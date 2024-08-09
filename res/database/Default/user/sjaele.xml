@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
 	<version value="3" comment="Själes Kram" />
-<!-- Die mit "Episode?" kommentierten Nachrichten eignen sich für Nachrichtenketten -->
-<!-- Die mit "deutschbezogen" kommentierten Nachrichten beziehen sich auf die deutsche Senderkarte -->
-<!-- Chemnitzer Nachrichten werden nicht derartig kommentiert -->
+	<!-- Die mit "Episode?" kommentierten Nachrichten eignen sich für Nachrichtenketten -->
+	<!-- Die mit "deutschbezogen" kommentierten Nachrichten beziehen sich auf die deutsche Senderkarte -->
+	<!-- Chemnitzer Nachrichten werden nicht derartig kommentiert -->
 	<allnews>
 
 		<news id="Sjaele-news-Gas-Pro" type="0" creator="7430" created_by="Sjaele">
@@ -1195,7 +1195,7 @@
 			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele">
+		<news id="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="iPhone should probably be spoofed.">
 			<title>
 				<de>iPhone zertrümmert</de>
 				<en>iPhone smashed</en>

@@ -173,7 +173,7 @@
 			<data genre="1" price="1.0" quality="70" />
 		</news>
 		<!-- "Fifa-WM 2022 in Katar" -->
-		<news id="cujo-news-quantar-01" type="0" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo">
+		<news id="cujo-news-quantar-01" type="0" thread_id="cujo-news-quantar" creator="8827" created_by="Cujo" comment="TODO: I don't think we need to spoof nation names. But eventually these spoof names could be used for some 'Earth from a parallel universes' joke.">
 			<title>
 				<de>FUFA vergibt heute die Fußball-WM 2022</de>
 				<en>FUFA awards the 2022 World Cup today</en>
@@ -597,7 +597,7 @@
 			</title>
 			<description>
 				<de>Die Stiftung Gütertest hat 5.748 Kugelschreiber getestet. Den besten Stift stellte die Firma Bastilo her. Erst nach einer Schreibdauer von 723 Stunden war seine Mine leer. 7 Tester wurden wegen eines Schreibkrampfes stationär behandelt.</de>
-				<en>Consumers' Association tested 5,748 ballpoint pens. The best ballpoint pen was produced by the Bastilo company. Its refill was only empty after writing for 723 hours. 7 testers were hospitalized due to writer's cramp.</en>
+				<en>Consumers' Association tested 5,748 ballpoint pens. The best ballpoint pen was produced by the Bastilo company. Its refill emptied only after 723 hours of writing. 7 testers were hospitalized due to writer's cramp.</en>
 				<pl>Stowarzyszenie Konsumentów przetestowało 5 748 długopisów. Najlepszy długopis został wyprodukowany przez firmę Bastilo. Jego wkład był pusty dopiero po 723 godzinach pisania. 7 testerów zostało hospitalizowanych z powodu skurczu mięśni.</pl>
 			</description>
 			<data genre="4" price="0.81" quality="59" />
@@ -831,7 +831,7 @@
 	</allnews>
 	<allads>
 		<!-- Toyota - Nichts ist unmöglich -->
-		<ad id="cujo-werbung-yotota">
+		<ad id="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
 			<title>
 				<de>Yotota</de>
 				<pl>Totoya</pl>
@@ -845,7 +845,7 @@
 			<data quality="20" repetitions="5" duration="3" profit="350" penalty="475" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Duplo -->
-		<ad id="cujo-werbung-pludo">
+		<ad id="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
 			<title>
 				<de>Pludo</de>
 				<pl>Pludo</pl>
@@ -859,14 +859,14 @@
 			<data quality="12" repetitions="4" duration="3" profit="1000" penalty="1550" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Schwartau -->
-		<ad id="cujo-werbung-schwalltau">
+		<ad id="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
 			<title>
 				<de>Schwalltau</de>
 				<pl>Sweettau</pl>
 			</title>
 			<description>
-				<de>Schwalltau - Die süßeste Versuchung seit es Marmelade gibt - Jetzt auch mit Tollkirschen</de>
-				<en>Schwalltau - The sweetest temptation since there is jam - Now also with belladonna cherries</en>
+				<de>Schwalltau - Die süßeste Versuchung seit es Marmelade gibt - Jetzt auch mit Tollkirschen.</de>
+				<en>Schwalltau - The sweetest temptation since there is jam - Now also with belladonna cherries.</en>
 				<pl>Sweettau - Najsłodsza pokusa odkąd istnieje dżem - teraz także z wiśniami belladonna</pl>
 			</description>
 			<conditions min_audience="2.3435" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>

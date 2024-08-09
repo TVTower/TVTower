@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" comment="Data entries by ariksan, ChatGPT used to bounce off ideas, rephrasing and translations" />
+	<scripttemplates>
+		<scripttemplate product="2" licence_type="3" guid="script-ariksan-mkw" creator="9621" comment="inspired by German realtor docu soaps">
+			<title>
+				<de>%title% (%randomcity%)</de>
+				<en>%title% (%randomcity%)</en>
+			</title>
+			<description>
+				<de>Makler versuchen Wohnungen und Häuser an Kunden mit ungewöhnlichen Ansprüchen zu verkaufen oder zu vermieten. Ob Geisterjäger oder Zirkusartisten - die skurrilen Kunden lassen die Makler an ihre Grenzen gehen und sorgen für jede Menge Unterhaltung.</de>
+				<en>Watch as desperate realtors cater to the most outrageous requests from their quirky clients. From a treehouse for a family of 6, to a mansion for a pet, no request is too absurd. Who will find their dream home and who will be left out in the cold?</en>
+			</description>
+			<variables>
+				<title>
+					<de>Träumen, Planen, Pleitegehen|Zoff, Zank, Abbruchbude|Himmel, Hölle, Hinterhof|Pech, Pannen, Pfusch|Vermieten, Verkaufen, Verzweifeln|Rausch, Reue, Ratenzahlung|Luxus, Lügen, Leerstand|Wohnen, Wunder, Wahnsinn|Traumhaus, Tränen, Trennungsschmerz|Schimmel, Schäden, Rost|Düster, Trostlos, Öde|Ratenzahlung, Rost, Bankrott|Suchen, Finden, Blechen|Renovieren, Sanieren, Abkassieren</de>
+					<en>Dreaming, Planning, Bankruptcy|Conflict, Quarrel, Breakdown|Cheating, Building, Bankruptcy|Luxury, Lies, Vacancy|Excess, Regret, Installment Plan|Miracle, Madness, Living|Cheap, Big, Dangerous|Rent, Spent, Repent|Bore, Explore, Adore|Sign, Align, Decline|Rent, Buy, Cry|Live, Obtain, Groan|Lease, Purchase, Debt|Place, Embrace, Palatial-Grace</en>
+				</title>
+				<randomcity>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</randomcity>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-mkw01">
+					<title>
+						<de>%wohnobjekt%</de>
+						<en>%wohnobjekt%</en>
+					</title>
+					<description>
+						<de>Objekt: ${wohn${wohnselector}}</de>
+						<en>Property: ${wohn${wohnselector}}</en>
+					</description>
+					<variables>
+						<suchende_person>
+							<de>Zwei arbeitslose Stripper suchen|Ein stinkreicher Kunstsammler sucht|Eine attraktive Frau und ihre zwei Liebhaber suchen|Ein Meeresbiologe sucht|Eine alleinerziehende Mutter und ihre drei Töchter suchen|Ein einsamer Witwer sucht|Ein erfolgreicher Geschäftsmann sucht|Ein junges Paar sucht|Eine reiche Erbin sucht|Ein abenteuerlustiger Backpacker sucht|Ein einsamer Rentner sucht|Ein verliebtes Pärchen sucht|Eine junge Familie sucht|Ein einsamer Seemann sucht|Eine einsame Witwe sucht|Ein erfolgreicher Künstler sucht|Ein alter Professor sucht|Eine frisch geschiedene Frau sucht|Ein junger Erbe sucht|Ein glücklicher Rentner sucht|Ein erfolgloser Schriftsteller sucht|Eine junge Studentin sucht|Eine abenteuerlustige Familie sucht|Ein geheimnisvoller Fremder sucht|Ein erfolgreicher Arzt sucht|Ein einsamer Cowboy sucht|Eine mutige Abenteurerin sucht|Ein berühmter Schauspieler sucht|Ein einsamer Wanderer sucht|Ein sportlicher Athlet sucht|Eine leidenschaftliche Musikerin sucht|Ein talentierter Koch sucht|Ein abenteuerlustiger Reisender sucht|Ein erfolgreicher Unternehmer sucht|Ein einsamer Aussteiger sucht|Eine erfolgreiche Geschäftsfrau sucht|Ein erfolgreicher Immobilieninvestor sucht|Eine junge Mutter sucht|Ein einsamer Angler sucht|Eine Gruppe von Backpackern sucht|Ein pensionierter Lehrer sucht|Ein junger Erfinder sucht|Ein berühmter Schauspieler sucht|Eine reiche Erbin sucht|Ein einsamer Cowboy sucht|Ein ehemaliger Soldat sucht|Ein aufstrebender Unternehmer sucht|Eine talentierte Sängerin sucht|Ein abenteuerlustiger Fotograf sucht|Eine Familie mit drei Kindern sucht|Ein passionierter Surfer sucht|Ein erfolgreicher Anwalt sucht|Ein frisch verheiratetes Paar sucht|Eine erfahrene Krankenschwester sucht|Ein engagierter Umweltschützer sucht|Ein junger Schriftsteller sucht|Ein aufgeschlossenes Paar sucht|Ein internationaler Geschäftsmann sucht|Eine alleinstehende Rentnerin sucht|Ein talentierter Koch sucht|Ein junges Model sucht|Ein ambitionierter Designer sucht|Ein erfolgsorientierter Manager sucht|Eine begeisterte Wandergruppe sucht|Ein junger Filmemacher sucht|Ein risikofreudiger Investor sucht|Ein Tierliebhaber sucht|Ein einsamer Angler sucht|Eine Gruppe von Extremsportlern sucht|Ein besorgter Elternteil sucht|Ein begeisterter Segler sucht|Eine Gruppe von Freiwilligen sucht|Ein junger Athlet sucht|Eine erfolgreiche Geschäftsfrau sucht|Ein erfahrener Feuerwehrmann sucht|Ein aufgeschlossener Reisender sucht|Ein zielstrebiger Wissenschaftler sucht|Eine kreative Künstlerin sucht|Eine spirituelle Gemeinschaft sucht</de>
+							<en>Two unemployed strippers look for|a filthy rich art collector looks for|A good looking woman and her two lovers look for|A marine biologist looks for|A single mother and her three daughters look for|A lonely widower looks for|A successful businessman looks for|A young couple looks for|A wealthy heiress looks for|An adventurous backpacker looks for|A lonely retiree looks for|A couple in love looks for|A young family looks for|A lonely sailor looks for|A lonely widow looks for|A successful artist looks for|An old professor looks for|A freshly divorced woman looks for|A young heir looks for|A happy retiree looks for|An unsuccessful writer looks for|A young student looks for|An adventurous family looks for|A mysterious stranger looks for|A successful doctor looks for|A lonely cowboy looks for|A brave adventurer looks for|A famous actor looks for|A lonely hiker looks for|A sporty athlete looks for|A passionate musician looks for|A talented chef looks for|An adventurous traveler looks for|A successful entrepreneur looks for|A lonely dropout looks for|A successful businesswoman looks for|A successful real estate investor looks for|A young mother looks for|A lonely fisherman looks for|A group of backpackers are looking for|A retired teacher is looking for|A young inventor is looking for|A famous actor is looking for|A wealthy heiress is looking for|A lonely cowboy is looking for|A former soldier is looking for|An aspiring entrepreneur is looking for|A talented singer is looking for|An adventurous photographer is looking for|A family with three children is looking for|A passionate surfer is looking for|A successful lawyer is looking for|A newly married couple is looking for|An experienced nurse is looking for|A dedicated environmentalist is looking for|A young writer is looking for|An open-minded couple is looking for|An international businessman is looking for|A single retiree is looking for|A talented chef is looking for|A young model is looking for|An ambitious designer is looking for|A success-driven manager is looking for|An enthusiastic hiking group is looking for|A young filmmaker is looking for|A risk-taking investor is looking for|An animal lover is looking for|A lonely fisherman is looking for|A group of extreme sports enthusiasts is looking for|A concerned parent is looking for|An avid sailor is looking for|A group of volunteers is looking for|A young athlete is looking for|A successful businesswoman is looking for|An experienced firefighter is looking for|An open-minded traveler is looking for|A goal-driven scientist is looking for|A creative artist is looking for|A spiritual community is looking for</en>
+						</suchende_person>
+						<wohnobjekt>
+							<de>ein geräumiges Einfamilienhaus|ein exklusives Anwesen|eine klassische Villa|ein idyllisches Landhaus|ein schickes Loft|ein historisches Herrenhaus|ein modernes Stadthaus|ein rustikales Bauernhaus|ein gemütliches Blockhaus|eine komfortable Doppelhaushälfte|ein zeitgenössisches Architektenhaus|eine extravagante Designerwohnung|eine traumhafte Seehütte|ein urbanes Loft-Apartment|ein romantisches Schlosshaus|ein beeindruckendes Industriedenkmal|ein großzügiges Bungalow|ein zeitloses Einfamilienhaus|ein urbanes Townhouse|eine einzigartige Höhlenwohnung|ein gemütliches Fachwerkhaus|eine moderne Maisonette-Wohnung|ein stilvolles Landgut|eine elegante Stadtvilla|ein schnuckeliges Gartenhaus|ein futuristisches Domizil|ein rustikales Berghaus|ein kompaktes Mikrohaus|ein großes Schlossanwesen|ein charmantes Reetdachhaus|eine luxuriöse Poolvilla|ein traditionelles Bauernhaus mit Scheune|ein modernes Glas-Haus|ein gemütlicher Bungalow mit Kamin|ein historisches Fachwerkhaus|ein ausgefallenes Baumhaus|ein ruhiges Appartement am Meer|ein helles Einfamilienhaus mit Wintergarten|ein stylisches Designerloft|ein traditionelles japanisches Haus|ein gigantisches Vogelhaus|ein bezauberndes Märchenschloss|eine noble Hütte im Wald|eine gläserne Iglu-Suite|ein edles Bootshaus auf dem Trockenen|eine schwimmende Villa mit Hai-Aquarium|ein majestätisches Baumhaus-Schloss|ein geheimes Versteck in den Wolkenkratzern|ein ungewöhnliches Pyramidenhaus|ein futuristisches Raumschiff-Loft|ein uriges Hexenhaus|ein schickes Vogelnest mit Infinity-Pool|eine verrückte Geisterbahn-Wohnung|ein gemütlicher Bienenstock|ein schwebendes Haus auf Stelzen|eine futuristische Mondbasis|ein fliegendes Schloss im Himmel|ein schräges Turmhaus|ein extravagantes Kunsthaus|eine luxuriöse Eisvilla|ein nostalgisches Wohnmobil|ein bequemer Wohnwagen auf der Autobahn|ein stimmungsvolles Leuchtturm-Apartment|ein pittoreskes Bauernhaus mit Hexenkräutergarten|ein süßes Puppenhaus mit Pool|ein geheimnisvolles Schloss im Nebel|ein gemütlicher Gartenpavillon|ein außergewöhnliches Zirkuszelt-Apartment|ein fantasievolles Märchendorf|ein modernes Hobbit-Haus|ein originelles Schiffscontainer-Loft|ein kleines Zirkuswagenhaus|ein gemütliches Gasthaus im Wald|eine ungewöhnliche Höhlenwohnung mit Wasserfall|ein kunterbuntes Hausboot|ein gemütliches Lebkuchenhaus|ein futuristischer Unterwasserpalast|ein altes Schmugglerversteck|ein schrilles Karussell-Apartment|ein rustikales Blockhaus auf einer einsamen Insel</de>
+							<en>a spacious single-family house|an exclusive estate|a classic villa|an idyllic country house|a stylish loft|a historic manor house|a modern townhouse|a rustic farmhouse|a cozy log cabin|a comfortable semi-detached house|a contemporary architect-designed house|an extravagant designer apartment|a dreamy lake cabin|an urban loft apartment|a romantic castle house|an impressive industrial monument|a generous bungalow|a timeless single-family house|an urban townhouse|a unique cave apartment|a cozy half-timbered house|a modern duplex apartment|a stylish country estate|an elegant town villa|a charming garden cottage|a futuristic residence|a rustic mountain house|a compact micro-home|a large castle estate|a charming thatched-roof house|a luxurious pool villa|a traditional farmhouse with barn|a modern glass house|a cozy bungalow with a fireplace|a historic half-timbered house|an unusual treehouse|a peaceful seaside apartment|a bright single-family house with a winter garden|a stylish designer loft|a traditional Japanese house|a gigantic birdhouse|an enchanting fairy tale castle|a noble hut in the forest|a glass igloo suite|a luxury boathouse on land|a floating villa with a shark aquarium|a majestic treehouse castle|a secret hideout in the skyscrapers|an unusual pyramid house|a futuristic spaceship loft|a rustic witch's house|a chic bird's nest with an infinity pool|a crazy haunted house apartment|a cozy beehive|a floating house on stilts|a futuristic moon base|a flying castle in the sky|a quirky tower house|an extravagant art house|a luxurious ice villa|a nostalgic camper van|a comfortable caravan on the highway|a romantic lighthouse apartment|a picturesque farmhouse with a witch's herb garden|a cute dollhouse with a pool|a mysterious castle in the fog|a cozy garden pavilion|an extraordinary circus tent apartment|an imaginative fairy tale village|a modern hobbit house|an original shipping container loft|a small circus wagon house|a cozy inn in the forest|an unusual cave apartment with a waterfall|a colorful houseboat|a cozy gingerbread house|a futuristic underwater palace|an old smuggler's hideout|a loud carousel apartment|a rustic log cabin on a deserted island</en>
+						</wohnobjekt>
+						<wohngrund>
+							<de>mit genügend Platz für fünf Katzen.|mit einer geheimen Schatzkammer.|für eine Hühnerzucht.|mit Seesicht.|mit einem Spielplatz.|um ein Museum einzurichten.|für ein zwielichtes Etablissement.|für eine Privatschule.|mit einer Rutsche ins Wohnzimmer.|mit Platz für eine Indoor-Gokart-Bahn.|um eine eigene Bowlingbahn zu bauen.|für den Start einer Yoga-Katzen-Zucht.|mit einem Wasserfall im Garten.|um eine Vampir-Kommune zu gründen.|mit einem Lift für den privaten Hubschrauber.|mit einem Geheimgang zum Nachbarn.|mit einer Sauna für 20 Personen.|für die eigene Bungee-Jumping-Plattform.|mit einem eigenen Raum für Dinosaurier-Skelette.|um eine private Detektiv-Agentur zu betreiben.|mit einem begehbaren Kleiderschrank in der Größe einer Kirche.|mit einem Whirlpool auf dem Dach.|um eine Ritterburg nachzubauen.|auf einer privaten Insel.|für eine Riesenschlangenzucht.|mit genug Platz für eine Bücherei mit 10.000 Büchern.|für den Betrieb eines Hochseilgartens.|für eine Sammlung von antiken Uhren.|mit genügend Raum für eine Skulpturengalerie.|um eine Geisterbahn einzurichten.|für eine exklusive Whiskey-Bar.|für die Aufzucht von exotischen Pflanzen.|mit einer integrierten Sauna.|um eine Flugschule zu betreiben.|mit ausreichend Platz für eine Bowlingbahn.|für ein Yoga-Studio.|mit genug Platz für einen Indoor-Golfplatz.|um eine Töpferwerkstatt einzurichten.|für eine private Diskothek.|für eine Kostümausstellung.|für ein begehbares Terrarium.|mit Platz für einen Kinosaal.|um eine private Sternwarte zu betreiben.|mit genügend Raum für eine Musikschule.|um eine Indoor-Kletterhalle einzurichten.|für eine Pilzzucht.|mit genug Platz für einen Schießstand.|für eine Vogelzucht.|für ein eigenes Tonstudio.|für eine Weindegustationsbar.|um eine Kampfsportschule zu betreiben.|mit genug Platz für ein Schmuckatelier.|für eine Sammlung von antiken Waffen.|um eine eigene Schokoladenmanufaktur zu betreiben.|für eine Privatklinik.|mit genug Raum für ein Modelabel.|um eine eigene Brauerei einzurichten.|für die Aufzucht von exotischen Tieren.|mit genug Platz für eine Eislaufbahn.|um eine Modellbahnlandschaft zu bauen.|für ein exklusives Dinner-Theater.|mit genug Raum für ein Tattoo-Studio</de>
+							<en>with enough space for five cats.|with a secret treasure chamber.|for a chicken farm.|with a lake view.|with a playground.|to set up a museum.|for a shady establishment.|for a private school.|with a slide into the living room.|with enough space for an indoor go-kart track.|to build a bowling alley.|to start a yoga-cat breeding business.|with a waterfall in the garden.|to start a vampire commune.|with a private helicopter lift.|with a secret passage to the neighbor's house.|with a sauna for 20 people.|for a bungee jumping platform.|with a dedicated room for dinosaur skeletons.|to run a private detective agency.|with a walk-in closet the size of a church.|with a rooftop hot tub.|to build a medieval castle.|on a private island.|for a giant snake breeding operation.|with enough space for a library with 10,000 books.|for operating a high ropes course.|for a collection of antique clocks.|with enough room for a sculpture gallery.|to set up a haunted house.|for an exclusive whiskey bar.|for breeding exotic plants.|with an integrated sauna.|to run a flight school.|with enough space for a bowling alley.|for a yoga studio.|with enough space for an indoor golf course.|to set up a pottery workshop.|for a private disco.|for a costume exhibition.|for a walk-in terrarium.|with space for a movie theater.|to operate a private observatory.|with enough room for a music school.|to set up an indoor climbing gym.|for a mushroom farm.|with enough space for a shooting range.|for a bird breeding operation.|for a recording studio.|for a wine tasting bar.|to operate a martial arts school.|with enough space for a jewelry workshop.|for a collection of antique weapons.|to set up a chocolate factory.|for a private clinic.|with enough room for a fashion label.|to set up a brewery.|for breeding exotic animals.|with enough space for an ice skating rink.|to build a model railway landscape.|for an exclusive dinner theater.|with enough room for a tattoo studio.</en>
+						</wohngrund>
+						<suchende_person2>
+							<de>einem reichen Rentner|einem verarmten Arzt|einem alleinstehenden Vater|einer geschiedenen Millionärin|einem arbeitslosen Piloten|einem Privatier|einem Liebhaber für exotische Spinnen|einer Affenzüchterin|einem ahnungslosen Opfer|einem treuen Diener|einem wagemutigen Abenteurer|einem verwöhnten Schlossherrn|einem gewitzten Dieb|einem naiven Jungspund|einem durchgeknallten Professor|einem gefürchteten Piratenkapitän|einem geheimnisvollen Fremden|einem unerschrockenen Forscher|einem einfühlsamen Psychologen|einem gelangweilten Adligen|einem verschrobenen Erfinder|einem unerbittlichen Rächer|einem besessenen Sammler|einem zwielichtigen Gestaltenwandler|einem unsterblichen Vampir|einem reumütigen Ex-Sträfling|einem sorglosen Playboys|einem einsamen Aussteiger|einem notorischen Schürzenjäger|einem tollpatschigen Tollpatsch|einem unternehmungslustigen Weltenbummler|einem einfältigen Dorfbewohner|einem skrupellosen Geschäftemacher|einem optimistischen Träumer|einem chaotischen Chaoten|einem käuflichen Richter|einem belesenen Bibliothekar|einem hartnäckigen Gläubiger|einem idealistischen Aktivisten|einem schüchternen Stotterer|einem liebestollen Casanova|einem verbissenen Streber|einem ungeduldigen Wichtigtuer|einem verträumten Romantiker|einem unbeholfenen Tollpatsch|einem schlauen Fuchs|einem ahnungsvollen Propheten|einem vernachlässigten Hausmann|einem stinkreichen Geizhals|einem erfolglosen Schriftsteller|einem verwöhnten Schnösel|einem vergesslichen Rentner|einem hoffnungslosen Romantiker|einem rebellischen Teenager|einem impulsiven Sammler|einem verschrobenen Wissenschaftler|einem eitlen Popstar|einem mürrischen Rentier|einem abenteuerlustigen Backpacker|einem blauäugigen Träumer|einem überforderten Hausmann|einem schrulligen Künstler|einem hyperaktiven Energiebündel|einem antriebslosen Faulenzer|einem verträumten Tagträumer|einem eigenwilligen Querdenker|einem introvertierten Bücherwurm|einem chaotischen Wirbelwind|einem impulsiven Draufgänger|einem gelangweilten Millionär|einem grummeligen Miesepeter|einem neugierigen Entdecker|einem geheimnisvollen Unbekannten|einem distanzierten Skeptiker|einem exzentrischen Modefreak|einem unabhängigen Freigeist|einem verpeilten Surfer|einem gruseligen Vampir|einem launischen Wettermacher|einem verknöcherten Bürokraten|einem unentschlossenen Zauderer|einem völlig planlosen Träumer|einem sprunghaften Abenteurer|einem wissbegierigen Schüler|einem verschwiegenen Geheimagenten|einem rätselhaften Magier|einem kindischen Spielverderber|einem großmäuligen Angeber</de>
+							<en>a wealthy retiree|an impoverished doctor|a single father|a divorced millionaire woman|an unemployed pilot|a private individual with independent means|a lover of exotic spiders|a monkey breeder|an unsuspecting victim|a loyal servant|a daring adventurer|a pampered lord|a cunning thief|a naive youngster|a mad professor|a feared pirate captain|a mysterious stranger|a fearless explorer|a sensitive psychologist|a bored nobleman|an eccentric inventor|a relentless avenger|an obsessed collector|a shady shapeshifter|an immortal vampire|a remorseful ex-convict|a carefree playboy|a lonely dropout|a notorious womanizer|a clumsy bungler|an adventurous globetrotter|a simple-minded villager|a ruthless businessperson|an optimistic dreamer|a chaotic troublemaker|a corrupt judge|a well-read librarian|a persistent creditor|an idealistic activist|a shy stutterer|a love-crazed Casanova|a stubborn nerd|an impatient blowhard|a dreamy romantic|an awkward bumbler|a sly fox|a prescient prophet|a neglected househusband|a filthy rich miser|an unsuccessful writer|a spoiled brat|a forgetful retiree|a hopeless romantic|a rebellious teenager|an impulsive collector|an eccentric scientist|a vain pop star|a grumpy reindeer|an adventurous backpacker|a starry-eyed dreamer|an overwhelmed house husband|a quirky artist|a hyperactive ball of energy|a lazy slacker|a dreamy daydreamer|a stubborn nonconformist|an introverted bookworm|a chaotic whirlwind|an impulsive daredevil|a bored millionaire|a grumpy curmudgeon|a curious explorer|a mysterious stranger|a skeptical skeptic|an eccentric fashion freak|an independent free spirit|a scatterbrained surfer|a creepy vampire|a moody weatherman|a rigid bureaucrat|an indecisive ditherer|a completely clueless dreamer|a fickle adventurer|a curious student|a secretive secret agent|a mysterious magician|an immature spoilsport|a boastful show-off</en>
+						</suchende_person2>
+						<artofthedeal>
+							<de>zu verkaufen|zu vermieten|anzudrehen</de>
+							<en>tries to sell %wohnobjekt% to %suchende_person2%|tries to rent out a %wohnobjekt% to %suchende_person2%|tries to foist %wohnobjekt% upon %suchende_person2%</en>
+						</artofthedeal>
+						<wohnsucher>
+							<de>%suchende_person% %wohnobjekt% %wohngrund%</de>
+							<en>%suchende_person% %wohnobjekt% %wohngrund%</en>
+						</wohnsucher>
+						<wohnfinder>
+							<de>Der Makler versucht, %suchende_person2% %wohnobjekt% %artofthedeal%.</de>
+							<en>The realtor %artofthedeal%.</en>
+						</wohnfinder>
+						<wohnselector>
+							<de>finder|sucher</de>
+							<en>finder|sucher</en>
+						</wohnselector>
+					</variables>
+					<episodes value="8" />
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="2" required="1" gender="0" />
+				<job index="3" function="32" required="1" gender="1" />
+				<job index="4" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="16" target_groups="68" />
+			<targetgroupattractivity men="0.5" />
+			<genres maingenre="6" subgenres="7" />
+			<blocks value="1" />
+			<price min="6000" max="13000" />
+			<potential min="26" max="58" />
+			<outcome min="26" max="58" />
+			<review min="11" max="33" />
+			<speed min="26" max="55" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="script-ariksan-wetten01" creator="9621" comment="schon wieder überzogen...">
+			<title>
+				<de>Auf die Wette, Fertig, Los - Live aus %city%</de>
+				<en>Let's Bet - Live from %city%</en>
+			</title>
+			<description>
+				<de>Der Höhepunkt der deutschen Unterhaltung in zwei, naja, sagen wir drei Blöcken. Sehen Sie zu, wie durchschnittliche Menschen absurde Wetten abschließen! Und nicht zu vergessen die Prominenten, die manchmal sogar mitmachen!</de>
+				<en>The pinnacle of German entertainment in two... well, let's say three blocks. Watch average people make absurd bets! And let's not forget the celebrities, who sometimes even join in!</en>
+			</description>
+			<variables>
+				<city>
+					<de>Basel|Saarbrücken|Berlin|Düsseldorf|Offenburg|Hannover|Bremen|Erfurt|Duisburg|Böblingen|Hof|Leipzig|Palma|Augsburg|Bremerhaven|Freiburg im Breisgau|Friedrichshafen|Insbruck|Linz|Nürnberg</de>
+					<en>Basle|Saarbrücken|Berlin|Düsseldorf|Offenburg|Hanover|Bremen|Erfurt|Duisburg|Böblingen|Hof|Leipzig|Palma|Augsburg|Bremerhaven|Freiburg im Breisgau|Friedrichshafen|Innsbruck|Linz|Nuremberg</en>
+					<!-- TODO: So if it's from an external city, then the studio in TVTower only acts as a relay station and can be size 1? Or are they lying about the location? -->
+				</city>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" gender="0" />
+				<job index="1" function="4" required="1" gender="0" />
+				<job index="2" function="8" required="1" gender="1" />
+				<job index="3" function="8" required="1" gender="2" />  <!--TODO: using function="8" instead of function="2048" (Model) as it is not supported yet -->
+				<job index="4" function="64" required="1" gender="0" />
+				<job index="5" function="64" required="1" gender="0" />
+				<job index="6" function="16" required="1" gender="0" />
+			</jobs>
+			<data flags="9" production_broadcast_limit="1" live_date="3,5,20,20" production_licence_flags="36" target_groups="7" />
+			<genres maingenre="104" />
+			<blocks min="2" max="3" slope="90" />
+			<price min="350000" max="600000" slope="65" />
+			<potential min="80" max="100" slope="90" />
+			<outcome min="80" max="100" slope="90" />
+			<review min="80" max="100" slope="80" />
+			<speed min="55" max="90" slope="60" />
+			<studio_size value="3" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="script-ariksan-flavor" creator="9621" comment="very loosely inspired by kitchen nightmares TODO change job to chef when available">
+			<title>
+				<de>%title% - %currentyear% Edition</de>
+				<en>%title% - %currentyear% Edition</en>
+			</title>
+			<description>
+				<de>Mutige Köche stürzen sich in kulinarische Missgeschicke. Von schrägen Kombinationen bis zu absurden Geschmacksexperimenten - ein Fest der Gaumenverwirrung und ein Fiasko für den guten Geschmack!</de>
+				<en>Daring chefs dive into adventurous culinary mishaps. From quirky ingredient combinations to absurd taste experiments - it's a feast of taste confusion and a fiasco for good taste!</en>
+			</description>
+			<variables>
+				<title>
+					<de>Geschmacksdesaster|Essensrausch|Küchenkatastrophen|Kulinarische Katastrophen|Das Küchenchaos|Die Gourmet-Patzer|Kulinarische Gemetzel|Das Feinschmecker-Experiment|Food Fiasco|Kulinarischer Kataklysmus|Geschmacksversagen|Menü Mayham|Küchenkataklysmus|Rezeptdesaster</de>
+					<en>Flavor Fiasco|Food Frenzy|Kitchen Catastrophes|Culinary Calamities|Cooking Chaos|Gourmet Gaffes|Culinary Carnage|Chef's Nightmares|Food Fiasco|Cuisine Cataclysm|Flavor Failures|Menu Mayhem|Kitchen Cataclysm|Recipe Reckoning</en>
+				</title>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-flavor01">
+					<title>
+						<de>%protein% mit %spice% ..??!</de>
+						<en>%protein% with %spice% ..??!</en>
+					</title>
+					<description>
+						<de>Die Köche kombinieren %protein% mit %spice% und versuchen %meal% zu kreiren. Ein unterhaltsames Geschmacksdesaster!</de>
+						<en>The chefs combine %protein% with %spice% to create a%flavor% %meal%. An entertaining flavor fiasco!</en>
+					</description>
+					<variables>
+						<protein>
+							<de>Huhn|Rindfleisch|Schweinefleisch|Lammfleisch|Fisch|Garnelen|Hummer|Krabben|Lachs|Thunfisch|Kalbfleisch|Truthahn|Ente|Wachtel|Kaninchen|Oktopus|Tintenfisch|Jakobsmuscheln|Muscheln|Miesmuscheln|Snappfisch|Katzenfisch|Tilapia|Sardellen|Schwertfisch|Austern|Garnelen|Kabeljau|Forelle|Karpfen|Schinken|Schellfisch|Bison|Gans|Hirsch|Sardinen|Kutteln|Niere|Leber|Tofu</de>
+							<en>chicken|beef|pork|lamb|fish|shrimp|lobster|crab|salmon|tuna|veal|turkey|duck|quail|rabbit|octopus|squid|scallops|clams|mussels|snapper|catfish|tilapia|anchovy|swordfish|oysters|prawns|cod|trout|carp|ham|haddock|bison|goose|venison|sardines|tripe|kidney|liver|tofu</en>
+						</protein>
+						<spice>
+							<de>Kreuzkümmel|Koriander|Kurkuma|Zimt|Paprika|Kardamom|Ingwer|Muskatnuss|Gewürznelken|Senf|Fenchel|Bockshornklee|Kümmel|Sternanis|schwarzem Pfeffer|weißem Pfeffer|Cayennepfeffer|Chilipulver|roten Pfefferflocken|Safran|Currypulver|Garam Masala|Five-Spice|Oregano|Thymian|Rosmarin|Basilikum|Petersilie|Dill|Minze|Salbei|Lorbeerblättern|Piment|Kürbisgewürz|Vanille|Knoblauchpulver|Zwiebelpulver|Selleriesalz|Koriandersamen|Mohnsamen|Paprikapulver|Cayennepfeffer|Konfitüre|Senf|Ketchup</de>
+							<en>cumin|coriander|turmeric|cinnamon|paprika|cardamom|ginger|nutmeg|cloves|mustard|fennel|fenugreek|caraway|star anise|black pepper|white pepper|cayenne pepper|chili powder|red pepper flakes|saffron|curry powder|garam masala|five-spice|oregano|thyme|rosemary|basil|parsley|dill|mint|sage|bay leaves|allspice|pumpkin spice|vanilla|garlic powder|onion powder|celery salt|coriander seeds|poppy seeds|paprika powder|cayenne|jelly|mustard|ketchup</en>
+						</spice>
+						<flavor>
+							<de>süß|sauer|scharf|salzig|bitter|herb|herzhaft|reichhaltig|kräuterhaft|rauchig|würzig|minzig|zitronig|erdig|fruchtig|blumig|pfeffrig|cremig|buttrig|nussig|knusprig|saftig|mild|kräftig|erfrischend|markant|aromatisch|exotisch|leicht süß|feurig|samten|saftig|leicht sauer|pikant|ausgewogen|sanft|charakteristisch|harmonisch</de>
+							<en> sweet| sour| spicy| salty| bitter| tangy| savory| rich|n herbaceous| smoky| zesty| minty| citrusy|n earthy| fruity| floral| peppery| creamy| buttery| nutty| crispy| juicy| mellow| tangy| refreshing| bold|n aromatic|n exotic| slightly sweet| fiery| velvety| succulent| slightly sour| pungent| balanced| mild| distinctive| harmonious</en>
+						</flavor>
+						<meal>
+							<de>ein %flavor%es Frühstück|einen %flavor%en Brunch|ein %flavor%es Mittagessen|ein %flavor%es Abendessen|%flavor%e Snacks|%flavor%e Vorspeisen|ein %flavor%es Hauptgericht|%flavor%e Beilagen|eine %flavor%e Suppe|einen %flavor%en Salat|ein %flavor%es Sandwich|einen %flavor%en Burger|ein %flavor%es Nudelgericht|eine %flavor%e Pizza|ein %flavor%es Pfannengericht|ein %flavor%es Barbecue|ein %flavor%es Picknick|ein %flavor%es Takeout-Gericht|ein %flavor%es Fast Food Gericht|%flavor%en Street Food|%flavor%e Tapas|ein %flavor%es Sushi-Gericht|ein %flavor%es Curry-Gericht|einen %flavor%en Braten|einen %flavor%en Auflauf|%flavor%e Wraps|ein %flavor%es Fingerfood-Gericht|ein %flavor%es Steak-Gericht|ein %flavor%es Dessert</de>
+							<en>breakfast|brunch|lunch|dinner|snack|appetizer|main course|side dish|soup|salad|sandwich|burger|pasta dish|pizza|stir-fry|barbecue|picnic|takeout dish|fast food dish|street food dish|tapas dish|sushi dish|curry|roast|casserole|wrap|finger food|steak dish|dessert</en>
+						</meal>
+					</variables>
+					<episodes value="6" />
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" gender="0" />
+				<job index="1" function="4" required="1" gender="0" />
+				<job index="2" function="2" required="1" gender="0" />
+				<job index="3" function="2" required="1" gender="0" />
+			</jobs>
+			<data target_groups="186" />
+			<targetgroupattractivity men="0.5" />
+			<genres maingenre="100" subgenres="6,7" />
+			<blocks value="1" />
+			<price min="30000" max="50000" slope="50" />
+			<potential min="25" max="75" slope="50" />
+			<outcome min="25" max="75" slope="50" />
+			<review min="10" max="60" slope="50" />
+			<speed min="25" max="60" slope="50" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="script-ariksan-storage" creator="9621" comment="inspired by storage wars">
+			<title>
+				<de>%title% %currentyear% Edition</de>
+				<en>%title% %currentyear% Edition</en>
+			</title>
+			<description>
+				<de>Begleiten Sie eine Gruppe von „Schatzjägern“ in einem erbitterten Kampf um vergessenen Trödel und wertlosen Gerümpel. In verstaubten Lagereinheiten wird jeder Ramsch zur potenziellen Goldgrube!</de>
+				<en>Watch as a group of "treasure hunters" battles it out over piles of forgotten junk, trying to turn trash into cash. Every storage unit holds the potential for absurd adventures and unlikely fortunes!</en>
+			</description>
+			<variables>
+				<title>
+					<de>Schrott-Spektakel|Kram-Konundrum|Trödelkriege|Schrottkriege|Schrott-Schlacht</de>
+					<en>Trash Treasures|Storage Mayhem|Clutter Clash|Dumpster Dazzle|Junk Journey</en>
+				</title>
+				<person1>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+				</person1>
+				<person2>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+				</person2>
+				<person3>
+					<de>%PERSONGENERATOR_FIRSTNAME(IT,1)%</de>
+				</person3>
+				<person4>
+					<de>%PERSONGENERATOR_FIRSTNAME(DE,2)%</de>
+				</person4>
+				<currentyear>
+					<de>%WORLDTIME:YEAR% Edition</de>
+				</currentyear>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-storage-01">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<description>
+						<de>%person1% und %person2% zanken sich mit %person3% um %treasure%. %person4% hat Glück im Unglück und kann %junk% verhökern.</de>
+						<en>%person1% und %person2% get into a fight with %person3% over %treasure%. %person4% has luck in misfortune and sells off %junk%.</en>
+					</description>
+					<variables>
+						<treasure>
+							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
+							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+						</treasure>
+						<junk>
+							<de>eine alte Zeitung|ein kaputtes Möbelstück|nicht übereinstimmende Socken|abgelaufene Konserven|einen zerbrochenen Spiegel|ein rostiges Fahrrad|abgetragene Schuhe|eine verstaubte Schallplatte|ein veraltetes VHS-Band|eine abgesplitterte Schale|ein verblichenes Gemälde|ein veralteter Elektroartikel|verknotete Kabel|eine leere Plastikflasche|ein stumpfes Küchenutensil|ein veraltetes Kassettenband|beschädigtes Gepäck|eine zerkratzte CD|eine veraltete Computer-Tastatur|zerrissene Kleidung|kaputtes Spielzeug|ein ausgefranstes Stromkabel|eine durchgelegene Matratze|ein leeres Glasgefäß|eine gesprungene Keramikfigur|abgelaufene Medizin|ein veraltetes Magazin|ein ungenutztes Trainingsgerät|einen zerbrochenen Bilderrahmen|ein ausgetrockneter Stift|verblichene Poster|ein defektes Küchengerät|ein beschädigtes Brettspiel|ein abgenutzter Teppich|Kisten voller abgelaufener Beauty-Produkte|ein veraltetes Mobiltelefon|etwas zersplittertes Glasgeschirr|eine kaputte Uhr|verblichene Weihnachtsdekorationen|ein abgenutztes Kissen|eine gesprungene Porzellanpuppe</de>
+							<en>an old newspaper|a broken furniture|mismatched socks|expired canned food|a cracked mirror|a rusty bicycle|worn-out shoes|a dusty vinyl record|an obsolete VHS tape|a chipped dish|a faded painting|an outdated electronic|tangled cables|an empty plastic bottle|a dull kitchen utensil|an obsolete cassette tape|damaged luggage|a scratched CD|an obsolete computer keyboard|torn clothing|a broken toy|frayed electrical cord|a worn-out mattress|an empty glass jar|a cracked ceramic figurine|expired medicine|an outdated magazine|unused exercise equipment|a broken picture frame|a dried-out pen|faded posters|a defunct kitchen appliance|a damaged board game|a worn-out carpet|boxes full of expired beauty products|an obsolete cellphone|some shattered glassware|a broken clock|faded holiday decorations|a worn-out pillow|a cracked porcelain doll</en>
+						</junk>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-storage-02">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<description>
+						<de>Der Auktionator hat sich verfahren. Also übernimmt %person4% seine Rolle. Chaos pur! %person1% und %person2% bieten mit %person3% um die Wette.</de>
+						<en>The auctioneer has gotten lost. %person4% takes over his role. Chaos ensues! %person1% and %person2% compete against %person3%.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-storage-03">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<description>
+						<de>%person1% und %person2% haben sich zerstritten und bieten heute gegeneinander. %person4% zieht den Jackpot und sichert sich %treasure%.</de>
+						<en>%person1% and %person2% have had a falling out and are bidding against each other. %person4% hits the jackpot and secures %treasure%.</en>
+					</description>
+					<variables>
+						<treasure>
+							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
+							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+						</treasure>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-storage-04">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<!--TODO soll treasure hier der gleiche Gegenstand wie in der vorigen Folge sein?-->
+					<description>
+						<de>%person1% und %person2% haben sich noch immer nicht versöhnt. %person3% kippt einen Kaffee auf %treasure%.</de>
+						<en>%person1% and %person2% still haven't reconciled. %person3% spills coffee on %treasure%.</en>
+					</description>
+					<variables>
+						<treasure>
+							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
+							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+						</treasure>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-storage-05">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<description>
+						<de>%person1% und %person2% haben sich insgeheim versöhnt und tricksen alle aus. Sie finden %treasure%.</de>
+						<en>%person1% and %person2% have secretly reconciled and outsmart the others, finding %treasure%.</en>
+					</description>
+					<variables>
+						<treasure>
+							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
+							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+						</treasure>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-storage-06">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<description>
+						<de>Ein neuer Bieter räumt ab. %person1%, %person2% und %person4% sehen zu, wie er %treasure% findet.</de>
+						<en>A new bidder outbids everyone. %person1%, %person2% and %person4% watch as he walks away with %treasure%.</en>
+					</description>
+					<variables>
+						<treasure>
+							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
+							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+						</treasure>
+					</variables>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-storage-07">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<description>
+						<de>Skandal, der neue Bieter ist da. %person1% und %person2% schäumen vor Wut. %person4% schafft es doch noch eine Lagereinheit zu ergattern.</de>
+						<en>The new bidder returns triumphantly. Frustration boils within %person1% and %person2%. However, %person4% manages to secure a storage unit.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-storage-08">
+					<title>
+						<de>%STATIONMAP:RANDOMCITY%</de>
+					</title>
+					<description>
+						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit %person3% in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>
+						<en>Hilarity ensues as it turns out that the new bidder is, in fact, %person3% in a genius disguise. Everyone laughs hysterically.</en>
+					</description>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" gender="0" />
+				<job index="1" function="8" required="1" gender="1" />
+				<job index="2" function="32" required="1" gender="1" />
+				<job index="3" function="32" required="1" gender="2" />
+				<job index="4" function="32" required="1" gender="1" />
+				<job index="5" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="16" target_groups="68" />
+			<targetgroupattractivity men="0.5" />
+			<genres maingenre="6" subgenres="14" />
+			<blocks value="1" />
+			<price min="4000" max="6000" slope="50" />
+			<potential min="20" max="65" slope="55" />
+			<outcome min="20" max="65" slope="55" />
+			<review min="5" max="45" slope="50" />
+			<speed min="50" max="80" slope="50" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="script-ariksan-kautz" creator="9621" comment="inspired by die Sendung mit der Maus">
+			<title>
+				<de>Die Sendung mit ${dativ_${variant}} ${tier_${variant}}</de>
+				<en>The Show with the %adjective% %animal%</en>
+			</title>
+			<description>
+				<de>Spass und Fakten mit ${dativ_${variant}} ${tier_${variant}} und dem kleinen %animal2%. ${nominativ_${variant}} ${tier_${variant}} und das %animal2% erklären die Welt und sorgen für Lacher.</de>
+				<en>Fun and facts with the %animal% and the tiny %animal2%. Children explore the world with the %adjective% %animal% and the tiny %animal2% who also present funny clips and stories.</en>
+			</description>
+			<variables>
+				<variant>
+					<de>m|w</de>
+				</variant>
+				<tier_m>
+					<de>Kautz|Strauß|Tiger|Schwan|Jaguar|Fuchs|Wolf|Widder|Hund|Gorilla|Hahn</de>
+					<en>Rook|Ostrich|Tiger|Swan|Jaguar|Fox|Wolf|Ram|Dog|Gorilla|Rooster</en>
+				</tier_m>
+				<tier_w>
+					<de>Laus|Katze|Gans|Möwe|Schlange|Ziege|Biene|Hummel|Taube|Ente|Spinne|Giraffe</de>
+					<en>Louse|Cat|Goose|Gull|Snake|Goat|Bee|Bumblebee|Dove|Duck|Spider|Giraffe</en>
+				</tier_w>
+				<dativ_m>
+					<de>dem</de>
+				</dativ_m>
+				<dativ_w>
+					<de>der</de>
+				</dativ_w>
+				<nominativ_m>
+					<de>Der</de>
+				</nominativ_m>
+				<nominativ_w>
+					<de>Die</de>
+				</nominativ_w>
+				<animal>
+					<en>${tier_${variant}}</en>
+				</animal>
+				<animal2>
+					<de>Nashorn|Flusspferd|Pferd|Stachelschwein|Schaf|Huhn|Kamel|Walross|Krokodil</de>
+					<en>rhino|hippo|horse|porcupine|sheep|chicken|camel|walrus|crocodile</en>
+				</animal2>
+				<adjective>
+					<en>Witty|Sharp|Clever|Smart|Funny</en>
+				</adjective>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-kautz-01">
+					<title>
+						<de>Die Grabkammer des Pharao</de>
+						<en>The tomb of the pharao</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% tauchen in die Welt der Archäologie ein. Achtung kleines %animal2%, keine alten Flüche wecken!</de>
+						<en>The %adjective% %animal% and the tiny %animal2% delve into archaeology. Easy, %animal2%, no ancient curses or mummies will make great roommates!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-kautz-02">
+					<title>
+						<de>C++ ist kein Vitamin</de>
+						<en>C++ is not a vitamine</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% lernen Programmieren. Achtung kleines %animal2%, übermäßige Semikolons werden den Computer nicht beeindrucken!</de>
+						<en>The %adjective% %animal% and the tiny %animal2% learn coding. Remember, %animal2%, excessive semicolons won't impress the computer, just confuse it!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-kautz-03">
+					<title>
+						<de>Quälende Quallen</de>
+						<en>Don't eat that jelly</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% erkunden den Ozean. Autsch, kleines %animal2%, lass uns lieber Abstand von den quälenden Quallen halten!</de>
+						<en>The %adjective% %animal% and the tiny %animal2% explore the ocean. Ouchy, tiny %animal2%, let's keep our distance from those jellyfish!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-kautz-04">
+					<title>
+						<de>Das schwarze Gold</de>
+						<en>Black Gold</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% besuchen eine Raffinerie. Oh uhhh, die Strechhölzer bitte stecken lassen, kleines %animal2%!</de>
+						<en>The %adjective% %animal% and the tiny %animal2% visit an oil refinery. Uhhh, tiny %animal2%, don't play with matches!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-kautz-05">
+					<title>
+						<de>PutziBot</de>
+						<en>BrushBot Buddy</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% besuchen ein Robotiklabor. Keine Sorge, kleines %animal2%, die Roboter werden die Welt nicht übernehmen... noch nicht!</de>
+						<en>The %adjective% %animal% and the tiny %animal2% visit a robotics lab. Don't worry, tiny %animal2%, the robots won't take over the world... yet!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-kautz-06">
+					<title>
+						<de>Waldgeschichten</de>
+						<en>Forest Explorers</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% begleiten einen Förster. Winziges %animal2%, es ist unhöflich mit den Bäumen zu streiten, auch wenn sie nicht gut zuhören!</de>
+						<en>The %adjective% %animal% and the tiny %animal2% accompany join forester in his daily tasks. Remember, tiny %animal2%, it's not polite to argue with the trees, even if they're not good listeners!</en>
+					</description>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="128" required="1" gender="0" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="2" />
+			</jobs>
+			<data flags="2" target_groups="69" />
+			<targetgroupattractivity children="2" teenagers="0.5" unemployed="0.5" />
+			<genres maingenre="9" subgenres="3" />
+			<episodes min="6" max="6" />
+			<blocks value="1" />
+			<price min="150000" max="190000" slope="55" />
+			<potential min="50" max="95" slope="65" />
+			<outcome min="50" max="95" slope="65" />
+			<review min="50" max="95" slope="75" />
+			<speed min="35" max="75" slope="50" />
+			<studio_size value="2" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="script-ariksan-bever" creator="9621" comment="inspired by Beverly Hills 90210, targetgroupattractivity spricht hauptächlich ein weibliches/teenie-publikum an">
+			<title>
+				<de>${title} Staffel #1</de>
+				<en>${title} Season #1</en>
+			</title>
+			<description>
+				<de>In einer Küstenstadt navigieren %person1_w%, %person2_w%, %person3_w%, %person1_m%, %person2_m% und %person3_m% Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit</de>
+				<en>In a coastal town, %person1_w%, %person2_w%, %person3_w%, %person1_m%, %person2_m%, and %person3_m% navigate love, friendship, secrets, and self-discovery in their eventful collage years.</en>
+			</description>
+			<variables>
+				<title>
+					<de>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</de>
+					<en>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</en>
+				</title>
+				<person1_m>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+				</person1_m>
+				<person2_m>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+				</person2_m>
+				<person3_m>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+				</person3_m>
+				<person1_w>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+				</person1_w>
+				<person2_w>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+				</person2_w>
+				<person3_w>
+					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+				</person3_w>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-bever-01">
+					<title>
+						<de>%person3_w%s Muse</de>
+						<en>%person3_w%'s Muse</en>
+					</title>
+					<description>
+						<de>%person3_w% entdeckt ein musikalisches Talent und gründet eine Band, was die Aufmerksamkeit von %person1_m% auf sich zieht, der Gefühle für sie entwickelt.</de>
+						<en>%person3_w% discovers a hidden talent for music and joins a band, catching the attention of %person1_m% who starts developing feelings for her.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-bever-02">
+					<title>
+						<de>Das Liebesbrief-Rätsel</de>
+						<en>Love Letter Enigma</en>
+					</title>
+					<description>
+						<de>%person2_m% erhält einen Liebesbrief, der ihn auf die Suche nach der Identität des  Verehrers führt, während %person1_w% sich fragt, ob er für sie bestimmt ist.</de>
+						<en>%person2_m% receives a love letter, leading to a quest to uncover the identity of the secret admirer, while %person1_w% wonders if it's meant for her.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-bever-03">
+					<title>
+						<de>Studienpartner</de>
+						<en>Academic Allies</en>
+					</title>
+					<description>
+						<de>%person3_m% kämpft mit einer überwältigenden Belastung im Studium und sucht Hilfe bei %person2_w%, die zu seiner Lernpartnerin und Motivationsquelle wird.</de>
+						<en>%person3_m% struggles with an overwhelming course load at college, seeking support from %person2_w% who becomes his study partner and source of motivation.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-bever-04">
+					<title>
+						<de>Offenbarte Geheimnisse</de>
+						<en>Secrets Unveiled</en>
+					</title>
+					<description>
+						<de>%person1_w% findet ein verlorenes Tagebuch, das alte Geheimnisse offenbart und sie auf eine Reise der Selbstentdeckung mit verdrängten Wahrheiten führt.</de>
+						<en>%person1_w% finds a long-lost diary that reveals shocking secrets about her past, leading to a journey of self-discovery and confronting buried truths.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-bever-05">
+					<title>
+						<de>Wegkreuzungen der Leidenschaft</de>
+						<en>Crossroads of Passion</en>
+					</title>
+					<description>
+						<de>%person2_m% steht vor einem Dilemma, als er zwischen Sport und Tanzen hin- und hergerissen ist und um Rat bei %person3_w% bittet, die ihm bei der Entscheidung hilft.</de>
+						<en>%person2_m% faces a dilemma when he's torn between pursuing his passion for sports or dancing, seeking guidance from %person3_w% who helps him make a decision.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-bever-06">
+					<title>
+						<de>Offengelegte Rivalität</de>
+						<en>Rivalry Revealed</en>
+					</title>
+					<description>
+						<de>%person1_m% vermutet, dass %person3_m% etwas verheimlicht, was zu einer Rivalität führt, bis eine Konfrontation sie zwingt, ihre Missverständnisse anzugehen.</de>
+						<en>%person1_m% suspects that %person3_m% is hiding something, fueling a tense rivalry until they are forced to confront their misunderstandings.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-bever-07">
+					<title>
+						<de>Bühne des Neids</de>
+						<en>Stage of Envy</en>
+					</title>
+					<description>
+						<de>%person2_w% erhält die Hauptrolle im Schultheaterstück, was Eifersucht auslöst, insbesondere bei %person3_w%, die ihre Emotionen bewältigen muss.</de>
+						<en>%person2_w% lands the lead role in the school play, causing jealousy among her friends, especially %person3_w% who must navigate her emotions.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-bever-08">
+					<title>
+						<de>Die Vergangenheit ans Licht bringen</de>
+						<en>Unearthing the Past</en>
+					</title>
+					<description>
+						<de>%person1_m% stößt auf ein Foto, das auf ein Familiengeheimnis hinweist. %person2_m% unterstützt ihn auf der Suche nach antworten.</de>
+						<en>%person1_m% stumbles upon a photo that hints at a family secret, leading him to embark on a quest for answers, with %person2_m% providing support.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="8" product="2" licence_type="2" guid="script-ariksan-bever-09">
+					<title>
+						<de>Dreiecksbeziehungen</de>
+						<en>Triangular Ties</en>
+					</title>
+					<description>
+						<de>%person3_w% ist zwischen %person2_m% und %person1_m% hin- und hergerissen. Das Liebesdreieck stellt ihre Freundschafte auf die Probe.</de>
+						<en>%person3_w% is torn between two potential love interests, %person2_m% and %person1_m%. The complicated love triangle tests their friendships.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-bever-10">
+					<title>
+						<de>Moralisches Dilemma</de>
+						<en>Moral Dilemma</en>
+					</title>
+					<description>
+						<de>%person1_w% steht vor einem Dilemma, als sie %person3_w%'s Geheimnis entdeckt, was sie vor die Wahl zwischen Loyalität und Gerechtigkeit stellt.</de>
+						<en>%person1_w% faces a moral dilemma when she discovers %person3_w%'s secret, forcing her to choose between loyalty and doing what she believes is right.</en>
+					</description>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="4" required="1" />
+				<job index="2" function="2" required="1" gender="1" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="1" />
+				<job index="5" function="2" required="1" gender="2" />
+				<job index="6" function="2" required="1" gender="2" />
+				<job index="7" function="2" required="1" gender="2" />
+				<job index="8" function="32" required="1" gender="1" />
+				<job index="9" function="32" required="1" gender="2" />
+			</jobs>
+			<data target_groups="134" />
+			<targetgroupattractivity men="0.75" children="2" teenagers="2" pensioners="0.25" />
+			<genres maingenre="15" subgenres="7" />
+			<episodes min="10" max="10" />
+			<blocks value="1" />
+			<price min="130000" max="220000" slope="55" />
+			<potential min="40" max="95" slope="75" />
+			<outcome min="40" max="95" slope="75" />
+			<review min="25" max="55" slope="50" />
+			<speed min="40" max="65" slope="55" />
+			<studio_size value="2" />
+		</scripttemplate>
+	</scripttemplates>
+</tvtdb>

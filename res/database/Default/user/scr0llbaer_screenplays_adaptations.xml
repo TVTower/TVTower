@@ -6,7 +6,7 @@
 
 		<!-- Literature -->
 		
-		<scripttemplate product="2" licence_type="3" guid="5a2d4f37-b87e-448b-a745-334a869e17bf" creator="9551" comment="https://en.wikipedia.org/wiki/The_Catcher_in_the_Rye">
+		<scripttemplate product="2" licence_type="3" guid="5a2d4f37-b87e-448b-a745-334a869e17bf" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/The_Catcher_in_the_Rye | auch: Der Mann im Roggen">
 			<title>
 				<de>Der Beschützer im Getreide</de>
 				<en>The Buckler in the Wheat</en>
@@ -73,7 +73,8 @@
 				<job index="6" function="32" required="1" gender="1" />
 				<job index="7" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="8" target_groups="6" />
+			<targetgroupattractivity men="0.75" children="2" teenagers="2" managers="1.25" />
 			<genres maingenre="7" subgenres="" />
 			<episodes min="3" max="3" />
 			<blocks value="2" />
@@ -84,14 +85,15 @@
 			<speed min="20" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="41a8d639-c657-4817-a822-a51e6d9c7099" creator="9551" comment="https://en.wikipedia.org/wiki/Foucault%27s_Pendulum | TODO: mention and reference Umberto Eco. Replace name Lia by reference.">
+		<scripttemplate product="2" licence_type="3" guid="41a8d639-c657-4817-a822-a51e6d9c7099" creator="9551" comment="https://en.wikipedia.org/wiki/Umberto_Eco | https://en.wikipedia.org/wiki/Foucault%27s_Pendulum | TODO: mention and reference Umberto Eco. Replace name Lia by reference.">
 			<title>
-				<de>Das Foucaultsche Schwingen</de>
+				<de>Die Foucaultschen Schwingungen</de>
 				<en>Foucault's Vibrations</en>
 			</title>
 			<title_original>
 				<de>Das Foucaultsche Pendel</de>
 				<en>Foucault's Pendulum</en>
+				<it>Il pendolo di Foucault</it>
 			</title_original>
 			<description>
 				<de>Adaption des 1988er Romans und eine ausgefeilte, manchmal brutale Dekonstruktion verschwörungstheoretischer Geschichtsauffassungen. Drei Verleger denken sich einen „Großen Plan“ aus und werden dann verfolgt.</de>
@@ -252,8 +254,9 @@
 				<job index="9" function="32" required="1" gender="2" />
 				<job index="10" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<genres maingenre="14" subgenres="17" />
+			<data flags="0" flags_optional="" target_groups="38" />
+			<targetgroupattractivity managers="2" pensioners="2" />
+			<genres maingenre="14" subgenres="17,1" />
 			<episodes min="10" max="10" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
@@ -264,7 +267,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1989" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="78e95e72-d015-4e62-9a76-e9497d657c17" creator="9551" comment="https://en.wikipedia.org/wiki/Rendezvous_with_Rama | TODO: mention and reference Arthur C. Clarke">
+		<scripttemplate product="2" licence_type="3" guid="78e95e72-d015-4e62-9a76-e9497d657c17" creator="9551" comment="https://en.wikipedia.org/wiki/Arthur_C._Clarke | https://en.wikipedia.org/wiki/Rendezvous_with_Rama | TODO: mention and reference Arthur C. Clarke">
 			<title>
 				<de>Reiseflug nach Rama</de>
 				<en>Revelation of Rama</en>
@@ -288,7 +291,7 @@
 						<en>Discovery</en>
 					</title_original>
 					<description>
-						<de>Ein Astronauten-Team begibt sich auf die Erkundungsmission des außergewöhnlichen, mysteriösen Artefakts. Im Inneren befinden sich keine Aliens, aber verblüffende, weite Landschaften und Technologie mit „Regel der Drei”-Redundanz-Prinzip.</de>
+						<de>Ein Astronauten-Team begibt sich auf die Erkundungsmission des außergewöhnlichen, mysteriösen Artefakts. Im Inneren befinden sich keine Aliens, aber verblüffende, weite Landschaften und Technologie mit „Regel der Drei“-Redundanz-Prinzip.</de>
 						<en>A team of astronauts embarks on the mission to explore the extraordinary, mysterious artifact. Inside they encounter no aliens, but baffling vast landscapes and technology built with a "Rule of Threes" redundancy.</en>
 					</description>
 				</scripttemplate>
@@ -330,7 +333,8 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="34" />
+			<targetgroupattractivity employees="1.5" managers="2" />
 			<genres maingenre="16" subgenres="14,7" />
 			<episodes min="3" max="3" />
 			<blocks value="3" />
@@ -341,7 +345,7 @@
 			<speed min="40" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="9f9d5722-d45d-4d2f-a741-4be832ff134f" creator="9551" comment="https://en.wikipedia.org/wiki/The_Last_Question | TODO: Maybe make more use of all the roles with spin-offs">
+		<scripttemplate product="1" licence_type="1" guid="9f9d5722-d45d-4d2f-a741-4be832ff134f" creator="9551" comment="https://en.wikipedia.org/wiki/Isaac_Asimov | https://en.wikipedia.org/wiki/The_Last_Question | https://en.wikipedia.org/wiki/Multivac | 'Multivac' series not necessarily in ordering of source material releases | fictional additions also included by now">
 			<title>
 				<de>Wenn die Gestirne sterben</de>
 				<en>The Final Query</en>
@@ -351,8 +355,8 @@
 				<en>The Last Question</en>
 			</title_original>
 			<description>
-				<de>„Keine ausreichenden Daten für eine sinnvolle Antwort.“ Die ursprünglich von Menschen geschaffene Super-AI, nun im Hyperraum, kann Jahrmilliarden lang die „letzte Frage“ des Wärmetods des Universums nicht beantworten, bis schließlich...</de>
-				<en>"Insufficient data for meaningful answer." Originally created by humans, the super-AI, now in hyperspace, for billions of years cannot answer the "last question" of the heat death of the universe, until finally...</en>
+				<de>„Keine ausreichenden Daten für eine sinnvolle Antwort.“ Die ursprünglich von Menschen geschaffene %ROLENAME1%-AI, nun im Hyperraum, kann Jahrmilliarden lang die „letzte Frage“ des Wärmetods des Universums nicht beantworten, bis schließlich...</de>
+				<en>"Insufficient data for meaningful answer." Originally created by humans, the %ROLENAME1% AI, now in hyperspace, cannot answer the "last question" of the heat death of the universe for billions of years, until finally...</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -369,7 +373,8 @@
 				<job index="11" function="2" required="1" role_guid="61ca741e-e786-4422-b278-f67dee5b0aba" />
 				<job index="12" function="2" required="1" role_guid="7df023ce-13b6-4947-8432-200076f10c64" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="34" />
+			<targetgroupattractivity children="2" teenagers="2" employees="1.5" managers="2" />
 			<genres maingenre="16" subgenres="14" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -378,8 +383,12 @@
 			<review min="40" max="90" />
 			<speed min="40" max="90" />
 			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="80eedad8-19c0-4dbd-b5b2-c351343e4056" />
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="12c7e43e-4ac9-4ca0-af3d-38a38deb4248" />
+			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="ce402a14-9815-4e9a-8801-b2c2cb2fafd5" creator="9551" comment="https://en.wikipedia.org/wiki/Blood_Meridian">
+		<scripttemplate product="1" licence_type="1" guid="ce402a14-9815-4e9a-8801-b2c2cb2fafd5" creator="9551" comment="https://en.wikipedia.org/wiki/Cormac_McCarthy | https://en.wikipedia.org/wiki/Blood_Meridian">
 			<title>
 				<de>Dem blutroten Abend entgegen</de>
 				<en>Blood Sunset</en>
@@ -401,7 +410,7 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="64" flags_optional="" />
+			<data flags="64" flags_optional="" target_groups="18" />
 			<genres maingenre="18" subgenres="13,11" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
@@ -411,7 +420,7 @@
 			<speed min="30" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="59eacb49-bfb8-4991-85a0-bfbd2f81cd43" creator="9551" comment="https://de.wikipedia.org/wiki/Till_Raether">
+		<scripttemplate product="1" licence_type="1" guid="59eacb49-bfb8-4991-85a0-bfbd2f81cd43" creator="9551" comment="https://de.wikipedia.org/wiki/Till_Raether | https://www.goodreads.com/book/show/20945868-treibland">
 			<title>
 				<de>Niemands-Sand</de>
 				<en>No Man's Sand</en>
@@ -426,15 +435,16 @@
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" />
+				<job index="1" function="2" required="1" role_guid="516b27ce-ae64-4332-975f-6eb628b728d7" />
 				<job index="2" function="2" required="1" gender="1" />
 				<job index="3" function="2" required="1" gender="2" />
 				<job index="4" function="2" required="1" gender="1" />
 				<job index="5" function="2" required="1" gender="2" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<genres maingenre="17" subgenres="7,4" />
+			<data flags="0" flags_optional="" target_groups="68" />
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="4" subgenres="7,17" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="70" />
@@ -442,10 +452,13 @@
 			<review min="30" max="70" />
 			<speed min="30" max="70" />
 			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="04b0454a-ce03-4ca3-8b30-c3efd358c496" />
+			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="87a89565-4ac3-48ea-99d4-1964b5ac4f36" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston">
+		<scripttemplate product="1" licence_type="1" guid="87a89565-4ac3-48ea-99d4-1964b5ac4f36" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston | https://www.goodreads.com/book/show/21278.Caught_Stealing">
 			<title>
-				<de>Gestohlen und Verprügelt</de>
+				<de>Bestohlen und Verprügelt</de>
 				<en>Caught In a Violent Act</en>
 			</title>
 			<title_original>
@@ -465,7 +478,7 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="18" />
 			<genres maingenre="17" subgenres="1,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -478,7 +491,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston">
+		<scripttemplate product="1" licence_type="1" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston | https://www.goodreads.com/book/show/21279.Six_Bad_Things">
 			<title>
 				<de>Sechs Schlimme Dinge</de>
 				<en>The Hunted One</en>
@@ -500,7 +513,7 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 87a89565-4ac3-48ea-99d4-1964b5ac4f36 -->
+			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by 87a89565-4ac3-48ea-99d4-1964b5ac4f36 -->
 			<genres maingenre="17" subgenres="1,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -513,7 +526,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="fb26308d-90bf-426e-b766-3534900c8612" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="fb26308d-90bf-426e-b766-3534900c8612" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston">
+		<scripttemplate product="1" licence_type="1" guid="fb26308d-90bf-426e-b766-3534900c8612" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston | https://www.goodreads.com/book/show/21276.A_Dangerous_Man">
 			<title>
 				<de>Ein bedrohlicher Mann</de>
 				<en>A Hazardous Man</en>
@@ -535,7 +548,7 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by f4d44af8-747c-4651-a720-bdd84ffbedc0 -->
+			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by f4d44af8-747c-4651-a720-bdd84ffbedc0 -->
 			<genres maingenre="17" subgenres="1,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -545,7 +558,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="ac018c75-aa8f-4cb1-b1aa-6d1e90da8625" creator="9551" comment="https://en.wikipedia.org/wiki/Survivor_(Palahniuk_novel)">
+		<scripttemplate product="1" licence_type="1" guid="ac018c75-aa8f-4cb1-b1aa-6d1e90da8625" creator="9551" comment="https://en.wikipedia.org/wiki/Chuck_Palahniuk | https://en.wikipedia.org/wiki/Survivor_(Palahniuk_novel)">
 			<title>
 				<de>Der Überlebende</de>
 				<en>Flight 2039</en>
@@ -567,8 +580,8 @@
 				<job index="5" function="2" required="1" gender="2" />
 				<job index="6" function="2" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<targetgroupattractivity employees="1.25" managers="2" pensioners="0.75" />
+			<data flags="0" flags_optional="" target_groups="6" />
+			<targetgroupattractivity children="1.25" managers="1.25" pensioners="0.25" />
 			<genres maingenre="5" subgenres="14,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -578,7 +591,7 @@
 			<speed min="30" max="90" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="a1929a96-b823-4149-884e-2988b99cc35d" creator="9551" comment="https://en.wikipedia.org/wiki/Native_Tongue_(Hiaasen_novel)">
+		<scripttemplate product="1" licence_type="1" guid="a1929a96-b823-4149-884e-2988b99cc35d" creator="9551" comment="https://en.wikipedia.org/wiki/Carl_Hiaasen | https://en.wikipedia.org/wiki/Native_Tongue_(Hiaasen_novel)">
 			<title>
 				<de>Muttersprache</de>
 				<en>Big Shots</en>
@@ -593,15 +606,20 @@
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="1" />
-				<job index="2" function="2" required="1" gender="1" />
-				<job index="3" function="2" required="1" gender="2" />
-				<job index="4" function="2" required="1" gender="1" />
-				<job index="5" function="2" required="1" gender="2" />
-				<job index="6" function="2" required="1" gender="2" />
+				<job index="1" function="2" required="1" role_guid="92b24f8a-a9ad-400c-b9c1-efd86907fb9d" />
+				<job index="2" function="2" required="1" role_guid="c32ebc57-54f5-47d8-b717-a7094ba9ef16" />
+				<job index="3" function="2" required="1" role_guid="e770fffd-286a-4485-b220-702026ebc4c8" />
+				<job index="4" function="2" required="1" role_guid="7415aa73-9c45-4630-b9c2-d26466b2a892" />
+				<job index="5" function="2" required="1" role_guid="106b20d3-f3fc-4688-b373-2c6d85799c02" />
+				<job index="6" function="2" required="1" role_guid="c0907391-ed60-4863-9dcb-21f96133ac6c" />
+				<job index="7" function="2" required="1" role_guid="3e8567cc-69fe-4ab6-afcd-ddba9a150eb8" />
+				<job index="8" function="2" required="1" role_guid="f4e0195e-a26a-4a13-8ce1-73e9cca673db" />
+				<job index="9" function="32" required="1" gender="2" />
+				<job index="10" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<genres maingenre="4" subgenres="14,14" />
+			<data flags="0" flags_optional="" target_groups="68" />
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="4" subgenres="7,14" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="70" />
@@ -610,7 +628,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="98360911-0efe-4040-8b94-da9359ceb149" creator="9551" comment="https://en.wikipedia.org/wiki/The_Anubis_Gates">
+		<scripttemplate product="1" licence_type="1" guid="98360911-0efe-4040-8b94-da9359ceb149" creator="9551" comment="https://en.wikipedia.org/wiki/Tim_Powers | https://en.wikipedia.org/wiki/The_Anubis_Gates">
 			<title>
 				<de>Das Anubis-Portal</de>
 				<en>The Anubis Portal</en>
@@ -638,7 +656,8 @@
 				<job index="11" function="32" required="1" gender="2" />
 				<job index="12" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="18" />
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
 			<genres maingenre="10" subgenres="17,1" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
@@ -649,7 +668,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1984" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann">
+		<scripttemplate product="1" licence_type="1" guid="39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/24178943-im-fr-hling-sterben | https://www.goodreads.com/book/show/31574746-to-die-in-spring">
 			<title>
 				<de>Der Tod im Frühjahr</de>
 				<en>Death in Spring</en>
@@ -673,8 +692,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<genres maingenre="7" subgenres="2" />
+			<data flags="0" flags_optional="" target_groups="274" />
+			<targetgroupattractivity women="0.5" />
+			<genres maingenre="7" subgenres="1,2" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -686,7 +706,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann">
+		<scripttemplate product="1" licence_type="1" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/1329586.Stier">
 			<title>
 				<de>Taurus</de>
 				<en>Taurus</en>
@@ -710,9 +730,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 -->
-			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
-			<genres maingenre="7" subgenres="" />
+			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 -->
+			<targetgroupattractivity teenagers="2" unemployed="2" pensioners="0.25" />
+			<genres maingenre="7" subgenres="1,2" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -724,7 +744,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann">
+		<scripttemplate product="1" licence_type="1" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/7819536-w-ldernacht">
 			<title>
 				<de>Wälderdämmerung</de>
 				<en>Forest Dusk</en>
@@ -748,9 +768,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 90fbe294-e7ab-4072-a1f0-71a8f8767d1e -->
-			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
-			<genres maingenre="7" subgenres="" />
+			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by 90fbe294-e7ab-4072-a1f0-71a8f8767d1e -->
+			<targetgroupattractivity teenagers="2" unemployed="2" pensioners="0.25" />
+			<genres maingenre="7" subgenres="1,2" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -762,7 +782,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="0bb634fb-3712-489f-a27b-537bfb605c19" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="0bb634fb-3712-489f-a27b-537bfb605c19" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | part of the 'Ruhrgebietsreihe' and also sequel to 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 (but written earlier)">
+		<scripttemplate product="1" licence_type="1" guid="0bb634fb-3712-489f-a27b-537bfb605c19" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/2633646-milch-und-kohle | part of the 'Ruhrgebietsreihe' and also sequel to 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 (but written earlier)">
 			<title>
 				<de>Milch Unter Tage</de>
 				<en>Milk Under Ground</en>
@@ -786,9 +806,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by d5ee2df6-e3cf-47f4-9870-f634fce4aa4a -->
-			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
-			<genres maingenre="7" subgenres="" />
+			<data flags="0" flags_optional="" target_groups="6" available="0" /> <!-- availability triggered by d5ee2df6-e3cf-47f4-9870-f634fce4aa4a -->
+			<targetgroupattractivity teenagers="2" unemployed="2" pensioners="0.25" />
+			<genres maingenre="7" subgenres="1,2" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -800,7 +820,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann">
+		<scripttemplate product="1" licence_type="1" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/8088885-junges-licht | actually has a film adaptation: https://de.wikipedia.org/wiki/Junges_Licht_(Film) - tt4830708">
 			<title>
 				<de>Junger Glanz</de>
 				<en>Young Shine</en>
@@ -824,9 +844,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 0bb634fb-3712-489f-a27b-537bfb605c19 -->
-			<targetgroupattractivity teenagers="1.5" pensioners="0.75" />
-			<genres maingenre="7" subgenres="" />
+			<data flags="0" flags_optional="" target_groups="6" available="0" /> <!-- availability triggered by 0bb634fb-3712-489f-a27b-537bfb605c19 -->
+			<targetgroupattractivity men="0.75" children="2" teenagers="2" unemployed="2" />
+			<genres maingenre="7" subgenres="1,2" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -835,7 +855,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="503f9778-62b2-4717-98ff-b31cf8c0a5e6" creator="9551" comment="https://en.wikipedia.org/wiki/The_Corrections">
+		<scripttemplate product="1" licence_type="1" guid="503f9778-62b2-4717-98ff-b31cf8c0a5e6" creator="9551" comment="https://en.wikipedia.org/wiki/Jonathan_Franzen | https://en.wikipedia.org/wiki/The_Corrections">
 			<title>
 				<de>Die Richtigstellungen</de>
 				<en>The Rectifications</en>
@@ -860,7 +880,8 @@
 				<job index="8" function="32" required="1" gender="2" />
 				<job index="9" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="6" />
+			<targetgroupattractivity men="0.75" children="2" managers="1.25" />
 			<genres maingenre="7" subgenres="5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -870,7 +891,7 @@
 			<speed min="30" max="90" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="6933d3b7-64b0-46e4-9671-3ddecebc89ce" creator="9551" comment="https://en.wikipedia.org/wiki/The_Shadow_of_the_Wind">
+		<scripttemplate product="1" licence_type="1" guid="6933d3b7-64b0-46e4-9671-3ddecebc89ce" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Shadow_of_the_Wind">
 			<title>
 				<de>Schemen der Brise</de>
 				<en>Shade of the Breeze</en>
@@ -894,8 +915,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<genres maingenre="14" subgenres="17" />
+			<data flags="0" flags_optional="" target_groups="6" />
+			<targetgroupattractivity children="2" managers="2" pensioners="2" />
+			<genres maingenre="14" subgenres="17,1" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -907,7 +929,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" creator="9551" comment="https://en.wikipedia.org/wiki/The_Angel%27s_Game">
+		<scripttemplate product="1" licence_type="1" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Angel%27s_Game">
 			<title>
 				<de>Schach des Engels</de>
 				<en>Angel's Play</en>
@@ -931,8 +953,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 6933d3b7-64b0-46e4-9671-3ddecebc89ce -->
-			<genres maingenre="14" subgenres="17" />
+			<data flags="0" flags_optional="" target_groups="6" available="0" /> <!-- availability triggered by 6933d3b7-64b0-46e4-9671-3ddecebc89ce -->
+			<targetgroupattractivity children="2" managers="2" pensioners="2" />
+			<genres maingenre="14" subgenres="17,1" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -944,7 +967,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" creator="9551" comment="https://en.wikipedia.org/wiki/The_Prisoner_of_Heaven">
+		<scripttemplate product="1" licence_type="1" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Prisoner_of_Heaven">
 			<title>
 				<de>Häftling im Paradies</de>
 				<en>Captive of Paradise</en>
@@ -968,8 +991,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 5740cd0d-3f8f-4b26-823a-23a91ea16b19 -->
-			<genres maingenre="14" subgenres="17" />
+			<data flags="0" flags_optional="" target_groups="6" available="0" /> <!-- availability triggered by 5740cd0d-3f8f-4b26-823a-23a91ea16b19 -->
+			<targetgroupattractivity children="2" managers="2" pensioners="2" />
+			<genres maingenre="14" subgenres="17,1" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -981,7 +1005,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" creator="9551" comment="https://en.wikipedia.org/wiki/The_Labyrinth_of_Spirits">
+		<scripttemplate product="1" licence_type="1" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Labyrinth_of_Spirits">
 			<title>
 				<de>Irrgarten der Geister</de>
 				<en>Maze of Lights</en>
@@ -1006,8 +1030,9 @@
 				<job index="8" function="32" required="1" gender="2" />
 				<job index="9" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 2c30a2fd-f940-481d-886e-30f1e21dc43d -->
-			<genres maingenre="14" subgenres="17" />
+			<data flags="0" flags_optional="" target_groups="6"  available="0" /> <!-- availability triggered by 2c30a2fd-f940-481d-886e-30f1e21dc43d -->
+			<targetgroupattractivity children="2" managers="2" pensioners="2" />
+			<genres maingenre="14" subgenres="17,1" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -1016,7 +1041,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="19e286f7-0b76-4377-b3c7-34e1887b1fda" creator="9551" comment="https://en.wikipedia.org/wiki/Martin_Dressler">
+		<scripttemplate product="1" licence_type="1" guid="19e286f7-0b76-4377-b3c7-34e1887b1fda" creator="9551" comment="https://en.wikipedia.org/wiki/Steven_Millhauser | https://en.wikipedia.org/wiki/Martin_Dressler">
 			<title>
 				<de>%ROLE1% - Ein amerikanischer Fantast</de>
 				<en>%ROLE1% - The Legend of an American Fantast</en>
@@ -1040,7 +1065,8 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="96" />
+			<targetgroupattractivity women="0.75" />
 			<genres maingenre="7" subgenres="1" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1050,7 +1076,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="e46b5a67-1b39-4625-9761-b0b88dc204ac" creator="9551" comment="https://en.wikipedia.org/wiki/Bones_of_the_Moon">
+		<scripttemplate product="1" licence_type="1" guid="e46b5a67-1b39-4625-9761-b0b88dc204ac" creator="9551" comment="https://en.wikipedia.org/wiki/Jonathan_Carroll | https://en.wikipedia.org/wiki/Bones_of_the_Moon">
 			<title>
 				<de>Schreiende Träume</de>
 				<en>Skeletons on the Moon</en>
@@ -1074,7 +1100,8 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="64" />
+			<data flags="0" flags_optional="64" target_groups="22" />
+			<targetgroupattractivity women="1.25" teenagers="2" housewives="2" />
 			<genres maingenre="12" subgenres="7,10" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1084,7 +1111,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="b6a6f561-943e-4c03-88c6-2d47fb96b7a7" creator="9551" comment="https://de.wikipedia.org/wiki/Philipp_Winkler_(Schriftsteller)">
+		<scripttemplate product="1" licence_type="1" guid="b6a6f561-943e-4c03-88c6-2d47fb96b7a7" creator="9551" comment="https://de.wikipedia.org/wiki/Philipp_Winkler_(Schriftsteller) | https://www.goodreads.com/book/show/29978653-hool">
 			<title>
 				<de>Rowdy</de>
 				<en>Rowdy</en>
@@ -1094,8 +1121,8 @@
 				<en>Hooligan</en>
 			</title_original>
 			<description>
-				<de>%ROLENAME1%s Match beginnt, wenn der Schiedsrichter abgepfiffen hat. Bei „seinem“ norddeutschen Profifußballverein steht er in der „dritten Hälfte“ im Startaufgebot. Seine Jungs, die besten Jahre, ihr Vermächtnis sind ihm heilig.</de>
-				<en>%ROLENAME1%s match starts when the referee blows the final whistle. For "his" northern German professional soccer club he is in the starting lineup of the "third half". His buddies, their best years, their legacy are sacred to him.</en>
+				<de>%ROLENAME1%s Match beginnt, wenn der Schiedsrichter abpfeift. Bei „seinem“ norddeutschen Profifußballclub steht er in der „3. Hälfte“ im Startaufgebot. Seine Jungs, die besten Jahre, ihr Vermächtnis sind ihm heilig. Frau und Kinder haben meist das Nachsehen.</de>
+				<en>%ROLENAME1%'s match starts when the referee blows the final whistle. For "his" northern German professional soccer club, he is in the starting lineup of the "3rd half". His buddies, their best years, their legacy are sacred to him. Wife and children are often neglected.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1107,7 +1134,8 @@
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="18" />
+			<targetgroupattractivity teenagers="2" housewives="2" unemployed="2" employees="1.25" />
 			<genres maingenre="2" subgenres="7,203" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1144,7 +1172,8 @@
 				<job index="10" function="32" required="1" gender="2" />
 				<job index="11" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="18" />
+			<targetgroupattractivity children="2" teenagers="2" />
 			<genres maingenre="17" subgenres="2,1" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1154,7 +1183,7 @@
 			<speed min="10" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="d545bf8a-b0f4-4888-978e-2a6561027be0" creator="9551" comment="https://de.wikipedia.org/wiki/Merle-Zyklus">
+		<scripttemplate product="2" licence_type="3" guid="d545bf8a-b0f4-4888-978e-2a6561027be0" creator="9551" comment="https://de.wikipedia.org/wiki/Kai_Meyer | https://de.wikipedia.org/wiki/Merle-Zyklus">
 			<title>
 				<de>%ROLENAME1%</de>
 				<en>%ROLENAME1%</en>
@@ -1224,8 +1253,9 @@
 				<job index="9" function="32" required="1" gender="2" />
 				<job index="10" function="32" required="1" gender="1" />
 			</jobs>
+			<data target_groups="7" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
 			<genres maingenre="10" subgenres="9,1" />
-			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" unemployed_male="1.25" unemployed_female="1.5" />
 			<episodes min="3" max="3" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1235,7 +1265,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="628f6d38-a2bc-4122-b191-07461282fef1" creator="9551" comment="https://en.wikipedia.org/wiki/Railsea">
+		<scripttemplate product="1" licence_type="1" guid="628f6d38-a2bc-4122-b191-07461282fef1" creator="9551" comment="https://en.wikipedia.org/wiki/China_Mi%C3%A9ville | https://en.wikipedia.org/wiki/Railsea">
 			<title>
 				<de>Das Eisenmeer</de>
 				<en>Ironsea</en>
@@ -1246,7 +1276,7 @@
 			</title_original>
 			<description>
 				<de>Auf einer mit endlosen Gleisen durchzogenen Steampunk-Erde, die von riesigen fleischfressenden Viechern beherrscht wird, die von den Menschen Walfang-artig auch als Nahrung gejagt werden, machen sich %ROLENAME1% und %ROLENAME2% auf die Suche nach einem Schatz.</de>
-				<en>On a steampunk Earth crisscrossed with endless connected railroad tracks and dominated by giant carnivorous creatures, that also are hunted whaling-like by humans for food, %ROLENAME1% and %ROLENAME2% set out to find treasure.</en>
+				<en>On a steampunk Earth crisscrossed with endless connected railroad tracks and dominated by giant carnivorous creatures, that also are hunted whaling-like by humans for food, %ROLENAME1% and %ROLENAME2% set out to find a treasure.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1259,7 +1289,8 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="18" />
+			<targetgroupattractivity employees="1.25" />
 			<genres maingenre="2" subgenres="16,1" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1352,6 +1383,8 @@
 				<job index="8" function="32" required="1" gender="2" />
 				<job index="9" function="32" required="1" gender="1" />
 			</jobs>
+			<data target_groups="18" />
+			<targetgroupattractivity children="2" teenagers="2" />
 			<genres maingenre="17" subgenres="16,2" />
 			<episodes min="4" max="4" />
 			<blocks value="2" />
@@ -1363,7 +1396,7 @@
 			<studio_size value="3" />
 			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="214fee00-acec-46a1-8959-ccac3264bee9" creator="9551" comment="https://en.wikipedia.org/wiki/Hyperion_Cantos">
+		<scripttemplate product="2" licence_type="3" guid="214fee00-acec-46a1-8959-ccac3264bee9" creator="9551" comment="https://en.wikipedia.org/wiki/Dan_Simmons | https://en.wikipedia.org/wiki/Hyperion_Cantos">
 			<title>
 				<de>Die Hyperiad-Kantaten</de>
 				<en>Hyperiad Cantata</en>
@@ -1387,7 +1420,7 @@
 						<en>Hyperion</en>
 					</title_original>
 					<description>
-						<de>Der titelgebende Planet liegt im abgelegenen „Outback“ und ist schwer zu erreichen, beherbergt aber in der Zeit rückwärts wandernde „Gräber“. 7 Pilger auf einer Reise dorthin, um eine Invasion zu verhindern, erzählen ihre Lebensgeschichten.</de>
+						<de>Der titelgebende Planet befindet sich im abgelegenen „Outback“ und ist schwer zu erreichen, beherbergt aber in der Zeit rückwärts wandernde „Gräber“. 7 Pilger auf einer Reise dorthin, um eine Invasion zu verhindern, erzählen ihre Lebensgeschichten.</de>
 						<en>The titular planet is located in the remote "outback" and is hard to reach, but carries backwards in time moving "Tombs". 7 pilgrims on a journey there to prevent an invasion tell their life stories.</en>
 					</description>
 				</scripttemplate>
@@ -1453,7 +1486,9 @@
 				<job index="15" function="32" required="1" gender="2" />
 				<job index="16" function="32" required="1" gender="1" />
 			</jobs>
-			<genres maingenre="16" subgenres="7,14" />
+			<data target_groups="22" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" employees="1.25" managers="1.5" />
+			<genres maingenre="16" subgenres="13,14" />
 			<episodes min="4" max="4" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
@@ -1464,7 +1499,7 @@
 			<studio_size value="3" />
 			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="d5f301bf-a014-4a7c-8963-319cb7dc827b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait">
+		<scripttemplate product="1" licence_type="1" guid="d5f301bf-a014-4a7c-8963-319cb7dc827b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1309057.Escapade">
 			<title>
 				<de>Eskalade</de>
 				<en>Escalade</en>
@@ -1490,8 +1525,9 @@
 				<job index="9" function="32" required="1" gender="2" />
 				<job index="10" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<genres maingenre="14" subgenres="7,4" />
+			<data flags="0" flags_optional="" target_groups="68" />
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="4" subgenres="14,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -1503,7 +1539,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="4fb85612-e170-4443-be34-31e9ecd65f50" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="4fb85612-e170-4443-be34-31e9ecd65f50" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait">
+		<scripttemplate product="1" licence_type="1" guid="4fb85612-e170-4443-be34-31e9ecd65f50" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/815901.Masquerade">
 			<title>
 				<de>Maskierungen</de>
 				<en>Mimicry</en>
@@ -1529,8 +1565,9 @@
 				<job index="9" function="32" required="1" gender="2" />
 				<job index="10" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by d5f301bf-a014-4a7c-8963-319cb7dc827b -->
-			<genres maingenre="14" subgenres="7,4" />
+			<data flags="0" flags_optional="" target_groups="68" available="0" /> <!-- availability triggered by d5f301bf-a014-4a7c-8963-319cb7dc827b -->
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="4" subgenres="14,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -1542,7 +1579,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait">
+		<scripttemplate product="1" licence_type="1" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1455585.Cavalcade">
 			<title>
 				<de>Scherereien</de>
 				<en>Charades</en>
@@ -1568,8 +1605,9 @@
 				<job index="9" function="32" required="1" gender="1" />
 				<job index="10" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 4fb85612-e170-4443-be34-31e9ecd65f50 -->
-			<genres maingenre="14" subgenres="7,4" />
+			<data flags="0" flags_optional="" available="0" target_groups="68" /> <!-- availability triggered by 4fb85612-e170-4443-be34-31e9ecd65f50 -->
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="4" subgenres="14,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -1581,7 +1619,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait">
+		<scripttemplate product="1" licence_type="1" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1232991.Wilde_West">
 			<title>
 				<de>%ROLE1% im Amerikanischen Westen</de>
 				<en>%ROLE1%'s West</en>
@@ -1607,7 +1645,8 @@
 				<job index="9" function="32" required="1" gender="1" />
 				<job index="10" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by c3b4897d-af32-4aa4-be78-ae736c03cd0b -->
+			<data flags="0" flags_optional="" target_groups="68" available="0" /> <!-- availability triggered by c3b4897d-af32-4aa4-be78-ae736c03cd0b -->
+			<targetgroupattractivity housewives="2" managers="1.5" />
 			<genres maingenre="18" subgenres="4,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -1641,13 +1680,12 @@
 						<en>Legends in Exile</en>
 					</title_original>
 					<description>
-						<de>Die Einführung von Fabletown und den wichtigsten Figuren. %ROLE1% untersucht den scheinbaren Mord an %ROLENAME3%. (Sie wurde ja einst im Bett erwischt mit dem %ROLENAME4%, dem damaligen Verlobten ihrer Schwester %ROLENAME2% aka Schneeweißchen).</de>
-						<en>The introduction to Fabletown. %ROLE1% investigates the apparent murder of %ROLENAME3%. (She was once caught in bed with %ROLENAME4%, the then-fiancé of her sister %ROLENAME2%).</en>
+						<de>Die Einführung von Fabletown und den wichtigsten Figuren. %ROLE1% untersucht den scheinbaren Mord an %ROLENAME3%. (Sie wurde ja einst im Bett erwischt mit dem %ROLENAME4%, dem damaligen Verlobten ihrer Schwester %ROLENAME2% aka Schneeweißchen.)</de>
+						<en>The introduction to Fabletown. %ROLE1% investigates the apparent murder of %ROLENAME3%. (She was once caught in bed with %ROLENAME4%, the then-fiancé of her sister %ROLENAME2%.)</en>
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" gender="1" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="15" function="2" required="1" role_guid="847e75c4-c92a-4539-a606-4adbf3c84e44" />
+						<job index="16" function="2" required="1" role_guid="b1fe150d-dd8e-402d-b1ab-894129568b38" />
 					</jobs>
 					<effects>
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="085400ce-9d05-4012-8e16-5276f335c38c" />
@@ -1667,9 +1705,7 @@
 						<en>The introduction of the farm, a place for those Fables who are not human or cannot take on human form. Gradually, a revolt occurs on the farm, which must be contained by %ROLENAME2%.</en>
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" gender="1" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="15" function="2" required="1" role_guid="847e75c4-c92a-4539-a606-4adbf3c84e44" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="0be7deab-510c-49fc-9db4-d15b555038e3">
@@ -1682,32 +1718,29 @@
 						<en>Bag 'O Bones</en>
 					</title_original>
 					<description>
-						<de>Eine Geschichte, die während des Amerikanischen Bürgerkrieges spielt, in der %ROLE5% einen Weg findet, den Tod zu betrügen.</de>
-						<en>A tale set during the American Civil War in which %ROLE5% finds a way to cheat Death.</en>
+						<de>Eine Geschichte, die während des Amerikanischen Bürgerkrieges spielt, in der Jack Horner einen Weg findet, den Tod zu betrügen.</de>
+						<en>A tale set during the American Civil War in which Jack Horner finds a way to cheat Death.</en> <!-- TODO: Make ref Jack Horner -->
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" role_guid="520fcf21-87d3-4a4d-a791-8c3b55bec8a0" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="15" function="2" required="1" role_guid="847e75c4-c92a-4539-a606-4adbf3c84e44" />
 					</jobs>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="31b44e71-a2cb-47f9-bd02-52a0d68f12de">
+				<scripttemplate index="3" product="2" licence_type="2" guid="31b44e71-a2cb-47f9-bd02-52a0d68f12de" comment="original title: A Two-Part Caper (but just using one part here)">
 					<title>
 						<de>Die Sharp-Affäre / Schmutzige Geschäfte</de>
-						<en>A Two-Part Caper</en>
+						<en>The Caper</en>
 					</title>
 					<title_original>
 						<de>Die Sharp-Affäre / Schmutzige Geschäfte</de>
-						<en>A Two-Part Caper</en>
+						<en>The Caper</en>
 					</title_original>
 					<description>
-						<de>%ROLE5%, ein menschlicher Journalist, erfährt von den Fables, welche nun entscheiden müssen, wie sie darauf reagieren sollen.</de>
-						<en>%ROLE5%, a mundane journalist finds out about the Fables, who now have to decide how to react.</en>
+						<de>Tommy Sharp, ein menschlicher Journalist, erfährt von den Fables, welche nun entscheiden müssen, wie sie darauf reagieren sollen.</de>
+						<en>Tommy Sharp, a mundane journalist finds out about the Fables, who now have to decide how to react.</en> <!-- TODO: Make ref Tommy Sharp -->
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" role_guid="e56d1313-8e45-42ee-b503-523dc27cde20" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="15" function="2" required="1" role_guid="847e75c4-c92a-4539-a606-4adbf3c84e44" />
+						<job index="16" function="2" required="1" role_guid="e56d1313-8e45-42ee-b503-523dc27cde20" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="a627450f-0d1d-4caa-a640-5ed3633b64b9">
@@ -1720,13 +1753,11 @@
 						<en>Storybook Love</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME5% versucht %ROLENAME1% und %ROLENAME2% loszuwerden, indem er sie verzaubert und die mörderische %ROLENAME6% auf die beiden hetzt. Der %ROLENAME4% beschließt währenddessen, als Bürgermeister von Fabletown zu kandidieren.</de>
-						<en>%ROLENAME5% hatches a plot to rid himself of %ROLENAME1% and %ROLENAME2% by enchanting them, and the homicidal %ROLENAME6% attempts to kill the pair. %ROLENAME4% decides to run for Fabletown Mayor.</en>
+						<de>Blaubart versucht %ROLENAME1% und %ROLENAME2% loszuwerden, indem er sie verzaubert und die mörderische Goldilocks auf die beiden hetzt. Der %ROLENAME4% beschließt währenddessen, als Bürgermeister von Fabletown zu kandidieren.</de>
+						<en>Bluebeard hatches a plot to rid himself of %ROLENAME1% and %ROLENAME2% by enchanting them, and the homicidal Goldilocks attempts to kill the pair. %ROLENAME4% decides to run for Fabletown Mayor.</en> <!-- TODO: Make ref Bluebeard, Goldilocks -->
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" role_guid="5cda9a5e-f823-42b9-993b-28d3011d76e5" />
-						<job index="6" function="2" required="1" role_guid="847e75c4-c92a-4539-a606-4adbf3c84e44" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="15" function="2" required="1" role_guid="847e75c4-c92a-4539-a606-4adbf3c84e44" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="f378729a-970f-437d-ba12-e2b8c2bf8691">
@@ -1739,14 +1770,9 @@
 						<en>Barleycorn Brides</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME1% erzählt %ROLENAME5% die Geschichte eines alten Smalltown-Brauchs.</de>
-						<en>%ROLENAME1% tells %ROLENAME5% the story of a Smalltown tradition.</en>
+						<de>%ROLENAME1% erzählt dem Fliegenfänger (aka Froschkönig) die Geschichte eines alten Smalltown-Brauchs.</de>
+						<en>%ROLENAME1% tells Flycatcher (aka the Frog Prince) the story of a Smalltown tradition.</en> <!-- TODO: make ref Flycatcher -->
 					</description>
-					<jobs>
-						<job index="5" function="2" required="1" role_guid="70240728-175b-4d35-b4b0-ca0c694dd696" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
-					</jobs>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="7f395aa2-ecef-4f40-b06b-357da0a72d87">
 					<title>
@@ -1758,14 +1784,9 @@
 						<en>March of the Wooden Soldiers</en>
 					</title_original>
 					<description>
-						<de>Der %ROLE4% kandidiert weiter für das Amt des Bürgermeisters von Fabletown, während die Gemeinde sich mit der scheinbaren Flucht von %ROLENAME5% aus der Heimat beschäftigt. Der Feind sendet seine ersten Truppen nach Fabletown, um einen Angriff zu beginnen.</de>
-						<en>%ROLE4% runs for Mayor of Fabletown while the community deals with the apparent escape from the Homelands of %ROLENAME5%. The Adversary sends his first troops into Fabletown to begin an assault.</en>
+						<de>Der %ROLE4% kandidiert weiter für das Amt des Bürgermeisters von Fabletown, während die Gemeinde sich mit der scheinbaren Flucht von Rotkappe aus der Heimat beschäftigt. Der Feind sendet seine ersten Truppen nach Fabletown, um einen Angriff zu beginnen.</de>
+						<en>%ROLE4% runs for Mayor of Fabletown while the community deals with the apparent escape from the Homelands of Red Riding Hood. The Adversary sends his first troops into Fabletown to begin an assault.</en> <!-- TODO: make ref Red Riding Hood -->
 					</description>
-					<jobs>
-						<job index="5" function="2" required="1" role_guid="b3ec26ce-9105-4545-b66f-c08dc5ce91bb" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
-					</jobs>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="dae9db61-7427-4053-89ee-e756d8369998">
 					<title>
@@ -1780,11 +1801,6 @@
 						<de>%ROLENAME5%s scheinbar frivole Lebensweise stellt sich als Tarnung für andere Tätigkeiten heraus.</de>
 						<en>%ROLENAME5%'s apparently frivolous lifestyle is revealed to be a front.</en>
 					</description>
-					<jobs>
-						<job index="5" function="2" required="1" role_guid="53261965-0118-4585-86a0-285d5f8bfc18" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
-					</jobs>
 				</scripttemplate>
 			</children>
 			<jobs>
@@ -1793,10 +1809,20 @@
 				<job index="2" function="2" required="1" role_guid="a00ea58a-4a9f-466e-9fe5-cf8b53730b60" />
 				<job index="3" function="2" required="1" role_guid="e38dc13c-ce6a-4a0f-98f5-fd5cec332bf6" />
 				<job index="4" function="2" required="1" role_guid="adee8709-5aa4-465b-af8d-60d4ee3e8847" />
-				<!-- index 5ff used for episode specific characters or generic ones -->
+				<job index="5" function="2" required="1" role_guid="53261965-0118-4585-86a0-285d5f8bfc18" />
+				<job index="6" function="2" required="1" role_guid="a5fbb2e6-3f3b-4482-b63c-d8659ac069f2" />
+				<job index="7" function="2" required="1" role_guid="f850f00c-470d-40d3-b801-00aab8ae0797" />
+				<job index="8" function="2" required="1" role_guid="70240728-175b-4d35-b4b0-ca0c694dd696" />
+				<job index="9" function="2" required="1" role_guid="2a76c63f-7adf-4fcf-b379-bec23e0d1e7c" />
+				<job index="10" function="2" required="1" role_guid="1be68fe1-ee48-4e39-a1b8-067b5c8cf211" />
+				<job index="11" function="2" required="1" role_guid="c88790e6-f285-4eb4-8020-cfb7d5fef423" />
+				<job index="12" function="2" required="1" role_guid="6d0fec28-eb89-4c7a-816e-7c56f1d2e6ad" />
+				<job index="13" function="2" required="1" role_guid="5cda9a5e-f823-42b9-993b-28d3011d76e5" />
+				<job index="14" function="2" required="1" role_guid="95d8558d-8dc5-4cb0-b1d1-abb32aa45231" />
+				<!-- index 15ff used in episodes -->
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
+			<data flags="0" flags_optional="" target_groups="18" />
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
 			<genres maingenre="10" subgenres="17,5" />
 			<episodes min="8" max="8" />
 			<blocks value="1" />
@@ -1834,11 +1860,9 @@
 						<de>Ein Abenteuer von %ROLENAME1% während des Zweiten Weltkriegs.</de>
 						<en>%ROLENAME1%'s adventures during World War II.</en>
 					</description>
-					<jobs>
-						<job index="5" function="2" required="1" gender="1" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
-					</jobs>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" enable="1" guid="e80a40b9-dd11-47a1-be43-6c766ac33365" />
+					</effects>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="62901969-ade8-4fa4-aed2-77b598ee622c">
 					<title>
@@ -1850,33 +1874,23 @@
 						<en>The Long Year</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME2%s Kinder werden geboren, und sie erkennt, dass sie auf die Farm umziehen muss. %ROLENAME1% (der wie ein Werwolf mutieren kann) ist dort nicht willkommen und begibt sich stattdessen ins Exil. %ROLENAME2% begegnet %ROLENAME1%s entfremdetem Vater, dem %ROLENAME5%.</de>
-						<en>%ROLENAME2% gives birth and realizes she must relocate to the Farm. %ROLENAME1% (who can mutate like a werewolf) isn't allowed there and instead exiles himself. %ROLENAME2% encounters %ROLENAME1%'s estranged father, the %ROLENAME5%.</en>
+						<de>%ROLENAME2%s Kinder werden geboren, und sie erkennt, dass sie auf die Farm umziehen muss. %ROLENAME1% (der wie ein Werwolf mutieren kann) ist dort nicht willkommen und begibt sich stattdessen ins Exil. %ROLENAME2% begegnet %ROLENAME1%s entfremdetem Vater, dem Nordwind.</de>
+						<en>%ROLENAME2% gives birth and realizes she must relocate to the Farm. %ROLENAME1% (who can mutate like a werewolf) isn't allowed there and instead exiles himself. %ROLENAME2% encounters %ROLENAME1%'s estranged father, the North Wind.</en> <!-- TODO: Make ref North Wind -->
 					</description>
-					<jobs>
-						<job index="5" function="2" required="1" role_guid="9e026c4a-04e2-41e9-8865-a8753d53ef01" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
-					</jobs>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="5a08d936-69b4-47e7-a4ba-2112f8085735">
 					<title>
-						<de>Der flotte %ROLENAME5%</de>
-						<en>%ROLENAME5% Be Nimble</en>
+						<de>Der flotte Jack</de>
+						<en>Jack Be Nimble</en>
 					</title>
 					<title_original>
-						<de>Der flotte %ROLENAME5%</de>
-						<en>%ROLENAME5% Be Nimble</en>
+						<de>Der flotte Jack</de>
+						<en>Jack Be Nimble</en>
 					</title_original>
 					<description>
-						<de>%ROLE5% geht nach Hollywood und gründet ein Filmstudio.</de>
-						<en>%ROLE5% goes to Hollywood and sets up a film studio.</en>
+						<de>Jack Horner geht nach Hollywood und gründet ein Filmstudio.</de>
+						<en>Jack Horner goes to Hollywood and sets up a film studio.</en> <!-- TODO: Make ref Jack Horner-->
 					</description>
-					<jobs>
-						<job index="5" function="2" required="1" role_guid="520fcf21-87d3-4a4d-a791-8c3b55bec8a0" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
-					</jobs>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="052b8118-2a4b-4528-a9ef-140250fedc29">
 					<title>
@@ -1888,13 +1902,11 @@
 						<en>Homelands</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME5% ist auf einer geheimen Mission in der Heimat mit dem Ziel, den Feind zu ermorden und dessen Identität herauszufinden.</de>
-						<en>%ROLENAME5% goes on a mission to the Homelands with the aim of assassinating the Adversary and learns the Adversary's identity.</en>
+						<de>Boy Blue ist auf einer geheimen Mission in der Heimat mit dem Ziel, den Feind zu ermorden und dessen Identität herauszufinden.</de>
+						<en>Boy Blue goes on a mission to the Homelands with the aim of assassinating the Adversary and learns the Adversary's identity.</en> <!-- TODO: Make ref Boy Blue -->
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" role_guid="71bb14c4-800e-4be0-a3c5-9ab868ac4b4a" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="16" function="2" required="1" role_guid="b1fe150d-dd8e-402d-b1ab-894129568b38" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="73c9e72c-02ff-437f-88be-3dc7e394db2d">
@@ -1907,14 +1919,9 @@
 						<en>Meanwhile</en>
 					</title_original>
 					<description>
-						<de>Was in Fabletown während %ROLENAME5%s Abenteuern passiert ist.</de>
-						<en>What has been going on in Fabletown during %ROLENAME5%'s adventures.</en>
+						<de>Was in Fabletown während Boy Blues Abenteuern passiert ist.</de>
+						<en>What has been going on in Fabletown during Boy Blue's adventures.</en> <!-- TODO: Make ref Boy Blue -->
 					</description>
-					<jobs>
-						<job index="5" function="2" required="1" role_guid="71bb14c4-800e-4be0-a3c5-9ab868ac4b4a" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
-					</jobs>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="e0b19159-69b4-4d8e-bbac-c30a8488a6aa">
 					<title>
@@ -1926,32 +1933,31 @@
 						<en>Arabian Nights (and Days)</en>
 					</title_original>
 					<description>
-						<de>Eine Delegation arabischer Fabels unter der Leitung von %ROLENAME5% besucht Fabletown, um eine Allianz gegen den Feind zu schließen.</de>
-						<en>A delegation of Arabian Fables led by %ROLENAME5% visits Fabletown to discuss an alliance against the Adversary.</en>
+						<de>Eine Delegation arabischer Fabels unter der Leitung von Sindbad besucht Fabletown, um eine Allianz gegen den Feind zu schließen.</de>
+						<en>A delegation of Arabian Fables led by Sinbad visits Fabletown to discuss an alliance against the Adversary.</en> <!-- TODO: Make ref Sinbad -->
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" role_guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="16" function="2" required="1" role_guid="12543516-3a0f-40fe-8eab-10ff7d799dab" />
+						<job index="17" function="2" required="1" role_guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="81747f71-77df-4d22-8725-a3860b621770">
 					<title>
-						<de>Die Ballade von %ROLENAME5% und %ROLENAME6%</de>
-						<en>The Ballad of %ROLENAME5% and %ROLENAME6%</en>
+						<de>Die Ballade von Rodney und June</de>
+						<en>The Ballad of Rodney and June</en>
 					</title>
 					<title_original>
-						<de>Die Ballade von %ROLENAME5% und %ROLENAME6%</de>
-						<en>The Ballad of %ROLENAME5% and %ROLENAME6%</en>
+						<de>Die Ballade von Rodney und June</de>
+						<en>The Ballad of Rodney and June</en>
 					</title_original>
 					<description>
-						<de>Eine Nebengeschichte der scheinbar unglückseligen Liebe von %ROLENAME5% und %ROLENAME6%, zwei Mitgliedern der Streitkräfte des Feindes.</de>
-						<en>A side story of the seemingly ill-fated love of %ROLENAME5% and %ROLENAME6%, two members of the Adversary's forces.</en>
+						<de>Eine Nebengeschichte der scheinbar unglückseligen Liebe von June und Rodney, zwei Mitgliedern der Streitkräfte des Feindes.</de>
+						<en>A side story of the seemingly ill-fated love of June and Rodney, two members of the Adversary's forces.</en> <!-- TODO: Make ref June, Rodney -->
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" role_guid="5c05a19e-fbac-4f5a-8edc-40c429c1a337" />
-						<job index="6" function="2" required="1" role_guid="cee85b5e-2c7d-4c2b-a507-bd6e1c6e898d" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="16" function="2" required="1" role_guid="12543516-3a0f-40fe-8eab-10ff7d799dab" />
+						<job index="17" function="2" required="1" role_guid="cee85b5e-2c7d-4c2b-a507-bd6e1c6e898d" />
+						<job index="18" function="2" required="1" role_guid="5c05a19e-fbac-4f5a-8edc-40c429c1a337" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="6ca2fe8e-8ad2-4325-ad3e-a88a9412fa30">
@@ -1964,13 +1970,11 @@
 						<en>Wolves</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME5% sucht nach dem vermissten %ROLENAME1% und bringt ihm eine Nachricht aus Fabletown.</de>
-						<en>%ROLENAME5% searches for the missing %ROLENAME1% and brings him a message from Fabletown.</en>
+						<de>Mowgli sucht nach dem vermissten %ROLENAME1% und bringt ihm eine Nachricht aus Fabletown.</de>
+						<en>Mowgli searches for the missing %ROLENAME1% and brings him a message from Fabletown.</en> <!-- TODO: Make ref Mowgli -->
 					</description>
 					<jobs>
-						<job index="5" function="2" required="1" role_guid="12543516-3a0f-40fe-8eab-10ff7d799dab" />
-						<job index="6" function="2" required="1" gender="2" />
-						<job index="7" function="2" required="1" gender="1" />
+						<job index="16" function="2" required="1" role_guid="12543516-3a0f-40fe-8eab-10ff7d799dab" />
 					</jobs>
 				</scripttemplate>
 			</children>
@@ -1980,10 +1984,21 @@
 				<job index="2" function="2" required="1" role_guid="a00ea58a-4a9f-466e-9fe5-cf8b53730b60" />
 				<job index="3" function="2" required="1" role_guid="e38dc13c-ce6a-4a0f-98f5-fd5cec332bf6" />
 				<job index="4" function="2" required="1" role_guid="adee8709-5aa4-465b-af8d-60d4ee3e8847" />
-				<!-- index 5ff used for episode specific characters or generic ones -->
+				<job index="5" function="2" required="1" role_guid="53261965-0118-4585-86a0-285d5f8bfc18" />
+				<job index="6" function="2" required="1" role_guid="a5fbb2e6-3f3b-4482-b63c-d8659ac069f2" />
+				<job index="7" function="2" required="1" role_guid="f850f00c-470d-40d3-b801-00aab8ae0797" />
+				<job index="8" function="2" required="1" role_guid="70240728-175b-4d35-b4b0-ca0c694dd696" />
+				<job index="9" function="2" required="1" role_guid="2a76c63f-7adf-4fcf-b379-bec23e0d1e7c" />
+				<job index="10" function="2" required="1" role_guid="1be68fe1-ee48-4e39-a1b8-067b5c8cf211" />
+				<job index="11" function="2" required="1" role_guid="c88790e6-f285-4eb4-8020-cfb7d5fef423" />
+				<job index="12" function="2" required="1" role_guid="6d0fec28-eb89-4c7a-816e-7c56f1d2e6ad" />
+				<job index="13" function="2" required="1" role_guid="5cda9a5e-f823-42b9-993b-28d3011d76e5" />
+				<job index="14" function="2" required="1" role_guid="95d8558d-8dc5-4cb0-b1d1-abb32aa45231" />
+				<job index="15" function="2" required="1" role_guid="9e026c4a-04e2-41e9-8865-a8753d53ef01" />
+				<!-- index 16ff used in episodes -->
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by previous season episode 1 -->
-			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
+			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
 			<genres maingenre="10" subgenres="17,5" />
 			<episodes min="8" max="8" />
 			<blocks value="1" />
@@ -2075,8 +2090,9 @@
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
+			<data target_groups="18" />
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" managers="2" />
 			<genres maingenre="10" subgenres="5,1" />
-			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
 			<episodes min="3" max="3" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
@@ -2157,9 +2173,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" managers="2" />
 			<genres maingenre="10" subgenres="5,1" />
-			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
 			<episodes min="3" max="3" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
@@ -2179,7 +2195,7 @@
 				<en>The Magic of Xanth (Season 3)</en>
 			</title_original>
 			<description>
-				<de>Die geografische Form des Landes ähnelt im Grunde der von Florida, dem Heimatstaat des Autors. Die Ähnlichkeit wird als Witz immer wieder aufgegriffen. Jenseits der Grenze im Norden, auch Istmus genannt, befindet sich „unser” Mundania.</de>
+				<de>Die geografische Form des Landes ähnelt im Grunde der von Florida, dem Heimatstaat des Autors. Die Ähnlichkeit wird als Witz immer wieder aufgegriffen. Jenseits der Grenze im Norden, auch Istmus genannt, befindet sich „unser“ Mundania.</de>
 				<en>The geographical shape of the country is basically similar to that of Florida, the author's home state. The similarity is taken up again and again as a joke. Across the border in the north, also called Istmus, is "our" Mundania.</en>
 			</description>
 			<children>
@@ -2236,9 +2252,9 @@
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" managers="2" />
 			<genres maingenre="10" subgenres="5,1" />
-			<targetgroupattractivity teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" managers="2" unemployed_female="1.25" />
 			<episodes min="3" max="3" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
@@ -2488,7 +2504,7 @@
 				<job index="5" function="32" required="1" gender="2" />
 				<job index="6" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="64" />
+			<data flags="0" flags_optional="64" target_groups="18" />
 			<genres maingenre="17" subgenres="7,16" />
 			<episodes min="15" max="15" />
 			<blocks value="1" />
@@ -2679,8 +2695,8 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<targetgroupattractivity teenagers="1.5" housewives="1.25" employees="1.25" unemployed_female="1.25" managers="0.75" pensioners="0.5" />
+			<data flags="0" flags_optional="" target_groups="6" />
+			<targetgroupattractivity children="2" teenagers="2" managers="0.75" pensioners="0.25" />
 			<genres maingenre="7" subgenres="15,202" />
 			<episodes min="11" max="11" />
 			<blocks value="1" />
@@ -2954,7 +2970,7 @@
 				<job index="5" function="32" required="1" gender="2" />
 				<job index="6" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="64" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data flags="0" flags_optional="64" target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<genres maingenre="17" subgenres="7,16" />
 			<episodes min="17" max="17" />
 			<blocks value="1" />
@@ -3212,8 +3228,8 @@
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<targetgroupattractivity teenagers="1.5" housewives="1.25" employees="1.25" unemployed_female="1.25" managers="0.75" pensioners="0.5" />
+			<data flags="0" flags_optional="" target_groups="18" />
+			<targetgroupattractivity children="2" teenagers="2" unemployed="2" managers="0.75" pensioners="0.25" />
 			<genres maingenre="7" subgenres="202" />
 			<episodes min="16" max="16" />
 			<blocks value="1" />
@@ -3388,7 +3404,8 @@
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="6" />
+			<targetgroupattractivity children="2" teenagers="2" pensioners="0.25" />
 			<genres maingenre="7" subgenres="1,5" />
 			<episodes min="10" max="10" />
 			<blocks value="1" />
@@ -3610,7 +3627,9 @@
 				<job index="6" function="32" required="1" gender="1" />
 				<job index="7" function="32" required="1" gender="2" />
 			</jobs>
-			<genres maingenre="7" subgenres="2" />
+			<data target_groups="18" /> <!-- TODO: pro_pressure_groups="8" contra_pressure_groups="4" -->
+			<targetgroupattractivity men="1.25" women="0.75" children="2" teenagers="2" />
+			<genres maingenre="7" subgenres="2,17" />
 			<episodes min="12" max="12" />
 			<blocks value="1" />
 			<price min="57000" max="96000" />
@@ -3634,7 +3653,7 @@
 				<en>%title_original_optional%</en>
 			</title_original>
 			<description>
-				<de>%ROLENAME1%s Freundin %ROLENAME2% wurde entführt vom verrückten Professor Dr. %ROLENAME5%! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de> <!-- TODO: Reference ROLETITLEx supported? -->
+				<de>%ROLENAME1%s Freundin %ROLENAME2% wurde entführt vom verrückten Professor Dr. %ROLENAME5%! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de>
 				<en>%ROLENAME1%'s girlfriend %ROLENAME2% has been kidnapped by the mad professor Dr. %ROLENAME5%! He and his friends want to free her from his mansion. There are a lot more strange things going on there! And where is gasoline for the chainsaw when you need it.</en>
 			</description>
 			<variables>
@@ -3694,7 +3713,8 @@
 				<job index="11" function="2" required="1" role_guid="6c3e23b0-11e3-40fb-ab09-57b0d2f79c2a" />
 				<job index="12" function="2" required="1" role_guid="11df5c9f-d963-4fe9-bff6-cdb053d43094" />
 			</jobs>
-			<data flags_optional="104" />
+			<data flags_optional="104" target_groups="18" />
+			<targetgroupattractivity teenagers="2" employees="1.25" unemployed="2" />
 			<genres maingenre="12" subgenres="5,16" />
 			<blocks value="2" />
 			<price min="55000" max="77000" />
@@ -3748,7 +3768,8 @@
 				<job index="14" function="32" required="1" gender="2" />
 				<job index="15" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags_optional="40" available="0" /> <!-- availability triggered by 352a2fbc-7e7b-462b-a217-34c300043d19 -->
+			<data flags_optional="40" target_groups="18" available="0" /> <!-- availability triggered by 352a2fbc-7e7b-462b-a217-34c300043d19 -->
+			<targetgroupattractivity children="1.25" teenagers="2" pensioners="0.1" />
 			<genres maingenre="5" subgenres="16,3" />
 			<blocks value="3" />
 			<price min="65000" max="90000" />
@@ -3798,7 +3819,8 @@
 				<job index="8" function="32" required="1" gender="1" />
 				<job index="9" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags_optional="40" />
+			<data flags_optional="40" target_groups="18" />
+			<targetgroupattractivity children="2" teenagers="2" housewives="2" employees="1.25" unemployed="2" />
 			<genres maingenre="16" subgenres="5,14" />
 			<blocks value="3" />
 			<price min="31000" max="48000" />
@@ -3913,8 +3935,8 @@
 				<job index="10" function="32" required="1" gender="2" />
 				<job index="11" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
-			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives_male="1.5" housewives_female="2" employees_male="1.25" employees_female="1.5" unemployed_male="1.25" unemployed_female="1.5" />
+			<data flags="0" flags_optional="" target_groups="7" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
 			<genres maingenre="10" subgenres="9,202" />
 			<episodes min="5" max="5" />
 			<blocks value="2" />
@@ -4172,6 +4194,8 @@
 				<job index="7" function="2" required="1" gender="2" />
 				<job index="8" function="2" required="1" gender="1" />
 			</jobs>
+			<data target_groups="19" />
+			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" employees="1.5" />
 			<genres maingenre="1" subgenres="5,10" />
 			<episodes min="12" max="12" />
 			<blocks value="1" />
@@ -4192,7 +4216,7 @@
 				<en>%ROLE3%s's Revenge</en>
 			</title_original>
 			<description>
-				<de>%ROLENAME1% hat sich einen Bart wachsen lassen, ist aber immer noch nicht so überzeugend als Pirat. Also möchte er es endgültig allen beweisen und den legendären Schatz „Big Whoop” finden. Doch der untote %ROLE3% kehrt in noch untoterer Form zurück.</de>
+				<de>%ROLENAME1% hat sich einen Bart wachsen lassen, ist aber immer noch nicht so überzeugend als Pirat. Also möchte er es endgültig allen beweisen und den legendären Schatz „Big Whoop“ finden. Doch der untote %ROLE3% kehrt in noch untoterer Form zurück.</de>
 				<en>%ROLENAME1%, who has grown a beard but still is not so convincing as a pirate, wants to finally prove it to everyone and find the legendary treasure "Big Whoop". But the undead %ROLE3% returns in an even more undead form.</en>
 			</description>
 			<children>
@@ -4206,7 +4230,7 @@
 						<en>The %ROLENAME6% Embargo</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME1% ist auf der Suche nach dem legendären Schatz „Big Whoop” auf Scabb Island, als er mit %ROLENAME6%s völlig legitimen Raubüberfall und einem Insel-Embargo konfrontiert wird. Er freundet sich in Woodtick mit Kartenmacher %ROLENAME5% an.</de>
+						<de>%ROLENAME1% ist auf der Suche nach dem legendären Schatz „Big Whoop“ auf Scabb Island, als er mit %ROLENAME6%s völlig legitimen Raubüberfall und einem Insel-Embargo konfrontiert wird. Er freundet sich in Woodtick mit Kartenmacher %ROLENAME5% an.</de>
 						<en>%ROLENAME1% searches for the legendary treasure of "Big Whoop" on Scabb Island while facing %ROLENAME6%'s totally legit robbery and an island embargo. He becomes friends with mapmaker %ROLENAME5% in Woodtick.</en>
 					</description>
 				</scripttemplate>
@@ -4378,7 +4402,8 @@
 				<job index="9" function="2" required="1" gender="2" />
 				<job index="10" function="2" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data flags="0" flags_optional="" target_groups="19" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" employees="1.5" />
 			<genres maingenre="1" subgenres="5,10" />
 			<episodes min="12" max="12" />
 			<blocks value="1" />
@@ -4473,7 +4498,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="4" function="32" required="1" gender="1" />
 				<job index="5" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="18" />
+			<targetgroupattractivity teenagers="2" employees="1.5" managers="2" />
 			<genres maingenre="16" subgenres="14,7" />
 			<episodes min="4" max="4" />
 			<blocks value="2" />
@@ -4637,7 +4663,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>On %gnostika_object_reference%, %ween_object_reference% finds that its Council of Immortal Sages has already been kidnapped by the %ROLENAME4%. %ween_object_reference% must free the sages in order to be able to activate the oracle...</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="6" product="2" licence_type="2" guid="45e0e001-645a-449e-a861-abb17b3192b7" comment="TODO: original planet name: Korath III">
+				<scripttemplate index="6" product="2" licence_type="2" guid="45e0e001-645a-449e-a861-abb17b3192b7">
 					<title>
 						<de>Lebwohl Galaxie</de>
 						<en>Farewell Galaxy</en>
@@ -4677,7 +4703,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="7" function="32" required="1" gender="1" />
 				<job index="8" function="32" required="1" gender="2" />
 			</jobs>
-			<targetgroupattractivity teenagers="1.5" housewives="1.5" employees="1.5" unemployed="1.25" managers="1.5" pensioners="2" />
+			<data target_groups="19" />
+			<targetgroupattractivity men="1.25" teenagers="2" employees="1.25" unemployed="1.25" />
 			<genres maingenre="3" subgenres="16,9" />
 			<episodes min="8" max="8" />
 			<blocks value="1" />
@@ -4833,7 +4860,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="5" function="32" required="1" gender="1" />
 				<job index="6" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="64" flags_optional="56" />
+			<data flags="64" flags_optional="40" target_groups="274" />
 			<genres maingenre="8" subgenres="5,15" />
 			<episodes min="8" max="8" />
 			<blocks value="2" />
@@ -4919,7 +4946,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 					</title_original>
 					<description>
 						<de>Schauplatzwechsel nach Frankreich zum Schloss von Lord William, einem der wichtigsten Unterstützer der Coalition Taskforce. Die osteuropäische Terrorvereinigung „Phoenix Connexion“ hat es auf ihn abgesehen. Die französische GIGN ist alarmiert.</de>
-						<en>The scene changes to France to the castle of Lord William, one of the major backers of the Coalition Taskforce. The Eastern European "Phoenix Connexion“" terrorist operation is targeting him. The French GIGN has been alerted.</en>
+						<en>The scene changes to France to the castle of Lord William, one of the major backers of the Coalition Taskforce. The Eastern European "Phoenix Connexion" terrorist operation is targeting him. The French GIGN has been alerted.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="e7239ea7-da0c-49cd-af93-efafc510b30f" comment="https://counterstrike.fandom.com/wiki/Mirage">
@@ -4961,7 +4988,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 					</title_original>
 					<description>
 						<de>Nun wird auch die USA in die Geschehnisse verwickelt, denn eine Anarchisten-Gruppierung hält Geiseln in einem Bürokomplex, vorgeblich ausbeuterische Konzernbosse. Doch es steckt wohl mehr hinter der ganzen Geschichte. Das FBI stürmt die Einrichtung.</de>
-						<en>Now, the U.S. also becomes involved in the events, as an anarchist group is holding hostages in an office complex, ostensibly exploitative corporate bosses. But there is probably more to the whole story. The FBI rushes in to raid the facility.</en>
+						<en>Now the U.S. also gets involved in the events, as an anarchist group is holding hostages in an office complex, ostensibly exploitative corporate bosses. But there is probably more to the whole story. The FBI rushes in to raid the facility.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="03c19643-d949-4952-af10-324cc12409cd" comment="https://counterstrike.fandom.com/wiki/Nuke">
@@ -5058,7 +5085,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="5" function="2" required="1" gender="1" />
 				<job index="6" function="2" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="64" />
+			<data flags="0" flags_optional="64" target_groups="18" />
+			<targetgroupattractivity employees="1.25" />
 			<genres maingenre="2" subgenres="17,4" />
 			<episodes min="12" max="12" />
 			<blocks value="1" />
@@ -5092,7 +5120,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="1" />
 				<job index="7" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="0" flags_optional="32" />
+			<data flags="0" flags_optional="32" target_groups="18" />
+			<targetgroupattractivity children="1.5" employees="1.25" />
 			<genres maingenre="2" subgenres="7,16" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
@@ -5123,8 +5152,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="10" flags_optional="" />
-			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
+			<data flags="10" flags_optional="" target_groups="19" />
+			<targetgroupattractivity men="1.25" teenagers="2" employees="1.25" unemployed="1.25" />
 			<genres maingenre="3" subgenres="16,2" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5137,7 +5166,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="eda00285-798d-4ba6-b299-621415d879d1" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="eda00285-798d-4ba6-b299-621415d879d1" creator="9551" comment="https://en.wikipedia.org/wiki/Turrican_II:_The_Final_Fight - TODO: ref person Buellhaecks / Huelsbeck">
+		<scripttemplate product="1" licence_type="1" guid="eda00285-798d-4ba6-b299-621415d879d1" creator="9551" comment="https://en.wikipedia.org/wiki/Turrican_II:_The_Final_Fight - TODO: ref person Bruellhaecks / Huelsbeck">
 			<title>
 				<de>Turrnado 2: Die Letzte Schlacht</de>
 				<en>Turrnado 2: The Last Battle</en>
@@ -5147,8 +5176,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<en>Turrican 2: The Final Fight</en>
 			</title_original>
 			<description>
-				<de>Das United-Planets-Raumschiff Avalon 1 wird von Mutanten angegriffen, angeführt von %ROLE3%. %ROLE1% muss den Tag retten. Erneut inklusive tollem Soundtrack von Claus Buellhaecks, der sich mal wieder selbst übertroffen hat.</de>
-				<en>The United Planets spaceship Avalon 1 is under attack by mutants, led by %ROLE3%. %ROLE1% must save the day. Once more including a great soundtrack by Claus Buellhaecks, who has again outdone himself.</en>
+				<de>Das United-Planets-Raumschiff Avalon 1 wird von Mutanten angegriffen, angeführt von %ROLE3%. %ROLE1% muss den Tag retten. Erneut inklusive tollem Soundtrack von Claus Bruellhaecks, der sich mal wieder selbst übertroffen hat.</de>
+				<en>The United Planets spaceship Avalon 1 is under attack by mutants, led by %ROLE3%. %ROLE1% must save the day. Once more including a great soundtrack by Claus Bruellhaecks, who has again outdone himself.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -5158,8 +5187,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="10" flags_optional="" available="0" /> <!-- availability triggered by 8264e56c-f9f9-4ffa-975d-93d9cc26f339 -->
-			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
+			<data flags="10" flags_optional="" target_groups="19" available="0" /> <!-- availability triggered by 8264e56c-f9f9-4ffa-975d-93d9cc26f339 -->
+			<targetgroupattractivity men="1.25" teenagers="2" employees="1.25" unemployed="1.25" />
 			<genres maingenre="3" subgenres="16,2" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5193,8 +5222,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="10" flags_optional="" available="0" /> <!-- availability triggered by eda00285-798d-4ba6-b299-621415d879d1 -->
-			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
+			<data flags="10" flags_optional="" target_groups="19" available="0" /> <!-- availability triggered by eda00285-798d-4ba6-b299-621415d879d1 -->
+			<targetgroupattractivity men="1.25" teenagers="2" employees="1.25" unemployed="1.25" />
 			<genres maingenre="3" subgenres="16,2" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5226,8 +5255,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="5" function="32" required="1" gender="2" />
 				<job index="6" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="10" flags_optional="32" />
-			<targetgroupattractivity teenagers_male="1.5" housewives_male="1.5" employees_male="1.5" unemployed_male="1.5" />
+			<data flags="10" flags_optional="32" target_groups="19" />
+			<targetgroupattractivity men="1.25" teenagers="2" employees="1.25" unemployed="1.25" />
 			<genres maingenre="3" subgenres="16,2" />
 			<blocks value="2" />
 			<price min="50000" max="100000" />
@@ -5261,7 +5290,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" />
+			<data flags="0" flags_optional="" target_groups="7" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5297,7 +5327,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by 8f13def6-dfd6-4efe-9436-6384faee92d8 -->
+			<data flags="0" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by 8f13def6-dfd6-4efe-9436-6384faee92d8 -->
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5333,7 +5364,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by f6fee4c6-4858-43d9-a17a-8bb90c769936 -->
+			<data flags="0" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by f6fee4c6-4858-43d9-a17a-8bb90c769936 -->
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5369,7 +5401,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by cc74462f-0e7f-4acc-b95f-fd61e1756037 -->
+			<data flags="0" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by cc74462f-0e7f-4acc-b95f-fd61e1756037 -->
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5405,7 +5438,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="6" function="32" required="1" gender="2" />
 				<job index="7" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" available="0" /> <!-- availability triggered by d621350a-5e57-4519-814a-5ea9f78d6553 -->
+			<data flags="0" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by d621350a-5e57-4519-814a-5ea9f78d6553 -->
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="9" subgenres="10,5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
@@ -5591,7 +5625,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<job index="4" function="2" required="1" role_guid="96ed8af6-d9e6-4c80-9c83-120cd6ceddc4" />
 				<job index="5" function="2" required="1" role_guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" />
 			</jobs>
-			<data flags="2" flags_optional="" available="0" /> <!-- availability triggered by therob-programme-speiuebelunddubrovnik -->
+			<data flags="2" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by therob-programme-speiuebelunddubrovnik -->
+			<targetgroupattractivity children="2" employees="0.75" />
 			<genres maingenre="9" subgenres="5" />
 			<episodes min="10" max="10" />
 			<blocks value="1" />

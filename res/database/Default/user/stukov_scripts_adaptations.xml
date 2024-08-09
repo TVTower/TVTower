@@ -136,6 +136,8 @@
 				<job index="10" function="2" required="1" gender="2" />
 				<job index="11" function="2" required="1" gender="1" />
 			</jobs>
+			<data target_groups="19" />
+			<targetgroupattractivity children="2" teenagers="2" unemployed="1.5" />
 			<genres maingenre="10" subgenres="1" />
 			<blocks value="2" />
 			<studio_size slope="50" max="3" min="2" />
@@ -144,7 +146,6 @@
 			<outcome slope="40" max="71" min="43" />
 			<review slope="40" max="53" min="28" />
 			<speed slope="50" max="83" min="48" />
-			<data target_groups="3" />
 			<availability year_range_from="1994" year_range_to="-1" />
 		</scripttemplate>
 
@@ -240,7 +241,9 @@
 				<job function="32" index="7" gender="0" required="0" />
 				<job function="32" index="8" gender="0" required="0" />
 				<job function="32" index="9" gender="0" required="0" />
-			</jobs>			
+			</jobs>
+			<data target_groups="19" />
+			<targetgroupattractivity children="2" teenagers="2" unemployed="1.5" />
 			<genres maingenre="10" subgenres="1" />
 			<blocks slope="50" max="2" min="1" />
 			<studio_size slope="33" max="2" min="1" />
@@ -249,7 +252,6 @@
 			<outcome slope="50" max="50" min="0" />
 			<review slope="30" max="25" min="0" />
 			<speed slope="60" max="83" min="0" />
-			<data target_groups="3" />
 		</scripttemplate>
 
 		<scripttemplate licence_type="1" product="1" guid="Stukov_DarkestDungeon" comment="https://en.wikipedia.org/wiki/Darkest_Dungeon">
@@ -299,8 +301,10 @@
 				<job function="32" index="5" gender="0" required="0" />
 				<job function="32" index="6" gender="0" required="0" />
 			</jobs>
-			<data flags_optional="96" />
+			<data flags_optional="96" target_groups="18" />
+			<targetgroupattractivity children="1.25" teenagers="2" unemployed="1.5" />
 			<genres maingenre="10" subgenres="12,1" />
+			<studio_size slope="40" max="3" min="1" />
 			<blocks slope="30" max="2" min="1" />
 			<price slope="25" max="500000" min="10000" />
 			<potential slope="30" max="100" min="0" />
@@ -346,8 +350,8 @@
 				<job function="32" index="4" gender="0" required="0" />
 				<job function="32" index="5" gender="0" required="0" />
 			</jobs>
-			<data flags_optional="48" />
-			<genres maingenre="17" subgenres="" />
+			<data flags_optional="48" target_groups="18" />
+			<genres maingenre="17" subgenres="10,2" />
 			<studio_size slope="40" max="3" min="1" />
 			<blocks slope="50" max="3" min="2" />
 			<price slope="25" max="500000" min="10000" />

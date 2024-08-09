@@ -5,7 +5,7 @@
 	<!-- fictional people -->
 
 	<insignificantpeople>
-		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock" />
+		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock | real version: 35af32a6-1c2a-4e3c-ae3c-d5786dd357df" />
 		<person id="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" country="D" job="200" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
 		<person id="8565d7d6-7c8d-447f-acd7-5dc65f073bec" first_name="Penelope" last_name="Truthseeker" nick_name="Trutherpenny" gender="2" birthday="1931-09-11" deathday="2012-12-21" country="GB" job="137" fictional="1" creator="9551" />
 	</insignificantpeople>
@@ -31,9 +31,10 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+				<member index="0" function="5">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
 			<data country="NL" distribution="2" maingenre="6" subgenre="103,300" flags="4" blocks="1" price_mod="0.5" />
 			<releaseTime year_relative="-15" year_relative_min="1970" year_relative_max="1995" />
 			<ratings critics="21" speed="3" outcome="9" />
@@ -79,7 +80,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		<programme id="89507f2c-f6e9-4d63-bf32-657a280f72c3" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
 			<title>
 				<de>Wohnen am Atomkraftwerk</de>
-				<en>Living next to a nuclear power plant</en>
+				<en>Living Next to a Nuclear Power Plant</en>
 				<pl>Życie w pobliżu elektrowni jądrowej</pl>
 			</title>
 			<description>
@@ -88,10 +89,11 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>Coraz mniej osób jest skłonnych zrezygnować z zalet nowoczesnego reaktora.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+				<member index="0" function="5">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
 				<member index="1" function="128">82d81b92-29ee-420e-82b2-a4690a1679db</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" />
 			<data country="DK" year="1971" distribution="2" maingenre="300" subgenre="6" flags="4" blocks="1" price_mod="0.5" />
 			<ratings critics="33" speed="31" outcome="12" />
 			<children>
@@ -145,11 +147,13 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>53-letni książę [2|Full] i 20-letnia księżniczka [3|First] biorą ślub w Ratyzbonie, czy to może się udać? Jak pięknie jest w zamku? Czy to naprawdę miłość? Czy książę potrzebuje pomocy przy bzykaniu? Pytania za pytaniami</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">9d987fbb-99c3-47b8-82c3-227461b6762c</member>
 				<member index="3" function="64">64828f7e-a96b-4bb3-85c6-477ebe408d05</member>
 			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="301" subgenre="6,15" flags="17" blocks="6" price_mod="0.5" />
 			<releaseTime year="1980" day="5" hour="10" />
 			<ratings critics="15" speed="30" outcome="60" />
@@ -160,7 +164,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		<programme id="583955ef-3acf-42bf-991e-b1c169583780" product="4" licence_type="1" fictional="1" creator="9551">
 			<title>
 				<de>Dynamit - Das Magazin Live: Hochzeit von [2|Nick] und [3|Nick]</de>
-				<en>Dynamite - The Magazine Live: Wedding of [2|Nick] und [3|Nick]</en>
+				<en>Dynamite - The Magazine Live: Wedding of [2|Nick] and [3|Nick]</en>
 				<pl>Dynamit - Magazyn na żywo: Ślub [2|Nick] i [3|Nick]</pl>
 			</title>
 			<description>
@@ -169,11 +173,13 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>W Opactwie Westminsterskim nie ma wystarczająco dużo miejsca. 32-letni [2|Nick] i 20-letnia [3|Nick] biorą więc ślub w londyńskiej katedrze św. Pawła. Czy to się uda? Była modelka [1|Full] relacjonuje na żywo.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">28fe86a0-74ca-43a7-bc49-d3bd4df7c4d3</member>
 				<member index="3" function="64">4623935a-750a-4e5a-9d1b-6875062ff2a8</member>
 			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="301" subgenre="6,15" flags="17" blocks="6" price_mod="0.5" />
 			<releaseTime year="1981" day="7" hour="10" />
 			<ratings critics="20" speed="40" outcome="95" />
@@ -193,12 +199,13 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>Była modelka [1|Full] odwiedziła młodą księżniczkę [3|Full] w zamku. Oboje świetnie się dogadują i rozmawiają o sekretach.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">9d987fbb-99c3-47b8-82c3-227461b6762c</member>
 				<member index="3" function="64">64828f7e-a96b-4bb3-85c6-477ebe408d05</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" year="1984" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.25" />
 			<ratings critics="19" speed="35" outcome="45" />
 			<children>
@@ -257,9 +264,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Rycerska sala kapryśnych hobby</pl>
 					</title>
 					<description>
-						<de>Fürstin „von Taug und Thunix”? Von wegen! [3|First] zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
-						<en>Princess "of Taunt and To nix"? Wrong! [3|First] shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
-						<pl>Księżniczka? Błąd! [3|Pierwszy] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
+						<de>Fürstin „von Taug und Thunix“? Von wegen! [3|First] zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
+						<en>Princess "von Taug und Thunix" - not good for anything? Wrong! [3|First] shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
+						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! [3|Pierwszy] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
 					</description>
 				</programme>
 			</children>
@@ -267,20 +274,21 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		<programme id="1900edf1-c697-4861-ae50-36e31070a652" product="2" licence_type="3" fictional="1" creator="9551" comment="First episode inspired from a MadTV item, everything else made up. TODO: There could be a second part about 2000s era. By Penny's daughter. Rumored to be the daughter of a former US president.">
 			<title>
 				<de>Eskapaden im Weißen Haus</de>
-				<en>Escapades in the White House</en>
+				<en>Escapades In the White House</en>
 				<pl>Eskapady w Białym Domu</pl>
 			</title>
 			<description>
 				<de>Investigativjournalistin „Augenzwinker-Miss [1|Nick]“ stellt ihre Jahrzehnte lange Arbeit vor und enthüllt die innen- und außenpolitischen Affären der U.S.-Regierung des 20. Jahrhunderts. Exklusive bisher unbekannte Details!</de>
-				<en>Investigative journalist "Tongue-in-cheeck Miss [1|Nick]" presents her decades of work and reveals the domestic and foreign affairs of the 20th century U.S. government. Exclusive hitherto undisclosed details!</en>
+				<en>Investigative journalist "Tongue-in-cheek Miss [1|Nick]" presents her decades of work and reveals the domestic and foreign affairs of the 20th century U.S. government. Exclusive hitherto undisclosed details!</en>
 				<pl>Dziennikarka śledcza „Panna z przymrużeniem oka [1|Nick]” przedstawia swoje dziesięciolecia pracy i ujawnia wewnętrzne i zagraniczne sprawy rządu USA XX wieku. Ekskluzywne, dotychczas nieujawnione szczegóły!</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+				<member index="0" function="5">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
 				<member index="1" function="136">8565d7d6-7c8d-447f-acd7-5dc65f073bec</member>
 				<!-- index 2: episode 'guests' -->
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="CH" year="1980" distribution="2" maingenre="300" subgenre="6,11" flags="4" blocks="1" price_mod="0.25" />
 			<ratings critics="46" speed="54" outcome="39" />
 			<children>
@@ -336,7 +344,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Łącznik [2|First]</pl>
 					</title>
 					<description>
-						<de>Bericht aus erster Hand? [2|Full] macht mit einer seiner außerehelichen Frauen eine „Spritztour” auf dem Potomac River in seinem „Amphicar“. Mitten im Akt finden sie sich plötzlich inmitten einer Regatta wieder. Der gegenseitige Überraschungseffekt ist enorm.</de>
+						<de>Bericht aus erster Hand? [2|Full] macht mit einer seiner außerehelichen Frauen eine „Spritztour“ auf dem Potomac River in seinem „Amphicar“. Mitten im Akt finden sie sich plötzlich inmitten einer Regatta wieder. Der gegenseitige Überraschungseffekt ist enorm.</de>
 						<en>First-hand report? [2|Full] takes one of his extramarital women out for a "joyride" on the Potomac River in his "Amphicar." In the middle of the act, they suddenly find themselves in the middle of a regatta. The mutual surprise effect is enormous.</en>
 						<pl>Relacja z pierwszej ręki? [2|Full] zabiera jedną ze swoich pozamałżeńskich kobiet na „przejażdżkę” po rzece Potomac w swoim „Amfikarze”. W połowie aktu nagle znajdują się w środku regat. Efekt wzajemnego zaskoczenia jest ogromny.</pl>
 					</description>
@@ -347,7 +355,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<programme id="088332a3-8534-490f-9f71-fb85c78d41b5" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>[2|First] möchte glauben</de>
-						<en>[2|First] wants to believe</en>
+						<en>[2|First] Wants to Believe</en>
 						<pl>[2|First] chce wierzyć</pl>
 					</title>
 					<description>
@@ -362,7 +370,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<programme id="a1170b5e-9b51-4bc8-be0d-a4338b9fd9ce" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>[2|Full]s Sputnik-Schock</de>
-						<en>[2|Full]'s Sputnik shock</en>
+						<en>[2|Full]'s Sputnik Shock</en>
 						<pl>Szok Sputnika [2|Full]</pl>
 					</title>
 					<description>
@@ -376,7 +384,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="d64fae37-49c0-4ba6-a6b5-ef52b1f9399a" product="1" licence_type="1" fictional="1" creator="9551" comment="'forked' from a51df750-cd95-49be-9d16-ffb8e48513bd">
+		<programme id="d64fae37-49c0-4ba6-a6b5-ef52b1f9399a" product="1" licence_type="1" fictional="1" creator="9551" comment="'forked' from a51df750-cd95-49be-9d16-ffb8e48513bd | TODO: The Scottish staff doesn't make much sense, separate them out">
 			<title>
 				<de>Ronny und Byte</de>
 				<en>Ronny and Byte</en>
@@ -397,14 +405,17 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<member index="6" function="2">Per_custom_Freddy_31</member>
 				<member index="7" function="2">Per_custom_Freddy_28</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.25" teenagers_female="1.5" housewives_female="1.2" employees_female="1.2" unemployed_female="1.2" managers_female="1.2" pensioners="2" />
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" employees="1.25" pensioners="2" />
 			<data country="SCO/D" distribution="2" maingenre="2" subgenre="15,16" flags="8" blocks="2" price_mod="0.25" />
 			<releaseTime year_relative="-1" year_relative_min="1980" year_relative_max="1995" />
 			<ratings critics="90" speed="90" outcome="90" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="therob-programme-ser-RonnyunddasBytekehrenzurueck" />
+			</effects>
 		</programme>
 	</allprogrammes>
 
@@ -422,7 +433,6 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<en>Programme filler for every morning. Here the stories that the colleagues from the newsroom have already thrown away are fished out of the garbage can again. Other low-threshold content can surely be sourced as well.</en>
 				<pl>Wypełniacz programu na każdy poranek. Tutaj historie, które koledzy z newsroomu już wyrzucili, są ponownie wyławiane ze śmietnika. Inne niskoprogowe treści z pewnością również mogą być pozyskiwane.</pl>
 			</description>
-
 			<variables>
 				<title>
 					<de>Morgenmuffel-TV|Mundgeruch am Morgen|Miesepeter am Morgen|Morgengrieß-Kram|G'n Morgääähn</de>
@@ -433,14 +443,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<jobs>
 				<job index="0" function="8" required="1" />
 			</jobs>
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" />
 			<genres maingenre="103" subgenres="6,300" />
 			<blocks value="3" />
 			<price min="2000" max="4000" />
-			<potential min="20" max="40" />
-			<outcome min="20" max="40" />
-			<review min="10" max="20" />
-			<speed min="10" max="20" />
+			<potential min="5" max="15" />
+			<outcome min="5" max="15" />
+			<review min="5" max="15" />
+			<speed min="5" max="15" />
 			<production_time value="60" />
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
@@ -471,7 +481,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<job index="6" function="16" required="0" />
 				<!--job index="7" function="2048" gender="2" required="0" /--> <!-- TODO: Eventually reactivate, should casting models become possible -->
 			</jobs>
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="69" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="103" subgenres="104,300" />
 			<blocks value="3" />
 			<price min="200000" max="500000" />
@@ -516,8 +527,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
-			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1.25" housewives_female="0.75" employees_male="2" employees_female="1" unemployed_male="1.5" unemployed_female="0.75" managers_male="2" managers_female="1.5" pensioners_male="1.25" pensioners_female="0.25" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="288" />
+			<targetgroupattractivity men="2" women="0.5" housewives="0.5" />
 			<genres maingenre="300" subgenres="6,16" />
 			<blocks value="1" />
 			<price min="50000" max="100000" />
@@ -564,7 +575,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="301" subgenres="204,7" />
 			<blocks value="1" />
 			<price min="75000" max="150000" />
@@ -613,7 +625,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="301" subgenres="204,7" />
 			<blocks value="1" />
 			<price min="50000" max="100000" />
@@ -663,7 +676,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
+			<targetgroupattractivity pensioners="0.25" />
 			<genres maingenre="204" subgenres="6,301" />
 			<blocks value="1" />
 			<price min="300000" max="600000" />
@@ -680,13 +694,13 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		<scripttemplate product="3" licence_type="1" guid="56bcb1ff-8a5d-4d91-b3f7-ad6958b3855b" creator="9551">
 			<title>
 				<de>%recreational%%athletes% aus %randomcity% und anderswo</de>
-				<en>%recreational% %athletes% from %randomcity% and elsewhere</en>
+				<en>%recreational% %athletes% from %randomcity% and Elsewhere</en>
 				<pl>%recreational% %athletes% i nie tylko</pl>
 			</title>
 			<description>
 				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Formel 3 &amp; 4 &amp; Kartsport und vieles mehr.</de>
-				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fun fair boxing, Formula 3 &amp; 4 &amp; karting, and much more.</en>
-				<pl>Najnowsze wiadomości i relacje z krajowych lig hobbystycznych, amatorskich i okręgowych. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, lekkoatletyka, boks, Formuła 3 &amp; 4 &amp; karting i wiele więcej.</pl>
+				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fairground boxing, Formula 3 &amp; 4 &amp; karting, and much more.</en>
+				<pl>Najnowsze wiadomości i relacje z krajowych lig hobbystycznych, amatorskich i okręgowych. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, lekkoatletyka, boks w wesołym miasteczku, Formuła 3 &amp; 4 &amp; karting i wiele więcej.</pl>
 			</description>
 			<variables>
 				<recreational>
@@ -710,7 +724,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="274"/>
+			<targetgroupattractivity women="0.75" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
 			<price min="15000" max="30000" />
@@ -754,7 +769,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" />
+			<targetgroupattractivity women="0.75" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
 			<price min="100000" max="200000" />
@@ -804,7 +820,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="12" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="12" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" />
+			<targetgroupattractivity women="0.75" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
 			<price min="500000" max="900000" />
@@ -831,7 +848,6 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<en>Politics up to date. New every day. We analyze the latest developments in business and politics.</en>
 				<pl>Polityka na bieżąco. Nowości każdego dnia. Analizujemy najnowsze wydarzenia w biznesie i polityce.</pl>
 			</description>
-
 			<variables>
 				<tower>
 					<de>TVT|Tower|TVTower</de>
@@ -856,7 +872,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="96" />
 			<genres maingenre="201" subgenres="300,101" />
 			<blocks value="1" />
 			<price min="50000" max="100000" />
@@ -905,7 +921,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups_optional="232" />
+			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="100" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="300" subgenres="6,11" />
 			<blocks value="1" />
 			<price min="30000" max="60000" />
@@ -954,8 +971,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups_optional="19"/>
-			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1" housewives_female="0.5" employees_male="1.25" employees_female="0.5" unemployed_male="1.5" unemployed_female="1" managers_male="1.25" managers_female="1" pensioners_male="0.5" pensioners_female="0.25" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="19" />
+			<targetgroupattractivity men="1.25" women="0.5" children_male="2" teenagers_male="2" unemployed="2" pensioners="0.25" />
 			<genres maingenre="104" subgenres="2,16" />
 			<blocks value="1" />
 			<price min="30000" max="60000" />
@@ -998,7 +1015,8 @@ Czyli 4120 na odcinek.</pl>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="128" required="1" />
 			</jobs>
-			<data flags="4" production_limit="100" production_broadcast_limit="2" production_licence_flags="36" />
+			<data flags="4" production_limit="100" production_broadcast_limit="2" production_licence_flags="36" target_groups="68" />
+			<targetgroupattractivity men="0.5" />
 			<genres maingenre="6" subgenres="300" />
 			<blocks value="2" />
 			<price min="30000" max="90000" />
@@ -1040,7 +1058,9 @@ Czyli 4120 na odcinek.</pl>
 				<job index="4" function="2" required="1" gender="2" />
 				<job index="5" function="2" required="1" gender="1" />
 			</jobs>
-			<genres maingenre="5" subgenres="9,7" />
+			<data target_groups="6" />
+			<targetgroupattractivity children="1.25" pensioners="0.25" />
+			<genres maingenre="5" subgenres="7,9" />
 			<blocks min="2" max="3" />
 			<price min="60000" max="111500" />
 			<potential min="65" max="100" />

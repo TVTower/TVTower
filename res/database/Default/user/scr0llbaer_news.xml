@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-	<version value="3" comment="News entries by scr0llbaer" />
+	<version value="3" comment="Fictional news entries by scr0llbaer" />
 
 	<allnews>
 		<news id="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
@@ -26,7 +26,6 @@
 				</thames>
 			</variables>
 		</news>
-
 		<news id="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Grienpies schlägt Alarm</de>
@@ -43,7 +42,6 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="5367ea49-6b5c-4703-87d1-b2427212f4d3" probability1="50" news2="5d9a2849-c5f2-4504-912f-84cf5065a9b5" probability2="50" />
 			</effects>
 		</news>
-
 		<news id="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal in ${thames}: Rettung in Sicht</de>
@@ -60,7 +58,6 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="43799353-d91e-4f70-accb-703f6d6b861a" />
 			</effects>
 		</news>
-
 		<news id="43799353-d91e-4f70-accb-703f6d6b861a" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Schlechtes Wetter behindert Wal-Rettung</de>
@@ -77,7 +74,6 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="5ab7ad14-2513-427f-893c-913d936e0575" />
 			</effects>
 		</news>
-
 		<news id="5ab7ad14-2513-427f-893c-913d936e0575" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Weiterhin Schwierigkeiten bei Wal-Rettung</de>
@@ -94,7 +90,6 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="321a8590-eec0-4f1d-8031-6d1f9b443b33" probability1="50" news2="9891cfa6-1cd9-41e4-b179-496da048f7d4" probability2="50" />
 			</effects>
 		</news>
-
 		<news id="321a8590-eec0-4f1d-8031-6d1f9b443b33" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Zustand des Wals verschlechtert sich</de>
@@ -111,7 +106,6 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="a33be652-8202-4685-a6ae-1b530f04b3a5" />
 			</effects>
 		</news>
-
 		<news id="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal in ${thames} ist tot</de>
@@ -125,7 +119,6 @@
 			</description>
 			<data genre="4" price="1" quality="70" fictional="1" />
 		</news>
-
 		<news id="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal in ${thames} schwimmt zur Flußmündung</de>
@@ -142,7 +135,6 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="5d9a2849-c5f2-4504-912f-84cf5065a9b5" />
 			</effects>
 		</news>
-
 		<news id="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal von ${thames} ins Meer zurückgeschwommen</de>
@@ -249,8 +241,8 @@
 					<pl>szop pracz</pl>
 				</squirrel_a>
 				<squirrel_b>
-					<de>Flamebird</de>
-					<en>Flamebird</en>
+					<de>Flamerbird</de>
+					<en>Flamerbird</en>
 					<pl>gołąb</pl>
 				</squirrel_b>
 				<squirrel_c>
@@ -433,7 +425,6 @@
 				<effect trigger="happen" type="triggernews" time="1,4,6" news="59e0b6e8-dae6-417b-9f40-1c4e6ffeadd0" />
 			</effects>
 		</news>
-
 		<news id="59e0b6e8-dae6-417b-9f40-1c4e6ffeadd0" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Beerdigung für %joe%</de>
@@ -450,7 +441,6 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="2f570f1d-13b8-4c4c-83a4-7227194e7542" />
 			</effects>
 		</news>
-
 		<news id="2f570f1d-13b8-4c4c-83a4-7227194e7542" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Auch %exhibitiontown% gedenkt %joe%</de>
@@ -467,7 +457,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="0753174a-1661-4dfe-8ea3-6c3e4525ef4f" />
 			</effects>
 		</news>
-
 		<news id="0753174a-1661-4dfe-8ea3-6c3e4525ef4f" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>%joe% an der Spitze der Hitparade</de>
@@ -484,7 +473,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="9318dddb-bafe-4116-9a8b-65b69e9c070a" />
 			</effects>
 		</news>
-
 		<news id="9318dddb-bafe-4116-9a8b-65b69e9c070a" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>%joe%-Merchandise verkauft sich prächtig</de>
@@ -501,7 +489,6 @@
 				<effect trigger="happen" type="triggernews" time="2,9,10,8,20" news="8d3887bc-a10a-4458-a8b9-8627764ccc5d" />
 			</effects>
 		</news>
-
 		<news id="8d3887bc-a10a-4458-a8b9-8627764ccc5d" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>${rodent_${i}}forscher schreibt über %joe%</de>
@@ -515,10 +502,9 @@
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,24,36" news="4cbb9f4c-fd68-4538-8b28-983a1930221d" />
+				<effect trigger="happen" type="triggernews" time="1,4,6" news="4cbb9f4c-fd68-4538-8b28-983a1930221d" />
 			</effects>
 		</news>
-
 		<news id="4cbb9f4c-fd68-4538-8b28-983a1930221d" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Keine News über %singerfirstname%-%singersecondname% %singerlastname%</de>
@@ -532,10 +518,9 @@
 			</description>
 			<data genre="1" price="1" quality="20" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,24,36" news="66aee363-ee72-4051-956e-b2f304adb8b6" />
+				<effect trigger="happen" type="triggernews" time="1,4,6" news="66aee363-ee72-4051-956e-b2f304adb8b6" />
 			</effects>
 		</news>
-
 		<news id="66aee363-ee72-4051-956e-b2f304adb8b6" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Wanderausstellung endlich in %funeraltown%</de>
@@ -549,10 +534,9 @@
 			</description>
 			<data genre="5" price="1" quality="40" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,24,36" news="150c3746-7389-49c1-9f6b-6ad27b321efa" />
+				<effect trigger="happen" type="triggernews" time="1,4,6" news="150c3746-7389-49c1-9f6b-6ad27b321efa" />
 			</effects>
 		</news>
-
 		<news id="150c3746-7389-49c1-9f6b-6ad27b321efa" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>%singerfirstname%-%singersecondname% %singerlastname% gesichtet</de>
@@ -898,7 +882,6 @@
 				<effect trigger="happen" type="triggernews" time="1,18,30" news="bfcac3ba-4030-4ac5-8627-e850bdbe1e22" />
 			</effects>
 		</news>
-
 		<news id="bfcac3ba-4030-4ac5-8627-e850bdbe1e22" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${giantinflatable_${i}} ${duck_${i}} in %sightedtown% gesichtet</de>
@@ -915,7 +898,6 @@
 				<effect trigger="happen" type="triggernews" time="1,18,30" news="e707f054-6a75-478b-bba7-b368da4ea7c5" />
 			</effects>
 		</news>
-
 		<news id="e707f054-6a75-478b-bba7-b368da4ea7c5" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${giantinflatable_${i}} ${duck_${i}} in %foundtown% gefunden</de>
@@ -932,7 +914,6 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="0dd044d0-7752-435e-8f12-7a3047e3e69b" probability1="25" news2="23ec2ae3-c7cf-413b-89fe-b5f44f408a11" probability2="25" news3="262a7de8-89b0-4fa5-884e-19c2861392fb" probability3="25" news4="d5c19330-0592-4585-b63d-7e6a18e2e75b" probability4="25" />
 			</effects>
 		</news>
-
 		<news id="0dd044d0-7752-435e-8f12-7a3047e3e69b" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>Rocksängerin %nina% %artistlastname% landet Riesenhit</de>
@@ -941,12 +922,11 @@
 			</title>
 			<description>
 				<de>„${it_${i}} %escapes% den Kriegsministern!“ Inspiriert vom Flug über %sightedtown% landet Rocksängerin %nina% %artistlastname% mit „${giantinflatable_${i}} ${duck_${i}}“ einen internationalen Riesenhit.</de>
-				<en>„${it_${i}} %escapes% the war ministers!“ Inspired by the flight over %sightettown%, rock singer %nina% %artistlastname% lands a huge international hit with "${giantinflatable_${i}} ${duck_${i}}".</en>
-				<pl>Zainspirowana lotem nad miastem %sightettown%, wokalistka rockowa %nina% %artistlastname% nagrywa piosenkę która staje się wielkim międzynarodowym hitem. Ten hit to "${giantinflatable_${i}} ${duck_${i}}".</pl>
+				<en>"${it_${i}} %escapes% the war ministers!" Inspired by the flight over %sightedtown%, rock singer %nina% %artistlastname% lands a huge international hit with "${giantinflatable_${i}} ${duck_${i}}".</en>
+				<pl>Zainspirowana lotem nad miastem %sightedtown%, wokalistka rockowa %nina% %artistlastname% nagrywa piosenkę która staje się wielkim międzynarodowym hitem. Ten hit to "${giantinflatable_${i}} ${duck_${i}}".</pl>
 			</description>
 			<data genre="1" price="1" quality="25" fictional="1" />
 		</news>
-
 		<news id="23ec2ae3-c7cf-413b-89fe-b5f44f408a11" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${duck_${i}}-Computerspiel wird großer Erfolg</de>
@@ -955,12 +935,11 @@
 			</title>
 			<description>
 				<de>Der vom Flug über %sightedtown% inspirierte Action-Kracher „${the_${i}} ${duck_${i}} %escapes%“ des aufstrebenden Garagen-Studios „%artistlastname%soft“ aus %paradetown% führt zur Zeit die internationalen Verkaufscharts an.</de>
-				<en>Inspired by the flight over %sightettown%, the action smash hit "${the_${i}} ${duck_${i}} %escapes%" by the up-and-coming bedroom studio "%artistlastname%soft" from %paradetown% is currently topping the international sales charts.</en>
-				<pl>Zainspirowani lotem nad miastem %sightettown% gigantycznego nadmuchiwanego balonu w kształcie $${duck_${i}} studio %artistlastname%soft z miasta %paradetown% wydaje grę, która podbija serca graczy.</pl>
+				<en>Inspired by the flight over %sightedtown%, the action smash hit "${the_${i}} ${duck_${i}} %escapes%" by the up-and-coming bedroom studio "%artistlastname%soft" from %paradetown% is currently topping the international sales charts.</en>
+				<pl>Zainspirowani lotem nad miastem %sightedtown% gigantycznego nadmuchiwanego balonu w kształcie $${duck_${i}} studio %artistlastname%soft z miasta %paradetown% wydaje grę, która podbija serca graczy.</pl>
 			</description>
 			<data genre="3" price="1" quality="25" fictional="1" />
 		</news>
-
 		<news id="262a7de8-89b0-4fa5-884e-19c2861392fb" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>Wanderausstellung in %sightedtown% wird erweitert</de>
@@ -974,7 +953,6 @@
 			</description>
 			<data genre="5" price="1" quality="25" fictional="1" />
 		</news>
-
 		<news id="d5c19330-0592-4585-b63d-7e6a18e2e75b" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${duck_${i}} wird Sportmaskottchen in %sightedtown%</de>
@@ -1283,7 +1261,6 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="017aef0b-57a0-4677-82d2-507d7fa822f9" />
 			</effects>
 		</news>
-
 		<news id="017aef0b-57a0-4677-82d2-507d7fa822f9" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Klage von ${name_${g}} %dismissed%</de>
@@ -1300,11 +1277,10 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="3153bc8d-4ee6-4d0a-9135-a8d1cf39ce7c" probability1="50" news2="ddc63d39-7c94-4710-85f1-e8462c14f34b" probability2="50" />
 			</effects>
 		</news>
-
 		<news id="3153bc8d-4ee6-4d0a-9135-a8d1cf39ce7c" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>${mw_${g}} fordert ${theirparrot_${i}} zum Duell</de>
-				<en>${mw_${g}} challenges ${theirparrot_${i}} to a duel</en>
+				<en>A ${mw_${g}} challenges ${theirparrot_${i}} to a duel</en>
 				<pl>${mw_${g}} wyzywa ${theirparrot_${i}} na pojedynek</pl>
 			</title>
 			<description>
@@ -1317,7 +1293,6 @@
 			</effects>
 			<data genre="4" price="1" quality="30" fictional="1" />
 		</news>
-
 		<news id="a3716822-419b-4a1a-ac1d-4529eea1ec6a" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Duell auf Marktplatz %subjecttown% abgesagt</de>
@@ -1334,7 +1309,6 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
 			</effects>
 		</news>
-
 		<news id="5af0c98a-e1f9-4842-827f-dfb90ae93d5b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Duell gegen ${theirparrot_${i}} verloren</de>
@@ -1351,7 +1325,6 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
 			</effects>
 		</news>
-
 		<news id="ddc63d39-7c94-4710-85f1-e8462c14f34b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>${name_${g}} %appeals%</de>
@@ -1368,7 +1341,6 @@
 			</effects>
 			<data genre="4" price="1" quality="30" fictional="1" />
 		</news>
-
 		<news id="1b671c51-6731-4b9e-9d60-728ada55995b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Klage von ${name_${g}} erneut %dismissed%</de>
@@ -1385,7 +1357,6 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
 			</effects>
 		</news>
-
 		<news id="a91c818c-df10-4dbb-a103-9b12e7cef6fe" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Aufarbeitung Causa ${name_${g}} begonnen</de>
@@ -1402,7 +1373,6 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="de4653c8-ef8c-4bd1-9470-b215c9f5c7fc" probability1="25" news2="3e57cb8c-2212-406c-bed4-cf6a5326d539" probability2="25" news3="f3c94d9d-8204-494d-843d-90e1ae50b520" probability3="25" news4="17f2268c-f87a-42b1-86f6-32170ff2aae1" probability4="25" />
 			</effects>
 		</news>
-
 		<news id="de4653c8-ef8c-4bd1-9470-b215c9f5c7fc" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>%artistfirstname%-%artistlastname%-%band% landet Riesenhit</de>
@@ -1419,7 +1389,6 @@
 			</effects>
 			<data genre="1" price="1" quality="40" fictional="1" />
 		</news>
-
 		<news id="3e57cb8c-2212-406c-bed4-cf6a5326d539" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Kabarettist %artistfirstname% %artistlastname% geht auf Tour</de>
@@ -1436,7 +1405,6 @@
 			</effects>
 			<data genre="5" price="1" quality="40" fictional="1" />
 		</news>
-
 		<news id="f3c94d9d-8204-494d-843d-90e1ae50b520" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Komiker %artistfirstname% %artistlastname% geht auf Tour</de>
@@ -1453,7 +1421,6 @@
 			</effects>
 			<data genre="1" price="1" quality="40" fictional="1" />
 		</news>
-
 		<news id="17f2268c-f87a-42b1-86f6-32170ff2aae1" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Wanderausstellung in %artisttown% wird erweitert</de>
@@ -1470,7 +1437,6 @@
 			</effects>
 			<data genre="5" price="1" quality="40" fictional="1" />
 		</news>
-
 		<news id="579c00f4-9604-40cb-b0c5-21ee829df594" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>${mw_${g}} lädt ${theirparrot_${i}} auf ein Bier ein</de>
@@ -1498,7 +1464,7 @@
 			</description>
 			<variables>
 				<i>
-					<de>0|1|2|3|4|5|6|7</de>
+					<de>0|1|2|3|4|5|6|7|8|9</de>
 				</i>
 				<man_0>
 					<de>Mann</de>
@@ -1507,13 +1473,13 @@
 				</man_0>
 				<man_1>
 					<de>Marskult-Anführer</de>
-					<en>Mars cult leader</en>
+					<en>Male Mars cult leader</en>
 					<pl>Przywódca kultu Marsa</pl>
 				</man_1>
 				<man_2>
 					<de>Venuskult-Anführerin</de>
-					<en>Venus cult leader</en>
-					<pl>Przywódca kultu Wenus</pl>
+					<en>Female Venus cult leader</en>
+					<pl>Przywódczyni kultu Wenus</pl>
 				</man_2>
 				<man_3>
 					<de>„Mann aus der Zukunft“</de>
@@ -1540,6 +1506,16 @@
 					<en>Woman</en>
 					<pl>Biedak</pl>
 				</man_7>
+				<man_8>
+					<de>Marskult-Anführerin</de>
+					<en>Female Mars cult leader</en>
+					<pl>Przywódczyni kultu Marsa</pl>
+				</man_8>
+				<man_9>
+					<de>Venuskult-Anführer</de>
+					<en>Male Venus cult leader</en>
+					<pl>Przywódca kultu Wenus</pl>
+				</man_9>
 				<fortheft_0>
 					<de> wegen Picknicktisch-Diebstahl</de>
 					<en> for stealing a picnic table</en>
@@ -1577,6 +1553,14 @@
 					<en> for stealing a trash can</en>
 					<pl> za kradzież kosza na śmieci</pl>
 				</fortheft_7>
+				<fortheft_8>
+					<de></de> <!-- intentionally blank -->
+					<en></en>
+				</fortheft_8>
+				<fortheft_9>
+					<de></de> <!-- intentionally blank -->
+					<en></en>
+				</fortheft_9>
 				<themanwho_0>
 					<de>Der Mann, der den Tisch aus einem Park in %town% stahl und angab, ihn zu einem Grillfest eines Freundes zu bringen, wurde wegen schweren Diebstahls%andcriminalmischief% angeklagt.</de>
 					<en>The man, who stole the table from a park in %town% and claimed to be taking it to a friend's backyard barbecue, was charged with grand larceny%andcriminalmischief%.</en>
@@ -1588,9 +1572,9 @@
 					<pl>Mężczyzna, który mieszkał w %town% przez kilka lat, zaczął głosić o nadchodzącej inwazji Marsjan i przyciągnął niewielką grupę ludzi. Został aresztowany za oszustwo%andcriminalmischief%.</pl>
 				</themanwho_1>
 				<themanwho_2>
-					<de>Eine Frau, die seit mehreren Jahren in %town% lebte, begann, von einer bevorstehenden Venusianer-Invasion zu schwärmen und zog eine kleine Anhängerschaft an. Sie wurde wegen Betrugs%andcriminalmischief% verhaftet.</de>
-					<en>A woman who had been living in %town% for several years began raving about an impending Venusian invasion and attracted a small following of people. She was arrested for fraud%andcriminalmischief%.</en>
-					<pl>Kobieta, która mieszkała w %town% przez kilka lat, zaczęła opowiadać o zbliżającej się inwazji Wenusjan i przyciągnęła niewielką grupę ludzi. Została aresztowana za oszustwo%andcriminalmischief%.</pl>
+					<de>Eine Frau, die seit mehreren Jahren in %town% lebte, begann, von einer bevorstehenden Invasion der „Schwestern von der Venus“ zu schwärmen und zog eine kleine Anhängerschaft an. Sie wurde wegen Betrugs%andcriminalmischief% verhaftet.</de>
+					<en>A woman who had been living in %town% for several years began raving about an impending invasion of the "Sisters from Venus" and attracted a small following of people. She was arrested for fraud%andcriminalmischief%.</en>
+					<pl>Kobieta, która mieszkała w %town% przez kilka lat, zaczęła opowiadać o zbliżającej się inwazji "Sióstr z Wenus" i przyciągnęła niewielką grupę ludzi. Została aresztowana za oszustwo%andcriminalmischief%.</pl>
 				</themanwho_2>
 				<themanwho_3>
 					<de>Ein Mann, der behauptet, aus dem Jahr 2050 zu stammen, wurde in %town% wegen Unruhestiftung%andcriminalmischief% verhaftet. Er wurde später als psychisch krank eingestuft und gegen Kaution freigelassen.</de> <!-- TODO: Replace year 2050 with script to guarantee future? :) -->
@@ -1617,6 +1601,16 @@
 					<en>The woman who took the trash can from a park in %town% and moved it 30 yards over to partying people so they could dispose of their trash was charged with grand larceny%andcriminalmischief%.</en>
 					<pl>Kobieta, która zabrała kosz na śmieci z parku w %town% i przeniosła go 30 metrów dalej do imprezujących ludzi, aby mogli pozbyć się swoich śmieci, została oskarżona o wielką kradzież%andcriminalmischief%.</pl>
 				</themanwho_7>
+				<themanwho_8>
+					<de>Eine Frau, die seit mehreren Jahren in %town% lebte, begann, von einer bevorstehenden Invasion muskulöser Marskrieger in Lendenschurzen zu schwärmen. Sie wurde wegen Erregung öffentlichen Ärgernisses%andcriminalmischief% verhaftet.</de>
+					<en>A woman who had lived in %town% for several years began raving about an impending invasion of muscular Martian warriors in loincloths. She was arrested for public nuisance%andcriminalmischief%.</en>
+					<pl>Kobieta, która mieszkała w %town% od kilku lat, zaczęła opowiadać o zbliżającej się inwazji umięśnionych marsjańskich wojowników w przepaskach biodrowych. Została aresztowana za zakłócanie porządku publicznego%andcriminalmischief%.</pl>
+				</themanwho_8>
+				<themanwho_9>
+					<de>Ein Mann, der seit mehreren Jahren in %town% lebte, begann, von einer bevorstehenden Invasion knapp bekleideter Venusgöttinnen zu schwärmen. Er wurde wegen Erregung öffentlichen Ärgernisses%andcriminalmischief% verhaftet.</de>
+					<en>A man who had been living in %town% for several years began raving about an impending invasion of scantily clad Venusian goddesses. He was arrested for public nuisance%andcriminalmischief%.</en>
+					<pl>Mężczyzna, który mieszkał w %town% przez kilka lat, zaczął opowiadać o zbliżającej się inwazji skąpo odzianych wenusjańskich bogiń. Został aresztowany za zakłócanie porządku publicznego%andcriminalmischief%.</pl>
+				</themanwho_9>
 				<andcriminalmischief>
 					<de> und kriminellen Fehlverhaltens| und ordnungswidrigen Verhaltens|</de>
 					<en> and criminal mischief| and disorderly conduct|</en>
@@ -1652,11 +1646,11 @@
 				</aggromann>
 			</variables>
 			<data genre="0" price="1" quality="55" fictional="1" />
+			<availability script="TIME_DAYSPLAYED > 12" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="2e32bf54-c56e-4991-9907-bbad7c36fcd1" />
 			</effects>
 		</news>
-
 		<news id="2e32bf54-c56e-4991-9907-bbad7c36fcd1" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW begründet Weltkriegs-Vorschlag</de>
@@ -1673,7 +1667,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="2d782a35-4cf5-48dc-b922-5ec4a1d6abfc" />
 			</effects>
 		</news>
-
 		<news id="2d782a35-4cf5-48dc-b922-5ec4a1d6abfc" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW legt Weltkriegs-Eröffnungstrategien dar</de>
@@ -1690,7 +1683,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="aedabde8-3a3e-4861-b487-b47c950284d7" />
 			</effects>
 		</news>
-
 		<news id="aedabde8-3a3e-4861-b487-b47c950284d7" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: different version required for the 1980s when the cold war was still 'hot' and the fallout trail hadn't been suspended yet">
 			<title>
 				<de>Kriegsausstellung in %exhibitiontown% erweitert</de>
@@ -1707,7 +1699,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="d595c46b-687e-4a5a-a328-e376c063ceb9" />
 			</effects>
 		</news>
-
 		<news id="d595c46b-687e-4a5a-a328-e376c063ceb9" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Proteste gegen AvW-Weltkriegspläne</de>
@@ -1724,7 +1715,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="58688de1-6d7a-4809-91e1-f0f51b1d267b" />
 			</effects>
 		</news>
-
 		<news id="58688de1-6d7a-4809-91e1-f0f51b1d267b" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="reference: https://de.wikipedia.org/wiki/Alternativlos | deliberatlely using a different spoof than the already existing 'Murkel' as this one here's still a kid">
 			<title>
 				<de>AvW-Protestsong in den Charts</de>
@@ -1741,7 +1731,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="85698374-1266-4e85-b3eb-c0080e9a23c4" />
 			</effects>
 		</news>
-
 		<news id="85698374-1266-4e85-b3eb-c0080e9a23c4" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Smarte Stöcke und Steine entwickelt</de>
@@ -1758,7 +1747,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="55c67451-fcc5-4c37-9c0d-727a6ff44d06" />
 			</effects>
 		</news>
-
 		<news id="55c67451-fcc5-4c37-9c0d-727a6ff44d06" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Weltkriegsantrag fällt durch</de>
@@ -1775,7 +1763,6 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="a8a96cf5-b22e-4537-9f48-69182e55c1de" />
 			</effects>
 		</news>
-
 		<news id="a8a96cf5-b22e-4537-9f48-69182e55c1de" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Niedergeschlagenheit bei der AvW</de>
@@ -1792,7 +1779,6 @@
 				<effect trigger="happen" type="triggernews" time="2,9,10,8,20" news="34b7dd0a-04dd-40aa-836b-45d7ec2d2dcc" />
 			</effects>
 		</news>
-
 		<news id="34b7dd0a-04dd-40aa-836b-45d7ec2d2dcc" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW wählt neuen Vorsitzenden</de>
@@ -1809,7 +1795,6 @@
 				<effect trigger="happen" type="triggernews" time="2,6,7,8,20" news="f3d79b38-4865-42fb-8f11-2f72ea82ca86" />
 			</effects>
 		</news>
-
 		<news id="f3d79b38-4865-42fb-8f11-2f72ea82ca86" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: Once time-dependent variations are supported, from 2013 on this Thatcher's announcement has to happen through a ghost apparition or a vision some people have">
 			<title>
 				<de>Marigold Flatcher erinnert an ihr Credo</de>
@@ -1826,7 +1811,6 @@
 				<effect trigger="happen" type="triggernews" time="1,3,5" news="458128fd-81a9-4c94-94b9-511fe8f2806f" />
 			</effects>
 		</news>
-
 		<news id="458128fd-81a9-4c94-94b9-511fe8f2806f" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW von Flatcher gekränkt</de>
@@ -1843,7 +1827,6 @@
 				<effect trigger="happen" type="triggernews" time="2,6,7,8,20" news="c33f421e-01e9-4700-b746-eba446c54310" />
 			</effects>
 		</news>
-
 		<news id="c33f421e-01e9-4700-b746-eba446c54310" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Bolton Dynamos zeigt Fortschritte</de>
@@ -1861,7 +1844,6 @@
 				<effect trigger="happen" type="triggernews" time="2,12,13,8,20" news="56ee3865-cd2f-4490-977a-083bdc991c7e" />
 			</effects>
 		</news>
-
 		<news id="56ee3865-cd2f-4490-977a-083bdc991c7e" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW wählt neuen Vorsitzenden</de>
