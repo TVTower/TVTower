@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2024 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -37,6 +37,7 @@ SuperStrict
 Import BRL.Retro
 Import BRL.Map
 Import "base.util.directorytree.bmx"
+Import "base.util.mersenne.bmx"
 
 
 Type TLocalization
@@ -675,6 +676,14 @@ Type TLocalizedString
 	Field valueCached:string {nosave}
 	'language of the current value (which might still be "empty" on purpose)
 	Field valueCachedLanguageID:Int = -1 {nosave}
+	'cache for calculated "random groups" sizes amongst the languages ("ape|beaver|camel|"
+	Field _maxRandomValues:Short = 0 {nosave}
+	Field _minRandomValues:Short = 0 {nosave}
+	
+
+	Method New(s:String)
+		Set(s, -1)
+	End Method
 
 
 	Method Copy:TLocalizedString()
@@ -692,7 +701,7 @@ Type TLocalizedString
 	Method ToString:string()
 		local r:string = ""
 		For local i:int = 0 until valueLangIDs.length
-			r :+ TLocalization.GetLanguageCode( valueLangIDs[i] ) + ": " + valueStrings[i] + "~n"
+			r :+ TLocalization.GetLanguageCode( valueLangIDs[i] ) + ": ~q" + valueStrings[i] + "~q~n"
 		Next
 		return r
 	End Method
@@ -714,6 +723,11 @@ Type TLocalizedString
 		endif
 
 		valueStrings[langIndex] = value
+		
+		'invalidate variants count cache
+		'(gets recalulated if required in GetRandom())
+		_minRandomValues = 0
+		_maxRandomValues = 0
 
 		'refresh cache
 		if languageCodeID = valueCachedLanguageID
@@ -761,6 +775,89 @@ endrem
 		return valueCached
 	End Method
 
+
+
+
+	'Create a new TLocalizedString only containing a single value per
+	'language extracted from a chain of values per language
+	'("ape|beaver|camel|dog" -> "beaver")
+	Method CopyRandom:TLocalizedString(limitElementsToChoseFrom:Int = True, defaultValue:string = "MISSING")
+		'loop through languages and calculate maximum amount of
+		'random values -> this gets our "reference count" if something
+		'is missing
+		If _minRandomValues = 0 or _maxRandomValues = 0
+			_minRandomValues = 1
+			_maxRandomValues = 1
+			For local langID:Int = EachIn self.GetLanguageIDs()
+				Local value:String = self.Get( langID )
+				Local randomValues:Short = 1 'at least one is always there
+				For local i:int = 0 until value.length
+					if value[i] = Asc("|")
+						randomValues :+ 1
+					EndIf
+				Next
+				
+				If _minRandomValues = 1 or randomValues < _minRandomValues
+					_minRandomValues = randomValues
+				EndIf
+				If _maxRandomValues < randomValues
+					_maxRandomValues = randomValues
+				EndIf
+			Next
+		EndIf
+
+
+		'is there even a choice to make?
+		If _maxRandomValues > 1 
+			Local result:TLocalizedString = new TLocalizedString
+			'decide which random portion we want
+			local useRandom:int
+			if limitElementsToChoseFrom
+				useRandom = RandRange(0, _minRandomValues - 1)
+			Else
+				useRandom = RandRange(0, _maxRandomValues - 1)
+			EndIf
+
+			For local langID:Int = EachIn GetLanguageIDs()
+				'iterate over the values elements until the desired element
+				'is found or end of string reached
+				Local value:String = Get( langID )
+				Local randomElementNumber:int
+				Local lastSplitterPos:Int = -1
+				Local foundValue:Int
+				For local i:int = 0 to value.length 'so +1 after string end
+					'end reached or splitter found?
+					If i = value.length or value[i] = Asc("|")
+						If randomElementNumber = useRandom
+							'eg the string is just "|", so 0th and 1st element
+							'are both "" (empty)
+							If (i - lastSplitterPos) <= 0
+								result.set("", langID)
+							Else
+								result.set(value[lastSplitterPos+1 .. i], langID)
+							EndIf
+							foundValue = True
+							exit 'done looping over this locale's string
+						EndIf
+						randomElementNumber :+ 1
+						lastSplitterPos = i
+					EndIf
+				Next
+				'if random index is bigger than the amount of options for
+				'this locale, set the default as resulting value for this
+				'language
+				If not limitElementsToChoseFrom and Not foundValue
+					result.set(defaultValue, langID)
+				EndIf
+			Next
+			
+			Return result
+		Else
+			Return self.Copy()
+		EndIf
+
+	End Method
+	
 
 	Method Replace:TLocalizedString(source:string, replacement:string)
 		For local i:int = 0 until valueStrings.length
