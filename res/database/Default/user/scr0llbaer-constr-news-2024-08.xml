@@ -2241,15 +2241,15 @@
 				</icehockey_0>
 				<icehockey_1>
 					<de>Skijöring|Eiskanu|Skibob</de>
-					<en>Skijoring|Ice Canoeing|Skibobbing</en>
+					<en>Skijoring|Ice Canoeing|Skibobbing</en> <!-- https://en.wikipedia.org/wiki/Skijoring | https://en.wikipedia.org/wiki/Ice_canoeing | https://en.wikipedia.org/wiki/Skibobbing -->
 				</icehockey_1>
 				<icehockey_2>
 					<de>Eissurfen|Snowkiting|Trickski</de>
-					<en>Ice Surfing|Snowkiting|Hot Dog Skiing</en>
+					<en>Ice Surfing|Snowkiting|Hot Dog Skiing</en> <!-- https://de.wikipedia.org/wiki/Eissurfen | https://en.wikipedia.org/wiki/Snowkiting | https://en.wikipedia.org/wiki/Freestyle_skiing ('Known as "hot-dogging" in the early 1970s') -->
 				</icehockey_2>
 				<icehockey_3>
 					<de>Fässer-Eisspringen|Stab-Eissprung|Eisstockschleudern</de>
-					<en>Barrel Ice Jumping|Ice Pole Vault|Ice Stock Skidding</en> <!-- last 2 made-up fictional sports -->
+					<en>Barrel Ice Jumping|Ice Pole Vault|Ice Stock Skidding</en> <!-- https://en.wikipedia.org/wiki/Barrel_jumping | last 2 made-up fictional sports -->
 				</icehockey_3>
 				<scorefor>
 					<de>4|4|4|5|5|5|6|6|7|8|9</de>
@@ -2518,19 +2518,19 @@
 				</k>
 				<armwrestling_0>
 					<de>Armdrücken|Baumstamm-Wasserrollen|Kanupolo|Ultimate-Frisbee</de>
-					<en>Arm Wrestling|Water Log Rolling|Canoe Polo|Ultimate Frisbee</en>
+					<en>Arm Wrestling|Water Log Rolling|Canoe Polo|Ultimate Frisbee</en> <!-- https://en.wikipedia.org/wiki/Arm_wrestling | https://en.wikipedia.org/wiki/Logrolling_(sport) | https://en.wikipedia.org/wiki/Canoe_polo | https://en.wikipedia.org/wiki/Ultimate_(sport) -->
 				</armwrestling_0>
 				<armwrestling_1>
 					<de>Freestyle-Footbag|Bullenreiten|Klippenspringen|Baumstammwerfen</de>
-					<en>Freestyle-Footbag|Bull Riding|Cliff Diving|Caber Toss</en>
+					<en>Freestyle-Footbag|Bull Riding|Cliff Diving|Caber Toss</en> <!-- https://en.wikipedia.org/wiki/Freestyle_footbag | https://en.wikipedia.org/wiki/Bull_riding | https://en.wikipedia.org/wiki/Cliff_diving | https://en.wikipedia.org/wiki/Caber_toss -->
 				</armwrestling_1>
 				<armwrestling_2>
 					<de>Sandboard-Rennen|Inline-Speedskating|Roller-Ski</de>
-					<en>Sandboard Racing|Inline Speedskating|Roller Skiing</en>
+					<en>Sandboard Racing|Inline Speed Skating|Roller Skiing</en> <!-- https://en.wikipedia.org/wiki/Sandboarding | https://en.wikipedia.org/wiki/Inline_speed_skating | https://en.wikipedia.org/wiki/Roller_skiing -->
 				</armwrestling_2>
 				<armwrestling_3>
 					<de>Frisbee-Weitwurf|Schleuderball</de>
-					<en>Frisbee Long Throw|Schleuderball</en>
+					<en>Frisbee Long Throw|Schleuderball</en> <!-- https://de.wikipedia.org/wiki/Frisbee | https://de.wikipedia.org/wiki/Schleuderball -->
 				</armwrestling_3>
 				<scorefor>
 					<de>4|4|4|5|5|5|6|6|7|8|9</de>

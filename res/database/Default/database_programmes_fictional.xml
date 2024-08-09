@@ -574,7 +574,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="1" day="7" hour="20" year_relative_min="2004" year_relative_max="2020" />
+			<releaseTime year_relative="3" day="7" hour="20" year_relative_min="2004" year_relative_max="2020" />
 			<ratings critics="35" speed="51" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
@@ -609,7 +609,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 					</staff>
 					<ratings critics="45" speed="56" />
-					<releaseTime year_relative="1" day="8" hour="20" year_relative_min="2004" year_relative_max="2020" />
+					<releaseTime year_relative="3" day="8" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -623,7 +623,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Kto przywiezie do domu bekon? Amator '[2|Nick]' ze Wschodniej Saksonii przeciwko mistrzowi BWr [4|First] '[4|Nick]' [4|Last]. Zacięta walka gwarantowana!</pl>
 					</description>
 					<ratings critics="56" speed="60" />
-					<releaseTime year_relative="1" day="9" hour="20" year_relative_min="2004" year_relative_max="2020" />
+					<releaseTime year_relative="3" day="9" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -640,7 +640,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 					</staff>
 					<ratings critics="35" speed="65" />
-					<releaseTime year_relative="1" day="10" hour="20" year_relative_min="2004" year_relative_max="2020" />
+					<releaseTime year_relative="3" day="10" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -654,7 +654,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Gospodarze wracają na ring po latach. [0|Last] i [1|Last] w parze z [3|Last] przeciwko wspaniałemu boliwijskiemu pokazowi mięśni wspieranemu przez Niemca [2|Last].</pl>
 					</description>
 					<ratings critics="41" speed="68" />
-					<releaseTime year_relative="1" day="11" hour="20" year_relative_min="2004" year_relative_max="2020" />
+					<releaseTime year_relative="3" day="11" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 			</children>
 		</programme>

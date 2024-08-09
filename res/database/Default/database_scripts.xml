@@ -936,8 +936,8 @@
 							<en>shout for another encore and want to hear the Bogey March again - for the fifth time. %firstname3%, nevertheless, comes up with one more variation.</en>
 						</description_f>
 						<description_g>
-							<de>sind da und wollen ihre Abenteuer verfilmt haben. Unsere ${who_${j}} sind sehr skeptisch, ob man da was gutes draus machen kann.</de>
-							<en>are here and want to have their adventures turned into a film. Our ${who_${j}} are very skeptical as to whether they can make something good out of it.</en>
+							<de>sind da und wollen ihre Abenteuer verfilmt haben. Unsere ${who_${i}} sind sehr skeptisch, ob man da was gutes draus machen kann.</de>
+							<en>are here and want to have their adventures turned into a film. Our ${who_${i}} are very skeptical as to whether they can make something good out of it.</en>
 						</description_g>
 						<description_h>
 							<de>sind da mit ihren Nichten, die reiten lernen wollen, doch die Pferde haben heute keine Lust. Die ${who_${i}} finden den richtigen Ton.</de>
