@@ -9754,7 +9754,7 @@ Weary of the twins' constant pranks, his helping-out sister also strongly recomm
 			</staff>
 			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="1.25" teenagers="2" pensioners="0.25" />
-			<data country="I/F" year="1972" distribution="1" maingenre="8" subgenre="15,7" flags="0" blocks="3" price_mod="1.00" />
+			<data country="I/F" year="1972" distribution="1" maingenre="8" subgenre="15,7" flags="0" blocks="3" price_mod="1.00" broadcast_flags="2048" />
 			<ratings critics="77" speed="71" outcome="82" />
 		</programme>
 		<programme id="TheRob-b5dc-4663-bd81-Tigergekuesst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0029947" creator="8751" created_by="TheRob" comment="TVTower 2013 description: Klassische Screwball-Comedy mit Katharine Hepburn und Cary Grant">
@@ -12640,7 +12640,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.5" />
 			<!-- neuere Folgen (nicht berücksichtigt) Link: http://www.imdb.com/title/tt0305025/episodes?season=-1&ref_=tt_eps_sn_-1 -->
-			<data country="D" distribution="0" maingenre="6" blocks="1" price_mod="0.5" />
+			<data country="D" distribution="0" maingenre="6" subgenre="9,300" blocks="1" price_mod="0.5" />
 			<releaseTime year_relative="-5" year_relative_min="1980" year_relative_max="2010" />
 			<ratings critics="75" speed="45" outcome="55" />
 			<!-- Episodes -->
@@ -12817,7 +12817,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.5" />
-			<data country="D" year="1989" distribution="2" maingenre="6" blocks="1" price_mod="0.5" />
+			<data country="D" year="1989" distribution="2" maingenre="6" subgenre="9,300" blocks="1" price_mod="0.5" />
 			<ratings critics="85" speed="30" outcome="55" />
 			<!-- Episodes -->
 			<children>
@@ -12956,7 +12956,7 @@ Dream scenes and sentiments warp the storyline.</en>
 			</staff>
 			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.5" />
-			<data country="D" year="1995" distribution="2" maingenre="6" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="D" year="1995" distribution="2" maingenre="6" subgenre="9,300" blocks="1" price_mod="0.5" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="85" speed="25" outcome="55" />
 			<!-- Episodes -->
 			<children>
@@ -31966,7 +31966,7 @@ Features a lot of puns and [3|Full] in Oscar-winning hilarity.</en>
 			</staff>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" teenagers="2" pensioners="0.25" />
-			<data country="USA" distribution="1" maingenre="15" subgenre="7,8" flags="0" blocks="3" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="7,8" flags="0" blocks="3" price_mod="1" broadcast_flags="2048" />
 			<releaseTime year="1988" day="2" />
 			<ratings critics="78" speed="77" outcome="55" />
 		</programme>
@@ -47026,8 +47026,8 @@ Who wouldn't love to have such a red-haired element as a companion.</en>
 				<member index="5" function="2">56fb7b57-fdf8-452d-905e-3950e2d6a5f5</member>
 			</staff>
 			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity women="0.75" pensioners="0.25" />
-			<data country="USA" distribution="1" maingenre="7" subgenre="8,15" flags="64" blocks="2" price_mod="1" />
+			<targetgroupattractivity women="1.25" teenagers="2" pensioners="0.25" />
+			<data country="USA" distribution="1" maingenre="8" subgenre="15,7" flags="64" blocks="2" price_mod="1" />
 			<releaseTime year="1999" day="10" />
 			<ratings critics="59" speed="65" outcome="21" />
 		</programme>

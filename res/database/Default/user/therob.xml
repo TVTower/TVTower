@@ -1150,7 +1150,7 @@
 					</description>
 					<groups target_groups="134" pro_pressure_groups="0" contra_pressure_groups="0" />
 					<targetgroupattractivity men="0.5" women="1.25" />
-					<data subgenre="300,8" /> <!-- TODO: this one should have no Betty malus if possible -->
+					<data subgenre="300,8" broadcast_flags="2048" /> <!-- no Betty malus here -->
 					<ratings critics="26" speed="53" />
 					<effects>
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="441e360b-4549-4115-bcfc-3de3ea4ac91c" />
@@ -3319,6 +3319,7 @@
 					<description>
 						<de>Ein verschwundener Hund entpuppt sich als Teil eines Schmugglernetzwerks.</de>
 						<en>A missing dog turns out to be part of a smuggling network.</en>
+						<pl>Zaginiony pies okazuje się być częścią siatki przemytniczej.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep2">
@@ -3330,6 +3331,7 @@
 					<description>
 						<de>%NAME1% verfolgt einen flüchtigen Dieb, der die Dorfbäckerei ausgeraubt hat. Dabei entdeckt er Hinweise auf eine größere Einbruchserie im Umland.</de>
 						<en>%NAME1% pursues a fugitive thief who has robbed the village bakery. In the process, he discovers evidence of a larger series of burglaries in the surrounding area.</en>
+						<pl>%NAME1% ściga zbiegłego złodzieja, który okradł wiejską piekarnię. W trakcie tego procesu odkrywa dowody większej serii włamań w okolicy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
@@ -3341,6 +3343,7 @@
 					<description>
 						<de>Die Tochter des Bürgermeisters wird entführt. %NAME1% ermittelt fieberhaft und entdeckt, dass der Entführer persönliche Rache anstrebt. Eine dramatische Rettungsaktion führt ihn durch verlassene Gebäude bis zum Showdown.</de>
 						<en>The mayor's daughter is kidnapped. %NAME1% investigates feverishly and discovers that the kidnapper is seeking personal revenge. A dramatic rescue operation leads him through abandoned buildings to a showdown.</en>
+						<pl>Córka burmistrza zostaje porwana. %NAME1% prowadzi gorączkowe śledztwo i odkrywa, że porywacz szuka osobistej zemsty. Dramatyczna akcja ratunkowa prowadzi go przez opuszczone budynki do starcia.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3353,6 +3356,7 @@
 					<description>
 						<de>Ein alter ungelöster Fall wird neu aufgerollt, als Beweise auftauchen. %NAME1% bringt durch akribische Nachforschungen die Wahrheit ans Licht und rehabilitiert einen unschuldig Verurteilten, der jahrelang in Haft saß.</de>
 						<en>An old unsolved case is reopened when evidence emerges. Through meticulous research, %NAME1% brings the truth to light and rehabilitates an innocent convict who has been in prison for years.</en>
+						<pl>Stara, nierozwiązana sprawa zostaje ponownie otwarta, gdy pojawiają się dowody. Dzięki skrupulatnym badaniom %NAME1% ujawnia prawdę i rehabilituje niewinnego skazańca, który od lat przebywa w więzieniu.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
@@ -3364,6 +3368,7 @@
 					<description>
 						<de>%NAME1% stößt auf einen alten Freund, der in einen mysteriösen Unfall verwickelt war. Seine Ermittlungen decken ein Netz aus Lügen und Vertuschungen auf, das bis in die höchsten Kreise des Dorfes reicht.</de>
 						<en>%NAME1% comes across an old friend who was involved in a mysterious accident. His investigations uncover a web of lies and cover-ups that reaches into the highest circles of the village.</en>
+						<pl>%NAME1% natrafia na starego przyjaciela, który brał udział w tajemniczym wypadku. Jego śledztwo ujawnia sieć kłamstw i zatuszowań, która sięga najwyższych kręgów wioski.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
@@ -3375,6 +3380,7 @@
 					<description>
 						<de>Eine Serie von Falschgeldscheinen taucht im Dorf auf. %NAME1% folgt den Spuren der Blüten und deckt einen kriminellen Ring auf, der bis in die Nachbarstadt reicht. Eine spektakuläre Verfolgungsjagd endet in einer alten Fabrikhalle.</de>
 						<en>A series of counterfeit banknotes turns up in the village. %NAME1% follows the trail of the flowers and uncovers a criminal ring that reaches as far as the neighboring town. A spectacular chase ends in an old factory building.</en>
+						<pl>W wiosce pojawia się seria fałszywych banknotów. %NAME1% podąża tropem kwiatów i odkrywa siatkę przestępczą, która sięga aż do sąsiedniego miasta. Spektakularny pościg kończy się w budynku starej fabryki.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3387,6 +3393,7 @@
 					<description>
 						<de>%NAME1% untersucht die Machenschaften eines örtlichen Politikers, der mit Fake News und Manipulationen das Dorf spaltet.</de>
 						<en>%NAME1% investigates the machinations of a local politician who divides the village with fake news and manipulation.</en>
+						<pl>%NAME1% bada machinacje lokalnego polityka, który dzieli wioskę za pomocą fałszywych wiadomości i manipulacji.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
