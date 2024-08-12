@@ -771,7 +771,7 @@
 				<en>The Joe Pitt Casebooks</en>
 			</title_original>
 			<description>
-				<de>%ROLE1%, ein „Vampyre”, schlägt sich im New Yorker Untergrund durch und erledigt im Tausch gegen Blut und Freiheit Aufträge für verschiedene Clans, während sich ein mysteriöser Zombie-„Vyrus“ ausbreitet.</de>
+				<de>%ROLE1%, ein „Vampyre“, schlägt sich im New Yorker Untergrund durch und erledigt im Tausch gegen Blut und Freiheit Aufträge für verschiedene Clans, während sich ein mysteriöser Zombie-„Vyrus“ ausbreitet.</de>
 				<en>%ROLE1%, a "Vampyre", struggles in the underground of New York doing jobs for various clans in exchange for blood and freedom, while a mysterious Zombie "Vyrus" is spreading.</en>
 			</description>
 			<children>
@@ -995,7 +995,7 @@
 			</title_original>
 			<description>
 				<de>Sie wird anfangs nicht recht ernst genommen: Eine kleine Terrorzelle glaubt, die einzige Möglichkeit, Floridas Natur zu bewahren, ist, Touristen mit Gewalt vom Besuch abzuhalten. Erst nach ein paar Anschlägen und Morden stellt die Polizei die Verbindung her.</de>
-				<en>It is not really taken seriously at first: A small terrorist cell believes that the only way to preserve Florida's nature is to deter tourists with violence from visiting. It is only after a few assaults and murders that the police connect the dots.</en>
+				<en>They are not really taken seriously at first: A small terrorist cell believes that the only way to preserve Florida's nature is to deter tourists with violence from visiting. It is only after a few assaults and murders that the police connect the dots.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2022,24 +2022,21 @@
 						<en>Boy Blue and %ROLENAME3% discuss their relationship. Flycatcher's offer is brought to the Farm. Plans are made to begin the war.</en> <!-- TODO: make ref Boy Blue, Flycatcher -->
 					</description>
 				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="ab995aea-37d3-4231-9b10-7e2747dd68c1" comment="changing ordering, originally after 'War and Pieces', so that job 16 would be dereferenced. TODO: restore original order once sticky roles are supported">
+				<scripttemplate index="1" product="2" licence_type="2" guid="3e672816-13b3-4d69-967f-6cea90d88032">
 					<title>
-						<de>In der Stadt</de>
-						<en>Around the Town</en>
+						<de>Miese Tricks</de>
+						<en>Skullduggery</en>
 					</title>
 					<title_original>
-						<de>In der Stadt</de>
-						<en>Around the Town</en>
+						<de>Miese Tricks</de>
+						<en>Skullduggery</en>
 					</title_original>
 					<description>
-						<de>Fabletowns neuestes Mitglied erhält eine Führung durch die Stadt, sehr zum Missfallen einiger anderer Bewohner.</de>
-						<en>Fabletown's newest member is given a tour, much to the displeasure of some of the other residents.</en>
+						<de>%ROLENAME5% zahlt Frau Totenkinder ihre Schulden zurück, indem sie eine Mission übernimmt, die sie nach Süden führt.</de> <!-- TODO: Make ref Frau Totenkinder -->
+						<en>%ROLENAME5% repays her debt to Frau Totenkinder by going on a mission down South.</en>
 					</description>
-					<jobs>
-						<job index="16" function="2" required="1" role_guid="b1fe150d-dd8e-402d-b1ab-894129568b38" />
-					</jobs>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="18aa12b8-9b0f-488c-8d65-267a456787db" comment="changing ordering, originally after 'Skullduggery', so that jobs 16-18 would be dereferenced. TODO: restore original order once sticky roles are supported">
+				<scripttemplate index="2" product="2" licence_type="2" guid="18aa12b8-9b0f-488c-8d65-267a456787db">
 					<title>
 						<de>Krieg und andere Kleinigkeiten</de>
 						<en>War and Pieces</en>
@@ -2053,24 +2050,26 @@
 						<en>Fabletown and the Empire go to war.</en>
 					</description>
 					<jobs>
-						<job index="16" function="2" required="1" role_guid="cee85b5e-2c7d-4c2b-a507-bd6e1c6e898d" />
-						<job index="17" function="2" required="1" role_guid="5c05a19e-fbac-4f5a-8edc-40c429c1a337" />
-						<job index="18" function="2" required="1" role_guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" />
+						<job index="17" function="2" required="1" role_guid="cee85b5e-2c7d-4c2b-a507-bd6e1c6e898d" />
+						<job index="18" function="2" required="1" role_guid="5c05a19e-fbac-4f5a-8edc-40c429c1a337" />
 					</jobs>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="3e672816-13b3-4d69-967f-6cea90d88032">
+				<scripttemplate index="3" product="2" licence_type="2" guid="ab995aea-37d3-4231-9b10-7e2747dd68c1">
 					<title>
-						<de>Miese Tricks</de>
-						<en>Skullduggery</en>
+						<de>In der Stadt</de>
+						<en>Around the Town</en>
 					</title>
 					<title_original>
-						<de>Miese Tricks</de>
-						<en>Skullduggery</en>
+						<de>In der Stadt</de>
+						<en>Around the Town</en>
 					</title_original>
 					<description>
-						<de>%ROLENAME5% zahlt Frau Totenkinder ihre Schulden zurück, indem sie eine Mission übernimmt, die sie nach Süden führt.</de> <!-- TODO: Make ref Frau Totenkinder -->
-						<en>%ROLENAME5% repays her debt to Frau Totenkinder by going on a mission down South.</en>
+						<de>Fabletowns neuestes Mitglied erhält eine Führung durch die Stadt, sehr zum Missfallen einiger anderer Bewohner.</de>
+						<en>Fabletown's newest member is given a tour, much to the displeasure of some of the other residents.</en>
 					</description>
+					<jobs>
+						<job index="17" function="2" required="1" role_guid="b1fe150d-dd8e-402d-b1ab-894129568b38" />
+					</jobs>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="151bc76e-812e-4457-b620-7d0d15c5cc1e">
 					<title>
@@ -2086,9 +2085,8 @@
 						<en>A new era begins as the residents of Fabletown face the aftermath of the war. New challenges arise at home and in a distant land a dark power is awakened.</en>
 					</description>
 					<jobs>
-						<job index="16" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" />
-						<job index="17" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
-						<job index="18" function="2" required="1" role_guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" />
+						<job index="17" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" /> <!-- TODO: for now, 'Einstellungen übernehmen' will reuse same actor for a different role here -->
+						<job index="18" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
 						<job index="19" function="2" required="1" role_guid="3a14136f-acc5-4515-8674-2c70846e1224" />
 					</jobs>
 				</scripttemplate>
@@ -2106,9 +2104,8 @@
 						<en>An epilogue to "The Dark Ages".</en>
 					</description>
 					<jobs>
-						<job index="16" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" />
-						<job index="17" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
-						<job index="18" function="2" required="1" role_guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" />
+						<job index="17" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" />
+						<job index="18" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
 						<job index="19" function="2" required="1" role_guid="3a14136f-acc5-4515-8674-2c70846e1224" />
 					</jobs>
 				</scripttemplate>
@@ -2126,9 +2123,8 @@
 						<en>%ROLENAME1% and %ROLENAME7% get into a violent fight that demonstrates the influence of the dark powers present. %ROLENAME2% sinks deeper and deeper into depression. Jack Horner returns and encounters his son, the new Jack Frost.</en> <!-- TODO: add ref Jack Horner, Jack Frost -->
 					</description>
 					<jobs>
-						<job index="16" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" />
-						<job index="17" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
-						<job index="18" function="2" required="1" role_guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" />
+						<job index="17" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" />
+						<job index="18" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
 						<job index="19" function="2" required="1" role_guid="3a14136f-acc5-4515-8674-2c70846e1224" />
 						<job index="20" function="2" required="1" role_guid="bb2293f9-7f79-4877-9f47-72ab2c23b5d2" />
 					</jobs>
@@ -2147,8 +2143,8 @@
 						<en>Mister Dark relates how he came to be trapped in a magical box by a group of imperial warlocks, and the rise of their leader Dunster Happ.</en> <!-- TODO: make ref Mister Dark, Dunster Happ -->
 					</description>
 					<jobs>
-						<job index="16" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" />
-						<job index="17" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
+						<job index="17" function="2" required="1" role_guid="2e366ce8-f292-4483-acb0-4a83b7808133" />
+						<job index="18" function="2" required="1" role_guid="8c003340-2694-46f9-b21b-45748c03afcd" />
 					</jobs>
 				</scripttemplate>
 			</children>
@@ -2169,7 +2165,8 @@
 				<job index="13" function="2" required="1" role_guid="95d8558d-8dc5-4cb0-b1d1-abb32aa45231" />
 				<job index="14" function="2" required="1" role_guid="9e026c4a-04e2-41e9-8865-a8753d53ef01" />
 				<job index="15" function="2" required="1" role_guid="12543516-3a0f-40fe-8eab-10ff7d799dab" />
-				<!-- index 16ff used in episodes -->
+				<job index="16" function="2" required="1" role_guid="dfc4b44e-471f-4b4d-83a0-a91cf0ca8dec" />
+				<!-- index 17ff used in episodes -->
 			</jobs>
 			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by by previous season episode 1 -->
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
@@ -2989,6 +2986,10 @@
 						<de>%ROLENAME1%s Missgeschick</de>
 						<en>%ROLENAME1%'s Mishap</en>
 					</title>
+					<title_original>
+						<de>%ROLENAME1%s Missgeschick</de>
+						<en>%ROLENAME1%'s Mishap</en>
+					</title_original>
 					<description>
 						<de>Eine Panne bei den %ROLENAME1%-Berechnungen führt die %ROLENAME2%-Familie auf unerwartete Umwege und zur Begegnung mit einem schelmischen Alien-Tierchen names Quirkle vom Planeten Zintar und all seinen verspielten Kapriolen.</de>
 						<en>A glitch in %ROLENAME1%'s calculations leads the %ROLENAME2% family on unexpected detours and to an encounter with a mischievous alien pet named Quirkle from the planet Zintar and all its playful antics.</en>
@@ -2999,6 +3000,10 @@
 						<de>Kosmische Küchenkatastrophen</de>
 						<en>Cosmic Cuisine Catastrophe</en>
 					</title>
+					<title_original>
+						<de>Kosmische Küchenkatastrophen</de>
+						<en>Cosmic Cuisine Catastrophe</en>
+					</title_original>
 					<description>
 						<de>Die Familie entdeckt ein einzigartiges interstellares Food-Festival. %ROLENAME1% gibt kulinarische Ratschläge, aber der Versuch, ein regionales Gericht zuzubereiten, geht schief. Währenddessen entwickelt Quirkle eine Vorliebe für exotische Weltraumfrüchte.</de>
 						<en>The family discovers a unique interstellar food festival. %ROLENAME1% provides culinary advice, but the attempt to cook a local dish goes awry. Meanwhile, Quirkle develops a taste for exotic space fruits.</en>
@@ -3009,6 +3014,10 @@
 						<de>Streiche in der Sternenschule</de>
 						<en>Star School Shenanigans</en>
 					</title>
+					<title_original>
+						<de>Streiche in der Sternenschule</de>
+						<en>Star School Shenanigans</en>
+					</title_original>
 					<description>
 						<de>%ROLENAME4% und II kommen in eine futuristische Weltraumschule. %ROLENAME1% leistet akademische Unterstützung, aber der schelmische Quirkle stiftet Chaos unter den Schülern, was zu einem Besuch des Schulleiters führt - einer intelligenten Gaswolke.</de>
 						<en>%ROLENAME4% and II enroll in a futuristic space school. %ROLENAME1% offers academic support, but the mischievous Quirkle creates mayhem among the students, prompting a visit from the school principal - an intelligent gas cloud.</en>
@@ -3019,6 +3028,10 @@
 						<de>Galaktische Gartenarbeit</de>
 						<en>Galactic Gardening</en>
 					</title>
+					<title_original>
+						<de>Galaktische Gartenarbeit</de>
+						<en>Galactic Gardening</en>
+					</title_original>
 					<description>
 						<de>Die %ROLENAME2%s versuchen, auf ihrem Raumschiff einen kosmischen Garten anzupflanzen. %ROLENAME1% berät sie in Sachen extraterrestrische Flora, doch Quirkles unberechenbarer Appetit verwandelt den Garten - in ein skurriles Wunderland.</de>
 						<en>The %ROLENAME2%s attempt to grow a cosmic garden on their spaceship. %ROLENAME1% advises on extraterrestrial flora, but Quirkle's unpredictable appetite transforms the garden - into a whimsical wonderland.</en>
@@ -3029,6 +3042,10 @@
 						<de>Universelle Harmonie</de>
 						<en>Universal Harmony</en>
 					</title>
+					<title_original>
+						<de>Universelle Harmonie</de>
+						<en>Universal Harmony</en>
+					</title_original>
 					<description>
 						<de>Die %ROLENAME2%s organisieren zusammen mit neuen Freunden verschiedener Planeten eine intergalaktische Talentshow, um kosmische Diversität zu feiern. %ROLENAME1% hilft bei der Koordinierung, doch natürlich passieren unvorhergesehene Dinge.</de>
 						<en>The %ROLENAME2%s, joined by new friends from different planets, organize an intergalactic talent show to celebrate cosmic diversity. %ROLENAME1% assists in coordinating, but of course unforeseen things happen.</en>

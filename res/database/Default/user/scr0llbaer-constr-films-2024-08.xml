@@ -5655,8 +5655,8 @@
 		</programme>
 		<programme id="9b26d48e-347d-441a-aae2-d96bd37171ac" product="1" licence_type="1" creator="9551" imdb_id="tt0064175" comment="auch: Zwei hau'n auf den Putz / Hügel der Stiefel | also: Trinity Rides Again (but misleading because not the Trinity series)">
 			<title>
-				<de>Anhöhen der blutigen Schuhe</de>
-				<en>Shoe Heights</en>
+				<de>Anhöhe der blutigen Schuhe</de>
+				<en>Shoes High Up</en>
 			</title>
 			<title_original>
 				<de>Hügel der blutigen Stiefel</de>
@@ -5698,7 +5698,7 @@
 			</staff>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="2" women="0.5" children_male="2" teenagers_male="2" housewives="0.5" unemployed="2" managers="0.5" pensioners="0.5" />
-			<data country="D" distribution="1" maingenre="6" subgenre="300,16" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="6" subgenre="16,301" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1970" day="4" />
 			<ratings critics="25" speed="42" outcome="64" />
 		</programme>
@@ -5819,7 +5819,7 @@
 		<programme id="9466ee7a-fb52-46cc-992f-cd9c873acf3d" product="1" licence_type="1" creator="9551" imdb_id="tt0067992">
 			<title>
 				<de>Jackie und die Süßigkeitenfabrik</de>
-				<en>Wally Winkie and the Candy Factory</en>
+				<en>Winnie Walko and the Candy Factory</en>
 			</title>
 			<title_original>
 				<de>Charlie und die Schokoladenfabrik</de>
@@ -6121,7 +6121,7 @@
 			</staff>
 			<groups target_groups="38" pro_pressure_groups="0" contra_pressure_groups="0" /> <!-- TODO: groups religion - banned in Ireland for a few years -->
 			<targetgroupattractivity pensioners="0.25" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="7,8" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="7,8" flags="0" blocks="2" price_mod="1" broadcast_flags="2048" />
 			<releaseTime year="1972" day="6" />
 			<ratings critics="79" speed="65" outcome="57" />
 		</programme>
@@ -7570,7 +7570,7 @@
 				<en>The Black Hole</en>
 			</title_original>
 			<description>
-				<de>Campiger [1|Last]-Kult-SciFi-Film mit dreisten Anleihen wie Lasergefechte und niedlichen Blecheimer-Robotern. Eine Expedition findet ein vermisstes Schiff, das am Rande eines schwarzen Loches „parkt“ und von einem mysteriösen Wissenschaftler kommandiert wird.</de>
+				<de>Campiger [1|Last]-Kult-SciFi-Film mit dreisten Anleihen wie Lasergefechten und niedlichen Blecheimer-Robotern. Eine Expedition findet ein vermisstes Schiff, das am Rande eines schwarzen Loches „parkt“ und von einem mysteriösen Wissenschaftler kommandiert wird.</de>
 				<en>Campy [1|Last] cult sci-fi movie with bold borrowings such as laser battles and cute tin-bucket robots. An expedition finds a missing ship "parked" on the edge of a black hole and commanded by a mysterious scientist.</en>
 			</description>
 			<staff>

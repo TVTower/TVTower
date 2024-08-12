@@ -66,9 +66,12 @@
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity teenagers="0.25" pensioners="2" />
-			<data country="D/A/CH" distribution="2" maingenre="102" blocks="2" />
-			<releaseTime year_relative="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" flags="1" blocks="2" />
+			<releaseTime year_relative="4" day="2" hour="20" />
 			<ratings critics="55" speed="60" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
 			<!-- Episodes -->
 			<children>
 				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
@@ -96,6 +99,7 @@
 						<pl>To budzi nawet najbardziej śpiącą osobę w ostatnim rzędzie. Cztery tuby, trąbka, zestaw perkusyjny i wokalista dają z siebie wszystko. Z miernym skutkiem.</pl>
 					</description>
 					<ratings critics="40" speed="50" />
+					<releaseTime year_relative="4" day="5" hour="20" />
 				</programme>
 				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
@@ -109,6 +113,7 @@
 						<pl>Z tłustymi przekomarzaniami i pompatycznymi żartami, pomaga uzyskać trochę wymuszonego śmiechu. Ballady, które śpiewa publiczności, są pozytywną atrakcją.</pl>
 					</description>
 					<ratings critics="49" speed="51" />
+					<releaseTime year_relative="4" day="8" hour="20" />
 				</programme>
 				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
@@ -122,6 +127,7 @@
 						<pl>Sam ze swoim godnym potępienia pseudonimem sprawia, że publiczność czuje się zażenowana, aż ich twarze stają się czerwone. Absolutnie najlepsza gwiazda tradycyjnej parady przebojów.</pl>
 					</description>
 					<ratings critics="62" speed="65" />
+					<releaseTime year_relative="4" day="11" hour="20" />
 				</programme>
 				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
@@ -135,6 +141,7 @@
 						<pl>Połączenie nowoczesnych instrumentów i ludowych rytmów. Sprawia, że program jest łatwy do zniesienia i równie łatwy do zapomnienia.</pl>
 					</description>
 					<ratings critics="42" speed="70" />
+					<releaseTime year_relative="5" day="2" hour="20" />
 				</programme>
 				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
@@ -148,6 +155,7 @@
 						<pl>"Na korytarzu jest niedźwiedź, na korytarzu jest niedźwiedź, tak, tak, na korytarzu jest niedźwiedź, który na mnie warczy". Jeśli cię nie poniosło, to już nie żyjesz!</pl>
 					</description>
 					<ratings critics="60" speed="68" />
+					<releaseTime year_relative="5" day="5" hour="20" />
 				</programme>
 				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
@@ -161,6 +169,7 @@
 						<pl>Oprócz talentu wokalnego, neutralny widz, a także fan, może odkryć znacznie bardziej oczywiste "talenty" w Edmondii.</pl>
 					</description>
 					<ratings critics="45" speed="60" />
+					<releaseTime year_relative="5" day="8" hour="20" />
 				</programme>
 				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
@@ -171,12 +180,13 @@
 					<description>
 						<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen [2|Full] ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
 						<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist [2|Full]. The unrivaled culmination in the popular tradidiotional calendar.</en>
-						<pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą [2|First]a [2|Last]'ego. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl>
+						<pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą Jasiem Głupkowatym. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl> <!-- using clear-text version of staff member here because of grammar -->
 					</description>
 					<staff>
 						<member index="2" function="64">SpeedMinister-celebritypeople-KarlHeinzDorfmichel</member>
 					</staff>
 					<ratings critics="55" speed="60" />
+					<releaseTime year_relative="5" day="11" hour="20" />
 				</programme>
 			</children>
 		</programme>
@@ -201,6 +211,9 @@
 			<data country="D" distribution="2" maingenre="103" flags="1" blocks="1" broadcast_flags="512" />
 			<releaseTime year_relative="1" day="9" />
 			<ratings critics="55" speed="30" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.75" />
+			</modifiers>
 			<!-- Episodes -->
 			<children>
 				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">

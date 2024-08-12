@@ -876,8 +876,8 @@
 							<en>are passing through and want their gear cleaned, pronto! Our ${who_${i}} have to negotiate an extra surcharge.</en>
 						</description_0>
 						<description_1>
-							<de>sind da zur großen Mode-Make-up-Challenge! Die ${who_${i}} und ${who_${j}} müssen Pärchen bilden und abends einen glamourösen Catwalk-Showdown hinlegen!</de>
-							<en>are here for the big fashion-make-up challenge! The ${who_${i}} and ${who_${j}} have to pair up and put on a glamorous catwalk showdown in the evening!</en>
+							<de>sind da zur großen Mode-Make-up-Challenge! Unsere ${who_${i}} und die angereisten ${who_${j}} müssen Pärchen bilden und abends einen glamourösen Catwalk-Showdown hinlegen!</de>
+							<en>are here for the big fashion-make-up challenge! Our ${who_${i}} and the visiting ${who_${j}} have to pair up and put on a glamorous catwalk showdown in the evening!</en>
 						</description_1>
 						<description_2>
 							<de>haben auf die Kontaktanzeigen geantwortet und sind eingetroffen. Die ${who_${i}} sind nicht sicher, ob da ein Fehler vorliegt.</de>
