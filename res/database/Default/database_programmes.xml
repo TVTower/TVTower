@@ -21934,7 +21934,7 @@ Nieokrzesany kierowca ciężarówki ratuje narzeczoną swojego przyjaciela przed
 			<description>
 				<de>Der erste Kinofilm der britischen Komiker-Truppe. Leider nur eine Sammlung von Sketchen, aber trotzdem unterhaltsam.</de>
 				<en>The first feature film of the British comedy troupe. Unfortunately, only a collection of sketches, but still entertaining.</en>
-				<pl>Grupa Monty Pythona prezentuje najlepsze skecze ze swojego serialu.</pl>
+				<pl>Angielska grupa komików Monty Python prezentuje najlepsze skecze ze swojego serialu.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
@@ -21992,7 +21992,7 @@ Nieokrzesany kierowca ciężarówki ratuje narzeczoną swojego przyjaciela przed
 			<description>
 				<de>Der verrückteste Jesus-Film aller Zeiten. Spitz die Lippen, pfeif ein Liedchen - das ist es.</de>
 				<en>The craziest Jesus film ever. Just push your lips and whistle, that's the thing.</en>
-				<pl>Monty Python. Brian, rówieśnik Chrystusa, przychodzi na świat w Betlejem i zostaje omyłkowo uznany za Mesjasza.</pl>
+				<pl>Angielska grupa komików opowiada o życiu Briana. Brian, rówieśnik Chrystusa, przychodzi na świat w Betlejem i zostaje omyłkowo uznany za Mesjasza.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">ab5bfc3f-c316-4921-bf81-87ee8250537e</member>
@@ -22021,7 +22021,7 @@ Nieokrzesany kierowca ciężarówki ratuje narzeczoną swojego przyjaciela przed
 			<description>
 				<de>42 allein ist nicht immer die Antwort. Die britische Komiker-Truppe führt uns mit viel Musik auf eine Reise durch die Etappen eines mehr oder weniger typischen menschlichen Lebens.</de>
 				<en>42 alone is not always the answer. With plenty of music, the British comedy troupe takes us on a journey through the stages of a more or less typical human life.</en>
-				<pl>Grupa Monty Pythona postanawia pokazać czym jest sens życia, ukazując je z różnych punktów widzenia.</pl>
+				<pl>Angielska grupa komików postanawia pokazać czym jest sens życia, ukazując je z różnych punktów widzenia.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">85341df9-bd8f-4fd0-9f80-c9ab44ca0829</member>
@@ -27748,7 +27748,7 @@ A semi-serious film adaptation of the 1928 novel that played a major role in the
 			<description>
 				<de>Die Komikergruppe versucht, in Amerika besser Fuß zu fassen. Die berühmtesten Sketche werden nachgespielt, oft mit einem Twist, und teilweise für das amerikanische Publikum angepasst. Es gibt auch neues Material sowie einiges aus den deutschen Episoden.</de>
 				<en>The comedy group tries to gain a better foothold in America. The most famous sketches are re-enacted, often with a twist, and partly adapted for the American audience. There is also new material as well as some from the German episodes.</en>
-				<pl>Tym razem rewolucyjny i przełomowy Monty Python zdobywa nie tylko wyżyny absurdalnego humoru, lecz przede wszystkim wypełnioną po brzegi legendarną scenę Hollywood Bowl.</pl>
+				<pl>Tym razem rewolucyjna i przełomowa grupa zdobywa nie tylko wyżyny absurdalnego humoru, lecz przede wszystkim wypełnioną po brzegi legendarną scenę Hollywood Bowl.</pl>
 			</description>
 			<staff>
 				<member index="0" function="6">88fb9936-51ca-41b7-acef-fd1b148d9fe7</member>
@@ -50396,7 +50396,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Das neunte Tor</de>
 				<en>The 9th Portal</en>
-				<pl>Dziewiąte portal</pl>
+				<pl>Dziewiąty portal</pl>
 			</title>
 			<title_original>
 				<de>Die neun Pforten</de>
@@ -50426,6 +50426,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Romantic XXX</de>
 				<en>Romantic</en>
+				<pl>Romantyka</pl>
 			</title>
 			<title_original>
 				<de>Romance XXX</de>
@@ -50452,6 +50453,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Sibling</de>
 				<en>Sibling</en>
+				<pl>Rodzeństwo</pl>
 			</title>
 			<title_original>
 				<de>Brother</de>
@@ -50479,6 +50481,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Pockimún 2 - Die Kraft des Individuums</de>
 				<en>Pockimún the Feature Film 2000</en>
+				<pl>Pockimún 2: Uwierz w swoją moc</pl>
 			</title>
 			<title_original>
 				<de>Pokémon 2 - Die Macht des Einzelnen</de>
@@ -50511,6 +50514,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Gladius</de>
 				<en>Gladius</en>
+				<pl>Gladius</pl>
 			</title>
 			<title_original>
 				<de>Gladiator</de>
@@ -50543,11 +50547,12 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Wrecked Away - Gestrandet</de>
 				<en>Wrecked Away</en>
+				<pl>Wrecked Away - Odcięty od świata</pl>
 			</title>
 			<title_original>
 				<de>Cast Away - Verschollen</de>
 				<en>Cast Away</en>
-				<pl>Cast Away - poza światem</pl>
+				<pl>Cast Away - Poza światem</pl>
 			</title_original>
 			<description>
 				<de>Chuck hat fast alles: Erfolg im Berufs- und Sozialleben und eine Frau, die ihn liebt - nur keine Zeit. Das ändert sich, als er nach einem Flugzeugabsturz allein auf einer Insel strandet. Die zweite Hauptrolle spielt ein Volleyball.</de>
@@ -50570,6 +50575,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>X-Mates</de>
 				<en>X-Mates</en>
+				<pl>X-Mates</pl>
 			</title>
 			<title_original>
 				<de>X-Men</de>
@@ -50608,6 +50614,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Shocking Movie</de>
 				<en>Shocking Movie</en>
+				<pl>Shocking Movie - Szokujący film</pl>
 			</title>
 			<title_original>
 				<de>Scary Movie</de>
@@ -50642,6 +50649,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Invulnerable - Unverwundbar</de>
 				<en>Invulnerable</en>
+				<pl>Invulnerable - Niedotykalny</pl>
 			</title>
 			<title_original>
 				<de>Unbreakable - Unzerbrechlich</de>
@@ -50668,6 +50676,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>The Bay</de>
 				<en>The Bay</en>
+				<pl>Niebiańska zatoka</pl>
 			</title>
 			<title_original>
 				<de>The Beach</de>
@@ -50696,6 +50705,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Screech 3</de>
 				<en>Screech 3</en>
+				<pl>Screech 3 - Okrzyk 3</pl>
 			</title>
 			<title_original>
 				<de>Scream 3</de>
@@ -50724,6 +50734,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Die Expedition zum roten Planeten</de>
 				<en>Expedition to the Red Planet</en>
+				<pl>Ekspedycja na czerwoną planetę</pl>
 			</title>
 			<title_original>
 				<de>Mission to Mars</de>
@@ -50755,6 +50766,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>U.S. Schizo</de>
 				<en>U.S. Schizo</en>
+				<pl>Amerykańska schiza</pl>
 			</title>
 			<title_original>
 				<de>American Psycho</de>
@@ -50784,6 +50796,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Oh Broth'r, Whence Thee Come? - Eine Mississippi-Heldenreise</de>
 				<en>Oh Broth'r, Whence Thee Come?</en>
+				<pl>Gdzie polazłeś braciszku?</pl>
 			</title>
 			<title_original>
 				<de>O Brother, Where Art Thou? - Eine Mississippi-Odyssee</de>
@@ -50814,6 +50827,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Was Ladies möchten</de>
 				<en>What Ladies Desire</en>
+				<pl>O czym marzą kobiety</pl>
 			</title>
 			<title_original>
 				<de>Was Frauen wollen</de>
@@ -50842,6 +50856,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Iguanodon</de>
 				<en>Iguanodon</en>
+				<pl>Iguanodon</pl>
 			</title>
 			<title_original>
 				<de>Dinosaurier</de>
@@ -50867,6 +50882,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Der Grouch</de>
 				<en>How the Grouch Robbed Christmas</en>
+				<pl>Samotnik: wigili nie będzie</pl>
 			</title>
 			<title_original>
 				<de>Der Grinch</de>
@@ -50894,6 +50910,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Meine Verlobte, ihr Papa und ich</de>
 				<en>Encounter Mom and Dad</en>
+				<pl>Spotkaj moich rodziców</pl>
 			</title>
 			<title_original>
 				<de>Meine Braut, ihr Vater und ich</de>
@@ -50922,6 +50939,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Das Unwetter</de>
 				<en>The Pristine Tempest</en>
+				<pl>The Pristine Tempest - Sztorm oceanu</pl>
 			</title>
 			<title_original>
 				<de>Der Sturm</de>
@@ -50953,6 +50971,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Schemen der Wirklichkeit</de>
 				<en>What Hides Below</en>
+				<pl>Co jest ukryte w prawdzie?</pl>
 			</title>
 			<title_original>
 				<de>Schatten der Wahrheit</de>
@@ -50981,6 +51000,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>3 Himmelsgeschöpfe für C.</de>
 				<en>C.'s Creatures From Heaven</en>
+				<pl>Trzy efektowne aniołki</pl>
 			</title>
 			<title_original>
 				<de>3 Engel für Charlie</de>
@@ -51011,6 +51031,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Ellie Brockovski</de>
 				<en>Ellie Brockovski</en>
+				<pl>Ellie Brockovski</pl>
 			</title>
 			<title_original>
 				<de>Erin Brockovich</de>
@@ -51039,6 +51060,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Lediglich eine Minute</de>
 				<en>Away in One Minute</en>
+				<pl>Umyka w 1 minutę</pl>
 			</title>
 			<title_original>
 				<de>Nur noch 60 Sekunden</de>
@@ -51067,6 +51089,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>The Great Henscape - Fliehendes Federvieh</de>
 				<en>The Great Henscape</en>
+				<pl>Uciekający drób</pl>
 			</title>
 			<title_original>
 				<de>Chicken Run - Hennen rennen</de>
@@ -51096,6 +51119,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Perpendicular Limit</de>
 				<en>Perpendicular Limit</en>
+				<pl>Lodowa granica wytrzymałości</pl>
 			</title>
 			<title_original>
 				<de>Vertical Limit</de>
@@ -51126,6 +51150,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>The Loyalist</de>
 				<en>The Loyalist</en>
+				<pl>Lojalista</pl>
 			</title>
 			<title_original>
 				<de>Der Patriot</de>
@@ -51157,6 +51182,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Panther und Drache</de>
 				<en>Ducked Panther, Concealed Draco</en>
+				<pl>Przyczajona pantera, skryty gad</pl>
 			</title>
 			<title_original>
 				<de>Tiger and Dragon</de>
@@ -51182,6 +51208,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Miss Secret Operation</de>
 				<en>Miss Cordiality</en>
+				<pl>Miss szpieg</pl>
 			</title>
 			<title_original>
 				<de>Miss Undercover</de>
@@ -51212,6 +51239,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Transit - Die Gewalt des Syndikats</de>
 				<en>Transit</en>
+				<pl>Tranzyt</pl>
 			</title>
 			<title_original>
 				<de>Traffic - Macht des Kartells</de>
@@ -51246,6 +51274,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Hull of a Man - Verborgene Bedrohung</de>
 				<en>Hull of a Man</en>
+				<pl>Hull of a Man - Człowiek niewidoczny</pl>
 			</title>
 			<title_original>
 				<de>Hollow Man - Unsichtbare Gefahr</de>
@@ -51301,6 +51330,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Huge Mama's Home</de>
 				<en>Huge Momma's Home</en>
+				<pl>Szpieg w rozmiarze XXL</pl>
 			</title>
 			<title_original>
 				<de>Big Mama's Haus</de>
@@ -51327,6 +51357,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Ein Himmelreich für ein Kamel</de>
 				<en>The Sovereign's New Vibe</en>
+				<pl>Nowe szmaty króla</pl>
 			</title>
 			<title_original>
 				<de>Ein Königreich für ein Lama</de>
@@ -51356,6 +51387,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Der Klumps-Clan und der bekloppte Professor</de>
 				<en>Cuckoo Professor II: The Clan</en>
+				<pl>Grubas i chudzielec 2: Klan</pl>
 			</title>
 			<title_original>
 				<de>Familie Klumps und der verrückte Professor</de>
@@ -51382,6 +51414,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Protocol - Augenblicke des Entschlusses</de>
 				<en>Protocol of Operation</en>
+				<pl>Kodeks ubijania</pl>
 			</title>
 			<title_original>
 				<de>Rules - Sekunden der Entscheidung</de>
@@ -51412,6 +51445,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Die Zündsteine in Roaring Rock Vegas</de>
 				<en>The Firestones in Roaring Rock Vegas</en>
+				<pl>Firestonsi: Wiwa Rock Vegas!</pl>
 			</title>
 			<title_original>
 				<de>Die Flintstones in Viva Rock Vegas</de>
@@ -51442,6 +51476,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Final Arrival</de>
 				<en>Final Arrival</en>
+				<pl>Zmylić przyszłość</pl>
 			</title>
 			<title_original>
 				<de>Final Destination</de>
@@ -51470,6 +51505,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Fine Harmonies</de>
 				<en>Fine Harmonies</en>
+				<pl>Hity i zakochanie</pl>
 			</title>
 			<title_original>
 				<de>High Fidelity</de>
@@ -51501,6 +51537,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Marines of Glory</de>
 				<en>Marines of Glory</en>
+				<pl>Moc i duma</pl>
 			</title>
 			<title_original>
 				<de>Men of Honor</de>
@@ -51528,6 +51565,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>4 Wochen</de>
 				<en>4 Weeks</en>
+				<pl>4 tygodnie</pl>
 			</title>
 			<title_original>
 				<de>28 Tage</de>
@@ -51555,6 +51593,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Cacao Sucré - Ein winziger Happen reicht</de>
 				<en>Cacao Sucré</en>
+				<pl>Masa czekoladowa</pl>
 			</title>
 			<title_original>
 				<de>Chocolat - Ein kleiner Biss genügt</de>
@@ -51584,6 +51623,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Sezieren</de>
 				<en>Dissection</en>
+				<pl>Chirurdzy</pl>
 			</title>
 			<title_original>
 				<de>Anatomie</de>
@@ -51611,11 +51651,12 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>[1|First] - Der Desasterfilm</de>
 				<en>[1|First] - The Catastrophical Film</en>
+				<pl>[1|First] - Film katastroficzny</pl>
 			</title>
 			<title_original>
 				<de>Otto - Der Katastrofenfilm</de>
 				<en>Otto - The Disaster Movie</en>
-				<pl>Otto - Der Katastrofenfilm</pl>
+				<pl>Otto - Film katastroficzny</pl>
 			</title_original>
 			<description>
 				<de>[1|Nick] erzählt auf einer Parkbank Passanten seine Lebensgeschichte, die mit einer Parodie auf Christi Geburt beginnt und viele weitere große Filmhits der letzten Jahre persifliert.</de>
@@ -51637,6 +51678,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Cabby Cabby</de>
 				<en>Cabby 2</en>
+				<pl>Cabby 2</pl>
 			</title>
 			<title_original>
 				<de>Taxi Taxi</de>
@@ -51665,6 +51707,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Pockimún 3 - Fluch des Verborgenen</de>
 				<en>Pockimún 3 the Feature Film: Curse of the Unown</en>
+				<pl>Pockimún 3: Klątwa Unown</pl>
 			</title>
 			<title_original>
 				<de>Pokémon 3 - Im Bann des Unbekannten</de>
@@ -51694,6 +51737,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Der Sarkophag II</de>
 				<en>The Sarcophagus II</en>
+				<pl>Sarkofag II</pl>
 			</title>
 			<title_original>
 				<de>Die Mumie kehrt zurück</de>
@@ -51721,6 +51765,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Triassic Land III</de>
 				<en>Triassic Land III</en>
+				<pl>Park triasowy III</pl>
 			</title>
 			<title_original>
 				<de>Jurassic Park III</de>
@@ -51752,6 +51797,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Die zauberhafte Welt der Angéline</de>
 				<en>Angéline</en>
+				<pl>Angéline</pl>
 			</title>
 			<title_original>
 				<de>Die fabelhafte Welt der Amélie</de>
@@ -51761,7 +51807,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<description>
 				<de>Eine junge Frau mit einer lebhaften Fantasie macht liebend gerne andere Menschen glücklich. Entsprechend ihrer Persönlichkeit tut sie dies auf skurrile Weise. Sie verliebt sich schließlich in einen ähnlich wundersamen Typen und muss nun lernen, sich selbst helfen.</de>
 				<en>A young woman with a vivid imagination loves to make other people happy. In accordance with her personality, she does this in whimsical ways. She eventually falls for a similarly peculiar guy and now has to learn to help herself.</en>
-				<pl>Żyjąca sama w wielkim Paryżu Amelia postanawia, że będzie uszczęśliwiać ludzi.</pl>
+				<pl>Żyjąca sama w wielkim Paryżu dziewczyna postanawia, że będzie uszczęśliwiać ludzi. W czasie swojej "misji" poznaje równie nieśmiałego jak ona Nino. Amelia uświadamia sobie, że myśląc ciągle o innych, zapomniała o własnym szczęściu.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">a5a76fbd-b05c-4e9e-a71c-005d853108ed</member>
@@ -51780,6 +51826,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Der Schatz des Manitu</de>
 				<en>Manitou's Treasure</en>
+				<pl>Skarb Manitu</pl>
 			</title>
 			<title_original>
 				<de>Der Schuh des Manitu</de>
@@ -51847,6 +51894,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Yams Pond 005 - Überlebe eine weitere Nacht</de>
 				<en>Live Another Night</en>
+				<pl>James Pond 007 - Zgon przyjdzie jutro</pl>
 			</title>
 			<title_original>
 				<de>James Bond 007 - Stirb an einem anderen Tag</de>
@@ -51879,6 +51927,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Simulatrix: Recharged</de>
 				<en>The Simulatrix Recharged</en>
+				<pl>Simulatrix Reaktywacja</pl>
 			</title>
 			<title_original>
 				<de>Matrix Reloaded</de>
@@ -51915,6 +51964,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Bruce Überirdisch</de>
 				<en>Bruce Celestial</en>
+				<pl>Brus Wszechmocny</pl>
 			</title>
 			<title_original>
 				<de>Bruce Allmächtig</de>
@@ -51942,6 +51992,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Simulatrix Resolutions</de>
 				<en>The Simulatrix Resolutions</en>
+				<pl>Simulatrix Rewolucje</pl>
 			</title>
 			<title_original>
 				<de>Matrix Revolutions</de>
@@ -51974,6 +52025,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>X-Mates 2</de>
 				<en>X-Mates 2: Together</en>
+				<pl>X-Mates 2</pl>
 			</title>
 			<title_original>
 				<de>X-Men 2</de>
@@ -52007,6 +52059,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Der Vampirjäger: Dreifaltigkeit</de>
 				<en>The Vampire Hunter: Triad</en>
+				<pl>Łowca wampirów: Trójca</pl>
 			</title>
 			<title_original>
 				<de>Blade: Trinity</de>
@@ -52035,6 +52088,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>(T)Raumschiff Saupreiß - Zyklus 1</de>
 				<en>Dreamship Splinterprize: Cycle 1</en>
+				<pl>Kosmiczne jaja: Część I - Zemsta psycholi</pl>
 			</title>
 			<title_original>
 				<de>(T)Raumschiff Surprise - Periode 1</de>
@@ -52063,6 +52117,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Hatred Incident</de>
 				<en>Hatred Incident</en>
+				<pl>Hatred Incident</pl>
 			</title>
 			<title_original>
 				<de>Hate Crime</de>
@@ -52132,6 +52187,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>The Morning After - Der Tag im Arsch</de>
 				<en>The Morning After</en>
+				<pl>The Morning After - Poranek następnego dnia</pl>
 			</title>
 			<title_original>
 				<de>The Day After - Der Tag danach</de>
@@ -52160,6 +52216,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Der Gabelstapler-Führerschein - Klaus am ersten Arbeitstag</de>
 				<en>The Forklift Driver's License: Klaus on the First Day of Work</en>
+				<pl>Pierwszy dzień w pracy operatora</pl>
 			</title>
 			<title_original>
 				<de>Staplerfahrer Klaus - Der erste Arbeitstag</de>
@@ -52169,7 +52226,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<description>
 				<de>Kurz, es geht alles schief, was nur schief gehen kann, und es wird blutrünstig. Und da wir hier im TVTower alle einen pädagogischen Auftrag haben, gibt's für den Rest der Stunde noch eine Analyse zwecks mentaler Verarbeitung und eine Einordnung ins aktuelle Zeitgeschehen.</de>
 				<en>In short, everything that can go wrong does go wrong, and it gets gory. And since we all have an educational mission here at TVTower, the rest of the hour is spent analyzing and mentally processing what we've seen and placing it in the context of contemporary history.</en>
-				<pl>Klaus uzyskuje uprawnienia operatora wózka widłowego. Rozpoczyna pierwszy dzień pracy.</pl>
+				<pl>Krótko mówiąc, wszystko, co może pójść źle, idzie źle i robi się krwawo. A ponieważ wszyscy w TVTower mamy misję edukacyjną, resztę godziny spędzamy na analizowaniu i mentalnym przetwarzaniu tego, co widzieliśmy i umieszczaniu tego w kontekście współczesnej historii.</pl>
 			</description>
 			<staff>
 				<member index="0" function="2">c9100c90-0450-4e88-a42d-b88b59cdf356</member>
@@ -52183,12 +52240,13 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Ein Urlaub in St. Tropez</de>
 				<en>Holidays in St. Tropez</en>
+				<pl>Urlop w Saint-Tropez</pl>
 			</title>
 			<title_original>
 				<de>Ein Sommer in St. Tropez</de>
 				<en>A Summer in St. Tropez</en>
 				<fr>Un été à Saint-Tropez</fr>
-				<pl>Un été à Saint-Tropez</pl>
+				<pl>Un été à Saint-Tropez - Lato w Saint-Tropez</pl>
 			</title_original>
 			<description>
 				<de>Sieben Mädchen verleben ihre Ferien in und um ein Sommerhaus. Dabei tanzen sie wahlweise nackt durch die Natur, proben Ballett oder vollführen semierotische Spielchen. Eine Handlung im eigentlichen Sinne hat der Film nicht.</de>
@@ -52207,6 +52265,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Wally &amp; Grombit - Voll der Käse</de>
 				<en>Wally &amp; Grombit: A Big Day in the Open</en>
+				<pl>Wally i Grombit: Podróż na Księżyc</pl>
 			</title>
 			<title_original>
 				<de>Wallace &amp; Gromit - Alles Käse</de>
@@ -52238,6 +52297,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Wally &amp; Grombit - Die Roboterhose</de>
 				<en>Wally &amp; Grombit: The Robot Trousers</en>
+				<pl>Wally i Grombit: Złe spodnie</pl>
 			</title>
 			<title_original>
 				<de>Wallace &amp; Gromit - Die Techno-Hose</de>
@@ -52269,6 +52329,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Wally &amp; Grombit - Eine gründliche Rasur</de>
 				<en>Wally &amp; Grombit: Among Sheep</en>
+				<pl>Wally i Grombit: Wełna z bliska</pl>
 			</title>
 			<title_original>
 				<de>Wallace &amp; Gromit - Unter Schafen</de>
@@ -52297,6 +52358,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Darkguy II - Durant ist zurück</de>
 				<en>Darkguy II: Durant Is Back</en>
+				<pl>Człowiek z ciemności II: Powrót Duranta</pl>
 			</title>
 			<title_original>
 				<de>Darkman II - Durants Rückkehr</de>
@@ -52327,6 +52389,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Darkguy III - Der Laborversuch</de>
 				<en>Darkguy III: Death to Darkguy</en>
+				<pl>Człowiek z ciemności III: Bitwa ze śmiercią</pl>
 			</title>
 			<title_original>
 				<de>Darkman III - Das Experiment</de>
@@ -52353,6 +52416,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Schatz, ich hab uns selbst verkleinert</de>
 				<en>Darling, We Dwindled Ourselves</en>
+				<pl>Moja droga, zmniejszyłem nas</pl>
 			</title>
 			<title_original>
 				<de>Liebling, jetzt haben wir uns geschrumpft</de>
@@ -52407,6 +52471,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Heimatland</de>
 				<en>Homeland</en>
+				<pl>Homeland - Tajemnice wojenne</pl>
 			</title>
 			<title_original>
 				<de>Vaterland</de>
@@ -52434,6 +52499,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Vor Neid versessen</de>
 				<en>Beyond Treason</en>
+				<pl>W potrzasku uniesienia</pl>
 			</title>
 			<title_original>
 				<de>Von Eifersucht besessen</de>
@@ -52460,6 +52526,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Die Serienkillerin</de>
 				<en>Prey of the Mimicry Woman</en>
+				<pl>Tajemnicze zaginięcia</pl>
 			</title>
 			<title_original>
 				<de>Die Serienmörderin</de>
@@ -52486,11 +52553,12 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Talisman Lucky</de>
 				<en>Behind the Stands</en>
+				<pl>Behind the Stands - Poza widownią</pl>
 			</title>
 			<title_original>
 				<de>Lucky im Glück</de>
 				<en>Past the Bleachers</en>
-				<pl>Past the Bleachers</pl>
+				<pl>Past the Bleachers - Za trybunami</pl>
 			</title_original>
 			<description>
 				<de>Bill und seine Frau haben vor kurzem eine Tragödie durchlebt. Als Bill beschließt, eine kleine Baseball-Mannschaft zu trainieren, trifft er auf den stummen geheimnisvollen Jungen Lucky, der vielleicht genau das ist, was die Mannschaft zum Siegen braucht.</de>
@@ -52512,6 +52580,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Closet Obsession / Kidnapped - Ein Fan dreht durch</de>
 				<en>Closet Obsession</en>
+				<pl>Bliska obsesja</pl>
 			</title>
 			<title_original>
 				<de>Private Obsession / Entführt - Ein Fan läuft Amok</de>
@@ -52521,7 +52590,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<description>
 				<de>Emanuelle, ein weltberühmtes Fotomodell, wird von Richard, einem verrückten Fan, gefangen gehalten. Richard will sie für ihn alleine, aber Emanuelle ist entschlossen, zu entkommen.</de>
 				<en>Emanuelle, a world famous fashion model, is held captive by Richard, a crazed fan. Richard wants her for himself but Emanuelle is determined to escape.</en>
-				<pl>Sławna modelka zostaje porwana i uwięziona przez szalonego fana.</pl>
+				<pl>Sławna modelka zostaje porwana i uwięziona przez szalonego fana. Richard chce ją dla siebie, ale Emanuelle jest zdeterminowana, by uciec.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">9280d014-9e69-49dc-b3cb-786b809a52d4</member>
@@ -52538,6 +52607,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Todschande</de>
 				<en>Lake Corollary</en>
+				<pl>Jezioro Corollary</pl>
 			</title>
 			<title_original>
 				<de>Todsünde</de>
@@ -52565,6 +52635,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Die düstere Kraft der Leidenschaft</de>
 				<en>Body of Manipulation</en>
+				<pl>Wycinek wpływów</pl>
 			</title>
 			<title_original>
 				<de>Die dunkle Macht der Leidenschaft</de>
@@ -52595,6 +52666,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Die düstere Kraft der Leidenschaft 2</de>
 				<en>Body of Manipulation 2</en>
+				<pl>Wycinek wpływów II</pl>
 			</title>
 			<title_original>
 				<de>Die dunkle Macht der Leidenschaft 2</de>
@@ -52620,6 +52692,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Heißkalte Bengel 2</de>
 				<en>Ruthless Intentions 2: Manchester High</en>
+				<pl>Nauka podrywania 2</pl>
 			</title>
 			<title_original>
 				<de>Eiskalte Engel 2</de>
@@ -52649,6 +52722,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>DoppelBock</de>
 				<en>Double Bock</en>
+				<pl>Double Bock</pl>
 			</title>
 			<title_original>
 				<de>DoppelPack</de>
@@ -52675,6 +52749,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Schauplatz des Verbrechens: Mord auf Neuwerk</de>
 				<en>Site of the Offense: Murder on Neuwerk</en>
+				<pl>Na scenie zbrodni: Morderstwo na Neuwerk</pl>
 			</title>
 			<title_original>
 				<de>Tatort: Tod auf Neuwerk</de>
@@ -52703,6 +52778,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>[1|Full]s Der Gefechtsstand am Ende der Welt</de>
 				<en>The Great Pestilence</en>
+				<pl>Ostatnie schronienie</pl>
 			</title>
 			<title_original>
 				<de>Stephen Kings The Stand - Das letzte Gefecht</de>
@@ -52735,6 +52811,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>The Pestilence</de>
 						<en>The Pestilence</en>
+						<pl>Epidemia choroby</pl>
 					</title>
 					<title_original>
 						<de>The Plague</de>
@@ -52751,6 +52828,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>The Apparitions</de>
 						<en>The Apparitions</en>
+						<en>W snach</en>
 					</title>
 					<title_original>
 						<de>The Dreams</de>
@@ -52767,6 +52845,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>The Deception</de>
 						<en>The Deception</en>
+						<pl>Oszukani</pl>
 					</title>
 					<title_original>
 						<de>The Betrayal</de>
@@ -52783,6 +52862,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>The Command</de>
 						<en>The Command</en>
+						<pl>Przywództwo</pl>
 					</title>
 					<title_original>
 						<de>The Stand</de>
@@ -52801,6 +52881,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Marty Serpent's Dashing Arena (Staffeln 1-2)</de>
 				<en>Marty Serpent's Dashing Arena (Seasons 1-2)</en>
+				<pl>Latający Cyrk Monty Pylona (Sezony 1-2)</pl>
 			</title>
 			<title_original>
 				<de>Monty Python's Flying Circus (Staffeln 1-2)</de>
@@ -52830,6 +52911,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Wohin des Weges, Kanada?</de>
 						<en>Which Way, Canada?</en>
+						<pl>Gdzie idziesz Kanado?</pl>
 					</title>
 					<title_original>
 						<de>Quo vadis, Kanada?</de>
@@ -52849,6 +52931,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Lektionen im Strecken von Eulen</de>
 						<en>Owl-Elongating Lessons</en>
+						<pl>Problem z myszami - czas mleczarzy</pl>
 					</title>
 					<title_original>
 						<de>Wie man Eulen streckt</de>
@@ -52865,6 +52948,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Warum so ernsthaft?</de>
 						<en>Why so Serious</en>
+						<pl>Nie tak na serio</pl>
 					</title>
 					<title_original>
 						<de>Du verdirbst mir den ganzen Spaß!</de>
@@ -52881,6 +52965,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Kurzes Zwischenspiel</de>
 						<en>Interlude</en>
+						<pl>Pauza</pl>
 					</title>
 					<title_original>
 						<de>Kurze Unterbrechung</de>
@@ -52897,6 +52982,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Heilige Inquisition</de>
 						<en>The Holy Inquisition</en>
+						<pl>Święta inkwizycja</pl>
 					</title>
 					<title_original>
 						<de>Spanische Inquisition</de>
@@ -52913,6 +52999,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Wie man sich besser versteckt</de>
 						<en>How to Hide Better</en>
+						<pl>Jak się ukryć</pl>
 					</title>
 					<title_original>
 						<de>Wie man nicht gesehen wird</de>
@@ -52929,6 +53016,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Spam</de>
 						<en>Spam</en>
+						<pl>Śmieciowe wiadomości</pl>
 					</title>
 					<title_original>
 						<de>Spam</de>
@@ -52947,6 +53035,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			<title>
 				<de>Marty Serpent's Dashing Arena (Staffeln 3-4)</de>
 				<en>Marty Serpent's Dashing Arena (Seasons 3-4)</en>
+				<pl>Latający Cyrk Monty Pylona (Sezony 3-4)</pl>
 			</title>
 			<title_original>
 				<de>Monty Python's Flying Circus (Staffeln 3-4)</de>
@@ -52976,6 +53065,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Das Befragungs-Eiland</de>
 						<en>Whickerson's World</en>
+						<pl>Świat Whickersona</pl>
 					</title>
 					<title_original>
 						<de>Die Interviewer-Insel</de>
@@ -52992,6 +53082,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Grauen, Zerstörung, Sterben, Krieg und Horror</de>
 						<en>Gore, Desolation, Dying, War and Horror</en>
+						<pl>Gore, spustoszenie, umieranie, wojna i horror</pl>
 					</title>
 					<title_original>
 						<de>Blut, Verwüstung, Tod, Krieg und Horror</de>
@@ -53008,6 +53099,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Gemüsetag</de>
 						<en>Vegetable Day</en>
+						<pl>Wegetariański dzień</pl>
 					</title>
 					<title_original>
 						<de>Lemon Curry</de>
@@ -53024,6 +53116,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Reiten zum Hodensee</de>
 						<en>E. Herbert Thropshawn's Illness</en>
+						<pl>Choroba Herberta Thropshawna</pl>
 					</title>
 					<title_original>
 						<de>Der Ritt zum Podensee</de>
@@ -53040,6 +53133,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 					<title>
 						<de>Ballonflug im Zeitalter der Aufklärung</de>
 						<en>The Illuminated Age of Balloon Flight</en>
+						<pl>Złoty wiek lotnictwa balonami</pl>
 					</title>
 					<title_original>
 						<de>Das goldene Zeitalter der Ballonfahrt</de>
