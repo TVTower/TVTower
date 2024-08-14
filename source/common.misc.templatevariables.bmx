@@ -78,6 +78,23 @@ Type TTemplateVariables
 	Method Reset()
 		placeholderVariables = null
 	End Method
+	
+	
+	Method GetContentAsText:String()
+		If Not variables Then Return ""
+		
+		Local result:TStringBuilder = new TStringBuilder()
+
+		For local key:Object = EachIn variables.Keys()
+			local v:Object = variables.ValueForKey(key)
+			If TLocalizedString(v)
+				result.appendLine(string(key)+"=>TLocalizedString")
+			Else
+				result.appendLine(string(key)+"=>~q"+string(v)+"~q")
+			EndIf
+		Next
+		return result.ToString()
+	End Method
 
 
 	Method AddPlaceHolderVariable(key:string, obj:object)
@@ -113,11 +130,39 @@ Type TTemplateVariables
 	End Method
 
 
-	Method AddVariable(key:string, obj:object)
-		key = key.toLower()
+	Method AddVariable(key:string, obj:object, keyIsLowerCase:Int = False)
+		If Not keyIsLowerCase 
+			key = key.toLower()
+		EndIf
 		if not variables then variables = CreateMap()
 		variablesLanguagesIDs = Null
 		variables.insert(key, obj)
+	End Method
+	
+	
+	Method GetVariableRawString:String(key:String, defaultValue:string = "", createDefault:int = True, useTime:Long = 0, keyIsLowerCase:Int = False)
+		If Not keyIsLowerCase 
+			key = key.toLower()
+		EndIf
+		
+		Local result:String
+		Local mapValue:Object
+		If variables And variables.ValueForKey(key, mapValue)
+			if TLocalizedString(mapValue)
+				return TLocalizedString(mapValue).get()
+			else
+				result = string(mapValue)
+			endif
+		EndIf
+
+		if not mapValue
+			result = defaultValue
+			if createDefault
+				AddVariable(key, defaultValue, True)
+			EndIf
+		EndIf
+		
+		Return result
 	End Method
 
 
@@ -235,6 +280,12 @@ Type TTemplateVariables
 		text = text.replace("%"+placeholder+"%", replacement)
 		text = text.replace("${"+placeholder+"}", replacement)
 	End Function
+	
+	
+
+	'creates a TLocalizedString containing the final value of a variable in all languages
+	Method GetFinalVariableContent:TLocalizedString(variable:String)
+	End Method
 
 
 	'replace all placeholders in the given TLocalizedString

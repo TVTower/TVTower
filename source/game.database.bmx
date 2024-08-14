@@ -429,6 +429,83 @@ Type TDatabaseLoader
 
 
 	'=== HELPER ===
+	Function ConvertOldScriptExpression:String(expression:string, oldNewMapping:TStringMap, scriptExpressionConverterSB:TStringBuilder, changedSomething:Int Var)
+		'check if at least 2 "%" (old expression sign) exist
+		local percentCount:Int
+		For local i:int = 0 until expression.length
+			if expression[i] = Asc("%") 
+				percentCount :+ 1
+			endif
+			if percentCount >= 2 then exit
+		Next
+		if percentCount < 2 
+			changedSomething = False
+			Return expression
+		EndIf
+
+
+		if not scriptExpressionConverterSB Then scriptExpressionConverterSB = New TStringBuilder()
+		scriptExpressionConverterSB.SetLength(0)
+
+		Local expressionStartPos:Int = -1
+		Local ch:Byte
+		Local appendChar:Int = True
+		For local i:int = 0 until expression.length
+			ch = expression[i]
+			if ch = Asc("%")
+				'expression started and end found? - interpret it
+				if expressionStartPos >= 0
+					scriptExpressionConverterSB.Append("${")
+					'local identifier:String = expression[expressionStartPos +1 .. i]
+					local identifierLS:String = expression[expressionStartPos +1 .. i].ToLower()
+					If oldNewMapping.Contains(identifierLS)
+						scriptExpressionConverterSB.Append( oldNewMapping.ValueForKey(identifierLS) )
+					Else
+						'prepend a "." to make it a function call, replace ":" with "_"
+						'-> "STATIONMAP:RANDOMCITY" becomes ".stationmap_randomcity"
+						if identifierLS.Find(":") > 0
+							scriptExpressionConverterSB.Append("." + expression[expressionStartPos +1 .. i].Replace(":", "_"))
+						else
+							scriptExpressionConverterSB.Append(expression[expressionStartPos +1 .. i])
+						endif
+					EndIf
+					scriptExpressionConverterSB.Append("}")
+					expressionStartPos = -1
+				'start found
+				else
+					expressionStartPos = i
+				endif
+
+				'do not add this % char to the result...
+				continue
+			EndIf
+
+			'outside of an expression?
+			If expressionStartPos < 0
+				scriptExpressionConverterSB.AppendChar(ch)
+			EndIf
+
+			'non-expression-allowed char found?
+			if not (..
+				ch = Asc(":") ..                    ' DOUBLE COLON --- STATIONMAP:BLA
+				Or ch = Asc("_") ..                 ' UNDERSCORE
+				Or ( ch >= 48 And ch <= 57 ) ..     ' NUMBER
+				Or ( ch >= 65 And ch <= 90 ) ..     ' UPPERCASE
+				Or ( ch >= 97 And ch <= 122 ) ..    ' LOWERCASE
+				)
+				
+				If expressionStartPos >= 0
+					scriptExpressionConverterSB.Append(expression[expressionStartPos .. i +1]) 'add all the "invalid expression"-stuff we found until now
+					expressionStartPos = -1
+				EndIf
+			endif
+		Next
+
+		changedSomething = True
+
+		'print "~q"+expression+"~q  =>  ~q" + scriptExpressionConverterSB.ToString() + "~q"
+		return scriptExpressionConverterSB.ToString()
+	End Function
 
 	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
 		Local GUID:String = xml.FindValueLC(node,"id", "")
@@ -2489,6 +2566,21 @@ Type TDatabaseLoader
 		For Local nodeLangEntry:TxmlNode = EachIn TxmlHelper.GetNodeChildElements(node)
 			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
 			Local value:String = nodeLangEntry.getContent().Replace("~~n", "~n") '.Trim()
+			
+			'migrate script expressions
+			'Local changedSomething:Int
+			Global sb:TStringBuilder
+			Global oldNewMap:TStringMap = New TStringMap
+			Global migratedScriptExpression:Int
+			Global migratedScriptExpressionCount:Int
+			if not sb then sb = New TStringBuilder()
+			'if value.find("%town%") >= 0 Then Print "Check: " + value
+			value = ConvertOldScriptExpression(value, oldNewMap, sb, migratedScriptExpression)
+			if migratedScriptExpression
+				migratedScriptExpressionCount :+ 1
+				'print "migrated script expression: #"+ migratedScriptExpressionCount +" => " + value
+			EndIf
+			
 
 			If value <> ""
 				Local languageID:Int = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )

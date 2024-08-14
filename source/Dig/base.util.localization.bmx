@@ -883,6 +883,15 @@ endrem
 	End Method
 
 
+	Method GetLanguageID:int(languageCode:string)
+		For local i:int = EachIn valueLangIDs
+			if TLocalization.languages[ valueLangIDs[i] ].languageCode = languageCode then return i
+		Next
+		return -1
+	End Method
+	
+
+
 	Method HasLanguageCode:int(languageCode:string)
 		For local i:int = EachIn valueLangIDs
 			if TLocalization.languages[ valueLangIDs[i] ].languageCode = languageCode then return True

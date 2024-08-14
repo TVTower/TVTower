@@ -479,8 +479,9 @@ Struct SScriptExpression
 			Local textLength:Int = text.Length()
 
 			'print "Process: " + text.ToString()
+			'print "pos      " + Rset("^", charPos + 1) + Rset("|", charPos + 1 + textLength - 1 - 1)
 
-			While charPos < textLength - 1
+			While charPos < textLength' - 1
 				charCode = text.CharAt(charPos)
 				
 				'found the start of an escape char: "\${}"
@@ -507,6 +508,22 @@ Struct SScriptExpression
 						
 						Local expression:String = text.Substring(expressionStartPos, charPos +1) 'sb.substring endindex is exclusive -> +1
 						Local newValue:String = parseText( expression, config, context )
+						rem
+						Local containsExpression:int = newValue.Find("${") >= 0
+						'try to replace further expressions returned by just
+						'this expression ${town} => "the town is ${.stationmap_randomcity}" => "the town is Bremen"
+						'this avoid iterating over a lengthier string over and over
+						while containsExpression
+							Local newNewValue:String = parseText( newValue, config, context )
+							if newNewValue = newValue
+								containsExpression = False
+							Else
+								newValue = newNewValue
+								containsExpression = newValue.Find("${") >= 0
+							endif
+						Wend
+						endrem
+						
 						
 						'print "Replace: ~q" + expression + "~q -> ~q" + newValue +"~q"
 
@@ -514,6 +531,8 @@ Struct SScriptExpression
 						'or do a text.Remove(index,index+length) and text.insert(index, newValue)
 						'depends on what is more likely
 						text.Replace(expression, newValue)
+						'text.Remove(expressionStartPos, charPos +1)
+						'text.insert(expressionStartPos, newValue)
 
 						'update length and move charpos
 						textLength = text.Length()
@@ -830,8 +849,8 @@ Type TScriptExpressionConfig Final
 	End Method
 
 	
-	Method EvaluateVariable( identifier:SToken Var )
-		If sIsSet Then Self.s.EvaluateVariable(identifier)
+	Method EvaluateVariable( identifier:SToken Var, context:Object = Null )
+		If sIsSet Then Self.s.EvaluateVariable(identifier, context)
 		'TODO: Throw exception about unset SScriptExpressionConfig
 	End Method
 End Type
@@ -974,7 +993,8 @@ Struct SScriptExpressionLexer
 					'result.AddToken(token)
 
 					'advance()
-					Return New SToken( TK_FUNCTION, ident.GetHash(), linenumstart, lineposstart )					
+					'Return New SToken( TK_FUNCTION, ident.GetHash(), linenumstart, lineposstart )					
+					Return New SToken( TK_FUNCTION, ident, linenumstart, lineposstart )
 
 				' QUOTED STRING
 				Case ch = SYM_DQUOTE
@@ -1289,7 +1309,7 @@ Struct SScriptExpressionParser
 					
 				Case TK_IDENTIFIER	' Identifiers on their own are variables!
 					' Replace the identifier
-					If configIsSet Then config.evaluateVariable( token ) 
+					If configIsSet Then config.evaluateVariable( token, context ) 
 					result.AddToken(token)
 					advance()
 
@@ -1396,7 +1416,7 @@ Struct SScriptExpressionParser
 						fn = TScriptExpression.GetFunctionHandler( firstToken.GetValueText() ) 
 					endif
 				EndIf
-				If Not fn Then Return New SToken( TK_ERROR, "Undefined function "+firstToken.value, firstToken )
+				If Not fn Then Return New SToken( TK_ERROR, "(Undefined function ~q."+firstToken.GetValueText()+"~q)", firstToken )
 
 				Return fn.run( tokens, context )
 
