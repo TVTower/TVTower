@@ -311,7 +311,7 @@ Modest joke concatenations based on the comics of [1|Full]. Still, it came 11th 
 		<programme id="e3c4000f-917c-402a-8423-355c2fc29c7b" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0216216" creator="">
 			<title>
 				<de>Am sechsten Tag erschuf...</de>
-				<en>On the sixth day of creation...</en>
+				<en>On the Sixth Day of Creation...</en>
 			</title>
 			<title_original>
 				<de>The 6th Day</de>
@@ -8463,7 +8463,7 @@ Tragic love story.</en>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity teenagers="0.25" pensioners="2" />
 			<data country="D" distribution="2" maingenre="202" subgenre="5,9" flags="1" blocks="3" price_mod="1.00" />
-			<releaseTime year_relative="2" day="2" hour="20" year_relative_min="1980" year_relative_max="1990" />
+			<releaseTime year_relative="2" day="3" hour="20" year_relative_min="1980" year_relative_max="1990" />
 			<ratings critics="52" speed="69" outcome="60" />
 			<modifiers>
 				<modifier name="topicality::age" value="2" />
@@ -11022,7 +11022,7 @@ Dream scenes and sentiments warp the storyline.</en>
 		<programme id="TheRob-mov-west-BaldipuhdasGespenst" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0063674" creator="8751" created_by="TheRob" comment="also: The Tattooed One">
 			<title>
 				<de>Baldipuh - das Gespenst</de>
-				<en>Baldipuh - the Ghost</en>
+				<en>Baldipuh - The Ghost</en>
 			</title>
 			<title_original>
 				<de>Balduin, das Nachtgespenst</de>
@@ -14458,7 +14458,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="1.25" teenagers="2" housewives="2" employees="1.25" />
-			<data country="USA" year="2011" distribution="2" maingenre="10" subgenre="1,7" flags="0" blocks="1" price_mod="1.0" />
+			<data country="USA" year="2011" distribution="2" maingenre="10" subgenre="7,1" flags="0" blocks="1" price_mod="1.0" />
 			<ratings critics="80" speed="78" outcome="82" />
 			<children>
 				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1480055" creator="8782" created_by="DerFronck">
@@ -14646,7 +14646,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="1.25" teenagers="2" housewives="2" employees="1.25" />
-			<data country="USA" year="2012" distribution="2" maingenre="10" subgenre="1,7" flags="0" blocks="1" price_mod="1.0" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="USA" year="2012" distribution="2" maingenre="10" subgenre="7,1" flags="0" blocks="1" price_mod="1.0" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="80" speed="78" outcome="82" />
 			<children>
 				<programme id="DF-Serien-FANTASY-Game_of_Thrones_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1971833" creator="8782" created_by="DerFronck">
@@ -14953,7 +14953,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" teenagers_female="2" />
-			<data country="USA" year="1986" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="1" price_mod="0.67" />
+			<data country="USA" year="1986" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="2" price_mod="0.67" />
 			<ratings critics="79" speed="75" outcome="78" />
 			<children>
 				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_01-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1336827" creator="" created_by="DerFronck">
@@ -15086,7 +15086,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" teenagers_female="2" />
-			<data country="USA" year="1987" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="1" price_mod="0.67" available="0" /> <!-- availability triggered by previous season episode 1 -->
+			<data country="USA" year="1987" distribution="2" maingenre="7" subgenre="11,1" flags="" blocks="2" price_mod="0.67" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<ratings critics="79" speed="75" outcome="78" />
 			<children>
 				<programme id="DF-Serien-DRAMA-Fackeln_im_Sturm_-_Staffel_02-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="tt6422264" creator="8782" created_by="DerFronck">
@@ -16708,7 +16708,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 		<programme id="cujo-show-doppeltspass" product="3" licence_type="1" tmdb_id="0" imdb_id="tt0435952" creator="8827" created_by="Cujo">
 			<title>
 				<de>Doppeltspaß - Best of</de>
-				<en>Double fun - Best of</en>
+				<en>Double Fun - Best of</en>
 			</title>
 			<title_original>
 				<de>Doppelpass - Best of</de>
@@ -16793,7 +16793,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="64a204d8-c756-419d-a5a7-670e220dbff4" />
 			</effects>
 		</programme>
-		<programme id="Stukov_Dune" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087363" creator="9584" created_by="Stukov">
+		<programme id="Stukov_Dune" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0087182" creator="9584" created_by="Stukov">
 			<title>
 				<de>Düne: Der Sandplanet</de>
 				<en>Dene</en>
@@ -17016,7 +17016,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 			</staff>
 			<groups target_groups="80" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" />
-			<data country="USA" year="1969" distribution="1" maingenre="5" subgenre="18" flags="" blocks="2" price_mod="0.5" />
+			<data country="USA" year="1969" distribution="1" maingenre="18" subgenre="5" flags="" blocks="2" price_mod="0.5" />
 			<ratings critics="71" speed="76" outcome="49" />
 		</programme>
 		<programme id="Stukov_Halloween_Die_Nacht_des_Grauens" product="1" licence_type="1" tmdb_id="tt0077651" imdb_id="0" creator="9584" created_by="Stukov" comment="TVTower 2013 description: In jungen Jahren ermordet Michael Myers zu Halloween kaltblütig seine Schwester. 15 Jahre später glückt ihm die Flucht aus einer geschloßenen Anstalt...">
@@ -17221,8 +17221,8 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 				<member index="14" function="2">26e29d9f-e8aa-4f53-a1f8-d2e35b95bcd5</member>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity children="1.5" employees="1.25" />
-			<data country="GB" distribution="1" maingenre="1" subgenre="10,5" flags="" blocks="2" price_mod="0.5" />
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
+			<data country="GB" distribution="1" maingenre="10" subgenre="5,1" flags="" blocks="2" price_mod="0.5" />
 			<releaseTime year="1981" day="7" />
 			<ratings critics="81" speed="72" outcome="67" />
 		</programme>
@@ -17633,7 +17633,7 @@ Dib decides to replace the AI of Tak's ship with his own personality.</en>
 				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="82833c29-2958-4715-8363-6a9af3455284" />
 			</effects>
 		</programme>
-		<programme id="Stukov_Winnetou2" product="1" licence_type="1" imdb_id="tt0058751" creator="9584" created_by="Stukov" comment="TVTower 2013 description: Winnetou und Old Shatterhand möchten Frieden zwischen den Indianern und den weißen Siedlern erreichen. / Schöner Western - natürlich mit der Musik von Martin Böttcher">
+		<programme id="Stukov_Winnetou2" product="1" licence_type="1" imdb_id="tt0058751" creator="9584" created_by="Stukov" comment="also: Winnetou: The Red Gentleman | TVTower 2013 description: Winnetou und Old Shatterhand möchten Frieden zwischen den Indianern und den weißen Siedlern erreichen. / Schöner Western - natürlich mit der Musik von Martin Böttcher">
 			<title>
 				<de>Rinnetooth 2. Teil</de>
 				<en>Rinnetooth: The Final Desperado</en>
@@ -18270,7 +18270,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 		</programme>
 		<programme id="Stukov_Maximum_Overdrive" product="1" licence_type="1" imdb_id="tt0091499" creator="9584" created_by="Stukov">
 			<title>
-				<de>Ronny M - Es fing ohne Vorwarnung an</de>
+				<de>Rhonda M - Es fing ohne Vorwarnung an</de>
 				<en>Extreme Overload</en>
 			</title>
 			<title_original>
@@ -18881,7 +18881,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 		</programme>
 		<programme id="aae9ebc1-db6c-4c62-9f5b-6e06704ba3ff" product="1" licence_type="1" creator="9551" imdb_id="tt0348150">
 			<title>
-				<de>Kryptons Superheld  - Er ist zurück</de>
+				<de>Kryptons Superheld - Er ist zurück</de>
 				<en>Krypton's Superhero: He's Back</en>
 			</title>
 			<title_original>
@@ -48328,7 +48328,7 @@ Unfortunately, for all the spectacle, it neglects the subtle humor of the source
 			</staff>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="1.25" teenagers="2" pensioners="0.1" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="7,202" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="5,202" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2000" day="3" />
 			<ratings critics="82" speed="81" outcome="28" />
 		</programme>
@@ -51775,7 +51775,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 				<programme id="bc70f1d9-175a-4379-97f5-f3d5fed907bd" product="2" licence_type="2" imdb_id="tt0751108" creator="9551">
 					<title>
-						<de>E.B.E.</de>
+						<de>Die Entität</de>
 						<en>Decoy</en>
 					</title>
 					<title_original>
@@ -51861,7 +51861,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 				<programme id="eda25211-3f04-4566-9a5e-c456736deddc" product="2" licence_type="2" imdb_id="tt0751107" creator="9551">
 					<title>
-						<de>Duane Berry</de>
+						<de>Im Reisebüro</de>
 						<en>Under Control</en>
 					</title>
 					<title_original>
@@ -51876,7 +51876,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				<programme id="46bce789-68af-4873-aabc-c02f05678574" product="2" licence_type="2" imdb_id="tt0751102" creator="9551">
 					<title>
 						<de>Die Faust die verwundet</de>
-						<en>Satan</en>
+						<en>Devil</en>
 					</title>
 					<title_original>
 						<de>Satan</de>
@@ -51903,7 +51903,7 @@ A young loner on a crusade to champion the cause of the innocent, the helpless, 
 				</programme>
 				<programme id="17424fd3-700b-4ac0-85e5-0daad14e43e9" product="2" licence_type="2" imdb_id="tt0751139" creator="9551">
 					<title>
-						<de>Humbug</de>
+						<de>Mumpitz</de>
 						<en>The Circus</en>
 					</title>
 					<title_original>
@@ -54739,7 +54739,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<programme id="5969ffa0-3c04-42ae-ad68-65394dba0ba2" product="2" licence_type="2" imdb_id="tt5720280" creator="9551">
 					<title>
 						<de>Die Größe spielt eine Rolle</de>
-						<en>The size plays a role</en>
+						<en>Size Plays a Role</en>
 					</title>
 					<title_original>
 						<de>Size Matters</de>
@@ -54753,7 +54753,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<programme id="20dfe2d3-8709-439a-9d2a-f173371322a5" product="2" licence_type="2" imdb_id="tt5720284" creator="9551">
 					<title>
 						<de>Mehr Sicherheit im Luftraum</de>
-						<en>More safety in the airspace</en>
+						<en>More Safety In the Airspace</en>
 					</title>
 					<title_original>
 						<de>Safer Skies</de>
@@ -54767,7 +54767,7 @@ This became one of the most common catchphrases of the 1970s. The show's end seq
 				<programme id="bd5c213d-e14f-439f-980b-add448910561" product="2" licence_type="2" imdb_id="tt5720286" creator="9551">
 					<title>
 						<de>Es geht rund im Orbit</de>
-						<en>It's all going round in orbit</en>
+						<en>It's All Going Round In Orbit</en>
 					</title>
 					<title_original>
 						<de>Watch This Space</de>
