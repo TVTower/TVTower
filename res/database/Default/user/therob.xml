@@ -2124,7 +2124,7 @@
 				<member index="1" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="2" maingenre="204" subgenre="103" flags="9" blocks="4" broadcast_flags="512" price_mod="0.5" />
+			<data country="D" distribution="2" maingenre="204" subgenre="103" flags="9" blocks="2" broadcast_flags="512" price_mod="0.5" />
 			<releaseTime year_relative="6" day="5" />
 			<ratings critics="89" speed="38" outcome="55" />
 			<children>
