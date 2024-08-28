@@ -19340,11 +19340,11 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 		<programme id="521f9c62-3131-460a-b142-9101cbe5a0ca" product="1" licence_type="1" creator="9551" imdb_id="tt0091578">
 			<title>
 				<de>Die wundervolle Wäscherei</de>
-				<en>The wonderful laundry</en>
+				<en>The Wonderful Laundry</en>
 			</title>
 			<title_original>
 				<de>Mein wunderbarer Waschsalon</de>
-				<en>My beautiful laundrette</en>
+				<en>My Beautiful Laundrette</en>
 			</title_original>
 			<description>
 				<de>Komödiantischer aber sozialkritischer Film über Rassismus. Der einst in seiner Heimat angesehene pakistanische Journalist Hussein Ali lebt zu Zeiten Thatchers verwahrlost in London. Sein Onkel bringt ihn dazu, einen Waschsalon zu auf Vordermann zu bringen.</de>
@@ -19641,7 +19641,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 			<releaseTime year="1988" day="8" />
 			<ratings critics="74" speed="58" outcome="34" />
 		</programme>
-		<programme id="1749d820-598e-438d-bfb8-8a90c6676f78" product="1" licence_type="1" creator="9551" imdb_id="tt0047528" comment="TVTower 2013 description: Ein ungleiches Paar zieht durch ein unwirtliches Italien von Jahrmarkt zu Jahrmarkt.">
+		<programme id="1749d820-598e-438d-bfb8-8a90c6676f78" product="1" licence_type="1" creator="9551" imdb_id="tt0047528" comment="also: The Road | TVTower 2013 description: Ein ungleiches Paar zieht durch ein unwirtliches Italien von Jahrmarkt zu Jahrmarkt.">
 			<title>
 				<de>La Rue - Die Melodie der Gasse</de>
 				<en>La Rue</en>
@@ -19889,7 +19889,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 				<member index="4" function="2">592ffe24-038e-4c95-a0b2-7366e0528f91</member>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="17" subgenre="7,8" flags="64" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="17" subgenre="15,8" flags="64" blocks="2" price_mod="1" />
 			<releaseTime year="1980" day="2" />
 			<ratings critics="61" speed="50" outcome="64" />
 		</programme>
@@ -20659,7 +20659,7 @@ A rough-and-tumble trucker rescues his friend's fiancée from an ancient sorcere
 			</staff>
 			<groups target_groups="38" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="0.25" pensioners="0.25" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="15,7" flags="0" blocks="2" price_mod="0.5" />
+			<data country="USA" distribution="1" maingenre="5" subgenre="15,8" flags="0" blocks="2" price_mod="0.5" broadcast_flags="2048" />
 			<releaseTime year="1986" day="8" />
 			<ratings critics="87" speed="67" outcome="32" />
 		</programme>
@@ -20940,7 +20940,7 @@ A possibly well-fitting title soundtrack didn't come until years later.</en>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="4" contra_pressure_groups="8" />
 			<targetgroupattractivity employees="1.25" />
-			<data country="USA" distribution="1" maingenre="2" subgenre="16" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="16,1" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1980" day="8" />
 			<ratings critics="52" speed="62" outcome="68" />
 		</programme>
@@ -21058,7 +21058,7 @@ A possibly well-fitting title soundtrack didn't come until years later.</en>
 			<releaseTime year="2006" day="10" />
 			<ratings critics="87" speed="85" outcome="63" />
 		</programme>
-		<programme id="2f59ee10-99ed-4ab1-8963-8ccccced8301" product="1" licence_type="1" creator="9551" imdb_id="tt0080736">
+		<programme id="2f59ee10-99ed-4ab1-8963-8ccccced8301" product="1" licence_type="1" creator="9551" imdb_id="tt0063442">
 			<title>
 				<de>Affenerde</de>
 				<en>Apes' Earth</en>
@@ -21148,7 +21148,7 @@ Sequel to the highly acclaimed and successful first ape film, but scathing revie
 				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="481c9562-1fec-48fe-aa48-a9804abda930" />
 			</effects>
 		</programme>
-		<programme id="481c9562-1fec-48fe-aa48-a9804abda930" product="1" licence_type="1" creator="9551" imdb_id="tt0067065">
+		<programme id="481c9562-1fec-48fe-aa48-a9804abda930" product="1" licence_type="1" creator="9551" imdb_id="tt0068408">
 			<title>
 				<de>Eroberung der Affenerde</de>
 				<en>Conquest of Apes' Earth</en>
@@ -21221,7 +21221,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity teenagers="2" employees="1.25" unemployed="2" />
-			<data country="GB" distribution="1" maingenre="12" subgenre="5" flags="0" blocks="2" price_mod="0.5" />
+			<data country="GB" distribution="1" maingenre="12" subgenre="16,5" flags="96" blocks="2" price_mod="0.5" />
 			<releaseTime year="2008" day="5" />
 			<ratings critics="17" speed="31" outcome="11" />
 		</programme>
@@ -21426,6 +21426,7 @@ Fifth and final part. Not so good.</en>
 				<member index="0" function="1">e51fa152-771a-4b7a-9257-d23dae473f55</member>
 				<member index="1" function="2">adcc18d5-1942-483a-8d0a-583b3b78d7aa</member>
 				<member index="2" function="2">7663c355-2881-4ff6-b440-dfa55c43a784</member>
+				<member index="3" function="2">036dbe00-92c8-4ae5-8919-fb92449deb9e</member>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="2" teenagers="2" housewives="2" employees="1.25" />
@@ -21460,7 +21461,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity pensioners="0.25" />
-			<data country="USA" distribution="1" maingenre="5" subgenre="7,10" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="15" subgenre="5,10" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1986" day="10" />
 			<ratings critics="79" speed="52" outcome="51" />
 		</programme>
@@ -21490,7 +21491,7 @@ Fifth and final part. Not so good.</en>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" />
-			<data country="I/F" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="0.25" />
+			<data country="I/F" distribution="1" maingenre="7" subgenre="15,17" flags="0" blocks="2" price_mod="0.25" />
 			<releaseTime year="1987" day="5" />
 			<ratings critics="72" speed="27" outcome="32" />
 		</programme>
