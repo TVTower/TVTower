@@ -1,6 +1,87 @@
 SuperStrict
 Import "Dig/base.util.scriptexpression.bmx"
+Import "Dig/base.util.scriptexpression_ng.bmx"
+
+Import "game.production.scripttemplate.bmx"
+Import "game.stationmap.bmx"
+
 Import Brl.Map
+
+
+Global GameScriptExpression:TGameScriptExpression = New TGameScriptExpression
+
+Type TGameScriptExpression extends TScriptExpression
+	Method New()
+		'set custom config for variable handlers etc
+		'self.config = New TScriptExpressionConfig(null, null, null )
+		self.config.s.variableHandlerCB = TGameScriptExpression.GameScriptVariableHandlerCB
+	End Method
+	
+	
+	Method ParseLocalizedText:TStringBuilder(text:String, context:Object, localeID:Int)
+		Return ParseNestedExpressionText(text, context, localeID)
+	End Method
+
+	Method ParseLocalizedText:TStringBuilder(text:TStringBuilder, context:Object, localeID:Int)
+		Return ParseNestedExpressionText(text, context, localeID)
+	End Method
+
+
+	Function GameScriptVariableHandlerCB:String(variable:String, context:Object, contextNumeric:Int)
+		Local result:String
+		Local localeID:Int = contextNumeric
+		
+		'print "GameScriptVariableHandlerCB: " + TTypeID.ForObject(context).Name()
+		
+		Select True
+			Case TScriptTemplate(context) <> Null
+				Local tV:TTemplateVariables = TScriptTemplate(context).templateVariables
+
+				' Create a localized string only containing resolved variables
+				' (the single option "Beaver" is chosen from the variable value "Ape|Beaver|Camel") 
+				Local lsResult:TLocalizedString = tV.GetResolvedVariable(variable, 0, False)
+
+				' The result MIGHT contain script expressions itself 
+				' -> parse it and replace the resolved variable accordingly
+				' -> this allows to only evaluate it once instead of on each
+				'    request
+				' The whole "GameScriptVariableHandlerCB" is called ONCE per language
+				' so we only need to parse the specific language value here!
+				result = lsResult.Get( localeID )
+				local resultNew:TStringBuilder = GameScriptExpression.ParseNestedExpressionText(result, context, localeID)
+
+				'avoid string creation and compare hashes first
+				If result.hash() <> resultNew.hash()
+					result = resultNew.ToString()
+					'store the newly parsed expression result
+					lsResult.Set(result, localeID)
+				EndIf
+		End Select
+
+		Return result
+	End Function
+
+End Type
+
+
+
+'TScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 2,  2)
+TScriptExpression.RegisterFunctionHandler( "stationmap_randomcity", SEFN_StationMap_randomcity, 2,  2)
+TScriptExpression.RegisterFunctionHandler( "stationmap_population", SEFN_StationMap_population, 2,  2)
+
+Function SEFN_StationMap_randomcity:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	Return New SToken( TK_TEXT, GetStationMapCollection().GenerateCity(), params.GetToken(0) )
+End Function
+
+Function SEFN_StationMap_population:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	Return New SToken( TK_NUMBER, GetStationMapCollection().population, params.GetToken(0) )
+End Function
+
+
+
+
+
+
 
 'initialize on import
 GetGameScriptExpressionOLD()
@@ -35,14 +116,16 @@ rem
 endrem
 
 	'override
-	Method HandleVariable:string(variable:string, resultElementType:int var)
+	Method HandleVariable:string(variable:string, resultElementType:int var) override
 		local wrapper:TGameScriptExpressionOLDFunctionWrapper = TGameScriptExpressionOLDFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
 		if wrapper
 			_lastCommandErrored = False
 			return wrapper.func(variable, null, resultElementType)
 		else
 			_errorCount :+1
-			_error :+ "Cannot handle variable ~q"+variable+"~q. Defaulting to 0.~n"
+			_error.Append("Cannot handle variable ~q")
+			_error.Append(variable)
+			_error.Append("~q. Defaulting to 0.~n")
 			_lastCommandErrored = True
 			'print _error
 
@@ -52,14 +135,16 @@ endrem
 
 
 	'override
-	Method HandleFunction:string(variable:string, params:string[], resultElementType:int var)
+	Method HandleFunction:string(variable:string, params:string[], resultElementType:int var) override
 		local wrapper:TGameScriptExpressionOLDFunctionWrapper = TGameScriptExpressionOLDFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
 		if wrapper
 			_lastCommandErrored = False
 			return wrapper.func(variable, params, resultElementType)
 		else
 			_errorCount :+1
-			_error :+ "Cannot handle function ~q"+variable+"~q. Defaulting to 0.~n"
+			_error.Append("Cannot handle function ~q")
+			_error.Append(variable)
+			_error.Append("~q. Defaulting to 0.~n")
 			_lastCommandErrored = True
 			'print _error
 

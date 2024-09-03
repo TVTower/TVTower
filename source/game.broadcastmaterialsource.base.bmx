@@ -254,7 +254,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
 				If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				'replace if some content was filled in
-				If replaced Then TTemplateVariables.ReplacePlaceholderInText(value, placeHolder, replacement)
+				If replaced Then TTemplateVariables.ReplacePlaceholderInText_DEPRECATED(value, placeHolder, replacement)
 				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
 			Next
 

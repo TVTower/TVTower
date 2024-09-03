@@ -4,6 +4,51 @@ Import "game.world.worldtime.bmx"
 Import "game.gameinformation.base.bmx"
 Import "Dig/base.util.persongenerator.bmx"
 
+Import "game.production.script.bmx"
+Import "game.programme.programmedata.bmx"
+
+'TScript
+GameScriptExpression.RegisterFunctionHandler( "episodeCount", SEFN_Script_episodeCount, 0, 0)
+'TProgrammeData
+GameScriptExpression.RegisterFunctionHandler( "cast", SEFN_cast, 1,  2)
+
+
+
+
+
+'${.cast:n:full} - context: TProgrammeData
+Function SEFN_cast:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	Local programmeData:TProgrammeData = TProgrammeData(context)
+	If Not programmeData Then Return New SToken( TK_ERROR, "(.cast only usable within TProgrammeData)", params.GetToken(0) )
+
+	Local castNumber:Int = params.GetToken(1).valueLong
+	Local job:TPersonProductionJob = programmeData.GetCastAtIndex(castNumber)
+	If Not job Then Return New SToken( TK_ERROR, "(.cast " + castNumber +" not found)", params.GetToken(0) )
+
+	Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
+	If Not person Then Return New SToken( TK_ERROR, "(.cast " + castNumber +" person not found)", params.GetToken(0) )
+
+	Select params.GetToken(2).value.ToLower()
+		Case "firstname"  Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
+		Case "lastname"   Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
+		Case "nickname"   Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
+		Default           Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+	End Select
+End Function
+
+
+'${.episodeCount} - context: TScript
+Function SEFN_Script_episodeCount:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	Local script:TScript = TScript(context)
+	If Not script Then Return New SToken( TK_ERROR, "(.episodeCount only usable within scripts)", params.GetToken(0) )
+
+	Return New SToken( TK_NUMBER, script.GetEpisodes(), params.GetToken(0) )
+End Function
+
+
+
+
+
 
 GetGameScriptExpressionOLD().RegisterHandler("TIME_YEAR", GameScriptExpression_Handle_Time)
 GetGameScriptExpressionOLD().RegisterHandler("TIME_DAY", GameScriptExpression_Handle_Time)
@@ -73,7 +118,7 @@ Function GameScriptExpression_Handle_Time:string(variable:string, params:string[
 		case "time_isdusk"
 			return string( GetWorldTime().IsDusk() )
 		default
-			GetGameScriptExpressionOLD()._error :+ "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpressionOLD()._error.Append("GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q.~n")
 			GetGameScriptExpressionOLD()._lastCommandErrored = True
 	End Select
 
@@ -95,7 +140,7 @@ Function GameScriptExpression_Handle_StationMap:string(variable:string, params:s
 			resultElementType = TScriptExpressionOLD.ELEMENTTYPE_NUMERIC
 			return string(GetGameInformation("stationmap", "population"))
 		default
-			GetGameScriptExpressionOLD()._error :+ "GameScriptExpression_Handle_StationMap: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpressionOLD()._error.Append("GameScriptExpression_Handle_StationMap: unknown variable ~q"+variable+"~q.~n")
 			GetGameScriptExpressionOLD()._lastCommandErrored = True
 	End Select
 
@@ -127,8 +172,9 @@ Function GameScriptExpression_Handle_PersonGenerator:string(variable:string, par
 		case "persongenerator_title"
 			return GetPersonGenerator().GetTitle(country, gender)
 		default
-			print "GameScriptExpression_Handle_PersonGenerator: unknown variable ~q"+variable+"~q.~n"
-			GetGameScriptExpressionOLD()._error :+ "GameScriptExpression_Handle_PersonGenerator: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpressionOLD()._error.Append("GameScriptExpression_Handle_PersonGenerator: unknown variable ~q")
+			GetGameScriptExpressionOLD()._error.Append(variable)
+			GetGameScriptExpressionOLD()._error.Append("~q.~n")
 			GetGameScriptExpressionOLD()._lastCommandErrored = True
 	End Select
 

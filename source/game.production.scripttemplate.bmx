@@ -201,14 +201,14 @@ Type TScriptTemplate Extends TScriptBase
 	'returns a title with all placeholders replaced
 	Method GenerateFinalTitle:TLocalizedString()
 		if not templateVariables then return title
-		return templateVariables.ReplacePlaceholders(title)
+		return templateVariables.ReplacePlaceholders_DEPRECATED(title)
 	End Method
 
 
 	'returns a description with all placeholders replaced
 	Method GenerateFinalDescription:TLocalizedString()
 		if not templateVariables then return description
-		return templateVariables.ReplacePlaceholders(description)
+		return templateVariables.ReplacePlaceholders_DEPRECATED(description)
 	End Method
 
 

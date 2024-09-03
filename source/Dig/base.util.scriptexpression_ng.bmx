@@ -282,8 +282,26 @@ Struct SToken
 		Self.linenum = linenum
 		Self.linepos = linepos
 	End Method
+
 	
-	' 27 FEB 23, SCAREMONGER: Added new constructor for errors that copy data from token
+	Method New( id:Int, valueLong:Long, token:SToken )
+		Self.id = id
+		Self.valueLong = valueLong
+		Self.valueType = ETokenValueType.Integer
+		Self.linenum = token.linenum
+		Self.linepos = token.linepos
+	End Method
+
+
+	Method New( id:Int, valueDouble:Double, token:SToken)
+		Self.id = id
+		Self.valueDouble = valueDouble
+		Self.valueType = ETokenValueType.FloatingPoint
+		Self.linenum = token.linenum
+		Self.linepos = token.linepos
+	End Method
+
+	
 	Method New( id:Int, value:String, token:SToken )
 		Self.id = id
 		Self.value = value
@@ -291,6 +309,7 @@ Struct SToken
 		Self.linenum = token.linenum
 		Self.linepos = token.linepos
 	End Method
+
 
 	Method CompareWith:Int(other:SToken)
 		Local r:Double
@@ -423,9 +442,9 @@ End Struct
 
 
 Struct SScriptExpression
-	Method Parse:SToken( expression:String, config:SScriptExpressionConfig, context:Object = Null)
+	Method Parse:SToken( expression:String, config:SScriptExpressionConfig, context:Object = Null, contextNumeric:Int = 0)
 		'DebugStop
-		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context )
+		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context, contextNumeric)
 		Return parser.readWrapper()
 		'Try
 		'	Return parser.readWrapper()
@@ -436,8 +455,8 @@ Struct SScriptExpression
 	End Method
 
 
-	Method ParseText:String( expression:String, config:SScriptExpressionConfig, context:Object )
-		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context, False )
+	Method ParseText:String( expression:String, config:SScriptExpressionConfig, context:Object, contextNumeric:Int)
+		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context, contextNumeric, False )
 		Local foundValidTokenCount:Int
 		Return parser.expandText(foundValidTokenCount)
 		'Try
@@ -449,27 +468,29 @@ Struct SScriptExpression
 	End Method
 
 
-	Method ParseText:String( expression:String, config:SScriptExpressionConfig, context:Object, foundValidTokenCount:Int var)
-		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context, False )
+	Method ParseText:String( expression:String, config:SScriptExpressionConfig, context:Object, contextNumeric:Int, foundValidTokenCount:Int var)
+		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context, contextNumeric, False )
 		Return parser.expandText(foundValidTokenCount)
 	End Method
 
 
 	
-	Method ParseNestedExpressionText:TStringBuilder(text:String, config:SScriptExpressionConfig, context:Object = Null)
+	Method ParseNestedExpressionText:TStringBuilder(text:String, config:SScriptExpressionConfig, context:Object = Null, contextNumeric:Int = 0)
 		Local sb:TStringBuilder = New TStringBuilder(text)
-		Return ParseNestedExpressionText(sb, config, context)
+		Return ParseNestedExpressionText(sb, config, context, contextNumeric)
 	End Method
 	
 
-	Method ParseNestedExpressionText:TStringBuilder(text:TStringBuilder, config:SScriptExpressionConfig, context:Object = Null)
+	Method ParseNestedExpressionText:TStringBuilder(text:TStringBuilder, config:SScriptExpressionConfig, context:Object = Null, contextNumeric:Int = 0)
 		Local iterations:Int = 0
 
 		'resolve (sub-)expressions eg. "${variant}" in "${name_${variant}}" and 
 		'single-level-expressions until none is left
 
 		Local replacedSomething:Int = False
+		Local dollarSymbolsFound:Int = 0
 		Repeat
+			dollarSymbolsFound = 0
 			replacedSomething = False
 
 			Local escapeCharFound:Int = False
@@ -493,9 +514,12 @@ Struct SScriptExpression
 
 				'found a expression start ("$") but not an escaped one ("\$")
 				If charCode = SYM_DOLLAR And Not escapeCharFound
+					dollarSymbolsFound :+ 1
+
 					'and also found the opener ("{")
 					If charPos < textLength and text.CharAt(charPos + 1) = SYM_LBRACE
 						expressionStartPos = charPos
+						charPos :+ 1
 					EndIf
 
 				'closing the "inner" one? ("${hello${world}}" - close on last but one "}")
@@ -507,7 +531,8 @@ Struct SScriptExpression
 						'print "         " + ""[..charPos] + "^--end"
 						
 						Local expression:String = text.Substring(expressionStartPos, charPos +1) 'sb.substring endindex is exclusive -> +1
-						Local newValue:String = parseText( expression, config, context )
+						Local newValue:String = parseText( expression, config, context, contextNumeric )
+
 						rem
 						Local containsExpression:int = newValue.Find("${") >= 0
 						'try to replace further expressions returned by just
@@ -542,6 +567,10 @@ Struct SScriptExpression
 						'print "         " + ""[..charPos] + "^--charpos"
 
 						replacedSomething = True
+
+						dollarSymbolsFound :- 1
+						if newValue.Find("$") >= 0 Then dollarSymbolsFound :+ 1
+
 						expressionStartPos = -1
 					EndIf
 				EndIf
@@ -549,6 +578,7 @@ Struct SScriptExpression
 				escapeCharFound = False
 				charPos :+ 1
 			Wend
+			'print "dollarSymbolsLeft: " + dollarSymbolsFound  +"  -> " + text.ToString()
 			
 			iterations :+ 1
 			If iterations > 20 'avoid doing more than 20 cycles (eg. deadloops / bugs)
@@ -556,7 +586,7 @@ Struct SScriptExpression
 				Print "Text: " + text.toString()
 				exit
 			EndIf
-		Until replacedSomething = 0
+		Until not replacedSomething or dollarSymbolsFound = 0
 		
 		Return text
 	End Method
@@ -592,54 +622,49 @@ Type TScriptExpression
 	End Method
 
 
-	Method Parse:SToken( expression:String, context:Object = Null)
+	Method Parse:SToken( expression:String, context:Object = Null, contextNumeric:Int = 0)
 		Return New SScriptExpression.Parse(expression, Self.config.s, context)
 	End Method
 
 
-	Method Parse:SToken( expression:String, config:SScriptExpressionConfig, context:Object)
-		Return New SScriptExpression.Parse(expression, config, context)
+	Method Parse:SToken( expression:String, config:SScriptExpressionConfig, context:Object, contextNumeric:Int)
+		Return New SScriptExpression.Parse(expression, config, context, contextNumeric)
 	End Method
 
 
-	Method Parse:SToken( expression:String, config:TScriptExpressionConfig, context:Object)
-		Return New SScriptExpression.Parse(expression, config.s, context)
+	Method Parse:SToken( expression:String, config:TScriptExpressionConfig, context:Object, contextNumeric:Int)
+		Return New SScriptExpression.Parse(expression, config.s, context, contextNumeric)
 	End Method
 
 
-	Method ParseText:String( expression:String, context:TStringMap=Null )
-		Return New SScriptExpression.ParseText(expression, Self.config.s, context)
+	Method ParseText:String( expression:String, config:TScriptExpressionConfig, context:Object, contextNumeric:Int)
+		Return New SScriptExpression.ParseText(expression, config.s, context, contextNumeric)
 	End Method
 
 
-	Method ParseText:String( expression:String, config:TScriptExpressionConfig, context:Object)
-		Return New SScriptExpression.ParseText(expression, config.s, context)
+	Method ParseText:String( expression:String, config:TScriptExpressionConfig, context:Object, contextNumeric:Int, foundValidTokenCount:Int var)
+		Return New SScriptExpression.ParseText(expression, config.s, context, contextNumeric, foundValidTokenCount)
 	End Method
 
 
-	Method ParseText:String( expression:String, config:TScriptExpressionConfig, context:Object, foundValidTokenCount:Int var)
-		Return New SScriptExpression.ParseText(expression, config.s, context, foundValidTokenCount)
+	Method ParseNestedExpressionText:TStringBuilder(text:String, context:Object = Null, contextNumeric:Int = 0)
+		Return New SScriptExpression.ParseNestedExpressionText(text, self.config.s, context, contextNumeric)
 	End Method
 
-
-	Method ParseNestedExpressionText:TStringBuilder(text:String, context:Object = Null)
-		Return New SScriptExpression.ParseNestedExpressionText(text, self.config.s, context)
+	Method ParseNestedExpressionText:TStringBuilder(text:String, config:TScriptExpressionConfig, context:Object, contextNumeric:Int)
+		Return New SScriptExpression.ParseNestedExpressionText(text, config.s, context, contextNumeric)
 	End Method
 
-	Method ParseNestedExpressionText:TStringBuilder(text:String, config:TScriptExpressionConfig, context:Object)
-		Return New SScriptExpression.ParseNestedExpressionText(text, config.s, context)
+	Method ParseNestedExpressionText:TStringBuilder(text:TStringBuilder, context:Object = Null, contextNumeric:Int = 0)
+		Return New SScriptExpression.ParseNestedExpressionText(text, self.config.s, context, contextNumeric)
 	End Method
 
-	Method ParseNestedExpressionText:TStringBuilder(text:TStringBuilder, context:Object = Null)
-		Return New SScriptExpression.ParseNestedExpressionText(text, self.config.s, context)
-	End Method
-
-	Method ParseNestedExpressionText:TStringBuilder(text:TStringBuilder, config:TScriptExpressionConfig, context:Object)
-		Return New SScriptExpression.ParseNestedExpressionText(text, config.s, context)
+	Method ParseNestedExpressionText:TStringBuilder(text:TStringBuilder, config:TScriptExpressionConfig, context:Object, contextNumeric:Int)
+		Return New SScriptExpression.ParseNestedExpressionText(text, config.s, context, contextNumeric)
 	End Method
 	
 
-	Function RegisterFunctionHandler( functionName:String, callback:SToken(params:STokenGroup Var, context:Object = Null), paramMinCount:Int = -1, paramMaxCount:Int = -1)
+	Function RegisterFunctionHandler( functionName:String, callback:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0), paramMinCount:Int = -1, paramMaxCount:Int = -1)
 		Local fnLower:String = functionName.ToLower()
 		Local handler:TSEFN_Handler = New TSEFN_Handler(callback, paramMinCount, paramMaxCount)
 		functionHandlers.Insert(fnLower, handler)
@@ -755,13 +780,13 @@ End Type
 Struct SScriptExpressionConfig
 	Field functionHandlerCB:TSEFN_Handler(functionName:String)
 	Field functionLowerHashHandlerCB:TSEFN_Handler(functionNameLowerHash:ULong)
-	Field variableIdentifierHandlerCB:String(variableIdentifier:SIdentifier var, context:Object)
-	Field variableLowerCaseHashHandlerCB:String(variableLowerCaseHash:ULong, context:Object)
-	Field variableHandlerCB:String(variableName:String, context:Object)
-	Field errorHandler:String(t:String, context:Object)
+	Field variableIdentifierHandlerCB:String(variableIdentifier:SIdentifier var, context:Object, contextNumeric:Int)
+	Field variableLowerCaseHashHandlerCB:String(variableLowerCaseHash:ULong, context:Object, contextNumeric:Int)
+	Field variableHandlerCB:String(variableName:String, context:Object, contextNumeric:Int)
+	Field errorHandler:String(t:String, context:Object, contextNumeric:Int)
 
 
-	Method New( functionHandlerCB:TSEFN_Handler(functionName:String), variableHandlerCB:String(variableName:String, context:Object), errorHandler:String(t:String, context:Object) )
+	Method New( functionHandlerCB:TSEFN_Handler(functionName:String), variableHandlerCB:String(variableName:String, context:Object, contextNumeric:Int), errorHandler:String(t:String, context:Object, contextNumeric:Int) )
 		Self.functionHandlerCB = functionHandlerCB
 		Self.variableHandlerCB = variableHandlerCB
 		Self.errorHandler = errorHandler
@@ -790,24 +815,24 @@ Struct SScriptExpressionConfig
 
 
 	' Example 
-	Method EvaluateVariable( identifier:SToken Var, context:Object = Null)
+	Method EvaluateVariable( identifier:SToken Var, context:Object = Null, contextNumeric:Int = 0)
 		if identifier.valueType = ETokenValueType.Identifier
 			If variableIdentifierHandlerCB
-				identifier.value = variableIdentifierHandlerCB(identifier.valueIdentifier, context)
+				identifier.value = variableIdentifierHandlerCB(identifier.valueIdentifier, context, contextNumeric)
 				identifier.valueType = ETokenValueType.Text
 				Return
 			ElseIf variableLowerCaseHashHandlerCB
-				identifier.value = variableLowerCaseHashHandlerCB(identifier.valueIdentifier.hash, context)
+				identifier.value = variableLowerCaseHashHandlerCB(identifier.valueIdentifier.hash, context, contextNumeric)
 				identifier.valueType = ETokenValueType.Text
 				Return
 			EndIf
 		EndIf
 		
 		If variableLowerCaseHashHandlerCB and identifier.valueType = ETokenValueType.LowerCaseHash
-			identifier.value = variableLowerCaseHashHandlerCB(identifier.valueLowerCaseHash, context)
+			identifier.value = variableLowerCaseHashHandlerCB(identifier.valueLowerCaseHash, context, contextNumeric)
 			identifier.valueType = ETokenValueType.Text
 		ElseIf variableHandlerCB
-			identifier.value = variableHandlerCB(identifier.GetValueText(), context)
+			identifier.value = variableHandlerCB(identifier.GetValueText(), context, contextNumeric)
 			identifier.valueType = ETokenValueType.Text
 		Else
 			identifier.value="<"+identifier.value+">"
@@ -828,7 +853,7 @@ Type TScriptExpressionConfig Final
 	End Method
 
 	
-	Method New( functionHandlerCB:TSEFN_Handler(functionName:String), variableHandlerCB:String(variableName:String, context:Object), errorHandler:String(t:String, context:Object) )
+	Method New( functionHandlerCB:TSEFN_Handler(functionName:String), variableHandlerCB:String(variableName:String, context:Object, contextNumeric:Int), errorHandler:String(t:String, context:Object, contextNumeric:Int) )
 		Self.s = New SScriptExpressionConfig(functionHandlerCB, variableHandlerCB, errorHandler)
 		Self.sIsSet = True
 	End Method
@@ -849,8 +874,8 @@ Type TScriptExpressionConfig Final
 	End Method
 
 	
-	Method EvaluateVariable( identifier:SToken Var, context:Object = Null )
-		If sIsSet Then Self.s.EvaluateVariable(identifier, context)
+	Method EvaluateVariable( identifier:SToken Var, context:Object = Null, contextNumeric:Int = 0)
+		If sIsSet Then Self.s.EvaluateVariable(identifier, context, contextNumeric)
 		'TODO: Throw exception about unset SScriptExpressionConfig
 	End Method
 End Type
@@ -1195,17 +1220,19 @@ End Struct
 ' Expression Parser
 Struct SScriptExpressionParser
 	Field context:Object
+	Field contextNumeric:Int
 	Field lexer:SScriptExpressionLexer
 	' Current token
 	Field token:SToken
 	Field config:SScriptExpressionConfig
 	Field configIsSet:Int
 	
-	Method New( config:SScriptExpressionConfig, expression:String, context:Object = Null, readFirst:Int = True )
+	Method New( config:SScriptExpressionConfig, expression:String, context:Object = Null, contextNumeric:Int = 0, readFirst:Int = True )
 		Self.config = config
 		Self.configIsSet = True
 
 		Self.context = context
+		Self.contextNumeric = contextNumeric
 		lexer = New SScriptExpressionLexer( expression )
 		
 		' Read first token
@@ -1216,23 +1243,27 @@ Struct SScriptExpressionParser
 
 	Method expandText:String(foundValidTokenCount:Int var)
 		foundValidTokenCount = 0
-
-		Local result:String
+		
+		Local result:TStringBuilder = New TStringBuilder()
+'		Local result:String
 		'DebugStop
 		Repeat
 			Local block:String = lexer.getBlock()
-			result :+ block
+'			result :+ block
+			result.append(block)
 			advance()
 			Select token.id
 				Case TK_EOF
-					Return result
+'					Return result
+					Return result.ToString()
 				Case SYM_DOLLAR
 					Local token:SToken = readWrapper()
 '					print token.id + " -> " + token.GetValueText()
 '					if token.id <> TK_ERROR
 						foundValidTokenCount :+ 1
 '					EndIf
-					result :+ token.GetValueText()
+'					result :+ token.GetValueText()
+					result.Append(token.GetValueText())
 			End Select
 		Forever
 	End Method
@@ -1309,7 +1340,7 @@ Struct SScriptExpressionParser
 					
 				Case TK_IDENTIFIER	' Identifiers on their own are variables!
 					' Replace the identifier
-					If configIsSet Then config.evaluateVariable( token, context ) 
+					If configIsSet Then config.evaluateVariable( token, context, contextNumeric ) 
 					result.AddToken(token)
 					advance()
 
@@ -1418,7 +1449,7 @@ Struct SScriptExpressionParser
 				EndIf
 				If Not fn Then Return New SToken( TK_ERROR, "(Undefined function ~q."+firstToken.GetValueText()+"~q)", firstToken )
 
-				Return fn.run( tokens, context )
+				Return fn.run( tokens, context, contextNumeric )
 
 			Case TK_IDENTIFIER, TK_BOOLEAN, TK_NUMBER, TK_QSTRING
 				If tokens.added > 1 Then Return New SToken( TK_ERROR, "Invalid parameters", tokens.GetToken(1) )
@@ -1435,37 +1466,37 @@ End Struct
 Type TSEFN_Handler
 	Field paramMinCount:Int = -1
 	Field paramMaxCount:Int = -1
-	Field callback:SToken(params:STokenGroup Var, context:Object = Null)
+	Field callback:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 
-	Method New(callback:SToken( params:STokenGroup Var, context:Object = Null), paramMinCount:Int, paramCount:Int)
+	Method New(callback:SToken( params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0), paramMinCount:Int, paramCount:Int)
 		Self.callback = callback
 		Self.paramMinCount = paramMinCount
 		Self.paramMaxCount = paramMaxCount
 	End Method
 
 
-	Method Run:SToken(params:STokenGroup Var, context:Object = Null)
-		If callback Then Return callback(params, context)
+	Method Run:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+		If callback Then Return callback(params, context, contextNumeric)
 	End Method
 End Type
 
 ' Register default functions
-Function SEFN_Or:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Or:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountTrueValues(params, 1) > 0), first.linenum, first.linepos )
 End Function
 
-Function SEFN_And:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_And:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountTrueValues(params, 1) = params.added - 1), first.linenum, first.linepos )
 End Function
 
-Function SEFN_Not:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Not:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountTrueValues(params, 1) = 0), first.linenum, first.linepos )
 End Function
 
-Function SEFN_If:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_If:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	' Get the IF token so we can use the line number and position
 	Local first:SToken = params.GetToken(0)
 	
@@ -1492,75 +1523,41 @@ Function SEFN_If:SToken(params:STokenGroup Var, context:Object = Null)
 	
 End Function
 
-Function SEFN_Eq:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Eq:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) = params.added - 1), first.linenum, first.linepos )
 End Function
 
-Function SEFN_NEq:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_NEq:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) <> params.added - 1), first.linenum, first.linepos )
 End Function
 
-Function SEFN_Gt:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Gt:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
 	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0), first.linenum, first.linepos )
 End Function
 
-Function SEFN_Gte:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Gte:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
 	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) >= 0), first.linenum, first.linepos )
 End Function
 
-Function SEFN_Lt:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Lt:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
 	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) < 0), first.linenum, first.linepos )
 End Function
 
-Function SEFN_Lte:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Lte:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local first:SToken = params.GetToken(0)
 	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
 	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) <= 0), first.linenum, first.linepos )
 End Function
 
-'finds an array index within a string array saved in a stringmap...!
-Function lookupstring:String( within:TStringMap, key:String, index:Int )
-	If Not within Or Not within.contains( key ) Then Return "<null>"
-	Local array:String[] = String[]( within.valueforkey( key ) )
-	If array.Length < index Then Return "#"+index
-	Return array[index-1]
-End Function
-
-Function SEFN_Rolename:SToken(params:STokenGroup Var, context:Object = Null)
-	Local first:SToken = params.GetToken(0)
-	Local idx:Int
-	'DebugStop
-	
-	Local within:TStringMap = TStringMap( context )
-	
-	If params.added > 1 Then idx = params.getToken(1).valueLong
-	
-	Local lookup:String = lookupString( TStringMap( context ), "rolename", idx )
-	
-	Return New SToken( TK_IDENTIFIER, lookup, first.linenum, first.linepos )
-End Function
-
-Function SEFN_Castname:SToken(params:STokenGroup Var, context:Object = Null)
-	Local first:SToken = params.GetToken(0)
-	Local idx:Int
-	'DebugStop
-	
-	If params.added > 1 Then idx = params.getToken(1).valueLong
-	
-	Local lookup:String = lookupString( TStringMap( context ), "castname", idx )
-	
-	Return New SToken( TK_IDENTIFIER, lookup, first.linenum, first.linepos )
-End Function
-
-Function SEFN_Concat:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Concat:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	'DebugStop
 	Local first:SToken = params.GetToken(0)
 	Local result:String
@@ -1572,7 +1569,7 @@ Function SEFN_Concat:SToken(params:STokenGroup Var, context:Object = Null)
 	Return New SToken( TK_TEXT, result, first.linenum, first.linepos )
 End Function
 
-Function SEFN_Hour:SToken(params:STokenGroup Var, context:Object = Null)
+Function SEFN_Hour:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	'Print params.reveal("PARAMS: "+ params.added)
 	'DebugStop
 	Local first:SToken = params.GetToken(0)

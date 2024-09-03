@@ -565,7 +565,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'(for now only check main language)
 		If template.title.Get().Find("%") >= 0 or template.title.Get().Find("${") >= 0
 			If varToUse
-				Self.title = _ReplacePlaceholders(varToUse.ReplacePlaceholders(template.title), time)
+				Self.title = _ReplacePlaceholders(varToUse.ReplacePlaceholders_DEPRECATED(template.title), time)
 			Else
 				Self.title = _ReplacePlaceholders(template.title, time)
 			EndIf
@@ -574,7 +574,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		EndIf
 		If template.description.Get().Find("%") >= 0 or template.description.Get().Find("${") >= 0
 			If varToUse
-				Self.description = _ReplacePlaceholders(varToUse.ReplacePlaceholders(template.description), time)
+				Self.description = _ReplacePlaceholders(varToUse.ReplacePlaceholders_DEPRECATED(template.description), time)
 			Else
 				Self.description = _ReplacePlaceholders(template.description, time)
 			EndIf

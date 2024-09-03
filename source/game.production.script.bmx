@@ -25,7 +25,7 @@ Type TScriptCollection Extends TGameObjectCollection
 	Field _usedScripts:TList {nosave}
 	Field _availableScripts:TList {nosave}
 	Field _parentScripts:TList {nosave}
-
+	
 	Global _instance:TScriptCollection
 
 
@@ -686,6 +686,22 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		Local result:TLocalizedString = text.copy()
 
+		For Local langID:Int = EachIn text.GetLanguageIDs()
+			Local valueOld:String = text.Get(langID)
+			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, self, langID)
+			If valueOLD <> valueNew.Hash()
+				result.Set(valueNew.ToString(), langID)
+			EndIf
+		Next
+		Return result
+		
+		
+		'hier weiter ... es braucht ".cast_..." function calls die je nach
+		'Context (TScriptTemplate...) reagieren.
+		
+		'TODO: Entfernen ...
+		
+
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
@@ -751,7 +767,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				End Select
 
 				'replace if some content was filled in
-				If replaced Then TTemplateVariables.ReplacePlaceholderInText(value, placeHolder, replacement)
+				If replaced Then TTemplateVariables.ReplacePlaceholderInText_DEPRECATED(value, placeHolder, replacement)
 			Next
 
 			result.Set(value, langID)

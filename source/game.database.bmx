@@ -430,6 +430,25 @@ Type TDatabaseLoader
 
 	'=== HELPER ===
 	Function ConvertOldScriptExpression:String(expression:string, oldNewMapping:TStringMap, scriptExpressionConverterSB:TStringBuilder, changedSomething:Int Var)
+		'type 1: [1|Full] ... only in cast
+		'type 2: %variable%
+		'type 3: %person|1|Full%  -- not in use in _our_ db files
+
+
+		'type 1:
+		For local i:int = 0 until 7
+			if expression.Find("["+i) >= 0
+				expression = expression.Replace("["+i+"|Full]", "${.cast:"+i+":fullname}")
+				expression = expression.Replace("["+i+"|First]", "${.cast:"+i+":firstname}")
+				expression = expression.Replace("["+i+"|Last]", "${.cast:"+i+":lastname}")
+				expression = expression.Replace("["+i+"|Nick]", "${.cast:"+i+":nickname}")
+			EndIf
+		Next
+		
+		
+		'type 2:
+		'-------
+
 		'check if at least 2 "%" (old expression sign) exist
 		local percentCount:Int
 		For local i:int = 0 until expression.length
@@ -861,7 +880,7 @@ Type TDatabaseLoader
 		If newsEventTemplate.availableScript
 			If Not GetScriptExpressionOLD().IsValid(newsEventTemplate.availableScript)
 				TLogger.Log("DB", "Script of NewsEventTemplate ~q" + newsEventTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
-				TLogger.Log("DB", GetScriptExpressionOLD()._error, LOG_WARNING)
+				TLogger.Log("DB", GetScriptExpressionOLD()._error.ToString(), LOG_WARNING)
 			EndIf
 		EndIf
 
@@ -1169,7 +1188,7 @@ Type TDatabaseLoader
 		If adContract.availableScript
 			If Not GetScriptExpressionOLD().IsValid(adContract.availableScript)
 				TLogger.Log("DB", "Script of AdContract ~q" + adContract.GetGUID() + "~q contains errors:", LOG_WARNING)
-				TLogger.Log("DB", GetScriptExpressionOLD()._error, LOG_WARNING)
+				TLogger.Log("DB", GetScriptExpressionOLD()._error.ToString(), LOG_WARNING)
 			EndIf
 		EndIf
 
