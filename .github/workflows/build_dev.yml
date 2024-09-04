@@ -360,32 +360,32 @@ jobs:
 
     steps:
     - name: Download game data artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: TVTower.GameData
 
     - name: Download Mac OS X bin artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: TVTower.app
 
     - name: Download Linux i386 bin artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: TVTower_Linux32
 
     - name: Download Linux x64 bin artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: TVTower_Linux64
 
     - name: Download Windows 32bit bin artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: TVTower_Win32.exe
 
     - name: Download Windows 64bit bin artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: TVTower_Win64.exe
 
