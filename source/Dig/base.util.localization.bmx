@@ -38,6 +38,7 @@ Import BRL.Retro
 Import BRL.Map
 Import "base.util.directorytree.bmx"
 Import "base.util.mersenne.bmx"
+Import "base.util.string.bmx"
 
 
 Type TLocalization
@@ -991,5 +992,12 @@ endrem
 			valueCachedLanguageID = -1
 		endif
 		return self
+	End Method
+	
+	
+	Method UCFirstAllEntries()
+		For local i:int = EachIn valueLangIDs
+			Set(StringHelper.UCFirst(Get(i), i))
+		Next
 	End Method
 End Type

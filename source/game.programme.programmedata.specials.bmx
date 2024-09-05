@@ -26,8 +26,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 	End Method
 
 
-	'override
-	Method UpdateLive:Int()
+	Method UpdateLive:Int() override
 		'do no longer display "live hint" once the last match started
 
 		If lastMatchStartTime = -1
