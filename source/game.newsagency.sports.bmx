@@ -1576,11 +1576,15 @@ End Type
 
 Type TNewsEventSportMatch Extends TGameObject
 	Field teams:TNewsEventSportTeam[]
+	'array containing total points of each team
 	Field points:Int[]
 	'csv-like score entries: "time,teamIndex,score|time,teamIndex,score..."
 	'custom sports might also do: "time,teamIndex,score,memberIndex|..."
 	Field scores:String
-	Field scoresArray:String[] {nosave}
+	'easy to access array of "scores" (to avoid string usage
+	Field _scoresTime:Int[] {nosave}
+	Field _scoresTeam:Int[] {nosave}
+	Field _scoresScore:Int[] {nosave}
 	Field duration:Int = 90 * TWorldTime.MINUTELENGTH 'in milliseconds
 	'when the match takes place
 	Field matchTime:Long
@@ -1637,25 +1641,79 @@ Type TNewsEventSportMatch Extends TGameObject
 
 
 	Method FillScores()
-		scoresArray = New String[0]
-		Local scoresArrayIndex:Int = 0
-
+		'calculate amount of points so that arrays know their sizes
+		Local totalPoints:Int
 		For Local teamIndex:Int = 0 Until points.length
-			If points[teamIndex] <= 0 Then Continue
+			totalPoints :+ points[teamIndex]
+		Next
 
-			'resize so that all scores fit
-			scoresArray = scoresArray[ .. scoresArray.length + points[teamIndex] ]
+		_scoresTime = New Int[totalPoints]
+		_scoresTeam = New Int[totalPoints]
+		_scoresScore = New Int[totalPoints]
+		
+		'generate time stamps of the scores
+		For Local pointNumber:Int = 0 Until totalPoints
+			_scoresTime[pointNumber] = RandRange(0, duration/1000)
+		Next
+		'earliest to latest
+		_scoresTime.sort(True)
 
+	
+		'fill array with one entry per score and team
+		'then shuffle them so that order of "scoring" is mixed
+		Local scoresTeamIndex:int = 0
+		For Local teamIndex:Int = 0 Until points.length
 			For Local point:Int = 0 Until points[teamIndex]
-				'store time as "000123" so it string-sorts correctly
-				scoresArray[ scoresArrayIndex ] = RSet(RandRange(0, duration/1000),6).Replace(" ", "0") + "," + teamIndex + ",1"
-				scoresArrayIndex :+ 1
+				_scoresTeam[scoresTeamIndex] = teamIndex
+				scoresTeamIndex :+ 1
 			Next
 		Next
-		scores = "|".Join(scoresArray)
+		'then shuffle them so that order of "scoring" is mixed
+		For Local a:int = 0 To totalPoints - 2
+			Local b:int = RandRange( a, totalPoints - 1)
+			Local team:int = _scoresTeam[a]
+			_scoresTeam[a] = _scoresTeam[b]
+			_scoresTeam[b] = team
+		Next
+		
+		'by default each score entry is "one point" (basketball would be 1, 2 or 3 then)
+		For Local i:int = 0 Until totalPoints
+			_scoresScore[i] = 1
+		Next
 
-		scoresArray.Sort(True)
-		scores = "|".Join(scoresArray)
+		'serialize them into a string (smaller than the xml-serialization of the arrays)
+		Local sb:TStringBuilder = New TStringBuilder
+		For local i:int = 0 until totalPoints
+			sb.Append(_scoresTime[i])
+			sb.Append(",")
+			sb.Append(_scoresTeam[i])
+			sb.Append(",")
+			sb.Append(_scoresScore[i])
+
+			If i < totalPoints -1
+				sb.Append("|")
+			EndIf
+		Next
+		self.scores = sb.ToString()
+	End Method
+	
+	
+	Method FillScoresFromString:Int(s:String)
+		Local entries:String[] = s.split("|")
+		local totalPoints:int = entries.length
+
+		_scoresTime = New Int[totalPoints]
+		_scoresTeam = New Int[totalPoints]
+		_scoresScore = New Int[totalPoints]
+		
+		For local i:int = 0 until entries.length
+			local parts:String[] = entries[i].split(",")
+			If parts.length <> 3 Then Return False
+			_scoresTime[i] = int(parts[0])
+			_scoresTeam[i] = int(parts[1])
+			_scoresScore[i] = int(parts[2])
+		Next
+		Return True
 	End Method
 
 
@@ -1869,18 +1927,21 @@ Type TNewsEventSportMatch Extends TGameObject
 
 
 	Method GetMatchScore:Int[](matchTime:Int)
-		If Not scoresArray Then scoresArray = scores.split("|")
+		'convert matchTime to seconds (from milliseconds)
+		matchTime :/ TWorldTime.SECONDLENGTH
+	
+		If Not _scoresTeam or _scoresTeam.length = 0 
+			If Not FillScoresFromString(self.scores)
+				Throw "FillScoresFromString: Invalid serialized string ~q"+self.scores+"~q."
+			EndIf
+		EndIf
 
-		Local matchScore:Int[] = New Int[points.length]
-		For Local scoreEntry:String = EachIn scoresArray
-			Local scoreParts:String[] = scoreEntry.split(",")
-			'invalid or not yet happened
-			If scoreParts.length < 3 Or Int(scoreParts[0]) > matchTime Then Continue
+		Local matchScore:Int[] = New Int[points.length] 'amount of teams
+		For local i:int = 0 until _scoresTime.length 'times of scores gained
+			'not yet happened? All further scores did not happen yet too
+			If _scoresTime[i] > matchTime Then Exit
 
-			Local teamIndex:Int = Int(scoreParts[1])
-			If teamIndex < 0 Or teamIndex >= matchScore.length Then Continue
-
-			matchScore[teamIndex] :+ Int(scoreParts[2])
+			matchScore[_scoresTeam[i]] :+ _scoresScore[i]
 		Next
 
 		Return matchScore
