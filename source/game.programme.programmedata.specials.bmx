@@ -227,10 +227,15 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 			'replace placeholders and and cache the result
 			If Not descriptionProcessed
 				If dynamicTexts
-					If leagueGUID
-						description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , -1 )
-					Else
-						description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , -1 )
+					'skip choosing a description if there is already one
+					'this avoids having a random "text" on eeach dynamic text
+					'refresh
+					If not description.HasLanguageID( TLocalization.currentLanguageID )
+						If leagueGUID
+							description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , TLocalization.currentLanguageID )
+						Else
+							description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , TLocalization.currentLanguageID )
+						EndIf
 					EndIf
 				EndIf
 
