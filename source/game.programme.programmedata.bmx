@@ -131,8 +131,9 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 				_liveProgrammeData.AddLast(data)
 			Next
 
-			'order by release
-			_liveProgrammeData.Sort(True, _SortByReleaseTime)
+			'order by release (and ID, not name - avoids GetTitle() 
+			'calls for live/dynamic data objects - which adds to cpu load)
+			_liveProgrammeData.Sort(True, _SortByReleaseTimeAndID)
 		EndIf
 
 		Return _liveProgrammeData
@@ -168,7 +169,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 			Next
 
 			'order by release
-			_finishedProductionProgrammeData.Sort(True, _SortByReleaseTime)
+			_finishedProductionProgrammeData.Sort(True, _SortByReleaseTimeAndID)
 		EndIf
 
 		Return _finishedProductionProgrammeData
@@ -371,6 +372,21 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		EndIf
 	End Function
 
+
+	Function _SortByReleaseTimeAndID:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeData = TProgrammeData(o1)
+		Local p2:TProgrammeData = TProgrammeData(o2)
+		If Not p2 Then Return 1
+	
+        If p1.releaseTime > p2.releaseTime
+			Return 1
+        ElseIf p1.releaseTime < p2.releaseTime
+			Return -1
+		Else
+			Return p1.id > p2.id
+		EndIf
+	End Function
+	
 
 	Function _SortByName:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeData = TProgrammeData(o1)
