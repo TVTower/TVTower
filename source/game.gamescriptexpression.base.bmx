@@ -65,20 +65,6 @@ End Type
 
 
 
-'TScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 2,  2)
-TScriptExpression.RegisterFunctionHandler( "stationmap_randomcity", SEFN_StationMap_randomcity, 2,  2)
-TScriptExpression.RegisterFunctionHandler( "stationmap_population", SEFN_StationMap_population, 2,  2)
-
-Function SEFN_StationMap_randomcity:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
-	Return New SToken( TK_TEXT, GetStationMapCollection().GenerateCity(), params.GetToken(0) )
-End Function
-
-Function SEFN_StationMap_population:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
-	Return New SToken( TK_NUMBER, GetStationMapCollection().population, params.GetToken(0) )
-End Function
-
-
-
 
 
 
