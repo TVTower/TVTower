@@ -2585,7 +2585,6 @@
 				<job index="4" function="64" required="0" gender="0" />
 			</jobs>
 			<data flags="1" production_broadcast_flags="512" target_groups="7" />
-			<data target_groups="7" />
 			<genres maingenre="100" subgenres="5" />
 			<blocks min="1" max="2" slope="25" />
 			<price min="3000" max="7500" slope="20" />
@@ -3379,7 +3378,7 @@
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="0" gender="1" />
 			</jobs>
-			<data flags="2" flags_optional="16" target_groups="7" />
+			<data flags="2" flags_optional="32" target_groups="7" />
 			<targetgroupattractivity women="1.25" teenagers="2" />
 			<genres maingenre="3" subgenres="5" />
 			<blocks min="1" max="2" slope="55" />
@@ -3543,7 +3542,7 @@
 				<job index="2" function="32" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="273" flags_optional="64" production_broadcast_limit="1" production_broadcast_flags="512" target_groups="274" />
+			<data flags="273" flags_optional="64" production_broadcast_limit="1" production_broadcast_flags="512" target_groups="274" /> <!-- TODO: set licence flag handling -->
 			<targetgroupattractivity children="0.25" pensioners="0.25" />
 			<genres maingenre="104" subgenres="8" />
 			<blocks min="1" max="2" slope="5" />

@@ -151,7 +151,7 @@
 				<job index="10" function="32" required="1" gender="2" />
 				<job index="11" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="8" target_groups="68" />
+			<data flags="0" flags_optional="8" target_groups="68" available="0" /> <!-- availability triggered by ee39e911-fabb-48af-9f88-af8476e87734 -->
 			<targetgroupattractivity men="0.75" />
 			<genres maingenre="7" subgenres="" />
 			<blocks value="2" />
