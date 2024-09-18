@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" comment="Screenplays by discord/eggi72" />
+
+	<scripttemplates>
+		<scripttemplate product="1" licence_type="1" guid="ab31c2dd-46f4-4736-81b7-830c73af9ddf" creator="discord/eggi72" comment="https://en.wikipedia.org/wiki/Nathan_Hill_(writer) | https://www.goodreads.com/book/show/65650229-wellness">
+			<title>
+				<de>Hellness</de>
+				<en>Hellness</en>
+			</title>
+			<title_original>
+				<de>Wellness</de>
+				<en>Wellness</en>
+			</title_original>
+			<description>
+				<de>%ROLENAME1% und %ROLENAME2%, ungleiches Paar in der Kunstszene Chicagos, kämpfen gegen Eheprobleme. Zwischen Achtsamkeitsseminaren und Immobilienträumen müssen sie ihre Vergangenheit bewältigen, um ihre Liebe zu retten.</de>
+				<en>%ROLENAME1% and %ROLENAME2%, a mismatched couple in Chicago's art scene, are battling marital problems. Between mindfulness seminars and real estate dreams, they have to come to terms with their past in order to save their love.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="bcde2f56-552f-48cf-a397-4108a492705d" />
+				<job index="2" function="2" required="1" role_guid="5184c743-9184-4fd0-8397-54c0eaba7307" />
+				<job index="3" function="2" required="1" role_guid="a472b39e-5ab5-43ef-9fd4-bba9c52a9357" /> <!-- child -->
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="2" required="1" gender="1" />
+				<job index="6" function="2" required="1" gender="2" />
+				<job index="7" function="2" required="1" gender="1" />
+				<job index="8" function="32" required="1" gender="2" />
+				<job index="9" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="0" flags_optional="" target_groups="6" />
+			<targetgroupattractivity men="0.75" managers="1.25" />
+			<genres maingenre="15" subgenres="13,7" />
+			<blocks value="5" />
+			<price min="100000" max="200000" />
+			<potential min="60" max="90" />
+			<outcome min="40" max="80" />
+			<review min="80" max="90" />
+			<speed min="30" max="50" />
+			<studio_size value="3" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="25b61ccf-34c5-4c76-9cc0-ecdab1a10504" creator="discord/eggi72" comment="https://de.wikipedia.org/wiki/Tobias_Goldfarb | https://www.goodreads.com/book/show/205484457-hilda-hasenherz-das-abenteuer-im-fuchswald | english original role names made-up, TODO: watch for actual English version">
+			<title>
+				<de>%ROLE1% - Abenteuer Fuchshöhle</de>
+				<en>%ROLE1% - Fox Cave Adventures</en>
+			</title>
+			<title_original>
+				<de>Hilda Hasenherz - Das Abenteuer im Fuchswald</de>
+				<en>Becki Bunnyheart - The Adventure in the Fox Forest</en>
+			</title_original>
+			<description>
+				<de>Mutiges Hasenmädchen %ROLENAME1% lebt im Möhrenfeld und entdeckt, dass der tyrannische %ROLE2% die Möhren für sich hortet. Entschlossen, ihn zu stoppen, begibt sie sich auf eine gefährliche Reise, um den legendären %ROLE5% zu finden.</de>
+				<en>Brave bunny girl %ROLENAME1% lives in the carrot field and discovers that the tyrannical %ROLE2% is hoarding the carrots for himself. Determined to stop him, she sets off on a dangerous journey to find the legendary %ROLE5%.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="2d8276be-611a-4d14-9107-766fdc7a9710" />
+				<job index="2" function="2" required="1" role_guid="a1a1b636-8e85-4af6-9562-5c4c1cc470a0" />
+				<job index="3" function="2" required="1" role_guid="ab13477d-6c92-4e1c-8ec0-e718090c09ce" />
+				<job index="4" function="2" required="1" role_guid="7369aa3a-e851-470e-ad6d-715ceaf26dd0" />
+				<job index="5" function="2" required="1" role_guid="3d192fec-4e71-4e27-82ef-c3e4a1c39950" />
+				<job index="6" function="2" required="1" role_guid="bd124df0-337d-4df5-94e6-a4606143e66d" />
+				<job index="7" function="2" required="1" role_guid="733deb40-6bdf-4d01-af40-b0fae20822c2" />
+				<job index="8" function="32" required="1" gender="2" />
+				<job index="9" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="2" flags_optional="" target_groups="7" />
+			<targetgroupattractivity women="1.25" teenagers="2" employees="1.25" unemployed="1.25" managers="1.5" pensioners="2" />
+			<genres maingenre="3" subgenres="9,10" />
+			<blocks value="2" />
+			<price min="100000" max="200000" />
+			<potential min="60" max="80" />
+			<outcome min="60" max="80" />
+			<review min="60" max="80" />
+			<speed min="30" max="60" />
+			<studio_size value="1" />
+		</scripttemplate>
+	</scripttemplates>
+</tvtdb>

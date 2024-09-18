@@ -346,36 +346,7 @@
 			<ratings critics="92" speed="27" outcome="61" />
 		</programme>
 
-		<programme id="a505f21f-aa9a-4159-b688-88a120375ae2" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="fictional but has reference to real titles">
-			<title>
-				<!-- Geschichte über MadTV und Rainbow Arts -->
-				<de>RatTV - Quo Vadis</de>
-				<en>RatTV - Quo Vadis</en>
-				<pl>RatTV - Quo Vadis</pl>
-			</title>
-			<title_original>
-				<de>Mad TV - Quo Vadis</de>
-				<en>Mad TV - Quo Vadis</en>
-			</title_original>
-			<description>
-				<de>[1|Full], [2|Full] u.a. von RegenbogenWünsche sprechen über ihr Werk. Fan [6|Full] berichtet, was ihn an dem Spiel begeistert. One-Hit-Wonder oder doch Dauerbrenner? Er wagt die Prognose: Es kommen Nachfolger! Ein Klasse Sonstiges!</de>
-				<en>[1|Full], [2|Full] and others from RainbowWishes talk about their work. Fan [6|Full] reports what inspires him about the game. One-hit wonder or perennial favorite? He dares to predict: There will be successors! A superb Sundry!</en>
-				<pl>[1|Full], [2|Full] i inni z RainbowWishes opowiadają o swojej pracy. Fan [6|Full] relacjonuje, co inspiruje go w grze. Co pozostanie w pamięci na długo? Ośmiela się przewidywać: Będą następcy! Znakomite "Różnorodne"!</pl>
-			</description>
-			<staff>
-				<member index="0" function="5">Per_custom_Freddy_368</member>
-				<member index="1" function="64">55a8a624-88f0-42f0-82c9-6e61fe36267e</member>
-				<member index="2" function="64">333e1b95-55fe-437a-b71a-b4c77d62302c</member>
-				<member index="3" function="64">35af32a6-1c2a-4e3c-ae3c-d5786dd357df</member>
-				<member index="4" function="64">689823f6-f7e2-4128-817f-88ed42132501</member>
-				<member index="5" function="64">c013079e-fefc-495a-941d-0ac148f30ba3</member>
-				<member index="6" function="64">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
-			</staff>
-			<groups target_groups="34" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity teenagers="2" managers="2" pensioners="0.25" />
-			<data country="D" year="1991" distribution="2" maingenre="0" subgenre="" flags="0" blocks="2" price_mod="1.00" /> <!-- eigtl. Talkshow -->
-			<ratings critics="88" speed="51" outcome="70" />
-		</programme>
+		<!-- 'RatTV - Quo Vadis' moved to database_programmes.xml -->
 
 		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
@@ -1159,32 +1130,7 @@
 			</children>
 		</programme>
 
-		<programme id="13a3ce46-b664-4f9d-984a-68e370842083" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff | fictional but has reference to a real title">
-			<title>
-				<!-- Reportage, Fiktion die auf einer wahren Begebenheit basiert, geflagt als culture und cult. Bezieht sich auf die Radioshow Krieg der Welten von Orson Welles -->
-				<de>Kampf der Planeten - die wahre Geschichte</de>
-				<en>Battle of the Planets - The True Story</en>
-				<pl>Bitwa planet - historia prawdziwa</pl>
-			</title>
-			<title_original>
-				<de>Krieg der Welten - die wahre Geschichte</de>
-				<en>War of the Worlds - The True Story</en>
-			</title_original>
-			<description>
-				<de>[1|Full] wurde von [2|Full] begleitet, als er seine legendäre Radioreportage entwickelte und durchführte. War die Massenpanik echt? Hier wird es gezeigt! Die einzige Reportage von [0|Full].</de>
-				<en>[1|Full] had been accompanied by [2|Full] as he developed and recorded his legendary radio show. Was the mass hysteria real? Here it is shown! The only report [0|Full] did.</en>
-				<pl>[1|Full] towarzyszył [2|First]owi podczas opracowywania i nagrywania jego legendarnego programu radiowego. Czy masowa histeria była prawdziwa? Tutaj jest to pokazane! Jedyny film fabularny [0|Last]a.</pl>
-			</description>
-			<staff>
-				<member index="0" function="1">cd2c1097-8e54-4bdb-8388-d9a58cae970d</member>
-				<member index="1" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
-				<member index="2" function="128">e7afce26-acbe-44e1-acb5-de3e6900ba58</member>
-			</staff>
-			<groups target_groups="66" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity women="0.75" managers="1.5" />
-			<data country="USA" year="1939" distribution="2" maingenre="300" subgenre="6,16" flags="12" blocks="2" price_mod="1" />
-			<ratings critics="79" speed="45" outcome="52" />
-		</programme>
+		<!-- 'Battle of the Planets' moved to database_programmes.xml -->
 
 		<programme id="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
@@ -2103,109 +2049,7 @@
 			</children>
 		</programme>
 
-		<programme id="9b430b37-1963-40cf-b9ee-38d6f2bfd40d" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="fictional but has reference to a real title in the last episode">
-			<title>
-				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
-				<de>Best of TVTower</de>
-				<en>Best of TVTower</en>
-				<pl>Best of TVTower</pl>
-			</title>
-			<title_original>
-				<de>Best of TVTower</de>
-				<en>Best of TVTower</en>
-			</title_original>
-			<description>
-				<de>[1|Full] präsentiert die besten Sendungen aus dem TVTower Programm. Die Spieler haben gewählt, und [1|First] kommentiert. Inklusive Outtakes und Kurzinterviews.</de>
-				<en>[1|Full] presents the best shows from the TVTower program. The players voted, and [1|First] comments. Including outtakes and short interviews.</en>
-				<pl>[1|Full] prezentuje najlepsze ujęcia z programu TVTower. Gracze głosowali, a [1|First] komentuje. W tym urywki i krótkie wywiady.</pl>
-			</description>
-			<staff>
-				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
-				<member index="1" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
-			</staff>
-			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="2" maingenre="204" subgenre="103" flags="9" blocks="2" broadcast_flags="512" price_mod="0.5" />
-			<releaseTime year_relative="6" day="5" />
-			<ratings critics="89" speed="38" outcome="55" />
-			<children>
-				<programme id="5726f0e3-ce8c-412e-be5f-067ade0f0fe2" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
-					<title>
-						<de>Tiefsee Dinoschrecken, Banzai</de>
-						<en>Dino Deep Sea Terror, Banzai</en>
-						<pl>Głębinowy terror dinozaurów, Banzai</pl>
-					</title>
-					<title_original>
-						<de>Tiefsee Dinoschrecken, Banzai</de>
-						<en>Dino Deep Sea Terror, Banzai</en>
-						<pl>Głębinowy terror dinozaurów, Banzai</pl>
-					</title_original>
-					<description>
-						<de>Total verkannt. Ein Film wie er besser nicht sein könnte. Die Zuschauer haben bisher den wahren Wert noch nicht gesehen.</de>
-						<en>Totally misjudged. A film as it could not be better. Viewers have yet to see the true value.</en>
-						<pl>Całkowicie źle oceniony. Film w takiej formie nie mógłby być lepszy. Widzowie muszą jeszcze dostrzec jego prawdziwą wartość.</pl>
-					</description>
-				</programme>
-				<programme id="e3120f04-3e51-48bf-b57d-4bf2c8bc26e3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
-					<title>
-						<de>Der Osten - Der Westen</de>
-						<en>The East - The West</en>
-						<pl>Wschód - Zachód</pl>
-					</title>
-					<title_original>
-						<de>Der Osten - Der Westen</de>
-						<en>The East - The West</en>
-						<pl>Wschód - Zachód</pl>
-					</title_original>
-					<description>
-						<de>[1|First] vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
-						<en>[1|First] compares the shows. But at some point, she just laughs at [2|Full]'s eyebrows. That will cause belly ache...</en>
-						<pl>[1|First] porównuje programy. Ale w pewnym momencie po prostu śmieje się z brwi [2|First]a. To spowoduje ból brzucha...</pl>
-					</description>
-					<staff>
-						<member index="2" function="64">Per_custom_Freddy_429</member>
-					</staff>
-					<data blocks="4" />
-				</programme>
-				<programme id="e3d7e71f-3237-4de8-bcd0-fa115aa2b496" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
-					<title>
-						<de>Iris entdeckt die Alm</de>
-						<en>Iris Explores the Alp</en>
-						<pl>Iris odkrywa alpy</pl>
-					</title>
-					<title_original>
-						<de>Iris entdeckt die Alm</de>
-						<en>Iris Explores the Alp</en>
-						<pl>Iris odkrywa alpy</pl>
-					</title_original>
-					<description>
-						<de>[1|First] philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
-						<en>[1|First] philosophizes about whether this is not rather a documentary about milking techniques and enriches many scenes with her experiences from the farm.</en>
-						<pl>[1|First] filozofuje na temat tego, czy nie jest to raczej dokument o technikach dojenia i wzbogaca wiele scen swoimi doświadczeniami z farmy.</pl>
-					</description>
-					<staff>
-						<member index="2" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
-					</staff>
-				</programme>
-				<programme id="72eb2560-dc93-4aff-8adf-788f62addb7a" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="Sjaele/TheRob">
-					<title>
-						<de>Picknick am Wegesrand</de>
-						<en>Picnic by the Wayside</en>
-						<pl>Piknik przy drodze</pl>
-					</title>
-					<title_original>
-						<de>Stalker</de>
-						<en>Stalker</en>
-						<pl>Stalker</pl>
-					</title_original>
-					<description>
-						<de>[1|First] überzeugt in ihrer russischen Kommentierung. Ansonsten vergleicht sie eifrig Walkers mit Daywalkers.</de>
-						<en>[1|First] is convincing in her Russian commentary. Otherwise, she zealously compares Walkers with Daywalkers.</en>
-						<pl>[1|First] jest przekonująca w swoim rosyjskim komentarzu. Poza tym gorliwie porównuje Walkerów z Daywalkerami.</pl>
-					</description>
-					<data blocks="3" />
-				</programme>
-			</children>
-		</programme>
+		<!-- 'Best of TVTower' moved to database_programmes.xml -->
 
 		<programme id="TheRob-dda6-mov-ero-LolitasimHeu" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
@@ -2550,14 +2394,7 @@
 		<person id="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" fictional="1" levelup="0" />
 		<person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" fictional="1" levelup="0" />
 
-		<person id="55a8a624-88f0-42f0-82c9-6e61fe36267e" first_name="Mark" last_name="Wullbrich" first_name_original="Marc" last_name_original="Ullrich" gender="1" birthday="" deathday="" imdb_id="nm1868299" creator="8751" created_by="TheRob" comment="https://www.mobygames.com/person/61669/marc-alexander-ullrich/" />
-		<person id="333e1b95-55fe-437a-b71a-b4c77d62302c" first_name="Thomas" last_name="Weierunterens" first_name_original="Thomas" last_name_original="Meiertoberens" gender="1" birthday="" deathday="" imdb_id="nm10581225" creator="8751" created_by="TheRob" comment="https://www.mobygames.com/person/381807/thomas-meiertoberens/" />
-
-			<!-- additional Mad TV staff -->
-
-		<person id="35af32a6-1c2a-4e3c-ae3c-d5786dd357df" first_name="Rolf" last_name="Strock" first_name_original="Ralph" last_name_original="Stock" gender="1" birthday="" deathday="" imdb_id="nm1777499" comment="https://de.wikipedia.org/wiki/Ralph_Stock | https://www.mobygames.com/person/2528/ralph-stock/ | fictional version: 3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" />
-		<person id="689823f6-f7e2-4128-817f-88ed42132501" first_name="Thorsten" last_name="Andrey" first_name_original="Thomas" last_name_original="Andrae" gender="1" birthday="" deathday="" imdb_id="nm2434948" comment="https://www.mobygames.com/person/31326/thomas-andrae/ | related to ad S8e075bfd-9aaa-47e1-ae24-bfc938fc490a" />
-		<person id="c013079e-fefc-495a-941d-0ac148f30ba3" first_name="Stephan" last_name="Hopfmann" first_name_original="Stefan" last_name_original="Hoffmann" gender="1" birthday="" deathday="" imdb_id="nm2916422" comment="https://www.mobygames.com/person/31513/stefan-hoffmann/ | related to ad c7edae3e-1fab-4fca-9704-1faaed11166a" />
+		<!-- Mad TV staff moved to database_people.xml -->
 
 		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" gender="1" fictional="1" creator="8751" created_by="TheRob" />
 	</insignificantpeople>

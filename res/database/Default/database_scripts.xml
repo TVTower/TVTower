@@ -1400,6 +1400,631 @@
 			<review min="30" max="45" slope="40" />
 			<speed min="20" max="40" slope="50" />
 		</scripttemplate>
+
+		<!-- added in 2024-08: screenplay-scripts as continuations based on long-existing fictional programme entries -->
+
+		<scripttemplate product="3" licence_type="1" guid="d176358a-b18a-44d4-86c0-731660bd0c78" creator="" comment="Screenplay version / continuation of 13cc99a6-4e82-4126-9b75-72f190901a2a">
+			<title>
+				<de>Talk um 10: Das Literaturjahr %currentyear%</de>
+				<en>Talk at 10: The Year in Literature %currentyear%</en>
+			</title>
+			<description>
+				<de>Wie jeden Abend wird ein Gast erwartet, oft ein Star am Literaturhimmel, und dessen Buch besprochen.</de>
+				<en>As every evening, a guest is expected, often a star in the realm of literature, and his or her new book is discussed.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+				<job index="2" function="8" required="1" />
+				<!-- job index="3" function="64" required="1" /--> <!-- TODO: Some book authors need to be created and seeded; let's assume for now they're provided by the production company -->
+			</jobs>
+			<data flags="5" broadcast_time_slot_start="22" broadcast_time_slot_end="23" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="36" />
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="103" subgenres="6" />
+			<blocks value="1" />
+			<price min="30000" max="90000" />
+			<potential min="20" max="40" />
+			<outcome min="1" max="10" />
+			<review min="50" max="90" />
+			<speed min="1" max="10" />
+			<studio_size value="1" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="5" />
+			</programme_data_modifiers>
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="f0010a94-c0a9-4d99-8522-06ce3891ac0f" creator="" comment="Screenplay version / continuation of 42761763-4125-4a66-8227-40027caab44a">
+			<title>
+				<de>Kultur Heute %currentyear%</de>
+				<en>Culture Today %currentyear%</en>
+			</title>
+			<description>
+				<de>Betty Botterblom (oder eine Vertretung) erzählt exklusiv von den neuesten kulturellen Errungenschaften des freien Westens.</de>
+				<en>Betty Botterblom (or a stand-in) tells exclusively about the latest cultural achievements of the free West.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="5" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" available="0" /> <!-- availability triggered by 42761763-4125-4a66-8227-40027caab44a -->
+			<targetgroupattractivity men="0.5" />
+			<genres maingenre="6" subgenres="300" />
+			<blocks value="1" />
+			<price min="20000" max="50000" />
+			<potential min="30" max="50" />
+			<outcome min="1" max="10" />
+			<review min="100" max="100" />
+			<speed min="30" max="50" />
+			<studio_size value="1" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+				<modifier name="topicality::age" value="4" />
+			</programme_data_modifiers>
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="a16dbdd9-bbf8-449f-bf4d-6d1146aa98d0" creator="" comment="Screenplay version / continuation of TheRob-1756-Polit-Show-WasistSache">
+			<title>
+				<de>Was ist Sache %currentyear%</de>
+				<en>What is the Matter %currentyear%</en>
+			</title>
+			<description>
+				<de>Das Politformat. Politiker stehen Rede und Antwort zur Lage der Nation.</de>
+				<en>The politics format. Politicians answer questions about the state of the nation.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" />
+				<!-- job index="2" function="64" required="1" /--> <!-- TODO: Some politicians need to be created and seeded; let's assume for now they're provided by the production company -->
+			</jobs>
+			<data flags="5" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="8" />
+			<genres maingenre="101" subgenres="300,201" />
+			<blocks value="1" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="50" />
+			<outcome min="20" max="50" />
+			<review min="20" max="50" />
+			<speed min="20" max="50" />
+			<studio_size value="1" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="5" />
+			</programme_data_modifiers>
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="5d2c7faa-4b64-4170-b2e0-dcebe2a1ebf5" creator="" comment="Screenplay version / continuation of e0da07de-d9fc-4426-bcf2-119d344598c8 | Probably parody and 'opposite' of 'Who Wants to Be a Millionaire?'">
+			<title>
+				<de>Wer wird Pleitegeier %currentyear%?</de>
+				<en>Who Wants to Be the Vulture-Bait %currentyear%?</en>
+			</title>
+			<description>
+				<de>Wieder spielt der Moderator mit 5 Kandidaten, allesamt am Rande des Ruins. Der Verlierer der Quizshow übernimmt die Schulden der anderen.
+
+Spannende Unterhaltung und knifflige Fragen.</de>
+				<en>Again the moderator plays with 5 candidates, all on the brink of ruin. The loser of the quiz show takes over the debts of the others.
+
+Exciting entertainment and brain-teasing trivia questions.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="1" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by e0da07de-d9fc-4426-bcf2-119d344598c8 -->
+			<genres maingenre="104" />
+			<blocks value="1" />
+			<price min="90000" max="200000" />
+			<potential min="20" max="80" />
+			<outcome min="50" max="70" />
+			<review min="20" max="40" />
+			<speed min="60" max="80" />
+			<studio_size value="2" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="5" />
+			</programme_data_modifiers>
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="0a2efe28-4326-49d1-a5a8-5f277b514adc" creator="" comment="Screenplay version / continuation of 53406dc9-1e66-4f79-aa24-67a2ed4c7441">
+			<title>
+				<de>Der Hammer fällt LIVE %currentyear%</de>
+				<en>The Hammer Falls LIVE %currentyear%</en>
+			</title>
+			<description>
+				<de>Nur im Fernsehen und nirgends sonst werden diese Ramschartikel an Ahnungslose versteigert.</de>
+				<en>Only on television and nowhere else are these junk items to be auctioned off to the unsuspecting.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="129" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by 53406dc9-1e66-4f79-aa24-67a2ed4c7441 -->
+			<genres maingenre="104" />
+			<blocks value="1" />
+			<price min="1000" max="3000" />
+			<potential min="10" max="30" />
+			<outcome min="10" max="30" />
+			<review min="5" max="10" />
+			<speed min="2" max="20" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="2d938802-02a2-4c38-9248-6a406cfb744d" creator="" comment="Screenplay version / continuation of 2fcf1b3e-701c-434d-acf3-c34c94227e7d">
+			<title>
+				<de>Die große Verarsche-Show %currentyear%</de>
+				<en>The Big Bullshitting-You Show %currentyear%</en>
+			</title>
+			<description>
+				<de>Hier treten Männer gegen Frauen an. Das Geschlecht mit den meisten Anrufen gewinnt.</de>
+				<en>Here, men compete against women. The gender with the most calls wins.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" gender="2" />
+				<job index="2" function="8" required="1" gender="1" />
+			</jobs>
+			<data flags="129" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by 2fcf1b3e-701c-434d-acf3-c34c94227e7d -->
+			<genres maingenre="104" />
+			<blocks value="2" />
+			<price min="1000" max="3000" />
+			<potential min="12" max="36" />
+			<outcome min="12" max="36" />
+			<review min="5" max="10" />
+			<speed min="3" max="25" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="3768ea29-e556-4bbd-a51b-e68a3ff3951f" creator="" comment="Screenplay version / continuation of 6cab2c62-39d7-4e0a-b957-191d54fc78f9">
+			<title>
+				<de>TED am Morgen %currentyear%</de>
+				<en>TED in the Morning %currentyear%</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="129" broadcast_time_slot_start="5" broadcast_time_slot_end="6" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by 6cab2c62-39d7-4e0a-b957-191d54fc78f9 -->
+			<genres maingenre="100" />
+			<blocks value="1" />
+			<price min="3000" max="5000" />
+			<potential min="20" max="40" />
+			<outcome min="10" max="20" />
+			<review min="20" max="30" />
+			<speed min="5" max="20" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="a3b10b1d-5cf0-409d-8b99-8f7f7c955898" creator="" comment="Screenplay version / continuation of ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5">
+			<title>
+				<de>TED am Abend %currentyear%</de>
+				<en>TED in the Evening %currentyear%</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="129" broadcast_time_slot_start="17" broadcast_time_slot_end="22" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5 -->
+			<genres maingenre="100" />
+			<blocks value="1" />
+			<price min="3000" max="5000" />
+			<potential min="20" max="40" />
+			<outcome min="10" max="20" />
+			<review min="20" max="30" />
+			<speed min="5" max="20" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="ffc9a36f-5c51-4ad5-8878-8143a8760de5" creator="" comment="Screenplay version / continuation of c55267c4-dd5d-4888-8a0a-c70291ad95a2">
+			<title>
+				<de>TED ab Mittag %currentyear%</de>
+				<en>TED at Midday %currentyear%</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="129" broadcast_time_slot_start="11" broadcast_time_slot_end="17" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by c55267c4-dd5d-4888-8a0a-c70291ad95a2 -->
+			<genres maingenre="100" />
+			<blocks value="1" />
+			<price min="3000" max="5000" />
+			<potential min="20" max="40" />
+			<outcome min="10" max="20" />
+			<review min="20" max="30" />
+			<speed min="5" max="20" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="d0f87d3e-f2a3-45f1-94ca-cb8c75cf2a64" creator="" comment="Screenplay version / continuation of ec190825-aeaa-41fd-b990-291ec0d1726f">
+			<title>
+				<de>TED in der Nacht %currentyear%</de>
+				<en>TED at Night %currentyear%</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="129" broadcast_time_slot_start="22" broadcast_time_slot_end="6" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by ec190825-aeaa-41fd-b990-291ec0d1726f -->
+			<genres maingenre="100" />
+			<blocks value="1" />
+			<price min="3000" max="5000" />
+			<potential min="20" max="40" />
+			<outcome min="10" max="20" />
+			<review min="20" max="30" />
+			<speed min="5" max="20" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="f1aff29a-048f-47b8-9503-b50931204611" creator="" comment="Screenplay version / continuation of b528cab3-ec3d-43fc-b76a-2cb1724a7055 | deliberately not a series format in the screenplay version">
+			<title>
+				<de>Ein Päuschen zum Gewinn %currentyear%</de>
+				<en>A Little Break For the Win %currentyear%</en>
+			</title>
+			<description>
+				<de>Schnelle Raterunden für debile Anrufer. Gestellt werden Fragen zu aktuell erschienen Schundromanen.</de>
+				<en>Short quiz sessions for dimwitted callers. The questions asked are about currently published pulp novels.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="129" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by b528cab3-ec3d-43fc-b76a-2cb1724a7055 last episode -->
+			<genres maingenre="104" />
+			<blocks value="1" />
+			<price min="1000" max="3000" />
+			<potential min="20" max="40" />
+			<outcome min="10" max="20" />
+			<review min="2" max="8" />
+			<speed min="20" max="30" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="84c38251-ff42-4422-908c-8177ff5b10ea" creator="" comment="Screenplay version / continuation of d0b61022-2ec0-4a6c-a496-92c102e41cde | deliberately not a series format in the screenplay version">
+			<title>
+				<de>Nur wer anruft kann gewinnen %currentyear%</de>
+				<en>You Need to Call to Win %currentyear%</en>
+			</title>
+			<description>
+				<de>Schäbige Call-In-Show, in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
+				<en>Shabby call-in show in which candidates have to recognize celebrities' breasts. At most, it's the broadcaster who's winning here.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" gender="1" />
+				<job index="2" function="8" required="1" gender="2" /> <!-- should be a model (additional to the 'breasts celebrity') -->
+			</jobs>
+			<data flags="193" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" available="0" /> <!-- availability triggered by d0b61022-2ec0-4a6c-a496-92c102e41cde last episode -->
+			<targetgroupattractivity women="0.75" />
+			<genres maingenre="104" subgenres="8" />
+			<blocks value="2" />
+			<price min="3000" max="5000" />
+			<potential min="20" max="40" />
+			<outcome min="10" max="20" />
+			<review min="5" max="15" />
+			<speed min="20" max="40" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="f1f973ed-7100-4514-bc69-3f6843b30bd9" creator="" comment="Screenplay version / continuation of 13cf3270-5458-460e-8360-75e0adc73a49 | deliberately not a series format in the screenplay version">
+			<title>
+				<de>Die Hellseher %currentyear%</de>
+				<en>The Clairvoyants %currentyear%</en>
+			</title>
+			<description>
+				<de>Zwei Hellseher verwirren mit verschwommenen Ausdeutungen von Zukunft und Vergangenheit ihrer Anrufer.</de>
+				<en>Two clairvoyants confuse with blurred interpretations of their callers' future and past.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection (and mention in the description like in the programme version) -->
+				<job index="1" function="8" required="1" gender="1" />
+				<job index="2" function="8" required="1" gender="2" />
+			</jobs>
+			<data flags="129" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by 13cf3270-5458-460e-8360-75e0adc73a49 last episode -->
+			<targetgroupattractivity men="0.75" children="2" teenagers_female="1.5" />
+			<genres maingenre="103" />
+			<blocks value="2" />
+			<price min="1000" max="3000" />
+			<potential min="10" max="30" />
+			<outcome min="5" max="15" />
+			<review min="1" max="5" />
+			<speed min="10" max="20" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="fb34ed9a-528e-45a9-83b9-16475c2ab67c" creator="" comment="Screenplay version / continuation of cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3 | deliberately not a series format in the screenplay version">
+			<title>
+				<de>Hot Quiz %currentyear%</de>
+				<en>Hot Quiz %currentyear%</en>
+			</title>
+			<description>
+				<de>Die Moderatorin macht sich nackig und die Anrufer arm. Brüste gegen Geld, wie im echten Leben.</de>
+				<en>The presenter gets naked and the callers poor. Breasts for money, like in real life.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" gender="2" /> <!-- should be model -->
+			</jobs>
+			<data flags="193" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" available="0" /> <!-- availability triggered by cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3 last episode -->
+			<targetgroupattractivity women="0.75" />
+			<genres maingenre="104" subgenres="8" />
+			<blocks value="2" />
+			<price min="3000" max="5000" />
+			<potential min="20" max="40" />
+			<outcome min="10" max="20" />
+			<review min="2" max="8" />
+			<speed min="10" max="40" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="4e671e3f-b2e4-45d6-b40e-16757e1139dc" creator="" comment="Screenplay version / continuation of 83a2a0c0-7101-4844-b792-d0ad08554981 | deliberately not a series format in the screenplay version">
+			<title>
+				<de>Schach gegen den Meister %currentyear%</de>
+				<en>Chess Against the Master %currentyear%</en>
+			</title>
+			<description>
+				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket.</de>
+				<en>Speed chess against the grandmasters. Call in, manage to get through, and checkmate the grandmaster. Use your brains, study, lose money in the waiting loop. The complete all-inclusive service package.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" />
+			</jobs>
+			<data flags="129" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="96" available="0" /> <!-- availability triggered by 83a2a0c0-7101-4844-b792-d0ad08554981 last episode -->
+			<genres maingenre="104" />
+			<blocks value="1" />
+			<price min="3000" max="5000" />
+			<potential min="20" max="40" />
+			<outcome min="9" max="29" />
+			<review min="21" max="40" />
+			<speed min="5" max="15" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="3" licence_type="1" guid="441e360b-4549-4115-bcfc-3de3ea4ac91c" creator="" comment="Screenplay version / continuation of 74e7af51-bce9-49e3-844f-589921426e0a | deliberately not a series format in the screenplay version">
+			<title>
+				<de>Kurven der Welt %currentyear% - Erkenne sie alle</de>
+				<en>Curves of the World %currentyear% - Know Them All</en>
+			</title>
+			<description>
+				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikshow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden.</de>
+				<en>The most beautiful breasts in the world. Discreetly packaged. Nothing and yet much to see. The sophisticated erotic show with interludes about the culture of the respective country. Even critics were able to make friends with it.</en>
+			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
+				<job index="1" function="8" required="1" /> <!-- should be model -->
+			</jobs>
+			<data flags="193" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" available="0" /> <!-- availability triggered by 74e7af51-bce9-49e3-844f-589921426e0a last episode -->
+			<targetgroupattractivity men="1.25" women="0.75" />
+			<genres maingenre="104" subgenres="8" />
+			<blocks value="2" />
+			<price min="3000" max="5000" />
+			<potential min="25" max="50" />
+			<outcome min="20" max="40" />
+			<review min="14" max="34" />
+			<speed min="30" max="54" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="1927c2dd-0691-48d3-9c64-311eb0570e53" creator="" comment="Remake of e61018ba-b0db-439c-a852-TheRob04">
+			<title>
+				<de>Wesensreiter</de>
+				<en>Creature Rider</en>
+			</title>
+			<description>
+				<de>Da junge Helden, die Drachen reiten, inzwischen Mainstream geworden sind, ist ein Remake des 1964er Fantasy-Films über %ROLENAME1%, der Fantasiewesen dressiert und reitet, einen Versuch wert.</de>
+				<en>As young heroes who ride dragons have become mainstream, a remake of the 1964 fantasy film about %ROLENAME1% training and riding fantasy creatures is worth a try.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="131c90a2-9936-4e37-9d55-efee3d851ab6" /> <!-- probably young teen -->
+				<job index="2" function="2" required="1" role_guid="c80efa43-06bf-42f2-b10c-654bddd8fab1" />
+				<job index="3" function="2" required="1" role_guid="67192a86-d0d7-4231-8bd4-3b093c91ec86" />
+				<job index="4" function="2" required="1" role_guid="54fa4c5f-ae87-4d24-9d0d-2cbca8152828" />
+				<job index="5" function="32" required="1" gender="2" />
+				<job index="6" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="0" flags_optional="" target_groups="7" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
+			<genres maingenre="10" subgenres="9,1" />
+			<blocks value="2" />
+			<price min="100000" max="250000" />
+			<potential min="10" max="60" />
+			<outcome min="10" max="60" />
+			<review min="10" max="60" />
+			<speed min="10" max="60" />
+			<studio_size value="2" />
+			<availability year_range_from="1986" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="42a3b7ca-57ff-42c0-a194-c12cc84ef8de" creator="9551" comment="Slightly modernized adaption of TheRob-serie-KomissarWirsch, content created with help of ChatGPT. | TODO: Replace role names with references (nick and title + last name not yet supported).">
+			<title>
+				<de>Kommissar Wirsch</de>
+				<en>Inspector Gruff</en>
+			</title>
+			<description>
+				<de>Die Neuauflage des deutschen Krimiserien-Klassikers aus den 1950ern. Behutsam modernisiert, so dass der Charme erhalten bleibt. Wie damals sind charismatische Schauspieler extrem wichtig als Gegenpol zur banalen Handlung.</de>
+				<en>The new adaptation of the classic German crime series from the 1950s. Carefully modernized so that the charm is retained. Like back then, charismatic actors are extremely important as a counterpoint to the banal plot.</en>
+			</description>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="93a7e553-8822-4171-ad2e-6cf41a2053d6">
+					<title>
+						<de>Wirschi und der Kater des Bürgermeisters</de>
+						<en>Gruffy and the Mayor's Cat</en>
+					</title>
+					<description>
+						<de>Dem Bürgermeister wurde mysteriöserweise etwas gestohlen - sein Kater! Kommissar Wirsch und seine Assistentin untersuchen den Fall. Skurrile Verdächtige, haarsträubende Alibis - wer nur hat den geliebten Vierbeiner entführt?</de>
+						<en>Mysteriously, something has been stolen from the mayor - his tomcat! Inspector Gruff and his assistant investigate the case. Bizarre suspects, hair-raising alibis - just who has kidnapped the beloved four-legged friend?</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="f1fb83a7-6363-4b2a-b7c4-a8ba1757503b">
+					<title>
+						<de>Wirschi und der geheimnisvolle Kühlschrank</de>
+						<en>Gruffy and the Mysterious Fridge</en>
+					</title>
+					<description>
+						<de>In der scheinbar friedlichen Nachbarschaft verschwindet ein Kühlschrank spurlos. Kommissar Wirsch und sein Team stoßen auf eine eiskalte Verschwörung, die sie bis an ihre Grenzen führt. Denn in diesem Fall steckt mehr drin, als nur kalte Luft!</de>
+						<en>A refrigerator disappears without a trace in the seemingly peaceful neighborhood. Inspector Gruff and his team come across an ice-cold conspiracy that takes them to their limits. Because there's more to this case than just cold air!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="77ee784a-99ea-45c9-8a4d-46d8c124d0f6">
+					<title>
+						<de>Wirschi und der Fluch des verzauberten Teppichs</de>
+						<en>Gruffy and the Curse of the Enchanted Carpet</en>
+					</title>
+					<description>
+						<de>Ein antiker Teppich wird gestohlen, und alle Spuren führen zu einem vermeintlichen Fluch. Was ist Aberglaube, was ist Realität? Wirschi muss das herausfinden, den Dieb schnappen und den mysteriösen Teppich zurückzubringen, bevor er noch mehr Unglück bringt.</de>
+						<en>An antique carpet is stolen and all the clues lead to a supposed curse. What is superstition, what is reality? Gruffy has to find out, catch the thief and return the mysterious carpet before it brings even more misfortune.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="a444af93-7e49-46f2-a5fe-4c4eb49c9a5a">
+					<title>
+						<de>Wirschi und die seltsame Affäre mit dem Gartenzwerg</de>
+						<en>Gruffy and the Strange Incident with the Garden Gnome</en>
+					</title>
+					<description>
+						<de>Ein wertvoller Gartenzwerg verschwindet aus einer wohlhabenden Vorstadtsiedlung, und Wirschi kämpft sich durch Labyrinthe aus Gartenwegen, -zwergen und Hecken. Hinter den perfekt geschnittenen Büschen lauern dunkle Geheimnisse.</de>
+						<en>A valuable garden gnome disappears from a wealthy suburban estate, and Gruffy fights his way through labyrinths of garden paths, gnomes and hedges. Dark secrets lurk behind the perfectly trimmed bushes.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="4990e115-b73f-4a2d-af4f-eb733a139a9b">
+					<title>
+						<de>Wirschi und die gestohlenen Glückskekse</de>
+						<en>Gruffy and the Stolen Fortune Cookies</en>
+					</title>
+					<description>
+						<de>In einem chinesischen Restaurant verschwinden plötzlich alle Glückskekse. Ein Wirbelwind aus Wortspielen und Weisheiten erwartet Wirschi und seine Assistentin. Können sie die Hinweise auf den Dieb entschlüsseln?</de>
+						<en>All the fortune cookies suddenly disappear from a Chinese restaurant. A whirlwind of puns and wisdom awaits Gruffy and his assistant. Can they decipher the clues to the thief?</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="22b6bb18-80a9-4e56-ae96-5e8afc2e03a8">
+					<title>
+						<de>Wirschi und die verflixte Parkbank</de>
+						<en>Gruffy and the Darned Park Bench</en>
+					</title>
+					<description>
+						<de>Eine Parkbank wird gestohlen, und Wirschi und Team geraten in ein wahres Sitzungschaos. Liebespaare, Zeitungsleser, wenn die alle nicht mehr sitzen können, dann kommt die Stadt ja zum Erliegen! Dieser Bankraub-Fall muss schleunigst geknackt werden.</de>
+						<en>A park bench is stolen and Gruffy and team get caught up in a veritable session chaos. Lovers, newspaper readers, if they all can't sit anymore, then the city will factually come to a rest! The bench robbery case must be cracked ASAP.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="c93e96de-fd91-4803-9fc4-ef67104f0401">
+					<title>
+						<de>Wirschi und die verschwundene Zeitung</de>
+						<en>Gruffy and the Missing Newspaper</en>
+					</title>
+					<description>
+						<de>Die einzige Zeitung der Stadt verschwindet kurz vor der Veröffentlichung! Wirschi kämpft sich durch ein Dickicht aus Druckerschwärze und Redaktionsgeheimnissen, um die Pressefreiheit zu retten.</de>
+						<en>The town's only newspaper disappears just before publication! Gruffy fights his way through a thicket of printer's ink and editorial secrets to save the freedom of the press.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="69e7b414-f318-4d43-8cf0-fdbd79d54947">
+					<title>
+						<de>Der Tanz um die gestohlene Trophäe</de>
+						<en>The Dance for the Stolen Trophy</en>
+					</title>
+					<description>
+						<de>Eine wertvolle Trophäe wird aus dem örtlichen Tanzstudio gestohlen. Wirschi stürzt sich in die Welt des Tanzes, um den Dieb zu entlarven und die gestohlene Trophäe zurückzubringen, bevor der Rhythmus des Lebens aus dem Takt gerät.</de>
+						<en>A valuable trophy is stolen from the local dance studio. Gruffy plunges into the world of dance to unmask the thief and return the stolen trophy before the rhythm of life is thrown out of sync.</en>
+					</description>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="6e48da2f-d468-4542-9510-c3412e8841f7" />
+				<job index="2" function="2" required="1" role_guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" />
+				<job index="3" function="2" required="1" gender="1" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="32" required="1" gender="1" />
+				<job index="6" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="0" flags_optional="" target_groups="68" available="0" /> <!-- availability triggered by TheRob-serie-KomissarWirsch Episode 1 -->
+			<targetgroupattractivity children="2" />
+			<genres maingenre="4" subgenres="5" />
+			<episodes min="8" max="8" />
+			<blocks value="1" />
+			<price min="70000" max="150000" />
+			<potential min="20" max="60" />
+			<outcome min="20" max="60" />
+			<review min="20" max="60" />
+			<speed min="20" max="60" />
+			<studio_size value="2" />
+		</scripttemplate>
 	</scripttemplates>
 
 	<programmeroles>

@@ -233,6 +233,23 @@
 		<person id="Ronny-person-various-teppic" first_name="Teppic" last_name="" nick_name="Teppic" fictional="1" gender="1" castable="0" country="D" job="64" />
 		<person id="Ronny-person-various-therob" first_name="TheRob" last_name="" nick_name="TheRob" fictional="1" gender="1" castable="0" country="D" job="64" />
 		<person id="Ronny-person-various-sushitv" first_name="SushiTV" last_name="" nick_name="SushiTV" fictional="1" gender="1" castable="0" country="D" job="64" />
+
+		<!-- added in 2024-08, mentioned in existing fictional programs; now made to be available for screenplays -->
+
+		<person id="778337de-e7f6-4f2b-9563-6de04d8cd21a" first_name="Sabine" last_name="Herrmann" fictional="1" gender="2" country="D" job="2154" comment="'früher Björn'" />
+		<person id="5d64caae-5e21-495a-a771-b2d297bb23a7" first_name="Mandy" last_name="Graves" fictional="1" gender="2" country="USA" job="2154" />
+		<person id="a0d0996b-b5c8-418c-beb5-081c3c37efa2" first_name="Peggy" last_name="Roades" fictional="1" gender="2" country="GB" job="2154" />
+
+		<!-- added in 2024-08, re-introduced from a 2013 version of TVTower -->
+
+		<person id="1c9e078b-e3cb-4b23-8aea-0ae2b8861347" first_name="Heidi" last_name="Alpendudel" fictional="1" gender="2" castable="1" />
+		<person id="576b0fa8-9601-4882-96d4-d4505d3cc0f4" first_name="Quenn" last_name="Stephanie" fictional="1" gender="2" castable="0" comment="spoof of https://en.wikipedia.org/wiki/Gwen_Stefani" />
+		<person id="5f68f9f5-b741-43e2-8387-a3cc6544863b" first_name="Ralf" last_name="Spielgel" fictional="1" gender="1" castable="0" comment="spoof of https://en.wikipedia.org/wiki/Ralph_Siegel" />
+		<person id="e35b9d87-9ac2-4de0-a3ac-a40fccdf2713" first_name="Dieter" last_name="Fohlen" fictional="1" gender="1" castable="0" comment="spoof of https://en.wikipedia.org/wiki/Dieter_Bohlen" />
+		<person id="c517442d-ef0d-4746-9aeb-3a3d575f39fa" first_name="Emil" last_name="Träumerl" fictional="1" gender="1" castable="1" />
+		<person id="d12cd810-2fed-48a7-a0df-1187cdaa20eb" first_name="Schorschl" last_name="Schwätzli" title="Prof. Dr. Dr. Dr. hab. hc." fictional="1" gender="1" castable="0" />
+		<person id="2a00793b-cb1d-4471-b437-5d59703c79b8" first_name="Heiner" last_name="Böller" fictional="1" gender="1" castable="1" />
+		<person id="ccb8e04a-7888-475a-896b-1bf83c47072f" first_name="Esraimt" last_name="Kiston" fictional="1" gender="1" castable="0" />
 	</insignificantpeople>
 
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />

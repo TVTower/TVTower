@@ -1878,5 +1878,1003 @@
 			</description>
 			<data genre="0" price="1" quality="35" fictional="1" />
 		</news>
+
+		<news id="c0f1d022-0b0f-48ed-9ccf-bef1e8ab8069" type="0" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551" comment="Meigawa mega thread - mostly made up, some little help from ChatGPT">
+			<title>
+				<de>%meigawa% Top 5 Entwicklungsregion</de>
+				<en>%meigawa% Top 5 developing region</en>
+			</title>
+			<description>
+				<de>Die ostasiatische Sonderwirtschaftszone %meigawa% gehörte im letzten Jahr zu den schnellstwachsenden Tech- und Wirtschaftsregionen weltweit.</de>
+				<en>The East Asian special economic zone %meigawa% was one of the fastest growing tech and economic regions in the world last year.</en>
+			</description>
+			<variables>
+				<meigawa>
+					<de>Meigawa|Saitorin|Nokoshima|Hikarugen|Jinsen|Shuranko|Chiyotek|Xingling|Shintai|Hakuryu</de>
+				</meigawa>
+				<isknownfor>
+					<de>ist bekannt für|ist berühmt für|ist weltbekannt für|ist anerkannt für|spezialisiert sich auf|ist spezialisiert auf</de>
+					<en>is known for|is famous for|is renowned for|is recognized for|specializes in|is specialized in</en>
+				</isknownfor>
+				<robotics>
+					<de>Fortschritte in Robotik, insbesondere bei menschenähnlichen Androiden und industrieller Automatisierung,|führende Entwicklung in den Bereichen Robotik und künstliche Intelligenz|Durchbrüche in Biotechnologie und Genforschung|Fortschritte bei erneuerbaren Energien und nachhaltigen Technologien|Errungenschaften in Marinetechnik und Unterwasserforschung|Virtual-Reality- und Augmented-Reality-Technik|Nanotechnologie und Mikroelektronik, mit Schwerpunkt auf Miniaturisierung und Präzisionsfertigung,|fortschrittliche Werkstofftechnik und ihre Spezialisierung auf Nanomaterialien|Durchbrüche in der Medizintechnik und Innovationen im Gesundheitswesen|Weltraumforschung und Satellitentechnologie</de>
+					<en>advancements in robotics, particularly in human-like androids and industrial automation,|cutting-edge robotics and artificial intelligence technologies|bioengineering breakthroughs and genetic research|advancements in renewable energy and sustainable technologies|achievements in maritime technology and underwater exploration|virtual reality and augmented reality technologies|nanotechnology and microelectronics, with a focus on miniaturization and precision manufacturing,|advanced materials engineering and specializing in nanomaterials|breakthroughs in medical technology and healthcare innovations|space exploration and satellite technology</en>
+				</robotics>
+				<hasbecomeagloballeader>
+					<de>ist zudem zu einem globalen Vorreiter für grüne Innovationen und Smart-City-Entwicklung geworden|bietet zudem eine pulsierende Technologiebranche mit fortschrittlichen Forschungseinrichtungen und innovativen Start-ups|beherbergt zudem hochmoderne Laboratorien und Biotech-Unternehmen|ist zudem ein Zentrum für Schiffbau, Ozeanographie und Tiefseeforschung|veranstaltet zudem bedeutende Technologiekonferenzen bekannt für immersive Gaming-Erlebnisse und fortschrittliche Visualisierungssysteme|ist zudem Standort für bahnbrechende Fortschritte in der Halbleitertechnologie|zieht zudem Spitzentalente und Unternehmen in der Robotikbranche an|ist zudem führend in der Entwicklung von leichten, hochfesten Materialien, die in der Luft- und Raumfahrt, der Automobil- und der Elektronikindustrie eingesetzt werden|ist zudem Knotenpunkt für Biomedizin, Telemedizin und tragbare Gesundheitsgeräte|beheimatet zudem ein Raumfahrtzentrum und Produktionsanlagen für Satelliten, die eine wichtige Rolle in der Raumfahrtindustrie spielen</de>
+					<en>has also become a global leader in green innovation and smart city development|also boasts a thriving tech industry with advanced research facilities and innovative startups|also is home to state-of-the-art laboratories and biotech companies|is also a hub for shipbuilding, oceanography, and deep-sea research|also hosts major tech conferences known for immersive gaming experiences and advanced visualization systems|is also home to groundbreaking advancements in semiconductor technology|also attracts top talent and companies in the robotics industry|also leads the way in the development of lightweight, high-strength materials used in aerospace, automotive, and electronics industries|is also a hub for biomedicine, telemedicine, and wearable health devices|is also home to a spaceport and satellite manufacturing facilities, playing a significant role in the space industry</en>
+				</hasbecomeagloballeader>
+				<summittown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</summittown>
+				<communism>
+					<de>Kommunismus|Liberalsozialismus|Luxemburgismus|Titoismus|Rätekommunismus|Situationismus|Syndikalismus|Distributismus|Mutualismus|Trotzkismus</de>
+					<en>Communism|Liberal Socialism|Luxemburgism|Titoism|Council Communism|Situationism|Syndicalism|Distributism|Mutualism|Trotskyism</en>
+				</communism>
+				<capitalism>
+					<de>Kapitalismus|Manchester-Kapitalismus|Agorismus|Georgismus|Voluntarismus|Objektivismus|Neoliberalismus|klassischem Liberalismus|Laissez-faire|Keynesianismus</de>
+					<en>Capitalism|Manchester Liberalism|Agorism|Georgism|Voluntaryism|Objectivism|Neoliberalism|Classic Liberalism|Laissez-faire|Keynesianism</en>
+				</capitalism>
+				<confucianism>
+					<de>Konfuzianismus|Neokonfuzianismus|Taoismus|Daoismus|Zen-Buddhismus|Shintoismus|Mohismus|Yinyangismus|Sikhismus|Jainismus|Sufismus</de>
+					<en>Confucianism|Neo-Confucianism|Taoism|Daoism|Zen Buddhism|Shinto|Mohism|Yinyangism|Sikhism|Jainism|Sufism</en>
+				</confucianism>
+				<namedancing>
+					<de>Namentanzen|Eurythmie|Mummerei|Mummenschanz|Dionysien|Voodoo|Derwischtanz</de>
+					<en>Name dancing|Eurythmy|Mummery|Mummers' Plays|Dionysia|Voodoo|Dervish Dance</en>
+				</namedancing>
+				<i>
+					<de>0|1|2|3</de>
+				</i>
+				<particleacc_0>
+					<de>Teilchenbeschleuniger</de>
+					<en>Particle Accelerator</en>
+				</particleacc_0>
+				<particleacc_1>
+					<de>Super-KI</de>
+					<en>Super AI</en>
+				</particleacc_1>
+				<particleacc_2>
+					<de>HoloScreen</de>
+					<en>HoloScreen</en>
+				</particleacc_2>
+				<particleacc_3>
+					<de>Super-Quanten-Internet</de>
+					<en>Super Quantum Internet</en>
+				</particleacc_3>
+				<itsshapedlike_0>
+					<de>Der Teilchenbeschleuniger hat die Form einer 8 und kann somit die Teilchen unendlich beschleunigen.</de>
+					<en>The particle accelerator is shaped like an 8 and can therefore accelerate the particles infinitely.</en>
+				</itsshapedlike_0>
+				<itsshapedlike_1>
+					<de>Die Super-KI liefert nicht nur aktuelle Information - sie hat auch Jahrmilliarden zu früh bereits die Antwort auf die „letzte Frage“ des Wärmetods des Universums.</de>
+					<en>The Super AI doesn't just provide up-to-date information - it also has the answer to the "last question" of the heat death of the universe billions of years too early.</en>
+				</itsshapedlike_1>
+				<itsshapedlike_2>
+					<de>Der holographische Bildschirm ist eine unvergleichliche Erfahrung mit optional unendlich aufgelöster, vektorbasierter 3D-Darstellung und perfektem Kontrast. Und das ist nur die Vorstufe zum Holodeck, an dem noch geforscht wird.</de>
+					<en>The holographic screen is an unrivaled experience with optionally infinite resolution vector-based 3D display and perfect contrast. And it is just the preliminary stage to the holodeck, which is still being researched.</en>
+				</itsshapedlike_2>
+				<itsshapedlike_3>
+					<de>Das Super-Quanten-Internet befördert dank verschränkter Teilchen manche Information als das Licht und sorgt so für sensationelle Ping-Werte. Endlich weltweite Match-Ups - die Revolution im Online-Gaming!</de>
+					<en>Thanks to entangled particles, the super quantum internet transports some of the information faster than light and thus ensures sensational ping values. Global match-ups at last - the revolution in online gaming!</en>
+				</itsshapedlike_3>
+				<srilanka>
+					<de>Sri Lanka|Osttimor|Brunei|Laos</de>
+					<en>Sri Lanka|East Timor|Brunei|Laos</en>
+				</srilanka>
+				<goalsfor>
+					<de>0|0|0|0|0|1|1|2</de>
+				</goalsfor>
+				<goalsagainst>
+					<de>7|8|9|10|11|12|13|14|15|16|17</de>
+				</goalsagainst>
+				<j>
+					<de>0|1</de>
+				</j>
+				<citizenslovetvtower_0>
+					<de>%meigawa%-Bürger lieben TVTower-Programm</de>
+					<en>%meigawa% citizens love TVTower program</en>
+				</citizenslovetvtower_0>
+				<citizenslovetvtower_1>
+					<de>%meigawa%-Bürger lieben TVTower-Game</de>
+					<en>%meigawa% citizens love TVTower game</en>
+				</citizenslovetvtower_1>
+				<inhabitantspirating_0>
+					<de>Die meisten Einwohner von %meigawa% schauen stundenlang die TVTower-Sender und lernen dabei unsere Sprache und unsere Kultur, empfangen das Programm aber schwarz.</de>
+					<en>Most of the inhabitants of %meigawa% watch the TVTower channels for hours, learning our language and our culture, but they receive the broadcast illicitly, they're pirating.</en>
+				</inhabitantspirating_0>
+				<inhabitantspirating_1>
+					<de>Die Einwohner von %meigawa% scheinen noch verrückter nach WiSim-Spielen zu sein als Deutsche, beziehen TVTower aber als Schwarzkopien.</de>
+					<en>The inhabitants of %meigawa% seem to be even crazier about biz-sim games than Germans, but obtain TVTower as pirated copies.</en>
+				</inhabitantspirating_1>
+				<billionsnewviewers_0>
+					<de>Milliarden neue Zuschauer aus %meigawa%?</de>
+					<en>Billions of new viewers from %meigawa%?</en>
+				</billionsnewviewers_0>
+				<billionsnewviewers_1>
+					<de>Milliarden $$$ aus %meigawa% für TVTower-Game?</de>
+					<en>Billions $$$ from %meigawa% for TVTower game?</en>
+				</billionsnewviewers_1>
+				<allfinancialtroublessolved_0>
+					<de>Alle Finanzierungsprobleme der TVTower-Programmplaner würden der Vergangenheit angehören, wenn die Zuschauerzahlen aus %meigawa% amtlich wären zur Vorlage an die Werbekunden.</de>
+					<en>All the financing problems of TVTower program planners would be a thing of the past if the viewer figures from %meigawa% were official for submission to advertisers.</en>
+				</allfinancialtroublessolved_0>
+				<allfinancialtroublessolved_1>
+					<de>Potenziell hunderte Milliarden Dollar könnten durch ordungsgemäßen Vertrieb in %meigawa% eingenommen werden. Mit dem Geld könnte TVTower zum besten Spiel aller Zeiten ausgebaut werden.</de>
+					<en>Potentially hundreds of billions of dollars could be raised through proper sales in %meigawa%. The money could be used to make TVTower the best game of all time.</en>
+				</allfinancialtroublessolved_1>
+				<bossesflyto_0>
+					<de>TVTower-Chefs fliegen nach %meigawa%</de>
+					<en>TVTower bosses fly to %meigawa%</en>
+				</bossesflyto_0>
+				<bossesflyto_1>
+					<de>Ronny fliegt nach %meigawa%</de>
+					<en>Ronny flies to %meigawa%</en>
+				</bossesflyto_1>
+				<bossesnegotiations_0>
+					<de>Die TVTower-Senderchefs, die eineiigen Raffer-Vierlinge, fliegen nach %meigawa% zu Verhandlungen über die Kommerzialisierung des Empfangs des TVTower-Programms.</de>
+					<en>The TVTower channel bosses, the identical Raffer quadruplets, fly to %meigawa% for negotiations on the commercialization of the reception of the TVTower broadcasting.</en>
+				</bossesnegotiations_0>
+				<bossesnegotiations_1>
+					<de>Ronny Otto, CEO von Gamezworld, fliegt nach %meigawa% zu Verhandlungen über die ordnungsgemäße Vermarktung des TVTower-Games.</de>
+					<en>Ronny Otto, CEO of Gamezworld, flies to %meigawa% for negotiations on the proper distribution of the TVTower game.</en>
+				</bossesnegotiations_1>
+				<stillavailable_0>
+					<de>Chefs noch im TVTower</de>
+					<en>Bosses still in TVTower</en>
+				</stillavailable_0>
+				<stillavailable_1>
+					<de>TVTower-Forum weiterhin betreut</de>
+					<en>TVTower forum still managed</en>
+				</stillavailable_1>
+				<atleastoneplayer_0>
+					<de>Mindestens ein Spieler hat nachgesehen, ob der Sender-Chef noch da ist. Ist er. Handelt es sich bei den Raffers gar um Achtlinge?</de>
+					<en>At least one player has checked to see if the channel boss is still there. He is. Are the Raffers actually octuplets?</en>
+				</atleastoneplayer_0>
+				<atleastoneplayer_1>
+					<de>Mindestens ein Spieler hat nachgesehen, ob Ronny trotz seiner wichtigen Geschäftsreise immer noch im Forum und im Chat heurmtrollt. Tut er.</de>
+					<en>At least one player has checked to see if Ronny is still trolling the forum and the chat despite his important business trip. He is.</en>
+				</atleastoneplayer_1>
+				<negotiationsfailed_0>
+					<de>Verhandlungen in %meigawa% erfolglos</de>
+					<en>Negotiations in %meigawa% failed</en>
+				</negotiationsfailed_0>
+				<negotiationsfailed_1>
+					<de>Verhandlungen in %meigawa% erfolglos</de>
+					<en>Negotiations in %meigawa% failed</en>
+				</negotiationsfailed_1>
+				<stillpirating_0>
+					<de>Die Bürger von %meigawa% schauen das TVTower-Programm weiterhin schwarz. Die Frage, wozu die dicken cholerischen TVTower-Chefs eigentlich gut sind, bleibt weiterhin offen.</de>
+					<en>The citizens of %meigawa% continue to watch the TVTower program illicitly. The question about what the fat, choleric TVTower bosses are actually good for remains unanswered.</en>
+				</stillpirating_0>
+				<stillpirating_1>
+					<de>Die Vertriebshäuser gingen mit Ronnys exorbitanten Preisvorstellungen einfach nicht mit. Die Einwohner von %meigawa% beziehen das TVTower-Game weiterhin schwarz.</de>
+					<en>The distribution centers simply did not go along with Ronny's exorbitant proposed prices. The inhabitants of %meigawa% continue to obtain the TVTower game as pirated copies.</en>
+				</stillpirating_1>
+				<singerfirstname>
+					<de>Kaori|Korui|Kyung|Sora</de>
+				</singerfirstname>
+				<singerlastname>
+					<de>Sakita|Shimoi|Seong|Kwon</de>
+				</singerlastname>
+				<k>
+					<de>0|1</de>
+				</k>
+				<teleportation_0>
+					<de>Teleportation</de>
+					<en>teleportation</en>
+				</teleportation_0>
+				<teleportation_1>
+					<de>Antigravitation</de>
+					<en>antigravity</en>
+				</teleportation_1>
+				<citizenscannow_0>
+					<de>Die Bürger können sich nun überall hinbeamen, wo sie wollen.</de>
+					<en>Citizens can now beam themselves anywhere they want.</en>
+				</citizenscannow_0>
+				<citizenscannow_1>
+					<de>Die Bürger können nun in Kleinfluggeräten herumschwirren, noch wendiger und schneller als fliegende Untertassen.</de>
+					<en>Citizens can now buzz around in small aircraft, even more agile and faster than flying saucers.</en>
+				</citizenscannow_1>
+				<ifeveryonecould_0>
+					<de>wenn sich jeder wild über Grenzen hinweg beamen könnte</de>
+					<en>if everyone could freely beam across borders</en>
+				</ifeveryonecould_0>
+				<ifeveryonecould_1>
+					<de>wenn jeder wild über Grenzen hinweg schwirren könnte</de>
+					<en>if everyone could whizz wildly across borders</en>
+				</ifeveryonecould_1>
+				<festivitytown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</festivitytown>
+				<m>
+					<de>0|1|2|3|4|5</de>
+				</m>
+				<onvenus_0>
+					<de>auf der Venus</de>
+					<en>on Venus</en>
+				</onvenus_0>
+				<onvenus_1>
+					<de>auf dem Mars</de>
+					<en>on Mars</en>
+				</onvenus_1>
+				<onvenus_2>
+					<de>auf dem Mond</de>
+					<en>on the Moon</en>
+				</onvenus_2>
+				<onvenus_3>
+					<de>im Inneren der Erde</de>
+					<en>inside Earth</en>
+				</onvenus_3>
+				<onvenus_4>
+					<de>in Agartha</de>
+					<en>in Agartha</en>
+				</onvenus_4>
+				<onvenus_5>
+					<de>im Äther</de>
+					<en>in the ether</en>
+				</onvenus_5>
+				<ontherapidlytransformedvenus_0>
+					<de>auf der rasch terraformierten Venus</de>
+					<en>on the rapidly terraformed Venus</en>
+				</ontherapidlytransformedvenus_0>
+				<ontherapidlytransformedvenus_1>
+					<de>auf dem rasch terraformierten Mars</de>
+					<en>on the rapidly terraformed Mars</en>
+				</ontherapidlytransformedvenus_1>
+				<ontherapidlytransformedvenus_2>
+					<de>auf der dunklen Seite des Mondes</de>
+					<en>on the dark side of the Moon</en>
+				</ontherapidlytransformedvenus_2>
+				<ontherapidlytransformedvenus_3>
+					<de>auf der Innenseite der hohlen Erde</de>
+					<en>on the inside of the hollow Earth</en>
+				</ontherapidlytransformedvenus_3>
+				<ontherapidlytransformedvenus_4>
+					<de>im versteckten unterirdischen Reich Agartha</de>
+					<en>in the hidden underground realm of Agartha</en>
+				</ontherapidlytransformedvenus_4>
+				<ontherapidlytransformedvenus_5>
+					<de>in der feinstofflichen ätherischen Zwischenwelt</de>
+					<en>in the intangible ethereal netherworld</en>
+				</ontherapidlytransformedvenus_5>
+				<festivitytownatlantis>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</festivitytownatlantis>
+				<cultleadertown>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</cultleadertown>
+			</variables>
+			<data genre="0" price="1" quality="60" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,3,5" news="dd161f02-9ddc-4064-b22c-a7875665cb3a" />
+			</effects>
+			<availability script="TIME_DAYSPLAYED > 12" />
+		</news>
+		<news id="dd161f02-9ddc-4064-b22c-a7875665cb3a" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Tech-Boom in %meigawa%</de>
+				<en>Tech boom in %meigawa%</en>
+			</title>
+			<description>
+				<de>Die boomende ostasiatische Sonderwirtschaftszone %meigawa% %isknownfor% %robotics%.</de>
+				<en>The booming East Asian special economic zone %meigawa% %isknownfor% %robotics%.</en>
+			</description>
+			<data genre="3" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,21,34" news="794b9b1f-2fde-4b6c-bb86-f2239effb8f7" />
+			</effects>
+		</news>
+		<news id="794b9b1f-2fde-4b6c-bb86-f2239effb8f7" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Hervorragende Prognosen</de>
+				<en>%meigawa%: Excellent Prospects</en>
+			</title>
+			<description>
+				<de>Die boomende ostasiatische Sonderwirtschaftszone %meigawa% wird so schnell nicht vom Radar verschwinden, sagen Wirtschaftsexperten.</de>
+				<en>The booming East Asian special economic zone %meigawa% will not disappear from the radar any time soon, economic experts say.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,3,5" news="6fc67b26-2b8a-480f-baf8-0208da8f1de0" />
+			</effects>
+		</news>
+		<news id="6fc67b26-2b8a-480f-baf8-0208da8f1de0" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Globaler Tech.-Vorreiter</de>
+				<en>%meigawa%: Global tech leader</en>
+			</title>
+			<description>
+				<de>Die boomende ostasiatische Sonderwirtschaftszone %hasbecomeagloballeader%.</de>
+				<en>The booming East Asian special economic zone %hasbecomeagloballeader%.</en>
+			</description>
+			<data genre="3" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="220848bb-6820-4a72-8bc8-3976427a4d8b" />
+			</effects>
+		</news>
+		<news id="220848bb-6820-4a72-8bc8-3976427a4d8b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% baut Eiffelturm nach</de>
+				<en>%meigawa% replicates the Eiffel Tower</en>
+			</title>
+			<description>
+				<de>Besser als das Original - besserer Feuer- und Korrosionsschutz und außerdem etwas größer: Ein neuer Eiffelturm steht im fernöstlichen %meigawa%.</de>
+				<en>Better than the original - better fire and corrosion protection and also slightly larger: a new Eiffel Tower stands in Far East %meigawa%.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="8f712f37-afbc-4671-97e9-513c2a23530d" />
+			</effects>
+		</news>
+		<news id="8f712f37-afbc-4671-97e9-513c2a23530d" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Neuer riesiger Vergnügungspark</de>
+				<en>%meigawa%: New huge amusement park</en>
+			</title>
+			<description>
+				<de>Die „Daisyworld“ im fernöstlichen %meigawa% ist 20x größer als das amerikanische Vorbild und hat außerdem viele Anime- und Manga-Attraktionen.</de>
+				<en>The "Daisyworld" in Far East %meigawa% is 20 times bigger than the American original and also has many anime and manga attractions.</en>
+			</description>
+			<data genre="1" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="799c8a9a-adf5-47fd-868e-5b5441b3d20d" />
+			</effects>
+		</news>
+		<news id="799c8a9a-adf5-47fd-868e-5b5441b3d20d" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% expandiert</de>
+				<en>%meigawa% expands</en>
+			</title>
+			<description>
+				<de>In der fernöstlichen Region %meigawa% werden in den bisher schwach besiedelten Ecken riesige neue Städte gebaut. Ein Großteil der verarmten Landbevölkerung soll eingegliedert werden.</de>
+				<en>In the Far Eastern region of %meigawa%, huge new cities are being built in previously sparsely populated areas, with the aim of incorporating a large part of the impoverished rural population.</en>
+			</description>
+			<data genre="0" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="28df5516-4c8f-40d8-9e11-9421990b25bc" />
+			</effects>
+		</news>
+		<news id="28df5516-4c8f-40d8-9e11-9421990b25bc" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Blühene Wirtschaft</de>
+				<en>%meigawa%: Thriving economy</en>
+			</title>
+			<description>
+				<de>Was ist das Geheimnis der fernöstlichen Region, während der Rest der Welt mit der Rezession kämpft? Ökonomen aus aller Welt am Wirtschaftsgipfel in %summittown% sind sich uneinig.</de>
+				<en>What is the secret of the Far Eastern region while the rest of the world is struggling with recession? Economists from around the world at the economic summit in %summittown% are divided.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,3,5" news="88a7ca08-f4db-4a90-a96d-b8c0dd0886c1" />
+			</effects>
+		</news>
+		<news id="88a7ca08-f4db-4a90-a96d-b8c0dd0886c1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%s Wirtschaft erklärt</de>
+				<en>%meigawa%'s economy explained</en>
+			</title>
+			<description>
+				<de>Ein Ökonom aus %meigawa% erklärt: Das Wirtschaftssystem bestehe aus dem Besten aus %communism%, %capitalism%, %confucianism% und %namedancing%, sei aber nach westlichen Maßstäben eigentlich nicht kategorisierbar.</de>
+				<en>An economist from %meigawa% explains: The economic system consists of the best of %communism%, %capitalism%, %confucianism% and %namedancing%, but cannot actually be categorized according to Western standards.</en>
+			</description>
+			<data genre="0" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="82d8767c-8e0e-43f8-ae94-8d0f6baeded5" />
+			</effects>
+		</news>
+		<news id="82d8767c-8e0e-43f8-ae94-8d0f6baeded5" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Wenig Korruption</de>
+				<en>%meigawa%: Low corruption</en>
+			</title>
+			<description>
+				<de>Nach Ansicht von Experten liegt der Erfolg von %meigawa% in der geringen bis nicht vorhandenen Korruption. Dies sei auf die Tradition, Kultur und Werten der Einheimischen zurückzuführen.</de>
+				<en>According to experts, the success of %meigawa% lies in the low to non-existent level of corruption. This is due to the tradition, culture and values of the locals.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="24bff879-3176-41fd-8c24-d7e646713562" />
+			</effects>
+		</news>
+		<news id="24bff879-3176-41fd-8c24-d7e646713562" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551" comment="reference: https://reddit.com/r/germany/comments/64aucx/question_from_canadian_what_was_stoiber_talking/">
+			<title>
+				<de>%meigawa% mit neuer Supermagnetbahn</de>
+				<en>%meigawa% with new super maglev</en>
+			</title>
+			<description>
+				<de>Die Vorwürfe des deutschen Megakonzerns Hiemens werden von den Ingenieuren aus %meigawa% zurückgewiesen. Der „Transbolt“ sei kein Plagiat, denn man sei damit bereits in 9 Minuten am Flughafen.</de>
+				<en>The accusations of the German mega corporation Hiemens are rejected by the engineers from %meigawa%. The "Transbolt" is not a plagiarism, because with it one can be at the airport already in 9 minutes.</en>
+			</description>
+			<data genre="3" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="52ef13f1-82f2-47d2-a2be-53a76b2d4554" />
+			</effects>
+		</news>
+		<news id="52ef13f1-82f2-47d2-a2be-53a76b2d4554" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% baut neuen Raumbahnhof</de>
+				<en>%meigawa% builds new spaceport</en>
+			</title>
+			<description>
+				<de>Raketenstartbasis, Forschungszentrum, Job-Motor, Vergnügungspark und Verkleidungsfestival in einem: „Cape Carnival“ ist das neue Wahrzeichen in %meigawa%.</de>
+				<en>Rocket launch base, research center, job creator, amusement park and costume festival all in one: "Cape Carnival" is the new landmark in %meigawa%.</en>
+			</description>
+			<data genre="3" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" />
+			</effects>
+		</news>
+		<news id="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Raumfahrtprogramm</de>
+				<en>%meigawa%: Space program</en>
+			</title>
+			<description>
+				<de>Da es die restliche Welt mit der Raumfahrt schleifen lässt, springt Cape Carnival in %meigawa% ein. Der Jungfernflug für die erste Linie rund um den Mond startet in drei Monaten.</de>
+				<en>As the rest of the world is putting space travel on the back burner, Cape Carnival in %meigawa% is stepping in. The maiden flight for the first line around the moon starts in three months.</en>
+			</description>
+			<data genre="3" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="522c9ed6-6682-4275-8903-6e08e4048104" />
+			</effects>
+		</news>
+		<news id="522c9ed6-6682-4275-8903-6e08e4048104" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% baut ${particleacc_${i}}</de>
+				<en>%meigawa% builds ${particleacc_${i}}</en>
+			</title>
+			<description>
+				<de>Damit endgültig *die* führende Wirtschafts- und Technologieregion: %meigawa% baut die beste ihrer Art - die neue ${particleacc_${i}}-Technologie lässt die weltweite Konkurrenz weit hinter sich.</de>
+				<en>Finally proven to be *the* leading economic and technology region: %meigawa% is building the best of its kind - the new ${particleacc_${i}} technology leaves the global competition far behind.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,3,5" news="ca47188a-8e6c-462e-9cc7-8e2328ac19c1" />
+			</effects>
+		</news>
+		<news id="ca47188a-8e6c-462e-9cc7-8e2328ac19c1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Details zu %meigawa%-${particleacc_${i}}</de>
+				<en>Details about %meigawa% ${particleacc_${i}}</en>
+			</title>
+			<description>
+				<de>${itsshapedlike_${i}}</de>
+				<en>${itsshapedlike_${i}}</en>
+			</description>
+			<data genre="3" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="a4d89c1a-8156-4161-af97-33deed8fabd9" />
+			</effects>
+		</news>
+		<news id="a4d89c1a-8156-4161-af97-33deed8fabd9" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>${particleacc_${i}}-Know-How bleibt in %meigawa%</de>
+				<en>${particleacc_${i}} know-how stays in %meigawa%</en>
+			</title>
+			<description>
+				<de>Was hat der Rest der Welt von den Innovationen in %meigawa%? Leider wenig. Bürokratie und Patentrechte stehen dem Export der ${particleacc_${i}}-Technologie und der Erhöhung des Lebensstandards im Westen im Wege.</de>
+				<en>What does the rest of the world gain from the innovations in %meigawa%? Unfortunately, very little. Bureaucracy and patent rights stand in the way of exporting the ${particleacc_${i}} technology and raising living standards in the West.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" />
+			</effects>
+		</news>
+		<news id="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Nun eigene Nation</de>
+				<en>%meigawa%: Now its own nation</en>
+			</title>
+			<description>
+				<de>Die ehemalige Sonderwirtschaftszone %meigawa% hat sich „freigekauft“ und ist nun eine eigenständige Nation.</de>
+				<en>The former special economic zone %meigawa% has "bought its freedom" and is now a nation in its own right.</en>
+			</description>
+			<data genre="0" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="79d69be8-25c5-4fb7-ab38-d517d567fac1" />
+			</effects>
+		</news>
+		<news id="79d69be8-25c5-4fb7-ab38-d517d567fac1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% überwacht Bürger</de>
+				<en>%meigawa% surveils citizens</en>
+			</title>
+			<description>
+				<de>Westliche Journalisten haben die Schattenseiten der Entwicklungen in %meigawa% enthüllt. Es wurde ein diskriminierendes Social-Credit-Scoring eingeführt.</de>
+				<en>Western journalists have revealed the dark side of developments in %meigawa%. Discriminatory social credit scoring has been introduced.</en>
+			</description>
+			<data genre="0" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="0f706f01-4ebe-47c4-b846-6321b020a765" />
+			</effects>
+		</news>
+		<news id="0f706f01-4ebe-47c4-b846-6321b020a765" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Proteste gegen %meigawa%-Credit-Scoring</de>
+				<en>Protests against %meigawa% credit scoring</en>
+			</title>
+			<description>
+				<de>Nach den jüngsten Enthüllungen über %meigawa% kam weltweit zu Protesten. Einige westliche Länder haben interne Gespräche über mögliche Strategien zur Einführung der Demokratie in dieser Region begonnen.</de>
+				<en>Following the recent revelations about %meigawa%, there have been protests around the world. Some Western countries have begun internal discussions about possible strategies to bring democracy to that region.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="ad42df97-3679-47b5-be9f-f16f40cee40c" />
+			</effects>
+		</news>
+		<news id="ad42df97-3679-47b5-be9f-f16f40cee40c" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% rechtfertigt Credit-Scoring</de>
+				<en>%meigawa% justifies credit scoring</en>
+			</title>
+			<description>
+				<de>Politiker und Wirtschaftswissenschaftler aus %meigawa% rechtfertigen ihr „Smart City“-Konzept. Es sei notwendig zur effizienten Ressourcen-Allokation.</de>
+				<en>Politicians and economists from %meigawa% justify their "smart city" concept. It is necessary for the efficient allocation of resources.</en>
+			</description>
+			<data genre="0" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="e8b29adf-ce2d-44ce-811f-1dbd53cc3264" />
+			</effects>
+		</news>
+		<news id="e8b29adf-ce2d-44ce-811f-1dbd53cc3264" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Riesige Geisterstädte</de>
+				<en>%meigawa%: Huge Ghost Cities</en>
+			</title>
+			<description>
+				<de>Die Journalisten enthüllten außerdem, dass viele der riesigen neuen Städte leer stünden. Sie waren wohl gedacht zum Eingliedern der Landbevölkerung - oder zum Abzocken ausländischer Investoren.</de>
+				<en>The journalists also revealed that many of the huge new cities are empty. They were probably intended to integrate the rural population - or to rip off foreign investors.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="98c68d6d-160b-4252-bcf1-b42b37e2795f" />
+			</effects>
+		</news>
+		<news id="98c68d6d-160b-4252-bcf1-b42b37e2795f" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% rudert zurück</de>
+				<en>%meigawa% backpedals</en>
+			</title>
+			<description>
+				<de>%meigawa% gesteht Fehler ein. Das Überwachungsprogramm wird zurückgezogen. Die Geisterstädte beweisen: Die Maßnahmen zur Ressourcen-Allokation hätten nicht funktioniert.</de>
+				<en>%meigawa% admits mistakes. The surveillance program is being withdrawn. The ghost cities prove it: The resource allocation measures have not worked.</en>
+			</description>
+			<data genre="0" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" />
+			</effects>
+		</news>
+		<news id="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% erschafft Wurmloch</de>
+				<en>%meigawa% creates wormhole</en>
+			</title>
+			<description>
+				<de>In einer Forschungseinrichtung in %meigawa% wurde versehentlich ein Wurmloch erzeugt. Es bestehe aber keine Gefahr für die Bevölkerung.</de>
+				<en>A wormhole has been accidentally created in a research facility in %meigawa%. There is no danger to the population, says the report.</en>
+			</description>
+			<data genre="3" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="dc2b7d43-72b0-4c50-b6b4-90c0619b1d59" />
+			</effects>
+		</news>
+		<news id="dc2b7d43-72b0-4c50-b6b4-90c0619b1d59" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Dämonen eingefangen</de>
+				<en>%meigawa%: Demons captured</en>
+			</title>
+			<description>
+				<de>Aus dem Wurmloch in %meigawa% waren drei Dämonen geschlüpft. Sie konnten eingefangen werden. Es bestehe keine Gefahr für die Bevölkerung oder das Raum-Zeit-Kontinuum.</de>
+				<en>Three demons had emerged from the wormhole in %meigawa%. They have been captured. There is no danger to the population or the space-time continuum.</en>
+			</description>
+			<data genre="3" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="f232dd43-8210-4a78-8aa5-24c08c03dd0e" />
+			</effects>
+		</news>
+		<news id="f232dd43-8210-4a78-8aa5-24c08c03dd0e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Analyse der Dämonen</de>
+				<en>%meigawa%: Analysis of the demons</en>
+			</title>
+			<description>
+				<de>Trotz der Proteste von Tierschutzvereinigungen werden Versuche an den Wurmloch-Dämonen unternommen, um neue wissenschaftliche und medizinische Erkenntnisse zu erlangen.</de>
+				<en>Despite protests from animal rights groups, experiments are being carried out on the wormhole demons in order to gain new scientific and medical knowledge.</en>
+			</description>
+			<data genre="3" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="9836c671-fc9a-4c5c-b969-ae123d776a39" />
+			</effects>
+		</news>
+		<news id="9836c671-fc9a-4c5c-b969-ae123d776a39" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Krebsheilmittel gefunden</de>
+				<en>%meigawa%: Cancer cure found</en>
+			</title>
+			<description>
+				<de>Dank der Forschungen an den Dämonen aus dem Wurmloch konnte herausgefunden werden, wie Krebs entsteht, und wie er geheilt werden kann. Auch das Problem des Alterns wurde damit gelöst.</de>
+				<en>Thanks to research on the demons from the wormhole, it has been possible to find out how cancer develops and how it can be cured. Thereby, the problem of ageing has also been solved.</en>
+			</description>
+			<data genre="3" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="0cbd0da3-da62-4280-9f7b-cb86060cf14e" />
+			</effects>
+		</news>
+		<news id="0cbd0da3-da62-4280-9f7b-cb86060cf14e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%-Krebsheilmittel: Kein Export</de>
+				<en>%meigawa% cancer cure: No export</en>
+			</title>
+			<description>
+				<de>Bürokratische und patentrechtliche Gründe stehen im Weg, um die restliche Welt außerhalb von %meigawa% von Krebs zu heilen.</de>
+				<en>Bureaucratic and patent law reasons stand in the way of curing cancer in the rest of the world outside %meigawa%.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="987f4b7f-3575-437c-8b32-121e6690d5cd" />
+			</effects>
+		</news>
+		<news id="987f4b7f-3575-437c-8b32-121e6690d5cd" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Riesiges Wachstum</de>
+				<en>%meigawa%: Huge growth</en>
+			</title>
+			<description>
+				<de>Nebenbei ist die Bevölkerung in %meigawa% inzwischen auf über ein Dutzend Milliarden Einwohner angestiegen, dank Unsterblichkeit, 13-Kinder-Politik, Arkologien und vertikal ausgedehnter Wolkenstädte.</de>
+				<en>Along the way, the population in %meigawa% has grown to over a dozen billion, thanks to immortality, a 13-child policy, arcologies and vertically expanded cloud cities.</en>
+			</description>
+			<data genre="0" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" />
+			</effects>
+		</news>
+		<news id="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% - %srilanka% %goalsfor%:%goalsagainst%</de>
+				<en>%meigawa% %goalsfor%-%goalsagainst% %srilanka%</en>
+			</title>
+			<description>
+				<de>Wo es noch nicht so läuft für %meigawa% ist der Fußball. Die Nationalmannschaft verliert in der Asien-Vor-Vor-Qualifikation haushoch gegen %srilanka% und verbleibt auf dem letzten Platz der FUFA-Weltrangliste.</de>
+				<en>Where things are not yet going so well for %meigawa% is soccer. The national team loses heavily to %srilanka% in the Asian pre-pre-qualifiers and remains in last place in the FUFA world rankings.</en>
+			</description>
+			<data genre="2" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="99f71d0b-92a2-4869-88fb-93d4d1ce907f" />
+			</effects>
+		</news>
+		<news id="99f71d0b-92a2-4869-88fb-93d4d1ce907f" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>${citizenslovetvtower_${j}}</de>
+				<en>${citizenslovetvtower_${j}}</en>
+			</title>
+			<description>
+				<de>${inhabitantspirating_${j}}</de>
+				<en>${inhabitantspirating_${j}}</en>
+			</description>
+			<data genre="3" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="52964ea8-07e7-4f61-b831-a420d20b7bb1" />
+			</effects>
+		</news>
+		<news id="52964ea8-07e7-4f61-b831-a420d20b7bb1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>${billionsnewviewers_${j}}</de>
+				<en>${billionsnewviewers_${j}}</en>
+			</title>
+			<description>
+				<de>${allfinancialtroublessolved_${j}}</de>
+				<en>${allfinancialtroublessolved_${j}}</en>
+			</description>
+			<data genre="3" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="e48a30a8-f013-46a5-9c00-6e051144e607" />
+			</effects>
+		</news>
+		<news id="e48a30a8-f013-46a5-9c00-6e051144e607" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>${bossesflyto_${j}}</de>
+				<en>${bossesflyto_${j}}</en>
+			</title>
+			<description>
+				<de>${bossesnegotiations_${j}}</de>
+				<en>${bossesnegotiations_${j}}</en>
+			</description>
+			<data genre="3" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,3,5" news="c3f150c9-d051-491d-bdeb-eaef20e44424" />
+			</effects>
+		</news>
+		<news id="c3f150c9-d051-491d-bdeb-eaef20e44424" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>${stillavailable_${j}}</de>
+				<en>${stillavailable_${j}}</en>
+			</title>
+			<description>
+				<de>${atleastoneplayer_${j}}</de>
+				<en>${atleastoneplayer_${j}}</en>
+			</description>
+			<data genre="3" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="c27ee130-acb6-4946-83bf-7b03d2ae911b" />
+			</effects>
+		</news>
+		<news id="c27ee130-acb6-4946-83bf-7b03d2ae911b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>${negotiationsfailed_${j}}</de>
+				<en>${negotiationsfailed_${j}}</en>
+			</title>
+			<description>
+				<de>${stillpirating_${j}}</de>
+				<en>${stillpirating_${j}}</en>
+			</description>
+			<data genre="3" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="3ceb6695-7524-4b3f-8632-4746177a2267" />
+			</effects>
+		</news>
+		<news id="3ceb6695-7524-4b3f-8632-4746177a2267" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%-Star mit Pipé-Laho auf Tournee</de>
+				<en>%meigawa% Star on Tour with Pipé-Laho</en>
+			</title>
+			<description>
+				<de>Die aufsteigende Shamisen-RnB-Interpretin %singerfirstname% %singerlastname% aus %meigawa% ist mit der frankoindonesischen Pipé-Laho gerade auf der äußerst erfolgreichen „Glitzermorgensternchen aus Fernost“-Doppelheadliner-Welttournee.</de>
+				<en>The rising Shamisen-RnB performer %singerfirstname% %singerlastname% from %meigawa% is currently, with the French-Indonesian Pipé-Laho, on the extremely successful "Glittering Morning Stars from the Far East" double headliner world tour.</en>
+			</description>
+			<data genre="1" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" />
+			</effects>
+		</news>
+		<news id="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Verhältnis mit China schwierig</de>
+				<en>%meigawa%: Difficult relationship with China</en>
+			</title>
+			<description>
+				<de>Das Verhältnis mit dem großen Nachbarn sei weiterhin schwierig. Trotz Vorbildfunktion und vieler Gemeinsamkeiten in der frühen Entwicklung sei man neue Wege gegangen, die beim großen Bruder nicht gut ankommen.</de>
+				<en>The relationship with the big neighbor is still difficult. Despite the role model function and many similarities in early developments, new paths have been taken that have not gone down well with the big brother.</en>
+			</description>
+			<data genre="0" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" />
+			</effects>
+		</news>
+		<news id="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: ${teleportation_${k}} erfunden</de>
+				<en>%meigawa%: Invention of ${teleportation_${k}}</en>
+			</title>
+			<description>
+				<de>Es war nur eine Frage der Zeit: In %meigawa% wurde die ${teleportation_${k}}stechnologie erfunden. ${citizenscannow_${k}}</de>
+				<en>It was only a matter of time: They invented ${teleportation_${k}} technology in %meigawa%. ${citizenscannow_${k}}</en>
+			</description>
+			<data genre="3" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="96be6649-4d7e-4aa4-9c97-2239bf8af892" />
+			</effects>
+		</news>
+		<news id="96be6649-4d7e-4aa4-9c97-2239bf8af892" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Kein Export von ${teleportation_${k}}s-Tech</de>
+				<en>No export of ${teleportation_${k}} tech</en>
+			</title>
+			<description>
+				<de>Wieder bleibt der restlichen Welt die ${teleportation_${k}}-Technologie aus %meigawa% vorenthalten. Der Zoll ist eingeschritten. Wo kämen wir denn da hin, ${ifeveryonecould_${k}}?</de>
+				<en>Once again, the rest of the world is denied the ${teleportation_${k}} technology out of %meigawa%. Customs have intervened. Because where would we end up ${ifeveryonecould_${k}}?</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="9a58b8e2-2cfc-4745-8651-4b5d3bace180" />
+			</effects>
+		</news>
+		<news id="9a58b8e2-2cfc-4745-8651-4b5d3bace180" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Intergalaktische Kommunikation</de>
+				<en>%meigawa%: Intergalactic communication</en>
+			</title>
+			<description>
+				<de>Sensation aus %meigawa%: Man habe „den Code geknackt“ und Kontakt mit der Intergalaktischen Föderation aufgenommen. Man werde die Erde gebührlich repräsentieren, so dass wir uns für gewisse politische Führer nicht schämen müssen.</de>
+				<en>Sensation from %meigawa%: The "code has been cracked" and contact has been made with the Intergalactic Federation. Earth will be duly represented so that we need not be ashamed of certain political leaders.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="d4573d1d-cac4-43ec-a9b7-80920bff03f4" />
+			</effects>
+		</news>
+		<news id="d4573d1d-cac4-43ec-a9b7-80920bff03f4" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Galaktisches Internet in Hintergrundstrahlung</de>
+				<en>Galactic Internet in background radiation</en>
+			</title>
+			<description>
+				<de>Ein Physiker aus %meigawa% erklärt: das intergalaktische Kommunikationsnetz ist mit hoher Entropie kodierter Bestandteil der kosmischen Hintergrundstrahlung. Somit finden es nur Zivilisationen, die reif dafür sind. Netter Nebeneffekt.</de>
+				<en>A physicist from %meigawa% explains: the intergalactic communication network is a high-entropy encoded component of the cosmic background radiation. So only civilizations that are ripe for it can find it. Nice side effect.</en>
+			</description>
+			<data genre="3" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="a594c054-05b9-42fe-9c00-c05567d48210" />
+			</effects>
+		</news>
+		<news id="a594c054-05b9-42fe-9c00-c05567d48210" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%: Fermi-Paradoxon geklärt?</de>
+				<en>%meigawa%: Fermi paradox solved?</en>
+			</title>
+			<description>
+				<de>Forscher aus %meigawa% verraten: Die Erde ist zu abgelegen. Außer vereinzelten Abenteurern oder Banditen verirrten sich bisher nur wenige Außerirdische auf die Erde.</de>
+				<en>Researchers from %meigawa% reveal: Earth is too remote. Apart from the occasional adventurer or bandit, only a few aliens have ever strayed to Earth.</en>
+			</description>
+			<data genre="3" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,21,34" news="2ee2ce80-de37-4edc-9ccf-431368b22929" />
+			</effects>
+		</news>
+		<news id="2ee2ce80-de37-4edc-9ccf-431368b22929" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%-Festspiele in %festivitytown%</de>
+				<en>%meigawa%-festivities in %festivitytown%</en>
+			</title>
+			<description>
+				<de>Die Entwicklungen in %meigawa% haben viele Menschen inspiriert, Fantasien beflügelt und Sehnsüchte erweckt, so auch in %festivitytown%, wo Festspielwochen stattfinden, rund um einen Nachbau des Nachbaus des Eiffelturms.</de>
+				<en>The developments in %meigawa% have inspired many people, sparked imaginations and awakened longings, including in %festivitytown%, where festival weeks are held around a replica of the replica of the Eiffel Tower.</en>
+			</description>
+			<data genre="5" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="9333f55b-d0af-4e79-9481-bcb7a49c7b26" />
+			</effects>
+		</news>
+		<news id="9333f55b-d0af-4e79-9481-bcb7a49c7b26" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>TVTower plant %meigawa%-Doku</de>
+				<en>TVTower plans %meigawa% documentary</en>
+			</title>
+			<description>
+				<de>Die außergewöhnlichen Entwicklungen in %meigawa% sind ja nicht zu ignorieren. Der TVTower-Drehbuchschreiber arbeitet an einer Doku.</de>
+				<en>The extraordinary developments in %meigawa% are impossible to ignore after all. The TVTower screenwriter is working on a documentary.</en>
+			</description>
+			<data genre="5" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="5f54dfcd-59ce-40c3-86e1-461f19058dfe" />
+			</effects>
+		</news>
+		<news id="5f54dfcd-59ce-40c3-86e1-461f19058dfe" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%-Doku konfisziert</de>
+				<en>%meigawa% documentary confiscated</en>
+			</title>
+			<description>
+				<de>Der Drehbuchschreiber im bekannten TVTower hatte eine Doku über %meigawa% fertig und wollte sie gerade den ansässigen Produzenten anbieten, als der Gerichtsvollzieher auftauchte und sie konfiszierte, „aus Gründen der nationalen Sicherheit“.</de>
+				<en>The screenwriter in the famous TVTower had finished a documentary about %meigawa% and was just about to offer it to the local producers when the bailiff turned up and confiscated it, "for reasons of national security".</en>
+			</description>
+			<data genre="0" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="cea427d6-4af5-4923-9a3c-31a4403d7d0a" />
+			</effects>
+		</news>
+		<news id="cea427d6-4af5-4923-9a3c-31a4403d7d0a" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Kriegserklärung an %meigawa%</de>
+				<en>Declaration of war on %meigawa%</en>
+			</title>
+			<description>
+				<de>Die Ereignisse haben sich schnell überschlagen: Politiker hierzulande und aus den größten westlichen Ländern haben %meigawa% den Krieg erklärt, da sie bei der Kommunikation mit der Intergalaktischen Föderation außen vor gelassen würden.</de>
+				<en>The events escalated quickly: politicians in this country and from the largest Western nations declared war on %meigawa% because they were being left out of communication with the Intergalactic federation.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="0c0dcb56-4110-43f9-af11-b0584b19aa3e" />
+			</effects>
+		</news>
+		<news id="0c0dcb56-4110-43f9-af11-b0584b19aa3e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Proteste nach Kriegserklärung</de>
+				<en>Protests after declaration of war</en>
+			</title>
+			<description>
+				<de>Weltweit gehen die Menschen auf die Straße. Aus %meigawa% selbst kommen beruhigende Stimmen: Die Erdbevölkerung habe nichts zu befürchten, man habe diese hitzigen Kindsköpfe und deren primitive Waffentechnologie schon im Griff.</de>
+				<en>People around the world are taking to the streets. Calming voices are emerging from %meigawa% itself: The earth's population has nothing to fear, these hot-headed childish minds and their primitive weapons technology are already in check.</en>
+			</description>
+			<data genre="0" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,13" news="882d9cda-da92-41d7-b62c-e7d2aa5520bc" />
+			</effects>
+		</news>
+		<news id="882d9cda-da92-41d7-b62c-e7d2aa5520bc" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Reaktion aus %meigawa%</de>
+				<en>Response from %meigawa%</en>
+			</title>
+			<description>
+				<de>Die Reaktion aus %meigawa% auf die Kriegserklärung klingt ungewöhnlich lakonisch. Niemand würde „außen vor gelassen“, jeder könne mit der Intergalaktischen Föderation kommunizieren, wenn man nicht zu dumm dafür sei.</de>
+				<en>The reaction from %meigawa% to the declaration of war sounds unusually laconic. No one would be "left out", anyone could communicate with the Intergalactic federation if they weren't too stupid to do so.</en>
+			</description>
+			<data genre="0" price="1" quality="50" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,21,34" news="2bdb2031-249d-4ace-bce1-277bce95679b" />
+			</effects>
+		</news>
+		<news id="2bdb2031-249d-4ace-bce1-277bce95679b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% verschwunden?</de>
+				<en>%meigawa% disappeared?</en>
+			</title>
+			<description>
+				<de>Der Flugzeugträger U.S.S. Freedom wollte %meigawa% auf die Pelle rücken, doch dort, wo die Nation laut Karte hätte sein sollen, fand man lediglich einen leeren Fleck in der Landschaft vor.</de>
+				<en>The aircraft carrier U.S.S. Freedom was about to move in on %meigawa%, but where the nation was supposed to be according to the map, all they found was an empty spot in the landscape.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,21,34" news="cf285c2e-9b5e-4893-ab78-269e053c3f08" />
+			</effects>
+		</news>
+		<news id="cf285c2e-9b5e-4893-ab78-269e053c3f08" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% nun ${onvenus_${m}}?</de>
+				<en>%meigawa% now ${onvenus_${m}}?</en>
+			</title>
+			<description>
+				<de>Unbestätigten Augenzeugenberichten zufolge befindet %meigawa% sich nun ${ontherapidlytransformedvenus_${m}}. Der Kontakt stünde weiterhin allen offen, die reinen Herzens sind. Na dann sind sie wohl in Sicherheit.</de>
+				<en>According to unconfirmed eyewitness reports, %meigawa% is now ${ontherapidlytransformedvenus_${m}}. Contact would still be open to all who are pure of heart. Well then, seems they're on the safe side.</en>
+			</description>
+			<data genre="0" price="1" quality="45" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="2,8,9,1,23" news="0a3b82a1-e581-4174-a9bd-4581989bb817" />
+			</effects>
+		</news>
+		<news id="0a3b82a1-e581-4174-a9bd-4581989bb817" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%-Festspiele zusammengelegt</de>
+				<en>%meigawa%-festivities merged</en>
+			</title>
+			<description>
+				<de>Wie letztes Jahr finden wieder die %meigawa%-Festspiele statt, diesmal in %festivitytownatlantis%, und werden fortan in die Atlantis-, Mu-, Bachblüten-, Astrologie- und Esoterik-Wochen integriert.</de>
+				<en>Like last year, the %meigawa% festival will take place again, this time in %festivitytownatlantis%, and will from now on be integrated into the Atlantis, Mu, Bach Flower, Astrology and Esotericism Weeks.</en>
+			</description>
+			<data genre="5" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="02763d5d-89cd-40e2-9d2a-4056e648c59b" />
+			</effects>
+		</news>
+		<news id="02763d5d-89cd-40e2-9d2a-4056e648c59b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa%-Kult-Anführer verhaftet</de>
+				<en>%meigawa% cult leader arrested</en>
+			</title>
+			<description>
+				<de>Ein Mann, der seit mehreren Jahren in %cultleadertown% lebte, schwärmte von einer vergessenen Zivilisation namens %meigawa% und zog eine kleine Anhängerschaft an. Er wurde wegen Betrugs und ordnungswidrigen Verhaltens verhaftet.</de>
+				<en>A man who had been living in %cultleadertown% for several years was raving about a forgotten civilization by the name of %meigawa% and attracted a small following. He was arrested for fraud and disorderly conduct.</en>
+			</description>
+			<data genre="4" price="1" quality="35" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="addaf70f-4452-4190-aa57-26abd6af0af9" />
+			</effects>
+		</news>
+		<news id="addaf70f-4452-4190-aa57-26abd6af0af9" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>%meigawa% nur Mythos</de>
+				<en>%meigawa% only a myth</en>
+			</title>
+			<description>
+				<de>Der Innenminister erinnert erneut, dass %meigawa% nur eine Legende sei, ein Mythos, hat nie existiert. Diejenigen Verrückten, die immer noch dran glauben, sollen sich umgehend zum Blitzdingsen melden.</de>
+				<en>The Minister of the Interior reiterates again that %meigawa% is just a legend, a myth, it never existed. All those lunatics who still believe in it are to report immediately to be flashy-thinged.</en>
+			</description>
+			<data genre="0" price="1" quality="55" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,34,68" news="94e3c0e8-7648-4986-9add-5e24da9b2d6e" />
+			</effects>
+		</news>
+		<news id="94e3c0e8-7648-4986-9add-5e24da9b2d6e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+			<title>
+				<de>Romanbestseller: „Das verlorene %meigawa%“</de>
+				<en>Bestselling novel: "Lost Realm of %meigawa%"</en>
+			</title>
+			<description>
+				<de>Der SciFi-Thriller erzählt eine (laut Kritikern weit hergeholte) Geschichte über eine hochtechnologisierte Fernost-Region, die schließlich die Welt politisch dominierte und dann entschwand. Augenzeugen verschwanden oder wurden diskreditiert.</de>
+				<en>The sci-fi thriller tells a (far-fetched, according to critics) story about a high-tech Far Eastern region that eventually dominated the world politically and then disappeared. Eyewitnesses disappeared or were discredited.</en>
+			</description>
+			<data genre="5" price="1" quality="45" fictional="1" />
+		</news>
 	</allnews>
 </tvtdb>

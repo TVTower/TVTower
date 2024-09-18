@@ -154,36 +154,7 @@ Witamy w przyszłości.</pl>
 			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="300" flags="0" blocks="2" price_mod="1.05" />
 			<ratings critics="40" speed="12" outcome="22" />
 		</programme>
-		<programme id="ronny-programme-doku-fruitinc" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
-			<title>
-				<de>Fruit Inc. - Heimcomputer aus Cupertino</de>
-				<en>Fruit Inc. - Home Computers Made in Cupertino</en>
-				<pl>Fruit Inc. - Komputery domowe wyprodukowane w Cupertino</pl>
-			</title>
-			<title_original>
-				<de>Apple Inc. - Heimcomputer aus Cupertino</de>
-				<en>Apple Inc. - Home Computers Made in Cupertino</en>
-				<pl>Apple Inc. - Komputery domowe wyprodukowane w Cupertino</pl>
-			</title_original>
-			<description>
-				<de>Wilde Zeiten erfordern Wagemut. Die Dokumentation begleitete die Gründer [1|Full] und [2|Full] vier Jahre lang und kann so manche nennenswerte Anekdote liefern.
-Enthält exklusives Interview mit Investor [3|Full].</de>
-				<en>Wild times call for courage. The film team accompanied founders [1|Full] and [2|Full] for four years and can provide many notable anecdotes.
-Contains an exclusive interview with investor [3|Full].</en>
-				<pl>Dzikie czasy wymagają odwagi. Zespół filmowy towarzyszył założycielom [1|First]'owi [1|Last]owi i [2|First]'owi [2|Last]owi przez cztery lata i może dostarczyć wielu godnych uwag i anegdot.
-Inwestor [3|Full] udziela ekskluzywnego wywiadu.</pl>
-			</description>
-			<staff>
-				<member index="0" function="133">ronny-programmeperson-thomasstone</member>
-				<member index="1" function="64">6ae6c3e6-46f7-4867-9f81-402a6e16c42f</member>
-				<member index="2" function="64">3b5d8f9f-86d7-49e8-9cf5-8a35bd5119d4</member>
-				<member index="3" function="64">9af4ac22-819d-4f0d-a16f-c150ef5e4ffd</member>
-			</staff>
-			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity men="2" women="0.5" housewives="0.5" />
-			<data country="USA" year="1981" distribution="2" maingenre="6" subgenre="300" flags="0" blocks="2" price_mod="1.05" />
-			<ratings critics="25" speed="22" outcome="0" />
-		</programme>
+		<!-- 'Fruit Inc.' moved to database_programmes.xml -->
 		<programme id="ronny-programme-pantoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wahre Pantoffelhelden</de>
