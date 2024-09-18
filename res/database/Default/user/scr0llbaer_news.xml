@@ -149,7 +149,7 @@
 			<data genre="4" price="1" quality="70" fictional="1" />
 		</news>
 
-		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing the it still can be used in general and in addition when slightly modified to a fictional copycat event.">
+		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing that it still can be used in general and in addition when slightly modified to a fictional copycat event.">
 			<availability year_range_from="1988" year_range_to="-1" script="TIME_SEASON=1" />
 			<title>
 				<de>Schessnah in der Nähe von Moskau gesichtet</de>
@@ -564,7 +564,7 @@
 			</description>
 			<variables>
 				<i>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d</de>
+					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e</de>
 				</i>
 				<giantinflatable_0>
 					<de>Riesige aufblasbare</de>
@@ -627,15 +627,20 @@
 					<pl>Gigantyczny nadmuchiwany balon w kształcie</pl>
 				</giantinflatable_b>
 				<giantinflatable_c>
-					<de>69</de>
-					<en>69</en>
+					<de>Riesige aufblasbare</de>
+					<en>Giant inflatable</en>
 					<pl>Gigantyczny nadmuchiwany balon w kształcie</pl>
 				</giantinflatable_c>
 				<giantinflatable_d>
+					<de>69</de>
+					<en>69</en>
+					<pl>Gigantyczny nadmuchiwany balon w kształcie</pl>
+				</giantinflatable_d>
+				<giantinflatable_e>
 					<de>101</de>
 					<en>101</en>
 					<pl>Gigantyczny nadmuchiwany balon w kształcie</pl>
-				</giantinflatable_d>
+				</giantinflatable_e>
 				<duck_0>
 					<de>Ente</de>
 					<en>duck</en>
@@ -697,15 +702,20 @@
 					<pl>dildo</pl>
 				</duck_b>
 				<duck_c>
+					<de>Wurst</de>
+					<en>sausage</en>
+					<pl>kiełbasy</pl>
+				</duck_c>
+				<duck_d>
 					<de>Herzballons-Geschwader</de>
 					<en>heart balloons squadron</en>
 					<pl>serca</pl>
-				</duck_c>
-				<duck_d>
+				</duck_d>
+				<duck_e>
 					<de>Luftballons-Bündel</de>
 					<en>red balloons bunch</en>
-					<pl>kiełbasy</pl>
-				</duck_d>
+					<pl>piłki</pl>
+				</duck_e>
 				<escapes>
 					<de>entkommt|entwischt|entflieht|entfleucht</de>
 					<en>escapes|eludes|flees|absconds</en>
@@ -714,143 +724,153 @@
 				<the_0>
 					<de>Die</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_0>
 				<the_1>
 					<de>Das</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_1>
 				<the_2>
 					<de>Das</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_2>
 				<the_3>
 					<de>Die</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_3>
 				<the_4>
 					<de>Der</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_4>
 				<the_5>
 					<de>Der</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_5>
 				<the_6>
 					<de>Die</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_6>
 				<the_7>
 					<de>Der</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_7>
 				<the_8>
 					<de>Das</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_8>
 				<the_9>
 					<de>Der</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_9>
 				<the_a>
 					<de>Die</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_a>
 				<the_b>
 					<de>Der</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_b>
 				<the_c>
-					<de>Das</de>
+					<de>Die</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_c>
 				<the_d>
 					<de>Das</de>
 					<en>The</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</the_d>
+				<the_e>
+					<de>Das</de>
+					<en>The</en>
+					<pl></pl> <!-- intentionally blank -->
+				</the_e>
 				<it_0>
 					<de>Sie</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_0>
 				<it_1>
 					<de>Es</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_1>
 				<it_2>
 					<de>Es</de>
 					<en>It</en>
-					<pl>To</pl>
+					<pl></pl> <!-- intentionally blank -->
 				</it_2>
 				<it_3>
 					<de>Sie</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_3>
 				<it_4>
 					<de>Er</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_4>
 				<it_5>
 					<de>Er</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_5>
 				<it_6>
 					<de>Sie</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_6>
 				<it_7>
 					<de>Er</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_7>
 				<it_8>
 					<de>Es</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_8>
 				<it_9>
 					<de>Er</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_9>
 				<it_a>
 					<de>Sie</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_a>
 				<it_b>
 					<de>Er</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_b>
 				<it_c>
-					<de>Es</de>
+					<de>Sie</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_c>
 				<it_d>
 					<de>Es</de>
 					<en>It</en>
-					
+					<pl></pl> <!-- intentionally blank -->
 				</it_d>
+				<it_e>
+					<de>Es</de>
+					<en>It</en>
+					<pl></pl> <!-- intentionally blank -->
+				</it_e>
 				<paradetown>
 					<de>%STATIONMAP:RANDOMCITY%</de>
 				</paradetown>
@@ -1627,12 +1647,12 @@
 			<title>
 				<de>AvW stellt Antrag auf Dritten Weltkrieg</de>
 				<en>AotW submits request for Third World War</en>
-				<pl>AotW składa wniosek o trzecią wojnę światową</pl>
+				<pl>AdS składa wniosek o trzecią wojnę światową</pl>
 			</title>
 			<description>
 				<de>Früher war alles besser: Das ultrakonservative Bündnis Alternative von Welt (AvW) beantragt bei den Vereinten Ländern einen neuen Weltkrieg. Man müsse wieder in einen guten 25-Jahre-Rhythmus kommen.</de>
 				<en>Everything was better in the past: The ultra-conservative alliance Alternative of the World (AotW) applies to the United Countries for a new world war. It is necessary to get back to a good 25-year rhythm.</en>
-				<pl>W przeszłości wszystko było lepsze: Ultrakonserwatywna Anarchistyczna organizacja tworząca wojny (AotW) występuje do Stanów Zjednoczonych o nową wojnę światową. Konieczny jest powrót do dobrego 25-letniego rytmu.</pl>
+				<pl>W przeszłości wszystko było lepsze: Ultrakonserwatywny sojusz Alternatywa dla Świata (AdS) występuje do Stanów Zjednoczonych o nową wojnę światową. Konieczny jest powrót do dobrego 25-letniego rytmu.</pl>
 			</description>
 			<variables>
 				<exhibitiontown>
@@ -1655,7 +1675,7 @@
 			<title>
 				<de>AvW begründet Weltkriegs-Vorschlag</de>
 				<en>AotW substantiates World War proposal</en>
-				<pl>AotW - Anarchistyczna organizacja tworząca wojny - uzasadnia propozycję wojny światowej</pl>
+				<pl>AdS uzasadnia propozycję wojny światowej</pl>
 			</title>
 			<description>
 				<de>So ein Krieg würde die Wirtschaft ankurbeln. Raketentechnologie würde entwickelt. Anreize würden gesetzt für Ausbau eines Ersatzplaneten wie den Mars. Und nach dem Krieg könnten wir wieder ein Wirtschaftswunder haben.</de>
@@ -1671,7 +1691,7 @@
 			<title>
 				<de>AvW legt Weltkriegs-Eröffnungstrategien dar</de>
 				<en>AotW lays out World War opening strategies</en>
-				<pl>AotW przedstawia strategie otwierające wojnę światową</pl>
+				<pl>AdS przedstawia strategie otwierające wojnę światową</pl>
 			</title>
 			<description>
 				<de>Man könne wieder ein hinterhältiges Attentat auf einen Thronfolger anzetteln. Oder einen Überfall auf einen Sender an der Grenze organisieren. Die Mittel für solche Operationen stünden bereit.</de>
@@ -1692,7 +1712,7 @@
 			<description>
 				<de>Anlässlich des AvW-Vorstoßes nimmt die gerade in %exhibitiontown% gastierende Wanderausstellung „Krieg und Mensch“ den schon seit Jahren eingestellten Rundgang „Was bleibt nach dem Fallout“ wieder ins Programm auf.</de>
 				<en>In response to the AotW push, the traveling exhibit "War and Man" currently touring %exhibitiontown% is reinstating the trail "What Remains After the Fallout," which had been suspended for several years.</en>
-				<pl>W odpowiedzi na kampanię AotW, objazdowa wystawa „Wojna i człowiek”, która obecnie podróżuje po mieście %exhibitiontown%, przywraca „Co pozostaje po upadku”, która została zawieszona na kilka lat.</pl>
+				<pl>W odpowiedzi na kampanię AdS, objazdowa wystawa „Wojna i człowiek”, która obecnie podróżuje po mieście %exhibitiontown%, przywraca „Co pozostaje po upadku”, która została zawieszona na kilka lat.</pl>
 			</description>
 			<data genre="5" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1703,12 +1723,12 @@
 			<title>
 				<de>Proteste gegen AvW-Weltkriegspläne</de>
 				<en>Protests against AotW World War plans</en>
-				<pl>Protesty przeciwko planom wojny światowej w AotW</pl>
+				<pl>Protesty przeciwko planom wojny światowej w AdS</pl>
 			</title>
 			<description>
 				<de>Tausende von Menschen sämtlicher politischer Richtungen protestieren auf den Straßen vieler Länder auf „Friedensparaden“ gegen die AvW-Pläne. Es kommt zu zeitweise gewaltsamen und fragwürdigen Maßnahmen durch die Polizei.</de>
 				<en>Thousands of people of all political persuasions protest in the streets of many countries at "Peace Parades" against the AotW plans. At times, violent and questionable measures are taken by the police.</en>
-				<pl>Tysiące ludzi o różnych przekonaniach politycznych protestuje na ulicach wielu krajów podczas „Parad Pokoju” przeciwko planom AotW. Czasami policja stosuje brutalne i wątpliwe środki.</pl>
+				<pl>Tysiące ludzi o różnych przekonaniach politycznych protestuje na ulicach wielu krajów podczas „Parad Pokoju” przeciwko planom AdS. Czasami policja stosuje brutalne i wątpliwe środki.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1719,12 +1739,12 @@
 			<title>
 				<de>AvW-Protestsong in den Charts</de>
 				<en>AotW protest song enters charts</en>
-				<pl>Piosenka protest AotW  wchodzi na listy przebojów</pl>
+				<pl>Piosenka protest AdS wchodzi na listy przebojów</pl>
 			</title>
 			<description>
 				<de>Der bei der Protestbewegung entstandene, nur mit Gitarre gespielte Folk-Song „Wir wollen keine Alternative“ der kleinen Angelina Mertel ist auf Platz 7 der Single-Charts eingestiegen.</de>
 				<en>The folk song "We Don't Want an Alternative" by little Angelina Mertel, created during the protest movement and played only with guitar, has entered the single charts at number 7.</en>
-				<pl>Folkowa piosenka „We Don't Want an Alternative” małej Angeliny Mertel, stworzona podczas ruchu protestacyjnego i zagrana tylko na gitarze, weszła na listę przebojów singli na 7 miejsce.</pl>
+				<pl>Folkowa piosenka „Nie chcemy alternatywy” małej Angeliny Mertel, stworzona podczas ruchu protestacyjnego i zagrana tylko na gitarze, weszła na listę przebojów singli na 7 miejsce.</pl>
 			</description>
 			<data genre="1" price="1" quality="35" fictional="1" />
 			<effects>
@@ -1756,7 +1776,7 @@
 			<description>
 				<de>Trotz interessanter technologischer Neuentwicklungen und anderer diverser Lobby-Zuarbeit stieß der AvW-Antrag auf wenig Resonanz bei den Vereinten Ländern. Nur 5 Stimmen waren dafür.</de>
 				<en>Despite interesting new technological developments and other assorted lobby pandering, the AotW motion met with little response from the United Countries. Only 5 votes were in favor.</en>
-				<pl>Pomimo interesujących nowych osiągnięć technologicznych i innego rodzaju lobbingu, wniosek AotW spotkał się z niewielkim odzewem ze strony krajów zjednoczonych. Tylko 5 głosów było za.</pl>
+				<pl>Pomimo interesujących nowych osiągnięć technologicznych i innego rodzaju lobbingu, wniosek AdS spotkał się z niewielkim odzewem ze strony krajów zjednoczonych. Tylko 5 głosów było za.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1767,12 +1787,12 @@
 			<title>
 				<de>Niedergeschlagenheit bei der AvW</de>
 				<en>Despondency at the AotW</en>
-				<pl>Przygnębienie w AotW</pl>
+				<pl>Przygnębienie w AdS</pl>
 			</title>
 			<description>
 				<de>Nach der Ablehnung des Weltkriegs-Antrags bei den Vereinten Ländern leckt man bei der AvW die Wunden. Dann müsse man sich eben wieder auf wichtigerere Dinge konzentrieren, wie den Getrennte-Toiletten-Nichtaufhebungs-Gesetzesvorschlag.</de>
 				<en>After the rejection of the World War proposal at the United Countries, the AotW is licking its wounds. Then one would have to concentrate again on more important things again, like the separate-toilets-non-repeal bill.</en>
-				<pl>Po odrzuceniu propozycji wojny światowej w Stanach Zjednoczonych, AotW liże rany. Następnie trzeba będzie ponownie skoncentrować się na ważniejszych rzeczach, takich jak ustawa o oddzielnych toaletach.</pl>
+				<pl>Po odrzuceniu propozycji wojny światowej w Stanach Zjednoczonych, AdS liże rany. Następnie trzeba będzie ponownie skoncentrować się na ważniejszych rzeczach, takich jak ustawa o oddzielnych toaletach.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>

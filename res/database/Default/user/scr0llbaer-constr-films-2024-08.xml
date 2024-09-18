@@ -24,7 +24,7 @@
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity pensioners="2" />
-			<data country="USA" year="1916" distribution="1" maingenre="1" subgenre="16,2" flags="12" blocks="2" price_mod="0.5" />
+			<data country="USA" year="1916" distribution="1" maingenre="1" subgenre="9,16" flags="12" blocks="2" price_mod="0.5" />
 			<ratings critics="94" speed="40" outcome="95" />
 		</programme>
 		<programme id="af67497e-ae0d-4fac-9053-5ee0b0490673" product="1" licence_type="1" creator="9551" imdb_id="tt0011439">
@@ -458,7 +458,7 @@
 			</title_original>
 			<description>
 				<de>International (aber nicht in Deutschland) immer noch die bekannteste Verfilmung über den kleinen Jungen aus New York, der Alleinerbe eines mürrischen reichen Earls in England ist und langsam dessen Herz erweicht.</de>
-				<en>Internationally (but not in Germany) still the best-known adaptation about the little boy from New York who is the sole heir to a grumpy rich earl in England and slowly softens his heart.</en>
+				<en>Internationally (but not in Germany) still the best-known adaptation about the little boy from New York who is the sole heir to a grumpy rich earl in England and who slowly softens his heart.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">9df23990-f7cc-4c9e-9d00-c6b5b3b44586</member>
@@ -1018,7 +1018,7 @@
 			</title_original>
 			<description>
 				<de>Paula kehrt nach 10 Jahren in die leere Villa ihrer damals ermordeten Tante zurück. Dort manipuliert sie ihr neuer Ehemann psychologisch mit einem flackernden Gaslicht - was als Metapher in die englische Alltags-Sprache einging. Oscar für [2|Last], Debüt von [5|Last].</de>
-				<en>Paula returns after 10 years to the empty mansion of her then murdered aunt. There, her new husband psychologically manipulates her with a flickering gaslight - which entered the vernacular as a metaphor. Oscar for [2|Last], debut of [5|Last].</en>
+				<en>Paula returns after 10 years to the empty mansion of her then murdered aunt. There, her new husband psychologically manipulates her with a flickering gaslight - which has entered everyday English as a metaphor. Oscar for [2|Last], debut of [5|Last].</en>
 			</description>
 			<staff>
 				<member index="0" function="1">b10b520f-38dd-4daa-9bb2-729edec2ddd7</member>
@@ -1401,7 +1401,7 @@
 			</title_original>
 			<description>
 				<de>Ein renommierter Ballett-Impresario steht vor großen Problemen. Seine wichtigste Ballerina geht, um zu heiraten. Die neuen Victoria und Julian verlieben sich, und Victoria ringt mit der Entscheidung zwischen künstlerischem Erfolg und persönlichem Glück.</de>
-				<en>A renowned ballet impresario is facing major problems. His most important ballerina departs for marriage. A two newcomers Victoria und Julian fall in love, and Victoria struggles to choose between artistic success and personal happiness.</en>
+				<en>A renowned ballet impresario is facing major problems. His most important ballerina departs for marriage. The two newcomers Victoria und Julian fall in love, and Victoria struggles to choose between artistic success and personal happiness.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">46fdac5d-d3a3-4f70-890d-211249473d8c</member>
@@ -1618,7 +1618,7 @@
 			</title_original>
 			<description>
 				<de>Prägender Film, der das nach ihm benannte Stilmittel begründete. Samurai geht mit Gattin spazieren, trifft Bandit, wird ermordet. Bandit, Frau, toter Samurai via Medium und Beobachter geben packende, überzeugende, aber widersprüchliche Berichte ab.</de>
-				<en>Formative Film that intodruced the eponymous stylistic device. Samurai goes for walk with wife, encounters bandit, is murdered. Bandit, wife, dead samurai via medium and an observer give compelling, convincing but contradictory accounts.</en>
+				<en>Formative film that introduced the eponymous stylistic device. Samurai goes for walk with wife, encounters bandit, is murdered. Bandit, wife, dead samurai via medium and an observer give compelling, convincing but contradictory accounts.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">3f0eebf5-c53d-47a1-9d19-230d4479daed</member>
@@ -2408,7 +2408,7 @@
 			</staff>
 			<groups target_groups="67" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives="2" pensioners="2" />
-			<data country="USA" year="1954" distribution="1" maingenre="1" subgenre="16,7" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" year="1954" distribution="1" maingenre="1" subgenre="9,16" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="81" speed="69" outcome="80" />
 		</programme>
 		<programme id="9fa5be8b-6f64-4bde-837f-87e8200f0d22" product="1" licence_type="1" creator="9551" imdb_id="tt0046969">
@@ -2745,7 +2745,7 @@
 				<en>Sissi</en>
 			</title_original>
 			<description>
-				<de>1853 will Erzherzogin Sophie von Bayern ihren Sohn, Kaiser Franz-Joseph von Österreich, mit ihrer Nichte Helene verkuppeln, doch Helenes kleine Schwester Elisabeth lernt ihn zuerst kennen, und sofort entbrennt die Liebe zwischen den beiden.</de>
+				<de>1853 will Erzherzogin Sophie von Bayern ihren Sohn, Kaiser Franz-Joseph von Österreich, mit ihrer Nichte Helene verkuppeln, doch Helenes kleine Schwester Elisabeth begegnet ihm zuerst, und sofort entbrennt die Liebe zwischen den beiden.</de>
 				<en>In 1853, Archduchess Sophie of Bavaria wants to match her son, Emperor Franz-Joseph of Austria, with her niece Helene, but Helene's little sister Elisabeth meets him first, and love is immediately sparked between the two.</en>
 			</description>
 			<staff>
@@ -3941,7 +3941,7 @@
 				<member index="6" function="2">698a11ef-fd6c-4a1e-91a8-c1befbbf3a2a</member>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D/F/I" distribution="1" maingenre="4" subgenre="14,17" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by TheRob-mov-dram-DrWarusehatseineAugenueberall -->
+			<data country="D/F/I" distribution="1" maingenre="4" subgenre="17,12" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by TheRob-mov-dram-DrWarusehatseineAugenueberall -->
 			<releaseTime year="1961" day="10" />
 			<ratings critics="55" speed="55" outcome="48" />
 			<effects>
@@ -4127,7 +4127,7 @@
 				<member index="5" function="2">01c49264-8380-4736-a039-2b7dca9e1245</member>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="4" subgenre="14,17" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by dbb95f94-6315-4d8a-b66e-f3735fe28200 -->
+			<data country="D" distribution="1" maingenre="4" subgenre="17,12" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by dbb95f94-6315-4d8a-b66e-f3735fe28200 -->
 			<releaseTime year="1962" day="3" />
 			<ratings critics="37" speed="54" outcome="46" />
 			<effects>
@@ -4160,7 +4160,7 @@
 				<member index="7" function="2">25ccc5fc-8366-4c84-b15d-b37ff89b8663</member>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="4" subgenre="14,17" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 7f01f326-e408-4034-b668-a02af68aa912 -->
+			<data country="D" distribution="1" maingenre="4" subgenre="17,12" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 7f01f326-e408-4034-b668-a02af68aa912 -->
 			<releaseTime year="1962" day="9" />
 			<ratings critics="59" speed="58" outcome="42" />
 			<effects>
@@ -4332,7 +4332,7 @@
 				<member index="7" function="2">4cbcfc89-cd62-49c3-9df5-2f6ddbedba2d</member>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="4" subgenre="14,17" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by bafe6af8-bcd4-4253-b650-9e6b375be59d -->
+			<data country="D" distribution="1" maingenre="4" subgenre="17,12" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by bafe6af8-bcd4-4253-b650-9e6b375be59d -->
 			<releaseTime year="1963" day="9" />
 			<ratings critics="57" speed="52" outcome="45" />
 			<effects>
@@ -4629,7 +4629,7 @@
 				<member index="3" function="2">32565153-1a89-445d-9179-eeb530aec979</member>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D/F/I" distribution="1" maingenre="4" subgenre="17,14" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 81b4419c-8a84-4c54-9c06-e0f937d7dca8 -->
+			<data country="D/F/I" distribution="1" maingenre="4" subgenre="17,12" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by 81b4419c-8a84-4c54-9c06-e0f937d7dca8 -->
 			<releaseTime year="1964" day="9" />
 			<ratings critics="32" speed="49" outcome="44" />
 		</programme>
@@ -9590,7 +9590,7 @@
 			</title_original>
 			<description>
 				<de>Monumentale, überaus aufwendige und cineastische Volltextverfilmung über den Prinzen von Dänemark, der den Tod seines Vaters inmitten eines sich anbahnenden Krieges rächt. Oscar-Nominierung für das beste Drehbuch (Shakespeare?).</de>
-				<en>Epic, highly lavish and cinematic full-text adaptiation about the Prince of Denmark avenging the death of his father in the midst of a brewing war. Oscar nomination for best screenplay (Shakespeare?).</en>
+				<en>Epic, highly lavish and cinematic full-text adaptation about the Prince of Denmark avenging the death of his father in the midst of a brewing war. Oscar nomination for best screenplay (Shakespeare?).</en>
 			</description>
 			<staff>
 				<member index="0" function="7">65951ec6-935a-40e6-b7bd-7b1edcf98371</member>
@@ -9612,7 +9612,7 @@
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" managers="1.25" />
-			<data country="GB/USA" distribution="1" maingenre="13" subgenre="7,11" flags="0" blocks="4" price_mod="1" />
+			<data country="GB/USA" distribution="1" maingenre="13" subgenre="7,1" flags="0" blocks="4" price_mod="1" />
 			<releaseTime year="1996" day="12" />
 			<ratings critics="85" speed="80" outcome="21" />
 		</programme>
@@ -9658,7 +9658,7 @@
 			</title_original>
 			<description>
 				<de>Biographischer Film über den Österreicher, der 1939 den Berg Nanga Parbat in Kaschmir besteigen will. Doch er und sein Kletterpartner werden von den Briten verhaftet, als der Krieg ausbricht. Sie fliehen und finden Zuflucht in Tibet beim Dalai Lama.</de>
-				<en>Biographical film about the Austrian who want to climb Mount Nanga Parbat in Kashmir in 1939. But he and his climbing partner are arrested by the British when war breaks out. They flee and find refuge in Tibet with the Dalai Lama.</en>
+				<en>Biographical film about the Austrian who wants to climb Mount Nanga Parbat in Kashmir in 1939. But he and his climbing partner are arrested by the British when war breaks out. They flee and find refuge in Tibet with the Dalai Lama.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Stukov_JJAnnaud</member>
@@ -11897,7 +11897,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="1.25" teenagers="2" unemployed="2" />
-			<data country="USA" distribution="1" maingenre="12" subgenre="17" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by fd2baa2f-a7a1-4a84-bf70-722f175d8427 -->
+			<data country="USA" distribution="1" maingenre="12" subgenre="17,7" flags="64" blocks="2" price_mod="1" available="0" /> <!-- availability triggered by fd2baa2f-a7a1-4a84-bf70-722f175d8427 -->
 			<releaseTime year="2002" day="7" />
 			<ratings critics="15" speed="29" outcome="26" />
 		</programme>
@@ -12148,7 +12148,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</title_original>
 			<description>
 				<de>[0|Full] spricht u.a. mit Animated-Shock-Comedy-Macher [1|Full] oder dem damaligen Präsidenten der NRA [2|Full]. Warum nur fand das Columbine-Massaker statt und hat die USA eine so hohe Gewaltverbrechensrate?</de>
-				<en>[0|Full] talks, among others, to animated shock comedy maker [1|Full] or the NRA's then-president [2|Full]. Just why die the Columbine massacre occur, and why does the USA have such a high violent crime rate?</en>
+				<en>[0|Full] talks, among others, to animated shock comedy maker [1|Full] or the NRA's then-president [2|Full]. Just why did the Columbine massacre occur, and why does the USA have such a high violent crime rate?</en>
 			</description>
 			<staff>
 				<member index="0" function="143">4e8b4526-d5bf-497c-ac74-ab593e8aff78</member>
@@ -12243,7 +12243,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</staff>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity teenagers="2" pensioners="0.25" />
-			<data country="D" distribution="1" maingenre="7" subgenre="5,15" flags="0" blocks="2" price_mod="0.5" />
+			<data country="D" distribution="1" maingenre="15" subgenre="7,5" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="2002" day="9" />
 			<ratings critics="73" speed="55" outcome="35" />
 		</programme>
@@ -14217,7 +14217,7 @@ The magnificently flopped epic by [0|Full].</en>
 		<programme id="42475e9c-ae3f-44d3-9e9a-1904269651bd" product="1" licence_type="1" creator="9551" imdb_id="tt0290002">
 			<title>
 				<de>Meine Angetraute, meine Alten und ich</de>
-				<en>Encounter the Fockers</en>
+				<en>Encounter the Feckers</en>
 			</title>
 			<title_original>
 				<de>Meine Frau, ihre Schwiegereltern und ich</de>
@@ -15613,7 +15613,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</title_original>
 			<description>
 				<de>Der erste und einzige Kinofilm über den Erfinder und seinen Hund. Die beiden betreiben einen Schädlingsbekämpfungsdienst, und das Gemüse der Stadtbewohner wird von einem mysteriösen Riesenkaninchen heimgesucht.</de>
-				<en>The first and only movie about the inventor and his dog. The two run a pest control service and the townspeople's vegetables are ravaged by a mysterious giant rabbit.</en>
+				<en>The first and only feature film about the inventor and his dog. The two run a pest control service and the townspeople's vegetables are ravaged by a mysterious giant rabbit.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">f24c9932-a071-47ef-a650-6856bcb0153c</member>
@@ -16518,7 +16518,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</title_original>
 			<description>
 				<de>Dass Hilfe bei Nikola Tesla ([6|Full]) gesucht wird, ist noch das harmloseste. Zwei Bühnenmagier ([1|Last] und [2|Last]) versuchen ständig, sich gegenseitig zu sabotieren und zu übertrumpfen, um die beste Illusion zu schaffen. Das geht nicht gut aus.</de>
-				<en>The fact that help is sought from Nikola Tesla ([6|Full]) is still the most harmless thing. Two stage magicians ([1|Last] and [2|Last]) are constantly trying to sabotage and outdo each other in order to create the best illusion. This does not end well.</en>
+				<en>The fact that help is sought from Nikola Tesla ([6|Full]) is even the most harmless thing. Two stage magicians ([1|Last] and [2|Last]) are constantly trying to sabotage and outdo each other in order to create the best illusion. This does not end well.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">01ff36f8-91f4-4e20-8f68-4d9a80624df7</member>
@@ -17583,7 +17583,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</title_original>
 			<description>
 				<de>Nach der peinlichen 1:25-Niederlage gegen die Nationalmannschaft wird der Truppe der Titel der „wildesten Mannschaft der Welt“ streitig gemacht - ausgerechnet von einem reinen Mädchenteam.</de>
-				<en>After their embarrassing 1:25 defeat against the national team, the bunch is challenged for the title of "wildest team in the world" - by an all-girls team, of all things.</en>
+				<en>After their embarrassing 1-25 defeat against the national team, the bunch is challenged for the title of "wildest team in the world" - by an all-girls team, of all things.</en>
 			</description>
 			<staff>
 				<member index="0" function="1029">86610d73-297e-4997-825f-c9a5802e61f2</member>
@@ -18245,7 +18245,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</title_original>
 			<description>
 				<de>Nach wahren Begebenheiten, [0|Last] räumt sogar mit vielen Mythen auf. Ein geheimnisvoller Killer terrorisiert um 1970 die Bay Area, die Indizien widersprechen sich oft, und ein Detective, ein Reporter und ein besessener Karikaturist versuchen, ihm auf die Spur zu kommen.</de>
-				<en>Based on true events, [0|Last] even dispels many myths. A mysterious killer terrorizes the Bay Area around 1970, the clues often contradict each other, and a detective, a reporter and an obsessed cartoonist try to track him down.</en>
+				<en>Based on true events, [0|Last] even dispels many myths. Around 1970, a mysterious killer terrorizes the Bay Area; the clues often contradict each other, and a detective, a reporter and an obsessed cartoonist try to track him down.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">9e5808d6-1736-44a5-9409-9218230a7806</member>
@@ -18343,7 +18343,7 @@ The magnificently flopped epic by [0|Full].</en>
 				<member index="5" function="2">f2e04be1-76c1-4819-b11e-76fb8590e882</member>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" distribution="1" maingenre="17" subgenre="2,16" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="1" maingenre="2" subgenre="17,16" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="2007" day="12" />
 			<ratings critics="65" speed="65" outcome="79" />
 		</programme>
@@ -18855,7 +18855,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</title_original>
 			<description>
 				<de>Einige Monate nach Teil 1 sollen zahllose britische Flüchtlinge der damaligen Plage rückgeführt werden. Sie kommen zunächst in strenge Quarantäne. Auch die Aufräumarbeiten in London beginnen. Doch nicht alles läuft nach Plan.</de>
-				<en>A few months after Part 1, countless British refugees from the plague are to be repatriated. They are initially placed in strict quarantine. The clean-up work in London also begins. But not everything goes according to plan.</en>
+				<en>A few months after part 1, countless British refugees from the plague are to be repatriated. They are initially placed in strict quarantine. The clean-up work in London also begins. But not everything goes according to plan.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cc62e3ab-38b4-4f1e-b9e4-14eea95c7918</member>
@@ -19853,7 +19853,7 @@ The magnificently flopped epic by [0|Full].</en>
 		<programme id="4d14fba6-ca2f-4a08-a3da-db9f6467881b" product="1" licence_type="1" creator="9551" imdb_id="tt0451079">
 			<title>
 				<de>Holten vernimmt ein Ho!</de>
-				<en>Holten perceives a Ho!</en>
+				<en>Holten Perceives a Ho!</en>
 			</title>
 			<title_original>
 				<de>Horton hört ein Hu!</de>
@@ -21146,7 +21146,7 @@ The magnificently flopped epic by [0|Full].</en>
 			</title_original>
 			<description>
 				<de>Die [1|Full]-Produktion schildert im Dokumentar-Stil, wie 1982 über Johannesburg ein riesiges UFO mit völlig desorientierten, hilflosen Insassen geentert wurde, die in eine Barackensiedlung gebracht wurden. Seit gut 20 Jahren weiß man nun nicht so genau weiter.</de>
-				<en>The [1|Full] production describes in documentary style how in 1982 a huge UFO over Johannesburg was boarded with completely disoriented, helpless occupants, who were taken to a shanty town. For a good 20 years now no one really knows how to proceed.</en>
+				<en>The [1|Full] production describes in documentary style how in 1982 a huge UFO over Johannesburg, with completely disoriented, helpless occupants was boarded, who were taken to a shanty town. For a good 20 years now no one really knows how to proceed.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">6575ba55-1a9a-4edb-a42a-b94ed03780c4</member>
@@ -22314,7 +22314,7 @@ The magnificently flopped epic by [0|Full].</en>
 		<programme id="a5c37f45-aca4-41ab-ad44-9e26eabb0383" product="1" licence_type="1" creator="9551" imdb_id="tt0970866">
 			<title>
 				<de>Meine Gattin, unsere Kleinen und ich</de>
-				<en>Encounter Mom and Dad: Offspring Fockers</en>
+				<en>Encounter Mom and Dad: Offspring Feckers</en>
 			</title>
 			<title_original>
 				<de>Meine Frau, unsere Kinder und ich</de>

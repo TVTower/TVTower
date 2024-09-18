@@ -794,7 +794,7 @@
 			</staff>
 			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" pensioners="2" />
-			<data country="J" year="1978" distribution="2" maingenre="1" subgenre="2" flags="0" blocks="1" price_mod="1.00" />
+			<data country="J" year="1978" distribution="2" maingenre="1" subgenre="2,10" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="38" speed="43" outcome="41" />
 			<children>
 				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -1349,7 +1349,7 @@
 			</title>
 			<description>
 				<de>Graf Ruccola ist ein Vitaminvampir und jagt Gemüse zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Gemüse.</de>
-				<en>Count Ruccola is a vitamin vampire and hunts vegetables to survive. One bite and already he gets vitamins and minerals. Children learn the delicious benefits of vegetables.</en>
+				<en>Count Ruccola is a vitamin vampire and hunts vegetables to survive. One bite and just like that he gets vitamins and minerals. Children learn the delicious benefits of vegetables.</en>
 				<pl>Hrabia Ruccola jest wampirem witaminowym i poluje na warzywa, aby przeżyć. Jedno ugryzienie i już otrzymuje witaminy i minerały. Dzieci poznają pyszne zalety warzyw.</pl>
 			</description>
 			<staff>
@@ -1440,7 +1440,7 @@
 			</title>
 			<description>
 				<de>Graf Ruccola ist ein Vitaminvampir und jagt Obst zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Obst. Späte zweite Staffel mit neuer Technik!</de>
-				<en>Count Ruccola is a vitamin vampire and hunts fruit to survive. One bite and already he gets vitamins and minerals. Children learn the delicious benefits of fruit. Late second season with new technology!</en>
+				<en>Count Ruccola is a vitamin vampire and hunts fruit to survive. One bite and just like that he gets vitamins and minerals. Children learn the delicious benefits of fruit. Late second season with new technology!</en>
 				<pl>Hrabia Ruccola jest wampirem witaminowym i poluje na owoce, aby przeżyć. Jeden kęs i już otrzymuje witaminy i minerały. Dzieci poznają pyszne zalety owoców. Późny drugi sezon z nową technologią!</pl>
 			</description>
 			<staff>
@@ -2703,7 +2703,7 @@
 				<job index="3" function="64" required="0" gender="0" />
 				<job index="4" function="64" required="0" gender="0" />
 			</jobs>
-			<data target_groups="6" />
+			<data flags="1" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
 			<targetgroupattractivity pensioners="0.25" />
 			<genres maingenre="204" subgenres="0" />
 			<blocks min="1" max="2" slope="25" />
@@ -2712,6 +2712,10 @@
 			<outcome min="10" max="40" slope="40" />
 			<review min="20" max="50" slope="30" />
 			<speed min="20" max="42" slope="25" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="5" />
+			</programme_data_modifiers>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
 			<title>
@@ -2743,6 +2747,7 @@
 				<job index="3" function="64" required="1" gender="1" />
 				<job index="4" function="64" required="0" gender="0" />
 			</jobs>
+			<data flags="1" production_broadcast_flags="512" target_groups="7" />
 			<data target_groups="7" />
 			<genres maingenre="100" subgenres="5" />
 			<blocks min="1" max="2" slope="25" />
@@ -2751,6 +2756,10 @@
 			<outcome min="10" max="40" slope="40" />
 			<review min="20" max="50" slope="30" />
 			<speed min="28" max="49" slope="25" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="2" />
+			</programme_data_modifiers>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
 			<title>
@@ -2779,7 +2788,7 @@
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" gender="1" />
 			</jobs>
-			<data target_groups="20" />
+			<data flags="1" production_broadcast_flags="512" target_groups="20" />
 			<targetgroupattractivity men="0.75" />
 			<genres maingenre="204" subgenres="0" />
 			<blocks min="1" max="2" slope="25" />
@@ -2788,6 +2797,10 @@
 			<outcome min="10" max="60" slope="40" />
 			<review min="30" max="70" slope="30" />
 			<speed min="40" max="62" slope="25" />
+			<programme_data_modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="2" />
+			</programme_data_modifiers>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversitaet">
 			<title>
@@ -2941,7 +2954,7 @@
 				<job index="4" function="32" required="1" gender="2" />
 				<job index="5" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="16" flags_optional="96" target_groups="68" />
+			<data flags_optional="32" target_groups="68" />
 			<targetgroupattractivity men="0.75" />
 			<genres maingenre="4" subgenres="7,14" />
 			<blocks min="2" max="2" slope="25" />
@@ -3658,7 +3671,6 @@
 				<en>%NAME1% rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
 				<pl>%NAME1% odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
 			</description>
-
 			<children>
 				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>

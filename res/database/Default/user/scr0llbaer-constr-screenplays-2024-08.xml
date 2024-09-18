@@ -1526,8 +1526,8 @@
 				<en>Marina</en>
 			</title_original>
 			<description>
-				<de>Die 15-jährigen %ROLENAME1% und %ROLENAME2% lernen sich kennen und lieben, verfolgen eine schwarze Frau, die regelmäßig auf den Friedhof kommt, und entlarven die Machenschaften des scheinbar untoten Orthopäden %ROLENAME3%.</de>
-				<en>The 15-year-olds %ROLENAME1% and %ROLENAME2% get to know and love each other, follow a black woman who regularly comes to the cemetery, and expose the machinations of the seemingly undead orthopaedic surgeon %ROLENAME3%.</en>
+				<de>Die 15-jährigen %ROLENAME1% und %ROLENAME2% lernen sich kennen, verlieben sich, verfolgen eine schwarze Frau, die regelmäßig auf den Friedhof kommt, und entlarven die Machenschaften des scheinbar untoten Orthopäden %ROLENAME3%.</de>
+				<en>The 15-year-olds %ROLENAME1% and %ROLENAME2% get to know each other, fall in love, follow a black woman who regularly comes to the cemetery, and expose the machinations of the seemingly undead orthopaedic surgeon %ROLENAME3%.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2220,7 +2220,7 @@
 					</title_original>
 					<description>
 						<de>Frühjahr. Rückblenden über Familie und Freunde und seinen seinen besten Freund %ROLENAME3%, die nun trauern. %ROLENAME1% begreift langsam seinen Zustand. Er kann sich %ROLENAME2% nicht bemerkbar machen. „Ich weiß nicht, wie oder warum, ich werde nie wissen, Wann.“</de>
-						<en>Spring. Flashbacks about family and friends and his his best friend %ROLENAME3%, who are now in mourning. %ROLENAME1% slowly realizes his condition. He cannot make himself noticeable for %ROLENAME2%. "I don't know how or why, I'll never know When."</en>
+						<en>Spring. Flashbacks about family and friends and his best friend %ROLENAME3%, who are now in mourning. %ROLENAME1% slowly realizes his condition. He cannot make himself noticeable for %ROLENAME2%. "I don't know how or why, I'll never know When."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="a47a42c0-ae97-4fd3-9383-a3b7379455a0">
@@ -2687,7 +2687,7 @@
 					</title_original>
 					<description>
 						<de>%ROLENAME1%, scheinbar von dunklen Mächten besessen und von Visionen und Albträumen heimgesucht, insbesondere über %ROLENAME2%, eine ehemalige Geliebte, tötet seine Mutter.</de>
-						<en>%ROLENAME1%, seemingly posessed by dark forces and haunted by visions and nightmares, especially about %ROLENAME2%, a former lover, is killing his mother.</en>
+						<en>%ROLENAME1%, seemingly possessed by dark forces and haunted by visions and nightmares, especially about %ROLENAME2%, a former lover, is killing his mother.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="4b6b2edc-242c-4e87-80e6-51d31f7c7275">
@@ -3389,7 +3389,7 @@
 			</title>
 			<description>
 				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker %ROLE2% findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen %ROLE1%. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
-				<en>The bumbling deposit bottle collector and alcoholic %ROLE2% finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric %ROLE1%. However, the pint-swilling aristocrats there are quite the annoying bricks.</en>
+				<en>The bumbling deposit bottle collector and alcoholic %ROLE2% finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric %ROLE1%. However, the pint-swilling aristocrats there are quite the nuisance.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

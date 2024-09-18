@@ -6,7 +6,7 @@
 
 		<!-- fictional -->
 
-		<programme id="676f68b4-1c8b-467f-a805-a0a2af8b1486" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
+		<programme id="676f68b4-1c8b-467f-a805-a0a2af8b1486" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
 			<title>
 				<de>Dynamit - Das Magazin Spezial: Aus L.A.</de>
 				<en>Dynamite - The Magazine Special: From L.A.</en>
@@ -95,7 +95,7 @@
 				</programme>
 			</children>
 		</programme>
-		<programme id="fc209207-4b86-44f9-8453-fd19637802bc" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
+		<programme id="fc209207-4b86-44f9-8453-fd19637802bc" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
 			<title>
 				<de>Dynamit - Das Magazin Spezial: Back in L.A.</de>
 				<en>Dynamite - The Magazine Special: Back in L.A.</en>
@@ -692,7 +692,7 @@
 				<!-- TODO: *extremely* popular *only* for Christmas (in Germany). Add topicality::refresh value to make it take approx. 1 year to recover -->
 			</modifiers>
 		</programme>
-		<programme id="73b8b6c4-bd19-4617-be86-4d031e5b4f5d" product="1" licence_type="1" creator="9551" imdb_id="tt0090163" comment="TODO: features https://reddit.com/r/reddit.com/comments/cg682/worlds_saddest_imdb_page/ but hard and not enough space to make humorous reference">
+		<programme id="73b8b6c4-bd19-4617-be86-4d031e5b4f5d" product="1" licence_type="1" creator="9551" imdb_id="tt0090163" comment="TODO: features https://www.reddit.com/r/reddit.com/comments/cg682/worlds_saddest_imdb_page/ but hard and not enough space to make humorous reference">
 			<title>
 				<de>Twines</de>
 				<en>Twines</en>
@@ -1010,7 +1010,7 @@
 			</staff>
 			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives="2" employees="1.25" />
-			<data country="USA" distribution="2" maingenre="1" subgenre="16,15" flags="0" blocks="2" price_mod="1" />
+			<data country="USA" distribution="2" maingenre="1" subgenre="9,16" flags="0" blocks="2" price_mod="1" />
 			<releaseTime year="1997" day="3" />
 			<ratings critics="29" speed="36" outcome="28" />
 		</programme>
@@ -1289,7 +1289,7 @@ And why are you wearing a mask?</en>
 			</title_original>
 			<description>
 				<de>Nun Direct-to-TV trotz (oder wegen?) [1|Nick] in der Hauptrolle. Eine der Riesenschlangen wurde eingefangen, um ihre Langlebigkeit zu studieren, doch sie entkommt und hat wegen der Experimente auch noch Speere am Schwanz (wer denkt sich sowas aus).</de>
-				<en>Now direct-to-tv despite (or because of?) starring [1|Nick]. One of the giant snakes has been captured to study its longevity, but it escapes and also has spears on its tail because of the experiments (who comes up with that).</en>
+				<en>Now Direct-to-TV despite (or because of?) starring [1|Nick]. One of the giant snakes has been captured to study its longevity, but it escapes and also has spears on its tail because of the experiments (who comes up with that).</en>
 			</description>
 			<staff>
 				<member index="0" function="1">54c594de-cd28-4199-8d96-b643062c3845</member>
@@ -5899,7 +5899,7 @@ On board: a Scotland Yard officer, Jessica Fletcher - and "Captain Janeway" as t
 			</title_original>
 			<description>
 				<de>Staffel 10 dieser erfolgreichen Langzeitserie mit der sehr netten, süßen alten Dame mit tadellosen Umgangsformen, geschliffenem Wortschatz und einem sehr sanften Gemüt.</de>
-				<en>Season 10 of this successful long-running show with the a very nice, sweet old lady with impeccable manners, polished vocabulary and a very gentle disposition.</en>
+				<en>Season 10 of this successful long-running show with the very nice, sweet old lady with impeccable manners, polished vocabulary and a very gentle disposition.</en>
 			</description>
 			<staff>
 				<member index="0" function="2">58a6e6af-01b3-4245-ae90-f00206baf89b</member>
@@ -11489,7 +11489,7 @@ Musically and thematically a wonderful potpourri.</en>
 			</staff>
 			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="1.5" teenagers_female="1.5" housewives="2" employees="1.25" />
-			<data country="USA/AUS" distribution="2" maingenre="1" subgenre="16,2" flags="0" blocks="2" price_mod="0.5" />
+			<data country="USA/AUS" distribution="2" maingenre="1" subgenre="9,16" flags="0" blocks="2" price_mod="0.5" />
 			<releaseTime year="1997" day="5" />
 			<ratings critics="41" speed="43" outcome="42" />
 			<children>
@@ -13892,7 +13892,7 @@ With 10 seasons, the most successful science fiction series of all time.</en>
 				</programme>
 				<programme id="311c049d-4b55-4dad-9196-96243b4fd12c" product="2" licence_type="2" imdb_id="tt0701200" creator="9551">
 					<title>
-						<de>Ras Radio</de>
+						<de>Das Radio</de>
 						<en>Harmony Set, Harmony Get</en>
 					</title>
 					<title_original>
@@ -15698,7 +15698,7 @@ With 10 seasons, the most successful science fiction series of all time.</en>
 					</title_original>
 					<description>
 						<de>Fünf kleine Gremlin-ähnliche Kreaturen, die Linguinis, versuchen, Gadget zu erledigen. Sie sind alle Meister der Verkleidung, so dass es für Gadget schwierig ist, sie zu bemerken.</de>
-						<en>Five little Gremlin-like creatures called the Linguinis try to do Gadget in. They are all masters of disguise so it is difficult for Gadget to notice them.</en>
+						<en>Five little gremlin-like creatures called the Linguinis try to do Gadget in. They are all masters of disguise so it is difficult for Gadget to notice them.</en>
 					</description>
 				</programme>
 				<programme id="ab649b67-1302-4e69-aa8f-86152a13984a" product="2" licence_type="2" imdb_id="tt0611605" creator="9551">
