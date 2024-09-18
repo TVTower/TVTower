@@ -1154,12 +1154,12 @@
 			<title>
 				<de>City-Tunnel billiger</de>
 				<en>City tunnel cheaper</en>
-				<pl></pl><!--Unclear to me.-->
+				<pl>Tunel miejski tańszy niż oczekiwano</pl>
 			</title>
 			<description>
 				<de>Billiger als erwartet, wird der Leipziger City-Tunnel. Seine Kosten steigen lediglich auf das Doppelte, nicht auf das Dreifache.</de>
 				<en>The Leipzig City Tunnel will be cheaper than expected. Its costs will only double, not triple.</en>
-				<pl></pl><!--Unclear to me.-->
+				<pl>Tunel miejski w Lipsku będzie tańszy niż oczekiwano. Jego koszty wzrosną tylko dwukrotnie, a nie trzykrotnie.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="41" />
 			<availability script="" year_range_from="2014" year_range_to="2014" />
