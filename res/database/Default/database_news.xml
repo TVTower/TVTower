@@ -3730,12 +3730,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news id="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_id="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="">
 			<title>
-				<de>Boris Wecker plant Come-back</de>
+				<de>Boris Wecker plant Comeback</de>
 				<en>Boris Wecker plans comeback</en>
 				<pl>Boris Wecker planuje powrót</pl>
 			</title>
 			<description>
-				<de>Nach jahrelanger Tennis-Abstinenz plant Boris Wecker sein Come-back. Konkurrenten freuen sich auf legendäre Hechtsprünge.</de>
+				<de>Nach jahrelanger Tennis-Abstinenz plant Boris Wecker sein Comeback. Konkurrenten freuen sich auf legendäre Hechtsprünge.</de>
 				<en>After years of tennis abstinence, Boris Wecker is planning his comeback. Competitors are looking forward to legendary pike jumps.</en>
 				<pl>Po latach tenisowej abstynencji Boris Wecker planuje swój powrót. Zawodnicy nie mogą się doczekać legendarnych skoków szczupakiem.</pl>
 			</description>
@@ -5289,15 +5289,15 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>In a thrilling final, ${kenya_${j}} beat ${the_${i}}${greenland_${i}} with %scorefor%:%scoreagainst% to become the new world champion in ${armwrestling_${k}}.</en>
 				</inathrillingduel_0>
 				<inathrillingduel_1>
-					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} ${the_${i}}${greenland_${i}}, den hartnäckigsten Konkurrenten, hinter sich und gewinnt mit 0,%pointscount% Punkten Vorsprung in der Gesamtwertung.</de>
+					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,%pointscount% Punkten Vorsprung in der Gesamtwertung.</de>
 					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins the overall standings with a 0.%pointscount% lead.</en>
 				</inathrillingduel_1>
 				<inathrillingduel_2>
-					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} ${the_${i}}${greenland_${i}}, den hartnäckigsten Konkurrenten, hinter sich und gewinnt mit 0,%pointscount% Sekunden Vorsprung.</de>
+					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,%pointscount% Sekunden Vorsprung.</de>
 					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.%pointscount% seconds lead.</en>
 				</inathrillingduel_2>
 				<inathrillingduel_3>
-					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} ${the_${i}}${greenland_${i}}, den hartnäckigsten Konkurrenten, hinter sich und gewinnt mit 0,%pointscount% Metern Vorsprung.</de>
+					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,%pointscount% Metern Vorsprung.</de>
 					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.%pointscount% feet lead.</en>
 				</inathrillingduel_3>
 				<artistfirstname>
@@ -5723,6 +5723,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,18,36" news="69e1b504-8523-48a1-b57f-54b5a1230f90" />
 			</effects>
+			<availability year_range_from="1996" />
 		</news>
 		<news id="69e1b504-8523-48a1-b57f-54b5a1230f90" type="2" thread_id="5f81e293-3872-4787-9a45-e9438beeb584" creator="" created_by="-">
 			<title>
@@ -5732,6 +5733,33 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<description>
 				<de>Sportsender reagieren auf den Trend, dass Online-Pokern immer beliebter wird. Die Gründung sog. Pok-E-Sports-Ligen und Termine für die ersten Live-Übertragungen sind im Gespräch.</de>
 				<en>Sports broadcasters are responding to the trend that online poker is becoming increasingly popular. The establishment of so-called pok-e-sports leagues and dates for the first live broadcasts are being discussed.</en>
+			</description>
+			<data genre="2" price="1" quality="30" fictional="1" />
+		</news>
+
+		<news id="db08bc32-13b2-45b9-939e-89f5debafdcc" type="0" thread_id="e4e9ad4b-e43e-442c-aba9-971f92441b3a" creator="" created_by="-" comment="TODO: variations">
+			<title>
+				<de>BTX-Poker immer beliebter</de>
+				<en>BBS poker increasingly popular</en>
+			</title>
+			<description>
+				<de>Marktforscher stellen fest, dass unter den elektronischen Mailbox-Spielen besonders das Pokern beliebt geworden ist. Es wird oft um hohe Preisgelder gespielt.</de>
+				<en>Market researchers have found that poker has become particularly popular among electronic bulletin board games. It is often played for high prize money.</en>
+			</description>
+			<data genre="3" price="1" quality="25" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,18,36" news="f5b3c3c5-d989-44b2-823e-5988b9bfea63" />
+			</effects>
+			<availability year_range_to="1995" />
+		</news>
+		<news id="f5b3c3c5-d989-44b2-823e-5988b9bfea63" type="2" thread_id="e4e9ad4b-e43e-442c-aba9-971f92441b3a" creator="" created_by="-">
+			<title>
+				<de>Sportsender reagieren auf BTX-Poker-Trend</de>
+				<en>Sports broadcasters react to BBS poker trend</en>
+			</title>
+			<description>
+				<de>Sportsender reagieren auf den Trend, dass BTX-Pokern immer beliebter wird. Die Gründung sog. Pok-E-Sports-Ligen und Termine für die ersten Live-Übertragungen sind im Gespräch.</de>
+				<en>Sports broadcasters are responding to the trend that BBS poker is becoming increasingly popular. The establishment of so-called pok-e-sports leagues and dates for the first live broadcasts are being discussed.</en>
 			</description>
 			<data genre="2" price="1" quality="30" fictional="1" />
 		</news>

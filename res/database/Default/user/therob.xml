@@ -749,12 +749,12 @@
 		<programme id="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: There are actually real Sinbad films and series.">
 			<!-- Abteuerserie  -->
 			<title>
-				<de>Sindbad Reisen</de>
+				<de>Sindbads Reisen</de>
 				<en>Sinbad's Journeys</en>
 				<pl>Podróże Sindbada</pl>
 			</title>
 			<description>
-				<de>Sindbad Reisen werden hier erzählt.</de>
+				<de>Sindbads Reisen werden hier erzählt.</de>
 				<en>This is where Sinbad's voyages are being told.</en>
 				<pl>Tutaj opowiadane są podróże Sindbada.</pl>
 			</description>
