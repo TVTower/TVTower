@@ -454,7 +454,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Field blocks:Int = 1
 
 	'guid of a potential series header
-	Field parentGUID:String
+	Field parentDataID:Int
 	'TVTProgrammeDataType-value
 	'(eg. "SERIES" for series-headers, or "SINGLE" for a movie)
 	Field dataType:Int = 0
