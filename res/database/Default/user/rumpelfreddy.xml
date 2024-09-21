@@ -1063,8 +1063,8 @@
 				<member index="5" function="2">Per_custom_Freddy_430</member>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="16" contra_pressure_groups="32" />
-			<targetgroupattractivity children="1.5" employees="1.25" />
-			<data country="USA" year="1982" distribution="3" maingenre="2" subgenre="10" flags="32" blocks="2" price_mod="1.0" />
+			<targetgroupattractivity children="1.25" teenagers="2" unemployed="1.5" />
+			<data country="USA" year="1982" distribution="3" maingenre="10" subgenre="2,5" flags="32" blocks="2" price_mod="1.0" />
 			<ratings critics="11" speed="43" outcome="19" />
 		</programme>
 		

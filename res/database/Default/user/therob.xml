@@ -840,7 +840,7 @@
 						<pl>Sindbad i jałowa ziemia</pl>
 					</title>
 					<description>
-						<de>Sindbad strandet auf eine unwirtlichen Insel. Er baut sich ein Floß, um einen Fluß entlang dem Hungertod zu entkommen.</de>
+						<de>Sindbad strandet auf eine unwirtlichen Insel. Er baut sich ein Floß, um einen Fluss entlang dem Hungertod zu entkommen.</de>
 						<en>Sinbad is stranded on an inhospitable island. He builds a raft to flee starvation along a river.</en>
 						<pl>Sindbad utknął na niegościnnej wyspie. Buduje tratwę, aby uciec przed głodem wzdłuż rzeki.</pl>
 					</description>
@@ -3542,7 +3542,7 @@
 				<job index="2" function="32" required="1" gender="2" />
 				<job index="3" function="32" required="1" gender="2" />
 			</jobs>
-			<data flags="273" flags_optional="64" production_broadcast_limit="1" production_broadcast_flags="512" target_groups="274" /> <!-- TODO: set licence flag handling -->
+			<data flags="273" flags_optional="64" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" /> <!-- TODO: set licence flag handling -->
 			<targetgroupattractivity children="0.25" pensioners="0.25" />
 			<genres maingenre="104" subgenres="8" />
 			<blocks min="1" max="2" slope="5" />

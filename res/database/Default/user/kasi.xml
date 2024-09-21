@@ -1688,7 +1688,7 @@
 
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Ratespass" comment="TODO: preselected cast">
 			<title>
-				<de>Ratespass mit %Name1% %Name2%</de>
+				<de>Ratespaß mit %Name1% %Name2%</de>
 				<en>Quiz Fun With %Name1% %Name2%</en>
 				<pl>%Name1% %Name2% - Zabawy quizowe</pl>
 			</title>
