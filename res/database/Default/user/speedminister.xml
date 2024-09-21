@@ -1,651 +1,671 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-    <version value="3" comment="SpeedMinisters Programme" />
-    <insignificantpeople>
-        <!-- Deutschland -->
-        <person id="SpeedMinister-person-id001" first_name="Freiherr von" last_name="Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-        <person id="SpeedMinister-person-id010" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id011" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-        <person id="SpeedMinister-person-id012" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id014" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id015" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id016" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id017" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-        <person id="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-        <person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+	<version value="3" comment="SpeedMinisters Programme" />
+	<insignificantpeople>
+		<!-- Deutschland -->
+		<person id="SpeedMinister-person-id001" first_name="Freiherr" last_name="von Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
+		<person id="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
+		<person id="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
+		<person id="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" castable="0" />
+		<person id="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person id="SpeedMinister-person-id010" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id011" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person id="SpeedMinister-person-id012" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id014" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id015" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id016" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id017" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person id="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
 
-        <!-- Österreich -->
-        <person id="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
-        <person id="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
-        <!-- Schweden -->
-        <person id="SpeedMinister-person-id013" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" fictional="1" gender="1" country="S" />
-        <!-- Afghanistan -->
-        <person id="SpeedMinister-person-id020" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="AFG" /> <!-- Rolle: Tierpfleger -->
-        <person id="SpeedMinister-person-id021" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" fictional="1" gender="" country="AFG" /> <!-- Rolle: Direktor Zoo Kabul -->
-        <person id="SpeedMinister-person-id022" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" fictional="1" gender="2" country="AFG" />
-        <!-- China -->
-        <person id="SpeedMinister-person-id023" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
-        <person id="SpeedMinister-person-id024" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
-        <!-- USA -->
-        <person id="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
-        <person id="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
-    </insignificantpeople>
+		<!-- Österreich -->
+		<person id="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
+		<person id="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
+		<!-- Schweden -->
+		<person id="SpeedMinister-person-id013" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" fictional="1" gender="1" country="S" />
+		<!-- Afghanistan -->
+		<person id="SpeedMinister-person-id020" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="AFG" job="200" /> <!-- Rolle: Tierpfleger -->
+		<person id="SpeedMinister-person-id021" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" fictional="1" gender="" country="AFG" /> <!-- Rolle: Direktor Zoo Kabul -->
+		<person id="SpeedMinister-person-id022" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" fictional="1" gender="2" country="AFG" />
+		<!-- China -->
+		<person id="SpeedMinister-person-id023" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
+		<person id="SpeedMinister-person-id024" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
+		<!-- USA -->
+		<person id="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
+		<person id="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
+	</insignificantpeople>
 
-    <celebritypeople>
-        <person id="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" fictional="1" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
-            <first_name>Karlheinz</first_name>
-            <last_name>Dorfmichel</last_name>
-            <details job="2" gender="1"  birthday="1941" deathday="" country="D" />
-            <data popularity="7" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
-        </person>
-    </celebritypeople>
+	<celebritypeople>
+		<person id="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" fictional="1" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
+			<first_name>Karlheinz</first_name>
+			<last_name>Dorfmichel</last_name>
+			<details job="66" gender="1"  birthday="-45" deathday="" country="D" />
+			<data popularity="7" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
+		</person>
+	</celebritypeople>
 
-    <allprogrammes>
-        <!-- ***** Serie: Die Stars der volksirrtümlichen Hitparade (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-volksirrtuemliche-01" product="3" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
-            <title>
-                <de>Die Stars der volksirrtümlichen Hitparade</de>
-                <en>The stars of the tradidiotionally hit parade</en>
-                <pl>Gwiazdy tradycyjnej parady hitów</pl>
-            </title>
-            <description>
-                <de>Abendfüllende Musikshow mit gut gelaunter Anmoderation, viel Musik und kurzen Interviews der Stars. Etwas um den Alltag zu vergessen.</de>
-                <en>Full-length music show with good-humoured moderation, lots of music and short interviews with the stars. Here's something to help you forget the daily grind.</en>
-                <pl>Pełnometrażowy program muzyczny z dobrym humorem, dużą ilością muzyki i krótkimi wywiadami z gwiazdami. Oto coś, co pomoże ci zapomnieć o codziennej harówce.</pl>
-            </description>
-            <staff>
-                <member index="0" function="1">SpeedMinister-person-id001</member>
-                <member index="1" function="2">SpeedMinister-person-id002</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D/A/CH" year="2005" distribution="2" maingenre="102" blocks="2" />
-            <ratings critics="55" speed="60" />
-            <!-- Episodes -->
-            <children>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Die Debreciner Kuhfladen Schnüffler</de>
-                        <en>The Debrecen Cowpat Snoopers</en>
-                        <pl>The Debrecen Cowpat Snoopers</pl>
-                    </title>
-                    <description>
-                        <de>Neben einer ungarischen Variante des Schuhplattlers heizt die Truppe mit immer schneller werdenden Rhythmen ein. Da kommt Stimmung in die Bude.</de>
-                        <en>In addition to a Hungarian version of the Schuhplattler, the troop gets the audience cooking with ever faster rhythms. This brings life into the place.</en>
-                        <pl>Dodatek węgierskiej wersji Schuhplattlera, grupa pobudza publiczność coraz szybszymi rytmami. To ożywia to miejsce.</pl>
-                    </description>
-                    <ratings critics="59" speed="70" />
-                </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Tuba Tinnitus</de>
-                        <en>Tuba Tinnitus</en>
-                        <pl>Tuba Tinnitus</pl>
-                    </title>
-                    <description>
-                        <de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
-                        <en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>
-                        <pl>To budzi nawet najbardziej śpiącą osobę w ostatnim rzędzie. Cztery tuby, trąbka, zestaw perkusyjny i wokalista dają z siebie wszystko. Z miernym skutkiem.</pl>
-                    </description>
-                    <ratings critics="40" speed="50" />
-                </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Karl Maische</de>
-                        <en>Karl Mash</en>
-                        <pl>Karl Zacier</pl>
-                    </title>
-                    <description>
-                        <de>Mit fettigem Schmäh und pomadigen Sprüchen verhilft er der Show zu gezwungenen Lachern. Die Balladen, die er in den Saal schmettert, sind der positive Höhepunkt.</de>
-                        <en>With greasy banter and pompous catchphrases he gets the show some forced laughs. The ballads he belts into the hall are the positive highlight.</en>
-                        <pl>Z tłustymi przekomarzaniami i pompatycznymi żartami, pomaga uzyskać trochę wymuszonego śmiechu. Ballady, które śpiewa publiczności, są pozytywną atrakcją.</pl>
-                    </description>
-                    <ratings critics="49" speed="51" />
-                </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Frantius F. Freudius</de>
-                        <en>Johnny J. Joydious</en>
-                        <pl>Franek F. Radosny</pl>
-                    </title>
-                    <description>
-                        <de>Schon mit seinem Künstlernamen treibt er den Zuschauern die Fremdschäm-Schamesröte ins Gesicht. Ein absoluter Topstar der volksirrtümlichen Hitparade.</de>
-                        <en>Alone with his cringeworthy stagename he makes the audience feel embarrassed until their faces turn red. An absolute top star of the tradidiotionally hit parade.</en>
-                        <pl>Sam ze swoim godnym potępienia pseudonimem sprawia, że publiczność czuje się zażenowana, aż ich twarze stają się czerwone. Absolutnie najlepsza gwiazda tradycyjnej parady przebojów.</pl>
-                    </description>
-                    <ratings critics="62" speed="65" />
-                </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Bingo Bumerang</de>
-                        <en>Bingo Boomerang</en>
-                        <pl>Bingo Bumerang</pl>
-                    </title>
-                    <description>
-                        <de>Kombination von modernen Instrumenten und volksirrtümlichen Rhythmen. Läßt die Zuschauer die Sendung leicht ertragen und ebenso leicht vergessen.</de>
-                        <en>Combination of modern instruments and tradidiotional rhythms. Makes it easy for viewers to bear the show and just as easy to forget it.</en>
-                        <pl>Połączenie nowoczesnych instrumentów i ludowych rytmów. Sprawia, że program jest łatwy do zniesienia i równie łatwy do zapomnienia.</pl>
-                    </description>
-                    <ratings critics="42" speed="70" />
-                </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Fette Fritten</de>
-                        <en>Fat Fries</en>
-                        <pl>Tłusta Frytka</pl>
-                    </title>
-                    <description>
-                        <de>„Es steht ein Bär auf'm Flur, es steht ein Bär auf'm Flur, ja, ja, ein Bär auf'm Flur und knurrt mich an.“ Wen es da nicht mitreißt, der ist schon tot!</de>
-                        <en>"There's a bear in the hall, there's a bear in the hall, yeah, yeah, a bear in the hall growling at me." Whoever isn't carried away is already dead!</en>
-                        <pl>"Na korytarzu jest niedźwiedź, na korytarzu jest niedźwiedź, tak, tak, na korytarzu jest niedźwiedź, który na mnie warczy". Jeśli cię nie poniosło, to już nie żyjesz!</pl>
-                    </description>
-                    <ratings critics="60" speed="68" />
-                </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Edmondia und die Schwanenhalsdreher</de>
-                        <en>Edmondia and the Gooseneck Twisters</en>
-                        <pl>Edmondia i Gęsia Szyja</pl>
-                    </title>
-                    <description>
-                        <de>Neben gesanglichem Talent kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere „Talente“ bei Edmondia entdecken.</de>
-                        <en>Besides vocal talent, the neutral spectator, as well as the fan, can discover much more obvious "talents" in Edmondia.</en>
-                        <pl>Oprócz talentu wokalnego, neutralny widz, a także fan, może odkryć znacznie bardziej oczywiste "talenty" w Edmondii.</pl>
-                    </description>
-                    <ratings critics="45" speed="60" />
-                </programme>
-                <programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Finale</de>
-                        <en>Final</en>
-                        <pl>Finał</pl>
-                    </title>
-                    <description>
-                        <de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen Karlheinz Dorfmichel ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
-                        <en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist John D. Silly Billy. The unrivaled culmination in the popular tradidiotional calendar.</en>
-                        <pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą Karlheinzem Dorfmichelem. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="64">SpeedMinister-celebritypeople-KarlHeinzDorfmichel</member>
-                    </staff>
-                    <ratings critics="55" speed="60" />
-                </programme>
-            </children>
-        </programme>
-        <!-- ***** Talkrunde, Serie: Andauernd Käse (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
-            <title>
-                <de>Andauernd Käse</de>
-                <en>Cheese all the time</en>
-                <pl>Ser przez cały czas</pl>
-            </title>
-            <description>
-                <de>Lockere Talkrunde mit Moderator und 2-3 Experten, Verkostung verschiedener Marken, mit klugen Sprüchen und einer Menge Rotwein.</de>
-                <en>Relaxed chat with moderator and 2-3 experts, tasting of various brands, with clever sayings and a lot of red wine.</en>
-                <pl>Relaksująca runda rozmów z moderatorem i 2-3 ekspertami, degustacja różnych marek, z mądrymi powiedzeniami i dużą ilością czerwonego wina.</pl>
-            </description>
-            <staff>
-                <member index="0" function="1">SpeedMinister-person-id004</member>
-                <member index="1" function="2">SpeedMinister-person-id003</member>
-            </staff>
-            <groups target_groups="0" />
-            <data country="D" year="2000" distribution="2" maingenre="103" blocks="1" />
-            <ratings critics="55" speed="30" />
-            <!-- Episodes -->
-            <children>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Analogkäse</de>
-                        <en>Cheese analogue</en>
-                        <pl>Analog do sera</pl>
-                    </title>
-                    <description>
-                        <de>Veganer Käse der Zukunft? Darf man von Käse sprechen - bei pflanzlichen Produkten? Kontroverser Serienstart, bei dem viel Käse erzählt wird.</de>
-                        <en>Vegan cheese of the future? Is it permissible to speak of cheese - in the case of plant-based products? Controversial series start with a lot of cheese-talk.</en>
-                        <pl>Wegański ser przyszłości? Czy można mówić o serze w przypadku produktów roślinnych? Kontrowersyjne seriale zaczynają się od wielu rozmów o serze.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">Per_custom_Freddy_461</member>
-                        <member index="3" function="2">SpeedMinister-person-id005</member>
-                        <member index="4" function="2">SpeedMinister-person-id006</member>
-                    </staff>
-                    <ratings critics="59" speed="30" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Frischkäse</de>
-                        <en>Cream cheese</en>
-                        <pl>Serek śmietankowy</pl>
-                    </title>
-                    <description>
-                        <de>Sehr weiche, streichfähige Konsistenz, ohne Reifung genussfertig. Experten streichen Ihnen ihre Meinung aufs Brot.</de>
-                        <en>Very soft, spreadable consistency, ready to eat without maturing. Experts spread their opinions on your bread.</en>
-                        <pl>Bardzo miękka, smarowna konsystencja, gotowa do spożycia bez dojrzewania. Eksperci wyrażają swoje opinie na temat chleba.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id007</member>
-                        <member index="3" function="2">SpeedMinister-person-id010</member>
-                    </staff>
-                    <ratings critics="50" speed="25" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Weichkäse</de>
-                        <en>Soft cheese</en>
-                        <pl>Miękki ser</pl>
-                    </title>
-                    <description>
-                        <de>Weicher Teig, der von außen nach innen reift, von Edelschimmel oder Rotschmierrinde umhüllt, Reifezeit 2 bis 3 Wochen. Talkgäste kommen zu Wort, deren Überlegungen nicht so lange gereift sind.</de>
-                        <en>Soft dough that matures from the outside to the inside, wrapped in fine mould or red smear bark, maturing time of 2 to 3 weeks. Talk guests have their say - whose thoughts have not matured that long.</en>
-                        <pl>Miękkie ciasto, które dojrzewa od zewnątrz do wewnątrz, owinięte delikatną pleśnią lub czerwoną mazistą korą, czas dojrzewania od 2 do 3 tygodni. Rozmowa gości - których myśli nie dojrzewały tak długo.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id005</member>
-                        <member index="3" function="2">SpeedMinister-person-id009</member>
-                    </staff>
-                    <ratings critics="49" speed="31" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Halbfester Schnittkäse</de>
-                        <en>Semi-solid cheese</en>
-                        <pl>Ser półstały</pl>
-                    </title>
-                    <description>
-                        <de>Weich-geschmeidiger Teig, in der Konsistenz zwischen Schnittkäse und Weichkäse, Reifezeit mindestens 3 Wochen. Die Gäste haben die Backen meist zu voll um etwas zu sagen.</de>
-                        <en>Soft and smooth dough, in the consistency between semi-hard cheese and soft cheese, maturing time at least 3 weeks. Guests usually have their cheeks too full to say anything.</en>
-                        <pl>Miękkie i gładkie ciasto o konsystencji pomiędzy serem półtwardym a miękkim, czas dojrzewania co najmniej 3 tygodnie. Goście zazwyczaj mają zbyt pełne policzki, by cokolwiek powiedzieć.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id011</member>
-                        <member index="3" function="2">SpeedMinister-person-id012</member>
-                    </staff>
-                    <ratings critics="45" speed="35" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Schnittkäse</de>
-                        <en>Semi-hard cheese</en>
-                        <pl>Ser półtwardy</pl>
-                    </title>
-                    <description>
-                        <de>Geschmeidiger Teig, Reifezeit mindestens 5 Wochen. Ein, zum Ende hin, abstoßendes Gelage, mit viel Käse und noch mehr Wein.</de>
-                        <en>Smooth dough, maturing time at least 5 weeks. A repulsive feast towards the end, with lots of cheese and even more wine.</en>
-                        <pl>Gładkie ciasto, czas dojrzewania co najmniej 5 tygodni. Odpychająca uczta pod koniec, z dużą ilością sera i jeszcze większą ilością wina.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id007</member>
-                        <member index="3" function="2">SpeedMinister-person-id013</member>
-                        <member index="4" function="2">SpeedMinister-person-id014</member>
-                        <member index="5" function="2">SpeedMinister-person-id015</member>
-                    </staff>
-                    <ratings critics="42" speed="33" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Hartkäse</de>
-                        <en>Hard cheese</en>
-                        <pl>Twardy ser</pl>
-                    </title>
-                    <description>
-                        <de>Sehr fester bis körniger Teig, Reifezeit mindestens drei Monate bis zu mehreren Jahren. Quervergleich mit Materialien aus der Baubranche. Auf Pizza sticht der Käse den Mörtel aus!</de>
-                        <en>Very firm to granular dough, maturing time at least three months to several years. Cross comparison with materials from the construction industry. On pizza, the cheese excels the mortar!</en>
-                        <pl>Bardzo twarde lub ziarniste ciasto, czas dojrzewania od co najmniej trzech miesięcy do kilku lat. Porównanie z materiałami z branży budowlanej. Na pizzy ser przewyższa zaprawę!</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id005</member>
-                        <member index="3" function="2">SpeedMinister-person-id008</member>
-                    </staff>
-                    <ratings critics="60" speed="30" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Sauermilchkäse</de>
-                        <en>Acid curd cheese</en>
-                        <pl>Kwaśny twaróg</pl>
-                    </title>
-                    <description>
-                        <de>Geschmeidiger Teig, der von außen nach innen reift, gelblich-transparent, je nach Sorte mit weißem Schimmel oder Rotschmiere bewachsen. Reifezeit wenige Tage bis einige Wochen. Genauso schmierige Gäste wurden engagiert.</de>
-                        <en>Smooth dough that matures from the outside to the inside, yellowish-transparent, covered with white mould or red smear, depending on the variety. Ripening time a few days to several weeks. Hired guests are just as greasy.</en>
-                        <pl>Gładkie ciasto dojrzewające od zewnątrz do wewnątrz, żółtawo-przezroczyste, pokryte białą pleśnią lub czerwoną mazią, w zależności od odmiany. Czas dojrzewania od kilku dni do kilku tygodni. Wypożyczane są równie tłuste.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id016</member>
-                        <member index="3" function="2">SpeedMinister-person-id005</member>
-                    </staff>
-                    <ratings critics="45" speed="25" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Schmelzkäse</de>
-                        <en>Processed cheese</en>
-                        <pl>Ser topiony</pl>
-                    </title>
-                    <description>
-                        <de>Hergestellt wird Schmelzkäse aus gereiftem Schnittkäse oder Frischkäse, der weiter verarbeitet und gleichzeitig haltbar gemacht wird. Diesen Käse zu verzehren schlägt weniger auf's Gemüt, als den Experten zuzuhören.</de>
-                        <en>Processed cheese is made from mature semi-hard cheese or cream cheese, which is processed further and preserved at the same time. Eating this cheese does not bring you as much down as listening to the experts.</en>
-                        <pl>Przetworzony ser jest wytwarzany z dojrzałego sera półtwardego lub śmietankowego, który jest dalej przetwarzany i jednocześnie konserwowany. Jedzenie tego sera nie powoduje takiego pogorszenia stanu zdrowia, jak słuchanie ekspertów.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id017</member>
-                        <member index="3" function="2">SpeedMinister-person-id018</member>
-                    </staff>
-                    <ratings critics="48" speed="30" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Schafs- und Ziegenkäse</de>
-                        <en>Sheep and goat cheese</en>
-                        <pl>Ser owczy i kozi</pl>
-                    </title>
-                    <description>
-                        <de>Schafskäse genießt unter Feinschmeckern einen guten Ruf und ist seit einigen Jahren äußerst beliebt. Ziegenkäse ist seit einigen Jahren der heimliche Star unter den Käsesorten. Die Experten haben da andere Ansichten.</de>
-                        <en>Sheep's cheese enjoys a good reputation among gourmets and has been extremely popular for several years. Goat cheese has been the secret star among cheeses for several years. The experts have other opinions.</en>
-                        <pl>Ser owczy cieszy się dobrą reputacją wśród smakoszy i jest niezwykle popularny od kilku lat. Ser kozi od kilku lat jest sekretną gwiazdą wśród serów. Eksperci mają jednak inne zdanie.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id013</member>
-                        <member index="3" function="2">SpeedMinister-person-id015</member>
-                    </staff>
-                    <ratings critics="45" speed="29" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Ofen- und Grillkäse</de>
-                        <en>Baked and grilled cheese</en>
-                        <pl>Pieczony i grillowany ser</pl>
-                    </title>
-                    <description>
-                        <de>Ofenkäse ist überraschend einfach und abwechslungsreich. Vorsicht heiß! Die Wartezeit vor dem Ofen wird von den Experten zum Vorglühen benutzt. Der Schnaps fließt in Strömen...</de>
-                        <en>Oven cheese is surprisingly simple and varied. Careful, it's hot! The waiting time in front of the furnace is used by the experts to pregame. The liquor flows in streams...</en>
-                        <pl>Ser z piekarnika jest zaskakująco prosty i różnorodny. Ostrożnie, jest gorący! Czas oczekiwania przed pieczeniem jest wykorzystywany przez ekspertów do gry wstępnej. Alkohol płynie strumieniami...</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id008</member>
-                        <member index="3" function="2">SpeedMinister-person-id019</member>
-                        <member index="4" function="2">SpeedMinister-person-id017</member>
-                    </staff>
-                    <ratings critics="55" speed="35" />
-                </programme>
-                <programme id="SpeedMinister-Serie-andauernd-käse-01-ep-11" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Andauernd Käse</de>
-                        <en>Cheese all the time</en>
-                        <pl>Ser przez cały czas</pl>
-                    </title>
-                    <description>
-                        <de>Aller Käse ist zu dieser Abschlussfolge aufgefahren. Sechs Experten schieben sich am kalten Buffet entlang und kennen keine Zurückhaltung. Fazit der Reihe: Alles Käse!</de>
-                        <en>All the cheeses are ramped up for this final episode. Six experts push themselves along the cold buffet and know no restraint. Conclusion of the series: It's all cheese!</en>
-                        <pl>W tym finałowym odcinku wszystkie sery są podrasowane. Sześciu ekspertów przepycha się wzdłuż zimnego bufetu i nie zna umiaru. Zakończenie serii: To wszystko ser!</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id008</member>
-                        <member index="3" function="2">SpeedMinister-person-id016</member>
-                        <member index="4" function="2">SpeedMinister-person-id006</member>
-                        <member index="5" function="2">SpeedMinister-person-id007</member>
-                        <member index="6" function="2">SpeedMinister-person-id010</member>
-                        <member index="7" function="2">SpeedMinister-person-id012</member>
-                    </staff>
-                    <ratings critics="50" speed="26" />
-                </programme>
-            </children>
-        </programme>
-        <!-- ***** Serie: Soldaten, Paviane und Co. (fiktiv) ***** -->
-        <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
-            <title>
-                <de>Soldaten, Paviane und Co.</de>
-                <en>Soldiers, baboons, and co.</en>
-                <pl>Żołnierze, pawiany i spółka.</pl>
-            </title>
-            <description>
-                <de>Das Leben im afghanischen Zoo der Hauptstadt Kabul mit der Kamera in Szene gesetzt.</de>
-                <en>The life in the Afghan zoo of the capital Kabul staged with the camera.</en>
-                <pl>Życie w afgańskim zoo w stolicy Kabulu zainscenizowane z kamerą.</pl>
-            </description>
-            <staff>
-                <member index="0" function="1">SpeedMinister-person-id027</member>
-                <member index="1" function="2">SpeedMinister-person-id020</member>
-            </staff>
-            <!-- Link: http://de.wikipedia.org/wiki/Kabuler_Zoo -->
-            <data country="D/AFG" year="2012" distribution="0" maingenre="300" blocks="1" />
-            <ratings critics="29" speed="35" />
-            <!-- Episodes -->
-            <children>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Rundgang im Zoo Kabul</de>
-                        <en>Tour of Kabul Zoo</en>
-                        <pl>Wycieczka po zoo w Kabulu</pl>
-                    </title>
-                    <description>
-                        <de>Zwei Drittel der Gehege waren durch die Kriege zerstört. Der Direktor begann 2010 mit 2 Papageien, die er bei sich zuhause versteckt hielt.</de>
-                        <en>Two thirds of the enclosures were destroyed by the wars. The director started 2010 with 2 parrots, which he kept hidden at home.</en>
-                        <pl>Dwie trzecie wybiegów zostało zniszczonych przez wojny. Dyrektor rozpoczął 2010 rok z 2 papugami, które trzymał w ukryciu w domu.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id021</member>
-                    </staff>
-                    <ratings critics="29" speed="30" />
-                </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Das neue Bärenhaus</de>
-                        <en>The new bear house</en>
-                        <pl>Nowy dom dla niedźwiedzi</pl>
-                    </title>
-                    <description>
-                        <de>Einweihungsfeier und Eingewöhnung zweier Schwarzbären. Tierpfleger und Bären bauen ein Vertrauensverhältnis zueinander auf. Da gibt es Explosionen in der Stadt.</de>
-                        <en>Inauguration ceremony and acclimatization of two black bears. Animal keepers and bears build a relationship of trust. Then there's explosions in the city.</en>
-                        <pl>Ceremonia inauguracji i aklimatyzacja dwóch niedźwiedzi czarnych. Opiekunowie zwierząt i niedźwiedzie budują relację opartą na zaufaniu. Następnie w mieście dochodzi do eksplozji.</pl>
-                    </description>
-                    <staff>
-                        <member index="0" function="2">SpeedMinister-person-id021</member>
-                        <member index="1" function="2">SpeedMinister-person-id022</member>
-                    </staff>
-                    <ratings critics="36" speed="35" />
-                </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Die chinesische Spende</de>
-                        <en>The Chinese donation</en>
-                        <pl>Chińska darowizna</pl>
-                    </title>
-                    <description>
-                        <de>Der chinesische Botschafter übergibt dem Kabuler Zoo eine bronzefarbene Löwenstatue, die auf dem zentralen Platz des Zoos enthüllt wird. Daneben werden 2 von China gespendete Löwen ins Außengehege entlassen.</de>
-                        <en>The Chinese ambassador hands over a bronze-coloured lion statue to the Kabul Zoo, which is unveiled in the central square of the zoo. In addition, 2 lions donated by China are released into the outside enclosure.</en>
-                        <pl>Ambasador Chin przekazuje zoo w Kabulu posąg lwa w kolorze brązu, który zostaje odsłonięty na centralnym placu zoo. Ponadto 2 lwy podarowane przez Chiny zostały wypuszczone na wybieg zewnętrzny.</pl>
-                    </description>
-                    <staff>
-                        <member index="0" function="2">SpeedMinister-person-id021</member>
-                        <member index="1" function="2">SpeedMinister-person-id023</member>
-                        <member index="2" function="2">SpeedMinister-person-id024</member>
-                    </staff>
-                    <ratings critics="29" speed="24" />
-                </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Auf Streife mit den GIs</de>
-                        <en>On patrol with the GIs</en>
-                        <pl>Na patrolu z żołnierzami piechoty morskiej</pl>
-                    </title>
-                    <description>
-                        <de>Die Route der GIs führt auch durch den Kabuler Zoo. „Wir sind immer froh, wenn wir am Zoo ankommen. Jeder ist gerne im Zoo. Er wird als Erholungsgebiet von allen Stammesfürsten anerkannt. Vielleicht der sicherste Platz in Kabul.“</de>
-                        <en>The route of the GIs also leads through Kabul Zoo. "We're always happy when we get to the zoo. Everybody loves the zoo. It is recognized as a recreation area by all tribal princes. Maybe the safest place in Kabul."</en>
-                        <pl>Trasa prowadzi przez zoo w Kabulu. "Zawsze jesteśmy szczęśliwi, gdy docieramy do zoo. Wszyscy kochają zoo. Jest ono uznawane za teren rekreacyjny przez wszystkich książąt plemiennych. Być może jest to najbezpieczniejsze miejsce w Kabulu".</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id025</member>
-                    </staff>
-                    <ratings critics="25" speed="32" />
-                </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Medikamente aus Amerika</de>
-                        <en>Medicines from America</en>
-                        <pl>Leki z Ameryki</pl>
-                    </title>
-                    <description>
-                        <de>Es wird eine Lieferung Medikamente beobachtet, wie sie in den USA zusammengestellt wird und wie das Paket die verschiedenen Logistikknotenpunkte durchwandert. Unterfüttert mit Alltagszenen aus dem kabuler Zoo.</de>
-                        <en>A delivery of medicines is observed as it is assembled in the USA and how the package travels through the various logistics hubs. Underpinned with everyday scenes from the Kabul Zoo.</en>
-                        <pl>Obserwujemy dostawę leków, która jest obsługiwana w USA i jak paczka podróżuje przez różne węzły logistyczne. W tle codzienne sceny z zoo w Kabulu.</pl>
-                    </description>
-                    <staff>
-                        <member index="2" function="2">SpeedMinister-person-id026</member>
-                    </staff>
-                    <ratings critics="28" speed="34" />
-                </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Da waren's nur noch 13</de>
-                        <en>There were only 13 left</en>
-                        <pl>Pozostało ich tylko 13</pl>
-                    </title>
-                    <description>
-                        <de>Bei den Meerkatzen herrscht Schwund. Sie teilen sich zusammen mit den Löwen und Erdmännchen ein Außengehege. Die Erdmännchen verschwinden in Ihren Höhlen, die Meerkatzen auf die Kletterbäume. Diese sind scheinbar nicht hoch genug.</de>
-                        <en>There is shrinkage among the guenons. They share an outside enclosure with the lions and meerkats. The meerkats disappear in their caves, the guenons on the climbing trees. These are apparently not high enough.</en>
-                        <pl>Wśród guenonów występują skurcze. Dzielą zewnętrzny wybieg z lwami i surykatkami. Surykatki znikają w swoich jaskiniach, guenony wspinają się na drzewa. Najwyraźniej nie są one wystarczająco wysokie.</pl>
-                    </description>
-                    <staff>
-                        <member index="0" function="2">SpeedMinister-person-id021</member>
-                        <member index="1" function="2">SpeedMinister-person-id022</member>
-                    </staff>
-                    <ratings critics="40" speed="40" />
-                </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Das improvisierte Affengehege</de>
-                        <en>The improvised monkey enclosure</en>
-                        <pl>Prowizoryczny wybieg dla małp</pl>
-                    </title>
-                    <description>
-                        <de>Nach der Krise im Löwengehege wird für die Meerkatzen in einer Blitzaktion ein Außengehege saniert. Zementsäcke verschwinden von verschieden Baustellen der Stadt. Ein 20 Fuß Standardcontainer muss als Tierhaus herhalten.</de>
-                        <en>After the crisis in the lion enclosure, an outdoor enclosure is being renovated for the guenons in a lightning action. Cement bags disappear from various construction sites in the city. A 20-foot standard container must be used as an animal house.</en>
-                        <pl>Po kryzysie na wybiegu dla lwów, w błyskawicznym tempie remontowany jest zewnętrzny wybieg dla guenonów. Z różnych placów budowy w mieście znikają worki z cementem. Standardowy kontener o długości 20 stóp musi być używany jako dom dla zwierząt.</pl>
-                    </description>
-                    <staff>
-                        <member index="0" function="2">SpeedMinister-person-id021</member>
-                        <member index="1" function="2">SpeedMinister-person-id022</member>
-                    </staff>
-                    <ratings critics="40" speed="40" />
-                </programme>
-                <programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-                    <title>
-                        <de>Ein Dank ans Personal</de>
-                        <en>A thank you to the staff</en>
-                        <pl>Podziękowania dla pracowników</pl>
-                    </title>
-                    <description>
-                        <de>Bei der Eröffnung des Schneeleopardengeheges, organisiert die Zooleitung für die Angestellten ein kleines Fest. Bei Tanz und Gesang wird der Einzug des Wahrzeichen Afghanistans gefeiert.</de>
-                        <en>At the opening of the snow leopard enclosure, the zoo management organizes a small party for the employees. The entrance of Afghanistan's landmark is celebrated with dancing and singing.</en>
-                        <pl>Z okazji otwarcia wybiegu dla lampartów śnieżnych, dyrekcja zoo organizuje małe przyjęcie dla pracowników. Wejście do afgańskiego zabytku świętowane jest tańcem i śpiewem.</pl>
-                    </description>
-                    <staff>
-                        <member index="0" function="2">SpeedMinister-person-id021</member>
-                        <member index="1" function="2">SpeedMinister-person-id022</member>
-                    </staff>
-                    <ratings critics="30" speed="30" />
-                </programme>
-            </children>
-        </programme>
-    </allprogrammes>
+	<allprogrammes>
+		<!-- ***** Serie: Die Stars der volksirrtümlichen Hitparade (fiktiv) ***** -->
+		<programme id="SpeedMinister-Serie-volksirrtuemliche-01" product="3" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade</de>
+				<en>The Stars of the Tradidiotional Hit Parade</en>
+				<pl>Gwiazdy tradycyjnej parady hitów</pl>
+			</title>
+			<description>
+				<de>Abendfüllende Musikshow mit gut gelaunter Anmoderation, viel Musik und kurzen Interviews der Stars. Etwas um den Alltag zu vergessen.</de>
+				<en>Full-length music show with good-humoured moderation, lots of music and short interviews with the stars. Here's something to help you forget the daily grind.</en>
+				<pl>Pełnometrażowy program muzyczny z dobrym humorem, dużą ilością muzyki i krótkimi wywiadami z gwiazdami. Oto coś, co pomoże ci zapomnieć o codziennej harówce.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">SpeedMinister-person-id001</member>
+				<member index="1" function="8">SpeedMinister-person-id002</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" flags="1" blocks="2" />
+			<releaseTime year_relative="4" day="2" hour="20" />
+			<ratings critics="55" speed="60" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+			<!-- Episodes -->
+			<children>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Die Debreciner Kuhfladen Schnüffler</de>
+						<en>The Debrecen Cowpat Snoopers</en>
+						<pl>The Debrecen Cowpat Snoopers</pl>
+					</title>
+					<description>
+						<de>Neben einer ungarischen Variante des Schuhplattlers heizt die Truppe mit immer schneller werdenden Rhythmen ein. Da kommt Stimmung in die Bude.</de>
+						<en>In addition to a Hungarian version of the Schuhplattler, the troop gets the audience cooking with ever faster rhythms. This brings life into the place.</en>
+						<pl>Dodatek węgierskiej wersji Schuhplattlera, grupa pobudza publiczność coraz szybszymi rytmami. To ożywia to miejsce.</pl>
+					</description>
+					<ratings critics="59" speed="70" />
+				</programme>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Tuba Tinnitus</de>
+						<en>Tuba Tinnitus</en>
+						<pl>Tuba Tinnitus</pl>
+					</title>
+					<description>
+						<de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
+						<en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>
+						<pl>To budzi nawet najbardziej śpiącą osobę w ostatnim rzędzie. Cztery tuby, trąbka, zestaw perkusyjny i wokalista dają z siebie wszystko. Z miernym skutkiem.</pl>
+					</description>
+					<ratings critics="40" speed="50" />
+					<releaseTime year_relative="4" day="5" hour="20" />
+				</programme>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Karl Maische</de>
+						<en>Karl Mash</en>
+						<pl>Karl Zacier</pl>
+					</title>
+					<description>
+						<de>Mit fettigem Schmäh und pomadigen Sprüchen verhilft er der Show zu gezwungenen Lachern. Die Balladen, die er in den Saal schmettert, sind der positive Höhepunkt.</de>
+						<en>With greasy banter and pompous catchphrases he gets the show some forced laughs. The ballads he belts into the hall are the positive highlight.</en>
+						<pl>Z tłustymi przekomarzaniami i pompatycznymi żartami, pomaga uzyskać trochę wymuszonego śmiechu. Ballady, które śpiewa publiczności, są pozytywną atrakcją.</pl>
+					</description>
+					<ratings critics="49" speed="51" />
+					<releaseTime year_relative="4" day="8" hour="20" />
+				</programme>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Frantius F. Freudius</de>
+						<en>Johnny J. Joydious</en>
+						<pl>Franek F. Radosny</pl>
+					</title>
+					<description>
+						<de>Schon mit seinem Künstlernamen treibt er den Zuschauern die Fremdschäm-Schamesröte ins Gesicht. Ein absoluter Topstar der volksirrtümlichen Hitparade.</de>
+						<en>Alone with his cringeworthy stagename he makes the audience feel embarrassed until their faces turn red. An absolute top star of the tradidiotionally hit parade.</en>
+						<pl>Sam ze swoim godnym potępienia pseudonimem sprawia, że publiczność czuje się zażenowana, aż ich twarze stają się czerwone. Absolutnie najlepsza gwiazda tradycyjnej parady przebojów.</pl>
+					</description>
+					<ratings critics="62" speed="65" />
+					<releaseTime year_relative="4" day="11" hour="20" />
+				</programme>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Bingo Bumerang</de>
+						<en>Bingo Boomerang</en>
+						<pl>Bingo Bumerang</pl>
+					</title>
+					<description>
+						<de>Kombination von modernen Instrumenten und volksirrtümlichen Rhythmen. Läßt die Zuschauer die Sendung leicht ertragen und ebenso leicht vergessen.</de>
+						<en>Combination of modern instruments and tradidiotional rhythms. Makes it easy for viewers to bear the show and just as easy to forget it.</en>
+						<pl>Połączenie nowoczesnych instrumentów i ludowych rytmów. Sprawia, że program jest łatwy do zniesienia i równie łatwy do zapomnienia.</pl>
+					</description>
+					<ratings critics="42" speed="70" />
+					<releaseTime year_relative="5" day="2" hour="20" />
+				</programme>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Fette Fritten</de>
+						<en>Fat Fries</en>
+						<pl>Tłusta Frytka</pl>
+					</title>
+					<description>
+						<de>„Es steht ein Bär auf'm Flur, es steht ein Bär auf'm Flur, ja, ja, ein Bär auf'm Flur und knurrt mich an.“ Wen es da nicht mitreißt, der ist schon tot!</de>
+						<en>"There's a bear in the hall, there's a bear in the hall, yeah, yeah, a bear in the hall growling at me." Whoever isn't carried away is already dead!</en>
+						<pl>"Na korytarzu jest niedźwiedź, na korytarzu jest niedźwiedź, tak, tak, na korytarzu jest niedźwiedź, który na mnie warczy". Jeśli cię nie poniosło, to już nie żyjesz!</pl>
+					</description>
+					<ratings critics="60" speed="68" />
+					<releaseTime year_relative="5" day="5" hour="20" />
+				</programme>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Edmondia und die Schwanenhalsdreher</de>
+						<en>Edmondia and the Gooseneck Twisters</en>
+						<pl>Edmondia i Gęsia Szyja</pl>
+					</title>
+					<description>
+						<de>Neben gesanglichem Talent kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere „Talente“ bei Edmondia entdecken.</de>
+						<en>Besides vocal talent, the neutral spectator, as well as the fan, can discover much more obvious "talents" in Edmondia.</en>
+						<pl>Oprócz talentu wokalnego, neutralny widz, a także fan, może odkryć znacznie bardziej oczywiste "talenty" w Edmondii.</pl>
+					</description>
+					<ratings critics="45" speed="60" />
+					<releaseTime year_relative="5" day="8" hour="20" />
+				</programme>
+				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Finale</de>
+						<en>Final</en>
+						<pl>Finał</pl>
+					</title>
+					<description>
+						<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen [2|Full] ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
+						<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist [2|Full]. The unrivaled culmination in the popular tradidiotional calendar.</en>
+						<pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą Jasiem Głupkowatym. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl> <!-- using clear-text version of staff member here because of grammar -->
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-celebritypeople-KarlHeinzDorfmichel</member>
+					</staff>
+					<ratings critics="55" speed="60" />
+					<releaseTime year_relative="5" day="11" hour="20" />
+				</programme>
+			</children>
+		</programme>
+		<!-- ***** Talkrunde, Serie: Andauernd Käse (fiktiv) ***** -->
+		<programme id="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Andauernd Käse</de>
+				<en>Cheese All the Time</en>
+				<pl>Ser przez cały czas</pl>
+			</title>
+			<description>
+				<de>Lockere Talkrunde mit Moderator und 2-3 Experten, Verkostung verschiedener Marken, mit klugen Sprüchen und einer Menge Rotwein.</de>
+				<en>Relaxed chat with moderator and 2-3 experts, tasting of various brands, with clever sayings and a lot of red wine.</en>
+				<pl>Relaksująca runda rozmów z moderatorem i 2-3 ekspertami, degustacja różnych marek, z mądrymi powiedzeniami i dużą ilością czerwonego wina.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">SpeedMinister-person-id004</member>
+				<member index="1" function="8">SpeedMinister-person-id003</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" distribution="2" maingenre="103" flags="1" blocks="1" broadcast_flags="512" />
+			<releaseTime year_relative="1" day="9" />
+			<ratings critics="55" speed="30" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.75" />
+			</modifiers>
+			<!-- Episodes -->
+			<children>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Analogkäse</de>
+						<en>Cheese Analogue</en>
+						<pl>Analog do sera</pl>
+					</title>
+					<description>
+						<de>Veganer Käse der Zukunft? Darf man von Käse sprechen - bei pflanzlichen Produkten? Kontroverser Serienstart, bei dem viel Käse erzählt wird.</de>
+						<en>Vegan cheese of the future? Is it permissible to speak of cheese - in the case of plant-based products? Controversial series start with a lot of cheese-talk.</en>
+						<pl>Wegański ser przyszłości? Czy można mówić o serze w przypadku produktów roślinnych? Kontrowersyjne seriale zaczynają się od wielu rozmów o serze.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">Per_custom_Freddy_461</member>
+						<member index="3" function="64">SpeedMinister-person-id005</member>
+						<member index="4" function="64">SpeedMinister-person-id006</member>
+					</staff>
+					<ratings critics="59" speed="30" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Frischkäse</de>
+						<en>Cream Cheese</en>
+						<pl>Serek śmietankowy</pl>
+					</title>
+					<description>
+						<de>Sehr weiche, streichfähige Konsistenz, ohne Reifung genussfertig. Experten streichen Ihnen ihre Meinung aufs Brot.</de>
+						<en>Very soft, spreadable consistency, ready to eat without maturing. Experts spread their opinions on your bread.</en>
+						<pl>Bardzo miękka, smarowna konsystencja, gotowa do spożycia bez dojrzewania. Eksperci wyrażają swoje opinie na temat chleba.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id007</member>
+						<member index="3" function="64">SpeedMinister-person-id010</member>
+					</staff>
+					<ratings critics="50" speed="25" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Weichkäse</de>
+						<en>Soft Cheese</en>
+						<pl>Miękki ser</pl>
+					</title>
+					<description>
+						<de>Weicher Teig, der von außen nach innen reift, von Edelschimmel oder Rotschmierrinde umhüllt, Reifezeit 2 bis 3 Wochen. Talkgäste kommen zu Wort, deren Überlegungen nicht so lange gereift sind.</de>
+						<en>Soft dough that matures from the outside to the inside, wrapped in fine mould or red smear bark, maturing time of 2 to 3 weeks. Talk guests have their say - whose thoughts have not matured that long.</en>
+						<pl>Miękkie ciasto, które dojrzewa od zewnątrz do wewnątrz, owinięte delikatną pleśnią lub czerwoną mazistą korą, czas dojrzewania od 2 do 3 tygodni. Rozmowa gości - których myśli nie dojrzewały tak długo.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id005</member>
+						<member index="3" function="64">SpeedMinister-person-id009</member>
+					</staff>
+					<ratings critics="49" speed="31" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Halbfester Schnittkäse</de>
+						<en>Semi-Solid Cheese</en>
+						<pl>Ser półstały</pl>
+					</title>
+					<description>
+						<de>Weich-geschmeidiger Teig, in der Konsistenz zwischen Schnittkäse und Weichkäse, Reifezeit mindestens 3 Wochen. Die Gäste haben die Backen meist zu voll um etwas zu sagen.</de>
+						<en>Soft and smooth dough, in the consistency between semi-hard cheese and soft cheese, maturing time at least 3 weeks. Guests usually have their cheeks too full to say anything.</en>
+						<pl>Miękkie i gładkie ciasto o konsystencji pomiędzy serem półtwardym a miękkim, czas dojrzewania co najmniej 3 tygodnie. Goście zazwyczaj mają zbyt pełne policzki, by cokolwiek powiedzieć.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id011</member>
+						<member index="3" function="64">SpeedMinister-person-id012</member>
+					</staff>
+					<ratings critics="45" speed="35" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Schnittkäse</de>
+						<en>Semi-Hard Cheese</en>
+						<pl>Ser półtwardy</pl>
+					</title>
+					<description>
+						<de>Geschmeidiger Teig, Reifezeit mindestens 5 Wochen. Ein, zum Ende hin, abstoßendes Gelage, mit viel Käse und noch mehr Wein.</de>
+						<en>Smooth dough, maturing time at least 5 weeks. A repulsive feast towards the end, with lots of cheese and even more wine.</en>
+						<pl>Gładkie ciasto, czas dojrzewania co najmniej 5 tygodni. Odpychająca uczta pod koniec, z dużą ilością sera i jeszcze większą ilością wina.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id007</member>
+						<member index="3" function="64">SpeedMinister-person-id013</member>
+						<member index="4" function="64">SpeedMinister-person-id014</member>
+						<member index="5" function="64">SpeedMinister-person-id015</member>
+					</staff>
+					<ratings critics="42" speed="33" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Hartkäse</de>
+						<en>Hard Cheese</en>
+						<pl>Twardy ser</pl>
+					</title>
+					<description>
+						<de>Sehr fester bis körniger Teig, Reifezeit mindestens drei Monate bis zu mehreren Jahren. Quervergleich mit Materialien aus der Baubranche. Auf Pizza sticht der Käse den Mörtel aus!</de>
+						<en>Very firm to granular dough, maturing time at least three months to several years. Cross comparison with materials from the construction industry. On pizza, the cheese excels the mortar!</en>
+						<pl>Bardzo twarde lub ziarniste ciasto, czas dojrzewania od co najmniej trzech miesięcy do kilku lat. Porównanie z materiałami z branży budowlanej. Na pizzy ser przewyższa zaprawę!</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id005</member>
+						<member index="3" function="64">SpeedMinister-person-id008</member>
+					</staff>
+					<ratings critics="60" speed="30" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Sauermilchkäse</de>
+						<en>Acid Curd Cheese</en>
+						<pl>Kwaśny twaróg</pl>
+					</title>
+					<description>
+						<de>Geschmeidiger Teig, der von außen nach innen reift, gelblich-transparent, je nach Sorte mit weißem Schimmel oder Rotschmiere bewachsen. Reifezeit wenige Tage bis einige Wochen. Genauso schmierige Gäste wurden engagiert.</de>
+						<en>Smooth dough that matures from the outside to the inside, yellowish-transparent, covered with white mould or red smear, depending on the variety. Ripening time a few days to several weeks. Hired guests are just as greasy.</en>
+						<pl>Gładkie ciasto dojrzewające od zewnątrz do wewnątrz, żółtawo-przezroczyste, pokryte białą pleśnią lub czerwoną mazią, w zależności od odmiany. Czas dojrzewania od kilku dni do kilku tygodni. Wypożyczane są równie tłuste.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id016</member>
+						<member index="3" function="64">SpeedMinister-person-id005</member>
+					</staff>
+					<ratings critics="45" speed="25" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Schmelzkäse</de>
+						<en>Processed Cheese</en>
+						<pl>Ser topiony</pl>
+					</title>
+					<description>
+						<de>Hergestellt wird Schmelzkäse aus gereiftem Schnittkäse oder Frischkäse, der weiter verarbeitet und gleichzeitig haltbar gemacht wird. Diesen Käse zu verzehren schlägt weniger auf's Gemüt, als den Experten zuzuhören.</de>
+						<en>Processed cheese is made from mature semi-hard cheese or cream cheese, which is processed further and preserved at the same time. Eating this cheese does not bring you as much down as listening to the experts.</en>
+						<pl>Przetworzony ser jest wytwarzany z dojrzałego sera półtwardego lub śmietankowego, który jest dalej przetwarzany i jednocześnie konserwowany. Jedzenie tego sera nie powoduje takiego pogorszenia stanu zdrowia, jak słuchanie ekspertów.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id017</member>
+						<member index="3" function="64">SpeedMinister-person-id018</member>
+					</staff>
+					<ratings critics="48" speed="30" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Schafs- und Ziegenkäse</de>
+						<en>Sheep and Goat Cheese</en>
+						<pl>Ser owczy i kozi</pl>
+					</title>
+					<description>
+						<de>Schafskäse genießt unter Feinschmeckern einen guten Ruf und ist seit einigen Jahren äußerst beliebt. Ziegenkäse ist seit einigen Jahren der heimliche Star unter den Käsesorten. Die Experten haben da andere Ansichten.</de>
+						<en>Sheep's cheese enjoys a good reputation among gourmets and has been extremely popular for several years. Goat cheese has been the secret star among cheeses for several years. The experts have other opinions.</en>
+						<pl>Ser owczy cieszy się dobrą reputacją wśród smakoszy i jest niezwykle popularny od kilku lat. Ser kozi od kilku lat jest sekretną gwiazdą wśród serów. Eksperci mają jednak inne zdanie.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id013</member>
+						<member index="3" function="64">SpeedMinister-person-id015</member>
+					</staff>
+					<ratings critics="45" speed="29" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Ofen- und Grillkäse</de>
+						<en>Baked and Grilled Cheese</en>
+						<pl>Pieczony i grillowany ser</pl>
+					</title>
+					<description>
+						<de>Ofenkäse ist überraschend einfach und abwechslungsreich. Vorsicht heiß! Die Wartezeit vor dem Ofen wird von den Experten zum Vorglühen benutzt. Der Schnaps fließt in Strömen...</de>
+						<en>Oven cheese is surprisingly simple and varied. Careful, it's hot! The waiting time in front of the furnace is used by the experts to pregame. The liquor flows in streams...</en>
+						<pl>Ser z piekarnika jest zaskakująco prosty i różnorodny. Ostrożnie, jest gorący! Czas oczekiwania przed pieczeniem jest wykorzystywany przez ekspertów do gry wstępnej. Alkohol płynie strumieniami...</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id008</member>
+						<member index="3" function="64">SpeedMinister-person-id019</member>
+						<member index="4" function="64">SpeedMinister-person-id017</member>
+					</staff>
+					<ratings critics="55" speed="35" />
+				</programme>
+				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-11" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Andauernd Käse</de>
+						<en>Cheese All the Time</en>
+						<pl>Ser przez cały czas</pl>
+					</title>
+					<description>
+						<de>Aller Käse ist zu dieser Abschlussfolge aufgefahren. Sechs Experten schieben sich am kalten Buffet entlang und kennen keine Zurückhaltung. Fazit der Reihe: Alles Käse!</de>
+						<en>All the cheeses are ramped up for this final episode. Six experts push themselves along the cold buffet and know no restraint. Conclusion of the series: It's all cheese!</en>
+						<pl>W tym finałowym odcinku wszystkie sery są podrasowane. Sześciu ekspertów przepycha się wzdłuż zimnego bufetu i nie zna umiaru. Zakończenie serii: To wszystko ser!</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id008</member>
+						<member index="3" function="64">SpeedMinister-person-id016</member>
+						<member index="4" function="64">SpeedMinister-person-id006</member>
+						<member index="5" function="64">SpeedMinister-person-id007</member>
+						<member index="6" function="64">SpeedMinister-person-id010</member>
+						<member index="7" function="64">SpeedMinister-person-id012</member>
+					</staff>
+					<ratings critics="50" speed="26" />
+				</programme>
+			</children>
+		</programme>
+		<!-- ***** Serie: Soldaten, Paviane und Co. (fiktiv) ***** -->
+		<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Soldaten, Paviane und Co.</de>
+				<en>Soldiers, Baboons, and Co.</en>
+				<pl>Żołnierze, pawiany i spółka.</pl>
+			</title>
+			<description>
+				<de>Das Leben im afghanischen Zoo der Hauptstadt Kabul mit der Kamera in Szene gesetzt.</de>
+				<en>The life in the Afghan zoo of the capital Kabul staged with the camera.</en>
+				<pl>Życie w afgańskim zoo w stolicy Kabulu zainscenizowane z kamerą.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">SpeedMinister-person-id027</member>
+				<member index="1" function="136">SpeedMinister-person-id020</member>
+			</staff>
+			<!-- Link: http://de.wikipedia.org/wiki/Kabuler_Zoo -->
+			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" teenagers_female="2" />
+			<data country="D/AFG" distribution="0" maingenre="300" subgenre="6" blocks="1" />
+			<releaseTime year_relative="3" year_relative_min="2011" year_relative_max="2020" /> <!-- year 2010 mentioned in episode 1 -->
+			<ratings critics="29" speed="35" />
+			<!-- Episodes -->
+			<children>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Rundgang im Zoo Kabul</de>
+						<en>Tour of Kabul Zoo</en>
+						<pl>Wycieczka po zoo w Kabulu</pl>
+					</title>
+					<description>
+						<de>Zwei Drittel der Gehege waren durch die Kriege zerstört. Der Direktor begann 2010 mit 2 Papageien, die er bei sich zuhause versteckt hielt.</de>
+						<en>Two thirds of the enclosures were destroyed by the wars. The director started 2010 with 2 parrots, which he kept hidden at home.</en>
+						<pl>Dwie trzecie wybiegów zostało zniszczonych przez wojny. Dyrektor rozpoczął 2010 rok z 2 papugami, które trzymał w ukryciu w domu.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id021</member>
+					</staff>
+					<ratings critics="29" speed="30" />
+				</programme>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Das neue Bärenhaus</de>
+						<en>The New Bear House</en>
+						<pl>Nowy dom dla niedźwiedzi</pl>
+					</title>
+					<description>
+						<de>Einweihungsfeier und Eingewöhnung zweier Schwarzbären. Tierpfleger und Bären bauen ein Vertrauensverhältnis zueinander auf. Da gibt es Explosionen in der Stadt.</de>
+						<en>Inauguration ceremony and acclimatization of two black bears. Animal keepers and bears build a relationship of trust. Then there's explosions in the city.</en>
+						<pl>Ceremonia inauguracji i aklimatyzacja dwóch niedźwiedzi czarnych. Opiekunowie zwierząt i niedźwiedzie budują relację opartą na zaufaniu. Następnie w mieście dochodzi do eksplozji.</pl>
+					</description>
+					<staff>
+						<member index="0" function="64">SpeedMinister-person-id021</member>
+						<member index="1" function="64">SpeedMinister-person-id022</member>
+					</staff>
+					<ratings critics="36" speed="35" />
+				</programme>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Die chinesische Spende</de>
+						<en>The Chinese Donation</en>
+						<pl>Chińska darowizna</pl>
+					</title>
+					<description>
+						<de>Der chinesische Botschafter übergibt dem Kabuler Zoo eine bronzefarbene Löwenstatue, die auf dem zentralen Platz des Zoos enthüllt wird. Daneben werden 2 von China gespendete Löwen ins Außengehege entlassen.</de>
+						<en>The Chinese ambassador hands over a bronze-coloured lion statue to the Kabul Zoo, which is unveiled in the central square of the zoo. In addition, 2 lions donated by China are released into the outside enclosure.</en>
+						<pl>Ambasador Chin przekazuje zoo w Kabulu posąg lwa w kolorze brązu, który zostaje odsłonięty na centralnym placu zoo. Ponadto 2 lwy podarowane przez Chiny zostały wypuszczone na wybieg zewnętrzny.</pl>
+					</description>
+					<staff>
+						<member index="0" function="64">SpeedMinister-person-id021</member>
+						<member index="1" function="64">SpeedMinister-person-id023</member>
+						<member index="2" function="64">SpeedMinister-person-id024</member>
+					</staff>
+					<ratings critics="29" speed="24" />
+				</programme>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Auf Streife mit den GIs</de>
+						<en>On Patrol With the GIs</en>
+						<pl>Na patrolu z żołnierzami piechoty morskiej</pl>
+					</title>
+					<description>
+						<de>Die Route der GIs führt auch durch den Kabuler Zoo. „Wir sind immer froh, wenn wir am Zoo ankommen. Jeder ist gerne im Zoo. Er wird als Erholungsgebiet von allen Stammesfürsten anerkannt. Vielleicht der sicherste Platz in Kabul.“</de>
+						<en>The route of the GIs also leads through Kabul Zoo. "We're always happy when we get to the zoo. Everybody loves the zoo. It is recognized as a recreation area by all tribal princes. Maybe the safest place in Kabul."</en>
+						<pl>Trasa prowadzi przez zoo w Kabulu. "Zawsze jesteśmy szczęśliwi, gdy docieramy do zoo. Wszyscy kochają zoo. Jest ono uznawane za teren rekreacyjny przez wszystkich książąt plemiennych. Być może jest to najbezpieczniejsze miejsce w Kabulu".</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id025</member>
+					</staff>
+					<ratings critics="25" speed="32" />
+				</programme>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Medikamente aus Amerika</de>
+						<en>Medicines from America</en>
+						<pl>Leki z Ameryki</pl>
+					</title>
+					<description>
+						<de>Es wird eine Lieferung Medikamente beobachtet, wie sie in den USA zusammengestellt wird und wie das Paket die verschiedenen Logistikknotenpunkte durchwandert. Unterfüttert mit Alltagszenen aus dem kabuler Zoo.</de>
+						<en>A delivery of medicines is observed as it is assembled in the USA and how the package travels through the various logistics hubs. Underpinned with everyday scenes from the Kabul Zoo.</en>
+						<pl>Obserwujemy dostawę leków, która jest obsługiwana w USA i jak paczka podróżuje przez różne węzły logistyczne. W tle codzienne sceny z zoo w Kabulu.</pl>
+					</description>
+					<staff>
+						<member index="2" function="64">SpeedMinister-person-id026</member>
+					</staff>
+					<ratings critics="28" speed="34" />
+				</programme>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Da waren's nur noch 13</de>
+						<en>...And Then There Were 13</en>
+						<pl>Pozostało ich tylko 13</pl>
+					</title>
+					<description>
+						<de>Bei den Meerkatzen herrscht Schwund. Sie teilen sich zusammen mit den Löwen und Erdmännchen ein Außengehege. Die Erdmännchen verschwinden in Ihren Höhlen, die Meerkatzen auf die Kletterbäume. Diese sind scheinbar nicht hoch genug.</de>
+						<en>There is shrinkage among the guenons. They share an outside enclosure with the lions and meerkats. The meerkats disappear in their caves, the guenons on the climbing trees. These are apparently not high enough.</en>
+						<pl>Wśród guenonów występują skurcze. Dzielą zewnętrzny wybieg z lwami i surykatkami. Surykatki znikają w swoich jaskiniach, guenony wspinają się na drzewa. Najwyraźniej nie są one wystarczająco wysokie.</pl>
+					</description>
+					<staff>
+						<member index="0" function="64">SpeedMinister-person-id021</member>
+						<member index="1" function="64">SpeedMinister-person-id022</member>
+					</staff>
+					<ratings critics="40" speed="40" />
+				</programme>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Das improvisierte Affengehege</de>
+						<en>The Improvised Monkey Enclosure</en>
+						<pl>Prowizoryczny wybieg dla małp</pl>
+					</title>
+					<description>
+						<de>Nach der Krise im Löwengehege wird für die Meerkatzen in einer Blitzaktion ein Außengehege saniert. Zementsäcke verschwinden von verschieden Baustellen der Stadt. Ein 20 Fuß Standardcontainer muss als Tierhaus herhalten.</de>
+						<en>After the crisis in the lion enclosure, an outdoor enclosure is being renovated for the guenons in a lightning action. Cement bags disappear from various construction sites in the city. A 20-foot standard container must be used as an animal house.</en>
+						<pl>Po kryzysie na wybiegu dla lwów, w błyskawicznym tempie remontowany jest zewnętrzny wybieg dla guenonów. Z różnych placów budowy w mieście znikają worki z cementem. Standardowy kontener o długości 20 stóp musi być używany jako dom dla zwierząt.</pl>
+					</description>
+					<staff>
+						<member index="0" function="64">SpeedMinister-person-id021</member>
+						<member index="1" function="64">SpeedMinister-person-id022</member>
+					</staff>
+					<ratings critics="40" speed="40" />
+				</programme>
+				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+					<title>
+						<de>Ein Dank ans Personal</de>
+						<en>A Thank You to the Staff</en>
+						<pl>Podziękowania dla pracowników</pl>
+					</title>
+					<description>
+						<de>Bei der Eröffnung des Schneeleopardengeheges, organisiert die Zooleitung für die Angestellten ein kleines Fest. Bei Tanz und Gesang wird der Einzug des Wahrzeichen Afghanistans gefeiert.</de>
+						<en>At the opening of the snow leopard enclosure, the zoo management organizes a small party for the employees. The entrance of Afghanistan's landmark is celebrated with dancing and singing.</en>
+						<pl>Z okazji otwarcia wybiegu dla lampartów śnieżnych, dyrekcja zoo organizuje małe przyjęcie dla pracowników. Wejście do afgańskiego zabytku świętowane jest tańcem i śpiewem.</pl>
+					</description>
+					<staff>
+						<member index="0" function="64">SpeedMinister-person-id021</member>
+						<member index="1" function="64">SpeedMinister-person-id022</member>
+					</staff>
+					<ratings critics="30" speed="30" />
+				</programme>
+			</children>
+		</programme>
+	</allprogrammes>
 
-    <allnews>
-        <news id="SpeedMinister-news-Nessi-01" type="0" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
-            <title>
-                <de>Nessi will nach Hause</de>
-                <en>Nessi wants to go home</en>
-                <pl>Nessi chce wrócić do domu</pl>
-            </title>
-            <description>
-                <de>Der Ausnahme-Fussballer Nessi will nach Hause. Am Loch Ness kann man seine Ankunft kaum erwarten.</de>
-                <en>The exceptional footballer Nessi wants to go home. At Loch Ness people can hardly wait for his arrival.</en>
-                <pl>Wyjątkowy piłkarz Nessi chce wrócić do domu. Mieszkańcy Loch Ness nie mogą się doczekać jego przyjazdu.</pl>
-            </description>
-            <effects>
-                <effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-02" />
-            </effects>
-            <data genre="2" price="1.0" quality="40" />
-        </news>
-        <news id="SpeedMinister-news-Nessi-02" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
-            <title>
-                <de>Nessi kommt nach Hause</de>
-                <en>Nessi arrives at home</en>
-                <pl>Nessi przybywa do domu</pl>
-            </title>
-            <description>
-                <de>Voller Bahnhof für Nessi, als er aus dem Zug steigt und in sein Elternhaus zieht.</de>
-                <en>Full station for Nessi as he gets off the train and moves to his parents' house.</en>
-                <pl>Gdy Nessi wysiada z pociągu witają go tłumy kibiców, a on przenosi się do domu rodziców.</pl>
-            </description>
-            <effects>
-                <effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-03" />
-            </effects>
-            <data genre="2" price="1.0" quality="30" />
-        </news>
-        <news id="SpeedMinister-news-Nessi-03" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
-            <title>
-                <de>Bürgermeister erfreut über Nessi</de>
-                <en>Mayor pleased about Nessi</en>
-                <pl>Burmistrz zadowolony z Nessiego</pl>
-            </title>
-            <description>
-                <de>Der Bürgermeister von Inverness äußert sich erfreut über Nessis Rückkehr: „Vielleicht zieht Nessi sogar ein paar Touristen an.“</de>
-                <en>The mayor of Inverness is pleased about Nessi's return: "Perhaps Nessi even attracts a few tourists".</en>
-                <pl>Burmistrz Inverness jest zadowolony z powrotu Nessiego: "Być może Nessi przyciągnie nawet kilku turystów".</pl>
-            </description>
-            <data genre="2" price="1.0" quality="32" />
-        </news>
-    </allnews>
+	<allnews>
+		<news id="SpeedMinister-news-Nessi-01" type="0" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Nessi will nach Hause</de>
+				<en>Nessi wants to go home</en>
+				<pl>Nessi chce wrócić do domu</pl>
+			</title>
+			<description>
+				<de>Der Ausnahme-Fussballer Nessi will nach Hause. Am Loch Ness kann man seine Ankunft kaum erwarten.</de>
+				<en>The exceptional footballer Nessi wants to go home. At Loch Ness people can hardly wait for his arrival.</en>
+				<pl>Wyjątkowy piłkarz Nessi chce wrócić do domu. Mieszkańcy Loch Ness nie mogą się doczekać jego przyjazdu.</pl>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-02" />
+			</effects>
+			<data genre="2" price="1.0" quality="40" />
+		</news>
+		<news id="SpeedMinister-news-Nessi-02" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Nessi kommt nach Hause</de>
+				<en>Nessi arrives at home</en>
+				<pl>Nessi przybywa do domu</pl>
+			</title>
+			<description>
+				<de>Voller Bahnhof für Nessi, als er aus dem Zug steigt und in sein Elternhaus zieht.</de>
+				<en>Full station for Nessi as he gets off the train and moves to his parents' house.</en>
+				<pl>Gdy Nessi wysiada z pociągu witają go tłumy kibiców, a on przenosi się do domu rodziców.</pl>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-03" />
+			</effects>
+			<data genre="2" price="1.0" quality="30" />
+		</news>
+		<news id="SpeedMinister-news-Nessi-03" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Bürgermeister erfreut über Nessi</de>
+				<en>Mayor pleased about Nessi</en>
+				<pl>Burmistrz zadowolony z Nessiego</pl>
+			</title>
+			<description>
+				<de>Der Bürgermeister von Inverness äußert sich erfreut über Nessis Rückkehr: „Vielleicht zieht Nessi sogar ein paar Touristen an.“</de>
+				<en>The mayor of Inverness is pleased about Nessi's return: "Perhaps Nessi even attracts a few tourists".</en>
+				<pl>Burmistrz Inverness jest zadowolony z powrotu Nessiego: "Być może Nessi przyciągnie nawet kilku turystów".</pl>
+			</description>
+			<data genre="2" price="1.0" quality="32" />
+		</news>
+	</allnews>
 
-    <allads>
-        <ad id="speedminister-ad-Mikrohard" creator="8605" created_by="SpeedMinister" comment="TODO: Add a version for earlier than 2008?">
-            <title>
-                <de>Makrohart Software Klaut</de>
-                <en>Macrohard Software Clout</en>
-                <pl>Macrohard Software Fraud</pl>
-            </title>
-            <description>
-                <de>Kaufen(!) Sie unsere Software und laden Sie Ihre Firmengeheimnisse SELBST auf unsere Server. Da bleibt es dann unter 5 Augen! Danke.</de>
-                <en>Buy(!) our software and upload your company secrets YOURSELF on our servers. Then things can remian confidential under 5 eyes! Thank you.</en>
-                <pl>Kup(!) nasze oprogramowanie i prześlij swoje tajemnice firmowe na nasze serwery. Wtedy wszystko może pozostać poufne! Dziękujemy.</pl>
-            </description>
-            <conditions min_audience="10.42" min_image="0" target_group="0"/>
-            <data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1"/>
-            <availability year_range_from="2008" />
-        </ad>
-        <ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
-            <title>
-                <de>Anwaltskanzlei Firnhick</de>
-                <en>Law Firm Fainbruck</en>
-                <pl>Kancelaria prawna Fainbruck</pl>
-            </title>
-            <description>
-                <de>Lobbyisten setzen gerade durch, dass wir Nichtkunden verklagen können, wegen Geschäftsschädigung! Werden Sie unser Kunde! Sonst zerren wir Sie vor Gericht!</de>
-                <en>Lobbyists are just enforcing that we can sue non-customers, for business damage! Become our customer! Otherwise we will take you to court!</en>
-                <pl>Lobbyści wymuszają, byśmy mogli pozywać nie-klientów za szkody biznesowe! Zostań naszym klientem! W przeciwnym razie podamy cię do sądu!</pl>
-            </description>
-            <conditions min_audience="2.08" min_image="0" target_group="0"/>
-            <data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1"/>
-        </ad>
-        <ad id="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister" comment="TODO: For these last 3 ads: The original parameters and values seemed off and outdated. So I've cloned them from other existing ads which seemed the best fit. They should be modified a bit for more variation.">
-            <title>
-                <de>Büroeinrichtung Wimmerl</de>
-                <en>Office Equipment Pimpler</en>
-                <pl>Sprzęt biurowy Pimpler</pl>
-            </title>
-            <description>
-                <de>Büromöbel in dunkelgrau, mausgrau und businessgrau. - Warum habe ich mein Geld nicht in eine Losbude gesteckt, auf dem Rummel? Kaufen Sie! Erlösen Sie mich!</de>
-                <en>Office furniture in dark gray, mouse gray and business gray. - Why didn't I put my money in a lottery booth, at the carnival? Buy! Redeem me!</en>
-                <pl>Meble biurowe w kolorze ciemnoszarym, szaro-mysim i szarym biznesowym. - Dlaczego nie postawiłem pieniędzy na loterii w wesołym miasteczku? Kup! Wykup mnie!</pl>
-            </description>
-            <conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
-            <data quality="12" repetitions="2" duration="4" profit="235" penalty="337" infomercial_profit="21" fix_infomercial_profit="1"/>
-        </ad>
-    </allads>
+	<allads>
+		<ad id="43e7451a-3eb1-4f91-9976-3e949c9ea8ed" creator="8605" created_by="SpeedMinister" comment="2008- | https://en.wikipedia.org/wiki/Microsoft_Azure | previous id: speedminister-ad-Mikrohard">
+			<title>
+				<de>Macrohard Arctic - Die Software Klaut</de>
+				<en>Macrohard Arctic - The Software Clout</en>
+				<pl>Macrohard Software Fraud</pl>
+			</title>
+			<description>
+				<de>Kaufen(!) Sie unsere Software und laden Sie Ihre Firmengeheimnisse SELBST auf unsere Server. Da bleibt es dann unter 5 Augen! Danke.</de>
+				<en>Buy(!) our software and upload your company secrets YOURSELF on our servers. Then things can remain confidential under 5 eyes! Thank you.</en>
+				<pl>Kup(!) nasze oprogramowanie i prześlij swoje tajemnice firmowe na nasze serwery. Wtedy wszystko może pozostać poufne! Dziękujemy.</pl>
+			</description>
+			<conditions min_audience="10.42" min_image="0" target_group="0" />
+			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
+			<availability year_range_from="2008" /> <!-- different years variations added in constr -->
+		</ad>
+		<ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
+			<title>
+				<de>Anwaltskanzlei Firnhick</de>
+				<en>Law Firm Fainbruck</en>
+				<pl>Kancelaria prawna Fainbruck</pl>
+			</title>
+			<description>
+				<de>Lobbyisten setzen gerade durch, dass wir Nichtkunden verklagen können, wegen Geschäftsschädigung! Werden Sie unser Kunde! Sonst zerren wir Sie vor Gericht!</de>
+				<en>Lobbyists are just enforcing that we can sue non-customers, for business damage! Become our customer! Otherwise we will take you to court!</en>
+				<pl>Lobbyści wymuszają, byśmy mogli pozywać nie-klientów za szkody biznesowe! Zostań naszym klientem! W przeciwnym razie podamy cię do sądu!</pl>
+			</description>
+			<conditions min_audience="2.08" min_image="0" target_group="0" />
+			<data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1" />
+		</ad>
+		<ad id="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Büroeinrichtung Wimmerl</de>
+				<en>Office Equipment Pimpler</en>
+				<pl>Sprzęt biurowy Pimpler</pl>
+			</title>
+			<description>
+				<de>Büromöbel in dunkelgrau, mausgrau und businessgrau. - Warum habe ich mein Geld nicht in eine Losbude gesteckt, auf dem Rummel? Kaufen Sie! Erlösen Sie mich!</de>
+				<en>Office furniture in dark gray, mouse gray and business gray. - Why didn't I put my money in a lottery booth, at the carnival? Buy! Redeem me!</en>
+				<pl>Meble biurowe w kolorze ciemnoszarym, szaro-mysim i szarym biznesowym. - Dlaczego nie postawiłem pieniędzy na loterii w wesołym miasteczku? Kup! Wykup mnie!</pl>
+			</description>
+			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="12" repetitions="2" duration="4" profit="235" penalty="337" infomercial_profit="21" fix_infomercial_profit="1" />
+		</ad>
+	</allads>
 </tvtdb>

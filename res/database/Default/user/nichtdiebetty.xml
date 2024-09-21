@@ -64,8 +64,10 @@ Na koniec rybak Matjes pokazuje, jak prawidłowo łuskać krewetki.</pl>
 			<staff>
 				<member index="0" function="1">nichtdiebetty-celebritypeople-hainerbecherflechter</member>
 			</staff>
-			<groups target_groups="0" />
-			<data country="D" year="1988" distribution="0" maingenre="300" subgenre="" flags="20" blocks="2" price_mod="1.0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="0.75" />
+			<data country="D" distribution="0" maingenre="300" subgenre="6" flags="20" blocks="2" price_mod="1.0" />
+			<releaseTime year_relative="0" year_relative_min="1970" year_relative_max="2010" />
 			<ratings critics="14" speed="15" outcome="0" />
 		</programme>
 	</allprogrammes>

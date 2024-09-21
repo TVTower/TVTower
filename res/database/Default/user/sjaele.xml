@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
 	<version value="3" comment="Själes Kram" />
-<!-- Die mit "Episode?" kommentierten Nachrichten eignen sich für Nachrichtenketten -->
-<!-- Die mit "deutschbezogen" kommentierten Nachrichten beziehen sich auf die deutsche Senderkarte -->
-<!-- Chemnitzer Nachrichten werden nicht derartig kommentiert -->
+	<!-- Die mit "Episode?" kommentierten Nachrichten eignen sich für Nachrichtenketten -->
+	<!-- Die mit "deutschbezogen" kommentierten Nachrichten beziehen sich auf die deutsche Senderkarte -->
+	<!-- Chemnitzer Nachrichten werden nicht derartig kommentiert -->
 	<allnews>
 
 		<news id="Sjaele-news-Gas-Pro" type="0" creator="7430" created_by="Sjaele">
@@ -407,7 +407,7 @@
 				<pl>Rozpoczęła się nowa era komputerów</pl>
 			</title>
 			<description>
-				<de>Der amerikanische Computerproduzent Cormoran stellt seinen Heimrechner „Eterna“ vor. Seine Grafikleistung ist einfach atemberaubend.</de>
+				<de>Der amerikanische Computerproduzent Cormorano stellt seinen Heimrechner „Eterna“ vor. Seine Grafikleistung ist einfach atemberaubend.</de>
 				<en>The American computer manufacturer Cormoran presents its home computer "Eterna". Its graphics performance is simply breathtaking.</en>
 				<pl>Amerykański producent komputerów Cormoran prezentuje swój komputer domowy "Eterna". Jego wydajność graficzna po prostu zapiera dech w piersiach.</pl>
 			</description>
@@ -1154,12 +1154,12 @@
 			<title>
 				<de>City-Tunnel billiger</de>
 				<en>City tunnel cheaper</en>
-				<pl></pl><!--Unclear to me.-->
+				<pl>Tunel miejski tańszy niż oczekiwano</pl>
 			</title>
 			<description>
 				<de>Billiger als erwartet, wird der Leipziger City-Tunnel. Seine Kosten steigen lediglich auf das Doppelte, nicht auf das Dreifache.</de>
 				<en>The Leipzig City Tunnel will be cheaper than expected. Its costs will only double, not triple.</en>
-				<pl></pl><!--Unclear to me.-->
+				<pl>Tunel miejski w Lipsku będzie tańszy niż oczekiwano. Jego koszty wzrosną tylko dwukrotnie, a nie trzykrotnie.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="41" />
 			<availability script="" year_range_from="2014" year_range_to="2014" />
@@ -1195,7 +1195,7 @@
 			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele">
+		<news id="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="iPhone should probably be spoofed.">
 			<title>
 				<de>iPhone zertrümmert</de>
 				<en>iPhone smashed</en>

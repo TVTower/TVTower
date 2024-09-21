@@ -5,7 +5,7 @@
 	<!-- fictional people -->
 
 	<insignificantpeople>
-		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock" />
+		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock | real version: 35af32a6-1c2a-4e3c-ae3c-d5786dd357df" />
 		<person id="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" country="D" job="200" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
 		<person id="8565d7d6-7c8d-447f-acd7-5dc65f073bec" first_name="Penelope" last_name="Truthseeker" nick_name="Trutherpenny" gender="2" birthday="1931-09-11" deathday="2012-12-21" country="GB" job="137" fictional="1" creator="9551" />
 	</insignificantpeople>
@@ -31,9 +31,10 @@ Format: Filmed lectures. Laid-back and to lay down.</en>
 Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+				<member index="0" function="5">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
 			<data country="NL" distribution="2" maingenre="6" subgenre="103,300" flags="4" blocks="1" price_mod="0.5" />
 			<releaseTime year_relative="-15" year_relative_min="1970" year_relative_max="1995" />
 			<ratings critics="21" speed="3" outcome="9" />
@@ -79,7 +80,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		<programme id="89507f2c-f6e9-4d63-bf32-657a280f72c3" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
 			<title>
 				<de>Wohnen am Atomkraftwerk</de>
-				<en>Living next to a nuclear power plant</en>
+				<en>Living Next to a Nuclear Power Plant</en>
 				<pl>Życie w pobliżu elektrowni jądrowej</pl>
 			</title>
 			<description>
@@ -88,10 +89,11 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>Coraz mniej osób jest skłonnych zrezygnować z zalet nowoczesnego reaktora.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+				<member index="0" function="5">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
 				<member index="1" function="128">82d81b92-29ee-420e-82b2-a4690a1679db</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" />
 			<data country="DK" year="1971" distribution="2" maingenre="300" subgenre="6" flags="4" blocks="1" price_mod="0.5" />
 			<ratings critics="33" speed="31" outcome="12" />
 			<children>
@@ -145,11 +147,13 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>53-letni książę [2|Full] i 20-letnia księżniczka [3|First] biorą ślub w Ratyzbonie, czy to może się udać? Jak pięknie jest w zamku? Czy to naprawdę miłość? Czy książę potrzebuje pomocy przy bzykaniu? Pytania za pytaniami</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">9d987fbb-99c3-47b8-82c3-227461b6762c</member>
 				<member index="3" function="64">64828f7e-a96b-4bb3-85c6-477ebe408d05</member>
 			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="301" subgenre="6,15" flags="17" blocks="6" price_mod="0.5" />
 			<releaseTime year="1980" day="5" hour="10" />
 			<ratings critics="15" speed="30" outcome="60" />
@@ -160,7 +164,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		<programme id="583955ef-3acf-42bf-991e-b1c169583780" product="4" licence_type="1" fictional="1" creator="9551">
 			<title>
 				<de>Dynamit - Das Magazin Live: Hochzeit von [2|Nick] und [3|Nick]</de>
-				<en>Dynamite - The Magazine Live: Wedding of [2|Nick] und [3|Nick]</en>
+				<en>Dynamite - The Magazine Live: Wedding of [2|Nick] and [3|Nick]</en>
 				<pl>Dynamit - Magazyn na żywo: Ślub [2|Nick] i [3|Nick]</pl>
 			</title>
 			<description>
@@ -169,11 +173,13 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>W Opactwie Westminsterskim nie ma wystarczająco dużo miejsca. 32-letni [2|Nick] i 20-letnia [3|Nick] biorą więc ślub w londyńskiej katedrze św. Pawła. Czy to się uda? Była modelka [1|Full] relacjonuje na żywo.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">28fe86a0-74ca-43a7-bc49-d3bd4df7c4d3</member>
 				<member index="3" function="64">4623935a-750a-4e5a-9d1b-6875062ff2a8</member>
 			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="301" subgenre="6,15" flags="17" blocks="6" price_mod="0.5" />
 			<releaseTime year="1981" day="7" hour="10" />
 			<ratings critics="20" speed="40" outcome="95" />
@@ -193,12 +199,13 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>Była modelka [1|Full] odwiedziła młodą księżniczkę [3|Full] w zamku. Oboje świetnie się dogadują i rozmawiają o sekretach.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">9d987fbb-99c3-47b8-82c3-227461b6762c</member>
 				<member index="3" function="64">64828f7e-a96b-4bb3-85c6-477ebe408d05</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" year="1984" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.25" />
 			<ratings critics="19" speed="35" outcome="45" />
 			<children>
@@ -257,9 +264,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Rycerska sala kapryśnych hobby</pl>
 					</title>
 					<description>
-						<de>Fürstin „von Taug und Thunix”? Von wegen! [3|First] zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
-						<en>Princess "of Taunt and To nix"? Wrong! [3|First] shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
-						<pl>Księżniczka? Błąd! [3|Pierwszy] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
+						<de>Fürstin „von Taug und Thunix“? Von wegen! [3|First] zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
+						<en>Princess "von Taug und Thunix" - not good for anything? Wrong! [3|First] shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
+						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! [3|Pierwszy] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
 					</description>
 				</programme>
 			</children>
@@ -267,20 +274,21 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		<programme id="1900edf1-c697-4861-ae50-36e31070a652" product="2" licence_type="3" fictional="1" creator="9551" comment="First episode inspired from a MadTV item, everything else made up. TODO: There could be a second part about 2000s era. By Penny's daughter. Rumored to be the daughter of a former US president.">
 			<title>
 				<de>Eskapaden im Weißen Haus</de>
-				<en>Escapades in the White House</en>
+				<en>Escapades In the White House</en>
 				<pl>Eskapady w Białym Domu</pl>
 			</title>
 			<description>
 				<de>Investigativjournalistin „Augenzwinker-Miss [1|Nick]“ stellt ihre Jahrzehnte lange Arbeit vor und enthüllt die innen- und außenpolitischen Affären der U.S.-Regierung des 20. Jahrhunderts. Exklusive bisher unbekannte Details!</de>
-				<en>Investigative journalist "Tongue-in-cheeck Miss [1|Nick]" presents her decades of work and reveals the domestic and foreign affairs of the 20th century U.S. government. Exclusive hitherto undisclosed details!</en>
+				<en>Investigative journalist "Tongue-in-cheek Miss [1|Nick]" presents her decades of work and reveals the domestic and foreign affairs of the 20th century U.S. government. Exclusive hitherto undisclosed details!</en>
 				<pl>Dziennikarka śledcza „Panna z przymrużeniem oka [1|Nick]” przedstawia swoje dziesięciolecia pracy i ujawnia wewnętrzne i zagraniczne sprawy rządu USA XX wieku. Ekskluzywne, dotychczas nieujawnione szczegóły!</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
+				<member index="0" function="5">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
 				<member index="1" function="136">8565d7d6-7c8d-447f-acd7-5dc65f073bec</member>
 				<!-- index 2: episode 'guests' -->
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="CH" year="1980" distribution="2" maingenre="300" subgenre="6,11" flags="4" blocks="1" price_mod="0.25" />
 			<ratings critics="46" speed="54" outcome="39" />
 			<children>
@@ -316,7 +324,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="a84ebdc0-23bd-4e49-8e89-6484367badaa" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>Der [2|Last]-Schock: [2|First] „nixes it“</de>
+						<de>Der [2|Last]-Schock: [2|First] nixt es</de>
 						<en>The [2|Last] Shock: [2|First] nixes it</en>
 						<pl>Szok [2|Last]: [2|First] go unieważnia</pl>
 					</title>
@@ -336,7 +344,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Łącznik [2|First]</pl>
 					</title>
 					<description>
-						<de>Bericht aus erster Hand? [2|Full] macht mit einer seiner außerehelichen Frauen eine „Spritztour” auf dem Potomac River in seinem „Amphicar“. Mitten im Akt finden sie sich plötzlich inmitten einer Regatta wieder. Der gegenseitige Überraschungseffekt ist enorm.</de>
+						<de>Bericht aus erster Hand? [2|Full] macht mit einer seiner außerehelichen Frauen eine „Spritztour“ auf dem Potomac River in seinem „Amphicar“. Mitten im Akt finden sie sich plötzlich inmitten einer Regatta wieder. Der gegenseitige Überraschungseffekt ist enorm.</de>
 						<en>First-hand report? [2|Full] takes one of his extramarital women out for a "joyride" on the Potomac River in his "Amphicar." In the middle of the act, they suddenly find themselves in the middle of a regatta. The mutual surprise effect is enormous.</en>
 						<pl>Relacja z pierwszej ręki? [2|Full] zabiera jedną ze swoich pozamałżeńskich kobiet na „przejażdżkę” po rzece Potomac w swoim „Amfikarze”. W połowie aktu nagle znajdują się w środku regat. Efekt wzajemnego zaskoczenia jest ogromny.</pl>
 					</description>
@@ -347,7 +355,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<programme id="088332a3-8534-490f-9f71-fb85c78d41b5" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>[2|First] möchte glauben</de>
-						<en>[2|First] wants to believe</en>
+						<en>[2|First] Wants to Believe</en>
 						<pl>[2|First] chce wierzyć</pl>
 					</title>
 					<description>
@@ -362,7 +370,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<programme id="a1170b5e-9b51-4bc8-be0d-a4338b9fd9ce" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>[2|Full]s Sputnik-Schock</de>
-						<en>[2|Full]'s Sputnik shock</en>
+						<en>[2|Full]'s Sputnik Shock</en>
 						<pl>Szok Sputnika [2|Full]</pl>
 					</title>
 					<description>
@@ -376,7 +384,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="d64fae37-49c0-4ba6-a6b5-ef52b1f9399a" product="1" licence_type="1" fictional="1" creator="9551" comment="'forked' from a51df750-cd95-49be-9d16-ffb8e48513bd">
+		<programme id="d64fae37-49c0-4ba6-a6b5-ef52b1f9399a" product="1" licence_type="1" fictional="1" creator="9551" comment="'forked' from a51df750-cd95-49be-9d16-ffb8e48513bd | TODO: The Scottish staff doesn't make much sense, separate them out">
 			<title>
 				<de>Ronny und Byte</de>
 				<en>Ronny and Byte</en>
@@ -397,14 +405,232 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<member index="6" function="2">Per_custom_Freddy_31</member>
 				<member index="7" function="2">Per_custom_Freddy_28</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" />
-			<targetgroupattractivity children="1.25" teenagers_female="1.5" housewives_female="1.2" employees_female="1.2" unemployed_female="1.2" managers_female="1.2" pensioners="2" />
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" employees="1.25" pensioners="2" />
 			<data country="SCO/D" distribution="2" maingenre="2" subgenre="15,16" flags="8" blocks="2" price_mod="0.25" />
 			<releaseTime year_relative="-1" year_relative_min="1980" year_relative_max="1995" />
 			<ratings critics="90" speed="90" outcome="90" />
 			<modifiers>
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="therob-programme-ser-RonnyunddasBytekehrenzurueck" />
+			</effects>
+		</programme>
+		<programme id="676f68b4-1c8b-467f-a805-a0a2af8b1486" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
+			<title>
+				<de>Dynamit - Das Magazin Spezial: Aus L.A.</de>
+				<en>Dynamite - The Magazine Special: From L.A.</en>
+			</title>
+			<description>
+				<de>Das Ex-Model [1|Full] ist nach L.A. geflogen und berichtet über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
+				<en>Ex-model [1|Full] has flown to L.A. to report on the latest and hottest gossip about the movie stars.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+			</staff>
+			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity pensioners="0.25" />
+			<data country="D" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.25" />
+			<releaseTime year_relative="+3" year_relative_min="1994" year_relative_max="2000" />
+			<ratings critics="21" speed="39" outcome="52" />
+			<children>
+				<programme id="81c85eea-a074-491b-87cf-3721e178b3a2" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>[2|First] die Niere</de>
+						<en>[2|First] De Weirdo</en>
+					</title>
+					<description>
+						<de>[2|Full] wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz Hollywood.</de>
+						<en>[2|Full] is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of Hollywood.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">506bc383-259e-4a36-9278-081aafc8f35c</member>
+					</staff>
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="fc209207-4b86-44f9-8453-fd19637802bc" />
+					</effects>
+				</programme>
+				<programme id="f879c4fe-d528-450a-b47c-a9a65fc6b688" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>[2|First] gibt's schon</de>
+						<en>[2|First] Giblets</en>
+					</title>
+					<description>
+						<de>[2|Full] rennt durch die schottischen Highlands, schwingt ein Schwert und ruft: „Es kann nur einen geben!“ Bereitet er sich auf eine neue Rolle vor? Dummerweise begegnet er seinem angeblich zeitreisenden zukünftigem Selbst, der meint: „Ich bin schon seit dem Mittelalter hier!“</de>
+						<en>[2|Full] accidentally serves his guests a Thanksgiving dinner with giblets from his pet turkey named "[2|Last]". The mix-up leads to uproarious confusion and a poultry-fueled PR disaster.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">1b8fcb9a-5961-43b8-af1b-1ed144880908</member>
+					</staff>
+				</programme>
+				<programme id="3be78126-e61c-45e1-93b9-39caf9138896" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Swish, Spritz | Swift used in a different episode">
+					<title>
+						<de>Willst Miff?</de>
+						<en>[2|First]'s Miff</en>
+					</title>
+					<description>
+						<de>[2|Full] gerät in einen heftigen Streit mit einem alten weißen Ladenbesitzer, der den Schriftzug „[2|Full] Edition“ auf Kartoffelchips-Tüten überklebte, den er für „Gekrakel wie das eines Dreijährigen“ bezeichnete, das angeblich für schwächeren Absatz als vorher sorgte.</de>
+						<en>[2|Full] gets into a fierce argument with an old white shopkeeper owner who taped over the lettering "[2|Full] Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
+					</staff>
+				</programme>
+				<programme id="50c05c1e-f1ce-4145-8d83-2c57bffeb3e9" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>[2|First] Testton</de>
+						<en>[2|First] Chest-on</en>
+					</title>
+					<description>
+						<de>[2|Full] wird beschuldigt, heimlich eine eigene Geräusch-Testfirma gegründet zu haben, um sicherzustellen, dass nur er die perfekte Stimmlage für epische Filmdialoge hat. „Er kontrolliert den Soundtrack unserer Leben!“, klagen misstrauische Tonspezialisten.</de>
+						<en>[2|Full] appears at a high-profile press conference sporting a (temporary?) tattoo of a cartoon heart with the inscription "Property of My Wife" on his chest, causing a flurry of speculation about his romantic life.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">b4561de6-215e-46ab-9212-f0868c6fcb33</member>
+					</staff>
+				</programme>
+				<programme id="558eaa7b-690c-41ca-988a-00b98207247e" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>[2|First] McVegan</de>
+						<en>[2|First] McVegan</en>
+					</title>
+					<description>
+						<de>Und auch von einem Ex-Schauspielstar und Ex-Präsidenten gibt's Neuigkeiten: [2|Full] baut Gerüchten zufolge heimlich ein veganes Fast-Food-Imperium auf. „Er ist also doch unser Commander in Leaf,“ rufen begeisterte Veganer weltweit.</de>
+						<en>And there's also news from an ex-acting star and ex-president: [2|Full] is rumored to be secretly building a vegan fast food empire. "So he is our Commander in Leaf after all," shout enthusiastic vegans worldwide.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">e52ca72c-83e2-431d-ae02-c66daefea035</member>
+					</staff>
+				</programme>
+			</children>
+		</programme>
+		<programme id="fc209207-4b86-44f9-8453-fd19637802bc" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
+			<title>
+				<de>Dynamit - Das Magazin Spezial: Back in L.A.</de>
+				<en>Dynamite - The Magazine Special: Back in L.A.</en>
+			</title>
+			<description>
+				<de>Das Ex-Model [1|Full] ist wieder in L.A. und berichtet erneut über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
+				<en>Ex-model [1|Full] has again flown to L.A. to once again report on the latest and hottest gossip about the movie stars.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="136">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+			</staff>
+			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity pensioners="0.25" />
+			<data country="D" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.25" available="0" /> <!-- availability triggered by 676f68b4-1c8b-467f-a805-a0a2af8b1486 Episode 1 -->
+			<releaseTime year_relative="+4" year_relative_min="1995" year_relative_max="2001" />
+			<ratings critics="19" speed="43" outcome="55" />
+			<children>
+				<programme id="87849e53-530d-4570-ae8c-1c161e852764" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Verloony">
+					<title>
+						<de>[2|First] verhört mich</de>
+						<en>[2|First] Verhooten</en>
+					</title>
+					<description>
+						<de>[2|Full] wird in einen Kriminalfall verwickelt und als Zeuge geladen. Direkt nach einer Fetisch-Party schaut er in einem gewagten Outfit vorbei. „Wird das ein Drehbuch oder ein Geständnis, und wer verhört hier eigentlich wen?“, fragt sich die erregte Jury.</de>
+						<en>[2|Full] casts a family of owls as the main characters in his highly anticipated sci-fi film. Viewers were baffled by the sudden appearance of owls in space suits, prompting speculation if it was avant-garde genius or a comical oversight.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">10d455be-e8e5-40eb-927b-c36e3345525d</member>
+					</staff>
+				</programme>
+				<programme id="f2e1597a-efa6-40dd-9f0a-2cc89b74d55e" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Chillis, Thrillis, Pillis, Drillis, Grillis, Dillis, Quillis, Brillis">
+					<title>
+						<de>[2|First] will es</de>
+						<en>[2|First] Will-less</en>
+					</title>
+					<description>
+						<de>Jaaa! Er ruft!!! sie!!! an!!! [2|Full] erscheint Tage lang nicht zum Dreh. Er hat sich im Hotelzimmer eingeschlossen und ist süchtig geworden ist nach Sex-Hotlines. „Du willst es doch auch!“ raunt die TV-Domina gerade, als endlich die Zimmertür aufgebrochen wird.</de>
+						<en>A depressed [2|Full] locks himself out of his own action movie set, leaving the entire production in chaos, with the crew unaware of him being stuck in his trailer binge-watching rom-coms.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">2b6af8c4-7775-44da-820e-1ce9c55d8cd9</member>
+					</staff>
+				</programme>
+				<programme id="36518cf4-419d-4de4-8394-d4fbfe5acf8c" product="2" licence_type="2" creator="9551" comment="Miff used in a previous episode">
+					<title>
+						<de>[2|First] Swift</de>
+						<en>[2|First] Swift</en>
+					</title>
+					<description>
+						<de>Erneut macht [2|Full] von sich reden, als er versucht, seine Fans zu beeindrucken, indem er seine neu entdeckte Leidenschaft für Ballett vorführt. Leider endet seine Swift-Pirouette damit, dass er in eine Requisite kracht und Chaos am Set verursacht.</de>
+						<en>Once again, [2|Full] makes a name for himself, as he attempts to impress his fans by showcasing his newfound passion for ballet. Unfortunately, his swift pirouette ends with him crashing into a prop, causing chaos on set.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
+					</staff>
+				</programme>
+				<programme id="853f96d6-da45-4bb4-a04a-35f2a4d14061" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Oliver Stoner, Boner">
+					<title>
+						<de>Rolliger Stein</de>
+						<en>[2|First] Bone</en>
+					</title>
+					<description>
+						<de>[2|Full] wird in einer Bowlinghalle gesichtet. Anscheinend dreht er eine Doku über „Die geheime Welt der Bowlingspieler“. „Ist die Anordnung der Pins ein Symbol der Illuminaten?“, fragt er besessen.</de>
+						<en>[2|Full] swaps the scripts of his historical epic with a dog training manual, leaving the bewildered actors on set reciting commands to imaginary canines and wondering whether this was avant-garde genius or just a bone-headed mistake.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">3d4a2d11-e943-4874-b8be-eaec31165150</member>
+					</staff>
+				</programme>
+				<programme id="49d2b764-c58b-4e38-b338-e13af4312525" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Will Weizen">
+					<title>
+						<de>[2|First] Bieten</de>
+						<en>[2|First]'s Wit Ton</en>
+					</title>
+					<description>
+						<de>[2|Full] wird beschuldigt, bei einer Auktion seine eigenen Sammlerstücke zu überbieten, um seinen Ruf als „Nerd-König“ zu festigen. „Ist das ein Gebot oder ein Rollenspiel?“, fragen sich verblüffte Bieter.</de>
+						<en>[2|Full] attempts to impress fans with his newfound passion for stand-up comedy and a program involving a "giant barrel of bad puns". Unfortunately, his jokes fall flat heavily, and the audience laughs at his expense.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">DF-Celebreties-Wil_Wheaton</member>
+					</staff>
+				</programme>
+				<programme id="5322bb8e-8061-4c5d-94d6-f585ce99bd8c" product="2" licence_type="2" creator="9551">
+					<title>
+						<de>[2|First] Heul</de>
+						<en>[2|First] Howl</en>
+					</title>
+					<description>
+						<de>Der Brite [2|Full] ist für ein Filmprojekt in L.A. und beginnt zu heulen, als er seinen Fünf-Uhr-Tee nicht bekommt, so lange und vehement, bis er in der folgenden Vollmondnacht zum Werwolf wird. Fortan lässt er oft seinen Wuschelbart unrasiert noch stehen.</de>
+						<en>The Brit [2|Full] is in L.A. for a film project and starts howling when he doesn't get his five o'clock tea, so long and vehemently until he becomes a werewolf on the following full moon night. From then on, he will often leave his fuzzy beard unshaven.</en>
+					</description>
+					<staff>
+						<member index="2" function="64">5322bb8e-8061-4c5d-94d6-f585ce99bd8c</member>
+					</staff>
+				</programme>
+			</children>
+		</programme>
+		<programme id="dba43687-9030-4e8f-9d8d-8bf2b8bafeb2" product="1" licence_type="1" creator="9551" fictional="1" comment="Einen Film über Sekretärinnen der eigentlichen Sexreport-Reihe gab es scheinbar nicht, es gibt aber ausländische Filme mit dem deutschen Titel 'Sekretärinnen-Report', daher die 'inoffizielle' Abwandlung '-Bericht' im TVTower-Universum | Description largely by ChatGPT | Screenplay continuations starting with d664f243-15d6-4645-886e-27a3e8cf8533">
+			<title>
+				<de>Sekretärinnen-Bericht - Akten, Affären &amp; Akrobatik</de>
+				<en>Secretaries Report - Accounts, Affairs &amp; Acrobatics</en>
+			</title>
+			<description>
+				<de>Bürochaos mit flirtenden Schreibkräften: Frau Huber vertauscht Akten mit Liebesbriefen, Herr Schmitt jongliert Termine und Techtelmechtel, und Frau Meier entdeckt die Kunst des Fotokopierens... Ein Balanceakt zwischen Bürokratie und Boudoir, während das Faxgerät heiß läuft.</de>
+				<en>Office chaos with flirting typists: Ms. Huber swaps files with love letters, Mr. Schmitt juggles deadlines and dalliances, and Ms. Meier discovers the art of photocopying... A balancing act between bureaucracy and boudoir, while the fax machine runs hot.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_390</member>
+				<member index="1" function="2">Per_custom_Freddy_257</member>
+				<member index="2" function="2">Per_custom_Freddy_511</member>
+				<member index="3" function="2">Per_custom_Freddy_638</member>
+				<member index="4" function="2">Per_custom_Freddy_47</member>
+				<member index="5" function="2">Per_custom_Freddy_678</member>
+				<member index="6" function="2">Per_custom_Freddy_71</member>
+				<member index="7" function="2">various-models</member>
+			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="8" subgenre="301,5" flags="96" blocks="2" price_mod="0.5" />
+			<releaseTime year="1979" day="4" />
+			<ratings critics="8" speed="24" outcome="22" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" enable="1" guid="d664f243-15d6-4645-886e-27a3e8cf8533" />
+			</effects>
 		</programme>
 	</allprogrammes>
 
@@ -422,7 +648,6 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<en>Programme filler for every morning. Here the stories that the colleagues from the newsroom have already thrown away are fished out of the garbage can again. Other low-threshold content can surely be sourced as well.</en>
 				<pl>Wypełniacz programu na każdy poranek. Tutaj historie, które koledzy z newsroomu już wyrzucili, są ponownie wyławiane ze śmietnika. Inne niskoprogowe treści z pewnością również mogą być pozyskiwane.</pl>
 			</description>
-
 			<variables>
 				<title>
 					<de>Morgenmuffel-TV|Mundgeruch am Morgen|Miesepeter am Morgen|Morgengrieß-Kram|G'n Morgääähn</de>
@@ -433,14 +658,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<jobs>
 				<job index="0" function="8" required="1" />
 			</jobs>
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" />
 			<genres maingenre="103" subgenres="6,300" />
 			<blocks value="3" />
 			<price min="2000" max="4000" />
-			<potential min="20" max="40" />
-			<outcome min="20" max="40" />
-			<review min="10" max="20" />
-			<speed min="10" max="20" />
+			<potential min="5" max="15" />
+			<outcome min="5" max="15" />
+			<review min="5" max="15" />
+			<speed min="5" max="15" />
 			<production_time value="60" />
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
@@ -471,7 +696,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<job index="6" function="16" required="0" />
 				<!--job index="7" function="2048" gender="2" required="0" /--> <!-- TODO: Eventually reactivate, should casting models become possible -->
 			</jobs>
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="11" production_limit="100" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="69" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="103" subgenres="104,300" />
 			<blocks value="3" />
 			<price min="200000" max="500000" />
@@ -516,8 +742,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
-			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1.25" housewives_female="0.75" employees_male="2" employees_female="1" unemployed_male="1.5" unemployed_female="0.75" managers_male="2" managers_female="1.5" pensioners_male="1.25" pensioners_female="0.25" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="288" />
+			<targetgroupattractivity men="2" women="0.5" housewives="0.5" />
 			<genres maingenre="300" subgenres="6,16" />
 			<blocks value="1" />
 			<price min="50000" max="100000" />
@@ -564,7 +790,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="301" subgenres="204,7" />
 			<blocks value="1" />
 			<price min="75000" max="150000" />
@@ -613,7 +840,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="17" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="301" subgenres="204,7" />
 			<blocks value="1" />
 			<price min="50000" max="100000" />
@@ -663,7 +891,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
+			<targetgroupattractivity pensioners="0.25" />
 			<genres maingenre="204" subgenres="6,301" />
 			<blocks value="1" />
 			<price min="300000" max="600000" />
@@ -680,13 +909,13 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		<scripttemplate product="3" licence_type="1" guid="56bcb1ff-8a5d-4d91-b3f7-ad6958b3855b" creator="9551">
 			<title>
 				<de>%recreational%%athletes% aus %randomcity% und anderswo</de>
-				<en>%recreational% %athletes% from %randomcity% and elsewhere</en>
+				<en>%recreational% %athletes% from %randomcity% and Elsewhere</en>
 				<pl>%recreational% %athletes% i nie tylko</pl>
 			</title>
 			<description>
 				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Formel 3 &amp; 4 &amp; Kartsport und vieles mehr.</de>
-				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fun fair boxing, Formula 3 &amp; 4 &amp; karting, and much more.</en>
-				<pl>Najnowsze wiadomości i relacje z krajowych lig hobbystycznych, amatorskich i okręgowych. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, lekkoatletyka, boks, Formuła 3 &amp; 4 &amp; karting i wiele więcej.</pl>
+				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fairground boxing, Formula 3 &amp; 4 &amp; karting, and much more.</en>
+				<pl>Najnowsze wiadomości i relacje z krajowych lig hobbystycznych, amatorskich i okręgowych. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, lekkoatletyka, boks w wesołym miasteczku, Formuła 3 &amp; 4 &amp; karting i wiele więcej.</pl>
 			</description>
 			<variables>
 				<recreational>
@@ -710,7 +939,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="274"/>
+			<targetgroupattractivity women="0.75" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
 			<price min="15000" max="30000" />
@@ -754,7 +984,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" />
+			<targetgroupattractivity women="0.75" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
 			<price min="100000" max="200000" />
@@ -804,7 +1035,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="12" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" production_limit="12" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="274" />
+			<targetgroupattractivity women="0.75" />
 			<genres maingenre="203" subgenres="103,300" />
 			<blocks value="1" />
 			<price min="500000" max="900000" />
@@ -831,7 +1063,6 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<en>Politics up to date. New every day. We analyze the latest developments in business and politics.</en>
 				<pl>Polityka na bieżąco. Nowości każdego dnia. Analizujemy najnowsze wydarzenia w biznesie i polityce.</pl>
 			</description>
-
 			<variables>
 				<tower>
 					<de>TVT|Tower|TVTower</de>
@@ -856,7 +1087,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="96" />
 			<genres maingenre="201" subgenres="300,101" />
 			<blocks value="1" />
 			<price min="50000" max="100000" />
@@ -905,7 +1136,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups_optional="232" />
+			<data flags="5" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="100" />
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="300" subgenres="6,11" />
 			<blocks value="1" />
 			<price min="30000" max="60000" />
@@ -954,8 +1186,8 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<job index="3" function="128" required="1" />
 				<job index="4" function="64" required="0" />
 			</jobs>
-			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups_optional="19"/>
-			<targetgroupattractivity children_male="2" children_female="1" teenagers_male="2" teenagers_female="1" housewives_male="1" housewives_female="0.5" employees_male="1.25" employees_female="0.5" unemployed_male="1.5" unemployed_female="1" managers_male="1.25" managers_female="1" pensioners_male="0.5" pensioners_female="0.25" />
+			<data flags="1" production_limit="100" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="19" />
+			<targetgroupattractivity men="1.25" women="0.5" children_male="2" teenagers_male="2" unemployed="2" pensioners="0.25" />
 			<genres maingenre="104" subgenres="2,16" />
 			<blocks value="1" />
 			<price min="30000" max="60000" />
@@ -998,7 +1230,8 @@ Czyli 4120 na odcinek.</pl>
 				<job index="1" function="4" required="1" />
 				<job index="2" function="128" required="1" />
 			</jobs>
-			<data flags="4" production_limit="100" production_broadcast_limit="2" production_licence_flags="36" />
+			<data flags="4" production_limit="100" production_broadcast_limit="2" production_licence_flags="36" target_groups="68" />
+			<targetgroupattractivity men="0.5" />
 			<genres maingenre="6" subgenres="300" />
 			<blocks value="2" />
 			<price min="30000" max="90000" />
@@ -1040,7 +1273,9 @@ Czyli 4120 na odcinek.</pl>
 				<job index="4" function="2" required="1" gender="2" />
 				<job index="5" function="2" required="1" gender="1" />
 			</jobs>
-			<genres maingenre="5" subgenres="9,7" />
+			<data target_groups="6" />
+			<targetgroupattractivity children="1.25" pensioners="0.25" />
+			<genres maingenre="5" subgenres="7,9" />
 			<blocks min="2" max="3" />
 			<price min="60000" max="111500" />
 			<potential min="65" max="100" />
@@ -1048,6 +1283,216 @@ Czyli 4120 na odcinek.</pl>
 			<review min="65" max="100" />
 			<speed min="65" max="100" />
 			<studio_size min="2" max="3" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="d26ee4f9-1b61-4b7a-926a-e462256b127b" creator="9551" comment="Making some use of the existing fairytale characters. Descriptions created with help of ChatGPT.">
+			<title>
+				<de>%ROLENAME2% und %ROLENAME1% im Märchenwald</de>
+				<en>%ROLENAME2% and %ROLENAME1% in the Woods of Wonder</en>
+			</title>
+			<description>
+				<de>Vor ihrem bekannten Aufeinandertreffen mit dem Bären erleben die heranwachsenden %ROLENAME1% und %ROLENAME2% zusammen mit den Kindern %ROLENAME3%, %ROLENAME4% und %ROLENAME5% Abenteuer im Wald.</de>
+				<en>Before their famous encounter with the bear, the adolescent %ROLENAME1% and %ROLENAME2% experience adventures in the forest together with the children %ROLENAME3%, %ROLENAME4% and %ROLENAME5%.</en>
+			</description>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="5bda9699-4cc2-49cd-875a-70e666594d56">
+					<title>
+						<de>Die flüsternden Bäume</de>
+						<en>The Whispering Trees</en>
+					</title>
+					<description>
+						<de>%ROLENAME5% bläst sein Horn in den Verwunschenen Wäldern und erweckt flüsternde Bäume, uralte Hüter und tückische Elfen, die die Abenteurer nun kichernd mit Illusionen und falschen Fährten in die Irre führen.</de>
+						<en>%ROLENAME5% blows his horn in the Enchanted Woods and awakens whispering trees, ancient guardians and elusive sprites, who now, while giggling, lead the adventurers astray with illusions and false trails.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="f4fddd1c-0f95-4887-8a76-7994b94e26ef">
+					<title>
+						<de>Spuk am Kaminfeuer</de>
+						<en>The Haunted Hearth</en>
+					</title>
+					<description>
+						<de>Auf der Suche nach Schutz vor einem Sturm stößt die Gruppe auf eine scheinbar in der Zeit eingefrorene Hütte. Im Inneren entdecken sie ein verstaubtes Tagebuch, das auf einen von geisterhaften Hütern bewachten verlorenen Schatz hinweist.</de>
+						<en>Seeking shelter from a storm, the group stumbles upon a cottage seemingly frozen in time. Inside, they uncover a dusty journal hinting at a lost treasure guarded by spectral guardians.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="78e0abc7-0df0-435a-89d4-8000dc9a820f">
+					<title>
+						<de>Der Spiegel der Wahrheit</de>
+						<en>The Mirror of Truth</en>
+					</title>
+					<description>
+						<de>Noch in der Hütte steckt %ROLE3% seinen Daumen in einen Kuchen und zieht eine Pflaume heraus, aber ein mystischer Spiegel reflektiert etwas anderes - er enthüllt die verborgensten Geheimnisse aller, was mit dem angesprochenen Schatz zu tun haben könnte.</de>
+						<en>Still in the cottage, %ROLE3% puts his thumb into a pie and pulls out a plum, but a mystical mirror reflects something else - it reveals the deepest secrets of everyone, which might have something to do with the treasure mentioned.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="408d1dbe-0887-4249-a7e6-15f206c63082">
+					<title>
+						<de>Die Rätsel der Mondschein-Lichtung</de>
+						<en>Riddles of the Moonlit Glade</en>
+					</title>
+					<description>
+						<de>Um einen gefangenen Faun zu retten, müssen unsere Abenteurer den schelmischen Koboldkönig überlisten. Seine Rätsel, die buchstäblich in das Gewebe der Mondschein-Lichtung eingeflochten sind, fordern all ihre Auffassungsgabe und Kreativität heraus.</de>
+						<en>To rescue a captured faun, our adventurers must outwit the mischievous Goblin King. His riddles, woven into the very fabric of the moonlit glade, challenge their logic and creativity.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="357292ab-33d4-4646-8694-9acacc94ff8a">
+					<title>
+						<de>Der Wächter des Vergessenen Hains</de>
+						<en>The Guardian of the Forgotten Grove</en>
+					</title>
+					<description>
+						<de>Im Herzen des Waldes der Finsternis liegt der Vergessene Hain, bewacht von einer furchterregenden Chimäre. Kann die Gruppe den schwer greifbaren Goldenen Schlüssel finden?</de>
+						<en>In the heart of the Forest of Darkness lies the Forgotten Grove, guarded by a fearsome Chimera. Can the group find the elusive Golden Key?</en>
+					</description>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="9faa394a-3c7e-4943-9236-7ccf70db6c6e" />
+				<job index="2" function="2" required="1" role_guid="e38dc13c-ce6a-4a0f-98f5-fd5cec332bf6" />
+				<job index="3" function="2" required="1" role_guid="520fcf21-87d3-4a4d-a791-8c3b55bec8a0" />
+				<job index="4" function="2" required="1" role_guid="b3ec26ce-9105-4545-b66f-c08dc5ce91bb" />
+				<job index="5" function="2" required="1" role_guid="71bb14c4-800e-4be0-a3c5-9ab868ac4b4a" />
+				<job index="6" function="32" required="1" gender="1" />
+				<job index="7" function="32" required="1" gender="2" />
+			</jobs>
+			<data target_groups="69" />
+			<targetgroupattractivity men="0.75" />
+			<genres maingenre="9" subgenres="10,1" />
+			<episodes min="5" max="5" />
+			<blocks value="1" />
+			<price min="70000" max="150000" />
+			<potential min="20" max="60" />
+			<outcome min="20" max="60" />
+			<review min="20" max="60" />
+			<speed min="20" max="60" />
+			<studio_size value="2" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="d664f243-15d6-4645-886e-27a3e8cf8533" creator="9551" comment="Screenplay version / continuation of dba43687-9030-4e8f-9d8d-8bf2b8bafeb2 | Description largely by ChatGPT">
+			<title>
+				<de>Sekretärinnen-Bericht 2. Teil - Karrieren, Kaffee &amp; Knutschen</de>
+				<en>Secretaries Report Part 2 - Careers, Coffee &amp; Canoodling</en>
+			</title>
+			<description>
+				<de>Das Büro brodelt! Neue Sekretärin %ROLE1% bringt frischen Schwung, Meetings werden zur Dating-Show, während Chef %ROLE2% hinterm Schreibtisch charmant Chaos stiftet. Und %ROLE3% entdeckt, dass Verträge und Knutschen mehr gemeinsam haben als gedacht.</de>
+				<en>The office is on fire! New secretary %ROLE1% brings fresh energy, meetings turn into a dating show, while boss %ROLE2% charmingly creates chaos behind his desk. And %ROLE3% discovers that contracts and canoodling have more in common than she thought.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="0db77eb6-b378-4a92-b023-ff14ff6b425b" />
+				<job index="2" function="2" required="1" role_guid="24ee8796-c890-4a27-90a8-d16a54540107" />
+				<job index="3" function="2" required="1" role_guid="63eea7e7-a2b6-4e6a-8a10-2d3c18878ae2" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="2" required="1" gender="2" />
+				<job index="6" function="2" required="1" gender="1" />
+			</jobs>
+			<data flags="96" flags_optional="" target_groups="274" available="0" /> <!-- availability triggered by dba43687-9030-4e8f-9d8d-8bf2b8bafeb2 -->
+			<genres maingenre="8" subgenres="301,5" />
+			<blocks value="2" />
+			<price min="50000" max="100000" />
+			<potential min="5" max="50" />
+			<outcome min="5" max="50" />
+			<review min="5" max="15" />
+			<speed min="5" max="50" />
+			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" enable="1" guid="443fa70e-450c-4085-a4de-c41b23e295ef" />
+			</effects>
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="443fa70e-450c-4085-a4de-c41b23e295ef" creator="9551" comment="Description largely by ChatGPT">
+			<title>
+				<de>Sekretärinnen-Bericht 3. Teil - Stenografie, Streiche &amp; Sinnlichkeit</de>
+				<en>Secretaries Report Part 3 - Shorthand, Stunts &amp; Sensuality</en>
+			</title>
+			<description>
+				<de>Jetzt wird's noch bunter: %ROLE1% wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und %ROLE2%s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
+				<en>Now it all gets extra sparkly: %ROLE1% becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and %ROLE2%'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="16268794-0b87-4fe9-85aa-b76420dac760" />
+				<job index="2" function="2" required="1" role_guid="e0848a91-7e3c-4182-be61-fa8adaf524ea" />
+				<job index="3" function="2" required="1" gender="2" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="2" required="1" gender="2" />
+				<job index="6" function="2" required="1" gender="1" />
+			</jobs>
+			<data flags="96" flags_optional="" target_groups="274" available="0" /> <!-- availability triggered by d664f243-15d6-4645-886e-27a3e8cf8533 -->
+			<genres maingenre="8" subgenres="301,5" />
+			<blocks value="2" />
+			<price min="50000" max="100000" />
+			<potential min="5" max="50" />
+			<outcome min="5" max="50" />
+			<review min="5" max="15" />
+			<speed min="5" max="50" />
+			<studio_size value="2" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" enable="1" guid="8be4356f-7d69-4e7c-b845-b7d3ad63a9d4" />
+			</effects>
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="8be4356f-7d69-4e7c-b845-b7d3ad63a9d4" creator="9551">
+			<title>
+				<de>Sekretärinnen-Bericht 4. Teil</de>
+				<en>Secretaries Report Part 4</en>
+			</title>
+			<description>
+				<de>Die blonde %ROLENAME1% von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler Higwig gibt's 'ne Natursekt-Party, der Chef %ROLE3% wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
+				<en>Blonde %ROLENAME1% from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent Higwig's, the boss %ROLE3% is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="bcc023e0-436c-434b-a8a1-34db387abd3b" />
+				<job index="2" function="2" required="1" role_guid="a26420cb-a727-47b0-b976-14926210cbef" />
+				<job index="3" function="2" required="1" role_guid="442145ed-a077-4591-963b-3603d8d8013f" />
+				<job index="4" function="2" required="1" gender="2" />
+				<job index="5" function="2" required="1" gender="2" />
+				<job index="6" function="2" required="1" gender="1" />
+				<job index="7" function="2" required="1" gender="2" />
+			</jobs>
+			<data flags="96" flags_optional="" target_groups="274" available="0" /> <!-- availability triggered by 443fa70e-450c-4085-a4de-c41b23e295ef -->
+			<genres maingenre="8" subgenres="301,5" />
+			<blocks value="2" />
+			<price min="50000" max="100000" />
+			<potential min="5" max="50" />
+			<outcome min="5" max="50" />
+			<review min="5" max="15" />
+			<speed min="5" max="50" />
+			<studio_size value="2" />
+		</scripttemplate>
+
+			<!-- fictional screenplays and parodies not based on original titles -->
+
+		<scripttemplate product="1" licence_type="1" guid="d31d1720-d567-4479-8ac9-f77d13848f3c" creator="9551" comment="Parody/spoof also in real-title mode of https://en.wikipedia.org/wiki/Charlie_and_the_Chocolate_Factory | TODO: Maybe yet another parody and erotic comedy version: W. Wanker and the Sex Toy Factory">
+			<title>
+				<de>%ROLE1% und die Spirituosenfabrik</de>
+				<en>%ROLE1% and the Liquor Factory</en>
+			</title>
+			<description>
+				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker %ROLE2% findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen %ROLE1%. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
+				<en>The bumbling deposit bottle collector and alcoholic %ROLE2% finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric %ROLE1%. However, the pint-swilling aristocrats there are quite the nuisance.</en>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="5c61faef-3078-45d9-ac40-b6c857386a6b" />
+				<job index="2" function="2" required="1" role_guid="5ef9df02-db41-4fa9-927d-9a5b1603c977" />
+				<job index="3" function="2" required="1" role_guid="f04b97f2-7d59-491c-81e5-0ba7e949ffd4" />
+				<job index="4" function="2" required="1" role_guid="938800c9-5a61-4928-aae1-862a23277772" />
+				<job index="5" function="2" required="1" role_guid="78f6fce7-00cc-40b5-b3da-6a062f0ad4ab" />
+				<job index="6" function="2" required="1" role_guid="0a688b25-78d6-46c5-8d1d-7a9072d23ec1" />
+				<job index="7" function="2" required="1" role_guid="74299967-c143-4bc1-a27b-7ba415eaa5f5" />
+				<job index="8" function="2" required="1" role_guid="9cefefa0-986d-410a-8574-1c1c9254ecab" />
+				<job index="9" function="32" required="1" gender="2" />
+				<job index="10" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by 9466ee7a-fb52-46cc-992f-cd9c873acf3d or 95520cdd-fece-491d-b21e-aec441e27046 -->
+			<targetgroupattractivity pensioners="0.25" />
+			<genres maingenre="5" subgenres="202,1" />
+			<blocks value="2" />
+			<price min="150000" max="300000" />
+			<potential min="20" max="50" />
+			<outcome min="20" max="50" />
+			<review min="20" max="50" />
+			<speed min="20" max="50" />
+			<studio_size value="2" />
 		</scripttemplate>
 	</scripttemplates>
 </tvtdb>
