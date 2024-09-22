@@ -2405,6 +2405,25 @@ Type TSaveGame Extends TGameState
 					Local dataX:Int = mapInfo.ScreenXToDataX(station.x)
 					Local dataY:Int = mapInfo.ScreenYToDataY(station.y)
 					station.SetPosition(dataX, dataY)
+					
+					'check if an no longer used providerGUID was used
+					If TStationCableNetworkUplink(station) or TStationSatelliteUplink(station) and station.providerID = 0
+						Local providerKey:String = station.GetID()+"_providerguid"
+						Local value:Object = savegameConverter.temporaryData.ValueForKey(providerKey)
+						If value
+							Local provider:TStationMap_BroadcastProvider
+							If TStationCableNetworkUplink(station)
+								provider = GetStationMapCollection().GetCableNetwork(string(value))
+							ElseIf TStationSatelliteUplink(station)
+								provider = GetStationMapCollection().GetSatellite(string(value))
+							EndIf
+							If provider
+								station.providerID = provider.GetID()
+								TLogger.Log("RepairData", "Assigned providerID " + station.providerID + " to replace removed providerGUID ~q"+string(value)+"~q.")
+							EndIf
+						EndIf
+					EndIf
+
 
 					if TStationAntenna(station)
 						Local newRadius:Int = 31 'calculated in earlier versions
@@ -2412,14 +2431,17 @@ Type TSaveGame Extends TGameState
 						'savegameConverter might contain the old reach information
 						'and thus allowing to find a better "newRadius"
 						If savegameConverter
-							Local oldReach:Int = Int(String( savegameConverter.temporaryData.ValueForKey(station) ))
-							if oldReach <> -1
-								For newRadius = TStationAntenna(station).radius - 5 to TStationAntenna(station).radius + 28
-									Local population:Int = GetStationMapCollection().GetAntennaPopulation(dataX, dataY, newRadius, 0)
-									if population >= oldReach
-										exit
-									EndIf
-								Next
+							Local key:String = station.GetID()+"_reachmax"
+							if savegameConverter.temporaryData.Contains(key)
+								Local oldReach:Int = Int(String( savegameConverter.temporaryData.ValueForKey(key) ))
+								if oldReach <> -1
+									For newRadius = TStationAntenna(station).radius - 5 to TStationAntenna(station).radius + 28
+										Local population:Int = GetStationMapCollection().GetAntennaPopulation(dataX, dataY, newRadius, 0)
+										if population >= oldReach
+											exit
+										EndIf
+									Next
+								EndIf
 							EndIf
 						EndIf
 
@@ -3013,6 +3035,7 @@ End Type
 
 Type TSavegameConverter
 	Field temporaryData:TMap = New TMap
+	Field sb:TStringBuilder = New TStringBuilder
 
 	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
 		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
@@ -3072,13 +3095,14 @@ Type TSavegameConverter
 
 	'handling fields no longer existing a type (obj.pos:TVec2D -> obj.x, obj.y)
 	Method HandleMissingField:Object(parentTypeName:String, fieldName:String, fieldTypeName:String, parent:Object, fieldObject:Object)
-		Local handle:String = (parentTypeName+"."+fieldName+":"+fieldTypeName).ToLower()
+		sb.SetLength(0)
+		sb.Append(parentTypeName)
+		sb.Append(".")
+		sb.Append(fieldName)
+		sb.Append(":")
+		sb.Append(fieldTypeName)
+		Local handle:String = sb.ToLower().ToString()
 		Select handle
-			'v0.8.3: TStationBase cleanup: reach etc no longer available, but radius recalculation needs information
-			case "TStationAntenna.reachMax:Int".ToLower()
-				'save in a temporary-Data Map to allow lookups
-				temporaryData.Insert(parent, string(fieldObject))
-
 			'v0.8.1: TEntityCollection cleanup: TEntityCollection became TLongMap + TStringMap
 			case "TFigureCollection.entries:TMap".ToLower()
 				Local fc:TFigureCollection = TFigureCollection(parent)
@@ -3088,12 +3112,14 @@ Type TSavegameConverter
 						fc.Add(eb)
 					Next
 				EndIf
+				Return parent
 
 			'v0.7.4 -> "TSpriteFrameAnimationCollection.currentAnimationName" deprecated
 			'          in favor of simpler "TSpriteFrameAnimationCollection.currentAnimation" 
 			case "TSpriteFrameAnimationCollection.currentAnimationName:String".ToLower()
 				Local collection:TSpriteFrameAnimationCollection = TSpriteFrameAnimationCollection(parent)
 				If collection Then collection.SetCurrent(String(fieldObject), False, False)
+				Return parent
 
 			'v0.7.2 -> "TStation***.pos:TVec2D" became "TStation***.x and .y"
 			case "TStation.pos:TVec2D".ToLower(), ..
@@ -3109,7 +3135,21 @@ Type TSavegameConverter
 				Return parent
 			
 			default
-				print "NOT handling ... " + handle
+				'Save old fields in a temporary-Data Map to allow lookups
+				'Format: "gameid_fieldname" => fieldValue
+				'v0.8.3: TStationBase cleanup: 
+				'        reach, reachMax: removed but radius recalculation needs information
+				'        providerGUID: replaced with providerID, but lookup in repair requires GUID
+				If TGameObject(parent)
+					Local id:Int = TGameObject(parent).GetID()
+					sb.SetLength(0)
+					sb.Append(id)
+					sb.Append("_")
+					sb.Append(fieldName)
+					temporaryData.Insert(sb.ToLower().ToString(), fieldObject)
+				'Else
+					'print "NOT handling ... " + handle
+				EndIf
 		End Select
 		
 		Return Null
