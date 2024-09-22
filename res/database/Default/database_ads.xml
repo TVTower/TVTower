@@ -164,7 +164,7 @@ You will really have to chew.</en>
 				<en>The fourth place. The GS2 is the successor to the GS made by Sunny.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="15" repetitions="3" duration="3" profit="347" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2000" year_range_to="2005" /> <!-- variations for other years added in constr -->
 		</ad>
 		<ad id="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy">
@@ -1428,7 +1428,7 @@ Brucey - harsh fragrance for expert men.</en>
 				<en>The walker is rusted? Your relatives have been glaringly absent for years? Sanitaxi provides you with all the hygiene products you need. Now with trendy designs on every second liner.</en>
 			</description>
 			<conditions min_audience="5.7301" min_image="12" target_group="64" />
-			<data infomercial="1" quality="12" repetitions="2" duration="4" profit="440" penalty="952" infomercial_profit="67" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="12" repetitions="2" duration="4" profit="420" penalty="952" infomercial_profit="67" fix_infomercial_profit="1" />
 		</ad>
 		<ad id="ronny-ad-schminkstift-01" creator="5578" created_by="Ronny">
 			<title>

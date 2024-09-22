@@ -573,7 +573,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<pl>Zapewniamy mobilność.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? Currently not - field is a single value -->
-			<data quality="17" repetitions="8" duration="3" profit="325" penalty="1053" fix_infomercial_profit="1" />
+			<data quality="17" repetitions="8" duration="4" profit="325" penalty="1053" fix_infomercial_profit="1" />
 		</ad>
 
 		<ad id="8514f4a6-7407-4d23-b729-1d027df18397" comment="https://en.wikipedia.org/wiki/Shell_plc">
