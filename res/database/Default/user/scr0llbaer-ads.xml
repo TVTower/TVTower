@@ -61,7 +61,7 @@ Now with an extra-high public expenditure quota.</en>
 				<en>Come join us! We don't know yet where we come from, where we want to go, or who we are, but together we'll figure it out!</en>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data infomercial="1" quality="4" repetitions="2" duration="4" profit="540" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="520" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
 			<!-- Anonymous spots should be at night time, only 1 repetition -->
 			<availability year_range_to="1996" />
 		</ad>
@@ -77,7 +77,7 @@ Expect us.</de>
 Expect us.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data infomercial="1" quality="4" repetitions="2" duration="4" profit="540" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="520" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2007" />
 		</ad>
 		<ad id="1a798b23-d33f-4325-a000-0a08f832ea13" creator="9551" comment="2008- | https://en.wikipedia.org/wiki/Anonymous_(hacker_group)">
@@ -92,7 +92,7 @@ We do not forgive. We do not forget. Expect us.</de>
 We do not forgive. We do not forget. Expect us.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data infomercial="1" quality="4" repetitions="2" duration="4" profit="540" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="525" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
 			<availability year_range_from="2008" year_range_to="-1" />
 		</ad>
 		<ad id="91595531-40f0-40bc-98df-90f7481b0bc5" creator="9551" comment="https://en.wikipedia.org/wiki/Zombo.com | Available before the internet age because the unattainable is unknown at Zombocom. :) | Infomercial high quality for comedic reasons">
@@ -828,7 +828,7 @@ It's easy with Macrohard BASIC.
 The benchmark for personal computing.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="25" repetitions="1" duration="2" profit="320" penalty="514" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1975" year_range_to="1982" />
 		</ad>
 		<ad id="9ab691bb-97c6-4fee-bb70-b23386b027e5" comment="1983-1989 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
@@ -845,7 +845,7 @@ It's easy with Macrohard BASIC.
 Now for MXS and Cormoran 64, among others.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="25" repetitions="1" duration="2" profit="320" penalty="514" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1983" year_range_to="1989" />
 		</ad>
 		<ad id="8f110aa4-c88d-4bd4-9aad-eb3ee2a1c8a4" comment="1990-1994 | https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack | https://en.wikipedia.org/wiki/Minesweeper_(video_game)">
@@ -858,7 +858,7 @@ Now for MXS and Cormoran 64, among others.</en>
 				<en>Now with Minecleaner. Bombastic excitement in our top puzzle game. Absolutely addictive! Now for your PC.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="25" repetitions="1" duration="2" profit="320" penalty="514" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1994" />
 		</ad>
 		<ad id="2cf218d7-be6d-4689-9b71-20121cb23434" comment="1995-1996 | https://en.wikipedia.org/wiki/Microsoft_Bob | https://en.wikipedia.org/wiki/Office_Assistant">
@@ -871,7 +871,7 @@ Now for MXS and Cormoran 64, among others.</en>
 				<en>Climpy's daddy and your digital assistant and guide through the wonderful world of computing. Now for your multimedia PC.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="25" repetitions="1" duration="2" profit="320" penalty="514" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1995" year_range_to="1996" />
 		</ad>
 		<ad id="20e1f868-bc55-497d-a624-cee97d9886da" comment="1997-2000 | https://en.wikipedia.org/wiki/Encarta">
@@ -888,7 +888,7 @@ Get the best out of your PC with CD-ROM.
 The unrivaled multimedia experience.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="25" repetitions="1" duration="2" profit="320" penalty="514" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2000" />
 		</ad>
 		<ad id="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="Vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
@@ -907,7 +907,7 @@ Y not our games console? Always consumable. Always available.
 Only from Macrohard.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="25" repetitions="1" duration="2" profit="320" penalty="514" fix_infomercial_profit="1" />
+			<data quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
 		<ad id="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="Vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker | TODO: Perhaps a bit 'better' international version">
