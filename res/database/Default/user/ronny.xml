@@ -10,7 +10,7 @@
 		<programme id="ronny-programme-livereportage-raketenstart1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Erster Start der Ariane-2</de>
-				<en>First launch of Ariane-2</en>
+				<en>First Launch of Ariane-2</en>
 				<pl>Pierwszy start Ariane-2</pl>
 			</title>
 			<description>
@@ -18,7 +18,8 @@
 				<en>First launch of the booster Ariane-2, LIVE. Share our excitement - the countdown is on: 9, 8 ...</en>
 				<pl>Pierwszy start rakiety nośnej Ariane-2, NA ŻYWO. Podziel się naszymi emocjami - odliczanie trwa: 9, 8 ...</pl>
 			</description>
-			<groups target_groups="96" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.75" />
 			<data country="D" distribution="2" maingenre="300" subgenre="16" flags="1" blocks="1" price_mod="0.90" />
 			<releaseTime year="1985" day="6" hour="18" />
 			<ratings critics="45" speed="30" outcome="40" />
@@ -34,11 +35,12 @@
 				<pl>Letnie Igrzyska Olimpijskie 1988 w Seulu</pl>
 			</title>
 			<description>
-				<de>Die große Eröffnungsfeier zur Sommerolympiade 1988 in Seoul. Grandiose Bilder und großer Tanz nach dem Motto „Heaven, Earth and Men“</de>
-				<en>The grand opening ceremony for the Summer Olympics 1988 in Seoul. Magnificent imagery and a fantastic dance with the theme "Heaven, Earth and Men"</en>
+				<de>Die große Eröffnungsfeier zur Sommerolympiade 1988 in Seoul. Grandiose Bilder und großer Tanz nach dem Motto „Heaven, Earth and Men“.</de>
+				<en>The grand opening ceremony for the Summer Olympics 1988 in Seoul. Magnificent imagery and a fantastic dance with the theme "Heaven, Earth and Men".</en>
 				<pl>Uroczyste otwarcie Letnich Igrzysk Olimpijskich 1988 w Seulu. Wspaniałe obrazy i fantastyczny taniec z tematem "Niebo, ziemia i ludzie".</pl>
 			</description>
-			<groups target_groups="70" />
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" women="1.5" />
 			<data country="D" distribution="2" maingenre="203" subgenre="204" flags="1" blocks="3" price_mod="1.00" />
 			<releaseTime year="1988" day="10" hour="12" />
 			<ratings critics="65" speed="40" outcome="65" />
@@ -59,10 +61,11 @@
 				<pl>Podczas gdy Fuhrer nadal marzył o zwycięstwie, minister Gebbels propagował wśród ludzi punkt zwrotny w wojnie poprzez użycie "Wunderwaffen", "cudownej broni". Nazistowskie UFO miało doprowadzić do przełomu.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
+				<member index="0" function="5">ronny-programmeperson-holgerpelz</member>
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
-			<groups target_groups="64" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" />
 			<data country="D" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<releaseTime year_relative="-4" year_relative_min="1975" year_relative_max="1990" />
 			<ratings critics="45" speed="20" outcome="24" />
@@ -79,10 +82,11 @@
 				<pl>Parady karnawałowe w czasach Hitlera. Hitler i Gebbels przebrani za Jasia i Małgosię. Po raz pierwszy materiał w pełnej kolorystyce!</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
+				<member index="0" function="5">ronny-programmeperson-holgerpelz</member>
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
-			<groups target_groups="64" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" />
 			<data country="D" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<releaseTime year_relative="-3" year_relative_min="1976" year_relative_max="1991" />
 			<ratings critics="38" speed="28" outcome="27" />
@@ -90,7 +94,7 @@
 		<programme id="ronny-programme-doku-kutler-untergang" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Untergang</de>
-				<en>Kutler's downfall</en>
+				<en>Kutler's Downfall</en>
 				<pl>Upadek Hitlera</pl>
 			</title>
 			<description>
@@ -99,10 +103,11 @@
 				<pl>Powstanie i upadek dyktatora Hitlera są wszechstronnie zbadane. Odrestaurowany oryginalny materiał filmowy można zobaczyć wyłącznie w tym dokumencie.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-holgerpelz</member>
+				<member index="0" function="5">ronny-programmeperson-holgerpelz</member>
 				<member index="1" function="128">ronny-programmeperson-holgerpelz</member>
 			</staff>
-			<groups target_groups="64" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" />
 			<data country="D" distribution="2" maingenre="6" subgenre="11" flags="0" blocks="1" price_mod="0.95" />
 			<releaseTime year_relative="+2" year_relative_min="1979" year_relative_max="1993" />
 			<ratings critics="49" speed="30" outcome="20" />
@@ -110,7 +115,7 @@
 		<programme id="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>BTX - Neue digitale Welt</de>
-				<en>BTX - new digital world</en>
+				<en>BTX - New Digital World</en>
 				<pl>BTX - nowy cyfrowy świat</pl>
 			</title>
 			<description>
@@ -119,62 +124,41 @@
 				<pl>Niemcy na wyłączność: Nigdy więcej nie wychodź z domu. Zamawianie chleba z kanapy i dokonywanie transakcji finansowych we własnych czterech ścianach. Interaktywny system wideotekstu BTX przenosi świat do telewizora.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-samuelloew</member>
-				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
+				<member index="0" function="133">ronny-programmeperson-samuelloew</member>
 			</staff>
-			<groups target_groups="256" />
-			<data country="D" distribution="2" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
+			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="2" women="0.5" housewives="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="0" blocks="2" price_mod="1.05" />
 			<releaseTime year_relative="-4" year_relative_min="1981" year_relative_max="1983" />
 			<ratings critics="55" speed="15" outcome="25" />
 		</programme>
-		<programme id="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme id="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny" comment="TODO: More of these tech docus through the decades, and make them age much faster">
 			<title>
 				<de>Mikroelektronik - Willkommen in der Zukunft</de>
-				<en>Microelectronics - Welcome to the future</en>
+				<en>Microelectronics - Welcome to the Future</en>
 				<pl>Mikroelektronika - Witamy w przyszłości</pl>
 			</title>
 			<description>
-				<de>[1|Full] führt den Zuschauer ein in die Welt der Mikroelektronik. Personal Computer die auf einen Schreibtisch passen!
+				<de>[0|Full] führt den Zuschauer ein in die Welt der Mikroelektronik. Personal Computer die auf einen Schreibtisch passen!
 Willkommen in der Zukunft.</de>
-				<en>[1|Full] introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
+				<en>[0|Full] introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
 Welcome to the future.</en>
 				<pl>[1|Full] wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
 Witamy w przyszłości.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-samuelloew</member>
-				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
+				<member index="0" function="133">ronny-programmeperson-samuelloew</member>
 			</staff>
-			<groups target_groups="256" />
-			<data country="D" year="1981" distribution="2" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
+			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="2" women="0.5" housewives="0.5" />
+			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="300" flags="0" blocks="2" price_mod="1.05" />
 			<ratings critics="40" speed="12" outcome="22" />
 		</programme>
-		<programme id="ronny-programme-doku-fruitinc" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
-			<title>
-				<de>Fruit Inc. - Heimcomputer aus Cupertino</de>
-				<en>Fruit Inc. - Home computers made in Cupertino</en>
-				<pl>Fruit Inc. - Komputery domowe wyprodukowane w Cupertino</pl>
-			</title>
-			<description>
-				<de>Wilde Zeiten erfordern Wagemut. Die Dokumentation begleitete die Fruit Inc.-Gründer Hobbs und Whooznajak vier Jahre lang und kann so manche nennenswerte Anekdote liefern.
-Enthält exklusives Interview mit Investor Mark Mikikulla.</de>
-				<en>Wild times call for courage. The film team accompanied Fruit Inc. founders Hobbs and Whooznajak for four years and can provide many notable anecdotes.
-Contains an exclusive interview with investor Mark Mikikulla.</en>
-				<pl>Dzikie czasy wymagają odwagi. Zespół filmowy towarzyszył założycielom Fruit Inc. Hobbsowi i Whooznajakowi przez cztery lata i może dostarczyć wielu godnych uwag i anegdot.
-Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
-			</description>
-			<staff>
-				<member index="0" function="1">ronny-programmeperson-thomasstone</member>
-				<member index="1" function="128">ronny-programmeperson-thomasstone</member>
-			</staff>
-			<groups target_groups="256" />
-			<data country="USA" year="1981" distribution="2" maingenre="6" flags="0" blocks="2" price_mod="1.05" />
-			<ratings critics="25" speed="22" outcome="0" />
-		</programme>
+		<!-- 'Fruit Inc.' moved to database_programmes.xml -->
 		<programme id="ronny-programme-pantoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wahre Pantoffelhelden</de>
-				<en>Truly henpecked</en>
+				<en>Truly Henpecked</en>
 				<pl>Prawdziwie upierdliwy</pl>
 			</title>
 			<description>
@@ -183,10 +167,15 @@ Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 				<pl>Gudrun dziedziczy po ojcu kurnik. Major knuje intrygi, a miasto potrzebuje... prawdziwych dziobaków, by ocalić kurnik.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="2" function="2">Per_custom_Freddy_659</member>
+				<member index="3" function="2">Per_custom_Freddy_660</member>
+				<member index="4" function="2">Per_custom_Freddy_565</member>
+				<member index="5" function="2">Per_custom_Freddy_539</member>
 			</staff>
-			<groups target_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" year="1983" distribution="2" maingenre="9" subgenre="15" flags="16" blocks="2" price_mod="0.9" />
 			<ratings critics="40" speed="20" outcome="48" />
 		</programme>
@@ -202,10 +191,16 @@ Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 				<pl>[1|Last] oczarowuje ziomków. W tej szczerej, ciepłej i romantycznej komedii telewizyjnej na próżno szukać wielkich ziemniaków i ptasich móżdżków.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="2" function="2">Per_custom_Freddy_540</member>
+				<member index="3" function="2">Per_custom_Freddy_646</member>
+				<member index="4" function="2">Per_custom_Freddy_691</member>
+				<member index="5" function="2">Per_custom_Freddy_553</member>
+				<member index="6" function="2">Per_custom_Freddy_431</member>
 			</staff>
-			<groups target_groups="0" />
+			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" children="2" />
 			<data country="D" year="1985" distribution="2" maingenre="15" subgenre="" flags="16" blocks="2" price_mod="0.95" />
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
@@ -222,9 +217,10 @@ Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 				<pl>Występują w kolorze czerwonym, białym i wielu innych. Czasami z cukrem, a czasami bez. W wielkim teście gum do żucia 200 rodzajów gumy balonowej jest testowanych pod kątem smaku, lepkości i przydatności do podeszwy buta.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<member index="0" function="5">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 			</staff>
-			<groups target_groups="23" />
+			<groups target_groups="23" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity pensioners="0.25" />
 			<data country="D" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
 			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="2000" />
 			<ratings critics="18" speed="25" />
@@ -232,7 +228,7 @@ Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 		<programme id="ronny-programme-feilschen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Feilschen will gelernt sein</de>
-				<en>Haggling is a skill</en>
+				<en>Haggling Is a Skill</en>
 				<pl>Targowanie się jest umiejętnością</pl>
 			</title>
 			<description>
@@ -241,9 +237,10 @@ Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 				<pl>Wprowadzenie do targowania się na orientalnych bazarach - lub na lokalnym targu.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 			</staff>
-			<groups target_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="0.75" />
 			<data country="D" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
 			<releaseTime year_relative="-8" year_relative_min="1976" year_relative_max="1990" />
 			<ratings critics="35" speed="15" />
@@ -251,7 +248,7 @@ Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 		<programme id="ronny-programme-recyclingfueranfaenger-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Recycling für Anfänger</de>
-				<en>Recycling for beginners</en>
+				<en>Recycling for Beginners</en>
 				<pl>Recykling dla początkujących</pl>
 			</title>
 			<description>
@@ -260,18 +257,19 @@ Zawiera ekskluzywny wywiad z inwestorem Markiem Mikikullą.</pl>
 				<pl>Jest nowy, modny - i ma znaczenie ekologiczne. [1|Full] pokazuje, co może trafić do kosza na śmieci.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="8">ronny-people-generated-01</member>
 			</staff>
 			<!-- pensioners and housewives -->
-			<groups target_groups="68" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" year="1991" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
 			<ratings critics="35" speed="8" />
 		</programme>
 		<programme id="ronny-programme-versandkataloge-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Versandkataloge: Woher, wofür?</de>
-				<en>Mail-order catalogues: From where and for what?</en>
+				<en>Mail-Order Catalogues: From Where and for What?</en>
 				<pl>Katalogi sprzedaży wysyłkowej: Skąd i po co?</pl>
 			</title>
 			<description>
@@ -283,12 +281,12 @@ With practical tricks to recognize junk goods.</en>
 Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="0" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 				<member index="1" function="8">ronny-people-generated-01</member>
 			</staff>
 			<!-- pensioners and housewives -->
-			<groups target_groups="68" />
-			<targetgroupattractivity teenagers="0.7" managers="0.7" housewives="1.15" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" teenagers_male="0.7" managers="0.7" housewives="1.15" />
 			<data country="D" year="1983" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="18" speed="12" />
 		</programme>
@@ -305,20 +303,21 @@ Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 				<pl>Wielu pracowników zgadza się co do jednego: pracodawca jest wrogiem. 100 pracowników i 2 pracodawców w debacie.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="0" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 				<member index="1" function="8">ronny-people-generated-02</member>
 			</staff>
 			<!-- employees and managers -->
-			<groups target_groups="40" />
+			<groups target_groups="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity teenagers="0.7" unemployed="0.8" managers="1.15" employees="1.25" />
-			<data country="D" year="1987" distribution="2" maingenre="103" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="1" blocks="2" broadcast_flags="512" price_mod="1.00" />
+			<releaseTime year_relative="2" day="7" year_relative_min="1984" year_relative_max="2014" />
 			<ratings critics="23" speed="15" />
 		</programme>
 
 		<programme id="ronny-programme-hausfrauliebenswert-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Hausfrau - liebenswert und putzig</de>
-				<en>The housewife - lovable and polished</en>
+				<en>The Housewife - Lovable and Polished</en>
 				<pl>Gospodyni domowa - urocza i dopieszczona</pl>
 			</title>
 			<description>
@@ -330,12 +329,12 @@ The report accompanies two families for a summer in West Berlin.</en>
 Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-achimvonklaven</member>
+				<member index="0" function="5">ronny-programmeperson-achimvonklaven</member>
 				<member index="1" function="128">ronny-programmeperson-achimvonklaven</member>
 			</staff>
 			<!-- men -->
-			<groups target_groups="256" />
-			<targetgroupattractivity women="0.9" />
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.75" unemployed_male="2" />
 			<data country="D" year="1962" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="20" speed="10" />
 		</programme>
@@ -343,7 +342,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 		<programme id="ronny-programme-buestenhalterinflammen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Büstenhalter in Flammen</de>
-				<en>Brassieres in Flames</en>
+				<en>Brassieres In Flames</en>
 				<pl>Biustonosze w płomieniach</pl>
 			</title>
 			<description>
@@ -352,12 +351,12 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 				<pl>Przybyła, zobaczyła, wydaje się podbijać: emancypacja kobiet. Mężczyźni pod wpływem nowej pewności siebie silnej "słabej" płci.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-ellygnatzer</member>
-				<member index="1" function="128">ronny-programmeperson-ellygnatzer</member>
+				<member index="0" function="5">ronny-programmeperson-ellygnartzer</member>
+				<member index="1" function="128">ronny-programmeperson-ellygnartzer</member>
 			</staff>
 			<!-- women -->
-			<groups target_groups="128" />
-			<targetgroupattractivity men="0.9" teenagers="1.1" />
+			<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" teenagers_female="2" />
 			<data country="D" year="1974" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="24" speed="15" />
 		</programme>
@@ -365,7 +364,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 		<programme id="ronny-programme-westberlinwehrdienst-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Westberlin - Nein zum Wehrdienst</de>
-				<en>West Berlin - No to military service</en>
+				<en>West Berlin - No to Military Service</en>
 				<pl>Berlin Zachodni - Nie dla służby wojskowej</pl>
 			</title>
 			<description>
@@ -374,11 +373,12 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 				<pl>Ekipa filmowa towarzyszy punkowi "Fizzy'emu" podczas jego przeprowadzki do Berlina Zachodniego. Dzięki alianckim prawom rezerwacji może on tam uniknąć obowiązkowej służby wojskowej.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="0" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 				<member index="1" function="128">ronny-programmeperson-heinzharaldfehm</member>
 			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<!-- men / male teenagers -->
-			<targetgroupattractivity men="1.05" teenagers_male="1.2" />
+			<targetgroupattractivity men="1.05" teenagers_male="1.2" pensioners="0.25" />
 			<data country="D" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
 			<releaseTime year_relative="-1" year_relative_min="1985" year_relative_max="1988" />
 			<ratings critics="25" speed="20" />
@@ -387,7 +387,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 		<programme id="ronny-programme-reeperbahnfreudenhaeusertest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Reeperbahn - Freudenhäuser im Test</de>
-				<en>Reeperbahn - Whorehouses under Test</en>
+				<en>Reeperbahn - Whorehouses Under Test</en>
 				<pl>Reeperbahn - Burdele w trakcie testów</pl>
 			</title>
 			<description>
@@ -399,11 +399,12 @@ Test winner: The "Little Twiddle".</en>
 Zwycięzca testu: "Little Twiddle".</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="0" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 				<member index="1" function="128">ronny-programmeperson-achimvonklaven</member>
 			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<!-- men / male teenagers -->
-			<targetgroupattractivity men="1.2" teenagers_male="1.4" />
+			<targetgroupattractivity women="0.5" men="1.25" teenagers_male="1.4" />
 			<data country="D" distribution="2" maingenre="300" subgenre="8" flags="64" blocks="1" />
 			<releaseTime year_relative="+2" year_relative_min="1993" year_relative_max="2000" />
 			<ratings critics="15" speed="30" />
@@ -427,8 +428,9 @@ Przygotuj chusteczki do nosa.</pl>
 				<member index="0" function="1">ronny-people-generated-02</member>
 				<member index="1" function="128">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 			</staff>
+			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<!-- women / female teenagers -->
-			<targetgroupattractivity women="1.20" teenagers_female="1.25" />
+			<targetgroupattractivity men="0.75" women="1.20" teenagers_female="1.25" />
 			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
 			<releaseTime year_relative="+2" year_relative_min="1995" year_relative_max="2005" />
 			<ratings critics="10" speed="30" />
@@ -436,8 +438,8 @@ Przygotuj chusteczki do nosa.</pl>
 
 		<programme id="ronny-programme-konfettitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
-				<de>Konfetti: Betrug am Kunde?</de>
-				<en>Confetti: Defrauding the customer?</en>
+				<de>Konfetti: Betrug am Kunden?</de>
+				<en>Confetti: Defrauding the Customer?</en>
 				<pl>Confetti: Oszustwo wobec klienta?</pl>
 			</title>
 			<description>
@@ -449,11 +451,12 @@ The hoped-for scandal failed to materialize.</en>
 Oczekiwany skandal nie zmaterializował się.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="128">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<!-- pensioners -->
-			<targetgroupattractivity pensioners="1.10" />
+			<targetgroupattractivity employees="0.75" pensioners="1.5" />
 			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
 			<releaseTime year_relative="+2" year_relative_min="1985" year_relative_max="2010" />
 			<ratings critics="11" speed="18" />
@@ -483,8 +486,9 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				<!-- the programme ages faster than average -->
 				<modifier name="topicality::age" value="1.2" />
 			</modifiers>
-			<data country="D" distribution="2" maingenre="100" subgenre="5" blocks="3" />
-			<releaseTime year_relative="-1" year_relative_min="1986" year_relative_max="1992" />
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="100" subgenre="5" flags="1" blocks="3" broadcast_flags="512" />
+			<releaseTime year_relative="1" day="4" year_relative_min="1986" year_relative_max="1992" />
 			<ratings critics="18" speed="35" />
 		</programme>
 
@@ -503,13 +507,15 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 5 rodzajów betonu w teście dużego basenu portowego.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-gertkalischke</member>
+				<member index="0" function="5">ronny-programmeperson-gertkalischke</member>
 				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
 			</staff>
 			<modifiers>
 				<!-- the programme ages slower than average -->
 				<modifier name="topicality::age" value="0.75" />
 			</modifiers>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.75" />
 			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
 			<releaseTime year_relative="-5" year_relative_min="1980" year_relative_max="1995" />
 			<ratings critics="25" speed="20" />
@@ -736,7 +742,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="4" price="1.0" quality="48" />
 		</news>
-		<news id="ronny-news-sandsturm-02" type="2" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny">
+		<news id="ronny-news-sandsturm-02" type="2" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny" comment="TODO: Actually add this film?">
 			<title>
 				<de>Sandsturm war nicht echt</de>
 				<en>Sandstorm was not real</en>
@@ -963,12 +969,12 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<variables>
 				<what>
 					<de>Musiksterne|Talente|Pop|Unterhaltung|Musikgenuss|Klassik|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</de>
-					<en>Music starlets|Talents|Pop|Entertainment|Music delight|Classical Music|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</en>
+					<en>Music Starlets|Talents|Pop|Entertainment|Music Delight|Classical Music|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</en>
 					<pl>Gwiazdy muzyki|Talenty|Pop|Rozrywka|Rozkosz muzyczna|Muzyka klasyczna|Rock|Metal|Jazz|Folk|Blues|Hip-Hop</pl>
 				</what>
 				<when>
 					<de>am Abend|zur besten Sendezeit|in der Dämmerung|im Mondschein|unterm Sternenzelt|zur guten Nacht|zum Sonnenuntergang</de>
-					<en>in the Evening|at Prime Time|at Nightfall|in the Moonlight|under the Canopy of Stars|for the Good Night|at Sunset</en>
+					<en>in the Evening|at Prime Time|at Nightfall|in the Moonlight|Under the Canopy of Stars|for the Good Night|at Sunset</en>
 					<pl>wieczorem|o najlepszej porze|o zmroku|w świetle księżyca|pod baldachimem gwiazd|na dobranoc|o zachodzie słońca</pl>
 				</when>
 			</variables>
@@ -980,6 +986,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				<job index="4" function="16" required="0" />
 			</jobs>
 
+			<data flags="1" live_date="8,1,20,20" target_groups="6" />
+			<targetgroupattractivity children="1.5" teenagers="2" pensioners="0.25" />
 			<genres maingenre="102" />
 			<blocks value="3" />
 			<price min="7000" max="16000" slope="60" />
@@ -990,7 +998,6 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<!-- production time is in minutes! -->
 			<production_time value="120" />
 			<!-- live on next work day 20:00 -->
-			<data flags="1" live_date="8,1,20,20" />
 		</scripttemplate>
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
@@ -1008,7 +1015,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<variables>
 				<showname>
 					<de>Goldene Morgenstunden|Guten Morgen %STATIONMAP:RANDOMCITY%|Die Frühaufsteher|Start in den Tag</de>
-					<en>The early birds|Good Morning %STATIONMAP:RANDOMCITY%|The early risers|Start of the day</en>
+					<en>The Early Birds|Good Morning %STATIONMAP:RANDOMCITY%|The Early Risers|Start of the Day</en>
 					<pl>Pobudka z TV|Dzień dobry %STATIONMAP:RANDOMCITY%|Poranne TV|Telewizja śniadaniowa</pl>
 				</showname>
 			</variables>
@@ -1020,6 +1027,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				<job index="3" function="16" required="0" />
 			</jobs>
 
+			<targetgroupattractivity men="0.75" />
 			<genres maingenre="103" subgenres="9" />
 			<blocks value="3" />
 			<price min="3000" max="5000" slope="60" />
@@ -1030,14 +1038,14 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<production_time value="60" />
 			<!-- live whenever first broadcastd -->
 			<!-- licence flags: 4 + 32 (REMOVE_ON_REACHING_BROADCASTLIMIT + LICENCEPOOL_REMOVES_TRADEABILITY) -->
-			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" />
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="69" />
 		</scripttemplate>
 
 
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above">
 			<title>
 				<de>${cntry} von oben</de>
-				<en>Bird's eye view of ${cntry}</en>
+				<en>Bird's Eye View of ${cntry}</en>
 				<pl>Widok z lotu ptaka na ${cntry}</pl>
 			</title>
 			<description>
@@ -1064,7 +1072,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</children>
 			<variables>
 				<cntry>
-					<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
+					<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Indien|Chile</de>
 					<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>
 					<pl>Niemcy|Hiszpanię|Francję|Danię|Szwecję|Finlandie|Norwegie|Polskę|Grecję|Włochy|Portugalię|Brazylię|Kostarykę|Kanadę|Wietnam|Tajlandię|Japonię|Belgię|Nepal|Indie|Chile</pl>
 				</cntry>
@@ -1073,7 +1081,9 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1"  />
 			</jobs>
-			<genres maingenre="6" subgenres="9"/>
+			<data flags="4" target_groups="68" />
+			<targetgroupattractivity men="0.5" />
+			<genres maingenre="6" subgenres="9,300"/>
 			<potential min="60" max="100" slope="70" />
 			<outcome min="50" max="90" slope="50" />
 			<review min="70" max="100" slope="50" />
@@ -1081,7 +1091,6 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<price min="30000" max="70000" slope="50" />
 			<blocks min="1" max="2" slope="20" />
 			<production_time min="720" max="1200" />
-			<data flags="4" />
 			<programme_data_modifiers>
 				<modifier name="price" value="0.15" />
 				<modifier name="topicality::refresh" value="0.65" />
@@ -1120,7 +1129,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 					<!--pilot is always present!-->
 					<title>
 						<de>${cntry} im Überblick</de>
-						<en>${cntry} in a nutshell</en>
+						<en>${cntry} in a Nutshell</en>
 						<pl>${cntry} w pigułce</pl>
 					</title>
 					<description>
@@ -1128,6 +1137,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Geographical, historical and political summary of ${cntry}, before a specific aspect of the country is highlighted in each episode.</en>
 						<pl>Geograficzne, historyczne i polityczne podsumowanie danego kraju. W każdym odcinku inny temat.</pl>
 					</description>
+					<data target_groups="68" />
+					<targetgroupattractivity men="0.5" />
 					<outcome min="30" max="60" slope="50" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="1" guid="scripttemplate-ron-visiting-ep2">
@@ -1136,7 +1147,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Castles</en>
 						<pl>Zamki</pl>
 					</title>
-					<data target_groups="65" />
+					<data target_groups="69" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="2" guid="scripttemplate-ron-visiting-ep3">
 					<title>
@@ -1144,7 +1156,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Stadiums</en>
 						<pl>Stadiony</pl>
 					</title>
-					<data target_groups="258" />
+					<data target_groups="274" />
+					<targetgroupattractivity women="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="3" guid="scripttemplate-ron-visiting-ep4">
 					<title>
@@ -1152,6 +1165,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Lakes</en>
 						<pl>Jeziora</pl>
 					</title>
+					<data target_groups="68" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="4" guid="scripttemplate-ron-visiting-ep5">
 					<title>
@@ -1159,6 +1174,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Mountains</en>
 						<pl>Góry</pl>
 					</title>
+					<data target_groups="68" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="5" guid="scripttemplate-ron-visiting-ep6">
 					<title>
@@ -1166,7 +1183,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Employers</en>
 						<pl>Zatrudnie i przemysł</pl>
 					</title>
-					<data target_groups="40" target_groups_optional="16"/>
+					<data target_groups="40" target_groups_optional="16" />
+					<targetgroupattractivity housewives="0.25" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="6" guid="scripttemplate-ron-visiting-ep7">
 					<title>
@@ -1174,7 +1192,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Farmers' Markets</en>
 						<pl>Rolnictwo i obszary wiejskie</pl>
 					</title>
-					<data target_groups="4" target_groups_optional="64"/>
+					<data target_groups="4" target_groups_optional="64" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="7" guid="scripttemplate-ron-visiting-ep8">
 					<title>
@@ -1182,7 +1200,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>National Parks</en>
 						<pl>Parki narodowe</pl>
 					</title>
-					<data target_groups="0" target_groups_optional="129"/>
+					<data target_groups="68" target_groups_optional="129" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="8" guid="scripttemplate-ron-visiting-ep9">
 					<title>
@@ -1190,7 +1209,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Architecture</en>
 						<pl>Architektura</pl>
 					</title>
-					<data target_groups="32" target_groups_optional="64"/>
+					<data target_groups="32" target_groups_optional="64" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="9" guid="scripttemplate-ron-visiting-ep10">
 					<title>
@@ -1198,7 +1217,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Literature</en>
 						<pl>Literatura</pl>
 					</title>
-					<data target_groups="128" target_groups_optional="32"/>
+					<data target_groups="128" target_groups_optional="32" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="10" guid="scripttemplate-ron-visiting-ep11">
 					<title>
@@ -1206,7 +1226,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Music</en>
 						<pl>Muzyka</pl>
 					</title>
-					<data target_groups="128" target_groups_optional="2"/>
+					<data target_groups="128" target_groups_optional="2" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="11" guid="scripttemplate-ron-visiting-ep12">
 					<title>
@@ -1214,7 +1235,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Beer</en>
 						<pl>Piwo</pl>
 					</title>
-					<data target_groups="18" target_groups_optional="8"/>
+					<data target_groups="274" target_groups_optional="8" />
+					<targetgroupattractivity men="2" teenagers_male="2" housewives="0.5" employees_female="0.75" unemployed="2" managers="0.25" pensioners="0.25" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="12" guid="scripttemplate-ron-visiting-ep13">
 					<title>
@@ -1222,7 +1244,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Wine</en>
 						<pl>Wino</pl>
 					</title>
-					<data target_groups="32" target_groups_optional="128"/>
+					<data target_groups="32" target_groups_optional="128" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="13" guid="scripttemplate-ron-visiting-ep14">
 					<title>
@@ -1230,7 +1252,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Cars</en>
 						<pl>Samochody i infrastruktura</pl>
 					</title>
-					<data target_groups="258" target_groups_optional="32"/>
+					<data target_groups="274" target_groups_optional="32" />
+					<targetgroupattractivity women="0.5" housewives="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="14" guid="scripttemplate-ron-visiting-ep15">
 					<title>
@@ -1238,6 +1261,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Photography</en>
 						<pl>Fotografie</pl>
 					</title>
+					<data target_groups="66" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="15" guid="scripttemplate-ron-visiting-ep16">
 					<title>
@@ -1245,7 +1270,8 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<en>Furniture</en>
 						<pl>Meble</pl>
 					</title>
-					<data target_groups="4" />
+					<data target_groups="68" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 				<scripttemplate product="2" licence_type="2" index="16" guid="scripttemplate-ron-visiting-ep17">
 					<title>
@@ -1254,13 +1280,14 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 						<pl>Teatr i sztuka</pl>
 					</title>
 					<data target_groups="128" />
+					<targetgroupattractivity men="0.5" />
 				</scripttemplate>
 			</children>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1"  />
 			</jobs>
-			<genres maingenre="6"/>
+			<genres maingenre="6" subgenres="300" />
 			<episodes min="4" max="6" />
 			<potential min="60" max="100" slope="70" />
 			<outcome min="50" max="90" slope="50" />
@@ -1291,7 +1318,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				<pl>Dołącz do nas w podróży dookoła świata. Coś niesamowitego można czasem znaleźć w krajach, w których byśmy się tego nie spodziewali.</pl>
 			</description>
 			<children>
-				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-world-eps">
+				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-world-eps" comment="TODO: English title vs text casings">
 					<title>
 						<de>${epttl}</de>
 						<en>${epttl}</en>
@@ -1351,7 +1378,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				</adj_bf>
 				<sbj_bf>
 					<de>Weihnachtsbräuche|Trachten|Frisuren|Autos|Eisenbahnstrecken|Märchen</de>
-					<en>Christmas traditions|Traditional costumes|Hair styles|Cars|Railways|Fairy tales</en>
+					<en>Christmas Traditions|Traditional Costumes|Hair Styles|Cars|Railways|Fairy Tales</en>
 					
 				</sbj_bf>
 				<adj_best>
@@ -1361,7 +1388,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				</adj_best>
 				<sbj_best>
 					<de>Bildungssysteme|Fußballmannschaften|Schokoladen|Bands|Weine|Biere</de>
-					<en>Educational systems|Soccer teams|Chocolates|Bands|Vines|Beers</en>
+					<en>Educational Systems|Soccer Teams|Chocolates|Bands|Vines|Beers</en>
 					
 				</sbj_best>
 				<adj_bi>
@@ -1396,22 +1423,22 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				</sbj_bigb>
 				<beautiful>
 					<de>Die schönsten</de>
-					<en>The most beautiful</en>
+					<en>The Most Beautiful</en>
 					
 				</beautiful>
 				<best>
 					<de>Die besten</de>
-					<en>The best</en>
+					<en>The Best</en>
 					
 				</best>
 				<important>
 					<de>Die bedeutendsten</de>
-					<en>The most important</en>
+					<en>The Most Important</en>
 					
 				</important>
 				<big>
 					<de>Die größten|Die beeindruckendsten</de>
-					<en>The biggest|The most impressive</en>
+					<en>The Biggest|The Most Impressive</en>
 					
 				</big>
 			</variables>
@@ -1419,7 +1446,9 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1"  />
 			</jobs>
-			<genres maingenre="6"/>
+			<data flags="4" target_groups="68" />
+			<targetgroupattractivity men="0.5" />
+			<genres maingenre="6" subgenres="300" />
 			<potential min="60" max="100" slope="70" />
 			<outcome min="50" max="90" slope="50" />
 			<review min="70" max="100" slope="50" />
@@ -1427,7 +1456,6 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<price min="30000" max="70000" slope="50" />
 			<blocks min="1" max="2" slope="20" />
 			<production_time min="720" max="1200" />
-			<data flags="4" />
 			<programme_data_modifiers>
 				<modifier name="price" value="0.15" />
 				<modifier name="topicality::refresh" value="0.65" />

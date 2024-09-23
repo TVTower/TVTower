@@ -9,24 +9,25 @@
 				<pl>Beer, Bier, Piwo</pl>
 			</title>
 			<description>
-				<de>Alle 987 Biersorten werden vorgestellt und von einem Obdachlosen, einem Alkoholiker und einem Steuerberater getestet. </de>
-				<en>All 987 types of beer are presented and tested by a homeless man, an alcoholic and a tax consultant. </en>
+				<de>Alle 987 Biersorten werden vorgestellt und von einem Obdachlosen, einem Alkoholiker und einem Steuerberater getestet.</de>
+				<en>All 987 types of beer are presented and tested by a homeless man, an alcoholic and a tax consultant.</en>
 				<pl>Wszystkie 987 rodzajów piwa są prezentowane i testowane przez bezdomnego, alkoholika i doradcę podatkowego.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">59f79e7c-9a72-4585-9d83-82ced5b6c191</member>
-				<member index="1" function="2">59f79e7c-9a72-4585-9d83-82ced5b6c191</member>
-				<member index="2" function="2">f43f2b92-43cd-4fc8-93aa-25adc647fb63</member>
-				<member index="3" function="2">0c774ab3-9301-4759-a3e1-40520dc9e7b9</member>
+				<member index="0" function="7">59f79e7c-9a72-4585-9d83-82ced5b6c191</member>
+				<member index="1" function="2">f43f2b92-43cd-4fc8-93aa-25adc647fb63</member>
+				<member index="2" function="2">0c774ab3-9301-4759-a3e1-40520dc9e7b9</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="B" year="1997" distribution="1" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="2" teenagers_male="2" housewives="0.5" employees_female="0.75" unemployed="2" managers="0.25" pensioners="0.25" />
+			<data country="B" distribution="1" maingenre="6" subgenre="300" flags="4" blocks="2" price_mod="1" />
+			<releaseTime year_relative="1" />
 			<ratings critics="9" speed="4" outcome="0" />
 		</programme>
 		<programme id="f51954ef-5d8a-4ca0-9936-fca27da79267" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Biedermeier - (K)eine Zeit zum Feiern</de>
-				<en>Biedermeier - (Not) A time for celebration</en>
+				<en>Biedermeier - (Not) A time For Celebration</en>
 				<pl>Biedermeier - (Nie) czas na świętowanie</pl>
 			</title>
 			<description>
@@ -35,14 +36,16 @@
 				<pl>Czy biedermeier nadal istnieje? Jak to wyglądało w tamtych czasach? Ten program dociera do sedna tych i innych pytań i próbuje udzielić nie do końca poważnych odpowiedzi.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">be56dbc0-3bf4-4326-a2a5-f30edf94fd2a</member>
-				<member index="1" function="2">a3cca42a-90b7-4533-a240-206066759ea4</member>
+				<member index="0" function="5">be56dbc0-3bf4-4326-a2a5-f30edf94fd2a</member>
+				<member index="1" function="136">a3cca42a-90b7-4533-a240-206066759ea4</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.90" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="0.90" />
+			<releaseTime year_relative="0" />
 			<ratings critics="14" speed="23" outcome="0" />
 		</programme>
-		<programme id="53406dc9-1e66-4f79-aa24-67a2ed4c7441" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="53406dc9-1e66-4f79-aa24-67a2ed4c7441" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as 0a2efe28-4326-49d1-a5a8-5f277b514adc">
 			<title>
 				<de>Der Hammer fällt LIVE</de>
 				<en>The Hammer Falls LIVE</en>
@@ -50,12 +53,20 @@
 			</title>
 			<description>
 				<de>Nur im Fernsehen und nirgends sonst werden diese Ramschartikel an Ahnungslose versteigert.</de>
-				<en>Only on television and nowhere else are these junk items auctioned off to the unsuspecting.</en>
+				<en>Only on television and nowhere else are these junk items to be auctioned off to the unsuspecting.</en>
 				<pl>Tylko w telewizji i nigdzie indziej te śmieciowe przedmioty nie są sprzedawane na aukcjach niczego niepodejrzewającym osobom.</pl>
 			</description>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="B" year="2011" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.85" />
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_367</member>
+				<member index="1" function="8">Per_custom_Freddy_518</member>
+			</staff>
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="B" distribution="2" maingenre="104" subgenre="" flags="129" broadcast_limit="1" broadcast_flags="512" licence_flags="36" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="0" day="9" />
 			<ratings critics="7" speed="10" outcome="0" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="0a2efe28-4326-49d1-a5a8-5f277b514adc" />
+			</effects>
 		</programme>
 		<programme id="35190c1d-aa55-4e84-967f-72a374e84dcf" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
@@ -69,14 +80,16 @@
 				<pl>[1|Full] prowadzi widza przez subiektywnie wybrane krótkie reportaże z życia fanatycznych wyznawców kościoła.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1996" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.67" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="2" price_mod="0.67" />
+			<releaseTime year_relative="1" year_relative_min="1990" year_relative_max="2020" />
 			<ratings critics="42" speed="23" outcome="4" />
 		</programme>
-		<programme id="2fcf1b3e-701c-434d-acf3-c34c94227e7d" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="2fcf1b3e-701c-434d-acf3-c34c94227e7d" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as 2d938802-02a2-4c38-9248-6a406cfb744d">
 			<title>
 				<de>Die große Verarsche-Show</de>
 				<en>The Big Bullshitting-You Show</en>
@@ -87,14 +100,23 @@
 				<en>Here, men compete against women. The gender with the most calls wins.</en>
 				<pl>Tutaj mężczyźni rywalizują z kobietami. Wygrywa płeć z największą liczbą połączeń.</pl>
 			</description>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2000" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="0.9" />
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_367</member>
+				<member index="1" function="8">Per_custom_Freddy_30</member>
+				<member index="2" function="8">Per_custom_Freddy_685</member>
+			</staff>
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="104" subgenre="" flags="129" broadcast_limit="1" broadcast_flags="512" licence_flags="36" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="1" />
 			<ratings critics="7" speed="11" outcome="8" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="2d938802-02a2-4c38-9248-6a406cfb744d" />
+			</effects>
 		</programme>
 		<programme id="4ce1c133-6062-4ad4-b925-729007157db9" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Ein Ei zum Frühstück?</de>
-				<en>An egg for breakfast?</en>
+				<en>An Egg For Breakfast?</en>
 				<pl>Jajko na śniadanie?</pl>
 			</title>
 			<description>
@@ -105,8 +127,10 @@
 			<staff>
 				<member index="0" function="2">common-amateur-actors</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="GB" year="1995" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="GB" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="1" />
+			<releaseTime year_relative="0" />
 			<ratings critics="28" speed="51" outcome="18" />
 		</programme>
 		<programme id="6273b893-99bf-4234-a312-a7a2d00845ec" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -121,17 +145,19 @@
 				<pl>Naukowa, artystyczna i językowo-kulturowa ocena najbardziej ekscytujących zwrotów w najpiękniejszych językach tego świata.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-				<member index="1" function="2">058c2105-4440-4d4f-8c62-131fb2fae01c</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="8">058c2105-4440-4d4f-8c62-131fb2fae01c</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1989" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="1" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="103" flags="4" blocks="2" price_mod="1" />
+			<releaseTime year_relative="0" />
 			<ratings critics="35" speed="0" outcome="10" />
 		</programme>
 		<programme id="8df86321-0fcd-4903-b9e9-2b67e0eaafea" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Kakiemon-Porzellanmanufakturen in Japan</de>
-				<en>Cacomon porcelain manufactories in Japan</en>
+				<en>Cacomon Porcelain Manufactories in Japan</en>
 				<pl>Manufaktury porcelany kakomonowej w Japonii</pl>
 			</title>
 			<description>
@@ -140,16 +166,19 @@
 				<pl>Film dokumentalny o tradycyjnych rzemieślnikach podczas ich kontemplacyjnej pracy.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">336ebe49-3b96-46f4-8cd5-da6f64ff8c38</member>
+				<member index="0" function="5">336ebe49-3b96-46f4-8cd5-da6f64ff8c38</member>
+				<member index="1" function="136">Per_custom_Freddy_643</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1992" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.10" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="1.10" />
+			<releaseTime year_relative="0" />
 			<ratings critics="47" speed="5" outcome="15" />
 		</programme>
 		<programme id="c2f960af-16fa-45f8-8b3a-1a17d4d9f3cf" product="7" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Kaminfeuer</de>
-				<en>Chimney fire</en>
+				<en>Chimney Fire</en>
 				<pl>Ogień w kominie</pl>
 			</title>
 			<description>
@@ -158,10 +187,11 @@
 				<pl>Zrelaksuj się przed telewizorem. Ogień działa tak, jakby trzaskał przed tobą. Stare telewizory nawet generują ciepło!</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">fa5cf4fe-7704-4eab-808b-5ea8f3935c6d</member>
+				<member index="0" function="5">fa5cf4fe-7704-4eab-808b-5ea8f3935c6d</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="PL" year="2001" distribution="1" maingenre="0" subgenre="" flags="16" blocks="3" price_mod="0.50" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="PL" distribution="2" maingenre="0" subgenre="" flags="16" blocks="3" price_mod="0.50" />
+			<releaseTime year_relative="0" />
 			<ratings critics="5" speed="2" outcome="8" />
 		</programme>
 		<programme id="e14c3026-b946-4f5b-9986-a41aa03a9bd4" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -176,15 +206,16 @@
 				<pl>[1|Full] przedstawia i omawia najbardziej ekscytujące wydarzenia kulturalne ostatnich 150 lat z kobiecego punktu widzenia.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">24967622-b169-4413-90df-6dc574464b65</member>
-				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+				<member index="0" function="5">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="1" function="136">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="2" maingenre="6" subgenre="" flags="4" blocks="5" price_mod="1.33" />
-			<releaseTime year_relative="5"  />
+			<groups target_groups="134" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="5" price_mod="1.33" />
+			<releaseTime year_relative="5" />
 			<ratings critics="75" speed="15" outcome="10" />
 		</programme>
-		<programme id="42761763-4125-4a66-8227-40027caab44a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="42761763-4125-4a66-8227-40027caab44a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as f0010a94-c0a9-4d99-8522-06ce3891ac0f | TODO: should have low viewer results (0% in Mad TV) but highest possible Betty points">
 			<title>
 				<de>Kultur Heute</de>
 				<en>Culture Today</en>
@@ -196,13 +227,21 @@
 				<pl>[1|Full] opowiada wyłącznie o najnowszych osiągnięciach kulturalnych wolnego Zachodu.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">24967622-b169-4413-90df-6dc574464b65</member>
-				<member index="1" function="2">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
+				<member index="0" function="5">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="1" function="136">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
-			<releaseTime year_relative="0" />
-			<ratings critics="100" speed="39" outcome="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="5" blocks="1" broadcast_flags="512" price_mod="0.5" />
+			<releaseTime year_relative="0" day="5" />
+			<ratings critics="100" speed="39" outcome="1" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f0010a94-c0a9-4d99-8522-06ce3891ac0f" />
+			</effects>
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+				<modifier name="topicality::age" value="4" />
+			</modifiers>
 		</programme>
 		<programme id="4fe2dff2-039d-4747-b37a-7f79010b9997" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
@@ -216,11 +255,13 @@
 				<pl>[1|Full] zachwyca się i relacjonuje kapryśne dzieła sztuki i artystów z odległego górskiego regionu o niezwykłej nazwie.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="136">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1983" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.13" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />	
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="0.13" />
+			<releaseTime year_relative="-1" year_relative_min="1983" year_relative_max="2020" />
 			<ratings critics="54" speed="15" outcome="10" />
 		</programme>
 		<programme id="c4348eef-2678-486b-a07c-ce00dc4fed91" product="5" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -240,14 +281,16 @@
 				<member index="2" function="2">c3494dd5-506b-46d1-97bd-12182ffa88da</member>
 				<member index="3" function="2">e94ba1d8-bb1f-4650-afea-3647a248b94d</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2006" distribution="1" maingenre="17" subgenre="" flags="16" blocks="3" price_mod="1.7" />
+			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="2" housewives="0.5" employees_female="0.75" pensioners="0.25" />
+			<data country="USA" distribution="2" maingenre="6" subgenre="300,16" flags="16" blocks="3" price_mod="1.7" />
+			<releaseTime year_relative="5" year_relative_min="2000" year_relative_max="2020" />
 			<ratings critics="94" speed="80" outcome="89" />
 		</programme>
 		<programme id="bddb797f-53cd-4d15-bb96-bb4b148203b2" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Lolcat: Da lacht die Katz'!</de>
-				<en>Lolcat: Here's where the cat laughs!</en>
+				<en>Lolcat: Here's Where the Cat Laughs!</en>
 				<pl>Lolcat: Tutaj kot się śmieje!</pl>
 			</title>
 			<description>
@@ -256,16 +299,18 @@
 				<pl>Kulturowa eksploracja młodego zjawiska internetowego: humorystyczne zdjęcia kotów.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">682d65b5-9ff7-475a-8d50-a4ded9eefa9e</member>
+				<member index="0" function="5">682d65b5-9ff7-475a-8d50-a4ded9eefa9e</member>
+				<member index="1" function="136">Per_custom_Freddy_218</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="2007" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.07" />
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity children="2" teenagers="2" housewives="0.5" pensioners="0.1" />
+			<data country="USA" year="2007" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="0.07" />
 			<ratings critics="13" speed="23" outcome="9" />
 		</programme>
 		<programme id="6a9105ff-c5ba-496c-b099-7ec5fb4aa465" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Mal rückwärts!</de>
-				<en>Try in reverse!</en>
+				<en>Try in Reverse!</en>
 				<pl>Spróbuj w odwrotnej kolejności!</pl>
 			</title>
 			<description>
@@ -274,13 +319,14 @@
 				<pl>Naukowcy wyjaśniają satanistyczne diatryby słyszane podczas odtwarzania popularnych płyt w odwrotnej kolejności.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">24967622-b169-4413-90df-6dc574464b65</member>
-				<member index="1" function="2">be4f2bdc-b09e-44fa-beac-5e2b74cea402</member>
-				<member index="2" function="2">24967622-b169-4413-90df-6dc574464b65</member>
-				<member index="3" function="2">62dcc893-538b-4fe7-8ac6-daf063185d73</member>
+				<member index="0" function="13">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="1" function="64">be4f2bdc-b09e-44fa-beac-5e2b74cea402</member>
+				<member index="2" function="64">62dcc893-538b-4fe7-8ac6-daf063185d73</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="NL" year="2001" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" /> <!-- TODO: Religion groups -->
+			<targetgroupattractivity children="2" teenagers="2" housewives="0.5" managers="0.1" pensioners="0.6" />
+			<data country="NL" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="1" />
+			<releaseTime year_relative="2" />
 			<ratings critics="32" speed="18" outcome="12" />
 		</programme>
 		<programme id="5eb4277b-41be-4b51-b639-5c8ec17cdb0a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Fictional programme but existing parody - https://en.wikipedia.org/wiki/Molvan%C3%AEa">
@@ -295,56 +341,77 @@
 				<pl>Molvanîa - kraj, w którym dentyści otwarcie opowiadają się za indywidualizmem. Reporter [0|Last] pokazuje senny kraj.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">878b0a3f-dd01-4d01-994a-30fd38eece00</member>
-				<member index="1" function="2">878b0a3f-dd01-4d01-994a-30fd38eece00</member>
-				<member index="2" function="2">edb89eb9-1592-41cb-83b6-81eeecfacfd3</member>
+				<member index="0" function="141">878b0a3f-dd01-4d01-994a-30fd38eece00</member>
+				<member index="1" function="64">edb89eb9-1592-41cb-83b6-81eeecfacfd3</member>
+				<member index="2" function="64">Per_custom_Freddy_98</member>
+				<member index="3" function="64">Per_custom_Freddy_412</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="RM" year="2000" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="RM" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="1" />
+			<releaseTime year_relative="2" />
 			<ratings critics="47" speed="9" outcome="4" />
 		</programme>
-		<programme id="13cc99a6-4e82-4126-9b75-72f190901a2a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="13cc99a6-4e82-4126-9b75-72f190901a2a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Turned into a special, and made the generic version a screenplay: d176358a-b18a-44d4-86c0-731660bd0c78 | TODO: Could create more 'Specials' with non-bookable 'real' authors already in database (and better ratings if famous), first example added as 870727e0-c302-44ad-a1b2-d23b64b4a1c9">
 			<title>
-				<de>Talk um 10</de>
-				<en>Talk at 10</en>
-				<pl>Rozmowy o 10</pl>
+				<de>Talk um 10 Spezial: [2|Full]</de>
+				<en>Talk at 10 Special: [2|Full]</en>
+				<pl>Rozmowy specjalna o 10: [2|Full]</pl>
 			</title>
 			<description>
-				<de>[1|Full] erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch.</de>
-				<en>As every evening, [1|Full] expects a guest, often a star in the realm of literature, and discusses his or her new book.</en>
-				<pl>Jak co wieczór, [1|Full] spodziewa się gościa, często gwiazdy w dziedzinie literatury, i omawia zaproszonego autora nową książkę.</pl>
+				<de>[0|Full] erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch. Diesmal: [2|Full].</de>
+				<en>As every evening, [0|Full] expects a guest, often a star in the realm of literature, and discusses his or her new book. This time: [2|Full].</en>
+				<pl>Jak co wieczór, [0|Full] spodziewa się gościa, często gwiazdy w dziedzinie literatury, i omawia zaproszonego autora nową książkę. Tym razem: [2|Full].</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
-				<member index="1" function="2">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
+				<member index="0" function="13">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
+				<member index="1" function="8">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
+				<member index="2" function="1088">Per_custom_Freddy_681</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1990" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.90" />
+			<groups target_groups="36" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="5" blocks="1" price_mod="0.90" />
+			<releaseTime year_relative="1" year_relative_min="1985" year_relative_max="2015" day="5" hour="22" />
 			<ratings critics="80" speed="4" outcome="4" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="4" />
+			</modifiers>
 		</programme>
 		<programme id="69955785-3357-4292-b20b-aba24f0cd98f" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
-				<de>Talk um 10 Spezial</de>
-				<en>Talk at 10 Special</en>
-				<pl>Rozmowa specjalna o 10</pl>
+				<de>Talk um 10 Spezial: Die große Runde</de>
+				<en>Talk at 10 Special: The Big Round</en>
+				<pl>Rozmowa specjalna o 10: Wielka runda</pl>
 			</title>
 			<description>
-				<de>Diesmal erwartet der Star-Buchkritiker [1|Last] nicht wie sonst nur einen Gast. Ganze Fünf kritisieren sich diesmal gegenseitig und bringen Würze in die Diskussionsrunde.</de>
-				<en>This time, star book critic [1|Last] is not expecting just one guest as usual. A total of five criticize each other this time and spice up the discussion round.</en>
-				<pl>Tym razem krytyk [1|Last] nie oczekuje tylko jednego gościa, jak zwykle. Tym razem aż pięć osób krytykuje się nawzajem i urozmaica rundę dyskusyjną.</pl>
+				<de>Diesmal erwartet der Star-Buchkritiker [0|Last] nicht wie sonst nur einen Gast. Ganze fünf kritisieren sich diesmal gegenseitig und bringen Würze in die Diskussionsrunde.</de>
+				<en>This time, star book critic [0|Last] is not expecting just one guest as usual. A total of five criticize each other this time and spice up the discussion round.</en>
+				<pl>Tym razem krytyk [0|Last] nie oczekuje tylko jednego gościa, jak zwykle. Tym razem aż pięć osób krytykuje się nawzajem i urozmaica rundę dyskusyjną.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
-				<member index="1" function="2">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
+				<member index="0" function="13">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
+				<member index="1" function="8">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
+				<member index="2" function="64">Per_custom_Freddy_669</member>
+				<member index="3" function="64">Per_custom_Freddy_383</member>
+				<member index="4" function="64">Per_custom_Freddy_500</member>
+				<member index="5" function="64">Per_custom_Freddy_674</member>
+				<member index="6" function="64">Per_custom_Freddy_505</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1991" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.67" />
+			<groups target_groups="36" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="5" blocks="1" price_mod="0.67" />
+			<releaseTime year_relative="2" year_relative_min="1986" year_relative_max="2016" day="5" hour="22" />
 			<ratings critics="70" speed="4" outcome="18" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="4" />
+			</modifiers>
 		</programme>
-		<programme id="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as 3768ea29-e556-4bbd-a51b-e68a3ff3951f">
 			<title>
 				<de>TED am Morgen</de>
-				<en>TED in the morning</en>
+				<en>TED in the Morning</en>
 				<pl>TED o poranku</pl>
 			</title>
 			<description>
@@ -353,16 +420,20 @@
 				<pl>Teledialog ankietuje widzów na tematy o dużym znaczeniu. Opiniotwórcze i zyskowne.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
+				<member index="0" function="13">11c74211-662a-4817-b5b5-ec2c635d0158</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="6" broadcast_time_slot_end="11" broadcast_flags="32768" price_mod="1.0" />
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="100" subgenre="" flags="129" blocks="1" broadcast_time_slot_start="6" broadcast_time_slot_end="11" broadcast_flags="33280" broadcast_limit="1" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="0" day="3" />
 			<ratings critics="25" speed="10" outcome="15" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="3768ea29-e556-4bbd-a51b-e68a3ff3951f" />
+			</effects>
 		</programme>
-		<programme id="ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as a3b10b1d-5cf0-409d-8b99-8f7f7c955898">
 			<title>
 				<de>TED am Abend</de>
-				<en>TED in the evening</en>
+				<en>TED in the Evening</en>
 				<pl>TED wieczorem</pl>
 			</title>
 			<description>
@@ -371,13 +442,17 @@
 				<pl>Teledialog ankietuje widzów na tematy o dużym znaczeniu. Opiniotwórcze i zyskowne.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">11c74211-662a-4817-b5b5-ec2c635d0158</member>
+				<member index="0" function="13">11c74211-662a-4817-b5b5-ec2c635d0158</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="1" maingenre="0" subgenre="" flags="128" blocks="1" broadcast_time_slot_start="17" broadcast_time_slot_end="22" broadcast_flags="32768" price_mod="1.0" />
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="100" subgenre="" flags="129" blocks="1" broadcast_time_slot_start="17" broadcast_time_slot_end="22" broadcast_flags="33280" broadcast_limit="1" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="0" day="5" />
 			<ratings critics="25" speed="10" outcome="15" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="a3b10b1d-5cf0-409d-8b99-8f7f7c955898" />
+			</effects>
 		</programme>
-		<programme id="02d0dfa5-dbcf-40b5-abb4-7e20a58d8efa" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="02d0dfa5-dbcf-40b5-abb4-7e20a58d8efa" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TVTower 2013 title: 'Ade Autobahn', probably erroneously spoofed - TODO: Maybe use that one for a predecessor / follow-up?">
 			<title>
 				<de>Tschüssikowski A4</de>
 				<en>Tschüssi-kowski A4</en>
@@ -389,19 +464,20 @@
 				<pl>Dyskusja na temat wartości niemieckiej autostrady dzisiaj i jej przydatności po wyczerpaniu szybów naftowych.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">8af76be0-b50c-4236-9275-e0cecd6594b0</member>
-				<member index="1" function="2">8af76be0-b50c-4236-9275-e0cecd6594b0</member>
-				<member index="2" function="2">9e19b198-4367-4637-ae6b-bb43264f8b4a</member>
-				<member index="3" function="2">9571b426-f7a9-47c5-94e5-98fede5b25d0</member>
+				<member index="0" function="9">8af76be0-b50c-4236-9275-e0cecd6594b0</member>
+				<member index="1" function="8">9e19b198-4367-4637-ae6b-bb43264f8b4a</member>
+				<member index="2" function="8">9571b426-f7a9-47c5-94e5-98fede5b25d0</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2006" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.90" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="0.90" />
+			<releaseTime year_relative="3" year_relative_min="1985" year_relative_max="2020" />
 			<ratings critics="84" speed="37" outcome="14" />
 		</programme>
 		<programme id="a61e7775-7565-48cd-ab4a-e5faea09d70d" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>VHS im Test</de>
-				<en>Folk High Schools under Test</en>
+				<en>Folk High Schools Under Test</en>
 				<pl>Testowane uniwersytety ludowe</pl>
 			</title>
 			<description>
@@ -410,12 +486,15 @@
 				<pl>Pokolenie, które (ponownie) pisze i opisuje "życia" za pomocą "tycia". Brak pracy i pieniędzy dla wszystkich!</pl>	
 			</description>
 			<staff>
-				<member index="0" function="1">f14d6ba0-0db5-4a76-a4d3-daba1603e4f6</member>
-				<member index="1" function="2">1994aa3a-23c3-48ce-b20a-d1f021df8c63</member>
-				<member index="2" function="2">2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64</member>
+				<member index="0" function="8">Per_custom_Freddy_552</member>
+				<member index="1" function="64">f14d6ba0-0db5-4a76-a4d3-daba1603e4f6</member>
+				<member index="2" function="64">1994aa3a-23c3-48ce-b20a-d1f021df8c63</member>
+				<member index="3" function="64">2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2004" distribution="1" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="1" />
+			<releaseTime year_relative="3" />
 			<ratings critics="42" speed="47" outcome="0" />
 		</programme>
 		<programme id="862497a5-844d-42cb-a691-c4e3876cd1bc" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -430,21 +509,23 @@
 				<pl>Ekscytujący dokument o muzyku eksperymentalnym: [1|Full]. Jego fascynujące instrumenty i kakofoniczne pejzaże dźwiękowe.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">003bbc46-ee54-43ea-bd2b-230f0feb051f</member>
-				<member index="1" function="2">bedfa8be-aaff-457d-b549-893c3a784c9b</member>
+				<member index="0" function="5">003bbc46-ee54-43ea-bd2b-230f0feb051f</member>
+				<member index="1" function="80">bedfa8be-aaff-457d-b549-893c3a784c9b</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="A" year="2001" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.90" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="A" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="2" price_mod="0.90" />
+			<releaseTime year_relative="2" />
 			<ratings critics="52" speed="1" outcome="0" />
 		</programme>
-		<programme id="e0da07de-d9fc-4426-bcf2-119d344598c8" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="e0da07de-d9fc-4426-bcf2-119d344598c8" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay for follow-ups added: 5d2c7faa-4b64-4170-b2e0-dcebe2a1ebf5 | Probably parody and 'opposite' of 'Who Wants to Be a Millionaire?'">
 			<title>
 				<de>Wer wird Pleitegeier?</de>
-				<en>Who'll be the Buster?</en>
+				<en>Who Wants to Be the Vulture-Bait?</en>
 				<pl>Kto zostanie Milionerem?</pl>
 			</title>
 			<description>
-				<de>Moderator [1|Full] spielt mit 5 Kandidaten, allesamt am Rande des Ruins. Der Verlierer der Quizshow, übernimmt die Schulden der anderen.
+				<de>Moderator [1|Full] spielt mit 5 Kandidaten, allesamt am Rande des Ruins. Der Verlierer der Quizshow übernimmt die Schulden der anderen.
 
 Spannende Unterhaltung und knifflige Fragen.</de>
 				<en>Host [1|Full] plays with 5 candidates, all on the brink of ruin. The loser of the quiz show takes over the debts of the others.
@@ -455,14 +536,22 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">5c93b075-3f35-4ef7-8ef7-e0e99af0ad48</member>
-				<member index="1" function="2">c92483f6-53bb-4ff9-b164-5283c5d2d86c</member>
+				<member index="0" function="5">5c93b075-3f35-4ef7-8ef7-e0e99af0ad48</member>
+				<member index="1" function="8">c92483f6-53bb-4ff9-b164-5283c5d2d86c</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1999" distribution="2" maingenre="100" subgenre="" flags="0" blocks="1" price_mod="1.33" />
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="104" subgenre="" flags="1" blocks="1" broadcast_flags="512" price_mod="0.5" />
+			<releaseTime year_relative="2" day="3" />
 			<ratings critics="28" speed="75" outcome="61" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="5d2c7faa-4b64-4170-b2e0-dcebe2a1ebf5" />
+			</effects>
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="4" />
+			</modifiers>
 		</programme>
-		<programme id="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="6" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="6" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: Should better be yearly events than a series. | TODO: screenplay continuation">
 			<title>
 				<de>BBWr - Best-Of Bolivian Wrestling</de>
 				<en>BBWr - Best-Of Bolivian Wrestling</en>
@@ -480,11 +569,17 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
 				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
 				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
-				<member index="6" function="1">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
+				<member index="6" function="5">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="BOL" year="2005" distribution="2" maingenre="203" subgenre="" flags="0" blocks="2" price_mod="0.80" />
-			<ratings critics="7" speed="19" outcome="20" />
+			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
+			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="3" day="7" hour="20" year_relative_min="2004" year_relative_max="2020" />
+			<ratings critics="35" speed="51" outcome="40" />
+			<modifiers>
+				<modifier name="topicality::age" value="4" />
+				<modifier name="topicality::notLive" value="0.25" />
+			</modifiers>
 			<children>
 				<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -493,16 +588,16 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>[0|Last] - [1|Last]</pl>
 					</title>
 					<description>
-						<de>Ein spannendes Match von 1987, in dem [1|Last] seinem Widersacher [0|Last] zeigt, wo der Hammer hängt.</de>
-						<en>An exciting match from 1987 in which [1|Last] shows his opponent [0|Last] who's wearing the pants.</en>
-						<pl>Ekscytujący mecz z 1987 roku, w którym [1|Last] pokazuje swojemu przeciwnikowi [0|Last], kto nosi majtki.</pl>
+						<de>Ein spannendes Match von 1987 nachgestellt, in dem [1|Last] seinem Widersacher [0|Last] zeigt, wo der Hammer hängt.</de>
+						<en>An exciting match from 1987 re-enacted, in which [1|Last] shows his opponent [0|Last] who's wearing the pants.</en>
+						<pl>Powtórka ekscytującego meczu z 1987 roku, w którym [1|Last] pokazuje swojemu przeciwnikowi [0|Last], kto nosi majtki.</pl>
 					</description>
-					<ratings critics="27" speed="27" />
+					<ratings critics="41" speed="55" />
 				</programme>
 				<programme id="d24b258f-654a-4d2c-8c13-39c4191613bc" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Der neue wird eingewiesen</de>
-						<en>The New One is Briefed</en>
+						<en>The New One Is Briefed</en>
 						<pl>Nowy został poinformowany</pl>
 					</title>
 					<description>
@@ -511,9 +606,10 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Nowi gospodarze [0|Full] i [1|Full] odprawiają nowicjusza, [5|First] '[5|Nick]' [5|Last]... z krzesłami opartymi o jego plecy.</pl>
 					</description>
 					<staff>
-						<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 					</staff>
-					<ratings critics="15" speed="16" />
+					<ratings critics="45" speed="56" />
+					<releaseTime year_relative="3" day="8" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -526,7 +622,8 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<en>Who will bring home the bacon? The amateur '[2|Nick]' from East Saxony against the BWr champion [4|First] '[4|Nick]' [4|Last]. A gritty fight is guaranteed!</en>
 						<pl>Kto przywiezie do domu bekon? Amator '[2|Nick]' ze Wschodniej Saksonii przeciwko mistrzowi BWr [4|First] '[4|Nick]' [4|Last]. Zacięta walka gwarantowana!</pl>
 					</description>
-					<ratings critics="15" speed="39" />
+					<ratings critics="56" speed="60" />
+					<releaseTime year_relative="3" day="9" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -540,9 +637,10 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Czy [3|Last] trafi w granit, czy uda mu się pokonać starego mistrza [5|First] '[5|Nick]' [5|Last]? Tylko dla twardych widzów, tutaj rekord świata w dalekim rozbryzgu krwi został ustanowiony na 5,3 metra.</pl>
 					</description>
 					<staff>
-						<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
 					</staff>
-					<ratings critics="7" speed="35" />
+					<ratings critics="35" speed="65" />
+					<releaseTime year_relative="3" day="10" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 				<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
@@ -555,7 +653,8 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<en>The hosts back in the ring after years. [0|Last] and [1|Last] teaming up with [3|Last] against the splendid Bolivian display of muscles supported by the German [2|Last].</en>
 						<pl>Gospodarze wracają na ring po latach. [0|Last] i [1|Last] w parze z [3|Last] przeciwko wspaniałemu boliwijskiemu pokazowi mięśni wspieranemu przez Niemca [2|Last].</pl>
 					</description>
-					<ratings critics="16" speed="51" />
+					<ratings critics="41" speed="68" />
+					<releaseTime year_relative="3" day="11" hour="20" year_relative_min="2004" year_relative_max="2020" />
 				</programme>
 			</children>
 		</programme>
@@ -571,16 +670,18 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>Były programista [0|Full] próbuje pomóc ludziom dzwoniącym ze swoimi problemami - na żywo przez telefon.</pl>
 			</description>
 			<staff>
-				<member index="0" function="2">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
+				<member index="0" function="13">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2011" distribution="2" maingenre="0" subgenre="" flags="16" blocks="4" price_mod="0.21" />
+			<groups target_groups="84" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="0.75" managers="0.25" />
+			<data country="D" distribution="2" maingenre="103" subgenre="" flags="17" blocks="4" broadcast_flags="512" price_mod="0.21" />
+			<releaseTime year_relative="3" day="3" year_relative_min="2002" />
 			<ratings critics="6" speed="3" outcome="0" />
 			<children>
 				<programme id="39803483-0800-46e3-a153-5534c3d212da" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
 						<de>Marios Wohnzimmer</de>
-						<en>Mario's living room</en>
+						<en>Mario's Living Room</en>
 						<pl>Pokój dzienny Mario</pl>
 					</title>
 					<description>
@@ -593,7 +694,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<programme id="4c062f49-f1e8-400a-9c11-852e95327873" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sandros Handyvertrag</de>
-						<en>Sandro's cell phone contract</en>
+						<en>Sandro's Cell Phone Contract</en>
 						<pl>Umowa na telefon komórkowy Sandro</pl>
 					</title>
 					<description>
@@ -619,7 +720,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<programme id="fc7b481e-33b5-4113-89b3-9998ef8c66a6" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
 						<de>...sich selbst</de>
-						<en>...himself</en>
+						<en>...Himself</en>
 						<pl>...siebie</pl>
 					</title>
 					<description>
@@ -643,11 +744,13 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>Ostre rzeczy z klasy średniej. Format reality-docu-mydlany w przedziale budżetowym.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<member index="0" function="5">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<member index="1" function="2">common-amateur-actors</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2009" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.2" />
+			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.2" />
+			<releaseTime year_relative="4" year_relative_min="2002" year_relative_max="2015" />
 			<ratings critics="3" speed="7" outcome="0" />
 			<children>
 				<programme id="3daec432-9b89-493d-806a-74b39ef9d7c4" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -727,13 +830,13 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Hans G. jest z wykształcenia murarzem, ale w nocy jeździ na wycieczki dla paskudnego Achima J. Kiedy jego żona dowiaduje się o tym, chce rozwodu - dopóki nie dowie się, dlaczego jej mąż to robi....</pl>
 					</description>
 					<staff>
-						<member index="0" function="1">ab17d747-426e-4a3c-ae6b-ac27587f7563</member>
+						<member index="0" function="5">ab17d747-426e-4a3c-ae6b-ac27587f7563</member>
 					</staff>
 					<ratings critics="5" speed="9" />
 				</programme>
 			</children>
 		</programme>
-		<programme id="b528cab3-ec3d-43fc-b76a-2cb1724a7055" product="3" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme id="b528cab3-ec3d-43fc-b76a-2cb1724a7055" product="3" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as f1aff29a-048f-47b8-9503-b50931204611">
 			<title>
 				<de>Ein Päuschen zum Gewinn</de>
 				<en>A Little Break For the Win</en>
@@ -745,11 +848,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>Krótkie sesje quizowe dla przygłupich rozmówców. Zadawane pytania dotyczą aktualnie publikowanych powieści.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
-				<member index="1" function="2">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
+				<member index="0" function="5">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
+				<member index="1" function="8">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2009" distribution="2" maingenre="0" subgenre="" flags="128" blocks="1" price_mod="0.85" />
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="104" subgenre="" flags="129" blocks="1" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="2" day="7" />
 			<ratings critics="5" speed="25" outcome="15" />
 			<children>
 				<programme id="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -803,6 +907,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Moderator zadaje nieprzyjemne pytania, które wszyscy rozmówcy muszą znieść, aby wygrać.</pl>
 					</description>
 					<ratings critics="5" speed="22" />
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f1aff29a-048f-47b8-9503-b50931204611" />
+					</effects>
 				</programme>
 			</children>
 		</programme>
@@ -820,7 +927,8 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<staff>
 				<member index="0" function="1">common-amateur-director</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.75" />
 			<data country="I" distribution="2" maingenre="203" subgenre="" flags="0" blocks="2" price_mod="0.90" />
 			<releaseTime year="1990" day="8" /> <!-- This shouldn't be availabe at the beginning of the year -->
 			<ratings critics="32" speed="75" outcome="80" />
@@ -875,28 +983,32 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme id="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as 84c38251-ff42-4422-908c-8177ff5b10ea">
 			<title>
 				<de>Nur wer anruft kann gewinnen</de>
-				<en>You can win only if you call</en>
+				<en>You Need to Call to Win</en>
 				<pl>Możesz wygrać tylko, jeśli zadzwonisz</pl>
 			</title>
 			<description>
-				<de>Schäbige Call-In-Show in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
+				<de>Schäbige Call-In-Show, in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
 				<en>Shabby call-in show in which candidates have to recognize celebrities' breasts. At most, it's the broadcaster who's winning here.</en>
 				<pl>Nędzny call-in show, w którym kandydaci muszą rozpoznać piersi celebrytów. Wygrywa tu tylko nadawca.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">13ce58ce-216d-4f5c-a9ca-bed86eef67e3</member>
+				<member index="0" function="5">13ce58ce-216d-4f5c-a9ca-bed86eef67e3</member>
+				<member index="1" function="8">Per_custom_Freddy_397</member>
+				<member index="2" function="8">Per_custom_Freddy_503</member> <!-- additional host and model, not intended to be the 'breasts celebrity' -->
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2009" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="0.85" />
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.75" />
+			<data country="D" distribution="2" maingenre="104" subgenre="8" flags="193" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="3" />
 			<ratings critics="2" speed="35" outcome="15" />
 			<children>
 				<programme id="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
 						<de>Anrufer Tommy wird abgezockt</de>
-						<en>Caller Tommy gets ripped off</en>
+						<en>Caller Tommy Gets Ripped Off</en>
 						<pl>Dzwoniący Tommy zostaje oszukany</pl>
 					</title>
 					<description>
@@ -909,12 +1021,12 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<programme id="f9278cc4-8468-4158-995f-59cc4ffa2230" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
 						<de>Haarige Erkenntnis</de>
-						<en>Hairy insight</en>
+						<en>Hairy Insight</en>
 						<pl>Owłosiony wgląd</pl>
 					</title>
 					<description>
 						<de>Diesmal werden die Zuschauer vom Foto eines Bauarbeiter-Dekolleté in die Irre geführt. Zum Haare raufen.</de>
-						<en>This time the viewers are misled by the photo of a plumber's smile. It's enough to make your hair stand on end.</en>
+						<en>This time the viewers are misled by the photo of a plumber's smile. Quite to make one's hair stand on end.</en>
 						<pl>Tym razem widzowie są wprowadzani w błąd przez zdjęcie uśmiechu hydraulika. To wystarczy, by włosy stanęły dęba.</pl>
 					</description>
 					<ratings critics="8" speed="25" />
@@ -931,10 +1043,13 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Gościnnym prowadzącym dzisiejszy quiz jest znana aktorka erotyczna Mella Melon. Szanse na wygraną dla dzwoniących zależą od IQ prezentera.</pl>
 					</description>
 					<ratings critics="15" speed="30" />
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="84c38251-ff42-4422-908c-8177ff5b10ea" />
+					</effects>
 				</programme>
 			</children>
 		</programme>
-		<programme id="13cf3270-5458-460e-8360-75e0adc73a49" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme id="13cf3270-5458-460e-8360-75e0adc73a49" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as f1f973ed-7100-4514-bc69-3f6843b30bd9">
 			<title>
 				<de>Die Hellseher</de>
 				<en>The Clairvoyants</en>
@@ -946,11 +1061,13 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>[0|First] i [1|First] dezorientują rozmytymi interpretacjami przyszłości i przeszłości swoich rozmówców.</pl>
 			</description>
 			<staff>
-				<member index="0" function="2">afa8d190-c907-4fcf-9c34-d55136ab3c99</member>
-				<member index="1" function="2">ec90ee47-cd37-42ca-9cb8-c2f68f8e72f4</member>
+				<member index="0" function="13">afa8d190-c907-4fcf-9c34-d55136ab3c99</member>
+				<member index="1" function="13">ec90ee47-cd37-42ca-9cb8-c2f68f8e72f4</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1999" distribution="2" maingenre="0" subgenre="" flags="128" blocks="2" price_mod="1.05" />
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" children="2" teenagers_female="1.5" />
+			<data country="D" distribution="2" maingenre="103" subgenre="" flags="129" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="1" day="7" />
 			<ratings critics="3" speed="15" outcome="8" />
 			<children>
 				<programme id="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -991,6 +1108,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<pl>Mariusz i Beatrix starają się pomóc jak największej liczbie rozmówców z problemami - ich tematy muszą się różnić.</pl>
 					</description>
 					<ratings critics="2" speed="20" />
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f1f973ed-7100-4514-bc69-3f6843b30bd9" />
+					</effects>
 				</programme>
 			</children>
 		</programme>
@@ -1006,11 +1126,13 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>[1|Full] poszukuje i odwiedza potomków słynnych malarzy. Spotkaniu towarzyszą nagrania odtwarzające ówczesną epokę.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+				<member index="0" function="5">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
 				<member index="1" function="128">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="1.0" />
+			<releaseTime year_relative="-3" />
 			<ratings critics="49" speed="17" outcome="0" />
 			<children>
 				<programme id="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1082,9 +1204,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 		</programme>
 		<programme id="7ad20bf5-c4c6-4237-b52a-b7b189ede0bf" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<title>
-				<de>Rolf Krall besucht...</de>
-				<en>Rolf Krall visits...</en>
-				<pl>Rolf Krall odwiedza...</pl>
+				<de>[1|Full] besucht...</de>
+				<en>[1|Full] Visits...</en>
+				<pl>[1|Full] odwiedza...</pl>
 			</title>
 			<description>
 				<de>Der bekannte Moderator [1|Full] besucht Menschen die keiner kennt, deren Wirkung aber unvergessen bleibt.</de>
@@ -1093,18 +1215,19 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
-				<member index="1" function="2">a6055f37-ab53-425e-9332-14e0dfabc424</member>
+				<member index="1" function="138">a6055f37-ab53-425e-9332-14e0dfabc424</member>
 			</staff>
-			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="0.85" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="0.75" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6,103" flags="4" blocks="1" price_mod="0.85" />
 			<releaseTime year_relative="-1" year_relative_min="1985" year_relative_max="1990" />
 			<ratings critics="20" speed="42" outcome="35" />
 			<children>
-				<programme id="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme id="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="TODO: ref person Marie Tussaud (but just mention 'sister')">
 					<title>
-						<de>Rolf Krall besucht... Madame Krussaud</de>
-						<en>Rolf Krall visits... Madame Krussaud</en>
-						<pl>Rolf Krall odwiedza... Madame Krussaud</pl>
+						<de>[1|Full] besucht... Madame Krussaud</de>
+						<en>[1|Full] Visits... Madame Krussaud</en>
+						<pl>[1|Full] odwiedza... Madame Krussaud</pl>
 					</title>
 					<description>
 						<de>Im Schatten ihrer Schwester bastelt Madame Krussaud Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
@@ -1115,9 +1238,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme id="b7f87935-b1ec-44a8-b544-398b010af809" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Rolf Krall besucht... Jens Flumme</de>
-						<en>Rolf Krall visits... Jens Flumme</en>
-						<pl>Rolf Krall odwiedza... Jensa Flumme</pl>
+						<de>[1|Full] besucht... Jens Flumme</de>
+						<en>[1|Full] Visits... Jens Flumme</en>
+						<pl>[1|Full] odwiedza... Jensa Flumme</pl>
 					</title>
 					<description>
 						<de>[1|Full] zu Besuch bei Jens Flumme. Ausführlich wird im Gespräch erklärt, wie es zur fabulösen Erfindung des Multifunktions-Radiergummis kam.</de>
@@ -1128,9 +1251,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme id="ff1cff05-d8a8-43dc-9765-a975bcc49e7b" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Rolf Krall besucht... Martin Zeck</de>
-						<en>Rolf Krall visits... Martin Zeck</en>
-						<pl>Rolf Krall odwiedza... Martina Zeck</pl>
+						<de>[1|Full] besucht... Martin Zeck</de>
+						<en>[1|Full] Visits... Martin Zeck</en>
+						<pl>[1|Full] odwiedza... Martina Zeck</pl>
 					</title>
 					<description>
 						<de>[1|Full] zu Besuch bei Martin Zeck. In geselliger Runde spricht [1|Last] über die umgreifende Problematik der Flaschenpfandproblematik.</de>
@@ -1141,9 +1264,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme id="44db9d84-e8d5-46b4-bed5-70b228a74bcb" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Rolf Krall besucht... Peter Kruste</de>
-						<en>Rolf Krall visits... Peter Crust</en>
-						<pl>Rolf Krall odwiedza... Petera Crusta</pl>
+						<de>[1|Full] besucht... Peter Kruste</de>
+						<en>[1|Full] Visits... Peter Crust</en>
+						<pl>[1|Full] odwiedza... Petera Crusta</pl>
 					</title>
 					<description>
 						<de>Bei leckerem Brot plaudert [1|Full] mit Peter Kruste darüber, wie Kruste darauf kam, dem Brot die schmackhafte Kante zu geben.</de>
@@ -1154,9 +1277,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme id="ec7fe439-49ad-40d4-b1b3-fb89504184c7" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Rolf Krall besucht... seine Mutter</de>
-						<en>Rolf Krall visits... his mother</en>
-						<pl>Rolf Krall odwiedza... swoją matkę</pl>
+						<de>[1|Full] besucht... seine Mutter</de>
+						<en>[1|Full] Visits... His Mother</en>
+						<pl>[1|Full] odwiedza... swoją matkę</pl>
 					</title>
 					<description>
 						<de>Zum Abschluss der Serie besucht [1|Full] seine eigene Mutter, kitzelt ein paar urige Rezepte aus ihr heraus und plaudert über intime Details des immer populärer werdenden Moderators.</de>
@@ -1179,11 +1302,13 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>[1|Full] spotyka energicznych emerytów z niemieckich twierdz geriatrycznych.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
-				<member index="1" function="2">660ccb76-bdbb-4c88-a608-f7a79ea73e6f</member>
+				<member index="0" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="1" function="136">660ccb76-bdbb-4c88-a608-f7a79ea73e6f</member>
 			</staff>
-			<groups target_groups="80" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2001" distribution="2" maingenre="301" subgenre="" flags="0" blocks="2" price_mod="0.80" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" distribution="2" maingenre="301" subgenre="" flags="0" blocks="2" price_mod="0.80" />
+			<releaseTime year_relative="1" year_relative_min="1985" year_relative_max="2010" />
 			<ratings critics="7" speed="1" outcome="0" />
 			<children>
 				<programme id="062287d0-1de3-47e9-b365-5ab5d163aef5" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1265,11 +1390,14 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>Po sukcesie, [1|Full] próbuje teraz szczęścia na wielkiej scenie telewizyjnej rozrywki. Ekscytujące rozmowy, ciekawe reportaże. Program seniorów dla seniorów.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<!-- index 2 used for guest star -->
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1997" distribution="2" maingenre="100" subgenre="" flags="0" blocks="2" price_mod="0.67" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" women="1.5" />
+			<data country="D" distribution="2" maingenre="100" subgenre="" flags="1" blocks="2" broadcast_flags="512" price_mod="0.5" />
+			<releaseTime year_relative="1" day="5" year_relative_min="1983" year_relative_max="2010" />
 			<ratings critics="51" speed="28" outcome="18" />
 			<children>
 				<programme id="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1286,10 +1414,6 @@ Do the two offer enough material for an exciting panel?</en>
 						<pl>Goście na starcie nowego programu: Landon Traszka, przewodniczący Szarych Panter, oraz Sabrina Filc z Biura Spraw Społecznych.
 Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</pl>
 					</description>
-					<staff>
-						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
-					</staff>
 					<ratings critics="61" speed="42" />
 				</programme>
 				<programme id="9570f151-042a-4913-8873-759f791ffbdd" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1303,16 +1427,12 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 						<en>After the furious start, [1|Full] now asks for a star duel. Celebrity hairdresser James Baldowski and pit babe Lara Leezy discuss the election of the new chancellor and general government policy.</en>
 						<pl>Po wściekłym początku, [1|Full] prosi teraz o pojedynek gwiazd. Fryzjer gwiazd James Łysowski i bokserska zdzira Lara Zwiewna dyskutują o wyborze nowego kanclerza i ogólnej polityce rządu.</pl>
 					</description>
-					<staff>
-						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
-					</staff>
 					<ratings critics="23" speed="56" />
 				</programme>
 				<programme id="7e610bb4-9327-4bc6-bccd-c7b996946e84" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
 						<de>[1|Full] selbst</de>
-						<en>[1|Full] herself</en>
+						<en>[1|Full] Herself</en>
 						<pl>[1|Full] sama</pl>
 					</title>
 					<description>
@@ -1320,10 +1440,6 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 						<en>After the debacle of the last show, [1|Full] is now the center of attention herself, facing callers Q&amp;A.</en>
 						<pl>Po porażce w ostatnim programie, [1|Full] sama jest teraz w centrum uwagi, stawiając czoła pytaniom i odpowiedziom dzwoniących.</pl>
 					</description>
-					<staff>
-						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
-					</staff>
 					<ratings critics="47" speed="42" />
 				</programme>
 				<programme id="8ffd3e59-e711-45ca-9810-b22c221bad9b" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1338,9 +1454,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 						<pl>Ostatni raz w roli gościa [1|Full]: jej następczyni [2|Full]. Opowiada o swoim nowym programie i żartuje z odejścia byłej gwiazdy.</pl>
 					</description>
 					<staff>
-						<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
-						<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
-						<member index="2" function="2">8cc73e2d-02a4-4403-8270-b4a66a3e872c</member>
+						<member index="2" function="8">8cc73e2d-02a4-4403-8270-b4a66a3e872c</member>
 					</staff>
 					<ratings critics="32" speed="61" />
 				</programme>
@@ -1358,12 +1472,13 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				<pl>Były model [1|Full] prezentuje specjalne wydanie naszego dynamicznego magazynu z okazji 30. urodzin [3|Nick].</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
 				<member index="1" function="8">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 				<member index="2" function="64">28fe86a0-74ca-43a7-bc49-d3bd4df7c4d3</member>
 				<member index="3" function="64">4623935a-750a-4e5a-9d1b-6875062ff2a8</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="1" />
 			<releaseTime year="1991" day="7" />
 			<ratings critics="28" speed="61" outcome="0" />
@@ -1438,7 +1553,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 		<programme id="0cefc3bc-f628-4b50-a466-682e7d117a2e" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<title>
 				<de>Entstehung des Kosmos</de>
-				<en>The Origin of our Cosmos</en>
+				<en>The Origin of Our Cosmos</en>
 				<pl>Pochodzenie naszego kosmosu</pl>
 			</title>
 			<description>
@@ -1447,12 +1562,13 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				<pl>[1|Full] przedstawia dzieciom w wieku przedszkolnym pochodzenie kosmosu w humorystycznych klipach.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">61439b07-6e8f-484e-9447-6c9588270e21</member>
-				<member index="1" function="2">396f8bfa-a414-4a25-85c7-4e05c687f6a0</member>
+				<member index="0" function="5">61439b07-6e8f-484e-9447-6c9588270e21</member>
+				<member index="1" function="8">396f8bfa-a414-4a25-85c7-4e05c687f6a0</member>
 			</staff>
-			<groups target_groups="3" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="A" distribution="2" maingenre="6" subgenre="" flags="4" blocks="2" price_mod="0.85" />
-			<releaseTime year_relative="-1" year_relative_min="2006" year_relative_max="2008" />
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="0.75" />
+			<data country="A" distribution="2" maingenre="100" subgenre="6" flags="4" blocks="2" price_mod="0.85" />
+			<releaseTime year_relative="-1" year_relative_min="1986" year_relative_max="2020" />
 			<ratings critics="35" speed="7" outcome="0" />
 			<children>
 				<programme id="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1522,7 +1638,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 			</children>
 		</programme>
-		<programme id="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme id="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as fb34ed9a-528e-45a9-83b9-16475c2ab67c">
 			<title>
 				<de>Hot Quiz</de>
 				<en>Hot Quiz</en>
@@ -1533,8 +1649,14 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				<en>The presenter gets naked and the callers poor. Breasts for money, like in real life.</en>
 				<pl>Prezenter rozbiera się do naga, a rozmówcy biednieją. Piersi za pieniądze, jak w prawdziwym życiu.</pl>
 			</description>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2005" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="0.8" />
+			<staff>
+				<member index="0" function="5">13ce58ce-216d-4f5c-a9ca-bed86eef67e3</member>
+				<!-- index 1 used for episode hosts -->
+			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.75" />
+			<data country="D" distribution="2" maingenre="104" subgenre="8" flags="193" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="2" />
 			<ratings critics="5" speed="30" outcome="0" />
 			<children>
 				<programme id="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1548,6 +1670,9 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 						<en>Today, Daniela hosts the show. Tricky, almost unsolvable tasks are set. Correct solutions result in a striptease from Daniela.</en>
 						<pl>Dziś Daniela jest gospodarzem programu. Zadawane są trudne, prawie nierozwiązywalne zadania. Prawidłowe rozwiązania skutkują striptizem Danieli.</pl>
 					</description>
+					<staff>
+						<member index="1" function="8">Per_custom_Freddy_80</member>
+					</staff>
 					<ratings critics="4" speed="32" />
 				</programme>
 				<programme id="f9579b28-072d-4027-8807-1c45326928d5" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1561,6 +1686,9 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 						<en>Today Sabine, formerly Björn, hosts the show. But she keeps her panties on.</en>
 						<pl>Dziś Sabina, dawniej Björn, jest gospodarzem programu. Ale nie zdejmuje majtek.</pl>
 					</description>
+					<staff>
+						<member index="1" function="8">778337de-e7f6-4f2b-9563-6de04d8cd21a</member>
+					</staff>
 					<ratings critics="8" speed="28" />
 				</programme>
 				<programme id="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1574,6 +1702,9 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 						<en>Mandy is a real cowgirl, but the trivia questions are more of a bull's butt.</en>
 						<pl>Mandy jest prawdziwą kowbojką, ale pytania do niej są tak interesujące jak tyłek byka.</pl>
 					</description>
+					<staff>
+						<member index="1" function="8">5d64caae-5e21-495a-a771-b2d297bb23a7</member>
+					</staff>
 					<ratings critics="5" speed="23" />
 				</programme>
 				<programme id="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
@@ -1587,7 +1718,13 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 						<en>Peggy comes from a rural farm, and all the questions revolve around the countrywoman's biggest two potatoes.</en>
 						<pl>Peggy pochodzi z wiejskiej farmy, a wszystkie pytania krążą wokół największych dwóch ziemniaków wiejskiej kobiety.</pl>
 					</description>
+					<staff>
+						<member index="1" function="8">a0d0996b-b5c8-418c-beb5-081c3c37efa2</member>
+					</staff>
 					<ratings critics="1" speed="13" />
+					<effects>
+						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="fb34ed9a-528e-45a9-83b9-16475c2ab67c" />
+					</effects>
 				</programme>
 			</children>
 		</programme>
@@ -1607,11 +1744,12 @@ Pedagogically valuable and absolutely ecological.</en>
 Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">ronny-programmeperson-freddyjbush</member>
+				<member index="0" function="5">ronny-programmeperson-freddyjbush</member>
 				<member index="1" function="128">ronny-programmeperson-bennyjameson</member>
 			</staff>
-			<groups target_groups="256" />
-			<data country="USA" distribution="2" maingenre="0" subgenre="9" flags="0" blocks="1" price_mod="0.95" />
+			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" women="0.75" children="1.5" />
+			<data country="USA" distribution="2" maingenre="100" subgenre="9,6" flags="0" blocks="1" price_mod="0.95" />
 			<releaseTime year_relative="-5" year_relative_min="1978" year_relative_max="1984" />
 			<ratings critics="20" speed="30" outcome="0" />
 			<!-- Episodes -->
@@ -1645,7 +1783,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				<programme id="ronny-programme-family-papierflieger-ep3" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Schneegans</de>
-						<en>Snow goose</en>
+						<en>Snow Goose</en>
 						<pl>Gęś śnieżna</pl>
 					</title>
 					<description>
@@ -1684,9 +1822,9 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
-				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<member index="0" function="5">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<!-- Patty Glansen -->
-				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="1" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 				<!-- random:
 				     generator = "countrycodes, gender, levelup"
 				     countrycodes = "countrycode1 countrycode2 ..."
@@ -1695,9 +1833,10 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				-->
 				<member index="2" function="64" generator="es,0"></member>
 			</staff>
-			<groups target_groups="0" />
-			<data country="D" distribution="2" maingenre="0" blocks="1" />
-			<releaseTime year_relative="-2" year_relative_min="1984" year_relative_max="1989" />
+			<groups target_groups="186" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="100" subgenre="9" flags="1" blocks="1" broadcast_flags="512" price_mod="0.5" />
+			<releaseTime year_relative="0" day="9" year_relative_min="1984" year_relative_max="1989" />
 			<modifiers>
 				<!-- the programme ages faster than average -->
 				<modifier name="topicality::age" value="1.5" />
@@ -1723,7 +1862,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				<programme id="ronny-programme-kochenmitpatty-01-ep-02" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Gefüllte Eier</de>
-						<en>Filled eggs</en>
+						<en>Filled Eggs</en>
 						<pl>Jajka faszerowane</pl>
 					</title>
 					<description>
@@ -1736,7 +1875,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				<programme id="ronny-programme-kochenmitpatty-01-ep-03" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Pumpernickel mal anders</de>
-						<en>Pumpernickel with a difference</en>
+						<en>Pumpernickel With a Difference</en>
 						<pl>Pumpernikiel z pewną różnicą</pl>
 					</title>
 					<description>
@@ -1749,7 +1888,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				<programme id="ronny-programme-kochenmitpatty-01-ep-04" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Shrimps-Cocktail</de>
-						<en>Shrimp cocktail</en>
+						<en>Shrimp Cocktail</en>
 						<pl>Koktajl z krewetek</pl>
 					</title>
 					<description>
@@ -1774,12 +1913,13 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 			</description>
 			<staff>
 				<!-- klaus grobe -->
-				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<member index="0" function="5">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<!-- Laiendarsteller -->
 				<member index="1" function="2">common-amateur-actors</member>
 			</staff>
-			<groups target_groups="0" />
-			<data country="D" distribution="2" maingenre="0" blocks="1" />
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="0.75" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
 			<releaseTime year_relative="-3" year_relative_min="1977" year_relative_max="1988" />
 			<ratings critics="44" speed="20" />
 			<!-- Episodes -->
@@ -1815,7 +1955,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				<programme id="ronny-programme-brisanteufer-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>SOS im Freibad Gammelau</de>
-						<en>SOS at the outdoor pool Gammelau</en>
+						<en>SOS at the Outdoor Pool in Gammelau</en>
 						<pl>SOS na odkrytym basenie Gammelau</pl>
 					</title>
 					<description>
@@ -1843,19 +1983,22 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 			</description>
 			<staff>
 				<!-- klaus grobe -->
-				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
-				<!-- Laiendarsteller -->
-				<member index="1" function="2">common-amateur-actors</member>
+				<member index="0" function="5">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<member index="1" function="2">various-voice-artists</member>
 			</staff>
-			<groups target_groups="0" />
-			<data country="D" year="1979" distribution="2" maingenre="3" blocks="1" flags="8" />
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" teenagers="1.5" unemployed="1.25" pensioners="2" />
+			<data country="D" year="1979" distribution="2" maingenre="3" subgenre="9,1" blocks="1" flags="10" />
 			<ratings critics="51" speed="25" />
+			<modifiers>
+				<modifier name="topicality::age" value="0.5" />
+			</modifiers>
 			<!-- Episodes -->
 			<children>
 				<programme id="ronny-programme-familiefuchs-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Neue Nachbarn</de>
-						<en>New neighbors</en>
+						<en>New Neighbors</en>
 						<pl>Nowi sąsiedzi</pl>
 					</title>
 					<description>
@@ -1869,7 +2012,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 				<programme id="ronny-programme-familiefuchs-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Maus in der Falle</de>
-						<en>Mouse in the trap</en>
+						<en>Mouse In the Trap</en>
 						<pl>Mysz w potrzasku</pl>
 					</title>
 					<description>
@@ -1897,7 +2040,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 				<programme id="ronny-programme-familiefuchs-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Guten Morgen meine Kinder</de>
-						<en>Good morning beloved children</en>
+						<en>Good Morning Beloved Children</en>
 						<pl>Dzień dobry ukochane dzieci</pl>
 					</title>
 					<description>
@@ -1925,7 +2068,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 				<programme id="ronny-programme-familiefuchs-01-ep-06" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Randale im Fuchsbau</de>
-						<en>Riot in the foxhole</en>
+						<en>Riot in the Foxhole</en>
 						<pl>Zamieszki w lisiej norze</pl>
 					</title>
 					<description>
@@ -1968,13 +2111,19 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 			</description>
 			<staff>
 				<!-- klaus grobe -->
-				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<member index="0" function="5">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
 				<!-- Patty -->
 				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 				<member index="2" function="2">ronny-programmeperson-gertkalischke</member>
+				<member index="3" function="2">Per_custom_Freddy_351</member>
+				<member index="4" function="2">Per_custom_Freddy_350</member>
+				<member index="5" function="2">Per_custom_Freddy_353</member>
+				<member index="6" function="2">Per_custom_Freddy_671</member>
+				<member index="7" function="2">Per_custom_Freddy_366</member>
 			</staff>
-			<groups target_groups="0" />
-			<data country="D/F" distribution="2" maingenre="15" blocks="2" />
+			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D/F" distribution="2" maingenre="15" subgenre="7" blocks="2" />
 			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="1990" />
 			<ratings critics="31" speed="30" />
 			<!-- Episodes -->
@@ -2010,7 +2159,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 				<programme id="ronny-programme-komtess-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Eine Leiche im Keller?</de>
-						<en>Skeletons in the closet?</en>
+						<en>Skeletons in the Closet?</en>
 						<pl>Szkielety w szafie?</pl>
 					</title>
 					<description>
@@ -2024,7 +2173,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 				<programme id="ronny-programme-komtess-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Waldhütte</de>
-						<en>The forest cabin</en>
+						<en>The Forest Cabin</en>
 						<pl>Leśna chatka</pl>
 					</title>
 					<description>
@@ -2038,7 +2187,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 				<programme id="ronny-programme-komtess-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sie war es...</de>
-						<en>It was ... her</en>
+						<en>It Was ... Her</en>
 						<pl>To był ... jej</pl>
 					</title>
 					<description>
@@ -2057,14 +2206,14 @@ Tragiczny finał.</pl>
 
 		<!-- imported from DerFronck Forum 30.04.2017 -->
 
-		<!-- ERFUNDENE SENDUNGEN  -->
+			<!-- ERFUNDENE SENDUNGEN  -->
 
-		<!-- DOKU  -->
+				<!-- DOKU  -->
 		
 		<programme id="DF-Serien-Dokumentation-001" product="2" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 			<title>
 				<de>Pfusch am Bau</de>
-				<en>Botched up Construction Sites</en>
+				<en>Botched Up Construction Sites</en>
 				<pl>Nieudane place budowy</pl>
 			</title>
 			<description>
@@ -2073,17 +2222,19 @@ Tragiczny finał.</pl>
 				<pl>Codzienne szaleństwo na placach budowy w naszym kraju jest bezlitośnie ujawniane za pomocą ukrytej kamery.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+				<member index="0" function="5">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
 				<member index="1" function="128">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
 			</staff>
-			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="" flags="" blocks="1" price_mod="1.0" />
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="" blocks="1" price_mod="1.0" />
+			<releaseTime year_relative="-2" />
 			<ratings critics="35" speed="10" outcome="4" />
 			<children>
 				<programme id="DF-Serien-Dokumentation-001-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Aller Anfang...</de>
-						<en>All beginnings are...</en>
+						<en>All Beginnings Are...</en>
 						<pl>Wszystkie początki są ...</pl>
 					</title>
 					<description>
@@ -2096,7 +2247,7 @@ Tragiczny finał.</pl>
 				<programme id="DF-Serien-Dokumentation-001-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Ein krummes Ding</de>
-						<en>A crooked thing</en>
+						<en>A Crooked Thing</en>
 						<pl>Krzywe rozwiązanie</pl>
 					</title>
 					<description>
@@ -2109,7 +2260,7 @@ Tragiczny finał.</pl>
 				<programme id="DF-Serien-Dokumentation-001-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Der Maurer war's</de>
-						<en>The bricklayer did it</en>
+						<en>The Bricklayer Did It</en>
 						<pl>Murarz to zrobił</pl>
 					</title>
 					<description>
@@ -2122,7 +2273,7 @@ Tragiczny finał.</pl>
 				<programme id="DF-Serien-Dokumentation-001-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Das gibt Anpfiff</de>
-						<en>The whistle blows</en>
+						<en>The Whistle Blows</en>
 						<pl>Rozlega się gwizdek</pl>
 					</title>
 					<description>
@@ -2135,7 +2286,7 @@ Tragiczny finał.</pl>
 				<programme id="DF-Serien-Dokumentation-001-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Der „fast“ perfekte Antrich</de>
-						<en>The "almost" perfect coat of paint</en>
+						<en>The "Almost" Perfect Coat of Paint</en>
 						<pl>"Prawie" idealna warstwa farby</pl>
 					</title>
 					<description>
@@ -2148,7 +2299,7 @@ Tragiczny finał.</pl>
 				<programme id="DF-Serien-Dokumentation-001-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 					<title>
 						<de>Das böse Ende</de>
-						<en>The bad end</en>
+						<en>The Bad Ending</en>
 						<pl>Zły koniec</pl>
 					</title>
 					<description>
@@ -2159,6 +2310,442 @@ Tragiczny finał.</pl>
 					<ratings critics="34" speed="14" />
 				</programme>
 			</children>
+		</programme>
+
+		<!-- added in 2024-08: entries recovered or 'reconstructed' from a 2013 version of TVTower -->
+
+		<programme id="7fae7c9f-e12b-42b7-b87f-0f0860d2a832" product="1" licence_type="1" creator="" fictional="1">
+			<title>
+				<de>NDW... und danach?</de>
+				<en>NDW... and what's next?</en>
+			</title>
+			<description>
+				<de>Deutsche Musikproduzenten und Stars erläutern den Wert des Jodelns.</de>
+				<en>German music producers and stars explain the virtues of yodeling.</en>
+			</description>
+			<staff>
+				<member index="0" function="13">1c9e078b-e3cb-4b23-8aea-0ae2b8861347</member>
+				<member index="1" function="64">576b0fa8-9601-4882-96d4-d4505d3cc0f4</member>
+				<member index="2" function="64">5f68f9f5-b741-43e2-8387-a3cc6544863b</member>
+				<member index="3" function="64">e35b9d87-9ac2-4de0-a3ac-a40fccdf2713</member>
+			</staff>
+			<groups target_groups="22" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity children="2" employees="0.75" />
+			<data country="D" distribution="2" maingenre="103" subgenre="102,101" flags="4" blocks="1" price_mod="1" />
+			<releaseTime year_relative="2" year_relative_min="1988" year_relative_max="2008" />
+			<ratings critics="45" speed="45" outcome="18" />
+		</programme>
+		<programme id="74cae1fa-e849-439c-826f-817f573c4327" product="1" licence_type="1" creator="" fictional="1">
+			<title>
+				<de>Krempel-Zeit</de>
+				<en>Junk Time</en>
+			</title>
+			<description>
+				<de>Kunsthistoriker begutachten den Krempel angelaufener Rentner.</de>
+				<en>Art historians examine the junk that pensioners bring into the show.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">c517442d-ef0d-4746-9aeb-3a3d575f39fa</member>
+				<member index="1" function="64">d12cd810-2fed-48a7-a0df-1187cdaa20eb</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="0.75" pensioners="2" />
+			<data country="CH" distribution="2" maingenre="103" subgenre="6" flags="4" blocks="1" price_mod="0.5" />
+			<releaseTime year_relative="2" />
+			<ratings critics="70" speed="30" outcome="16" />
+		</programme>
+		<programme id="662f13fc-bd5f-4980-b690-433eff1063b6" product="1" licence_type="1" creator="" fictional="1">
+			<title>
+				<de>Geschichte des Pokers</de>
+				<en>The History of Poker</en>
+			</title>
+			<description>
+				<de>Sowjetischer Präsident hält einen Vortrag über die Geschichte des Pokers. Von babylonischen Steinkarten bis zum modernen Karton.</de>
+				<en>The Soviet President gives a lecture on the history of poker. From Babylonian stone cards to modern cardboard.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">2c7d96e8-f6c9-47da-87af-8e2ed7dd4f82</member>
+				<member index="1" function="394">6dd0a9b9-96a0-4712-83f0-f6388bdc5bec</member>
+			</staff>
+			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="2" women="0.5" housewives="0.5" />
+			<data country="SU" distribution="2" maingenre="6" subgenre="103,300" flags="4" blocks="1" price_mod="0.5" />
+			<releaseTime year="1988" day="1" />
+			<ratings critics="15" speed="5" outcome="15" />
+		</programme>
+		<programme id="cb747b67-8ac3-4715-bafe-2c1b2fb321c7" product="1" licence_type="1" creator="" fictional="1">
+			<title>
+				<de>Die Religionen-Olympiade</de>
+				<en>The Religions Olympics</en>
+			</title>
+			<description>
+				<de>Parallel zu den Olympischen Spielen fand hier der rhetorische Wettkampf der Religionen statt. Schon vorher disqualifiziert: die Atheisten.</de>
+				<en>Parallel to the Olympic Games, the rhetorical competition of religions took place here. Already disqualified beforehand: the Atheists.</en>
+			</description>
+			<staff>
+				<member index="0" function="13">2a00793b-cb1d-4471-b437-5d59703c79b8</member>
+				<member index="1" function="64">ccb8e04a-7888-475a-896b-1bf83c47072f</member>
+				<member index="2" function="64">80448f46-150d-445a-b688-63b21523ff13</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="IL" distribution="2" maingenre="103" subgenre="300,6" flags="4" blocks="1" price_mod="0.5" />
+			<releaseTime year="2004" day="7" />
+			<ratings critics="52" speed="30" outcome="18" />
+		</programme>
+		<programme id="4c166edb-771e-4a47-906b-f1687bf76921" product="1" licence_type="1" creator="" fictional="1">
+			<title>
+				<de>Fantastico - Unsere Welt</de>
+				<en>Fantastico - Our World</en>
+			</title>
+			<description>
+				<de>Mit neuen Techniken des Film und Fernsehens führt [1|Full] die Zuschauer in die Mysterien des Planeten ein.</de>
+				<en>Using new film and television techniques, [1|Full] introduces viewers to the mysteries of the planet.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
+				<member index="1" function="138">a6055f37-ab53-425e-9332-14e0dfabc424</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="2" price_mod="1" />
+			<releaseTime year_relative="1" year_relative_min="1987" year_relative_max="1992" />
+			<ratings critics="52" speed="16" outcome="22" />
+		</programme>
+		<programme id="e8df720d-3b11-48f3-a15f-3816abeb6150" product="1" licence_type="1" creator="" fictional="1">
+			<title>
+				<de>Fantastico - Unsere Meere</de>
+				<en>Fantastico - Our Oceans</en>
+			</title>
+			<description>
+				<de>Nach den Mysterien der Erde entführt [1|Full] diesmal die Zuschauer ins Unbekannte Nass: Mysterien der Ozeane fesseln Jung und Alt.</de>
+				<en>Following up on the mysteries of Earth, this time [1|Full] takes viewers into the unknown waters: mysteries of the oceans captivate young and old alike.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
+				<member index="1" function="138">a6055f37-ab53-425e-9332-14e0dfabc424</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="2" price_mod="1" />
+			<releaseTime year_relative="2" year_relative_min="1988" year_relative_max="1993" />
+			<ratings critics="55" speed="28" outcome="38" />
+		</programme>
+		<programme id="7dd40cc0-7476-4d83-9c7a-8a780f652a10" product="1" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Ein Herz für Inder [2006, nicht freigegeben]' but it seems lost. Maybe because of missing description, maybe because of awkward title. 'Reframing' it in a way it should be 'fine', created anew with the help of ChatGPT. | In German a spoof of https://de.wikipedia.org/wiki/Ein_Herz_f%C3%BCr_Kinder">
+			<title>
+				<de>Ein Herz für Inder: Die Wohltätigkeitsfalle</de>
+				<en>A Heart for Indians: The Charity Trap</en>
+			</title>
+			<description>
+				<de>Die „Humanitäre Gesellschaft für indische Belange“ behauptet, Rassismus zu bekämpfen. „Hilfsprojekte“ wie „Indische Kochkurse für Weiße“ oder „Tuk-Tuk-Safari für Reiche“ enthüllen jedoch eine zynische Agenda, die Klischees bestärkt und echte Probleme ignoriert.</de>
+				<en>The "Humanitarian Society for Indian Affairs" claims to fight racism. But "aid projects" such as "Indian cooking classes for whites" or "Tuk-Tuk safaris for the wealthy" reveal a cynical agenda that reinforces clichés and ignores real issues.</en>
+			</description>
+			<staff>
+				<member index="0" function="133">ronny-programmeperson-ellygnartzer</member>
+				<member index="1" function="64">6781fa1c-b8cb-4ad6-9fb5-5222d61a00b7</member>
+			</staff>
+			<groups target_groups="130" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="1" year_relative_min="2000" year_relative_max="2010" />
+			<ratings critics="75" speed="40" outcome="40" />
+		</programme>
+		<programme id="8aaae0f3-90bb-4bd5-8db0-f80beb89abbb" product="1" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Klub der toten Sänger [1900, nicht freigegeben]' but it seems lost. Maybe because of missing description, maybe because of bad quality. 1900 appears to be wrong as it seems to refer to 'Klub 27'? | https://en.wikipedia.org/wiki/27_Club | Created anew with the help of ChatGPT. |">
+			<title>
+				<de>Klub der toten Sänger</de>
+				<en>Dead Singers Club</en>
+			</title>
+			<description>
+				<de>Die Mitglieder des „Klub 27“ leben hier weiter. Es gibt eine Untergrund-Szene, die die viel zu früh verstorbenen Rockstars „channelt“ und mit neuen Songs aufwartet, die wahrhaft von den Originalen stammen könnten. [0|Full] auf der Spur.</de>
+				<en>Here, the members of the "27 Club" are living on. There's an underground scene that "channels" the rock stars who died far too young and comes up with new songs that could truly have come from the originals. [0|Full] on the trail.</en>
+			</description>
+			<staff>
+				<member index="0" function="133">24967622-b169-4413-90df-6dc574464b65</member>
+				<member index="1" function="16">fe82cabc-268b-4164-9a04-3649fa4cbbbc</member>
+				<member index="2" function="16">fbadf599-cc6d-4fd4-a26e-a791176027c4</member>
+				<member index="3" function="16">e3c0c802-8874-4783-94fa-34834f187e3d</member>
+				<member index="4" function="16">9969988d-058b-4ce1-ad31-787dd5028e1b</member>
+				<member index="5" function="16">6d99f357-444d-4f9d-ba1f-8812cd133ee4</member>
+			</staff>
+			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity children="1.5" teenagers="2" unemployed="2" pensioners="0.25" />
+			<data country="D" distribution="2" maingenre="300" subgenre="202,6" flags="4" blocks="2" price_mod="1" />
+			<releaseTime year_relative="+3" year_relative_min="1995" year_relative_max="2002" />
+			<ratings critics="25" speed="70" outcome="35" />
+		</programme>
+		<programme id="6300145a-5104-4186-8d42-9a3c0f13be84" product="1" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Unsere Biographien [2006]' but it seems lost. Making something up with help of ChatGPT.">
+			<title>
+				<de>Unsere Biographien</de>
+				<en>Our Biographies</en>
+			</title>
+			<description>
+				<de>Lebensgeschichten von ganz gewöhnlichen Menschen. Von der Katzen-Clown-Trainerin bis zum Champion im Kaffeekränzchen - Anekdoten eben, die das Leben so schreibt. [1|Full] taucht ein in die wundersame Welt der Durchschnittlichkeit.</de>
+				<en>Life stories from ordinary people. From the cat clown trainer to the champion of the coffee party - simply anecdotes that life writes. [1|Full] delves into the wondrous world of the commonplace.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
+				<member index="1" function="136">660ccb76-bdbb-4c88-a608-f7a79ea73e6f</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="2" price_mod="1" />
+			<releaseTime year_relative="-2" />
+			<ratings critics="39" speed="25" outcome="33" />
+		</programme>
+
+		<!-- added in 2024-08: prequels, sequels or otherwise related to long-existing entries -->
+
+		<programme id="6a11e4c6-eb2b-49b2-b6e6-deb2957ca8cb" product="1" licence_type="1" creator="" fictional="1" comment="Prequels to Freddy_Film_CustomB_17 | Description created with help of ChatGPT">
+			<title>
+				<de>Super Mega Duper Teenage Kraft Roboter</de>
+				<en>Super Duper Mega Teenage Robot Force</en>
+			</title>
+			<description>
+				<de>Der Aufmarsch der Microbots: Als ein ruchloses Technik-Genie eine Armee Mikroroboter auf die Stadt loslässt, müssen sich die Super Mega Duper Teenage Kraft Roboter zusammenschließen, um sie zu stoppen, bevor sie irreparablen Schaden anrichten.</de>
+				<en>The Rise of the Microbots: When a nefarious tech genius unleashes an army of tiny robots on the city, the Super Duper Mega Teenage Robot Force must band together to stop them before they cause irreparable damage.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_117</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" teenagers_male="2" unemployed="1.25" />
+			<data country="USA" year="2000" distribution="3" maingenre="3" subgenre="2,16" flags="34" blocks="2" price_mod="1.0" />
+			<ratings critics="18" speed="47" outcome="28" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="aa760da2-a034-4279-a9f5-3fd45fd48e42" />
+			</effects>
+		</programme>
+		<programme id="aa760da2-a034-4279-a9f5-3fd45fd48e42" product="1" licence_type="1" creator="" fictional="1" comment="Description created with help of ChatGPT">
+			<title>
+				<de>Super Mega Duper Teenage Kraft Roboter 2</de>
+				<en>Super Duper Mega Teenage Robot Force 2</en>
+			</title>
+			<description>
+				<de>Die Quantenbedrohung: Eine interdimensionale Gefahr zeichnet sich am Horizont ab. Doch während unsere Helden durch alternative Realitäten reisen, entdecken sie, dass der wahre Feind vielleicht näher ist, als sie denken.</de>
+				<en>The Quantum Menace: An interdimensional threat looms on the horizon. But as our heroes travel through alternate realities, they discover that the true enemy may be closer than they think.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_117</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" teenagers_male="2" unemployed="1.25" />
+			<data country="USA" year="2002" distribution="3" maingenre="3" subgenre="2,16" flags="34" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by 6a11e4c6-eb2b-49b2-b6e6-deb2957ca8cb -->
+			<ratings critics="14" speed="44" outcome="25" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="9c556f2e-fd6c-4b84-90e4-48f9b4f26e2c" />
+			</effects>
+		</programme>
+		<programme id="9c556f2e-fd6c-4b84-90e4-48f9b4f26e2c" product="1" licence_type="1" creator="" fictional="1" comment="Description created with help of ChatGPT | TODO: Continuation as screenplays">
+			<title>
+				<de>Super Mega Duper Teenage Kraft Roboter 3</de>
+				<en>Super Duper Mega Teenage Robot Force 3</en>
+			</title>
+			<description>
+				<de>Der kosmische Showdown: Ein Alien-Warlord taucht mit einer mächtigen Roboterarmee auf der Erde auf. Unsere Helden finden intergalaktischen Verbündete. Doch während der Kämpfe schöpft das Team den Verdacht, dass diese Hintergedanken haben.</de>
+				<en>The Cosmic Showdown: An alien warlord arrives on Earth with a powerful robot army. Our heroes find intergalactic allies. But during the battles, the team begins to suspect they may have ulterior motives.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_117</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" teenagers_male="2" unemployed="1.25" />
+			<data country="USA" year="2004" distribution="3" maingenre="3" subgenre="2,16" flags="34" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by aa760da2-a034-4279-a9f5-3fd45fd48e42 -->
+			<ratings critics="9" speed="42" outcome="19" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_17" />
+			</effects>
+		</programme>
+		<programme id="048e8ec6-6c8f-4878-b16b-f1db4d3fd931" product="1" licence_type="1" creator="" fictional="1" comment="Prequels to Freddy_Film_CustomB_7 | Description created with help of ChatGPT">
+			<title>
+				<de>Kroko See</de>
+				<en>Croco Lake</en>
+			</title>
+			<description>
+				<de>Ein riesiges und intelligentes Krokodil hat einen See als sein Territorium beansprucht und tötet jeden, der es wagt, ihn zu betreten. Als sich ein Forscherteam aufmacht, das Tier zu studieren, entdecken sie eine schockierende Wahrheit.</de>
+				<en>A massive and intelligent crocodile has claimed a lake as its territory, killing anyone who dares to enter. When a team of researchers set out to study the beast, they uncover a shocking truth.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_684</member>
+				<member index="3" function="2">Per_custom_Freddy_645</member>
+				<member index="4" function="2">Per_custom_Freddy_381</member>
+				<member index="5" function="2">Per_custom_Freddy_666</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="1.25" />
+			<data country="D" year="1995" distribution="3" maingenre="2" subgenre="12,1" flags="96" blocks="2" price_mod="1.0" />
+			<ratings critics="19" speed="58" outcome="23" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="7af651a9-2028-4ee2-a332-0f4e2bc9c4b8" />
+			</effects>
+		</programme>
+		<programme id="7af651a9-2028-4ee2-a332-0f4e2bc9c4b8" product="1" licence_type="1" creator="" fictional="1" comment="Description created with help of ChatGPT">
+			<title>
+				<de>Kroko See 2 - Die Rache der Brut</de>
+				<en>Croco Lake 2: The Hatchlings' Revenge</en>
+			</title>
+			<description>
+				<de>Als eine Gruppe von Wilderern Krokodileier aus einem Schutzgebiet stiehlt, wächst die Brut rachsüchtig und blutdürstig auf. Kann ein Team aus Wissenschaftlern und Parkrangern sie aufhalten, bevor es zu einem Blutbad kommt?</de>
+				<en>When a group of poachers steals crocodile eggs from a protected reserve, the hatchlings grow up vengeful and bloodthirsty. Cam a team of scientists and park rangers stop them before a bloodbath happens?</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_684</member>
+				<member index="3" function="2">Per_custom_Freddy_271</member>
+				<member index="4" function="2">Per_custom_Freddy_392</member>
+				<member index="5" function="2">Per_custom_Freddy_672</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="1.25" />
+			<data country="D" year="1996" distribution="3" maingenre="2" subgenre="12,1" flags="96" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by 048e8ec6-6c8f-4878-b16b-f1db4d3fd931 -->
+			<ratings critics="16" speed="55" outcome="18" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="51691d90-2e8c-4a32-bd00-3bf4d7c4fc62" />
+			</effects>
+		</programme>
+		<programme id="51691d90-2e8c-4a32-bd00-3bf4d7c4fc62" product="1" licence_type="1" creator="" fictional="1" comment="Description created with help of ChatGPT">
+			<title>
+				<de>Kroko See 3 - Blut im Wasser</de>
+				<en>Croco Lake 3: Blood in the Water</en>
+			</title>
+			<description>
+				<de>Eine Gruppe von Urlaubern auf einer abgelegenen Insel gerät mitten in einen Kampf zwischen rivalisierenden Krokodilclans. Während die Zahl der Todesopfer steigt und die Lage immer brenzliger wird, müssen die Überlebenden einen Weg finden, um zu entkommen.</de>
+				<en>A group of vacationers on a remote island find themselves trapped in the middle of a battle between rival crocodile clans. As the death toll rises and tensions boil over, the survivors must find a way to escape.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_684</member>
+				<member index="3" function="2">Per_custom_Freddy_645</member>
+				<member index="4" function="2">Per_custom_Freddy_536</member>
+				<member index="5" function="2">Per_custom_Freddy_664</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="1.25" />
+			<data country="D" year="1998" distribution="3" maingenre="2" subgenre="12,1" flags="96" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by 7af651a9-2028-4ee2-a332-0f4e2bc9c4b8 -->
+			<ratings critics="15" speed="52" outcome="16" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="37705910-3a57-4f20-af74-d3be59bfe2ff" />
+			</effects>
+		</programme>
+		<programme id="37705910-3a57-4f20-af74-d3be59bfe2ff" product="1" licence_type="1" creator="" fictional="1" comment="Description created with help of ChatGPT">
+			<title>
+				<de>Kroko See 4 - Abgrund des Schreckens</de>
+				<en>Croco Lake 4: Abyss of Terror</en>
+			</title>
+			<description>
+				<de>Tiefseetaucher stoßen auf uralte Unterwasserhöhlen und erwecken eine prähistorische Krokodilart, die dort seit Millionen von Jahren schlummerte, und die sich als die furchterregendsten Raubtiere entpuppen, die die Welt je gesehen hat.</de>
+				<en>Deep-sea divers accidentally stumble upon ancient underwater caves and awaken a prehistoric crocodile species that has been dormant for millions of years, who turn out to be the most fearsome predators the world has ever seen.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_680</member>
+				<member index="3" function="2">Per_custom_Freddy_271</member>
+				<member index="4" function="2">Per_custom_Freddy_364</member>
+				<member index="5" function="2">Per_custom_Freddy_392</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="1.25" />
+			<data country="D" year="2000" distribution="3" maingenre="2" subgenre="12,1" flags="96" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by 51691d90-2e8c-4a32-bd00-3bf4d7c4fc62 -->
+			<ratings critics="13" speed="51" outcome="14" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="0cdf29f9-658f-4b1a-b8db-2b3dec70c700" />
+			</effects>
+		</programme>
+		<programme id="0cdf29f9-658f-4b1a-b8db-2b3dec70c700" product="1" licence_type="1" creator="" fictional="1" comment="Description created with help of ChatGPT">
+			<title>
+				<de>Kroko See 5 - Das letzte Gefecht</de>
+				<en>Croco Lake 5: The Final Stand</en>
+			</title>
+			<description>
+				<de>Nach jahrelangem Kampf gegen die Krokodile dachte Bademeister und Ex-Fremdenlegionär Günter, er hätte schon alles gesehen - doch dann taucht ein riesiges Exemplar auf, das die Fähigkeit hat, sich zu tarnen.</de>
+				<en>After years of fighting against the crocodiles, bath attendant and ex Foreign Legionnaire Gunter thought he had seen it all - but then a massive specimen surfaces that has the ability to camouflage itself.</en>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_8</member>
+				<member index="3" function="2">Per_custom_Freddy_6</member>
+				<member index="4" function="2">Per_custom_Freddy_385</member>
+				<member index="5" function="2">Per_custom_Freddy_549</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity employees="1.25" />
+			<data country="D" year="2002" distribution="3" maingenre="2" subgenre="12,1" flags="96" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by 37705910-3a57-4f20-af74-d3be59bfe2ff -->
+			<ratings critics="8" speed="50" outcome="12" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_7" />
+			</effects>
+		</programme>
+		<programme id="870727e0-c302-44ad-a1b2-d23b64b4a1c9" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+			<title>
+				<de>Talk um 10 Spezial: [2|Full]</de>
+				<en>Talk at 10 Special: [2|Full]</en>
+			</title>
+			<description>
+				<de>[0|Full] erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch. Diesmal: Bestseller-Autor [2|Full].</de>
+				<en>As every evening, [0|Full] expects a guest, often a star in the realm of literature, and discusses his or her new book. This time: Best-selling author [2|Full].</en>
+			</description>
+			<staff>
+				<member index="0" function="13">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
+				<member index="1" function="8">0142e7e1-c601-4de6-ab42-f3a34bc3c2dd</member>
+				<member index="2" function="1088">ba981291-70b0-4b79-8862-1fd8309a70de</member>
+			</staff>
+			<groups target_groups="36" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="5" blocks="1" price_mod="0.67" />
+			<releaseTime year_relative="3" year_relative_min="1987" year_relative_max="2017" day="5" hour="22" />
+			<ratings critics="70" speed="44" outcome="68" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.25" />
+				<modifier name="topicality::age" value="4" />
+			</modifiers>
+		</programme>
+		<programme id="c55267c4-dd5d-4888-8a0a-c70291ad95a2" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as ffc9a36f-5c51-4ad5-8878-8143a8760de5">
+			<title>
+				<de>TED ab Mittag</de>
+				<en>TED at Midday</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<staff>
+				<member index="0" function="13">11c74211-662a-4817-b5b5-ec2c635d0158</member>
+			</staff>
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="100" subgenre="" flags="129" blocks="1" broadcast_time_slot_start="11" broadcast_time_slot_end="17" broadcast_flags="33280" broadcast_limit="1" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="0" day="7" />
+			<ratings critics="25" speed="10" outcome="15" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="ffc9a36f-5c51-4ad5-8878-8143a8760de5" />
+			</effects>
+		</programme>
+		<programme id="ec190825-aeaa-41fd-b990-291ec0d1726f" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as d0f87d3e-f2a3-45f1-94ca-cb8c75cf2a64">
+			<title>
+				<de>TED in der Nacht</de>
+				<en>TED at Night</en>
+			</title>
+			<description>
+				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
+				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+			</description>
+			<staff>
+				<member index="0" function="13">11c74211-662a-4817-b5b5-ec2c635d0158</member>
+			</staff>
+			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" distribution="2" maingenre="100" subgenre="" flags="129" blocks="1" broadcast_time_slot_start="22" broadcast_time_slot_end="6" broadcast_flags="33280" broadcast_limit="1" licence_flags="36" price_mod="0.5" />
+			<releaseTime year_relative="0" day="9" />
+			<ratings critics="25" speed="10" outcome="15" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="d0f87d3e-f2a3-45f1-94ca-cb8c75cf2a64" />
+			</effects>
 		</programme>
 	</allprogrammes>
 
