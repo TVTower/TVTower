@@ -436,7 +436,7 @@ Type TDatabaseLoader
 
 
 		'type 1:
-		For local i:int = 0 until 7
+		For local i:int = 0 until 15
 			if expression.Find("["+i) >= 0
 				expression = expression.Replace("["+i+"|Full]", "${.self:~qcast~q:"+i+":~qfullname~q}")
 				expression = expression.Replace("["+i+"|First]", "${.self:~qcast~q:"+i+":~qfirstname~q}")
