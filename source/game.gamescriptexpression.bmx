@@ -6,16 +6,24 @@ Import "Dig/base.util.persongenerator.bmx"
 
 Import "game.production.script.bmx"
 Import "game.programme.programmedata.bmx"
+Import "game.programme.programmelicence.bmx"
 
 'valid context(s): TScript
 GameScriptExpression.RegisterFunctionHandler( "episodeCount", SEFN_Script_episodeCount, 0, 0)
 'valid context(s): TProgrammeData
 GameScriptExpression.RegisterFunctionHandler( "cast", SEFN_cast, 1,  2)
 
+'valid context(s): "all supported"
+GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 2, 3)
+GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedata, 2, 3)
+GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3)
+
 
 'valid context(s): all
 GameScriptExpression.RegisterFunctionHandler( "stationmap_randomcity", SEFN_StationMap_Various, 0, 0)
 GameScriptExpression.RegisterFunctionHandler( "stationmap_population", SEFN_StationMap_Various, 0, 0)
+GameScriptExpression.RegisterFunctionHandler( "stationmap_mapname", SEFN_StationMap_Various, 0, 0)
+GameScriptExpression.RegisterFunctionHandler( "stationmap_mapnameshort", SEFN_StationMap_Various, 0, 0)
 
 GameScriptExpression.RegisterFunctionHandler( "worldtime_year", SEFN_WorldTime_Various, 0, 0)
 GameScriptExpression.RegisterFunctionHandler( "worldtime_month", SEFN_WorldTime_Various, 0, 0)
@@ -141,7 +149,7 @@ End Function
 'VARIOUS
 '--------------
 
-'${.cast:n:full} - context: TProgrammeData
+'${.cast:n:"full"} - context: TProgrammeData
 Function SEFN_cast:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local programmeData:TProgrammeData = TProgrammeData(context)
 	If Not programmeData Then Return New SToken( TK_ERROR, "(.cast only usable within TProgrammeData)", params.GetToken(0) )
@@ -160,6 +168,143 @@ Function SEFN_cast:SToken(params:STokenGroup Var, context:Object = Null, context
 		Default           Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
 	End Select
 End Function
+
+
+'${.programme:"the-guid-1-2":"title"} - context: all
+Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	Local licenceGUID:String = params.GetToken(1).value
+	Local licence:TProgrammeLicence
+
+	If not licenceGUID
+		licence = TProgrammeLicence(context)
+		If Not licence
+			Local data:TProgrammeData = TProgrammeData(context)
+			print "lookup by parentid: " + data.parentDataID
+			if data and data.parentDataID
+				licence = GetProgrammeLicenceCollection().Get(data.parentDataID)
+			EndIf
+		EndIf
+		If Not licence Then Return New SToken( TK_ERROR, "(.programme only usable with a valid programme(licence) GUID or within a TProgrammeData or TProgrammeLicence itself.)", params.GetToken(0) )
+	Else
+		licence = GetProgrammeLicenceCollection().GetByGUID(licenceGUID)
+	EndIf
+
+	If Not licence Then Return New SToken( TK_ERROR, "(.programme with GUID ~q"+licenceGUID+"~q not found.)", params.GetToken(0) )
+		
+	Select params.GetToken(2).value.ToLower()
+		Case "title"                   Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
+		Case "description"             Return New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
+		Case "country"                 Return New SToken( TK_TEXT, licence.data.country, params.GetToken(0) )
+		Case "year"                    Return New SToken( TK_NUMBER, licence.data.GetYear(), params.GetToken(0) )
+		Case "islive"                  Return New SToken( TK_BOOLEAN, licence.IsLive(), params.GetToken(0) )
+		Case "isalwayslive"            Return New SToken( TK_BOOLEAN, licence.IsAlwayslive(), params.GetToken(0) )
+		Case "isxrated"                Return New SToken( TK_BOOLEAN, licence.IsXRated(), params.GetToken(0) )
+		Case "isliveontape"            Return New SToken( TK_BOOLEAN, licence.IsLiveOnTape(), params.GetToken(0) )
+		Case "ispaid"                  Return New SToken( TK_BOOLEAN, licence.IsPaid(), params.GetToken(0) )
+		Case "isseries"                Return New SToken( TK_BOOLEAN, licence.IsSeries(), params.GetToken(0) )
+		Case "isepisode"               Return New SToken( TK_BOOLEAN, licence.IsEpisode(), params.GetToken(0) )
+		Case "issingle"                Return New SToken( TK_BOOLEAN, licence.IsSingle(), params.GetToken(0) )
+		Case "iscollection"            Return New SToken( TK_BOOLEAN, licence.IsCollection(), params.GetToken(0) )
+		Case "iscollectionelement"     Return New SToken( TK_BOOLEAN, licence.IsCollectionElement(), params.GetToken(0) )
+		Case "istvdistribution"        Return New SToken( TK_BOOLEAN, licence.IsTVDistribution(), params.GetToken(0) )
+		Case "iscustomproduction"      Return New SToken( TK_BOOLEAN, licence.IsCustomProduction(), params.GetToken(0) )
+		'Case "isaplayerscustomproduction"            Return New SToken( TK_BOOLEAN, licence.IsAPlayersCustomProduction(), params.GetToken(0) )
+		'Case "isaplayersunfinishedcustomproduction"  Return New SToken( TK_BOOLEAN, licence.IsAPlayersUnfinishedCustomProduction(), params.GetToken(0) )
+		'Case "isunfinishedcustomproduction"          Return New SToken( TK_BOOLEAN, licence.IsUnfinishedCustomProduction(), params.GetToken(0) )
+		Case "broadcasttimeslotstart"  Return New SToken( TK_NUMBER, licence.GetBroadcastTimeSlotStart(), params.GetToken(0) )
+		Case "broadcasttimeslotstart"  Return New SToken( TK_NUMBER, licence.GetBroadcastTimeSlotStart(), params.GetToken(0) )
+		Case "hasbroadcasttimeslot"    Return New SToken( TK_BOOLEAN, licence.HasBroadcastTimeSlot(), params.GetToken(0) )
+		Case "broadcastlimitmax"       Return New SToken( TK_NUMBER, licence.GetBroadcastLimitMax(), params.GetToken(0) )
+		Case "broadcastlimit"          Return New SToken( TK_NUMBER, licence.GetBroadcastLimit(), params.GetToken(0) )
+		Case "hasbroadcastlimit"       Return New SToken( TK_BOOLEAN, licence.HasBroadcastLimit(), params.GetToken(0) )
+		Case "episodenumber"           Return New SToken( TK_NUMBER, licence.GetEpisodeNumber(), params.GetToken(0) )
+		Case "episodecount"            Return New SToken( TK_NUMBER, licence.GetEpisodeCount(), params.GetToken(0) )
+		'Case "isavailable"             Return New SToken( TK_BOOLEAN, licence.isAvailable(), params.GetToken(0) )
+		'Case "isreleased"              Return New SToken( TK_BOOLEAN, licence.isReleased(), params.GetToken(0) )
+		'Case "isplanned"               Return New SToken( TK_BOOLEAN, licence.isPlanned(), params.GetToken(0) )
+		'Case "isprogrammeplanned"      Return New SToken( TK_BOOLEAN, licence.isProgrammePlanned(), params.GetToken(0) )
+		'Case "istrailerplanned"        Return New SToken( TK_BOOLEAN, licence.isTrailerPlanned(), params.GetToken(0) )
+		'Case "isnewbroadcastpossible"  Return New SToken( TK_TEXT, licence.IsNewBroadcastPossible(), params.GetToken(0) )
+		Case "genre"                   Return New SToken( TK_TEXT, licence.GetGenre(), params.GetToken(0) )
+		Case "genrestring"             Return New SToken( TK_TEXT, licence.GetGenreString(), params.GetToken(0) )
+		Case "genresline"              Return New SToken( TK_TEXT, licence.GetGenresLine(), params.GetToken(0) )
+		Case "hasdataflag"             Return New SToken( TK_BOOLEAN, licence.HasDataFlag(Int(params.GetToken(3).valueLong)), params.GetToken(0) )
+		Case "hasbroadcastflag"        Return New SToken( TK_BOOLEAN, licence.HasBroadcastFlag(Int(params.GetToken(3).valueLong)), params.GetToken(0) )
+		Case "hasflag"                 Return New SToken( TK_BOOLEAN, licence.HasFlag(Int(params.GetToken(3).valueLong)), params.GetToken(0) )
+		Case "quality"                 Return New SToken( TK_NUMBER, licence.GetQuality(), params.GetToken(0) )
+		Case "speed"                   Return New SToken( TK_NUMBER, licence.GetSpeed(), params.GetToken(0) )
+		Case "review"                  Return New SToken( TK_NUMBER, licence.GetReview(), params.GetToken(0) )
+		Case "outcome"                 Return New SToken( TK_NUMBER, licence.GetOutcome(), params.GetToken(0) )
+		Case "outcometv"               Return New SToken( TK_NUMBER, licence.GetOutcomeTV(), params.GetToken(0) )
+		Case "blocks"                  Return New SToken( TK_NUMBER, licence.GetBlocks(), params.GetToken(0) )
+		Case "relativetopicality"      Return New SToken( TK_NUMBER, licence.GetRelativeTopicality(), params.GetToken(0) )
+		Case "topicality"              Return New SToken( TK_NUMBER, licence.GetTopicality(), params.GetToken(0) )
+		Case "maxtopicality"           Return New SToken( TK_NUMBER, licence.GetMaxTopicality(), params.GetToken(0) )
+		Default                        Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
+	End Select
+End Function
+
+
+
+'${.self:"title"} - context: TProgrammeLicence / TProgrammeData
+Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	Local data:TProgrammeData = TProgrammeData(context)
+	If Not data Then Return New SToken( TK_ERROR, "(."+params.GetToken(0).GetValueText()+" only usable with a valid programme(data).)", params.GetToken(0) )
+
+	'do not allow title/description for "self" as this is prone
+	'to a recursive call (description requesting description)
+	if params.GetToken(0).GetValueText() <> "self"
+		Select params.GetToken(1).value.ToLower()
+			Case "title"               Return New SToken( TK_TEXT, data.GetTitle(), params.GetToken(0) )
+			Case "description"         Return New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
+		End Select
+	EndIf
+	
+	Select params.GetToken(1).value.ToLower()
+		Case "country"                 Return New SToken( TK_TEXT, data.country, params.GetToken(0) )
+		Case "year"                    Return New SToken( TK_NUMBER, data.GetYear(), params.GetToken(0) )
+		Case "islive"                  Return New SToken( TK_BOOLEAN, data.IsLive(), params.GetToken(0) )
+		Case "isalwayslive"            Return New SToken( TK_BOOLEAN, data.IsAlwayslive(), params.GetToken(0) )
+		Case "isxrated"                Return New SToken( TK_BOOLEAN, data.IsXRated(), params.GetToken(0) )
+		Case "isliveontape"            Return New SToken( TK_BOOLEAN, data.IsLiveOnTape(), params.GetToken(0) )
+		Case "ispaid"                  Return New SToken( TK_BOOLEAN, data.IsPaid(), params.GetToken(0) )
+		Case "isepisode"               Return New SToken( TK_BOOLEAN, data.IsEpisode(), params.GetToken(0) )
+		Case "issingle"                Return New SToken( TK_BOOLEAN, data.IsSingle(), params.GetToken(0) )
+		Case "iscustomproduction"      Return New SToken( TK_BOOLEAN, data.IsCustomProduction(), params.GetToken(0) )
+		Case "broadcasttimeslotstart"  Return New SToken( TK_NUMBER, data.GetBroadcastTimeSlotStart(), params.GetToken(0) )
+		Case "broadcasttimeslotstart"  Return New SToken( TK_NUMBER, data.GetBroadcastTimeSlotStart(), params.GetToken(0) )
+		Case "hasbroadcasttimeslot"    Return New SToken( TK_BOOLEAN, data.HasBroadcastTimeSlot(), params.GetToken(0) )
+		Case "broadcastlimitmax"       Return New SToken( TK_NUMBER, data.GetBroadcastLimitMax(), params.GetToken(0) )
+		Case "broadcastlimit"          Return New SToken( TK_NUMBER, data.GetBroadcastLimit(), params.GetToken(0) )
+		Case "hasbroadcastlimit"       Return New SToken( TK_BOOLEAN, data.HasBroadcastLimit(), params.GetToken(0) )
+		Case "genre"                   Return New SToken( TK_TEXT, data.GetGenre(), params.GetToken(0) )
+		Case "genrestring"             Return New SToken( TK_TEXT, data.GetGenreString(), params.GetToken(0) )
+		Case "hasbroadcastflag"        Return New SToken( TK_BOOLEAN, data.HasBroadcastFlag(Int(params.GetToken(2).valueLong)), params.GetToken(0) )
+		Case "hasflag"                 Return New SToken( TK_BOOLEAN, data.HasFlag(Int(params.GetToken(2).valueLong)), params.GetToken(0) )
+		Case "quality"                 Return New SToken( TK_NUMBER, data.GetQuality(), params.GetToken(0) )
+		Case "speed"                   Return New SToken( TK_NUMBER, data.GetSpeed(), params.GetToken(0) )
+		Case "review"                  Return New SToken( TK_NUMBER, data.GetReview(), params.GetToken(0) )
+		Case "outcome"                 Return New SToken( TK_NUMBER, data.GetOutcome(), params.GetToken(0) )
+		Case "outcometv"               Return New SToken( TK_NUMBER, data.GetOutcomeTV(), params.GetToken(0) )
+		Case "blocks"                  Return New SToken( TK_NUMBER, data.GetBlocks(), params.GetToken(0) )
+		Case "topicality"              Return New SToken( TK_NUMBER, data.GetTopicality(), params.GetToken(0) )
+		Case "maxtopicality"           Return New SToken( TK_NUMBER, data.GetMaxTopicality(), params.GetToken(0) )
+		Default                        Return New SToken( TK_TEXT, "unknown_property", params.GetToken(0) )
+	End Select
+End Function
+
+
+'various "self"-referencing options
+'context: TProgrammeLicence
+'context: TProgrammeData
+Function SEFN_self:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	If TProgrammeData(context)
+		return SEFN_programmedata(params, context, contextNumeric)
+	ElseIf TProgrammeLicence(context)
+		return SEFN_programmelicence(params, TProgrammeLicence(context).data, contextNumeric)
+	EndIf
+End Function
+
 
 
 '${.episodeCount} - context: TScript
