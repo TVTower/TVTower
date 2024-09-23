@@ -725,7 +725,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 						Local actorNum:Int = Int(Chr(placeHolder[8]))-1
 						If actors.length > actorNum
-							Local role:TProgrammeRole = EnsureRole(actors[actorNum])
+							Local role:TProgrammeRole = _EnsureRole(actors[actorNum])
 							If role
 								replacement = role.GetFirstName()
 							Else
@@ -743,7 +743,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 						Local actorNum:Int = Int(Chr(placeHolder[4]))-1
 						If actors.length > actorNum
-							Local role:TProgrammeRole = EnsureRole(actors[actorNum])
+							Local role:TProgrammeRole = _EnsureRole(actors[actorNum])
 							If role
 								replacement = role.GetFullName()
 							Else
@@ -774,16 +774,17 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Next
 
 		Return result
-
-		Function EnsureRole:TProgrammeRole(actor:TPersonProductionJob)
-			Local roleID:Int = actor.roleID
-			If roleID <> 0 Then return GetProgrammeRoleCollection().GetByID(roleID)
-			'TODO reuse previous role? - see inactive code in TScriptTemplate#GetFinalJobs
-			Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(actor.country, actor.gender)
-			actor.roleID = role.id
-			return role
-		End Function
 	End Method
+
+
+	Function _EnsureRole:TProgrammeRole(actor:TPersonProductionJob)
+		Local roleID:Int = actor.roleID
+		If roleID <> 0 Then return GetProgrammeRoleCollection().GetByID(roleID)
+		'TODO reuse previous role? - see inactive code in TScriptTemplate#GetFinalJobs
+		Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(actor.country, actor.gender)
+		actor.roleID = role.id
+		return role
+	End Function
 
 
 	'override

@@ -8,15 +8,13 @@ Import "game.production.script.bmx"
 Import "game.programme.programmedata.bmx"
 Import "game.programme.programmelicence.bmx"
 
-'valid context(s): TScript
-GameScriptExpression.RegisterFunctionHandler( "episodeCount", SEFN_Script_episodeCount, 0, 0)
-'valid context(s): TProgrammeData
-GameScriptExpression.RegisterFunctionHandler( "cast", SEFN_cast, 1,  2)
-
 'valid context(s): "all supported"
-GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 2, 3)
+GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 1, 3)
+
 GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedata, 2, 3)
-GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3)
+GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3) '
+GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
+GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
 
 
 'valid context(s): all
@@ -170,30 +168,42 @@ Function SEFN_cast:SToken(params:STokenGroup Var, context:Object = Null, context
 End Function
 
 
-'${.programme:"the-guid-1-2":"title"} - context: all
+'${.programme/.programmelicence:"the-guid-1-2":"title"} - context: TProgrameLicence / TProgrammeData
 Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
-	Local licenceGUID:String = params.GetToken(1).value
+	'non-self requires an offset of 1 to retrieve required property
+	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
+	Local tokenOffset:Int = 0
 	Local licence:TProgrammeLicence
+	Local firstTokenIsSelf:Int = params.GetToken(0).GetValueText() = "self"
 
-	If not licenceGUID
+	If firstTokenIsSelf
 		licence = TProgrammeLicence(context)
-		If Not licence
-			Local data:TProgrammeData = TProgrammeData(context)
-			print "lookup by parentid: " + data.parentDataID
-			if data and data.parentDataID
-				licence = GetProgrammeLicenceCollection().Get(data.parentDataID)
-			EndIf
-		EndIf
-		If Not licence Then Return New SToken( TK_ERROR, "(.programme only usable with a valid programme(licence) GUID or within a TProgrammeData or TProgrammeLicence itself.)", params.GetToken(0) )
+		If Not licence Then Return New SToken( TK_ERROR, "(.self is not a TProgrammeLicence.)", params.GetToken(0) )
 	Else
-		licence = GetProgrammeLicenceCollection().GetByGUID(licenceGUID)
+		Local GUID:String = params.GetToken(1).value
+		Local ID:Long = params.GetToken(1).valueLong
+		If GUID
+			licence = GetProgrammeLicenceCollection().GetByGUID(GUID)
+			If Not licence Then Return New SToken( TK_ERROR, "(.programmelicence with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+		ElseIf ID <> 0
+			licence = GetProgrammeLicenceCollection().Get(Int(ID))
+			If Not licence Then Return New SToken( TK_ERROR, "(.programmelicence with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+		EndIf
+		tokenOffset = 1
 	EndIf
+	
+	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower() 
 
-	If Not licence Then Return New SToken( TK_ERROR, "(.programme with GUID ~q"+licenceGUID+"~q not found.)", params.GetToken(0) )
-		
-	Select params.GetToken(2).value.ToLower()
-		Case "title"                   Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
-		Case "description"             Return New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
+	'do not allow title/description for "self" as this is prone
+	'to a recursive call (description requesting description)
+	if not firstTokenIsSelf
+		Select propertyName
+			Case "title"               Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
+			Case "description"         Return New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
+		End Select
+	EndIf
+	
+	Select propertyName
 		Case "country"                 Return New SToken( TK_TEXT, licence.data.country, params.GetToken(0) )
 		Case "year"                    Return New SToken( TK_NUMBER, licence.data.GetYear(), params.GetToken(0) )
 		Case "islive"                  Return New SToken( TK_BOOLEAN, licence.IsLive(), params.GetToken(0) )
@@ -240,27 +250,66 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:Object = N
 		Case "relativetopicality"      Return New SToken( TK_NUMBER, licence.GetRelativeTopicality(), params.GetToken(0) )
 		Case "topicality"              Return New SToken( TK_NUMBER, licence.GetTopicality(), params.GetToken(0) )
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, licence.GetMaxTopicality(), params.GetToken(0) )
+		Case "cast"
+			Local castNum:Int = params.GetToken(2 + tokenOffset).valueLong
+ 			If castNum <= 0 Then Return New SToken( TK_ERROR, "(cast number must be positive.)", params.GetToken(0) )
+
+			Local job:TPersonProductionJob = licence.data.GetCastAtIndex(castNum)
+			If Not job Then Return New SToken( TK_ERROR, "(cast " + castNum +" not found.)", params.GetToken(0) )
+
+			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
+			If Not person Then Return New SToken( TK_ERROR, "(cast " + castNum +" person not found.)", params.GetToken(0) )
+
+			Select params.GetToken(3 + tokenOffset).value.ToLower()
+				Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
+				Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
+				Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
+				'Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+				Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+			End Select
+
 		Default                        Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
 	End Select
 End Function
 
 
 
-'${.self:"title"} - context: TProgrammeLicence / TProgrammeData
+'${.programmedata:"title"} - context: TProgrammeData
 Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
-	Local data:TProgrammeData = TProgrammeData(context)
-	If Not data Then Return New SToken( TK_ERROR, "(."+params.GetToken(0).GetValueText()+" only usable with a valid programme(data).)", params.GetToken(0) )
+	'non-self requires an offset of 1 to retrieve required property
+	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
+	Local tokenOffset:Int = 0
+	Local data:TprogrammeData
+	Local firstTokenIsSelf:Int = params.GetToken(0).GetValueText() = "self"
+
+	If firstTokenIsSelf
+		data = TProgrammeData(context)
+		If Not data Then Return New SToken( TK_ERROR, "(.self is not a TProgrammeData.)", params.GetToken(0) )
+	Else
+		Local GUID:String = params.GetToken(1).value
+		Local ID:Long = params.GetToken(1).valueLong
+		If GUID
+			data = GetProgrammeDataCollection().GetByGUID(GUID)
+			If Not data Then Return New SToken( TK_ERROR, "(.programmedata with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+		ElseIf ID <> 0
+			data = GetProgrammeDataCollection().GetByID(Int(ID))
+			If Not data Then Return New SToken( TK_ERROR, "(.programmedata with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+		EndIf
+		tokenOffset = 1
+	EndIf
+	
+	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower() 
 
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)
-	if params.GetToken(0).GetValueText() <> "self"
-		Select params.GetToken(1).value.ToLower()
+	if not firstTokenIsSelf
+		Select propertyName
 			Case "title"               Return New SToken( TK_TEXT, data.GetTitle(), params.GetToken(0) )
 			Case "description"         Return New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
 		End Select
 	EndIf
 	
-	Select params.GetToken(1).value.ToLower()
+	Select propertyName
 		Case "country"                 Return New SToken( TK_TEXT, data.country, params.GetToken(0) )
 		Case "year"                    Return New SToken( TK_NUMBER, data.GetYear(), params.GetToken(0) )
 		Case "islive"                  Return New SToken( TK_BOOLEAN, data.IsLive(), params.GetToken(0) )
@@ -289,7 +338,88 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null
 		Case "blocks"                  Return New SToken( TK_NUMBER, data.GetBlocks(), params.GetToken(0) )
 		Case "topicality"              Return New SToken( TK_NUMBER, data.GetTopicality(), params.GetToken(0) )
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, data.GetMaxTopicality(), params.GetToken(0) )
+		Case "cast"
+			Local castNum:Int = params.GetToken(2 + tokenOffset).valueLong
+ 			If castNum <= 0 Then Return New SToken( TK_ERROR, "(cast number must be positive.)", params.GetToken(0) )
+
+			Local job:TPersonProductionJob = data.GetCastAtIndex(castNum)
+			If Not job Then Return New SToken( TK_ERROR, "(cast " + castNum +" not found.)", params.GetToken(0) )
+
+			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
+			If Not person Then Return New SToken( TK_ERROR, "(cast " + castNum +" person not found.)", params.GetToken(0) )
+
+			Select params.GetToken(3 + tokenOffset).value.ToLower()
+				Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
+				Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
+				Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
+				'Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+				Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+			End Select
+
 		Default                        Return New SToken( TK_TEXT, "unknown_property", params.GetToken(0) )
+	End Select
+End Function
+
+
+
+'${.self:"title"} - context: TProgrammeLicence / TProgrammeData
+Function SEFN_script:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	'non-self requires an offset of 1 to retrieve required property
+	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
+	Local tokenOffset:Int = 0
+	Local script:TScript
+	Local firstTokenIsSelf:Int = params.GetToken(0).GetValueText() = "self"
+
+	If firstTokenIsSelf
+		script = TScript(context)
+		If Not script Then Return New SToken( TK_ERROR, "(.self is not a TScript.)", params.GetToken(0) )
+	Else
+		Local GUID:String = params.GetToken(1).value
+		Local ID:Long = params.GetToken(1).valueLong
+		If GUID
+			script = GetScriptCollection().GetByGUID(GUID)
+			If Not script Then Return New SToken( TK_ERROR, "(.script with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+		ElseIf ID <> 0
+			script = GetScriptCollection().GetByID(Int(ID))
+			If Not script Then Return New SToken( TK_ERROR, "(.script with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+		EndIf
+		tokenOffset = 1
+	EndIf
+	
+	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower() 
+
+	'do not allow title/description for "self" as this is prone
+	'to a recursive call (description requesting description)
+	if not firstTokenIsSelf
+		Select propertyName
+			Case "title"        Return New SToken( TK_TEXT, script.GetTitle(), params.GetToken(0) )
+			Case "description"  Return New SToken( TK_TEXT, script.GetDescription(), params.GetToken(0) )
+		End Select
+	EndIf
+	
+	Select propertyName
+		Case "episodes"         Return New SToken( TK_NUMBER, script.GetEpisodes(), params.GetToken(0) )
+		Case "genre"            Return New SToken( TK_NUMBER, script.GetMainGenre(), params.GetToken(0) )
+		Case "genrestring"      Return New SToken( TK_NUMBER, script.GetMainGenreString(), params.GetToken(0) )
+
+		Case "role"
+			Local roleNum:Int = Int(params.GetToken(2 + tokenOffset).GetValueText())
+ 			If roleNum <= 0 Then Return New SToken( TK_ERROR, "(role number must be positive.)", params.GetToken(0) )
+
+			Local actors:TPersonProductionJob[] = script.GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
+			If roleNum > actors.length Then Return New SToken( TK_ERROR, "(not enough actors for role #" + roleNum+".)", params.GetToken(0) )
+
+			Local role:TProgrammeRole = TScript._EnsureRole(actors[roleNum-1])
+
+			Local subCommand:String = params.GetToken(3 + tokenOffset).GetValueText()
+			Select subCommand.ToLower()
+				Case "firstname"  Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
+				Case "lastname"   Return New SToken( TK_TEXT, role.GetLastName(), params.GetToken(0) )
+				'Case "fullname"   Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+				Default           Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+			End Select
+							
+		Default                  Return New SToken( TK_TEXT, "unknown_property", params.GetToken(0) )
 	End Select
 End Function
 
@@ -302,19 +432,10 @@ Function SEFN_self:SToken(params:STokenGroup Var, context:Object = Null, context
 		return SEFN_programmedata(params, context, contextNumeric)
 	ElseIf TProgrammeLicence(context)
 		return SEFN_programmelicence(params, TProgrammeLicence(context).data, contextNumeric)
+	ElseIf TScript(context)
+		return SEFN_script(params, context, contextNumeric)
 	EndIf
 End Function
-
-
-
-'${.episodeCount} - context: TScript
-Function SEFN_Script_episodeCount:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
-	Local script:TScript = TScript(context)
-	If Not script Then Return New SToken( TK_ERROR, "(.episodeCount only usable within scripts)", params.GetToken(0) )
-
-	Return New SToken( TK_NUMBER, script.GetEpisodes(), params.GetToken(0) )
-End Function
-
 
 
 
