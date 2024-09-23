@@ -15,157 +15,93 @@ GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedat
 GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3) '
 GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
 GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
-
-
-'valid context(s): all
-GameScriptExpression.RegisterFunctionHandler( "stationmap_randomcity", SEFN_StationMap_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "stationmap_population", SEFN_StationMap_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "stationmap_mapname", SEFN_StationMap_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "stationmap_mapnameshort", SEFN_StationMap_Various, 0, 0)
-
-GameScriptExpression.RegisterFunctionHandler( "worldtime_year", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_month", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_day", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_hour", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_minute", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_daysplayed", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_yearsplayed", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_weekday", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_season", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_dayofmonth", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_dayofyear", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_isnight", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_isdawn", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_isday", SEFN_WorldTime_Various, 0, 0)
-GameScriptExpression.RegisterFunctionHandler( "worldtime_isdusk", SEFN_WorldTime_Various, 0, 0)
-
-GameScriptExpression.RegisterFunctionHandler( "persongenerator_firstname", SEFN_PersonGenerator_Various, 0, 2)
-GameScriptExpression.RegisterFunctionHandler( "persongenerator_lastname", SEFN_PersonGenerator_Various, 0, 2)
-GameScriptExpression.RegisterFunctionHandler( "persongenerator_name", SEFN_PersonGenerator_Various, 0, 2)
-GameScriptExpression.RegisterFunctionHandler( "persongenerator_title", SEFN_PersonGenerator_Various, 0, 2)
+GameScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 1, 1)
+GameScriptExpression.RegisterFunctionHandler( "persongenerator", SEFN_PersonGenerator, 1, 3)
+GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 1)
 
 
 
 
-'${.worldTime_***} - context: all
-Function SEFN_WorldTime_Various:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+'${.worldTime:***} - context: all
+'${.worldTime:"year"}
+'${.worldTime:"isnight"}
+Function SEFN_WorldTime:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local command:String = params.GetToken(0).GetValueText()
+	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 	
-	Select command.ToLower()
-		case "worldtime_year"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetYear(), params.GetToken(0) )
-		case "worldtime_month"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetMonth(), params.GetToken(0) )
-		case "worldtime_day"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetDay(), params.GetToken(0) )
-		case "worldtime_hour"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetDayHour(), params.GetToken(0) )
-		case "worldtime_minute"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetDayMinute(), params.GetToken(0) )
-		case "worldtime_daysplayed"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun(), params.GetToken(0) )
-		case "worldtime_yearsplayed"
-			Return New SToken( TK_NUMBER, int(floor(GetWorldTime().GetDaysRun() / GetWorldTime().GetDaysPerYear())), params.GetToken(0) )
-		case "worldtime_weekday"
-			'attention, use the weekday depending on game start (day 1
-			'of a game is always a monday... ani: no it is not)
-			'return string( GetWorldTime().GetWeekdayByDay( GetWorldTime().GetDaysRun() ) )
-			'this would return weekday of the exact start date
-			'so 1985/1/1 is a different weekday than 1986/1/1
-			Return New SToken( TK_NUMBER, GetWorldTime().GetWeekday(), params.GetToken(0) )
-		case "worldtime_season"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetSeason(), params.GetToken(0) )
-		case "worldtime_dayofmonth"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfMonth(), params.GetToken(0) )
-		case "worldtime_dayofyear"
-			Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfYear(), params.GetToken(0) )
-		case "worldtime_isnight"
-			Return New SToken( TK_NUMBER, GetWorldTime().IsNight(), params.GetToken(0) )
-		case "worldtime_isdawn"
-			Return New SToken( TK_NUMBER, GetWorldTime().IsDawn(), params.GetToken(0) )
-		case "worldtime_isday"
-			Return New SToken( TK_NUMBER, GetWorldTime().IsDay(), params.GetToken(0) )
-		case "worldtime_isdusk"
-			Return New SToken( TK_NUMBER, GetWorldTime().IsDusk(), params.GetToken(0) )
-		default
-			Return New SToken( TK_ERROR, "(Undefined function ~q."+command+"~q)", params.GetToken(0) )
+	Select subCommand.ToLower()
+		case "year"         Return New SToken( TK_NUMBER, GetWorldTime().GetYear(), params.GetToken(0) )
+		case "month"        Return New SToken( TK_NUMBER, GetWorldTime().GetMonth(), params.GetToken(0) )
+		case "day"          Return New SToken( TK_NUMBER, GetWorldTime().GetDay(), params.GetToken(0) )
+		case "hour"         Return New SToken( TK_NUMBER, GetWorldTime().GetDayHour(), params.GetToken(0) )
+		case "minute"       Return New SToken( TK_NUMBER, GetWorldTime().GetDayMinute(), params.GetToken(0) )
+		case "daysplayed"   Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun(), params.GetToken(0) )
+		case "yearsplayed"  Return New SToken( TK_NUMBER, int(floor(GetWorldTime().GetDaysRun() / GetWorldTime().GetDaysPerYear())), params.GetToken(0) )
+		'attention, use the weekday depending on game start (day 1
+		'of a game is always a monday... ani: no it is not)
+		'case "weekday"     Return string( GetWorldTime().GetWeekdayByDay( GetWorldTime().GetDaysRun() ) )
+		'this would return weekday of the exact start date
+		'so 1985/1/1 is a different weekday than 1986/1/1
+		case "weekday"      Return New SToken( TK_NUMBER, GetWorldTime().GetWeekday(), params.GetToken(0) )
+		case "season"       Return New SToken( TK_NUMBER, GetWorldTime().GetSeason(), params.GetToken(0) )
+		case "dayofmonth"   Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfMonth(), params.GetToken(0) )
+		case "dayofyear"    Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfYear(), params.GetToken(0) )
+		case "isnight"      Return New SToken( TK_BOOLEAN, GetWorldTime().IsNight(), params.GetToken(0) )
+		case "isdawn"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDawn(), params.GetToken(0) )
+		case "isday"        Return New SToken( TK_BOOLEAN, GetWorldTime().IsDay(), params.GetToken(0) )
+		case "isdusk"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDusk(), params.GetToken(0) )
+		default             Return New SToken( TK_ERROR, "(Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
 	End Select
 End Function
 
 
 
-'${.stationmap_***} - context: all
-Function SEFN_StationMap_Various:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+'${.stationmap:***} - context: all
+'${.stationmap:"randomcity"}
+'${.stationmap:"mapname"}
+Function SEFN_StationMap:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local command:String = params.GetToken(0).GetValueText()
+	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 
-	Select command.ToLower()
-		case "stationmap_randomcity"
-			Return New SToken( TK_TEXT, GetStationMapCollection().GenerateCity(), params.GetToken(0) )
-		case "stationmap_population"
-			'Return New SToken( TK_NUMBER, GetGameInformation("stationmap", "population"), params.GetToken(0) )
-			Return New SToken( TK_NUMBER, GetStationMapCollection().population, params.GetToken(0) )
-		case "stationmap_mapname"
-			'Return New SToken( TK_TEXT, GetGameInformation("stationmap", "mapname"), params.GetToken(0) )
-			Return New SToken( TK_TEXT, GetStationMapCollection().GetMapName(), params.GetToken(0) )
-		Case "stationmap_mapnameshort"
-			'Return New SToken( TK_TEXT, GetGameInformation("stationmap", "mapnameshort"), params.GetToken(0) )
-			Return New SToken( TK_TEXT, GetStationMapCollection().GetMapISO3166Code(), params.GetToken(0) )
-		default
-			Return New SToken( TK_ERROR, "(Undefined function ~q."+command+"~q)", params.GetToken(0) )
+	Select subCommand.ToLower()
+		case "randomcity"    Return New SToken( TK_TEXT, GetStationMapCollection().GenerateCity(), params.GetToken(0) )
+		'case "population"    Return New SToken( TK_NUMBER, GetGameInformation("stationmap", "population"), params.GetToken(0) )
+		'case "mapname"       Return New SToken( TK_TEXT, GetGameInformation("stationmap", "mapname"), params.GetToken(0) )
+		'case "mapnameshort"  Return New SToken( TK_TEXT, GetGameInformation("stationmap", "mapnameshort"), params.GetToken(0) )
+		case "population"    Return New SToken( TK_NUMBER, GetStationMapCollection().population, params.GetToken(0) )
+		case "mapname"       Return New SToken( TK_TEXT, GetStationMapCollection().GetMapName(), params.GetToken(0) )
+		Case "mapnameshort"  Return New SToken( TK_TEXT, GetStationMapCollection().GetMapISO3166Code(), params.GetToken(0) )
+		default              Return New SToken( TK_ERROR, "(Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
 	End Select
 End Function
 
 
 
-'${.persongenerator_***} - context: all
-Function SEFN_PersonGenerator_Various:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+'${.persongenerator:***} - context: all
+'${.persongenerator:"firstname":"us":"female"}
+'${.persongenerator:"fullname"}
+Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
 	Local command:String = params.GetToken(0).GetValueText()
+	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 	'choose a random country if the country is not defined or no generator
 	'existing for it
-	Local country:String = params.GetToken(1).GetValueText()
+	Local country:String = params.GetToken(2).GetValueText()
 	If country = "" or Not GetPersonGenerator().HasProvider(country)
 		country = GetPersonGenerator().GetRandomCountryCode()
 	EndIf
 	'gender as defined or a random one
-	Local gender:Int = TPersonGenerator.GetGenderFromString( params.GetToken(2).GetValueText() )
+	Local gender:Int = TPersonGenerator.GetGenderFromString( params.GetToken(3).GetValueText() )
 
-	Select command.ToLower()
-		case "persongenerator_firstname"
-			Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender), params.GetToken(0) )
-		case "persongenerator_lastname"
-			Return New SToken( TK_TEXT, GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
-		case "persongenerator_name"
-			Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender) + " " + GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
-		case "persongenerator_title"
-			Return New SToken( TK_TEXT, GetPersonGenerator().GetTitle(country, gender), params.GetToken(0) )
-		default
-			Return New SToken( TK_ERROR, "(Undefined function ~q."+command+"~q)", params.GetToken(0) )
+	Select subCommand.ToLower()
+		case "firstname"  Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender), params.GetToken(0) )
+		case "lastname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
+		case "fullname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender) + " " + GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
+		case "title"      Return New SToken( TK_TEXT, GetPersonGenerator().GetTitle(country, gender), params.GetToken(0) )
+		default           Return New SToken( TK_ERROR, "(Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
 	End Select
 End Function
 
 
-'VARIOUS
-'--------------
-
-'${.cast:n:"full"} - context: TProgrammeData
-Function SEFN_cast:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
-	Local programmeData:TProgrammeData = TProgrammeData(context)
-	If Not programmeData Then Return New SToken( TK_ERROR, "(.cast only usable within TProgrammeData)", params.GetToken(0) )
-
-	Local castNumber:Int = params.GetToken(1).valueLong
-	Local job:TPersonProductionJob = programmeData.GetCastAtIndex(castNumber)
-	If Not job Then Return New SToken( TK_ERROR, "(.cast " + castNumber +" not found)", params.GetToken(0) )
-
-	Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
-	If Not person Then Return New SToken( TK_ERROR, "(.cast " + castNumber +" person not found)", params.GetToken(0) )
-
-	Select params.GetToken(2).value.ToLower()
-		Case "firstname"  Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
-		Case "lastname"   Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
-		Case "nickname"   Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
-		Default           Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
-	End Select
-End Function
 
 
 '${.programme/.programmelicence:"the-guid-1-2":"title"} - context: TProgrameLicence / TProgrammeData
@@ -356,7 +292,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null
 				Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
 			End Select
 
-		Default                        Return New SToken( TK_TEXT, "unknown_property", params.GetToken(0) )
+		Default                        Return New SToken( TK_ERROR, "(unknown property ~q" + propertyName + "~q.)", params.GetToken(0) )
 	End Select
 End Function
 
@@ -419,7 +355,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:Object = Null, conte
 				Default           Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
 			End Select
 							
-		Default                  Return New SToken( TK_TEXT, "unknown_property", params.GetToken(0) )
+		Default                 Return New SToken( TK_ERROR, "(unknown property ~q" + propertyName + "~q.)", params.GetToken(0) )
 	End Select
 End Function
 

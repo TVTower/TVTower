@@ -438,10 +438,10 @@ Type TDatabaseLoader
 		'type 1:
 		For local i:int = 0 until 7
 			if expression.Find("["+i) >= 0
-				expression = expression.Replace("["+i+"|Full]", "${.cast:"+i+":fullname}")
-				expression = expression.Replace("["+i+"|First]", "${.cast:"+i+":firstname}")
-				expression = expression.Replace("["+i+"|Last]", "${.cast:"+i+":lastname}")
-				expression = expression.Replace("["+i+"|Nick]", "${.cast:"+i+":nickname}")
+				expression = expression.Replace("["+i+"|Full]", "${.self:~qcast~q:"+i+":~qfullname~q}")
+				expression = expression.Replace("["+i+"|First]", "${.self:~qcast~q:"+i+":~qfirstname~q}")
+				expression = expression.Replace("["+i+"|Last]", "${.self:~qcast~q:"+i+":~qlastname~q}")
+				expression = expression.Replace("["+i+"|Nick]", "${.self:~qcast~q:"+i+":~qnickname~q}")
 			EndIf
 		Next
 		
@@ -483,7 +483,8 @@ Type TDatabaseLoader
 						'prepend a "." to make it a function call, replace ":" with "_"
 						'-> "STATIONMAP:RANDOMCITY" becomes ".stationmap_randomcity"
 						if identifierLS.Find(":") > 0
-							scriptExpressionConverterSB.Append("." + expression[expressionStartPos +1 .. i].Replace(":", "_"))
+							scriptExpressionConverterSB.Append("." + expression[expressionStartPos +1 .. i].Replace(":", ":~q"))
+							scriptExpressionConverterSB.Append("~q")
 						else
 							scriptExpressionConverterSB.Append(expression[expressionStartPos +1 .. i])
 						endif
