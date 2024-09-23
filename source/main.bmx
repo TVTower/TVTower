@@ -2467,6 +2467,13 @@ Type TSaveGame Extends TGameState
 				EndIf
 			Next
 
+			For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
+				If licence.isPaid() And licence.data and licence.data.releaseTime < 0
+					licence.data.releaseTime = 0
+					TLogger.Log("RepairData()", "Fix release date for "+ licence.getTitle(), LOG_LOADING)
+				EndIf
+			Next
+
 		EndIf
 
 		If savegameVersion < 18
