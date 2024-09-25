@@ -160,6 +160,8 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:Object = N
 	EndIf
 	
 	Select propertyName
+		case "guid"                    Return New SToken( TK_TEXT, licence.GetGUID(), params.GetToken(0) )
+		case "id"                      Return New SToken( TK_NUMBER, licence.GetID(), params.GetToken(0) )
 		Case "country"                 Return New SToken( TK_TEXT, licence.data.country, params.GetToken(0) )
 		Case "year"                    Return New SToken( TK_NUMBER, licence.data.GetYear(), params.GetToken(0) )
 		Case "islive"                  Return New SToken( TK_BOOLEAN, licence.IsLive(), params.GetToken(0) )
@@ -266,6 +268,8 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null
 	EndIf
 	
 	Select propertyName
+		case "guid"                    Return New SToken( TK_TEXT, data.GetGUID(), params.GetToken(0) )
+		case "id"                      Return New SToken( TK_NUMBER, data.GetID(), params.GetToken(0) )
 		Case "country"                 Return New SToken( TK_TEXT, data.country, params.GetToken(0) )
 		Case "year"                    Return New SToken( TK_NUMBER, data.GetYear(), params.GetToken(0) )
 		Case "islive"                  Return New SToken( TK_BOOLEAN, data.IsLive(), params.GetToken(0) )
@@ -339,6 +343,8 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:Object = Null, conte
 	Local propertyName:String = params.GetToken(2).value
 
 	Select propertyName.ToLower()
+		case "guid"         Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
+		case "id"           Return New SToken( TK_NUMBER, person.GetID(), params.GetToken(0) )
 		case "firstname"    Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
 		case "lastname"     Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
 		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
@@ -442,6 +448,8 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:Object = Null, conte
 	EndIf
 	
 	Select propertyName
+		case "guid"             Return New SToken( TK_TEXT, script.GetGUID(), params.GetToken(0) )
+		case "id"               Return New SToken( TK_NUMBER, script.GetID(), params.GetToken(0) )
 		Case "episodes"         Return New SToken( TK_NUMBER, script.GetEpisodes(), params.GetToken(0) )
 		Case "genre"            Return New SToken( TK_NUMBER, script.GetMainGenre(), params.GetToken(0) )
 		Case "genrestring"      Return New SToken( TK_NUMBER, script.GetMainGenreString(), params.GetToken(0) )
