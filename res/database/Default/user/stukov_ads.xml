@@ -51,7 +51,7 @@
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />
-			<availability year_range_from="1990" year_range_to="1993" /> <!-- different years variations added in constr -->
+			<availability year_range_from="1990" year_range_to="1993" />
 		</ad>
 
 		<ad id="036e8811-5486-4c8a-87a5-6b09983f5661" comment="variation of Mad TV 'La Baguette'">

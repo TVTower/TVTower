@@ -427,7 +427,7 @@
 		</scripttemplate>
 		
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
+		<scripttemplate product="3" licence_type="1" guid="scripttemplate-random-ron-show1">
 			<title>
 				<de>%KIND%%DATE%</de>
 				<en>%KIND%%DATE%</en>
@@ -529,7 +529,7 @@
 				</who_5>
 				<who_6>
 					<de>Krankenpfleger</de>
-					<en>Carers</en>
+					<en>Caregivers</en>
 				</who_6>
 				<who_7>
 					<de>Stripper</de>
@@ -1740,7 +1740,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 		<scripttemplate product="3" licence_type="1" guid="84c38251-ff42-4422-908c-8177ff5b10ea" creator="" comment="Screenplay version / continuation of d0b61022-2ec0-4a6c-a496-92c102e41cde | deliberately not a series format in the screenplay version">
 			<title>
 				<de>Nur wer anruft kann gewinnen %currentyear%</de>
-				<en>You Need to Call to Win %currentyear%</en>
+				<en>You Need to Call In to Win %currentyear%</en>
 			</title>
 			<description>
 				<de>Schäbige Call-In-Show, in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>

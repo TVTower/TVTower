@@ -1644,7 +1644,7 @@
 		</scripttemplate>
 
 		<!--Cast Gäste statt Darsteller, Genre Gameshow, live nur eine Ausstrahlung, 5 Produktionen, Produktionszeit kein optionaler Kult, TODO Host passt nicht wirklich zum Namen-->
-		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Imschlafreich" comment="TODO: preselected cast">
+		<scripttemplate product="3" licence_type="1" guid="Kasi-Script-Imschlafreich" comment="TODO: preselected cast">
 			<title>
 				<de>%Name1% %Name2%s Schlaf dich reich</de>
 				<en>%Name1% %Name2%'s Get Rich Sleeping</en>
@@ -1686,7 +1686,7 @@
 			<speed slope="40" max="50" min="30" />
 		</scripttemplate>
 
-		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Ratespass" comment="TODO: preselected cast">
+		<scripttemplate product="3" licence_type="1" guid="Kasi-Script-Ratespass" comment="TODO: preselected cast">
 			<title>
 				<de>Ratespaß mit %Name1% %Name2%</de>
 				<en>Quiz Fun With %Name1% %Name2%</en>

@@ -637,7 +637,7 @@
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
-			<availability year_range_from="2008" /> <!-- different years variations added in constr -->
+			<availability year_range_from="2008" />
 		</ad>
 		<ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
 			<title>

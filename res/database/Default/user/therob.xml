@@ -348,7 +348,7 @@
 
 		<!-- 'RatTV - Quo Vadis' moved to database_programmes.xml -->
 
-		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<de>Goaaaaal</de>
 				<en>Goaaaaal</en>
@@ -1804,7 +1804,7 @@
 			<ratings critics="25" speed="12" outcome="18" />
 		</programme>
 
-		<programme id="TheRob-1756-Polit-Show-WasistSache" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="regular format / continuation as screenplay added as a16dbdd9-bbf8-449f-bf4d-6d1146aa98d0">
+		<programme id="TheRob-1756-Polit-Show-WasistSache" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="regular format / continuation as screenplay added as a16dbdd9-bbf8-449f-bf4d-6d1146aa98d0">
 				<!-- Was ist Sache, Politshow 101, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Was ist Sache Spezial - Dänemark</de>
@@ -1831,7 +1831,7 @@
 			</modifiers>
 		</programme>
 
-		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
 			<title>
 				<de>Das Leben der [2|Full]</de>
@@ -1854,7 +1854,7 @@
 			<ratings critics="35" speed="31" outcome="33" />
 		</programme>
 
-		<programme id="TheRob-1756-polit-event-AnalysederReden" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="TheRob-1756-polit-event-AnalysederReden" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Analyse der Reden, Polit Event 201, Zielgruppe Manager -->
 			<title>
 				<de>Analyse der Reden</de>
@@ -2361,7 +2361,7 @@
 			<ratings critics="81" speed="17" outcome="2" />
 		</programme>
 
-		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Und Jetzt?</de>
