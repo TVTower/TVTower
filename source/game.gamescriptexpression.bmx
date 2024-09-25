@@ -14,6 +14,8 @@ GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 1, 3)
 GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedata, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3) '
 GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
+GameScriptExpression.RegisterFunctionHandler( "person", SEFN_person, 2, 3)
+GameScriptExpression.RegisterFunctionHandler( "locale", SEFN_locale, 1, 2)
 GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 1, 1)
 GameScriptExpression.RegisterFunctionHandler( "persongenerator", SEFN_PersonGenerator, 1, 3)
@@ -99,6 +101,24 @@ Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:Object = Nu
 		case "title"      Return New SToken( TK_TEXT, GetPersonGenerator().GetTitle(country, gender), params.GetToken(0) )
 		default           Return New SToken( TK_ERROR, "(Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
 	End Select
+End Function
+
+
+
+
+'${.locale:"localekey":"optional: language"} - context: all
+Function SEFN_locale:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	If params.added >= 1
+		Local key:String = params.GetToken(1).GetValueText()
+		If params.added >= 2
+			Local languageCode:String = params.GetToken(2).value 'MUST be a string
+			Return New SToken( TK_TEXT, GetLocale(key, languageCode), params.GetToken(0) )
+		Else
+			Return New SToken( TK_TEXT, "hallo" + GetLocale(key), params.GetToken(0) )
+		EndIf
+	Else
+		Return New SToken( TK_ERROR, "(no locale key passed.)", params.GetToken(0) )
+	EndIf
 End Function
 
 
@@ -295,6 +315,92 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null
 			End Select
 
 		Default                        Return New SToken( TK_ERROR, "(unknown property ~q" + propertyName + "~q.)", params.GetToken(0) )
+	End Select
+End Function
+
+
+
+
+
+'${.person:"guid":"name"} - context: all
+Function SEFN_person:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+	Local person:TPersonBase
+	Local token:SToken = params.GetToken(1)
+	Local GUID:String = token.value
+	Local ID:Long = token.valueLong
+	If GUID
+		person = GetPersonBaseCollection().GetByGUID(GUID)
+		If Not person Then Return New SToken( TK_ERROR, "(.person with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+	ElseIf ID <> 0
+		person = GetPersonBaseCollection().GetByID(Int(ID))
+		If Not person Then Return New SToken( TK_ERROR, "(.person with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+	EndIf
+	
+	Local propertyName:String = params.GetToken(2).value
+
+	Select propertyName.ToLower()
+		case "firstname"    Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
+		case "lastname"     Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
+		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+		case "nickname"     Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
+		case "age"          Return New SToken( TK_NUMBER, person.GetAge(), params.GetToken(0) )
+		case "isalive"      Return New SToken( TK_BOOLEAN, person.IsAlive(), params.GetToken(0) )
+		case "isdead"       Return New SToken( TK_BOOLEAN, person.IsDead(), params.GetToken(0) )
+		case "isborn"       Return New SToken( TK_BOOLEAN, person.IsBorn(), params.GetToken(0) )
+		case "iscelebrity"  Return New SToken( TK_BOOLEAN, person.IsCelebrity(), params.GetToken(0) )
+		case "iscastable"   Return New SToken( TK_BOOLEAN, person.IsCastable(), params.GetToken(0) )
+		case "isbookable"   Return New SToken( TK_BOOLEAN, person.IsBookable(), params.GetToken(0) )
+		case "canlevelup"   Return New SToken( TK_BOOLEAN, person.CanLevelUp(), params.GetToken(0) )
+		case "isfictional"  Return New SToken( TK_BOOLEAN, person.IsFictional(), params.GetToken(0) )
+		case "ispolitician" Return New SToken( TK_BOOLEAN, person.IsPolitician(), params.GetToken(0) )
+		case "ismusician"   Return New SToken( TK_BOOLEAN, person.IsMusician(), params.GetToken(0) )
+		case "ispainter"    Return New SToken( TK_BOOLEAN, person.IsPainter(), params.GetToken(0) )
+		case "iswriter"     Return New SToken( TK_BOOLEAN, person.IsWriter(), params.GetToken(0) )
+		case "isartist"     Return New SToken( TK_BOOLEAN, person.IsArtist(), params.GetToken(0) )
+		case "ismodel"      Return New SToken( TK_BOOLEAN, person.IsModel(), params.GetToken(0) )
+		case "issportsman"  Return New SToken( TK_BOOLEAN, person.IsSportsman(), params.GetToken(0) )
+		case "isadult"      Return New SToken( TK_BOOLEAN, person.IsAdult(), params.GetToken(0) )
+		case "countrycode"  Return New SToken( TK_TEXT, person.GetCountryCode(), params.GetToken(0) )
+		case "country"      Return New SToken( TK_TEXT, person.GetCountry(), params.GetToken(0) )
+		case "countrylong"  Return New SToken( TK_TEXT, person.GetCountryLong(), params.GetToken(0) )
+		case "popularity"   Return New SToken( TK_TEXT, person.GetPopularityValue(), params.GetToken(0) )
+		case "channelsympathy"
+			if params.added < 3 
+				If Not person Then Return New SToken( TK_ERROR, "(.person ChannelSympathy requires channel parameter.)", params.GetToken(0) )
+			else
+				Local channel:Int = Int(params.GetToken(3).GetValueText())
+				Return New SToken( TK_NUMBER, person.GetChannelSympathy(channel), params.GetToken(0) )
+			endif
+		case "productionjobsdone"  Return New SToken( TK_NUMBER, person.GetTotalProductionJobsDone(), params.GetToken(0) )
+		case "jobsdone"
+			if params.added < 3 
+				If Not person Then Return New SToken( TK_ERROR, "(.person JobsDone requires jobID parameter.)", params.GetToken(0) )
+			else
+				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Return New SToken( TK_NUMBER, person.GetJobsDone(jobID), params.GetToken(0) )
+			endif
+		case "effectivejobexperiencepercentage"
+			if params.added < 3 
+				If Not person Then Return New SToken( TK_ERROR, "(.person EffectiveJobExperiencePercentage requires jobID parameter.)", params.GetToken(0) )
+			else
+				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Return New SToken( TK_NUMBER, person.GetEffectiveJobExperiencePercentage(jobID), params.GetToken(0) )
+			endif
+		case "hasjob"
+			if params.added < 3 
+				If Not person Then Return New SToken( TK_ERROR, "(.person HasJob requires jobID parameter.)", params.GetToken(0) )
+			else
+				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Return New SToken( TK_NUMBER, person.HasJob(jobID), params.GetToken(0) )
+			endif
+		case "haspreferredjob"
+			if params.added < 3 
+				If Not person Then Return New SToken( TK_ERROR, "(.person HasPreferredJob requires jobID parameter.)", params.GetToken(0) )
+			else
+				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Return New SToken( TK_NUMBER, person.HasPreferredJob(jobID), params.GetToken(0) )
+			endif
+		default             Return New SToken( TK_ERROR, "(Undefined property ~q"+propertyName+"~q.)", params.GetToken(0) )
 	End Select
 End Function
 

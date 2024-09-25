@@ -77,19 +77,22 @@ Type TLocalization
 
 	'Returns the value for the specified key, or the given key if
 	'nothing was found
-	Function GetString:String(Key:String, group:String = Null)
+	Function GetString:String(Key:String, group:String = Null, useLanguage:TLocalizationLanguage = Null)
+		if not useLanguage Then useLanguage = currentLanguage
+		
 		'skip "has"-check without a default
 		if not defaultLanguage
-			if not currentLanguage then Return Key
-		elseif defaultLanguage <> currentLanguage
-			if currentLanguage.Has(Key, group)
-				Return currentLanguage.Get(Key, group).replace("\n", Chr(13))
+			if not useLanguage then Return Key
+		elseif defaultLanguage <> useLanguage
+			if useLanguage.Has(Key, group)
+				Return useLanguage.Get(Key, group).replace("\n", Chr(13))
 			else
 				Return defaultLanguage.Get(Key, group).replace("\n", Chr(13))
 			endif
 		endif
 
-		Return currentLanguage.Get(Key, group).replace("\n", Chr(13))
+		If Not useLanguage Then Return ""
+		Return useLanguage.Get(Key, group).replace("\n", Chr(13))
 	End Function
 
 
@@ -186,7 +189,7 @@ Type TLocalization
 			if availableAlternatives = 0
 				return language.GetRaw(keyLower).replace("\n", Chr(13))
 			else
-				local index:int = Rand(0, availableAlternatives)
+				local index:int = RandRange(0, availableAlternatives)
 				if index = 0
 					return language.GetRaw(keyLower).replace("\n", Chr(13))
 				else
@@ -197,7 +200,7 @@ Type TLocalization
 			if availableAlternatives = 0
 				return key
 			else
-				return language.GetRaw(keyLower + (1 + Rand(0, availableAlternatives-1))).replace("\n", Chr(13))
+				return language.GetRaw(keyLower + (1 + RandRange(0, availableAlternatives-1))).replace("\n", Chr(13))
 			endif
 		endif
 	End Function
@@ -248,7 +251,7 @@ Type TLocalization
 			if availableStringsCount = 1
 				return language.GetRaw(availableStrings[0]).replace("\n", Chr(13))
 			else
-				return language.GetRaw(availableStrings[Rand(0, availableStringsCount-1)]).replace("\n", Chr(13))
+				return language.GetRaw(availableStrings[RandRange(0, availableStringsCount-1)]).replace("\n", Chr(13))
 			endif
 		endif
 
@@ -476,6 +479,16 @@ End Function
 'convenience helper function
 Function GetLocale:string(key:string)
 	return TLocalization.GetString(key)
+End Function
+
+'convenience helper function
+Function GetLocale:string(key:string, language:TLocalizationLanguage)
+	return TLocalization.GetString(key, Null, language)
+End Function
+
+'convenience helper function
+Function GetLocale:string(key:string, languageCode:String)
+	return TLocalization.GetString(key, Null, TLocalization.GetLanguage(languageCode))
 End Function
 
 
