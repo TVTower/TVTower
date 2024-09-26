@@ -206,6 +206,8 @@ endrem
 
 
 	Method HasVariable:Int(key:String, keyIsLowerCase:Int = False)
+		If Not variables Then Return False
+		
 		If Not keyIsLowerCase 
 			key = key.toLower()
 		EndIf
