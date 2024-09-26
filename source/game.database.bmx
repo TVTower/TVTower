@@ -907,10 +907,10 @@ Type TDatabaseLoader
 		For Local nodeVariable:TxmlNode = EachIn xml.GetNodeChildElements(nodeVariables)
 			'each variable is stored as a localizedstring
 			Local varName:String = nodeVariable.getName()
-			Local varString:TLocalizedString = GetLocalizedStringFromNode(nodeVariable)
+			If Not varName Then Continue
 
-			'skip invalid
-			If Not varName Or Not varString Then Continue
+			Local varString:TLocalizedString = GetLocalizedStringFromNode(nodeVariable)
+			If Not varString Then Continue
 
 			'create if missing
 			newsEventTemplate.CreateTemplateVariables()

@@ -509,19 +509,38 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 	Function GameScriptVariableHandlerCB:String(variable:String, context:SScriptExpressionContext var) override
 		Local result:String
 		Local localeID:Int = context.contextNumeric
+		Local tv:TTemplateVariables
 		
+		'explicitely passed template vars? higher priority than context-provided ones
 		If TTemplateVariables(context.extra)
-			result = _ParseWithTemplateVariables(variable, context) 
+			tv = TTemplateVariables(context.extra)
+		'check if the passed context is one we know it has template variables
+		Else
+			If TScriptTemplate(context.context)
+				tv = TScriptTemplate(context.context).templateVariables
+			ElseIf TNewsEvent(context.context)
+				tv = TNewsEvent(context.context).templateVariables
+			EndIf
 		EndIf
+		
+		If tv
+			result = _ParseWithTemplateVariables(variable, context, tv) 
+		EndIf
+
 		Return result
 	End Function
 
 
-	Function _ParseWithTemplateVariables:String(variable:String, context:SScriptExpressionContext var)
-		Local tv:TTemplateVariables = TTemplateVariables(context.extra)
+	Function _ParseWithTemplateVariables:String(variable:String, context:SScriptExpressionContext, tv:TTemplateVariables = Null)
+		If not tv and TTemplateVariables(context.extra)
+			tv = TTemplateVariables(context.extra)
+		EndIf
 		If Not tv
 			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
 		EndIf
+		
+		'store the template variables as context (working on a copy here!)
+		context.extra = tv 
 		
 		Local result:String
 		Local localeID:Int = context.contextNumeric
