@@ -8,59 +8,27 @@ Import "game.stationmap.bmx"
 Import Brl.Map
 
 
-Global GameScriptExpression:TGameScriptExpression = New TGameScriptExpression
+Global GameScriptExpression:TGameScriptExpressionBase = New TGameScriptExpressionBase
 
-Type TGameScriptExpression extends TScriptExpression
+Type TGameScriptExpressionBase extends TScriptExpression
 	Method New()
 		'set custom config for variable handlers etc
 		'self.config = New TScriptExpressionConfig(null, null, null )
-		self.config.s.variableHandlerCB = TGameScriptExpression.GameScriptVariableHandlerCB
+		self.config.s.variableHandlerCB = TGameScriptExpressionBase.GameScriptVariableHandlerCB
 	End Method
 	
 	
-	Method ParseLocalizedText:TStringBuilder(text:String, context:Object, localeID:Int)
-		Return ParseNestedExpressionText(text, context, localeID)
+	Method ParseLocalizedText:TStringBuilder(text:String, context:SScriptExpressionContext)
+		Return ParseNestedExpressionText(text, context)
 	End Method
 
-	Method ParseLocalizedText:TStringBuilder(text:TStringBuilder, context:Object, localeID:Int)
-		Return ParseNestedExpressionText(text, context, localeID)
+	Method ParseLocalizedText:TStringBuilder(text:TStringBuilder, context:SScriptExpressionContext)
+		Return ParseNestedExpressionText(text, context)
 	End Method
 
-
-	Function GameScriptVariableHandlerCB:String(variable:String, context:Object, contextNumeric:Int)
-		Local result:String
-		Local localeID:Int = contextNumeric
-		
-		'print "GameScriptVariableHandlerCB: " + TTypeID.ForObject(context).Name()
-		
-		Select True
-			Case TScriptTemplate(context) <> Null
-				Local tV:TTemplateVariables = TScriptTemplate(context).templateVariables
-
-				' Create a localized string only containing resolved variables
-				' (the single option "Beaver" is chosen from the variable value "Ape|Beaver|Camel") 
-				Local lsResult:TLocalizedString = tV.GetResolvedVariable(variable, 0, False)
-
-				' The result MIGHT contain script expressions itself 
-				' -> parse it and replace the resolved variable accordingly
-				' -> this allows to only evaluate it once instead of on each
-				'    request
-				' The whole "GameScriptVariableHandlerCB" is called ONCE per language
-				' so we only need to parse the specific language value here!
-				result = lsResult.Get( localeID )
-				local resultNew:TStringBuilder = GameScriptExpression.ParseNestedExpressionText(result, context, localeID)
-
-				'avoid string creation and compare hashes first
-				If result.hash() <> resultNew.hash()
-					result = resultNew.ToString()
-					'store the newly parsed expression result
-					lsResult.Set(result, localeID)
-				EndIf
-		End Select
-
-		Return result
+	Function GameScriptVariableHandlerCB:String(variable:String, context:SScriptExpressionContext var)
+		Return "(unhandled variable " + variable+")"
 	End Function
-
 End Type
 
 

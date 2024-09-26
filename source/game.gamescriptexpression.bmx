@@ -7,6 +7,10 @@ Import "Dig/base.util.persongenerator.bmx"
 Import "game.production.script.bmx"
 Import "game.programme.programmedata.bmx"
 Import "game.programme.programmelicence.bmx"
+Import "game.programme.newsevent.bmx"
+
+'override base gamescript expression instance with specific instance
+GameScriptExpression = New TGameScriptExpression
 
 'valid context(s): "all supported"
 GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 1, 3)
@@ -27,7 +31,7 @@ GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 1)
 '${.worldTime:***} - context: all
 '${.worldTime:"year"}
 '${.worldTime:"isnight"}
-Function SEFN_WorldTime:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_WorldTime:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local command:String = params.GetToken(0).GetValueText()
 	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 	
@@ -61,7 +65,7 @@ End Function
 '${.stationmap:***} - context: all
 '${.stationmap:"randomcity"}
 '${.stationmap:"mapname"}
-Function SEFN_StationMap:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_StationMap:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local command:String = params.GetToken(0).GetValueText()
 	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 
@@ -82,7 +86,7 @@ End Function
 '${.persongenerator:***} - context: all
 '${.persongenerator:"firstname":"us":"female"}
 '${.persongenerator:"fullname"}
-Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local command:String = params.GetToken(0).GetValueText()
 	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 	'choose a random country if the country is not defined or no generator
@@ -107,7 +111,7 @@ End Function
 
 
 '${.locale:"localekey":"optional: language"} - context: all
-Function SEFN_locale:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_locale:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	If params.added >= 1
 		Local key:String = params.GetToken(1).GetValueText()
 		If params.added >= 2
@@ -125,7 +129,7 @@ End Function
 
 
 '${.programme/.programmelicence:"the-guid-1-2":"title"} - context: TProgrameLicence / TProgrammeData
-Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
 	Local tokenOffset:Int = 0
@@ -133,7 +137,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:Object = N
 	Local firstTokenIsSelf:Int = params.GetToken(0).GetValueText() = "self"
 
 	If firstTokenIsSelf
-		licence = TProgrammeLicence(context)
+		licence = TProgrammeLicence(context.context)
 		If Not licence Then Return New SToken( TK_ERROR, "(.self is not a TProgrammeLicence.)", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
@@ -233,7 +237,7 @@ End Function
 
 
 '${.programmedata:"title"} - context: TProgrammeData
-Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
 	Local tokenOffset:Int = 0
@@ -241,7 +245,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:Object = Null
 	Local firstTokenIsSelf:Int = params.GetToken(0).GetValueText() = "self"
 
 	If firstTokenIsSelf
-		data = TProgrammeData(context)
+		data = TProgrammeData(context.context)
 		If Not data Then Return New SToken( TK_ERROR, "(.self is not a TProgrammeData.)", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
@@ -327,7 +331,7 @@ End Function
 
 
 '${.person:"guid":"name"} - context: all
-Function SEFN_person:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local person:TPersonBase
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
@@ -413,7 +417,7 @@ End Function
 
 
 '${.self:"title"} - context: TProgrammeLicence / TProgrammeData
-Function SEFN_script:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
+Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
 	Local tokenOffset:Int = 0
@@ -421,7 +425,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:Object = Null, conte
 	Local firstTokenIsSelf:Int = params.GetToken(0).GetValueText() = "self"
 
 	If firstTokenIsSelf
-		script = TScript(context)
+		script = TScript(context.context)
 		If Not script Then Return New SToken( TK_ERROR, "(.self is not a TScript.)", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
@@ -479,15 +483,72 @@ End Function
 'various "self"-referencing options
 'context: TProgrammeLicence
 'context: TProgrammeData
-Function SEFN_self:SToken(params:STokenGroup Var, context:Object = Null, contextNumeric:Int = 0)
-	If TProgrammeData(context)
-		return SEFN_programmedata(params, context, contextNumeric)
-	ElseIf TProgrammeLicence(context)
-		return SEFN_programmelicence(params, TProgrammeLicence(context).data, contextNumeric)
-	ElseIf TScript(context)
-		return SEFN_script(params, context, contextNumeric)
+Function SEFN_self:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
+	If TProgrammeData(context.context)
+		return SEFN_programmedata(params, context)
+	ElseIf TProgrammeLicence(context.context)
+'		Local subContext:SScriptExpressionContext = New SScriptExpressionContext(TProgrammeLicence(context.context).data, context.contextNumeric, context.extra)
+		'return SEFN_programmelicence(params, subContext)
+		return SEFN_programmelicence(params, context)
+	ElseIf TScript(context.context)
+		return SEFN_script(params, context)
 	EndIf
 End Function
+
+
+
+Type TGameScriptExpression extends TGameScriptExpressionBase
+	Method New()
+		'set custom config for variable handlers etc
+		'self.config = New TScriptExpressionConfig(null, null, null )
+		self.config.s.variableHandlerCB = TGameScriptExpression.GameScriptVariableHandlerCB
+	End Method
+
+
+	'override to add support for template variables
+	Function GameScriptVariableHandlerCB:String(variable:String, context:SScriptExpressionContext var) override
+		Local result:String
+		Local localeID:Int = context.contextNumeric
+		
+		If TTemplateVariables(context.extra)
+			result = _ParseWithTemplateVariables(variable, context) 
+		EndIf
+		Return result
+	End Function
+
+
+	Function _ParseWithTemplateVariables:String(variable:String, context:SScriptExpressionContext var)
+		Local tv:TTemplateVariables = TTemplateVariables(context.extra)
+		If Not tv
+			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
+		EndIf
+		
+		Local result:String
+		Local localeID:Int = context.contextNumeric
+
+		' Create a localized string only containing resolved variables
+		' (the single option "Beaver" is chosen from the variable value "Ape|Beaver|Camel") 
+		Local lsResult:TLocalizedString = tv.GetResolvedVariable(variable, 0, False)
+
+		' The result MIGHT contain script expressions itself 
+		' -> parse it and replace the resolved variable accordingly
+		' -> this allows to only evaluate it once instead of on each
+		'    request
+		' The whole "GameScriptVariableHandlerCB" is called ONCE per language
+		' so we only need to parse the specific language value here!
+		result = lsResult.Get( localeID )
+		local resultNew:TStringBuilder = GameScriptExpression.ParseNestedExpressionText(result, context)
+
+		'avoid string creation and compare hashes first
+		If result.hash() <> resultNew.hash()
+			result = resultNew.ToString()
+			'store the newly parsed expression result
+			lsResult.Set(result, localeID)
+		EndIf
+		
+		Return result
+	End Function
+End Type
 
 
 

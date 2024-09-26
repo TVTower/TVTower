@@ -688,7 +688,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		For Local langID:Int = EachIn text.GetLanguageIDs()
 			Local valueOld:String = text.Get(langID)
-			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, self, langID)
+			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)
+			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, context)
 			If valueOLD <> valueNew.Hash()
 				result.Set(valueNew.ToString(), langID)
 			EndIf

@@ -973,7 +973,8 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			sb.Append(text)
 		EndIf
 
-		sb = GameScriptExpression.ParseLocalizedText(sb, self, localeID)
+		Local context:SScriptExpressionContext = new SScriptExpressionContext(self, localeID, Null)
+		sb = GameScriptExpression.ParseLocalizedText(sb, context)
 		If text <> sb.Hash() 'only create new string if required
 			text = sb.ToString()
 			Return True
