@@ -520,6 +520,8 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 				tv = TScriptTemplate(context.context).templateVariables
 			ElseIf TNewsEvent(context.context)
 				tv = TNewsEvent(context.context).templateVariables
+			ElseIf TNewsEventTemplate(context.context)
+				tv = TNewsEventTemplate(context.context).templateVariables
 			EndIf
 		EndIf
 		

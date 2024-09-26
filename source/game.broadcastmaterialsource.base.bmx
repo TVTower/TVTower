@@ -235,14 +235,13 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
+	Method _ReplaceScriptExpressions:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		Local result:TLocalizedString = text.copy()
 		if useTime = 0 then useTime = GetWorldTime().GetTimeGone()
 
-		'print "_ReplacePlaceholders: " + text.Get()
-		'for each defined language we check for existent placeholders
-		'which then get replaced by a random string stored in the
-		'variable with the same name
+		'print "_ReplaceScriptExpressions: " + text.Get()
+		'for each defined language we check for existent script expressions
+		'which can contain variables or other logic.
 		For Local langID:Int = EachIn text.GetLanguageIDs()
 			Local valueOld:String = text.Get(langID)
 			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)

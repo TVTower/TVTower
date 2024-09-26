@@ -565,28 +565,6 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		self.title = _ParseScriptExpressions(template.title, True, varToUse)
 		self.description = _ParseScriptExpressions(template.description, True, varToUse)
-rem
-		'copy text if we intend to replace content
-		'(for now only check main language)
-		If template.title.Get().Find("%") >= 0 or template.title.Get().Find("${") >= 0
-			If varToUse
-				Self.title = _ReplacePlaceholders(varToUse.ReplacePlaceholders_DEPRECATED(template.title), time)
-			Else
-				Self.title = _ReplacePlaceholders(template.title, time)
-			EndIf
-		Else
-			Self.title = template.title
-		EndIf
-		If template.description.Get().Find("%") >= 0 or template.description.Get().Find("${") >= 0
-			If varToUse
-				Self.description = _ReplacePlaceholders(varToUse.ReplacePlaceholders_DEPRECATED(template.description), time)
-			Else
-				Self.description = _ReplacePlaceholders(template.description, time)
-			EndIf
-		Else
-			Self.description = template.description
-		EndIf
-endrem
 
 		'store variables for passing on to potential trigger
 		If varToUse And Not templateVariables
@@ -594,9 +572,6 @@ endrem
 			'print "storing templateVariables for " +Self.GetTitle()
 		EndIf
 	End Method
-
-
-
 
 
 	Method _ParseScriptExpressions:TLocalizedString(text:TLocalizedString, createCopy:Int = True, templateVariablesToUse:TTemplateVariables = Null)

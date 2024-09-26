@@ -607,9 +607,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			script.jobs = template.GetFinalJobs()
 		EndIf
 
-		'replace placeholders as we know the cast / roles now
-		script.title = script._ReplacePlaceholders(script.title)
-		script.description = script._ReplacePlaceholders(script.description)
+		'replace script expressions/variables as we know the cast / roles now
+		script.title = script._ReplaceScriptExpressions(script.title)
+		script.description = script._ReplaceScriptExpressions(script.description)
 
 		script.basedOnScriptTemplateID = template.GetID()
 		template.AddUsedForScript(script.GetID())
@@ -683,7 +683,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
+	Method _ReplaceScriptExpressions:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		Local result:TLocalizedString = text.copy()
 
 		For Local langID:Int = EachIn text.GetLanguageIDs()
