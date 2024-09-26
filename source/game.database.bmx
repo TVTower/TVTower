@@ -2581,9 +2581,21 @@ Type TDatabaseLoader
 	Function GetLocalizedStringFromNode:TLocalizedString(node:TxmlNode)
 		If Not node Then Return Null
 
-		Local foundEntry:Int = True
-		Local localized:TLocalizedString = New TLocalizedString
-		For Local nodeLangEntry:TxmlNode = EachIn TxmlHelper.GetNodeChildElements(node)
+		Local localized:TLocalizedString
+		Local childNodes:TList = TxmlHelper.GetNodeChildElements(node)
+		'if no languages were used:
+		'<var1>
+		'  <de>bla</de>
+		'  <en>bla</en>
+		'</var>
+		'then use the
+		'node itself so you can use a global value
+		'<var1>bla</var1> 
+		If childNodes.Count() = 0
+			childNodes.Addlast(node)
+		EndIf
+		
+		For Local nodeLangEntry:TxmlNode = EachIn childNodes
 			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
 			Local value:String = nodeLangEntry.getContent().Replace("~~n", "~n") '.Trim()
 			
@@ -2602,19 +2614,21 @@ Type TDatabaseLoader
 			EndIf
 			
 
-			If value <> ""
-				Local languageID:Int = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
+			Local languageID:Int = -1
+			if nodeLangEntry = node 'global definition?
+				languageID = TLocalization.defaultLanguageID
+			else
+				languageID = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
+			EndIf
 
-				If languageID <> -1
-					localized.Set(value, languageID)
-					foundEntry = True
-				Else
-					TLogger.Log("TDATABASE.LOAD()", "Found and ignored localization entry for unsupported language " + nodeLangEntry.GetName().ToLower(), LOG_LOADING|LOG_WARNING)
-				EndIf
+			If languageID <> -1
+				if not localized then localized = New TLocalizedString
+				localized.Set(value, languageID)
+			Else
+				TLogger.Log("TDATABASE.LOAD()", "Found and ignored localization entry for unsupported language " + nodeLangEntry.GetName().ToLower(), LOG_LOADING|LOG_WARNING)
 			EndIf
 		Next
 
-		If Not foundEntry Then Return Null
 		Return localized
 	End Function
 
