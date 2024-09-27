@@ -4,6 +4,7 @@ Import Brl.Map
 Import brl.retro	' Hex() in SToken.reveal()
 Import Brl.StringBuilder
 Import "base.util.longmap.bmx"
+Import "base.util.string.bmx"
 
 Import "base.util.scriptexpression_ng.c"
 Extern "C"
@@ -1595,6 +1596,13 @@ Function SEFN_Concat:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	Return New SToken( TK_TEXT, result, first.linenum, first.linepos )
 End Function
 
+
+Function SEFN_UCFirst:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
+	Local value:String = params.GetToken(1).GetValueText()
+	Return New SToken( TK_Text, StringHelper.UCFirst(value), params.GetToken(0) )
+End Function
+
+
 Function SEFN_Hour:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	'Print params.reveal("PARAMS: "+ params.added)
 	'DebugStop
@@ -1617,6 +1625,7 @@ TScriptExpression.RegisterFunctionHandler( "gte", SEFN_Gte, 2,  2)
 TScriptExpression.RegisterFunctionHandler( "lt",  SEFN_Lt,  2,  2)
 TScriptExpression.RegisterFunctionHandler( "lte", SEFN_Lte, 2,  2)
 TScriptExpression.RegisterFunctionHandler( "concat", SEFN_Concat, 2,  2)
+TScriptExpression.RegisterFunctionHandler( "ucfirst", SEFN_UCFirst, 1,  1)
 TScriptExpression.RegisterFunctionHandler( "hour", SEFN_Hour, 0,  0)
 ' Boolean operators
 TScriptExpression.RegisterFunctionHandler( "==", SEFN_Eq,  2, 2)
