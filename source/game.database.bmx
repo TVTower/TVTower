@@ -431,9 +431,9 @@ Type TDatabaseLoader
 	'=== HELPER ===
 	Function ConvertOldScriptExpression:String(expression:string, oldNewMapping:TStringMap, scriptExpressionConverterSB:TStringBuilder, changedSomething:Int Var)
 		'type 1: [1|Full] ... only in cast
-		'type 2: %variable%
-		'type 3: %person|1|Full%  -- not in use in _our_ db files
-
+		'type 2: %PERSONGENERATOR_NAME(country,gender)%
+		'type 3: %variable%
+		'type 4: %person|1|Full%  -- not in use in _our_ db files
 
 		'type 1:
 		For local i:int = 0 until 15
@@ -443,10 +443,36 @@ Type TDatabaseLoader
 				expression = expression.Replace("["+i+"|Last]", "${.self:~qcast~q:"+i+":~qlastname~q}")
 				expression = expression.Replace("["+i+"|Nick]", "${.self:~qcast~q:"+i+":~qnickname~q}")
 			EndIf
+
+			if expression.Find("%ROLENAME"+i) >= 0
+				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+i+":~qfirstname~q}")
+			EndIf
+			if expression.Find("%ROLE"+i) >= 0
+				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+i+":~qfullname~q}")
+			EndIf
 		Next
+
+			
+		'replace %PERSONGENERATOR_...
+		local personGenPos:Int = expression.Find("%PERSONGENERATOR_")
+		if personGenPos >= 0
+			While personGenPos >= 0
+				Local personGenEndPos:Int = expression.Find(")%", personGenPos)
+				Local sub:String = expression[personGenPos .. personGenEndPos + 2]
+				sub = sub.replace("%PERSONGENERATOR_", "${.persongenerator:~q")
+				sub = sub.replace("(","~q:~q")
+				sub = sub.replace(",","~q:")
+				sub = sub.replace(")%","}")
+				sub = sub.replace("unk", "") 'remove "unknown" country code 
+				expression = expression[0 .. personGenPos] + sub +  expression[personGenEndPos + 2 ..]
+
+				'search next
+				personGenPos = expression.Find("%PERSONGENERATOR_")
+			Wend
+		EndIf
 		
 		
-		'type 2:
+		'type 3:
 		'-------
 
 		'check if at least 2 "%" (old expression sign) exist
@@ -524,6 +550,7 @@ Type TDatabaseLoader
 		changedSomething = True
 
 		'print "~q"+expression+"~q  =>  ~q" + scriptExpressionConverterSB.ToString() + "~q"
+		
 		return scriptExpressionConverterSB.ToString()
 	End Function
 

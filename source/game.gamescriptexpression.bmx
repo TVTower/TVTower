@@ -518,6 +518,16 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		Else
 			If TScriptTemplate(context.context)
 				tv = TScriptTemplate(context.context).templateVariables
+			ElseIf TScript(context.context)
+				' TScript does not offer own variables, so fall back to
+				' use the variables of the template it bases on (if it does)
+				Local basedOnScriptTemplateID:Int = TScript(context.context).basedOnScriptTemplateID
+				If basedOnScriptTemplateID
+					Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+					If template
+						tv = template.templateVariables
+					EndIf
+				EndIf
 			ElseIf TNewsEvent(context.context)
 				tv = TNewsEvent(context.context).templateVariables
 			ElseIf TNewsEventTemplate(context.context)
@@ -526,7 +536,9 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		EndIf
 		
 		If tv
-			result = _ParseWithTemplateVariables(variable, context, tv) 
+			result = _ParseWithTemplateVariables(variable, context, tv)
+		Else
+			result = TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
 		EndIf
 
 		Return result
@@ -557,14 +569,20 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		'    request
 		' The whole "GameScriptVariableHandlerCB" is called ONCE per language
 		' so we only need to parse the specific language value here!
-		result = lsResult.Get( localeID )
-		local resultNew:TStringBuilder = GameScriptExpression.ParseNestedExpressionText(result, context)
+		If lsResult
+			result = lsResult.Get( localeID )
+			local resultNew:TStringBuilder = GameScriptExpression.ParseNestedExpressionText(result, context)
 
-		'avoid string creation and compare hashes first
-		If result.hash() <> resultNew.hash()
-			result = resultNew.ToString()
-			'store the newly parsed expression result
-			lsResult.Set(result, localeID)
+			'avoid string creation and compare hashes first
+			If result.hash() <> resultNew.hash()
+				result = resultNew.ToString()
+				'store the newly parsed expression result
+				lsResult.Set(result, localeID)
+			EndIf
+		' lsResult can be null if the variable was not resolved (or is
+		' not contained in the variables collection)
+		Else
+			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
 		EndIf
 		
 		Return result
