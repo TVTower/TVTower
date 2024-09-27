@@ -99,11 +99,12 @@ Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:SScriptExpr
 	Local gender:Int = TPersonGenerator.GetGenderFromString( params.GetToken(3).GetValueText() )
 
 	Select subCommand.ToLower()
+		case "name"       Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender), params.GetToken(0) )
 		case "firstname"  Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender), params.GetToken(0) )
 		case "lastname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
 		case "fullname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender) + " " + GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
 		case "title"      Return New SToken( TK_TEXT, GetPersonGenerator().GetTitle(country, gender), params.GetToken(0) )
-		default           Return New SToken( TK_ERROR, "(Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
+		default           Return New SToken( TK_ERROR, "(PersonGenerator: Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
 	End Select
 End Function
 
