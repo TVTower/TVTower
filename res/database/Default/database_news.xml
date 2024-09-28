@@ -1767,6 +1767,21 @@
 
 			<!-- 1988-06 -->
 
+		<news id="news-jorgaeff-1988-5-02" type="0" creator="8936" created_by="jorgaeff">
+			<availability script="TIME_YEAR=1988" />
+			<title>
+				<de>Candela feiert 70. Geburtstag</de>
+				<en>Candela celebrates 70th birthday</en>
+				<pl>Candela świętuje 70. urodziny</pl>
+			</title>
+			<description>
+				<de>Im Londoner Embley-Park-Stadion findet anlässlich des 70. Geburtstags des westafrikanischen Politikers, Nestor Candela, ein Solidaritätskonzert statt. Namhafte Künstler wie die Ghee Bees, UB60 oder Simple Thoughts spielen für lau.</de>
+				<en>A solidarity concert is being held at London's Embley Park Stadium to mark the 70th birthday of West African politician Nestor Candela. Well-known artists such as the Ghee Bees, UB60 or Simple Thoughts play for free.</en>
+				<pl>Na londyńskim stadionie Embley Park odbędzie się koncert solidarnościowy z okazji 70. urodzin zachodnioafrykańskiego polityka Nestora Candeli. Znani artyści tacy jak Ghee Bees, UB60 czy Simple Thoughts zagrają za darmo.</pl>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+		</news>
+
 			<!-- 1988-07 -->
 
 		<news id="news-jorgaeff-1988-0-01" type="0" creator="8936" created_by="jorgaeff">
