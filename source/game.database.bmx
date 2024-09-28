@@ -493,7 +493,7 @@ Type TDatabaseLoader
 		scriptExpressionConverterSB.SetLength(0)
 
 		Local expressionStartPos:Int = -1
-		Local ch:Byte
+		Local ch:Int
 		Local appendChar:Int = True
 		For local i:int = 0 until expression.length
 			ch = expression[i]
@@ -532,15 +532,15 @@ Type TDatabaseLoader
 			EndIf
 
 			'non-expression-allowed char found?
-			if not (..
-				ch = Asc(":") ..                    ' DOUBLE COLON --- STATIONMAP:BLA
-				Or ch = Asc("_") ..                 ' UNDERSCORE
-				Or ( ch >= 48 And ch <= 57 ) ..     ' NUMBER
-				Or ( ch >= 65 And ch <= 90 ) ..     ' UPPERCASE
-				Or ( ch >= 97 And ch <= 122 ) ..    ' LOWERCASE
-				)
+			If expressionStartPos >= 0
+				if not (..
+					ch = Asc(":") ..                    ' DOUBLE COLON --- STATIONMAP:BLA
+					Or ch = Asc("_") ..                 ' UNDERSCORE
+					Or ( ch >= 48 And ch <= 57 ) ..     ' NUMBER
+					Or ( ch >= 65 And ch <= 90 ) ..     ' UPPERCASE
+					Or ( ch >= 97 And ch <= 122 ) ..    ' LOWERCASE
+					)
 				
-				If expressionStartPos >= 0
 					scriptExpressionConverterSB.Append(expression[expressionStartPos .. i +1]) 'add all the "invalid expression"-stuff we found until now
 					expressionStartPos = -1
 				EndIf
