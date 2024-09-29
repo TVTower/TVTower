@@ -163,7 +163,7 @@ Ronny: should not needed as CreateFromTemplate ensures uniqueness of title alrea
 			If template.GetProductionLimitMax() > 1
 				Local tempName:TLocalizedString
 				For Local i:Int = 0 Until 20
-					template.reset()
+					template.ResetVariables()
 					tempName = template.GenerateFinalTitle()
 					If Not GetScriptCollection().IsTitleProtected(tempName)
 						Exit
@@ -563,6 +563,14 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			'#440 propagate final optional header flags to episodes
 			'also propagate parent effects
 			For Local subScript:TScript = EachIn script.subScripts
+				' sub scripts could be the all same (eg only one child
+				' defined but 5 episodes generated).
+				' So we need to ensure to reset variables used in title
+				' and description generation of the "subscript" (parent
+				' variables should be unaffected)
+				Local subTemplate:TScriptTemplate = GetScriptTemplateCollection().GetByID(subScript.basedOnScriptTemplateID)
+				If subTemplate Then subTemplate.ResetVariables()
+
 				subScript._GenerateTitleFromTemplate()
 				subScript._GenerateDescriptionFromTemplate()
 			Next
@@ -667,9 +675,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 					
 					if foundDuplicate
 						'reset resolved variables (not other expressions)
-						If subTemplate
-							subTemplate.reset()
-						EndIf
+						If subTemplate Then subTemplate.ResetVariables()
 						'reevaluate expressions (but do NOT protect the title)
 						subScript._GenerateTitleFromTemplate(False)
 					Else

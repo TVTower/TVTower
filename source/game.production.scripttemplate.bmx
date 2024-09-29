@@ -171,10 +171,15 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	'reset things used for random data
-	'like placeholders (which are stored there so that children could
-	'reuse it)
+	'reset things used for random data, resolved variables (which are
+	'stored there so that children could reuse it)
 	Method Reset:int()
+		ResetVariables()
+	End Method
+
+
+	'reset (resolved) variables
+	Method ResetVariables:int()
 		if templateVariables then templateVariables.Reset()
 	End Method
 
