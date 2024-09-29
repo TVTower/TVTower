@@ -710,12 +710,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 	
-	Method _GenerateTitleFromTemplate(skipProtectionCheck:Int = False)
-		If not basedOnScriptTemplateID Then Return
+	Method _GenerateTitleFromTemplate:Int(skipProtectionCheck:Int = False)
+		If not basedOnScriptTemplateID Then Return False
 
 		'fetch original title from template
 		Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
-		If not template Then Return
+		If not template Then Return False
 
 		'define a random seed so any generation generates the same "result"
 		'(which allows episodes to fetch parent title/description and when
@@ -731,7 +731,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'eg. titles of episodes could have non-unique titles ("Final")
 		if skipProtectionCheck 
 			self.title = resultTitle
-			Return
+			Return True
 		EndIf
 		
 
@@ -781,6 +781,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		EndIf
 		
 		self.title = resultTitle
+		Return True
 	End Method	
 
 
