@@ -3,7 +3,10 @@
 	<version value="3" comment="jorgaeffs Nachrichten; TODO: This file has a lot of persons that should be referenced once possible" />
 	<allnews>
 
-	<!-- "POLITIK + WIRTSCHAFT" -->
+		<!-- real historical news items moved to database_news.xml -->
+
+		<!-- "POLITIK + WIRTSCHAFT" -->
+
 		<news id="news-jorgaeff-dumb-01" type="0" thread_id="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff" comment="TODO: ref person Donald Dumb">
 			<title>
 				<de>Donald Dumb wird Präsident der VR Duban</de>
@@ -72,7 +75,8 @@
 			<data genre="0" price="0.7" quality="55" fictional="1" />
 		</news>
 
-	<!-- "SHOWBIZ" -->
+		<!-- "SHOWBIZ" -->
+
 		<news id="news-jorgaeff-bricks-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Rolling Bricks auf Abschiedstournee</de>
@@ -284,8 +288,9 @@
 			</effects>
 		</news>
 
-	<!-- "SPORT" -->
-		<news id="news-jorgaeff-socks-01" type="0" creator="8936" created_by="jorgaeff">
+		<!-- "SPORT" -->
+
+		<news id="news-jorgaeff-socks-01" type="0" creator="8936" created_by="jorgaeff" comment="TODO: Reference not clear, if any; was (erroneously?) declared as non-fictional but no date">
 			<title>
 				<de>Blue Socks gewinnen Football-Meisterschaft</de>
 				<en>Blue Socks Win Football Championship</en>
@@ -296,10 +301,10 @@
 				<en>For the first time in 26 years, the Blue Socks have won the championship again. In a thrilling final series, they were ultimately able to prevail against the Rednecks with 4-3.</en>
 				<pl>Po raz pierwszy od 26 lat Blue Socks ponownie zdobyli mistrzostwo. W emocjonującej serii finałowej udało im się ostatecznie wygrać z Rednecks wynikiem 4-3.</pl>
 			</description>
-			<data genre="2" price="0.2" quality="30" fictional="0" />
+			<data genre="2" price="0.2" quality="30" fictional="1" />
 		</news>
 
-		<news id="news-jorgaeff-fufa-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-fufa-01" type="0" creator="8936" created_by="jorgaeff" comment="previously declared non-fictional but likely wrong">
 			<title>
 				<de>Weltmeisterschaft ohne Nationalteams?</de>
 				<en>World Cup without national teams?</en>
@@ -310,7 +315,7 @@
 				<en>If it went according to the ideas of the FUFA, then, starting next year, the World Cup would take place for the first time without national teams. The participants would then be determined via casting shows.</en>
 				<pl>Jeśli wszystko poszłoby zgodnie z pomysłami FUFA, to od przyszłego roku mistrzostwa świata po raz pierwszy odbyłyby się bez udziału drużyn narodowych. Uczestnicy byliby wówczas wyłaniani w drodze castingów.</pl>
 			</description>
-			<data genre="2" price="0.35" quality="40" fictional="0" />
+			<data genre="2" price="0.35" quality="40" fictional="1" />
 		</news>
 
 		<news id="news-jorgaeff-abstieg-01" type="0" thread_id="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
@@ -832,7 +837,8 @@
 			<data genre="2" price="0.20" quality="20" fictional="1" />
 		</news>
 
-	<!-- "TECHNIK + WISSENSCHAFT" (Medien & Technik)-->
+		<!-- "TECHNIK + WISSENSCHAFT" (Medien & Technik)-->
+
 		<news id="news-jorgaeff-faulkswagen-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Faulkswagen entwickelt Null-Liter-Auto</de>
@@ -1011,7 +1017,8 @@
 			<data genre="3" price="0.55" quality="55" fictional="1" flags="2" />
 		</news>
 
-	<!-- "TAGESGESCHEHEN" -->
+		<!-- "TAGESGESCHEHEN" -->
+
 		<news id="news-jorgaeff-hyperraum-01" type="0" thread_id="news-jorgaeff-hyperraum" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Hyperraum-Umgehungsstraße geplant</de>
@@ -1224,7 +1231,8 @@
 			<data genre="4" price="0.1" quality="10" fictional="1" flags="2" />
 		</news>
 
-	<!-- "KULTUR" -->
+		<!-- "KULTUR" -->
+
 		<news id="news-jorgaeff-klinski-01" type="0" thread_id="news-jorgaeff-klinski" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Kaugummi-Klumpen-Sammlung versteigert</de>
@@ -1454,8 +1462,7 @@
 			<data genre="5" price="0.5" quality="50" fictional="1" />
 		</news>
 
-		<news id="news-jorgaeff-1985-5-02" type="0" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=1985" />
+		<news id="news-jorgaeff-1985-5-02" type="0" creator="8936" created_by="jorgaeff" comment="TODO: previously restricted to 1985; reference not clear">
 			<title>
 				<de>Edward-Swanstein-Museum eröffnet</de>
 				<en>Edward Swanstein Museum opened</en>
@@ -1469,8 +1476,7 @@
 			<data genre="5" price="0.3" quality="30" fictional="1" flags="2" />
 		</news>
 
-		<news id="news-jorgaeff-1985-5-03" type="0" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=1985" />
+		<news id="news-jorgaeff-1985-5-03" type="0" creator="8936" created_by="jorgaeff" comment="TODO: previously restricted to 1985; reference not clear, probably https://www.ndr.de/nachrichten/info/epg/Der-Kunstzerstoerer-Die-Saeure-Attentate-von-Hans-Joachim-Bohlmann,sendung1447870.html">
 			<title>
 				<de>Säureanschlag im Kunsthaus Wanne-Eickel</de>
 				<en>Acid attack in the Wanne-Eickel art gallery</en>
@@ -1481,7 +1487,7 @@
 				<en>Through an acid attack in the Wanne-Eickel art gallery, the painting "The Rubens Lady" by Hans-Dieter Blasewitz has been completely destroyed.</en>
 				<pl>W wyniku ataku kwasem w galerii sztuki Wanne-Eickel obraz „Dama Rubensa” Hansa-Dietera Blasewitza został całkowicie zniszczony.</pl>
 			</description>
-			<data genre="5" price="0.35" quality="35" fictional="1" />
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
 		</news>
 	</allnews>
 </tvtdb>

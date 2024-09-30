@@ -2,6 +2,9 @@
 <tvtdb>
 	<version value="3" comment="Cujos Daten" />
 	<allnews>
+
+		<!-- real historical news items moved to database_news.xml -->
+
 		<!-- "Superman und Supergirl" -->
 		<news id="cujo-news-superkerl-01" type="0" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>

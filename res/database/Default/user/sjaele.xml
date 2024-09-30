@@ -6,6 +6,8 @@
 	<!-- Chemnitzer Nachrichten werden nicht derartig kommentiert -->
 	<allnews>
 
+		<!-- real historical news items moved to database_news.xml -->
+
 		<news id="Sjaele-news-Gas-Pro" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kauft Gas-Pro Griechenland?</de>
