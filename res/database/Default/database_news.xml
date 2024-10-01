@@ -140,6 +140,20 @@
 
 			<!-- 1985-02 -->
 
+		<news id="461e5887-6123-496f-aa64-d83295eaa09e" type="0" creator="8936" created_by="jorgaeff" comment="Semperoper, Carl Maria von Weber: Der Freischütz, Intendant Max Gerd Schönfelder - https://de.wikipedia.org/wiki/Semperoper#Wiederaufbau">
+			<title>
+				<de>Dresdner Staatsoper wieder eröffnet</de>
+				<en>Dresden State Opera reopened</en>
+				<pl>Drezdeńska Opera Państwowa ponownie otwarta</pl>
+			</title>
+			<description>
+				<de>Nach jahrelanger Sanierung wurde die Dresdner Staatsoper mit der Uraufführung der Oper „Der Schäfer und seine Zicklein“ von Hannes Lotz wieder eröffnet.</de>
+				<en>After years of renovation, the Dresden State Opera reopened with the premiere of the opera "The Shepherd and his Kids" by Hannes Lotz.</en>
+				<pl>Po latach renowacji Drezdeńska Opera Państwowa została ponownie otwarta premierą opery „Pasterz i jego dzieci” Hannesa Lotza.</pl>
+			</description>
+			<data genre="5" price="0.4" quality="55" fictional="0" flags="2" happen_time="4,1985,2,13" /> <!-- previously set as fictional but the reopening with an opera did happen in 1985, though spoof names very far off -->
+		</news>
+
 		<news id="87930735-e504-41d3-b648-b2c20875626f" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/World_Chess_Championship_1984%E2%80%931985 | duplicate, first one wins | https://en.wikipedia.org/wiki/Anatoly_Karpov | https://en.wikipedia.org/wiki/Garry_Kasparov">
 			<title>
 				<de>Schachwettkampf abgebrochen</de>
@@ -174,20 +188,6 @@
 				<!-- alternative Nachricht deaktivieren-->
 				<effect trigger="happen" type="modifyNewsAvailability" enable="0" news="87930735-e504-41d3-b648-b2c20875626f" />
 			</effects>
-		</news>
-
-		<news id="461e5887-6123-496f-aa64-d83295eaa09e" type="0" creator="8936" created_by="jorgaeff" comment="Semperoper, Carl Maria von Weber: Der Freischütz, Intendant Max Gerd Schönfelder - https://de.wikipedia.org/wiki/Semperoper#Wiederaufbau">
-			<title>
-				<de>Dresdner Staatsoper wieder eröffnet</de>
-				<en>Dresden State Opera reopened</en>
-				<pl>Drezdeńska Opera Państwowa ponownie otwarta</pl>
-			</title>
-			<description>
-				<de>Nach jahrelanger Sanierung wurde die Dresdner Staatsoper mit der Uraufführung der Oper „Der Schäfer und seine Zicklein“ von Hannes Lotz wieder eröffnet.</de>
-				<en>After years of renovation, the Dresden State Opera reopened with the premiere of the opera "The Shepherd and his Kids" by Hannes Lotz.</en>
-				<pl>Po latach renowacji Drezdeńska Opera Państwowa została ponownie otwarta premierą opery „Pasterz i jego dzieci” Hannesa Lotza.</pl>
-			</description>
-			<data genre="5" price="0.4" quality="55" fictional="0" flags="2" happen_time="4,1985,2,13" /> <!-- previously set as fictional but the reopening with an opera did happen in 1985, though spoof names very far off -->
 		</news>
 
 			<!-- 1985-03 -->
@@ -801,20 +801,6 @@
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" happen_time="4,1986,3,6" />
 		</news>
 
-		<news id="326076ed-f7e9-44b3-9735-ff0305d6301b" type="0" creator="8936" created_by="jorgaeff" comment="liekly https://en.wikipedia.org/wiki/Reykjav%C3%ADk_Summit">
-			<title>
-				<de>Michailow bittet um Abrüstung</de>
-				<en>Michailow asks for disarmament</en>
-				<pl>Michailow prosi o rozbrojenie</pl>
-			</title>
-			<description>
-				<de>KPdvSS-Generalsekretär, Sergei Michailow, schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
-				<en>CPUSS Secretary General, Sergei Mikhailov, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
-				<pl>Sekretarz Generalny CPUSS, Sergei Mikhailov, proponuje Zachodowi rozbrojenie całej broni nuklearnej do roku 2000. Zaoszczędzony uran ma zostać wykorzystany w elektrowniach do produkcji energii.</pl>
-			</description>
-			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" happen_time="4,1986,10,11" />
-		</news>
-
 		<news id="d3e1b826-dfec-40df-9ce8-3c0762543836" type="0" creator="8936" created_by="jorgaeff" comment="Metallica, Master of Puppets - https://en.wikipedia.org/wiki/Master_of_Puppets">
 			<title>
 				<de>Palladium veröffentlicht Album</de>
@@ -1015,6 +1001,20 @@
 			<data genre="5" price="0.35" quality="35" fictional="0" flags="2" happen_time="4,1986,10,9" />
 		</news>
 
+		<news id="326076ed-f7e9-44b3-9735-ff0305d6301b" type="0" creator="8936" created_by="jorgaeff" comment="liekly https://en.wikipedia.org/wiki/Reykjav%C3%ADk_Summit">
+			<title>
+				<de>Michailow bittet um Abrüstung</de>
+				<en>Michailow asks for disarmament</en>
+				<pl>Michailow prosi o rozbrojenie</pl>
+			</title>
+			<description>
+				<de>KPdvSS-Generalsekretär, Sergei Michailow, schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
+				<en>CPUSS Secretary General, Sergei Mikhailov, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
+				<pl>Sekretarz Generalny CPUSS, Sergei Mikhailov, proponuje Zachodowi rozbrojenie całej broni nuklearnej do roku 2000. Zaoszczędzony uran ma zostać wykorzystany w elektrowniach do produkcji energii.</pl>
+			</description>
+			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" happen_time="4,1986,10,11" />
+		</news>
+
 		<news id="93431fa9-d6bd-4258-b3d0-12ba6124cf2f" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/Reinhold_Messner#Besteigung_des_Lhotse">
 			<title>
 				<de>Siegwart Messier</de>
@@ -1166,6 +1166,21 @@
 		</news>
 
 			<!-- 1987-05 -->
+
+		<news id="c1d45e4e-3c3f-4843-ae47-2823cee994df" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
+			<!-- deutschbezogen -->
+			<title>
+				<de>Aktena 8</de>
+				<en>Aktena 8</en>
+				<pl>Aktena 8</pl>
+			</title>
+			<description>
+				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
+				<en>On June 12, the world's largest art exhibition opens its doors. It is dedicated to the artistic examination of war and violence, utopias and the loss of utopia.</en>
+				<pl>12 czerwca otwiera się największa na świecie wystawa sztuki. Jest ona poświęcona artystycznemu badaniu wojny i przemocy, utopii i utraty utopii.</pl>
+			</description>
+			<data genre="5" price="0.7" quality="41" fictional="0" flags="6" happen_time="4,1987,6,12" />
+		</news>
 
 		<!-- triggers other thread...-->
 		<news id="2739e75a-51fb-400e-a26a-5fce3543a108" type="0" thread_id="2e9f56cb-f123-4626-8951-7e37fd666ad7" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Mathias_Rust | https://en.wikipedia.org/wiki/Cessna_172 | TODO: available set to 0 for now because of duplicate cujo-news-roter-platz">
@@ -1365,20 +1380,6 @@
 			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" />
 		</news>
 
-		<news id="c1d45e4e-3c3f-4843-ae47-2823cee994df" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
-			<!-- deutschbezogen -->
-			<title>
-				<de>Aktena 8</de>
-				<en>Aktena 8</en>
-				<pl>Aktena 8</pl>
-			</title>
-			<description>
-				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
-				<en>On June 12, the world's largest art exhibition opens its doors. It is dedicated to the artistic examination of war and violence, utopias and the loss of utopia.</en>
-				<pl>12 czerwca otwiera się największa na świecie wystawa sztuki. Jest ona poświęcona artystycznemu badaniu wojny i przemocy, utopii i utraty utopii.</pl>
-			</description>
-			<data genre="5" price="0.7" quality="41" fictional="0" flags="6" happen_time="4,1987,6,12" />
-		</news>
 		<news id="96368bb2-db1f-45fc-ac87-8028f9cd0c64" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
 			<!-- deutschbezogen -->
 			<title>
@@ -1392,20 +1393,6 @@
 				<pl>Wystawa sztuki z ponad 400 wystawiającymi się artystami jest po raz pierwszy poświęcona sztuce wideo i obejmuje cały obszar miasta Kassel.</pl>
 			</description>
 			<data genre="5" price="0.7" quality="41" fictional="0" flags="6" happen_time="4,1987,6,12" />
-		</news>
-		<news id="dd97f13c-7c10-48f6-a5ca-4abf45cfe58c" type="0" creator="7430" created_by="Sjaele"  comment="https://en.wikipedia.org/wiki/Documenta">
-			<!-- deutschbezogen -->
-			<title>
-				<de>Aktena 8 beendet</de>
-				<en>Aktena 8 closed</en>
-				<pl>Aktena 8 zamknięta</pl>
-			</title>
-			<description>
-				<de>Nach 100 Tagen wurde die Weltkunstausstellung in Kassel mit fast einer halben Millionen Zuschauern beendet. Besucherrekord trotz beliebiger Kritiken aus Kritikerkreisen.</de>
-				<en>After 100 days, the world art exhibition in Kassel ended with almost half a million spectators. Record attendance despite criticism from critics.</en>
-				<pl>Po 100 dniach światowa wystawa sztuki w Kassel zakończyła się z prawie pół milionem widzów. Rekordowa frekwencja pomimo krytyki ze strony krytyków.</pl>
-			</description>
-			<data genre="5" price="0.7" quality="41" fictional="0" flags="6" happen_time="4,1987,10,20" />
 		</news>
 
 		<news id="7601142f-1ef8-4d8b-8cbe-1e608e48a27d" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Tear_down_this_wall!">
@@ -1497,6 +1484,21 @@
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" happen_time="4,1987,10,19" /> <!-- TODO: Ensure Monday (but with happen_time) -->
 			<!-- availability script="TIME_YEAR=1987 &amp;&amp; TIME_WEEKDAY=0 &amp;&amp; TIME_HOUR>=12" /-->
+		</news>
+
+		<news id="dd97f13c-7c10-48f6-a5ca-4abf45cfe58c" type="0" creator="7430" created_by="Sjaele"  comment="https://en.wikipedia.org/wiki/Documenta">
+			<!-- deutschbezogen -->
+			<title>
+				<de>Aktena 8 beendet</de>
+				<en>Aktena 8 closed</en>
+				<pl>Aktena 8 zamknięta</pl>
+			</title>
+			<description>
+				<de>Nach 100 Tagen wurde die Weltkunstausstellung in Kassel mit fast einer halben Millionen Zuschauern beendet. Besucherrekord trotz beliebiger Kritiken aus Kritikerkreisen.</de>
+				<en>After 100 days, the world art exhibition in Kassel ended with almost half a million spectators. Record attendance despite criticism from critics.</en>
+				<pl>Po 100 dniach światowa wystawa sztuki w Kassel zakończyła się z prawie pół milionem widzów. Rekordowa frekwencja pomimo krytyki ze strony krytyków.</pl>
+			</description>
+			<data genre="5" price="0.7" quality="41" fictional="0" flags="6" happen_time="4,1987,10,20" />
 		</news>
 
 			<!-- 1987-11 -->
