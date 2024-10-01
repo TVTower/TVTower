@@ -23,12 +23,12 @@
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-mkw01">
 					<title>
-						<de>%wohnobjekt%</de>
-						<en>%wohnobjekt%</en>
+						<de>In %wohnobjekt%</de>
+						<en>Into %wohnobjekt%</en>
 					</title>
 					<description>
-						<de>Objekt: ${wohn${wohnselector}}</de>
-						<en>Property: ${wohn${wohnselector}}</en>
+						<de>${wohn${wohnselector}}</de>
+						<en>${wohn${wohnselector}}</en>
 					</description>
 					<variables>
 						<suchende_person>
@@ -213,7 +213,7 @@
 					<de>%PERSONGENERATOR_FIRSTNAME(DE,2)%</de>
 				</person4>
 				<currentyear>
-					<de>%WORLDTIME:YEAR% Edition</de>
+					<de>%WORLDTIME:YEAR%</de>
 				</currentyear>
 			</variables>
 			<children>
@@ -475,7 +475,7 @@
 				<en>${title} Season #1</en>
 			</title>
 			<description>
-				<de>In einer Küstenstadt navigieren %person1_w%, %person2_w%, %person3_w%, %person1_m%, %person2_m% und %person3_m% Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit</de>
+				<de>In einer Küstenstadt navigieren %person1_w%, %person2_w%, %person3_w%, %person1_m%, %person2_m% und %person3_m% Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit.</de>
 				<en>In a coastal town, %person1_w%, %person2_w%, %person3_w%, %person1_m%, %person2_m%, and %person3_m% navigate love, friendship, secrets, and self-discovery in their eventful collage years.</en>
 			</description>
 			<variables>

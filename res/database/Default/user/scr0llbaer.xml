@@ -266,7 +266,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<description>
 						<de>Fürstin „von Taug und Thunix“? Von wegen! [3|First] zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
 						<en>Princess "von Taug und Thunix" - not good for anything? Wrong! [3|First] shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
-						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! [3|Pierwszy] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
+						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! [3|First] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
 					</description>
 				</programme>
 			</children>
@@ -707,7 +707,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<speed min="60" max="90" />
 			<production_time value="60" />
 		</scripttemplate>
-		<scripttemplate product="3" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="4" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -906,7 +906,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
 		</scripttemplate>
-		<scripttemplate product="3" licence_type="1" guid="56bcb1ff-8a5d-4d91-b3f7-ad6958b3855b" creator="9551">
+		<scripttemplate product="4" licence_type="1" guid="56bcb1ff-8a5d-4d91-b3f7-ad6958b3855b" creator="9551">
 			<title>
 				<de>%recreational%%athletes% aus %randomcity% und anderswo</de>
 				<en>%recreational% %athletes% from %randomcity% and Elsewhere</en>
@@ -954,7 +954,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
 		</scripttemplate>
-		<scripttemplate product="3" licence_type="1" guid="acf3207f-bfcd-4aef-9c10-a4871dcab928" creator="9551">
+		<scripttemplate product="4" licence_type="1" guid="acf3207f-bfcd-4aef-9c10-a4871dcab928" creator="9551">
 			<title>
 				<de>%secondleague% Sport%report%</de>
 				<en>%secondleague% Sports%report%</en>
@@ -1000,7 +1000,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			</programme_data_modifiers>
 			<availability script="TIME_DAYSPLAYED > 12" />
 		</scripttemplate>
-		<scripttemplate product="3" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="4" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -1052,7 +1052,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
-		<scripttemplate product="3" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="4" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower% %latebreaking%: %title%</de>
 				<en>%tower% %latebreaking%: %title%</en>
@@ -1101,11 +1101,11 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
 		</scripttemplate>
-		<scripttemplate product="3" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
+		<scripttemplate product="4" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>%tower%: %title%%latebreaking%</de>
 				<en>%tower%: %title%%latebreaking%</en>
-				<pl>%tower%: %title% - %latebreaking%</pl>
+				<pl>%tower%: %title%%latebreaking%</pl>
 			</title>
 			<description>
 				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
@@ -1126,7 +1126,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<latebreaking>
 					<de> Aktuell| der Gegenwart| im aktuellen Kontext|</de>
 					<en> Up-to-date| of the Present| in a Contemporary Context|</en>
-					<pl> aktualności| wiadomości| przegląd wydarzeń kulturalnych|</pl>
+					<pl> - aktualności| - wiadomości| - przegląd wydarzeń kulturalnych|</pl>
 				</latebreaking>
 			</variables>
 			<jobs>

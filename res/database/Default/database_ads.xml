@@ -62,7 +62,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<conditions min_audience="0.1032" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="3" profit="4000" penalty="4900" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="153bd5af-1163-4c22-a718-3ceb63da26c7">
+		<ad id="153bd5af-1163-4c22-a718-3ceb63da26c7" comment="https://en.wikipedia.org/wiki/Pampers">
 			<title>
 				<de>Pantzers</de>
 			</title>
@@ -155,6 +155,42 @@ You will really have to chew.</en>
 			<conditions min_audience="11.46" min_image="18" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="29" fix_infomercial_profit="1" />
 		</ad>
+		<ad id="d1339a50-8d64-4f51-a54e-8a26fe956982" comment="1979-1986 | https://en.wikipedia.org/wiki/Walkman">
+			<title>
+				<de>Sunny Walkboy</de>
+			</title>
+			<description>
+				<de>Hört eure Lieblings-MCs nun auch unterwegs! Sunny macht den Groove.</de>
+				<en>Now you can listen to your favorite MCs on the go! Sunny's got the groove.</en>
+			</description>
+			<conditions min_audience="8.34" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
+			<availability year_range_from="1979" year_range_to="1986" />
+		</ad>
+		<ad id="4d2f4ef9-5262-44d7-a062-f27a494fb503" comment="1987-1993 | https://en.wikipedia.org/wiki/Discman">
+			<title>
+				<de>Sunny Discboy</de>
+			</title>
+			<description>
+				<de>Hört eure Lieblings-CDs nun auch unterwegs! Sunny macht den Groove.</de>
+				<en>Now you can listen to your favorite CDs on the go! Sunny's got the groove.</en>
+			</description>
+			<conditions min_audience="8.34" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
+			<availability year_range_from="1987" year_range_to="1993" />
+		</ad>
+		<ad id="43e66d8f-5275-47a5-87c0-8f5c5d0082ee" comment="1994-1999 | https://en.wikipedia.org/wiki/PlayStation_(console)">
+			<title>
+				<de>GameStation</de>
+			</title>
+			<description>
+				<de>It's not just playing. Die neue Spielkonsolengeneration aus dem Hause Sunny.</de>
+				<en>It's not just playing. The new generation of games consoles made by Sunny.</en>
+			</description>
+			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
+			<availability year_range_from="1994" year_range_to="1999" />
+		</ad>
 		<ad id="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad" comment="2000-2005 | https://en.wikipedia.org/wiki/PlayStation_2">
 			<title>
 				<de>GameStation 2</de>
@@ -166,6 +202,42 @@ You will really have to chew.</en>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2000" year_range_to="2005" /> <!-- variations for other years added in constr -->
+		</ad>
+		<ad id="8a2865eb-80d8-4afb-b2e2-2c1a7fe3599b" comment="2006-2012 | https://en.wikipedia.org/wiki/PlayStation_3">
+			<title>
+				<de>GameStation 3</de>
+			</title>
+			<description>
+				<de>Playing is just the beginning. Tauchen Sie ein in die Parallelprozessorwelten! Die GS3 ist der Nachfolger der GS2 aus dem Hause Sunny.</de>
+				<en>Playing is just the beginning. Dive into the parallel processing universes! The GS3 is the successor to the GS2 made by Sunny.</en>
+			</description>
+			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
+			<availability year_range_from="2006" year_range_to="2012" />
+		</ad>
+		<ad id="9971a105-b9fe-435f-97f8-e9dfa6f531a5" comment="2013-2019 | https://en.wikipedia.org/wiki/PlayStation_4">
+			<title>
+				<de>GameStation 4</de>
+			</title>
+			<description>
+				<de>Be astounding. Be astounded. Be GameStation 4. Der Nachfolger der GS3 aus dem Hause Sunny.</de>
+				<en>Be astounding. Be astounded. Be GameStation 4. The successor to the GS3 made by Sunny.</en>
+			</description>
+			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
+			<availability year_range_from="2013" year_range_to="2019" />
+		</ad>
+		<ad id="8b8a295e-b600-48c5-ac81-3f3094cab452" comment="2020- | https://en.wikipedia.org/wiki/PlayStation_5">
+			<title>
+				<de>GameStation 5</de>
+			</title>
+			<description>
+				<de>The game without boundaries. Die GS5 ist der Nachfolger der GS4 aus dem Hause Sunny.</de>
+				<en>The game without boundaries. The GS5 is the successor to the GS4 made by Sunny.</en>
+			</description>
+			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
+			<availability year_range_from="2020" />
 		</ad>
 		<ad id="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy">
 			<title>
@@ -2567,6 +2639,165 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="45" repetitions="3" duration="0" profit="2500" penalty="790" infomercial_profit="300" fix_infomercial_profit="1" available="0" type="1" />
+		</ad>
+
+		<!-- from Vicusfeli, plus different years variations -->
+
+		<ad id="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="Vicusfeli" comment="">
+			<title>
+				<de>DubanAirways</de>
+				<en>DubanAirways</en>
+			</title>
+			<description>
+				<de>Landet nur auf Flughafenlandebahnen, immer.</de>
+				<en>Only lands on airport runways, always.</en>
+			</description>
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="1" duration="3" profit="275" penalty="400" fix_infomercial_profit="1" />
+		</ad>
+		<ad id="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="Vicusfeli" comment="">
+			<title>
+				<de>Radio</de>
+				<en>Radio</en>
+			</title>
+			<description>
+				<de>Sehen Sie, hören ist besser.</de>
+				<en>You see, listening is better.</en>
+			</description>
+			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="1" duration="2" profit="300" penalty="420" fix_infomercial_profit="1" />
+		</ad>
+		<ad id="1cba1e23-87ef-46c4-9336-a8e28127953b" comment="1975-1982 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
+			<title>
+				<de>Macrohard BASIC</de>
+				<en>Macrohard BASIC</en>
+			</title>
+			<description>
+				<de>Holen Sie das Beste heraus aus Ihrem Computer-Bausatz.
+Ganz einfach mit Macrohard BASIC.
+Der Maßstab für Personal Computing.</de>
+				<en>Get the most out of your computer kit.
+It's easy with Macrohard BASIC.
+The benchmark for personal computing.</en>
+			</description>
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
+			<availability year_range_from="1975" year_range_to="1982" />
+		</ad>
+		<ad id="9ab691bb-97c6-4fee-bb70-b23386b027e5" comment="1983-1989 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
+			<title>
+				<de>Macrohard BASIC</de>
+				<en>Macrohard BASIC</en>
+			</title>
+			<description>
+				<de>Holen Sie das Beste heraus aus Ihrem Heimcomputer.
+Ganz einfach mit Macrohard BASIC.
+Jetzt u.a. für MXS und Cormorano 64.</de>
+				<en>Get the most out of your home computer.
+It's easy with Macrohard BASIC.
+Now for MXS and Cormoran 64, among others.</en>
+			</description>
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
+			<availability year_range_from="1983" year_range_to="1989" />
+		</ad>
+		<ad id="8f110aa4-c88d-4bd4-9aad-eb3ee2a1c8a4" comment="1990-1994 | https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack | https://en.wikipedia.org/wiki/Minesweeper_(video_game)">
+			<title>
+				<de>Macrohard Amusement Pack</de>
+				<en>Macrohard Amusement Pack</en>
+			</title>
+			<description>
+				<de>Jetzt mit Minenräumer. Bombenstimmung bei unserem Top-Knobelspiel. Absolute Suchtgefahr! Jetzt für Ihren PC.</de>
+				<en>Now with Minecleaner. Bombastic excitement in our top puzzle game. Absolutely addictive! Now for your PC.</en>
+			</description>
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
+			<availability year_range_from="1990" year_range_to="1994" />
+		</ad>
+		<ad id="2cf218d7-be6d-4689-9b71-20121cb23434" comment="1995-1996 | https://en.wikipedia.org/wiki/Microsoft_Bob | https://en.wikipedia.org/wiki/Office_Assistant">
+			<title>
+				<de>Macrohard Bob</de>
+				<en>Macrohard Bob</en>
+			</title>
+			<description>
+				<de>Der Papa von Climpy und Ihr digitaler Assistent und Führer durch die Wunderwelt der Computerei. Jetzt für ihren Multimedia-PC.</de>
+				<en>Climpy's daddy and your digital assistant and guide through the wonderful world of computing. Now for your multimedia PC.</en>
+			</description>
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
+			<availability year_range_from="1995" year_range_to="1996" />
+		</ad>
+		<ad id="20e1f868-bc55-497d-a624-cee97d9886da" comment="1997-2000 | https://en.wikipedia.org/wiki/Encarta">
+			<title>
+				<de>Macrohard Enzyklopädie</de>
+				<en>Macrohard Encyclopedia</en>
+			</title>
+			<description>
+				<de>Das Wissen der Welt in Ihren Fingerspitzen.
+Holen Sie das Beste heraus aus Ihrem PC mit CD-ROM.
+Das einzigartige Multimedia-Erlebnis.</de>
+				<en>The world's knowledge at your fingertips.
+Get the best out of your PC with CD-ROM.
+The unrivaled multimedia experience.</en>
+			</description>
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
+			<availability year_range_from="1997" year_range_to="2000" />
+		</ad>
+		<ad id="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="Vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
+			<title>
+				<de>Y-Kasten</de>
+				<en>Y-Crate</en>
+			</title>
+			<description>
+				<de>Because Y not?
+
+Warum nicht unsere Spielkonsole? Immer nutzbar. Immer verfügbar.
+Nur von Macrohard.</de>
+				<en>Because Y not?
+
+Y not our games console? Always consumable. Always available.
+Only from Macrohard.</en>
+			</description>
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
+			<availability year_range_from="2001" />
+		</ad>
+		<ad id="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="Vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker | TODO: Perhaps a bit 'better' international version">
+			<title>
+				<de>Theoretiker</de>
+				<en>The Theorists</en>
+			</title>
+			<description>
+				<de>Rabatte auf Tiernahrung, sonst nichts.</de>
+				<en>Just thinking about doing something, anything.</en>
+			</description>
+			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="25" repetitions="3" duration="3" profit="1300" penalty="1716" fix_infomercial_profit="1" />
+		</ad>
+		<ad id="af2fe506-45fd-4330-a2e2-37c04266c25d" creator="" created_by="Vicusfeli" comment="">
+			<title>
+				<de>FR Duban</de>
+				<en>FR Duban</en>
+			</title>
+			<description>
+				<de>Kommen Sie in die FR Duban, hier entdecken Sie Geschichte, bei Bombenwetter.</de>
+				<en>Come to the FR Duban, where you can discover history while enjoying the bombastic weather.</en>
+			</description>
+			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="1" duration="2" profit="640" penalty="800" fix_infomercial_profit="1" />
+		</ad>
+		<ad id="9bb0ce36-7b3e-4b85-b7c3-9b7959f66f40" creator="" created_by="Vicusfeli" comment="">
+			<title>
+				<de>VR Duban</de>
+				<en>PR Duban</en>
+			</title>
+			<description>
+				<de>Kommen Sie in die VR Duban, wir haben den besten Präsidenten der Welt.</de>
+				<en>Come to PR Duban, we have the best president in the world.</en>
+			</description>
+			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="1" duration="2" profit="640" penalty="800" fix_infomercial_profit="1" />
 		</ad>
 	</allads>
 </tvtdb>
