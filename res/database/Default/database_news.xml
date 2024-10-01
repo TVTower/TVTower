@@ -1179,7 +1179,7 @@
 				<en>On June 12, the world's largest art exhibition opens its doors. It is dedicated to the artistic examination of war and violence, utopias and the loss of utopia.</en>
 				<pl>12 czerwca otwiera się największa na świecie wystawa sztuki. Jest ona poświęcona artystycznemu badaniu wojny i przemocy, utopii i utraty utopii.</pl>
 			</description>
-			<data genre="5" price="0.7" quality="41" fictional="0" flags="6" happen_time="4,1987,6,12" />
+			<data genre="5" price="0.7" quality="41" fictional="0" flags="6" happen_time="5,1987,1987,5,5,5,25" />  <!-- forerun, actual date of opening 1987-06-12 -->
 		</news>
 
 		<!-- triggers other thread...-->
