@@ -432,10 +432,12 @@ Type TDatabaseLoader
 	Function ConvertOldScriptExpression:String(expression:string, oldNewMapping:TStringMap, scriptExpressionConverterSB:TStringBuilder, changedSomething:Int Var)
 		'type 1: [1|Full] ... only in cast
 		'type 2: %PERSONGENERATOR_NAME(country,gender)%
-		'type 3: %variable%
-		'type 4: %person|1|Full%  -- not in use in _our_ db files
+		'type 3: %WORLDTIME:wrongSubCommandName%
+		'type 4: %variable%
+		'type 5: %person|1|Full%  -- not in use in _our_ db files
 
 		'type 1:
+		'-------
 		For local i:int = 0 until 15
 			if expression.Find("["+i) >= 0
 				expression = expression.Replace("["+i+"|Full]", "${.self:~qcast~q:"+i+":~qfullname~q}")
@@ -453,6 +455,8 @@ Type TDatabaseLoader
 		Next
 
 			
+		'type 2:
+		'-------
 		'replace %PERSONGENERATOR_...
 		local personGenPos:Int = expression.Find("%PERSONGENERATOR_")
 		if personGenPos >= 0
@@ -470,9 +474,21 @@ Type TDatabaseLoader
 				personGenPos = expression.Find("%PERSONGENERATOR_")
 			Wend
 		EndIf
-		
-		
+
+
 		'type 3:
+		'-------
+		'replace renamed subcommands
+		if expression.Find("%WORLDTIME") >= 0
+			expression = expression.Replace("%WORLDTIME:GAMEDAY%", "${.worldtime:~qdayplaying~q}")
+			'officially only used in kieferer.xml - stock exchange news
+			expression = expression.Replace("%WORLDTIME:GERMANCURRENCY%", "${.if:${.worldtime:~qyear~q}>=2002:~qEuro~q:~q${.if:${.worldtime:~qyear~q}>=1990:~qDM~q:~qMark~q}~q}")
+			'not used in official dbs (so only in potential user databases)
+			expression = expression.Replace("%WORLDTIME:GERMANCAPITAL%", "${.if:${.worldtime:~qyear~q}>=1990:~qBerlin~q:~qBonn~q}")
+		EndIf
+
+
+		'type 4:
 		'-------
 
 		'check if at least 2 "%" (old expression sign) exist
@@ -507,7 +523,7 @@ Type TDatabaseLoader
 						scriptExpressionConverterSB.Append( oldNewMapping.ValueForKey(identifierLS) )
 					Else
 						'prepend a "." to make it a function call, replace ":" with "_"
-						'-> "STATIONMAP:RANDOMCITY" becomes ".stationmap_randomcity"
+						'-> "STATIONMAP:RANDOMCITY" becomes ".stationmap:~qrandomcity~q"
 						if identifierLS.Find(":") > 0
 							scriptExpressionConverterSB.Append("." + expression[expressionStartPos +1 .. i].Replace(":", ":~q"))
 							scriptExpressionConverterSB.Append("~q")

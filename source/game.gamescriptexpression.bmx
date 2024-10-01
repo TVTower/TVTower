@@ -42,6 +42,7 @@ Function SEFN_WorldTime:SToken(params:STokenGroup Var, context:SScriptExpression
 		case "hour"         Return New SToken( TK_NUMBER, GetWorldTime().GetDayHour(), params.GetToken(0) )
 		case "minute"       Return New SToken( TK_NUMBER, GetWorldTime().GetDayMinute(), params.GetToken(0) )
 		case "daysplayed"   Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun(), params.GetToken(0) )
+		case "dayplaying"   Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun() + 1, params.GetToken(0) )
 		case "yearsplayed"  Return New SToken( TK_NUMBER, int(floor(GetWorldTime().GetDaysRun() / GetWorldTime().GetDaysPerYear())), params.GetToken(0) )
 		'attention, use the weekday depending on game start (day 1
 		'of a game is always a monday... ani: no it is not)
