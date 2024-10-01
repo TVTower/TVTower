@@ -266,7 +266,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<description>
 						<de>Fürstin „von Taug und Thunix“? Von wegen! [3|First] zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
 						<en>Princess "von Taug und Thunix" - not good for anything? Wrong! [3|First] shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
-						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! [3|Pierwszy] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
+						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! [3|First] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
 					</description>
 				</programme>
 			</children>
@@ -1105,7 +1105,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			<title>
 				<de>%tower%: %title%%latebreaking%</de>
 				<en>%tower%: %title%%latebreaking%</en>
-				<pl>%tower%: %title% - %latebreaking%</pl>
+				<pl>%tower%: %title%%latebreaking%</pl>
 			</title>
 			<description>
 				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
@@ -1126,7 +1126,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<latebreaking>
 					<de> Aktuell| der Gegenwart| im aktuellen Kontext|</de>
 					<en> Up-to-date| of the Present| in a Contemporary Context|</en>
-					<pl> aktualności| wiadomości| przegląd wydarzeń kulturalnych|</pl>
+					<pl> - aktualności| - wiadomości| - przegląd wydarzeń kulturalnych|</pl>
 				</latebreaking>
 			</variables>
 			<jobs>

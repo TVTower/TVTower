@@ -106,11 +106,9 @@
 				</funny>
 				<namewoman>
 					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
-					<en>%PERSONGENERATOR_NAME(unk,2)%</en>
 				</namewoman>
 				<nameman>
-					<de>%PERSONGENERATOR_LASTNAME(unk,1)%</de>
-					<en>%PERSONGENERATOR_LASTNAME(unk,1)%</en>
+					<de>%PERSONGENERATOR_NAME(unk,1)%</de>
 				</nameman>
 			</variables>
 
@@ -300,8 +298,8 @@
 			</description>
 			<variables>
 				<title>
-					<de>%BUILDING% der %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Verfluchte %MONSTER%|Blutrünstige %MONSTER%|%MONSTER% im Blutrausch|%MONSTER% der Nacht|%MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
-					<en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|%MONSTER% in a Bloodlust|%MONSTER% of the Night|%MONSTER%: They'll Get You|Night of the %MONSTER%</en>
+					<de>%BUILDING% der %COUNT%%MONSTER%|Die %COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Die verfluchten %MONSTER%|Die blutrünstigen %MONSTER%|Die %MONSTER% im Blutrausch|Die %MONSTER% der Nacht|Die %MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
+					<en>%BUILDING% of the %COUNT%%MONSTER%|The %COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|The %MONSTER% in Bloodlust|The %MONSTER% of the Night|The %MONSTER%: They'll Get You|Night of the %MONSTER%</en>
 				</title>
 				<building>
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
@@ -1458,7 +1456,7 @@
 			</jobs>
 			<data flags="5" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" available="0" /> <!-- availability triggered by 42761763-4125-4a66-8227-40027caab44a -->
 			<targetgroupattractivity men="0.5" />
-			<genres maingenre="6" subgenres="300" />
+			<genres maingenre="103" subgenres="300,6" />
 			<blocks value="1" />
 			<price min="20000" max="50000" />
 			<potential min="30" max="50" />
