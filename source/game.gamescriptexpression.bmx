@@ -216,7 +216,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, licence.GetMaxTopicality(), params.GetToken(0) )
 		Case "cast"
 			Local castNum:Int = params.GetToken(2 + tokenOffset).valueLong
- 			If castNum <= 0 Then Return New SToken( TK_ERROR, "(cast number must be positive.)", params.GetToken(0) )
+ 			If castNum < 0 Then Return New SToken( TK_ERROR, "(cast number must be positive.)", params.GetToken(0) )
 
 			Local job:TPersonProductionJob = licence.data.GetCastAtIndex(castNum)
 			If Not job Then Return New SToken( TK_ERROR, "(cast " + castNum +" not found.)", params.GetToken(0) )
