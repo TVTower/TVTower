@@ -1603,14 +1603,21 @@ Function SEFN_UCFirst:SToken(params:STokenGroup Var, context:SScriptExpressionCo
 End Function
 
 
-Function SEFN_Hour:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
-	'Print params.reveal("PARAMS: "+ params.added)
-	'DebugStop
-	Local first:SToken = params.GetToken(0)
-	If params.added > 1 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
-	Local Hour:String = CurrentDate( "%H" )
-	Return New SToken( TK_NUMBER, Int(hour), first.linenum, first.linepos )
+Function SEFN_Csv:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
+	Local values:TStringBuilder = New TStringBuilder(params.GetToken(1).GetValueText())
+	Local index:Int = Int(params.GetToken(2).GetValueText())
+	Local separator:String = ","
+	If params.added >= 4
+		separator = String(params.GetToken(3).GetValueText())
+	EndIf
+	Local splitBuffer:TSplitBuffer = values.Split(separator)
+	If splitBuffer.Length() <= index
+		Return New SToken( TK_ERROR, "CSV-Index too big (" + index + " passed, " + (splitBuffer.Length()+1) + " allowed)", params.GetToken(0) )
+	Else
+		Return New SToken( TK_Text, splitBuffer.Text(index), params.GetToken(0) )
+	EndIf
 End Function
+
 
 ' Register the functions
 ' The two numbers are MInimum and Maximum number of allowed parameters
@@ -1626,7 +1633,8 @@ TScriptExpression.RegisterFunctionHandler( "lt",  SEFN_Lt,  2,  2)
 TScriptExpression.RegisterFunctionHandler( "lte", SEFN_Lte, 2,  2)
 TScriptExpression.RegisterFunctionHandler( "concat", SEFN_Concat, 2,  2)
 TScriptExpression.RegisterFunctionHandler( "ucfirst", SEFN_UCFirst, 1,  1)
-TScriptExpression.RegisterFunctionHandler( "hour", SEFN_Hour, 0,  0)
+TScriptExpression.RegisterFunctionHandler( "csv", SEFN_Csv, 2,  3)
+
 ' Boolean operators
 TScriptExpression.RegisterFunctionHandler( "==", SEFN_Eq,  2, 2)
 TScriptExpression.RegisterFunctionHandler( ">",  SEFN_Gt,  2, 2)
