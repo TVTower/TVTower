@@ -57,7 +57,7 @@ Function SEFN_WorldTime:SToken(params:STokenGroup Var, context:SScriptExpression
 		case "isdawn"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDawn(), params.GetToken(0) )
 		case "isday"        Return New SToken( TK_BOOLEAN, GetWorldTime().IsDay(), params.GetToken(0) )
 		case "isdusk"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDusk(), params.GetToken(0) )
-		default             Return New SToken( TK_ERROR, "(Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
+		default             Return New SToken( TK_ERROR, "Undefined command ~q"+subCommand+"~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -78,7 +78,7 @@ Function SEFN_StationMap:SToken(params:STokenGroup Var, context:SScriptExpressio
 		case "population"    Return New SToken( TK_NUMBER, GetStationMapCollection().population, params.GetToken(0) )
 		case "mapname"       Return New SToken( TK_TEXT, GetStationMapCollection().GetMapName(), params.GetToken(0) )
 		Case "mapnameshort"  Return New SToken( TK_TEXT, GetStationMapCollection().GetMapISO3166Code(), params.GetToken(0) )
-		default              Return New SToken( TK_ERROR, "(Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
+		default              Return New SToken( TK_ERROR, "Undefined command ~q"+subCommand+"~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -105,7 +105,7 @@ Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:SScriptExpr
 		case "lastname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
 		case "fullname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender) + " " + GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
 		case "title"      Return New SToken( TK_TEXT, GetPersonGenerator().GetTitle(country, gender), params.GetToken(0) )
-		default           Return New SToken( TK_ERROR, "(PersonGenerator: Undefined command ~q"+subCommand+"~q.)", params.GetToken(0) )
+		default           Return New SToken( TK_ERROR, "PersonGenerator: Undefined command ~q"+subCommand+"~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -120,10 +120,10 @@ Function SEFN_locale:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 			Local languageCode:String = params.GetToken(2).value 'MUST be a string
 			Return New SToken( TK_TEXT, GetLocale(key, languageCode), params.GetToken(0) )
 		Else
-			Return New SToken( TK_TEXT, "hallo" + GetLocale(key), params.GetToken(0) )
+			Return New SToken( TK_TEXT, GetLocale(key), params.GetToken(0) )
 		EndIf
 	Else
-		Return New SToken( TK_ERROR, "(no locale key passed.)", params.GetToken(0) )
+		Return New SToken( TK_ERROR, "No locale key passed", params.GetToken(0) )
 	EndIf
 End Function
 
@@ -140,16 +140,16 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 
 	If firstTokenIsSelf
 		licence = TProgrammeLicence(context.context)
-		If Not licence Then Return New SToken( TK_ERROR, "(.self is not a TProgrammeLicence.)", params.GetToken(0) )
+		If Not licence Then Return New SToken( TK_ERROR, ".self is not a TProgrammeLicence", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
 		Local ID:Long = params.GetToken(1).valueLong
 		If GUID
 			licence = GetProgrammeLicenceCollection().GetByGUID(GUID)
-			If Not licence Then Return New SToken( TK_ERROR, "(.programmelicence with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+			If Not licence Then Return New SToken( TK_ERROR, ".programmelicence with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
 		ElseIf ID <> 0
 			licence = GetProgrammeLicenceCollection().Get(Int(ID))
-			If Not licence Then Return New SToken( TK_ERROR, "(.programmelicence with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+			If Not licence Then Return New SToken( TK_ERROR, ".programmelicence with ID ~q"+ID+"~q not found", params.GetToken(0) )
 		EndIf
 		tokenOffset = 1
 	EndIf
@@ -216,13 +216,13 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, licence.GetMaxTopicality(), params.GetToken(0) )
 		Case "cast"
 			Local castNum:Int = params.GetToken(2 + tokenOffset).valueLong
- 			If castNum < 0 Then Return New SToken( TK_ERROR, "(cast number must be positive.)", params.GetToken(0) )
+ 			If castNum < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
 
 			Local job:TPersonProductionJob = licence.data.GetCastAtIndex(castNum)
-			If Not job Then Return New SToken( TK_ERROR, "(cast " + castNum +" not found.)", params.GetToken(0) )
+			If Not job Then Return New SToken( TK_ERROR, "Cast " + castNum +" not found", params.GetToken(0) )
 
 			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
-			If Not person Then Return New SToken( TK_ERROR, "(cast " + castNum +" person not found.)", params.GetToken(0) )
+			If Not person Then Return New SToken( TK_ERROR, "Cast " + castNum +" person not found", params.GetToken(0) )
 
 			Select params.GetToken(3 + tokenOffset).value.ToLower()
 				Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
@@ -248,16 +248,16 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 
 	If firstTokenIsSelf
 		data = TProgrammeData(context.context)
-		If Not data Then Return New SToken( TK_ERROR, "(.self is not a TProgrammeData.)", params.GetToken(0) )
+		If Not data Then Return New SToken( TK_ERROR, ".self is not a TProgrammeData", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
 		Local ID:Long = params.GetToken(1).valueLong
 		If GUID
 			data = GetProgrammeDataCollection().GetByGUID(GUID)
-			If Not data Then Return New SToken( TK_ERROR, "(.programmedata with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+			If Not data Then Return New SToken( TK_ERROR, ".programmedata with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
 		ElseIf ID <> 0
 			data = GetProgrammeDataCollection().GetByID(Int(ID))
-			If Not data Then Return New SToken( TK_ERROR, "(.programmedata with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+			If Not data Then Return New SToken( TK_ERROR, ".programmedata with ID ~q"+ID+"~q not found", params.GetToken(0) )
 		EndIf
 		tokenOffset = 1
 	EndIf
@@ -306,13 +306,13 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, data.GetMaxTopicality(), params.GetToken(0) )
 		Case "cast"
 			Local castNum:Int = params.GetToken(2 + tokenOffset).valueLong
- 			If castNum <= 0 Then Return New SToken( TK_ERROR, "(cast number must be positive.)", params.GetToken(0) )
+ 			If castNum < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
 
 			Local job:TPersonProductionJob = data.GetCastAtIndex(castNum)
-			If Not job Then Return New SToken( TK_ERROR, "(cast " + castNum +" not found.)", params.GetToken(0) )
+			If Not job Then Return New SToken( TK_ERROR, "Cast " + castNum +" not found", params.GetToken(0) )
 
 			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
-			If Not person Then Return New SToken( TK_ERROR, "(cast " + castNum +" person not found.)", params.GetToken(0) )
+			If Not person Then Return New SToken( TK_ERROR, "Cast " + castNum +" person not found", params.GetToken(0) )
 
 			Select params.GetToken(3 + tokenOffset).value.ToLower()
 				Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
@@ -324,7 +324,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 				Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
 			End Select
 
-		Default                        Return New SToken( TK_ERROR, "(unknown property ~q" + propertyName + "~q.)", params.GetToken(0) )
+		Default                        Return New SToken( TK_ERROR, "Unknown property ~q" + propertyName + "~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -340,10 +340,10 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	Local ID:Long = token.valueLong
 	If GUID
 		person = GetPersonBaseCollection().GetByGUID(GUID)
-		If Not person Then Return New SToken( TK_ERROR, "(.person with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+		If Not person Then Return New SToken( TK_ERROR, ".person with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
 	ElseIf ID <> 0
 		person = GetPersonBaseCollection().GetByID(Int(ID))
-		If Not person Then Return New SToken( TK_ERROR, "(.person with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+		If Not person Then Return New SToken( TK_ERROR, ".person with ID ~q"+ID+"~q not found", params.GetToken(0) )
 	EndIf
 	
 	Local propertyName:String = params.GetToken(2).value
@@ -378,7 +378,7 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		case "popularity"   Return New SToken( TK_TEXT, person.GetPopularityValue(), params.GetToken(0) )
 		case "channelsympathy"
 			if params.added < 3 
-				If Not person Then Return New SToken( TK_ERROR, "(.person ChannelSympathy requires channel parameter.)", params.GetToken(0) )
+				If Not person Then Return New SToken( TK_ERROR, ".person ChannelSympathy requires channel parameter", params.GetToken(0) )
 			else
 				Local channel:Int = Int(params.GetToken(3).GetValueText())
 				Return New SToken( TK_NUMBER, person.GetChannelSympathy(channel), params.GetToken(0) )
@@ -386,33 +386,33 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		case "productionjobsdone"  Return New SToken( TK_NUMBER, person.GetTotalProductionJobsDone(), params.GetToken(0) )
 		case "jobsdone"
 			if params.added < 3 
-				If Not person Then Return New SToken( TK_ERROR, "(.person JobsDone requires jobID parameter.)", params.GetToken(0) )
+				If Not person Then Return New SToken( TK_ERROR, ".person JobsDone requires jobID parameter", params.GetToken(0) )
 			else
 				Local jobID:Int = Int(params.GetToken(3).GetValueText())
 				Return New SToken( TK_NUMBER, person.GetJobsDone(jobID), params.GetToken(0) )
 			endif
 		case "effectivejobexperiencepercentage"
 			if params.added < 3 
-				If Not person Then Return New SToken( TK_ERROR, "(.person EffectiveJobExperiencePercentage requires jobID parameter.)", params.GetToken(0) )
+				If Not person Then Return New SToken( TK_ERROR, ".person EffectiveJobExperiencePercentage requires jobID parameter", params.GetToken(0) )
 			else
 				Local jobID:Int = Int(params.GetToken(3).GetValueText())
 				Return New SToken( TK_NUMBER, person.GetEffectiveJobExperiencePercentage(jobID), params.GetToken(0) )
 			endif
 		case "hasjob"
 			if params.added < 3 
-				If Not person Then Return New SToken( TK_ERROR, "(.person HasJob requires jobID parameter.)", params.GetToken(0) )
+				If Not person Then Return New SToken( TK_ERROR, ".person HasJob requires jobID parameter", params.GetToken(0) )
 			else
 				Local jobID:Int = Int(params.GetToken(3).GetValueText())
 				Return New SToken( TK_NUMBER, person.HasJob(jobID), params.GetToken(0) )
 			endif
 		case "haspreferredjob"
 			if params.added < 3 
-				If Not person Then Return New SToken( TK_ERROR, "(.person HasPreferredJob requires jobID parameter.)", params.GetToken(0) )
+				If Not person Then Return New SToken( TK_ERROR, ".person HasPreferredJob requires jobID parameter", params.GetToken(0) )
 			else
 				Local jobID:Int = Int(params.GetToken(3).GetValueText())
 				Return New SToken( TK_NUMBER, person.HasPreferredJob(jobID), params.GetToken(0) )
 			endif
-		default             Return New SToken( TK_ERROR, "(Undefined property ~q"+propertyName+"~q.)", params.GetToken(0) )
+		default             Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -428,16 +428,16 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 
 	If firstTokenIsSelf
 		script = TScript(context.context)
-		If Not script Then Return New SToken( TK_ERROR, "(.self is not a TScript.)", params.GetToken(0) )
+		If Not script Then Return New SToken( TK_ERROR, ".self is not a TScript", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
 		Local ID:Long = params.GetToken(1).valueLong
 		If GUID
 			script = GetScriptCollection().GetByGUID(GUID)
-			If Not script Then Return New SToken( TK_ERROR, "(.script with GUID ~q"+GUID+"~q not found.)", params.GetToken(0) )
+			If Not script Then Return New SToken( TK_ERROR, ".script with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
 		ElseIf ID <> 0
 			script = GetScriptCollection().GetByID(Int(ID))
-			If Not script Then Return New SToken( TK_ERROR, "(.script with ID ~q"+ID+"~q not found.)", params.GetToken(0) )
+			If Not script Then Return New SToken( TK_ERROR, ".script with ID ~q"+ID+"~q not found", params.GetToken(0) )
 		EndIf
 		tokenOffset = 1
 	EndIf
@@ -462,7 +462,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 
 		Case "role"
 			Local roleNum:Int = Int(params.GetToken(2 + tokenOffset).GetValueText())
- 			If roleNum <= 0 Then Return New SToken( TK_ERROR, "(role number must be positive.)", params.GetToken(0) )
+ 			If roleNum <= 0 Then Return New SToken( TK_ERROR, "role number must be positive.", params.GetToken(0) )
 
 			Local actors:TPersonProductionJob[] = script.GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
 			If roleNum > actors.length Then Return New SToken( TK_ERROR, "(not enough actors for role #" + roleNum+".)", params.GetToken(0) )
@@ -477,7 +477,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 				Default           Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
 			End Select
 							
-		Default                 Return New SToken( TK_ERROR, "(unknown property ~q" + propertyName + "~q.)", params.GetToken(0) )
+		Default                 Return New SToken( TK_ERROR, "unknown property ~q" + propertyName + "~q", params.GetToken(0) )
 	End Select
 End Function
 

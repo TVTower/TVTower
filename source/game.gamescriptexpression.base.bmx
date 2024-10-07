@@ -27,7 +27,7 @@ Type TGameScriptExpressionBase extends TScriptExpression
 	End Method
 
 	Function GameScriptVariableHandlerCB:String(variable:String, context:SScriptExpressionContext var)
-		Return "(unhandled variable " + variable+")"
+		Return "([ERROR] unhandled variable ~q" + variable+"~q)"
 	End Function
 End Type
 

@@ -367,7 +367,7 @@ Struct SToken
 	Method GetValueText:String()
 		Select id
 		Case TK_ERROR
-			Return value
+			Return "([ERROR] " + value + ")"
 		Case TK_EOF
 			Return "EOF"
 		Default
@@ -1474,7 +1474,7 @@ Struct SScriptExpressionParser
 						fn = TScriptExpression.GetFunctionHandler( firstToken.GetValueText() ) 
 					endif
 				EndIf
-				If Not fn Then Return New SToken( TK_ERROR, "(Undefined function ~q."+firstToken.GetValueText()+"~q)", firstToken )
+				If Not fn Then Return New SToken( TK_ERROR, "Undefined function ~q"+firstToken.GetValueText()+"~q", firstToken )
 
 				Return fn.run( tokens, context )
 
