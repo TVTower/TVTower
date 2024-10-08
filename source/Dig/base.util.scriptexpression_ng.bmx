@@ -1606,7 +1606,7 @@ End Function
 Function SEFN_Csv:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local values:TStringBuilder = New TStringBuilder(params.GetToken(1).GetValueText())
 	Local index:Int = Int(params.GetToken(2).GetValueText())
-	Local separator:String = ","
+	Local separator:String = ";"
 	If params.added >= 4
 		separator = String(params.GetToken(3).GetValueText())
 	EndIf
