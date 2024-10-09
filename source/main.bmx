@@ -2101,7 +2101,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 20
+	Const SAVEGAME_VERSION:int = 21
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2397,6 +2397,35 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
+		If savegameVersion < 21
+			'iterate over all news event templates, scripts, ... and check if
+			'their "strings" contain old script expressions
+			Local migratedScriptExpression:Int
+			Local migratedScriptExpressionCount:Int
+			
+			migratedScriptExpressionCount = 0
+			For local net:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().allTemplates.Values()
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.title, migratedScriptExpression)
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.description, migratedScriptExpression)
+			Next
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENT TEMPLATES: " + migratedScriptExpressionCount +" #############"
+
+			migratedScriptExpressionCount = 0
+			For local st:TScriptTemplate = EachIn GetScriptTemplateCollection().entries.Values()
+				'local oldCount:int = migratedScriptExpressionCount
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(st.title, migratedScriptExpression)
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(st.description, migratedScriptExpression)
+				'if oldCount <> migratedScriptExpressionCount
+				'	print st.title.toString()
+				'	print st.description.ToString()
+				'	print "----"
+				'endif
+			Next
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPT TEMPLATES: " + migratedScriptExpressionCount +" #############"
+			'Throw "end"
+
+		EndIf
+
 		If savegameVersion < 20
 			'repair station coordinates from "pixel based" to "data based"
 			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo

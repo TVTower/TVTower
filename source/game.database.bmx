@@ -429,7 +429,36 @@ Type TDatabaseLoader
 
 
 	'=== HELPER ===
+	'migrate script expressions
+	Global convertSB:TStringBuilder = New TStringBuilder()
+	Global convertOldNewMap:TStringMap = New TStringMap
+
+	Function ConvertOldScriptExpression:Int(ls:TLocalizedString, changedSomething:Int Var)
+
+		Local changeCount:Int = 0
+		For local i:Int = 0 until ls.valueStrings.length
+			changedSomething = False
+			Local newS:String = ConvertOldScriptExpression(ls.valueStrings[i], changedSomething)
+			if changedSomething
+				ls.valueStrings[i] = newS
+				changeCount :+ 1
+			EndIf
+		Next
+		changedSomething = (changeCount > 0)
+		Return changeCount
+	End Function
+
+
+	Function ConvertOldScriptExpression:String(expression:string, changedSomething:Int Var)
+		Return ConvertOldScriptExpression(expression, convertOldNewMap, convertSB, changedsomething)
+	End function
+
+
 	Function ConvertOldScriptExpression:String(expression:string, oldNewMapping:TStringMap, scriptExpressionConverterSB:TStringBuilder, changedSomething:Int Var)
+		changedsomething = False
+		'store old so we can identify if it was changed during conversion
+		Local expressionBefore:String = expression
+		
 		'type 1: [1|Full] ... only in cast
 		'type 2: %PERSONGENERATOR_NAME(country,gender)%
 		'type 3: %WORLDTIME:wrongSubCommandName%
@@ -487,6 +516,12 @@ Type TDatabaseLoader
 			'not used in official dbs (so only in potential user databases)
 			expression = expression.Replace("%WORLDTIME:GERMANCAPITAL%", "${.if:${.worldtime:~qyear~q}>=1990:~qBerlin~q:~qBonn~q}")
 		EndIf
+		
+
+		'in type 4 we "return", so update changed information here
+		If expressionBefore <> expression
+			changedSomething = True
+		EndIf
 
 
 		'type 4:
@@ -500,10 +535,7 @@ Type TDatabaseLoader
 			endif
 			if percentCount >= 2 then exit
 		Next
-		if percentCount < 2 
-			changedSomething = False
-			Return expression
-		EndIf
+		if percentCount < 2 Then Return expression
 
 
 		if not scriptExpressionConverterSB Then scriptExpressionConverterSB = New TStringBuilder()
@@ -534,6 +566,9 @@ Type TDatabaseLoader
 					EndIf
 					scriptExpressionConverterSB.Append("}")
 					expressionStartPos = -1
+
+					changedSomething = True
+
 				'start found
 				else
 					expressionStartPos = i
@@ -563,8 +598,6 @@ Type TDatabaseLoader
 				EndIf
 			endif
 		Next
-
-		changedSomething = True
 
 		'print "~q"+expression+"~q  =>  ~q" + scriptExpressionConverterSB.ToString() + "~q"
 		
@@ -2643,15 +2676,11 @@ Type TDatabaseLoader
 			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
 			Local value:String = nodeLangEntry.getContent().Replace("~~n", "~n") '.Trim()
 			
-			'migrate script expressions
-			'Local changedSomething:Int
-			Global sb:TStringBuilder
-			Global oldNewMap:TStringMap = New TStringMap
-			Global migratedScriptExpression:Int
+
+			Local migratedScriptExpression:Int
 			Global migratedScriptExpressionCount:Int
-			if not sb then sb = New TStringBuilder()
 			'if value.find("%town%") >= 0 Then Print "Check: " + value
-			value = ConvertOldScriptExpression(value, oldNewMap, sb, migratedScriptExpression)
+			value = ConvertOldScriptExpression(value, migratedScriptExpression)
 			if migratedScriptExpression
 				migratedScriptExpressionCount :+ 1
 				'print "migrated script expression: #"+ migratedScriptExpressionCount +" => " + value
