@@ -2407,6 +2407,10 @@ Type TSaveGame Extends TGameState
 			For local net:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().allTemplates.Values()
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.title, migratedScriptExpression)
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.description, migratedScriptExpression)
+
+				If net.availableScript
+					net.availableScript = TDatabaseLoader.ConvertOldAvailableScript(net.availableScript)
+				EndIf
 			Next
 			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENT TEMPLATES: " + migratedScriptExpressionCount +" #############"
 
@@ -2420,9 +2424,18 @@ Type TSaveGame Extends TGameState
 				'	print st.description.ToString()
 				'	print "----"
 				'endif
+
+				If st.availableScript
+					st.availableScript = TDatabaseLoader.ConvertOldAvailableScript(st.availableScript)
+				EndIf
 			Next
 			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPT TEMPLATES: " + migratedScriptExpressionCount +" #############"
-			'Throw "end"
+
+			For local ac:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+				If ac.availableScript
+					ac.availableScript = TDatabaseLoader.ConvertOldAvailableScript(ac.availableScript)
+				EndIf
+			Next
 
 		EndIf
 

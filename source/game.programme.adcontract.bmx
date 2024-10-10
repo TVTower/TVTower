@@ -216,6 +216,7 @@ End Function
 
 
 Type TAdContractCollection
+	'TODO: Change to TIntMap (no need for TList!)
 	Field list:TList = CreateList()
 	Global _instance:TAdContractCollection
 
@@ -465,7 +466,7 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		If availableScript And Not GetScriptExpressionOLD().Eval(availableScript)
+		if availableScript and not GameScriptExpression.ParseToTrue(availableScript, self)
 			Return False
 		EndIf
 

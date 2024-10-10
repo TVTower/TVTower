@@ -604,6 +604,92 @@ Type TDatabaseLoader
 		return scriptExpressionConverterSB.ToString()
 	End Function
 
+
+	Function ConvertOldAvailableScript:String(expression:string)
+		'skip if the expression contains ${ already.
+		'yes, this also converts "4 > 10" (at least tries to...,)
+		if expression.Find("${") >= 0 Then Return expression
+
+		'sample scripts (used in the DBs at the time of writing this) 
+		'TIME_YEAR=2017
+		'TIME_YEAR=1987 && TIME_MONTH=1
+		'TIME_YEAR=1987 && TIME_WEEKDAY=0 && TIME_HOUR>=12
+		'TIME_MONTH=1 || TIME_MONTH=7
+		
+		
+		'split by "||" or "&&" connectors:
+		Local parts:String[]
+		Local connectors:String[]
+		if expression.Find("||") >= 0 or expression.Find("&&") >= 0
+			local lastPos:Int
+			local pos:Int
+			Repeat
+				pos = expression.Find("||", lastPos)
+				If pos = -1 
+					pos = expression.Find("&&", lastPos)
+				EndIf
+				
+				If pos >= 0
+					parts :+ [expression[lastPos .. pos-1].Trim()]
+					connectors :+ [expression[pos .. pos + 2]]
+					lastPos = pos + 2 '|| and && have a length of 2
+				EndIf
+			Until pos = -1
+			'append missing parts
+			parts :+ [expression[lastPos ..].Trim()]
+		Else
+			parts = [expression]
+		EndIf
+		
+		'instead of trying to play smart we simply replace hardcoded strings...
+		For Local i:int = 0 until parts.length
+			'ensure to replace "DAYxxx" before "DAY", same for "YEAR"
+			parts[i] = parts[i].Replace("TIME_DAYSPLAYED", "${.worldtime:~qdaysplayed~q}")
+			parts[i] = parts[i].Replace("TIME_DAYOFMONTH", "${.worldtime:~qdayofmonth~q}")
+			parts[i] = parts[i].Replace("TIME_DAYOFYEAR", "${.worldtime:~qdayofyear~q}")
+			parts[i] = parts[i].Replace("TIME_DAY", "${.worldtime:~qday~q}")
+			parts[i] = parts[i].Replace("TIME_YEARSPLAYED", "${.worldtime:~qyearsplayed~q}")
+			parts[i] = parts[i].Replace("TIME_YEAR", "${.worldtime:~qyear~q}")
+			parts[i] = parts[i].Replace("TIME_HOUR", "${.worldtime:~qhour~q}")
+			parts[i] = parts[i].Replace("TIME_MINUTE", "${.worldtime:~qminute~q}")
+			parts[i] = parts[i].Replace("TIME_WEEKDAY", "${.worldtime:~qweekday~q}")
+			parts[i] = parts[i].Replace("TIME_SEASON", "${.worldtime:~qseason~q}")
+			parts[i] = parts[i].Replace("TIME_MONTH", "${.worldtime:~qmonth~q}")
+			parts[i] = parts[i].Replace("TIME_ISNIGHT", "${.worldtime:~qisnight~q}")
+			parts[i] = parts[i].Replace("TIME_ISDAWN", "${.worldtime:~qisdawn~q}")
+			parts[i] = parts[i].Replace("TIME_ISDAY", "${.worldtime:~qisday~q}")
+			parts[i] = parts[i].Replace("TIME_ISDUSK", "${.worldtime:~qisdusk~q}")
+			
+			parts[i] = parts[i].Replace("}=", "}==") 'replace single "=" sign
+		Next
+		
+		'reconnect things
+
+		if connectors.length = 0
+			Return parts[0]
+		ElseIf connectors.length = parts.length - 1 'a CONN b CONN c -> 3 elements, 2 connectors)
+			convertSB.SetLength(0)
+			For local i:int = 0 until connectors.length
+				If connectors[i] = "&&"
+					convertSB.append("${.and:")
+				Else 'Elseif connectors[i] = "||" - already ensured to only contain && or ||
+					convertSB.append("${.or:")
+				EndIf
+
+				convertSB.append(parts[i])
+				convertSB.append(":")
+				convertSB.append(parts[i+1])
+				convertSB.append("}")
+			Next
+			Return convertSB.ToString()
+		Else
+			TLogger.Log("TDatabaseLoader.ConvertOldAvailableScript", "Failed to convert script ~q"+expression+"~q, incorrect expression / too few connectors.", LOG_ERROR)
+			Return ""
+		Endif
+		
+	End Function
+
+
 	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
 		Local GUID:String = xml.FindValueLC(node,"id", "")
 
@@ -956,9 +1042,14 @@ Type TDatabaseLoader
 		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
 
 		If newsEventTemplate.availableScript
-			If Not GetScriptExpressionOLD().IsValid(newsEventTemplate.availableScript)
+			newsEventTemplate.availableScript = ConvertOldAvailableScript(newsEventTemplate.availableScript)
+
+			Local parsedToken:SToken
+			Local result:Int = GameScriptExpression.ParseToTrue(newsEventTemplate.availableScript, newsEventTemplate, parsedToken)
+			if parsedToken.id = TK_ERROR
 				TLogger.Log("DB", "Script of NewsEventTemplate ~q" + newsEventTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
-				TLogger.Log("DB", GetScriptExpressionOLD()._error.ToString(), LOG_WARNING)
+				TLogger.Log("DB", "Script: " + newsEventTemplate.availableScript, LOG_WARNING)
+				TLogger.Log("DB", "Error : " + parsedToken.GetValueText(), LOG_WARNING)
 			EndIf
 		EndIf
 
@@ -1264,9 +1355,14 @@ Type TDatabaseLoader
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
 
 		If adContract.availableScript
-			If Not GetScriptExpressionOLD().IsValid(adContract.availableScript)
+			adContract.availableScript = ConvertOldAvailableScript(adContract.availableScript)
+		
+			Local parsedToken:SToken
+			Local result:Int = GameScriptExpression.ParseToTrue(adContract.availableScript, adContract, parsedToken)
+			if parsedToken.id = TK_ERROR
 				TLogger.Log("DB", "Script of AdContract ~q" + adContract.GetGUID() + "~q contains errors:", LOG_WARNING)
-				TLogger.Log("DB", GetScriptExpressionOLD()._error.ToString(), LOG_WARNING)
+				TLogger.Log("DB", "Script: " + adContract.availableScript, LOG_WARNING)
+				TLogger.Log("DB", "Error : " + parsedToken.GetValueText(), LOG_WARNING)
 			EndIf
 		EndIf
 

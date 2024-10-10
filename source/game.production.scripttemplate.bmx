@@ -10,6 +10,8 @@ Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.world.worldtime.bmx" 'to access world time
 Import "game.person.base.bmx"
 Import "game.programme.programmerole.bmx"
+Import "game.gamescriptexpression.base.bmx"
+
 
 Struct SScriptTemplateFilter
 	Field skipNotAvailable:Int = True
@@ -214,7 +216,7 @@ Type TScriptTemplate Extends TScriptBase
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		if availableScript and not GetScriptExpressionOLD().Eval(availableScript)
+		if availableScript and not GameScriptExpression.ParseToTrue(availableScript, self)
 			return False
 		endif
 

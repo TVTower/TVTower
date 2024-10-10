@@ -543,7 +543,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		if availableScript and not GetScriptExpressionOLD().Eval(availableScript)
+		if availableScript and not GameScriptExpression.ParseToTrue(availableScript, self)
 			return False
 		endif
 

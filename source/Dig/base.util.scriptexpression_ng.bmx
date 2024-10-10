@@ -634,33 +634,59 @@ Type TScriptExpression
 	End Method
 
 
-	Method Parse:SToken( expression:String)
+	Method ParseToTrue:Int(expression:String)
+		Local context:SScriptExpressionContext
+		Local parsedToken:SToken = New SScriptExpression.Parse(expression, Self.config.s, context)
+		'true: any unempty string, numbers <> 0, bool (true, false), ...
+		Return _IsTrueValue( parsedToken )
+	End Method
+
+	Method ParseToTrue:Int(expression:String, context:SScriptExpressionContext var)
+		Local parsedToken:SToken = New SScriptExpression.Parse(expression, Self.config.s, context)
+		'true: any unempty string, numbers <> 0, bool (true, false), ...
+		Return _IsTrueValue( parsedToken )
+	End Method
+
+	Method ParseToTrue:Int(expression:String, contextObject:object)
+		Local context:SScriptExpressionContext = new SScriptExpressionContext(contextObject, 0, Null)
+		Local parsedToken:SToken = New SScriptExpression.Parse(expression, Self.config.s, context)
+		'true: any unempty string, numbers <> 0, bool (true, false), ...
+		Return _IsTrueValue( parsedToken )
+	End Method
+
+
+	Method ParseToTrue:Int(expression:String, contextObject:object, parsedToken:SToken var)
+		Local context:SScriptExpressionContext = new SScriptExpressionContext(contextObject, 0, Null)
+		parsedToken = New SScriptExpression.Parse(expression, Self.config.s, context)
+		'true: any unempty string, numbers <> 0, bool (true, false), ...
+		Return _IsTrueValue( parsedToken )
+	End Method
+
+
+	Method Parse:SToken(expression:String)
 		Local context:SScriptExpressionContext
 		Return New SScriptExpression.Parse(expression, Self.config.s, context)
 	End Method
 
-	Method Parse:SToken( expression:String, context:SScriptExpressionContext var)
+	Method Parse:SToken(expression:String, context:SScriptExpressionContext var)
 		Return New SScriptExpression.Parse(expression, Self.config.s, context)
 	End Method
 
-
-	Method Parse:SToken( expression:String, config:SScriptExpressionConfig var)
+	Method Parse:SToken(expression:String, config:SScriptExpressionConfig var)
 		Local context:SScriptExpressionContext
 		Return New SScriptExpression.Parse(expression, config, context)
 	End Method
 
-
-	Method Parse:SToken( expression:String, config:TScriptExpressionConfig, context:SScriptExpressionContext var)
+	Method Parse:SToken(expression:String, config:TScriptExpressionConfig, context:SScriptExpressionContext var)
 		Return New SScriptExpression.Parse(expression, config.s, context)
 	End Method
 
 
-	Method ParseText:String( expression:String, config:TScriptExpressionConfig, context:SScriptExpressionContext var)
+	Method ParseText:String(expression:String, config:TScriptExpressionConfig, context:SScriptExpressionContext var)
 		Return New SScriptExpression.ParseText(expression, config.s, context)
 	End Method
 
-
-	Method ParseText:String( expression:String, config:TScriptExpressionConfig, context:SScriptExpressionContext var, foundValidTokenCount:Int var)
+	Method ParseText:String(expression:String, config:TScriptExpressionConfig, context:SScriptExpressionContext var, foundValidTokenCount:Int var)
 		Return New SScriptExpression.ParseText(expression, config.s, context, foundValidTokenCount)
 	End Method
 
