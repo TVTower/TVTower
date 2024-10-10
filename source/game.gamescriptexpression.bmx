@@ -215,14 +215,14 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "topicality"              Return New SToken( TK_NUMBER, licence.GetTopicality(), params.GetToken(0) )
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, licence.GetMaxTopicality(), params.GetToken(0) )
 		Case "cast"
-			Local castNum:Int = params.GetToken(2 + tokenOffset).valueLong
- 			If castNum < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
+			Local castIndex:Int = params.GetToken(2 + tokenOffset).valueLong
+ 			If castIndex < 0 Then Return New SToken( TK_ERROR, "Cast index must be positive", params.GetToken(0) )
 
-			Local job:TPersonProductionJob = licence.data.GetCastAtIndex(castNum)
-			If Not job Then Return New SToken( TK_ERROR, "Cast " + castNum +" not found", params.GetToken(0) )
+			Local job:TPersonProductionJob = licence.data.GetCastAtIndex(castIndex)
+			If Not job Then Return New SToken( TK_ERROR, "Cast " + castIndex +" not found", params.GetToken(0) )
 
 			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
-			If Not person Then Return New SToken( TK_ERROR, "Cast " + castNum +" person not found", params.GetToken(0) )
+			If Not person Then Return New SToken( TK_ERROR, "Cast " + castIndex +" person not found", params.GetToken(0) )
 
 			Select params.GetToken(3 + tokenOffset).value.ToLower()
 				Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
@@ -305,11 +305,11 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		Case "topicality"              Return New SToken( TK_NUMBER, data.GetTopicality(), params.GetToken(0) )
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, data.GetMaxTopicality(), params.GetToken(0) )
 		Case "cast"
-			Local castNum:Int = params.GetToken(2 + tokenOffset).valueLong
- 			If castNum < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
+			Local castIndex:Int = params.GetToken(2 + tokenOffset).valueLong
+ 			If castIndex < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
 
-			Local job:TPersonProductionJob = data.GetCastAtIndex(castNum)
-			If Not job Then Return New SToken( TK_ERROR, "Cast " + castNum +" not found", params.GetToken(0) )
+			Local job:TPersonProductionJob = data.GetCastAtIndex(castIndex)
+			If Not job Then Return New SToken( TK_ERROR, "Cast " + castIndex +" not found", params.GetToken(0) )
 
 			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
 			If Not person Then Return New SToken( TK_ERROR, "Cast " + castNum +" person not found", params.GetToken(0) )
@@ -590,6 +590,11 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		Return result
 	End Function
 End Type
+
+
+
+
+
 
 
 
