@@ -325,10 +325,8 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 	Field jobXP:TXPContainer_Job = new TXPContainer_Job
 	Field genreXP:TXPContainer_Genre = new TXPContainer_Genre
 
-	Field calculatedTopGenreCache:Int = 0 {nosave}
-	'array containing GUIDs of all produced programmes
-	Field producedProgrammes:String[] {nosave}
-	Field producedProgrammesCached:Int = False {nosave}
+	Field _calculatedTopGenreCache:Int = 0 {nosave}
+	Field _producedProgrammesCached:Int = False {nosave}
 
 	Global PersonsGainExperienceForProgrammes:Int = True
 	
@@ -352,7 +350,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 	Method GetTopGenre:Int()
 		'if there was no topGenre defined...
 		If topGenre <= 0
-			If calculatedTopGenreCache > 0 Then Return calculatedTopGenreCache
+			If _calculatedTopGenreCache > 0 Then Return _calculatedTopGenreCache
 
 
 			Local genres:Int[]
@@ -369,9 +367,9 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				Next
 			Next
 
-			If bestGenre >= 0 Then calculatedTopGenreCache = bestGenre
+			If bestGenre >= 0 Then _calculatedTopGenreCache = bestGenre
 
-			Return calculatedTopGenreCache
+			Return _calculatedTopGenreCache
 		EndIf
 
 		Return topGenre
@@ -582,7 +580,6 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 	
 
 	Method _GenerateProducedProgrammesCache:Int()
-		producedProgrammes = New String[0]
 		producedProgrammeIDs = New Int[0]
 
 		'fill up with already finished
@@ -602,36 +599,23 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 
 			'instead of adding episodes, we add the series
-			If programmeData.parentGUID
+			If programmeData.parentDataID <> 0
 				'skip if already added
-				If StringHelper.InArray(programmeData.parentGUID, producedProgrammes)
+				If MathHelper.InIntArray(programmeData.parentDataID, producedProgrammeIDs)
 					Continue
 				EndIf
-				producedProgrammes :+ [programmeData.parentGUID]
-
-				Local parentData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeData.parentGUID)
-				producedProgrammeIDs :+ [parentData.GetID()]
+				producedProgrammeIDs :+ [programmeData.parentDataID]
 			Else
-				producedProgrammes :+ [programmeData.GetGUID()]
 				producedProgrammeIDs :+ [programmeData.GetID()]
 			EndIf
 		Next
-		producedProgrammesCached = True
-	End Method
-
-
-	'refresh cache (for newly converted "insignifants" or after a savegame)
-	Method GetProducedProgrammes:String[]()
-		If Not producedProgrammesCached
-			_GenerateProducedProgrammesCache()
-		EndIf
-		Return producedProgrammes
+		_producedProgrammesCached = True
 	End Method
 
 
 	'refresh cache (for newly converted "insignifants" or after a savegame)
 	Method GetProducedProgrammeIDs:Int[]() override
-		If Not producedProgrammesCached
+		If Not _producedProgrammesCached
 			_GenerateProducedProgrammesCache()
 		EndIf
 		Return producedProgrammeIDs
@@ -700,12 +684,11 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 		GainExperienceForProgramme(programmeDataID)
 
-		'add programme (do not just add, as this destroys desc-sort)
-		producedProgrammesCached = False
-		'producedProgrammes :+ [programmeDataGUID]
+		'add programme ID? Simply invalidate the cache...
+		_producedProgrammesCached = False
 
 		'reset cached calculations
-		calculatedTopGenreCache = -1
+		_calculatedTopGenreCache = -1
 	End Method
 
 

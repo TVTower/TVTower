@@ -137,13 +137,10 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Local result:TProgrammeLicence
 		If production.producedLicenceID
 			result = GetProgrammeLicenceCollection().Get(production.producedLicenceID )
-		'TODO: DEPRECATED - can be removed after v0.7.1
-		ElseIf production.producedLicenceGUID
-			result = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
 		EndIf
 		If Not result
-			TLogger.Log("TProgrammeProducer.CreateProgrammeLicence()", "Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")", LOG_ERROR)
-			Throw "TProgrammeProducer.CreateProgrammeLicence() : Unable to fetch produced programmelicence (id="+production.producedLicenceID+", guid="+production.producedLicenceGUID+")"
+			TLogger.Log("TProgrammeProducer.CreateProgrammeLicence()", "Unable to fetch produced programmelicence (id="+production.producedLicenceID+")", LOG_ERROR)
+			Throw "TProgrammeProducer.CreateProgrammeLicence() : Unable to fetch produced programmelicence (id="+production.producedLicenceID+")"
 		EndIf
 		
 		If Not result.data.extra Then result.data.extra = New TData

@@ -25,7 +25,7 @@ Type TScriptCollection Extends TGameObjectCollection
 	Field _usedScripts:TList {nosave}
 	Field _availableScripts:TList {nosave}
 	Field _parentScripts:TList {nosave}
-
+	
 	Global _instance:TScriptCollection
 
 
@@ -125,7 +125,7 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GenerateFromTemplateID:TScript(ID:Int)
+	Method GenerateFromTemplate:TScript(ID:Int)
 		Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID( ID )
 		If Not template Then Return Null
 
@@ -155,12 +155,15 @@ Type TScriptCollection Extends TGameObjectCollection
 				filter.skipNotAvailable = True
 				template = GetScriptTemplateCollection().GetRandomByFilter(filter)
 			EndIf
+rem
+TODO: remove if working
+Ronny: should not needed as CreateFromTemplate ensures uniqueness of title already
 
 			'If the template has a production limit, ensure no protected title is used
 			If template.GetProductionLimitMax() > 1
 				Local tempName:TLocalizedString
 				For Local i:Int = 0 Until 20
-					template.reset()
+					template.ResetVariables()
 					tempName = template.GenerateFinalTitle()
 					If Not GetScriptCollection().IsTitleProtected(tempName)
 						Exit
@@ -170,6 +173,7 @@ Type TScriptCollection Extends TGameObjectCollection
 				Next
 				If Not tempName Then template = Null
 			EndIf
+endrem
 
 			If template
 				Local script:TScript = TScript.CreateFromTemplate(template,True)
@@ -392,50 +396,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 	Function CreateFromTemplate:TScript(template:TScriptTemplate, includingEpisodes:Int)
 		Local script:TScript = New TScript
-		script.title = template.GenerateFinalTitle()
-		If GetScriptCollection().IsTitleProtected(script.title)
-'			print "script title in use: " + script.title.Get()
 
-			'use another random one
-			Local tries:Int = 0
-			Local validTitle:Int = False
-			For Local i:Int = 0 Until 5
-				script.title = template.GenerateFinalTitle()
-				If Not GetScriptCollection().IsTitleProtected(script.title)
-					validTitle = True
-					Exit
-				EndIf
-			Next
-			'no random one available or most already used
-			If Not validTitle
-				Local langIDs:Int[] = script.title.GetLanguageIDs()
-				'remove numbers
-				For Local langID:Int = EachIn langIDs
-					Local numberfreeTitle:String = script.title.Get(langID)
-					Local hashPos:Int = numberfreeTitle.FindLast("#")
-					If hashPos > 2 '"sometext" + space + hash means > 2
-						Local numberS:String = numberFreetitle[hashPos+1 .. ]
-						If numberS = String(Int(numberS)) 'so "#123hashtag"
-							numberfreeTitle = numberfreetitle[.. hashPos-1] 'remove space before too
-						EndIf
-
-						script.title.Set(numberfreeTitle, langID)
-					EndIf
-				Next
-				'append number
-				Local titleCopy:TLocalizedString = script.title.Copy()
-				'start with "2" to avoid "title #1"
-				Local number:Int = 2
-				Repeat
-					For Local langID:Int = EachIn langIDs
-						script.title.Set(titleCopy.Get(langID) + " #"+number, langID)
-					Next
-					number :+ 1
-					If number > 10000 Then Throw "TScript.CreateFromTemplate() - failed to generate title with increased number: " + script.title.Get()
-				Until Not GetScriptCollection().IsTitleProtected(script.title)
-			EndIf
-		EndIf
-		script.description = template.GenerateFinalDescription()
+		'assign basic variables (so title/description can use them)
 
 		script.outcome = template.GetOutcome()
 		script.review = template.GetReview()
@@ -512,7 +474,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 					EndIf
 				Next
 			Else
-				Local episodeTitles:TList=new TList()
 				'disregard parent episode definition; add number of episodes defined by the child script
 				For Local subTemplate:TScriptTemplate = EachIn template.subScripts
 					Local episodesCount:Int = subTemplate.getEpisodes()
@@ -529,21 +490,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 									subScript.programmeDataModifiers.Append(subTemplate.programmeDataModifiers)
 								EndIf
 								script.AddSubScript(subScript)
-								'try to ensure unique episode names
-								Local title:TLocalizedString = subScript.title
-								Local description:TLocalizedString = subScript.description
-								For Local j:Int = 0 until 10
-									If episodeTitles.contains(title.get())
-										subTemplate.reset()
-										title = subTemplate.GenerateFinalTitle()
-										description = subTemplate.GenerateFinalDescription()
-									Else
-										Exit
-									EndIf
-								Next
-								subScript.title = title
-								subScript.description = description
-								episodeTitles.addLast(title.get())
 							EndIf
 						Next
 					EndIf
@@ -607,21 +553,47 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			script.jobs = template.GetFinalJobs()
 		EndIf
 
-		'replace placeholders as we know the cast / roles now
-		script.title = script._ReplacePlaceholders(script.title)
-		script.description = script._ReplacePlaceholders(script.description)
-
 		script.basedOnScriptTemplateID = template.GetID()
 		template.AddUsedForScript(script.GetID())
+
+
+		'create title and description
+		
+		If script.subScripts
+			'#440 propagate final optional header flags to episodes
+			'also propagate parent effects
+			For Local subScript:TScript = EachIn script.subScripts
+				' sub scripts could be the all same (eg only one child
+				' defined but 5 episodes generated).
+				' So we need to ensure to reset variables used in title
+				' and description generation of the "subscript" (parent
+				' variables should be unaffected)
+				Local subTemplate:TScriptTemplate = GetScriptTemplateCollection().GetByID(subScript.basedOnScriptTemplateID)
+				If subTemplate Then subTemplate.ResetVariables()
+
+				subScript._GenerateTitleFromTemplate()
+				subScript._GenerateDescriptionFromTemplate()
+			Next
+
+			'ensure they use distinct names
+			script._EnsureUniqueEpisodeNames()
+		EndIf
+
+
+		'replace script expressions/variables as we know the cast / roles now
+		'also ensure title is unique
+		script._GenerateTitleFromTemplate()
+		script._GenerateDescriptionFromTemplate()
 
 		'reset the state of the template
 		'without that, the following scripts created with this template
 		'as base will get the same title/description
 		template.Reset()
-
+	
 		Return script
 	End Function
-
+	
+	
 	Function _calculateLiveTime(script:TScript, template:TScriptTemplate)
 		If script.HasFlag(TVTProgrammeDataFlag.LIVE)
 			Local alwaysLive:int = script.HasProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
@@ -648,16 +620,175 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 	'override
 	Method GetTitle:String() {_exposeToLua}
+		' prioritize an optional given custom title 
+		' (eg. given by the player in the supermarket)  
 		If customTitle Then Return customTitle
+		
+		' if no title was generated from the template, do so
+		' (this evaluates variables and expressions and ensures
+		'  that the script title is only used exclusively)
+		if not title Then _GenerateTitleFromTemplate()
+		
 		Return Super.GetTitle()
 	End Method
 
 
 	'override
 	Method GetDescription:String()
+		' prioritize an optional given custom description 
+		' (eg. given by the player in the supermarket)  
 		If customDescription Then Return customDescription
+	
+		' if no description was generated from the template, do so
+		' (this evaluates variables and expressions)
+		if not description Then _GenerateDescriptionFromTemplate()
+	
 		Return Super.GetDescription()
 	End Method
+
+
+	'check subscripts for duplicate titles (ensures unique episode names)
+	Method _EnsureUniqueEpisodeNames()
+		if GetSubScriptCount() > 0
+			Local episodeTitles:TList = new TList()
+			Local sb:TStringBuilder = New TStringBuilder()
+			For Local subScript:TScript = EachIn subScripts
+				'try to ensure unique episode names
+				Local subTemplate:TScriptTemplate = GetScriptTemplateCollection().getById(subScript.basedOnScriptTemplateID)
+				Local foundDuplicate:Int = False
+
+				For Local j:Int = 0 until 10
+					foundDuplicate = False
+					For Local langID:Int = EachIn subScript.title.GetLanguageIDs()
+						Local localizedTitle:String = subScript.title.Get(langID)
+						sb.SetLength(0)
+						sb.Append(TLocalization.GetLanguageCode(langID))
+						sb.Append("::")
+						sb.Append(localizedTitle)
+						Local key:String = sb.ToLower().ToString()
+
+						If episodeTitles.contains(key)
+							foundDuplicate = True
+							exit
+						EndIf
+					Next
+					
+					if foundDuplicate
+						'reset resolved variables (not other expressions)
+						If subTemplate Then subTemplate.ResetVariables()
+						'reevaluate expressions (but do NOT protect the title)
+						subScript._GenerateTitleFromTemplate(False)
+					Else
+						Exit
+					EndIf
+				Next
+				'if a new title was generated, refresh description too
+				if foundDuplicate
+					subScript._GenerateDescriptionFromTemplate()
+
+					'add the titles of all languages to the list 
+					'so next episode can check against them
+					For Local langID:Int = EachIn subScript.title.GetLanguageIDs()
+						sb.SetLength(0)
+						sb.Append(TLocalization.GetLanguageCode(langID))
+						sb.Append("::")
+						sb.Append(subScript.title.Get(langID))
+						episodeTitles.addLast(sb.ToLower().ToString())
+					Next
+				endIf
+			Next
+		EndIf
+	End Method
+
+
+	Method _GenerateDescriptionFromTemplate()
+		If not basedOnScriptTemplateID Then Return
+
+		'fetch original title from template
+		Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+		If not template Then Return
+
+		Local resultDescription:TLocalizedString
+		'replace variables/expressions in it
+		resultDescription = _ReplaceScriptExpressions(template.description)
+		
+		self.description = resultDescription
+	End Method
+
+	
+	Method _GenerateTitleFromTemplate:Int(skipProtectionCheck:Int = False)
+		If not basedOnScriptTemplateID Then Return False
+
+		'fetch original title from template
+		Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+		If not template Then Return False
+
+		'define a random seed so any generation generates the same "result"
+		'(which allows episodes to fetch parent title/description and when
+		' parent _recreates_ its title to now reference an episode title, the
+		' other text parts stay the same)
+		'TODO! - check if really needed
+
+
+		Local resultTitle:TLocalizedString
+		'replace variables/expressions in it
+		resultTitle = _ReplaceScriptExpressions(template.title)
+		
+		'eg. titles of episodes could have non-unique titles ("Final")
+		if skipProtectionCheck 
+			self.title = resultTitle
+			Return True
+		EndIf
+		
+
+		If GetScriptCollection().IsTitleProtected(resultTitle)
+'			print "script title in use: " + resultTitle.Get()
+
+			'use another random one
+			Local tries:Int = 0
+			Local validTitle:Int = False
+			For Local i:Int = 0 Until 5
+				'replace variables/expressions in it
+				resultTitle = _ReplaceScriptExpressions(template.title)
+
+				If Not GetScriptCollection().IsTitleProtected(resultTitle)
+					validTitle = True
+					Exit
+				EndIf
+			Next
+			'no random one available or most already used
+			If Not validTitle
+				Local langIDs:Int[] = resultTitle.GetLanguageIDs()
+				'remove numbers
+				For Local langID:Int = EachIn langIDs
+					Local numberfreeTitle:String = resultTitle.Get(langID)
+					Local hashPos:Int = numberfreeTitle.FindLast("#")
+					If hashPos > 2 '"sometext" + space + hash means > 2
+						Local numberS:String = numberFreetitle[hashPos+1 .. ]
+						If numberS = String(Int(numberS)) 'so "#123hashtag"
+							numberfreeTitle = numberfreetitle[.. hashPos-1] 'remove space before too
+						EndIf
+
+						resultTitle.Set(numberfreeTitle, langID)
+					EndIf
+				Next
+				'append number
+				Local resultTitleCopy:TLocalizedString = resultTitle.Copy()
+				'start with "2" to avoid "title #1"
+				Local number:Int = 2
+				Repeat
+					For Local langID:Int = EachIn langIDs
+						resultTitle.Set(resultTitleCopy.Get(langID) + " #"+number, langID)
+					Next
+					number :+ 1
+					If number > 10000 Then Throw "TScript.GenerateTitleFromTemplate() - failed to generate title with increased number: " + resultTitle.Get()
+				Until Not GetScriptCollection().IsTitleProtected(resultTitle)
+			EndIf
+		EndIf
+		
+		self.title = resultTitle
+		Return True
+	End Method	
 
 
 	Method SetCustomTitle(value:String)
@@ -683,91 +814,30 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
+	Method _ReplaceScriptExpressions:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		Local result:TLocalizedString = text.copy()
 
-		'for each defined language we check for existent placeholders
-		'which then get replaced by a random string stored in the
-		'variable with the same name
 		For Local langID:Int = EachIn text.GetLanguageIDs()
-			Local value:String = text.Get(langID)
-			Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(value, True)
-			If placeHolders.length = 0 Then Continue
-
-			Local actorsFetched:Int = False
-			Local actors:TPersonProductionJob[]
-			Local replacement:String = ""
-			For Local placeHolder:String = EachIn placeHolders
-				Local replaced:Int = False
-				replacement = ""
-				Select placeHolder.toUpper()
-					Case "ROLENAME1", "ROLENAME2", "ROLENAME3", "ROLENAME4", "ROLENAME5", "ROLENAME6", "ROLENAME7"
-						If Not actorsFetched
-							actors = GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
-							actorsFetched = True
-						EndIf
-
-						Local actorNum:Int = Int(Chr(placeHolder[8]))-1
-						If actors.length > actorNum
-							Local role:TProgrammeRole = EnsureRole(actors[actorNum])
-							If role
-								replacement = role.GetFirstName()
-							Else
-								throw "could not fill role in "+GetTitle()
-							EndIf
-						Else
-							throw "not enough actors in " +GetTitle() + " for role "+ (actorNum +1)
-						EndIf
-						replaced = True
-					Case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
-						If Not actorsFetched
-							actors = GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
-							actorsFetched = True
-						EndIf
-
-						Local actorNum:Int = Int(Chr(placeHolder[4]))-1
-						If actors.length > actorNum
-							Local role:TProgrammeRole = EnsureRole(actors[actorNum])
-							If role
-								replacement = role.GetFullName()
-							Else
-								throw "could not fill role in "+GetTitle()
-							EndIf
-						Else
-							throw "not enough actors in " +GetTitle() + " for role "+ (actorNum +1)
-						EndIf
-						replaced = True
-
-					Case "GENRE"
-						replacement = GetMainGenreString()
-						replaced = True
-					Case "EPISODES"
-						replacement = GetEpisodes()
-						replaced = True
-
-					Default
-						If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
-						If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
-				End Select
-
-				'replace if some content was filled in
-				If replaced Then TTemplateVariables.ReplacePlaceholderInText(value, placeHolder, replacement)
-			Next
-
-			result.Set(value, langID)
+			Local valueOld:String = text.Get(langID)
+			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)
+			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, context)
+			If valueOLD <> valueNew.Hash()
+				result.Set(valueNew.ToString(), langID)
+			EndIf
 		Next
 
 		Return result
-
-		Function EnsureRole:TProgrammeRole(actor:TPersonProductionJob)
-			Local roleID:Int = actor.roleID
-			If roleID <> 0 Then return GetProgrammeRoleCollection().GetByID(roleID)
-			'TODO reuse previous role? - see inactive code in TScriptTemplate#GetFinalJobs
-			Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(actor.country, actor.gender)
-			actor.roleID = role.id
-			return role
-		End Function
 	End Method
+
+
+	Function _EnsureRole:TProgrammeRole(actor:TPersonProductionJob)
+		Local roleID:Int = actor.roleID
+		If roleID <> 0 Then return GetProgrammeRoleCollection().GetByID(roleID)
+		'TODO reuse previous role? - see inactive code in TScriptTemplate#GetFinalJobs
+		Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(actor.country, actor.gender)
+		actor.roleID = role.id
+		return role
+	End Function
 
 
 	'override

@@ -738,7 +738,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'inform programmeData about being episode of a series
 		if (isSeries() or isCollection()) and licence.data and self.data
-			licence.data.parentGUID = self.data.GetGUID()
+			licence.data.parentDataID = self.data.GetID()
 		endif
 
 		if index = -1
