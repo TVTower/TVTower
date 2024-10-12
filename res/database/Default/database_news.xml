@@ -90,36 +90,34 @@
 			<availability year_range_from="1985" year_range_to="1985" /> <!-- exact date actually unknown -->
 		</news>
 
-		<news id="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_id="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart | Oper König Hirsch von Hans Werner Henze">
+		<news id="adbb8913-0726-4c59-bdac-dd2158e58072" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Darian_calendar">
 			<title>
-				<de>Ulm-Oper ungekürzt aufgeführt</de>
-				<en>Ulm opera performed unabridged</en>
-				<pl>Opera w Ulm w wersji nieskróconej</pl>
+				<de>Marskalender erschienen</de>
+				<en>Mars Calendar published</en>
+				<pl>Kalendarz marsjański opublikowany</pl>
 			</title>
 			<description>
-				<de>Im Württembergischen Staatstheater in Stuttgart geht zum ersten Mal die Oper „Der Kolibri“ von Horst-Werner Ulm in ihrer ungekürzten Fassung über die Bühne. Davor war das Werk nur mit großen Abstrichen aufgeführt worden.</de>
-				<en>In the Württemberg State Theater in Stuttgart, the opera "The Hummingbird" by Horst-Werner Ulm goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
-				<pl>W Württemberg State Theater w Stuttgarcie opera „The Hummingbird” Horsta-Wernera Ulma po raz pierwszy trafia na scenę w niezmienionej wersji. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
+				<de>Der Darische Kalender unterteilt das Marsjahr in 24 Monate und enthält sämtliche Schalttage.</de>
+				<en>The Darian Calendar divides the Martian year into 24 months and includes all leap days.</en>
+				<pl>Kalendarz Dariana dzieli rok marsjański na 24 miesiące i uwzględnia wszystkie dni przestępne.</pl>
 			</description>
-			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
-			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual date: 1985-05-05 -->
-			<effects>
-				<!-- "morgen, 12 bis 18.00 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,12,18" news="2771fc9a-d94d-4451-b25f-13a1789e7978" />
-			</effects>
+			<data genre="3" price="1.0" quality="35" /> <!-- TODO: flags="2" -->
+			<availability year_range_from="1985" year_range_to="2000" />
 		</news>
-		<news id="2771fc9a-d94d-4451-b25f-13a1789e7978" type="2" thread_id="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff">
+
+		<news id="08bb7e3b-0b4c-4128-ae13-a2cf93af177e" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/150_Jahre_Deutsche_Eisenbahnen">
 			<title>
-				<de>Ulm-Oper erhält wenig Beifall</de>
-				<en>Ulm opera receives poor applause</en>
-				<pl>Opera w Ulm otrzymuje słaby aplauz</pl>
+				<de>150 Jahre Eisenbahn in Deutschland</de>
+				<en>150 years of railroads in Germany</en>
+				<pl>150 lat kolei w Niemczech</pl>
 			</title>
 			<description>
-				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten Ulm-Oper „Der Kolibri“. Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
-				<en>There was only little applause at the end of the Ulm opera "The Hummingbird", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
-				<pl>Na zakończenie opery „The Hummingbird” w Ulm, wystawionej po raz pierwszy w wersji nieskróconej, rozległy się tylko niewielkie brawa. Większość z 1200 widzów zasnęła już pod koniec pierwszego aktu. Krytycy narzekali na długość dzieła.</pl>
+				<de>Die Deutsche Bundesbahn feiert 150 Jahre Eisenbahn. Zum Jubiläum gibt es das ganze Jahr über Veranstaltungen und Sonderfahrten mit historischen Lokomotiven zu Schleuderpreisen.</de>
+				<en>The Deutsche Bundesbahn celebrates 150 years of railroads. For the anniversary, there are events and special trips with historic locomotives at knockdown prices throughout the year.</en>
+				<pl>Deutsche Bundesbahn świętuje 150-lecie kolei. Z okazji rocznicy przez cały rok organizowane są wydarzenia i specjalne wycieczki z historycznymi lokomotywami po obniżonych cenach.</pl>
 			</description>
-			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+			<data genre="3" price="0.3" quality="45" fictional="0" flags="2" />
+			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual anniversary day is 1985-12-07 but celebrations are for the whole year -->
 		</news>
 
 			<!-- 1985-01 -->
@@ -136,6 +134,22 @@
 				<pl>„Born in the States”, album muzyczny amerykańskiego piosenkarza Chrisa Springfielda, został uznany za najbardziej wpływowy album roku. Springfield po raz pierwszy użył w nim syntezatorów.</pl>
 			</description>
 			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" happen_time="4,1985,1,8" /> <!-- actually no exact source date (voted where by whom?) -->
+		</news>
+
+		<news id="6e8d6544-5571-43f5-ab56-50404c97bac9" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Sender_Bielstein">
+			<!-- deutschbezogen -->
+			<title>
+				<de>Sendemast stürzt um</de>
+				<en>Broadcasting tower topples</en>
+				<pl>Wieża nadawcza przewraca się</pl>
+			</title>
+			<description>
+				<de>Der fast 300 Meter hohe Rundfunk-Sendemast auf dem Bielstein stürzte aufgrund starker Vereisung und Bruch einer Pardune um. In der Folge kam es zu Sendeausfällen.</de>
+				<en>The almost 300 meter high broadcasting tower on the Bielstein collapsed due to heavy icing and a breaking guy wire. As a result, there were transmission failures.</en>
+				<pl>Prawie 300-metrowa wieża nadawcza na Bielstein zawaliła się z powodu silnego oblodzenia i zerwania liny odciągowej. W rezultacie doszło do awarii transmisji.</pl>
+			</description>
+			<data genre="3" flags="2" price="1.0" quality="65" />
+			<availability year_range_from="1985" />  <!-- actual date: 1985-01-15 -->
 		</news>
 
 			<!-- 1985-02 -->
@@ -267,6 +281,38 @@
 				<pl>Kanclerz Herbert Kappes oczekuje wyjątkowego gościa: Robert Keagan odwiedza Republikę Federalną Niemiec. Ale prezydent USA chce również wziąć udział w meczu piłki nożnej.</pl>
 			</description>
 			<data genre="0" price="0.5" quality="70" fictional="0" flags="2" happen_time="4,1985,5,1" />
+		</news>
+
+		<news id="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_id="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart | Oper König Hirsch von Hans Werner Henze">
+			<title>
+				<de>Ulm-Oper ungekürzt aufgeführt</de>
+				<en>Ulm opera performed unabridged</en>
+				<pl>Opera w Ulm w wersji nieskróconej</pl>
+			</title>
+			<description>
+				<de>Im Württembergischen Staatstheater in Stuttgart geht zum ersten Mal die Oper „Der Kolibri“ von Horst-Werner Ulm in ihrer ungekürzten Fassung über die Bühne. Davor war das Werk nur mit großen Abstrichen aufgeführt worden.</de>
+				<en>In the Württemberg State Theater in Stuttgart, the opera "The Hummingbird" by Horst-Werner Ulm goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
+				<pl>W Württemberg State Theater w Stuttgarcie opera „The Hummingbird” Horsta-Wernera Ulma po raz pierwszy trafia na scenę w niezmienionej wersji. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual date: 1985-05-05 -->
+			<effects>
+				<!-- "morgen, 12 bis 18.00 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,12,18" news="2771fc9a-d94d-4451-b25f-13a1789e7978" />
+			</effects>
+		</news>
+		<news id="2771fc9a-d94d-4451-b25f-13a1789e7978" type="2" thread_id="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Ulm-Oper erhält wenig Beifall</de>
+				<en>Ulm opera receives poor applause</en>
+				<pl>Opera w Ulm otrzymuje słaby aplauz</pl>
+			</title>
+			<description>
+				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten Ulm-Oper „Der Kolibri“. Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
+				<en>There was only little applause at the end of the Ulm opera "The Hummingbird", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
+				<pl>Na zakończenie opery „The Hummingbird” w Ulm, wystawionej po raz pierwszy w wersji nieskróconej, rozległy się tylko niewielkie brawa. Większość z 1200 widzów zasnęła już pod koniec pierwszego aktu. Krytycy narzekali na długość dzieła.</pl>
+			</description>
+			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
 		</news>
 
 		<news id="3555bb5c-227e-4a3e-94cc-f15ce14c0aa1" type="0" creator="8936" created_by="jorgaeff" comment="SPD, Johannes Rau, https://de.wikipedia.org/wiki/Landtagswahl_in_Nordrhein-Westfalen_1985">
@@ -498,21 +544,6 @@
 		</news>
 
 			<!-- 1985-12 -->
-
-		<news id="08bb7e3b-0b4c-4128-ae13-a2cf93af177e" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/150_Jahre_Deutsche_Eisenbahnen">
-			<title>
-				<de>150 Jahre Eisenbahn in Deutschland</de>
-				<en>150 years of railroads in Germany</en>
-				<pl>150 lat kolei w Niemczech</pl>
-			</title>
-			<description>
-				<de>Die Deutsche Bundesbahn feiert 150 Jahre Eisenbahn. Zum Jubiläum gibt es das ganze Jahr über Veranstaltungen und Sonderfahrten mit historischen Lokomotiven zu Schleuderpreisen.</de>
-				<en>The Deutsche Bundesbahn celebrates 150 years of railroads. For the anniversary, there are events and special trips with historic locomotives at knockdown prices throughout the year.</en>
-				<pl>Deutsche Bundesbahn świętuje 150-lecie kolei. Z okazji rocznicy przez cały rok organizowane są wydarzenia i specjalne wycieczki z historycznymi lokomotywami po obniżonych cenach.</pl>
-			</description>
-			<data genre="3" price="0.3" quality="45" fictional="0" flags="2" />
-			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual anniversary day is 1985-12-07 but celebrations are for the whole year -->
-		</news>
 
 		<news id="5d981172-baf2-4aa9-8c99-fd1ab69a1d11" type="0" creator="8936" created_by="jorgaeff" comment="a-ha, Take On Me, https://en.wikipedia.org/wiki/List_of_number-one_hits_of_1985_(Germany) | 14 weeks apparently not correct">
 			<title>
@@ -2201,6 +2232,23 @@
 				<pl>Krótko przed swoimi 19 urodzinami, interaktywna usługa online w krajach niemieckojęzycznych zostanie zamknięta pod koniec roku. Czy nadchodzi teraz World Wide Web?</pl>
 			</description>
 			<data genre="3" price="0.4" quality="40" fictional="0" flags="2" happen_time="4,2001,12,31" />
+		</news>
+
+			<!-- 2002 general -->
+
+		<news id="4e8ee2e1-40f4-45e5-9b0f-c4708ea13c10" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Darian_calendar">
+			<title>
+				<de>Neuer Marskalender</de>
+				<en>New Mars calendar</en>
+				<pl>Nowy kalendarz marsjański</pl>
+			</title>
+			<description>
+				<de>Der Darische Kalender unterteilt das Marsjahr in 24 Monate und enthält sämtliche Schalttage. Nur noch einen Tag Abweichung auf 12.000 Marsjahre.</de>
+				<en>The Darian Calendar divides the Martian year into 24 months and includes all leap days. Deviation now only one day per 12,000 Mars years.</en>
+				<pl>Kalendarz Dariana dzieli rok marsjański na 24 miesiące i uwzględnia wszystkie dni przestępne. Odchylenie wynosi teraz tylko jeden dzień na 12 000 lat marsjańskich.</pl>
+			</description>
+			<data genre="3" price="1.0" quality="25" />  <!-- TODO: flags="2" -->
+			<availability year_range_from="2001" />
 		</news>
 
 			<!-- 2002-10 -->
