@@ -465,13 +465,13 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		Case "genrestring"      Return New SToken( TK_NUMBER, script.GetMainGenreString(), params.GetToken(0) )
 
 		Case "role"
-			Local roleNum:Int = Int(params.GetToken(2 + tokenOffset).GetValueText())
- 			If roleNum <= 0 Then Return New SToken( TK_ERROR, "role number must be positive.", params.GetToken(0) )
+			Local roleIndex:Int = Int(params.GetToken(2 + tokenOffset).GetValueText())
+ 			If roleIndex < 0 Then Return New SToken( TK_ERROR, "role index must be positive.", params.GetToken(0) )
 
 			Local actors:TPersonProductionJob[] = script.GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
-			If roleNum > actors.length Then Return New SToken( TK_ERROR, "(not enough actors for role #" + roleNum+".)", params.GetToken(0) )
+			If roleIndex >= actors.length Then Return New SToken( TK_ERROR, "(not enough actors for role #" + roleIndex+".)", params.GetToken(0) )
 
-			Local role:TProgrammeRole = TScript._EnsureRole(actors[roleNum-1])
+			Local role:TProgrammeRole = TScript._EnsureRole(actors[roleIndex])
 
 			Local subCommand:String = params.GetToken(3 + tokenOffset).GetValueText()
 			Select subCommand.ToLower()
