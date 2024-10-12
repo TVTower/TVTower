@@ -1630,12 +1630,33 @@ End Function
 
 
 Function SEFN_Csv:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
-	Local values:TStringBuilder = New TStringBuilder(params.GetToken(1).GetValueText())
-	Local index:Int = Int(params.GetToken(2).GetValueText())
+	If params.added <= 1 
+		Return New SToken( TK_ERROR, "No CSV-Entries passed", params.GetToken(0) )
+	EndIf
+
+	Local values:TStringBuilder
+	Local index:Int
 	Local separator:String = ";"
+	Local doTrim:Int = True
+
+	If params.added >= 5
+		local token:SToken = params.GetToken(4)
+		doTrim = TScriptExpression._IsTrueValue( token )
+	EndIf
 	If params.added >= 4
 		separator = String(params.GetToken(3).GetValueText())
 	EndIf
+	If params.added >= 3
+		index = Int(params.GetToken(2).GetValueText())
+	EndIf
+
+	If doTrim
+		'SB's trim() avoids new string creation, so prefer it over string.trim()
+		values = New TStringBuilder(params.GetToken(1).GetValueText()).Trim()
+	Else
+		values = New TStringBuilder(params.GetToken(1).GetValueText())
+	EndIf
+
 	Local splitBuffer:TSplitBuffer = values.Split(separator)
 	If splitBuffer.Length() <= index
 		Return New SToken( TK_ERROR, "CSV-Index too big (" + index + " passed, " + (splitBuffer.Length()+1) + " allowed)", params.GetToken(0) )
