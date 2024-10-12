@@ -356,7 +356,7 @@
 			<title>
 				<de>Talk um 10 Spezial: [2|Full]</de>
 				<en>Talk at 10 Special: [2|Full]</en>
-				<pl>Rozmowy specjalna o 10: [2|Full]</pl>
+				<pl>Rozmowa o 10 - Wydanie Specjalne: [2|Full]</pl>
 			</title>
 			<description>
 				<de>[0|Full] erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch. Diesmal: [2|Full].</de>
@@ -382,7 +382,7 @@
 			<title>
 				<de>Talk um 10 Spezial: Die große Runde</de>
 				<en>Talk at 10 Special: The Big Round</en>
-				<pl>Rozmowa specjalna o 10: Wielka runda</pl>
+				<pl>Rozmowa o 10 - Wydanie Specjalne: Wielka runda</pl>
 			</title>
 			<description>
 				<de>Diesmal erwartet der Star-Buchkritiker [0|Last] nicht wie sonst nur einen Gast. Ganze fünf kritisieren sich diesmal gegenseitig und bringen Würze in die Diskussionsrunde.</de>
@@ -1139,7 +1139,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			</staff>
 			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" children="2" teenagers_female="1.5" />
-			<data country="D" distribution="2" maingenre="103" subgenre="" flags="129" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
+			<data country="D" distribution="2" maingenre="103" subgenre="14" flags="129" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
 			<releaseTime year_relative="1" day="7" />
 			<ratings critics="3" speed="15" outcome="8" />
 			<children>

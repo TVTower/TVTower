@@ -1042,7 +1042,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 		</scripttemplate>
 
 
-		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above">
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above" comment="TODO: episode descriptions">
 			<title>
 				<de>${maintitle}</de>
 			</title>
@@ -1060,8 +1060,6 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 							<en>${subject} of ${cntry}</en>
 							<pl>${subject} z lotu ptaka</pl>
 						</episodetitle>
-						<episodedescription>
-						</episodedescription>
 						<subject>
 							<de>Berge|Flüsse|Städte|Nationalparks|Wälder|Seen|Bahnhöfe|Schlösser|Parks|Inseln|Kirchen|Stadien|Ruinen|Gletscher|Wochenmärkte|Bahnstrecken</de>
 							<en>Mountains|Rivers|Cities|National Parks|Forests|Lakes|Railroad Stations|Castles|Parks|Islands|Churches|Stadiums|Ruins|Glaciers|Farmers' Markets|Railways</en>

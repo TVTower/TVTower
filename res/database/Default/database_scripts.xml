@@ -1786,7 +1786,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</jobs>
 			<data flags="129" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by 13cf3270-5458-460e-8360-75e0adc73a49 last episode -->
 			<targetgroupattractivity men="0.75" children="2" teenagers_female="1.5" />
-			<genres maingenre="103" />
+			<genres maingenre="103" subgenres="14" />
 			<blocks value="2" />
 			<price min="1000" max="3000" />
 			<potential min="10" max="30" />

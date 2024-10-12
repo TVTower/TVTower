@@ -90,7 +90,7 @@
 			<availability year_range_from="1985" year_range_to="1985" /> <!-- exact date actually unknown -->
 		</news>
 
-		<news id="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_id="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart">
+		<news id="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_id="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart | Oper König Hirsch von Hans Werner Henze">
 			<title>
 				<de>Ulm-Oper ungekürzt aufgeführt</de>
 				<en>Ulm opera performed unabridged</en>
@@ -102,7 +102,7 @@
 				<pl>W Württemberg State Theater w Stuttgarcie opera „The Hummingbird” Horsta-Wernera Ulma po raz pierwszy trafia na scenę w niezmienionej wersji. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
 			</description>
 			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
-			<availability year_range_from="1985" year_range_to="1985" /> <!-- TODO: exact date and reference not yet clear (fictional flag is set but then why specific year 1985?) -->
+			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual date: 1985-05-05 -->
 			<effects>
 				<!-- "morgen, 12 bis 18.00 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,18" news="2771fc9a-d94d-4451-b25f-13a1789e7978" />
@@ -140,7 +140,7 @@
 
 			<!-- 1985-02 -->
 
-		<news id="461e5887-6123-496f-aa64-d83295eaa09e" type="0" creator="8936" created_by="jorgaeff" comment="Semperoper, Carl Maria von Weber: Der Freischütz, Intendant Max Gerd Schönfelder - https://de.wikipedia.org/wiki/Semperoper#Wiederaufbau">
+		<news id="461e5887-6123-496f-aa64-d83295eaa09e" type="0" creator="8936" created_by="jorgaeff" comment="Semperoper, Carl Maria von Weber: Der Freischütz, Intendant Max Gerd Schönfelder - https://de.wikipedia.org/wiki/Semperoper#Wiederaufbau | möglicherweise auch: Siegfried Matthus, Die Weise von Liebe und Tod des Cornets Christoph Rilke">
 			<title>
 				<de>Dresdner Staatsoper wieder eröffnet</de>
 				<en>Dresden State Opera reopened</en>
@@ -206,7 +206,7 @@
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" happen_time="4,1985,3,11" />
 		</news>
 
-		<news id="41a29d48-f6b7-44e0-8b48-d81d398c27e8" type="0" thread_id="c0283395-31cc-4024-a7b2-a67959c376ed" creator="8936" created_by="jorgaeff" comment="WWF, World Wrestling Federation - https://en.wikipedia.org/wiki/WrestleMania_I">
+		<news id="41a29d48-f6b7-44e0-8b48-d81d398c27e8" type="0" creator="8936" created_by="jorgaeff" comment="WWF, World Wrestling Federation - https://en.wikipedia.org/wiki/WrestleMania_I">
 			<title>
 				<de>Weltmeisterschaft im Show-Catchen</de>
 				<en>World Championship in Show-Wrestling</en>
@@ -217,24 +217,24 @@
 				<en>The West American Wrestling Friends (WWFr) are hosting their first WrestleMadness at the Texas Skydome. In the Main-Event Badguy "Rowdy" Pfeiffer meets the title holder Hugh Hoden.</en>
 				<pl>West American Wrestling Friends (WWFr) organizuje swoje pierwsze pokazy w Texas Skydome. W głównym wydarzeniu Badguy "Rowdy" Pfeiffer spotka się z posiadaczem tytułu Hugh Hodenem.</pl>
 			</description>
-			<data genre="2" price="0.3" quality="40" fictional="0" flags="2" happen_time="4,1985,3,31" />
+			<data genre="2" price="1" quality="60" fictional="0" flags="2" happen_time="5,1985,1985,3,3,1,15" /> <!-- forerun, actual date 1985-03-31 -->
 			<effects>
-				<!-- "morgen 3-7 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,3,7" news="f6646976-665e-441f-8e48-76d214d4be57" />
+				<effect trigger="happen" type="modifyMovieGenrePopularity" genre="200" valueMin="0.5" valueMax="2.0" /> <!-- TODO: specify programme id instead -->
 			</effects>
 		</news>
-		<news id="f6646976-665e-441f-8e48-76d214d4be57" type="2" thread_id="c0283395-31cc-4024-a7b2-a67959c376ed" creator="8936" created_by="jorgaeff">
+
+		<news id="f6646976-665e-441f-8e48-76d214d4be57" type="0" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Mr. Y entscheidet Catchkampf</de>
 				<en>Mr. Y decides wrestling match</en>
-				<pl>Pan Y decyduje o pojedynku zapaśniczym</pl>
+				<pl>Mr. Y decyduje o pojedynku zapaśniczym</pl>
 			</title>
 			<description>
 				<de>Hollywood-Schauspieler Mr. Y greift im Weltmeisterschaftskampf zwischen „Rowdy“ Pfeiffer und Hugh Hoden zugunsten des Titelträgers ein. Hoden somit weiterhin Weltmeister im Schwergewicht!</de>
 				<en>Hollywood actor Mr. Y intervenes in the world championship fight between "Rowdy" Pfeiffer and Hugh Hoden in favor of the title holder. Hoden thus continues to be world heavyweight champion!</en>
 				<pl>Hollywoodzki aktor Mr. Y interweniuje w walce o mistrzostwo świata pomiędzy "Rowdy" Pfeifferem i Hugh Hodenem na korzyść posiadacza tytułu. Tym samym Hoden pozostaje mistrzem świata wagi ciężkiej!</pl>
 			</description>
-			<data genre="2" price="0.35" quality="40" fictional="0" flags="2" />
+			<data genre="2" price="1" quality="55" fictional="0" flags="2" happen_time="4,1985,4,1" />
 		</news>
 
 			<!-- 1985-04 -->
@@ -329,7 +329,7 @@
 			<data genre="3" price="0.49" quality="45" fictional="0" flags="2" happen_time="5,1985,1985,7,7,10,20" /> <!-- exact day of voting actually not clear -->
 		</news>
 
-		<news id="22731e49-5759-4e92-8fdf-ee6d5c0257ea" type="0" creator="7430" created_by="Sjaele" comment="Commodore, https://en.wikipedia.org/wiki/Amiga_1000">
+		<news id="22731e49-5759-4e92-8fdf-ee6d5c0257ea" type="0" creator="7430" created_by="Sjaele" comment="Commodore, https://en.wikipedia.org/wiki/Amiga_1000 | TODO: Maybe 'Sondersendung', more of: Commodore stellt den Amiga (später in Amiga 1000 umbenannt) im Lincoln Center in New York, USA, vor. Er überbietet an Grafikleistung alles bisher da Gewesene. Mit dabei sind unter anderem der Künstler Andy Warhol und Debbie Harry (Blondie).">
 			<title>
 				<de>Neue Computerära begonnen</de>
 				<en>New computer era begun</en>
@@ -510,7 +510,8 @@
 				<en>The Deutsche Bundesbahn celebrates 150 years of railroads. For the anniversary, there are events and special trips with historic locomotives at knockdown prices throughout the year.</en>
 				<pl>Deutsche Bundesbahn świętuje 150-lecie kolei. Z okazji rocznicy przez cały rok organizowane są wydarzenia i specjalne wycieczki z historycznymi lokomotywami po obniżonych cenach.</pl>
 			</description>
-			<data genre="3" price="0.3" quality="45" fictional="0" flags="2" happen_time="4,1985,12,7" />
+			<data genre="3" price="0.3" quality="45" fictional="0" flags="2" />
+			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual anniversary day is 1985-12-07 but celebrations are for the whole year -->
 		</news>
 
 		<news id="5d981172-baf2-4aa9-8c99-fd1ab69a1d11" type="0" creator="8936" created_by="jorgaeff" comment="a-ha, Take On Me, https://en.wikipedia.org/wiki/List_of_number-one_hits_of_1985_(Germany) | 14 weeks apparently not correct">
@@ -1515,7 +1516,6 @@
 				<pl>Węgierski biznesmen sprzedaje grę brytyjskiej firmie programistycznej.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="45" fictional="0" flags="2" happen_time="4,1987,11,15" /> <!-- exact day actually not clear -->
-			<availability year_range_from="1986" year_range_to="1986" />
 		</news>
 
 			<!-- 1987-12 -->
@@ -4673,7 +4673,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Die ganze Welt lacht über unseren %minister%, der die Haltung ein${animal_gen_${index}} zur Pflicht machen will.</de>
 				<en>The whole world is laughing at our %minister% who wants to make keeping a${animal_gen_${index}} mandatory.</en>
-				<pl>%minister% wyśmiany przez cały świat, za to że chce wprowadzić obowiązek posiadania ${animal_dat_${index}}.</pl>
+				<pl>%minister% wyśmiany przez cały świat za wprowadzenie prawa dla posiadania w domu ${animals_dat_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="79b75334-0bec-4061-a029-890601f10b5e" />
@@ -6744,8 +6744,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${artistname_${i}}: ${rap_${i}} is dead!</en>
 			</title>
 			<description>
-				<de>Mit Argwohn hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
-				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene with disdain. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
+				<de>%withdisdain% hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
+				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene %withdisdain%. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
 			</description>
 			<variables>
 				<i>
@@ -6823,6 +6823,10 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>die Dance-Gruppe</de>
 					<en>The Electronic Dance group</en>
 				</therapper_6>
+				<withdisdain>
+					<de>Mit Argwohn|Mit Bestürzung|Voller Verzweiflung|Voller Verachtung|Total abgetörnt|Desillusioniert|Ernüchtert|Recht verzweifelt|Ziemlich enttäuscht|Voller Enttäuschung</de>
+					<en>with disdain|in dismay|with complete desperation|in total disgust|totally turned off|with disillusionment|despondently|in quite desparation|with considerable disappointment|with great disappointment</en>
+				</withdisdain>
 				<theirverdictproper_0>
 					<de>Sein Urteil: richtiger US-</de>
 					<en>His verdict: proper US </en>
@@ -6862,8 +6866,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${artistname_${i}}: ${rap_${i}} is dead!</en>
 			</title>
 			<description>
-				<de>Mit Argwohn hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
-				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene with disdain. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
+				<de>%withdisdain% hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
+				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene %withdisdain%. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
 			</description>
 			<variables>
 				<i>
@@ -6942,6 +6946,10 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>der Softrock-Sänger</de>
 					<en>The Soft Rock singer</en>
 				</therapper_6>
+				<withdisdain>
+					<de>Mit Argwohn|Mit Bestürzung|Voller Verzweiflung|Voller Verachtung|Total abgetörnt|Desillusioniert|Ernüchtert|Recht verzweifelt|Ziemlich enttäuscht|Voller Enttäuschung</de>
+					<en>with disdain|in dismay|with complete desperation|in total disgust|totally turned off|with disillusionment|despondently|in quite desparation|with considerable disappointment|with great disappointment</en>
+				</withdisdain>
 				<theirverdictproper_0>
 					<de>Ihr Urteil: richtiger US-</de>
 					<en>Their verdict: proper US </en>
@@ -7078,7 +7086,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</variables>
 			<data genre="1" price="1" quality="39" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="2c1e36bc-6f4f-4641-a6d8-b6753e216b29" />
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="2c1e36bc-6f4f-4641-a6d8-b6753e216b29" />
 			</effects>
 			<availability year_range_from="2002" />
 		</news>
@@ -7211,7 +7219,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</variables>
 			<data genre="1" price="1" quality="39" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="367c97b2-072f-4645-bfd7-ec85f838d55f" />
+				<effect trigger="happen" type="triggernews" time="1,5,8" news="367c97b2-072f-4645-bfd7-ec85f838d55f" />
 			</effects>
 			<availability year_range_from="1986" year_range_to="2001" />
 		</news>
@@ -8905,11 +8913,11 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</counterfeitmoneysecured_0>
 				<counterfeitmoneysecured_1>
 					<de>Exotische Tiere in %town% sicher gestellt</de>
-					<en>Exotic animals seized in %town</en>
+					<en>Exotic animals seized in %town%</en>
 				</counterfeitmoneysecured_1>
 				<counterfeitmoneysecured_2>
 					<de>Schwarzlimonade in %town% sicher gestellt</de>
-					<en>Bootleg lemonade seized in %town</en>
+					<en>Bootleg lemonade seized in %town%</en>
 				</counterfeitmoneysecured_2>
 				<counterfeitmoneysecured_3>
 					<de>Rakete in %town% sicher gestellt</de>
