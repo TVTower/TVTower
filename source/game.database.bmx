@@ -476,10 +476,10 @@ Type TDatabaseLoader
 			EndIf
 
 			'attention: role(name) NUMBER to INDEX! (i-1)
-			if expression.Find("%ROLENAME"+i) > 0
+			if expression.Find("%ROLENAME"+i) >= 0
 				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfirstname~q}")
 			EndIf
-			if expression.Find("%ROLE"+i) > 0
+			if expression.Find("%ROLE"+i) >= 0
 				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfullname~q}")
 			EndIf
 		Next
