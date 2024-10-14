@@ -5,7 +5,7 @@
 
 		<!-- 'Real news reel' - Historical news sorted by date (some fictional 'alternative universe' variations may occur) -->
 
-			<!-- 1972-general -->
+			<!-- 1972 general -->
 
 		<news id="b5140fd5-e3af-40f4-a985-6d5b0a742271" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Space_Shuttle_program | previously part of thread 5328557c-be27-46d2-acc0-a8ae2901eff3 | previously wrong date 1985">
 			<title>
@@ -70,10 +70,10 @@
 				<en>After 2 days in Earth orbit, the space shuttle Columbus has successfully landed at Cap Carneval. Due to the resounding success of this mission, more funding is expected to be approved for future missions.</en>
 				<pl>Po 2 dniach spędzonych na orbicie okołoziemskiej, prom kosmiczny Columbus pomyślnie wylądował na Cap Carneval. Ze względu na ogromny sukces tej misji, oczekuje się, że zatwierdzone zostanie więcej funduszy na przyszłe misje.</pl>
 			</description>
-			<data genre="3" price="0.65" quality="65" fictional="0" />
+			<data genre="3" price="0.65" quality="65" fictional="0" flags="2" />
 		</news>
 
-			<!-- 1985-general -->
+			<!-- 1985 general -->
 
 		<news id="81f3916f-deb7-4931-8d99-db45d52444d5" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Tetris">
 			<title>
@@ -101,8 +101,8 @@
 				<en>The Darian Calendar divides the Martian year into 24 months and includes all leap days.</en>
 				<pl>Kalendarz Dariana dzieli rok marsjański na 24 miesiące i uwzględnia wszystkie dni przestępne.</pl>
 			</description>
-			<data genre="3" price="1.0" quality="35" /> <!-- TODO: flags="2" -->
-			<availability year_range_from="1985" year_range_to="2000" />
+			<data genre="3" price="1.0" quality="35" fictional="0" /> <!-- TODO: flags="2" -->
+			<availability year_range_from="1985" year_range_to="2001" />
 		</news>
 
 		<news id="08bb7e3b-0b4c-4128-ae13-a2cf93af177e" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/150_Jahre_Deutsche_Eisenbahnen">
@@ -129,9 +129,9 @@
 				<pl>Muzyczny album roku wybrany</pl>
 			</title>
 			<description>
-				<de>„Born in the States“, das Musikalbum des amerikanischen Sängers Chris Springfield, wurde zum einflussreichsten Album des Jahres gewählt. Springfield verwendet darin erstmals Synthesizer.</de>
-				<en>"Born in the States", the music album by American singer Chris Springfield, was voted the most influential album of the year. In it, Springfield uses synthesizers for the first time.</en>
-				<pl>„Born in the States”, album muzyczny amerykańskiego piosenkarza Chrisa Springfielda, został uznany za najbardziej wpływowy album roku. Springfield po raz pierwszy użył w nim syntezatorów.</pl>
+				<de>„Born in the States“, das Musikalbum des amerikanischen Sängers Chris Springfield, wurde zum einflussreichsten Album des Jahres 1984 gewählt. Springfield verwendet darin erstmals Synthesizer.</de>
+				<en>"Born in the States", the music album by American singer Chris Springfield, was voted the most influential album of the year 1984. In it, Springfield uses synthesizers for the first time.</en>
+				<pl>„Born in the States”, album muzyczny amerykańskiego piosenkarza Chrisa Springfielda, został uznany za najbardziej wpływowy album roku 1984. Springfield po raz pierwszy użył w nim syntezatorów.</pl>
 			</description>
 			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" happen_time="4,1985,1,8" /> <!-- actually no exact source date (voted where by whom?) -->
 		</news>
@@ -148,7 +148,7 @@
 				<en>The almost 300 meter high broadcasting tower on the Bielstein collapsed due to heavy icing and a breaking guy wire. As a result, there were transmission failures.</en>
 				<pl>Prawie 300-metrowa wieża nadawcza na Bielstein zawaliła się z powodu silnego oblodzenia i zerwania liny odciągowej. W rezultacie doszło do awarii transmisji.</pl>
 			</description>
-			<data genre="3" flags="2" price="1.0" quality="65" />
+			<data genre="3" price="1.0" quality="65" fictional="0" flags="2" />
 			<availability year_range_from="1985" />  <!-- actual date: 1985-01-15 -->
 		</news>
 
@@ -294,7 +294,7 @@
 				<en>In the Württemberg State Theater in Stuttgart, the opera "The Hummingbird" by Horst-Werner Ulm goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
 				<pl>W Württemberg State Theater w Stuttgarcie opera „The Hummingbird” Horsta-Wernera Ulma po raz pierwszy trafia na scenę w niezmienionej wersji. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
 			</description>
-			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="0" flags="2" />
 			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual date: 1985-05-05 -->
 			<effects>
 				<!-- "morgen, 12 bis 18.00 Uhr" -->
@@ -312,7 +312,7 @@
 				<en>There was only little applause at the end of the Ulm opera "The Hummingbird", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
 				<pl>Na zakończenie opery „The Hummingbird” w Ulm, wystawionej po raz pierwszy w wersji nieskróconej, rozległy się tylko niewielkie brawa. Większość z 1200 widzów zasnęła już pod koniec pierwszego aktu. Krytycy narzekali na długość dzieła.</pl>
 			</description>
-			<data genre="5" price="0.35" quality="35" fictional="1" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="0" flags="2" />
 		</news>
 
 		<news id="3555bb5c-227e-4a3e-94cc-f15ce14c0aa1" type="0" creator="8936" created_by="jorgaeff" comment="SPD, Johannes Rau, https://de.wikipedia.org/wiki/Landtagswahl_in_Nordrhein-Westfalen_1985">
@@ -467,33 +467,32 @@
 
 			<!-- 1985-10 -->
 
-		<news id="65f89afb-fbbd-4f3f-8757-81ff6a0cb754" type="0" thread_id="0babb98d-15e2-44c6-9c10-3ec910e4f34c" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/Vogel_des_Jahres_(Deutschland) | TODO: add pre-1985">
+		<news id="65f89afb-fbbd-4f3f-8757-81ff6a0cb754" type="0" thread_id="0babb98d-15e2-44c6-9c10-3ec910e4f34c" creator="8936" created_by="jorgaeff" comment="'merged' with entry by 7430 Sjaele | https://de.wikipedia.org/wiki/Vogel_des_Jahres_(Deutschland) | https://en.wikipedia.org/wiki/Naturschutzbund_Deutschland | TODO: add pre-1985">
 			<title>
 				<de>Neuntöter ist Vogel des Jahres</de>
-				<en>Red-backed Shrike is bird of the Year</en>
+				<en>Red-backed shrike is bird of the Year</en>
 				<pl>Gąsiorek został ptakiem roku</pl>
 			</title>
 			<description>
-				<de>Der Neuntöter ist eine Vogelart aus der Familie der Würger und in Mitteleuropa die häufigste Würgerart. Er ist vor allem durch sein Verhalten bekannt, Beutetiere auf Dornen aufzuspießen.</de>
-				<en>The red-backed shrike is a bird species of the shrike family and the most common shrike species in Central Europe. It is best known for its behavior of impaling prey on thorns.</en>
-				<pl>Gąsiorek to gatunek ptaka z rodziny dzierzbowatych i najpospolitszy gatunek dzierzby w Europie Środkowej. Jest najbardziej znany ze swojego zachowania polegającego na nadziewaniu zdobyczy na ciernie.</pl>
+				<de>Wie der Umweltbund jetzt bekannt gab, ist der Neuntöter der diesjährige Jahresvogel. Der Neuntöter ist eine Vogelart aus der Familie der Würger und in Mitteleuropa die häufigste Würgerart.</de>
+				<en>The Environmental Association has now announced that the red-backed shrike is this year's Bird of the Year. The red-backed shrike is a bird species of the shrike family and the most common shrike species in Central Europe.</en>
+				<pl>Stowarzyszenie Ochrony Środowiska ogłosiło, że gąsiorek został tegorocznym Ptakiem Roku. Gąsiorek to gatunek ptaka z rodziny dzierzbowatych i najpospolitszy gatunek dzierzby w Europie Środkowej.</pl>
 			</description>
 			<data genre="4" price="0.1" quality="25" fictional="0" flags="2" happen_time="5,1985,1985,10,10,5,25" /> <!-- exact day actually not clear -->
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ec118a9e-af0f-4f35-a2e5-d73b98df6a23" />
 			</effects>
 		</news>
-		<news id="ec118a9e-af0f-4f35-a2e5-d73b98df6a23" type="2" thread_id="0babb98d-15e2-44c6-9c10-3ec910e4f34c" creator="7430" created_by="Sjaele" comment="TODO: change text, doesn't need to be duplicate, other genres can get into detail">
-			<!-- deutschbezogen -->
+		<news id="ec118a9e-af0f-4f35-a2e5-d73b98df6a23" type="2" thread_id="0babb98d-15e2-44c6-9c10-3ec910e4f34c" creator="" created_by="-" comment="TODO: general news item + science detail news item could be made for each bird of the year">
 			<title>
-				<de>Neuntöter Vogel des Jahres</de>
-				<en>Red-backed shrike is Bird of the Year</en>
-				<pl>Gąsiorek został Ptakiem Roku</pl>
+				<de>Der Neuntöter spießt seine Beute auf</de>
+				<en>The red-backed shrike spears its prey</en>
+				<pl>Dzierzba gąsiorek przebija swoją ofiarę włócznią</pl>
 			</title>
 			<description>
-				<de>Wie der Umweltbund jetzt bekannt gab, ist der Neuntöter der diesjährige Jahresvogel.</de>
-				<en>The Environmental Association has now announced that the red-backed shrike is this year's Bird of the Year.</en>
-				<pl>Stowarzyszenie Ochrony Środowiska ogłosiło, że gąsiorek został tegorocznym Ptakiem Roku.</pl>
+				<de>Der Vogel des Jahres, der Neuntöter, ist vor allem durch sein Verhalten bekannt, Beutetiere auf Dornen aufzuspießen. Von Insekten bis kleinen Mäusen - er improvisiert eine schick dekorierte Spießplatte wie ein kleiner Gourmet-Koch.</de>
+				<en>The bird of the year, the red-backed shrike, is best known for its behavior of impaling prey on thorns. From insects to small mice - it improvises a stylishly decorated skewer platter like a little gourmet chef.</en>
+				<pl>Ptak roku, dzierzba gąsiorek, jest najbardziej znany ze swojego zachowania polegającego na nadziewaniu zdobyczy na ciernie. Od owadów po małe myszy - improwizuje stylowo udekorowany półmisek na szpikulce niczym mały szef kuchni dla smakoszy.</pl>
 			</description>
 			<data genre="3" price="0.5" quality="29" fictional="0" flags="2" />
 		</news>
@@ -574,7 +573,7 @@
 			<data genre="0" price="0.5" quality="65" fictional="0" flags="2" happen_time="4,1985,12,12" />
 		</news>
 
-			<!-- 1986-general -->
+			<!-- 1986 general -->
 
 		<news id="86453a95-f3c0-4361-96a0-b92be73547bc" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Tetris">
 			<title>
@@ -591,7 +590,7 @@
 			<availability year_range_from="1986" year_range_to="1986" /> <!-- exact date actually unknown -->
 		</news>
 
-		<news id="c7f2508d-afc5-49dd-aee3-6f1c62c988ce" type="0" creator="8936" created_by="jorgaeff" comment="TODO: 'East of Eden' title not spoofed, but a film adaptation from 1986 doesn't exist either, and the person references are not clear. Apparently neither a spoof of 1986 German award film https://de.wikipedia.org/wiki/Caspar_David_Friedrich_%E2%80%93_Grenzen_der_Zeit | Probably 'Jenseits von Afrika' although spoof names and details don't fit very well.">
+		<news id="c7f2508d-afc5-49dd-aee3-6f1c62c988ce" type="0" creator="8936" created_by="jorgaeff" comment="TODO: 'East of Eden' title not spoofed, but a film adaptation from 1986 doesn't exist either, and the person references are not clear. Apparently neither a spoof of 1986 German award film https://de.wikipedia.org/wiki/Caspar_David_Friedrich_%E2%80%93_Grenzen_der_Zeit | Probably 'Jenseits von Afrika' although spoof names and details don't fit very well. | Probably Oscars are meant with 'Filmpreisverleihungen'.">
 			<title>
 				<de>„Jenseits von Eden“ ausgezeichnet</de>
 				<en>"East of Eden" awarded</en>
@@ -860,7 +859,7 @@
 				<en>Jean-Pierre Moreau plays a concert in front of at least 1,300,000 listeners on the occasion of the 150th birthday of the US state of Texas and the 25th anniversary of the NASE Space Center Houston and receives an entry in the Guinness Book of World Records.</en>
 				<pl>Jean-Pierre Moreau gra koncert przed co najmniej 1 300 000 słuchaczy z okazji 150. urodzin amerykańskiego stanu Teksas i 25. rocznicy NASE Space Center Houston i otrzymuje wpis do Księgi Rekordów Guinnessa.</pl>
 			</description>
-			<data genre="5" price="0.45" quality="45" fictional="0" flags="2" happen_time="4,1986,4,5" />
+			<data genre="1" price="0.45" quality="45" fictional="0" flags="2" happen_time="4,1986,4,5" />
 		</news>
 
 		<news id="6b197acd-2526-456b-93b7-620de7ffb817" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/Parteitag_der_SED">
@@ -1075,7 +1074,7 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,1986,1986,10,10,5,25" /> <!-- exact day actually not clear -->
 		</news>
 
-			<!-- 1987-general -->
+			<!-- 1987 general -->
 
 		<news id="0d76e451-440f-409e-b854-abfefce7177c" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Nirvana_(band)">
 			<title>
@@ -1294,12 +1293,11 @@
 				<en>A Schessnah 127 has landed on Moscow's Red Square. The pilot of the plane has not yet been identified. Is it a German?</en>
 				<pl>Samolot Schessnah 127 wylądował na Placu Czerwonym w Moskwie. Pilot samolotu nie został jeszcze zidentyfikowany. Czy to Niemiec?</pl>
 			</description>
+			<data genre="4" price="1.2" quality="100" fictional="0" flags="2" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,2,3" news="ab5b5b9a-1b67-4fd7-80a9-e6eca6b705e6" />
 			</effects>
-			<data genre="4" price="1.2" quality="100" fictional="0" flags="2" />
 		</news>
-
 		<news id="ab5b5b9a-1b67-4fd7-80a9-e6eca6b705e6" type="2" thread_id="6169eaf0-e573-4df4-9837-bb077cc6f5a5" creator="8827" created_by="Cujo">
 			<title>
 				<de>Schessnah-Pilot stammt aus Deutschland</de>
@@ -1311,10 +1309,10 @@
 				<en>The pilot of the Schessnah, which landed on Moscow's Red Square a few hours ago, is from Germany. His name is Markus Trust and he comes from Hamburg.</en>
 				<pl>Pilot samolotu Schessnah, który kilka godzin temu wylądował na Placu Czerwonym w Moskwie, pochodzi z Niemiec. Nazywa się Markus Trust i pochodzi z Hamburga.</pl>
 			</description>
+			<data genre="4" price="1.05" quality="80" fictional="0" flags="2" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,2,3" news="a9b99371-f803-4664-b8b4-dcbd23879ffc" />
 			</effects>
-			<data genre="4" price="1.05" quality="80" />
 		</news>
 		<news id="a9b99371-f803-4664-b8b4-dcbd23879ffc" type="2" thread_id="6169eaf0-e573-4df4-9837-bb077cc6f5a5" creator="8827" created_by="Cujo">
 			<title>
@@ -1327,10 +1325,10 @@
 				<en>Markus Trust, the Hamburg pilot who landed his Schessnah on Red Square, appeals to all people: "Let's live in peace."</en>
 				<pl>Markus Trust, hamburski pilot, który wylądował swoim Schessnahem na Placu Czerwonym, apeluje do wszystkich ludzi: „Żyjmy w pokoju”.</pl>
 			</description>
+			<data genre="4" price="0.94" quality="70" fictional="0" flags="2" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,2,3" news="68185058-09ad-419c-83d4-553b85e58574" />
 			</effects>
-			<data genre="4" price="0.94" quality="70" />
 		</news>
 		<news id="68185058-09ad-419c-83d4-553b85e58574" type="2" thread_id="6169eaf0-e573-4df4-9837-bb077cc6f5a5" creator="8827" created_by="Cujo">
 			<title>
@@ -1343,10 +1341,10 @@
 				<en>The Schessnah pilot Markus Trust was arrested by the GKB. Does he now have to spend his life behind bars?</en>
 				<pl>Pilot Schessnah Markus Trust został aresztowany przez GKB. Czy teraz będzie musiał spędzić życie za kratkami?</pl>
 			</description>
+			<data genre="4" price="1.1" quality="85" fictional="0" flags="2" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,3,4,16,20" news="72260607-a34f-46c6-aa65-cc9ae4b152cf" />
 			</effects>
-			<data genre="4" price="1.1" quality="85" />
 		</news>
 		<news id="72260607-a34f-46c6-aa65-cc9ae4b152cf" type="2" thread_id="6169eaf0-e573-4df4-9837-bb077cc6f5a5" creator="8827" created_by="Cujo">
 			<title>
@@ -1359,11 +1357,11 @@
 				<en>Markus Trust, who embarrassed the Russian Air Force a few days ago with his Schessnah landing on Moscow's Red Square, was sentenced by a judge to 5 years in a labor camp for serious hooliganism.</en>
 				<pl>Markus Trust, który kilka dni temu zawstydził rosyjskie siły powietrzne swoim lądowaniem na Placu Czerwonym w Moskwie, został skazany przez sędziego na 5 lat obozu pracy za poważne chuligaństwo.</pl>
 			</description>
+			<data genre="4" price="0.85" quality="65" fictional="0" flags="2" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,5,6,18,22" news="b03dc758-924c-46e9-b157-36e420a245bb" />
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="0e11a4da-1982-4d81-bd18-713201c7af6f" />
 			</effects>
-			<data genre="4" price="0.85" quality="65" />
 		</news>
 		<news id="b03dc758-924c-46e9-b157-36e420a245bb" type="2" thread_id="6169eaf0-e573-4df4-9837-bb077cc6f5a5" creator="8827" created_by="Cujo">
 			<title>
@@ -1376,7 +1374,7 @@
 				<en>Schessnah pilot Markus Trust, who landed in Red Square, is pardoned. After 15 months in a labor camp, he can return to his family tomorrow. His Schessnah will be scrapped.</en>
 				<pl>Pilot Schessnah Markus Trust, który wylądował na Placu Czerwonym, został ułaskawiony. Po 15 miesiącach spędzonych w obozie pracy może jutro wrócić do swojej rodziny. Jego Schessnah zostanie zezłomowany.</pl>
 			</description>
-			<data genre="4" price="0.78" quality="55" />
+			<data genre="4" price="0.78" quality="55" fictional="0" flags="2" />
 		</news>
 
 			<!-- 1987-06 -->
@@ -1546,7 +1544,7 @@
 				<en>A Hungarian businessman sells the game to a British software company.</en>
 				<pl>Węgierski biznesmen sprzedaje grę brytyjskiej firmie programistycznej.</pl>
 			</description>
-			<data genre="3" price="1.0" quality="45" fictional="0" flags="2" happen_time="4,1987,11,15" /> <!-- exact day actually not clear -->
+			<data genre="3" price="1.0" quality="45" fictional="0" flags="2" happen_time="5,1987,1987,11,11,1,30" /> <!-- exact day actually not clear -->
 		</news>
 
 			<!-- 1987-12 -->
@@ -1588,9 +1586,9 @@
 				<pl>Mater Dolorosa tylko z numerem 2</pl>
 			</title>
 			<description>
-				<de>Zum erfolgreichsten Song des Jahres hat es leider nicht gereicht. Mater Dolorosas Hit „The Isle of Bel Air“ wurde von Eagernesses Chart-Breaker „Travel travel“ noch knapp übertroffen.</de>
-				<en>Unfortunately, it was not enough for the most successful song of the year. Mater Dolorosa's hit "The Isle of Bel Air" was narrowly surpassed by Eagerness's chart-breaker "Travel travel".</en>
-				<pl>Niestety, to nie wystarczyło, by zdobyć tytuł najbardziej przebojowej piosenki roku. Przebój Mater Dolorosa „The Isle of Bel Air” został nieznacznie wyprzedzony przez przebojowy „Travel travel” Eagerness.</pl>
+				<de>Zum erfolgreichsten Song des Jahres 1987 hat es leider nicht gereicht. Mater Dolorosas Hit „The Isle of Bel Air“ wurde von Eagernesses Chart-Breaker „Travel travel“ noch knapp übertroffen.</de>
+				<en>Unfortunately, it was not enough for the most successful song of the year 1987. Mater Dolorosa's hit "The Isle of Bel Air" was narrowly surpassed by Eagerness's chart-breaker "Travel travel".</en>
+				<pl>Niestety, to nie wystarczyło, by zdobyć tytuł najbardziej przebojowej piosenki roku 1987. Przebój Mater Dolorosa „The Isle of Bel Air” został nieznacznie wyprzedzony przez przebojowy „Travel travel” Eagerness.</pl>
 			</description>
 			<data genre="1" price="0.4" quality="40" fictional="0" flags="2" happen_time="5,1988,1988,1,1,1,10" /> <!-- exact day not clear -->
 		</news>
@@ -1726,7 +1724,7 @@
 
 			<!-- 1988-06 -->
 
-		<news id="b6872e1f-087e-4e58-ac29-78413fb5d652" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Nelson_Mandela | https://www.harmonyfm.de/themen/welt-der-80er/403686-11-juni-1988-das-tribute-konzert-fuer-nelson-mandela-mit-82-acts.html | https://en.wikipedia.org/wiki/Bee_Gees | https://en.wikipedia.org/wiki/UB40 | https://en.wikipedia.org/wiki/Simple_Minds | previously 'Embley Park Stadium' but arguably doesn't need to be spoofed">
+		<news id="b6872e1f-087e-4e58-ac29-78413fb5d652" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Nelson_Mandela | https://www.harmonyfm.de/themen/welt-der-80er/403686-11-juni-1988-das-tribute-konzert-fuer-nelson-mandela-mit-82-acts.html | https://en.wikipedia.org/wiki/Bee_Gees | https://en.wikipedia.org/wiki/UB40 | https://en.wikipedia.org/wiki/Simple_Minds | previously 'Embley Park Stadium' but arguably doesn't need to be spoofed | TODO: make thread, one political + one showbiz">
 			<title>
 				<de>Candela feiert 70. Geburtstag</de>
 				<en>Candela celebrates 70th birthday</en>
@@ -1737,7 +1735,7 @@
 				<en>A solidarity concert is being held at London's Wembley Stadium to mark the 70th birthday of West African politician Nestor Candela. Well-known artists such as the Ghee Bees, UB60 or Simple Thoughts play for free.</en>
 				<pl>Na londyńskim stadionie Wembley odbędzie się koncert solidarnościowy z okazji 70. urodzin zachodnioafrykańskiego polityka Nestora Candeli. Znani artyści tacy jak Ghee Bees, UB60 czy Simple Thoughts zagrają za darmo.</pl>
 			</description>
-			<data genre="5" price="0.35" quality="35" fictional="0" flags="2" happen_time="4,1988,6,11" />
+			<data genre="1" price="0.35" quality="35" fictional="0" flags="2" happen_time="4,1988,6,11" />
 		</news>
 
 			<!-- 1988-07 -->
@@ -1940,7 +1938,7 @@
 				<en>The Berlin Fairytale Days were founded by the Fairyland Association on April 2nd, Hans Christian Andersen's birthday. They are to take place annually in November.</en>
 				<pl>Berlińskie Dni Bajki zostały założone przez Stowarzyszenie Fairyland 2 kwietnia, w dniu urodzin Hansa Christiana Andersena. Odbywają się one co roku w listopadzie.</pl>
 			</description>
-			<data genre="5" flags="6" price="0.7" quality="25" happen_time="4,1990,4,3" />
+			<data genre="5" price="0.7" quality="25" fictional="0" flags="6" happen_time="4,1990,4,3" />
 		</news>
 
 			<!-- 1990-07 -->
@@ -1980,15 +1978,20 @@
 		<news id="b64fd1a5-bcbc-40ee-b078-523513447420" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
-				<de>Berliner Märchentage begonnen</de>
-				<en>Berlin Fairy Tale Days started</en>
-				<pl>Rozpoczęły się Berlińskie Dni Bajki</pl>
+				<de>Berliner Märchentage %currentyear% begonnen</de>
+				<en>Berlin Fairy Tale Days %currentyear% started</en>
+				<pl>Rozpoczęły się Berlińskie Dni Bajki %currentyear%</pl>
 			</title>
 			<description>
 				<de>An 17 Tagen im November gibt es Märchen satt. Förderer sind auch die Lottogesellschaft und Bundespolitische Bildungszentrale.</de>
 				<en>There will be plenty of fairy tales on 17 days in November. Sponsors include the Lottery company and the Federal Political Education Centre.</en>
 				<pl>W ciągu 17 dni listopada nie zabraknie bajek. Sponsorami są firma Lottery i Federalne Centrum Edukacji Politycznej.</pl>
 			</description>
+			<variables>
+				<currentyear>
+					<de>%WORLDTIME:YEAR%</de>
+				</currentyear>
+			</variables>
 			<data genre="5" price="0.7" quality="25" fictional="0" />
 			<availability script="TIME_MONTH=10" year_range_from="1990" year_range_to="-1" /> <!-- can appear annually -->
 		</news>
@@ -2089,7 +2092,7 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,1995,1995,10,10,5,25" /> <!-- exact day actually not clear -->
 		</news>
 
-			<!-- 1996-general -->
+			<!-- 1996 general -->
 
 		<news id="3fd18115-b555-4083-978f-6698dd824b6d" type="0" creator="7430" created_by="Sjaele" comment="TODO: Reference (which station) not clear">
 			<title>
@@ -2247,8 +2250,8 @@
 				<en>The Darian Calendar divides the Martian year into 24 months and includes all leap days. Deviation now only one day per 12,000 Mars years.</en>
 				<pl>Kalendarz Dariana dzieli rok marsjański na 24 miesiące i uwzględnia wszystkie dni przestępne. Odchylenie wynosi teraz tylko jeden dzień na 12 000 lat marsjańskich.</pl>
 			</description>
-			<data genre="3" price="1.0" quality="25" />  <!-- TODO: flags="2" -->
-			<availability year_range_from="2001" />
+			<data genre="3" price="1.0" quality="25" fictional="0" />  <!-- TODO: flags="2" -->
+			<availability year_range_from="2002" />
 		</news>
 
 			<!-- 2002-10 -->
@@ -2363,7 +2366,7 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,2006,2006,10,10,5,25" /> <!-- exact day actually not clear -->
 		</news>
 
-			<!-- 2007-general -->
+			<!-- 2007 general -->
 
 		<news id="d5d29536-e631-4536-8f9e-a1aa3128fc0c" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Heino | https://de.wikipedia.org/wiki/Lustige_Musikanten | https://www.dwdl.de/zahlenzentrale/11865/lustige_musikanten_tagessieg_vor_absetzung/">
 			<!-- deutschbezogen -->
@@ -2445,7 +2448,7 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,2007,2007,10,10,5,25" /> <!-- exact day actually not clear -->
 		</news>
 
-			<!-- 2008-general -->
+			<!-- 2008 general -->
 
 		<news id="ded0623e-821d-4619-9f33-792bba17b1a3" type="0" creator="8936" created_by="jorgaeff" comment="TODO: date reference not exactly clear, LCDs existed long before; surpassing CRTs in sales?">
 			<title>
@@ -2508,7 +2511,7 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,2008,2008,10,10,5,25" /> <!-- exact day actually not clear -->
 		</news>
 
-			<!-- 2009-general -->
+			<!-- 2009 general -->
 
 		<news id="aed60b54-332d-461a-9c3e-1883766264c6" type="0" creator="8936" created_by="jorgaeff" comment="TODO: date reference not exactly clear, Blu-ray was introduced already in 2006; surpassing DVD in sales?">
 			<title>
@@ -2834,7 +2837,7 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,2013,2013,10,10,5,25" /> <!-- exact day actually not clear -->
 		</news>
 
-			<!-- 2014-general -->
+			<!-- 2014 general -->
 
 		<news id="3329deb6-473b-4f97-bf49-0a84b7e3fde2" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->

@@ -39,7 +39,7 @@
 				<!-- "morgen oder uebermorgen, 13-17 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,13,17" news="cujo-news-superkerl-03" />
 			</effects>
-			<data genre="1" price="1.0" quality="30" />
+			<data genre="1" price="1.0" quality="30" /> <!-- TODO: for whole thread: flags="2" like triggering entry; or variations with other characters (Wonder Woman etc)? -->
 		</news>
 		<news id="cujo-news-superkerl-03" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
