@@ -47,7 +47,7 @@
 			XRated = 64     Paid/CallIn = 128
 		-->
 	<allprogrammes>
-		<programme id="nichtdiebetty-programme-helgoland-01" product="1" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
+		<programme id="nichtdiebetty-programme-helgoland-01" product="4" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Helgoland</de>
 				<en>Helgoland</en>

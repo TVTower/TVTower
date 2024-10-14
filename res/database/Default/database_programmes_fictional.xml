@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3" />
 	<allprogrammes>
-		<programme id="9bec0952-e3a8-48fc-82e9-d96e2809e746" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="9bec0952-e3a8-48fc-82e9-d96e2809e746" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Beer, Bier, Pivo</de>
 				<en>Beer, Bier, Pivo</en>
@@ -24,7 +24,7 @@
 			<releaseTime year_relative="1" />
 			<ratings critics="9" speed="4" outcome="0" />
 		</programme>
-		<programme id="f51954ef-5d8a-4ca0-9936-fca27da79267" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="f51954ef-5d8a-4ca0-9936-fca27da79267" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Biedermeier - (K)eine Zeit zum Feiern</de>
 				<en>Biedermeier - (Not) A time For Celebration</en>
@@ -68,7 +68,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="0a2efe28-4326-49d1-a5a8-5f277b514adc" />
 			</effects>
 		</programme>
-		<programme id="35190c1d-aa55-4e84-967f-72a374e84dcf" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="35190c1d-aa55-4e84-967f-72a374e84dcf" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Die Demoskopie des Menschen</de>
 				<en>The Demoscopy of Man</en>
@@ -113,7 +113,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="2d938802-02a2-4c38-9248-6a406cfb744d" />
 			</effects>
 		</programme>
-		<programme id="4ce1c133-6062-4ad4-b925-729007157db9" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="4ce1c133-6062-4ad4-b925-729007157db9" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Ein Ei zum Frühstück?</de>
 				<en>An Egg For Breakfast?</en>
@@ -133,7 +133,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="28" speed="51" outcome="18" />
 		</programme>
-		<programme id="6273b893-99bf-4234-a312-a7a2d00845ec" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="6273b893-99bf-4234-a312-a7a2d00845ec" product="7" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Faszination Plusquamperfekt</de>
 				<en>Fascination Plusquamperfect</en>
@@ -154,7 +154,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="35" speed="0" outcome="10" />
 		</programme>
-		<programme id="8df86321-0fcd-4903-b9e9-2b67e0eaafea" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="8df86321-0fcd-4903-b9e9-2b67e0eaafea" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Kakiemon-Porzellanmanufakturen in Japan</de>
 				<en>Cacomon Porcelain Manufactories in Japan</en>
@@ -194,7 +194,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="5" speed="2" outcome="8" />
 		</programme>
-		<programme id="e14c3026-b946-4f5b-9986-a41aa03a9bd4" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="e14c3026-b946-4f5b-9986-a41aa03a9bd4" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Klimax Kulturgeschichte: Eine weibliche Erörterung</de>
 				<en>Climax Cultural History: A Female Discourse</en>
@@ -215,7 +215,7 @@
 			<releaseTime year_relative="5" />
 			<ratings critics="75" speed="15" outcome="10" />
 		</programme>
-		<programme id="42761763-4125-4a66-8227-40027caab44a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as f0010a94-c0a9-4d99-8522-06ce3891ac0f | TODO: should have low viewer results (0% in Mad TV) but highest possible Betty points">
+		<programme id="42761763-4125-4a66-8227-40027caab44a" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as f0010a94-c0a9-4d99-8522-06ce3891ac0f | TODO: should have low viewer results (0% in Mad TV) but highest possible Betty points">
 			<title>
 				<de>Kultur Heute</de>
 				<en>Culture Today</en>
@@ -232,7 +232,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.5" />
-			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="5" blocks="1" broadcast_flags="512" price_mod="0.5" />
+			<data country="D" distribution="2" maingenre="103" subgenre="300,6" flags="5" blocks="1" broadcast_flags="512" price_mod="0.5" />
 			<releaseTime year_relative="0" day="5" />
 			<ratings critics="100" speed="39" outcome="1" />
 			<effects>
@@ -243,7 +243,7 @@
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme id="4fe2dff2-039d-4747-b37a-7f79010b9997" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="4fe2dff2-039d-4747-b37a-7f79010b9997" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Kunst am Arsch der Welt</de>
 				<en>Arts at the Arse End of Nowhere</en>
@@ -264,7 +264,7 @@
 			<releaseTime year_relative="-1" year_relative_min="1983" year_relative_max="2020" />
 			<ratings critics="54" speed="15" outcome="10" />
 		</programme>
-		<programme id="c4348eef-2678-486b-a07c-ce00dc4fed91" product="5" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="c4348eef-2678-486b-a07c-ce00dc4fed91" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Landung auf dem Mars</de>
 				<en>Landing on Mars</en>
@@ -287,7 +287,7 @@
 			<releaseTime year_relative="5" year_relative_min="2000" year_relative_max="2020" />
 			<ratings critics="94" speed="80" outcome="89" />
 		</programme>
-		<programme id="bddb797f-53cd-4d15-bb96-bb4b148203b2" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="bddb797f-53cd-4d15-bb96-bb4b148203b2" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Lolcat: Da lacht die Katz'!</de>
 				<en>Lolcat: Here's Where the Cat Laughs!</en>
@@ -307,7 +307,7 @@
 			<data country="USA" year="2007" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="0.07" />
 			<ratings critics="13" speed="23" outcome="9" />
 		</programme>
-		<programme id="6a9105ff-c5ba-496c-b099-7ec5fb4aa465" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="6a9105ff-c5ba-496c-b099-7ec5fb4aa465" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Mal rückwärts!</de>
 				<en>Try in Reverse!</en>
@@ -329,7 +329,7 @@
 			<releaseTime year_relative="2" />
 			<ratings critics="32" speed="18" outcome="12" />
 		</programme>
-		<programme id="5eb4277b-41be-4b51-b639-5c8ec17cdb0a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Fictional programme but existing parody - https://en.wikipedia.org/wiki/Molvan%C3%AEa">
+		<programme id="5eb4277b-41be-4b51-b639-5c8ec17cdb0a" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Fictional programme but existing parody - https://en.wikipedia.org/wiki/Molvan%C3%AEa">
 			<title>
 				<de>Reiseziel Molwanîen</de>
 				<en>Destination Molvanîa</en>
@@ -352,11 +352,11 @@
 			<releaseTime year_relative="2" />
 			<ratings critics="47" speed="9" outcome="4" />
 		</programme>
-		<programme id="13cc99a6-4e82-4126-9b75-72f190901a2a" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Turned into a special, and made the generic version a screenplay: d176358a-b18a-44d4-86c0-731660bd0c78 | TODO: Could create more 'Specials' with non-bookable 'real' authors already in database (and better ratings if famous), first example added as 870727e0-c302-44ad-a1b2-d23b64b4a1c9">
+		<programme id="13cc99a6-4e82-4126-9b75-72f190901a2a" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Turned into a special, and made the generic version a screenplay: d176358a-b18a-44d4-86c0-731660bd0c78 | TODO: Could create more 'Specials' with non-bookable 'real' authors already in database (and better ratings if famous), first example added as 870727e0-c302-44ad-a1b2-d23b64b4a1c9">
 			<title>
 				<de>Talk um 10 Spezial: [2|Full]</de>
 				<en>Talk at 10 Special: [2|Full]</en>
-				<pl>Rozmowy specjalna o 10: [2|Full]</pl>
+				<pl>Rozmowa o 10 - Wydanie Specjalne: [2|Full]</pl>
 			</title>
 			<description>
 				<de>[0|Full] erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch. Diesmal: [2|Full].</de>
@@ -378,11 +378,11 @@
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme id="69955785-3357-4292-b20b-aba24f0cd98f" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="69955785-3357-4292-b20b-aba24f0cd98f" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Talk um 10 Spezial: Die große Runde</de>
 				<en>Talk at 10 Special: The Big Round</en>
-				<pl>Rozmowa specjalna o 10: Wielka runda</pl>
+				<pl>Rozmowa o 10 - Wydanie Specjalne: Wielka runda</pl>
 			</title>
 			<description>
 				<de>Diesmal erwartet der Star-Buchkritiker [0|Last] nicht wie sonst nur einen Gast. Ganze fünf kritisieren sich diesmal gegenseitig und bringen Würze in die Diskussionsrunde.</de>
@@ -452,7 +452,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="a3b10b1d-5cf0-409d-8b99-8f7f7c955898" />
 			</effects>
 		</programme>
-		<programme id="02d0dfa5-dbcf-40b5-abb4-7e20a58d8efa" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TVTower 2013 title: 'Ade Autobahn', probably erroneously spoofed - TODO: Maybe use that one for a predecessor / follow-up?">
+		<programme id="02d0dfa5-dbcf-40b5-abb4-7e20a58d8efa" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TVTower 2013 title: 'Ade Autobahn', probably erroneously spoofed - TODO: Maybe use that one for a predecessor / follow-up?">
 			<title>
 				<de>Tschüssikowski A4</de>
 				<en>Tschüssi-kowski A4</en>
@@ -474,7 +474,7 @@
 			<releaseTime year_relative="3" year_relative_min="1985" year_relative_max="2020" />
 			<ratings critics="84" speed="37" outcome="14" />
 		</programme>
-		<programme id="a61e7775-7565-48cd-ab4a-e5faea09d70d" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="a61e7775-7565-48cd-ab4a-e5faea09d70d" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>VHS im Test</de>
 				<en>Folk High Schools Under Test</en>
@@ -497,7 +497,7 @@
 			<releaseTime year_relative="3" />
 			<ratings critics="42" speed="47" outcome="0" />
 		</programme>
-		<programme id="862497a5-844d-42cb-a691-c4e3876cd1bc" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="862497a5-844d-42cb-a691-c4e3876cd1bc" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Wasser-Theremin, Klickphone &amp; Achselgeige: Musikgeschmack im Grenzbereich</de>
 				<en>Water Theremin, Clickphone &amp; Armpit Fiddle: Music Taste on the Fringe</en>
@@ -522,7 +522,7 @@
 			<title>
 				<de>Wer wird Pleitegeier?</de>
 				<en>Who Wants to Be the Vulture-Bait?</en>
-				<pl>Kto zostanie Milionerem?</pl>
+				<pl>Kto chce być przynętą na sępy?</pl>
 			</title>
 			<description>
 				<de>Moderator [1|Full] spielt mit 5 Kandidaten, allesamt am Rande des Ruins. Der Verlierer der Quizshow übernimmt die Schulden der anderen.
@@ -551,11 +551,11 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme id="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="6" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: Should better be yearly events than a series. | TODO: screenplay continuation">
+		<programme id="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
 			<title>
-				<de>BBWr - Best-Of Bolivian Wrestling</de>
-				<en>BBWr - Best-Of Bolivian Wrestling</en>
-				<pl>NBWr - Najlepszy boliwijski wrestling</pl>
+				<de>BBWr - Best-Of Bolivian Wrestling I</de>
+				<en>BBWr - Best-Of Bolivian Wrestling I</en>
+				<pl>NBWr - Najlepszy boliwijski wrestling I</pl>
 			</title>
 			<description>
 				<de>[0|Last] - Härter - bolivianisches Wrestling. Schlechte Schauspieler und echtes Blut entzücken Fans weltweit.</de>
@@ -574,89 +574,162 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="3" day="7" hour="20" year_relative_min="2004" year_relative_max="2020" />
+			<releaseTime year_relative="3" day="1" hour="20" year_relative_min="2004" year_relative_max="2020" />
 			<ratings critics="35" speed="51" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
-			<children>
-				<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
-					<title>
-						<de>[0|Last] - [1|Last]</de>
-						<en>[0|Last] - [1|Last]</en>
-						<pl>[0|Last] - [1|Last]</pl>
-					</title>
-					<description>
-						<de>Ein spannendes Match von 1987 nachgestellt, in dem [1|Last] seinem Widersacher [0|Last] zeigt, wo der Hammer hängt.</de>
-						<en>An exciting match from 1987 re-enacted, in which [1|Last] shows his opponent [0|Last] who's wearing the pants.</en>
-						<pl>Powtórka ekscytującego meczu z 1987 roku, w którym [1|Last] pokazuje swojemu przeciwnikowi [0|Last], kto nosi majtki.</pl>
-					</description>
-					<ratings critics="41" speed="55" />
-				</programme>
-				<programme id="d24b258f-654a-4d2c-8c13-39c4191613bc" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
-					<title>
-						<de>Der neue wird eingewiesen</de>
-						<en>The New One Is Briefed</en>
-						<pl>Nowy został poinformowany</pl>
-					</title>
-					<description>
-						<de>Die neuen Moderatoren [0|Full] und [1|Full] weisen den Neuling, [5|First] '[5|Nick]' [5|Last] ein... mit Stühlen auf dem Rücken.</de>
-						<en>The new hosts [0|Full] and [1|Full] are briefing the newbie, [5|First] '[5|Nick]' [5|Last]... with chairs against his back.</en>
-						<pl>Nowi gospodarze [0|Full] i [1|Full] odprawiają nowicjusza, [5|First] '[5|Nick]' [5|Last]... z krzesłami opartymi o jego plecy.</pl>
-					</description>
-					<staff>
-						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
-					</staff>
-					<ratings critics="45" speed="56" />
-					<releaseTime year_relative="3" day="8" hour="20" year_relative_min="2004" year_relative_max="2020" />
-				</programme>
-				<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
-					<title>
-						<de>[2|Last] - [4|Nick]</de>
-						<en>[2|Last] - [4|Nick]</en>
-						<pl>[2|Last] - [4|Nick]</pl>
-					</title>
-					<description>
-						<de>Wer macht das Rennen? Der Amateur '[2|Nick]' aus Ostsachsen gegen den BWr-Champion [4|First] '[4|Nick]' [4|Last]. Ein bissiger Kampf ist garantiert!</de>
-						<en>Who will bring home the bacon? The amateur '[2|Nick]' from East Saxony against the BWr champion [4|First] '[4|Nick]' [4|Last]. A gritty fight is guaranteed!</en>
-						<pl>Kto przywiezie do domu bekon? Amator '[2|Nick]' ze Wschodniej Saksonii przeciwko mistrzowi BWr [4|First] '[4|Nick]' [4|Last]. Zacięta walka gwarantowana!</pl>
-					</description>
-					<ratings critics="56" speed="60" />
-					<releaseTime year_relative="3" day="9" hour="20" year_relative_min="2004" year_relative_max="2020" />
-				</programme>
-				<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
-					<title>
-						<de>[3|Last] - [5|Last]</de>
-						<en>[3|Last] - [5|Last]</en>
-						<pl>[3|Last] - [5|Last]</pl>
-					</title>
-					<description>
-						<de>Schlägt der [3|Last] auf Granit oder schafft er es dem Altmeister [5|First] '[5|Nick]' [5|Last] zu schlagen? Nur für hartgesottene Zuschauer, hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</de>
-						<en>Does [3|Last] hit granite or does he manage to beat the old master [5|First] '[5|Nick]' [5|Last]? Only for the tough spectators, here the world record in long-range blood-splatter was set to 5.3 meters.</en>
-						<pl>Czy [3|Last] trafi w granit, czy uda mu się pokonać starego mistrza [5|First] '[5|Nick]' [5|Last]? Tylko dla twardych widzów, tutaj rekord świata w dalekim rozbryzgu krwi został ustanowiony na 5,3 metra.</pl>
-					</description>
-					<staff>
-						<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
-					</staff>
-					<ratings critics="35" speed="65" />
-					<releaseTime year_relative="3" day="10" hour="20" year_relative_min="2004" year_relative_max="2020" />
-				</programme>
-				<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="2" tmdb_id="0" imdb_id="" creator="">
-					<title>
-						<de>Tag-Team-Match</de>
-						<en>Tag Team Match</en>
-						<pl>Pojedynek Tag Team</pl>
-					</title>
-					<description>
-						<de>Die Moderatoren nach Jahren wieder im Ring. [0|Last] und [1|Last] im Team mit [3|Last] gegen die bolivianische Muskelpracht verstärkt durch den deutschen [2|Last].</de>
-						<en>The hosts back in the ring after years. [0|Last] and [1|Last] teaming up with [3|Last] against the splendid Bolivian display of muscles supported by the German [2|Last].</en>
-						<pl>Gospodarze wracają na ring po latach. [0|Last] i [1|Last] w parze z [3|Last] przeciwko wspaniałemu boliwijskiemu pokazowi mięśni wspieranemu przez Niemca [2|Last].</pl>
-					</description>
-					<ratings critics="41" speed="68" />
-					<releaseTime year_relative="3" day="11" hour="20" year_relative_min="2004" year_relative_max="2020" />
-				</programme>
-			</children>
+		</programme>
+		<programme id="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+			<title>
+				<de>BBWr II: [0|Last] - [1|Last]</de>
+				<en>BBWr II: [0|Last] - [1|Last]</en>
+				<pl>NBWr II: [0|Last] - [1|Last]</pl>
+			</title>
+			<description>
+				<de>Ein spannendes Match von 1987 nachgestellt, in dem [1|Last] seinem Widersacher [0|Last] zeigt, wo der Hammer hängt.</de>
+				<en>An exciting match from 1987 re-enacted, in which [1|Last] shows his opponent [0|Last] who's wearing the pants.</en>
+				<pl>Powtórka ekscytującego meczu z 1987 roku, w którym [1|Last] pokazuje swojemu przeciwnikowi [0|Last], kto nosi majtki.</pl>
+			</description>
+			<staff>
+				<member index="0" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
+				<member index="1" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
+				<member index="2" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
+				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
+				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
+				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="6" function="5">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
+			</staff>
+			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
+			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="4" day="1" hour="20" year_relative_min="2005" year_relative_max="2021" />
+			<ratings critics="41" speed="55" outcome="40" />
+			<modifiers>
+				<modifier name="topicality::age" value="4" />
+				<modifier name="topicality::notLive" value="0.25" />
+			</modifiers>
+		</programme>
+		<programme id="d24b258f-654a-4d2c-8c13-39c4191613bc" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+			<title>
+				<de>BBWr III: Der neue wird eingewiesen</de>
+				<en>BBWr III: The New One Is Briefed</en>
+				<pl>NBWr III: Nowy został poinformowany</pl>
+			</title>
+			<description>
+				<de>Die neuen Moderatoren [0|Full] und [1|Full] weisen den Neuling, [5|First] '[5|Nick]' [5|Last] ein... mit Stühlen auf dem Rücken.</de>
+				<en>The new hosts [0|Full] and [1|Full] are briefing the newbie, [5|First] '[5|Nick]' [5|Last]... with chairs against his back.</en>
+				<pl>Nowi gospodarze [0|Full] i [1|Full] odprawiają nowicjusza, [5|First] '[5|Nick]' [5|Last]... z krzesłami opartymi o jego plecy.</pl>
+			</description>
+			<staff>
+				<member index="0" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
+				<member index="1" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
+				<member index="2" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
+				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
+				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
+				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+			</staff>
+			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
+			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="5" day="1" hour="20" year_relative_min="2006" year_relative_max="2022" />
+			<ratings critics="45" speed="56" outcome="40" />
+			<modifiers>
+				<modifier name="topicality::age" value="4" />
+				<modifier name="topicality::notLive" value="0.25" />
+			</modifiers>
+		</programme>
+		<programme id="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+			<title>
+				<de>BBWr IV: [2|Last] - [4|Nick]</de>
+				<en>BBWr IV: [2|Last] - [4|Nick]</en>
+				<pl>NBWr IV: [2|Last] - [4|Nick]</pl>
+			</title>
+			<description>
+				<de>Wer macht das Rennen? Der Amateur '[2|Nick]' aus Ostsachsen gegen den BWr-Champion [4|First] '[4|Nick]' [4|Last]. Ein bissiger Kampf ist garantiert!</de>
+				<en>Who will bring home the bacon? The amateur '[2|Nick]' from East Saxony against the BWr champion [4|First] '[4|Nick]' [4|Last]. A gritty fight is guaranteed!</en>
+				<pl>Kto przywiezie do domu bekon? Amator '[2|Nick]' ze Wschodniej Saksonii przeciwko mistrzowi BWr [4|First] '[4|Nick]' [4|Last]. Zacięta walka gwarantowana!</pl>
+			</description>
+			<staff>
+				<member index="0" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
+				<member index="1" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
+				<member index="2" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
+				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
+				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
+				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="6" function="5">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
+			</staff>
+			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
+			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="6" day="1" hour="20" year_relative_min="2007" year_relative_max="2023" />
+			<ratings critics="56" speed="60" outcome="40" />
+			<modifiers>
+				<modifier name="topicality::age" value="4" />
+				<modifier name="topicality::notLive" value="0.25" />
+			</modifiers>
+		</programme>
+		<programme id="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+			<title>
+				<de>BBWr V: [3|Last] - [5|Last]</de>
+				<en>BBWr V: [3|Last] - [5|Last]</en>
+				<pl>NBWr V: [3|Last] - [5|Last]</pl>
+			</title>
+			<description>
+				<de>Schlägt der [3|Last] auf Granit oder schafft er es dem Altmeister [5|First] '[5|Nick]' [5|Last] zu schlagen? Nur für hartgesottene Zuschauer, hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</de>
+				<en>Does [3|Last] hit granite or does he manage to beat the old master [5|First] '[5|Nick]' [5|Last]? Only for the tough spectators, here the world record in long-range blood-splatter was set to 5.3 meters.</en>
+				<pl>Czy [3|Last] trafi w granit, czy uda mu się pokonać starego mistrza [5|First] '[5|Nick]' [5|Last]? Tylko dla twardych widzów, tutaj rekord świata w dalekim rozbryzgu krwi został ustanowiony na 5,3 metra.</pl>
+			</description>
+			<staff>
+				<member index="0" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
+				<member index="1" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
+				<member index="2" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
+				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
+				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
+				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="6" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+			</staff>
+			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
+			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="7" day="1" hour="20" year_relative_min="2008" year_relative_max="2024" />
+			<ratings critics="35" speed="65" outcome="40" />
+			<modifiers>
+				<modifier name="topicality::age" value="4" />
+				<modifier name="topicality::notLive" value="0.25" />
+			</modifiers>
+		</programme>
+		<programme id="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+			<title>
+				<de>BBWr VI: Tag-Team-Match</de>
+				<en>BBWr VI: Tag Team Match</en>
+				<pl>NBWr VI: Pojedynek Tag Team</pl>
+			</title>
+			<description>
+				<de>Die Moderatoren nach Jahren wieder im Ring. [0|Last] und [1|Last] im Team mit [3|Last] gegen die bolivianische Muskelpracht verstärkt durch den deutschen [2|Last].</de>
+				<en>The hosts back in the ring after years. [0|Last] and [1|Last] teaming up with [3|Last] against the splendid Bolivian display of muscles supported by the German [2|Last].</en>
+				<pl>Gospodarze wracają na ring po latach. [0|Last] i [1|Last] w parze z [3|Last] przeciwko wspaniałemu boliwijskiemu pokazowi mięśni wspieranemu przez Niemca [2|Last].</pl>
+			</description>
+			<staff>
+				<member index="0" function="2">c9784ca1-3c3a-4d15-a6c9-493e45d03559</member>
+				<member index="1" function="2">d39a1a8b-1f04-485c-b454-1727c2dfc443</member>
+				<member index="2" function="2">3d9fa753-1621-46b2-b0fe-8096cbba644b</member>
+				<member index="3" function="2">b306d6f7-83c6-474d-b291-71245e2700c4</member>
+				<member index="4" function="2">9eb98994-41a1-45f3-b70f-bcf4c7393224</member>
+				<member index="5" function="2">c1543aab-18a4-44ad-be31-34bc1c972553</member>
+				<member index="6" function="5">4bd36da9-4f07-4067-af4a-01ff5175ad73</member>
+			</staff>
+			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
+			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="8" day="1" hour="20" year_relative_min="2009" year_relative_max="2025" />
+			<ratings critics="41" speed="68" outcome="40" />
+			<modifiers>
+				<modifier name="topicality::age" value="4" />
+				<modifier name="topicality::notLive" value="0.25" />
+			</modifiers>
 		</programme>
 		<programme id="04439fd1-e89f-4922-a48e-6f8ddf96f7ab" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<title>
@@ -913,7 +986,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="7ff3171c-9064-4bbd-bfbb-f0b13e5f5a8a" product="64" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TODO: Final missing? Also should age pretty fast. Add the other World Cups instead of having this in the movie agency all the time.">
+		<programme id="7ff3171c-9064-4bbd-bfbb-f0b13e5f5a8a" product="4" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TODO: Final missing? Also should age pretty fast. Add the other World Cups instead of having this in the movie agency all the time.">
 			<title>
 				<de>Fußball-Weltmeisterschaft Italien 1990</de>
 				<en>Soccer World Cup Italy 1990</en>
@@ -933,7 +1006,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year="1990" day="8" /> <!-- This shouldn't be availabe at the beginning of the year -->
 			<ratings critics="32" speed="75" outcome="80" />
 			<children>
-				<programme id="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="64" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme id="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Kamerun - Kolumbien 2:1</de>
 						<en>Cameroon 2-1 Colombia</en>
@@ -949,7 +1022,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<member index="2" function="2">b360f7b8-3d87-4f6a-96c5-cc7a8ab8c488</member>
 					</staff>
 				</programme>
-				<programme id="3ed6d2bf-ad36-430a-965f-68ea8f00c36f" product="64" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme id="3ed6d2bf-ad36-430a-965f-68ea8f00c36f" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>CSFR - Costa Rica 4:1</de>
 						<en>CSFR 4-1 Costa Rica</en>
@@ -965,7 +1038,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<member index="2" function="2">b11fed5e-9636-4a9d-b13a-f5d490fef1b9</member>
 					</staff>
 				</programme>
-				<programme id="67f527f4-5d82-442f-9eaa-418710c35bbb" product="64" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme id="67f527f4-5d82-442f-9eaa-418710c35bbb" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Brasilien - Argentinien 0:1</de>
 						<en>Brazil 0-1 Argentina</en>
@@ -986,7 +1059,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 		<programme id="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as 84c38251-ff42-4422-908c-8177ff5b10ea">
 			<title>
 				<de>Nur wer anruft kann gewinnen</de>
-				<en>You Need to Call to Win</en>
+				<en>You Need to Call In to Win</en>
 				<pl>Możesz wygrać tylko, jeśli zadzwonisz</pl>
 			</title>
 			<description>
@@ -1066,7 +1139,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			</staff>
 			<groups target_groups="20" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" children="2" teenagers_female="1.5" />
-			<data country="D" distribution="2" maingenre="103" subgenre="" flags="129" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
+			<data country="D" distribution="2" maingenre="103" subgenre="14" flags="129" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.5" />
 			<releaseTime year_relative="1" day="7" />
 			<ratings critics="3" speed="15" outcome="8" />
 			<children>
@@ -2314,7 +2387,7 @@ Tragiczny finał.</pl>
 
 		<!-- added in 2024-08: entries recovered or 'reconstructed' from a 2013 version of TVTower -->
 
-		<programme id="7fae7c9f-e12b-42b7-b87f-0f0860d2a832" product="1" licence_type="1" creator="" fictional="1">
+		<programme id="7fae7c9f-e12b-42b7-b87f-0f0860d2a832" product="4" licence_type="1" creator="" fictional="1">
 			<title>
 				<de>NDW... und danach?</de>
 				<en>NDW... and what's next?</en>
@@ -2335,7 +2408,7 @@ Tragiczny finał.</pl>
 			<releaseTime year_relative="2" year_relative_min="1988" year_relative_max="2008" />
 			<ratings critics="45" speed="45" outcome="18" />
 		</programme>
-		<programme id="74cae1fa-e849-439c-826f-817f573c4327" product="1" licence_type="1" creator="" fictional="1">
+		<programme id="74cae1fa-e849-439c-826f-817f573c4327" product="4" licence_type="1" creator="" fictional="1">
 			<title>
 				<de>Krempel-Zeit</de>
 				<en>Junk Time</en>
@@ -2354,7 +2427,7 @@ Tragiczny finał.</pl>
 			<releaseTime year_relative="2" />
 			<ratings critics="70" speed="30" outcome="16" />
 		</programme>
-		<programme id="662f13fc-bd5f-4980-b690-433eff1063b6" product="1" licence_type="1" creator="" fictional="1">
+		<programme id="662f13fc-bd5f-4980-b690-433eff1063b6" product="7" licence_type="1" creator="" fictional="1">
 			<title>
 				<de>Geschichte des Pokers</de>
 				<en>The History of Poker</en>
@@ -2373,7 +2446,7 @@ Tragiczny finał.</pl>
 			<releaseTime year="1988" day="1" />
 			<ratings critics="15" speed="5" outcome="15" />
 		</programme>
-		<programme id="cb747b67-8ac3-4715-bafe-2c1b2fb321c7" product="1" licence_type="1" creator="" fictional="1">
+		<programme id="cb747b67-8ac3-4715-bafe-2c1b2fb321c7" product="4" licence_type="1" creator="" fictional="1">
 			<title>
 				<de>Die Religionen-Olympiade</de>
 				<en>The Religions Olympics</en>
@@ -2393,7 +2466,7 @@ Tragiczny finał.</pl>
 			<releaseTime year="2004" day="7" />
 			<ratings critics="52" speed="30" outcome="18" />
 		</programme>
-		<programme id="4c166edb-771e-4a47-906b-f1687bf76921" product="1" licence_type="1" creator="" fictional="1">
+		<programme id="4c166edb-771e-4a47-906b-f1687bf76921" product="4" licence_type="1" creator="" fictional="1">
 			<title>
 				<de>Fantastico - Unsere Welt</de>
 				<en>Fantastico - Our World</en>
@@ -2412,7 +2485,7 @@ Tragiczny finał.</pl>
 			<releaseTime year_relative="1" year_relative_min="1987" year_relative_max="1992" />
 			<ratings critics="52" speed="16" outcome="22" />
 		</programme>
-		<programme id="e8df720d-3b11-48f3-a15f-3816abeb6150" product="1" licence_type="1" creator="" fictional="1">
+		<programme id="e8df720d-3b11-48f3-a15f-3816abeb6150" product="4" licence_type="1" creator="" fictional="1">
 			<title>
 				<de>Fantastico - Unsere Meere</de>
 				<en>Fantastico - Our Oceans</en>
@@ -2431,7 +2504,7 @@ Tragiczny finał.</pl>
 			<releaseTime year_relative="2" year_relative_min="1988" year_relative_max="1993" />
 			<ratings critics="55" speed="28" outcome="38" />
 		</programme>
-		<programme id="7dd40cc0-7476-4d83-9c7a-8a780f652a10" product="1" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Ein Herz für Inder [2006, nicht freigegeben]' but it seems lost. Maybe because of missing description, maybe because of awkward title. 'Reframing' it in a way it should be 'fine', created anew with the help of ChatGPT. | In German a spoof of https://de.wikipedia.org/wiki/Ein_Herz_f%C3%BCr_Kinder">
+		<programme id="7dd40cc0-7476-4d83-9c7a-8a780f652a10" product="4" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Ein Herz für Inder [2006, nicht freigegeben]' but it seems lost. Maybe because of missing description, maybe because of awkward title. 'Reframing' it in a way it should be 'fine', created anew with the help of ChatGPT. | In German a spoof of https://de.wikipedia.org/wiki/Ein_Herz_f%C3%BCr_Kinder">
 			<title>
 				<de>Ein Herz für Inder: Die Wohltätigkeitsfalle</de>
 				<en>A Heart for Indians: The Charity Trap</en>
@@ -2450,7 +2523,7 @@ Tragiczny finał.</pl>
 			<releaseTime year_relative="1" year_relative_min="2000" year_relative_max="2010" />
 			<ratings critics="75" speed="40" outcome="40" />
 		</programme>
-		<programme id="8aaae0f3-90bb-4bd5-8db0-f80beb89abbb" product="1" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Klub der toten Sänger [1900, nicht freigegeben]' but it seems lost. Maybe because of missing description, maybe because of bad quality. 1900 appears to be wrong as it seems to refer to 'Klub 27'? | https://en.wikipedia.org/wiki/27_Club | Created anew with the help of ChatGPT. |">
+		<programme id="8aaae0f3-90bb-4bd5-8db0-f80beb89abbb" product="4" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Klub der toten Sänger [1900, nicht freigegeben]' but it seems lost. Maybe because of missing description, maybe because of bad quality. 1900 appears to be wrong as it seems to refer to 'Klub 27'? | https://en.wikipedia.org/wiki/27_Club | Created anew with the help of ChatGPT. |">
 			<title>
 				<de>Klub der toten Sänger</de>
 				<en>Dead Singers Club</en>
@@ -2473,7 +2546,7 @@ Tragiczny finał.</pl>
 			<releaseTime year_relative="+3" year_relative_min="1995" year_relative_max="2002" />
 			<ratings critics="25" speed="70" outcome="35" />
 		</programme>
-		<programme id="6300145a-5104-4186-8d42-9a3c0f13be84" product="1" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Unsere Biographien [2006]' but it seems lost. Making something up with help of ChatGPT.">
+		<programme id="6300145a-5104-4186-8d42-9a3c0f13be84" product="4" licence_type="1" creator="" fictional="1" comment="A TVTower 2013 or previous version apparently had an entry 'Unsere Biographien [2006]' but it seems lost. Making something up with help of ChatGPT.">
 			<title>
 				<de>Unsere Biographien</de>
 				<en>Our Biographies</en>
@@ -2683,7 +2756,7 @@ Tragiczny finał.</pl>
 				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_7" />
 			</effects>
 		</programme>
-		<programme id="870727e0-c302-44ad-a1b2-d23b64b4a1c9" product="1" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="870727e0-c302-44ad-a1b2-d23b64b4a1c9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
 			<title>
 				<de>Talk um 10 Spezial: [2|Full]</de>
 				<en>Talk at 10 Special: [2|Full]</en>
