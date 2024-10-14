@@ -6,7 +6,6 @@ EndRem
 SuperStrict
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.math.bmx"
-Import "Dig/base.util.scriptexpression.bmx"
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
@@ -15,6 +14,7 @@ Import "game.world.worldtime.bmx"
 Import "game.player.base.bmx"
 
 Import "game.programme.newsevent.template.bmx"
+Import "game.gamescriptexpression.base.bmx"
 
 
 

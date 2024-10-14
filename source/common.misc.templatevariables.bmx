@@ -3,16 +3,12 @@ Import Brl.Map
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.string.bmx"
-Import "Dig/base.util.scriptexpression.bmx"
-Import "game.gameinformation.base.bmx" 'to access worldtime
+Import "Dig/base.util.scriptexpression_ng.bmx"
 
 
 
-'By default templatevariables use the registered variables and placeholders
-'but also default ones via GetGameInformation(placeholder.toLower(), "")
+'By default templatevariables use registered variables and expressions
 'to fill in the corresponding data.
-'so when adding new placeholder-handlers, also check the gameinformation
-'system if it is containing them already
 Type TTemplateVariables
 	'known languageIDs used in the variables-map
 	'(length always >0 as at least 1 language id has to be set)
@@ -128,35 +124,6 @@ Type TTemplateVariables
 		variablesResolved.insert(key, obj)
 	End Method
 
-rem
-	'return a "multi language"-string for the given key/variable
-	'If instance does not contain it, a potential parent is asked.
-	'This allows a shared parent to define values for the children.
-	Method GetResolvedVariable:TLocalizedString(key:string, defaultValue:string="", createDefault:int = True, keyIsLowerCase:Int = False)
-		If Not keyIsLowerCase 
-			key = key.toLower()
-		EndIf
-
-		'search if individually resolved
-		Local result:TLocalizedString
-		If variablesResolved
-			result = TLocalizedString(variablesResolved.ValueForKey(key))
-		EndIf
-		'a parent could have it resolved ("more generic")
-		If Not result
-			Local parent:TTemplateVariables = GetParentTemplateVariables()
-			If parent
-				result = parent.GetResolvedVariable(key, defaultValue, createDefault, keyIsLowerCase)
-			EndIf
-		EndIf
-
-		If Not result And createDefault
-			result = New TLocalizedString(defaultValue)
-		endif
-		return result
-	End Method
-endrem
-
 
 	Method AddVariable(key:string, obj:object, keyIsLowerCase:Int = False)
 		If Not keyIsLowerCase 
@@ -177,34 +144,7 @@ endrem
 		variables.insert(key, obj)
 	End Method
 	
-rem
-	Method GetVariableRawString:String(key:String, defaultValue:string = "", createDefault:int = True, useTime:Long = 0, keyIsLowerCase:Int = False)
-		If Not keyIsLowerCase 
-			key = key.toLower()
-		EndIf
-		
-		Local result:String
-		Local mapValue:Object
-		If variables And variables.ValueForKey(key, mapValue)
-			if TLocalizedString(mapValue)
-				return TLocalizedString(mapValue).get()
-			else
-				result = string(mapValue)
-			endif
-		EndIf
-
-		if not mapValue
-			result = defaultValue
-			if createDefault
-				AddVariable(key, defaultValue, True)
-			EndIf
-		EndIf
-		
-		Return result
-	End Method
-endrem
-
-
+	
 	Method HasVariable:Int(key:String, keyIsLowerCase:Int = False)
 		If Not variables Then Return False
 		
@@ -213,7 +153,6 @@ endrem
 		EndIf
 		Return variables.Contains(key)
 	End Method
-	
 
 
 	'Return the TLocalizedString placed for the given variable / key 

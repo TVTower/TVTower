@@ -6,11 +6,12 @@ EndRem
 SuperStrict
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.math.bmx"
-Import "Dig/base.util.scriptexpression.bmx"
 Import "game.gameconstants.bmx"
 Import "game.modifier.base.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.player.base.bmx"
+'to be able to evaluate scripts
+Import "game.gamescriptexpression.base.bmx"
 
 Import "common.misc.templatevariables.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
