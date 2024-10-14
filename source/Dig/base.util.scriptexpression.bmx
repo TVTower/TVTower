@@ -43,6 +43,7 @@ SuperStrict
 
 Import Brl.StandardIO
 Import Brl.Retro
+Import Brl.StringBuilder
 
 'based on the approach described at
 'http://www.strchr.com/expression_evaluator (author: Peter Kankowski)
@@ -52,7 +53,7 @@ Type TScriptExpression
 	global _expressionIndex:int = 0
 	global _errorCount:int = 0
 	global _lastCommandErrored:int = False
-	global _error:string = ""
+	global _error:TStringBuilder = New TStringBuilder()
 	global _variableHandler:string(variable:string, params:string[], resultType:int var)
 
 	global _instance:TScriptExpression
@@ -74,7 +75,7 @@ Type TScriptExpression
 		_expression = expression
 		_expressionIndex = 0
 		_errorCount = 0
-		_error = ""
+		_error.SetLength(0)
 		_variableHandler = variableHandler
 
 		return ParseConnectors()
@@ -82,6 +83,9 @@ Type TScriptExpression
 
 
 	Method EvalString:string(expression:string)
+		_errorCount = 0
+		_error.SetLength(0)
+		
 		local expressionResultType:int
 		local paramsStart:int = expression.Find("(")
 		if paramsStart >= 0
@@ -112,7 +116,9 @@ Type TScriptExpression
 			op :+ GetCharAtPos( _expressionIndex + 1)
 			if op <> "&&" and op <> "||"
 				_errorCount :+ 1
-				_error = "Incorrect operator ~q"+op+"~q. Valid are ~q&&~q and ~q||~q."
+				_error.Append("Incorrect operator ~q")
+				_error.Append(op)
+				_error.Append("~q. Valid are ~q&&~q and ~q||~q.")
 				return False
 			endif
 			'next token
@@ -159,7 +165,10 @@ Type TScriptExpression
 
 			if op <> ">=" and op <> "=>" and op <> "=<" and op <> "<=" and op <> "=" and op <> ">" and op <> "<" and op <> "<>"
 				_errorCount :+ 1
-				_error :+ "Incorrect conditional ~q"+op+"~q. Valid are ~q>=~q, ~q<=q, ~q=~q, ~q>~q and ~q<~q.~n"
+				_error.Append("Incorrect conditional ~q")
+				_error.Append(op)
+				_error.Append("~q. Valid are ~q>=~q, ~q<=q, ~q=~q, ~q>~q and ~q<~q.~n")
+
 				return False
 			endif
 
@@ -259,7 +268,7 @@ Type TScriptExpression
 			local res:int = ParseConnectors()
 			if GetCurrentChar() <> ")"
 				_errorCount :+ 1
-				_error :+ "Unmatched bracket. Make sure to close with ~q)~q.~n"
+				_error.Append("Unmatched bracket. Make sure to close with ~q)~q.~n")
 				return -1
 			else
 				'skip ending bracket
@@ -361,7 +370,7 @@ Type TScriptExpression
 		endif
 
 		_errorCount :+ 1
-		_error :+ "Invalid characters used. Allowed: alphanumeric characters, brackets, comparators (<, >, =, >=, <=) and connectors (&&, ||).~n"
+		_error.Append("Invalid characters used. Allowed: alphanumeric characters, brackets, comparators (<, >, =, >=, <=) and connectors (&&, ||).~n")
 
 		return -1
 	End Method
@@ -425,7 +434,9 @@ Type TScriptExpression
 		if _variableHandler then return _variableHandler(variable, null, resultType)
 
 		_errorCount :+1
-		_error :+ "Cannot handle variable ~q"+variable+"~q. Defaulting to 0.~n"
+		_error.Append("Cannot handle variable ~q")
+		_error.Append(variable)
+		_error.Append("~q. Defaulting to 0.~n")
 		_lastCommandErrored = True
 		'print _error
 
@@ -438,7 +449,11 @@ Type TScriptExpression
 		if _variableHandler then return _variableHandler(variable, params, resultType)
 
 		_errorCount :+1
-		_error :+ "Cannot handle function ~q"+variable+"~q with params ~q" + ",".Join(params) +"~q. Defaulting to 0.~n"
+		_error.Append("Cannot handle function ~q")
+		_error.Append(variable)
+		_error.Append("~q with params ~q")
+		_error.Append(",".Join(params))
+		_error.Append("~q. Defaulting to 0.~n")
 		_lastCommandErrored = True
 		'print _error
 
@@ -465,7 +480,7 @@ Function ReplaceTextWithScriptExpression:int(text:string, replacement:string var
 
 	'found something valid?
 	if TScriptExpression._lastCommandErrored
-		replacement = TScriptExpression._error
+		replacement = TScriptExpression._error.ToString()
 		return False
 	else
 		replacement = expressionResult

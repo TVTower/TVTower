@@ -6,7 +6,6 @@ EndRem
 SuperStrict
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.math.bmx"
-Import "Dig/base.util.scriptexpression.bmx"
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
@@ -15,6 +14,7 @@ Import "game.world.worldtime.bmx"
 Import "game.player.base.bmx"
 
 Import "game.programme.newsevent.template.bmx"
+Import "game.gamescriptexpression.base.bmx"
 
 
 
@@ -531,6 +531,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			If not template Then Return False
 		EndIf
 
+		' identify which template variables to use, merge multiple if 
+		' required to eg. inherit variables from parent
 		Local varToUse:TTemplateVariables
 		If templateVariables
 			varToUse = templateVariables
@@ -561,26 +563,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
-		'copy text if we intend to replace content
-		'(for now only check main language)
-		If template.title.Get().Find("%") >= 0 or template.title.Get().Find("${") >= 0
-			If varToUse
-				Self.title = _ReplacePlaceholders(varToUse.ReplacePlaceholders(template.title), time)
-			Else
-				Self.title = _ReplacePlaceholders(template.title, time)
-			EndIf
-		Else
-			Self.title = template.title
-		EndIf
-		If template.description.Get().Find("%") >= 0 or template.description.Get().Find("${") >= 0
-			If varToUse
-				Self.description = _ReplacePlaceholders(varToUse.ReplacePlaceholders(template.description), time)
-			Else
-				Self.description = _ReplacePlaceholders(template.description, time)
-			EndIf
-		Else
-			Self.description = template.description
-		EndIf
+		self.title = _ParseScriptExpressions(template.title, True, varToUse)
+		self.description = _ParseScriptExpressions(template.description, True, varToUse)
 
 		'store variables for passing on to potential trigger
 		If varToUse And Not templateVariables
@@ -588,6 +572,51 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'print "storing templateVariables for " +Self.GetTitle()
 		EndIf
 	End Method
+
+
+	Method _ParseScriptExpressions:TLocalizedString(text:TLocalizedString, createCopy:Int = True, templateVariablesToUse:TTemplateVariables = Null)
+		Local result:TLocalizedString = text
+		If createCopy 
+			result = text.copy()
+		Else
+			result = text
+		EndIf
+	
+		Local sb:TStringBuilder = New TStringBuilder()
+
+		For Local langID:Int = EachIn text.GetLanguageIDs()
+			Local value:String = text.Get(langID)
+			Local valueNew:String = value
+			
+			_ParseScriptExpressions(valueNew, langID, sb, templateVariablesToUse)
+
+			if value <> valueNew
+				result.Set(valueNew, langID)
+			EndIf
+		Next
+		Return result
+	End Method
+
+
+	Method _ParseScriptExpressions:Int(text:String var, localeID:int, sb:TStringBuilder = Null, templateVariablesToUse:TTemplateVariables = Null)
+		if not sb 
+			sb = New TStringBuilder(text)
+		Else
+			sb.SetLength(0)
+			sb.Append(text)
+		EndIf
+		
+		if not templateVariablesToUse then templateVariablesToUse = self.templateVariables
+
+		Local context:SScriptExpressionContext = new SScriptExpressionContext(self, localeID, templateVariablesToUse)
+		sb = GameScriptExpression.ParseLocalizedText(sb, context)
+		If text <> sb.Hash() 'only create new string if required
+			text = sb.ToString()
+			Return True
+		EndIf
+		Return False
+	End Method
+
 
 
 	Method SetTitle(title:TLocalizedString)

@@ -64,8 +64,6 @@ endrem
 
 Type TProduction Extends TOwnedGameObject
 	Field productionConcept:TProductionConcept
-	'DEPRECATED: SAVEGAME - remove in > 0.7.1 
-	Field studioRoomGUID:String
 	'in which room was/is this production recorded (might no longer
 	'be a studio!)
 	Field studioRoomID:Int
@@ -93,9 +91,6 @@ Type TProduction Extends TOwnedGameObject
 	Field productionTimeMod:Float = 1.0
 	Field productionPriceMod:Float = 1.0
 
-
-	'todo: DEPRECATED, remove GUID variable after 0.7.1 release
-	Field producedLicenceGUID:String
 	Field producedLicenceID:Int
 	'the programme licence once the production is finished
 	'this is cleared after finalizing the production
@@ -833,8 +828,6 @@ Type TProduction Extends TOwnedGameObject
 			Return _designatedProgrammeLicence
 		ElseIf producedLicenceID
 			Return GetProgrammeLicenceCollection().Get(producedLicenceID)
-		elseif producedLicenceGUID
-			Return GetProgrammeLicenceCollection().GetByGUID(producedLicenceGUID)
 		endif
 		Return Null
 	End Method

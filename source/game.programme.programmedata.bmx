@@ -13,6 +13,8 @@ Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
 Import "basefunctions.bmx"
 Import "game.stationmap.bmx"
+Import "game.gamescriptexpression.base.bmx"
+
 
 Type TProgrammeDataCollection Extends TGameObjectCollection
 
@@ -129,8 +131,9 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 				_liveProgrammeData.AddLast(data)
 			Next
 
-			'order by release
-			_liveProgrammeData.Sort(True, _SortByReleaseTime)
+			'order by release (and ID, not name - avoids GetTitle() 
+			'calls for live/dynamic data objects - which adds to cpu load)
+			_liveProgrammeData.Sort(True, _SortByReleaseTimeAndID)
 		EndIf
 
 		Return _liveProgrammeData
@@ -166,7 +169,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 			Next
 
 			'order by release
-			_finishedProductionProgrammeData.Sort(True, _SortByReleaseTime)
+			_finishedProductionProgrammeData.Sort(True, _SortByReleaseTimeAndID)
 		EndIf
 
 		Return _finishedProductionProgrammeData
@@ -370,6 +373,21 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Function
 
 
+	Function _SortByReleaseTimeAndID:Int(o1:Object, o2:Object)
+		Local p1:TProgrammeData = TProgrammeData(o1)
+		Local p2:TProgrammeData = TProgrammeData(o2)
+		If Not p2 Then Return 1
+	
+        If p1.releaseTime > p2.releaseTime
+			Return 1
+        ElseIf p1.releaseTime < p2.releaseTime
+			Return -1
+		Else
+			Return p1.id > p2.id
+		EndIf
+	End Function
+	
+
 	Function _SortByName:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeData = TProgrammeData(o1)
 		Local p2:TProgrammeData = TProgrammeData(o2)
@@ -436,7 +454,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Field blocks:Int = 1
 
 	'guid of a potential series header
-	Field parentGUID:String
+	Field parentDataID:Int
 	'TVTProgrammeDataType-value
 	'(eg. "SERIES" for series-headers, or "SINGLE" for a movie)
 	Field dataType:Int = 0
@@ -923,65 +941,45 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method _ReplacePlaceholdersInLocalizedString:TLocalizedString(localizedString:TLocalizedString)
-		Local result:TLocalizedString = New TLocalizedString
-		For Local langID:Int = EachIn localizedString.GetLanguageIDs()
-			result.Set(_ReplacePlaceholdersInString(localizedString.Get(langID)), langID)
-			'print langID + "  => " + Lset(localizedString.valueStrings[langID],30) + "  =>  " + Lset(localizedString.Get(langID),30) +"     result: " + Lset(result.Get(langID),30) +"  langIndex="+localizedString.GetLanguageIndex(langID)
+	Method _ParseScriptExpressions:TLocalizedString(text:TLocalizedString, createCopy:Int = True)
+		Local result:TLocalizedString = text
+		If createCopy 
+			result = text.copy()
+		Else
+			result = text
+		EndIf
+	
+		Local sb:TStringBuilder = New TStringBuilder()
+
+		For Local langID:Int = EachIn text.GetLanguageIDs()
+			Local value:String = text.Get(langID)
+			Local valueNew:String = value
+			
+			_ParseScriptExpressions(valueNew, langID, sb)
+
+			if value <> valueNew
+				result.Set(valueNew, langID)
+			EndIf
 		Next
 		Return result
 	End Method
 
 
-	Method _ReplacePlaceholdersInString:String(content:String)
-		Local result:String = content
-
-		'placeholders are: "%object|guid|whatinformation%"
-		'              or: "${object|guid|whatinformation}"
-		Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(content)
-		For Local placeHolder:String = EachIn placeHolders
-			Local elements:String[] = placeHolder.split("|")
-			If elements.length < 3 Then Continue
-
-			If elements[0] = "person"
-				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(elements[1])
-				If Not person
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Full", "John Doe")
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|First", "John")
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Nick", "John")
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Last", "Doe")
-				Else
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Full", person.GetFullName())
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|First", person.GetFirstName())
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Nick", person.GetNickName())
-					TTemplateVariables.ReplacePlaceholderInText(result, "person|"+elements[1]+"|Last", person.GetLastName())
-				EndIf
-			EndIf
-		Next
-
-		If result.find("|") >= 0
-			If result.find("[") >= 0
-				Local job:TPersonProductionJob
-				'check for cast
-				For Local i:Int = 0 To 10
-					job = GetCastAtIndex(i)
-					If Not job
-						result = result.Replace("["+i+"|Full]", "John Doe")
-						result = result.Replace("["+i+"|First]", "John")
-						result = result.Replace("["+i+"|Nick]", "John")
-						result = result.Replace("["+i+"|Last]", "Doe")
-					Else
-						Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
-						result = result.Replace("["+i+"|Full]", person.GetFullName())
-						result = result.Replace("["+i+"|First]", person.GetFirstName())
-						result = result.Replace("["+i+"|Nick]", person.GetNickName())
-						result = result.Replace("["+i+"|Last]", person.GetLastName())
-					EndIf
-				Next
-			EndIf
+	Method _ParseScriptExpressions:Int(text:String var, localeID:int, sb:TStringBuilder = Null)
+		if not sb 
+			sb = New TStringBuilder(text)
+		Else
+			sb.SetLength(0)
+			sb.Append(text)
 		EndIf
 
-		Return result
+		Local context:SScriptExpressionContext = new SScriptExpressionContext(self, localeID, Null)
+		sb = GameScriptExpression.ParseLocalizedText(sb, context)
+		If text <> sb.Hash() 'only create new string if required
+			text = sb.ToString()
+			Return True
+		EndIf
+		Return False
 	End Method
 
 
@@ -989,7 +987,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		If title
 			'replace placeholders and and cache the result
 			If Not titleProcessed
-				titleProcessed = _ReplacePlaceholdersInLocalizedString(title)
+				titleProcessed = _ParseScriptExpressions(title)
 			EndIf
 			Return titleProcessed.Get()
 		EndIf
@@ -1001,7 +999,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		If description
 			'replace placeholders and and cache the result
 			If Not descriptionProcessed
-				descriptionProcessed = _ReplacePlaceholdersInLocalizedString(description)
+				descriptionProcessed = _ParseScriptExpressions(description, True)
 			EndIf
 			Return descriptionProcessed.Get()
 		EndIf

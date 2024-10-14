@@ -26,8 +26,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 	End Method
 
 
-	'override
-	Method UpdateLive:Int()
+	Method UpdateLive:Int(calledAfterbroadCast:Int) override
 		'do no longer display "live hint" once the last match started
 
 		If lastMatchStartTime = -1
@@ -103,7 +102,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 		'create live state texts
 		If Not finalDescription
 			If Not descriptionProcessed
-				descriptionProcessed = _ReplacePlaceholdersInLocalizedString(description)
+				descriptionProcessed = _ParseScriptExpressions(description)
 			EndIf
 
 			If matchesFinished
@@ -215,7 +214,7 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 					EndIf
 				EndIf
 
-				titleProcessed = _ReplacePlaceholdersInLocalizedString(title)
+				titleProcessed = _ParseScriptExpressions(title)
 			EndIf
 			Return titleProcessed.Get()
 		EndIf
@@ -228,27 +227,23 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 			'replace placeholders and and cache the result
 			If Not descriptionProcessed
 				If dynamicTexts
-					If leagueGUID
-						description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , -1 )
-					Else
-						description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , -1 )
+					'skip choosing a description if there is already one
+					'this avoids having a random "text" on eeach dynamic text
+					'refresh
+					If not description.HasLanguageID( TLocalization.currentLanguageID )
+						If leagueGUID
+							description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , TLocalization.currentLanguageID )
+						Else
+							description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , TLocalization.currentLanguageID )
+						EndIf
 					EndIf
 				EndIf
 
-				descriptionProcessed = _ReplacePlaceholdersInLocalizedString(description)
+				descriptionProcessed = _ParseScriptExpressions(description)
 			EndIf
 
 			If Not IsLive()
 				Return "|i|("+GetRandomLocale("LIVE_ON_TAPE")+": " + GetLocale("GAMEDAY")+" "+ GetWorldTime().GetFormattedDate(GetMatchTime(), "g, h:i") + " " + GetLocale("OCLOCK")+")|/i|~n" + descriptionProcessed.Get()
-Rem
-				'compatibility with old savegames in which "sportheaderprogrammedata"
-				'was not existing and header+matches shared one type
-				if matchGUID
-					return "|i|("+GetRandomLocale("LIVE_ON_TAPE")+": " + GetLocale("GAMEDAY")+" "+ GetWorldTime().GetFormattedGameDate(GetMatchTime(), "g, h:i") + " " + GetLocale("OCLOCK")+")|/i|~n" + descriptionProcessed.Get()
-				else
-					return "|i|("+GetRandomLocale("LIVE_ON_TAPE")+": " + GetLocale("ALL_MATCHES_FINISHED") + "|/i|)~n" + descriptionProcessed.Get()
-				endif
-endrem
 			Else
 				Return descriptionProcessed.Get()
 			EndIf
@@ -355,29 +350,46 @@ endrem
 	End Function
 
 
-	Method _ReplacePlaceholdersInString:String(content:String)
-		Local result:String = Super._ReplacePlaceholdersInString(content)
+	Method _ParseScriptExpressions:TLocalizedString(text:TLocalizedString, createCopy:Int = True) override
+		text = Super._ParseScriptExpressions(text, createCopy)
+
+		'add sports information
+
+		'TODO: replace with "function calls / expressions"
+		'      context TProgrammeData -> TSportsHeaderProgrammeData
 
 		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
-		If league
-			result = _replaceLeagueInformation(result, league, TLocalization.GetCurrentLanguageID())
-
-			Local sport:TNewsEventSport = league.GetSport()
-			If sport Then result = _replaceSportInformation(result, sport, TLocalization.GetCurrentLanguageID())
-		EndIf
-
 		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
-		If match
-			result = _replaceMatchInformation(result, match, TLocalization.GetCurrentLanguageID())
+		Local sport:TNewsEventSport
+		If league Then sport = league.GetSport()
 
-			If result.Find("%TEAM") >= 0
-				For Local teamIndex:Int = 0 Until match.teams.length
-					result = _replaceTeamInformation(result, match.teams[teamIndex], teamIndex+1, TLocalization.GetCurrentLanguageID())
-				Next
+		For Local langID:Int = EachIn text.GetLanguageIDs()
+			Local s:String = text.Get(langID)
+			Local sNew:String = s
+			
+			If league
+				sNew = _replaceLeagueInformation(sNew, league, langID)
 			EndIf
-		EndIf
 
-		Return result
+			If sport
+				sNew = _replaceSportInformation(sNew, sport, langID)
+			EndIf
+
+			If match
+				sNew = _replaceMatchInformation(sNew, match, langID)
+				If sNew.Find("%TEAM") >= 0
+					For Local teamIndex:Int = 0 Until match.teams.length
+						sNew = _replaceTeamInformation(sNew, match.teams[teamIndex], teamIndex+1, langID)
+					Next
+				EndIf
+			EndIf
+			
+			if sNew <> s
+				text.Set(sNew, langID)
+			EndIf
+		Next
+		
+		Return text
 	End Method
 
 
@@ -540,7 +552,7 @@ Rem
 endrem
 
 
-	Method UpdateLive:Int()
+	Method UpdateLive:Int(calledAfterbroadCast:Int) override
 		Super.UpdateLive(False)
 
 		'refresh processedTitle (recreated on request)
