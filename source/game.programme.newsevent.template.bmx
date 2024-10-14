@@ -24,20 +24,18 @@ Type TNewsEventTemplateCollection
 	Field allTemplates:TIntMap = new TIntMap
 	Field reuseableTemplates:TIntMap = new TIntMap
 	Field unusedTemplates:TIntMap = new TIntMap
-	'TLowerString-GUID->object pairs
-	Field allTemplatesGUID:TMap = new TMap
 	Field threadLastHappened:TStringMap = new TStringMap
 
 	'CACHES (eg. for random accesses)
 	'the *Count fields help to predefine an initial size of the arrays
 	'when refilling while nothing had changed meanwhile
 	Field _allCount:int = -1 {nosave}
+	Field _allTemplatesGUID:TStringMap {nosave}
+	Field _allTemplatesGUIDValid:Int = False {nosave}
 	Field _unusedInitialTemplates:TNewsEventTemplate[][] {nosave}
 	Field _unusedInitialTemplatesCount:int[] {nosave}
 	Field _unusedAvailableInitialTemplates:TNewsEventTemplate[][] {nosave}
 	Field _unusedAvailableInitialTemplatesCount:int[] {nosave}
-'	Field _unusedInitialTemplates:TList[] {nosave}
-'	Field _unusedAvailableInitialTemplates:TList[] {nosave}
 	Global _instance:TNewsEventTemplateCollection
 
 
@@ -52,7 +50,6 @@ Type TNewsEventTemplateCollection
 
 	Method Initialize:TNewsEventTemplateCollection()
 		allTemplates.Clear()
-		allTemplatesGUID.Clear()
 		threadLastHappened.Clear()
 
 		unusedTemplates.Clear()
@@ -67,65 +64,80 @@ Type TNewsEventTemplateCollection
 	Method _InvalidateCaches()
 		_InvalidateUnusedAvailableInitialTemplates()
 		_InvalidateUnusedInitialTemplates()
+		
+		_allTemplatesGUIDValid = False
 
 		_allCount = -1
 	End Method
 
 
 	Method _InvalidateUnusedAvailableInitialTemplates()
-'		_unusedAvailableInitialTemplates = New TList[TVTNewsGenre.count + 1]
-		'I know no (vanilla compatible) way to reset an "array of arrays"
-		'_unusedAvailableInitialTemplates = New TNewsEventTemplate[TVTNewsGenre.count +1][0]
-
-		'so this will have to do
-		local empty:TNewsEventTemplate[][]
-		_unusedAvailableInitialTemplates = empty
-		_unusedAvailableInitialTemplates = _unusedAvailableInitialTemplates[.. TVTNewsGenre.count+1]
+		'create a new array of arrays with parent array being genreCount + 1
+		_unusedAvailableInitialTemplates = New TNewsEventTemplate[][TVTNewsGenre.count+1]
 
 		_unusedAvailableInitialTemplatesCount = New Int[TVTNewsGenre.count+1]
 	End Method
 
 
 	Method _InvalidateUnusedInitialTemplates()
-'		_unusedInitialTemplates = New TList[TVTNewsGenre.count + 1]
-		'I know no (vanilla compatible) way to reset an "array of arrays"
-		'_unusedInitialTemplates = New TNewsEventTemplate[TVTNewsGenre.count][]
-
-		'so this will have to do
-		local empty:TNewsEventTemplate[][]
-		_unusedInitialTemplates = empty
-		_unusedInitialTemplates = _unusedInitialTemplates[.. TVTNewsGenre.count+1]
+		'create a new array of arrays with parent array being genreCount + 1
+		_unusedInitialTemplates = New TNewsEventTemplate[][TVTNewsGenre.count+1]
 
 		_unusedInitialTemplatesCount = New Int[TVTNewsGenre.count+1]
+	End Method
+	
+	
+	Method _GetAllTemplatesGUID:TStringMap()
+		If not _allTemplatesGUIDValid or not self._allTemplatesGUID
+			If not self._allTemplatesGUID 
+				self._allTemplatesGUID = New TStringMap
+			Else
+				self._allTemplatesGUID.Clear()
+			EndIf
+			
+			For Local nET:TNewsEventTemplate = EachIn allTemplates.Values()
+				self._allTemplatesGUID.Insert(nET.GetGUID().ToLower(), nET)
+			Next 
+
+			self._allTemplatesGUIDValid = True
+		End If
+
+		Return self._allTemplatesGUID
 	End Method
 
 
 	Method Add:int(obj:TNewsEventTemplate)
+		If not obj Then Return False
+
 		'add to common maps
-		'special lists get filled when using their Getters
-		allTemplatesGUID.Insert(obj.GetLowerStringGUID(), obj)
-		allTemplates.Insert(obj.GetID(), obj)
-		unusedTemplates.Insert(obj.GetID(), obj)
+		Local id:Int = obj.GetID()
+		allTemplates.Insert(id, obj)
+		unusedTemplates.Insert(id, obj)
 
 		_InvalidateCaches()
 
-		return TRUE
+		Return True
 	End Method
 
 
 	Method Remove:int(obj:TNewsEventTemplate)
-		allTemplatesGUID.Remove(obj.GetLowerStringGUID())
-		allTemplates.Remove(obj.GetID())
-		reuseableTemplates.Remove(obj.GetID())
-		unusedTemplates.Remove(obj.GetID())
+		If not obj Then Return False
+			
+		'remove from common maps
+		Local id:Int = obj.GetID()
+		allTemplates.Remove(id)
+		reuseableTemplates.Remove(id)
+		unusedTemplates.Remove(id)
 
 		_InvalidateCaches()
 
-		return TRUE
+		Return True
 	End Method
 
 
 	Method Use:int(obj:TNewsEventTemplate)
+		If not obj Then Return False
+
 		obj.timesUsed :+ 1
 		obj.SetLastUsedTime( Long(GetWorldTime().GetTimeGone()) )
 
@@ -164,9 +176,8 @@ Type TNewsEventTemplateCollection
 	End Method
 
 
-	Method GetByGUID:TNewsEventTemplate(GUID:object)
-		if not TLowerString(GUID) then GUID = TLowerString.Create(string(GUID))
-		Return TNewsEventTemplate(allTemplatesGUID.ValueForKey(GUID))
+	Method GetByGUID:TNewsEventTemplate(GUID:String)
+		Return TNewsEventTemplate( _GetAllTemplatesGUID().ValueForKey(GUID.ToLower()))
 	End Method
 
 
@@ -175,25 +186,25 @@ Type TNewsEventTemplateCollection
 	End Method
 
 
-	Global nilNode:TNode = New TNode._parent
 	Method SearchByPartialGUID:TNewsEventTemplate(GUID:String)
 		'skip searching if there is nothing to search
 		if GUID.trim() = "" then return Null
 
 		GUID = GUID.ToLower()
 
-		'find first hit
-		Local node:TNode = allTemplatesGUID._FirstNode()
-		While node And node <> nilNode
-			if TLowerString(node._key).Find(GUID) >= 0
-				return TNewsEventTemplate(node._value)
-			endif
+		Local node:TStringNode = _GetAllTemplatesGUID()._FirstNode()
+		While node
+			If node.Key().ToLower().Find(GUID) >= 0
+				Return TNewsEventTemplate(node.Value())
+			EndIf
 
 			'move on to next node
-			node = node.NextNode()
+			If node.HasNext()
+				node = node.NextNode()
+			EndIf
 		Wend
 
-		return Null
+		Return Null
 	End Method
 
 
@@ -302,6 +313,7 @@ Type TNewsEventTemplateCollection
 		'create if missing
 		if not _unusedInitialTemplates then _InvalidateUnusedInitialTemplates()
 
+		'fill in templates if not done yet for the genre
 		if not _unusedInitialTemplates[genreIndex]
 			'start with the same size as last time (tries to avoid some
 			'memory copy when doing an array resize)
@@ -327,7 +339,6 @@ Type TNewsEventTemplateCollection
 
 			'resize the array to the now real amount of entries
 			if _unusedInitialTemplates[genreIndex].length <> _unusedInitialTemplatesCount[genreIndex]
-				local old:int = _unusedInitialTemplates[genreIndex].length
 				_unusedInitialTemplates[genreIndex] = _unusedInitialTemplates[genreIndex][.. _unusedInitialTemplatesCount[genreIndex]]
 			endif
 		endif
@@ -339,12 +350,13 @@ Type TNewsEventTemplateCollection
 	'returns (and creates if needed) an array containing only available
 	'and initial news
 	Method GetUnusedAvailableInitialTemplates:TNewsEventTemplate[](genre:int=-1)
-		'create if missing
-		if not _unusedAvailableInitialTemplates then _InvalidateUnusedAvailableInitialTemplates()
-
 		'index 0 is for "all" while genre 0 would be Politics/Economy
 		local genreIndex:int = genre + 1
 
+		'create if missing
+		if not _unusedAvailableInitialTemplates then _InvalidateUnusedAvailableInitialTemplates()
+
+		'fill in templates if not done yet for the genre
 		if not _unusedAvailableInitialTemplates[genreIndex]
 			'we start with the (maybe) already filtered initial templates
 			'array
