@@ -1608,9 +1608,18 @@ endrem
 		If Not item Then Return False
 
 		'assisting shortcuts create new guiobjects
+		'shift+ctrl: next episode and to to next day
 		'shift: next episode
 		'ctrl : programme again
-		If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
+		If KEYMANAGER.IsDown(KEY_LSHIFT) And KEYMANAGER.IsDown(KEY_LCONTROL)
+			'reset key
+			KEYMANAGER.ResetKey(KEY_LSHIFT)
+			KEYMANAGER.ResetKey(KEY_LCONTROL)
+
+			ChangePlanningDay(planningDay+1)
+			CreateNextEpisodeOrCopy(item, False)
+			Return True
+		ElseIf KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
 			'reset key
 			KEYMANAGER.ResetKey(KEY_LSHIFT)
 			KEYMANAGER.ResetKey(KEY_RSHIFT)
