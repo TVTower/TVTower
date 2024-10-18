@@ -1381,7 +1381,7 @@
 			<title>
 				<de>Aufarbeitung Causa ${name_${g}} begonnen</de>
 				<en>${name_${g}} case processing started</en>
-				<pl>Rozpoczęto przetwarzanie sprawy ${nazwa_${g}}</pl>
+				<pl>Rozpoczęto przetwarzanie sprawy ${name_${g}}</pl>
 			</title>
 			<description>
 				<de>Die Causa ${name_${g}} gegen ${theirparrot_${i}} findet Eingang in die rechtswissenschaftliche Literatur, und viele Jurastudierende werden sich mit der Fallstudie herumschlagen dürfen.</de>
