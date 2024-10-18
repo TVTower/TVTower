@@ -2918,6 +2918,11 @@ endrem
 		'close message window
 		If messageWindow Then messageWindow.Close()
 
+		'reduce game speed for autosave games (saved during fast forward)
+		If saveURI.contains("autosave.") and GetWorldTime().GetTimeFactor() > 200
+			GetGame().SetGameSpeedPreset(0)
+		EndIf
+
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
 
@@ -6311,7 +6316,7 @@ endrem
 		If TSaveGame.autoSaveNow and Not GetPlayer().GetFigure().IsInRoom()
 			Local gameName:String = GameConfig.savegame_lastUsedName
 			Local autoSaveName:String = "autosave"
-			If gameName and gameName <> "quicksave" and not gameName.endsWith("_autosave")
+			If gameName and gameName <> "quicksave" and not gameName.endsWith("autosave")
 				autoSaveName = gameName + "_autosave"
 			EndIf
 			Local autoSaveURI:String = TSavegame.GetSavegameURI(autoSaveName)
