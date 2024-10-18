@@ -150,7 +150,7 @@
 		</news>
 
 		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing that it still can be used in general and in addition when slightly modified to a fictional copycat event.">
-			<availability script='${.and:${.worldtime:"year"}&gt;=1988:${.worldtime:"season"}==1}' />
+			<availability year_range_from="1988" year_range_to="-1" script='${.worldtime:"season"}==1' />
 			<title>
 				<de>Schessnah in der Nähe von Moskau gesichtet</de>
 				<en>Schessnah spotted near Moscow</en>
@@ -1678,7 +1678,7 @@
 				</aggroman>
 			</variables>
 			<data genre="0" price="1" quality="55" fictional="1" />
-			<availability script='${.worldtime:"daysplayed"}&gt;12' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="2e32bf54-c56e-4991-9907-bbad7c36fcd1" />
 			</effects>
@@ -2161,7 +2161,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,3,5" news="dd161f02-9ddc-4064-b22c-a7875665cb3a" />
 			</effects>
-			<availability script='${.worldtime:"daysplayed"}&gt;12' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 		</news>
 		<news id="dd161f02-9ddc-4064-b22c-a7875665cb3a" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>

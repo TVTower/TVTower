@@ -3009,7 +3009,7 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="3" />
-			<availability script='${.worldtime:"daysplayed"}&gt;18}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="214fee00-acec-46a1-8959-ccac3264bee9" creator="9551" comment="https://en.wikipedia.org/wiki/Dan_Simmons | https://en.wikipedia.org/wiki/Hyperion_Cantos">
 			<title>
@@ -3112,7 +3112,7 @@
 			<review min="20" max="90" />
 			<speed min="20" max="90" />
 			<studio_size value="3" />
-			<availability script='${.worldtime:"daysplayed"}&gt;18}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="b0a49e9d-8fd5-47dd-abb2-fbe2a3ca656b" creator="9551" comment="https://en.wikipedia.org/wiki/Dan_Simmons | https://en.wikipedia.org/wiki/Ilium/Olympos">
 			<title>
@@ -3191,7 +3191,7 @@
 			<review min="30" max="80" />
 			<speed min="30" max="80" />
 			<studio_size value="3" />
-			<availability script='${.worldtime:"daysplayed"}&gt;18}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="d5f301bf-a014-4a7c-8963-319cb7dc827b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1309057.Escapade">
 			<title>
@@ -3637,7 +3637,7 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="3" />
-			<availability script='${.worldtime:"daysplayed"}&gt;18}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="085400ce-9d05-4012-8e16-5276f335c38c" creator="9551" comment="https://en.wikipedia.org/wiki/Fables_(comics) | public domain, as are the characters">
 			<title>
@@ -4867,7 +4867,7 @@
 			<review min="40" max="80" />
 			<speed min="40" max="80" />
 			<studio_size value="3" />
-			<availability script='${.worldtime:"daysplayed"}&gt;18}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="3e6b74d2-b386-47f8-b876-858db1449467" creator="9551" comment="https://en.wikipedia.org/wiki/Operation:_Mindcrime_II">
 			<title>
@@ -7207,7 +7207,7 @@
 			<review min="79" max="95" />
 			<speed min="54" max="89" />
 			<studio_size value="3" />
-			<availability script='${.worldtime:"daysplayed"}&gt;18}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="b23f4846-075a-4c1f-8437-6a989b3c8351" creator="9551" comment="https://en.wikipedia.org/wiki/The_Dig_(video_game)">
 			<title>
@@ -8059,7 +8059,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="20" max="60" />
 			<speed min="20" max="60" />
 			<studio_size value="1" />
-			<availability script='${.worldtime:"daysplayed"}&gt;18}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="8f13def6-dfd6-4efe-9436-6384faee92d8" creator="9551" comment="https://en.wikipedia.org/wiki/Pyjamarama | TODO: Genre not specified more specifically, not much space. The film series is probably to be a puppet format.">
 			<title>

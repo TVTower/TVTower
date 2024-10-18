@@ -8781,7 +8781,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
-			<availability script='${.and:${.worldtime:"year"}&gt;=2002:${.worldtime:"month"}==5}' />
+			<availability year_range_from="2002" script='${.worldtime:"month"}==5' />
 		</news>
 
 		<news id="2cf59a3b-43cc-4683-9540-3a1b52a628ac" type="0" creator="" created_by="-">
@@ -8802,7 +8802,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
-			<availability script='${.and:${.worldtime:"year"}&lt;=2001:${.worldtime:"month"}==5}' />
+			<availability year_range_to="2001" script='${.worldtime:"month"}==5' />
 		</news>
 
 		<news id="37353373-3144-4879-bb74-387181b4cbaa" type="0" thread_id="9464e59a-0944-4ab0-b96a-2227a2cd14f5" creator="" created_by="-" comment="TVTower 2014 version: Schweden und Norwegen bilden Union - Nach historischem Vorbild bilden Schweden und Norwegen eine Union. Finnland möchte sich anschließen um damit die USL (Union skandinavischer Länder) bilden zu können. | Not clear, is it already done? If so, too 'alternative world' scenario and would have to be a one-time news item | maybe add other unions elsewhere of all kinds">
@@ -9112,7 +9112,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,4,10" news="eb05f8a5-b614-4d4d-a616-25c7cd0ae405" />
 			</effects>
-			<availability script='${.worldtime:"daysplayed"}&gt;36}' />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:36}' />
 		</news>
 		<news id="eb05f8a5-b614-4d4d-a616-25c7cd0ae405" type="2" thread_id="e248e5da-3555-48fe-acab-caaa9cdb7c70" creator="" created_by="-">
 			<title>
