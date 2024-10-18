@@ -567,7 +567,7 @@
 				<pl>To zwykły klub piłkarski. Podobieństwo nazwy do producenta napojów gazowanych jest przypadkowe.</pl>
 			</description>
 			<data genre="2" price="0.7" quality="11" />
-			<availability script='${.and:${.worldtime:"year"}&gt;=2010:${.or:${.worldtime:"month"}==1:${.worldtime:"month"}==7}}' />
+			<availability year_range_from="2010" year_range_to="" script='${.or:${.worldtime:"month"}==1:${.worldtime:"month"}==7}' />
 		</news>
 
 		<news id="Sjaele-news-Fußballbund-vermutet" type="0" creator="7430" created_by="Sjaele">

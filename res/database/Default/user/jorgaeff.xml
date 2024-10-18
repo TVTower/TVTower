@@ -883,7 +883,7 @@
 
 		<news id="news-jorgaeff-c256-01" type="0" thread_id="news-jorgaeff-space-c256a" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 1989-90" -->
-			<availability script='${.and:${.worldtime:"year"}&gt;=1989:${.worldtime:"year"}&lt;=1990}' />
+			<availability year_range_from="1989" year_range_to="1990" />
 			<title>
 				<de>Cormorano veröffentlicht C256</de>
 				<en>Cormoran releases C256</en>
@@ -917,7 +917,7 @@
 
 		<news id="news-jorgaeff-c256-03" type="0" thread_id="news-jorgaeff-space-c256b" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 1994-95" -->
-			<availability script='${.and:${.worldtime:"year"}&gt;=1994:${.worldtime:"year"}&lt;=1995}' />
+			<availability year_range_from="1994" year_range_to="1995" />
 			<title>
 				<de>Cormorano veröffentlicht C512</de>
 				<en>Cormoran releases C512</en>
@@ -951,7 +951,7 @@
 
 		<news id="news-jorgaeff-c256-05" type="0" thread_id="news-jorgaeff-space-c256c" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 1999-00" -->
-			<availability script='${.and:${.worldtime:"year"}&gt;=1999:${.worldtime:"year"}&lt;=2000}' />
+			<availability year_range_from="1999" year_range_to="2000" />
 			<title>
 				<de>Cormorano veröffentlicht C1k024</de>
 				<en>Cormoran releases C1k024</en>
@@ -985,7 +985,7 @@
 
 		<news id="news-jorgaeff-c256-07" type="0" thread_id="news-jorgaeff-space-c256d" creator="8936" created_by="jorgaeff">
 				<!-- "erscheint 2004-05" -->
-			<availability script='${.and:${.worldtime:"year"}&gt;=2004:${.worldtime:"year"}&lt;=2005}' />
+			<availability year_range_from="2004" year_range_to="2005" />
 			<title>
 				<de>Cormorano veröffentlicht C2k048</de>
 				<en>Cormoran publishes C2k048</en>
@@ -1170,7 +1170,7 @@
 
 		<news id="news-jorgaeff-lotto-01" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint mittwochs ab 18.00 Uhr" -->
-			<availability script='${.and:${.worldtime:"weekday"}==2:${.worldtime:"hour"}&gt;=18}' />
+			<availability script='${.and:${.worldtime:"weekday"}==2:${.gte:${.worldtime:"hour"}:18}}' />
 			<title>
 				<de>Gewinnzahlen vom Mittwochs-Lotto</de>
 				<en>Winning numbers from Wednesday Lottery</en>
@@ -1186,7 +1186,7 @@
 
 		<news id="news-jorgaeff-lotto-02" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint samstags ab 20.00 Uhr" -->
-			<availability script='${.and:${.worldtime:"weekday"}==5:${.worldtime:"hour"}&gt;=20}'/>
+			<availability script='${.and:${.worldtime:"weekday"}==5:${.gte:${.worldtime:"hour"}:20}}' />
 			<title>
 				<de>Gewinnzahlen vom Samstags-Lotto</de>
 				<en>Winning numbers from Saturday Lottery</en>
@@ -1202,7 +1202,7 @@
 
 		<news id="news-jorgaeff-sonntag-01" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint jeden Sonntag ab 18.00 Uhr" -->
-			<availability script='${.and:${.worldtime:"weekday"}==6:${.worldtime:"hour"}&gt;=18}' />
+			<availability script='${.and:${.worldtime:"weekday"}==6:${.gte:${.worldtime:"hour"}:18}}' />
 			<title>
 				<de>Das Wort zum Sonntag</de>
 				<en>Sunday's Words of Wisdom</en>
@@ -1217,7 +1217,7 @@
 		</news>
 
 		<news id="news-jorgaeff-2018-4-01" type="0" creator="8936" created_by="jorgaeff">
-			<availability script='${.worldtime:"year"}==2018' />
+			<availability year_range_from="2018" year_range_to="2018" />
 			<title>
 				<de>Newsschreiber gesteht Fake-News</de>
 				<en>News writer admits to fake news</en>
