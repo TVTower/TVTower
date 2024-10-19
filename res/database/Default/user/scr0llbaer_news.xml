@@ -150,7 +150,7 @@
 		</news>
 
 		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing that it still can be used in general and in addition when slightly modified to a fictional copycat event.">
-			<availability year_range_from="1988" year_range_to="-1" script='${.worldtime:"season"}==1' />
+			<availability year_range_from="1988" year_range_to="-1" script='${.eq:${.worldtime:"season"}:1}' />
 			<title>
 				<de>Schessnah in der Nähe von Moskau gesichtet</de>
 				<en>Schessnah spotted near Moscow</en>

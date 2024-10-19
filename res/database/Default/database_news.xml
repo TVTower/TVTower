@@ -1993,7 +1993,7 @@
 				</currentyear>
 			</variables>
 			<data genre="5" price="0.7" quality="25" fictional="0" />
-			<availability script='${.worldtime:"month"}==10' year_range_from="1990" year_range_to="-1" /> <!-- can appear annually -->
+			<availability script='${.eq:${.worldtime:"month"}:10}' year_range_from="1990" year_range_to="-1" /> <!-- can appear annually -->
 		</news>
 
 			<!-- 1991-10 -->
@@ -8024,7 +8024,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					news9="2713d6fa-883d-440c-92cf-194ecce9d472" probability9="10"
 					news10="f0fcd92d-7e78-416e-a5e4-d616772ac724" probability10="10" />
 			</effects>
-			<availability script='${.worldtime:"month"}==1' />
+			<availability script='${.eq:${.worldtime:"month"}:1}' />
 		</news>
 		<news id="476b42d3-fc13-4526-9d18-f9a03bf556fb" type="2" thread_id="a3ac1453-f37f-4d37-a669-8c127ab2cf48" creator="" created_by="-">
 			<title>
@@ -8305,7 +8305,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					news9="c6cfb73b-172e-44f9-b0f0-b9ee4057bf4f" probability9="10"
 					news10="9668bcc7-0818-4571-bdff-c3e9c73147a9" probability10="10" />
 			</effects>
-			<availability script='${.worldtime:"month"}==7' />
+			<availability script='${.eq:${.worldtime:"month"}:7}' />
 		</news>
 		<news id="1c7689a0-8d96-4382-ab7e-377dea389693" type="2" thread_id="96e6549c-19a1-4ede-a125-a665c1ae87de" creator="" created_by="-">
 			<title>
@@ -8781,7 +8781,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
-			<availability year_range_from="2002" script='${.worldtime:"month"}==5' />
+			<availability year_range_from="2002" script='${.eq:${.worldtime:"month"}:5}' />
 		</news>
 
 		<news id="2cf59a3b-43cc-4683-9540-3a1b52a628ac" type="0" creator="" created_by="-">
@@ -8802,7 +8802,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
-			<availability year_range_to="2001" script='${.worldtime:"month"}==5' />
+			<availability year_range_to="2001" script='${.eq:${.worldtime:"month"}:5}' />
 		</news>
 
 		<news id="37353373-3144-4879-bb74-387181b4cbaa" type="0" thread_id="9464e59a-0944-4ab0-b96a-2227a2cd14f5" creator="" created_by="-" comment="TVTower 2014 version: Schweden und Norwegen bilden Union - Nach historischem Vorbild bilden Schweden und Norwegen eine Union. Finnland möchte sich anschließen um damit die USL (Union skandinavischer Länder) bilden zu können. | Not clear, is it already done? If so, too 'alternative world' scenario and would have to be a one-time news item | maybe add other unions elsewhere of all kinds">

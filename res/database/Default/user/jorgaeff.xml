@@ -552,7 +552,7 @@
 
 		<news id="news-jorgaeff-dyson-01" type="0" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 				<!-- "Beginnt an einem Sonntag" -->
-			<availability script='${.worldtime:"weekday"}==6' />
+			<availability script='${.eq:${.worldtime:"weekday"}:6}' />
 			<title>
 				<de>Klatschkowski weiterhin Boxweltmeister</de>
 				<en>Klatschkowski still world boxing champion</en>
