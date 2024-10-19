@@ -666,9 +666,11 @@ Type TDatabaseLoader
 		'reconnect things
 
 		if connectors.length = 0
-			Return parts[0]
+			'ensure to at least wrap it one time! 
+			Return "${" + parts[0] + "}"
 		ElseIf connectors.length = parts.length - 1 'a CONN b CONN c -> 3 elements, 2 connectors)
 			convertSB.SetLength(0)
+			convertSB.Append("${")
 			For local i:int = 0 until connectors.length
 				If connectors[i] = "&&"
 					convertSB.append("${.and:")
@@ -681,6 +683,7 @@ Type TDatabaseLoader
 				convertSB.append(parts[i+1])
 				convertSB.append("}")
 			Next
+			convertSB.append("}")
 			Return convertSB.ToString()
 		Else
 			TLogger.Log("TDatabaseLoader.ConvertOldAvailableScript", "Failed to convert script ~q"+expression+"~q, incorrect expression / too few connectors.", LOG_ERROR)
@@ -2225,6 +2228,17 @@ Type TDatabaseLoader
 		scriptTemplate.availableYearRangeFrom = data.GetInt("year_range_from", scriptTemplate.availableYearRangeFrom)
 		scriptTemplate.availableYearRangeTo = data.GetInt("year_range_to", scriptTemplate.availableYearRangeTo)
 
+		If scriptTemplate.availableScript
+			scriptTemplate.availableScript = ConvertOldAvailableScript(scriptTemplate.availableScript)
+
+			Local parsedToken:SToken
+			Local result:Int = GameScriptExpression.ParseToTrue(scriptTemplate.availableScript, scriptTemplate, parsedToken)
+			if parsedToken.id = TK_ERROR
+				TLogger.Log("DB", "Script of ScriptTemplate ~q" + scriptTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
+				TLogger.Log("DB", "Script: " + scriptTemplate.availableScript, LOG_WARNING)
+				TLogger.Log("DB", "Error : " + parsedToken.GetValueText(), LOG_WARNING)
+			EndIf
+		EndIf
 
 		Rem
 			auto correction cannot be done this way, as a show could
