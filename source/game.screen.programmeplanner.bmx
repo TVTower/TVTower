@@ -1497,8 +1497,13 @@ endrem
 				fastNavigateTimer.setInterval( fastNavigateInitialTimer, True )
 			EndIf
 		EndIf
+		'home for going to the current day, up/down for changing by exactly one day
 		If KEYMANAGER.isHit(KEY_HOME)
 			ChangePlanningDay(GetWorldTime().GetDay())
+		ElseIf KEYMANAGER.isHit(KEY_UP)
+			ChangePlanningDay(planningDay-1)
+		ElseIf KEYMANAGER.isHit(KEY_DOWN)
+			ChangePlanningDay(planningDay+1)
 		EndIf
 
 
