@@ -649,6 +649,7 @@ Type TProduction Extends TOwnedGameObject
 
 		If Not programmeData.extra Then programmeData.extra = New TData
 		programmeData.extra.AddInt("productionID", self.GetID())
+		programmeData.extra.addInt("scriptID", productionConcept.script.GetId())
 
 		If owner <> 0 Then programmeData.extra.AddInt("producerID", owner)
 

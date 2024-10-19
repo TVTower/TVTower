@@ -1667,6 +1667,22 @@ endrem
 					'for "single licences" we cannot fetch a "next sublicence"
 					else
 						createFromLicence = TProgramme(item.broadcastMaterial).licence
+						'but for multi-productions we can look for the "next" one
+						If createFromLicence.IsCustomProduction() And createFromLicence.GetData().extra
+							Local scriptId:Int = createFromLicence.GetData().extra.GetInt("scriptID")
+							Local origReleaseDate:Long = createFromLicence.GetData().GetReleaseTime()
+							Local replaced:Int = False
+							If scriptId
+								For Local t:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(createFromLicence.GetOwner()).GetProgrammeLicences()
+									If t.IsCustomProduction() And t.GetData().extra And scriptId = t.GetData().extra.GetInt("scriptID")
+										If t.GetData().GetReleaseTime() > origReleaseDate And (Not replaced Or t.GetData().GetReleaseTime() < createFromLicence.GetData().GetReleaseTime())  
+											createFromLicence = t
+											replaced = True
+										EndIf
+									EndIf
+								Next
+							EndIf
+						EndIf
 					endif
 				EndIf
 
