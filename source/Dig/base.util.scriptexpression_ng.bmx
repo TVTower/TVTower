@@ -454,10 +454,23 @@ End Struct
 
 
 Struct SScriptExpression
+	'parse a raw expression ("${bla}")
 	Method Parse:SToken( expression:String, config:SScriptExpressionConfig var, context:SScriptExpressionContext var)
 		'DebugStop
 		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context)
-		Return parser.readWrapper()
+		Local result:SToken = parser.readWrapper()
+		'check if something was NOT evaluated (indicator of missing ${ }
+		'wrapper - eg when using operators) 
+		If parser.lexer.cursor < expression.length
+			Local nonEvaluated:String = expression[parser.lexer.cursor ..]
+			If nonEvaluated.Trim() 'ignore whitespace
+				'adjust line pos to cursor (handled until "there")
+				result.linepos = parser.lexer.cursor
+				Return New SToken( TK_ERROR, "Non-evaluated content ~q" + nonEvaluated+"~q found. Missing ${...}?", result )
+			EndIf
+		EndIf
+		Return result
+
 		'Try
 		'	Return parser.readWrapper()
 		'Catch e:TParseException
@@ -467,8 +480,9 @@ Struct SScriptExpression
 	End Method
 
 
-	Method ParseText:String( expression:String, config:SScriptExpressionConfig var, context:SScriptExpressionContext var)
-		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context, False )
+	'parse a text which can contain expressions ("your name is ${bla} ?")
+	Method ParseText:String( mixedTextWithExpressions:String, config:SScriptExpressionConfig var, context:SScriptExpressionContext var)
+		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, mixedTextWithExpressions, context, False )
 		Local foundValidTokenCount:Int
 		Return parser.expandText(foundValidTokenCount)
 		'Try
@@ -480,20 +494,20 @@ Struct SScriptExpression
 	End Method
 
 
-	Method ParseText:String( expression:String, config:SScriptExpressionConfig var, context:SScriptExpressionContext var, foundValidTokenCount:Int var)
-		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, expression, context, False )
+	Method ParseText:String( mixedTextWithExpressions:String, config:SScriptExpressionConfig var, context:SScriptExpressionContext var, foundValidTokenCount:Int var)
+		Local parser:SScriptExpressionParser = New SScriptExpressionParser( config, mixedTextWithExpressions, context, False )
 		Return parser.expandText(foundValidTokenCount)
 	End Method
 
 
 	
-	Method ParseNestedExpressionText:TStringBuilder(text:String, config:SScriptExpressionConfig var, context:SScriptExpressionContext var)
-		Local sb:TStringBuilder = New TStringBuilder(text)
+	Method ParseNestedExpressionText:TStringBuilder(mixedTextWithExpressions:String, config:SScriptExpressionConfig var, context:SScriptExpressionContext var)
+		Local sb:TStringBuilder = New TStringBuilder(mixedTextWithExpressions)
 		Return ParseNestedExpressionText(sb, config, context)
 	End Method
 	
 
-	Method ParseNestedExpressionText:TStringBuilder(text:TStringBuilder, config:SScriptExpressionConfig var, context:SScriptExpressionContext var)
+	Method ParseNestedExpressionText:TStringBuilder(mixedTextWithExpressions:TStringBuilder, config:SScriptExpressionConfig var, context:SScriptExpressionContext var)
 		Local iterations:Int = 0
 
 		'resolve (sub-)expressions eg. "${variant}" in "${name_${variant}}" and 
@@ -509,13 +523,13 @@ Struct SScriptExpression
 			Local expressionStartPos:Int = -1
 			Local charCode:Int
 			Local charPos:int
-			Local textLength:Int = text.Length()
+			Local textLength:Int = mixedTextWithExpressions.Length()
 
-			'print "Process: " + text.ToString()
+			'print "Process: " + mixedTextWithExpressions.ToString()
 			'print "pos      " + Rset("^", charPos + 1) + Rset("|", charPos + 1 + textLength - 1 - 1)
 
 			While charPos < textLength' - 1
-				charCode = text.CharAt(charPos)
+				charCode = mixedTextWithExpressions.CharAt(charPos)
 				
 				'found the start of an escape char: "\${}"
 				If charCode = Asc("\") And Not escapeCharFound
@@ -529,7 +543,7 @@ Struct SScriptExpression
 					dollarSymbolsFound :+ 1
 
 					'and also found the opener ("{")
-					If charPos < textLength and text.CharAt(charPos + 1) = SYM_LBRACE
+					If charPos < textLength and mixedTextWithExpressions.CharAt(charPos + 1) = SYM_LBRACE
 						expressionStartPos = charPos
 						charPos :+ 1
 					EndIf
@@ -542,7 +556,7 @@ Struct SScriptExpression
 						'print "         " + ""[..expressionStartPos] + "^--begin"
 						'print "         " + ""[..charPos] + "^--end"
 						
-						Local expression:String = text.Substring(expressionStartPos, charPos +1) 'sb.substring endindex is exclusive -> +1
+						Local expression:String = mixedTextWithExpressions.Substring(expressionStartPos, charPos +1) 'sb.substring endindex is exclusive -> +1
 						Local newValue:String = parseText( expression, config, context)
 
 						rem
@@ -565,17 +579,17 @@ Struct SScriptExpression
 						'print "Replace: ~q" + expression + "~q -> ~q" + newValue +"~q"
 
 						'either replace (all occourenced - eg ${index} used more than once)
-						'or do a text.Remove(index,index+length) and text.insert(index, newValue)
+						'or do a mixedTextWithExpressions.Remove(index,index+length) and text.insert(index, newValue)
 						'depends on what is more likely
-						text.Replace(expression, newValue)
-						'text.Remove(expressionStartPos, charPos +1)
-						'text.insert(expressionStartPos, newValue)
+						mixedTextWithExpressions.Replace(expression, newValue)
+						'mixedTextWithExpressions.Remove(expressionStartPos, charPos +1)
+						'mixedTextWithExpressions.insert(expressionStartPos, newValue)
 
 						'update length and move charpos
-						textLength = text.Length()
+						textLength = mixedTextWithExpressions.Length()
 						charPos :+ newValue.length - expression.Length
 
-						'print "Process: " + text.ToString()
+						'print "Process: " + mixedTextWithExpressions.ToString()
 						'print "         " + ""[..charPos] + "^--charpos"
 
 						replacedSomething = True
@@ -595,12 +609,12 @@ Struct SScriptExpression
 			iterations :+ 1
 			If iterations > 20 'avoid doing more than 20 cycles (eg. deadloops / bugs)
 				Print "ParseMultiLevelExpressionText: iterated more than 20 times over the given text. Avoid deep nesting - or found a bug?"
-				Print "Text: " + text.toString()
+				Print "Text: " + mixedTextWithExpressions.toString()
 				exit
 			EndIf
 		Until not replacedSomething or dollarSymbolsFound = 0
 		
-		Return text
+		Return mixedTextWithExpressions
 	End Method
 
 rem
