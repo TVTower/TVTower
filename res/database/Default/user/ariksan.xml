@@ -139,7 +139,7 @@
 					<en>Flavor Fiasco|Food Frenzy|Kitchen Catastrophes|Culinary Calamities|Cooking Chaos|Gourmet Gaffes|Culinary Carnage|Chef's Nightmares|Food Fiasco|Cuisine Cataclysm|Flavor Failures|Menu Mayhem|Kitchen Cataclysm|Recipe Reckoning</en>
 				</title>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<children>
@@ -217,7 +217,7 @@
 					<de>${.persongenerator:"firstname":"de":"female"}</de>
 				</person4>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<children>

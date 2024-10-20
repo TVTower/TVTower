@@ -1989,7 +1989,7 @@
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<data genre="5" price="0.7" quality="25" fictional="0" />
@@ -8777,7 +8777,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94</de>
 				</percentcount>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
@@ -8798,7 +8798,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>17|18|18|18|18|18|18|19</de>
 				</percentcount>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />

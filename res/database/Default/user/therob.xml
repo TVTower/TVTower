@@ -2522,9 +2522,9 @@
 					<pl>Nadchodzące|Wybitne|Ciekawe</pl>
 				</adjective>
 				<modifier>
-					<de>|| %WORLDTIME:YEAR%</de>
-					<en>|| %WORLDTIME:YEAR%</en>
-					<pl>|| %WORLDTIME:YEAR%</pl>
+					<de>|| ${.worldtime:"year"}</de>
+					<en>|| ${.worldtime:"year"}</en>
+					<pl>|| ${.worldtime:"year"}</pl>
 				</modifier>
 			</variables>
 			

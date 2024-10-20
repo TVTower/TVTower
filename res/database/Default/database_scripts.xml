@@ -454,7 +454,7 @@
 				</group>
 				<date>
 					<!-- either add the game year (with space!), or nothing -->
-					<de>| %WORLDTIME:YEAR%</de>
+					<de>| ${.worldtime:"year"}</de>
 				</date>
 			</variables>
 
@@ -1412,7 +1412,7 @@
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1447,7 +1447,7 @@
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1480,7 +1480,7 @@
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1517,7 +1517,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1549,7 +1549,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1577,7 +1577,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1606,7 +1606,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1634,7 +1634,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1662,7 +1662,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1690,7 +1690,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1718,7 +1718,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1746,7 +1746,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1776,7 +1776,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1806,7 +1806,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1835,7 +1835,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>
@@ -1863,7 +1863,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<jobs>

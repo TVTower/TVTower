@@ -881,9 +881,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 		</news>
 		<news id="ronny-news-frauenbart-02a" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
-				<de>Ausstellung „Frauenbärte %WORLDTIME:YEAR%“ lockt Betrüger</de>
-				<en>Exhibition "Women's Beards %WORLDTIME:YEAR%" lures scammers</en>
-				<pl>Wystawa „Kobiece brody %WORLDTIME:YEAR%” wabi oszustów</pl>
+				<de>Ausstellung „Frauenbärte ${.worldtime:"year"}“ lockt Betrüger</de>
+				<en>Exhibition "Women's Beards ${.worldtime:"year"}" lures scammers</en>
+				<pl>Wystawa „Kobiece brody ${.worldtime:"year"}” wabi oszustów</pl>
 			</title>
 			<description>
 				<de>Heute versuchten zwei mit Bärten getarnte Männer sich kostenlosen Zugang zur Ausstellung „Frauenbärte“ zu erschleichen. Beim Handgemenge wurde einer Wachfrau der Schnurrbart gezupft.</de>
