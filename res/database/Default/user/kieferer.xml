@@ -114,7 +114,7 @@ Organizator wycieczki ich oszukuje.</pl>
 					<pl>| do %RANDOMCITY%</pl>
 				</modifier>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 
@@ -156,8 +156,8 @@ Każdy środek się nada.</pl>
 					<pl>|%RANDOMCITY%</pl>
 				</modifier>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%|Prosperous Creek</de>
-					<pl>%STATIONMAP:RANDOMCITY%|Prosperujący Potok</pl>
+					<de>${.stationmap:"randomcity"}|Prosperous Creek</de>
+					<pl>${.stationmap:"randomcity"}|Prosperujący Potok</pl>
 				</randomcity>
 			</variables>
 			<jobs>

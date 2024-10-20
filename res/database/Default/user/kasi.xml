@@ -1244,7 +1244,7 @@
 					<pl>Paryżem|Berlinem|Londynem|Nowym Jorkiem|Madrytem|Wrocławiem</pl>
 				</wo>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 			<jobs>

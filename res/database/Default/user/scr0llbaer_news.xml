@@ -177,7 +177,7 @@
 			</description>
 			<variables>
 				<funeraltown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</funeraltown>
 				<joe> <!-- soll absichtlich manchmal ein internationaler Name sein -->
 					<de>${.persongenerator:"firstname":"de":"female"}|${.persongenerator:"firstname":"en":"female"}|${.persongenerator:"firstname":"es":"female"}|${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"en":"male"}|${.persongenerator:"firstname":"es":"male"}</de>
@@ -391,7 +391,7 @@
 					<pl>siedem|osiem|dziewięć|dziesięć|jedenaście|dwanaście|trzynaście|czternaście|piętnaście</pl>
 				</twelve>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 				<singerfirstname>
 					<de>${.persongenerator:"firstname":"de":"female"}</de>
@@ -872,13 +872,13 @@
 					<pl></pl> <!-- intentionally blank -->
 				</it_e>
 				<paradetown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</paradetown>
 				<sightedtown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</sightedtown>
 				<foundtown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</foundtown>
 				<andbroughtdownby>
 					<de> und von der Feuerwehr zu Boden gebracht|. ${it_${i}} wurde gemütlich schwimmend in einem Parkteich entdeckt und wohlbehalten an die Organisatoren der Parade zurückgegeben|. ${it_${i}} wurde von ein paar Witzbolden entführt, doch die Polizei konnte die Entführer ausfinding machen</de>
@@ -1073,7 +1073,7 @@
 					<pl>sama</pl>
 				</themself_f>
 				<subjecttown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</subjecttown>
 				<name_m>
 					<de>${.persongenerator:"firstname":"de":"male"}</de>
@@ -1273,7 +1273,7 @@
 					<pl>Przeciwko|Przez|Dla|Ale|Jeszcze|Ale nie|O nie, nie|Dlaczego|O nie, nie|Dlaczego|Za co|Nie|Nie,</pl>
 				</against>
 				<artisttown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</artisttown>
 			</variables>
 			<data genre="4" price="1" quality="20" fictional="1" />
@@ -1637,7 +1637,7 @@
 					<pl> i wykroczenie| i zakłócanie porządku|</pl>
 				</andcriminalmischief>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 			</variables>
 			<data genre="4" price="1" quality="15" fictional="1" />
@@ -1656,7 +1656,7 @@
 			</description>
 			<variables>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 				<gottliebmaessigmann>
 					<de>%gottlieb% %maessigmann%</de>
@@ -1917,7 +1917,7 @@
 					<en>has also become a global leader in green innovation and smart city development|also boasts a thriving tech industry with advanced research facilities and innovative startups|also is home to state-of-the-art laboratories and biotech companies|is also a hub for shipbuilding, oceanography, and deep-sea research|also hosts major tech conferences known for immersive gaming experiences and advanced visualization systems|is also home to groundbreaking advancements in semiconductor technology|also attracts top talent and companies in the robotics industry|also leads the way in the development of lightweight, high-strength materials used in aerospace, automotive, and electronics industries|is also a hub for biomedicine, telemedicine, and wearable health devices|is also home to a spaceport and satellite manufacturing facilities, playing a significant role in the space industry</en>
 				</hasbecomeagloballeader>
 				<summittown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</summittown>
 				<communism>
 					<de>Kommunismus|Liberalsozialismus|Luxemburgismus|Titoismus|Rätekommunismus|Situationismus|Syndikalismus|Distributismus|Mutualismus|Trotzkismus</de>
@@ -2097,7 +2097,7 @@
 					<en>if everyone could whizz wildly across borders</en>
 				</ifeveryonecould_1>
 				<festivitytown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</festivitytown>
 				<m>
 					<de>0|1|2|3|4|5</de>
@@ -2151,10 +2151,10 @@
 					<en>in the intangible ethereal netherworld</en>
 				</ontherapidlytransformedvenus_5>
 				<festivitytownatlantis>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</festivitytownatlantis>
 				<cultleadertown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</cultleadertown>
 			</variables>
 			<data genre="0" price="1" quality="60" fictional="1" />

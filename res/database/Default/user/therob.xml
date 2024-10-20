@@ -2471,9 +2471,9 @@
 					<pl>Raporty z obszaru nadawania|%RANDOMCITY% - Wiadomości lokalne|%RANDOMCITY% - Raporty lokalne|%RANDOMCITY% - Co słychać w mieście?</pl>
 				</title>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
-					<en>%STATIONMAP:RANDOMCITY%</en>
-					<pl>%STATIONMAP:RANDOMCITY%</pl>
+					<de>${.stationmap:"randomcity"}</de>
+					<en>${.stationmap:"randomcity"}</en>
+					<pl>${.stationmap:"randomcity"}</pl>
 				</randomcity>
 			</variables>
 			

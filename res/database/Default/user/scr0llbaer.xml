@@ -929,7 +929,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 					<pl>Sportowcy|Piłkarze i spółka|Przyjaciele sportowi</pl>
 				</athletes>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 			<jobs>

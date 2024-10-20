@@ -7349,7 +7349,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>She</en>
 				</they_f>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 				<shotathief_0>
 					<de>erschießt Dieb</de>
@@ -7688,7 +7688,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</description>
 			<variables>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 				<i>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c</de>
@@ -8007,7 +8007,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Hansen|Johansson|Andersen|Nielsen|Jørgensen|Svensson|Petersen|Olsen|Larsen|Pedersen|Eriksson|Christiansen|Nilsen|Berg|Magnusson|Kristiansen|Sørensen|Sandberg|Lund|Holm</de>
 				</artistlastname>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 			</variables>
 			<data genre="2" price="1" quality="15" fictional="1" />
@@ -8288,7 +8288,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>${.persongenerator:"lastname":"en":"male"}</de>
 				</artistlastname>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 			</variables>
 			<data genre="2" price="1" quality="20" fictional="1" />
@@ -8899,7 +8899,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>Norway|Sweden|Denmark</en>
 				</finland_9>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 			</variables>
 			<data genre="0" price="1" quality="45" fictional="1" />
@@ -9017,7 +9017,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>firecrackers|cartoon cups|glitter pens|unicorn masks|mega chewing gum balls|giant gummy bears|hip hop records|heavy metal albums|video games</en>
 				</firecrackers>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 				<johndoe_m>
 					<de>${.persongenerator:"firstname":"de":"male"}</de>

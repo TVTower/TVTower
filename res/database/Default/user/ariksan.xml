@@ -17,7 +17,7 @@
 					<en>Dreaming, Planning, Bankruptcy|Conflict, Quarrel, Breakdown|Cheating, Building, Bankruptcy|Luxury, Lies, Vacancy|Excess, Regret, Installment Plan|Miracle, Madness, Living|Cheap, Big, Dangerous|Rent, Spent, Repent|Bore, Explore, Adore|Sign, Align, Decline|Rent, Buy, Cry|Live, Obtain, Groan|Lease, Purchase, Debt|Place, Embrace, Palatial-Grace</en>
 				</title>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 			<children>
@@ -223,7 +223,7 @@
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-storage-01">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
 						<de>%person1% und %person2% zanken sich mit %person3% um %treasure%. %person4% hat Glück im Unglück und kann %junk% verhökern.</de>
@@ -242,7 +242,7 @@
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-storage-02">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
 						<de>Der Auktionator hat sich verfahren. Also übernimmt %person4% seine Rolle. Chaos pur! %person1% und %person2% bieten mit %person3% um die Wette.</de>
@@ -251,7 +251,7 @@
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-storage-03">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
 						<de>%person1% und %person2% haben sich zerstritten und bieten heute gegeneinander. %person4% zieht den Jackpot und sichert sich %treasure%.</de>
@@ -266,7 +266,7 @@
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-storage-04">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<!--TODO soll treasure hier der gleiche Gegenstand wie in der vorigen Folge sein?-->
 					<description>
@@ -282,7 +282,7 @@
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-storage-05">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
 						<de>%person1% und %person2% haben sich insgeheim versöhnt und tricksen alle aus. Sie finden %treasure%.</de>
@@ -297,7 +297,7 @@
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-storage-06">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
 						<de>Ein neuer Bieter räumt ab. %person1%, %person2% und %person4% sehen zu, wie er %treasure% findet.</de>
@@ -312,7 +312,7 @@
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-storage-07">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
 						<de>Skandal, der neue Bieter ist da. %person1% und %person2% schäumen vor Wut. %person4% schafft es doch noch eine Lagereinheit zu ergattern.</de>
@@ -321,7 +321,7 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-storage-08">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
 						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit %person3% in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>

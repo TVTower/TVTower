@@ -942,11 +942,11 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<en>The successful traveling exhibition sets up its tents in %CITYNAME%. Dozens of residents dropped all their cudgels in order to catch some tickets.</en>
 				<pl>Odnosząca sukcesy wystawa objazdowa rozstawia swoje namioty w %CITYNAME%. Dziesiątki mieszkańców porzuciło wszystkie swoje pałki, aby zdobyć bilety.</pl>
 			</description>
-			<!-- usage of %STATIONMAP:RANDOMCITY% in the text directly, will lead to a different random city
+			<!-- usage of ${.stationmap:"randomcity"} in the text directly, will lead to a different random city
 				 in title than in the description - so we use variables as this caches the output of the first city -->
 			<variables>
 				<cityname>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</cityname>
 			</variables>
 			<data genre="5" price="0.9" quality="28" />
@@ -1014,9 +1014,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 			<variables>
 				<showname>
-					<de>Goldene Morgenstunden|Guten Morgen %STATIONMAP:RANDOMCITY%|Die Frühaufsteher|Start in den Tag</de>
-					<en>The Early Birds|Good Morning %STATIONMAP:RANDOMCITY%|The Early Risers|Start of the Day</en>
-					<pl>Pobudka z TV|Dzień dobry %STATIONMAP:RANDOMCITY%|Poranne TV|Telewizja śniadaniowa</pl>
+					<de>Goldene Morgenstunden|Guten Morgen ${.stationmap:"randomcity"}|Die Frühaufsteher|Start in den Tag</de>
+					<en>The Early Birds|Good Morning ${.stationmap:"randomcity"}|The Early Risers|Start of the Day</en>
+					<pl>Pobudka z TV|Dzień dobry ${.stationmap:"randomcity"}|Poranne TV|Telewizja śniadaniowa</pl>
 				</showname>
 			</variables>
 

@@ -662,7 +662,7 @@
 					<en>Gags non-stop.|Spot-on punchlines.|Pure entertainment.|Endless laughter.|Comic brilliance.|Laugh-a-minute extravaganza.|Top-notch humor.|Side-splitting comedy.|Jokes galore.|Hilarity at its best.|Unstoppable laughs.|Comic perfection.|Non-stop amusement.|Laughs that keep on coming.|Rollercoaster of humor.|A comedic tour de force.|An uproarious experience.|Entertaining hilarity.|||||</en>
 				</jokes>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 				<firstname1> <!-- all these are more or less gender-neutral/-flexible first names, source: internet. TODO: maybe the Bavarians and the nuns need special treatment -->
 					<de>Addison|Alex|Anouk|Anuk|Avery|Benja|Beverly|Billie|Bozan|Cameron|Charlie|Cherry|Celeste|Conny|Daniele|Darian|Devin|Eden|Elliot|Elya|Esra|Felice|Finley|Flo|Gale|Gerritt|Glenn|Günes|Hadir|Harley|Henny|Ihsan|Immi|Indra|Isa|Islay|Jamal|Jayce|Jean|Jody|Jona|Junis|Kaj|Kennedy|Kim|Kourtney|Kyler|Lee|Lindsay|Lou|Luka|Mans|Marley|Meredith|Michele|Mika|Nicola|Nikita|Noah|Oakley|Oyama|Parker|Paulin|Pim|Quincy|Regis|René|Robby|Rory|Rowan|Sasha|Scout|Siro|Shiloh|Taylor|Tiam|Tony|Tyler|Ude|Vada|Valo|Wally|Whitney|Wynne|Zero|Zohar</de>
@@ -867,7 +867,7 @@
 							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
 						</j>
 						<othertown>
-							<de>%STATIONMAP:RANDOMCITY%</de>
+							<de>${.stationmap:"randomcity"}</de>
 						</othertown>
 						<description_0>
 							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Unsere ${who_${i}} müssen Extrazuschlag aushandeln.</de>
@@ -1075,7 +1075,7 @@
 							<en>in their own way|in their innate manner|in their very own way|as only they can|quite originally|in a surprising way</en>
 						</intheirownway>
 						<othertown>
-							<de>%STATIONMAP:RANDOMCITY%</de>
+							<de>${.stationmap:"randomcity"}</de>
 						</othertown>
 						<park>
 							<de>Der „${location_${k}}-Park“|Der „${location_${k}}-Vorgarten“|Der „${location_${k}}-Garten“|Der „${location_${k}}-Rosengarten“|Der „${location_${k}}-Blumengarten“|Die „${location_${k}}-Kantine“|Der „${location_${k}}-Platz“|Der „${location_${k}}-Spielplatz“|Der „${location_${k}}-Plaza“|Die „${location_${k}}-Piazza“|Die „${location_${k}}-Passage“|Die „${location_${k}}-Allee“|Der „${location_${k}}-Boulevard“</de>
@@ -1211,7 +1211,7 @@
 							<en>An impromptu country music jam session takes place. %firstname2% has a very nice voice.|A chili cooking contest takes place against ${who_${j}} from %othertown%. %firstname3% gets all hot, it ends up being quite spicy chili.|A craft challenge takes place against ${who_${j}} from %othertown%. The place really really needs to be spruced up. %firstname1% is good with hammer and nails.|An old time capsule is discovered, triggering nostalgic memories and a search for its owner. %firstname1% remembers and reflects on Elvis.|An escape room challenge takes place against ${who_${j}} from %othertown%. %firstname2% and %firstname3% get stuck as always. %firstname1% sets them free.|A fundraiser takes place. %firstname1% has no change as usual.|A dog training demonstration takes place. %firstname1% and %firstname3% have dogs themselves and show everyone how it's done.|Our ${who_${i}} and ${who_${j}} from %othertown% organize a scavenger hunt. %firstname1% and %firstname3% get lost as usual. %firstname2% picks them up again.|A cooking competition takes place against ${who_${j}} from %othertown%. %firstname1% convinces with an Italian-Vietnamese crossover cuisine creation.|Suddenly a flash mob with crazy artists shows up. %firstname1% unpacks the hula hoop and joins in.|A hidden treasure map is discovered. %firstname1% and %firstname2% are flabbergasted: Where could this ape island be?|A talent contest takes place. No problem for our ${who_${i}}, obviously they are the most talented, since they already have a TVTower camera team with them.</en>
 						</musicsession>
 						<othertown>
-							<de>%STATIONMAP:RANDOMCITY%</de>
+							<de>${.stationmap:"randomcity"}</de>
 						</othertown>
 						<bar>
 							<de>Die ${location_${k}}-Bar|Der ${location_${k}}-Stadl|Der ${location_${k}}-Garten|Der ${location_${k}}-Biergarten|Das ${location_${k}}-Bierzelt|Die ${location_${k}}-Nachtgalerie|Die ${location_${k}}-Nachtkantine|Das ${location_${k}}-Festival</de>
