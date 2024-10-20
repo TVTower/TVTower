@@ -256,13 +256,14 @@ Type TNewsEventTemplateCollection
 		'if no news is available, make older ones available again
 		'start with 7 days ago and lower until we got a news
 		local days:int = 7
-		While GetUnusedAvailableInitialTemplates(genre).length = 0 and days >= 0
+		local arr:TNewsEventTemplate[] = GetUnusedAvailableInitialTemplates(genre)
+		While arr.length = 0 and days >= 0
 			If days<=4 Then TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "ResetUsedTemplates("+days+", "+genre+").", LOG_DEBUG)
 			ResetUsedTemplates(days, genre)
 			days :- 1
+			arr = GetUnusedAvailableInitialTemplates(genre)
 		Wend
 
-		local arr:TNewsEventTemplate[] = GetUnusedAvailableInitialTemplates(genre)
 		if arr.length = 0
 			'This should only happen if no news events were found in the database
 			if genre = TVTNewsGenre.CURRENTAFFAIRS
@@ -279,7 +280,7 @@ Type TNewsEventTemplateCollection
 		If RandRange(0, 10) > 5
 			Local scriptArr:TNewsEventTemplate[] = new TNewsEventTemplate[0]
 			For Local t:TNewsEventTemplate = EachIn arr
-				If t.availableScript And t.availableScript.contains("&&")
+				If t.availableScript And t.availableScript.contains("${.and")
 					scriptArr:+ [t]
 				EndIf
 			Next
