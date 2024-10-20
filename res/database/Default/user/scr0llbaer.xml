@@ -639,9 +639,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 	<scripttemplates>
 		<scripttemplate product="3" licence_type="1" guid="e569b0af-e97f-4897-8b8d-6c426fa5a7d5" creator="9551" comment="Low-Budget- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
-				<de>%title%</de>
-				<en>%title%</en>
-				<pl>%title%</pl>
+				<de>${title}</de>
+				<en>${title}</en>
+				<pl>${title}</pl>
 			</title>
 			<description>
 				<de>Programmfüller für den jeden Morgen. Hier werden nochmal die Beiträge aus dem Mülleimer gefischt, die die Kollegen aus der Nachrichtenredaktion schon weggeschmissen haben. Andere niedrigschwellige Inhalte finden sich bestimmt auch noch.</de>
@@ -670,9 +670,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
-				<de>%title%</de>
-				<en>%title%</en>
-				<pl>%title%</pl>
+				<de>${title}</de>
+				<en>${title}</en>
+				<pl>${title}</pl>
 			</title>
 			<description>
 				<de>Es lohnt sich! Für jeden Morgen! Tolles Programm und gute Unterhaltung für einen beschwingten Start in den Tag.</de>
@@ -709,9 +709,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower}: ${title}</pl>
 			</title>
 			<description>
 				<de>Technologie aktuell. Jeden Tag neu. Die neuesten Entwicklungen und Trends bei Elektronik, Telekommunikation, Computern.</de>
@@ -759,9 +759,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented?">
 			<title>
-				<de>%tower% Dynamit - Das Magazin: %latebreaking%</de>
-				<en>%tower% Dynamite - The Magazine: %latebreaking%</en>
-				<pl>%tower% Dynamit - Magazyn: %latebreaking%</pl>
+				<de>${tower} Dynamit - Das Magazin: ${latebreaking}</de>
+				<en>${tower} Dynamite - The Magazine: ${latebreaking}</en>
+				<pl>${tower} Dynamit - Magazyn: ${latebreaking}</pl>
 			</title>
 			<description>
 				<de>Showbiz aktuell. Jeden Tag neu. Aktueller Tratsch, Promi-Geflüster und tränenrührende Tagesgeschehnisse.
@@ -807,9 +807,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="40a79c72-f53d-4b4f-ad29-886dd6c99135" creator="9551" comment="TODO: Added after proposals from ronny and nittka, but perhaps this format should be more distinct from 'dynamite' somehow.">
 			<title>
-				<de>%pulse% - %show% %withexplosivenews%</de>
-				<en>%pulse% - The %show% %withexplosivenews%</en>
-				<pl>%pulse% - %show% %withexplosivenews%</pl>
+				<de>${pulse} - ${show} ${withexplosivenews}</de>
+				<en>${pulse} - The ${show} ${withexplosivenews}</en>
+				<pl>${pulse} - ${show} ${withexplosivenews}</pl>
 			</title>
 			<description>
 				<de>Und noch ein Showbiz-Format. Die Welt da draußen scheint nicht genug davon bekommen zu können.</de>
@@ -858,9 +858,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="007b49ae-41e2-47b7-bf7c-628aecee7731" creator="9551">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Filme, Musik, Stars und Sternchen. Die ganz große Kino-Show. Trailer, Ausschnitte, Infos und Interviews zu den aktuellen Neuerscheinungen.</de>
@@ -908,9 +908,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="56bcb1ff-8a5d-4d91-b3f7-ad6958b3855b" creator="9551">
 			<title>
-				<de>%recreational%%athletes% aus %randomcity% und anderswo</de>
-				<en>%recreational% %athletes% from %randomcity% and Elsewhere</en>
-				<pl>%recreational% %athletes% i nie tylko</pl>
+				<de>${recreational}${athletes} aus ${randomcity} und anderswo</de>
+				<en>${recreational} ${athletes} from ${randomcity} and Elsewhere</en>
+				<pl>${recreational} ${athletes} i nie tylko</pl>
 			</title>
 			<description>
 				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Formel 3 &amp; 4 &amp; Kartsport und vieles mehr.</de>
@@ -956,9 +956,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="acf3207f-bfcd-4aef-9c10-a4871dcab928" creator="9551">
 			<title>
-				<de>%secondleague% Sport%report%</de>
-				<en>%secondleague% Sports%report%</en>
-				<pl>%secondleague% - %report%</pl>
+				<de>${secondleague} Sport${report}</de>
+				<en>${secondleague} Sports${report}</en>
+				<pl>${secondleague} - ${report}</pl>
 			</title>
 			<description>
 				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
@@ -1002,9 +1002,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Boxen, Formel 1, Wintersport, alles dabei.</de>
@@ -1054,9 +1054,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
 		<scripttemplate product="4" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Politik aktuell. Jeden Tag neu. Wir analysieren die neuesten Entwicklungen in Wirtschaft und Politik.</de>
@@ -1103,9 +1103,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower%: %title%%latebreaking%</de>
-				<en>%tower%: %title%%latebreaking%</en>
-				<pl>%tower%: %title%%latebreaking%</pl>
+				<de>${tower}: ${title}${latebreaking}</de>
+				<en>${tower}: ${title}${latebreaking}</en>
+				<pl>${tower}: ${title}${latebreaking}</pl>
 			</title>
 			<description>
 				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
@@ -1153,9 +1153,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Die neuesten und heißesten Videospiele werden hier präsentiert und getestet. Nur für euch! Außerdem könnt ihr im Studio gegeneinander antreten und Preise gewinnen!</de>
@@ -1203,9 +1203,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
 			<title>
-				<de>Die Götterwelt von %bali%</de>
-				<en>The Gods of %bali%</en>
-				<pl>Bogowie %bali%</pl>
+				<de>Die Götterwelt von ${bali}</de>
+				<en>The Gods of ${bali}</en>
+				<pl>Bogowie ${bali}</pl>
 			</title>
 			<description>
 				<de>Alle 412.000 Götter werden vorgestellt.
@@ -1246,20 +1246,20 @@ Czyli 4120 na odcinek.</pl>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="40d169cd-eeb2-400e-b839-f69690893bc1" creator="9551" comment="Quelle: Das Kino in meinem Kopf, das enstand, als ich zum ersten Mal den Titel von TheRob-Script-Com-EngeloderBengel, bei mir 'Aribert außer Rand und Band' gelesen hatte. :)">
 			<title>
-				<de>%title%</de>
-				<en>%title%</en>
-				<pl>%title%</pl>
+				<de>${title}</de>
+				<en>${title}</en>
+				<pl>${title}</pl>
 			</title>
 			<description>
-				<de>%name% ist behütet in einer fürsorglichen Familie aufgewachsen und lebt Mitte 20 in einer Studenten-WG mit braven Kommilitonen. Doch er spürt, etwas ist in ihm. Was ist das nur? Ist er vielleicht nicht ganz monogam? Sein Umfeld beginnt zu verzweifeln...</de>
-				<en>%name% grew up safely in a caring family and in his mid-20s lives in a flat-share with well-behaved fellow students. But he senses something is inside him. What is it? Is he perhaps not quite monogamous? Everyone close to him begins to despair...</en>
-				<pl>%name% dorastał bezpiecznie w troskliwej rodzinie, a po dwudziestce mieszka we wspólnym mieszkaniu z dobrze wychowanymi kolegami ze studiów. Ale czuje, że coś w nim jest. Co to jest? Może nie jest do końca monogamiczny? Wszyscy jego bliscy zaczynają rozpaczać...</pl>
+				<de>${name} ist behütet in einer fürsorglichen Familie aufgewachsen und lebt Mitte 20 in einer Studenten-WG mit braven Kommilitonen. Doch er spürt, etwas ist in ihm. Was ist das nur? Ist er vielleicht nicht ganz monogam? Sein Umfeld beginnt zu verzweifeln...</de>
+				<en>${name} grew up safely in a caring family and in his mid-20s lives in a flat-share with well-behaved fellow students. But he senses something is inside him. What is it? Is he perhaps not quite monogamous? Everyone close to him begins to despair...</en>
+				<pl>${name} dorastał bezpiecznie w troskliwej rodzinie, a po dwudziestce mieszka we wspólnym mieszkaniu z dobrze wychowanymi kolegami ze studiów. Ale czuje, że coś w nim jest. Co to jest? Może nie jest do końca monogamiczny? Wszyscy jego bliscy zaczynają rozpaczać...</pl>
 			</description>
 			<variables>
 				<title>
-					<de>%name% vogelwild|%name% ganz aus dem Häuschen|%name% voll aufgekratzt|Für %name% gibt es kein Morgen mehr|%name% nicht mehr zu bändigen|%name% ganz ganz wild|%name% völlig ungezügelt|%name% wird ganz wild</de>
-					<en>%name% all boisterous|%name% all over the place|%name% totally psyched|For %name% there is no more tomorrow|%name% no longer to be tamed|%name% going so very wild|%name% totally unbridled|%name% gets all wild</en>
-					<pl>%name%  dziki jak ptak|%name% podekscytowany|%name% totalnie zakręcony|Nie ma jutra dla %name%|%name% oszołomiony|%name% wariuje|%name% idzie na całość|%name% ma wszystko gdzieś!</pl>
+					<de>${name} vogelwild|${name} ganz aus dem Häuschen|${name} voll aufgekratzt|Für ${name} gibt es kein Morgen mehr|${name} nicht mehr zu bändigen|${name} ganz ganz wild|${name} völlig ungezügelt|${name} wird ganz wild</de>
+					<en>${name} all boisterous|${name} all over the place|${name} totally psyched|For ${name} there is no more tomorrow|${name} no longer to be tamed|${name} going so very wild|${name} totally unbridled|${name} gets all wild</en>
+					<pl>${name}  dziki jak ptak|${name} podekscytowany|${name} totalnie zakręcony|Nie ma jutra dla ${name}|${name} oszołomiony|${name} wariuje|${name} idzie na całość|${name} ma wszystko gdzieś!</pl>
 				</title>
 				<name>
 					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}</de>

@@ -933,14 +933,14 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 		</news>
 		<news id="ronny-news-steinzeit-01" type="0" creator="5578" created_by="Ronny">
 			<title>
-				<de>„Das war die Steinzeit“ gastiert in %CITYNAME%</de>
-				<en>"That was the Stone Age" exhibits in %CITYNAME%</en>
-				<pl>Wystawa „To była epoka kamienia łupanego” w %CITYNAME%</pl>
+				<de>„Das war die Steinzeit“ gastiert in ${CITYNAME}</de>
+				<en>"That was the Stone Age" exhibits in ${CITYNAME}</en>
+				<pl>Wystawa „To była epoka kamienia łupanego” w ${CITYNAME}</pl>
 			</title>
 			<description>
-				<de>Die erfolgreiche Wanderausstellung schlägt ihre Zelte in %CITYNAME% auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen, um Tickets zu erjagen.</de>
-				<en>The successful traveling exhibition sets up its tents in %CITYNAME%. Dozens of residents dropped all their cudgels in order to catch some tickets.</en>
-				<pl>Odnosząca sukcesy wystawa objazdowa rozstawia swoje namioty w %CITYNAME%. Dziesiątki mieszkańców porzuciło wszystkie swoje pałki, aby zdobyć bilety.</pl>
+				<de>Die erfolgreiche Wanderausstellung schlägt ihre Zelte in ${CITYNAME} auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen, um Tickets zu erjagen.</de>
+				<en>The successful traveling exhibition sets up its tents in ${CITYNAME}. Dozens of residents dropped all their cudgels in order to catch some tickets.</en>
+				<pl>Odnosząca sukcesy wystawa objazdowa rozstawia swoje namioty w ${CITYNAME}. Dziesiątki mieszkańców porzuciło wszystkie swoje pałki, aby zdobyć bilety.</pl>
 			</description>
 			<!-- usage of ${.stationmap:"randomcity"} in the text directly, will lead to a different random city
 				 in title than in the description - so we use variables as this caches the output of the first city -->
@@ -957,9 +957,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 		<!-- product="3" => "Show" -->
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-musiksterneamabend">
 			<title>
-				<de>%WHAT% %WHEN%</de>
-				<en>%WHAT% %WHEN%</en>
-				<pl>%WHAT% %WHEN%</pl>
+				<de>${WHAT} ${WHEN}</de>
+				<en>${WHAT} ${WHEN}</en>
+				<pl>${WHAT} ${WHEN}</pl>
 			</title>
 			<description>
 				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
@@ -1002,9 +1002,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
 			<title>
-				<de>%SHOWNAME%</de>
-				<en>%SHOWNAME%</en>
-				<pl>%SHOWNAME%</pl>
+				<de>${SHOWNAME}</de>
+				<en>${SHOWNAME}</en>
+				<pl>${SHOWNAME}</pl>
 			</title>
 			<description>
 				<de>Aufgewacht das Bettchen kracht. Lockere Morgenunterhaltung für alle - vom Frühaufsteher bis zum arbeitslosen Langschläfer.</de>

@@ -5579,12 +5579,12 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="61661455-9607-44fd-a090-c1caa8ee3205" creator="9551" comment="https://en.wikipedia.org/wiki/Dead_Winter_Dead">
 			<title>
-				<de>%dead% %winter% in %sarajevo%</de>
-				<en>%dead% %winter% in %sarajevo%</en>
+				<de>${dead} ${winter} in ${sarajevo}</de>
+				<en>${dead} ${winter} in ${sarajevo}</en>
 			</title>
 			<title_original>
-				<de>%title_original_optional%</de>
-				<en>%title_original_optional%</en>
+				<de>${title_original_optional}</de>
+				<en>${title_original_optional}</en>
 			</title_original>
 			<description>
 				<de>Kriegsdrama über den jungen, enthusiastischen und leicht beeindruckbaren ${.self:"role":0:"firstname"} auf der einen, und die warmherzige, aber resolute ${.self:"role":1:"firstname"} auf der anderen Seite der Front in Jugoslawien, und einen Teufels-${.self:"role":2:"firstname"}en dazwischen.</de>
@@ -5592,8 +5592,8 @@
 			</description>
 			<variables>
 				<title_original_optional>
-					<de>Dead Winter Dead|Tot Winter Tot|Tot Winter Tod|Toter Wintertod|Tote Winterstarre|Toter Winter in Sarjevo|%dead% %winter% in %sarajevo%</de>
-					<en>Dead Winter Dead|Dead Winter Dead|Dead Winter Death|Dead Winter Death|Dead Winter Dead|Dead Winter in Sarajevo|%dead% %winter% in %sarajevo%</en>
+					<de>Dead Winter Dead|Tot Winter Tot|Tot Winter Tod|Toter Wintertod|Tote Winterstarre|Toter Winter in Sarjevo|${dead} ${winter} in ${sarajevo}</de>
+					<en>Dead Winter Dead|Dead Winter Dead|Dead Winter Death|Dead Winter Death|Dead Winter Dead|Dead Winter in Sarajevo|${dead} ${winter} in ${sarajevo}</en>
 				</title_original_optional>
 				<dead>
 					<de>Toter|Karger|Kalter|Trostloser|Trister|Rauer</de>
@@ -5709,12 +5709,12 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="98f1d16e-5a8e-4838-8f3b-a51213062008">
 					<title>
-						<de>%dead% %winter%</de>
-						<en>%dead% %winter%</en>
+						<de>${dead} ${winter}</de>
+						<en>${dead} ${winter}</en>
 					</title>
 					<title_original>
-						<de>%title_original_optional%</de>
-						<en>%title_original_optional%</en>
+						<de>${title_original_optional}</de>
+						<en>${title_original_optional}</en>
 					</title_original>
 					<description>
 						<de>Obwohl der Winter sein Bestes tut, die Landschaft in eine Decke vorübergehender Unschuld zu hüllen, eskaliert der Krieg in Gewalt und Brutalität. ${.self:"role":0:"firstname"} ist auf Patrouille und macht eine grausame Entdeckung...</de>
@@ -6439,12 +6439,12 @@
 
 		<scripttemplate product="1" licence_type="1" guid="352a2fbc-7e7b-462b-a217-34c300043d19" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Maniac_Mansion">
 			<title>
-				<de>%title_spoofed%</de>
-				<en>%title_spoofed%</en>
+				<de>${title_spoofed}</de>
+				<en>${title_spoofed}</en>
 			</title>
 			<title_original>
-				<de>%title_original_optional%</de>
-				<en>%title_original_optional%</en>
+				<de>${title_original_optional}</de>
+				<en>${title_original_optional}</en>
 			</title_original>
 			<description>
 				<de>${.self:"role":0:"firstname"}s Freundin ${.self:"role":1:"firstname"} wurde entführt vom verrückten Professor Dr. ${.self:"role":4:"firstname"}! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de>
@@ -6452,12 +6452,12 @@
 			</description>
 			<variables>
 				<title_spoofed>
-					<de>Der %adj% %house_m%|Die %adj% %house_f%|Das %adj% %house_n%</de>
-					<en>The %adj% %house_m%|The %adj% %house_f%|The %adj% %house_n%</en>
+					<de>Der ${adj} ${house_m}|Die ${adj} ${house_f}|Das ${adj} ${house_n}</de>
+					<en>The ${adj} ${house_m}|The ${adj} ${house_f}|The ${adj} ${house_n}</en>
 				</title_spoofed>
 				<title_original_optional>
-					<de>Maniac Mansion|Der %adj_o% %house_m_o%|Die %adj_o% %house_f_o%|Das %adj% %house_n_o%</de>
-					<en>Maniac Mansion|The %adj_o% %house_m_o%|The %adj_o% %house_f_o%|The %adj% %house_n_o%</en>
+					<de>Maniac Mansion|Der ${adj_o} ${house_m_o}|Die ${adj_o} ${house_f_o}|Das ${adj} ${house_n_o}</de>
+					<en>Maniac Mansion|The ${adj_o} ${house_m_o}|The ${adj_o} ${house_f_o}|The ${adj} ${house_n_o}</en>
 				</title_original_optional>
 				<adj>
 					<de>Wahnwitzige|Verrückte|Irrwitzige|Durchgeknallte|Geisteskranke|Irrsinnige|Aberwitzige|Manische|Wahnsinnige|Absurde|Groteske|Bizarre|Abgedrehte</de>
@@ -6523,12 +6523,12 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="a3d2c98d-fbdb-45c1-a5f0-0e61cfa497e7" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Day_of_the_Tentacle">
 			<title>
-				<de>%Revenge% des Tentakels</de>
-				<en>The %Revenge% of the Tentacle</en>
+				<de>${Revenge} des Tentakels</de>
+				<en>The ${Revenge} of the Tentacle</en>
 			</title>
 			<title_original>
-				<de>%title_original_optional%</de>
-				<en>%title_original_optional%</en>
+				<de>${title_original_optional}</de>
+				<en>${title_original_optional}</en>
 			</title_original>
 			<description>
 				<de>Zurück zur abgedrehten Villa! Dr. ${.self:"role":3:"firstname"} ist diesmal auf unserer Seite. Naja fast. Er will verhindern, dass ${.self:"role":4:"fullname"} die Menschheit versklavt, aber hat was mit der Zeitmaschine gründlich vermasselt. Die Protagonisten müssen's richten.</de>
@@ -6540,8 +6540,8 @@
 					<en>Revenge|Return|Grand Entrance|Big Act|Tantrum</en>
 				</revenge>
 				<title_original_optional>
-					<de>%Revenge% des Tentakels|Der Tag des Tentakels|Der Große Tag des Tentakels|Day of the Tentacle</de>
-					<en>The %Revenge% of the Tentacle|The Day of the Tentacle|The Grand Day of the Tentacle|Day of the Tentacle</en>
+					<de>${Revenge} des Tentakels|Der Tag des Tentakels|Der Große Tag des Tentakels|Day of the Tentacle</de>
+					<en>The ${Revenge} of the Tentacle|The Day of the Tentacle|The Grand Day of the Tentacle|Day of the Tentacle</en>
 				</title_original_optional>
 			</variables>
 			<jobs>
@@ -6576,12 +6576,12 @@
 		<!-- TODO: Add a series with episodes from https://maniac-mansion-mania.com/ to make more use of all the defined roles. -->
 		<scripttemplate product="1" licence_type="1" guid="61d6403e-6ee6-4849-81af-6b08dbc4aaa8" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Zak_McKracken_and_the_Alien_Mindbenders">
 			<title>
-				<de>%myname%${.self:"role":0:"fullname"}, %roving% Reporter</de>
-				<en>Hi, ${.self:"role":0:"fullname"}%myname%, %roving% Reporter</en>
+				<de>${myname}${.self:"role":0:"fullname"}, ${roving} Reporter</de>
+				<en>Hi, ${.self:"role":0:"fullname"}${myname}, ${roving} Reporter</en>
 			</title>
 			<title_original>
-				<de>%title_original_optional%</de>
-				<en>%title_original_optional%</en>
+				<de>${title_original_optional}</de>
+				<en>${title_original_optional}</en>
 			</title_original>
 			<description>
 				<de>Ich muss für dieses Schmierblatt schreiben, dabei will ich den Pulitzer-Preis gewinnen! Aber ich bin Aliens auf der Spur, wirklich! Die wollen die Menschheit verdummen! Ich treff die Frau aus meinem Traum, und selbst zum Mars verschlägt's mich.</de>
@@ -6589,8 +6589,8 @@
 			</description>
 			<variables>
 				<title_original_optional>
-					<de>${.self:"role":0:"fullname"} and the Alien Mindbenders|${.self:"role":0:"fullname"} und die außerirdischen Gedankenverdreher|%myname%${.self:"role":0:"fullname"}, %roving% Reporter</de>
-					<en>${.self:"role":0:"fullname"} and the Alien Mindbenders|${.self:"role":0:"fullname"} and the Alien Mindbenders|Hi, ${.self:"role":0:"fullname"}%myname%, %roving% Reporter</en>
+					<de>${.self:"role":0:"fullname"} and the Alien Mindbenders|${.self:"role":0:"fullname"} und die außerirdischen Gedankenverdreher|${myname}${.self:"role":0:"fullname"}, ${roving} Reporter</de>
+					<en>${.self:"role":0:"fullname"} and the Alien Mindbenders|${.self:"role":0:"fullname"} and the Alien Mindbenders|Hi, ${.self:"role":0:"fullname"}${myname}, ${roving} Reporter</en>
 				</title_original_optional>
 				<myname>
 					<de>Hi, |Gestatten, |</de>
@@ -6626,12 +6626,12 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="273d5865-822b-4320-97b0-a0c4e56f6e44" creator="9551" comment="https://en.wikipedia.org/wiki/Loom_(video_game) | TODO: maybe add unreleased sequels: Forge; The Fold">
 			<title>
-				<de>%askmeabout%Weave - Das Zeitalter der Großen Gilden</de>
-				<en>%askmeabout%Weave - The Age of the Great Guilds</en>
+				<de>${askmeabout}Weave - Das Zeitalter der Großen Gilden</de>
+				<en>${askmeabout}Weave - The Age of the Great Guilds</en>
 			</title>
 			<title_original>
-				<de>%askmeabout%Loom - Das Zeitalter der Großen Gilden</de>
-				<en>%askmeabout%Loom - The Age of the Great Guilds</en>
+				<de>${askmeabout}Loom - Das Zeitalter der Großen Gilden</de>
+				<en>${askmeabout}Loom - The Age of the Great Guilds</en>
 			</title_original>
 			<description>
 				<de>Die Weber perfektionierten ihr Handwerk so, dass sie das Gewebe der Wirklichkeit selbst flechten können, wurden auf eine Insel verbannt und mit der Zeit unfruchtbar. ${.self:"role":1:"fullname"} webt ein Kind, erzürnt die Ältesten und wird in einen Schwan verwandelt.</de>
@@ -6743,12 +6743,12 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="e10c6a0a-fde6-4f73-8bb4-30a6d65cd744" creator="9551" comment="https://en.wikipedia.org/wiki/The_Secret_of_Monkey_Island">
 			<title>
-				<de>Das %donkeybay_object_reference%-%mystery_object_reference%</de>
-				<en>The %mystery_object_reference% of %donkeybay_object_reference%</en>
+				<de>Das ${donkeybay_object_reference}-${mystery_object_reference}</de>
+				<en>The ${mystery_object_reference} of ${donkeybay_object_reference}</en>
 			</title>
 			<title_original>
-				<de>Das %donkeybay_object_reference%-%mystery_object_reference%</de>
-				<en>The %mystery_object_reference% of %donkeybay_object_reference%</en>
+				<de>Das ${donkeybay_object_reference}-${mystery_object_reference}</de>
+				<en>The ${mystery_object_reference} of ${donkeybay_object_reference}</en>
 			</title_original>
 			<description>
 				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund ${.self:"role":0:"fullname"} strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat ${.self:"role":2:"fullname"}. Und dann ist da noch die Liebe.</de> <!-- TODO: ROLELASTx? -->
@@ -6764,20 +6764,20 @@
 					<en>Mêlée Island™</en>
 				</hurlyeisland_object_reference_original>
 				<donkeybay_object_reference>
-					<de>%donkey%%bay%</de>
-					<en>%donkey% %bay%</en>
+					<de>${donkey}${bay}</de>
+					<en>${donkey} ${bay}</en>
 				</donkeybay_object_reference>
 				<donkeybay_object_reference_original>
-					<de>%donkey_o%%bay_o%</de>
-					<en>%donkey_o% %bay_o%</en>
+					<de>${donkey_o}${bay_o}</de>
+					<en>${donkey_o} ${bay_o}</en>
 				</donkeybay_object_reference_original>
 				<mystery_object_reference>
-					<de>%mystery%</de>
-					<en>%mystery%</en>
+					<de>${mystery}</de>
+					<en>${mystery}</en>
 				</mystery_object_reference>
 				<mystery_object_reference_original>
-					<de>%mystery_o%</de>
-					<en>%mystery_o%</en>
+					<de>${mystery_o}</de>
+					<en>${mystery_o}</en>
 				</mystery_object_reference_original>
 				<mystery>
 					<de>Mysterium|Rätsel|Geheimnis</de>
@@ -6807,16 +6807,16 @@
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="b33a635e-d381-4349-9a41-7d2277c5d6da">
 					<title>
-						<de>%hurlyeisland_object_reference%</de>
-						<en>%hurlyeisland_object_reference%</en>
+						<de>${hurlyeisland_object_reference}</de>
+						<en>${hurlyeisland_object_reference}</en>
 					</title>
 					<title_original>
-						<de>%hurlyeisland_object_reference%</de>
-						<en>%hurlyeisland_object_reference%</en>
+						<de>${hurlyeisland_object_reference}</de>
+						<en>${hurlyeisland_object_reference}</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":0:"firstname"} ist erstmal auf %hurlyeisland_object_reference% gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen ${.self:"role":2:"fullname"} vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
-						<en>${.self:"role":0:"firstname"} is stranded on %hurlyeisland_object_reference% for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of ${.self:"role":2:"fullname"}, actually seasoned men, and other bizarre characters.</en>
+						<de>${.self:"role":0:"firstname"} ist erstmal auf ${hurlyeisland_object_reference} gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen ${.self:"role":2:"fullname"} vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
+						<en>${.self:"role":0:"firstname"} is stranded on ${hurlyeisland_object_reference} for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of ${.self:"role":2:"fullname"}, actually seasoned men, and other bizarre characters.</en>
 					</description>
 					<effects>
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c48d5851-d9f8-4fc1-8d34-264dfa3f6384" />
@@ -6874,8 +6874,8 @@
 						<en>Treasure Hunt</en>
 					</title_original>
 					<description>
-						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt ${.self:"role":0:"firstname"}, dass ${.self:"role":2:"fullname"} ${.self:"role":1:"firstname"} auch immer liebte und für sie das %donkeybay_object_reference%-%mystery_object_reference% lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
-						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, ${.self:"role":0:"firstname"} learns that ${.self:"role":2:"fullname"} always loved ${.self:"role":1:"firstname"}, too, and wanted to uncover the %mystery_object_reference% of %donkeybay_object_reference% for her, but became a ghost pirate there instead.</en>
+						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt ${.self:"role":0:"firstname"}, dass ${.self:"role":2:"fullname"} ${.self:"role":1:"firstname"} auch immer liebte und für sie das ${donkeybay_object_reference}-${mystery_object_reference} lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
+						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, ${.self:"role":0:"firstname"} learns that ${.self:"role":2:"fullname"} always loved ${.self:"role":1:"firstname"}, too, and wanted to uncover the ${mystery_object_reference} of ${donkeybay_object_reference} for her, but became a ghost pirate there instead.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="ce069d69-7735-4270-814a-eb5f20c895dd">
@@ -6888,8 +6888,8 @@
 						<en>Behind you, a three-headed monkey!</en>
 					</title_original>
 					<description>
-						<de>Jetzt kann sich ${.self:"role":0:"firstname"} ein Pirat schimpfen, aber oh Schreck! ${.self:"role":2:"fullname"} hat mit seinem Geisterschiff ${.self:"role":1:"firstname"} entführt! %donkeybay_object_reference%, nicht nur eine Sage! ${.self:"role":0:"firstname"} muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
-						<en>Now ${.self:"role":0:"firstname"} can call himself a pirate, but oh horrors! ${.self:"role":2:"fullname"} has kidnapped ${.self:"role":1:"firstname"} with his ghost ship! %donkeybay_object_reference%, not just a legend! ${.self:"role":0:"firstname"} must round up a crew and sail to this island.</en>
+						<de>Jetzt kann sich ${.self:"role":0:"firstname"} ein Pirat schimpfen, aber oh Schreck! ${.self:"role":2:"fullname"} hat mit seinem Geisterschiff ${.self:"role":1:"firstname"} entführt! ${donkeybay_object_reference}, nicht nur eine Sage! ${.self:"role":0:"firstname"} muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
+						<en>Now ${.self:"role":0:"firstname"} can call himself a pirate, but oh horrors! ${.self:"role":2:"fullname"} has kidnapped ${.self:"role":1:"firstname"} with his ghost ship! ${donkeybay_object_reference}, not just a legend! ${.self:"role":0:"firstname"} must round up a crew and sail to this island.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="0f626bb5-c7fb-4c51-aea7-4fe00f012cad">
@@ -6908,12 +6908,12 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="50d96da4-78ea-497c-8802-bb586d01682b">
 					<title>
-						<de>%donkeybay_object_reference%</de>
-						<en>%donkeybay_object_reference%</en>
+						<de>${donkeybay_object_reference}</de>
+						<en>${donkeybay_object_reference}</en>
 					</title>
 					<title_original>
-						<de>%donkeybay_object_reference%</de>
-						<en>%donkeybay_object_reference%</en>
+						<de>${donkeybay_object_reference}</de>
+						<en>${donkeybay_object_reference}</en>
 					</title_original>
 					<description>
 						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber ${.self:"role":0:"firstname"} trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte Hendrik ist schon seit Jahren gestrandet dort.</de>
@@ -6950,16 +6950,16 @@
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="c5c297fc-ecbb-4595-a342-40fc8f1d3b27">
 					<title>
-						<de>Zurück nach %hurlyeisland_object_reference%</de>
-						<en>Back to %hurlyeisland_object_reference%</en>
+						<de>Zurück nach ${hurlyeisland_object_reference}</de>
+						<en>Back to ${hurlyeisland_object_reference}</en>
 					</title>
 					<title_original>
-						<de>Zurück nach %hurlyeisland_object_reference%</de>
-						<en>Back to %hurlyeisland_object_reference%</en>
+						<de>Zurück nach ${hurlyeisland_object_reference}</de>
+						<en>Back to ${hurlyeisland_object_reference}</en>
 					</title_original>
 					<description>
-						<de>Doch ${.self:"role":2:"fullname"} ist inzwischen wieder zurückgesegelt, um ${.self:"role":1:"firstname"} zu heiraten. ${.self:"role":0:"firstname"} muss die Kirche auf %hurlyeisland_object_reference% stürmen, um das zu verhindern!</de>
-						<en>But ${.self:"role":2:"fullname"} has since sailed back to marry ${.self:"role":1:"firstname"}. ${.self:"role":0:"firstname"} must gatecrash the church on %hurlyeisland_object_reference% to prevent this!</en>
+						<de>Doch ${.self:"role":2:"fullname"} ist inzwischen wieder zurückgesegelt, um ${.self:"role":1:"firstname"} zu heiraten. ${.self:"role":0:"firstname"} muss die Kirche auf ${hurlyeisland_object_reference} stürmen, um das zu verhindern!</de>
+						<en>But ${.self:"role":2:"fullname"} has since sailed back to marry ${.self:"role":1:"firstname"}. ${.self:"role":0:"firstname"} must gatecrash the church on ${hurlyeisland_object_reference} to prevent this!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="a38b5c1a-ee98-49f8-83d0-06a3d27a5eaf">
@@ -7307,25 +7307,25 @@ The project, which was cancelled by a major producer, is now free to be realized
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" comment="https://en.wikipedia.org/wiki/Commander_Keen | TODO: apply proper nickname references of Ween/Keen once feature is available">
 			<title>
-				<de>%title_spoofed%</de>
-				<en>%title_spoofed%</en>
+				<de>${title_spoofed}</de>
+				<en>${title_spoofed}</en>
 			</title>
 			<title_original>
-				<de>%title_original_optional%</de>
-				<en>%title_original_optional%</en>
+				<de>${title_original_optional}</de>
+				<en>${title_original_optional}</en>
 			</title_original>
 			<description>
-				<de>Cartoon-Reihe über den 8-jährigen Wunderknaben ${.self:"role":0:"fullname"}. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu %captain% %ween_object_reference% und macht sich auf...</de>
-				<en>Cartoon series about the 8-year-old boy genius ${.self:"role":0:"fullname"}. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes %captain% %ween_object_reference% and sets out...</en>
+				<de>Cartoon-Reihe über den 8-jährigen Wunderknaben ${.self:"role":0:"fullname"}. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu ${captain} ${ween_object_reference} und macht sich auf...</de>
+				<en>Cartoon series about the 8-year-old boy genius ${.self:"role":0:"fullname"}. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes ${captain} ${ween_object_reference} and sets out...</en>
 			</description>
 			<variables>
 				<title_spoofed>
-					<de>Die %space%%adventures% des %captain% %ween_object_reference%|Die %galactic% %adventures_c% des %captain% %ween_object_reference%</de>
-					<en>The %space% %adventures% of %captain% %ween_object_reference%|The %galactic% %adventures_c% of %captain% %ween_object_reference%</en>
+					<de>Die ${space}${adventures} des ${captain} ${ween_object_reference}|Die ${galactic} ${adventures_c} des ${captain} ${ween_object_reference}</de>
+					<en>The ${space} ${adventures} of ${captain} ${ween_object_reference}|The ${galactic} ${adventures_c} of ${captain} ${ween_object_reference}</en>
 				</title_spoofed>
 				<title_original_optional>
-					<de>%captain% %ween_object_reference%|Die %space%%adventures% des %captain% %ween_object_reference%|Die %galactic% %adventures_c% des %captain% %ween_object_reference%</de>
-					<en>%captain% %ween_object_reference%|The %space% %adventures% of %captain% %ween_object_reference%|The %galactic% %adventures_c% of %captain% %ween_object_reference%</en>
+					<de>${captain} ${ween_object_reference}|Die ${space}${adventures} des ${captain} ${ween_object_reference}|Die ${galactic} ${adventures_c} des ${captain} ${ween_object_reference}</de>
+					<en>${captain} ${ween_object_reference}|The ${space} ${adventures} of ${captain} ${ween_object_reference}|The ${galactic} ${adventures_c} of ${captain} ${ween_object_reference}</en>
 				</title_original_optional>
 				<space>
 					<de>Weltraum|Weltall|Sternen|Galaxis</de>
@@ -7397,8 +7397,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Invasion of the ${.self:"role":2:"firstname"}s</en>
 					</title_original>
 					<description>
-						<de>%ween_object_reference% schafft es rechtzeitig zurück zur Erde, bevor seine Eltern nach Hause kommen. Seinen neuen Gefährten, den kleinen grünen einäugigen ${.self:"role":1:"firstname"}, kann er jedoch nicht verstecken. Die ${.self:"role":2:"firstname"}s haben inzwischen ein Mutterschiff im Erdorbit...</de>
-						<en>%ween_object_reference% makes it back to Earth in time before his parents come home. However, he can't hide his new companion, the little green one-eyed ${.self:"role":1:"firstname"}. The ${.self:"role":2:"firstname"}s, meanwhile, have a mothership in Earth orbit...</en>
+						<de>${ween_object_reference} schafft es rechtzeitig zurück zur Erde, bevor seine Eltern nach Hause kommen. Seinen neuen Gefährten, den kleinen grünen einäugigen ${.self:"role":1:"firstname"}, kann er jedoch nicht verstecken. Die ${.self:"role":2:"firstname"}s haben inzwischen ein Mutterschiff im Erdorbit...</de>
+						<en>${ween_object_reference} makes it back to Earth in time before his parents come home. However, he can't hide his new companion, the little green one-eyed ${.self:"role":1:"firstname"}. The ${.self:"role":2:"firstname"}s, meanwhile, have a mothership in Earth orbit...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="e1360097-a12f-4cbf-81a8-a7299d9ee789">
@@ -7411,22 +7411,22 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Earth Explodes</en>
 					</title_original>
 					<description>
-						<de>Das ${.self:"role":2:"firstname"}-Mutterschiff hat seine Strahlenkanonen auf mehrere Wahrzeichen auf der Erde gerichtet. Kann %ween_object_reference% in das Schiff eindringen, die Kanonen finden und vernichten?</de>
-						<en>The ${.self:"role":2:"firstname"} mothership has aimed its ray guns at several landmarks on Earth. Can %ween_object_reference% penetrate the ship, find the cannons and destroy them?</en>
+						<de>Das ${.self:"role":2:"firstname"}-Mutterschiff hat seine Strahlenkanonen auf mehrere Wahrzeichen auf der Erde gerichtet. Kann ${ween_object_reference} in das Schiff eindringen, die Kanonen finden und vernichten?</de>
+						<en>The ${.self:"role":2:"firstname"} mothership has aimed its ray guns at several landmarks on Earth. Can ${ween_object_reference} penetrate the ship, find the cannons and destroy them?</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="c028f88d-bae8-474f-9654-5e3ff79b05a8">
 					<title>
-						<de>%ween_object_reference% muss sterben!</de>
-						<en>%ween_object_reference% Must Die!</en>
+						<de>${ween_object_reference} muss sterben!</de>
+						<en>${ween_object_reference} Must Die!</en>
 					</title>
 					<title_original>
-						<de>%ween_object_reference% muss sterben!</de>
-						<en>%ween_object_reference% Must Die!</en>
+						<de>${ween_object_reference} muss sterben!</de>
+						<en>${ween_object_reference} Must Die!</en>
 					</title_original>
 					<description>
-						<de>Es stellt sich heraus, die ${.self:"role":2:"firstname"}s werden von einem Großen Gehirn ferngesteuert und kontrolliert. %ween_object_reference% macht sich auf auf dessen Heimatplaneten...</de>
-						<en>It turns out the ${.self:"role":2:"firstname"}s are remotely controlled by a Great Brain. %ween_object_reference% sets out for its home planet...</en>
+						<de>Es stellt sich heraus, die ${.self:"role":2:"firstname"}s werden von einem Großen Gehirn ferngesteuert und kontrolliert. ${ween_object_reference} macht sich auf auf dessen Heimatplaneten...</de>
+						<en>It turns out the ${.self:"role":2:"firstname"}s are remotely controlled by a Great Brain. ${ween_object_reference} sets out for its home planet...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="daba5e8b-11ec-4ae0-aae8-10a110bb4784">
@@ -7439,8 +7439,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Secret of the Oracle</en>
 					</title_original>
 					<description>
-						<de>Das Große Gehirn ist besiegt, doch, wie %ween_object_reference% mittels seinem selbstgebauten überlichtschnellen Radiogerät feststellt: die ${.self:"role":3:"firstname"} wollen die ganze Galaxie zerstören. Vielleicht kann das geheimnisvolle Orakel auf dem Planeten %gnostika_object_reference% helfen...</de>
-						<en>The Great Brain is defeated, but, as %ween_object_reference% discovers by means of his self-built faster-than-light radio: the ${.self:"role":3:"firstname"} want to destroy the whole galaxy. Maybe the mysterious oracle on the planet %gnostika_object_reference% can help...</en>
+						<de>Das Große Gehirn ist besiegt, doch, wie ${ween_object_reference} mittels seinem selbstgebauten überlichtschnellen Radiogerät feststellt: die ${.self:"role":3:"firstname"} wollen die ganze Galaxie zerstören. Vielleicht kann das geheimnisvolle Orakel auf dem Planeten ${gnostika_object_reference} helfen...</de>
+						<en>The Great Brain is defeated, but, as ${ween_object_reference} discovers by means of his self-built faster-than-light radio: the ${.self:"role":3:"firstname"} want to destroy the whole galaxy. Maybe the mysterious oracle on the planet ${gnostika_object_reference} can help...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="be85e20a-3dbc-421a-93d6-5bdfad070ede">
@@ -7453,8 +7453,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Armageddon Machine</en>
 					</title_original>
 					<description>
-						<de>Auf %gnostika_object_reference% muss %ween_object_reference% feststellen, dass dessen Rat der Unsterblichen Weisen bereits von den ${.self:"role":3:"firstname"} entführt wurde. %ween_object_reference% muss die Weisen befreien, um das Orakel aktivieren zu können...</de>
-						<en>On %gnostika_object_reference%, %ween_object_reference% finds that its Council of Immortal Sages has already been kidnapped by the ${.self:"role":3:"firstname"}. %ween_object_reference% must free the sages in order to be able to activate the oracle...</en>
+						<de>Auf ${gnostika_object_reference} muss ${ween_object_reference} feststellen, dass dessen Rat der Unsterblichen Weisen bereits von den ${.self:"role":3:"firstname"} entführt wurde. ${ween_object_reference} muss die Weisen befreien, um das Orakel aktivieren zu können...</de>
+						<en>On ${gnostika_object_reference}, ${ween_object_reference} finds that its Council of Immortal Sages has already been kidnapped by the ${.self:"role":3:"firstname"}. ${ween_object_reference} must free the sages in order to be able to activate the oracle...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="45e0e001-645a-449e-a861-abb17b3192b7">
@@ -7467,8 +7467,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Goodbye, Galaxy</en>
 					</title_original>
 					<description>
-						<de>Vom Orakel erfuhr %ween_object_reference%, die ${.self:"role":3:"firstname"} sind Schattenwesen von der dunklen Seite der Galaxie und haben auf %codrakiv_object_reference% eine Vernichtungsmaschine. Sie wollen die Galaxie zerstören und nach ihren Vorstellungen wieder aufbauen. %ween_object_reference% muss sie stoppen...</de>
-						<en>%ween_object_reference% learned from the oracle that the ${.self:"role":3:"firstname"} are shadow beings from the dark side of the galaxy and have an extermination machine on %codrakiv_object_reference%. They want to destroy the galaxy and rebuild it according to their ideas. %ween_object_reference% must stop them...</en>
+						<de>Vom Orakel erfuhr ${ween_object_reference}, die ${.self:"role":3:"firstname"} sind Schattenwesen von der dunklen Seite der Galaxie und haben auf ${codrakiv_object_reference} eine Vernichtungsmaschine. Sie wollen die Galaxie zerstören und nach ihren Vorstellungen wieder aufbauen. ${ween_object_reference} muss sie stoppen...</de>
+						<en>${ween_object_reference} learned from the oracle that the ${.self:"role":3:"firstname"} are shadow beings from the dark side of the galaxy and have an extermination machine on ${codrakiv_object_reference}. They want to destroy the galaxy and rebuild it according to their ideas. ${ween_object_reference} must stop them...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="754c2dec-f377-4b4b-a24a-4b4b3a93b35b">
@@ -7510,12 +7510,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="https://en.wikipedia.org/wiki/Leisure_Suit_Larry | TODO: ref nicknames once feature available">
 			<title>
-				<de>Leather Jacket ${.self:"role":0:"firstname"}, %ladykiller%</de>
-				<en>Leather Jacket ${.self:"role":0:"firstname"}, %ladykiller%</en>
+				<de>Leather Jacket ${.self:"role":0:"firstname"}, ${ladykiller}</de>
+				<en>Leather Jacket ${.self:"role":0:"firstname"}, ${ladykiller}</en>
 			</title>
 			<title_original>
-				<de>%title_original_optional%</de>
-				<en>%title_original_optional%</en>
+				<de>${title_original_optional}</de>
+				<en>${title_original_optional}</en>
 			</title_original>
 			<description>
 				<de>${.self:"role":0:"firstname"} ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de>
@@ -7523,8 +7523,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 			</description>
 			<variables>
 				<title_original_optional>
-					<de>Leisure Suit ${.self:"role":0:"firstname"}|Leisure Suit ${.self:"role":0:"firstname"}, %ladykiller%</de>
-					<en>Leisure Suit ${.self:"role":0:"firstname"}|Leisure Suit ${.self:"role":0:"firstname"}, %ladykiller%</en>
+					<de>Leisure Suit ${.self:"role":0:"firstname"}|Leisure Suit ${.self:"role":0:"firstname"}, ${ladykiller}</de>
+					<en>Leisure Suit ${.self:"role":0:"firstname"}|Leisure Suit ${.self:"role":0:"firstname"}, ${ladykiller}</en>
 				</title_original_optional>
 				<ladykiller>
 					<de>Ladykiller|Schwerenöter vom Dienst|Reizender Charmeur|Bezaubernder Schmeichler</de>
@@ -7667,12 +7667,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="0f7053ad-249f-47d3-8302-4853b386bedb" creator="9551" comment="https://en.wikipedia.org/wiki/Counter-Strike:_Global_Offensive with popular maps as episodes">
 			<title>
-				<de>%counteroffensive% - %global% %operations%</de>
-				<en>%counteroffensive% - %global% %operations%</en>
+				<de>${counteroffensive} - ${global} ${operations}</de>
+				<en>${counteroffensive} - ${global} ${operations}</en>
 			</title>
 			<title_original>
-				<de>%counterstrike% - %global% %offensive%</de>
-				<en>%counterstrike% - %global% %offensive%</en>
+				<de>${counterstrike} - ${global} ${offensive}</de>
+				<en>${counterstrike} - ${global} ${offensive}</en>
 			</title_original>
 			<description>
 				<de>Hochdramatische Szenen an Schauplätzen auf der ganzen Welt. Kann das Einsatzkommando in letzter Millisekunde die Bombe entschärfen? Die Geisel aus dem Kreuzfeuer der Terroristen befreien? Oder fahren eher letztere die Sympathiepunkte beim Publikum ein?</de>
@@ -7684,8 +7684,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 					<en>Counter-Strike|Counterstrike|Counter-Fire|Retaliation|Counterplot|Counterploy|Riposte|Strike-Back</en>
 				</counterstrike>
 				<offensive>
-					<de>Offensive|%operations%</de>
-					<en>Offensive|%operations%</en>
+					<de>Offensive|${operations}</de>
+					<en>Offensive|${operations}</en>
 				</offensive>
 				<counteroffensive>
 					<de>Gegenoffensive|Gegenfeuer|Vergeltung|Gegenanschlag|Gegenangriff|Gegenschlag|Gegenreaktion</de>
@@ -8397,12 +8397,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 
 		<scripttemplate product="2" licence_type="3" guid="71f4752c-2c8f-41f0-82c6-3461e02e8160" creator="9551" comment="TODO: To test a future 'franchise script' feature. Episode titles and contents by ChatGPT. A bit formulaic perhaps.">
 			<title>
-				<de>${.self:"role":0:"firstname"} und ${.self:"role":1:"firstname"} - Die %new% %adventures%</de>
-				<en>${.self:"role":0:"firstname"} and ${.self:"role":1:"firstname"} - The %new% %adventures%</en>
+				<de>${.self:"role":0:"firstname"} und ${.self:"role":1:"firstname"} - Die ${new} ${adventures}</de>
+				<en>${.self:"role":0:"firstname"} and ${.self:"role":1:"firstname"} - The ${new} ${adventures}</en>
 			</title>
 			<title_original>
-				<de>${.self:"role":0:"firstname"} und ${.self:"role":1:"firstname"} - Die %new% %adventures%</de>
-				<en>${.self:"role":0:"firstname"} and ${.self:"role":1:"firstname"} - The %new% %adventures%</en>
+				<de>${.self:"role":0:"firstname"} und ${.self:"role":1:"firstname"} - Die ${new} ${adventures}</de>
+				<en>${.self:"role":0:"firstname"} and ${.self:"role":1:"firstname"} - The ${new} ${adventures}</en>
 			</title_original>
 			<description>
 				<de>Eine Neuauflage der beliebten tschechischen Marionettenserie über Vater ${.self:"role":0:"firstname"}, den kleinen Sohn ${.self:"role":1:"firstname"}, Schulfreundin ${.self:"role":3:"firstname"}, Großmutter Frau ${.self:"role":2:"firstname"} und Hund ${.self:"role":4:"firstname"}. Behutsam modernisiert, so dass der Charme erhalten bleibt.</de>

@@ -161,9 +161,9 @@
 				<pl>Gobliny</pl>
 			</title_original>
 			<description>
-				<de>Verfilmung der Buchreihe Die Goblins um %Goblin% den Goblin und den vergessenen Gott %Gott%.</de>
-				<en>Adaptation of the book series The Goblins about %Goblin% the goblin and the forgotten god %Gott%.</en>
-				<pl>Adaptacja serii książek Gobliny, o goblinie %Goblin% i zapomnianym bogu %Gott%.</pl>
+				<de>Verfilmung der Buchreihe Die Goblins um ${Goblin} den Goblin und den vergessenen Gott ${Gott}.</de>
+				<en>Adaptation of the book series The Goblins about ${Goblin} the goblin and the forgotten god ${Gott}.</en>
+				<pl>Adaptacja serii książek Gobliny, o goblinie ${Goblin} i zapomnianym bogu ${Gott}.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Stukov_Goblins_1">
@@ -178,9 +178,9 @@
 						<pl>Gobliny</pl>
 					</title_original>
 					<description>
-						<de>%Goblin% ist ein Goblin - ein kleiner, schwächlicher Goblin. Wenn er eines nicht sein will, dann ist es ein Held zu sein. Eines Tages jedoch passiert etwas ... und %Goblin% muss zum Helden werden ... irgendwie. Ach ja und %Gott% gibt es auch.</de>
-						<en>%Goblin% is a goblin - a small, weak goblin. If there's one thing he doesn't want to be, then it is to be a hero. One day, however, something happens ... and %Goblin% has to become a hero ... somehow. Oh, and %Gott% exists, too.</en>
-						<pl>%Goblin% jest goblinem - małym, słabym goblinem. Jeśli jest jedna rzecz, którą nie chce być, to jest to bycie bohaterem. Pewnego dnia jednak coś się dzieje... i %Goblin% musi zostać bohaterem... w jakiś sposób. Aha, i %Gott% też istnieje.</pl>
+						<de>${Goblin} ist ein Goblin - ein kleiner, schwächlicher Goblin. Wenn er eines nicht sein will, dann ist es ein Held zu sein. Eines Tages jedoch passiert etwas ... und ${Goblin} muss zum Helden werden ... irgendwie. Ach ja und ${Gott} gibt es auch.</de>
+						<en>${Goblin} is a goblin - a small, weak goblin. If there's one thing he doesn't want to be, then it is to be a hero. One day, however, something happens ... and ${Goblin} has to become a hero ... somehow. Oh, and ${Gott} exists, too.</en>
+						<pl>${Goblin} jest goblinem - małym, słabym goblinem. Jeśli jest jedna rzecz, którą nie chce być, to jest to bycie bohaterem. Pewnego dnia jednak coś się dzieje... i ${Goblin} musi zostać bohaterem... w jakiś sposób. Aha, i ${Gott} też istnieje.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Stukov_Goblins_2">
@@ -195,9 +195,9 @@
 						<pl>Powrót goblinów</pl>
 					</title_original>
 					<description>
-						<de>Als eines Tages ein Oger auftaucht und die Goblins um Hilfe bittet, wird der schwächliche %Goblin% auf eine brandgefährliche Mission geschickt. Ach ja und %Gott% gibt es auch.</de>
-						<en>When one day an ogre shows up and asks the goblins for help, the frail %Goblin% is sent on a blazingly dangerous mission. Oh yes and %Gott% also exists.</en>
-						<pl>Kiedy pewnego dnia pojawia się ogr i prosi gobliny o pomoc, wątły %Goblin% zostaje wysłany na niesamowicie niebezpieczną misję. O tak i %Gott% również istnieje.</pl>
+						<de>Als eines Tages ein Oger auftaucht und die Goblins um Hilfe bittet, wird der schwächliche ${Goblin} auf eine brandgefährliche Mission geschickt. Ach ja und ${Gott} gibt es auch.</de>
+						<en>When one day an ogre shows up and asks the goblins for help, the frail ${Goblin} is sent on a blazingly dangerous mission. Oh yes and ${Gott} also exists.</en>
+						<pl>Kiedy pewnego dnia pojawia się ogr i prosi gobliny o pomoc, wątły ${Goblin} zostaje wysłany na niesamowicie niebezpieczną misję. O tak i ${Gott} również istnieje.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Stukov_Goblins_3">
@@ -212,9 +212,9 @@
 						<pl>Wojna goblinów</pl>
 					</title_original>
 					<description>
-						<de>Ein Angriff auf die Goblin Hoehlen und schon steckt %Goblin% Drachentoeter mitten im Krieg. Ach ja und %Gott% gibt es auch.</de>
-						<en>One attack on the goblin caves and %Goblin% Dragonslayer is already in the middle of the war. Oh yes and %Gott% is also there.</en>
-						<pl>Jeden atak na jaskinie goblinów i %Goblin% Pogromca Smoków jest już w środku wojny. O tak i %Gott% też tam jest.</pl>
+						<de>Ein Angriff auf die Goblin Hoehlen und schon steckt ${Goblin} Drachentoeter mitten im Krieg. Ach ja und ${Gott} gibt es auch.</de>
+						<en>One attack on the goblin caves and ${Goblin} Dragonslayer is already in the middle of the war. Oh yes and ${Gott} is also there.</en>
+						<pl>Jeden atak na jaskinie goblinów i ${Goblin} Pogromca Smoków jest już w środku wojny. O tak i ${Gott} też tam jest.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -266,9 +266,9 @@
 				<pl>Darkest Dungeon - Film</pl>
 			</title_original>
 			<description>
-				<de>Versuch einer Verfilmung des Computerspiels, naja zumindest der Kampf gegen Monster. %Class1%, %Class2%, %Class3% und %Class4% versuchen zu überleben. Jayne Wune leiht seine Stimme, oder ist sie nur eingespielt?</de>
-				<en>Attempt at a film adaptation of the computer game, well at least the fight against monsters. %Class1%, %Class2%, %Class3% and %Class4% try to survive. Jayne Wune lends his voice, or is it just recorded?</en>
-				<pl>Próba filmowej adaptacji gry komputerowej, a przynajmniej walki z potworami. %Class1%, %Class2%, %Class3% i %Class4% próbują przetrwać. Jayne Wune użycza swojego głosu, a może to tylko nagranie?</pl>
+				<de>Versuch einer Verfilmung des Computerspiels, naja zumindest der Kampf gegen Monster. ${Class1}, ${Class2}, ${Class3} und ${Class4} versuchen zu überleben. Jayne Wune leiht seine Stimme, oder ist sie nur eingespielt?</de>
+				<en>Attempt at a film adaptation of the computer game, well at least the fight against monsters. ${Class1}, ${Class2}, ${Class3} and ${Class4} try to survive. Jayne Wune lends his voice, or is it just recorded?</en>
+				<pl>Próba filmowej adaptacji gry komputerowej, a przynajmniej walki z potworami. ${Class1}, ${Class2}, ${Class3} i ${Class4} próbują przetrwać. Jayne Wune użycza swojego głosu, a może to tylko nagranie?</pl>
 			</description>
 			<variables>
 				<Class1>
@@ -326,9 +326,9 @@
 				<pl>Adwersarz</pl>
 			</title_original>
 			<description>
-				<de>Er kommt mit Feuer und Sturm, und mit seinem Erscheinen brechen die letzten Tage der Menschheit an. Eine Legende wird Wirklichkeit, wie der Metzger %RoleMale% und Anhalterin %RoleFemale% erleben.</de>
-				<en>He comes with fire and storm, and with his appearance the final days of mankind are dawning. A legend becomes reality, as the butcher %RoleMale% and hitchhiker %RoleFemale% experience.</en>
-				<pl>Nadchodzi z ogniem i burzą, a wraz z jego pojawieniem się nadchodzą ostatnie dni ludzkości. Legenda staje się rzeczywistością, czego doświadczają rzeźnik %RoleMale% i autostopowiczka %RoleFemale%.</pl>
+				<de>Er kommt mit Feuer und Sturm, und mit seinem Erscheinen brechen die letzten Tage der Menschheit an. Eine Legende wird Wirklichkeit, wie der Metzger ${RoleMale} und Anhalterin ${RoleFemale} erleben.</de>
+				<en>He comes with fire and storm, and with his appearance the final days of mankind are dawning. A legend becomes reality, as the butcher ${RoleMale} and hitchhiker ${RoleFemale} experience.</en>
+				<pl>Nadchodzi z ogniem i burzą, a wraz z jego pojawieniem się nadchodzą ostatnie dni ludzkości. Legenda staje się rzeczywistością, czego doświadczają rzeźnik ${RoleMale} i autostopowiczka ${RoleFemale}.</pl>
 			</description>
 			<variables>
 				<RoleMale>

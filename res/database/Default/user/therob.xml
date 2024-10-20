@@ -2419,14 +2419,14 @@
 	<scripttemplates>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
 			<title>
-				<de>%WHAT% für %WHO%</de>
-				<en>Writing %WHAT% for %WHO%</en>
-				<pl>Jak napisać %WHAT% dla %WHO%</pl>
+				<de>${WHAT} für ${WHO}</de>
+				<en>Writing ${WHAT} for ${WHO}</en>
+				<pl>Jak napisać ${WHAT} dla ${WHO}</pl>
 			</title>
 			<description>
-				<de>Wie schreibe ich %WHAT% für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
-				<en>%WHAT% - How do I write those for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
-				<pl>Jak napisać %WHAT% dla TVTower? Raportaż, w którym odwiedzamy autorów odnoszących największe sukcesy, przyglądamy się im z bliska i uzyskujemy ekscytujące wskazówki w wywiadach.</pl>
+				<de>Wie schreibe ich ${WHAT} für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
+				<en>${WHAT} - How do I write those for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
+				<pl>Jak napisać ${WHAT} dla TVTower? Raportaż, w którym odwiedzamy autorów odnoszących największe sukcesy, przyglądamy się im z bliska i uzyskujemy ekscytujące wskazówki w wywiadach.</pl>
 			</description>
 			<variables>
 				<what>
@@ -2460,15 +2460,15 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<variables>
 				<title>
-					<de>Reportagen aus dem Sendegebiet|Neues aus %RANDOMCITY%|Reportagen aus %RANDOMCITY%|Was ist los in %RANDOMCITY%?</de>
-					<en>Reports From the Broadcast Area|News From %RANDOMCITY%|Reports From %RANDOMCITY%|What's Up in %RANDOMCITY%?</en>
-					<pl>Raporty z obszaru nadawania|%RANDOMCITY% - Wiadomości lokalne|%RANDOMCITY% - Raporty lokalne|%RANDOMCITY% - Co słychać w mieście?</pl>
+					<de>Reportagen aus dem Sendegebiet|Neues aus ${RANDOMCITY}|Reportagen aus ${RANDOMCITY}|Was ist los in ${RANDOMCITY}?</de>
+					<en>Reports From the Broadcast Area|News From ${RANDOMCITY}|Reports From ${RANDOMCITY}|What's Up in ${RANDOMCITY}?</en>
+					<pl>Raporty z obszaru nadawania|${RANDOMCITY} - Wiadomości lokalne|${RANDOMCITY} - Raporty lokalne|${RANDOMCITY} - Co słychać w mieście?</pl>
 				</title>
 				<randomcity>
 					<de>${.stationmap:"randomcity"}</de>
@@ -2501,15 +2501,15 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<variables>
 				<title>
-					<de>%ADJECTIVE% %SUBJECT%%MODIFIER%</de>
-					<en>%ADJECTIVE% %SUBJECT%%MODIFIER%</en>
-					<pl>%ADJECTIVE% %SUBJECT%%MODIFIER%</pl>
+					<de>${ADJECTIVE} ${SUBJECT}${MODIFIER}</de>
+					<en>${ADJECTIVE} ${SUBJECT}${MODIFIER}</en>
+					<pl>${ADJECTIVE} ${SUBJECT}${MODIFIER}</pl>
 				</title>
 				<subject>
 					<de>Filme|Serien|Shows|Produktionen</de>
@@ -2556,9 +2556,9 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
 			<title>
-				<de>%GROANERS% %TYPE%</de>
-				<en>%GROANERS% %TYPE%</en>
-				<pl>%GROANERS% na scenie - %TYPE%</pl>
+				<de>${GROANERS} ${TYPE}</de>
+				<en>${GROANERS} ${TYPE}</en>
+				<pl>${GROANERS} na scenie - ${TYPE}</pl>
 			</title>
 			<description>
 				<de>Ein Moderator lässt seine Gäste Sketche aufführen und gibt ihnen spontane Regieanweisungen.</de>
@@ -2599,9 +2599,9 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
 			<title>
-				<de>%birth% %station%</de>
-				<en>%birth% of %station%</en>
-				<pl>%birth% %station%</pl>
+				<de>${birth} ${station}</de>
+				<en>${birth} of ${station}</en>
+				<pl>${birth} ${station}</pl>
 			</title>
 			<description>
 				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
@@ -2640,9 +2640,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversitaet">
 			<title>
-				<de>Die %WAS%%ART%</de>
-				<en>The %WAS% %ART%</en>
-				<pl>%ART% %WAS%</pl>
+				<de>Die ${WAS}${ART}</de>
+				<en>The ${WAS} ${ART}</en>
+				<pl>${ART} ${WAS}</pl>
 			</title>
 			<description>
 				<de>Studenten der Filmwissenschaften stellen ihre Horrordrehbücher für die Abschlussarbeit des Semester allen Studios zur Verfügung. Was da wohl rauskommt?</de>
@@ -2680,9 +2680,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Com-EngeloderBengel">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<description>
 				<de>Familienkomödie über das Leben mit einem frechen Sohnemann. Das Drehbuch wird von dem Stardrehbuchschreiber Don Ron geschrieben.</de>
@@ -2691,9 +2691,9 @@
 			</description>
 			<variables>
 				<title>
-					<de>Engel oder Bengel|%NAME% dreht durch|%NAME% außer Rand und Band</de>
-					<en>Angel or Rascal|%NAME% Goes Berserk|%NAME% Goes Haywire</en>
-					<pl>Anioł lub łobuz|%NAME% - diabełek w owczej skórze|%NAME% rozrabia</pl>
+					<de>Engel oder Bengel|${NAME} dreht durch|${NAME} außer Rand und Band</de>
+					<en>Angel or Rascal|${NAME} Goes Berserk|${NAME} Goes Haywire</en>
+					<pl>Anioł lub łobuz|${NAME} - diabełek w owczej skórze|${NAME} rozrabia</pl>
 				</title>
 				<name>
 					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim</de>
@@ -2722,9 +2722,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
 			<title>
-				<de>%NAME1% %NAME2%</de>
-				<en>%NAME1% %NAME2%</en>
-				<pl>%NAME1% %NAME2%</pl>
+				<de>${NAME1} ${NAME2}</de>
+				<en>${NAME1} ${NAME2}</en>
+				<pl>${NAME1} ${NAME2}</pl>
 			</title>
 			<description>
 				<de>Jodelnde Liebeserklärungen und epische Bergaufnahmen.</de>
@@ -2761,14 +2761,14 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Krim-ErbarmungsloseErmittler" comment="TODO: English version names should be more international">
 			<title>
-				<de>Erbarmungslose Ermittler: %CITY%</de>
-				<en>Merciless Investigators: %CITY%</en>
-				<pl>Bezlitośni śledczy z miasta %CITY%</pl>
+				<de>Erbarmungslose Ermittler: ${CITY}</de>
+				<en>Merciless Investigators: ${CITY}</en>
+				<pl>Bezlitośni śledczy z miasta ${CITY}</pl>
 			</title>
 			<description>
-				<de>%NAME% ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
-				<en>%NAME% investigate in their city. The case deals with a current social issue that moves the nation.</en>
-				<pl>%NAME% prowadzą śledztwo w swoim mieście. Sprawa dotyczy aktualnej kwestii społecznej, która porusza naród.</pl>
+				<de>${NAME} ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
+				<en>${NAME} investigate in their city. The case deals with a current social issue that moves the nation.</en>
+				<pl>${NAME} prowadzą śledztwo w swoim mieście. Sprawa dotyczy aktualnej kwestii społecznej, która porusza naród.</pl>
 			</description>
 			<variables>
 				<city>
@@ -2803,9 +2803,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-SciFi-QueenundUfo">
 			<title>
-				<de>Die Queen und %what%</de>
-				<en>The Queen and %what%</en>
-				<pl>Królowa i %what%</pl>
+				<de>Die Queen und ${what}</de>
+				<en>The Queen and ${what}</en>
+				<pl>Królowa i ${what}</pl>
 			</title>
 			<description>
 				<de>Ein UFO mit Außerirdischen landet auf der Erde. Doch statt die Queen zu schrumpfen, sind es Weltraumgroupies der Queen.</de>
@@ -2838,9 +2838,9 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
 			<title>
-				<de>ISS - auf der Suche nach %NAME%</de>
-				<en>ISS - Searching for %NAME%</en>
-				<pl>ISS - Szukanie %NAME%</pl>
+				<de>ISS - auf der Suche nach ${NAME}</de>
+				<en>ISS - Searching for ${NAME}</en>
+				<pl>ISS - Szukanie ${NAME}</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
@@ -2872,9 +2872,9 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-miroftvt">
 			<title>
-				<de>MIR - auf der Suche nach %NAME%</de>
-				<en>MIR - Searching for %NAME%</en>
-				<pl>MIR - Szukanie %NAME%</pl>
+				<de>MIR - auf der Suche nach ${NAME}</de>
+				<en>MIR - Searching for ${NAME}</en>
+				<pl>MIR - Szukanie ${NAME}</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
@@ -2906,14 +2906,14 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-dram-TVTintern" comment="TODO: Episode descriptions">
 			<title>
-				<de>TVTs: %OBJECT% im Hochhaus</de>
-				<en>TVTs: %OBJECT% In A Skyscraper</en>
-				<pl>TVT: %OBJECT% w wieżowcu</pl>
+				<de>TVTs: ${OBJECT} im Hochhaus</de>
+				<en>TVTs: ${OBJECT} In A Skyscraper</en>
+				<pl>TVT: ${OBJECT} w wieżowcu</pl>
 			</title>
 			<description>
-				<de>Serie über %OBJECT% im TV Tower Hochhaus</de>
-				<en>Series about %OBJECT% in The TV Tower Skyscraper</en>
-				<pl>Serial. %OBJECT% w wieżowcu telewizyjnym TV Tower</pl>
+				<de>Serie über ${OBJECT} im TV Tower Hochhaus</de>
+				<en>Series about ${OBJECT} in The TV Tower Skyscraper</en>
+				<pl>Serial. ${OBJECT} w wieżowcu telewizyjnym TV Tower</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep1">
@@ -2934,9 +2934,9 @@
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep3">
 					<title>
-						<de>%ATTRIBUTE% macht eine Party</de>
-						<en>%ATTRIBUTE% is Having a Party</en>
-						<pl>%ATTRIBUTE% organizuje imprezę</pl>
+						<de>${ATTRIBUTE} macht eine Party</de>
+						<en>${ATTRIBUTE} is Having a Party</en>
+						<pl>${ATTRIBUTE} organizuje imprezę</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep4">
@@ -2956,9 +2956,9 @@
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep6">
 					<title>
-						<de>%SUBJECT1A%</de>
-						<en>The %SUBJECT1A%</en>
-						<pl>%SUBJECT1A%</pl>
+						<de>${SUBJECT1A}</de>
+						<en>The ${SUBJECT1A}</en>
+						<pl>${SUBJECT1A}</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep7">
@@ -2970,9 +2970,9 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep8">
 					<title>
-						<de>%ATTRIBUTE% wird wütend</de>
-						<en>%ATTRIBUTE% Gets Mad</en>
-						<pl>%ATTRIBUTE% Dostaje szału</pl>
+						<de>${ATTRIBUTE} wird wütend</de>
+						<en>${ATTRIBUTE} Gets Mad</en>
+						<pl>${ATTRIBUTE} Dostaje szału</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep9">
@@ -2985,9 +2985,9 @@
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep10">
 					<title>
-						<de>Streit bei %SUBJECT1B%</de>
-						<en>Trouble At The %SUBJECT1B%</en>
-						<pl>%SUBJECT1B% ma kłopoty</pl>
+						<de>Streit bei ${SUBJECT1B}</de>
+						<en>Trouble At The ${SUBJECT1B}</en>
+						<pl>${SUBJECT1B} ma kłopoty</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep11">
@@ -3149,14 +3149,14 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-act-DerFahnder" comment="Episode descriptions added in 2024 with help of ChatGPT">
 			<title>
-				<de>Der %TITLE1%%TITLE2%</de>
-				<en>The %TITLE1% %TITLE2%</en>
-				<pl>%NAME1% - %TITLE2% %TITLE1%</pl>
+				<de>Der ${TITLE1}${TITLE2}</de>
+				<en>The ${TITLE1} ${TITLE2}</en>
+				<pl>${NAME1} - ${TITLE2} ${TITLE1}</pl>
 			</title>
 			<description>
-				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
-				<en>%NAME1% solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
-				<pl>%NAME1% rozwiązuje szybko sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
+				<de>${NAME1} löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
+				<en>${NAME1} solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
+				<pl>${NAME1} rozwiązuje szybko sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep1">
@@ -3178,9 +3178,9 @@
 						<pl>Polowanie</pl>
 					</title>
 					<description>
-						<de>%NAME1% verfolgt einen flüchtigen Dieb, der die Dorfbäckerei ausgeraubt hat. Dabei entdeckt er Hinweise auf eine größere Einbruchserie im Umland.</de>
-						<en>%NAME1% pursues a fugitive thief who has robbed the village bakery. In the process, he discovers evidence of a larger series of burglaries in the surrounding area.</en>
-						<pl>%NAME1% ściga zbiegłego złodzieja, który okradł wiejską piekarnię. W trakcie tego procesu odkrywa dowody większej serii włamań w okolicy.</pl>
+						<de>${NAME1} verfolgt einen flüchtigen Dieb, der die Dorfbäckerei ausgeraubt hat. Dabei entdeckt er Hinweise auf eine größere Einbruchserie im Umland.</de>
+						<en>${NAME1} pursues a fugitive thief who has robbed the village bakery. In the process, he discovers evidence of a larger series of burglaries in the surrounding area.</en>
+						<pl>${NAME1} ściga zbiegłego złodzieja, który okradł wiejską piekarnię. W trakcie tego procesu odkrywa dowody większej serii włamań w okolicy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
@@ -3190,9 +3190,9 @@
 						<pl>Porwanie</pl>
 					</title>
 					<description>
-						<de>Die Tochter des Bürgermeisters wird entführt. %NAME1% ermittelt fieberhaft und entdeckt, dass der Entführer persönliche Rache anstrebt. Eine dramatische Rettungsaktion führt ihn durch verlassene Gebäude bis zum Showdown.</de>
-						<en>The mayor's daughter is kidnapped. %NAME1% investigates feverishly and discovers that the kidnapper is seeking personal revenge. A dramatic rescue operation leads him through abandoned buildings to a showdown.</en>
-						<pl>Córka burmistrza zostaje porwana. %NAME1% prowadzi gorączkowe śledztwo i odkrywa, że porywacz szuka osobistej zemsty. Dramatyczna akcja ratunkowa prowadzi go przez opuszczone budynki do starcia.</pl>
+						<de>Die Tochter des Bürgermeisters wird entführt. ${NAME1} ermittelt fieberhaft und entdeckt, dass der Entführer persönliche Rache anstrebt. Eine dramatische Rettungsaktion führt ihn durch verlassene Gebäude bis zum Showdown.</de>
+						<en>The mayor's daughter is kidnapped. ${NAME1} investigates feverishly and discovers that the kidnapper is seeking personal revenge. A dramatic rescue operation leads him through abandoned buildings to a showdown.</en>
+						<pl>Córka burmistrza zostaje porwana. ${NAME1} prowadzi gorączkowe śledztwo i odkrywa, że porywacz szuka osobistej zemsty. Dramatyczna akcja ratunkowa prowadzi go przez opuszczone budynki do starcia.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3203,9 +3203,9 @@
 						<pl>Sprawa zamknięta</pl>
 					</title>
 					<description>
-						<de>Ein alter ungelöster Fall wird neu aufgerollt, als Beweise auftauchen. %NAME1% bringt durch akribische Nachforschungen die Wahrheit ans Licht und rehabilitiert einen unschuldig Verurteilten, der jahrelang in Haft saß.</de>
-						<en>An old unsolved case is reopened when evidence emerges. Through meticulous research, %NAME1% brings the truth to light and rehabilitates an innocent convict who has been in prison for years.</en>
-						<pl>Stara, nierozwiązana sprawa zostaje ponownie otwarta, gdy pojawiają się dowody. Dzięki skrupulatnym badaniom %NAME1% ujawnia prawdę i rehabilituje niewinnego skazańca, który od lat przebywa w więzieniu.</pl>
+						<de>Ein alter ungelöster Fall wird neu aufgerollt, als Beweise auftauchen. ${NAME1} bringt durch akribische Nachforschungen die Wahrheit ans Licht und rehabilitiert einen unschuldig Verurteilten, der jahrelang in Haft saß.</de>
+						<en>An old unsolved case is reopened when evidence emerges. Through meticulous research, ${NAME1} brings the truth to light and rehabilitates an innocent convict who has been in prison for years.</en>
+						<pl>Stara, nierozwiązana sprawa zostaje ponownie otwarta, gdy pojawiają się dowody. Dzięki skrupulatnym badaniom ${NAME1} ujawnia prawdę i rehabilituje niewinnego skazańca, który od lat przebywa w więzieniu.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
@@ -3215,9 +3215,9 @@
 						<pl>Prawda</pl>
 					</title>
 					<description>
-						<de>%NAME1% stößt auf einen alten Freund, der in einen mysteriösen Unfall verwickelt war. Seine Ermittlungen decken ein Netz aus Lügen und Vertuschungen auf, das bis in die höchsten Kreise des Dorfes reicht.</de>
-						<en>%NAME1% comes across an old friend who was involved in a mysterious accident. His investigations uncover a web of lies and cover-ups that reaches into the highest circles of the village.</en>
-						<pl>%NAME1% natrafia na starego przyjaciela, który brał udział w tajemniczym wypadku. Jego śledztwo ujawnia sieć kłamstw i zatuszowań, która sięga najwyższych kręgów wioski.</pl>
+						<de>${NAME1} stößt auf einen alten Freund, der in einen mysteriösen Unfall verwickelt war. Seine Ermittlungen decken ein Netz aus Lügen und Vertuschungen auf, das bis in die höchsten Kreise des Dorfes reicht.</de>
+						<en>${NAME1} comes across an old friend who was involved in a mysterious accident. His investigations uncover a web of lies and cover-ups that reaches into the highest circles of the village.</en>
+						<pl>${NAME1} natrafia na starego przyjaciela, który brał udział w tajemniczym wypadku. Jego śledztwo ujawnia sieć kłamstw i zatuszowań, która sięga najwyższych kręgów wioski.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
@@ -3227,9 +3227,9 @@
 						<pl>Fałszywe pieniądze</pl>
 					</title>
 					<description>
-						<de>Eine Serie von Falschgeldscheinen taucht im Dorf auf. %NAME1% folgt den Spuren der Blüten und deckt einen kriminellen Ring auf, der bis in die Nachbarstadt reicht. Eine spektakuläre Verfolgungsjagd endet in einer alten Fabrikhalle.</de>
-						<en>A series of counterfeit banknotes turns up in the village. %NAME1% follows the trail of the flowers and uncovers a criminal ring that reaches as far as the neighboring town. A spectacular chase ends in an old factory building.</en>
-						<pl>W wiosce pojawia się seria fałszywych banknotów. %NAME1% podąża tropem kwiatów i odkrywa siatkę przestępczą, która sięga aż do sąsiedniego miasta. Spektakularny pościg kończy się w budynku starej fabryki.</pl>
+						<de>Eine Serie von Falschgeldscheinen taucht im Dorf auf. ${NAME1} folgt den Spuren der Blüten und deckt einen kriminellen Ring auf, der bis in die Nachbarstadt reicht. Eine spektakuläre Verfolgungsjagd endet in einer alten Fabrikhalle.</de>
+						<en>A series of counterfeit banknotes turns up in the village. ${NAME1} follows the trail of the flowers and uncovers a criminal ring that reaches as far as the neighboring town. A spectacular chase ends in an old factory building.</en>
+						<pl>W wiosce pojawia się seria fałszywych banknotów. ${NAME1} podąża tropem kwiatów i odkrywa siatkę przestępczą, która sięga aż do sąsiedniego miasta. Spektakularny pościg kończy się w budynku starej fabryki.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3240,9 +3240,9 @@
 						<pl>Alternatywne fakty</pl>
 					</title>
 					<description>
-						<de>%NAME1% untersucht die Machenschaften eines örtlichen Politikers, der mit Fake News und Manipulationen das Dorf spaltet.</de>
-						<en>%NAME1% investigates the machinations of a local politician who divides the village with fake news and manipulation.</en>
-						<pl>%NAME1% bada machinacje lokalnego polityka, który dzieli wioskę za pomocą fałszywych wiadomości i manipulacji.</pl>
+						<de>${NAME1} untersucht die Machenschaften eines örtlichen Politikers, der mit Fake News und Manipulationen das Dorf spaltet.</de>
+						<en>${NAME1} investigates the machinations of a local politician who divides the village with fake news and manipulation.</en>
+						<pl>${NAME1} bada machinacje lokalnego polityka, który dzieli wioskę za pomocą fałszywych wiadomości i manipulacji.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3282,9 +3282,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Mon-EpischeGeschichte">
 			<title>
-				<de>Don Rons %WAS%</de>
-				<en>Don Ron's %WAS%</en>
-				<pl>Opowieści Don Rona: %WAS%</pl>
+				<de>Don Rons ${WAS}</de>
+				<en>Don Ron's ${WAS}</en>
+				<pl>Opowieści Don Rona: ${WAS}</pl>
 			</title>
 			<description>
 				<de>Don Rons monumentale Geschichte über eine royale Familie. Erfolg wie immer garantiert.</de>
@@ -3317,14 +3317,14 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Fant-Wesen">
 			<title>
-				<de>%WESEN%</de>
-				<en>The %WESEN%</en>
-				<pl>%WESEN%</pl>
+				<de>${WESEN}</de>
+				<en>The ${WESEN}</en>
+				<pl>${WESEN}</pl>
 			</title>
 			<description>
-				<de>%NAME% trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
-				<en>%NAME% meets a strange creature. They explore the world together and have wonderful adventures.</en>
-				<pl>%NAME% spotyka dziwną istotę. Razem odkrywają świat i przeżywają wspaniałe przygody.</pl>
+				<de>${NAME} trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
+				<en>${NAME} meets a strange creature. They explore the world together and have wonderful adventures.</en>
+				<pl>${NAME} spotyka dziwną istotę. Razem odkrywają świat i przeżywają wspaniałe przygody.</pl>
 			</description>
 			<variables>
 				<wesen>
@@ -3356,9 +3356,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-trick-SprechenderGegenstand">
 			<title>
-				<de>%GEGENSTAND%</de>
-				<en>The Talking %GEGENSTAND%</en>
-				<pl>%GEGENSTAND%</pl>
+				<de>${GEGENSTAND}</de>
+				<en>The Talking ${GEGENSTAND}</en>
+				<pl>${GEGENSTAND}</pl>
 			</title>
 			<description>
 				<de>Ein sprechender Gegenstand freundet sich mit einem Kind an und das lustige Abenteuer beginnt.</de>
@@ -3391,9 +3391,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hist-Voelker">
 			<title>
-				<de>Die %Volk%</de>
-				<en>The %Volk%</en>
-				<pl>%Volk%</pl>
+				<de>Die ${Volk}</de>
+				<en>The ${Volk}</en>
+				<pl>${Volk}</pl>
 			</title>
 			<description>
 				<de>Der Moderator erzählt die Geschichte über den Aufstieg und Fall dieses Volkes. Laiendarsteller stellen wichtige Szenen nach.</de>
@@ -3425,9 +3425,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Adv-DieGruselUniversität">
 			<title>
-				<de>%ORT%</de>
-				<en>The %ORT%</en>
-				<pl>%ORT%</pl>
+				<de>${ORT}</de>
+				<en>The ${ORT}</en>
+				<pl>${ORT}</pl>
 			</title>
 			<description>
 				<de>Ein Schatzsucher erlebt viele Abenteuer auf seiner Jagd nach seimen Reichtum.</de>
@@ -3458,9 +3458,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-West-mitdemhelden">
 			<title>
-				<de>Don Rons Der %WAS% aus %WOHER%</de>
-				<en>Don Ron's The %WAS% from %WOHER%</en>
-				<pl>Western Don Rona - %WAS% z %WOHER%</pl>
+				<de>Don Rons Der ${WAS} aus ${WOHER}</de>
+				<en>Don Ron's The ${WAS} from ${WOHER}</en>
+				<pl>Western Don Rona - ${WAS} z ${WOHER}</pl>
 			</title>
 			<description>
 				<de>Vom Stardrehbuchschreiber Don Ron geschriebener Western. Wie immer kultig und genial.</de>
@@ -3498,21 +3498,21 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
 			<title>
-				<de>TVTs: %TITLE1%</de>
-				<en>TVTs: %TITLE1%</en>
-				<pl>Produkcja TVT: %TITLE1% - Teleturniej</pl>
+				<de>TVTs: ${TITLE1}</de>
+				<en>TVTs: ${TITLE1}</en>
+				<pl>Produkcja TVT: ${TITLE1} - Teleturniej</pl>
 			</title>
 			<description>
-				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
-				<en>%NAME1% rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
-				<pl>%NAME1% odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
+				<de>${NAME1} zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
+				<en>${NAME1} rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
+				<pl>${NAME1} odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>
-						<de>%EPISODE%</de>
-						<en>%EPISODE%</en>
-						<pl>%EPISODE%</pl>
+						<de>${EPISODE}</de>
+						<en>${EPISODE}</en>
+						<pl>${EPISODE}</pl>
 					</title>
 					<variables>
 						<episode>
