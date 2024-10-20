@@ -474,7 +474,14 @@ Type TDatabaseLoader
 				expression = expression.Replace("["+i+"|Last]", "${.self:~qcast~q:"+i+":~qlastname~q}")
 				expression = expression.Replace("["+i+"|Nick]", "${.self:~qcast~q:"+i+":~qnickname~q}")
 			EndIf
+		Next
+		if expression <> expressionBefore
+			print expressionBefore
+			print expression
+			print "----"
+		endif
 
+		For local i:int = 0 until 15
 			'attention: role(name) NUMBER to INDEX! (i-1)
 			if expression.Find("%ROLENAME"+i) >= 0
 				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfirstname~q}")
@@ -483,7 +490,6 @@ Type TDatabaseLoader
 				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfullname~q}")
 			EndIf
 		Next
-
 			
 		'type 2:
 		'-------

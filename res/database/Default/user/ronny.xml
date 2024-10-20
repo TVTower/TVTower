@@ -139,11 +139,11 @@
 				<pl>Mikroelektronika - Witamy w przyszłości</pl>
 			</title>
 			<description>
-				<de>[0|Full] führt den Zuschauer ein in die Welt der Mikroelektronik. Personal Computer die auf einen Schreibtisch passen!
+				<de>${.self:"cast":0:"fullname"} führt den Zuschauer ein in die Welt der Mikroelektronik. Personal Computer die auf einen Schreibtisch passen!
 Willkommen in der Zukunft.</de>
-				<en>[0|Full] introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
+				<en>${.self:"cast":0:"fullname"} introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
 Welcome to the future.</en>
-				<pl>[0|Full] wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
+				<pl>${.self:"cast":0:"fullname"} wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
 Witamy w przyszłości.</pl>
 			</description>
 			<staff>
@@ -186,9 +186,9 @@ Witamy w przyszłości.</pl>
 				<pl>Królowa ziemniaków</pl>
 			</title>
 			<description>
-				<de>[1|Last] verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
-				<en>[1|Last] enchants the countrymen. You will look in vain for big potatoes and birdbrained countrymen in this sincere warm and romantic TV-comedy.</en>
-				<pl>[1|Last] oczarowuje ziomków. W tej szczerej, ciepłej i romantycznej komedii telewizyjnej na próżno szukać wielkich ziemniaków i ptasich móżdżków.</pl>
+				<de>${.self:"cast":1:"lastname"} verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
+				<en>${.self:"cast":1:"lastname"} enchants the countrymen. You will look in vain for big potatoes and birdbrained countrymen in this sincere warm and romantic TV-comedy.</en>
+				<pl>${.self:"cast":1:"lastname"} oczarowuje ziomków. W tej szczerej, ciepłej i romantycznej komedii telewizyjnej na próżno szukać wielkich ziemniaków i ptasich móżdżków.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -252,9 +252,9 @@ Witamy w przyszłości.</pl>
 				<pl>Recykling dla początkujących</pl>
 			</title>
 			<description>
-				<de>Es ist neu, es ist trendy und es ist ökologisch wichtig. [1|Full] zeigt was in die Tonne kann.</de>
-				<en>It's new, it's trendy - and it is of ecological importance. [1|Full] shows what can go in the garbage can.</en>
-				<pl>Jest nowy, modny - i ma znaczenie ekologiczne. [1|Full] pokazuje, co może trafić do kosza na śmieci.</pl>
+				<de>Es ist neu, es ist trendy und es ist ökologisch wichtig. ${.self:"cast":1:"fullname"} zeigt was in die Tonne kann.</de>
+				<en>It's new, it's trendy - and it is of ecological importance. ${.self:"cast":1:"fullname"} shows what can go in the garbage can.</en>
+				<pl>Jest nowy, modny - i ma znaczenie ekologiczne. ${.self:"cast":1:"fullname"} pokazuje, co może trafić do kosza na śmieci.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -391,11 +391,11 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 				<pl>Reeperbahn - Burdele w trakcie testów</pl>
 			</title>
 			<description>
-				<de>Mit versteckter Kamera durchstreift Reporter [1|Full] verschiedene Etablissements in Deutschlands bekanntestem Rotlichtviertel.
+				<de>Mit versteckter Kamera durchstreift Reporter ${.self:"cast":1:"fullname"} verschiedene Etablissements in Deutschlands bekanntestem Rotlichtviertel.
 Testsieger: Das „Fummeldidumm“.</de>
-				<en>With a hidden camera, reporter [1|Full] roams through various establishments in Germany's best-known red-light district.
+				<en>With a hidden camera, reporter ${.self:"cast":1:"fullname"} roams through various establishments in Germany's best-known red-light district.
 Test winner: The "Little Twiddle".</en>
-				<pl>Z ukrytą kamerą reporter [1|Full] przemierza różne lokale w najbardziej znanej dzielnicy czerwonych latarni w Niemczech.
+				<pl>Z ukrytą kamerą reporter ${.self:"cast":1:"fullname"} przemierza różne lokale w najbardziej znanej dzielnicy czerwonych latarni w Niemczech.
 Zwycięzca testu: "Little Twiddle".</pl>
 			</description>
 			<staff>
@@ -469,12 +469,12 @@ Oczekiwany skandal nie zmaterializował się.</pl>
 				<pl>(Nie) zamierzona zabawa</pl>
 			</title>
 			<description>
-				<de>[1|Full] zeigt woher Wortzoten kommen und in welchen Jahren sie ihren Höhepunkt hatten.
-Illustre Gäste und Musik von [3|Nick].</de>
-				<en>[1|Full] reveals where bad puns come from and in which years they peaked.
-Illustrious guests and music by [3|Nick].</en>
-				<pl>[1|Full] zdradza, skąd wzięły się złe kalambury i w których latach osiągnęły swój szczyt.
-Znamienici goście i muzyka autorstwa [3|Nick].</pl>
+				<de>${.self:"cast":1:"fullname"} zeigt woher Wortzoten kommen und in welchen Jahren sie ihren Höhepunkt hatten.
+Illustre Gäste und Musik von ${.self:"cast":3:"nickname"}.</de>
+				<en>${.self:"cast":1:"fullname"} reveals where bad puns come from and in which years they peaked.
+Illustrious guests and music by ${.self:"cast":3:"nickname"}.</en>
+				<pl>${.self:"cast":1:"fullname"} zdradza, skąd wzięły się złe kalambury i w których latach osiągnęły swój szczyt.
+Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			</description>
 			<staff>
 				<member index="0" function="8">ronny-programmeperson-holgerpelz</member>
