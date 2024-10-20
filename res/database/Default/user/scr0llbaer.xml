@@ -137,14 +137,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</programme>
 		<programme id="dcf404f3-7f17-4f4f-83cd-83626951a4f0" product="4" licence_type="1" fictional="1" creator="9551">
 			<title>
-				<de>Dynamit - Das Magazin Live: Hochzeit von [3|First] und [2|Full]</de>
-				<en>Dynamite - The Magazine Live: Wedding of [3|First] and [2|Full]</en>
-				<pl>Dynamit - Magazyn na żywo: Ślub [3|First] i [2|Full]</pl>
+				<de>Dynamit - Das Magazin Live: Hochzeit von ${.self:"cast":3:"firstname"} und ${.self:"cast":2:"fullname"}</de>
+				<en>Dynamite - The Magazine Live: Wedding of ${.self:"cast":3:"firstname"} and ${.self:"cast":2:"fullname"}</en>
+				<pl>Dynamit - Magazyn na żywo: Ślub ${.self:"cast":3:"firstname"} i ${.self:"cast":2:"fullname"}</pl>
 			</title>
 			<description>
-				<de>Der 53-jährige Fürst [2|Full] und die 20-jährige Punk-Pinzessin [3|First] heiraten in Regensburg, ja kann das gut gehen? Wie schön ist's im Schloss? Ist es wirklich Liebe? Braucht der Fürst Hilfsmittel zum Schnackseln? Fragen über Fragen.</de>
-				<en>The 53-year-old Prince [2|Full] and the 20-year-old Punk Princess [3|First] get married in Regensburg, can that go well? How beautiful is it in the castle? Is it really love? Does the prince need aids for bonking? Questions upon questions.</en>
-				<pl>53-letni książę [2|Full] i 20-letnia księżniczka [3|First] biorą ślub w Ratyzbonie, czy to może się udać? Jak pięknie jest w zamku? Czy to naprawdę miłość? Czy książę potrzebuje pomocy przy bzykaniu? Pytania za pytaniami</pl>
+				<de>Der 53-jährige Fürst ${.self:"cast":2:"fullname"} und die 20-jährige Punk-Pinzessin ${.self:"cast":3:"firstname"} heiraten in Regensburg, ja kann das gut gehen? Wie schön ist's im Schloss? Ist es wirklich Liebe? Braucht der Fürst Hilfsmittel zum Schnackseln? Fragen über Fragen.</de>
+				<en>The 53-year-old Prince ${.self:"cast":2:"fullname"} and the 20-year-old Punk Princess ${.self:"cast":3:"firstname"} get married in Regensburg, can that go well? How beautiful is it in the castle? Is it really love? Does the prince need aids for bonking? Questions upon questions.</en>
+				<pl>53-letni książę ${.self:"cast":2:"fullname"} i 20-letnia księżniczka ${.self:"cast":3:"firstname"} biorą ślub w Ratyzbonie, czy to może się udać? Jak pięknie jest w zamku? Czy to naprawdę miłość? Czy książę potrzebuje pomocy przy bzykaniu? Pytania za pytaniami</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -163,14 +163,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</programme>
 		<programme id="583955ef-3acf-42bf-991e-b1c169583780" product="4" licence_type="1" fictional="1" creator="9551">
 			<title>
-				<de>Dynamit - Das Magazin Live: Hochzeit von [2|Nick] und [3|Nick]</de>
-				<en>Dynamite - The Magazine Live: Wedding of [2|Nick] and [3|Nick]</en>
-				<pl>Dynamit - Magazyn na żywo: Ślub [2|Nick] i [3|Nick]</pl>
+				<de>Dynamit - Das Magazin Live: Hochzeit von ${.self:"cast":2:"nickname"} und ${.self:"cast":3:"nickname"}</de>
+				<en>Dynamite - The Magazine Live: Wedding of ${.self:"cast":2:"nickname"} and ${.self:"cast":3:"nickname"}</en>
+				<pl>Dynamit - Magazyn na żywo: Ślub ${.self:"cast":2:"nickname"} i ${.self:"cast":3:"nickname"}</pl>
 			</title>
 			<description>
-				<de>In der Westminster Abbey ist nicht genug Platz. Der 32-jährige [2|Nick] und die 20-jährige [3|Nick] heiraten daher in der Londoner St Paul's Cathedral. Ja kann das gut gehen? Ex-Model [1|Full] berichtet live.</de>
-				<en>There is not enough space in Westminster Abbey. So 32-year-old [2|Nick] and 20-year-old [3|Nick] get married in London's St Paul's Cathedral. Can that go well? Ex-model [1|Full] reports live.</en>
-				<pl>W Opactwie Westminsterskim nie ma wystarczająco dużo miejsca. 32-letni [2|Nick] i 20-letnia [3|Nick] biorą więc ślub w londyńskiej katedrze św. Pawła. Czy to się uda? Była modelka [1|Full] relacjonuje na żywo.</pl>
+				<de>In der Westminster Abbey ist nicht genug Platz. Der 32-jährige ${.self:"cast":2:"nickname"} und die 20-jährige ${.self:"cast":3:"nickname"} heiraten daher in der Londoner St Paul's Cathedral. Ja kann das gut gehen? Ex-Model ${.self:"cast":1:"fullname"} berichtet live.</de>
+				<en>There is not enough space in Westminster Abbey. So 32-year-old ${.self:"cast":2:"nickname"} and 20-year-old ${.self:"cast":3:"nickname"} get married in London's St Paul's Cathedral. Can that go well? Ex-model ${.self:"cast":1:"fullname"} reports live.</en>
+				<pl>W Opactwie Westminsterskim nie ma wystarczająco dużo miejsca. 32-letni ${.self:"cast":2:"nickname"} i 20-letnia ${.self:"cast":3:"nickname"} biorą więc ślub w londyńskiej katedrze św. Pawła. Czy to się uda? Była modelka ${.self:"cast":1:"fullname"} relacjonuje na żywo.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -189,14 +189,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</programme>
 		<programme id="7df480c6-93c3-4616-8e76-d3d697f9445f" product="7" licence_type="3" fictional="1" creator="9551" comment="asked ChatGPT for a little help creating this, came back with good results">
 			<title>
-				<de>Dynamit - Das Magazin Spezial: Im Schloss [2|Last]</de>
-				<en>Dynamite - The Magazine Special: In the Castle [2|Last]</en>
-				<pl>Dynamit - Magazyn specjalny: W zamku [2|Last]</pl>
+				<de>Dynamit - Das Magazin Spezial: Im Schloss ${.self:"cast":2:"lastname"}</de>
+				<en>Dynamite - The Magazine Special: In the Castle ${.self:"cast":2:"lastname"}</en>
+				<pl>Dynamit - Magazyn specjalny: W zamku ${.self:"cast":2:"lastname"}</pl>
 			</title>
 			<description>
-				<de>Das Ex-Model [1|Full] hat die junge Fürstin [3|Full] im Schloss besucht. Die beiden verstehen sich prächtig und plaudern so manche Geheimnisse aus.</de>
-				<en>The ex-model [1|Full] has visited the young princess [3|Full] in the castle. The two get along splendidly and chat out some secrets.</en>
-				<pl>Była modelka [1|Full] odwiedziła młodą księżniczkę [3|Full] w zamku. Oboje świetnie się dogadują i rozmawiają o sekretach.</pl>
+				<de>Das Ex-Model ${.self:"cast":1:"fullname"} hat die junge Fürstin ${.self:"cast":3:"fullname"} im Schloss besucht. Die beiden verstehen sich prächtig und plaudern so manche Geheimnisse aus.</de>
+				<en>The ex-model ${.self:"cast":1:"fullname"} has visited the young princess ${.self:"cast":3:"fullname"} in the castle. The two get along splendidly and chat out some secrets.</en>
+				<pl>Była modelka ${.self:"cast":1:"fullname"} odwiedziła młodą księżniczkę ${.self:"cast":3:"fullname"} w zamku. Oboje świetnie się dogadują i rozmawiają o sekretach.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -211,26 +211,26 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<children>
 				<programme id="f2ba424b-d842-4902-9a8b-1b4e299b856f" product="7" licence_type="2" creator="9551">
 					<title>
-						<de>[3|First] und die Geheimnisse der Samtstrumpfhosen</de>
-						<en>[3|First] and the Secrets of the Velvet Tights</en>
-						<pl>[3|First] i sekrety aksamitnych rajstop</pl>
+						<de>${.self:"cast":3:"firstname"} und die Geheimnisse der Samtstrumpfhosen</de>
+						<en>${.self:"cast":3:"firstname"} and the Secrets of the Velvet Tights</en>
+						<pl>${.self:"cast":3:"firstname"} i sekrety aksamitnych rajstop</pl>
 					</title>
 					<description>
-						<de>Fürstin [3|First] führt die Zuschauer durch ihr Schloss und enthüllt, dass sie überall geheime Fächer mit Samtstrumpfhosen versteckt hat. Sind sie der Schlüssel zum Glanz der 80er?</de>
-						<en>Princess [3|First] leads the audience through her castle and reveals that she has hidden secret fans of velvet tights everywhere. Are they the key to the glamour of the 80s?</en>
-						<pl>Księżniczka [3|First] oprowadza widzów przez swój zamek i ujawnia, że wszędzie ukryła sekretne wachlarze aksamitnych rajstop. Czy są one kluczem do glamour lat 80-tych?</pl>
+						<de>Fürstin ${.self:"cast":3:"firstname"} führt die Zuschauer durch ihr Schloss und enthüllt, dass sie überall geheime Fächer mit Samtstrumpfhosen versteckt hat. Sind sie der Schlüssel zum Glanz der 80er?</de>
+						<en>Princess ${.self:"cast":3:"firstname"} leads the audience through her castle and reveals that she has hidden secret fans of velvet tights everywhere. Are they the key to the glamour of the 80s?</en>
+						<pl>Księżniczka ${.self:"cast":3:"firstname"} oprowadza widzów przez swój zamek i ujawnia, że wszędzie ukryła sekretne wachlarze aksamitnych rajstop. Czy są one kluczem do glamour lat 80-tych?</pl>
 					</description>
 				</programme>
 				<programme id="0a6d3442-eb31-4025-95ef-ee187922f703" product="7" licence_type="2" creator="9551">
 					<title>
-						<de>Die Flamingos [2|Last]</de>
-						<en>The Flamingos [2|Last]</en>
-						<pl>Flamingi [2|Last]</pl>
+						<de>Die Flamingos ${.self:"cast":2:"lastname"}</de>
+						<en>The Flamingos ${.self:"cast":2:"lastname"}</en>
+						<pl>Flamingi ${.self:"cast":2:"lastname"}</pl>
 					</title>
 					<description>
-						<de>[3|First] präsentiert stolz ihren persönlichen Flamingo-Garten, der Gerüchten zufolge für die berühmten „Pink Flamingo“ Partys diente. Die Vögel haben mehr Glamour als man denkt!</de>
-						<en>[3|First] proudly presents her personal flamingo garden, rumored to have been used for the famous "Pink Flamingo" parties. The birds have more glamour than you think!</en>
-						<pl>[3|First] z dumą prezentuje swój osobisty ogród flamingów, który podobno był używany na słynnych imprezach „Pink Flamingo”. Ptaki mają więcej uroku niż myślisz!</pl>
+						<de>${.self:"cast":3:"firstname"} präsentiert stolz ihren persönlichen Flamingo-Garten, der Gerüchten zufolge für die berühmten „Pink Flamingo“ Partys diente. Die Vögel haben mehr Glamour als man denkt!</de>
+						<en>${.self:"cast":3:"firstname"} proudly presents her personal flamingo garden, rumored to have been used for the famous "Pink Flamingo" parties. The birds have more glamour than you think!</en>
+						<pl>${.self:"cast":3:"firstname"} z dumą prezentuje swój osobisty ogród flamingów, który podobno był używany na słynnych imprezach „Pink Flamingo”. Ptaki mają więcej uroku niż myślisz!</pl>
 					</description>
 				</programme>
 				<programme id="edb526e7-ffae-45f6-989b-eebe7cd707b2" product="7" licence_type="2" creator="9551">
@@ -240,9 +240,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Ognista dyskoteka w zamkowej piwnicy</pl>
 					</title>
 					<description>
-						<de>Im Keller des Schlosses zeigt [3|First] die 80er-Disko mit lebendigen Diskokugeln und einem DJ-Roboter. Ist sie die heimliche Königin des Nachtlebens?</de>
-						<en>In the basement of the castle, [3|First] shows the 80s disco with alive disco balls and a DJ robot. Is she the secret queen of the nightlife?</en>
-						<pl>W podziemiach zamku [3|First] pokazuje dyskotekę z lat 80. z żywymi kulami dyskotekowymi i robotem DJ-em. Czy to sekretna królowa nocnego życia?</pl>
+						<de>Im Keller des Schlosses zeigt ${.self:"cast":3:"firstname"} die 80er-Disko mit lebendigen Diskokugeln und einem DJ-Roboter. Ist sie die heimliche Königin des Nachtlebens?</de>
+						<en>In the basement of the castle, ${.self:"cast":3:"firstname"} shows the 80s disco with alive disco balls and a DJ robot. Is she the secret queen of the nightlife?</en>
+						<pl>W podziemiach zamku ${.self:"cast":3:"firstname"} pokazuje dyskotekę z lat 80. z żywymi kulami dyskotekowymi i robotem DJ-em. Czy to sekretna królowa nocnego życia?</pl>
 					</description>
 				</programme>
 				<programme id="2427d269-8b68-4681-9527-32c6ca96f5ca" product="7" licence_type="2" creator="9551">
@@ -252,9 +252,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Różana piwnica konspiracji</pl>
 					</title>
 					<description>
-						<de>[3|First] enthüllt, dass der Rosé-Keller angeblich geheime Treffen und Verschwörungen beherbergte. Wurde hier über die „Hauspost“ geredet?</de>
-						<en>[3|First] reveals that the Rosé Cellar allegedly hosted secret meetings and conspiracies. Was it here where all that "house mail" talk happened?</en>
-						<pl>[3|First] ujawnia, że Piwnica Rosé była rzekomo miejscem tajnych spotkań i spisków. Czy to tutaj miała miejsce cała ta „domowa poczta”?</pl>
+						<de>${.self:"cast":3:"firstname"} enthüllt, dass der Rosé-Keller angeblich geheime Treffen und Verschwörungen beherbergte. Wurde hier über die „Hauspost“ geredet?</de>
+						<en>${.self:"cast":3:"firstname"} reveals that the Rosé Cellar allegedly hosted secret meetings and conspiracies. Was it here where all that "house mail" talk happened?</en>
+						<pl>${.self:"cast":3:"firstname"} ujawnia, że Piwnica Rosé była rzekomo miejscem tajnych spotkań i spisków. Czy to tutaj miała miejsce cała ta „domowa poczta”?</pl>
 					</description>
 				</programme>
 				<programme id="dc400f07-99c8-4e8e-b6d2-67093d6ea468" product="7" licence_type="2" creator="9551">
@@ -264,9 +264,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Rycerska sala kapryśnych hobby</pl>
 					</title>
 					<description>
-						<de>Fürstin „von Taug und Thunix“? Von wegen! [3|First] zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
-						<en>Princess "von Taug und Thunix" - not good for anything? Wrong! [3|First] shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
-						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! [3|First] pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
+						<de>Fürstin „von Taug und Thunix“? Von wegen! ${.self:"cast":3:"firstname"} zeigt den Rittersaal, wo sie Schach gegen Aliens spielt und Einhörner in geheimer Mission dressiert. Warum nicht, wenn man eine Fürstin ist?</de>
+						<en>Princess "von Taug und Thunix" - not good for anything? Wrong! ${.self:"cast":3:"firstname"} shows the Knight's Hall, where she plays chess against aliens and trains unicorns on a secret mission. Why not, if you are a princess?</en>
+						<pl>Księżniczka „von Taug und Thunix“ - do niczego się nie nadaje? Błąd! ${.self:"cast":3:"firstname"} pokazuje Salę Rycerską, gdzie gra w szachy przeciwko kosmitom i trenuje jednorożce w tajnej misji. Czemu nie, skoro jesteś księżniczką?</pl>
 					</description>
 				</programme>
 			</children>
@@ -278,9 +278,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>Eskapady w Białym Domu</pl>
 			</title>
 			<description>
-				<de>Investigativjournalistin „Augenzwinker-Miss [1|Nick]“ stellt ihre Jahrzehnte lange Arbeit vor und enthüllt die innen- und außenpolitischen Affären der U.S.-Regierung des 20. Jahrhunderts. Exklusive bisher unbekannte Details!</de>
-				<en>Investigative journalist "Tongue-in-cheek Miss [1|Nick]" presents her decades of work and reveals the domestic and foreign affairs of the 20th century U.S. government. Exclusive hitherto undisclosed details!</en>
-				<pl>Dziennikarka śledcza „Panna z przymrużeniem oka [1|Nick]” przedstawia swoje dziesięciolecia pracy i ujawnia wewnętrzne i zagraniczne sprawy rządu USA XX wieku. Ekskluzywne, dotychczas nieujawnione szczegóły!</pl>
+				<de>Investigativjournalistin „Augenzwinker-Miss ${.self:"cast":1:"nickname"}“ stellt ihre Jahrzehnte lange Arbeit vor und enthüllt die innen- und außenpolitischen Affären der U.S.-Regierung des 20. Jahrhunderts. Exklusive bisher unbekannte Details!</de>
+				<en>Investigative journalist "Tongue-in-cheek Miss ${.self:"cast":1:"nickname"}" presents her decades of work and reveals the domestic and foreign affairs of the 20th century U.S. government. Exclusive hitherto undisclosed details!</en>
+				<pl>Dziennikarka śledcza „Panna z przymrużeniem oka ${.self:"cast":1:"nickname"}” przedstawia swoje dziesięciolecia pracy i ujawnia wewnętrzne i zagraniczne sprawy rządu USA XX wieku. Ekskluzywne, dotychczas nieujawnione szczegóły!</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">3b48670f-99d1-4b8e-b3b4-ea4f70c6571f</member>
@@ -294,14 +294,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<children>
 				<programme id="cd1e19bb-cce4-4145-b227-3b72555ac705" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|Full]s sonniges Arabien</de>
-						<en>[2|Full]'s Sunny Arabia</en>
-						<pl>Słoneczna Arabia - Opowiada [2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}s sonniges Arabien</de>
+						<en>${.self:"cast":2:"fullname"}'s Sunny Arabia</en>
+						<pl>Słoneczna Arabia - Opowiada ${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
-						<de>[2|Full] erzählt schmutzige arabische Witze - auf arabisch. Mit dieser Aktion sorgt er auf der Veranstaltung „Öl und Islam - sonniges Arabien“ während der Ölkrise für einen Eklat und für diplomatische Schwierigkeiten.</de>
-						<en>[2|Full] tells dirty Arabic jokes - in Arabic. With this stunt at the event "Oil and Islam - Sunny Arabia" during the oil crisis, he causes a scandal and diplomatic difficulties.</en>
-						<pl>[2|Full] opowiada sprośne arabskie dowcipy - po arabsku. Tym wyczynem na imprezie „Ropa i Islam - Słoneczna Arabia” podczas kryzysu naftowego wywołuje skandal i trudności dyplomatyczne.</pl>
+						<de>${.self:"cast":2:"fullname"} erzählt schmutzige arabische Witze - auf arabisch. Mit dieser Aktion sorgt er auf der Veranstaltung „Öl und Islam - sonniges Arabien“ während der Ölkrise für einen Eklat und für diplomatische Schwierigkeiten.</de>
+						<en>${.self:"cast":2:"fullname"} tells dirty Arabic jokes - in Arabic. With this stunt at the event "Oil and Islam - Sunny Arabia" during the oil crisis, he causes a scandal and diplomatic difficulties.</en>
+						<pl>${.self:"cast":2:"fullname"} opowiada sprośne arabskie dowcipy - po arabsku. Tym wyczynem na imprezie „Ropa i Islam - Słoneczna Arabia” podczas kryzysu naftowego wywołuje skandal i trudności dyplomatyczne.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">dd6a3d8a-b1ee-4dcc-b3de-94c11c780923</member>
@@ -309,14 +309,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="0383c1fd-94ca-4146-80cc-80d3df9e0914" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First]s Raygun</de>
-						<en>[2|First]'s Raygun</en>
-						<pl>Raygun od [2|First]</pl>
+						<de>${.self:"cast":2:"firstname"}s Raygun</de>
+						<en>${.self:"cast":2:"firstname"}'s Raygun</en>
+						<pl>Raygun od ${.self:"cast":2:"firstname"}</pl>
 					</title>
 					<description>
-						<de>[2|Full] war mal drauf und dran, einen lupenreinen Amoklauf hinzulegen. Beim Dreh des nie fertiggestellten SciFi-B-Movies „[2|First]'s Raygun“ war er so tief in der Rolle drin, dass er eines Feierabends aggressiv durch die Straßen lief.</de>
-						<en>[2|Full] was once about to go on a flawless rampage. While filming the sci-fi B-movie "[2|First]'s Raygun" that was never finished, he was so deep into the role that he aggressively ran through the streets one after-work evening.</en>
-						<pl>[2|Full] miał kiedyś wpaść w bezbłędny szał. Podczas kręcenia filmu sci-fi klasy B „[2|First]'s Raygun”, który nigdy nie został ukończony, tak bardzo wczuł się w rolę, że pewnego wieczoru po pracy agresywnie biegał po ulicach.</pl>
+						<de>${.self:"cast":2:"fullname"} war mal drauf und dran, einen lupenreinen Amoklauf hinzulegen. Beim Dreh des nie fertiggestellten SciFi-B-Movies „${.self:"cast":2:"firstname"}'s Raygun“ war er so tief in der Rolle drin, dass er eines Feierabends aggressiv durch die Straßen lief.</de>
+						<en>${.self:"cast":2:"fullname"} was once about to go on a flawless rampage. While filming the sci-fi B-movie "${.self:"cast":2:"firstname"}'s Raygun" that was never finished, he was so deep into the role that he aggressively ran through the streets one after-work evening.</en>
+						<pl>${.self:"cast":2:"fullname"} miał kiedyś wpaść w bezbłędny szał. Podczas kręcenia filmu sci-fi klasy B „${.self:"cast":2:"firstname"}'s Raygun”, który nigdy nie został ukończony, tak bardzo wczuł się w rolę, że pewnego wieczoru po pracy agresywnie biegał po ulicach.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">e52ca72c-83e2-431d-ae02-c66daefea035</member>
@@ -324,14 +324,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="a84ebdc0-23bd-4e49-8e89-6484367badaa" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>Der [2|Last]-Schock: [2|First] nixt es</de>
-						<en>The [2|Last] Shock: [2|First] nixes it</en>
-						<pl>Szok [2|Last]: [2|First] go unieważnia</pl>
+						<de>Der ${.self:"cast":2:"lastname"}-Schock: ${.self:"cast":2:"firstname"} nixt es</de>
+						<en>The ${.self:"cast":2:"lastname"} Shock: ${.self:"cast":2:"firstname"} nixes it</en>
+						<pl>Szok ${.self:"cast":2:"lastname"}: ${.self:"cast":2:"firstname"} go unieważnia</pl>
 					</title>
 					<description>
-						<de>Viele Nationen baten [2|First], die überaus populären „KNIX!“-Comichefte im Hort Knix einzulagern, da sie das öffentliche Leben lahmlegten, doch der verschenkt einen Großteil an US-Kinder. Wenn man den Rest zurück haben wolle, müsse man halt Lesezirkel bilden.</de>
-						<en>Many nations have asked [2|First] to store the wildly popular "KNIX!" comic books at Hoard Knix because they were disrupting public life, but he gives away a large part to US children. If you want the rest back, well you have to form reading circles.</en>
-						<pl>Wiele narodów poprosiło [2|First] o przechowywanie szalenie popularnych komiksów „KNIX!” w Hoard Knix, ponieważ zakłócały one życie publiczne, ale on oddaje dużą część amerykańskim dzieciom. Jeśli chcesz odzyskać resztę, musisz utworzyć kółka czytelnicze.</pl>
+						<de>Viele Nationen baten ${.self:"cast":2:"firstname"}, die überaus populären „KNIX!“-Comichefte im Hort Knix einzulagern, da sie das öffentliche Leben lahmlegten, doch der verschenkt einen Großteil an US-Kinder. Wenn man den Rest zurück haben wolle, müsse man halt Lesezirkel bilden.</de>
+						<en>Many nations have asked ${.self:"cast":2:"firstname"} to store the wildly popular "KNIX!" comic books at Hoard Knix because they were disrupting public life, but he gives away a large part to US children. If you want the rest back, well you have to form reading circles.</en>
+						<pl>Wiele narodów poprosiło ${.self:"cast":2:"firstname"} o przechowywanie szalenie popularnych komiksów „KNIX!” w Hoard Knix, ponieważ zakłócały one życie publiczne, ale on oddaje dużą część amerykańskim dzieciom. Jeśli chcesz odzyskać resztę, musisz utworzyć kółka czytelnicze.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">8f485b0c-5270-462b-9bac-698ff6f0cebb</member>
@@ -339,14 +339,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="44a6c9b3-7d87-4a89-97dd-6e7d3d00320b" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First]'s Liaison</de>
-						<en>[2|First]'s Liaison</en>
-						<pl>Łącznik [2|First]</pl>
+						<de>${.self:"cast":2:"firstname"}'s Liaison</de>
+						<en>${.self:"cast":2:"firstname"}'s Liaison</en>
+						<pl>Łącznik ${.self:"cast":2:"firstname"}</pl>
 					</title>
 					<description>
-						<de>Bericht aus erster Hand? [2|Full] macht mit einer seiner außerehelichen Frauen eine „Spritztour“ auf dem Potomac River in seinem „Amphicar“. Mitten im Akt finden sie sich plötzlich inmitten einer Regatta wieder. Der gegenseitige Überraschungseffekt ist enorm.</de>
-						<en>First-hand report? [2|Full] takes one of his extramarital women out for a "joyride" on the Potomac River in his "Amphicar." In the middle of the act, they suddenly find themselves in the middle of a regatta. The mutual surprise effect is enormous.</en>
-						<pl>Relacja z pierwszej ręki? [2|Full] zabiera jedną ze swoich pozamałżeńskich kobiet na „przejażdżkę” po rzece Potomac w swoim „Amfikarze”. W połowie aktu nagle znajdują się w środku regat. Efekt wzajemnego zaskoczenia jest ogromny.</pl>
+						<de>Bericht aus erster Hand? ${.self:"cast":2:"fullname"} macht mit einer seiner außerehelichen Frauen eine „Spritztour“ auf dem Potomac River in seinem „Amphicar“. Mitten im Akt finden sie sich plötzlich inmitten einer Regatta wieder. Der gegenseitige Überraschungseffekt ist enorm.</de>
+						<en>First-hand report? ${.self:"cast":2:"fullname"} takes one of his extramarital women out for a "joyride" on the Potomac River in his "Amphicar." In the middle of the act, they suddenly find themselves in the middle of a regatta. The mutual surprise effect is enormous.</en>
+						<pl>Relacja z pierwszej ręki? ${.self:"cast":2:"fullname"} zabiera jedną ze swoich pozamałżeńskich kobiet na „przejażdżkę” po rzece Potomac w swoim „Amfikarze”. W połowie aktu nagle znajdują się w środku regat. Efekt wzajemnego zaskoczenia jest ogromny.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">d9803dfc-f104-40d4-a385-e3a4adf2ae1a</member>
@@ -354,14 +354,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="088332a3-8534-490f-9f71-fb85c78d41b5" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First] möchte glauben</de>
-						<en>[2|First] Wants to Believe</en>
-						<pl>[2|First] chce wierzyć</pl>
+						<de>${.self:"cast":2:"firstname"} möchte glauben</de>
+						<en>${.self:"cast":2:"firstname"} Wants to Believe</en>
+						<pl>${.self:"cast":2:"firstname"} chce wierzyć</pl>
 					</title>
 					<description>
-						<de>[2|Full] sichtet ein UFO, das in allen Farben schillert und dann vor ihm landet. Heraus steigt das freundliche Erdbusnutter-Alien, das süchtig nach Erde-Erdnussbutter ist. Also zeigt [2|First] ihm seine Erdnussfarm.</de>
-						<en>[2|Full] sights a UFO that glitters in all colors and then lands in front of him. Out climbs the friendly Peabuttnutter Alien who is addicted to Earthen peanut butter. So [2|First] shows him his peanut farm.</en>
-						<pl>[2|Full] dostrzega UFO, które mieni się wszystkimi kolorami, a następnie ląduje przed nim. Na zewnątrz wspina się przyjazny Peabuttnutter Alien, który jest uzależniony od ziemnego masła orzechowego. [2|First] pokazuje mu swoją farmę orzeszków ziemnych.</pl>
+						<de>${.self:"cast":2:"fullname"} sichtet ein UFO, das in allen Farben schillert und dann vor ihm landet. Heraus steigt das freundliche Erdbusnutter-Alien, das süchtig nach Erde-Erdnussbutter ist. Also zeigt ${.self:"cast":2:"firstname"} ihm seine Erdnussfarm.</de>
+						<en>${.self:"cast":2:"fullname"} sights a UFO that glitters in all colors and then lands in front of him. Out climbs the friendly Peabuttnutter Alien who is addicted to Earthen peanut butter. So ${.self:"cast":2:"firstname"} shows him his peanut farm.</en>
+						<pl>${.self:"cast":2:"fullname"} dostrzega UFO, które mieni się wszystkimi kolorami, a następnie ląduje przed nim. Na zewnątrz wspina się przyjazny Peabuttnutter Alien, który jest uzależniony od ziemnego masła orzechowego. ${.self:"cast":2:"firstname"} pokazuje mu swoją farmę orzeszków ziemnych.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">852920e2-2c58-461a-95f8-be9970dccca7</member>
@@ -369,14 +369,14 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="a1170b5e-9b51-4bc8-be0d-a4338b9fd9ce" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|Full]s Sputnik-Schock</de>
-						<en>[2|Full]'s Sputnik Shock</en>
-						<pl>Szok Sputnika [2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}s Sputnik-Schock</de>
+						<en>${.self:"cast":2:"fullname"}'s Sputnik Shock</en>
+						<pl>Szok Sputnika ${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
-						<de>„[2|Nick]“ fährt gemütlich und stolz auf seinen Deutschland-inspirierten Highways dahin, plötzlich kracht etwas vom Himmel herunter. Welch ein Schock! Kann grad noch ausweichen. Das Ding stellt sich als Hobby-Sonde eines eingewanderten russischen Ingenieurs heraus.</de>
-						<en>"[2|Nick]" is driving along comfortably and proudly on his Germany-inspired highways, suddenly something crashes down from the sky. What a shock! He just manages to dodge it. The thing turns out to be an immigrated Russian engineer's amateur probe.</en>
-						<pl>"[2|Nick]" jedzie sobie wygodnie i dumnie po swoich inspirowanych Niemcami autostradach, aż tu nagle coś spada z nieba. Co za szok! Udaje mu się zrobić unik. Okazuje się, że jest to amatorska sonda rosyjskiego inżyniera.</pl>
+						<de>„${.self:"cast":2:"nickname"}“ fährt gemütlich und stolz auf seinen Deutschland-inspirierten Highways dahin, plötzlich kracht etwas vom Himmel herunter. Welch ein Schock! Kann grad noch ausweichen. Das Ding stellt sich als Hobby-Sonde eines eingewanderten russischen Ingenieurs heraus.</de>
+						<en>"${.self:"cast":2:"nickname"}" is driving along comfortably and proudly on his Germany-inspired highways, suddenly something crashes down from the sky. What a shock! He just manages to dodge it. The thing turns out to be an immigrated Russian engineer's amateur probe.</en>
+						<pl>"${.self:"cast":2:"nickname"}" jedzie sobie wygodnie i dumnie po swoich inspirowanych Niemcami autostradach, aż tu nagle coś spada z nieba. Co za szok! Udaje mu się zrobić unik. Okazuje się, że jest to amatorska sonda rosyjskiego inżyniera.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">80b55b19-bce3-442e-be13-cdc15e7aca92</member>
@@ -391,9 +391,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<pl>Ronny and Byte</pl>
 			</title>
 			<description>
-				<de>Zu einem besonders in Retrospektive fantastischen Synthwave-Soundtrack machen [0|First] und das geheimnisvolle sphärische Energiewesen unbekannter Herkunft Byte, das sich meist in weiblicher Form präsentiert, die Datenautobahnen unsicher.</de>
-				<en>To a Synthwave soundtrack that is especially fantastic in retrospective, [0|First] and the mysterious spherical energy being of unknown origin Byte, who presents itself mostly in female form, unsettle the information highways.</en>
-				<pl>Synthwave'owa ścieżka dźwiękowa, która jest szczególnie fantastyczna w retrospektywie, [0|First] i tajemnicza kulista istota energetyczna nieznanego pochodzenia Byte, która prezentuje się głównie w kobiecej formie, zakłócają autostrady informacyjne.</pl>
+				<de>Zu einem besonders in Retrospektive fantastischen Synthwave-Soundtrack machen ${.self:"cast":0:"firstname"} und das geheimnisvolle sphärische Energiewesen unbekannter Herkunft Byte, das sich meist in weiblicher Form präsentiert, die Datenautobahnen unsicher.</de>
+				<en>To a Synthwave soundtrack that is especially fantastic in retrospective, ${.self:"cast":0:"firstname"} and the mysterious spherical energy being of unknown origin Byte, who presents itself mostly in female form, unsettle the information highways.</en>
+				<pl>Synthwave'owa ścieżka dźwiękowa, która jest szczególnie fantastyczna w retrospektywie, ${.self:"cast":0:"firstname"} i tajemnicza kulista istota energetyczna nieznanego pochodzenia Byte, która prezentuje się głównie w kobiecej formie, zakłócają autostrady informacyjne.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -423,8 +423,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<en>Dynamite - The Magazine Special: From L.A.</en>
 			</title>
 			<description>
-				<de>Das Ex-Model [1|Full] ist nach L.A. geflogen und berichtet über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
-				<en>Ex-model [1|Full] has flown to L.A. to report on the latest and hottest gossip about the movie stars.</en>
+				<de>Das Ex-Model ${.self:"cast":1:"fullname"} ist nach L.A. geflogen und berichtet über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
+				<en>Ex-model ${.self:"cast":1:"fullname"} has flown to L.A. to report on the latest and hottest gossip about the movie stars.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -438,12 +438,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<children>
 				<programme id="81c85eea-a074-491b-87cf-3721e178b3a2" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First] die Niere</de>
-						<en>[2|First] De Weirdo</en>
+						<de>${.self:"cast":2:"firstname"} die Niere</de>
+						<en>${.self:"cast":2:"firstname"} De Weirdo</en>
 					</title>
 					<description>
-						<de>[2|Full] wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz Hollywood.</de>
-						<en>[2|Full] is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of Hollywood.</en>
+						<de>${.self:"cast":2:"fullname"} wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz Hollywood.</de>
+						<en>${.self:"cast":2:"fullname"} is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of Hollywood.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">506bc383-259e-4a36-9278-081aafc8f35c</member>
@@ -454,12 +454,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="f879c4fe-d528-450a-b47c-a9a65fc6b688" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First] gibt's schon</de>
-						<en>[2|First] Giblets</en>
+						<de>${.self:"cast":2:"firstname"} gibt's schon</de>
+						<en>${.self:"cast":2:"firstname"} Giblets</en>
 					</title>
 					<description>
-						<de>[2|Full] rennt durch die schottischen Highlands, schwingt ein Schwert und ruft: „Es kann nur einen geben!“ Bereitet er sich auf eine neue Rolle vor? Dummerweise begegnet er seinem angeblich zeitreisenden zukünftigem Selbst, der meint: „Ich bin schon seit dem Mittelalter hier!“</de>
-						<en>[2|Full] accidentally serves his guests a Thanksgiving dinner with giblets from his pet turkey named "[2|Last]". The mix-up leads to uproarious confusion and a poultry-fueled PR disaster.</en>
+						<de>${.self:"cast":2:"fullname"} rennt durch die schottischen Highlands, schwingt ein Schwert und ruft: „Es kann nur einen geben!“ Bereitet er sich auf eine neue Rolle vor? Dummerweise begegnet er seinem angeblich zeitreisenden zukünftigem Selbst, der meint: „Ich bin schon seit dem Mittelalter hier!“</de>
+						<en>${.self:"cast":2:"fullname"} accidentally serves his guests a Thanksgiving dinner with giblets from his pet turkey named "${.self:"cast":2:"lastname"}". The mix-up leads to uproarious confusion and a poultry-fueled PR disaster.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">1b8fcb9a-5961-43b8-af1b-1ed144880908</member>
@@ -468,11 +468,11 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<programme id="3be78126-e61c-45e1-93b9-39caf9138896" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Swish, Spritz | Swift used in a different episode">
 					<title>
 						<de>Willst Miff?</de>
-						<en>[2|First]'s Miff</en>
+						<en>${.self:"cast":2:"firstname"}'s Miff</en>
 					</title>
 					<description>
-						<de>[2|Full] gerät in einen heftigen Streit mit einem alten weißen Ladenbesitzer, der den Schriftzug „[2|Full] Edition“ auf Kartoffelchips-Tüten überklebte, den er für „Gekrakel wie das eines Dreijährigen“ bezeichnete, das angeblich für schwächeren Absatz als vorher sorgte.</de>
-						<en>[2|Full] gets into a fierce argument with an old white shopkeeper owner who taped over the lettering "[2|Full] Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
+						<de>${.self:"cast":2:"fullname"} gerät in einen heftigen Streit mit einem alten weißen Ladenbesitzer, der den Schriftzug „${.self:"cast":2:"fullname"} Edition“ auf Kartoffelchips-Tüten überklebte, den er für „Gekrakel wie das eines Dreijährigen“ bezeichnete, das angeblich für schwächeren Absatz als vorher sorgte.</de>
+						<en>${.self:"cast":2:"fullname"} gets into a fierce argument with an old white shopkeeper owner who taped over the lettering "${.self:"cast":2:"fullname"} Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
@@ -480,12 +480,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="50c05c1e-f1ce-4145-8d83-2c57bffeb3e9" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First] Testton</de>
-						<en>[2|First] Chest-on</en>
+						<de>${.self:"cast":2:"firstname"} Testton</de>
+						<en>${.self:"cast":2:"firstname"} Chest-on</en>
 					</title>
 					<description>
-						<de>[2|Full] wird beschuldigt, heimlich eine eigene Geräusch-Testfirma gegründet zu haben, um sicherzustellen, dass nur er die perfekte Stimmlage für epische Filmdialoge hat. „Er kontrolliert den Soundtrack unserer Leben!“, klagen misstrauische Tonspezialisten.</de>
-						<en>[2|Full] appears at a high-profile press conference sporting a (temporary?) tattoo of a cartoon heart with the inscription "Property of My Wife" on his chest, causing a flurry of speculation about his romantic life.</en>
+						<de>${.self:"cast":2:"fullname"} wird beschuldigt, heimlich eine eigene Geräusch-Testfirma gegründet zu haben, um sicherzustellen, dass nur er die perfekte Stimmlage für epische Filmdialoge hat. „Er kontrolliert den Soundtrack unserer Leben!“, klagen misstrauische Tonspezialisten.</de>
+						<en>${.self:"cast":2:"fullname"} appears at a high-profile press conference sporting a (temporary?) tattoo of a cartoon heart with the inscription "Property of My Wife" on his chest, causing a flurry of speculation about his romantic life.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">b4561de6-215e-46ab-9212-f0868c6fcb33</member>
@@ -493,12 +493,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="558eaa7b-690c-41ca-988a-00b98207247e" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First] McVegan</de>
-						<en>[2|First] McVegan</en>
+						<de>${.self:"cast":2:"firstname"} McVegan</de>
+						<en>${.self:"cast":2:"firstname"} McVegan</en>
 					</title>
 					<description>
-						<de>Und auch von einem Ex-Schauspielstar und Ex-Präsidenten gibt's Neuigkeiten: [2|Full] baut Gerüchten zufolge heimlich ein veganes Fast-Food-Imperium auf. „Er ist also doch unser Commander in Leaf,“ rufen begeisterte Veganer weltweit.</de>
-						<en>And there's also news from an ex-acting star and ex-president: [2|Full] is rumored to be secretly building a vegan fast food empire. "So he is our Commander in Leaf after all," shout enthusiastic vegans worldwide.</en>
+						<de>Und auch von einem Ex-Schauspielstar und Ex-Präsidenten gibt's Neuigkeiten: ${.self:"cast":2:"fullname"} baut Gerüchten zufolge heimlich ein veganes Fast-Food-Imperium auf. „Er ist also doch unser Commander in Leaf,“ rufen begeisterte Veganer weltweit.</de>
+						<en>And there's also news from an ex-acting star and ex-president: ${.self:"cast":2:"fullname"} is rumored to be secretly building a vegan fast food empire. "So he is our Commander in Leaf after all," shout enthusiastic vegans worldwide.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">e52ca72c-83e2-431d-ae02-c66daefea035</member>
@@ -512,8 +512,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<en>Dynamite - The Magazine Special: Back in L.A.</en>
 			</title>
 			<description>
-				<de>Das Ex-Model [1|Full] ist wieder in L.A. und berichtet erneut über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
-				<en>Ex-model [1|Full] has again flown to L.A. to once again report on the latest and hottest gossip about the movie stars.</en>
+				<de>Das Ex-Model ${.self:"cast":1:"fullname"} ist wieder in L.A. und berichtet erneut über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
+				<en>Ex-model ${.self:"cast":1:"fullname"} has again flown to L.A. to once again report on the latest and hottest gossip about the movie stars.</en>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -527,12 +527,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<children>
 				<programme id="87849e53-530d-4570-ae8c-1c161e852764" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Verloony">
 					<title>
-						<de>[2|First] verhört mich</de>
-						<en>[2|First] Verhooten</en>
+						<de>${.self:"cast":2:"firstname"} verhört mich</de>
+						<en>${.self:"cast":2:"firstname"} Verhooten</en>
 					</title>
 					<description>
-						<de>[2|Full] wird in einen Kriminalfall verwickelt und als Zeuge geladen. Direkt nach einer Fetisch-Party schaut er in einem gewagten Outfit vorbei. „Wird das ein Drehbuch oder ein Geständnis, und wer verhört hier eigentlich wen?“, fragt sich die erregte Jury.</de>
-						<en>[2|Full] casts a family of owls as the main characters in his highly anticipated sci-fi film. Viewers were baffled by the sudden appearance of owls in space suits, prompting speculation if it was avant-garde genius or a comical oversight.</en>
+						<de>${.self:"cast":2:"fullname"} wird in einen Kriminalfall verwickelt und als Zeuge geladen. Direkt nach einer Fetisch-Party schaut er in einem gewagten Outfit vorbei. „Wird das ein Drehbuch oder ein Geständnis, und wer verhört hier eigentlich wen?“, fragt sich die erregte Jury.</de>
+						<en>${.self:"cast":2:"fullname"} casts a family of owls as the main characters in his highly anticipated sci-fi film. Viewers were baffled by the sudden appearance of owls in space suits, prompting speculation if it was avant-garde genius or a comical oversight.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">10d455be-e8e5-40eb-927b-c36e3345525d</member>
@@ -540,12 +540,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="f2e1597a-efa6-40dd-9f0a-2cc89b74d55e" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Chillis, Thrillis, Pillis, Drillis, Grillis, Dillis, Quillis, Brillis">
 					<title>
-						<de>[2|First] will es</de>
-						<en>[2|First] Will-less</en>
+						<de>${.self:"cast":2:"firstname"} will es</de>
+						<en>${.self:"cast":2:"firstname"} Will-less</en>
 					</title>
 					<description>
-						<de>Jaaa! Er ruft!!! sie!!! an!!! [2|Full] erscheint Tage lang nicht zum Dreh. Er hat sich im Hotelzimmer eingeschlossen und ist süchtig geworden ist nach Sex-Hotlines. „Du willst es doch auch!“ raunt die TV-Domina gerade, als endlich die Zimmertür aufgebrochen wird.</de>
-						<en>A depressed [2|Full] locks himself out of his own action movie set, leaving the entire production in chaos, with the crew unaware of him being stuck in his trailer binge-watching rom-coms.</en>
+						<de>Jaaa! Er ruft!!! sie!!! an!!! ${.self:"cast":2:"fullname"} erscheint Tage lang nicht zum Dreh. Er hat sich im Hotelzimmer eingeschlossen und ist süchtig geworden ist nach Sex-Hotlines. „Du willst es doch auch!“ raunt die TV-Domina gerade, als endlich die Zimmertür aufgebrochen wird.</de>
+						<en>A depressed ${.self:"cast":2:"fullname"} locks himself out of his own action movie set, leaving the entire production in chaos, with the crew unaware of him being stuck in his trailer binge-watching rom-coms.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">2b6af8c4-7775-44da-820e-1ce9c55d8cd9</member>
@@ -553,12 +553,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="36518cf4-419d-4de4-8394-d4fbfe5acf8c" product="2" licence_type="2" creator="9551" comment="Miff used in a previous episode">
 					<title>
-						<de>[2|First] Swift</de>
-						<en>[2|First] Swift</en>
+						<de>${.self:"cast":2:"firstname"} Swift</de>
+						<en>${.self:"cast":2:"firstname"} Swift</en>
 					</title>
 					<description>
-						<de>Erneut macht [2|Full] von sich reden, als er versucht, seine Fans zu beeindrucken, indem er seine neu entdeckte Leidenschaft für Ballett vorführt. Leider endet seine Swift-Pirouette damit, dass er in eine Requisite kracht und Chaos am Set verursacht.</de>
-						<en>Once again, [2|Full] makes a name for himself, as he attempts to impress his fans by showcasing his newfound passion for ballet. Unfortunately, his swift pirouette ends with him crashing into a prop, causing chaos on set.</en>
+						<de>Erneut macht ${.self:"cast":2:"fullname"} von sich reden, als er versucht, seine Fans zu beeindrucken, indem er seine neu entdeckte Leidenschaft für Ballett vorführt. Leider endet seine Swift-Pirouette damit, dass er in eine Requisite kracht und Chaos am Set verursacht.</de>
+						<en>Once again, ${.self:"cast":2:"fullname"} makes a name for himself, as he attempts to impress his fans by showcasing his newfound passion for ballet. Unfortunately, his swift pirouette ends with him crashing into a prop, causing chaos on set.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
@@ -567,11 +567,11 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<programme id="853f96d6-da45-4bb4-a04a-35f2a4d14061" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Oliver Stoner, Boner">
 					<title>
 						<de>Rolliger Stein</de>
-						<en>[2|First] Bone</en>
+						<en>${.self:"cast":2:"firstname"} Bone</en>
 					</title>
 					<description>
-						<de>[2|Full] wird in einer Bowlinghalle gesichtet. Anscheinend dreht er eine Doku über „Die geheime Welt der Bowlingspieler“. „Ist die Anordnung der Pins ein Symbol der Illuminaten?“, fragt er besessen.</de>
-						<en>[2|Full] swaps the scripts of his historical epic with a dog training manual, leaving the bewildered actors on set reciting commands to imaginary canines and wondering whether this was avant-garde genius or just a bone-headed mistake.</en>
+						<de>${.self:"cast":2:"fullname"} wird in einer Bowlinghalle gesichtet. Anscheinend dreht er eine Doku über „Die geheime Welt der Bowlingspieler“. „Ist die Anordnung der Pins ein Symbol der Illuminaten?“, fragt er besessen.</de>
+						<en>${.self:"cast":2:"fullname"} swaps the scripts of his historical epic with a dog training manual, leaving the bewildered actors on set reciting commands to imaginary canines and wondering whether this was avant-garde genius or just a bone-headed mistake.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">3d4a2d11-e943-4874-b8be-eaec31165150</member>
@@ -579,12 +579,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="49d2b764-c58b-4e38-b338-e13af4312525" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Will Weizen">
 					<title>
-						<de>[2|First] Bieten</de>
-						<en>[2|First]'s Wit Ton</en>
+						<de>${.self:"cast":2:"firstname"} Bieten</de>
+						<en>${.self:"cast":2:"firstname"}'s Wit Ton</en>
 					</title>
 					<description>
-						<de>[2|Full] wird beschuldigt, bei einer Auktion seine eigenen Sammlerstücke zu überbieten, um seinen Ruf als „Nerd-König“ zu festigen. „Ist das ein Gebot oder ein Rollenspiel?“, fragen sich verblüffte Bieter.</de>
-						<en>[2|Full] attempts to impress fans with his newfound passion for stand-up comedy and a program involving a "giant barrel of bad puns". Unfortunately, his jokes fall flat heavily, and the audience laughs at his expense.</en>
+						<de>${.self:"cast":2:"fullname"} wird beschuldigt, bei einer Auktion seine eigenen Sammlerstücke zu überbieten, um seinen Ruf als „Nerd-König“ zu festigen. „Ist das ein Gebot oder ein Rollenspiel?“, fragen sich verblüffte Bieter.</de>
+						<en>${.self:"cast":2:"fullname"} attempts to impress fans with his newfound passion for stand-up comedy and a program involving a "giant barrel of bad puns". Unfortunately, his jokes fall flat heavily, and the audience laughs at his expense.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">DF-Celebreties-Wil_Wheaton</member>
@@ -592,12 +592,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme id="5322bb8e-8061-4c5d-94d6-f585ce99bd8c" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>[2|First] Heul</de>
-						<en>[2|First] Howl</en>
+						<de>${.self:"cast":2:"firstname"} Heul</de>
+						<en>${.self:"cast":2:"firstname"} Howl</en>
 					</title>
 					<description>
-						<de>Der Brite [2|Full] ist für ein Filmprojekt in L.A. und beginnt zu heulen, als er seinen Fünf-Uhr-Tee nicht bekommt, so lange und vehement, bis er in der folgenden Vollmondnacht zum Werwolf wird. Fortan lässt er oft seinen Wuschelbart unrasiert noch stehen.</de>
-						<en>The Brit [2|Full] is in L.A. for a film project and starts howling when he doesn't get his five o'clock tea, so long and vehemently until he becomes a werewolf on the following full moon night. From then on, he will often leave his fuzzy beard unshaven.</en>
+						<de>Der Brite ${.self:"cast":2:"fullname"} ist für ein Filmprojekt in L.A. und beginnt zu heulen, als er seinen Fünf-Uhr-Tee nicht bekommt, so lange und vehement, bis er in der folgenden Vollmondnacht zum Werwolf wird. Fortan lässt er oft seinen Wuschelbart unrasiert noch stehen.</de>
+						<en>The Brit ${.self:"cast":2:"fullname"} is in L.A. for a film project and starts howling when he doesn't get his five o'clock tea, so long and vehemently until he becomes a werewolf on the following full moon night. From then on, he will often leave his fuzzy beard unshaven.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">5322bb8e-8061-4c5d-94d6-f585ce99bd8c</member>
@@ -639,9 +639,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 	<scripttemplates>
 		<scripttemplate product="3" licence_type="1" guid="e569b0af-e97f-4897-8b8d-6c426fa5a7d5" creator="9551" comment="Low-Budget- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
-				<de>%title%</de>
-				<en>%title%</en>
-				<pl>%title%</pl>
+				<de>${title}</de>
+				<en>${title}</en>
+				<pl>${title}</pl>
 			</title>
 			<description>
 				<de>Programmfüller für den jeden Morgen. Hier werden nochmal die Beiträge aus dem Mülleimer gefischt, die die Kollegen aus der Nachrichtenredaktion schon weggeschmissen haben. Andere niedrigschwellige Inhalte finden sich bestimmt auch noch.</de>
@@ -670,9 +670,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
-				<de>%title%</de>
-				<en>%title%</en>
-				<pl>%title%</pl>
+				<de>${title}</de>
+				<en>${title}</en>
+				<pl>${title}</pl>
 			</title>
 			<description>
 				<de>Es lohnt sich! Für jeden Morgen! Tolles Programm und gute Unterhaltung für einen beschwingten Start in den Tag.</de>
@@ -709,9 +709,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower}: ${title}</pl>
 			</title>
 			<description>
 				<de>Technologie aktuell. Jeden Tag neu. Die neuesten Entwicklungen und Trends bei Elektronik, Telekommunikation, Computern.</de>
@@ -759,9 +759,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="d6242a49-71e0-4997-97d6-3684e5c67d54" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented?">
 			<title>
-				<de>%tower% Dynamit - Das Magazin: %latebreaking%</de>
-				<en>%tower% Dynamite - The Magazine: %latebreaking%</en>
-				<pl>%tower% Dynamit - Magazyn: %latebreaking%</pl>
+				<de>${tower} Dynamit - Das Magazin: ${latebreaking}</de>
+				<en>${tower} Dynamite - The Magazine: ${latebreaking}</en>
+				<pl>${tower} Dynamit - Magazyn: ${latebreaking}</pl>
 			</title>
 			<description>
 				<de>Showbiz aktuell. Jeden Tag neu. Aktueller Tratsch, Promi-Geflüster und tränenrührende Tagesgeschehnisse.
@@ -807,9 +807,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="40a79c72-f53d-4b4f-ad29-886dd6c99135" creator="9551" comment="TODO: Added after proposals from ronny and nittka, but perhaps this format should be more distinct from 'dynamite' somehow.">
 			<title>
-				<de>%pulse% - %show% %withexplosivenews%</de>
-				<en>%pulse% - The %show% %withexplosivenews%</en>
-				<pl>%pulse% - %show% %withexplosivenews%</pl>
+				<de>${pulse} - ${show} ${withexplosivenews}</de>
+				<en>${pulse} - The ${show} ${withexplosivenews}</en>
+				<pl>${pulse} - ${show} ${withexplosivenews}</pl>
 			</title>
 			<description>
 				<de>Und noch ein Showbiz-Format. Die Welt da draußen scheint nicht genug davon bekommen zu können.</de>
@@ -854,13 +854,13 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="007b49ae-41e2-47b7-bf7c-628aecee7731" creator="9551">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Filme, Musik, Stars und Sternchen. Die ganz große Kino-Show. Trailer, Ausschnitte, Infos und Interviews zu den aktuellen Neuerscheinungen.</de>
@@ -908,9 +908,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="56bcb1ff-8a5d-4d91-b3f7-ad6958b3855b" creator="9551">
 			<title>
-				<de>%recreational%%athletes% aus %randomcity% und anderswo</de>
-				<en>%recreational% %athletes% from %randomcity% and Elsewhere</en>
-				<pl>%recreational% %athletes% i nie tylko</pl>
+				<de>${recreational}${athletes} aus ${randomcity} und anderswo</de>
+				<en>${recreational} ${athletes} from ${randomcity} and Elsewhere</en>
+				<pl>${recreational} ${athletes} i nie tylko</pl>
 			</title>
 			<description>
 				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Formel 3 &amp; 4 &amp; Kartsport und vieles mehr.</de>
@@ -929,7 +929,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 					<pl>Sportowcy|Piłkarze i spółka|Przyjaciele sportowi</pl>
 				</athletes>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 			<jobs>
@@ -956,9 +956,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="acf3207f-bfcd-4aef-9c10-a4871dcab928" creator="9551">
 			<title>
-				<de>%secondleague% Sport%report%</de>
-				<en>%secondleague% Sports%report%</en>
-				<pl>%secondleague% - %report%</pl>
+				<de>${secondleague} Sport${report}</de>
+				<en>${secondleague} Sports${report}</en>
+				<pl>${secondleague} - ${report}</pl>
 			</title>
 			<description>
 				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
@@ -998,13 +998,13 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_DAYSPLAYED > 12" />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Boxen, Formel 1, Wintersport, alles dabei.</de>
@@ -1049,14 +1049,14 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<modifier name="topicality::age" value="5" />
 				<modifier name="topicality::refresh" value="2" />
 			</programme_data_modifiers>
-			<availability script="TIME_DAYSPLAYED > 18" />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
 		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
 		<scripttemplate product="4" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Politik aktuell. Jeden Tag neu. Wir analysieren die neuesten Entwicklungen in Wirtschaft und Politik.</de>
@@ -1103,9 +1103,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower%: %title%%latebreaking%</de>
-				<en>%tower%: %title%%latebreaking%</en>
-				<pl>%tower%: %title%%latebreaking%</pl>
+				<de>${tower}: ${title}${latebreaking}</de>
+				<en>${tower}: ${title}${latebreaking}</en>
+				<pl>${tower}: ${title}${latebreaking}</pl>
 			</title>
 			<description>
 				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
@@ -1153,9 +1153,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>%tower% %latebreaking%: %title%</de>
-				<en>%tower% %latebreaking%: %title%</en>
-				<pl>%tower% %latebreaking%: %title%</pl>
+				<de>${tower} ${latebreaking}: ${title}</de>
+				<en>${tower} ${latebreaking}: ${title}</en>
+				<pl>${tower} ${latebreaking}: ${title}</pl>
 			</title>
 			<description>
 				<de>Die neuesten und heißesten Videospiele werden hier präsentiert und getestet. Nur für euch! Außerdem könnt ihr im Studio gegeneinander antreten und Preise gewinnen!</de>
@@ -1203,9 +1203,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="14c23a4a-9d4b-4c87-8890-45652ce81cd4" creator="9551" comment="inspired from programme from original MadTV">
 			<title>
-				<de>Die Götterwelt von %bali%</de>
-				<en>The Gods of %bali%</en>
-				<pl>Bogowie %bali%</pl>
+				<de>Die Götterwelt von ${bali}</de>
+				<en>The Gods of ${bali}</en>
+				<pl>Bogowie ${bali}</pl>
 			</title>
 			<description>
 				<de>Alle 412.000 Götter werden vorgestellt.
@@ -1246,23 +1246,23 @@ Czyli 4120 na odcinek.</pl>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="40d169cd-eeb2-400e-b839-f69690893bc1" creator="9551" comment="Quelle: Das Kino in meinem Kopf, das enstand, als ich zum ersten Mal den Titel von TheRob-Script-Com-EngeloderBengel, bei mir 'Aribert außer Rand und Band' gelesen hatte. :)">
 			<title>
-				<de>%title%</de>
-				<en>%title%</en>
-				<pl>%title%</pl>
+				<de>${title}</de>
+				<en>${title}</en>
+				<pl>${title}</pl>
 			</title>
 			<description>
-				<de>%name% ist behütet in einer fürsorglichen Familie aufgewachsen und lebt Mitte 20 in einer Studenten-WG mit braven Kommilitonen. Doch er spürt, etwas ist in ihm. Was ist das nur? Ist er vielleicht nicht ganz monogam? Sein Umfeld beginnt zu verzweifeln...</de>
-				<en>%name% grew up safely in a caring family and in his mid-20s lives in a flat-share with well-behaved fellow students. But he senses something is inside him. What is it? Is he perhaps not quite monogamous? Everyone close to him begins to despair...</en>
-				<pl>%name% dorastał bezpiecznie w troskliwej rodzinie, a po dwudziestce mieszka we wspólnym mieszkaniu z dobrze wychowanymi kolegami ze studiów. Ale czuje, że coś w nim jest. Co to jest? Może nie jest do końca monogamiczny? Wszyscy jego bliscy zaczynają rozpaczać...</pl>
+				<de>${name} ist behütet in einer fürsorglichen Familie aufgewachsen und lebt Mitte 20 in einer Studenten-WG mit braven Kommilitonen. Doch er spürt, etwas ist in ihm. Was ist das nur? Ist er vielleicht nicht ganz monogam? Sein Umfeld beginnt zu verzweifeln...</de>
+				<en>${name} grew up safely in a caring family and in his mid-20s lives in a flat-share with well-behaved fellow students. But he senses something is inside him. What is it? Is he perhaps not quite monogamous? Everyone close to him begins to despair...</en>
+				<pl>${name} dorastał bezpiecznie w troskliwej rodzinie, a po dwudziestce mieszka we wspólnym mieszkaniu z dobrze wychowanymi kolegami ze studiów. Ale czuje, że coś w nim jest. Co to jest? Może nie jest do końca monogamiczny? Wszyscy jego bliscy zaczynają rozpaczać...</pl>
 			</description>
 			<variables>
 				<title>
-					<de>%name% vogelwild|%name% ganz aus dem Häuschen|%name% voll aufgekratzt|Für %name% gibt es kein Morgen mehr|%name% nicht mehr zu bändigen|%name% ganz ganz wild|%name% völlig ungezügelt|%name% wird ganz wild</de>
-					<en>%name% all boisterous|%name% all over the place|%name% totally psyched|For %name% there is no more tomorrow|%name% no longer to be tamed|%name% going so very wild|%name% totally unbridled|%name% gets all wild</en>
-					<pl>%name%  dziki jak ptak|%name% podekscytowany|%name% totalnie zakręcony|Nie ma jutra dla %name%|%name% oszołomiony|%name% wariuje|%name% idzie na całość|%name% ma wszystko gdzieś!</pl>
+					<de>${name} vogelwild|${name} ganz aus dem Häuschen|${name} voll aufgekratzt|Für ${name} gibt es kein Morgen mehr|${name} nicht mehr zu bändigen|${name} ganz ganz wild|${name} völlig ungezügelt|${name} wird ganz wild</de>
+					<en>${name} all boisterous|${name} all over the place|${name} totally psyched|For ${name} there is no more tomorrow|${name} no longer to be tamed|${name} going so very wild|${name} totally unbridled|${name} gets all wild</en>
+					<pl>${name}  dziki jak ptak|${name} podekscytowany|${name} totalnie zakręcony|Nie ma jutra dla ${name}|${name} oszołomiony|${name} wariuje|${name} idzie na całość|${name} ma wszystko gdzieś!</pl>
 				</title>
 				<name>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%</de>
+					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}</de>
 				</name>
 			</variables>
 			<jobs>
@@ -1286,12 +1286,12 @@ Czyli 4120 na odcinek.</pl>
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="d26ee4f9-1b61-4b7a-926a-e462256b127b" creator="9551" comment="Making some use of the existing fairytale characters. Descriptions created with help of ChatGPT.">
 			<title>
-				<de>%ROLENAME2% und %ROLENAME1% im Märchenwald</de>
-				<en>%ROLENAME2% and %ROLENAME1% in the Woods of Wonder</en>
+				<de>${.self:"role":1:"firstname"} und ${.self:"role":0:"firstname"} im Märchenwald</de>
+				<en>${.self:"role":1:"firstname"} and ${.self:"role":0:"firstname"} in the Woods of Wonder</en>
 			</title>
 			<description>
-				<de>Vor ihrem bekannten Aufeinandertreffen mit dem Bären erleben die heranwachsenden %ROLENAME1% und %ROLENAME2% zusammen mit den Kindern %ROLENAME3%, %ROLENAME4% und %ROLENAME5% Abenteuer im Wald.</de>
-				<en>Before their famous encounter with the bear, the adolescent %ROLENAME1% and %ROLENAME2% experience adventures in the forest together with the children %ROLENAME3%, %ROLENAME4% and %ROLENAME5%.</en>
+				<de>Vor ihrem bekannten Aufeinandertreffen mit dem Bären erleben die heranwachsenden ${.self:"role":0:"firstname"} und ${.self:"role":1:"firstname"} zusammen mit den Kindern ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} Abenteuer im Wald.</de>
+				<en>Before their famous encounter with the bear, the adolescent ${.self:"role":0:"firstname"} and ${.self:"role":1:"firstname"} experience adventures in the forest together with the children ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} and ${.self:"role":4:"firstname"}.</en>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="5bda9699-4cc2-49cd-875a-70e666594d56">
@@ -1300,8 +1300,8 @@ Czyli 4120 na odcinek.</pl>
 						<en>The Whispering Trees</en>
 					</title>
 					<description>
-						<de>%ROLENAME5% bläst sein Horn in den Verwunschenen Wäldern und erweckt flüsternde Bäume, uralte Hüter und tückische Elfen, die die Abenteurer nun kichernd mit Illusionen und falschen Fährten in die Irre führen.</de>
-						<en>%ROLENAME5% blows his horn in the Enchanted Woods and awakens whispering trees, ancient guardians and elusive sprites, who now, while giggling, lead the adventurers astray with illusions and false trails.</en>
+						<de>${.self:"role":4:"firstname"} bläst sein Horn in den Verwunschenen Wäldern und erweckt flüsternde Bäume, uralte Hüter und tückische Elfen, die die Abenteurer nun kichernd mit Illusionen und falschen Fährten in die Irre führen.</de>
+						<en>${.self:"role":4:"firstname"} blows his horn in the Enchanted Woods and awakens whispering trees, ancient guardians and elusive sprites, who now, while giggling, lead the adventurers astray with illusions and false trails.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="f4fddd1c-0f95-4887-8a76-7994b94e26ef">
@@ -1320,8 +1320,8 @@ Czyli 4120 na odcinek.</pl>
 						<en>The Mirror of Truth</en>
 					</title>
 					<description>
-						<de>Noch in der Hütte steckt %ROLE3% seinen Daumen in einen Kuchen und zieht eine Pflaume heraus, aber ein mystischer Spiegel reflektiert etwas anderes - er enthüllt die verborgensten Geheimnisse aller, was mit dem angesprochenen Schatz zu tun haben könnte.</de>
-						<en>Still in the cottage, %ROLE3% puts his thumb into a pie and pulls out a plum, but a mystical mirror reflects something else - it reveals the deepest secrets of everyone, which might have something to do with the treasure mentioned.</en>
+						<de>Noch in der Hütte steckt ${.self:"role":2:"fullname"} seinen Daumen in einen Kuchen und zieht eine Pflaume heraus, aber ein mystischer Spiegel reflektiert etwas anderes - er enthüllt die verborgensten Geheimnisse aller, was mit dem angesprochenen Schatz zu tun haben könnte.</de>
+						<en>Still in the cottage, ${.self:"role":2:"fullname"} puts his thumb into a pie and pulls out a plum, but a mystical mirror reflects something else - it reveals the deepest secrets of everyone, which might have something to do with the treasure mentioned.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="408d1dbe-0887-4249-a7e6-15f206c63082">
@@ -1373,8 +1373,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 2 - Careers, Coffee &amp; Canoodling</en>
 			</title>
 			<description>
-				<de>Das Büro brodelt! Neue Sekretärin %ROLE1% bringt frischen Schwung, Meetings werden zur Dating-Show, während Chef %ROLE2% hinterm Schreibtisch charmant Chaos stiftet. Und %ROLE3% entdeckt, dass Verträge und Knutschen mehr gemeinsam haben als gedacht.</de>
-				<en>The office is on fire! New secretary %ROLE1% brings fresh energy, meetings turn into a dating show, while boss %ROLE2% charmingly creates chaos behind his desk. And %ROLE3% discovers that contracts and canoodling have more in common than she thought.</en>
+				<de>Das Büro brodelt! Neue Sekretärin ${.self:"role":0:"fullname"} bringt frischen Schwung, Meetings werden zur Dating-Show, während Chef ${.self:"role":1:"fullname"} hinterm Schreibtisch charmant Chaos stiftet. Und ${.self:"role":2:"fullname"} entdeckt, dass Verträge und Knutschen mehr gemeinsam haben als gedacht.</de>
+				<en>The office is on fire! New secretary ${.self:"role":0:"fullname"} brings fresh energy, meetings turn into a dating show, while boss ${.self:"role":1:"fullname"} charmingly creates chaos behind his desk. And ${.self:"role":2:"fullname"} discovers that contracts and canoodling have more in common than she thought.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1404,8 +1404,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 3 - Shorthand, Stunts &amp; Sensuality</en>
 			</title>
 			<description>
-				<de>Jetzt wird's noch bunter: %ROLE1% wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und %ROLE2%s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
-				<en>Now it all gets extra sparkly: %ROLE1% becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and %ROLE2%'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
+				<de>Jetzt wird's noch bunter: ${.self:"role":0:"fullname"} wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und ${.self:"role":1:"fullname"}s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
+				<en>Now it all gets extra sparkly: ${.self:"role":0:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":1:"fullname"}'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1435,8 +1435,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 4</en>
 			</title>
 			<description>
-				<de>Die blonde %ROLENAME1% von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler Higwig gibt's 'ne Natursekt-Party, der Chef %ROLE3% wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
-				<en>Blonde %ROLENAME1% from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent Higwig's, the boss %ROLE3% is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+				<de>Die blonde ${.self:"role":0:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler Higwig gibt's 'ne Natursekt-Party, der Chef ${.self:"role":2:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
+				<en>Blonde ${.self:"role":0:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent Higwig's, the boss ${.self:"role":2:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1463,12 +1463,12 @@ Czyli 4120 na odcinek.</pl>
 
 		<scripttemplate product="1" licence_type="1" guid="d31d1720-d567-4479-8ac9-f77d13848f3c" creator="9551" comment="Parody/spoof also in real-title mode of https://en.wikipedia.org/wiki/Charlie_and_the_Chocolate_Factory | TODO: Maybe yet another parody and erotic comedy version: W. Wanker and the Sex Toy Factory">
 			<title>
-				<de>%ROLE1% und die Spirituosenfabrik</de>
-				<en>%ROLE1% and the Liquor Factory</en>
+				<de>${.self:"role":0:"fullname"} und die Spirituosenfabrik</de>
+				<en>${.self:"role":0:"fullname"} and the Liquor Factory</en>
 			</title>
 			<description>
-				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker %ROLE2% findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen %ROLE1%. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
-				<en>The bumbling deposit bottle collector and alcoholic %ROLE2% finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric %ROLE1%. However, the pint-swilling aristocrats there are quite the nuisance.</en>
+				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker ${.self:"role":1:"fullname"} findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen ${.self:"role":0:"fullname"}. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
+				<en>The bumbling deposit bottle collector and alcoholic ${.self:"role":1:"fullname"} finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric ${.self:"role":0:"fullname"}. However, the pint-swilling aristocrats there are quite the nuisance.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

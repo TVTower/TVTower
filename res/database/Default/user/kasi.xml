@@ -11,14 +11,14 @@
 		<!--Kult optional, kein Trash-->
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Superheros" comment="TODO: Now that plenty of 'real' Marvel stuff is in the game, perhaps introduce 'Moval' not as a spoof but a cheap-rip-off">
 			<title>
-				<de>%HERO%</de>
-				<en>%HERO%</en>
-				<pl>%HERO%</pl>
+				<de>${HERO}</de>
+				<en>${HERO}</en>
+				<pl>${HERO}</pl>
 			</title>
 			<description>
-				<de>Heldenverfilmung aus den bekannten Moval-Comics. %HERO% kämpft gegen einen neuen Superschurken und rettet die Welt.</de>
-				<en>A Superhero-movie from the well-known Moval-Comics. %HERO% is fighting a new super villain and is saving the world.</en>
-				<pl>Superbohaterski film ze znanego Moval-Comics. %HERO% walczy z nowym zagrożeniem i ratuje świat.</pl>
+				<de>Heldenverfilmung aus den bekannten Moval-Comics. ${HERO} kämpft gegen einen neuen Superschurken und rettet die Welt.</de>
+				<en>A Superhero-movie from the well-known Moval-Comics. ${HERO} is fighting a new super villain and is saving the world.</en>
+				<pl>Superbohaterski film ze znanego Moval-Comics. ${HERO} walczy z nowym zagrożeniem i ratuje świat.</pl>
 			</description>
 			<variables>
 				<hero>
@@ -68,21 +68,21 @@
 						<pl>Pierwsza wymiana</pl>
 					</title>
 					<description>
-						<de>Der arbeitslose %Name1% tauscht mit dem Multimilionär %Name2%. Während %Name1% die teuren Weine von %Name2% austrinkt und merkt, dass ein Multimillionär genauso hart arbeiten muss wie er selbst, wundert sich %Name2%, dass nicht alle Toiletten aus Gold sind.</de>
-						<en>The unemployed %Name1% swaps places with the multimilionaire %Name2%. While %Name1% drinks up %Name2%'s expensive wines and realizes that a multimillionaire has to work just as hard as he does, %Name2% wonders why not all toilets are made of gold.</en>
-						<pl>Bezrobotny %Name1% zamienia się miejscami z multimilionerem %Name2%. %Name1% pijąc drogie wina zdaje sobie sprawę, że multimilioner musi pracować tak samo ciężko jak on. %Name2% zastanawia się, dlaczego nie wszystkie toalety są ze złota.</pl>
+						<de>Der arbeitslose ${Name1} tauscht mit dem Multimilionär ${Name2}. Während ${Name1} die teuren Weine von ${Name2} austrinkt und merkt, dass ein Multimillionär genauso hart arbeiten muss wie er selbst, wundert sich ${Name2}, dass nicht alle Toiletten aus Gold sind.</de>
+						<en>The unemployed ${Name1} swaps places with the multimilionaire ${Name2}. While ${Name1} drinks up ${Name2}'s expensive wines and realizes that a multimillionaire has to work just as hard as he does, ${Name2} wonders why not all toilets are made of gold.</en>
+						<pl>Bezrobotny ${Name1} zamienia się miejscami z multimilionerem ${Name2}. ${Name1} pijąc drogie wina zdaje sobie sprawę, że multimilioner musi pracować tak samo ciężko jak on. ${Name2} zastanawia się, dlaczego nie wszystkie toalety są ze złota.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Typentausch-Ep2">
 					<title>
-						<de>%Name3% und die Truckerbräute</de>
-						<en>%Name3% andd the Trucker Brides</en>
-						<pl>Kierowca ciężarówki %Name3% i kierowca rajdowy %Name4%</pl>
+						<de>${Name3} und die Truckerbräute</de>
+						<en>${Name3} andd the Trucker Brides</en>
+						<pl>Kierowca ciężarówki ${Name3} i kierowca rajdowy ${Name4}</pl>
 					</title>
 					<description>
-						<de>Der Satanist %Name3% und der Truckfahrer %Name4% tauschen die Plätze. Während sich %Name4% schnell daran gewöhnt in einem Sarg zu schlafen, erkennt %Name3% beim Truckfahren seine Liebe zur Umweltzerstörung und Truckerbräuten.</de>
-						<en>The satanist %Name3% and the truckdriver %Name4% swap places. While %Name4% quickly gets used to sleeping in a coffin, %Name3% discovers his love of environmental destruction and trucker brides while driving a truck.</en>
-						<pl>Kierowca ciężarówki - %Name3%, zamienia się z kierowcą rajdowym. %Name4% - kierowca rajdowy łapie mandaty za szybką jazdę, a %Name3% zajmuje ostatnią pozycję w rajdzie.</pl>
+						<de>Der Satanist ${Name3} und der Truckfahrer ${Name4} tauschen die Plätze. Während sich ${Name4} schnell daran gewöhnt in einem Sarg zu schlafen, erkennt ${Name3} beim Truckfahren seine Liebe zur Umweltzerstörung und Truckerbräuten.</de>
+						<en>The satanist ${Name3} and the truckdriver ${Name4} swap places. While ${Name4} quickly gets used to sleeping in a coffin, ${Name3} discovers his love of environmental destruction and trucker brides while driving a truck.</en>
+						<pl>Kierowca ciężarówki - ${Name3}, zamienia się z kierowcą rajdowym. ${Name4} - kierowca rajdowy łapie mandaty za szybką jazdę, a ${Name3} zajmuje ostatnią pozycję w rajdzie.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Typentausch-Ep3">
@@ -92,9 +92,9 @@
 						<pl>To ciężkie życie</pl>
 					</title>
 					<description>
-						<de>Der Dachdecker %Name5% tauscht mit der aus Zufall in die Sendung geratenen %Name6%. Während %Name5% vollkommen überfordert ist mit der Hausarbeit, die %Name6% jeden Tag erledigt, genießt %Name6% die Zeit biertinkend auf einem Dach.</de>
-						<en>The roofer %Name5% swaps places with %Name6%, who got into the show by accident. While %Name5% is completely overwhelmed with the housework %Name6% does every day, %Name6% enjoys her time drinking beer on a roof.</en>
-						<pl>Dekarz %Name5% zamienia się miejscami z gościem, który dostał się do programu przez przypadek. Podczas gdy %Name5% jest całkowicie przytłoczony pracami domowymi, które %Name6% wykonuje każdego dnia, %Name6% lubi pić piwo na dachu.</pl>
+						<de>Der Dachdecker ${Name5} tauscht mit der aus Zufall in die Sendung geratenen ${Name6}. Während ${Name5} vollkommen überfordert ist mit der Hausarbeit, die ${Name6} jeden Tag erledigt, genießt ${Name6} die Zeit biertinkend auf einem Dach.</de>
+						<en>The roofer ${Name5} swaps places with ${Name6}, who got into the show by accident. While ${Name5} is completely overwhelmed with the housework ${Name6} does every day, ${Name6} enjoys her time drinking beer on a roof.</en>
+						<pl>Dekarz ${Name5} zamienia się miejscami z gościem, który dostał się do programu przez przypadek. Podczas gdy ${Name5} jest całkowicie przytłoczony pracami domowymi, które ${Name6} wykonuje każdego dnia, ${Name6} lubi pić piwo na dachu.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Typentausch-Ep4">
@@ -104,9 +104,9 @@
 						<pl>Życie karmiciela</pl>
 					</title>
 					<description>
-						<de>Der übergewichtige %Name7% tauscht mit dem Soziopathen und Frisör %Name8%. Da %Name7% auf Grund seine Gewichtes das Bett nicht mehr verlassen kann, verbringt er die ganze Sendung gemeinsam mit %Name8%, der %Name7% seine Bauchhaare stylt und ihm leckeres, fettiges Essen kocht.</de>
-						<en>The overweight %Name7% swaps with the sociopath and hairdresser %Name8%. Since %Name7% can not leave the bed because of his weight, he spends the whole show together with %Name8%, who styles %Name7%'s abdominal hair and cooks him delicious greasy food.</en>
-						<pl>Otyły %Name7% zamienia się z socjopatą i fryzjerem o imieniu %Name8%. Ponieważ %Name7% nie może opuścić łóżka z powodu swojej wagi, spędza cały program razem ze zmiennikiem, który układa mu włosy na brzuchu i gotuje mu pyszne tłuste jedzenie.</pl>
+						<de>Der übergewichtige ${Name7} tauscht mit dem Soziopathen und Frisör ${Name8}. Da ${Name7} auf Grund seine Gewichtes das Bett nicht mehr verlassen kann, verbringt er die ganze Sendung gemeinsam mit ${Name8}, der ${Name7} seine Bauchhaare stylt und ihm leckeres, fettiges Essen kocht.</de>
+						<en>The overweight ${Name7} swaps with the sociopath and hairdresser ${Name8}. Since ${Name7} can not leave the bed because of his weight, he spends the whole show together with ${Name8}, who styles ${Name7}'s abdominal hair and cooks him delicious greasy food.</en>
+						<pl>Otyły ${Name7} zamienia się z socjopatą i fryzjerem o imieniu ${Name8}. Ponieważ ${Name7} nie może opuścić łóżka z powodu swojej wagi, spędza cały program razem ze zmiennikiem, który układa mu włosy na brzuchu i gotuje mu pyszne tłuste jedzenie.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Typentausch-Ep5">
@@ -116,9 +116,9 @@
 						<pl>Wszyscy razem</pl>
 					</title>
 					<description>
-						<de>Im großen Staffelfinale treffen sich %Name1%, %Name2%, %Name3%, %Name4%, %Name5%, %Name6%, %Name7% und %Name8% und trinken gemeinsam Bier und veranstalten einen Furzwettbewerb, den %Name6% gewinnt.</de>
-						<en>In the big season finale, %Name1%, %Name2%, %Name3%, %Name4%, %Name5%, %Name6%,%Name7% and %Name8% meet, and drink beer together and organize a fart competition which %Name6% wins.</en>
-						<pl>W wielkim finale sezonu, %Name1%, %Name2%, %Name3%, %Name4%, %Name5%, %Name6%,%Name7% i %Name8% spotykają się, piją razem piwo i organizują konkurs pierdzenia. Wygrywa %Name6%.</pl>
+						<de>Im großen Staffelfinale treffen sich ${Name1}, ${Name2}, ${Name3}, ${Name4}, ${Name5}, ${Name6}, ${Name7} und ${Name8} und trinken gemeinsam Bier und veranstalten einen Furzwettbewerb, den ${Name6} gewinnt.</de>
+						<en>In the big season finale, ${Name1}, ${Name2}, ${Name3}, ${Name4}, ${Name5}, ${Name6},${Name7} and ${Name8} meet, and drink beer together and organize a fart competition which ${Name6} wins.</en>
+						<pl>W wielkim finale sezonu, ${Name1}, ${Name2}, ${Name3}, ${Name4}, ${Name5}, ${Name6},${Name7} i ${Name8} spotykają się, piją razem piwo i organizują konkurs pierdzenia. Wygrywa ${Name6}.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -182,14 +182,14 @@
 		<!--Besetzung Musiker, Livedatum, nur eine Ausstrahlung, Produktionszeit (Vorproduktion), kein optionaler Kult-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-LiveKonzert" comment="TODO: Though it doesn't matter much in effect, it's confusing and not clear for (new) players why you have to cast a musician when there's already a musician in the title. Support act? Co-musician? If so, that should be added to the description. Or should there be a feature request to have some sort of pre-selected cast (which can't be changed in this example)?">
 			<title>
-				<de>Das Livekonzert von %Name1% %Name2%</de>
-				<en>%Name1% %Name2% Live</en>
-				<pl>%Name1% %Name2% Na Żywo</pl>
+				<de>Das Livekonzert von ${Name1} ${Name2}</de>
+				<en>${Name1} ${Name2} Live</en>
+				<pl>${Name1} ${Name2} Na Żywo</pl>
 			</title>
 			<description>
-				<de>Live in Stereo, Farbe und Bunt: %Name1% %Name2%</de>
-				<en>Live and In Stereo: %Name1% %Name2%</en>
-				<pl>Na Żywo i w stereo: %Name1% %Name2%</pl>
+				<de>Live in Stereo, Farbe und Bunt: ${Name1} ${Name2}</de>
+				<en>Live and In Stereo: ${Name1} ${Name2}</en>
+				<pl>Na Żywo i w stereo: ${Name1} ${Name2}</pl>
 			</description>
 			<variables>
 				<name1>
@@ -225,14 +225,14 @@
 
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-freieTiere">
 			<title>
-				<de>Befreit den %Tier% %title%%Name%</de>
-				<en>Free the %Tier% %title%%Name%</en>
-				<pl>Uwolnić %Tier% %Name%</pl>
+				<de>Befreit den ${Tier} ${title}${Name}</de>
+				<en>Free the ${Tier} ${title}${Name}</en>
+				<pl>Uwolnić ${Tier} ${Name}</pl>
 			</title>
 			<description>
-				<de>Ein Kind verliebt sich beim Zoobesuch in den %Tier% %title%%Name%. Doch sieht dieser sehr traurig aus. So tut das Kind alles in seiner Macht stehende, um ihn zu befreien.</de>
-				<en>A child falls in love with the %Tier% %title%%Name% while visiting the zoo. But it looks very sad. So the child does everything in its power to free the animal.</en>
-				<pl>Dziecko zakochuje się w zwierzątku podczas wizyty w zoo. Wygląda ono jednak na bardzo smutne. Dziecko robi więc wszystko, co w jego mocy, by uwolnić %Name%.</pl>
+				<de>Ein Kind verliebt sich beim Zoobesuch in den ${Tier} ${title}${Name}. Doch sieht dieser sehr traurig aus. So tut das Kind alles in seiner Macht stehende, um ihn zu befreien.</de>
+				<en>A child falls in love with the ${Tier} ${title}${Name} while visiting the zoo. But it looks very sad. So the child does everything in its power to free the animal.</en>
+				<pl>Dziecko zakochuje się w zwierzątku podczas wizyty w zoo. Wygląda ono jednak na bardzo smutne. Dziecko robi więc wszystko, co w jego mocy, by uwolnić ${Name}.</pl>
 			</description>
 			<variables>
 				<Tier>
@@ -270,14 +270,14 @@
 		<!-- buster entfernt, B-Movie statt Trash -->
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Ghost">
 			<title>
-				<de>Ghost%zu%</de>
-				<en>Ghost%zu%</en>
-				<pl>%zu%</pl>
+				<de>Ghost${zu}</de>
+				<en>Ghost${zu}</en>
+				<pl>${zu}</pl>
 			</title>
 			<description>
-				<de>Der Ghost%zu% James ist nicht sehr erfolgreich in seinem Job. Aus Verzweiflung macht er einen Urlaub im Gebirge. Doch in seiner Ferienwohnung geschehen gespenstische Dinge.</de>
-				<en>The Ghost%zu% James isn't very successful in his job. Out of desperation, he takes a vacation in the mountains. But in his vacation home spooky things happen.</en>
-				<pl>%zu% nie odnosi sukcesów w swojej pracy. Z desperacji wyjeżdża na wakacje w góry. W jego domu wakacyjnym dzieją się straszne i dziwne rzeczy.</pl>
+				<de>Der Ghost${zu} James ist nicht sehr erfolgreich in seinem Job. Aus Verzweiflung macht er einen Urlaub im Gebirge. Doch in seiner Ferienwohnung geschehen gespenstische Dinge.</de>
+				<en>The Ghost${zu} James isn't very successful in his job. Out of desperation, he takes a vacation in the mountains. But in his vacation home spooky things happen.</en>
+				<pl>${zu} nie odnosi sukcesów w swojej pracy. Z desperacji wyjeżdża na wakacje w góry. W jego domu wakacyjnym dzieją się straszne i dziwne rzeczy.</pl>
 			</description>
 			<variables>
 				<zu>
@@ -306,14 +306,14 @@
 		<!-- Verfügbarkeit ergänzt, kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-SozialeNetzwerke">
 			<title>
-				<de>%Name1% %Name2% - Verloren im digitalem Sumpf</de>
-				<en>%Name1% %Name2% - Lost In the Digital Swamp</en>
-				<pl>%Name2% w %Name1% - Zagubienie w cyfrowym bagnie</pl>
+				<de>${Name1} ${Name2} - Verloren im digitalem Sumpf</de>
+				<en>${Name1} ${Name2} - Lost In the Digital Swamp</en>
+				<pl>${Name2} w ${Name1} - Zagubienie w cyfrowym bagnie</pl>
 			</title>
 			<description>
-				<de>Spannende Thriller-Serie über die Geheimnisse, welche in %Name1% geschrieben wurden, und eine Gruppe junger Menschen, die versuchen, mit diesen Geheimnissen Morde aufzudecken.</de>
-				<en>Suspenseful thriller series about secrets written in %Name1% and a group of young people trying to resolve murder cases using those secrets.</en>
-				<pl>Trzymająca w napięciu seria thrillerów o tajemnicach zapisanych w %Name1% i grupie młodych ludzi próbujących rozwiązać sprawy morderstw przy użyciu tych tajemnic.</pl>
+				<de>Spannende Thriller-Serie über die Geheimnisse, welche in ${Name1} geschrieben wurden, und eine Gruppe junger Menschen, die versuchen, mit diesen Geheimnissen Morde aufzudecken.</de>
+				<en>Suspenseful thriller series about secrets written in ${Name1} and a group of young people trying to resolve murder cases using those secrets.</en>
+				<pl>Trzymająca w napięciu seria thrillerów o tajemnicach zapisanych w ${Name1} i grupie młodych ludzi próbujących rozwiązać sprawy morderstw przy użyciu tych tajemnic.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-SozialeNetzwerke-Ep1">
@@ -323,9 +323,9 @@
 						<pl>Początek</pl>
 					</title>
 					<description>
-						<de>Nach etlichen Morden in ihrer Stadt schließt sich eine Gruppe junger Menschen zusammen, um diesen nachzugehen. Ihre größte Chance sind Recherchen in %Name1%.</de>
-						<en>After several murders in their city, a group of young people get together to investigate them. Their biggest chance is to do research in %Name1%.</en>
-						<pl>Po kilku morderstwach w ich mieście, grupa młodych ludzi zbiera się, aby je zbadać. Ich największą szansą jest przeprowadzenie badań zapisanych w %Name1%.</pl>
+						<de>Nach etlichen Morden in ihrer Stadt schließt sich eine Gruppe junger Menschen zusammen, um diesen nachzugehen. Ihre größte Chance sind Recherchen in ${Name1}.</de>
+						<en>After several murders in their city, a group of young people get together to investigate them. Their biggest chance is to do research in ${Name1}.</en>
+						<pl>Po kilku morderstwach w ich mieście, grupa młodych ludzi zbiera się, aby je zbadać. Ich największą szansą jest przeprowadzenie badań zapisanych w ${Name1}.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-SozialeNetzwerke-Ep2">
@@ -347,21 +347,21 @@
 						<pl>Panika</pl>
 					</title>
 					<description>
-						<de>Die Recherchen auf %Name1% sorgen dafür, dass die Gruppe in Gefahr gerät. Der Mörder droht ihnen über %Name1%.</de>
-						<en>The research on %Name1% puts the group in danger. The killer threatens them through %Name1%.</en>
-						<pl>Badania w %Name1% narażają grupę na niebezpieczeństwo. Zabójca grozi im za pośrednictwem tych mediów.</pl>
+						<de>Die Recherchen auf ${Name1} sorgen dafür, dass die Gruppe in Gefahr gerät. Der Mörder droht ihnen über ${Name1}.</de>
+						<en>The research on ${Name1} puts the group in danger. The killer threatens them through ${Name1}.</en>
+						<pl>Badania w ${Name1} narażają grupę na niebezpieczeństwo. Zabójca grozi im za pośrednictwem tych mediów.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-SozialeNetzwerke-Ep4">
 					<title>
-						<de>%Name1%</de>
-						<en>%Name1%</en>
+						<de>${Name1}</de>
+						<en>${Name1}</en>
 						<pl>Blokada</pl>
 					</title>
 					<description>
-						<de>Der Mörder hat mehr Macht als erwartet. Er lässt alle Accounts bei %Name1% sperren. Verzweiflung macht sich breit.</de>
-						<en>The killer has more power than expected. He blocks all accounts of %Name1%. Despair is spreading.</en>
-						<pl>Zabójca ma większą moc niż oczekiwano. Blokuje wszystkie konta w %Name1%. Rozpacz się rozprzestrzenia.</pl>
+						<de>Der Mörder hat mehr Macht als erwartet. Er lässt alle Accounts bei ${Name1} sperren. Verzweiflung macht sich breit.</de>
+						<en>The killer has more power than expected. He blocks all accounts of ${Name1}. Despair is spreading.</en>
+						<pl>Zabójca ma większą moc niż oczekiwano. Blokuje wszystkie konta w ${Name1}. Rozpacz się rozprzestrzenia.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-SozialeNetzwerke-Ep5">
@@ -371,8 +371,8 @@
 						<pl>Żadnych szans</pl>
 					</title>
 					<description>
-						<de>Die Gruppe wechselt geschlossen zu einem anderen Netzwerk. Doch der Mörder ist noch immer auf freiem Fuß und niemand ahnt, dass er dank %Name1% alles über die Gruppe weiß.</de>
-						<en>The complete group switches to another network. But the killer is still at large and no one suspects that he knows everything about the group because of %Name1%.</en>
+						<de>Die Gruppe wechselt geschlossen zu einem anderen Netzwerk. Doch der Mörder ist noch immer auf freiem Fuß und niemand ahnt, dass er dank ${Name1} alles über die Gruppe weiß.</de>
+						<en>The complete group switches to another network. But the killer is still at large and no one suspects that he knows everything about the group because of ${Name1}.</en>
 						<pl>Cała grupa przenosi się do innej sieci. Zabójca wciąż jest na wolności i nikt nie podejrzewa, że wie wszystko o grupie z poszukiwawczej.</pl>
 					</description>
 				</scripttemplate>
@@ -412,14 +412,14 @@
 		<!-- Verfügbarkeit ergänzt, kein optionaler Kult-->
 		<scripttemplate product="4" licence_type="1" guid="Kasi-Script-Streaming">
 			<title>
-				<de>Die Macht von %Name%</de>
-				<en>The Power of %Name%</en>
-				<pl>Siła %Name%</pl>
+				<de>Die Macht von ${Name}</de>
+				<en>The Power of ${Name}</en>
+				<pl>Siła ${Name}</pl>
 			</title>
 			<description>
-				<de>Die Macht von %Name% ist eine Investigativ-Dokumentation, die tief in die Gefilde des Streamingdienstes eintaucht. Die Fragen sind: Werden Kunden von TVTower verschwinden? Wird die Werbung billiger? Verschwinden alle Filme aus dem Filmverleih?</de>
-				<en>The power of %Name% is an investigative documentary that dives deep into the realm of the streaming service. The questions are: Will customers of TVTower disappear? Will the advertising get cheaper? Will all movies disappear from the movie agency?</en>
-				<pl>Siła %Name% to dokument śledczy, który zagłębia się w sferę usług streamingowych. Pytania są następujące: Czy klienci TV-Tower znikną? Czy reklamy będą tańsze? Czy wszystkie filmy znikną z agencji filmowych?</pl>
+				<de>Die Macht von ${Name} ist eine Investigativ-Dokumentation, die tief in die Gefilde des Streamingdienstes eintaucht. Die Fragen sind: Werden Kunden von TVTower verschwinden? Wird die Werbung billiger? Verschwinden alle Filme aus dem Filmverleih?</de>
+				<en>The power of ${Name} is an investigative documentary that dives deep into the realm of the streaming service. The questions are: Will customers of TVTower disappear? Will the advertising get cheaper? Will all movies disappear from the movie agency?</en>
+				<pl>Siła ${Name} to dokument śledczy, który zagłębia się w sferę usług streamingowych. Pytania są następujące: Czy klienci TV-Tower znikną? Czy reklamy będą tańsze? Czy wszystkie filmy znikną z agencji filmowych?</pl>
 			</description>
 			<variables>
 				<name>
@@ -448,13 +448,13 @@
 		<!--Show statt Serie, Host+Gäste statt Schauspieler, Genre angepasst; TODO Host ggf. entfernen (Sprich mit X, dann aber anderer Moderator), kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="3" guid="Kasi-script-Talkshow">
 			<title>
-				<de>Sprich mit %NAME%</de>
-				<en>Talk to %NAME%</en>
-				<pl>Rozmowy z %NAME%</pl>
+				<de>Sprich mit ${NAME}</de>
+				<en>Talk to ${NAME}</en>
+				<pl>Rozmowy z ${NAME}</pl>
 			</title>
 			<description>
-				<de>Talkshowformat, bei dem die Verzweiflung des Moderators mit jeder einzelnen Sendung zunimmt. Begleiten Sie %NAME% bei schrecklichen Gesprächen mit willkürlich aufgelesenen Menschen, die für eine Sekunde Berühmtheit praktisch alles sagen würden.</de>
-				<en>Talk show format where the desperation of the host increases with each show. Join %NAME% as he has horrible conversations with people picked up at random who will say practically anything for a second of fame.</en>
+				<de>Talkshowformat, bei dem die Verzweiflung des Moderators mit jeder einzelnen Sendung zunimmt. Begleiten Sie ${NAME} bei schrecklichen Gesprächen mit willkürlich aufgelesenen Menschen, die für eine Sekunde Berühmtheit praktisch alles sagen würden.</de>
+				<en>Talk show format where the desperation of the host increases with each show. Join ${NAME} as he has horrible conversations with people picked up at random who will say practically anything for a second of fame.</en>
 				<pl>Talk show, w którym desperacja prowadzącego rośnie z każdym odcinkiem. Prowadzimy okropne rozmowy z losowo wybranymi ludźmi, którzy powiedzą praktycznie wszystko za sekundę sławy.</pl>
 			</description>
 			<children>
@@ -465,8 +465,8 @@
 						<pl>Pierwsza rozmowa</pl>
 					</title>
 					<description>
-						<de>Drei Arbeitslose treffen sich und bezeichnen die jeweils anderen als Schmarotzer. Als dann noch die Mutter der drei auftaucht, fällt ihnen auf, dass sie Brüder sind. Der verzweifelte Moderator %NAME% begleitet dies mit interessanten Fragen.</de>
-						<en>Three unemployed people meet and call each other parasites. Then, when the mother of the three shows up, it strikes them that they are brothers. The desperate moderator %NAME% accompanies this with interesting questions.</en>
+						<de>Drei Arbeitslose treffen sich und bezeichnen die jeweils anderen als Schmarotzer. Als dann noch die Mutter der drei auftaucht, fällt ihnen auf, dass sie Brüder sind. Der verzweifelte Moderator ${NAME} begleitet dies mit interessanten Fragen.</de>
+						<en>Three unemployed people meet and call each other parasites. Then, when the mother of the three shows up, it strikes them that they are brothers. The desperate moderator ${NAME} accompanies this with interesting questions.</en>
 						<pl>Trzech bezrobotnych spotyka się i nazywa się nawzajem pasożytami. Kiedy pojawia się matka całej trójki, okazuje się, że są braćmi. Zdesperowany moderator towarzyszy tym interesującym rozmowom.</pl>
 					</description>
 				</scripttemplate>
@@ -477,8 +477,8 @@
 						<pl>Dwie pary</pl>
 					</title>
 					<description>
-						<de>Ein Pärchen gesteht sich gegenseitig fremdgegangen zu sein. Es stellt sich heraus, dass Sie mit dem Mann der Frau, mit der ihr Ehemann fremdgegangen ist, fremdgegangen ist. Diese sind wiederum auch mit einem anderen Pärchen fremdgegangen. Verwirrend, nicht nur für %NAME%.</de>
-						<en>A couple confesses to having cheated on each other. It turns out that she has cheated with the husband of the woman with whom her husband has cheated. They, in turn, have also cheated with another couple. Confusing, not only for %NAME%.</en>
+						<de>Ein Pärchen gesteht sich gegenseitig fremdgegangen zu sein. Es stellt sich heraus, dass Sie mit dem Mann der Frau, mit der ihr Ehemann fremdgegangen ist, fremdgegangen ist. Diese sind wiederum auch mit einem anderen Pärchen fremdgegangen. Verwirrend, nicht nur für ${NAME}.</de>
+						<en>A couple confesses to having cheated on each other. It turns out that she has cheated with the husband of the woman with whom her husband has cheated. They, in turn, have also cheated with another couple. Confusing, not only for ${NAME}.</en>
 						<pl>Para przyznaje się do zdrady. Okazuje się, że ona zdradzała z mężem kobiety, z którą zdradzał jej mąż. Oni z kolei zdradzali również z inną parą. Zagmatwane, nie tylko dla prowadzącego.</pl>
 					</description>
 				</scripttemplate>
@@ -501,8 +501,8 @@
 						<pl>Porwany</pl>
 					</title>
 					<description>
-						<de>Fünf Menschen behaupten in der Sendung, von Aliens entführt worden zu sein. Dort wurden Tests mit Ihnen durchgeführt z.B. ein IQ-Test und BDI. %Name% verliert die Kontrolle über die fünf, als Sie sich streiten wer, den höchsten BDI-Wert erreicht hat.</de>
-						<en>Five people claim in the program to have been abducted by aliens. There, tests were performed on them, e.g. an IQ test and BDI. %Name% loses control of the five when they argue about who has the highest BDI score.</en>
+						<de>Fünf Menschen behaupten in der Sendung, von Aliens entführt worden zu sein. Dort wurden Tests mit Ihnen durchgeführt z.B. ein IQ-Test und BDI. ${Name} verliert die Kontrolle über die fünf, als Sie sich streiten wer, den höchsten BDI-Wert erreicht hat.</de>
+						<en>Five people claim in the program to have been abducted by aliens. There, tests were performed on them, e.g. an IQ test and BDI. ${Name} loses control of the five when they argue about who has the highest BDI score.</en>
 						<pl>Pięć osób twierdzi w programie, że zostało uprowadzonych przez kosmitów. Tam przeprowadzono na nich testy, np. test IQ i BDI. Prezenter traci kontrolę nad piątką, gdy kłócą się o to, kto ma najwyższy wynik BDI.</pl>
 					</description>
 				</scripttemplate>
@@ -513,8 +513,8 @@
 						<pl>Hipnoza</pl>
 					</title>
 					<description>
-						<de>Ein Profihypnotiseur wird eingeladen. Als die Hälfte des Publikums wie ein Huhn gackert, die andere Hälfte denkt, ihr Sitz wäre ein Bobbycar, und %Name% anfängt, Modern Walking zu singen, wird die Sendung abgebrochen.</de>
-						<en>A professional hypnotist is invited. When half the audience clucks like a chicken, the other half thinks their seat is a bobby car, and %Name% starts singing Modern Walking, the show is aborted.</en>
+						<de>Ein Profihypnotiseur wird eingeladen. Als die Hälfte des Publikums wie ein Huhn gackert, die andere Hälfte denkt, ihr Sitz wäre ein Bobbycar, und ${Name} anfängt, Modern Walking zu singen, wird die Sendung abgebrochen.</de>
+						<en>A professional hypnotist is invited. When half the audience clucks like a chicken, the other half thinks their seat is a bobby car, and ${Name} starts singing Modern Walking, the show is aborted.</en>
 						<pl>Zaproszony zostaje profesjonalny hipnotyzer. Kiedy połowa publiczności gdakała jak kurczak, druga połowa myślała, że ich siedzenie to kaktus, a prezenter zaczął śpiewać Modern Walking, pokaz został przerwany.</pl>
 					</description>
 				</scripttemplate>
@@ -525,8 +525,8 @@
 						<pl>Miłośnicy drzew</pl>
 					</title>
 					<description>
-						<de>Zwei Menschen haben sich in den gleichen Baum verliebt. In der Sendung streiten sie darum, wen der Baum von den beiden mehr liebt. Als ein Wissenschaftler mit einer Baumsprechmaschine ankommt und der Baum sagt, dass er %Name% am meisten liebt, wird dieser von den Baumliebhabern verprügelt.</de>
-						<en>Two people have fallen in love with the same tree. On the show, they fight over who the tree loves more of the two. When a scientist arrives with a tree language translator and the tree says it loves %Name% the most, the tree lovers beat him up.</en>
+						<de>Zwei Menschen haben sich in den gleichen Baum verliebt. In der Sendung streiten sie darum, wen der Baum von den beiden mehr liebt. Als ein Wissenschaftler mit einer Baumsprechmaschine ankommt und der Baum sagt, dass er ${Name} am meisten liebt, wird dieser von den Baumliebhabern verprügelt.</de>
+						<en>Two people have fallen in love with the same tree. On the show, they fight over who the tree loves more of the two. When a scientist arrives with a tree language translator and the tree says it loves ${Name} the most, the tree lovers beat him up.</en>
 						<pl>Dwoje ludzi zakochało się w tym samym drzewie. W programie walczą o to, kogo drzewo kocha bardziej. Kiedy naukowiec przybywa z tłumaczem języka drzew, a drzewo mówi, że najbardziej kocha prezentera, miłośnicy drzew biją go.</pl>
 					</description>
 				</scripttemplate>
@@ -537,8 +537,8 @@
 						<pl>Rezygnacja</pl>
 					</title>
 					<description>
-						<de>Aufgrund schwerer Verletzungen und ernsten Depressionen, die %Name% durch seine Show erlitten hat, tritt %Name% nun zurück. Er erklärt, dass er dieses Format hasst und nicht verstehen kann, wie ein Mensch so etwas freiwillig gucken kann.</de>
-						<en>Due to severe injuries and serious depression that %Name% has suffered from his show, %Name% is now resigning. He explains that he hates this format and cannot understand how a person can watch something like this voluntarily.</en>
+						<de>Aufgrund schwerer Verletzungen und ernsten Depressionen, die ${Name} durch seine Show erlitten hat, tritt ${Name} nun zurück. Er erklärt, dass er dieses Format hasst und nicht verstehen kann, wie ein Mensch so etwas freiwillig gucken kann.</de>
+						<en>Due to severe injuries and serious depression that ${Name} has suffered from his show, ${Name} is now resigning. He explains that he hates this format and cannot understand how a person can watch something like this voluntarily.</en>
 						<pl>Z powodu poważnych obrażeń i poważnej depresji, na którą cierpiał prezenter z powodu swojego programu, rezygnuje z prowadzenia programu. Wyjaśnia, że nienawidzi tego formatu i nie może zrozumieć, jak ktoś może dobrowolnie oglądać coś takiego.</pl>
 					</description>
 				</scripttemplate>
@@ -571,14 +571,14 @@
 		<!-- nicht paid, kein Kult, Ausstrahlungszeitraum+Häufigkeit, Produktionszeit Gäste angepasst (Model aktuell nicht möglich)-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Spendengala">
 			<title>
-				<de>Die große Spendengala - Ein Herz für %Name%</de>
-				<en>The Big Charity Gala - A Heart for %Name%</en>
-				<pl>Wielka Gala Charytatywna - Serce dla %Name%</pl>
+				<de>Die große Spendengala - Ein Herz für ${Name}</de>
+				<en>The Big Charity Gala - A Heart for ${Name}</en>
+				<pl>Wielka Gala Charytatywna - Serce dla ${Name}</pl>
 			</title>
 			<description>
-				<de>Völlig unbekannte Stars wollen Geld für die vom aussterben bedrohten %Name% sammeln. Ein Abend voller Musik, Comedy, Hoffnung und Spenden.</de>
-				<en>Completely unknown stars want to raise money for the %Name% threatened with extinction. An evening full of music, comedy, hope and donations.</en>
-				<pl>Zupełnie nieznane gwiazdy chcą zebrać pieniądze dla %Name% zagrożonych wyginięciem. Wieczór pełen muzyki, komedii, nadziei i datków.</pl>
+				<de>Völlig unbekannte Stars wollen Geld für die vom aussterben bedrohten ${Name} sammeln. Ein Abend voller Musik, Comedy, Hoffnung und Spenden.</de>
+				<en>Completely unknown stars want to raise money for the ${Name} threatened with extinction. An evening full of music, comedy, hope and donations.</en>
+				<pl>Zupełnie nieznane gwiazdy chcą zebrać pieniądze dla ${Name} zagrożonych wyginięciem. Wieczór pełen muzyki, komedii, nadziei i datków.</pl>
 			</description>
 			<variables>
 				<name>
@@ -613,9 +613,9 @@
 		<!--xrated ergänzt -->
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Deathaction">
 			<title>
-				<de>Die Todes%zu%</de>
-				<en>The Death-%zu%</en>
-				<pl>Śmierć %zu%</pl>
+				<de>Die Todes${zu}</de>
+				<en>The Death-${zu}</en>
+				<pl>Śmierć ${zu}</pl>
 			</title>
 			<description>
 				<de>Klassischer Actionfilm, in dem 15 Menschen auf einem fremden Planten ausgesetzt werden, um sich umzubringen.</de>
@@ -653,9 +653,9 @@
 		<!-- Kult, Trash entfernt -->
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Wege">
 			<title>
-				<de>Der Weg %Name%</de>
-				<en>The Road %Name%</en>
-				<pl>Droga do %Name%</pl>
+				<de>Der Weg ${Name}</de>
+				<en>The Road ${Name}</en>
+				<pl>Droga do ${Name}</pl>
 			</title>
 			<description>
 				<de>Ein Wissenschaftler öffnet einen Weg in ein mysteriöses Reich voller schrecklicher Wesen.</de>
@@ -693,9 +693,9 @@
 		<!--kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Abenteuerfreunde">
 			<title>
-				<de>Die Abenteuer%Name%</de>
-				<en>Adventure %Name%</en>
-				<pl>Przygoda %Name%</pl>
+				<de>Die Abenteuer${Name}</de>
+				<en>Adventure ${Name}</en>
+				<pl>Przygoda ${Name}</pl>
 			</title>
 			<description>
 				<de>Abenteuerserie über junge Helden der Neuzeit, die mit Hilfe ihrer Freundschaft alle Hindernisse überwinden.</de>
@@ -881,9 +881,9 @@
 
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Nerdszusammen">
 			<title>
-				<de>Das Nerd%Name%</de>
-				<en>The Nerd %Name%</en>
-				<pl>Nerd %Name%</pl>
+				<de>Das Nerd${Name}</de>
+				<en>The Nerd ${Name}</en>
+				<pl>Nerd ${Name}</pl>
 			</title>
 			<description>
 				<de>Wissen ist Macht. Die Nerds wissen es und lernen, um actiongeladene Missionen zu überstehen.</de>
@@ -1072,14 +1072,14 @@
 		<!--Genre family ergänzt, Zufallsstadt ergänzt, kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Kinderfliegen">
 			<title>
-				<de>Die %Was% über %Wo%</de>
-				<en>The %Was% Above %Wo%</en>
-				<pl>%Was% nad %Wo%</pl>
+				<de>Die ${Was} über ${Wo}</de>
+				<en>The ${Was} Above ${Wo}</en>
+				<pl>${Was} nad ${Wo}</pl>
 			</title>
 			<description>
-				<de>Eine Gruppe von Kindern guckt hoch nach oben in den Himmel von %wo% und träumt vom Fliegen. Gemeinsam versuchen sie alles, um den Himmel für sich zu erobern.</de>
-				<en>A group of children watches the sky above %wo% and dreams of flying. Together they try everything in order to conquer the sky for themselves.</en>
-				<pl>Grupa dzieci obserwuje niebo nad %wo% i marzy o lataniu. Razem próbują wszystkiego, aby podbić niebo dla siebie.</pl>
+				<de>Eine Gruppe von Kindern guckt hoch nach oben in den Himmel von ${wo} und träumt vom Fliegen. Gemeinsam versuchen sie alles, um den Himmel für sich zu erobern.</de>
+				<en>A group of children watches the sky above ${wo} and dreams of flying. Together they try everything in order to conquer the sky for themselves.</en>
+				<pl>Grupa dzieci obserwuje niebo nad ${wo} i marzy o lataniu. Razem próbują wszystkiego, aby podbić niebo dla siebie.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-Kinderfliegen-Ep1">
@@ -1089,21 +1089,21 @@
 						<pl>Pilot</pl>
 					</title>
 					<description>
-						<de>Kinder träumen von vielen Dingen, aber manchmal sind sie auch erreichbar. Der Traum vom Fliegen packt eine Gruppe junger Menschen aus %wo%. Sie versuchen alles, um ihren Traum zu verwirklichen.</de>
-						<en>Children dream of many things, some may even be attainable. The dream of flying captivates a group of young people from %wo%. They try everything to make their dream come true.</en>
+						<de>Kinder träumen von vielen Dingen, aber manchmal sind sie auch erreichbar. Der Traum vom Fliegen packt eine Gruppe junger Menschen aus ${wo}. Sie versuchen alles, um ihren Traum zu verwirklichen.</de>
+						<en>Children dream of many things, some may even be attainable. The dream of flying captivates a group of young people from ${wo}. They try everything to make their dream come true.</en>
 						<pl>Dzieci marzą o wielu rzeczach, niektóre mogą być nawet osiągalne. Marzenie o lataniu urzeka grupę młodych ludzi. Próbują wszystkiego, aby ich marzenie się spełniło.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-Kinderfliegen-Ep2">
 					<title>
-						<de>Der Himmel über %wo%</de>
-						<en>The Sky Above %wo%</en>
-						<pl>Niebo nad %wo%</pl>
+						<de>Der Himmel über ${wo}</de>
+						<en>The Sky Above ${wo}</en>
+						<pl>Niebo nad ${wo}</pl>
 					</title>
 					<description>
-						<de>%wo% ist eine wunderschöne Stadt. Die Kinder wollen hier den Himmel erobern und basteln an einem Plan.</de>
-						<en>%wo% is a beautiful city. The children want to conquer the sky here and are working on a plan.</en>
-						<pl>Nad %wo% jest piękne miasto. Dzieci chcą tu podbić niebo i pracują nad planem.</pl>
+						<de>${wo} ist eine wunderschöne Stadt. Die Kinder wollen hier den Himmel erobern und basteln an einem Plan.</de>
+						<en>${wo} is a beautiful city. The children want to conquer the sky here and are working on a plan.</en>
+						<pl>Nad ${wo} jest piękne miasto. Dzieci chcą tu podbić niebo i pracują nad planem.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Kinderfliegen-Ep3">
@@ -1151,8 +1151,8 @@
 						<pl>Szkoła latania</pl>
 					</title>
 					<description>
-						<de>Um das Wissen für das Fliegen aufzubauen, besuchen die Kinder eine Flugschule und sie sehen zum erstemal %wo% von oben.</de>
-						<en>To build up the knowledge for flying, the children visit a flight school and they see %wo% from above for the first time.</en>
+						<de>Um das Wissen für das Fliegen aufzubauen, besuchen die Kinder eine Flugschule und sie sehen zum erstemal ${wo} von oben.</de>
+						<en>To build up the knowledge for flying, the children visit a flight school and they see ${wo} from above for the first time.</en>
 						<pl>Aby zdobyć wiedzę na temat latania, dzieci odwiedzają szkołę lotniczą i po raz pierwszy widzą miasto z góry.</pl>
 					</description>
 				</scripttemplate>
@@ -1163,9 +1163,9 @@
 						<pl>Lekcje latania</pl>
 					</title>
 					<description>
-						<de>Die Flugstunden gehen weiter, und die Kinder bekommen einen Flugschein, der sie berechtigt, über %wo% zu fliegen.</de>
-						<en>The flying lessons continue, and the children get a pilot's license that entitles them to fly over %wo%.</en>
-						<pl>Lekcje latania są kontynuowane, a dzieci otrzymują licencję pilota, która uprawnia je do latania nad %wo%.</pl>
+						<de>Die Flugstunden gehen weiter, und die Kinder bekommen einen Flugschein, der sie berechtigt, über ${wo} zu fliegen.</de>
+						<en>The flying lessons continue, and the children get a pilot's license that entitles them to fly over ${wo}.</en>
+						<pl>Lekcje latania są kontynuowane, a dzieci otrzymują licencję pilota, która uprawnia je do latania nad ${wo}.</pl>
 					</description>
 					<episodes max="1" min="0"/>
 				</scripttemplate>
@@ -1209,13 +1209,13 @@
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-Kinderfliegen-Ep11">
 					<title>
-						<de>Der Flug über %wo%</de>
-						<en>Flight Over %wo%</en>
-						<pl>Lot nad %wo%</pl>
+						<de>Der Flug über ${wo}</de>
+						<en>Flight Over ${wo}</en>
+						<pl>Lot nad ${wo}</pl>
 					</title>
 					<description>
-						<de>Der Traum vom Fliegen wird wahr. Die Kinder von %wo% haben ihren Traum verwirklicht haben und alle in Staunen versetzt.</de>
-						<en>The dream of flying comes true. The children of %wo% have accomplished their dream, astonishing everybody.</en>
+						<de>Der Traum vom Fliegen wird wahr. Die Kinder von ${wo} haben ihren Traum verwirklicht haben und alle in Staunen versetzt.</de>
+						<en>The dream of flying comes true. The children of ${wo} have accomplished their dream, astonishing everybody.</en>
 						<pl>Marzenie o lataniu się spełniło. Dzieci spełniły swoje marzenie, zadziwiając wszystkich.</pl>
 					</description>
 				</scripttemplate>
@@ -1226,9 +1226,9 @@
 						<pl>20 lat później: dzieci dzieci</pl>
 					</title>
 					<description>
-						<de>Die Kinder sind Erwachsen geworden und haben selbst Kinder, die davon traumen den Himmel über %wo% zu erobern.</de>
-						<en>The children have grown up and have kids of their own who now dream of conquering the sky above %wo%.</en>
-						<pl>Dzieci dorosły i mają własne dzieci, które teraz marzą o podbiciu nieba nad %wo%.</pl>
+						<de>Die Kinder sind Erwachsen geworden und haben selbst Kinder, die davon traumen den Himmel über ${wo} zu erobern.</de>
+						<en>The children have grown up and have kids of their own who now dream of conquering the sky above ${wo}.</en>
+						<pl>Dzieci dorosły i mają własne dzieci, które teraz marzą o podbiciu nieba nad ${wo}.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1239,12 +1239,12 @@
 					<pl>Chmury|Gwiazdy|Słońce|Samoloty|Ptaki</pl>
 				</was>
 				<wo>
-					<de>Paris|Berlin|London|New York|Madrid|%randomcity%</de>
-					<en>Paris|Berlin|London|New York|Madrid|%randomcity%</en>
+					<de>Paris|Berlin|London|New York|Madrid|${randomcity}</de>
+					<en>Paris|Berlin|London|New York|Madrid|${randomcity}</en>
 					<pl>Paryżem|Berlinem|Londynem|Nowym Jorkiem|Madrytem|Wrocławiem</pl>
 				</wo>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 			<jobs>
@@ -1269,9 +1269,9 @@
 		<!--kein optionaler Kult; Besetzung passt ggf. nicht zu Name (Comedyduo mit 5 Darstellern)?-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Comedygemeinschaft" comment="TODO: Mostly references to German culture, English version needs entirely different episodes">
 			<title>
-				<de>Das Comedy%name%</de>
-				<en>The Comedy %name%</en>
-				<pl>Komediowe %name%</pl>
+				<de>Das Comedy${name}</de>
+				<en>The Comedy ${name}</en>
+				<pl>Komediowe ${name}</pl>
 			</title>
 			<description>
 				<de>Die besten Comedynummern des Jahres. Witze zum Ablachen und Nacherzählen für alle.</de>
@@ -1457,25 +1457,25 @@
 		<!-- kein optionaler Kult -->
 		<scripttemplate product="2" licence_type="3" guid="Kasi-script-Metalsucher" comment="TODO: Problems with title casings vs text casings in English version">
 			<title>
-				<de>%name1%%name2% in Alaska</de>
-				<en>%name1% %name2% in Alaska</en>
-				<pl>%name2% %name1% na Alasce</pl>
+				<de>${name1}${name2} in Alaska</de>
+				<en>${name1} ${name2} in Alaska</en>
+				<pl>${name2} ${name1} na Alasce</pl>
 			</title>
 			<description>
-				<de>Auf der ganzen Welt suchen Menschen nach %name1%. Dieses wertvolle Metall wird überall gebraucht und ist äußerst selten. Wir begleiten unsere Ausgräber bei der Suche nach %name1% und dokumentieren ihre Freude und ihr Leid.</de>
-				<en>All over the world, people are looking for %name1%. This valuable metal is needed everywhere and is extremely rare. We accompany our excavators in their search for %name1% and document their joy and sorrow.</en>
-				<pl>Na całym świecie ludzie poszukują %name1%. Ten cenny metal jest potrzebny wszędzie i jest niezwykle rzadki. Towarzyszymy naszym kopaczom w poszukiwaniach i dokumentujemy ich radość i smutek.</pl>
+				<de>Auf der ganzen Welt suchen Menschen nach ${name1}. Dieses wertvolle Metall wird überall gebraucht und ist äußerst selten. Wir begleiten unsere Ausgräber bei der Suche nach ${name1} und dokumentieren ihre Freude und ihr Leid.</de>
+				<en>All over the world, people are looking for ${name1}. This valuable metal is needed everywhere and is extremely rare. We accompany our excavators in their search for ${name1} and document their joy and sorrow.</en>
+				<pl>Na całym świecie ludzie poszukują ${name1}. Ten cenny metal jest potrzebny wszędzie i jest niezwykle rzadki. Towarzyszymy naszym kopaczom w poszukiwaniach i dokumentujemy ich radość i smutek.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-Metalsucher-Ep1">
 					<title>
-						<de>In Alaska gibt es %name1%</de>
-						<en>In Alaska There is %name1%</en>
-						<pl>Na Alasce znajdują się duże pokłady %name1%</pl>
+						<de>In Alaska gibt es ${name1}</de>
+						<en>In Alaska There is ${name1}</en>
+						<pl>Na Alasce znajdują się duże pokłady ${name1}</pl>
 					</title>
 					<description>
-						<de>%name1% ist eines der wertvollsten Metalle der Welt. Drei Frauen und ein Mann gehen nach Alaska, um dort %name1% zu suchen.</de>
-						<en>%name1% is among the most valuable metals in the world. Three women and one man go to Alaska to search for it.</en>
+						<de>${name1} ist eines der wertvollsten Metalle der Welt. Drei Frauen und ein Mann gehen nach Alaska, um dort ${name1} zu suchen.</de>
+						<en>${name1} is among the most valuable metals in the world. Three women and one man go to Alaska to search for it.</en>
 						<pl>Jest jednym z najcenniejszych metali na świecie. Trzy kobiety i jeden mężczyzna wyruszają na Alaskę, by go odnaleźć.</pl>
 					</description>
 				</scripttemplate>
@@ -1486,9 +1486,9 @@
 						<pl>Właściwe miejsce</pl>
 					</title>
 					<description>
-						<de>Nach fünf endlosen Stunden finden die %name1%gräber einen passenden Ort, an dem sie nach %name1% suchen können.</de>
-						<en>After five endless hours, the %name1% diggers find a suitable place to search for the metal.</en>
-						<pl>Po pięciu niekończących się godzinach kopacze %name1% znajdują odpowiednie miejsce do poszukiwania metalu.</pl>
+						<de>Nach fünf endlosen Stunden finden die ${name1}gräber einen passenden Ort, an dem sie nach ${name1} suchen können.</de>
+						<en>After five endless hours, the ${name1} diggers find a suitable place to search for the metal.</en>
+						<pl>Po pięciu niekończących się godzinach kopacze ${name1} znajdują odpowiednie miejsce do poszukiwania metalu.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-Metalsucher-Ep3">
@@ -1498,9 +1498,9 @@
 						<pl>Maszyny są skonfigurowane</pl>
 					</title>
 					<description>
-						<de>Schwere Maschinen werden aufgestellt, um nach %name1% zu graben. Doch schon nach kurzer Zeit sind drei Pumpen und zahlreiche Schläuche kaputt.</de>
-						<en>Heavy machinery is set up to dig for %name1%. But after a short time, three pumps and numerous hoses are broken.</en>
-						<pl>Ciężkie maszyny są ustawione do kopania %name1%. Jednak po krótkim czasie trzy pompy i liczne węże zostają uszkodzone.</pl>
+						<de>Schwere Maschinen werden aufgestellt, um nach ${name1} zu graben. Doch schon nach kurzer Zeit sind drei Pumpen und zahlreiche Schläuche kaputt.</de>
+						<en>Heavy machinery is set up to dig for ${name1}. But after a short time, three pumps and numerous hoses are broken.</en>
+						<pl>Ciężkie maszyny są ustawione do kopania ${name1}. Jednak po krótkim czasie trzy pompy i liczne węże zostają uszkodzone.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Metalsucher-Ep4">
@@ -1522,9 +1522,9 @@
 						<pl>Jesteśmy bogaci</pl>
 					</title>
 					<description>
-						<de>Nach vier Tagen wird erstmals %name1% gefunden. Die %name1%gräber fühlen sich jetzt schon wie die reichsten Menschen auf dem Planeten.</de>
-						<en>After four days %name1% is found for the first time. The %name1% diggers already feel like the richest people on the planet.</en>
-						<pl>Po czterech dniach zostaje znaleziony po raz pierwszywiększy kawałek %name1%. Kopacze %name1% czują się już jak najbogatsi ludzie na planecie.</pl>
+						<de>Nach vier Tagen wird erstmals ${name1} gefunden. Die ${name1}gräber fühlen sich jetzt schon wie die reichsten Menschen auf dem Planeten.</de>
+						<en>After four days ${name1} is found for the first time. The ${name1} diggers already feel like the richest people on the planet.</en>
+						<pl>Po czterech dniach zostaje znaleziony po raz pierwszywiększy kawałek ${name1}. Kopacze ${name1} czują się już jak najbogatsi ludzie na planecie.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="5" guid="Kasi-script-Metalsucher-Ep6">
@@ -1534,9 +1534,9 @@
 						<pl>Jeszcze więcej maszyn</pl>
 					</title>
 					<description>
-						<de>Vom Erlös des %name1%verkaufs werden noch mehr Maschinen geholt. Und die %name1%gräber freuen sich, da der %name1%preis enorm gestiegen ist.</de>
-						<en>More machines are fetched from the proceeds of the %name1% sale. And the %name1% diggers are happy, because the %name1% price has increased enormously.</en>
-						<pl>Więcej maszyn jest pozyskiwanych z wpływów ze sprzedaży %name1%. A kopacze %name1% są szczęśliwi, ponieważ cena %name1% ogromnie wzrosła.</pl>
+						<de>Vom Erlös des ${name1}verkaufs werden noch mehr Maschinen geholt. Und die ${name1}gräber freuen sich, da der ${name1}preis enorm gestiegen ist.</de>
+						<en>More machines are fetched from the proceeds of the ${name1} sale. And the ${name1} diggers are happy, because the ${name1} price has increased enormously.</en>
+						<pl>Więcej maszyn jest pozyskiwanych z wpływów ze sprzedaży ${name1}. A kopacze ${name1} są szczęśliwi, ponieważ cena ${name1} ogromnie wzrosła.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-Metalsucher-Ep7">
@@ -1546,9 +1546,9 @@
 						<pl>Staliśmy się jeszcze bogatsi</pl>
 					</title>
 					<description>
-						<de>Es wird immer mehr %name1% gefunden. Die %name1%gräber bunkern ihr Funde und werden immer reicher.</de>
-						<en>More and more %name1% is found. The %name1% diggers bunker their finds and become richer and richer.</en>
-						<pl>Znajduje się coraz więcej %name1%. Kopacze %name1% bunkrują swoje znaleziska i stają się coraz bogatsi.</pl>
+						<de>Es wird immer mehr ${name1} gefunden. Die ${name1}gräber bunkern ihr Funde und werden immer reicher.</de>
+						<en>More and more ${name1} is found. The ${name1} diggers bunker their finds and become richer and richer.</en>
+						<pl>Znajduje się coraz więcej ${name1}. Kopacze ${name1} bunkrują swoje znaleziska i stają się coraz bogatsi.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="7" guid="Kasi-script-Metalsucher-Ep8">
@@ -1558,9 +1558,9 @@
 						<pl>Idealne znalezisko</pl>
 					</title>
 					<description>
-						<de>Ein noch großer Klumpen %name1% wird gefunden und alle freuen sich über den Fund.</de>
-						<en>An even larger nugget of %name1% is found and everyone is happy about the find.</en>
-						<pl>Znaleziono jeszcze większy samorodek %name1% i wszyscy są zadowoleni ze znaleziska.</pl>
+						<de>Ein noch großer Klumpen ${name1} wird gefunden und alle freuen sich über den Fund.</de>
+						<en>An even larger nugget of ${name1} is found and everyone is happy about the find.</en>
+						<pl>Znaleziono jeszcze większy samorodek ${name1} i wszyscy są zadowoleni ze znaleziska.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="8" guid="Kasi-script-Metalsucher-Ep9">
@@ -1570,21 +1570,21 @@
 						<pl>Jeszcze więcej bogactwa</pl>
 					</title>
 					<description>
-						<de>Die %name1%gräber haben inzwischen so viel %name1% gesammelt, dass sie und ihre Familien nie mehr arbeiten müssen. Sie warten nur noch auf den perfekten Moment für den Verkauf, denn der %name1%preis steigt und steigt.</de>
-						<en>The %name1% diggers now have collected so much %name1% that they and their families never have to work again. They are just waiting for the perfect moment to sell, because the %name1% price is going up and up.</en>
-						<pl>Kopacze %name1% zebrali już tyle %name1%, że oni i ich rodziny nie muszą już nigdy pracować. Czekają tylko na idealny moment, aby sprzedać, ponieważ cena %name1% rośnie i rośnie.</pl>
+						<de>Die ${name1}gräber haben inzwischen so viel ${name1} gesammelt, dass sie und ihre Familien nie mehr arbeiten müssen. Sie warten nur noch auf den perfekten Moment für den Verkauf, denn der ${name1}preis steigt und steigt.</de>
+						<en>The ${name1} diggers now have collected so much ${name1} that they and their families never have to work again. They are just waiting for the perfect moment to sell, because the ${name1} price is going up and up.</en>
+						<pl>Kopacze ${name1} zebrali już tyle ${name1}, że oni i ich rodziny nie muszą już nigdy pracować. Czekają tylko na idealny moment, aby sprzedać, ponieważ cena ${name1} rośnie i rośnie.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="9" guid="Kasi-script-Metalsucher-Ep10">
 					<title>
-						<de>Wissenschaftler kann %name1% hestellen</de>
-						<en>Scientist Can Manufacture %name1%</en>
-						<pl>Naukowcy mogą wytwarzać pierwiastek %name1%</pl>
+						<de>Wissenschaftler kann ${name1} hestellen</de>
+						<en>Scientist Can Manufacture ${name1}</en>
+						<pl>Naukowcy mogą wytwarzać pierwiastek ${name1}</pl>
 					</title>
 					<description>
-						<de>Ein Wissenschaftler schaffte es, %name1% herzustellen und überschwemmt den Markt. Unsere %name1%gräber bekommen dies leider nicht mit.</de>
-						<en>A scientist has managed to produce %name1% and is flooding the market. Unfortunately, our %name1% diggers are unaware of this.</en>
-						<pl>Pewnemu naukowcowi udało się wyprodukować pierwiastek %name1%, który zalewa rynek. Niestety, nasi poszukiwacze %name1% nie są tego świadomi.</pl>
+						<de>Ein Wissenschaftler schaffte es, ${name1} herzustellen und überschwemmt den Markt. Unsere ${name1}gräber bekommen dies leider nicht mit.</de>
+						<en>A scientist has managed to produce ${name1} and is flooding the market. Unfortunately, our ${name1} diggers are unaware of this.</en>
+						<pl>Pewnemu naukowcowi udało się wyprodukować pierwiastek ${name1}, który zalewa rynek. Niestety, nasi poszukiwacze ${name1} nie są tego świadomi.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-Metalsucher-Ep11">
@@ -1594,9 +1594,9 @@
 						<pl>Recesja</pl>
 					</title>
 					<description>
-						<de>Der %name1%preis fällt ins Bodenlose, und als unsere %name1%gräber dies mitbekommen, versuchen sie alles %name1% auf einmal zu verkaufen, doch der Umsatz ist sehr gering. %name1% ist nichts mehr wert, und unsere %name1%gräber sind vollkommen pleite.</de>
-						<en>The %name1% price plummets, and when our %name1% diggers realize this, they try to sell all %name1% at once, but sales are very low. %name1% is no longer worth anything, and our %name1% diggers are completely broke.</en>
-						<pl>Cena %name1% gwałtownie spada, a gdy nasi poszukiwacze %name1% zdają sobie z tego sprawę, próbują sprzedać wszystko na raz, ale sprzedaż jest bardzo niska. Rzeczy nie są już nic warte, a nasi poszukiwacze %name1% są kompletnie spłukani.</pl>
+						<de>Der ${name1}preis fällt ins Bodenlose, und als unsere ${name1}gräber dies mitbekommen, versuchen sie alles ${name1} auf einmal zu verkaufen, doch der Umsatz ist sehr gering. ${name1} ist nichts mehr wert, und unsere ${name1}gräber sind vollkommen pleite.</de>
+						<en>The ${name1} price plummets, and when our ${name1} diggers realize this, they try to sell all ${name1} at once, but sales are very low. ${name1} is no longer worth anything, and our ${name1} diggers are completely broke.</en>
+						<pl>Cena ${name1} gwałtownie spada, a gdy nasi poszukiwacze ${name1} zdają sobie z tego sprawę, próbują sprzedać wszystko na raz, ale sprzedaż jest bardzo niska. Rzeczy nie są już nic warte, a nasi poszukiwacze ${name1} są kompletnie spłukani.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-Metalsucher-Ep12">
@@ -1606,9 +1606,9 @@
 						<pl>Jesteśmy spłukani</pl>
 					</title>
 					<description>
-						<de>Der Markt für %name1% brach aufgrund der Rezession zusammen. Der Versuch, die riesigen %name1%vorräte auf einmal zu verkaufen, drückte den Preis noch zusätzlich. Das Lager wird abgebrochen, doch die Träume leben weiter.</de>
-						<en>The market for %name1% collapsed due to the recession. The attempt to sell the huge stock of %name1% at once further depressed the price. The camp is torn down, but the dreams live on.</en>
-						<pl>Rynek %name1% załamuje się z powodu recesji. Próba sprzedaży ogromnego zapasu %name1% na raz jeszcze bardziej obniża cenę. Obóz zostaje zburzony, ale marzenia pozostają żywe.</pl>
+						<de>Der Markt für ${name1} brach aufgrund der Rezession zusammen. Der Versuch, die riesigen ${name1}vorräte auf einmal zu verkaufen, drückte den Preis noch zusätzlich. Das Lager wird abgebrochen, doch die Träume leben weiter.</de>
+						<en>The market for ${name1} collapsed due to the recession. The attempt to sell the huge stock of ${name1} at once further depressed the price. The camp is torn down, but the dreams live on.</en>
+						<pl>Rynek ${name1} załamuje się z powodu recesji. Próba sprzedaży ogromnego zapasu ${name1} na raz jeszcze bardziej obniża cenę. Obóz zostaje zburzony, ale marzenia pozostają żywe.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1646,14 +1646,14 @@
 		<!--Cast Gäste statt Darsteller, Genre Gameshow, live nur eine Ausstrahlung, 5 Produktionen, Produktionszeit kein optionaler Kult, TODO Host passt nicht wirklich zum Namen-->
 		<scripttemplate product="3" licence_type="1" guid="Kasi-Script-Imschlafreich" comment="TODO: preselected cast">
 			<title>
-				<de>%Name1% %Name2%s Schlaf dich reich</de>
-				<en>%Name1% %Name2%'s Get Rich Sleeping</en>
-				<pl>%Name1% %Name2%. Jak stać się bogatym śpiąc?</pl>
+				<de>${Name1} ${Name2}s Schlaf dich reich</de>
+				<en>${Name1} ${Name2}'s Get Rich Sleeping</en>
+				<pl>${Name1} ${Name2}. Jak stać się bogatym śpiąc?</pl>
 			</title>
 			<description>
-				<de>Die berühmte Sängerin %Name1% %Name2% leitet diese skurrile Show, in der der Gast, der am längsten auf seinem Stuhl schlafen kann, eine Million Cent gewinnt. Während des Schlafen werden die Gäste geärgert.</de>
-				<en>The popular singer %Name1% %Name2% hosts this whimsical show where the guest who can sleep on their chair the longest wins a million cents. While sleeping the guests are getting teased.</en>
-				<pl>Popularna piosenkarka %Name1% %Name2% jest gospodarzem tego dziwnego programu, w którym gość, który najdłużej śpi na krześle, wygrywa milion centów. Podczas snu goście są drażnieni i wybudzani ze snu.</pl>
+				<de>Die berühmte Sängerin ${Name1} ${Name2} leitet diese skurrile Show, in der der Gast, der am längsten auf seinem Stuhl schlafen kann, eine Million Cent gewinnt. Während des Schlafen werden die Gäste geärgert.</de>
+				<en>The popular singer ${Name1} ${Name2} hosts this whimsical show where the guest who can sleep on their chair the longest wins a million cents. While sleeping the guests are getting teased.</en>
+				<pl>Popularna piosenkarka ${Name1} ${Name2} jest gospodarzem tego dziwnego programu, w którym gość, który najdłużej śpi na krześle, wygrywa milion centów. Podczas snu goście są drażnieni i wybudzani ze snu.</pl>
 			</description>
 			<variables>
 				<name1>
@@ -1688,14 +1688,14 @@
 
 		<scripttemplate product="3" licence_type="1" guid="Kasi-Script-Ratespass" comment="TODO: preselected cast">
 			<title>
-				<de>Ratespaß mit %Name1% %Name2%</de>
-				<en>Quiz Fun With %Name1% %Name2%</en>
-				<pl>%Name1% %Name2% - Zabawy quizowe</pl>
+				<de>Ratespaß mit ${Name1} ${Name2}</de>
+				<en>Quiz Fun With ${Name1} ${Name2}</en>
+				<pl>${Name1} ${Name2} - Zabawy quizowe</pl>
 			</title>
 			<description>
-				<de>Die berühmte Sängerin %Name1% %Name2% leitet diese wundervolle Rateshow, bei denen die Gäste ein tolles Essservice gewinnen können.</de>
-				<en>Famous singer %Name1% %Name2% hosts this wonderful quiz show where guests can win a fabulous dinnerware set.</en>
-				<pl>Znana piosenkarka %Name1% %Name2% jest gospodarzem tego teleturnieju, w którym goście mogą wygrać wspaniały zestaw zastawy stołowej.</pl>
+				<de>Die berühmte Sängerin ${Name1} ${Name2} leitet diese wundervolle Rateshow, bei denen die Gäste ein tolles Essservice gewinnen können.</de>
+				<en>Famous singer ${Name1} ${Name2} hosts this wonderful quiz show where guests can win a fabulous dinnerware set.</en>
+				<pl>Znana piosenkarka ${Name1} ${Name2} jest gospodarzem tego teleturnieju, w którym goście mogą wygrać wspaniały zestaw zastawy stołowej.</pl>
 			</description>
 			<variables>
 				<name1>
@@ -1731,9 +1731,9 @@
 
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Webcamfreude" comment="TODO: preselected cast">
 			<title>
-				<de>%Name1% %Name2%s „Versteckte Webcam“</de>
-				<en>%Name1% %Name2%'s "Hidden Webcam"</en>
-				<pl>%Name1% %Name2% z ukrytą kamerą</pl>
+				<de>${Name1} ${Name2}s „Versteckte Webcam“</de>
+				<en>${Name1} ${Name2}'s "Hidden Webcam"</en>
+				<pl>${Name1} ${Name2} z ukrytą kamerą</pl>
 			</title>
 			<description>
 				<de>Webcams werden in zufälligen Häusern installiert. Eine Woche lang werden die Bewohner bei allem was sie machen gefilmt und live ins Internet gestreamt. Die Show konfrontiert die Protagonisten mit ihren Verfehlungen und zeigt die schönsten Szenen.</de>
@@ -1773,49 +1773,49 @@
 		<!--kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-MagischeWesen" comment="TODO: English title vs text casings">
 			<title>
-				<de>Die %name1% im %name2%</de>
-				<en>The %name1% of %name2%</en>
-				<pl>O %name1% z %name2%</pl>
+				<de>Die ${name1} im ${name2}</de>
+				<en>The ${name1} of ${name2}</en>
+				<pl>O ${name1} z ${name2}</pl>
 			</title>
 			<description>
-				<de>Spannende Fantasyserie über %name1% im %name2% und ihre Unternehmungen, sich vor den Menschen zu verstecken.</de>
-				<en>Exciting fantasy series about %name1% in %name2% and their ventures to hide from humans.</en>
-				<pl>Ekscytująca seria fantasy o %name1% z %name2% i ich próbach ukrycia się przed ludźmi.</pl>
+				<de>Spannende Fantasyserie über ${name1} im ${name2} und ihre Unternehmungen, sich vor den Menschen zu verstecken.</de>
+				<en>Exciting fantasy series about ${name1} in ${name2} and their ventures to hide from humans.</en>
+				<pl>Ekscytująca seria fantasy o ${name1} z ${name2} i ich próbach ukrycia się przed ludźmi.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-MagischeWesen-Ep1">
 					<title>
-						<de>%name1% überall</de>
-						<en>%name1% Everywhere</en>
-						<pl>Wszędzie o %name1%</pl>
+						<de>${name1} überall</de>
+						<en>${name1} Everywhere</en>
+						<pl>Wszędzie o ${name1}</pl>
 					</title>
 					<description>
-						<de>%name1% sind mystische Wesen, und die letzten von ihnen leben im %name2%. Die Angst vor den Menschen beherrscht ihren Alltag, doch die Menschen dringen immer weiter in ihre Umgebung vor.</de>
-						<en>%name1% are mystical beings, and the last of them live in %name2%. Fear of humans dominates their everyday life, but the humans penetrate further and further into their environment.</en>
-						<pl>Opowieść o %name1% z %name2%. Ich strach przed ludźmi dominuje w ich codziennym życiu. Ludzie przenikają coraz dalej do ich środowiska.</pl>
+						<de>${name1} sind mystische Wesen, und die letzten von ihnen leben im ${name2}. Die Angst vor den Menschen beherrscht ihren Alltag, doch die Menschen dringen immer weiter in ihre Umgebung vor.</de>
+						<en>${name1} are mystical beings, and the last of them live in ${name2}. Fear of humans dominates their everyday life, but the humans penetrate further and further into their environment.</en>
+						<pl>Opowieść o ${name1} z ${name2}. Ich strach przed ludźmi dominuje w ich codziennym życiu. Ludzie przenikają coraz dalej do ich środowiska.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Kasi-script-MagischeWesen-Ep2">
 					<title>
-						<de>Der Ring der %name1%</de>
-						<en>The Ring of the %name1%</en>
+						<de>Der Ring der ${name1}</de>
+						<en>The Ring of the ${name1}</en>
 						<pl>O magicznym pierścieniu</pl>
 					</title>
 					<description>
-						<de>Der Ring der %name1% ist ein magisches Artefakt, welches die %name1% vor den Menschen verstecken. Doch als dieser Ring verschwindet, geraten die %name1% in Panik.</de>
-						<en>The ring of the %name1% is a magical artifact that the %name1% hide from the humans. But when this ring disappears, the %name1% panic.</en>
+						<de>Der Ring der ${name1} ist ein magisches Artefakt, welches die ${name1} vor den Menschen verstecken. Doch als dieser Ring verschwindet, geraten die ${name1} in Panik.</de>
+						<en>The ring of the ${name1} is a magical artifact that the ${name1} hide from the humans. But when this ring disappears, the ${name1} panic.</en>
 						<pl>Ten odcinek opowiada o magiczny pierścieniu, który ten stwór ukrywa przed ludźmi. Gdy pierścień znika, zaczyna się panika.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Kasi-script-MagischeWesen-Ep3">
 					<title>
-						<de>Das Auge der %name1%</de>
-						<en>The Eye of the %name1%</en>
+						<de>Das Auge der ${name1}</de>
+						<en>The Eye of the ${name1}</en>
 						<pl>W poszukiwaniu pierścienia</pl>
 					</title>
 					<description>
-						<de>Der Ring der %name1% ist verschwunden, doch mittels eines magischen Auges versuchen die %name1% ihn wiederzufinden.</de>
-						<en>The ring of the %name1% has disappeared, but by means of a magic eye the %name1% try to find it again.</en>
+						<de>Der Ring der ${name1} ist verschwunden, doch mittels eines magischen Auges versuchen die ${name1} ihn wiederzufinden.</de>
+						<en>The ring of the ${name1} has disappeared, but by means of a magic eye the ${name1} try to find it again.</en>
 						<pl>Pierścień zniknął, ale za pomocą magicznego oka na stwór próbuje go ponownie odnaleźć.</pl>
 					</description>
 					<episodes max="1" min="0"/>
@@ -1827,8 +1827,8 @@
 						<pl>Lider</pl>
 					</title>
 					<description>
-						<de>Einer der %name1% findet den magischen Ring wieder und wird zum neuen Anführer gewählt. Der neue Anführer hat vollkommen andere Einstellungen zum Umgang mit den Menschen als der alte.</de>
-						<en>One of the %name1% finds the magic ring again and is elected as the new leader. The new leader has a completely different attitude towards dealing with humans than the old one.</en>
+						<de>Einer der ${name1} findet den magischen Ring wieder und wird zum neuen Anführer gewählt. Der neue Anführer hat vollkommen andere Einstellungen zum Umgang mit den Menschen als der alte.</de>
+						<en>One of the ${name1} finds the magic ring again and is elected as the new leader. The new leader has a completely different attitude towards dealing with humans than the old one.</en>
 						<pl>Jeden ze stworów znajduje magiczny pierścień i zostaje wybrany na nowego przywódcę. Nowy przywódca ma zupełnie inne podejście do ludzi niż poprzedni.</pl>
 					</description>
 					<episodes max="1" min="0"/>
@@ -1840,8 +1840,8 @@
 						<pl>Rozpacz i żal</pl>
 					</title>
 					<description>
-						<de>Als einer der %name1% beim Verstecken vor dem Menschen schwer verletzt wird, ist die Verzweiflung und Trauer unter den %name1% riesig.</de>
-						<en>When one of the %name1% is seriously injured while hiding from some human, the despair and grief among the %name1% is huge.</en>
+						<de>Als einer der ${name1} beim Verstecken vor dem Menschen schwer verletzt wird, ist die Verzweiflung und Trauer unter den ${name1} riesig.</de>
+						<en>When one of the ${name1} is seriously injured while hiding from some human, the despair and grief among the ${name1} is huge.</en>
 						<pl>Kiedy jeden ze stworów zostaje poważnie ranny podczas ukrywania się przed ludźmi, rozpacz i żal wśród innych jest ogromna.</pl>
 					</description>
 				</scripttemplate>
@@ -1852,21 +1852,21 @@
 						<pl>Myśli o zemście</pl>
 					</title>
 					<description>
-						<de>Die Menschen sind schuld. Dies ist der allgemeine Tenor unter den %name1%. Der neue Anführer hegt den gleichen Groll. Schreckliche Rachegelüste entstehen.</de>
-						<en>The humans are to blame. This is the general sentiment among the %name1%. The new leader holds the same grudge. Terrible desires for revenge arise.</en>
+						<de>Die Menschen sind schuld. Dies ist der allgemeine Tenor unter den ${name1}. Der neue Anführer hegt den gleichen Groll. Schreckliche Rachegelüste entstehen.</de>
+						<en>The humans are to blame. This is the general sentiment among the ${name1}. The new leader holds the same grudge. Terrible desires for revenge arise.</en>
 						<pl>Winni są ludzie. Taki jest ogólny pogląd wśród stworów. Nowy przywódca żywi taką samą urazę do ludzi. Pojawia się straszne pragnienie zemsty.</pl>
 					</description>
 					<episodes max="1" min="0"/>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="6" guid="Kasi-script-MagischeWesen-Ep7">
 					<title>
-						<de>Der Versprechen der %name1%</de>
-						<en>The Vow of the %name1%</en>
+						<de>Der Versprechen der ${name1}</de>
+						<en>The Vow of the ${name1}</en>
 						<pl>Przysięga</pl>
 					</title>
 					<description>
-						<de>Ein Schwur, auf den Tod aller Menschen hinzuwirken, wird ausgesprochen. Ein Versprechen, welches bei den %name1% bindend ist.</de>
-						<en>An oath to work towards the death of all humans is made. A vow which is binding for the %name1%.</en>
+						<de>Ein Schwur, auf den Tod aller Menschen hinzuwirken, wird ausgesprochen. Ein Versprechen, welches bei den ${name1} bindend ist.</de>
+						<en>An oath to work towards the death of all humans is made. A vow which is binding for the ${name1}.</en>
 						<pl>Stwory składają przysięgę, że będą dążyć do śmierci wszystkich ludzi. </pl>
 					</description>
 					<episodes max="1" min="0"/>
@@ -1878,8 +1878,8 @@
 						<pl>Czarne brygady</pl>
 					</title>
 					<description>
-						<de>Die %name1% verbünden sich mit einem geheimen, mysteriösen, uralten Volk, welches ihnen verspricht die Menschen zu vernichten.</de>
-						<en>The %name1% ally with a secret, mysterious, ancient tribe that promises to destroy the humans.</en>
+						<de>Die ${name1} verbünden sich mit einem geheimen, mysteriösen, uralten Volk, welches ihnen verspricht die Menschen zu vernichten.</de>
+						<en>The ${name1} ally with a secret, mysterious, ancient tribe that promises to destroy the humans.</en>
 						<pl>Stwory sprzymierzają się z tajemniczym, starożytnym plemieniem, które obiecuje zniszczyć ludzi.</pl>
 					</description>
 				</scripttemplate>
@@ -1903,35 +1903,35 @@
 						<pl>Epidemia</pl>
 					</title>
 					<description>
-						<de>Eine Krankheit, die fast alle Menschen auslöscht, bricht aus. Die %name1% überlegen sich einen Plan, um auch die letzten Menschen auszurotten.</de>
-						<en>A disease that wipes out almost all humans breaks out. The %name1% come up with a plan to wipe out the last humans as well.</en>
+						<de>Eine Krankheit, die fast alle Menschen auslöscht, bricht aus. Die ${name1} überlegen sich einen Plan, um auch die letzten Menschen auszurotten.</de>
+						<en>A disease that wipes out almost all humans breaks out. The ${name1} come up with a plan to wipe out the last humans as well.</en>
 						<pl>Wybucha choroba, która wyniszcza prawie wszystkich ludzi. Stwory wymyślają plan, aby wymazać również ostatnich ludzi.</pl>
 					</description>
 					<episodes max="1" min="0"/>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="10" guid="Kasi-script-MagischeWesen-Ep11">
 					<title>
-						<de>Angriff der %name1%</de>
-						<en>Attack of the %name1%</en>
-						<pl>Atak z %name2%</pl>
+						<de>Angriff der ${name1}</de>
+						<en>Attack of the ${name1}</en>
+						<pl>Atak z ${name2}</pl>
 					</title>
 					<description>
-						<de>Es gibt nur noch ein paar verstreute Menschen auf der Welt. Die %name1% nutzen die Gelegenheit, um auch die letzen von ihnen auszulöschen.</de>
-						<en>There are only a few scattered humans left in the world. The %name1% take the opportunity to wipe out the last of them.</en>
+						<de>Es gibt nur noch ein paar verstreute Menschen auf der Welt. Die ${name1} nutzen die Gelegenheit, um auch die letzen von ihnen auszulöschen.</de>
+						<en>There are only a few scattered humans left in the world. The ${name1} take the opportunity to wipe out the last of them.</en>
 						<pl>Na świecie pozostało tylko kilku rozproszonych ludzi. Stwory korzystają z okazji, by zniszczyć ostatnich z nich.</pl>
 					</description>
 					<episodes max="1" min="0"/>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="11" guid="Kasi-script-MagischeWesen-Ep12">
 					<title>
-						<de>Weltübernahme der %name1%</de>
-						<en>The %name1% Take Over the World</en>
+						<de>Weltübernahme der ${name1}</de>
+						<en>The ${name1} Take Over the World</en>
 						<pl>Stwory przejmują świat</pl>
 					</title>
 					<description>
-						<de>Der letzte Mensch wurde getötet und die %name1% ziehen aus dem %name2% aus, um die ganze Welt zu besiedeln.</de>
-						<en>The last human was killed and the %name1% move out of %name2% to colonize the whole world.</en>
-						<pl>Ostatni człowiek został zabity, a nasze stwory wyruszyły z %name2%, by skolonizować cały świat.</pl>
+						<de>Der letzte Mensch wurde getötet und die ${name1} ziehen aus dem ${name2} aus, um die ganze Welt zu besiedeln.</de>
+						<en>The last human was killed and the ${name1} move out of ${name2} to colonize the whole world.</en>
+						<pl>Ostatni człowiek został zabity, a nasze stwory wyruszyły z ${name2}, by skolonizować cały świat.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1969,9 +1969,9 @@
 		<!--Produkt Show statt Serie, Cast Host+Gäste statt Darseller, eine Ausstrahlung, Ausstrahlungszeit, kein optionaler Kult, Preis gesenkt-->
 		<scripttemplate licence_type="3" product="3" guid="Kasi-script-UnterhaltungNachts">
 			<title>
-				<de>Die Nacht%name%</de>
-				<en>The Night %name%</en>
-				<pl>%name%</pl>
+				<de>Die Nacht${name}</de>
+				<en>The Night ${name}</en>
+				<pl>${name}</pl>
 			</title>
 			<description>
 				<de>Zusammenfassung der besten Szenen aus dem Programm der letzten Tage. Bestes Nachprogramm für die Schlaflosen.</de>
@@ -1998,9 +1998,9 @@
 						<pl>Dziś jest wyjątkowa noc</pl>
 					</title>
 					<description>
-						<de>Die Einschaltquoten des letzten Tages waren grandios. „Die Nacht%name%“ würdigt dies mit besondere Szenen.</de>
-						<en>The viewing rates of the last day were terrific. "The Night %name%" honors this with special scenes.</en>
-						<pl>"%name%". Pogadamy jak nie przespać nocy.</pl>
+						<de>Die Einschaltquoten des letzten Tages waren grandios. „Die Nacht${name}“ würdigt dies mit besondere Szenen.</de>
+						<en>The viewing rates of the last day were terrific. "The Night ${name}" honors this with special scenes.</en>
+						<pl>"${name}". Pogadamy jak nie przespać nocy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="3" index="2" guid="Kasi-script-UnterhaltungNachts-Ep3">
@@ -2163,13 +2163,13 @@
 		<!--Kult nur optional-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-SitcomeRunde" comment="TODO: discuss translation with more native speakers: for now *not* applying 'thick friends', but that term does exist - https://www.urbandictionary.com/define.php?term=thick%20friends - it's just not very common and would have a stronger than intended association with 'fat', so the joke wouldn't come across I believe.">
 			<title>
-				<de>Die runden %zahl%</de>
-				<en>The Chummy-Yummy %zahl%</en>
-				<pl>%zahl%</pl>
+				<de>Die runden ${zahl}</de>
+				<en>The Chummy-Yummy ${zahl}</en>
+				<pl>${zahl}</pl>
 			</title>
 			<description>
-				<de>%zahl% gute Freunde sind, seitdem sie 12 Jahre alt waren, etwas dick. Sie essen gerne und mit Leidenschaft, was dazu führt, dass die %zahl% immer wieder in seltsame Situationen geraten.</de>
-				<en>%zahl% good friends, since they were 12 years old, are a bit chubby. They like to eat with passion, which leads to the fact that the %zahl% always get into strange situations.</en>
+				<de>${zahl} gute Freunde sind, seitdem sie 12 Jahre alt waren, etwas dick. Sie essen gerne und mit Leidenschaft, was dazu führt, dass die ${zahl} immer wieder in seltsame Situationen geraten.</de>
+				<en>${zahl} good friends, since they were 12 years old, are a bit chubby. They like to eat with passion, which leads to the fact that the ${zahl} always get into strange situations.</en>
 				<pl>Najlepsi przyjaciele. Są nieco pulchni. Lubią jeść z pasją, co prowadzi do różnych dziwnych sytuacji.</pl>
 			</description>
 			<children>
@@ -2180,8 +2180,8 @@
 						<pl>Przyjaciele na całe życie</pl>
 					</title>
 					<description>
-						<de>Die runden %zahl% treffen sich vor 19 Jahren das erste Mal. Als die %zahl% versuchen, die Streusel aus einer Eisdiele zu klauen, werden sie die besten Freunde.</de>
-						<en>The chummy-yummy %zahl% meet for the first time 19 years ago. When the %zahl% try to steal the sprinkles from an ice cream parlor, they become the best of friends.</en>
+						<de>Die runden ${zahl} treffen sich vor 19 Jahren das erste Mal. Als die ${zahl} versuchen, die Streusel aus einer Eisdiele zu klauen, werden sie die besten Freunde.</de>
+						<en>The chummy-yummy ${zahl} meet for the first time 19 years ago. When the ${zahl} try to steal the sprinkles from an ice cream parlor, they become the best of friends.</en>
 						<pl>Nasi bohaterowie spotykają się po raz pierwszy 19 lat temu. Kiedy próbują ukraść posypkę z lodziarni, stają się najlepszymi przyjaciółmi.</pl>
 					</description>
 				</scripttemplate>
@@ -2192,8 +2192,8 @@
 						<pl>Przestępstwo pączkowe</pl>
 					</title>
 					<description>
-						<de>Die Donutpackung ist leer. Einer der runden %zahl% hat sie aufgegessen, ohne eine neue zu kaufen. Doch wer war es?</de>
-						<en>The doughnut box is empty. One of the chummy-yummy %zahl% has eaten it without buying a new one. But who was it?</en>
+						<de>Die Donutpackung ist leer. Einer der runden ${zahl} hat sie aufgegessen, ohne eine neue zu kaufen. Doch wer war es?</de>
+						<en>The doughnut box is empty. One of the chummy-yummy ${zahl} has eaten it without buying a new one. But who was it?</en>
 						<pl>Pudełko z pączkami jest puste. Jeden z bohaterów zjadł go bez kupowania nowego. Ale kto to był?</pl>
 					</description>
 				</scripttemplate>
@@ -2204,8 +2204,8 @@
 						<pl>Przekąska o północy</pl>
 					</title>
 					<description>
-						<de>Die runden %zahl%, feiern ihre Freundschaft bei einen Mitternachtssnack. Alte Geschichten werden aufgewärmt und alte Speisen verputzt.</de>
-						<en>The chummy-yummy %zahl% celebrate their friendship with a midnight snack. Old stories are rehashed and old food is consumed.</en>
+						<de>Die runden ${zahl}, feiern ihre Freundschaft bei einen Mitternachtssnack. Alte Geschichten werden aufgewärmt und alte Speisen verputzt.</de>
+						<en>The chummy-yummy ${zahl} celebrate their friendship with a midnight snack. Old stories are rehashed and old food is consumed.</en>
 						<pl>Bohaterowie świętują swoją przyjaźń przekąską o północy. Stare historie są ponownie opowiadane, a stare jedzenie jest spożywane.</pl>
 					</description>
 				</scripttemplate>
@@ -2216,8 +2216,8 @@
 						<pl>Grube kłopoty</pl>
 					</title>
 					<description>
-						<de>Einer der runden %zahl% passt nicht mehr durch die Tür und verpasst die Verabredung mit den anderen. Diese sind sehr wütend, da man das „All you can eat“ für %zahl% nicht mit einer Person weniger antreten kann.</de>
-						<en>One of the chummy-yummy %zahl% no longer fits through the door and misses the appointment with the others. These are very angry, because it is not possible to attend the "All you can eat" for %zahl% with one person less.</en>
+						<de>Einer der runden ${zahl} passt nicht mehr durch die Tür und verpasst die Verabredung mit den anderen. Diese sind sehr wütend, da man das „All you can eat“ für ${zahl} nicht mit einer Person weniger antreten kann.</de>
+						<en>One of the chummy-yummy ${zahl} no longer fits through the door and misses the appointment with the others. These are very angry, because it is not possible to attend the "All you can eat" for ${zahl} with one person less.</en>
 						<pl>Jeden z naszych bohaterów nie mieści się już w drzwiach i spóźnia się na spotkanie z innymi. Są bardzo źli, ponieważ nie mogą uczestniczyć w programie "Wszystko co możesz" .</pl>
 					</description>
 				</scripttemplate>
@@ -2228,8 +2228,8 @@
 						<pl>Pełne pragnienia</pl>
 					</title>
 					<description>
-						<de>Einer der runden %zahl% verliebt sich. Die anderen helfen ihm die Frau zu erobern.</de>
-						<en>One of the chummy-yummy %zahl% falls in love. The others help him to conquer the woman.</en>
+						<de>Einer der runden ${zahl} verliebt sich. Die anderen helfen ihm die Frau zu erobern.</de>
+						<en>One of the chummy-yummy ${zahl} falls in love. The others help him to conquer the woman.</en>
 						<pl>Jeden z naszych bohaterów zakochuje się. Pozostali pomagają mu zdobyć kobietę.</pl>
 					</description>
 				</scripttemplate>
@@ -2240,8 +2240,8 @@
 						<pl>Normalna waga</pl>
 					</title>
 					<description>
-						<de>Als einer der runden %zahl% plötzlich beginnt abzunehmen, bekommen die anderen Angst, dass sie bald keine Freunde mehr sein werden.</de>
-						<en>When one of the chummy-yummy %zahl% suddenly starts to lose weight, the others get scared that soon they won't be friends anymore.</en>
+						<de>Als einer der runden ${zahl} plötzlich beginnt abzunehmen, bekommen die anderen Angst, dass sie bald keine Freunde mehr sein werden.</de>
+						<en>When one of the chummy-yummy ${zahl} suddenly starts to lose weight, the others get scared that soon they won't be friends anymore.</en>
 						<pl>Kiedy jeden z naszych bohaterów nagle zaczyna tracić na wadze, pozostali boją się, że wkrótce nie będą już przyjaciółmi.</pl>
 					</description>
 				</scripttemplate>
@@ -2252,8 +2252,8 @@
 						<pl>Korpulentny król</pl>
 					</title>
 					<description>
-						<de>Das Steakhouse ehrt den besten Esser mit dem Steakhousekönigstitel. Die runden %zahl% kämpfen um jedes Gramm, welches verputzt werden muss.</de>
-						<en>The Steakhouse honors the best eater with the Steakhouse King title. The chummy-yummy %zahl% fight for every gram that must be devoured.</en>
+						<de>Das Steakhouse ehrt den besten Esser mit dem Steakhousekönigstitel. Die runden ${zahl} kämpfen um jedes Gramm, welches verputzt werden muss.</de>
+						<en>The Steakhouse honors the best eater with the Steakhouse King title. The chummy-yummy ${zahl} fight for every gram that must be devoured.</en>
 						<pl>Steakhouse honoruje najlepszego zjadacza tytułem króla stekowego. Nasi bohaterowie walczą o każdy gram, który musi zostać pożarty.</pl>
 					</description>
 				</scripttemplate>
@@ -2264,8 +2264,8 @@
 						<pl>Dobrze wyściełane to połowa wygranej</pl>
 					</title>
 					<description>
-						<de>Bei einem Autounfall erkennen die runden %zahl% wie gut es ist einiges an Gewicht extra zu haben. Sie helfen einem anderen Autofahrer mit lustigen Turbulenzen.</de>
-						<en>During a car accident, the chummy-yummy %zahl% realize how good it is to have some extra weight. They help another motorist with funny turbulences.</en>
+						<de>Bei einem Autounfall erkennen die runden ${zahl} wie gut es ist einiges an Gewicht extra zu haben. Sie helfen einem anderen Autofahrer mit lustigen Turbulenzen.</de>
+						<en>During a car accident, the chummy-yummy ${zahl} realize how good it is to have some extra weight. They help another motorist with funny turbulences.</en>
 						<pl>Podczas wypadku samochodowego nasi bohaterowie zdają sobie sprawę, jak dobrze jest mieć trochę dodatkowej wagi. Pomagają innemu kierowcy w zabawnych turbulencjach.</pl>
 					</description>
 				</scripttemplate>
@@ -2276,8 +2276,8 @@
 						<pl>Pełna figura</pl>
 					</title>
 					<description>
-						<de>Bei einem Modecontest merken die runden %zahl% wie gut es ist, einige Fehler zu haben und wie schrecklich Bulimie sein muss.</de>
-						<en>At a fashion contest, the chummy-yummy %zahl% realize how good it is to have some flaws and how terrible bulimia must be.</en>
+						<de>Bei einem Modecontest merken die runden ${zahl} wie gut es ist, einige Fehler zu haben und wie schrecklich Bulimie sein muss.</de>
+						<en>At a fashion contest, the chummy-yummy ${zahl} realize how good it is to have some flaws and how terrible bulimia must be.</en>
 						<pl>Podczas konkursu mody, bohaterowie zdają sobie sprawę, jak dobrze jest mieć pewne wady i jak straszna musi być bulimia.</pl>
 					</description>
 				</scripttemplate>
@@ -2288,8 +2288,8 @@
 						<pl>Pulchne przyjemności</pl>
 					</title>
 					<description>
-						<de>Manchmal ist die einzige Freude im Leben, etwas Schönes zu essen. Die runden %zahl% wissen dies und kochen gemeinsam das schönste Menu für Freunde.</de>
-						<en>Sometimes the only joy in life is to eat something nice. The chummy-yummy %zahl% know this and cook together the most wonderful menu for friends.</en>
+						<de>Manchmal ist die einzige Freude im Leben, etwas Schönes zu essen. Die runden ${zahl} wissen dies und kochen gemeinsam das schönste Menu für Freunde.</de>
+						<en>Sometimes the only joy in life is to eat something nice. The chummy-yummy ${zahl} know this and cook together the most wonderful menu for friends.</en>
 						<pl>Czasami jedyną radością w życiu jest zjedzenie czegoś dobrego. Oni wiedzą o tym i gotują razem najwspanialsze menu dla przyjaciół.</pl>
 					</description>
 				</scripttemplate>
@@ -2300,8 +2300,8 @@
 						<pl>Straciłem formę</pl>
 					</title>
 					<description>
-						<de>Als die runden %zahl% beim Arzt sind, erfahren sie, dass sie zuviel Gewicht auf den Hüften haben. Gemeinsam versuchen sie, ihre alte Form wiederzuerlangen.</de>
-						<en>When the chummy-yummy %zahl% are at the doctor, they learn that they have too much weight on their hips. Together they try to regain their old shape.</en>
+						<de>Als die runden ${zahl} beim Arzt sind, erfahren sie, dass sie zuviel Gewicht auf den Hüften haben. Gemeinsam versuchen sie, ihre alte Form wiederzuerlangen.</de>
+						<en>When the chummy-yummy ${zahl} are at the doctor, they learn that they have too much weight on their hips. Together they try to regain their old shape.</en>
 						<pl>Kiedy nasi bohaterowie są u lekarza, dowiadują się, że mają za dużo kilogramów na biodrach. Razem próbują odzyskać dawną sylwetkę.</pl>
 					</description>
 				</scripttemplate>
@@ -2312,8 +2312,8 @@
 						<pl>Grubi przyjaciele</pl>
 					</title>
 					<description>
-						<de>Die runden %zahl% sind Freunde, egal was passiert. Wegen lustiger Sprüche und ihres liebenswürdigen Charakters lieben die Zuschauer sie einfach.</de>
-						<en>The chummy-yummy %zahl% are friends, no matter what. Because of funny lines and their kind characters, viewers just love them.</en>
+						<de>Die runden ${zahl} sind Freunde, egal was passiert. Wegen lustiger Sprüche und ihres liebenswürdigen Charakters lieben die Zuschauer sie einfach.</de>
+						<en>The chummy-yummy ${zahl} are friends, no matter what. Because of funny lines and their kind characters, viewers just love them.</en>
 						<pl>Oni są przyjaciółmi, bez względu na wszystko. Widzowie uwielbiają ich za zabawne teksty i miłe charaktery.</pl>
 					</description>
 				</scripttemplate>

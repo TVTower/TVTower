@@ -367,7 +367,7 @@
 				<pl>Tegoroczna wyprzedaż rozpoczyna się z rabatami wynoszącymi średnio 600%. Sprzedawcy detaliczni proszą o przyniesienie wystarczającej ilości drobnych, odpowiadających cenom.</pl>
 			</description>
 			<data genre="4" price="0.7" quality="21" />
-			<availability script="TIME_MONTH=1 || TIME_MONTH=7" year_range_from="" year_range_to="" />
+			<availability script='${.or:${.eq:${.worldtime:"month"}:1}:${.eq:${.worldtime:"month"}:7}}' />
 		</news>
 
 		<news id="Sjaele-news-Spanner-Spanner" type="0" creator="7430" created_by="Sjaele">
@@ -567,7 +567,7 @@
 				<pl>To zwykły klub piłkarski. Podobieństwo nazwy do producenta napojów gazowanych jest przypadkowe.</pl>
 			</description>
 			<data genre="2" price="0.7" quality="11" />
-			<availability script="TIME_MONTH=1 || TIME_MONTH=7" year_range_from="2010" year_range_to="" />
+			<availability year_range_from="2010" year_range_to="" script='${.or:${.eq:${.worldtime:"month"}:1}:${.eq:${.worldtime:"month"}:7}}' />
 		</news>
 
 		<news id="Sjaele-news-Fußballbund-vermutet" type="0" creator="7430" created_by="Sjaele">
@@ -582,7 +582,7 @@
 				<pl>Wynik 75-1 w decydującym meczu o awansie do Zachodnio-Północnej Ligi Klubowej wezwał na miejsce ekspertów ds. oszustw w piłce nożnej.</pl>
 			</description>
 			<data genre="2" flags="2" price="1.0" quality="29" />
-			<availability script="TIME_MONTH=6" />
+			<availability script='${.eq:${.worldtime:"month"}:6}' />
 		</news>
 
 		<news id="Sjaele-news-Wintereinbruch-Engpässen" type="0" creator="7430" created_by="Sjaele">
@@ -597,7 +597,7 @@
 				<pl>Drogi całkowicie zasypane śniegiem z powodu niesezonowego nadejścia zimy doprowadziły między innymi do rażącego niedoboru kawy.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="27" />
-			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
+			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
 		<news id="Sjaele-news-Kaffee-Ausstellung-beendet" type="0" creator="7430" created_by="Sjaele">
@@ -690,7 +690,7 @@
 				<pl>Na specjalnej sesji większość parlamentu odrzuciła wczesny początek zimy w tym roku, głównie z powodów ekonomicznych.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="21" />
-			<availability script="TIME_SEASON=3" year_range_from="" year_range_to="" />
+			<availability script='${.eq:${.worldtime:"season"}:3}' />
 		</news>
 
 		<news id="Sjaele-news-Dreckschleuder-Drei" type="0" creator="7430" created_by="Sjaele">
@@ -782,7 +782,7 @@
 				<pl>Ponieważ codziennie odwiedza swoje byłe miejsce pracy, do odśnieżenia zwrotnicy wystarczyła kieszonkowa łopata: Intercity Express na czas.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="36" />
-			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
+			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
 		<news id="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="iPhone should probably be spoofed.">

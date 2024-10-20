@@ -4,8 +4,8 @@
 	<scripttemplates>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-mkw" creator="9621" comment="inspired by German realtor docu soaps">
 			<title>
-				<de>%title% (%randomcity%)</de>
-				<en>%title% (%randomcity%)</en>
+				<de>${title} (${randomcity})</de>
+				<en>${title} (${randomcity})</en>
 			</title>
 			<description>
 				<de>Makler versuchen Wohnungen und Häuser an Kunden mit ungewöhnlichen Ansprüchen zu verkaufen oder zu vermieten. Ob Geisterjäger oder Zirkusartisten - die skurrilen Kunden lassen die Makler an ihre Grenzen gehen und sorgen für jede Menge Unterhaltung.</de>
@@ -17,14 +17,14 @@
 					<en>Dreaming, Planning, Bankruptcy|Conflict, Quarrel, Breakdown|Cheating, Building, Bankruptcy|Luxury, Lies, Vacancy|Excess, Regret, Installment Plan|Miracle, Madness, Living|Cheap, Big, Dangerous|Rent, Spent, Repent|Bore, Explore, Adore|Sign, Align, Decline|Rent, Buy, Cry|Live, Obtain, Groan|Lease, Purchase, Debt|Place, Embrace, Palatial-Grace</en>
 				</title>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-mkw01">
 					<title>
-						<de>%titleprefix% %wohnobjekt%</de>
-						<en>%titleprefix% %wohnobjekt%</en>
+						<de>${titleprefix} ${wohnobjekt}</de>
+						<en>${titleprefix} ${wohnobjekt}</en>
 					</title>
 					<description>
 						<de>${wohn${wohnselector}}</de>
@@ -53,15 +53,15 @@
 						</suchende_person2>
 						<artofthedeal>
 							<de>zu verkaufen|zu vermieten|anzudrehen</de>
-							<en>tries to sell %wohnobjekt% to %suchende_person2%|tries to rent out a %wohnobjekt% to %suchende_person2%|tries to foist %wohnobjekt% upon %suchende_person2%</en>
+							<en>tries to sell ${wohnobjekt} to ${suchende_person2}|tries to rent out a ${wohnobjekt} to ${suchende_person2}|tries to foist ${wohnobjekt} upon ${suchende_person2}</en>
 						</artofthedeal>
 						<wohnsucher>
-							<de>%suchende_person% %wohnobjekt% %wohngrund%</de>
-							<en>%suchende_person% %wohnobjekt% %wohngrund%</en>
+							<de>${suchende_person} ${wohnobjekt} ${wohngrund}</de>
+							<en>${suchende_person} ${wohnobjekt} ${wohngrund}</en>
 						</wohnsucher>
 						<wohnfinder>
-							<de>Der Makler versucht, %suchende_person2% %wohnobjekt% %artofthedeal%.</de>
-							<en>The realtor %artofthedeal%.</en>
+							<de>Der Makler versucht, ${suchende_person2} ${wohnobjekt} ${artofthedeal}.</de>
+							<en>The realtor ${artofthedeal}.</en>
 						</wohnfinder>
 						<wohnselector>
 							<de>finder|sucher</de>
@@ -91,8 +91,8 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="script-ariksan-wetten01" creator="9621" comment="schon wieder überzogen...">
 			<title>
-				<de>Auf die Wette, Fertig, Los - Live aus %city%</de>
-				<en>Let's Bet - Live from %city%</en>
+				<de>Auf die Wette, Fertig, Los - Live aus ${city}</de>
+				<en>Let's Bet - Live from ${city}</en>
 			</title>
 			<description>
 				<de>Der Höhepunkt der deutschen Unterhaltung in zwei, naja, sagen wir drei Blöcken. Sehen Sie zu, wie durchschnittliche Menschen absurde Wetten abschließen! Und nicht zu vergessen die Prominenten, die manchmal sogar mitmachen!</de>
@@ -126,8 +126,8 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-flavor" creator="9621" comment="very loosely inspired by kitchen nightmares TODO change job to chef when available">
 			<title>
-				<de>%title% - %currentyear% Edition</de>
-				<en>%title% - %currentyear% Edition</en>
+				<de>${title} - ${currentyear} Edition</de>
+				<en>${title} - ${currentyear} Edition</en>
 			</title>
 			<description>
 				<de>Mutige Köche stürzen sich in kulinarische Missgeschicke. Von schrägen Kombinationen bis zu absurden Geschmacksexperimenten - ein Fest der Gaumenverwirrung und ein Fiasko für den guten Geschmack!</de>
@@ -139,18 +139,18 @@
 					<en>Flavor Fiasco|Food Frenzy|Kitchen Catastrophes|Culinary Calamities|Cooking Chaos|Gourmet Gaffes|Culinary Carnage|Chef's Nightmares|Food Fiasco|Cuisine Cataclysm|Flavor Failures|Menu Mayhem|Kitchen Cataclysm|Recipe Reckoning</en>
 				</title>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-flavor01">
 					<title>
-						<de>%protein% mit %spice% ..??!</de>
-						<en>%protein% with %spice% ..??!</en>
+						<de>${protein} mit ${spice} ..??!</de>
+						<en>${protein} with ${spice} ..??!</en>
 					</title>
 					<description>
-						<de>Die Köche kombinieren %protein% mit %spice% und versuchen %meal% zu kreiren. Ein unterhaltsames Geschmacksdesaster!</de>
-						<en>The chefs combine %protein% with %spice% to create a%flavor% %meal%. An entertaining flavor fiasco!</en>
+						<de>Die Köche kombinieren ${protein} mit ${spice} und versuchen ${meal} zu kreiren. Ein unterhaltsames Geschmacksdesaster!</de>
+						<en>The chefs combine ${protein} with ${spice} to create a${flavor} ${meal}. An entertaining flavor fiasco!</en>
 					</description>
 					<variables>
 						<protein>
@@ -166,7 +166,7 @@
 							<en> sweet| sour| spicy| salty| bitter| tangy| savory| rich|n herbaceous| smoky| zesty| minty| citrusy|n earthy| fruity| floral| peppery| creamy| buttery| nutty| crispy| juicy| mellow| tangy| refreshing| bold|n aromatic|n exotic| slightly sweet| fiery| velvety| succulent| slightly sour| pungent| balanced| mild| distinctive| harmonious</en>
 						</flavor>
 						<meal>
-							<de>ein %flavor%es Frühstück|einen %flavor%en Brunch|ein %flavor%es Mittagessen|ein %flavor%es Abendessen|%flavor%e Snacks|%flavor%e Vorspeisen|ein %flavor%es Hauptgericht|%flavor%e Beilagen|eine %flavor%e Suppe|einen %flavor%en Salat|ein %flavor%es Sandwich|einen %flavor%en Burger|ein %flavor%es Nudelgericht|eine %flavor%e Pizza|ein %flavor%es Pfannengericht|ein %flavor%es Barbecue|ein %flavor%es Picknick|ein %flavor%es Takeout-Gericht|ein %flavor%es Fast Food Gericht|%flavor%en Street Food|%flavor%e Tapas|ein %flavor%es Sushi-Gericht|ein %flavor%es Curry-Gericht|einen %flavor%en Braten|einen %flavor%en Auflauf|%flavor%e Wraps|ein %flavor%es Fingerfood-Gericht|ein %flavor%es Steak-Gericht|ein %flavor%es Dessert</de>
+							<de>ein ${flavor}es Frühstück|einen ${flavor}en Brunch|ein ${flavor}es Mittagessen|ein ${flavor}es Abendessen|${flavor}e Snacks|${flavor}e Vorspeisen|ein ${flavor}es Hauptgericht|${flavor}e Beilagen|eine ${flavor}e Suppe|einen ${flavor}en Salat|ein ${flavor}es Sandwich|einen ${flavor}en Burger|ein ${flavor}es Nudelgericht|eine ${flavor}e Pizza|ein ${flavor}es Pfannengericht|ein ${flavor}es Barbecue|ein ${flavor}es Picknick|ein ${flavor}es Takeout-Gericht|ein ${flavor}es Fast Food Gericht|${flavor}en Street Food|${flavor}e Tapas|ein ${flavor}es Sushi-Gericht|ein ${flavor}es Curry-Gericht|einen ${flavor}en Braten|einen ${flavor}en Auflauf|${flavor}e Wraps|ein ${flavor}es Fingerfood-Gericht|ein ${flavor}es Steak-Gericht|ein ${flavor}es Dessert</de>
 							<en>breakfast|brunch|lunch|dinner|snack|appetizer|main course|side dish|soup|salad|sandwich|burger|pasta dish|pizza|stir-fry|barbecue|picnic|takeout dish|fast food dish|street food dish|tapas dish|sushi dish|curry|roast|casserole|wrap|finger food|steak dish|dessert</en>
 						</meal>
 					</variables>
@@ -192,8 +192,8 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-storage" creator="9621" comment="inspired by storage wars">
 			<title>
-				<de>%title% %currentyear% Edition</de>
-				<en>%title% %currentyear% Edition</en>
+				<de>${title} ${currentyear} Edition</de>
+				<en>${title} ${currentyear} Edition</en>
 			</title>
 			<description>
 				<de>Begleiten Sie eine Gruppe von „Schatzjägern“ in einem erbitterten Kampf um vergessenen Trödel und wertlosen Gerümpel. In verstaubten Lagereinheiten wird jeder Ramsch zur potenziellen Goldgrube!</de>
@@ -205,29 +205,29 @@
 					<en>Trash Treasures|Storage Mayhem|Clutter Clash|Dumpster Dazzle|Junk Journey</en>
 				</title>
 				<person1>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person1>
 				<person2>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person2>
 				<person3>
-					<de>%PERSONGENERATOR_FIRSTNAME(IT,1)%</de>
+					<de>${.persongenerator:"firstname":"it":"male"}</de>
 				</person3>
 				<person4>
-					<de>%PERSONGENERATOR_FIRSTNAME(DE,2)%</de>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
 				</person4>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-storage-01">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
-						<de>%person1% und %person2% zanken sich mit %person3% um %treasure%. %person4% hat Glück im Unglück und kann %junk% verhökern.</de>
-						<en>%person1% und %person2% get into a fight with %person3% over %treasure%. %person4% has luck in misfortune and sells off %junk%.</en>
+						<de>${person1} und ${person2} zanken sich mit ${person3} um ${treasure}. ${person4} hat Glück im Unglück und kann ${junk} verhökern.</de>
+						<en>${person1} und ${person2} get into a fight with ${person3} over ${treasure}. ${person4} has luck in misfortune and sells off ${junk}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -242,20 +242,20 @@
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-storage-02">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
-						<de>Der Auktionator hat sich verfahren. Also übernimmt %person4% seine Rolle. Chaos pur! %person1% und %person2% bieten mit %person3% um die Wette.</de>
-						<en>The auctioneer has gotten lost. %person4% takes over his role. Chaos ensues! %person1% and %person2% compete against %person3%.</en>
+						<de>Der Auktionator hat sich verfahren. Also übernimmt ${person4} seine Rolle. Chaos pur! ${person1} und ${person2} bieten mit ${person3} um die Wette.</de>
+						<en>The auctioneer has gotten lost. ${person4} takes over his role. Chaos ensues! ${person1} and ${person2} compete against ${person3}.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-storage-03">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
-						<de>%person1% und %person2% haben sich zerstritten und bieten heute gegeneinander. %person4% zieht den Jackpot und sichert sich %treasure%.</de>
-						<en>%person1% and %person2% have had a falling out and are bidding against each other. %person4% hits the jackpot and secures %treasure%.</en>
+						<de>${person1} und ${person2} haben sich zerstritten und bieten heute gegeneinander. ${person4} zieht den Jackpot und sichert sich ${treasure}.</de>
+						<en>${person1} and ${person2} have had a falling out and are bidding against each other. ${person4} hits the jackpot and secures ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -266,12 +266,12 @@
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-storage-04">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<!--TODO soll treasure hier der gleiche Gegenstand wie in der vorigen Folge sein?-->
 					<description>
-						<de>%person1% und %person2% haben sich noch immer nicht versöhnt. %person3% kippt einen Kaffee auf %treasure%.</de>
-						<en>%person1% and %person2% still haven't reconciled. %person3% spills coffee on %treasure%.</en>
+						<de>${person1} und ${person2} haben sich noch immer nicht versöhnt. ${person3} kippt einen Kaffee auf ${treasure}.</de>
+						<en>${person1} and ${person2} still haven't reconciled. ${person3} spills coffee on ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -282,11 +282,11 @@
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-storage-05">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
-						<de>%person1% und %person2% haben sich insgeheim versöhnt und tricksen alle aus. Sie finden %treasure%.</de>
-						<en>%person1% and %person2% have secretly reconciled and outsmart the others, finding %treasure%.</en>
+						<de>${person1} und ${person2} haben sich insgeheim versöhnt und tricksen alle aus. Sie finden ${treasure}.</de>
+						<en>${person1} and ${person2} have secretly reconciled and outsmart the others, finding ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -297,11 +297,11 @@
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-storage-06">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
-						<de>Ein neuer Bieter räumt ab. %person1%, %person2% und %person4% sehen zu, wie er %treasure% findet.</de>
-						<en>A new bidder outbids everyone. %person1%, %person2% and %person4% watch as he walks away with %treasure%.</en>
+						<de>Ein neuer Bieter räumt ab. ${person1}, ${person2} und ${person4} sehen zu, wie er ${treasure} findet.</de>
+						<en>A new bidder outbids everyone. ${person1}, ${person2} and ${person4} watch as he walks away with ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -312,20 +312,20 @@
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-storage-07">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
-						<de>Skandal, der neue Bieter ist da. %person1% und %person2% schäumen vor Wut. %person4% schafft es doch noch eine Lagereinheit zu ergattern.</de>
-						<en>The new bidder returns triumphantly. Frustration boils within %person1% and %person2%. However, %person4% manages to secure a storage unit.</en>
+						<de>Skandal, der neue Bieter ist da. ${person1} und ${person2} schäumen vor Wut. ${person4} schafft es doch noch eine Lagereinheit zu ergattern.</de>
+						<en>The new bidder returns triumphantly. Frustration boils within ${person1} and ${person2}. However, ${person4} manages to secure a storage unit.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-storage-08">
 					<title>
-						<de>%STATIONMAP:RANDOMCITY%</de>
+						<de>${.stationmap:"randomcity"}</de>
 					</title>
 					<description>
-						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit %person3% in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>
-						<en>Hilarity ensues as it turns out that the new bidder is, in fact, %person3% in a genius disguise. Everyone laughs hysterically.</en>
+						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit ${person3} in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>
+						<en>Hilarity ensues as it turns out that the new bidder is, in fact, ${person3} in a genius disguise. Everyone laughs hysterically.</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -351,11 +351,11 @@
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-kautz" creator="9621" comment="inspired by die Sendung mit der Maus">
 			<title>
 				<de>Die Sendung mit ${dativ_${variant}} ${tier_${variant}}</de>
-				<en>The Show with the %adjective% %animal%</en>
+				<en>The Show with the ${adjective} ${animal}</en>
 			</title>
 			<description>
-				<de>Spaß und Fakten mit ${dativ_${variant}} ${tier_${variant}} und dem kleinen %animal2%. ${nominativ_${variant}} ${tier_${variant}} und das %animal2% erklären die Welt und sorgen für Lacher.</de>
-				<en>Fun and facts with the %animal% and the tiny %animal2%. Children explore the world with the %adjective% %animal% and the tiny %animal2% who also present funny clips and stories.</en>
+				<de>Spaß und Fakten mit ${dativ_${variant}} ${tier_${variant}} und dem kleinen ${animal2}. ${nominativ_${variant}} ${tier_${variant}} und das ${animal2} erklären die Welt und sorgen für Lacher.</de>
+				<en>Fun and facts with the ${animal} and the tiny ${animal2}. Children explore the world with the ${adjective} ${animal} and the tiny ${animal2} who also present funny clips and stories.</en>
 			</description>
 			<variables>
 				<variant>
@@ -399,8 +399,8 @@
 						<en>The Tomb of the Pharao</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% tauchen in die Welt der Archäologie ein. Achtung kleines %animal2%, keine alten Flüche wecken!</de>
-						<en>The %adjective% %animal% and the tiny %animal2% delve into archaeology. Easy, %animal2%, no ancient curses or mummies will make great roommates!</en>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} tauchen in die Welt der Archäologie ein. Achtung kleines ${animal2}, keine alten Flüche wecken!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} delve into archaeology. Easy, ${animal2}, no ancient curses or mummies will make great roommates!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-kautz-02">
@@ -409,8 +409,8 @@
 						<en>C++ Is not a Vitamine</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% lernen Programmieren. Achtung kleines %animal2%, übermäßige Semikolons werden den Computer nicht beeindrucken!</de>
-						<en>The %adjective% %animal% and the tiny %animal2% learn coding. Remember, %animal2%, excessive semicolons won't impress the computer, just confuse it!</en>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} lernen Programmieren. Achtung kleines ${animal2}, übermäßige Semikolons werden den Computer nicht beeindrucken!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} learn coding. Remember, ${animal2}, excessive semicolons won't impress the computer, just confuse it!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-kautz-03">
@@ -419,8 +419,8 @@
 						<en>Don't Eat that Jelly</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% erkunden den Ozean. Autsch, kleines %animal2%, lass uns lieber Abstand von den quälenden Quallen halten!</de>
-						<en>The %adjective% %animal% and the tiny %animal2% explore the ocean. Ouchy, tiny %animal2%, let's keep our distance from those jellyfish!</en>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} erkunden den Ozean. Autsch, kleines ${animal2}, lass uns lieber Abstand von den quälenden Quallen halten!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} explore the ocean. Ouchy, tiny ${animal2}, let's keep our distance from those jellyfish!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-kautz-04">
@@ -429,8 +429,8 @@
 						<en>Black Gold</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% besuchen eine Raffinerie. Oh uhhh, die Strechhölzer bitte stecken lassen, kleines %animal2%!</de>
-						<en>The %adjective% %animal% and the tiny %animal2% visit an oil refinery. Uhhh, tiny %animal2%, don't play with matches!</en>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} besuchen eine Raffinerie. Oh uhhh, die Strechhölzer bitte stecken lassen, kleines ${animal2}!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} visit an oil refinery. Uhhh, tiny ${animal2}, don't play with matches!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-kautz-05">
@@ -439,8 +439,8 @@
 						<en>BrushBot Buddy</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% besuchen ein Robotiklabor. Keine Sorge, kleines %animal2%, die Roboter werden die Welt nicht übernehmen... noch nicht!</de>
-						<en>The %adjective% %animal% and the tiny %animal2% visit a robotics lab. Don't worry, tiny %animal2%, the robots won't take over the world... yet!</en>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} besuchen ein Robotiklabor. Keine Sorge, kleines ${animal2}, die Roboter werden die Welt nicht übernehmen... noch nicht!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a robotics lab. Don't worry, tiny ${animal2}, the robots won't take over the world... yet!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-kautz-06">
@@ -449,8 +449,8 @@
 						<en>Forest Explorers</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das %animal2% begleiten einen Förster. Winziges %animal2%, es ist unhöflich mit den Bäumen zu streiten, auch wenn sie nicht gut zuhören!</de>
-						<en>The %adjective% %animal% and the tiny %animal2% accompany join forester in his daily tasks. Remember, tiny %animal2%, it's not polite to argue with the trees, even if they're not good listeners!</en>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} begleiten einen Förster. Winziges ${animal2}, es ist unhöflich mit den Bäumen zu streiten, auch wenn sie nicht gut zuhören!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} accompany join forester in his daily tasks. Remember, tiny ${animal2}, it's not polite to argue with the trees, even if they're not good listeners!</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -479,8 +479,8 @@
 				<en>${title} Season #1</en>
 			</title>
 			<description>
-				<de>In einer Küstenstadt navigieren %person1_w%, %person2_w%, %person3_w%, %person1_m%, %person2_m% und %person3_m% Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit.</de>
-				<en>In a coastal town, %person1_w%, %person2_w%, %person3_w%, %person1_m%, %person2_m%, and %person3_m% navigate love, friendship, secrets, and self-discovery in their eventful collage years.</en>
+				<de>In einer Küstenstadt navigieren ${person1_w}, ${person2_w}, ${person3_w}, ${person1_m}, ${person2_m} und ${person3_m} Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit.</de>
+				<en>In a coastal town, ${person1_w}, ${person2_w}, ${person3_w}, ${person1_m}, ${person2_m}, and ${person3_m} navigate love, friendship, secrets, and self-discovery in their eventful collage years.</en>
 			</description>
 			<variables>
 				<title>
@@ -488,33 +488,33 @@
 					<en>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</en>
 				</title>
 				<person1_m>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person1_m>
 				<person2_m>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person2_m>
 				<person3_m>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person3_m>
 				<person1_w>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person1_w>
 				<person2_w>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person2_w>
 				<person3_w>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person3_w>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-bever-01">
 					<title>
-						<de>%person3_w%s Muse</de>
-						<en>%person3_w%'s Muse</en>
+						<de>${person3_w}s Muse</de>
+						<en>${person3_w}'s Muse</en>
 					</title>
 					<description>
-						<de>%person3_w% entdeckt ein musikalisches Talent und gründet eine Band, was die Aufmerksamkeit von %person1_m% auf sich zieht, der Gefühle für sie entwickelt.</de>
-						<en>%person3_w% discovers a hidden talent for music and joins a band, catching the attention of %person1_m% who starts developing feelings for her.</en>
+						<de>${person3_w} entdeckt ein musikalisches Talent und gründet eine Band, was die Aufmerksamkeit von ${person1_m} auf sich zieht, der Gefühle für sie entwickelt.</de>
+						<en>${person3_w} discovers a hidden talent for music and joins a band, catching the attention of ${person1_m} who starts developing feelings for her.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-bever-02">
@@ -523,8 +523,8 @@
 						<en>Love Letter Enigma</en>
 					</title>
 					<description>
-						<de>%person2_m% erhält einen Liebesbrief, der ihn auf die Suche nach der Identität des  Verehrers führt, während %person1_w% sich fragt, ob er für sie bestimmt ist.</de>
-						<en>%person2_m% receives a love letter, leading to a quest to uncover the identity of the secret admirer, while %person1_w% wonders if it's meant for her.</en>
+						<de>${person2_m} erhält einen Liebesbrief, der ihn auf die Suche nach der Identität des  Verehrers führt, während ${person1_w} sich fragt, ob er für sie bestimmt ist.</de>
+						<en>${person2_m} receives a love letter, leading to a quest to uncover the identity of the secret admirer, while ${person1_w} wonders if it's meant for her.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-bever-03">
@@ -533,8 +533,8 @@
 						<en>Academic Allies</en>
 					</title>
 					<description>
-						<de>%person3_m% kämpft mit einer überwältigenden Belastung im Studium und sucht Hilfe bei %person2_w%, die zu seiner Lernpartnerin und Motivationsquelle wird.</de>
-						<en>%person3_m% struggles with an overwhelming course load at college, seeking support from %person2_w% who becomes his study partner and source of motivation.</en>
+						<de>${person3_m} kämpft mit einer überwältigenden Belastung im Studium und sucht Hilfe bei ${person2_w}, die zu seiner Lernpartnerin und Motivationsquelle wird.</de>
+						<en>${person3_m} struggles with an overwhelming course load at college, seeking support from ${person2_w} who becomes his study partner and source of motivation.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-bever-04">
@@ -543,8 +543,8 @@
 						<en>Secrets Unveiled</en>
 					</title>
 					<description>
-						<de>%person1_w% findet ein verlorenes Tagebuch, das alte Geheimnisse offenbart und sie auf eine Reise der Selbstentdeckung mit verdrängten Wahrheiten führt.</de>
-						<en>%person1_w% finds a long-lost diary that reveals shocking secrets about her past, leading to a journey of self-discovery and confronting buried truths.</en>
+						<de>${person1_w} findet ein verlorenes Tagebuch, das alte Geheimnisse offenbart und sie auf eine Reise der Selbstentdeckung mit verdrängten Wahrheiten führt.</de>
+						<en>${person1_w} finds a long-lost diary that reveals shocking secrets about her past, leading to a journey of self-discovery and confronting buried truths.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-bever-05">
@@ -553,8 +553,8 @@
 						<en>Crossroads of Passion</en>
 					</title>
 					<description>
-						<de>%person2_m% steht vor einem Dilemma, als er zwischen Sport und Tanzen hin- und hergerissen ist und um Rat bei %person3_w% bittet, die ihm bei der Entscheidung hilft.</de>
-						<en>%person2_m% faces a dilemma when he's torn between pursuing his passion for sports or dancing, seeking guidance from %person3_w% who helps him make a decision.</en>
+						<de>${person2_m} steht vor einem Dilemma, als er zwischen Sport und Tanzen hin- und hergerissen ist und um Rat bei ${person3_w} bittet, die ihm bei der Entscheidung hilft.</de>
+						<en>${person2_m} faces a dilemma when he's torn between pursuing his passion for sports or dancing, seeking guidance from ${person3_w} who helps him make a decision.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-bever-06">
@@ -563,8 +563,8 @@
 						<en>Rivalry Revealed</en>
 					</title>
 					<description>
-						<de>%person1_m% vermutet, dass %person3_m% etwas verheimlicht, was zu einer Rivalität führt, bis eine Konfrontation sie zwingt, ihre Missverständnisse anzugehen.</de>
-						<en>%person1_m% suspects that %person3_m% is hiding something, fueling a tense rivalry until they are forced to confront their misunderstandings.</en>
+						<de>${person1_m} vermutet, dass ${person3_m} etwas verheimlicht, was zu einer Rivalität führt, bis eine Konfrontation sie zwingt, ihre Missverständnisse anzugehen.</de>
+						<en>${person1_m} suspects that ${person3_m} is hiding something, fueling a tense rivalry until they are forced to confront their misunderstandings.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-bever-07">
@@ -573,8 +573,8 @@
 						<en>Stage of Envy</en>
 					</title>
 					<description>
-						<de>%person2_w% erhält die Hauptrolle im Schultheaterstück, was Eifersucht auslöst, insbesondere bei %person3_w%, die ihre Emotionen bewältigen muss.</de>
-						<en>%person2_w% lands the lead role in the school play, causing jealousy among her friends, especially %person3_w% who must navigate her emotions.</en>
+						<de>${person2_w} erhält die Hauptrolle im Schultheaterstück, was Eifersucht auslöst, insbesondere bei ${person3_w}, die ihre Emotionen bewältigen muss.</de>
+						<en>${person2_w} lands the lead role in the school play, causing jealousy among her friends, especially ${person3_w} who must navigate her emotions.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-bever-08">
@@ -583,8 +583,8 @@
 						<en>Unearthing the Past</en>
 					</title>
 					<description>
-						<de>%person1_m% stößt auf ein Foto, das auf ein Familiengeheimnis hinweist. %person2_m% unterstützt ihn auf der Suche nach antworten.</de>
-						<en>%person1_m% stumbles upon a photo that hints at a family secret, leading him to embark on a quest for answers, with %person2_m% providing support.</en>
+						<de>${person1_m} stößt auf ein Foto, das auf ein Familiengeheimnis hinweist. ${person2_m} unterstützt ihn auf der Suche nach antworten.</de>
+						<en>${person1_m} stumbles upon a photo that hints at a family secret, leading him to embark on a quest for answers, with ${person2_m} providing support.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="script-ariksan-bever-09">
@@ -593,8 +593,8 @@
 						<en>Triangular Ties</en>
 					</title>
 					<description>
-						<de>%person3_w% ist zwischen %person2_m% und %person1_m% hin- und hergerissen. Das Liebesdreieck stellt ihre Freundschafte auf die Probe.</de>
-						<en>%person3_w% is torn between two potential love interests, %person2_m% and %person1_m%. The complicated love triangle tests their friendships.</en>
+						<de>${person3_w} ist zwischen ${person2_m} und ${person1_m} hin- und hergerissen. Das Liebesdreieck stellt ihre Freundschafte auf die Probe.</de>
+						<en>${person3_w} is torn between two potential love interests, ${person2_m} and ${person1_m}. The complicated love triangle tests their friendships.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-bever-10">
@@ -603,8 +603,8 @@
 						<en>Moral Dilemma</en>
 					</title>
 					<description>
-						<de>%person1_w% steht vor einem Dilemma, als sie %person3_w%'s Geheimnis entdeckt, was sie vor die Wahl zwischen Loyalität und Gerechtigkeit stellt.</de>
-						<en>%person1_w% faces a moral dilemma when she discovers %person3_w%'s secret, forcing her to choose between loyalty and doing what she believes is right.</en>
+						<de>${person1_w} steht vor einem Dilemma, als sie ${person3_w}'s Geheimnis entdeckt, was sie vor die Wahl zwischen Loyalität und Gerechtigkeit stellt.</de>
+						<en>${person1_w} faces a moral dilemma when she discovers ${person3_w}'s secret, forcing her to choose between loyalty and doing what she believes is right.</en>
 					</description>
 				</scripttemplate>
 			</children>
