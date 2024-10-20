@@ -205,16 +205,16 @@
 					<en>Trash Treasures|Storage Mayhem|Clutter Clash|Dumpster Dazzle|Junk Journey</en>
 				</title>
 				<person1>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person1>
 				<person2>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person2>
 				<person3>
-					<de>%PERSONGENERATOR_FIRSTNAME(IT,1)%</de>
+					<de>${.persongenerator:"firstname":"it":"male"}</de>
 				</person3>
 				<person4>
-					<de>%PERSONGENERATOR_FIRSTNAME(DE,2)%</de>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
 				</person4>
 				<currentyear>
 					<de>%WORLDTIME:YEAR%</de>
@@ -488,22 +488,22 @@
 					<en>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</en>
 				</title>
 				<person1_m>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person1_m>
 				<person2_m>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person2_m>
 				<person3_m>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,1)%</de>
+					<de>${.persongenerator:"firstname":"us":"male"}</de>
 				</person3_m>
 				<person1_w>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person1_w>
 				<person2_w>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person2_w>
 				<person3_w>
-					<de>%PERSONGENERATOR_FIRSTNAME(US,2)%</de>
+					<de>${.persongenerator:"firstname":"us":"female"}</de>
 				</person3_w>
 			</variables>
 			<children>

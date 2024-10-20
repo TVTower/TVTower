@@ -123,9 +123,9 @@ Type TPersonGenerator
 
 	Function GetGenderFromString:int(str:string)
 		Select str.Trim()
-			case "m", "1"
+			case "m", "1", "male"
 				return GENDER_MALE
-			case "f", "w", "2"
+			case "f", "w", "2", "female"
 				return GENDER_FEMALE
 			default
 				return GetRandomGender()

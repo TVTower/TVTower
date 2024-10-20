@@ -483,11 +483,6 @@ Type TDatabaseLoader
 				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfullname~q}")
 			EndIf
 		Next
-		if expression <> expressionBefore
-			print expressionBefore
-			print expression
-			print "----"
-		endif
 
 			
 		'type 2:

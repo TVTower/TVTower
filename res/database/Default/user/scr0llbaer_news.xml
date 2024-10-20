@@ -180,7 +180,7 @@
 					<de>%STATIONMAP:RANDOMCITY%</de>
 				</funeraltown>
 				<joe> <!-- soll absichtlich manchmal ein internationaler Name sein -->
-					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%|%PERSONGENERATOR_FIRSTNAME(en,2)%|%PERSONGENERATOR_FIRSTNAME(es,2)%|%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(en,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%</de>
+					<de>${.persongenerator:"firstname":"de":"female"}|${.persongenerator:"firstname":"en":"female"}|${.persongenerator:"firstname":"es":"female"}|${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"en":"male"}|${.persongenerator:"firstname":"es":"male"}</de>
 				</joe>
 				<i>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c</de>
@@ -394,13 +394,13 @@
 					<de>%STATIONMAP:RANDOMCITY%</de>
 				</exhibitiontown>
 				<singerfirstname>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%</de>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
 				</singerfirstname>
 				<singersecondname>
-					<de>%PERSONGENERATOR_FIRSTNAME(en,2)%</de> <!-- absichtlicher deutsch-englischer 'Künstler'-Vorname. TODO: maybe English-French for the English version -->
+					<de>${.persongenerator:"firstname":"en":"female"}</de> <!-- absichtlicher deutsch-englischer 'Künstler'-Vorname. TODO: maybe English-French for the English version -->
 				</singersecondname>
 				<singerlastname>
-					<de>%PERSONGENERATOR_LASTNAME(de,2)%</de>
+					<de>${.persongenerator:"lastname":"de":"female"}</de>
 				</singerlastname>
 				<dontleaveme>
 					<de>verlass mich nicht|lass mich nicht allein|lass mich nicht im Stich|komm zurück</de>
@@ -408,16 +408,16 @@
 					<pl>nie zostawiaj mnie|nie opuszczaj mnie|nie porzucaj mnie|wróć do mnie</pl>
 				</dontleaveme>
 				<scientistfirstname>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%</de>
+					<de>${.persongenerator:"firstname":"de":"male"}</de>
 				</scientistfirstname>
 				<scientistsecondname>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%</de> <!-- absichtlich weiblicher zweiter Vorname -->
+					<de>${.persongenerator:"firstname":"de":"female"}</de> <!-- absichtlich weiblicher zweiter Vorname -->
 				</scientistsecondname>
 				<scientistpenultimatename>
-					<de>%PERSONGENERATOR_LASTNAME(de,1)%</de>
+					<de>${.persongenerator:"lastname":"de":"male"}</de>
 				</scientistpenultimatename>
 				<scientistlastname>
-					<de>%PERSONGENERATOR_LASTNAME(de,1)%</de> <!-- Doppel-Nachname erzwingen, was anscheinend in verschiedenen Variablen erfolgen muss. Innerhalb einer wird bei zwei GENERATOR-Aufrufen derselbe nochmal zurückgegeben. -->
+					<de>${.persongenerator:"lastname":"de":"male"}</de> <!-- Doppel-Nachname erzwingen, was anscheinend in verschiedenen Variablen erfolgen muss. Innerhalb einer wird bei zwei GENERATOR-Aufrufen derselbe nochmal zurückgegeben. -->
 				</scientistlastname>
 			</variables>
 			<data genre="4" price="1" quality="20" fictional="1" />
@@ -889,7 +889,7 @@
 					<de>Nina|Nia|Nana|Nona</de>
 				</nina>
 				<artistlastname>
-					<de>%PERSONGENERATOR_LASTNAME(de,2)%|%PERSONGENERATOR_LASTNAME(en,2)%|%PERSONGENERATOR_LASTNAME(fr,2)%</de>
+					<de>${.persongenerator:"lastname":"de":"female"}|${.persongenerator:"lastname":"en":"female"}|${.persongenerator:"lastname":"fr":"female"}</de>
 				</artistlastname>
 				<ofsportsclub>
 					<de>des Sportclubs|des Sportvereins|der Sportfreunde|des Fußballclubs|der Spielvereinigung</de>
@@ -1076,12 +1076,12 @@
 					<de>%STATIONMAP:RANDOMCITY%</de>
 				</subjecttown>
 				<name_m>
-					<de>%PERSONGENERATOR_NAME(de,1)%</de>
-					<en>%PERSONGENERATOR_NAME(en,1)%</en>
+					<de>${.persongenerator:"firstname":"de":"male"}</de>
+					<en>${.persongenerator:"firstname":"en":"male"}</en>
 				</name_m>
 				<name_f>
-					<de>%PERSONGENERATOR_NAME(de,2)%</de>
-					<en>%PERSONGENERATOR_NAME(en,2)%</en>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
+					<en>${.persongenerator:"firstname":"en":"female"}</en>
 				</name_f>
 				<sues>
 					<de>verklagt|klagt gegen</de> <!-- too long: erhebt Klage gegen|prozessiert gegen -->
@@ -1257,10 +1257,10 @@
 					<pl>odwołania|złożenie odwołania</pl>
 				</appeals>
 				<artistfirstname>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%</de>
+					<de>${.persongenerator:"firstname":"de":"male"}</de>
 				</artistfirstname>
 				<artistlastname>
-					<de>%PERSONGENERATOR_LASTNAME(de,2)%</de>
+					<de>${.persongenerator:"lastname":"de":"female"}</de>
 				</artistlastname>
 				<band>
 					<de>Band|Gang|Kapelle|Combo|Band</de>

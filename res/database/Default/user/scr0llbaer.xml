@@ -1262,7 +1262,7 @@ Czyli 4120 na odcinek.</pl>
 					<pl>%name%  dziki jak ptak|%name% podekscytowany|%name% totalnie zakręcony|Nie ma jutra dla %name%|%name% oszołomiony|%name% wariuje|%name% idzie na całość|%name% ma wszystko gdzieś!</pl>
 				</title>
 				<name>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%</de>
+					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}</de>
 				</name>
 			</variables>
 			<jobs>

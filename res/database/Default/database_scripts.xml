@@ -105,10 +105,10 @@
 					<en>Hilarious|Lovely|Turbulent|Romantic|Melancholic|Surprising</en>
 				</funny>
 				<namewoman>
-					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
+					<de>${.persongenerator:"name":"":"female"}</de>
 				</namewoman>
 				<nameman>
-					<de>%PERSONGENERATOR_NAME(unk,1)%</de>
+					<de>${.persongenerator:"name":"":"male"}</de>
 				</nameman>
 			</variables>
 
@@ -256,7 +256,7 @@
 
 			<variables>
 				<woman>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%|%PERSONGENERATOR_FIRSTNAME(es,2)%|%PERSONGENERATOR_FIRSTNAME(unk,2)%|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
+					<de>${.persongenerator:"firstname":"de":"female"}|${.persongenerator:"firstname":"es":"female"}|${.persongenerator:"firstname":"":"female"}|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
 				</woman>
 				<action>
 					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
@@ -372,8 +372,8 @@
 					<en>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% and me|I am %NAME%</en>
 				</title>
 				<name>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(aut,1)%</de>
-					<en>%PERSONGENERATOR_FIRSTNAME(us,1)%|%PERSONGENERATOR_FIRSTNAME(uk,1)%</en>
+					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"aut":"male"}</de>
+					<en>${.persongenerator:"firstname":"us":"male"}|${.persongenerator:"firstname":"uk":"male"}</en>
 				</name>
 				<titleaction>
 					<de>und die %DISEASE%|vs. %DISEASE%|kontra %DISEASE%|besingt %DISEASE%</de>

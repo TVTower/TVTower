@@ -7325,12 +7325,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>heroine</en>
 				</hero_f>
 				<johndoe_m>
-					<de>%PERSONGENERATOR_NAME(de,1)%</de>
-					<en>%PERSONGENERATOR_NAME(en,1)%</en>
+					<de>${.persongenerator:"firstname":"de":"male"}</de>
+					<en>${.persongenerator:"firstname":"en":"male"}</en>
 				</johndoe_m>
 				<johndoe_f>
-					<de>%PERSONGENERATOR_NAME(de,2)%</de>
-					<en>%PERSONGENERATOR_NAME(en,2)%</en>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
+					<en>${.persongenerator:"firstname":"en":"female"}</en>
 				</johndoe_f>
 				<vigilantcitizen_m>
 					<de>ein wachsamer Bürger</de>
@@ -8282,10 +8282,10 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.%pointscount% feet lead.</en>
 				</inathrillingduel_3>
 				<artistfirstname>
-					<de>%PERSONGENERATOR_FIRSTNAME(fr,1)%</de>
+					<de>${.persongenerator:"firstname":"fr":"male"}</de>
 				</artistfirstname>
 				<artistlastname>
-					<de>%PERSONGENERATOR_LASTNAME(en,1)%</de>
+					<de>${.persongenerator:"lastname":"en":"male"}</de>
 				</artistlastname>
 				<exhibitiontown>
 					<de>%STATIONMAP:RANDOMCITY%</de>
@@ -9020,12 +9020,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>%STATIONMAP:RANDOMCITY%</de>
 				</town>
 				<johndoe_m>
-					<de>%PERSONGENERATOR_NAME(de,1)%</de>
-					<en>%PERSONGENERATOR_NAME(en,1)%</en>
+					<de>${.persongenerator:"firstname":"de":"male"}</de>
+					<en>${.persongenerator:"firstname":"en":"male"}</en>
 				</johndoe_m>
 				<johndoe_f>
-					<de>%PERSONGENERATOR_NAME(de,2)%</de>
-					<en>%PERSONGENERATOR_NAME(en,2)%</en>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
+					<en>${.persongenerator:"firstname":"en":"female"}</en>
 				</johndoe_f>
 				<triedto_0>
 					<de>hat versucht, mit ${their_${g}} Farbdrucker Geldscheine herzustellen. ${they_${g}} wurde beim Kauf von %firecrackers% überführt</de>
