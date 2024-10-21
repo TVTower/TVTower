@@ -108,10 +108,10 @@
 					<en>Hilarious|Lovely|Turbulent|Romantic|Melancholic|Surprising</en>
 				</funny>
 				<namewoman>
-					<de>${.persongenerator:"name":"":"female"}</de>
+					<de>${.persongenerator:"firstname":"":"female"}</de>
 				</namewoman>
 				<nameman>
-					<de>${.persongenerator:"name":"":"male"}</de>
+					<de>${.persongenerator:"firstname":"":"male"}</de>
 				</nameman>
 			</variables>
 
