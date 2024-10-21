@@ -95,13 +95,15 @@ Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon die Eröffn
 
 Solange die Programm- oder Werbeblöcke grau eingefärbt sind, könnt Ihr sie auf andere Sendeplätze verschieben. Andere Einfärbungen deuten darauf hin, dass sie gerade gesendet werden oder wurden. Rot eingefärbte, schon gesendete Werbeblöcke deuten darauf hin, dass die geforderte Einschaltquote nicht erreicht wurde.
 
-Führt Ihr den Mauszeiger über einen Sendung oder eine Werbung, erscheint ein Tooltip, der Informationen zur gewählten Sendung enthält. Die „Shift“-Taste schaltet im Tooltip einer Sendung auf die Anzeige der maximalen Einschaltquote statt der maximalen Zuschauerzahl um.
+Führt Ihr den Mauszeiger über einen Sendung oder eine Werbung, erscheint ein Tooltip, der Informationen zur gewählten Sendung enthält. Die „Shift“-Taste schaltet im Tooltip einer Sendung auf die Anzeige der maximalen Einschaltquote statt der maximalen Zuschauerzahl und Preis pro Block um.
 
 Zum Bewegen der Sendungen/Werbung klickt einfach mit links darauf, dann hängt die Sendung am Mauszeiger. Zum Ablegen klickt wieder links.
 
 Wenn Ihr (auch bereits gesendete) Sendungen/Werbungen noch an anderer Stelle platzieren wollt, so drückt die „Strg“-Taste und klickt dann mit links darauf. Die eigentliche Sendung bleibt liegen, das Duplikat hängt an Eurer Hand und lässt sich durch erneuten Linksklick an der aktuellen Stelle ablegen.
 
-Wenn Ihr einzelne Folgen von Serien in ihrer Reihenfolge ablegen wollt, so drückt die „Shift“-Taste und klickt mit links darauf. Solange ihr die „Shift“-Taste gedrückt lasst, wird mit jedem Linksklick eine Folge abgelegt.
+Wenn Ihr einzelne Folgen von Serien in ihrer Reihenfolge ablegen wollt, so drückt die „Shift“-Taste und klickt mit links darauf. Wenn die „Shift“-Taste beim Linksklick gedrückt ist, wird automatisch die nächste Folge bereitgestellt.
+
+Mit den Pfeiltasten hoch/runter kann der Planer einen Tag zurück-/weitergeblättert werden. Zusammen mit „Shift“ lassen sich so leicht die Folgen einer Serie über mehrere Tage verteilen.
 
 Legt Ihr eine Werbung auf einem Sendungsplatz ab, so wird daraus eine Dauerwerbesendung. Diese spielt pro Zuschauer eine bestimmte Geldmenge ein. Vermindert aber auch Euer Image bei den Zuschauern.
 
@@ -323,6 +325,15 @@ Sonstiges
 * F5: Spielstand speichern (Quicksave)
 * F8: Spielstand laden (Quickload)
 * F12: Screenshot speichern
+
+Im Programmplaner
+* Pfeiltaste hoch: ein Tag zurück
+* Pfeiltaste runter: ein Tag weiter
+* Bild hoch (so lange die Taste gedrückt ist): zurückblättern
+* Bild runter (so lange die Taste gedrückt ist): weiterblättern
+* Pos 1: zum aktuellen Tag springen
+* Strg beim Platzieren von Programm/Werbung: selbes Element kann erneut platziert werden
+* Shift beim Platzieren einer Serienfolge: nächste Folge kann platziert werden
 
 Abweichende Tastenkürzel im Entwicklermodus
 ===========================================

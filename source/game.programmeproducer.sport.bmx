@@ -129,29 +129,25 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		'only store for current/default to save savegame space
 		'For local locale:string = EachIn TLocalization.languages.Keys()
 		Local localeIDs:Int[] = [TLocalization.currentLanguageID, TLocalization.defaultLanguageID]
-		For Local localeID:Int = EachIn localeIDs
 
-			Local title:String = GetRandomLocalizedString("SPORT_PROGRAMME_TITLE").Get(localeID)
-			Local description:String = GetRandomLocalizedString("SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X").Get(localeID)
-			Local descriptionAirtimeHint:String = GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get(localeID)
-			Local descriptionAiredHint:String = GetRandomLocalizedString("ALL_MATCHES_RUN").Get(localeID)
 
-			'as the collection header is of "TProgrammeData" we have to
-			'replace placeholders manually
-			title = TSportsProgrammeData._replaceSportInformation(title, league.GetSport(), localeID)
-			title = TSportsProgrammeData._replaceLeagueInformation(title, league, localeID)
-			description = TSportsProgrammeData._replaceSportInformation(description, league.GetSport(), localeID)
-			description = TSportsProgrammeData._replaceLeagueInformation(description, league, localeID)
-			descriptionAirtimeHint = TSportsProgrammeData._replaceSportInformation(descriptionAirtimeHint, league.GetSport(), localeID)
-			descriptionAirtimeHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAirtimeHint, league, localeID)
-			descriptionAiredHint = TSportsProgrammeData._replaceSportInformation(descriptionAiredHint, league.GetSport(), localeID)
-			descriptionAiredHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAiredHint, league, localeID)
+		programmeData.title = GetRandomLocalizedString("SPORT_PROGRAMME_TITLE")
+		programmeData.description = GetRandomLocalizedString("SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X")
+		programmeData.descriptionAirtimeHint = GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES")
+		programmeData.descriptionAiredHint = GetRandomLocalizedString("ALL_MATCHES_RUN")
 
-			programmeData.title.Set(StringHelper.UCFirst(title), localeID)
-			programmeData.description.Set(StringHelper.UCFirst(description), localeID)
-			programmeData.descriptionAirtimeHint.Set(StringHelper.UCFirst(descriptionAirtimeHint), localeID)
-			programmeData.descriptionAiredHint.Set(StringHelper.UCFirst(descriptionAiredHint), localeID)
-		Next
+		'add sports information and parse potential expressions
+		programmeData._ParseScriptExpressions(programmeData.title, False) 'False => directly manipulate .title
+		programmeData._ParseScriptExpressions(programmeData.description, False)
+		programmeData._ParseScriptExpressions(programmeData.descriptionAiredHint, False)
+		programmeData._ParseScriptExpressions(programmeData.descriptionAiredHint, False)
+
+		'Set first char to Upper case
+		programmeData.title.UCFirstAllEntries()
+		programmeData.description.UCFirstAllEntries()
+		programmeData.descriptionAiredHint.UCFirstAllEntries()
+		programmeData.descriptionAiredHint.UCFirstAllEntries()
+
 
 		programmeData.GUID = "programmedata-sportleaguecollection-"+league.GetGUID() +"-season-"+league.GetCurrentSeason().GetGUID()
 		programmeData.titleProcessed = Null

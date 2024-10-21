@@ -97,13 +97,15 @@ You will see the first day. At the beginning of the game, the Opening Show and t
 
 As long as the programme or advertisement blocks are coloured grey, then you can move them to other broadcast slots. Other colours mean that they are already being or have been  broadcast. A red advertising block means that it did not fulfil the requirements.
 
-Moving the mouse pointer over a programme or an advertisement displays a tooltip containing information about the selected programme. Pressing the "Shift"-key while displaying the programme tooltip toggles to showing the maximum audience rate instead of the maximal absolute audience.
+Moving the mouse pointer over a programme or an advertisement displays a tooltip containing information about the selected programme. Pressing the "Shift"-key while displaying the programme tooltip toggles to showing the maximum audience rate instead of the maximal absolute audience as well as price per block.
 
 To move a programme/advertisement simply left-click on it, then the item is picked up and is attached to the mouse pointer. To drop the item, left-click again.
 
 If you want to place your (even already broadcast) programmes/advertisements in another slot, press the "Ctrl"-key and then left click. The existing broadcast stays where it is; the duplicate is attached to the cursor and can be placed in the current location with a fresh left-click.
 
-If you want to place individual episodes of a series in sequence, press the "Shift"-key and left-click on it. As long as the "Shift"-key is pressed, then every left-click will place an episode.
+If you want to place individual episodes of a series in sequence, press the "Shift"-key and left-click on it. If the "Shift"-key is pressed while clicking then the next episode is automatically picked up.
+
+The arrow keys up/down allow turning the planner one day back/forward. In combination with "Shift" this allows for a convenient distribution of episodes over several days.
 
 If you place an advertisement in a schedule slot, then it becomes an infomercial. These receive a certain amount of money per viewer. But they also damage your image with the viewers.
 
@@ -326,6 +328,15 @@ Misc
 * F5: Save game state (Quicksave)
 * F8: Load game state (Quickload)
 * F12: Save screenshot
+
+In the Programme Planner
+* arrow key up: one day forward
+* arrow keydown: one day back
+* page up (as long as pressed): scroll back
+* page down (as long as pressed): scroll forward
+* Pos 1: go to the current day
+* Ctrl while placing a programme/ad: same element can be placed again
+* Shift while placing an episode: next episode can be placed
 
 Deviating Shortcuts in Developer Mode
 =====================================

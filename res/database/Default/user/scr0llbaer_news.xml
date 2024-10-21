@@ -989,14 +989,14 @@
 
 		<news id="8ac54969-a412-4c23-98c1-a3b2f449605d" type="0" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551" comment="Source: Items 1 and 2, variations and the 'duel' version from ChatGPT, other continuations made up by me. TODO: Perhaps internationalization of artist name and 'beer tents', but we still have only German region available to play.">
 			<title>
-				<de>${mw_${g}} aus %subjecttown% %sues% ${theirparrot_${i}}</de>
-				<en>A ${mw_${g}} from %subjecttown% %sues% ${theirparrot_${i}}</en>
-				<pl>${mw_${g}} z miasta %subjecttown% %sues%</pl>
+				<de>${mw_${g}} %sues% ${theirparrot_${i}}</de>
+				<en>A ${mw_${g}} %sues% ${theirparrot_${i}}</en>
+				<pl>${mw_${g}} %sues% ${theirparrot_${i}}</pl>
 			</title>
 			<description>
-				<de>${the_${g}} ${mw_${g}} namens ${name_${g}} %claims%${ithadinsulted_${i}}.</de>
-				<en>${the_${g}} ${mw_${g}} named ${name_${g}} %claims%${ithadinsulted_${i}}.</en>
-				<pl>${mw_${g}} z miasta %subjecttown% składa pozew ${theirparrot_${i}}.</pl>
+				<de>${name_${g}} aus %subjecttown% %claims%${ithadinsulted_${i}}.</de>
+				<en>${name_${g}} from %subjecttown% %claims%${ithadinsulted_${i}}.</en>
+				<pl>${name_${g}} z miasta %subjecttown% %claims%${ithadinsulted_${i}}.</pl>
 			</description>
 			<variables>
 				<g>
@@ -1304,9 +1304,9 @@
 				<pl>${mw_${g}} wyzywa ${theirparrot_${i}} na pojedynek</pl>
 			</title>
 			<description>
-				<de>Nach der abgewiesenen Klage greift ${name_${g}} zu den Mitteln der Selbstjustiz. Showdown morgen 12 Uhr mittags auf dem Marktplatz %subjecttown%.</de>
-				<en>After the dismissed lawsuit, ${name_${g}} resorts to vigilante justice. Showdown tomorrow at 12 high noon marketplace %subjecttown%.</en>
-				<pl>Po odrzuceniu pozwu, ${name_${g}} ucieka się do wymierzania sprawiedliwości. Starcie odbędzie się jutro o 12 w południe na rynku miasta %subjecttown%.</pl>
+				<de>Nach der abgewiesenen Klage greift ${name_${g}} zu den Mitteln der Selbstjustiz. ${the_${g}} ${mw_${g}} meint es ernst. Showdown morgen 12 Uhr mittags auf dem Marktplatz %subjecttown%.</de>
+				<en>After the dismissed lawsuit, ${name_${g}} resorts to vigilante justice. ${the_${g}} ${mw_${g}} means business. Showdown tomorrow at 12 high noon marketplace %subjecttown%.</en>
+				<pl>Po odrzuceniu pozwu, ${name_${g}} ucieka się do wymierzania sprawiedliwości. ${mw_${g}} jest poważny. Starcie odbędzie się jutro o 12 w południe na rynku miasta %subjecttown%.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernewschoice" time="1,18,30" choose="or" news1="a3716822-419b-4a1a-ac1d-4529eea1ec6a" probability1="50" news2="5af0c98a-e1f9-4842-827f-dfb90ae93d5b" probability2="50" />
@@ -1352,9 +1352,9 @@
 				<pl>${name_${g}} %appeals%</pl>
 			</title>
 			<description>
-				<de>Nun erneut vor dem Landgericht: ${name_${g}} %claims%${ithadinsulted_${i}}.</de>
-				<en>Now again before the regional court: ${name_${g}} %claims%${ithadinsulted_${i}}.</en>
-				<pl>Teraz ponownie przed sądem okręgowym: ${name_${g}} %claims%${ithadinsulted_${i}}.</pl>
+				<de>Nun erneut vor dem Landgericht: ${the_${g}} ${mw_${g}} %claims%${ithadinsulted_${i}}.</de>
+				<en>Now again before the regional court: ${the_${g}} ${mw_${g}} %claims%${ithadinsulted_${i}}.</en>
+				<pl>Teraz ponownie przed sądem okręgowym: ${mw_${g}} %claims%${ithadinsulted_${i}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="1b671c51-6731-4b9e-9d60-728ada55995b" />
@@ -1381,7 +1381,7 @@
 			<title>
 				<de>Aufarbeitung Causa ${name_${g}} begonnen</de>
 				<en>${name_${g}} case processing started</en>
-				<pl>Rozpoczęto przetwarzanie sprawy ${nazwa_${g}}</pl>
+				<pl>Rozpoczęto przetwarzanie sprawy ${name_${g}}</pl>
 			</title>
 			<description>
 				<de>Die Causa ${name_${g}} gegen ${theirparrot_${i}} findet Eingang in die rechtswissenschaftliche Literatur, und viele Jurastudierende werden sich mit der Fallstudie herumschlagen dürfen.</de>
@@ -1599,7 +1599,7 @@
 				<themanwho_3>
 					<de>Ein Mann, der behauptet, aus dem Jahr 2050 zu stammen, wurde in %town% wegen Unruhestiftung%andcriminalmischief% verhaftet. Er wurde später als psychisch krank eingestuft und gegen Kaution freigelassen.</de> <!-- TODO: Replace year 2050 with script to guarantee future? :) -->
 					<en>A man claiming to be from the year 2050 was arrested in %town% for causing a disturbance%andcriminalmischief%. He was later found to be mentally ill and and released on bail.</en>
-					<pl>Mężczyzna twierdzący, że pochodzi z roku 2050 został aresztowany w %town% za wywołanie zamieszek% i przestępstwo. Później uznano go za chorego psychicznie i zwolniono za kaucją.</pl>
+					<pl>Mężczyzna twierdzący, że pochodzi z roku 2050 został aresztowany w %town% za wywołanie zamieszek%andcriminalmischief%. Później uznano go za chorego psychicznie i zwolniono za kaucją.</pl>
 				</themanwho_3>
 				<themanwho_4>
 					<de>Der Mann, der die Ampel von einer Straßenkreuzung in %town% stahl und angab, das Grillfest eines Freundes mit Partylichtern aufwerten zu wollen, wurde wegen schweren Diebstahls%andcriminalmischief% angeklagt.</de>
@@ -1658,12 +1658,24 @@
 				<exhibitiontown>
 					<de>%STATIONMAP:RANDOMCITY%</de>
 				</exhibitiontown>
+				<gottliebmaessigmann>
+					<de>%gottlieb% %maessigmann%</de>
+				</gottliebmaessigmann>
+				<gottlieb>
+					<de>Benedict|Benedikt|Carsten|Christian|Christof|Christoph|Clemens|Delbert|Detlef|Detlev|Diederich|Diedrich|Diepold|Dieter|Diether|Dieterich|Dietmar|Dietrich|Dirk|Egon|Elias|Elimar|Elmar|Emil|Emmerich|Engelbert|Ewald|Ferdinand|Fredrik|Fridolf|Fridolin|Friedemann|Frieder|Friedrich|Gerwin|Giselbert|Giselher|Gottfried|Gottlieb|Gottlob|Gottschalk|Gustav|Hans-Ulrich|Hansjörg|Harald|Hein|Heine|Heiner|Heini|Helge|Henning|Heribert|Herschel|Herwig|Janosch|Julius|Klemens|Karsten|Ludolf|Maik|Martin|Meinolf|Meinrad|Mirco|Mirko|Nico|Olaf|Paul|Philip|Philipp|Ralph|Roderick|Rötger|Sander|Severin|Sven|Thies|Traugott|Willi</de>
+				</gottlieb>
 				<maessigmann>
-					<de>%PERSONGENERATOR_NAME(de,1)%</de>
+					<de>Bächli|Bluemel|Blume|Blumenberg|Blumenkrantz|Blumenthal|Edelmann|Edelstein|Ehrlich|Engel|Engelberg|Engelberger|Engelke|Engelkes|Engl|Ermentraut|Eulenburg|Fiedler|Freudenberg|Freudenberger|Freudenthal|Freund|Freundlich|Friedberg|Friedberger|Friedeberg|Friedel|Friedl|Friedländer|Fröhlich|Fromm|Frommelt|Gaertner|Gans|Gansz|Gansfried|Ganzfried|Gärtner|Glöckner|Glück|Glücklich|Goldberg|Goldberger|Goldblatt|Goldblum|Goldenberg|Goldfarb|Goldstern|Grün|Grünbaum|Grünberg|Grünke|Gunkel|Hanfstaengl|Hase|Hasenauer|Hasenfus|Hasenfuß|Hasenhüttl|Himmelblau|Hoenigberg|Honig|Honigberg|Honigmann|Hönigmann|Honigsberg|Immergut|Immerwahr|Kindermann|Kindl|Kindler|Kindlmann|Klee|Kleeberg|Kleeblatt|Klein|Kleine|Kleinfeld|Kleinknecht|Kleinman|Kleinmann|Klemm|Klemme|Kornblum|Lamm|Lappe|Lasch|Leid|Leidig|Lieb|Lieber|Lieberknecht|Liebermann|Liebers|Liebich|Lieblein|Liebmann|Liebreich|Lilie|Lilienthal|Maass|Maessigmann|Maiwald|Mäßigmann|Mässigmann|Möhre|Muessig|Muff|Nelke|Nelken|Obst|Rehlein|Rose|Rosen|Rosenbaum|Rosenberg|Rosenberger|Rosenblatt|Rosenblum|Rosenfeld|Rosengart|Rosengarten|Rosenhain|Rosenkranz|Rosenmeier|Rosensaft|Rosenstock|Rosenthal|Rosenwasser|Rosenzweig|Samt|Samtrock|Sanft|Sanftmut|Schlapp|Schön|Schöne|Schwan|Segen|Seiden|Seifer|Selig|Seligmann|Sommer|Sommerfeld|Sonne|Sonnenblume|Sonnenfeld|Stern|Sternberg|Streichler|Treu|Vögele|Wiese|Wurm|Würmer</de>
 				</maessigmann>
-				<aggromann>
-					<de>%PERSONGENERATOR_NAME(de,1)%</de>
-				</aggromann>
+				<hassoaggroman>
+					<de>%hasso% %aggroman%</de>
+				</hassoaggroman>
+				<hasso>
+					<de>Adolf|Albrecht|Ansgar|Arno|Artur|Arthur|Axel|Baldur|Bernhard|Berthold|Bertolt|Bruno|Calvin|Ekkehard|Eilhard|Eilhart|Erhard|Ernst|Gebhard|Gebhardt|Gerhard|Gerhardt|Gerhold|Gernot|Götz|Hanno|Hartmann|Hartmut|Hasso|Hauke|Hellmut|Hellmuth|Helmut|Helmuth|Ingo|Jan|Kalle|Karl|Knut|Konrad|Kuno|Kurt|Lothar|Ludger|Magnus|Manfred|Norbert|Norman|Patrick|Rainer|Randall|Reinhard|Reinhardt|Reinhart|Reinhold|Roman|Rupprecht|Ruprecht|Samuel|Siegfried|Sigmar|Sigmund|Sylvester|Torger|Udo|Urban|Veit|Vollrath|Waldemar|Walther|Wernher|Wolfgang|Xaver</de>
+				</hasso>
+				<aggroman>
+					<de>Abstreiter|Ackroman|Aggroman|Armbruster|Assenmacher|Axmann|Bär|Bauernfeind|Bechtholdt|Bechtold|Bluter|Bodenblut|Boll|Brandstätter|Brandstetter|Braun|Braunbeck|Braune|Brauner|Braunig|Bräunlich|Braunstein|Breitbart|Breitkreuz|Brettschneider|Deutsch|Deutscher|Deutschmann|Dorn|Dornberger|Drach|Drache|Drachmann|Fähnrich|Feuer|Feuerwerker|Fleisch|Fleischer|Fleischhacker|Fleischhauer|Funke|Gassmann|Gassner|Goebbels|Göring|Hass|Hacke|Hackenholt|Haider|Hammer|Hammerer|Hammerschmidt|Hammerstein|Hardegen|Hardenberg|Harnisch|Hart|Hartenstein|Hartig|Hartl|Hartleben|Hartnagel|Hartstein|Hass|Hassel|Hassbach|Hassing|Hassler|Hauer|Haugk|Haugwitz|Haupt|Hauptmann|Hauschild|Heerwagen|Heidler|Heitler|Heydrich|Himmler|Hinrichs|Hitzig|Jungblut|Jungbluth|Junker|Junkermann|Kahl|Kahle|Kahlenberg|Kahler|Kalbfleisch|Keckler|Laut|Löwe|Ludendorff|Mannheim|Maurenbrecher|Nothnagel|Österreicher|Pfahl|Pfahler|Rausch|Rothbart|Rott|Rottmann|Rottmanner|Rumpff|Ruppel|Sauer|Sauerbeck|Sauerbruch|Sauermann|Schachner|Schächter|Schädlich|Schädler|Scharf|Scharff|Schild|Schilder|Schildhauer|Schimpf|Schimpff|Schirmacher|Schlachter|Schlächter|Schlag|Schlagbauer|Schläger|Schlecht|Schlechter|Schleifer|Schnauf|Schnaufer|Schönhuber|Schwartz|Schwartzmann|Schwarzenberger|Schwarzkopf|Schwarzmann|Schwefel|Schwerdtfeger|Schwert|Schwertfeger|Sieg|Siegmann|Siegwart|Steinbrecher|Steinhardt|Steinhauer|Streit|Streitmann|Streitwagen|Sturm|Stürmer|Unruh|Wächter|Wilderer|Wildhauer|Wolf|Wolfensohn|Wolfermann|Zürner|Zundel|Zunder</de>
+				</aggroman>
 			</variables>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<availability script="TIME_DAYSPLAYED > 12" />
@@ -1806,9 +1818,9 @@
 				<pl>AdS wybiera nowego przewodniczącego</pl>
 			</title>
 			<description>
-				<de>Der neue Vorsitzende %maessigmann% gilt als recht gemäßigt, friedliebend und auch sozial ziemlich progressiv. Er wolle etwa den laufenden Frauen-Rückwärts-Einpark-Verbot-Gesetzesvorschlag nicht weiter mittragen.</de>
-				<en>The new chairman %maessigmann% is considered to be quite moderate, peace-loving and also socially pretty progressive. For example, he won't continue to support the current women's reverse parking ban bill.</en>
-				<pl>Nowy przewodniczący %maessigmann% jest uważany za dość umiarkowanego, miłującego pokój, a także społecznie dość postępowego. Na przykład, nie będzie on nadal wspierał obecnej ustawy o zakazie parkowania tyłem dla kobiet.</pl>
+				<de>Der neue Vorsitzende %gottliebmaessigmann% gilt als recht gemäßigt, friedliebend und auch sozial ziemlich progressiv. Er wolle etwa den laufenden Frauen-Rückwärts-Einpark-Verbot-Gesetzesvorschlag nicht weiter mittragen.</de>
+				<en>The new chairman %gottliebmaessigmann% is considered to be quite moderate, peace-loving and also socially pretty progressive. For example, he won't continue to support the current women's reverse parking ban bill.</en>
+				<pl>Nowy przewodniczący %gottliebmaessigmann% jest uważany za dość umiarkowanego, miłującego pokój, a także społecznie dość postępowego. Na przykład, nie będzie on nadal wspierał obecnej ustawy o zakazie parkowania tyłem dla kobiet.</pl>
 			</description>
 			<data genre="0" price="1" quality="35" fictional="1" />
 			<effects>
@@ -1838,9 +1850,9 @@
 				<pl>AdS obrażony przez Flatchera</pl>
 			</title>
 			<description>
-				<de>Der Vorsitzende der „Alternative von Welt“, %maessigmann%, zeigt sich gekränkt von Marigold Flatchers Ansage, es gebe keine Alternative. „Es gibt uns noch! Und wir sind gesund und munter!“</de>
-				<en>The chairman of the "Alternative of the World", %maessigmann%, is offended by Marigold Flatcher's statement that there is no alternative. "We're still here! And we're alive and kicking!"</en>
-				<pl>Przewodniczący „Alternatywy dla Świata”, %maessigmann%, jest urażony stwierdzeniem Marigold Flatcher, że nie ma alternatywy. „Wciąż tu jesteśmy! Żyjemy i kopiemy!”</pl>
+				<de>Der Vorsitzende der „Alternative von Welt“, %gottliebmaessigmann%, zeigt sich gekränkt von Marigold Flatchers Ansage, es gebe keine Alternative. „Es gibt uns noch! Und wir sind gesund und munter!“</de>
+				<en>The chairman of the "Alternative of the World", %gottliebmaessigmann%, is offended by Marigold Flatcher's statement that there is no alternative. "We're still here! And we're alive and kicking!"</en>
+				<pl>Przewodniczący „Alternatywy dla Świata”, %gottliebmaessigmann%, jest urażony stwierdzeniem Marigold Flatcher, że nie ma alternatywy. „Wciąż tu jesteśmy! Żyjemy i kopiemy!”</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1871,10 +1883,10 @@
 				<pl>AdS wybiera nowego przewodniczącego</pl>
 			</title>
 			<description>
-				<de>Der neue Vorsitzende %aggromann% gilt wieder als recht aggressiv, kriegstreiberisch und ultrakonservativ. Man sei auf der Hut, mit welchen Vorschlägen er um die Ecke kommen wird.</de>
-				<en>The new chairman %aggromann% is again considered to be quite aggressive, warmongering and ultraconservative. Be on the lookout for what proposals he will come around the corner with.</en>
+				<de>Der neue Vorsitzende %hassoaggroman% gilt wieder als recht aggressiv, kriegstreiberisch und ultrakonservativ. Man sei auf der Hut, mit welchen Vorschlägen er um die Ecke kommen wird.</de>
+				<en>The new chairman %hassoaggroman% is again considered to be quite aggressive, warmongering and ultraconservative. Be on the lookout for what proposals he will come around the corner with.</en>
 				<!-- and da capo. TODO: Once something like that is supported, add variation to first item 'beantragt *erneut* dritten Weltkrieg' for the 2nd, 3rd,... iterations -->
-				<pl>Nowy przewodniczący %aggromann% jest ponownie uważany za dość agresywnego, podżegającego do wojny i ultrakonserwatywnego. Należy wypatrywać, z jakimi propozycjami pojawi się za rogiem.</pl>
+				<pl>Nowy przewodniczący %hassoaggroman% jest ponownie uważany za dość agresywnego, podżegającego do wojny i ultrakonserwatywnego. Należy wypatrywać, z jakimi propozycjami pojawi się za rogiem.</pl>
 			</description>
 			<data genre="0" price="1" quality="35" fictional="1" />
 		</news>

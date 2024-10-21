@@ -13,11 +13,6 @@ Import "game.gameconfig.bmx"
 'Studio: emitting and receiving the production concepts for specific
 '        scripts
 Type RoomHandler_Studio Extends TRoomHandler
-	'a map containing "roomGUID"=>"script" pairs
-	'replaced in 0.7.2 but kept for savegame compatibility
-	'(gets converted after loading)
-	'DEPRECATED from 0.7.2
-	Field studioScriptsByRoom:TMap = new TMap {nosave doload}
 	'a map containing "roomID"=>"script" pairs
 	Field studioScriptsByRoomID:TIntMap = new TIntMap
 
@@ -143,12 +138,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'this lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGUIStudioScript") ]
 
-		'DEPRECATED from 0.7.2
-		'(only needed to convert studioScriptsByRoom to studioScriptsByRoomID as
-		' as room IDs are not known in the moment of deserialization)
-		'savegame loaded - fill studioScriptsByRoomID if needed
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onLoadSavegame) ]
-
 		'(re-)localize content
 		SetLanguage()
 	End Method
@@ -156,7 +145,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 	Method CleanUp()
 		'=== unset cross referenced objects ===
-		studioScriptsByRoom.Clear()
 		studioScriptsByRoomID.Clear()
 		studioManagerDialogue = Null
 		studioManagerTooltip = Null
@@ -270,31 +258,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		Return True
 	End Method
-
-
-	'DEPRECATED from 0.7.2
-	Function onLoadSavegame:Int(triggerEvent:TEventBase)
-		local cGUIDs:Int
-		local cIDs:Int
-		For local s:TScript = EachIn GetInstance().studioScriptsByRoom.Values()
-			cGUIDs :+ 1
-		Next
-		For local s:TScript = EachIn GetInstance().studioScriptsByRoomID.Values()
-			cIDs :+ 1
-		Next
-		if cGUIDs > cIDs
-			TLogger.Log("Savegame.Load()", "Migrating TRoomHandler_Studio's ~qstudioScriptsByRoom~q to ~qstudioScriptsByRoomID~q", LOG_SAVELOAD)
-			GetInstance().studioScriptsByRoomID.Clear()
-			For local roomGUID:String = EachIn GetInstance().studioScriptsByRoom.Keys()
-				Local r:TRoomBase = GetRoomBaseByGUID(roomGUID)
-				If Not r
-					Notify "onLoadSavegame: room with guid ~q"+roomGUID+"~q not found."
-				Else
-					GetInstance().studioScriptsByRoomID.Insert(r.GetID(), GetInstance().studioScriptsByRoom.ValueForKey(roomGUID))
-				EndIf
-			Next
-		EndIf
-	End Function
 
 
 	Function onRemoveScriptFromProgrammeCollection:Int( triggerEvent:TEventBase )

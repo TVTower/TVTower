@@ -2098,7 +2098,7 @@
 			</title_original>
 			<description>
 				<de>1870 war St. Louis die viertgrößte Stadt Amerikas, jetzt ist es nur noch die 27ste. Eine Inderin wird überraschend neue Polizeichefin. Ihr begegnen Sexismus und Rassismus, aber dank Charisma und zupackender Art auch Bewunderung und Personenkult.</de>
-				<en>In 1870, St. Louis was the fourth largest city in America, now it is only the 27th. An Indian woman surprisingly becomes the new police chief. She encounters sexism and racism, but also admiration and a cult of personality thanks to her charisma and hands-on manner.</en>
+				<en>In 1870, St. Louis was the fourth largest city in America, now it is only the 27th. A woman from India surprisingly becomes the new police chief. She encounters sexism and racism, but also admiration and a cult of personality thanks to her charisma and hands-on manner.</en>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="502f4dc9-e80b-46f8-bdcc-564bb558b883">
@@ -3152,8 +3152,8 @@
 						<en>Olympos</en>
 					</title_original>
 					<description>
-						<de>Neben den Vorgängen im Olymp (auf dem Mars) und denen der intelligenten Roboter im Kuiper-Gürtel müssen auf der Erde die dekadenten „Altmenschen“, die dachten, bald zu „Metamenschen“ zu werden, plötzlich um ihr Überleben gegen aggressive Voynixe kämpfen.</de>
-						<en>In addition to the affairs in Olympus (on Mars) or of the intelligent robots in the Kuiper Belt, the decadent "Old-Style Humans" on Earth, who thought to soon become "Post-Humans", suddenly have to fight for their survival against aggressive Voynix.</en>
+						<de>Zusammenlaufende Handlungsstränge: Götter-Intrigen im Olymp (auf dem Mars). Philosophierende Minenroboter von den Jupiter-Monden. Dekadente Erden-„Altmenschen“, die dachten, zu „Metamenschen“ aufzusteigen, aber um ihr Überleben gegen aggressive Voynixe kämpfen müssen.</de>
+						<en>Converging storylines: Intrigues of the gods in Olympus (on Mars). Philosophizing mining robots from the moons of Jupiter. Decadent "Old-Style Humans" on Earth, thinking they were ascending to "Post-Humans", but having to fight for their survival against aggressive Voynix.</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -3191,6 +3191,7 @@
 			<review min="30" max="80" />
 			<speed min="30" max="80" />
 			<studio_size value="3" />
+			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="d5f301bf-a014-4a7c-8963-319cb7dc827b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1309057.Escapade">
 			<title>
@@ -3636,6 +3637,7 @@
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
 			<studio_size value="3" />
+			<availability script="TIME_DAYSPLAYED > 18" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="085400ce-9d05-4012-8e16-5276f335c38c" creator="9551" comment="https://en.wikipedia.org/wiki/Fables_(comics) | public domain, as are the characters">
 			<title>

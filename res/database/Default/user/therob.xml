@@ -348,7 +348,7 @@
 
 		<!-- 'RatTV - Quo Vadis' moved to database_programmes.xml -->
 
-		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<de>Goaaaaal</de>
 				<en>Goaaaaal</en>
@@ -1263,7 +1263,7 @@
 			<ratings critics="6" speed="32" outcome="7" />
 		</programme>
 
-		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous ill-fitting real staff replaced with fictional">
+		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous ill-fitting real staff replaced with fictional">
 			<title>
 				<!-- Überleben wir die LAF?, Fictional, Dokumentation -->
 				<de>Überleben wir die L.A.F.?</de>
@@ -1368,7 +1368,7 @@
 						<pl>Hrabia Ruccola spotyka fasolę</pl>
 					</title>
 					<description>
-						<de>Was soll man sagen, jedes Böhnchen, ein Tönchen. Graf Ruccola ißt viele Böhnchen und nutzt die Tönchen für die schönsten Kinderlieder.</de>
+						<de>Was soll man sagen, jedes Böhnchen, ein Tönchen. Graf Ruccola isst viele Böhnchen und nutzt die Tönchen für die schönsten Kinderlieder.</de>
 						<en>What can you say, beans, the musical fruit, the more you eat, the more you toot. Count Ruccola eats many beans and toots the most beautiful nursery rhymes.</en>
 						<pl>Co można powiedzieć, fasola, muzyczny owoc, im więcej jesz, tym więcej ćwierkasz. Hrabia Ruccola zjada wiele fasolek i wyśpiewuje najpiękniejsze rymowanki.</pl>
 					</description>
@@ -1804,7 +1804,7 @@
 			<ratings critics="25" speed="12" outcome="18" />
 		</programme>
 
-		<programme id="TheRob-1756-Polit-Show-WasistSache" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="regular format / continuation as screenplay added as a16dbdd9-bbf8-449f-bf4d-6d1146aa98d0">
+		<programme id="TheRob-1756-Polit-Show-WasistSache" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="regular format / continuation as screenplay added as a16dbdd9-bbf8-449f-bf4d-6d1146aa98d0">
 				<!-- Was ist Sache, Politshow 101, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Was ist Sache Spezial - Dänemark</de>
@@ -1831,7 +1831,7 @@
 			</modifiers>
 		</programme>
 
-		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
 			<title>
 				<de>Das Leben der [2|Full]</de>
@@ -1854,7 +1854,7 @@
 			<ratings critics="35" speed="31" outcome="33" />
 		</programme>
 
-		<programme id="TheRob-1756-polit-event-AnalysederReden" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="TheRob-1756-polit-event-AnalysederReden" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Analyse der Reden, Polit Event 201, Zielgruppe Manager -->
 			<title>
 				<de>Analyse der Reden</de>
@@ -2361,7 +2361,7 @@
 			<ratings critics="81" speed="17" outcome="2" />
 		</programme>
 
-		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Und Jetzt?</de>
@@ -2836,7 +2836,7 @@
 			<speed min="40" max="70" slope="40" />
 			<studio_size min="1" max="2" slope="25" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
+		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
 			<title>
 				<de>ISS - auf der Suche nach %NAME%</de>
 				<en>ISS - Searching for %NAME%</en>
@@ -2870,7 +2870,7 @@
 			<speed min="18" max="49" slope="25" />
 			<availability year_range_from="1999" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-miroftvt">
+		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-miroftvt">
 			<title>
 				<de>MIR - auf der Suche nach %NAME%</de>
 				<en>MIR - Searching for %NAME%</en>

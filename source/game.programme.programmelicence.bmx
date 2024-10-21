@@ -738,7 +738,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'inform programmeData about being episode of a series
 		if (isSeries() or isCollection()) and licence.data and self.data
-			licence.data.parentGUID = self.data.GetGUID()
+			licence.data.parentDataID = self.data.GetID()
 		endif
 
 		if index = -1
@@ -2625,6 +2625,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 		if showPrice
+			if shiftDown then price:/ GetBlocksTotal()
 			if canAfford
 				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, MathHelper.DottedValue( price ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 			else

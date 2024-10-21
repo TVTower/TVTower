@@ -106,11 +106,9 @@
 				</funny>
 				<namewoman>
 					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
-					<en>%PERSONGENERATOR_NAME(unk,2)%</en>
 				</namewoman>
 				<nameman>
-					<de>%PERSONGENERATOR_LASTNAME(unk,1)%</de>
-					<en>%PERSONGENERATOR_LASTNAME(unk,1)%</en>
+					<de>%PERSONGENERATOR_NAME(unk,1)%</de>
 				</nameman>
 			</variables>
 
@@ -300,8 +298,8 @@
 			</description>
 			<variables>
 				<title>
-					<de>%BUILDING% der %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Verfluchte %MONSTER%|Blutrünstige %MONSTER%|%MONSTER% im Blutrausch|%MONSTER% der Nacht|%MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
-					<en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|%MONSTER% in a Bloodlust|%MONSTER% of the Night|%MONSTER%: They'll Get You|Night of the %MONSTER%</en>
+					<de>%BUILDING% der %COUNT%%MONSTER%|Die %COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Die verfluchten %MONSTER%|Die blutrünstigen %MONSTER%|Die %MONSTER% im Blutrausch|Die %MONSTER% der Nacht|Die %MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
+					<en>%BUILDING% of the %COUNT%%MONSTER%|The %COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|The %MONSTER% in Bloodlust|The %MONSTER% of the Night|The %MONSTER%: They'll Get You|Night of the %MONSTER%</en>
 				</title>
 				<building>
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
@@ -427,7 +425,7 @@
 		</scripttemplate>
 		
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
+		<scripttemplate product="3" licence_type="1" guid="scripttemplate-random-ron-show1">
 			<title>
 				<de>%KIND%%DATE%</de>
 				<en>%KIND%%DATE%</en>
@@ -529,7 +527,7 @@
 				</who_5>
 				<who_6>
 					<de>Krankenpfleger</de>
-					<en>Carers</en>
+					<en>Caregivers</en>
 				</who_6>
 				<who_7>
 					<de>Stripper</de>
@@ -1458,7 +1456,7 @@
 			</jobs>
 			<data flags="5" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" available="0" /> <!-- availability triggered by 42761763-4125-4a66-8227-40027caab44a -->
 			<targetgroupattractivity men="0.5" />
-			<genres maingenre="6" subgenres="300" />
+			<genres maingenre="103" subgenres="300,6" />
 			<blocks value="1" />
 			<price min="20000" max="50000" />
 			<potential min="30" max="50" />
@@ -1740,7 +1738,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 		<scripttemplate product="3" licence_type="1" guid="84c38251-ff42-4422-908c-8177ff5b10ea" creator="" comment="Screenplay version / continuation of d0b61022-2ec0-4a6c-a496-92c102e41cde | deliberately not a series format in the screenplay version">
 			<title>
 				<de>Nur wer anruft kann gewinnen %currentyear%</de>
-				<en>You Need to Call to Win %currentyear%</en>
+				<en>You Need to Call In to Win %currentyear%</en>
 			</title>
 			<description>
 				<de>Schäbige Call-In-Show, in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
@@ -1788,7 +1786,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			</jobs>
 			<data flags="129" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="20" available="0" /> <!-- availability triggered by 13cf3270-5458-460e-8360-75e0adc73a49 last episode -->
 			<targetgroupattractivity men="0.75" children="2" teenagers_female="1.5" />
-			<genres maingenre="103" />
+			<genres maingenre="103" subgenres="14" />
 			<blocks value="2" />
 			<price min="1000" max="3000" />
 			<potential min="10" max="30" />

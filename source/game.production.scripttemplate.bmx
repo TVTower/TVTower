@@ -10,6 +10,8 @@ Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.world.worldtime.bmx" 'to access world time
 Import "game.person.base.bmx"
 Import "game.programme.programmerole.bmx"
+Import "game.gamescriptexpression.base.bmx"
+
 
 Struct SScriptTemplateFilter
 	Field skipNotAvailable:Int = True
@@ -171,10 +173,15 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	'reset things used for random data
-	'like placeholders (which are stored there so that children could
-	'reuse it)
+	'reset things used for random data, resolved variables (which are
+	'stored there so that children could reuse it)
 	Method Reset:int()
+		ResetVariables()
+	End Method
+
+
+	'reset (resolved) variables
+	Method ResetVariables:int()
 		if templateVariables then templateVariables.Reset()
 	End Method
 
@@ -198,20 +205,6 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	'returns a title with all placeholders replaced
-	Method GenerateFinalTitle:TLocalizedString()
-		if not templateVariables then return title
-		return templateVariables.ReplacePlaceholders(title)
-	End Method
-
-
-	'returns a description with all placeholders replaced
-	Method GenerateFinalDescription:TLocalizedString()
-		if not templateVariables then return description
-		return templateVariables.ReplacePlaceholders(description)
-	End Method
-
-
 	Method IsAvailable:int()
 		'=== generic availability ===
 
@@ -223,7 +216,7 @@ Type TScriptTemplate Extends TScriptBase
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		if availableScript and not GetScriptExpression().Eval(availableScript)
+		if availableScript and not GameScriptExpression.ParseToTrue(availableScript, self)
 			return False
 		endif
 
