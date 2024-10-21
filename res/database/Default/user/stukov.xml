@@ -116,7 +116,7 @@
 				<en>Alien spacecrafts reveal themselves as giant solar panels - "We always thought they were attacks, but they were just collecting energy for their home planets!" #Area51 #SolarEnergy</en>
 				<pl>Obce statki kosmiczne ujawniają się jako gigantyczne panele słoneczne - "Zawsze myśleliśmy, że to ataki, ale oni po prostu zbierali energię dla swoich planet macierzystych!" #Area51 #SolarEnergy</pl>
 			</description>
-			<data genre="4" price="1.2" quality="63" fictional="1" />
+			<data genre="3" price="1.2" quality="63" fictional="1" />
 			<effects>
 				<effect trigger="happen" type="modifyMovieGenrePopularity" genre="16" valueMin="0.1" valueMax="2.5" />
 			</effects>

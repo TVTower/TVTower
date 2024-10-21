@@ -1,5 +1,6 @@
 SuperStrict
 Import Brl.LinkedList
+Import Brl.StringBuilder
 Import "game.gameobject.bmx"
 Import "Dig/base.util.persongenerator.bmx"
 
@@ -123,19 +124,19 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 
 
 	Method GetFullName:string()
-		if lastName <> ""
-			if title <> ""
-				return title + " " + firstName + " " + lastName
-			else
-				return firstName + " " + lastName
-			endif
-		else
-			if title <> ""
-				return title + " " + firstName
-			else
-				return firstName
-			endif
-		endif
+		Local sb:TStringBuilder = New TStringBuilder()
+		If title 
+			sb.Append(title)
+		EndIf
+		If firstName
+			If sb.Length() > 0 Then sb.Append(" ")
+			sb.Append(firstName)
+		EndIf
+		If lastName
+			If sb.Length() > 0 then sb.Append(" ")
+			sb.Append(lastName)
+		EndIf
+		Return sb.ToString()
 	End Method
 End Type
 

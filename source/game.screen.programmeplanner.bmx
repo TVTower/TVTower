@@ -1497,8 +1497,13 @@ endrem
 				fastNavigateTimer.setInterval( fastNavigateInitialTimer, True )
 			EndIf
 		EndIf
+		'home for going to the current day, up/down for changing by exactly one day
 		If KEYMANAGER.isHit(KEY_HOME)
 			ChangePlanningDay(GetWorldTime().GetDay())
+		ElseIf KEYMANAGER.isHit(KEY_UP)
+			ChangePlanningDay(planningDay-1)
+		ElseIf KEYMANAGER.isHit(KEY_DOWN)
+			ChangePlanningDay(planningDay+1)
 		EndIf
 
 
@@ -1662,6 +1667,22 @@ endrem
 					'for "single licences" we cannot fetch a "next sublicence"
 					else
 						createFromLicence = TProgramme(item.broadcastMaterial).licence
+						'but for multi-productions we can look for the "next" one
+						If createFromLicence.IsCustomProduction() And createFromLicence.GetData().extra
+							Local scriptId:Int = createFromLicence.GetData().extra.GetInt("scriptID")
+							Local origReleaseDate:Long = createFromLicence.GetData().GetReleaseTime()
+							Local replaced:Int = False
+							If scriptId
+								For Local t:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(createFromLicence.GetOwner()).GetProgrammeLicences()
+									If t.IsCustomProduction() And t.GetData().extra And scriptId = t.GetData().extra.GetInt("scriptID")
+										If t.GetData().GetReleaseTime() > origReleaseDate And (Not replaced Or t.GetData().GetReleaseTime() < createFromLicence.GetData().GetReleaseTime())  
+											createFromLicence = t
+											replaced = True
+										EndIf
+									EndIf
+								Next
+							EndIf
+						EndIf
 					endif
 				EndIf
 

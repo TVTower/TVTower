@@ -40,6 +40,19 @@
 			<data quality="6" repetitions="2" duration="5" profit="2500" penalty="4000" fix_infomercial_profit="1" />
 		</ad>
 
+		<ad id="320dcf2f-3cc1-4cdd-af5f-078d984a4ad8" comment="1979-1989 | https://en.wikipedia.org/wiki/Multi-user_dungeon | earlier incarnation of fcc7b834-283c-4ad8-a4db-c5110be687ac (not related, just because of similar name)">
+			<title>
+				<de>M.U.D.</de>
+			</title>
+			<description>
+				<de>Die Mehrspieler-Dungeon-Sensation jetzt auch an einer Universität oder in einem Rechenzentrum in Ihrer Nähe!</de>
+				<en>The multiplayer dungeon sensation now available at a university or computing center near you!</en>
+			</description>
+			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />
+			<availability year_range_from="1979" year_range_to="1989" />
+		</ad>
+
 		<ad id="fcc7b834-283c-4ad8-a4db-c5110be687ac" comment="1990-1993 | https://de.wikipedia.org/wiki/M.U.D.S. | variation of Mad TV 'Logical'">
 			<title>
 				<de>M.O.R.D.S.</de>
@@ -51,7 +64,20 @@
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />
-			<availability year_range_from="1990" year_range_to="1993" /> <!-- different years variations added in constr -->
+			<availability year_range_from="1990" year_range_to="1993" />
+		</ad>
+
+		<ad id="a693205f-9315-4d3f-9cc7-f469651e91f4" comment="1994- | fictional">
+			<title>
+				<de>Level Up Mag</de>
+			</title>
+			<description>
+				<de>Levelt euch up auf den nächsten Level und levelt dann alles nieder! Das Mag mit den vernichtendsten Tips für die neusten und erfolgreichsten MMORPGs.</de>
+				<en>Level up to the next level to level everything down to the ground! The mag with the most crushing tips for the newest and most successful MMORPGs.</en>
+			</description>
+			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />
+			<availability year_range_from="1994" />
 		</ad>
 
 		<ad id="036e8811-5486-4c8a-87a5-6b09983f5661" comment="variation of Mad TV 'La Baguette'">

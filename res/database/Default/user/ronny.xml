@@ -143,7 +143,7 @@
 Willkommen in der Zukunft.</de>
 				<en>[0|Full] introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
 Welcome to the future.</en>
-				<pl>[1|Full] wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
+				<pl>[0|Full] wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
 Witamy w przyszłości.</pl>
 			</description>
 			<staff>
@@ -1042,25 +1042,24 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 		</scripttemplate>
 
 
-		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above">
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above" comment="TODO: episode descriptions">
 			<title>
-				<de>${cntry} von oben</de>
-				<en>Bird's Eye View of ${cntry}</en>
-				<pl>Widok z lotu ptaka na ${cntry}</pl>
+				<de>${maintitle}</de>
 			</title>
 			<description>
-				<de>Erleben Sie atemberaubende Luftaufnahmen von ${cntry}.|${cntry} wie Sie es noch nie gesehen haben.|${cntry} aus einer neuen Perspektive.</de>
-				<en>Experience breathtaking aerial views of ${cntry}.|${cntry} as you have never seen it before.|${cntry} from a new perspective.</en>
-				<pl>Doświadcz zapierających dech w piersiach widoków z lotu ptaka na ${cntry}.|Doświadcz widoków z lotu ptaka na ${cntry}, których jeszcze nigdy wcześniej nie widziałeś.|Doświadcz widoków z lotu ptaka na ${cntry}, z nowej perspektywy.</pl>
+				<de>${maindescription}</de>
 			</description>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-from-above-eps">
 					<title>
-						<de>${cntry}s ${subject}</de>
-						<en>${subject} of ${cntry}</en>
-						<pl>${subject} z lotu ptaka</pl>
+						<de>${episodetitle}</de>
 					</title>
 					<variables>
+						<episodetitle>
+							<de>${cntry}s ${subject}</de>
+							<en>${subject} of ${cntry}</en>
+							<pl>${subject} z lotu ptaka</pl>
+						</episodetitle>
 						<subject>
 							<de>Berge|Flüsse|Städte|Nationalparks|Wälder|Seen|Bahnhöfe|Schlösser|Parks|Inseln|Kirchen|Stadien|Ruinen|Gletscher|Wochenmärkte|Bahnstrecken</de>
 							<en>Mountains|Rivers|Cities|National Parks|Forests|Lakes|Railroad Stations|Castles|Parks|Islands|Churches|Stadiums|Ruins|Glaciers|Farmers' Markets|Railways</en>
@@ -1071,6 +1070,16 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				</scripttemplate>
 			</children>
 			<variables>
+				<maintitle>
+					<de>${cntry} von oben</de>
+					<en>Bird's Eye View of ${cntry}</en>
+					<pl>Widok z lotu ptaka na ${cntry}</pl>
+				</maintitle>
+				<maindescription>
+					<de>Erleben Sie atemberaubende Luftaufnahmen von ${cntry}.|${cntry} wie Sie es noch nie gesehen haben.|${cntry} aus einer neuen Perspektive.</de>
+					<en>Experience breathtaking aerial views of ${cntry}.|${cntry} as you have never seen it before.|${cntry} from a new perspective.</en>
+					<pl>Doświadcz zapierających dech w piersiach widoków z lotu ptaka na ${cntry}.|Doświadcz widoków z lotu ptaka na ${cntry}, których jeszcze nigdy wcześniej nie widziałeś.|Doświadcz widoków z lotu ptaka na ${cntry}, z nowej perspektywy.</pl>
+				</maindescription>
 				<cntry>
 					<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Indien|Chile</de>
 					<en>Germany|Spain|France|Denmark|Sweden|Finland|Norway|Poland|Greece|Italy|Portugal|Brazil|Costa Rica|Canada|Vietnam|Thailand|Japan|Belgium|Nepal|India|Chile</en>

@@ -93,7 +93,7 @@
 			<studio_size min="1" max="2" slope="30" />
 		</scripttemplate>
 
-		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-daytrip">
+		<scripttemplate product="4" licence_type="1" guid="scripttemplate-random-kieferer-daytrip">
 			<title>
 				<de>Kaffeefahrt%MODIFIER%</de>
 				<en>Day Trip%MODIFIER%</en>
@@ -289,7 +289,8 @@ Każdy środek się nada.</pl>
 					<en>Analysts do not believe in a recovery for gold.|An increase in oil production depresses prices.|The cocoa harvest is expected to be particularly poor this year.|Consumption of rare earths surprisingly declines.</en>
 					<pl>Analitycy nie wierzą w ożywienie dla złota.|Wzrost produkcji ropy naftowej obniża ceny.|Oczekuje się, że zbiory kakao będą szczególnie słabe w tym roku.|Zużycie metali ziem rzadkich zaskakująco spada.</pl>
 				</resources3A>
-
+				
+				<germancurrency>${.if:${.worldtime:"year"}>=2002:"Euro":"${.if:${.worldtime:"year"}>=1990:"DM":"Mark"}"}</germancurrency>
 
 				<currency1>
 					<de>Dollar verliert, %CURRENCY1A%|Dollar schwächelt, %CURRENCY1A%</de>
@@ -297,9 +298,9 @@ Każdy środek się nada.</pl>
 					<pl>Dolar traci, %CURRENCY1A%|Dolar traci, %CURRENCY1A%</pl>
 				</currency1>
 				<currency1A>
-					<de>%WORLDTIME:GERMANCURRENCY% gewinnt.|%WORLDTIME:GERMANCURRENCY% schwächelt.|%WORLDTIME:GERMANCURRENCY% profitiert von guten Konjunkturdaten.|%WORLDTIME:GERMANCURRENCY% profitiert von einem Rückgang der Staatsverschuldung.|%WORLDTIME:GERMANCURRENCY% gewinnt stark, türkische Lira im Sturzflug.</de>
-					<en>%WORLDTIME:GERMANCURRENCY% gains.|%WORLDTIME:GERMANCURRENCY% sheds.|%WORLDTIME:GERMANCURRENCY% benefits from good economic data.|%WORLDTIME:GERMANCURRENCY% benefits from a decline in government debt.|%WORLDTIME:GERMANCURRENCY% gains strongly, Turkish lira nosedives.</en>
-					<pl>%WORLDTIME:GERMANCURRENCY% zyskuje.|%WORLDTIME:GERMANCURRENCY% sheds.|%WORLDTIME:GERMANCURRENCY% korzysta z dobrych danych gospodarczych.|%WORLDTIME:GERMANCURRENCY% korzysta ze spadku długu publicznego.|%WORLDTIME:GERMANCURRENCY% silnie zyskuje, turecka lira spada.</pl>
+					<de>${germancurrency} gewinnt.|${germancurrency} schwächelt.|${germancurrency} profitiert von guten Konjunkturdaten.|${germancurrency} profitiert von einem Rückgang der Staatsverschuldung.|${germancurrency} gewinnt stark, türkische Lira im Sturzflug.</de>
+					<en>${germancurrency} gains.|${germancurrency} sheds.|${germancurrency} benefits from good economic data.|${germancurrency} benefits from a decline in government debt.|${germancurrency} gains strongly, Turkish lira nosedives.</en>
+					<pl>${germancurrency} zyskuje.|${germancurrency} sheds.|${germancurrency} korzysta z dobrych danych gospodarczych.|${germancurrency} korzysta ze spadku długu publicznego.|${germancurrency} silnie zyskuje, turecka lira spada.</pl>
 				</currency1A>
 
 				<currency2>
@@ -308,9 +309,9 @@ Każdy środek się nada.</pl>
 					<pl>Dolar bez zmian, %CURRENCY2A%|Dolar utrzymuje się, %CURRENCY2A%</pl>	
 				</currency2>
 				<currency2A>
-					<de>%WORLDTIME:GERMANCURRENCY% legt leicht zu, Schweizer Franken weiterhin stark.|Inflation sorgt für einen kaum veränderten %WORLDTIME:GERMANCURRENCY%.|%WORLDTIME:GERMANCURRENCY% gibt in breiter Front nach.|Sorge um britisches Pfund.</de>
-					<en>%WORLDTIME:GERMANCURRENCY% gains slightly, Swiss franc remains strong.|Inflation provides for a barely changed %WORLDTIME:GERMANCURRENCY%.|%WORLDTIME:GERMANCURRENCY% weakening across the board.|Concern about British pound.</en>
-					<pl>%WORLDTIME:GERMANCURRENCY% nieznacznie zyskuje, frank szwajcarski pozostaje mocny.|Inflacja sprawia, że %WORLDTIME:GERMANCURRENCY% prawie się nie zmienia.|%WORLDTIME:GERMANCURRENCY% osłabia się we wszystkich kierunkach.|Zaniepokojenie funtem brytyjskim.</pl>
+					<de>${germancurrency} legt leicht zu, Schweizer Franken weiterhin stark.|Inflation sorgt für einen kaum veränderten ${germancurrency}.|${germancurrency} gibt in breiter Front nach.|Sorge um britisches Pfund.</de>
+					<en>${germancurrency} gains slightly, Swiss franc remains strong.|Inflation provides for a barely changed ${germancurrency}.|${germancurrency} weakening across the board.|Concern about British pound.</en>
+					<pl>${germancurrency} nieznacznie zyskuje, frank szwajcarski pozostaje mocny.|Inflacja sprawia, że ${germancurrency} prawie się nie zmienia.|${germancurrency} osłabia się we wszystkich kierunkach.|Zaniepokojenie funtem brytyjskim.</pl>
 				</currency2A>
 
 				<currency3>
@@ -319,9 +320,9 @@ Każdy środek się nada.</pl>
 					<pl>Dolar rośnie, %CURRENCY3A%|Dolar na plusie, %CURRENCY3A%</pl>
 				</currency3>
 				<currency3A>
-					<de>%WORLDTIME:GERMANCURRENCY% gibt Vortagesgewinn ab.|%WORLDTIME:GERMANCURRENCY% weiterhin in starker Verfassung.|höhere Inflation sorgt für Unsicherheit bei %WORLDTIME:GERMANCURRENCY%.|Yen überraschend stark.</de>
-					<en>%WORLDTIME:GERMANCURRENCY% gives up previous day's gain.|%WORLDTIME:GERMANCURRENCY% remains in robust condition.|higher inflation causes uncertainty for the %WORLDTIME:GERMANCURRENCY%.|Yen surprisingly strong.</en>
-					<pl>%WORLDTIME:GERMANCURRENCY% oddaje zyski z poprzedniego dnia.|%WORLDTIME:GERMANCURRENCY% pozostaje w dobrej kondycji.|Wyższa inflacja powoduje niepewność dla %WORLDTIME:GERMANCURRENCY%.|Jen zaskakująco silny.</pl>
+					<de>${germancurrency} gibt Vortagesgewinn ab.|${germancurrency} weiterhin in starker Verfassung.|höhere Inflation sorgt für Unsicherheit bei ${germancurrency}.|Yen überraschend stark.</de>
+					<en>${germancurrency} gives up previous day's gain.|${germancurrency} remains in robust condition.|higher inflation causes uncertainty for the ${germancurrency}.|Yen surprisingly strong.</en>
+					<pl>${germancurrency} oddaje zyski z poprzedniego dnia.|${germancurrency} pozostaje w dobrej kondycji.|Wyższa inflacja powoduje niepewność dla ${germancurrency}.|Jen zaskakująco silny.</pl>
 				</currency3A>
 
 

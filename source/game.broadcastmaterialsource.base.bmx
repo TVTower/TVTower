@@ -4,10 +4,10 @@ Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.modifier.base.bmx"
 Import "game.gameinformation.base.bmx"
-Import "Dig/base.util.scriptexpression.bmx"
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.bitmask.bmx"
 Import "common.misc.templatevariables.bmx" 'for replacement function
+Import "game.gamescriptexpression.base.bmx"
 
 
 'could be done as "interface"
@@ -235,30 +235,20 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
+	Method _ReplaceScriptExpressions:TLocalizedString(text:TLocalizedString, useTime:Long = 0)
 		Local result:TLocalizedString = text.copy()
 		if useTime = 0 then useTime = GetWorldTime().GetTimeGone()
 
-		'print "_ReplacePlaceholders: " + text.Get()
-		'for each defined language we check for existent placeholders
-		'which then get replaced by a random string stored in the
-		'variable with the same name
+		'print "_ReplaceScriptExpressions: " + text.Get()
+		'for each defined language we check for existent script expressions
+		'which can contain variables or other logic.
 		For Local langID:Int = EachIn text.GetLanguageIDs()
-			Local value:String = text.Get(langID)
-			Local placeHolders:String[] = StringHelper.ExtractPlaceholdersCombined(value, True)
-			If placeHolders.length = 0 Then Continue
-
-			For Local placeHolder:String = EachIn placeHolders
-				Local replacement:String = ""
-				Local replaced:Int = False
-				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement, useTime)
-				If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
-				'replace if some content was filled in
-				If replaced Then TTemplateVariables.ReplacePlaceholderInText(value, placeHolder, replacement)
-				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
-			Next
-
-			result.Set(value, langID)
+			Local valueOld:String = text.Get(langID)
+			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)
+			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, context)
+			If valueOLD <> valueNew.Hash()
+				result.Set(valueNew.ToString(), langID)
+			EndIf
 		Next
 		Return result
 	End Method

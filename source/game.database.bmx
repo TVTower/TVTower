@@ -429,6 +429,269 @@ Type TDatabaseLoader
 
 
 	'=== HELPER ===
+	'migrate script expressions
+	Global convertSB:TStringBuilder = New TStringBuilder()
+	Global convertOldNewMap:TStringMap = New TStringMap
+
+	Function ConvertOldScriptExpression:Int(ls:TLocalizedString, changedSomething:Int Var)
+
+		Local changeCount:Int = 0
+		For local i:Int = 0 until ls.valueStrings.length
+			changedSomething = False
+			Local newS:String = ConvertOldScriptExpression(ls.valueStrings[i], changedSomething)
+			if changedSomething
+				ls.valueStrings[i] = newS
+				changeCount :+ 1
+			EndIf
+		Next
+		changedSomething = (changeCount > 0)
+		Return changeCount
+	End Function
+
+
+	Function ConvertOldScriptExpression:String(expression:string, changedSomething:Int Var)
+		Return ConvertOldScriptExpression(expression, convertOldNewMap, convertSB, changedsomething)
+	End function
+
+
+	Function ConvertOldScriptExpression:String(expression:string, oldNewMapping:TStringMap, scriptExpressionConverterSB:TStringBuilder, changedSomething:Int Var)
+		changedsomething = False
+		'store old so we can identify if it was changed during conversion
+		Local expressionBefore:String = expression
+		
+		'type 1: [1|Full] ... only in cast
+		'type 2: %PERSONGENERATOR_NAME(country,gender)%
+		'type 3: %WORLDTIME:wrongSubCommandName%
+		'type 4: %variable%
+		'type 5: %person|1|Full%  -- not in use in _our_ db files
+
+		'type 1:
+		'-------
+		For local i:int = 0 until 15
+			if expression.Find("["+i) >= 0
+				expression = expression.Replace("["+i+"|Full]", "${.self:~qcast~q:"+i+":~qfullname~q}")
+				expression = expression.Replace("["+i+"|First]", "${.self:~qcast~q:"+i+":~qfirstname~q}")
+				expression = expression.Replace("["+i+"|Last]", "${.self:~qcast~q:"+i+":~qlastname~q}")
+				expression = expression.Replace("["+i+"|Nick]", "${.self:~qcast~q:"+i+":~qnickname~q}")
+			EndIf
+
+			'attention: role(name) NUMBER to INDEX! (i-1)
+			if expression.Find("%ROLENAME"+i) >= 0
+				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfirstname~q}")
+			EndIf
+			if expression.Find("%ROLE"+i) >= 0
+				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfullname~q}")
+			EndIf
+		Next
+
+			
+		'type 2:
+		'-------
+		'replace %PERSONGENERATOR_...
+		local personGenPos:Int = expression.Find("%PERSONGENERATOR_")
+		if personGenPos >= 0
+			While personGenPos >= 0
+				Local personGenEndPos:Int = expression.Find(")%", personGenPos)
+				Local sub:String = expression[personGenPos .. personGenEndPos + 2]
+				sub = sub.replace("%PERSONGENERATOR_", "${.persongenerator:~q")
+				sub = sub.replace("(","~q:~q")
+				sub = sub.replace(",","~q:")
+				sub = sub.replace(")%","}")
+				sub = sub.replace("unk", "") 'remove "unknown" country code 
+				expression = expression[0 .. personGenPos] + sub +  expression[personGenEndPos + 2 ..]
+
+				'search next
+				personGenPos = expression.Find("%PERSONGENERATOR_")
+			Wend
+		EndIf
+
+
+		'type 3:
+		'-------
+		'replace renamed subcommands
+		if expression.Find("%WORLDTIME") >= 0
+			expression = expression.Replace("%WORLDTIME:GAMEDAY%", "${.worldtime:~qdayplaying~q}")
+			'officially only used in kieferer.xml - stock exchange news
+			expression = expression.Replace("%WORLDTIME:GERMANCURRENCY%", "${.if:${.worldtime:~qyear~q}>=2002:~qEuro~q:~q${.if:${.worldtime:~qyear~q}>=1990:~qDM~q:~qMark~q}~q}")
+			'not used in official dbs (so only in potential user databases)
+			expression = expression.Replace("%WORLDTIME:GERMANCAPITAL%", "${.if:${.worldtime:~qyear~q}>=1990:~qBerlin~q:~qBonn~q}")
+		EndIf
+		
+
+		'in type 4 we "return", so update changed information here
+		If expressionBefore <> expression
+			changedSomething = True
+		EndIf
+
+
+		'type 4:
+		'-------
+
+		'check if at least 2 "%" (old expression sign) exist
+		local percentCount:Int
+		For local i:int = 0 until expression.length
+			if expression[i] = Asc("%") 
+				percentCount :+ 1
+			endif
+			if percentCount >= 2 then exit
+		Next
+		if percentCount < 2 Then Return expression
+
+
+		if not scriptExpressionConverterSB Then scriptExpressionConverterSB = New TStringBuilder()
+		scriptExpressionConverterSB.SetLength(0)
+
+		Local expressionStartPos:Int = -1
+		Local ch:Int
+		Local appendChar:Int = True
+		For local i:int = 0 until expression.length
+			ch = expression[i]
+			if ch = Asc("%")
+				'expression started and end found? - interpret it
+				if expressionStartPos >= 0
+					scriptExpressionConverterSB.Append("${")
+					'local identifier:String = expression[expressionStartPos +1 .. i]
+					local identifierLS:String = expression[expressionStartPos +1 .. i].ToLower()
+					If oldNewMapping.Contains(identifierLS)
+						scriptExpressionConverterSB.Append( oldNewMapping.ValueForKey(identifierLS) )
+					Else
+						'prepend a "." to make it a function call, replace ":" with "_"
+						'-> "STATIONMAP:RANDOMCITY" becomes ".stationmap:~qrandomcity~q"
+						if identifierLS.Find(":") > 0
+							scriptExpressionConverterSB.Append("." + expression[expressionStartPos +1 .. i].Replace(":", ":~q"))
+							scriptExpressionConverterSB.Append("~q")
+						else
+							scriptExpressionConverterSB.Append(expression[expressionStartPos +1 .. i])
+						endif
+					EndIf
+					scriptExpressionConverterSB.Append("}")
+					expressionStartPos = -1
+
+					changedSomething = True
+
+				'start found
+				else
+					expressionStartPos = i
+				endif
+
+				'do not add this % char to the result...
+				continue
+			EndIf
+
+			'outside of an expression?
+			If expressionStartPos < 0
+				scriptExpressionConverterSB.AppendChar(ch)
+			EndIf
+
+			'non-expression-allowed char found?
+			If expressionStartPos >= 0
+				if not (..
+					ch = Asc(":") ..                    ' DOUBLE COLON --- STATIONMAP:BLA
+					Or ch = Asc("_") ..                 ' UNDERSCORE
+					Or ( ch >= 48 And ch <= 57 ) ..     ' NUMBER
+					Or ( ch >= 65 And ch <= 90 ) ..     ' UPPERCASE
+					Or ( ch >= 97 And ch <= 122 ) ..    ' LOWERCASE
+					)
+				
+					scriptExpressionConverterSB.Append(expression[expressionStartPos .. i +1]) 'add all the "invalid expression"-stuff we found until now
+					expressionStartPos = -1
+				EndIf
+			endif
+		Next
+
+		'print "~q"+expression+"~q  =>  ~q" + scriptExpressionConverterSB.ToString() + "~q"
+		
+		return scriptExpressionConverterSB.ToString()
+	End Function
+
+
+	Function ConvertOldAvailableScript:String(expression:string)
+		'skip if the expression contains ${ already.
+		'yes, this also converts "4 > 10" (at least tries to...,)
+		if expression.Find("${") >= 0 Then Return expression
+
+		'sample scripts (used in the DBs at the time of writing this) 
+		'TIME_YEAR=2017
+		'TIME_YEAR=1987 && TIME_MONTH=1
+		'TIME_YEAR=1987 && TIME_WEEKDAY=0 && TIME_HOUR>=12
+		'TIME_MONTH=1 || TIME_MONTH=7
+		
+		
+		'split by "||" or "&&" connectors:
+		Local parts:String[]
+		Local connectors:String[]
+		if expression.Find("||") >= 0 or expression.Find("&&") >= 0
+			local lastPos:Int
+			local pos:Int
+			Repeat
+				pos = expression.Find("||", lastPos)
+				If pos = -1 
+					pos = expression.Find("&&", lastPos)
+				EndIf
+				
+				If pos >= 0
+					parts :+ [expression[lastPos .. pos-1].Trim()]
+					connectors :+ [expression[pos .. pos + 2]]
+					lastPos = pos + 2 '|| and && have a length of 2
+				EndIf
+			Until pos = -1
+			'append missing parts
+			parts :+ [expression[lastPos ..].Trim()]
+		Else
+			parts = [expression]
+		EndIf
+		
+		'instead of trying to play smart we simply replace hardcoded strings...
+		For Local i:int = 0 until parts.length
+			'ensure to replace "DAYxxx" before "DAY", same for "YEAR"
+			parts[i] = parts[i].Replace("TIME_DAYSPLAYED", "${.worldtime:~qdaysplayed~q}")
+			parts[i] = parts[i].Replace("TIME_DAYOFMONTH", "${.worldtime:~qdayofmonth~q}")
+			parts[i] = parts[i].Replace("TIME_DAYOFYEAR", "${.worldtime:~qdayofyear~q}")
+			parts[i] = parts[i].Replace("TIME_DAY", "${.worldtime:~qday~q}")
+			parts[i] = parts[i].Replace("TIME_YEARSPLAYED", "${.worldtime:~qyearsplayed~q}")
+			parts[i] = parts[i].Replace("TIME_YEAR", "${.worldtime:~qyear~q}")
+			parts[i] = parts[i].Replace("TIME_HOUR", "${.worldtime:~qhour~q}")
+			parts[i] = parts[i].Replace("TIME_MINUTE", "${.worldtime:~qminute~q}")
+			parts[i] = parts[i].Replace("TIME_WEEKDAY", "${.worldtime:~qweekday~q}")
+			parts[i] = parts[i].Replace("TIME_SEASON", "${.worldtime:~qseason~q}")
+			parts[i] = parts[i].Replace("TIME_MONTH", "${.worldtime:~qmonth~q}")
+			parts[i] = parts[i].Replace("TIME_ISNIGHT", "${.worldtime:~qisnight~q}")
+			parts[i] = parts[i].Replace("TIME_ISDAWN", "${.worldtime:~qisdawn~q}")
+			parts[i] = parts[i].Replace("TIME_ISDAY", "${.worldtime:~qisday~q}")
+			parts[i] = parts[i].Replace("TIME_ISDUSK", "${.worldtime:~qisdusk~q}")
+			
+			parts[i] = parts[i].Replace("}=", "}==") 'replace single "=" sign
+		Next
+		
+		'reconnect things
+
+		if connectors.length = 0
+			'ensure to at least wrap it one time! 
+			Return "${" + parts[0] + "}"
+		ElseIf connectors.length = parts.length - 1 'a CONN b CONN c -> 3 elements, 2 connectors)
+			convertSB.SetLength(0)
+			convertSB.Append("${")
+			For local i:int = 0 until connectors.length
+				If connectors[i] = "&&"
+					convertSB.append("${.and:")
+				Else 'Elseif connectors[i] = "||" - already ensured to only contain && or ||
+					convertSB.append("${.or:")
+				EndIf
+
+				convertSB.append(parts[i])
+				convertSB.append(":")
+				convertSB.append(parts[i+1])
+				convertSB.append("}")
+			Next
+			convertSB.append("}")
+			Return convertSB.ToString()
+		Else
+			TLogger.Log("TDatabaseLoader.ConvertOldAvailableScript", "Failed to convert script ~q"+expression+"~q, incorrect expression / too few connectors.", LOG_ERROR)
+			Return ""
+		Endif
+		
+	End Function
+
 
 	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
 		Local GUID:String = xml.FindValueLC(node,"id", "")
@@ -782,9 +1045,14 @@ Type TDatabaseLoader
 		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
 
 		If newsEventTemplate.availableScript
-			If Not GetScriptExpression().IsValid(newsEventTemplate.availableScript)
+			newsEventTemplate.availableScript = ConvertOldAvailableScript(newsEventTemplate.availableScript)
+
+			Local parsedToken:SToken
+			Local result:Int = GameScriptExpression.ParseToTrue(newsEventTemplate.availableScript, newsEventTemplate, parsedToken)
+			if parsedToken.id = TK_ERROR
 				TLogger.Log("DB", "Script of NewsEventTemplate ~q" + newsEventTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
-				TLogger.Log("DB", GetScriptExpression()._error, LOG_WARNING)
+				TLogger.Log("DB", "Script: " + newsEventTemplate.availableScript, LOG_WARNING)
+				TLogger.Log("DB", "Error : " + parsedToken.GetValueText(), LOG_WARNING)
 			EndIf
 		EndIf
 
@@ -810,10 +1078,10 @@ Type TDatabaseLoader
 		For Local nodeVariable:TxmlNode = EachIn xml.GetNodeChildElements(nodeVariables)
 			'each variable is stored as a localizedstring
 			Local varName:String = nodeVariable.getName()
-			Local varString:TLocalizedString = GetLocalizedStringFromNode(nodeVariable)
+			If Not varName Then Continue
 
-			'skip invalid
-			If Not varName Or Not varString Then Continue
+			Local varString:TLocalizedString = GetLocalizedStringFromNode(nodeVariable)
+			If Not varString Then Continue
 
 			'create if missing
 			newsEventTemplate.CreateTemplateVariables()
@@ -1090,9 +1358,14 @@ Type TDatabaseLoader
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
 
 		If adContract.availableScript
-			If Not GetScriptExpression().IsValid(adContract.availableScript)
+			adContract.availableScript = ConvertOldAvailableScript(adContract.availableScript)
+		
+			Local parsedToken:SToken
+			Local result:Int = GameScriptExpression.ParseToTrue(adContract.availableScript, adContract, parsedToken)
+			if parsedToken.id = TK_ERROR
 				TLogger.Log("DB", "Script of AdContract ~q" + adContract.GetGUID() + "~q contains errors:", LOG_WARNING)
-				TLogger.Log("DB", GetScriptExpression()._error, LOG_WARNING)
+				TLogger.Log("DB", "Script: " + adContract.availableScript, LOG_WARNING)
+				TLogger.Log("DB", "Error : " + parsedToken.GetValueText(), LOG_WARNING)
 			EndIf
 		EndIf
 
@@ -1955,6 +2228,17 @@ Type TDatabaseLoader
 		scriptTemplate.availableYearRangeFrom = data.GetInt("year_range_from", scriptTemplate.availableYearRangeFrom)
 		scriptTemplate.availableYearRangeTo = data.GetInt("year_range_to", scriptTemplate.availableYearRangeTo)
 
+		If scriptTemplate.availableScript
+			scriptTemplate.availableScript = ConvertOldAvailableScript(scriptTemplate.availableScript)
+
+			Local parsedToken:SToken
+			Local result:Int = GameScriptExpression.ParseToTrue(scriptTemplate.availableScript, scriptTemplate, parsedToken)
+			if parsedToken.id = TK_ERROR
+				TLogger.Log("DB", "Script of ScriptTemplate ~q" + scriptTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
+				TLogger.Log("DB", "Script: " + scriptTemplate.availableScript, LOG_WARNING)
+				TLogger.Log("DB", "Error : " + parsedToken.GetValueText(), LOG_WARNING)
+			EndIf
+		EndIf
 
 		Rem
 			auto correction cannot be done this way, as a show could
@@ -2484,25 +2768,50 @@ Type TDatabaseLoader
 	Function GetLocalizedStringFromNode:TLocalizedString(node:TxmlNode)
 		If Not node Then Return Null
 
-		Local foundEntry:Int = True
-		Local localized:TLocalizedString = New TLocalizedString
-		For Local nodeLangEntry:TxmlNode = EachIn TxmlHelper.GetNodeChildElements(node)
+		Local localized:TLocalizedString
+		Local childNodes:TList = TxmlHelper.GetNodeChildElements(node)
+		'if no languages were used:
+		'<var1>
+		'  <de>bla</de>
+		'  <en>bla</en>
+		'</var>
+		'then use the
+		'node itself so you can use a global value
+		'<var1>bla</var1> 
+		If childNodes.Count() = 0
+			childNodes.Addlast(node)
+		EndIf
+		
+		For Local nodeLangEntry:TxmlNode = EachIn childNodes
 			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
 			Local value:String = nodeLangEntry.getContent().Replace("~~n", "~n") '.Trim()
+			
 
-			If value <> ""
-				Local languageID:Int = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
+			Local migratedScriptExpression:Int
+			Global migratedScriptExpressionCount:Int
+			'if value.find("%town%") >= 0 Then Print "Check: " + value
+			value = ConvertOldScriptExpression(value, migratedScriptExpression)
+			if migratedScriptExpression
+				migratedScriptExpressionCount :+ 1
+				'print "migrated script expression: #"+ migratedScriptExpressionCount +" => " + value
+			EndIf
+			
 
-				If languageID <> -1
-					localized.Set(value, languageID)
-					foundEntry = True
-				Else
-					TLogger.Log("TDATABASE.LOAD()", "Found and ignored localization entry for unsupported language " + nodeLangEntry.GetName().ToLower(), LOG_LOADING|LOG_WARNING)
-				EndIf
+			Local languageID:Int = -1
+			if nodeLangEntry = node 'global definition?
+				languageID = TLocalization.defaultLanguageID
+			else
+				languageID = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
+			EndIf
+
+			If languageID <> -1
+				if not localized then localized = New TLocalizedString
+				localized.Set(value, languageID)
+			Else
+				TLogger.Log("TDATABASE.LOAD()", "Found and ignored localization entry for unsupported language " + nodeLangEntry.GetName().ToLower(), LOG_LOADING|LOG_WARNING)
 			EndIf
 		Next
 
-		If Not foundEntry Then Return Null
 		Return localized
 	End Function
 
