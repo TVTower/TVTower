@@ -4,9 +4,9 @@
 	<scripttemplates>
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mysteriousisland">
 			<title>
-				<de>%ADJECTIVE% Insel</de>
-				<en>%ADJECTIVE% Island</en>
-				<pl>%ADJECTIVE% Wyspa</pl>
+				<de>${ADJECTIVE} Insel</de>
+				<en>${ADJECTIVE} Island</en>
+				<pl>${ADJECTIVE} Wyspa</pl>
 			</title>
 			<variables>
 				<adjective>
@@ -41,9 +41,9 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mummyattack">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<description>
 				<de>Ein ganz normaler Teenagerausflug endet in einem Besäufnis und einem Wald voller Untoter.</de>
@@ -52,9 +52,9 @@
 			</description>
 			<variables>
 				<title>
-					<de>%WHO% greifen an|Angriff der %WHO%|Rache der %WHO%|Umzingelt von %WHOD%|Wald der %WHO%</de>
-					<en>%WHO% Attack|Assault of the %WHO%|Revenge of the %WHO%|Surrounded by %WHOD%|Forest of the %WHO%</en>
-					<pl>Atak %WHO%|Zemsta %WHO%|Las pełen %WHO%|Zasadzka %WHO%|Siedziba %WHO%</pl>
+					<de>${WHO} greifen an|Angriff der ${WHO}|Rache der ${WHO}|Umzingelt von ${WHOD}|Wald der ${WHO}</de>
+					<en>${WHO} Attack|Assault of the ${WHO}|Revenge of the ${WHO}|Surrounded by ${WHOD}|Forest of the ${WHO}</en>
+					<pl>Atak ${WHO}|Zemsta ${WHO}|Las pełen ${WHO}|Zasadzka ${WHO}|Siedziba ${WHO}</pl>
 				</title>
 				<whoi>
 					<de>Mumien|Zombies</de>
@@ -62,14 +62,14 @@
 					<pl>mummii|zombie</pl>
 				</whoi>
 				<who>
-					<de>%WHOI%|Vampire|Geister|Monster|Werwölfe</de>
-					<en>%WHOI%|Vampires|Ghosts|Monsters|Werewolves</en>
-					<pl>%WHOI%|wampirów|duchów|potworów|wilkorów</pl>
+					<de>${WHOI}|Vampire|Geister|Monster|Werwölfe</de>
+					<en>${WHOI}|Vampires|Ghosts|Monsters|Werewolves</en>
+					<pl>${WHOI}|wampirów|duchów|potworów|wilkorów</pl>
 				</who>
 				<whod>
-					<de>%WHOI%|Vampiren|Geistern|Monstern|Werwölfen</de>
-					<en>%WHOI%|Vampires|Ghosts|Monsters|Werewolves</en>
-					<pl>%WHOI%|wampirów|duchów|potworów|wilkorów</pl>
+					<de>${WHOI}|Vampiren|Geistern|Monstern|Werwölfen</de>
+					<en>${WHOI}|Vampires|Ghosts|Monsters|Werewolves</en>
+					<pl>${WHOI}|wampirów|duchów|potworów|wilkorów</pl>
 				</whod>
 			</variables>
 			<jobs>
@@ -95,9 +95,9 @@
 
 		<scripttemplate product="4" licence_type="1" guid="scripttemplate-random-kieferer-daytrip">
 			<title>
-				<de>Kaffeefahrt%MODIFIER%</de>
-				<en>Day Trip%MODIFIER%</en>
-				<pl>Jednodniowa wycieczka%MODIFIER%</pl>
+				<de>Kaffeefahrt${MODIFIER}</de>
+				<en>Day Trip${MODIFIER}</en>
+				<pl>Jednodniowa wycieczka${MODIFIER}</pl>
 			</title>
 			<description>
 				<de>Eine Rentnergruppe probt den Aufstand. Sie wollen eine Kaffeefahrt ohne Heizdecken.
@@ -109,12 +109,12 @@ Organizator wycieczki ich oszukuje.</pl>
 			</description>
 			<variables>
 				<modifier>
-					<de>| nach %RANDOMCITY%</de>
-					<en>| to %RANDOMCITY%</en>
-					<pl>| do %RANDOMCITY%</pl>
+					<de>| nach ${RANDOMCITY}</de>
+					<en>| to ${RANDOMCITY}</en>
+					<pl>| do ${RANDOMCITY}</pl>
 				</modifier>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</randomcity>
 			</variables>
 
@@ -137,27 +137,27 @@ Organizator wycieczki ich oszukuje.</pl>
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-goldrush">
 			<title>
-				<de>Goldrausch%MODIFIER%</de>
-				<en>Gold Rush%MODIFIER%</en>
-				<pl>%MODIFIER%. Wybuchła gorączka złota</pl>
+				<de>Goldrausch${MODIFIER}</de>
+				<en>Gold Rush${MODIFIER}</en>
+				<pl>${MODIFIER}. Wybuchła gorączka złota</pl>
 			</title>
 			<description>
-				<de>Rivalisierende Goldschürfer wetteifern in %RANDOMCITY% um die größten Goldfunde.
+				<de>Rivalisierende Goldschürfer wetteifern in ${RANDOMCITY} um die größten Goldfunde.
 Dabei sind ihnen alle Mittel recht.</de>
-				<en>Rival gold diggers compete for the biggest gold finds in %RANDOMCITY%.
+				<en>Rival gold diggers compete for the biggest gold finds in ${RANDOMCITY}.
 Any means will do.</en>
-				<pl>%RANDOMCITY%, w tym mięście rywalizujący poszukiwacze złota rywalizują o największe znaleziska złota.
+				<pl>${RANDOMCITY}, w tym mięście rywalizujący poszukiwacze złota rywalizują o największe znaleziska złota.
 Każdy środek się nada.</pl>
 			</description>
 			<variables>
 				<modifier>
-					<de>| in %RANDOMCITY%</de>
-					<en>| in %RANDOMCITY%</en>
-					<pl>|%RANDOMCITY%</pl>
+					<de>| in ${RANDOMCITY}</de>
+					<en>| in ${RANDOMCITY}</en>
+					<pl>|${RANDOMCITY}</pl>
 				</modifier>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%|Prosperous Creek</de>
-					<pl>%STATIONMAP:RANDOMCITY%|Prosperujący Potok</pl>
+					<de>${.stationmap:"randomcity"}|Prosperous Creek</de>
+					<pl>${.stationmap:"randomcity"}|Prosperujący Potok</pl>
 				</randomcity>
 			</variables>
 			<jobs>
@@ -188,79 +188,79 @@ Każdy środek się nada.</pl>
 		</news>
 		<news id="news-stockexchange-generic" type="2" thread_id="news-stockexchange-thread" creator="" created_by="Kieferer">
 			<title>
-				<de>Börsennachrichten für Tag %WORLDTIME:GAMEDAY%</de>
-				<en>Stock Exchange News for day %WORLDTIME:GAMEDAY%</en>
-				<pl>Wiadomości giełdowe z dnia %WORLDTIME:GAMEDAY%</pl>
+				<de>Börsennachrichten für Tag ${.worldtime:"dayplaying"}</de>
+				<en>Stock Exchange News for day ${.worldtime:"dayplaying"}</en>
+				<pl>Wiadomości giełdowe z dnia ${.worldtime:"dayplaying"}</pl>
 			</title>
 			<description>
-				<de>%CONTENT%</de>
-				<en>%CONTENT%</en>
-				<pl>%CONTENT%</pl>
+				<de>${CONTENT}</de>
+				<en>${CONTENT}</en>
+				<pl>${CONTENT}</pl>
 			</description>
 
 			<variables>
 				<content>
-					<de>%STOCKEXCHANGE% %RESOURCES%|%STOCKEXCHANGE% %CURRENCY%</de>
-					<en>%STOCKEXCHANGE% %RESOURCES%|%STOCKEXCHANGE% %CURRENCY%</en>
-					<pl>%STOCKEXCHANGE% %RESOURCES%|%STOCKEXCHANGE% %CURRENCY%</pl>
+					<de>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</de>
+					<en>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</en>
+					<pl>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</pl>
 				</content>
 
 				<!-- one of the three options - for each -->
 				<stockexchange>
-					<de>%STOCKEXCHANGE1%|%STOCKEXCHANGE2%|%STOCKEXCHANGE3%</de>
-					<en>%STOCKEXCHANGE1%|%STOCKEXCHANGE2%|%STOCKEXCHANGE3%</en>
-					<pl>%STOCKEXCHANGE1%|%STOCKEXCHANGE2%|%STOCKEXCHANGE3%</pl>
+					<de>${STOCKEXCHANGE1}|${STOCKEXCHANGE2}|${STOCKEXCHANGE3}</de>
+					<en>${STOCKEXCHANGE1}|${STOCKEXCHANGE2}|${STOCKEXCHANGE3}</en>
+					<pl>${STOCKEXCHANGE1}|${STOCKEXCHANGE2}|${STOCKEXCHANGE3}</pl>
 				</stockexchange>
 				<resources>
-					<de>%RESOURCES1%|%RESOURCES2%|%RESOURCES3%</de>
-					<en>%RESOURCES1%|%RESOURCES2%|%RESOURCES3%</en>
-					<pl>%RESOURCES1%|%RESOURCES2%|%RESOURCES3%</pl>
+					<de>${RESOURCES1}|${RESOURCES2}|${RESOURCES3}</de>
+					<en>${RESOURCES1}|${RESOURCES2}|${RESOURCES3}</en>
+					<pl>${RESOURCES1}|${RESOURCES2}|${RESOURCES3}</pl>
 				</resources>
 				<currency>
-					<de>%CURRENCY1%|%CURRENCY2%|%CURRENCY3%</de>
-					<en>%CURRENCY1%|%CURRENCY2%|%CURRENCY3%</en>
-					<pl>%CURRENCY1%|%CURRENCY2%|%CURRENCY3%</pl>
+					<de>${CURRENCY1}|${CURRENCY2}|${CURRENCY3}</de>
+					<en>${CURRENCY1}|${CURRENCY2}|${CURRENCY3}</en>
+					<pl>${CURRENCY1}|${CURRENCY2}|${CURRENCY3}</pl>
 				</currency>
 
 
 				<stockexchange1>
-					<de>Der Aktienindex DUX startet heute bei lebhaftem Handel im Plus. %STOCKEXCHANGE1A%|Die Zeichen des DUX stehen Dank regem Handel auf Plus. %STOCKEXCHANGE1A%</de>
-					<en>Today, the stock index DUX starts with brisk trading in the plus. %STOCKEXCHANGE1A%|The signs of the DUX are on the plus side thanks to brisk trading. %STOCKEXCHANGE1A%</en>
-					<pl>Dziś indeks giełdowy DUX rozpoczyna notowania na plusie. %STOCKEXCHANGE1A%|Znaki indeksu DUX są na plusie dzięki dynamicznemu handlowi. %STOCKEXCHANGE1A%</pl>
+					<de>Der Aktienindex DUX startet heute bei lebhaftem Handel im Plus. ${STOCKEXCHANGE1A}|Die Zeichen des DUX stehen Dank regem Handel auf Plus. ${STOCKEXCHANGE1A}</de>
+					<en>Today, the stock index DUX starts with brisk trading in the plus. ${STOCKEXCHANGE1A}|The signs of the DUX are on the plus side thanks to brisk trading. ${STOCKEXCHANGE1A}</en>
+					<pl>Dziś indeks giełdowy DUX rozpoczyna notowania na plusie. ${STOCKEXCHANGE1A}|Znaki indeksu DUX są na plusie dzięki dynamicznemu handlowi. ${STOCKEXCHANGE1A}</pl>
 				</stockexchange1>
 				<stockexchange1A>
-					<de>Gute Zahlen bei den %VALUES%n sorgen für Phantasie und steigende Kurse.|Gute Analysteneinschätzungen bei den %VALUES%n beflügeln die Kurse.|Gute Konjunkturdaten befeuern die guten Aussichten.|Gute Arbeitsmarktdaten sorgen für Optimismus.|Übernahmephantasien in der %SECTION% erfreuen die Bullen.</de>
-					<en>Good figures for %VALUES% provide for fantasies and rising share prices.|Good analyst ratings for %VALUES% boost share prices.|Good economic data fuel the positive outlook.|Good labor market data provide for optimism.|Takeover fantasies in the %SECTION% delight the bulls.</en>
-					<pl>Dobre dane dla %VALUES% zapewniają rosnące ceny akcji.|Dobre oceny analityków dla %VALUES% zwiększają ceny akcji.|Dobre dane gospodarcze napędzają pozytywne perspektywy.|Dobre dane z rynku pracy zapewniają optymizm.|Informacje o przejęciu w %SECTION% cieszą byki.</pl>
+					<de>Gute Zahlen bei den ${VALUES}n sorgen für Phantasie und steigende Kurse.|Gute Analysteneinschätzungen bei den ${VALUES}n beflügeln die Kurse.|Gute Konjunkturdaten befeuern die guten Aussichten.|Gute Arbeitsmarktdaten sorgen für Optimismus.|Übernahmephantasien in der ${SECTION} erfreuen die Bullen.</de>
+					<en>Good figures for ${VALUES} provide for fantasies and rising share prices.|Good analyst ratings for ${VALUES} boost share prices.|Good economic data fuel the positive outlook.|Good labor market data provide for optimism.|Takeover fantasies in the ${SECTION} delight the bulls.</en>
+					<pl>Dobre dane dla ${VALUES} zapewniają rosnące ceny akcji.|Dobre oceny analityków dla ${VALUES} zwiększają ceny akcji.|Dobre dane gospodarcze napędzają pozytywne perspektywy.|Dobre dane z rynku pracy zapewniają optymizm.|Informacje o przejęciu w ${SECTION} cieszą byki.</pl>
 				</stockexchange1A>
 
 				<stockexchange2>
-					<de>Der Aktienindex DUX startet heute sehr verhalten. %STOCKEXCHANGE2A%|Der Aktienindex DUX zeigt sich unauffällig. %STOCKEXCHANGE2A%</de>
-					<en>Today, the stock index DUX starts very cautiously. %STOCKEXCHANGE2A%|The stock index DUX displays an unremarkable performance. %STOCKEXCHANGE2A%</en>
-					<pl>Dzisiejszy dzień indeks giełdowy DUX rozpoczyna bardzo ostrożnie. %STOCKEXCHANGE2A%|Indeks giełdowy DUX zachowuje się nietypowo. %STOCKEXCHANGE2A%</pl>
+					<de>Der Aktienindex DUX startet heute sehr verhalten. ${STOCKEXCHANGE2A}|Der Aktienindex DUX zeigt sich unauffällig. ${STOCKEXCHANGE2A}</de>
+					<en>Today, the stock index DUX starts very cautiously. ${STOCKEXCHANGE2A}|The stock index DUX displays an unremarkable performance. ${STOCKEXCHANGE2A}</en>
+					<pl>Dzisiejszy dzień indeks giełdowy DUX rozpoczyna bardzo ostrożnie. ${STOCKEXCHANGE2A}|Indeks giełdowy DUX zachowuje się nietypowo. ${STOCKEXCHANGE2A}</pl>
 				</stockexchange2>
 				<stockexchange2A>
-					<de>Zahlen der %SECTION% liegen im Rahmen der Erwartungen.|%VALUES% behaupten sich.|Der Feiertag in Übersee sorgt für einen zögerlichen Handel.|Die Konjunkturdaten sorgen für ruhigen Handel.|Übernahmepläne in der %SECTION% sorgen für Verstimmung.</de>
-					<en>Figures for the %SECTION% are in line with expectations.|%VALUES% are holding up.|The overseas holiday makes for hesitant trading.|The economic data provide for quiet trading.|Takeover plans in the %SECTION% cause unsettlement.</en>
-					<pl>Dane w %SECTION% są zgodne z oczekiwaniami.|%VALUES% utrzymują się.|Zagraniczne wakacje powodują wahania w handlu.|Dane ekonomiczne zapewniają spokojny handel.|Plany przejęcia w %SECTION% powodują niepokój.</pl>
+					<de>Zahlen der ${SECTION} liegen im Rahmen der Erwartungen.|${VALUES} behaupten sich.|Der Feiertag in Übersee sorgt für einen zögerlichen Handel.|Die Konjunkturdaten sorgen für ruhigen Handel.|Übernahmepläne in der ${SECTION} sorgen für Verstimmung.</de>
+					<en>Figures for the ${SECTION} are in line with expectations.|${VALUES} are holding up.|The overseas holiday makes for hesitant trading.|The economic data provide for quiet trading.|Takeover plans in the ${SECTION} cause unsettlement.</en>
+					<pl>Dane w ${SECTION} są zgodne z oczekiwaniami.|${VALUES} utrzymują się.|Zagraniczne wakacje powodują wahania w handlu.|Dane ekonomiczne zapewniają spokojny handel.|Plany przejęcia w ${SECTION} powodują niepokój.</pl>
 				</stockexchange2A>
 
 				<stockexchange3>
-					<de>Der Aktienindex DUX startet heute leicht negativ. %STOCKEXCHANGE3A%|DUX im leichten Fall. %STOCKEXCHANGE3A%</de>
-					<en>The stock index DUX starts slightly negative today. %STOCKEXCHANGE3A%|DUX in a slight fall. %STOCKEXCHANGE3A%</en>
-					<pl>Indeks giełdowy DUX zaczyna dziś lekko na minusie. %STOCKEXCHANGE3A%|DUX na lekkim minusie. %STOCKEXCHANGE3A%</pl>
+					<de>Der Aktienindex DUX startet heute leicht negativ. ${STOCKEXCHANGE3A}|DUX im leichten Fall. ${STOCKEXCHANGE3A}</de>
+					<en>The stock index DUX starts slightly negative today. ${STOCKEXCHANGE3A}|DUX in a slight fall. ${STOCKEXCHANGE3A}</en>
+					<pl>Indeks giełdowy DUX zaczyna dziś lekko na minusie. ${STOCKEXCHANGE3A}|DUX na lekkim minusie. ${STOCKEXCHANGE3A}</pl>
 				</stockexchange3>
 				<stockexchange3A>
-					<de>Grund sind nur zufriedenstellende Zahlen der %VALUES%.|Negative Bewertungen der %SECTION% sorgen für sinkende Kurse.|Die Konjunkturdaten verstimmen die Börsianer.|Im großen Rahmen fallende Kurse. Nur %VALUES% können heute überzeugen.|Für Ernüchterung sorgen Analysteneinschätzungen der %SECTION%.</de>
-					<en>Reason for this are merely satisfactory figures of %VALUES%.|Negative valuations of the %SECTION% provide for falling prices.|The economic data unsettle the stockbrokers.|On a large scale, falling prices. Only %VALUES% can convince today.|Analysts' assessments of the %SECTION% cause some disillusionment.</en>
-					<pl>Powodem tego są jedynie zadowalające dane %VALUES%.|Negatywne wyceny w %SECTION% powodują spadki cen.|Dane ekonomiczne niepokoją maklerów.|Na dużą skalę spadków cen tylko walory %VALUES% mogą dziś przekonać inwestorów.|Oceny analityków w %SECTION% powodują lekkie rozczarowanie.</pl>
+					<de>Grund sind nur zufriedenstellende Zahlen der ${VALUES}.|Negative Bewertungen der ${SECTION} sorgen für sinkende Kurse.|Die Konjunkturdaten verstimmen die Börsianer.|Im großen Rahmen fallende Kurse. Nur ${VALUES} können heute überzeugen.|Für Ernüchterung sorgen Analysteneinschätzungen der ${SECTION}.</de>
+					<en>Reason for this are merely satisfactory figures of ${VALUES}.|Negative valuations of the ${SECTION} provide for falling prices.|The economic data unsettle the stockbrokers.|On a large scale, falling prices. Only ${VALUES} can convince today.|Analysts' assessments of the ${SECTION} cause some disillusionment.</en>
+					<pl>Powodem tego są jedynie zadowalające dane ${VALUES}.|Negatywne wyceny w ${SECTION} powodują spadki cen.|Dane ekonomiczne niepokoją maklerów.|Na dużą skalę spadków cen tylko walory ${VALUES} mogą dziś przekonać inwestorów.|Oceny analityków w ${SECTION} powodują lekkie rozczarowanie.</pl>
 				</stockexchange3A>
 
 
 				<resources1>
-					<de>Rohstoffe heute erfreulich. %RESOURCES1A%|Rohstoffwerte wissen zu gefallen. %RESOURCES1A%</de>
-					<en>Commodities are pleasing today. %RESOURCES1A%|Commodity stocks look appealing. %RESOURCES1A%</en>
-					<pl>Rynek surowców jest dziś atrakcyjny. %RESOURCES1A%|Akcje spółek surowcowych wyglądają atrakcyjnie. %RESOURCES1A%</pl>
+					<de>Rohstoffe heute erfreulich. ${RESOURCES1A}|Rohstoffwerte wissen zu gefallen. ${RESOURCES1A}</de>
+					<en>Commodities are pleasing today. ${RESOURCES1A}|Commodity stocks look appealing. ${RESOURCES1A}</en>
+					<pl>Rynek surowców jest dziś atrakcyjny. ${RESOURCES1A}|Akcje spółek surowcowych wyglądają atrakcyjnie. ${RESOURCES1A}</pl>
 				</resources1>
 				<resources1A>
 					<de>Gold legte gestern nachbörslich stark zu.|Öl-Preise erholen sich wegen stärker Nachfrage.|Öl-Preise profitieren von gesenkter Fördermenge.|Der Wolfram-Bedarf der Industrie ist stark gestiegen.</de>
@@ -269,9 +269,9 @@ Każdy środek się nada.</pl>
 				</resources1A>
 
 				<resources2>
-					<de>Rohstoffe heute unverändert. %RESOURCES2A%</de>
-					<en>Commodities unchanged today. %RESOURCES2A%</en>
-					<pl>Rynek surowców bez zmian w dniu dzisiejszym. %RESOURCES2A%</pl>
+					<de>Rohstoffe heute unverändert. ${RESOURCES2A}</de>
+					<en>Commodities unchanged today. ${RESOURCES2A}</en>
+					<pl>Rynek surowców bez zmian w dniu dzisiejszym. ${RESOURCES2A}</pl>
 				</resources2>
 				<resources2A>
 					<de>Gold liegt bei geringen Umsätzen auf Vortagsniveau.|Öl-Preise zeigen sich unbeeindruckt von OPIG-Plänen.|Weizen und Kaffee nach lustlosem Handel minimal im Plus.|Palladium in einer intakten Seitwärtsbewegung.</de>
@@ -280,9 +280,9 @@ Każdy środek się nada.</pl>
 				</resources2A>
 
 				<resources3>
-					<de>Rohstoffe geben spürbar nach. %RESOURCES3A%|Sinkflug für Rohstoffe. %RESOURCES3A%</de>
-					<en>Commodities weaken noticeably. %RESOURCES3A%|Decline for commodities. %RESOURCES3A%</en>
-					<pl>Rynek surowców wyraźnie słabnie. %RESOURCES3A%|Spadek dla rynku towarów. %RESOURCES3A%</pl>
+					<de>Rohstoffe geben spürbar nach. ${RESOURCES3A}|Sinkflug für Rohstoffe. ${RESOURCES3A}</de>
+					<en>Commodities weaken noticeably. ${RESOURCES3A}|Decline for commodities. ${RESOURCES3A}</en>
+					<pl>Rynek surowców wyraźnie słabnie. ${RESOURCES3A}|Spadek dla rynku towarów. ${RESOURCES3A}</pl>
 				</resources3>
 				<resources3A>
 					<de>Analysten glauben nicht an eine Erholung bei Gold.|Eine Erhöhung der Ölproduktion drückt auf die Preise.|Die Kakaoernte soll dieses Jahr besonders schlecht ausfallen.|Verbrauch von seltenen Erden geht überraschend zurück.</de>
@@ -293,9 +293,9 @@ Każdy środek się nada.</pl>
 				<germancurrency>${.if:${.worldtime:"year"}>=2002:"Euro":"${.if:${.worldtime:"year"}>=1990:"DM":"Mark"}"}</germancurrency>
 
 				<currency1>
-					<de>Dollar verliert, %CURRENCY1A%|Dollar schwächelt, %CURRENCY1A%</de>
-					<en>Dollar loses, %CURRENCY1A%|Dollar sheds, %CURRENCY1A%</en>
-					<pl>Dolar traci, %CURRENCY1A%|Dolar traci, %CURRENCY1A%</pl>
+					<de>Dollar verliert, ${CURRENCY1A}|Dollar schwächelt, ${CURRENCY1A}</de>
+					<en>Dollar loses, ${CURRENCY1A}|Dollar sheds, ${CURRENCY1A}</en>
+					<pl>Dolar traci, ${CURRENCY1A}|Dolar traci, ${CURRENCY1A}</pl>
 				</currency1>
 				<currency1A>
 					<de>${germancurrency} gewinnt.|${germancurrency} schwächelt.|${germancurrency} profitiert von guten Konjunkturdaten.|${germancurrency} profitiert von einem Rückgang der Staatsverschuldung.|${germancurrency} gewinnt stark, türkische Lira im Sturzflug.</de>
@@ -304,9 +304,9 @@ Każdy środek się nada.</pl>
 				</currency1A>
 
 				<currency2>
-					<de>Dollar unverändert, %CURRENCY2A%|Dollar hält sich, %CURRENCY2A%</de>
-					<en>Dollar unchanged, %CURRENCY2A%|Dollar holds up, %CURRENCY2A%</en>
-					<pl>Dolar bez zmian, %CURRENCY2A%|Dolar utrzymuje się, %CURRENCY2A%</pl>	
+					<de>Dollar unverändert, ${CURRENCY2A}|Dollar hält sich, ${CURRENCY2A}</de>
+					<en>Dollar unchanged, ${CURRENCY2A}|Dollar holds up, ${CURRENCY2A}</en>
+					<pl>Dolar bez zmian, ${CURRENCY2A}|Dolar utrzymuje się, ${CURRENCY2A}</pl>	
 				</currency2>
 				<currency2A>
 					<de>${germancurrency} legt leicht zu, Schweizer Franken weiterhin stark.|Inflation sorgt für einen kaum veränderten ${germancurrency}.|${germancurrency} gibt in breiter Front nach.|Sorge um britisches Pfund.</de>
@@ -315,9 +315,9 @@ Każdy środek się nada.</pl>
 				</currency2A>
 
 				<currency3>
-					<de>Dollar steigt, %CURRENCY3A%|Dollar im Aufwind, %CURRENCY3A%</de>
-					<en>Dollar rises, %CURRENCY3A%|Dollar on the upswing, %CURRENCY3A%</en>
-					<pl>Dolar rośnie, %CURRENCY3A%|Dolar na plusie, %CURRENCY3A%</pl>
+					<de>Dollar steigt, ${CURRENCY3A}|Dollar im Aufwind, ${CURRENCY3A}</de>
+					<en>Dollar rises, ${CURRENCY3A}|Dollar on the upswing, ${CURRENCY3A}</en>
+					<pl>Dolar rośnie, ${CURRENCY3A}|Dolar na plusie, ${CURRENCY3A}</pl>
 				</currency3>
 				<currency3A>
 					<de>${germancurrency} gibt Vortagesgewinn ab.|${germancurrency} weiterhin in starker Verfassung.|höhere Inflation sorgt für Unsicherheit bei ${germancurrency}.|Yen überraschend stark.</de>

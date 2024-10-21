@@ -1978,9 +1978,9 @@
 		<news id="b64fd1a5-bcbc-40ee-b078-523513447420" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
-				<de>Berliner Märchentage %currentyear% begonnen</de>
-				<en>Berlin Fairy Tale Days %currentyear% started</en>
-				<pl>Rozpoczęły się Berlińskie Dni Bajki %currentyear%</pl>
+				<de>Berliner Märchentage ${currentyear} begonnen</de>
+				<en>Berlin Fairy Tale Days ${currentyear} started</en>
+				<pl>Rozpoczęły się Berlińskie Dni Bajki ${currentyear}</pl>
 			</title>
 			<description>
 				<de>An 17 Tagen im November gibt es Märchen satt. Förderer sind auch die Lottogesellschaft und Bundespolitische Bildungszentrale.</de>
@@ -1989,11 +1989,11 @@
 			</description>
 			<variables>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<data genre="5" price="0.7" quality="25" fictional="0" />
-			<availability script="TIME_MONTH=10" year_range_from="1990" year_range_to="-1" /> <!-- can appear annually -->
+			<availability script='${.eq:${.worldtime:"month"}:10}' year_range_from="1990" year_range_to="-1" /> <!-- can appear annually -->
 		</news>
 
 			<!-- 1991-10 -->
@@ -4075,26 +4075,26 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news id="094806da-5113-4b57-b09a-c0639ebc20f9" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="0" creator="">
 			<title>
-				<de>%title%</de>
-				<en>%title%</en>
+				<de>${title}</de>
+				<en>${title}</en>
 			</title>
 			<description>
-				<de>%desc%</de>
-				<en>%desc%</en>
+				<de>${desc}</de>
+				<en>${desc}</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="18200428-fdff-4e2d-88fa-4902939c7aa3" />
 			</effects>
 			<variables>
 				<title>
-					<de>%minister%: ${animals_${index}} her!</de>
-					<en>%minister%: Gimme ${animals_${index}}!</en>
-					<pl>%minister%: Trzymajcie w domach ${animals_${index}}!</pl>
+					<de>${minister}: ${animals_${index}} her!</de>
+					<en>${minister}: Gimme ${animals_${index}}!</en>
+					<pl>${minister}: Trzymajcie w domach ${animals_${index}}!</pl>
 				</title>
 				<desc>
-					<de>Der %minister% beantragt im Bundestag die Verpflichtung eines jeden Bundesbürgers zur Haltung ein${animal_gen_${index}}.</de>
-					<en>The %minister% requests in Parliament the obligation of every citizen to keep a${animal_gen_${index}}.</en>
-					<pl>%minister% domaga się w parlamencie zobowiązania każdego obywatela, aby trzymać w domu ${animal_gen_${index}}.</pl>
+					<de>Der ${minister} beantragt im Bundestag die Verpflichtung eines jeden Bundesbürgers zur Haltung ein${animal_gen_${index}}.</de>
+					<en>The ${minister} requests in Parliament the obligation of every citizen to keep a${animal_gen_${index}}.</en>
+					<pl>${minister} domaga się w parlamencie zobowiązania każdego obywatela, aby trzymać w domu ${animal_gen_${index}}.</pl>
 				</desc>
 				<index>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d</de>
@@ -4600,14 +4600,14 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news id="18200428-fdff-4e2d-88fa-4902939c7aa3" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>%minister% verrückt geworden?</de>
-				<en>%minister% gone mad?</en>
-				<pl>%minister% oszalał?</pl>
+				<de>${minister} verrückt geworden?</de>
+				<en>${minister} gone mad?</en>
+				<pl>${minister} oszalał?</pl>
 			</title>
 			<description>
-				<de>Die meisten Sozialdemokraten, aber auch Vertreter anderer Parteien haben verlautbaren lassen, man teile die Einschätzung, dass der %minister% wegen seinen ${animals_dat_${index}} offenbar verrückt geworden sei.</de>
-				<en>Most Democracts, as well as representatives of other parties, have announced that they share the view that because of his ${animals_dat_${index}}, the %minister% appears to have gone mad.</en>
-				<pl>%minister% oszalał. Tak myśli większość demokratów, a także przedstawiciele innych partii, w sprawie trzymania ${animals_dat_${index}} w domach.</pl>
+				<de>Die meisten Sozialdemokraten, aber auch Vertreter anderer Parteien haben verlautbaren lassen, man teile die Einschätzung, dass der ${minister} wegen seinen ${animals_dat_${index}} offenbar verrückt geworden sei.</de>
+				<en>Most Democracts, as well as representatives of other parties, have announced that they share the view that because of his ${animals_dat_${index}}, the ${minister} appears to have gone mad.</en>
+				<pl>${minister} oszalał. Tak myśli większość demokratów, a także przedstawiciele innych partii, w sprawie trzymania ${animals_dat_${index}} w domach.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="21f5d3a5-ba85-40a2-861d-6914ff6123dd" />
@@ -4617,15 +4617,15 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news id="21f5d3a5-ba85-40a2-861d-6914ff6123dd" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>%minister%: ${animals_${index}} bald Pflicht!</de>
-				<en>%minister%: ${animals_${index}} soon mandatory!</en>
-				<pl>%minister%: ${animals_${index}} - wkrótce obowiązkowo wymagane w domach!</pl>
+				<de>${minister}: ${animals_${index}} bald Pflicht!</de>
+				<en>${minister}: ${animals_${index}} soon mandatory!</en>
+				<pl>${minister}: ${animals_${index}} - wkrótce obowiązkowo wymagane w domach!</pl>
 			</title>
 			<description>
-				<de>Der %minister% meint es ernst und bekräftigt nochmal seine Forderung. Er habe auch die nötige Befugnis, sie durchzusetzen: Ab 1. Mai nächsten Jahres muss jeder Bürger ein${animal_akk_${index}} besitzen!</de>
-				<en>The %minister% is serious and reiterates his demand. He has the necessary power to enforce it, he says: As of May 1st next year, every citizen must own a${animal_akk_${index}}!</en>
+				<de>Der ${minister} meint es ernst und bekräftigt nochmal seine Forderung. Er habe auch die nötige Befugnis, sie durchzusetzen: Ab 1. Mai nächsten Jahres muss jeder Bürger ein${animal_akk_${index}} besitzen!</de>
+				<en>The ${minister} is serious and reiterates his demand. He has the necessary power to enforce it, he says: As of May 1st next year, every citizen must own a${animal_akk_${index}}!</en>
 				<!-- I have adapted this to Polish  Instead of ${animal_akk_${index}} there is ${animals_${index}}-->
-				<pl>%minister% powtarza swoje żądanie odnośnie nowego prawa. Mówi, że ma niezbędną władzę, aby wyegzekwować je. Prawo to ma stanowić, że od 1 maja przyszłego roku każdy obywatel musi posiadać w domu ${animals_${index}}!</pl>
+				<pl>${minister} powtarza swoje żądanie odnośnie nowego prawa. Mówi, że ma niezbędną władzę, aby wyegzekwować je. Prawo to ma stanowić, że od 1 maja przyszłego roku każdy obywatel musi posiadać w domu ${animals_${index}}!</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d4b58f67-56ed-4c7b-a524-3c641187c348" />
@@ -4635,14 +4635,14 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news id="bf0ee1be-3dc3-4581-8614-fff5253d6330" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Des %minister%s Liebe</de>
-				<en>The %minister%'s Love</en>
-				<pl>%minister% jest zakochany</pl>
+				<de>Des ${minister}s Liebe</de>
+				<en>The ${minister}'s Love</en>
+				<pl>${minister} jest zakochany</pl>
 			</title>
 			<description>
-				<de>Der %minister% hat seine heimliche Liebe zu ${animals_dat_${index}} zugegeben, obwohl sich herausgestellt hat, dass ${animals_${index}} ${haveclaws_${index}}.</de>
-				<en>The %minister% has admitted his secret love for ${animals_dat_${index}}, although it turned out that ${animals_${index}} ${haveclaws_${index}}.</en>
-				<pl>%minister% przyznał się do swojej sekretnej miłości do ${animals_dat_${index}}, choć okazało się, że ${animals_${index}} ${haveclaws_${index}}.</pl>
+				<de>Der ${minister} hat seine heimliche Liebe zu ${animals_dat_${index}} zugegeben, obwohl sich herausgestellt hat, dass ${animals_${index}} ${haveclaws_${index}}.</de>
+				<en>The ${minister} has admitted his secret love for ${animals_dat_${index}}, although it turned out that ${animals_${index}} ${haveclaws_${index}}.</en>
+				<pl>${minister} przyznał się do swojej sekretnej miłości do ${animals_dat_${index}}, choć okazało się, że ${animals_${index}} ${haveclaws_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="17528858-a7e0-4b6d-a515-d245e40ce87c" />
@@ -4652,28 +4652,28 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news id="23fc5b0e-d3d8-4049-970b-236966ec8da5" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>%minister% schreibt Biographie</de>
-				<en>%minister% writes biography</en>
-				<pl>%minister% pisze biografię</pl>
+				<de>${minister} schreibt Biographie</de>
+				<en>${minister} writes biography</en>
+				<pl>${minister} pisze biografię</pl>
 			</title>
 			<description>
-				<de>Der %minister% hat seine Memoiren geschrieben und in seinem 8-Kapitel-Buch sieben Kapitel seinen ${animals_dat_${index}} gewidmet.</de>
-				<en>The %minister% wrote his memoirs and devoted seven chapters of his 8-chapter book to his ${animals_dat_${index}}.</en>
-				<pl>%minister% napisał swoje wspomnienia i poświęcił siedem rozdziałów swojej 8-rozdziałowej książki pod tytułem: Ja i ${animals_${index}}.</pl><!-- I have adapted this to Polish-->
+				<de>Der ${minister} hat seine Memoiren geschrieben und in seinem 8-Kapitel-Buch sieben Kapitel seinen ${animals_dat_${index}} gewidmet.</de>
+				<en>The ${minister} wrote his memoirs and devoted seven chapters of his 8-chapter book to his ${animals_dat_${index}}.</en>
+				<pl>${minister} napisał swoje wspomnienia i poświęcił siedem rozdziałów swojej 8-rozdziałowej książki pod tytułem: Ja i ${animals_${index}}.</pl><!-- I have adapted this to Polish-->
 			</description>
 			<data genre="0" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="17528858-a7e0-4b6d-a515-d245e40ce87c" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>%minister% zurückgetreten</de>
-				<en>%minister% resigned</en>
-				<pl>%minister% podał się do dymisji</pl>
+				<de>${minister} zurückgetreten</de>
+				<en>${minister} resigned</en>
+				<pl>${minister} podał się do dymisji</pl>
 			</title>
 			<description>
-				<de>Nach seinem Bekenntnis in der ${animal_${index}}-Affäre hat sich der %minister% entschlossen, sein Amt aufzugeben und zurückzutreten.</de>
-				<en>After his confession in the ${animal_${index}} affair, the %minister% has decided to give up his office and resign.</en>
-				<pl>%minister% zdecydował się zrezygnować ze swojego urzędu po przyznaniu się do winy w aferze: ${animals_${index}} w domach.</pl>
+				<de>Nach seinem Bekenntnis in der ${animal_${index}}-Affäre hat sich der ${minister} entschlossen, sein Amt aufzugeben und zurückzutreten.</de>
+				<en>After his confession in the ${animal_${index}} affair, the ${minister} has decided to give up his office and resign.</en>
+				<pl>${minister} zdecydował się zrezygnować ze swojego urzędu po przyznaniu się do winy w aferze: ${animals_${index}} w domach.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
@@ -4688,8 +4688,8 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Skandal! Nie, dla posiadania w domu ${animals_dat_${index}}!</pl>
 			</title>
 			<description>
-				<de>Grienpies ist über die Forderung des %minister%s entsetzt: Die artgerechte Haltung d${animal_gen_${index}} in der Wohnung müsse garantiert werden, und überhaupt, ${animals_${index}} vertragen gar kein${mentholcandies_${index}}!</de>
-				<en>Creampeas is appalled by the demand of the %minister%: The species-appropriate keeping of a${animal_gen_${index}} indoors at home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
+				<de>Grienpies ist über die Forderung des ${minister}s entsetzt: Die artgerechte Haltung d${animal_gen_${index}} in der Wohnung müsse garantiert werden, und überhaupt, ${animals_${index}} vertragen gar kein${mentholcandies_${index}}!</de>
+				<en>Creampeas is appalled by the demand of the ${minister}: The species-appropriate keeping of a${animal_gen_${index}} indoors at home would have to be ensured, and above all, ${animals_${index}} can't stomach ${mentholcandies_${index}}!</en>
 				<pl>Greampeace jest zbulwersowana żądaniem urzędnika. Trzeba zapewnić odpowiednie warunki w domu. Przede wszystkim ${animals_${index}} nie mogą ${mentholcandies_${index}}!</pl>
 			</description>
 			<effects>
@@ -4700,14 +4700,14 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news id="d4b58f67-56ed-4c7b-a524-3c641187c348" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Nation lacht über ${animal_${index}}-%minister%</de>
-				<en>Nation laughs at ${animal_${index}} %minister%</en>
-				<pl>%minister% wyśmiany przez naród.</pl>
+				<de>Nation lacht über ${animal_${index}}-${minister}</de>
+				<en>Nation laughs at ${animal_${index}} ${minister}</en>
+				<pl>${minister} wyśmiany przez naród.</pl>
 			</title>
 			<description>
-				<de>Die ganze Nation lacht über den Antrag des %minister%s, die Haltung ein${animal_gen_${index}} zur Pflicht zu machen.</de>
-				<en>The whole nation is laughing at the %minister%'s proposal to make keeping a${animal_gen_${index}} mandatory.</en>
-				<pl>%minister% wyśmiany przez naród za wprowadzenie prawa dla posiadania w domu ${animals_dat_${index}}.</pl>
+				<de>Die ganze Nation lacht über den Antrag des ${minister}s, die Haltung ein${animal_gen_${index}} zur Pflicht zu machen.</de>
+				<en>The whole nation is laughing at the ${minister}'s proposal to make keeping a${animal_gen_${index}} mandatory.</en>
+				<pl>${minister} wyśmiany przez naród za wprowadzenie prawa dla posiadania w domu ${animals_dat_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="53fdba7b-a310-4a31-85e6-5247e908ca10" />
@@ -4717,14 +4717,14 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news id="53fdba7b-a310-4a31-85e6-5247e908ca10" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
 			<title>
-				<de>Welt lacht über ${animal_${index}}-%minister%</de>
-				<en>World laughs at ${animal_${index}} %minister%</en>
+				<de>Welt lacht über ${animal_${index}}-${minister}</de>
+				<en>World laughs at ${animal_${index}} ${minister}</en>
 				<pl>Świat śmieje się z urzędnika i jego rozporządzenia.</pl>
 			</title>
 			<description>
-				<de>Die ganze Welt lacht über unseren %minister%, der die Haltung ein${animal_gen_${index}} zur Pflicht machen will.</de>
-				<en>The whole world is laughing at our %minister% who wants to make keeping a${animal_gen_${index}} mandatory.</en>
-				<pl>%minister% wyśmiany przez cały świat za wprowadzenie prawa dla posiadania w domu ${animals_dat_${index}}.</pl>
+				<de>Die ganze Welt lacht über unseren ${minister}, der die Haltung ein${animal_gen_${index}} zur Pflicht machen will.</de>
+				<en>The whole world is laughing at our ${minister} who wants to make keeping a${animal_gen_${index}} mandatory.</en>
+				<pl>${minister} wyśmiany przez cały świat za wprowadzenie prawa dla posiadania w domu ${animals_dat_${index}}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="79b75334-0bec-4061-a029-890601f10b5e" />
@@ -6795,8 +6795,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${artistname_${i}}: ${rap_${i}} is dead!</en>
 			</title>
 			<description>
-				<de>%withdisdain% hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
-				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene %withdisdain%. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
+				<de>${withdisdain} hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
+				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene ${withdisdain}. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
 			</description>
 			<variables>
 				<i>
@@ -6917,8 +6917,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${artistname_${i}}: ${rap_${i}} is dead!</en>
 			</title>
 			<description>
-				<de>%withdisdain% hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
-				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene %withdisdain%. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
+				<de>${withdisdain} hat ${therapper_${i}} ${artistname_${i}} das ${rap_${i}}-Geschehen beobachtet. ${theirverdictproper_${i}}${rap_${i}} ist tot!</de>
+				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene ${withdisdain}. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
 			</description>
 			<variables>
 				<i>
@@ -7306,8 +7306,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>A new ${hero_${g}} who ${shotathief_${i}}</en>
 			</title>
 			<description>
-				<de>In %town% wird ${vigilantcitizen_${g}} namens ${johndoe_${g}} als ${hero_${g}} gefeiert. ${hadwitnessed_${i}}. %mayorhonors%.</de>
-				<en>In %town%, ${vigilantcitizen_${g}} named ${johndoe_${g}} is celebrated as a ${hero_${g}}. ${hadwitnessed_${i}}. %mayorhonors%.</en>
+				<de>In ${town} wird ${vigilantcitizen_${g}} namens ${johndoe_${g}} als ${hero_${g}} gefeiert. ${hadwitnessed_${i}}. ${mayorhonors}.</de>
+				<en>In ${town}, ${vigilantcitizen_${g}} named ${johndoe_${g}} is celebrated as a ${hero_${g}}. ${hadwitnessed_${i}}. ${mayorhonors}.</en>
 			</description>
 			<variables>
 				<g>
@@ -7325,12 +7325,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>heroine</en>
 				</hero_f>
 				<johndoe_m>
-					<de>%PERSONGENERATOR_NAME(de,1)%</de>
-					<en>%PERSONGENERATOR_NAME(en,1)%</en>
+					<de>${.persongenerator:"firstname":"de":"male"}</de>
+					<en>${.persongenerator:"firstname":"en":"male"}</en>
 				</johndoe_m>
 				<johndoe_f>
-					<de>%PERSONGENERATOR_NAME(de,2)%</de>
-					<en>%PERSONGENERATOR_NAME(en,2)%</en>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
+					<en>${.persongenerator:"firstname":"en":"female"}</en>
 				</johndoe_f>
 				<vigilantcitizen_m>
 					<de>ein wachsamer Bürger</de>
@@ -7349,7 +7349,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>She</en>
 				</they_f>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 				<shotathief_0>
 					<de>erschießt Dieb</de>
@@ -7441,12 +7441,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news id="ec40184f-4ac8-4c7f-882d-85534172de07" type="0" thread_id="130c87fe-7e39-45d5-bce0-264281b3ce0f" creator="" created_by="-" comment="TODO: more variations, other endings">
 			<title>
-				<de>%netherlands% unter Wasser</de>
-				<en>%netherlands% under water</en>
+				<de>${netherlands} unter Wasser</de>
+				<en>${netherlands} under water</en>
 			</title>
 			<description>
-				<de>Hochwasser in %netherlands% verursacht Chaos. Schon ein Drittel der Region steht unter Wasser.</de>
-				<en>Flooding in %netherlands% causes chaos. A third of the region is already under water.</en>
+				<de>Hochwasser in ${netherlands} verursacht Chaos. Schon ein Drittel der Region steht unter Wasser.</de>
+				<en>Flooding in ${netherlands} causes chaos. A third of the region is already under water.</en>
 			</description>
 			<variables>
 				<netherlands>
@@ -7468,8 +7468,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news id="e6b8ec1c-3488-486c-8fec-19b45d086e25" type="2" thread_id="130c87fe-7e39-45d5-bce0-264281b3ce0f" creator="" created_by="-">
 			<title>
-				<de>%netherlands% braucht Hilfe</de>
-				<en>%netherlands% needs help</en>
+				<de>${netherlands} braucht Hilfe</de>
+				<en>${netherlands} needs help</en>
 			</title>
 			<description>
 				<de>Das Hochwasser hat alle Dämme gebrochen. Nun bittet die Regierung um internationale Hilfe.</de>
@@ -7486,8 +7486,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>UCINEF provides rubber dinghies</en>
 			</title>
 			<description>
-				<de>Drama in %netherlands% setzt sich fort, UCINEF stellt Schlauchboote. Bis jetzt %missedcount% Menschen vermisst.</de>
-				<en>Drama in %netherlands% continues, UCINEF provides rubber dinghies. So far %missedcount% people missing.</en>
+				<de>Drama in ${netherlands} setzt sich fort, UCINEF stellt Schlauchboote. Bis jetzt ${missedcount} Menschen vermisst.</de>
+				<en>Drama in ${netherlands} continues, UCINEF provides rubber dinghies. So far ${missedcount} people missing.</en>
 			</description>
 			<data genre="4" price="1" quality="56" fictional="1" />
 			<effects>
@@ -7500,8 +7500,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Floods claim no human victims</en>
 			</title>
 			<description>
-				<de>Bei den %missedcount% vermissten Personen des %netherlands%-Hochwassers handelt es sich um Menschen, die vor ihren Familien und %toaustria% geflohen sind, um dort ihre Ferien verbringen.</de>
-				<en>The %missedcount% persons missing due to the %netherlands% floods are people who fled their families and went %toaustria% to spend their vacations there.</en>
+				<de>Bei den ${missedcount} vermissten Personen des ${netherlands}-Hochwassers handelt es sich um Menschen, die vor ihren Familien und ${toaustria} geflohen sind, um dort ihre Ferien verbringen.</de>
+				<en>The ${missedcount} persons missing due to the ${netherlands} floods are people who fled their families and went ${toaustria} to spend their vacations there.</en>
 			</description>
 			<data genre="4" price="1" quality="39" fictional="1" />
 		</news>
@@ -7512,8 +7512,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${name_${i}} auctions off ${pipe_${i}}</en>
 			</title>
 			<description>
-				<de>${therenowned_${i}} versteigert ${theirfamous_${i}}. Der Erlös geht an %hungry% %children%.</de>
-				<en>${therenowned_${i}} auctions off ${theirfamous_${i}}. The proceeds go to %hungry% %children%.</en>
+				<de>${therenowned_${i}} versteigert ${theirfamous_${i}}. Der Erlös geht an ${hungry} ${children}.</de>
+				<en>${therenowned_${i}} auctions off ${theirfamous_${i}}. The proceeds go to ${hungry} ${children}.</en>
 			</description>
 			<variables>
 				<i>
@@ -7679,16 +7679,16 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news id="228d9e57-72f7-4f6d-b02a-e72fc3c140cb" type="0" creator="" created_by="-" comment="TODO: make somehow more funny/ironic/special">
 			<title>
-				<de>Brand in %town%</de>
-				<en>Fire in %town%</en>
+				<de>Brand in ${town}</de>
+				<en>Fire in ${town}</en>
 			</title>
 			<description>
-				<de>Heute kam es zu einem Brand ${inbuilding_${i}} in %town%. Zum Glück kamen die ${occupants_${i}} mit leichten Rauchvergiftungen und einem Schrecken davon.</de>
-				<en>Today there was a fire ${inbuilding_${i}} in %town%. Fortunately, the ${occupants_${i}} got away with minor smoke inhalation and a scare.</en>
+				<de>Heute kam es zu einem Brand ${inbuilding_${i}} in ${town}. Zum Glück kamen die ${occupants_${i}} mit leichten Rauchvergiftungen und einem Schrecken davon.</de>
+				<en>Today there was a fire ${inbuilding_${i}} in ${town}. Fortunately, the ${occupants_${i}} got away with minor smoke inhalation and a scare.</en>
 			</description>
 			<variables>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 				<i>
 					<de>0|1|2|3|4|5|6|7|8|9|a|b|c</de>
@@ -7985,20 +7985,20 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|25|27|28|29|30</de>
 				</pointscount>
 				<inathrillingduel_0>
-					<de>In einem spannenden Duell gegen ${kenya_${j}} ${win_${i}} ${the_${i}}${greenland_${i}} das ${icehockey_${k}}-Weltmeisterschafts-Finale mit %scorefor%:%scoreagainst%.</de>
-					<en>In a thrilling duel against ${kenya_${j}}, ${the_${i}}${greenland_${i}} ${win_${i}} the ${icehockey_${k}} World Championship final %scorefor%-%scoreagainst%.</en>
+					<de>In einem spannenden Duell gegen ${kenya_${j}} ${win_${i}} ${the_${i}}${greenland_${i}} das ${icehockey_${k}}-Weltmeisterschafts-Finale mit ${scorefor}:${scoreagainst}.</de>
+					<en>In a thrilling duel against ${kenya_${j}}, ${the_${i}}${greenland_${i}} ${win_${i}} the ${icehockey_${k}} World Championship final ${scorefor}-${scoreagainst}.</en>
 				</inathrillingduel_0>
 				<inathrillingduel_1>
-					<de>In einem spannenden Wettkampf ${leave_${i}} ${the_${i}}${greenland_${i}} den hartnäckigsten Konkurrenten ${kenya_${j}} hinter sich und ${win_${i}} mit 0,%pointscount% Punkten Vorsprung in der Gesamtwertung.</de>
-					<en>In a thrilling competition, ${the_${i}}${greenland_${i}} ${leave_${i}} behind the fiercest competitor ${kenya_${j}} and ${win_${i}} the overall standings with a 0.%pointscount% lead.</en>
+					<de>In einem spannenden Wettkampf ${leave_${i}} ${the_${i}}${greenland_${i}} den hartnäckigsten Konkurrenten ${kenya_${j}} hinter sich und ${win_${i}} mit 0,${pointscount} Punkten Vorsprung in der Gesamtwertung.</de>
+					<en>In a thrilling competition, ${the_${i}}${greenland_${i}} ${leave_${i}} behind the fiercest competitor ${kenya_${j}} and ${win_${i}} the overall standings with a 0.${pointscount} lead.</en>
 				</inathrillingduel_1>
 				<inathrillingduel_2>
-					<de>In einem spannenden Wettkampf ${leave_${i}} ${the_${i}}${greenland_${i}} den hartnäckigsten Konkurrenten ${kenya_${j}} hinter sich und ${win_${i}} mit 0,%pointscount% Sekunden Vorsprung.</de>
-					<en>In a thrilling competition, ${the_${i}}${greenland_${i}} ${leave_${i}} behind the fiercest competitor ${kenya_${j}} and ${win_${i}} with a 0.%pointscount% seconds lead.</en>
+					<de>In einem spannenden Wettkampf ${leave_${i}} ${the_${i}}${greenland_${i}} den hartnäckigsten Konkurrenten ${kenya_${j}} hinter sich und ${win_${i}} mit 0,${pointscount} Sekunden Vorsprung.</de>
+					<en>In a thrilling competition, ${the_${i}}${greenland_${i}} ${leave_${i}} behind the fiercest competitor ${kenya_${j}} and ${win_${i}} with a 0.${pointscount} seconds lead.</en>
 				</inathrillingduel_2>
 				<inathrillingduel_3>
-					<de>In einem spannenden Wettkampf ${leave_${i}} ${the_${i}}${greenland_${i}} den hartnäckigsten Konkurrenten ${kenya_${j}} hinter sich und ${win_${i}} mit 0,%pointscount% Metern Vorsprung.</de>
-					<en>In a thrilling competition, ${the_${i}}${greenland_${i}} ${leave_${i}} behind the fiercest competitor ${kenya_${j}} and ${win_${i}} with a 0.%pointscount% feet lead.</en>
+					<de>In einem spannenden Wettkampf ${leave_${i}} ${the_${i}}${greenland_${i}} den hartnäckigsten Konkurrenten ${kenya_${j}} hinter sich und ${win_${i}} mit 0,${pointscount} Metern Vorsprung.</de>
+					<en>In a thrilling competition, ${the_${i}}${greenland_${i}} ${leave_${i}} behind the fiercest competitor ${kenya_${j}} and ${win_${i}} with a 0.${pointscount} feet lead.</en>
 				</inathrillingduel_3>
 				<artistfirstname> <!-- Scandinavian / Nordic name generator doesn't seem to be implemented yet -->
 					<de>Lars|Erik|Björn|Henrik|Olaf|Magnus|Anders|Sven|Thor|Gustav|Axel|Finn|Oskar|Kristian|Rune|Nils|Jørgen|Viggo|Arvid|Harald</de>
@@ -8007,7 +8007,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Hansen|Johansson|Andersen|Nielsen|Jørgensen|Svensson|Petersen|Olsen|Larsen|Pedersen|Eriksson|Christiansen|Nilsen|Berg|Magnusson|Kristiansen|Sørensen|Sandberg|Lund|Holm</de>
 				</artistlastname>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 			</variables>
 			<data genre="2" price="1" quality="15" fictional="1" />
@@ -8024,7 +8024,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					news9="2713d6fa-883d-440c-92cf-194ecce9d472" probability9="10"
 					news10="f0fcd92d-7e78-416e-a5e4-d616772ac724" probability10="10" />
 			</effects>
-			<availability script="TIME_MONTH=1" />
+			<availability script='${.eq:${.worldtime:"month"}:1}' />
 		</news>
 		<news id="476b42d3-fc13-4526-9d18-f9a03bf556fb" type="2" thread_id="a3ac1453-f37f-4d37-a669-8c127ab2cf48" creator="" created_by="-">
 			<title>
@@ -8032,8 +8032,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${icehockey_${k}} anthem a huge hit</en>
 			</title>
 			<description>
-				<de>Anlässlich des Gewinns der Weltmeisterschaft landet Sänger %artistfirstname% %artistlastname% mit der Hymne „${greenland_${i}} ${icehockey_${k}}land“ einen Riesenhit.</de>
-				<en>On the occasion of the victory of the World Championship, singer %artistfirstname% %artistlastname% lands a huge hit with the anthem "${greenland_${i}} ${icehockey_${k}} Land".</en>
+				<de>Anlässlich des Gewinns der Weltmeisterschaft landet Sänger ${artistfirstname} ${artistlastname} mit der Hymne „${greenland_${i}} ${icehockey_${k}}land“ einen Riesenhit.</de>
+				<en>On the occasion of the victory of the World Championship, singer ${artistfirstname} ${artistlastname} lands a huge hit with the anthem "${greenland_${i}} ${icehockey_${k}} Land".</en>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -8043,8 +8043,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Film about ${kenya_${j}} team?</en>
 			</title>
 			<description>
-				<de>Anlässlich der knappen Niederlage will der aufstrebende Filmemacher %artistfirstname% %artistlastname% die Abenteuer des ${kenya_${j}}-Teams bei der ${icehockey_${k}}-WM auf die Leinwand bringen. Arbeitstitel: „Cold Sleddings“.</de>
-				<en>On the occasion of the narrow defeat, aspiring filmmaker %artistfirstname% %artistlastname% wants to bring the adventures of the ${kenya_${j}} team at the ${icehockey_${k}} World Championship to the big screen. Working title: "Cold Sleddings".</en>
+				<de>Anlässlich der knappen Niederlage will der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} die Abenteuer des ${kenya_${j}}-Teams bei der ${icehockey_${k}}-WM auf die Leinwand bringen. Arbeitstitel: „Cold Sleddings“.</de>
+				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} wants to bring the adventures of the ${kenya_${j}} team at the ${icehockey_${k}} World Championship to the big screen. Working title: "Cold Sleddings".</en>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -8054,8 +8054,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${icehockey_${k}} book a bestseller</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, wird das Buch „Die besten Taktiken im ${icehockey_${k}}“ von Prof. Dr. %artistfirstname% %artistlastname% zum Bestseller.</de>
-				<en>After the minor hype following the World Championship, the book "The best tactics in ${icehockey_${k}}" by Prof. Dr. %artistfirstname% %artistlastname% becomes a bestseller.</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, wird das Buch „Die besten Taktiken im ${icehockey_${k}}“ von Prof. Dr. ${artistfirstname} ${artistlastname} zum Bestseller.</de>
+				<en>After the minor hype following the World Championship, the book "The best tactics in ${icehockey_${k}}" by Prof. Dr. ${artistfirstname} ${artistlastname} becomes a bestseller.</en>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -8065,8 +8065,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${icehockey_${k}} game big success</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, führt das Game „${icehockey_${k}} Challenge“ von %artistlastname%soft derzeit die internationalen Verkaufscharts an.</de>
-				<en>After the minor hype following the World Championship, the game "${icehockey_${k}} Challenge" by %artistlastname%soft is currently topping the international sales charts.</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, führt das Game „${icehockey_${k}} Challenge“ von ${artistlastname}soft derzeit die internationalen Verkaufscharts an.</de>
+				<en>After the minor hype following the World Championship, the game "${icehockey_${k}} Challenge" by ${artistlastname}soft is currently topping the international sales charts.</en>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -8076,19 +8076,19 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${icehockey_${k}} equipment top seller</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, packt der Ausrüster „%artistlastname% Gears &amp; Gadgets“ die Gelegenheit beim Schopf und lässt mit seiner „${icehockey_${k}} ${greenland_${i}} Edition“ die Konkurrenz hinter sich.</de>
-				<en>After the minor hype following the World Championship, the equipment supplier "%artistlastname% Gears &amp; Gadgets" seizes the opportunity and leaves the competition behind with their "${icehockey_${k}} ${greenland_${i}} Edition".</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, packt der Ausrüster „${artistlastname} Gears &amp; Gadgets“ die Gelegenheit beim Schopf und lässt mit seiner „${icehockey_${k}} ${greenland_${i}} Edition“ die Konkurrenz hinter sich.</de>
+				<en>After the minor hype following the World Championship, the equipment supplier "${artistlastname} Gears &amp; Gadgets" seizes the opportunity and leaves the competition behind with their "${icehockey_${k}} ${greenland_${i}} Edition".</en>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
 		<news id="353cc6f6-9d5f-46f3-ae98-de75ecf232a6" type="2" thread_id="a3ac1453-f37f-4d37-a669-8c127ab2cf48" creator="" created_by="-">
 			<title>
-				<de>Polar-Ausstellung in %exhibitiontown% wird erweitert</de>
-				<en>Polar exhibit in %exhibitiontown% to be expanded</en>
+				<de>Polar-Ausstellung in ${exhibitiontown} wird erweitert</de>
+				<en>Polar exhibit in ${exhibitiontown} to be expanded</en>
 			</title>
 			<description>
-				<de>Anlässlich des Gewinns der Weltmeisterschaft nimmt die gerade in %exhibitiontown% gastierende Wanderausstellung „Polar-Volkssport im Wandel der Zeit“ den Rundgang „${greenland_${i}} und ${icehockey_${k}}“ ins Programm auf.</de>
-				<en>On the occasion of the victory of the World Championship, the traveling exhibit "Popular polar sports in the course of time" currently touring %exhibitiontown% will add the trail "${greenland_${i}} and ${icehockey_${k}}" to its program.</en>
+				<de>Anlässlich des Gewinns der Weltmeisterschaft nimmt die gerade in ${exhibitiontown} gastierende Wanderausstellung „Polar-Volkssport im Wandel der Zeit“ den Rundgang „${greenland_${i}} und ${icehockey_${k}}“ ins Programm auf.</de>
+				<en>On the occasion of the victory of the World Championship, the traveling exhibit "Popular polar sports in the course of time" currently touring ${exhibitiontown} will add the trail "${greenland_${i}} and ${icehockey_${k}}" to its program.</en>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -8098,19 +8098,19 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Docu about ${icehockey_${k}} in ${kenya_${j}}</en>
 			</title>
 			<description>
-				<de>Anlässlich der knappen Niederlage hat der aufstrebende Filmemacher %artistfirstname% %artistlastname% eine Doku über den ${icehockey_${k}}-Sport in ${kenya_${j}} in der Mache. Arbeitstitel: „Cold Sleddings“.</de>
-				<en>On the occasion of the narrow defeat, aspiring filmmaker %artistfirstname% %artistlastname% has a documentary about the sport of ${icehockey_${k}} in ${kenya_${j}} in the making. Working title: "Cold Sleddings".</en>
+				<de>Anlässlich der knappen Niederlage hat der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} eine Doku über den ${icehockey_${k}}-Sport in ${kenya_${j}} in der Mache. Arbeitstitel: „Cold Sleddings“.</de>
+				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} has a documentary about the sport of ${icehockey_${k}} in ${kenya_${j}} in the making. Working title: "Cold Sleddings".</en>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
 		<news id="c33c110c-b771-436a-99ce-940b51186445" type="2" thread_id="a3ac1453-f37f-4d37-a669-8c127ab2cf48" creator="" created_by="-">
 			<title>
-				<de>Kabarettist %artistfirstname% %artistlastname% mit ${icehockey_${k}}-Programm</de>
-				<en>Satirist %artistfirstname% %artistlastname% with ${icehockey_${k}} program</en>
+				<de>Kabarettist ${artistfirstname} ${artistlastname} mit ${icehockey_${k}}-Programm</de>
+				<en>Satirist ${artistfirstname} ${artistlastname} with ${icehockey_${k}} program</en>
 			</title>
 			<description>
-				<de>Der aufstrebene Kabarettist %artistfirstname% %artistlastname% beginnt seine Tour in %exhibitiontown% und stellt sein von der kürzlichen WM inspiriertes Programm „Das ist ja wie ${icehockey_${k}} in ${kenya_${j}}“ vor.</de>
-				<en>Up-and-coming satirist %artistfirstname% %artistlastname% begins his tour in %exhibitiontown% and, inspired by the recent World Championship, presents his program "This be like ${icehockey_${k}} in ${kenya_${j}}".</en>
+				<de>Der aufstrebene Kabarettist ${artistfirstname} ${artistlastname} beginnt seine Tour in ${exhibitiontown} und stellt sein von der kürzlichen WM inspiriertes Programm „Das ist ja wie ${icehockey_${k}} in ${kenya_${j}}“ vor.</de>
+				<en>Up-and-coming satirist ${artistfirstname} ${artistlastname} begins his tour in ${exhibitiontown} and, inspired by the recent World Championship, presents his program "This be like ${icehockey_${k}} in ${kenya_${j}}".</en>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -8120,8 +8120,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${icehockey_${k}} hype causes many injuries</en>
 			</title>
 			<description>
-				<de>Probiert das nicht zu Hause aus, Kinder! %exhibitiontown% und weitere Orte klagen über viele Einlieferungen ins Krankenhaus, als nach der ${icehockey_${k}}-Weltmeisterschaft viele Untrainierte den Sport ausprobieren wollten.</de>
-				<en>Don't try this at home, kids! %exhibitiontown% and other towns complain about many hospitalizations when, following the ${icehockey_${k}} World Championship, many untrained people wanted to try the sport.</en>
+				<de>Probiert das nicht zu Hause aus, Kinder! ${exhibitiontown} und weitere Orte klagen über viele Einlieferungen ins Krankenhaus, als nach der ${icehockey_${k}}-Weltmeisterschaft viele Untrainierte den Sport ausprobieren wollten.</de>
+				<en>Don't try this at home, kids! ${exhibitiontown} and other towns complain about many hospitalizations when, following the ${icehockey_${k}} World Championship, many untrained people wanted to try the sport.</en>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -8131,8 +8131,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Road closures due to ${icehockey_${k}} flash mob</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, haben sich in %exhibitiontown% Menschen zusammengefunden und mit frechen Botschaften den Sport imitiert. Viele Straßen mussten gesperrt werden.</de>
-				<en>After the minor hype following the World Championship, people came together in %exhibitiontown% and imitated the sport with cheeky messages. Many streets had to be closed.</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, haben sich in ${exhibitiontown} Menschen zusammengefunden und mit frechen Botschaften den Sport imitiert. Viele Straßen mussten gesperrt werden.</de>
+				<en>After the minor hype following the World Championship, people came together in ${exhibitiontown} and imitated the sport with cheeky messages. Many streets had to be closed.</en>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -8266,29 +8266,29 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|25|27|28|29|30</de>
 				</pointscount>
 				<inathrillingduel_0>
-					<de>In einem spannenden Finale schlug ${kenya_${j}} ${the_${i}}${greenland_${i}} mit %scorefor%:%scoreagainst% und wurde neuer Weltmeister im ${armwrestling_${k}}.</de>
-					<en>In a thrilling final, ${kenya_${j}} beat ${the_${i}}${greenland_${i}} with %scorefor%:%scoreagainst% to become the new world champion in ${armwrestling_${k}}.</en>
+					<de>In einem spannenden Finale schlug ${kenya_${j}} ${the_${i}}${greenland_${i}} mit ${scorefor}:${scoreagainst} und wurde neuer Weltmeister im ${armwrestling_${k}}.</de>
+					<en>In a thrilling final, ${kenya_${j}} beat ${the_${i}}${greenland_${i}} with ${scorefor}:${scoreagainst} to become the new world champion in ${armwrestling_${k}}.</en>
 				</inathrillingduel_0>
 				<inathrillingduel_1>
-					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,%pointscount% Punkten Vorsprung in der Gesamtwertung.</de>
-					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins the overall standings with a 0.%pointscount% lead.</en>
+					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,${pointscount} Punkten Vorsprung in der Gesamtwertung.</de>
+					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins the overall standings with a 0.${pointscount} lead.</en>
 				</inathrillingduel_1>
 				<inathrillingduel_2>
-					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,%pointscount% Sekunden Vorsprung.</de>
-					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.%pointscount% seconds lead.</en>
+					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,${pointscount} Sekunden Vorsprung.</de>
+					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.${pointscount} seconds lead.</en>
 				</inathrillingduel_2>
 				<inathrillingduel_3>
-					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,%pointscount% Metern Vorsprung.</de>
-					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.%pointscount% feet lead.</en>
+					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,${pointscount} Metern Vorsprung.</de>
+					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.${pointscount} feet lead.</en>
 				</inathrillingduel_3>
 				<artistfirstname>
-					<de>%PERSONGENERATOR_FIRSTNAME(fr,1)%</de>
+					<de>${.persongenerator:"firstname":"fr":"male"}</de>
 				</artistfirstname>
 				<artistlastname>
-					<de>%PERSONGENERATOR_LASTNAME(en,1)%</de>
+					<de>${.persongenerator:"lastname":"en":"male"}</de>
 				</artistlastname>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 			</variables>
 			<data genre="2" price="1" quality="20" fictional="1" />
@@ -8305,7 +8305,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					news9="c6cfb73b-172e-44f9-b0f0-b9ee4057bf4f" probability9="10"
 					news10="9668bcc7-0818-4571-bdff-c3e9c73147a9" probability10="10" />
 			</effects>
-			<availability script="TIME_MONTH=7" />
+			<availability script='${.eq:${.worldtime:"month"}:7}' />
 		</news>
 		<news id="1c7689a0-8d96-4382-ab7e-377dea389693" type="2" thread_id="96e6549c-19a1-4ede-a125-a665c1ae87de" creator="" created_by="-">
 			<title>
@@ -8313,8 +8313,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${armwrestling_${k}} Reggae a dancefloor banger</en>
 			</title>
 			<description>
-				<de>Anlässlich des Gewinns der Weltmeisterschaft wird der Reggae-Song „${kenya_${j}} - ${armwrestling_${k}} Vibin'“ von %artistfirstname% %artistlastname% der absolute Abräumer auf den Dancefloors und Sommer-Festivals weltweit.</de>
-				<en>On the occasion of the victory of the World Championship, the reggae song "${kenya_${j}} - ${armwrestling_${k}} Vibin'" by %artistfirstname% %artistlastname% becomes the absolute runaway sensation on dancefloors and summer festivals worldwide.</en>
+				<de>Anlässlich des Gewinns der Weltmeisterschaft wird der Reggae-Song „${kenya_${j}} - ${armwrestling_${k}} Vibin'“ von ${artistfirstname} ${artistlastname} der absolute Abräumer auf den Dancefloors und Sommer-Festivals weltweit.</de>
+				<en>On the occasion of the victory of the World Championship, the reggae song "${kenya_${j}} - ${armwrestling_${k}} Vibin'" by ${artistfirstname} ${artistlastname} becomes the absolute runaway sensation on dancefloors and summer festivals worldwide.</en>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -8324,8 +8324,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Film about ${greenland_${i}} team?</en>
 			</title>
 			<description>
-				<de>Anlässlich der knappen Niederlage will der aufstrebende Filmemacher %artistfirstname% %artistlastname% die Abenteuer des ${greenland_${i}}-Teams bei der ${armwrestling_${k}}-WM unter dem Titel „Hot Runnings“ auf die Leinwand bringen.</de>
-				<en>On the occasion of the narrow defeat, aspiring filmmaker %artistfirstname% %artistlastname% wants to bring the adventures of the ${greenland_${i}} team at the ${armwrestling_${k}} World Championship to the big screen under the title "Hot Runnings".</en>
+				<de>Anlässlich der knappen Niederlage will der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} die Abenteuer des ${greenland_${i}}-Teams bei der ${armwrestling_${k}}-WM unter dem Titel „Hot Runnings“ auf die Leinwand bringen.</de>
+				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} wants to bring the adventures of the ${greenland_${i}} team at the ${armwrestling_${k}} World Championship to the big screen under the title "Hot Runnings".</en>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -8335,8 +8335,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${armwrestling_${k}} book a bestseller</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, wird das Buch „Die besten Taktiken im ${armwrestling_${k}}“ von Prof. Dr. %artistfirstname% %artistlastname% zum Bestseller.</de>
-				<en>After the minor hype following the World Championship, the book "The best tactics in ${armwrestling_${k}}" by Prof. Dr. %artistfirstname% %artistlastname% becomes a bestseller.</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, wird das Buch „Die besten Taktiken im ${armwrestling_${k}}“ von Prof. Dr. ${artistfirstname} ${artistlastname} zum Bestseller.</de>
+				<en>After the minor hype following the World Championship, the book "The best tactics in ${armwrestling_${k}}" by Prof. Dr. ${artistfirstname} ${artistlastname} becomes a bestseller.</en>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -8346,8 +8346,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${armwrestling_${k}} game big success</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, führt das Game „${armwrestling_${k}} Challenge“ von %artistlastname%soft derzeit die internationalen Verkaufscharts an.</de>
-				<en>After the minor hype following the World Championship, the game "${armwrestling_${k}} Challenge" by %artistlastname%soft is currently topping the international sales charts.</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, führt das Game „${armwrestling_${k}} Challenge“ von ${artistlastname}soft derzeit die internationalen Verkaufscharts an.</de>
+				<en>After the minor hype following the World Championship, the game "${armwrestling_${k}} Challenge" by ${artistlastname}soft is currently topping the international sales charts.</en>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -8357,19 +8357,19 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${armwrestling_${k}} equipment top seller</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, packt der Ausrüster „%artistlastname% Gears &amp; Gadgets“ die Gelegenheit beim Schopf und lässt mit seiner „${armwrestling_${k}} ${kenya_${j}} Edition“ die Konkurrenz hinter sich.</de>
-				<en>After the minor hype following the World Championship, the equipment supplier "%artistlastname% Gears &amp; Gadgets" seizes the opportunity and leaves the competition behind with their "${armwrestling_${k}} ${kenya_${j}} Edition".</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, packt der Ausrüster „${artistlastname} Gears &amp; Gadgets“ die Gelegenheit beim Schopf und lässt mit seiner „${armwrestling_${k}} ${kenya_${j}} Edition“ die Konkurrenz hinter sich.</de>
+				<en>After the minor hype following the World Championship, the equipment supplier "${artistlastname} Gears &amp; Gadgets" seizes the opportunity and leaves the competition behind with their "${armwrestling_${k}} ${kenya_${j}} Edition".</en>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
 		<news id="6ee19b73-5081-4fbf-8dcf-c14019a06853" type="2" thread_id="96e6549c-19a1-4ede-a125-a665c1ae87de" creator="" created_by="-">
 			<title>
-				<de>Sommer-Sonne-Ausstellung in %exhibitiontown% erweitert</de>
-				<en>Sun-summer exhibit in %exhibitiontown% expanded</en>
+				<de>Sommer-Sonne-Ausstellung in ${exhibitiontown} erweitert</de>
+				<en>Sun-summer exhibit in ${exhibitiontown} expanded</en>
 			</title>
 			<description>
-				<de>Anlässlich des Gewinns der Weltmeisterschaft nimmt die gerade in %exhibitiontown% gastierende Wanderausstellung „Sommer-Sonne-Volkssport im Wandel der Zeit“ den Rundgang „${armwrestling_${k}} in ${kenya_${j}}“ ins Programm auf.</de>
-				<en>On the occasion of the victory of the World Championship, the traveling exhibit "Popular sun-sommer-sports in the course of time" currently touring %exhibitiontown% will add the trail "${armwrestling_${k}} in ${kenya_${j}}" to its program.</en>
+				<de>Anlässlich des Gewinns der Weltmeisterschaft nimmt die gerade in ${exhibitiontown} gastierende Wanderausstellung „Sommer-Sonne-Volkssport im Wandel der Zeit“ den Rundgang „${armwrestling_${k}} in ${kenya_${j}}“ ins Programm auf.</de>
+				<en>On the occasion of the victory of the World Championship, the traveling exhibit "Popular sun-sommer-sports in the course of time" currently touring ${exhibitiontown} will add the trail "${armwrestling_${k}} in ${kenya_${j}}" to its program.</en>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -8379,19 +8379,19 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Docu about ${greenland_${i}} and ${armwrestling_${k}}</en>
 			</title>
 			<description>
-				<de>Anlässlich der knappen Niederlage hat der aufstrebende Filmemacher %artistfirstname% %artistlastname% eine Doku über ${the_${i}}${greenland_${i}} und den ${armwrestling_${k}}-Sport in der Mache. Arbeitstitel: „Hot Runnings“.</de>
-				<en>On the occasion of the narrow defeat, aspiring filmmaker %artistfirstname% %artistlastname% has a documentary about ${the_${i}}${greenland_${i}} and the sport of ${armwrestling_${k}} in the making. Working title: "Hot Runnings".</en>
+				<de>Anlässlich der knappen Niederlage hat der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} eine Doku über ${the_${i}}${greenland_${i}} und den ${armwrestling_${k}}-Sport in der Mache. Arbeitstitel: „Hot Runnings“.</de>
+				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} has a documentary about ${the_${i}}${greenland_${i}} and the sport of ${armwrestling_${k}} in the making. Working title: "Hot Runnings".</en>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
 		<news id="59d5b4d6-d685-4152-90fb-20ea6ea66706" type="2" thread_id="96e6549c-19a1-4ede-a125-a665c1ae87de" creator="" created_by="-">
 			<title>
-				<de>Kabarettist %artistfirstname% %artistlastname% mit ${armwrestling_${k}}-Programm</de>
-				<en>Satirist %artistfirstname% %artistlastname% with ${armwrestling_${k}} program</en>
+				<de>Kabarettist ${artistfirstname} ${artistlastname} mit ${armwrestling_${k}}-Programm</de>
+				<en>Satirist ${artistfirstname} ${artistlastname} with ${armwrestling_${k}} program</en>
 			</title>
 			<description>
-				<de>Der aufstrebene Kabarettist %artistfirstname% %artistlastname% beginnt seine Tour in %exhibitiontown% und stellt sein von der kürzlichen WM inspiriertes Programm „Sich anstellen wie ${the_${i}}${greenland_${i}} beim ${armwrestling_${k}}“ vor.</de>
-				<en>Up-and-coming satirist %artistfirstname% %artistlastname% begins his tour in %exhibitiontown% and, inspired by the recent World Championship, will present his program "Acting up like ${the_${i}}${greenland_${i}} at ${armwrestling_${k}}".</en>
+				<de>Der aufstrebene Kabarettist ${artistfirstname} ${artistlastname} beginnt seine Tour in ${exhibitiontown} und stellt sein von der kürzlichen WM inspiriertes Programm „Sich anstellen wie ${the_${i}}${greenland_${i}} beim ${armwrestling_${k}}“ vor.</de>
+				<en>Up-and-coming satirist ${artistfirstname} ${artistlastname} begins his tour in ${exhibitiontown} and, inspired by the recent World Championship, will present his program "Acting up like ${the_${i}}${greenland_${i}} at ${armwrestling_${k}}".</en>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -8401,8 +8401,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${armwrestling_${k}} hype causes many injuries</en>
 			</title>
 			<description>
-				<de>Probiert das nicht zu Hause aus, Kinder! %exhibitiontown% und weitere Orte klagen über viele Einlieferungen ins Krankenhaus, als nach der ${armwrestling_${k}}-Weltmeisterschaft viele Untrainierte den Sport ausprobieren wollten.</de>
-				<en>Don't try this at home, kids! %exhibitiontown% and other towns complain about many hospitalizations when, following the ${armwrestling_${k}} World Championship, many untrained people wanted to try the sport.</en>
+				<de>Probiert das nicht zu Hause aus, Kinder! ${exhibitiontown} und weitere Orte klagen über viele Einlieferungen ins Krankenhaus, als nach der ${armwrestling_${k}}-Weltmeisterschaft viele Untrainierte den Sport ausprobieren wollten.</de>
+				<en>Don't try this at home, kids! ${exhibitiontown} and other towns complain about many hospitalizations when, following the ${armwrestling_${k}} World Championship, many untrained people wanted to try the sport.</en>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -8412,8 +8412,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Road closures due to ${armwrestling_${k}} flash mob</en>
 			</title>
 			<description>
-				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, haben sich in %exhibitiontown% Menschen zusammengefunden und mit frechen Botschaften den Sport imitiert. Viele Straßen mussten gesperrt werden.</de>
-				<en>After the minor hype following the World Championship, people came together in %exhibitiontown% and imitated the sport with cheeky messages. Many streets had to be closed.</en>
+				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, haben sich in ${exhibitiontown} Menschen zusammengefunden und mit frechen Botschaften den Sport imitiert. Viele Straßen mussten gesperrt werden.</de>
+				<en>After the minor hype following the World Championship, people came together in ${exhibitiontown} and imitated the sport with cheeky messages. Many streets had to be closed.</en>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -8644,8 +8644,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Wreckage of plane discovered</en>
 			</title>
 			<description>
-				<de>Das abgestürzte Flugzeug aus ${indonesia_${i}} wurde im %indianocean% gefunden. Bilanz: %deathcount% Tote.</de>
-				<en>The crashed plane from ${indonesia_${i}} was found in the %indianocean%. The toll: %deathcount% dead.</en>
+				<de>Das abgestürzte Flugzeug aus ${indonesia_${i}} wurde im ${indianocean} gefunden. Bilanz: ${deathcount} Tote.</de>
+				<en>The crashed plane from ${indonesia_${i}} was found in the ${indianocean}. The toll: ${deathcount} dead.</en>
 			</description>
 			<data genre="4" price="1" quality="55" fictional="1" />
 		</news>
@@ -8747,12 +8747,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news id="8128a80b-c699-4388-b876-63017310f95d" type="0" creator="" created_by="-" comment="TODO: variations">
 			<title>
-				<de>%berlin% autofrei</de>
-				<en>%berlin% car-free</en>
+				<de>${berlin} autofrei</de>
+				<en>${berlin} car-free</en>
 			</title>
 			<description>
-				<de>Ab dem nächsten Jahr wird die Landeshauptstadt %berlin% eine autofreie Zone. Der öffentliche Verkehr feierte nach diesem Beschluss bis morgens.</de>
-				<en>From next year, the state capital %berlin% will be a car-free zone. Following this decision, public transport celebrated until the morning.</en>
+				<de>Ab dem nächsten Jahr wird die Landeshauptstadt ${berlin} eine autofreie Zone. Der öffentliche Verkehr feierte nach diesem Beschluss bis morgens.</de>
+				<en>From next year, the state capital ${berlin} will be a car-free zone. Following this decision, public transport celebrated until the morning.</en>
 			</description>
 			<variables>
 				<berlin>
@@ -8769,19 +8769,19 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>We want the Deutschmark!</en>
 			</title>
 			<description>
-				<de>Einer Umfrage vom April %currentyear% zufolge wollen %percentcount% Prozent der Deutschen ihre alte Währung wieder zurück.</de>
-				<en>According to a survey from April %currentyear%, %percentcount% of Germans want their old currency back.</en>
+				<de>Einer Umfrage vom April ${currentyear} zufolge wollen ${percentcount} Prozent der Deutschen ihre alte Währung wieder zurück.</de>
+				<en>According to a survey from April ${currentyear}, ${percentcount} of Germans want their old currency back.</en>
 			</description>
 			<variables>
 				<percentcount>
 					<de>76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94</de>
 				</percentcount>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
-			<availability year_range_from="2002" script="TIME_MONTH=5" />
+			<availability year_range_from="2002" script='${.eq:${.worldtime:"month"}:5}' />
 		</news>
 
 		<news id="2cf59a3b-43cc-4683-9540-3a1b52a628ac" type="0" creator="" created_by="-">
@@ -8790,19 +8790,19 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>We want the Reichsmark!</en>
 			</title>
 			<description>
-				<de>Einer Umfrage vom April %currentyear% zufolge zufolge wollen %percentcount% Prozent der Deutschen die Reichsmark wieder zurück.</de>
-				<en>According to a survey from April %currentyear%, %percentcount% of Germans want the Reichsmark back.</en>
+				<de>Einer Umfrage vom April ${currentyear} zufolge zufolge wollen ${percentcount} Prozent der Deutschen die Reichsmark wieder zurück.</de>
+				<en>According to a survey from April ${currentyear}, ${percentcount} of Germans want the Reichsmark back.</en>
 			</description>
 			<variables>
 				<percentcount>
 					<de>17|18|18|18|18|18|18|19</de>
 				</percentcount>
 				<currentyear>
-					<de>%WORLDTIME:YEAR%</de>
+					<de>${.worldtime:"year"}</de>
 				</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
-			<availability year_range_to="2001" script="TIME_MONTH=5" />
+			<availability year_range_to="2001" script='${.eq:${.worldtime:"month"}:5}' />
 		</news>
 
 		<news id="37353373-3144-4879-bb74-387181b4cbaa" type="0" thread_id="9464e59a-0944-4ab0-b96a-2227a2cd14f5" creator="" created_by="-" comment="TVTower 2014 version: Schweden und Norwegen bilden Union - Nach historischem Vorbild bilden Schweden und Norwegen eine Union. Finnland möchte sich anschließen um damit die USL (Union skandinavischer Länder) bilden zu können. | Not clear, is it already done? If so, too 'alternative world' scenario and would have to be a one-time news item | maybe add other unions elsewhere of all kinds">
@@ -8899,7 +8899,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>Norway|Sweden|Denmark</en>
 				</finland_9>
 				<exhibitiontown>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</exhibitiontown>
 			</variables>
 			<data genre="0" price="1" quality="45" fictional="1" />
@@ -8909,12 +8909,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news id="c4ea1bdf-5f0e-4c08-9e02-5c5725b5b7b3" type="2" thread_id="9464e59a-0944-4ab0-b96a-2227a2cd14f5" creator="" created_by="-">
 			<title>
-				<de>Skandinavien-Rundang in %exhibitiontown%</de>
-				<en>Scandinavia trail in %exhibitiontown%</en>
+				<de>Skandinavien-Rundang in ${exhibitiontown}</de>
+				<en>Scandinavia trail in ${exhibitiontown}</en>
 			</title>
 			<description>
-				<de>Anlässlich der geplanten USL von ${finland_${i}}, ${swedenandnorway_${i}} nimmt die derzeit in %exhibitiontown% gastierende Wanderausstellung „Nordeuropa im Wandel der Zeit“ den Rundgang „Kulturgeschichte Skandinaviens“ ins Programm auf.</de>
-				<en>On the occasion of the planned USN of ${finland_${i}}, ${swedenandnorway_${i}}, the traveling exhibit "Northern Europe in the course of time", currently touring %exhibitiontown%, will add the trail "Cultural history of Scandinavia" to its program.</en>
+				<de>Anlässlich der geplanten USL von ${finland_${i}}, ${swedenandnorway_${i}} nimmt die derzeit in ${exhibitiontown} gastierende Wanderausstellung „Nordeuropa im Wandel der Zeit“ den Rundgang „Kulturgeschichte Skandinaviens“ ins Programm auf.</de>
+				<en>On the occasion of the planned USN of ${finland_${i}}, ${swedenandnorway_${i}}, the traveling exhibit "Northern Europe in the course of time", currently touring ${exhibitiontown}, will add the trail "Cultural history of Scandinavia" to its program.</en>
 			</description>
 			<data genre="5" price="1" quality="35" fictional="1" />
 			<effects>
@@ -8959,28 +8959,28 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>0|1|2|3|4|5</de>
 				</i>
 				<counterfeitmoneysecured_0>
-					<de>Falschgeld in %town% gesichert</de>
-					<en>Counterfeit money in %town% secured</en>
+					<de>Falschgeld in ${town} gesichert</de>
+					<en>Counterfeit money in ${town} secured</en>
 				</counterfeitmoneysecured_0>
 				<counterfeitmoneysecured_1>
-					<de>Exotische Tiere in %town% sicher gestellt</de>
-					<en>Exotic animals seized in %town%</en>
+					<de>Exotische Tiere in ${town} sicher gestellt</de>
+					<en>Exotic animals seized in ${town}</en>
 				</counterfeitmoneysecured_1>
 				<counterfeitmoneysecured_2>
-					<de>Schwarzlimonade in %town% sicher gestellt</de>
-					<en>Bootleg lemonade seized in %town%</en>
+					<de>Schwarzlimonade in ${town} sicher gestellt</de>
+					<en>Bootleg lemonade seized in ${town}</en>
 				</counterfeitmoneysecured_2>
 				<counterfeitmoneysecured_3>
-					<de>Rakete in %town% sicher gestellt</de>
-					<en>Rocket seized in %town%</en>
+					<de>Rakete in ${town} sicher gestellt</de>
+					<en>Rocket seized in ${town}</en>
 				</counterfeitmoneysecured_3>
 				<counterfeitmoneysecured_4>
-					<de>Schwarzdrucke in %town% sicher gestellt</de>
-					<en>Black prints in %town% secured</en>
+					<de>Schwarzdrucke in ${town} sicher gestellt</de>
+					<en>Black prints in ${town} secured</en>
 				</counterfeitmoneysecured_4>
 				<counterfeitmoneysecured_5>
-					<de>Mittagessen-Schwarzmarkt in %town% aufgelöst</de>
-					<en>Lunch black market in %town% disbanded</en>
+					<de>Mittagessen-Schwarzmarkt in ${town} aufgelöst</de>
+					<en>Lunch black market in ${town} disbanded</en>
 				</counterfeitmoneysecured_5>
 				<age>
 					<de>12|13|14|15|16</de>
@@ -8989,12 +8989,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>m|f</de>
 				</g>
 				<aschoolboy_m>
-					<de>Ein %age%-jähriger Schüler</de>
-					<en>A %age% year old schoolboy</en>
+					<de>Ein ${age}-jähriger Schüler</de>
+					<en>A ${age} year old schoolboy</en>
 				</aschoolboy_m>
 				<aschoolboy_f>
-					<de>Eine %age%-jährige Schülerin</de>
-					<en>A %age% year old schoolgirl</en>
+					<de>Eine ${age}-jährige Schülerin</de>
+					<en>A ${age} year old schoolgirl</en>
 				</aschoolboy_f>
 				<they_m>
 					<de>Er</de>
@@ -9017,19 +9017,19 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>firecrackers|cartoon cups|glitter pens|unicorn masks|mega chewing gum balls|giant gummy bears|hip hop records|heavy metal albums|video games</en>
 				</firecrackers>
 				<town>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</town>
 				<johndoe_m>
-					<de>%PERSONGENERATOR_NAME(de,1)%</de>
-					<en>%PERSONGENERATOR_NAME(en,1)%</en>
+					<de>${.persongenerator:"firstname":"de":"male"}</de>
+					<en>${.persongenerator:"firstname":"en":"male"}</en>
 				</johndoe_m>
 				<johndoe_f>
-					<de>%PERSONGENERATOR_NAME(de,2)%</de>
-					<en>%PERSONGENERATOR_NAME(en,2)%</en>
+					<de>${.persongenerator:"firstname":"de":"female"}</de>
+					<en>${.persongenerator:"firstname":"en":"female"}</en>
 				</johndoe_f>
 				<triedto_0>
-					<de>hat versucht, mit ${their_${g}} Farbdrucker Geldscheine herzustellen. ${they_${g}} wurde beim Kauf von %firecrackers% überführt</de>
-					<en>tried to produce banknotes with ${their_${g}} color printer. ${they_${g}} was caught buying %firecrackers%</en>
+					<de>hat versucht, mit ${their_${g}} Farbdrucker Geldscheine herzustellen. ${they_${g}} wurde beim Kauf von ${firecrackers} überführt</de>
+					<en>tried to produce banknotes with ${their_${g}} color printer. ${they_${g}} was caught buying ${firecrackers}</en>
 				</triedto_0>
 				<triedto_1>
 					<de>hat versucht, einen „Hinterhof-Zoo“ mit exotischen Tieren wie Alpakas, Flamingos und Nasenbären in ${their_${g}} Garten zu betreiben</de>
@@ -9069,12 +9069,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news id="2d02f11f-e96c-46da-b2b1-a9657cd94b10" type="0" thread_id="bb65be8a-8501-487d-8f3e-025f6ce5f403" creator="" created_by="-" comment="TODO: more variations">
 			<title>
-				<de>Öl in %leipzig% gefunden</de>
-				<en>Oil found in %leipzig%</en>
+				<de>Öl in ${leipzig} gefunden</de>
+				<en>Oil found in ${leipzig}</en>
 			</title>
 			<description>
-				<de>Bei Baugrunduntersuchungen in %leipzig% haben Geologen wider Erwarten Öl gefunden.</de>
-				<en>Contrary to expectations, geologists have found oil during subsoil investigations in %leipzig%.</en>
+				<de>Bei Baugrunduntersuchungen in ${leipzig} haben Geologen wider Erwarten Öl gefunden.</de>
+				<en>Contrary to expectations, geologists have found oil during subsoil investigations in ${leipzig}.</en>
 			</description>
 			<variables>
 				<leipzig>
@@ -9093,8 +9093,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>No oil well after all</en>
 			</title>
 			<description>
-				<de>Beim Ölfund in %leipzig% handelt es sich leider nicht um eine Ölquelle. Aus Versehen wurde eine Öl-Pipeline angebort.</de>
-				<en>Unfortunately, the oil discovery in %leipzig% is not an oil well. It was an oil pipeline that was accidentally tapped.</en>
+				<de>Beim Ölfund in ${leipzig} handelt es sich leider nicht um eine Ölquelle. Aus Versehen wurde eine Öl-Pipeline angebort.</de>
+				<en>Unfortunately, the oil discovery in ${leipzig} is not an oil well. It was an oil pipeline that was accidentally tapped.</en>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -9112,7 +9112,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="1,4,10" news="eb05f8a5-b614-4d4d-a616-25c7cd0ae405" />
 			</effects>
-			<availability script="TIME_DAYSPLAYED > 36" />
+			<availability script='${.gt:${.worldtime:"daysplayed"}:36}' />
 		</news>
 		<news id="eb05f8a5-b614-4d4d-a616-25c7cd0ae405" type="2" thread_id="e248e5da-3555-48fe-acab-caaa9cdb7c70" creator="" created_by="-">
 			<title>
@@ -9194,12 +9194,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news id="e3ccc4f2-2f73-4871-b3be-117ed74f0238" type="0" creator="" created_by="-">
 			<title>
-				<de>%footballteam% ${struck_${i}}</de>
-				<en>%footballteam% ${struck_${i}}</en>
+				<de>${footballteam} ${struck_${i}}</de>
+				<en>${footballteam} ${struck_${i}}</en>
 			</title>
 			<description>
-				<de>Die ${russian_${i}} %footballteam% wurde beim Training ${struckbylightning_${i}}. %three% Spieler wurden schwer verletzt ins Krankenhaus gebracht.</de>
-				<en>The ${russian_${i}} %footballteam% was ${struckbylightning_${i}} during training. %three% players were seriously injured and taken to hospital.</en>
+				<de>Die ${russian_${i}} ${footballteam} wurde beim Training ${struckbylightning_${i}}. ${three} Spieler wurden schwer verletzt ins Krankenhaus gebracht.</de>
+				<en>The ${russian_${i}} ${footballteam} was ${struckbylightning_${i}} during training. ${three} players were seriously injured and taken to hospital.</en>
 			</description>
 			<variables>
 				<footballteam>
@@ -9279,12 +9279,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news id="fdee74de-2d51-40ae-a630-d86bb48be3f4" type="0" creator="" created_by="-" comment="TVTower 2014 version: Taxifahrer überfallen - Ein Taxifahrer in München wurde überfallen. Beute: 6 Euro und 12 Cent. | Adding variations - TODO: Find out if there's a special reference or joke, except for the low amount in an affluent region | TODO: merge when conditional variables possible | TODO: International version with other currencies - Zürich|Singapur|Dubai|Chelsea|Mayfair|Beverly Hills|Bel Air|Malibu|Hong Kong">
 			<title>
-				<de>%munich%: %cabdriver% überfallen</de>
-				<en>%munich%: %cabdriver% robbed</en>
+				<de>${munich}: ${cabdriver} überfallen</de>
+				<en>${munich}: ${cabdriver} robbed</en>
 			</title>
 			<description>
-				<de>Ein %cabdriver% in %munich% wurde überfallen. Beute: %amounteuro% Euro und %amountcent% Cent.</de>
-				<en>A %cabdriver% in %munich% was robbed. Loot: %amounteuro% and %amountcent% cents.</en>
+				<de>Ein ${cabdriver} in ${munich} wurde überfallen. Beute: ${amounteuro} Euro und ${amountcent} Cent.</de>
+				<en>A ${cabdriver} in ${munich} was robbed. Loot: ${amounteuro} and ${amountcent} cents.</en>
 			</description>
 			<variables>
 				<cabdriver>
@@ -9308,12 +9308,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news id="48a691f3-fb25-4cfc-8bd3-8fc59a93febd" type="0" creator="" created_by="-">
 			<title>
-				<de>%munich%: %cabdriver% überfallen</de>
-				<en>%munich%: %cabdriver% robbed</en>
+				<de>${munich}: ${cabdriver} überfallen</de>
+				<en>${munich}: ${cabdriver} robbed</en>
 			</title>
 			<description>
-				<de>Ein %cabdriver% in %munich% wurde überfallen. Beute: %amountdm% Mark und %amountpf% Pfennig.</de>
-				<en>A %cabdriver% in %munich% was robbed. Loot: %amountdm% deutschmarks and %amountpf% pfennigs.</en>
+				<de>Ein ${cabdriver} in ${munich} wurde überfallen. Beute: ${amountdm} Mark und ${amountpf} Pfennig.</de>
+				<en>A ${cabdriver} in ${munich} was robbed. Loot: ${amountdm} deutschmarks and ${amountpf} pfennigs.</en>
 			</description>
 			<variables>
 				<cabdriver>

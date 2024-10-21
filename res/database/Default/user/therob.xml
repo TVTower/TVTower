@@ -101,9 +101,9 @@
 						<pl>Asystent staje się śpiewającą gwiazdą</pl>
 					</title>
 					<description>
-						<de>[2|Full] singt in einer Bar. Ein Plattenproduzent entdeckt sie. Der traurige Abschied beginnt</de>
-						<en>[2|Full] sings in a bar. A record producer discovers her. The sad farewell begins.</en>
-						<pl>[2|Full] śpiewa w barze. Odkrywa ją producent płytowy. Rozpoczyna się smutne pożegnanie.</pl>
+						<de>${.self:"cast":2:"fullname"} singt in einer Bar. Ein Plattenproduzent entdeckt sie. Der traurige Abschied beginnt</de>
+						<en>${.self:"cast":2:"fullname"} sings in a bar. A record producer discovers her. The sad farewell begins.</en>
+						<pl>${.self:"cast":2:"fullname"} śpiewa w barze. Odkrywa ją producent płytowy. Rozpoczyna się smutne pożegnanie.</pl>
 					</description>
 					<ratings critics="50" speed="25" />
 				</programme>
@@ -215,14 +215,14 @@
 
 		<programme id="TheRob-dda6-ero-WuzzGeiersDamen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="practically a fictional compilation of real films; shouldn't contain fictional actors - moved these to dba43687-9030-4e8f-9d8d-8bf2b8bafeb2">
 			<title>
-				<de>[0|Full]s Damen</de>
-				<en>[0|Full]'s Ladies</en>
-				<pl>Wszystkie kobiety [0|Full]</pl>
+				<de>${.self:"cast":0:"fullname"}s Damen</de>
+				<en>${.self:"cast":0:"fullname"}'s Ladies</en>
+				<pl>Wszystkie kobiety ${.self:"cast":0:"fullname"}</pl>
 			</title>
 			<description>
-				<de>Die bestgebauten Damen von [0|Full] hüpfen durch das Bild.</de>
-				<en>The finest proportioned ladies of [0|Full] are bouncing through the picture.</en>
-				<pl>W programie pokazane są kobiety o najlepszych proporcjach ciała według [0|Full]a.</pl><!--I don't know if this is what you meant. help!-->
+				<de>Die bestgebauten Damen von ${.self:"cast":0:"fullname"} hüpfen durch das Bild.</de>
+				<en>The finest proportioned ladies of ${.self:"cast":0:"fullname"} are bouncing through the picture.</en>
+				<pl>W programie pokazane są kobiety o najlepszych proporcjach ciała według ${.self:"cast":0:"fullname"}a.</pl><!--I don't know if this is what you meant. help!-->
 			</description>
 			<staff>
 				<member index="0" function="1">1b9dbd90-5ec0-4e11-ae86-f3365c96897d</member>
@@ -286,9 +286,9 @@
 				<pl>Różnorodne - temat gatunku</pl>
 			</title>
 			<description>
-				<de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
-				<en>[0|Full] has invited [1|Full], [2|Full], [3|Full] and [4|Full]. The goal an intensive conversation about Sundry. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
-				<pl>[0|Full] zaprasza gości. To: [1|Full], [2|Full], [3|Full] i [4|Full]. Celem jest intensywna rozmowa na temat "Różnorodne". Co się na to składa? Jaki jest wpływ? Jakie będą wskaźniki oglądalności? Bardzo ekscytująca runda ekspertów. Zwłaszcza gdy wybuchnie kłótnia.</pl>
+				<de>${.self:"cast":0:"fullname"} hat ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} und ${.self:"cast":4:"fullname"} eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
+				<en>${.self:"cast":0:"fullname"} has invited ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} and ${.self:"cast":4:"fullname"}. The goal an intensive conversation about Sundry. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
+				<pl>${.self:"cast":0:"fullname"} zaprasza gości. To: ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} i ${.self:"cast":4:"fullname"}. Celem jest intensywna rozmowa na temat "Różnorodne". Co się na to składa? Jaki jest wpływ? Jakie będą wskaźniki oglądalności? Bardzo ekscytująca runda ekspertów. Zwłaszcza gdy wybuchnie kłótnia.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -310,9 +310,9 @@
 				<pl>Redaktor i sztuczna inteligencja</pl>
 			</title>
 			<description>
-				<de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen? Und hat [1|Full] richtig gehandelt? Ist Real-Life wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig.</de>
-				<en>[0|Full] and [1|Full] in lively discussion. Where do we stand with the editor? What should the AI look like? And did [1|Full] act correctly? Is real life more important? And who is working on the AI now? Exciting, but a bit too lengthy.</en>
-				<pl>[0|Full] i [1|Full] w ożywionej dyskusji. Jak powinna wyglądać sztuczna inteligencja? Czy [1|Full] działał poprawnie? Czy prawdziwe życie jest ważniejsze? I kto teraz pracuje nad SI? Ekscytujące, ale trochę za długie.</pl>
+				<de>${.self:"cast":0:"fullname"} und ${.self:"cast":1:"fullname"} in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen? Und hat ${.self:"cast":1:"fullname"} richtig gehandelt? Ist Real-Life wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig.</de>
+				<en>${.self:"cast":0:"fullname"} and ${.self:"cast":1:"fullname"} in lively discussion. Where do we stand with the editor? What should the AI look like? And did ${.self:"cast":1:"fullname"} act correctly? Is real life more important? And who is working on the AI now? Exciting, but a bit too lengthy.</en>
+				<pl>${.self:"cast":0:"fullname"} i ${.self:"cast":1:"fullname"} w ożywionej dyskusji. Jak powinna wyglądać sztuczna inteligencja? Czy ${.self:"cast":1:"fullname"} działał poprawnie? Czy prawdziwe życie jest ważniejsze? I kto teraz pracuje nad SI? Ekscytujące, ale trochę za długie.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -331,9 +331,9 @@
 				<pl>TVTower - początek</pl>
 			</title>
 			<description>
-				<de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVTower. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de> <!-- TODO: 2025 follow-up -->
-				<en>[0|Full] and [1|Full] as well as [2|Full] explain their motivation. Why TVTower. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
-				<pl>[0|Full] i [1|Full] oraz [2|Full] wyjaśniają swoją motywację do pracy nad TVTower. I jak długo będą wytrwali. Czy kiedykolwiek zostanie ukończona. Czy można to zrobić w harmonii z resztą życia? Czekamy na obiecany wywiad z 2025 roku!</pl>
+				<de>${.self:"cast":0:"fullname"} und ${.self:"cast":1:"fullname"} sowie ${.self:"cast":2:"fullname"} erklären ihre Motivation. Warum TVTower. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de> <!-- TODO: 2025 follow-up -->
+				<en>${.self:"cast":0:"fullname"} and ${.self:"cast":1:"fullname"} as well as ${.self:"cast":2:"fullname"} explain their motivation. Why TVTower. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
+				<pl>${.self:"cast":0:"fullname"} i ${.self:"cast":1:"fullname"} oraz ${.self:"cast":2:"fullname"} wyjaśniają swoją motywację do pracy nad TVTower. I jak długo będą wytrwali. Czy kiedykolwiek zostanie ukończona. Czy można to zrobić w harmonii z resztą życia? Czekamy na obiecany wywiad z 2025 roku!</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -355,9 +355,9 @@
 				<pl>Goaaaaal</pl>
 			</title>
 			<description>
-				<de>[1|Full] präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
-				<en>[1|Full] presents the finest goals of 1981. A feast for the eyes of every fan!</en>
-				<pl>[1|Full] prezentuje najlepsze bramki z 1981 roku. Uczta dla oczu każdego fana!</pl>
+				<de>${.self:"cast":1:"fullname"} präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
+				<en>${.self:"cast":1:"fullname"} presents the finest goals of 1981. A feast for the eyes of every fan!</en>
+				<pl>${.self:"cast":1:"fullname"} prezentuje najlepsze bramki z 1981 roku. Uczta dla oczu każdego fana!</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_639</member>
@@ -482,9 +482,9 @@
 				<pl>Polowanie na Meringo</pl>
 			</title>
 			<description>
-				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. [1|Full], der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
-				<en>Meringo slaughters a village with his mob. [1|Full], having lost his child because of this, hunts him down mercilessly.</en>
-				<pl>Meringo morduje wioskę ze swoim tłumem. [1|Full], straciwszy z tego powodu dziecko, bezlitośnie na niego poluje.</pl>
+				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. ${.self:"cast":1:"fullname"}, der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
+				<en>Meringo slaughters a village with his mob. ${.self:"cast":1:"fullname"}, having lost his child because of this, hunts him down mercilessly.</en>
+				<pl>Meringo morduje wioskę ze swoim tłumem. ${.self:"cast":1:"fullname"}, straciwszy z tego powodu dziecko, bezlitośnie na niego poluje.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">bef085c9-c305-4033-9ec8-fa9ad90635e0</member>
@@ -691,9 +691,9 @@
 				<pl>Skandale</pl>
 			</title>
 			<description>
-				<de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
-				<en>[0|Full] presents the scandals of [1|Full]. Everything is shown, from freak-outs at film locations to interviews and talk show appearances. Hilarious to no end. But completely unsuitable for younger viewers.</en>
-				<pl>[0|Full] przedstawia skandale z [1|Full]. Pokazano wszystko, od szaleństw w miejscach kręcenia filmów po wywiady i występy w talk show. Przezabawne bez końca. Ale zupełnie nieodpowiednie dla młodszych widzów.</pl>
+				<de>${.self:"cast":0:"fullname"} präsentiert die Skandale von ${.self:"cast":1:"fullname"}. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
+				<en>${.self:"cast":0:"fullname"} presents the scandals of ${.self:"cast":1:"fullname"}. Everything is shown, from freak-outs at film locations to interviews and talk show appearances. Hilarious to no end. But completely unsuitable for younger viewers.</en>
+				<pl>${.self:"cast":0:"fullname"} przedstawia skandale z ${.self:"cast":1:"fullname"}. Pokazano wszystko, od szaleństw w miejscach kręcenia filmów po wywiady i występy w talk show. Przezabawne bez końca. Ale zupełnie nieodpowiednie dla młodszych widzów.</pl>
 			</description>
 			<staff>
 				<member index="0" function="9">c9541cda-d802-4421-bc52-30747c163db0</member>
@@ -706,40 +706,40 @@
 			<children>
 				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[1|Full] qualmt die Bude zu</de>
-						<en>[1|Full] Smoking Up the Place</en>
-						<pl>[1|Full] puszcza z dymem to miejsce</pl>
+						<de>${.self:"cast":1:"fullname"} qualmt die Bude zu</de>
+						<en>${.self:"cast":1:"fullname"} Smoking Up the Place</en>
+						<pl>${.self:"cast":1:"fullname"} puszcza z dymem to miejsce</pl>
 					</title>
 					<description>
-						<de>[1|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
-						<en>[1|Full] as a chain smoker insults the host to the point of no return.</en>
-						<pl>[1|Full], jako palacz który obraża gospodarza i doprowadza go do punktu, z którego nie ma powrotu.</pl>
+						<de>${.self:"cast":1:"fullname"} als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
+						<en>${.self:"cast":1:"fullname"} as a chain smoker insults the host to the point of no return.</en>
+						<pl>${.self:"cast":1:"fullname"}, jako palacz który obraża gospodarza i doprowadza go do punktu, z którego nie ma powrotu.</pl>
 					</description>
 					<ratings critics="60" speed="30" />
 				</programme>
 				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>[1|Full] beleidigt die Interviewerin</de>
-						<en>[1|Full] Insulting the Interviewer</en>
-						<pl>[1|Full] obraża osobę z którą przeprowadza wywiad</pl>
+						<de>${.self:"cast":1:"fullname"} beleidigt die Interviewerin</de>
+						<en>${.self:"cast":1:"fullname"} Insulting the Interviewer</en>
+						<pl>${.self:"cast":1:"fullname"} obraża osobę z którą przeprowadza wywiad</pl>
 					</title>
 					<description>
-						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
-						<en>Can't help feeling sorry for the lady. [1|Full] goes completely berserk and attacks her obscenely.</en>
-						<pl>Nie mogę przestać współczuć tej kobiecie. [1|Full] wpada w szał i atakuje ją nieprzyzwoicie.</pl>
+						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. ${.self:"cast":1:"fullname"} rastet völlig aus und geht sie unflätig an.</de>
+						<en>Can't help feeling sorry for the lady. ${.self:"cast":1:"fullname"} goes completely berserk and attacks her obscenely.</en>
+						<pl>Nie mogę przestać współczuć tej kobiecie. ${.self:"cast":1:"fullname"} wpada w szał i atakuje ją nieprzyzwoicie.</pl>
 					</description>
 					<ratings critics="65" speed="35" />
 				</programme>
 				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>[1|Full] im Dschungel</de>
-						<en>[1|Full] in the Jungle</en>
-						<pl>[1|Full] w dżungli</pl>
+						<de>${.self:"cast":1:"fullname"} im Dschungel</de>
+						<en>${.self:"cast":1:"fullname"} in the Jungle</en>
+						<pl>${.self:"cast":1:"fullname"} w dżungli</pl>
 					</title>
 					<description>
-						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
-						<en>[1|Full]'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
-						<pl>Legendarny napad złości w dżungli. Kogo zaatakuje [1|Full] w następnej kolejności? Naoczni świadkowie do dziś przeżywają traumę.</pl>
+						<de>${.self:"cast":1:"fullname"} legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
+						<en>${.self:"cast":1:"fullname"}'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
+						<pl>Legendarny napad złości w dżungli. Kogo zaatakuje ${.self:"cast":1:"fullname"} w następnej kolejności? Naoczni świadkowie do dziś przeżywają traumę.</pl>
 					</description>
 					<ratings critics="70" speed="40" />
 				</programme>
@@ -892,9 +892,9 @@
 						<pl>Studio filmowe w Bollywood</pl>
 					</title>
 					<description>
-						<de>[1|Full] begleitet Hans Imglück auf seinem Weg, Qualitätsfilme in Bollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
-						<en>[1|Full] accompanies Hans Inluck on his way to shoot quality films in Bollywood. A magnificent loss-making business.</en>
-						<pl>[1|Full] towarzyszy Hansowi Inluckowi w jego drodze do kręcenia wysokiej jakości filmów w Bollywood. Wspaniały biznes przynoszący straty.</pl>
+						<de>${.self:"cast":1:"fullname"} begleitet Hans Imglück auf seinem Weg, Qualitätsfilme in Bollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
+						<en>${.self:"cast":1:"fullname"} accompanies Hans Inluck on his way to shoot quality films in Bollywood. A magnificent loss-making business.</en>
+						<pl>${.self:"cast":1:"fullname"} towarzyszy Hansowi Inluckowi w jego drodze do kręcenia wysokiej jakości filmów w Bollywood. Wspaniały biznes przynoszący straty.</pl>
 					</description>
 					<ratings critics="43" speed="22" />
 				</programme>
@@ -905,9 +905,9 @@
 						<pl>Sklep erotyczny w Jemenie</pl>
 					</title>
 					<description>
-						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. [1|Full] führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf, die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
-						<en>Nick Thinknotlong sets up an erotic store in Yemen. [1|Full] conducts an exciting interview about Nick's knowledge of Yemen. We're looking forward to filming the episode about the ideas he comes up with in prison.</en>
-						<pl>Nick Thinknotlong zakłada sklep erotyczny w Jemenie. [1|Full] przeprowadza ekscytujący wywiad na temat wiedzy Nicka o Jemenie. Z niecierpliwością czekamy na nakręcenie odcinka o pomysłach, na które wpada w więzieniu.</pl>
+						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. ${.self:"cast":1:"fullname"} führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf, die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
+						<en>Nick Thinknotlong sets up an erotic store in Yemen. ${.self:"cast":1:"fullname"} conducts an exciting interview about Nick's knowledge of Yemen. We're looking forward to filming the episode about the ideas he comes up with in prison.</en>
+						<pl>Nick Thinknotlong zakłada sklep erotyczny w Jemenie. ${.self:"cast":1:"fullname"} przeprowadza ekscytujący wywiad na temat wiedzy Nicka o Jemenie. Z niecierpliwością czekamy na nakręcenie odcinka o pomysłach, na które wpada w więzieniu.</pl>
 					</description>
 					<ratings critics="48" speed="27" />
 				</programme>
@@ -918,9 +918,9 @@
 						<pl>Sklep z lodówkami w Grenlandii</pl>
 					</title>
 					<description>
-						<de>[1|Full] reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Eine etwas kühle Sache.</de>
-						<en>[1|Full] travels to Greenland with Mee Isfreezy to follow the development of her refrigerator specialty store. A somewhat chilly affair.</en>
-						<pl>[1|Full] podróżuje na Grenlandię z Mee Isfreezy, aby śledzić rozwój jej specjalistycznego sklepu z lodówkami. Nieco chłodna sprawa.</pl>
+						<de>${.self:"cast":1:"fullname"} reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Eine etwas kühle Sache.</de>
+						<en>${.self:"cast":1:"fullname"} travels to Greenland with Mee Isfreezy to follow the development of her refrigerator specialty store. A somewhat chilly affair.</en>
+						<pl>${.self:"cast":1:"fullname"} podróżuje na Grenlandię z Mee Isfreezy, aby śledzić rozwój jej specjalistycznego sklepu z lodówkami. Nieco chłodna sprawa.</pl>
 					</description>
 					<ratings critics="44" speed="19" />
 				</programme>
@@ -1834,14 +1834,14 @@
 		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
 			<title>
-				<de>Das Leben der [2|Full]</de>
-				<en>The Life of [2|Full]</en>
-				<pl>Życie [2|Full]</pl>
+				<de>Das Leben der ${.self:"cast":2:"fullname"}</de>
+				<en>The Life of ${.self:"cast":2:"fullname"}</en>
+				<pl>Życie ${.self:"cast":2:"fullname"}</pl>
 			</title>
 			<description>
-				<de>Der Tod von [2|Full] wird zum Anlass genommen, ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
-				<en>The death of [2|Full] is taken as an opportunity to completely examine her life. Including extensive wedding shots with the prince.</en>
-				<pl>Śmierć [2|Full] zostaje wykorzystana jako okazja do całkowitego przeanalizowania jej życia. W tym obszerne ujęcia ślubne z księciem.</pl>
+				<de>Der Tod von ${.self:"cast":2:"fullname"} wird zum Anlass genommen, ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
+				<en>The death of ${.self:"cast":2:"fullname"} is taken as an opportunity to completely examine her life. Including extensive wedding shots with the prince.</en>
+				<pl>Śmierć ${.self:"cast":2:"fullname"} zostaje wykorzystana jako okazja do całkowitego przeanalizowania jej życia. W tym obszerne ujęcia ślubne z księciem.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_377</member>
@@ -1862,9 +1862,9 @@
 				<pl>Analiza wystąpień</pl>
 			</title>
 			<description>
-				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von [2|Full] und [3|Full] chronologisch gezeigt und miteinander verglichen.</de>
-				<en>The Cuban crisis frightened everyone. Here the speeches of [2|Full] and [3|Full] are shown chronologically, and are compared with each other.</en>
-				<pl>Kryzys kubański przeraził wszystkich. W programie pokazane są chronologicznie przemówienia [2|First]a [2|Last] i [3|Last]a.</pl>
+				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von ${.self:"cast":2:"fullname"} und ${.self:"cast":3:"fullname"} chronologisch gezeigt und miteinander verglichen.</de>
+				<en>The Cuban crisis frightened everyone. Here the speeches of ${.self:"cast":2:"fullname"} and ${.self:"cast":3:"fullname"} are shown chronologically, and are compared with each other.</en>
+				<pl>Kryzys kubański przeraził wszystkich. W programie pokazane są chronologicznie przemówienia ${.self:"cast":2:"firstname"}a ${.self:"cast":2:"lastname"} i ${.self:"cast":3:"lastname"}a.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-BastlRuetli</member>
@@ -1961,9 +1961,9 @@
 				<pl>Powrót Ronny'ego i Byte'a</pl>
 			</title>
 			<description>
-				<de>Splatter und Splatter. [0|First] und Byte kehren als Zombies wieder. Klar, 'ne Geschichte gibt es auch. Irgendwo.</de>
-				<en>Splatter and splatter. [0|First] and Byte are returning as walking deads. Sure, there is a story too. Somewhere.</en>
-				<pl>Rozprysk i rozprysk. [0|First] i Byte powracają jako chodzące trupy. Jasne, jest też jakaś historia. Gdzieś.</pl>
+				<de>Splatter und Splatter. ${.self:"cast":0:"firstname"} und Byte kehren als Zombies wieder. Klar, 'ne Geschichte gibt es auch. Irgendwo.</de>
+				<en>Splatter and splatter. ${.self:"cast":0:"firstname"} and Byte are returning as walking deads. Sure, there is a story too. Somewhere.</en>
+				<pl>Rozprysk i rozprysk. ${.self:"cast":0:"firstname"} i Byte powracają jako chodzące trupy. Jasne, jest też jakaś historia. Gdzieś.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -1996,14 +1996,14 @@
 				</programme>
 				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Reference: https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt">
 					<title>
-						<de>[0|First] sucht das Fliwatüt</de>
-						<en>[0|First] Is Looking For the Flywatoot</en>
-						<pl>[0|First] szuka Fliwatütki</pl>
+						<de>${.self:"cast":0:"firstname"} sucht das Fliwatüt</de>
+						<en>${.self:"cast":0:"firstname"} Is Looking For the Flywatoot</en>
+						<pl>${.self:"cast":0:"firstname"} szuka Fliwatütki</pl>
 					</title>
 					<description>
-						<de>[0|First] jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
-						<en>[0|First] is chasing the Flywatoot. The army of grannies opposes him.</en>
-						<pl>[0|First] szuka Fliwatütki. Przeciwstawia mu się armia babć.</pl>
+						<de>${.self:"cast":0:"firstname"} jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
+						<en>${.self:"cast":0:"firstname"} is chasing the Flywatoot. The army of grannies opposes him.</en>
+						<pl>${.self:"cast":0:"firstname"} szuka Fliwatütki. Przeciwstawia mu się armia babć.</pl>
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>
@@ -2027,9 +2027,9 @@
 						<pl>Zniszcz bit</pl>
 					</title>
 					<description>
-						<de>[0|First] und Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
-						<en>[0|First] and Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
-						<pl>[0|First] i Byte chcą wyładować swój gniew na Bicie. Ale gdzie on się ukrywa? I kto tym razem stanie im na drodze?</pl>
+						<de>${.self:"cast":0:"firstname"} und Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
+						<en>${.self:"cast":0:"firstname"} and Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
+						<pl>${.self:"cast":0:"firstname"} i Byte chcą wyładować swój gniew na Bicie. Ale gdzie on się ukrywa? I kto tym razem stanie im na drodze?</pl>
 					</description>
 					<ratings critics="12" speed="59" />
 				</programme>
@@ -2040,9 +2040,9 @@
 						<pl>Początek</pl>
 					</title>
 					<description>
-						<de>[0|First] und Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt, wird übersehen. Ergibt das eine neue Serie?</de>
-						<en>[0|First] and Byte are raiding a city. Anyone who can't escape is bitten. Only one sheriff, who's in a coma, is overlooked. Does this make for a new series?</en>
-						<pl>[0|First] i Byte napadają na miasto. Każdy, kto nie może uciec, zostaje ugryziony. Tylko jeden szeryf, który jest w śpiączce, zostaje pominięty. Czy będzie z tego nowy serial?</pl>
+						<de>${.self:"cast":0:"firstname"} und Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt, wird übersehen. Ergibt das eine neue Serie?</de>
+						<en>${.self:"cast":0:"firstname"} and Byte are raiding a city. Anyone who can't escape is bitten. Only one sheriff, who's in a coma, is overlooked. Does this make for a new series?</en>
+						<pl>${.self:"cast":0:"firstname"} i Byte napadają na miasto. Każdy, kto nie może uciec, zostaje ugryziony. Tylko jeden szeryf, który jest w śpiączce, zostaje pominięty. Czy będzie z tego nowy serial?</pl>
 					</description>
 					<ratings critics="27" speed="61" />
 				</programme>
@@ -2058,9 +2058,9 @@
 				<pl>Lolitki w sianie</pl>
 			</title>
 			<description>
-				<de>Die frühe Jugendsünde von [1|Full]. Aber sie ist hinreißend.</de>
-				<en>The early actor sins of [1|Full]. But what a beauty.</en>
-				<pl>[1|Full] - grzechy wczesnych aktorów. Ale co za piękno.</pl>
+				<de>Die frühe Jugendsünde von ${.self:"cast":1:"fullname"}. Aber sie ist hinreißend.</de>
+				<en>The early actor sins of ${.self:"cast":1:"fullname"}. But what a beauty.</en>
+				<pl>${.self:"cast":1:"fullname"} - grzechy wczesnych aktorów. Ale co za piękno.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">Per_custom_Freddy_682</member>
@@ -2084,9 +2084,9 @@
 				<pl>Plaże świata</pl>
 			</title>
 			<description>
-				<de>[1|Full] zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschönen Frau?</de>
-				<en>[1|Full] presents the most beautiful beaches in the world. A great documentary. Or just a pretty bikini on a beautiful woman?</en>
-				<pl>[1|Full] prezentuje najpiękniejsze plaże na świecie. Wspaniały dokument. A może po prostu ładne bikini na pięknych kobietach?</pl>
+				<de>${.self:"cast":1:"fullname"} zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschönen Frau?</de>
+				<en>${.self:"cast":1:"fullname"} presents the most beautiful beaches in the world. A great documentary. Or just a pretty bikini on a beautiful woman?</en>
+				<pl>${.self:"cast":1:"fullname"} prezentuje najpiękniejsze plaże na świecie. Wspaniały dokument. A może po prostu ładne bikini na pięknych kobietach?</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">TheRob-TowerTV-MorisWeverkov</member>
@@ -2104,9 +2104,9 @@
 						<pl>Zatoka Walvis</pl>
 					</title>
 					<description>
-						<de>Namibia. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Namibia. [1|First] bounces around happily showing the sand and the animals. And you get to learn something about the country too.</en>
-						<pl>Namibia. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o tym kraju.</pl>
+						<de>Namibia. ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Namibia. ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you get to learn something about the country too.</en>
+						<pl>Namibia. ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o tym kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -2116,9 +2116,9 @@
 						<pl>Oak beach</pl>
 					</title>
 					<description>
-						<de>Australien mit direktem Blick auf das Great Barrier Reef. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Australia with direct view on the Great Barrier Reef. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Australia z bezpośrednim widokiem na Wielką Rafę Koralową. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o tym kraju.</pl>
+						<de>Australien mit direktem Blick auf das Great Barrier Reef. ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Australia with direct view on the Great Barrier Reef. ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Australia z bezpośrednim widokiem na Wielką Rafę Koralową. ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o tym kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -2128,9 +2128,9 @@
 						<pl>Vallvik</pl>
 					</title>
 					<description>
-						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Szwecja. Surowa plaża. Czy ktoś powinien powiedzieć prezenterce, że wyraźnie widać na niej zimno? [1|First] podskakuje radośnie pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
+						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Szwecja. Surowa plaża. Czy ktoś powinien powiedzieć prezenterce, że wyraźnie widać na niej zimno? ${.self:"cast":1:"firstname"} podskakuje radośnie pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -2140,9 +2140,9 @@
 						<pl>Playa Corcovado</pl>
 					</title>
 					<description>
-						<de>Costa Rica. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Costa Rica. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Kostaryka. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o kraju.</pl>
+						<de>Costa Rica. ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Costa Rica. ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Kostaryka. ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -2152,9 +2152,9 @@
 						<pl>Koh Thas</pl>
 					</title>
 					<description>
-						<de>Kambodscha. Wer hält da denn Kokosnüsse? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Cambodia. Who's holding coconuts there? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Kambodża. Kto tam trzyma kokosy? [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
+						<de>Kambodscha. Wer hält da denn Kokosnüsse? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Cambodia. Who's holding coconuts there? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Kambodża. Kto tam trzyma kokosy? ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
@@ -2164,9 +2164,9 @@
 						<pl>Vyshka</pl>
 					</title>
 					<description>
-						<de>Russland. Wer kennt schon das kaspische Meer? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Russia. Who has ever heard of the Caspian Sea anyway? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Rosja. Kto w ogóle słyszał o Morzu Kaspijskim? [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
+						<de>Russland. Wer kennt schon das kaspische Meer? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Russia. Who has ever heard of the Caspian Sea anyway? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Rosja. Kto w ogóle słyszał o Morzu Kaspijskim? ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 			</children>
@@ -2198,9 +2198,9 @@
 			<children>
 				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2214,9 +2214,9 @@
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2230,9 +2230,9 @@
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2246,9 +2246,9 @@
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2262,9 +2262,9 @@
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2278,9 +2278,9 @@
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2294,9 +2294,9 @@
 				</programme>
 				<programme id="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2369,9 +2369,9 @@
 				<pl>I co teraz</pl>
 			</title>
 			<description>
-				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview. Spoiler: [2|Full] will Präsident werden... HaHaHa!</de>
-				<en>An actor starts his political career. An in-depth interview. Spoiler: [2|Full] wants to be elected as US president. We are still laughing.</en>
-				<pl>Aktor rozpoczyna karierę polityczną. Szczegółowy wywiad. Spoiler: [2|Full] chce zostać wybrany na prezydenta USA. Wciąż się śmiejemy.</pl>
+				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview. Spoiler: ${.self:"cast":2:"fullname"} will Präsident werden... HaHaHa!</de>
+				<en>An actor starts his political career. An in-depth interview. Spoiler: ${.self:"cast":2:"fullname"} wants to be elected as US president. We are still laughing.</en>
+				<pl>Aktor rozpoczyna karierę polityczną. Szczegółowy wywiad. Spoiler: ${.self:"cast":2:"fullname"} chce zostać wybrany na prezydenta USA. Wciąż się śmiejemy.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_149</member>
@@ -2419,14 +2419,14 @@
 	<scripttemplates>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
 			<title>
-				<de>%WHAT% für %WHO%</de>
-				<en>Writing %WHAT% for %WHO%</en>
-				<pl>Jak napisać %WHAT% dla %WHO%</pl>
+				<de>${WHAT} für ${WHO}</de>
+				<en>Writing ${WHAT} for ${WHO}</en>
+				<pl>Jak napisać ${WHAT} dla ${WHO}</pl>
 			</title>
 			<description>
-				<de>Wie schreibe ich %WHAT% für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
-				<en>%WHAT% - How do I write those for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
-				<pl>Jak napisać %WHAT% dla TVTower? Raportaż, w którym odwiedzamy autorów odnoszących największe sukcesy, przyglądamy się im z bliska i uzyskujemy ekscytujące wskazówki w wywiadach.</pl>
+				<de>Wie schreibe ich ${WHAT} für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
+				<en>${WHAT} - How do I write those for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
+				<pl>Jak napisać ${WHAT} dla TVTower? Raportaż, w którym odwiedzamy autorów odnoszących największe sukcesy, przyglądamy się im z bliska i uzyskujemy ekscytujące wskazówki w wywiadach.</pl>
 			</description>
 			<variables>
 				<what>
@@ -2460,20 +2460,20 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<variables>
 				<title>
-					<de>Reportagen aus dem Sendegebiet|Neues aus %RANDOMCITY%|Reportagen aus %RANDOMCITY%|Was ist los in %RANDOMCITY%?</de>
-					<en>Reports From the Broadcast Area|News From %RANDOMCITY%|Reports From %RANDOMCITY%|What's Up in %RANDOMCITY%?</en>
-					<pl>Raporty z obszaru nadawania|%RANDOMCITY% - Wiadomości lokalne|%RANDOMCITY% - Raporty lokalne|%RANDOMCITY% - Co słychać w mieście?</pl>
+					<de>Reportagen aus dem Sendegebiet|Neues aus ${RANDOMCITY}|Reportagen aus ${RANDOMCITY}|Was ist los in ${RANDOMCITY}?</de>
+					<en>Reports From the Broadcast Area|News From ${RANDOMCITY}|Reports From ${RANDOMCITY}|What's Up in ${RANDOMCITY}?</en>
+					<pl>Raporty z obszaru nadawania|${RANDOMCITY} - Wiadomości lokalne|${RANDOMCITY} - Raporty lokalne|${RANDOMCITY} - Co słychać w mieście?</pl>
 				</title>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
-					<en>%STATIONMAP:RANDOMCITY%</en>
-					<pl>%STATIONMAP:RANDOMCITY%</pl>
+					<de>${.stationmap:"randomcity"}</de>
+					<en>${.stationmap:"randomcity"}</en>
+					<pl>${.stationmap:"randomcity"}</pl>
 				</randomcity>
 			</variables>
 			
@@ -2501,15 +2501,15 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<variables>
 				<title>
-					<de>%ADJECTIVE% %SUBJECT%%MODIFIER%</de>
-					<en>%ADJECTIVE% %SUBJECT%%MODIFIER%</en>
-					<pl>%ADJECTIVE% %SUBJECT%%MODIFIER%</pl>
+					<de>${ADJECTIVE} ${SUBJECT}${MODIFIER}</de>
+					<en>${ADJECTIVE} ${SUBJECT}${MODIFIER}</en>
+					<pl>${ADJECTIVE} ${SUBJECT}${MODIFIER}</pl>
 				</title>
 				<subject>
 					<de>Filme|Serien|Shows|Produktionen</de>
@@ -2522,9 +2522,9 @@
 					<pl>Nadchodzące|Wybitne|Ciekawe</pl>
 				</adjective>
 				<modifier>
-					<de>|| %WORLDTIME:YEAR%</de>
-					<en>|| %WORLDTIME:YEAR%</en>
-					<pl>|| %WORLDTIME:YEAR%</pl>
+					<de>|| ${.worldtime:"year"}</de>
+					<en>|| ${.worldtime:"year"}</en>
+					<pl>|| ${.worldtime:"year"}</pl>
 				</modifier>
 			</variables>
 			
@@ -2556,9 +2556,9 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
 			<title>
-				<de>%GROANERS% %TYPE%</de>
-				<en>%GROANERS% %TYPE%</en>
-				<pl>%GROANERS% na scenie - %TYPE%</pl>
+				<de>${GROANERS} ${TYPE}</de>
+				<en>${GROANERS} ${TYPE}</en>
+				<pl>${GROANERS} na scenie - ${TYPE}</pl>
 			</title>
 			<description>
 				<de>Ein Moderator lässt seine Gäste Sketche aufführen und gibt ihnen spontane Regieanweisungen.</de>
@@ -2599,9 +2599,9 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
 			<title>
-				<de>%birth% %station%</de>
-				<en>%birth% of %station%</en>
-				<pl>%birth% %station%</pl>
+				<de>${birth} ${station}</de>
+				<en>${birth} of ${station}</en>
+				<pl>${birth} ${station}</pl>
 			</title>
 			<description>
 				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
@@ -2640,9 +2640,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversitaet">
 			<title>
-				<de>Die %WAS%%ART%</de>
-				<en>The %WAS% %ART%</en>
-				<pl>%ART% %WAS%</pl>
+				<de>Die ${WAS}${ART}</de>
+				<en>The ${WAS} ${ART}</en>
+				<pl>${ART} ${WAS}</pl>
 			</title>
 			<description>
 				<de>Studenten der Filmwissenschaften stellen ihre Horrordrehbücher für die Abschlussarbeit des Semester allen Studios zur Verfügung. Was da wohl rauskommt?</de>
@@ -2680,9 +2680,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Com-EngeloderBengel">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<description>
 				<de>Familienkomödie über das Leben mit einem frechen Sohnemann. Das Drehbuch wird von dem Stardrehbuchschreiber Don Ron geschrieben.</de>
@@ -2691,13 +2691,13 @@
 			</description>
 			<variables>
 				<title>
-					<de>Engel oder Bengel|%NAME% dreht durch|%NAME% außer Rand und Band</de>
-					<en>Angel or Rascal|%NAME% Goes Berserk|%NAME% Goes Haywire</en>
-					<pl>Anioł lub łobuz|%NAME% - diabełek w owczej skórze|%NAME% rozrabia</pl>
+					<de>Engel oder Bengel|${NAME} dreht durch|${NAME} außer Rand und Band</de>
+					<en>Angel or Rascal|${NAME} Goes Berserk|${NAME} Goes Haywire</en>
+					<pl>Anioł lub łobuz|${NAME} - diabełek w owczej skórze|${NAME} rozrabia</pl>
 				</title>
 				<name>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%|Tim</de>
-					<pl>Pawełek|%PERSONGENERATOR_FIRSTNAME(pl,1)%|Marcelek</pl>
+					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim</de>
+					<pl>Pawełek|${.persongenerator:"firstname":"pl":"male"}|Marcelek</pl>
 				</name>
 			</variables>
 			
@@ -2722,9 +2722,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
 			<title>
-				<de>%NAME1% %NAME2%</de>
-				<en>%NAME1% %NAME2%</en>
-				<pl>%NAME1% %NAME2%</pl>
+				<de>${NAME1} ${NAME2}</de>
+				<en>${NAME1} ${NAME2}</en>
+				<pl>${NAME1} ${NAME2}</pl>
 			</title>
 			<description>
 				<de>Jodelnde Liebeserklärungen und epische Bergaufnahmen.</de>
@@ -2761,14 +2761,14 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Krim-ErbarmungsloseErmittler" comment="TODO: English version names should be more international">
 			<title>
-				<de>Erbarmungslose Ermittler: %CITY%</de>
-				<en>Merciless Investigators: %CITY%</en>
-				<pl>Bezlitośni śledczy z miasta %CITY%</pl>
+				<de>Erbarmungslose Ermittler: ${CITY}</de>
+				<en>Merciless Investigators: ${CITY}</en>
+				<pl>Bezlitośni śledczy z miasta ${CITY}</pl>
 			</title>
 			<description>
-				<de>%NAME% ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
-				<en>%NAME% investigate in their city. The case deals with a current social issue that moves the nation.</en>
-				<pl>%NAME% prowadzą śledztwo w swoim mieście. Sprawa dotyczy aktualnej kwestii społecznej, która porusza naród.</pl>
+				<de>${NAME} ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
+				<en>${NAME} investigate in their city. The case deals with a current social issue that moves the nation.</en>
+				<pl>${NAME} prowadzą śledztwo w swoim mieście. Sprawa dotyczy aktualnej kwestii społecznej, która porusza naród.</pl>
 			</description>
 			<variables>
 				<city>
@@ -2803,9 +2803,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-SciFi-QueenundUfo">
 			<title>
-				<de>Die Queen und %what%</de>
-				<en>The Queen and %what%</en>
-				<pl>Królowa i %what%</pl>
+				<de>Die Queen und ${what}</de>
+				<en>The Queen and ${what}</en>
+				<pl>Królowa i ${what}</pl>
 			</title>
 			<description>
 				<de>Ein UFO mit Außerirdischen landet auf der Erde. Doch statt die Queen zu schrumpfen, sind es Weltraumgroupies der Queen.</de>
@@ -2838,9 +2838,9 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
 			<title>
-				<de>ISS - auf der Suche nach %NAME%</de>
-				<en>ISS - Searching for %NAME%</en>
-				<pl>ISS - Szukanie %NAME%</pl>
+				<de>ISS - auf der Suche nach ${NAME}</de>
+				<en>ISS - Searching for ${NAME}</en>
+				<pl>ISS - Szukanie ${NAME}</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
@@ -2872,9 +2872,9 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-miroftvt">
 			<title>
-				<de>MIR - auf der Suche nach %NAME%</de>
-				<en>MIR - Searching for %NAME%</en>
-				<pl>MIR - Szukanie %NAME%</pl>
+				<de>MIR - auf der Suche nach ${NAME}</de>
+				<en>MIR - Searching for ${NAME}</en>
+				<pl>MIR - Szukanie ${NAME}</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
@@ -2906,14 +2906,14 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-dram-TVTintern" comment="TODO: Episode descriptions">
 			<title>
-				<de>TVTs: %OBJECT% im Hochhaus</de>
-				<en>TVTs: %OBJECT% In A Skyscraper</en>
-				<pl>TVT: %OBJECT% w wieżowcu</pl>
+				<de>TVTs: ${OBJECT} im Hochhaus</de>
+				<en>TVTs: ${OBJECT} In A Skyscraper</en>
+				<pl>TVT: ${OBJECT} w wieżowcu</pl>
 			</title>
 			<description>
-				<de>Serie über %OBJECT% im TV Tower Hochhaus</de>
-				<en>Series about %OBJECT% in The TV Tower Skyscraper</en>
-				<pl>Serial. %OBJECT% w wieżowcu telewizyjnym TV Tower</pl>
+				<de>Serie über ${OBJECT} im TV Tower Hochhaus</de>
+				<en>Series about ${OBJECT} in The TV Tower Skyscraper</en>
+				<pl>Serial. ${OBJECT} w wieżowcu telewizyjnym TV Tower</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep1">
@@ -2934,9 +2934,9 @@
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep3">
 					<title>
-						<de>%ATTRIBUTE% macht eine Party</de>
-						<en>%ATTRIBUTE% is Having a Party</en>
-						<pl>%ATTRIBUTE% organizuje imprezę</pl>
+						<de>${ATTRIBUTE} macht eine Party</de>
+						<en>${ATTRIBUTE} is Having a Party</en>
+						<pl>${ATTRIBUTE} organizuje imprezę</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep4">
@@ -2956,9 +2956,9 @@
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep6">
 					<title>
-						<de>%SUBJECT1A%</de>
-						<en>The %SUBJECT1A%</en>
-						<pl>%SUBJECT1A%</pl>
+						<de>${SUBJECT1A}</de>
+						<en>The ${SUBJECT1A}</en>
+						<pl>${SUBJECT1A}</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep7">
@@ -2970,9 +2970,9 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep8">
 					<title>
-						<de>%ATTRIBUTE% wird wütend</de>
-						<en>%ATTRIBUTE% Gets Mad</en>
-						<pl>%ATTRIBUTE% Dostaje szału</pl>
+						<de>${ATTRIBUTE} wird wütend</de>
+						<en>${ATTRIBUTE} Gets Mad</en>
+						<pl>${ATTRIBUTE} Dostaje szału</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep9">
@@ -2985,9 +2985,9 @@
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep10">
 					<title>
-						<de>Streit bei %SUBJECT1B%</de>
-						<en>Trouble At The %SUBJECT1B%</en>
-						<pl>%SUBJECT1B% ma kłopoty</pl>
+						<de>Streit bei ${SUBJECT1B}</de>
+						<en>Trouble At The ${SUBJECT1B}</en>
+						<pl>${SUBJECT1B} ma kłopoty</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep11">
@@ -3149,14 +3149,14 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-act-DerFahnder" comment="Episode descriptions added in 2024 with help of ChatGPT">
 			<title>
-				<de>Der %TITLE1%%TITLE2%</de>
-				<en>The %TITLE1% %TITLE2%</en>
-				<pl>%NAME1% - %TITLE2% %TITLE1%</pl>
+				<de>Der ${TITLE1}${TITLE2}</de>
+				<en>The ${TITLE1} ${TITLE2}</en>
+				<pl>${NAME1} - ${TITLE2} ${TITLE1}</pl>
 			</title>
 			<description>
-				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
-				<en>%NAME1% solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
-				<pl>%NAME1% rozwiązuje szybko sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
+				<de>${NAME1} löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
+				<en>${NAME1} solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
+				<pl>${NAME1} rozwiązuje szybko sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep1">
@@ -3178,9 +3178,9 @@
 						<pl>Polowanie</pl>
 					</title>
 					<description>
-						<de>%NAME1% verfolgt einen flüchtigen Dieb, der die Dorfbäckerei ausgeraubt hat. Dabei entdeckt er Hinweise auf eine größere Einbruchserie im Umland.</de>
-						<en>%NAME1% pursues a fugitive thief who has robbed the village bakery. In the process, he discovers evidence of a larger series of burglaries in the surrounding area.</en>
-						<pl>%NAME1% ściga zbiegłego złodzieja, który okradł wiejską piekarnię. W trakcie tego procesu odkrywa dowody większej serii włamań w okolicy.</pl>
+						<de>${NAME1} verfolgt einen flüchtigen Dieb, der die Dorfbäckerei ausgeraubt hat. Dabei entdeckt er Hinweise auf eine größere Einbruchserie im Umland.</de>
+						<en>${NAME1} pursues a fugitive thief who has robbed the village bakery. In the process, he discovers evidence of a larger series of burglaries in the surrounding area.</en>
+						<pl>${NAME1} ściga zbiegłego złodzieja, który okradł wiejską piekarnię. W trakcie tego procesu odkrywa dowody większej serii włamań w okolicy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
@@ -3190,9 +3190,9 @@
 						<pl>Porwanie</pl>
 					</title>
 					<description>
-						<de>Die Tochter des Bürgermeisters wird entführt. %NAME1% ermittelt fieberhaft und entdeckt, dass der Entführer persönliche Rache anstrebt. Eine dramatische Rettungsaktion führt ihn durch verlassene Gebäude bis zum Showdown.</de>
-						<en>The mayor's daughter is kidnapped. %NAME1% investigates feverishly and discovers that the kidnapper is seeking personal revenge. A dramatic rescue operation leads him through abandoned buildings to a showdown.</en>
-						<pl>Córka burmistrza zostaje porwana. %NAME1% prowadzi gorączkowe śledztwo i odkrywa, że porywacz szuka osobistej zemsty. Dramatyczna akcja ratunkowa prowadzi go przez opuszczone budynki do starcia.</pl>
+						<de>Die Tochter des Bürgermeisters wird entführt. ${NAME1} ermittelt fieberhaft und entdeckt, dass der Entführer persönliche Rache anstrebt. Eine dramatische Rettungsaktion führt ihn durch verlassene Gebäude bis zum Showdown.</de>
+						<en>The mayor's daughter is kidnapped. ${NAME1} investigates feverishly and discovers that the kidnapper is seeking personal revenge. A dramatic rescue operation leads him through abandoned buildings to a showdown.</en>
+						<pl>Córka burmistrza zostaje porwana. ${NAME1} prowadzi gorączkowe śledztwo i odkrywa, że porywacz szuka osobistej zemsty. Dramatyczna akcja ratunkowa prowadzi go przez opuszczone budynki do starcia.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3203,9 +3203,9 @@
 						<pl>Sprawa zamknięta</pl>
 					</title>
 					<description>
-						<de>Ein alter ungelöster Fall wird neu aufgerollt, als Beweise auftauchen. %NAME1% bringt durch akribische Nachforschungen die Wahrheit ans Licht und rehabilitiert einen unschuldig Verurteilten, der jahrelang in Haft saß.</de>
-						<en>An old unsolved case is reopened when evidence emerges. Through meticulous research, %NAME1% brings the truth to light and rehabilitates an innocent convict who has been in prison for years.</en>
-						<pl>Stara, nierozwiązana sprawa zostaje ponownie otwarta, gdy pojawiają się dowody. Dzięki skrupulatnym badaniom %NAME1% ujawnia prawdę i rehabilituje niewinnego skazańca, który od lat przebywa w więzieniu.</pl>
+						<de>Ein alter ungelöster Fall wird neu aufgerollt, als Beweise auftauchen. ${NAME1} bringt durch akribische Nachforschungen die Wahrheit ans Licht und rehabilitiert einen unschuldig Verurteilten, der jahrelang in Haft saß.</de>
+						<en>An old unsolved case is reopened when evidence emerges. Through meticulous research, ${NAME1} brings the truth to light and rehabilitates an innocent convict who has been in prison for years.</en>
+						<pl>Stara, nierozwiązana sprawa zostaje ponownie otwarta, gdy pojawiają się dowody. Dzięki skrupulatnym badaniom ${NAME1} ujawnia prawdę i rehabilituje niewinnego skazańca, który od lat przebywa w więzieniu.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
@@ -3215,9 +3215,9 @@
 						<pl>Prawda</pl>
 					</title>
 					<description>
-						<de>%NAME1% stößt auf einen alten Freund, der in einen mysteriösen Unfall verwickelt war. Seine Ermittlungen decken ein Netz aus Lügen und Vertuschungen auf, das bis in die höchsten Kreise des Dorfes reicht.</de>
-						<en>%NAME1% comes across an old friend who was involved in a mysterious accident. His investigations uncover a web of lies and cover-ups that reaches into the highest circles of the village.</en>
-						<pl>%NAME1% natrafia na starego przyjaciela, który brał udział w tajemniczym wypadku. Jego śledztwo ujawnia sieć kłamstw i zatuszowań, która sięga najwyższych kręgów wioski.</pl>
+						<de>${NAME1} stößt auf einen alten Freund, der in einen mysteriösen Unfall verwickelt war. Seine Ermittlungen decken ein Netz aus Lügen und Vertuschungen auf, das bis in die höchsten Kreise des Dorfes reicht.</de>
+						<en>${NAME1} comes across an old friend who was involved in a mysterious accident. His investigations uncover a web of lies and cover-ups that reaches into the highest circles of the village.</en>
+						<pl>${NAME1} natrafia na starego przyjaciela, który brał udział w tajemniczym wypadku. Jego śledztwo ujawnia sieć kłamstw i zatuszowań, która sięga najwyższych kręgów wioski.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
@@ -3227,9 +3227,9 @@
 						<pl>Fałszywe pieniądze</pl>
 					</title>
 					<description>
-						<de>Eine Serie von Falschgeldscheinen taucht im Dorf auf. %NAME1% folgt den Spuren der Blüten und deckt einen kriminellen Ring auf, der bis in die Nachbarstadt reicht. Eine spektakuläre Verfolgungsjagd endet in einer alten Fabrikhalle.</de>
-						<en>A series of counterfeit banknotes turns up in the village. %NAME1% follows the trail of the flowers and uncovers a criminal ring that reaches as far as the neighboring town. A spectacular chase ends in an old factory building.</en>
-						<pl>W wiosce pojawia się seria fałszywych banknotów. %NAME1% podąża tropem kwiatów i odkrywa siatkę przestępczą, która sięga aż do sąsiedniego miasta. Spektakularny pościg kończy się w budynku starej fabryki.</pl>
+						<de>Eine Serie von Falschgeldscheinen taucht im Dorf auf. ${NAME1} folgt den Spuren der Blüten und deckt einen kriminellen Ring auf, der bis in die Nachbarstadt reicht. Eine spektakuläre Verfolgungsjagd endet in einer alten Fabrikhalle.</de>
+						<en>A series of counterfeit banknotes turns up in the village. ${NAME1} follows the trail of the flowers and uncovers a criminal ring that reaches as far as the neighboring town. A spectacular chase ends in an old factory building.</en>
+						<pl>W wiosce pojawia się seria fałszywych banknotów. ${NAME1} podąża tropem kwiatów i odkrywa siatkę przestępczą, która sięga aż do sąsiedniego miasta. Spektakularny pościg kończy się w budynku starej fabryki.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3240,9 +3240,9 @@
 						<pl>Alternatywne fakty</pl>
 					</title>
 					<description>
-						<de>%NAME1% untersucht die Machenschaften eines örtlichen Politikers, der mit Fake News und Manipulationen das Dorf spaltet.</de>
-						<en>%NAME1% investigates the machinations of a local politician who divides the village with fake news and manipulation.</en>
-						<pl>%NAME1% bada machinacje lokalnego polityka, który dzieli wioskę za pomocą fałszywych wiadomości i manipulacji.</pl>
+						<de>${NAME1} untersucht die Machenschaften eines örtlichen Politikers, der mit Fake News und Manipulationen das Dorf spaltet.</de>
+						<en>${NAME1} investigates the machinations of a local politician who divides the village with fake news and manipulation.</en>
+						<pl>${NAME1} bada machinacje lokalnego polityka, który dzieli wioskę za pomocą fałszywych wiadomości i manipulacji.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3282,9 +3282,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Mon-EpischeGeschichte">
 			<title>
-				<de>Don Rons %WAS%</de>
-				<en>Don Ron's %WAS%</en>
-				<pl>Opowieści Don Rona: %WAS%</pl>
+				<de>Don Rons ${WAS}</de>
+				<en>Don Ron's ${WAS}</en>
+				<pl>Opowieści Don Rona: ${WAS}</pl>
 			</title>
 			<description>
 				<de>Don Rons monumentale Geschichte über eine royale Familie. Erfolg wie immer garantiert.</de>
@@ -3317,14 +3317,14 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Fant-Wesen">
 			<title>
-				<de>%WESEN%</de>
-				<en>The %WESEN%</en>
-				<pl>%WESEN%</pl>
+				<de>${WESEN}</de>
+				<en>The ${WESEN}</en>
+				<pl>${WESEN}</pl>
 			</title>
 			<description>
-				<de>%NAME% trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
-				<en>%NAME% meets a strange creature. They explore the world together and have wonderful adventures.</en>
-				<pl>%NAME% spotyka dziwną istotę. Razem odkrywają świat i przeżywają wspaniałe przygody.</pl>
+				<de>${NAME} trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
+				<en>${NAME} meets a strange creature. They explore the world together and have wonderful adventures.</en>
+				<pl>${NAME} spotyka dziwną istotę. Razem odkrywają świat i przeżywają wspaniałe przygody.</pl>
 			</description>
 			<variables>
 				<wesen>
@@ -3356,9 +3356,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-trick-SprechenderGegenstand">
 			<title>
-				<de>%GEGENSTAND%</de>
-				<en>The Talking %GEGENSTAND%</en>
-				<pl>%GEGENSTAND%</pl>
+				<de>${GEGENSTAND}</de>
+				<en>The Talking ${GEGENSTAND}</en>
+				<pl>${GEGENSTAND}</pl>
 			</title>
 			<description>
 				<de>Ein sprechender Gegenstand freundet sich mit einem Kind an und das lustige Abenteuer beginnt.</de>
@@ -3391,9 +3391,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hist-Voelker">
 			<title>
-				<de>Die %Volk%</de>
-				<en>The %Volk%</en>
-				<pl>%Volk%</pl>
+				<de>Die ${Volk}</de>
+				<en>The ${Volk}</en>
+				<pl>${Volk}</pl>
 			</title>
 			<description>
 				<de>Der Moderator erzählt die Geschichte über den Aufstieg und Fall dieses Volkes. Laiendarsteller stellen wichtige Szenen nach.</de>
@@ -3425,9 +3425,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Adv-DieGruselUniversität">
 			<title>
-				<de>%ORT%</de>
-				<en>The %ORT%</en>
-				<pl>%ORT%</pl>
+				<de>${ORT}</de>
+				<en>The ${ORT}</en>
+				<pl>${ORT}</pl>
 			</title>
 			<description>
 				<de>Ein Schatzsucher erlebt viele Abenteuer auf seiner Jagd nach seimen Reichtum.</de>
@@ -3458,9 +3458,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-West-mitdemhelden">
 			<title>
-				<de>Don Rons Der %WAS% aus %WOHER%</de>
-				<en>Don Ron's The %WAS% from %WOHER%</en>
-				<pl>Western Don Rona - %WAS% z %WOHER%</pl>
+				<de>Don Rons Der ${WAS} aus ${WOHER}</de>
+				<en>Don Ron's The ${WAS} from ${WOHER}</en>
+				<pl>Western Don Rona - ${WAS} z ${WOHER}</pl>
 			</title>
 			<description>
 				<de>Vom Stardrehbuchschreiber Don Ron geschriebener Western. Wie immer kultig und genial.</de>
@@ -3498,21 +3498,21 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
 			<title>
-				<de>TVTs: %TITLE1%</de>
-				<en>TVTs: %TITLE1%</en>
-				<pl>Produkcja TVT: %TITLE1% - Teleturniej</pl>
+				<de>TVTs: ${TITLE1}</de>
+				<en>TVTs: ${TITLE1}</en>
+				<pl>Produkcja TVT: ${TITLE1} - Teleturniej</pl>
 			</title>
 			<description>
-				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
-				<en>%NAME1% rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
-				<pl>%NAME1% odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
+				<de>${NAME1} zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
+				<en>${NAME1} rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
+				<pl>${NAME1} odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>
-						<de>%EPISODE%</de>
-						<en>%EPISODE%</en>
-						<pl>%EPISODE%</pl>
+						<de>${EPISODE}</de>
+						<en>${EPISODE}</en>
+						<pl>${EPISODE}</pl>
 					</title>
 					<variables>
 						<episode>

@@ -178,8 +178,8 @@
 						<pl>Finał</pl>
 					</title>
 					<description>
-						<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen [2|Full] ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
-						<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist [2|Full]. The unrivaled culmination in the popular tradidiotional calendar.</en>
+						<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen ${.self:"cast":2:"fullname"} ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
+						<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist ${.self:"cast":2:"fullname"}. The unrivaled culmination in the popular tradidiotional calendar.</en>
 						<pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą Jasiem Głupkowatym. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl> <!-- using clear-text version of staff member here because of grammar -->
 					</description>
 					<staff>

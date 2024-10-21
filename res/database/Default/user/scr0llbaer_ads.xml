@@ -230,7 +230,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="12" repetitions="2" duration="4" profit="1600" penalty="1900" infomercial_profit="142" fix_infomercial_profit="1" />
 			<availability year_range_from="2011" />
 		</ad>
-		<ad id="ee9663fe-ea29-4ec1-910f-ff54133991e2" creator="9551" comment="Initech - https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/That-Would-Be-Great | description probably too long to fit in, but that's fine for wall-of-text-effect | TODO: German version translated, should be quoted from the movie | TODO: Would like to break 4th wall in description: 'Hello %PLAYERNAME%'">
+		<ad id="ee9663fe-ea29-4ec1-910f-ff54133991e2" creator="9551" comment="Initech - https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/That-Would-Be-Great | description probably too long to fit in, but that's fine for wall-of-text-effect | TODO: German version translated, should be quoted from the movie | TODO: Would like to break 4th wall in description: 'Hello ${PLAYERNAME}'">
 			<title>
 				<de>InitTec GmbH</de>
 				<en>InitTec, LLC</en>

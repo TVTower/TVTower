@@ -552,7 +552,7 @@
 
 		<news id="news-jorgaeff-dyson-01" type="0" thread_id="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 				<!-- "Beginnt an einem Sonntag" -->
-			<availability script="TIME_WEEKDAY=6" />
+			<availability script='${.eq:${.worldtime:"weekday"}:6}' />
 			<title>
 				<de>Klatschkowski weiterhin Boxweltmeister</de>
 				<en>Klatschkowski still world boxing champion</en>
@@ -1170,7 +1170,7 @@
 
 		<news id="news-jorgaeff-lotto-01" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint mittwochs ab 18.00 Uhr" -->
-			<availability script="TIME_WEEKDAY=2 &amp;&amp; TIME_HOUR >= 18" />
+			<availability script='${.and:${.eq:${.worldtime:"weekday"}:2}:${.gte:${.worldtime:"hour"}:18}}' />
 			<title>
 				<de>Gewinnzahlen vom Mittwochs-Lotto</de>
 				<en>Winning numbers from Wednesday Lottery</en>
@@ -1186,7 +1186,7 @@
 
 		<news id="news-jorgaeff-lotto-02" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint samstags ab 20.00 Uhr" -->
-			<availability script="TIME_WEEKDAY=5 &amp;&amp; TIME_HOUR >= 20" />
+			<availability script='${.and:${.eq:${.worldtime:"weekday"}:5}:${.gte:${.worldtime:"hour"}:20}}' />
 			<title>
 				<de>Gewinnzahlen vom Samstags-Lotto</de>
 				<en>Winning numbers from Saturday Lottery</en>
@@ -1202,7 +1202,7 @@
 
 		<news id="news-jorgaeff-sonntag-01" type="0" creator="8936" created_by="jorgaeff">
 			<!-- "erscheint jeden Sonntag ab 18.00 Uhr" -->
-			<availability script="TIME_WEEKDAY=6 &amp;&amp; TIME_HOUR >= 18" />
+			<availability script='${.and:${.eq:${.worldtime:"weekday"}:6}:${.gte:${.worldtime:"hour"}:18}}' />
 			<title>
 				<de>Das Wort zum Sonntag</de>
 				<en>Sunday's Words of Wisdom</en>
@@ -1217,7 +1217,7 @@
 		</news>
 
 		<news id="news-jorgaeff-2018-4-01" type="0" creator="8936" created_by="jorgaeff">
-			<availability script="TIME_YEAR=2018" />
+			<availability year_range_from="2018" year_range_to="2018" />
 			<title>
 				<de>Newsschreiber gesteht Fake-News</de>
 				<en>News writer admits to fake news</en>
