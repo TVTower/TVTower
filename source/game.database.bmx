@@ -514,6 +514,27 @@ Type TDatabaseLoader
 	Global convertSB:TStringBuilder = New TStringBuilder()
 	Global convertOldNewMap:TStringMap = New TStringMap
 
+
+	Function ConvertOldScriptExpression:Int(templateVariables:TTemplateVariables, changedSomething:Int Var)
+		If Not templateVariables Then Return 0
+		
+		Local changeCount:Int = 0
+		If templateVariables.variables
+			For Local ls:TLocalizedString = EachIn templateVariables.variables.Values()
+				changeCount :+ ConvertOldScriptExpression(ls, changedSomething)
+			Next
+		EndIf
+		If templateVariables.variablesResolved
+			For Local ls:TLocalizedString = EachIn templateVariables.variablesResolved.Values()
+				changeCount :+ ConvertOldScriptExpression(ls, changedSomething)
+			Next
+		EndIf
+
+		changedSomething = (changeCount > 0)
+		Return changeCount
+	End Function
+
+
 	Function ConvertOldScriptExpression:Int(ls:TLocalizedString, changedSomething:Int Var)
 
 		Local changeCount:Int = 0

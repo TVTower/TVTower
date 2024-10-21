@@ -2459,8 +2459,8 @@ Type TSaveGame Extends TGameState
 			'their "strings" contain old script expressions
 			Local migratedScriptExpression:Int
 			Local migratedScriptExpressionCount:Int
+			Local migratedVariables:Int
 			
-			migratedScriptExpressionCount = 0
 			For local net:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().allTemplates.Values()
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.title, migratedScriptExpression)
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.description, migratedScriptExpression)
@@ -2468,10 +2468,25 @@ Type TSaveGame Extends TGameState
 				If net.availableScript
 					net.availableScript = TDatabaseLoader.ConvertOldAvailableScript(net.availableScript)
 				EndIf
+				
+				migratedVariables :+ TDatabaseLoader.ConvertOldScriptExpression(net.templateVariables, migratedScriptExpression)
 			Next
-			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENT TEMPLATES: " + migratedScriptExpressionCount +" #############"
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENT TEMPLATES: " + migratedScriptExpressionCount +" templates, " + migratedVariables + " variables #############"
+
 
 			migratedScriptExpressionCount = 0
+			migratedVariables = 0
+			For local ne:TNewsEvent = EachIn GetNewsEventCollection().allNewsEvents.Values()
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(ne.title, migratedScriptExpression)
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(ne.description, migratedScriptExpression)
+
+				migratedVariables :+ TDatabaseLoader.ConvertOldScriptExpression(ne.templateVariables, migratedScriptExpression)
+			Next
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENTS: " + migratedScriptExpressionCount +" events, " + migratedVariables + " variables #############"
+
+
+			migratedScriptExpressionCount = 0
+			migratedVariables = 0
 			For local st:TScriptTemplate = EachIn GetScriptTemplateCollection().entries.Values()
 				'local oldCount:int = migratedScriptExpressionCount
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(st.title, migratedScriptExpression)
@@ -2485,8 +2500,21 @@ Type TSaveGame Extends TGameState
 				If st.availableScript
 					st.availableScript = TDatabaseLoader.ConvertOldAvailableScript(st.availableScript)
 				EndIf
+
+				migratedVariables :+ TDatabaseLoader.ConvertOldScriptExpression(st.templateVariables, migratedScriptExpression)
 			Next
-			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPT TEMPLATES: " + migratedScriptExpressionCount +" #############"
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPT TEMPLATES: " + migratedScriptExpressionCount +" templates, " + migratedVariables + " variables #############"
+
+
+			migratedScriptExpressionCount = 0
+			migratedVariables = 0
+			For local s:TScript = EachIn GetScriptCollection().entries.Values()
+				'local oldCount:int = migratedScriptExpressionCount
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(s.title, migratedScriptExpression)
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(s.description, migratedScriptExpression)
+			Next
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPTS: " + migratedScriptExpressionCount +" scripts #############"
+
 
 			For local ac:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 				If ac.availableScript
