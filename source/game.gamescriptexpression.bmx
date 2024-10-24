@@ -90,7 +90,7 @@ End Function
 
 
 '${.persongenerator:***} - context: all
-'${.persongenerator:"firstname":"us":"female"}
+'${.persongenerator:"firstname":"us":"male/female/0/1/m/f"}
 '${.persongenerator:"fullname"}
 Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local command:String = params.GetToken(0).GetValueText()
@@ -152,7 +152,8 @@ End Function
 
 
 
-'${.programme/.programmelicence:"the-guid-1-2":"title"} - context: TProgrameLicence / TProgrammeData
+'${.programme/.programmelicence:"guid"/id:"title"} - context: all
+'${.self:"title"} - context: TProgrameLicence / TProgrammeData
 Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
@@ -293,7 +294,8 @@ End Function
 
 
 
-'${.programmedata:"title"} - context: TProgrammeData
+'${.programmedata:"guid"/id:"title"} - context: all
+'${.self:"title"} - context: TProgrammeData
 Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
@@ -416,7 +418,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 End Function
 
 
-'${.programmedata:"title"} - context: TProgrammeData
+'${.role:"guid"/id:"fullname"} - context: all
 Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local role:TProgrammeRole
 	Local token:SToken = params.GetToken(1)
@@ -447,7 +449,7 @@ Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionConte
 End Function
 
 
-'${.person:"guid":"name"} - context: all
+'${.person:"guid"/id:"name"} - context: all
 Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local person:TPersonBase
 	Local token:SToken = params.GetToken(1)
@@ -539,7 +541,8 @@ End Function
 
 
 
-'${.self:"title"} - context: TProgrammeLicence / TProgrammeData
+'${.script:"guid"/id:"title"} - context: all
+'${.self:"title"} - context: TScript
 Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
