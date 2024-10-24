@@ -581,8 +581,10 @@ Type TPersonBase Extends TGameObject
 	Field lastName:String = ""
 	Field firstName:String = ""
 	Field nickName:String = ""
-	Field countryCode:String = ""
+	'title - like "Dr." or "Prof."
+	Field title:string 
 	Field gender:Int = 0
+	Field countryCode:String = ""
 	'a text code representing the config for the figure generator
 	Field faceCode:String
 	'bitmask containing "castable", "active", "celebrity", ..
@@ -630,12 +632,6 @@ Type TPersonBase Extends TGameObject
 	End Method
 
 
-	Method GetNickName:String()
-		If nickName = "" Then Return firstName
-		Return nickName
-	End Method
-
-
 	Method GetFirstName:String()
 		Return firstName
 	End Method
@@ -646,12 +642,26 @@ Type TPersonBase Extends TGameObject
 	End Method
 
 
+	Method GetNickName:String()
+		If nickName = "" Then Return firstName
+		Return nickName
+	End Method
+
+
 	Method GetFullName:String()
-		If Self.lastName<>""
-			If Self.firstName <> "" Then Return Self.firstName + " " + Self.lastName
-			Return Self.lastName
+		Local sb:TStringBuilder = New TStringBuilder()
+		If title 
+			sb.Append(title)
 		EndIf
-		Return Self.firstName
+		If firstName
+			If sb.Length() > 0 Then sb.Append(" ")
+			sb.Append(firstName)
+		EndIf
+		If lastName
+			If sb.Length() > 0 then sb.Append(" ")
+			sb.Append(lastName)
+		EndIf
+		Return sb.ToString()
 	End Method
 
 
