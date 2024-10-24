@@ -727,7 +727,7 @@ Type TDatabaseLoader
 		Local data:TDataCSK = New TDataCSK
 		If Not _personCommonDetailKeys
 			_personCommonDetailKeys = [..
-				"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
+				"first_name", "last_name", "nick_name", "title", "fictional", "levelup", "country", ..
 				"job", "gender", "generator", "face_code", "bookable", "castable" ..
 			]
 		EndIf		
@@ -2355,6 +2355,7 @@ Type TDatabaseLoader
 		role.Init(..
 			TXmlHelper.FindValue(node, "first_name", role.firstname), ..
 			TXmlHelper.FindValue(node, "last_name", role.lastname), ..
+			TXmlHelper.FindValue(node, "nick_name", role.nickname), ..
 			TXmlHelper.FindValue(node, "title", role.title), ..
 			TXmlHelper.FindValue(node, "country", role.countryCode).ToUpper(), ..
 			TXmlHelper.FindValueIntLC(node, "gender", role.gender), ..
