@@ -637,8 +637,12 @@ Type TPersonBase Extends TGameObject
 	End Method
 
 
-	Method GetLastName:String()
-		Return lastName
+	Method GetLastName:String(includeTitle:Int = False)
+		If includeTitle and title
+			Return title + " " + lastName
+		Else
+			Return lastName
+		EndIf
 	End Method
 
 
@@ -648,9 +652,9 @@ Type TPersonBase Extends TGameObject
 	End Method
 
 
-	Method GetFullName:String()
+	Method GetFullName:String(includeTitle:Int = True)
 		Local sb:TStringBuilder = New TStringBuilder()
-		If title 
+		If includeTitle and title 
 			sb.Append(title)
 		EndIf
 		If firstName
@@ -662,6 +666,11 @@ Type TPersonBase Extends TGameObject
 			sb.Append(lastName)
 		EndIf
 		Return sb.ToString()
+	End Method
+
+
+	Method GetTitle:String()
+		Return title
 	End Method
 
 
