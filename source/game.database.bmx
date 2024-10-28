@@ -727,7 +727,7 @@ Type TDatabaseLoader
 		Local data:TDataCSK = New TDataCSK
 		If Not _personCommonDetailKeys
 			_personCommonDetailKeys = [..
-				"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
+				"first_name", "last_name", "nick_name", "title", "fictional", "levelup", "country", ..
 				"job", "gender", "generator", "face_code", "bookable", "castable" ..
 			]
 		EndIf		
@@ -756,6 +756,7 @@ Type TDatabaseLoader
 		person.firstName = data.GetString("first_name", person.firstName)
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
+		person.title = data.GetString("title", person.title)
 		person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetBool("fictional", person.IsFictional()) )
 		'fallback for old database syntax
 		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("bookable", person.IsCastable()) )
@@ -2355,6 +2356,7 @@ Type TDatabaseLoader
 		role.Init(..
 			TXmlHelper.FindValue(node, "first_name", role.firstname), ..
 			TXmlHelper.FindValue(node, "last_name", role.lastname), ..
+			TXmlHelper.FindValue(node, "nick_name", role.nickname), ..
 			TXmlHelper.FindValue(node, "title", role.title), ..
 			TXmlHelper.FindValue(node, "country", role.countryCode).ToUpper(), ..
 			TXmlHelper.FindValueIntLC(node, "gender", role.gender), ..
@@ -2836,14 +2838,15 @@ Type TDatabaseLoader
 		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
 			If nodePerson.getName() <> "person" Then Continue
 			Local data:TData = New TData
-			xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name"])
+			xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name", "title"])
 			Local guid:String=data.GetString("guid")
 			If guid
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(guid)
 				If person
-					person.firstName=data.GetString("first_name","")
-					person.lastName=data.GetString("last_name","")
-					person.nickName=data.GetString("nick_name","")
+					person.firstName = data.GetString("first_name","")
+					person.lastName = data.GetString("last_name","")
+					person.nickName = data.GetString("nick_name","")
+					person.title = data.GetString("title","")
 					'print "updated person to "+person.GetFullName()
 				EndIf
 			EndIf
@@ -2854,14 +2857,15 @@ Type TDatabaseLoader
 		For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
 			If nodeRole.getName() <> "role" Then Continue
 			Local data:TData = New TData
-			xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "title"])
+			xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "nick_name", "title"])
 			Local guid:String=data.GetString("guid")
 			If guid
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
 				If role
-					role.firstName=data.GetString("first_name","")
-					role.lastName=data.GetString("last_name","")
-					role.title=data.GetString("title","")
+					role.firstName = data.GetString("first_name","")
+					role.lastName = data.GetString("last_name","")
+					role.nickName = data.GetString("nick_name","")
+					role.title = data.GetString("title","")
 					'print "updated role to "+role.GetFullName()
 				EndIf
 			EndIf

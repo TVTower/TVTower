@@ -96,18 +96,35 @@ Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:SScriptExpr
 	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 	'choose a random country if the country is not defined or no generator
 	'existing for it
-	Local country:String = params.GetToken(2).GetValueText()
+	Local country:String
+	If params.added >= 2
+		country = params.GetToken(2).GetValueText()
+	EndIf
 	If country = "" or Not GetPersonGenerator().HasProvider(country)
 		country = GetPersonGenerator().GetRandomCountryCode()
 	EndIf
 	'gender as defined or a random one
-	Local gender:Int = TPersonGenerator.GetGenderFromString( params.GetToken(3).GetValueText() )
+	Local gender:Int
+	If params.added >= 3
+		gender = TPersonGenerator.GetGenderFromString( params.GetToken(3).GetValueText() )
+	EndIf
+	'chance (0 - 1.0) that full names get a title (like "Dr.") prefixed
+	Local titleChance:Float
+	If params.added >= 4
+		Local t:SToken = params.GetToken(4)
+		'in case someone wrote 0 or 1 (not 0.0 or 1.0) we handle long too
+		If t.valueLong <> 0
+			titleChance = Float(t.valueLong)
+		Else
+			titleChance = Float(t.valueDouble)
+		EndIf
+	EndIf
 
 	Select subCommand.ToLower()
 		case "name"       Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender), params.GetToken(0) )
 		case "firstname"  Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender), params.GetToken(0) )
 		case "lastname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
-		case "fullname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetFirstName(country, gender) + " " + GetPersonGenerator().GetLastName(country, gender), params.GetToken(0) )
+		case "fullname"   Return New SToken( TK_TEXT, GetPersonGenerator().GetFullName(country, gender, titleChance), params.GetToken(0) )
 		case "title"      Return New SToken( TK_TEXT, GetPersonGenerator().GetTitle(country, gender), params.GetToken(0) )
 		default           Return New SToken( TK_ERROR, "PersonGenerator: Undefined command ~q"+subCommand+"~q", params.GetToken(0) )
 	End Select
@@ -350,15 +367,21 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		If Not person Then Return New SToken( TK_ERROR, ".person with ID ~q"+ID+"~q not found", params.GetToken(0) )
 	EndIf
 	
+	Local includeTitle:Int = True
+	If params.added >= 3
+		includeTitle = params.GetToken(3).GetValueBool()
+	EndIf
+	
 	Local propertyName:String = params.GetToken(2).value
 
 	Select propertyName.ToLower()
 		case "guid"         Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
 		case "id"           Return New SToken( TK_NUMBER, person.GetID(), params.GetToken(0) )
 		case "firstname"    Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
-		case "lastname"     Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
-		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+		case "lastname"     Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
+		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		case "nickname"     Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
+		case "title"        Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
 		case "age"          Return New SToken( TK_NUMBER, person.GetAge(), params.GetToken(0) )
 		case "isalive"      Return New SToken( TK_BOOLEAN, person.IsAlive(), params.GetToken(0) )
 		case "isdead"       Return New SToken( TK_BOOLEAN, person.IsDead(), params.GetToken(0) )

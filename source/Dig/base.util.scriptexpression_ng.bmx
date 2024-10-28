@@ -387,6 +387,24 @@ Struct SToken
 	End Method
 
 
+	Method GetValueBool:Int()
+		Select id
+			Case TK_NUMBER
+				If valueType = ETokenValueType.Integer And valueLong > 0
+					Return True
+				ElseIf valueType = ETokenValueType.FloatingPoint And valueDouble > 0
+					Return True
+				EndIf
+			Case TK_IDENTIFIER
+				If value Then Return True
+			Case TK_QSTRING
+				If value Then Return True
+			Case TK_BOOLEAN
+				If valueLong = 1 Then Return True
+		EndSelect
+		Return False
+	End Method
+
 	' Debugging
 	Method reveal:String()
 		If id=TK_ERROR Then Return "h"+Hex(id)+" = ERROR:"+value+" at ["+linenum+","+linepos+"]"
