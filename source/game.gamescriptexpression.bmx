@@ -22,6 +22,7 @@ GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 1, 3)
 GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedata, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3) '
 GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
+GameScriptExpression.RegisterFunctionHandler( "role", SEFN_role, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "person", SEFN_person, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "locale", SEFN_locale, 1, 2)
 GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
@@ -89,7 +90,7 @@ End Function
 
 
 '${.persongenerator:***} - context: all
-'${.persongenerator:"firstname":"us":"female"}
+'${.persongenerator:"firstname":"us":"male/female/0/1/m/f"}
 '${.persongenerator:"fullname"}
 Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local command:String = params.GetToken(0).GetValueText()
@@ -151,7 +152,8 @@ End Function
 
 
 
-'${.programme/.programmelicence:"the-guid-1-2":"title"} - context: TProgrameLicence / TProgrammeData
+'${.programme/.programmelicence:"guid"/id:"title"} - context: all
+'${.self:"title"} - context: TProgrameLicence / TProgrammeData
 Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
@@ -235,23 +237,9 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "relativetopicality"      Return New SToken( TK_NUMBER, licence.GetRelativeTopicality(), params.GetToken(0) )
 		Case "topicality"              Return New SToken( TK_NUMBER, licence.GetTopicality(), params.GetToken(0) )
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, licence.GetMaxTopicality(), params.GetToken(0) )
-		Case "cast"
-			Local castIndex:Int = params.GetToken(2 + tokenOffset).valueLong
- 			If castIndex < 0 Then Return New SToken( TK_ERROR, "Cast index must be positive", params.GetToken(0) )
-
-			Local job:TPersonProductionJob = licence.data.GetCastAtIndex(castIndex)
-			If Not job Then Return New SToken( TK_ERROR, "Cast " + castIndex +" not found", params.GetToken(0) )
-
-			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
-			If Not person Then Return New SToken( TK_ERROR, "Cast " + castIndex +" person not found", params.GetToken(0) )
-
-			Select params.GetToken(3 + tokenOffset).value.ToLower()
-				Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
-				Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
-				Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
-				'Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
-				Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
-			End Select
+		Case "cast"                    Return _EvaluateProgrammeDataCast(licence.data, params, 0)
+		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
+		Case "role"                    Return _EvaluateProgrammeDataRole(licence.data, params, 0)
 
 		Default                        Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
 	End Select
@@ -259,7 +247,8 @@ End Function
 
 
 
-'${.programmedata:"title"} - context: TProgrammeData
+'${.programmedata:"guid"/id:"title"} - context: all
+'${.self:"title"} - context: TProgrammeData
 Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
@@ -325,35 +314,119 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		Case "blocks"                  Return New SToken( TK_NUMBER, data.GetBlocks(), params.GetToken(0) )
 		Case "topicality"              Return New SToken( TK_NUMBER, data.GetTopicality(), params.GetToken(0) )
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, data.GetMaxTopicality(), params.GetToken(0) )
-		Case "cast"
-			Local castIndex:Int = params.GetToken(2 + tokenOffset).valueLong
- 			If castIndex < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
-
-			Local job:TPersonProductionJob = data.GetCastAtIndex(castIndex)
-			If Not job Then Return New SToken( TK_ERROR, "Cast " + castIndex +" not found", params.GetToken(0) )
-
-			Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
-			If Not person Then Return New SToken( TK_ERROR, "Cast " + castIndex +" person not found", params.GetToken(0) )
-
-			Select params.GetToken(3 + tokenOffset).value.ToLower()
-				Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
-				Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(), params.GetToken(0) )
-				Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
-				Case "guid"      Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
-				Case "id"        Return New SToken( TK_NUMBER, person.GetID(), params.GetToken(0) )
-				'Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
-				Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
-			End Select
+		Case "cast"                    Return _EvaluateProgrammeDataCast(data, params, tokenOffset)
+		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
+		Case "role"                    Return _EvaluateProgrammeDataRole(data, params, tokenOffset)
 
 		Default                        Return New SToken( TK_ERROR, "Unknown property ~q" + propertyName + "~q", params.GetToken(0) )
 	End Select
 End Function
 
 
+Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int) 'inline
+	Local castIndex:Int = params.GetToken(2 + tokenOffset).valueLong
+	If castIndex < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
+
+	Local job:TPersonProductionJob = data.GetCastAtIndex(castIndex)
+	If Not job Then Return New SToken( TK_ERROR, "Cast " + castIndex +" not found", params.GetToken(0) )
+
+	Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
+	If Not person Then Return New SToken( TK_ERROR, "Cast " + castIndex +" person not found", params.GetToken(0) )
+	
+	Local includeTitle:Int
+	If params.added >= 4 + tokenOffset
+		includeTitle = params.GetToken(4 + tokenOffset).GetValueBool()
+	EndIf
 
 
+	Select params.GetToken(3 + tokenOffset).value.ToLower()
+		Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
+		Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
+		Case "fullname"  Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
+		Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
+		Case "title"     Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
+		Case "guid"      Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
+		Case "id"        Return New SToken( TK_NUMBER, person.GetID(), params.GetToken(0) )
+		Case "roleid"    Return New SToken( TK_TEXT, job.roleID, params.GetToken(0) )
+		Case "hasrole"   Return New SToken( TK_BOOLEAN, Long(job.roleID<>0), params.GetToken(0) )
 
-'${.person:"guid":"name"} - context: all
+		Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+	End Select
+End Function
+
+
+Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int) 'inline
+	Local roleIndex:Int = params.GetToken(2 + tokenOffset).valueLong
+	If roleIndex < 0 Then Return New SToken( TK_ERROR, "Role index must be positive", params.GetToken(0) )
+
+	Local job:TPersonProductionJob = data.GetCastAtIndex(roleIndex)
+	If Not job Then Return New SToken( TK_ERROR, "No cast at index " + roleIndex + " to look for assigned role", params.GetToken(0) )
+	
+	If job.roleID = 0 Then Return New SToken( TK_ERROR, "No role assigned to cast " + roleIndex, params.GetToken(0) )
+
+	Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID( job.roleID )
+	If Not role Then Return New SToken( TK_ERROR, "Role " + roleIndex +" not found", params.GetToken(0) )
+
+	Local includeTitle:Int
+	If params.added >= 4 + tokenOffset
+		includeTitle = params.GetToken(4 + tokenOffset).GetValueBool()
+	EndIf
+
+
+	Select params.GetToken(3 + tokenOffset).value.ToLower()
+		Case "firstname" Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
+		Case "lastname"  Return New SToken( TK_TEXT, role.GetLastName(includeTitle), params.GetToken(0) )
+		Case "fullname"  Return New SToken( TK_TEXT, role.GetFullName(includeTitle), params.GetToken(0) )
+		Case "title"     Return New SToken( TK_TEXT, role.GetTitle(), params.GetToken(0) )
+		case "countrycode" Return New SToken( TK_TEXT, role.countrycode, params.GetToken(0) )
+		case "gender"    Return New SToken( TK_NUMBER, role.gender, params.GetToken(0) )
+		Case "guid"      Return New SToken( TK_TEXT, role.GetGUID(), params.GetToken(0) )
+		Case "id"        Return New SToken( TK_NUMBER, role.GetID(), params.GetToken(0) )
+		case "fictional" Return New SToken( TK_BOOLEAN, role.fictional, params.GetToken(0) )
+
+		Default          Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+	End Select
+End Function
+
+
+'${.role:"guid"/id:"fullname"} - context: all
+Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
+	Local role:TProgrammeRole
+	Local token:SToken = params.GetToken(1)
+	Local GUID:String = token.value
+	Local ID:Long = token.valueLong
+	If GUID
+		role = GetProgrammeRoleCollection().GetByGUID(GUID)
+		If Not role Then Return New SToken( TK_ERROR, ".role with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
+	ElseIf ID <> 0
+		role = GetProgrammeRoleCollection().GetByID(Int(ID))
+		If Not role Then Return New SToken( TK_ERROR, ".role with ID ~q"+ID+"~q not found", params.GetToken(0) )
+	EndIf
+
+
+	Local includeTitle:Int
+	If params.added >= 3
+		includeTitle = params.GetToken(3).GetValueBool()
+	EndIf
+
+
+	Select params.GetToken(2).value.ToLower()
+		case "firstname"    Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
+		case "lastname"     Return New SToken( TK_TEXT, role.GetLastName(includeTitle), params.GetToken(0) )
+		case "fullname"     Return New SToken( TK_TEXT, role.GetFullName(includeTitle), params.GetToken(0) )
+		Case "title"        Return New SToken( TK_TEXT, role.GetTitle(), params.GetToken(0) )
+		case "countrycode"  Return New SToken( TK_TEXT, role.countrycode, params.GetToken(0) )
+		case "gender"       Return New SToken( TK_NUMBER, role.gender, params.GetToken(0) )
+		case "guid"         Return New SToken( TK_TEXT, role.GetGUID(), params.GetToken(0) )
+		case "id"           Return New SToken( TK_NUMBER, role.GetID(), params.GetToken(0) )
+		case "fictional"    Return New SToken( TK_BOOLEAN, role.fictional, params.GetToken(0) )
+
+		default             Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+	End Select
+End Function
+
+
+'${.person:"guid"/id:"name"} - context: all
 Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local person:TPersonBase
 	Local token:SToken = params.GetToken(1)
@@ -445,7 +518,8 @@ End Function
 
 
 
-'${.self:"title"} - context: TProgrammeLicence / TProgrammeData
+'${.script:"guid"/id:"title"} - context: all
+'${.self:"title"} - context: TScript
 Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	'non-self requires an offset of 1 to retrieve required property
 	'${.self:"episodes"} - ${.myclass:"guid":"episodes"}
