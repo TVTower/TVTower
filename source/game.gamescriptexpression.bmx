@@ -342,7 +342,7 @@ Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGro
 	Select params.GetToken(3 + tokenOffset).value.ToLower()
 		Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
 		Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
-		Case "fullname"  Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
+		Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
 		Case "title"     Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
 		Case "guid"      Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
@@ -377,6 +377,7 @@ Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGro
 		Case "firstname" Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
 		Case "lastname"  Return New SToken( TK_TEXT, role.GetLastName(includeTitle), params.GetToken(0) )
 		Case "fullname"  Return New SToken( TK_TEXT, role.GetFullName(includeTitle), params.GetToken(0) )
+		Case "nickname"  Return New SToken( TK_TEXT, role.GetNickName(), params.GetToken(0) )
 		Case "title"     Return New SToken( TK_TEXT, role.GetTitle(), params.GetToken(0) )
 		case "countrycode" Return New SToken( TK_TEXT, role.countrycode, params.GetToken(0) )
 		case "gender"    Return New SToken( TK_NUMBER, role.gender, params.GetToken(0) )
@@ -574,8 +575,11 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 			Select subCommand.ToLower()
 				Case "firstname"  Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
 				Case "lastname"   Return New SToken( TK_TEXT, role.GetLastName(), params.GetToken(0) )
-				'Case "fullname"   Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
-				Default           Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+				Case "fullname"   Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+				Case "nickname"   Return New SToken( TK_TEXT, role.GetNickName(), params.GetToken(0) )
+				Case "title"      Return New SToken( TK_TEXT, role.GetTitle(), params.GetToken(0) )
+				'TODO weitere properties, fullname with title flag?sollten hier nicht die wichtigsten anderen properties unterstützt und im Defaultfall ein Error-Token zurückgegeben werden? 
+				Default           Return New SToken( TK_ERROR, "unknown property ~q" + subCommand.ToLower() + "~q", params.GetToken(0) )
 			End Select
 							
 		Default                 Return New SToken( TK_ERROR, "unknown property ~q" + propertyName + "~q", params.GetToken(0) )
