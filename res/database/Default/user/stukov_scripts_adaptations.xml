@@ -14,9 +14,9 @@
 				<pl>Pamięć, smutek i cierń</pl>
 			</title_original>
 			<description>
-				<de>Verfilmung der epischen Fantasy-Serie über die Welt von Osten Ard. Die Geschichte von ${.self:"role":0:"firstname"} Mondkalb (wegen seiner Zerstreung so genannt) und ${.self:"role":1:"firstname"} Sturmkönig - und ihrer tödlichen Feindschaft.</de>
-				<en>Film adaptation of the epic fantasy series about the world of Osten Ard. The story of ${.self:"role":0:"firstname"} Mooncalf (named so because of his absent-mindedness) and ${.self:"role":1:"firstname"} Storm King - and their deadly enmity.</en>
-				<pl>Filmowa adaptacja epickiej serii fantasy o świecie Osten Ard. Historia ${.self:"role":0:"firstname"} Mooncalfa (nazwanego tak z powodu roztargnienia) i ${.self:"role":1:"firstname"} Storm Kinga - oraz ich śmiertelnej wrogości.</pl>
+				<de>Verfilmung der epischen Fantasy-Serie über die Welt von Osten Ard. Die Geschichte von ${.self:"role":1:"firstname"} Mondkalb (wegen seiner Zerstreung so genannt) und ${.self:"role":2:"firstname"} Sturmkönig - und ihrer tödlichen Feindschaft.</de>
+				<en>Film adaptation of the epic fantasy series about the world of Osten Ard. The story of ${.self:"role":1:"firstname"} Mooncalf (named so because of his absent-mindedness) and ${.self:"role":2:"firstname"} Storm King - and their deadly enmity.</en>
+				<pl>Filmowa adaptacja epickiej serii fantasy o świecie Osten Ard. Historia ${.self:"role":1:"firstname"} Mooncalfa (nazwanego tak z powodu roztargnienia) i ${.self:"role":2:"firstname"} Storm Kinga - oraz ich śmiertelnej wrogości.</pl>
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_1">
@@ -31,9 +31,9 @@
 						<pl>Krzesło Smocza Kość I</pl>
 					</title_original>
 					<description>
-						<de>Der betagte König Johan liegt im Sterben, und um die Thronfolge entbrennt ein hinterhältiger Kampf unter seinen Söhnen ${.self:"role":4:"firstname"} und ${.self:"role":3:"firstname"}. Der Küchenjunge ${.self:"role":0:"firstname"} gerät mitten in die Auseinandersetzungen.</de>
-						<en>The aged King John is dying, and a treacherous battle breaks out among his sons ${.self:"role":4:"firstname"} and ${.self:"role":3:"firstname"} over the succession to the throne. The kitchen boy ${.self:"role":0:"firstname"} gets caught in the middle of the confrontations.</en>
-						<pl>Starzejący się król Jan umiera, a między jego synami ${.self:"role":4:"firstname"} i ${.self:"role":3:"firstname"} wybucha zdradziecka walka o sukcesję tronu. Chłopiec kuchenny ${.self:"role":0:"firstname"} zostaje wciągnięty w sam środek konfrontacji.</pl>
+						<de>Der betagte König Johan liegt im Sterben, und um die Thronfolge entbrennt ein hinterhältiger Kampf unter seinen Söhnen ${.self:"role":5:"firstname"} und ${.self:"role":4:"firstname"}. Der Küchenjunge ${.self:"role":1:"firstname"} gerät mitten in die Auseinandersetzungen.</de>
+						<en>The aged King John is dying, and a treacherous battle breaks out among his sons ${.self:"role":5:"firstname"} and ${.self:"role":4:"firstname"} over the succession to the throne. The kitchen boy ${.self:"role":1:"firstname"} gets caught in the middle of the confrontations.</en>
+						<pl>Starzejący się król Jan umiera, a między jego synami ${.self:"role":5:"firstname"} i ${.self:"role":4:"firstname"} wybucha zdradziecka walka o sukcesję tronu. Chłopiec kuchenny ${.self:"role":1:"firstname"} zostaje wciągnięty w sam środek konfrontacji.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="1" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_2">
@@ -48,9 +48,9 @@
 						<pl>Krzesło Smocza Kość II</pl>
 					</title_original>
 					<description>
-						<de>Welche Ziele aber verfolgen die geheimnisvollen Elbenvölker der Nornen und Sithi, denen das Land einst gehörte? Aus Misstrauen gegenüber seinem Bruder ${.self:"role":3:"firstname"} schliesst Koenig ${.self:"role":4:"firstname"} einen Bund mit den Nornen und erhält das große Schwert Leid.</de>
-						<en>But what are the goals of the mysterious elven nations of the Norns and Sithi, to whom the land once belonged? Out of mistrust towards his brother ${.self:"role":3:"firstname"}, King ${.self:"role":4:"firstname"} enters into a covenant with the Norns and receives the great sword Sorrow.</en>
-						<pl>Ale jakie są cele tajemniczych elfich narodów Nornów i Sithi, do których niegdyś należały te ziemie? Z braku zaufania do swojego brata ${.self:"role":3:"firstname"}, król ${.self:"role":4:"firstname"} zawiera przymierze z Nornami i otrzymuje wielki miecz Smutek.</pl>
+						<de>Welche Ziele aber verfolgen die geheimnisvollen Elbenvölker der Nornen und Sithi, denen das Land einst gehörte? Aus Misstrauen gegenüber seinem Bruder ${.self:"role":4:"firstname"} schliesst Koenig ${.self:"role":5:"firstname"} einen Bund mit den Nornen und erhält das große Schwert Leid.</de>
+						<en>But what are the goals of the mysterious elven nations of the Norns and Sithi, to whom the land once belonged? Out of mistrust towards his brother ${.self:"role":4:"firstname"}, King ${.self:"role":5:"firstname"} enters into a covenant with the Norns and receives the great sword Sorrow.</en>
+						<pl>Ale jakie są cele tajemniczych elfich narodów Nornów i Sithi, do których niegdyś należały te ziemie? Z braku zaufania do swojego brata ${.self:"role":4:"firstname"}, król ${.self:"role":5:"firstname"} zawiera przymierze z Nornami i otrzymuje wielki miecz Smutek.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="2" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_3">
@@ -65,9 +65,9 @@
 						<pl>Kamień pożegnalny I</pl>
 					</title_original>
 					<description>
-						<de>Auf dem Hochhorst herrschen Sturmkönig ${.self:"role":1:"firstname"}s Kreaturen. Aber noch regt sich Widerstand.</de>
-						<en>Storm King ${.self:"role":1:"firstname"}'s creatures rule on the high eyrie. But resistance is still stirring.</en>
-						<pl>Stworzenia Króla Burzy ${.self:"role":1:"firstname"} rządzą na wysokim oku. Ale opór wciąż trwa.</pl>
+						<de>Auf dem Hochhorst herrschen Sturmkönig ${.self:"role":2:"firstname"}s Kreaturen. Aber noch regt sich Widerstand.</de>
+						<en>Storm King ${.self:"role":2:"firstname"}'s creatures rule on the high eyrie. But resistance is still stirring.</en>
+						<pl>Stworzenia Króla Burzy ${.self:"role":2:"firstname"} rządzą na wysokim oku. Ale opór wciąż trwa.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="3" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_4">
@@ -82,9 +82,9 @@
 						<pl>Kamień pożegnalny II</pl>
 					</title_original>
 					<description>
-						<de>Die Gruppe um Prinz ${.self:"role":3:"firstname"} erreicht die alte Festung der Sitthi auf dem Abschiedsstein. Von dort aus beginnt der letzte Kampf um Osten Ard.</de>
-						<en>The group around Prince ${.self:"role":3:"firstname"} reaches the old fortress of the Sitthi on the Farewell Stone. From there, the final battle for Osten Ard begins.</en>
-						<pl>Grupa wokół księcia ${.self:"role":3:"firstname"} dociera do starej fortecy Sitthi na Kamieniu Pożegnalnym. Stamtąd rozpoczyna się ostateczna bitwa o Osten Ard.</pl>
+						<de>Die Gruppe um Prinz ${.self:"role":4:"firstname"} erreicht die alte Festung der Sitthi auf dem Abschiedsstein. Von dort aus beginnt der letzte Kampf um Osten Ard.</de>
+						<en>The group around Prince ${.self:"role":4:"firstname"} reaches the old fortress of the Sitthi on the Farewell Stone. From there, the final battle for Osten Ard begins.</en>
+						<pl>Grupa wokół księcia ${.self:"role":4:"firstname"} dociera do starej fortecy Sitthi na Kamieniu Pożegnalnym. Stamtąd rozpoczyna się ostateczna bitwa o Osten Ard.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="4" guid="Stukov_Das-Geheimnis_der_großen_Schwerter_5">
@@ -116,9 +116,9 @@
 						<pl>Do Wieży Zielonego Anioła</pl>
 					</title_original>
 					<description>
-						<de>Während vor den Toren des Hochhorstes ${.self:"role":3:"firstname"}s Armee warted, findet im Engelsturm die entscheidende Auseinandersetzung zwischen ${.self:"role":4:"firstname"}, ${.self:"role":5:"firstname"}, ${.self:"role":0:"firstname"} und ${.self:"role":2:"firstname"} statt.</de>
-						<en>While ${.self:"role":3:"firstname"}'s army waits outside the gates of the High Eyrie, the decisive confrontation between ${.self:"role":4:"firstname"}, ${.self:"role":5:"firstname"}, ${.self:"role":0:"firstname"} and ${.self:"role":2:"firstname"} takes place in the Angel Tower.</en>
-						<pl>Podczas gdy armia ${.self:"role":3:"firstname"} czeka przed bramami High Eyrie, decydująca konfrontacja pomiędzy ${.self:"role":4:"firstname"}, ${.self:"role":5:"firstname"}, ${.self:"role":0:"firstname"} i ${.self:"role":2:"firstname"} ma miejsce w Angel Tower.</pl>
+						<de>Während vor den Toren des Hochhorstes ${.self:"role":4:"firstname"}s Armee warted, findet im Engelsturm die entscheidende Auseinandersetzung zwischen ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":1:"firstname"} und ${.self:"role":3:"firstname"} statt.</de>
+						<en>While ${.self:"role":4:"firstname"}'s army waits outside the gates of the High Eyrie, the decisive confrontation between ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":1:"firstname"} and ${.self:"role":3:"firstname"} takes place in the Angel Tower.</en>
+						<pl>Podczas gdy armia ${.self:"role":4:"firstname"} czeka przed bramami High Eyrie, decydująca konfrontacja pomiędzy ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":1:"firstname"} i ${.self:"role":3:"firstname"} ma miejsce w Angel Tower.</pl>
 					</description>
 				</scripttemplate>
 			</children>

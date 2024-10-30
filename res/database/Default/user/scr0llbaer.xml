@@ -1286,12 +1286,12 @@ Czyli 4120 na odcinek.</pl>
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="d26ee4f9-1b61-4b7a-926a-e462256b127b" creator="9551" comment="Making some use of the existing fairytale characters. Descriptions created with help of ChatGPT.">
 			<title>
-				<de>${.self:"role":1:"firstname"} und ${.self:"role":0:"firstname"} im Märchenwald</de>
-				<en>${.self:"role":1:"firstname"} and ${.self:"role":0:"firstname"} in the Woods of Wonder</en>
+				<de>${.self:"role":2:"firstname"} und ${.self:"role":1:"firstname"} im Märchenwald</de>
+				<en>${.self:"role":2:"firstname"} and ${.self:"role":1:"firstname"} in the Woods of Wonder</en>
 			</title>
 			<description>
-				<de>Vor ihrem bekannten Aufeinandertreffen mit dem Bären erleben die heranwachsenden ${.self:"role":0:"firstname"} und ${.self:"role":1:"firstname"} zusammen mit den Kindern ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} Abenteuer im Wald.</de>
-				<en>Before their famous encounter with the bear, the adolescent ${.self:"role":0:"firstname"} and ${.self:"role":1:"firstname"} experience adventures in the forest together with the children ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} and ${.self:"role":4:"firstname"}.</en>
+				<de>Vor ihrem bekannten Aufeinandertreffen mit dem Bären erleben die heranwachsenden ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} zusammen mit den Kindern ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} und ${.self:"role":5:"firstname"} Abenteuer im Wald.</de>
+				<en>Before their famous encounter with the bear, the adolescent ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} experience adventures in the forest together with the children ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} and ${.self:"role":5:"firstname"}.</en>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="5bda9699-4cc2-49cd-875a-70e666594d56">
@@ -1300,8 +1300,8 @@ Czyli 4120 na odcinek.</pl>
 						<en>The Whispering Trees</en>
 					</title>
 					<description>
-						<de>${.self:"role":4:"firstname"} bläst sein Horn in den Verwunschenen Wäldern und erweckt flüsternde Bäume, uralte Hüter und tückische Elfen, die die Abenteurer nun kichernd mit Illusionen und falschen Fährten in die Irre führen.</de>
-						<en>${.self:"role":4:"firstname"} blows his horn in the Enchanted Woods and awakens whispering trees, ancient guardians and elusive sprites, who now, while giggling, lead the adventurers astray with illusions and false trails.</en>
+						<de>${.self:"role":5:"firstname"} bläst sein Horn in den Verwunschenen Wäldern und erweckt flüsternde Bäume, uralte Hüter und tückische Elfen, die die Abenteurer nun kichernd mit Illusionen und falschen Fährten in die Irre führen.</de>
+						<en>${.self:"role":5:"firstname"} blows his horn in the Enchanted Woods and awakens whispering trees, ancient guardians and elusive sprites, who now, while giggling, lead the adventurers astray with illusions and false trails.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="f4fddd1c-0f95-4887-8a76-7994b94e26ef">
@@ -1320,8 +1320,8 @@ Czyli 4120 na odcinek.</pl>
 						<en>The Mirror of Truth</en>
 					</title>
 					<description>
-						<de>Noch in der Hütte steckt ${.self:"role":2:"fullname"} seinen Daumen in einen Kuchen und zieht eine Pflaume heraus, aber ein mystischer Spiegel reflektiert etwas anderes - er enthüllt die verborgensten Geheimnisse aller, was mit dem angesprochenen Schatz zu tun haben könnte.</de>
-						<en>Still in the cottage, ${.self:"role":2:"fullname"} puts his thumb into a pie and pulls out a plum, but a mystical mirror reflects something else - it reveals the deepest secrets of everyone, which might have something to do with the treasure mentioned.</en>
+						<de>Noch in der Hütte steckt ${.self:"role":3:"fullname"} seinen Daumen in einen Kuchen und zieht eine Pflaume heraus, aber ein mystischer Spiegel reflektiert etwas anderes - er enthüllt die verborgensten Geheimnisse aller, was mit dem angesprochenen Schatz zu tun haben könnte.</de>
+						<en>Still in the cottage, ${.self:"role":3:"fullname"} puts his thumb into a pie and pulls out a plum, but a mystical mirror reflects something else - it reveals the deepest secrets of everyone, which might have something to do with the treasure mentioned.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="408d1dbe-0887-4249-a7e6-15f206c63082">
@@ -1373,8 +1373,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 2 - Careers, Coffee &amp; Canoodling</en>
 			</title>
 			<description>
-				<de>Das Büro brodelt! Neue Sekretärin ${.self:"role":0:"fullname"} bringt frischen Schwung, Meetings werden zur Dating-Show, während Chef ${.self:"role":1:"fullname"} hinterm Schreibtisch charmant Chaos stiftet. Und ${.self:"role":2:"fullname"} entdeckt, dass Verträge und Knutschen mehr gemeinsam haben als gedacht.</de>
-				<en>The office is on fire! New secretary ${.self:"role":0:"fullname"} brings fresh energy, meetings turn into a dating show, while boss ${.self:"role":1:"fullname"} charmingly creates chaos behind his desk. And ${.self:"role":2:"fullname"} discovers that contracts and canoodling have more in common than she thought.</en>
+				<de>Das Büro brodelt! Neue Sekretärin ${.self:"role":1:"fullname"} bringt frischen Schwung, Meetings werden zur Dating-Show, während Chef ${.self:"role":2:"fullname"} hinterm Schreibtisch charmant Chaos stiftet. Und ${.self:"role":3:"fullname"} entdeckt, dass Verträge und Knutschen mehr gemeinsam haben als gedacht.</de>
+				<en>The office is on fire! New secretary ${.self:"role":1:"fullname"} brings fresh energy, meetings turn into a dating show, while boss ${.self:"role":2:"fullname"} charmingly creates chaos behind his desk. And ${.self:"role":3:"fullname"} discovers that contracts and canoodling have more in common than she thought.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1404,8 +1404,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 3 - Shorthand, Stunts &amp; Sensuality</en>
 			</title>
 			<description>
-				<de>Jetzt wird's noch bunter: ${.self:"role":0:"fullname"} wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und ${.self:"role":1:"fullname"}s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
-				<en>Now it all gets extra sparkly: ${.self:"role":0:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":1:"fullname"}'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
+				<de>Jetzt wird's noch bunter: ${.self:"role":1:"fullname"} wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und ${.self:"role":2:"fullname"}s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
+				<en>Now it all gets extra sparkly: ${.self:"role":1:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":2:"fullname"}'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1435,8 +1435,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 4</en>
 			</title>
 			<description>
-				<de>Die blonde ${.self:"role":0:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler Higwig gibt's 'ne Natursekt-Party, der Chef ${.self:"role":2:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
-				<en>Blonde ${.self:"role":0:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent Higwig's, the boss ${.self:"role":2:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler Higwig gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
+				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent Higwig's, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1463,12 +1463,12 @@ Czyli 4120 na odcinek.</pl>
 
 		<scripttemplate product="1" licence_type="1" guid="d31d1720-d567-4479-8ac9-f77d13848f3c" creator="9551" comment="Parody/spoof also in real-title mode of https://en.wikipedia.org/wiki/Charlie_and_the_Chocolate_Factory | TODO: Maybe yet another parody and erotic comedy version: W. Wanker and the Sex Toy Factory">
 			<title>
-				<de>${.self:"role":0:"fullname"} und die Spirituosenfabrik</de>
-				<en>${.self:"role":0:"fullname"} and the Liquor Factory</en>
+				<de>${.self:"role":1:"fullname"} und die Spirituosenfabrik</de>
+				<en>${.self:"role":1:"fullname"} and the Liquor Factory</en>
 			</title>
 			<description>
-				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker ${.self:"role":1:"fullname"} findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen ${.self:"role":0:"fullname"}. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
-				<en>The bumbling deposit bottle collector and alcoholic ${.self:"role":1:"fullname"} finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric ${.self:"role":0:"fullname"}. However, the pint-swilling aristocrats there are quite the nuisance.</en>
+				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker ${.self:"role":2:"fullname"} findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen ${.self:"role":1:"fullname"}. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
+				<en>The bumbling deposit bottle collector and alcoholic ${.self:"role":2:"fullname"} finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric ${.self:"role":1:"fullname"}. However, the pint-swilling aristocrats there are quite the nuisance.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
