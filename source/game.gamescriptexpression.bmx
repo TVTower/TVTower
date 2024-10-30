@@ -575,6 +575,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 			Select subCommand.ToLower()
 				Case "firstname"  Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
 				Case "lastname"   Return New SToken( TK_TEXT, role.GetLastName(), params.GetToken(0) )
+				'TODO sollten hier nicht die wichtigsten anderen properties unterstützt und im Defaultfall ein Error-Token zurückgegeben werden? 
 				'Case "fullname"   Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
 				Default           Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
 			End Select
