@@ -143,8 +143,8 @@
 				<en>${ADJECTIVE} ${OBJECT}</en>
 			</title>
 			<description>
-				<de>${JOB} ${.self:"role":0:"firstname"} ${ACTION} ${ENEMY}. Sie wollen ${VICTIM} ${ACTION2}.</de>
-				<en>${JOB} ${.self:"role":0:"firstname"} ${ACTION} ${ENEMY} who want to ${ACTION2}.</en>
+				<de>${JOB} ${.self:"role":1:"firstname"} ${ACTION} ${ENEMY}. Sie wollen ${VICTIM} ${ACTION2}.</de>
+				<en>${JOB} ${.self:"role":1:"firstname"} ${ACTION} ${ENEMY} who want to ${ACTION2}.</en>
 			</description>
 
 			<variables>
@@ -175,8 +175,8 @@
 					<en>a Mexican drug cartel|a secret CIA group|Aliens|a confused sect|the own family|pirates</en>
 				</enemy>
 				<victim>
-					<de>den Präsidenten der USA|den Familienhund|den Sohn von ${.self:"role":0:"firstname"}|den Nachbar von ${.self:"role":0:"firstname"}</de>
-					<en>the president of the USA|the family dog|the son of ${.self:"role":0:"firstname"}|the neighbor of ${.self:"role":0:"firstname"}</en>
+					<de>den Präsidenten der USA|den Familienhund|den Sohn von ${.self:"role":1:"firstname"}|den Nachbar von ${.self:"role":1:"firstname"}</de>
+					<en>the president of the USA|the family dog|the son of ${.self:"role":1:"firstname"}|the neighbor of ${.self:"role":1:"firstname"}</en>
 				</victim>
 			</variables>
 
@@ -1890,8 +1890,8 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>Creature Rider</en>
 			</title>
 			<description>
-				<de>Da junge Helden, die Drachen reiten, inzwischen Mainstream geworden sind, ist ein Remake des 1964er Fantasy-Films über ${.self:"role":0:"firstname"}, der Fantasiewesen dressiert und reitet, einen Versuch wert.</de>
-				<en>As young heroes who ride dragons have become mainstream, a remake of the 1964 fantasy film about ${.self:"role":0:"firstname"} training and riding fantasy creatures is worth a try.</en>
+				<de>Da junge Helden, die Drachen reiten, inzwischen Mainstream geworden sind, ist ein Remake des 1964er Fantasy-Films über ${.self:"role":1:"firstname"}, der Fantasiewesen dressiert und reitet, einen Versuch wert.</de>
+				<en>As young heroes who ride dragons have become mainstream, a remake of the 1964 fantasy film about ${.self:"role":1:"firstname"} training and riding fantasy creatures is worth a try.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

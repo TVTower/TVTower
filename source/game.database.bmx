@@ -475,12 +475,12 @@ Type TDatabaseLoader
 				expression = expression.Replace("["+i+"|Nick]", "${.self:~qcast~q:"+i+":~qnickname~q}")
 			EndIf
 
-			'attention: role(name) NUMBER to INDEX! (i-1)
+			'role(name) assumption is that NUMBER corrensponds to job INDEX (0=director, 1..x=actors)
 			if expression.Find("%ROLENAME"+i) >= 0
-				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfirstname~q}")
+				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+(i)+":~qfirstname~q}")
 			EndIf
 			if expression.Find("%ROLE"+i) >= 0
-				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfullname~q}")
+				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i)+":~qfullname~q}")
 			EndIf
 		Next
 
