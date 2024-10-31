@@ -139,17 +139,23 @@ Type TScriptCollection Extends TGameObjectCollection
 		filter.biggerStudioAllowedChance = 10 + 5 * (GetWorldTime().GetDaysRun())
 
 		'apart from avoidTemplateIDs, templates from already available scripts should not be used again
-		Local alreadyAvailable:Int[] =[]
-		for local sc:TScript = EachIn GetAvailableScriptList()
-			alreadyAvailable :+ [sc.basedOnScriptTemplateID]
+		Local availableScriptList:TList = GetAvailableScriptList()
+		'presize array in advance instead of adding a new one-entry-array on each for-loop
+		Local alreadyAvailable:Int[] = New Int[availableScriptList.Count()]
+		Local scIndex:Int = 0
+		for local sc:TScript = EachIn availableScriptList
+			alreadyAvailable[scIndex] = sc.basedOnScriptTemplateID
+			scIndex :+ 1
 		Next
+		'theoretically list.count() could be higher than actual TScript count (it could contain incompatible objects..)
+		If scIndex < alreadyAvailable.length Then alreadyAvailable = alreadyAvailable[..scIndex]
 
 		filter.avoidIDs = avoidTemplateIDs + alreadyAvailable
 		filter.skipNotAvailable = True
 		'determine candidate
 		template = GetScriptTemplateCollection().GetRandomByFilter(filter)
 		'get a random one, ignore avoid IDs
-		If Not template And avoidTemplateIDs And avoidTemplateIDs.length > 0
+		If Not template And filter.avoidIDs And filter.avoidIDs.length > 0
 			TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Trying an avoided entry.", LOG_WARNING)
 			filter.avoidIDs = null
 			template = GetScriptTemplateCollection().GetRandomByFilter(filter)
