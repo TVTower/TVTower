@@ -28,6 +28,7 @@ AD_STILL_X_DAYS       = até %1 dias
 
 AD_CHANNEL_IMAGE_TOO_LOW = Imagem do canal muito baixa. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = Por favor, gênero %GENRE%
+AD_PLEASE_NOT_GENRE_X    = Por favor, não gênero %GENRE%
 AD_PLEASE_FLAG           = Por favor, %FLAG%
 
 INFOMERCIAL                  = Infomercial

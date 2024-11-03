@@ -582,8 +582,16 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 		Return GetLimitedToProgrammeGenre() = genre
 	End Method
 
+	Method IsForbiddenProgrammeGenre:Int(genre:Int) {_exposeToLua}
+		Return GetForbiddenProgrammeGenre() = genre
+	End Method
+
 	Method GetLimitedToProgrammeGenre:Int() {_exposeToLua}
 		Return limitedToProgrammeGenre
+	End Method
+
+	Method GetForbiddenProgrammeGenre:Int() {_exposeToLua}
+		Return forbiddenProgrammeGenre
 	End Method
 
 
@@ -1498,10 +1506,26 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Return base.GetLimitedToProgrammeGenre()
 	End Method
 
+	Method IsForbiddenProgrammeGenre:Int(genre:Int) {_exposeToLua}
+		Return base.IsForbiddenProgrammeGenre(genre)
+	End Method
+
+	Method GetForbiddenProgrammeGenre:Int() {_exposeToLua}
+		Return base.GetForbiddenProgrammeGenre()
+	End Method
+
 
 	Method GetLimitedToProgrammeGenreString:String(genre:Int=-1) {_exposeToLua}
 		'if no genre given, use the one of the object
 		If genre < 0 Then genre = base.limitedToProgrammeGenre
+		If genre < 0 Then Return ""
+
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
+	End Method
+
+	Method GetForbiddenProgrammeGenreString:String(genre:Int=-1) {_exposeToLua}
+		'if no genre given, use the one of the object
+		If genre < 0 Then genre = base.forbiddenProgrammeGenre
 		If genre < 0 Then Return ""
 
 		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
@@ -1551,7 +1575,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		EndIf
 
 		'limited to a specific genre - and not fulfilled
-		If GetLimitedToProgrammeGenre() >= 0 or GetLimitedToProgrammeFlag() > 0
+		If GetLimitedToProgrammeGenre() >= 0 or GetLimitedToProgrammeFlag() > 0 or GetForbiddenProgrammeGenre() >= 0
 			'check current programme of the owner
 			'TODO: check if that has flaws playing with high speed
 			'      (check if current broadcast is correctly set at this
@@ -1567,6 +1591,11 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 				if GetLimitedToProgrammeGenre() >= 0
 					if genreDefinition and genreDefinition.referenceId <> GetLimitedToProgrammeGenre()
 						Return "GENRE"
+					endif
+				endif
+				if GetForbiddenProgrammeGenre() >= 0
+					if genreDefinition and genreDefinition.referenceId = GetForbiddenProgrammeGenre()
+						Return "GENREFORBIDDEN"
 					endif
 				endif
 				if GetLimitedToProgrammeFlag() > 0
@@ -1779,6 +1808,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'message area
 		If GetLimitedToTargetGroup() > 0 Then msgAreaH :+ msgH
 		If GetLimitedToProgrammeGenre() >= 0 Then msgAreaH :+ msgH
+		If GetForbiddenProgrammeGenre() >= 0 Then msgAreaH :+ msgH
 		If GetLimitedToProgrammeFlag() > 0 Then msgAreaH :+ msgH
 		'warn if short of time or finished/failed
 		If daysLeft <= 1 Or IsCompleted()
@@ -1839,6 +1869,10 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		EndIf
 		If GetLimitedToProgrammeGenre() >= 0
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToProgrammeGenreString()), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		EndIf
+		If GetForbiddenProgrammeGenre() >= 0
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_NOT_GENRE_X").Replace("%GENRE%", GetForbiddenProgrammeGenreString()), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		If GetLimitedToProgrammeFlag() > 0

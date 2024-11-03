@@ -28,6 +28,7 @@ AD_STILL_X_DAYS       = still %1 days
 
 AD_CHANNEL_IMAGE_TOO_LOW = Channel image too low. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = %GENRE% genre, please
+AD_PLEASE_NOT_GENRE_X    = not %GENRE% genre, please
 AD_PLEASE_FLAG           = %FLAG%, please
 
 INFOMERCIAL                  = Infomercial

@@ -28,6 +28,7 @@ AD_STILL_X_DAYS       = noch %1 Tage
 
 AD_CHANNEL_IMAGE_TOO_LOW = Senderimage zu gering. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = Bitte Genre %GENRE%
+AD_PLEASE_NOT_GENRE_X    = Bitte nicht Genre %GENRE%
 AD_PLEASE_FLAG           = Bitte %FLAG%
 
 INFOMERCIAL                  = Dauerwerbesendung

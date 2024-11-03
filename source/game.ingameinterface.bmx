@@ -445,6 +445,8 @@ Type TInGameInterface
 											minAudienceText = "|color=200,100,100|" + minAudienceText + "!|/color|"
 										case "GENRE"
 											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToProgrammeGenreString()+ "!|/color|"
+										case "GENREFORBIDDEN"
+											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetForbiddenProgrammeGenreString()+ "!|/color|"
 										default
 											minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
 									End Select

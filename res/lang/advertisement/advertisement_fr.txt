@@ -28,6 +28,7 @@ AD_STILL_X_DAYS       = encore %1 jours
 
 AD_CHANNEL_IMAGE_TOO_LOW = Image de marque trop insignifiant. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = SVP genre %GENRE%
+AD_PLEASE_NOT_GENRE_X    = SVP pas genre %GENRE%
 AD_PLEASE_FLAG           = SVP %FLAG%
 
 INFOMERCIAL                  = Émission publicitaire

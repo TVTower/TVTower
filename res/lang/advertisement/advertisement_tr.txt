@@ -28,6 +28,7 @@ AD_STILL_X_DAYS       = halen %1 gününüz var
 
 AD_CHANNEL_IMAGE_TOO_LOW = Kanal İmajı çok düşük %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = Lütfen, Tür: %GENRE%
+#AD_PLEASE_NOT_GENRE_X    = Lütfen, Tür: %GENRE% olmasın??
 AD_PLEASE_FLAG           = Lütfen, %FLAG%
 
 INFOMERCIAL                  = Infomercial

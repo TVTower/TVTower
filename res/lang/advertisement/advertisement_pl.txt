@@ -28,6 +28,7 @@ AD_STILL_X_DAYS       = ciągle %1 dni
 
 AD_CHANNEL_IMAGE_TOO_LOW = Wizerunek za niski. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = Proszę o gatunek %GENRE%
+AD_PLEASE_NOT_GENRE_X    = Proszę nie %GENRE% gatunkowy
 AD_PLEASE_FLAG           = Proszę %FLAG%
 
 INFOMERCIAL                  = Infomercial
