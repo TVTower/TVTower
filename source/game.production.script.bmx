@@ -137,51 +137,42 @@ Type TScriptCollection Extends TGameObjectCollection
 		Local template:TScriptTemplate
 		Local filter:SScriptTemplateFilter = new SScriptTemplateFilter
 		filter.biggerStudioAllowedChance = 10 + 5 * (GetWorldTime().GetDaysRun())
-		'iterate several times in case template with production limit and protected title is involved
-		For Local i:Int = 0 Until 20
-			filter.avoidIDs = avoidTemplateIDs
-			filter.skipNotAvailable = True
-			'determine candidate
-			template = GetScriptTemplateCollection().GetRandomByFilter(filter)
-			'get a random one, ignore avoid IDs
-			If Not template And avoidTemplateIDs And avoidTemplateIDs.length > 0
-				TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Trying an avoided entry.", LOG_WARNING)
-				filter.avoidIDs = null
-				template = GetScriptTemplateCollection().GetRandomByFilter(filter)
-			EndIf
-			'get a random one, ignore availability
-			If Not template
-				TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Using an unfiltered entry.", LOG_WARNING)
-				filter.skipNotAvailable = True
-				template = GetScriptTemplateCollection().GetRandomByFilter(filter)
-			EndIf
-rem
-TODO: remove if working
-Ronny: should not needed as CreateFromTemplate ensures uniqueness of title already
 
-			'If the template has a production limit, ensure no protected title is used
-			If template.GetProductionLimitMax() > 1
-				Local tempName:TLocalizedString
-				For Local i:Int = 0 Until 20
-					template.ResetVariables()
-					tempName = template.GenerateFinalTitle()
-					If Not GetScriptCollection().IsTitleProtected(tempName)
-						Exit
-					Else
-						tempName = Null
-					EndIf
-				Next
-				If Not tempName Then template = Null
-			EndIf
-endrem
-
-			If template
-				Local script:TScript = TScript.CreateFromTemplate(template,True)
-				script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
-				Add(script)
-				Return script
-			EndIf
+		'apart from avoidTemplateIDs, templates from already available scripts should not be used again
+		Local availableScriptList:TList = GetAvailableScriptList()
+		'presize array in advance instead of adding a new one-entry-array on each for-loop
+		Local alreadyAvailable:Int[] = New Int[availableScriptList.Count()]
+		Local scIndex:Int = 0
+		for local sc:TScript = EachIn availableScriptList
+			alreadyAvailable[scIndex] = sc.basedOnScriptTemplateID
+			scIndex :+ 1
 		Next
+		'theoretically list.count() could be higher than actual TScript count (it could contain incompatible objects..)
+		If scIndex < alreadyAvailable.length Then alreadyAvailable = alreadyAvailable[..scIndex]
+
+		filter.avoidIDs = avoidTemplateIDs + alreadyAvailable
+		filter.skipNotAvailable = True
+		'determine candidate
+		template = GetScriptTemplateCollection().GetRandomByFilter(filter)
+		'get a random one, ignore avoid IDs
+		If Not template And filter.avoidIDs And filter.avoidIDs.length > 0
+			TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Trying an avoided entry.", LOG_WARNING)
+			filter.avoidIDs = null
+			template = GetScriptTemplateCollection().GetRandomByFilter(filter)
+		EndIf
+		'get a random one, ignore availability
+		If Not template
+			TLogger.Log("TScriptCollection.GenerateRandom()", "No available template found (avoid-list too big?). Using an unfiltered entry.", LOG_WARNING)
+			filter.skipNotAvailable = True
+			template = GetScriptTemplateCollection().GetRandomByFilter(filter)
+		EndIf
+
+		If template
+			Local script:TScript = TScript.CreateFromTemplate(template,True)
+			script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+			Add(script)
+			Return script
+		EndIf
 		'this should never happen - twenty tries and always protected multi-production template is unlikely
 		throw "TScriptCollection.GenerateRandom(): could not create a new script"
 	End Method
