@@ -196,9 +196,10 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "role"                    Return _EvaluateProgrammeDataRole(licence.data, params, 0)
 		Case "year"                    Return New SToken( TK_NUMBER, licence.data.GetYear(), params.GetToken(0) )
 		Case "episodecount"            Return New SToken( TK_NUMBER, licence.GetEpisodeCount(), params.GetToken(0) )
+		Case "episodenumber"           Return New SToken( TK_NUMBER, licence.GetEpisodeNumber(), params.GetToken(0) )
+		Case "country"                 Return New SToken( TK_TEXT, licence.data.country, params.GetToken(0) )
 		case "guid"                    Return New SToken( TK_TEXT, licence.GetGUID(), params.GetToken(0) )
 		case "id"                      Return New SToken( TK_NUMBER, licence.GetID(), params.GetToken(0) )
-		Case "country"                 Return New SToken( TK_TEXT, licence.data.country, params.GetToken(0) )
 		Case "islive"                  Return New SToken( TK_BOOLEAN, licence.IsLive(), params.GetToken(0) )
 		Case "isalwayslive"            Return New SToken( TK_BOOLEAN, licence.IsAlwayslive(), params.GetToken(0) )
 		Case "isxrated"                Return New SToken( TK_BOOLEAN, licence.IsXRated(), params.GetToken(0) )
@@ -220,14 +221,13 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "broadcastlimitmax"       Return New SToken( TK_NUMBER, licence.GetBroadcastLimitMax(), params.GetToken(0) )
 		Case "broadcastlimit"          Return New SToken( TK_NUMBER, licence.GetBroadcastLimit(), params.GetToken(0) )
 		Case "hasbroadcastlimit"       Return New SToken( TK_BOOLEAN, licence.HasBroadcastLimit(), params.GetToken(0) )
-		Case "episodenumber"           Return New SToken( TK_NUMBER, licence.GetEpisodeNumber(), params.GetToken(0) )
 		'Case "isavailable"             Return New SToken( TK_BOOLEAN, licence.isAvailable(), params.GetToken(0) )
 		'Case "isreleased"              Return New SToken( TK_BOOLEAN, licence.isReleased(), params.GetToken(0) )
 		'Case "isplanned"               Return New SToken( TK_BOOLEAN, licence.isPlanned(), params.GetToken(0) )
 		'Case "isprogrammeplanned"      Return New SToken( TK_BOOLEAN, licence.isProgrammePlanned(), params.GetToken(0) )
 		'Case "istrailerplanned"        Return New SToken( TK_BOOLEAN, licence.isTrailerPlanned(), params.GetToken(0) )
 		'Case "isnewbroadcastpossible"  Return New SToken( TK_TEXT, licence.IsNewBroadcastPossible(), params.GetToken(0) )
-		Case "genre"                   Return New SToken( TK_TEXT, licence.GetGenre(), params.GetToken(0) ) 'TODO isn't that a number
+		Case "genre"                   Return New SToken( TK_NUMBER, licence.GetGenre(), params.GetToken(0) )
 		Case "genrestring"             Return New SToken( TK_TEXT, licence.GetGenreString(), params.GetToken(0) )
 		Case "genresline"              Return New SToken( TK_TEXT, licence.GetGenresLine(), params.GetToken(0) )
 		Case "hasdataflag"             Return New SToken( TK_BOOLEAN, licence.HasDataFlag(Int(params.GetToken(3).valueLong)), params.GetToken(0) )
@@ -307,7 +307,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		Case "broadcastlimitmax"       Return New SToken( TK_NUMBER, data.GetBroadcastLimitMax(), params.GetToken(0) )
 		Case "broadcastlimit"          Return New SToken( TK_NUMBER, data.GetBroadcastLimit(), params.GetToken(0) )
 		Case "hasbroadcastlimit"       Return New SToken( TK_BOOLEAN, data.HasBroadcastLimit(), params.GetToken(0) )
-		Case "genre"                   Return New SToken( TK_TEXT, data.GetGenre(), params.GetToken(0) )
+		Case "genre"                   Return New SToken( TK_NUMBER, data.GetGenre(), params.GetToken(0) )
 		Case "genrestring"             Return New SToken( TK_TEXT, data.GetGenreString(), params.GetToken(0) )
 		Case "hasbroadcastflag"        Return New SToken( TK_BOOLEAN, data.HasBroadcastFlag(Int(params.GetToken(2).valueLong)), params.GetToken(0) )
 		Case "hasflag"                 Return New SToken( TK_BOOLEAN, data.HasFlag(Int(params.GetToken(2).valueLong)), params.GetToken(0) )
@@ -342,9 +342,9 @@ Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGro
 
 
 	Select params.GetToken(3 + tokenOffset).value.ToLower()
-		Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
 		Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
+		Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
 		Case "title"     Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
 		Case "guid"      Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
@@ -451,9 +451,9 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	Local propertyName:String = params.GetToken(2).value
 
 	Select propertyName.ToLower()
-		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		case "firstname"    Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
 		case "lastname"     Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
+		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		case "nickname"     Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
 		case "title"        Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
 		case "guid"         Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
@@ -478,7 +478,7 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		case "countrycode"  Return New SToken( TK_TEXT, person.GetCountryCode(), params.GetToken(0) )
 		case "country"      Return New SToken( TK_TEXT, person.GetCountry(), params.GetToken(0) )
 		case "countrylong"  Return New SToken( TK_TEXT, person.GetCountryLong(), params.GetToken(0) )
-		case "popularity"   Return New SToken( TK_TEXT, person.GetPopularityValue(), params.GetToken(0) )'TODO isn't that a number
+		case "popularity"   Return New SToken( TK_NUMBER, person.GetPopularityValue(), params.GetToken(0) )'TODO isn't that a number
 		case "channelsympathy"
 			if params.added < 3 
 				If Not person Then Return New SToken( TK_ERROR, ".person ChannelSympathy requires channel parameter", params.GetToken(0) )
@@ -506,14 +506,14 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 				If Not person Then Return New SToken( TK_ERROR, ".person HasJob requires jobID parameter", params.GetToken(0) )
 			else
 				Local jobID:Int = Int(params.GetToken(3).GetValueText())
-				Return New SToken( TK_NUMBER, person.HasJob(jobID), params.GetToken(0) )
+				Return New SToken( TK_BOOLEAN, person.HasJob(jobID), params.GetToken(0) )
 			endif
 		case "haspreferredjob"
 			if params.added < 3 
 				If Not person Then Return New SToken( TK_ERROR, ".person HasPreferredJob requires jobID parameter", params.GetToken(0) )
 			else
 				Local jobID:Int = Int(params.GetToken(3).GetValueText())
-				Return New SToken( TK_NUMBER, person.HasPreferredJob(jobID), params.GetToken(0) )
+				Return New SToken( TK_BOOLEAN, person.HasPreferredJob(jobID), params.GetToken(0) )
 			endif
 		default             Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
 	End Select
