@@ -2853,7 +2853,8 @@ Type TDatabaseLoader
 		Next
 
 		Local nodeAllRoles:TxmlNode
-		nodeAllRoles = xml.FindRootChildLC("roles")
+		nodeAllRoles = xml.FindRootChildLC("programmeroles")
+		If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
 		For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
 			If nodeRole.getName() <> "role" Then Continue
 			Local data:TData = New TData

@@ -22,7 +22,7 @@
 
 		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" first_name="Karlheinz" last_name="Dorfmichel" />
 	</persons>
-	<roles>
+	<programmeroles>
 		<!--
 			<role guid="script-roles-ron-001" first_name="Vincent" last_name="Graf" title="" />
 		-->
@@ -127,5 +127,5 @@
 
 		<role guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Wirsch" title="Kommissar" />
 		<role guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Marlene" last_name="" title="Assistentin" />
-	</roles>
+	</programmeroles>
 </tvtdb>
