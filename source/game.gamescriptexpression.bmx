@@ -478,7 +478,7 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		case "countrycode"  Return New SToken( TK_TEXT, person.GetCountryCode(), params.GetToken(0) )
 		case "country"      Return New SToken( TK_TEXT, person.GetCountry(), params.GetToken(0) )
 		case "countrylong"  Return New SToken( TK_TEXT, person.GetCountryLong(), params.GetToken(0) )
-		case "popularity"   Return New SToken( TK_NUMBER, person.GetPopularityValue(), params.GetToken(0) )'TODO isn't that a number
+		case "popularity"   Return New SToken( TK_NUMBER, person.GetPopularityValue(), params.GetToken(0) )
 		case "channelsympathy"
 			if params.added < 3 
 				If Not person Then Return New SToken( TK_ERROR, ".person ChannelSympathy requires channel parameter", params.GetToken(0) )
