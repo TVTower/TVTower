@@ -24,7 +24,8 @@ Import "game.player.base.bmx"
 Import "common.misc.datasheet.bmx"
 
 Import "game.broadcastmaterialsource.base.bmx"
-Import "game.broadcast.audienceresult.bmx"
+Import "game.broadcast.base.bmx"
+
 
 'to be able to evaluate scripts
 Import "game.gamescriptexpression.base.bmx"
@@ -1531,6 +1532,54 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
+	'checks if the contract/ad passes specific requirements
+	'-> min audience, target groups, ...
+	'returns "OK" when passing, or another String with the reason for failing
+	Method IsPassingRequirements:String(audienceResult:TAudienceResult, previouslyRunningBroadcastMaterial:TBroadcastMaterial = Null)
+		'checks against audience
+		If audienceResult
+			'programme broadcasting outage = ad fails too!
+			If audienceResult.broadcastOutage
+				return "OUTAGE"
+			'condition not fulfilled
+			ElseIf audienceResult.Audience.GetTotalSum() < GetMinAudience()
+				return "SUM"
+			'limited to a specific target group - and not fulfilled
+			ElseIf GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(GetLimitedToTargetGroup()) < GetMinAudience()
+				return "TARGETGROUP"
+			EndIf
+		EndIf
+
+		'limited to a specific genre - and not fulfilled
+		If GetLimitedToProgrammeGenre() >= 0 or GetLimitedToProgrammeFlag() > 0
+			'check current programme of the owner
+			'TODO: check if that has flaws playing with high speed
+			'      (check if current broadcast is correctly set at this
+			'      time)
+			'if no previous material was given, use the currently running one
+			if not previouslyRunningBroadcastMaterial then previouslyRunningBroadcastMaterial = GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner)
+
+			'should not happen - as it else is a broadcastOutage
+			if not previouslyRunningBroadcastMaterial
+				Return "OUTAGE"
+			else
+				local genreDefinition:TGenreDefinitionBase = previouslyRunningBroadcastMaterial.GetGenreDefinition()
+				if GetLimitedToProgrammeGenre() >= 0
+					if genreDefinition and genreDefinition.referenceId <> GetLimitedToProgrammeGenre()
+						Return "GENRE"
+					endif
+				endif
+				if GetLimitedToProgrammeFlag() > 0
+					if not (GetLimitedToProgrammeFlag() & previouslyRunningBroadcastMaterial.GetProgrammeFlags())
+						Return "FLAGS"
+					endif
+				endif
+			endif
+		EndIf
+
+		return "OK"
+	End Method
+
 
 	Method ShowSheet:Int(x:Int,y:Int, align:Float=0.5, showMode:Int=0, forPlayerID:Int=-1, audienceResult:TAudienceResult)
 		'set default mode
@@ -1686,15 +1735,9 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		local minAudienceHightlightType:Int = 0
 		'highlight number if owned contract (not in ad agency)
 		If audienceResult and owner > 0
-			minAudienceHightlightType = +1
-
-			If audienceResult.broadcastOutage
-				minAudienceHightlightType = -1
-			'condition not fulfilled
-			ElseIf audienceResult.Audience.GetTotalSum() < GetMinAudience()
-				minAudienceHightlightType = -1
-			'limited to a specific target group - and not fulfilled
-			ElseIf GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(GetLimitedToTargetGroup()) < GetMinAudience()
+			If IsPassingRequirements(audienceResult) = "OK"
+				minAudienceHightlightType = +1
+			Else
 				minAudienceHightlightType = -1
 			EndIf
 		EndIf
