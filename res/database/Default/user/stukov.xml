@@ -105,7 +105,7 @@
 	<!-- from Stukov - https://www.gamezworld.de/phpforum/viewtopic.php?id=14039 -->
 
 	<allnews>
-		<news id="news-stukov0001" type="0" creator="Stukov" created_by="Stukov" comment="TODO: variations">
+		<news guid="news-stukov0001" type="0" creator="Stukov" created_by="Stukov" comment="TODO: variations">
 			<title>
 				<de>Aliens setzen auf erneuerbare Energien</de>
 				<en>Aliens Go Green</en>

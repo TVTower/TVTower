@@ -3,7 +3,7 @@
 	<version value="3" comment="Fictional news entries by scr0llbaer" />
 
 	<allnews>
-		<news id="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="9c58c119-6d16-41fa-9a58-76c5824099aa" type="0" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal in ${thames} gesichtet</de>
 				<en>Whale sighted in ${thames}</en>
@@ -26,7 +26,7 @@
 				</thames>
 			</variables>
 		</news>
-		<news id="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Grienpies schlägt Alarm</de>
 				<en>Creampeas sounds the alarm</en>
@@ -42,7 +42,7 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="5367ea49-6b5c-4703-87d1-b2427212f4d3" probability1="50" news2="5d9a2849-c5f2-4504-912f-84cf5065a9b5" probability2="50" />
 			</effects>
 		</news>
-		<news id="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="5367ea49-6b5c-4703-87d1-b2427212f4d3" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal in ${thames}: Rettung in Sicht</de>
 				<en>Whale in ${thames}: Rescue in sight</en>
@@ -58,7 +58,7 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="43799353-d91e-4f70-accb-703f6d6b861a" />
 			</effects>
 		</news>
-		<news id="43799353-d91e-4f70-accb-703f6d6b861a" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="43799353-d91e-4f70-accb-703f6d6b861a" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Schlechtes Wetter behindert Wal-Rettung</de>
 				<en>Bad weather hinders rescue action for whale</en>
@@ -74,7 +74,7 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="5ab7ad14-2513-427f-893c-913d936e0575" />
 			</effects>
 		</news>
-		<news id="5ab7ad14-2513-427f-893c-913d936e0575" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="5ab7ad14-2513-427f-893c-913d936e0575" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Weiterhin Schwierigkeiten bei Wal-Rettung</de>
 				<en>Difficulties with whale rescue continue</en>
@@ -90,7 +90,7 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,10,15" choose="or" news1="321a8590-eec0-4f1d-8031-6d1f9b443b33" probability1="50" news2="9891cfa6-1cd9-41e4-b179-496da048f7d4" probability2="50" />
 			</effects>
 		</news>
-		<news id="321a8590-eec0-4f1d-8031-6d1f9b443b33" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="321a8590-eec0-4f1d-8031-6d1f9b443b33" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Zustand des Wals verschlechtert sich</de>
 				<en>Condition of the whale deteriorates</en>
@@ -106,7 +106,7 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="a33be652-8202-4685-a6ae-1b530f04b3a5" />
 			</effects>
 		</news>
-		<news id="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="a33be652-8202-4685-a6ae-1b530f04b3a5" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal in ${thames} ist tot</de>
 				<en>Whale in ${thames} dead</en>
@@ -119,7 +119,7 @@
 			</description>
 			<data genre="4" price="1" quality="70" fictional="1" />
 		</news>
-		<news id="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="9891cfa6-1cd9-41e4-b179-496da048f7d4" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal in ${thames} schwimmt zur Flussmündung</de>
 				<en>Whale in ${thames} swims to river mouth</en>
@@ -135,7 +135,7 @@
 				<effect trigger="happen" type="triggernews" time="1,10,15" news="5d9a2849-c5f2-4504-912f-84cf5065a9b5" />
 			</effects>
 		</news>
-		<news id="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_id="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
+		<news guid="5d9a2849-c5f2-4504-912f-84cf5065a9b5" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
 				<de>Wal von ${thames} ins Meer zurückgeschwommen</de>
 				<en>Whale from ${thames} swam back to sea</en>
@@ -149,7 +149,7 @@
 			<data genre="4" price="1" quality="70" fictional="1" />
 		</news>
 
-		<news id="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing that it still can be used in general and in addition when slightly modified to a fictional copycat event.">
+		<news guid="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing that it still can be used in general and in addition when slightly modified to a fictional copycat event.">
 			<availability year_range_from="1988" year_range_to="-1" script='${.eq:${.worldtime:"season"}:1}' />
 			<title>
 				<de>Schessnah in der Nähe von Moskau gesichtet</de>
@@ -164,7 +164,7 @@
 			<data genre="4" price="0.55" quality="8" fictional="1" />
 		</news>
 
-		<news id="4e9e0ab5-5e33-4d9f-8679-72cb0e3d0bae" type="0" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551" comment="Source: First two items ChatGPT news generator which effectively has some kind of templated generator too as some returned items are in the format 'Town holds funeral for dead squirrel|dead car|dead tree|etc'. Everything else made up by me. TODO: Internationalize more (generated names etc) once playing other regions becomes available. TODO: variations 'dead car', 'dead tree' may be a more subtle pun, at least in English, perhaps separate them out">
+		<news guid="4e9e0ab5-5e33-4d9f-8679-72cb0e3d0bae" type="0" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551" comment="Source: First two items ChatGPT news generator which effectively has some kind of templated generator too as some returned items are in the format 'Town holds funeral for dead squirrel|dead car|dead tree|etc'. Everything else made up by me. TODO: Internationalize more (generated names etc) once playing other regions becomes available. TODO: variations 'dead car', 'dead tree' may be a more subtle pun, at least in English, perhaps separate them out">
 			<title>
 				<de>${squirrel_${i}} ${joe} gestorben</de>
 				<en>${joe} the ${squirrel_${i}} has died</en>
@@ -425,7 +425,7 @@
 				<effect trigger="happen" type="triggernews" time="1,4,6" news="59e0b6e8-dae6-417b-9f40-1c4e6ffeadd0" />
 			</effects>
 		</news>
-		<news id="59e0b6e8-dae6-417b-9f40-1c4e6ffeadd0" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="59e0b6e8-dae6-417b-9f40-1c4e6ffeadd0" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Beerdigung für ${joe}</de>
 				<en>Funeral for ${joe}</en>
@@ -441,7 +441,7 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="2f570f1d-13b8-4c4c-83a4-7227194e7542" />
 			</effects>
 		</news>
-		<news id="2f570f1d-13b8-4c4c-83a4-7227194e7542" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="2f570f1d-13b8-4c4c-83a4-7227194e7542" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Auch ${exhibitiontown} gedenkt ${joe}</de>
 				<en>Also ${exhibitiontown} commemorates ${joe}</en>
@@ -457,7 +457,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="0753174a-1661-4dfe-8ea3-6c3e4525ef4f" />
 			</effects>
 		</news>
-		<news id="0753174a-1661-4dfe-8ea3-6c3e4525ef4f" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="0753174a-1661-4dfe-8ea3-6c3e4525ef4f" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>${joe} an der Spitze der Hitparade</de>
 				<en>${joe} at the top of the charts</en>
@@ -473,7 +473,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="9318dddb-bafe-4116-9a8b-65b69e9c070a" />
 			</effects>
 		</news>
-		<news id="9318dddb-bafe-4116-9a8b-65b69e9c070a" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="9318dddb-bafe-4116-9a8b-65b69e9c070a" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>${joe}-Merchandise verkauft sich prächtig</de>
 				<en>${joe} merchandise is selling beautifully</en>
@@ -489,7 +489,7 @@
 				<effect trigger="happen" type="triggernews" time="2,9,10,8,20" news="8d3887bc-a10a-4458-a8b9-8627764ccc5d" />
 			</effects>
 		</news>
-		<news id="8d3887bc-a10a-4458-a8b9-8627764ccc5d" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="8d3887bc-a10a-4458-a8b9-8627764ccc5d" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>${rodent_${i}}forscher schreibt über ${joe}</de>
 				<en>${rodent_${i}} researcher writes about ${joe}</en>
@@ -505,7 +505,7 @@
 				<effect trigger="happen" type="triggernews" time="1,4,6" news="4cbb9f4c-fd68-4538-8b28-983a1930221d" />
 			</effects>
 		</news>
-		<news id="4cbb9f4c-fd68-4538-8b28-983a1930221d" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="4cbb9f4c-fd68-4538-8b28-983a1930221d" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Keine News über ${singerfirstname}-${singersecondname} ${singerlastname}</de>
 				<en>No news about ${singerfirstname}-${singersecondname} ${singerlastname}</en>
@@ -521,7 +521,7 @@
 				<effect trigger="happen" type="triggernews" time="1,4,6" news="66aee363-ee72-4051-956e-b2f304adb8b6" />
 			</effects>
 		</news>
-		<news id="66aee363-ee72-4051-956e-b2f304adb8b6" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="66aee363-ee72-4051-956e-b2f304adb8b6" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>Wanderausstellung endlich in ${funeraltown}</de>
 				<en>Traveling exhibit finally in ${funeraltown}</en>
@@ -537,7 +537,7 @@
 				<effect trigger="happen" type="triggernews" time="1,4,6" news="150c3746-7389-49c1-9f6b-6ad27b321efa" />
 			</effects>
 		</news>
-		<news id="150c3746-7389-49c1-9f6b-6ad27b321efa" type="2" thread_id="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
+		<news guid="150c3746-7389-49c1-9f6b-6ad27b321efa" type="2" thread_guid="99ce928a-24ed-4090-b92c-9ebfd5e8b83c" creator="9551">
 			<title>
 				<de>${singerfirstname}-${singersecondname} ${singerlastname} gesichtet</de>
 				<en>${singerfirstname}-${singersecondname} ${singerlastname} sighted</en>
@@ -551,7 +551,7 @@
 			<data genre="1" price="1" quality="30" fictional="1" />
 		</news>
 
-		<news id="733f6d6a-4021-45c0-8ace-7768f9a922f0" type="0" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551" comment="Source: ChatGPT came up with the inflatable duck escaping from the parade. Asked for a few variations and made up my own. Continuations by myself.">
+		<news guid="733f6d6a-4021-45c0-8ace-7768f9a922f0" type="0" thread_guid="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551" comment="Source: ChatGPT came up with the inflatable duck escaping from the parade. Asked for a few variations and made up my own. Continuations by myself.">
 			<title>
 				<de>${giantinflatable_${i}} ${duck_${i}} ${escapes} Parade</de>
 				<en>${giantinflatable_${i}} ${duck_${i}} ${escapes} parade</en>
@@ -902,7 +902,7 @@
 				<effect trigger="happen" type="triggernews" time="1,18,30" news="bfcac3ba-4030-4ac5-8627-e850bdbe1e22" />
 			</effects>
 		</news>
-		<news id="bfcac3ba-4030-4ac5-8627-e850bdbe1e22" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+		<news guid="bfcac3ba-4030-4ac5-8627-e850bdbe1e22" type="2" thread_guid="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${giantinflatable_${i}} ${duck_${i}} in ${sightedtown} gesichtet</de>
 				<en>${giantinflatable_${i}} ${duck_${i}} sighted in ${sightedtown}</en>
@@ -918,7 +918,7 @@
 				<effect trigger="happen" type="triggernews" time="1,18,30" news="e707f054-6a75-478b-bba7-b368da4ea7c5" />
 			</effects>
 		</news>
-		<news id="e707f054-6a75-478b-bba7-b368da4ea7c5" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+		<news guid="e707f054-6a75-478b-bba7-b368da4ea7c5" type="2" thread_guid="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${giantinflatable_${i}} ${duck_${i}} in ${foundtown} gefunden</de>
 				<en>${giantinflatable_${i}} ${duck_${i}} found in ${foundtown}</en>
@@ -934,7 +934,7 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="0dd044d0-7752-435e-8f12-7a3047e3e69b" probability1="25" news2="23ec2ae3-c7cf-413b-89fe-b5f44f408a11" probability2="25" news3="262a7de8-89b0-4fa5-884e-19c2861392fb" probability3="25" news4="d5c19330-0592-4585-b63d-7e6a18e2e75b" probability4="25" />
 			</effects>
 		</news>
-		<news id="0dd044d0-7752-435e-8f12-7a3047e3e69b" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+		<news guid="0dd044d0-7752-435e-8f12-7a3047e3e69b" type="2" thread_guid="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>Rocksängerin ${nina} ${artistlastname} landet Riesenhit</de>
 				<en>Rock singer ${nina} ${artistlastname} lands huge hit</en>
@@ -947,7 +947,7 @@
 			</description>
 			<data genre="1" price="1" quality="25" fictional="1" />
 		</news>
-		<news id="23ec2ae3-c7cf-413b-89fe-b5f44f408a11" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+		<news guid="23ec2ae3-c7cf-413b-89fe-b5f44f408a11" type="2" thread_guid="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${duck_${i}}-Computerspiel wird großer Erfolg</de>
 				<en>${the_${i}} ${duck_${i}} computer game becomes big success</en>
@@ -960,7 +960,7 @@
 			</description>
 			<data genre="3" price="1" quality="25" fictional="1" />
 		</news>
-		<news id="262a7de8-89b0-4fa5-884e-19c2861392fb" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+		<news guid="262a7de8-89b0-4fa5-884e-19c2861392fb" type="2" thread_guid="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>Wanderausstellung in ${sightedtown} wird erweitert</de>
 				<en>Traveling exhibit in ${sightedtown} to be expanded</en>
@@ -973,7 +973,7 @@
 			</description>
 			<data genre="5" price="1" quality="25" fictional="1" />
 		</news>
-		<news id="d5c19330-0592-4585-b63d-7e6a18e2e75b" type="2" thread_id="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
+		<news guid="d5c19330-0592-4585-b63d-7e6a18e2e75b" type="2" thread_guid="52d6aec3-e4ae-4f87-ac56-5db89c01cea0" creator="9551">
 			<title>
 				<de>${duck_${i}} wird Sportmaskottchen in ${sightedtown}</de>
 				<en>${the_${i}} ${duck_${i}} becomes sports mascot in ${sightedtown}</en>
@@ -987,7 +987,7 @@
 			<data genre="2" price="1" quality="25" fictional="1" />
 		</news>
 
-		<news id="8ac54969-a412-4c23-98c1-a3b2f449605d" type="0" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551" comment="Source: Items 1 and 2, variations and the 'duel' version from ChatGPT, other continuations made up by me. TODO: Perhaps internationalization of artist name and 'beer tents', but we still have only German region available to play.">
+		<news guid="8ac54969-a412-4c23-98c1-a3b2f449605d" type="0" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551" comment="Source: Items 1 and 2, variations and the 'duel' version from ChatGPT, other continuations made up by me. TODO: Perhaps internationalization of artist name and 'beer tents', but we still have only German region available to play.">
 			<title>
 				<de>${mw_${g}} ${sues} ${theirparrot_${i}}</de>
 				<en>A ${mw_${g}} ${sues} ${theirparrot_${i}}</en>
@@ -1281,7 +1281,7 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="017aef0b-57a0-4677-82d2-507d7fa822f9" />
 			</effects>
 		</news>
-		<news id="017aef0b-57a0-4677-82d2-507d7fa822f9" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="017aef0b-57a0-4677-82d2-507d7fa822f9" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Klage von ${name_${g}} ${dismissed}</de>
 				<en>${name_${g}}'s lawsuit ${dismissed}</en>
@@ -1297,7 +1297,7 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="3153bc8d-4ee6-4d0a-9135-a8d1cf39ce7c" probability1="50" news2="ddc63d39-7c94-4710-85f1-e8462c14f34b" probability2="50" />
 			</effects>
 		</news>
-		<news id="3153bc8d-4ee6-4d0a-9135-a8d1cf39ce7c" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="3153bc8d-4ee6-4d0a-9135-a8d1cf39ce7c" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>${mw_${g}} fordert ${theirparrot_${i}} zum Duell</de>
 				<en>A ${mw_${g}} challenges ${theirparrot_${i}} to a duel</en>
@@ -1313,7 +1313,7 @@
 			</effects>
 			<data genre="4" price="1" quality="30" fictional="1" />
 		</news>
-		<news id="a3716822-419b-4a1a-ac1d-4529eea1ec6a" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="a3716822-419b-4a1a-ac1d-4529eea1ec6a" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Duell auf Marktplatz ${subjecttown} abgesagt</de>
 				<en>Duel on marketplace ${subjecttown} cancelled</en>
@@ -1329,7 +1329,7 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
 			</effects>
 		</news>
-		<news id="5af0c98a-e1f9-4842-827f-dfb90ae93d5b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="5af0c98a-e1f9-4842-827f-dfb90ae93d5b" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Duell gegen ${theirparrot_${i}} verloren</de>
 				<en>Duel against ${theirparrot_${i}} lost</en>
@@ -1345,7 +1345,7 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
 			</effects>
 		</news>
-		<news id="ddc63d39-7c94-4710-85f1-e8462c14f34b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="ddc63d39-7c94-4710-85f1-e8462c14f34b" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>${name_${g}} ${appeals}</de>
 				<en>${name_${g}} ${appeals}</en>
@@ -1361,7 +1361,7 @@
 			</effects>
 			<data genre="4" price="1" quality="30" fictional="1" />
 		</news>
-		<news id="1b671c51-6731-4b9e-9d60-728ada55995b" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="1b671c51-6731-4b9e-9d60-728ada55995b" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Klage von ${name_${g}} erneut ${dismissed}</de>
 				<en>${name_${g}}'s lawsuit again ${dismissed}</en>
@@ -1377,7 +1377,7 @@
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="a91c818c-df10-4dbb-a103-9b12e7cef6fe" />
 			</effects>
 		</news>
-		<news id="a91c818c-df10-4dbb-a103-9b12e7cef6fe" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="a91c818c-df10-4dbb-a103-9b12e7cef6fe" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Aufarbeitung Causa ${name_${g}} begonnen</de>
 				<en>${name_${g}} case processing started</en>
@@ -1393,7 +1393,7 @@
 				<effect trigger="happen" type="triggernewschoice" time="1,3,7" choose="or" news1="de4653c8-ef8c-4bd1-9470-b215c9f5c7fc" probability1="25" news2="3e57cb8c-2212-406c-bed4-cf6a5326d539" probability2="25" news3="f3c94d9d-8204-494d-843d-90e1ae50b520" probability3="25" news4="17f2268c-f87a-42b1-86f6-32170ff2aae1" probability4="25" />
 			</effects>
 		</news>
-		<news id="de4653c8-ef8c-4bd1-9470-b215c9f5c7fc" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="de4653c8-ef8c-4bd1-9470-b215c9f5c7fc" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>${artistfirstname}-${artistlastname}-${band} landet Riesenhit</de>
 				<en>${artistfirstname} ${artistlastname} ${band} lands huge hit</en>
@@ -1409,7 +1409,7 @@
 			</effects>
 			<data genre="1" price="1" quality="40" fictional="1" />
 		</news>
-		<news id="3e57cb8c-2212-406c-bed4-cf6a5326d539" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="3e57cb8c-2212-406c-bed4-cf6a5326d539" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Kabarettist ${artistfirstname} ${artistlastname} geht auf Tour</de>
 				<en>Satirist ${artistfirstname} ${artistlastname} goes on tour</en>
@@ -1425,7 +1425,7 @@
 			</effects>
 			<data genre="5" price="1" quality="40" fictional="1" />
 		</news>
-		<news id="f3c94d9d-8204-494d-843d-90e1ae50b520" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="f3c94d9d-8204-494d-843d-90e1ae50b520" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Komiker ${artistfirstname} ${artistlastname} geht auf Tour</de>
 				<en>Comedian ${artistfirstname} ${artistlastname} goes on tour</en>
@@ -1441,7 +1441,7 @@
 			</effects>
 			<data genre="1" price="1" quality="40" fictional="1" />
 		</news>
-		<news id="17f2268c-f87a-42b1-86f6-32170ff2aae1" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="17f2268c-f87a-42b1-86f6-32170ff2aae1" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>Wanderausstellung in ${artisttown} wird erweitert</de>
 				<en>Traveling exhibit in ${artisttown} to be expanded</en>
@@ -1457,7 +1457,7 @@
 			</effects>
 			<data genre="5" price="1" quality="40" fictional="1" />
 		</news>
-		<news id="579c00f4-9604-40cb-b0c5-21ee829df594" type="2" thread_id="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
+		<news guid="579c00f4-9604-40cb-b0c5-21ee829df594" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
 				<de>${mw_${g}} lädt ${theirparrot_${i}} auf ein Bier ein</de>
 				<en>A ${mw_${g}} invites ${theirparrot_${i}} for a beer</en>
@@ -1471,7 +1471,7 @@
 			<data genre="4" price="1" quality="30" fictional="1" />
 		</news>
 
-		<news id="1cbec0df-5486-4348-b05a-b2b74bc609f8" type="0" creator="9551" comment="Source: Typical ChatGPT 'funny news' items. TODO: Add many more variations, ChatGPT has plenty of this format.">
+		<news guid="1cbec0df-5486-4348-b05a-b2b74bc609f8" type="0" creator="9551" comment="Source: Typical ChatGPT 'funny news' items. TODO: Add many more variations, ChatGPT has plenty of this format.">
 			<title>
 				<de>${man_${i}}${fortheft_${i}} verhaftet</de>
 				<en>${man_${i}} arrested${fortheft_${i}}</en>
@@ -1643,7 +1643,7 @@
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
 
-		<news id="b3b730a5-937e-47c1-a56f-ccf0d494fdc1" type="0" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="Source: made up. Spoof of https://en.wikipedia.org/wiki/Alternative_for_Germany | TODO: Translated versions should perhaps use something different and internationally more recognizable">
+		<news guid="b3b730a5-937e-47c1-a56f-ccf0d494fdc1" type="0" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="Source: made up. Spoof of https://en.wikipedia.org/wiki/Alternative_for_Germany | TODO: Translated versions should perhaps use something different and internationally more recognizable">
 			<title>
 				<de>AvW stellt Antrag auf Dritten Weltkrieg</de>
 				<en>AotW submits request for Third World War</en>
@@ -1683,7 +1683,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="2e32bf54-c56e-4991-9907-bbad7c36fcd1" />
 			</effects>
 		</news>
-		<news id="2e32bf54-c56e-4991-9907-bbad7c36fcd1" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="2e32bf54-c56e-4991-9907-bbad7c36fcd1" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW begründet Weltkriegs-Vorschlag</de>
 				<en>AotW substantiates World War proposal</en>
@@ -1699,7 +1699,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="2d782a35-4cf5-48dc-b922-5ec4a1d6abfc" />
 			</effects>
 		</news>
-		<news id="2d782a35-4cf5-48dc-b922-5ec4a1d6abfc" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="2d782a35-4cf5-48dc-b922-5ec4a1d6abfc" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW legt Weltkriegs-Eröffnungstrategien dar</de>
 				<en>AotW lays out World War opening strategies</en>
@@ -1715,7 +1715,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="aedabde8-3a3e-4861-b487-b47c950284d7" />
 			</effects>
 		</news>
-		<news id="aedabde8-3a3e-4861-b487-b47c950284d7" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: different version required for the 1980s when the cold war was still 'hot' and the fallout trail hadn't been suspended yet">
+		<news guid="aedabde8-3a3e-4861-b487-b47c950284d7" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: different version required for the 1980s when the cold war was still 'hot' and the fallout trail hadn't been suspended yet">
 			<title>
 				<de>Kriegsausstellung in ${exhibitiontown} erweitert</de>
 				<en>War exhibition in ${exhibitiontown} expanded</en>
@@ -1731,7 +1731,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="d595c46b-687e-4a5a-a328-e376c063ceb9" />
 			</effects>
 		</news>
-		<news id="d595c46b-687e-4a5a-a328-e376c063ceb9" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="d595c46b-687e-4a5a-a328-e376c063ceb9" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Proteste gegen AvW-Weltkriegspläne</de>
 				<en>Protests against AotW World War plans</en>
@@ -1747,7 +1747,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="58688de1-6d7a-4809-91e1-f0f51b1d267b" />
 			</effects>
 		</news>
-		<news id="58688de1-6d7a-4809-91e1-f0f51b1d267b" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="reference: https://de.wikipedia.org/wiki/Alternativlos | deliberatlely using a different spoof than the already existing 'Murkel' as this one here's still a kid">
+		<news guid="58688de1-6d7a-4809-91e1-f0f51b1d267b" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="reference: https://de.wikipedia.org/wiki/Alternativlos | deliberatlely using a different spoof than the already existing 'Murkel' as this one here's still a kid">
 			<title>
 				<de>AvW-Protestsong in den Charts</de>
 				<en>AotW protest song enters charts</en>
@@ -1763,7 +1763,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="85698374-1266-4e85-b3eb-c0080e9a23c4" />
 			</effects>
 		</news>
-		<news id="85698374-1266-4e85-b3eb-c0080e9a23c4" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="85698374-1266-4e85-b3eb-c0080e9a23c4" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Smarte Stöcke und Steine entwickelt</de>
 				<en>Smart sticks and stones developed</en>
@@ -1779,7 +1779,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="55c67451-fcc5-4c37-9c0d-727a6ff44d06" />
 			</effects>
 		</news>
-		<news id="55c67451-fcc5-4c37-9c0d-727a6ff44d06" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="55c67451-fcc5-4c37-9c0d-727a6ff44d06" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Weltkriegsantrag fällt durch</de>
 				<en>World War proposal falls flat</en>
@@ -1795,7 +1795,7 @@
 				<effect trigger="happen" type="triggernews" time="1,24,36" news="a8a96cf5-b22e-4537-9f48-69182e55c1de" />
 			</effects>
 		</news>
-		<news id="a8a96cf5-b22e-4537-9f48-69182e55c1de" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="a8a96cf5-b22e-4537-9f48-69182e55c1de" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Niedergeschlagenheit bei der AvW</de>
 				<en>Despondency at the AotW</en>
@@ -1811,7 +1811,7 @@
 				<effect trigger="happen" type="triggernews" time="2,9,10,8,20" news="34b7dd0a-04dd-40aa-836b-45d7ec2d2dcc" />
 			</effects>
 		</news>
-		<news id="34b7dd0a-04dd-40aa-836b-45d7ec2d2dcc" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="34b7dd0a-04dd-40aa-836b-45d7ec2d2dcc" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW wählt neuen Vorsitzenden</de>
 				<en>AotW elects new chairman</en>
@@ -1827,7 +1827,7 @@
 				<effect trigger="happen" type="triggernews" time="2,6,7,8,20" news="f3d79b38-4865-42fb-8f11-2f72ea82ca86" />
 			</effects>
 		</news>
-		<news id="f3d79b38-4865-42fb-8f11-2f72ea82ca86" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: Once time-dependent variations are supported, from 2013 on this Thatcher's announcement has to happen through a ghost apparition or a vision some people have">
+		<news guid="f3d79b38-4865-42fb-8f11-2f72ea82ca86" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="TODO: Once time-dependent variations are supported, from 2013 on this Thatcher's announcement has to happen through a ghost apparition or a vision some people have">
 			<title>
 				<de>Marigold Flatcher erinnert an ihr Credo</de>
 				<en>Marigold Flatcher reiterates her credo</en>
@@ -1843,7 +1843,7 @@
 				<effect trigger="happen" type="triggernews" time="1,3,5" news="458128fd-81a9-4c94-94b9-511fe8f2806f" />
 			</effects>
 		</news>
-		<news id="458128fd-81a9-4c94-94b9-511fe8f2806f" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="458128fd-81a9-4c94-94b9-511fe8f2806f" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW von Flatcher gekränkt</de>
 				<en>AotW offended by Flatcher</en>
@@ -1859,7 +1859,7 @@
 				<effect trigger="happen" type="triggernews" time="2,6,7,8,20" news="c33f421e-01e9-4700-b746-eba446c54310" />
 			</effects>
 		</news>
-		<news id="c33f421e-01e9-4700-b746-eba446c54310" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="c33f421e-01e9-4700-b746-eba446c54310" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>Bolton Dynamos zeigt Fortschritte</de>
 				<en>Bolton Dynamos shows progress</en>
@@ -1876,7 +1876,7 @@
 				<effect trigger="happen" type="triggernews" time="2,12,13,8,20" news="56ee3865-cd2f-4490-977a-083bdc991c7e" />
 			</effects>
 		</news>
-		<news id="56ee3865-cd2f-4490-977a-083bdc991c7e" type="2" thread_id="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
+		<news guid="56ee3865-cd2f-4490-977a-083bdc991c7e" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
 				<de>AvW wählt neuen Vorsitzenden</de>
 				<en>AotW elects new chairman</en>
@@ -1891,7 +1891,7 @@
 			<data genre="0" price="1" quality="35" fictional="1" />
 		</news>
 
-		<news id="c0f1d022-0b0f-48ed-9ccf-bef1e8ab8069" type="0" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551" comment="Meigawa mega thread - mostly made up, some little help from ChatGPT">
+		<news guid="c0f1d022-0b0f-48ed-9ccf-bef1e8ab8069" type="0" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551" comment="Meigawa mega thread - mostly made up, some little help from ChatGPT">
 			<title>
 				<de>${meigawa} Top 5 Entwicklungsregion</de>
 				<en>${meigawa} Top 5 developing region</en>
@@ -2163,7 +2163,7 @@
 			</effects>
 			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 		</news>
-		<news id="dd161f02-9ddc-4064-b22c-a7875665cb3a" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="dd161f02-9ddc-4064-b22c-a7875665cb3a" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Tech-Boom in ${meigawa}</de>
 				<en>Tech boom in ${meigawa}</en>
@@ -2177,7 +2177,7 @@
 				<effect trigger="happen" type="triggernews" time="1,21,34" news="794b9b1f-2fde-4b6c-bb86-f2239effb8f7" />
 			</effects>
 		</news>
-		<news id="794b9b1f-2fde-4b6c-bb86-f2239effb8f7" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="794b9b1f-2fde-4b6c-bb86-f2239effb8f7" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Hervorragende Prognosen</de>
 				<en>${meigawa}: Excellent Prospects</en>
@@ -2191,7 +2191,7 @@
 				<effect trigger="happen" type="triggernews" time="1,3,5" news="6fc67b26-2b8a-480f-baf8-0208da8f1de0" />
 			</effects>
 		</news>
-		<news id="6fc67b26-2b8a-480f-baf8-0208da8f1de0" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="6fc67b26-2b8a-480f-baf8-0208da8f1de0" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Globaler Tech.-Vorreiter</de>
 				<en>${meigawa}: Global tech leader</en>
@@ -2205,7 +2205,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="220848bb-6820-4a72-8bc8-3976427a4d8b" />
 			</effects>
 		</news>
-		<news id="220848bb-6820-4a72-8bc8-3976427a4d8b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="220848bb-6820-4a72-8bc8-3976427a4d8b" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} baut Eiffelturm nach</de>
 				<en>${meigawa} replicates the Eiffel Tower</en>
@@ -2219,7 +2219,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="8f712f37-afbc-4671-97e9-513c2a23530d" />
 			</effects>
 		</news>
-		<news id="8f712f37-afbc-4671-97e9-513c2a23530d" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="8f712f37-afbc-4671-97e9-513c2a23530d" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Neuer riesiger Vergnügungspark</de>
 				<en>${meigawa}: New huge amusement park</en>
@@ -2233,7 +2233,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="799c8a9a-adf5-47fd-868e-5b5441b3d20d" />
 			</effects>
 		</news>
-		<news id="799c8a9a-adf5-47fd-868e-5b5441b3d20d" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="799c8a9a-adf5-47fd-868e-5b5441b3d20d" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} expandiert</de>
 				<en>${meigawa} expands</en>
@@ -2247,7 +2247,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="28df5516-4c8f-40d8-9e11-9421990b25bc" />
 			</effects>
 		</news>
-		<news id="28df5516-4c8f-40d8-9e11-9421990b25bc" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="28df5516-4c8f-40d8-9e11-9421990b25bc" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Blühene Wirtschaft</de>
 				<en>${meigawa}: Thriving economy</en>
@@ -2261,7 +2261,7 @@
 				<effect trigger="happen" type="triggernews" time="1,3,5" news="88a7ca08-f4db-4a90-a96d-b8c0dd0886c1" />
 			</effects>
 		</news>
-		<news id="88a7ca08-f4db-4a90-a96d-b8c0dd0886c1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="88a7ca08-f4db-4a90-a96d-b8c0dd0886c1" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}s Wirtschaft erklärt</de>
 				<en>${meigawa}'s economy explained</en>
@@ -2275,7 +2275,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="82d8767c-8e0e-43f8-ae94-8d0f6baeded5" />
 			</effects>
 		</news>
-		<news id="82d8767c-8e0e-43f8-ae94-8d0f6baeded5" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="82d8767c-8e0e-43f8-ae94-8d0f6baeded5" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Wenig Korruption</de>
 				<en>${meigawa}: Low corruption</en>
@@ -2289,7 +2289,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="24bff879-3176-41fd-8c24-d7e646713562" />
 			</effects>
 		</news>
-		<news id="24bff879-3176-41fd-8c24-d7e646713562" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551" comment="reference: https://reddit.com/r/germany/comments/64aucx/question_from_canadian_what_was_stoiber_talking/">
+		<news guid="24bff879-3176-41fd-8c24-d7e646713562" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551" comment="reference: https://reddit.com/r/germany/comments/64aucx/question_from_canadian_what_was_stoiber_talking/">
 			<title>
 				<de>${meigawa} mit neuer Supermagnetbahn</de>
 				<en>${meigawa} with new super maglev</en>
@@ -2303,7 +2303,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="52ef13f1-82f2-47d2-a2be-53a76b2d4554" />
 			</effects>
 		</news>
-		<news id="52ef13f1-82f2-47d2-a2be-53a76b2d4554" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="52ef13f1-82f2-47d2-a2be-53a76b2d4554" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} baut neuen Raumbahnhof</de>
 				<en>${meigawa} builds new spaceport</en>
@@ -2317,7 +2317,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" />
 			</effects>
 		</news>
-		<news id="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Raumfahrtprogramm</de>
 				<en>${meigawa}: Space program</en>
@@ -2331,7 +2331,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="522c9ed6-6682-4275-8903-6e08e4048104" />
 			</effects>
 		</news>
-		<news id="522c9ed6-6682-4275-8903-6e08e4048104" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="522c9ed6-6682-4275-8903-6e08e4048104" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} baut ${particleacc_${i}}</de>
 				<en>${meigawa} builds ${particleacc_${i}}</en>
@@ -2345,7 +2345,7 @@
 				<effect trigger="happen" type="triggernews" time="1,3,5" news="ca47188a-8e6c-462e-9cc7-8e2328ac19c1" />
 			</effects>
 		</news>
-		<news id="ca47188a-8e6c-462e-9cc7-8e2328ac19c1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="ca47188a-8e6c-462e-9cc7-8e2328ac19c1" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Details zu ${meigawa}-${particleacc_${i}}</de>
 				<en>Details about ${meigawa} ${particleacc_${i}}</en>
@@ -2359,7 +2359,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="a4d89c1a-8156-4161-af97-33deed8fabd9" />
 			</effects>
 		</news>
-		<news id="a4d89c1a-8156-4161-af97-33deed8fabd9" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="a4d89c1a-8156-4161-af97-33deed8fabd9" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${particleacc_${i}}-Know-How bleibt in ${meigawa}</de>
 				<en>${particleacc_${i}} know-how stays in ${meigawa}</en>
@@ -2373,7 +2373,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" />
 			</effects>
 		</news>
-		<news id="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Nun eigene Nation</de>
 				<en>${meigawa}: Now its own nation</en>
@@ -2387,7 +2387,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="79d69be8-25c5-4fb7-ab38-d517d567fac1" />
 			</effects>
 		</news>
-		<news id="79d69be8-25c5-4fb7-ab38-d517d567fac1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="79d69be8-25c5-4fb7-ab38-d517d567fac1" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} überwacht Bürger</de>
 				<en>${meigawa} surveils citizens</en>
@@ -2401,7 +2401,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="0f706f01-4ebe-47c4-b846-6321b020a765" />
 			</effects>
 		</news>
-		<news id="0f706f01-4ebe-47c4-b846-6321b020a765" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="0f706f01-4ebe-47c4-b846-6321b020a765" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Proteste gegen ${meigawa}-Credit-Scoring</de>
 				<en>Protests against ${meigawa} credit scoring</en>
@@ -2415,7 +2415,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="ad42df97-3679-47b5-be9f-f16f40cee40c" />
 			</effects>
 		</news>
-		<news id="ad42df97-3679-47b5-be9f-f16f40cee40c" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="ad42df97-3679-47b5-be9f-f16f40cee40c" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} rechtfertigt Credit-Scoring</de>
 				<en>${meigawa} justifies credit scoring</en>
@@ -2429,7 +2429,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="e8b29adf-ce2d-44ce-811f-1dbd53cc3264" />
 			</effects>
 		</news>
-		<news id="e8b29adf-ce2d-44ce-811f-1dbd53cc3264" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="e8b29adf-ce2d-44ce-811f-1dbd53cc3264" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Riesige Geisterstädte</de>
 				<en>${meigawa}: Huge Ghost Cities</en>
@@ -2443,7 +2443,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="98c68d6d-160b-4252-bcf1-b42b37e2795f" />
 			</effects>
 		</news>
-		<news id="98c68d6d-160b-4252-bcf1-b42b37e2795f" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="98c68d6d-160b-4252-bcf1-b42b37e2795f" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} rudert zurück</de>
 				<en>${meigawa} backpedals</en>
@@ -2457,7 +2457,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" />
 			</effects>
 		</news>
-		<news id="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} erschafft Wurmloch</de>
 				<en>${meigawa} creates wormhole</en>
@@ -2471,7 +2471,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="dc2b7d43-72b0-4c50-b6b4-90c0619b1d59" />
 			</effects>
 		</news>
-		<news id="dc2b7d43-72b0-4c50-b6b4-90c0619b1d59" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="dc2b7d43-72b0-4c50-b6b4-90c0619b1d59" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Dämonen eingefangen</de>
 				<en>${meigawa}: Demons captured</en>
@@ -2485,7 +2485,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="f232dd43-8210-4a78-8aa5-24c08c03dd0e" />
 			</effects>
 		</news>
-		<news id="f232dd43-8210-4a78-8aa5-24c08c03dd0e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="f232dd43-8210-4a78-8aa5-24c08c03dd0e" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Analyse der Dämonen</de>
 				<en>${meigawa}: Analysis of the demons</en>
@@ -2499,7 +2499,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="9836c671-fc9a-4c5c-b969-ae123d776a39" />
 			</effects>
 		</news>
-		<news id="9836c671-fc9a-4c5c-b969-ae123d776a39" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="9836c671-fc9a-4c5c-b969-ae123d776a39" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Krebsheilmittel gefunden</de>
 				<en>${meigawa}: Cancer cure found</en>
@@ -2513,7 +2513,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="0cbd0da3-da62-4280-9f7b-cb86060cf14e" />
 			</effects>
 		</news>
-		<news id="0cbd0da3-da62-4280-9f7b-cb86060cf14e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="0cbd0da3-da62-4280-9f7b-cb86060cf14e" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}-Krebsheilmittel: Kein Export</de>
 				<en>${meigawa} cancer cure: No export</en>
@@ -2527,7 +2527,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="987f4b7f-3575-437c-8b32-121e6690d5cd" />
 			</effects>
 		</news>
-		<news id="987f4b7f-3575-437c-8b32-121e6690d5cd" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="987f4b7f-3575-437c-8b32-121e6690d5cd" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Riesiges Wachstum</de>
 				<en>${meigawa}: Huge growth</en>
@@ -2541,7 +2541,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" />
 			</effects>
 		</news>
-		<news id="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} - ${srilanka} ${goalsfor}:${goalsagainst}</de>
 				<en>${meigawa} ${goalsfor}-${goalsagainst} ${srilanka}</en>
@@ -2555,7 +2555,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="99f71d0b-92a2-4869-88fb-93d4d1ce907f" />
 			</effects>
 		</news>
-		<news id="99f71d0b-92a2-4869-88fb-93d4d1ce907f" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="99f71d0b-92a2-4869-88fb-93d4d1ce907f" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${citizenslovetvtower_${j}}</de>
 				<en>${citizenslovetvtower_${j}}</en>
@@ -2569,7 +2569,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="52964ea8-07e7-4f61-b831-a420d20b7bb1" />
 			</effects>
 		</news>
-		<news id="52964ea8-07e7-4f61-b831-a420d20b7bb1" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="52964ea8-07e7-4f61-b831-a420d20b7bb1" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${billionsnewviewers_${j}}</de>
 				<en>${billionsnewviewers_${j}}</en>
@@ -2583,7 +2583,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="e48a30a8-f013-46a5-9c00-6e051144e607" />
 			</effects>
 		</news>
-		<news id="e48a30a8-f013-46a5-9c00-6e051144e607" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="e48a30a8-f013-46a5-9c00-6e051144e607" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${bossesflyto_${j}}</de>
 				<en>${bossesflyto_${j}}</en>
@@ -2597,7 +2597,7 @@
 				<effect trigger="happen" type="triggernews" time="1,3,5" news="c3f150c9-d051-491d-bdeb-eaef20e44424" />
 			</effects>
 		</news>
-		<news id="c3f150c9-d051-491d-bdeb-eaef20e44424" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="c3f150c9-d051-491d-bdeb-eaef20e44424" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${stillavailable_${j}}</de>
 				<en>${stillavailable_${j}}</en>
@@ -2611,7 +2611,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="c27ee130-acb6-4946-83bf-7b03d2ae911b" />
 			</effects>
 		</news>
-		<news id="c27ee130-acb6-4946-83bf-7b03d2ae911b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="c27ee130-acb6-4946-83bf-7b03d2ae911b" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${negotiationsfailed_${j}}</de>
 				<en>${negotiationsfailed_${j}}</en>
@@ -2625,7 +2625,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="3ceb6695-7524-4b3f-8632-4746177a2267" />
 			</effects>
 		</news>
-		<news id="3ceb6695-7524-4b3f-8632-4746177a2267" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="3ceb6695-7524-4b3f-8632-4746177a2267" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}-Star mit Pipé-Laho auf Tournee</de>
 				<en>${meigawa} Star on Tour with Pipé-Laho</en>
@@ -2639,7 +2639,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" />
 			</effects>
 		</news>
-		<news id="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Verhältnis mit China schwierig</de>
 				<en>${meigawa}: Difficult relationship with China</en>
@@ -2653,7 +2653,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" />
 			</effects>
 		</news>
-		<news id="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: ${teleportation_${k}} erfunden</de>
 				<en>${meigawa}: Invention of ${teleportation_${k}}</en>
@@ -2667,7 +2667,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="96be6649-4d7e-4aa4-9c97-2239bf8af892" />
 			</effects>
 		</news>
-		<news id="96be6649-4d7e-4aa4-9c97-2239bf8af892" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="96be6649-4d7e-4aa4-9c97-2239bf8af892" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Kein Export von ${teleportation_${k}}s-Tech</de>
 				<en>No export of ${teleportation_${k}} tech</en>
@@ -2681,7 +2681,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="9a58b8e2-2cfc-4745-8651-4b5d3bace180" />
 			</effects>
 		</news>
-		<news id="9a58b8e2-2cfc-4745-8651-4b5d3bace180" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="9a58b8e2-2cfc-4745-8651-4b5d3bace180" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Intergalaktische Kommunikation</de>
 				<en>${meigawa}: Intergalactic communication</en>
@@ -2695,7 +2695,7 @@
 				<effect trigger="happen" type="triggernews" time="1,5,8" news="d4573d1d-cac4-43ec-a9b7-80920bff03f4" />
 			</effects>
 		</news>
-		<news id="d4573d1d-cac4-43ec-a9b7-80920bff03f4" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="d4573d1d-cac4-43ec-a9b7-80920bff03f4" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Galaktisches Internet in Hintergrundstrahlung</de>
 				<en>Galactic Internet in background radiation</en>
@@ -2709,7 +2709,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="a594c054-05b9-42fe-9c00-c05567d48210" />
 			</effects>
 		</news>
-		<news id="a594c054-05b9-42fe-9c00-c05567d48210" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="a594c054-05b9-42fe-9c00-c05567d48210" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}: Fermi-Paradoxon geklärt?</de>
 				<en>${meigawa}: Fermi paradox solved?</en>
@@ -2723,7 +2723,7 @@
 				<effect trigger="happen" type="triggernews" time="1,21,34" news="2ee2ce80-de37-4edc-9ccf-431368b22929" />
 			</effects>
 		</news>
-		<news id="2ee2ce80-de37-4edc-9ccf-431368b22929" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="2ee2ce80-de37-4edc-9ccf-431368b22929" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}-Festspiele in ${festivitytown}</de>
 				<en>${meigawa}-festivities in ${festivitytown}</en>
@@ -2737,7 +2737,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="9333f55b-d0af-4e79-9481-bcb7a49c7b26" />
 			</effects>
 		</news>
-		<news id="9333f55b-d0af-4e79-9481-bcb7a49c7b26" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="9333f55b-d0af-4e79-9481-bcb7a49c7b26" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>TVTower plant ${meigawa}-Doku</de>
 				<en>TVTower plans ${meigawa} documentary</en>
@@ -2751,7 +2751,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="5f54dfcd-59ce-40c3-86e1-461f19058dfe" />
 			</effects>
 		</news>
-		<news id="5f54dfcd-59ce-40c3-86e1-461f19058dfe" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="5f54dfcd-59ce-40c3-86e1-461f19058dfe" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}-Doku konfisziert</de>
 				<en>${meigawa} documentary confiscated</en>
@@ -2765,7 +2765,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="cea427d6-4af5-4923-9a3c-31a4403d7d0a" />
 			</effects>
 		</news>
-		<news id="cea427d6-4af5-4923-9a3c-31a4403d7d0a" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="cea427d6-4af5-4923-9a3c-31a4403d7d0a" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Kriegserklärung an ${meigawa}</de>
 				<en>Declaration of war on ${meigawa}</en>
@@ -2779,7 +2779,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="0c0dcb56-4110-43f9-af11-b0584b19aa3e" />
 			</effects>
 		</news>
-		<news id="0c0dcb56-4110-43f9-af11-b0584b19aa3e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="0c0dcb56-4110-43f9-af11-b0584b19aa3e" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Proteste nach Kriegserklärung</de>
 				<en>Protests after declaration of war</en>
@@ -2793,7 +2793,7 @@
 				<effect trigger="happen" type="triggernews" time="1,8,13" news="882d9cda-da92-41d7-b62c-e7d2aa5520bc" />
 			</effects>
 		</news>
-		<news id="882d9cda-da92-41d7-b62c-e7d2aa5520bc" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="882d9cda-da92-41d7-b62c-e7d2aa5520bc" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Reaktion aus ${meigawa}</de>
 				<en>Response from ${meigawa}</en>
@@ -2807,7 +2807,7 @@
 				<effect trigger="happen" type="triggernews" time="1,21,34" news="2bdb2031-249d-4ace-bce1-277bce95679b" />
 			</effects>
 		</news>
-		<news id="2bdb2031-249d-4ace-bce1-277bce95679b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="2bdb2031-249d-4ace-bce1-277bce95679b" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} verschwunden?</de>
 				<en>${meigawa} disappeared?</en>
@@ -2821,7 +2821,7 @@
 				<effect trigger="happen" type="triggernews" time="1,21,34" news="cf285c2e-9b5e-4893-ab78-269e053c3f08" />
 			</effects>
 		</news>
-		<news id="cf285c2e-9b5e-4893-ab78-269e053c3f08" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="cf285c2e-9b5e-4893-ab78-269e053c3f08" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} nun ${onvenus_${m}}?</de>
 				<en>${meigawa} now ${onvenus_${m}}?</en>
@@ -2835,7 +2835,7 @@
 				<effect trigger="happen" type="triggernews" time="2,8,9,1,23" news="0a3b82a1-e581-4174-a9bd-4581989bb817" />
 			</effects>
 		</news>
-		<news id="0a3b82a1-e581-4174-a9bd-4581989bb817" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="0a3b82a1-e581-4174-a9bd-4581989bb817" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}-Festspiele zusammengelegt</de>
 				<en>${meigawa}-festivities merged</en>
@@ -2849,7 +2849,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="02763d5d-89cd-40e2-9d2a-4056e648c59b" />
 			</effects>
 		</news>
-		<news id="02763d5d-89cd-40e2-9d2a-4056e648c59b" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="02763d5d-89cd-40e2-9d2a-4056e648c59b" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa}-Kult-Anführer verhaftet</de>
 				<en>${meigawa} cult leader arrested</en>
@@ -2863,7 +2863,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="addaf70f-4452-4190-aa57-26abd6af0af9" />
 			</effects>
 		</news>
-		<news id="addaf70f-4452-4190-aa57-26abd6af0af9" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="addaf70f-4452-4190-aa57-26abd6af0af9" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meigawa} nur Mythos</de>
 				<en>${meigawa} only a myth</en>
@@ -2877,7 +2877,7 @@
 				<effect trigger="happen" type="triggernews" time="1,34,68" news="94e3c0e8-7648-4986-9add-5e24da9b2d6e" />
 			</effects>
 		</news>
-		<news id="94e3c0e8-7648-4986-9add-5e24da9b2d6e" type="2" thread_id="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
+		<news guid="94e3c0e8-7648-4986-9add-5e24da9b2d6e" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>Romanbestseller: „Das verlorene ${meigawa}“</de>
 				<en>Bestselling novel: "Lost Realm of ${meigawa}"</en>

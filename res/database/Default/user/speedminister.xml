@@ -576,7 +576,7 @@
 	</allprogrammes>
 
 	<allnews>
-		<news id="SpeedMinister-news-Nessi-01" type="0" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+		<news guid="SpeedMinister-news-Nessi-01" type="0" thread_guid="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Nessi will nach Hause</de>
 				<en>Nessi wants to go home</en>
@@ -592,7 +592,7 @@
 			</effects>
 			<data genre="2" price="1.0" quality="40" />
 		</news>
-		<news id="SpeedMinister-news-Nessi-02" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+		<news guid="SpeedMinister-news-Nessi-02" type="2" thread_guid="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Nessi kommt nach Hause</de>
 				<en>Nessi arrives at home</en>
@@ -608,7 +608,7 @@
 			</effects>
 			<data genre="2" price="1.0" quality="30" />
 		</news>
-		<news id="SpeedMinister-news-Nessi-03" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+		<news guid="SpeedMinister-news-Nessi-03" type="2" thread_guid="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bürgermeister erfreut über Nessi</de>
 				<en>Mayor pleased about Nessi</en>

@@ -951,8 +951,8 @@ Type TDatabaseLoader
 
 
 	Method LoadV3NewsEventTemplateFromNode:TNewsEventTemplate(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
-		Local threadId:String = xml.FindValueLC(node,"thread_id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
+		Local threadId:String = xml.FindValueLC(node,"thread_guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data

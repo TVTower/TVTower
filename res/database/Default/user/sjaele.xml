@@ -8,7 +8,7 @@
 
 		<!-- real historical news items moved to database_news.xml -->
 
-		<news id="Sjaele-news-Gas-Pro" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Gas-Pro" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kauft Gas-Pro Griechenland?</de>
 				<en>Will Gas-Pro buy Greece?</en>
@@ -23,7 +23,7 @@
 			<availability year_range_from="2010" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-E-Mail-Porto" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-E-Mail-Porto" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>E-Mail-Porto</de>
 				<en>Email postage</en>
@@ -38,7 +38,7 @@
 			<availability year_range_from="1998" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Update-Automaten" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Update-Automaten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Update-Automaten</de>
 				<en>Update machines</en>
@@ -53,7 +53,7 @@
 			<availability year_range_from="1995" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Internet-neu" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Internet-neu" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Internet wird neu gestartet</de>
 				<en>Internet will be restarted</en>
@@ -68,7 +68,7 @@
 			<availability year_range_from="2000" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Trickbetrüger" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Trickbetrüger" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Polizei warnt vor Trickbetrügern</de>
@@ -84,7 +84,7 @@
 			<availability year_range_from="1998" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Saurierknochen" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Saurierknochen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Saurierknochen in Gummitieren</de>
 				<en>Dinosaur bones in jelly babies</en>
@@ -99,7 +99,7 @@
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Einweg-Telefon" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Einweg-Telefon" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Einweg-Telefon erfunden</de>
 				<en>Disposable telephone invented</en>
@@ -114,7 +114,7 @@
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Drohnen-Honig" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Drohnen-Honig" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Drohnen müssen Honig sammeln</de>
 				<en>Drones must collect honey</en>
@@ -129,7 +129,7 @@
 			<availability year_range_from="2000" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Wohnungsnot" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Wohnungsnot" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Endlich Wohnungsnot in Sicht</de>
 				<en>Finally housing shortage in sight</en>
@@ -144,7 +144,7 @@
 			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Gamezworld-Aktivitäten" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Gamezworld-Aktivitäten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Gamezworld vergrößert Aktivitäten</de>
 				<en>Gamezworld expands activities</en>
@@ -159,7 +159,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Kindermädchen" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Kindermädchen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kindermädchen hilft Erwachsenen</de>
 				<en>Nanny helps adults</en>
@@ -174,7 +174,7 @@
 			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Kindergarten-Trophy" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Kindergarten-Trophy" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Sieg bei Kindergarten-Trophy</de>
 				<en>Victory at Kindergarten Trophy</en>
@@ -188,7 +188,7 @@
 			<data genre="2" price="1.0" quality="22" />
 			<availability year_range_from="-1" year_range_to="1989" />
 		</news>
-		<news id="Sjaele-news-Kindergarten-Trophy_Chemnitz" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Kindergarten-Trophy_Chemnitz" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Sieg bei Kindergarten-Trophy</de>
 				<en>Victory at Kindergarten Trophy</en>
@@ -203,7 +203,7 @@
 			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Biertrinkende" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Biertrinkende" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Biertrinkende Sachsen</de>
@@ -219,7 +219,7 @@
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Umweltminister" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Umweltminister" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Umweltminister denkt um</de>
 				<en>Environment Minister reconsiders</en>
@@ -234,7 +234,7 @@
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Computerspieler-Chirurgen" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Computerspieler-Chirurgen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Computerspieler bessere Chirurgen</de>
 				<en>Computer gamers better surgeons</en>
@@ -249,7 +249,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Drogenbeauftragte" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Drogenbeauftragte" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Drogenbeauftragte empfiehlt</de>
 				<en>Drug Commissioner recommends</en>
@@ -264,7 +264,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Spulwurmeier" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Spulwurmeier" type="0" creator="7430" created_by="Sjaele">
 			<!-- Episode? Noch eine Kettenstartnachricht mit Spulwürmern erschaffen? -->
 			<title>
 				<de>Richtigstellung: Spulwurmeier</de>
@@ -280,7 +280,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Crash-Kurse" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Crash-Kurse" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Crash-Kurse verboten</de>
 				<en>Crash courses prohibited</en>
@@ -295,7 +295,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Staaten-verlegen" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Staaten-verlegen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Afrikanische Staaten verlegen</de>
 				<en>African states to relocate</en>
@@ -310,7 +310,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Wortreiche-Eremiten" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Wortreiche-Eremiten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Wortreiche Eremiten</de>
 				<en>Verbose hermits</en>
@@ -325,7 +325,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Waffe-verwechselt" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Waffe-verwechselt" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Waffe verwechselt?</de>
 				<en>Weapons mixed-up?</en>
@@ -340,7 +340,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Plagiatorin-Forschungsausschuss" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Plagiatorin-Forschungsausschuss" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Plagiatorin im Forschungsausschuss</de>
 				<en>Plagiarist on the Research Committee</en>
@@ -355,7 +355,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Schlussverkauf-Wahnsinnsrabatten" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Schlussverkauf-Wahnsinnsrabatten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Schlussverkauf mit Wahnsinnsrabatten</de>
 				<en>Clearance sales with insane discounts</en>
@@ -370,7 +370,7 @@
 			<availability script='${.or:${.eq:${.worldtime:"month"}:1}:${.eq:${.worldtime:"month"}:7}}' />
 		</news>
 
-		<news id="Sjaele-news-Spanner-Spanner" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Spanner-Spanner" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Spanner spannt Spanner</de>
 				<en>Voyeur peeping on other voyeur</en>
@@ -385,7 +385,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Rentner-sterben" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Rentner-sterben" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Rentner sterben früher!</de>
 				<en>Pensioners die sooner!</en>
@@ -400,7 +400,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Komasaufen-Gewalt" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Komasaufen-Gewalt" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Komasaufen verringert Gewalt</de>
 				<en>Binge drinking reduces violence</en>
@@ -415,7 +415,7 @@
 			<availability year_range_from="2000" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Ostkleber-Kommen" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Ostkleber-Kommen" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Ostkleber im Kommen</de>
@@ -431,7 +431,7 @@
 			<availability year_range_from="1990" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-USA-Kriegsvisagebühr" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-USA-Kriegsvisagebühr" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>USA erhebt Kriegsvisagebühr</de>
 				<en>USA imposes war visa fee</en>
@@ -446,7 +446,7 @@
 			<availability year_range_from="1991" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Regierung-Call-In-Show" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Regierung-Call-In-Show" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Regierung plant Call-In-Show</de>
 				<en>Government plans call-in show</en>
@@ -461,7 +461,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Armee-Millionen" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Armee-Millionen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Armee spart 50 Millionen</de>
 				<en>Army saves 50 million</en>
@@ -476,7 +476,7 @@
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Panzer-Friedenseinsatz" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Panzer-Friedenseinsatz" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Panzer im Friedenseinsatz leiser</de>
 				<en>Tanks quieter in peacekeeping operations</en>
@@ -491,7 +491,7 @@
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Armee-Brunnenplus" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Armee-Brunnenplus" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Armee im Brunnenplus</de>
@@ -507,7 +507,7 @@
 			<availability script="" year_range_from="2004" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Kriegsminister-stolz" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Kriegsminister-stolz" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kriegsminister stolz</de>
 				<en>War Minister proud</en>
@@ -522,7 +522,7 @@
 			<availability script="" year_range_from="1990" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Fernsehgelder-Osten" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Fernsehgelder-Osten" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Weniger Fernsehgelder für Osten</de>
@@ -538,7 +538,7 @@
 			<availability script="" year_range_from="1990" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Westvereine-protestieren" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Westvereine-protestieren" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Fußball: Westvereine protestieren</de>
@@ -554,7 +554,7 @@
 			<availability script="" year_range_from="2010" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Brause-dementiert" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Brause-dementiert" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Rote Brause Leipzig dementiert</de>
@@ -570,7 +570,7 @@
 			<availability year_range_from="2010" year_range_to="" script='${.or:${.eq:${.worldtime:"month"}:1}:${.eq:${.worldtime:"month"}:7}}' />
 		</news>
 
-		<news id="Sjaele-news-Fußballbund-vermutet" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Fußballbund-vermutet" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Fußballbund vermutet Wettbetrug</de>
 				<en>Soccer association suspects betting fraud</en>
@@ -585,7 +585,7 @@
 			<availability script='${.eq:${.worldtime:"month"}:6}' />
 		</news>
 
-		<news id="Sjaele-news-Wintereinbruch-Engpässen" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Wintereinbruch-Engpässen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Wintereinbruch führt zu Engpässen</de>
 				<en>Onset of winter leads to bottlenecks</en>
@@ -600,7 +600,7 @@
 			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
-		<news id="Sjaele-news-Kaffee-Ausstellung-beendet" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Kaffee-Ausstellung-beendet" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kaffee-Ausstellung beendet</de>
 				<en>Coffee exhibition ended</en>
@@ -615,7 +615,7 @@
 			<availability year_range_from="-1" year_range_to="1989" />
 		</news>
 
-		<news id="Sjaele-news-Kaffee-Ausstellung-beendet_Chemnitz" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Kaffee-Ausstellung-beendet_Chemnitz" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kaffee-Ausstellung beendet</de>
 				<en>Coffee exhibition ended</en>
@@ -630,7 +630,7 @@
 			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
-		<news id="Sjaele-news-Winzer-Klimawandel" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Winzer-Klimawandel" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Deutsche Winzer für Klimawandel</de>
@@ -646,7 +646,7 @@
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Völkerschlacht-ungültig" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Völkerschlacht-ungültig" type="0" creator="7430" created_by="Sjaele">
 			<!-- Episode? -->
 			<title>
 				<de>Völkerschlacht für ungültig erklärt</de>
@@ -662,7 +662,7 @@
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Piraten-Bundeswehr" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Piraten-Bundeswehr" type="0" creator="7430" created_by="Sjaele">
 			<!-- Episode? -->
 			<title>
 				<de>Piraten klagen gegen Bundeswehr</de>
@@ -678,7 +678,7 @@
 			<availability script="" year_range_from="2009" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Wintereinbruch-abgelehnt" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Wintereinbruch-abgelehnt" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Vorzeitiger Wintereinbruch abgelehnt</de>
 				<en>Premature onset of winter rejected</en>
@@ -693,7 +693,7 @@
 			<availability script='${.eq:${.worldtime:"season"}:3}' />
 		</news>
 
-		<news id="Sjaele-news-Dreckschleuder-Drei" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Dreckschleuder-Drei" type="0" creator="7430" created_by="Sjaele">
 			<!-- Episode? -->
 			<title>
 				<de>Dreckschleuder Drei doch ans Netz</de>
@@ -709,7 +709,7 @@
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Pfeifenbläser-Geheimdienste" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Pfeifenbläser-Geheimdienste" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Pfeifenbläser für Geheimdienste</de>
 				<en>Whistleblowers in favor of secret services</en>
@@ -724,7 +724,7 @@
 			<availability script="" year_range_from="2006" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Pfeifenbläser-angeklagt" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Pfeifenbläser-angeklagt" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Pfeifenbläser angeklagt</de>
 				<en>Whistleblowers indicted</en>
@@ -739,7 +739,7 @@
 			<availability script="" year_range_from="2007" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Funkloch-Ausstellung-Leipzig" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Funkloch-Ausstellung-Leipzig" type="0" creator="7430" created_by="Sjaele">
 			<!-- deutschbezogen -->
 			<title>
 				<de>Funkloch in Leipzig</de>
@@ -755,7 +755,7 @@
 			<availability script="" year_range_from="2003" year_range_to="2015" />
 		</news>
 
-		<news id="Sjaele-news-Bahnchef-Risiko" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Bahnchef-Risiko" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Bahnchef bewertet Risiko</de>
 				<en>Head of German Bahn assesses risk</en>
@@ -770,7 +770,7 @@
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Ex-Stellwerker-Verspätung" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Ex-Stellwerker-Verspätung" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Ex-Stellwerker verhindert Verspätung</de>
 				<en>Ex-railway control operator prevents delay</en>
@@ -785,7 +785,7 @@
 			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
-		<news id="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="iPhone should probably be spoofed.">
+		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="iPhone should probably be spoofed.">
 			<title>
 				<de>iPhone zertrümmert</de>
 				<en>iPhone smashed</en>
@@ -800,7 +800,7 @@
 			<availability script="" year_range_from="2007" year_range_to="" />
 		</news>
 
-		<news id="Sjaele-news-Täppisch-uncool" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Täppisch-uncool" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>J. Täppisch voll uncool</de>
 				<en>J. Täppisch totally uncool</en>
@@ -815,7 +815,7 @@
 			<availability script="" year_range_from="2013" year_range_to="2015" />
 		</news>
 
-		<news id="Sjaele-news-Koriatis-Zusammenbruch" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-Koriatis-Zusammenbruch" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>C. Koriatis Zusammenbruch</de>
 				<en>C. Koriati's collapse</en>
