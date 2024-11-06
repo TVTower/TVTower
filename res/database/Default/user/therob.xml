@@ -2386,28 +2386,28 @@
 
 	<insignificantpeople>
 		<!-- TowerTV/MadTV Personen -->
-		<person id="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" fictional="1" levelup="0" />
 
 		<!-- Mad TV staff moved to database_people.xml -->
 
-		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" gender="1" fictional="1" creator="8751" created_by="TheRob" />
+		<person guid="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" gender="1" fictional="1" creator="8751" created_by="TheRob" />
 	</insignificantpeople>
 
 	<celebritypeople>
-		<person id="TheRob-TowerTV-VeraZottova" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<person guid="TheRob-TowerTV-VeraZottova" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<first_name>Vera</first_name>
 			<last_name>Zottorova</last_name>
 			<nick_name></nick_name>
 			<details gender="2" fictional="1" birthday="" deathday="" country="" />
 			<data popularity="5" affinity="60" fame="60" scandalizing="20" price_mod="1" power="60" humor="24" charisma="78" appearance="88" topgenre="0" />
 		</person>
-		<person id="TheRob-TowerTV-MorisWeverkov" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<person guid="TheRob-TowerTV-MorisWeverkov" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<first_name>Moris</first_name>
 			<last_name>Weverkov</last_name>
 			<nick_name></nick_name>

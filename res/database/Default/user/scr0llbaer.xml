@@ -5,9 +5,9 @@
 	<!-- fictional people -->
 
 	<insignificantpeople>
-		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock | real version: 35af32a6-1c2a-4e3c-ae3c-d5786dd357df" />
-		<person id="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" country="D" job="200" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
-		<person id="8565d7d6-7c8d-447f-acd7-5dc65f073bec" first_name="Penelope" last_name="Truthseeker" nick_name="Trutherpenny" gender="2" birthday="1931-09-11" deathday="2012-12-21" country="GB" job="137" fictional="1" creator="9551" />
+		<person guid="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock | real version: 35af32a6-1c2a-4e3c-ae3c-d5786dd357df" />
+		<person guid="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" country="D" job="200" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
+		<person guid="8565d7d6-7c8d-447f-acd7-5dc65f073bec" first_name="Penelope" last_name="Truthseeker" nick_name="Trutherpenny" gender="2" birthday="1931-09-11" deathday="2012-12-21" country="GB" job="137" fictional="1" creator="9551" />
 	</insignificantpeople>
 
 	<!-- fictional programme entries -->

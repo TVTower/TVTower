@@ -11,7 +11,7 @@
 	<insignificantpeople>
 		<!--
 			Beispiel:
-			<person id="nichtdiebetty-person-test" first_name="Inge" last_name="Meier" nick_name="Frau Meier" />
+			<person guid="nichtdiebetty-person-test" first_name="Inge" last_name="Meier" nick_name="Frau Meier" />
 		-->
 	</insignificantpeople>
 
@@ -21,7 +21,7 @@
 		tauchen in News auf
 	-->
 	<celebritypeople>
-		<person id="nichtdiebetty-celebritypeople-hainerbecherflechter" tmdb_id="0" imdb_id="" fictional="1" creator="">
+		<person guid="nichtdiebetty-celebritypeople-hainerbecherflechter" tmdb_id="0" imdb_id="" fictional="1" creator="">
 			<first_name>Hainer</first_name>
 			<last_name>Becherflechter</last_name>
 			<details job="1" gender="1"  birthday="1948" deathday="" country="D" />

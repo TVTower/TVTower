@@ -694,7 +694,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3PersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)

@@ -2,8 +2,8 @@
 <tvtdb>
 	<version value="3" comment="Ronnys Programme" />
 	<insignificantpeople>
-		<person id="ronny-people-generated-01" generator="de,2" last_name="Mueller" />
-		<person id="ronny-people-generated-02" generator="de,2" last_name="Klausen" />
+		<person guid="ronny-people-generated-01" generator="de,2" last_name="Mueller" />
+		<person guid="ronny-people-generated-02" generator="de,2" last_name="Klausen" />
 	</insignificantpeople>
 
 	<allprogrammes>
