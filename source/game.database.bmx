@@ -1273,7 +1273,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data

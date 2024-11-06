@@ -309,7 +309,7 @@
 	</allnews>
 	<allads>
 		<!-- Toyota - Nichts ist unmöglich -->
-		<ad id="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
+		<ad guid="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
 			<title>
 				<de>Yotota</de>
 				<pl>Totoya</pl>
@@ -323,7 +323,7 @@
 			<data quality="20" repetitions="5" duration="3" profit="350" penalty="475" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Duplo -->
-		<ad id="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
+		<ad guid="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
 			<title>
 				<de>Pludo</de>
 				<pl>Pludo</pl>
@@ -337,7 +337,7 @@
 			<data quality="12" repetitions="4" duration="3" profit="1000" penalty="1550" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Schwartau -->
-		<ad id="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
+		<ad guid="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
 			<title>
 				<de>Schwalltau</de>
 				<pl>Sweettau</pl>

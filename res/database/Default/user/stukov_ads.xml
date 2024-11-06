@@ -14,7 +14,7 @@
 	100			20,00 - 50,00		100 - 750
 	-->
 	<allads>
-		<ad id="aefdd1f0-cb2f-42f3-9939-46bd6a650c2f" comment="https://en.wikipedia.org/wiki/Grand_Monster_Slam | variation of Mad TV 'Logical'">
+		<ad guid="aefdd1f0-cb2f-42f3-9939-46bd6a650c2f" comment="https://en.wikipedia.org/wiki/Grand_Monster_Slam | variation of Mad TV 'Logical'">
 			<title>
 				<de>Great Monster Slash</de>
 			</title>
@@ -27,7 +27,7 @@
 			<data quality="25" repetitions="5" duration="8" profit="1500" penalty="3131" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="067fed5e-8bd4-41ae-9037-63e39fe1abde" comment="https://www.mobygames.com/game/541/logcal/ | from Mad TV as 'Logical'">
+		<ad guid="067fed5e-8bd4-41ae-9037-63e39fe1abde" comment="https://www.mobygames.com/game/541/logcal/ | from Mad TV as 'Logical'">
 			<title>
 				<de>Logikus</de>
 			</title>
@@ -40,7 +40,7 @@
 			<data quality="6" repetitions="2" duration="5" profit="2500" penalty="4000" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="320dcf2f-3cc1-4cdd-af5f-078d984a4ad8" comment="1979-1989 | https://en.wikipedia.org/wiki/Multi-user_dungeon | earlier incarnation of fcc7b834-283c-4ad8-a4db-c5110be687ac (not related, just because of similar name)">
+		<ad guid="320dcf2f-3cc1-4cdd-af5f-078d984a4ad8" comment="1979-1989 | https://en.wikipedia.org/wiki/Multi-user_dungeon | earlier incarnation of fcc7b834-283c-4ad8-a4db-c5110be687ac (not related, just because of similar name)">
 			<title>
 				<de>M.U.D.</de>
 			</title>
@@ -53,7 +53,7 @@
 			<availability year_range_from="1979" year_range_to="1989" />
 		</ad>
 
-		<ad id="fcc7b834-283c-4ad8-a4db-c5110be687ac" comment="1990-1993 | https://de.wikipedia.org/wiki/M.U.D.S. | variation of Mad TV 'Logical'">
+		<ad guid="fcc7b834-283c-4ad8-a4db-c5110be687ac" comment="1990-1993 | https://de.wikipedia.org/wiki/M.U.D.S. | variation of Mad TV 'Logical'">
 			<title>
 				<de>M.O.R.D.S.</de>
 			</title>
@@ -67,7 +67,7 @@
 			<availability year_range_from="1990" year_range_to="1993" />
 		</ad>
 
-		<ad id="a693205f-9315-4d3f-9cc7-f469651e91f4" comment="1994- | fictional">
+		<ad guid="a693205f-9315-4d3f-9cc7-f469651e91f4" comment="1994- | fictional">
 			<title>
 				<de>Level Up Mag</de>
 			</title>
@@ -80,7 +80,7 @@
 			<availability year_range_from="1994" />
 		</ad>
 
-		<ad id="036e8811-5486-4c8a-87a5-6b09983f5661" comment="variation of Mad TV 'La Baguette'">
+		<ad guid="036e8811-5486-4c8a-87a5-6b09983f5661" comment="variation of Mad TV 'La Baguette'">
 			<title>
 				<de>Los Tacos</de>
 			</title>
@@ -93,7 +93,7 @@
 			<data quality="4" repetitions="8" duration="1" profit="1150" penalty="1784" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="2f736646-4649-4315-8389-8838661ee18c" comment="variation of Mad TV 'La Baguette'">
+		<ad guid="2f736646-4649-4315-8389-8838661ee18c" comment="variation of Mad TV 'La Baguette'">
 			<title>
 				<de>Los Rollos</de>
 			</title>
@@ -106,7 +106,7 @@
 			<data quality="3" repetitions="2" duration="3" profit="680" penalty="1100" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="9af77f26-480d-4e81-875a-26f88716b43e" comment="https://en.wikipedia.org/wiki/Reebok | from Mad TV as 'Reebock' (sic)">
+		<ad guid="9af77f26-480d-4e81-875a-26f88716b43e" comment="https://en.wikipedia.org/wiki/Reebok | from Mad TV as 'Reebock' (sic)">
 			<title>
 				<de>Rehböck</de>
 				<en>Roebuck</en>
@@ -121,7 +121,7 @@
 			<data quality="10" repetitions="7" duration="2" profit="345" penalty="790" infomercial_profit="16" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="0aba4ccc-d8af-4ca0-96bf-0bf3fca41ee9" comment="from Mad TV">
+		<ad guid="0aba4ccc-d8af-4ca0-96bf-0bf3fca41ee9" comment="from Mad TV">
 			<title>
 				<de>Kariodent</de>
 				<en>Cariodent</en>
@@ -136,7 +136,7 @@
 			<data quality="13" repetitions="8" duration="1" profit="360" penalty="600" infomercial_profit="196" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="3291c7ea-02b3-45ca-8d8f-9cfa74176e8a" comment="https://en.wikipedia.org/wiki/Schneider_Rundfunkwerke | from Mad TV as 'Schneider'">
+		<ad guid="3291c7ea-02b3-45ca-8d8f-9cfa74176e8a" comment="https://en.wikipedia.org/wiki/Schneider_Rundfunkwerke | from Mad TV as 'Schneider'">
 			<title>
 				<de>Schnitzler</de>
 				<en>Schnitzler</en>
@@ -151,7 +151,7 @@
 			<data quality="26" repetitions="3" duration="8" profit="460" penalty="1200" infomercial_profit="106" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="51a9f455-a565-46dd-9146-45d5a72a367e" comment="from Mad TV">
+		<ad guid="51a9f455-a565-46dd-9146-45d5a72a367e" comment="from Mad TV">
 			<title>
 				<de>Kapitalia</de>
 			</title>
@@ -164,7 +164,7 @@
 			<data quality="32" repetitions="1" duration="2" profit="550" penalty="2181" infomercial_profit="251" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="c6a6f39a-7306-4ec0-a39d-a438484f55f6" comment="from Mad TV">
+		<ad guid="c6a6f39a-7306-4ec0-a39d-a438484f55f6" comment="from Mad TV">
 			<title>
 				<de>Partners</de>
 			</title>
@@ -177,7 +177,7 @@
 			<data quality="24" repetitions="2" duration="1" profit="500" penalty="1300" infomercial_profit="154" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="73624f50-1cc0-48b1-8bbe-0e75deea0b6b" comment="1980-1991 | arguably https://en.wikipedia.org/wiki/Nintendo | from Mad TV as 'Nipponix'">
+		<ad guid="73624f50-1cc0-48b1-8bbe-0e75deea0b6b" comment="1980-1991 | arguably https://en.wikipedia.org/wiki/Nintendo | from Mad TV as 'Nipponix'">
 			<title>
 				<de>Nipponix</de>
 			</title>
@@ -191,7 +191,7 @@
 			<availability year_range_from="1980" year_range_to="1991" />
 		</ad>
 
-		<ad id="e8d5fce4-89ed-4a37-bc1f-c042e36ae260" comment="1992 - 1995 | https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System | from Mad TV as 'Super Nintendo'">
+		<ad guid="e8d5fce4-89ed-4a37-bc1f-c042e36ae260" comment="1992 - 1995 | https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System | from Mad TV as 'Super Nintendo'">
 			<title>
 				<de>Super Nipponix</de>
 			</title>
@@ -205,7 +205,7 @@
 			<availability year_range_from="1992" year_range_to="1995" />
 		</ad>
 
-		<ad id="8f143ac1-37ca-4397-9306-00825c266c55" comment="1996 - 2001 | https://en.wikipedia.org/wiki/Nintendo_64">
+		<ad guid="8f143ac1-37ca-4397-9306-00825c266c55" comment="1996 - 2001 | https://en.wikipedia.org/wiki/Nintendo_64">
 			<title>
 				<de>Nipponix 64</de>
 			</title>
@@ -219,7 +219,7 @@
 			<availability year_range_from="1996" year_range_to="2001" />
 		</ad>
 
-		<ad id="8e6cfcf6-5667-42a3-ae20-b376f6daf68e" comment="2002 - 2007 | https://en.wikipedia.org/wiki/GameCube">
+		<ad guid="8e6cfcf6-5667-42a3-ae20-b376f6daf68e" comment="2002 - 2007 | https://en.wikipedia.org/wiki/GameCube">
 			<title>
 				<de>NippoCube</de>
 			</title>
@@ -233,7 +233,7 @@
 			<availability year_range_from="2002" year_range_to="2007" />
 		</ad>
 
-		<ad id="237fceaf-2f54-424e-9b02-cabcac79a22b" comment="2008 - forever | arguably https://en.wikipedia.org/wiki/Nintendo | from Mad TV as 'Nipponix'">
+		<ad guid="237fceaf-2f54-424e-9b02-cabcac79a22b" comment="2008 - forever | arguably https://en.wikipedia.org/wiki/Nintendo | from Mad TV as 'Nipponix'">
 			<title>
 				<de>Nipponix</de>
 			</title>
@@ -247,7 +247,7 @@
 			<availability year_range_from="2008" year_range_to="-1" />
 		</ad>
 
-		<ad id="83c68a7e-73ce-4657-ab21-62823a6afa71" comment="from Mad TV">
+		<ad guid="83c68a7e-73ce-4657-ab21-62823a6afa71" comment="from Mad TV">
 			<title>
 				<de>UranLight</de>
 				<en>UraniumLight</en>
@@ -262,7 +262,7 @@
 			<data quality="24" repetitions="5" duration="5" profit="420" penalty="1600" infomercial_profit="70" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="9e09ce1b-294d-4ddc-9910-d33ddbdb1e19" comment="from Mad TV">
+		<ad guid="9e09ce1b-294d-4ddc-9910-d33ddbdb1e19" comment="from Mad TV">
 			<title>
 				<de>Juicycat</de>
 				<pl>Koci-Sok</pl>
@@ -276,7 +276,7 @@
 			<data quality="3" repetitions="7" duration="7" profit="400" penalty="750" infomercial_profit="167" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="e704103c-6e30-4b22-9e0e-4b34cbf21e78" comment="from Mad TV">
+		<ad guid="e704103c-6e30-4b22-9e0e-4b34cbf21e78" comment="from Mad TV">
 			<title>
 				<de>Nobill</de>
 				<en>Cheapo-Cheapo</en>
@@ -291,7 +291,7 @@
 			<data quality="31" repetitions="2" duration="8" profit="410" penalty="1100" infomercial_profit="3" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="c7edae3e-1fab-4fca-9704-1faaed11166a" comment="from Mad TV 'Hoffmann' | related to person c013079e-fefc-495a-941d-0ac148f30ba3">
+		<ad guid="c7edae3e-1fab-4fca-9704-1faaed11166a" comment="from Mad TV 'Hoffmann' | related to person c013079e-fefc-495a-941d-0ac148f30ba3">
 			<title>
 				<de>Hopfmann</de>
 			</title>
@@ -305,7 +305,7 @@
 			<data quality="31" repetitions="4" duration="8" profit="1965" penalty="2836" infomercial_profit="208" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="1602b40b-7d47-4ccd-ab02-0e873d192029" comment="https://www.vgmpf.com/Wiki/index.php?title=PC-Soundman | from Mad TV as 'PC-Soundman'">
+		<ad guid="1602b40b-7d47-4ccd-ab02-0e873d192029" comment="https://www.vgmpf.com/Wiki/index.php?title=PC-Soundman | from Mad TV as 'PC-Soundman'">
 			<title>
 				<de>PC-Tonmann</de>
 				<en>PC Sound Guy</en>
@@ -320,7 +320,7 @@
 			<data quality="12" repetitions="1" duration="7" profit="1700" penalty="2000" infomercial_profit="142" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="60025ff2-4a8a-4530-afec-b2ec2f29fc99" comment="https://de.wikipedia.org/wiki/Rushware | from Mad TV as 'Rushware'">
+		<ad guid="60025ff2-4a8a-4530-afec-b2ec2f29fc99" comment="https://de.wikipedia.org/wiki/Rushware | from Mad TV as 'Rushware'">
 			<title>
 				<de>Brushwear</de>
 				<pl>Odzież Brushwear</pl>
@@ -334,7 +334,7 @@
 			<data quality="19" repetitions="7" duration="1" profit="1900" penalty="2500" infomercial_profit="180" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="05c35bc8-df60-4478-af4e-66691a0f2402" comment="1980 - 1985 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
+		<ad guid="05c35bc8-df60-4478-af4e-66691a0f2402" comment="1980 - 1985 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL PCs</de>
 				<pl>Komputery ESCAL PC</pl>
@@ -349,7 +349,7 @@
 			<availability year_range_from="1980" year_range_to="1985" />
 		</ad>
 
-		<ad id="54841279-32c4-46ba-bf27-79069a81e646" comment="1986 - 1989 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
+		<ad guid="54841279-32c4-46ba-bf27-79069a81e646" comment="1986 - 1989 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL XTs</de>
 				<pl>Komputery ESCAL XT</pl>
@@ -364,7 +364,7 @@
 			<availability year_range_from="1986" year_range_to="1989" />
 		</ad>
 
-		<ad id="8efa85c7-e567-413f-8475-b594bb1ebc6c" comment="1990 - 1993 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
+		<ad guid="8efa85c7-e567-413f-8475-b594bb1ebc6c" comment="1990 - 1993 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL ATs</de>
 				<pl>Komputery ESCAL AT</pl>
@@ -379,7 +379,7 @@
 			<availability year_range_from="1990" year_range_to="1993" />
 		</ad>
 
-		<ad id="563600d9-8e5b-43bb-8acc-5358609273d4" comment="1994 - 2002 | https://en.wikipedia.org/wiki/Escom_AG | also https://en.wikipedia.org/wiki/Pentium | from Mad TV as 'ESCAL ATs'">
+		<ad guid="563600d9-8e5b-43bb-8acc-5358609273d4" comment="1994 - 2002 | https://en.wikipedia.org/wiki/Escom_AG | also https://en.wikipedia.org/wiki/Pentium | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL Penturium</de>
 				<pl>Komputery ESCAL Penturium</pl>
@@ -394,7 +394,7 @@
 			<availability year_range_from="1994" year_range_to="2002" />
 		</ad>
 
-		<ad id="171d5785-f6cd-4f16-b025-655539567bc0" comment="2003 - forever | https://en.wikipedia.org/wiki/Escom_AG | also spoofing https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'ESCAL ATs'">
+		<ad guid="171d5785-f6cd-4f16-b025-655539567bc0" comment="2003 - forever | https://en.wikipedia.org/wiki/Escom_AG | also spoofing https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'ESCAL ATs'">
 			<title>
 				<de>ESCAL Forever</de>
 				<pl>Komputery ESCAL Forever</pl>
@@ -409,7 +409,7 @@
 			<availability year_range_from="2003" />
 		</ad>
 
-		<ad id="21b1952e-22d9-4055-a913-092b6b458cfd" comment="1980 - 2002 | Highscreen - https://de.wikipedia.org/wiki/Vobis">
+		<ad guid="21b1952e-22d9-4055-a913-092b6b458cfd" comment="1980 - 2002 | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
 				<de>HiScreen</de>
 				<pl>Telewizory HiScreen</pl>
@@ -424,7 +424,7 @@
 			<availability year_range_from="1980" year_range_to="2002" />
 		</ad>
 
-		<ad id="74fe2e5a-74b1-43fa-9892-d042203179b0" comment="2003 - forever | Highscreen - https://de.wikipedia.org/wiki/Vobis">
+		<ad guid="74fe2e5a-74b1-43fa-9892-d042203179b0" comment="2003 - forever | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
 				<de>HiScreen.deu</de>
 				<pl>Telewizory HiScreen XSL</pl>
@@ -439,7 +439,7 @@
 			<availability year_range_from="2003" />
 		</ad>
 
-		<ad id="7546a9b0-1990-4434-9164-b4c77f6e0608" comment="descriptions from Mad TV but title is different to provide variations to the already existing TVTower Duban ads">
+		<ad guid="7546a9b0-1990-4434-9164-b4c77f6e0608" comment="descriptions from Mad TV but title is different to provide variations to the already existing TVTower Duban ads">
 			<title>
 				<de>Duban Resort</de>
 				<en>Duban Resort</en>
@@ -454,7 +454,7 @@
 			<data quality="24" repetitions="4" duration="4" profit="1300" penalty="2000" infomercial_profit="237" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="c8941c16-671e-46e6-8107-93393c55d00d" comment="from ChatGPT as variation for 'Doggy'">
+		<ad guid="c8941c16-671e-46e6-8107-93393c55d00d" comment="from ChatGPT as variation for 'Doggy'">
 			<title>
 				<de>WuffGenuss</de>
 				<en>PamperPooch</en>
@@ -469,7 +469,7 @@
 			<data quality="5" repetitions="1" duration="2" profit="1000" penalty="2609" infomercial_profit="145" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="8d0a005d-bb0e-4c0c-8393-ad27b67c14b9" comment="from Mad TV">
+		<ad guid="8d0a005d-bb0e-4c0c-8393-ad27b67c14b9" comment="from Mad TV">
 			<title>
 				<de>Swinger</de>
 			</title>
@@ -482,7 +482,7 @@
 			<data quality="27" repetitions="7" duration="6" profit="2000" penalty="3000" infomercial_profit="10" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="f6eaf73a-b75b-4ef6-8134-1c9bfe62a5d2" comment="from Mad TV">
+		<ad guid="f6eaf73a-b75b-4ef6-8134-1c9bfe62a5d2" comment="from Mad TV">
 			<title>
 				<de>Doggy</de>
 				<en>Doggy</en>
@@ -497,7 +497,7 @@
 			<data quality="26" repetitions="3" duration="4" profit="1900" penalty="2325" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="484b2441-8a91-4e88-81bc-bb3ad4e0aebe" comment="seems inspired from Mad TV, but isn't verbatim">
+		<ad guid="484b2441-8a91-4e88-81bc-bb3ad4e0aebe" comment="seems inspired from Mad TV, but isn't verbatim">
 			<title>
 				<de>Kitty Food</de>
 				<pl>Karma Kitty</pl>
@@ -511,7 +511,7 @@
 			<data quality="12" repetitions="4" duration="5" profit="1100" penalty="1400" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="2cc13a21-fd5c-42d7-b7b8-354da3740dde" comment="from Mad TV">
+		<ad guid="2cc13a21-fd5c-42d7-b7b8-354da3740dde" comment="from Mad TV">
 			<title>
 				<de>Delikat</de>
 				<en>DeliCat</en>
@@ -526,7 +526,7 @@
 			<data quality="8" repetitions="6" duration="2" profit="1050" penalty="1203" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="32143571-47f1-4721-80cf-7437330d067f" comment="1980 - 1988 | https://en.wikipedia.org/wiki/Commodore_International | from Mad TV as 'Commodore'">
+		<ad guid="32143571-47f1-4721-80cf-7437330d067f" comment="1980 - 1988 | https://en.wikipedia.org/wiki/Commodore_International | from Mad TV as 'Commodore'">
 			<title>
 				<de>Cormorano</de>
 				<en>Cormoran</en>
@@ -544,7 +544,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<availability year_range_from="1980" year_range_to="1988" />
 		</ad>
 
-		<ad id="63b71a79-7c9b-48b5-a3d7-4650433bc078" comment="1989 - 1991 | https://en.wikipedia.org/wiki/Commodore_International | https://en.wikipedia.org/wiki/Amiga | from Mad TV as 'Commodore'">
+		<ad guid="63b71a79-7c9b-48b5-a3d7-4650433bc078" comment="1989 - 1991 | https://en.wikipedia.org/wiki/Commodore_International | https://en.wikipedia.org/wiki/Amiga | from Mad TV as 'Commodore'">
 			<title>
 				<de>Cormorano</de>
 				<en>Cormoran</en>
@@ -559,7 +559,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<availability year_range_from="1989" year_range_to="1991" />
 		</ad>
 
-		<ad id="958ad4f5-76bf-467a-877a-b904fba5d45d" comment="1992 - 1996 | https://en.wikipedia.org/wiki/Commodore_International | https://en.wikipedia.org/wiki/Commodore_CDTV | from Mad TV as 'Commodore'">
+		<ad guid="958ad4f5-76bf-467a-877a-b904fba5d45d" comment="1992 - 1996 | https://en.wikipedia.org/wiki/Commodore_International | https://en.wikipedia.org/wiki/Commodore_CDTV | from Mad TV as 'Commodore'">
 			<title>
 				<de>Cormorano</de>
 				<en>Cormoran</en>
@@ -574,7 +574,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<availability year_range_from="1992" year_range_to="1996" />
 		</ad>
 
-		<ad id="ba7c0e52-f960-4aa7-b85a-b5c673c53f4e" comment="1997 - forever | https://en.wikipedia.org/wiki/Commodore_International | also https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'Commodore'">
+		<ad guid="ba7c0e52-f960-4aa7-b85a-b5c673c53f4e" comment="1997 - forever | https://en.wikipedia.org/wiki/Commodore_International | also https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'Commodore'">
 			<title>
 				<de>Cormorano Forever</de>
 				<en>Cormoran Forever</en>
@@ -589,7 +589,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<availability year_range_from="1997" year_range_to="-1" />
 		</ad>
 
-		<ad id="dd8f1816-8f10-4b3b-9a67-d46f7bba1394" comment="https://en.wikipedia.org/wiki/BP | from Mad TV as 'BP'">
+		<ad guid="dd8f1816-8f10-4b3b-9a67-d46f7bba1394" comment="https://en.wikipedia.org/wiki/BP | from Mad TV as 'BP'">
 			<title>
 				<de>PB</de>
 			</title>
@@ -602,7 +602,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="17" repetitions="8" duration="4" profit="325" penalty="1053" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="8514f4a6-7407-4d23-b729-1d027df18397" comment="https://en.wikipedia.org/wiki/Shell_plc">
+		<ad guid="8514f4a6-7407-4d23-b729-1d027df18397" comment="https://en.wikipedia.org/wiki/Shell_plc">
 			<title>
 				<de>Swell</de>
 			</title>
@@ -615,7 +615,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="10" repetitions="6" duration="8" profit="305" penalty="600" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="bafb4492-6f43-4674-9b02-bd6c4496eecd" comment="https://en.wikipedia.org/wiki/Colgate-Palmolive | from Mad TV as 'Colgate'">
+		<ad guid="bafb4492-6f43-4674-9b02-bd6c4496eecd" comment="https://en.wikipedia.org/wiki/Colgate-Palmolive | from Mad TV as 'Colgate'">
 			<title>
 				<de>Calgonti</de>
 			</title>
@@ -628,7 +628,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="21" repetitions="4" duration="2" profit="190" penalty="450" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="ca93584b-c7ca-4358-8a13-92620c18c9fc" comment="maybe spoof of https://en.wikipedia.org/wiki/American_Airlines | from Mad TV as 'TWAN' and as the German version/'translation' of Lufthansa | could perhaps nowadays also be understood as a spoof of https://en.wikipedia.org/wiki/T%27way_Air">
+		<ad guid="ca93584b-c7ca-4358-8a13-92620c18c9fc" comment="maybe spoof of https://en.wikipedia.org/wiki/American_Airlines | from Mad TV as 'TWAN' and as the German version/'translation' of Lufthansa | could perhaps nowadays also be understood as a spoof of https://en.wikipedia.org/wiki/T%27way_Air">
 			<title>
 				<de>TWAN</de>
 			</title>
@@ -641,7 +641,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="35" repetitions="5" duration="8" profit="170" penalty="300" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="2f6bffc9-e5eb-4670-86e9-7afa31e7f96b" comment="https://en.wikipedia.org/wiki/Lufthansa | from Mad TV as 'Lufthansa' and as the English version/'translation' of TWAN">
+		<ad guid="2f6bffc9-e5eb-4670-86e9-7afa31e7f96b" comment="https://en.wikipedia.org/wiki/Lufthansa | from Mad TV as 'Lufthansa' and as the English version/'translation' of TWAN">
 			<title>
 				<de>Luefthaensel</de>
 			</title>
@@ -654,7 +654,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="12" repetitions="8" duration="2" profit="125" penalty="200" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="31da2056-1a11-494b-96f0-56f4de5303b5" comment="https://en.wikipedia.org/wiki/Diet_Coke | from Mad TV as 'Coke Light'">
+		<ad guid="31da2056-1a11-494b-96f0-56f4de5303b5" comment="https://en.wikipedia.org/wiki/Diet_Coke | from Mad TV as 'Coke Light'">
 			<title>
 				<de>Cacca Lite</de>
 			</title>
@@ -667,7 +667,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="15" repetitions="6" duration="4" profit="255" penalty="380" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="d282e6e6-56bd-4a84-9ca4-e116487a92eb" comment="https://en.wikipedia.org/wiki/Coca-Cola | from Mad TV as 'Coca Cola'">
+		<ad guid="d282e6e6-56bd-4a84-9ca4-e116487a92eb" comment="https://en.wikipedia.org/wiki/Coca-Cola | from Mad TV as 'Coca Cola'">
 			<title>
 				<de>Cacca Cola</de>
 			</title>
@@ -680,7 +680,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="29" repetitions="2" duration="1" profit="215" penalty="370" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="cf761426-1bda-44da-bcfc-ff5a8311d471" comment="https://en.wikipedia.org/wiki/Coca-Cola_Zero_Sugar">
+		<ad guid="cf761426-1bda-44da-bcfc-ff5a8311d471" comment="https://en.wikipedia.org/wiki/Coca-Cola_Zero_Sugar">
 			<title>
 				<de>Cacca Zilch</de>
 			</title>
@@ -693,7 +693,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="17" repetitions="4" duration="4" profit="290" penalty="500" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="cb34354a-5ba8-487d-8c28-bda35544e9b4" comment="from Mad TV">
+		<ad guid="cb34354a-5ba8-487d-8c28-bda35544e9b4" comment="from Mad TV">
 			<title>
 				<de>China-Wok</de>
 				<en>China Wok</en>
@@ -709,7 +709,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="6" repetitions="3" duration="8" profit="460" penalty="600" infomercial_profit="127" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="213e13bd-0723-4b34-b6b7-78ca29dfd0ab" comment="from Mad TV">
+		<ad guid="213e13bd-0723-4b34-b6b7-78ca29dfd0ab" comment="from Mad TV">
 			<title>
 				<de>SUN</de>
 			</title>
@@ -723,7 +723,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="1" repetitions="5" duration="5" profit="500" penalty="1300" infomercial_profit="198" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="00b7348c-0215-4de4-8328-9a6633251e68" comment="from Mad TV as English version/'translation' of 'Baraus'">
+		<ad guid="00b7348c-0215-4de4-8328-9a6633251e68" comment="from Mad TV as English version/'translation' of 'Baraus'">
 			<title>
 				<de>Cashback</de>
 			</title>
@@ -737,7 +737,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="33" repetitions="7" duration="7" profit="366" penalty="524" infomercial_profit="74" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="0dda9953-176f-4279-aa0f-c804f911b53f" comment="from Mad TV as the English version/'translation' of 'Camel'">
+		<ad guid="0dda9953-176f-4279-aa0f-c804f911b53f" comment="from Mad TV as the English version/'translation' of 'Camel'">
 			<title>
 				<de>Maple-Translate</de>
 			</title>
@@ -750,7 +750,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="14" repetitions="1" duration="4" profit="345" penalty="1200" infomercial_profit="46" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="a829e080-3657-42f5-9dc1-44a3d89700d0" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi'">
+		<ad guid="a829e080-3657-42f5-9dc1-44a3d89700d0" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi'">
 			<title>
 				<de>Pipsi Cola</de>
 				<en>Pipsi Cola</en>
@@ -765,7 +765,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="24" repetitions="4" duration="7" profit="400" penalty="1300" infomercial_profit="188" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="004b7c26-60cf-4f19-92ca-5d297ed5b1e0" comment="https://en.wikipedia.org/wiki/Camel_(cigarette) | from Mad TV as 'Camel' and as the German version/'translation' of 'Maple-Translate'">
+		<ad guid="004b7c26-60cf-4f19-92ca-5d297ed5b1e0" comment="https://en.wikipedia.org/wiki/Camel_(cigarette) | from Mad TV as 'Camel' and as the German version/'translation' of 'Maple-Translate'">
 			<title>
 				<de>Dromedar</de>
 				<en>Dromedary</en>
@@ -780,7 +780,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="20" repetitions="8" duration="1" profit="355" penalty="1000" infomercial_profit="72" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="bb2a341c-1b25-4934-9493-2b4890eee942" comment="from Mad TV">
+		<ad guid="bb2a341c-1b25-4934-9493-2b4890eee942" comment="from Mad TV">
 			<title>
 				<de>CredCard</de>
 			</title>
@@ -793,7 +793,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="14" repetitions="8" duration="1" profit="365" penalty="2573" infomercial_profit="177" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="a7ce6b0f-b72a-4fec-9395-77d08220ac1f" comment="from Mad TV">
+		<ad guid="a7ce6b0f-b72a-4fec-9395-77d08220ac1f" comment="from Mad TV">
 			<title>
 				<de>Softshop</de>
 			</title>
@@ -806,7 +806,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="23" repetitions="5" duration="6" profit="1250" penalty="2300" infomercial_profit="222" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="4810a736-c8c3-4968-bb56-ebf144e153f7" comment="from Mad TV as the English version/'translation' of 'Marlboro Light'">
+		<ad guid="4810a736-c8c3-4968-bb56-ebf144e153f7" comment="from Mad TV as the English version/'translation' of 'Marlboro Light'">
 			<title>
 				<de>KD Wirtschaftsprüfer</de>
 				<en>KD Accounting</en>
@@ -821,7 +821,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="14" repetitions="1" duration="7" profit="500" penalty="2246" infomercial_profit="12" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="4d699d7d-d90e-4948-8d48-0711a10548d6" comment="from Mad TV as the English version/'translation' of 'Marlboro'">
+		<ad guid="4d699d7d-d90e-4948-8d48-0711a10548d6" comment="from Mad TV as the English version/'translation' of 'Marlboro'">
 			<title>
 				<de>MU Verwaltungsgesellschaft</de>
 				<en>MU Management</en>
@@ -836,7 +836,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="17" repetitions="6" duration="5" profit="1050" penalty="2930" infomercial_profit="235" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="e33f91eb-89f4-4b3e-8099-ab0de27d0ef7" comment="from Mad TV as German version/'translation' of 'Cashback'">
+		<ad guid="e33f91eb-89f4-4b3e-8099-ab0de27d0ef7" comment="from Mad TV as German version/'translation' of 'Cashback'">
 			<title>
 				<de>Baraus</de>
 				<en>Corner Bank</en>
@@ -851,7 +851,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="13" repetitions="5" duration="6" profit="750" penalty="1100" infomercial_profit="176" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="8b945529-7cc6-46a8-b572-47189c26b43a" comment="description from Mad TV 'Aunt Lizzy'; title already existing in TVTower, hence the variation">
+		<ad guid="8b945529-7cc6-46a8-b572-47189c26b43a" comment="description from Mad TV 'Aunt Lizzy'; title already existing in TVTower, hence the variation">
 			<title>
 				<de>Aunt Lucy's</de>
 				<pl>Od Cioci Lucy</pl>
@@ -865,7 +865,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="6" repetitions="5" duration="4" profit="2250" penalty="3100" infomercial_profit="31" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="8be83e54-ef37-44e4-9bc1-1df0eded9843" comment="another 'Aunt Lizzy' variation for fun and profit">
+		<ad guid="8be83e54-ef37-44e4-9bc1-1df0eded9843" comment="another 'Aunt Lizzy' variation for fun and profit">
 			<title>
 				<de>Aunt Lilly's</de>
 				<pl>Od Cioci Lilly</pl>
@@ -879,7 +879,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="14" repetitions="7" duration="6" profit="3400" penalty="4400" infomercial_profit="121" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="1980daac-be0e-472b-8787-8eb19b7691a2" comment="https://en.wikipedia.org/wiki/Marlboro | from Mad TV 'Marlboro Light'">
+		<ad guid="1980daac-be0e-472b-8787-8eb19b7691a2" comment="https://en.wikipedia.org/wiki/Marlboro | from Mad TV 'Marlboro Light'">
 			<title>
 				<de>Murlborough Light</de>
 			</title>
@@ -892,7 +892,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="25" repetitions="7" duration="3" profit="450" penalty="1300" infomercial_profit="135" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="79d8d9b9-934a-4a54-afd0-c3f0c22cae92" comment="https://en.wikipedia.org/wiki/Atari | from Mad TV as 'Atari'">
+		<ad guid="79d8d9b9-934a-4a54-afd0-c3f0c22cae92" comment="https://en.wikipedia.org/wiki/Atari | from Mad TV as 'Atari'">
 			<title>
 				<de>Arrati</de>
 			</title>
@@ -905,7 +905,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="11" repetitions="5" duration="2" profit="345" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="b23cec38-36fb-4ece-b182-9e1bd95490c5" comment="https://en.wikipedia.org/wiki/Marlboro | from Mad TV 'Marlboro'">
+		<ad guid="b23cec38-36fb-4ece-b182-9e1bd95490c5" comment="https://en.wikipedia.org/wiki/Marlboro | from Mad TV 'Marlboro'">
 			<title>
 				<de>Murlborough</de>
 			</title>
@@ -918,7 +918,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="35" repetitions="2" duration="6" profit="400" penalty="1235" infomercial_profit="282" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="5fc3f896-7c85-4ecc-aca6-8d689eaf2291" creator="9584" created_by="Stukov" comment="from Mad TV">
+		<ad guid="5fc3f896-7c85-4ecc-aca6-8d689eaf2291" creator="9584" created_by="Stukov" comment="from Mad TV">
 			<title>
 				<de>Adventravel</de>
 				<pl>Biuro podróży "Przygoda"</pl>
@@ -932,7 +932,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="14" repetitions="4" duration="5" profit="350" penalty="600" infomercial_profit="7" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="01a5c6ea-105c-4aab-a5ab-f03393ad2ca0" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Rainbow_Arts | from Mad TV as 'Rainbow Arts' and as the English version/'translation' of 'PC-Soundman'">
+		<ad guid="01a5c6ea-105c-4aab-a5ab-f03393ad2ca0" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Rainbow_Arts | from Mad TV as 'Rainbow Arts' and as the English version/'translation' of 'PC-Soundman'">
 			<title>
 				<de>RegenbogenWünsche</de>
 				<en>RainbowWishes</en>
@@ -947,7 +947,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="11" repetitions="5" duration="6" profit="2100" penalty="2500" infomercial_profit="120" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="973bdff8-3080-4c19-b606-8711c350d5e1" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi Light'">
+		<ad guid="973bdff8-3080-4c19-b606-8711c350d5e1" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi Light'">
 			<title>
 				<de>Pipsi Lite</de>
 			</title>
@@ -960,7 +960,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="15" repetitions="7" duration="2" profit="550" penalty="1500" infomercial_profit="147" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="c76f9b7d-c5b1-4782-ae8a-0f0437b3b006" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Citro%C3%ABn">
+		<ad guid="c76f9b7d-c5b1-4782-ae8a-0f0437b3b006" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Citro%C3%ABn">
 			<title>
 				<de>Citröneaux</de>
 			</title>
@@ -973,7 +973,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="2" repetitions="1" duration="3" profit="690" penalty="2613" infomercial_profit="171" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="e077fcb9-5216-42d0-82b1-ec9b1b518345" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Renault | https://en.wikipedia.org/wiki/Peugeot">
+		<ad guid="e077fcb9-5216-42d0-82b1-ec9b1b518345" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Renault | https://en.wikipedia.org/wiki/Peugeot">
 			<title>
 				<de>Peureault</de>
 			</title>
@@ -986,7 +986,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="4" repetitions="2" duration="4" profit="540" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="51f64ecc-81f6-4feb-a924-6e4f60f1b10c" comment="https://en.wikipedia.org/wiki/Persil">
+		<ad guid="51f64ecc-81f6-4feb-a924-6e4f60f1b10c" comment="https://en.wikipedia.org/wiki/Persil">
 			<title>
 				<de>Serpil</de>
 			</title>
@@ -999,7 +999,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="9" repetitions="5" duration="4" profit="320" penalty="750" infomercial_profit="193" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="17b1fe94-9767-4f76-9ed1-300cd67918d0" comment="https://en.wikipedia.org/wiki/BMW">
+		<ad guid="17b1fe94-9767-4f76-9ed1-300cd67918d0" comment="https://en.wikipedia.org/wiki/BMW">
 			<title>
 				<de>BWM</de>
 			</title>
@@ -1012,7 +1012,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="11" repetitions="3" duration="5" profit="280" penalty="600" infomercial_profit="3" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="da24ef42-563d-4a70-92e9-0bd72ac8555a" comment="created with help of ChatGPT">
+		<ad guid="da24ef42-563d-4a70-92e9-0bd72ac8555a" comment="created with help of ChatGPT">
 			<title>
 				<de>BioBlast AG</de>
 				<en>BioBlast Inc.</en>
@@ -1027,7 +1027,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="5" repetitions="3" duration="5" profit="330" penalty="700" infomercial_profit="200" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="608e2267-fd60-4122-9856-31164d876d4c" comment="created with help of ChatGPT">
+		<ad guid="608e2267-fd60-4122-9856-31164d876d4c" comment="created with help of ChatGPT">
 			<title>
 				<de>TrekTrove</de>
 			</title>
@@ -1040,7 +1040,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="35" repetitions="2" duration="6" profit="400" penalty="1000" infomercial_profit="279" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="1e231e27-176a-4277-861b-120d9dc6752d" comment="variation of Mad TV 'Andrae Design'">
+		<ad guid="1e231e27-176a-4277-861b-120d9dc6752d" comment="variation of Mad TV 'Andrae Design'">
 			<title>
 				<de>Azzini Design</de>
 			</title>
@@ -1053,7 +1053,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="18" repetitions="5" duration="6" profit="3600" penalty="4800" infomercial_profit="51" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="eb1d4213-6171-40d5-bf87-8cd7071ce467" comment="variation of Mad TV 'Andrae Design'">
+		<ad guid="eb1d4213-6171-40d5-bf87-8cd7071ce467" comment="variation of Mad TV 'Andrae Design'">
 			<title>
 				<de>Aubert Design</de>
 			</title>
@@ -1066,7 +1066,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="26" repetitions="3" duration="4" profit="2200" penalty="3000" infomercial_profit="151" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad id="S8e075bfd-9aaa-47e1-ae24-bfc938fc490a" comment="from Mad TV 'Andrae Design' | related to person 689823f6-f7e2-4128-817f-88ed42132501">
+		<ad guid="S8e075bfd-9aaa-47e1-ae24-bfc938fc490a" comment="from Mad TV 'Andrae Design' | related to person 689823f6-f7e2-4128-817f-88ed42132501">
 			<title>
 				<de>Andrey Design</de>
 			</title>
