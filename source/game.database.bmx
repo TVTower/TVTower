@@ -1113,7 +1113,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementFromNode:TAchievement(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -1197,7 +1197,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementElementFromNode:Int(elementName:String="task", source:TAchievement, node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)

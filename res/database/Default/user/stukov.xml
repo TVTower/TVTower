@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3" />
 	<allachievements>
-		<achievement id="Stukov-Liebesfilm100" creator="" created_by="Stukov">
+		<achievement guid="Stukov-Liebesfilm100" creator="" created_by="Stukov">
 			<title>
 				<de>Liebe ist in der Luft</de>
 				<en>Love Is In the Air</en>
@@ -11,7 +11,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="Stukov-Task-Liebesfilm100" creator="" created_by="Stukov">
+				<task guid="Stukov-Task-Liebesfilm100" creator="" created_by="Stukov">
 					<title>
 						<de>Erreiche 100.000 Zuschauer mit einem Liebesfilm</de>
 						<en>Reach an audience of 100,000 with a love story</en>
@@ -26,7 +26,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="Stukov-Reward-Liebesfilm100" creator="" created_by="Stukov">
+				<reward guid="Stukov-Reward-Liebesfilm100" creator="" created_by="Stukov">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -37,7 +37,7 @@
 			<data flags="0" group="1" category="1" index="4" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 
-		<achievement id="Stukov-Liebesfilm300" creator="" created_by="Stukov">
+		<achievement guid="Stukov-Liebesfilm300" creator="" created_by="Stukov">
 			<title>
 				<de>Noch mehr Liebe ist in der Luft</de>
 				<en>Even More Love Is In the Air</en>
@@ -45,7 +45,7 @@
 			</title>
 			<text />
 			<tasks>
-				<task id="Stukov-Task-Liebesfilm300" creator="" created_by="Stukov">
+				<task guid="Stukov-Task-Liebesfilm300" creator="" created_by="Stukov">
 					<title>
 						<de>Erreiche 300.000 Zuschauer mit einem Liebesfilm</de>
 						<en>Reach an audience of 300,000 with a love story</en>
@@ -60,7 +60,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="Stukov-Reward-Liebesfilm300" creator="" created_by="Stukov">
+				<reward guid="Stukov-Reward-Liebesfilm300" creator="" created_by="Stukov">
 					<title />
 					<text />
 					<data type="money" money="100000" />
@@ -69,7 +69,7 @@
 			<data flags="0" group="1" category="1" index="4" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 
-		<achievement id="Stukov-Liebesfilm1000" creator="" created_by="Stukov">
+		<achievement guid="Stukov-Liebesfilm1000" creator="" created_by="Stukov">
 			<title>
 				<de>Die Liebe blüht unendlich</de>
 				<en>Love Blossoms Endlessly</en>
@@ -77,7 +77,7 @@
 			</title>
 			<text />
 			<tasks>
-				<task id="Stukov-Task-Liebesfilm1000" creator="" created_by="Stukov">
+				<task guid="Stukov-Task-Liebesfilm1000" creator="" created_by="Stukov">
 					<title>
 						<de>Erreiche 1.000.000 Zuschauer mit einem Liebesfilm</de>
 						<en>Reach an audience of 1,000,000 with a love story</en>
@@ -92,7 +92,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="Stukov-Reward-Liebesfilm1000" creator="" created_by="Stukov">
+				<reward guid="Stukov-Reward-Liebesfilm1000" creator="" created_by="Stukov">
 					<title />
 					<text />
 					<data type="money" money="200000" />

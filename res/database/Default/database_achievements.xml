@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3" />
 	<allachievements>
-		<achievement id="tvt-gameachievement-audience1" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-audience1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Lokalsender</de>
 				<en>Regional broadcaster</en>
@@ -11,7 +11,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-audience1" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-audience1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 250.000 Zuschauer</de>
 						<en>Reach an audience of 250,000</en>
@@ -26,7 +26,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-audience1" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-audience1" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -36,7 +36,7 @@
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
 			<data flags="0" group="1" category="1" index="1" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-audience2" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-audience2" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sender auf Überholspur</de>
 				<en>Broadcaster in the fast lane</en>
@@ -45,7 +45,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-audience2" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-audience2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 2,5 Millionen Zuschauer</de>
 						<en>Reach an audience of 2.5 million</en>
@@ -60,7 +60,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-audience2" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-audience2" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -70,7 +70,7 @@
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
 			<data flags="0" group="1" category="1" index="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-audience3" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-audience3" creator="5578" created_by="Ronny">
 			<title>
 				<de>Man kennt uns</de>
 				<en>They know us</en>
@@ -79,7 +79,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-audience3" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-audience3" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 10 Millionen Zuschauer</de>
 						<en>Reach an audience of 10 million</en>
@@ -94,7 +94,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-audience3" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-audience3" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -104,7 +104,7 @@
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
 			<data flags="0" group="1" category="1" index="3" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-newsaudience1" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-newsaudience1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wald- und Wiesenjournalismus</de>
 				<en>Everyday journalism</en>
@@ -113,7 +113,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-newsaudience1" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-newsaudience1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 150.000 Zuschauer mit Nachrichten</de>
 						<en>Reach an audience of 150.000 with a news show</en>
@@ -128,7 +128,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-newsaudience1" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-newsaudience1" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -138,7 +138,7 @@
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
 			<data flags="0" group="2" category="2" index="1" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-newsaudience2" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-newsaudience2" creator="5578" created_by="Ronny">
 			<title>
 				<de>Lokaljournalismus</de>
 				<en>Regional journalism</en>
@@ -147,7 +147,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-newsaudience2" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-newsaudience2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 1 Million Zuschauer mit Nachrichten</de>
 						<en>Reach an audience of 1 million with a news broadcast</en>
@@ -162,7 +162,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-newsaudience2" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-newsaudience2" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -172,7 +172,7 @@
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
 			<data flags="0" group="2" category="2" index="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-newsaudience3" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-newsaudience3" creator="5578" created_by="Ronny">
 			<title>
 				<de>Nachrichten für alle</de>
 				<en>News for everyone</en>
@@ -181,7 +181,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-newsaudience3" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-newsaudience3" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erreiche 5 Million Zuschauer mit Nachrichten</de>
 						<en>Reach an audience of 5 million with a news broadcast</en>
@@ -196,7 +196,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-newsaudience3" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-newsaudience3" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -206,7 +206,7 @@
 			<!-- flags = 0. "0" fuer "keine Besonderheiten" -->
 			<data flags="0" group="2" category="2" index="3" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-reachBroadcastArea1" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-reachBroadcastArea1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sendegebiet „Bronze“</de>
 				<en>Broadcast Area "Bronze"</en>
@@ -215,7 +215,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-reachBroadcastArea1" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-reachBroadcastArea1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sendegebiet mit 2,5 Millionen Empfängern</de>
 						<en>Broadcast area with 2.5 million receivers</en>
@@ -230,7 +230,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-reachBroadcastArea1" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-reachBroadcastArea1" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -240,7 +240,7 @@
 			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
 			<data flags="2" group="3" category="4" index="1" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-reachBroadcastArea2" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-reachBroadcastArea2" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sendegebiet „Silber“</de>
 				<en>Broadcast Area "Silver"</en>
@@ -249,7 +249,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-reachBroadcastArea2" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-reachBroadcastArea2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sendegebiet mit 10 Millionen Empfängern</de>
 						<en>Broadcast area with 10 million receivers</en>
@@ -264,7 +264,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-reachBroadcastArea2" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-reachBroadcastArea2" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -274,7 +274,7 @@
 			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
 			<data flags="2" group="3" category="4" index="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
-		<achievement id="tvt-gameachievement-reachBroadcastArea3" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-reachBroadcastArea3" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sendegebiet „Gold“</de>
 				<en>Broadcast Area "Gold"</en>
@@ -283,7 +283,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-reachBroadcastArea3" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-reachBroadcastArea3" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sendegebiet mit 25 Millionen Empfängern</de>
 						<en>Broadcast area with 25 million receivers</en>
@@ -298,7 +298,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-reachBroadcastArea3" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-reachBroadcastArea3" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -309,7 +309,7 @@
 			<data flags="2" group="3" category="4" index="3" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
 		</achievement>
 
-		<achievement id="tvt-gameachievement-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wetterfrosch</de>
 				<en>Tree Frog</en>
@@ -318,7 +318,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sende 3 Wetterberichte</de>
 						<en>Broadcast 3 weather forecasts</en>
@@ -333,7 +333,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-broadcastNewsShow-weather1" creator="5578" created_by="Ronny">
 					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					<title />
 					<text />
@@ -342,7 +342,7 @@
 			</rewards>
 			<data flags="0" group="4" category="2" index="1" />
 		</achievement>
-		<achievement id="tvt-gameachievement-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Klatschreporter</de>
 				<en>Gossip reporter</en>
@@ -351,7 +351,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-broadcastNewsShow-showbiz1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sende 3 Showbiz-Nachrichten</de>
 						<en>Broadcast 3 showbiz news</en>
@@ -366,7 +366,7 @@
 				</task>
 			</tasks>
 			<rewards>
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
+				<reward guid="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" creator="5578" created_by="Ronny">
 			<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
 					
 					<title />
@@ -377,7 +377,7 @@
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
-		<achievement id="tvt-gameachievement-broadcastNewsShow-culture1" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-broadcastNewsShow-culture1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kulturkult</de>
 				<en>Culture cult</en>
@@ -386,7 +386,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-broadcastNewsShow-culture1" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-broadcastNewsShow-culture1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sende 3 Kultur-Nachrichten</de>
 						<en>Broadcast 3 culture news</en>
@@ -402,11 +402,11 @@
 			</tasks>
 			<rewards>
 				<!-- gleiche Belohnung wie "Klatschreporter" -->
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
+				<reward guid="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
-		<achievement id="tvt-gameachievement-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
+		<achievement guid="tvt-gameachievement-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sport frei</de>
 				<en>All about sport</en>
@@ -415,7 +415,7 @@
 			<!-- kein Text = automatisches Generieren aus Aufgabentext + Belohnung -->
 			<text />
 			<tasks>
-				<task id="tvt-gameachievement-task-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
+				<task guid="tvt-gameachievement-task-broadcastNewsShow-sport1" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sende 3 Sport-Nachrichten</de>
 						<en>Broadcast 3 sport news</en>
@@ -431,7 +431,7 @@
 			</tasks>
 			<rewards>
 				<!-- gleiche Belohnung wie "Klatschreporter" -->
-				<reward id="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
+				<reward guid="tvt-gameachievement-reward-broadcastNewsShow-3newsgenres" />
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
