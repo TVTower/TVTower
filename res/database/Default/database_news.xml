@@ -233,7 +233,7 @@
 			</description>
 			<data genre="2" price="1" quality="60" fictional="0" flags="2" happen_time="5,1985,1985,3,3,1,15" /> <!-- forerun, actual date 1985-03-31 -->
 			<effects>
-				<effect trigger="happen" type="modifyMovieGenrePopularity" genre="200" valueMin="0.5" valueMax="2.0" /> <!-- TODO: specify programme id instead -->
+				<effect trigger="happen" type="modifyMovieGenrePopularity" genre="200" valueMin="0.5" valueMax="2.0" /> <!-- TODO: specify programme guid instead -->
 			</effects>
 		</news>
 

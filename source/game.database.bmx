@@ -1430,9 +1430,9 @@ Type TDatabaseLoader
 
 
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
-		Local GUID:String = TXmlHelper.FindValueLC(node,"id", "")
+		Local GUID:String = TXmlHelper.FindValueLC(node,"guid", "")
 		'referencing an already existing programmedata? Or just use "data-GUID"
-		Local dataGUID:String = TXmlHelper.FindValueLC(node,"programmedata_id", "data-"+GUID)
+		Local dataGUID:String = TXmlHelper.FindValueLC(node,"programmedata_guid", "data-"+GUID)
 		'forgot to prepend "data-" ?
 		If dataGUID.Find("data-") <> 0 Then dataGUID = "data-"+dataGUID
 

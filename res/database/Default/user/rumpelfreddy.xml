@@ -847,7 +847,7 @@
 	</celebritypeople>
 
 	<allprogrammes>
-		<programme id="Freddy_Film_CustomB_1" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_1" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Express nach Sibirien</de>
 				<en>Express to Siberia</en>
@@ -872,7 +872,7 @@
 			<ratings critics="23" speed="8" outcome="9" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_2" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_2" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Tempel des Grauens</de>
 				<en>Temple of Horror</en>
@@ -896,7 +896,7 @@
 			<ratings critics="11" speed="43" outcome="14" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_3" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_3" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Tempel der Verdammnis</de>
 				<en>Temple of Doom</en>
@@ -920,7 +920,7 @@
 			<ratings critics="10" speed="38" outcome="15" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_4" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_4" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Tempel der Mumie</de>
 				<en>Temple of the Mummy</en>
@@ -944,7 +944,7 @@
 			<ratings critics="7" speed="39" outcome="18" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_5" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_5" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Das Rennen zum Nordpol</de>
 				<en>The Race to the North Pole</en>
@@ -968,7 +968,7 @@
 			<ratings critics="19" speed="12" outcome="9" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_6" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_6" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Glück in Schweden</de>
 				<en>Happiness in Sweden</en>
@@ -993,7 +993,7 @@
 			<ratings critics="8" speed="16" outcome="9" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_7" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy" comment="Prequels now added: 048e8ec6-6c8f-4878-b16b-f1db4d3fd931 | TODO: Continuation as screenplays">
+		<programme guid="Freddy_Film_CustomB_7" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy" comment="Prequels now added: 048e8ec6-6c8f-4878-b16b-f1db4d3fd931 | TODO: Continuation as screenplays">
 			<title>
 				<de>Kroko See 6</de>
 				<en>Croco Lake 6</en>
@@ -1018,7 +1018,7 @@
 			<ratings critics="4" speed="48" outcome="9" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_8" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_8" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>27 sind nicht genug</de>
 				<en>27 Are Not Enough</en>
@@ -1043,7 +1043,7 @@
 			<ratings critics="7" speed="51" outcome="19" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_9" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_9" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Midgards Schlacht um die Erde</de>
 				<en>Midgards Battle for Earth</en>
@@ -1068,7 +1068,7 @@
 			<ratings critics="11" speed="43" outcome="19" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_10" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_10" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Tiefsee Dinoschrecken, Banzai</de>
 				<en>Dino Deep Sea Terror, Banzai</en>
@@ -1090,7 +1090,7 @@
 			<ratings critics="8" speed="37" outcome="13" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_11" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_11" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Metzel Mambo</de>
 				<en>Slaughter Mambo</en>
@@ -1115,7 +1115,7 @@
 			<ratings critics="3" speed="61" outcome="19" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_12" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_12" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Frucht Kung Fu</de>
 				<en>Fruit Kung Fu</en>
@@ -1143,7 +1143,7 @@
 			</effects>
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_13" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_13" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Frucht Kung Fu 2</de>
 				<en>Fruit Kung Fu 2</en>
@@ -1170,7 +1170,7 @@
 			</effects>
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_14" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy" comment="TODO: Continuation as screenplays">
+		<programme guid="Freddy_Film_CustomB_14" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy" comment="TODO: Continuation as screenplays">
 			<title>
 				<de>Frucht Kung Fu 3</de>
 				<en>Fruit Kung Fu 3</en>
@@ -1194,7 +1194,7 @@
 			<ratings critics="2" speed="32" outcome="4" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_15" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_15" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Santa gegen die Magmazwerge</de>
 				<en>Santa Against the Magma Dwarfs</en>
@@ -1217,7 +1217,7 @@
 			<ratings critics="7" speed="18" outcome="22" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_16" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
+		<programme guid="Freddy_Film_CustomB_16" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Julia in der Feenwelt</de>
 				<en>Julia In the Fairy World</en>
@@ -1238,7 +1238,7 @@
 			<ratings critics="6" speed="12" outcome="27" />
 		</programme>
 		
-		<programme id="Freddy_Film_CustomB_17" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy" comment="Prequels now added: 6a11e4c6-eb2b-49b2-b6e6-deb2957ca8cb | TODO: Continuation as screenplays">
+		<programme guid="Freddy_Film_CustomB_17" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy" comment="Prequels now added: 6a11e4c6-eb2b-49b2-b6e6-deb2957ca8cb | TODO: Continuation as screenplays">
 			<title>
 				<de>Super Mega Duper Teenage Kraft Roboter 4</de>
 				<en>Super Duper Mega Teenage Robot Force 4</en>

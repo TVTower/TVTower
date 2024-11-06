@@ -7,7 +7,7 @@
 	</insignificantpeople>
 
 	<allprogrammes>
-		<programme id="ronny-programme-livereportage-raketenstart1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-livereportage-raketenstart1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Erster Start der Ariane-2</de>
 				<en>First Launch of Ariane-2</en>
@@ -28,7 +28,7 @@
 			</modifiers>		
 		</programme>
 		<!--TODO: Sport events could be done by a generator -->
-		<programme id="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sommerolympiade 1988 in Seoul</de>
 				<en>Summer Olympics 1988 in Seoul</en>
@@ -49,7 +49,7 @@
 				<modifier name="topicality::age" value="3.0" />
 			</modifiers>
 		</programme>
-		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-kutler-wunderwaffen" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Wunderwaffen</de>
 				<en>Kutler's Wunderwaffen</en>
@@ -70,7 +70,7 @@
 			<releaseTime year_relative="-4" year_relative_min="1975" year_relative_max="1990" />
 			<ratings critics="45" speed="20" outcome="24" />
 		</programme>
-		<programme id="ronny-programme-doku-kutler-alaaf" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-kutler-alaaf" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Keil Kutler und Koelle Alaaf</de>
 				<en>Keil Kutler and &quot;Koelle Alaaf&quot;</en>
@@ -91,7 +91,7 @@
 			<releaseTime year_relative="-3" year_relative_min="1976" year_relative_max="1991" />
 			<ratings critics="38" speed="28" outcome="27" />
 		</programme>
-		<programme id="ronny-programme-doku-kutler-untergang" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-kutler-untergang" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Untergang</de>
 				<en>Kutler's Downfall</en>
@@ -112,7 +112,7 @@
 			<releaseTime year_relative="+2" year_relative_min="1979" year_relative_max="1993" />
 			<ratings critics="49" speed="30" outcome="20" />
 		</programme>
-		<programme id="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>BTX - Neue digitale Welt</de>
 				<en>BTX - New Digital World</en>
@@ -132,7 +132,7 @@
 			<releaseTime year_relative="-4" year_relative_min="1981" year_relative_max="1983" />
 			<ratings critics="55" speed="15" outcome="25" />
 		</programme>
-		<programme id="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny" comment="TODO: More of these tech docus through the decades, and make them age much faster">
+		<programme guid="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny" comment="TODO: More of these tech docus through the decades, and make them age much faster">
 			<title>
 				<de>Mikroelektronik - Willkommen in der Zukunft</de>
 				<en>Microelectronics - Welcome to the Future</en>
@@ -155,7 +155,7 @@ Witamy w przyszłości.</pl>
 			<ratings critics="40" speed="12" outcome="22" />
 		</programme>
 		<!-- 'Fruit Inc.' moved to database_programmes.xml -->
-		<programme id="ronny-programme-pantoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-pantoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wahre Pantoffelhelden</de>
 				<en>Truly Henpecked</en>
@@ -179,7 +179,7 @@ Witamy w przyszłości.</pl>
 			<data country="D" year="1983" distribution="2" maingenre="9" subgenre="15" flags="16" blocks="2" price_mod="0.9" />
 			<ratings critics="40" speed="20" outcome="48" />
 		</programme>
-		<programme id="ronny-programme-kartoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-kartoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Kartoffelkönigin</de>
 				<en>The Potato Queen</en>
@@ -205,7 +205,7 @@ Witamy w przyszłości.</pl>
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
 
-		<programme id="ronny-programme-kaugummitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-kaugummitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Der große Kaugummitest</de>
 				<en>The Great Chewing Gum Check</en>
@@ -225,7 +225,7 @@ Witamy w przyszłości.</pl>
 			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="2000" />
 			<ratings critics="18" speed="25" />
 		</programme>
-		<programme id="ronny-programme-feilschen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-feilschen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Feilschen will gelernt sein</de>
 				<en>Haggling Is a Skill</en>
@@ -245,7 +245,7 @@ Witamy w przyszłości.</pl>
 			<releaseTime year_relative="-8" year_relative_min="1976" year_relative_max="1990" />
 			<ratings critics="35" speed="15" />
 		</programme>
-		<programme id="ronny-programme-recyclingfueranfaenger-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-recyclingfueranfaenger-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Recycling für Anfänger</de>
 				<en>Recycling for Beginners</en>
@@ -266,7 +266,7 @@ Witamy w przyszłości.</pl>
 			<data country="D" year="1991" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
 			<ratings critics="35" speed="8" />
 		</programme>
-		<programme id="ronny-programme-versandkataloge-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-versandkataloge-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Versandkataloge: Woher, wofür?</de>
 				<en>Mail-Order Catalogues: From Where and for What?</en>
@@ -291,7 +291,7 @@ Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			<ratings critics="18" speed="12" />
 		</programme>
 
-		<programme id="ronny-programme-arbeitgebersuendenboecke-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-arbeitgebersuendenboecke-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Arbeitgeber - Sündenböcke oder Klassenfeind?</de>
 				<en>Employers - Scapegoats or Class Enemy?</en>
@@ -314,7 +314,7 @@ Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			<ratings critics="23" speed="15" />
 		</programme>
 
-		<programme id="ronny-programme-hausfrauliebenswert-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-hausfrauliebenswert-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Hausfrau - liebenswert und putzig</de>
 				<en>The Housewife - Lovable and Polished</en>
@@ -339,7 +339,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			<ratings critics="20" speed="10" />
 		</programme>
 
-		<programme id="ronny-programme-buestenhalterinflammen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-buestenhalterinflammen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Büstenhalter in Flammen</de>
 				<en>Brassieres In Flames</en>
@@ -361,7 +361,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			<ratings critics="24" speed="15" />
 		</programme>
 
-		<programme id="ronny-programme-westberlinwehrdienst-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-westberlinwehrdienst-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Westberlin - Nein zum Wehrdienst</de>
 				<en>West Berlin - No to Military Service</en>
@@ -384,7 +384,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			<ratings critics="25" speed="20" />
 		</programme>
 
-		<programme id="ronny-programme-reeperbahnfreudenhaeusertest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-reeperbahnfreudenhaeusertest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Reeperbahn - Freudenhäuser im Test</de>
 				<en>Reeperbahn - Whorehouses Under Test</en>
@@ -410,7 +410,7 @@ Zwycięzca testu: "Little Twiddle".</pl>
 			<ratings critics="15" speed="30" />
 		</programme>
 
-		<programme id="ronny-programme-unterderhaube-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-unterderhaube-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Unter der Haube</de>
 				<en>Hitched Hairdressers</en>
@@ -436,7 +436,7 @@ Przygotuj chusteczki do nosa.</pl>
 			<ratings critics="10" speed="30" />
 		</programme>
 
-		<programme id="ronny-programme-konfettitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-konfettitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Konfetti: Betrug am Kunden?</de>
 				<en>Confetti: Defrauding the Customer?</en>
@@ -462,7 +462,7 @@ Oczekiwany skandal nie zmaterializował się.</pl>
 			<ratings critics="11" speed="18" />
 		</programme>
 
-		<programme id="ronny-programme-zumbleistift-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-zumbleistift-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Zum Bleistift?</de>
 				<en>(No) Fun Intended</en>
@@ -492,7 +492,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			<ratings critics="18" speed="35" />
 		</programme>
 
-		<programme id="ronny-programme-betonfuerdenclan-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-betonfuerdenclan-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Beton für den Clan</de>
 				<en>Concrete for the Clans</en>
