@@ -154,10 +154,11 @@ Struct STokenGroup
 	End Method
 	
 	Method GetToken:SToken(index:Int)
+		'TODO shouldn't added be checked
 		If index < token.Length
 			Return token[index]
-		ElseIf index < dynamicToken.Length - token.Length
-			Return dynamicToken[dynamicToken.Length - token.Length]
+		ElseIf index < dynamicToken.Length + token.Length
+			Return dynamicToken[index - token.Length]
 		EndIf
 	End Method
 
@@ -165,17 +166,19 @@ Struct STokenGroup
 	' containing only the requested token. This is used when calling
 	' a function when you only have the name and no arguments.
 	Method GetTokenGroup:STokenGroup(index:Int)
+		'TODO shouldn't added be checked
 		If index < token.Length
 			Return New STokenGroup( token[index] )
-		ElseIf index < dynamicToken.Length - token.Length
-			Return New STokenGroup( dynamicToken[dynamicToken.Length - token.Length] )
+		ElseIf index < dynamicToken.Length + token.Length
+			Return New STokenGroup( dynamicToken[index - token.Length] )
 		EndIf
 	End Method
 
 	Method AddToken(s:SToken)
 		If added < token.Length
 			token[added] = s
-		ElseIf added < dynamicToken.Length + token.Length
+		Else
+			If added >= dynamicToken.Length + token.Length - 5 Then dynamicToken = dynamicToken[..added]
 			dynamicToken[added - token.Length] = s
 		EndIf
 		added :+ 1
@@ -1605,7 +1608,19 @@ Function SEFN_If:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 			EndIf
 		EndIf
 	EndIf
-	
+End Function
+
+Function SEFN_Select:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
+	Local first:SToken = params.GetToken(0)
+	If params.added Mod 2 <> 1 Then Return New SToken( TK_ERROR, "even number of parameters expected", first )
+
+	Local key:SToken = params.GetToken(1)
+	Local i:Int = 2
+	Repeat
+		If Long(key.CompareWith(params.GetToken(i)) = 0) Then Return params.GetToken(i+1)
+		i:+2
+	Until  i >= params.added - 1
+	Return params.GetToken(i)
 End Function
 
 Function SEFN_Eq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1618,7 +1633,7 @@ Function SEFN_Eq:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 			Return params.GetToken(4)
 		EndIf
 	EndIf
-	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", first )
 End Function
 '.alleq could check if an arbitrary number of parameters are equal
 'Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) = params.added - 1), first.linenum, first.linepos )
@@ -1633,7 +1648,7 @@ Function SEFN_NEq:SToken(params:STokenGroup Var, context:SScriptExpressionContex
 			Return params.GetToken(4)
 		EndIf
 	EndIf
-	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", first )
 End Function
 
 Function SEFN_Gt:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1646,7 +1661,7 @@ Function SEFN_Gt:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 			Return params.GetToken(4)
 		EndIf
 	EndIf
-	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", first )
 End Function
 
 Function SEFN_Gte:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1659,7 +1674,7 @@ Function SEFN_Gte:SToken(params:STokenGroup Var, context:SScriptExpressionContex
 			Return params.GetToken(4)
 		EndIf
 	EndIf
-	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", first )
 End Function
 
 Function SEFN_Lt:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1672,7 +1687,7 @@ Function SEFN_Lt:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 			Return params.GetToken(4)
 		EndIf
 	EndIf
-	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", first )
 End Function
 
 Function SEFN_Lte:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1685,7 +1700,7 @@ Function SEFN_Lte:SToken(params:STokenGroup Var, context:SScriptExpressionContex
 			Return params.GetToken(4)
 		EndIf
 	EndIf
-	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", first )
 End Function
 
 Function SEFN_Concat:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1750,6 +1765,11 @@ TScriptExpression.RegisterFunctionHandler( "not", SEFN_Not, 1, -1)
 TScriptExpression.RegisterFunctionHandler( "and", SEFN_And, 1, -1)
 TScriptExpression.RegisterFunctionHandler( "or",  SEFN_Or,  1, -1)
 TScriptExpression.RegisterFunctionHandler( "if",  SEFN_If,  1,  3)
+
+'.select:key:case1:result1:...:casen:resultn:defaultresult
+'-> if key == casei then return resulti
+'one case and default result required
+TScriptExpression.RegisterFunctionHandler( "select", SEFN_Select,  4,  -1)
 
 '2 or 4 parameters
 '.cmp:x:y -> result of comparison
