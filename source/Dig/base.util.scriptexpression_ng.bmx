@@ -1608,11 +1608,16 @@ Function SEFN_If:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 	
 End Function
 
+'distinguish between eq (regular compare with 3 or 5 parameters
+'and all_eq with arbitrary parameter number
+
+'rename to all_eq
 Function SEFN_Eq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
 	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) = params.added - 1), first.linenum, first.linepos )
 End Function
 
+'rename to n_all_eq
 Function SEFN_NEq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
 	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) <> params.added - 1), first.linenum, first.linepos )
@@ -1620,7 +1625,18 @@ End Function
 
 Function SEFN_Gt:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
+	'proposed semantics for all comparisons
+	'1,2,4, >5 parameters error
+	'3 like before
+	'5 if 2 compare 3 then 4 else 5
 	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
+	If params.added = 5
+		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0)
+			Return params.GetToken(3)
+		Else
+			Return params.GetToken(4)
+		EndIf
+	EndIf
 	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0), first.linenum, first.linepos )
 End Function
 
@@ -1704,7 +1720,9 @@ TScriptExpression.RegisterFunctionHandler( "not", SEFN_Not, 1, -1)
 TScriptExpression.RegisterFunctionHandler( "and", SEFN_And, 1, -1)
 TScriptExpression.RegisterFunctionHandler( "or",  SEFN_Or,  1, -1)
 TScriptExpression.RegisterFunctionHandler( "if",  SEFN_If,  1,  3)
+'neq vs nalleq
 TScriptExpression.RegisterFunctionHandler( "neq",  SEFN_NEq,  1, -1)
+'eq vs alleq
 TScriptExpression.RegisterFunctionHandler( "eq",  SEFN_Eq,  1, -1)
 TScriptExpression.RegisterFunctionHandler( "gt",  SEFN_Gt,  2,  2)
 TScriptExpression.RegisterFunctionHandler( "gte", SEFN_Gte, 2,  2)
