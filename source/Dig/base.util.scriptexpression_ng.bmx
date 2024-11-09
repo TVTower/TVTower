@@ -1608,28 +1608,37 @@ Function SEFN_If:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 	
 End Function
 
-'distinguish between eq (regular compare with 3 or 5 parameters
-'and all_eq with arbitrary parameter number
-
-'rename to all_eq
 Function SEFN_Eq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) = params.added - 1), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) = 0), first.linenum, first.linepos )
+	If params.added = 5
+		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) = 0)
+			Return params.GetToken(3)
+		Else
+			Return params.GetToken(4)
+		EndIf
+	EndIf
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
 End Function
+'.alleq could check if an arbitrary number of parameters are equal
+'Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) = params.added - 1), first.linenum, first.linepos )
 
-'rename to n_all_eq
 Function SEFN_NEq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) <> params.added - 1), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) <> 0), first.linenum, first.linepos )
+	If params.added = 5
+		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) <> 0)
+			Return params.GetToken(3)
+		Else
+			Return params.GetToken(4)
+		EndIf
+	EndIf
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
 End Function
 
 Function SEFN_Gt:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	'proposed semantics for all comparisons
-	'1,2,4, >5 parameters error
-	'3 like before
-	'5 if 2 compare 3 then 4 else 5
-	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0), first.linenum, first.linepos )
 	If params.added = 5
 		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0)
 			Return params.GetToken(3)
@@ -1637,25 +1646,46 @@ Function SEFN_Gt:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 			Return params.GetToken(4)
 		EndIf
 	EndIf
-	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0), first.linenum, first.linepos )
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
 End Function
 
 Function SEFN_Gte:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
-	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) >= 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) => 0), first.linenum, first.linepos )
+	If params.added = 5
+		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) => 0)
+			Return params.GetToken(3)
+		Else
+			Return params.GetToken(4)
+		EndIf
+	EndIf
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
 End Function
 
 Function SEFN_Lt:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
-	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) < 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) < 0), first.linenum, first.linepos )
+	If params.added = 5
+		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) < 0)
+			Return params.GetToken(3)
+		Else
+			Return params.GetToken(4)
+		EndIf
+	EndIf
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
 End Function
 
 Function SEFN_Lte:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added < 3 Then Return New SToken( TK_BOOLEAN, False, first.linenum, first.linepos )
-	Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) <= 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) <= 0), first.linenum, first.linepos )
+	If params.added = 5
+		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) <= 0)
+			Return params.GetToken(3)
+		Else
+			Return params.GetToken(4)
+		EndIf
+	EndIf
+	Return New SToken( TK_ERROR, "2 or 4 parameters expected", params.GetToken(0) )
 End Function
 
 Function SEFN_Concat:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1715,19 +1745,22 @@ End Function
 
 
 ' Register the functions
-' The two numbers are MInimum and Maximum number of allowed parameters
+' The two numbers are minimum and maximum number of allowed parameters
 TScriptExpression.RegisterFunctionHandler( "not", SEFN_Not, 1, -1)
 TScriptExpression.RegisterFunctionHandler( "and", SEFN_And, 1, -1)
 TScriptExpression.RegisterFunctionHandler( "or",  SEFN_Or,  1, -1)
 TScriptExpression.RegisterFunctionHandler( "if",  SEFN_If,  1,  3)
-'neq vs nalleq
-TScriptExpression.RegisterFunctionHandler( "neq",  SEFN_NEq,  1, -1)
-'eq vs alleq
-TScriptExpression.RegisterFunctionHandler( "eq",  SEFN_Eq,  1, -1)
-TScriptExpression.RegisterFunctionHandler( "gt",  SEFN_Gt,  2,  2)
-TScriptExpression.RegisterFunctionHandler( "gte", SEFN_Gte, 2,  2)
-TScriptExpression.RegisterFunctionHandler( "lt",  SEFN_Lt,  2,  2)
-TScriptExpression.RegisterFunctionHandler( "lte", SEFN_Lte, 2,  2)
+
+'2 or 4 parameters
+'.cmp:x:y -> result of comparison
+'.cmp:x:y:a:b is short for .if:${.cmp:x:y}:a:b
+TScriptExpression.RegisterFunctionHandler( "neq", SEFN_NEq, 2, 4)
+TScriptExpression.RegisterFunctionHandler( "eq",  SEFN_Eq,  2, 4)
+TScriptExpression.RegisterFunctionHandler( "gt",  SEFN_Gt,  2, 4)
+TScriptExpression.RegisterFunctionHandler( "gte", SEFN_Gte, 2, 4)
+TScriptExpression.RegisterFunctionHandler( "lt",  SEFN_Lt,  2, 4)
+TScriptExpression.RegisterFunctionHandler( "lte", SEFN_Lte, 2, 4)
+
 TScriptExpression.RegisterFunctionHandler( "concat", SEFN_Concat, 2,  2)
 TScriptExpression.RegisterFunctionHandler( "ucfirst", SEFN_UCFirst, 1,  1)
 TScriptExpression.RegisterFunctionHandler( "csv", SEFN_Csv, 2,  3)
