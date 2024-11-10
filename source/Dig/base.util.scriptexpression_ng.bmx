@@ -260,6 +260,14 @@ Struct SToken
 		Self.linepos = linepos
 	End Method
 
+	Method New( id:Int, valueInt:Int, linenum:Int, linepos:Int = 0 )
+		Self.id = id
+		Self.valueLong = valueInt
+		Self.valueType = ETokenValueType.Integer
+		Self.linenum = linenum
+		Self.linepos = linepos
+	End Method
+
 	Method New( id:Int, valueLong:Long, linenum:Int, linepos:Int = 0 )
 		Self.id = id
 		Self.valueLong = valueLong
@@ -292,7 +300,14 @@ Struct SToken
 		Self.linepos = linepos
 	End Method
 
-	
+	Method New( id:Int, valueInt:Int, token:SToken )
+		Self.id = id
+		Self.valueLong = valueInt
+		Self.valueType = ETokenValueType.Integer
+		Self.linenum = token.linenum
+		Self.linepos = token.linepos
+	End Method
+
 	Method New( id:Int, valueLong:Long, token:SToken )
 		Self.id = id
 		Self.valueLong = valueLong
@@ -1576,17 +1591,17 @@ End Type
 ' Register default functions
 Function SEFN_Or:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountTrueValues(params, 1) > 0), first.linenum, first.linepos )
+	Return New SToken( TK_BOOLEAN, TScriptExpression._CountTrueValues(params, 1) > 0, first.linenum, first.linepos )
 End Function
 
 Function SEFN_And:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountTrueValues(params, 1) = params.added - 1), first.linenum, first.linepos )
+	Return New SToken( TK_BOOLEAN, TScriptExpression._CountTrueValues(params, 1) = params.added - 1, first.linenum, first.linepos )
 End Function
 
 Function SEFN_Not:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountTrueValues(params, 1) = 0), first.linenum, first.linepos )
+	Return New SToken( TK_BOOLEAN, TScriptExpression._CountTrueValues(params, 1) = 0, first.linenum, first.linepos )
 End Function
 
 Function SEFN_If:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -1622,7 +1637,7 @@ Function SEFN_Select:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	Local key:SToken = params.GetToken(1)
 	Local i:Int = 2
 	Repeat
-		If Long(key.CompareWith(params.GetToken(i)) = 0) Then Return params.GetToken(i+1)
+		If key.CompareWith(params.GetToken(i)) = 0 Then Return params.GetToken(i+1)
 		i:+2
 	Until  i >= params.added - 1
 	Return params.GetToken(i)
@@ -1630,9 +1645,9 @@ End Function
 
 Function SEFN_Eq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) = 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) = 0, first.linenum, first.linepos )
 	If params.added = 5
-		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) = 0)
+		If params.GetToken(1).CompareWith(params.GetToken(2)) = 0
 			Return params.GetToken(3)
 		Else
 			Return params.GetToken(4)
@@ -1643,9 +1658,9 @@ End Function
 
 Function SEFN_NEq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) <> 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) <> 0, first.linenum, first.linepos )
 	If params.added = 5
-		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) <> 0)
+		If params.GetToken(1).CompareWith(params.GetToken(2)) <> 0
 			Return params.GetToken(3)
 		Else
 			Return params.GetToken(4)
@@ -1656,9 +1671,9 @@ End Function
 
 Function SEFN_Gt:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) > 0, first.linenum, first.linepos )
 	If params.added = 5
-		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) > 0)
+		If params.GetToken(1).CompareWith(params.GetToken(2)) > 0
 			Return params.GetToken(3)
 		Else
 			Return params.GetToken(4)
@@ -1669,9 +1684,9 @@ End Function
 
 Function SEFN_Gte:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) => 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) => 0, first.linenum, first.linepos )
 	If params.added = 5
-		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) => 0)
+		If params.GetToken(1).CompareWith(params.GetToken(2)) => 0
 			Return params.GetToken(3)
 		Else
 			Return params.GetToken(4)
@@ -1682,9 +1697,9 @@ End Function
 
 Function SEFN_Lt:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) < 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) < 0, first.linenum, first.linepos )
 	If params.added = 5
-		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) < 0)
+		If params.GetToken(1).CompareWith(params.GetToken(2)) < 0
 			Return params.GetToken(3)
 		Else
 			Return params.GetToken(4)
@@ -1695,9 +1710,9 @@ End Function
 
 Function SEFN_Lte:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added = 3 Then Return New SToken( TK_BOOLEAN, Long(params.GetToken(1).CompareWith(params.GetToken(2)) <= 0), first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) <= 0, first.linenum, first.linepos )
 	If params.added = 5
-		If Long(params.GetToken(1).CompareWith(params.GetToken(2)) <= 0)
+		If params.GetToken(1).CompareWith(params.GetToken(2)) <= 0
 			Return params.GetToken(3)
 		Else
 			Return params.GetToken(4)
