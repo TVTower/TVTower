@@ -188,6 +188,7 @@ Struct STokenGroup
 	End Method
 
 	Method SetToken(index:Int, s:SToken)
+		If index < 0 Then Return
 		If index < token.Length
 			token[index] = s
 		Else
