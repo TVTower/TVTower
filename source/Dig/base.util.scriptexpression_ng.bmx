@@ -178,8 +178,11 @@ Struct STokenGroup
 		If added < token.Length
 			token[added] = s
 		Else
-			If added >= dynamicToken.Length + token.Length - 5 Then dynamicToken = dynamicToken[..added]
-			dynamicToken[added - token.Length] = s
+			Local dynamicArrayIndex:Int = added - token.Length
+			'resize dynamic array if needed
+			If dynamicArrayIndex >= dynamicToken.Length Then dynamicToken = dynamicToken[..dynamicArrayIndex + 5]
+
+			dynamicToken[dynamicArrayIndex] = s
 		EndIf
 		added :+ 1
 	End Method
@@ -187,8 +190,10 @@ Struct STokenGroup
 	Method SetToken(index:Int, s:SToken)
 		If index < token.Length
 			token[index] = s
-		ElseIf index < dynamicToken.Length + token.Length
-			dynamicToken[index - token.Length] = s
+		Else
+			Local dynamicArrayIndex:Int = added - token.Length
+			If dynamicArrayIndex >= dynamicToken.Length Then dynamicToken = dynamicToken[..dynamicArrayIndex + 5]
+			dynamicToken[dynamicArrayIndex] = s
 		EndIf
 	End Method
 	
@@ -1635,8 +1640,6 @@ Function SEFN_Eq:SToken(params:STokenGroup Var, context:SScriptExpressionContext
 	EndIf
 	Return New SToken( TK_ERROR, "2 or 4 parameters expected", first )
 End Function
-'.alleq could check if an arbitrary number of parameters are equal
-'Return New SToken( TK_BOOLEAN, Long(TScriptExpression._CountEqualValues(params, 1) = params.added - 1), first.linenum, first.linepos )
 
 Function SEFN_NEq:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
