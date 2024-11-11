@@ -180,13 +180,13 @@ Każdy środek się nada.</pl>
 
 	<allnews>
 		<!-- flags: 1,2,4,256 - now, unique, unskippable, invisible (effect only); trigger news only-->
-		<news id="news-stockexchange-trigger" type="0" thread_id="news-stockexchange-thread" creator="" created_by="nittka">
+		<news guid="news-stockexchange-trigger" type="0" thread_guid="news-stockexchange-thread" creator="" created_by="nittka">
 			<effects>
 				<effect trigger="happen" type="triggernews" time="8,0,9,11" news="news-stockexchange-generic" />
 			</effects>
 			<data genre="0" flags="263" happen_time="0" quality="0" price="1" />
 		</news>
-		<news id="news-stockexchange-generic" type="2" thread_id="news-stockexchange-thread" creator="" created_by="Kieferer">
+		<news guid="news-stockexchange-generic" type="2" thread_guid="news-stockexchange-thread" creator="" created_by="Kieferer">
 			<title>
 				<de>Börsennachrichten für Tag ${.worldtime:"dayplaying"}</de>
 				<en>Stock Exchange News for day ${.worldtime:"dayplaying"}</en>

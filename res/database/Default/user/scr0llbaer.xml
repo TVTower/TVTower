@@ -5,15 +5,15 @@
 	<!-- fictional people -->
 
 	<insignificantpeople>
-		<person id="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock | real version: 35af32a6-1c2a-4e3c-ae3c-d5786dd357df" />
-		<person id="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" country="D" job="200" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
-		<person id="8565d7d6-7c8d-447f-acd7-5dc65f073bec" first_name="Penelope" last_name="Truthseeker" nick_name="Trutherpenny" gender="2" birthday="1931-09-11" deathday="2012-12-21" country="GB" job="137" fictional="1" creator="9551" />
+		<person guid="3b48670f-99d1-4b8e-b3b4-ea4f70c6571f" first_name="Rolf" last_name="Strock" nick_name="Rolfie" fictional="1" gender="1" country="D" job="69" birthday="1945-03-03" deathday="2020-07-06" creator="9551" comment="spoof of (or the daddy of) https://en.wikipedia.org/wiki/Ralph_Stock | real version: 35af32a6-1c2a-4e3c-ae3c-d5786dd357df" />
+		<person guid="82d81b92-29ee-420e-82b2-a4690a1679db" first_name="Hauke" last_name="Strahlemann" nick_name="Strahli" fictional="1" gender="1" country="D" job="200" birthday="1951-06-21" deathday="2021-12-21" creator="9551" comment="" />
+		<person guid="8565d7d6-7c8d-447f-acd7-5dc65f073bec" first_name="Penelope" last_name="Truthseeker" nick_name="Trutherpenny" gender="2" birthday="1931-09-11" deathday="2012-12-21" country="GB" job="137" fictional="1" creator="9551" />
 	</insignificantpeople>
 
 	<!-- fictional programme entries -->
 
 	<allprogrammes>
-		<programme id="f95058fe-1d4e-4d93-83f6-e33ae06ed346" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
+		<programme guid="f95058fe-1d4e-4d93-83f6-e33ae06ed346" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
 			<title>
 				<de>Das alte Nepal</de>
 				<en>Ancient Nepal</en>
@@ -39,7 +39,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<releaseTime year_relative="-15" year_relative_min="1970" year_relative_max="1995" />
 			<ratings critics="21" speed="3" outcome="9" />
 			<children>
-				<programme id="1fc5dff9-f72d-40c9-938f-990a3875603b" product="2" licence_type="2" creator="9551">
+				<programme guid="1fc5dff9-f72d-40c9-938f-990a3875603b" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>Steaks</de>
 						<en>Steaks</en>
@@ -51,7 +51,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Steki były jednym z głównych produktów w starożytnym Nepalu.</pl>
 					</description>
 				</programme>
-				<programme id="78656b84-7730-420f-b85c-7d05fc259b70" product="2" licence_type="2" creator="9551">
+				<programme guid="78656b84-7730-420f-b85c-7d05fc259b70" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>Bier</de>
 						<en>Beer</en>
@@ -63,7 +63,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Piwo było jednym z podstawowych produktów w starożytnym Nepalu.</pl>
 					</description>
 				</programme>
-				<programme id="b5ed35d3-7618-4368-a7b8-60d453bee37d" product="2" licence_type="2" creator="9551">
+				<programme guid="b5ed35d3-7618-4368-a7b8-60d453bee37d" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>Zigaretten</de>
 						<en>Cigarettes</en>
@@ -77,7 +77,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="89507f2c-f6e9-4d63-bf32-657a280f72c3" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
+		<programme guid="89507f2c-f6e9-4d63-bf32-657a280f72c3" product="2" licence_type="3" fictional="1" creator="9551" comment="Inspired from programme in MadTV">
 			<title>
 				<de>Wohnen am Atomkraftwerk</de>
 				<en>Living Next to a Nuclear Power Plant</en>
@@ -97,7 +97,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<data country="DK" year="1971" distribution="2" maingenre="300" subgenre="6" flags="4" blocks="1" price_mod="0.5" />
 			<ratings critics="33" speed="31" outcome="12" />
 			<children>
-				<programme id="3b56f810-64c1-49e6-8540-274098947b10" product="2" licence_type="2" creator="9551">
+				<programme guid="3b56f810-64c1-49e6-8540-274098947b10" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>Three Mile Island</de>
 						<en>Three Mile Island</en>
@@ -109,7 +109,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Jedna z najnowocześniejszych i najbezpieczniejszych fabryk powstaje w Pensylwanii. Byliśmy na miejscu.</pl>
 					</description>
 				</programme>
-				<programme id="001f3d7b-ae35-429b-9d47-a690fe6c9958" product="2" licence_type="2" creator="9551">
+				<programme guid="001f3d7b-ae35-429b-9d47-a690fe6c9958" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>Tschernobyl</de>
 						<en>Chernobyl</en>
@@ -121,7 +121,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Jedna z najnowocześniejszych i najbezpieczniejszych elektrowni powstaje w obwodzie kijowskim. Byliśmy na miejscu.</pl>
 					</description>
 				</programme>
-				<programme id="71956dc0-4fbb-4e9a-ac62-a0821eea04bd" product="2" licence_type="2" creator="9551">
+				<programme guid="71956dc0-4fbb-4e9a-ac62-a0821eea04bd" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>Fukushima</de>
 						<en>Fukushima</en>
@@ -135,7 +135,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="dcf404f3-7f17-4f4f-83cd-83626951a4f0" product="4" licence_type="1" fictional="1" creator="9551">
+		<programme guid="dcf404f3-7f17-4f4f-83cd-83626951a4f0" product="4" licence_type="1" fictional="1" creator="9551">
 			<title>
 				<de>Dynamit - Das Magazin Live: Hochzeit von ${.self:"cast":3:"firstname"} und ${.self:"cast":2:"fullname"}</de>
 				<en>Dynamite - The Magazine Live: Wedding of ${.self:"cast":3:"firstname"} and ${.self:"cast":2:"fullname"}</en>
@@ -161,7 +161,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme id="583955ef-3acf-42bf-991e-b1c169583780" product="4" licence_type="1" fictional="1" creator="9551">
+		<programme guid="583955ef-3acf-42bf-991e-b1c169583780" product="4" licence_type="1" fictional="1" creator="9551">
 			<title>
 				<de>Dynamit - Das Magazin Live: Hochzeit von ${.self:"cast":2:"nickname"} und ${.self:"cast":3:"nickname"}</de>
 				<en>Dynamite - The Magazine Live: Wedding of ${.self:"cast":2:"nickname"} and ${.self:"cast":3:"nickname"}</en>
@@ -187,7 +187,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme id="7df480c6-93c3-4616-8e76-d3d697f9445f" product="7" licence_type="3" fictional="1" creator="9551" comment="asked ChatGPT for a little help creating this, came back with good results">
+		<programme guid="7df480c6-93c3-4616-8e76-d3d697f9445f" product="7" licence_type="3" fictional="1" creator="9551" comment="asked ChatGPT for a little help creating this, came back with good results">
 			<title>
 				<de>Dynamit - Das Magazin Spezial: Im Schloss ${.self:"cast":2:"lastname"}</de>
 				<en>Dynamite - The Magazine Special: In the Castle ${.self:"cast":2:"lastname"}</en>
@@ -209,7 +209,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<data country="D" year="1984" distribution="2" maingenre="301" subgenre="" flags="0" blocks="1" price_mod="0.25" />
 			<ratings critics="19" speed="35" outcome="45" />
 			<children>
-				<programme id="f2ba424b-d842-4902-9a8b-1b4e299b856f" product="7" licence_type="2" creator="9551">
+				<programme guid="f2ba424b-d842-4902-9a8b-1b4e299b856f" product="7" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":3:"firstname"} und die Geheimnisse der Samtstrumpfhosen</de>
 						<en>${.self:"cast":3:"firstname"} and the Secrets of the Velvet Tights</en>
@@ -221,7 +221,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>Księżniczka ${.self:"cast":3:"firstname"} oprowadza widzów przez swój zamek i ujawnia, że wszędzie ukryła sekretne wachlarze aksamitnych rajstop. Czy są one kluczem do glamour lat 80-tych?</pl>
 					</description>
 				</programme>
-				<programme id="0a6d3442-eb31-4025-95ef-ee187922f703" product="7" licence_type="2" creator="9551">
+				<programme guid="0a6d3442-eb31-4025-95ef-ee187922f703" product="7" licence_type="2" creator="9551">
 					<title>
 						<de>Die Flamingos ${.self:"cast":2:"lastname"}</de>
 						<en>The Flamingos ${.self:"cast":2:"lastname"}</en>
@@ -233,7 +233,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>${.self:"cast":3:"firstname"} z dumą prezentuje swój osobisty ogród flamingów, który podobno był używany na słynnych imprezach „Pink Flamingo”. Ptaki mają więcej uroku niż myślisz!</pl>
 					</description>
 				</programme>
-				<programme id="edb526e7-ffae-45f6-989b-eebe7cd707b2" product="7" licence_type="2" creator="9551">
+				<programme guid="edb526e7-ffae-45f6-989b-eebe7cd707b2" product="7" licence_type="2" creator="9551">
 					<title>
 						<de>Die feurige Disko im Schlosskeller</de>
 						<en>The Fiery Disco in the Castle Cellar</en>
@@ -245,7 +245,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>W podziemiach zamku ${.self:"cast":3:"firstname"} pokazuje dyskotekę z lat 80. z żywymi kulami dyskotekowymi i robotem DJ-em. Czy to sekretna królowa nocnego życia?</pl>
 					</description>
 				</programme>
-				<programme id="2427d269-8b68-4681-9527-32c6ca96f5ca" product="7" licence_type="2" creator="9551">
+				<programme guid="2427d269-8b68-4681-9527-32c6ca96f5ca" product="7" licence_type="2" creator="9551">
 					<title>
 						<de>Der Rosé-Keller der Verschwörung</de>
 						<en>The Rosé Cellar of Conspiracy</en>
@@ -257,7 +257,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<pl>${.self:"cast":3:"firstname"} ujawnia, że Piwnica Rosé była rzekomo miejscem tajnych spotkań i spisków. Czy to tutaj miała miejsce cała ta „domowa poczta”?</pl>
 					</description>
 				</programme>
-				<programme id="dc400f07-99c8-4e8e-b6d2-67093d6ea468" product="7" licence_type="2" creator="9551">
+				<programme guid="dc400f07-99c8-4e8e-b6d2-67093d6ea468" product="7" licence_type="2" creator="9551">
 					<title>
 						<de>Der Rittersaal der skurrilen Hobbys</de>
 						<en>The Knight's Hall of Whimsical Hobbies</en>
@@ -271,7 +271,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="1900edf1-c697-4861-ae50-36e31070a652" product="2" licence_type="3" fictional="1" creator="9551" comment="First episode inspired from a MadTV item, everything else made up. TODO: There could be a second part about 2000s era. By Penny's daughter. Rumored to be the daughter of a former US president.">
+		<programme guid="1900edf1-c697-4861-ae50-36e31070a652" product="2" licence_type="3" fictional="1" creator="9551" comment="First episode inspired from a MadTV item, everything else made up. TODO: There could be a second part about 2000s era. By Penny's daughter. Rumored to be the daughter of a former US president.">
 			<title>
 				<de>Eskapaden im Weißen Haus</de>
 				<en>Escapades In the White House</en>
@@ -292,7 +292,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<data country="CH" year="1980" distribution="2" maingenre="300" subgenre="6,11" flags="4" blocks="1" price_mod="0.25" />
 			<ratings critics="46" speed="54" outcome="39" />
 			<children>
-				<programme id="cd1e19bb-cce4-4145-b227-3b72555ac705" product="2" licence_type="2" creator="9551">
+				<programme guid="cd1e19bb-cce4-4145-b227-3b72555ac705" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"fullname"}s sonniges Arabien</de>
 						<en>${.self:"cast":2:"fullname"}'s Sunny Arabia</en>
@@ -307,7 +307,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">dd6a3d8a-b1ee-4dcc-b3de-94c11c780923</member>
 					</staff>
 				</programme>
-				<programme id="0383c1fd-94ca-4146-80cc-80d3df9e0914" product="2" licence_type="2" creator="9551">
+				<programme guid="0383c1fd-94ca-4146-80cc-80d3df9e0914" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"}s Raygun</de>
 						<en>${.self:"cast":2:"firstname"}'s Raygun</en>
@@ -322,7 +322,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">e52ca72c-83e2-431d-ae02-c66daefea035</member>
 					</staff>
 				</programme>
-				<programme id="a84ebdc0-23bd-4e49-8e89-6484367badaa" product="2" licence_type="2" creator="9551">
+				<programme guid="a84ebdc0-23bd-4e49-8e89-6484367badaa" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>Der ${.self:"cast":2:"lastname"}-Schock: ${.self:"cast":2:"firstname"} nixt es</de>
 						<en>The ${.self:"cast":2:"lastname"} Shock: ${.self:"cast":2:"firstname"} nixes it</en>
@@ -337,7 +337,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">8f485b0c-5270-462b-9bac-698ff6f0cebb</member>
 					</staff>
 				</programme>
-				<programme id="44a6c9b3-7d87-4a89-97dd-6e7d3d00320b" product="2" licence_type="2" creator="9551">
+				<programme guid="44a6c9b3-7d87-4a89-97dd-6e7d3d00320b" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"}'s Liaison</de>
 						<en>${.self:"cast":2:"firstname"}'s Liaison</en>
@@ -352,7 +352,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">d9803dfc-f104-40d4-a385-e3a4adf2ae1a</member>
 					</staff>
 				</programme>
-				<programme id="088332a3-8534-490f-9f71-fb85c78d41b5" product="2" licence_type="2" creator="9551">
+				<programme guid="088332a3-8534-490f-9f71-fb85c78d41b5" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"} möchte glauben</de>
 						<en>${.self:"cast":2:"firstname"} Wants to Believe</en>
@@ -367,7 +367,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">852920e2-2c58-461a-95f8-be9970dccca7</member>
 					</staff>
 				</programme>
-				<programme id="a1170b5e-9b51-4bc8-be0d-a4338b9fd9ce" product="2" licence_type="2" creator="9551">
+				<programme guid="a1170b5e-9b51-4bc8-be0d-a4338b9fd9ce" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"fullname"}s Sputnik-Schock</de>
 						<en>${.self:"cast":2:"fullname"}'s Sputnik Shock</en>
@@ -384,7 +384,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="d64fae37-49c0-4ba6-a6b5-ef52b1f9399a" product="1" licence_type="1" fictional="1" creator="9551" comment="'forked' from a51df750-cd95-49be-9d16-ffb8e48513bd | TODO: The Scottish staff doesn't make much sense, separate them out">
+		<programme guid="d64fae37-49c0-4ba6-a6b5-ef52b1f9399a" product="1" licence_type="1" fictional="1" creator="9551" comment="'forked' from a51df750-cd95-49be-9d16-ffb8e48513bd | TODO: The Scottish staff doesn't make much sense, separate them out">
 			<title>
 				<de>Ronny und Byte</de>
 				<en>Ronny and Byte</en>
@@ -417,7 +417,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="therob-programme-ser-RonnyunddasBytekehrenzurueck" />
 			</effects>
 		</programme>
-		<programme id="676f68b4-1c8b-467f-a805-a0a2af8b1486" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
+		<programme guid="676f68b4-1c8b-467f-a805-a0a2af8b1486" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
 			<title>
 				<de>Dynamit - Das Magazin Spezial: Aus L.A.</de>
 				<en>Dynamite - The Magazine Special: From L.A.</en>
@@ -436,7 +436,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<releaseTime year_relative="+3" year_relative_min="1994" year_relative_max="2000" />
 			<ratings critics="21" speed="39" outcome="52" />
 			<children>
-				<programme id="81c85eea-a074-491b-87cf-3721e178b3a2" product="2" licence_type="2" creator="9551">
+				<programme guid="81c85eea-a074-491b-87cf-3721e178b3a2" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"} die Niere</de>
 						<en>${.self:"cast":2:"firstname"} De Weirdo</en>
@@ -452,7 +452,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="fc209207-4b86-44f9-8453-fd19637802bc" />
 					</effects>
 				</programme>
-				<programme id="f879c4fe-d528-450a-b47c-a9a65fc6b688" product="2" licence_type="2" creator="9551">
+				<programme guid="f879c4fe-d528-450a-b47c-a9a65fc6b688" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"} gibt's schon</de>
 						<en>${.self:"cast":2:"firstname"} Giblets</en>
@@ -465,7 +465,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">1b8fcb9a-5961-43b8-af1b-1ed144880908</member>
 					</staff>
 				</programme>
-				<programme id="3be78126-e61c-45e1-93b9-39caf9138896" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Swish, Spritz | Swift used in a different episode">
+				<programme guid="3be78126-e61c-45e1-93b9-39caf9138896" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Swish, Spritz | Swift used in a different episode">
 					<title>
 						<de>Willst Miff?</de>
 						<en>${.self:"cast":2:"firstname"}'s Miff</en>
@@ -478,7 +478,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
 					</staff>
 				</programme>
-				<programme id="50c05c1e-f1ce-4145-8d83-2c57bffeb3e9" product="2" licence_type="2" creator="9551">
+				<programme guid="50c05c1e-f1ce-4145-8d83-2c57bffeb3e9" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"} Testton</de>
 						<en>${.self:"cast":2:"firstname"} Chest-on</en>
@@ -491,7 +491,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">b4561de6-215e-46ab-9212-f0868c6fcb33</member>
 					</staff>
 				</programme>
-				<programme id="558eaa7b-690c-41ca-988a-00b98207247e" product="2" licence_type="2" creator="9551">
+				<programme guid="558eaa7b-690c-41ca-988a-00b98207247e" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"} McVegan</de>
 						<en>${.self:"cast":2:"firstname"} McVegan</en>
@@ -506,7 +506,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="fc209207-4b86-44f9-8453-fd19637802bc" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
+		<programme guid="fc209207-4b86-44f9-8453-fd19637802bc" product="2" licence_type="3" creator="9551" fictional="1" comment="Most episode titles 'inspired' by the previous (German) or alternative versions of some of the entries in the peoples data (English versions largely made up a-new); descriptions created largely with help of ChatGPT | mostly different puns/content/descriptions German vs English">
 			<title>
 				<de>Dynamit - Das Magazin Spezial: Back in L.A.</de>
 				<en>Dynamite - The Magazine Special: Back in L.A.</en>
@@ -525,7 +525,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<releaseTime year_relative="+4" year_relative_min="1995" year_relative_max="2001" />
 			<ratings critics="19" speed="43" outcome="55" />
 			<children>
-				<programme id="87849e53-530d-4570-ae8c-1c161e852764" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Verloony">
+				<programme guid="87849e53-530d-4570-ae8c-1c161e852764" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Verloony">
 					<title>
 						<de>${.self:"cast":2:"firstname"} verhört mich</de>
 						<en>${.self:"cast":2:"firstname"} Verhooten</en>
@@ -538,7 +538,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">10d455be-e8e5-40eb-927b-c36e3345525d</member>
 					</staff>
 				</programme>
-				<programme id="f2e1597a-efa6-40dd-9f0a-2cc89b74d55e" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Chillis, Thrillis, Pillis, Drillis, Grillis, Dillis, Quillis, Brillis">
+				<programme guid="f2e1597a-efa6-40dd-9f0a-2cc89b74d55e" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Chillis, Thrillis, Pillis, Drillis, Grillis, Dillis, Quillis, Brillis">
 					<title>
 						<de>${.self:"cast":2:"firstname"} will es</de>
 						<en>${.self:"cast":2:"firstname"} Will-less</en>
@@ -551,7 +551,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">2b6af8c4-7775-44da-820e-1ce9c55d8cd9</member>
 					</staff>
 				</programme>
-				<programme id="36518cf4-419d-4de4-8394-d4fbfe5acf8c" product="2" licence_type="2" creator="9551" comment="Miff used in a previous episode">
+				<programme guid="36518cf4-419d-4de4-8394-d4fbfe5acf8c" product="2" licence_type="2" creator="9551" comment="Miff used in a previous episode">
 					<title>
 						<de>${.self:"cast":2:"firstname"} Swift</de>
 						<en>${.self:"cast":2:"firstname"} Swift</en>
@@ -564,7 +564,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
 					</staff>
 				</programme>
-				<programme id="853f96d6-da45-4bb4-a04a-35f2a4d14061" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Oliver Stoner, Boner">
+				<programme guid="853f96d6-da45-4bb4-a04a-35f2a4d14061" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Oliver Stoner, Boner">
 					<title>
 						<de>Rolliger Stein</de>
 						<en>${.self:"cast":2:"firstname"} Bone</en>
@@ -577,7 +577,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">3d4a2d11-e943-4874-b8be-eaec31165150</member>
 					</staff>
 				</programme>
-				<programme id="49d2b764-c58b-4e38-b338-e13af4312525" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Will Weizen">
+				<programme guid="49d2b764-c58b-4e38-b338-e13af4312525" product="2" licence_type="2" creator="9551" comment="alternatives / variations: Will Weizen">
 					<title>
 						<de>${.self:"cast":2:"firstname"} Bieten</de>
 						<en>${.self:"cast":2:"firstname"}'s Wit Ton</en>
@@ -590,7 +590,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<member index="2" function="64">DF-Celebreties-Wil_Wheaton</member>
 					</staff>
 				</programme>
-				<programme id="5322bb8e-8061-4c5d-94d6-f585ce99bd8c" product="2" licence_type="2" creator="9551">
+				<programme guid="5322bb8e-8061-4c5d-94d6-f585ce99bd8c" product="2" licence_type="2" creator="9551">
 					<title>
 						<de>${.self:"cast":2:"firstname"} Heul</de>
 						<en>${.self:"cast":2:"firstname"} Howl</en>
@@ -605,7 +605,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme id="dba43687-9030-4e8f-9d8d-8bf2b8bafeb2" product="1" licence_type="1" creator="9551" fictional="1" comment="Einen Film über Sekretärinnen der eigentlichen Sexreport-Reihe gab es scheinbar nicht, es gibt aber ausländische Filme mit dem deutschen Titel 'Sekretärinnen-Report', daher die 'inoffizielle' Abwandlung '-Bericht' im TVTower-Universum | Description largely by ChatGPT | Screenplay continuations starting with d664f243-15d6-4645-886e-27a3e8cf8533">
+		<programme guid="dba43687-9030-4e8f-9d8d-8bf2b8bafeb2" product="1" licence_type="1" creator="9551" fictional="1" comment="Einen Film über Sekretärinnen der eigentlichen Sexreport-Reihe gab es scheinbar nicht, es gibt aber ausländische Filme mit dem deutschen Titel 'Sekretärinnen-Report', daher die 'inoffizielle' Abwandlung '-Bericht' im TVTower-Universum | Description largely by ChatGPT | Screenplay continuations starting with d664f243-15d6-4645-886e-27a3e8cf8533">
 			<title>
 				<de>Sekretärinnen-Bericht - Akten, Affären &amp; Akrobatik</de>
 				<en>Secretaries Report - Accounts, Affairs &amp; Acrobatics</en>

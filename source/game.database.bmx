@@ -694,7 +694,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3PersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
@@ -951,8 +951,8 @@ Type TDatabaseLoader
 
 
 	Method LoadV3NewsEventTemplateFromNode:TNewsEventTemplate(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
-		Local threadId:String = xml.FindValueLC(node,"thread_id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
+		Local threadId:String = xml.FindValueLC(node,"thread_guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -1113,7 +1113,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementFromNode:TAchievement(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -1197,7 +1197,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementElementFromNode:Int(elementName:String="task", source:TAchievement, node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
@@ -1273,7 +1273,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -1430,9 +1430,9 @@ Type TDatabaseLoader
 
 
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
-		Local GUID:String = TXmlHelper.FindValueLC(node,"id", "")
+		Local GUID:String = TXmlHelper.FindValueLC(node,"guid", "")
 		'referencing an already existing programmedata? Or just use "data-GUID"
-		Local dataGUID:String = TXmlHelper.FindValueLC(node,"programmedata_id", "data-"+GUID)
+		Local dataGUID:String = TXmlHelper.FindValueLC(node,"programmedata_guid", "data-"+GUID)
 		'forgot to prepend "data-" ?
 		If dataGUID.Find("data-") <> 0 Then dataGUID = "data-"+dataGUID
 
