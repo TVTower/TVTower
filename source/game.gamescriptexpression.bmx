@@ -243,7 +243,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "topicality"              Return New SToken( TK_NUMBER, licence.GetTopicality(), params.GetToken(0) )
 		Case "maxtopicality"           Return New SToken( TK_NUMBER, licence.GetMaxTopicality(), params.GetToken(0) )
 
-		Default                        Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
+		Default                        Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -352,7 +352,7 @@ Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGro
 		Case "roleid"    Return New SToken( TK_TEXT, job.roleID, params.GetToken(0) )
 		Case "hasrole"   Return New SToken( TK_BOOLEAN, Long(job.roleID<>0), params.GetToken(0) )
 
-		Default          Return New SToken( TK_TEXT, person.GetFullName(), params.GetToken(0) )
+		Default          Return New SToken( TK_ERROR, "Undefined property ~q"+params.GetToken(3 + tokenOffset).value.ToLower()+"~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -387,7 +387,7 @@ Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGro
 		Case "id"        Return New SToken( TK_NUMBER, role.GetID(), params.GetToken(0) )
 		case "fictional" Return New SToken( TK_BOOLEAN, role.fictional, params.GetToken(0) )
 
-		Default          Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+		Default          Return New SToken( TK_ERROR, "Undefined property ~q"+params.GetToken(3 + tokenOffset).value.ToLower()+"~q", params.GetToken(0) )
 	End Select
 End Function
 
@@ -417,6 +417,7 @@ Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionConte
 		case "firstname"    Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
 		case "lastname"     Return New SToken( TK_TEXT, role.GetLastName(includeTitle), params.GetToken(0) )
 		case "fullname"     Return New SToken( TK_TEXT, role.GetFullName(includeTitle), params.GetToken(0) )
+		Case "nickname"     Return New SToken( TK_TEXT, role.GetNickName(), params.GetToken(0) )
 		Case "title"        Return New SToken( TK_TEXT, role.GetTitle(), params.GetToken(0) )
 		case "countrycode"  Return New SToken( TK_TEXT, role.countrycode, params.GetToken(0) )
 		case "gender"       Return New SToken( TK_NUMBER, role.gender, params.GetToken(0) )
@@ -424,7 +425,7 @@ Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionConte
 		case "id"           Return New SToken( TK_NUMBER, role.GetID(), params.GetToken(0) )
 		case "fictional"    Return New SToken( TK_BOOLEAN, role.fictional, params.GetToken(0) )
 
-		default             Return New SToken( TK_TEXT, role.GetFullName(), params.GetToken(0) )
+		default             Return New SToken( TK_ERROR, "Undefined property ~q"+params.GetToken(2).value.ToLower()+"~q", params.GetToken(0) )
 	End Select
 End Function
 
