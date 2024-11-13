@@ -1954,6 +1954,10 @@ Type TPersonProductionJob
 
 	'only valid for actors
 	Field roleID:Int = 0
+	'marker if a random role should be created
+	'1=job from parent, only reset role on parent reset
+	'2=job overridden in child, reset role also on child reset
+	Field randomRole:Int = 0
 	
 	
 	Method Init:TPersonProductionJob(personID:Int, job:Int, gender:Int=0, country:String="", roleID:Int=0)

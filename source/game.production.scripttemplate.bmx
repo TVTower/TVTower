@@ -177,6 +177,10 @@ Type TScriptTemplate Extends TScriptBase
 	'stored there so that children could reuse it)
 	Method Reset:int()
 		ResetVariables()
+		'reset random roles - always for overridden jobs (2) or if reset is done on parent
+		For Local j:TPersonProductionJob = EachIn jobs
+			If j.randomRole = 2 Or (j.randomRole And Not parentScriptID) Then j.roleID = 0
+		Next
 	End Method
 
 
@@ -371,6 +375,10 @@ Type TScriptTemplate Extends TScriptBase
 		'convert instances to new copies (to avoid modification of the
 		'template jobs)
 		For local i:int = 0 until result.length
+			If result[i].randomRole And result[i].roleId = 0
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(result[i].country, result[i].gender)
+				result[i].roleID = role.id
+			EndIf
 			result[i] = result[i].Copy()
 			Local finalJob:TPersonProductionJob = result[i]
 			If finalJob.gender = 0 And finalJob.roleID <> 0
