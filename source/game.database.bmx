@@ -1942,9 +1942,11 @@ Type TDatabaseLoader
 		If Not scriptTemplate
 			'try to clone the parent, if that fails, create a new instance
 			If parentScriptTemplate
-				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id"))
+				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id guid jobs"))
 				'#440 optional flags are not propagated to episode templates
 				scriptTemplate.flagsOptional = 0
+				'jobs must not be cloned, the same instances must be used for all templates, so that random roles are propagated
+				scriptTemplate.jobs = parentScriptTemplate.jobs[ .. ] 'complete copy of the array
 			EndIf
 			If Not scriptTemplate
 				scriptTemplate = New TScriptTemplate
@@ -2119,6 +2121,13 @@ Type TDatabaseLoader
 			Local jobCountry:String = xml.FindValueLC(nodeJob, "country", "")
 			'for actor jobs this defines if a specific role is defined
 			Local jobRoleGUID:String = xml.FindValueLC(nodeJob, "role_guid", "")
+			Local jobRandomRole:Int = xml.FindValueIntLC(nodeJob, "random_role", 0)
+			If jobRandomRole
+				jobRandomRole = 1
+				'overriding job must be reset on child reset!
+				If parentScriptTemplate Then jobRandomRole = 2
+				jobRoleGUID=""
+			EndIf
 			Local jobRoleID:Int = 0
 			If jobRoleGUID
 				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
@@ -2132,6 +2141,7 @@ Type TDatabaseLoader
 
 			'create a job without an assigned person
 			Local job:TPersonProductionJob = New TPersonProductionJob.Init(0, jobFunction, jobGender, jobCountry, jobRoleID)
+			job.randomRole = jobRandomRole
 			If jobRequired = 0
 				'check if the job has to override an existing one
 				If jobIndex >= 0 And scriptTemplate.GetRandomJobAtIndex(jobIndex)
