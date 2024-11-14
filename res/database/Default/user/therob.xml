@@ -2,7 +2,7 @@
 <tvtdb>
 <version value="3" comment="Programme von TheRob" />
 	<allprogrammes>
-		<programme id="TheRob-serie-KomissarWirsch" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-serie-KomissarWirsch" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<de>Kommissar Wirsch</de>
 				<en>Inspector Gruff</en>
@@ -26,7 +26,7 @@
 			<data country="D" year="1951" distribution="2" maingenre="4" subgenre="5" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="30" speed="49" />
 			<children>
-				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Tante Emma Laden</de>
 						<en>Gruffy and the Corner Store</en>
@@ -42,7 +42,7 @@
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="42a3b7ca-57ff-42c0-a194-c12cc84ef8de" />
 					</effects>
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-KommissarWirsch-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der vermisste Bürgermeister</de>
 						<en>Gruffy and the Missing Mayor</en>
@@ -55,7 +55,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-KommissarWirsch-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und das versteckte Gemälde</de>
 						<en>Gruffy and the Hidden Painting</en>
@@ -68,7 +68,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-KommissarWirsch-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Fotograf</de>
 						<en>Gruffy and the Photographer</en>
@@ -81,7 +81,7 @@
 					</description>
 					<ratings critics="32" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-KommissarWirsch-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wirschi und der Grenzstein</de>
 						<en>Gruffy and the Border Stone</en>
@@ -94,23 +94,23 @@
 					</description>
 					<ratings critics="12" speed="8" />
 				</programme>
-				<programme id="TheRob-serie-KommissarWirsch-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-KommissarWirsch-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Assistentin wird Sängerin</de>
 						<en>The Assistant Becomes a Singing Star</en>
 						<pl>Asystent staje się śpiewającą gwiazdą</pl>
 					</title>
 					<description>
-						<de>[2|Full] singt in einer Bar. Ein Plattenproduzent entdeckt sie. Der traurige Abschied beginnt</de>
-						<en>[2|Full] sings in a bar. A record producer discovers her. The sad farewell begins.</en>
-						<pl>[2|Full] śpiewa w barze. Odkrywa ją producent płytowy. Rozpoczyna się smutne pożegnanie.</pl>
+						<de>${.self:"cast":2:"fullname"} singt in einer Bar. Ein Plattenproduzent entdeckt sie. Der traurige Abschied beginnt</de>
+						<en>${.self:"cast":2:"fullname"} sings in a bar. A record producer discovers her. The sad farewell begins.</en>
+						<pl>${.self:"cast":2:"fullname"} śpiewa w barze. Odkrywa ją producent płytowy. Rozpoczyna się smutne pożegnanie.</pl>
 					</description>
 					<ratings critics="50" speed="25" />
 				</programme>
 			</children>
 		</programme>
 
-		<programme id="TheRob-a4d6-act-Meinsallesmeins" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained real staff; less fitting here, replaced by fictional ones">
+		<programme guid="TheRob-a4d6-act-Meinsallesmeins" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained real staff; less fitting here, replaced by fictional ones">
 			<title>
 				<de>Meins! Alles MEINS!</de>
 				<en>Mine! All MINE!</en>
@@ -135,7 +135,7 @@
 			<ratings critics="27" speed="63" outcome="36" />
 		</programme>
 
-		<programme id="TheRob-b0db-fant-ReisemitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-b0db-fant-ReisemitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<!-- Zielgruppe Kinder -->
 				<de>Ich reiste mit dem Sandmännchen</de>
@@ -161,7 +161,7 @@
 			<ratings critics="33" speed="27" outcome="56" />
 		</programme>
 
-		<programme id="TheRob-b0db-myst-VerschwandmitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-b0db-myst-VerschwandmitSandmaennchen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<!-- Als Mysterie Test mit Subgenre Horror -->
 				<de>Ich verschwand mit dem Sandmännchen</de>
@@ -187,7 +187,7 @@
 			<ratings critics="73" speed="58" outcome="76" />
 		</programme>
 
-		<programme id="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Der Bau von Neuschwanstein</de>
 				<en>The Construction of Neuschwanstein</en>
@@ -213,16 +213,16 @@
 			<ratings critics="65" speed="36" outcome="51" />
 		</programme>
 
-		<programme id="TheRob-dda6-ero-WuzzGeiersDamen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="practically a fictional compilation of real films; shouldn't contain fictional actors - moved these to dba43687-9030-4e8f-9d8d-8bf2b8bafeb2">
+		<programme guid="TheRob-dda6-ero-WuzzGeiersDamen" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="practically a fictional compilation of real films; shouldn't contain fictional actors - moved these to dba43687-9030-4e8f-9d8d-8bf2b8bafeb2">
 			<title>
-				<de>[0|Full]s Damen</de>
-				<en>[0|Full]'s Ladies</en>
-				<pl>Wszystkie kobiety [0|Full]</pl>
+				<de>${.self:"cast":0:"fullname"}s Damen</de>
+				<en>${.self:"cast":0:"fullname"}'s Ladies</en>
+				<pl>Wszystkie kobiety ${.self:"cast":0:"fullname"}</pl>
 			</title>
 			<description>
-				<de>Die bestgebauten Damen von [0|Full] hüpfen durch das Bild.</de>
-				<en>The finest proportioned ladies of [0|Full] are bouncing through the picture.</en>
-				<pl>W programie pokazane są kobiety o najlepszych proporcjach ciała według [0|Full]a.</pl><!--I don't know if this is what you meant. help!-->
+				<de>Die bestgebauten Damen von ${.self:"cast":0:"fullname"} hüpfen durch das Bild.</de>
+				<en>The finest proportioned ladies of ${.self:"cast":0:"fullname"} are bouncing through the picture.</en>
+				<pl>W programie pokazane są kobiety o najlepszych proporcjach ciała według ${.self:"cast":0:"fullname"}a.</pl><!--I don't know if this is what you meant. help!-->
 			</description>
 			<staff>
 				<member index="0" function="1">1b9dbd90-5ec0-4e11-ae86-f3365c96897d</member>
@@ -233,7 +233,7 @@
 			<ratings critics="12" speed="49" outcome="30" />
 		</programme>
 
-		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff (spoof of The NeverEnding Story but in 1964 with the real staff of the original film, partly not even born yet) | Created screenplay 1927c2dd-0691-48d3-9c64-311eb0570e53 to keep a The NeverEnding Story reference.">
+		<programme guid="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff (spoof of The NeverEnding Story but in 1964 with the real staff of the original film, partly not even born yet) | Created screenplay 1927c2dd-0691-48d3-9c64-311eb0570e53 to keep a The NeverEnding Story reference.">
 			<title>
 				<de>Wesensreiter</de>
 				<en>Creature Rider</en>
@@ -258,7 +258,7 @@
 			<ratings critics="33" speed="27" outcome="56" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b0db-439c-a852-BullshitBingo" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Bullshit Bingo</de>
 				<en>Bullshit Bingo</en>
@@ -279,16 +279,16 @@
 			<ratings critics="29" speed="27" outcome="10" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b0db-439c-a852-Sonstiges" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Sonstiges - das Thema</de>
 				<en>Sundry - the Topic</en>
 				<pl>Różnorodne - temat gatunku</pl>
 			</title>
 			<description>
-				<de>[0|Full] hat [1|Full], [2|Full], [3|Full] und [4|Full] eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
-				<en>[0|Full] has invited [1|Full], [2|Full], [3|Full] and [4|Full]. The goal an intensive conversation about Sundry. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
-				<pl>[0|Full] zaprasza gości. To: [1|Full], [2|Full], [3|Full] i [4|Full]. Celem jest intensywna rozmowa na temat "Różnorodne". Co się na to składa? Jaki jest wpływ? Jakie będą wskaźniki oglądalności? Bardzo ekscytująca runda ekspertów. Zwłaszcza gdy wybuchnie kłótnia.</pl>
+				<de>${.self:"cast":0:"fullname"} hat ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} und ${.self:"cast":4:"fullname"} eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
+				<en>${.self:"cast":0:"fullname"} has invited ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} and ${.self:"cast":4:"fullname"}. The goal an intensive conversation about Sundry. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
+				<pl>${.self:"cast":0:"fullname"} zaprasza gości. To: ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} i ${.self:"cast":4:"fullname"}. Celem jest intensywna rozmowa na temat "Różnorodne". Co się na to składa? Jaki jest wpływ? Jakie będą wskaźniki oglądalności? Bardzo ekscytująca runda ekspertów. Zwłaszcza gdy wybuchnie kłótnia.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -303,16 +303,16 @@
 			<ratings critics="99" speed="47" outcome="74" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b0db-439c-a852-EditorundKI" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Editor und KI</de>
 				<en>Editor and AI</en>
 				<pl>Redaktor i sztuczna inteligencja</pl>
 			</title>
 			<description>
-				<de>[0|Full] und [1|Full] in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen? Und hat [1|Full] richtig gehandelt? Ist Real-Life wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig.</de>
-				<en>[0|Full] and [1|Full] in lively discussion. Where do we stand with the editor? What should the AI look like? And did [1|Full] act correctly? Is real life more important? And who is working on the AI now? Exciting, but a bit too lengthy.</en>
-				<pl>[0|Full] i [1|Full] w ożywionej dyskusji. Jak powinna wyglądać sztuczna inteligencja? Czy [1|Full] działał poprawnie? Czy prawdziwe życie jest ważniejsze? I kto teraz pracuje nad SI? Ekscytujące, ale trochę za długie.</pl>
+				<de>${.self:"cast":0:"fullname"} und ${.self:"cast":1:"fullname"} in reger Diskussion. Wie steht es um den Editor? Wie muss die KI aussehen? Und hat ${.self:"cast":1:"fullname"} richtig gehandelt? Ist Real-Life wichtiger? Und wer macht jetzt die KI? Spannend, aber etwas zu langatmig.</de>
+				<en>${.self:"cast":0:"fullname"} and ${.self:"cast":1:"fullname"} in lively discussion. Where do we stand with the editor? What should the AI look like? And did ${.self:"cast":1:"fullname"} act correctly? Is real life more important? And who is working on the AI now? Exciting, but a bit too lengthy.</en>
+				<pl>${.self:"cast":0:"fullname"} i ${.self:"cast":1:"fullname"} w ożywionej dyskusji. Jak powinna wyglądać sztuczna inteligencja? Czy ${.self:"cast":1:"fullname"} działał poprawnie? Czy prawdziwe życie jest ważniejsze? I kto teraz pracuje nad SI? Ekscytujące, ale trochę za długie.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -324,16 +324,16 @@
 			<ratings critics="92" speed="27" outcome="61" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b0db-439c-a852-TVGigantderAnfang" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>TVTower - der Anfang</de>
 				<en>TVTower - the Beginning</en>
 				<pl>TVTower - początek</pl>
 			</title>
 			<description>
-				<de>[0|Full] und [1|Full] sowie [2|Full] erklären ihre Motivation. Warum TVTower. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de> <!-- TODO: 2025 follow-up -->
-				<en>[0|Full] and [1|Full] as well as [2|Full] explain their motivation. Why TVTower. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
-				<pl>[0|Full] i [1|Full] oraz [2|Full] wyjaśniają swoją motywację do pracy nad TVTower. I jak długo będą wytrwali. Czy kiedykolwiek zostanie ukończona. Czy można to zrobić w harmonii z resztą życia? Czekamy na obiecany wywiad z 2025 roku!</pl>
+				<de>${.self:"cast":0:"fullname"} und ${.self:"cast":1:"fullname"} sowie ${.self:"cast":2:"fullname"} erklären ihre Motivation. Warum TVTower. Und wie lange halten sie durch. Wird es jemals fertig. Geht das im Einklang mit dem restlichen Leben? Wir freuen uns auf das versprochene Interview 2025!</de> <!-- TODO: 2025 follow-up -->
+				<en>${.self:"cast":0:"fullname"} and ${.self:"cast":1:"fullname"} as well as ${.self:"cast":2:"fullname"} explain their motivation. Why TVTower. And how long will they persevere. Will it ever be finished. Can it be done in harmony with the rest of life? We look forward to the promised interview 2025!</en>
+				<pl>${.self:"cast":0:"fullname"} i ${.self:"cast":1:"fullname"} oraz ${.self:"cast":2:"fullname"} wyjaśniają swoją motywację do pracy nad TVTower. I jak długo będą wytrwali. Czy kiedykolwiek zostanie ukończona. Czy można to zrobić w harmonii z resztą życia? Czekamy na obiecany wywiad z 2025 roku!</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -348,16 +348,16 @@
 
 		<!-- 'RatTV - Quo Vadis' moved to database_programmes.xml -->
 
-		<programme id="TheRob-b0db-439c-a852-Goaaaaal" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-b0db-439c-a852-Goaaaaal" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<de>Goaaaaal</de>
 				<en>Goaaaaal</en>
 				<pl>Goaaaaal</pl>
 			</title>
 			<description>
-				<de>[1|Full] präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
-				<en>[1|Full] presents the finest goals of 1981. A feast for the eyes of every fan!</en>
-				<pl>[1|Full] prezentuje najlepsze bramki z 1981 roku. Uczta dla oczu każdego fana!</pl>
+				<de>${.self:"cast":1:"fullname"} präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
+				<en>${.self:"cast":1:"fullname"} presents the finest goals of 1981. A feast for the eyes of every fan!</en>
+				<pl>${.self:"cast":1:"fullname"} prezentuje najlepsze bramki z 1981 roku. Uczta dla oczu każdego fana!</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_639</member>
@@ -371,7 +371,7 @@
 			<ratings critics="22" speed="95" outcome="62" />
 		</programme>
 
-		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="previously contained ill-fitting real staff, replaced with fictional">
+		<programme guid="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="previously contained ill-fitting real staff, replaced with fictional">
 			<title>
 				<de>Iris entdeckt die Alm</de>
 				<en>Iris Explores the Alp</en>
@@ -396,7 +396,7 @@
 			<ratings critics="9" speed="19" outcome="29" />
 		</programme>
 
-		<programme id="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="contains real staff, some ill-fitting replaced with fictional">
+		<programme guid="8ef29506-1756-400d-8f9c-TheRobTest03" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="contains real staff, some ill-fitting replaced with fictional">
 			<title>
 				<de>Weib, Wein und Gesang</de>
 				<en>Wine, Women and Song</en>
@@ -422,7 +422,7 @@
 			<ratings critics="32" speed="49" outcome="47" />
 		</programme>
 
-		<programme id="TheRob-916a-47bf-infinityjest" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="previously contained ill-fitting real staff, replaced with fictional | TODO: Book adaptations should in most cases be screenplays">
+		<programme guid="TheRob-916a-47bf-infinityjest" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="previously contained ill-fitting real staff, replaced with fictional | TODO: Book adaptations should in most cases be screenplays">
 			<title>
 				<!-- Idee basiert auf Unendlicher Spaß, Das Buch musste umgesetzt werden -->
 				<de>Der perfekte, unendlich spaßige Film</de>
@@ -449,7 +449,7 @@
 			<ratings critics="100" speed="100" outcome="100" />
 		</programme>
 
-		<programme id="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="contains real staff">
+		<programme guid="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="contains real staff">
 			<title>
 				<de>Jo Mei, ei schei Jodeler</de>
 				<en>Jo Mei, a Fu'ing Yodeler</en>
@@ -475,16 +475,16 @@
 			<ratings critics="32" speed="9" outcome="20" />
 		</programme>
 
-		<programme id="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="contains real staff">
+		<programme guid="c4be7d64-35e9-4e56-8e6e-TheRobTest06" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="contains real staff">
 			<title>
 				<de>Jag den Meringo</de>
 				<en>Hunting Meringo</en>
 				<pl>Polowanie na Meringo</pl>
 			</title>
 			<description>
-				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. [1|Full], der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
-				<en>Meringo slaughters a village with his mob. [1|Full], having lost his child because of this, hunts him down mercilessly.</en>
-				<pl>Meringo morduje wioskę ze swoim tłumem. [1|Full], straciwszy z tego powodu dziecko, bezlitośnie na niego poluje.</pl>
+				<de>Meringo metzelt mit seiner Bande ein Dorf nieder. ${.self:"cast":1:"fullname"}, der dadurch sein Kind verlor, jagt ihn erbarmungslos.</de>
+				<en>Meringo slaughters a village with his mob. ${.self:"cast":1:"fullname"}, having lost his child because of this, hunts him down mercilessly.</en>
+				<pl>Meringo morduje wioskę ze swoim tłumem. ${.self:"cast":1:"fullname"}, straciwszy z tego powodu dziecko, bezlitośnie na niego poluje.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">bef085c9-c305-4033-9ec8-fa9ad90635e0</member>
@@ -498,7 +498,7 @@
 			<ratings critics="67" speed="66" outcome="65" />
 		</programme>
 
-		<programme id="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="therob-programme-elefantengedaechtnis" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<de>Elefantengedächtnis</de>
 				<en>An Elephant's Memory</en>
@@ -518,7 +518,7 @@
 			<data country="D" year="1978" distribution="2" maingenre="9" subgenre="100" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="67" speed="25" outcome="46" />
 			<children>
-				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Zahnpasta</de>
 						<en>Toothpaste</en>
@@ -531,7 +531,7 @@
 					</description>
 					<ratings critics="73" speed="24" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-elefantengedaechtnis-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Limonade</de>
 						<en>Lemonade</en>
@@ -544,7 +544,7 @@
 					</description>
 					<ratings critics="65" speed="26" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-elefantengedaechtnis-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Bleistifte</de>
 						<en>Pencils</en>
@@ -557,7 +557,7 @@
 					</description>
 					<ratings critics="66" speed="25" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-elefantengedaechtnis-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Moderator ohne Kontrolle</de>
 						<en>Presenter Without Control</en>
@@ -570,7 +570,7 @@
 					</description>
 					<ratings critics="74" speed="49" />
 				</programme>
-				<programme id="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-elefantengedaechtnis-ep105" product="5" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Namentanzen</de>
 						<en>Name Dancing</en>
@@ -586,7 +586,7 @@
 			</children>
 		</programme>
 
-		<programme id="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="631f722f-b5dc-4663-bd81-TheRobHist01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<de>Die Tempelritter</de>
 				<en>The Templars</en>
@@ -612,7 +612,7 @@
 			<ratings critics="75" speed="31" outcome="48" />
 		</programme>
 
-		<programme id="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
+		<programme guid="e61018ba-b0db-439c-a852-TheRobTest13" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
 			<title>
 				<!-- Dudu ist die Grundidee, aber da das Setting in meinen Augen so verändert ist, dass man noch DuDu und Herbie anlegen kann, ohne das es stört, ist Baba auf fictional gesetzt. -->
 				<de>Baba der Trabbi</de>
@@ -636,7 +636,7 @@
 			<ratings critics="27" speed="34" outcome="46" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-WilhelmTell" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
+		<programme guid="TheRob-b0db-439c-a852-WilhelmTell" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
 			<title>
 				<!-- Wilhelm Tell als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
 				<de>Wilhelm Tell</de>
@@ -660,7 +660,7 @@
 			<ratings critics="36" speed="32" outcome="31" />
 		</programme>
 
-		<programme id="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
+		<programme guid="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
 			<title>
 				<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
 				<de>Jánošík</de>
@@ -684,16 +684,16 @@
 			<ratings critics="56" speed="42" outcome="41" />
 		</programme>
 
-		<programme id="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff, previous ill-fitting director replaced">
+		<programme guid="therob-programme-trash-skandale" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff, previous ill-fitting director replaced">
 			<title>
 				<de>Skandale</de>
 				<en>Scandals</en>
 				<pl>Skandale</pl>
 			</title>
 			<description>
-				<de>[0|Full] präsentiert die Skandale von [1|Full]. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
-				<en>[0|Full] presents the scandals of [1|Full]. Everything is shown, from freak-outs at film locations to interviews and talk show appearances. Hilarious to no end. But completely unsuitable for younger viewers.</en>
-				<pl>[0|Full] przedstawia skandale z [1|Full]. Pokazano wszystko, od szaleństw w miejscach kręcenia filmów po wywiady i występy w talk show. Przezabawne bez końca. Ale zupełnie nieodpowiednie dla młodszych widzów.</pl>
+				<de>${.self:"cast":0:"fullname"} präsentiert die Skandale von ${.self:"cast":1:"fullname"}. Präsentiert wird alles, von Ausrastern an Drehorten über Interviews bis zu Talkshow-Auftritten. Erheiternd bis zum geht nicht mehr. Aber für Jugendliche völlig ungeeignet.</de>
+				<en>${.self:"cast":0:"fullname"} presents the scandals of ${.self:"cast":1:"fullname"}. Everything is shown, from freak-outs at film locations to interviews and talk show appearances. Hilarious to no end. But completely unsuitable for younger viewers.</en>
+				<pl>${.self:"cast":0:"fullname"} przedstawia skandale z ${.self:"cast":1:"fullname"}. Pokazano wszystko, od szaleństw w miejscach kręcenia filmów po wywiady i występy w talk show. Przezabawne bez końca. Ale zupełnie nieodpowiednie dla młodszych widzów.</pl>
 			</description>
 			<staff>
 				<member index="0" function="9">c9541cda-d802-4421-bc52-30747c163db0</member>
@@ -704,49 +704,49 @@
 			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="103,11" flags="92" blocks="2" price_mod="1.00" />
 			<ratings critics="65" speed="35" outcome="60" />
 			<children>
-				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[1|Full] qualmt die Bude zu</de>
-						<en>[1|Full] Smoking Up the Place</en>
-						<pl>[1|Full] puszcza z dymem to miejsce</pl>
+						<de>${.self:"cast":1:"fullname"} qualmt die Bude zu</de>
+						<en>${.self:"cast":1:"fullname"} Smoking Up the Place</en>
+						<pl>${.self:"cast":1:"fullname"} puszcza z dymem to miejsce</pl>
 					</title>
 					<description>
-						<de>[1|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
-						<en>[1|Full] as a chain smoker insults the host to the point of no return.</en>
-						<pl>[1|Full], jako palacz który obraża gospodarza i doprowadza go do punktu, z którego nie ma powrotu.</pl>
+						<de>${.self:"cast":1:"fullname"} als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
+						<en>${.self:"cast":1:"fullname"} as a chain smoker insults the host to the point of no return.</en>
+						<pl>${.self:"cast":1:"fullname"}, jako palacz który obraża gospodarza i doprowadza go do punktu, z którego nie ma powrotu.</pl>
 					</description>
 					<ratings critics="60" speed="30" />
 				</programme>
-				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>[1|Full] beleidigt die Interviewerin</de>
-						<en>[1|Full] Insulting the Interviewer</en>
-						<pl>[1|Full] obraża osobę z którą przeprowadza wywiad</pl>
+						<de>${.self:"cast":1:"fullname"} beleidigt die Interviewerin</de>
+						<en>${.self:"cast":1:"fullname"} Insulting the Interviewer</en>
+						<pl>${.self:"cast":1:"fullname"} obraża osobę z którą przeprowadza wywiad</pl>
 					</title>
 					<description>
-						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
-						<en>Can't help feeling sorry for the lady. [1|Full] goes completely berserk and attacks her obscenely.</en>
-						<pl>Nie mogę przestać współczuć tej kobiecie. [1|Full] wpada w szał i atakuje ją nieprzyzwoicie.</pl>
+						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. ${.self:"cast":1:"fullname"} rastet völlig aus und geht sie unflätig an.</de>
+						<en>Can't help feeling sorry for the lady. ${.self:"cast":1:"fullname"} goes completely berserk and attacks her obscenely.</en>
+						<pl>Nie mogę przestać współczuć tej kobiecie. ${.self:"cast":1:"fullname"} wpada w szał i atakuje ją nieprzyzwoicie.</pl>
 					</description>
 					<ratings critics="65" speed="35" />
 				</programme>
-				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>[1|Full] im Dschungel</de>
-						<en>[1|Full] in the Jungle</en>
-						<pl>[1|Full] w dżungli</pl>
+						<de>${.self:"cast":1:"fullname"} im Dschungel</de>
+						<en>${.self:"cast":1:"fullname"} in the Jungle</en>
+						<pl>${.self:"cast":1:"fullname"} w dżungli</pl>
 					</title>
 					<description>
-						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
-						<en>[1|Full]'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
-						<pl>Legendarny napad złości w dżungli. Kogo zaatakuje [1|Full] w następnej kolejności? Naoczni świadkowie do dziś przeżywają traumę.</pl>
+						<de>${.self:"cast":1:"fullname"} legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
+						<en>${.self:"cast":1:"fullname"}'s legendary tantrum in the jungle. Who will he attack next? The eyewitnesses are still traumatized today.</en>
+						<pl>Legendarny napad złości w dżungli. Kogo zaatakuje ${.self:"cast":1:"fullname"} w następnej kolejności? Naoczni świadkowie do dziś przeżywają traumę.</pl>
 					</description>
 					<ratings critics="70" speed="40" />
 				</programme>
 			</children>
 		</programme>
 
-		<programme id="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: There are actually real Sinbad films and series.">
+		<programme guid="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: There are actually real Sinbad films and series.">
 			<!-- Abteuerserie  -->
 			<title>
 				<de>Sindbads Reisen</de>
@@ -768,7 +768,7 @@
 			<data country="J" year="1978" distribution="2" maingenre="1" subgenre="2,10" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="38" speed="43" outcome="41" />
 			<children>
-				<programme id="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-adv-sinbadsreisen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Sindbad und die Insel</de>
 						<en>Sinbad and the Island</en>
@@ -781,7 +781,7 @@
 					</description>
 					<ratings critics="34" speed="41" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-adv-sinbadsreisen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sindbad und das Diamantental</de>
 						<en>Sinbad and the Diamond Valley</en>
@@ -794,7 +794,7 @@
 					</description>
 					<ratings critics="34" speed="42" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-adv-sinbadsreisen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sindbad und der Riese</de>
 						<en>Sinbad and the giant</en>
@@ -807,7 +807,7 @@
 					</description>
 					<ratings critics="37" speed="47" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep104" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-adv-sinbadsreisen-ep104" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sindbad heiratet</de>
 						<en>Sinbad marries</en>
@@ -820,7 +820,7 @@
 					</description>
 					<ratings critics="35" speed="29" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadreisen-ep105" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-adv-sinbadreisen-ep105" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sindbad und der Riesenvogel</de>
 						<en>Sinbad and the giant bird</en>
@@ -833,7 +833,7 @@
 					</description>
 					<ratings critics="33" speed="51" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadreisen-ep106" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-adv-sinbadreisen-ep106" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sindbad und das karge Land</de>
 						<en>Sinbad and the barren land</en>
@@ -846,7 +846,7 @@
 					</description>
 					<ratings critics="42" speed="39" />
 				</programme>
-				<programme id="therob-programme-adv-sinbadsreisen-ep107" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-adv-sinbadsreisen-ep107" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Sindbad geht in Rente</de>
 						<en>Sinbad is retiring</en>
@@ -863,7 +863,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="therob-programme-mng-firmengruendungen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Manager, geflagt als Kultur -->
 			<title>
 				<de>Firmengründungen</de>
@@ -885,49 +885,49 @@
 			<releaseTime year_relative="-1" year_relative_min="1984" year_relative_max="2010" />
 			<ratings critics="45" speed="23" outcome="34" />
 			<children>
-				<programme id="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="here changing back to Bollywood because it was probably meant not as a spoof">
+				<programme guid="therob-programme-mng-firmengruendungen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="here changing back to Bollywood because it was probably meant not as a spoof">
 					<title>
 						<de>Filmstudio in Bollywood</de>
 						<en>Movie Studio in Bollywood</en>
 						<pl>Studio filmowe w Bollywood</pl>
 					</title>
 					<description>
-						<de>[1|Full] begleitet Hans Imglück auf seinem Weg, Qualitätsfilme in Bollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
-						<en>[1|Full] accompanies Hans Inluck on his way to shoot quality films in Bollywood. A magnificent loss-making business.</en>
-						<pl>[1|Full] towarzyszy Hansowi Inluckowi w jego drodze do kręcenia wysokiej jakości filmów w Bollywood. Wspaniały biznes przynoszący straty.</pl>
+						<de>${.self:"cast":1:"fullname"} begleitet Hans Imglück auf seinem Weg, Qualitätsfilme in Bollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
+						<en>${.self:"cast":1:"fullname"} accompanies Hans Inluck on his way to shoot quality films in Bollywood. A magnificent loss-making business.</en>
+						<pl>${.self:"cast":1:"fullname"} towarzyszy Hansowi Inluckowi w jego drodze do kręcenia wysokiej jakości filmów w Bollywood. Wspaniały biznes przynoszący straty.</pl>
 					</description>
 					<ratings critics="43" speed="22" />
 				</programme>
-				<programme id="therob-programme-mng-firmengruendungen-epp102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-mng-firmengruendungen-epp102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Erotikshop im Jemen</de>
 						<en>Erotic Store in Yemen</en>
 						<pl>Sklep erotyczny w Jemenie</pl>
 					</title>
 					<description>
-						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. [1|Full] führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf, die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
-						<en>Nick Thinknotlong sets up an erotic store in Yemen. [1|Full] conducts an exciting interview about Nick's knowledge of Yemen. We're looking forward to filming the episode about the ideas he comes up with in prison.</en>
-						<pl>Nick Thinknotlong zakłada sklep erotyczny w Jemenie. [1|Full] przeprowadza ekscytujący wywiad na temat wiedzy Nicka o Jemenie. Z niecierpliwością czekamy na nakręcenie odcinka o pomysłach, na które wpada w więzieniu.</pl>
+						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. ${.self:"cast":1:"fullname"} führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf, die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
+						<en>Nick Thinknotlong sets up an erotic store in Yemen. ${.self:"cast":1:"fullname"} conducts an exciting interview about Nick's knowledge of Yemen. We're looking forward to filming the episode about the ideas he comes up with in prison.</en>
+						<pl>Nick Thinknotlong zakłada sklep erotyczny w Jemenie. ${.self:"cast":1:"fullname"} przeprowadza ekscytujący wywiad na temat wiedzy Nicka o Jemenie. Z niecierpliwością czekamy na nakręcenie odcinka o pomysłach, na które wpada w więzieniu.</pl>
 					</description>
 					<ratings critics="48" speed="27" />
 				</programme>
-				<programme id="therob-programme-mng-firmengruendungen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-mng-firmengruendungen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Kühlschrankfachladen in Grönland</de>
 						<en>Fridge Store in Greenland</en>
 						<pl>Sklep z lodówkami w Grenlandii</pl>
 					</title>
 					<description>
-						<de>[1|Full] reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Eine etwas kühle Sache.</de>
-						<en>[1|Full] travels to Greenland with Mee Isfreezy to follow the development of her refrigerator specialty store. A somewhat chilly affair.</en>
-						<pl>[1|Full] podróżuje na Grenlandię z Mee Isfreezy, aby śledzić rozwój jej specjalistycznego sklepu z lodówkami. Nieco chłodna sprawa.</pl>
+						<de>${.self:"cast":1:"fullname"} reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Eine etwas kühle Sache.</de>
+						<en>${.self:"cast":1:"fullname"} travels to Greenland with Mee Isfreezy to follow the development of her refrigerator specialty store. A somewhat chilly affair.</en>
+						<pl>${.self:"cast":1:"fullname"} podróżuje na Grenlandię z Mee Isfreezy, aby śledzić rozwój jej specjalistycznego sklepu z lodówkami. Nieco chłodna sprawa.</pl>
 					</description>
 					<ratings critics="44" speed="19" />
 				</programme>
 			</children>
 		</programme>
 
-		<programme id="83a2a0c0-7101-4844-b792-d0ad08554981" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous id: b528cab3-ec3d-43fc-TheRobCallInTest01 | Screenplay continuation added as 4e671e3f-b2e4-45d6-b40e-16757e1139dc">
+		<programme guid="83a2a0c0-7101-4844-b792-d0ad08554981" product="3" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous id: b528cab3-ec3d-43fc-TheRobCallInTest01 | Screenplay continuation added as 4e671e3f-b2e4-45d6-b40e-16757e1139dc">
 			<title>
 				<de>Schach gegen den Meister</de>
 				<en>Chess Against the Master</en>
@@ -947,7 +947,7 @@
 			<releaseTime year_relative="3" day="7" />
 			<ratings critics="29" speed="10" outcome="18" />
 			<children>
-				<programme id="59ab8a37-87cb-40ec-b454-6e182b9e2b36" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="59ab8a37-87cb-40ec-b454-6e182b9e2b36" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>2 Türme, 3 Bauern</de>
 						<en>2 Rooks, 3 Pawns</en>
@@ -960,7 +960,7 @@
 					</description>
 					<ratings critics="30" speed="4" />
 				</programme>
-				<programme id="bdd5d055-02b5-41d6-8fb9-ee389893e09d" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="bdd5d055-02b5-41d6-8fb9-ee389893e09d" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Springer und Läufer</de>
 						<en>Knights and Bishops</en>
@@ -973,7 +973,7 @@
 					</description>
 					<ratings critics="32" speed="4" />
 				</programme>
-				<programme id="139c5e7b-a543-4555-804f-af59d275c854" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="139c5e7b-a543-4555-804f-af59d275c854" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Nur noch Bauern</de>
 						<en>Only Pawns Left</en>
@@ -986,7 +986,7 @@
 					</description>
 					<ratings critics="24" speed="4" />
 				</programme>
-				<programme id="3177a6b6-d04b-40a5-914e-0638eb1d790b" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="3177a6b6-d04b-40a5-914e-0638eb1d790b" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Damen</de>
 						<en>Queens</en>
@@ -1005,7 +1005,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b5dc-4663-bd81-DerOsten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Rentner -->
 			<title>
 				<de>Der Osten - der wahre Horror</de>
@@ -1026,7 +1026,7 @@
 			<ratings critics="25" speed="40" outcome="35" />
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b5dc-4663-bd81-DerWesten" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Zielgruppe Rentner -->
 			<title>
 				<de>Der Westen - der wahre Horror</de>
@@ -1047,7 +1047,7 @@
 			<ratings critics="25" speed="40" outcome="35" />
 		</programme>
 
-		<programme id="74e7af51-bce9-49e3-844f-589921426e0a" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous id: TheRob-CallIn-TopundTeuer-KurvenderWelt | Screenplay version added as 441e360b-4549-4115-bcfc-3de3ea4ac91c">
+		<programme guid="74e7af51-bce9-49e3-844f-589921426e0a" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous id: TheRob-CallIn-TopundTeuer-KurvenderWelt | Screenplay version added as 441e360b-4549-4115-bcfc-3de3ea4ac91c">
 			<title>
 				<de>Kurven der Welt - Erkenne sie alle</de>
 				<en>Curves of the World - Know Them All</en>
@@ -1068,7 +1068,7 @@
 			<releaseTime year_relative="4" year_relative_min="1990" year_relative_max="2010" />
 			<ratings critics="24" speed="42" outcome="33" />
 			<children>
-				<programme id="2415b4de-46a1-4898-a2ab-5eb7b594e91f" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="2415b4de-46a1-4898-a2ab-5eb7b594e91f" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Jamaika</de>
 						<en>Jamaica</en>
@@ -1081,7 +1081,7 @@
 					</description>
 					<ratings critics="20" speed="38" />
 				</programme>
-				<programme id="f8d1332a-e3bb-4e99-8a02-2d82f8e11ae5" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="f8d1332a-e3bb-4e99-8a02-2d82f8e11ae5" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Kambodscha</de>
 						<en>Cambodia</en>
@@ -1094,7 +1094,7 @@
 					</description>
 					<ratings critics="29" speed="33" />
 				</programme>
-				<programme id="807226d3-ae1d-42f4-b525-d6c5b759cdb5" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="807226d3-ae1d-42f4-b525-d6c5b759cdb5" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Bulgarien</de>
 						<en>Bulgaria</en>
@@ -1107,7 +1107,7 @@
 					</description>
 					<ratings critics="21" speed="43" />
 				</programme>
-				<programme id="e5f1fad5-31eb-4cca-98ba-4412fbbfc20b" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="e5f1fad5-31eb-4cca-98ba-4412fbbfc20b" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<!-- Zielgruppe Damen -->
 						<de>Tunesien</de>
@@ -1132,7 +1132,7 @@
 
 		<!-- 'Battle of the Planets' moved to database_programmes.xml -->
 
-		<programme id="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="therob-programme-HaFr-Marmeladenselbermachen" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Zielgruppe Hausfrauen -->
 				<de>Marmeladen selber machen</de>
@@ -1153,7 +1153,7 @@
 			<data country="A" year="1959" distribution="2" maingenre="100" subgenre="9,6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="35" speed="9" outcome="23" />
 			<children>
-				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Erdbeermarmelade</de>
 						<en>Strawberry Jelly</en>
@@ -1166,7 +1166,7 @@
 					</description>
 					<ratings critics="34" speed="10" />
 				</programme>
-				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-HaFr-Marmeladenselbermachen-ep102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Pflaumenmarmelade</de>
 						<en>Plum Jelly</en>
@@ -1179,7 +1179,7 @@
 					</description>
 					<ratings critics="35" speed="9" />
 				</programme>
-				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-HaFr-Marmeladenselbermachen-ep103" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Kirschmarmelade</de>
 						<en>Cherry Jelly</en>
@@ -1195,7 +1195,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-b0db-myst-Wardaswahr" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b0db-myst-Wardaswahr" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- War das wahr? Fictional, Mystery -->
 				<de>War das wahr?</de>
@@ -1218,7 +1218,7 @@
 			<ratings critics="49" speed="37" outcome="12" />
 		</programme>
 
-		<programme id="TheRob-b0db-cri-Derschwarzmarkt" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-b0db-cri-Derschwarzmarkt" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<!-- Der Schwarzmarkt, Fictional, Krimi -->
 				<de>Der Schwarzmarkt</de>
@@ -1240,7 +1240,7 @@
 			<ratings critics="46" speed="43" outcome="21" />
 		</programme>
 
-		<programme id="TheRob-b0db-cri-Werwares" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff, previous ill-fitting staff replaced with fictional">
+		<programme guid="TheRob-b0db-cri-Werwares" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff, previous ill-fitting staff replaced with fictional">
 			<title>
 				<!-- Wer war es?, Fictional, Krimi -->
 				<de>Wer war es?</de>
@@ -1263,7 +1263,7 @@
 			<ratings critics="6" speed="32" outcome="7" />
 		</programme>
 
-		<programme id="TheRob-b0db-dok-UeberlebenwirdieLAF" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous ill-fitting real staff replaced with fictional">
+		<programme guid="TheRob-b0db-dok-UeberlebenwirdieLAF" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previous ill-fitting real staff replaced with fictional">
 			<title>
 				<!-- Überleben wir die LAF?, Fictional, Dokumentation -->
 				<de>Überleben wir die L.A.F.?</de>
@@ -1286,7 +1286,7 @@
 			<ratings critics="7" speed="16" outcome="10" />
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="therob-programme-GrafRuccola01" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Gemüse</de>
@@ -1309,7 +1309,7 @@
 			<data country="F" year="1971" distribution="2" maingenre="3" subgenre="9,5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="54" speed="34" outcome="44" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spargel</de>
 						<en>Count Ruccola Meets Asparagus</en>
@@ -1322,7 +1322,7 @@
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spinat</de>
 						<en>Count Ruccola Meets Spinach</en>
@@ -1335,7 +1335,7 @@
 					</description>
 					<ratings critics="54" speed="35" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Blumenkohl</de>
 						<en>Count Ruccola Meets Cauliflower</en>
@@ -1348,7 +1348,7 @@
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep104" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep104" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Rosenkohl</de>
 						<en>Count Ruccola Meets Brussels Sprouts</en>
@@ -1361,7 +1361,7 @@
 					</description>
 					<ratings critics="49" speed="34" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep105" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep105" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Bohnen</de>
 						<en>Count Ruccola Meets Beans</en>
@@ -1377,7 +1377,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="therob-programme-GrafRuccola02" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Kinderserie, geflagt als Animation -->
 				<de>Graf Ruccola und das Obst</de>
@@ -1400,7 +1400,7 @@
 			<data country="F" year="1989" distribution="2" maingenre="3" subgenre="9,5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="42" outcome="45" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Kirschen</de>
 						<en>Count Ruccola Meets Cherries</en>
@@ -1413,7 +1413,7 @@
 					</description>
 					<ratings critics="49" speed="45" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Birnen</de>
 						<en>Count Ruccola Meets Pears</en>
@@ -1426,7 +1426,7 @@
 					</description>
 					<ratings critics="45" speed="40" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Erdbeeren</de>
 						<en>Count Ruccola Meets Strawberries</en>
@@ -1439,7 +1439,7 @@
 					</description>
 					<ratings critics="46" speed="37" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Äpfel</de>
 						<en>Count Ruccola Meets Apples</en>
@@ -1452,7 +1452,7 @@
 					</description>
 					<ratings critics="47" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Orangen</de>
 						<en>Count Ruccola Meets Oranges</en>
@@ -1465,7 +1465,7 @@
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
-				 <programme id="therob-programme-GrafRuccola-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				 <programme guid="therob-programme-GrafRuccola-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Himbeeren</de>
 						<en>Count Ruccola Meets Raspberries</en>
@@ -1478,7 +1478,7 @@
 					</description>
 					<ratings critics="42" speed="44" />
 				</programme>
-				 <programme id="therob-programme-GrafRuccola-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				 <programme guid="therob-programme-GrafRuccola-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Trauben</de>
 						<en>Count Ruccola Meets Grapes</en>
@@ -1491,7 +1491,7 @@
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Brombeeren</de>
 						<en>Count Ruccola Meets Blackberries</en>
@@ -1504,7 +1504,7 @@
 					</description>
 					<ratings critics="50" speed="45" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola trifft Bananen</de>
 						<en>Count Ruccola Meets Bananas</en>
@@ -1520,7 +1520,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="therob-programme-GrafRuccola03" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Serie für Jugendliche, geflagt als Animation -->
 				<de>Graf Ruccola und die Nachtschattengewächse</de>
@@ -1543,7 +1543,7 @@
 			<data country="F" year="2001" distribution="2" maingenre="3" subgenre="9,5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="56" speed="38" outcome="47" />
 			<children>
-				<programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Tomate</de>
 						<en>Count Ruccola and the Tomato</en>
@@ -1556,7 +1556,7 @@
 					</description>
 					<ratings critics="59" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Kartoffel</de>
 						<en>Count Ruccola and the Potato</en>
@@ -1569,7 +1569,7 @@
 					</description>
 					<ratings critics="56" speed="39" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Aubergine</de>
 						<en>Count Ruccola and the Aubergine</en>
@@ -1582,7 +1582,7 @@
 					</description>
 					<ratings critics="52" speed="34" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep304" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep304" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola und die Paprika</de>
 						<en>Count Ruccola and the Bell Peppers</en>
@@ -1595,7 +1595,7 @@
 					</description>
 					<ratings critics="51" speed="38" />
 				</programme>
-				<programme id="therob-programme-GrafRuccola-ep305" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-GrafRuccola-ep305" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Graf Ruccola und der Stechapfel</de>
 						<en>Count Ruccola and the Jimsonweed</en>
@@ -1611,7 +1611,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-crime-DieZwillinge" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-serie-crime-DieZwillinge" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<!-- Die Zwillinge, Crime mit Flag Mystery, letzte Folge mit Subgenre Drama und Comedy -->
 				<de>Die Zwillinge</de>
@@ -1633,7 +1633,7 @@
 			<data country="DDR" year="1980" distribution="2" maingenre="4" subgenre="7,14" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="40" speed="40" outcome="40" />
 			<children>
-				<programme id="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieZwillinge-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rolle jagt den Ladendieb</de>
 						<en>Rolle Chases the Shoplifter</en>
@@ -1646,7 +1646,7 @@
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieZwillinge-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ralle wird die Ware nicht los</de>
 						<en>Ralle Can't Sell the Goods</en>
@@ -1659,7 +1659,7 @@
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieZwillinge-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rolle schöpft Verdacht</de>
 						<en>Rolle's Got a Suspicion</en>
@@ -1672,7 +1672,7 @@
 					</description>
 					<ratings critics="42" speed="38" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieZwillinge-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ralle schöpft Verdacht</de>
 						<en>Ralle's Got a Suspicion</en>
@@ -1685,7 +1685,7 @@
 					</description>
 					<ratings critics="38" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieZwillinge-Ep005" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das große Kennenlernen</de>
 						<en>The Big Getting to Know Each Other</en>
@@ -1702,7 +1702,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-myst-DasUnbekannte" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-serie-myst-DasUnbekannte" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<!-- Das Unbekannte, Mystery und Subgenre Horror plus FSK18 -->
 				<de>Das Unbekannte</de>
@@ -1724,7 +1724,7 @@
 			<data country="USA" year="1940" distribution="2" maingenre="14" subgenre="12" flags="64" blocks="1" price_mod="1.00" />
 			<ratings critics="65" speed="40" outcome="52" />
 			<children>
-				<programme id="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DasUnbekannte-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Ich klopfe, wenn Du schläfst!</de>
 						<en>I Knock When You Sleep!</en>
@@ -1737,7 +1737,7 @@
 					</description>
 					<ratings critics="67" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-DasUnbekannte-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DasUnbekannte-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der See</de>
 						<en>The Lake</en>
@@ -1750,7 +1750,7 @@
 					</description>
 					<ratings critics="65" speed="38" />
 				</programme>
-				<programme id="TheRob-serie-DasUnbekannte-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DasUnbekannte-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der fremde Planet</de>
 						<en>Unknown Planet</en>
@@ -1763,7 +1763,7 @@
 					</description>
 					<ratings critics="61" speed="44" />
 				</programme>
-				<programme id="TheRob-serie-DasUbekannte-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DasUbekannte-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die unsichtbare Bedrohung</de>
 						<en>The Invisible Threat</en>
@@ -1779,7 +1779,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-1756-Musik-Show-MusikderBerge" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 				<!-- Musik der Berge, Musikshow 102, Zielgruppe Kinder -->
 			<title>
 				<de>Musik der Berge</de>
@@ -1804,7 +1804,7 @@
 			<ratings critics="25" speed="12" outcome="18" />
 		</programme>
 
-		<programme id="TheRob-1756-Polit-Show-WasistSache" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="regular format / continuation as screenplay added as a16dbdd9-bbf8-449f-bf4d-6d1146aa98d0">
+		<programme guid="TheRob-1756-Polit-Show-WasistSache" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="" comment="regular format / continuation as screenplay added as a16dbdd9-bbf8-449f-bf4d-6d1146aa98d0">
 				<!-- Was ist Sache, Politshow 101, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Was ist Sache Spezial - Dänemark</de>
@@ -1831,17 +1831,17 @@
 			</modifiers>
 		</programme>
 
-		<programme id="TheRob-1756-Yellow-Press-DasLebenderGrace" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="TheRob-1756-Yellow-Press-DasLebenderGrace" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
 			<title>
-				<de>Das Leben der [2|Full]</de>
-				<en>The Life of [2|Full]</en>
-				<pl>Życie [2|Full]</pl>
+				<de>Das Leben der ${.self:"cast":2:"fullname"}</de>
+				<en>The Life of ${.self:"cast":2:"fullname"}</en>
+				<pl>Życie ${.self:"cast":2:"fullname"}</pl>
 			</title>
 			<description>
-				<de>Der Tod von [2|Full] wird zum Anlass genommen, ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
-				<en>The death of [2|Full] is taken as an opportunity to completely examine her life. Including extensive wedding shots with the prince.</en>
-				<pl>Śmierć [2|Full] zostaje wykorzystana jako okazja do całkowitego przeanalizowania jej życia. W tym obszerne ujęcia ślubne z księciem.</pl>
+				<de>Der Tod von ${.self:"cast":2:"fullname"} wird zum Anlass genommen, ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
+				<en>The death of ${.self:"cast":2:"fullname"} is taken as an opportunity to completely examine her life. Including extensive wedding shots with the prince.</en>
+				<pl>Śmierć ${.self:"cast":2:"fullname"} zostaje wykorzystana jako okazja do całkowitego przeanalizowania jej życia. W tym obszerne ujęcia ślubne z księciem.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_377</member>
@@ -1854,7 +1854,7 @@
 			<ratings critics="35" speed="31" outcome="33" />
 		</programme>
 
-		<programme id="TheRob-1756-polit-event-AnalysederReden" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="TheRob-1756-polit-event-AnalysederReden" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Analyse der Reden, Polit Event 201, Zielgruppe Manager -->
 			<title>
 				<de>Analyse der Reden</de>
@@ -1862,9 +1862,9 @@
 				<pl>Analiza wystąpień</pl>
 			</title>
 			<description>
-				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von [2|Full] und [3|Full] chronologisch gezeigt und miteinander verglichen.</de>
-				<en>The Cuban crisis frightened everyone. Here the speeches of [2|Full] and [3|Full] are shown chronologically, and are compared with each other.</en>
-				<pl>Kryzys kubański przeraził wszystkich. W programie pokazane są chronologicznie przemówienia [2|First]a [2|Last] i [3|Last]a.</pl>
+				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von ${.self:"cast":2:"fullname"} und ${.self:"cast":3:"fullname"} chronologisch gezeigt und miteinander verglichen.</de>
+				<en>The Cuban crisis frightened everyone. Here the speeches of ${.self:"cast":2:"fullname"} and ${.self:"cast":3:"fullname"} are shown chronologically, and are compared with each other.</en>
+				<pl>Kryzys kubański przeraził wszystkich. W programie pokazane są chronologicznie przemówienia ${.self:"cast":2:"firstname"}a ${.self:"cast":2:"lastname"} i ${.self:"cast":3:"lastname"}a.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-BastlRuetli</member>
@@ -1877,7 +1877,7 @@
 			<ratings critics="65" speed="21" outcome="43" />
 		</programme>
 
-		<programme id="TheRob-serie-Sonst-TrendfuerMaenner" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-serie-Sonst-TrendfuerMaenner" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
@@ -1898,7 +1898,7 @@
 			<data country="D" year="1952" distribution="2" maingenre="0" subgenre="" flags="0" blocks="1" price_mod="1.00" /> <!-- eigentlich Reportage, Talk -->
 			<ratings critics="28" speed="44" outcome="36" />
 			<children>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Urangrill</de>
 						<en>Uranium Grill</en>
@@ -1911,7 +1911,7 @@
 					</description>
 					<ratings critics="29" speed="43" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-TrendfuerMaenner-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>0 auf 1000 km/h in 3 Sekunden</de>
 						<en>From 0 to 700 MPH in 3 Seconds</en>
@@ -1924,7 +1924,7 @@
 					</description>
 					<ratings critics="26" speed="43" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-TrendfuerMaenner-Ep003" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Kellerbunker</de>
 						<en>Basement Bunker</en>
@@ -1937,7 +1937,7 @@
 					</description>
 					<ratings critics="29" speed="46" />
 				</programme>
-				<programme id="TheRob-serie-TrendfuerMaenner-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="'Mottorad' wohl Absicht">
+				<programme guid="TheRob-serie-TrendfuerMaenner-Ep004" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="'Mottorad' wohl Absicht">
 					<title>
 						<de>Frittenbike</de>
 						<en>Chip-Fat Bike</en>
@@ -1953,7 +1953,7 @@
 			</children>
 		</programme>
 
-		<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="therob-programme-ser-RonnyunddasBytekehrenzurueck" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<!-- Serie Horror-->
 			<title>
 				<de>Die Rückkehr von Ronny und Byte</de>
@@ -1961,9 +1961,9 @@
 				<pl>Powrót Ronny'ego i Byte'a</pl>
 			</title>
 			<description>
-				<de>Splatter und Splatter. [0|First] und Byte kehren als Zombies wieder. Klar, 'ne Geschichte gibt es auch. Irgendwo.</de>
-				<en>Splatter and splatter. [0|First] and Byte are returning as walking deads. Sure, there is a story too. Somewhere.</en>
-				<pl>Rozprysk i rozprysk. [0|First] i Byte powracają jako chodzące trupy. Jasne, jest też jakaś historia. Gdzieś.</pl>
+				<de>Splatter und Splatter. ${.self:"cast":0:"firstname"} und Byte kehren als Zombies wieder. Klar, 'ne Geschichte gibt es auch. Irgendwo.</de>
+				<en>Splatter and splatter. ${.self:"cast":0:"firstname"} and Byte are returning as walking deads. Sure, there is a story too. Somewhere.</en>
+				<pl>Rozprysk i rozprysk. ${.self:"cast":0:"firstname"} i Byte powracają jako chodzące trupy. Jasne, jest też jakaś historia. Gdzieś.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
@@ -1981,7 +1981,7 @@
 			<releaseTime year_relative="+2" year_relative_min="1982" year_relative_max="1997" />
 			<ratings critics="17" speed="55" outcome="39" />
 			<children>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Byte beißt den Wärter</de>
 						<en>Byte Bites the Guardian</en>
@@ -1994,20 +1994,20 @@
 					</description>
 					<ratings critics="13" speed="59" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Reference: https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt">
+				<programme guid="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Reference: https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt">
 					<title>
-						<de>[0|First] sucht das Fliwatüt</de>
-						<en>[0|First] Is Looking For the Flywatoot</en>
-						<pl>[0|First] szuka Fliwatütki</pl>
+						<de>${.self:"cast":0:"firstname"} sucht das Fliwatüt</de>
+						<en>${.self:"cast":0:"firstname"} Is Looking For the Flywatoot</en>
+						<pl>${.self:"cast":0:"firstname"} szuka Fliwatütki</pl>
 					</title>
 					<description>
-						<de>[0|First] jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
-						<en>[0|First] is chasing the Flywatoot. The army of grannies opposes him.</en>
-						<pl>[0|First] szuka Fliwatütki. Przeciwstawia mu się armia babć.</pl>
+						<de>${.self:"cast":0:"firstname"} jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
+						<en>${.self:"cast":0:"firstname"} is chasing the Flywatoot. The army of grannies opposes him.</en>
+						<pl>${.self:"cast":0:"firstname"} szuka Fliwatütki. Przeciwstawia mu się armia babć.</pl>
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep03" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep03" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Bank</de>
 						<en>The Bank</en>
@@ -2020,29 +2020,29 @@
 					</description>
 					<ratings critics="17" speed="47" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep04" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Vernichte das Bit</de>
 						<en>Destroy the Bit</en>
 						<pl>Zniszcz bit</pl>
 					</title>
 					<description>
-						<de>[0|First] und Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
-						<en>[0|First] and Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
-						<pl>[0|First] i Byte chcą wyładować swój gniew na Bicie. Ale gdzie on się ukrywa? I kto tym razem stanie im na drodze?</pl>
+						<de>${.self:"cast":0:"firstname"} und Byte wollen ihre Wut auf das Lebende am Bit auslassen. Aber wo ist es. Und wer stellt sich diesmal dazwischen?</de>
+						<en>${.self:"cast":0:"firstname"} and Byte want to take out their anger against the living on the Bit. But where is it hiding. And who will get in the way this time?</en>
+						<pl>${.self:"cast":0:"firstname"} i Byte chcą wyładować swój gniew na Bicie. Ale gdzie on się ukrywa? I kto tym razem stanie im na drodze?</pl>
 					</description>
 					<ratings critics="12" speed="59" />
 				</programme>
-				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep05" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep05" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
 						<de>Der Anfang</de>
 						<en>The Beginning</en>
 						<pl>Początek</pl>
 					</title>
 					<description>
-						<de>[0|First] und Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt, wird übersehen. Ergibt das eine neue Serie?</de>
-						<en>[0|First] and Byte are raiding a city. Anyone who can't escape is bitten. Only one sheriff, who's in a coma, is overlooked. Does this make for a new series?</en>
-						<pl>[0|First] i Byte napadają na miasto. Każdy, kto nie może uciec, zostaje ugryziony. Tylko jeden szeryf, który jest w śpiączce, zostaje pominięty. Czy będzie z tego nowy serial?</pl>
+						<de>${.self:"cast":0:"firstname"} und Byte überrennen eine Stadt. Jeder, der nicht fliehen kann, wird gebissen. Nur ein Sheriff, der im Koma liegt, wird übersehen. Ergibt das eine neue Serie?</de>
+						<en>${.self:"cast":0:"firstname"} and Byte are raiding a city. Anyone who can't escape is bitten. Only one sheriff, who's in a coma, is overlooked. Does this make for a new series?</en>
+						<pl>${.self:"cast":0:"firstname"} i Byte napadają na miasto. Każdy, kto nie może uciec, zostaje ugryziony. Tylko jeden szeryf, który jest w śpiączce, zostaje pominięty. Czy będzie z tego nowy serial?</pl>
 					</description>
 					<ratings critics="27" speed="61" />
 				</programme>
@@ -2051,16 +2051,16 @@
 
 		<!-- 'Best of TVTower' moved to database_programmes.xml -->
 
-		<programme id="TheRob-dda6-mov-ero-LolitasimHeu" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
+		<programme guid="TheRob-dda6-mov-ero-LolitasimHeu" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
 			<title>
 				<de>Lolitas im Heu</de>
 				<en>Lolitas In the Hay</en>
 				<pl>Lolitki w sianie</pl>
 			</title>
 			<description>
-				<de>Die frühe Jugendsünde von [1|Full]. Aber sie ist hinreißend.</de>
-				<en>The early actor sins of [1|Full]. But what a beauty.</en>
-				<pl>[1|Full] - grzechy wczesnych aktorów. Ale co za piękno.</pl>
+				<de>Die frühe Jugendsünde von ${.self:"cast":1:"fullname"}. Aber sie ist hinreißend.</de>
+				<en>The early actor sins of ${.self:"cast":1:"fullname"}. But what a beauty.</en>
+				<pl>${.self:"cast":1:"fullname"} - grzechy wczesnych aktorów. Ale co za piękno.</pl>
 			</description>
 			<staff>
 				<member index="0" function="7">Per_custom_Freddy_682</member>
@@ -2076,7 +2076,7 @@
 			<ratings critics="29" speed="49" outcome="89" />
 		</programme>
 
-		<programme id="TheRob-serie-DieStraendederWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-serie-DieStraendederWelt" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
 				<de>Die Strände der Welt</de>
@@ -2084,9 +2084,9 @@
 				<pl>Plaże świata</pl>
 			</title>
 			<description>
-				<de>[1|Full] zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschönen Frau?</de>
-				<en>[1|Full] presents the most beautiful beaches in the world. A great documentary. Or just a pretty bikini on a beautiful woman?</en>
-				<pl>[1|Full] prezentuje najpiękniejsze plaże na świecie. Wspaniały dokument. A może po prostu ładne bikini na pięknych kobietach?</pl>
+				<de>${.self:"cast":1:"fullname"} zeigt die schönsten Strände der Welt. Eine tolle Dokumentation. Oder doch nur ein schöner Bikini an einer wunderschönen Frau?</de>
+				<en>${.self:"cast":1:"fullname"} presents the most beautiful beaches in the world. A great documentary. Or just a pretty bikini on a beautiful woman?</en>
+				<pl>${.self:"cast":1:"fullname"} prezentuje najpiękniejsze plaże na świecie. Wspaniały dokument. A może po prostu ładne bikini na pięknych kobietach?</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">TheRob-TowerTV-MorisWeverkov</member>
@@ -2097,82 +2097,82 @@
 			<data country="CS" year="1980" distribution="2" maingenre="6" subgenre="8,300" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="29" speed="59" />
 			<children>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieStraendederWelt-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Walvis Bucht</de>
 						<en>Walvis Bay</en>
 						<pl>Zatoka Walvis</pl>
 					</title>
 					<description>
-						<de>Namibia. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Namibia. [1|First] bounces around happily showing the sand and the animals. And you get to learn something about the country too.</en>
-						<pl>Namibia. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o tym kraju.</pl>
+						<de>Namibia. ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Namibia. ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you get to learn something about the country too.</en>
+						<pl>Namibia. ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o tym kraju.</pl>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieStraendederWelt-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Oak Beach</de>
 						<en>Oak Beach</en>
 						<pl>Oak beach</pl>
 					</title>
 					<description>
-						<de>Australien mit direktem Blick auf das Great Barrier Reef. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Australia with direct view on the Great Barrier Reef. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Australia z bezpośrednim widokiem na Wielką Rafę Koralową. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o tym kraju.</pl>
+						<de>Australien mit direktem Blick auf das Great Barrier Reef. ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Australia with direct view on the Great Barrier Reef. ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Australia z bezpośrednim widokiem na Wielką Rafę Koralową. ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o tym kraju.</pl>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vallvik</de>
 						<en>Vallvik</en>
 						<pl>Vallvik</pl>
 					</title>
 					<description>
-						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Szwecja. Surowa plaża. Czy ktoś powinien powiedzieć prezenterce, że wyraźnie widać na niej zimno? [1|First] podskakuje radośnie pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
+						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Szwecja. Surowa plaża. Czy ktoś powinien powiedzieć prezenterce, że wyraźnie widać na niej zimno? ${.self:"cast":1:"firstname"} podskakuje radośnie pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Playa Corcovado</de>
 						<en>Playa Corcovado</en>
 						<pl>Playa Corcovado</pl>
 					</title>
 					<description>
-						<de>Costa Rica. [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Costa Rica. [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Kostaryka. [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o kraju.</pl>
+						<de>Costa Rica. ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Costa Rica. ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Kostaryka. ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Możesz też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Koh Thas</de>
 						<en>Koh Thas</en>
 						<pl>Koh Thas</pl>
 					</title>
 					<description>
-						<de>Kambodscha. Wer hält da denn Kokosnüsse? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Cambodia. Who's holding coconuts there? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Kambodża. Kto tam trzyma kokosy? [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
+						<de>Kambodscha. Wer hält da denn Kokosnüsse? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Cambodia. Who's holding coconuts there? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Kambodża. Kto tam trzyma kokosy? ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
 						<de>Vyshka</de>
 						<en>Vyshka</en>
 						<pl>Vyshka</pl>
 					</title>
 					<description>
-						<de>Russland. Wer kennt schon das kaspische Meer? [1|First] hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
-						<en>Russia. Who has ever heard of the Caspian Sea anyway? [1|First] bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
-						<pl>Rosja. Kto w ogóle słyszał o Morzu Kaspijskim? [1|First] podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
+						<de>Russland. Wer kennt schon das kaspische Meer? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
+						<en>Russia. Who has ever heard of the Caspian Sea anyway? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
+						<pl>Rosja. Kto w ogóle słyszał o Morzu Kaspijskim? ${.self:"cast":1:"firstname"} podskakuje radośnie, pokazując piasek i zwierzęta. Można też dowiedzieć się czegoś o kraju.</pl>
 					</description>
 				</programme>
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Wirstellenvor" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: Version for 60s, 70s,...">
+		<programme guid="TheRob-serie-Wirstellenvor" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: Version for 60s, 70s,...">
 			<title>
 				<!-- Wir stellen vor, Music show -->
 				<de>Wir stellen vor</de>
@@ -2196,11 +2196,11 @@
 				<modifier name="topicality::age" value="0.5" />
 			</modifiers>
 			<children>
-				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2212,11 +2212,11 @@
 					</staff>
 					<ratings critics="41" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2228,11 +2228,11 @@
 					</staff>
 					<ratings critics="28" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2244,11 +2244,11 @@
 					</staff>
 					<ratings critics="28" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2260,11 +2260,11 @@
 					</staff>
 					<ratings critics="30" speed="58" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2276,11 +2276,11 @@
 					</staff>
 					<ratings critics="27" speed="60" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2292,11 +2292,11 @@
 					</staff>
 					<ratings critics="32" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+				<programme guid="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>[2|Full]</de>
-						<en>[2|Full]</en>
-						<pl>[2|Full]</pl>
+						<de>${.self:"cast":2:"fullname"}</de>
+						<en>${.self:"cast":2:"fullname"}</en>
+						<pl>${.self:"cast":2:"fullname"}</pl>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2311,7 +2311,7 @@
 			</children>
 		</programme>
 
-		<programme id="TheRob-b5dc-4663-hist-DieWikinger" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<programme guid="TheRob-b5dc-4663-hist-DieWikinger" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<title>
 				<de>Die Wikinger</de>
 				<en>The Vikings</en>
@@ -2336,7 +2336,7 @@
 			<ratings critics="71" speed="37" outcome="55" />
 		</programme>
 
-		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Ursprünglich 24 Stunden und auskommentiert, geändert auf 12 Stunden, damit alles funktioniert in der GUI">
+		<programme guid="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Ursprünglich 24 Stunden und auskommentiert, geändert auf 12 Stunden, damit alles funktioniert in der GUI">
 			<title>
 				<de>Ein Monumentaler Versuch</de>
 				<en>An Attempt at an Epic</en>
@@ -2361,7 +2361,7 @@
 			<ratings critics="81" speed="17" outcome="2" />
 		</programme>
 
-		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="TheRob-1757-Polit-Show-UndJetzt?" product="3" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="">
 				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Und Jetzt?</de>
@@ -2369,9 +2369,9 @@
 				<pl>I co teraz</pl>
 			</title>
 			<description>
-				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview. Spoiler: [2|Full] will Präsident werden... HaHaHa!</de>
-				<en>An actor starts his political career. An in-depth interview. Spoiler: [2|Full] wants to be elected as US president. We are still laughing.</en>
-				<pl>Aktor rozpoczyna karierę polityczną. Szczegółowy wywiad. Spoiler: [2|Full] chce zostać wybrany na prezydenta USA. Wciąż się śmiejemy.</pl>
+				<de>Ein Schauspieler startet in seine politische Kariere. Ein ausführliches Interview. Spoiler: ${.self:"cast":2:"fullname"} will Präsident werden... HaHaHa!</de>
+				<en>An actor starts his political career. An in-depth interview. Spoiler: ${.self:"cast":2:"fullname"} wants to be elected as US president. We are still laughing.</en>
+				<pl>Aktor rozpoczyna karierę polityczną. Szczegółowy wywiad. Spoiler: ${.self:"cast":2:"fullname"} chce zostać wybrany na prezydenta USA. Wciąż się śmiejemy.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_149</member>
@@ -2386,28 +2386,28 @@
 
 	<insignificantpeople>
 		<!-- TowerTV/MadTV Personen -->
-		<person id="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" fictional="1" levelup="0" />
-		<person id="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Gast2" first_name="Gast" last_name="2" nick_name="Frechdachs" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Sushi" first_name="Sushi" last_name="TV" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-rumpel" first_name="rumpel" last_name="freddy" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-speed" first_name="speed" last_name="minister" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-STARS" first_name="STARS" last_name="crazy" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Michael" first_name="Michael" last_name="B" nick_name="" fictional="1" levelup="0" />
+		<person guid="TheRob-TowerTV-Daniel" first_name="Daniel" last_name="W" nick_name="" fictional="1" levelup="0" />
 
 		<!-- Mad TV staff moved to database_people.xml -->
 
-		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" gender="1" fictional="1" creator="8751" created_by="TheRob" />
+		<person guid="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" gender="1" fictional="1" creator="8751" created_by="TheRob" />
 	</insignificantpeople>
 
 	<celebritypeople>
-		<person id="TheRob-TowerTV-VeraZottova" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<person guid="TheRob-TowerTV-VeraZottova" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<first_name>Vera</first_name>
 			<last_name>Zottorova</last_name>
 			<nick_name></nick_name>
 			<details gender="2" fictional="1" birthday="" deathday="" country="" />
 			<data popularity="5" affinity="60" fame="60" scandalizing="20" price_mod="1" power="60" humor="24" charisma="78" appearance="88" topgenre="0" />
 		</person>
-		<person id="TheRob-TowerTV-MorisWeverkov" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
+		<person guid="TheRob-TowerTV-MorisWeverkov" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 			<first_name>Moris</first_name>
 			<last_name>Weverkov</last_name>
 			<nick_name></nick_name>
@@ -2419,14 +2419,14 @@
 	<scripttemplates>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
 			<title>
-				<de>%WHAT% für %WHO%</de>
-				<en>Writing %WHAT% for %WHO%</en>
-				<pl>Jak napisać %WHAT% dla %WHO%</pl>
+				<de>${WHAT} für ${WHO}</de>
+				<en>Writing ${WHAT} for ${WHO}</en>
+				<pl>Jak napisać ${WHAT} dla ${WHO}</pl>
 			</title>
 			<description>
-				<de>Wie schreibe ich %WHAT% für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
-				<en>%WHAT% - How do I write those for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
-				<pl>Jak napisać %WHAT% dla TVTower? Raportaż, w którym odwiedzamy autorów odnoszących największe sukcesy, przyglądamy się im z bliska i uzyskujemy ekscytujące wskazówki w wywiadach.</pl>
+				<de>Wie schreibe ich ${WHAT} für TVTower? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
+				<en>${WHAT} - How do I write those for TVTower? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
+				<pl>Jak napisać ${WHAT} dla TVTower? Raportaż, w którym odwiedzamy autorów odnoszących największe sukcesy, przyglądamy się im z bliska i uzyskujemy ekscytujące wskazówki w wywiadach.</pl>
 			</description>
 			<variables>
 				<what>
@@ -2460,20 +2460,20 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<variables>
 				<title>
-					<de>Reportagen aus dem Sendegebiet|Neues aus %RANDOMCITY%|Reportagen aus %RANDOMCITY%|Was ist los in %RANDOMCITY%?</de>
-					<en>Reports From the Broadcast Area|News From %RANDOMCITY%|Reports From %RANDOMCITY%|What's Up in %RANDOMCITY%?</en>
-					<pl>Raporty z obszaru nadawania|%RANDOMCITY% - Wiadomości lokalne|%RANDOMCITY% - Raporty lokalne|%RANDOMCITY% - Co słychać w mieście?</pl>
+					<de>Reportagen aus dem Sendegebiet|Neues aus ${RANDOMCITY}|Reportagen aus ${RANDOMCITY}|Was ist los in ${RANDOMCITY}?</de>
+					<en>Reports From the Broadcast Area|News From ${RANDOMCITY}|Reports From ${RANDOMCITY}|What's Up in ${RANDOMCITY}?</en>
+					<pl>Raporty z obszaru nadawania|${RANDOMCITY} - Wiadomości lokalne|${RANDOMCITY} - Raporty lokalne|${RANDOMCITY} - Co słychać w mieście?</pl>
 				</title>
 				<randomcity>
-					<de>%STATIONMAP:RANDOMCITY%</de>
-					<en>%STATIONMAP:RANDOMCITY%</en>
-					<pl>%STATIONMAP:RANDOMCITY%</pl>
+					<de>${.stationmap:"randomcity"}</de>
+					<en>${.stationmap:"randomcity"}</en>
+					<pl>${.stationmap:"randomcity"}</pl>
 				</randomcity>
 			</variables>
 			
@@ -2501,15 +2501,15 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<variables>
 				<title>
-					<de>%ADJECTIVE% %SUBJECT%%MODIFIER%</de>
-					<en>%ADJECTIVE% %SUBJECT%%MODIFIER%</en>
-					<pl>%ADJECTIVE% %SUBJECT%%MODIFIER%</pl>
+					<de>${ADJECTIVE} ${SUBJECT}${MODIFIER}</de>
+					<en>${ADJECTIVE} ${SUBJECT}${MODIFIER}</en>
+					<pl>${ADJECTIVE} ${SUBJECT}${MODIFIER}</pl>
 				</title>
 				<subject>
 					<de>Filme|Serien|Shows|Produktionen</de>
@@ -2522,9 +2522,9 @@
 					<pl>Nadchodzące|Wybitne|Ciekawe</pl>
 				</adjective>
 				<modifier>
-					<de>|| %WORLDTIME:YEAR%</de>
-					<en>|| %WORLDTIME:YEAR%</en>
-					<pl>|| %WORLDTIME:YEAR%</pl>
+					<de>|| ${.worldtime:"year"}</de>
+					<en>|| ${.worldtime:"year"}</en>
+					<pl>|| ${.worldtime:"year"}</pl>
 				</modifier>
 			</variables>
 			
@@ -2556,9 +2556,9 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
 			<title>
-				<de>%GROANERS% %TYPE%</de>
-				<en>%GROANERS% %TYPE%</en>
-				<pl>%GROANERS% na scenie - %TYPE%</pl>
+				<de>${GROANERS} ${TYPE}</de>
+				<en>${GROANERS} ${TYPE}</en>
+				<pl>${GROANERS} na scenie - ${TYPE}</pl>
 			</title>
 			<description>
 				<de>Ein Moderator lässt seine Gäste Sketche aufführen und gibt ihnen spontane Regieanweisungen.</de>
@@ -2599,9 +2599,9 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
 			<title>
-				<de>%birth% %station%</de>
-				<en>%birth% of %station%</en>
-				<pl>%birth% %station%</pl>
+				<de>${birth} ${station}</de>
+				<en>${birth} of ${station}</en>
+				<pl>${birth} ${station}</pl>
 			</title>
 			<description>
 				<de>Sie haben die Eröffnungsshow verpasst? Hier sind die besten Szenen, Outtakes und Erinnerungen der Teilnehmer.</de>
@@ -2640,9 +2640,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversitaet">
 			<title>
-				<de>Die %WAS%%ART%</de>
-				<en>The %WAS% %ART%</en>
-				<pl>%ART% %WAS%</pl>
+				<de>Die ${WAS}${ART}</de>
+				<en>The ${WAS} ${ART}</en>
+				<pl>${ART} ${WAS}</pl>
 			</title>
 			<description>
 				<de>Studenten der Filmwissenschaften stellen ihre Horrordrehbücher für die Abschlussarbeit des Semester allen Studios zur Verfügung. Was da wohl rauskommt?</de>
@@ -2680,9 +2680,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Com-EngeloderBengel">
 			<title>
-				<de>%TITLE%</de>
-				<en>%TITLE%</en>
-				<pl>%TITLE%</pl>
+				<de>${TITLE}</de>
+				<en>${TITLE}</en>
+				<pl>${TITLE}</pl>
 			</title>
 			<description>
 				<de>Familienkomödie über das Leben mit einem frechen Sohnemann. Das Drehbuch wird von dem Stardrehbuchschreiber Don Ron geschrieben.</de>
@@ -2691,13 +2691,13 @@
 			</description>
 			<variables>
 				<title>
-					<de>Engel oder Bengel|%NAME% dreht durch|%NAME% außer Rand und Band</de>
-					<en>Angel or Rascal|%NAME% Goes Berserk|%NAME% Goes Haywire</en>
-					<pl>Anioł lub łobuz|%NAME% - diabełek w owczej skórze|%NAME% rozrabia</pl>
+					<de>Engel oder Bengel|${NAME} dreht durch|${NAME} außer Rand und Band</de>
+					<en>Angel or Rascal|${NAME} Goes Berserk|${NAME} Goes Haywire</en>
+					<pl>Anioł lub łobuz|${NAME} - diabełek w owczej skórze|${NAME} rozrabia</pl>
 				</title>
 				<name>
-					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(es,1)%|Tim</de>
-					<pl>Pawełek|%PERSONGENERATOR_FIRSTNAME(pl,1)%|Marcelek</pl>
+					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim</de>
+					<pl>Pawełek|${.persongenerator:"firstname":"pl":"male"}|Marcelek</pl>
 				</name>
 			</variables>
 			
@@ -2722,9 +2722,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
 			<title>
-				<de>%NAME1% %NAME2%</de>
-				<en>%NAME1% %NAME2%</en>
-				<pl>%NAME1% %NAME2%</pl>
+				<de>${NAME1} ${NAME2}</de>
+				<en>${NAME1} ${NAME2}</en>
+				<pl>${NAME1} ${NAME2}</pl>
 			</title>
 			<description>
 				<de>Jodelnde Liebeserklärungen und epische Bergaufnahmen.</de>
@@ -2761,14 +2761,14 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Krim-ErbarmungsloseErmittler" comment="TODO: English version names should be more international">
 			<title>
-				<de>Erbarmungslose Ermittler: %CITY%</de>
-				<en>Merciless Investigators: %CITY%</en>
-				<pl>Bezlitośni śledczy z miasta %CITY%</pl>
+				<de>Erbarmungslose Ermittler: ${CITY}</de>
+				<en>Merciless Investigators: ${CITY}</en>
+				<pl>Bezlitośni śledczy z miasta ${CITY}</pl>
 			</title>
 			<description>
-				<de>%NAME% ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
-				<en>%NAME% investigate in their city. The case deals with a current social issue that moves the nation.</en>
-				<pl>%NAME% prowadzą śledztwo w swoim mieście. Sprawa dotyczy aktualnej kwestii społecznej, która porusza naród.</pl>
+				<de>${NAME} ermitteln in ihrer Stadt. Der Fall behandelt ein aktuelles soziales Thema, dass die Nation bewegt.</de>
+				<en>${NAME} investigate in their city. The case deals with a current social issue that moves the nation.</en>
+				<pl>${NAME} prowadzą śledztwo w swoim mieście. Sprawa dotyczy aktualnej kwestii społecznej, która porusza naród.</pl>
 			</description>
 			<variables>
 				<city>
@@ -2803,9 +2803,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-SciFi-QueenundUfo">
 			<title>
-				<de>Die Queen und %what%</de>
-				<en>The Queen and %what%</en>
-				<pl>Królowa i %what%</pl>
+				<de>Die Queen und ${what}</de>
+				<en>The Queen and ${what}</en>
+				<pl>Królowa i ${what}</pl>
 			</title>
 			<description>
 				<de>Ein UFO mit Außerirdischen landet auf der Erde. Doch statt die Queen zu schrumpfen, sind es Weltraumgroupies der Queen.</de>
@@ -2838,9 +2838,9 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
 			<title>
-				<de>ISS - auf der Suche nach %NAME%</de>
-				<en>ISS - Searching for %NAME%</en>
-				<pl>ISS - Szukanie %NAME%</pl>
+				<de>ISS - auf der Suche nach ${NAME}</de>
+				<en>ISS - Searching for ${NAME}</en>
+				<pl>ISS - Szukanie ${NAME}</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
@@ -2872,9 +2872,9 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Dok-miroftvt">
 			<title>
-				<de>MIR - auf der Suche nach %NAME%</de>
-				<en>MIR - Searching for %NAME%</en>
-				<pl>MIR - Szukanie %NAME%</pl>
+				<de>MIR - auf der Suche nach ${NAME}</de>
+				<en>MIR - Searching for ${NAME}</en>
+				<pl>MIR - Szukanie ${NAME}</pl>
 			</title>
 			<description>
 				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
@@ -2906,14 +2906,14 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-dram-TVTintern" comment="TODO: Episode descriptions">
 			<title>
-				<de>TVTs: %OBJECT% im Hochhaus</de>
-				<en>TVTs: %OBJECT% In A Skyscraper</en>
-				<pl>TVT: %OBJECT% w wieżowcu</pl>
+				<de>TVTs: ${OBJECT} im Hochhaus</de>
+				<en>TVTs: ${OBJECT} In A Skyscraper</en>
+				<pl>TVT: ${OBJECT} w wieżowcu</pl>
 			</title>
 			<description>
-				<de>Serie über %OBJECT% im TV Tower Hochhaus</de>
-				<en>Series about %OBJECT% in The TV Tower Skyscraper</en>
-				<pl>Serial. %OBJECT% w wieżowcu telewizyjnym TV Tower</pl>
+				<de>Serie über ${OBJECT} im TV Tower Hochhaus</de>
+				<en>Series about ${OBJECT} in The TV Tower Skyscraper</en>
+				<pl>Serial. ${OBJECT} w wieżowcu telewizyjnym TV Tower</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep1">
@@ -2934,9 +2934,9 @@
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep3">
 					<title>
-						<de>%ATTRIBUTE% macht eine Party</de>
-						<en>%ATTRIBUTE% is Having a Party</en>
-						<pl>%ATTRIBUTE% organizuje imprezę</pl>
+						<de>${ATTRIBUTE} macht eine Party</de>
+						<en>${ATTRIBUTE} is Having a Party</en>
+						<pl>${ATTRIBUTE} organizuje imprezę</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep4">
@@ -2956,9 +2956,9 @@
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep6">
 					<title>
-						<de>%SUBJECT1A%</de>
-						<en>The %SUBJECT1A%</en>
-						<pl>%SUBJECT1A%</pl>
+						<de>${SUBJECT1A}</de>
+						<en>The ${SUBJECT1A}</en>
+						<pl>${SUBJECT1A}</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep7">
@@ -2970,9 +2970,9 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep8">
 					<title>
-						<de>%ATTRIBUTE% wird wütend</de>
-						<en>%ATTRIBUTE% Gets Mad</en>
-						<pl>%ATTRIBUTE% Dostaje szału</pl>
+						<de>${ATTRIBUTE} wird wütend</de>
+						<en>${ATTRIBUTE} Gets Mad</en>
+						<pl>${ATTRIBUTE} Dostaje szału</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep9">
@@ -2985,9 +2985,9 @@
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep10">
 					<title>
-						<de>Streit bei %SUBJECT1B%</de>
-						<en>Trouble At The %SUBJECT1B%</en>
-						<pl>%SUBJECT1B% ma kłopoty</pl>
+						<de>Streit bei ${SUBJECT1B}</de>
+						<en>Trouble At The ${SUBJECT1B}</en>
+						<pl>${SUBJECT1B} ma kłopoty</pl>
 					</title>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep11">
@@ -3149,14 +3149,14 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-act-DerFahnder" comment="Episode descriptions added in 2024 with help of ChatGPT">
 			<title>
-				<de>Der %TITLE1%%TITLE2%</de>
-				<en>The %TITLE1% %TITLE2%</en>
-				<pl>%NAME1% - %TITLE2% %TITLE1%</pl>
+				<de>Der ${TITLE1}${TITLE2}</de>
+				<en>The ${TITLE1} ${TITLE2}</en>
+				<pl>${NAME1} - ${TITLE2} ${TITLE1}</pl>
 			</title>
 			<description>
-				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
-				<en>%NAME1% solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
-				<pl>%NAME1% rozwiązuje szybko sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
+				<de>${NAME1} löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagden garantiert.</de>
+				<en>${NAME1} solves fast-paced cases in his cozy neighborhood. Chases are guaranteed.</en>
+				<pl>${NAME1} rozwiązuje szybko sprawy w swojej przytulnej okolicy. Pościgi są gwarantowane.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep1">
@@ -3178,9 +3178,9 @@
 						<pl>Polowanie</pl>
 					</title>
 					<description>
-						<de>%NAME1% verfolgt einen flüchtigen Dieb, der die Dorfbäckerei ausgeraubt hat. Dabei entdeckt er Hinweise auf eine größere Einbruchserie im Umland.</de>
-						<en>%NAME1% pursues a fugitive thief who has robbed the village bakery. In the process, he discovers evidence of a larger series of burglaries in the surrounding area.</en>
-						<pl>%NAME1% ściga zbiegłego złodzieja, który okradł wiejską piekarnię. W trakcie tego procesu odkrywa dowody większej serii włamań w okolicy.</pl>
+						<de>${NAME1} verfolgt einen flüchtigen Dieb, der die Dorfbäckerei ausgeraubt hat. Dabei entdeckt er Hinweise auf eine größere Einbruchserie im Umland.</de>
+						<en>${NAME1} pursues a fugitive thief who has robbed the village bakery. In the process, he discovers evidence of a larger series of burglaries in the surrounding area.</en>
+						<pl>${NAME1} ściga zbiegłego złodzieja, który okradł wiejską piekarnię. W trakcie tego procesu odkrywa dowody większej serii włamań w okolicy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
@@ -3190,9 +3190,9 @@
 						<pl>Porwanie</pl>
 					</title>
 					<description>
-						<de>Die Tochter des Bürgermeisters wird entführt. %NAME1% ermittelt fieberhaft und entdeckt, dass der Entführer persönliche Rache anstrebt. Eine dramatische Rettungsaktion führt ihn durch verlassene Gebäude bis zum Showdown.</de>
-						<en>The mayor's daughter is kidnapped. %NAME1% investigates feverishly and discovers that the kidnapper is seeking personal revenge. A dramatic rescue operation leads him through abandoned buildings to a showdown.</en>
-						<pl>Córka burmistrza zostaje porwana. %NAME1% prowadzi gorączkowe śledztwo i odkrywa, że porywacz szuka osobistej zemsty. Dramatyczna akcja ratunkowa prowadzi go przez opuszczone budynki do starcia.</pl>
+						<de>Die Tochter des Bürgermeisters wird entführt. ${NAME1} ermittelt fieberhaft und entdeckt, dass der Entführer persönliche Rache anstrebt. Eine dramatische Rettungsaktion führt ihn durch verlassene Gebäude bis zum Showdown.</de>
+						<en>The mayor's daughter is kidnapped. ${NAME1} investigates feverishly and discovers that the kidnapper is seeking personal revenge. A dramatic rescue operation leads him through abandoned buildings to a showdown.</en>
+						<pl>Córka burmistrza zostaje porwana. ${NAME1} prowadzi gorączkowe śledztwo i odkrywa, że porywacz szuka osobistej zemsty. Dramatyczna akcja ratunkowa prowadzi go przez opuszczone budynki do starcia.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3203,9 +3203,9 @@
 						<pl>Sprawa zamknięta</pl>
 					</title>
 					<description>
-						<de>Ein alter ungelöster Fall wird neu aufgerollt, als Beweise auftauchen. %NAME1% bringt durch akribische Nachforschungen die Wahrheit ans Licht und rehabilitiert einen unschuldig Verurteilten, der jahrelang in Haft saß.</de>
-						<en>An old unsolved case is reopened when evidence emerges. Through meticulous research, %NAME1% brings the truth to light and rehabilitates an innocent convict who has been in prison for years.</en>
-						<pl>Stara, nierozwiązana sprawa zostaje ponownie otwarta, gdy pojawiają się dowody. Dzięki skrupulatnym badaniom %NAME1% ujawnia prawdę i rehabilituje niewinnego skazańca, który od lat przebywa w więzieniu.</pl>
+						<de>Ein alter ungelöster Fall wird neu aufgerollt, als Beweise auftauchen. ${NAME1} bringt durch akribische Nachforschungen die Wahrheit ans Licht und rehabilitiert einen unschuldig Verurteilten, der jahrelang in Haft saß.</de>
+						<en>An old unsolved case is reopened when evidence emerges. Through meticulous research, ${NAME1} brings the truth to light and rehabilitates an innocent convict who has been in prison for years.</en>
+						<pl>Stara, nierozwiązana sprawa zostaje ponownie otwarta, gdy pojawiają się dowody. Dzięki skrupulatnym badaniom ${NAME1} ujawnia prawdę i rehabilituje niewinnego skazańca, który od lat przebywa w więzieniu.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
@@ -3215,9 +3215,9 @@
 						<pl>Prawda</pl>
 					</title>
 					<description>
-						<de>%NAME1% stößt auf einen alten Freund, der in einen mysteriösen Unfall verwickelt war. Seine Ermittlungen decken ein Netz aus Lügen und Vertuschungen auf, das bis in die höchsten Kreise des Dorfes reicht.</de>
-						<en>%NAME1% comes across an old friend who was involved in a mysterious accident. His investigations uncover a web of lies and cover-ups that reaches into the highest circles of the village.</en>
-						<pl>%NAME1% natrafia na starego przyjaciela, który brał udział w tajemniczym wypadku. Jego śledztwo ujawnia sieć kłamstw i zatuszowań, która sięga najwyższych kręgów wioski.</pl>
+						<de>${NAME1} stößt auf einen alten Freund, der in einen mysteriösen Unfall verwickelt war. Seine Ermittlungen decken ein Netz aus Lügen und Vertuschungen auf, das bis in die höchsten Kreise des Dorfes reicht.</de>
+						<en>${NAME1} comes across an old friend who was involved in a mysterious accident. His investigations uncover a web of lies and cover-ups that reaches into the highest circles of the village.</en>
+						<pl>${NAME1} natrafia na starego przyjaciela, który brał udział w tajemniczym wypadku. Jego śledztwo ujawnia sieć kłamstw i zatuszowań, która sięga najwyższych kręgów wioski.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
@@ -3227,9 +3227,9 @@
 						<pl>Fałszywe pieniądze</pl>
 					</title>
 					<description>
-						<de>Eine Serie von Falschgeldscheinen taucht im Dorf auf. %NAME1% folgt den Spuren der Blüten und deckt einen kriminellen Ring auf, der bis in die Nachbarstadt reicht. Eine spektakuläre Verfolgungsjagd endet in einer alten Fabrikhalle.</de>
-						<en>A series of counterfeit banknotes turns up in the village. %NAME1% follows the trail of the flowers and uncovers a criminal ring that reaches as far as the neighboring town. A spectacular chase ends in an old factory building.</en>
-						<pl>W wiosce pojawia się seria fałszywych banknotów. %NAME1% podąża tropem kwiatów i odkrywa siatkę przestępczą, która sięga aż do sąsiedniego miasta. Spektakularny pościg kończy się w budynku starej fabryki.</pl>
+						<de>Eine Serie von Falschgeldscheinen taucht im Dorf auf. ${NAME1} folgt den Spuren der Blüten und deckt einen kriminellen Ring auf, der bis in die Nachbarstadt reicht. Eine spektakuläre Verfolgungsjagd endet in einer alten Fabrikhalle.</de>
+						<en>A series of counterfeit banknotes turns up in the village. ${NAME1} follows the trail of the flowers and uncovers a criminal ring that reaches as far as the neighboring town. A spectacular chase ends in an old factory building.</en>
+						<pl>W wiosce pojawia się seria fałszywych banknotów. ${NAME1} podąża tropem kwiatów i odkrywa siatkę przestępczą, która sięga aż do sąsiedniego miasta. Spektakularny pościg kończy się w budynku starej fabryki.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3240,9 +3240,9 @@
 						<pl>Alternatywne fakty</pl>
 					</title>
 					<description>
-						<de>%NAME1% untersucht die Machenschaften eines örtlichen Politikers, der mit Fake News und Manipulationen das Dorf spaltet.</de>
-						<en>%NAME1% investigates the machinations of a local politician who divides the village with fake news and manipulation.</en>
-						<pl>%NAME1% bada machinacje lokalnego polityka, który dzieli wioskę za pomocą fałszywych wiadomości i manipulacji.</pl>
+						<de>${NAME1} untersucht die Machenschaften eines örtlichen Politikers, der mit Fake News und Manipulationen das Dorf spaltet.</de>
+						<en>${NAME1} investigates the machinations of a local politician who divides the village with fake news and manipulation.</en>
+						<pl>${NAME1} bada machinacje lokalnego polityka, który dzieli wioskę za pomocą fałszywych wiadomości i manipulacji.</pl>
 					</description>
 					<episodes min="0" max="1" />
 				</scripttemplate>
@@ -3282,9 +3282,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Mon-EpischeGeschichte">
 			<title>
-				<de>Don Rons %WAS%</de>
-				<en>Don Ron's %WAS%</en>
-				<pl>Opowieści Don Rona: %WAS%</pl>
+				<de>Don Rons ${WAS}</de>
+				<en>Don Ron's ${WAS}</en>
+				<pl>Opowieści Don Rona: ${WAS}</pl>
 			</title>
 			<description>
 				<de>Don Rons monumentale Geschichte über eine royale Familie. Erfolg wie immer garantiert.</de>
@@ -3317,14 +3317,14 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Fant-Wesen">
 			<title>
-				<de>%WESEN%</de>
-				<en>The %WESEN%</en>
-				<pl>%WESEN%</pl>
+				<de>${WESEN}</de>
+				<en>The ${WESEN}</en>
+				<pl>${WESEN}</pl>
 			</title>
 			<description>
-				<de>%NAME% trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
-				<en>%NAME% meets a strange creature. They explore the world together and have wonderful adventures.</en>
-				<pl>%NAME% spotyka dziwną istotę. Razem odkrywają świat i przeżywają wspaniałe przygody.</pl>
+				<de>${NAME} trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
+				<en>${NAME} meets a strange creature. They explore the world together and have wonderful adventures.</en>
+				<pl>${NAME} spotyka dziwną istotę. Razem odkrywają świat i przeżywają wspaniałe przygody.</pl>
 			</description>
 			<variables>
 				<wesen>
@@ -3356,9 +3356,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-trick-SprechenderGegenstand">
 			<title>
-				<de>%GEGENSTAND%</de>
-				<en>The Talking %GEGENSTAND%</en>
-				<pl>%GEGENSTAND%</pl>
+				<de>${GEGENSTAND}</de>
+				<en>The Talking ${GEGENSTAND}</en>
+				<pl>${GEGENSTAND}</pl>
 			</title>
 			<description>
 				<de>Ein sprechender Gegenstand freundet sich mit einem Kind an und das lustige Abenteuer beginnt.</de>
@@ -3391,9 +3391,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hist-Voelker">
 			<title>
-				<de>Die %Volk%</de>
-				<en>The %Volk%</en>
-				<pl>%Volk%</pl>
+				<de>Die ${Volk}</de>
+				<en>The ${Volk}</en>
+				<pl>${Volk}</pl>
 			</title>
 			<description>
 				<de>Der Moderator erzählt die Geschichte über den Aufstieg und Fall dieses Volkes. Laiendarsteller stellen wichtige Szenen nach.</de>
@@ -3425,9 +3425,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Adv-DieGruselUniversität">
 			<title>
-				<de>%ORT%</de>
-				<en>The %ORT%</en>
-				<pl>%ORT%</pl>
+				<de>${ORT}</de>
+				<en>The ${ORT}</en>
+				<pl>${ORT}</pl>
 			</title>
 			<description>
 				<de>Ein Schatzsucher erlebt viele Abenteuer auf seiner Jagd nach seimen Reichtum.</de>
@@ -3458,9 +3458,9 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-West-mitdemhelden">
 			<title>
-				<de>Don Rons Der %WAS% aus %WOHER%</de>
-				<en>Don Ron's The %WAS% from %WOHER%</en>
-				<pl>Western Don Rona - %WAS% z %WOHER%</pl>
+				<de>Don Rons Der ${WAS} aus ${WOHER}</de>
+				<en>Don Ron's The ${WAS} from ${WOHER}</en>
+				<pl>Western Don Rona - ${WAS} z ${WOHER}</pl>
 			</title>
 			<description>
 				<de>Vom Stardrehbuchschreiber Don Ron geschriebener Western. Wie immer kultig und genial.</de>
@@ -3498,21 +3498,21 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
 			<title>
-				<de>TVTs: %TITLE1%</de>
-				<en>TVTs: %TITLE1%</en>
-				<pl>Produkcja TVT: %TITLE1% - Teleturniej</pl>
+				<de>TVTs: ${TITLE1}</de>
+				<en>TVTs: ${TITLE1}</en>
+				<pl>Produkcja TVT: ${TITLE1} - Teleturniej</pl>
 			</title>
 			<description>
-				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
-				<en>%NAME1% rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
-				<pl>%NAME1% odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
+				<de>${NAME1} zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
+				<en>${NAME1} rips off callers who have to find words. Two half-naked ladies dance in the background.</en>
+				<pl>${NAME1} odpytuje rozmówców, którzy muszą znaleźć odpowiednie słowa. W tle tańczą dwie półnagie kobiety.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>
-						<de>%EPISODE%</de>
-						<en>%EPISODE%</en>
-						<pl>%EPISODE%</pl>
+						<de>${EPISODE}</de>
+						<en>${EPISODE}</en>
+						<pl>${EPISODE}</pl>
 					</title>
 					<variables>
 						<episode>

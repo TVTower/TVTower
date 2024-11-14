@@ -475,12 +475,12 @@ Type TDatabaseLoader
 				expression = expression.Replace("["+i+"|Nick]", "${.self:~qcast~q:"+i+":~qnickname~q}")
 			EndIf
 
-			'attention: role(name) NUMBER to INDEX! (i-1)
+			'role(name) assumption is that NUMBER corrensponds to job INDEX (0=director, 1..x=actors)
 			if expression.Find("%ROLENAME"+i) >= 0
-				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfirstname~q}")
+				expression = expression.Replace("%ROLENAME"+i+"%", "${.self:~qrole~q:"+(i)+":~qfirstname~q}")
 			EndIf
 			if expression.Find("%ROLE"+i) >= 0
-				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i-1)+":~qfullname~q}")
+				expression = expression.Replace("%ROLE"+i+"%", "${.self:~qrole~q:"+(i)+":~qfullname~q}")
 			EndIf
 		Next
 
@@ -694,7 +694,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3PersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
@@ -727,7 +727,7 @@ Type TDatabaseLoader
 		Local data:TDataCSK = New TDataCSK
 		If Not _personCommonDetailKeys
 			_personCommonDetailKeys = [..
-				"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
+				"first_name", "last_name", "nick_name", "title", "fictional", "levelup", "country", ..
 				"job", "gender", "generator", "face_code", "bookable", "castable" ..
 			]
 		EndIf		
@@ -756,6 +756,7 @@ Type TDatabaseLoader
 		person.firstName = data.GetString("first_name", person.firstName)
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
+		person.title = data.GetString("title", person.title)
 		person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetBool("fictional", person.IsFictional()) )
 		'fallback for old database syntax
 		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("bookable", person.IsCastable()) )
@@ -950,8 +951,8 @@ Type TDatabaseLoader
 
 
 	Method LoadV3NewsEventTemplateFromNode:TNewsEventTemplate(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
-		Local threadId:String = xml.FindValueLC(node,"thread_id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
+		Local threadId:String = xml.FindValueLC(node,"thread_guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -1112,7 +1113,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementFromNode:TAchievement(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -1196,7 +1197,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AchievementElementFromNode:Int(elementName:String="task", source:TAchievement, node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 
 		'fetch potential meta data
 		Local mData:TData = LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
@@ -1272,7 +1273,7 @@ Type TDatabaseLoader
 
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
-		Local GUID:String = xml.FindValueLC(node,"id", "")
+		Local GUID:String = xml.FindValueLC(node,"guid", "")
 		Local doAdd:Int = True
 
 		'fetch potential meta data
@@ -1429,9 +1430,9 @@ Type TDatabaseLoader
 
 
 	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
-		Local GUID:String = TXmlHelper.FindValueLC(node,"id", "")
+		Local GUID:String = TXmlHelper.FindValueLC(node,"guid", "")
 		'referencing an already existing programmedata? Or just use "data-GUID"
-		Local dataGUID:String = TXmlHelper.FindValueLC(node,"programmedata_id", "data-"+GUID)
+		Local dataGUID:String = TXmlHelper.FindValueLC(node,"programmedata_guid", "data-"+GUID)
 		'forgot to prepend "data-" ?
 		If dataGUID.Find("data-") <> 0 Then dataGUID = "data-"+dataGUID
 
@@ -1941,9 +1942,11 @@ Type TDatabaseLoader
 		If Not scriptTemplate
 			'try to clone the parent, if that fails, create a new instance
 			If parentScriptTemplate
-				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id"))
+				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id guid jobs"))
 				'#440 optional flags are not propagated to episode templates
 				scriptTemplate.flagsOptional = 0
+				'jobs must not be cloned, the same instances must be used for all templates, so that random roles are propagated
+				scriptTemplate.jobs = parentScriptTemplate.jobs[ .. ] 'complete copy of the array
 			EndIf
 			If Not scriptTemplate
 				scriptTemplate = New TScriptTemplate
@@ -2118,6 +2121,13 @@ Type TDatabaseLoader
 			Local jobCountry:String = xml.FindValueLC(nodeJob, "country", "")
 			'for actor jobs this defines if a specific role is defined
 			Local jobRoleGUID:String = xml.FindValueLC(nodeJob, "role_guid", "")
+			Local jobRandomRole:Int = xml.FindValueIntLC(nodeJob, "random_role", 0)
+			If jobRandomRole
+				jobRandomRole = 1
+				'overriding job must be reset on child reset!
+				If parentScriptTemplate Then jobRandomRole = 2
+				jobRoleGUID=""
+			EndIf
 			Local jobRoleID:Int = 0
 			If jobRoleGUID
 				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
@@ -2131,6 +2141,7 @@ Type TDatabaseLoader
 
 			'create a job without an assigned person
 			Local job:TPersonProductionJob = New TPersonProductionJob.Init(0, jobFunction, jobGender, jobCountry, jobRoleID)
+			job.randomRole = jobRandomRole
 			If jobRequired = 0
 				'check if the job has to override an existing one
 				If jobIndex >= 0 And scriptTemplate.GetRandomJobAtIndex(jobIndex)
@@ -2355,6 +2366,7 @@ Type TDatabaseLoader
 		role.Init(..
 			TXmlHelper.FindValue(node, "first_name", role.firstname), ..
 			TXmlHelper.FindValue(node, "last_name", role.lastname), ..
+			TXmlHelper.FindValue(node, "nick_name", role.nickname), ..
 			TXmlHelper.FindValue(node, "title", role.title), ..
 			TXmlHelper.FindValue(node, "country", role.countryCode).ToUpper(), ..
 			TXmlHelper.FindValueIntLC(node, "gender", role.gender), ..
@@ -2836,32 +2848,35 @@ Type TDatabaseLoader
 		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
 			If nodePerson.getName() <> "person" Then Continue
 			Local data:TData = New TData
-			xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name"])
+			xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name", "title"])
 			Local guid:String=data.GetString("guid")
 			If guid
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(guid)
 				If person
-					person.firstName=data.GetString("first_name","")
-					person.lastName=data.GetString("last_name","")
-					person.nickName=data.GetString("nick_name","")
+					person.firstName = data.GetString("first_name","")
+					person.lastName = data.GetString("last_name","")
+					person.nickName = data.GetString("nick_name","")
+					person.title = data.GetString("title","")
 					'print "updated person to "+person.GetFullName()
 				EndIf
 			EndIf
 		Next
 
 		Local nodeAllRoles:TxmlNode
-		nodeAllRoles = xml.FindRootChildLC("roles")
+		nodeAllRoles = xml.FindRootChildLC("programmeroles")
+		If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
 		For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
-			If nodeRole.getName() <> "role" Then Continue
+			If nodeRole.getName() <> "programmerole" And nodeRole.getName() <> "role" Then Continue
 			Local data:TData = New TData
-			xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "title"])
+			xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "nick_name", "title"])
 			Local guid:String=data.GetString("guid")
 			If guid
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
 				If role
-					role.firstName=data.GetString("first_name","")
-					role.lastName=data.GetString("last_name","")
-					role.title=data.GetString("title","")
+					role.firstName = data.GetString("first_name","")
+					role.lastName = data.GetString("last_name","")
+					role.nickName = data.GetString("nick_name","")
+					role.title = data.GetString("title","")
 					'print "updated role to "+role.GetFullName()
 				EndIf
 			EndIf

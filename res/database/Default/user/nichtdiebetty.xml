@@ -11,7 +11,7 @@
 	<insignificantpeople>
 		<!--
 			Beispiel:
-			<person id="nichtdiebetty-person-test" first_name="Inge" last_name="Meier" nick_name="Frau Meier" />
+			<person guid="nichtdiebetty-person-test" first_name="Inge" last_name="Meier" nick_name="Frau Meier" />
 		-->
 	</insignificantpeople>
 
@@ -21,7 +21,7 @@
 		tauchen in News auf
 	-->
 	<celebritypeople>
-		<person id="nichtdiebetty-celebritypeople-hainerbecherflechter" tmdb_id="0" imdb_id="" fictional="1" creator="">
+		<person guid="nichtdiebetty-celebritypeople-hainerbecherflechter" tmdb_id="0" imdb_id="" fictional="1" creator="">
 			<first_name>Hainer</first_name>
 			<last_name>Becherflechter</last_name>
 			<details job="1" gender="1"  birthday="1948" deathday="" country="D" />
@@ -47,7 +47,7 @@
 			XRated = 64     Paid/CallIn = 128
 		-->
 	<allprogrammes>
-		<programme id="nichtdiebetty-programme-helgoland-01" product="4" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
+		<programme guid="nichtdiebetty-programme-helgoland-01" product="4" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Helgoland</de>
 				<en>Helgoland</en>

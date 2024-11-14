@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3" />
 	<allads>
-		<ad id="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4" comment="https://en.wikipedia.org/wiki/Ford_Motor_Company">
+		<ad guid="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4" comment="https://en.wikipedia.org/wiki/Ford_Motor_Company">
 			<title>
 				<de>Fort</de>
 			</title>
@@ -13,7 +13,7 @@
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="3" duration="2" profit="420" penalty="500" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="044991ac-f4a6-4705-8e84-052d497d1b3a">
+		<ad guid="044991ac-f4a6-4705-8e84-052d497d1b3a">
 			<title>
 				<de>ToughWhip</de>
 			</title>
@@ -24,7 +24,7 @@
 			<conditions min_audience="2.86" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="5" duration="4" profit="672" penalty="950" infomercial_profit="68" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="1199be32-4985-4697-a5c8-c0da0ef09fc1" comment="TVTower 2013 version: Okea | https://en.wikipedia.org/wiki/IKEA">
+		<ad guid="1199be32-4985-4697-a5c8-c0da0ef09fc1" comment="TVTower 2013 version: Okea | https://en.wikipedia.org/wiki/IKEA">
 			<title>
 				<de>Möbler</de>
 				<en>Barry Buffet</en>
@@ -38,7 +38,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="285" penalty="460" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="Rahmah-Ron1">
+		<ad guid="Rahmah-Ron1">
 			<title>
 				<de>Rahmah</de>
 				<en>Rowmow</en>
@@ -50,7 +50,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="2" profit="280" penalty="400" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="14340286-55d9-408f-b0b5-9cd4208054dc" comment="TODO: Discuss Translation: I felt the barrel doesn't fit with carpentry. 'Pull s.o. over the barrel' could perhaps be used in a new ad, with a German version of 'Fass aufmachen'.">
+		<ad guid="14340286-55d9-408f-b0b5-9cd4208054dc" comment="TODO: Discuss Translation: I felt the barrel doesn't fit with carpentry. 'Pull s.o. over the barrel' could perhaps be used in a new ad, with a German version of 'Fass aufmachen'.">
 			<title>
 				<de>Tischlerei Nagler</de>
 				<en>J. Nailer Carpentry</en>
@@ -62,7 +62,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<conditions min_audience="0.1032" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="3" profit="4000" penalty="4900" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="153bd5af-1163-4c22-a718-3ceb63da26c7" comment="https://en.wikipedia.org/wiki/Pampers">
+		<ad guid="153bd5af-1163-4c22-a718-3ceb63da26c7" comment="https://en.wikipedia.org/wiki/Pampers">
 			<title>
 				<de>Pantzers</de>
 			</title>
@@ -73,7 +73,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="2" duration="3" profit="453" penalty="670" infomercial_profit="41" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="17074737-4b08-457e-8536-b3ae0da3c02c" comment="https://en.wikipedia.org/wiki/Snickers | TVTower 2013 version: Snuckers">
+		<ad guid="17074737-4b08-457e-8536-b3ae0da3c02c" comment="https://en.wikipedia.org/wiki/Snickers | TVTower 2013 version: Snuckers">
 			<title>
 				<de>Trickers</de>
 			</title>
@@ -86,7 +86,7 @@ You will really have to chew.</en>
 			<conditions min_audience="2.34" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="5" duration="4" profit="680" penalty="1000" infomercial_profit="75" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="1edeb46a-caf8-4ce0-a66f-71706fc48b62">
+		<ad guid="1edeb46a-caf8-4ce0-a66f-71706fc48b62">
 			<title>
 				<de>Dubantours</de>
 				<en>Duban Tours</en>
@@ -98,7 +98,7 @@ You will really have to chew.</en>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="3" profit="345" penalty="450" infomercial_profit="41" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="1fa08a9f-5658-46a1-b634-43bbacd1a7bb" comment="arguably now more https://de.wikipedia.org/wiki/Puschkin_Vodka | TVTower 2013 version: Wodka Jelzin - Des Wodkas reine Seele | https://en.wikipedia.org/wiki/Wodka_Gorbatschow">
+		<ad guid="1fa08a9f-5658-46a1-b634-43bbacd1a7bb" comment="arguably now more https://de.wikipedia.org/wiki/Puschkin_Vodka | TVTower 2013 version: Wodka Jelzin - Des Wodkas reine Seele | https://en.wikipedia.org/wiki/Wodka_Gorbatschow">
 			<title>
 				<de>Wodka Jutschin</de>
 				<en>Vodka Juczyn</en>
@@ -110,7 +110,7 @@ You will really have to chew.</en>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="23" repetitions="1" duration="2" profit="415" penalty="460" infomercial_profit="40" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there">
+		<ad guid="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there">
 			<title>
 				<de>Affro-Cola</de>
 			</title>
@@ -121,7 +121,7 @@ You will really have to chew.</en>
 			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="240" penalty="380" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="2e70e2e8-1b23-4aa5-90dc-40e2f5230f71">
+		<ad guid="2e70e2e8-1b23-4aa5-90dc-40e2f5230f71">
 			<title>
 				<de>Eau de WC</de>
 			</title>
@@ -132,7 +132,7 @@ You will really have to chew.</en>
 			<conditions min_audience="4.17" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="3" profit="537" penalty="900" infomercial_profit="53" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="329eb726-34c8-49b3-a0af-be76dcbd296c">
+		<ad guid="329eb726-34c8-49b3-a0af-be76dcbd296c">
 			<title>
 				<de>Ringtone Fuzzy</de>
 			</title>
@@ -143,7 +143,7 @@ You will really have to chew.</en>
 			<conditions min_audience="0.39" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="2" duration="3" profit="2000" penalty="3220" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="360b9ee1-9e2e-469d-b61e-fa8a69cbf560" comment="https://de.wikipedia.org/wiki/Meister_Proper | https://en.wikipedia.org/wiki/Mr._Clean">
+		<ad guid="360b9ee1-9e2e-469d-b61e-fa8a69cbf560" comment="https://de.wikipedia.org/wiki/Meister_Proper | https://en.wikipedia.org/wiki/Mr._Clean">
 			<title>
 				<de>Mr. Ploper</de>
 				<en>Mr. Clank</en>
@@ -155,7 +155,7 @@ You will really have to chew.</en>
 			<conditions min_audience="11.46" min_image="18" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="29" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d1339a50-8d64-4f51-a54e-8a26fe956982" comment="1979-1986 | https://en.wikipedia.org/wiki/Walkman">
+		<ad guid="d1339a50-8d64-4f51-a54e-8a26fe956982" comment="1979-1986 | https://en.wikipedia.org/wiki/Walkman">
 			<title>
 				<de>Sunny Walkboy</de>
 			</title>
@@ -167,7 +167,7 @@ You will really have to chew.</en>
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="1979" year_range_to="1986" />
 		</ad>
-		<ad id="4d2f4ef9-5262-44d7-a062-f27a494fb503" comment="1987-1993 | https://en.wikipedia.org/wiki/Discman">
+		<ad guid="4d2f4ef9-5262-44d7-a062-f27a494fb503" comment="1987-1993 | https://en.wikipedia.org/wiki/Discman">
 			<title>
 				<de>Sunny Discboy</de>
 			</title>
@@ -179,7 +179,7 @@ You will really have to chew.</en>
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="1987" year_range_to="1993" />
 		</ad>
-		<ad id="43e66d8f-5275-47a5-87c0-8f5c5d0082ee" comment="1994-1999 | https://en.wikipedia.org/wiki/PlayStation_(console)">
+		<ad guid="43e66d8f-5275-47a5-87c0-8f5c5d0082ee" comment="1994-1999 | https://en.wikipedia.org/wiki/PlayStation_(console)">
 			<title>
 				<de>GameStation</de>
 			</title>
@@ -191,7 +191,7 @@ You will really have to chew.</en>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="1994" year_range_to="1999" />
 		</ad>
-		<ad id="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad" comment="2000-2005 | https://en.wikipedia.org/wiki/PlayStation_2">
+		<ad guid="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad" comment="2000-2005 | https://en.wikipedia.org/wiki/PlayStation_2">
 			<title>
 				<de>GameStation 2</de>
 			</title>
@@ -203,7 +203,7 @@ You will really have to chew.</en>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2000" year_range_to="2005" /> <!-- variations for other years added in constr -->
 		</ad>
-		<ad id="8a2865eb-80d8-4afb-b2e2-2c1a7fe3599b" comment="2006-2012 | https://en.wikipedia.org/wiki/PlayStation_3">
+		<ad guid="8a2865eb-80d8-4afb-b2e2-2c1a7fe3599b" comment="2006-2012 | https://en.wikipedia.org/wiki/PlayStation_3">
 			<title>
 				<de>GameStation 3</de>
 			</title>
@@ -215,7 +215,7 @@ You will really have to chew.</en>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2006" year_range_to="2012" />
 		</ad>
-		<ad id="9971a105-b9fe-435f-97f8-e9dfa6f531a5" comment="2013-2019 | https://en.wikipedia.org/wiki/PlayStation_4">
+		<ad guid="9971a105-b9fe-435f-97f8-e9dfa6f531a5" comment="2013-2019 | https://en.wikipedia.org/wiki/PlayStation_4">
 			<title>
 				<de>GameStation 4</de>
 			</title>
@@ -227,7 +227,7 @@ You will really have to chew.</en>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2013" year_range_to="2019" />
 		</ad>
-		<ad id="8b8a295e-b600-48c5-ac81-3f3094cab452" comment="2020- | https://en.wikipedia.org/wiki/PlayStation_5">
+		<ad guid="8b8a295e-b600-48c5-ac81-3f3094cab452" comment="2020- | https://en.wikipedia.org/wiki/PlayStation_5">
 			<title>
 				<de>GameStation 5</de>
 			</title>
@@ -239,7 +239,7 @@ You will really have to chew.</en>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2020" />
 		</ad>
-		<ad id="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy">
+		<ad guid="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy">
 			<title>
 				<de>Mödie-Markt</de>
 				<en>Burst-Buy</en>
@@ -251,7 +251,7 @@ You will really have to chew.</en>
 			<conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="4" duration="4" profit="540" penalty="920" infomercial_profit="56" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="41f0778e-f2fd-4b34-be1a-1d67f2ff3ce4">
+		<ad guid="41f0778e-f2fd-4b34-be1a-1d67f2ff3ce4">
 			<title>
 				<de>Frau Müller</de>
 				<en>Mrs. Miller</en>
@@ -263,7 +263,7 @@ You will really have to chew.</en>
 			<conditions min_audience="1.3" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="4" duration="3" profit="1020" penalty="1700" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="PoliPlayw01">
+		<ad guid="PoliPlayw01">
 			<title>
 				<de>PoliPlay</de>
 			</title>
@@ -275,7 +275,7 @@ You will really have to chew.</en>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1982" year_range_to="1989" />
 		</ad>
-		<ad id="PoliPlayw02">
+		<ad guid="PoliPlayw02">
 			<title>
 				<de>PoliPlay</de>
 			</title>
@@ -287,7 +287,7 @@ You will really have to chew.</en>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1997" />
 		</ad>
-		<ad id="PoliPlayw03">
+		<ad guid="PoliPlayw03">
 			<title>
 				<de>PoliPlay</de>
 			</title>
@@ -299,7 +299,7 @@ You will really have to chew.</en>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" year_range_to="2004" />
 		</ad>
-		<ad id="42b4aa37-1274-4da2-9d72-4e203720eeb6">
+		<ad guid="42b4aa37-1274-4da2-9d72-4e203720eeb6">
 			<title>
 				<de>PoliPlay</de>
 			</title>
@@ -311,7 +311,7 @@ You will really have to chew.</en>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="2005" year_range_to="2017" />
 		</ad>
-		<ad id="44af9e71-7c61-4531-b125-181948cd791a">
+		<ad guid="44af9e71-7c61-4531-b125-181948cd791a">
 			<title>
 				<de>Aunt Lizzy's</de>
 			</title>
@@ -322,7 +322,7 @@ You will really have to chew.</en>
 			<conditions min_audience="0.1553" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="4" duration="3" fix_price="0" profit="2250" penalty="3250" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="4621cea4-26c9-4c74-b796-a687651333f4">
+		<ad guid="4621cea4-26c9-4c74-b796-a687651333f4">
 			<title>
 				<de>Big Kahuna Burger</de>
 			</title>
@@ -333,7 +333,7 @@ You will really have to chew.</en>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="250" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="4921816c-91a3-42c5-8ca8-56d67394f8dc">
+		<ad guid="4921816c-91a3-42c5-8ca8-56d67394f8dc">
 			<title>
 				<de>KittyFood</de>
 			</title>
@@ -344,7 +344,7 @@ You will really have to chew.</en>
 			<conditions min_audience="4.69" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="1" profit="550" penalty="850" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="496e9783-2d9c-44aa-b71f-845533dc907e">
+		<ad guid="496e9783-2d9c-44aa-b71f-845533dc907e">
 			<title>
 				<de>Fahrschule Fürst</de>
 				<en>Driving school Prince</en>
@@ -358,7 +358,7 @@ In Berlin Tempelhof and Steglitz</en>
 			<conditions min_audience="3.1251" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="4" duration="3" profit="650" penalty="1100" infomercial_profit="67" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="4cc7ea59-a0dd-4dda-90b8-ec217635d631">
+		<ad guid="4cc7ea59-a0dd-4dda-90b8-ec217635d631">
 			<title>
 				<de>Lutschfix</de>
 				<en>SpeedSweet</en>
@@ -370,7 +370,7 @@ In Berlin Tempelhof and Steglitz</en>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="5" duration="3" profit="585" penalty="1050" infomercial_profit="58" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="5078e947-ea8f-47bc-9f20-0e611bf2ad28" comment="https://de.wikipedia.org/wiki/Dusch_das | https://en.wikipedia.org/wiki/Lux_(soap)">
+		<ad guid="5078e947-ea8f-47bc-9f20-0e611bf2ad28" comment="https://de.wikipedia.org/wiki/Dusch_das | https://en.wikipedia.org/wiki/Lux_(soap)">
 			<title>
 				<de>wasch das</de>
 				<en>Lyx</en>
@@ -382,7 +382,7 @@ In Berlin Tempelhof and Steglitz</en>
 			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="4" duration="3" profit="1000" penalty="1500" infomercial_profit="100" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="527e41eb-a641-49b9-a521-e921ec652e23">
+		<ad guid="527e41eb-a641-49b9-a521-e921ec652e23">
 			<title>
 				<de>Plöpp-Bier</de>
 				<en>Pop'Beer</en>
@@ -394,7 +394,7 @@ In Berlin Tempelhof and Steglitz</en>
 			<conditions min_audience="1.56" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="900" penalty="1400" infomercial_profit="97" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="589d51a5-52ab-463f-90f9-ddf48abef355">
+		<ad guid="589d51a5-52ab-463f-90f9-ddf48abef355">
 			<title>
 				<de>Ulbricht Umzüge</de>
 				<en>Relocation Rudolph</en>
@@ -408,7 +408,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="7" repetitions="3" duration="2" profit="2333" penalty="3500" infomercial_profit="133" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="5eaab2a2-34aa-47b9-9387-0223a0eaad29" comment="https://en.wikipedia.org/wiki/Gillette">
+		<ad guid="5eaab2a2-34aa-47b9-9387-0223a0eaad29" comment="https://en.wikipedia.org/wiki/Gillette">
 			<title>
 				<de>Gillettine</de>
 			</title>
@@ -419,7 +419,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="6.25" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="460" penalty="900" infomercial_profit="42" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9" comment="https://en.wikipedia.org/wiki/Mastercard">
+		<ad guid="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9" comment="https://en.wikipedia.org/wiki/Mastercard">
 			<title>
 				<de>FasterCard</de>
 			</title>
@@ -430,7 +430,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="27" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="66303d6e-e116-4dcb-8984-f216a70c21fd">
+		<ad guid="66303d6e-e116-4dcb-8984-f216a70c21fd">
 			<title>
 				<de>Schwarzmalerei AG</de>
 				<en>Doom-Mongering LLC</en>
@@ -442,7 +442,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.39" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="4" duration="3" profit="2000" penalty="2700" infomercial_profit="110" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="6c93f77e-8180-4811-a5e1-57b375eef68f">
+		<ad guid="6c93f77e-8180-4811-a5e1-57b375eef68f">
 			<title>
 				<de>Spruzzi Plöpp</de>
 				<en>Fizzy Plop</en>
@@ -454,7 +454,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="4" duration="2" profit="775" penalty="1000" infomercial_profit="77" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="6db2fb7a-fa30-4de3-9035-e02c37486d09">
+		<ad guid="6db2fb7a-fa30-4de3-9035-e02c37486d09">
 			<title>
 				<de>Tussishop</de>
 				<en>Broadshop</en>
@@ -466,7 +466,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.62" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="3" profit="1583" penalty="2500" infomercial_profit="124" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="7408e6f0-0505-42d9-96e0-bf6dc4869039">
+		<ad guid="7408e6f0-0505-42d9-96e0-bf6dc4869039">
 			<title>
 				<de>Raus Hier</de>
 				<en>Outta Here!</en>
@@ -478,7 +478,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="2" fix_price="0" profit="3000" penalty="3800" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="774e0ca3-a31c-4afc-86be-304b02176fcd">
+		<ad guid="774e0ca3-a31c-4afc-86be-304b02176fcd">
 			<title>
 				<de>Tu-doch-so</de>
 				<!-- <en>Fakation</en> -->
@@ -491,7 +491,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.39" min_image="6" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="3" profit="2100" penalty="3400" infomercial_profit="100" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="79e0a668-f929-4746-bcb2-b073f1f2bf65">
+		<ad guid="79e0a668-f929-4746-bcb2-b073f1f2bf65">
 			<title>
 				<de>Jesse Wasser- und Wärmedienst</de>
 				<en>Jesse water and heat services</en>
@@ -503,7 +503,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.4679" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="3" duration="3" profit="1888" penalty="3280" infomercial_profit="119" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="7a86d4cd-7266-4247-ac6a-b63a62d12c93">
+		<ad guid="7a86d4cd-7266-4247-ac6a-b63a62d12c93">
 			<title>
 				<de>Hobelmarkt</de>
 				<en>Planer Market</en>
@@ -515,7 +515,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="2.6" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="3" profit="700" penalty="1100" infomercial_profit="72" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="7bf56c92-52f5-44aa-8cef-2788ece421ac" comment="https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese | White Revive: https://en.wikipedia.org/wiki/OxiClean">
+		<ad guid="7bf56c92-52f5-44aa-8cef-2788ece421ac" comment="https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese | White Revive: https://en.wikipedia.org/wiki/OxiClean">
 			<title>
 				<de>Weißer Friese</de>
 				<en>White Resize</en>
@@ -527,7 +527,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="15.63" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="240" penalty="400" infomercial_profit="23" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="81181726-b98e-42fd-8ffb-23ddb068d61d" comment="arguably https://en.wikipedia.org/wiki/Lacoste">
+		<ad guid="81181726-b98e-42fd-8ffb-23ddb068d61d" comment="arguably https://en.wikipedia.org/wiki/Lacoste">
 			<title>
 				<de>La Côte</de>
 			</title>
@@ -538,7 +538,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="9.38" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="3" duration="2" profit="340" penalty="560" infomercial_profit="32" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="8384acef-9c23-4efa-9ffa-0d0e370693d4">
+		<ad guid="8384acef-9c23-4efa-9ffa-0d0e370693d4">
 			<title>
 				<de>Vitalon Super Supau</de>
 			</title>
@@ -549,7 +549,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="4" profit="490" penalty="790" infomercial_profit="43" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="848b76e8-f93f-4a6f-aa55-b62643c0793d" comment="perhaps https://en.wikipedia.org/wiki/Scania_AB or https://en.wikipedia.org/wiki/Kaipan">
+		<ad guid="848b76e8-f93f-4a6f-aa55-b62643c0793d" comment="perhaps https://en.wikipedia.org/wiki/Scania_AB or https://en.wikipedia.org/wiki/Kaipan">
 			<title>
 				<de>Saipien</de>
 			</title>
@@ -560,7 +560,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="5" duration="3" profit="672" penalty="812" infomercial_profit="67" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="860fd127-f921-4a06-9fd4-123f0638a94e">
+		<ad guid="860fd127-f921-4a06-9fd4-123f0638a94e">
 			<title>
 				<de>Nichts-wie-weg</de>
 				<en>Let's scram</en>
@@ -572,7 +572,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="1" duration="4" profit="506" penalty="900" infomercial_profit="88" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="872a0f04-852d-4b49-b813-6f051e663fbc">
+		<ad guid="872a0f04-852d-4b49-b813-6f051e663fbc">
 			<title>
 				<de>Call-A-Beer</de>
 			</title>
@@ -583,7 +583,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="3.6461" min_image="18" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="5" duration="2" profit="620" penalty="1000" infomercial_profit="122" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="8b3add88-51b3-4776-b144-da0fcdd665a6">
+		<ad guid="8b3add88-51b3-4776-b144-da0fcdd665a6">
 			<title>
 				<de>Zimzi</de>
 				<en>Cinnamzy</en>
@@ -595,7 +595,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="3.65" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="4" profit="600" penalty="950" infomercial_profit="58" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="914bf7d1-8338-4ace-87c8-a84dca3872f5">
+		<ad guid="914bf7d1-8338-4ace-87c8-a84dca3872f5">
 			<title>
 				<de>Chateau Migraine</de>
 			</title>
@@ -606,7 +606,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="3.65" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="5" duration="3" profit="610" penalty="990" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="95a1c5b7-c89a-4fe8-85c9-834c07daa2f9">
+		<ad guid="95a1c5b7-c89a-4fe8-85c9-834c07daa2f9">
 			<title>
 				<de>Copyshop Raub</de>
 				<en>Copy-Shop Piraczi</en>
@@ -618,7 +618,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="3.13" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="4" repetitions="5" duration="2" profit="670" penalty="950" infomercial_profit="95" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="9c19ac3c-c1d2-4a2b-9c09-7379ead5382a" comment="https://en.wikipedia.org/wiki/Heinz_Tomato_Ketchup">
+		<ad guid="9c19ac3c-c1d2-4a2b-9c09-7379ead5382a" comment="https://en.wikipedia.org/wiki/Heinz_Tomato_Ketchup">
 			<title>
 				<de>Hanzis Tomatenketchup</de>
 				<en>Hanzl Tomato Ketchup</en>
@@ -630,7 +630,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="8.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="377" penalty="558" infomercial_profit="35" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="Sjaele-spysoft2" creator="7430" created_by="Sjaele">
+		<ad guid="Sjaele-spysoft2" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Spysoft</de>
 			</title>
@@ -642,7 +642,7 @@ But only with Relocation Rudolph!</en>
 			<data quality="10" repetitions="2" duration="2" profit="440" penalty="640" infomercial_profit="41" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" />
 		</ad>
-		<ad id="a401f20f-8832-45df-a274-2599fd8d0afb" comment="Berliner Pilsener (previously used but it's a real brand) https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei | 'Brandenburger Pilsener' also a real brand">
+		<ad guid="a401f20f-8832-45df-a274-2599fd8d0afb" comment="Berliner Pilsener (previously used but it's a real brand) https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei | 'Brandenburger Pilsener' also a real brand">
 			<title>
 				<de>Kreuzberger Pilsener</de>
 			</title>
@@ -653,7 +653,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="2" duration="3" profit="425" penalty="667" infomercial_profit="42" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="a574c051-d283-441f-8337-7b159017c7dc" comment="TVTower 2013 version: StyleDJ">
+		<ad guid="a574c051-d283-441f-8337-7b159017c7dc" comment="TVTower 2013 version: StyleDJ">
 			<title>
 				<de>Stilvento</de>
 			</title>
@@ -664,7 +664,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="2.3435" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="5" duration="2" profit="766" penalty="1188" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="a5c552c1-9205-4b71-831a-1acc0a1387a9" comment="https://en.wikipedia.org/wiki/Mars_bar">
+		<ad guid="a5c552c1-9205-4b71-831a-1acc0a1387a9" comment="https://en.wikipedia.org/wiki/Mars_bar">
 			<title>
 				<de>Morss</de>
 			</title>
@@ -675,7 +675,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="5.73" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="450" penalty="823" infomercial_profit="45" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="a8087397-e57e-4bdc-b2a9-f44b7173de6d">
+		<ad guid="a8087397-e57e-4bdc-b2a9-f44b7173de6d">
 			<title>
 				<de>Ravelli</de>
 			</title>
@@ -686,7 +686,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="4.69" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="22" repetitions="3" duration="2" profit="545" penalty="975" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="a81fea24-859f-463e-a69c-0124de937a47" comment="https://en.wikipedia.org/wiki/Sarotti | TVTower 2013 version: Saratti | TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
+		<ad guid="a81fea24-859f-463e-a69c-0124de937a47" comment="https://en.wikipedia.org/wiki/Sarotti | TVTower 2013 version: Saratti | TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
 			<title>
 				<de>Schorotti</de>
 			</title>
@@ -697,7 +697,7 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="4" duration="2" profit="700" penalty="1050" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="a86fab74-1d8f-464c-8ec9-93dc1f894b86">
+		<ad guid="a86fab74-1d8f-464c-8ec9-93dc1f894b86">
 			<title>
 				<de>Pustbank</de>
 				<en>Puff-Bank</en>
@@ -711,7 +711,7 @@ The benefit: No postage for remittance slips.</en>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="240" penalty="350" infomercial_profit="21" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="a8c56723-2603-4622-bf23-4645b8fa3bb5">
+		<ad guid="a8c56723-2603-4622-bf23-4645b8fa3bb5">
 			<title>
 				<de>Gib Pfote</de>
 				<en>Give paw!</en>
@@ -723,7 +723,7 @@ The benefit: No postage for remittance slips.</en>
 			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="470" penalty="690" infomercial_profit="75" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ac90b184-af1e-48e3-9f64-eb3ccff0c7aa">
+		<ad guid="ac90b184-af1e-48e3-9f64-eb3ccff0c7aa">
 			<title>
 				<de>MinutePass</de>
 			</title>
@@ -734,7 +734,7 @@ The benefit: No postage for remittance slips.</en>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="315" penalty="448" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ad62c53b-3d7d-404e-bb37-0babaed87df1">
+		<ad guid="ad62c53b-3d7d-404e-bb37-0babaed87df1">
 			<title>
 				<de>Althans</de>
 			</title>
@@ -747,7 +747,7 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 			<conditions min_audience="12.5" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="2" profit="290" penalty="459" infomercial_profit="27" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="b422ad7a-ed8a-4c01-a4fa-0496c07e73d5">
+		<ad guid="b422ad7a-ed8a-4c01-a4fa-0496c07e73d5">
 			<title>
 				<de>Buchstehude</de>
 				<en>Pantown</en>
@@ -759,7 +759,7 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 			<conditions min_audience="0.1" min_image="2" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="4" profit="3900" penalty="5000" infomercial_profit="80" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="b5dbf200-bd84-4126-b80e-66a71661c8aa">
+		<ad guid="b5dbf200-bd84-4126-b80e-66a71661c8aa">
 			<title>
 				<de>Speck</de>
 			</title>
@@ -770,7 +770,7 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="2" duration="3" profit="828" penalty="960" infomercial_profit="82" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="b61b71f4-255f-48a3-99e4-c25c10c59a58" comment="https://en.wikipedia.org/wiki/Toblerone">
+		<ad guid="b61b71f4-255f-48a3-99e4-c25c10c59a58" comment="https://en.wikipedia.org/wiki/Toblerone">
 			<title>
 				<de>Tubenkrone</de>
 				<en>Tuberthrone</en>
@@ -784,7 +784,7 @@ Tuberthrone - Chocolate with character.</en>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="2" profit="430" penalty="606" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b" comment="https://en.wikipedia.org/wiki/Sony">
+		<ad guid="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b" comment="https://en.wikipedia.org/wiki/Sony">
 			<title>
 				<de>Sunny</de>
 			</title>
@@ -797,7 +797,7 @@ It's a Sunny.</en>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="4" duration="3" profit="733" penalty="950" infomercial_profit="73" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="bacae753-442b-46c6-a16a-10b2cd5e3db9">
+		<ad guid="bacae753-442b-46c6-a16a-10b2cd5e3db9">
 			<title>
 				<de>Matratzendoktor</de>
 				<en>Mattress-Doc</en>
@@ -809,7 +809,7 @@ It's a Sunny.</en>
 			<conditions min_audience="1.82" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="4" duration="2" profit="800" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="bd51bc63-e6f4-43cd-86ac-9f1d039aa188">
+		<ad guid="bd51bc63-e6f4-43cd-86ac-9f1d039aa188">
 			<title>
 				<de>Bikeshop</de>
 			</title>
@@ -820,7 +820,7 @@ It's a Sunny.</en>
 			<conditions min_audience="0.78" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="2" profit="1333" penalty="2000" infomercial_profit="118" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="beff6512-fd07-4e1d-aaf8-ce8da3ebd876">
+		<ad guid="beff6512-fd07-4e1d-aaf8-ce8da3ebd876">
 			<title>
 				<de>Kau-Tschuk</de>
 				<en>Caout-Chew</en>
@@ -832,7 +832,7 @@ It's a Sunny.</en>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="3" duration="3" profit="500" penalty="850" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="c078ab28-32f5-439a-81bc-f90602f5fcbc" comment="https://en.wikipedia.org/wiki/Ravensburger">
+		<ad guid="c078ab28-32f5-439a-81bc-f90602f5fcbc" comment="https://en.wikipedia.org/wiki/Ravensburger">
 			<title>
 				<de>Rabensburger</de>
 			</title>
@@ -843,7 +843,7 @@ It's a Sunny.</en>
 			<conditions min_audience="8.34" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="3" duration="2" profit="380" penalty="570" infomercial_profit="37" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="cb0392f3-cc95-4508-a776-22d0e8ca00fa">
+		<ad guid="cb0392f3-cc95-4508-a776-22d0e8ca00fa">
 			<title>
 				<de>La Baguette</de>
 			</title>
@@ -854,7 +854,7 @@ It's a Sunny.</en>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="1" profit="445" penalty="730" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="cd0362d7-5317-41d2-8287-64c0c7810f02" comment="https://en.wikipedia.org/wiki/Dr_Pepper | TVTower 2013 version: Dr. Papper">
+		<ad guid="cd0362d7-5317-41d2-8287-64c0c7810f02" comment="https://en.wikipedia.org/wiki/Dr_Pepper | TVTower 2013 version: Dr. Papper">
 			<title>
 				<de>Dr. Plapper</de>
 				<en>Dr. Blabber</en>
@@ -866,7 +866,7 @@ It's a Sunny.</en>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" comment="https://de.wikipedia.org/wiki/MediaMarktSaturn | TVTower 2013 version: Zaturn">
+		<ad guid="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" comment="https://de.wikipedia.org/wiki/MediaMarktSaturn | TVTower 2013 version: Zaturn">
 			<title>
 				<de>Zaturno</de>
 			</title>
@@ -877,7 +877,7 @@ It's a Sunny.</en>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="2" duration="3" profit="1100" penalty="1200" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="cf26df7e-6721-4f09-9457-28c1e072e11e">
+		<ad guid="cf26df7e-6721-4f09-9457-28c1e072e11e">
 			<title>
 				<de>Bundi</de>
 			</title>
@@ -888,7 +888,7 @@ It's a Sunny.</en>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="2" duration="3" fix_price="0" profit="1500" penalty="2118" infomercial_profit="118" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d0ebcef4-284b-462e-917b-73ed27be5cec">
+		<ad guid="d0ebcef4-284b-462e-917b-73ed27be5cec">
 			<title>
 				<de>Hartz Bier</de>
 				<en>Dole Beer</en>
@@ -902,7 +902,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="2.34" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="4" duration="4" profit="700" penalty="1000" infomercial_profit="74" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d2de2875-249c-4b10-8ba2-0dda65ae5674">
+		<ad guid="d2de2875-249c-4b10-8ba2-0dda65ae5674">
 			<title>
 				<de>Polstermöbel Dobrawa</de>
 				<en>Dobrawa Upholstery</en>
@@ -914,7 +914,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="1.04" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="6" repetitions="4" duration="3" profit="1100" penalty="1400" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d319be4e-e9fe-42d9-9e43-351ddde2fbe5">
+		<ad guid="d319be4e-e9fe-42d9-9e43-351ddde2fbe5">
 			<title>
 				<de>Schlimm-Schnell</de>
 				<en>Trim-Fast</en>
@@ -926,7 +926,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="0.31" min_image="2" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="4" profit="2100" penalty="2675" infomercial_profit="116" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d43943a8-67c3-47a5-bb96-e0f03b5194df" comment="https://en.wikipedia.org/wiki/Lamy">
+		<ad guid="d43943a8-67c3-47a5-bb96-e0f03b5194df" comment="https://en.wikipedia.org/wiki/Lamy">
 			<title>
 				<de>Laimi</de>
 			</title>
@@ -937,7 +937,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="4.17" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="540" penalty="840" infomercial_profit="55" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d4e84634-b122-4cca-90c6-c44707d8a79e" comment="Capri-Sonne - https://en.wikipedia.org/wiki/Capri-Sun | TODO: Perhaps 'Capri' should better be spoofed also">
+		<ad guid="d4e84634-b122-4cca-90c6-c44707d8a79e" comment="Capri-Sonne - https://en.wikipedia.org/wiki/Capri-Sun | TODO: Perhaps 'Capri' should better be spoofed also">
 			<title>
 				<de>Capri-Mond</de>
 				<en>Capri-Moon</en>
@@ -949,7 +949,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="7.29" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="3" duration="3" profit="461" penalty="672" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" comment="https://en.wikipedia.org/wiki/Orangina">
+		<ad guid="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" comment="https://en.wikipedia.org/wiki/Orangina">
 			<title>
 				<de>Oranchina</de>
 			</title>
@@ -960,7 +960,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="10.42" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="2" duration="2" profit="325" penalty="500" infomercial_profit="31" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="d66284c0-6440-4590-a620-f400d67c98b8">
+		<ad guid="d66284c0-6440-4590-a620-f400d67c98b8">
 			<title>
 				<de>Je Ne Reviens Pas</de>
 			</title>
@@ -971,7 +971,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="3" duration="3" profit="500" penalty="750" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="Escal-Sjaele-01" comment="https://de.wikipedia.org/wiki/Escom">
+		<ad guid="Escal-Sjaele-01" comment="https://de.wikipedia.org/wiki/Escom">
 			<title>
 				<de>ESCAL</de>
 			</title>
@@ -983,7 +983,7 @@ Campaign week: no bottle deposit.</en>
 			<data quality="3" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
 			<availability year_range_to="2001" />
 		</ad>
-		<ad id="d8ee3597-56e1-4117-909a-bde9da3f9f9e" comment="https://de.wikipedia.org/wiki/Escom">
+		<ad guid="d8ee3597-56e1-4117-909a-bde9da3f9f9e" comment="https://de.wikipedia.org/wiki/Escom">
 			<title>
 				<de>ESCAL.deu</de>
 			</title>
@@ -995,7 +995,7 @@ Campaign week: no bottle deposit.</en>
 			<data quality="4" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
 			<availability year_range_from="2002" />
 		</ad>
-		<ad id="da699c1f-4117-4fc6-b365-a3a7608105ab">
+		<ad guid="da699c1f-4117-4fc6-b365-a3a7608105ab">
 			<title>
 				<de>Aeroswift</de>
 			</title>
@@ -1006,7 +1006,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="8.3352" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="3" duration="4" profit="377" penalty="620" infomercial_profit="24" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="dd4e46bc-3dae-4738-af7a-f2665bf53435">
+		<ad guid="dd4e46bc-3dae-4738-af7a-f2665bf53435">
 			<title>
 				<de>Fleischerei Fettmit</de>
 				<en>Fad's Meat Market</en>
@@ -1018,7 +1018,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="0.78" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="4" duration="3" profit="1333" penalty="2094" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ddfbfa22-5af8-4558-afc4-b34619bab1c9">
+		<ad guid="ddfbfa22-5af8-4558-afc4-b34619bab1c9">
 			<title>
 				<de>Superfurni</de>
 			</title>
@@ -1029,7 +1029,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="2" profit="1911" penalty="2031" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="e0433c39-f332-4638-9c4b-112fff85179b">
+		<ad guid="e0433c39-f332-4638-9c4b-112fff85179b">
 			<title>
 				<de>Leckerfett</de>
 				<en>Tasty Fat</en>
@@ -1041,7 +1041,7 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="2" duration="3" fix_price="0" profit="325" penalty="520" infomercial_profit="30" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="e096e5ef-34d6-41a4-a98e-cb690673f074" comment="https://en.wikipedia.org/wiki/Nivea | TVTower 2013 version: Novea">
+		<ad guid="e096e5ef-34d6-41a4-a98e-cb690673f074" comment="https://en.wikipedia.org/wiki/Nivea | TVTower 2013 version: Novea">
 			<title>
 				<de>Norwea</de>
 			</title>
@@ -1054,7 +1054,7 @@ Only genuine with the elk!</en>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="2" profit="275" penalty="420" infomercial_profit="24" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="e1f2329c-2a43-453d-8711-11de240d1fbf" comment="https://de.wikipedia.org/wiki/Selterswasser">
+		<ad guid="e1f2329c-2a43-453d-8711-11de240d1fbf" comment="https://de.wikipedia.org/wiki/Selterswasser">
 			<title>
 				<de>Sylters</de>
 			</title>
@@ -1065,7 +1065,7 @@ Only genuine with the elk!</en>
 			<conditions min_audience="1.56" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="2" profit="900" penalty="1300" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="e22453eb-7008-4af8-a3a5-7c2f4fd18667" comment="TVTower 2013 version: Reisebüro TeurI">
+		<ad guid="e22453eb-7008-4af8-a3a5-7c2f4fd18667" comment="TVTower 2013 version: Reisebüro TeurI">
 			<title>
 				<de>Reisebüro Teurl</de>
 				<en>Travel agency Kostli</en>
@@ -1077,7 +1077,7 @@ Only genuine with the elk!</en>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="2750" penalty="4000" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="e77d26ae-895d-448f-b6ac-7171b785d21f">
+		<ad guid="e77d26ae-895d-448f-b6ac-7171b785d21f">
 			<title>
 				<de>Guld Körn</de>
 				<en>Gulden Cörn</en>
@@ -1089,7 +1089,7 @@ Only genuine with the elk!</en>
 			<conditions min_audience="6.7721" min_image="18" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="2" duration="4" profit="476" penalty="788" infomercial_profit="45" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="e9a3aed8-00b1-494f-998a-3f3f08a983cd">
+		<ad guid="e9a3aed8-00b1-494f-998a-3f3f08a983cd">
 			<title>
 				<de>Gold per Post</de>
 				<en>Gold by Mail</en>
@@ -1101,7 +1101,7 @@ Only genuine with the elk!</en>
 			<conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="6" repetitions="2" duration="3" profit="740" penalty="1164" infomercial_profit="77" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ec7e37af-1a67-482b-8e65-348f81c22b79">
+		<ad guid="ec7e37af-1a67-482b-8e65-348f81c22b79">
 			<title>
 				<de>Crunchmunch</de>
 			</title>
@@ -1112,7 +1112,7 @@ Only genuine with the elk!</en>
 			<conditions min_audience="10.42" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="345" penalty="581" infomercial_profit="31" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="f006c0bb-89cc-4924-b17e-151658c15618" comment="Lenor: https://de.wikipedia.org/wiki/Procter_%26_Gamble | https://en.wikipedia.org/wiki/Downy | TVTower 2013 version: Lemor">
+		<ad guid="f006c0bb-89cc-4924-b17e-151658c15618" comment="Lenor: https://de.wikipedia.org/wiki/Procter_%26_Gamble | https://en.wikipedia.org/wiki/Downy | TVTower 2013 version: Lemor">
 			<title>
 				<de>Lemur</de>
 				<en>Dumby</en>
@@ -1126,7 +1126,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="7.29" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="4" duration="4" profit="420" penalty="645" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="f86e045c-51ca-4725-aaff-2d5c158348f9">
+		<ad guid="f86e045c-51ca-4725-aaff-2d5c158348f9">
 			<title>
 				<de>Maike</de>
 			</title>
@@ -1137,7 +1137,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="9.38" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="3" duration="4" profit="340" penalty="540" infomercial_profit="34" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="fc24c505-d3cc-467c-a57c-a154f9d308cb" comment="https://en.wikipedia.org/wiki/Mercedes-Benz | TVTower 2013 version: Märzedes">
+		<ad guid="fc24c505-d3cc-467c-a57c-a154f9d308cb" comment="https://en.wikipedia.org/wiki/Mercedes-Benz | TVTower 2013 version: Märzedes">
 			<title>
 				<de>Bonze</de>
 			</title>
@@ -1148,7 +1148,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="nichtdiebetty-ad-angryglasses-01" creator="8659" created_by="Nicht_die_Betty">
+		<ad guid="nichtdiebetty-ad-angryglasses-01" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Brillen Zorn</de>
 				<en>Glasses Blackeye</en>
@@ -1160,7 +1160,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="2466" penalty="3288" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty" comment="https://en.wikipedia.org/wiki/Gothic_(series) | https://en.wikipedia.org/wiki/Piranha_Bytes">
+		<ad guid="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty" comment="https://en.wikipedia.org/wiki/Gothic_(series) | https://en.wikipedia.org/wiki/Piranha_Bytes">
 			<title>
 				<de>Baroque</de>
 			</title>
@@ -1171,7 +1171,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="5.7301" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="472" penalty="661" infomercial_profit="133" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="nichtdiebetty-ad-tieminister-01" creator="8659" created_by="Nicht_die_Betty">
+		<ad guid="nichtdiebetty-ad-tieminister-01" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Krawatten-Minister</de>
 				<en>Tie-Minister</en>
@@ -1183,7 +1183,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="0.31" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="2166" penalty="2688" infomercial_profit="75" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny">
 			<title>
 				<de>Handy-Dandy</de>
 				<en>Puny Phones</en>
@@ -1196,7 +1196,7 @@ I feel good with Dumby.</en>
 			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="770" penalty="1100" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" year_range_to="2003" />
 		</ad>
-		<ad id="ronny-ad-Kaschaemm" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-Kaschaemm" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kaschämm</de>
 				<en>Gin Palace</en>
@@ -1208,7 +1208,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-Lammpion" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-Lammpion" creator="5578" created_by="Ronny">
 			<title>
 				<de>Lammpion</de>
 				<en>Lambion</en>
@@ -1220,7 +1220,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="0.1" min_image="8" target_group="1" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="3800" penalty="4500" infomercial_profit="75" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
 			<title>
 				<de>Meschmucke</de>
 				<en>DJ Meshugge</en>
@@ -1233,7 +1233,7 @@ I feel good with Dumby.</en>
 			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="770" penalty="1200" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1992" year_range_to="1995" />
 		</ad>
-		<ad id="ronny-ad-Senner-Kaes" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-Senner-Kaes" creator="5578" created_by="Ronny">
 			<title>
 				<de>Senner-Käs</de>
 				<en>Herdsman Cheese</en>
@@ -1245,7 +1245,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="1.041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="21" repetitions="7" duration="6" profit="1050" penalty="2024" infomercial_profit="85" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-Veggismecki" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-Veggismecki" creator="5578" created_by="Ronny">
 			<title>
 				<de>Veggismecki</de>
 				<en>Veggismacky</en>
@@ -1257,7 +1257,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="2.6041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="27" repetitions="6" duration="5" profit="690" penalty="1200" infomercial_profit="80" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-Wackeldackel02">
+		<ad guid="ronny-ad-Wackeldackel02">
 			<title>
 				<de>Wackeldackel</de>
 				<en>Nodding Dog</en>
@@ -1270,7 +1270,7 @@ I feel good with Dumby.</en>
 			<data infomercial="1" quality="19" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="55" fix_infomercial_profit="1" />
 			<availability year_range_from="1973" year_range_to="1988" />
 		</ad>
-		<ad id="ronny-ad-Wackeldackel">
+		<ad guid="ronny-ad-Wackeldackel">
 			<title>
 				<de>Wackeldackel</de>
 				<en>Nodding Dog</en>
@@ -1283,7 +1283,7 @@ I feel good with Dumby.</en>
 			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2008" />
 		</ad>
-		<ad id="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Alle Hits 1</de>
 				<en>All Hits 1</en>
@@ -1296,7 +1296,7 @@ I feel good with Dumby.</en>
 			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="780" penalty="1220" fix_infomercial_profit="1" />
 			<availability year_range_from="1985" year_range_to="1986" />
 		</ad>
-		<ad id="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
 			<title>
 				<de>Alle Hits 2</de>
 				<en>All Hits 2</en>
@@ -1309,7 +1309,7 @@ I feel good with Dumby.</en>
 			<data infomercial="1" quality="22" repetitions="7" duration="4" profit="780" penalty="1150" fix_infomercial_profit="1" />
 			<availability year_range_from="1987" year_range_to="1988" />
 		</ad>
-		<ad id="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
 			<title>
 				<de>Alle Hits Best Of</de>
 				<en>All Hits Best Of</en>
@@ -1322,7 +1322,7 @@ I feel good with Dumby.</en>
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1" />
 			<availability year_range_from="1988" year_range_to="1990" />
 		</ad>
-		<ad id="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>SOS Arthritis</de>
 			</title>
@@ -1333,7 +1333,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="2.86" min_image="12" target_group="64" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="12" repetitions="4" duration="3" profit="685" penalty="990" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-bargeld-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-bargeld-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Bargeld-Kalle</de>
 				<en>Cash-Dave</en>
@@ -1345,7 +1345,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="0.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="3" duration="2" profit="2200" penalty="2400" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-batterietanke-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-batterietanke-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Batterie-Tanke</de>
 				<en>Battery-Station</en>
@@ -1359,7 +1359,7 @@ We offer fully automatic charging machines. Insert battery, fill coin slot. Pres
 			<conditions min_audience="5.73" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" fix_price="0" profit="445" penalty="717" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-brucey-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-brucey-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Brucey</de>
 			</title>
@@ -1372,7 +1372,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="470" penalty="800" infomercial_profit="49" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-einkaufseck-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-einkaufseck-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Einkaufseck</de>
 				<en>Corner Shop</en>
@@ -1384,7 +1384,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="6" duration="3" fix_price="0" profit="2375" penalty="3500" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-guten-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-guten-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Gutendruck</de>
 				<en>Gutendruck</en>
@@ -1396,7 +1396,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="5" duration="3" profit="510" penalty="823" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kalua</de>
 			</title>
@@ -1408,7 +1408,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<data quality="15" repetitions="4" duration="2" profit="720" penalty="1100" fix_infomercial_profit="1" />
 			<availability year_range_to="1999" />
 		</ad>
-		<ad id="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kalua BBQ</de>
 			</title>
@@ -1420,7 +1420,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<data quality="20" repetitions="4" duration="2" profit="720" penalty="1100" fix_infomercial_profit="1" />
 			<availability year_range_from="2000" />
 		</ad>
-		<ad id="ronny-ad-kambalott-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-kambalott-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kambalott</de>
 			</title>
@@ -1431,7 +1431,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="5" repetitions="6" duration="4" profit="1675" penalty="1957" infomercial_profit="138" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-laola-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-laola-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Laola</de>
 			</title>
@@ -1442,7 +1442,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="5.21" min_image="12" target_group="2" />
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="510" penalty="1175" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-litfasssaeule-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-litfasssaeule-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Litfaßsäule</de>
 				<en>Adpillar</en>
@@ -1454,7 +1454,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="0.1" min_image="0" />
 			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="4000" penalty="4900" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-portaet-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-portaet-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>1-2-3-Porträt</de>
 				<en>1-2-3-Portrait</en>
@@ -1466,7 +1466,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="0.4679" min_image="6" target_group="4" />
 			<data infomercial="1" quality="14" repetitions="4" duration="4" profit="1888" penalty="3298" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-rentnerreisen-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-rentnerreisen-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Rentner-Reisen</de>
 				<en>Retiree-Routes</en>
@@ -1478,7 +1478,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="1.562" min_image="12" target_group="64" />
 			<data infomercial="1" quality="12" repetitions="5" duration="4" profit="890" penalty="1500" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-reunionbeer-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-reunionbeer-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wendebier</de>
 				<en>Reunion Beer</en>
@@ -1491,7 +1491,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="340" penalty="520" infomercial_profit="85" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1993" />
 		</ad>
-		<ad id="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sanitaxi</de>
 			</title>
@@ -1502,7 +1502,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<conditions min_audience="5.7301" min_image="12" target_group="64" />
 			<data infomercial="1" quality="12" repetitions="2" duration="4" profit="420" penalty="952" infomercial_profit="67" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-schminkstift-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-schminkstift-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Schminkstift</de>
 				<en>Beauty Pen</en>
@@ -1516,7 +1516,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="1.82" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="1" duration="3" profit="771" penalty="900" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-speckfett-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-speckfett-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Speckfett</de>
 				<en>Fatty Bacon</en>
@@ -1528,7 +1528,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="1.8225" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="8" repetitions="3" duration="3" profit="828" penalty="1155" infomercial_profit="115" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Zick-Schnack</de>
 			</title>
@@ -1539,7 +1539,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="0.6242" min_image="18" target_group="2" />
 			<data infomercial="1" quality="11" repetitions="4" duration="5" profit="1583" penalty="2400" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="ronny-ad-zockomo-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-zockomo-01" creator="5578" created_by="Ronny">
 			<title>
 				<de>Zockomo</de>
 				<en>Screwmatic</en>
@@ -1551,7 +1551,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="18.76" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="7" profit="220" penalty="500" infomercial_profit="95" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="sjaele-ad-Abschiedsgruss" creator="7430" created_by="Sjaele">
+		<ad guid="sjaele-ad-Abschiedsgruss" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Abschiedsgruß</de>
 				<en>Farewell</en>
@@ -1564,7 +1564,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="15" repetitions="1" duration="7" profit="170" penalty="453" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1999" year_range_to="2000" />
 		</ad>
-		<ad id="sjaele-ad-Bio-Tube" creator="7430" created_by="Sjaele">
+		<ad guid="sjaele-ad-Bio-Tube" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Bio-Tube</de>
 			</title>
@@ -1575,7 +1575,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1050" penalty="1600" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="sjaele-ad-Macht-nischt" creator="7430" created_by="Sjaele">
+		<ad guid="sjaele-ad-Macht-nischt" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Macht nischt</de>
 				<en>Not a prob</en>
@@ -1588,7 +1588,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="20" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="105" fix_infomercial_profit="1" />
 			<availability year_range_to="1998" />
 		</ad>
-		<ad id="sjaele-ad-Macht-nischt2" creator="7430" created_by="Sjaele">
+		<ad guid="sjaele-ad-Macht-nischt2" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Macht nischt.deu</de>
 				<en>Not a prob.deu</en>
@@ -1601,7 +1601,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="25" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="100" fix_infomercial_profit="1" />
 			<availability year_range_from="1999" />
 		</ad>
-		<ad id="sjaele-ad-Ratz-Fatz" creator="7430" created_by="Sjaele">
+		<ad guid="sjaele-ad-Ratz-Fatz" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Ratz-Fatz</de>
 				<en>Hassle Frazzle</en>
@@ -1613,7 +1613,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="11.4612" min_image="4" target_group="128" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="322" penalty="504" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="sjaele-ad-Umrechner02" creator="7430" created_by="Sjaele">
+		<ad guid="sjaele-ad-Umrechner02" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Der große Umrechner</de>
 				<en>The bulky converter</en>
@@ -1626,7 +1626,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="2002" />
 		</ad>
-		<ad id="sjaele-ad-Umrechner" creator="7430" created_by="Sjaele">
+		<ad guid="sjaele-ad-Umrechner" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Umrechner.deu</de>
 				<en>BulkyConverter.deu</en>
@@ -1639,7 +1639,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="440" penalty="697" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="2003" />
 		</ad>
-		<ad id="speedminister-ad-Beisele" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Beisele" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Unternehmensberatung Beisele</de>
 				<en>Billayehill Business Consulting</en>
@@ -1651,7 +1651,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="18.76" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="3" duration="6" profit="220" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Bobo" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Bobo" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bobo Wattebällchen</de>
 				<en>Bobo Cotton Balls</en>
@@ -1663,7 +1663,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="3.65" min_image="0" target_group="0" />
 			<data infomercial="1" quality="10" repetitions="2" duration="2" profit="575" penalty="890" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Bruch" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Bruch" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Spedition und Lagerei Bruch</de>
 				<en>Transport and Warehousing B. Reach</en>
@@ -1675,7 +1675,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="1.82" min_image="0" target_group="0" />
 			<data infomercial="1" quality="8" repetitions="5" duration="2" profit="874" penalty="1251" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Bullshit-Bingo-Brokers" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Bullshit-Bingo-Brokers" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bullshit Bingo Brokers</de>
 			</title>
@@ -1686,7 +1686,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="17.19" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="4" profit="240" penalty="320" infomercial_profit="15" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Doublie-Kate" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Doublie-Kate" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Doublie-Kate</de>
 			</title>
@@ -1697,7 +1697,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="28.65" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="4" profit="170" penalty="309" infomercial_profit="35" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Doerrobst" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Doerrobst" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Dörrobst Toni</de>
 				<en>Dried Fruit Dave</en>
@@ -1709,7 +1709,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="1.3015" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="6" duration="4" profit="1060" penalty="1571" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Enemy24" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Enemy24" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Enemy24</de>
 			</title>
@@ -1720,7 +1720,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="11.46" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="3" duration="3" profit="330" penalty="565" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Encyclopedia1" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Encyclopedia1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Die halbe Enzyklopädie von Allem</de>
 				<en>Half the Encyclopedia of Everything</en>
@@ -1732,7 +1732,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="20.84" min_image="0" target_group="0" />
 			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="210" penalty="303" infomercial_profit="25" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Encyclopedia2" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Encyclopedia2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Die ganze Enzyklopädie von Allem</de>
 				<en>The complete Encyclopedia of Everything</en>
@@ -1744,7 +1744,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="20.84" min_image="37" target_group="0" />
 			<data infomercial="1" quality="31" repetitions="2" duration="2" profit="215" penalty="315" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Fluchomat" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Fluchomat" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Fluchomat von Karkasonic</de>
 				<en>Cursomat by Karkasonic</en>
@@ -1756,7 +1756,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="12.5" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="4" profit="287" penalty="422" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Hopfengurgler1" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Hopfengurgler1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Brauerei Hopfengurgler</de>
 				<en>Brewery Hopgurgler</en>
@@ -1769,7 +1769,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" />
 			<availability year_range_from="2006" />
 		</ad>
-		<ad id="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Brauerei Hopfengurgler</de>
 				<en>Brewery Hopgurgler</en>
@@ -1782,7 +1782,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="568" penalty="450" fix_infomercial_profit="1" />
 			<availability year_range_to="2005" />
 		</ad>
-		<ad id="speedminister-ad-Hummeldoof" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Hummeldoof" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Imkerei Hummeldoof</de>
 				<en>Apiary Dumblebee</en>
@@ -1794,7 +1794,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="0.0511" min_image="4" target_group="4" />
 			<data infomercial="1" quality="12" repetitions="3" duration="3" profit="2650" penalty="3343" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Immobilien-Haino" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Immobilien-Haino" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Immobilien-Haino</de>
 				<en>Real Estate Sharky</en>
@@ -1806,7 +1806,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="1" duration="1" profit="843" penalty="1129" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Kung-Pau-Airlines" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Kung-Pau-Airlines" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Kung Pau Airlines</de>
 			</title>
@@ -1817,7 +1817,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="2.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="672" penalty="1001" infomercial_profit="67" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Landwirtschafts-Discount" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Landwirtschafts-Discount" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Siggis Landwirtschafts-Discount</de>
 				<en>Old Joe's Farming-Discount</en>
@@ -1829,7 +1829,7 @@ Available in any well-stocked drugstore.</en>
 			<conditions min_audience="0.78" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="6" duration="4" profit="1400" penalty="2009" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Mietmaul1" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Mietmaul1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
@@ -1844,7 +1844,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="270" penalty="440" infomercial_profit="14" fix_infomercial_profit="1" />
 			<availability year_range_to="1995" />
 		</ad>
-		<ad id="speedminister-ad-Mietmaul2" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Mietmaul2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
@@ -1859,7 +1859,7 @@ Available in any well-stocked drugstore.</en>
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="278" penalty="460" fix_infomercial_profit="1" />
 			<availability year_range_from="1996" />
 		</ad>
-		<ad id="speedminister-ad-Mietmaul3" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Mietmaul3" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
@@ -1874,7 +1874,7 @@ Hired Parrot - We are more equal than others.</en>
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="14" fix_infomercial_profit="1" />
 			<availability year_range_from="1995" />
 		</ad>
-		<ad id="speedminister-ad-Mietmaul4" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Mietmaul4" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
@@ -1889,7 +1889,7 @@ Hired Parrot - We are better than others.</en>
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1" />
 			<availability year_range_from="1996" />
 		</ad>
-		<ad id="speedminister-ad-Moporatret" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Moporatret" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Moporatret</de>
 				<en>Mobikepedal</en>
@@ -1901,7 +1901,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="6.77" min_image="0" target_group="0" />
 			<data infomercial="1" quality="19" repetitions="4" duration="4" profit="445" penalty="988" infomercial_profit="40" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Musikscheune" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Musikscheune" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Musikscheune Konzelmann</de>
 				<en>Music Shack Konzelmann</en>
@@ -1913,7 +1913,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="1.3" min_image="0" target_group="0" />
 			<data infomercial="1" quality="13" repetitions="3" duration="5" profit="1000" penalty="1450" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Ohrostopf" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Ohrostopf" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Ohrostopf Lärmschutz</de>
 				<en>Ear-O-Plug noise control</en>
@@ -1927,7 +1927,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="5.21" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="5" duration="4" profit="500" penalty="1056" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
+		<ad guid="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
 			<title>
 				<de>Pemto Taschentücher</de>
 				<en>Pemto Tissues</en>
@@ -1939,7 +1939,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="14.07" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="270" penalty="425" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
+		<ad guid="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
 			<title>
 				<de>Pemto Toilettenpapier</de>
 				<en>Pemto Toilet Paper</en>
@@ -1951,7 +1951,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="14.07" min_image="32" target_group="0" />
 			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="265" penalty="410" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Pillreis" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Pillreis" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Antiquitäten Pillreis</de>
 				<en>Antiques Pillreis</en>
@@ -1963,7 +1963,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="2.6" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="1" duration="4" profit="690" penalty="948" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Ploerre" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Ploerre" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Plörre Bier</de>
 				<en>Muck Beer</en>
@@ -1975,7 +1975,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="3.13" min_image="4" target_group="256" />
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="640" penalty="890" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Rapunzel" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Rapunzel" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rapunzel Haarteile</de>
 				<en>Rapunzel's Hairpieces</en>
@@ -1987,7 +1987,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="18.76" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="6" profit="225" penalty="360" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Rhinozerosfarm" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Rhinozerosfarm" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rhinozerosfarm Aschenbühl</de>
 				<en>Rhinoceros farm Aschenbuehl</en>
@@ -1999,7 +1999,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="7.29" min_image="0" target_group="0" />
 			<data infomercial="1" quality="13" repetitions="5" duration="3" profit="438" penalty="682" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-RoZZona" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-RoZZona" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>RoZZona</de>
 				<en>SnotZZy</en>
@@ -2011,7 +2011,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="23.44" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="185" penalty="327" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Roll-Shop" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Roll-Shop" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Der Roll-Shop</de>
 				<en>The Roll-Shop</en>
@@ -2023,7 +2023,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="9.38" min_image="0" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="4" duration="4" profit="347" penalty="537" infomercial_profit="32" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Schmierlapp" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Schmierlapp" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Autohaus Schmierlapp</de>
 				<en>Greasy's Cars</en>
@@ -2035,7 +2035,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="0.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="10" repetitions="5" duration="3" profit="2320" penalty="3105" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Schniggo1" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Schniggo1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Schniggo Schokokubus</de>
 				<en>Schniggo Choco Cube</en>
@@ -2047,7 +2047,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="3.1251" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="6" duration="3" profit="640" penalty="900" infomercial_profit="11" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Schniggo2" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Schniggo2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Schniggo Lakritzkugel</de>
 				<en>Schniggo Licorice Ball</en>
@@ -2059,7 +2059,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="39.07" min_image="30" target_group="0" />
 			<data infomercial="1" quality="13" repetitions="3" duration="4" profit="121" penalty="190" infomercial_profit="12" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Schaedlingsbekaempfung" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Schaedlingsbekaempfung" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Stefanjek Schädlingsbekämpfung</de>
 				<en>Stefanjek Pest Control</en>
@@ -2071,7 +2071,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="0.62" min_image="0" target_group="0" />
 			<data infomercial="1" quality="8" repetitions="4" duration="2" profit="1583" penalty="2020" infomercial_profit="158" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Steiss" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Steiss" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Steiß Teddybären</de>
 				<en>Rump Teddy Bears</en>
@@ -2083,7 +2083,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="1.041" min_image="18" target_group="1" />
 			<data infomercial="1" quality="11" repetitions="3" duration="4" profit="1100" penalty="1800" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Stop-Hound" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Stop-Hound" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Stop Hound</de>
 			</title>
@@ -2094,7 +2094,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="8.34" min_image="0" target_group="0" />
 			<data infomercial="1" quality="24" repetitions="1" duration="2" profit="360" penalty="600" infomercial_profit="35" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-TVBunker" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-TVBunker" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>TVBunker PC-Spiel</de>
 				<en>TVBunker PC-Game</en>
@@ -2106,7 +2106,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="3.6461" min_image="0" target_group="0" />
 			<data infomercial="1" quality="28" repetitions="7" duration="4" profit="621" penalty="845" infomercial_profit="95" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-TVBunker2" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-TVBunker2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>TVTower PC-Spiel</de>
 				<en>TVTower PC-Game</en>
@@ -2118,7 +2118,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="41.6799" min_image="0" target_group="0" />
 			<data infomercial="1" quality="30" repetitions="1" duration="8" profit="113" penalty="196" infomercial_profit="65" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Tarnschiff1" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Tarnschiff1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
 				<en>Stealth Cruises</en>
@@ -2130,7 +2130,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="33.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="2" duration="4" profit="138" penalty="207" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Tarnschiff2" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Tarnschiff2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
 				<en>Stealth Cruises</en>
@@ -2142,7 +2142,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="33.86" min_image="18" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="2" duration="4" profit="146" penalty="194" infomercial_profit="33" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Tarnschiff3" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Tarnschiff3" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
 				<en>Stealth Cruises</en>
@@ -2154,7 +2154,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="33.86" min_image="32" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="153" penalty="218" infomercial_profit="13" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Ticketschalter" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Ticketschalter" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Ticketschalter</de>
 				<en>Ticket Counter</en>
@@ -2166,7 +2166,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="15.63" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="250" penalty="345" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Weinstein" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Weinstein" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Winzerei Weinstein</de>
 				<en>Winery Tartar</en>
@@ -2178,7 +2178,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="3.13" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="650" penalty="970" infomercial_profit="67" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-bafm-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-bafm-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bundesdeutsche Anstalt für Meditation</de>
 				<en>Federal Institute for Meditation</en>
@@ -2190,7 +2190,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="26.05" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="5" profit="185" penalty="320" infomercial_profit="69" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-baumschule-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-baumschule-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Baumschule Bummbarts</de>
 				<en>Tree Nursery Bummbeards</en>
@@ -2202,7 +2202,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="8.3352" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="377" penalty="544" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-baumschule-02" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-baumschule-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Baumschule Bummbarts</de>
 				<en>Tree Nursery Bummbeards</en>
@@ -2214,7 +2214,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="1.82" min_image="45" target_group="256" />
 			<data infomercial="1" quality="18" repetitions="6" duration="4" profit="770" penalty="999" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-bildergalerie-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-bildergalerie-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bildergalerie Silberfisch</de>
 				<en>Picture Gallery Silverfish</en>
@@ -2226,7 +2226,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="2.083" min_image="12" target_group="4" />
 			<data infomercial="1" quality="19" repetitions="4" duration="2" profit="780" penalty="1300" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-chemicalair-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-chemicalair-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Chemical Air</de>
 			</title>
@@ -2237,7 +2237,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="28.65" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="1" duration="4" profit="175" penalty="240" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-esel24-02" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-esel24-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Esel24</de>
 				<en>Donkey24</en>
@@ -2250,7 +2250,7 @@ Hired Parrot - We are better than others.</en>
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" />
 			<availability year_range_to="1999" />
 		</ad>
-		<ad id="speedminister-ad-esel24-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-esel24-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Esel24.komm</de>
 				<en>Donkey24.come</en>
@@ -2263,7 +2263,7 @@ Hired Parrot - We are better than others.</en>
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" />
 			<availability year_range_from="2000" />
 		</ad>
-		<ad id="speedminister-ad-four4down-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-four4down-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>four4down</de>
 			</title>
@@ -2274,7 +2274,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="23.44" min_image="0" />
 			<data infomercial="1" quality="16" repetitions="1" duration="4" profit="193" penalty="320" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
+		<ad guid="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
 			<title>
 				<de>Greek Haircut</de>
 			</title>
@@ -2285,7 +2285,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="1.3015" min_image="0" target_group="0" />
 			<data infomercial="1" quality="9" repetitions="2" duration="2" profit="960" penalty="1200" infomercial_profit="40" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-hammer-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-hammer-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Hammer</de>
 				<en>Hammer</en>
@@ -2297,7 +2297,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="26.05" min_image="4" target_group="256" />
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="180" penalty="330" infomercial_profit="36" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>HAPPO</de>
 			</title>
@@ -2308,7 +2308,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="10.42" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="520" infomercial_profit="60" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-haslan-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-haslan-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Haslan Autocars</de>
 			</title>
@@ -2319,7 +2319,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" />
 			<data infomercial="1" quality="7" repetitions="4" duration="3" profit="3200" penalty="3771" infomercial_profit="40" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Hexler und Schorsch</de>
 				<en>Hexler and Schorsch</en>
@@ -2331,7 +2331,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="17.19" min_image="4" target_group="256" />
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="242" penalty="445" infomercial_profit="65" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-interouter-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-interouter-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Inter Outer Under World Travel</de>
 			</title>
@@ -2344,7 +2344,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="23.44" min_image="7" target_group="8" />
 			<data infomercial="1" quality="22" repetitions="1" duration="4" profit="185" penalty="300" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Kaisers neue Kleider</de>
 				<en>Emperor's New Clothes</en>
@@ -2356,7 +2356,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="36.47" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="1" duration="3" profit="124" penalty="226" infomercial_profit="22" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-kakteenwunderland-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-kakteenwunderland-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Kakteenwunderland</de>
 				<en>Cactus Wonderland</en>
@@ -2368,7 +2368,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="6.25" min_image="0" target_group="0" />
 			<data infomercial="1" quality="17" repetitions="3" duration="4" profit="450" penalty="650" infomercial_profit="42" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-koizucht-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-koizucht-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Koizucht Koiner</de>
 				<en>Koi Breeding Koiner</en>
@@ -2380,7 +2380,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="33.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="4" profit="130" penalty="228" infomercial_profit="11" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-malereifarbecht-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-malereifarbecht-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Malerei Farbecht</de>
 				<en>Paintshop Colorfast</en>
@@ -2392,7 +2392,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="6" duration="3" profit="2000" penalty="2750" infomercial_profit="100" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-overbrain-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-overbrain-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Overbrain Bug-Generator</de>
 				<en>Overbrain Bug Generator</en>
@@ -2405,7 +2405,7 @@ Hired Parrot - We are better than others.</en>
 			<data infomercial="1" quality="14" repetitions="2" duration="5" profit="118" penalty="241" infomercial_profit="11" fix_infomercial_profit="1" />
 			<availability year_range_to="2000" />
 		</ad>
-		<ad id="speedminister-ad-overbrain-02" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-overbrain-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Overbrain Virus-Simulator</de>
 				<en>Overbrain Virus Simulator</en>
@@ -2418,7 +2418,7 @@ Hired Parrot - We are better than others.</en>
 			<data infomercial="1" quality="20" repetitions="2" duration="5" profit="172" penalty="220" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
-		<ad id="speedminister-ad-pizzapaschulke-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-pizzapaschulke-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Pizza Paschulke</de>
 				<en>Pizza Pachulkee</en>
@@ -2430,7 +2430,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" />
 			<data infomercial="1" quality="17" repetitions="2" duration="2" profit="2120" penalty="1900" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-placebotazementamol-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-placebotazementamol-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Placebotazementamol</de>
 				<en>Placebotazementamol</en>
@@ -2442,7 +2442,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="20.84" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="205" penalty="250" infomercial_profit="18" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-potzblitz-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-potzblitz-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Potz-Blitz Autohof</de>
 				<en>Godspeeders Car Yard</en>
@@ -2454,7 +2454,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="0.26" min_image="2" target_group="256" />
 			<data infomercial="1" quality="9" repetitions="3" duration="4" profit="2300" penalty="3200" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-raffgier-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-raffgier-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Raff und Gier, Banken und Versicherungen</de>
 				<en>Hogg and Greed, banking and insurance</en>
@@ -2466,7 +2466,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="31.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="1" duration="6" profit="160" penalty="220" infomercial_profit="23" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-raffgier-02" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-raffgier-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Raff und Gier, Banken und Versicherungen</de>
 				<en>Hogg and Greed, banking and insurance</en>
@@ -2478,7 +2478,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="31.26" min_image="68" target_group="128" />
 			<data infomercial="1" quality="27" repetitions="3" duration="4" profit="145" penalty="130" infomercial_profit="23" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-rauschebart-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-rauschebart-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Käpt'n Rauschebart</de>
 				<en>Captain Bush Beard</en>
@@ -2490,7 +2490,7 @@ Hired Parrot - We are better than others.</en>
 			<conditions min_audience="9.38" min_image="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="345" penalty="515" infomercial_profit="62" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-rechtschreibdudan-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-rechtschreibdudan-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rechtschreibdudan</de>
 				<en>Diggtionary</en>
@@ -2505,7 +2505,7 @@ Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that sh
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="500" penalty="720" fix_infomercial_profit="1" />
 			<availability year_range_to="2007" />
 		</ad>
-		<ad id="speedminister-ad-rechtschreibdudan-02" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-rechtschreibdudan-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rechtschreibdudan</de>
 				<en>Diggtionary</en>
@@ -2520,7 +2520,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="700" penalty="950" fix_infomercial_profit="1" />
 			<availability year_range_from="2008" />
 		</ad>
-		<ad id="speedminister-ad-rennpferde-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-rennpferde-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rennpferde Engel</de>
 				<en>Racehorses Angel</en>
@@ -2532,7 +2532,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="2.08" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-spackeroog-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-spackeroog-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Nordseeinsel Spackeroog</de>
 				<en>North Sea island Spackeroog</en>
@@ -2544,7 +2544,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="0.4679" min_image="0" target_group="0" />
 			<data infomercial="1" quality="14" repetitions="2" duration="1" profit="1888" penalty="2526" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-spargelsund-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-spargelsund-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Erlebnisbad Spargelsund</de>
 				<en>Water Park Aspargustic</en>
@@ -2556,7 +2556,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="2.34" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="700" penalty="1087" infomercial_profit="73" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-sportschule-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-sportschule-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Sportschule Steilpass</de>
 				<en>Sports School Steeppass</en>
@@ -2568,7 +2568,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="0.31" min_image="0" target_group="0" />
 			<data infomercial="1" quality="14" repetitions="4" duration="2" profit="2300" penalty="3287" infomercial_profit="150" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-teppichoase-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-teppichoase-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Teppichoase Kamelfurt</de>
 				<en>Carpet-Oasis Camelford</en>
@@ -2580,7 +2580,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="1.04" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="4" duration="2" profit="1150" penalty="1908" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-valvoa-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-valvoa-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Valvoa</de>
 			</title>
@@ -2592,7 +2592,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="205" penalty="340" infomercial_profit="47" fix_infomercial_profit="1" />
 			<availability year_range_from="2002" />
 		</ad>
-		<ad id="speedminister-ad-valvoa-02" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-valvoa-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Valvoa</de>
 			</title>
@@ -2607,7 +2607,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 
 
 		<!-- opening contracts - not available for "normal adagency business" -->
-		<ad id="ronny-ad-startad-bmxng" creator="5578" created_by="Ronny" comment="TKP 1000, Quote 25000">
+		<ad guid="ronny-ad-startad-bmxng" creator="5578" created_by="Ronny" comment="TKP 1000, Quote 25000">
 			<title>
 				<de>BMX NG</de>
 			</title>
@@ -2618,7 +2618,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="1.3015" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="45" repetitions="1" duration="0" profit="1000" penalty="490" infomercial_profit="134" fix_infomercial_profit="1" available="0" type="1" />
 		</ad>
-		<ad id="ronny-ad-startad-gamezworld" creator="7430" created_by="Sjaele" comment="TKP 1800, Quote 12000">
+		<ad guid="ronny-ad-startad-gamezworld" creator="7430" created_by="Sjaele" comment="TKP 1800, Quote 12000">
 			<title>
 				<de>GamezWorld</de>
 			</title>
@@ -2629,7 +2629,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="0.6242" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="45" repetitions="2" duration="0" profit="1800" penalty="690" infomercial_profit="220" fix_infomercial_profit="1" available="0" type="1" />
 		</ad>
-		<ad id="ronny-ad-startad-digidea" creator="7430" created_by="Sjaele" comment="TKP 7000, Quote 2500">
+		<ad guid="ronny-ad-startad-digidea" creator="7430" created_by="Sjaele" comment="TKP 7000, Quote 2500">
 			<title>
 				<de>Digidea</de>
 			</title>
@@ -2643,7 +2643,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 
 		<!-- from Vicusfeli, plus different years variations -->
 
-		<ad id="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="Vicusfeli" comment="">
 			<title>
 				<de>DubanAirways</de>
 				<en>DubanAirways</en>
@@ -2655,7 +2655,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="275" penalty="400" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="Vicusfeli" comment="">
 			<title>
 				<de>Radio</de>
 				<en>Radio</en>
@@ -2667,7 +2667,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="2" profit="300" penalty="420" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="1cba1e23-87ef-46c4-9336-a8e28127953b" comment="1975-1982 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
+		<ad guid="1cba1e23-87ef-46c4-9336-a8e28127953b" comment="1975-1982 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
 			<title>
 				<de>Macrohard BASIC</de>
 				<en>Macrohard BASIC</en>
@@ -2684,7 +2684,7 @@ The benchmark for personal computing.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1975" year_range_to="1982" />
 		</ad>
-		<ad id="9ab691bb-97c6-4fee-bb70-b23386b027e5" comment="1983-1989 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
+		<ad guid="9ab691bb-97c6-4fee-bb70-b23386b027e5" comment="1983-1989 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
 			<title>
 				<de>Macrohard BASIC</de>
 				<en>Macrohard BASIC</en>
@@ -2701,7 +2701,7 @@ Now for MXS and Cormoran 64, among others.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1983" year_range_to="1989" />
 		</ad>
-		<ad id="8f110aa4-c88d-4bd4-9aad-eb3ee2a1c8a4" comment="1990-1994 | https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack | https://en.wikipedia.org/wiki/Minesweeper_(video_game)">
+		<ad guid="8f110aa4-c88d-4bd4-9aad-eb3ee2a1c8a4" comment="1990-1994 | https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack | https://en.wikipedia.org/wiki/Minesweeper_(video_game)">
 			<title>
 				<de>Macrohard Amusement Pack</de>
 				<en>Macrohard Amusement Pack</en>
@@ -2714,7 +2714,7 @@ Now for MXS and Cormoran 64, among others.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1994" />
 		</ad>
-		<ad id="2cf218d7-be6d-4689-9b71-20121cb23434" comment="1995-1996 | https://en.wikipedia.org/wiki/Microsoft_Bob | https://en.wikipedia.org/wiki/Office_Assistant">
+		<ad guid="2cf218d7-be6d-4689-9b71-20121cb23434" comment="1995-1996 | https://en.wikipedia.org/wiki/Microsoft_Bob | https://en.wikipedia.org/wiki/Office_Assistant">
 			<title>
 				<de>Macrohard Bob</de>
 				<en>Macrohard Bob</en>
@@ -2727,7 +2727,7 @@ Now for MXS and Cormoran 64, among others.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1995" year_range_to="1996" />
 		</ad>
-		<ad id="20e1f868-bc55-497d-a624-cee97d9886da" comment="1997-2000 | https://en.wikipedia.org/wiki/Encarta">
+		<ad guid="20e1f868-bc55-497d-a624-cee97d9886da" comment="1997-2000 | https://en.wikipedia.org/wiki/Encarta">
 			<title>
 				<de>Macrohard Enzyklopädie</de>
 				<en>Macrohard Encyclopedia</en>
@@ -2744,7 +2744,7 @@ The unrivaled multimedia experience.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2000" />
 		</ad>
-		<ad id="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="Vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
+		<ad guid="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="Vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
 			<title>
 				<de>Y-Kasten</de>
 				<en>Y-Crate</en>
@@ -2763,7 +2763,7 @@ Only from Macrohard.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
-		<ad id="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="Vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker | TODO: Perhaps a bit 'better' international version">
+		<ad guid="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="Vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker | TODO: Perhaps a bit 'better' international version">
 			<title>
 				<de>Theoretiker</de>
 				<en>The Theorists</en>
@@ -2775,7 +2775,7 @@ Only from Macrohard.</en>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="3" profit="1300" penalty="1716" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="af2fe506-45fd-4330-a2e2-37c04266c25d" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="af2fe506-45fd-4330-a2e2-37c04266c25d" creator="" created_by="Vicusfeli" comment="">
 			<title>
 				<de>FR Duban</de>
 				<en>FR Duban</en>
@@ -2787,7 +2787,7 @@ Only from Macrohard.</en>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="640" penalty="800" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="9bb0ce36-7b3e-4b85-b7c3-9b7959f66f40" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="9bb0ce36-7b3e-4b85-b7c3-9b7959f66f40" creator="" created_by="Vicusfeli" comment="">
 			<title>
 				<de>VR Duban</de>
 				<en>PR Duban</en>

@@ -247,52 +247,8 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
-	'checks if the contract/ad passes specific requirements
-	'-> min audience, target groups, ...
-	'returns "OK" when passing, or another String with the reason for failing
 	Method IsPassingRequirements:String(audienceResult:TAudienceResult, previouslyRunningBroadcastMaterial:TBroadcastMaterial = Null)
-		'checks against audience
-		If audienceResult
-			'programme broadcasting outage = ad fails too!
-			If audienceResult.broadcastOutage
-				return "OUTAGE"
-			'condition not fulfilled
-			ElseIf audienceResult.Audience.GetTotalSum() < contract.GetMinAudience()
-				return "SUM"
-			'limited to a specific target group - and not fulfilled
-			ElseIf contract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(contract.GetLimitedToTargetGroup()) < contract.GetMinAudience()
-				return "TARGETGROUP"
-			EndIf
-		EndIf
-
-		'limited to a specific genre - and not fulfilled
-		If contract.GetLimitedToProgrammeGenre() >= 0 or contract.GetLimitedToProgrammeFlag() > 0
-			'check current programme of the owner
-			'TODO: check if that has flaws playing with high speed
-			'      (check if current broadcast is correctly set at this
-			'      time)
-			'if no previous material was given, use the currently running one
-			if not previouslyRunningBroadcastMaterial then previouslyRunningBroadcastMaterial = GetBroadcastManager().GetCurrentProgrammeBroadcastMaterial(owner)
-
-			'should not happen - as it else is a broadcastOutage
-			if not previouslyRunningBroadcastMaterial
-				Return "OUTAGE"
-			else
-				local genreDefinition:TGenreDefinitionBase = previouslyRunningBroadcastMaterial.GetGenreDefinition()
-				if contract.GetLimitedToProgrammeGenre() >= 0
-					if genreDefinition and genreDefinition.referenceId <> contract.GetLimitedToProgrammeGenre()
-						Return "GENRE"
-					endif
-				endif
-				if contract.GetLimitedToProgrammeFlag() > 0
-					if not (contract.GetLimitedToProgrammeFlag() & previouslyRunningBroadcastMaterial.GetProgrammeFlags())
-						Return "FLAGS"
-					endif
-				endif
-			endif
-		EndIf
-
-		return "OK"
+		return contract.IsPassingRequirements(audienceResult, previouslyRunningBroadcastMaterial)
 	End Method
 
 

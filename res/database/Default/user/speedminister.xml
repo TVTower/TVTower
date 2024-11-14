@@ -3,43 +3,43 @@
 	<version value="3" comment="SpeedMinisters Programme" />
 	<insignificantpeople>
 		<!-- Deutschland -->
-		<person id="SpeedMinister-person-id001" first_name="Freiherr" last_name="von Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
-		<person id="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
-		<person id="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
-		<person id="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" castable="0" />
-		<person id="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-		<person id="SpeedMinister-person-id010" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id011" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-		<person id="SpeedMinister-person-id012" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id014" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id015" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id016" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id017" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-		<person id="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person id="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
+		<person guid="SpeedMinister-person-id001" first_name="Freiherr" last_name="von Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
+		<person guid="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
+		<person guid="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
+		<person guid="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" castable="0" />
+		<person guid="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person guid="SpeedMinister-person-id010" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id011" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person guid="SpeedMinister-person-id012" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id014" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id015" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id016" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id017" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person guid="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
 
 		<!-- Österreich -->
-		<person id="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
-		<person id="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
+		<person guid="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
+		<person guid="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
 		<!-- Schweden -->
-		<person id="SpeedMinister-person-id013" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" fictional="1" gender="1" country="S" />
+		<person guid="SpeedMinister-person-id013" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" fictional="1" gender="1" country="S" />
 		<!-- Afghanistan -->
-		<person id="SpeedMinister-person-id020" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="AFG" job="200" /> <!-- Rolle: Tierpfleger -->
-		<person id="SpeedMinister-person-id021" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" fictional="1" gender="" country="AFG" /> <!-- Rolle: Direktor Zoo Kabul -->
-		<person id="SpeedMinister-person-id022" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" fictional="1" gender="2" country="AFG" />
+		<person guid="SpeedMinister-person-id020" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="AFG" job="200" /> <!-- Rolle: Tierpfleger -->
+		<person guid="SpeedMinister-person-id021" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" fictional="1" gender="" country="AFG" /> <!-- Rolle: Direktor Zoo Kabul -->
+		<person guid="SpeedMinister-person-id022" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" fictional="1" gender="2" country="AFG" />
 		<!-- China -->
-		<person id="SpeedMinister-person-id023" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
-		<person id="SpeedMinister-person-id024" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
+		<person guid="SpeedMinister-person-id023" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
+		<person guid="SpeedMinister-person-id024" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
 		<!-- USA -->
-		<person id="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
-		<person id="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
+		<person guid="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
+		<person guid="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
 	</insignificantpeople>
 
 	<celebritypeople>
-		<person id="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" fictional="1" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
+		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" fictional="1" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
 			<first_name>Karlheinz</first_name>
 			<last_name>Dorfmichel</last_name>
 			<details job="66" gender="1"  birthday="-45" deathday="" country="D" />
@@ -49,7 +49,7 @@
 
 	<allprogrammes>
 		<!-- ***** Serie: Die Stars der volksirrtümlichen Hitparade (fiktiv) ***** -->
-		<programme id="SpeedMinister-Serie-volksirrtuemliche-01" product="3" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+		<programme guid="SpeedMinister-Serie-volksirrtuemliche-01" product="3" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Die Stars der volksirrtümlichen Hitparade</de>
 				<en>The Stars of the Tradidiotional Hit Parade</en>
@@ -74,7 +74,7 @@
 			</modifiers>
 			<!-- Episodes -->
 			<children>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die Debreciner Kuhfladen Schnüffler</de>
 						<en>The Debrecen Cowpat Snoopers</en>
@@ -87,7 +87,7 @@
 					</description>
 					<ratings critics="59" speed="70" />
 				</programme>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Tuba Tinnitus</de>
 						<en>Tuba Tinnitus</en>
@@ -101,7 +101,7 @@
 					<ratings critics="40" speed="50" />
 					<releaseTime year_relative="4" day="5" hour="20" />
 				</programme>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Karl Maische</de>
 						<en>Karl Mash</en>
@@ -115,7 +115,7 @@
 					<ratings critics="49" speed="51" />
 					<releaseTime year_relative="4" day="8" hour="20" />
 				</programme>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Frantius F. Freudius</de>
 						<en>Johnny J. Joydious</en>
@@ -129,7 +129,7 @@
 					<ratings critics="62" speed="65" />
 					<releaseTime year_relative="4" day="11" hour="20" />
 				</programme>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Bingo Bumerang</de>
 						<en>Bingo Boomerang</en>
@@ -143,7 +143,7 @@
 					<ratings critics="42" speed="70" />
 					<releaseTime year_relative="5" day="2" hour="20" />
 				</programme>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Fette Fritten</de>
 						<en>Fat Fries</en>
@@ -157,7 +157,7 @@
 					<ratings critics="60" speed="68" />
 					<releaseTime year_relative="5" day="5" hour="20" />
 				</programme>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Edmondia und die Schwanenhalsdreher</de>
 						<en>Edmondia and the Gooseneck Twisters</en>
@@ -171,15 +171,15 @@
 					<ratings critics="45" speed="60" />
 					<releaseTime year_relative="5" day="8" hour="20" />
 				</programme>
-				<programme id="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Finale</de>
 						<en>Final</en>
 						<pl>Finał</pl>
 					</title>
 					<description>
-						<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen [2|Full] ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
-						<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist [2|Full]. The unrivaled culmination in the popular tradidiotional calendar.</en>
+						<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen ${.self:"cast":2:"fullname"} ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
+						<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist ${.self:"cast":2:"fullname"}. The unrivaled culmination in the popular tradidiotional calendar.</en>
 						<pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą Jasiem Głupkowatym. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl> <!-- using clear-text version of staff member here because of grammar -->
 					</description>
 					<staff>
@@ -191,7 +191,7 @@
 			</children>
 		</programme>
 		<!-- ***** Talkrunde, Serie: Andauernd Käse (fiktiv) ***** -->
-		<programme id="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+		<programme guid="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Andauernd Käse</de>
 				<en>Cheese All the Time</en>
@@ -216,7 +216,7 @@
 			</modifiers>
 			<!-- Episodes -->
 			<children>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Analogkäse</de>
 						<en>Cheese Analogue</en>
@@ -234,7 +234,7 @@
 					</staff>
 					<ratings critics="59" speed="30" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Frischkäse</de>
 						<en>Cream Cheese</en>
@@ -251,7 +251,7 @@
 					</staff>
 					<ratings critics="50" speed="25" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Weichkäse</de>
 						<en>Soft Cheese</en>
@@ -268,7 +268,7 @@
 					</staff>
 					<ratings critics="49" speed="31" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Halbfester Schnittkäse</de>
 						<en>Semi-Solid Cheese</en>
@@ -285,7 +285,7 @@
 					</staff>
 					<ratings critics="45" speed="35" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Schnittkäse</de>
 						<en>Semi-Hard Cheese</en>
@@ -304,7 +304,7 @@
 					</staff>
 					<ratings critics="42" speed="33" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Hartkäse</de>
 						<en>Hard Cheese</en>
@@ -321,7 +321,7 @@
 					</staff>
 					<ratings critics="60" speed="30" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Sauermilchkäse</de>
 						<en>Acid Curd Cheese</en>
@@ -338,7 +338,7 @@
 					</staff>
 					<ratings critics="45" speed="25" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Schmelzkäse</de>
 						<en>Processed Cheese</en>
@@ -355,7 +355,7 @@
 					</staff>
 					<ratings critics="48" speed="30" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Schafs- und Ziegenkäse</de>
 						<en>Sheep and Goat Cheese</en>
@@ -372,7 +372,7 @@
 					</staff>
 					<ratings critics="45" speed="29" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Ofen- und Grillkäse</de>
 						<en>Baked and Grilled Cheese</en>
@@ -390,7 +390,7 @@
 					</staff>
 					<ratings critics="55" speed="35" />
 				</programme>
-				<programme id="SpeedMinister-Serie-andauernd-käse-01-ep-11" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-11" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Andauernd Käse</de>
 						<en>Cheese All the Time</en>
@@ -414,7 +414,7 @@
 			</children>
 		</programme>
 		<!-- ***** Serie: Soldaten, Paviane und Co. (fiktiv) ***** -->
-		<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+		<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Soldaten, Paviane und Co.</de>
 				<en>Soldiers, Baboons, and Co.</en>
@@ -437,7 +437,7 @@
 			<ratings critics="29" speed="35" />
 			<!-- Episodes -->
 			<children>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Rundgang im Zoo Kabul</de>
 						<en>Tour of Kabul Zoo</en>
@@ -453,7 +453,7 @@
 					</staff>
 					<ratings critics="29" speed="30" />
 				</programme>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Das neue Bärenhaus</de>
 						<en>The New Bear House</en>
@@ -470,7 +470,7 @@
 					</staff>
 					<ratings critics="36" speed="35" />
 				</programme>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die chinesische Spende</de>
 						<en>The Chinese Donation</en>
@@ -488,7 +488,7 @@
 					</staff>
 					<ratings critics="29" speed="24" />
 				</programme>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Auf Streife mit den GIs</de>
 						<en>On Patrol With the GIs</en>
@@ -504,7 +504,7 @@
 					</staff>
 					<ratings critics="25" speed="32" />
 				</programme>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Medikamente aus Amerika</de>
 						<en>Medicines from America</en>
@@ -520,7 +520,7 @@
 					</staff>
 					<ratings critics="28" speed="34" />
 				</programme>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Da waren's nur noch 13</de>
 						<en>...And Then There Were 13</en>
@@ -537,7 +537,7 @@
 					</staff>
 					<ratings critics="40" speed="40" />
 				</programme>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Das improvisierte Affengehege</de>
 						<en>The Improvised Monkey Enclosure</en>
@@ -554,7 +554,7 @@
 					</staff>
 					<ratings critics="40" speed="40" />
 				</programme>
-				<programme id="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Ein Dank ans Personal</de>
 						<en>A Thank You to the Staff</en>
@@ -576,7 +576,7 @@
 	</allprogrammes>
 
 	<allnews>
-		<news id="SpeedMinister-news-Nessi-01" type="0" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+		<news guid="SpeedMinister-news-Nessi-01" type="0" thread_guid="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Nessi will nach Hause</de>
 				<en>Nessi wants to go home</en>
@@ -592,7 +592,7 @@
 			</effects>
 			<data genre="2" price="1.0" quality="40" />
 		</news>
-		<news id="SpeedMinister-news-Nessi-02" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+		<news guid="SpeedMinister-news-Nessi-02" type="2" thread_guid="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Nessi kommt nach Hause</de>
 				<en>Nessi arrives at home</en>
@@ -608,7 +608,7 @@
 			</effects>
 			<data genre="2" price="1.0" quality="30" />
 		</news>
-		<news id="SpeedMinister-news-Nessi-03" type="2" thread_id="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
+		<news guid="SpeedMinister-news-Nessi-03" type="2" thread_guid="SpeedMinister-news-Nessi" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bürgermeister erfreut über Nessi</de>
 				<en>Mayor pleased about Nessi</en>
@@ -624,7 +624,7 @@
 	</allnews>
 
 	<allads>
-		<ad id="cc5f7107-f929-4331-8dcf-fc4dd2d7e606" comment="1980-1987 | https://en.wikipedia.org/wiki/Xenix">
+		<ad guid="cc5f7107-f929-4331-8dcf-fc4dd2d7e606" comment="1980-1987 | https://en.wikipedia.org/wiki/Xenix">
 			<title>
 				<de>Xunix</de>
 				<en>Xunix</en>
@@ -637,7 +637,7 @@
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1980" year_range_to="1987" />
 		</ad>
-		<ad id="cf636ccc-c253-45c5-afb8-c7aca1521f8b" comment="1988-1994 | https://en.wikipedia.org/wiki/LAN_Manager">
+		<ad guid="cf636ccc-c253-45c5-afb8-c7aca1521f8b" comment="1988-1994 | https://en.wikipedia.org/wiki/LAN_Manager">
 			<title>
 				<de>LAN Master</de>
 				<en>LAN Master</en>
@@ -650,7 +650,7 @@
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1988" year_range_to="1994" />
 		</ad>
-		<ad id="867c2c0b-69c4-4c90-be72-804e9fa939cb" comment="1995-2007 | https://en.wikipedia.org/wiki/MSN">
+		<ad guid="867c2c0b-69c4-4c90-be72-804e9fa939cb" comment="1995-2007 | https://en.wikipedia.org/wiki/MSN">
 			<title>
 				<de>MHN</de>
 			</title>
@@ -662,7 +662,7 @@
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="1995" year_range_to="2007" />
 		</ad>
-		<ad id="43e7451a-3eb1-4f91-9976-3e949c9ea8ed" creator="8605" created_by="SpeedMinister" comment="2008- | https://en.wikipedia.org/wiki/Microsoft_Azure | previous id: speedminister-ad-Mikrohard">
+		<ad guid="43e7451a-3eb1-4f91-9976-3e949c9ea8ed" creator="8605" created_by="SpeedMinister" comment="2008- | https://en.wikipedia.org/wiki/Microsoft_Azure | previous id: speedminister-ad-Mikrohard">
 			<title>
 				<de>Macrohard Arctic - Die Software Klaut</de>
 				<en>Macrohard Arctic - The Software Clout</en>
@@ -677,7 +677,7 @@
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="2008" />
 		</ad>
-		<ad id="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
+		<ad guid="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
 			<title>
 				<de>Anwaltskanzlei Firnhick</de>
 				<en>Law Firm Fainbruck</en>
@@ -691,7 +691,7 @@
 			<conditions min_audience="2.08" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Büroeinrichtung Wimmerl</de>
 				<en>Office Equipment Pimpler</en>

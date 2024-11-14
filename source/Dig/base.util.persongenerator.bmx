@@ -1,6 +1,7 @@
 ﻿SuperStrict
 Import Brl.Map
 Import Brl.Retro
+Import Brl.StringBuilder
 Import "base.util.mersenne.bmx"
 
 
@@ -123,9 +124,9 @@ Type TPersonGenerator
 
 	Function GetGenderFromString:int(str:string)
 		Select str.Trim()
-			case "m", "1"
+			case "m", "1", "male"
 				return GENDER_MALE
-			case "f", "w", "2"
+			case "f", "w", "2", "female"
 				return GENDER_FEMALE
 			default
 				return GetRandomGender()
@@ -148,6 +149,12 @@ Type TPersonGenerator
 	Method GetTitle:string(countryCode:string, gender:int)
 		if gender = 0 then gender = GetRandomGender()
 		return GetProvider(countryCode).GetTitle(gender)
+	End Method
+
+
+	Method GetFullName:String(countryCode:string, gender:int, titleChance:Float = 0.05)
+		If gender = 0 Then gender = GetRandomGender()
+		Return GetProvider(countryCode).GetFullName(gender, titleChance)
 	End Method
 
 
@@ -230,8 +237,8 @@ Type TPersonGeneratorCountry
 	Field lastNames:string[] = ["Mustermann"]
 	Field firstNamesFemale:string[] = ["Erika"]
 	Field firstNamesMale:string[] = ["Max"]
-	Field titleMale:string[] = ["Herr", "Dr.", "Prof."]
-	Field titleFemale:string[] = ["Frau", "Dr.", "Prof."]
+	Field titleMale:string[] = ["Dr.", "Prof."]
+	Field titleFemale:string[] = ["Dr.", "Prof."]
 
 
 	Method GetFirstName:string(gender:int)
@@ -259,6 +266,28 @@ Type TPersonGeneratorCountry
 				return GetTitleMale()
 		End Select
 	End Method
+
+
+	Method GetFullName:String(gender:int, titleChance:Float = 0.05)
+		Local title:String = GetTitle(gender)
+		Local firstName:String = GetFirstName(gender)
+		Local LastName:String = GetLastName(gender)
+		
+		Local sb:TStringBuilder = New TStringBuilder()
+		If title and RandMax(100) <= int(100 * titleChance)
+			sb.Append(title)
+		EndIf
+		If firstName
+			If sb.Length() > 0 Then sb.Append(" ")
+			sb.Append(firstName)
+		EndIf
+		If lastName
+			If sb.Length() > 0 then sb.Append(" ")
+			sb.Append(lastName)
+		EndIf
+		Return sb.ToString()
+	End Method
+
 
 
 	Method GetPrefix:string(gender:int)

@@ -87,8 +87,9 @@ End Function
 'describes a character in a programme/series (the "role")
 Type TProgrammeRole extends TGameObject {_exposeToLua}
 	'name of the character 
-	Field firstName:string
 	Field lastName:string
+	Field firstName:string
+	Field nickName:String = ""
 	'title - like "Dr." or "Prof."
 	Field title:string 
 	Field gender:int
@@ -102,9 +103,10 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 	End Method
 
 
-	Method Init:TProgrammeRole(firstName:string, lastName:string, title:string="", countryCode:string="", gender:int=0, fictional:int = False)
+	Method Init:TProgrammeRole(firstName:string, lastName:string, nickName:String="", title:string="", countryCode:string="", gender:int=0, fictional:int = False)
 		self.firstName = firstName
 		self.lastName = lastName
+		self.nickName = nickName
 		self.title = title
 		self.gender = gender
 		self.countryCode = countryCode
@@ -118,14 +120,29 @@ Type TProgrammeRole extends TGameObject {_exposeToLua}
 	End Method
 
 
-	Method GetLastName:String()
-		return lastName
+	Method GetTitle:String()
+		return title
 	End Method
 
 
-	Method GetFullName:string()
+	Method GetLastName:String(includeTitle:Int = False)
+		If includeTitle and title
+			Return title + " " + lastName
+		Else
+			Return lastName
+		EndIf
+	End Method
+
+
+	Method GetNickName:String()
+		If nickName = "" Then Return firstName
+		Return nickName
+	End Method
+
+
+	Method GetFullName:string(includeTitle:Int = True)
 		Local sb:TStringBuilder = New TStringBuilder()
-		If title 
+		If includeTitle and title 
 			sb.Append(title)
 		EndIf
 		If firstName

@@ -2,12 +2,12 @@
 <tvtdb>
 	<version value="3" comment="Ronnys Programme" />
 	<insignificantpeople>
-		<person id="ronny-people-generated-01" generator="de,2" last_name="Mueller" />
-		<person id="ronny-people-generated-02" generator="de,2" last_name="Klausen" />
+		<person guid="ronny-people-generated-01" generator="de,2" last_name="Mueller" />
+		<person guid="ronny-people-generated-02" generator="de,2" last_name="Klausen" />
 	</insignificantpeople>
 
 	<allprogrammes>
-		<programme id="ronny-programme-livereportage-raketenstart1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-livereportage-raketenstart1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Erster Start der Ariane-2</de>
 				<en>First Launch of Ariane-2</en>
@@ -28,7 +28,7 @@
 			</modifiers>		
 		</programme>
 		<!--TODO: Sport events could be done by a generator -->
-		<programme id="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sommerolympiade 1988 in Seoul</de>
 				<en>Summer Olympics 1988 in Seoul</en>
@@ -49,7 +49,7 @@
 				<modifier name="topicality::age" value="3.0" />
 			</modifiers>
 		</programme>
-		<programme id="ronny-programme-doku-kutler-wunderwaffen" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-kutler-wunderwaffen" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Wunderwaffen</de>
 				<en>Kutler's Wunderwaffen</en>
@@ -70,7 +70,7 @@
 			<releaseTime year_relative="-4" year_relative_min="1975" year_relative_max="1990" />
 			<ratings critics="45" speed="20" outcome="24" />
 		</programme>
-		<programme id="ronny-programme-doku-kutler-alaaf" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-kutler-alaaf" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Keil Kutler und Koelle Alaaf</de>
 				<en>Keil Kutler and &quot;Koelle Alaaf&quot;</en>
@@ -91,7 +91,7 @@
 			<releaseTime year_relative="-3" year_relative_min="1976" year_relative_max="1991" />
 			<ratings critics="38" speed="28" outcome="27" />
 		</programme>
-		<programme id="ronny-programme-doku-kutler-untergang" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-kutler-untergang" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kutlers Untergang</de>
 				<en>Kutler's Downfall</en>
@@ -112,7 +112,7 @@
 			<releaseTime year_relative="+2" year_relative_min="1979" year_relative_max="1993" />
 			<ratings critics="49" speed="30" outcome="20" />
 		</programme>
-		<programme id="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-doku-eyebeam-btx-digitalewelt" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>BTX - Neue digitale Welt</de>
 				<en>BTX - New Digital World</en>
@@ -132,18 +132,18 @@
 			<releaseTime year_relative="-4" year_relative_min="1981" year_relative_max="1983" />
 			<ratings critics="55" speed="15" outcome="25" />
 		</programme>
-		<programme id="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny" comment="TODO: More of these tech docus through the decades, and make them age much faster">
+		<programme guid="ronny-programme-doku-mikroelektronik" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny" comment="TODO: More of these tech docus through the decades, and make them age much faster">
 			<title>
 				<de>Mikroelektronik - Willkommen in der Zukunft</de>
 				<en>Microelectronics - Welcome to the Future</en>
 				<pl>Mikroelektronika - Witamy w przyszłości</pl>
 			</title>
 			<description>
-				<de>[0|Full] führt den Zuschauer ein in die Welt der Mikroelektronik. Personal Computer die auf einen Schreibtisch passen!
+				<de>${.self:"cast":0:"fullname"} führt den Zuschauer ein in die Welt der Mikroelektronik. Personal Computer die auf einen Schreibtisch passen!
 Willkommen in der Zukunft.</de>
-				<en>[0|Full] introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
+				<en>${.self:"cast":0:"fullname"} introduces the viewer to the world of microelectronics. Personal computers that fit on a desk!
 Welcome to the future.</en>
-				<pl>[0|Full] wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
+				<pl>${.self:"cast":0:"fullname"} wprowadza widza w świat mikroelektroniki. Komputery osobiste, które mieszczą się na biurku!
 Witamy w przyszłości.</pl>
 			</description>
 			<staff>
@@ -155,7 +155,7 @@ Witamy w przyszłości.</pl>
 			<ratings critics="40" speed="12" outcome="22" />
 		</programme>
 		<!-- 'Fruit Inc.' moved to database_programmes.xml -->
-		<programme id="ronny-programme-pantoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-pantoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Wahre Pantoffelhelden</de>
 				<en>Truly Henpecked</en>
@@ -179,16 +179,16 @@ Witamy w przyszłości.</pl>
 			<data country="D" year="1983" distribution="2" maingenre="9" subgenre="15" flags="16" blocks="2" price_mod="0.9" />
 			<ratings critics="40" speed="20" outcome="48" />
 		</programme>
-		<programme id="ronny-programme-kartoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-kartoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Kartoffelkönigin</de>
 				<en>The Potato Queen</en>
 				<pl>Królowa ziemniaków</pl>
 			</title>
 			<description>
-				<de>[1|Last] verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
-				<en>[1|Last] enchants the countrymen. You will look in vain for big potatoes and birdbrained countrymen in this sincere warm and romantic TV-comedy.</en>
-				<pl>[1|Last] oczarowuje ziomków. W tej szczerej, ciepłej i romantycznej komedii telewizyjnej na próżno szukać wielkich ziemniaków i ptasich móżdżków.</pl>
+				<de>${.self:"cast":1:"lastname"} verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</de>
+				<en>${.self:"cast":1:"lastname"} enchants the countrymen. You will look in vain for big potatoes and birdbrained countrymen in this sincere warm and romantic TV-comedy.</en>
+				<pl>${.self:"cast":1:"lastname"} oczarowuje ziomków. W tej szczerej, ciepłej i romantycznej komedii telewizyjnej na próżno szukać wielkich ziemniaków i ptasich móżdżków.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -205,7 +205,7 @@ Witamy w przyszłości.</pl>
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
 
-		<programme id="ronny-programme-kaugummitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-kaugummitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Der große Kaugummitest</de>
 				<en>The Great Chewing Gum Check</en>
@@ -225,7 +225,7 @@ Witamy w przyszłości.</pl>
 			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="2000" />
 			<ratings critics="18" speed="25" />
 		</programme>
-		<programme id="ronny-programme-feilschen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-feilschen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Feilschen will gelernt sein</de>
 				<en>Haggling Is a Skill</en>
@@ -245,16 +245,16 @@ Witamy w przyszłości.</pl>
 			<releaseTime year_relative="-8" year_relative_min="1976" year_relative_max="1990" />
 			<ratings critics="35" speed="15" />
 		</programme>
-		<programme id="ronny-programme-recyclingfueranfaenger-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-recyclingfueranfaenger-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Recycling für Anfänger</de>
 				<en>Recycling for Beginners</en>
 				<pl>Recykling dla początkujących</pl>
 			</title>
 			<description>
-				<de>Es ist neu, es ist trendy und es ist ökologisch wichtig. [1|Full] zeigt was in die Tonne kann.</de>
-				<en>It's new, it's trendy - and it is of ecological importance. [1|Full] shows what can go in the garbage can.</en>
-				<pl>Jest nowy, modny - i ma znaczenie ekologiczne. [1|Full] pokazuje, co może trafić do kosza na śmieci.</pl>
+				<de>Es ist neu, es ist trendy und es ist ökologisch wichtig. ${.self:"cast":1:"fullname"} zeigt was in die Tonne kann.</de>
+				<en>It's new, it's trendy - and it is of ecological importance. ${.self:"cast":1:"fullname"} shows what can go in the garbage can.</en>
+				<pl>Jest nowy, modny - i ma znaczenie ekologiczne. ${.self:"cast":1:"fullname"} pokazuje, co może trafić do kosza na śmieci.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -266,7 +266,7 @@ Witamy w przyszłości.</pl>
 			<data country="D" year="1991" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="1" price_mod="1.05" />
 			<ratings critics="35" speed="8" />
 		</programme>
-		<programme id="ronny-programme-versandkataloge-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-versandkataloge-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Versandkataloge: Woher, wofür?</de>
 				<en>Mail-Order Catalogues: From Where and for What?</en>
@@ -291,7 +291,7 @@ Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			<ratings critics="18" speed="12" />
 		</programme>
 
-		<programme id="ronny-programme-arbeitgebersuendenboecke-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-arbeitgebersuendenboecke-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Arbeitgeber - Sündenböcke oder Klassenfeind?</de>
 				<en>Employers - Scapegoats or Class Enemy?</en>
@@ -314,7 +314,7 @@ Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			<ratings critics="23" speed="15" />
 		</programme>
 
-		<programme id="ronny-programme-hausfrauliebenswert-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-hausfrauliebenswert-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die Hausfrau - liebenswert und putzig</de>
 				<en>The Housewife - Lovable and Polished</en>
@@ -339,7 +339,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			<ratings critics="20" speed="10" />
 		</programme>
 
-		<programme id="ronny-programme-buestenhalterinflammen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-buestenhalterinflammen-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Büstenhalter in Flammen</de>
 				<en>Brassieres In Flames</en>
@@ -361,7 +361,7 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			<ratings critics="24" speed="15" />
 		</programme>
 
-		<programme id="ronny-programme-westberlinwehrdienst-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-westberlinwehrdienst-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Westberlin - Nein zum Wehrdienst</de>
 				<en>West Berlin - No to Military Service</en>
@@ -384,18 +384,18 @@ Reportaż towarzyszy dwóm rodzinom podczas wakacji w Berlinie Zachodnim.</pl>
 			<ratings critics="25" speed="20" />
 		</programme>
 
-		<programme id="ronny-programme-reeperbahnfreudenhaeusertest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-reeperbahnfreudenhaeusertest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Reeperbahn - Freudenhäuser im Test</de>
 				<en>Reeperbahn - Whorehouses Under Test</en>
 				<pl>Reeperbahn - Burdele w trakcie testów</pl>
 			</title>
 			<description>
-				<de>Mit versteckter Kamera durchstreift Reporter [1|Full] verschiedene Etablissements in Deutschlands bekanntestem Rotlichtviertel.
+				<de>Mit versteckter Kamera durchstreift Reporter ${.self:"cast":1:"fullname"} verschiedene Etablissements in Deutschlands bekanntestem Rotlichtviertel.
 Testsieger: Das „Fummeldidumm“.</de>
-				<en>With a hidden camera, reporter [1|Full] roams through various establishments in Germany's best-known red-light district.
+				<en>With a hidden camera, reporter ${.self:"cast":1:"fullname"} roams through various establishments in Germany's best-known red-light district.
 Test winner: The "Little Twiddle".</en>
-				<pl>Z ukrytą kamerą reporter [1|Full] przemierza różne lokale w najbardziej znanej dzielnicy czerwonych latarni w Niemczech.
+				<pl>Z ukrytą kamerą reporter ${.self:"cast":1:"fullname"} przemierza różne lokale w najbardziej znanej dzielnicy czerwonych latarni w Niemczech.
 Zwycięzca testu: "Little Twiddle".</pl>
 			</description>
 			<staff>
@@ -410,7 +410,7 @@ Zwycięzca testu: "Little Twiddle".</pl>
 			<ratings critics="15" speed="30" />
 		</programme>
 
-		<programme id="ronny-programme-unterderhaube-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-unterderhaube-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Unter der Haube</de>
 				<en>Hitched Hairdressers</en>
@@ -436,7 +436,7 @@ Przygotuj chusteczki do nosa.</pl>
 			<ratings critics="10" speed="30" />
 		</programme>
 
-		<programme id="ronny-programme-konfettitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-konfettitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Konfetti: Betrug am Kunden?</de>
 				<en>Confetti: Defrauding the Customer?</en>
@@ -462,19 +462,19 @@ Oczekiwany skandal nie zmaterializował się.</pl>
 			<ratings critics="11" speed="18" />
 		</programme>
 
-		<programme id="ronny-programme-zumbleistift-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-zumbleistift-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Zum Bleistift?</de>
 				<en>(No) Fun Intended</en>
 				<pl>(Nie) zamierzona zabawa</pl>
 			</title>
 			<description>
-				<de>[1|Full] zeigt woher Wortzoten kommen und in welchen Jahren sie ihren Höhepunkt hatten.
-Illustre Gäste und Musik von [3|Nick].</de>
-				<en>[1|Full] reveals where bad puns come from and in which years they peaked.
-Illustrious guests and music by [3|Nick].</en>
-				<pl>[1|Full] zdradza, skąd wzięły się złe kalambury i w których latach osiągnęły swój szczyt.
-Znamienici goście i muzyka autorstwa [3|Nick].</pl>
+				<de>${.self:"cast":1:"fullname"} zeigt woher Wortzoten kommen und in welchen Jahren sie ihren Höhepunkt hatten.
+Illustre Gäste und Musik von ${.self:"cast":3:"nickname"}.</de>
+				<en>${.self:"cast":1:"fullname"} reveals where bad puns come from and in which years they peaked.
+Illustrious guests and music by ${.self:"cast":3:"nickname"}.</en>
+				<pl>${.self:"cast":1:"fullname"} zdradza, skąd wzięły się złe kalambury i w których latach osiągnęły swój szczyt.
+Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			</description>
 			<staff>
 				<member index="0" function="8">ronny-programmeperson-holgerpelz</member>
@@ -492,7 +492,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<ratings critics="18" speed="35" />
 		</programme>
 
-		<programme id="ronny-programme-betonfuerdenclan-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-betonfuerdenclan-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Beton für den Clan</de>
 				<en>Concrete for the Clans</en>
@@ -559,7 +559,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 				Folgenachricht und ihre Wahrscheinlichkeit im Falle einer
 				"oder"-Verknuepfung
 		-->
-		<news id="ronny-news-spitzel-01" type="0" thread_id="ronny-news-spitzel" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-spitzel-01" type="0" thread_guid="ronny-news-spitzel" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre</de>
 				<en>Snitch scandal</en>
@@ -578,7 +578,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="0" price="1.0" quality="48" />
 		</news>
-		<news id="ronny-news-spitzel-02a" type="2" thread_id="ronny-news-spitzel" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-spitzel-02a" type="2" thread_guid="ronny-news-spitzel" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre - Zensur herausgefiltert</de>
 				<en>Snitch scandal - censorship filtered out</en>
@@ -591,7 +591,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="0" price="1.0" quality="44" />
 		</news>
-		<news id="ronny-news-spitzel-02b" type="2" thread_id="ronny-news-spitzel" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-spitzel-02b" type="2" thread_guid="ronny-news-spitzel" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre - Experten uneinig</de>
 				<en>Snitch scandal - experts are divided</en>
@@ -615,7 +615,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			 |         /
 			 |_ Ep3 __/
 		-->
-		<news id="ronny-news-drucktaste-01" type="0" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-drucktaste-01" type="0" thread_guid="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>„DRUCK“-Taste: Abgaben geplant</de>
 				<en>"PRINT"-Key: levies planned</en>
@@ -634,7 +634,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="3" price="1" quality="38" />
 		</news>
-		<news id="ronny-news-drucktaste-02a" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-drucktaste-02a" type="2" thread_guid="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>„DRUCK“-Taste: Plombe spart Abgaben</de>
 				<en>"PRINT"-Key: Seals to spare levies</en>
@@ -651,7 +651,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="3" price="1.0" quality="35" />
 		</news>
-		<news id="ronny-news-drucktaste-02b" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-drucktaste-02b" type="2" thread_guid="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>„DRUCK“-Taste: Vereine demonstrieren</de>
 				<en>"PRINT"-Key: Associations protest</en>
@@ -667,7 +667,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="3" price="1.0" quality="29" />
 		</news>
-		<news id="ronny-news-drucktaste-02b1" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-drucktaste-02b1" type="2" thread_guid="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>„DRUCK“-Taste: Für private Haushalte kostenlos</de>
 				<en>"PRINT"-Key: Free for private households</en>
@@ -684,7 +684,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="3" price="1.0" quality="35" />
 		</news>
-		<news id="ronny-news-drucktaste-03" type="2" thread_id="ronny-news-drucktaste" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-drucktaste-03" type="2" thread_guid="ronny-news-drucktaste" creator="5578" created_by="Ronny">
 			<title>
 				<de>„DRUCK“-Taste: Keine Abgaben mehr</de>
 				<en>"PRINT"-Key: No more levies</en>
@@ -697,7 +697,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="3" price="1.0" quality="30" />
 		</news>
-		<news id="ronny-news-reizdarm-01" type="0" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-reizdarm-01" type="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>Bauchflusensieb löst Reizdarm aus</de>
 				<en>Belly lint filter triggers IBS</en>
@@ -710,7 +710,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="4" price="1.20" quality="18" />
 		</news>
-		<news id="ronny-news-usbratte-01" type="0" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-usbratte-01" type="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>USB-Ratte: Mausersatz für große Hände</de>
 				<en>USB-Rat: Mouse replacement for huge hands</en>
@@ -725,7 +725,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			<availability year_range_from="1996" year_range_to="-1" />
 		</news>
 
-		<news id="ronny-news-sandsturm-01" type="0" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-sandsturm-01" type="0" thread_guid="ronny-news-sandsturm" creator="5578" created_by="Ronny">
 			<title>
 				<de>Sandsturm am nördlichen Polarkreis</de>
 				<en>Sandstorm near the Arctic Circle</en>
@@ -742,7 +742,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="4" price="1.0" quality="48" />
 		</news>
-		<news id="ronny-news-sandsturm-02" type="2" thread_id="ronny-news-sandsturm" creator="5578" created_by="Ronny" comment="TODO: Actually add this film?">
+		<news guid="ronny-news-sandsturm-02" type="2" thread_guid="ronny-news-sandsturm" creator="5578" created_by="Ronny" comment="TODO: Actually add this film?">
 			<title>
 				<de>Sandsturm war nicht echt</de>
 				<en>Sandstorm was not real</en>
@@ -766,7 +766,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 		</news>
 
 
-		<news id="ronny-news-katschminski-01" type="0" thread_id="ronny-news-katschminski" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-katschminski-01" type="0" thread_guid="ronny-news-katschminski" creator="5578" created_by="Ronny">
 			<title>
 				<de>Leser lesen wieder, dank Katschminski</de>
 				<en>Readers read again. Thanks to Katschinski</en>
@@ -783,7 +783,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="5" price="1.0" quality="38" />
 		</news>
-		<news id="ronny-news-katschminski-02" type="2" thread_id="ronny-news-katschminski" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-katschminski-02" type="2" thread_guid="ronny-news-katschminski" creator="5578" created_by="Ronny">
 			<title>
 				<de>Ansturm auf neues Buch</de>
 				<en>Rush for new book</en>
@@ -800,7 +800,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="5" price="1.0" quality="34" />
 		</news>
-		<news id="ronny-news-katschminski-03" type="2" thread_id="ronny-news-katschminski" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-katschminski-03" type="2" thread_guid="ronny-news-katschminski" creator="5578" created_by="Ronny">
 			<title>
 				<de>Katschminski veröffentlicht neues Buch</de>
 				<en>Katschinski releases new book</en>
@@ -813,7 +813,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="5" price="1.0" quality="32" />
 		</news>
-		<news id="ronny-news-pipelaho-01" type="0" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-pipelaho-01" type="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>Pipé-Laho Nummer 1</de>
 				<en>Pipé-Laho number 1</en>
@@ -826,7 +826,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="1" price="1.0" quality="32" />
 		</news>
-		<news id="ronny-news-karldingensbummens-01" type="0" thread_id="ronny-news-karldingensbummens" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-karldingensbummens-01" type="0" thread_guid="ronny-news-karldingensbummens" creator="5578" created_by="Ronny">
 			<title>
 				<de>Plastik „Karl Dingensbummens“ gestohlen</de>
 				<en>Sculpture "Joe Thingamabob" stolen</en>
@@ -843,7 +843,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="5" price="1.0" quality="22" />
 		</news>
-		<news id="ronny-news-karldingensbummens-02" type="2" thread_id="ronny-news-karldingensbummens" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-karldingensbummens-02" type="2" thread_guid="ronny-news-karldingensbummens" creator="5578" created_by="Ronny">
 			<title>
 				<de>„Karl Dingensbummens“ wieder da</de>
 				<en>"Joe Thingamabob" back again</en>
@@ -858,7 +858,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 		</news>
 
 
-		<news id="ronny-news-frauenbart-01" type="0" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-frauenbart-01" type="0" thread_guid="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
 				<de>Ausstellung zum Thema Frauenbärte</de>
 				<en>Exhibition on Women's Beards</en>
@@ -879,11 +879,11 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</effects>
 			<data genre="5" price="1.0" quality="15" />
 		</news>
-		<news id="ronny-news-frauenbart-02a" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-frauenbart-02a" type="2" thread_guid="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
-				<de>Ausstellung „Frauenbärte %WORLDTIME:YEAR%“ lockt Betrüger</de>
-				<en>Exhibition "Women's Beards %WORLDTIME:YEAR%" lures scammers</en>
-				<pl>Wystawa „Kobiece brody %WORLDTIME:YEAR%” wabi oszustów</pl>
+				<de>Ausstellung „Frauenbärte ${.worldtime:"year"}“ lockt Betrüger</de>
+				<en>Exhibition "Women's Beards ${.worldtime:"year"}" lures scammers</en>
+				<pl>Wystawa „Kobiece brody ${.worldtime:"year"}” wabi oszustów</pl>
 			</title>
 			<description>
 				<de>Heute versuchten zwei mit Bärten getarnte Männer sich kostenlosen Zugang zur Ausstellung „Frauenbärte“ zu erschleichen. Beim Handgemenge wurde einer Wachfrau der Schnurrbart gezupft.</de>
@@ -892,7 +892,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="5" price="1.0" quality="17" />
 		</news>
-		<news id="ronny-news-frauenbart-02b" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-frauenbart-02b" type="2" thread_guid="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
 				<de>Frauenbärte: Frauen schwören auf Koteletten</de>
 				<en>Women's beards: women swear by sideburns</en>
@@ -905,7 +905,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="5" price="1.0" quality="18" />
 		</news>
-		<news id="ronny-news-frauenbart-02c" type="2" thread_id="ronny-news-frauenbart" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-frauenbart-02c" type="2" thread_guid="ronny-news-frauenbart" creator="5578" created_by="Ronny">
 			<title>
 				<de>Frauenbärte: Aus und Vorbei</de>
 				<en>Women's Beards: Over and done with</en>
@@ -918,7 +918,7 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="5" price="1.1" quality="21" />
 		</news>
-		<news id="ronny-news-tarotimwandel-01" type="0" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-tarotimwandel-01" type="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>„Tarot im Wandel der Zeit“ auf Tour</de>
 				<en>"Tarot in the course of time" on tour</en>
@@ -931,22 +931,22 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 			</description>
 			<data genre="5" price="1.2" quality="23" />
 		</news>
-		<news id="ronny-news-steinzeit-01" type="0" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-steinzeit-01" type="0" creator="5578" created_by="Ronny">
 			<title>
-				<de>„Das war die Steinzeit“ gastiert in %CITYNAME%</de>
-				<en>"That was the Stone Age" exhibits in %CITYNAME%</en>
-				<pl>Wystawa „To była epoka kamienia łupanego” w %CITYNAME%</pl>
+				<de>„Das war die Steinzeit“ gastiert in ${CITYNAME}</de>
+				<en>"That was the Stone Age" exhibits in ${CITYNAME}</en>
+				<pl>Wystawa „To była epoka kamienia łupanego” w ${CITYNAME}</pl>
 			</title>
 			<description>
-				<de>Die erfolgreiche Wanderausstellung schlägt ihre Zelte in %CITYNAME% auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen, um Tickets zu erjagen.</de>
-				<en>The successful traveling exhibition sets up its tents in %CITYNAME%. Dozens of residents dropped all their cudgels in order to catch some tickets.</en>
-				<pl>Odnosząca sukcesy wystawa objazdowa rozstawia swoje namioty w %CITYNAME%. Dziesiątki mieszkańców porzuciło wszystkie swoje pałki, aby zdobyć bilety.</pl>
+				<de>Die erfolgreiche Wanderausstellung schlägt ihre Zelte in ${CITYNAME} auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen, um Tickets zu erjagen.</de>
+				<en>The successful traveling exhibition sets up its tents in ${CITYNAME}. Dozens of residents dropped all their cudgels in order to catch some tickets.</en>
+				<pl>Odnosząca sukcesy wystawa objazdowa rozstawia swoje namioty w ${CITYNAME}. Dziesiątki mieszkańców porzuciło wszystkie swoje pałki, aby zdobyć bilety.</pl>
 			</description>
-			<!-- usage of %STATIONMAP:RANDOMCITY% in the text directly, will lead to a different random city
+			<!-- usage of ${.stationmap:"randomcity"} in the text directly, will lead to a different random city
 				 in title than in the description - so we use variables as this caches the output of the first city -->
 			<variables>
 				<cityname>
-					<de>%STATIONMAP:RANDOMCITY%</de>
+					<de>${.stationmap:"randomcity"}</de>
 				</cityname>
 			</variables>
 			<data genre="5" price="0.9" quality="28" />
@@ -957,9 +957,9 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 		<!-- product="3" => "Show" -->
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-musiksterneamabend">
 			<title>
-				<de>%WHAT% %WHEN%</de>
-				<en>%WHAT% %WHEN%</en>
-				<pl>%WHAT% %WHEN%</pl>
+				<de>${WHAT} ${WHEN}</de>
+				<en>${WHAT} ${WHEN}</en>
+				<pl>${WHAT} ${WHEN}</pl>
 			</title>
 			<description>
 				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
@@ -1002,9 +1002,9 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
 			<title>
-				<de>%SHOWNAME%</de>
-				<en>%SHOWNAME%</en>
-				<pl>%SHOWNAME%</pl>
+				<de>${SHOWNAME}</de>
+				<en>${SHOWNAME}</en>
+				<pl>${SHOWNAME}</pl>
 			</title>
 			<description>
 				<de>Aufgewacht das Bettchen kracht. Lockere Morgenunterhaltung für alle - vom Frühaufsteher bis zum arbeitslosen Langschläfer.</de>
@@ -1014,9 +1014,9 @@ Znamienici goście i muzyka autorstwa [3|Nick].</pl>
 
 			<variables>
 				<showname>
-					<de>Goldene Morgenstunden|Guten Morgen %STATIONMAP:RANDOMCITY%|Die Frühaufsteher|Start in den Tag</de>
-					<en>The Early Birds|Good Morning %STATIONMAP:RANDOMCITY%|The Early Risers|Start of the Day</en>
-					<pl>Pobudka z TV|Dzień dobry %STATIONMAP:RANDOMCITY%|Poranne TV|Telewizja śniadaniowa</pl>
+					<de>Goldene Morgenstunden|Guten Morgen ${.stationmap:"randomcity"}|Die Frühaufsteher|Start in den Tag</de>
+					<en>The Early Birds|Good Morning ${.stationmap:"randomcity"}|The Early Risers|Start of the Day</en>
+					<pl>Pobudka z TV|Dzień dobry ${.stationmap:"randomcity"}|Poranne TV|Telewizja śniadaniowa</pl>
 				</showname>
 			</variables>
 

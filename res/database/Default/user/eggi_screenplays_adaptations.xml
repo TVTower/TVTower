@@ -13,8 +13,8 @@
 				<en>Wellness</en>
 			</title_original>
 			<description>
-				<de>%ROLENAME1% und %ROLENAME2%, ungleiches Paar in der Kunstszene Chicagos, kämpfen gegen Eheprobleme. Zwischen Achtsamkeitsseminaren und Immobilienträumen müssen sie ihre Vergangenheit bewältigen, um ihre Liebe zu retten.</de>
-				<en>%ROLENAME1% and %ROLENAME2%, a mismatched couple in Chicago's art scene, are battling marital problems. Between mindfulness seminars and real estate dreams, they have to come to terms with their past in order to save their love.</en>
+				<de>${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"}, ungleiches Paar in der Kunstszene Chicagos, kämpfen gegen Eheprobleme. Zwischen Achtsamkeitsseminaren und Immobilienträumen müssen sie ihre Vergangenheit bewältigen, um ihre Liebe zu retten.</de>
+				<en>${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"}, a mismatched couple in Chicago's art scene, are battling marital problems. Between mindfulness seminars and real estate dreams, they have to come to terms with their past in order to save their love.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -41,16 +41,16 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="25b61ccf-34c5-4c76-9cc0-ecdab1a10504" creator="discord/eggi72" comment="https://de.wikipedia.org/wiki/Tobias_Goldfarb | https://www.goodreads.com/book/show/205484457-hilda-hasenherz-das-abenteuer-im-fuchswald | english original role names made-up, TODO: watch for actual English version">
 			<title>
-				<de>%ROLE1% - Abenteuer Fuchshöhle</de>
-				<en>%ROLE1% - Fox Cave Adventures</en>
+				<de>${.self:"role":1:"fullname"} - Abenteuer Fuchshöhle</de>
+				<en>${.self:"role":1:"fullname"} - Fox Cave Adventures</en>
 			</title>
 			<title_original>
 				<de>Hilda Hasenherz - Das Abenteuer im Fuchswald</de>
 				<en>Becki Bunnyheart - The Adventure in the Fox Forest</en>
 			</title_original>
 			<description>
-				<de>Mutiges Hasenmädchen %ROLENAME1% lebt im Möhrenfeld und entdeckt, dass der tyrannische %ROLE2% die Möhren für sich hortet. Entschlossen, ihn zu stoppen, begibt sie sich auf eine gefährliche Reise, um den legendären %ROLE5% zu finden.</de>
-				<en>Brave bunny girl %ROLENAME1% lives in the carrot field and discovers that the tyrannical %ROLE2% is hoarding the carrots for himself. Determined to stop him, she sets off on a dangerous journey to find the legendary %ROLE5%.</en>
+				<de>Mutiges Hasenmädchen ${.self:"role":1:"firstname"} lebt im Möhrenfeld und entdeckt, dass der tyrannische ${.self:"role":2:"fullname"} die Möhren für sich hortet. Entschlossen, ihn zu stoppen, begibt sie sich auf eine gefährliche Reise, um den legendären ${.self:"role":5:"fullname"} zu finden.</de>
+				<en>Brave bunny girl ${.self:"role":1:"firstname"} lives in the carrot field and discovers that the tyrannical ${.self:"role":2:"fullname"} is hoarding the carrots for himself. Determined to stop him, she sets off on a dangerous journey to find the legendary ${.self:"role":5:"fullname"}.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

@@ -581,8 +581,10 @@ Type TPersonBase Extends TGameObject
 	Field lastName:String = ""
 	Field firstName:String = ""
 	Field nickName:String = ""
-	Field countryCode:String = ""
+	'title - like "Dr." or "Prof."
+	Field title:string 
 	Field gender:Int = 0
+	Field countryCode:String = ""
 	'a text code representing the config for the figure generator
 	Field faceCode:String
 	'bitmask containing "castable", "active", "celebrity", ..
@@ -630,28 +632,45 @@ Type TPersonBase Extends TGameObject
 	End Method
 
 
+	Method GetFirstName:String()
+		Return firstName
+	End Method
+
+
+	Method GetLastName:String(includeTitle:Int = False)
+		If includeTitle and title
+			Return title + " " + lastName
+		Else
+			Return lastName
+		EndIf
+	End Method
+
+
 	Method GetNickName:String()
 		If nickName = "" Then Return firstName
 		Return nickName
 	End Method
 
 
-	Method GetFirstName:String()
-		Return firstName
-	End Method
-
-
-	Method GetLastName:String()
-		Return lastName
-	End Method
-
-
-	Method GetFullName:String()
-		If Self.lastName<>""
-			If Self.firstName <> "" Then Return Self.firstName + " " + Self.lastName
-			Return Self.lastName
+	Method GetFullName:String(includeTitle:Int = True)
+		Local sb:TStringBuilder = New TStringBuilder()
+		If includeTitle and title 
+			sb.Append(title)
 		EndIf
-		Return Self.firstName
+		If firstName
+			If sb.Length() > 0 Then sb.Append(" ")
+			sb.Append(firstName)
+		EndIf
+		If lastName
+			If sb.Length() > 0 then sb.Append(" ")
+			sb.Append(lastName)
+		EndIf
+		Return sb.ToString()
+	End Method
+
+
+	Method GetTitle:String()
+		Return title
 	End Method
 
 
@@ -1935,6 +1954,10 @@ Type TPersonProductionJob
 
 	'only valid for actors
 	Field roleID:Int = 0
+	'marker if a random role should be created
+	'1=job from parent, only reset role on parent reset
+	'2=job overridden in child, reset role also on child reset
+	Field randomRole:Int = 0
 	
 	
 	Method Init:TPersonProductionJob(personID:Int, job:Int, gender:Int=0, country:String="", roleID:Int=0)

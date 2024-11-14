@@ -6,7 +6,7 @@
 		<!-- real historical news items moved to database_news.xml -->
 
 		<!-- "Superman und Supergirl" -->
-		<news id="cujo-news-superkerl-01" type="0" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-01" type="0" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superweib verliebt sich in Superkerl</de>
 				<en>Superwoman falls in love with Superguy</en>
@@ -24,7 +24,7 @@
 			<data genre="1" price="1.0" quality="10" flags="2"/>
 			<availability year_range_from="1985" year_range_to="1995" />
 		</news>
-		<news id="cujo-news-superkerl-02" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-02" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superweib und Superkerl verloben sich</de>
 				<en>Superwoman and Superguy get engaged</en>
@@ -41,7 +41,7 @@
 			</effects>
 			<data genre="1" price="1.0" quality="30" /> <!-- TODO: for whole thread: flags="2" like triggering entry; or variations with other characters (Wonder Woman etc)? -->
 		</news>
-		<news id="cujo-news-superkerl-03" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-03" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superkerl und Superweib haben geheiratet</de>
 				<en>Superguy and Superwoman got married</en>
@@ -58,7 +58,7 @@
 			</effects>
 			<data genre="1" price="1.0" quality="50" />
 		</news>
-		<news id="cujo-news-superkerl-04" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-04" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superweib ist schwanger</de>
 				<en>Superwoman is pregnant</en>
@@ -75,7 +75,7 @@
 			</effects>
 			<data genre="1" price="1.0" quality="60" />
 		</news>
-		<news id="cujo-news-superkerl-05" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-05" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superweib bringt einen Jungen zur Welt</de>
 				<en>Superwoman gives birth to a boy</en>
@@ -95,7 +95,7 @@
 			</effects>
 			<data genre="1" price="1.0" quality="40" />
 		</news>
-		<news id="cujo-news-superkerl-06a" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-06a" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Trennungsgerüchte um Superkerl und Superweib</de>
 				<en>Superguy and Superwoman separation rumors</en>
@@ -112,7 +112,7 @@
 			</effects>
 			<data genre="1" price="1.0" quality="70" />
 		</news>
-		<news id="cujo-news-superkerl-06b" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-06b" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Trennungsgerüchte um Superkerl und Superweib</de>
 				<en>Superguy and Superwoman separation rumors</en>
@@ -129,7 +129,7 @@
 			</effects>
 			<data genre="1" price="1.0" quality="80" />
 		</news>
-		<news id="cujo-news-superkerl-07" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-07" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superweib und Superkerl versöhnen sich wieder</de>
 				<en>Superwoman and Superguy reconcile again</en>
@@ -149,7 +149,7 @@
 			</effects>
 			<data genre="1" price="1.0" quality="40" />
 		</news>
-		<news id="cujo-news-superkerl-08a" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-08a" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superkerl und Superweib lassen sich scheiden</de>
 				<en>Superguy and Superwoman get a divorce</en>
@@ -162,7 +162,7 @@
 			</description>
 			<data genre="1" price="1.0" quality="70" />
 		</news>
-		<news id="cujo-news-superkerl-08b" type="2" thread_id="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-08b" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
 				<de>Superkerl und Superweib lassen sich scheiden</de>
 				<en>Superguy and Superwoman get a divorce</en>
@@ -177,7 +177,7 @@
 		</news>
 		<!-- "Ältester Mensch der Welt" -->
 		<!--TODO variables-->
-		<news id="cujo-news-aeltestermensch-01" type="0" thread_id="cujo-news-aeltestermensch" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-aeltestermensch-01" type="0" thread_guid="cujo-news-aeltestermensch" creator="8827" created_by="Cujo">
 			<title>
 				<de>Ältester Mensch der Welt gestorben</de>
 				<en>Oldest person in the world died</en>
@@ -191,7 +191,7 @@
 			<data genre="4" price="0.9" quality="30" flags="2"/>
 		</news>
 		<!-- "Bill Gates: Internet ist nur ein Hype" -->
-		<news id="cujo-news-internet-trend-01" type="0" thread_id="cujo-news-internet-trend" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-internet-trend-01" type="0" thread_guid="cujo-news-internet-trend" creator="8827" created_by="Cujo">
 			<title>
 				<de>Willy Bates: Internet ist nur ein Trend</de>
 				<en>Willy Bates: Internet is just a trend</en>
@@ -207,7 +207,7 @@
 		</news>
 		<!-- "Wildecker Herzbuben" -->
 		<!--TODO variables-->
-		<news id="cujo-news-wildberger-karobuben-01" type="0" thread_id="cujo-news-wildberger-karobuben" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-wildberger-karobuben-01" type="0" thread_guid="cujo-news-wildberger-karobuben" creator="8827" created_by="Cujo">
 			<title>
 				<de>Wildberger Karobuben: „Wir sind jetzt schlank“</de>
 				<en>Wildberger Karobuben: "We are now slim"</en>
@@ -223,7 +223,7 @@
 		</news>
 		<!-- "Stiftung Warentest" -->
 		<!--TODO variables-->
-		<news id="cujo-news-stiftung-guetertest-01" type="0" thread_id="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-stiftung-guetertest-01" type="0" thread_guid="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Kugelschreiber</de>
 				<en>Consumers' Association tests ballpoint pens</en>
@@ -237,7 +237,7 @@
 			<data genre="4" price="0.81" quality="59" />
 		</news>
 		<!--TODO variables-->
-		<news id="cujo-news-stiftung-guetertest-02" type="0" thread_id="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-stiftung-guetertest-02" type="0" thread_guid="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Vibratoren</de>
 				<en>Consumers' Association tests vibrators</en>
@@ -251,7 +251,7 @@
 			<data genre="4" price="0.82" quality="58" />
 		</news>
 		<!-- "Gamezworld AG" -->
-		<news id="cujo-news-gamezworld-01" type="0" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-01" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
 			<title>
 				<de>TV Tower-Entwickler arbeiten im Home-Office</de>
 				<en>TV Tower developers work in a home office</en>
@@ -265,7 +265,7 @@
 			<data genre="0" price="0.5" quality="20" />
 			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news id="cujo-news-gamezworld-02" type="0" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-02" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
 			<title>
 				<de>News werden verschlüsselt</de>
 				<en>News are encrypted</en>
@@ -279,7 +279,7 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news id="cujo-news-gamezworld-03" type="0" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-03" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
 			<title>
 				<de>Gamezworld AG schafft Schreibmaschinen ab</de>
 				<en>Gamezworld AG abolishes typewriters</en>
@@ -293,7 +293,7 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2000" year_range_to="" />
 		</news>
-		<news id="cujo-news-gamezworld-04" type="2" thread_id="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-04" type="2" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
 			<title>
 				<de>Schokoriegel sollen verboten werden</de>
 				<en>Candy bars to be banned</en>
@@ -309,7 +309,7 @@
 	</allnews>
 	<allads>
 		<!-- Toyota - Nichts ist unmöglich -->
-		<ad id="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
+		<ad guid="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
 			<title>
 				<de>Yotota</de>
 				<pl>Totoya</pl>
@@ -323,7 +323,7 @@
 			<data quality="20" repetitions="5" duration="3" profit="350" penalty="475" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Duplo -->
-		<ad id="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
+		<ad guid="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
 			<title>
 				<de>Pludo</de>
 				<pl>Pludo</pl>
@@ -337,7 +337,7 @@
 			<data quality="12" repetitions="4" duration="3" profit="1000" penalty="1550" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Schwartau -->
-		<ad id="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
+		<ad guid="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
 			<title>
 				<de>Schwalltau</de>
 				<pl>Sweettau</pl>

@@ -13,7 +13,7 @@
 	-->
 
 	<allads>
-		<ad id="60bf1e4b-0646-4ab5-8cbb-8a8aa6ff174b" creator="9551" comment="fictional | similar 'brand' but different pun in German vs English">
+		<ad guid="60bf1e4b-0646-4ab5-8cbb-8a8aa6ff174b" creator="9551" comment="fictional | similar 'brand' but different pun in German vs English">
 			<title>
 				<de>Scham-Po</de>
 				<en>RealPoo</en>
@@ -25,7 +25,7 @@
 			<conditions min_audience="4.69" min_image="0" target_group="0" />
 			<data infomercial="1" quality="10" repetitions="2" duration="2" profit="510" penalty="890" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="77f0d337-30a4-45de-b26d-fa0093fe89e7" creator="9551" comment="https://de.wikipedia.org/wiki/Demeter_(Deutschland)">
+		<ad guid="77f0d337-30a4-45de-b26d-fa0093fe89e7" creator="9551" comment="https://de.wikipedia.org/wiki/Demeter_(Deutschland)">
 			<title>
 				<de>Delmetro</de>
 			</title>
@@ -36,7 +36,7 @@
 			<conditions min_audience="1.3015" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="1060" penalty="1571" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="10c9b55c-0b6d-4c93-af8a-0a0bd326df78" creator="9551" comment="https://en.wikipedia.org/wiki/Siemens | https://en.wikipedia.org/wiki/He-Man | https://duckduckgo.com/?q=he-man+i+have+the+power | alternative slogan part: Without us, everything will grind to a halt. The engine room of the republic.">
+		<ad guid="10c9b55c-0b6d-4c93-af8a-0a0bd326df78" creator="9551" comment="https://en.wikipedia.org/wiki/Siemens | https://en.wikipedia.org/wiki/He-Man | https://duckduckgo.com/?q=he-man+i+have+the+power | alternative slogan part: Without us, everything will grind to a halt. The engine room of the republic.">
 			<title>
 				<de>Hiemens</de>
 			</title>
@@ -51,7 +51,7 @@ Now with an extra-high public expenditure quota.</en>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="2" duration="2" profit="420" penalty="500" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="b24e8304-f106-4577-a13a-bdb60c422cbe" creator="9551" comment="-1996 | https://en.wikipedia.org/wiki/Anonymous_(hacker_group) | pre-internet era ironically fictional">
+		<ad guid="b24e8304-f106-4577-a13a-bdb60c422cbe" creator="9551" comment="-1996 | https://en.wikipedia.org/wiki/Anonymous_(hacker_group) | pre-internet era ironically fictional">
 			<title>
 				<de>Die Anonymen Anonymiker</de>
 				<en>Anonymics Anonymous</en>
@@ -65,7 +65,7 @@ Now with an extra-high public expenditure quota.</en>
 			<!-- Anonymous spots should be at night time, only 1 repetition -->
 			<availability year_range_to="1996" />
 		</ad>
-		<ad id="a8831f80-a696-44cd-8a2b-c6611c13f4c5" creator="9551" comment="1997-2007 | https://en.wikipedia.org/wiki/Anonymous_(hacker_group)">
+		<ad guid="a8831f80-a696-44cd-8a2b-c6611c13f4c5" creator="9551" comment="1997-2007 | https://en.wikipedia.org/wiki/Anonymous_(hacker_group)">
 			<title>
 				<de>Die anonymen Anonymiker</de>
 				<en>Anonymics Anonymous</en>
@@ -80,7 +80,7 @@ Expect us.</en>
 			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="520" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2007" />
 		</ad>
-		<ad id="1a798b23-d33f-4325-a000-0a08f832ea13" creator="9551" comment="2008- | https://en.wikipedia.org/wiki/Anonymous_(hacker_group)">
+		<ad guid="1a798b23-d33f-4325-a000-0a08f832ea13" creator="9551" comment="2008- | https://en.wikipedia.org/wiki/Anonymous_(hacker_group)">
 			<title>
 				<de>Anonymous</de>
 				<en>Anonymous</en>
@@ -95,7 +95,7 @@ We do not forgive. We do not forget. Expect us.</en>
 			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="525" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
 			<availability year_range_from="2008" year_range_to="-1" />
 		</ad>
-		<ad id="91595531-40f0-40bc-98df-90f7481b0bc5" creator="9551" comment="https://en.wikipedia.org/wiki/Zombo.com | Available before the internet age because the unattainable is unknown at Zombocom. :) | Infomercial high quality for comedic reasons">
+		<ad guid="91595531-40f0-40bc-98df-90f7481b0bc5" creator="9551" comment="https://en.wikipedia.org/wiki/Zombo.com | Available before the internet age because the unattainable is unknown at Zombocom. :) | Infomercial high quality for comedic reasons">
 			<title>
 				<de>Zombo.com</de>
 			</title>
@@ -110,7 +110,7 @@ Anything is possible at Zombocom.</en>
 			<conditions min_audience="2.08" min_image="0" target_group="0" />
 			<data infomercial="1" quality="52" repetitions="1" duration="3" profit="740" penalty="1000" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="3153545d-d231-4f4e-9a75-647f50c4cef9" creator="9551" comment="1975-1982 | https://de.wikipedia.org/wiki/Betamax">
+		<ad guid="3153545d-d231-4f4e-9a75-647f50c4cef9" creator="9551" comment="1975-1982 | https://de.wikipedia.org/wiki/Betamax">
 			<title>
 				<de>Gammamax</de>
 			</title>
@@ -122,7 +122,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
 			<availability year_range_from="1975" year_range_to="1982" />
 		</ad>
-		<ad id="bef518f9-38fc-404d-a767-28fe4e9f65dc" creator="9551" comment="1983-1987 | https://en.wikipedia.org/wiki/MSX">
+		<ad guid="bef518f9-38fc-404d-a767-28fe4e9f65dc" creator="9551" comment="1983-1987 | https://en.wikipedia.org/wiki/MSX">
 			<title>
 				<de>Sunny MXS</de>
 			</title>
@@ -134,7 +134,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
 			<availability year_range_from="1983" year_range_to="1987" />
 		</ad>
-		<ad id="88a600ed-b687-4ee7-a59c-2b5d042903e4" creator="9551" comment="1988-1992 | https://en.wikipedia.org/wiki/Pioneer_Corporation | https://en.wikipedia.org/wiki/LaserDisc | alt spoof names: Precideer, Presideer | actually discontinued only in 2001 (films) / 2009 | didn't find a Sony product fitting into this time period and to the 'discontinued tech' theme of this 'thread'">
+		<ad guid="88a600ed-b687-4ee7-a59c-2b5d042903e4" creator="9551" comment="1988-1992 | https://en.wikipedia.org/wiki/Pioneer_Corporation | https://en.wikipedia.org/wiki/LaserDisc | alt spoof names: Precideer, Presideer | actually discontinued only in 2001 (films) / 2009 | didn't find a Sony product fitting into this time period and to the 'discontinued tech' theme of this 'thread'">
 			<title>
 				<de>Pyrodeer LazyDisk</de>
 			</title>
@@ -146,7 +146,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
 			<availability year_range_from="1988" year_range_to="1992" />
 		</ad>
-		<ad id="6b381d2a-b4bc-44fb-9c07-3047209bfa57" creator="9551" comment="1993-2002 | https://en.wikipedia.org/wiki/MiniDisc | slogan by ChatGPT | actually discontinued only in 2013 | could be more satirical">
+		<ad guid="6b381d2a-b4bc-44fb-9c07-3047209bfa57" creator="9551" comment="1993-2002 | https://en.wikipedia.org/wiki/MiniDisc | slogan by ChatGPT | actually discontinued only in 2013 | could be more satirical">
 			<title>
 				<de>Sunny MikroDisk</de>
 			</title>
@@ -158,7 +158,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
 			<availability year_range_from="1993" year_range_to="2002" />
 		</ad>
-		<ad id="4eade518-8772-4697-9508-da43af3782c2" creator="9551" comment="2003-2013 | https://en.wikipedia.org/wiki/Vaio">
+		<ad guid="4eade518-8772-4697-9508-da43af3782c2" creator="9551" comment="2003-2013 | https://en.wikipedia.org/wiki/Vaio">
 			<title>
 				<de>Sunny VIAO</de>
 			</title>
@@ -170,7 +170,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
 			<availability year_range_from="2003" year_range_to="2013" />
 		</ad>
-		<ad id="07c6b7de-06ce-4d62-b237-49dcfa0060c6" creator="9551" comment="2014- | https://en.wikipedia.org/wiki/Vaio | since 2014 not anymore a brand of Sony">
+		<ad guid="07c6b7de-06ce-4d62-b237-49dcfa0060c6" creator="9551" comment="2014- | https://en.wikipedia.org/wiki/Vaio | since 2014 not anymore a brand of Sony">
 			<title>
 				<de>VIAO</de>
 			</title>
@@ -182,7 +182,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
 			<availability year_range_from="2014" />
 		</ad>
-		<ad id="3c9d81f5-15c7-4cf3-93a4-9d0ddd08b0a6" creator="9551" comment="variation of Mad TV 'Andrae Design' | TODO: Andrae was the name of the Mad TV graphics artist, so every TVTower graphics contributor should receive a version of this ad">
+		<ad guid="3c9d81f5-15c7-4cf3-93a4-9d0ddd08b0a6" creator="9551" comment="variation of Mad TV 'Andrae Design' | TODO: Andrae was the name of the Mad TV graphics artist, so every TVTower graphics contributor should receive a version of this ad">
 			<title>
 				<de>Ronny Design</de>
 			</title>
@@ -193,7 +193,7 @@ Anything is possible at Zombocom.</en>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="21" repetitions="4" duration="2" profit="2375" penalty="3500" infomercial_profit="125" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="8ecbab11-0df5-4695-94f7-e37d7b30ef5d" creator="9551" comment="https://en.wikipedia.org/wiki/Boston_Dynamics | actually founded in 1992 but being liberal and ironically fictional here about killer robots in previous times, so no pre-1992 versions for now">
+		<ad guid="8ecbab11-0df5-4695-94f7-e37d7b30ef5d" creator="9551" comment="https://en.wikipedia.org/wiki/Boston_Dynamics | actually founded in 1992 but being liberal and ironically fictional here about killer robots in previous times, so no pre-1992 versions for now">
 			<title>
 				<de>Bolton Dynamos</de>
 			</title>
@@ -204,7 +204,7 @@ Anything is possible at Zombocom.</en>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="34" repetitions="4" duration="5" profit="1000" penalty="1700" infomercial_profit="103" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="34f344db-04c1-4858-b1fd-6cca76ff068e" creator="9551" comment="-2010 | https://de.wikipedia.org/wiki/Drachenlord | pre-YouTube version ironically fictional | 'Haider' means 'Hater', not the politician | TODO: english / international versions require something different">
+		<ad guid="34f344db-04c1-4858-b1fd-6cca76ff068e" creator="9551" comment="-2010 | https://de.wikipedia.org/wiki/Drachenlord | pre-YouTube version ironically fictional | 'Haider' means 'Hater', not the politician | TODO: english / international versions require something different">
 			<title>
 				<de>Graf Drache</de>
 				<en>Count Dragon</en>
@@ -217,7 +217,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="12" repetitions="2" duration="4" profit="1600" penalty="1900" infomercial_profit="142" fix_infomercial_profit="1" />
 			<availability year_range_to="2010" />
 		</ad>
-		<ad id="ee6dcfd2-4f76-4116-9faf-841246a75fb9" creator="9551" comment="2011- | https://de.wikipedia.org/wiki/Drachenlord">
+		<ad guid="ee6dcfd2-4f76-4116-9faf-841246a75fb9" creator="9551" comment="2011- | https://de.wikipedia.org/wiki/Drachenlord">
 			<title>
 				<de>Graf Drache</de>
 				<en>Count Dragon</en>
@@ -230,7 +230,7 @@ Anything is possible at Zombocom.</en>
 			<data quality="12" repetitions="2" duration="4" profit="1600" penalty="1900" infomercial_profit="142" fix_infomercial_profit="1" />
 			<availability year_range_from="2011" />
 		</ad>
-		<ad id="ee9663fe-ea29-4ec1-910f-ff54133991e2" creator="9551" comment="Initech - https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/That-Would-Be-Great | description probably too long to fit in, but that's fine for wall-of-text-effect | TODO: German version translated, should be quoted from the movie | TODO: Would like to break 4th wall in description: 'Hello %PLAYERNAME%'">
+		<ad guid="ee9663fe-ea29-4ec1-910f-ff54133991e2" creator="9551" comment="Initech - https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/That-Would-Be-Great | description probably too long to fit in, but that's fine for wall-of-text-effect | TODO: German version translated, should be quoted from the movie | TODO: Would like to break 4th wall in description: 'Hello ${PLAYERNAME}'">
 			<title>
 				<de>InitTec GmbH</de>
 				<en>InitTec, LLC</en>
@@ -242,7 +242,7 @@ Anything is possible at Zombocom.</en>
 			<conditions min_audience="28.65" min_image="52" target_group="8" />
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="fc5c71a5-9dbe-4dc7-a5bf-3c45de0f62de" creator="9551" comment="https://en.wikipedia.org/wiki/Swingline | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/72453974/Office-Space-Stapler">
+		<ad guid="fc5c71a5-9dbe-4dc7-a5bf-3c45de0f62de" creator="9551" comment="https://en.wikipedia.org/wiki/Swingline | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/72453974/Office-Space-Stapler">
 			<title>
 				<de>Slipline Rio Red</de>
 			</title>
@@ -257,7 +257,7 @@ Only from Slipline.</en>
 			<conditions min_audience="2.6041" min_image="7" target_group="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="695" penalty="1150" infomercial_profit="72" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="e6e33ac8-6c37-4920-8ad4-dbbd0b3b5d1c" creator="9551" comment="https://en.wikipedia.org/wiki/HP_LaserJet | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/31270921/PC-load-letter">
+		<ad guid="e6e33ac8-6c37-4920-8ad4-dbbd0b3b5d1c" creator="9551" comment="https://en.wikipedia.org/wiki/HP_LaserJet | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/31270921/PC-load-letter">
 			<title>
 				<de>HB LazerJam</de>
 			</title>
@@ -268,7 +268,7 @@ Only from Slipline.</en>
 			<conditions min_audience="18.76" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="210" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="55f86f26-6484-4bf4-bd27-6a004c8c1343" creator="9551" comment="-1990 | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/eYb22BLBqGw | also using the brand name progression through time like in the movie, except for the original name and the last finally obviously vulgar version">
+		<ad guid="55f86f26-6484-4bf4-bd27-6a004c8c1343" creator="9551" comment="-1990 | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/eYb22BLBqGw | also using the brand name progression through time like in the movie, except for the original name and the last finally obviously vulgar version">
 			<title>
 				<de>Futtruckers</de>
 			</title>
@@ -280,7 +280,7 @@ Only from Slipline.</en>
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 			<availability year_range_to="1990" />
 		</ad>
-		<ad id="d3f47c5f-636d-4978-b4b4-c5673824e504" creator="9551" comment="1991 - 2010 | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy">
+		<ad guid="d3f47c5f-636d-4978-b4b4-c5673824e504" creator="9551" comment="1991 - 2010 | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy">
 			<title>
 				<de>Futtbuckers</de>
 			</title>
@@ -292,7 +292,7 @@ Only from Slipline.</en>
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 			<availability year_range_from="1991" />
 		</ad>
-		<ad id="8c75167f-7155-45ba-9594-8b4fbdfd673c" creator="9551" comment="2011- | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy">
+		<ad guid="8c75167f-7155-45ba-9594-8b4fbdfd673c" creator="9551" comment="2011- | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy">
 			<title>
 				<de>Buttruckers</de>
 			</title>
@@ -304,7 +304,7 @@ Only from Slipline.</en>
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 			<availability year_range_from="2011" />
 		</ad>
-		<ad id="2651208e-1d21-4d90-968c-9f045c79fcc7" creator="9551" comment="Carl's Jr.: https://en.wikipedia.org/wiki/Carl%27s_Jr. | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/5d7SaO0JAHk">
+		<ad guid="2651208e-1d21-4d90-968c-9f045c79fcc7" creator="9551" comment="Carl's Jr.: https://en.wikipedia.org/wiki/Carl%27s_Jr. | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/5d7SaO0JAHk">
 			<title>
 				<de>Curt's Jr.</de>
 			</title>
@@ -321,7 +321,7 @@ Char-grilled burgers the right way. Now with Extra Big-Ass Fries.</en>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1050" penalty="1600" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="9175d090-17bd-4786-823a-cc6b0080d480" creator="9551" comment="https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/ZMHfBobgLSI">
+		<ad guid="9175d090-17bd-4786-823a-cc6b0080d480" creator="9551" comment="https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/ZMHfBobgLSI">
 			<title>
 				<de>Brawndo</de>
 			</title>
@@ -336,7 +336,7 @@ Brawndo - the thirst mutilator.</en>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="4" duration="3" profit="320" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="791793cd-94ce-4e36-872c-56dbce7d5970" creator="9551" comment="https://en.wikipedia.org/wiki/Costco | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So">
+		<ad guid="791793cd-94ce-4e36-872c-56dbce7d5970" creator="9551" comment="https://en.wikipedia.org/wiki/Costco | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So">
 			<title>
 				<de>Cosscu</de>
 			</title>
@@ -353,7 +353,7 @@ Now available: Law degree in 8 minutes.</en>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="2" duration="3" fix_price="0" profit="1500" penalty="2118" infomercial_profit="118" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="41768f4b-5f4d-405f-863b-b321bee23b62" creator="9551" comment="https://en.wikipedia.org/wiki/Starbucks | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So | TODO: Starfucks would be too vulgar but a more frivolous spoof name would be good">
+		<ad guid="41768f4b-5f4d-405f-863b-b321bee23b62" creator="9551" comment="https://en.wikipedia.org/wiki/Starbucks | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So | TODO: Starfucks would be too vulgar but a more frivolous spoof name would be good">
 			<title>
 				<de>Spacebucks</de>
 			</title>
@@ -364,7 +364,7 @@ Now available: Law degree in 8 minutes.</en>
 			<conditions min_audience="1.3" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="8" />
 			<data quality="5" repetitions="4" duration="3" profit="1000" penalty="1800" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="0a4187c9-676f-4f23-9f92-f25a44ebb884" creator="9551" comment="https://en.wikipedia.org/wiki/Idiocracy | https://i.chzbgr.com/full/5302682112/h79C36BCD/seems-legit">
+		<ad guid="0a4187c9-676f-4f23-9f92-f25a44ebb884" creator="9551" comment="https://en.wikipedia.org/wiki/Idiocracy | https://i.chzbgr.com/full/5302682112/h79C36BCD/seems-legit">
 			<title>
 				<de>St. Gott Gedenkkrankenhaus</de>
 				<en>St. God's Memorial Hospital</en>
@@ -376,7 +376,7 @@ Now available: Law degree in 8 minutes.</en>
 			<conditions min_audience="5.7301" min_image="12" target_group="64" />
 			<data infomercial="1" quality="12" repetitions="3" duration="2" profit="440" penalty="952" infomercial_profit="67" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="4e4d90ef-79ca-46d6-a28b-599f6b350c3e" creator="9551" comment="1980-1989 | https://en.wikipedia.org/wiki/Kim_Dotcom | https://www.c64-wiki.de/wiki/Swapper | 1980s version probably not even too fictional">
+		<ad guid="4e4d90ef-79ca-46d6-a28b-599f6b350c3e" creator="9551" comment="1980-1989 | https://en.wikipedia.org/wiki/Kim_Dotcom | https://www.c64-wiki.de/wiki/Swapper | 1980s version probably not even too fictional">
 			<title>
 				<de>kimswap</de>
 			</title>
@@ -392,7 +392,7 @@ Swapping Services by Kimmich &amp; Schmitt LP LLC</en>
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
 			<availability year_range_from="1980" year_range_to="1989" />
 		</ad>
-		<ad id="90ccc2ae-b6fe-4e36-a036-21ef61ff9d15" creator="9551" comment="1990-1995 | https://en.wikipedia.org/wiki/Kim_Dotcom">
+		<ad guid="90ccc2ae-b6fe-4e36-a036-21ef61ff9d15" creator="9551" comment="1990-1995 | https://en.wikipedia.org/wiki/Kim_Dotcom">
 			<title>
 				<de>kimphreak</de>
 			</title>
@@ -408,7 +408,7 @@ Phreaking Services by Kimmich &amp; Schmitt LP LLC</en>
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1995" />
 		</ad>
-		<ad id="9de8605c-cd2f-4406-9ba8-4e471834570c" creator="9551" comment="1996-2000 | https://en.wikipedia.org/wiki/Kim_Dotcom">
+		<ad guid="9de8605c-cd2f-4406-9ba8-4e471834570c" creator="9551" comment="1996-2000 | https://en.wikipedia.org/wiki/Kim_Dotcom">
 			<title>
 				<de>kimcard</de>
 			</title>
@@ -424,7 +424,7 @@ Kimmich &amp; Schmitt Telecards LP LLC</en>
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
 			<availability year_range_from="1996" year_range_to="2000" />
 		</ad>
-		<ad id="6af447e2-a088-47a8-b6e4-18b284622d04" creator="9551" comment="2001-2004 | https://en.wikipedia.org/wiki/Kim_Dotcom | https://de.wikipedia.org/wiki/Letsbuyit.com | actual name was Kimvestor">
+		<ad guid="6af447e2-a088-47a8-b6e4-18b284622d04" creator="9551" comment="2001-2004 | https://en.wikipedia.org/wiki/Kim_Dotcom | https://de.wikipedia.org/wiki/Letsbuyit.com | actual name was Kimvestor">
 			<title>
 				<de>kimvest</de>
 			</title>
@@ -438,7 +438,7 @@ Kimmich &amp; Schmitt Investments LP LLC</en>
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" year_range_to="2004" />
 		</ad>
-		<ad id="4438209f-7391-43fc-8dfc-2d79407b06c3" creator="9551" comment="2005-2018 | https://en.wikipedia.org/wiki/Megaupload | https://en.wikipedia.org/wiki/Mega_(service)">
+		<ad guid="4438209f-7391-43fc-8dfc-2d79407b06c3" creator="9551" comment="2005-2018 | https://en.wikipedia.org/wiki/Megaupload | https://en.wikipedia.org/wiki/Mega_(service)">
 			<title>
 				<de>kimfilez</de>
 			</title>
@@ -452,7 +452,7 @@ kimfilez.come - a service by Kimmich &amp; Schmitt LP LLC</en>
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
 			<availability year_range_from="2005" year_range_to="2018" />
 		</ad>
-		<ad id="5f80ef50-8c69-43c4-b9ba-c251c6fe3cd4" creator="9551" comment="2019- | https://en.wikipedia.org/wiki/Kim_Dotcom | ironically fictional, first 'brand name' again closing the circle">
+		<ad guid="5f80ef50-8c69-43c4-b9ba-c251c6fe3cd4" creator="9551" comment="2019- | https://en.wikipedia.org/wiki/Kim_Dotcom | ironically fictional, first 'brand name' again closing the circle">
 			<title>
 				<de>kimswap</de>
 			</title>
@@ -468,7 +468,7 @@ SIM Swapping Services by Kimmich &amp; Schmitt LP LLC</en>
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
 			<availability year_range_from="2019" />
 		</ad>
-		<ad id="e16885da-28e5-4f71-8931-d4ddbcbb7fbd" creator="9551" comment="1980-1986 | PC Tools, Copy II Plus, Copy II PC - https://en.wikipedia.org/wiki/Central_Point_Software">
+		<ad guid="e16885da-28e5-4f71-8931-d4ddbcbb7fbd" creator="9551" comment="1980-1986 | PC Tools, Copy II Plus, Copy II PC - https://en.wikipedia.org/wiki/Central_Point_Software">
 			<title>
 				<de>PC Utils</de>
 			</title>
@@ -488,7 +488,7 @@ Powerful copy programs and other tools for your PC.</en>
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="1980" year_range_to="1986" />
 		</ad>
-		<ad id="de4c2660-d438-4646-940c-deaf66580af7" creator="9551" comment="1987-2008 | https://en.wikipedia.org/wiki/McAfee">
+		<ad guid="de4c2660-d438-4646-940c-deaf66580af7" creator="9551" comment="1987-2008 | https://en.wikipedia.org/wiki/McAfee">
 			<title>
 				<de>McÄffle</de>
 				<en>McApee</en>
@@ -505,7 +505,7 @@ AntiVirus - by Jonas &amp; McApee LP LLC</en>
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="1987" year_range_to="2008" />
 		</ad>
-		<ad id="e3050f5f-83e3-49cb-8773-eba0b2418f3c" creator="9551" comment="2009- | https://en.wikipedia.org/wiki/McAfee">
+		<ad guid="e3050f5f-83e3-49cb-8773-eba0b2418f3c" creator="9551" comment="2009- | https://en.wikipedia.org/wiki/McAfee">
 			<title>
 				<de>McÄffle VPN</de>
 				<en>McApee VPN</en>
@@ -522,7 +522,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="2009" />
 		</ad>
-		<ad id="231c932d-eae7-4c37-9d33-46ffb5f7a998" creator="9551" comment="https://en.wikipedia.org/wiki/Chaos_Computer_Club | https://duckduckgo.com/?q=%22da+war+wohl+der+zensor+pinkeln%22">
+		<ad guid="231c932d-eae7-4c37-9d33-46ffb5f7a998" creator="9551" comment="https://en.wikipedia.org/wiki/Chaos_Computer_Club | https://duckduckgo.com/?q=%22da+war+wohl+der+zensor+pinkeln%22">
 			<title>
 				<de>kaos klabauter klub</de>
 			</title>
@@ -534,7 +534,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<data infomercial="1" quality="15" repetitions="2" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
 			<availability year_range_from="1981" />
 		</ad>
-		<ad id="623d4599-fe8f-44a6-8a5c-62d1c043aab0" creator="9551" comment="https://de.wikipedia.org/wiki/Fefes_Blog | https://duckduckgo.com/?q=%22einmal+mit+profis+arbeiten%22 | https://duckduckgo.com/?q=%22einmal+mit+profis+arbeiten%22+site%3Ablog.fefe.de | no different versions for previous times intended for the 'Consulting' variation for now, Fefe is eternal :)">
+		<ad guid="623d4599-fe8f-44a6-8a5c-62d1c043aab0" creator="9551" comment="https://de.wikipedia.org/wiki/Fefes_Blog | https://duckduckgo.com/?q=%22einmal+mit+profis+arbeiten%22 | https://duckduckgo.com/?q=%22einmal+mit+profis+arbeiten%22+site%3Ablog.fefe.de | no different versions for previous times intended for the 'Consulting' variation for now, Fefe is eternal :)">
 			<title>
 				<de>Fifi Consulting</de>
 			</title>
@@ -545,7 +545,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="1d528879-5a9d-4328-9b06-750f50bf178b" creator="9551" comment="-2004 | https://de.wikipedia.org/wiki/Fefes_Blog">
+		<ad guid="1d528879-5a9d-4328-9b06-750f50bf178b" creator="9551" comment="-2004 | https://de.wikipedia.org/wiki/Fefes_Blog">
 			<title>
 				<de>Fifis Kolumne</de>
 				<en>Fifi's Column</en>
@@ -558,7 +558,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<data infomercial="1" quality="20" repetitions="3" duration="5" profit="750" penalty="900" fix_infomercial_profit="1" />
 			<availability year_range_to="2004" />
 		</ad>
-		<ad id="47a3719b-130a-4d44-89af-ad95b58cda1a" creator="9551" comment="2005- | https://de.wikipedia.org/wiki/Fefes_Blog | https://duckduckgo.com/?q=%22alles+finden+die+raus%22">
+		<ad guid="47a3719b-130a-4d44-89af-ad95b58cda1a" creator="9551" comment="2005- | https://de.wikipedia.org/wiki/Fefes_Blog | https://duckduckgo.com/?q=%22alles+finden+die+raus%22">
 			<title>
 				<de>Fifis Blog</de>
 				<en>Fifi's Blog</en>
@@ -571,7 +571,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<data infomercial="1" quality="20" repetitions="3" duration="5" profit="750" penalty="900" fix_infomercial_profit="1" />
 			<availability year_range_from="2005" />
 		</ad>
-		<ad id="cb535e3b-9778-41d3-8077-11acf625265d" creator="9551" comment="1981-1997 | https://en.wikipedia.org/wiki/CompuServe | then bought by AOL | Slogan created with help of ChatGPT">
+		<ad guid="cb535e3b-9778-41d3-8077-11acf625265d" creator="9551" comment="1981-1997 | https://en.wikipedia.org/wiki/CompuServe | then bought by AOL | Slogan created with help of ChatGPT">
 			<title>
 				<de>CompiSurf</de>
 			</title>
@@ -583,7 +583,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<data infomercial="1" quality="20" repetitions="5" duration="2" profit="450" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />
 			<availability year_range_from="1981" year_range_to="1997" />
 		</ad>
-		<ad id="0120f9b5-e60a-4e03-a4dd-971b7fe4d399" creator="9551" comment="1998- | https://en.wikipedia.org/wiki/AOL | TODO: Make reference: English version is quoting title of the film 7d76d4b1-33e9-4130-b064-b04dd17ca454 that was based on the popular slogan in the US">
+		<ad guid="0120f9b5-e60a-4e03-a4dd-971b7fe4d399" creator="9551" comment="1998- | https://en.wikipedia.org/wiki/AOL | TODO: Make reference: English version is quoting title of the film 7d76d4b1-33e9-4130-b064-b04dd17ca454 that was based on the popular slogan in the US">
 			<title>
 				<de>OAL</de>
 			</title>
@@ -595,7 +595,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<data infomercial="1" quality="20" repetitions="5" duration="2" profit="450" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" />
 		</ad>
-		<ad id="057282e1-d2d2-471c-b6b9-ff2f63336145" creator="9551" comment="-1989 | https://cyber.equipment/">
+		<ad guid="057282e1-d2d2-471c-b6b9-ff2f63336145" creator="9551" comment="-1989 | https://cyber.equipment/">
 			<title>
 				<de>CYBER</de>
 			</title>
@@ -609,7 +609,7 @@ We are now also in CYBER Space with our BBS. Dial in: 555-CYBER-CYBER</en>
 			<data quality="8" repetitions="4" duration="2" profit="820" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
 			<availability year_range_to="1989" />
 		</ad>
-		<ad id="d3f328c6-33d3-4b10-950b-ec0159e4957b" creator="9551" comment="1990-1996 | https://cyber.equipment/">
+		<ad guid="d3f328c6-33d3-4b10-950b-ec0159e4957b" creator="9551" comment="1990-1996 | https://cyber.equipment/">
 			<title>
 				<de>CYBER</de>
 			</title>
@@ -623,7 +623,7 @@ We are also in CYBER Space on CompiSurf with all kinds of gears and gadgets: GO 
 			<data quality="8" repetitions="4" duration="2" profit="820" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1996" />
 		</ad>
-		<ad id="6d7f8f5f-8197-42c9-8070-3faab61b087a" creator="9551" comment="1997- | https://cyber.equipment/">
+		<ad guid="6d7f8f5f-8197-42c9-8070-3faab61b087a" creator="9551" comment="1997- | https://cyber.equipment/">
 			<title>
 				<de>CYBER</de>
 			</title>
@@ -637,7 +637,7 @@ We are also in CYBER Space! Visit us our CYBERWeb page at cyber://cyber.cyber</e
 			<data quality="8" repetitions="4" duration="2" profit="820" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" />
 		</ad>
-		<ad id="e61220d6-f898-489c-bc2f-efe08556ef2b" creator="9551" comment="https://en.wikipedia.org/wiki/Prada | inspired by film title 3019fa91-7768-437d-896f-a24dd5956bec | Slogan partly by ChatGPT">
+		<ad guid="e61220d6-f898-489c-bc2f-efe08556ef2b" creator="9551" comment="https://en.wikipedia.org/wiki/Prada | inspired by film title 3019fa91-7768-437d-896f-a24dd5956bec | Slogan partly by ChatGPT">
 			<title>
 				<de>Praedo</de>
 			</title>
@@ -650,7 +650,7 @@ Recommended by Satan himself.</en>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="2" duration="2" profit="490" penalty="750" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="07e6647f-c8dc-406d-a9bf-90490d7489ce" comment="https://en.wikipedia.org/wiki/Aral_AG | Slogan mirroring dd8f1816-8f10-4b3b-9a67-d46f7bba1394">
+		<ad guid="07e6647f-c8dc-406d-a9bf-90490d7489ce" comment="https://en.wikipedia.org/wiki/Aral_AG | Slogan mirroring dd8f1816-8f10-4b3b-9a67-d46f7bba1394">
 			<title>
 				<de>Arol</de>
 			</title>
@@ -661,7 +661,7 @@ Recommended by Satan himself.</en>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="7" />
 			<data quality="17" repetitions="4" duration="2" profit="325" penalty="1053" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="1801ad71-1ba6-4c77-b698-5416560a65ad" creator="9551" comment="https://en.wikipedia.org/wiki/Opel_Manta">
+		<ad guid="1801ad71-1ba6-4c77-b698-5416560a65ad" creator="9551" comment="https://en.wikipedia.org/wiki/Opel_Manta">
 			<title>
 				<de>Ommel Panta</de>
 			</title>
@@ -672,7 +672,7 @@ Recommended by Satan himself.</en>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="3" duration="6" profit="250" penalty="300" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="874f2587-f51a-461d-bd46-fb4d93d054b5" creator="9551" comment="-1982 | https://en.wikipedia.org/wiki/Pontiac_Firebird | slogan created with help from ChatGPT">
+		<ad guid="874f2587-f51a-461d-bd46-fb4d93d054b5" creator="9551" comment="-1982 | https://en.wikipedia.org/wiki/Pontiac_Firebird | slogan created with help from ChatGPT">
 			<title>
 				<de>Puntiac Flamerbird</de>
 			</title>
@@ -684,7 +684,7 @@ Recommended by Satan himself.</en>
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_to="1982" />
 		</ad>
-		<ad id="0c3715b4-2776-439d-9591-97938c384b2e" creator="9551" comment="1983-2002 | Pontiac Trans Am Firebird: https://en.wikipedia.org/wiki/Pontiac_Firebird_(third_generation) | owned by General Motors, discontinued in 2002">
+		<ad guid="0c3715b4-2776-439d-9591-97938c384b2e" creator="9551" comment="1983-2002 | Pontiac Trans Am Firebird: https://en.wikipedia.org/wiki/Pontiac_Firebird_(third_generation) | owned by General Motors, discontinued in 2002">
 			<title>
 				<de>Puntiac Tres-M Flamerbird</de>
 			</title>
@@ -696,7 +696,7 @@ Recommended by Satan himself.</en>
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="1983" year_range_to="2002" />
 		</ad>
-		<ad id="ed7ef0fa-435a-4b2a-acbd-f1419cf34ead" creator="9551" comment="2003-2008 | https://en.wikipedia.org/wiki/General_Motors | slogan by ChatGPT">
+		<ad guid="ed7ef0fa-435a-4b2a-acbd-f1419cf34ead" creator="9551" comment="2003-2008 | https://en.wikipedia.org/wiki/General_Motors | slogan by ChatGPT">
 			<title>
 				<de>Generic Motos</de>
 			</title>
@@ -708,7 +708,7 @@ Recommended by Satan himself.</en>
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="2003" year_range_to="2008" />
 		</ad>
-		<ad id="c60f4f8e-a71b-4c4b-a6fd-81db42928e6a" creator="9551" comment="2009- | https://en.wikipedia.org/wiki/General_Motors | post financial crisis edition | slogan by ChatGPT">
+		<ad guid="c60f4f8e-a71b-4c4b-a6fd-81db42928e6a" creator="9551" comment="2009- | https://en.wikipedia.org/wiki/General_Motors | post financial crisis edition | slogan by ChatGPT">
 			<title>
 				<de>Generic Motos</de>
 			</title>
@@ -720,7 +720,7 @@ Recommended by Satan himself.</en>
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="2009" />
 		</ad>
-		<ad id="88342e7d-cb1e-4b10-b643-23a858d53192" creator="9551" comment="-2009 | https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | https://en.bitcoin.it/wiki/Alpaca | pre-2010 version ironically fictional">
+		<ad guid="88342e7d-cb1e-4b10-b643-23a858d53192" creator="9551" comment="-2009 | https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | https://en.bitcoin.it/wiki/Alpaca | pre-2010 version ironically fictional">
 			<title>
 				<de>MtSox</de>
 			</title>
@@ -736,7 +736,7 @@ New on offer due to never-ending inquiries: socks! Made of finest alpaca wool, o
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
 			<availability year_range_to="2009" />
 		</ad>
-		<ad id="fb4bae6a-8983-4f97-87a8-d0b4a18e7ed9" creator="9551" comment="2010-2014 | https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | bankruptcy in 2014">
+		<ad guid="fb4bae6a-8983-4f97-87a8-d0b4a18e7ed9" creator="9551" comment="2010-2014 | https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | bankruptcy in 2014">
 			<title>
 				<de>Mt. Sox</de>
 			</title>
@@ -750,7 +750,7 @@ That's right, now finally online too! And while we're at it: in addition to play
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
 			<availability year_range_from="2010" year_range_to="2014" />
 		</ad>
-		<ad id="1a5350b1-3bcf-4409-980a-9533fb803260" creator="9551" comment="2015- | https://en.wikipedia.org/wiki/Mt._Gox | https://duckduckgo.com/?q=goxcoin | post bankruptcy era ironically fictional | the concept of an NFT existed already in 2015 and earlier, but the term was fully established only around 2018 | however, no idea for a 2015-2018 variation for now">
+		<ad guid="1a5350b1-3bcf-4409-980a-9533fb803260" creator="9551" comment="2015- | https://en.wikipedia.org/wiki/Mt._Gox | https://duckduckgo.com/?q=goxcoin | post bankruptcy era ironically fictional | the concept of an NFT existed already in 2015 and earlier, but the term was fully established only around 2018 | however, no idea for a 2015-2018 variation for now">
 			<title>
 				<de>Soxcoin</de>
 			</title>
@@ -764,7 +764,7 @@ Buy money socks JPEGs in the most beautiful shapes and colors!</en>
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
 			<availability year_range_from="2015" />
 		</ad>
-		<ad id="816434cf-de09-4f73-984b-0a79a2987b7b" creator="9551" comment="https://en.wikipedia.org/wiki/Duff_Beer">
+		<ad guid="816434cf-de09-4f73-984b-0a79a2987b7b" creator="9551" comment="https://en.wikipedia.org/wiki/Duff_Beer">
 			<title>
 				<de>Döff Bier</de>
 				<en>Döff Beer</en>
@@ -776,7 +776,7 @@ Buy money socks JPEGs in the most beautiful shapes and colors!</en>
 			<conditions min_audience="3.13" min_image="4" target_group="256" />
 			<data infomercial="1" quality="15" repetitions="3" duration="2" profit="640" penalty="890" fix_infomercial_profit="1" />
 		</ad>
-		<ad id="87bcafd8-b567-4acd-9f3e-7e62eefb62fb" creator="9551" comment="https://en.wikipedia.org/wiki/Budweiser | ac09552a-75f0-46cc-85ac-c49c232309d2 chose his first screen name after this">
+		<ad guid="87bcafd8-b567-4acd-9f3e-7e62eefb62fb" creator="9551" comment="https://en.wikipedia.org/wiki/Budweiser | ac09552a-75f0-46cc-85ac-c49c232309d2 chose his first screen name after this">
 			<title>
 				<de>Buckweizer</de>
 			</title>
