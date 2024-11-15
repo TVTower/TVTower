@@ -2810,15 +2810,23 @@ Type TDatabaseLoader
 			
 
 			Local languageID:Int = -1
-			if nodeLangEntry = node 'global definition?
+			If nodeLangEntry = node 'global definition?
 				languageID = TLocalization.defaultLanguageID
-			else
+			ElseIf nodeLangEntry.GetName().ToLower() = "all"
+				languageId = -2 'same base value for all default languages
+			Else
 				languageID = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
 			EndIf
 
 			If languageID <> -1
-				if not localized then localized = New TLocalizedString
-				localized.Set(value, languageID)
+				If Not localized Then localized = New TLocalizedString
+				If languageID = -2
+					localized.Set(value, TLocalization.GetLanguageID("en"))
+					localized.Set(value, TLocalization.GetLanguageID("de"))
+					localized.Set(value, TLocalization.GetLanguageID("pl"))
+				Else
+					localized.Set(value, languageID)
+				EndIf
 			Else
 				TLogger.Log("TDATABASE.LOAD()", "Found and ignored localization entry for unsupported language " + nodeLangEntry.GetName().ToLower(), LOG_LOADING|LOG_WARNING)
 			EndIf
