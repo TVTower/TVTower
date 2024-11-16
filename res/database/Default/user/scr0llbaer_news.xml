@@ -855,7 +855,7 @@
 					<pl> i ściągnięty przez straż pożarną|w stawie w parku i bezpiecznie zwrócony organizatorom parady|Okazało się że balon został porwany przez żartownisiów, ale policji udało się ich wytropić.</pl>
 				</andbroughtdownby>
 				<nina>Nina|Nia|Nana|Nona</nina>
-				<artistlastname>>${.persongenerator:"lastname":"de":"female"}|${.persongenerator:"lastname":"en":"female"}|${.persongenerator:"lastname":"fr":"female"}</artistlastname>
+				<artistlastname>${.persongenerator:"lastname":"de":"female"}|${.persongenerator:"lastname":"en":"female"}|${.persongenerator:"lastname":"fr":"female"}</artistlastname>
 				<ofsportsclub>
 					<de>des Sportclubs|des Sportvereins|der Sportfreunde|des Fußballclubs|der Spielvereinigung</de>
 					<en>of Sports Club|of the Sports Association|of Sports Friends|of Football Club|of United</en>

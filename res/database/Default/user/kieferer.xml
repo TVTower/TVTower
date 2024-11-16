@@ -111,7 +111,7 @@ Organizator wycieczki ich oszukuje.</pl>
 					<en>| to ${RANDOMCITY}</en>
 					<pl>| do ${RANDOMCITY}</pl>
 				</modifier>
-				<randomcity>>${.stationmap:"randomcity"}</randomcity>
+				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 
 			<jobs>
