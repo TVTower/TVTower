@@ -146,12 +146,10 @@
 				<!-- international title for all incarnations - so "de" is enough -->
 				<!-- scr0llbaer: that may be true, but probably still not a good idea, because someone might add nested variables later, which then would resolve into German. EDIT: addressed in https://github.com/TVTower/TVTower/pull/906 -->
 				<object>
-					<de>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</de>
-					<en>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</en>
+					<all>Cannons|Guns|Ropes|Knives|Jaws|Dynamite|Bones</all>
 				</object>
 				<adjective>
-					<de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
-					<en>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</en>
+					<all>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</all>
 				</adjective>
 				<job>
 					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
@@ -485,8 +483,7 @@
 					<en>Washer Women</en> <!-- always capitalized for now, even in flow-text. TODO: possibly change as soon as capitalization per expression available. -->
 				</who_0>
 				<who_1>
-					<de>Drag-Queens</de>
-					<en>Drag-Queens</en>
+					<all>Drag-Queens</all>
 				</who_1>
 				<who_2>
 					<de>Schwerenöter</de>
@@ -501,8 +498,7 @@
 					<en>Lifeguards</en>
 				</who_4>
 				<who_5>
-					<de>Clowns</de>
-					<en>Clowns</en>
+					<all>Clowns</all>
 				</who_5>
 				<who_6>
 					<de>Krankenpfleger</de>
