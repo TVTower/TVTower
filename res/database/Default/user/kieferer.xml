@@ -41,9 +41,7 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mummyattack">
 			<title>
-				<de>${TITLE}</de>
-				<en>${TITLE}</en>
-				<pl>${TITLE}</pl>
+				<all>${TITLE}</all>
 			</title>
 			<description>
 				<de>Ein ganz normaler Teenagerausflug endet in einem Besäufnis und einem Wald voller Untoter.</de>
@@ -113,9 +111,7 @@ Organizator wycieczki ich oszukuje.</pl>
 					<en>| to ${RANDOMCITY}</en>
 					<pl>| do ${RANDOMCITY}</pl>
 				</modifier>
-				<randomcity>
-					<de>${.stationmap:"randomcity"}</de>
-				</randomcity>
+				<randomcity>>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 
 			<jobs>
@@ -193,33 +189,23 @@ Każdy środek się nada.</pl>
 				<pl>Wiadomości giełdowe z dnia ${.worldtime:"dayplaying"}</pl>
 			</title>
 			<description>
-				<de>${CONTENT}</de>
-				<en>${CONTENT}</en>
-				<pl>${CONTENT}</pl>
+				<all>${CONTENT}</all>
 			</description>
 
 			<variables>
 				<content>
-					<de>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</de>
-					<en>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</en>
-					<pl>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</pl>
+					<all>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</all>
 				</content>
 
 				<!-- one of the three options - for each -->
 				<stockexchange>
-					<de>${STOCKEXCHANGE1}|${STOCKEXCHANGE2}|${STOCKEXCHANGE3}</de>
-					<en>${STOCKEXCHANGE1}|${STOCKEXCHANGE2}|${STOCKEXCHANGE3}</en>
-					<pl>${STOCKEXCHANGE1}|${STOCKEXCHANGE2}|${STOCKEXCHANGE3}</pl>
+					<all>${STOCKEXCHANGE1}|${STOCKEXCHANGE2}|${STOCKEXCHANGE3}</all>
 				</stockexchange>
 				<resources>
-					<de>${RESOURCES1}|${RESOURCES2}|${RESOURCES3}</de>
-					<en>${RESOURCES1}|${RESOURCES2}|${RESOURCES3}</en>
-					<pl>${RESOURCES1}|${RESOURCES2}|${RESOURCES3}</pl>
+					<all>${RESOURCES1}|${RESOURCES2}|${RESOURCES3}</all>
 				</resources>
 				<currency>
-					<de>${CURRENCY1}|${CURRENCY2}|${CURRENCY3}</de>
-					<en>${CURRENCY1}|${CURRENCY2}|${CURRENCY3}</en>
-					<pl>${CURRENCY1}|${CURRENCY2}|${CURRENCY3}</pl>
+					<all>${CURRENCY1}|${CURRENCY2}|${CURRENCY3}</all>
 				</currency>
 
 

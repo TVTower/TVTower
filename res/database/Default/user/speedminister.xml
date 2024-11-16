@@ -88,11 +88,7 @@
 					<ratings critics="59" speed="70" />
 				</programme>
 				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Tuba Tinnitus</de>
-						<en>Tuba Tinnitus</en>
-						<pl>Tuba Tinnitus</pl>
-					</title>
+					<title>Tuba Tinnitus</title>
 					<description>
 						<de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
 						<en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>
@@ -625,10 +621,7 @@
 
 	<allads>
 		<ad guid="cc5f7107-f929-4331-8dcf-fc4dd2d7e606" comment="1980-1987 | https://en.wikipedia.org/wiki/Xenix">
-			<title>
-				<de>Xunix</de>
-				<en>Xunix</en>
-			</title>
+			<title>Xunix</title>
 			<description>
 				<de>Besser als das Original! Das Betriebssystem von Macrohard speziell für Ihren Hochleistungsrechner.</de>
 				<en>Better than the original! The operating system from Macrohard especially for your high-performance computer.</en>
@@ -638,10 +631,7 @@
 			<availability year_range_from="1980" year_range_to="1987" />
 		</ad>
 		<ad guid="cf636ccc-c253-45c5-afb8-c7aca1521f8b" comment="1988-1994 | https://en.wikipedia.org/wiki/LAN_Manager">
-			<title>
-				<de>LAN Master</de>
-				<en>LAN Master</en>
-			</title>
+			<title>LAN Master</title>
 			<description>
 				<de>Verbinden, Vereinen, Prosperieren. Die Lösung für Ihr Netzwerk von Macrohard.</de>
 				<en>Connect, Combine, Prosper. The solution for your network by Macrohard.</en>
@@ -651,9 +641,7 @@
 			<availability year_range_from="1988" year_range_to="1994" />
 		</ad>
 		<ad guid="867c2c0b-69c4-4c90-be72-804e9fa939cb" comment="1995-2007 | https://en.wikipedia.org/wiki/MSN">
-			<title>
-				<de>MHN</de>
-			</title>
+			<title>MHN</title>
 			<description>
 				<de>Das Portal und Ihr Pass für Ihre Reise in die digitalen Welten des Macrohard Netwebs.</de>
 				<en>The portal and your passport for your journey into the digital worlds of the Macrohard Netweb.</en>

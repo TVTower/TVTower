@@ -176,15 +176,10 @@
 				<pl>W ${funeraltown} zdechł ulubiony zwierzak miasta: ${squirrel_${i}} ${joe}. Zwierzak ${hadbeenlivingon_${i}}.</pl>
 			</description>
 			<variables>
-				<funeraltown>
-					<de>${.stationmap:"randomcity"}</de>
-				</funeraltown>
-				<joe> <!-- soll absichtlich manchmal ein internationaler Name sein -->
-					<de>${.persongenerator:"firstname":"de":"female"}|${.persongenerator:"firstname":"en":"female"}|${.persongenerator:"firstname":"es":"female"}|${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"en":"male"}|${.persongenerator:"firstname":"es":"male"}</de>
-				</joe>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b|c</de>
-				</i>
+				<funeraltown>${.stationmap:"randomcity"}</funeraltown>
+				 <!-- soll absichtlich manchmal ein internationaler Name sein -->
+				<joe>${.persongenerator:"firstname":"de":"female"}|${.persongenerator:"firstname":"en":"female"}|${.persongenerator:"firstname":"es":"female"}|${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"en":"male"}|${.persongenerator:"firstname":"es":"male"}</joe>
+				<i>0|1|2|3|4|5|6|7|8|9|a|b|c</i>
 				<squirrel_0>
 					<de>Eichhörnchen</de> <!-- alle nur Maskulinum und Neutrum! -->
 					<en>squirrel</en>
@@ -390,35 +385,19 @@
 					<en>seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen</en>
 					<pl>siedem|osiem|dziewięć|dziesięć|jedenaście|dwanaście|trzynaście|czternaście|piętnaście</pl>
 				</twelve>
-				<exhibitiontown>
-					<de>${.stationmap:"randomcity"}</de>
-				</exhibitiontown>
-				<singerfirstname>
-					<de>${.persongenerator:"firstname":"de":"female"}</de>
-				</singerfirstname>
-				<singersecondname>
-					<de>${.persongenerator:"firstname":"en":"female"}</de> <!-- absichtlicher deutsch-englischer 'Künstler'-Vorname. TODO: maybe English-French for the English version -->
-				</singersecondname>
-				<singerlastname>
-					<de>${.persongenerator:"lastname":"de":"female"}</de>
-				</singerlastname>
+				<exhibitiontown>${.stationmap:"randomcity"}</exhibitiontown>
+				<singerfirstname>${.persongenerator:"firstname":"de":"female"}</singerfirstname>
+				<singersecondname>${.persongenerator:"firstname":"en":"female"}</singersecondname><!-- absichtlicher deutsch-englischer 'Künstler'-Vorname. TODO: maybe English-French for the English version -->
+				<singerlastname>${.persongenerator:"lastname":"de":"female"}</singerlastname>
 				<dontleaveme>
 					<de>verlass mich nicht|lass mich nicht allein|lass mich nicht im Stich|komm zurück</de>
 					<en>don't leave me|don't abandon me|do not forsake me|come back</en>
 					<pl>nie zostawiaj mnie|nie opuszczaj mnie|nie porzucaj mnie|wróć do mnie</pl>
 				</dontleaveme>
-				<scientistfirstname>
-					<de>${.persongenerator:"firstname":"de":"male"}</de>
-				</scientistfirstname>
-				<scientistsecondname>
-					<de>${.persongenerator:"firstname":"de":"female"}</de> <!-- absichtlich weiblicher zweiter Vorname -->
-				</scientistsecondname>
-				<scientistpenultimatename>
-					<de>${.persongenerator:"lastname":"de":"male"}</de>
-				</scientistpenultimatename>
-				<scientistlastname>
-					<de>${.persongenerator:"lastname":"de":"male"}</de> <!-- Doppel-Nachname erzwingen, was anscheinend in verschiedenen Variablen erfolgen muss. Innerhalb einer wird bei zwei GENERATOR-Aufrufen derselbe nochmal zurückgegeben. -->
-				</scientistlastname>
+				<scientistfirstname>${.persongenerator:"firstname":"de":"male"}</scientistfirstname>
+				<scientistsecondname>${.persongenerator:"firstname":"de":"female"}</scientistsecondname><!-- absichtlich weiblicher zweiter Vorname -->
+				<scientistpenultimatename>${.persongenerator:"lastname":"de":"male"}</scientistpenultimatename>
+				<scientistlastname>${.persongenerator:"lastname":"de":"male"}</scientistlastname><!-- Doppel-Nachname erzwingen, was anscheinend in verschiedenen Variablen erfolgen muss. Innerhalb einer wird bei zwei GENERATOR-Aufrufen derselbe nochmal zurückgegeben. -->
 			</variables>
 			<data genre="4" price="1" quality="20" fictional="1" />
 			<effects>
@@ -563,9 +542,7 @@
 				<pl>${giantinflatable_${i}} ${duck_${i}}, część parady w mieście ${paradetown}, wyrwał się z cum i odfrunął. Ma ponad 50 stóp wysokości. Został zauważony nad miastem i zniknął za horyzontem. Trwa operacja poszukiwawcza.</pl>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e</de>
-				</i>
+				<i>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e</i>
 				<giantinflatable_0>
 					<de>Riesige aufblasbare</de>
 					<en>Giant inflatable</en>
@@ -682,9 +659,7 @@
 					<pl>pluszowego misia</pl>
 				</duck_7>
 				<duck_8>
-					<de>UFO</de>
-					<en>UFO</en>
-					<pl>UFO</pl>
+					<all>UFO</all>
 				</duck_8>
 				<duck_9>
 					<de>Diamant</de>
@@ -871,26 +846,16 @@
 					<en>It</en>
 					<pl></pl> <!-- intentionally blank -->
 				</it_e>
-				<paradetown>
-					<de>${.stationmap:"randomcity"}</de>
-				</paradetown>
-				<sightedtown>
-					<de>${.stationmap:"randomcity"}</de>
-				</sightedtown>
-				<foundtown>
-					<de>${.stationmap:"randomcity"}</de>
-				</foundtown>
+				<paradetown>${.stationmap:"randomcity"}</paradetown>
+				<sightedtown>${.stationmap:"randomcity"}</sightedtown>
+				<foundtown>${.stationmap:"randomcity"}</foundtown>
 				<andbroughtdownby>
 					<de> und von der Feuerwehr zu Boden gebracht|. ${it_${i}} wurde gemütlich schwimmend in einem Parkteich entdeckt und wohlbehalten an die Organisatoren der Parade zurückgegeben|. ${it_${i}} wurde von ein paar Witzbolden entführt, doch die Polizei konnte die Entführer ausfinding machen</de>
 					<en> and brought down by the fire department|. ${it_${i}} was discovered leisurely floating in a park pond and was safely returned to the parade organizers|. ${it_${i}} was hijacked by some pranksters, but the police were able to track down them down</en>
 					<pl> i ściągnięty przez straż pożarną|w stawie w parku i bezpiecznie zwrócony organizatorom parady|Okazało się że balon został porwany przez żartownisiów, ale policji udało się ich wytropić.</pl>
 				</andbroughtdownby>
-				<nina>
-					<de>Nina|Nia|Nana|Nona</de>
-				</nina>
-				<artistlastname>
-					<de>${.persongenerator:"lastname":"de":"female"}|${.persongenerator:"lastname":"en":"female"}|${.persongenerator:"lastname":"fr":"female"}</de>
-				</artistlastname>
+				<nina>Nina|Nia|Nana|Nona</nina>
+				<artistlastname>>${.persongenerator:"lastname":"de":"female"}|${.persongenerator:"lastname":"en":"female"}|${.persongenerator:"lastname":"fr":"female"}</artistlastname>
 				<ofsportsclub>
 					<de>des Sportclubs|des Sportvereins|der Sportfreunde|des Fußballclubs|der Spielvereinigung</de>
 					<en>of Sports Club|of the Sports Association|of Sports Friends|of Football Club|of United</en>
@@ -999,9 +964,7 @@
 				<pl>${name_${g}} z miasta ${subjecttown} ${claims}${ithadinsulted_${i}}.</pl>
 			</description>
 			<variables>
-				<g>
-					<de>m|f</de>
-				</g>
+				<g>m|f</g>
 				<mw_m>
 					<de>Mann</de>
 					<en>man</en>
@@ -1072,9 +1035,7 @@
 					<en>herself</en>
 					<pl>sama</pl>
 				</themself_f>
-				<subjecttown>
-					<de>${.stationmap:"randomcity"}</de>
-				</subjecttown>
+				<subjecttown>${.stationmap:"randomcity"}</subjecttown>
 				<name_m>
 					<de>${.persongenerator:"firstname":"de":"male"}</de>
 					<en>${.persongenerator:"firstname":"en":"male"}</en>
@@ -1088,9 +1049,7 @@
 					<en>sues|files suit against</en> <!--too long: files lawsuit against|takes action against -->
 					<pl>pozywa|składa pozew sądowy</pl>
 				</sues>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b</de>
-				</i>
+				<i>0|1|2|3|4|5|6|7|8|9|a|b</i>
 				<theirparrot_0>
 					<de>${their_${g}}en Hauspapagei</de>
 					<en>${their_${g}} pet parrot</en>
@@ -1112,9 +1071,7 @@
 					<pl>lustro sklepowe</pl>
 				</theirparrot_3>
 				<theirparrot_4>
-					<de>${themself_${g}}</de>
-					<en>${themself_${g}}</en>
-					<pl>${themself_${g}}</pl>
+					<all>${themself_${g}}</all>
 				</theirparrot_4>
 				<theirparrot_5>
 					<de>${their_${g}}en Schatten</de>
@@ -1256,12 +1213,8 @@
 					<en>appeals|files an appeal</en>
 					<pl>odwołania|złożenie odwołania</pl>
 				</appeals>
-				<artistfirstname>
-					<de>${.persongenerator:"firstname":"de":"male"}</de>
-				</artistfirstname>
-				<artistlastname>
-					<de>${.persongenerator:"lastname":"de":"female"}</de>
-				</artistlastname>
+				<artistfirstname>${.persongenerator:"firstname":"de":"male"}</artistfirstname>
+				<artistlastname>${.persongenerator:"lastname":"de":"female"}</artistlastname>
 				<band>
 					<de>Band|Gang|Kapelle|Combo|Band</de>
 					<en>Band|Gang|Band|Combo|Band</en>
@@ -1272,9 +1225,7 @@
 					<en>Against|About|Through|To|For|But|Yet,|But not|Oh no, not|Why|What for|Not|No,</en>
 					<pl>Przeciwko|Przez|Dla|Ale|Jeszcze|Ale nie|O nie, nie|Dlaczego|O nie, nie|Dlaczego|Za co|Nie|Nie,</pl>
 				</against>
-				<artisttown>
-					<de>${.stationmap:"randomcity"}</de>
-				</artisttown>
+				<artisttown>${.stationmap:"randomcity"}</artisttown>
 			</variables>
 			<data genre="4" price="1" quality="20" fictional="1" />
 			<effects>
@@ -1347,9 +1298,7 @@
 		</news>
 		<news guid="ddc63d39-7c94-4710-85f1-e8462c14f34b" type="2" thread_guid="d578f569-5a26-405a-903d-4afe21c03308" creator="9551">
 			<title>
-				<de>${name_${g}} ${appeals}</de>
-				<en>${name_${g}} ${appeals}</en>
-				<pl>${name_${g}} ${appeals}</pl>
+				<all>${name_${g}} ${appeals}</all>
 			</title>
 			<description>
 				<de>Nun erneut vor dem Landgericht: ${the_${g}} ${mw_${g}} ${claims}${ithadinsulted_${i}}.</de>
@@ -1478,14 +1427,10 @@
 				<pl>${man_${i}} aresztowany${fortheft_${i}}</pl>
 			</title>
 			<description>
-				<de>${themanwho_${i}}</de>
-				<en>${themanwho_${i}}</en>
-				<pl>${themanwho_${i}}</pl>
+				<all>${themanwho_${i}}</all>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9</de>
-				</i>
+				<i>0|1|2|3|4|5|6|7|8|9</i>
 				<man_0>
 					<de>Mann</de>
 					<en>Man</en>
@@ -1541,18 +1486,11 @@
 					<en> for stealing a picnic table</en>
 					<pl> za kradzież stołu piknikowego</pl>
 				</fortheft_0>
-				<fortheft_1>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</fortheft_1>
-				<fortheft_2>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</fortheft_2>
-				<fortheft_3>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</fortheft_3>
+				<!--TODO check if working as expected
+				<!-- intentionally blank -->
+				<fortheft_1></fortheft_1>
+				<fortheft_2></fortheft_2>
+				<fortheft_3></fortheft_3>
 				<fortheft_4>
 					<de> wegen Ampel-Diebstahl</de>
 					<en> for stealing a traffic light</en>
@@ -1573,14 +1511,9 @@
 					<en> for stealing a trash can</en>
 					<pl> za kradzież kosza na śmieci</pl>
 				</fortheft_7>
-				<fortheft_8>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</fortheft_8>
-				<fortheft_9>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</fortheft_9>
+				<!-- intentionally blank -->
+				<fortheft_8></fortheft_8>
+				<fortheft_9></fortheft_9>
 				<themanwho_0>
 					<de>Der Mann, der den Tisch aus einem Park in ${town} stahl und angab, ihn zu einem Grillfest eines Freundes zu bringen, wurde wegen schweren Diebstahls${andcriminalmischief} angeklagt.</de>
 					<en>The man, who stole the table from a park in ${town} and claimed to be taking it to a friend's backyard barbecue, was charged with grand larceny${andcriminalmischief}.</en>
@@ -1636,9 +1569,7 @@
 					<en> and criminal mischief| and disorderly conduct|</en>
 					<pl> i wykroczenie| i zakłócanie porządku|</pl>
 				</andcriminalmischief>
-				<town>
-					<de>${.stationmap:"randomcity"}</de>
-				</town>
+				<town>${.stationmap:"randomcity"}</town>
 			</variables>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -1655,9 +1586,8 @@
 				<pl>W przeszłości wszystko było lepsze: Ultrakonserwatywny sojusz Alternatywa dla Świata (AdS) występuje do Stanów Zjednoczonych o nową wojnę światową. Konieczny jest powrót do dobrego 25-letniego rytmu.</pl>
 			</description>
 			<variables>
-				<exhibitiontown>
-					<de>${.stationmap:"randomcity"}</de>
-				</exhibitiontown>
+				<exhibitiontown>${.stationmap:"randomcity"}</exhibitiontown>
+				<!--TODO unclear if no other languages intended-->
 				<gottliebmaessigmann>
 					<de>${gottlieb} ${maessigmann}</de>
 				</gottliebmaessigmann>
@@ -1901,9 +1831,7 @@
 				<en>The East Asian special economic zone ${meigawa} was one of the fastest growing tech and economic regions in the world last year.</en>
 			</description>
 			<variables>
-				<meigawa>
-					<de>Meigawa|Saitorin|Nokoshima|Hikarugen|Jinsen|Shuranko|Chiyotek|Xingling|Shintai|Hakuryu</de>
-				</meigawa>
+				<meigawa>Meigawa|Saitorin|Nokoshima|Hikarugen|Jinsen|Shuranko|Chiyotek|Xingling|Shintai|Hakuryu</meigawa>
 				<isknownfor>
 					<de>ist bekannt für|ist berühmt für|ist weltbekannt für|ist anerkannt für|spezialisiert sich auf|ist spezialisiert auf</de>
 					<en>is known for|is famous for|is renowned for|is recognized for|specializes in|is specialized in</en>
@@ -1916,9 +1844,7 @@
 					<de>ist zudem zu einem globalen Vorreiter für grüne Innovationen und Smart-City-Entwicklung geworden|bietet zudem eine pulsierende Technologiebranche mit fortschrittlichen Forschungseinrichtungen und innovativen Start-ups|beherbergt zudem hochmoderne Laboratorien und Biotech-Unternehmen|ist zudem ein Zentrum für Schiffbau, Ozeanographie und Tiefseeforschung|veranstaltet zudem bedeutende Technologiekonferenzen bekannt für immersive Gaming-Erlebnisse und fortschrittliche Visualisierungssysteme|ist zudem Standort für bahnbrechende Fortschritte in der Halbleitertechnologie|zieht zudem Spitzentalente und Unternehmen in der Robotikbranche an|ist zudem führend in der Entwicklung von leichten, hochfesten Materialien, die in der Luft- und Raumfahrt, der Automobil- und der Elektronikindustrie eingesetzt werden|ist zudem Knotenpunkt für Biomedizin, Telemedizin und tragbare Gesundheitsgeräte|beheimatet zudem ein Raumfahrtzentrum und Produktionsanlagen für Satelliten, die eine wichtige Rolle in der Raumfahrtindustrie spielen</de>
 					<en>has also become a global leader in green innovation and smart city development|also boasts a thriving tech industry with advanced research facilities and innovative startups|also is home to state-of-the-art laboratories and biotech companies|is also a hub for shipbuilding, oceanography, and deep-sea research|also hosts major tech conferences known for immersive gaming experiences and advanced visualization systems|is also home to groundbreaking advancements in semiconductor technology|also attracts top talent and companies in the robotics industry|also leads the way in the development of lightweight, high-strength materials used in aerospace, automotive, and electronics industries|is also a hub for biomedicine, telemedicine, and wearable health devices|is also home to a spaceport and satellite manufacturing facilities, playing a significant role in the space industry</en>
 				</hasbecomeagloballeader>
-				<summittown>
-					<de>${.stationmap:"randomcity"}</de>
-				</summittown>
+				<summittown>${.stationmap:"randomcity"}</summittown>
 				<communism>
 					<de>Kommunismus|Liberalsozialismus|Luxemburgismus|Titoismus|Rätekommunismus|Situationismus|Syndikalismus|Distributismus|Mutualismus|Trotzkismus</de>
 					<en>Communism|Liberal Socialism|Luxemburgism|Titoism|Council Communism|Situationism|Syndicalism|Distributism|Mutualism|Trotskyism</en>
@@ -1935,9 +1861,7 @@
 					<de>Namentanzen|Eurythmie|Mummerei|Mummenschanz|Dionysien|Voodoo|Derwischtanz</de>
 					<en>Name dancing|Eurythmy|Mummery|Mummers' Plays|Dionysia|Voodoo|Dervish Dance</en>
 				</namedancing>
-				<i>
-					<de>0|1|2|3</de>
-				</i>
+				<i>0|1|2|3</i>
 				<particleacc_0>
 					<de>Teilchenbeschleuniger</de>
 					<en>Particle Accelerator</en>
@@ -1947,8 +1871,7 @@
 					<en>Super AI</en>
 				</particleacc_1>
 				<particleacc_2>
-					<de>HoloScreen</de>
-					<en>HoloScreen</en>
+					<all>HoloScreen</all>
 				</particleacc_2>
 				<particleacc_3>
 					<de>Super-Quanten-Internet</de>
@@ -1974,15 +1897,9 @@
 					<de>Sri Lanka|Osttimor|Brunei|Laos</de>
 					<en>Sri Lanka|East Timor|Brunei|Laos</en>
 				</srilanka>
-				<goalsfor>
-					<de>0|0|0|0|0|1|1|2</de>
-				</goalsfor>
-				<goalsagainst>
-					<de>7|8|9|10|11|12|13|14|15|16|17</de>
-				</goalsagainst>
-				<j>
-					<de>0|1</de>
-				</j>
+				<goalsfor>0|0|0|0|0|1|1|2</goalsfor>
+				<goalsagainst>7|8|9|10|11|12|13|14|15|16|17</goalsagainst>
+				<j>0|1</j>
 				<citizenslovetvtower_0>
 					<de>${meigawa}-Bürger lieben TVTower-Programm</de>
 					<en>${meigawa} citizens love TVTower program</en>
@@ -2063,15 +1980,9 @@
 					<de>Die Vertriebshäuser gingen mit Ronnys exorbitanten Preisvorstellungen einfach nicht mit. Die Einwohner von ${meigawa} beziehen das TVTower-Game weiterhin schwarz.</de>
 					<en>The distribution centers simply did not go along with Ronny's exorbitant proposed prices. The inhabitants of ${meigawa} continue to obtain the TVTower game as pirated copies.</en>
 				</stillpirating_1>
-				<singerfirstname>
-					<de>Kaori|Korui|Kyung|Sora</de>
-				</singerfirstname>
-				<singerlastname>
-					<de>Sakita|Shimoi|Seong|Kwon</de>
-				</singerlastname>
-				<k>
-					<de>0|1</de>
-				</k>
+				<singerfirstname>Kaori|Korui|Kyung|Sora</singerfirstname>
+				<singerlastname>Sakita|Shimoi|Seong|Kwon</singerlastname>
+				<k>>0|1</k>
 				<teleportation_0>
 					<de>Teleportation</de>
 					<en>teleportation</en>
@@ -2096,12 +2007,8 @@
 					<de>wenn jeder wild über Grenzen hinweg schwirren könnte</de>
 					<en>if everyone could whizz wildly across borders</en>
 				</ifeveryonecould_1>
-				<festivitytown>
-					<de>${.stationmap:"randomcity"}</de>
-				</festivitytown>
-				<m>
-					<de>0|1|2|3|4|5</de>
-				</m>
+				<festivitytown>${.stationmap:"randomcity"}</festivitytown>
+				<m>0|1|2|3|4|5</m>
 				<onvenus_0>
 					<de>auf der Venus</de>
 					<en>on Venus</en>
@@ -2150,12 +2057,8 @@
 					<de>in der feinstofflichen ätherischen Zwischenwelt</de>
 					<en>in the intangible ethereal netherworld</en>
 				</ontherapidlytransformedvenus_5>
-				<festivitytownatlantis>
-					<de>${.stationmap:"randomcity"}</de>
-				</festivitytownatlantis>
-				<cultleadertown>
-					<de>${.stationmap:"randomcity"}</de>
-				</cultleadertown>
+				<festivitytownatlantis>${.stationmap:"randomcity"}</festivitytownatlantis>
+				<cultleadertown>${.stationmap:"randomcity"}</cultleadertown>
 			</variables>
 			<data genre="0" price="1" quality="60" fictional="1" />
 			<effects>
@@ -2351,8 +2254,7 @@
 				<en>Details about ${meigawa} ${particleacc_${i}}</en>
 			</title>
 			<description>
-				<de>${itsshapedlike_${i}}</de>
-				<en>${itsshapedlike_${i}}</en>
+				<all>${itsshapedlike_${i}}</all>
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
@@ -2557,12 +2459,10 @@
 		</news>
 		<news guid="99f71d0b-92a2-4869-88fb-93d4d1ce907f" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
-				<de>${citizenslovetvtower_${j}}</de>
-				<en>${citizenslovetvtower_${j}}</en>
+				<all>${citizenslovetvtower_${j}}</all>
 			</title>
 			<description>
-				<de>${inhabitantspirating_${j}}</de>
-				<en>${inhabitantspirating_${j}}</en>
+				<all>${inhabitantspirating_${j}}</all>
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
@@ -2571,12 +2471,10 @@
 		</news>
 		<news guid="52964ea8-07e7-4f61-b831-a420d20b7bb1" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
-				<de>${billionsnewviewers_${j}}</de>
-				<en>${billionsnewviewers_${j}}</en>
+				<all>${billionsnewviewers_${j}}</all>
 			</title>
 			<description>
-				<de>${allfinancialtroublessolved_${j}}</de>
-				<en>${allfinancialtroublessolved_${j}}</en>
+				<all>${allfinancialtroublessolved_${j}}</all>
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
@@ -2585,12 +2483,10 @@
 		</news>
 		<news guid="e48a30a8-f013-46a5-9c00-6e051144e607" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
-				<de>${bossesflyto_${j}}</de>
-				<en>${bossesflyto_${j}}</en>
+				<all>${bossesflyto_${j}}</all>
 			</title>
 			<description>
-				<de>${bossesnegotiations_${j}}</de>
-				<en>${bossesnegotiations_${j}}</en>
+				<all>${bossesnegotiations_${j}}</all>
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
@@ -2599,12 +2495,10 @@
 		</news>
 		<news guid="c3f150c9-d051-491d-bdeb-eaef20e44424" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
-				<de>${stillavailable_${j}}</de>
-				<en>${stillavailable_${j}}</en>
+				<all>${stillavailable_${j}}</all>
 			</title>
 			<description>
-				<de>${atleastoneplayer_${j}}</de>
-				<en>${atleastoneplayer_${j}}</en>
+				<all>${atleastoneplayer_${j}}</all>
 			</description>
 			<data genre="3" price="1" quality="35" fictional="1" />
 			<effects>
@@ -2613,12 +2507,10 @@
 		</news>
 		<news guid="c27ee130-acb6-4946-83bf-7b03d2ae911b" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
-				<de>${negotiationsfailed_${j}}</de>
-				<en>${negotiationsfailed_${j}}</en>
+				<all>${negotiationsfailed_${j}}</all>
 			</title>
 			<description>
-				<de>${stillpirating_${j}}</de>
-				<en>${stillpirating_${j}}</en>
+				<all>${stillpirating_${j}}</all>
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
