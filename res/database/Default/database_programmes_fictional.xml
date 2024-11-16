@@ -1012,11 +1012,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<en>Cameroon 2-1 Colombia</en>
 						<pl>Kamerun - Kolumbia</pl>
 					</title>
-					<description>
-						<de></de>
-						<en></en>
-						<pl></pl> 
-					</description>
+					<description></description>
 					<staff>
 						<member index="1" function="2">8dbf9ebe-a0a1-4400-8ed5-82cd8ac0185e</member>
 						<member index="2" function="2">b360f7b8-3d87-4f6a-96c5-cc7a8ab8c488</member>
@@ -1028,11 +1024,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<en>CSFR 4-1 Costa Rica</en>
 						<pl>Czechosłowacja - Costa Rica</pl>
 					</title>
-					<description>
-						<de></de>
-						<en></en>
-						<pl></pl>
-					</description>
+					<description></description>
 					<staff>
 						<member index="1" function="2">c0b2d723-bf35-4e05-868c-205815edd356</member>
 						<member index="2" function="2">b11fed5e-9636-4a9d-b13a-f5d490fef1b9</member>
@@ -1044,11 +1036,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 						<en>Brazil 0-1 Argentina</en>
 						<pl>Brazylia - Argentyna</pl>
 					</title>
-					<description>
-						<de></de>
-						<en></en>
-						<pl></pl>
-					</description>
+					<description></description>
 					<staff>
 						<member index="1" function="2">88595c7f-30bf-4600-add4-43098011d419</member>
 						<member index="2" function="2">1d71a663-3fc0-44b5-9887-583eb5ca9959</member>
@@ -1223,9 +1211,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme guid="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Monet</de>
-						<en>Monet</en>
-						<pl>Monet</pl>
+						<all>Monet</all>
 					</title>
 					<description>
 						<de>Diesmal reist ${.self:"cast":1:"lastname"} nach Paris um Nachfahren des bedeutenden Impressionisten Monet zu suchen.</de>
@@ -1236,9 +1222,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme guid="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Picasso</de>
-						<en>Picasso</en>
-						<pl>Picasso</pl>
+						<all>Picasso</all>
 					</title>
 					<description>
 						<de>In Madrid spürt ${.self:"cast":1:"fullname"} einen Neffen Picassos auf. Interessante Anekdoten würzen diese Episode.</de>
@@ -1249,9 +1233,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme guid="494fa370-4744-4616-aa14-910aa692af25" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Rembrandt</de>
-						<en>Rembrandt</en>
-						<pl>Rembrandt</pl>
+						<all>Rembrandt</all>
 					</title>
 					<description>
 						<de>${.self:"cast":1:"lastname"} sendet diesmal direkt vom Hausboot eines Rembrandt-Nachfahren. Neben Kochrezepten erfährt der Zuschauer vieles aus Rembrandts Leben.</de>
@@ -1262,9 +1244,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 				<programme guid="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Kandinsky</de>
-						<en>Kandinsky</en>
-						<pl>Kandinsky</pl>
+						<all>Kandinsky</all>
 					</title>
 					<description>
 						<de>Bortsch und Kandinsky. Neben einem geselligem Essen begleiten die Zuschauer ${.self:"cast":1:"lastname"} durch die Geschichte mit Zaren und Kandinsky.</de>
@@ -1517,9 +1497,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 				<programme guid="8ffd3e59-e711-45ca-9810-b22c221bad9b" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Das letzte Mal zu Gast bei ${.self:"cast":1:"fullname"}: ihr Nachfolger ${.self:"cast":2:"fullname"}. Er redet über seine neue Sendung und macht sich lustig über den Abgang des ehemaligen Stars ${.self:"cast":1:"fullname"}.</de>
@@ -1713,9 +1691,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 		</programme>
 		<programme guid="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as fb34ed9a-528e-45a9-83b9-16475c2ab67c">
 			<title>
-				<de>Hot Quiz</de>
-				<en>Hot Quiz</en>
-				<pl>Hot Quiz</pl>
+				<all>Hot Quiz</all>
 			</title>
 			<description>
 				<de>Die Moderatorin macht sich nackig und die Anrufer arm. Brüste gegen Geld, wie im echten Leben.</de>
@@ -1734,9 +1710,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 			<children>
 				<programme guid="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Daniela</de>
-						<en>Daniela</en>
-						<pl>Daniela</pl>
+						<all>Daniela</all>
 					</title>
 					<description>
 						<de>Heute moderiert Daniela die Sendung. Kniffelige, nahezu unlösbare Aufgaben werden gestellt. Richtige Lösungen sorgen für einen Strip von Daniela.</de>
@@ -1766,9 +1740,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 				<programme guid="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Mandy</de>
-						<en>Mandy</en>
-						<pl>Mandy</pl>
+						<all>Mandy</all>
 					</title>
 					<description>
 						<de>Mandy ist ein echtes Cowgirl, die Quizfragen allerdings zum Mäusemelken.</de>
@@ -1782,9 +1754,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 				<programme guid="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<de>Peggy</de>
-						<en>Peggy</en>
-						<pl>Peggy</pl>
+						<all>Peggy</all>
 					</title>
 					<description>
 						<de>Peggy kommt vom Lande, und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</de>
@@ -2203,9 +2173,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 			<children>
 				<programme guid="ronny-programme-komtess-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
-						<de>Jaqueline Montegrieux</de>
-						<en>Jaqueline Montegrieux</en>
-						<pl>Jaqueline Montegrieux</pl>
+						<all>Jaqueline Montegrieux</all>
 					</title>
 					<description>
 						<de>Jaqueline, Tochter des Grafen Montegrieux erblüht und entdeckt bisher unerkannte Gefühle für den Stallburschen Henri.</de>
@@ -2217,9 +2185,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 				</programme>
 				<programme guid="ronny-programme-komtess-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
-						<de>Francine du Pomeranc</de>
-						<en>Francine du Pomeranc</en>
-						<pl>Francine du Pomeranc</pl>
+						<all>Francine du Pomeranc</all>
 					</title>
 					<description>
 						<de>Der umtriebige Graf Pomeranc besucht den Landsitz Montegrieux. Er versucht Jaqueline nachzustellen, während seine Tochter Francine Henri schöne Augen macht...</de>

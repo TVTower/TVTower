@@ -107,12 +107,8 @@
 					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
 					<en>Hilarious|Lovely|Turbulent|Romantic|Melancholic|Surprising</en>
 				</funny>
-				<namewoman>
-					<de>${.persongenerator:"firstname":"":"female"}</de>
-				</namewoman>
-				<nameman>
-					<de>${.persongenerator:"firstname":"":"male"}</de>
-				</nameman>
+				<namewoman>${.persongenerator:"firstname":"":"female"}</namewoman>
+				<nameman>${.persongenerator:"firstname":"":"male"}</nameman>
 			</variables>
 
 			<jobs>
@@ -139,8 +135,7 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-fightagainst01">
 			<title>
-				<de>${ADJECTIVE} ${OBJECT}</de>
-				<en>${ADJECTIVE} ${OBJECT}</en>
+				<all>${ADJECTIVE} ${OBJECT}</all>
 			</title>
 			<description>
 				<de>${JOB} ${.self:"role":1:"firstname"} ${ACTION} ${ENEMY}. Sie wollen ${VICTIM} ${ACTION2}.</de>
@@ -203,8 +198,7 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
 			<title>
-				<de>${NUMBER} ${OBJECT} ${ACTION}</de>
-				<en>${NUMBER} ${OBJECT} ${ACTION}</en>
+				<all>${NUMBER} ${OBJECT} ${ACTION}</all>
 			</title>
 			<description>
 				<de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der ${NUMBER} ${OBJECT}.</de>
@@ -212,9 +206,7 @@
 			</description>
 
 			<variables>
-				<number>
-					<de>2|3|4|5</de>
-				</number>
+				<number>2|3|4|5</number>
 				<object>
 					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten|Feuerwehrmänner|Politiker</de>
 					<en>Idiots|Fools|Dorks|Gangsters|Charmers|Policemen|Firefighters|Politicians</en>
@@ -249,8 +241,7 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-eroticmovie1">
 			<title>
-				<de>${WOMAN} ${ACTION} ${MAN}</de>
-				<en>${WOMAN} ${ACTION} ${MAN}</en>
+				<all>${WOMAN} ${ACTION} ${MAN}</all>
 			</title>
 			<description>
 				<de>${WOMAN} ist eine Tagträumerin und verliert sich in ihren erotischen Fantasien.</de>
@@ -258,9 +249,7 @@
 			</description>
 
 			<variables>
-				<woman>
-					<de>${.persongenerator:"firstname":"de":"female"}|${.persongenerator:"firstname":"es":"female"}|${.persongenerator:"firstname":"":"female"}|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
-				</woman>
+				<woman>${.persongenerator:"firstname":"de":"female"}|${.persongenerator:"firstname":"es":"female"}|${.persongenerator:"firstname":"":"female"}|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</woman>
 				<action>
 					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
 					<en>seduces the|enchants the|whispers sweet nothings to the|bewitches the</en>
@@ -292,12 +281,10 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-horrormovie1">
 			<title>
-				<de>${TITLE}</de>
-				<en>${TITLE}</en>
+				<all>${TITLE}</all>
 			</title>
 			<description>
-				<de>${DESCRIPTION}</de>
-				<en>${DESCRIPTION}</en>
+				<all>${DESCRIPTION}</all>
 			</description>
 			<variables>
 				<title>
@@ -308,9 +295,7 @@
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
 					<en>Castle|Country House|Hotel|Guesthouse|Tavern|Forest Lodge|Village|Lighthouse</en> <!-- 'Inn' conflicting with article 'A' (must be 'An') for now -->
 				</building>
-				<count>
-					<de>|||3 |4 |5 |8 |10 |1000 </de>
-				</count>
+				<count>|||3 |4 |5 |8 |10 |1000 </count>
 				<terror>
 					<de>des Horrors|des Terrors|der Angst|der Panik|des Übels</de>
 					<en>of Horror|of Terror|of Fear|of Panic|of Disgust</en>
@@ -360,8 +345,7 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-dramamovie1">
 			<title>
-				<de>${TITLE}</de>
-				<en>${TITLE}</en>
+				<all>${TITLE}</all>
 			</title>
 			<description>
 				<de>${NAME} ${DESCRIPTIONACTION}. Seine ${ENVIRONMENT} ${ENVIRONMENTACTION}.${FEELING}</de>
@@ -430,8 +414,7 @@
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-random-ron-show1">
 			<title>
-				<de>${KIND}${DATE}</de>
-				<en>${KIND}${DATE}</en>
+				<all>${KIND}${DATE}</all>
 			</title>
 			<description>
 				<de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
@@ -444,8 +427,7 @@
 					<en>The ${INNER} Quiz|The ${INNER}-Duel|The ${INNER} Show</en>
 				</kind>
 				<inner>
-					<de>${ATTRIBUTE} ${GROUP}</de>
-					<en>${ATTRIBUTE} ${GROUP}</en>
+					<all>${ATTRIBUTE} ${GROUP}</all>
 				</inner>
 				<attribute>
 					<de>tierische|große|abgefahrene|lustige|skurrile</de>
@@ -455,10 +437,8 @@
 					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
 					<en>Celebrity|Kids|Politicians|Music|Movie|Guessing|Travel</en>
 				</group>
-				<date>
-					<!-- either add the game year (with space!), or nothing -->
-					<de>| ${.worldtime:"year"}</de>
-				</date>
+				<!-- either add the game year (with space!), or nothing -->
+				<date>| ${.worldtime:"year"}</date>
 			</variables>
 
 			<jobs>
@@ -485,12 +465,10 @@
 		<!-- === SERIES === -->
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01" comment="">
 			<title>
-				<de>${adj}${who_${i}}${titleaddendum}</de>
-				<en>${adj}${who_${i}}${titleaddendum}</en>
+				<all>${adj}${who_${i}}${titleaddendum}</all>
 			</title>
 			<description>
-				<de>${seriesabout} ${how_${i}}. ${adj}${who_${i}}${legacy}. ${jokes}</de>
-				<en>${seriesabout} ${how_${i}}. ${adj}${who_${i}}${legacy}. ${jokes}</en>
+				<all>${seriesabout} ${how_${i}}. ${adj}${who_${i}}${legacy}. ${jokes}</all>
 			</description>
 			<variables>
 				<seriesabout>
@@ -501,9 +479,7 @@
 					<de>Ein Haufen |Die Hinterwäldler-|Verrückte |Wahnsinns-|Bayrische |Tugendhafte |Durchgedrehte |Fromme |Zankende |Schelmische |Verschmitzte |Witzige |Abenteuerlustige |Extravagante |Geheimnisvolle |Exzentrische |Temperamentvolle |Joviale |Hartnäckige |Lebensfrohe |Verwegene |Brillante </de>
 					<en>A Bunch of |The Hillbilly |Crazy |The Frenzied |Bavarian |Virtuous |Nutty |Devout |Quarreling |Mischievous |Impish |Witty |Adventurous |Flamboyant |The Mysterious |Eccentric |Spirited |The Jovial |The Tenacious |The Vivacious |Swashbuckling |The Brilliant </en>
 				</adj>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same as j in episodes -->
-				</i>
+				<i>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</i><!-- must be same as j in episodes -->
 				<who_0>
 					<de>Waschweiber</de>
 					<en>Washer Women</en> <!-- always capitalized for now, even in flow-text. TODO: possibly change as soon as capitalization per expression available. -->
@@ -664,18 +640,11 @@
 					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.|Lacher ohne Ende.|Punktgenaue Pointen.|Lacher im Sekundentakt.|Humor der Extraklasse.|Bauchweh vor Lachen.|Humor in Hülle und Fülle.|Höchste Heiterkeit.|Dauerlachen garantiert.|Komik in Perfektion.|Amüsement ohne Ende.|Lachen ohne Unterlass.|Achterbahnfahrt des Lachens.|Meisterwerk des Humors.|Eine urkomische Erfahrung.|Unterhaltsame Heiterkeit.|||||</de>
 					<en>Gags non-stop.|Spot-on punchlines.|Pure entertainment.|Endless laughter.|Comic brilliance.|Laugh-a-minute extravaganza.|Top-notch humor.|Side-splitting comedy.|Jokes galore.|Hilarity at its best.|Unstoppable laughs.|Comic perfection.|Non-stop amusement.|Laughs that keep on coming.|Rollercoaster of humor.|A comedic tour de force.|An uproarious experience.|Entertaining hilarity.|||||</en>
 				</jokes>
-				<town>
-					<de>${.stationmap:"randomcity"}</de>
-				</town>
-				<firstname1> <!-- all these are more or less gender-neutral/-flexible first names, source: internet. TODO: maybe the Bavarians and the nuns need special treatment -->
-					<de>Addison|Alex|Anouk|Anuk|Avery|Benja|Beverly|Billie|Bozan|Cameron|Charlie|Cherry|Celeste|Conny|Daniele|Darian|Devin|Eden|Elliot|Elya|Esra|Felice|Finley|Flo|Gale|Gerritt|Glenn|Günes|Hadir|Harley|Henny|Ihsan|Immi|Indra|Isa|Islay|Jamal|Jayce|Jean|Jody|Jona|Junis|Kaj|Kennedy|Kim|Kourtney|Kyler|Lee|Lindsay|Lou|Luka|Mans|Marley|Meredith|Michele|Mika|Nicola|Nikita|Noah|Oakley|Oyama|Parker|Paulin|Pim|Quincy|Regis|René|Robby|Rory|Rowan|Sasha|Scout|Siro|Shiloh|Taylor|Tiam|Tony|Tyler|Ude|Vada|Valo|Wally|Whitney|Wynne|Zero|Zohar</de>
-				</firstname1>
-				<firstname2>
-					<de>Alexis|Angel|Aria|Ashley|Aydin|Bent|Billy|Blair|Bobby|Camilie|Casey|Chaska|Chris|Dakota|Dany|Deniz|Dylan|Elis|Elia|Enid|Erin|Evin|Feng|Finn|Fiore|Florin|Gates|Gerit|Güven|Hadley|Helge|Hilal|Ilter|Indiana|Ino|Ira|Jade|Jamie|James|Jayden|Jesse|Jorah|June|Kai|Kaya|Kelsey|Kerry|Konni|Kris|Leslie|Loki|Luca|Maria|Marlin|Marlo|Marlon|Maxime|Merle|Milou|Nicki|Nikky|Özbek|Ola|Pahul|Pat|Payden|Pleun|Raleigh|Raven|Reese|Reign|Riley|Robin|Ryan|Sandy|Sean|Shannon|Skyler|Simone|Terry|Tjade|Toni|Umut|Uli|Val|Vanja|Wanja|Yael|Yuki|Zia</de>
-				</firstname2>
-				<firstname3>
-					<de>Amar|Andrea|Ari|Ashton|Bailey|Bene|Bente|Blake|Bo|Bob|Carol|Carter|Charly|Corey|Dani|Darcy|Derya|Dominique|Eike|Elvin|Emerson|Esin|Farina|Fidan|Friedel|Francis|Gin|Gwenaël|Hadar|Haik|Harper|Hemke|Ilya|Indigo|Isa|Jaime|Janne|Jean|Jessi|Jordan|Joyce|Kay|Kendall|Kersten|Kiran|Kristan|Lesley|Lorin|Luan|Malu|Marian|Maxi|Mel|Mian|Nika|Niki|Nino|Nova|Paris|Patrice|Phoenix|Orly|Qian|Quinn|Rayan|Renée|Rey|Robbie|Sam|Sanja|Sascha|Shanti|Sidney|Theodore|Tomke|Tracy|Ulli|Uzay|Valentine|Vesa|Yuri|Wisal|Zisan</de>
-				</firstname3>
+				<town>${.stationmap:"randomcity"}</town>
+				<!-- all these are more or less gender-neutral/-flexible first names, source: internet. TODO: maybe the Bavarians and the nuns need special treatment -->
+				<firstname1>Addison|Alex|Anouk|Anuk|Avery|Benja|Beverly|Billie|Bozan|Cameron|Charlie|Cherry|Celeste|Conny|Daniele|Darian|Devin|Eden|Elliot|Elya|Esra|Felice|Finley|Flo|Gale|Gerritt|Glenn|Günes|Hadir|Harley|Henny|Ihsan|Immi|Indra|Isa|Islay|Jamal|Jayce|Jean|Jody|Jona|Junis|Kaj|Kennedy|Kim|Kourtney|Kyler|Lee|Lindsay|Lou|Luka|Mans|Marley|Meredith|Michele|Mika|Nicola|Nikita|Noah|Oakley|Oyama|Parker|Paulin|Pim|Quincy|Regis|René|Robby|Rory|Rowan|Sasha|Scout|Siro|Shiloh|Taylor|Tiam|Tony|Tyler|Ude|Vada|Valo|Wally|Whitney|Wynne|Zero|Zohar</firstname1>
+				<firstname2>Alexis|Angel|Aria|Ashley|Aydin|Bent|Billy|Blair|Bobby|Camilie|Casey|Chaska|Chris|Dakota|Dany|Deniz|Dylan|Elis|Elia|Enid|Erin|Evin|Feng|Finn|Fiore|Florin|Gates|Gerit|Güven|Hadley|Helge|Hilal|Ilter|Indiana|Ino|Ira|Jade|Jamie|James|Jayden|Jesse|Jorah|June|Kai|Kaya|Kelsey|Kerry|Konni|Kris|Leslie|Loki|Luca|Maria|Marlin|Marlo|Marlon|Maxime|Merle|Milou|Nicki|Nikky|Özbek|Ola|Pahul|Pat|Payden|Pleun|Raleigh|Raven|Reese|Reign|Riley|Robin|Ryan|Sandy|Sean|Shannon|Skyler|Simone|Terry|Tjade|Toni|Umut|Uli|Val|Vanja|Wanja|Yael|Yuki|Zia</firstname2>
+				<firstname3>Amar|Andrea|Ari|Ashton|Bailey|Bene|Bente|Blake|Bo|Bob|Carol|Carter|Charly|Corey|Dani|Darcy|Derya|Dominique|Eike|Elvin|Emerson|Esin|Farina|Fidan|Friedel|Francis|Gin|Gwenaël|Hadar|Haik|Harper|Hemke|Ilya|Indigo|Isa|Jaime|Janne|Jean|Jessi|Jordan|Joyce|Kay|Kendall|Kersten|Kiran|Kristan|Lesley|Lorin|Luan|Malu|Marian|Maxi|Mel|Mian|Nika|Niki|Nino|Nova|Paris|Patrice|Phoenix|Orly|Qian|Quinn|Rayan|Renée|Rey|Robbie|Sam|Sanja|Sascha|Shanti|Sidney|Theodore|Tomke|Tracy|Ulli|Uzay|Valentine|Vesa|Yuri|Wisal|Zisan</firstname3>
 				<location_0>
 					<de>Paradies</de> <!-- alle Orte nur Maskulinum, Neutrum und wo 'im xyz' passt -->
 					<en>paradise</en>
@@ -778,8 +747,7 @@
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_02">
 					<title>
-						<de>${overtime} ${atworkplace_${i}}</de>
-						<en>${overtime} ${atworkplace_${i}}</en>
+						<all>${overtime} ${atworkplace_${i}}</all>
 					</title>
 					<description>
 						<de>Die ${who_${i}} ${havetheirhandsfull}. ${who_${j}} aus ${othertown} ${description_${i}}</de>
@@ -866,12 +834,8 @@
 							<de>haben alle Hände voll zu tun|sind schwer beschäftigt|sind voll im Einsatz|sind schwer bei der Arbeit|sind gestresst|sind gestresst, es wird ihnen nichts geschenkt</de>
 							<en>have their hands full|are heavily busy|are in full action|are hard at work|are stressed|are stressed, they get nothing for free</en>
 						</havetheirhandsfull>
-						<j>
-							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
-						</j>
-						<othertown>
-							<de>${.stationmap:"randomcity"}</de>
-						</othertown>
+						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j><!-- must be same count and elements as i -->
+						<othertown>${.stationmap:"randomcity"}</othertown>
 						<description_0>
 							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Unsere ${who_${i}} müssen Extrazuschlag aushandeln.</de>
 							<en>are passing through and want their gear cleaned, pronto! Our ${who_${i}} have to negotiate an extra surcharge.</en>
@@ -952,12 +916,12 @@
 						<en>${trouble} in ${location_${k}}</en> <!-- TODO: apply capitalization function when available -->
 					</title>
 					<description>
-						<de>${descriptions}</de>
+						<all>${descriptions}</all>
 					</description>
 					<episodes min="1" max="2" />
 					<variables>
 						<descriptions>
-							<de>${description_0}|${description_1}</de>
+							<all>${description_0}|${description_1}</all>
 						</descriptions>
 						<description_0>
 							<de>${gang} ${rioting} ${bikers} ${appears}${whythere_${k}}${causingtrouble}. Die ${who_${i}} ${solvetheconflict} ${intheirownway}.</de>
@@ -971,12 +935,8 @@
 							<de>Ärger|Panik|Pechsträhne|Chaos|Durcheinander|Desaster|Aufruhr|Krise|Aufregung|Verwüstung|Unruhe|Tumult|Eklat|Zoff|Krawall</de>
 							<en>Trouble|Panic|Streak of bad luck|Chaos|Mayhem|Disaster|Turmoil|Crisis|Commotion|Havoc|Unrest|Tumult|Uproar|Down and out|Riot</en>
 						</trouble>
-						<j>
-							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
-						</j>
-						<k>
-							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de>
-						</k>
+						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j><!-- must be same count and elements as i -->
+						<k>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</k>
 						<whythere_0>
 							<de>, überrumpelt Petrus an der Himmelspforte und will dem ewigen Frieden ein für alle mal den Garaus zu machen</de>
 							<en>, overpowers St. Peter at the Gates of Heaven, and wants to put an end to eternal peace once and for all</en>
@@ -1077,9 +1037,7 @@
 							<de>auf ihre Weise|auf ihre ureigene Art|ganz auf ihre Weise|so, wie es nur sie können|ziemlich originell|auf überraschende Weise</de>
 							<en>in their own way|in their innate manner|in their very own way|as only they can|quite originally|in a surprising way</en>
 						</intheirownway>
-						<othertown>
-							<de>${.stationmap:"randomcity"}</de>
-						</othertown>
+						<othertown>${.stationmap:"randomcity"}</othertown>
 						<park>
 							<de>Der „${location_${k}}-Park“|Der „${location_${k}}-Vorgarten“|Der „${location_${k}}-Garten“|Der „${location_${k}}-Rosengarten“|Der „${location_${k}}-Blumengarten“|Die „${location_${k}}-Kantine“|Der „${location_${k}}-Platz“|Der „${location_${k}}-Spielplatz“|Der „${location_${k}}-Plaza“|Die „${location_${k}}-Piazza“|Die „${location_${k}}-Passage“|Die „${location_${k}}-Allee“|Der „${location_${k}}-Boulevard“</de>
 							<en>"${location_${k}} park"|"${location_${k}} frontyard"|"${location_${k}} garden"|"${location_${k}} rose garden"|"${location_${k}} flower garden"|"${location_${k}} cantina"|"${location_${k}} square"|"${location_${k}} playground"|"${location_${k}} plaza"|"${location_${k}} piazza"|"${location_${k}} arcade"|"${location_${k}} avenue"|"${location_${k}} boulevard"</en> <!-- TODO: apply capitalization function when available -->
@@ -1108,12 +1066,12 @@
 						<en>${meeting} in ${location_${k}}</en> <!-- TODO: apply capitalization function when available -->
 					</title>
 					<description>
-						<de>${descriptions}</de>
+						<all>${descriptions}</all>
 					</description>
 					<episodes min="1" max="2" />
 					<variables>
 						<descriptions>
-							<de>${description_0}|${description_1}</de>
+							<all>${description_0}|${description_1}</all>
 						</descriptions>
 						<description_0>
 							<de>Im ${location_${k}}${allstillright} ${whythere_${k}}</de>
@@ -1127,12 +1085,8 @@
 							<de>Treffen|Aufruhr|Fette Beute|Klamauk|Überraschungsfeier|Versammlung|Ringelpiez|Trubel|Wiedersehen|Begegnung|Spektakel|Scherz|Ereignis|Belustigung</de>
 							<en>Meeting|Riot|Fuss|Big booty|Surprise party|Gathering|Revelry|Hustle and bustle|Reunion|Encounter|Spectacle|Frolic|Happening|Merrymaking</en>
 						</meeting>
-						<j>
-							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de> <!-- must be same count and elements as i -->
-						</j>
-						<k>
-							<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</de>
-						</k>
+						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j><!-- must be same count and elements as i -->
+						<k>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</k>
 						<allstillright>
 							<de> ist die Welt noch in Ordnung.| ist alles in Ordnung.|, da lässt sich's aushalten.| ist alles gut.| gibt es nur gute Vibes.| ist's wie im Himmel.| ist die Stimmung stets ausgelassen.| ist die Luft voller Liebe und Freude.| ist jeder Tag ein Fest.| gibt es immer was zu feiern.| ist die Laune stets bestens.| gibt es nur strahlende Gesichter.| herrscht eine wunderbare Atmosphäre.| ist das Glück zu Hause.| scheint die Zeit stillzustehen.| gibt es keine Sorgen oder Probleme.| ist die Welt voller Magie.| fühlt man sich wie im siebten Himmel.</de>
 							<en>, all's right with the world.| everything's alright.|, life is comfortable and enjoyable.|, life is good.|, there are only good vibes.|, it's like heaven.|, the atmosphere is always lively.|, the air is full of love and joy.|, every day is a celebration.|, there is always something to celebrate.|, everyone is in high spirits.|, there are only smiles and joy.|, there is a wonderful atmosphere.|, happiness resides.|, time seems to stand still.|, there are no worries or troubles.|, the world is full of magic.|, it feels like being on cloud nine.</en>
@@ -1213,9 +1167,7 @@
 							<de>Eine improvisierte Volksmusik-Jam-Session findet statt. ${firstname2} hat eine sehr schöne Stimme.|Ein Chili-Kochwettbewerb findet statt gegen ${who_${j}} aus ${othertown}. ${firstname3} wird ganz heiß, es ist dann doch recht scharfes Chili.|Eine Handwerks-Challenge findet statt gegen ${who_${j}} aus ${othertown}. Der Ort gehört mal so richtig aufgemöbelt. ${firstname1} kann gut mit Hammer und Nägeln umgehen.|Eine alte Zeitkapsel wird entdeckt, die nostalgische Erinnerungen und eine Suche nach ihrem Besitzer auslöst. ${firstname1} denkt zurück an Elvis.|Eine Escape-Room-Challenge findet statt gegen ${who_${j}} aus ${othertown}. ${firstname2} und ${firstname3} stecken mal wieder fest. ${firstname1} befreit sie.|Eine Spendenaktion findet statt. ${firstname1} hat wie immer kein Kleingeld dabei.|Eine Hundetrainingsvorführung findet statt. ${firstname1} und ${firstname3} haben selber Hunde und zeigen allen, wie's geht.|Unsere ${who_${i}} sowie ${who_${j}} aus ${othertown} organisieren eine Schnitzeljagd. ${firstname1} und ${firstname3} verlaufen sich mal wieder. ${firstname2} sammelt sie wieder ein.|Ein Kochwettbewerb findet statt gegen gegen ${who_${j}} aus ${othertown}. ${firstname1} überzeugt mit einer italienisch-vietnamesischen Crossover-Cuisine-Kreation.|Plötzlich taucht ein Flashmob mit verrückten Künstlern auf. ${firstname1} packt den Hula-Hoop-Reifen aus und macht mit.|Eine versteckte Schatzkarte wird entdeckt. ${firstname1} und ${firstname2} sind ganz baff: Wo könnte denn nur diese Affeninsel sein?|Ein Talentwettbewerb findet statt. Kein Problem für unsere ${who_${i}}, sind ja offensichtlich die talentiertesten, wenn sie schon ein TVTower-Kamerateam dabei haben.</de>
 							<en>An impromptu country music jam session takes place. ${firstname2} has a very nice voice.|A chili cooking contest takes place against ${who_${j}} from ${othertown}. ${firstname3} gets all hot, it ends up being quite spicy chili.|A craft challenge takes place against ${who_${j}} from ${othertown}. The place really really needs to be spruced up. ${firstname1} is good with hammer and nails.|An old time capsule is discovered, triggering nostalgic memories and a search for its owner. ${firstname1} remembers and reflects on Elvis.|An escape room challenge takes place against ${who_${j}} from ${othertown}. ${firstname2} and ${firstname3} get stuck as always. ${firstname1} sets them free.|A fundraiser takes place. ${firstname1} has no change as usual.|A dog training demonstration takes place. ${firstname1} and ${firstname3} have dogs themselves and show everyone how it's done.|Our ${who_${i}} and ${who_${j}} from ${othertown} organize a scavenger hunt. ${firstname1} and ${firstname3} get lost as usual. ${firstname2} picks them up again.|A cooking competition takes place against ${who_${j}} from ${othertown}. ${firstname1} convinces with an Italian-Vietnamese crossover cuisine creation.|Suddenly a flash mob with crazy artists shows up. ${firstname1} unpacks the hula hoop and joins in.|A hidden treasure map is discovered. ${firstname1} and ${firstname2} are flabbergasted: Where could this ape island be?|A talent contest takes place. No problem for our ${who_${i}}, obviously they are the most talented, since they already have a TVTower camera team with them.</en>
 						</musicsession>
-						<othertown>
-							<de>${.stationmap:"randomcity"}</de>
-						</othertown>
+						<othertown>${.stationmap:"randomcity"}</othertown>
 						<bar>
 							<de>Die ${location_${k}}-Bar|Der ${location_${k}}-Stadl|Der ${location_${k}}-Garten|Der ${location_${k}}-Biergarten|Das ${location_${k}}-Bierzelt|Die ${location_${k}}-Nachtgalerie|Die ${location_${k}}-Nachtkantine|Das ${location_${k}}-Festival</de>
 							<en>${location_${k}} bar|${location_${k}} barn|${location_${k}} garden|${location_${k}} beer garden|${location_${k}} beer tent|${location_${k}} night arcade|${location_${k}} night-cantina|${location_${k}} festival</en> <!-- TODO: apply capitalization function when available -->
@@ -1251,8 +1203,7 @@
 		<!-- === SERIES === -->
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-animalseries01" comment="English title vs text casings">
 			<title>
-				<de>${TITLE}</de>
-				<en>${TITLE}</en>
+				<all>${TITLE}</all>
 			</title>
 			<description>
 				<de>Dokumentation über ${ANIMALS}.
@@ -1264,43 +1215,37 @@ ${EXTRA}</en>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_01">
 					<title>
-						<de>${TITLEEPISODE1}</de>
-						<en>${TITLEEPISODE1}</en>
+						<all>${TITLEEPISODE1}</all>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
 					<title>
-						<de>${TITLEEPISODE2}</de>
-						<en>${TITLEEPISODE2}</en>
+						<all>${TITLEEPISODE2}</all>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
 					<title>
-						<de>${TITLEEPISODE3}</de>
-						<en>${TITLEEPISODE3}</en>
+						<all>${TITLEEPISODE3}</all>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
 					<title>
-						<de>${TITLEEPISODE4}</de>
-						<en>${TITLEEPISODE4}</en>
+						<all>${TITLEEPISODE4}</all>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
 					<title>
-						<de>${TITLEEPISODE5}</de>
-						<en>${TITLEEPISODE5}</en>
+						<all>${TITLEEPISODE5}</all>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
 					<title>
-						<de>${TITLEEPISODE6}</de>
-						<en>${TITLEEPISODE6}</en>
+						<all>${TITLEEPISODE6}</all>
 					</title>
 					<blocks min="1" max="1" />
 				</scripttemplate>
@@ -1414,9 +1359,7 @@ ${EXTRA}</en>
 				<en>As every evening, a guest is expected, often a star in the realm of literature, and his or her new book is discussed.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1449,9 +1392,7 @@ ${EXTRA}</en>
 				<en>Betty Botterblom (or a stand-in) tells exclusively about the latest cultural achievements of the free West.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1482,9 +1423,7 @@ ${EXTRA}</en>
 				<en>The politics format. Politicians answer questions about the state of the nation.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1519,9 +1458,7 @@ Spannende Unterhaltung und knifflige Fragen.</de>
 Exciting entertainment and brain-teasing trivia questions.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1551,9 +1488,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>Only on television and nowhere else are these junk items to be auctioned off to the unsuspecting.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1579,9 +1514,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>Here, men compete against women. The gender with the most calls wins.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1608,9 +1541,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1636,9 +1567,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1664,9 +1593,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1692,9 +1619,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1720,9 +1645,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>Short quiz sessions for dimwitted callers. The questions asked are about currently published pulp novels.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1748,9 +1671,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>Shabby call-in show in which candidates have to recognize celebrities' breasts. At most, it's the broadcaster who's winning here.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1778,9 +1699,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>Two clairvoyants confuse with blurred interpretations of their callers' future and past.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection (and mention in the description like in the programme version) -->
@@ -1800,17 +1719,14 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="fb34ed9a-528e-45a9-83b9-16475c2ab67c" creator="" comment="Screenplay version / continuation of cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3 | deliberately not a series format in the screenplay version">
 			<title>
-				<de>Hot Quiz ${currentyear}</de>
-				<en>Hot Quiz ${currentyear}</en>
+				<all>Hot Quiz ${currentyear}</all>
 			</title>
 			<description>
 				<de>Die Moderatorin macht sich nackig und die Anrufer arm. Brüste gegen Geld, wie im echten Leben.</de>
 				<en>The presenter gets naked and the callers poor. Breasts for money, like in real life.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1837,9 +1753,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>Speed chess against the grandmasters. Call in, manage to get through, and checkmate the grandmaster. Use your brains, study, lose money in the waiting loop. The complete all-inclusive service package.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
@@ -1865,9 +1779,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 				<en>The most beautiful breasts in the world. Discreetly packaged. Nothing and yet much to see. The sophisticated erotic show with interludes about the culture of the respective country. Even critics were able to make friends with it.</en>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->

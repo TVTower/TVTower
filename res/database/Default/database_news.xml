@@ -1048,9 +1048,7 @@
 
 		<news guid="93431fa9-d6bd-4258-b3d0-12ba6124cf2f" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/Reinhold_Messner#Besteigung_des_Lhotse">
 			<title>
-				<de>Siegwart Messier</de>
-				<en>Siegwart Messier</en>
-				<pl>Siegwart Messier</pl>
+				<all>Siegwart Messier</all>
 			</title>
 			<description>
 				<de>Siegwart Messier hat als erster Mensch alle 14 Achttausender erstiegen. Während sich andere für Gipfelfotos vom Helikopter absetzen lassen kletterte der Bergsteiger aus Südtirol jeden Berg selbst hinauf.</de>
@@ -1201,9 +1199,7 @@
 		<news guid="c1d45e4e-3c3f-4843-ae47-2823cee994df" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
 			<!-- deutschbezogen -->
 			<title>
-				<de>Aktena 8</de>
-				<en>Aktena 8</en>
-				<pl>Aktena 8</pl>
+				<all>Aktena 8</all>
 			</title>
 			<description>
 				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
@@ -1988,9 +1984,7 @@
 				<pl>W ciągu 17 dni listopada nie zabraknie bajek. Sponsorami są firma Lottery i Federalne Centrum Edukacji Politycznej.</pl>
 			</description>
 			<variables>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<data genre="5" price="0.7" quality="25" fictional="0" />
 			<availability script='${.eq:${.worldtime:"month"}:10}' year_range_from="1990" year_range_to="-1" /> <!-- can appear annually -->
@@ -4075,12 +4069,10 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="094806da-5113-4b57-b09a-c0639ebc20f9" thread_guid="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="0" creator="">
 			<title>
-				<de>${title}</de>
-				<en>${title}</en>
+				<all>${title}</all>
 			</title>
 			<description>
-				<de>${desc}</de>
-				<en>${desc}</en>
+				<all>${desc}</all>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="18200428-fdff-4e2d-88fa-4902939c7aa3" />
@@ -4096,9 +4088,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 					<en>The ${minister} requests in Parliament the obligation of every citizen to keep a${animal_gen_${index}}.</en>
 					<pl>${minister} domaga się w parlamencie zobowiązania każdego obywatela, aby trzymać w domu ${animal_gen_${index}}.</pl>
 				</desc>
-				<index>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d</de>
-				</index>
+				<index>0|1|2|3|4|5|6|7|8|9|a|b|c|d</index>
 				<minister>
 					<de>Finanzminister|Innenminister|Außenminister|Verteidigungsminister|Regierungschef|DG-Metall-Chef|BV-Energie-Chef|ADCA-Chef|Bahnchef|Verkehrsminister</de>
 					<en>Finance Minister|Interior Minister|Foreign Minister|Defense Minister|Prime Minister|WA-Steel Chief|EI-Energy Chief|AB-Automobile Chief|Railways Secretary|Transport Secretary</en>
@@ -5018,9 +5008,8 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Komputery wariują</pl>
 			</title>
 			<description>
+				<all>3.14159265358979323846264338327950-2884197169399375105820974944592307-8164062862089986280348253421170679-8214808651328230664709384460955058-22317253594081284811174502...</all>
 				<de>3,14159265358979323846264338327950-2884197169399375105820974944592307-8164062862089986280348253421170679-8214808651328230664709384460955058-22317253594081284811174502...</de>
-				<en>3.14159265358979323846264338327950-2884197169399375105820974944592307-8164062862089986280348253421170679-8214808651328230664709384460955058-22317253594081284811174502...</en>
-				<pl>3.14159265358979323846264338327950-2884197169399375105820974944592307-8164062862089986280348253421170679-8214808651328230664709384460955058-22317253594081284811174502...</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="2195e517-be06-4729-8508-824119e5d4aa" />
@@ -6799,9 +6788,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene ${withdisdain}. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5|6</de>
-				</i>
+				<i>0|1|2|3|4|5|6</i>
 				<artistname_0>
 					<de>Shoop Doggie Doug|JJ Cold L</de>
 				</artistname_0>
@@ -6921,9 +6908,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${therapper_${i}} ${artistname_${i}} has been watching the ${rap_${i}} scene ${withdisdain}. ${theirverdictproper_${i}}${rap_${i}} is dead!</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5|6</de>
-				</i>
+				<i>0|1|2|3|4|5|6</i>
 				<artistname_0>
 					<de>The Candyhill Mob|Grandmixer Flesh &amp; the Ferocious 5</de>
 				</artistname_0>
@@ -7044,9 +7029,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${motherjob_${i}} ${mothername_${i}} wants to adopt scandalous ${childjob_${j}} ${childname_${j}}. "The child must be helped!" ${mothername_${i}} explained.</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5</de>
-				</i>
+				<i>0|1|2|3|4|5</i>
 				<mothername_0>
 					<de>Madonara</de>
 				</mothername_0>
@@ -7089,9 +7072,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Schauspielerin</de>
 					<en>Actress</en>
 				</motherjob_5>
-				<j>
-					<de>0|1|2|3|4|5</de>
-				</j>
+				<j>0|1|2|3|4|5</j>
 				<childname_0>
 					<de>Whitney Speers</de>
 				</childname_0>
@@ -7177,9 +7158,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${motherjob_${i}} ${mothername_${i}} wants to adopt scandalous ${childjob_${j}} ${childname_${j}}. "The child must be helped!" ${mothername_${i}} explained.</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5</de>
-				</i>
+				<i>0|1|2|3|4|5</i>
 				<mothername_0>
 					<de>Polly Dalton</de>
 				</mothername_0>
@@ -7222,9 +7201,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Tänzerin und Schauspielerin</de>
 					<en>Dancer and actress</en>
 				</motherjob_5>
-				<j>
-					<de>0|1|2|3|4|5</de>
-				</j>
+				<j>0|1|2|3|4|5</j>
 				<childname_0>
 					<de>Madonara</de>
 				</childname_0>
@@ -7310,12 +7287,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>In ${town}, ${vigilantcitizen_${g}} named ${johndoe_${g}} is celebrated as a ${hero_${g}}. ${hadwitnessed_${i}}. ${mayorhonors}.</en>
 			</description>
 			<variables>
-				<g>
-					<de>m|f</de>
-				</g>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9</de>
-				</i>
+				<g>m|f</g>
+				<i>0|1|2|3|4|5|6|7|8|9</i>
 				<hero_m>
 					<de>Held</de>
 					<en>hero</en>
@@ -7348,9 +7321,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Sie</de>
 					<en>She</en>
 				</they_f>
-				<town>
-					<de>${.stationmap:"randomcity"}</de>
-				</town>
+				<town>${.stationmap:"randomcity"}</town>
 				<shotathief_0>
 					<de>erschießt Dieb</de>
 					<en>shot a thief</en>
@@ -7457,9 +7428,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>nach Österreich|in die Schweiz|nach Nepal|nach Peru|nach Norwegen|nach Bhutan|nach Kirgisistan|nach Chile</de>
 					<en>to Austria|to Switzerland|to Nepal|to Peru|to Norway|to Bhutan|to Kyrgyzstan|to Chile</en>
 				</toaustria>
-				<missedcount>
-					<de>143|87|210|62|176|125|199|54|231|98|114</de>
-				</missedcount>
+				<missedcount>143|87|210|62|176|125|199|54|231|98|114</missedcount>
 			</variables>
 			<data genre="4" price="1" quality="58" fictional="1" />
 			<effects>
@@ -7516,9 +7485,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${therenowned_${i}} auctions off ${theirfamous_${i}}. The proceeds go to ${hungry} ${children}.</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5|6</de>
-				</i>
+				<i>0|1|2|3|4|5|6</i>
 				<name_0>
 					<de>Günther Krass</de>
 				</name_0>
@@ -7687,12 +7654,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Today there was a fire ${inbuilding_${i}} in ${town}. Fortunately, the ${occupants_${i}} got away with minor smoke inhalation and a scare.</en>
 			</description>
 			<variables>
-				<town>
-					<de>${.stationmap:"randomcity"}</de>
-				</town>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b|c</de>
-				</i>
+				<town>${.stationmap:"randomcity"}</town>
+				<i>0|1|2|3|4|5|6|7|8|9|a|b|c</i>
 				<inbuilding_0>
 					<de>in einem Mehrfamilienhaus</de>
 					<en>in an apartment building</en>
@@ -7822,13 +7785,10 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${greenland_${i}} is ${icehockey_${k}} World Champion</en>
 			</title>
 			<description>
-				<de>${inathrillingduel_${k}}</de>
-				<en>${inathrillingduel_${k}}</en>
+				<all>${inathrillingduel_${k}}</all>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4</de>
-				</i>
+				<i>0|1|2|3|4</i>
 				<greenland_0>
 					<de>Grönland</de>
 					<en>Greenland</en>
@@ -7889,29 +7849,17 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>lässt</de>
 					<en>leaves</en>
 				</leave_4>
-				<the_0>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_0>
+				<!-- intentionally blank -->
+				<the_0></the_0>
 				<the_1>
 					<de>die </de>
 					<en>the </en>
 				</the_1>
-				<the_2>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_2>
-				<the_3>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_3>
-				<the_4>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_4>
-				<j>
-					<de>0|1|2|3|4|5|6|7|8|9|a</de>
-				</j>
+				<!-- intentionally blank -->
+				<the_2></the_2>
+				<the_3></the_3>
+				<the_4></the_4>
+				<j>0|1|2|3|4|5|6|7|8|9|a</j>
 				<kenya_0>
 					<de>Kenia</de>
 					<en>Kenya</en>
@@ -7956,9 +7904,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Tonga</de>
 					<en>Tonga</en>
 				</kenya_a>
-				<k>
-					<de>0|1|2|3</de>
-				</k>
+				<k>0|1|2|3</k>
 				<icehockey_0>
 					<de>Junioren-Eishockey|Juniorinnen-Eishockey|Amateur-Eishockey</de>
 					<en>Junior Ice Hockey|Junior Women's Ice Hockey|Amateur Ice Hockey</en>
@@ -7975,15 +7921,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Fässer-Eisspringen|Stab-Eissprung|Eisstockschleudern</de>
 					<en>Barrel Ice Jumping|Ice Pole Vault|Ice Stock Skidding</en> <!-- https://en.wikipedia.org/wiki/Barrel_jumping | last 2 made-up fictional sports -->
 				</icehockey_3>
-				<scorefor>
-					<de>4|4|4|5|5|5|6|6|7|8|9</de>
-				</scorefor>
-				<scoreagainst>
-					<de>0|1|1|2|2|2|3|3|3</de>
-				</scoreagainst>
-				<pointscount>
-					<de>01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|25|27|28|29|30</de>
-				</pointscount>
+				<scorefor>4|4|4|5|5|5|6|6|7|8|9</scorefor>
+				<scoreagainst>0|1|1|2|2|2|3|3|3</scoreagainst>
+				<pointscount>01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|25|27|28|29|30</pointscount>
 				<inathrillingduel_0>
 					<de>In einem spannenden Duell gegen ${kenya_${j}} ${win_${i}} ${the_${i}}${greenland_${i}} das ${icehockey_${k}}-Weltmeisterschafts-Finale mit ${scorefor}:${scoreagainst}.</de>
 					<en>In a thrilling duel against ${kenya_${j}}, ${the_${i}}${greenland_${i}} ${win_${i}} the ${icehockey_${k}} World Championship final ${scorefor}-${scoreagainst}.</en>
@@ -8000,15 +7940,10 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>In einem spannenden Wettkampf ${leave_${i}} ${the_${i}}${greenland_${i}} den hartnäckigsten Konkurrenten ${kenya_${j}} hinter sich und ${win_${i}} mit 0,${pointscount} Metern Vorsprung.</de>
 					<en>In a thrilling competition, ${the_${i}}${greenland_${i}} ${leave_${i}} behind the fiercest competitor ${kenya_${j}} and ${win_${i}} with a 0.${pointscount} feet lead.</en>
 				</inathrillingduel_3>
-				<artistfirstname> <!-- Scandinavian / Nordic name generator doesn't seem to be implemented yet -->
-					<de>Lars|Erik|Björn|Henrik|Olaf|Magnus|Anders|Sven|Thor|Gustav|Axel|Finn|Oskar|Kristian|Rune|Nils|Jørgen|Viggo|Arvid|Harald</de>
-				</artistfirstname>
-				<artistlastname>
-					<de>Hansen|Johansson|Andersen|Nielsen|Jørgensen|Svensson|Petersen|Olsen|Larsen|Pedersen|Eriksson|Christiansen|Nilsen|Berg|Magnusson|Kristiansen|Sørensen|Sandberg|Lund|Holm</de>
-				</artistlastname>
-				<exhibitiontown>
-					<de>${.stationmap:"randomcity"}</de>
-				</exhibitiontown>
+				<!-- Scandinavian / Nordic name generator doesn't seem to be implemented yet - dk exists -->
+				<artistfirstname>Lars|Erik|Björn|Henrik|Olaf|Magnus|Anders|Sven|Thor|Gustav|Axel|Finn|Oskar|Kristian|Rune|Nils|Jørgen|Viggo|Arvid|Harald</artistfirstname>
+				<artistlastname>Hansen|Johansson|Andersen|Nielsen|Jørgensen|Svensson|Petersen|Olsen|Larsen|Pedersen|Eriksson|Christiansen|Nilsen|Berg|Magnusson|Kristiansen|Sørensen|Sandberg|Lund|Holm</artistlastname>
+				<exhibitiontown>${.stationmap:"randomcity"}</exhibitiontown>
 			</variables>
 			<data genre="2" price="1" quality="15" fictional="1" />
 			<effects>
@@ -8143,13 +8078,10 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>${kenya_${j}} is ${armwrestling_${k}} World Champion</en>
 			</title>
 			<description>
-				<de>${inathrillingduel_${k}}</de>
-				<en>${inathrillingduel_${k}}</en>
+				<all>${inathrillingduel_${k}}</all>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4</de>
-				</i>
+				<i>0|1|2|3|4</i>
 				<greenland_0>
 					<de>Grönland</de>
 					<en>Greenland</en>
@@ -8170,29 +8102,17 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Neufundland</de>
 					<en>Newfoundland</en>
 				</greenland_4>
-				<the_0>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_0>
+				<!-- intentionally blank -->
+				<the_0></the_0>
 				<the_1>
 					<de>die </de>
 					<en>the </en>
 				</the_1>
-				<the_2>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_2>
-				<the_3>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_3>
-				<the_4>
-					<de></de> <!-- intentionally blank -->
-					<en></en>
-				</the_4>
-				<j>
-					<de>0|1|2|3|4|5|6|7|8|9|a</de>
-				</j>
+				<!-- intentionally blank -->
+				<the_2></the_2>
+				<the_3></the_3>
+				<the_4></the_4>
+				<j>0|1|2|3|4|5|6|7|8|9|a</j>
 				<kenya_0>
 					<de>Kenia</de>
 					<en>Kenya</en>
@@ -8237,9 +8157,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Tonga</de>
 					<en>Tonga</en>
 				</kenya_a>
-				<k>
-					<de>0|1|2|3</de>
-				</k>
+				<k>0|1|2|3</k>
 				<armwrestling_0>
 					<de>Armdrücken|Baumstamm-Wasserrollen|Kanupolo|Ultimate-Frisbee</de>
 					<en>Arm Wrestling|Water Log Rolling|Canoe Polo|Ultimate Frisbee</en> <!-- https://en.wikipedia.org/wiki/Arm_wrestling | https://en.wikipedia.org/wiki/Logrolling_(sport) | https://en.wikipedia.org/wiki/Canoe_polo | https://en.wikipedia.org/wiki/Ultimate_(sport) -->
@@ -8256,15 +8174,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Frisbee-Weitwurf|Schleuderball</de>
 					<en>Frisbee Long Throw|Schleuderball</en> <!-- https://de.wikipedia.org/wiki/Frisbee | https://de.wikipedia.org/wiki/Schleuderball -->
 				</armwrestling_3>
-				<scorefor>
-					<de>4|4|4|5|5|5|6|6|7|8|9</de>
-				</scorefor>
-				<scoreagainst>
-					<de>0|1|1|2|2|2|3|3|3</de>
-				</scoreagainst>
-				<pointscount>
-					<de>01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|25|27|28|29|30</de>
-				</pointscount>
+				<scorefor>4|4|4|5|5|5|6|6|7|8|9</scorefor>
+				<scoreagainst>0|1|1|2|2|2|3|3|3</scoreagainst>
+				<pointscount>01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|25|27|28|29|30</pointscount>
 				<inathrillingduel_0>
 					<de>In einem spannenden Finale schlug ${kenya_${j}} ${the_${i}}${greenland_${i}} mit ${scorefor}:${scoreagainst} und wurde neuer Weltmeister im ${armwrestling_${k}}.</de>
 					<en>In a thrilling final, ${kenya_${j}} beat ${the_${i}}${greenland_${i}} with ${scorefor}:${scoreagainst} to become the new world champion in ${armwrestling_${k}}.</en>
@@ -8281,15 +8193,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>In einem spannenden Wettkampf lässt ${kenya_${j}} den hartnäckigsten Konkurrenten ${the_${i}}${greenland_${i}} hinter sich und gewinnt mit 0,${pointscount} Metern Vorsprung.</de>
 					<en>In a thrilling competition, ${kenya_${j}} leaves behind their fiercest competitor ${the_${i}}${greenland_${i}} and wins with a 0.${pointscount} feet lead.</en>
 				</inathrillingduel_3>
-				<artistfirstname>
-					<de>${.persongenerator:"firstname":"fr":"male"}</de>
-				</artistfirstname>
-				<artistlastname>
-					<de>${.persongenerator:"lastname":"en":"male"}</de>
-				</artistlastname>
-				<exhibitiontown>
-					<de>${.stationmap:"randomcity"}</de>
-				</exhibitiontown>
+				<artistfirstname>${.persongenerator:"firstname":"fr":"male"}</artistfirstname>
+				<artistlastname>${.persongenerator:"lastname":"en":"male"}</artistlastname>
+				<exhibitiontown>${.stationmap:"randomcity"}</exhibitiontown>
 			</variables>
 			<data genre="2" price="1" quality="20" fictional="1" />
 			<effects>
@@ -8428,9 +8334,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>An ${indonesian_fem_${i}} passenger plane has been missing for several hours.</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e</de>
-				</i>
+				<i>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e</i>
 				<indonesian_neu_0>
 					<de>Indonesisches</de>
 					<en>Indonesian</en>
@@ -8611,9 +8515,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Indien</de>
 					<en>India</en>
 				</indonesia_e>
-				<deathcount>
-					<de>291|224|312|178|267|205|326|156|239|303|327</de>
-				</deathcount>
+				<deathcount>291|224|312|178|267|205|326|156|239|303|327</deathcount>
 				<indianocean>
 					<de>Indischen Ozean|Pazifischen Ozean</de>
 					<en>Indian Ocean|Pacific Ocean</en>
@@ -8773,12 +8675,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>According to a survey from April ${currentyear}, ${percentcount} of Germans want their old currency back.</en>
 			</description>
 			<variables>
-				<percentcount>
-					<de>76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94</de>
-				</percentcount>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<percentcount>76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94</percentcount>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
 			<availability year_range_from="2002" script='${.eq:${.worldtime:"month"}:5}' />
@@ -8794,12 +8692,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>According to a survey from April ${currentyear}, ${percentcount} of Germans want the Reichsmark back.</en>
 			</description>
 			<variables>
-				<percentcount>
-					<de>17|18|18|18|18|18|18|19</de>
-				</percentcount>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<percentcount>17|18|18|18|18|18|18|19</percentcount>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
 			<availability year_range_to="2001" script='${.eq:${.worldtime:"month"}:5}' />
@@ -8815,9 +8709,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Following historical precedent, ${swedenandnorway_${i}} want to form a union. ${finland_${i}} also would join the new USN (Union of Scandinavian Nations).</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5|6|7|8|9</de>
-				</i>
+				<i>0|1|2|3|4|5|6|7|8|9</i>
 				<swedenandnorway_0>
 					<de>Schweden und Norwegen</de>
 					<en>Sweden and Norway</en>
@@ -8898,9 +8790,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Norwegen|Schweden|Dänemark</de>
 					<en>Norway|Sweden|Denmark</en>
 				</finland_9>
-				<exhibitiontown>
-					<de>${.stationmap:"randomcity"}</de>
-				</exhibitiontown>
+				<exhibitiontown>${.stationmap:"randomcity"}</exhibitiontown>
 			</variables>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
@@ -8947,17 +8837,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news guid="a218144b-a3b0-4840-b793-134e902d7227" type="0" creator="" created_by="-" comment="some variations created with help of ChatGPT | TODO: more variations">
 			<title>
-				<de>${counterfeitmoneysecured_${i}}</de>
-				<en>${counterfeitmoneysecured_${i}}</en>
+				<all>${counterfeitmoneysecured_${i}}</all>
 			</title>
 			<description>
 				<de>${aschoolboy_${g}} namens ${johndoe_${g}} ${triedto_${i}}.</de>
 				<en>${aschoolboy_${g}} named ${johndoe_${g}} ${triedto_${i}}.</en>
 			</description>
 			<variables>
-				<i>
-					<de>0|1|2|3|4|5</de>
-				</i>
+				<i>0|1|2|3|4|5</i>
 				<counterfeitmoneysecured_0>
 					<de>Falschgeld in ${town} gesichert</de>
 					<en>Counterfeit money in ${town} secured</en>
@@ -8982,9 +8869,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Mittagessen-Schwarzmarkt in ${town} aufgelöst</de>
 					<en>Lunch black market in ${town} disbanded</en>
 				</counterfeitmoneysecured_5>
-				<age>
-					<de>12|13|14|15|16</de>
-				</age>
+				<age>12|13|14|15|16</age>
 				<g>
 					<de>m|f</de>
 				</g>
@@ -9016,9 +8901,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Böllern|Comic-Tassen|Glitzerstiften|Einhornmasken|Mega-Kaugummibällen|Riesengummibärchen|Hip-Hop-Schallplatten|Heavy-Metal-Alben|Videospielen</de>
 					<en>firecrackers|cartoon cups|glitter pens|unicorn masks|mega chewing gum balls|giant gummy bears|hip hop records|heavy metal albums|video games</en>
 				</firecrackers>
-				<town>
-					<de>${.stationmap:"randomcity"}</de>
-				</town>
+				<town>${.stationmap:"randomcity"}</town>
 				<johndoe_m>
 					<de>${.persongenerator:"firstname":"de":"male"}</de>
 					<en>${.persongenerator:"firstname":"en":"male"}</en>
@@ -9078,8 +8961,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</description>
 			<variables>
 				<leipzig>
-					<de>Leipzig|Dresden|Halle|Erfurt|Magdeburg|Potsdam|Rostock|Chemnitz|Cottbus</de>
-					<en>Leipzig|Dresden|Halle|Erfurt|Magdeburg|Potsdam|Rostock|Chemnitz|Cottbus</en>
+					<all>Leipzig|Dresden|Halle|Erfurt|Magdeburg|Potsdam|Rostock|Chemnitz|Cottbus</all>
 				</leipzig>
 			</variables>
 			<data genre="4" price="1" quality="25" fictional="1" />
@@ -9194,8 +9076,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 
 		<news guid="e3ccc4f2-2f73-4871-b3be-117ed74f0238" type="0" creator="" created_by="-">
 			<title>
-				<de>${footballteam} ${struck_${i}}</de>
-				<en>${footballteam} ${struck_${i}}</en>
+				<all>${footballteam} ${struck_${i}}</all>
 			</title>
 			<description>
 				<de>Die ${russian_${i}} ${footballteam} wurde beim Training ${struckbylightning_${i}}. ${three} Spieler wurden schwer verletzt ins Krankenhaus gebracht.</de>
@@ -9206,9 +9087,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Fußballelf|Rugbymannschaft|Feldhockeymannschaft|Polomannschaft|Baseballmannschaft</de> <!-- nur feminin! -->
 					<en>Football Team|Rugby Team|Field Hockey Team|Polo Team|Baseball Team</en>
 				</footballteam>
-				<i>
-					<de>0|1|2|3|4</de>
-				</i>
+				<i>0|1|2|3|4</i>
 				<struck_0>
 					<de>vom Blitz getroffen</de>
 					<en>struck by lightning</en>
@@ -9295,12 +9174,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>München|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude|Monaco|Paris</de>
 					<en>Munich|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude|Monaco|Paris</en>
 				</munich>
-				<amounteuro>
-					<de>4|5|6|7|8</de>
-				</amounteuro>
-				<amountcent>
-					<de>12|24|36|48|60|72|84|96</de>
-				</amountcent>
+				<amounteuro>4|5|6|7|8</amounteuro>
+				<amountcent>12|24|36|48|60|72|84|96</amountcent>
 			</variables>
 			<data genre="4" price="1" quality="10" fictional="1" />
 			<availability year_range_from="2002" />
@@ -9324,12 +9199,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>München|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude</de>
 					<en>Munich|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude</en>
 				</munich>
-				<amountdm>
-					<de>5|6|7|8|9</de>
-				</amountdm>
-				<amountpf>
-					<de>12|24|36|48|60|72|84|96</de>
-				</amountpf>
+				<amountdm>5|6|7|8|9</amountdm>
+				<amountpf>12|24|36|48|60|72|84|96</amountpf>
 			</variables>
 			<data genre="4" price="1" quality="10" fictional="1" />
 			<availability year_range_to="2001" />
