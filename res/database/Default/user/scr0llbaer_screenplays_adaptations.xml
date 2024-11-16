@@ -543,8 +543,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="ed6652ef-7559-48ab-9ee3-a4fbb26fae59" creator="9551" comment="https://en.wikipedia.org/wiki/Umberto_Eco | https://de.wikipedia.org/wiki/Baudolino">
 			<title>
-				<de>${.self:"role":1:"firstname"}</de>
-				<en>${.self:"role":1:"firstname"}</en>
+				<all>${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
 				<de>Baudolino</de>
@@ -2542,8 +2541,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="9eac358b-717a-4a43-a699-71a813833b00" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/Marina_(novel)">
 			<title>
-				<de>${.self:"role":1:"firstname"}</de>
-				<en>${.self:"role":1:"firstname"}</en>
+				<all>${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
 				<de>Marina</de>
@@ -2762,8 +2760,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="e8a3bf50-ab02-43d8-b980-c0fb7234a3b4" creator="9551" comment="https://en.wikipedia.org/wiki/Bruno_Brazil">
 			<title>
-				<de>${.self:"role":1:"fullname"}</de>
-				<en>${.self:"role":1:"fullname"}</en>
+				<all>${.self:"role":1:"fullname"}</all>
 			</title>
 			<title_original>
 				<de>Bruno Brazil</de>
@@ -2800,8 +2797,7 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="d545bf8a-b0f4-4888-978e-2a6561027be0" creator="9551" comment="https://de.wikipedia.org/wiki/Kai_Meyer | https://de.wikipedia.org/wiki/Merle-Zyklus">
 			<title>
-				<de>${.self:"role":1:"firstname"}</de>
-				<en>${.self:"role":1:"firstname"}</en>
+				<all>${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
 				<de>Merle</de>
@@ -2931,8 +2927,7 @@
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="d1a8be89-1ded-49ee-8cb4-47cfd4cc64f9">
 					<title>
-						<de>${.self:"role":1:"fullname"}</de>
-						<en>${.self:"role":1:"fullname"}</en>
+						<all>${.self:"role":1:"fullname"}</all>
 					</title>
 					<title_original>
 						<de>Selina</de>
@@ -2945,8 +2940,7 @@
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="b54f96e8-2ad4-4714-a9ca-6b45a8d8a55d">
 					<title>
-						<de>${.self:"role":5:"firstname"}</de>
-						<en>${.self:"role":5:"firstname"}</en>
+						<all>${.self:"role":5:"firstname"}</all>
 					</title>
 					<title_original>
 						<de>Stark</de>
@@ -2959,8 +2953,7 @@
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="403a5846-8d8b-4d21-87a6-4817ffbf7c4b">
 					<title>
-						<de>${.self:"role":6:"firstname"}</de>
-						<en>${.self:"role":6:"firstname"}</en>
+						<all>${.self:"role":6:"firstname"}</all>
 					</title>
 					<title_original>
 						<de>Slam</de>
@@ -3352,8 +3345,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="56617d57-9cb3-40a8-afb0-e4621524c8f9" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1802533.Miss_Lizzie | translators: the rhyming verse might also be on some on the other language versions of https://en.wikipedia.org/wiki/Lizzie_Borden">
 			<title>
-				<de>Miss ${.self:"role":1:"firstname"}</de>
-				<en>Miss ${.self:"role":1:"firstname"}</en>
+				<all>Miss ${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
 				<de>Miss Lizzie</de>
@@ -4545,8 +4537,7 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="6f362a5a-6730-4772-b964-655d6bb3b6aa">
 					<title>
-						<de>Sound Sister ${.self:"role":2:"firstname"}</de>
-						<en>Sound Sister ${.self:"role":2:"firstname"}</en>
+						<all>Sound Sister ${.self:"role":2:"firstname"}</all>
 					</title>
 					<title_original>
 						<de>Suite Sister Mary</de>
@@ -4734,12 +4725,10 @@
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="be63b350-f1a2-44ad-a139-df3a1145ac12">
 					<title>
-						<de>${.self:"role":4:"fullname"}</de>
-						<en>${.self:"role":4:"fullname"}</en>
+						<all>${.self:"role":4:"fullname"}</all>
 					</title>
 					<title_original>
-						<de>${.self:"role":4:"fullname"}</de>
-						<en>${.self:"role":4:"fullname"}</en>
+						<all>${.self:"role":4:"fullname"}</all>
 					</title_original>
 					<description>
 						<de>${.self:"role":4:"firstname"}s Vergangenheit mit ${.self:"role":6:"firstname"} wird aufgedeckt und die dunklen Geheimnisse, die sie teilen. Als Johnny von ihrer Verbindung erfährt, wird er von Schuldgefühlen und Reue übermannt, was zu Konflikten führt, die den Zusammenhalt der Band gefährden.</de>
@@ -5579,12 +5568,10 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="61661455-9607-44fd-a090-c1caa8ee3205" creator="9551" comment="https://en.wikipedia.org/wiki/Dead_Winter_Dead">
 			<title>
-				<de>${dead} ${winter} in ${sarajevo}</de>
-				<en>${dead} ${winter} in ${sarajevo}</en>
+				<all>${dead} ${winter} in ${sarajevo}</all>
 			</title>
 			<title_original>
-				<de>${title_original_optional}</de>
-				<en>${title_original_optional}</en>
+				<all>${title_original_optional}</all>
 			</title_original>
 			<description>
 				<de>Kriegsdrama über den jungen, enthusiastischen und leicht beeindruckbaren ${.self:"role":1:"firstname"} auf der einen, und die warmherzige, aber resolute ${.self:"role":2:"firstname"} auf der anderen Seite der Front in Jugoslawien, und einen Teufels-${.self:"role":3:"firstname"}en dazwischen.</de>
@@ -5709,12 +5696,10 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="98f1d16e-5a8e-4838-8f3b-a51213062008">
 					<title>
-						<de>${dead} ${winter}</de>
-						<en>${dead} ${winter}</en>
+						<all>${dead} ${winter}</all>
 					</title>
 					<title_original>
-						<de>${title_original_optional}</de>
-						<en>${title_original_optional}</en>
+						<all>${title_original_optional}</all>
 					</title_original>
 					<description>
 						<de>Obwohl der Winter sein Bestes tut, die Landschaft in eine Decke vorübergehender Unschuld zu hüllen, eskaliert der Krieg in Gewalt und Brutalität. ${.self:"role":1:"firstname"} ist auf Patrouille und macht eine grausame Entdeckung...</de>
@@ -6439,12 +6424,10 @@
 
 		<scripttemplate product="1" licence_type="1" guid="352a2fbc-7e7b-462b-a217-34c300043d19" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Maniac_Mansion">
 			<title>
-				<de>${title_spoofed}</de>
-				<en>${title_spoofed}</en>
+				<all>${title_spoofed}</all>
 			</title>
 			<title_original>
-				<de>${title_original_optional}</de>
-				<en>${title_original_optional}</en>
+				<all>${title_original_optional}</all>
 			</title_original>
 			<description>
 				<de>${.self:"role":1:"firstname"}s Freundin ${.self:"role":2:"firstname"} wurde entführt vom verrückten Professor Dr. ${.self:"role":5:"firstname"}! Er und seine Freunde wollen sie aus dessen Villa befreien. Dort gehen noch viel mehr merkwürdige Dinge vor sich! Und wo ist Benzin für die Kettensäge, wenn man's mal braucht.</de>
@@ -6772,12 +6755,10 @@
 					<en>${donkey_o} ${bay_o}</en>
 				</donkeybay_object_reference_original>
 				<mystery_object_reference>
-					<de>${mystery}</de>
-					<en>${mystery}</en>
+					<all>${mystery}</all>
 				</mystery_object_reference>
 				<mystery_object_reference_original>
-					<de>${mystery_o}</de>
-					<en>${mystery_o}</en>
+					<all>${mystery_o}</all>
 				</mystery_object_reference_original>
 				<mystery>
 					<de>Mysterium|Rätsel|Geheimnis</de>
@@ -6807,12 +6788,10 @@
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="b33a635e-d381-4349-9a41-7d2277c5d6da">
 					<title>
-						<de>${hurlyeisland_object_reference}</de>
-						<en>${hurlyeisland_object_reference}</en>
+						<all>${hurlyeisland_object_reference}</all>
 					</title>
 					<title_original>
-						<de>${hurlyeisland_object_reference}</de>
-						<en>${hurlyeisland_object_reference}</en>
+						<all>${hurlyeisland_object_reference}</all>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} ist erstmal auf ${hurlyeisland_object_reference} gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen ${.self:"role":3:"fullname"} vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
@@ -6908,12 +6887,10 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="50d96da4-78ea-497c-8802-bb586d01682b">
 					<title>
-						<de>${donkeybay_object_reference}</de>
-						<en>${donkeybay_object_reference}</en>
+						<all>${donkeybay_object_reference}</all>
 					</title>
 					<title_original>
-						<de>${donkeybay_object_reference}</de>
-						<en>${donkeybay_object_reference}</en>
+						<all>${donkeybay_object_reference}</all>
 					</title_original>
 					<description>
 						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber ${.self:"role":1:"firstname"} trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte Hendrik ist schon seit Jahren gestrandet dort.</de>
@@ -7307,12 +7284,10 @@ The project, which was cancelled by a major producer, is now free to be realized
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" comment="https://en.wikipedia.org/wiki/Commander_Keen | TODO: apply proper nickname references of Ween/Keen once feature is available">
 			<title>
-				<de>${title_spoofed}</de>
-				<en>${title_spoofed}</en>
+				<all>${title_spoofed}</all>
 			</title>
 			<title_original>
-				<de>${title_original_optional}</de>
-				<en>${title_original_optional}</en>
+				<all>${title_original_optional}</all>
 			</title_original>
 			<description>
 				<de>Cartoon-Reihe über den 8-jährigen Wunderknaben ${.self:"role":1:"fullname"}. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu ${captain} ${ween_object_reference} und macht sich auf...</de>
@@ -7510,12 +7485,10 @@ The project, which was cancelled by a major producer, is now free to be realized
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="https://en.wikipedia.org/wiki/Leisure_Suit_Larry | TODO: ref nicknames once feature available">
 			<title>
-				<de>Leather Jacket ${.self:"role":1:"firstname"}, ${ladykiller}</de>
-				<en>Leather Jacket ${.self:"role":1:"firstname"}, ${ladykiller}</en>
+				<all>Leather Jacket ${.self:"role":1:"firstname"}, ${ladykiller}</all>
 			</title>
 			<title_original>
-				<de>${title_original_optional}</de>
-				<en>${title_original_optional}</en>
+				<all>${title_original_optional}</all>
 			</title_original>
 			<description>
 				<de>${.self:"role":1:"firstname"} ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de>
@@ -7523,8 +7496,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 			</description>
 			<variables>
 				<title_original_optional>
-					<de>Leisure Suit ${.self:"role":1:"firstname"}|Leisure Suit ${.self:"role":1:"firstname"}, ${ladykiller}</de>
-					<en>Leisure Suit ${.self:"role":1:"firstname"}|Leisure Suit ${.self:"role":1:"firstname"}, ${ladykiller}</en>
+					<all>Leisure Suit ${.self:"role":1:"firstname"}|Leisure Suit ${.self:"role":1:"firstname"}, ${ladykiller}</all>
 				</title_original_optional>
 				<ladykiller>
 					<de>Ladykiller|Schwerenöter vom Dienst|Reizender Charmeur|Bezaubernder Schmeichler</de>
@@ -7667,12 +7639,10 @@ The project, which was cancelled by a major producer, is now free to be realized
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="0f7053ad-249f-47d3-8302-4853b386bedb" creator="9551" comment="https://en.wikipedia.org/wiki/Counter-Strike:_Global_Offensive with popular maps as episodes">
 			<title>
-				<de>${counteroffensive} - ${global} ${operations}</de>
-				<en>${counteroffensive} - ${global} ${operations}</en>
+				<all>${counteroffensive} - ${global} ${operations}</all>
 			</title>
 			<title_original>
-				<de>${counterstrike} - ${global} ${offensive}</de>
-				<en>${counterstrike} - ${global} ${offensive}</en>
+				<all>${counterstrike} - ${global} ${offensive}</all>
 			</title_original>
 			<description>
 				<de>Hochdramatische Szenen an Schauplätzen auf der ganzen Welt. Kann das Einsatzkommando in letzter Millisekunde die Bombe entschärfen? Die Geisel aus dem Kreuzfeuer der Terroristen befreien? Oder fahren eher letztere die Sympathiepunkte beim Publikum ein?</de>
@@ -8705,14 +8675,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="7d13827e-63c7-4d87-a1e0-73d8a19b16f5">
-					<title>
-						<de>Pilot</de>
-						<en>Pilot</en>
-					</title>
-					<title_original>
-						<de>Pilot</de>
-						<en>Pilot</en>
-					</title_original>
+					<title>Pilot</title>
+					<title_original>Pilot</title_original>
 					<description>
 						<de>Die Ankunft der Außerirdischen und der Integrationsprozess wird in Rückblenden erzählt, während Detective ${.self:"role":1:"firstname"} und sein neuer Partner, der Tenctonese ${.self:"role":2:"firstname"}, ihren ersten Mordfall lösen.</de>
 						<en>The arrival of the aliens and the integration process is told in flashbacks as Detective ${.self:"role":1:"firstname"} and his new partner, Tenctonese ${.self:"role":2:"firstname"}, solve their first murder case.</en>
