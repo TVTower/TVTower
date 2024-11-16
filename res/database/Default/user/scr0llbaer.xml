@@ -488,7 +488,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					</staff>
 				</programme>
 				<programme guid="558eaa7b-690c-41ca-988a-00b98207247e" product="2" licence_type="2" creator="9551">
-					<title>${.self:"cast":2:"firstname"} McVegan</title>
+					<title>
+						<all>${.self:"cast":2:"firstname"} McVegan</all>
+					</title>
 					<description>
 						<de>Und auch von einem Ex-Schauspielstar und Ex-Präsidenten gibt's Neuigkeiten: ${.self:"cast":2:"fullname"} baut Gerüchten zufolge heimlich ein veganes Fast-Food-Imperium auf. „Er ist also doch unser Commander in Leaf,“ rufen begeisterte Veganer weltweit.</de>
 						<en>And there's also news from an ex-acting star and ex-president: ${.self:"cast":2:"fullname"} is rumored to be secretly building a vegan fast food empire. "So he is our Commander in Leaf after all," shout enthusiastic vegans worldwide.</en>
@@ -545,7 +547,9 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					</staff>
 				</programme>
 				<programme guid="36518cf4-419d-4de4-8394-d4fbfe5acf8c" product="2" licence_type="2" creator="9551" comment="Miff used in a previous episode">
-					<title>${.self:"cast":2:"firstname"} Swift</title>
+					<title>
+						<all>${.self:"cast":2:"firstname"} Swift</all>
+					</title>
 					<description>
 						<de>Erneut macht ${.self:"cast":2:"fullname"} von sich reden, als er versucht, seine Fans zu beeindrucken, indem er seine neu entdeckte Leidenschaft für Ballett vorführt. Leider endet seine Swift-Pirouette damit, dass er in eine Requisite kracht und Chaos am Set verursacht.</de>
 						<en>Once again, ${.self:"cast":2:"fullname"} makes a name for himself, as he attempts to impress his fans by showcasing his newfound passion for ballet. Unfortunately, his swift pirouette ends with him crashing into a prop, causing chaos on set.</en>
