@@ -1376,8 +1376,8 @@ Type TDatabaseLoader
 		If Not _adContractConditionKeys
 			_adContractConditionKeys = [..
 				"min_audience", "min_image", "max_image", "target_group", ..
-				"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
-				"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
+				"allowed_programme_flag", "allowed_genre", ..
+				"prohibited_programme_flag", "prohibited_genre" ..
 			]
 		EndIf
 		'do not reset "data" before - it contains the pressure groups
@@ -1388,10 +1388,8 @@ Type TDatabaseLoader
 		adContract.maxImage = 0.01 * data.GetFloat("max_image", adContract.maxImage*100.0)
 		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
 		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
-		adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)
 		adContract.limitedToProgrammeFlag = data.GetInt("allowed_programme_flag", adContract.limitedToProgrammeFlag)
 		adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
-		adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
 		adContract.forbiddenProgrammeFlag = data.GetInt("prohibited_programme_flag", adContract.forbiddenProgrammeFlag)
 		'if only one group
 		'adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)

@@ -704,7 +704,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>The only genuine wok. Authentic from China.</en>
 				<pl>Jedyny oryginalny wok. Autentyczny produkt z Chin.</pl>
 			</description>
-			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
+			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
 			<data infomercial="1" quality="6" repetitions="3" duration="8" profit="460" penalty="600" infomercial_profit="127" fix_infomercial_profit="1" />
 		</ad>
@@ -718,7 +718,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Don't trust just any sect! SUN with money-gone guarantee.</en>
 				<pl>Nie ufaj byle jakiej sekcie! SUN z gwarancją zwrotu pieniędzy.</pl>
 			</description>
-			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
+			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
 			<data infomercial="1" quality="1" repetitions="5" duration="5" profit="500" penalty="1300" infomercial_profit="198" fix_infomercial_profit="1" />
 		</ad>
@@ -732,7 +732,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>From the Cash Van: Cash as Cash can. Your cash into your can now!</en> <!-- orig: Cash as Cash can -->
 				<pl>Z furgonetki Cash Van: Gotówka do puszki. Gotówka do puszki już teraz!</pl>
 			</description>
-			<conditions min_audience="8.3352" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_type="3" prohibited_programme_flag="4" />
+			<conditions min_audience="8.3352" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
 			<data infomercial="1" quality="33" repetitions="7" duration="7" profit="366" penalty="524" infomercial_profit="74" fix_infomercial_profit="1" />
 		</ad>
@@ -817,7 +817,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>We issue checks before you know it!</en>
 				<pl>Wystawiamy czeki, zanim się zorientujesz!</pl>
 			</description>
-			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
+			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="14" repetitions="1" duration="7" profit="500" penalty="2246" infomercial_profit="12" fix_infomercial_profit="1" />
 		</ad>
 
@@ -832,7 +832,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Don't call us - we're on vacation!</en>
 				<pl>Nie dzwoń do nas - jesteśmy na wakacjach!</pl>
 			</description>
-			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
+			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="17" repetitions="6" duration="5" profit="1050" penalty="2930" infomercial_profit="235" fix_infomercial_profit="1" />
 		</ad>
 
@@ -847,7 +847,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Your bank around the corner - and your cash performer.</en>
 				<pl>Twój bank za rogiem - i twój dawca gotówkowy.</pl>
 			</description>
-			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_type="3" prohibited_programme_flag="1" />
+			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="13" repetitions="5" duration="6" profit="750" penalty="1100" infomercial_profit="176" fix_infomercial_profit="1" />
 		</ad>
 
