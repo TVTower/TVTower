@@ -1192,7 +1192,7 @@ I feel good with Dumby.</en>
 				<de>Hol Dir die knalligen Cover für Dein Handy. Vorbei mit drögem Graublau. Jetzt auch für alle Sumens-Modelle verfügbar.</de>
 				<en>Get our flashy covers for your mobile phone. Gone is the dull gray-blue. Now also available for Sumens models.</en>
 			</description>
-			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.8225" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="770" penalty="1100" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" year_range_to="2003" />
 		</ad>
@@ -1205,7 +1205,7 @@ I feel good with Dumby.</en>
 				<de>Deine Stammkneipe mit dem Hauch des Prätentiösen. Bierdeckel an den Wänden zeugen von weitreichender Bierkenntnis des Wirtes.</de>
 				<en>Your favourite pub with a touch of the pretentious. Beermats on the walls testify to the innkeeper's extensive knowledge of beer.</en>
 			</description>
-			<conditions min_audience="0.7805" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="ronny-ad-Lammpion" creator="5578" created_by="Ronny">
@@ -1217,7 +1217,7 @@ I feel good with Dumby.</en>
 				<de>Lustige Laternen in zahlreichen Tierformen. Jetzt neu: Kuh und Marienkäfer. Der Knaller für jeden Kindergeburtstag.</de>
 				<en>Funny lanterns in numerous animal shapes. Brand new: Cow and Ladybug. The cracker for every child's birthday.</en>
 			</description>
-			<conditions min_audience="0.1" min_image="8" target_group="1" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="0.1" min_image="8" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="3800" penalty="4500" infomercial_profit="75" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
@@ -1229,7 +1229,7 @@ I feel good with Dumby.</en>
 				<de>Crazy Beats vom israelischen Star-DJ 4Locke. Jetzt alle 3 Hits auf einem Album.</de>
 				<en>Crazy beats from Israelic star DJ Meshugge. Now all 3 hits on one Album.</en>
 			</description>
-			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.8225" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="770" penalty="1200" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1992" year_range_to="1995" />
 		</ad>
@@ -1242,7 +1242,7 @@ I feel good with Dumby.</en>
 				<de>Handgemachter Käse von hoch in den Alpen. Bärtige Senner, Sonne, saftige Wiesen und glückliche Kühe liefern den Gaumenschmaus für einen jeden Stadtmenschen.</de>
 				<en>Handmade cheese from high up in the Alps. Bearded dairymen, the sun, lush meadows and happy cows provide the palate for any city dweller.</en>
 			</description>
-			<conditions min_audience="1.041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.041" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="21" repetitions="7" duration="6" profit="1050" penalty="2024" infomercial_profit="85" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="ronny-ad-Veggismecki" creator="5578" created_by="Ronny">
@@ -1254,7 +1254,7 @@ I feel good with Dumby.</en>
 				<de>Leckere Tofutörtchen für den Vegetarier von heute. Alle Tofutiere werden artgerecht gehalten und mit Biofutter aufgezogen.</de>
 				<en>Delicious tofu tarts for the contemporary vegetarian. All tofu livestock is kept species-appropriate and reared with organic feed.</en>
 			</description>
-			<conditions min_audience="2.6041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="2.6041" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="27" repetitions="6" duration="5" profit="690" penalty="1200" infomercial_profit="80" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="ronny-ad-Wackeldackel02">
@@ -1266,7 +1266,7 @@ I feel good with Dumby.</en>
 				<de>Wir verkaufen nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
 				<en>We sell nothing but nodding dogs. But at unrivaled low prices. Brand new: the dwarf dachshund in 1:1 scale.</en>
 			</description>
-			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="19" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="55" fix_infomercial_profit="1" />
 			<availability year_range_from="1973" year_range_to="1988" />
 		</ad>
@@ -1279,7 +1279,7 @@ I feel good with Dumby.</en>
 				<de>Wir verkaufen wieder nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
 				<en>We still sell nothing but nodding dogs. But at unrivaled low prices. Brand new: the dwarf dachshund in 1:1 scale.</en>
 			</description>
-			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2008" />
 		</ad>
@@ -1330,7 +1330,7 @@ I feel good with Dumby.</en>
 				<de>Sie hassen es, keinen Finger krumm zu machen? SOS Arthritis lindert die Beschwerden innerhalb weniger Stunden. Jetzt bestellen und 1 Flasche Schlangenöl umsonst dazubekommen.</de>
 				<en>You hate not lifting a finger? SOS Arthritis relieves the discomfort within a few hours. Order now and get 1 bottle of snake oil for free.</en>
 			</description>
-			<conditions min_audience="2.86" min_image="12" target_group="64" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="2.86" min_image="12" target_group="64" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="12" repetitions="4" duration="3" profit="685" penalty="990" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="ronny-ad-bargeld-01" creator="5578" created_by="Ronny">
@@ -1513,7 +1513,7 @@ Erhältlich in jeder gut sortierten Drogerie.</de>
 				<en>Decorate lips, eyelids and even walls. Tried and tested by women and children!
 Available in any well-stocked drugstore.</en>
 			</description>
-			<conditions min_audience="1.82" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="1" duration="3" profit="771" penalty="900" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="ronny-ad-speckfett-01" creator="5578" created_by="Ronny">
@@ -1525,7 +1525,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Griebenschmalz aus dem Erzgebirge! Von stark behaarten Männern empfohlen. „Ruff off de Bemme“ seit 1951.</de>
 				<en>Greaves lard from the Ore Mountains! Recommended by heavily haired men. "Just this and bread" since 1951.</en>
 			</description>
-			<conditions min_audience="1.8225" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.8225" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="8" repetitions="3" duration="3" profit="828" penalty="1155" infomercial_profit="115" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
@@ -1560,7 +1560,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Wir suchen uns eine neue Erde. Macht's gut und danke für den Fisch. Eure Delphine.</de>
 				<en>We are looking for a new earth. Take care and thanks for the fish. Your dolphins.</en>
 			</description>
-			<conditions min_audience="46.89" min_image="0" target_group="0" allowed_programme_type="0" prohibited_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="46.89" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="7" profit="170" penalty="453" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1999" year_range_to="2000" />
 		</ad>
@@ -1572,7 +1572,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Die vollwertige Bio-Mahlzeit aus der Tube. Schmeckt wie bei Muttern, krümelt nicht und sooo gesund! Ideal für lange Zockerpartien.</de>
 				<en>The wholesome organic meal from the tube. Tastes like the food at home from mother, does not crumble and is sooo healthy! Ideal for long gaming sessions.</en>
 			</description>
-			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.3015" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1050" penalty="1600" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="sjaele-ad-Macht-nischt" creator="7430" created_by="Sjaele">
@@ -1584,7 +1584,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Das dicke Ausredenbuch. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
 				<en>The thick book of excuses. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
 			</description>
-			<conditions min_audience="2.86" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="105" fix_infomercial_profit="1" />
 			<availability year_range_to="1998" />
 		</ad>
@@ -1597,7 +1597,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Der Online-Shop. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
 				<en>The online shop. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
 			</description>
-			<conditions min_audience="2.86" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="100" fix_infomercial_profit="1" />
 			<availability year_range_from="1999" />
 		</ad>
@@ -1610,7 +1610,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Kein Bock mehr auf den Alten? Ratz-Fatz-Scheidungshotline. Wir liefern Gründe, Anlässe, Anwälte und Schuldfreigarantie!</de>
 				<en>Tired of your old man? Call the Hassle Frazzle divorce hotline. We provide reasons, causes, attorneys and a not-guilty guarantee!</en>
 			</description>
-			<conditions min_audience="11.4612" min_image="4" target_group="128" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="11.4612" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="322" penalty="504" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="sjaele-ad-Umrechner02" creator="7430" created_by="Sjaele">
@@ -1622,7 +1622,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Das Handbuch zum Umrechnen von D-Mark in Mark der DDR! Für alle, die's genau wissen wollen. Weil früher alles besser war. Und billiger?</de>
 				<en>The manual for converting Deutsche Mark (DEM) into East German mark (DDM)! For all who want to know things precisely. Because everything was better in the old days. And cheaper?</en>
 			</description>
-			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="2002" />
 		</ad>
@@ -1635,7 +1635,7 @@ Available in any well-stocked drugstore.</en>
 				<de>Die Webseite zum Umrechnen von Euro in D-Mark! Für alle, die's genau wissen wollen. Weil früher alles besser war.</de>
 				<en>The website for converting Euro (EUR) into Deutsche Mark (DEM). For all who want to know things precisely. Because everything was better in the old days.</en>
 			</description>
-			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="440" penalty="697" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="2003" />
 		</ad>

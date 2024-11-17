@@ -318,7 +318,7 @@ Burger vom Holzkohlegrill auf die richtige Art. Jetzt mit Extra Big-Ass Pommes.<
 
 Char-grilled burgers the right way. Now with Extra Big-Ass Fries.</en>
 			</description>
-			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="1.3015" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1050" penalty="1600" infomercial_profit="50" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="9175d090-17bd-4786-823a-cc6b0080d480" creator="9551" comment="https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/ZMHfBobgLSI">
@@ -530,7 +530,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 				<de>Endlich normale Leute! Die galaktische Gemeinschaft von Lebewesen, benannt nach der Göttin der... Moment mal, wer hat denn den Namen ausgesucht, sagt mal habt ihr sie noch alle!? Da war wohl der Zensor pinkeln.</de>
 				<en>Finally normal people! The galactic community of living beings, named after the goddess of... Wait a minute, who chose that name, have you all lost your marbles!? The censor must have gone for a pee.</en>
 			</description>
-			<conditions min_audience="0.7805" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
 			<availability year_range_from="1981" />
 		</ad>
