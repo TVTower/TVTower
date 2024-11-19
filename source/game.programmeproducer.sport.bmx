@@ -139,13 +139,13 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		'add sports information and parse potential expressions
 		programmeData._ParseScriptExpressions(programmeData.title, False) 'False => directly manipulate .title
 		programmeData._ParseScriptExpressions(programmeData.description, False)
-		programmeData._ParseScriptExpressions(programmeData.descriptionAiredHint, False)
+		programmeData._ParseScriptExpressions(programmeData.descriptionAirtimeHint, False)
 		programmeData._ParseScriptExpressions(programmeData.descriptionAiredHint, False)
 
 		'Set first char to Upper case
 		programmeData.title.UCFirstAllEntries()
 		programmeData.description.UCFirstAllEntries()
-		programmeData.descriptionAiredHint.UCFirstAllEntries()
+		programmeData.descriptionAirtimeHint.UCFirstAllEntries()
 		programmeData.descriptionAiredHint.UCFirstAllEntries()
 
 
@@ -225,6 +225,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		Local localeIDs:Int[] = [TLocalization.currentLanguageID, TLocalization.defaultLanguageID]
 		For Local localeID:Int = EachIn localeIDs
 			programmeData.title.Set("%LEAGUENAMESHORT%: %MATCHNAMESHORT%", localeID )
+			'TODO sollte das nicht für alle Sprachen gemacht werden, nicht nur für 2
 			programmeData.description.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , localeID )
 		Next
 
