@@ -225,7 +225,6 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		Local localeIDs:Int[] = [TLocalization.currentLanguageID, TLocalization.defaultLanguageID]
 		For Local localeID:Int = EachIn localeIDs
 			programmeData.title.Set("%LEAGUENAMESHORT%: %MATCHNAMESHORT%", localeID )
-			'TODO sollte das nicht für alle Sprachen gemacht werden, nicht nur für 2
 			programmeData.description.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , localeID )
 		Next
 
