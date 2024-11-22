@@ -231,6 +231,7 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 					'this avoids having a random "text" on eeach dynamic text
 					'refresh
 					If not description.HasLanguageID( TLocalization.currentLanguageID )
+						'TODO SPORT_PROGRAMME_MATCH_DESCRIPTION benötigt trim und ucfirst *nach* der Variablenersetzung und *vor* dem Konkatenieren
 						If leagueGUID
 							description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , TLocalization.currentLanguageID )
 						Else

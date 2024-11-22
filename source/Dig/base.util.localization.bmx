@@ -1010,7 +1010,7 @@ endrem
 	
 	Method UCFirstAllEntries()
 		For local i:int = EachIn valueLangIDs
-			Set(StringHelper.UCFirst(Get(i), i))
+			Set(StringHelper.UCFirst( Get(i, False) ), i)
 		Next
 	End Method
 End Type
