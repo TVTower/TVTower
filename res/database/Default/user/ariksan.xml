@@ -4,8 +4,7 @@
 	<scripttemplates>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-mkw" creator="9621" comment="inspired by German realtor docu soaps">
 			<title>
-				<de>${title} (${randomcity})</de>
-				<en>${title} (${randomcity})</en>
+				<all>${title} (${randomcity})</all>
 			</title>
 			<description>
 				<de>Makler versuchen Wohnungen und Häuser an Kunden mit ungewöhnlichen Ansprüchen zu verkaufen oder zu vermieten. Ob Geisterjäger oder Zirkusartisten - die skurrilen Kunden lassen die Makler an ihre Grenzen gehen und sorgen für jede Menge Unterhaltung.</de>
@@ -16,19 +15,15 @@
 					<de>Träumen, Planen, Pleitegehen|Zoff, Zank, Abbruchbude|Himmel, Hölle, Hinterhof|Pech, Pannen, Pfusch|Vermieten, Verkaufen, Verzweifeln|Rausch, Reue, Ratenzahlung|Luxus, Lügen, Leerstand|Wohnen, Wunder, Wahnsinn|Traumhaus, Tränen, Trennungsschmerz|Schimmel, Schäden, Rost|Düster, Trostlos, Öde|Ratenzahlung, Rost, Bankrott|Suchen, Finden, Blechen|Renovieren, Sanieren, Abkassieren</de>
 					<en>Dreaming, Planning, Bankruptcy|Conflict, Quarrel, Breakdown|Cheating, Building, Bankruptcy|Luxury, Lies, Vacancy|Excess, Regret, Installment Plan|Miracle, Madness, Living|Cheap, Big, Dangerous|Rent, Spent, Repent|Bore, Explore, Adore|Sign, Align, Decline|Rent, Buy, Cry|Live, Obtain, Groan|Lease, Purchase, Debt|Place, Embrace, Palatial-Grace</en>
 				</title>
-				<randomcity>
-					<de>${.stationmap:"randomcity"}</de>
-				</randomcity>
+				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-mkw01">
 					<title>
-						<de>${titleprefix} ${wohnobjekt}</de>
-						<en>${titleprefix} ${wohnobjekt}</en>
+						<all>${titleprefix} ${wohnobjekt}</all>
 					</title>
 					<description>
-						<de>${wohn${wohnselector}}</de>
-						<en>${wohn${wohnselector}}</en>
+						<all>${wohn${wohnselector}}</all>
 					</description>
 					<variables>
 						<suchende_person>
@@ -56,16 +51,14 @@
 							<en>tries to sell ${wohnobjekt} to ${suchende_person2}|tries to rent out a ${wohnobjekt} to ${suchende_person2}|tries to foist ${wohnobjekt} upon ${suchende_person2}</en>
 						</artofthedeal>
 						<wohnsucher>
-							<de>${suchende_person} ${wohnobjekt} ${wohngrund}</de>
-							<en>${suchende_person} ${wohnobjekt} ${wohngrund}</en>
+							<all>${suchende_person} ${wohnobjekt} ${wohngrund}</all>
 						</wohnsucher>
 						<wohnfinder>
 							<de>Der Makler versucht, ${suchende_person2} ${wohnobjekt} ${artofthedeal}.</de>
 							<en>The realtor ${artofthedeal}.</en>
 						</wohnfinder>
 						<wohnselector>
-							<de>finder|sucher</de>
-							<en>finder|sucher</en>
+							<all>finder|sucher</all>
 						</wohnselector>
 					</variables>
 					<episodes value="8" />
@@ -126,8 +119,7 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-flavor" creator="9621" comment="very loosely inspired by kitchen nightmares TODO change job to chef when available">
 			<title>
-				<de>${title} - ${currentyear} Edition</de>
-				<en>${title} - ${currentyear} Edition</en>
+				<all>${title} - ${currentyear} Edition</all>
 			</title>
 			<description>
 				<de>Mutige Köche stürzen sich in kulinarische Missgeschicke. Von schrägen Kombinationen bis zu absurden Geschmacksexperimenten - ein Fest der Gaumenverwirrung und ein Fiasko für den guten Geschmack!</de>
@@ -138,9 +130,7 @@
 					<de>Geschmacksdesaster|Essensrausch|Küchenkatastrophen|Kulinarische Katastrophen|Das Küchenchaos|Die Gourmet-Patzer|Kulinarische Gemetzel|Das Feinschmecker-Experiment|Food Fiasco|Kulinarischer Kataklysmus|Geschmacksversagen|Menü Mayhem|Küchenkataklysmus|Rezeptdesaster</de>
 					<en>Flavor Fiasco|Food Frenzy|Kitchen Catastrophes|Culinary Calamities|Cooking Chaos|Gourmet Gaffes|Culinary Carnage|Chef's Nightmares|Food Fiasco|Cuisine Cataclysm|Flavor Failures|Menu Mayhem|Kitchen Cataclysm|Recipe Reckoning</en>
 				</title>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-flavor01">
@@ -192,8 +182,7 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-storage" creator="9621" comment="inspired by storage wars">
 			<title>
-				<de>${title} ${currentyear} Edition</de>
-				<en>${title} ${currentyear} Edition</en>
+				<all>${title} ${currentyear} Edition</all>
 			</title>
 			<description>
 				<de>Begleiten Sie eine Gruppe von „Schatzjägern“ in einem erbitterten Kampf um vergessenen Trödel und wertlosen Gerümpel. In verstaubten Lagereinheiten wird jeder Ramsch zur potenziellen Goldgrube!</de>
@@ -204,27 +193,15 @@
 					<de>Schrott-Spektakel|Kram-Konundrum|Trödelkriege|Schrottkriege|Schrott-Schlacht</de>
 					<en>Trash Treasures|Storage Mayhem|Clutter Clash|Dumpster Dazzle|Junk Journey</en>
 				</title>
-				<person1>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person1>
-				<person2>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person2>
-				<person3>
-					<de>${.persongenerator:"firstname":"it":"male"}</de>
-				</person3>
-				<person4>
-					<de>${.persongenerator:"firstname":"de":"female"}</de>
-				</person4>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<person1>${.persongenerator:"firstname":"us":"male"}</person1>
+				<person2>${.persongenerator:"firstname":"us":"female"}</person2>
+				<person3>${.persongenerator:"firstname":"it":"male"}</person3>
+				<person4>${.persongenerator:"firstname":"de":"female"}</person4>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-storage-01">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
 						<de>${person1} und ${person2} zanken sich mit ${person3} um ${treasure}. ${person4} hat Glück im Unglück und kann ${junk} verhökern.</de>
 						<en>${person1} und ${person2} get into a fight with ${person3} over ${treasure}. ${person4} has luck in misfortune and sells off ${junk}.</en>
@@ -241,18 +218,14 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-storage-02">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
 						<de>Der Auktionator hat sich verfahren. Also übernimmt ${person4} seine Rolle. Chaos pur! ${person1} und ${person2} bieten mit ${person3} um die Wette.</de>
 						<en>The auctioneer has gotten lost. ${person4} takes over his role. Chaos ensues! ${person1} and ${person2} compete against ${person3}.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-storage-03">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
 						<de>${person1} und ${person2} haben sich zerstritten und bieten heute gegeneinander. ${person4} zieht den Jackpot und sichert sich ${treasure}.</de>
 						<en>${person1} and ${person2} have had a falling out and are bidding against each other. ${person4} hits the jackpot and secures ${treasure}.</en>
@@ -265,9 +238,7 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-storage-04">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<!--TODO soll treasure hier der gleiche Gegenstand wie in der vorigen Folge sein?-->
 					<description>
 						<de>${person1} und ${person2} haben sich noch immer nicht versöhnt. ${person3} kippt einen Kaffee auf ${treasure}.</de>
@@ -281,9 +252,7 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-storage-05">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
 						<de>${person1} und ${person2} haben sich insgeheim versöhnt und tricksen alle aus. Sie finden ${treasure}.</de>
 						<en>${person1} and ${person2} have secretly reconciled and outsmart the others, finding ${treasure}.</en>
@@ -296,9 +265,7 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-storage-06">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
 						<de>Ein neuer Bieter räumt ab. ${person1}, ${person2} und ${person4} sehen zu, wie er ${treasure} findet.</de>
 						<en>A new bidder outbids everyone. ${person1}, ${person2} and ${person4} watch as he walks away with ${treasure}.</en>
@@ -311,18 +278,14 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-storage-07">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
 						<de>Skandal, der neue Bieter ist da. ${person1} und ${person2} schäumen vor Wut. ${person4} schafft es doch noch eine Lagereinheit zu ergattern.</de>
 						<en>The new bidder returns triumphantly. Frustration boils within ${person1} and ${person2}. However, ${person4} manages to secure a storage unit.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-storage-08">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
 						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit ${person3} in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>
 						<en>Hilarity ensues as it turns out that the new bidder is, in fact, ${person3} in a genius disguise. Everyone laughs hysterically.</en>
@@ -358,9 +321,7 @@
 				<en>Fun and facts with the ${animal} and the tiny ${animal2}. Children explore the world with the ${adjective} ${animal} and the tiny ${animal2} who also present funny clips and stories.</en>
 			</description>
 			<variables>
-				<variant>
-					<de>m|w</de>
-				</variant>
+				<variant>m|w</variant>
 				<tier_m>
 					<de>Kautz|Strauß|Tiger|Schwan|Jaguar|Fuchs|Wolf|Widder|Hund|Gorilla|Hahn</de>
 					<en>Rook|Ostrich|Tiger|Swan|Jaguar|Fox|Wolf|Ram|Dog|Gorilla|Rooster</en>
@@ -369,6 +330,7 @@
 					<de>Laus|Katze|Gans|Möwe|Schlange|Ziege|Biene|Hummel|Taube|Ente|Spinne|Giraffe</de>
 					<en>Louse|Cat|Goose|Gull|Snake|Goat|Bee|Bumblebee|Dove|Duck|Spider|Giraffe</en>
 				</tier_w>
+				<!--leaving pattern for language sepcific grammar forms even if used only in German for now-->
 				<dativ_m>
 					<de>dem</de>
 				</dativ_m>
@@ -382,7 +344,7 @@
 					<de>Die</de>
 				</nominativ_w>
 				<animal>
-					<en>${tier_${variant}}</en>
+					<all>${tier_${variant}}</all>
 				</animal>
 				<animal2>
 					<de>Nashorn|Flusspferd|Pferd|Stachelschwein|Schaf|Huhn|Kamel|Walross|Krokodil</de>
@@ -484,27 +446,14 @@
 			</description>
 			<variables>
 				<title>
-					<de>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</de>
-					<en>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</en>
+					<all>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</all>
 				</title>
-				<person1_m>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person1_m>
-				<person2_m>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person2_m>
-				<person3_m>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person3_m>
-				<person1_w>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person1_w>
-				<person2_w>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person2_w>
-				<person3_w>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person3_w>
+				<person1_m>${.persongenerator:"firstname":"us":"male"}</person1_m>
+				<person2_m>${.persongenerator:"firstname":"us":"male"}</person2_m>
+				<person3_m>${.persongenerator:"firstname":"us":"male"}</person3_m>
+				<person1_w>${.persongenerator:"firstname":"us":"female"}</person1_w>
+				<person2_w>${.persongenerator:"firstname":"us":"female"}</person2_w>
+				<person3_w>${.persongenerator:"firstname":"us":"female"}</person3_w>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-bever-01">

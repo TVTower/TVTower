@@ -48,11 +48,7 @@
 		-->
 	<allprogrammes>
 		<programme guid="nichtdiebetty-programme-helgoland-01" product="4" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
-			<title>
-				<de>Helgoland</de>
-				<en>Helgoland</en>
-				<pl>Helgoland</pl>
-			</title>
+			<title>Helgoland</title>
 			<description>
 				<de>Gezeigt werden alle Sehenswürdigkeiten. Die Lange Anna. Die Lummen. Jede. In Nahaufnahme.
 Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>

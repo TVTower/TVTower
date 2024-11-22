@@ -5,12 +5,10 @@
 	<scripttemplates>
 		<scripttemplate product="1" licence_type="1" guid="ab31c2dd-46f4-4736-81b7-830c73af9ddf" creator="discord/eggi72" comment="https://en.wikipedia.org/wiki/Nathan_Hill_(writer) | https://www.goodreads.com/book/show/65650229-wellness">
 			<title>
-				<de>Hellness</de>
-				<en>Hellness</en>
+				<all>Hellness</all>
 			</title>
 			<title_original>
-				<de>Wellness</de>
-				<en>Wellness</en>
+				<all>Wellness</all>
 			</title_original>
 			<description>
 				<de>${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"}, ungleiches Paar in der Kunstszene Chicagos, kämpfen gegen Eheprobleme. Zwischen Achtsamkeitsseminaren und Immobilienträumen müssen sie ihre Vergangenheit bewältigen, um ihre Liebe zu retten.</de>

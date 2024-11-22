@@ -945,9 +945,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			<!-- usage of ${.stationmap:"randomcity"} in the text directly, will lead to a different random city
 				 in title than in the description - so we use variables as this caches the output of the first city -->
 			<variables>
-				<cityname>
-					<de>${.stationmap:"randomcity"}</de>
-				</cityname>
+				<cityname>${.stationmap:"randomcity"}</cityname>
 			</variables>
 			<data genre="5" price="0.9" quality="28" />
 		</news>
@@ -957,9 +955,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 		<!-- product="3" => "Show" -->
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-musiksterneamabend">
 			<title>
-				<de>${WHAT} ${WHEN}</de>
-				<en>${WHAT} ${WHEN}</en>
-				<pl>${WHAT} ${WHEN}</pl>
+				<all>${WHAT} ${WHEN}</all>
 			</title>
 			<description>
 				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
@@ -1002,9 +998,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
 			<title>
-				<de>${SHOWNAME}</de>
-				<en>${SHOWNAME}</en>
-				<pl>${SHOWNAME}</pl>
+				<all>${SHOWNAME}</all>
 			</title>
 			<description>
 				<de>Aufgewacht das Bettchen kracht. Lockere Morgenunterhaltung für alle - vom Frühaufsteher bis zum arbeitslosen Langschläfer.</de>
@@ -1044,15 +1038,15 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above" comment="TODO: episode descriptions">
 			<title>
-				<de>${maintitle}</de>
+				<all>${maintitle}</all>
 			</title>
 			<description>
-				<de>${maindescription}</de>
+				<all>${maindescription}</all>
 			</description>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-from-above-eps">
 					<title>
-						<de>${episodetitle}</de>
+						<all>${episodetitle}</all>
 					</title>
 					<variables>
 						<episodetitle>
@@ -1111,15 +1105,12 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-visiting">
 			<title>
-				<de>${ttl}</de>
-				<en>${ttl}</en>
-				<pl>${ttl}</pl>
+				<all>${ttl}</all>
 			</title>
-			<description>
-				<!--no description at all: first episode's description is shown for series-->
-				<de></de>
-				<en></en>
-			</description>
+			
+			<!--no description at all: first episode's description is shown for series-->
+			<!--TODO test that empty description still works as expected-->
+			<description></description>
 			<variables>
 				<ttl>
 					<de>Zu Gast in ${cntry}|Reise durch ${cntry}|Auf Achse in ${cntry}|Leben in ${cntry}|Sehenswertes ${cntry}|Faszination ${cntry}|Blickpunkt ${cntry}</de>
@@ -1317,9 +1308,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-world">
 			<title>
-				<de>${ttl}</de>
-				<en>${ttl}</en>
-				<pl>${ttl}</pl>
+				<all>${ttl}</all>
 			</title>
 			<description>
 				<de>Folgen Sie uns auf einer Reise um die Welt. ${subject} findet man auch in Ländern, in denen man sie nicht vermutet hätte.</de>
@@ -1329,13 +1318,10 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-world-eps" comment="TODO: English title vs text casings">
 					<title>
-						<de>${epttl}</de>
-						<en>${epttl}</en>
-						<pl>${epttl}</pl>
+						<all>${epttl}</all>
 					</title>
 					<description>
-						<de>${dsc}</de>
-						<en>${dsc}</en>
+						<all>${dsc}</all>
 						<pl>Podróże przez świat. Poznajemy różne kraje. ${dsc}</pl>
 					</description>
 					<variables>
@@ -1366,23 +1352,19 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 					<pl>Kraje świata</pl>
 				</ttl>
 				<subject>
-					<de>${sbj_${variant}}</de>
-					<en>${sbj_${variant}}</en>
+					<all>${sbj_${variant}}</all>
 					
 				</subject>
 				<adjective>
-					<de>|${adj_${variant}} </de>
-					<en>|${adj_${variant}} </en>
+					<all>|${adj_${variant}} </all>
 					
 				</adjective>
 				<variant>
-					<de>bf|best|bi|big|bigb</de>
-					<en>bf|best|bi|big|bigb</en>
+					<all>bf|best|bi|big|bigb</all>
 					
 				</variant>
 				<adj_bf>
-					<de>${beautiful}</de>
-					<en>${beautiful}</en>
+					<all>${beautiful}</all>
 					
 				</adj_bf>
 				<sbj_bf>
@@ -1391,8 +1373,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 					
 				</sbj_bf>
 				<adj_best>
-					<de>${best}</de>
-					<en>${best}</en>
+					<all>${best}</all>
 					
 				</adj_best>
 				<sbj_best>
@@ -1401,8 +1382,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 					
 				</sbj_best>
 				<adj_bi>
-					<de>${best}|${important}</de>
-					<en>${best}|${important}</en>
+					<all>${best}|${important}</all>
 					
 				</adj_bi>
 				<sbj_bi>
@@ -1411,8 +1391,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 					
 				</sbj_bi>
 				<adj_big>
-					<de>${big}</de>
-					<en>${big}</en>
+					<all>${big}</all>
 					
 				</adj_big>
 				<sbj_big>
@@ -1421,8 +1400,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 					
 				</sbj_big>
 				<adj_bigb>
-					<de>${big}|${beautiful}</de>
-					<en>${big}|${beautiful}</en>
+					<all>${big}|${beautiful}</all>
 					
 				</adj_bigb>
 				<sbj_bigb>

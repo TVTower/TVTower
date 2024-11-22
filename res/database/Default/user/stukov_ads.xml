@@ -138,9 +138,7 @@
 
 		<ad guid="3291c7ea-02b3-45ca-8d8f-9cfa74176e8a" comment="https://en.wikipedia.org/wiki/Schneider_Rundfunkwerke | from Mad TV as 'Schneider'">
 			<title>
-				<de>Schnitzler</de>
-				<en>Schnitzler</en>
-				<pl>Schnitzler</pl>
+				<all>Schnitzler</all>
 			</title>
 			<description>
 				<de>Schnitzler-Computer: Jetzt mit drei RegenbogenWünsche-Spielen!</de>
@@ -441,9 +439,7 @@
 
 		<ad guid="7546a9b0-1990-4434-9164-b4c77f6e0608" comment="descriptions from Mad TV but title is different to provide variations to the already existing TVTower Duban ads">
 			<title>
-				<de>Duban Resort</de>
-				<en>Duban Resort</en>
-				<pl>Duban Resort</pl>
+				<all>Duban Resort</all>
 			</title>
 			<description>
 				<de>Mach Urlaub in Duban - Baden, Sonnen, Erdöl graben.</de>
@@ -484,9 +480,7 @@
 
 		<ad guid="f6eaf73a-b75b-4ef6-8134-1c9bfe62a5d2" comment="from Mad TV">
 			<title>
-				<de>Doggy</de>
-				<en>Doggy</en>
-				<pl>Doggy</pl>
+				<all>Doggy</all>
 			</title>
 			<description>
 				<de>Verwöhnen Sie ihr Hundchen mit Doggy!</de>
@@ -752,9 +746,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="a829e080-3657-42f5-9dc1-44a3d89700d0" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi'">
 			<title>
-				<de>Pipsi Cola</de>
-				<en>Pipsi Cola</en>
-				<pl>Pipsi Cola</pl>
+				<all>Pipsi Cola</all>
 			</title>
 			<description>
 				<de>Das schmeckt! Für die junge Brut.</de> <!-- Die schmeckt! -->

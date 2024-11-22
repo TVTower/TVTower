@@ -224,11 +224,7 @@
 					<en>Shadowstar|Isa|Lightbiter|Ipsep|Noc|Autumnstar</en>
 					<pl>Cienista Gwiazda|Isa|Lekkigryzak|Ipsep|Noc|Jesienna Gwiazda</pl>
 				</Gott>
-				<Goblin>
-					<de>Jig|Braf|Relka|Grell</de>
-					<en>Jig|Braf|Relka|Grell</en>
-					<pl>Jig|Braf|Relka|Grell</pl>
-				</Goblin>
+				<Goblin>Jig|Braf|Relka|Grell</Goblin>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -271,26 +267,10 @@
 				<pl>Próba filmowej adaptacji gry komputerowej, a przynajmniej walki z potworami. ${Class1}, ${Class2}, ${Class3} i ${Class4} próbują przetrwać. Jayne Wune użycza swojego głosu, a może to tylko nagranie?</pl>
 			</description>
 			<variables>
-				<Class1>
-					<de>Grave Robber|Crusader|Arbalest</de>
-					<en>Grave Robber|Crusader|Arbalest</en>
-					<pl>Grave Robber|Crusader|Arbalest</pl>
-				</Class1>
-				<Class2>
-					<de>Bounty Hunter|Hellion|Highwayman</de>
-					<en>Bounty Hunter|Hellion|Highwayman</en>
-					<pl>Bounty Hunter|Hellion|Highwayman</pl>
-				</Class2>
-				<Class3>
-					<de>Houndmaster|Jester|Man-at-Arms</de>
-					<en>Houndmaster|Jester|Man-at-Arms</en>
-					<pl>Houndmaster|Jester|Man-at-Arms</pl>
-				</Class3>
-				<Class4>
-					<de>Occultist|Plague Doctor|Vestal|Flagellant</de>
-					<en>Occultist|Plague Doctor|Vestal|Flagellant</en>
-					<pl>Occultist|Plague Doctor|Vestal|Flagellant</pl>
-				</Class4>
+				<Class1>Grave Robber|Crusader|Arbalest</Class1>
+				<Class2>Bounty Hunter|Hellion|Highwayman</Class2>
+				<Class3>Houndmaster|Jester|Man-at-Arms</Class3>
+				<Class4>Occultist|Plague Doctor|Vestal|Flagellant</Class4>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -331,16 +311,8 @@
 				<pl>Nadchodzi z ogniem i burzą, a wraz z jego pojawieniem się nadchodzą ostatnie dni ludzkości. Legenda staje się rzeczywistością, czego doświadczają rzeźnik ${RoleMale} i autostopowiczka ${RoleFemale}.</pl>
 			</description>
 			<variables>
-				<RoleMale>
-					<de>Brenner|Heidmann|Baumann|Schmidt</de>
-					<en>Brenner|Heidmann|Baumann|Schmidt</en>
-					<pl>Brenner|Heidmann|Baumann|Schmidt</pl>
-				</RoleMale>
-				<RoleFemale>
-					<de>Astrid|Charlotte|Nicole|Christiane</de>
-					<en>Astrid|Charlotte|Nicole|Christiane</en>
-					<pl>Astrid|Charlotte|Nicole|Christiane</pl>
-				</RoleFemale>				
+				<RoleMale>Brenner|Heidmann|Baumann|Schmidt</RoleMale>
+				<RoleFemale>Astrid|Charlotte|Nicole|Christiane</RoleFemale>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
