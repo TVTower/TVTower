@@ -1010,10 +1010,7 @@ endrem
 	
 	Method UCFirstAllEntries()
 		For local i:int = EachIn valueLangIDs
-			If i < valueStrings.length And valueStrings[i]
-				valueStrings[i] = StringHelper.UCFirst(valueStrings[i])
-			EndIf
-			valueCachedLanguageID = -2
+			Set(StringHelper.UCFirst( Get(i, False) ), i)
 		Next
 	End Method
 End Type
