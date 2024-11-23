@@ -435,5 +435,102 @@
 			</rewards>
 			<data flags="0" group="5" category="2" index="1" />
 		</achievement>
+
+		<achievement guid="tvt-gameachievement-blockbuster1" creator="ani">
+			<title>
+				<de>Blockbuster „Bronze“</de>
+				<en>Blockbuster "Bronze"</en>
+				<pl>Blockbuster „Brązowy”</pl>
+			</title>
+			<text>
+				<de>Erreiche eine Einschaltquote von 40% (20 und 21 Uhr)</de>
+				<en>Achieve an audience rating of 40% (8pm and 9pm)</en>
+			</text>
+			<tasks>
+				<task guid="tvt-gameachievement-task-blockbuster1-20" >
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="20" checkMinute="5" />
+				</task>
+				<task guid="tvt-gameachievement-task-blockbuster1-21" >
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="21" checkMinute="5" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward guid="tvt-gameachievement-reward-blockbuster1">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="100000" />
+				</reward>
+			</rewards>
+			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
+			<data flags="2" group="6" category="1" index="1" sprite_finished="gfx_datasheet_achievement_img_level1" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+		</achievement>
+		<achievement guid="tvt-gameachievement-blockbuster2" creator="ani">
+			<title>
+				<de>Blockbuster „Silber“</de>
+				<en>Blockbuster "Silver"</en>
+				<pl>Blockbuster „Srebrny”</pl>
+			</title>
+			<text>
+				<de>Erreiche eine Einschaltquote von 55% (20 - 22 Uhr)</de>
+				<en>Achieve an audience rating of 55% (8pm - 10pm)</en>
+			</text>
+			<tasks>
+				<task guid="tvt-gameachievement-task-blockbuster2-20" >
+					<data type="reachAudience" minAudienceQuote="0.55" checkHour="20" checkMinute="5" />
+				</task>
+				<task guid="tvt-gameachievement-task-blockbuster2-21" >
+					<data type="reachAudience" minAudienceQuote="0.55" checkHour="21" checkMinute="5" />
+				</task>
+				<task guid="tvt-gameachievement-task-blockbuster2-22" >
+					<data type="reachAudience" minAudienceQuote="0.55" checkHour="22" checkMinute="5" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward guid="tvt-gameachievement-reward-blockbuster2">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="500000" />
+				</reward>
+			</rewards>
+			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
+			<data flags="2" group="6" category="1" index="2" sprite_finished="gfx_datasheet_achievement_img_level2" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+		</achievement>
+		<achievement guid="tvt-gameachievement-blockbuster3" creator="ani">
+			<title>
+				<de>Blockbuster „Gold“</de>
+				<en>Blockbuster "Gold"</en>
+				<pl>Blockbuster „Złoty”</pl>
+			</title>
+			<text>
+				<de>Erreiche eine Einschaltquote von 70% (20 - 23 Uhr)</de>
+				<en>Achieve an audience rating of 70% (8pm - 11pm)</en>
+			</text>
+			<tasks>
+				<task guid="tvt-gameachievement-task-blockbuster3-20" >
+					<data type="reachAudience" minAudienceQuote="0.7" checkHour="20" checkMinute="5" />
+				</task>
+				<task guid="tvt-gameachievement-task-blockbuster3-21" >
+					<data type="reachAudience" minAudienceQuote="0.7" checkHour="21" checkMinute="5" />
+				</task>
+				<task guid="tvt-gameachievement-task-blockbuster3-22" >
+					<data type="reachAudience" minAudienceQuote="0.7" checkHour="22" checkMinute="5" />
+				</task>
+				<task guid="tvt-gameachievement-task-blockbuster3-23" >
+					<data type="reachAudience" minAudienceQuote="0.7" checkHour="23" checkMinute="5" />
+				</task>
+			</tasks>
+			<rewards>
+				<reward guid="tvt-gameachievement-reward-blockbuster3">
+					<!-- kein Titel und es wird der Belohnungsinterne Text genommen -->
+					<title />
+					<text />
+					<data type="money" money="1500000" />
+				</reward>
+			</rewards>
+			<!-- flags = 2. "2" fuer "nur der erste bekommt die Belohnung" -->
+			<data flags="2" group="6" category="1" index="3" sprite_finished="gfx_datasheet_achievement_img_level3" sprite_unfinished="gfx_datasheet_achievement_img_level0" />
+		</achievement>
 	</allachievements>
 </tvtdb>
