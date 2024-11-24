@@ -28,7 +28,7 @@
 			</jobs>
 			<data flags="0" flags_optional="" target_groups="6" />
 			<targetgroupattractivity men="0.75" managers="1.25" />
-			<genres maingenre="15" subgenres="13,7" />
+			<genres maingenre="7" subgenres="13,15" />
 			<blocks value="5" />
 			<price min="100000" max="200000" />
 			<potential min="60" max="90" />

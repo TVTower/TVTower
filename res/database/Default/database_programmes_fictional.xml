@@ -371,7 +371,7 @@
 			<groups target_groups="36" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="5" blocks="1" price_mod="0.90" />
-			<releaseTime year_relative="1" year_relative_min="1985" year_relative_max="2015" day="5" hour="22" />
+			<releaseTime year_relative="1" year_relative_min="1985" day="5" hour="22" />
 			<ratings critics="80" speed="4" outcome="4" />
 			<modifiers>
 				<modifier name="topicality::notLive" value="0.25" />
@@ -401,7 +401,7 @@
 			<groups target_groups="36" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="5" blocks="1" price_mod="0.67" />
-			<releaseTime year_relative="2" year_relative_min="1986" year_relative_max="2016" day="5" hour="22" />
+			<releaseTime year_relative="2" year_relative_min="1986" day="5" hour="22" />
 			<ratings critics="70" speed="4" outcome="18" />
 			<modifiers>
 				<modifier name="topicality::notLive" value="0.25" />
@@ -574,7 +574,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="3" day="1" hour="20" year_relative_min="2004" year_relative_max="2020" />
+			<releaseTime year_relative="3" day="1" hour="20" year_relative_min="2004" />
 			<ratings critics="35" speed="51" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
@@ -604,7 +604,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="4" day="1" hour="20" year_relative_min="2005" year_relative_max="2021" />
+			<releaseTime year_relative="4" day="1" hour="20" year_relative_min="2005" />
 			<ratings critics="41" speed="55" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
@@ -634,7 +634,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="5" day="1" hour="20" year_relative_min="2006" year_relative_max="2022" />
+			<releaseTime year_relative="5" day="1" hour="20" year_relative_min="2006" />
 			<ratings critics="45" speed="56" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
@@ -664,7 +664,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="6" day="1" hour="20" year_relative_min="2007" year_relative_max="2023" />
+			<releaseTime year_relative="6" day="1" hour="20" year_relative_min="2007" />
 			<ratings critics="56" speed="60" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
@@ -694,7 +694,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="7" day="1" hour="20" year_relative_min="2008" year_relative_max="2024" />
+			<releaseTime year_relative="7" day="1" hour="20" year_relative_min="2008" />
 			<ratings critics="35" speed="65" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
@@ -724,7 +724,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="275" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" teenagers="2" unemployed="2" pensioners="0.25" />
 			<data country="BOL" distribution="2" maingenre="200" subgenre="5,203" flags="1" blocks="2" price_mod="0.5" />
-			<releaseTime year_relative="8" day="1" hour="20" year_relative_min="2009" year_relative_max="2025" />
+			<releaseTime year_relative="8" day="1" hour="20" year_relative_min="2009" />
 			<ratings critics="41" speed="68" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::age" value="4" />
@@ -1175,7 +1175,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="4" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme guid="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="4" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="TODO: Use references / spoofs for the later painters">
 			<title>
 				<de>Maler vergangener Zeiten</de>
 				<en>Painters of Bygone Times</en>
@@ -1276,16 +1276,16 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="-1" year_relative_min="1985" year_relative_max="1990" />
 			<ratings critics="20" speed="42" outcome="35" />
 			<children>
-				<programme guid="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="TODO: ref person Marie Tussaud (but just mention 'sister')">
+				<programme guid="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>${.self:"cast":1:"fullname"} besucht... Madame Krussaud</de>
-						<en>${.self:"cast":1:"fullname"} Visits... Madame Krussaud</en>
-						<pl>${.self:"cast":1:"fullname"} odwiedza... Madame Krussaud</pl>
+						<de>${.self:"cast":1:"fullname"} besucht... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"}</de>
+						<en>${.self:"cast":1:"fullname"} Visits... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"}</en>
+						<pl>${.self:"cast":1:"fullname"} odwiedza... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"}</pl>
 					</title>
 					<description>
-						<de>Im Schatten ihrer Schwester bastelt Madame Krussaud Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
-						<en>In the shadow of her sister, Madame Krussaud crafts figures from earwax provided by fans.</en>
-						<pl>W cieniu swojej siostry, Madame Krussaud tworzy figurki z woskowiny dostarczanej przez fanów.</pl>
+						<de>Im Schatten ihrer Schwester bastelt Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"} Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
+						<en>In the shadow of her sister, Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"} crafts figures from earwax provided by fans.</en>
+						<pl>W cieniu swojej siostry, Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"} tworzy figurki z woskowiny dostarczanej przez fanów.</pl>
 					</description>
 					<ratings critics="28" speed="32" />
 				</programme>
@@ -1433,9 +1433,9 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 		</programme>
 		<programme guid="50b89ce5-a59b-4108-b4e0-0f82b2c6b15f" product="3" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<title>
-				<de>Die Patty Glansen Show</de>
-				<en>The Patty Glansen Show</en>
-				<pl>Patty Glansen Show</pl>
+				<de>Die ${.self:"cast":1:"fullname"} Show</de>
+				<en>The ${.self:"cast":1:"fullname"} Show</en>
+				<pl>${.self:"cast":1:"fullname"} Show</pl>
 			</title>
 			<description>
 				<de>Nach ihrem Erfolg (bei den Kritikern) versucht sich ${.self:"cast":1:"fullname"} nun auf dem großen Parkett der TV-Unterhaltung. Spannende Gespräche, interessante Berichte. Eine Show von Senioren, für Senioren.</de>
@@ -1450,7 +1450,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" women="1.5" />
 			<data country="D" distribution="2" maingenre="100" subgenre="" flags="1" blocks="2" broadcast_flags="512" price_mod="0.5" />
-			<releaseTime year_relative="1" day="5" year_relative_min="1983" year_relative_max="2010" />
+			<releaseTime year_relative="1" day="5" year_relative_min="1983" />
 			<ratings critics="51" speed="28" outcome="18" />
 			<children>
 				<programme guid="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
@@ -1710,12 +1710,12 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 			<children>
 				<programme guid="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<all>Daniela</all>
+						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
 					<description>
-						<de>Heute moderiert Daniela die Sendung. Kniffelige, nahezu unlösbare Aufgaben werden gestellt. Richtige Lösungen sorgen für einen Strip von Daniela.</de>
-						<en>Today, Daniela hosts the show. Tricky, almost unsolvable tasks are set. Correct solutions result in a striptease from Daniela.</en>
-						<pl>Dziś Daniela jest gospodarzem programu. Zadawane są trudne, prawie nierozwiązywalne zadania. Prawidłowe rozwiązania skutkują striptizem Danieli.</pl>
+						<de>Heute moderiert ${.self:"cast":1:"firstname"} die Sendung. Kniffelige, nahezu unlösbare Aufgaben werden gestellt. Richtige Lösungen sorgen für einen Strip von ${.self:"cast":1:"firstname"}.</de>
+						<en>Today, ${.self:"cast":1:"firstname"} hosts the show. Tricky, almost unsolvable tasks are set. Correct solutions result in a striptease from ${.self:"cast":1:"firstname"}.</en>
+						<pl>Dziś ${.self:"cast":1:"firstname"} jest gospodarzem programu. Zadawane są trudne, prawie nierozwiązywalne zadania. Prawidłowe rozwiązania skutkują striptizem Danieli.</pl>
 					</description>
 					<staff>
 						<member index="1" function="8">Per_custom_Freddy_80</member>
@@ -1724,14 +1724,12 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 				<programme guid="f9579b28-072d-4027-8807-1c45326928d5" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>Sabine</de>
-						<en>Sabine</en>
-						<pl>Sabina</pl>
+						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
 					<description>
-						<de>Heute moderiert Sabine, früher Björn, die Sendung. Ihr Höschen behält Sie aber an.</de>
-						<en>Today Sabine, formerly Björn, hosts the show. But she keeps her panties on.</en>
-						<pl>Dziś Sabina, dawniej Björn, jest gospodarzem programu. Ale nie zdejmuje majtek.</pl>
+						<de>Heute moderiert ${.self:"cast":1:"firstname"}, früher Björn, die Sendung. Ihr Höschen behält Sie aber an.</de>
+						<en>Today ${.self:"cast":1:"firstname"}, formerly Björn, hosts the show. But she keeps her panties on.</en>
+						<pl>Dziś ${.self:"cast":1:"firstname"}, dawniej Björn, jest gospodarzem programu. Ale nie zdejmuje majtek.</pl>
 					</description>
 					<staff>
 						<member index="1" function="8">778337de-e7f6-4f2b-9563-6de04d8cd21a</member>
@@ -1740,12 +1738,12 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 				<programme guid="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<all>Mandy</all>
+						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
 					<description>
-						<de>Mandy ist ein echtes Cowgirl, die Quizfragen allerdings zum Mäusemelken.</de>
-						<en>Mandy is a real cowgirl, but the trivia questions are more of a bull's butt.</en>
-						<pl>Mandy jest prawdziwą kowbojką, ale pytania do niej są tak interesujące jak tyłek byka.</pl>
+						<de>${.self:"cast":1:"firstname"} ist ein echtes Cowgirl, die Quizfragen allerdings zum Mäusemelken.</de>
+						<en>${.self:"cast":1:"firstname"} is a real cowgirl, but the trivia questions are more of a bull's butt.</en>
+						<pl>${.self:"cast":1:"firstname"} jest prawdziwą kowbojką, ale pytania do niej są tak interesujące jak tyłek byka.</pl>
 					</description>
 					<staff>
 						<member index="1" function="8">5d64caae-5e21-495a-a771-b2d297bb23a7</member>
@@ -1754,12 +1752,12 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 				<programme guid="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
 					<title>
-						<all>Peggy</all>
+						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
 					<description>
-						<de>Peggy kommt vom Lande, und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</de>
-						<en>Peggy comes from a rural farm, and all the questions revolve around the countrywoman's biggest two potatoes.</en>
-						<pl>Peggy pochodzi z wiejskiej farmy, a wszystkie pytania krążą wokół największych dwóch ziemniaków wiejskiej kobiety.</pl>
+						<de>${.self:"cast":1:"firstname"} kommt vom Lande, und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</de>
+						<en>${.self:"cast":1:"firstname"} comes from a rural farm, and all the questions revolve around the countrywoman's biggest two potatoes.</en>
+						<pl>${.self:"cast":1:"firstname"} pochodzi z wiejskiej farmy, a wszystkie pytania krążą wokół największych dwóch ziemniaków wiejskiej kobiety.</pl>
 					</description>
 					<staff>
 						<member index="1" function="8">a0d0996b-b5c8-418c-beb5-081c3c37efa2</member>
@@ -1869,17 +1867,17 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				<!-- Patty Glansen -->
 				<member index="1" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 				<!-- random:
-				     generator = "countrycodes, gender, levelup"
-				     countrycodes = "countrycode1 countrycode2 ..."
-				     gender = 0 [random]  1 [male]  2 [female]
-				     levelup = 0 [no levelup]  1 [levelup]
+						generator = "countrycodes, gender, levelup"
+						countrycodes = "countrycode1 countrycode2 ..."
+						gender = 0 [random]  1 [male]  2 [female]
+						levelup = 0 [no levelup]  1 [levelup]
 				-->
 				<member index="2" function="64" generator="es,0"></member>
 			</staff>
 			<groups target_groups="186" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.5" />
 			<data country="D" distribution="2" maingenre="100" subgenre="9" flags="1" blocks="1" broadcast_flags="512" price_mod="0.5" />
-			<releaseTime year_relative="0" day="9" year_relative_min="1984" year_relative_max="1989" />
+			<releaseTime year_relative="0" day="9" year_relative_min="1984" />
 			<modifiers>
 				<!-- the programme ages faster than average -->
 				<modifier name="topicality::age" value="1.5" />
@@ -1979,7 +1977,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 						<pl>Bohaterami tego odcinka są mężczyźni ze zniszczoną skórą, dużą ilością wody i kapryśnym morzem.</pl>
 					</description>
 					<data price_mod="0.95" />
-					<ratings critics="48"  />
+					<ratings critics="48" />
 				</programme>
 				<programme guid="ronny-programme-brisanteufer-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -1993,7 +1991,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 						<pl>Pozornie nudne, ale niezwykle ważne: konserwacja jazu na Łabie. Pokazuje unikalne, ale nudne podwodne ujęcia.</pl>
 					</description>
 					<data price_mod="1.0" />
-					<ratings critics="34" speed="12"  />
+					<ratings critics="34" speed="12" />
 				</programme>
 				<programme guid="ronny-programme-brisanteufer-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2006,7 +2004,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 						<en>Dramatic scenes captured at the outdoor pool Gammelau: Is it a chocolate bar?</en>
 						<pl>Dramatyczne sceny uchwycone na odkrytym basenie Gammelau: Czy to tabliczka czekolady?</pl>
 					</description>
-					<ratings critics="26" speed="56"  />
+					<ratings critics="26" speed="56" />
 				</programme>
 			</children>
 		</programme>
@@ -2050,7 +2048,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Jeż Rodzinny przenosi się na sąsiednie sterty liści. Podczas zabawy z Jeżem Henrym, Feliks rani się o ciernie. Koniec rodzącej się przyjaźni?</pl>
 					</description>
 					<data price_mod="0.68" />
-					<ratings critics="55"  />
+					<ratings critics="55" />
 				</programme>
 				<programme guid="ronny-programme-familiefuchs-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2078,7 +2076,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Sezon lęgowy. Słodki zapach unosi się przez las. Kiedy Felix podąża za nim, spotyka Friedę. Jak poradzić sobie z nowymi i ekscytującymi uczuciami?</pl>
 					</description>
 					<data price_mod="0.58" />
-					<ratings critics="62" speed="22"  />
+					<ratings critics="62" speed="22" />
 				</programme>
 				<programme guid="ronny-programme-familiefuchs-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2092,7 +2090,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Minęły niecałe dwa miesiące, a lisica Frieda urodziła trójkę dzieci - dzieci Feliksa. Ekscytujące czasy dla nowej rodziny.</pl>
 					</description>
 					<data price_mod="0.65" />
-					<ratings critics="69" speed="20"  />
+					<ratings critics="69" speed="20" />
 				</programme>
 				<programme guid="ronny-programme-familiefuchs-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2106,7 +2104,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Feliks zabiera dzieci na wizytę do Jeża Henry'ego. Święto motyli dla wszystkich.</pl>
 					</description>
 					<data price_mod="0.61" />
-					<ratings critics="59" speed="23"  />
+					<ratings critics="59" speed="23" />
 				</programme>
 				<programme guid="ronny-programme-familiefuchs-01-ep-06" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2120,7 +2118,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Pewnej nocy, gdy dzieci z lisiej rodziny zbytnio się awanturują, w lisiej norze wybucha kłótnia. Młode lisy wyprowadzają się.</pl>
 					</description>
 					<data price_mod="0.53" />
-					<ratings critics="58" speed="27"  />
+					<ratings critics="58" speed="27" />
 				</programme>
 				<programme guid="ronny-programme-familiefuchs-01-ep-07" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2137,7 +2135,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						Smutny finał popularnego serialu dla dzieci, który wprawił w drżenie miliony dziecięcych serc.</pl>
 					</description>
 					<data price_mod="0.70" />
-					<ratings critics="77" speed="20"  />
+					<ratings critics="77" speed="20" />
 				</programme>
 			</children>
 		</programme>
@@ -2181,7 +2179,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Jacqueline, córka hrabiego Montegrieux, rozkwita i odkrywa nieznane wcześniej uczucia do stajennego Henriego.</pl>
 					</description>
 					<data price_mod="0.98" />
-					<ratings critics="32" speed="28"  />
+					<ratings critics="32" speed="28" />
 				</programme>
 				<programme guid="ronny-programme-komtess-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2193,7 +2191,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Zapracowany hrabia Pomeranc odwiedza dwór Montegrieux. Próbuje zabiegać o względy Jaqueline, podczas gdy jego córka Francine spogląda na Henriego ...</pl>
 					</description>
 					<data price_mod="0.98" />
-					<ratings critics="30" speed="29"  />
+					<ratings critics="30" speed="29" />
 				</programme>
 				<programme guid="ronny-programme-komtess-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2207,7 +2205,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Fale ekscytacji: Earl Pomeranc zniknął. Co ma z tym wspólnego Jacqueline ze swoją podartą koszulą nocną?</pl>
 					</description>
 					<data price_mod="0.98" />
-					<ratings critics="34" speed="25"  />
+					<ratings critics="34" speed="25" />
 				</programme>
 				<programme guid="ronny-programme-komtess-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2221,7 +2219,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 						<pl>Wszyscy szukają Earla Pomeranca. Jacqueline i Henri szukają w pobliskim lesie i trafiają do odosobnionego domku. Kiedy nadchodzi burza, oboje spędzają zmysłową noc przy trzaskającym kominku.</pl>
 					</description>
 					<data price_mod="0.93" />
-					<ratings critics="30" speed="30"  />
+					<ratings critics="30" speed="30" />
 				</programme>
 				<programme guid="ronny-programme-komtess-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
@@ -2238,16 +2236,16 @@ Terrific final.</en>
 Tragiczny finał.</pl>
 					</description>
 					<data price_mod="0.95" />
-					<ratings critics="25" speed="35"  />
+					<ratings critics="25" speed="35" />
 				</programme>
 			</children>
 		</programme>
 
 		<!-- imported from DerFronck Forum 30.04.2017 -->
 
-			<!-- ERFUNDENE SENDUNGEN  -->
+			<!-- ERFUNDENE SENDUNGEN -->
 
-				<!-- DOKU  -->
+				<!-- DOKU -->
 		
 		<programme guid="DF-Serien-Dokumentation-001" product="2" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
 			<title>
@@ -2739,7 +2737,7 @@ Tragiczny finał.</pl>
 			<groups target_groups="36" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" />
 			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="5" blocks="1" price_mod="0.67" />
-			<releaseTime year_relative="3" year_relative_min="1987" year_relative_max="2017" day="5" hour="22" />
+			<releaseTime year_relative="3" year_relative_min="1987" day="5" hour="22" /> <!-- TODO: year_relative_max - watch for eventual deathdate -->
 			<ratings critics="70" speed="44" outcome="68" />
 			<modifiers>
 				<modifier name="topicality::notLive" value="0.25" />

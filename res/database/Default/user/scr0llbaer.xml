@@ -700,8 +700,6 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		<scripttemplate product="4" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
 				<de>${tower} ${latebreaking}: ${title}</de>
-				<en>${tower} ${latebreaking}: ${title}</en>
-				<pl>${tower}: ${title}</pl>
 			</title>
 			<description>
 				<de>Technologie aktuell. Jeden Tag neu. Die neuesten Entwicklungen und Trends bei Elektronik, Telekommunikation, Computern.</de>
@@ -715,7 +713,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
 					<en>Late-Breaking|Hot</en>
-					<pl></pl>
+					<pl>Info|Aktualności</pl>
 				</latebreaking>
 				<title>
 					<de>Tech|Technologie|Tech-Corner|Nerd-Corner</de>
@@ -938,7 +936,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			<title>
 				<de>${secondleague} Sport${report}</de>
 				<en>${secondleague} Sports${report}</en>
-				<pl>${secondleague} - ${report}</pl>
+				<pl>${secondleague} - Sport${report}</pl>
 			</title>
 			<description>
 				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
@@ -954,7 +952,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<report>
 					<de>report|reportage|bericht|berichterstattung|</de>
 					<en> Report| Feature| Bulletin| Coverage|</en>
-					<pl> Sportowy reportaż| Sportowy felieton| Sportowy biuletyn| Sportowy przegląd|</pl>
+					<pl>owy reportaż|owy felieton|owy biuletyn|owy przegląd|</pl>
 				</report>
 			</variables>
 			<jobs>
@@ -1184,9 +1182,9 @@ Czyli 4120 na odcinek.</pl>
 			</description>
 			<variables>
 				<bali>
-					<de>Bali|Laos|Kambodscha|Myanmar|Bhutan|Nepal|Bangladesch|Sri Lanka|Tibet|Vietnam|Macau|Kalmückien</de>
-					<en>Bali|Laos|Cambodia|Myanmar|Bhutan|Nepal|Bangladesh|Sri Lanka|Tibet|Vietnam|Macau|Kalmykia</en>
-					<pl>Bali|Laosu|Kambodży|Węgier|Bhutanu|Nepalu|Bangladeszu|Sri Lanki|Tybetu|Wietnamu|Makau|Greccy</pl>
+					<de>Bali|Laos|Kambodscha|Bhutan|Nepal|Bangladesch|Sri Lanka|Tibet|Vietnam|Macau|Kalmückien|Myanmar</de> <!-- TODO: earlier Birma/Burma -->
+					<en>Bali|Laos|Cambodia|Bhutan|Nepal|Bangladesh|Sri Lanka|Tibet|Vietnam|Macau|Kalmykia|Myanmar</en>
+					<pl>Bali|Laosu|Kambodży|Bhutanu|Nepalu|Bangladeszu|Sri Lanki|Tybetu|Wietnamu|Makau|Greccy|Węgier</pl>
 				</bali>
 			</variables>
 			<jobs>
@@ -1221,7 +1219,7 @@ Czyli 4120 na odcinek.</pl>
 				<title>
 					<de>${name} vogelwild|${name} ganz aus dem Häuschen|${name} voll aufgekratzt|Für ${name} gibt es kein Morgen mehr|${name} nicht mehr zu bändigen|${name} ganz ganz wild|${name} völlig ungezügelt|${name} wird ganz wild</de>
 					<en>${name} all boisterous|${name} all over the place|${name} totally psyched|For ${name} there is no more tomorrow|${name} no longer to be tamed|${name} going so very wild|${name} totally unbridled|${name} gets all wild</en>
-					<pl>${name}  dziki jak ptak|${name} podekscytowany|${name} totalnie zakręcony|Nie ma jutra dla ${name}|${name} oszołomiony|${name} wariuje|${name} idzie na całość|${name} ma wszystko gdzieś!</pl>
+					<pl>${name} dziki jak ptak|${name} podekscytowany|${name} totalnie zakręcony|Nie ma jutra dla ${name}|${name} oszołomiony|${name} wariuje|${name} idzie na całość|${name} ma wszystko gdzieś!</pl>
 				</title>
 				<name>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}</name>
 			</variables>
@@ -1395,8 +1393,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 4</en>
 			</title>
 			<description>
-				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler Higwig gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
-				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent Higwig's, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler ${.self:"role":2:"lastname"} gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
+				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent ${.self:"role":2:"lastname"}'s, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

@@ -152,8 +152,7 @@ Każdy środek się nada.</pl>
 					<pl>|${RANDOMCITY}</pl>
 				</modifier>
 				<randomcity>
-					<de>${.stationmap:"randomcity"}|Prosperous Creek</de>
-					<pl>${.stationmap:"randomcity"}|Prosperujący Potok</pl>
+					<all>${.stationmap:"randomcity"}|Prosperous Creek</all>
 				</randomcity>
 			</variables>
 			<jobs>

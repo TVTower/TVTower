@@ -332,10 +332,17 @@
 				<pl>Pomieszanie broni?</pl>
 			</title>
 			<description>
-				<de>Das Beschaffungsamt des Heeres bestritt die Meldung, sie habe versehentlich über Internet Spielzeuggewehre bestellt.</de>
-				<en>The Army Procurement Office denied the report that it had inadvertently ordered toy guns via the Internet.</en>
-				<pl>Urząd Zamówień Wojskowych zaprzeczył doniesieniom, jakoby nieumyślnie zamówił zabawkowe pistolety przez Internet.</pl>
+				<de>Das Beschaffungsamt des Heeres bestritt die Meldung, sie habe versehentlich über ${theinternet} Spielzeuggewehre bestellt.</de>
+				<en>The Army Procurement Office denied the report that it had inadvertently ordered toy guns via ${theinternet}.</en>
+				<pl>Urząd Zamówień Wojskowych zaprzeczył doniesieniom, jakoby nieumyślnie zamówił zabawkowe pistolety ${theinternet}.</pl>
 			</description>
+			<variables>
+				<theinternet>
+					<de>${.gte:${.worldtime:"year"}:1995:"Internet":"BTX"}</de>
+					<en>${.gte:${.worldtime:"year"}:1995:"the internet":"BBSs"}</en>
+					<pl>${.gte:${.worldtime:"year"}:1995:"przez Internet":"poprzez systemy tablic ogłoszeń"}</pl>
+				</theinternet>
+			</variables>
 			<data genre="0" price="0.7" quality="27" />
 			<availability year_range_from="" year_range_to="" />
 		</news>

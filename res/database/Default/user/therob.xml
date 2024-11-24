@@ -656,9 +656,8 @@
 			<ratings critics="36" speed="32" outcome="31" />
 		</programme>
 
-		<programme guid="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
-			<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
-			<title>Jánošík</title>
+		<programme guid="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional | reference: https://en.wikipedia.org/wiki/Juraj_J%C3%A1no%C5%A1%C3%ADk | TODO: There actually exist several films">
+			<title>Jánošík</title> <!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
 			<description>
 				<de>Jánošík als Anführer einer Waldräubergruppe. Der slowakische Robin Hood.</de>
 				<en>Jánošík as the leader of a group of forest robbers. The Slovak Robin Hood.</en>
@@ -739,7 +738,7 @@
 		</programme>
 
 		<programme guid="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: There are actually real Sinbad films and series.">
-			<!-- Abteuerserie  -->
+			<!-- Abteuerserie -->
 			<title>
 				<de>Sindbads Reisen</de>
 				<en>Sinbad's Journeys</en>
@@ -1057,7 +1056,7 @@
 			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" />
 			<data country="S" distribution="2" maingenre="104" subgenre="8,300" flags="193" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.25" /> <!-- billiger als normal -->
-			<releaseTime year_relative="4" year_relative_min="1990" year_relative_max="2010" />
+			<releaseTime year_relative="4" year_relative_min="1990" />
 			<ratings critics="24" speed="42" outcome="33" />
 			<children>
 				<programme guid="2415b4de-46a1-4898-a2ab-5eb7b594e91f" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
@@ -1873,7 +1872,7 @@
 			<title>
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
-				<en>Trends for men</en>
+				<en>Trends for Men</en>
 				<pl>Trendy dla mężczyzn</pl>
 			</title>
 			<description>
@@ -2202,7 +2201,7 @@
 				</programme>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<all>${.self:"cast":2:"fullname"}</all>
+						<all>The ${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2642,8 +2641,9 @@
 					<pl>Anioł lub łobuz|${NAME} - diabełek w owczej skórze|${NAME} rozrabia</pl>
 				</title>
 				<name>
-					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim</de>
-					<pl>Pawełek|${.persongenerator:"firstname":"pl":"male"}|Marcelek</pl>
+					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim|Paule|Marcell</de>
+					<en>${.persongenerator:"firstname":"en":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim|Paulin|Marcel</en>
+					<pl>${.persongenerator:"firstname":"pl":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim|Pawełek|Marcelek</pl>
 				</name>
 			</variables>
 			
@@ -2973,7 +2973,7 @@
 				</subject1b>
 			</variables>
 			<jobs>
-				<job index="0" function="1" required="1"  />
+				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="2" />
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="1" gender="1" />
@@ -3023,7 +3023,7 @@
 				</scripttemplate>
 			</children>
 			<jobs>
-				<job index="0" function="1" required="1"  />
+				<job index="0" function="1" required="1" />
 			</jobs>
 			<data flags="114" flags_optional="8" target_groups="18" />
 			<targetgroupattractivity men="1.25" teenagers="2" />
@@ -3063,7 +3063,7 @@
 				</scripttemplate>
 			</children>
 			<jobs>
-				<job index="0" function="1" required="1"  />
+				<job index="0" function="1" required="1" />
 			</jobs>
 			<data flags="48" flags_optional="12" target_groups="18" />
 			<targetgroupattractivity pensioners="0.25" />
@@ -3452,7 +3452,11 @@
 					<en>Dancing Queen|Word Guessing|Prizes Guaranteed|Ripped Off|Fabulous Peeks</en>
 					<pl>Dancing Queens|Zgadywanka|Nagrody gwarantowane|Rozbierz to|Fantastyczne wybory</pl>
 				</title1>
-				<name1>Jimmy|Bobby|Danny|Manni|Donny|Johny</name1>
+				<name1>
+					<de>Jimmy|Bobby|Danny|Manni|Donny|Johny</de>
+					<en>Jimmy|Bobby|Danny|Manni|Donny|Johny</en>
+					<pl>Jimmy|Bobby|Danny|Manni|Donny|Johny</pl>
+				</name1>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />

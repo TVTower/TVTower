@@ -3,10 +3,10 @@
 	<version value="3" comment="Daten von Nicht_die_Betty" />
 	<!--
 		Personen die nur mal in einer Serie auftauchen und keine anderen
-	    Rollen spielen.
-	    Nutzen, wenn man verschiedene Leute im "Cast" (Bei Schauspieler
-	    usw.) haben will, ohne dass die eigene News bekommen - oder man
-	    viele Details angeben muss.
+		Rollen spielen.
+		Nutzen, wenn man verschiedene Leute im "Cast" (Bei Schauspieler
+		usw.) haben will, ohne dass die eigene News bekommen - oder man
+		viele Details angeben muss.
 	-->
 	<insignificantpeople>
 		<!--

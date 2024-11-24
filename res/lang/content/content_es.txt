@@ -1,0 +1,11 @@
+SPORTS_formula1 = Fórmula A
+
+SPORTS_formula2 = Fórmula B
+
+SPORTS_formula3 = Fórmula C
+
+SPORTS_formula4 = Fórmula D
+
+# 'Royal' seems like a natural spoof for international audience but might be unusual in Spanish; Regio (majestic) might be better in Spanish but sounds like just "regional" internationally.
+SPORTS_CLUB_realmadrid = Regio Madrid
+SPORTS_CLUB_real = Regio

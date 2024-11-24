@@ -29,7 +29,7 @@
 		<person guid="Per_custom_Freddy_46" first_name="Oscar" last_name="Larsson" nick_name="" gender="1" country="S" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_47" first_name="Ella" last_name="Olsson" nick_name="" gender="2" country="S" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_48" first_name="Oliver" last_name="Persson" nick_name="" gender="1" country="S" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_49" first_name="Julia" last_name="Svensson" nick_name=""  gender="2" country="S" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_49" first_name="Julia" last_name="Svensson" nick_name="" gender="2" country="S" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_50" first_name="Hugo" last_name="Gustafsson" nick_name="" gender="1" country="S" fictional="1" job="114" />
 		<person guid="Per_custom_Freddy_51" first_name="Ebba" last_name="Pettersson" nick_name="" gender="2" country="S" fictional="1" job="234" />
 		<person guid="Per_custom_Freddy_52" first_name="Charlie" last_name="Jonsson" nick_name="" gender="1" country="S" fictional="1" job="98" />
@@ -708,140 +708,140 @@
 			<!-- Express nach Sibirien (2) -->
 			<first_name>Anna</first_name>
 			<last_name>Adlerman</last_name>
-			<details job="98" gender="2"  birthday="1946" deathday="" country="D" />
+			<details job="98" gender="2" birthday="1946" deathday="" country="D" />
 			<data popularity="10" affinity="45" fame="0" scandalizing="0" price_mod="1" power="45" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="Rumpelfreddy-fictionalperson-HannaHobkinns" fictional="1"  creator="8667" created_by="Rumpelfreddy">
+		<person guid="Rumpelfreddy-fictionalperson-HannaHobkinns" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- Julia in der Feenwelt(1) -->
 			<first_name>Hannah</first_name>
 			<last_name>Hobkinns</last_name>
-			<details job="69" gender="2"  birthday="1984" deathday="" country="GB" />
+			<details job="69" gender="2" birthday="1984" deathday="" country="GB" />
 			<data popularity="14" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="60" topgenre="0" />
 		</person>
 		<person guid="Rumpelfreddy-fictionalperson-LenaLauterberg" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Lena</first_name>
 			<last_name>Lauterberg</last_name>
-			<details job="98" gender="2"  birthday="1979-04-03" deathday="" country="D" />
+			<details job="98" gender="2" birthday="1979-04-03" deathday="" country="D" />
 			<data popularity="8" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="Per_custom_Freddy_4" fictional="1"  creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+		<person guid="Per_custom_Freddy_4" fictional="1" creator="8667" created_by="Rumpelfreddy">
+			<!-- -->
 			<first_name>Sarah</first_name>
 			<last_name>van Sonderbar</last_name>
-			<details job="69" gender="2"  birthday="1987" deathday="" country="D" />
+			<details job="69" gender="2" birthday="1987" deathday="" country="D" />
 			<data popularity="9" affinity="18" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_5" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Blondie</first_name>
 			<last_name>Prall</last_name>
-			<details job="69" gender="2"  birthday="1976" deathday="" country="A" />
+			<details job="69" gender="2" birthday="1976" deathday="" country="A" />
 			<data popularity="12" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="55" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_6" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- Kroko See 6 (2) -->
 			<first_name>Olga</first_name>
 			<last_name>Ostburg</last_name>
-			<details job="98" gender="2"  birthday="1981" deathday="" country="D" />
+			<details job="98" gender="2" birthday="1981" deathday="" country="D" />
 			<data popularity="10" affinity="7" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_7" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Gerlinde</first_name>
 			<last_name>von Gluterhof</last_name>
-			<details job="114" gender="2"  birthday="1961" deathday="" country="D" />
+			<details job="114" gender="2" birthday="1961" deathday="" country="D" />
 			<data popularity="15" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_8" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- Kroko See 6 (2)-->
 			<first_name>Marie</first_name>
 			<last_name>Merkl</last_name>
-			<details job="98" gender="2"  birthday="1978" deathday="" country="D" />
+			<details job="98" gender="2" birthday="1978" deathday="" country="D" />
 			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_9" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Leonie</first_name>
 			<last_name>Luberlippe</last_name>
-			<details job="69" gender="2"  birthday="1983" deathday="" country="D" />
+			<details job="69" gender="2" birthday="1983" deathday="" country="D" />
 			<data popularity="10" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_10" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Zoe</first_name>
 			<last_name>Zeckenbart</last_name>
-			<details job="69" gender="2"  birthday="1960" deathday="" country="D" />
+			<details job="69" gender="2" birthday="1960" deathday="" country="D" />
 			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_11" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Lukas</first_name>
 			<last_name>Liebsterman</last_name>
-			<details job="69" gender="1"  birthday="1980" deathday="" country="D" />
+			<details job="69" gender="1" birthday="1980" deathday="" country="D" />
 			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_12" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1)   -->
+			<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1) -->
 			<first_name>Tobias</first_name>
 			<last_name>Täubchen</last_name>
-			<details job="103" gender="1"  birthday="1962" deathday="" country="D" />
+			<details job="103" gender="1" birthday="1962" deathday="" country="D" />
 			<data popularity="15" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_13" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- Express nach Sibirien (1) -->
 			<first_name>Hardtmann</first_name>
 			<last_name>von Eisenhalt</last_name>
-			<details job="69" gender="1"  birthday="1940" deathday="" country="D" />
+			<details job="69" gender="1" birthday="1940" deathday="" country="D" />
 			<data popularity="18" affinity="40" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_14" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Bernd</first_name>
 			<last_name>Bohrman</last_name>
-			<details job="69" gender="1"  birthday="1976" deathday="" country="D" />
+			<details job="69" gender="1" birthday="1976" deathday="" country="D" />
 			<data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_15" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
 			<first_name>David</first_name>
 			<last_name>Davidson</last_name>
-			<details job="98" gender="1"  birthday="1953" deathday="" country="DK" />
+			<details job="98" gender="1" birthday="1953" deathday="" country="DK" />
 			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_16" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Walter</first_name>
 			<last_name>Wienerwurst</last_name>
-			<details job="69" gender="1"  birthday="1982" deathday="" country="D" />
+			<details job="69" gender="1" birthday="1982" deathday="" country="D" />
 			<data popularity="7" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_17" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- Krokosee 6 (2) -->
 			<first_name>Felix</first_name>
 			<last_name>Feuerfranz</last_name>
-			<details job="98" gender="1"  birthday="1964" deathday="" country="D"  />
+			<details job="98" gender="1" birthday="1964" deathday="" country="D" />
 			<data popularity="2" affinity="27" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_18" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Günter</first_name>
 			<last_name>von und zu Gutberg</last_name>
-			<details job="69" gender="1"  birthday="1985" deathday="" country="D" />
+			<details job="69" gender="1" birthday="1985" deathday="" country="D" />
 			<data popularity="11" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_19" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Johannes</first_name>
 			<last_name>Jasager</last_name>
-			<details job="69" gender="1"  birthday="1970" deathday="" country="D" />
+			<details job="69" gender="1" birthday="1970" deathday="" country="D" />
 			<data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_20" fictional="1" creator="8667" created_by="Rumpelfreddy">
-			<!--  -->
+			<!-- -->
 			<first_name>Karl</first_name>
 			<last_name>Krautrauch</last_name>
-			<details job="69" gender="1"  birthday="1933" deathday="" country="D" />
+			<details job="69" gender="1" birthday="1933" deathday="" country="D" />
 			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 	</celebritypeople>

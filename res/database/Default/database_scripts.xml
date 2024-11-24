@@ -435,8 +435,7 @@
 					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
 					<en>Celebrity|Kids|Politicians|Music|Movie|Guessing|Travel</en>
 				</group>
-				<!-- either add the game year (with space!), or nothing -->
-				<date>| ${.worldtime:"year"}</date>
+				<date>| ${.worldtime:"year"}</date> <!-- either add the game year (with space!), or nothing -->
 			</variables>
 
 			<jobs>
@@ -477,13 +476,14 @@
 					<de>Ein Haufen |Die Hinterwäldler-|Verrückte |Wahnsinns-|Bayrische |Tugendhafte |Durchgedrehte |Fromme |Zankende |Schelmische |Verschmitzte |Witzige |Abenteuerlustige |Extravagante |Geheimnisvolle |Exzentrische |Temperamentvolle |Joviale |Hartnäckige |Lebensfrohe |Verwegene |Brillante </de>
 					<en>A Bunch of |The Hillbilly |Crazy |The Frenzied |Bavarian |Virtuous |Nutty |Devout |Quarreling |Mischievous |Impish |Witty |Adventurous |Flamboyant |The Mysterious |Eccentric |Spirited |The Jovial |The Tenacious |The Vivacious |Swashbuckling |The Brilliant </en>
 				</adj>
-				<i>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</i><!-- must be same as j in episodes -->
+				<i>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</i> <!-- must be same as j in episodes -->
 				<who_0>
 					<de>Waschweiber</de>
 					<en>Washer Women</en> <!-- always capitalized for now, even in flow-text. TODO: possibly change as soon as capitalization per expression available. -->
 				</who_0>
 				<who_1>
-					<all>Drag-Queens</all>
+					<de>Drag-Queens</de>
+					<en>Drag Queens</en>
 				</who_1>
 				<who_2>
 					<de>Schwerenöter</de>
@@ -830,7 +830,7 @@
 							<de>haben alle Hände voll zu tun|sind schwer beschäftigt|sind voll im Einsatz|sind schwer bei der Arbeit|sind gestresst|sind gestresst, es wird ihnen nichts geschenkt</de>
 							<en>have their hands full|are heavily busy|are in full action|are hard at work|are stressed|are stressed, they get nothing for free</en>
 						</havetheirhandsfull>
-						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j><!-- must be same count and elements as i -->
+						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j> <!-- must be same count and elements as i -->
 						<othertown>${.stationmap:"randomcity"}</othertown>
 						<description_0>
 							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Unsere ${who_${i}} müssen Extrazuschlag aushandeln.</de>
@@ -931,7 +931,7 @@
 							<de>Ärger|Panik|Pechsträhne|Chaos|Durcheinander|Desaster|Aufruhr|Krise|Aufregung|Verwüstung|Unruhe|Tumult|Eklat|Zoff|Krawall</de>
 							<en>Trouble|Panic|Streak of bad luck|Chaos|Mayhem|Disaster|Turmoil|Crisis|Commotion|Havoc|Unrest|Tumult|Uproar|Down and out|Riot</en>
 						</trouble>
-						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j><!-- must be same count and elements as i -->
+						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j> <!-- must be same count and elements as i -->
 						<k>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</k>
 						<whythere_0>
 							<de>, überrumpelt Petrus an der Himmelspforte und will dem ewigen Frieden ein für alle mal den Garaus zu machen</de>
@@ -1081,7 +1081,7 @@
 							<de>Treffen|Aufruhr|Fette Beute|Klamauk|Überraschungsfeier|Versammlung|Ringelpiez|Trubel|Wiedersehen|Begegnung|Spektakel|Scherz|Ereignis|Belustigung</de>
 							<en>Meeting|Riot|Fuss|Big booty|Surprise party|Gathering|Revelry|Hustle and bustle|Reunion|Encounter|Spectacle|Frolic|Happening|Merrymaking</en>
 						</meeting>
-						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j><!-- must be same count and elements as i -->
+						<j>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</j> <!-- must be same count and elements as i -->
 						<k>0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|h</k>
 						<allstillright>
 							<de> ist die Welt noch in Ordnung.| ist alles in Ordnung.|, da lässt sich's aushalten.| ist alles gut.| gibt es nur gute Vibes.| ist's wie im Himmel.| ist die Stimmung stets ausgelassen.| ist die Luft voller Liebe und Freude.| ist jeder Tag ein Fest.| gibt es immer was zu feiern.| ist die Laune stets bestens.| gibt es nur strahlende Gesichter.| herrscht eine wunderbare Atmosphäre.| ist das Glück zu Hause.| scheint die Zeit stillzustehen.| gibt es keine Sorgen oder Probleme.| ist die Welt voller Magie.| fühlt man sich wie im siebten Himmel.</de>

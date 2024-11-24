@@ -1,0 +1,12 @@
+# Marken, Sportvereine, Musiktitel und ähnliche Ressourcen, die in Nachrichten, Anzeigen, Programmen usw. erscheinen können, werden von hier referenziert.
+# Für diesen Ordner ist diese englische Datei die Hauptdatei, die alle Einträge enthält.
+# Übersetzungen in andere Sprachen sind hier ad-lib. In diesem Ordner müssen die Einträge nicht in jeder Sprache gespiegelt werden.
+
+SPORTS_formula1 = Formel 1
+
+SPORTS_formula2 = Formel 2
+
+SPORTS_formula3 = Formel 3
+
+SPORTS_formula4 = Formel 4
+

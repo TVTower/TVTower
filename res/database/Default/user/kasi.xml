@@ -241,7 +241,7 @@
 				</Name>
 				<title>
 					<all>Mister |Little |Big |Mac</all>
-					<!--In Polish, not required. I had to rewrite it to make it grammatically ok.  -->
+					<!--In Polish, not required. I had to rewrite it to make it grammatically ok. -->
 				</title>
 			</variables>
 			<jobs>
@@ -276,7 +276,7 @@
 				<zu>
 					<de>writer|rider|searcher|hunter</de>
 					<en>writer|rider|searcher|hunter</en>
-					<pl>Eryk pisarz|Mark rajdowiec|Piotr wynalazca|Leon restaurator</pl><!--In Polish, I had to rewrite it to make it grammatically ok.  -->
+					<pl>Eryk pisarz|Mark rajdowiec|Piotr wynalazca|Leon restaurator</pl> <!--In Polish, I had to rewrite it to make it grammatically ok. -->
 				</zu>
 			</variables>
 			<jobs>
@@ -1061,9 +1061,9 @@
 		<!--Genre family ergänzt, Zufallsstadt ergänzt, kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Kinderfliegen">
 			<title>
-				<de>Die ${Was} über ${Wo}</de>
-				<en>The ${Was} Above ${Wo}</en>
-				<pl>${Was} nad ${Wo}</pl>
+				<de>Die ${Was} über ${wo}</de>
+				<en>The ${Was} Above ${wo}</en>
+				<pl>${Was} nad ${wo}</pl>
 			</title>
 			<description>
 				<de>Eine Gruppe von Kindern guckt hoch nach oben in den Himmel von ${wo} und träumt vom Fliegen. Gemeinsam versuchen sie alles, um den Himmel für sich zu erobern.</de>
@@ -1211,7 +1211,7 @@
 						<pl>20 lat później: dzieci dzieci</pl>
 					</title>
 					<description>
-						<de>Die Kinder sind Erwachsen geworden und haben selbst Kinder, die davon traumen den Himmel über ${wo} zu erobern.</de>
+						<de>Die Kinder sind erwachsen geworden und haben selbst Kinder, die davon traumen den Himmel über ${wo} zu erobern.</de>
 						<en>The children have grown up and have kids of their own who now dream of conquering the sky above ${wo}.</en>
 						<pl>Dzieci dorosły i mają własne dzieci, które teraz marzą o podbiciu nieba nad ${wo}.</pl>
 					</description>
@@ -1224,9 +1224,9 @@
 					<pl>Chmury|Gwiazdy|Słońce|Samoloty|Ptaki</pl>
 				</was>
 				<wo>
-					<de>Paris|Berlin|London|New York|Madrid|${randomcity}</de>
-					<en>Paris|Berlin|London|New York|Madrid|${randomcity}</en>
-					<pl>Paryżem|Berlinem|Londynem|Nowym Jorkiem|Madrytem|Wrocławiem</pl>
+					<de>Paris|Berlin|London|New York|Madrid|Warschau|Breslau|Lyon|Hamburg|Chicago|Sevilla|Kopenhagen|Stockholm|Oslo|Helsinki|Mailand|Rom|Kairo|Marrakesch|Casablanca|Sofia|Budapest|Bukarest|Athen|${randomcity}</de>
+					<en>Paris|Berlin|London|New York|Madrid|Warsaw|Wroclaw|Lyon|Hamburg|Chicago|Seville|Copenhagen|Stockholm|Oslo|Helsinki|Milan|Rome|Cairo|Marrakesh|Casablanca|Sofia|Budapest|Bucharest|Athens|${randomcity}</en>
+					<pl>Paryżem|Berlinem|Londynem|Nowym Jorkiem|Madrytem|Warszawą|Wrocławiem|Lyonem|Hamburgiem|Chicago|Sewillą|Kopenhagą|Sztokholmem|Oslo|Helsinkami|Mediolanem|Rzymem|Kairem|Marrakeszem|Casablanką|Sofią|Budapesztem|Bukaresztem|Atenami|Świetlanowem</pl> <!-- Polish cities not in nominative form! TODO: last one statically fictional ('City of Lights'), Polish grammar not working out with city name generator -->
 				</wo>
 				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
@@ -1298,16 +1298,16 @@
 						<pl>Hasła typu "Twoja mama" są popularne. Ale dlaczego twoja mama jest mądrzejsza niż wszyscy inni i nie jest gruba, bez względu na wagę, wyjaśniono w programie.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Comedygemeinschaft-Ep4" comment="TODO: Nuck Chorris also used as spoof">
+				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Comedygemeinschaft-Ep4">
 					<title>
-						<de>Buck Torris kann ich niederschlagen</de>
-						<en>Buck Torris, I Can Knock Him Down</en>
-						<pl>Buck Torris, mogę go powalić</pl>
+						<de>${chucknorris} kann ich niederschlagen</de>
+						<en>${chucknorris}, I Can Knock Him Down</en>
+						<pl>${chucknorris}, mogę go powalić</pl>
 					</title>
 					<description>
-						<de>Buck Torris kann alles? Nein. Was er nicht kann, wird lustig dargestellt.</de>
-						<en>Buck Torris can do anything? No. What he can not do is presented in a funny way.</en>
-						<pl>Buck Torris może zrobić wszystko? Nie. To, czego nie może zrobić, jest przedstawione w zabawny sposób.</pl>
+						<de>${chucknorris} kann alles? Nein. Was er nicht kann, wird lustig dargestellt.</de>
+						<en>${chucknorris} can do anything? No. What he can not do is presented in a funny way.</en>
+						<pl>${chucknorris} może zrobić wszystko? Nie. To, czego nie może zrobić, jest przedstawione w zabawny sposób.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Comedygemeinschaft-Ep5">
@@ -1408,6 +1408,7 @@
 				</scripttemplate>
 			</children>
 			<variables>
+				<chucknorris>${.person:"f9886d56-43a6-4584-950e-d62ecf41e62a":"fullname"}</chucknorris>
 				<name>
 					<de>duo|trio|quartett|quintett|sextett</de>
 					<en>Duo|Trio|Quartet|Quintet|Sextet</en>

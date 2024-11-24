@@ -9,32 +9,87 @@
 
 		<news guid="news-jorgaeff-dumb-01" type="0" thread_guid="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff" comment="TODO: ref person Donald Dumb">
 			<title>
-				<de>Donald Dumb wird Präsident der VR Duban</de>
-				<en>Donald Dumb becomes President of PR Duban</en>
-				<pl>Donald Dumb zostaje prezesem LR Duban</pl>
+				<de>${donald} ${trump} wird Präsident der ${duban1short}</de>
+				<en>${donald} ${trump} becomes President of the ${duban1short}</en>
+				<pl>${donald} ${trump} zostaje prezesem ${duban1short}</pl>
 			</title>
 			<description>
-				<de>Die Volksrepublik Duban hat Donald Dumb zu ihrem neuen Präsidenten ernannt. Für die nächsten vier Jahre wird der Multi-Millionär die Geschicke der Volksrepublik leiten.</de>
-				<en>The People's Republic of Duban has appointed Donald Dumb as its new president. For the next four years, the multi-millionaire will lead the fortunes of the People's Republic.</en>
-				<pl>Dubańska Republika Ludowa mianowała Donalda Dumba na swojego nowego prezydenta. Przez następne cztery lata multimilioner będzie kierował losami Republiki Ludowej.</pl>
+				<de>Die ${duban1long} hat ${donald} ${trump} zu ihrem neuen Präsidenten ernannt. Für die nächsten vier Jahre wird ${themultimillionaire} die Geschicke der Republik leiten.</de>
+				<en>The ${duban1long} has appointed ${donald} ${trump} as its new president. For the next four years, ${themultimillionaire} will lead the fortunes of the republic.</en>
+				<pl>${duban1long} mianowała ${donald}a ${trump}a na swojego nowego prezydenta. Przez następne cztery lata ${themultimillionaire} będzie kierował losami republiki.</pl>
 			</description>
+			<variables>
+				<!--
+					19xx-1990: Donald Trump or Willi Stoph
+					1991-2005: Donald Trump or Manfred Gerlach
+					2006-2014: Donald Trump or Egon Krenz
+					2015-20xx: George W. Bush or Egon Krenz
+				-->
+				<i>0|1</i> <!-- US or GDR -->
+				<epoch>${.lte:${.worldtime:"year"}:1990:0:"${.lte:${.worldtime:"year"}:2005:1:"${.lte:${.worldtime:"year"}:2015:2:3}"}"}</epoch>
+				<president_0_id>${.csv:"7cfb1ee1-0391-4532-8d85-7b70e24a6d9b;7cfb1ee1-0391-4532-8d85-7b70e24a6d9b;7cfb1ee1-0391-4532-8d85-7b70e24a6d9b;1f75865b-39e1-4398-a6d9-ac35b6ac43f3":epoch}</president_0_id>
+				<president_0_attr>
+					<de>${.csv:"der Multi-Millionär;der Multi-Millionär;der Multi-Millionär;der Ex-US-Präsident":epoch}</de>
+					<en>${.csv:"the multi-millionaire;the multi-millionaire;the multi-millionaire;the ex-US president":epoch}</en>
+					<pl>${.csv:"multimilioner;multimilioner;multimilioner;były prezydent USA":epoch}</pl>
+				</president_0_attr>
+				<president_1_id>${.csv:"04fc0e00-91fb-4baf-b9f9-f0cd5852ebba;b75d5dd8-fd43-45fa-828e-c9c18b0f1462;cc0f5c37-e4e8-46d2-b2f8-a62d951a5880;cc0f5c37-e4e8-46d2-b2f8-a62d951a5880":epoch}</president_1_id>
+				<president_1_attr>
+					<de>der Ex-Staatsratsvorsitzende der DDR</de>
+					<en>the former Chairman of the State Council of the GDR</en>
+					<pl>były przewodniczący Rady Państwowej NRD</pl>
+				</president_1_attr>
+				<donald>${.person:president_${i}_id:"firstname"}</donald>
+				<trump>${.person:president_${i}_id:"lastname"}</trump>
+				<themultimillionaire>
+					<all>${president_${i}_attr}</all>
+				</themultimillionaire>
+				<duban_csv>
+					<de>VR Duban;Volksrepublik Duban;Volksrepublik Duban;FR Duban;Freie Republik Duban;Freie Republik Duban|
+						FR Duban;Freie Republic Duban;Freien Republik Duban;VR Duban;Volksrepublik Duban;Volksrepublik Duban
+					</de>
+					<en>PR Duban;People's Republic of Duban;People's Republic of Duban;FR Duban;Free Republic of Duban;Free Republic of Duban|
+						FR Duban;Free Republic of Duban;Free Republic of Duban;PR Duban;People's Republic of Duban;People's Republic of Duban
+					</en>
+					<pl>LR Duban;Dubańska Republika Ludowa;Ludowej Republiki Dubanu;WR Duban;Wolna Republika Duban;Wolną Republikę Dubanu|
+						WR Duban;Wolna Republika Duban;Wolnej Republiki Duban;LR Duban;Dubańska Republika Ludowa;Dubańską Republikę Ludową
+					</pl>
+				</duban_csv>
+				<duban1short>
+					<all>${.csv:duban_csv:0}</all>
+				</duban1short>
+				<duban1long>
+					<all>${.csv:duban_csv:1}</all>
+				</duban1long>
+				<duban1long_gen>
+					<all>${.csv:duban_csv:2}</all>
+				</duban1long_gen>
+				<duban2short>
+					<all>${.csv:duban_csv:3}</all>
+				</duban2short>
+				<duban2long>
+					<all>${.csv:duban_csv:4}</all>
+				</duban2long>
+				<duban2long_acc>
+					<all>${.csv:duban_csv:5}</all>
+				</duban2long_acc>
+			</variables>
 			<data genre="0" price="0.9" quality="75" fictional="1" />
 			<effects>
 				<!-- "morgen 9-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,9,12" news="news-jorgaeff-dumb-02" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dumb-02" type="2" thread_guid="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Donald Dumb provoziert Freie Republik Duban</de>
-				<en>Donald Dumb provokes Free Republic of Duban</en>
-				<pl>Donald Dumb prowokuje Wolną Republikę Dubanu</pl>
+				<de>${trump} provoziert ${duban2short}</de>
+				<en>${trump} provokes ${duban2short}</en>
+				<pl>${trump} prowokuje ${duban2short}</pl>
 			</title>
 			<description>
-				<de>In seiner Eröffnungsrede bezeichnete Dumb die Freie Republik Duban als „... Abschaum, der beseitigt werden muss!“. Die Freie Republik Duban drohte daraufhin Konsequenzen an.</de>
-				<en>In his opening speech, Dumb referred to the Duban Free Republic as ".... Scum that must be eliminated!". The Free Republic of Duban followed up with threats of consequences.</en>
-				<pl>W swoim przemówieniu inauguracyjnym Dumb określił Wolną Republikę Duban jako „.... Szumowiny, które muszą zostać wyeliminowane!”. Wolna Republika Duban zaczęła grozić konsekwencjami.</pl>
+				<de>In seiner Eröffnungsrede bezeichnete der neue Präsident der ${duban1short}, ${donald} ${trump}, die ${duban2long_acc} als „... Abschaum, der beseitigt werden muss!“. Die ${duban2long} drohte daraufhin Konsequenzen an.</de>
+				<en>In his opening speech, the new president of the ${duban1short}, ${donald} ${trump}, referred to the ${duban2long_acc} as "... Scum that must be eliminated!". The ${duban2long} followed up with threats of consequences.</en>
+				<pl>W swoim przemówieniu inauguracyjnym ${trump} określił ${duban2long_acc} jako „... Szumowiny, które muszą zostać wyeliminowane!”. ${duban2long} zaczęła grozić konsekwencjami.</pl>
 			</description>
 			<data genre="0" price="0.9" quality="75" fictional="1" />
 			<effects>
@@ -42,17 +97,16 @@
 				<effect trigger="happen" type="triggernews" time="2,2,2,8,16" news="news-jorgaeff-dumb-03" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dumb-03" type="2" thread_guid="news-jorgaeff-dumb" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Donald Dumb möchte Mauer bauen</de>
-				<en>Donald Dumb wants to build wall</en>
-				<pl>Donald Dumb chce zbudować mur</pl>
+				<de>${donald} ${trump} möchte Mauer bauen</de>
+				<en>${donald} ${trump} wants to build wall</en>
+				<pl>${donald} ${trump} chce zbudować mur</pl>
 			</title>
 			<description>
-				<de>Weil sein hölzerner Gartenzaun schon wieder kaputt ist, möchte der Präsident der Volksrepublik Duban nun eine Mauer um sein Grundstück bauen. Sein Kommentar: „Steine halten einfach länger.“</de>
-				<en>Because his wooden garden fence is once again damaged, the president of the People's Republic of Duban now wants to build a wall around his property. His comment: "Stones just last longer."</en>
-				<pl>Ponieważ jego drewniany płot ogrodowy został ponownie uszkodzony, prezydent Ludowej Republiki Dubanu chce teraz zbudować mur wokół swojej posiadłości. Jego komentarz: „Kamienie są po prostu trwalsze”.</pl>
+				<de>Weil sein hölzerner Gartenzaun schon wieder kaputt ist, möchte der Präsident der ${duban1long_gen} nun eine Mauer um sein Grundstück bauen. Sein Kommentar: „Steine halten einfach länger.“</de>
+				<en>Because his wooden garden fence is once again damaged, the president of the ${duban1long_gen} now wants to build a wall around his property. His comment: "Stones just last longer."</en>
+				<pl>Ponieważ jego drewniany płot ogrodowy został ponownie uszkodzony, prezydent ${duban1long_gen} chce teraz zbudować mur wokół swojej posiadłości. Jego komentarz: „Kamienie są po prostu trwalsze”.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="55" fictional="1" />
 			<effects>
@@ -60,87 +114,96 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,2,7" news="news-jorgaeff-dumb-04" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dumb-04" thread_guid="news-jorgaeff-dumb" type="2" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Donald Dumb vermisst Quietsche-Entchen</de>
-				<en>Donald Dumb is missing rubber ducky</en>
-				<pl>Donald Dumb zgubił gumową kaczkę</pl>
+				<de>${donald} ${trump} vermisst Quietsche-Entchen</de>
+				<en>${donald} ${trump} is missing rubber ducky</en>
+				<pl>${donald} ${trump} zgubił gumową kaczkę</pl>
 			</title>
 			<description>
-				<de>Donald Dumb ist traurig, da er schon seit Tagen seine Quietsche-Ente nicht mehr finden kann. „Ohne die Quietsche-Ente macht dem Präsidenten das Baden keinen Spaß mehr, und er duscht lieber“, wird Dumb von seinem Pressesprecher zitiert.</de>
-				<en>Donald Dumb is sad because he has not been able to find his squeaky rubber ducky for days. "Without the rubber duck, bathing is no longer fun for the president, and he prefers to take a shower," Dumb is quoted as saying by his press spokesman.</en>
-				<pl>Donald Dumb jest smutny, ponieważ od kilku dni nie może znaleźć swojej piszczącej gumowej kaczuszki. „Bez gumowej kaczuszki kąpiel nie jest już dla prezydenta zabawą i woli on brać prysznic” - powiedział rzecznik prasowy Donalda Dumba.</pl>
+				<de>Der Präsident der ${duban1short} ist traurig, da er schon seit Tagen seine Quietsche-Ente nicht mehr finden kann. „Ohne die Quietsche-Ente macht dem Präsidenten das Baden keinen Spaß mehr, und er duscht lieber“, wird ${trump} von seinem Pressesprecher zitiert.</de>
+				<en>The President of the ${duban1short} is sad because he has not been able to find his squeaky rubber ducky for days. "Without the rubber duck, bathing is no longer fun for the president, and he prefers to take a shower," ${trump} is quoted as saying by his press spokesman.</en>
+				<pl>Prezes ${duban1short} jest smutny, ponieważ od kilku dni nie może znaleźć swojej piszczącej gumowej kaczuszki. „Bez gumowej kaczuszki kąpiel nie jest już dla prezydenta zabawą i woli on brać prysznic” - ${trump} jest cytowany przez swojego rzecznika prasowego.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="55" fictional="1" />
-		</news>
+		</news> <!-- TODO: pause thread for the mentioned four years or fill it with entries in that time frame -->
 
 		<!-- "SHOWBIZ" -->
 
 		<news guid="news-jorgaeff-bricks-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Rolling Bricks auf Abschiedstournee</de>
-				<en>Rolling Bricks on farewell tour</en>
-				<pl>Rolling Bricks na pożegnalnej trasie</pl>
+				<de>${rollingstones} auf Abschiedstournee</de>
+				<en>${rollingstones} on farewell tour</en>
+				<pl>${rollingstones} na pożegnalnej trasie</pl>
 			</title>
 			<description>
-				<de>Mit einem Alterdurchschnitt von 89 Jahren touren die Rolling Bricks durch die Altersheime der Nation. Für ihren Pressesprecher ist es „... die perfekte Möglichkeit sich einen Ruhesitz auszusuchen.“</de>
-				<en>With an average age of 89 years, the Rolling Bricks tour the retirement homes of the nation. For their spokesman, it is "... the perfect opportunity to choose a retirement home."</en>
-				<pl>Ze średnią wieku 89 lat, Rolling Bricks objeżdżają domy spokojnej starości w całym kraju. Dla ich rzecznika jest to „... doskonała okazja, aby wybrać dom spokojnej starości”.</pl>
+				<de>Mit einem Alterdurchschnitt von 89 Jahren touren die ${rollingstones} durch die Altersheime der Nation. Für ihren Pressesprecher ist es „... die perfekte Möglichkeit sich einen Ruhesitz auszusuchen.“</de>
+				<en>With an average age of 89 years, the ${rollingstones} tour the retirement homes of the nation. For their spokesman, it is "... the perfect opportunity to choose a retirement home."</en>
+				<pl>Ze średnią wieku 89 lat, ${rollingstones} objeżdżają domy spokojnej starości w całym kraju. Dla ich rzecznika jest to „... doskonała okazja, aby wybrać dom spokojnej starości”.</pl>
 			</description>
+			<variables>
+				<rollingstones>${.person:"6d31485f-6f62-4553-84af-a6c3db6b5ed1":"firstname"}</rollingstones>
+			</variables>
 			<data genre="1" price="0.45" quality="45" fictional="1" />
 		</news>
 
 		<news guid="news-jorgaeff-chorris-01" type="0" thread_guid="news-jorgaeff-chorris" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Nuck Chorris schlägt Zeit tot</de>
-				<en>Nuck Chorris kills time</en>
-				<pl>Nuck Chorris zabija czas</pl>
+				<de>${chucknorris} schlägt Zeit tot</de>
+				<en>${chucknorris} kills time</en>
+				<pl>${chucknorris} zabija czas</pl>
 			</title>
 			<description>
-				<de>Das hat vor ihm noch keiner geschafft, doch nun ist es Kampfkünstler und Action-Schauspieler Nuck Chorris gelungen die Zeit tot zu schlagen. Und das Beste: Es ist völlig legal!</de>
-				<en>No one has ever done that before him, but now martial artist and action star Nuck Chorris has managed to kill time. And what's best: It's completely legal!</en>
-				<pl>Nikt przed nim tego nie zrobił, ale teraz artysta sztuk walki i gwiazda akcji Nuck Chorris zdołał zabić czas. A co najlepsze: Jest to całkowicie legalne!</pl>
+				<de>Das hat vor ihm noch keiner geschafft, doch nun ist es Kampfkünstler und Action-Schauspieler ${chucknorris} gelungen die Zeit tot zu schlagen. Und das Beste: Es ist völlig legal!</de>
+				<en>No one has ever done that before him, but now martial artist and action star ${chucknorris} has managed to kill time. And what's best: It's completely legal!</en>
+				<pl>Nikt przed nim tego nie zrobił, ale teraz artysta sztuk walki i gwiazda akcji ${chucknorris} zdołał zabić czas. A co najlepsze: Jest to całkowicie legalne!</pl>
 			</description>
+			<variables>
+				<chucknorris>${.person:"f9886d56-43a6-4584-950e-d62ecf41e62a":"fullname"}</chucknorris>
+			</variables>
 			<data genre="1" price="0.3" quality="30" fictional="1" />
 			<effects>
 				<!-- "in 3 Tagen 20-23 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,20,23" news="news-jorgaeff-chorris-02" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-chorris-02" type="2" thread_guid="news-jorgaeff-chorris" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Nuck Chorris zählt bis zur Unendlichkeit</de>
-				<en>Nuck Chorris counts to infinity</en>
-				<pl>Nuck Chorris liczy do nieskończoności</pl>
+				<de>${chucknorris} zählt bis zur Unendlichkeit</de>
+				<en>${chucknorris} counts to infinity</en>
+				<pl>${chucknorris} liczy do nieskończoności</pl>
 			</title>
 			<description>
-				<de>Laut eigenen Angaben hat Nuck Chorris bereits 2x bis zur Unendlichkeit gezählt. Die Mathe-Experten dieser Erde rätseln immer noch darüber, ob das stimmt.</de>
-				<en>According to his own statements, Nuck Chorris has already counted to infinity twice. The math experts of this world are still puzzling over whether this is true.</en>
-				<pl>Według jego własnych oświadczeń, Nuck Chorris policzył już do nieskończoności dwa razy. Eksperci matematyczni tego świata wciąż zastanawiają się, czy to prawda.</pl>
+				<de>Laut eigenen Angaben hat ${chucknorris} bereits 2x bis zur Unendlichkeit gezählt. Die Mathe-Experten dieser Erde rätseln immer noch darüber, ob das stimmt.</de>
+				<en>According to his own statements, ${chucknorris} has already counted to infinity twice. The math experts of this world are still puzzling over whether this is true.</en>
+				<pl>Według jego własnych oświadczeń, ${chucknorris} policzył już do nieskończoności dwa razy. Eksperci matematyczni tego świata wciąż zastanawiają się, czy to prawda.</pl>
 			</description>
 			<data genre="1" price="0.3" quality="30" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-drops-01" type="0" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-drops-01" type="0" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff" comment="TODO: Maybe shouldn't be the 'real' Johnny Depp but a separate parody">
 			<title>
-				<de>Jonnie Drops bei Dreharbeiten schwer verletzt</de>
-				<en>Jonnie Drops seriously injured during filming</en>
-				<pl>Jonnie Drops poważnie ranny podczas kręcenia filmu</pl>
+				<de>${johnny} ${depp} bei Dreharbeiten schwer verletzt</de>
+				<en>${johnny} ${depp} seriously injured during filming</en>
+				<pl>${johnny} ${depp} poważnie ranny podczas kręcenia filmu</pl>
 			</title>
 			<description>
-				<de>Beim Dreh von „Mein Grog - dein Grog“ hat sich Jonnie Drops an einer zerbrochenen Grogflasche verletzt. Die Dreharbeiten verzögern sich.</de>
-				<en>During the filming of "My Grog - Your Grog" Jonnie Drops injured himself due to a broken grog bottle. The shooting is delayed.</en>
-				<pl>Podczas kręcenia filmu „My Grog - Your Grog” Jonnie Drops zranił się z powodu pękniętej butelki grogu. Zdjęcia zostały opóźnione.</pl>
+				<de>Beim Dreh von „Mein Grog - dein Grog“ hat sich ${johnny} ${depp} an einer zerbrochenen Grogflasche verletzt. Die Dreharbeiten verzögern sich.</de>
+				<en>During the filming of "My Grog - Your Grog" ${johnny} ${depp} injured himself due to a broken grog bottle. The shooting is delayed.</en>
+				<pl>Podczas kręcenia filmu „My Grog - Your Grog” ${johnny} ${depp} zranił się z powodu pękniętej butelki grogu. Zdjęcia zostały opóźnione.</pl>
 			</description>
+			<variables>
+				<johnny>${.person:"e7924d67-a4de-417d-a1f9-581fd611b534":"firstname"}</johnny>
+				<depp>${.person:"e7924d67-a4de-417d-a1f9-581fd611b534":"lastname"}</depp>
+				<pattyglansen>${.person:"21e88c65-0cc6-4bd1-bd14-b48b6ce25402":"fullname"}</pattyglansen>
+				<bennyjameson>${.person:"ronny-programmeperson-bennyjameson":"fullname"}</bennyjameson>
+			</variables>
 			<data genre="1" price="0.4" quality="40" fictional="1" />
 			<effects>
 				<!-- "morgen 10-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,12" news="news-jorgaeff-drops-02" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-drops-02" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>„Mein Grog - dein Grog“: Dreh geht weiter</de>
@@ -148,9 +211,9 @@
 				<pl>„My Grog - Your Grog”: zdjęcia trwają</pl>
 			</title>
 			<description>
-				<de>Der Dreh des neuen Drops-Films geht weiter! Der Schauspieler möchte trotz schwerer Verletzung auf die Zähne beißen und den Film fertig drehen.</de>
-				<en>The shooting of the new Drops film continues! The actor wants to grit his teeth and finish shooting the film despite a serious injury.</en>
-				<pl>Zdjęcia do nowego filmu Drops trwają! Aktor chce zacisnąć zęby i dokończyć zdjęcia do filmu pomimo poważnej kontuzji.</pl>
+				<de>Der Dreh des neuen ${depp}-Films geht weiter! Der Schauspieler möchte trotz schwerer Verletzung auf die Zähne beißen und den Film fertig drehen.</de>
+				<en>The shooting of the new ${depp} film continues! The actor wants to grit his teeth and finish shooting the film despite a serious injury.</en>
+				<pl>Zdjęcia do nowego filmu ${depp} trwają! Aktor chce zacisnąć zęby i dokończyć zdjęcia do filmu pomimo poważnej kontuzji.</pl>
 			</description>
 			<data genre="1" price="0.35" quality="35" />
 			<effects>
@@ -158,12 +221,11 @@
 				<effect trigger="happen" type="triggernews" time="2,2,2,8,16" news="news-jorgaeff-drops-03" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-drops-03" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Neuer Drops-Film kommt in die Kinos</de>
-				<en>New Drops movie coming to theaters</en>
-				<pl>Nowy film Drops już wkrótce w kinach</pl>
+				<de>Neuer ${depp}-Film kommt in die Kinos</de>
+				<en>New ${depp} movie coming to theaters</en>
+				<pl>Nowy film ${depp} już wkrótce w kinach</pl>
 			</title>
 			<description>
 				<de>Trotz der schweren Verletzung des Hauptdarstellers wurde der Dreh des Filmes zu Ende gebracht und wird nun einem Millionen-Publikum vorgestellt.</de>
@@ -176,17 +238,16 @@
 				<effect trigger="happen" type="triggernews" time="2,3,3,8,14" news="news-jorgaeff-drops-04" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-drops-04" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Goldene Brombeere für Jonnie Drops</de>
-				<en>Golden Bramble for Jonnie Drops</en>
-				<pl>Golden Bramble dla Jonnie Drops</pl>
+				<de>Goldene Brombeere für ${johnny} ${depp}</de>
+				<en>Golden Bramble for ${johnny} ${depp}</en>
+				<pl>Golden Bramble dla ${johnny} ${depp}</pl>
 			</title>
 			<description>
-				<de>Schauspieler Jonnie Drops wurde für seine schlechte Performance in „Mein Grog - dein Grog“ mit der Goldenen Brombeere geehrt.</de>
-				<en>Actor Jonnie Drops was awarded the Golden Bramble for his poor performance in "My Grog - Your Grog".</en>
-				<pl>Aktor Jonnie Drops otrzymał nagrodę Golden Bramble za słaby występ w „My Grog - Your Grog”.</pl>
+				<de>Schauspieler ${johnny} ${depp} wurde für seine schlechte Performance in „Mein Grog - dein Grog“ mit der Goldenen Brombeere geehrt.</de>
+				<en>Actor ${johnny} ${depp} was awarded the Golden Bramble for his poor performance in "My Grog - Your Grog".</en>
+				<pl>Aktor ${johnny} ${depp} otrzymał nagrodę Golden Bramble za słaby występ w „My Grog - Your Grog”.</pl>
 			</description>
 			<data genre="1" price="0.45" quality="45" />
 			<effects>
@@ -194,17 +255,16 @@
 				<effect trigger="happen" type="triggernews" time="1,2,4" news="news-jorgaeff-drops-05" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-drops-05" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Patty Glansen gesteht Affäre</de>
-				<en>Patty Glansen confesses affair</en>
-				<pl>Patty Glansen przyznaje się do romansu</pl>
+				<de>${pattyglansen} gesteht Affäre</de>
+				<en>${pattyglansen} confesses affair</en>
+				<pl>${pattyglansen} przyznaje się do romansu</pl>
 			</title>
 			<description>
-				<de>Am Rande der Filmpreisverleihungen gesteht Patty Glansen, die zusammen mit Jonnie Drops in „Mein Grog - dein Grog“ vor der Kamera stand, eine Affäre mit dem Schauspieler.</de>
-				<en>On the sidelines of the film awards, Patty Glansen, who co-starred with Jonnie Drops in "My Grog - Your Grog," confesses to an affair with the actor.</en>
-				<pl>Na marginesie rozdania nagród filmowych Patty Glansen, która zagrała z Jonnie Dropsem w „My Grog - Your Grog”, wyznaje, że ma romans z aktorem.</pl>
+				<de>Am Rande der Filmpreisverleihungen gesteht ${pattyglansen}, die zusammen mit ${johnny} ${depp} in „Mein Grog - dein Grog“ vor der Kamera stand, eine Affäre mit dem Schauspieler.</de>
+				<en>On the sidelines of the film awards, ${pattyglansen}, who co-starred with ${johnny} ${depp} in "My Grog - Your Grog," confesses to an affair with the actor.</en>
+				<pl>Na marginesie rozdania nagród filmowych ${pattyglansen}, która zagrała z ${johnny} ${depp}em w „My Grog - Your Grog”, wyznaje, że ma romans z aktorem.</pl>
 			</description>
 			<data genre="1" price="0.35" quality="35" fictional="1" />
 			<effects>
@@ -213,17 +273,16 @@
 				<effect trigger="happen" type="modifyPersonPopularity" guid="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" valueMin="0.05" valueMax="0.075" />
 			</effects>
 		</news>
-
-		<news guid="news-jorgaeff-drops-06" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-drops-06" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff" comment="TODO: minor castable character, players will be unfamiliar, make this person more prominent">
 			<title>
-				<de>Benny Jameson klaut Filmpreis</de>
-				<en>Benny Jameson steals film award</en>
-				<pl>Benny Jameson kradnie nagrodę filmową</pl>
+				<de>${bennyjameson} klaut Filmpreis</de>
+				<en>${bennyjameson} steals film award</en>
+				<pl>${bennyjameson} kradnie nagrodę filmową</pl>
 			</title>
 			<description>
-				<de>Weil er bei den Filmpreisverleihungen keinen Preis erhalten hat, klaut sich Benny Jameson einfach einen und verschwindet durch die Hintertür.</de>
-				<en>Because he didn't receive a prize at the film awards, Benny Jameson simply nicked one for himself and disappeared through the back door.</en>
-				<pl>Ponieważ nie otrzymał nagrody na rozdaniu nagród filmowych, Benny Jameson po prostu zgarnął jedną dla siebie i zniknął tylnymi drzwiami.</pl>
+				<de>Weil er bei den Filmpreisverleihungen keinen Preis erhalten hat, klaut sich ${bennyjameson} einfach einen und verschwindet durch die Hintertür.</de>
+				<en>Because he didn't receive a prize at the film awards, ${bennyjameson} simply nicked one for himself and disappeared through the back door.</en>
+				<pl>Ponieważ nie otrzymał nagrody na rozdaniu nagród filmowych, ${bennyjameson} po prostu zgarnął jedną dla siebie i zniknął tylnymi drzwiami.</pl>
 			</description>
 			<data genre="1" price="0.45" quality="40" fictional="1" />
 			<effects>
@@ -232,17 +291,16 @@
 				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-drops-07" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Benny Jameson zu Gefängnisstrafe verurteilt</de>
-				<en>Benny Jameson sentenced to prison</en>
-				<pl>Benny Jameson skazany na karę więzienia</pl>
+				<de>${bennyjameson} zu Gefängnisstrafe verurteilt</de>
+				<en>${bennyjameson} sentenced to prison</en>
+				<pl>${bennyjameson} skazany na karę więzienia</pl>
 			</title>
 			<description>
-				<de>Den geklauten Filmpreis hat er zurück gegeben. Trotzdem wurde Benny Jameson zu einer dreitägigen Gefängnisstrafe verurteilt, die er bereits angetreten hat.</de>
-				<en>He gave back the stolen film award. Nevertheless, Benny Jameson was convicted to a three-day prison sentence, which he has already entered.</en>
-				<pl>Oddał skradzioną nagrodę filmową. Mimo to, Benny Jameson został skazany na karę trzech dni pozbawienia wolności, którą już odbył.</pl>
+				<de>Den geklauten Filmpreis hat er zurück gegeben. Trotzdem wurde ${bennyjameson} zu einer dreitägigen Gefängnisstrafe verurteilt, die er bereits angetreten hat.</de>
+				<en>He gave back the stolen film award. Nevertheless, ${bennyjameson} was convicted to a three-day prison sentence, which he has already entered.</en>
+				<pl>Oddał skradzioną nagrodę filmową. Mimo to, ${bennyjameson} został skazany na karę trzech dni pozbawienia wolności, którą już odbył.</pl>
 			</description>
 			<data genre="1" price="0.5" quality="45" fictional="1" />
 			<effects>
@@ -251,17 +309,16 @@
 				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="-0.07" valueMax="-0.03" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-drops-08" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Benny Jameson aus dem Gefängnis entlassen</de>
-				<en>Benny Jameson released from prison</en>
-				<pl>Benny Jameson zwolniony z więzienia</pl>
+				<de>${bennyjameson} aus dem Gefängnis entlassen</de>
+				<en>${bennyjameson} released from prison</en>
+				<pl>${bennyjameson} zwolniony z więzienia</pl>
 			</title>
 			<description>
-				<de>Aufgrund guter Führung wurde Benny Jameson einen Tag früher aus dem Gefängnis entlassen. Der Schauspieler möchte seine Erfahrungen nun in einem Film verarbeiten.</de>
-				<en>Because of good behavior Benny Jameson was released from prison a day early. The actor now wants to reflect on his experience in a film.</en>
-				<pl>Dzięki dobremu zachowaniu Benny Jameson został zwolniony z więzienia dzień wcześniej. Aktor chce teraz opowiedzieć o swoim doświadczeniu w filmie.</pl>
+				<de>Aufgrund guter Führung wurde ${bennyjameson} einen Tag früher aus dem Gefängnis entlassen. Der Schauspieler möchte seine Erfahrungen nun in einem Film verarbeiten.</de>
+				<en>Because of good behavior ${bennyjameson} was released from prison a day early. The actor now wants to reflect on his experience in a film.</en>
+				<pl>Dzięki dobremu zachowaniu ${bennyjameson} został zwolniony z więzienia dzień wcześniej. Aktor chce teraz opowiedzieć o swoim doświadczeniu w filmie.</pl>
 			</description>
 			<data genre="1" price="0.55" quality="50" fictional="1" />
 			<effects>
@@ -270,17 +327,16 @@
 				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.01" valueMax="0.03" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-drops-09" type="2" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Benny Jameson erhält Filmpreis</de>
-				<en>Benny Jameson receives film award</en>
-				<pl>Benny Jameson otrzymuje nagrodę filmową</pl>
+				<de>${bennyjameson} erhält Filmpreis</de>
+				<en>${bennyjameson} receives film award</en>
+				<pl>${bennyjameson} otrzymuje nagrodę filmową</pl>
 			</title>
 			<description>
-				<de>Für die Rolle eines Häftlings wurde Benny Jameson mit einem Filmpreis geehrt. Die Kritiker loben die besonders realistische Darstellung des Schauspielers.</de>
-				<en>For the role of a prisoner Benny Jameson was honored with a film award. The critics praise the actor's particularly realistic portrayal.</en>
-				<pl>Za rolę więźnia Benny Jameson został uhonorowany nagrodą filmową. Krytycy chwalą aktora za wyjątkowo realistyczny portret.</pl>
+				<de>Für die Rolle eines Häftlings wurde ${bennyjameson} mit einem Filmpreis geehrt. Die Kritiker loben die besonders realistische Darstellung des Schauspielers.</de>
+				<en>For the role of a prisoner ${bennyjameson} was honored with a film award. The critics praise the actor's particularly realistic portrayal.</en>
+				<pl>Za rolę więźnia ${bennyjameson} został uhonorowany nagrodą filmową. Krytycy chwalą aktora za wyjątkowo realistyczny portret.</pl>
 			</description>
 			<data genre="1" price="0.6" quality="55" fictional="1" />
 			<effects>
@@ -428,67 +484,68 @@
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-racing-01" type="0" thread_guid="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-racing-01" type="0" thread_guid="news-jorgaeff-racing" creator="8936" created_by="jorgaeff" comment="previously somewhat 'real' with random outcome, thus may collide with actual historical news to be added; turning this into a fictional kids championship; spoof names now intended to be in diminuitive form, in addition to eventual existing 'real' entries | Previously 'Formula X' but Formula 1,2,3,... is probably better spoofed with Formula A,B,C,...">
 			<title>
-				<de>Formel X: Wer holt sich die Fahrer-WM?</de>
-				<en>Formula X: Who will win the drivers' championship?</en>
-				<pl>Formuła X: Kto zdobędzie mistrzostwo kierowców?</pl>
+				<de>U15 Formel A: Wer holt sich die Fahrer-WM?</de>
+				<en>U15 Formula A: Who will win the drivers' championship?</en>
+				<pl>Formuła A U15: Kto zdobędzie mistrzostwo kierowców?</pl>
 			</title>
 			<description>
-				<de>Zu einem Dreikampf kommt es heute Abend beim letzten Rennen der Formel X zwischen den punktgleichen Piloten Luis Pamelton, Bastian Kettel und Ferdinando Alfonso. Wer wird Fahrer-Weltmeister?</de>
-				<en>There will be a triple-header tonight in the last race of Formula X between the drivers Luis Pamelton, Bastian Kettel and Ferdinando Alfonso, who are tied on points. Who will be the world drivers' champion?</en>
-				<pl>Dziś wieczorem w ostatnim wyścigu Formuły X dojdzie do potrójnego pojedynku pomiędzy kierowcami Luisem Pameltonem, Bastianem Kettelem i Ferdinando Alfonso, którzy zremisowali pod względem punktów. Kto zostanie mistrzem świata kierowców?</pl>
+				<de>Zu einem Dreikampf kommt es heute Abend beim letzten Rennen der Unter-15-Formel A zwischen den punktgleichen Piloten ${driver1}, ${driver2} und ${driver3}. Wer wird Fahrer-Weltmeister?</de>
+				<en>There will be a triple-header tonight in the final race of the Under-15 Formula A between the drivers ${driver1}, ${driver2} and ${driver3}, who are tied on points. Who will be the world drivers' champion?</en>
+				<pl>Dziś wieczorem w ostatnim wyścigu Formuły A do lat 15 dojdzie do potrójnego pojedynku. Kierowcy ${driver1}, ${driver2} i ${driver3} zremisowali na punkty. Kto zostanie mistrzem świata kierowców?</pl>
 			</description>
+			<variables>
+				<driver1>Louis Pummelton|Miki Lausa|Kiki Rasburg|Alain Most|Jamie Hurt|Nigel Damsell|Mika Häkkleinen|Michi Schublattler</driver1>
+				<driver2>Sebastian Kettkar|Ayrton Flenna|Jackie Stewie|Mario Androlli|Jody Schleckie|Nelson Pequeno|Emerson Littipoldi|Damian Chill</driver2>
+				<driver3>Floriano Alfonso|Jackie Villejeune|Rubens Balliballo|Davy Coolheart|Gerald Burgie|Riccardo Capresi|Sean Alusi|Heinz-Harald Frantzi</driver3>
+			</variables>
 			<data genre="2" price="0.45" quality="45" fictional="1" />
 			<effects>
 				<!-- "möglicher Effekt: Live-Übertragung" -->
 				<!-- "morgen 6-12 Uhr / News a, b, c oder d" -->
-				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,12" news1="news-jorgaeff-racing-02a" probability1="30" news2="news-jorgaeff-racing-02b" probability2="30" 	news3="news-jorgaeff-racing-02c" probability3="30" news4="news-jorgaeff-racing-02d" probability4="10"/>
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,12" news1="news-jorgaeff-racing-02a" probability1="30" news2="news-jorgaeff-racing-02b" probability2="30" news3="news-jorgaeff-racing-02c" probability3="30" news4="news-jorgaeff-racing-02d" probability4="10"/>
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-racing-02a" type="2" thread_guid="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Luis Pamelton ist Weltmeister</de>
-				<en>Luis Pamelton is world champion</en>
-				<pl>Luis Pamelton mistrzem świata</pl>
+				<de>${driver1} ist Weltmeister</de>
+				<en>${driver1} is world champion</en>
+				<pl>${driver1} mistrzem świata</pl>
 			</title>
 			<description>
-				<de>Der neue Formel-X-Weltmeister heißt Luis Pamelton. In einem spannenden Rennen konnte er sich gegen seine Rivalen Bastian Kettel und Ferdinando Alfonso trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
-				<en>The new Formula X world champion is Luis Pamelton. In an exciting race, he was able to prevail against his rivals Bastian Kettel and Ferdinando Alfonso despite a 10-second penalty for speeding.</en>
-				<pl>Nowym mistrzem świata Formuły X został Luis Pamelton. W emocjonującym wyścigu udało mu się wygrać z rywalami Bastianem Kettelem i Ferdinando Alfonso pomimo 10-sekundowej kary za przekroczenie prędkości.</pl>
+				<de>Der neue U15-Formel-A-Weltmeister heißt ${driver1}. In einem spannenden Rennen konnte er sich gegen seine Rivalen ${driver2} und ${driver3} trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
+				<en>The new U15 Formula A world champion is ${driver1}. In an exciting race, he was able to prevail against his rivals ${driver2} and ${driver3} despite a 10-second penalty for speeding.</en>
+				<pl>Nowym mistrzem świata Formuły A do lat 15 został ${driver1}. W emocjonującym wyścigu udało mu się zwyciężyć pomimo 10-sekundowej kary za przekroczenie prędkości. Jego rywale ${driver2} i ${driver3} zostali w tyle.</pl>
 			</description>
 			<data genre="2" price="0.5" quality="50" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-racing-02b" type="2" thread_guid="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Bastian Kettel ist Weltmeister</de>
-				<en>Bastian Kettel is world champion</en>
-				<pl>Bastian Kettel mistrzem świata</pl>
+				<de>${driver2} ist Weltmeister</de>
+				<en>${driver2} is world champion</en>
+				<pl>${driver2} mistrzem świata</pl>
 			</title>
 			<description>
-				<de>Der neue Formel-X-Weltmeister heißt Bastian Kettel. In einem spannenden Rennen konnte er sich gegen seine Rivalen Luis Pamelton und Ferdinando Alfonso trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
-				<en>The new Formula X world champion is Bastian Kettel. In an exciting race, he was able to prevail over his rivals Luis Pamelton and Ferdinando Alfonso despite a 10-second penalty for speeding.</en>
-				<pl>Nowym mistrzem świata Formuły X został Bastian Kettel. W emocjonującym wyścigu udało mu się pokonać rywali Luisa Pameltona i Ferdinando Alfonso pomimo 10-sekundowej kary za przekroczenie prędkości.</pl>
+				<de>Der neue U15-Formel-A-Weltmeister heißt ${driver2}. In einem spannenden Rennen konnte er sich gegen seine Rivalen ${driver1} und ${driver3} trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
+				<en>The new U15 Formula A world champion is ${driver2}. In an exciting race, he was able to prevail over his rivals ${driver1} and ${driver3} despite a 10-second penalty for speeding.</en>
+				<pl>Nowym mistrzem świata Formuły A do lat 15 został ${driver2}. W emocjonującym wyścigu udało mu się zwyciężyć pomimo 10-sekundowej kary za przekroczenie prędkości. Jego rywale ${driver1} i ${driver3} zostali w tyle.</pl>
 			</description>
 			<data genre="2" price="0.5" quality="50" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-racing-02c" type="2" thread_guid="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Ferdinando Alfonso ist Weltmeister</de>
-				<en>Ferdinando Alfonso is world champion</en>
-				<pl>Ferdinando Alfonso mistrzem świata</pl>
+				<de>${driver3} ist Weltmeister</de>
+				<en>${driver3} is world champion</en>
+				<pl>${driver3} mistrzem świata</pl>
 			</title>
 			<description>
-				<de>Der neue Formel-X-Weltmeister heißt Ferdinando Alfonso. In einem spannenden Rennen konnte er sich gegen seine Rivalen Luis Pamelton und Bastian Kettel trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
-				<en>The new Formula X world champion is Ferdinando Alfonso. In an exciting race, he was able to prevail over his rivals Luis Pamelton and Bastian Kettel despite a 10-second penalty for speeding.</en>
-				<pl>Nowym mistrzem świata Formuły X został Ferdinando Alfonso. W emocjonującym wyścigu udało mu się pokonać rywali Luisa Pameltona i Bastiana Kettela pomimo 10-sekundowej kary za przekroczenie prędkości.</pl>
+				<de>Der neue U15-Formel-A-Weltmeister heißt ${driver3}. In einem spannenden Rennen konnte er sich gegen seine Rivalen ${driver1} und ${driver2} trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
+				<en>The new U15 Formula A world champion is ${driver3}. In an exciting race, he was able to prevail over his rivals ${driver1} and ${driver2} despite a 10-second penalty for speeding.</en>
+				<pl>Nowym mistrzem świata Formuły A do lat 15 został ${driver3}. W emocjonującym wyścigu udało mu się zwyciężyć pomimo 10-sekundowej kary za przekroczenie prędkości. Jego rywale ${driver1} i ${driver2} zostali w tyle.</pl>
 			</description>
 			<data genre="2" price="0.5" quality="50" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-racing-02d" type="2" thread_guid="news-jorgaeff-racing" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Sensation: Erstmalig drei Weltmeister</de>
@@ -496,9 +553,9 @@
 				<pl>Sensacja: Trzech mistrzów świata po raz pierwszy</pl>
 			</title>
 			<description>
-				<de>Zu einem Novum kam es beim letzten Rennen der Formel X: Alle drei WM-Führenden schieden nach Reifenplatzern aus. Somit gibt es erstmalig in der Geschichte der Formel X drei Weltmeister.</de>
-				<en>There was a novelty in the last race of Formula X: All three world championship leaders dropped out after tire blowouts. Thus, for the first time in the history of Formula X, there are three world champions.</en>
-				<pl>W ostatnim wyścigu Formuły X miała miejsce nowość: wszyscy trzej liderzy mistrzostw świata odpadli po przebiciu opon. Tym samym po raz pierwszy w historii Formuły X mamy trzech mistrzów świata.</pl>
+				<de>Zu einem Novum kam es beim letzten Rennen der U15-Formel A: Alle drei WM-Führenden schieden nach Reifenplatzern aus. Somit gibt es erstmalig in der Geschichte der U15-Formel A drei Weltmeister.</de>
+				<en>There was a novelty in the last race of U15 Formula A: All three world championship leaders dropped out after tire blowouts. Thus, for the first time in the history of U15 Formula A, there are three world champions.</en>
+				<pl>W ostatnim wyścigu Formuły A do lat 15 miała miejsce nowość: wszyscy trzej liderzy mistrzostw świata odpadli po przebiciu opon. Tym samym po raz pierwszy w historii Formuły A do lat 15 mamy trzech mistrzów świata.</pl>
 			</description>
 			<data genre="2" price="0.6" quality="60" fictional="1" />
 		</news>
@@ -521,7 +578,6 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,0,23" news="news-jorgaeff-nachtrennen-02" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-nachtrennen-02" type="2" thread_guid="news-jorgaeff-nachtrennen" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Nachtrennen der Formel Öko abgebrochen</de>
@@ -538,19 +594,22 @@
 
 		<news guid="news-jorgaeff-kurzer-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Denkward Kurzer gelingt Hole-in-one</de>
-				<en>Denkward Kurzer achieves hole-in-one</en>
-				<pl>Denkward Kurzer osiąga hole-in-one</pl>
+				<de>${bernhardlanger} gelingt Hole-in-one</de>
+				<en>${bernhardlanger} achieves hole-in-one</en>
+				<pl>${bernhardlanger} osiąga hole-in-one</pl>
 			</title>
 			<description>
-				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone Denkward Kurzer den Turniersieg beim Major-Turnier der Senioren in Key Briscane.</de>
-				<en>With the first hole-in-one of his professional career, golf legend Denkward Kurzer claims victory in the senior major tournament in Key Briscane.</en>
-				<pl>Z pierwszym hole-in-one w swojej karierze zawodowej, legenda golfa Denkward Kurzer zwycięża w turnieju senior major w Key Briscane.</pl>
+				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone ${bernhardlanger} den Turniersieg beim Major-Turnier der Senioren in Key Briscane.</de>
+				<en>With the first hole-in-one of his professional career, golf legend ${bernhardlanger} claims victory in the senior major tournament in Key Briscane.</en>
+				<pl>Z pierwszym hole-in-one w swojej karierze zawodowej, legenda golfa ${bernhardlanger} zwycięża w turnieju senior major w Key Briscane.</pl>
 			</description>
+			<variables>
+				<bernhardlanger>${.person:"4e3f08d2-839e-4934-a2de-efec79f22233":"fullname"}</bernhardlanger>
+			</variables>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-dyson-01" type="0" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-dyson-01" type="0" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff" comment="TODO: deal with this 'half-fictional' aspect somehow">
 				<!-- "Beginnt an einem Sonntag" -->
 			<availability script='${.eq:${.worldtime:"weekday"}:6}' />
 			<title>
@@ -569,7 +628,6 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-02" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-02" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Klatschkowski möchte Titel verteidigen</de>
@@ -587,7 +645,6 @@
 				<effect trigger="happen" type="triggernews" time="1,4,8" news="news-jorgaeff-dyson-03" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-03" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson nimmt Herausforderung an</de>
@@ -605,7 +662,6 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-04" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-04" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson trainiert für Comeback</de>
@@ -623,7 +679,6 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-05" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-05" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Dyson vs. Klatschkowski: Tumulte vor Boxkampf</de>
@@ -641,7 +696,6 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,18,20" news="news-jorgaeff-dyson-06" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-06" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Heute Abend: Dyson vs. Klatschkowski</de>
@@ -660,7 +714,6 @@
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4" news1="news-jorgaeff-dyson-06a" probability1="30" news2="news-jorgaeff-dyson-06b" probability2="70" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-06a" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson neuer Box-Weltmeister</de>
@@ -668,7 +721,7 @@
 				<pl>Spike Dyson nowym mistrzem świata w boksie</pl>
 			</title>
 			<description>
-				<de>Der 50. Herausforderer war einer zu viel: Spike Dyson ist trotz seiner 52 Jahre der neue Box-Weltmeister. In einem spannenden Kampf konnte er den Dauer-Champion Eugen Klatschkowski nach klarem K.o. in der 12. Runde den Gürtel abnehmen.</de>
+				<de>Der 50. Herausforderer war einer zu viel: Spike Dyson ist trotz seiner 52 Jahre der neue Box-Weltmeister. In einem spannenden Kampf konnte er den Dauer-Champion Eugen Klatschkowski nach klarem K. o. in der 12. Runde den Gürtel abnehmen.</de>
 				<en>The 50th challenger was one too many: Spike Dyson, despite his 52 years, is the new boxing world champion. In an exciting fight he was able to take the belt from the long-standing champion Eugen Klatschkowski after a clear knockout in the 12th round.</en>
 				<pl>Pięćdziesiąty pretendent to o jeden za dużo: Spike Dyson, mimo swoich 52 lat, został nowym mistrzem świata w boksie. W ekscytującej walce udało mu się odebrać pas wieloletniemu mistrzowi Eugenowi Klatschkowskiemu po wyraźnym nokaucie w 12. rundzie.</pl>
 			</description>
@@ -678,7 +731,6 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-dyson-07a" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-06b" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Klatschkowski bleibt Box-Weltmeister</de>
@@ -696,7 +748,6 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-dyson-07b" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-dyson-07a" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Spike Dyson: Mit Yoga habe ich es geschafft</de>
@@ -710,7 +761,6 @@
 			</description>
 			<data genre="2" price="0.55" quality="55" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-dyson-07b" type="2" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Klatschkowski tritt zurück</de>
@@ -727,12 +777,12 @@
 
 		<news guid="news-jorgaeff-badminton-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Badminton: Alle Ergebnisse und Tabellen</de>
-				<en>Badminton: All results and tables</en>
-				<pl>Badminton: Wszystkie wyniki i tabele</pl>
+				<de>Badminton: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Badminton: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Badminton: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
-				<de>Alle Badminton-Ergebnisse mit aktuellen Tabellen.</de>
+				<de>Alle Badminton-Ergebnisse mit aktuellen Tabellen .</de>
 				<en>All badminton results with current tables.</en>
 				<pl>Wszystkie wyniki badmintona z aktualnymi tabelami.</pl>
 			</description>
@@ -741,9 +791,9 @@
 
 		<news guid="news-jorgaeff-schach-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Schach: Alle Ergebnisse und Tabellen</de>
-				<en>Chess: All results and tables</en>
-				<pl>Szachy: Wszystkie wyniki i tabele</pl>
+				<de>Schach: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Chess: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Szachy: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
 				<de>Alle Schach-Ergebnisse mit aktuellen Tabellen.</de>
@@ -755,9 +805,9 @@
 
 		<news guid="news-jorgaeff-hockey-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Hockey: Alle Ergebnisse und Tabellen</de>
-				<en>Hockey: All results and tables</en>
-				<pl>Hokej: Wszystkie wyniki i tabele</pl>
+				<de>Hockey: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Hockey: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Hokej: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
 				<de>Alle Hockey-Ergebnisse mit aktuellen Tabellen.</de>
@@ -769,9 +819,9 @@
 
 		<news guid="news-jorgaeff-billard-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Billard: Alle Ergebnisse und Tabellen</de>
-				<en>Billiards: All results and tables</en>
-				<pl>Bilard: Wszystkie wyniki i tabele</pl>
+				<de>Billard: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Billiards: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Bilard: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
 				<de>Alle Ergebnisse vom Billard mit aktuellen Tabellen.</de>
@@ -783,9 +833,9 @@
 
 		<news guid="news-jorgaeff-ringen-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Ringen: Alle Ergebnisse und Tabellen</de>
-				<en>Wrestling: All results and tables</en>
-				<pl>Wrestling: Wszystkie wyniki i tabele</pl>
+				<de>Ringen: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Wrestling: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Wrestling: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
 				<de>Alle Ergebnisse vom Ringen mit aktuellen Tabellen.</de>
@@ -797,9 +847,9 @@
 
 		<news guid="news-jorgaeff-tennis-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Tennis: Alle Ergebnisse und Tabellen</de>
-				<en>Tennis: All results and tables</en>
-				<pl>Tenis: Wszystkie wyniki i tabele</pl>
+				<de>Tennis: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Tennis: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Tenis: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
 				<de>Alle Tennis-Ergebnisse mit aktuellen Tabellen.</de>
@@ -811,9 +861,9 @@
 
 		<news guid="news-jorgaeff-tischtennis-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Tischtennis: Alle Ergebnisse und Tabellen</de>
-				<en>Table tennis: All results and tables</en>
-				<pl>Tenis stołowy: Wszystkie wyniki i tabele</pl>
+				<de>Tischtennis: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Table tennis: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Tenis stołowy: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
 				<de>Alle Tischtennis-Ergebnisse mit aktuellen Tabellen.</de>
@@ -825,9 +875,9 @@
 
 		<news guid="news-jorgaeff-volleyball-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Volleyball: Alle Ergebnisse und Tabellen</de>
-				<en>Volleyball: All results and tables</en>
-				<pl>Siatkówka: Wszystkie wyniki i tabele</pl>
+				<de>Volleyball: Alle Ergebnisse und Tabellen ${.worldtime:"month"}/${.worldtime:"year"}</de>
+				<en>Volleyball: All results and tables ${.worldtime:"month"}/${.worldtime:"year"}</en>
+				<pl>Siatkówka: Wszystkie wyniki i tabele ${.worldtime:"month"}/${.worldtime:"year"}</pl>
 			</title>
 			<description>
 				<de>Alle Volleyball-Ergebnisse mit aktuellen Tabellen.</de>
@@ -1380,17 +1430,149 @@
 			<data genre="5" price="0.45" quality="45" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-gamseier-01" type="0" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-gamseier-01" type="0" creator="8936" created_by="jorgaeff" comment="reference: https://de.wikipedia.org/wiki/RTL_Samstag_Nacht#Karl_Ranseier | Varianten-Quelle: 'Internet' und ChatGPT | TODO: Various puns have to be translated better or adapted / changed">
 			<title>
-				<de>Karl Gamseier ist tot</de>
-				<en>Karl Gamseier is dead</en>
-				<pl>Karl Gamseier nie żyje</pl>
+				<de>${karl} ${rans}${eier} ist tot</de>
+				<en>${karl} ${rans}${eier} is dead</en>
+				<pl>${karl} ${rans}${eier} nie żyje</pl>
 			</title>
 			<description>
-				<de>Der wohl erfolgloseste Nachrichtensprecher aller Zeiten war der Erste im deutschen Fernsehen, der weder „Bonn“ noch „Berlin“ aussprechen konnte. Er starb gestern im Alter von 63 Jahren beim Versuch die Wetterkarten neu zu mischen.</de>
-				<en>The probably most unsuccessful newscaster of all time was the first on German television who could not pronounce "Bonn" or "Berlin". He died yesterday at the age of 63 while trying to reshuffle the weather charts.</en>
-				<pl>Prawdopodobnie najbardziej nieudany prezenter wiadomości wszech czasów był pierwszym w niemieckiej telewizji, który nie potrafił wymówić słów „Bonn” lub „Berlin”. Zmarł wczoraj w wieku 63 lat, gdy próbował przetasować listę przebojów pogodowych.</pl>
+				<all>${.csv:theprobablymost_csv:0}</all>
 			</description>
+			<variables>
+				<karl>Karl|Karl|Karl|Karl|Klaus|Knut|Kurd|Kurt|Kurt</karl>
+				<rans>Rans|Ramm|Ramsch|Rantz|Ranz|Rein|Reins|Gams</rans>
+				<eier>eier|geier|meier|reier|reiher|scheier|seier|weier|weiher</eier>
+				<wolfgang>${.person:"1e0f9b72-847d-42a4-9c26-491fac2cc929":"firstname"}</wolfgang>
+				<lippert>${.person:"1e0f9b72-847d-42a4-9c26-491fac2cc929":"lastname"}</lippert>
+				<ayrton>${.person:"84330774-b938-4eb6-8b54-8316dd4172f0":"firstname"}</ayrton>
+				<senna>${.person:"84330774-b938-4eb6-8b54-8316dd4172f0":"lastname"}</senna>
+				<influencer>
+					<de>${.gte:${.worldtime:"year"}:2009:"Influencer":"Naturfilmer"}</de>
+					<en>${.gte:${.worldtime:"year"}:2009:"influencer":"nature film maker"}</en>
+					<pl>${.gte:${.worldtime:"year"}:2009:"influencer":"nieudany twórca filmów przyrodniczych"}</pl>
+				</influencer>
+				<generatefollowers>
+					<de>${.gte:${.worldtime:"year"}:2009:"Follower zu generieren":"Geschichte zu schreiben"}</de>
+					<en>${.gte:${.worldtime:"year"}:2009:"generate followers":"make history"}</en>
+					<pl>${.gte:${.worldtime:"year"}:2009:"wygenerować obserwujących":"przejść do historii"}</pl>
+				</generatefollowers>
+				<withalivestream>
+					<de>${.gte:${.worldtime:"year"}:2009:"mit einem Livestream":"mit sensationellen Aufnahmen"}</de>
+					<en>${.gte:${.worldtime:"year"}:2009:"with a live stream":"with sensational footage"}</en>
+					<pl>${.gte:${.worldtime:"year"}:2009:"za pomocą transmisji na żywo":"za pomocą sensacyjnego materiału filmowego"}</pl>
+				</withalivestream>
+				<theprobablymost_csv> <!-- one-element CSV for readability -->
+					<de>Der wohl erfolgloseste Nachrichtensprecher aller Zeiten war der Erste im deutschen Fernsehen, der weder „Bonn“ noch „Berlin“ aussprechen konnte. Er starb gestern im Alter von 63 Jahren beim Versuch die Wetterkarten neu zu mischen.|
+						Der wohl erfolgloseste Enzyklopädie-Autor aller Zeiten verstarb gestern beim Erstellen eines Artikels über das Paarungsverhaltens des geschniegelten Borneograupapageis.|
+						Der wohl erfolgloseste Physiker des 20. Jahrhunderts dachte sich schon als Schuljunge die „Absolutitätstheorie“ aus, in der Licht immer die gleiche Geschwindigkeit hat. Er starb beim Experiment, wo er mit einer Taschenlampe vor einem fahrenden Zug herlief.|
+						Der wohl erfolgloseste Feuerwehrmann aller Zeiten verstarb, als er versuchte, ein brennendes Streichholz mit einem Liter Benzin zu löschen. Zuvor hatte er Großbrände oft mit Konfettikanonen bekämpft.|
+						Der wohl erfolgloseste ${influencer} aller Zeiten versuchte, ${withalivestream} aus einer Höhle in Grönland ${generatefollowers}. Er starb, als er in ein Loch fiel, das er selbst für bessere Lichtverhältnisse gegraben hatte.|
+						Der wohl erfolgloseste Geheimagent aller Zeiten scheiterte und starb bei seiner Undercover-Mission, als er sich in seinem falschen Bart verhedderte.|
+						Der wohl erfolgloseste Extremsportler aller Zeiten verstarb bei dem Versuch, den Weltrekord im Rückwärts-Bungee-Springen zu brechen. Er wurde von dem herunterfallenden Klavier erschlagen, an das er das Seil befestigt hatte.|
+						Der wohl erfolgloseste Astronaut und Sohn einer bemannten Raumpflegerin scheiterte an seiner größten Mission: Beim Wiedereintritt musste er nachzahlen, weil ihm der Stempel fehlte. Er starb gestern, als er mit Dynamit in die Luft fliegen wollte.|
+						Der wohl erfolgloseste Showmaster aller Zeiten erfand nie gesendete Klassiker wie „Traumhochrechnung“ und wurde mit dem ${wolfgang}-${lippert}-Preis gedemütigt. Er starb schließlich im Studio, als er beim Familienduell erschossen wurde.|
+						Der wohl erfolgloseste Drogenabhängige spritzte Heroin in die Oder und erfand die 1,5-Liter-Pfandspritze. Bei Junkies war er unbeliebt, weil er im Maggi-Koks-Studio Knorr fixte. Er starb an einer Überdosis Fischeier - Deutschlands erster Rogentoter.|
+						Der wohl erfolgloseste Nachrichtensprecher aller Zeiten konnte weder „Hosen“ aussprechen noch Schalke richtig datieren. Er starb gestern mit 76 Jahren beim Versuch, Wetterkarten zu mischen. Die Nachricht von seinem Tod erreichte ihn leider zu spät.|
+						Der wohl erfolgloseste Profifußballer aller Zeiten brachte neue Spielkultur mit Torwarthausschuhen und log Tore aus 70 Metern. Er starb gestern bei einem Freundschaftsspiel in Grönland, als er beim Trikottausch erfror.|
+						Der wohl erfolgloseste Polizist aller Zeiten lebte 10 Jahre undercover in einer Litfaßsäule und scheiterte bei der Aufklärung seiner Tochter. Er starb gestern in Essen-Bredeney, als er seine kugelsichere Weste falsch herum anzog und sich selbst erschoss.|
+						Der wohl erfolgloseste Formel-1-Pilot gründete den Rennstall „${rans}${eier} Trabbi“ und erfand die Siegerrolltreppe. Er scheiterte er beim Großen Preis von Spar, als all seine Schachfiguren aus der Zielflagge fielen. Er starb bei seiner ${ayrton}-${senna}-Parodie.|
+						Der wohl erfolgloseste Diktator aller Zeiten scheiterte mit Parolen wie „Ein Volk, ein Reich, eins achtzig“ und einem Angriff mit Panzerschildkröten. Er starb gestern, als er versuchte, seinen Schäferhund „Fass“ zu nennen.|
+						Der wohl erfolgloseste Zirkusdirektor aller Zeiten erfand das Löwen-Senf-Bändigen und scheiterte als Schlangenmensch beim Anstehen. Er starb gestern auf der Reeperbahn, als er einen süßen Hasen aus einem 8-Zylinder ziehen wollte.|
+						Der wohl erfolgloseste Wilthentrinker trank eine Palette Wilthen in einem Zug durch die Maschine und ging dabei nicht über „Los“. Er starb gestern abend bei seiner letzten Ölung. Sein Erbe reichte nur für eine Urnenbestattung in einer 3-Liter-Wilthenflasche.|
+						Der wohl erfolgloseste Kapitän aller Zeiten heiratete eine Schiffsschraube und erfand den aufblasbaren Anker. Bei der großen Sinnflut rettete er sich auf eine Leinsameninsel. Er starb gestern, als er bemerkte, dass seine Schwimmweste nicht kugelsicher war.|
+						Der wohl erfolgloseste Tyrann aller Zeiten rief vom Reichstagsbalkon die Diktatur aus und bekam eine Anzeige wegen Ruhestörung. Er starb vorgestern, als er versuchte, seinen Hunger zu unterdrücken.|
+						Der wohl erfolgloseste Schönheitschirurg aller Zeiten schnitt schon in der Kindheit Grimassen und machte Mädchen schöne Augen. Er erfand Heliumbrüste, doch die Patientinnen flogen ohne zu bezahlen weg. Er starb gestern an einer Portion Skalpellkartoffeln.|
+						Der wohl erfolgloseste Feuerwehrmann stand schon als Kind auf dem Schlauch, erfand das Feuerzangenbowling und löschte das olympische Feuer mit einer Wolldecke. Er steckte sich bei einem Brand auf einer Seuchenstation an und starb. Sein Erbe geht an eine gemeinnützige Brandstiftung.|
+						Der wohl erfolgloseste Gigolo aller Zeiten arbeitete als Latrin-Lover, machte einer Bäuerin den kompletten Hof und half sogar alten Damen über die Strapse. Er starb gestern in einem Hafenbecken in Sizilien, weil er Casanova mit Cosanostra verwechselte.|
+						Der wohl erfolgloseste Hellseher war von seinem Tod selbst überrascht. Er besaß nicht nur das zweite Gesicht, sondern auch die dritten Zähne und las die Zukunft aus entkoffeiniertem Kaffeesatz. Er wurde beim Lesen eines Sternzeichens von einem Mercedes überfahren.|
+						Das wohl erfolgloseste ADAC-Mitglied aller Zeiten erlangte Berühmtheit als Geisterfahrer und durch seine Bemühungen, die Formel 1 auszurechnen. Er starb gestern im Alter von 82 Jahren an den Folgen einer Führerscheinprüfung.|
+						Der wohl erfolgloseste Automechaniker aller Zeiten hatte schon als Kind einen Plattfuß und lud gern ein zu einer Runde Chef-Roulette. Er starb gestern im Alter von 83 Jahren und wurde in einem Saab beerdigt.|
+						Der wohl erfolgloseste Flüchtling aller Zeiten liebte schon als Kind die Fluchtzwerge, züchtete Fluchtfliegen und erfand sogar den Fluchtkompensator. Er starb gestern in einer Talkshow, als er das öffentlich-rechtliche Fernsehen verfluchte.|
+						Der wohl erfolgloseste Laubpuster aller Zeiten nahm schon als Kind kein Blatt vor den Mund. Er wurde bei der Laubtrennung im Nadelwald erwischt und verlor seinen Laubsägen-Schein. Er starb auf Urlaub in einer Laube und wurde auf einem Komposthaufen beerdigt.|
+						Der wohl erfolgloseste Webdesigner aller Zeiten erfand die Schreibschrift-Tastatur und cellulosefreie Webseiten. Er starb gestern, als er versehentlich vom Server gelöscht wurde. Die Trauerfeier findet im engsten Kreis seiner Backups statt.|
+						Der wohl erfolgloseste Politiker aller Zeiten war schon früh ständig leer und gab volle Versprechen. Oder umgekehrt. Er warnte vor der Kluft zwischen Arm und Bein - erfolglos. Gestern starb er bei der Neuauflage der großen Kollision.|
+						Der wohl erfolgloseste Demonstrant aller Zeiten zündete schon als Kind Spielzeugautos an und protestierte gegen den G1-Gipfel. Gestern starb er an einer Überdosis Anti-Demonstrativa. Zur Beisetzung lief eine Demo-Version seines Lieblingsliedes.|
+						Der wohl erfolgloseste LARPer aller Zeiten spielte schon als Kind verrückt und entwickelte die Meilensteine „Cowboy und Indianer“ und „Räuber und Gendarm“. Er starb gestern im Alter von 87 Jahren und hinterlässt 7 Kinder sowie einen Ork namens Horst.|
+						Der wohl erfolgloseste Verbraucherschützer aller Zeiten wurde in einer Pyramide von einer Sandsteinstafel erschlagen, als er Verbraucherschutz im alten Ägypten erforschte. Er hinterlässt 36 Berichte, 17 Stellungnahmen und 14.424 Beschwerden.|
+						Der wohl erfolgloseste Straßenmarkierungsmaler aller Zeiten malte Zebrastreifen in Schlangenlinien, was die Wirte begeisterte - die Behörden nicht. Er verunglückte, als er mit einem Streichholz die neue Farblieferung im Tankwagen inspizierte.|
+						Der wohl erfolgloseste Knecht Ruprecht aller Zeiten drohte in den frühen Morgenstunden einem nicht braven Mann eine Tracht Prügel an - der sich mit einer Machete wehrte. ${rans}${eier} hinterlässt Ruten, einen falschen Bart und einen trauernden Nikolaus.|
+						Der wohl erfolgloseste Endurofahrer aller Zeiten beendete nie ein Rennen und verschleierte seine Stürze als innovative Manöver. Er verstarb gestern, als er sein Motorrad aus einem Kirschbaum barg, der völlig überraschend unter ihm gewachsen war.
+					</de>
+					<en>The probably most unsuccessful newscaster of all time was the first on German television who could not pronounce "Bonn" or "Berlin". He died yesterday at the age of 63 while trying to reshuffle the weather charts.|
+						The probably most unsuccessful encyclopedia author of all times died yesterday while writing an article about the mating behavior of the spruced up Borneo grey parrot.|
+						The probably most unsuccessful physicist of the 20th century came up with the "theory of absolutivity" as a schoolboy, in which light always has the same speed. He died in an experiment where he ran in front of a moving train with a flashlight.|
+						The probably most unsuccessful firefighter of all time died when he tried to extinguish a burning match with a liter of petrol. Before that, he had often fought conflagrations with confetti cannons.|
+						The probably most unsuccessful ${influencer} of all time tried to ${generatefollowers} ${withalivestream} from a cave in Greenland. He died when he fell into a hole he had dug himself for better lighting conditions.|
+						The probably most unsuccessful secret agent of all time failed and died during his undercover mission when he got tangled up in his fake beard.|
+						The probably most unsuccessful extreme athlete of all time died while attempting to break the world record for backwards bungee jumping. He was killed by the falling piano to which he had attached the rope.|
+						The probably most unsuccessful astronaut and son of a manned space captain failed his greatest mission: during re-entry, he had to pay extra because he didn't have a stamp. He died yesterday trying to fly into the air with dynamite.|
+						The probably most unsuccessful showmaster of all time created never-aired classics like "Dream Calculations" and was humiliated with the ${wolfgang} ${lippert} Award. He finally died in a studio, shot during Family Feud.|
+						The probably most unsuccessful drug addict injected heroin into a stream and invented the 1.5-liter deposit syringe. Junkies disliked him for snorting Knorr in the Maggi Coke Studio. He died from a fish egg overdose - Germany's first roe victim.|
+						The probably most unsuccessful newsreader of all time could neither pronounce "pants" nor date Schalke correctly. He died yesterday at the age of 76 while trying to shuffle weather maps. Unfortunately, the news of his death reached him too late.|
+						The probably most unsuccessful professional footballer of all time introduced innovations like goalkeeper slippers and faked goals from 70 meters. He died yesterday during a friendly match in Greenland, freezing to death during a jersey swap.|
+						The probably most unsuccessful police officer of all time spent 10 years undercover in a billboard column and failed to clue up his daughter. He died yesterday in Essen-Bredeney when he put on his bulletproof vest backwards and accidentally shot himself.|
+						The probably most unsuccessful Formula 1 driver founded the "${rans}${eier} Trabbi" racing team and invented the winner's escalator. He failed in the Spar Grand Prix when all his chess pieces fell off the chequered flag. He died during his ${ayrton} ${senna} parody.|
+						The probably most unsuccessful dictator of all time failed with slogans such as "One people, one empire, one eighty" and an attack with tortoiseshells. He died yesterday when he tried to name his sheepdog "Snatch".|
+						The probably most unsuccessful circus director of all time invented lion-mustard taming and failed as a contortionist while lining up. He died yesterday on the Reeperbahn when he tried to pull a cute bunny out of an 8-cylinder.|
+						The probably most unsuccessful Wilthen drinker drank a pallet of Wilthen in one go through the machine and did not pass "Go". He died last night at his final unction. His inheritance provided only enough for an urn burial in a 3-liter Wilthen bottle.|
+						The probably most unsuccessful captain of all time married a propeller, and invented the inflatable anchor. During the great flood, he saved himself on a flaxseed island. He died yesterday when he realized his life vest wasn't bulletproof.|
+						The probably most unsuccessful tyrant of all time declared a dictatorship from the Reichstag balcony and got a noise complaint. He died the day before yesterday trying to suppress his hunger.|
+						The probably most unsuccessful plastic surgeon of all time was already making faces and eyes at the girls as a child. He invented helium breasts, but his patients flew away without paying. He died yesterday from a portion of scalpeeled potatoes.|
+						The probably most unsuccessful firefighter already stood on a hose as a child, invented fire tong bowling and extinguished the Olympic fire with a woollen blanket. He contracted a fire at an epidemic ward and died. His estate goes to a charitable arson foundation.|
+						The probably most unsuccessful gigolo of all time worked as a latrine lover, courted a farmer's wife and even helped old ladies over the straps. He died yesterday in a harbor basin in Sicily because he mistook Casanova for Cosanostra.|
+						The probably most unsuccessful clairvoyant was surprised by his own death. He not only had second sight, but also third teeth and read the future from decaffeinated tea leaves. He was run over by a Mercedes while reading a star sign.|
+						The probably most unsuccessful automobile club member of all time achieved fame as a wrong-way driver and through his efforts to calculate Formula 1. He died yesterday at the age of 82 as a result of a driving test.|
+						The probably most unsuccessful car mechanic of all time already had a puncture as a kid and liked to invite people to a round of chef-roulette. He died yesterday at the age of 83 and was buried in a box hole.|
+						The probably most unsuccessful fugitive of all time loved fudgees as a child, bred refuge flies and even invented the flight compensator. He died yesterday on a talk show when he refuted public television.|
+						The probably most unsuccessful leaf blower of all time didn't mince his words even as a child. He was caught cutting leaves in a pine forest and lost his fretsaw license. He died on vacation in an arbor and was buried in a compost heap.|
+						The probably most unsuccessful web designer of all time invented the cursive keyboard and cellulose-free homepages. He died yesterday when he was accidentally deleted from the server. The funeral will be held in the intimate circle of his backups.|
+						The probably most unsuccessful politician of all time was constantly empty and made canned promises early on. Or the other way around. He warned of the gap between the pure and the snitches - unsuccessfully. He died yesterday during the reenactment of the great collision.|
+						The probably most unsuccessful demonstrator of all time set toy cars on fire as a child and protested against the G1 summit. Yesterday he died of an overdose of Anti-Demonstrativa. A demo version of his favorite song played at the funeral.|
+						The probably most unsuccessful LARPer of all time was acting up already as a child and developed the milestones "Cowboys and Indians" and "Robbers and Gendarmes". He died yesterday at the age of 87 and leaves behind 7 children and an orc named Horst.|
+						The probably most unsuccessful consumer advocate of all time was killed by a sandstone tablet in a pyramid while researching consumer protection in ancient Egypt. He left behind 36 reports, 17 statements and 14,424 complaints.|
+						The probably most unsuccessful road marking painter of all time painted crosswalks in serpentine lines, which delighted the innkeepers - but not the authorities. He was killed when he used a match to inspect the new paint delivery in the tanker.|
+						The probably most unsuccessful Knecht Ruprecht of all time threatened an unruly man with a good spanking in the early hours of the morning - who fought back with a machete. ${rans}${eier} leaves behind rods, a fake beard and a grieving Santa Claus.|
+						The probably most unsuccessful enduro rider of all time never finished a race and disguised his crashes as innovative maneuvers. He died yesterday when he retrieved his bike from a cherry tree that had completely unexpectedly grown underneath him.
+					</en>
+					<pl>Prawdopodobnie najbardziej nieudany prezenter wiadomości wszech czasów był pierwszym w niemieckiej telewizji, który nie potrafił wymówić słów „Bonn” lub „Berlin”. Zmarł wczoraj w wieku 63 lat, gdy próbował przetasować listę przebojów pogodowych.|
+						Prawdopodobnie najbardziej nieudany autor encyklopedii wszechczasów zmarł wczoraj podczas pisania artykułu o zachowaniach godowych wypielęgnowanej papugi szarej z Borneo.|
+						Prawdopodobnie najbardziej nieudany fizyk XX wieku jako uczeń wymyślił „teorię absolutności”, w której światło ma zawsze taką samą prędkość. Zginął podczas eksperymentu, w którym biegł przed jadącym pociągiem z latarką.|
+						Prawdopodobnie najbardziej nieudany strażak wszech czasów zginął, gdy próbował ugasić płonącą zapałkę litrem benzyny. Wcześniej często walczył z pożarami za pomocą armatek konfetti.|
+						Prawdopodobnie najbardziej nieudany ${influencer} wszechczasów próbował ${generatefollowers} ${withalivestream} z jaskini na Grenlandii. Zginął, gdy wpadł do dziury, którą sam wykopał, aby uzyskać lepsze warunki oświetleniowe.|
+						Prawdopodobnie najbardziej nieudany tajny agent wszechczasów zawiódł i zginął podczas tajnej misji, gdy zaplątał się w swoją sztuczną brodę.|
+						Prawdopodobnie najbardziej nieudany sportowiec ekstremalny wszech czasów zginął podczas próby pobicia rekordu świata w skoku na bungee tyłem. Został zabity przez spadający fortepian, do którego przymocował linę.|
+						Prawdopodobnie najbardziej nieudany astronauta i syn kapitana załogowego statku kosmicznego nie wykonał swojej największej misji: przy wejściu w atmosferę musiał dopłacić, bo nie miał pieczątki. Zginął wczoraj, próbując wznieść się w powietrze za pomocą dynamitu.|
+						Prawdopodobnie najbardziej nieudany showman w historii stworzył nigdy niewyemitowane klasyki jak „Kalkulacje marzeń” i został upokorzony nagrodą ${wolfgang}a ${lippert}a. Zginął w studiu, gdy został zastrzelony podczas programu „Familiada“.|
+						Prawdopodobnie najbardziej nieudany narkoman wstrzykiwał heroinę do Odry i wynalazł strzykawkę zwrotną 1,5 litra. Ćpuny go nie lubiły, bo w studiu Maggi-Koks wciągał Knorra. Zmarł w wyniku przedawkowania ikry rybiej - pierwszy „rogentoter“ Niemiec.|
+						Prawdopodobnie najbardziej nieudany prezenter wiadomości wszech czasów nie potrafił ani poprawnie wymówić słowa „spodnie”, ani podać daty założenia Schalke. Zmarł wczoraj w wieku 76 lat podczas próby tasowania map pogody. Niestety, wiadomość o jego śmierci dotarła do niego zbyt późno.|
+						Prawdopodobnie najbardziej nieudany piłkarz w historii wprowadził innowacje, jak kapcie bramkarskie, i oszukiwał gole z 70 metrów. Zmarł wczoraj podczas meczu towarzyskiego na Grenlandii, zamarzając przy wymianie koszulek.|
+						Prawdopodobnie najbardziej nieudany policjant wszech czasów spędził 10 lat pod przykrywką na słupie ogłoszeniowym i nie udało mu się namierzyć swojej córki. Zginął wczoraj w Essen-Bredeney, gdy założył kamizelkę kuloodporną tył na przód i przypadkowo się postrzelił.|
+						Prawdopodobnie najbardziej nieudany kierowca Formuły 1 założył zespół „${rans}${eier} Trabbi“ i wynalazł zwycięskie ruchome schody. Zawiódł w Grand Prix Spar, kiedy wszystkie jego figury szachowe spadły z flagi w szachownicę. Zmarł podczas parodii: „${ayrton} ${senna}”.|
+						Prawdopodobnie najbardziej nieudany dyktator w historii nie zdobył poparcia hasłami „Jeden naród, jedno imperium, jeden metr osiemdziesiąt“ ani atakiem z użyciem pancernych żółwi. Zmarł wczoraj, próbując nazwać swojego owczarka „Snatch“.|
+						Prawdopodobnie najbardziej nieudany dyrektor cyrku wszechczasów wymyślił oswajanie lwów z musztardą i zawiódł jako kontorsjonista w kolejce. Zginął wczoraj na Reeperbahn, gdy próbował wyciągnąć słodkiego króliczka z 8-cylindrowego samochodu.|
+						Prawdopodobnie najbardziej nieudany pijący Wilthen wypił paletę Wilthen za jednym razem przez maszynę i nie przeszedł „Start”. Zmarł zeszłej nocy podczas ostatniego namaszczenia. Jego spadek wystarczył jedynie na pochówek w urnie w 3-litrowej butelce Wilthen.|
+						Prawdopodobnie najbardziej nieudany kapitan w historii poślubił śrubę okrętową i wynalazł dmuchany kotwicę. Podczas wielkiej powodzi uratował się na wyspie lnianej. Zginął wczoraj, gdy zdał sobie sprawę, że jego kamizelka ratunkowa nie jest kuloodporna.|
+						Prawdopodobnie najbardziej nieudany tyran w historii ogłosił dyktaturę z balkonu Reichstagu i dostał mandat za zakłócanie spokoju. Zmarł przedwczoraj, próbując stłumić głód.|
+						Prawdopodobnie najbardziej nieudany chirurg plastyczny wszech czasów już jako dziecko robił miny i oczy do dziewczynek. Wynalazł helowe piersi, ale jego pacjentki odleciały nie płacąc. Zmarł wczoraj od porcji ziemniaków ze skalpela.|
+						Prawdopodobnie najbardziej nieudany strażak już jako dziecko stał na wężu, wynalazł kręgle strażackie i ugasił pożar olimpijski wełnianym kocem. Zaraził się pożarem na oddziale epidemicznym i zmarł. Jego majątek trafił do fundacji charytatywnej zajmującej się podpaleniami.|
+						Prawdopodobnie najbardziej nieudany żigolak wszech czasów pracował jako latrynoski kochanek, zalecał się do żony rolnika, a nawet pomagał staruszkom przy pasach. Zmarł wczoraj w basenie portowym na Sycylii, ponieważ pomylił Casanovę z Cosanostrą.|
+						Prawdopodobnie najbardziej nieudany jasnowidz był zaskoczony własną śmiercią. Miał nie tylko drugi wzrok, ale także trzecie zęby i odczytywał przyszłość z liści herbaty bezkofeinowej. Został przejechany przez mercedesa podczas odczytywania znaku gwiazdy.|
+						Prawdopodobnie najbardziej nieudany członek automobilklubu wszech czasów zyskał sławę jako kierowca jeżdżący po niewłaściwych drogach oraz dzięki swoim staraniom o skalkulowanie Formuły 1. Zmarł wczoraj w wieku 82 lat w wyniku egzaminu na prawo jazdy.|
+						Prawdopodobnie najbardziej nieudany mechanik samochodowy wszech czasów już jako dziecko miał przebicie opony i lubił zapraszać ludzi na rundę szef-ruletki. Zmarł wczoraj w wieku 83 lat i został pochowany w skrzyni.|
+						Prawdopodobnie najbardziej nieudany uciekinier wszech czasów w dzieciństwie uwielbiał krówki, hodował muchy schronieniowe, a nawet wynalazł kompensator lotu. Zmarł wczoraj w talk show, gdy obalił telewizję publiczną.|
+						Prawdopodobnie najbardziej nieudany dmuchacz liści wszechczasów nie przebierał w słowach nawet jako dziecko. Został przyłapany na ścinaniu liści w sosnowym lesie i stracił licencję pilarza. Zmarł na wakacjach w altanie i został pochowany w pryzmie kompostu.|
+						Prawdopodobnie najbardziej nieudany projektant stron internetowych wszechczasów wynalazł klawiaturę kursywną i strony główne bez celulozy. Zmarł wczoraj, gdy został przypadkowo usunięty z serwera. Pogrzeb odbędzie się w kameralnym gronie jego kopii zapasowych.|
+						Prawdopodobnie najbardziej nieudany polityk wszechczasów był ciągle pusty i wcześnie składał obietnice bez pokrycia. Albo na odwrót. Ostrzegał przed przepaścią między czystymi a donosicielami - bezskutecznie. Zmarł wczoraj podczas odtwarzania wielkiego zderzenia.|
+						Prawdopodobnie najbardziej nieudany demonstrant wszech czasów jako dziecko podpalał samochodziki i protestował przeciwko szczytowi G1. Wczoraj zmarł z powodu przedawkowania Anti-Demonstrativa. Na pogrzebie zagrano wersję demo jego ulubionej piosenki.|
+						Prawdopodobnie najbardziej nieudany LARPer wszech czasów działał już jako dziecko i opracował kamienie milowe „Kowboje i Indianie” oraz „Rozbójnicy i żandarmi”. Zmarł wczoraj w wieku 87 lat i pozostawił po sobie siedmioro dzieci oraz orka o imieniu Horst.|
+						Prawdopodobnie najbardziej nieudany rzecznik konsumentów wszech czasów został zabity przez tablicę z piaskowca w piramidzie podczas badań nad ochroną konsumentów w starożytnym Egipcie. Pozostawił po sobie 36 raportów, 17 oświadczeń i 14 424 skargi.|
+						Prawdopodobnie najbardziej nieudany malarz oznakowań drogowych wszechczasów malował przejścia dla pieszych w serpentynowe linie, co zachwycało karczmarzy - ale nie władze. Zginął, gdy użył zapałki do sprawdzenia dostawy nowej farby w cysternie.|
+						Prawdopodobnie najbardziej nieudany Knecht Ruprecht wszech czasów groził chłostą niesfornemu mężczyźnie we wczesnych godzinach porannych - który walczył z maczetą. ${rans}${eier} pozostawia po sobie rózgi, sztuczną brodę i zasmuconego Świętego Mikołaja.|
+						Prawdopodobnie najbardziej nieudany zawodnik enduro wszech czasów nigdy nie ukończył wyścigu, a swoje kraksy maskował innowacyjnymi manewrami. Zginął wczoraj, gdy wyciągał swój rower spod drzewa wiśniowego, które zupełnie niespodziewanie wyrosło pod nim.
+					</pl>
+				</theprobablymost_csv>
+			</variables>
 			<data genre="5" price="0.3" quality="30" fictional="1" />
 		</news>
 
