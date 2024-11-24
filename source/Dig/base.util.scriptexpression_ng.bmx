@@ -336,7 +336,9 @@ Struct SToken
 	End Method
 
 
-	'set strictTypeCheck to True to evaluate ("123" vs 124
+	'set strictTypeCheck to True to evaluate only same types
+	'"123" vs 123 -> False
+	'123:Long vs 123.0:Double -> False ...
 	Method CompareWith:Int(other:SToken, strictTypeCheck:Int = False)
 		Local r:Double
 		If Self.valueType = ETokenValueType.Integer
