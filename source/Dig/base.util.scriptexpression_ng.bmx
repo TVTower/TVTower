@@ -336,27 +336,70 @@ Struct SToken
 	End Method
 
 
-	Method CompareWith:Int(other:SToken)
+	'set strictTypeCheck to True to evaluate only same types
+	'"123" vs 123 -> False
+	'123:Long vs 123.0:Double -> False ...
+	Method CompareWith:Int(other:SToken, strictTypeCheck:Int = False)
 		Local r:Double
 		If Self.valueType = ETokenValueType.Integer
 			If other.valueType = ETokenValueType.Integer
 				r = Self.valueLong - other.valueLong
-			ElseIf other.valueType = ETokenValueType.FloatingPoint
-				r = Self.valueLong - other.valueDouble
+			ElseIf Not strictTypeCheck
+				If other.valueType = ETokenValueType.FloatingPoint
+					r = Self.valueLong - other.valueDouble
+				ElseIf other.valueType = ETokenValueType.Text
+					Local containsNumber:Int
+					Local comparison:Int = StringHelper.StringNumberComparison(other.value, self.valueLong, containsNumber)
+					if not containsNumber
+						r = -1 'at least not equal
+					Else
+						r = comparison
+					EndIf
+				EndIf
 			EndIf
 		ElseIf Self.valueType = ETokenValueType.FloatingPoint
 			If other.valueType = ETokenValueType.Integer
 				r = Self.valueDouble - other.valueLong
-			ElseIf other.valueType = ETokenValueType.Integer
-				r = Self.valueDouble - other.valueDouble
+			ElseIf Not strictTypeCheck
+				If other.valueType = ETokenValueType.Integer
+					r = Self.valueDouble - other.valueDouble
+				ElseIf other.valueType = ETokenValueType.Text
+					Local containsNumber:Int
+					Local comparison:Int = StringHelper.StringNumberComparison(other.value, self.valueDouble, containsNumber)
+					if not containsNumber
+						r = -1 'at least not equal
+					Else
+						r = comparison
+					EndIf
+				EndIf
 			EndIf
 		ElseIf Self.valueType = ETokenValueType.Text
-			If Self.value > other.value
-				r = 1
-			ElseIf Self.value = other.value
-				r = 1
-			Else
-				r = -1
+			If other.valueType = ETokenValueType.Text
+				If (self.value = other.value) '"=" allows hash comparison
+					r = 0
+				ElseIf self.value > other.value
+					r = 1
+				Else
+					r = -1
+				EndIf
+			ElseIf Not strictTypeCheck
+				If other.valueType = ETokenValueType.Integer
+					Local containsNumber:Int
+					Local comparison:Int = StringHelper.StringNumberComparison(self.value, other.valueLong, containsNumber)
+					if not containsNumber
+						r = -1 'at least not equal
+					Else
+						r = comparison
+					EndIf
+				ElseIf other.valueType = ETokenValueType.FloatingPoint
+					Local containsNumber:Int
+					Local comparison:Int = StringHelper.StringNumberComparison(self.value, other.valueDouble, containsNumber)
+					if not containsNumber
+						r = -1 'at least not equal
+					Else
+						r = comparison
+					EndIf
+				EndIf
 			EndIf
 		ElseIf Self.valueType = ETokenValueType.Identifier
 			Local selfValue:String = self.valueIdentifier.GetValue()
