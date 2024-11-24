@@ -1059,4 +1059,142 @@ Type StringHelper
 
 		Return Upper( Left(s, length) ) + Right(s, s.length - length)
 	End Function
+
+
+	'Alternative to ExtractNumber and a follow up custom comparison
+	'returns 0 (and containsNumber = False) if s1 is incompatible
+	'returns 0 if equal (and containsNumber = True)
+	'returns > 0 if s1 is bigger than d2 (and containsNumber = True)
+	'returns < 0 if s1 is smaller than d2 (and containsNumber = True)
+	Function StringNumberComparison:Int(s:String, d:Double, containsNumber:Int var, epsilon:Float = 0.0001)
+		If s.length = 0 
+			containsNumber = False
+			Return 0 'no extraction happened
+		EndIf
+		containsNumber = True
+		
+		Local value:Double
+		
+		Local negative:Int = 0
+		Local decimalDivider:Long=10
+		Local hasDot:Int = 0
+		Local hasSpaceAfter:Int = 0
+		Local hasDigits:Int = 0
+		Local hasMinus:Int = 0
+		Local index:int = 0
+
+		While index < s.Length
+			Local charCode:Int = s[index]
+			'only allow spaces once a space after a numeric value happened
+			If hasSpaceAfter and charCode <> Asc(" ")
+				containsNumber = False
+				Return 0 'invalid
+			EndIf
+			
+			'extract number / decimals
+			If (charCode >= 48 And charCode <= 57) '48 = "0", 57 = "9"
+				If not hasDot 'number
+					value = value * 10 + (charCode-48)
+				Else 'decimals
+					value :+ Double(charCode-48) / decimalDivider
+					decimalDivider :* 10
+				EndIf
+				hasDigits = True
+			ElseIf charCode = Asc(".")
+				'there can only be one dot
+				If hasDot 
+					containsNumber = False
+					Return 0 'invalid
+				EndIf
+				hasDot = True
+			' allow minus at begin
+			ElseIf charCode = Asc("-") And not HasDot And Not hasDigits
+				hasMinus = True
+			' allow space at begin and end
+			ElseIf charCode = Asc(" ")
+				' if space at end - mark it
+				If hasDigits or hasDot
+					hasSpaceAfter = True
+				EndIf
+			' invalid char found
+			Else
+				containsNumber = False
+				Return 0 'invalid
+			EndIf
+			index :+ 1 'processed 
+		Wend
+
+		If hasMinus Then value = -1 * value
+
+		Return value - d
+	End Function
+
+
+	'Get a number from a string into the passed variable references
+	'Only valid number elements numbers are converted
+	'Whitespace in front and end is ignored
+	'Returns 0 for invalid content, 1 for long numbers, 2 for doubles
+	Function NumberFromString:Int(s:String, longValue:Long Var, doubleValue:Double Var)
+		If s.length = 0 Then Return 0 'no extraction happened
+		
+		longValue = 0
+		doubleValue = 0
+		
+		Local negative:Int = 0
+		Local decimalDivider:Long=10
+		Local hasDot:Int = 0
+		Local hasSpaceAfter:Int = 0
+		Local hasDigits:Int = 0
+		Local hasMinus:Int = 0
+		Local numberType:Int = 0
+		Local index:int = 0
+
+		While index < s.Length
+			Local charCode:Int = s[index]
+			'only allow spaces once a space after a numeric value happened
+			If hasSpaceAfter and charCode <> Asc(" ")
+				Return 0 'invalid
+			EndIf
+			
+			'extract number / decimals
+			If (charCode >= 48 And charCode <= 57) '48 = "0", 57 = "9"
+				If not hasDot 'number
+					longValue = longValue * 10 + (charCode-48)
+					numberType = 1
+				Else 'decimals
+					if numberType = 1 Then doubleValue = longValue
+					doubleValue :+ Double(charCode-48) / decimalDivider
+					decimalDivider :* 10
+					numberType = 2
+				EndIf
+				hasDigits = True
+			ElseIf charCode = Asc(".")
+				'there can only be one dot
+				If hasDot Then Return 0 'invalid
+				hasDot = True
+			' allow minus at begin
+			ElseIf charCode = Asc("-") And not HasDot And Not hasDigits
+				hasMinus = True
+			' allow space at begin and end
+			ElseIf charCode = Asc(" ")
+				' if space at end - mark it
+				If hasDigits or hasDot
+					hasSpaceAfter = True
+				EndIf
+			' invalid char found
+			Else
+				Return 0 'invalid
+			EndIf
+			index :+ 1 'processed 
+		Wend
+
+		If hasMinus
+			If numberType = 1 	
+				longValue = -1 * longValue
+			ElseIf numberType = 2
+				doubleValue = -1 * doubleValue
+			EndIf
+		EndIf
+		Return numberType
+	End Function
 End Type
