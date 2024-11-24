@@ -2468,12 +2468,12 @@ Struct STextParseElement
 	Global ELEMENTTYPE_MISC:Byte = 2
 	
 	
-	Method New(width:Short, height:Short, advanceWidth:Short, visible:Byte, changedFont:Byte)
+	Method New(width:Short, height:Short, advanceWidth:Short, visible:Int, changedFont:Int)
 		Self.width = width
 		Self.height = height
 		Self.advWidth = advanceWidth
-		Self.visible = visible
-		Self.changedFont = changedFont
+		Self.visible = (visible = True)
+		Self.changedFont = (changedFont = True)
 
 		Self.skipOnLinebreak = False
 	End Method
@@ -3071,7 +3071,7 @@ Type STextParseInfo
 			Return HandleSpriteCommand(font, txt, txtPos, x, y)
 		EndIf
 		
-		Return New STextParseElement(0,0, 0, False, fontChanged)
+		Return New STextParseElement(0:Short,0:Short, 0:Short, False, fontChanged)
 	End Method
 
 
