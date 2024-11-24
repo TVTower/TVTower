@@ -179,7 +179,18 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		tokenOffset = 1
 	EndIf
 	
-	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower() 
+	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower()
+
+	If propertyName = "parent"
+		If licence.parentLicenceGUID
+			licence = licence.GetParentLicence()
+		Else
+			Return New SToken( TK_ERROR, ".self has no parent", params.GetToken(0) )
+		EndIf
+		If Not licence Then Return New SToken( TK_ERROR, ".self has no parent", params.GetToken(0) )
+		firstTokenIsSelf = False
+		propertyName = params.GetToken(2 + tokenOffset).value.ToLower()
+	EndIf
 
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)
@@ -274,7 +285,14 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		tokenOffset = 1
 	EndIf
 	
-	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower() 
+	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower()
+
+	If propertyName = "parent"
+		data = GetProgrammeDataCollection().GetByID(data.parentDataID)
+		If Not data Then Return New SToken( TK_ERROR, ".self has no parent", params.GetToken(0) )
+		firstTokenIsSelf = False
+		propertyName = params.GetToken(2 + tokenOffset).value.ToLower()
+	EndIf
 
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)
@@ -457,6 +475,7 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		case "nickname"     Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
 		case "title"        Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
+		case "gender"       Return New SToken( TK_NUMBER, person.gender, params.GetToken(0) )
 		case "guid"         Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
 		case "id"           Return New SToken( TK_NUMBER, person.GetID(), params.GetToken(0) )
 		case "age"          Return New SToken( TK_NUMBER, person.GetAge(), params.GetToken(0) )
@@ -546,8 +565,16 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		EndIf
 		tokenOffset = 1
 	EndIf
-	
-	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower() 
+
+	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower()
+
+	If propertyName = "parent"
+		'access via parent ID does not work as scripts are added to the collection only after creation is finished
+		If Not script._parentScriptTmp Then Return New SToken( TK_ERROR, ".self has no parent", params.GetToken(0) )
+		script = script._parentScriptTmp
+		firstTokenIsSelf = False
+		propertyName = params.GetToken(2 + tokenOffset).value.ToLower()
+	EndIf
 
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)

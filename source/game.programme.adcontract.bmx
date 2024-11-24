@@ -758,6 +758,9 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If baseContract Then baseContract.AddCurrentlyUsedByContract( GetGUID() )
 
 		Self.base = baseContract
+		'persist texts if expression evaluation is necessary
+		If baseContract.title.ContainsString("${") Then Self.title = _ReplaceScriptExpressions(baseContract.title.Copy())
+		If baseContract.description.ContainsString("${") Self.description = _ReplaceScriptExpressions(baseContract.description.Copy())
 	End Method
 
 
