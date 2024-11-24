@@ -1013,4 +1013,16 @@ endrem
 			Set(StringHelper.UCFirst( Get(i, False) ), i)
 		Next
 	End Method
+
+	Method ContainsString:Int(contained:String, languageCodeID:Int = -1)
+		If languageCodeID >= 0
+			Local langIndex:Int = GetLanguageIndex(languageCodeID)
+			If langIndex >= 0 and valueStrings[langIndex] And valueStrings[langIndex].contains(contained) Then Return True
+		Else
+			For Local s:String = EachIn valueStrings
+				If s And s.contains(contained) Then Return True
+			Next
+		EndIf
+		Return False
+	End Method
 End Type

@@ -377,6 +377,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'many scripts are based on the same script template on the same time)
 	Field basedOnScriptTemplateID:Int = 0
 
+	'parent script temporarily stored during title/description creation
+	Field _parentScriptTmp:TScript {nosave}
+	
+
 	Global spriteNameOverlayXRatedLS:TLowerString = New TLowerString.Create("gfx_datasheet_overlay_xrated")
 
 
@@ -562,8 +566,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				Local subTemplate:TScriptTemplate = GetScriptTemplateCollection().GetByID(subScript.basedOnScriptTemplateID)
 				If subTemplate Then subTemplate.ResetVariables()
 
+				'temporarily make parent script directly available
+				subScript._parentScriptTmp = script
 				subScript._GenerateTitleFromTemplate()
 				subScript._GenerateDescriptionFromTemplate()
+				subScript._parentScriptTmp = Null
 			Next
 
 			'ensure they use distinct names
