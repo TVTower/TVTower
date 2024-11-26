@@ -393,6 +393,17 @@ Type TGameModifierBase
 	Method Update:Int(params:TData)
 		If params Then passedParams = params
 
+		'check if data contains a time definition and apply it (once)
+		If data
+			Local timeString:String = data.GetString("time")
+			If timeString
+				Local happenTime:Int[] = StringHelper.StringToIntArray(timeString, ",")
+				Local timeStamp:Long = GetWorldTime().CalcTime_Auto(-1, happenTime[0], happenTime[1..])
+				If timeStamp > 0 Then SetDelayedExecutionTime(timeStamp)
+				data.remove("time")
+			EndIf
+		EndIf
+
 		'if delayed and delay is in the future, set item to be managed
 		'by the modifier manager (so it gets updated regularily until
 		'delay is gone)
