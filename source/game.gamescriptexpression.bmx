@@ -107,7 +107,7 @@ Function SEFN_PersonGenerator:SToken(params:STokenGroup Var, context:SScriptExpr
 	EndIf
 	'gender as defined or a random one
 	Local gender:Int
-	If params.HasToken(4)
+	If params.HasToken(3)
 		gender = TPersonGenerator.GetGenderFromString( params.GetToken(3).GetValueText() )
 	EndIf
 	'chance (0 - 1.0) that full names get a title (like "Dr.") prefixed
