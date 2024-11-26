@@ -394,7 +394,7 @@ Type TGameModifierBase
 		If params Then passedParams = params
 
 		'check if data contains a time definition and apply it (once)
-		If data
+		If data And Not HasDelayedExecution()
 			Local timeString:String = data.GetString("time")
 			If timeString
 				Local happenTime:Int[] = StringHelper.StringToIntArray(timeString, ",")
@@ -605,7 +605,7 @@ Type TGameModifierGroup
 				If Not l Then Continue
 
 				For Local m:TGameModifierBase = EachIn l
-					c.AddEntry(String(node._key), m)
+					c.AddEntry(String(node._key), m.copy())
 				Next
 
 				'move on to next node

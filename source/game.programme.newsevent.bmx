@@ -1166,7 +1166,7 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 	Method Init:TGameModifierNews_ModifyAvailability(data:TData, extra:TData=Null)
 		If Not data Then Return Null
 
-		self.data = data.copy()
+		If data And data.GetString("time") Then self.data = data.copy()
 
 		newsGUID = data.GetString("news", "")
 		enable = data.GetBool("enable", True)

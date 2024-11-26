@@ -346,7 +346,7 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	Method Init:TGameModifierPopularity_ModifyPopularity(data:TData, extra:TData=null)
 		if not data then return null
 
-		self.data = data.copy()
+		If data And data.GetString("time") Then self.data = data.copy()
 
 		local index:string = ""
 		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
