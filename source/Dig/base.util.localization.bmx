@@ -271,6 +271,14 @@ Type TLocalization
 	End Function
 
 
+	Function GetLanguage:TLocalizationLanguage(languageID:Int)
+		If languageID >= 0 And languageID < languages.length
+			Return languages[languageID]
+		EndIf
+		Return Null
+	End Function
+
+
 	Function AddLanguage:int(language:TLocalizationLanguage)
 		if not GetLanguage(language.languageCode)
 			languagesCount :+ 1
@@ -489,6 +497,11 @@ End Function
 'convenience helper function
 Function GetLocale:string(key:string, languageCode:String)
 	return TLocalization.GetString(key, Null, TLocalization.GetLanguage(languageCode))
+End Function
+
+'convenience helper function
+Function GetLocale:string(key:string, languageID:Int)
+	return TLocalization.GetString(key, Null, TLocalization.GetLanguage(languageID))
 End Function
 
 
