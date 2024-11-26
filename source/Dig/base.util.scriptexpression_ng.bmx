@@ -152,7 +152,27 @@ Struct STokenGroup
 	Method New( token:SToken )
 		addToken( token )
 	End Method
+
+	' Was a token added at the given index? 
+	Method HasToken:Int(index:Int)
+		Return (index >= 0 and index < added)
+	End Method
 	
+	' Was a specific type of token added at the given index?
+	Method HasToken:Int(index:Int, valueType:ETokenValueType)
+		If index >= 0 and index < added
+			If index < token.Length
+				Return token[index].valueType = valueType
+			ElseIf index < dynamicToken.Length + token.Length
+				Return dynamicToken[index - token.Length].valueType = valueType
+			EndIf
+		Else
+			Return False
+		EndIf
+	End Method 
+	
+	' Return the token at the given index
+	' (attention: invalid indices lead to "default" tokens (as they are structs)
 	Method GetToken:SToken(index:Int)
 		'TODO shouldn't added be checked
 		If index < token.Length
