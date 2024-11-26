@@ -571,6 +571,15 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	
 	Local propertyName:String = params.GetToken(1 + tokenOffset).value 
 	Local propertyNameLower:String = propertyName.ToLower()
+
+	If propertyNameLower = "parent"
+		'access via parent ID does not work as scripts are added to the collection only after creation is finished
+		If Not script._parentScriptTmp Then Return New SToken( TK_ERROR, ".self has no parent", params.GetToken(0) )
+		script = script._parentScriptTmp
+		firstTokenIsSelf = False
+		propertyName = params.GetToken(2 + tokenOffset).value
+		propertyNameLower = propertyName.ToLower()
+	EndIf
 	
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)
