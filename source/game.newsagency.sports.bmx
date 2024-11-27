@@ -151,7 +151,7 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 			sport.CreateDefaultLeagues()
 		Next
 	End Method
-	
+
 
 	Method UpdateAll:Int()
 		For Local sport:TNewsEventSport = EachIn entries.Values()
