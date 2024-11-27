@@ -327,6 +327,7 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	Method CopyFrom(other:TGameModifierPopularity_ModifyPopularity)
 		popularityID = other.popularityID
 		popularityReferenceID = other.popularityReferenceID
+		popularityReferenceGUID = other.popularityReferenceGUID
 		valueMin = other.valueMin
 		valueMax = other.valueMax
 		modifyProbability = other.modifyProbability
