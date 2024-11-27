@@ -4,6 +4,7 @@ Import "Dig/base.util.math.bmx"
 Import "game.gameconstants.bmx"
 Import "game.popularity.bmx"
 Import "game.person.base.bmx"
+Import "game.gamescriptexpression.bmx"
 
 
 Type TPersonPopularity Extends TPopularity
@@ -123,7 +124,9 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 
 
 	Method GetPopularity:TPopularity() override
-		'TODO evaluate potential variable here
+		If popularityReferenceGUID And popularityReferenceGUID.contains("${")
+			popularityReferenceGUID = GameScriptExpression.ParseLocalizedText(popularityReferenceGUID, new SScriptExpressionContext(null, 0, passedParams.get("variables"))).ToString()
+		EndIf
 		Local popularity:TPopularity = Super.GetPopularity()
 		If Not popularity 
 			Local person:TPersonBase
