@@ -770,7 +770,7 @@ Type TGameModifierChoice Extends TGameModifierBase
 
 	Method Copy:TGameModifierChoice()
 		Local clone:TGameModifierChoice = New TGameModifierChoice
-		clone.CopyBaseFrom(Self)
+		clone.CopyFromChoice(self)
 
 		Return clone
 	End Method
