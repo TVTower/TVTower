@@ -779,12 +779,11 @@ Type TGameModifierChoice Extends TGameModifierBase
 	Method CopyFromChoice:TGameModifierChoice(choice:TGameModifierChoice)
 		Self.CopyBaseFrom(choice)
 		Self.chooseType = choice.chooseType
-		For Local p:Int = EachIn choice.modifiersProbability
-			Self.modifiersProbability :+ [p]
-		Next
-		For Local m:TGameModifierBase = EachIn choice.modifiers
-			Self.modifiers :+ [m.Copy()]
-		Next
+		Self.modifiersProbability = choice.modifiersProbability[ .. ]
+		Self.modifiers = New TGameModifierBase[ choice.modifiers.length ]
+		For Local i:Int = 0 Until Self.modifiers.length
+			If choice.modifiers[i] Then Self.modifiers[i] = choice.modifiers[i].Copy()
+		next 
 		Return Self
 	End Method
 

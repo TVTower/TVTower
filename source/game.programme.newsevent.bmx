@@ -1185,6 +1185,10 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 	End Method
 
 
+'modify news availability is a one time effect
+'not intended for temporary enabling/disabling for a given time by the same effect instance
+'undo will be called immediately after the run if the event is not marked as permanent
+rem
 	'override
 	Method UndoFunc:Int(params:TData)
 		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplate()
@@ -1215,6 +1219,7 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 		Print "TGameModifierNews_ModifyAvailability.Undo: Failed to find newsEventTemplate or newsEvent with GUID ~q"+newsGUID+"~q."
 		Return False
 	End Method
+endrem
 
 
 	'override to trigger a specific news
@@ -1228,7 +1233,7 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 			newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
 
 		
-			'also modify "not yet happened" but existing news 
+			'also modify "not yet happened" but existing news; already published news remain available
 			'ATTENTION: this does not backup potentially "differing" news
 			'           availabilities. An individually made available
 			'           newsevent would get their availability overridden!
@@ -1240,8 +1245,6 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 				EndIf
 			Next
 
-			'prevent undoing enablement immediately
-			setFlag(TGameModifierBase.FLAG_PERMANENT)
 			Return True
 		Else
 			Local newsEvent:TNewsEvent = GetNewsEvent()
@@ -1254,8 +1257,6 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 				'refresh caches
 				GetNewsEventCollection()._InvalidateCaches()
 
-				'prevent undoing enablement immediately
-				setFlag(TGameModifierBase.FLAG_PERMANENT)
 				Return True
 			EndIf
 		EndIf
@@ -1266,7 +1267,7 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 End Type
 
 
-
+'currently not used, makes no sense without permanent-flag (values would be reset immediately)
 Type TGameModifierNews_ModifyAttribute Extends TGameModifierBase
 	Field newsGUID:String
 	Field attribute:String

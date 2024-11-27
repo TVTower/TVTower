@@ -863,7 +863,9 @@ Type TGameModifier_Money extends TGameModifierBase
 	End Method
 
 
-
+'TODO undo makes no real sense - temporary increase money?
+'regular update+run would immediately reset the value
+'modifier.run is currently invoked directly by awards; not using the update mechanism
 	Method UndoFunc:int(params:TData)
 		local playerID:int = GetData().GetInt("playerID", 0)
 		if not playerID then return False
