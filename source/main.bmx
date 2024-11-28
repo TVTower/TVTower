@@ -1018,6 +1018,20 @@ Rem
 					print "-----------------"
 				EndIf
 endrem
+If KeyManager.isHit(KEY_X)
+	Local gv:TGlobalVariablesProviderBase=GetGlobalVariablesProviderBase()
+	If gv
+		Local ll:TLocalizationLanguage = TLocalizationLanguage(gv.get("de",null))
+		If ll
+			print ll.get("var1")
+		Else
+			print "NO GERMAN LOCALIZATION"
+		EndIf
+	Else
+		print "NO GLOBALVARIABLES"
+	EndIf
+	print TLocalizationLanguage(GetGlobalVariablesProviderBase().get("de",null)).get("var1")
+EndIf
 				If KeyManager.isHit(KEY_S)
 					If KeyManager.IsDown(KEY_LCONTROL)
 						room = "supermarket"
