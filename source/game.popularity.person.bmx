@@ -124,6 +124,7 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 
 
 	Method GetPopularity:TPopularity() override
+		Local guidBackup:String = popularityReferenceGUID
 		If popularityReferenceGUID And popularityReferenceGUID.contains("${")
 			popularityReferenceGUID = GameScriptExpression.ParseLocalizedText(popularityReferenceGUID, new SScriptExpressionContext(null, 0, passedParams.get("variables"))).ToString()
 		EndIf
@@ -139,6 +140,7 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 				popularity = person.GetPopularity()
 			EndIf
 		EndIf
+		popularityReferenceGUID = guidBackup
 		Return popularity
 	End Method
 
