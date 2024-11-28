@@ -235,9 +235,41 @@ Type TDatabaseLoader
 			Notify "Important data is missing:  series:"+totalSeriesCount+"  movies:"+totalMoviesCount+"  news:"+totalNewsCount+"  adcontracts:"+totalContractsCount
 		EndIf
 
+		LoadGlobalVariables(dbDirectory)
 
 		'fix potentially corrupt data
 		FixLoadedData()
+	End Method
+
+
+	Method LoadGlobalVariables(dbDirectory:String)
+		Local langDir:String = dbDirectory+"/lang/"
+		Local gv:TGlobalVariablesProviderBase = GetGlobalVariablesProviderBase()
+
+		For Local l:TLocalizationLanguage = EachIn TLocalization.languages
+			Local code:String = l.languageCode
+			Local file:String = langDir + code+".xml"
+			If FileType(file) = 1
+				Local xml:TXmlHelper = TXmlHelper.Create(file)
+				Local allGlobalVars:TxmlNode = xml.FindRootChildLC("globalvariables")
+				If allGlobalVars
+					Local gvl:TLocalizationLanguage = TLocalizationLanguage(gv.get(code))
+					If Not gvl
+						gvl = new TLocalizationLanguage
+						gvl.languageCode = code
+						gv.set(code, gvl)
+					EndIf
+					Local varName:String
+					Local value:String
+					For Local varNode:TxmlNode = EachIn xml.GetNodeChildElements(allGlobalVars)
+						varName = varNode.getName()
+						value = varNode.getContent()
+						'TODO normalize
+						If varName And value Then gvl.map.insert(varName, value)
+					Next
+				EndIf
+			EndIf
+		Next
 	End Method
 	
 	
