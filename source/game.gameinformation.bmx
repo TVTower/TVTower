@@ -7,8 +7,71 @@ Import "game.stationmap.bmx"
 TProgrammePlanInformationProviderBase.GetInstance()
 TWorldTimeInformationProviderBase.GetInstance()
 TStationMapInformationProviderBase.GetInstance()
+TGlobalVariablesProviderBase.GetInstance()
 
 
+
+Type TGlobalVariablesProviderBase extends TGameInformationProvider
+
+	Field languages:TMap
+	Global _instance:TGlobalVariablesProviderBase
+
+	Method New()
+		print "new variables"
+		Reset()
+
+		'register provider to provider collection
+		GetGameInformationCollection().AddProvider("globalvariables", self)
+	End Method
+
+	Function GetInstance:TGlobalVariablesProviderBase()
+		if not _instance then _instance = new TGlobalVariablesProviderBase
+		return _instance
+	End Function
+
+
+	Method Reset()
+		print("reset variables")
+		languages = CreateMap()
+	End Method
+
+	Method Set(key:string, obj:object)
+		languages.insert(key, obj)
+	End Method
+	
+	Method Get:object(key:string, params:object = null, useTime:Long = 0)
+		Return languages.ValueForKey(key)
+	End Method
+
+	Method SerializeTGlobalVariablesProviderBaseToString:string()
+		local result:string = "serializing"
+'		For local code:string = EachIn languages.Keys()
+'			result:+ (code+"\n")
+'			Local l:TLocalizationLanguage=TLocalizationLanguage(languages.valueForKey(code))
+'			For local key:String = EachIn l.map.Keys()
+'			result:+ (key+"::"+String(l.map.ValueForKey(key))+"\n")
+'			Next
+'		Next
+		print result
+		return result
+	End Method
+
+	Method DeSerializeTGlobalVariablesProviderBaseFromString(text:String)
+		print "deserializing"
+		Local l:TLocalizationLanguage=new TLocalizationLanguage
+		l.languageCode="de"
+		l.map.insert("var1", "value1")
+		'without getInstance there is a segmentation fault
+		'why is this no problem for the other providers - info never used?
+		GetInstance().set("de", l)
+	End Method
+
+End Type
+'===== CONVENIENCE ACCESSOR =====
+'return instance
+Function GetGlobalVariablesProviderBase:TGlobalVariablesProviderBase()
+	Return TGlobalVariablesProviderBase.GetInstance()
+End Function
 
 
 'contains general information of all broadcasts in the programmeplans
