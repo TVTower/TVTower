@@ -683,8 +683,7 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		Else
 			'TODO parse Expression if it contains further variables? 
 			'${.worldtime:"year"} was resolved without further changes...
-			Local code:String = TLocalization.GetLanguageCode(localeID)
-			result = GetDatabaseLocalizer().getGlobalVariable(code, varLowerCase, True)
+			result = GetDatabaseLocalizer().getGlobalVariable(localeID, varLowerCase, True)
 			If Not result Then result = TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
 		EndIf
 

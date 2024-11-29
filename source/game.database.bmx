@@ -244,17 +244,18 @@ Type TDatabaseLoader
 		Local dbl:TDatabaseLocalizer = GetDatabaseLocalizer()
 
 		For Local l:TLocalizationLanguage = EachIn TLocalization.languages
-			Local code:String = l.languageCode
-			Local file:String = langDir + code+".xml"
+			Local languageId:Int = TLocalization.GetLanguageId(l.languageCode)
+			If languageId < 0 Then Continue
+			Local file:String = langDir + l.languageCode+".xml"
 			If FileType(file) = 1
 				Local xml:TXmlHelper = TXmlHelper.Create(file)
 				Local allGlobalVars:TxmlNode = xml.FindRootChildLC("globalvariables")
 				If allGlobalVars
-					Local gvl:TLocalizationLanguage = dbl.getGlobalVariables(code)
+					Local gvl:TLocalizationLanguage = dbl.getGlobalVariables(languageId)
 					If Not gvl
 						gvl = new TLocalizationLanguage
-						gvl.languageCode = code
-						dbl.globalVariables.insert(code, gvl)
+						gvl.languageCode = l.languageCode
+						dbl.globalVariables.insert(languageId, gvl)
 					EndIf
 					Local varName:String
 					Local value:String
@@ -305,7 +306,7 @@ Type TDatabaseLoader
 							personsToStore:+ [personToStore]
 						EndIf
 					EndIf
-					dbl.persons.insert(code, personsToStore)
+					dbl.persons.insert(languageId, personsToStore)
 				Next
 		
 				Local nodeAllRoles:TxmlNode
@@ -345,7 +346,7 @@ Type TDatabaseLoader
 							rolesToStore:+ [roleToStore]
 						EndIf
 					EndIf
-					dbl.roles.insert(code, rolesToStore)
+					dbl.roles.insert(languageId, rolesToStore)
 				Next
 			EndIf
 		Next
