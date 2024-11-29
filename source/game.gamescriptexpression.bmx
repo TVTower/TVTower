@@ -10,6 +10,7 @@ Import "game.production.scripttemplate.bmx"
 Import "game.programme.programmedata.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.programme.newsevent.bmx"
+Import "game.database.localizer.bmx"
 Import Brl.Map
 
 
@@ -676,10 +677,13 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 			EndIf
 		EndIf
 		
-		If tv
+		If tv And tv.HasVariable(variable)
 			result = _ParseWithTemplateVariables(variable, context, tv)
 		Else
-			result = TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
+			'TODO parse Expression if it contains further variables
+			Local code:String = TLocalization.GetLanguageCode(localeID)
+			result = GetDatabaseLocalizer().getGlobalVariable(code, variable)
+			If Not result Then result = TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
 		EndIf
 
 		Return result

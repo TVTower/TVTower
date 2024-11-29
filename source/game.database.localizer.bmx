@@ -30,7 +30,7 @@ Type TDatabaseLocalizer
 		If fallback
 			Return getGlobalVariable(TLocalization.GetDefaultLanguageCode(), lowerKey, False)
 		EndIf
-		Return lowerKey + " NOT FOUND"'exception?
+		Return Null
 	End Method
 
 	Method getGlobalVariables:TLocalizationLanguage(languageCode:String)
