@@ -13,6 +13,7 @@ Import "game.programme.newsevent.bmx"
 Import "game.person.bmx"
 Import "Dig/base.util.persongenerator.bmx"
 Import "game.gameconstants.bmx"
+Import "game.database.localizer.bmx"
 
 
 Type TDatabaseLoader
@@ -47,7 +48,6 @@ Type TDatabaseLoader
 	Field skipProgrammeCreators:String
 	Field config:TData = New TData
 	Global metaData:TData = New TData
-	Field _eventListeners:TEventListenerBase[]
 	Global XMLErrorCount:Int
 
 
@@ -126,9 +126,6 @@ Type TDatabaseLoader
 		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PERSONS_CREATED_BY", "").Split(",")
 			skipPersonCreators :+ " "+Trim(s).ToLower()+" "
 		Next
-
-		'localize person names / roles
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.App_OnSetLanguage, onSetLanguage ) ]
 	End Method
 
 
@@ -235,16 +232,16 @@ Type TDatabaseLoader
 			Notify "Important data is missing:  series:"+totalSeriesCount+"  movies:"+totalMoviesCount+"  news:"+totalNewsCount+"  adcontracts:"+totalContractsCount
 		EndIf
 
-		LoadGlobalVariables(dbDirectory)
+		LoadDatabaseLocalizations(dbDirectory)
 
 		'fix potentially corrupt data
 		FixLoadedData()
 	End Method
 
 
-	Method LoadGlobalVariables(dbDirectory:String)
+	Function LoadDatabaseLocalizations(dbDirectory:String)
 		Local langDir:String = dbDirectory+"/lang/"
-		Local gv:TGlobalVariablesProviderBase = GetGlobalVariablesProviderBase()
+		Local dbl:TDatabaseLocalizer = GetDatabaseLocalizer()
 
 		For Local l:TLocalizationLanguage = EachIn TLocalization.languages
 			Local code:String = l.languageCode
@@ -253,11 +250,11 @@ Type TDatabaseLoader
 				Local xml:TXmlHelper = TXmlHelper.Create(file)
 				Local allGlobalVars:TxmlNode = xml.FindRootChildLC("globalvariables")
 				If allGlobalVars
-					Local gvl:TLocalizationLanguage = TLocalizationLanguage(gv.get(code))
+					Local gvl:TLocalizationLanguage = dbl.getGlobalVariables(code)
 					If Not gvl
 						gvl = new TLocalizationLanguage
 						gvl.languageCode = code
-						gv.set(code, gvl)
+						dbl.globalVariables.insert(code, gvl)
 					EndIf
 					Local varName:String
 					Local value:String
@@ -268,9 +265,92 @@ Type TDatabaseLoader
 						If varName And value Then gvl.map.insert(varName, value)
 					Next
 				EndIf
+
+				Local NO_VALUE:String = "<NO_VALUE_PRESENT>"
+				Local v:String
+
+				Local nodeAllPersons:TxmlNode
+				nodeAllPersons = xml.FindRootChildLC("persons")
+				Local personsToStore:PersonLocalization[] = new PersonLocalization[0]
+				Local personCollection:TPersonBaseCollection = GetPersonBaseCollection()
+				For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
+					If nodePerson.getName() <> "person" Then Continue
+					Local data:TData = New TData
+					xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name", "title"])
+					Local guid:String=data.GetString("guid")
+					If guid
+						Local person:TPersonBase = personCollection.GetByGUID(guid)
+						If person
+							Local personToStore:PersonLocalization = new PersonLocalization
+							personToStore.id = person.id
+							v = data.GetString("first_name",NO_VALUE)
+							If v<>NO_VALUE
+								personToStore.firstName=v
+								personToStore.flags :| PersonLocalization.FLAG_FIRSTNAME
+							EndIf
+							v = data.GetString("last_name",NO_VALUE)
+							If v<>NO_VALUE
+								personToStore.lastName=v
+								personToStore.flags :| PersonLocalization.FLAG_LASTTNAME
+							EndIf
+							v = data.GetString("nick_name",NO_VALUE)
+							If v<>NO_VALUE
+								personToStore.nickName=v
+								personToStore.flags :| PersonLocalization.FLAG_NICKTNAME
+							EndIf
+							v = data.GetString("title",NO_VALUE)
+							If v<>NO_VALUE
+								personToStore.title=v
+								personToStore.flags :| PersonLocalization.FLAG_TITLE
+							EndIf
+							personsToStore:+ [personToStore]
+						EndIf
+					EndIf
+					dbl.persons.insert(code, personsToStore)
+				Next
+		
+				Local nodeAllRoles:TxmlNode
+				nodeAllRoles = xml.FindRootChildLC("programmeroles")
+				If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
+				Local rolesToStore:PersonLocalization[] = new PersonLocalization[0]
+				For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
+					If nodeRole.getName() <> "programmerole" And nodeRole.getName() <> "role" Then Continue
+					Local data:TData = New TData
+					xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "nick_name", "title"])
+					Local guid:String=data.GetString("guid")
+					If guid
+						Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
+						If role
+							Local roleToStore:PersonLocalization = new PersonLocalization
+							roleToStore.id = role.id
+							v = data.GetString("first_name",NO_VALUE)
+							If v<>NO_VALUE
+								roleToStore.firstName=v
+								roleToStore.flags :| PersonLocalization.FLAG_FIRSTNAME
+							EndIf
+							v = data.GetString("last_name",NO_VALUE)
+							If v<>NO_VALUE
+								roleToStore.lastName=v
+								roleToStore.flags :| PersonLocalization.FLAG_LASTTNAME
+							EndIf
+							v = data.GetString("nick_name",NO_VALUE)
+							If v<>NO_VALUE
+								roleToStore.nickName=v
+								roleToStore.flags :| PersonLocalization.FLAG_NICKTNAME
+							EndIf
+							v = data.GetString("title",NO_VALUE)
+							If v<>NO_VALUE
+								roleToStore.title=v
+								roleToStore.flags :| PersonLocalization.FLAG_TITLE
+							EndIf
+							rolesToStore:+ [roleToStore]
+						EndIf
+					EndIf
+					dbl.roles.insert(code, rolesToStore)
+				Next
 			EndIf
 		Next
-	End Method
+	End Function
 	
 	
 	Function MXMLErrorCallback(message:Byte Ptr)
@@ -2864,63 +2944,6 @@ Type TDatabaseLoader
 
 		Return localized
 	End Function
-
-	Function onSetLanguage:Int(triggerEvent:TEventBase)
-		Local lang:String = triggerEvent.GetData().GetString("languageCode", "en")
-
-		'first restore default:
-		'English is intended to be the default language for localized person entries
-		'and should contain an entry for all localized persons and roles.
-		'So a reasonable default is used in case not all languages translate all names.
-		If lang <> "en" Then SetLanguage("en")
-		SetLanguage(lang)
-	End Function
-
-	Function SetLanguage(lang:String)
-		Local baseDir:String = "res/database/Default/"
-		Local file:String = baseDir+"lang/"+lang+".xml"
-
-		Local xml:TXmlHelper = TXmlHelper.Create(file)
-		Local nodeAllPersons:TxmlNode
-		nodeAllPersons = xml.FindRootChildLC("persons")
-		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
-			If nodePerson.getName() <> "person" Then Continue
-			Local data:TData = New TData
-			xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name", "title"])
-			Local guid:String=data.GetString("guid")
-			If guid
-				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(guid)
-				If person
-					person.firstName = data.GetString("first_name","")
-					person.lastName = data.GetString("last_name","")
-					person.nickName = data.GetString("nick_name","")
-					person.title = data.GetString("title","")
-					'print "updated person to "+person.GetFullName()
-				EndIf
-			EndIf
-		Next
-
-		Local nodeAllRoles:TxmlNode
-		nodeAllRoles = xml.FindRootChildLC("programmeroles")
-		If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
-		For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
-			If nodeRole.getName() <> "programmerole" And nodeRole.getName() <> "role" Then Continue
-			Local data:TData = New TData
-			xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "nick_name", "title"])
-			Local guid:String=data.GetString("guid")
-			If guid
-				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
-				If role
-					role.firstName = data.GetString("first_name","")
-					role.lastName = data.GetString("last_name","")
-					role.nickName = data.GetString("nick_name","")
-					role.title = data.GetString("title","")
-					'print "updated role to "+role.GetFullName()
-				EndIf
-			EndIf
-		Next
-
-	EndFunction
 End Type
 
 

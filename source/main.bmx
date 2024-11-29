@@ -1019,18 +1019,10 @@ Rem
 				EndIf
 endrem
 If KeyManager.isHit(KEY_X)
-	Local gv:TGlobalVariablesProviderBase=GetGlobalVariablesProviderBase()
-	If gv
-		Local ll:TLocalizationLanguage = TLocalizationLanguage(gv.get("de",null))
-		If ll
-			print ll.get("var1")
-		Else
-			print "NO GERMAN LOCALIZATION"
-		EndIf
-	Else
-		print "NO GLOBALVARIABLES"
-	EndIf
-	print TLocalizationLanguage(GetGlobalVariablesProviderBase().get("de",null)).get("var1")
+	Local dbl:TDatabaseLocalizer=GetDatabaseLocalizer()
+	print dbl.getGlobalVariable("de","var1")
+	print GetPersonBaseCollection().GetByGuid("1994aa3a-23c3-48ce-b20a-d1f021df8c63").GetFullName()
+	print GetProgrammeRoleCollection().GetByGuid("a00ea58a-4a9f-466e-9fe5-cf8b53730b60").GetFullName()
 EndIf
 				If KeyManager.isHit(KEY_S)
 					If KeyManager.IsDown(KEY_LCONTROL)
@@ -1730,6 +1722,7 @@ Type TGameState
 	Field _GameModifierManager:TGameModifierManager = Null
 	Field _GameInformationCollection:TGameInformationCollection = Null
 	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null
+	Field _DatabaseLocalizer:TDatabaseLocalizer = Null
 
 	Field _AudienceManager:TAudienceManager = Null
 	Field _AdContractBaseCollection:TAdContractBaseCollection = Null
@@ -1866,6 +1859,7 @@ Type TGameState
 		GetPlayerCollection().Initialize()
 		GetPlayerFinanceCollection().Initialize()
 		GetPlayerFinanceHistoryListCollection().Initialize()
+		GetDatabaseLocalizer().Reset()
 
 		'reset all achievements
 		GetAchievementCollection().Reset()
@@ -1919,6 +1913,7 @@ Type TGameState
 		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_ProgrammeLicenceCollection, TProgrammeLicenceCollection._instance, "ProgrammeLicenceCollection", MODE_LOAD)
 		_Assign(_ProgrammeProducerCollection, TProgrammeProducerCollection._instance, "ProgrammeProducerCollection", MODE_LOAD)
+		_Assign(_DatabaseLocalizer, TDatabaseLocalizer._instance, "DatabaseLocalizer", MODE_LOAD)
 
 		_Assign(_PlayerCollection, TPlayerCollection._instance, "PlayerCollection", MODE_LOAD)
 		_Assign(_PlayerDifficultyCollection, TPlayerDifficultyCollection._instance, "PlayerDifficultyCollection", MODE_LOAD)
@@ -2031,6 +2026,7 @@ Type TGameState
 		'database data for persons and their roles
 		_Assign(TPersonBaseCollection._instance, _ProgrammePersonBaseCollection, "ProgrammePersonBaseCollection", MODE_SAVE)
 		_Assign(TProgrammeRoleCollection._instance, _ProgrammeRoleCollection, "ProgrammeRoleCollection", MODE_SAVE)
+		_Assign(TDatabaseLocalizer._instance, _DatabaseLocalizer, "DatabaseLocalizer", MODE_SAVE)
 
 		'database data for programmes
 		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
@@ -2412,6 +2408,10 @@ Type TSaveGame Extends TGameState
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
 		If savegameVersion < 21
+			If Not GetDatabaseLocalizer().persons.Contains("de")
+				TDatabaseLoader.LoadDatabaseLocalizations("res/database/Default")
+			EndIf
+
 			'iterate over all news event templates, scripts, ... and check if
 			'their "strings" contain old script expressions
 			Local migratedScriptExpression:Int
