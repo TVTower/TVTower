@@ -7,10 +7,9 @@ Type TDatabaseLocalizer
 	Global _instance:TDatabaseLocalizer
 	Global _eventListeners:TEventListenerBase[]
 
-	Field globalVariables:TIntMap
-	Field persons:TIntMap
-	Field roles:TIntMap
-	Field englishLanguageId:Int
+	Field globalVariables:TMap
+	Field persons:TMap
+	Field roles:TMap
 
 	Method New()
 		Reset()
@@ -21,27 +20,23 @@ Type TDatabaseLocalizer
 	End Method
 
 	Method Reset()
-		globalVariables = new TIntMap'CreateMap()
-		persons =  new TIntMap'CreateMap()
-		roles =  new TIntMap'CreteMap()
-		englishLanguageId = TLocalization.GetLanguageId("en")
-		If englishLanguageId < 0
-			throw "TDatabaseLocalizer.Reset: unable to determine id of default language English" 
-		EndIf
+		globalVariables = new TMap'CreateMap()
+		persons =  new TMap'CreateMap()
+		roles =  new TMap'CreteMap()
 	End Method
 
-	Method getGlobalVariable:String(languageId:Int, key:String, isKeyLowerCase:Int= False, fallback:Int=True)
-		Local l:TLocalizationLanguage = getGlobalVariables(languageId)
+	Method getGlobalVariable:String(languageCode:String, key:String, isKeyLowerCase:Int= False, fallback:Int=True)
+		Local l:TLocalizationLanguage = getGlobalVariables(languageCode)
 		If Not isKeyLowerCase Then key=key.ToLower()
 		If l And l.Has(key) Then Return l.Get(key)
 		If fallback
-			Return getGlobalVariable(englishLanguageId, key, True, False)
+			Return getGlobalVariable("en", key, True, False)
 		EndIf
 		Return Null
 	End Method
 
-	Method getGlobalVariables:TLocalizationLanguage(languageId:Int)
-		Return TLocalizationLanguage(globalVariables.ValueForKey(languageId))
+	Method getGlobalVariables:TLocalizationLanguage(languageCode:String)
+		Return TLocalizationLanguage(globalVariables.ValueForKey(languageCode))
 	End Method
 
 	Function GetInstance:TDatabaseLocalizer()
@@ -57,10 +52,8 @@ Type TDatabaseLocalizer
 
 	Method _updateLocalization(lang:String)
 		Local personCollection:TPersonBaseCollection = GetPersonBaseCollection()
-		Local languageId:Int = TLocalization.GetLanguageId(lang)
-		If languageID < 0 Then Return
 		Local person:TPersonBase
-		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](persons.valueForKey(languageId))
+		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](persons.valueForKey(lang))
 			person = personCollection.GetById(pl.id)
 			If person
 				If pl.flags & TPersonLocalization.FLAG_FIRSTNAME Then person.firstName = pl.firstName
@@ -71,7 +64,7 @@ Type TDatabaseLocalizer
 		Next
 		Local roleCollection:TProgrammeRoleCollection = GetProgrammeRoleCollection()
 		Local role:TProgrammeRole
-		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](roles.valueForKey(languageId))
+		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](roles.valueForKey(lang))
 			role = roleCollection.GetById(pl.id)
 			If role
 				If pl.flags & TPersonLocalization.FLAG_FIRSTNAME Then role.firstName = pl.firstName

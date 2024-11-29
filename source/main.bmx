@@ -1020,7 +1020,7 @@ Rem
 endrem
 If KeyManager.isHit(KEY_X)
 	Local dbl:TDatabaseLocalizer=GetDatabaseLocalizer()
-	print dbl.getGlobalVariable(TLocalization.GetLanguageID("de"),"var1")
+	print dbl.getGlobalVariable("de","var1")
 	print GetPersonBaseCollection().GetByGuid("1994aa3a-23c3-48ce-b20a-d1f021df8c63").GetFullName()
 	print GetProgrammeRoleCollection().GetByGuid("a00ea58a-4a9f-466e-9fe5-cf8b53730b60").GetFullName()
 EndIf
@@ -2408,7 +2408,7 @@ Type TSaveGame Extends TGameState
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
 		If savegameVersion < 21
-			If Not GetDatabaseLocalizer().persons.Contains(TLocalization.GetLanguageId("de"))
+			If Not GetDatabaseLocalizer().persons.Contains("de")
 				TDatabaseLoader.LoadDatabaseLocalizations("res/database/Default")
 			EndIf
 
