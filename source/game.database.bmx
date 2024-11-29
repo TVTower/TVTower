@@ -242,7 +242,7 @@ Type TDatabaseLoader
 	Function LoadDatabaseLocalizations(dbDirectory:String)
 		Local langDir:String = dbDirectory+"/lang/"
 		Local dbl:TDatabaseLocalizer = GetDatabaseLocalizer()
-		Local toStore:TPersonLocalization[] = new TPersonLocalization[10000]
+		Local toStore:TPersonLocalization[] = new TPersonLocalization[GetPersonBaseCollection().GetCount()]
 
 		For Local l:TLocalizationLanguage = EachIn TLocalization.languages
 			Local code:String = l.languageCode
