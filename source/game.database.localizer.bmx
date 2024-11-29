@@ -25,11 +25,12 @@ Type TDatabaseLocalizer
 
 	Method getGlobalVariable:String(languageCode:String, key:String, fallback:Int=True)
 		Local l:TLocalizationLanguage = getGlobalVariables(languageCode)
-		If l And l.Has(key) Then Return l.Get(key)
+		Local lowerKey:String = key.toLower()
+		If l And l.Has(lowerKey) Then Return l.Get(lowerKey)
 		If fallback
-			Return getGlobalVariable(TLocalization.GetDefaultLanguageCode(), key, False)
+			Return getGlobalVariable(TLocalization.GetDefaultLanguageCode(), lowerKey, False)
 		EndIf
-		Return "NOT FOUND"'exception?
+		Return lowerKey + " NOT FOUND"'exception?
 	End Method
 
 	Method getGlobalVariables:TLocalizationLanguage(languageCode:String)

@@ -259,9 +259,8 @@ Type TDatabaseLoader
 					Local varName:String
 					Local value:String
 					For Local varNode:TxmlNode = EachIn xml.GetNodeChildElements(allGlobalVars)
-						varName = varNode.getName()
+						varName = varNode.getName().toLower()
 						value = varNode.getContent()
-						'TODO normalize
 						If varName And value Then gvl.map.insert(varName, value)
 					Next
 				EndIf
