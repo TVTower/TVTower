@@ -23,12 +23,13 @@ Type TDatabaseLocalizer
 		roles =  new TMap'CreteMap()
 	End Method
 
-	Method getGlobalVariable:String(languageCode:String, key:String, fallback:Int=True)
+	Method getGlobalVariable:String(languageCode:String, key:String, isKeyLowerCase:Int= False, fallback:Int=True)
 		Local l:TLocalizationLanguage = getGlobalVariables(languageCode)
-		Local lowerKey:String = key.toLower()
+		Local lowerKey:String = key
+		If Not isKeyLowerCase Then lowerKey=lowerKey.ToLower()
 		If l And l.Has(lowerKey) Then Return l.Get(lowerKey)
 		If fallback
-			Return getGlobalVariable(TLocalization.GetDefaultLanguageCode(), lowerKey, False)
+			Return getGlobalVariable(TLocalization.GetDefaultLanguageCode(), lowerKey, True, False)
 		EndIf
 		Return Null
 	End Method

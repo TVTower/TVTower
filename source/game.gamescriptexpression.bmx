@@ -676,13 +676,15 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 				tv = TNewsEventTemplate(context.context).templateVariables
 			EndIf
 		EndIf
-		
-		If tv And tv.HasVariable(variable)
-			result = _ParseWithTemplateVariables(variable, context, tv)
+
+		Local varLowerCase:String = variable.ToLower()
+		If tv And tv.HasVariable(varLowerCase, True)
+			result = _ParseWithTemplateVariables(varLowerCase, context, tv)
 		Else
-			'TODO parse Expression if it contains further variables
+			'TODO parse Expression if it contains further variables? 
+			'${.worldtime:"year"} was resolved without further changes...
 			Local code:String = TLocalization.GetLanguageCode(localeID)
-			result = GetDatabaseLocalizer().getGlobalVariable(code, variable)
+			result = GetDatabaseLocalizer().getGlobalVariable(code, varLowerCase, True)
 			If Not result Then result = TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
 		EndIf
 
@@ -690,12 +692,12 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 	End Function
 
 
-	Function _ParseWithTemplateVariables:String(variable:String, context:SScriptExpressionContext, tv:TTemplateVariables = Null)
+	Function _ParseWithTemplateVariables:String(variableLowerCase:String, context:SScriptExpressionContext, tv:TTemplateVariables = Null)
 		If not tv and TTemplateVariables(context.extra)
 			tv = TTemplateVariables(context.extra)
 		EndIf
 		If Not tv
-			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
+			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variableLowerCase, context)
 		EndIf
 		
 		'store the template variables as context (working on a copy here!)
@@ -706,7 +708,7 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 
 		' Create a localized string only containing resolved variables
 		' (the single option "Beaver" is chosen from the variable value "Ape|Beaver|Camel") 
-		Local lsResult:TLocalizedString = tv.GetResolvedVariable(variable, 0, False)
+		Local lsResult:TLocalizedString = tv.GetResolvedVariable(variableLowerCase, 0, True)
 
 		' The result MIGHT contain script expressions itself 
 		' -> parse it and replace the resolved variable accordingly
@@ -727,7 +729,7 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		' lsResult can be null if the variable was not resolved (or is
 		' not contained in the variables collection)
 		Else
-			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
+			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variableLowerCase, context)
 		EndIf
 		
 		Return result
