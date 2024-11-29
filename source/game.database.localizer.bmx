@@ -5,15 +5,17 @@ Import "game.programme.programmerole.bmx"
 
 Type TDatabaseLocalizer
 	Global _instance:TDatabaseLocalizer
+	Global _eventListeners:TEventListenerBase[]
 
 	Field globalVariables:TIntMap
 	Field persons:TIntMap
 	Field roles:TIntMap
-	Field _eventListeners:TEventListenerBase[]
 	Field englishLanguageId:Int
 
 	Method New()
 		Reset()
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = New TEventListenerBase[0]
 		'localize person names / roles
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.App_OnSetLanguage, onSetLanguage ) ]
 	End Method
@@ -30,11 +32,10 @@ Type TDatabaseLocalizer
 
 	Method getGlobalVariable:String(languageId:Int, key:String, isKeyLowerCase:Int= False, fallback:Int=True)
 		Local l:TLocalizationLanguage = getGlobalVariables(languageId)
-		Local lowerKey:String = key
-		If Not isKeyLowerCase Then lowerKey=lowerKey.ToLower()
-		If l And l.Has(lowerKey) Then Return l.Get(lowerKey)
+		If Not isKeyLowerCase Then key=key.ToLower()
+		If l And l.Has(key) Then Return l.Get(key)
 		If fallback
-			Return getGlobalVariable(englishLanguageId, lowerKey, True, False)
+			Return getGlobalVariable(englishLanguageId, key, True, False)
 		EndIf
 		Return Null
 	End Method
@@ -59,24 +60,24 @@ Type TDatabaseLocalizer
 		Local languageId:Int = TLocalization.GetLanguageId(lang)
 		If languageID < 0 Then Return
 		Local person:TPersonBase
-		For Local pl:PersonLocalization = EachIn PersonLocalization[](persons.valueForKey(languageId))
+		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](persons.valueForKey(languageId))
 			person = personCollection.GetById(pl.id)
 			If person
-				If pl.flags & PersonLocalization.FLAG_FIRSTNAME Then person.firstName = pl.firstName
-				If pl.flags & PersonLocalization.FLAG_LASTTNAME Then person.lastName = pl.lastName
-				If pl.flags & PersonLocalization.FLAG_TITLE Then person.title = pl.title
-				If pl.flags & PersonLocalization.FLAG_NICKTNAME Then person.nickName = pl.nickName
+				If pl.flags & TPersonLocalization.FLAG_FIRSTNAME Then person.firstName = pl.firstName
+				If pl.flags & TPersonLocalization.FLAG_LASTTNAME Then person.lastName = pl.lastName
+				If pl.flags & TPersonLocalization.FLAG_TITLE Then person.title = pl.title
+				If pl.flags & TPersonLocalization.FLAG_NICKTNAME Then person.nickName = pl.nickName
 			EndIf
 		Next
 		Local roleCollection:TProgrammeRoleCollection = GetProgrammeRoleCollection()
 		Local role:TProgrammeRole
-		For Local pl:PersonLocalization = EachIn PersonLocalization[](roles.valueForKey(languageId))
+		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](roles.valueForKey(languageId))
 			role = roleCollection.GetById(pl.id)
 			If role
-				If pl.flags & PersonLocalization.FLAG_FIRSTNAME Then role.firstName = pl.firstName
-				If pl.flags & PersonLocalization.FLAG_LASTTNAME Then role.lastName = pl.lastName
-				If pl.flags & PersonLocalization.FLAG_TITLE Then role.title = pl.title
-				If pl.flags & PersonLocalization.FLAG_NICKTNAME Then role.nickName = pl.nickName
+				If pl.flags & TPersonLocalization.FLAG_FIRSTNAME Then role.firstName = pl.firstName
+				If pl.flags & TPersonLocalization.FLAG_LASTTNAME Then role.lastName = pl.lastName
+				If pl.flags & TPersonLocalization.FLAG_TITLE Then role.title = pl.title
+				If pl.flags & TPersonLocalization.FLAG_NICKTNAME Then role.nickName = pl.nickName
 			EndIf
 		Next
 	End Method
@@ -89,7 +90,7 @@ Function GetDatabaseLocalizer:TDatabaseLocalizer()
 End Function
 
 
-Type PersonLocalization
+Type TPersonLocalization
 	Global FLAG_FIRSTNAME:Int = 1
 	Global FLAG_LASTTNAME:Int = 2
 	Global FLAG_TITLE:Int = 4

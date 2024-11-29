@@ -242,6 +242,7 @@ Type TDatabaseLoader
 	Function LoadDatabaseLocalizations(dbDirectory:String)
 		Local langDir:String = dbDirectory+"/lang/"
 		Local dbl:TDatabaseLocalizer = GetDatabaseLocalizer()
+		Local toStore:TPersonLocalization[] = new TPersonLocalization[10000]
 
 		For Local l:TLocalizationLanguage = EachIn TLocalization.languages
 			Local languageId:Int = TLocalization.GetLanguageId(l.languageCode)
@@ -266,12 +267,11 @@ Type TDatabaseLoader
 					Next
 				EndIf
 
-				Local NO_VALUE:String = "<NO_VALUE_PRESENT>"
 				Local v:String
 
 				Local nodeAllPersons:TxmlNode
 				nodeAllPersons = xml.FindRootChildLC("persons")
-				Local personsToStore:PersonLocalization[] = new PersonLocalization[0]
+				Local count:Int = 0
 				Local personCollection:TPersonBaseCollection = GetPersonBaseCollection()
 				For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
 					If nodePerson.getName() <> "person" Then Continue
@@ -281,38 +281,35 @@ Type TDatabaseLoader
 					If guid
 						Local person:TPersonBase = personCollection.GetByGUID(guid)
 						If person
-							Local personToStore:PersonLocalization = new PersonLocalization
+							Local personToStore:TPersonLocalization = new TPersonLocalization
 							personToStore.id = person.id
-							v = data.GetString("first_name",NO_VALUE)
-							If v<>NO_VALUE
-								personToStore.firstName=v
-								personToStore.flags :| PersonLocalization.FLAG_FIRSTNAME
+							If data.has("first_name")
+								personToStore.firstName=data.GetString("first_name","")
+								personToStore.flags :| TPersonLocalization.FLAG_FIRSTNAME
 							EndIf
-							v = data.GetString("last_name",NO_VALUE)
-							If v<>NO_VALUE
-								personToStore.lastName=v
-								personToStore.flags :| PersonLocalization.FLAG_LASTTNAME
+							If data.has("last_name")
+								personToStore.lastName=data.GetString("last_name","")
+								personToStore.flags :| TPersonLocalization.FLAG_LASTTNAME
 							EndIf
-							v = data.GetString("nick_name",NO_VALUE)
-							If v<>NO_VALUE
-								personToStore.nickName=v
-								personToStore.flags :| PersonLocalization.FLAG_NICKTNAME
+							If data.has("nick_name")
+								personToStore.nickName=data.GetString("nick_name","")
+								personToStore.flags :| TPersonLocalization.FLAG_NICKTNAME
 							EndIf
-							v = data.GetString("title",NO_VALUE)
-							If v<>NO_VALUE
-								personToStore.title=v
-								personToStore.flags :| PersonLocalization.FLAG_TITLE
+							If data.has("title")
+								personToStore.title=data.GetString("title","")
+								personToStore.flags :| TPersonLocalization.FLAG_TITLE
 							EndIf
-							personsToStore:+ [personToStore]
+							toStore[count] = personToStore
+							count:+1
 						EndIf
 					EndIf
-					dbl.persons.insert(languageId, personsToStore)
+					dbl.persons.insert(languageId, toStore[..count])
 				Next
 		
 				Local nodeAllRoles:TxmlNode
 				nodeAllRoles = xml.FindRootChildLC("programmeroles")
 				If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
-				Local rolesToStore:PersonLocalization[] = new PersonLocalization[0]
+				count = 0
 				For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
 					If nodeRole.getName() <> "programmerole" And nodeRole.getName() <> "role" Then Continue
 					Local data:TData = New TData
@@ -321,32 +318,29 @@ Type TDatabaseLoader
 					If guid
 						Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
 						If role
-							Local roleToStore:PersonLocalization = new PersonLocalization
+							Local roleToStore:TPersonLocalization = new TPersonLocalization
 							roleToStore.id = role.id
-							v = data.GetString("first_name",NO_VALUE)
-							If v<>NO_VALUE
-								roleToStore.firstName=v
-								roleToStore.flags :| PersonLocalization.FLAG_FIRSTNAME
+							If data.has("first_name")
+								roleToStore.firstName=data.GetString("first_name","")
+								roleToStore.flags :| TPersonLocalization.FLAG_FIRSTNAME
 							EndIf
-							v = data.GetString("last_name",NO_VALUE)
-							If v<>NO_VALUE
-								roleToStore.lastName=v
-								roleToStore.flags :| PersonLocalization.FLAG_LASTTNAME
+							If data.has("last_name")
+								roleToStore.lastName=data.GetString("last_name","")
+								roleToStore.flags :| TPersonLocalization.FLAG_LASTTNAME
 							EndIf
-							v = data.GetString("nick_name",NO_VALUE)
-							If v<>NO_VALUE
-								roleToStore.nickName=v
-								roleToStore.flags :| PersonLocalization.FLAG_NICKTNAME
+							If data.has("nick_name")
+								roleToStore.nickName=data.GetString("nick_name","")
+								roleToStore.flags :| TPersonLocalization.FLAG_NICKTNAME
 							EndIf
-							v = data.GetString("title",NO_VALUE)
-							If v<>NO_VALUE
-								roleToStore.title=v
-								roleToStore.flags :| PersonLocalization.FLAG_TITLE
+							If data.has("title")
+								roleToStore.title=data.GetString("title","")
+								roleToStore.flags :| TPersonLocalization.FLAG_TITLE
 							EndIf
-							rolesToStore:+ [roleToStore]
+							toStore[count] = roleToStore
+							count:+ 1
 						EndIf
 					EndIf
-					dbl.roles.insert(languageId, rolesToStore)
+					dbl.roles.insert(languageId, toStore[..count])
 				Next
 			EndIf
 		Next
