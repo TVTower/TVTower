@@ -681,10 +681,9 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		If tv And tv.HasVariable(varLowerCase, True)
 			result = _ParseWithTemplateVariables(varLowerCase, context, tv)
 		Else
-			'TODO parse Expression if it contains further variables? 
+			'parsing expression if it contains further variables necessary? 
 			'${.worldtime:"year"} was resolved without further changes...
-			Local code:String = TLocalization.GetLanguageCode(localeID)
-			result = GetDatabaseLocalizer().getGlobalVariable(code, varLowerCase, True)
+			result = GetDatabaseLocalizer().getGlobalVariable(localeID, varLowerCase, True)
 			If Not result Then result = TGameScriptExpressionBase.GameScriptVariableHandlerCB(variable, context)
 		EndIf
 

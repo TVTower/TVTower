@@ -242,7 +242,7 @@ Type TDatabaseLoader
 	Function LoadDatabaseLocalizations(dbDirectory:String)
 		Local langDir:String = dbDirectory+"/lang/"
 		Local dbl:TDatabaseLocalizer = GetDatabaseLocalizer()
-		Local toStore:TPersonLocalization[] = new TPersonLocalization[GetPersonBaseCollection().GetCount()]
+		Local toStore:TPersonLocalization[] = new TPersonLocalization[100]
 
 		For Local l:TLocalizationLanguage = EachIn TLocalization.languages
 			Local code:String = l.languageCode
@@ -266,11 +266,9 @@ Type TDatabaseLoader
 					Next
 				EndIf
 
-				Local v:String
-
 				Local nodeAllPersons:TxmlNode
 				nodeAllPersons = xml.FindRootChildLC("persons")
-				Local count:Int = 0
+				Local index:Int = 0
 				Local personCollection:TPersonBaseCollection = GetPersonBaseCollection()
 				For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
 					If nodePerson.getName() <> "person" Then Continue
@@ -282,33 +280,22 @@ Type TDatabaseLoader
 						If person
 							Local personToStore:TPersonLocalization = new TPersonLocalization
 							personToStore.id = person.id
-							If data.has("first_name")
-								personToStore.firstName=data.GetString("first_name","")
-								personToStore.flags :| TPersonLocalization.FLAG_FIRSTNAME
-							EndIf
-							If data.has("last_name")
-								personToStore.lastName=data.GetString("last_name","")
-								personToStore.flags :| TPersonLocalization.FLAG_LASTTNAME
-							EndIf
-							If data.has("nick_name")
-								personToStore.nickName=data.GetString("nick_name","")
-								personToStore.flags :| TPersonLocalization.FLAG_NICKTNAME
-							EndIf
-							If data.has("title")
-								personToStore.title=data.GetString("title","")
-								personToStore.flags :| TPersonLocalization.FLAG_TITLE
-							EndIf
-							toStore[count] = personToStore
-							count:+1
+							personToStore.firstName=data.GetString("first_name","")
+							personToStore.lastName=data.GetString("last_name","")
+							personToStore.nickName=data.GetString("nick_name","")
+							personToStore.title=data.GetString("title","")
+							if toStore.length <= index Then toStore = toStore[.. index + 50]
+							toStore[index] = personToStore
+							index:+1
 						EndIf
 					EndIf
-					dbl.persons.insert(code, toStore[..count])
+					dbl.persons.insert(code, toStore[..index])
 				Next
-		
+
 				Local nodeAllRoles:TxmlNode
 				nodeAllRoles = xml.FindRootChildLC("programmeroles")
 				If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
-				count = 0
+				index = 0
 				For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
 					If nodeRole.getName() <> "programmerole" And nodeRole.getName() <> "role" Then Continue
 					Local data:TData = New TData
@@ -319,33 +306,22 @@ Type TDatabaseLoader
 						If role
 							Local roleToStore:TPersonLocalization = new TPersonLocalization
 							roleToStore.id = role.id
-							If data.has("first_name")
-								roleToStore.firstName=data.GetString("first_name","")
-								roleToStore.flags :| TPersonLocalization.FLAG_FIRSTNAME
-							EndIf
-							If data.has("last_name")
-								roleToStore.lastName=data.GetString("last_name","")
-								roleToStore.flags :| TPersonLocalization.FLAG_LASTTNAME
-							EndIf
-							If data.has("nick_name")
-								roleToStore.nickName=data.GetString("nick_name","")
-								roleToStore.flags :| TPersonLocalization.FLAG_NICKTNAME
-							EndIf
-							If data.has("title")
-								roleToStore.title=data.GetString("title","")
-								roleToStore.flags :| TPersonLocalization.FLAG_TITLE
-							EndIf
-							toStore[count] = roleToStore
-							count:+ 1
+							roleToStore.firstName=data.GetString("first_name","")
+							roleToStore.lastName=data.GetString("last_name","")
+							roleToStore.nickName=data.GetString("nick_name","")
+							roleToStore.title=data.GetString("title","")
+							if toStore.length <= index Then toStore = toStore[.. index + 50]
+							toStore[index] = roleToStore
+							index:+ 1
 						EndIf
 					EndIf
-					dbl.roles.insert(code, toStore[..count])
+					dbl.roles.insert(code, toStore[..index])
 				Next
 			EndIf
 		Next
 	End Function
-	
-	
+
+
 	Function MXMLErrorCallback(message:Byte Ptr)
 		Local s:String = string.FromCString(message)
 		TLogger.Log("TDatabase.Load()", "mxml-Error: " + s, LOG_ERROR + LOG_XML)

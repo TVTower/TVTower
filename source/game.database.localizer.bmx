@@ -20,9 +20,13 @@ Type TDatabaseLocalizer
 	End Method
 
 	Method Reset()
-		globalVariables = new TMap'CreateMap()
-		persons =  new TMap'CreateMap()
-		roles =  new TMap'CreteMap()
+		globalVariables = new TMap
+		persons =  new TMap
+		roles =  new TMap
+	End Method
+
+	Method getGlobalVariable:String(languageId:Int, key:String, isKeyLowerCase:Int= False, fallback:Int=True)
+		Return getGlobalVariable(TLocalization.GetLanguageCode(languageId), key, isKeyLowerCase, fallback)
 	End Method
 
 	Method getGlobalVariable:String(languageCode:String, key:String, isKeyLowerCase:Int= False, fallback:Int=True)
@@ -56,10 +60,10 @@ Type TDatabaseLocalizer
 		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](persons.valueForKey(lang))
 			person = personCollection.GetById(pl.id)
 			If person
-				If pl.flags & TPersonLocalization.FLAG_FIRSTNAME Then person.firstName = pl.firstName
-				If pl.flags & TPersonLocalization.FLAG_LASTTNAME Then person.lastName = pl.lastName
-				If pl.flags & TPersonLocalization.FLAG_TITLE Then person.title = pl.title
-				If pl.flags & TPersonLocalization.FLAG_NICKTNAME Then person.nickName = pl.nickName
+				person.firstName = pl.firstName
+				person.lastName = pl.lastName
+				person.title = pl.title
+				person.nickName = pl.nickName
 			EndIf
 		Next
 		Local roleCollection:TProgrammeRoleCollection = GetProgrammeRoleCollection()
@@ -67,10 +71,10 @@ Type TDatabaseLocalizer
 		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](roles.valueForKey(lang))
 			role = roleCollection.GetById(pl.id)
 			If role
-				If pl.flags & TPersonLocalization.FLAG_FIRSTNAME Then role.firstName = pl.firstName
-				If pl.flags & TPersonLocalization.FLAG_LASTTNAME Then role.lastName = pl.lastName
-				If pl.flags & TPersonLocalization.FLAG_TITLE Then role.title = pl.title
-				If pl.flags & TPersonLocalization.FLAG_NICKTNAME Then role.nickName = pl.nickName
+				role.firstName = pl.firstName
+				role.lastName = pl.lastName
+				role.title = pl.title
+				role.nickName = pl.nickName
 			EndIf
 		Next
 	End Method
@@ -84,11 +88,6 @@ End Function
 
 
 Type TPersonLocalization
-	Global FLAG_FIRSTNAME:Int = 1
-	Global FLAG_LASTTNAME:Int = 2
-	Global FLAG_TITLE:Int = 4
-	Global FLAG_NICKTNAME:Int = 8
-
 	Field id:Int
 	Field flags:Int
 	Field firstName:String
