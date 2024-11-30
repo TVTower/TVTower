@@ -2641,10 +2641,11 @@
 					<pl>Anioł lub łobuz|${NAME} - diabełek w owczej skórze|${NAME} rozrabia</pl>
 				</title>
 				<name>
-					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim|Paule|Marcell</de>
-					<en>${.persongenerator:"firstname":"en":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim|Paulin|Marcel</en>
-					<pl>${.persongenerator:"firstname":"pl":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim|Pawełek|Marcelek</pl>
+					<de>${.persongenerator:"firstname":"de":"male"}|${spanishname}|Tim|Paule|Marcell</de>
+					<en>${.persongenerator:"firstname":"en":"male"}|${spanishname}|Tim|Paulin|Marcel</en>
+					<pl>${.persongenerator:"firstname":"pl":"male"}|${spanishname}|Tim|Pawełek|Marcelek</pl>
 				</name>
+				<spanishname>${.persongenerator:"firstname":"es":"male"}</spanishname>
 			</variables>
 			
 			<jobs>
@@ -3452,11 +3453,7 @@
 					<en>Dancing Queen|Word Guessing|Prizes Guaranteed|Ripped Off|Fabulous Peeks</en>
 					<pl>Dancing Queens|Zgadywanka|Nagrody gwarantowane|Rozbierz to|Fantastyczne wybory</pl>
 				</title1>
-				<name1>
-					<de>Jimmy|Bobby|Danny|Manni|Donny|Johny</de>
-					<en>Jimmy|Bobby|Danny|Manni|Donny|Johny</en>
-					<pl>Jimmy|Bobby|Danny|Manni|Donny|Johny</pl>
-				</name1>
+				<name1>Jimmy|Bobby|Danny|Manni|Donny|Johny</name1>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />

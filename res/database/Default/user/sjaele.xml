@@ -337,10 +337,11 @@
 				<pl>Urząd Zamówień Wojskowych zaprzeczył doniesieniom, jakoby nieumyślnie zamówił zabawkowe pistolety ${theinternet}.</pl>
 			</description>
 			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<theinternet>
-					<de>${.gte:${.worldtime:"year"}:1995:"Internet":"BTX"}</de>
-					<en>${.gte:${.worldtime:"year"}:1995:"the internet":"BBSs"}</en>
-					<pl>${.gte:${.worldtime:"year"}:1995:"przez Internet":"poprzez systemy tablic ogłoszeń"}</pl>
+					<de>${.gte:currentyear:1995:"Internet":"BTX"}</de>
+					<en>${.gte:currentyear:1995:"the internet":"BBSs"}</en>
+					<pl>${.gte:currentyear:1995:"przez Internet":"poprzez systemy tablic ogłoszeń"}</pl>
 				</theinternet>
 			</variables>
 			<data genre="0" price="0.7" quality="27" />

@@ -21,8 +21,7 @@
 				<!-- "morgen oder uebermorgen, 12-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,12,16" news="cujo-news-superkerl-02" />
 			</effects>
-			<data genre="1" price="1.0" quality="10" />
-			<availability year_range_from="1985" year_range_to="1995" />
+			<data genre="1" price="1.0" quality="10" flags="2" />
 		</news>
 		<news guid="cujo-news-superkerl-02" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
@@ -299,7 +298,7 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2000" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-04" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo" comment="previously Kurt Schmitt (only one minister for all years? and reference not clear | ministers from https://de.wikipedia.org/wiki/Bundesministerium_f%C3%BCr_Gesundheit_(Deutschland)">
+		<news guid="cujo-news-gamezworld-04" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo" comment="previously Kurt Schmitt (only one minister for all years? and reference not clear | ministers from https://de.wikipedia.org/wiki/Bundesministerium_f%C3%BCr_Gesundheit_(Deutschland) | #maintenancecritical">
 			<title>
 				<de>Schokoriegel sollen verboten werden</de>
 				<en>Candy bars to be banned</en>
@@ -311,7 +310,8 @@
 				<pl>Minister Zdrowia ${currenthealthminister} ogłosił w stacji TV Tower, że batoniki zostaną zakazane ze względu na wysoką zawartość cukru. Producent Pludo, firma Pferreri, rozważa, czy kontynuować reklamę w stacjach TV Tower.</pl>
 			</description>
 			<variables>
-				<currenthealthminister_id>${.lte:${.worldtime:"year"}:1981:"a3846b71-4765-4adf-b4ff-5979da6dd493":"${.lte:${.worldtime:"year"}:1982:"8ae4f1fa-ab67-450d-86d5-7eb1ae23989b":"${.lte:${.worldtime:"year"}:1985:"7187b163-cc0a-4a98-b3fb-8d1804e8c71d":"${.lte:${.worldtime:"year"}:1988:"38d530de-5f42-40ab-9bb1-61402c25ceef":"${.lte:${.worldtime:"year"}:1991:"85f5f323-2261-4909-8812-a55da8af16bb":"${.lte:${.worldtime:"year"}:1992:"9da694fc-e09e-4f29-aaa2-fc5225556900":"${.lte:${.worldtime:"year"}:1998:"32c7dec3-a4ab-4c77-9d4d-ea10033fa02e":"${.lte:${.worldtime:"year"}:2001:"dd18b433-aec6-4f00-8456-d7ac0c7f983c":"${.lte:${.worldtime:"year"}:2009:"4e961b7f-0a77-411a-a2e0-773f331d3f16":"${.lte:${.worldtime:"year"}:2011:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"${.lte:${.worldtime:"year"}:2013:"df2cbe92-7128-457a-930d-0195bca3b750":"${.lte:${.worldtime:"year"}:2018:"d30e5003-f197-4710-91df-94d09a104c70":"${.lte:${.worldtime:"year"}:2021:"cd59f232-a39b-43d0-afef-0937f5e4edb0":"8a7b1e1b-a902-4606-ab51-62488433b260"}"}"}"}"}"}"}"}"}"}"}"}"}</currenthealthminister_id> <!-- TODO: make more exact (but cumbersome to write; months; need proper datetime comparer) -->
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<currenthealthminister_id>${.lte:currentyear:1981:"a3846b71-4765-4adf-b4ff-5979da6dd493":"${.lte:currentyear:1982:"8ae4f1fa-ab67-450d-86d5-7eb1ae23989b":"${.lte:currentyear:1985:"7187b163-cc0a-4a98-b3fb-8d1804e8c71d":"${.lte:currentyear:1988:"38d530de-5f42-40ab-9bb1-61402c25ceef":"${.lte:currentyear:1991:"85f5f323-2261-4909-8812-a55da8af16bb":"${.lte:currentyear:1992:"9da694fc-e09e-4f29-aaa2-fc5225556900":"${.lte:currentyear:1998:"32c7dec3-a4ab-4c77-9d4d-ea10033fa02e":"${.lte:currentyear:2001:"dd18b433-aec6-4f00-8456-d7ac0c7f983c":"${.lte:currentyear:2009:"4e961b7f-0a77-411a-a2e0-773f331d3f16":"${.lte:currentyear:2011:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"${.lte:currentyear:2013:"df2cbe92-7128-457a-930d-0195bca3b750":"${.lte:currentyear:2018:"d30e5003-f197-4710-91df-94d09a104c70":"${.lte:currentyear:2021:"cd59f232-a39b-43d0-afef-0937f5e4edb0":"8a7b1e1b-a902-4606-ab51-62488433b260"}"}"}"}"}"}"}"}"}"}"}"}"}</currenthealthminister_id> <!-- TODO: make more exact (but cumbersome to write; months; need proper datetime comparer) -->
 				<currenthealthminister>${.person:currenthealthminister_id:"fullname"}</currenthealthminister>
 				<gendersuffix>
 					<de>${.eq:${.person:currenthealthminister_id:"gender"}:2:"in":""}</de>

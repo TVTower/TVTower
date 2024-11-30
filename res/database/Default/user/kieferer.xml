@@ -275,7 +275,7 @@ Każdy środek się nada.</pl>
 					<pl>Analitycy nie wierzą w ożywienie dla złota.|Wzrost produkcji ropy naftowej obniża ceny.|Oczekuje się, że zbiory kakao będą szczególnie słabe w tym roku.|Zużycie metali ziem rzadkich zaskakująco spada.</pl>
 				</resources3A>
 				
-				<germancurrency>${.if:${.worldtime:"year"}>=2002:"Euro":"${.if:${.worldtime:"year"}>=1990:"DM":"Mark"}"}</germancurrency>
+				<germancurrency>${.if:${.worldtime:"year"}&gt;=2002:"Euro":"${.if:${.worldtime:"year"}&lt;=1990:"DM":"Mark"}"}</germancurrency>
 
 				<currency1>
 					<de>Dollar verliert, ${CURRENCY1A}|Dollar schwächelt, ${CURRENCY1A}</de>

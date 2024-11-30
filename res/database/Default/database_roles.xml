@@ -52,7 +52,7 @@
 		<programmerole guid="935e5bc7-bbf7-453a-a14f-44d63202c881" first_name="Gertraud E." last_name="Stern" first_name_original="Gertrude" last_name_original="Stein" gender="2" comment="https://en.wikipedia.org/wiki/Gertrude_Stein" />
 		<programmerole guid="62705657-da02-4b01-9d42-c439d692d819" first_name="Earnest" last_name="Henningweg" first_name_original="Ernest" last_name_original="Hemingway" gender="1" comment="https://en.wikipedia.org/wiki/Ernest_Hemingway" />
 		<programmerole guid="44fe5edc-0212-46f7-8011-c59c6e6bd18c" first_name="Joy" last_name="Jayce" first_name_original="James" last_name_original="Joyce" gender="1" comment="https://en.wikipedia.org/wiki/James_Joyce" />
-		<programmerole guid="68005476-8da3-4004-9736-cbe357e2fc51" first_name="Pedro" last_name="Pecassi" first_name_original="Pablo" last_name_original="Picasso" gender="1" comment="https://en.wikipedia.org/wiki/Pablo_Picasso" />
+		<programmerole guid="68005476-8da3-4004-9736-cbe357e2fc51" first_name="Pedro" last_name="Pecassi" first_name_original="Pablo" last_name_original="Picasso" gender="1" comment="https://en.wikipedia.org/wiki/Pablo_Picasso | person version: 37aed784-11bd-4ae4-9d40-f712f37f0a99" />
 		<programmerole guid="8c6234f8-cd38-419c-8ee2-44be3b0b0634" first_name="Ernst" last_name="Hanfstangerl" nick_name="Putzl" nick_name_original="Putzi" first_name_original="Ernst" last_name_original="Hanfstaengl" gender="1" comment="https://en.wikipedia.org/wiki/Ernst_Hanfstaengl" />
 		<programmerole guid="c539783d-246c-48ac-97b3-7e0a2f542587" first_name="Adolph" last_name="Kutler" first_name_original="Adolf" last_name_original="Hitler" gender="1" comment="https://en.wikipedia.org/wiki/Adolf_Hitler" />
 		<programmerole guid="eea0844b-8f7e-41e2-a7e4-5847e28d42e0" first_name="Rudolph" last_name="Hass" first_name_original="Rudolf" last_name_original="Hess" gender="1" comment="https://en.wikipedia.org/wiki/Rudolf_Hess" />
@@ -235,6 +235,9 @@
 		<programmerole guid="30f8b1d8-0801-478a-8920-84d78ef86ee2" first_name="Elena" last_name="Fernando" first_name_original="Emily" last_name_original="Francisco" gender="2" comment="https://aliennation.fandom.com/wiki/Emily_Francisco" />
 		<programmerole guid="ddcf691e-8152-4cf7-8e6c-9d5e48986783" first_name="Bud" last_name="Fernando" first_name_original="Buck" last_name_original="Francisco" gender="1" comment="https://aliennation.fandom.com/wiki/Buck_Francisco" />
 		<programmerole guid="82d37286-c038-4144-83b3-7068ad03629f" first_name="Kathleen" last_name="Freddel" title="Dr" first_name_original="Cathy" last_name_original="Frankel" gender="2" comment="https://aliennation.fandom.com/wiki/Cathy_Frankel" />
+
+		<programmerole guid="e81d85bb-d1b8-4b02-9995-13407f935c9a" first_name="Johnny" last_name="Plombi" first_name_original="Jimmy" last_name_original="Bondi" gender="1" comment="https://en.wikipedia.org/wiki/Superbug_(film_series)" />
+		<programmerole guid="3c71921a-393e-47c3-bed6-be34c7efe827" first_name="Ronni" last_name="" first_name_original="Robbi" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt" />
 
 			<!-- Cartoon characters, using readable IDs because they likely won't be referenced via actor -->
 
@@ -741,6 +744,8 @@
 		<programmerole guid="6f875586-5fae-40cb-b943-3449934f3396" first_name="Mira" last_name="" first_name_original="Mira" last_name_original="" gender="2" comment="made up for https://en.wikipedia.org/wiki/Ghost_Reveries" />
 		<programmerole guid="e4202139-3afe-4c79-b3d9-ea1fb9e650d1" first_name="Gabriel" last_name="" title="Father" first_name_original="Gabriel" last_name_original="" gender="1" comment="made up for https://en.wikipedia.org/wiki/Ghost_Reveries" />
 		<programmerole guid="9e9434b6-216d-4913-9de1-b213806b0463" first_name="Victoria" last_name="" first_name_original="Victoria" last_name_original="" gender="2" comment="made up for https://en.wikipedia.org/wiki/Ghost_Reveries" />
+
+		<programmerole guid="72127d1d-2e94-4d6a-8c34-eff75f5fbb0e" first_name="Zaggy" last_name="Spacedust" first_name_original="Ziggy" last_name_original="Stardust" gender="1" comment="https://en.wikipedia.org/wiki/Ziggy_Stardust_(character)" />
 
 		<!-- Games -->
 

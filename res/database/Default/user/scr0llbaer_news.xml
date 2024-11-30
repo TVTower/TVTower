@@ -394,7 +394,7 @@
 			</title>
 			<description>
 				<de>${the} ${duck} gehörte zu einem Festumzug in ${paradetown}, löste sich aus der Verankerung und schwebte davon. ${theobject} umfasst mehr als 15 Meter, wurde über der Stadt schwebend gesichtet und verschwand hinter dem Horizont. Die Suchaktion ist im Gange.</de>
-				<en>${ucfirst:the} ${duck}, part of a parade in ${paradetown}, broke loose from its moorings and floated away. ${theobject} spans more than 50 feet, was spotted floating over the city and disappeared behind the horizon. The search operation is underway.</en>
+				<en>${.ucfirst:the} ${duck}, part of a parade in ${paradetown}, broke loose from its moorings and floated away. ${theobject} spans more than 50 feet, was spotted floating over the city and disappeared behind the horizon. The search operation is underway.</en>
 				<pl>${giantinflatable} ${duck}, część parady w mieście ${paradetown}, wyrwał się z cum i odfrunął. Ma ponad 50 stóp wysokości. Został zauważony nad miastem i zniknął za horyzontem. Trwa operacja poszukiwawcza.</pl>
 			</description>
 			<variables>
@@ -494,7 +494,7 @@
 			</title>
 			<description>
 				<de>${the} ${duck} von der Parade in ${paradetown} flog heute Morgen über ${sightedtown} hinweg, wie Augenzeugen berichteten. Die Fliegerstaffel ist hinterher.</de>
-				<en>${ucfirst:the} ${duck} off the ${paradetown} parade flew over ${sightedtown} this morning, according to eyewitnesses. The super high-tech jet fighters are in pursuit.</en>
+				<en>${.ucfirst:the} ${duck} off the ${paradetown} parade flew over ${sightedtown} this morning, according to eyewitnesses. The super high-tech jet fighters are in pursuit.</en>
 				<pl>${giantinflatable} ${duck} z parady w mieście ${paradetown} przeleciał dziś rano nad miastem ${sightedtown}, według naocznych świadków. Super zaawansowane technologicznie myśliwce odrzutowe są w pościgu.</pl>
 			</description>
 			<data genre="4" price="1" quality="10" fictional="1" />
@@ -510,7 +510,7 @@
 			</title>
 			<description>
 				<de>${the} ${duck} von der Parade in ${paradetown} wurde heute nachmittag schließlich in ${foundtown} gefunden${andbroughtdownby}.</de>
-				<en>${ucfirst:the} ${duck} off the ${paradetown} parade was eventually found in ${foundtown} this afternoon${andbroughtdownby}.</en>
+				<en>${.ucfirst:the} ${duck} off the ${paradetown} parade was eventually found in ${foundtown} this afternoon${andbroughtdownby}.</en>
 				<pl>${giantinflatable} ${duck} z miasta ${paradetown} został ostatecznie znaleziony w mieście ${foundtown} tego popołudnia${andbroughtdownby}.</pl>
 			</description>
 			<data genre="4" price="1" quality="20" fictional="1" />
@@ -539,7 +539,7 @@
 			</title>
 			<description>
 				<de>Der vom Flug über ${sightedtown} inspirierte Action-Kracher „${the} ${duck} ${escapes}“ des aufstrebenden Garagen-Studios „${artistlastname}soft“ aus ${paradetown} führt zur Zeit die internationalen Verkaufscharts an.</de>
-				<en>Inspired by the flight over ${sightedtown}, the action smash hit "${ucfirst:the} ${duck} ${escapes}" by the up-and-coming bedroom studio "${artistlastname}soft" from ${paradetown} is currently topping the international sales charts.</en>
+				<en>Inspired by the flight over ${sightedtown}, the action smash hit "${.ucfirst:the} ${duck} ${escapes}" by the up-and-coming bedroom studio "${artistlastname}soft" from ${paradetown} is currently topping the international sales charts.</en>
 				<pl>Zainspirowani lotem nad miastem ${sightedtown} gigantycznego nadmuchiwanego balonu w kształcie ${duck} studio ${artistlastname}soft z miasta ${paradetown} wydaje grę, która podbija serca graczy.</pl>
 			</description>
 			<data genre="3" price="1" quality="25" fictional="1" />
@@ -937,9 +937,7 @@
 				<pl>${man} aresztowany${fortheft}</pl>
 			</title>
 			<description>
-				<de>${themanwho}</de>
-				<en>${themanwho}</en>
-				<pl>${themanwho}</pl>
+				<all>${themanwho}</all>
 			</description>
 			<variables>
 				<person_csv> <!-- TODO: Replace year 2050 with script to guarantee future? :) -->
@@ -996,7 +994,7 @@
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
 
-		<news guid="b3b730a5-937e-47c1-a56f-ccf0d494fdc1" type="0" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="Source: made up. Spoof of https://en.wikipedia.org/wiki/Alternative_for_Germany | TODO: Translated versions should perhaps use something different and internationally more recognizable">
+		<news guid="b3b730a5-937e-47c1-a56f-ccf0d494fdc1" type="0" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551" comment="Source: made up. Spoof of https://en.wikipedia.org/wiki/Alternative_for_Germany | TODO: Translated versions should perhaps use something different and internationally more recognizable | #maintenancecritical">
 			<title>
 				<de>AvW stellt Antrag auf Dritten Weltkrieg</de>
 				<en>AotW submits request for Third World War</en>
@@ -1008,6 +1006,7 @@
 				<pl>W przeszłości wszystko było lepsze: Ultrakonserwatywny sojusz Alternatywa dla Świata (AdS) występuje do Stanów Zjednoczonych o nową wojnę światową. Konieczny jest powrót do dobrego 25-letniego rytmu.</pl>
 			</description>
 			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<exhibitiontown>${.stationmap:"randomcity"}</exhibitiontown>
 				<angelina>Adelheid|Agathe|Alberta|Alena|Alene|Alina|Aline|Allegra|Allene|Alona|Amalia|Amalie|Amelia|Amelie|Andrea|Anette|Angelika|Angelina|Anika|Anita|Anke|Annalena|Annamari|Annamarie|Anneke|Anneliese|Annemarie|Annetta|Annette|Annika|Anthonia|Antje|Antonia|Antonie|Ariana|Augusta|August</angelina>
 				<mertel>Markel|Markels|Märkler|Märklers|Merkler|Merklers|Merpel|Mersen|Mersel|Mertel|Mertels|Merten|Mertens|Moerkel|Moerkels|Moertel|Moertels|Mörkel|Mörkels|Mörtel|Mörtels|Murkel|Murkels</mertel>
@@ -1041,10 +1040,10 @@
 					<pl>credo swojej matki, „Żelaznej Damy”</pl>
 				</thatcher_gen_b>
 				<theironlady>
-					<all>${.lte:${.worldtime:"year"}:2010:thatcher_subj_a:thatcher_subj_b}</all>
+					<all>${.lte:currentyear:2010:thatcher_subj_a:thatcher_subj_b}</all>
 				</theironlady>
 				<hercredo>
-					<all>${.lte:${.worldtime:"year"}:2010:thatcher_gen_a:thatcher_gen_b}</all>
+					<all>${.lte:currentyear:2010:thatcher_gen_a:thatcher_gen_b}</all>
 				</hercredo>
 				<trail_a>
 					<de>den in den Jahren des Kalten Krieges eigentlich hochaktuellen Rundgang „Was bleibt nach dem Fallout“ wieder ins Programm auf</de>
@@ -1057,7 +1056,7 @@
 					<pl>przywraca ścieżkę „Co pozostaje po opadzie nuklearnym”, która została zawieszona na kilka lat</pl>
 				</trail_b>
 				<isreinstatingthetrail>
-					<all>${.lte:${.worldtime:"year"}:1989:trail_a:trail_b}</all>
+					<all>${.lte:currentyear:1989:trail_a:trail_b}</all>
 				</isreinstatingthetrail>
 			</variables>
 			<data genre="0" price="1" quality="55" fictional="1" />
@@ -1291,7 +1290,7 @@
 				</isknownfor>
 				<robotics>
 					<de>Fortschritte in Robotik, insbesondere bei menschenähnlichen Androiden und industrieller Automatisierung,|führende Entwicklung in den Bereichen Robotik und künstliche Intelligenz|Durchbrüche in Biotechnologie und Genforschung|Fortschritte bei erneuerbaren Energien und nachhaltigen Technologien|Errungenschaften in Marinetechnik und Unterwasserforschung|Virtual-Reality- und Augmented-Reality-Technik|Nanotechnologie und Mikroelektronik, mit Schwerpunkt auf Miniaturisierung und Präzisionsfertigung,|fortschrittliche Werkstofftechnik und Nanomaterialien|Durchbrüche in der Medizintechnik und Innovationen im Gesundheitswesen|Weltraumforschung und Satellitentechnologie</de>
-					<en>advancements in robotics, particularly in human-like androids and industrial automation,|cutting-edge robotics and artificial intelligence technologies|bioengineering breakthroughs and genetic research|advancements in renewable energy and sustainable technologies|achievements in maritime technology and underwater exploration|virtual reality and augmented reality technologies|nanotechnology and microelectronics, with a focus on miniaturization and precision manufacturing,|advanced materials engineering and nanomaterials|breakthroughs in medical technology and healthcare innovations|space exploration and satellite technology</en>
+					<en>advancements in robotics, particularly in human-like androids and industrial automation|cutting-edge robotics and artificial intelligence technologies|bioengineering breakthroughs and genetic research|advancements in renewable energy and sustainable technologies|achievements in maritime technology and underwater exploration|virtual reality and augmented reality technologies|nanotechnology and microelectronics, with a focus on miniaturization and precision manufacturing,|advanced materials engineering and nanomaterials|breakthroughs in medical technology and healthcare innovations|space exploration and satellite technology</en>
 				</robotics>
 				<hasbecomeagloballeader>
 					<de>ist zudem zu einem globalen Vorreiter für grüne Innovationen und Smart-City-Entwicklung geworden|bietet zudem eine pulsierende Technologiebranche mit fortschrittlichen Forschungseinrichtungen und innovativen Start-ups|beherbergt zudem hochmoderne Laboratorien und Biotech-Unternehmen|ist zudem ein Zentrum für Schiffbau, Ozeanographie und Tiefseeforschung|veranstaltet zudem bedeutende Technologiekonferenzen bekannt für immersive Gaming-Erlebnisse und fortschrittliche Visualisierungssysteme|ist zudem Standort für bahnbrechende Fortschritte in der Halbleitertechnologie|zieht zudem Spitzentalente und Unternehmen in der Robotikbranche an|ist zudem führend in der Entwicklung von leichten, hochfesten Materialien, die in der Luft- und Raumfahrt, der Automobil- und der Elektronikindustrie eingesetzt werden|ist zudem Knotenpunkt für Biomedizin, Telemedizin und tragbare Gesundheitsgeräte|beheimatet zudem ein Raumfahrtzentrum und Produktionsanlagen für Satelliten, die eine wichtige Rolle in der Raumfahrtindustrie spielen</de>
@@ -1418,9 +1417,7 @@
 				<ontherapidlytransformedvenus>
 					<all>${.csv:vanished_csv:1}</all>
 				</ontherapidlytransformedvenus>
-				<festivitytownatlantis>
-					<all>${.stationmap:"randomcity"}</all>
-				</festivitytownatlantis>
+				<festivitytownatlantis>${.stationmap:"randomcity"}</festivitytownatlantis>
 			</variables>
 			<data genre="0" price="1" quality="60" fictional="1" />
 			<effects>
@@ -1467,7 +1464,7 @@
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="220848bb-6820-4a72-8bc8-3976427a4d8b" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="220848bb-6820-4a72-8bc8-3976427a4d8b" />
 			</effects>
 		</news>
 		<news guid="220848bb-6820-4a72-8bc8-3976427a4d8b" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1481,7 +1478,7 @@
 			</description>
 			<data genre="5" price="1" quality="40" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="8f712f37-afbc-4671-97e9-513c2a23530d" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="8f712f37-afbc-4671-97e9-513c2a23530d" />
 			</effects>
 		</news>
 		<news guid="8f712f37-afbc-4671-97e9-513c2a23530d" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1495,7 +1492,7 @@
 			</description>
 			<data genre="1" price="1" quality="40" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="799c8a9a-adf5-47fd-868e-5b5441b3d20d" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="799c8a9a-adf5-47fd-868e-5b5441b3d20d" />
 			</effects>
 		</news>
 		<news guid="799c8a9a-adf5-47fd-868e-5b5441b3d20d" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1509,7 +1506,7 @@
 			</description>
 			<data genre="0" price="1" quality="35" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="28df5516-4c8f-40d8-9e11-9421990b25bc" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="28df5516-4c8f-40d8-9e11-9421990b25bc" />
 			</effects>
 		</news>
 		<news guid="28df5516-4c8f-40d8-9e11-9421990b25bc" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1551,7 +1548,7 @@
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="24bff879-3176-41fd-8c24-d7e646713562" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="24bff879-3176-41fd-8c24-d7e646713562" />
 			</effects>
 		</news>
 		<news guid="24bff879-3176-41fd-8c24-d7e646713562" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551" comment="reference: https://reddit.com/r/germany/comments/64aucx/question_from_canadian_what_was_stoiber_talking/">
@@ -1565,7 +1562,7 @@
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="52ef13f1-82f2-47d2-a2be-53a76b2d4554" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="52ef13f1-82f2-47d2-a2be-53a76b2d4554" />
 			</effects>
 		</news>
 		<news guid="52ef13f1-82f2-47d2-a2be-53a76b2d4554" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1579,7 +1576,7 @@
 			</description>
 			<data genre="3" price="1" quality="55" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" />
 			</effects>
 		</news>
 		<news guid="89f28e07-7d83-4d3d-bdfb-ebc4e5efb7c8" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1593,7 +1590,7 @@
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="522c9ed6-6682-4275-8903-6e08e4048104" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="522c9ed6-6682-4275-8903-6e08e4048104" />
 			</effects>
 		</news>
 		<news guid="522c9ed6-6682-4275-8903-6e08e4048104" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1634,7 +1631,7 @@
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" />
 			</effects>
 		</news>
 		<news guid="7a8e829c-0f1b-431e-9c55-2b02fbfeebba" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1648,7 +1645,7 @@
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="79d69be8-25c5-4fb7-ab38-d517d567fac1" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="79d69be8-25c5-4fb7-ab38-d517d567fac1" />
 			</effects>
 		</news>
 		<news guid="79d69be8-25c5-4fb7-ab38-d517d567fac1" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1718,7 +1715,7 @@
 			</description>
 			<data genre="0" price="1" quality="50" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" />
 			</effects>
 		</news>
 		<news guid="16f06d3c-3d70-4cfc-8587-e83ef8b984cf" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1728,7 +1725,7 @@
 			</title>
 			<description>
 				<de>In einer Forschungseinrichtung in ${meiguwu} wurde versehentlich ein Wurmloch erzeugt. Es bestehe aber keine Gefahr für die Bevölkerung.</de>
-				<en>A wormhole has been accidentally created in a research facility in ${meiguwu}. There is no danger to the population, says the report.</en>
+				<en>A wormhole has been accidentally created in a research facility in ${meiguwu}. There is no danger to the population, it is reported.</en>
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1741,8 +1738,8 @@
 				<en>${meiguwu}: Demons captured</en>
 			</title>
 			<description>
-				<de>Aus dem Wurmloch in ${meiguwu} waren drei Dämonen geschlüpft. Sie konnten eingefangen werden. Es bestehe keine Gefahr für die Bevölkerung oder das Raum-Zeit-Kontinuum.</de>
-				<en>Three demons had emerged from the wormhole in ${meiguwu}. They have been captured. There is no danger to the population or the space-time continuum.</en>
+				<de>Aus dem Wurmloch in ${meiguwu} waren drei Dämonen geschlüpft. Sie konnten eingefangen werden. Es wird nochmal bekräftigt, es bestehe keine Gefahr für die Bevölkerung - oder das Raum-Zeit-Kontinuum.</de>
+				<en>Three demons had emerged from the wormhole in ${meiguwu}. They have been captured. It is confirmed once again that there is no danger to the population - or the space-time continuum.</en>
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1788,7 +1785,7 @@
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="987f4b7f-3575-437c-8b32-121e6690d5cd" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="987f4b7f-3575-437c-8b32-121e6690d5cd" />
 			</effects>
 		</news>
 		<news guid="987f4b7f-3575-437c-8b32-121e6690d5cd" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1802,7 +1799,7 @@
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" />
 			</effects>
 		</news>
 		<news guid="1a5b7a64-7b7d-41f1-b5b1-0aa72b823e73" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1816,7 +1813,7 @@
 			</description>
 			<data genre="2" price="1" quality="35" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="99f71d0b-92a2-4869-88fb-93d4d1ce907f" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="99f71d0b-92a2-4869-88fb-93d4d1ce907f" />
 			</effects>
 		</news>
 		<news guid="99f71d0b-92a2-4869-88fb-93d4d1ce907f" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1876,7 +1873,7 @@
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="3ceb6695-7524-4b3f-8632-4746177a2267" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="3ceb6695-7524-4b3f-8632-4746177a2267" />
 			</effects>
 		</news>
 		<news guid="3ceb6695-7524-4b3f-8632-4746177a2267" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1890,7 +1887,7 @@
 			</description>
 			<data genre="1" price="1" quality="35" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" />
 			</effects>
 		</news>
 		<news guid="b0444aea-a0be-45d1-9d1f-4e8b3d553dbd" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1904,7 +1901,7 @@
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" />
 			</effects>
 		</news>
 		<news guid="1ef4b8b5-ccdc-4463-aa0c-5730dcab9053" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1932,7 +1929,7 @@
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="9a58b8e2-2cfc-4745-8651-4b5d3bace180" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="9a58b8e2-2cfc-4745-8651-4b5d3bace180" />
 			</effects>
 		</news>
 		<news guid="9a58b8e2-2cfc-4745-8651-4b5d3bace180" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -1988,7 +1985,7 @@
 			</description>
 			<data genre="5" price="1" quality="50" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="9333f55b-d0af-4e79-9481-bcb7a49c7b26" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="9333f55b-d0af-4e79-9481-bcb7a49c7b26" />
 			</effects>
 		</news>
 		<news guid="9333f55b-d0af-4e79-9481-bcb7a49c7b26" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -2100,7 +2097,7 @@
 			</description>
 			<data genre="5" price="1" quality="55" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="02763d5d-89cd-40e2-9d2a-4056e648c59b" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="02763d5d-89cd-40e2-9d2a-4056e648c59b" />
 			</effects>
 		</news>
 		<news guid="02763d5d-89cd-40e2-9d2a-4056e648c59b" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -2114,7 +2111,7 @@
 			</description>
 			<data genre="4" price="1" quality="35" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="addaf70f-4452-4190-aa57-26abd6af0af9" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="addaf70f-4452-4190-aa57-26abd6af0af9" />
 			</effects>
 		</news>
 		<news guid="addaf70f-4452-4190-aa57-26abd6af0af9" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
@@ -2128,7 +2125,7 @@
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,34,68" news="94e3c0e8-7648-4986-9add-5e24da9b2d6e" />
+				<effect trigger="happen" type="triggernews" time="2,2,6,1,23" news="94e3c0e8-7648-4986-9add-5e24da9b2d6e" />
 			</effects>
 		</news>
 		<news guid="94e3c0e8-7648-4986-9add-5e24da9b2d6e" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">

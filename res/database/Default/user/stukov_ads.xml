@@ -262,8 +262,7 @@
 
 		<ad guid="9e09ce1b-294d-4ddc-9910-d33ddbdb1e19" comment="from Mad TV">
 			<title>
-				<de>Juicycat</de>
-				<en>Juicycat</en>
+				<all>Juicycat</all>
 				<pl>Koci-Sok</pl>
 			</title>
 			<description>
@@ -321,14 +320,13 @@
 
 		<ad guid="60025ff2-4a8a-4530-afec-b2ec2f29fc99" comment="https://de.wikipedia.org/wiki/Rushware | from Mad TV as 'Rushware'">
 			<title>
-				<de>Brushwear</de>
-				<en>Brushwear</en>
+				<all>Brushwear</all>
 				<pl>Odzież Brushwear</pl>
 			</title>
 			<description>
 				<de>Auf der Leine mit dem Trend.</de> <!-- orig: Online with the trend -->
 				<en>On linen with the trend.</en>
-				<pl>Ciuchy zgodne z trendem</pl>
+				<pl>Ciuchy zgodne z trendem.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="1" target_group="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="7" duration="1" profit="1900" penalty="2500" infomercial_profit="180" fix_infomercial_profit="1" />
@@ -336,8 +334,7 @@
 
 		<ad guid="05c35bc8-df60-4478-af4e-66691a0f2402" comment="1980 - 1985 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<de>ESCAL PCs</de>
-				<en>ESCAL PCs</en>
+				<all>ESCAL PCs</all>
 				<pl>Komputery ESCAL PC</pl>
 			</title>
 			<description>
@@ -352,8 +349,7 @@
 
 		<ad guid="54841279-32c4-46ba-bf27-79069a81e646" comment="1986 - 1989 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<de>ESCAL XTs</de>
-				<en>ESCAL XTs</en>
+				<all>ESCAL XTs</all>
 				<pl>Komputery ESCAL XT</pl>
 			</title>
 			<description>
@@ -368,8 +364,7 @@
 
 		<ad guid="8efa85c7-e567-413f-8475-b594bb1ebc6c" comment="1990 - 1993 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<de>ESCAL ATs</de>
-				<en>ESCAL ATs</en>
+				<all>ESCAL ATs</all>
 				<pl>Komputery ESCAL AT</pl>
 			</title>
 			<description>
@@ -384,8 +379,7 @@
 
 		<ad guid="563600d9-8e5b-43bb-8acc-5358609273d4" comment="1994 - 2002 | https://en.wikipedia.org/wiki/Escom_AG | also https://en.wikipedia.org/wiki/Pentium | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<de>ESCAL Penturium</de>
-				<en>ESCAL Penturium</en>
+				<all>ESCAL Penturium</all>
 				<pl>Komputery ESCAL Penturium</pl>
 			</title>
 			<description>
@@ -400,8 +394,7 @@
 
 		<ad guid="171d5785-f6cd-4f16-b025-655539567bc0" comment="2003 - forever | https://en.wikipedia.org/wiki/Escom_AG | also spoofing https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<de>ESCAL Forever</de>
-				<en>ESCAL Forever</en>
+				<all>ESCAL Forever</all>
 				<pl>Komputery ESCAL Forever</pl>
 			</title>
 			<description>
@@ -416,8 +409,7 @@
 
 		<ad guid="21b1952e-22d9-4055-a913-092b6b458cfd" comment="1980 - 2002 | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
-				<de>HiScreen</de>
-				<en>HiScreen</en>
+				<all>HiScreen</all>
 				<pl>Telewizory HiScreen</pl>
 			</title>
 			<description>
@@ -432,8 +424,7 @@
 
 		<ad guid="74fe2e5a-74b1-43fa-9892-d042203179b0" comment="2003 - forever | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
-				<de>HiScreen.deu</de>
-				<en>HiScreen.deu</en>
+				<all>HiScreen.deu</all>
 				<pl>Telewizory HiScreen XSL</pl>
 			</title>
 			<description>
@@ -502,8 +493,7 @@
 
 		<ad guid="484b2441-8a91-4e88-81bc-bb3ad4e0aebe" comment="seems inspired from Mad TV, but isn't verbatim">
 			<title>
-				<de>Kitty Food</de>
-				<en>Kitty Food</en>
+				<all>Kitty Food</all>
 				<pl>Karma Kitty</pl>
 			</title>
 			<description>
@@ -855,8 +845,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="8b945529-7cc6-46a8-b572-47189c26b43a" comment="description from Mad TV 'Aunt Lizzy'; title already existing in TVTower, hence the variation">
 			<title>
-				<de>Aunt Lucy's</de>
-				<en>Aunt Lucy's</en>
+				<all>Aunt Lucy's</all>
 				<pl>Od Cioci Lucy</pl>
 			</title>
 			<description>
@@ -870,8 +859,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="8be83e54-ef37-44e4-9bc1-1df0eded9843" comment="another 'Aunt Lizzy' variation for fun and profit">
 			<title>
-				<de>Aunt Lilly's</de>
-				<en>Aunt Lilly's</en>
+				<all>Aunt Lilly's</all>
 				<pl>Od Cioci Lilly</pl>
 			</title>
 			<description>
@@ -924,8 +912,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="5fc3f896-7c85-4ecc-aca6-8d689eaf2291" creator="9584" created_by="Stukov" comment="from Mad TV">
 			<title>
-				<de>Adventravel</de>
-				<en>Adventravel</en>
+				<all>Adventravel</all>
 				<pl>Biuro podróży "Przygoda"</pl>
 			</title>
 			<description>

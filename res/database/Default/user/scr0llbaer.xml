@@ -699,7 +699,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>${tower} ${latebreaking}: ${title}</de>
+				<all>${tower} ${latebreaking}: ${title}</all>
 			</title>
 			<description>
 				<de>Technologie aktuell. Jeden Tag neu. Die neuesten Entwicklungen und Trends bei Elektronik, Telekommunikation, Computern.</de>

@@ -1278,14 +1278,14 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<children>
 				<programme guid="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 					<title>
-						<de>${.self:"cast":1:"fullname"} besucht... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"}</de>
-						<en>${.self:"cast":1:"fullname"} Visits... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"}</en>
-						<pl>${.self:"cast":1:"fullname"} odwiedza... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"}</pl>
+						<de>${.self:"cast":1:"fullname"} besucht... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"}</de>
+						<en>${.self:"cast":1:"fullname"} Visits... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"}</en>
+						<pl>${.self:"cast":1:"fullname"} odwiedza... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"}</pl>
 					</title>
 					<description>
-						<de>Im Schatten ihrer Schwester bastelt Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"} Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
-						<en>In the shadow of her sister, Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"} crafts figures from earwax provided by fans.</en>
-						<pl>W cieniu swojej siostry, Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"fullname"} tworzy figurki z woskowiny dostarczanej przez fanów.</pl>
+						<de>Im Schatten ihrer Schwester bastelt Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"} Figuren aus von Fans bereitgestelltem Ohrenschmalz.</de>
+						<en>In the shadow of her sister, Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"} crafts figures from earwax provided by fans.</en>
+						<pl>W cieniu swojej siostry, Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"} tworzy figurki z woskowiny dostarczanej przez fanów.</pl>
 					</description>
 					<ratings critics="28" speed="32" />
 				</programme>
