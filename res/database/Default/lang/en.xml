@@ -147,4 +147,10 @@
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" title="Inspector" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Darlene" last_name="" title="Assistant" />
 	</programmeroles>
+
+<!--Define global variables here
+	<globalvariables>
+		<variableName>Value</variableName>
+	</globalvariables>
+-->
 </tvtdb>
