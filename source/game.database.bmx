@@ -289,8 +289,8 @@ Type TDatabaseLoader
 							index:+1
 						EndIf
 					EndIf
-					dbl.persons.insert(code, toStore[..index])
 				Next
+				If index > 0 Then dbl.persons.insert(code, toStore[..index])
 
 				Local nodeAllRoles:TxmlNode
 				nodeAllRoles = xml.FindRootChildLC("programmeroles")
@@ -315,8 +315,8 @@ Type TDatabaseLoader
 							index:+ 1
 						EndIf
 					EndIf
-					dbl.roles.insert(code, toStore[..index])
 				Next
+				If index > 0 Then dbl.roles.insert(code, toStore[..index])
 			EndIf
 		Next
 	End Function
