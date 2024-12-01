@@ -218,7 +218,7 @@ Type TGameModifierBase
 
 	'The modifier is not a one-time effect but a long-running one
 	'whose effect is undone after a delay (or if a condition is not met anymore)
-	'by default modifiers are permanentn one-time effects
+	'by default modifiers are permanent one-time effects
 	Const FLAG_LONG_RUNNING_WITH_UNDO:Int = 1
 	Const FLAG_ACTIVATED:Int = 2
 	Const FLAG_EXPIRED:Int = 4

@@ -1262,7 +1262,7 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 End Type
 
 
-'currently not used, makes no sense without permanent-flag (values would be reset immediately)
+'currently not used
 Type TGameModifierNews_ModifyAttribute Extends TGameModifierBase
 	Field newsGUID:String
 	Field attribute:String
