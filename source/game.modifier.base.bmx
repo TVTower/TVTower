@@ -239,6 +239,11 @@ Type TGameModifierBase
 	End Method
 
 
+	Method InitTimeDataIfPresent(data:TData)
+		If data And data.GetString("time") Then GetData().AddString("time", data.GetString("time"))
+	End Method
+
+
 	Method Copy:TGameModifierBase()
 		'deprecated
 		'local clone:TGameModifierBase = new self

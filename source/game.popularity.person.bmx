@@ -117,7 +117,7 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 	Method Init:TGameModifierPopularity_ModifyPersonPopularity(data:TData, extra:TData=null)
 		Super.Init(data, extra)
 
-		If data And data.GetString("time") Then self.data = data.copy()
+		InitTimeDataIfPresent(data)
 
 		Return self
 	End Method
