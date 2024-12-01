@@ -216,7 +216,10 @@ Type TGameModifierBase
 	Global lsKeyCustomRunFuncKey:TLowerString = New TLowerString.Create("customRunFuncKey")
 
 
-	Const FLAG_PERMANENT:Int = 1
+	'The modifier is not a one-time effect but a long-running one
+	'whose effect is undone after a delay (or if a condition is not met anymore)
+	'by default modifiers are permanentn one-time effects
+	Const FLAG_LONG_RUNNING_WITH_UNDO:Int = 1
 	Const FLAG_ACTIVATED:Int = 2
 	Const FLAG_EXPIRED:Int = 4
 	Const FLAG_EXPIRATION_DISABLED:Int = 8
@@ -250,6 +253,11 @@ Type TGameModifierBase
 		Local clone:TGameModifierBase = TGameModifierBase(TTypeId.ForObject(Self).NewObject())
 		clone.CopyBasefrom(Self)
 		Return clone
+	End Method
+
+
+	Method SetLongRunngingWithUndo()
+		SetFlag(FLAG_LONG_RUNNING_WITH_UNDO)
 	End Method
 
 
@@ -437,7 +445,7 @@ Type TGameModifierBase
 		'run() above
 		If HasFlag(Flag_ACTIVATED)
 			If Not HasFlag(FLAG_EXPIRATION_DISABLED) And (Not conditions Or Not conditionsOK)
-				If Not HasFlag(FLAG_PERMANENT)
+				If HasFlag(FLAG_LONG_RUNNING_WITH_UNDO)
 					Undo(passedParams)
 				EndIf
 

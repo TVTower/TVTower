@@ -1185,10 +1185,6 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 	End Method
 
 
-'modify news availability is a one time effect
-'not intended for temporary enabling/disabling for a given time by the same effect instance
-'undo will be called immediately after the run if the event is not marked as permanent
-rem
 	'override
 	Method UndoFunc:Int(params:TData)
 		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplate()
@@ -1219,7 +1215,6 @@ rem
 		Print "TGameModifierNews_ModifyAvailability.Undo: Failed to find newsEventTemplate or newsEvent with GUID ~q"+newsGUID+"~q."
 		Return False
 	End Method
-endrem
 
 
 	'override to trigger a specific news

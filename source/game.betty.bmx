@@ -542,8 +542,8 @@ Type TGUIBettyPresent extends TGuiObject
 End Type
 
 
-
-
+'TODO support database effects, playerID has to be passed in params (owner of context object?)
+'modifier.run is currently invoked directly by awards; not using the update mechanism
 Type TGameModifier_BettyLove extends TGameModifierBase
 	Function CreateNewInstance:TGameModifier_BettyLove()
 		Return new TGameModifier_BettyLove
@@ -563,9 +563,7 @@ Type TGameModifier_BettyLove extends TGameModifierBase
 		return "TGameModifier_BettyLove ("+GetName()+")"
 	End Method
 
-'TODO undo makes no real sense - temporary betty love increase?
-'regular update+run would immediately reset the value
-'modifier.run is currently invoked directly by awards; not using the update mechanism
+
 	Method UndoFunc:int(params:TData)
 		local playerID:int = GetData().GetInt("playerID", 0)
 		if not playerID then return False
