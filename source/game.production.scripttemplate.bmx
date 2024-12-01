@@ -754,6 +754,8 @@ Type TGameModifierScriptTemplate_ModifyAvailability Extends TGameModifierBase
 	Method Init:TGameModifierScriptTemplate_ModifyAvailability(data:TData, extra:TData=Null)
 		If Not data Then Return Null
 
+		InitTimeDataIfPresent(data)
+
 		templateGUID = data.GetString("guid", "")
 		enable = data.GetBool("enable", True)
 

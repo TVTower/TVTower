@@ -216,7 +216,10 @@ Type TGameModifierBase
 	Global lsKeyCustomRunFuncKey:TLowerString = New TLowerString.Create("customRunFuncKey")
 
 
-	Const FLAG_PERMANENT:Int = 1
+	'The modifier is not a one-time effect but a long-running one
+	'whose effect is undone after a delay (or if a condition is not met anymore)
+	'by default modifiers are permanent one-time effects
+	Const FLAG_LONG_RUNNING_WITH_UNDO:Int = 1
 	Const FLAG_ACTIVATED:Int = 2
 	Const FLAG_EXPIRED:Int = 4
 	Const FLAG_EXPIRATION_DISABLED:Int = 8
@@ -239,12 +242,22 @@ Type TGameModifierBase
 	End Method
 
 
+	Method InitTimeDataIfPresent(data:TData)
+		If data And data.GetString("time") Then GetData().AddString("time", data.GetString("time"))
+	End Method
+
+
 	Method Copy:TGameModifierBase()
 		'deprecated
 		'local clone:TGameModifierBase = new self
 		Local clone:TGameModifierBase = TGameModifierBase(TTypeId.ForObject(Self).NewObject())
 		clone.CopyBasefrom(Self)
 		Return clone
+	End Method
+
+
+	Method SetLongRunngingWithUndo()
+		SetFlag(FLAG_LONG_RUNNING_WITH_UNDO)
 	End Method
 
 
@@ -393,6 +406,17 @@ Type TGameModifierBase
 	Method Update:Int(params:TData)
 		If params Then passedParams = params
 
+		'check if data contains a time definition and apply it (once)
+		If data And Not HasDelayedExecution()
+			Local timeString:String = data.GetString("time")
+			If timeString
+				Local happenTime:Int[] = StringHelper.StringToIntArray(timeString, ",")
+				Local timeStamp:Long = GetWorldTime().CalcTime_Auto(-1, happenTime[0], happenTime[1..])
+				If timeStamp > 0 Then SetDelayedExecutionTime(timeStamp)
+				data.remove("time")
+			EndIf
+		EndIf
+
 		'if delayed and delay is in the future, set item to be managed
 		'by the modifier manager (so it gets updated regularily until
 		'delay is gone)
@@ -421,7 +445,7 @@ Type TGameModifierBase
 		'run() above
 		If HasFlag(Flag_ACTIVATED)
 			If Not HasFlag(FLAG_EXPIRATION_DISABLED) And (Not conditions Or Not conditionsOK)
-				If Not HasFlag(FLAG_PERMANENT)
+				If HasFlag(FLAG_LONG_RUNNING_WITH_UNDO)
 					Undo(passedParams)
 				EndIf
 
@@ -594,7 +618,7 @@ Type TGameModifierGroup
 				If Not l Then Continue
 
 				For Local m:TGameModifierBase = EachIn l
-					c.AddEntry(String(node._key), m)
+					c.AddEntry(String(node._key), m.copy())
 				Next
 
 				'move on to next node
@@ -759,7 +783,7 @@ Type TGameModifierChoice Extends TGameModifierBase
 
 	Method Copy:TGameModifierChoice()
 		Local clone:TGameModifierChoice = New TGameModifierChoice
-		clone.CopyBaseFrom(Self)
+		clone.CopyFromChoice(self)
 
 		Return clone
 	End Method
@@ -768,12 +792,11 @@ Type TGameModifierChoice Extends TGameModifierBase
 	Method CopyFromChoice:TGameModifierChoice(choice:TGameModifierChoice)
 		Self.CopyBaseFrom(choice)
 		Self.chooseType = choice.chooseType
-		For Local p:Int = EachIn choice.modifiersProbability
-			Self.modifiersProbability :+ [p]
-		Next
-		For Local m:TGameModifierBase = EachIn choice.modifiers
-			Self.modifiers :+ [m.Copy()]
-		Next
+		Self.modifiersProbability = choice.modifiersProbability[ .. ]
+		Self.modifiers = New TGameModifierBase[ choice.modifiers.length ]
+		For Local i:Int = 0 Until Self.modifiers.length
+			If choice.modifiers[i] Then Self.modifiers[i] = choice.modifiers[i].Copy()
+		next 
 		Return Self
 	End Method
 

@@ -542,8 +542,8 @@ Type TGUIBettyPresent extends TGuiObject
 End Type
 
 
-
-
+'TODO support database effects, playerID has to be passed in params (owner of context object?)
+'modifier.run is currently invoked directly by awards; not using the update mechanism
 Type TGameModifier_BettyLove extends TGameModifierBase
 	Function CreateNewInstance:TGameModifier_BettyLove()
 		Return new TGameModifier_BettyLove

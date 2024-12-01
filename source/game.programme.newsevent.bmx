@@ -1166,6 +1166,8 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 	Method Init:TGameModifierNews_ModifyAvailability(data:TData, extra:TData=Null)
 		If Not data Then Return Null
 
+		InitTimeDataIfPresent(data)
+
 		newsGUID = data.GetString("news", "")
 		enable = data.GetBool("enable", True)
 
@@ -1226,7 +1228,7 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 			newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not enable)
 
 		
-			'also modify "not yet happened" but existing news 
+			'also modify "not yet happened" but existing news; already published news remain available
 			'ATTENTION: this does not backup potentially "differing" news
 			'           availabilities. An individually made available
 			'           newsevent would get their availability overridden!
@@ -1238,8 +1240,6 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 				EndIf
 			Next
 
-			'prevent undoing enablement immediately
-			setFlag(TGameModifierBase.FLAG_PERMANENT)
 			Return True
 		Else
 			Local newsEvent:TNewsEvent = GetNewsEvent()
@@ -1252,8 +1252,6 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 				'refresh caches
 				GetNewsEventCollection()._InvalidateCaches()
 
-				'prevent undoing enablement immediately
-				setFlag(TGameModifierBase.FLAG_PERMANENT)
 				Return True
 			EndIf
 		EndIf
@@ -1264,7 +1262,7 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 End Type
 
 
-
+'currently not used
 Type TGameModifierNews_ModifyAttribute Extends TGameModifierBase
 	Field newsGUID:String
 	Field attribute:String

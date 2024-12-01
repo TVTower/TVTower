@@ -1,9 +1,10 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.math.bmx"
 Import "game.gameconstants.bmx"
 Import "game.popularity.bmx"
 Import "game.person.base.bmx"
+Import "game.gamescriptexpression.bmx"
 
 
 Type TPersonPopularity Extends TPopularity
@@ -115,11 +116,18 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 
 	Method Init:TGameModifierPopularity_ModifyPersonPopularity(data:TData, extra:TData=null)
 		Super.Init(data, extra)
+
+		InitTimeDataIfPresent(data)
+
 		Return self
 	End Method
 
 
 	Method GetPopularity:TPopularity() override
+		Local guidBackup:String = popularityReferenceGUID
+		If popularityReferenceGUID And popularityReferenceGUID.contains("${")
+			popularityReferenceGUID = GameScriptExpression.ParseLocalizedText(popularityReferenceGUID, new SScriptExpressionContext(null, 0, passedParams.get("variables"))).ToString()
+		EndIf
 		Local popularity:TPopularity = Super.GetPopularity()
 		If Not popularity 
 			Local person:TPersonBase
@@ -132,6 +140,7 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 				popularity = person.GetPopularity()
 			EndIf
 		EndIf
+		popularityReferenceGUID = guidBackup
 		Return popularity
 	End Method
 
