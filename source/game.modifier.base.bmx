@@ -447,6 +447,9 @@ Type TGameModifierBase
 			If Not HasFlag(FLAG_EXPIRATION_DISABLED) And (Not conditions Or Not conditionsOK)
 				If HasFlag(FLAG_LONG_RUNNING_WITH_UNDO)
 					Undo(passedParams)
+				Else
+					'unsetting flag necessary for running one-time event multiple times
+					SetFlag(FLAG_ACTIVATED, False)
 				EndIf
 
 				If HasFlag(FLAG_EXPIRATION_DISABLED)
