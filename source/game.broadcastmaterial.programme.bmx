@@ -343,7 +343,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		data.RefreshTrailerTopicality()
 
 		If licence And licence.effects
-			Local effectParams:TData = New TData.AddInt("programmeId", Self.licence.GetId())
+			Local effectParams:TData = New TData.AddInt("programmeId", Self.licence.GetId()).AddInt("playerID", Self.licence.GetOwner())
 			licence.effects.Update("broadcastDone", effectParams)
 			'very first broadcast - not owner dependent
 			If data.GetTimesBroadcasted(-1) = 1 Then licence.effects.Update("broadcastFirstTimeDone", effectParams)

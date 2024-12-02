@@ -587,7 +587,14 @@ Type TGameModifier_BettyLove extends TGameModifierBase
 		endif
 		if not playerID then return False
 
-		local value:Int = GetData().GetDouble("value", 0.0)
+		local value:Int
+		If GetData().Has("value")
+			value = GetData().GetDouble("value", 0.0)
+		Else If GetData().Has("valueMin") And GetData().Has("valueMax")
+			Local min:Int = GetData().GetDouble("valueMin", 0.0)
+			Local max:Int = GetData().GetDouble("valueMax", 0.0)
+			value = RandRange(min, max)
+		EndIf
 		if value = 0 then return False
 
 		local valueBackup:Int = TBetty.GetInstance().GetInLove(playerID)
