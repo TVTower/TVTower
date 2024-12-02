@@ -468,7 +468,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} gerät in einen heftigen Streit mit einem alten weißen Ladenbesitzer, der den Schriftzug „${.self:"cast":2:"fullname"} Edition“ auf Kartoffelchips-Tüten überklebte, den er für „Gekrakel wie das eines Dreijährigen“ bezeichnete, das angeblich für schwächeren Absatz als vorher sorgte.</de>
-						<en>${.self:"cast":2:"fullname"} gets into a fierce argument with an old white shopkeeper owner who taped over the lettering "${.self:"cast":2:"fullname"} Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
+						<en>${.self:"cast":2:"fullname"} gets into a fierce argument with an old white shopkeeper who taped over the lettering "${.self:"cast":2:"fullname"} Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>

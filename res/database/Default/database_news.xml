@@ -1425,6 +1425,12 @@
 			<variables>
 				<mathias>${.person:"95bb70af-624f-4396-a09d-698d284a59f3":"firstname"}</mathias>
 				<rust>${.person:"95bb70af-624f-4396-a09d-698d284a59f3":"lastname"}</rust>
+				<mikhail>
+					<all>${.person:"6dd0a9b9-96a0-4712-83f0-f6388bdc5bec":"firstname"}</all>
+				</mikhail>
+				<gorbachev>
+					<all>${.person:"6dd0a9b9-96a0-4712-83f0-f6388bdc5bec":"lastname"}</all>
+				</gorbachev>
 			</variables>
 			<data genre="4" price="0.8" quality="80" fictional="0" flags="2" happen_time="5,1987,1987,4,6,1,30" /> <!-- actual date: 1987-05-28, also leaving wiggle room for random choice and deactivation of duplicate -->
 			<effects>
@@ -1432,37 +1438,6 @@
 				<effect trigger="happen" type="triggernews" time="1,2,3" news="ab5b5b9a-1b67-4fd7-80a9-e6eca6b705e6" />
 				<effect trigger="happen" type="modifyNewsAvailability" enable="0" news="d58a07ac-8a3f-4dd0-b2db-6e0b742efd23" />
 			</effects>
-		</news>
-
-		<news guid="0e11a4da-1982-4d81-bd18-713201c7af6f" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8936" created_by="jorgaeff" comment="TODO: can't use variables here because thread has no start entry (may be called be two other threads); but maybe they can all use the same thread_id">
-			<title>
-				<de>${gorbachev} entlässt Minister</de>
-				<en>${gorbachev} dismisses minister</en>
-				<pl>${gorbachev} odwołuje ministra</pl>
-			</title>
-			<description>
-				<de>KPdvSS-Generalsekretär ${mikhail} ${gorbachev} hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, ${mathias} ${rust}, auf dem Roten Platz in Moskau entlassen.</de>
-				<en>CPUSS Secretary General ${mikhail} ${gorbachev} has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, ${mathias} ${rust}, on Red Square in Moscow.</en>
-				<pl>Sekretarz generalny CPUSS ${mikhail} ${gorbachev} zdymisjonował ministra obrony i szefa radzieckiej obrony powietrznej w związku z lądowaniem niemieckiego pilota ${mathias}a ${rust}a na Placu Czerwonym w Moskwie.</pl>
-			</description>
-			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
-			<effects>
-				<!-- "in 2 Tagen 14-16 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="85189be5-ea9a-4566-a8de-793b351ec6db" />
-			</effects>
-		</news>
-		<news guid="85189be5-ea9a-4566-a8de-793b351ec6db" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8936" created_by="jorgaeff">
-			<title>
-				<de>Weitere Entlassungen in Moskau</de>
-				<en>Further dismissals in Moscow</en>
-				<pl>Kolejne zwolnienia w Moskwie</pl>
-			</title>
-			<description>
-				<de>KPdvSS-Generalsekretär ${.person:"6dd0a9b9-96a0-4712-83f0-f6388bdc5bec":"fullname"} hat über 300 weitere perestroika- und glasnostfeindlich eingestellte Generäle entlassen. Er möchte die Wende im Ostblock weiter voran treiben.</de>
-				<en>CPUSS Secretary General ${.person:"6dd0a9b9-96a0-4712-83f0-f6388bdc5bec":"fullname"} has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
-				<pl>Sekretarz generalny KPZR ${.person:"6dd0a9b9-96a0-4712-83f0-f6388bdc5bec":"fullname"} zwolnił ponad 300 dodatkowych generałów wrogo nastawionych do pierestrojki i głasnosti. Chce on kontynuować przemiany w bloku wschodnim.</pl>
-			</description>
-			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 		</news>
 
 		<!-- "Mathias Rust landet auf Rotem Platz" -->
@@ -1586,6 +1561,36 @@
 				<pl>Pilot Schessnah ${mathias} ${rust}, który wylądował na Placu Czerwonym, został ułaskawiony. Po 15 miesiącach spędzonych w obozie pracy może jutro wrócić do swojej rodziny. Jego Schessnah zostanie zezłomowany.</pl>
 			</description>
 			<data genre="4" price="0.78" quality="55" fictional="0" flags="2" />
+		</news>
+		<news guid="0e11a4da-1982-4d81-bd18-713201c7af6f" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>${gorbachev} entlässt Minister</de>
+				<en>${gorbachev} dismisses minister</en>
+				<pl>${gorbachev} odwołuje ministra</pl>
+			</title>
+			<description>
+				<de>KPdvSS-Generalsekretär ${mikhail} ${gorbachev} hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, ${mathias} ${rust}, auf dem Roten Platz in Moskau entlassen.</de>
+				<en>CPUSS Secretary General ${mikhail} ${gorbachev} has dismissed the defense minister and the head of Soviet air defense over the landing of the German pilot, ${mathias} ${rust}, on Red Square in Moscow.</en>
+				<pl>Sekretarz generalny CPUSS ${mikhail} ${gorbachev} zdymisjonował ministra obrony i szefa radzieckiej obrony powietrznej w związku z lądowaniem niemieckiego pilota ${mathias}a ${rust}a na Placu Czerwonym w Moskwie.</pl>
+			</description>
+			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
+			<effects>
+				<!-- "in 2 Tagen 14-16 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="85189be5-ea9a-4566-a8de-793b351ec6db" />
+			</effects>
+		</news>
+		<news guid="85189be5-ea9a-4566-a8de-793b351ec6db" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8936" created_by="jorgaeff">
+			<title>
+				<de>Weitere Entlassungen in Moskau</de>
+				<en>Further dismissals in Moscow</en>
+				<pl>Kolejne zwolnienia w Moskwie</pl>
+			</title>
+			<description>
+				<de>KPdvSS-Generalsekretär ${mikhail} ${gorbachev} hat über 300 weitere perestroika- und glasnostfeindlich eingestellte Generäle entlassen. Er möchte die Wende im Ostblock weiter voran treiben.</de>
+				<en>CPUSS Secretary General ${mikhail} ${gorbachev} has dismissed more than 300 additional generals hostile to perestroika and glasnost. He wants to push ahead with the turnaround in the Eastern Bloc.</en>
+				<pl>Sekretarz generalny KPZR ${mikhail} ${gorbachev} zwolnił ponad 300 dodatkowych generałów wrogo nastawionych do pierestrojki i głasnosti. Chce on kontynuować przemiany w bloku wschodnim.</pl>
+			</description>
+			<data genre="0" price="0.6" quality="60" fictional="0" flags="2" />
 		</news>
 
 			<!-- 1987-06 -->
@@ -4047,9 +4052,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>${vehicletitle} na złomowisko?</pl>
 			</title>
 			<description>
-				<de>${thelegendary} wird verschrottet. Dies teilte der aktuelle Besitzer ${ofthevehicle} mit.</de>
-				<en>${thelegendary} is to be scrapped. This was announced by the current owner ${ofthevehicle}.</en>
-				<pl>${thelegendary} zostanie zezłomowany. Zostało to ogłoszone przez obecnego właściciela ${ofthevehicle}.</pl>
+				<de>${thelegendary} wird verschrottet. Dies teilte der aktuelle Besitzer ${ofthecar} mit.</de>
+				<en>${thelegendary} is to be scrapped. This was announced by the current owner ${ofthecar}.</en>
+				<pl>${thelegendary} zostanie zezłomowany. Zostało to ogłoszone przez obecnego właściciela ${ofthecar}.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -4082,35 +4087,35 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<mrt>${.person:"a6d2c2f1-6b5e-4ed5-80cf-0db50ed447db":"nickname"}</mrt>
 				<robbi>${.role:"3c71921a-393e-47c3-bed6-be34c7efe827":"firstname"}</robbi>
 				<vehicle_csv>
-					<de>„${knightrider}“-Auto;${kitt};${kitt}, das legendäre Auto der Serie „${knightrider}“,;des Autos;das Auto;„Ein Auto, ein Computer, ein Mann.“ ;${davidhasselhoff};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${kitt}s;Rettet ${kitt}|
-						${batmobile};${batmobile};Das ${batmobile}, das legendäre Supergefährt des Superhelden,;des Gefährts;das Gefährt;;${adamwest_or_christianbale};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${batmobile}s;Rettet ${batmobile}|
-						WV-Käfer ${dudu};${dudu};„${dudu} macht das schon“? Leider nicht mehr. Der legendäre gelbe WV-Käfer der Filmreihe;des Autos;das Auto;„Die glauben wohl, ich bin doof. Bin ich aber nicht!“ ;${jimmybondi};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${dudu}s;Rettet ${dudu}|
-						WV-Käfer ${herbie};${herbie};${herbie}, der legendäre Renn-Käfer der Filmreihe,;des Autos;das Auto;;${stefaniepowers_or_lindsaylohan};auf dem Autofriedhof;widersetzt sich der Verschrottung ihres Spielzeugs;zur Erhaltung ${herbie}s;Rettet ${herbie}|
-						Hubschrauber ${airwolf};${airwolf};${airwolf}, der legendäre Super-Kampfhubschrauber der TV-Serie,;des Hubschraubers;der Hubschrauber;;${ernestborgnine_or_janmichaelvincent};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${airwolf};Rettet ${airwolf}|
-						„${backtothefuture}“-Auto;${delorean};Der ${delorean} aus dem erfolgreichen Film „${backtothefuture}“;des Autos;das Auto;;${christopherlloyd_or_michaeljfox};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${delorean}s;Rettet den ${delorean}|
-						„${ghostbusters}“-Auto;${ecto};Der ${ecto} aus dem erfolgreichen Film „${ghostbusters}“;des Autos;das Auto;;${danaykroyd_or_billmurray};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${ecto};Rettet ${ecto}|
-						${ateamvan};${ateamvan};Der bekannte ${ateamvan} aus der erfolgreichen Fernsehserie;des Autos;das Auto;;${mrt};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${ateamvan};Rettet den ${ateamvan}|
-						${fliewatuut};${fliewatuut};Das ${fliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${fliewatuut};Rettet das ${fliewatuut}
+					<de>„${knightrider}“-Auto;${kitt};${kitt};${kitt}, das legendäre Auto der Serie „${knightrider}“,;des Autos;das Auto;„Ein Auto, ein Computer, ein Mann.“ ;${davidhasselhoff};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${kitt}s;Rettet ${kitt}|
+						${batmobile};${batmobile};das ${batmobile};Das ${batmobile}, das legendäre Supergefährt des Superhelden,;des Gefährts;das Gefährt;;${adamwest_or_christianbale};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${batmobile}s;Rettet ${batmobile}|
+						WV-Käfer ${dudu};${dudu};${dudu};„${dudu} macht das schon“? Leider nicht mehr. Der legendäre gelbe WV-Käfer der Filmreihe;des Autos;das Auto;„Die glauben wohl, ich bin doof. Bin ich aber nicht!“ ;${jimmybondi};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${dudu}s;Rettet ${dudu}|
+						WV-Käfer ${herbie};${herbie};${herbie};${herbie}, der legendäre Renn-Käfer der Filmreihe,;des Autos;das Auto;;${stefaniepowers_or_lindsaylohan};auf dem Autofriedhof;widersetzt sich der Verschrottung ihres Spielzeugs;zur Erhaltung ${herbie}s;Rettet ${herbie}|
+						Hubschrauber ${airwolf};${airwolf};${airwolf};${airwolf}, der legendäre Super-Kampfhubschrauber der TV-Serie,;des Hubschraubers;der Hubschrauber;;${ernestborgnine_or_janmichaelvincent};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${airwolf};Rettet ${airwolf}|
+						„${backtothefuture}“-Auto;${delorean};der ${delorean};Der ${delorean} aus dem erfolgreichen Film „${backtothefuture}“;des Autos;das Auto;;${christopherlloyd_or_michaeljfox};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${delorean}s;Rettet den ${delorean}|
+						„${ghostbusters}“-Auto;${ecto};der ${ecto};Der ${ecto} aus dem erfolgreichen Film „${ghostbusters}“;des Autos;das Auto;;${danaykroyd_or_billmurray};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${ecto};Rettet ${ecto}|
+						${ateamvan};${ateamvan};der ${ateamvan};Der bekannte ${ateamvan} aus der erfolgreichen Fernsehserie;des Autos;das Auto;;${mrt};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${ateamvan};Rettet den ${ateamvan}|
+						${fliewatuut};${fliewatuut};das ${fliewatuut};Das ${fliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${fliewatuut};Rettet das ${fliewatuut}
 					</de>
-					<en>„${knightrider}” car;${kitt};${kitt}, the legendary car from the “${knightrider}” series,;of the car;the car;"A lone crusader in a dangerous world." ;${davidhasselhoff};in the junkyard;resists the destruction of his toy;to preserve ${kitt};Save ${kitt}|
-						${batmobile};${batmobile};The ${batmobile}, the legendary super vehicle of the super hero,;of the vehicle;the vehicle;;${adamwest_or_christianbale};in the junkyard;resists the destruction of his toy;to preserve the ${batmobile};Save the ${batmobile}|
-						WV Beetle ${dudu};${dudu};"${dudu}'s gonna take care of it"? Alas, no longer. The legendary yellow WV Beetle from the movie series;of the car;the car;"They probably think I'm stupid. But I'm not!" ;${jimmybondi};in the junkyard;resists the destruction of his toy;to preserve ${dudu};Save ${dudu}|
-						WV Beetle ${herbie};${herbie};${herbie}, the legendary racing Beetle from the movie series,;of the car;the car;;${stefaniepowers_or_lindsaylohan};in the junkyard;resists the destruction of her toy;to preserve ${herbie};Save ${herbie}|
-						Helicopter ${airwolf};${airwolf};${airwolf}, the legendary super combat helicopter from the TV series,;of the helicopter;the helicopter;;${ernestborgnine_or_janmichaelvincent};on the scrap yard;resists the destruction of his toy;to preserve ${airwolf};Save ${airwolf}|
-						„${backtothefuture}” car;${delorean};The ${delorean} from the successful movie "${backtothefuture}";of the car;the car;;${christopherlloyd_or_michaeljfox};in the junkyard;resists the destruction of his toy;to preserve the ${delorean};Save the ${delorean}|
-						„${ghostbusters}” car;${ecto};The ${ecto} from the successful movie "${ghostbusters}";of the car;the car;;${danaykroyd_or_billmurray};in the junkyard;resists the destruction of his toy;to preserve ${ecto};Save ${ecto}|
-						${ateamvan};${ateamvan};The famous ${ateamvan} from the popular TV series;of the car;the car;;${mrt};in the junkyard;resists the destruction of his toy;to preserve the ${ateamvan};Save the ${ateamvan}|
-						${fliewatuut};${fliewatuut};The ${fliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi};on the scrap yard;resists the destruction of his toy;to preserve the ${fliewatuut};Save the ${fliewatuut}
+					<en>„${knightrider}” car;${kitt};${kitt};${kitt}, the legendary car from the “${knightrider}” series,;of the car;the car;"A lone crusader in a dangerous world." ;${davidhasselhoff};in the junkyard;resists the destruction of his toy;to preserve ${kitt};Save ${kitt}|
+						${batmobile};${batmobile};the ${batmobile};The ${batmobile}, the legendary super vehicle of the super hero,;of the vehicle;the vehicle;;${adamwest_or_christianbale};in the junkyard;resists the destruction of his toy;to preserve the ${batmobile};Save the ${batmobile}|
+						WV Beetle ${dudu};${dudu};${dudu};"${dudu}'s got this"? Alas, no longer. The legendary yellow WV Beetle from the movie series;of the car;the car;"They probably think I'm stupid. But I'm not!" ;${jimmybondi};in the junkyard;resists the destruction of his toy;to preserve ${dudu};Save ${dudu}|
+						WV Beetle ${herbie};${herbie};${herbie};${herbie}, the legendary racing Beetle from the movie series,;of the car;the car;;${stefaniepowers_or_lindsaylohan};in the junkyard;resists the destruction of her toy;to preserve ${herbie};Save ${herbie}|
+						Helicopter ${airwolf};${airwolf};${airwolf};${airwolf}, the legendary super combat helicopter from the TV series,;of the helicopter;the helicopter;;${ernestborgnine_or_janmichaelvincent};on the scrap yard;resists the destruction of his toy;to preserve ${airwolf};Save ${airwolf}|
+						„${backtothefuture}” car;${delorean};the ${delorean};The ${delorean} from the successful movie "${backtothefuture}";of the car;the car;;${christopherlloyd_or_michaeljfox};in the junkyard;resists the destruction of his toy;to preserve the ${delorean};Save the ${delorean}|
+						„${ghostbusters}” car;${ecto};the ${ecto};The ${ecto} from the successful movie "${ghostbusters}";of the car;the car;;${danaykroyd_or_billmurray};in the junkyard;resists the destruction of his toy;to preserve ${ecto};Save ${ecto}|
+						${ateamvan};${ateamvan};the ${ateamvan};The famous ${ateamvan} from the popular TV series;of the car;the car;;${mrt};in the junkyard;resists the destruction of his toy;to preserve the ${ateamvan};Save the ${ateamvan}|
+						${fliewatuut};${fliewatuut};the ${fliewatuut};The ${fliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi};on the scrap yard;resists the destruction of his toy;to preserve the ${fliewatuut};Save the ${fliewatuut}
 					</en>
-					<pl>„${knightrider}”-samochód;${kitt};${kitt}, legendarny samochód z serialu „${knightrider}”,;samochodu;samochód;„Samotny krzyżowiec w niebezpiecznym świecie.” ;${davidhasselhoff};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${kitt}a;Save ${kitt}|
-						${batmobile};${batmobile};${batmobile}, legendarny super pojazd super bohatera,;pojazdu;pojazd;;${adamwest_or_christianbale};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie batmobilu;Save the ${batmobile}|
-						WV Beetle ${dudu};${dudu};„${dudu} się tym zajmie”? Niestety, już nie. Legendarny żółty WV Beetle z serii filmowej;samochodu;samochód;„Pewnie myślą, że jestem głupi. Ale nie jestem!” ;${jimmybondi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${dudu};Save ${dudu}|
-						WV Beetle ${herbie};${herbie};${herbie}, legendarny wyścigowy Beetle z serii filmów,;samochodu;samochód;;${stefaniepowers_or_lindsaylohan};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${herbie}go;Save ${herbie}|
-						Helikopter ${airwolf};${airwolf};${airwolf}, legendarne super śmigłowiec bojowy z serialu telewizyjnego,;śmigłowca;śmigłowiec;;${ernestborgnine_or_janmichaelvincent};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${airwolf}a;Save ${airwolf}|
-						„${backtothefuture}”-samochód;${delorean};${delorean} z popularnego filmu „${backtothefuture}”;samochodu;samochód;;${christopherlloyd_or_michaeljfox};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${delorean}a;Save the ${delorean}|
-						„${ghostbusters}”-samochód;${ecto};${ecto} z popularnego filmu „${ghostbusters}”;samochodu;samochód;;${danaykroyd_or_billmurray};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ecto};Save ${ecto}|
-						${ateamvan};${ateamvan};Znane ${ateamvan} z popularnego serialu telewizyjnego;samochodu;samochód;;${mrt};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ateamvan}a;Save the ${ateamvan}|
-						${fliewatuut};${fliewatuut};${fliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${fliewatuut}a;Save the ${fliewatuut}
+					<pl>„${knightrider}”-samochód;${kitt};${kitt};${kitt}, legendarny samochód z serialu „${knightrider}”,;samochodu;samochód;„Samotny krzyżowiec w niebezpiecznym świecie.” ;${davidhasselhoff};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${kitt}a;Save ${kitt}|
+						${batmobile};${batmobile};${batmobile};${batmobile}, legendarny super pojazd super bohatera,;pojazdu;pojazd;;${adamwest_or_christianbale};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie batmobilu;Save the ${batmobile}|
+						WV Beetle ${dudu};${dudu};${dudu};„${dudu} się tym zajmie”? Niestety, już nie. Legendarny żółty WV Beetle z serii filmowej;samochodu;samochód;„Pewnie myślą, że jestem głupi. Ale nie jestem!” ;${jimmybondi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${dudu};Save ${dudu}|
+						WV Beetle ${herbie};${herbie};${herbie};${herbie}, legendarny wyścigowy Beetle z serii filmów,;samochodu;samochód;;${stefaniepowers_or_lindsaylohan};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${herbie}go;Save ${herbie}|
+						Helikopter ${airwolf};${airwolf};${airwolf};${airwolf}, legendarne super śmigłowiec bojowy z serialu telewizyjnego,;śmigłowca;śmigłowiec;;${ernestborgnine_or_janmichaelvincent};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${airwolf}a;Save ${airwolf}|
+						„${backtothefuture}”-samochód;${delorean};${delorean};${delorean} z popularnego filmu „${backtothefuture}”;samochodu;samochód;;${christopherlloyd_or_michaeljfox};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${delorean}a;Save the ${delorean}|
+						„${ghostbusters}”-samochód;${ecto};${ecto};${ecto} z popularnego filmu „${ghostbusters}”;samochodu;samochód;;${danaykroyd_or_billmurray};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ecto};Save ${ecto}|
+						${ateamvan};${ateamvan};${ateamvan};Znane ${ateamvan} z popularnego serialu telewizyjnego;samochodu;samochód;;${mrt};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ateamvan}a;Save the ${ateamvan}|
+						${fliewatuut};${fliewatuut};${fliewatuut};${fliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${fliewatuut}a;Save the ${fliewatuut}
 					</pl>
 				</vehicle_csv>
 				<vehicletitle>
@@ -4119,32 +4124,35 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<vehicle>
 					<all>${.csv:vehicle_csv:1}</all>
 				</vehicle>
-				<thelegendary>
-					<all>${.csv:vehicle_csv:2}</all>
-				</thelegendary>
-				<ofthevehicle>
-					<all>${.csv:vehicle_csv:3}</all>
-				</ofthevehicle>
 				<thevehicle>
-					<all>${.csv:vehicle_csv:4}</all>
+					<all>${.csv:vehicle_csv:2}</all>
 				</thevehicle>
-				<alonecrusader>
+				<thelegendary>
+					<all>${.csv:vehicle_csv:3}</all>
+				</thelegendary>
+				<ofthecar>
+					<all>${.csv:vehicle_csv:4}</all>
+				</ofthecar>
+				<thecar>
 					<all>${.csv:vehicle_csv:5}</all>
+				</thecar>
+				<alonecrusader>
+					<all>${.csv:vehicle_csv:6}</all>
 				</alonecrusader>
 				<actor>
-					<all>${.csv:vehicle_csv:6}</all>
+					<all>${.csv:vehicle_csv:7}</all>
 				</actor>
 				<inthejunkjard>
-					<all>${.csv:vehicle_csv:7}</all>
+					<all>${.csv:vehicle_csv:8}</all>
 				</inthejunkjard>
 				<resiststhe>
-					<all>${.csv:vehicle_csv:8}</all>
+					<all>${.csv:vehicle_csv:9}</all>
 				</resiststhe>
 				<topreserve>
-					<all>${.csv:vehicle_csv:9}</all>
+					<all>${.csv:vehicle_csv:10}</all>
 				</topreserve>
 				<savethe>
-					<all>${.csv:vehicle_csv:10}</all>
+					<all>${.csv:vehicle_csv:11}</all>
 				</savethe>
 				<inthesouthcity>
 					<de>in der Südstadt|in der Nordstadt|in der Weststadt|in der Oststadt</de>
@@ -4188,9 +4196,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>${vehicle} zezłomowany</pl>
 			</title>
 			<description>
-				<de>Obwohl ${actor} ${millions},${hundredthousands} Millionen Dollar ${topreserve} gesammelt hatte, wurde ${thevehicle} verschrottet.</de>
-				<en>Although ${actor} had raised $ ${millions}.${hundredthousands} million ${topreserve}, the car ended up being scrapped.</en>
-				<pl>Chociaż ${actor} zebrał ${millions},${hundredthousands} miliona dolarów ${topreserve}, {thevehicle} został ostatecznie zezłomowany.</pl>
+				<de>Obwohl ${actor} ${millions},${hundredthousands} Millionen Dollar ${topreserve} gesammelt hatte, wurde ${thecar} verschrottet.</de>
+				<en>Although ${actor} had raised $ ${millions}.${hundredthousands} million ${topreserve}, ${thecar} ended up being scrapped.</en>
+				<pl>Chociaż ${actor} zebrał ${millions},${hundredthousands} miliona dolarów ${topreserve}, {thecar} został ostatecznie zezłomowany.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
@@ -4204,9 +4212,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>${vehicle}: Pogrzeb</pl>
 			</title>
 			<description>
-				<de>${vehicle} wurde heute ${inthesouthcity} ${ofcologne} begraben. Das Begräbnis ${inthejunkjard} lockte zehntausende Trauernde. Sie mussten ${actor} in den Arm nehmen.</de>
-				<en>${vehicle} was buried today ${inthesouthcity} ${ofcologne}. The burial ${inthejunkjard} attracted tens of thousands of mourners. They had to give ${actor} hugs.</en>
-				<pl>${vehicle} został dziś pochowany ${inthesouthcity} ${ofcologne}. Pochówek ${inthejunkjard} przyciągnął dziesiątki tysięcy żałobników. ${actor} musiał zostać objęty.</pl>
+				<de>${.ucfirst:thevehicle} wurde heute ${inthesouthcity} ${ofcologne} begraben. Das Begräbnis ${inthejunkjard} lockte zehntausende Trauernde. Sie mussten ${actor} in den Arm nehmen.</de>
+				<en>${.ucfirst:thevehicle} was buried today ${inthesouthcity} ${ofcologne}. The burial ${inthejunkjard} attracted tens of thousands of mourners. They had to give ${actor} hugs.</en>
+				<pl>${.ucfirst:thevehicle} został dziś pochowany ${inthesouthcity} ${ofcologne}. Pochówek ${inthejunkjard} przyciągnął dziesiątki tysięcy żałobników. ${actor} musiał zostać objęty.</pl>
 			</description>
 			<data genre="1" price="0.8" quality="21" />
 		</news>
@@ -4294,43 +4302,68 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news guid="1b15ca2e-e303-4863-9173-137eff033d7c_chemnitz" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
+		<news guid="1b15ca2e-e303-4863-9173-137eff033d7c" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
 			<title>
-				<de>Nashorn aus Zoo entlaufen</de>
-				<en>Rhino escaped from zoo</en>
-				<pl>Nosorożec uciekł z zoo</pl>
+				<de>${leipzig}: Nashorn aus Zoo entlaufen</de>
+				<en>${leipzig}: Rhino escaped from zoo</en>
+				<pl>${leipzig}: Nosorożec uciekł z zoo</pl>
 			</title>
 			<description>
-				<de>Im Chemnitzer Zoo fehlte heute morgen bei der Zählung ein Nashorn. Die Bevölkerung wird gebeten das Haus nicht zu verlassen.</de>
-				<en>A rhinoceros was missing from the Chemnitz Zoo this morning during a census. The population is asked not to leave the house.</en>
-				<pl>Nosorożec zaginął dziś rano w zoo w Chemnitz podczas spisu ludności. Populacja jest proszona o nieopuszczanie domu.</pl>
+				<de>Im ${leipziger} Zoo fehlte heute morgen bei der Zählung ein Nashorn. Die Bevölkerung wird gebeten, das Haus nicht zu verlassen.</de>
+				<en>A rhinoceros was missing from the ${leipziger} Zoo this morning during a census. The population is asked not to leave the house.</en>
+				<pl>Nosorożec zaginął dziś rano w zoo w ${leipziger} podczas spisu ludności. Populacja jest proszona o nieopuszczanie domu.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<chemnitz>
+					<all>${.gte:currentyear:1990:"Chemnitz":"Karl-Marx-Stadt"}</all>
+				</chemnitz>
+				<chemnitzer>
+					<de>${.gte:currentyear:1990:"Chemnitzer":"Karl-Marx-Städter"}</de>
+					<en>${.gte:currentyear:1990:"Chemnitz":"Karl-Marx-Stadt"}</en>
+					<pl>${.gte:currentyear:1990:"Chemnitz":"Karl-Marx-Stadt"}</pl>
+				</chemnitzer>
+				<city_csv>
+					<de>Leipzig;Leipziger|${chemnitz};${chemnitzer}|Dresden;Dresdner|Halle;Haller|Cottbus;Cottbuser|Rostock;Rostocker|Erfurt;Erfurter</de>
+					<en>Leipzig;Leipzig|${chemnitz};${chemnitzer}|Dresden;Dresden|Halle;Halle|Cottbus;Cottbus|Rostock;Rostock|Erfurt;Erfurt</en>
+					<pl>Lipsk;Lipsku|${chemnitz};${chemnitzer}|Drezno;Dreźnie|Halle;Halle|Cottbus;Cottbus|Rostock;Rostocku|Erfurt;Erfurcie</pl>
+				</city_csv>
+				<leipzig>
+					<all>${.csv:city_csv:0}</all>
+				</leipzig>
+				<leipziger>
+					<all>${.csv:city_csv:1}</all>
+				</leipziger>
+				<eur>
+					<de>${.lte:currentyear:1989:"Ostmark":"${.lte:currentyear:2001:"DEM":"EUR"}"}</de>
+					<en>${.lte:currentyear:1989:"ostmarks":"${.lte:currentyear:2001:"DEM":"EUR"}"}</en>
+					<pl>${.lte:currentyear:1989:"marek":"${.lte:currentyear:2001:"DEM":"EUR"}"}</pl>
+				</eur>
+				<amount>75|100|150|200</amount>
+			</variables>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc_chemnitz" time="2,1,2,5,15" />
+				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc" time="2,1,2,5,15" />
 				<effect trigger="happen" type="triggernews" news="8906094a-6ee5-4054-9e8c-9eea78ea8950" time="2,2,2,16,23"/>
 			</effects>
 			<data genre="4" price="1.0" quality="39" />
-			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
-		<news guid="777c94c2-49a6-4e72-ad02-06c33f7350bc_chemnitz" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+		<news guid="777c94c2-49a6-4e72-ad02-06c33f7350bc" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Nashorn im Wald untergetaucht</de>
 				<en>Rhino hiding in forest</en>
 				<pl>Nosorożec ukrywający się w lesie</pl>
 			</title>
 			<description>
-				<de>Das vermisste Nashorn aus dem Chemnitzer Zoo ist von Zeugen in einem nahe gelegenen Wald gesehen worden.</de>
-				<en>The missing rhino from the Chemnitz Zoo has been seen by witnesses in a nearby forest.</en>
-				<pl>Zaginiony nosorożec z zoo w Chemnitz był widziany przez świadków w pobliskim lesie.</pl>
+				<de>Das vermisste Nashorn aus dem ${leipziger} Zoo ist von Zeugen in einem nahe gelegenen Wald gesehen worden.</de>
+				<en>The missing rhino from the ${leipziger} Zoo has been seen by witnesses in a nearby forest.</en>
+				<pl>Zaginiony nosorożec z zoo w ${leipziger} był widziany przez świadków w pobliskim lesie.</pl>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz" time="1,8,20" />
-				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz_euro" time="1,8,20" />
+				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" time="1,8,20" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
-			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
-		<news guid="8906094a-6ee5-4054-9e8c-9eea78ea8950" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+		<news guid="8906094a-6ee5-4054-9e8c-9eea78ea8950" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="" comment="TODO: ZORRO reference not clear (real or not)">
 			<title>
 				<de>Ökoterroristen ließen Nashorn frei</de>
 				<en>Eco-terrorists liberated rhino</en>
@@ -4342,47 +4375,28 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Według oświadczenia, za ucieczkę nosorożca odpowiedzialni są obrońcy praw zwierząt z grupy „ZORRO”.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="25" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+		<news guid="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Touristen vom Nashorn angegriffen</de>
 				<en>Tourists attacked by rhino</en>
 				<pl>Turyści zaatakowani przez nosorożca</pl>
 			</title>
 			<description>
-				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 Mark.</de>
-				<en>Tourists have been attacked in the Chemnitz forest by the escaped rhinoceros in their camper. The damage amounts to about 100,000 DEM.</en>
-				<pl>Turyści zostali zaatakowani w lesie Chemnitz przez zbiegłego nosorożca w ich kamperze. Szkody wynoszą około 100 000 DEM.</pl>
+				<de>Touristen sind im ${leipziger} Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa ${amount}.000 ${eur}.</de>
+				<en>Tourists have been attacked in the ${leipziger} forest by the escaped rhinoceros in their camper. The damage amounts to about ${amount},000 ${eur}.</en>
+				<pl>Turyści zostali zaatakowani w lesie ${leipziger} przez zbiegłego nosorożca w ich kamperze. Szkody wynoszą około ${amount} 000 ${eur}.</pl>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
+				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" time="2,1,1,4,12" />
 			</effects>
 			<data genre="4" price="1.0" quality="35" />
-			<availability year_range_from="1990" year_range_to="2001" />
 		</news>
-		<news guid="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz_euro" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+		<news guid="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
-				<de>Touristen vom Nashorn angegriffen</de>
-				<en>Tourists attacked by rhino</en>
-				<pl>Turyści zaatakowani przez nosorożca</pl>
-			</title>
-			<description>
-				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa € 50.000.</de>
-				<en>Tourists have been attacked in the Chemnitz forest by the escaped rhinoceros in their camper. The damage amounts to about € 50,000.</en>
-				<pl>Turyści zostali zaatakowani w lesie Chemnitz przez zbiegłego nosorożca w ich kamperze. Szkody wynoszą około 50 000 euro.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
-			</effects>
-			<data genre="4" price="1.0" quality="35" />
-			<availability year_range_from="2002" year_range_to="-1" />
-		</news>
-		<news guid="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
-			<title>
-				<de>Chemnitzer Nashorn umzingelt</de>
-				<en>Chemnitz rhino cornered</en>
-				<pl>Nosorożec z Chemnitz osaczony</pl>
+				<de>${leipziger} Nashorn umzingelt</de>
+				<en>${leipziger} rhino cornered</en>
+				<pl>Nosorożec z ${leipziger} osaczony</pl>
 			</title>
 			<description>
 				<de>Das entlaufene Nashorn ist auf einer Lichtung gestellt worden. Mehrere Veterinäre mit Betäubungsgewehren stehen bereit es einzufangen.</de>
@@ -4393,7 +4407,6 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<effect trigger="happen" type="triggernews" news="a4f30290-dc9f-49e0-ad44-727e00e44693" time="2,1,1,16,23" />
 			</effects>
 			<data genre="4" price="1.0" quality="26" />
-			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 		<news guid="a4f30290-dc9f-49e0-ad44-727e00e44693" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
@@ -4407,80 +4420,6 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Uwolniony nosorożec wrócił do zoo cały i zdrowy po spektakularnej wycieczce.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="23" />
-			<availability year_range_from="-1" year_range_to="-1" />
-		</news>
-		<!-- karl-marx-stadt-variant -->
-		<news guid="1b15ca2e-e303-4863-9173-137eff033d7c_karlmarxstadt" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
-			<title>
-				<de>Nashorn aus Zoo entlaufen</de>
-				<en>Rhino escaped from the zoo</en>
-				<pl>Nosorożec uciekł z zoo</pl>
-			</title>
-			<description>
-				<de>Im Karl-Marx-Städter Zoo fehlte heute morgen bei der Zählung ein Nashorn. Die Bevölkerung wird gebeten das Haus nicht zu verlassen.</de>
-				<en>A rhinoceros was missing from the Karl-Marx-Stadt zoo this morning during a census. The population is asked not to leave the house.</en>
-				<pl>Nosorożec zaginął dziś rano w zoo Karl-Marx-Stadt podczas spisu. Mieszkańców proszą o nieopuszczanie domu.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc_karlmarxstadt" time="2,1,2,5,15" />
-				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc_chemnitz" time="2,1,2,5,15" />
-				<effect trigger="happen" type="triggernews" news="8906094a-6ee5-4054-9e8c-9eea78ea8950" time="2,2,2,16,23"/>
-			</effects>
-			<data genre="4" price="1.0" quality="39" />
-			<availability year_range_from="-1" year_range_to="1989" />
-		</news>
-		<news guid="777c94c2-49a6-4e72-ad02-06c33f7350bc_karlmarxstadt" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
-			<title>
-				<de>Nashorn im Wald untergetaucht</de>
-				<en>Rhino hiding in forest</en>
-				<pl>Nosorożec ukrywający się w lesie</pl>
-			</title>
-			<description>
-				<de>Das vermisste Nashorn aus dem Karl-Marx-Städter Zoo ist von Zeugen in einem nahe gelegenen Wald gesehen worden.</de>
-				<en>The missing rhino from the Karl-Marx-Stadt Zoo has been seen by witnesses in a nearby forest.</en>
-				<pl>Zaginiony nosorożec z zoo Karl-Marx-Stadt był widziany przez świadków w pobliskim lesie.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz" time="1,8,20" />
-				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_karlmarxstadt" time="1,8,20" />
-			</effects>
-			<data genre="4" price="1.0" quality="29" />
-			<availability year_range_from="-1" year_range_to="1989" />
-		</news>
-		<news guid="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_karlmarxstadt" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
-			<title>
-				<de>Touristen vom Nashorn angegriffen</de>
-				<en>Tourists attacked by Rhino</en>
-				<pl>Turyści zaatakowani przez nosorożca</pl>
-			</title>
-			<description>
-				<de>Touristen sind im Karl-Marx-Städter Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 Mark.</de>
-				<en>Tourists have been attacked in the Karl-Marx-Stadt forest by the escaped rhinoceros in their camper. The damage amounts to about 100,000 Ostmark.</en>
-				<pl>Turyści zostali zaatakowani w lesie Karl-Marx-Stadt przez zbiegłego nosorożca w ich kamperze. Szkody wynoszą około 100 000 ostmarków.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_karlmarxstadt" time="2,1,1,4,12" />
-				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
-			</effects>
-			<data genre="4" price="1.0" quality="35" />
-			<availability year_range_from="-1" year_range_to="1989" />
-		</news>
-		<news guid="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_karlmarxstadt" thread_guid="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
-			<title>
-				<de>Karl-Marx-Städter Nashorn umzingelt</de>
-				<en>Rhino of Karl-Marx-Stadt cornered</en>
-				<pl>Nosorożec z Karl-Marx-Stadt osaczony</pl>
-			</title>
-			<description>
-				<de>Das entlaufene Nashorn ist auf einer Lichtung gestellt worden. Mehrere Veterinäre mit Betäubungsgewehren stehen bereit es einzufangen.</de>
-				<en>The escaped rhino has been located in a forest clearing. Several veterinarians with tranquilizer guns are ready to catch it.</en>
-				<pl>Uciekający nosorożec został zlokalizowany na leśnej polanie. Kilku weterynarzy z pistoletami usypiającymi jest gotowych go złapać.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="a4f30290-dc9f-49e0-ad44-727e00e44693" time="2,1,1,16,23" />
-			</effects>
-			<data genre="4" price="1.0" quality="26" />
-			<availability year_range_from="-1" year_range_to="1989" />
 		</news>
 
 		<news guid="b8a64acb-74e0-4786-9810-2c6531b3bcd3" thread_guid="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="0" creator="">
@@ -4539,66 +4478,18 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Fort notuje straty</pl>
 			</title>
 			<description>
-				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Montana.</de>
-				<en>The American car company is deep in the red. One reason for this is the poor sales of the new Montana model.</en>
-				<pl>Amerykańska firma samochodowa jest głęboko na minusie. Jednym z powodów jest słaba sprzedaż nowego modelu Montana.</pl>
+				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells ${montana}.</de>
+				<en>The American car company is deep in the red. One reason for this is the poor sales of the new ${montana} model.</en>
+				<pl>Amerykańska firma samochodowa jest głęboko na minusie. Jednym z powodów jest słaba sprzedaż nowego modelu ${montana}.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<montana>${.lte:currentyear:1981:"Esquart":"${.lte:currentyear:1991:"Suerrah":"${.lte:currentyear:2002:"Mardeo":"Montana"}"}"}</montana>
+			</variables>
+			<data genre="0" price="1.0" quality="19" />
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
-			<data genre="0" price="1.0" quality="19" />
-			<availability year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news guid="2f64517a-f2d6-4720-a195-6a35cc6e72c6_1" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
-			<title>
-				<de>Fort schreibt Verluste</de>
-				<en>Fort records losses</en>
-				<pl>Fort notuje straty</pl>
-			</title>
-			<description>
-				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Esquart.</de>
-				<en>The American car company is deep in the red. One reason for this is the poor sales of the new Esquart model.</en>
-				<pl>Amerykańska firma samochodowa jest głęboko na minusie. Jednym z powodów jest słaba sprzedaż nowego modelu Esquart.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
-			</effects>
-			<data genre="0" price="1.0" quality="19" />
-			<availability year_range_from="-1" year_range_to="1981" />
-		</news>
-		<news guid="2f64517a-f2d6-4720-a195-6a35cc6e72c6_2" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
-			<title>
-				<de>Fort schreibt Verluste</de>
-				<en>Fort records losses</en>
-				<pl>Fort notuje straty</pl>
-			</title>
-			<description>
-				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Suerrah.</de>
-				<en>The American car company is deep in the red. One reason for this is the poor sales of the new Suerrah model.</en>
-				<pl>Amerykańska firma motoryzacyjna jest głęboko na minusie. Jednym z powodów jest słaba sprzedaż nowego modelu Suerrah.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
-			</effects>
-			<data genre="0" price="1.0" quality="19" />
-			<availability year_range_from="1982" year_range_to="1991" />
-		</news>
-		<news guid="2f64517a-f2d6-4720-a195-6a35cc6e72c6_3" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
-			<title>
-				<de>Fort schreibt Verluste</de>
-				<en>Fort records losses</en>
-				<pl>Fort notuje straty</pl>
-			</title>
-			<description>
-				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Mardeo.</de>
-				<en>The American car company is deep in the red. One reason for this is the poor sales of the new Mardeo model.</en>
-				<pl>Amerykańska firma samochodowa jest głęboko na minusie. Jednym z powodów jest słaba sprzedaż nowego modelu Mardeo.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
-			</effects>
-			<data genre="0" price="1.0" quality="19" />
-			<availability year_range_from="1992" year_range_to="2002" />
 		</news>
 		<news guid="1135edbe-daf4-4ed7-8817-b352b9ee7442" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
@@ -5323,16 +5214,16 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="1995" year_range_to="-1" />
 		</news>
-		<news guid="df3f342a-6bb2-4445-9f77-2765d51a8187_2" thread_guid="769c4c90-9ddc-4c72-8ad7-1850f0c95109" type="0" creator="">
+		<news guid="0f4e6da4-6107-4970-8fec-8bae4ee37e6c" thread_guid="769c4c90-9ddc-4c72-8ad7-1850f0c95109" type="0" creator="">
 			<title>
-				<de>Tele-Komm schafft Wählscheibe ab</de>
-				<en>Tele-Komm abolishes the dial plate</en>
-				<pl>Tele-Komm likwiduje tarczę zegara</pl>
+				<de>Bundespost schafft Wählscheibe ab</de>
+				<en>Bundespost abolishes the dial plate</en>
+				<pl>Bundespost likwiduje tarczę zegara</pl>
 			</title>
 			<description>
-				<de>Die deutsche Tele-Komm schafft die klassische Wählscheibe ab. Inoffizieller Grund: Zu geringe Effizienz der Callcenter.</de>
-				<en>The German Tele-Komm company abolishes the classic dial plate. Unofficial reason: Call centers not efficient enough.</en>
-				<pl>Niemiecka firma Tele-Komm likwiduje klasyczną tarczę zegara. Nieoficjalny powód: Centra telefoniczne nie są wystarczająco wydajne.</pl>
+				<de>Die Bundespost schafft die klassische Wählscheibe ab. Inoffizieller Grund: Zu geringe Effizienz der Callcenter.</de>
+				<en>The German Bundespost abolishes the classic dial plate. Unofficial reason: Call centers not efficient enough.</en>
+				<pl>Niemiecka Bundespost likwiduje klasyczną tarczę zegara. Nieoficjalny powód: Centra telefoniczne nie są wystarczająco wydajne.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="-1" year_range_to="1994" />
@@ -5596,7 +5487,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news guid="newsevent-unknown-preyts-ep1" thread_guid="newsevent-unknown-preyts" type="0" creator="">
+		<news guid="0757381e-e8b7-47b4-91d7-09e9ec79573e" thread_guid="fb5d1c32-7fd6-49a3-9c4a-b24a934a2ef0" type="0" creator="" comment="TODO: maybe real news but he became manager in 2009, not coach">
 			<title>
 				<de>${preetz} neuer Trainer in Berlin?</de>
 				<en>${preetz} new coach in Berlin?</en>
@@ -5612,12 +5503,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<preetz>${.person:"95346f78-cb9c-48b0-8e0f-9e7268c57aee":"lastname"}</preetz>
 			</variables>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,2,6,18" />
+				<effect trigger="happen" type="triggernews" news="e89cd68e-b62a-4feb-89d5-9e26c2420dbe" time="2,1,2,6,18" />
 			</effects>
-			<data genre="2" price="1.0" quality="30" />
-			<availability year_range_from="2004" year_range_to="2005" />
+			<data genre="2" price="1.0" quality="30" flags="2" />
+			<availability year_range_from="2004" year_range_to="2008" />
 		</news>
-		<news guid="newsevent-unknown-preyts-ep2" thread_guid="newsevent-unknown-preyts" type="2" creator="">
+		<news guid="e89cd68e-b62a-4feb-89d5-9e26c2420dbe" thread_guid="fb5d1c32-7fd6-49a3-9c4a-b24a934a2ef0" type="2" creator="">
 			<title>
 				<de>Trainerschein für M. ${preetz}?</de>
 				<en>Coaching license for M. ${preetz}?</en>
@@ -5629,12 +5520,11 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Szanse są duże: "Chciałbym najpierw zdobyć licencję trenera, a potem możesz ze mną porozmawiać" - mówi były gracz Berty. Berlin może mieć nadzieję.</pl>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep3" time="1,6,12" />
+				<effect trigger="happen" type="triggernews" news="92405094-7964-47c2-aade-9c8319a3b243" time="1,6,12" />
 			</effects>
 			<data genre="2" price="1.0" quality="25" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="newsevent-unknown-preyts-ep3" thread_guid="newsevent-unknown-preyts" type="2" creator="">
+		<news guid="92405094-7964-47c2-aade-9c8319a3b243" thread_guid="fb5d1c32-7fd6-49a3-9c4a-b24a934a2ef0" type="2" creator="">
 			<title>
 				<de>Probleme für ${preetz} &amp; Co</de>
 				<en>Problems for ${preetz} &amp; Co</en>
@@ -5646,12 +5536,11 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Jako że były kapitan Berty BSC nie posiada na razie licencji trenerskiej, decyzja napastnika może jeszcze trochę potrwać....</pl>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep4" time="2,2,3,8,21" />
+				<effect trigger="happen" type="triggernews" news="93b97853-afdf-42df-9c86-e7b98bf417c7" time="2,2,3,8,21" />
 			</effects>
 			<data genre="2" price="1.0" quality="35" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="newsevent-unknown-preyts-ep4" thread_guid="newsevent-unknown-preyts" type="2" creator="">
+		<news guid="93b97853-afdf-42df-9c86-e7b98bf417c7" thread_guid="fb5d1c32-7fd6-49a3-9c4a-b24a934a2ef0" type="2" creator="">
 			<title>
 				<de>Und nun, Herr ${preetz}?</de>
 				<en>And now, Mr. ${preetz}?</en>
@@ -5663,12 +5552,11 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Były zawodnik Berty, ${michael} ${preetz}, otrzymał wczoraj licencję trenerską. Według doradcy ${preetz}a, obecnie trwają rozmowy na temat jego przyszłości.</pl>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,1,7,11" />
+				<effect trigger="happen" type="triggernews" news="b4fc0a48-9a3f-463f-8ddf-82fe3c71259c" time="2,1,1,7,11" />
 			</effects>
 			<data genre="2" price="1.0" quality="25" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="newsevent-unknown-preyts-ep5" thread_guid="newsevent-unknown-preyts" type="2" creator="">
+		<news guid="b4fc0a48-9a3f-463f-8ddf-82fe3c71259c" thread_guid="fb5d1c32-7fd6-49a3-9c4a-b24a934a2ef0" type="2" creator="">
 			<title>
 				<de>Berta BSC holt ${preetz}</de>
 				<en>Berta BSC gets ${preetz} under contract</en>
@@ -5680,7 +5568,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Doskonale: ${michael} ${preetz} przyjmie posadę trenerską w stolicy. Nie może się doczekać tego wyzwania, mówi ${preetz}, nr 11 od wielu lat.</pl>
 			</description>
 			<data genre="2" price="1.0" quality="30" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news guid="53769295-e71f-4cbc-a127-3e3cfb70b394" thread_guid="a3e86722-1b9a-4cf4-991f-a7da7d16872b" type="0" creator="">
@@ -5801,7 +5688,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="2" price="0.7" quality="40" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="d824c05e-00fc-4d4f-a1cd-40a8e7a42085" thread_guid="b504e69a-721b-4c1c-838c-fdbd8684dd45" type="0" creator="">
+		<news guid="d824c05e-00fc-4d4f-a1cd-40a8e7a42085" thread_guid="b504e69a-721b-4c1c-838c-fdbd8684dd45" type="0" creator="" comment="TODO: probably real news, but 'Man of Peace prize which is awarded by several Nobel Peace Prize laureates' in 2008">
 			<title>
 				<de>${bono} Nobelpreisträger</de>
 				<en>${bono} Nobel laureate</en>
@@ -5883,93 +5770,72 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="83ba96bc-4560-4ac0-9929-329eb7f68751" thread_guid="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
 			<title>
-				<de>MIR empfängt fremde Signale</de>
-				<en>MIR receives unknown signals</en>
-				<pl>MIR odbiera nieznane sygnały</pl>
+				<de>${mir} empfängt fremde Signale</de>
+				<en>${mir} receives unknown signals</en>
+				<pl>${mir} odbiera nieznane sygnały</pl>
 			</title>
 			<description>
-				<de>Die sowjetische Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
-				<en>The Soviet space station has received signals that do not originate from our solar system. Whether they are alien is still unclear.</en>
-				<pl>Radziecka stacja kosmiczna odebrała sygnały, które nie pochodzą z naszego Układu Słonecznego. To, czy są one obce, jest nadal niejasne.</pl>
+				<de>${thesoviet} hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
+				<en>${thesoviet} has received signals that do not originate from our solar system. Whether they are alien is still unclear.</en>
+				<pl>${thesoviet} odebrała sygnały, które nie pochodzą z naszego Układu Słonecznego. To, czy są one obce, jest nadal niejasne.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<mir>
+					<de>${.lte:currentyear:1999:"MIR":"ISS"}</de>
+					<en>${.lte:currentyear:1999:"MIR":"ISS"}</en>
+					<pl>${.lte:currentyear:1999:"MIR":"MSK"}</pl>
+				</mir>
+				<thesoviet>
+					<de>${.lte:currentyear:1999:"Die sowjetische Raumstation":"Die internationale Raumstation"}</de>
+					<en>${.lte:currentyear:1999:"The Soviet space station":"The International Space Station"}</en>
+					<pl>${.lte:currentyear:1999:"Radziecka stacja kosmiczna":"Międzynarodowa Stacja Kosmiczna"}</pl>
+				</thesoviet>
+			</variables>
 			<data genre="3" price="0.7" quality="72" />
-			<availability year_range_from="1986" year_range_to="1998" />
+			<availability year_range_from="1986" />
 		</news>
-		<news guid="83ba96bc-4560-4ac0-9929-329eb7f68751_2" thread_guid="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
+		<news guid="d2b527a3-3181-4cbc-baa2-7bd4c7503a74" thread_guid="baadc4ea-796b-44a2-b4cb-d333f01516ea" type="0" creator="">
 			<title>
-				<de>ISS empfängt fremde Signale</de>
-				<en>ISS receives unknown signals</en>
-				<pl>MSK odbiera nieznane sygnały</pl>
+				<de>Straßenfeger findet ${onethousanddem}</de>
+				<en>Street sweeper finds ${onethousanddem}</en>
+				<pl>Zamiatarka uliczna znajduje ${onethousanddem}</pl>
 			</title>
 			<description>
-				<de>Die internationale Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
-				<en>The International Space Station has received signals that do not originate from our solar system. Whether they are alien is still unclear.</en>
-				<pl>Międzynarodowa Stacja Kosmiczna odebrała sygnały, które nie pochodzą z naszego Układu Słonecznego. Nadal nie jest jasne, czy są one obce.</pl>
+				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg ${onethousanddem}. „Die wer'n sofort versofff'n“, so der Finder.</de>
+				<en>The morning couldn't have started better: While working, a street sweeper in Hamburg found ${onethousanddem}. "I'm... I'mma booze 'em up rite awwway," said the finder.</en>
+				<pl>Poranek nie mógł zacząć się lepiej: Podczas pracy zamiatacz ulic w Hamburgu znalazł ${onethousanddem}. "Ja... zaraz je wypiję" - powiedział znalazca.</pl>
 			</description>
-			<data genre="3" price="0.7" quality="72" />
-			<availability year_range_from="1999" year_range_to="-1" />
-		</news>
-		<news guid="d2b527a3-3181-4cbc-baa2-7bd4c7503a74_1" thread_guid="baadc4ea-796b-44a2-b4cb-d333f01516ea_1" type="0" creator="">
-			<title>
-				<de>Straßenfeger findet 1.000 Mark</de>
-				<en>Street sweeper finds 1,000 DEM</en>
-				<pl>Zamiatarka uliczna znajduje 1 000 DEM</pl>
-			</title>
-			<description>
-				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 1.000 Mark. „Die wer'n sofort versofff'n“, so der Finder.</de>
-				<en>The morning couldn't have started better: While working, a street sweeper in Hamburg found 1,000 DEM. "I'm... I'mma booze 'em up rite awwway," said the finder.</en>
-				<pl>Poranek nie mógł zacząć się lepiej: Podczas pracy zamiatacz ulic w Hamburgu znalazł 1000 DEM. "Ja... zaraz je wypiję" - powiedział znalazca.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010_1" />
-			</effects>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<onethousanddem>
+					<de>${.lte:currentyear:2001:"1.000 Mark":"500 Euro"}</de>
+					<en>${.lte:currentyear:2001:"1,000 DEM":"500 euro"}</en>
+					<pl>${.lte:currentyear:2001:"1 000 DEM":"500 euro"}</pl>
+				</onethousanddem>
+				<onethousandmarkbill>
+					<de>${.lte:currentyear:2001:"1.000-Mark-Scheins":"500-Euro-Scheins"}</de>
+					<en>${.lte:currentyear:2001:"1,000-mark bill:"500 euro bill"}</en>
+					<pl>${.lte:currentyear:2001:"banknot 1000-markowy":"banknot 500 euro"}</pl>
+				</onethousandmarkbill>
+			</variables>
 			<data genre="4" price="1.0" quality="19" />
-			<availability year_range_from="-1" year_range_to="2001" />
+			<effects>
+				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010" />
+			</effects>
 		</news>
-		<news guid="9c1f0f27-72d6-4bbd-b271-939ab31c3010_1" thread_guid="baadc4ea-796b-44a2-b4cb-d333f01516ea_1" type="2" creator="">
+		<news guid="9c1f0f27-72d6-4bbd-b271-939ab31c3010" thread_guid="baadc4ea-796b-44a2-b4cb-d333f01516ea" type="2" creator="">
 			<title>
 				<de>Straßenfeger tot</de>
 				<en>Street sweeper dead</en>
 				<pl>Zamiatacz ulic nie żyje</pl>
 			</title>
 			<description>
-				<de>Der Finder des 1.000-Mark-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“.</de>
-				<en>The man who found the 1,000-mark bill died of alcohol poisoning. On his gravestone is written: "...and he'll never sweep through the docklands again".</en>
-				<pl>Mężczyzna, który znalazł banknot 1000-markowy, zmarł w wyniku zatrucia alkoholem. Na jego nagrobku widnieje napis: "...i już nigdy nie będzie przeczesywał doków".</pl>
+				<de>Der Finder des ${onethousandmarkbill} starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“.</de>
+				<en>The man who found the ${onethousandmarkbill} died of alcohol poisoning. On his gravestone is written: "...and he'll never sweep through the docklands again".</en>
+				<pl>Mężczyzna, który znalazł ${onethousandmarkbill}, zmarł w wyniku zatrucia alkoholem. Na jego nagrobku widnieje napis: "...i już nigdy nie będzie przeczesywał doków".</pl>
 			</description>
 			<data genre="4" price="1.0" quality="19" />
-			<availability year_range_from="-1" year_range_to="2001" />
-		</news>
-		<news guid="d2b527a3-3181-4cbc-baa2-7bd4c7503a74_2" thread_guid="baadc4ea-796b-44a2-b4cb-d333f01516ea_2" type="0" creator="">
-			<title>
-				<de>Straßenfeger findet 500 Euro</de>
-				<en>Street sweeper finds 500 euro</en>
-				<pl>Zamiatacz ulic znajduje 500 euro</pl>
-			</title>
-			<description>
-				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 500 Euro. „Die wer'n sofort versofff'n“, so der Finder.</de>
-				<en>The morning couldn't have started better: While working, a street sweeper in Hamburg found 500 euros. "I'm... I'mma booze 'em up rite awwway," said the finder.</en>
-				<pl>Poranek nie mógł zacząć się lepiej: Podczas pracy zamiatacz ulic w Hamburgu znalazł 500 euro. "Ja... zaraz je wypiję" - powiedział znalazca.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010_2" />
-			</effects>
-			<data genre="4" price="1.0" quality="19" />
-			<availability year_range_from="2002" year_range_to="-1" />
-		</news>
-		<news guid="9c1f0f27-72d6-4bbd-b271-939ab31c3010_2" thread_guid="baadc4ea-796b-44a2-b4cb-d333f01516ea_2" type="2" creator="">
-			<title>
-				<de>Straßenfeger tot</de>
-				<en>Street sweeper dead</en>
-				<pl>Zamiatacz ulic nie żyje</pl>
-			</title>
-			<description>
-				<de>Der Finder des 500-Euro-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“</de>
-				<en>The man who found the 500 euro bill died of alcohol poisoning. On his gravestone is written: "...and he'll never sweep through the docklands again".</en>
-				<pl>Mężczyzna, który znalazł banknot 500 euro, zmarł w wyniku zatrucia alkoholem. Na jego nagrobku widnieje napis: "...i już nigdy nie będzie przeczesywał doków".</pl>
-			</description>
-			<data genre="4" price="1.0" quality="19" />
-			<availability year_range_from="2002" year_range_to="-1" />
 		</news>
 		<news guid="4177ebd7-888e-4df0-97bd-c74109e81616" thread_guid="bae6336f-1755-4619-96b8-9b66f9ff6c7a" type="0" creator="">
 			<title>
@@ -6398,29 +6264,23 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Tageszeitungen werden abgeschafft</de>
 				<en>Daily newspapers to be abolished</en>
-				<pl>Wielki krok w kierunku ochrony środowiska, skomentował niemiecki minister środowiska. Od teraz gazety codzienne będą dostępne wyłącznie online.</pl>
-			</title>
-			<description>
-				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch online.</de>
-				<en>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers will be available online only.</en>
-				<pl>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers will be available online only.</pl>
-			</description>
-			<data genre="3" price="1.0" quality="39" />
-			<availability year_range_from="1993" year_range_to="-1" />
-		</news>
-		<news guid="a6ac4b6c-83a0-433a-9336-c7256b6e3165_2" thread_guid="d4c54bd0-cecf-4f40-bb10-7cda64543f3d" type="0" creator="">
-			<title>
-				<de>Tageszeitungen werden abgeschafft</de>
-				<en>Daily newspapers are abolished</en>
 				<pl>Gazety codzienne zostają zniesione</pl>
 			</title>
 			<description>
-				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch per Bildschirmtext.</de>
-				<en>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers will be available via teletext only.</en>
-				<pl>Wielki krok w kierunku ochrony środowiska, skomentował niemiecki minister środowiska. Od teraz gazety codzienne będą dostępne wyłącznie za pośrednictwem telegazety.</pl>
+				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch ${viateletext}.</de>
+				<en>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers will be available ${viateletext} only.</en>
+				<pl>Wielki krok w kierunku ochrony środowiska, skomentował niemiecki minister środowiska. Od teraz gazety codzienne będą dostępne wyłącznie ${viateletext}.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<viateletext>
+					<de>${.lte:currentyear:1992:"per Bildschirmtext":"online"}</de>
+					<en>${.lte:currentyear:1992:"via teletext":"online"}</en>
+					<pl>${.lte:currentyear:1992:"za pośrednictwem telegazety":"online"}</pl>
+				</viateletext>
+			</variables>
 			<data genre="3" price="1.0" quality="39" />
-			<availability year_range_from="1982" year_range_to="1992" />
+			<availability year_range_from="1982" />
 		</news>
 		<news guid="a008bb9e-8e06-4b59-84ff-5bd46f3bc1d2" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="0" creator="">
 			<title>
@@ -6707,18 +6567,38 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Programista okrada ${beateuhse}</pl>
 			</title>
 			<description>
-				<de>Der TVTower-Entwickler R. hat beim norddeutschen Erotikhaus eine Gummipuppe mit USB-Anschluss geklaut. Seine Fans sind schockiert.</de>
-				<en>The TVTower developer R. has stolen a rubber doll with USB connection from the North German erotic store. His fans are shocked.</en>
-				<pl>Deweloper TVTower R. ukradł gumową lalkę ze złączem USB z północnoniemieckiego sklepu erotycznego. Jego fani są zszokowani.</pl>
+				<de>Der TVTower-Entwickler R. hat beim norddeutschen Erotikhaus eine ${rubberdollwithusb} geklaut. Seine Fans sind schockiert.</de>
+				<en>The TVTower developer R. has stolen a ${rubberdollwithusb} from the North German erotic store. His fans are shocked.</en>
+				<pl>Deweloper TVTower R. ukradł ${rubberdollwithusb} z północnoniemieckiego sklepu erotycznego. Jego fani są zszokowani.</pl>
 			</description>
 			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<beateuhse>${.person:"753e7d1d-6a22-45c2-a1db-231f1bfa2433":"fullname"}</beateuhse>
+				<rubberdollwithusb>
+					<de>${.gte:currentyear:1997:"Gummipuppe mit USB-Anschluss":"Gummipuppe mit RS-232-Anschluss"}</de>
+					<en>${.gte:currentyear:1997:"rubber doll with USB connection":"rubber doll with RS-232 port"}</en>
+					<pl>${.gte:currentyear:1997:"ukradł gumową lalkę ze złączem USB":"gumową lalkę z portem RS-232"}</pl>
+				</rubberdollwithusb>
+				<oftheusbrubberdoll>
+					<de>${.gte:currentyear:1997:"der USB-Gummipuppe":"der Com-Port-Gummipuppe"}</de>
+					<en>${.gte:currentyear:1997:"of the USB rubber doll":"of the COM port rubber doll"}</en>
+					<pl>${.gte:currentyear:1997:"gumowej lalki USB":"gumowej lalki z portem COM"}</pl>
+				</oftheusbrubberdoll>
+				<usbrubberdollscandal>
+					<de>${.gte:currentyear:1997:"USB-Gummipuppenskandal":"Com-Port-Gummipuppenskandal"}</de>
+					<en>${.gte:currentyear:1997:"USB rubber doll scandal":"COM port rubber doll scandal"}</en>
+					<pl>${.gte:currentyear:1997:"skandalu z gumową lalką USB":"skandalu z gumową lalką portu COM"}</pl>
+				</usbrubberdollscandal>
+				<usbrubberdolls>
+					<de>${.gte:currentyear:1997:"USB-Gummipuppen":"Gummipuppen mit RS-232-Port"}</de>
+					<en>${.gte:currentyear:1997:"USB rubber dolls":"RS-232 port rubber dolls"}</en>
+					<pl>${.gte:currentyear:1997:"gumowych lalek USB":"gumowych lalek z portem RS-232"}</pl>
+				</usbrubberdolls>
 			</variables>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="b368f82c-392c-47d5-b494-f8bfe9029c25" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
-			<availability year_range_from="1996" year_range_to="-1" />
 		</news>
 		<news guid="b368f82c-392c-47d5-b494-f8bfe9029c25" thread_guid="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
@@ -6727,15 +6607,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Oskarżenie przeciwko deweloperowi Ronowi</pl>
 			</title>
 			<description>
-				<de>Der Erotikkonzern ${beateuhse} erstattet Anzeige gegen den TVTower-Programmierer. Nach dem Diebstahl der USB-Gummipuppe drohen Ron bis zu 2 Jahre Haft.</de>
-				<en>The erotic company ${beateuhse} files a complaint against the TVTower programmer. After the theft of the USB rubber doll, Ron is threatened with up to 2 years imprisonment.</en>
-				<pl>Firma erotyczna ${beateuhse} składa skargę na programistę TVTower. Po kradzieży gumowej lalki USB Ronowi grozi do 2 lat pozbawienia wolności.</pl>
+				<de>Der Erotikkonzern ${beateuhse} erstattet Anzeige gegen den TVTower-Programmierer. Nach dem Diebstahl ${oftheusbrubberdoll} drohen Ron bis zu 2 Jahre Haft.</de>
+				<en>The erotic company ${beateuhse} files a complaint against the TVTower programmer. After the theft ${oftheusbrubberdoll}, Ron is threatened with up to 2 years imprisonment.</en>
+				<pl>Firma erotyczna ${beateuhse} składa skargę na programistę TVTower. Po kradzieży ${oftheusbrubberdoll} Ronowi grozi do 2 lat pozbawienia wolności.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0edca939-dbee-41f9-a1bf-8bec9b7718fb" />
 			</effects>
 			<data genre="4" price="1.0" quality="48" />
-			<availability year_range_from="1996" year_range_to="-1" />
 		</news>
 		<news guid="0edca939-dbee-41f9-a1bf-8bec9b7718fb" thread_guid="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
@@ -6744,15 +6623,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Fani zbierają dla Rona</pl>
 			</title>
 			<description>
-				<de>Nach dem USB-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: „Wir können doch unseren Ron nicht im Stich lassen.“</de>
-				<en>After the USB rubber doll scandal, TVTower fans collect money for the court costs: "We can't let our Ron down."</en>
-				<pl>Po skandalu z gumową lalką USB fani TVTower zbierają pieniądze na koszty sądowe: "Nie możemy zawieść naszego Rona".</pl>
+				<de>Nach dem ${usbrubberdollscandal} sammeln die TVTower-Fans Geld für die Gerichtskosten: „Wir können doch unseren Ron nicht im Stich lassen.“</de>
+				<en>After the ${usbrubberdollscandal}, TVTower fans collect money for the court costs: "We can't let our Ron down."</en>
+				<pl>Po ${usbrubberdollscandal}, fani TVTower zbierają pieniądze na koszty sądowe: "Nie możemy zawieść naszego Rona".</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ff1f0a05-040c-4930-a314-12784ce12177" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
-			<availability year_range_from="1996" year_range_to="-1" />
 		</news>
 		<news guid="ff1f0a05-040c-4930-a314-12784ce12177" thread_guid="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
@@ -6761,80 +6639,11 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Uniewinnienie programisty</pl>
 			</title>
 			<description>
-				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte USB-Gummipuppen für Alle.</de>
-				<en>Developer Ron was acquitted in the rubber doll case. Judge Peterson outed himself as a TVTower fan and demanded USB rubber dolls for everyone.</en>
-				<pl>Deweloper Ron został uniewinniony w sprawie gumowych lalek. Sędzia Peterson ujawnił się jako fan TVTower i zażądał gumowych lalek USB dla wszystkich.</pl>
+				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte ${usbrubberdolls} für alle.</de>
+				<en>Developer Ron was acquitted in the rubber doll case. Judge Peterson outed himself as a TVTower fan and demanded ${usbrubberdolls} for everyone.</en>
+				<pl>Deweloper Ron został uniewinniony w sprawie gumowych lalek. Sędzia Peterson ujawnił się jako fan TVTower i zażądał ${usbrubberdolls} dla wszystkich.</pl>
 			</description>
 			<data genre="4" price="0.7" quality="48" />
-			<availability year_range_from="1996" year_range_to="-1" />
-		</news>
-		<news guid="e730d750-5b8f-4f10-a7c5-86936521de82_2" thread_guid="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="0" creator="">
-			<title>
-				<de>Programmierer klaut bei ${beateuhse}</de>
-				<en>Programmer steals from ${beateuhse}</en>
-				<pl>Programista okrada ${beateuhse}</pl>
-			</title>
-			<description>
-				<de>Der TVTower-Entwickler R. hat beim norddeutschen Erotikhaus eine Gummipuppe mit RS-232-Anschluss geklaut. Seine Fans sind schockiert.</de>
-				<en>The TVTower developer R. has stolen a rubber doll with RS-232 port from the North German erotic store. His fans are shocked.</en>
-				<pl>Deweloper TVTower R. ukradł gumową lalkę z portem RS-232 z północnoniemieckiego sklepu erotycznego. Jego fani są zszokowani.</pl>
-			</description>
-			<variables>
-				<beateuhse>${.person:"753e7d1d-6a22-45c2-a1db-231f1bfa2433":"fullname"}</beateuhse>
-			</variables>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="b368f82c-392c-47d5-b494-f8bfe9029c25_2" />
-			</effects>
-			<data genre="4" price="1.0" quality="58" />
-			<availability year_range_from="-1" year_range_to="1995" />
-		</news>
-		<news guid="b368f82c-392c-47d5-b494-f8bfe9029c25_2" thread_guid="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
-			<title>
-				<de>Anzeige gegen Entwickler Ron</de>
-				<en>Charge against developer Ron</en>
-				<pl>Oskarżenie przeciwko deweloperowi Ronowi</pl>
-			</title>
-			<description>
-				<de>Der Erotikkonzern ${beateuhse} erstattet Anzeige gegen den TVTower-Programmierer. Nach dem Diebstahl der Com-Port-Gummipuppe drohen Ron bis zu 2 Jahre Haft.</de>
-				<en>The erotic company ${beateuhse} files a complaint against the TVTower programmer. After the theft of the COM port rubber doll, Ron is threatened with up to 2 years imprisonment.</en>
-				<pl>Firma erotyczna ${beateuhse} składa skargę na programistę TVTower. Po kradzieży gumowej lalki z portem COM Ronowi grozi do 2 lat pozbawienia wolności.</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="0edca939-dbee-41f9-a1bf-8bec9b7718fb_2" />
-			</effects>
-			<data genre="4" price="1.0" quality="48" />
-			<availability year_range_from="-1" year_range_to="1995" />
-		</news>
-		<news guid="0edca939-dbee-41f9-a1bf-8bec9b7718fb_2" thread_guid="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
-			<title>
-				<de>Fans sammeln für Ron</de>
-				<en>Fans collect for Ron</en>
-				<pl>Fani zbierają dla Rona</pl>
-			</title>
-			<description>
-				<de>Nach dem Com-Port-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: „Wir können doch unseren Ron nicht im Stich lassen.“</de>
-				<en>After the COM port rubber doll scandal, TVTower fans collect money for the court costs: "We can't let our Ron down."</en>
-				<pl>Po skandalu z gumową lalką portu COM, fani TVTower zbierają pieniądze na koszty sądowe: "Nie możemy zawieść naszego Rona".</pl>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="ff1f0a05-040c-4930-a314-12784ce12177_2" />
-			</effects>
-			<data genre="4" price="1.0" quality="29" />
-			<availability year_range_from="-1" year_range_to="1995" />
-		</news>
-		<news guid="ff1f0a05-040c-4930-a314-12784ce12177_2" thread_guid="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
-			<title>
-				<de>Freispruch für Programmierer</de>
-				<en>Acquittal for programmer</en>
-				<pl>Uniewinnienie programisty</pl>
-			</title>
-			<description>
-				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte Gummipuppen mit RS-232-Port für Alle.</de>
-				<en>Developer Ron was acquitted in the rubber doll case. Judge Peterson outed himself as a TVTower fan and demanded RS-232 port rubber dolls for everyone.</en>
-				<pl>Deweloper Ron został uniewinniony w sprawie gumowych lalek. Sędzia Peterson ujawnił się jako fan TVTower i zażądał gumowych lalek z portem RS-232 dla wszystkich.</pl>
-			</description>
-			<data genre="4" price="0.7" quality="48" />
-			<availability year_range_from="-1" year_range_to="1995" />
 		</news>
 
 		<news guid="d9aa67c1-5aa3-4519-9cc2-ef8e1a769ae5" thread_guid="e7afb16c-023e-47d8-a23c-8f45efa02854" type="0" creator="">
@@ -7149,7 +6958,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</therapper>
 				<withdisdain>
 					<de>Mit Argwohn|Mit Bestürzung|Voller Verzweiflung|Voller Verachtung|Total abgetörnt|Desillusioniert|Ernüchtert|Recht verzweifelt|Ziemlich enttäuscht|Voller Enttäuschung</de>
-					<en>with disdain|in dismay|with complete desperation|in total disgust|totally turned off|with disillusionment|despondently|in quite desparation|with considerable disappointment|with great disappointment</en>
+					<en>with disdain|in dismay|with complete desperation|in total disgust|totally turned off|with disillusionment|despondently|with quite a bit of despair|rather disappointed|with great disappointment</en>
 				</withdisdain>
 			</variables>
 			<data genre="1" price="1" quality="29" fictional="1" />
@@ -8306,13 +8115,13 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</title>
 			<description>
 				<de>Einer Umfrage vom April ${currentyear} zufolge wollen ${percentcount} Prozent der Deutschen ${theiroldcurrency} wieder zurück.</de>
-				<en>According to a survey from April ${currentyear}, ${percentcount} of Germans want ${theiroldcurrency} back.</en>
+				<en>According to a survey from April ${currentyear}, ${percentcount} percent of Germans want ${theiroldcurrency} back.</en>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<percentcount_reichsmark>17|18|18|18|18|18|18|19</percentcount_reichsmark>
 				<percentcount_deutschmark>76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94</percentcount_deutschmark>
-				<percentcount>${.gte:currentyear:2002:${percentcount_deutschmark}:"${percentcount_reichsmark}"}</percentcount>
+				<percentcount>${.gte:currentyear:2002:${percentcount_deutschmark}:${percentcount_reichsmark}}</percentcount>
 				<thedeutschmark>
 					<de>${.gte:currentyear:2002:"die D-Mark":"die Reichsmark"}</de>
 					<en>${.gte:currentyear:2002:"the Deutschmark":"the Reichsmark"}</en>
@@ -8409,7 +8218,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						Schwarzdrucke in ${town} sicher gestellt;hat eine „Untergrundbibliothek“ mit illegalen Kopien von Lehrbüchern und Romanen in ${their} Schließfach betrieben. ${.ucfirst:they} wurde beim Kauf von ${firecrackers} überführt|
 						Mittagessen-Schwarzmarkt in ${town} aufgelöst;hat einen illegalen „Schulmittagessen-Schwarzmarkt“ organisiert. ${.ucfirst:they} verkaufte dazu ungenehmigt Essen aus der Schulcafeteria
 					</de>
-					<en>Counterfeit secured in ${town};produced banknotes with ${their} color printer. ${.ucfirst:they} was caught buying ${firecrackers}|
+					<en>Counterfeit money secured in ${town};produced banknotes with ${their} color printer. ${.ucfirst:they} was caught buying ${firecrackers}|
 						Exotic animals seized in ${town};ran a "backyard zoo" with exotic animals like alpacas, flamingos and coatis in ${their} garden|
 						Bootleg lemonade seized in ${town};ran an illegal lemonade brewery in ${their} basement by mixing various syrups and carbon dioxide|
 						Rocket seized in ${town};founded a "secret club for space exploration" and built a homemade rocket in ${their} basement laboratory. ${.ucfirst:they} wanted to fly into space with it|

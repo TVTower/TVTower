@@ -1558,7 +1558,7 @@
 			</title>
 			<description>
 				<de>Die Vorwürfe des deutschen Megakonzerns Hiemens werden von den Ingenieuren aus ${meiguwu} zurückgewiesen. Der „Transbolt“ sei kein Plagiat, denn man sei damit bereits in 9 Minuten am Flughafen.</de>
-				<en>The accusations of the German mega corporation Hiemens are rejected by the engineers from ${meiguwu}. The "Transbolt" is not a plagiarism, because with it one can be at the airport already in 9 minutes.</en>
+				<en>The accusations of the German mega corporation Hiemens are rejected by the engineers from ${meiguwu}. The "Transbolt" is not a plagiarism, because it can take you to the airport in only 9 minutes, not 10, as advertised by Hiemens.</en>
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1693,7 +1693,7 @@
 		<news guid="e8b29adf-ce2d-44ce-811f-1dbd53cc3264" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
 				<de>${meiguwu}: Riesige Geisterstädte</de>
-				<en>${meiguwu}: Huge Ghost Cities</en>
+				<en>${meiguwu}: Huge ghost cities</en>
 			</title>
 			<description>
 				<de>Die Journalisten enthüllten außerdem, dass viele der riesigen neuen Städte leer stünden. Sie waren wohl gedacht zum Eingliedern der Landbevölkerung - oder zum Abzocken ausländischer Investoren.</de>

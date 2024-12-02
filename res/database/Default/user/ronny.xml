@@ -626,6 +626,14 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<en>The Text-and-Computer Regulation Agency is seeking remuneration for the use of the "Print" key located on computer keyboards. Even the intention to print is to be compensated.</en>
 				<pl>Agencja Regulacji Tekstu i Komputerów domaga się wynagrodzenia za korzystanie z klawisza "Drukuj" znajdującego się na klawiaturach komputerów. Nawet zamiar drukowania ma być rekompensowany.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<dem>
+					<de>${.lte:currentyear:2001:"DM":"Euro"}</de>
+					<en>${.lte:currentyear:2001:"DEM":"euros"}</en>
+					<pl>${.lte:currentyear:2001:"DEM":"euro"}</pl>
+				</dem>
+			</variables>
 			<effects>
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="1,4,8"
 					news1="ronny-news-drucktaste-02a" probability1="60"
@@ -691,9 +699,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<pl>Klawisz "PRINT": Koniec z opłatami</pl>
 			</title>
 			<description>
-				<de>Regierung stimmt Vorschlag der VG „Text und Computer“ zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
-				<en>Government approves proposal by the Text-and-Computer Regulation Agency: the "PRINT" key will once again be duty-free. The additional revenue of 1,200 euros would be offset by administrative costs of 2.8 million euros.</en>
-				<pl>Rząd zatwierdza propozycję Agencji Regulacji Tekstu i Komputerów: klawisz"PRINT" będzie ponownie zwolniony z cła. Dodatkowy przychód w wysokości 1200 euro zostanie zrekompensowany kosztami administracyjnymi w wysokości 2,8 mln euro.</pl>
+				<de>Regierung stimmt Vorschlag der VG „Text und Computer“ zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 ${dem} stünden Verwaltungskosten von 2,8 Millionen ${dem} gegenüber.</de>
+				<en>Government approves proposal by the Text-and-Computer Regulation Agency: the "PRINT" key will once again be duty-free. The additional revenue of 1,200 ${dem} would be offset by administrative costs of 2.8 million ${dem}.</en>
+				<pl>Rząd zatwierdza propozycję Agencji Regulacji Tekstu i Komputerów: klawisz"PRINT" będzie ponownie zwolniony z cła. Dodatkowy przychód w wysokości 1200 ${dem} zostanie zrekompensowany kosztami administracyjnymi w wysokości 2,8 mln ${dem}.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="30" />
 		</news>

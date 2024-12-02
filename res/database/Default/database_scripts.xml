@@ -427,7 +427,7 @@
 				</inner>
 				<attribute>
 					<de>tierische|große|abgefahrene|lustige|skurrile</de>
-					<en>brute|big|whacky|funny|quirky</en>
+					<en>Brute|Big|Whacky|Funny|Quirky</en>
 				</attribute>
 				<group>
 					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
@@ -978,8 +978,8 @@
 						</musicsession>
 						<othertown>${.stationmap:"randomcity"}</othertown>
 						<bar>
-							<de>Die ${location}-Bar|Der ${location}-Stadl|Der ${location}-Garten|Der ${location}-Biergarten|Das ${location}-Bierzelt|Die ${location}-Nachtgalerie|Die ${location}-Nachtkantine|Das ${location}-Festival</de>
-							<en>${location} bar|${location} barn|${location} garden|${location} beer garden|${location} beer tent|${location} night arcade|${location} night-cantina|${location} festival</en> <!-- TODO: apply title-casing function when available -->
+							<de>Die „${location}-Bar“|Der „${location}-Stadl“|Der „${location}-Garten“|Der „${location}-Biergarten“|Das „${location}-Bierzelt“|Die „${location}-Nachtgalerie“|Die „${location}-Nachtkantine“|Das „${location}-Festival“</de>
+							<en>"${location} bar"|"${location} barn"|"${location} garden"|"${location} beer garden"|"${location} beer tent"|"${location} night arcade"|"${location} night-cantina"|"${location} festival"</en> <!-- TODO: apply title-casing function when available -->
 						</bar>
 						<thepartylocation>
 							<de>*die* Party-Location|die Top-Ausgeh-Location|einer der beliebtesten Treffpunkte|einer der beliebtesten Versammlungsorte|*die* Event-Location|der Ort, wo immer was los ist|der Ort, wo die Action ist|*der* „Place to be“</de>

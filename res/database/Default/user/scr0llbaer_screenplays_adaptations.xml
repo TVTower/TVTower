@@ -5790,131 +5790,187 @@
 				<de>${.self:"role":1:"firstname"}, ein junger Mann, stirbt auf tragische Weise und wird ein Geist. Unfähig, weiterzugehen, bleibt er an das irdische Reich gebunden, wacht über seine ehemalige Liebe ${.self:"role":2:"firstname"}, und kämpft mit unbewältigten Gefühlen und unvollendeten Angelegenheiten.</de>
 				<en>${.self:"role":1:"firstname"}, a young man, dies tragically and becomes a ghost. Unable to move on, he remains tethered to the earthly realm, watching over his former love ${.self:"role":2:"firstname"}, and grappling with unresolved emotions and unfinished business.</en>
 			</description>
+			<variables> <!-- TODO: change to direct references once that feature is working. ${.self:"parent":"episodes"} currently returns the episode count. Need access to the collection. -->
+				<episode_0_title>
+					<de>Präludium</de>
+					<en>Prelude</en>
+				</episode_0_title>
+				<episode_0_title_original>
+					<de>Prolog</de>
+					<en>Prologue</en>
+				</episode_0_title_original>
+				<episode_1_title>
+					<de>März mystisch</de>
+					<en>March Mystical</en>
+				</episode_1_title>
+				<episode_1_title_original>
+					<de>April ätherisch</de>
+					<en>April Ethereal</en>
+				</episode_1_title_original>
+				<episode_2_title>
+					<de>Wo</de>
+					<en>Where</en>
+				</episode_2_title>
+				<episode_2_title_original>
+					<de>Wann</de>
+					<en>When</en>
+				</episode_2_title_original>
+				<episode_3_title>
+					<de>Choral</de>
+					<en>Chorale</en>
+				</episode_3_title>
+				<episode_3_title_original>
+					<de>Madrigal</de>
+					<en>Madrigal</en>
+				</episode_3_title_original>
+				<episode_4_title>
+					<de>Kammer des Amens</de>
+					<en>The Amen Chamber</en>
+				</episode_4_title>
+				<episode_4_title_original>
+					<de>Ecke des Amens</de>
+					<en>The Amen Corner</en>
+				</episode_4_title_original>
+				<episode_5_title>
+					<de>Teufel der fallenden Blätter</de>
+					<en>Devil of the Fall</en>
+				</episode_5_title>
+				<episode_5_title_original>
+					<de>Dämon der fallenden Blätter</de>
+					<en>Demon of the Fall</en>
+				</episode_5_title_original>
+				<episode_6_title>
+					<de>Glauben</de>
+					<en>Faith</en>
+				</episode_6_title>
+				<episode_6_title_original>
+					<de>Glauben</de>
+					<en>Credence</en>
+				</episode_6_title_original>
+				<episode_7_title>
+					<de>Schicksal</de>
+					<en>Fate</en>
+				</episode_7_title>
+				<episode_7_title_original>
+					<de>Karma</de>
+					<en>Karma</en>
+				</episode_7_title_original>
+				<episode_8_title>
+					<de>Epitaph</de>
+					<en>Epitaph</en>
+				</episode_8_title>
+				<episode_8_title_original>
+					<de>Epilog</de>
+					<en>Epilogue</en>
+				</episode_8_title_original>
+			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="84b6f0ba-2727-41ef-898a-88b2309250d2">
 					<title>
-						<de>Präludium</de>
-						<en>Prelude</en>
+						<all>${episode_0_title}</all>
 					</title>
 					<title_original>
-						<de>Prolog</de>
-						<en>Prologue</en>
+						<all>${episode_0_title}</all> <!-- variable name won't be affected in typical replace operation -->
 					</title_original>
 					<description>
-						<de>Winter. ${.self:"role":1:"firstname"} wohnt seiner eigenen Beerdigung als Geist bei und betrachtet ${.self:"role":2:"firstname"}. Rückblenden über ihre frühere liebevolle Beziehung. „Ich wusste, es war die Ankunft des Frühlings, daher war unser ${.self:"parent":"episodes":1:"title"}.“</de>
-						<en>Winter. ${.self:"role":1:"firstname"} is attending his own funeral as a ghost, looking at ${.self:"role":2:"firstname"}. Flashbacks about their former loving relationship. "I knew it was the coming of spring, thus our ${.self:"parent":"episodes":1:"title"}."</en> <!-- Using feat of the source material here: Last line of a song always refers to the title of next track/episode -->
+						<de>Winter. ${.self:"role":1:"firstname"} wohnt seiner eigenen Beerdigung als Geist bei und betrachtet ${.self:"role":2:"firstname"}. Rückblenden über ihre frühere liebevolle Beziehung. „Ich wusste, es war die Ankunft des Frühlings, daher war unser ${episode_1_title}.“</de>
+						<en>Winter. ${.self:"role":1:"firstname"} is attending his own funeral as a ghost, looking at ${.self:"role":2:"firstname"}. Flashbacks about their former loving relationship. "I knew it was the coming of spring, thus our ${episode_1_title}."</en> <!-- Using feat of the source material here: Last line of a song always refers to the title of next track/episode -->
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="65e64ed7-32dc-4604-b1fb-3f47ea887856">
 					<title>
-						<de>März mystisch</de>
-						<en>March Mystical</en>
+						<all>${episode_1_title}</all>
 					</title>
 					<title_original>
-						<de>April ätherisch</de>
-						<en>April Ethereal</en>
+						<all>${episode_1_title}</all>
 					</title_original>
 					<description>
-						<de>Frühjahr. Rückblenden über Familie und Freunde und seinen seinen besten Freund ${.self:"role":3:"firstname"}, die nun trauern. ${.self:"role":1:"firstname"} begreift langsam seinen Zustand. Er kann sich ${.self:"role":2:"firstname"} nicht bemerkbar machen. „Ich weiß nicht, wie oder warum, ich werde nie wissen, ${.self:"parent":"episodes":2:"title"}.“</de>
-						<en>Spring. Flashbacks about family and friends and his best friend ${.self:"role":3:"firstname"}, who are now in mourning. ${.self:"role":1:"firstname"} slowly realizes his condition. He cannot make himself noticeable for ${.self:"role":2:"firstname"}. "I don't know how or why, I'll never know ${.self:"parent":"episodes":2:"title"}."</en>
+						<de>Frühjahr. Rückblenden über Familie und Freunde und seinen seinen besten Freund ${.self:"role":3:"firstname"}, die nun trauern. ${.self:"role":1:"firstname"} begreift langsam seinen Zustand. Er kann sich ${.self:"role":2:"firstname"} nicht bemerkbar machen. „Ich weiß nicht, wie oder warum, ich werde nie wissen, ${episode_2_title}.“</de>
+						<en>Spring. Flashbacks about family and friends and his best friend ${.self:"role":3:"firstname"}, who are now in mourning. ${.self:"role":1:"firstname"} slowly realizes his condition. He cannot make himself noticeable for ${.self:"role":2:"firstname"}. "I don't know how or why, I'll never know ${episode_2_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="a47a42c0-ae97-4fd3-9383-a3b7379455a0">
 					<title>
-						<de>Wo</de>
-						<en>Where</en>
+						<all>${episode_2_title}</all>
 					</title>
 					<title_original>
-						<de>Wann</de>
-						<en>When</en>
+						<all>${episode_2_title}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} fühlt sich verloren in der Zeit. Eine höhere Entität ${.self:"role":4:"firstname"} führt ihn. Er hört männliche Stimmen bei ${.self:"role":2:"firstname"}. Sie scheint ihn langsam hinter sich zu lassen. „Das Ende von diesem traurigen ${.self:"parent":"episodes":3:"title"}.“</de>
-						<en>${.self:"role":1:"firstname"} feels lost in time. A higher entity ${.self:"role":4:"firstname"} guides him. He hears male voices around ${.self:"role":2:"firstname"}. She seems to be slowly leaving him behind. "The end of this sad ${.self:"parent":"episodes":3:"title"}."</en>
+						<de>${.self:"role":1:"firstname"} fühlt sich verloren in der Zeit. Eine höhere Entität ${.self:"role":4:"firstname"} führt ihn. Er hört männliche Stimmen bei ${.self:"role":2:"firstname"}. Sie scheint ihn langsam hinter sich zu lassen. „Das Ende von diesem traurigen ${episode_3_title}.“</de>
+						<en>${.self:"role":1:"firstname"} feels lost in time. A higher entity ${.self:"role":4:"firstname"} guides him. He hears male voices around ${.self:"role":2:"firstname"}. She seems to be slowly leaving him behind. "The end of this sad ${episode_3_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="132714c6-553f-4eef-a14e-bdb089c84a40">
 					<title>
-						<de>Choral</de>
-						<en>Chorale</en>
+						<all>${episode_3_title}</all>
 					</title>
 					<title_original>
-						<de>Madrigal</de>
-						<en>Madrigal</en>
+						<all>${episode_3_title}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":3:"firstname"} scheint etwas über ${.self:"role":1:"firstname"}' Todesursache zu wissen. Währenddessen wird dieser immer frustrierter. Wenn er nicht zu ${.self:"role":2:"firstname"} kommen kann, dann sie vielleicht zu ihm. „Du verlierst dich selbst. Du versteckst dich in der ${.self:"parent":"episodes":4:"title"}.“</de>
-						<en>${.self:"role":3:"firstname"} seems to know something about ${.self:"role":1:"firstname"}' cause of death. Meanwhile, the latter becomes increasingly frustrated. If he can't come to ${.self:"role":2:"firstname"}, maybe she can come to him. "You are losing yourself. Hiding within ${.self:"parent":"episodes":4:"title"}."</en>
+						<de>${.self:"role":3:"firstname"} scheint etwas über ${.self:"role":1:"firstname"}' Todesursache zu wissen. Währenddessen wird dieser immer frustrierter. Wenn er nicht zu ${.self:"role":2:"firstname"} kommen kann, dann sie vielleicht zu ihm. „Du verlierst dich selbst. Du versteckst dich in der ${episode_4_title}.“</de>
+						<en>${.self:"role":3:"firstname"} seems to know something about ${.self:"role":1:"firstname"}' cause of death. Meanwhile, the latter becomes increasingly frustrated. If he can't come to ${.self:"role":2:"firstname"}, maybe she can come to him. "You are losing yourself. Hiding within ${episode_4_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="3804a3c8-e391-4fa4-aa17-55d1d4ffea8a">
 					<title>
-						<de>Kammer des Amens</de>
-						<en>The Amen Chamber</en>
+						<all>${episode_4_title}</all>
 					</title>
 					<title_original>
-						<de>Ecke des Amens</de>
-						<en>The Amen Corner</en>
+						<all>${episode_4_title}</all>
 					</title_original>
 					<description>
-						<de>Sommer. ${.self:"role":3:"firstname"} merkt, dass etwas Übernatürliches vor sich geht: ${.self:"role":1:"firstname"}' steigende Wut zeigt zeigt langsam Wirkung. Er will nun ${.self:"role":2:"firstname"} mit Gewalt zu sich holen. „Der letzte Funke, der mir Leben einhauchte, der ${.self:"parent":"episodes":5:"title"}.“</de>
-						<en>Summer. ${.self:"role":3:"firstname"} realizes that something supernatural is going on: ${.self:"role":1:"firstname"}' rising anger is beginning to have an effect. He now wants to get ${.self:"role":2:"firstname"} to him by force. "The final spark that blew life into me, the ${.self:"parent":"episodes":5:"title"}."</en>
+						<de>Sommer. ${.self:"role":3:"firstname"} merkt, dass etwas Übernatürliches vor sich geht: ${.self:"role":1:"firstname"}' steigende Wut zeigt zeigt langsam Wirkung. Er will nun ${.self:"role":2:"firstname"} mit Gewalt zu sich holen. „Der letzte Funke, der mir Leben einhauchte, der ${episode_5_title}.“</de>
+						<en>Summer. ${.self:"role":3:"firstname"} realizes that something supernatural is going on: ${.self:"role":1:"firstname"}' rising anger is beginning to have an effect. He now wants to get ${.self:"role":2:"firstname"} to him by force. "The final spark that blew life into me, the ${episode_5_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="34fc79a3-2e26-4599-ae9f-2518748c1ca4">
 					<title>
-						<de>Teufel der fallenden Blätter</de>
-						<en>Devil of the Fall</en>
+						<all>${episode_5_title}</all>
 					</title>
 					<title_original>
-						<de>Dämon der fallenden Blätter</de>
-						<en>Demon of the Fall</en>
+						<all>${episode_5_title}</all>
 					</title_original>
 					<description>
-						<de>Herbst. ${.self:"role":1:"firstname"} schafft es endlich, vor ${.self:"role":2:"firstname"} zu erscheinen. Sie sieht ihn ehrfürchtig an - und läuft davon. „Und verloren hatte sie, in mir, ihren ${.self:"parent":"episodes":6:"title"}.“</de>
-						<en>Autumn. ${.self:"role":1:"firstname"} finally manages to appear before ${.self:"role":2:"firstname"}. She faces him in awe - and runs away. "And she had lost in me, her ${.self:"parent":"episodes":6:"title"}."</en>
+						<de>Herbst. ${.self:"role":1:"firstname"} schafft es endlich, vor ${.self:"role":2:"firstname"} zu erscheinen. Sie sieht ihn ehrfürchtig an - und läuft davon. „Und verloren hatte sie, in mir, ihren ${episode_6_title}.“</de>
+						<en>Autumn. ${.self:"role":1:"firstname"} finally manages to appear before ${.self:"role":2:"firstname"}. She faces him in awe - and runs away. "And she had lost in me, her ${episode_6_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="612d52b8-27f4-4c40-af4e-a0839fad7c62">
 					<title>
-						<de>Glauben</de>
-						<en>Faith</en>
+						<all>${episode_6_title}</all>
 					</title>
 					<title_original>
-						<de>Glauben</de>
-						<en>Credence</en>
+						<all>${episode_6_title}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} erkennt die Furcht, die er in ${.self:"role":2:"firstname"} ausgelöst hat, und die Fehler seiner Handlungen. „Die Bestätigung des Nachrufs meiner Seele und das Aufzeigen des einst unbekannten ${.self:"parent":"episodes":7:"title"}.“</de>
-						<en>${.self:"role":1:"firstname"} recognizes the fear he has caused in ${.self:"role":2:"firstname"} and the error of his ways. "Confirming the epitaph of my soul and displaying the once unknown ${.self:"parent":"episodes":7:"title"}."</en>
+						<de>${.self:"role":1:"firstname"} erkennt die Furcht, die er in ${.self:"role":2:"firstname"} ausgelöst hat, und die Fehler seiner Handlungen. „Die Bestätigung des Nachrufs meiner Seele und das Aufzeigen des einst unbekannten ${episode_7_title}.“</de>
+						<en>${.self:"role":1:"firstname"} recognizes the fear he has caused in ${.self:"role":2:"firstname"} and the error of his ways. "Confirming the epitaph of my soul and displaying the once unknown ${episode_7_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="1649de50-4a66-494a-8502-63946ca0b538">
 					<title>
-						<de>Schicksal</de>
-						<en>Fate</en>
+						<all>${episode_7_title}</all>
 					</title>
 					<title_original>
-						<de>Karma</de>
-						<en>Karma</en>
+						<all>${episode_7_title}</all>
 					</title_original>
 					<description>
-						<de>Winter. ${.self:"role":2:"firstname"} versucht, das Erlebte zu verarbeiten. ${.self:"role":1:"firstname"} beginnt, mit Hilfe von ${.self:"role":4:"firstname"} seinen Tod zu akzeptieren. „Gehüllt in ein Schicksal, das ich nicht ändern konnte, und immer bereit für des Winters ${.self:"parent":"episodes":8:"title"}.“</de>
-						<en>Winter. ${.self:"role":2:"firstname"} tries to come to terms with what she has experienced. ${.self:"role":1:"firstname"} begins to accept his death with the help of ${.self:"role":4:"firstname"}. "Draped within a fate I could not change, and always welcoming Winter's ${.self:"parent":"episodes":8:"title"}."</en>
+						<de>Winter. ${.self:"role":2:"firstname"} versucht, das Erlebte zu verarbeiten. ${.self:"role":1:"firstname"} beginnt, mit Hilfe von ${.self:"role":4:"firstname"} seinen Tod zu akzeptieren. „Gehüllt in ein Schicksal, das ich nicht ändern konnte, und immer bereit für des Winters ${episode_8_title}.“</de>
+						<en>Winter. ${.self:"role":2:"firstname"} tries to come to terms with what she has experienced. ${.self:"role":1:"firstname"} begins to accept his death with the help of ${.self:"role":4:"firstname"}. "Draped within a fate I could not change, and always welcoming Winter's ${episode_8_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="e0e5726b-7253-4807-8212-6ea330968198">
 					<title>
-						<de>Epitaph</de>
-						<en>Epitaph</en>
+						<all>${episode_8_title}</all>
 					</title>
 					<title_original>
-						<de>Epilog</de>
-						<en>Epilogue</en>
+						<all>${episode_8_title}</all>
 					</title_original>
 					<description>
-						<de>Die letzten Geheimnisse werden gelüftet, und die noch unvollendeten Angelegenheiten werden aufgelöst, so dass ${.self:"role":1:"firstname"} an einen neuen Ort gehen kann. „Aufsteigen und allen erzählen von der Schönheit und dem ${.self:"parent":"episodes":0:"title"}.“</de>
-						<en>The last secrets are revealed and the remaining unfinished business is resolved so that ${.self:"role":1:"firstname"} can go to a new place. "Rising and telling everyone about the beauty of its ${.self:"parent":"episodes":0:"title"}."</en>
+						<de>Die letzten Geheimnisse werden gelüftet, und die noch unvollendeten Angelegenheiten werden aufgelöst, so dass ${.self:"role":1:"firstname"} an einen neuen Ort gehen kann. „Aufsteigen und allen erzählen von der Schönheit und dem ${episode_0_title}.“</de>
+						<en>The last secrets are revealed and the remaining unfinished business is resolved so that ${.self:"role":1:"firstname"} can go to a new place. "Rising and telling everyone about the beauty of its ${episode_0_title}."</en>
 					</description>
 				</scripttemplate>
 			</children>
