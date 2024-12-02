@@ -5815,7 +5815,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</onethousanddem>
 				<onethousandmarkbill>
 					<de>${.lte:currentyear:2001:"1.000-Mark-Scheins":"500-Euro-Scheins"}</de>
-					<en>${.lte:currentyear:2001:"1,000-mark bill:"500 euro bill"}</en>
+					<en>${.lte:currentyear:2001:"1,000-mark bill":"500 euro bill"}</en>
 					<pl>${.lte:currentyear:2001:"banknot 1000-markowy":"banknot 500 euro"}</pl>
 				</onethousandmarkbill>
 			</variables>
