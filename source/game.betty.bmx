@@ -352,7 +352,7 @@ Type TBetty
 				'divide by block count so each block adds some points
 				points :/ blocks
 				'but longer programmes should get higher total points than a one-block programme
-				points :* 1.1
+				points :* (1.1^(blocks-1))
 			EndIf
 		EndIf
 
@@ -363,7 +363,7 @@ Type TBetty
 		EndIf
 
 		'calculate final score
-		return int(ceil(Max(0, points * pointsMod)))
+		return int(round(points * pointsMod))
 	End Function
 End Type
 
