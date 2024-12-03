@@ -21,8 +21,7 @@
 				<!-- "morgen oder uebermorgen, 12-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,12,16" news="cujo-news-superkerl-02" />
 			</effects>
-			<data genre="1" price="1.0" quality="10" flags="2"/>
-			<availability year_range_from="1985" year_range_to="1995" />
+			<data genre="1" price="1.0" quality="10" flags="2" />
 		</news>
 		<news guid="cujo-news-superkerl-02" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
@@ -193,15 +192,18 @@
 		<!-- "Bill Gates: Internet ist nur ein Hype" -->
 		<news guid="cujo-news-internet-trend-01" type="0" thread_guid="cujo-news-internet-trend" creator="8827" created_by="Cujo">
 			<title>
-				<de>Willy Bates: Internet ist nur ein Trend</de>
-				<en>Willy Bates: Internet is just a trend</en>
-				<pl>Willy Bates: Internet to tylko trend</pl>
+				<de>${billgates}: Internet ist nur ein Trend</de>
+				<en>${billgates}: Internet is just a trend</en>
+				<pl>${billgates}: Internet to tylko trend</pl>
 			</title>
 			<description>
-				<de>In einem Fernseh-Interview prophezeit der Software-Entwickler Willy Bates dem Internet keine große Zukunft: „Das ist nur ein kurzfristiger Trend. In 10 Jahren gibt es das nicht mehr.“</de>
-				<en>In a television interview, software developer Willy Bates doesn't predict a great future for the Internet: "It's just a short-term trend. It won't be around in 10 years."</en>
-				<pl>W wywiadzie telewizyjnym twórca oprogramowania Willy Bates nie przewiduje wspaniałej przyszłości dla Internetu: „To tylko krótkoterminowy trend. Nie będzie go za 10 lat”.</pl>
+				<de>In einem Fernseh-Interview prophezeit der Software-Entwickler ${billgates} dem Internet keine große Zukunft: „Das ist nur ein kurzfristiger Trend. In 10 Jahren gibt es das nicht mehr.“</de>
+				<en>In a television interview, software developer ${billgates} doesn't predict a great future for the Internet: "It's just a short-term trend. It won't be around in 10 years."</en>
+				<pl>W wywiadzie telewizyjnym twórca oprogramowania ${billgates} nie przewiduje wspaniałej przyszłości dla Internetu: „To tylko krótkoterminowy trend. Nie będzie go za 10 lat”.</pl>
 			</description>
+			<variables>
+				<billgates>${.person:"8d2f54a1-71ec-46b0-b750-b9d32661aea5":"fullname"}</billgates>
+			</variables>
 			<data genre="3" price="0.8" quality="37" />
 			<availability year_range_from="1993" year_range_to="1995" />
 		</news>
@@ -209,15 +211,18 @@
 		<!--TODO variables-->
 		<news guid="cujo-news-wildberger-karobuben-01" type="0" thread_guid="cujo-news-wildberger-karobuben" creator="8827" created_by="Cujo">
 			<title>
-				<de>Wildberger Karobuben: „Wir sind jetzt schlank“</de>
-				<en>Wildberger Karobuben: "We are now slim"</en>
-				<pl>Wildberger Karobuben: „Jesteśmy teraz szczupli”</pl>
+				<de>${wildeckerherzbuben}: „Wir sind jetzt schlank“</de>
+				<en>${wildeckerherzbuben}: "We are now slim"</en>
+				<pl>${wildeckerherzbuben}: „Jesteśmy teraz szczupli”</pl>
 			</title>
 			<description>
-				<de>In einem Exklusiv-Interview mit der Zeitschrift FARBIGE erzählen die Wildberger Karobuben von ihrer Hungerkur: „Wir haben 7 Monate lang fast nichts gegessen und in dieser Zeit 300 Gramm abgenommen. Zusammengerechnet natürlich.“</de>
-				<en>In an exclusive interview with FARBIGE magazine, the Wildberg Karobuben talk about their starvation diet: "We ate almost nothing for 7 months and lost 300 grams in that time. Added up, of course."</en>
-				<pl>W ekskluzywnym wywiadzie dla magazynu FARBIGE, Wildberg Karobuben opowiada o swojej głodowej diecie: „Nie jedliśmy prawie nic przez 7 miesięcy i straciliśmy w tym czasie 300 gramów. Oczywiście zsumowane”.</pl>
+				<de>In einem Exklusiv-Interview mit der Zeitschrift FARBIGE erzählen die ${wildeckerherzbuben} von ihrer Hungerkur: „Wir haben 7 Monate lang fast nichts gegessen und in dieser Zeit 300 Gramm abgenommen. Zusammengerechnet natürlich.“</de>
+				<en>In an exclusive interview with FARBIGE magazine, the ${wildeckerherzbuben} talk about their starvation diet: "We ate almost nothing for 7 months and lost 300 grams in that time. Added up, of course."</en>
+				<pl>W ekskluzywnym wywiadzie dla magazynu FARBIGE, ${wildeckerherzbuben} opowiada o swojej głodowej diecie: „Nie jedliśmy prawie nic przez 7 miesięcy i straciliśmy w tym czasie 300 gramów. Oczywiście zsumowane”.</pl>
 			</description>
+			<variables>
+				<wildeckerherzbuben>${.person:"5d987980-b4ca-4adb-81d0-daf804e71661":"firstname"}</wildeckerherzbuben>
+			</variables>
 			<data genre="1" price="1.03" quality="19"/>
 			<availability year_range_from="1989" year_range_to="" />
 		</news>
@@ -293,17 +298,25 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2000" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-04" type="2" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-04" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo" comment="previously Kurt Schmitt (only one minister for all years? and reference not clear | ministers from https://de.wikipedia.org/wiki/Bundesministerium_f%C3%BCr_Gesundheit_(Deutschland) | #maintenancecritical">
 			<title>
 				<de>Schokoriegel sollen verboten werden</de>
 				<en>Candy bars to be banned</en>
 				<pl>Batoniki mają zostać zakazane</pl>
 			</title>
 			<description>
-				<de>Wie Gesundheitsminister Kurt Schmitt in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. Pludo-Hersteller Pferreri prüft, ob er weiterhin Werbung auf den TV Tower-Sendern schaltet.</de>
-				<en>Health Minister Kurt Smith announced on a TV Tower station that candy bars will be banned because of their high sugar content. Pludo manufacturer Pferreri is considering whether to continue advertising on TV Tower stations.</en>
-				<pl>Minister Zdrowia Kurt Smith ogłosił w stacji TV Tower, że batoniki zostaną zakazane ze względu na wysoką zawartość cukru. Producent Pludo, firma Pferreri, rozważa, czy kontynuować reklamę w stacjach TV Tower.</pl>
+				<de>Wie Gesundheitsminister${gendersuffix} ${currenthealthminister} in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. Pludo-Hersteller Pferreri prüft, ob er weiterhin Werbung auf den TV Tower-Sendern schaltet.</de>
+				<en>Health Minister ${currenthealthminister} announced on a TV Tower station that candy bars will be banned because of their high sugar content. Pludo manufacturer Pferreri is considering whether to continue advertising on TV Tower stations.</en>
+				<pl>Minister Zdrowia ${currenthealthminister} ogłosił w stacji TV Tower, że batoniki zostaną zakazane ze względu na wysoką zawartość cukru. Producent Pludo, firma Pferreri, rozważa, czy kontynuować reklamę w stacjach TV Tower.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<currenthealthminister_id>${.lte:currentyear:1981:"a3846b71-4765-4adf-b4ff-5979da6dd493":"${.lte:currentyear:1982:"8ae4f1fa-ab67-450d-86d5-7eb1ae23989b":"${.lte:currentyear:1985:"7187b163-cc0a-4a98-b3fb-8d1804e8c71d":"${.lte:currentyear:1988:"38d530de-5f42-40ab-9bb1-61402c25ceef":"${.lte:currentyear:1991:"85f5f323-2261-4909-8812-a55da8af16bb":"${.lte:currentyear:1992:"9da694fc-e09e-4f29-aaa2-fc5225556900":"${.lte:currentyear:1998:"32c7dec3-a4ab-4c77-9d4d-ea10033fa02e":"${.lte:currentyear:2001:"dd18b433-aec6-4f00-8456-d7ac0c7f983c":"${.lte:currentyear:2009:"4e961b7f-0a77-411a-a2e0-773f331d3f16":"${.lte:currentyear:2011:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"${.lte:currentyear:2013:"df2cbe92-7128-457a-930d-0195bca3b750":"${.lte:currentyear:2018:"d30e5003-f197-4710-91df-94d09a104c70":"${.lte:currentyear:2021:"cd59f232-a39b-43d0-afef-0937f5e4edb0":"8a7b1e1b-a902-4606-ab51-62488433b260"}"}"}"}"}"}"}"}"}"}"}"}"}</currenthealthminister_id> <!-- TODO: make more exact (but cumbersome to write; months; need proper datetime comparer) -->
+				<currenthealthminister>${.person:currenthealthminister_id:"fullname"}</currenthealthminister>
+				<gendersuffix>
+					<de>${.eq:${.person:currenthealthminister_id:"gender"}:2:"in":""}</de>
+				</gendersuffix>
+			</variables>
 			<data genre="0" price="0.5" quality="40" />
 		</news>
 	</allnews>
@@ -311,8 +324,7 @@
 		<!-- Toyota - Nichts ist unmöglich -->
 		<ad guid="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
 			<title>
-				<de>Yotota</de>
-				<pl>Totoya</pl>
+				<all>Yotota</all>
 			</title>
 			<description>
 				<de>Alles ist möglich - Yotota - Helfen Sie mit: Yotota stiftet für jedes verkaufte Auto 10 Cent an eine Initiative zur Rettung des Regenwalds.</de>
@@ -324,7 +336,9 @@
 		</ad>
 		<!-- Duplo -->
 		<ad guid="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
-			<title>Pludo</title>
+			<title>
+				<all>Pludo</all>
+			</title>
 			<description>
 				<de>Pludo - Der wahrscheinlich längste Schokoriegel der Welt - Neu: Sonderaktion - 9 Riegel zum Preis von 11</de>
 				<en>Pludo - Probably the longest chocolate bar in the world - New: Special offer - 9 bars for the price of 11</en>
@@ -336,7 +350,7 @@
 		<!-- Schwartau -->
 		<ad guid="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
 			<title>
-				<de>Schwalltau</de>
+				<all>Schwalltau</all>
 				<pl>Sweettau</pl>
 			</title>
 			<description>

@@ -132,7 +132,7 @@ You will really have to chew.</en>
 			<conditions min_audience="4.17" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="3" profit="537" penalty="900" infomercial_profit="53" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="329eb726-34c8-49b3-a0af-be76dcbd296c">
+		<ad guid="329eb726-34c8-49b3-a0af-be76dcbd296c" comment="TODO: availability years + predecessor">
 			<title>
 				<de>Ringtone Fuzzy</de>
 			</title>
@@ -424,8 +424,8 @@ But only with Relocation Rudolph!</en>
 				<de>FasterCard</de>
 			</title>
 			<description>
-				<de>MacGreifer als Werbeträger für die FasterCard: R. D. Handerson noch einmal in seiner Paraderolle - unbezahlbar.</de>
-				<en>MacGrifter as a promotional campaigner for the FasterCard: R. D. Handerson once again in his signature role - priceless.</en>
+				<de>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} als Werbeträger für die FasterCard: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} noch einmal in seiner Paraderolle - unbezahlbar.</de>
+				<en>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} as a promotional campaigner for the FasterCard: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} once again in his signature role - priceless.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -543,8 +543,8 @@ But only with Relocation Rudolph!</en>
 				<de>Vitalon Super Supau</de>
 			</title>
 			<description>
-				<de>Die „Vitalon Foods Company“ aus Taiwan lässt R. D. Handerson als MacGreifer für ihren Sporttrunk werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Rennboot.</de>
-				<en>The "Vitalon Foods Company" from Taiwan lets R. D. Handerson advertise as MacGrifter for their sports drink: on a bicycle, in a jeep, during Tai Chi and on a speedboat.</en>
+				<de>Die „Vitalon Foods Company“ aus Taiwan lässt ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} als ${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} für ihren Sporttrunk werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Rennboot.</de>
+				<en>The "Vitalon Foods Company" from Taiwan lets ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} advertise as ${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} for their sports drink: on a bicycle, in a jeep, during Tai Chi and on a speedboat.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="4" profit="490" penalty="790" infomercial_profit="43" fix_infomercial_profit="1" />
@@ -728,8 +728,8 @@ The benefit: No postage for remittance slips.</en>
 				<de>MinutePass</de>
 			</title>
 			<description>
-				<de>R. D. Handerson präsentiert für die Telecom USA in zwei Spots eine nützliche Telefonkarte.</de>
-				<en>In two commercials, the famous R. D. Handerson presents a useful phone card powered by Telecom USA.</en>
+				<de>${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} präsentiert für die Telecom USA in zwei Spots eine nützliche Telefonkarte.</de>
+				<en>In two commercials, the famous ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} presents a useful phone card powered by Telecom USA.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="315" penalty="448" infomercial_profit="28" fix_infomercial_profit="1" />
@@ -854,14 +854,14 @@ It's a Sunny.</en>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="1" profit="445" penalty="730" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="cd0362d7-5317-41d2-8287-64c0c7810f02" comment="https://en.wikipedia.org/wiki/Dr_Pepper | TVTower 2013 version: Dr. Papper">
+		<ad guid="cd0362d7-5317-41d2-8287-64c0c7810f02" comment="https://en.wikipedia.org/wiki/Dr_Pepper | TVTower 2013 version: Dr. Papper | TODO: Maybe create and use role instead of title reference">
 			<title>
 				<de>Dr. Plapper</de>
 				<en>Dr. Blabber</en>
 			</title>
 			<description>
-				<de>Nicht nur Furrest Gomp trinkt leidenschaftlich Dr. Plapper.</de>
-				<en>It is not just Furrest Gomp who passionately drinks Dr. Blabber.</en>
+				<de>Nicht nur ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} trinkt leidenschaftlich Dr. Plapper.</de>
+				<en>It is not just ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} who passionately drinks Dr. Blabber.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1" />
@@ -1160,7 +1160,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="2466" penalty="3288" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty" comment="https://en.wikipedia.org/wiki/Gothic_(series) | https://en.wikipedia.org/wiki/Piranha_Bytes">
+		<ad guid="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty" comment="https://en.wikipedia.org/wiki/Gothic_(series) | https://en.wikipedia.org/wiki/Piranha_Bytes | TODO: pre-2001 variation">
 			<title>
 				<de>Baroque</de>
 			</title>
@@ -1183,7 +1183,7 @@ I feel good with Dumby.</en>
 			<conditions min_audience="0.31" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="2166" penalty="2688" infomercial_profit="75" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny" comment="TODO: predecessor">
 			<title>
 				<de>Handy-Dandy</de>
 				<en>Puny Phones</en>
@@ -1194,7 +1194,7 @@ I feel good with Dumby.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="770" penalty="1100" infomercial_profit="50" fix_infomercial_profit="1" />
-			<availability year_range_from="1998" year_range_to="2003" />
+			<availability year_range_from="1998" />
 		</ad>
 		<ad guid="ronny-ad-Kaschaemm" creator="5578" created_by="Ronny">
 			<title>
@@ -1735,7 +1735,7 @@ Available in any well-stocked drugstore.</en>
 		<ad guid="speedminister-ad-Encyclopedia2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Die ganze Enzyklopädie von Allem</de>
-				<en>The complete Encyclopedia of Everything</en>
+				<en>The Complete Encyclopedia of Everything</en>
 			</title>
 			<description>
 				<de>Herausgegeben in 2 Bänden. Band 1 bereits heute erhältlich. Jedoch können wir vorraussagen, dass Band 2 nie erscheinen wird, da wir nicht in die Zukunft sehen können. Ein Paradox? Singularity Verlag.</de>
@@ -2643,7 +2643,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 
 		<!-- from Vicusfeli, plus different years variations -->
 
-		<ad guid="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="discord/vicusfeli" comment="">
 			<title>
 				<de>DubanAirways</de>
 				<en>DubanAirways</en>
@@ -2655,7 +2655,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="275" penalty="400" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="discord/vicusfeli" comment="">
 			<title>
 				<de>Radio</de>
 				<en>Radio</en>
@@ -2775,7 +2775,7 @@ Only from Macrohard.</en>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="3" profit="1300" penalty="1716" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="af2fe506-45fd-4330-a2e2-37c04266c25d" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="af2fe506-45fd-4330-a2e2-37c04266c25d" creator="" created_by="discord/vicusfeli" comment="">
 			<title>
 				<de>FR Duban</de>
 				<en>FR Duban</en>

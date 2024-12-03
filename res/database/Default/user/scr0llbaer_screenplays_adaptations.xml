@@ -129,7 +129,8 @@
 				<all>Harksworth 18, 1924</all>
 			</title>
 			<title_original>
-				<all>Hapworth 16, 1924</all>
+				<de>Hapworth 16, 1924</de>
+				<en>Hapworth 16, 1924</en>
 			</title_original>
 			<description>
 				<de>Prequel über ${.self:"role":3:"fullname"}: Sein Aufenthalt als 7-Jähriger im titulären Camp, seine Eltern, die Varieté-Perfomer ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"}, und seine Geschwister. Alle 7 Kinder traten in einem Radioquiz für Hochbegabte auf, was sie aufs College brachte.</de>
@@ -285,8 +286,8 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="e0e63fdf-b7c4-4aaf-8aa3-2c6b44e407ee" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/Franny_and_Zooey">
 			<title>
-				<de>Flory und Zewwey</de>
-				<en>Flory and Zewwey</en> <!-- TODO: ref nicknames -->
+				<de>${.self:"role":1:"nickname"} und ${.self:"role":2:"nickname"}</de>
+				<en>${.self:"role":1:"nickname"} and ${.self:"role":2:"nickname"}</en>
 			</title>
 			<title_original>
 				<de>Franny und Zooey</de>
@@ -319,7 +320,7 @@
 			<speed min="20" max="90" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="41a8d639-c657-4817-a822-a51e6d9c7099" creator="9551" comment="https://en.wikipedia.org/wiki/Umberto_Eco | https://en.wikipedia.org/wiki/Foucault%27s_Pendulum | TODO: mention and reference Umberto Eco. Replace name Lia by reference.">
+		<scripttemplate product="2" licence_type="3" guid="41a8d639-c657-4817-a822-a51e6d9c7099" creator="9551" comment="https://en.wikipedia.org/wiki/Umberto_Eco | https://en.wikipedia.org/wiki/Foucault%27s_Pendulum">
 			<title>
 				<de>Die Foucaultschen Schwingungen</de>
 				<en>Foucault's Vibrations</en>
@@ -330,9 +331,12 @@
 				<it>Il pendolo di Foucault</it>
 			</title_original>
 			<description>
-				<de>Adaption des 1988er Romans und eine ausgefeilte, manchmal brutale Dekonstruktion verschwörungstheoretischer Geschichtsauffassungen. Drei Verleger denken sich einen „Großen Plan“ aus und werden dann verfolgt.</de>
-				<en>Adaptation of the 1988 novel and an elaborated, sometimes savage deconstruction of conspiracy theory views of history. Three publishers dream up "The Plan" and then are persecuted.</en>
+				<de>Adaption des 1988er Romans von ${umbertoeco}, eine ausgefeilte, manchmal brutale Dekonstruktion verschwörungstheoretischer Geschichtsauffassungen. Drei Verleger denken sich einen „Großen Plan“ aus und werden dann verfolgt.</de>
+				<en>Adaptation of the 1988 novel by ${umbertoeco}, an elaborated, sometimes savage deconstruction of conspiracy theory views of history. Three publishers dream up "The Plan" and then are persecuted.</en>
 			</description>
+			<variables>
+				<umbertoeco>${.person:"a7aa2d24-06d8-4053-83e8-288ac64ea7b6":"fullname"}</umbertoeco>
+			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="e4ba8123-de6e-4ff6-ae3b-208572a11e36">
 					<title>
@@ -364,10 +368,12 @@
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="f064c96f-0fbf-4187-93ee-2313f545c259">
 					<title>
-						<all>Hod</all>
+						<de>Hod</de>
+						<en>Hod</en>
 					</title>
 					<title_original>
-						<all>Hod</all>
+						<de>Hod</de>
+						<en>Hod</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":5:"fullname"} präsentiert ein mysteriöses und potenziell gefährliches Templer-Manuskript, nur um dann spurlos zu verschwinden.</de>
@@ -376,10 +382,12 @@
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="ec0ad1cd-a4c5-485d-9833-62264469be39">
 					<title>
-						<all>Netzach</all>
+						<de>Netzach</de>
+						<en>Netzach</en>
 					</title>
 					<title_original>
-						<all>Netzach</all>
+						<de>Netzach</de>
+						<en>Netzach</en>
 					</title_original>
 					<description>
 						<de>Auf der Suche nach Trost reist ${.self:"role":1:"fullname"} nach Brasilien, wo er ${.self:"role":7:"fullname"}, einem Experten für das Okkulte, begegnet und sich in die Sozialistin ${.self:"role":6:"fullname"} verliebt.</de>
@@ -396,8 +404,8 @@
 						<en>Tiferet</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"fullname"} kehrt zurück, angezogen von seiner Liebe zu einer Frau namens Lia, und wird als freiberuflicher Forscher mit verschiedenen Projekten betraut.</de>
-						<en>${.self:"role":1:"fullname"} returns, drawn back by his love for woman named Lia, and becomes a freelance researcher, taking on various projects.</en>
+						<de>${.self:"role":1:"fullname"} kehrt zurück, angezogen von seiner Liebe zu einer Frau namens ${.self:"role":8:"firstname"}, und wird als freiberuflicher Forscher mit verschiedenen Projekten betraut.</de>
+						<en>${.self:"role":1:"fullname"} returns, drawn back by his love for woman named ${.self:"role":8:"firstname"}, and becomes a freelance researcher, taking on various projects.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="70cdf605-5db8-48d4-9474-1c61c959a500">
@@ -416,10 +424,12 @@
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="28d6e0e8-19c8-4e8d-b065-0112170448b4">
 					<title>
-						<all>Chesed</all>
+						<de>Chesed</de>
+						<en>Chesed</en>
 					</title>
 					<title_original>
-						<all>Chesed</all>
+						<de>Chesed</de>
+						<en>Chesed</en>
 					</title_original>
 					<description>
 						<de>Gelangweilt von bestehenden Theorien heckt das Trio, nur als Gedankenspiel, eine ausgeklügelte Superverschwörung aus, die nur als der „Große Plan“ bezeichnet wird.</de>
@@ -428,10 +438,12 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="2e8c38f8-c3bd-4964-be28-77086a72f2f1">
 					<title>
-						<all>Binah</all>
+						<de>Binah</de>
+						<en>Binah</en>
 					</title>
 					<title_original>
-						<all>Binah</all>
+						<de>Binah</de>
+						<en>Binah</en>
 					</title_original>
 					<description>
 						<de>Begeistert von ihrer Schöpfung beginnen ${.self:"role":1:"fullname"} und seine Partner, ${.self:"role":7:"fullname"} gegenüber anzudeuten, dass sie im Besitz verborgenen Wissens sind.</de>
@@ -440,10 +452,12 @@
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="c572b563-808f-42da-9dba-541171f2844a">
 					<title>
-						<all>Chochmah</all>
+						<de>Chochmah</de>
+						<en>Chochmah</en>
 					</title>
 					<title_original>
-						<all>Chochmah</all>
+						<de>Chochmah</de>
+						<en>Chochmah</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":7:"fullname"} und europäische Okkultisten, die glauben, die Geschichte kontrollieren zu müssen, jagen das Trio unerbittlich wegen der angeblichen Geheimnisse des „Großen Plans“.</de>
@@ -452,10 +466,12 @@
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="ebb91722-c6cd-4cc3-87e1-3f60ba0847f4">
 					<title>
-						<all>Kether</all>
+						<de>Kether</de>
+						<en>Kether</en>
 					</title>
 					<title_original>
-						<all>Kether</all>
+						<de>Kether</de>
+						<en>Kether</en>
 					</title_original>
 					<description>
 						<de>Als die Verfolgung immer intensiver wird, verzweifeln ${.self:"role":7:"fullname"} und die anderen, was in einem spannenden Höhepunkt gipfelt, an dem Wahrheit und Trug aufeinanderprallen.</de>
@@ -532,7 +548,8 @@
 				<all>${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
-				<all>Baudolino</all>
+				<de>Baudolino</de>
+				<en>Baudolino</en>
 				<it>Baudolino</it>
 			</title_original>
 			<description>
@@ -568,7 +585,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="2002" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="78e95e72-d015-4e62-9a76-e9497d657c17" creator="9551" comment="https://en.wikipedia.org/wiki/Arthur_C._Clarke | https://en.wikipedia.org/wiki/Rendezvous_with_Rama | TODO: mention and reference Arthur C. Clarke">
+		<scripttemplate product="2" licence_type="3" guid="78e95e72-d015-4e62-9a76-e9497d657c17" creator="9551" comment="https://en.wikipedia.org/wiki/Arthur_C._Clarke | https://en.wikipedia.org/wiki/Rendezvous_with_Rama">
 			<title>
 				<de>Reiseflug nach Rama</de>
 				<en>Revelation of Rama</en>
@@ -578,9 +595,12 @@
 				<en>Rendezvous with Rama</en>
 			</title_original>
 			<description>
-				<de>Adaption des 1973er Romans. Im Jahre 2131 dringt ein massives, 50 Kilometer langes zylindrisches Objekt, zunächst für einen Asteroiden gehalten, in unser Sonnensystem ein. Es wird nach dem Hindu-Gott Rama benannt.</de>
-				<en>Adaptation of the 1973 novel. In 2131, a massive, 50-kilometer-long cylindrical object, initially mistaken for an asteroid, enters our solar system. It is named after the Hindu god Rama.</en>
+				<de>Adaption des 1973er Romans von ${arthurclarke}. Im Jahre 2131 dringt ein massives, 50 Kilometer langes zylindrisches Objekt, zunächst für einen Asteroiden gehalten, in unser Sonnensystem ein. Es wird nach dem Hindu-Gott Rama benannt.</de>
+				<en>Adaptation of the 1973 novel by ${arthurclarke}. In 2131, a massive, 50-kilometer-long cylindrical object, initially mistaken for an asteroid, enters our solar system. It is named after the Hindu god Rama.</en>
 			</description>
+			<variables>
+				<arthurclarke>${.person:"90e81255-6046-43fa-8c44-7929f5e15930":"fullname"}</arthurclarke>
+			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="ec7797a4-6768-4ae3-9ece-3c7fd4743b97">
 					<title>
@@ -1017,10 +1037,11 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="7fd1459c-12b3-4c86-ac3e-6771d79b52c2" creator="9551" comment="https://en.wikipedia.org/wiki/Cormac_McCarthy | https://en.wikipedia.org/wiki/Suttree">
 			<title>
-				<all>Siltrunk</all> <!-- TODO: Use last name reference -->
+				<all>${.self:"role":1:"lastname"}</all>
 			</title>
 			<title_original>
-				<all>Suttree</all>
+				<de>Suttree</de>
+				<en>Suttree</en>
 			</title_original>
 			<description>
 				<de>${.self:"role":1:"fullname"} gibt sein früheres privilegiertes Leben auf, um Fischer am Tennessee River zu werden, versucht, seine wahre Identität inmitten von Verstoßenen und Außenseitern zu finden, und erlebt dabei allerlei Missgeschicke.</de>
@@ -1091,7 +1112,8 @@
 				<en>Downwind</en>
 			</title>
 			<title_original>
-				<all>Fallwind</all>
+				<de>Fallwind</de>
+				<en>Fallwind</en>
 			</title_original>
 			<description>
 				<de>Kommissar ${.self:"role":1:"fullname"} findet sich in einer Windrad-Gondel auf der Nordsee wieder, zusammen mit einer Unbekannten und Vorräten für ein paar Tage. Erst Stück für Stück kommen die Erinnerungen zurück.</de>
@@ -1196,8 +1218,8 @@
 				<en>Caught Stealing</en>
 			</title_original>
 			<description>
-				<de>Teil 1 der Trilogie über ${.self:"role":1:"fullname"}, ein gescheiterter Baseballspieler, der gern Bars aufsucht und trinkt. Plötzlich wird er ständig mit Schlägern konfrontiert und findet sich alsbald in einer Odyssee durch New York wieder.</de>
-				<en>Part 1 of the trilogy about ${.self:"role":1:"fullname"}, a failed baseball player who likes to frequent bars and drink. Suddenly he is constantly confronted with thugs and soon finds himself in an odyssey through New York.</en>
+				<de>Teil 1 der Trilogie über ${.self:"role":1:"firstname"} „${.self:"role":1:"nickname"}“ ${.self:"role":1:"lastname"}, ein gescheiterter Baseballspieler, der gern Bars aufsucht und trinkt. Plötzlich wird er ständig mit Schlägern konfrontiert und findet sich alsbald in einer Odyssee durch New York wieder.</de>
+				<en>Part 1 of the trilogy about ${.self:"role":1:"firstname"} "${.self:"role":1:"nickname"}" ${.self:"role":1:"lastname"}, a failed baseball player who likes to frequent bars and drink. Suddenly he is constantly confronted with thugs and soon finds himself in an odyssey through New York.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1231,8 +1253,8 @@
 				<en>Six Bad Things</en>
 			</title_original>
 			<description>
-				<de>${.self:"role":1:"firstname"} ist untergetaucht in Mexiko, mit einer Tasche voller Bargeld, das die russische Mafia zurückhaben will, und mit vielen, vielen Geheimnissen. Er trifft auf einen Rucksacktouristen, der einige von ihnen kennt. Teil 2 der Trilogie.</de>
-				<en>${.self:"role":1:"firstname"} is in hiding in Mexico, with a bag full of cash that the Russian mafia wants back, and with many, many secrets. He meets a backpacker who knows some of them. Part 2 of the trilogy.</en>
+				<de>${.self:"role":1:"nickname"} ${.self:"role":1:"lastname"} ist untergetaucht in Mexiko, mit einer Tasche voller Bargeld, das die russische Mafia zurückhaben will, und mit vielen, vielen Geheimnissen. Er trifft auf einen Rucksacktouristen, der einige von ihnen kennt. Teil 2 der Trilogie.</de>
+				<en>${.self:"role":1:"nickname"} ${.self:"role":1:"lastname"} is in hiding in Mexico, with a bag full of cash that the Russian mafia wants back, and with many, many secrets. He meets a backpacker who knows some of them. Part 2 of the trilogy.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1266,8 +1288,8 @@
 				<en>A Dangerous Man</en>
 			</title_original>
 			<description>
-				<de>Widerwilliger Auftragskiller ${.self:"role":1:"firstname"} hat sein Leben nicht mehr im Griff, nimmt Schmerzmittel, seine Schusshand zittert. Umso überraschender, dass er von seinem russischen Mafia-Boss den Auftrag bekommt, einen Baseball-Star zu überwachen. Teil 3 der Trilogie.</de>
-				<en>Reluctant hitman ${.self:"role":1:"firstname"} is no longer in control of his life, takes painkillers, his shooting hand trembles. All the more surprising that he gets the order from his Russian mafia boss to monitor a baseball star. Part 3 of the trilogy.</en>
+				<de>Widerwilliger Auftragskiller ${.self:"role":1:"nickname"} hat sein Leben nicht mehr im Griff, nimmt Schmerzmittel, seine Schusshand zittert. Umso überraschender, dass er von seinem russischen Mafia-Boss den Auftrag bekommt, einen Baseball-Star zu überwachen. Teil 3 der Trilogie.</de>
+				<en>Reluctant hitman ${.self:"role":1:"nickname"} is no longer in control of his life, takes painkillers, his shooting hand trembles. All the more surprising that he gets the order from his Russian mafia boss to monitor a baseball star. Part 3 of the trilogy.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1553,7 +1575,7 @@
 			</title_original>
 			<description>
 				<de>Ein Ex-Enthüllungsjournalist, nun in der Öffentlichkeitsarbeit für einen Themenpark, möchte den Diebstahl zweier seltener Tiere untersuchen, doch sein Chef rät ihm davon ab. Der Gründer des Parks ist ein verurteilter Gangster im Zeugenschutzprogramm.</de>
-				<en>An former investigative reporter, now in public relations for a theme park, wants to investigate the theft of two rare animals, but his boss advises him against it. The park's founder is a convicted gangster in the Witness Protection Program.</en>
+				<en>A former investigative reporter, now in public relations for a theme park, wants to look into the theft of two rare animals, but his boss advises him against it. The park's founder is a convicted gangster in the Witness Protection Program.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1765,9 +1787,9 @@
 				<job index="7" function="32" required="1" gender="2" />
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" target_groups="274" />
-			<targetgroupattractivity women="0.5" />
-			<genres maingenre="7" subgenres="1,2" />
+			<data flags="0" flags_optional="" target_groups="80" />
+			<targetgroupattractivity pensioners="2" />
+			<genres maingenre="1" subgenres="7,2" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -2003,7 +2025,7 @@
 			</title>
 			<title_original>
 				<de>Feuer brennt nicht</de>
-				<en>Fire Isn't Burning</en>
+				<en>Fire Doesn't Burn</en>
 			</title_original>
 			<description>
 				<de>${.self:"role":1:"firstname"} ist älter geworden und seine Liebe zu Buchhändlerin ${.self:"role":2:"firstname"} verblasst wie Kreuzberg nach dem Mauerfall. Der Umzug an den Müggelsee soll die Lösung sein - und eine Affäre mit Professorin ${.self:"role":3:"firstname"} - zu der ihn ${.self:"role":2:"firstname"} sogar ermuntert.</de>
@@ -2179,7 +2201,8 @@
 						<en>The Road in Illinois</en>
 					</title>
 					<title_original>
-						<all>Argilla Road</all>
+						<de>Argilla Road</de>
+						<en>Argilla Road</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} besucht seinen Vater ${.self:"role":3:"firstname"} in Illinois, ein linksliberaler, ökologisch eingestellter Geschichtsprofessor, und sie sprechen sich aus, u.a. über die kapitalistische ${.self:"role":4:"firstname"}. Er äußert die Vermutung wirtschaftskrimineller Manipulationen.</de>
@@ -2246,7 +2269,8 @@
 						<en>${.self:"role":1:"firstname"} in the Bay Area</en>
 					</title>
 					<title_original>
-						<all>Purity in Oakland</all>
+						<de>Purity in Oakland</de>
+						<en>Purity in Oakland</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} arbeitet als Telemarketerin und lebt wegen ihrer heimlichen Liebe zu einem verheirateten Mann mietfrei in einem besetzten Haus. ${.self:"role":6:"firstname"}, eine schöne deutsche Aktivistin, bringt sie nach Bolivien zur Arbeit bei einer Whistleblowing-Plattform.</de>
@@ -2287,7 +2311,7 @@
 					</title>
 					<title_original>
 						<de>Moonglow Diary</de>
-						<en>Moonglow Dairy</en><!-- TODO really Dairy-->
+						<en>Moonglow Diary</en>
 					</title_original>
 					<description>
 						<de>Rückblick auf die Arbeit von ${.self:"role":1:"firstname"} in Bolivien, die sie liebt, aber sie ist konsterniert über die bizarre Hierarchie. ${.self:"role":2:"firstname"} macht ihr sexuelle Avancen und sagt ihr, dass es unmöglich sei, ihren Vater ausfindig zu machen.</de>
@@ -2299,7 +2323,8 @@
 						<all>[li3o9n8e0l1]</all>
 					</title>
 					<title_original>
-						<all>[le1o9n8a0rd]</all>
+						<de>[le1o9n8a0rd]</de>
+						<en>[le1o9n8a0rd]</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":4:"fullname"}s Hintergrundgeschichte über seine missbräuchliche Ehe und seine Reise nach Ostdeutschland in den 90er Jahren, wo er ${.self:"role":2:"firstname"} trifft und ihm hilft, die Leiche von ${.self:"role":6:"firstname"}s missbräuchlichem Stiefvater zu entsorgen.</de>
@@ -2500,7 +2525,7 @@
 				<job index="8" function="32" required="1" gender="2" />
 				<job index="9" function="32" required="1" gender="1" />
 			</jobs>
-			<data flags="0" flags_optional="" target_groups="6"  available="0" /> <!-- availability triggered by 2c30a2fd-f940-481d-886e-30f1e21dc43d -->
+			<data flags="0" flags_optional="" target_groups="6" available="0" /> <!-- availability triggered by 2c30a2fd-f940-481d-886e-30f1e21dc43d -->
 			<targetgroupattractivity children="2" managers="2" pensioners="2" />
 			<genres maingenre="14" subgenres="17,1" />
 			<blocks value="2" />
@@ -2516,7 +2541,9 @@
 				<all>${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
-				<all>Marina</all>
+				<de>Marina</de>
+				<en>Marina</en>
+				<es>Marina</es>
 			</title_original>
 			<description>
 				<de>Die 15-jährigen ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} lernen sich kennen, verlieben sich, verfolgen eine schwarze Frau, die regelmäßig auf den Friedhof kommt, und entlarven die Machenschaften des scheinbar untoten Orthopäden ${.self:"role":3:"firstname"}.</de>
@@ -2556,8 +2583,8 @@
 				<en>Martin Dressler - The Tale of an American Dreamer</en>
 			</title_original>
 			<description>
-				<de>Der deutsche ${.self:"role":1:"firstname"} geht im 1900er New York unaufhaltbar den Weg des amerikanischen Traums, vom Zigarrenverkäufer und Liftboy zum Bauunternehmer, der Luxushotels eröffnet und eine geheimnisvolle Frau heiratet. Doch der Fall droht ständig.</de>
-				<en>In 1900s New York, the German ${.self:"role":1:"firstname"} unstoppably follows the path of the American dream, from cigar salesman and elevator boy to building contractor who opens luxury hotels and marries a mysterious woman. But the fall is constantly looming.</en>
+				<de>Der deutsche ${.self:"role":1:"fullname"} geht im 1900er New York unaufhaltbar den Weg des amerikanischen Traums, vom Zigarrenverkäufer und Liftboy zum Bauunternehmer, der Luxushotels eröffnet und eine geheimnisvolle Frau heiratet. Doch der Fall droht ständig.</de>
+				<en>In 1900s New York, the German ${.self:"role":1:"fullname"} unstoppably follows the path of the American dream, from cigar salesman and elevator boy to building contractor who opens luxury hotels and marries a mysterious woman. But the fall is constantly looming.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2733,7 +2760,9 @@
 				<all>${.self:"role":1:"fullname"}</all>
 			</title>
 			<title_original>
-				<all>Bruno Brazil</all>
+				<de>Bruno Brazil</de>
+				<en>Bruno Brazil</en>
+				<fr>Bruno Brazil</fr>
 			</title_original>
 			<description>
 				<de>Realverfilmung des Comics. ${.self:"role":1:"firstname"} ist Anführer einer kleinen Elite-Kampfeinheit des US-Geheimdienstes, dem „Cayman Command“. Jedes Mitglied verfügt über besondere Fähigkeiten. Gemeinsam bekämpfen sie Verbrechen und exotische Bedrohungen.</de>
@@ -2769,7 +2798,8 @@
 				<all>${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
-				<all>Merle</all>
+				<de>Merle</de>
+				<en>Merle</en>
 			</title_original>
 			<description>
 				<de>${.self:"role":1:"firstname"} ist in einem Waisenhaus aufgewachsen und kommt mit 14 Jahren zusammen mit ${.self:"role":2:"firstname"} als Lehrling in die Werkstatt ${.self:"role":4:"firstname"}s. Die einzige Beziehung zu ihren Eltern ist der Zauberspiegel ihrer Mutter, der aus Wasser statt Glas besteht.</de>
@@ -2854,15 +2884,15 @@
 				<en>Railsea</en>
 			</title_original>
 			<description>
-				<de>Auf einer mit endlosen Gleisen durchzogenen Steampunk-Erde, die von riesigen fleischfressenden Viechern beherrscht wird, die von den Menschen Walfang-artig auch als Nahrung gejagt werden, machen sich ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} auf die Suche nach einem Schatz.</de>
-				<en>On a steampunk Earth crisscrossed with endless connected railroad tracks and dominated by giant carnivorous creatures, that also are hunted whaling-like by humans for food, ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} set out to find a treasure.</en>
+				<de>Auf einer mit endlosen Gleisen durchzogenen Steampunk-Erde, die von riesigen fleischfressenden Viechern beherrscht wird, die von den Menschen Walfang-artig auch als Nahrung gejagt werden, machen sich ${.self:"role":1:"nickname"} und ${.self:"role":2:"firstname"} auf die Suche nach einem Schatz.</de>
+				<en>On a steampunk Earth crisscrossed with endless connected railroad tracks and dominated by giant carnivorous creatures, that also are hunted whaling-like by humans for food, ${.self:"role":1:"nickname"} and ${.self:"role":2:"firstname"} set out to find a treasure.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" role_guid="464b0d49-a99f-48bb-901d-62bff0f2e370" />
 				<job index="2" function="2" required="1" role_guid="fee5668b-a3da-45d3-b469-6c2ed1cfeebb" />
 				<job index="3" function="2" required="1" role_guid="09efb937-5a02-41ea-b532-0d769ae40d42" />
-				<job index="4" function="2" required="1" role_guid="cc4012b2-ad1a-46e8-8075-433e557ce354" />
+				<job index="4" function="2" required="1" role_guid="cc4012b2-ad1a-46e8-8075-433e557ce354" /> <!-- '10-12 years old' -->
 				<job index="5" function="2" required="1" gender="2" />
 				<job index="6" function="2" required="1" gender="1" />
 				<job index="7" function="32" required="1" gender="2" />
@@ -2898,11 +2928,12 @@
 						<all>${.self:"role":1:"fullname"}</all>
 					</title>
 					<title_original>
-						<all>Selina</all>
+						<de>Selina</de>
+						<en>Selina</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"fullname"}s Marokko-Raubzug geht schief, als sie feststellt, dass der „Cup of Hassan“ nicht echt ist. ${.self:"role":2:"firstname"} versorgt sie mit Bargeld und einem sicheren Haus in Gotham. Eine neue Gelegenheit wartet.</de>
-						<en>${.self:"role":1:"fullname"}'s Morocco heist goes awry when she realizes the 'Cup of Hassan' is a fake. ${.self:"role":2:"firstname"} sets her up with cash and a safe house in Gotham. A new opportunity is waiting.</en>
+						<de>${.self:"role":1:"fullname"}s Marokko-Raubzug geht schief, als sie feststellt, dass der „Cup of Hassan“ nicht echt ist. „${.self:"role":2:"nickname"}“ ${.self:"role":2:"lastname"} versorgt sie mit Bargeld und einem sicheren Haus in Gotham. Eine neue Gelegenheit wartet.</de>
+						<en>${.self:"role":1:"fullname"}'s Morocco heist goes awry when she realizes the 'Cup of Hassan' is a fake. "${.self:"role":2:"nickname"}" ${.self:"role":2:"lastname"} sets her up with cash and a safe house in Gotham. A new opportunity is waiting.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="b54f96e8-2ad4-4714-a9ca-6b45a8d8a55d">
@@ -2910,7 +2941,8 @@
 						<all>${.self:"role":5:"firstname"}</all>
 					</title>
 					<title_original>
-						<all>Stark</all>
+						<de>Stark</de>
+						<en>Stark</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} und ${.self:"role":5:"firstname"} stimmen dem Eisenbahnraub zu, aber ${.self:"role":5:"firstname"} besteht darauf, die Kontrolle zu behalten. Sie planen, sich in fünf Tagen in Las Vegas zu treffen. ${.self:"role":5:"firstname"} warnt ${.self:"role":1:"firstname"} vor einem Privatdetektiv.</de>
@@ -2922,11 +2954,12 @@
 						<all>${.self:"role":6:"firstname"}</all>
 					</title>
 					<title_original>
-						<all>Slam</all>
+						<de>Slam</de>
+						<en>Slam</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":6:"fullname"} wartet auf ${.self:"role":1:"firstname"}, trifft aber beim Verlassen von ${.self:"role":2:"firstname"}'s auf ${.self:"role":4:"firstname"}. Er folgt ${.self:"role":1:"firstname"}s und ${.self:"role":4:"firstname"}s Spur, muss aber feststellen, dass ${.self:"role":4:"firstname"} von ${.self:"role":3:"fullname"} schwer verprügelt wurde. ${.self:"role":6:"firstname"} tötet ${.self:"role":3:"firstname"}s Männer.</de>
-						<en>${.self:"role":6:"fullname"} waits for ${.self:"role":1:"firstname"} but encounters ${.self:"role":4:"firstname"} leaving ${.self:"role":2:"firstname"}'s. He follows ${.self:"role":1:"firstname"} and ${.self:"role":4:"firstname"}'s trail, only to discover ${.self:"role":4:"firstname"} badly beaten by ${.self:"role":3:"fullname"}. ${.self:"role":6:"firstname"} kills ${.self:"role":3:"firstname"}'s men.</en>
+						<de>${.self:"role":6:"fullname"} wartet auf ${.self:"role":1:"firstname"}, trifft aber beim Verlassen von ${.self:"role":2:"nickname"}'s auf ${.self:"role":4:"firstname"}. Er folgt ${.self:"role":1:"firstname"}s und ${.self:"role":4:"firstname"}s Spur, muss aber feststellen, dass ${.self:"role":4:"firstname"} von ${.self:"role":3:"fullname"} schwer verprügelt wurde. ${.self:"role":6:"firstname"} tötet ${.self:"role":3:"firstname"}s Männer.</de>
+						<en>${.self:"role":6:"fullname"} waits for ${.self:"role":1:"firstname"} but encounters ${.self:"role":4:"firstname"} leaving ${.self:"role":2:"nickname"}'s. He follows ${.self:"role":1:"firstname"} and ${.self:"role":4:"firstname"}'s trail, only to discover ${.self:"role":4:"firstname"} badly beaten by ${.self:"role":3:"fullname"}. ${.self:"role":6:"firstname"} kills ${.self:"role":3:"firstname"}'s men.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="a093e4f1-27ee-4da0-8690-587c565a5da6">
@@ -2934,11 +2967,12 @@
 						<all>Coup</all>
 					</title>
 					<title_original>
-						<all>Score</all>
+						<de>Score</de>
+						<en>Score</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"}, ${.self:"role":7:"firstname"} und ${.self:"role":5:"firstname"} entern erfolgreich den Geldtransport-Zug und werfen die Taschen in den Fluss. ${.self:"role":2:"firstname"}s Boot wartet unten, aber als das Trio an Bord geht, wird auf sie geschossen.</de>
-						<en>${.self:"role":1:"firstname"}, ${.self:"role":7:"firstname"}, and ${.self:"role":5:"firstname"} successfully board the money train, tossing the bags into the river. ${.self:"role":2:"firstname"}'s boat waits below, but when the trio boards, they are shot at.</en>
+						<de>${.self:"role":1:"firstname"}, ${.self:"role":7:"firstname"} und ${.self:"role":5:"firstname"} entern erfolgreich den Geldtransport-Zug und werfen die Taschen in den Fluss. ${.self:"role":2:"nickname"}s Boot wartet unten, aber als das Trio an Bord geht, wird auf sie geschossen.</de>
+						<en>${.self:"role":1:"firstname"}, ${.self:"role":7:"firstname"}, and ${.self:"role":5:"firstname"} successfully board the money train, tossing the bags into the river. ${.self:"role":2:"nickname"}'s boat waits below, but when the trio boards, they are shot at.</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -2986,7 +3020,8 @@
 						<all>Hyperiad</all>
 					</title>
 					<title_original>
-						<all>Hyperion</all>
+						<de>Hyperion</de>
+						<en>Hyperion</en>
 					</title_original>
 					<description>
 						<de>Der titelgebende Planet befindet sich im abgelegenen „Outback“ und ist schwer zu erreichen, beherbergt aber in der Zeit rückwärts wandernde „Gräber“. 7 Pilger auf einer Reise dorthin, um eine Invasion zu verhindern, erzählen ihre Lebensgeschichten.</de>
@@ -3073,7 +3108,8 @@
 				<all>Ilios/Olympium</all>
 			</title>
 			<title_original>
-				<all>Ilium/Olympos</all>
+				<de>Ilium/Olympos</de>
+				<en>Ilium/Olympos</en>
 			</title_original>
 			<description>
 				<de>Raum und Zeit sind manipulierbar. ${.self:"role":1:"fullname"}, ein nach 4200 Jahren von den Göttern (sind es überhaupt die „echten“?) wiederbelebter Historiker aus dem 21. Jahrhundert, studiert Homer und den Trojanischen Krieg und hat selbst Einfluss auf das Geschehen.</de>
@@ -3085,7 +3121,8 @@
 						<all>Ilios</all>
 					</title>
 					<title_original>
-						<all>Ilium</all>
+						<de>Ilium</de>
+						<en>Ilium</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"}, in der Gestalt von ${.self:"role":7:"firstname"}, erschleicht sich ein Schäferstündchen mit der schönen ${.self:"role":4:"fullname"}, doch die hält ihm dann einen Dolch an die Kehle und entwickelt einen Plan, mit dessen Verwirklichung der Krieg zwischen Griechen und Trojanern endet.</de>
@@ -3097,7 +3134,8 @@
 						<all>Olympium</all>
 					</title>
 					<title_original>
-						<all>Olympos</all>
+						<de>Olympos</de>
+						<en>Olympos</en>
 					</title_original>
 					<description>
 						<de>Zusammenlaufende Handlungsstränge: Götter-Intrigen im Olymp (auf dem Mars). Philosophierende Minenroboter von den Jupiter-Monden. Dekadente Erden-„Altmenschen“, die dachten, zu „Metamenschen“ aufzusteigen, aber um ihr Überleben gegen aggressive Voynixe kämpfen müssen.</de>
@@ -3151,8 +3189,8 @@
 				<en>Escapade</en>
 			</title_original>
 			<description>
-				<de>Im Sommer 1921 treffen sich 13 illustre Gäste zu einer Séance in Devon. Der Earl of Axminster wird ermordet in einem verschlossenen Zimmer aufgefunden. Die berühmten ${.self:"role":3:"fullname"} und Der Große ${.self:"role":4:"fullname"} bieten ihre Hilfe an.</de>
-				<en>Summer of 1921, 13 distinguished guests gather together for a séance in Devon. The Earl of Axminster is found murdered in a locked room. The famous ${.self:"role":3:"fullname"} and The Great ${.self:"role":4:"fullname"} offer their help.</en>
+				<de>Im Sommer 1921 treffen sich 13 illustre Gäste zu einer Séance in Devon. Der Earl of Axminster wird ermordet in einem verschlossenen Zimmer aufgefunden. Die berühmten ${.self:"role":3:"fullname"} und Der Große ${.self:"role":4:"lastname"} bieten ihre Hilfe an.</de>
+				<en>Summer of 1921, 13 distinguished guests gather together for a séance in Devon. The Earl of Axminster is found murdered in a locked room. The famous ${.self:"role":3:"fullname"} and The Great ${.self:"role":4:"lastname"} offer their help.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -3303,11 +3341,12 @@
 				<all>Miss ${.self:"role":1:"firstname"}</all>
 			</title>
 			<title_original>
-				<all>Miss Lizzie</all>
+				<de>Miss Lizzie</de>
+				<en>Miss Lizzie</en>
 			</title_original>
 			<description>
-				<de>„${.self:"role":1:"fullname"} mit dem Beile, hackt Mama in 40 Teile. Das Ergebnis freut sie sehr, bei Papa wird's ein Teil mehr.“ 1892 freigesprochen (wahre Geschichte) trifft sie 61-jährig 1921 (fiktiv) auf die kleine ${.self:"role":2:"firstname"}. Auch deren verhasste Stiefmutter wird bald erschlagen aufgefunden.</de>
-				<en>"${.self:"role":1:"fullname"} took an axe and gave her mother forty whacks. When she saw what she had done, she gave her father forty-one." Acquitted in 1892 (true story), in 1921 at the age of 61 she (fictionally) encounters little ${.self:"role":2:"firstname"}, whose hated stepmother is also soon found slain.</en>
+				<de>„${.self:"role":1:"firstname"} ${.self:"role":1:"lastname"} mit dem Beile, hackt Mama in 40 Teile. Das Ergebnis freut sie sehr, bei Papa wird's ein Teil mehr.“ 1892 freigesprochen (wahre Geschichte) trifft sie 61-jährig 1921 (fiktiv) auf die kleine ${.self:"role":2:"firstname"}. Auch deren verhasste Stiefmutter wird bald erschlagen aufgefunden.</de>
+				<en>"${.self:"role":1:"firstname"} ${.self:"role":1:"lastname"} took an axe and gave her mother forty whacks. When she saw what she had done, she gave her father forty-one." Acquitted in 1892 (true story), in 1921 at the age of 61 she (fictionally) encounters little ${.self:"role":2:"firstname"}, whose hated stepmother is also soon found slain.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -3331,6 +3370,7 @@
 			<outcome min="20" max="80" />
 			<review min="20" max="80" />
 			<speed min="20" max="80" />
+			<studio_size value="3" />
 			<effects>
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f0dce9e4-e7d5-4e7b-b84b-64247bdd944b" />
 			</effects>
@@ -3378,7 +3418,8 @@
 				<en>Deceased Horse</en>
 			</title>
 			<title_original>
-				<all>Dead Horse</all>
+				<de>Dead Horse</de>
+				<en>Dead Horse</en>
 			</title_original>
 			<description>
 				<de>1933 heiratet die reiche ${.self:"role":2:"firstname"} den erfolgreichen Groschenroman-Autor ${.self:"role":1:"firstname"}. Sie feiern ausschweifende Partys auf ihrer Ranch nahe Las Vegas. 1935 begeht ${.self:"role":2:"firstname"} Selbstmord (wahre Geschichte). Was ist wirklich passiert (fiktiv-spekulativ)?</de>
@@ -4408,7 +4449,8 @@
 						<all>Anarch-Y</all>
 					</title>
 					<title_original>
-						<all>Anarchy-X</all>
+						<de>Anarchy-X</de>
+						<en>Anarchy-X</en>
 					</title_original>
 					<description>
 						<de>Rückblende: Als Heroinabhängiger und Möchtegern-Radikaler, der aufgrund wirtschaftlicher Ungleichheit, Korruption und Heuchelei von der heutigen Gesellschaft frustriert war, wurde ${.self:"role":1:"firstname"} dazu gebracht, sich einer angeblich geheimen Organisation anzuschließen.</de>
@@ -4490,7 +4532,8 @@
 						<all>Sound Sister ${.self:"role":2:"firstname"}</all>
 					</title>
 					<title_original>
-						<all>Suite Sister Mary</all>
+						<de>Suite Sister Mary</de>
+						<en>Suite Sister Mary</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":3:"fullname"} wird aufmerksam und sieht in ${.self:"role":2:"firstname"} eine potenzielle Bedrohung für seinen Personenkult und befiehlt ${.self:"role":1:"firstname"}, sowohl sie als auch den Priester zu töten. ${.self:"role":1:"firstname"} geht zu ${.self:"role":2:"firstname"}s Kirche und tötet den Priester, ${.self:"role":2:"firstname"} aber nicht.</de>
@@ -4676,7 +4719,8 @@
 						<all>${.self:"role":4:"fullname"}</all>
 					</title>
 					<title_original>
-						<all>${.self:"role":4:"fullname"}</all>
+						<de>Della Brown</de>
+						<en>Della Brown</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":4:"firstname"}s Vergangenheit mit ${.self:"role":6:"firstname"} wird aufgedeckt und die dunklen Geheimnisse, die sie teilen. Als Johnny von ihrer Verbindung erfährt, wird er von Schuldgefühlen und Reue übermannt, was zu Konflikten führt, die den Zusammenhalt der Band gefährden.</de>
@@ -5098,7 +5142,8 @@
 						<en>Alleys</en>
 					</title>
 					<title_original>
-						<all>Streets</all>
+						<de>Streets</de>
+						<en>Streets</en>
 					</title_original>
 					<description>
 						<de>„${.self:"role":1:"fullname"}“, ${.self:"role":1:"firstname"} kurz für sowohl „de-tox“ als auch „Downtown“, ein Drogenhändler aus New Yorks Straßen, hat enormes Talent und Leidenschaft für Musik, wird Rockstar, verkauft Millionen Alben und spielt ausverkaufte Konzerte.</de>
@@ -5181,8 +5226,8 @@
 						<en>${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"}</en>
 					</title>
 					<title_original>
-						<de>${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"}</de>
-						<en>${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"}</en>
+						<de>Sammy und Tex</de>
+						<en>Sammy and Tex</en>
 					</title_original>
 					<description>
 						<de>Eine Konfrontation mit einer gefahrvollen Vergangenheit: Ein rachsüchtiger Drogendealer namens ${.self:"role":3:"firstname"} sucht ${.self:"role":1:"firstname"} heim und bringt ${.self:"role":1:"firstname"}s Freund ${.self:"role":2:"firstname"} um.</de>
@@ -5194,7 +5239,8 @@
 						<all>St. Patrick's</all>
 					</title>
 					<title_original>
-						<all>St. Patrick's</all>
+						<de>St. Patrick's</de>
+						<en>St. Patrick's</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} rennt blind in die Nacht, bis er in die St. Patrick's Cathedral stolpert. Er bittet Gott um eine Erklärung, warum es Schmerz und Leid gibt.</de>
@@ -5512,7 +5558,8 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="61661455-9607-44fd-a090-c1caa8ee3205" creator="9551" comment="https://en.wikipedia.org/wiki/Dead_Winter_Dead">
 			<title>
-				<all>${dead} ${winter} in ${sarajevo}</all>
+				<de>${dead} ${winter} in ${sarajevo}</de>
+				<en>${dead} ${winter} in ${sarajevo}</en>
 			</title>
 			<title_original>
 				<all>${title_original_optional}</all>
@@ -5545,7 +5592,8 @@
 						<all>Sarajevo</all>
 					</title>
 					<title_original>
-						<all>Sarajevo</all>
+						<de>Sarajevo</de>
+						<en>Sarajevo</en>
 					</title_original>
 					<description>
 						<de>Eröffnungssequenz: Eine steinene Wasserspeier-Kreatur hoch oben auf einer alten gotischen Kirche im noch friedlichen Sarajevo. Seit Jahrhunderten versucht er, die Menschen zu verstehen. Was ist Lachen, was sind Tränen?</de>
@@ -5641,7 +5689,8 @@
 						<all>${dead} ${winter}</all>
 					</title>
 					<title_original>
-						<all>${title_original_optional}</all>
+						<de>Tot Winter Tot</de>
+						<en>Dead Winter Dead</en>
 					</title_original>
 					<description>
 						<de>Obwohl der Winter sein Bestes tut, die Landschaft in eine Decke vorübergehender Unschuld zu hüllen, eskaliert der Krieg in Gewalt und Brutalität. ${.self:"role":1:"firstname"} ist auf Patrouille und macht eine grausame Entdeckung...</de>
@@ -5741,128 +5790,187 @@
 				<de>${.self:"role":1:"firstname"}, ein junger Mann, stirbt auf tragische Weise und wird ein Geist. Unfähig, weiterzugehen, bleibt er an das irdische Reich gebunden, wacht über seine ehemalige Liebe ${.self:"role":2:"firstname"}, und kämpft mit unbewältigten Gefühlen und unvollendeten Angelegenheiten.</de>
 				<en>${.self:"role":1:"firstname"}, a young man, dies tragically and becomes a ghost. Unable to move on, he remains tethered to the earthly realm, watching over his former love ${.self:"role":2:"firstname"}, and grappling with unresolved emotions and unfinished business.</en>
 			</description>
+			<variables> <!-- TODO: change to direct references once that feature is working. ${.self:"parent":"episodes"} currently returns the episode count. Need access to the collection. -->
+				<episode_0_title>
+					<de>Präludium</de>
+					<en>Prelude</en>
+				</episode_0_title>
+				<episode_0_title_original>
+					<de>Prolog</de>
+					<en>Prologue</en>
+				</episode_0_title_original>
+				<episode_1_title>
+					<de>März mystisch</de>
+					<en>March Mystical</en>
+				</episode_1_title>
+				<episode_1_title_original>
+					<de>April ätherisch</de>
+					<en>April Ethereal</en>
+				</episode_1_title_original>
+				<episode_2_title>
+					<de>Wo</de>
+					<en>Where</en>
+				</episode_2_title>
+				<episode_2_title_original>
+					<de>Wann</de>
+					<en>When</en>
+				</episode_2_title_original>
+				<episode_3_title>
+					<de>Choral</de>
+					<en>Chorale</en>
+				</episode_3_title>
+				<episode_3_title_original>
+					<de>Madrigal</de>
+					<en>Madrigal</en>
+				</episode_3_title_original>
+				<episode_4_title>
+					<de>Kammer des Amens</de>
+					<en>The Amen Chamber</en>
+				</episode_4_title>
+				<episode_4_title_original>
+					<de>Ecke des Amens</de>
+					<en>The Amen Corner</en>
+				</episode_4_title_original>
+				<episode_5_title>
+					<de>Teufel der fallenden Blätter</de>
+					<en>Devil of the Fall</en>
+				</episode_5_title>
+				<episode_5_title_original>
+					<de>Dämon der fallenden Blätter</de>
+					<en>Demon of the Fall</en>
+				</episode_5_title_original>
+				<episode_6_title>
+					<de>Glauben</de>
+					<en>Faith</en>
+				</episode_6_title>
+				<episode_6_title_original>
+					<de>Glauben</de>
+					<en>Credence</en>
+				</episode_6_title_original>
+				<episode_7_title>
+					<de>Schicksal</de>
+					<en>Fate</en>
+				</episode_7_title>
+				<episode_7_title_original>
+					<de>Karma</de>
+					<en>Karma</en>
+				</episode_7_title_original>
+				<episode_8_title>
+					<de>Epitaph</de>
+					<en>Epitaph</en>
+				</episode_8_title>
+				<episode_8_title_original>
+					<de>Epilog</de>
+					<en>Epilogue</en>
+				</episode_8_title_original>
+			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="84b6f0ba-2727-41ef-898a-88b2309250d2">
 					<title>
-						<de>Präludium</de>
-						<en>Prelude</en>
+						<all>${episode_0_title}</all>
 					</title>
 					<title_original>
-						<de>Prolog</de>
-						<en>Prologue</en>
+						<all>${episode_0_title}</all> <!-- variable name won't be affected in typical replace operation -->
 					</title_original>
 					<description>
-						<de>Winter. ${.self:"role":1:"firstname"} wohnt seiner eigenen Beerdigung als Geist bei und betrachtet ${.self:"role":2:"firstname"}. Rückblenden über ihre frühere liebevolle Beziehung. „Ich wusste, es war die Ankunft des Frühlings, daher war unser April ätherisch.“</de>
-						<en>Winter. ${.self:"role":1:"firstname"} is attending his own funeral as a ghost, looking at ${.self:"role":2:"firstname"}. Flashbacks about their former loving relationship. "I knew it was the coming of spring, thus our April Ethereal."</en> <!-- TODO: Use title references once supported (last line of a song always refers to the title of next track/episode) -->
+						<de>Winter. ${.self:"role":1:"firstname"} wohnt seiner eigenen Beerdigung als Geist bei und betrachtet ${.self:"role":2:"firstname"}. Rückblenden über ihre frühere liebevolle Beziehung. „Ich wusste, es war die Ankunft des Frühlings, daher war unser ${episode_1_title}.“</de>
+						<en>Winter. ${.self:"role":1:"firstname"} is attending his own funeral as a ghost, looking at ${.self:"role":2:"firstname"}. Flashbacks about their former loving relationship. "I knew it was the coming of spring, thus our ${episode_1_title}."</en> <!-- Using feat of the source material here: Last line of a song always refers to the title of next track/episode -->
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="65e64ed7-32dc-4604-b1fb-3f47ea887856">
 					<title>
-						<de>März mystisch</de>
-						<en>March Mystical</en>
+						<all>${episode_1_title}</all>
 					</title>
 					<title_original>
-						<de>April ätherisch</de>
-						<en>April Ethereal</en>
+						<all>${episode_1_title}</all>
 					</title_original>
 					<description>
-						<de>Frühjahr. Rückblenden über Familie und Freunde und seinen seinen besten Freund ${.self:"role":3:"firstname"}, die nun trauern. ${.self:"role":1:"firstname"} begreift langsam seinen Zustand. Er kann sich ${.self:"role":2:"firstname"} nicht bemerkbar machen. „Ich weiß nicht, wie oder warum, ich werde nie wissen, Wann.“</de>
-						<en>Spring. Flashbacks about family and friends and his best friend ${.self:"role":3:"firstname"}, who are now in mourning. ${.self:"role":1:"firstname"} slowly realizes his condition. He cannot make himself noticeable for ${.self:"role":2:"firstname"}. "I don't know how or why, I'll never know When."</en>
+						<de>Frühjahr. Rückblenden über Familie und Freunde und seinen seinen besten Freund ${.self:"role":3:"firstname"}, die nun trauern. ${.self:"role":1:"firstname"} begreift langsam seinen Zustand. Er kann sich ${.self:"role":2:"firstname"} nicht bemerkbar machen. „Ich weiß nicht, wie oder warum, ich werde nie wissen, ${episode_2_title}.“</de>
+						<en>Spring. Flashbacks about family and friends and his best friend ${.self:"role":3:"firstname"}, who are now in mourning. ${.self:"role":1:"firstname"} slowly realizes his condition. He cannot make himself noticeable for ${.self:"role":2:"firstname"}. "I don't know how or why, I'll never know ${episode_2_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="a47a42c0-ae97-4fd3-9383-a3b7379455a0">
 					<title>
-						<de>Dann</de>
-						<en>Then</en>
+						<all>${episode_2_title}</all>
 					</title>
 					<title_original>
-						<de>Wann</de>
-						<en>When</en>
+						<all>${episode_2_title}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} fühlt sich verloren in der Zeit. Eine höhere Entität ${.self:"role":4:"firstname"} führt ihn. Er hört männliche Stimmen bei ${.self:"role":2:"firstname"}. Sie scheint ihn langsam hinter sich zu lassen. „Das Ende dieses traurigen Madrigal.“</de>
-						<en>${.self:"role":1:"firstname"} feels lost in time. A higher entity ${.self:"role":4:"firstname"} guides him. He hears male voices around ${.self:"role":2:"firstname"}. She seems to be slowly leaving him behind. "The end of this sad Madrigal."</en>
+						<de>${.self:"role":1:"firstname"} fühlt sich verloren in der Zeit. Eine höhere Entität ${.self:"role":4:"firstname"} führt ihn. Er hört männliche Stimmen bei ${.self:"role":2:"firstname"}. Sie scheint ihn langsam hinter sich zu lassen. „Das Ende von diesem traurigen ${episode_3_title}.“</de>
+						<en>${.self:"role":1:"firstname"} feels lost in time. A higher entity ${.self:"role":4:"firstname"} guides him. He hears male voices around ${.self:"role":2:"firstname"}. She seems to be slowly leaving him behind. "The end of this sad ${episode_3_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="132714c6-553f-4eef-a14e-bdb089c84a40">
 					<title>
-						<de>Choral</de>
-						<en>Chorale</en>
+						<all>${episode_3_title}</all>
 					</title>
 					<title_original>
-						<all>Madrigal</all>
+						<all>${episode_3_title}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":3:"firstname"} scheint etwas über ${.self:"role":1:"firstname"}' Todesursache zu wissen. Währenddessen wird dieser immer frustrierter. Wenn er nicht zu ${.self:"role":2:"firstname"} kommen kann, dann sie vielleicht zu ihm. „Du verlierst dich selbst. Du versteckst dich in der Ecke des Amens.“</de>
-						<en>${.self:"role":3:"firstname"} seems to know something about ${.self:"role":1:"firstname"}' cause of death. Meanwhile, the latter becomes increasingly frustrated. If he can't come to ${.self:"role":2:"firstname"}, maybe she can come to him. "You are losing yourself. Hiding within The Amen Corner."</en>
+						<de>${.self:"role":3:"firstname"} scheint etwas über ${.self:"role":1:"firstname"}' Todesursache zu wissen. Währenddessen wird dieser immer frustrierter. Wenn er nicht zu ${.self:"role":2:"firstname"} kommen kann, dann sie vielleicht zu ihm. „Du verlierst dich selbst. Du versteckst dich in der ${episode_4_title}.“</de>
+						<en>${.self:"role":3:"firstname"} seems to know something about ${.self:"role":1:"firstname"}' cause of death. Meanwhile, the latter becomes increasingly frustrated. If he can't come to ${.self:"role":2:"firstname"}, maybe she can come to him. "You are losing yourself. Hiding within ${episode_4_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="3804a3c8-e391-4fa4-aa17-55d1d4ffea8a">
 					<title>
-						<de>Kammer des Amens</de>
-						<en>The Amen Chamber</en>
+						<all>${episode_4_title}</all>
 					</title>
 					<title_original>
-						<de>Ecke des Amens</de>
-						<en>The Amen Corner</en>
+						<all>${episode_4_title}</all>
 					</title_original>
 					<description>
-						<de>Sommer. ${.self:"role":3:"firstname"} merkt, dass etwas Übernatürliches vor sich geht: ${.self:"role":1:"firstname"}' steigende Wut zeigt zeigt langsam Wirkung. Er will nun ${.self:"role":2:"firstname"} mit Gewalt zu sich holen. „Der letzte Funke, der mir Leben einhauchte, der Dämon der fallenden Blätter.“</de>
-						<en>Summer. ${.self:"role":3:"firstname"} realizes that something supernatural is going on: ${.self:"role":1:"firstname"}' rising anger is beginning to have an effect. He now wants to get ${.self:"role":2:"firstname"} to him by force. "The final spark that blew life into me, the Demon of the Fall."</en>
+						<de>Sommer. ${.self:"role":3:"firstname"} merkt, dass etwas Übernatürliches vor sich geht: ${.self:"role":1:"firstname"}' steigende Wut zeigt zeigt langsam Wirkung. Er will nun ${.self:"role":2:"firstname"} mit Gewalt zu sich holen. „Der letzte Funke, der mir Leben einhauchte, der ${episode_5_title}.“</de>
+						<en>Summer. ${.self:"role":3:"firstname"} realizes that something supernatural is going on: ${.self:"role":1:"firstname"}' rising anger is beginning to have an effect. He now wants to get ${.self:"role":2:"firstname"} to him by force. "The final spark that blew life into me, the ${episode_5_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="34fc79a3-2e26-4599-ae9f-2518748c1ca4">
 					<title>
-						<de>Teufel der fallenden Blätter</de>
-						<en>Devil of the Fall</en>
+						<all>${episode_5_title}</all>
 					</title>
 					<title_original>
-						<de>Dämon der fallenden Blätter</de>
-						<en>Demon of the Fall</en>
+						<all>${episode_5_title}</all>
 					</title_original>
 					<description>
-						<de>Herbst. ${.self:"role":1:"firstname"} schafft es endlich, vor ${.self:"role":2:"firstname"} zu erscheinen. Sie sieht ihn ehrfürchtig an - und läuft davon. „Und verloren hatte sie, in mir, ihren Glauben.“</de>
-						<en>Autumn. ${.self:"role":1:"firstname"} finally manages to appear before ${.self:"role":2:"firstname"}. She faces him in awe - and runs away. "And she had lost in me, her Credence."</en>
+						<de>Herbst. ${.self:"role":1:"firstname"} schafft es endlich, vor ${.self:"role":2:"firstname"} zu erscheinen. Sie sieht ihn ehrfürchtig an - und läuft davon. „Und verloren hatte sie, in mir, ihren ${episode_6_title}.“</de>
+						<en>Autumn. ${.self:"role":1:"firstname"} finally manages to appear before ${.self:"role":2:"firstname"}. She faces him in awe - and runs away. "And she had lost in me, her ${episode_6_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="612d52b8-27f4-4c40-af4e-a0839fad7c62">
 					<title>
-						<de>Glauben</de>
-						<en>Faith</en>
+						<all>${episode_6_title}</all>
 					</title>
 					<title_original>
-						<de>Glauben</de>
-						<en>Credence</en>
+						<all>${episode_6_title}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} erkennt die Furcht, die er in ${.self:"role":2:"firstname"} ausgelöst hat, und die Fehler seiner Handlungen. „Die Bestätigung des Nachrufs meiner Seele und das Aufzeigen des einst unbekannten Karma.“</de>
-						<en>${.self:"role":1:"firstname"} recognizes the fear he has caused in ${.self:"role":2:"firstname"} and the error of his ways. "Confirming the epitaph of my soul and displaying the once unknown Karma."</en>
+						<de>${.self:"role":1:"firstname"} erkennt die Furcht, die er in ${.self:"role":2:"firstname"} ausgelöst hat, und die Fehler seiner Handlungen. „Die Bestätigung des Nachrufs meiner Seele und das Aufzeigen des einst unbekannten ${episode_7_title}.“</de>
+						<en>${.self:"role":1:"firstname"} recognizes the fear he has caused in ${.self:"role":2:"firstname"} and the error of his ways. "Confirming the epitaph of my soul and displaying the once unknown ${episode_7_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="1649de50-4a66-494a-8502-63946ca0b538">
 					<title>
-						<de>Schicksal</de>
-						<en>Fate</en>
+						<all>${episode_7_title}</all>
 					</title>
 					<title_original>
-						<all>Karma</all>
+						<all>${episode_7_title}</all>
 					</title_original>
 					<description>
-						<de>Winter. ${.self:"role":2:"firstname"} versucht, das Erlebte zu verarbeiten. ${.self:"role":1:"firstname"} beginnt, mit Hilfe von ${.self:"role":4:"firstname"} seinen Tod zu akzeptieren. „Gehüllt in ein Schicksal, das ich nicht ändern konnte, und immer bereit für des Winters Epilog.“</de>
-						<en>Winter. ${.self:"role":2:"firstname"} tries to come to terms with what she has experienced. ${.self:"role":1:"firstname"} begins to accept his death with the help of ${.self:"role":4:"firstname"}. "Draped within a fate I could not change, and always welcoming Winter's Epilogue."</en>
+						<de>Winter. ${.self:"role":2:"firstname"} versucht, das Erlebte zu verarbeiten. ${.self:"role":1:"firstname"} beginnt, mit Hilfe von ${.self:"role":4:"firstname"} seinen Tod zu akzeptieren. „Gehüllt in ein Schicksal, das ich nicht ändern konnte, und immer bereit für des Winters ${episode_8_title}.“</de>
+						<en>Winter. ${.self:"role":2:"firstname"} tries to come to terms with what she has experienced. ${.self:"role":1:"firstname"} begins to accept his death with the help of ${.self:"role":4:"firstname"}. "Draped within a fate I could not change, and always welcoming Winter's ${episode_8_title}."</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="e0e5726b-7253-4807-8212-6ea330968198">
 					<title>
-						<all>Epitaph</all>
+						<all>${episode_8_title}</all>
 					</title>
 					<title_original>
-						<de>Epilog</de>
-						<en>Epilogue</en>
+						<all>${episode_8_title}</all>
 					</title_original>
 					<description>
-						<de>Die letzten Geheimnisse werden gelüftet, und die noch unvollendeten Angelegenheiten werden aufgelöst, so dass ${.self:"role":1:"firstname"} an einen neuen Ort gehen kann. „Aufsteigen und allen erzählen von der Schönheit und dem Prolog.“</de>
-						<en>The last secrets are revealed and the remaining unfinished business is resolved so that ${.self:"role":1:"firstname"} can go to a new place. "Rising and telling everyone about the beauty of its Prologue."</en>
+						<de>Die letzten Geheimnisse werden gelüftet, und die noch unvollendeten Angelegenheiten werden aufgelöst, so dass ${.self:"role":1:"firstname"} an einen neuen Ort gehen kann. „Aufsteigen und allen erzählen von der Schönheit und dem ${episode_0_title}.“</de>
+						<en>The last secrets are revealed and the remaining unfinished business is resolved so that ${.self:"role":1:"firstname"} can go to a new place. "Rising and telling everyone about the beauty of its ${episode_0_title}."</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -6031,7 +6139,8 @@
 				<all>Darkwater Grove</all>
 			</title>
 			<title_original>
-				<all>Blackwater Park</all>
+				<de>Blackwater Park</de>
+				<en>Blackwater Park</en>
 			</title_original>
 			<description>
 				<de>Geschichten über das titelgebende kleine, verwunschene Städtchen, das von einem Fluch heimgesucht zu werden scheint, lose verbunden durch die Rahmenhandlung der Ankunft von ${.self:"role":1:"firstname"}, einer aufgewühlten jungen Frau mit einer bewegten Vergangenheit.</de>
@@ -6062,8 +6171,8 @@
 						<en>Bleak</en>
 					</title_original>
 					<description>
-						<de>Detective ${.self:"role":3:"firstname"} untersucht eine Reihe mysteriöser Todesfälle, die den Ort schon eine Weile lang heimsuchen. Seine eigene Vergangenheit ist durchzogen von Verlust und Reue. Er lernt ${.self:"role":1:"firstname"} kennen und fühlt sich von ihrer rätselhaften Präsenz angezogen.</de>
-						<en>Detective ${.self:"role":3:"firstname"} is investigating a series of mysterious deaths that have been haunting the town for a while. His own past is riddled with loss and regret. He meets ${.self:"role":1:"firstname"} and is drawn to her enigmatic presence.</en>
+						<de>Detective ${.self:"role":3:"lastname"} untersucht eine Reihe mysteriöser Todesfälle, die den Ort schon eine Weile lang heimsuchen. Seine eigene Vergangenheit ist durchzogen von Verlust und Reue. Er lernt ${.self:"role":1:"firstname"} kennen und fühlt sich von ihrer rätselhaften Präsenz angezogen.</de>
+						<en>Detective ${.self:"role":3:"lastname"} is investigating a series of mysterious deaths that have been haunting the town for a while. His own past is riddled with loss and regret. He meets ${.self:"role":1:"firstname"} and is drawn to her enigmatic presence.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="7d552a8f-e9a3-45d9-ab07-6b9a0d87d23c">
@@ -6090,8 +6199,8 @@
 						<en>The Drapery Falls</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":3:"firstname"} besucht ${.self:"role":5:"firstname"}, eine geheimnisvolle Frau, die behauptet, mit den Toten kommunizieren zu können. Sie channelt eine Entität, die vom Städtchen Besitz ergriffen haben will und möchte, dass die Menschheit für ihre Sünden büßt.</de>
-						<en>${.self:"role":3:"firstname"} visits ${.self:"role":5:"firstname"}, a mysterious woman who claims to be able to communicate with the dead. She channels an entity that claims to have taken possession of the village and wants humanity to atone for its sins.</en>
+						<de>${.self:"role":3:"lastname"} besucht ${.self:"role":5:"firstname"}, eine geheimnisvolle Frau, die behauptet, mit den Toten kommunizieren zu können. Sie channelt eine Entität, die vom Städtchen Besitz ergriffen haben will und möchte, dass die Menschheit für ihre Sünden büßt.</de>
+						<en>${.self:"role":3:"lastname"} visits ${.self:"role":5:"firstname"}, a mysterious woman who claims to be able to communicate with the dead. She channels an entity that claims to have taken possession of the village and wants humanity to atone for its sins.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="4f9840a1-db25-41c4-9ee1-7cb5f0a2975d">
@@ -6158,8 +6267,8 @@
 						<en>Still Day Beneath the Sun</en>
 					</title_original>
 					<description>
-						<de>Das Chaos hat sich in einigen Tötungen entladen, die nicht mehr nur mehr vom bisherigen Serientäter alleine durchgeführt wurden. ${.self:"role":3:"firstname"} ist hoffnungslos überfordert. Zum Glück ist vorerst wieder etwas Ruhe eingekehrt.</de>
-						<en>The chaos has erupted in a number of killings that were no longer carried out by the previous serial killer alone. ${.self:"role":3:"firstname"} is hopelessly overwhelmed. Fortunately, calm has returned for the time being.</en>
+						<de>Das Chaos hat sich in einigen Tötungen entladen, die nicht mehr nur mehr vom bisherigen Serientäter alleine durchgeführt wurden. ${.self:"role":3:"lastname"} ist hoffnungslos überfordert. Zum Glück ist vorerst wieder etwas Ruhe eingekehrt.</de>
+						<en>The chaos has erupted in a number of killings that were no longer carried out by the previous serial killer alone. ${.self:"role":3:"lastname"} is hopelessly overwhelmed. Fortunately, calm has returned for the time being.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="d2861985-32d2-4d08-ab12-615e15d64a70">
@@ -6204,11 +6313,11 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="42f179f3-7ae8-45bd-9d15-4a9fcbee93c6" creator="9551" comment="https://en.wikipedia.org/wiki/Ghost_Reveries | originally only 'half' a concept album, 'completed' from fan forums and via ChatGPT">
 			<title>
-				<de>Geistträumereien</de>
+				<de>Gespenstische Rêverie</de>
 				<en>Eerie Reveries</en>
 			</title>
 			<title_original>
-				<de>Geistträumereien</de>
+				<de>Gespenstische Rêverie</de>
 				<en>Ghost Reveries</en>
 			</title_original>
 			<description>
@@ -6667,8 +6776,8 @@
 				<en>The ${mystery_object_reference} of ${donkeybay_object_reference}</en>
 			</title_original>
 			<description>
-				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund ${.self:"role":1:"fullname"} strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat ${.self:"role":3:"fullname"}. Und dann ist da noch die Liebe.</de> <!-- TODO: ROLELASTx? -->
-				<en>Deep in the Caribbean few 'undred yearsies ago. Youngster ${.self:"role":1:"fullname"} gets stranded on a pirate island. But that be jus' fine, always wanted t' be a pirate anyway. Howe'er, area be 'aunted by ghost pirate ${.self:"role":3:"fullname"}. An' then thar also be love.</en>
+				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund ${.self:"role":1:"fullname"} strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat ${.self:"role":3:"lastname"}. Und dann ist da noch die Liebe.</de>
+				<en>Deep in the Caribbean few 'undred yearsies ago. Youngster ${.self:"role":1:"fullname"} gets stranded on a pirate island. But that be jus' fine, always wanted t' be a pirate anyway. Howe'er, area be 'aunted by ghost pirate ${.self:"role":3:"lastname"}. An' then thar also be love.</en>
 			</description>
 			<variables>
 				<hurlyeisland_object_reference> <!-- introducing 'xyz_object_reference' and 'xyz_object_reference_original' as a convention to enable search-and-replace if one wants to play with original names of places, objects etc -->
@@ -6725,8 +6834,8 @@
 						<all>${hurlyeisland_object_reference}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} ist erstmal auf ${hurlyeisland_object_reference} gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen ${.self:"role":3:"fullname"} vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
-						<en>${.self:"role":1:"firstname"} is stranded on ${hurlyeisland_object_reference} for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of ${.self:"role":3:"fullname"}, actually seasoned men, and other bizarre characters.</en>
+						<de>${.self:"role":1:"firstname"} ist erstmal auf ${hurlyeisland_object_reference} gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen ${.self:"role":3:"lastname"} vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
+						<en>${.self:"role":1:"firstname"} is stranded on ${hurlyeisland_object_reference} for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of ${.self:"role":3:"lastname"}, actually seasoned men, and other bizarre characters.</en>
 					</description>
 					<effects>
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c48d5851-d9f8-4fc1-8d34-264dfa3f6384" />
@@ -6784,8 +6893,8 @@
 						<en>Treasure Hunt</en>
 					</title_original>
 					<description>
-						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt ${.self:"role":1:"firstname"}, dass ${.self:"role":3:"fullname"} ${.self:"role":2:"firstname"} auch immer liebte und für sie das ${donkeybay_object_reference}-${mystery_object_reference} lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
-						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, ${.self:"role":1:"firstname"} learns that ${.self:"role":3:"fullname"} always loved ${.self:"role":2:"firstname"}, too, and wanted to uncover the ${mystery_object_reference} of ${donkeybay_object_reference} for her, but became a ghost pirate there instead.</en>
+						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt ${.self:"role":1:"firstname"}, dass ${.self:"role":3:"lastname"} ${.self:"role":2:"firstname"} auch immer liebte und für sie das ${donkeybay_object_reference}-${mystery_object_reference} lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
+						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, ${.self:"role":1:"firstname"} learns that ${.self:"role":3:"lastname"} always loved ${.self:"role":2:"firstname"}, too, and wanted to uncover the ${mystery_object_reference} of ${donkeybay_object_reference} for her, but became a ghost pirate there instead.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="ce069d69-7735-4270-814a-eb5f20c895dd">
@@ -6798,8 +6907,8 @@
 						<en>Behind you, a three-headed monkey!</en>
 					</title_original>
 					<description>
-						<de>Jetzt kann sich ${.self:"role":1:"firstname"} ein Pirat schimpfen, aber oh Schreck! ${.self:"role":3:"fullname"} hat mit seinem Geisterschiff ${.self:"role":2:"firstname"} entführt! ${donkeybay_object_reference}, nicht nur eine Sage! ${.self:"role":1:"firstname"} muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
-						<en>Now ${.self:"role":1:"firstname"} can call himself a pirate, but oh horrors! ${.self:"role":3:"fullname"} has kidnapped ${.self:"role":2:"firstname"} with his ghost ship! ${donkeybay_object_reference}, not just a legend! ${.self:"role":1:"firstname"} must round up a crew and sail to this island.</en>
+						<de>Jetzt kann sich ${.self:"role":1:"firstname"} ein Pirat schimpfen, aber oh Schreck! ${.self:"role":3:"lastname"} hat mit seinem Geisterschiff ${.self:"role":2:"firstname"} entführt! ${donkeybay_object_reference}, nicht nur eine Sage! ${.self:"role":1:"firstname"} muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
+						<en>Now ${.self:"role":1:"firstname"} can call himself a pirate, but oh horrors! ${.self:"role":3:"lastname"} has kidnapped ${.self:"role":2:"firstname"} with his ghost ship! ${donkeybay_object_reference}, not just a legend! ${.self:"role":1:"firstname"} must round up a crew and sail to this island.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="0f626bb5-c7fb-4c51-aea7-4fe00f012cad">
@@ -6844,16 +6953,16 @@
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="b93968b6-f863-44a5-b7c4-42a6f434f0a5">
 					<title>
-						<de>${.self:"role":3:"fullname"}'s Schiff</de>
-						<en>${.self:"role":3:"fullname"}'s ship</en>
+						<de>${.self:"role":3:"lastname"}s Schiff</de>
+						<en>${.self:"role":3:"lastname"}'s ship</en>
 					</title>
 					<title_original>
-						<de>${.self:"role":3:"fullname"}'s Schiff</de>
-						<en>${.self:"role":3:"fullname"}'s ship</en>
+						<de>LeChucks Schiff</de>
+						<en>LeChuck's ship</en>
 					</title_original>
 					<description>
-						<de>Schließlich gelangt ${.self:"role":1:"firstname"} in die Höhlen unter der Insel, wo ${.self:"role":3:"fullname"}s Geisterschiff auf Anker liegt. Er klaut Voodoo-Zutaten von dort, und die Kannibalen brauen für ihn dann ein Geistervernichtungs-Elixier.</de>
-						<en>Finally, ${.self:"role":1:"firstname"} gets to the caves under the island, where ${.self:"role":3:"fullname"}'s ghost ship is at anchor. He steals voodoo ingredients from there, and the cannibals then brew a ghost-destroying elixir for him.</en>
+						<de>Schließlich gelangt ${.self:"role":1:"firstname"} in die Höhlen unter der Insel, wo ${.self:"role":3:"lastname"}s Geisterschiff auf Anker liegt. Er klaut Voodoo-Zutaten von dort, und die Kannibalen brauen für ihn dann ein Geistervernichtungs-Elixier.</de>
+						<en>Finally, ${.self:"role":1:"firstname"} gets to the caves under the island, where ${.self:"role":3:"lastname"}'s ghost ship is at anchor. He steals voodoo ingredients from there, and the cannibals then brew a ghost-destroying elixir for him.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="c5c297fc-ecbb-4595-a342-40fc8f1d3b27">
@@ -6866,8 +6975,8 @@
 						<en>Back to ${hurlyeisland_object_reference}</en>
 					</title_original>
 					<description>
-						<de>Doch ${.self:"role":3:"fullname"} ist inzwischen wieder zurückgesegelt, um ${.self:"role":2:"firstname"} zu heiraten. ${.self:"role":1:"firstname"} muss die Kirche auf ${hurlyeisland_object_reference} stürmen, um das zu verhindern!</de>
-						<en>But ${.self:"role":3:"fullname"} has since sailed back to marry ${.self:"role":2:"firstname"}. ${.self:"role":1:"firstname"} must gatecrash the church on ${hurlyeisland_object_reference} to prevent this!</en>
+						<de>Doch ${.self:"role":3:"lastname"} ist inzwischen wieder zurückgesegelt, um ${.self:"role":2:"firstname"} zu heiraten. ${.self:"role":1:"firstname"} muss die Kirche auf ${hurlyeisland_object_reference} stürmen, um das zu verhindern!</de>
+						<en>But ${.self:"role":3:"lastname"} has since sailed back to marry ${.self:"role":2:"firstname"}. ${.self:"role":1:"firstname"} must gatecrash the church on ${hurlyeisland_object_reference} to prevent this!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="a38b5c1a-ee98-49f8-83d0-06a3d27a5eaf">
@@ -6880,8 +6989,8 @@
 						<en>The Elixir</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":2:"firstname"} kann sich schon ganz gut selbst helfen. Und ${.self:"role":1:"firstname"} verliert auch noch das Elixier bei seiner tollpatschigen Rettungsaktion. Wie kann er nun im großen Showdown ${.self:"role":3:"fullname"} doch noch besiegen?</de>
-						<en>${.self:"role":2:"firstname"} can already help herself quite well. And ${.self:"role":1:"firstname"} also loses the elixir during his clumsy rescue attempt. How can he still defeat ${.self:"role":3:"fullname"} in the big showdown?</en>
+						<de>${.self:"role":2:"firstname"} kann sich schon ganz gut selbst helfen. Und ${.self:"role":1:"firstname"} verliert auch noch das Elixier bei seiner tollpatschigen Rettungsaktion. Wie kann er nun im großen Showdown ${.self:"role":3:"lastname"} doch noch besiegen?</de>
+						<en>${.self:"role":2:"firstname"} can already help herself quite well. And ${.self:"role":1:"firstname"} also loses the elixir during his clumsy rescue attempt. How can he still defeat ${.self:"role":3:"lastname"} in the big showdown?</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -6910,16 +7019,16 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="c48d5851-d9f8-4fc1-8d34-264dfa3f6384" creator="9551" comment="https://de.wikipedia.org/wiki/Monkey_Island_2:_LeChuck%E2%80%99s_Revenge">
 			<title>
-				<de>${.self:"role":3:"fullname"} schlägt zurück</de>
-				<en>${.self:"role":3:"fullname"} Strikes Back</en>
+				<de>${.self:"role":3:"lastname"} schlägt zurück</de>
+				<en>${.self:"role":3:"lastname"} Strikes Back</en>
 			</title>
 			<title_original>
-				<de>${.self:"role":3:"fullname"}s Rache</de>
-				<en>${.self:"role":3:"fullname"}s's Revenge</en>
+				<de>LeChucks Rache</de>
+				<en>LeChuck's Revenge</en>
 			</title_original>
 			<description>
-				<de>${.self:"role":1:"firstname"} hat sich einen Bart wachsen lassen, ist aber immer noch nicht so überzeugend als Pirat. Also möchte er es endgültig allen beweisen und den legendären Schatz „Big Whoop“ finden. Doch der untote ${.self:"role":3:"fullname"} kehrt in noch untoterer Form zurück.</de>
-				<en>${.self:"role":1:"firstname"}, who has grown a beard but still is not so convincing as a pirate, wants to finally prove it to everyone and find the legendary treasure "Big Whoop". But the undead ${.self:"role":3:"fullname"} returns in an even more undead form.</en>
+				<de>${.self:"role":1:"firstname"} hat sich einen Bart wachsen lassen, ist aber immer noch nicht so überzeugend als Pirat. Also möchte er es endgültig allen beweisen und den legendären Schatz „Big Whoop“ finden. Doch der untote ${.self:"role":3:"lastname"} kehrt in noch untoterer Form zurück.</de>
+				<en>${.self:"role":1:"firstname"}, who has grown a beard but still is not so convincing as a pirate, wants to finally prove it to everyone and find the legendary treasure "Big Whoop". But the undead ${.self:"role":3:"lastname"} returns in an even more undead form.</en>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="a89e4f67-3f62-4f43-b36a-0066466a9910">
@@ -6928,8 +7037,8 @@
 						<en>The ${.self:"role":6:"firstname"} Embargo</en>
 					</title>
 					<title_original>
-						<de>Das ${.self:"role":6:"firstname"}-Embargo</de>
-						<en>The ${.self:"role":6:"firstname"} Embargo</en>
+						<de>Das Largo-Embargo</de>
+						<en>The Largo Embargo</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} ist auf der Suche nach dem legendären Schatz „Big Whoop“ auf Scabb Island, als er mit ${.self:"role":6:"firstname"}s völlig legitimen Raubüberfall und einem Insel-Embargo konfrontiert wird. Er freundet sich in Woodtick mit Kartenmacher ${.self:"role":5:"firstname"} an.</de>
@@ -6960,8 +7069,8 @@
 						<en>A Voodoo Confrontation</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} setzt eine Voodoo-Puppe gegen ${.self:"role":6:"firstname"} ein, aber ein schwerer Fehler bringt den rachsüchtigen ${.self:"role":3:"fullname"} zurück.</de>
-						<en>${.self:"role":1:"firstname"} uses a voodoo doll against ${.self:"role":6:"firstname"}, but a grave mistake brings back the vengeful ${.self:"role":3:"fullname"}.</en>
+						<de>${.self:"role":1:"firstname"} setzt eine Voodoo-Puppe gegen ${.self:"role":6:"firstname"} ein, aber ein schwerer Fehler bringt den rachsüchtigen ${.self:"role":3:"lastname"} zurück.</de>
+						<en>${.self:"role":1:"firstname"} uses a voodoo doll against ${.self:"role":6:"firstname"}, but a grave mistake brings back the vengeful ${.self:"role":3:"lastname"}.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="1a28e944-a682-4320-b898-901c2b345615">
@@ -6974,8 +7083,8 @@
 						<en>Revenge from Beyond the Grave</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":3:"fullname"} kehrt als Zombie zurück, um sich an ${.self:"role":1:"firstname"} zu rächen. Um ihm zu entkommen, verrät die Voodoo-Lady das Geheimnis von Big Whoop.</de>
-						<en>${.self:"role":3:"fullname"} returns as a zombie, seeking revenge on ${.self:"role":1:"firstname"}. The Voodoo Lady reveals the secret of Big Whoop to escape him.</en>
+						<de>${.self:"role":3:"lastname"} kehrt als Zombie zurück, um sich an ${.self:"role":1:"firstname"} zu rächen. Um ihm zu entkommen, verrät die Voodoo-Lady das Geheimnis von Big Whoop.</de>
+						<en>${.self:"role":3:"lastname"} returns as a zombie, seeking revenge on ${.self:"role":1:"firstname"}. The Voodoo Lady reveals the secret of Big Whoop to escape him.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="83d14cdc-230d-46af-8d8b-1282c251d440">
@@ -7012,8 +7121,8 @@
 						<en>${.self:"role":4:"firstname"}, Coffins, and Reunions</en>
 					</title>
 					<title_original>
-						<de>${.self:"role":4:"firstname"}, Särge und Wiedersehen</de>
-						<en>${.self:"role":4:"firstname"}, Coffins, and Reunions</en>
+						<de>Stan, Särge und Wiedersehen</de>
+						<en>Stan, Coffins, and Reunions</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} begegnet ${.self:"role":4:"firstname"}, der nun gebrauchte Särge verkauft, und trifft ${.self:"role":2:"firstname"} auf Booty Island im Laufe verschiedener Abenteuer wie einem Spuckwettbewerb.</de>
@@ -7036,16 +7145,16 @@
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="33239572-ffe7-4b68-81e2-86e88a6d7705">
 					<title>
-						<de>${.self:"role":3:"fullname"}s Festung</de>
-						<en>${.self:"role":3:"fullname"}'s Fortress</en>
+						<de>${.self:"role":3:"lastname"}s Festung</de>
+						<en>${.self:"role":3:"lastname"}'s Fortress</en>
 					</title>
 					<title_original>
-						<de>${.self:"role":3:"fullname"}s Festung</de>
-						<en>${.self:"role":3:"fullname"}'s Fortress</en>
+						<de>LeChucks Festung</de>
+						<en>LeChuck's Fortress</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":3:"fullname"} entführt ${.self:"role":5:"firstname"} und die Karte, was ${.self:"role":1:"firstname"} dazu zwingt, dessen Festung zu infiltrieren und sich großer Gefahr zu stellen.</de>
-						<en>${.self:"role":3:"fullname"} kidnaps ${.self:"role":5:"firstname"} and the map, leading ${.self:"role":1:"firstname"} to infiltrate his fortress and face great danger.</en>
+						<de>${.self:"role":3:"lastname"} entführt ${.self:"role":5:"firstname"} und die Karte, was ${.self:"role":1:"firstname"} dazu zwingt, dessen Festung zu infiltrieren und sich großer Gefahr zu stellen.</de>
+						<en>${.self:"role":3:"lastname"} kidnaps ${.self:"role":5:"firstname"} and the map, leading ${.self:"role":1:"firstname"} to infiltrate his fortress and face great danger.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="6d1ad74b-6fd7-49f2-82e7-bc27b7fac6f0">
@@ -7053,7 +7162,8 @@
 						<all>Dinky Island</all>
 					</title>
 					<title_original>
-						<all>Dinky Island</all>
+						<de>Dinky Island</de>
+						<en>Dinky Island</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} kommt auf Dinky Island an, entdeckt das Versteck von Big Whoop und sieht sich unter der Erde unheimlichen Offenbarungen gegenüber.</de>
@@ -7070,8 +7180,8 @@
 						<en>The Voodoo Showdown</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} und ${.self:"role":3:"fullname"} liefern sich ein Voodoo-Duell, und schockierende Familiengeheimnisse werden enthüllt.</de>
-						<en>${.self:"role":1:"firstname"} and ${.self:"role":3:"fullname"} engage in a voodoo duel, and shocking family secrets are revealed.</en>
+						<de>${.self:"role":1:"firstname"} und ${.self:"role":3:"lastname"} liefern sich ein Voodoo-Duell, und schockierende Familiengeheimnisse werden enthüllt.</de>
+						<en>${.self:"role":1:"firstname"} and ${.self:"role":3:"lastname"} engage in a voodoo duel, and shocking family secrets are revealed.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="ae371367-645b-4f6b-83b8-c0c0614de2a7">
@@ -7120,7 +7230,8 @@
 				<all>The Excavation</all>
 			</title>
 			<title_original>
-				<all>The Dig</all>
+				<de>The Dig</de>
+				<en>The Dig</en>
 			</title_original>
 			<description>
 				<de>Ein Asteroid auf Kollisionskurs mit der Erde. Mission: Hinfliegen und Atomsprengkörper verbuddeln. Was sich nur wie der nächste übliche Weltuntergangsfilm anlässt, nimmt eine überraschende Wendung, denn der Asteroid entpuppt sich als etwas anderes.
@@ -7209,7 +7320,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<studio_size value="3" />
 			<availability year_range_from="1990" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" comment="https://en.wikipedia.org/wiki/Commander_Keen | TODO: apply proper nickname references of Ween/Keen once feature is available">
+		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" comment="https://en.wikipedia.org/wiki/Commander_Keen">
 			<title>
 				<all>${title_spoofed}</all>
 			</title>
@@ -7217,17 +7328,17 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<all>${title_original_optional}</all>
 			</title_original>
 			<description>
-				<de>Cartoon-Reihe über den 8-jährigen Wunderknaben ${.self:"role":1:"fullname"}. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu ${captain} ${ween_object_reference} und macht sich auf...</de>
-				<en>Cartoon series about the 8-year-old boy genius ${.self:"role":1:"fullname"}. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes ${captain} ${ween_object_reference} and sets out...</en>
+				<de>Cartoon-Reihe über den 8-jährigen Wunderknaben ${.self:"role":1:"fullname"}. Er baut aus einem Staubsauger ein Raumfahrzeug, schnappt sich seinen Pogo-Stick, setzt den Footballhelm seines älteren Bruders auf, wird zu ${captain} ${.self:"role":1:"nickname"} und macht sich auf...</de>
+				<en>Cartoon series about the 8-year-old boy genius ${.self:"role":1:"fullname"}. He builds a spacecraft out of a vacuum cleaner, grabs his pogo stick, puts on his older brother's football helmet, becomes ${captain} ${.self:"role":1:"nickname"} and sets out...</en>
 			</description>
 			<variables>
 				<title_spoofed>
-					<de>Die ${space}${adventures} des ${captain} ${ween_object_reference}|Die ${galactic} ${adventures_c} des ${captain} ${ween_object_reference}</de>
-					<en>The ${space} ${adventures} of ${captain} ${ween_object_reference}|The ${galactic} ${adventures_c} of ${captain} ${ween_object_reference}</en>
+					<de>Die ${space}${adventures} des ${captain} ${.self:"role":1:"nickname"}|Die ${galactic} ${adventures_c} des ${captain} ${.self:"role":1:"nickname"}</de>
+					<en>The ${space} ${adventures} of ${captain} ${.self:"role":1:"nickname"}|The ${galactic} ${adventures_c} of ${captain} ${.self:"role":1:"nickname"}</en>
 				</title_spoofed>
 				<title_original_optional>
-					<de>${captain} ${ween_object_reference}|Die ${space}${adventures} des ${captain} ${ween_object_reference}|Die ${galactic} ${adventures_c} des ${captain} ${ween_object_reference}</de>
-					<en>${captain} ${ween_object_reference}|The ${space} ${adventures} of ${captain} ${ween_object_reference}|The ${galactic} ${adventures_c} of ${captain} ${ween_object_reference}</en>
+					<de>${captain} ${.self:"role":1:"nickname"}|Die ${space}${adventures} des ${captain} ${.self:"role":1:"nickname"}|Die ${galactic} ${adventures_c} des ${captain} ${.self:"role":1:"nickname"}</de>
+					<en>${captain} ${.self:"role":1:"nickname"}|The ${space} ${adventures} of ${captain} ${.self:"role":1:"nickname"}|The ${galactic} ${adventures_c} of ${captain} ${.self:"role":1:"nickname"}</en>
 				</title_original_optional>
 				<space>
 					<de>Weltraum|Weltall|Sternen|Galaxis</de>
@@ -7248,12 +7359,6 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<captain> <!-- TODO: should actually be defined in programmerole; but maybe can be variable even when playing with original names -->
 					<all>Captain|Colonel|Commander|Admiral</all>
 				</captain>
-				<ween_object_reference>
-					<all>Ween</all>
-				</ween_object_reference>
-				<ween_object_reference_original>
-					<all>Keen</all>
-				</ween_object_reference_original>
 				<gnostika_object_reference>
 					<all>Gnostika</all>
 				</gnostika_object_reference>
@@ -7288,12 +7393,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Invasion of the ${.self:"role":3:"firstname"}s</en>
 					</title>
 					<title_original>
-						<de>Invasion der ${.self:"role":3:"firstname"}s</de>
-						<en>Invasion of the ${.self:"role":3:"firstname"}s</en>
+						<de>Invasion der Vorticons</de>
+						<en>Invasion of the Vorticons</en>
 					</title_original>
 					<description>
-						<de>${ween_object_reference} schafft es rechtzeitig zurück zur Erde, bevor seine Eltern nach Hause kommen. Seinen neuen Gefährten, den kleinen grünen einäugigen ${.self:"role":2:"firstname"}, kann er jedoch nicht verstecken. Die ${.self:"role":3:"firstname"}s haben inzwischen ein Mutterschiff im Erdorbit...</de>
-						<en>${ween_object_reference} makes it back to Earth in time before his parents come home. However, he can't hide his new companion, the little green one-eyed ${.self:"role":2:"firstname"}. The ${.self:"role":3:"firstname"}s, meanwhile, have a mothership in Earth orbit...</en>
+						<de>${.self:"role":1:"nickname"} schafft es rechtzeitig zurück zur Erde, bevor seine Eltern nach Hause kommen. Seinen neuen Gefährten, den kleinen grünen einäugigen ${.self:"role":2:"firstname"}, kann er jedoch nicht verstecken. Die ${.self:"role":3:"firstname"}s haben inzwischen ein Mutterschiff im Erdorbit...</de>
+						<en>${.self:"role":1:"nickname"} makes it back to Earth in time before his parents come home. However, he can't hide his new companion, the little green one-eyed ${.self:"role":2:"firstname"}. The ${.self:"role":3:"firstname"}s, meanwhile, have a mothership in Earth orbit...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="e1360097-a12f-4cbf-81a8-a7299d9ee789">
@@ -7306,22 +7411,22 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Earth Explodes</en>
 					</title_original>
 					<description>
-						<de>Das ${.self:"role":3:"firstname"}-Mutterschiff hat seine Strahlenkanonen auf mehrere Wahrzeichen auf der Erde gerichtet. Kann ${ween_object_reference} in das Schiff eindringen, die Kanonen finden und vernichten?</de>
-						<en>The ${.self:"role":3:"firstname"} mothership has aimed its ray guns at several landmarks on Earth. Can ${ween_object_reference} penetrate the ship, find the cannons and destroy them?</en>
+						<de>Das ${.self:"role":3:"firstname"}-Mutterschiff hat seine Strahlenkanonen auf mehrere Wahrzeichen auf der Erde gerichtet. Kann ${.self:"role":1:"nickname"} in das Schiff eindringen, die Kanonen finden und vernichten?</de>
+						<en>The ${.self:"role":3:"firstname"} mothership has aimed its ray guns at several landmarks on Earth. Can ${.self:"role":1:"nickname"} penetrate the ship, find the cannons and destroy them?</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="c028f88d-bae8-474f-9654-5e3ff79b05a8">
 					<title>
-						<de>${ween_object_reference} muss sterben!</de>
-						<en>${ween_object_reference} Must Die!</en>
+						<de>${.self:"role":1:"nickname"} muss sterben!</de>
+						<en>${.self:"role":1:"nickname"} Must Die!</en>
 					</title>
 					<title_original>
-						<de>${ween_object_reference} muss sterben!</de>
-						<en>${ween_object_reference} Must Die!</en>
+						<de>Keen muss sterben!</de>
+						<en>Keen Must Die!</en>
 					</title_original>
 					<description>
-						<de>Es stellt sich heraus, die ${.self:"role":3:"firstname"}s werden von einem Großen Gehirn ferngesteuert und kontrolliert. ${ween_object_reference} macht sich auf auf dessen Heimatplaneten...</de>
-						<en>It turns out the ${.self:"role":3:"firstname"}s are remotely controlled by a Great Brain. ${ween_object_reference} sets out for its home planet...</en>
+						<de>Es stellt sich heraus, die ${.self:"role":3:"firstname"}s werden von einem Großen Gehirn ferngesteuert und kontrolliert. ${.self:"role":1:"nickname"} macht sich auf auf dessen Heimatplaneten...</de>
+						<en>It turns out the ${.self:"role":3:"firstname"}s are remotely controlled by a Great Brain. ${.self:"role":1:"nickname"} sets out for its home planet...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="daba5e8b-11ec-4ae0-aae8-10a110bb4784">
@@ -7334,8 +7439,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Secret of the Oracle</en>
 					</title_original>
 					<description>
-						<de>Das Große Gehirn ist besiegt, doch, wie ${ween_object_reference} mittels seinem selbstgebauten überlichtschnellen Radiogerät feststellt: die ${.self:"role":4:"firstname"} wollen die ganze Galaxie zerstören. Vielleicht kann das geheimnisvolle Orakel auf dem Planeten ${gnostika_object_reference} helfen...</de>
-						<en>The Great Brain is defeated, but, as ${ween_object_reference} discovers by means of his self-built faster-than-light radio: the ${.self:"role":4:"firstname"} want to destroy the whole galaxy. Maybe the mysterious oracle on the planet ${gnostika_object_reference} can help...</en>
+						<de>Das Große Gehirn ist besiegt, doch, wie ${.self:"role":1:"nickname"} mittels seinem selbstgebauten überlichtschnellen Radiogerät feststellt: die ${.self:"role":4:"firstname"} wollen die ganze Galaxie zerstören. Vielleicht kann das geheimnisvolle Orakel auf dem Planeten ${gnostika_object_reference} helfen...</de>
+						<en>The Great Brain is defeated, but, as ${.self:"role":1:"nickname"} discovers by means of his self-built faster-than-light radio: the ${.self:"role":4:"firstname"} want to destroy the whole galaxy. Maybe the mysterious oracle on the planet ${gnostika_object_reference} can help...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="be85e20a-3dbc-421a-93d6-5bdfad070ede">
@@ -7348,8 +7453,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Armageddon Machine</en>
 					</title_original>
 					<description>
-						<de>Auf ${gnostika_object_reference} muss ${ween_object_reference} feststellen, dass dessen Rat der Unsterblichen Weisen bereits von den ${.self:"role":4:"firstname"} entführt wurde. ${ween_object_reference} muss die Weisen befreien, um das Orakel aktivieren zu können...</de>
-						<en>On ${gnostika_object_reference}, ${ween_object_reference} finds that its Council of Immortal Sages has already been kidnapped by the ${.self:"role":4:"firstname"}. ${ween_object_reference} must free the sages in order to be able to activate the oracle...</en>
+						<de>Auf ${gnostika_object_reference} muss ${.self:"role":1:"nickname"} feststellen, dass dessen Rat der Unsterblichen Weisen bereits von den ${.self:"role":4:"firstname"} entführt wurde. ${.self:"role":1:"nickname"} muss die Weisen befreien, um das Orakel aktivieren zu können...</de>
+						<en>On ${gnostika_object_reference}, ${.self:"role":1:"nickname"} finds that its Council of Immortal Sages has already been kidnapped by the ${.self:"role":4:"firstname"}. ${.self:"role":1:"nickname"} must free the sages in order to be able to activate the oracle...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="45e0e001-645a-449e-a861-abb17b3192b7">
@@ -7362,8 +7467,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Goodbye, Galaxy</en>
 					</title_original>
 					<description>
-						<de>Vom Orakel erfuhr ${ween_object_reference}, die ${.self:"role":4:"firstname"} sind Schattenwesen von der dunklen Seite der Galaxie und haben auf ${codrakiv_object_reference} eine Vernichtungsmaschine. Sie wollen die Galaxie zerstören und nach ihren Vorstellungen wieder aufbauen. ${ween_object_reference} muss sie stoppen...</de>
-						<en>${ween_object_reference} learned from the oracle that the ${.self:"role":4:"firstname"} are shadow beings from the dark side of the galaxy and have an extermination machine on ${codrakiv_object_reference}. They want to destroy the galaxy and rebuild it according to their ideas. ${ween_object_reference} must stop them...</en>
+						<de>Vom Orakel erfuhr ${.self:"role":1:"nickname"}, die ${.self:"role":4:"firstname"} sind Schattenwesen von der dunklen Seite der Galaxie und haben auf ${codrakiv_object_reference} eine Vernichtungsmaschine. Sie wollen die Galaxie zerstören und nach ihren Vorstellungen wieder aufbauen. ${.self:"role":1:"nickname"} muss sie stoppen...</de>
+						<en>${.self:"role":1:"nickname"} learned from the oracle that the ${.self:"role":4:"firstname"} are shadow beings from the dark side of the galaxy and have an extermination machine on ${codrakiv_object_reference}. They want to destroy the galaxy and rebuild it according to their ideas. ${.self:"role":1:"nickname"} must stop them...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="754c2dec-f377-4b4b-a24a-4b4b3a93b35b">
@@ -7403,20 +7508,20 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<review min="60" max="70" />
 			<speed min="50" max="70" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="https://en.wikipedia.org/wiki/Leisure_Suit_Larry | TODO: ref nicknames once feature available">
+		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="https://en.wikipedia.org/wiki/Leisure_Suit_Larry">
 			<title>
-				<all>Leather Jacket ${.self:"role":1:"firstname"}, ${ladykiller}</all>
+				<all>${.self:"role":1:"nickname"}, ${ladykiller}</all>
 			</title>
 			<title_original>
 				<all>${title_original_optional}</all>
 			</title_original>
 			<description>
-				<de>${.self:"role":1:"firstname"} ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de>
-				<en>${.self:"role":1:"firstname"} is untouched and innocent until his mid-30s. But now he wants to get it done and seeks out a flophouse. After some difficulties... Finally! Slowly he gets the hang of it, and then starts looking for the woman of his life.</en>
+				<de>${.self:"role":1:"fullname"} ist bis Mitte 30 unberührt und unschuldig. Nun will er's aber wissen und sucht eine Absteige auf. Nach einigen Schwierigkeiten... Endlich! Langsam kriegt er den Dreh raus, und beginnt dann nach der Frau seines Lebens zu suchen.</de>
+				<en>${.self:"role":1:"fullname"} is untouched and innocent until his mid-30s. But now he wants to get it done and seeks out a flophouse. After some difficulties... Finally! Slowly he gets the hang of it, and then starts looking for the woman of his life.</en>
 			</description>
 			<variables>
 				<title_original_optional>
-					<all>Leisure Suit ${.self:"role":1:"firstname"}|Leisure Suit ${.self:"role":1:"firstname"}, ${ladykiller}</all>
+					<all>Leisure Suit Larry|Leisure Suit Larry, ${ladykiller}</all>
 				</title_original_optional>
 				<ladykiller>
 					<de>Ladykiller|Schwerenöter vom Dienst|Reizender Charmeur|Bezaubernder Schmeichler</de>
@@ -7426,12 +7531,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="8f5a2c84-89b4-41fe-9e27-3898382f612b">
 					<title>
-						<de>Leather Jacket ${.self:"role":1:"firstname"} aus dem Land der alleinigen Leidhammel</de>
-						<en>Leather jacket ${.self:"role":1:"firstname"} from the Land of the Lone Lobsters</en>
+						<de>${.self:"role":1:"nickname"} aus dem Land der alleinigen Leidhammel</de>
+						<en>${.self:"role":1:"nickname"} from the Land of the Lone Lobsters</en>
 					</title>
 					<title_original>
-						<de>Leisure Suit ${.self:"role":1:"firstname"} im Lande der Lounge-Echsen</de>
-						<en>Leisure Suit ${.self:"role":1:"firstname"} in the Land of the Lounge Lizards</en>
+						<de>Leisure Suit Larry im Lande der Lounge-Echsen</de>
+						<en>Leisure Suit Larry in the Land of the Lounge Lizards</en>
 					</title_original>
 					<description>
 						<de>Es hagelt nur so an Abfuhren. Schließlich in einem schmutzigen Etablissement ... ein nicht so berauschendes Erlebnis, und er fängt sich auch noch was ein. Eine Dame am Pool scheint ihn endlich wirklich ein bisschen zu mögen...</de>
@@ -7454,12 +7559,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="4985f4d8-734b-4991-a7af-eee33546e38f">
 					<title>
-						<de>Fervent ${.self:"role":2:"firstname"} beim Fördern vibrierender Vernakularität</de>
-						<en>Fervent ${.self:"role":2:"firstname"} Fostering Vibrating Vernacular</en>
+						<de>${.self:"role":2:"nickname"} beim Fördern vibrierender Vernakularität</de>
+						<en>${.self:"role":2:"nickname"} Fostering Vibrating Vernacular</en>
 					</title>
 					<title_original>
-						<de>Passionate ${.self:"role":2:"firstname"} auf der Suche nach vibrierenden Muskeln</de>
-						<en>Passionate ${.self:"role":2:"firstname"} in Pursuit of the Pulsating Pectorals</en>
+						<de>Passionate Patti auf der Suche nach vibrierenden Muskeln</de>
+						<en>Passionate Patti in Pursuit of the Pulsating Pectorals</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} hat 5 Jahre lang ein tolles Leben auf Hawaii und eine glückliche Ehe, doch plötzlich wird er verlassen, als sich seine Frau in eine andere Frau verliebt. Nach einigen Abenteuern findet er eine neue für's Leben, aber dann geht was schief...</de>
@@ -7482,12 +7587,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="d7c7c96a-1bc3-4e1b-8875-d20ff1ddf632">
 					<title>
-						<de>Fervent ${.self:"role":2:"firstname"} als wenig verdeckte Ermittlerin</de>
-						<en>Fervent ${.self:"role":2:"firstname"} as an Undercover Agent</en>
+						<de>${.self:"role":2:"nickname"} als wenig verdeckte Ermittlerin</de>
+						<en>${.self:"role":2:"nickname"} as an Undercover Agent</en>
 					</title>
 					<title_original>
-						<de>Passionate ${.self:"role":2:"firstname"} macht beim Geheimdienst mit</de>
-						<en>Passionate ${.self:"role":2:"firstname"} Does a Little Undercover Work</en>
+						<de>Passionate Patti macht beim Geheimdienst mit</de>
+						<en>Passionate Patti Does a Little Undercover Work</en>
 					</title_original>
 					<description>
 						<de>Nach dieser seltsamen Amnesie findet sich ${.self:"role":1:"firstname"} in der Erwachsenenfilmindustrie wieder, für die er weltweit auf der Suche nach Models ist. ${.self:"role":2:"firstname"} ist inzwischen für's FBI unterwegs.</de>
@@ -7527,7 +7632,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<all>Cum hoc ergo cum laude</all>
 					</title>
 					<title_original>
-						<all>Magna Cum Laude</all>
+						<de>Magna Cum Laude</de>
+						<en>Magna Cum Laude</en>
 					</title_original>
 					<description>
 						<de>Ein Spinoff? Es geht diesmal um ${.self:"role":1:"firstname"}s Neffen, der auch ${.self:"role":1:"firstname"} heißt, im College ist und bei einer Dating Show mitmacht. Onkel ${.self:"role":1:"firstname"} gibt immerhin noch wertvolle Tips. Was ist mit ${.self:"role":2:"firstname"}? Ist noch offen, vielleicht in der nächsten Staffel...</de>
@@ -7590,7 +7696,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="077e10fa-d063-4450-9295-0843f89d53b4" comment="https://counterstrike.fandom.com/wiki/Dust">
 					<title>
-						<all>Sand</all>
+						<de>Sand</de>
+						<en>Sand</en>
 					</title>
 					<title_original>
 						<de>Staub</de>
@@ -7603,7 +7710,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="9efeadb2-f6aa-4af1-ba55-c825c9671e5f" comment="https://counterstrike.fandom.com/wiki/Dust_II">
 					<title>
-						<all>Sand 2</all>
+						<de>Sand 2</de>
+						<en>Sand 2</en>
 					</title>
 					<title_original>
 						<de>Staub 2</de>
@@ -7630,7 +7738,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="e7239ea7-da0c-49cd-af93-efafc510b30f" comment="https://counterstrike.fandom.com/wiki/Mirage">
 					<title>
-						<all>Morgana</all>
+						<de>Morgana</de>
+						<en>Morgana</en>
 					</title>
 					<title_original>
 						<de>Morgana</de>
@@ -7647,7 +7756,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Infernal</en>
 					</title>
 					<title_original>
-						<all>Inferno</all>
+						<de>Inferno</de>
+						<en>Inferno</en>
 					</title_original>
 					<description>
 						<de>In einem beschaulichen italienischen Dorf gelten noch Lebensweisheiten wie: Ein Mann soll ein Haus bauen, einen Sohn zeugen und eine Bombe pflanzen. Separatisten wollen zwei Gas-Pipelines in die Luft jagen. Es folgt ein heftiges Gefecht in einer engen Bananengasse.</de>
@@ -7656,10 +7766,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="a66c6bcd-7199-4f5d-9621-66377149c0ba" comment="https://counterstrike.fandom.com/wiki/Office">
 					<title>
-						<all>Business</all>
+						<de>Business</de>
+						<en>Business</en>
 					</title>
 					<title_original>
-						<all>Office</all>
+						<de>Office</de>
+						<en>Office</en>
 					</title_original>
 					<description>
 						<de>Nun wird auch die USA in die Geschehnisse verwickelt, denn eine Anarchisten-Gruppierung hält Geiseln in einem Bürokomplex, vorgeblich ausbeuterische Konzernbosse. Doch es steckt wohl mehr hinter der ganzen Geschichte. Das FBI stürmt die Einrichtung.</de>
@@ -7700,7 +7812,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Vertical</en>
 					</title>
 					<title_original>
-						<all>Vertigo</all>
+						<de>Vertigo</de>
+						<en>Vertigo</en>
 					</title_original>
 					<description>
 						<de>Die „Professionals“ werden angeheuert, um einen im Bau befindlichen Wolkenkratzer zu sprengen. Die Terrorvereinigungen wollen damit ein Zeichen setzen. In schwindelerregenden Höhen kommt es zum Showdown mit dem FBI.</de>
@@ -7709,7 +7822,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="0340cbb9-9a54-488d-8587-23c2cd68c18e" comment="https://counterstrike.fandom.com/wiki/Militia">
 					<title>
-						<all>Militant</all>
+						<de>Militant</de>
+						<en>Militant</en>
 					</title>
 					<title_original>
 						<de>Miliz</de>
@@ -7809,7 +7923,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<all>Turrnado</all>
 			</title>
 			<title_original>
-				<all>Turrican</all>
+				<de>Turrican</de>
+				<en>Turrican</en>
 			</title_original>
 			<description>
 				<de>„Shoot! Or! Die! Hahahaha!“ Flotte Anime-SciFi-Action über Soldat ${.self:"role":1:"fullname"} in seinem biomechanischen Anzug, der die Weltraumkolonie Alterra von der außer Kontrolle geratenen künstlichen Intelligenz M.O.R.G.U.L. befreien muss.</de>
@@ -7837,7 +7952,7 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="eda00285-798d-4ba6-b299-621415d879d1" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="eda00285-798d-4ba6-b299-621415d879d1" creator="9551" comment="https://en.wikipedia.org/wiki/Turrican_II:_The_Final_Fight - TODO: ref person Bruellhaecks / Huelsbeck">
+		<scripttemplate product="1" licence_type="1" guid="eda00285-798d-4ba6-b299-621415d879d1" creator="9551" comment="https://en.wikipedia.org/wiki/Turrican_II:_The_Final_Fight">
 			<title>
 				<de>Turrnado 2: Die Letzte Schlacht</de>
 				<en>Turrnado 2: The Last Battle</en>
@@ -7847,9 +7962,12 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<en>Turrican 2: The Final Fight</en>
 			</title_original>
 			<description>
-				<de>Das United-Planets-Raumschiff Avalon 1 wird von Mutanten angegriffen, angeführt von ${.self:"role":3:"fullname"}. ${.self:"role":1:"fullname"} muss den Tag retten. Erneut inklusive tollem Soundtrack von Claus Bruellhaecks, der sich mal wieder selbst übertroffen hat.</de>
-				<en>The United Planets spaceship Avalon 1 is under attack by mutants, led by ${.self:"role":3:"fullname"}. ${.self:"role":1:"fullname"} must save the day. Once more including a great soundtrack by Claus Bruellhaecks, who has again outdone himself.</en>
+				<de>Das United-Planets-Raumschiff Avalon 1 wird von Mutanten angegriffen, angeführt von ${.self:"role":3:"fullname"}. ${.self:"role":1:"fullname"} muss den Tag retten. Erneut inklusive tollem Soundtrack von ${chrishuelsbeck}, der sich mal wieder selbst übertroffen hat.</de>
+				<en>The United Planets spaceship Avalon 1 is under attack by mutants, led by ${.self:"role":3:"fullname"}. ${.self:"role":1:"fullname"} must save the day. Once more including a great soundtrack by ${chrishuelsbeck}, who has again outdone himself.</en>
 			</description>
+			<variables>
+				<chrishuelsbeck>${.person:"d1de8736-869d-4beb-84df-e784da131741":"fullname"}</chrishuelsbeck>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" role_guid="895e0e5a-277e-41b5-bb3f-bcc5ca8cc812" />
@@ -7909,7 +8027,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<all>Zero Squad</all>
 			</title>
 			<title_original>
-				<all>Zero Wing</all>
+				<de>Zero Wing</de>
+				<en>Zero Wing</en>
 			</title_original>
 			<description>
 				<de>In Jahr 2101 Krieg hat gestartet. - Was passiert? - Jemand hat Bombe uns gesetzt. - Wir haben Signal. - Was ! - Haupt Monitor an. - Es ist Sie !! - Wie geht meine Herren !! ALL IHR BASIS NUN GEHÖREN UNS !! Sie haben nicht Chance überleben machen Sie Ihre Zeit.</de>
@@ -7942,7 +8061,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<en>Pajama-Palooza</en>
 			</title>
 			<title_original>
-				<all>Pyjamarama</all>
+				<de>Pyjamarama</de>
+				<en>Pyjamarama</en>
 			</title_original>
 			<description>
 				<de>Oh nein, ${.self:"role":1:"firstname"} hat vergessen, den Wecker zu stellen. So kommt er zu spät zur Arbeit. Jetzt muss er ihn im Traum stellen, wobei er allerlei im Haus herumspukenden Gestalten begegnet. Nur wo ist der verflixte Aufziehschlüssel? Vielleicht auf dem Mond?</de>
@@ -8014,8 +8134,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<en>We all are ${.self:"role":1:"firstname"}</en>
 			</title>
 			<title_original>
-				<de>Wir alle sind ${.self:"role":1:"firstname"}</de>
-				<en>Everyone's a ${.self:"role":1:"firstname"}</en>
+				<de>Wir alle sind Wally</de>
+				<en>Everyone's a Wally</en>
 			</title_original>
 			<description>
 				<de>Nicht nur ${.self:"role":1:"firstname"}, sondern auch seine Kumpels, seine Frau ${.self:"role":2:"firstname"} und selbst sein kleines krabbelndes Baby ${.self:"role":3:"firstname"} haben ihre verrückten Jobs, denen sie den ganzen lieben langen Tag nachkommen müssen.</de>
@@ -8051,8 +8171,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<en>${.self:"role":3:"firstname"}'s Trial Run</en>
 			</title>
 			<title_original>
-				<de>${.self:"role":3:"firstname"} lernt laufen</de>
-				<en>${.self:"role":3:"firstname"}'s Dummy Run</en>
+				<de>Herbert lernt laufen</de>
+				<en>Herbert's Dummy Run</en>
 			</title_original>
 			<description>
 				<de>Och, wie schnell sie groß werden. Aber natürlich läuft bei ${.self:"role":1:"fullname"} und seiner Familie alles ein bisschen anders. Wenn der kleine ${.self:"role":3:"fullname"} laufen lernt, dann ist das daher mit ganz besonderen Hindernissen verbunden.</de>
@@ -8234,7 +8354,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<all>Winds</all>
 			</title>
 			<title_original>
-				<all>Wings</all>
+				<de>Wings</de>
+				<en>Wings</en>
 			</title_original>
 			<description>
 				<de>1916, das letzte Jahr des Ersten Weltkriegs. Ein Pilot-Neuling, der sich der 56. Staffel anschließt, erlebt Kameradschaft, Tapferkeit, Tragödien, Höhen und Tiefen sowie die Fortentwicklung der Luftkampftaktik und wird allmählich zu einem gestandenen Fliegerass.</de>
@@ -8268,16 +8389,16 @@ The project, which was cancelled by a major producer, is now free to be realized
 
 		<scripttemplate product="2" licence_type="3" guid="71f4752c-2c8f-41f0-82c6-3461e02e8160" creator="9551" comment="TODO: To test a future 'franchise script' feature. Episode titles and contents by ChatGPT. A bit formulaic perhaps.">
 			<title>
-				<de>${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} - Die ${new} ${adventures}</de>
-				<en>${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} - The ${new} ${adventures}</en>
+				<de>${.self:"role":1:"lastname"} und ${.self:"role":2:"firstname"} - Die ${new} ${adventures}</de>
+				<en>${.self:"role":1:"lastname"} and ${.self:"role":2:"firstname"} - The ${new} ${adventures}</en>
 			</title>
 			<title_original>
-				<de>${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} - Die ${new} ${adventures}</de>
-				<en>${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} - The ${new} ${adventures}</en>
+				<de>Spejbl und Hurvínek - Die ${new} ${adventures}</de>
+				<en>Spejbl and Hurvínek - The ${new} ${adventures}</en>
 			</title_original>
 			<description>
-				<de>Eine Neuauflage der beliebten tschechischen Marionettenserie über Vater ${.self:"role":1:"firstname"}, den kleinen Sohn ${.self:"role":2:"firstname"}, Schulfreundin ${.self:"role":4:"firstname"}, Großmutter Frau ${.self:"role":3:"firstname"} und Hund ${.self:"role":5:"firstname"}. Behutsam modernisiert, so dass der Charme erhalten bleibt.</de>
-				<en>A new edition of the popular Czech puppet series about father ${.self:"role":1:"firstname"}, little son ${.self:"role":2:"firstname"}, school girl friend ${.self:"role":4:"firstname"}, grandmother Ms. ${.self:"role":3:"firstname"} and dog ${.self:"role":5:"firstname"}. Cautiously modernized, so that the charm is preserved.</en>
+				<de>Eine Neuauflage der beliebten tschechischen Marionettenserie über Vater ${.self:"role":1:"fullname"}, den kleinen Sohn ${.self:"role":2:"firstname"}, Schulfreundin ${.self:"role":4:"firstname"}, Großmutter Frau ${.self:"role":3:"firstname"} und Hund ${.self:"role":5:"firstname"}. Behutsam modernisiert, so dass der Charme erhalten bleibt.</de>
+				<en>A new edition of the popular Czech puppet series about father ${.self:"role":1:"fullname"}, little son ${.self:"role":2:"firstname"}, school girl friend ${.self:"role":4:"firstname"}, grandmother Ms. ${.self:"role":3:"firstname"} and dog ${.self:"role":5:"firstname"}. Cautiously modernized, so that the charm is preserved.</en>
 			</description>
 			<variables>
 				<new>
@@ -8300,8 +8421,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Mischievous Pet</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":2:"firstname"} bringt einen streunenden Hund mit nach Hause und sorgt damit für Chaos im Haushalt. ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} versuchen, den Hund vor Frau ${.self:"role":3:"firstname"} zu verstecken, was zu witzigen Begegnungen und einer herzerwärmenden Auflösung führt.</de>
-						<en>${.self:"role":2:"firstname"} brings home a stray dog, causing chaos in the household. ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} try to hide the dog from Ms. ${.self:"role":3:"firstname"}, leading to hilarious encounters and a heartwarming resolution.</en>
+						<de>${.self:"role":2:"firstname"} bringt einen streunenden Hund mit nach Hause und sorgt damit für Chaos. ${.self:"role":1:"lastname"} und ${.self:"role":2:"firstname"} versuchen, den Hund vor Frau ${.self:"role":3:"firstname"} zu verstecken.</de>
+						<en>${.self:"role":2:"firstname"} brings home a stray dog, causing chaos. ${.self:"role":1:"lastname"} and ${.self:"role":2:"firstname"} try to hide the dog from Ms. ${.self:"role":3:"firstname"}.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="84a75131-37e9-4ffe-821f-0c3deb7ce740">
@@ -8314,8 +8435,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Magical Adventure</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} entdeckt ein geheimnisvolles altes Buch, und mit ${.self:"role":2:"firstname"}s Hilfe begeben sie sich versehentlich in eine magische Welt. Dort müssen sie sich mit skurrilen Wesen herumschlagen und einen Weg zurück nach Hause finden.</de>
-						<en>${.self:"role":1:"firstname"} discovers a mysterious old book, and with ${.self:"role":2:"firstname"}'s help, they accidentally transport themselves into a magical world. They must navigate whimsical creatures and find a way back home.</en>
+						<de>${.self:"role":1:"lastname"} entdeckt ein geheimnisvolles altes Buch, und mit ${.self:"role":2:"firstname"}s Hilfe begeben sie sich versehentlich in eine magische Welt. Dort müssen sie sich mit seltsamen Wesen herumschlagen und einen Weg zurück nach Hause finden.</de>
+						<en>${.self:"role":1:"lastname"} discovers a mysterious old book, and with ${.self:"role":2:"firstname"}'s help, they accidentally transport themselves into a magical world. They must navigate whimsical creatures and find a way back home.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="8823f7b7-3748-4683-94b4-f4fc35be6f56">
@@ -8328,8 +8449,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Talent Show</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":2:"firstname"} und ${.self:"role":4:"firstname"} beschließen, an einer lokalen Talentshow teilzunehmen, aber sie brauchen ${.self:"role":1:"firstname"}s Hilfe, um ihren Auftritt vorzubereiten. ${.self:"role":1:"firstname"}s mangelnde Talentmanagementfähigkeiten führen jedoch zu skurrilen Missgeschicken.</de>
-						<en>${.self:"role":2:"firstname"} and ${.self:"role":4:"firstname"} decide to participate in a local talent show, but they need ${.self:"role":1:"firstname"}'s help to prepare their act. However, ${.self:"role":1:"firstname"}'s lack of talent management skills leads to comical mishaps.</en>
+						<de>${.self:"role":2:"firstname"} und ${.self:"role":4:"firstname"} beschließen, an einer lokalen Talentshow teilzunehmen, aber sie brauchen ${.self:"role":1:"lastname"}s Hilfe, um ihren Auftritt vorzubereiten. ${.self:"role":1:"lastname"}s mangelnde Talentmanagementfähigkeiten führen jedoch zu lustigen Missgeschicken.</de>
+						<en>${.self:"role":2:"firstname"} and ${.self:"role":4:"firstname"} decide to participate in a local talent show, but they need ${.self:"role":1:"lastname"}'s help to prepare their act. However, ${.self:"role":1:"lastname"}'s lack of talent management skills leads to comical mishaps.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="9db22b70-29f8-4b67-b4a2-ac512e6022d5">
@@ -8342,8 +8463,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Great Camping Disaster</en>
 					</title_original>
 					<description>
-						<de>Die Familie beschließt, einen Campingausflug zu machen, aber ${.self:"role":1:"firstname"}s mangelnde Outdoor-Kenntnisse führen zu einer Reihe von lustigen Camping-Desastern. ${.self:"role":2:"firstname"} und ${.self:"role":5:"firstname"} lassen sich clevere Lösungen einfallen, um den Tag zu retten.</de>
-						<en>The family decides to go on a camping trip, but ${.self:"role":1:"firstname"}'s lack of outdoor skills creates a series of hilarious camping disasters. ${.self:"role":2:"firstname"} and the ${.self:"role":5:"firstname"} come up with clever solutions to save the day.</en>
+						<de>Die Familie beschließt, einen Campingausflug zu machen, aber ${.self:"role":1:"lastname"}s mangelnde Outdoor-Kenntnisse führen zu einer Reihe von lustigen Camping-Desastern. ${.self:"role":2:"firstname"} und ${.self:"role":5:"firstname"} lassen sich clevere Lösungen einfallen, um den Tag zu retten.</de>
+						<en>The family decides to go on a camping trip, but ${.self:"role":1:"lastname"}'s lack of outdoor skills creates a series of hilarious camping disasters. ${.self:"role":2:"firstname"} and the ${.self:"role":5:"firstname"} come up with clever solutions to save the day.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="bff2275b-56d2-4581-a88b-9632a1510e38">
@@ -8356,8 +8477,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Mystery of the Missing Cake</en>
 					</title_original>
 					<description>
-						<de>Frau ${.self:"role":3:"firstname"} backt einen leckeren Kuchen für einen besonderen Anlass, aber er verschwindet auf mysteriöse Weise. ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} werden zu Amateurdetektiven, um das Rätsel zu lösen, und kommen dabei unerwarteten Schuldigen auf die Spur.</de>
-						<en>Ms. ${.self:"role":3:"firstname"} bakes a delicious cake for a special occasion, but it mysteriously disappears. ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} turn into amateur detectives to solve the mystery, uncovering unexpected culprits.</en>
+						<de>Frau ${.self:"role":3:"firstname"} backt einen leckeren Kuchen für einen besonderen Anlass, aber er verschwindet auf mysteriöse Weise. ${.self:"role":1:"lastname"} und ${.self:"role":2:"firstname"} werden zu Amateurdetektiven, und kommen dabei unerwarteten Schuldigen auf die Spur.</de>
+						<en>Ms. ${.self:"role":3:"firstname"} bakes a delicious cake for a special occasion, but it mysteriously disappears. ${.self:"role":1:"lastname"} and ${.self:"role":2:"firstname"} turn into amateur detectives, uncovering unexpected culprits.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="75a226c4-26cc-4a3d-b39c-e0c154f5841b">
@@ -8370,8 +8491,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Robot Invasion</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} bestellt versehentlich einen schlecht funktionierenden Roboter, der im Haus für Chaos sorgt. Mit ${.self:"role":2:"firstname"}s spitzbübischen Ideen versuchen sie, den Roboter zu überlisten, bevor er ihr Leben übernimmt.</de>
-						<en>${.self:"role":1:"firstname"} accidentally orders a malfunctioning robot, causing chaos in the house. With ${.self:"role":1:"firstname"}'s mischievous ideas, they attempt to outsmart the robot before it takes over their lives.</en>
+						<de>${.self:"role":1:"lastname"} bestellt versehentlich einen schlecht funktionierenden Roboter, der im Haus für Chaos sorgt. Mit ${.self:"role":2:"firstname"}s spitzbübischen Ideen versuchen sie, den Roboter zu überlisten, bevor er ihr Leben übernimmt.</de>
+						<en>${.self:"role":1:"lastname"} accidentally orders a malfunctioning robot, causing chaos in the house. With ${.self:"role":2:"firstname"}'s mischievous ideas, they attempt to outsmart the robot before it takes over their lives.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="59b6fb38-f8be-43e7-9273-7e93ca321199">
@@ -8384,8 +8505,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Birthday Surprise</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} planen eine Überraschungsgeburtstagsfeier für Frau ${.self:"role":3:"firstname"}, aber alles geht schief. Ihre Versuche, die Überraschung geheim zu halten, führen zu witzigen Missverständnissen und unerwarteten Wendungen.</de>
-						<en>${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} plan a surprise birthday party for Ms. ${.self:"role":3:"firstname"}, but everything goes awry. Their attempts to keep the surprise under wraps result in hilarious misunderstandings and unexpected twists.</en>
+						<de>${.self:"role":1:"lastname"} und ${.self:"role":2:"firstname"} planen eine Überraschungsgeburtstagsfeier für Frau ${.self:"role":3:"firstname"}, aber alles geht schief. Ihre Versuche, die Überraschung geheim zu halten, führen zu witzigen Missverständnissen und unerwarteten Wendungen.</de>
+						<en>${.self:"role":1:"lastname"} and ${.self:"role":2:"firstname"} plan a surprise birthday party for Ms. ${.self:"role":3:"firstname"}, but everything goes awry. Their attempts to keep the surprise under wraps result in hilarious misunderstandings and unexpected twists.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="7bfa386a-d0c6-4d89-9f86-52e5ab9e0e7c">
@@ -8398,8 +8519,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Magical Time Travel</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":2:"firstname"} entdeckt auf dem Dachboden eine Zeitreisemaschine und überredet ${.self:"role":1:"firstname"}, sich auf ein Abenteuer in die Vergangenheit zu begeben. Ihre Reise führt sie in verschiedene historische Epochen, was zu lustigen Begegnungen und wertvollen Lektionen führt.</de>
-						<en>${.self:"role":2:"firstname"} discovers a time-traveling machine in the attic and convinces ${.self:"role":1:"firstname"} to go on an adventure to the past. Their journey takes them to various historical eras, leading to humorous encounters and valuable lessons.</en>
+						<de>${.self:"role":2:"firstname"} entdeckt auf dem Dachboden eine Zeitreisemaschine und überredet ${.self:"role":1:"lastname"}, sich auf ein Abenteuer in die Vergangenheit zu begeben. Ihre Reise führt sie in verschiedene historische Epochen, was zu lustigen Begegnungen und wertvollen Lektionen führt.</de>
+						<en>${.self:"role":2:"firstname"} discovers a time-traveling machine in the attic and convinces ${.self:"role":1:"lastname"} to go on an adventure to the past. Their journey takes them to various historical eras, leading to humorous encounters and valuable lessons.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="c42695d0-c3cc-4d97-bcca-9cf521793fd3">
@@ -8412,8 +8533,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Case of the Missing Treasure</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":4:"firstname"} findet eine alte Schatzkarte, und mit ${.self:"role":5:"firstname"}s Hilfe überredet sie ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"}, sich auf eine Schatzsuche zu begeben. Ihre Reise ist gespickt mit lustigen Hindernissen und unerwarteten Entdeckungen, die zu einer überraschenden Wendung führen.</de>
-						<en>${.self:"role":4:"firstname"} finds an old treasure map, and with ${.self:"role":5:"firstname"}'s help, she convinces ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} to embark on a treasure hunt. Their journey is filled with funny obstacles and unexpected discoveries, leading to a surprising twist.</en>
+						<de>${.self:"role":4:"firstname"} findet eine alte Schatzkarte, und mit ${.self:"role":5:"firstname"}s Hilfe überredet sie ${.self:"role":1:"lastname"} und ${.self:"role":2:"firstname"}, sich auf eine Schatzsuche zu begeben. Ihre Reise ist gespickt mit lustigen Hindernissen und unerwarteten Entdeckungen.</de>
+						<en>${.self:"role":4:"firstname"} finds an old treasure map, and with ${.self:"role":5:"firstname"}'s help, she convinces ${.self:"role":1:"lastname"} and ${.self:"role":2:"firstname"} to embark on a treasure hunt. Their journey is filled with funny obstacles and unexpected discoveries.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="752a897a-c895-411c-a864-f95e6e1dd6fb">
@@ -8426,8 +8547,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Music Band Fiasco</en>
 					</title_original>
 					<description>
-						<de>${.self:"role":4:"firstname"}, inspiriert von einer berühmten Musikband, überredet ${.self:"role":2:"firstname"} und ${.self:"role":5:"firstname"}, ihre eigene Band zu gründen. ${.self:"role":1:"firstname"} schließt sich widerwillig an, was zu urkomischen Versuchen führt, Instrumente zu spielen und chaotische, aber amüsante Auftritte zu gestalten.</de>
-						<en>${.self:"role":4:"firstname"}, inspired by a famous music band, convinces ${.self:"role":2:"firstname"} and ${.self:"role":5:"firstname"} to form their own band. ${.self:"role":1:"firstname"} reluctantly joins in, leading to hilarious attempts at playing instruments and creating chaotic but amusing performances.</en>
+						<de>${.self:"role":4:"firstname"}, inspiriert von einer berühmten Musikband, überredet ${.self:"role":2:"firstname"} und ${.self:"role":5:"firstname"}, ihre eigene Band zu gründen. ${.self:"role":1:"lastname"} schließt sich widerwillig an, was zu urkomischen Versuchen führt, Instrumente zu spielen und chaotische, aber amüsante Auftritte zu gestalten.</de>
+						<en>${.self:"role":4:"firstname"}, inspired by a famous music band, convinces ${.self:"role":2:"firstname"} and ${.self:"role":5:"firstname"} to form their own band. ${.self:"role":1:"lastname"} reluctantly joins in, leading to hilarious attempts at playing instruments and creating chaotic but amusing performances.</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -8471,8 +8592,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>${.self:"role":1:"firstname"}'s Mishap</en>
 					</title>
 					<title_original>
-						<de>${.self:"role":1:"firstname"}s Missgeschick</de>
-						<en>${.self:"role":1:"firstname"}'s Mishap</en>
+						<de>Multivacs Missgeschick</de>
+						<en>Multivac's Mishap</en>
 					</title_original>
 					<description>
 						<de>Eine Panne bei den ${.self:"role":1:"firstname"}-Berechnungen führt die ${.self:"role":2:"firstname"}-Familie auf unerwartete Umwege und zur Begegnung mit einem schelmischen Alien-Tierchen names Quirkle vom Planeten Zintar und all seinen verspielten Kapriolen.</de>
@@ -8566,7 +8687,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<all>Stranger Nation</all>
 			</title>
 			<title_original>
-				<all>Alien Nation</all>
+				<de>Alien Nation</de>
+				<en>Alien Nation</en>
 			</title_original>
 			<description>
 				<de>Ein Remake der 1989er Serie, spielt nun im Jahre 2030, mit Anpassungen an zeitgemäße gesellschaftliche Probleme, über die Außerirdischen, die in der Wüste außerhalb von L.A. landen und dann über Jahre in die menschliche Gesellschaft integriert werden.</de>
@@ -8682,7 +8804,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<en>North Texas Tales</en>
 			</title>
 			<title_original>
-				<all>Dallas Tales</all>
+				<de>Dallas Tales</de>
+				<en>Dallas Tales</en>
 			</title_original>
 			<description>
 				<de>Die Originalserie für Kinder zu langweilig? Dem kann Abhilfe geschaffen werden. Die eh schon überzeichneten Charaktere des Clans um ${.self:"role":1:"fullname"} erleben neu inszenierte Abenteuer in diesem lustigen Cartoon! Bietet auch Humorebenen für Erwachsene.</de>
@@ -8695,8 +8818,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>${.self:"role":2:"firstname"} in Danger</en>
 					</title>
 					<title_original>
-						<de>${.self:"role":2:"firstname"} in Gefahr</de>
-						<en>${.self:"role":2:"firstname"} in Danger</en>
+						<de>Bobby in Gefahr</de>
+						<en>Bobby in Danger</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":2:"firstname"} jagt seinen Hut in einem Tornado, als er von fiesen als Präriehunde getarnten Roboter-Aliens nahe der Area 51 gefangen genommen wird. Der Clan startet eine Rettungsaktion und erhält unerwartete Hilfe von einem UFO-Forscher.</de>
@@ -8723,8 +8846,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Miss ${.self:"role":3:"firstname"}'s Last Show</en>
 					</title>
 					<title_original>
-						<de>Miss ${.self:"role":3:"firstname"}s letztes Programm</de>
-						<en>Miss ${.self:"role":3:"firstname"}'s Last Show</en>
+						<de>Miss Ellies letztes Programm</de>
+						<en>Miss Ellie's Last Show</en>
 					</title_original>
 					<description>
 						<de>Miss ${.self:"role":3:"firstname"} spielt für ein Gemeindetheaterstück vor. Doch als sich herausstellt, dass ihr Co-Star ein entflohener Papagei ist, bricht das Chaos aus, und ${.self:"role":1:"firstname"} versucht, die Situation zu seinem Vorteil zu nutzen.</de>
@@ -8821,8 +8944,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>${.self:"role":1:"firstname"} and the Player</en>
 					</title>
 					<title_original>
-						<de>${.self:"role":1:"firstname"} und der Spieler</de>
-						<en>${.self:"role":1:"firstname"} and the Player</en>
+						<de>J.R. und der Spieler</de>
+						<en>J.R. and the Player</en>
 					</title_original>
 					<description>
 						<de>${.self:"role":1:"firstname"} will einen Schachcomputer besiegen, doch der blamiert ihn und zwingt ihn bei jedem Zug, seine Machenschaften zu überdenken. Dabei wird in schlauen Rückblenden von ${.self:"role":1:"firstname"}'s Aufstieg erzählt und wie er einen Gegenspieler bekämpfte.</de>
