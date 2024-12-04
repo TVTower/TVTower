@@ -650,7 +650,6 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 	'override to add support for template variables
 	Function GameScriptVariableHandlerCB:String(variable:String, context:SScriptExpressionContext var) override
 		Local result:String
-		Local resolved:Int = False
 		Local localeID:Int = context.contextNumeric
 		Local tv:TTemplateVariables
 		
@@ -680,11 +679,16 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 
 		Local varLowerCase:String = variable.ToLower()
 		If tv
-			result = _ParseWithTemplateVariables(varLowerCase, context, tv)
-			'resolved variable may be empty
-			If Not result Or Not result.Contains("([ERROR]") Then resolved = True
-		EndIf
-		If Not resolved
+			'workaround for variable resolution bug in episodes
+			'if tv defines a variable itself - resolve it
+			'otherwise check for global variables (returns null if not defined) and fall back on the variable resolution including the context
+			If tv.HasVariable(varLowerCase, True)
+				result = _ParseWithTemplateVariables(varLowerCase, context, tv)
+			Else
+				result = GetDatabaseLocalizer().getGlobalVariable(localeID, varLowerCase, True)
+				If Not result Then result = _ParseWithTemplateVariables(varLowerCase, context, tv)
+			EndIf
+		Else
 			'parsing expression if it contains further variables necessary? 
 			'${.worldtime:"year"} was resolved without further changes...
 			result = GetDatabaseLocalizer().getGlobalVariable(localeID, varLowerCase, True)
