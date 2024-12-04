@@ -265,13 +265,14 @@ Type TBetty
 	'betty reacts to broadcasted programmes
 	Function onBeforeFinishAllProgrammeBlockBroadcasts:int(triggerEvent:TEventBase)
 		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))
+		local hour:Int =triggerEvent.GetData().GetInt("hour", -1)
 
 		For local broadcastMaterial:TBroadcastMaterial = Eachin broadcasts
 			'only material which ends now ? So a 5block culture would get
 			'ignored if ending _after_ award time
 			'if broadcastMaterial.currentBlockBroadcasting <> broadcastMaterial.GetBlocks()
 
-			local score:int = CalculateProgrammeScore(broadcastMaterial)
+			local score:int = CalculateProgrammeScore(broadcastMaterial, hour)
 			if score = 0 then continue
 
 			'do not adjust love to other players
@@ -317,35 +318,53 @@ Type TBetty
 	End Function
 
 
-	Function CalculateProgrammeScore:int(broadcastMaterial:TBroadcastMaterial)
-		if not broadcastMaterial or broadcastMaterial.owner < 0 then return 0
+	Function CalculateProgrammeScore:int(broadcastMaterial:TBroadcastMaterial, hour:Int = -1)
+		If Not broadcastMaterial Or broadcastMaterial.owner < 0 Then Return 0
 		'not of interest for Betty?
-		if broadcastMaterial.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_BETTY) then return 0
+		If broadcastMaterial.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_BETTY) Then Return 0
 
 		'calculate score:
 		'a perfect Betty programme would give 100 points
 		'- topicality<1.0 and rawQuality<1.0 reduce points -> GetQuality()
-		'- "CallIn/Trash/Infomercials" is someting Betty absolutely dislikes
+		'- "CallIn/Trash/Infomercials/Erotic" is someting Betty absolutely dislikes
+		Local points:Float = 0
+		Local pointsMod:Float = 1.0
+		If TAdvertisement(broadcastMaterial)
+			points = -5
+		Else
+			Local programme:TProgramme = TProgramme(broadcastMaterial)
+			Local tgWomen:Int = programme.data.hasTargetGroup(TVTTargetGroup.WOMEN)
+			Local blocks:Int = programme.GetBlocks()
+			If (programme.data.GetGenre() = TVTProgrammeGenre.Erotic And Not tgWomen)
+				points = -20 * blocks
+			ElseIf programme.data.HasSubGenre(TVTProgrammeGenre.Erotic And Not tgWomen)
+				points = -10 * blocks
+			ElseIf programme.data.HasFlag(TVTProgrammeDataFlag.PAID)
+				points = -5 * blocks
+			ElseIf programme.data.HasFlag(TVTProgrammeDataFlag.TRASH) 
+				points = -3 * blocks
+			ElseIf programme.data.HasFlag(TVTProgrammeDataFlag.CULTURE)
+				points = 100 * programme.GetQuality()
+			EndIf
 
-		if TAdvertisement(broadcastMaterial) then return -5
-		local programme:TProgramme = TProgramme(broadcastMaterial)
-		if programme.data.HasFlag(TVTProgrammeDataFlag.PAID) then return -5
-		if programme.data.HasFlag(TVTProgrammeDataFlag.TRASH) then return -3
-		if programme.data.GetGenre() = TVTProgrammeGenre.Erotic then return -20
-		if programme.data.HasSubGenre(TVTProgrammeGenre.Erotic) then return -10
+			If programme.data.HasFlag(TVTProgrammeDataFlag.LIVE) then pointsMod :+ 0.1
 
-		'in all other cases: only interested in culture-programmes
-		if not programme.data.HasFlag(TVTProgrammeDataFlag.CULTURE) then return 0
+			If blocks > 1
+				'divide by block count so each block adds some points
+				points :/ blocks
+				'but longer programmes should get higher total points than a one-block programme
+				points :* (1.1^(blocks-1))
+			EndIf
+		EndIf
 
-		local points:Float = 100 * programme.GetQuality()
-		local pointsMod:Float = 1.0
-		if programme.data.HasFlag(TVTProgrammeDataFlag.LIVE) then pointsMod :+ 0.1
-
-		'divide by block count so each block adds some points
-		points :/ programme.GetBlocks()
+		If hour > 0 And hour < 7
+			pointsMod:- 0.25
+		ElseIf hour > 18
+			pointsMod:+ 0.25
+		EndIf
 
 		'calculate final score
-		return int(ceil(Max(0, points * pointsMod)))
+		return int(round(points * pointsMod))
 	End Function
 End Type
 

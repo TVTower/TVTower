@@ -6223,7 +6223,7 @@ endrem
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 54
 					evKey = GameEventKeys.Broadcasting_BeforeFinishAllProgrammeBlockBroadcasts
-					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) ).addNumber("hour", hour)
 				Case 55
 					evKey = GameEventKeys.Broadcasting_BeforeStartAllAdBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
