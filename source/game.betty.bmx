@@ -333,10 +333,11 @@ Type TBetty
 			points = -5
 		Else
 			Local programme:TProgramme = TProgramme(broadcastMaterial)
+			Local tgWomen:Int = programme.data.hasTargetGroup(TVTTargetGroup.WOMEN)
 			Local blocks:Int = programme.GetBlocks()
-			If programme.data.GetGenre() = TVTProgrammeGenre.Erotic 
+			If (programme.data.GetGenre() = TVTProgrammeGenre.Erotic And Not tgWomen)
 				points = -20 * blocks
-			ElseIf programme.data.HasSubGenre(TVTProgrammeGenre.Erotic)
+			ElseIf programme.data.HasSubGenre(TVTProgrammeGenre.Erotic And Not tgWomen)
 				points = -10 * blocks
 			ElseIf programme.data.HasFlag(TVTProgrammeDataFlag.PAID)
 				points = -5 * blocks
