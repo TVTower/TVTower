@@ -174,4 +174,281 @@
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" title="Inspector" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Marlene" last_name="" title="Assistant" />
 	</programmeroles>
+	<globalvariables>
+
+		<!--
+			Brands, sports clubs, music titles and similar resources that may appear in news, ads, programmes, etc., are referenced from here.
+			This English file is the main reference file that contains all entries.
+			Starting here, translations to other languages are ad-lib. Entries don't have to be mirrored in every language any more.
+		-->
+
+		<!-- Brands -->
+
+		<brand_microsoft>Microsoft</brand_microsoft> <!-- https://en.wikipedia.org/wiki/Microsoft -->
+		<brand_windows>Windows</brand_windows> <!-- https://en.wikipedia.org/wiki/Microsoft_Windows -->
+		<brand_azure>Azure</brand_azure> <!-- https://en.wikipedia.org/wiki/Microsoft_Azure -->
+		<brand_xbox>Xbox</brand_xbox> <!-- https://en.wikipedia.org/wiki/Xbox -->
+		<brand_entertainmentpack>Entertainment Pack</brand_entertainmentpack> <!-- https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack -->
+		<brand_encarta>Encarta</brand_encarta> <!-- https://en.wikipedia.org/wiki/Encarta -->
+		<brand_microsoftbob>Microsoft Bob</brand_microsoftbob> <!-- https://en.wikipedia.org/wiki/Microsoft_Bob -->
+		<brand_clippy>Clippy</brand_clippy> <!-- https://en.wikipedia.org/wiki/Office_Assistant -->
+		<brand_xenix>Xenix</brand_xenix> <!-- https://en.wikipedia.org/wiki/Xenix -->
+		<brand_lanmanager>LAN Manager</brand_lanmanager> <!-- https://en.wikipedia.org/wiki/LAN_Manager -->
+		<brand_msn>MSN</brand_msn> <!-- https://en.wikipedia.org/wiki/MSN -->
+		<brand_msx>MSX</brand_msx> <!-- https://en.wikipedia.org/wiki/MSX -->
+		<brand_pentium>Pentium</brand_pentium> <!-- https://en.wikipedia.org/wiki/Pentium -->
+		<brand_initech>Initech</brand_initech> <!-- https://en.wikipedia.org/wiki/Office_Space -->
+		<brand_hewlettpackard>Hewlett-Packard</brand_hewlettpackard> <!-- https://en.wikipedia.org/wiki/Hewlett-Packard -->
+		<brand_hp>HP</brand_hp> <!-- https://en.wikipedia.org/wiki/HP_Inc. -->
+		<brand_laserjet>LaserJet</brand_laserjet> <!-- https://en.wikipedia.org/wiki/HP_LaserJet -->
+		<brand_apple>Apple</brand_apple> <!-- https://en.wikipedia.org/wiki/Apple_Inc. -->
+		<brand_iphone>iPhone</brand_iphone> <!-- https://en.wikipedia.org/wiki/IPhone -->
+		<brand_ipod>iPod</brand_ipod> <!-- https://en.wikipedia.org/wiki/IPod -->
+		<brand_i_apple_generic>i</brand_i_apple_generic>
+		<brand_compuserve>CompuServe</brand_compuserve> <!-- https://en.wikipedia.org/wiki/CompuServe -->
+		<brand_aol>AOL</brand_aol> <!-- https://en.wikipedia.org/wiki/AOL -->
+		<brand_sony>Sony</brand_sony> <!-- https://en.wikipedia.org/wiki/Sony -->
+		<brand_betamax>Betamax</brand_betamax> <!-- https://en.wikipedia.org/wiki/Betamax -->
+		<brand_walkman>Walkman</brand_walkman> <!-- https://en.wikipedia.org/wiki/Walkman -->
+		<brand_discman>Discman</brand_discman> <!-- https://en.wikipedia.org/wiki/Discman -->
+		<brand_minidisc>MiniDisc</brand_minidisc> <!-- https://en.wikipedia.org/wiki/MiniDisc -->
+		<brand_vaio>VAIO</brand_vaio> <!-- https://en.wikipedia.org/wiki/Vaio -->
+		<brand_playstation>PlayStation</brand_playstation> <!-- https://en.wikipedia.org/wiki/PlayStation -->
+		<brand_ps>PS</brand_ps>
+		<brand_nintendo>Nintendo</brand_nintendo> <!-- https://en.wikipedia.org/wiki/Nintendo -->
+		<brand_supernes>Super NES</brand_supernes> <!-- https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System -->
+		<brand_gamecube>GameCube</brand_gamecube> <!-- https://en.wikipedia.org/wiki/GameCube -->
+		<brand_commodore>Commodore</brand_commodore> <!-- https://en.wikipedia.org/wiki/Commodore_International -->
+		<brand_c64>C64</brand_c64> <!-- https://en.wikipedia.org/wiki/Commodore_64 -->
+		<brand_datasette1530>Datasette 1530</brand_datasette1530> <!-- https://en.wikipedia.org/wiki/Commodore_Datasette -->
+		<brand_amiga>Amiga</brand_amiga> <!-- https://en.wikipedia.org/wiki/Amiga -->
+		<brand_cdtv>CDTV</brand_cdtv> <!-- https://en.wikipedia.org/wiki/CDTV -->
+		<brand_escom>ESCOM</brand_escom> <!-- https://en.wikipedia.org/wiki/Escom_AG -->
+		<brand_highscreen>Highscreen</brand_highscreen> <!-- https://de.wikipedia.org/wiki/Vobis -->
+		<brand_rainbowarts>Rainbow Arts</brand_rainbowarts> <!-- https://en.wikipedia.org/wiki/Rainbow_Arts -->
+		<brand_rushware>Rushware</brand_rushware> <!-- https://de.wikipedia.org/wiki/Rushware -->
+		<brand_schneider>Schneider</brand_schneider> <!-- https://en.wikipedia.org/wiki/Schneider_Rundfunkwerke -->
+		<brand_atari>Atari</brand_atari> <!-- https://en.wikipedia.org/wiki/Atari -->
+		<brand_virgin>Virgin</brand_virgin> <!-- https://en.wikipedia.org/wiki/Virgin_Group -->
+		<brand_pioneer>Pioneer</brand_pioneer> <!-- https://en.wikipedia.org/wiki/Pioneer_Corporation -->
+		<brand_laserdisc>LaserDisc</brand_laserdisc> <!-- https://en.wikipedia.org/wiki/LaserDisc -->
+		<brand_siemens>Siemens</brand_siemens> <!-- https://en.wikipedia.org/wiki/Siemens -->
+		<brand_deutschetelekom>Deutsche Telekom</brand_deutschetelekom> <!-- https://en.wikipedia.org/wiki/Deutsche_Telekom -->
+		<brand_telekom>Telekom</brand_telekom>
+		<brand_bostondynamics>Boston Dynamics</brand_bostondynamics> <!-- https://en.wikipedia.org/wiki/Boston_Dynamics -->
+		<brand_tesla>Tesla</brand_tesla> <!-- https://en.wikipedia.org/wiki/Tesla,_Inc. -->
+		<brand_mercedes>Mercedes</brand_mercedes> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
+		<brand_benz>Benz</brand_benz> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
+		<brand_bmw>BMW</brand_bmw> <!-- https://en.wikipedia.org/wiki/BMW -->
+		<brand_volkswagen>Volkswagen</brand_volkswagen> <!-- https://en.wikipedia.org/wiki/Volkswagen -->
+		<brand_vw>VW</brand_vw>
+		<brand_beetle>Beetle</brand_beetle> <!-- https://en.wikipedia.org/wiki/Volkswagen_Beetle -->
+		<brand_toyota>Toyota</brand_toyota> <!-- https://en.wikipedia.org/wiki/Toyota -->
+		<brand_saab>Saab</brand_saab> <!-- https://en.wikipedia.org/wiki/Saab_AB -->
+		<brand_scania>Scania</brand_scania> <!-- https://en.wikipedia.org/wiki/Scania_AB -->
+		<brand_kaipan>Kaipan</brand_kaipan> <!-- https://en.wikipedia.org/wiki/Kaipan -->
+		<brand_opel>Opel</brand_opel> <!-- https://en.wikipedia.org/wiki/Opel -->
+		<brand_manta>Manta</brand_manta> <!-- https://en.wikipedia.org/wiki/Opel_Manta -->
+		<brand_generalmotors>General Motors</brand_generalmotors> <!-- https://en.wikipedia.org/wiki/General_Motors -->
+		<brand_pontiac>Pontiac</brand_pontiac> <!-- https://en.wikipedia.org/wiki/Pontiac_(automobile) -->
+		<brand_firebird>Firebird</brand_firebird> <!-- https://en.wikipedia.org/wiki/Pontiac_Firebird -->
+		<brand_transam>Trans AM</brand_transam> <!-- https://en.wikipedia.org/wiki/Pontiac_Firebird_(third_generation) -->
+		<brand_delorean>DeLorean</brand_delorean> <!-- https://en.wikipedia.org/wiki/DeLorean_Motor_Company -->
+		<brand_ford>Ford</brand_ford> <!-- https://en.wikipedia.org/wiki/Ford_Motor_Company -->
+		<brand_escort>Escort</brand_escort> <!-- https://en.wikipedia.org/wiki/Ford_Escort -->
+		<brand_sierra>Sierra</brand_sierra> <!-- https://en.wikipedia.org/wiki/Ford_Sierra -->
+		<brand_mondeo>Mondeo</brand_mondeo> <!-- https://en.wikipedia.org/wiki/Ford_Mondeo -->
+		<brand_mustang>Mustang</brand_mustang> <!-- https://en.wikipedia.org/wiki/Ford_Mustang -->
+		<brand_citroen>Citroën</brand_citroen> <!-- https://en.wikipedia.org/wiki/Citro%C3%ABn -->
+		<brand_renault>Renault</brand_renault> <!-- https://en.wikipedia.org/wiki/Renault -->
+		<brand_peugeot>Peugeot</brand_peugeot> <!-- https://en.wikipedia.org/wiki/Peugeot -->
+		<brand_bp>BP</brand_bp> <!-- https://en.wikipedia.org/wiki/BP -->
+		<brand_shell>Shell</brand_shell> <!-- https://en.wikipedia.org/wiki/Shell_plc -->
+		<brand_aral>Aral</brand_aral> <!-- https://en.wikipedia.org/wiki/Aral_AG -->
+		<brand_transworldairlines>Trans World Airlines</brand_transworldairlines> <!-- https://en.wikipedia.org/wiki/Trans_World_Airlines -->
+		<brand_twa>TWA</brand_twa>
+		<brand_americanairlines>American Airlines</brand_americanairlines> <!-- https://en.wikipedia.org/wiki/American_Airlines -->
+		<brand_lufthansa>Lufthansa</brand_lufthansa> <!-- https://en.wikipedia.org/wiki/Lufthansa -->
+		<brand_cessna>Cessna</brand_cessna> <!-- https://en.wikipedia.org/wiki/Cessna -->
+		<brand_cessna172>Cessna 172</brand_cessna172> <!-- https://en.wikipedia.org/wiki/Cessna_172 -->
+		<brand_ravensburger>Ravensburger</brand_ravensburger> <!-- https://en.wikipedia.org/wiki/Ravensburger -->
+		<brand_lamy>Lamy</brand_lamy> <!-- https://en.wikipedia.org/wiki/Lamy -->
+		<brand_swingline>Swingline</brand_swingline> <!-- https://en.wikipedia.org/wiki/Swingline -->
+		<brand_riored>Rio Red</brand_riored> <!-- https://en.wikipedia.org/wiki/Swingline -->
+		<brand_bestbuy>Best Buy</brand_bestbuy> <!-- https://en.wikipedia.org/wiki/Best_Buy -->
+		<brand_mediamarkt>MediaMarkt</brand_mediamarkt> <!-- https://de.wikipedia.org/wiki/MediaMarktSaturn -->
+		<brand_saturn>Saturn</brand_saturn> <!-- https://de.wikipedia.org/wiki/MediaMarktSaturn -->
+		<brand_praktiker>Praktiker</brand_praktiker> <!-- https://en.wikipedia.org/wiki/Praktiker -->
+		<brand_ikea>IKEA</brand_ikea> <!-- https://en.wikipedia.org/wiki/IKEA -->
+		<brand_costco>Costco</brand_costco> <!-- https://en.wikipedia.org/wiki/Costco -->
+		<brand_mastercard>Mastercard</brand_mastercard> <!-- https://en.wikipedia.org/wiki/Mastercard -->
+		<brand_dax>DAX</brand_dax> <!-- https://en.wikipedia.org/wiki/DAX -->
+		<brand_deutscheaktienindex>Deutsche Aktienindex</brand_deutscheaktienindex>
+		<brand_deutscheraktienindex>Deutscher Aktienindex</brand_deutscheraktienindex>
+		<brand_basf>BASF</brand_basf> <!-- https://en.wikipedia.org/wiki/BASF -->
+		<brand_cocacola>Coca Cola</brand_cocacola> <!-- https://en.wikipedia.org/wiki/Coca-Cola -->
+		<brand_coke>Coke</brand_coke>
+		<brand_dietcoke>Diet Coke</brand_dietcoke> <!-- https://en.wikipedia.org/wiki/Diet_Coke -->
+		<brand_cokelight>Coke Light</brand_cokelight>
+		<brand_cokezero>Coke Zero</brand_cokezero> <!-- https://en.wikipedia.org/wiki/Coca-Cola_Zero_Sugar -->
+		<brand_pepsi>Pepsi</brand_pepsi> <!-- https://en.wikipedia.org/wiki/Pepsi -->
+		<brand_dietpepsi>Diet Pepsi</brand_dietpepsi> <!-- https://en.wikipedia.org/wiki/Diet_Pepsi -->
+		<brand_pepsilight>Pepsi Light</brand_pepsilight>
+		<brand_africola>Afri-Cola</brand_africola> <!-- https://en.wikipedia.org/wiki/Afri_Cola -->
+		<brand_orangina>Orangina</brand_orangina> <!-- https://en.wikipedia.org/wiki/Orangina -->
+		<brand_capri>Capri</brand_capri> <!-- https://en.wikipedia.org/wiki/Capri-Sun -->
+		<brand_drpepper>Dr Pepper</brand_drpepper> <!-- https://en.wikipedia.org/wiki/Dr_Pepper -->
+		<brand_selters>Selters</brand_selters> <!-- https://en.wikipedia.org/wiki/Selters -->
+		<brand_brawndo>Brawndo</brand_brawndo> <!-- https://en.wikipedia.org/wiki/Idiocracy -->
+		<brand_camel>Camel</brand_camel> <!-- https://en.wikipedia.org/wiki/Camel -->
+		<brand_marlboro>Marlboro</brand_marlboro> <!-- https://en.wikipedia.org/wiki/Marlboro -->
+		<brand_mrclean>Mr. Clean</brand_mrclean> <!-- https://en.wikipedia.org/wiki/Mr._Clean | English version of Meister Proper -->
+		<brand_meisterproper>Meister Proper</brand_meisterproper> <!-- https://de.wikipedia.org/wiki/Meister_Proper | German version of Mr. Clean -->
+		<brand_gillette>Gillette</brand_gillette> <!-- https://en.wikipedia.org/wiki/Gillette -->
+		<brand_weisserriese>Weißer Riese</brand_weisserriese> <!-- https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese -->
+		<brand_whiterevive>White Revive</brand_whiterevive> <!-- https://en.wikipedia.org/wiki/OxiClean -->
+		<brand_nivea>Nivea</brand_nivea> <!-- https://de.wikipedia.org/wiki/Nivea -->
+		<brand_lenor>Lenor</brand_lenor> <!-- https://de.wikipedia.org/wiki/Lenor | German version of Downy -->
+		<brand_downy>Downy</brand_downy> <!-- https://en.wikipedia.org/wiki/Downy | English version of Lenor -->
+		<brand_tempo>Tempo</brand_tempo> <!-- https://en.wikipedia.org/wiki/Tempo_(brand) -->
+		<brand_duschdas>dusch das</brand_duschdas> <!-- https://de.wikipedia.org/wiki/Dusch_das -->
+		<brand_lux>Lux</brand_lux> <!-- https://en.wikipedia.org/wiki/Lux_(soap) -->
+		<brand_colgate>Colgate</brand_colgate> <!-- https://en.wikipedia.org/wiki/Colgate_(toothpaste) -->
+		<brand_pampers>Pampers</brand_pampers> <!-- https://en.wikipedia.org/wiki/Pampers -->
+		<brand_lacoste>Lacoste</brand_lacoste> <!-- https://en.wikipedia.org/wiki/Lacoste -->
+		<brand_prada>Prada</brand_prada> <!-- https://en.wikipedia.org/wiki/Prada -->
+		<brand_reebok>Reebok</brand_reebok> <!-- https://en.wikipedia.org/wiki/Reebok -->
+		<brand_c_a>C&amp;A</brand_c_a> <!-- https://en.wikipedia.org/wiki/C%26A -->
+		<brand_sothebys>Sotheby's</brand_sothebys> <!-- https://de.wikipedia.org/wiki/Sotheby%E2%80%99s -->
+		<brand_snickers>Snickers</brand_snickers> <!-- https://en.wikipedia.org/wiki/Snickers -->
+		<brand_ferrero>Ferrero</brand_ferrero> <!-- https://en.wikipedia.org/wiki/Ferrero_SpA -->
+		<brand_duplo>Duplo</brand_duplo> <!-- https://de.wikipedia.org/wiki/Duplo_(Schokoriegel) -->
+		<brand_mars>Mars</brand_mars> <!-- https://en.wikipedia.org/wiki/Mars_bar -->
+		<brand_sarotti>Sarotti</brand_sarotti> <!-- https://en.wikipedia.org/wiki/Sarotti -->
+		<brand_toblerone>Toblerone</brand_toblerone> <!-- https://en.wikipedia.org/wiki/Toblerone -->
+		<brand_schwartau>Schwartau</brand_schwartau> <!-- https://de.wikipedia.org/wiki/Schwartauer_Werke -->
+		<brand_maggi>Maggi</brand_maggi> <!-- https://en.wikipedia.org/wiki/Maggi -->
+		<brand_knorr>Knorr</brand_knorr> <!-- https://en.wikipedia.org/wiki/Knorr_(brand) -->
+		<brand_loewensenf>Löwensenf</brand_loewensenf> <!-- https://en.wikipedia.org/wiki/L%C3%B6wensenf -->
+		<brand_heinz>Heinz</brand_heinz> <!-- https://en.wikipedia.org/wiki/Heinz -->
+		<brand_demeter>Demeter</brand_demeter> <!-- https://de.wikipedia.org/wiki/Demeter_(Deutschland) -->
+		<brand_fuddruckers>Fuddruckers</brand_fuddruckers> <!-- https://en.wikipedia.org/wiki/Fuddruckers -->
+		<brand_carlsjr>Carl's Jr.</brand_carlsjr> <!-- https://en.wikipedia.org/wiki/Carl%27s_Jr. -->
+		<brand_carljr>Carl Jr.</brand_carljr>
+		<brand_starbucks>Starbucks</brand_starbucks> <!-- https://en.wikipedia.org/wiki/Starbucks -->
+		<brand_guinness>Guinness</brand_guinness> <!-- https://en.wikipedia.org/wiki/Guinness -->
+		<brand_budweiser>Budweiser</brand_budweiser> <!-- https://en.wikipedia.org/wiki/Budweiser -->
+		<brand_berlinerpilsener>Berliner Pilsener</brand_berlinerpilsener> <!-- https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei -->
+		<brand_duff>Duff</brand_duff> <!-- https://en.wikipedia.org/wiki/Duff_Beer -->
+		<brand_puschkin>Puschkin</brand_puschkin> <!-- https://de.wikipedia.org/wiki/Puschkin_Vodka -->
+
+		<brandslogan_thethirdplace>The third place</brandslogan_thethirdplace>
+		<brandslogan_cantbeatthefeeling>Can't beat the feeling</brandslogan_cantbeatthefeeling>
+		<brandslogan_budsfor>Bud's for</brandslogan_budsfor>
+		<brandslogan_thetrinityoftaste>The Trinity of Taste</brandslogan_thetrinityoftaste>
+		<brandslogan_vierbuddysfuer>Vier Buddys für ein Halleluja</brandslogan_vierbuddysfuer>
+
+		<!-- Other organizations and projects -->
+
+		<generalorg_nasa>NASA</generalorg_nasa> <!-- # https://en.wikipedia.org/wiki/NASA -->
+		<generalorg_communistpartyofthesovietunion>Communist Party of the Soviet Union</generalorg_communistpartyofthesovietunion> <!-- # https://en.wikipedia.org/wiki/Communist_Party_of_the_Soviet_Union -->
+		<generalorg_ofthecommunistpartyofthesovietunion>of the Communist Party of the Soviet Union</generalorg_ofthecommunistpartyofthesovietunion>
+		<generalorg_cpsu>CPSU</generalorg_cpsu>
+		<generalorg_cdu>CDU</generalorg_cdu> <!-- https://en.wikipedia.org/wiki/Christian_Democratic_Union_of_Germany -->
+		<generalorg_csu>CSU</generalorg_csu> <!-- https://en.wikipedia.org/wiki/Christian_Social_Union_in_Bavaria -->
+		<generalorg_spd>SPD</generalorg_spd> <!-- https://en.wikipedia.org/wiki/Social_Democratic_Party_of_Germany -->
+		<generalorg_socialdemocraticpartyofgermany>Social Democratic Party of Germany</generalorg_socialdemocraticpartyofgermany>
+		<generalorg_fdp>FPD</generalorg_fdp> <!-- https://de.wikipedia.org/wiki/Freiheitliche_Partei_Deutschlands -->
+		<generalorg_npd>NPD</generalorg_npd> <!-- https://en.wikipedia.org/wiki/National_Democratic_Party_of_Germany -->
+		<generalorg_sed>SED</generalorg_sed> <!-- https://en.wikipedia.org/wiki/Socialist_Unity_Party_of_Germany -->
+		<generalorg_socialistunitypartyofgermany>Socialist Unity Party of Germany</generalorg_socialistunitypartyofgermany>
+		<generalorg_ofthesocialistunitypartyofgermany>of the Socialist Unity Party of Germany</generalorg_ofthesocialistunitypartyofgermany>
+		<generalorg_greenpeace>Greenpeace</generalorg_greenpeace> <!-- https://en.wikipedia.org/wiki/Greenpeace -->
+		<generalorg_chaoscomputerclub>Chaos Computer Club</generalorg_chaoscomputerclub> <!-- https://en.wikipedia.org/wiki/Chaos_Computer_Club -->
+
+		<generalorgproject_columbia>Columbia</generalorgproject_columbia> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Columbia -->
+		<generalorgproject_challenger>Challenger</generalorgproject_challenger> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Challenger -->
+		<generalorgproject_documenta>Documenta</generalorgproject_documenta> <!-- https://en.wikipedia.org/wiki/Documenta -->
+
+		<!-- Sports -->
+
+		<sports_formula1>Formula 1</sports_formula1> <!-- https://en.wikipedia.org/wiki/Formula_One -->
+		<sports_formula2>Formula 2</sports_formula2> <!-- https://en.wikipedia.org/wiki/Formula_Two -->
+		<sports_formula3>Formula 3</sports_formula3> <!-- https://en.wikipedia.org/wiki/Formula_Three -->
+		<sports_formula4>Formula 4</sports_formula4> <!-- https://en.wikipedia.org/wiki/Formula_4 -->
+		<sports_f1>F1</sports_f1>
+		<sports_f2>F2</sports_f2>
+		<sports_f3>F3</sports_f3>
+		<sports_f4>F4</sports_f4>
+		<sports_fifa>FIFA</sports_fifa> <!-- https://en.wikipedia.org/wiki/FIFA -->
+		<sports_daviscup>Davis Cup</sports_daviscup> <!-- https://en.wikipedia.org/wiki/Davis_Cup -->
+		<sports_1fc_generic>1. FC</sports_1fc_generic>
+
+		<sportsclub_fcbayern>FC Bayern</sportsclub_fcbayern> <!-- https://en.wikipedia.org/wiki/FC_Bayern_Munich -->
+		<sportsclub_bayern>Bayern</sportsclub_bayern>
+		<sportsclub_herthabsc>Hertha BSC</sportsclub_herthabsc> <!-- https://en.wikipedia.org/wiki/Hertha_BSC -->
+		<sportsclub_hertha>Hertha</sportsclub_hertha>
+		<sportsclub_realmadrid>Real Madrid</sportsclub_realmadrid> <!-- https://en.wikipedia.org/wiki/Real_Madrid_CF -->
+		<sportsclub_real>Real</sportsclub_real>
+		<sportsclub_fcbarcelona>FC Barcelona</sportsclub_fcbarcelona> <!-- https://en.wikipedia.org/wiki/FC_Barcelona -->
+		<sportsclub_barca>Barça</sportsclub_barca>
+		<sportsclub_manchesterunited>Manchester United</sportsclub_manchesterunited> <!-- https://en.wikipedia.org/wiki/Manchester_United_F.C. -->
+		<sportsclub_manu>ManU</sportsclub_manu>
+		<sportsclub_hamburgersv>Hamburger SV</sportsclub_hamburgersv> <!-- https://en.wikipedia.org/wiki/Hamburger_SV -->
+		<sportsclub_hsv>HSV</sportsclub_hsv>
+
+		<!-- Media -->
+
+		<media_oscar>Oscar</media_oscar> <!-- (was) often referenced in clear-text but trademarked | https://en.wikipedia.org/wiki/Academy_Awards -->
+		<media_academyaward>Academy Award</media_academyaward> <!-- https://en.wikipedia.org/wiki/Academy_Awards -->
+		<media_hollywood>Hollywood</media_hollywood> <!-- https://en.wikipedia.org/wiki/Hollywood | just a geographical location but may be part of a trademark in certain contexts, e.g. 'Hollywood Records'; providing consistency for entries like that -->
+
+		<mediageneralorg_ard>ARD</mediageneralorg_ard> <!-- https://en.wikipedia.org/wiki/ARD_(broadcaster) -->
+		<mediageneralorg_zweitesdeutschesfernsehen>Zweites Deutsches Fernsehen</mediageneralorg_zweitesdeutschesfernsehen> <!-- https://en.wikipedia.org/wiki/ZDF -->
+		<mediageneralorg_zweitedeutschefernsehen>Zweite Deutsche Fernsehen</mediageneralorg_zweitedeutschefernsehen>
+		<mediageneralorg_zdf>ZDF</mediageneralorg_zdf>
+		<mediageneralorg_rtl>RTL</mediageneralorg_rtl> <!-- https://en.wikipedia.org/wiki/RTL_Group -->
+		<mediageneralorg_sat1>Sat.1</mediageneralorg_sat1> <!-- https://en.wikipedia.org/wiki/Sat.1 -->
+		<mediageneralorg_prosieben>ProSieben</mediageneralorg_prosieben> <!-- https://en.wikipedia.org/wiki/ProSieben -->
+		<mediageneralorg_pro7>Pro7</mediageneralorg_pro7>
+		<mediageneralorg_worldwrestlingentertainment>World Wrestling Entertainment</mediageneralorg_worldwrestlingentertainment> <!-- https://en.wikipedia.org/wiki/WWE -->
+		<mediageneralorg_wwe>WWE</mediageneralorg_wwe>
+		<mediageneralorg_worldwrestlingfederation>World Wrestling Federation</mediageneralorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
+		<mediageneralorg_theworldwrestlingfederation>the World Wrestling Federation</mediageneralorg_theworldwrestlingfederation>
+		<mediageneralorg_wwf>WWF</mediageneralorg_wwf>
+		<mediageneralorg_marvel>Marvel</mediageneralorg_marvel> <!-- https://en.wikipedia.org/wiki/Marvel_Entertainment -->
+
+		<mediatitle_lowestofthelow>Lowest of the Low</mediatitle_lowestofthelow> <!-- https://en.wikipedia.org/wiki/Lowest_of_the_Low_(book) -->
+		<mediatitle_bornintheusa>Born in the USA</mediatitle_bornintheusa> <!-- https://en.wikipedia.org/wiki/Born_in_the_U.S.A. -->
+		<mediatitle_derfreischuetz>Der Freischütz</mediatitle_derfreischuetz> <!-- https://en.wikipedia.org/wiki/Der_Freisch%C3%BCtz -->
+		<mediatitle_masterofpuppets>Master of Puppets</mediatitle_masterofpuppets> <!-- https://en.wikipedia.org/wiki/Master_of_Puppets -->
+		<mediatitle_trueblue>True Blue</mediatitle_trueblue> <!-- https://en.wikipedia.org/wiki/True_Blue_(Madonna_album) -->
+		<mediatitle_thriller>Thriller</mediatitle_thriller> <!-- https://en.wikipedia.org/wiki/Thriller_(album) -->
+		<mediatitle_bad>Bad</mediatitle_bad> <!-- https://en.wikipedia.org/wiki/Bad_(album) -->
+		<mediatitle_laislabonita>La Isla Bonita</mediatitle_laislabonita> <!-- https://en.wikipedia.org/wiki/La_Isla_Bonita -->
+		<mediatitle_voyagevoyage>Voyage, Voyage</mediatitle_voyagevoyage> <!-- https://en.wikipedia.org/wiki/Voyage,_voyage -->
+		<mediatitle_oe>Ö</mediatitle_oe> <!-- https://de.wikipedia.org/wiki/%C3%96_(Album) -->
+		<mediatitle_madtv>Mad TV</mediatitle_madtv> <!-- https://en.wikipedia.org/wiki/Mad_TV_(video_game) -->
+		<mediatitle_tetris>Tetris</mediatitle_tetris> <!-- https://en.wikipedia.org/wiki/Tetris -->
+		<mediatitle_gothic>Gothic</mediatitle_gothic> <!-- https://en.wikipedia.org/wiki/Gothic_(series) -->
+		<mediatitle_grandmonsterslam>Grand Monster Slam</mediatitle_grandmonsterslam> <!-- https://en.wikipedia.org/wiki/Grand_Monster_Slam -->
+		<mediatitle_logical>Logical</mediatitle_logical> <!-- https://www.mobygames.com/game/541/logcal/ -->
+		<mediatitle_muds>M.U.D.S.</mediatitle_muds> <!-- https://de.wikipedia.org/wiki/M.U.D.S. -->
+		<mediatitle_magicthegathering>Magic: The Gathering</mediatitle_magicthegathering> <!-- https://en.wikipedia.org/wiki/Magic:_The_Gathering -->
+		<mediatitle_sherlockholmesconsultingdetective>Sherlock Holmes: Consulting Detective</mediatitle_sherlockholmesconsultingdetective> <!-- https://en.wikipedia.org/wiki/Sherlock_Holmes:_Consulting_Detective_(gamebook) -->
+		<mediatitle_hoitytoity>Hoity Toity</mediatitle_hoitytoity> <!-- https://en.wikipedia.org/wiki/Hoity_Toity -->
+		<mediatitle_thesettlersofcatan>The Settlers of Catan</mediatitle_thesettlersofcatan> <!-- https://en.wikipedia.org/wiki/Catan -->
+		<mediatitle_ateam>A-Team</mediatitle_ateam> <!-- https://en.wikipedia.org/wiki/The_A-Team -->
+		<mediatitle_airwolf>Airwolf</mediatitle_airwolf> <!-- https://en.wikipedia.org/wiki/Airwolf -->
+		<mediatitle_ghostbusters>Ghostbusters</mediatitle_ghostbusters> <!-- https://en.wikipedia.org/wiki/Ghostbusters_(franchise) -->
+		<mediatitle_knightrider>Knight Rider</mediatitle_knightrider> <!-- https://en.wikipedia.org/wiki/Knight_Rider -->
+		<mediatitle_starwars>Star Wars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
+		<mediatitle_ottifants>Ottifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant -->
+
+		<mediaprop_batmobile>Batmobile</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
+		<mediaprop_dudu>Dudu</mediaprop_dudu> <!-- https://en.wikipedia.org/wiki/Superbug_(film_series) -->
+		<mediaprop_herbie>Herbie</mediaprop_herbie> <!-- https://en.wikipedia.org/wiki/Herbie -->
+		<mediaprop_ecto1>Ecto-1</mediaprop_ecto1> <!-- https://en.wikipedia.org/wiki/Ectomobile -->
+		<mediaprop_fliewatuut>Flywatoot</mediaprop_fliewatuut> <!-- https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt_(Fernsehfilm) -->
+	</globalvariables>
 </tvtdb>

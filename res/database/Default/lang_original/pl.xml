@@ -174,4 +174,21 @@
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" title="Inspektor" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Marlene" last_name="" title="Asystentka" />
 	</programmeroles>
+	<globalvariables>
+		<generalorg_communistpartyofthesovietunion>Komunistyczna Partia Związku Radzieckiego</generalorg_communistpartyofthesovietunion>
+		<generalorg_ofthecommunistpartyofthesovietunion>Komunistycznej Partii Związku Radzieckiego</generalorg_ofthecommunistpartyofthesovietunion>
+		<generalorg_cpsu>KPZR</generalorg_cpsu>
+		<generalorg_socialdemocraticpartyofgermany>Socjaldemokratyczna Partia Niemiec</generalorg_socialdemocraticpartyofgermany>
+		<generalorg_sed>SPJN</generalorg_sed>
+		<generalorg_socialistunitypartyofgermany>Socjalistyczna Partia Jedności Niemiec</generalorg_socialistunitypartyofgermany>
+		<generalorg_ofthesocialistunitypartyofgermany>Socjalistycznej Partii Jedności Niemiec</generalorg_ofthesocialistunitypartyofgermany>
+
+		<sports_formula1>Formuła 1</sports_formula1>
+		<sports_formula2>Formuła 2</sports_formula2>
+		<sports_formula3>Formuła 3</sports_formula3>
+		<sports_formula4>Formuła 4</sports_formula4>
+
+		<mediatitle_lowestofthelow>Na samym dnie</mediatitle_lowestofthelow>
+		<mediatitle_ottifants>Ottifanty</mediatitle_ottifants>
+	</globalvariables>
 </tvtdb>

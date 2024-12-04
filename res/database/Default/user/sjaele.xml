@@ -793,16 +793,16 @@
 			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
-		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="iPhone should probably be spoofed.">
+		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele">
 			<title>
-				<de>iPhone zertrümmert</de>
-				<en>iPhone smashed</en>
-				<pl>Rozbity iPhone</pl>
+				<de>${brand_iphone} zertrümmert</de>
+				<en>${brand_iphone} smashed</en>
+				<pl>Rozbity ${brand_iphone}</pl>
 			</title>
 			<description>
-				<de>Weil ihn die Computerstimme nicht verstehen wollte, zertrümmerte Al Friedeno (73) auf der Toilette eines Restaurants sein iPhone.</de>
-				<en>Because the computer voice would not understand him, Al Friedeno (73) smashed his iPhone in the restroom of a restaurant.</en>
-				<pl>Ponieważ telefon nie chciał go zrozumieć, Al Friedeno (73 lata) rozbił swojego iPhone'a w toalecie restauracji.</pl>
+				<de>Weil ihn die Computerstimme nicht verstehen wollte, zertrümmerte Al Friedeno (73) auf der Toilette eines Restaurants sein ${brand_iphone}.</de>
+				<en>Because the computer voice would not understand him, Al Friedeno (73) smashed his ${brand_iphone} in the restroom of a restaurant.</en>
+				<pl>Ponieważ telefon nie chciał go zrozumieć, Al Friedeno (73 lata) rozbił swojego ${brand_iphone}'a w toalecie restauracji.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="21" />
 			<availability script="" year_range_from="2007" year_range_to="" />

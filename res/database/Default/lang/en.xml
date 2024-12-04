@@ -174,10 +174,281 @@
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" title="Inspector" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Darlene" last_name="" title="Assistant" />
 	</programmeroles>
-
-<!--Define global variables here
 	<globalvariables>
-		<variableName>value en</variableName>
+
+		<!--
+			Brands, sports clubs, music titles and similar resources that may appear in news, ads, programmes, etc., are referenced from here.
+			This English file is the main reference file that contains all entries.
+			Starting here, translations to other languages are ad-lib. Entries don't have to be mirrored in every language any more.
+		-->
+
+		<!-- Brands -->
+
+		<brand_microsoft>Macrohard</brand_microsoft> <!-- https://en.wikipedia.org/wiki/Microsoft -->
+		<brand_windows>Windoze</brand_windows> <!-- https://en.wikipedia.org/wiki/Microsoft_Windows -->
+		<brand_azure>Arctic</brand_azure> <!-- https://en.wikipedia.org/wiki/Microsoft_Azure -->
+		<brand_xbox>Ycrate</brand_xbox> <!-- https://en.wikipedia.org/wiki/Xbox -->
+		<brand_entertainmentpack>Amusement Pack</brand_entertainmentpack> <!-- https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack -->
+		<brand_encarta>Encyclopedia</brand_encarta> <!-- https://en.wikipedia.org/wiki/Encarta -->
+		<brand_microsoftbob>Macrohard Ben</brand_microsoftbob> <!-- https://en.wikipedia.org/wiki/Microsoft_Bob -->
+		<brand_clippy>Climpy</brand_clippy> <!-- https://en.wikipedia.org/wiki/Office_Assistant -->
+		<brand_xenix>Xunix</brand_xenix> <!-- https://en.wikipedia.org/wiki/Xenix -->
+		<brand_lanmanager>LAN Master</brand_lanmanager> <!-- https://en.wikipedia.org/wiki/LAN_Manager -->
+		<brand_msn>MNS</brand_msn> <!-- https://en.wikipedia.org/wiki/MSN -->
+		<brand_msx>MXS</brand_msx> <!-- https://en.wikipedia.org/wiki/MSX -->
+		<brand_pentium>Penturium</brand_pentium> <!-- https://en.wikipedia.org/wiki/Pentium -->
+		<brand_initech>InitTec</brand_initech> <!-- https://en.wikipedia.org/wiki/Office_Space -->
+		<brand_hewlettpackard>Hewitt-Backerd</brand_hewlettpackard> <!-- https://en.wikipedia.org/wiki/Hewlett-Packard -->
+		<brand_hp>HB</brand_hp> <!-- https://en.wikipedia.org/wiki/HP_Inc. -->
+		<brand_laserjet>LazerJam</brand_laserjet> <!-- https://en.wikipedia.org/wiki/HP_LaserJet -->
+		<brand_apple>Aepfle</brand_apple> <!-- https://en.wikipedia.org/wiki/Apple_Inc. | alt/previous spoofs: Orange, Fruit -->
+		<brand_iphone>myPhone</brand_iphone> <!-- https://en.wikipedia.org/wiki/IPhone -->
+		<brand_ipod>myPod</brand_ipod> <!-- https://en.wikipedia.org/wiki/IPod -->
+		<brand_i_apple_generic>y</brand_i_apple_generic>
+		<brand_compuserve>CompiSurf</brand_compuserve> <!-- https://en.wikipedia.org/wiki/CompuServe -->
+		<brand_aol>OAL</brand_aol> <!-- https://en.wikipedia.org/wiki/AOL -->
+		<brand_sony>Sunny</brand_sony> <!-- https://en.wikipedia.org/wiki/Sony -->
+		<brand_betamax>Gammamax</brand_betamax> <!-- https://en.wikipedia.org/wiki/Betamax -->
+		<brand_walkman>Walkboy</brand_walkman> <!-- https://en.wikipedia.org/wiki/Walkman -->
+		<brand_discman>Diskboy</brand_discman> <!-- https://en.wikipedia.org/wiki/Discman -->
+		<brand_minidisc>Mikrodisk</brand_minidisc> <!-- https://en.wikipedia.org/wiki/MiniDisc -->
+		<brand_vaio>VIAO</brand_vaio> <!-- https://en.wikipedia.org/wiki/Vaio -->
+		<brand_playstation>GameStation</brand_playstation> <!-- https://en.wikipedia.org/wiki/PlayStation -->
+		<brand_ps>GS</brand_ps>
+		<brand_nintendo>Nipponix</brand_nintendo> <!-- https://en.wikipedia.org/wiki/Nintendo | alt. spoof previously used: Nidennto -->
+		<brand_supernes>Super NIP</brand_supernes> <!-- https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System -->
+		<brand_gamecube>NippoCube</brand_gamecube> <!-- https://en.wikipedia.org/wiki/GameCube -->
+		<brand_commodore>Cormoran</brand_commodore> <!-- https://en.wikipedia.org/wiki/Commodore_International -->
+		<brand_c64>Co64</brand_c64> <!-- https://en.wikipedia.org/wiki/Commodore_64 -->
+		<brand_datasette1530>Datasette 1350</brand_datasette1530> <!-- https://en.wikipedia.org/wiki/Commodore_Datasette -->
+		<brand_amiga>Novia</brand_amiga> <!-- https://en.wikipedia.org/wiki/Amiga | previous spoof: Eterna -->
+		<brand_cdtv>CDVID</brand_cdtv> <!-- https://en.wikipedia.org/wiki/CDTV -->
+		<brand_escom>ESCAL</brand_escom> <!-- https://en.wikipedia.org/wiki/Escom_AG -->
+		<brand_highscreen>HiScreen</brand_highscreen> <!-- https://de.wikipedia.org/wiki/Vobis -->
+		<brand_rainbowarts>Rainbow Wish</brand_rainbowarts> <!-- https://en.wikipedia.org/wiki/Rainbow_Arts -->
+		<brand_rushware>Brushware</brand_rushware> <!-- https://de.wikipedia.org/wiki/Rushware -->
+		<brand_schneider>Schnitzler</brand_schneider> <!-- https://en.wikipedia.org/wiki/Schneider_Rundfunkwerke -->
+		<brand_atari>Arati</brand_atari> <!-- https://en.wikipedia.org/wiki/Atari -->
+		<brand_virgin>Virgo</brand_virgin> <!-- https://en.wikipedia.org/wiki/Virgin_Group -->
+		<brand_pioneer>Pyrodeer</brand_pioneer> <!-- https://en.wikipedia.org/wiki/Pioneer_Corporation -->
+		<brand_laserdisc>LazerDisk</brand_laserdisc> <!-- https://en.wikipedia.org/wiki/LaserDisc -->
+		<brand_siemens>Sumens</brand_siemens> <!-- https://en.wikipedia.org/wiki/Siemens | other extra-parody spoof: Hiemens -->
+		<brand_deutschetelekom>Deutsche Tellycom</brand_deutschetelekom> <!-- https://en.wikipedia.org/wiki/Deutsche_Telekom -->
+		<brand_telekom>Tellycom</brand_telekom>
+		<brand_bostondynamics>Bolton Dynamos</brand_bostondynamics> <!-- https://en.wikipedia.org/wiki/Boston_Dynamics -->
+		<brand_tesla>Tusla</brand_tesla> <!-- https://en.wikipedia.org/wiki/Tesla,_Inc. | TODO: Nikola Tesla not yet spoofed -->
+		<brand_mercedes>Mercieles</brand_mercedes> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
+		<brand_benz>Bonz</brand_benz> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
+		<brand_bmw>BWM</brand_bmw> <!-- https://en.wikipedia.org/wiki/BMW -->
+		<brand_volkswagen>Wolkwagen V.</brand_volkswagen> <!-- https://en.wikipedia.org/wiki/Volkswagen | alt./previous spoof: Faulkswagen; TODO: use for some parody -->
+		<brand_vw>WV</brand_vw>
+		<brand_beetle>Buggy</brand_beetle> <!-- https://en.wikipedia.org/wiki/Volkswagen_Beetle -->
+		<brand_toyota>Totoya</brand_toyota> <!-- https://en.wikipedia.org/wiki/Toyota | prev. spoof: Yotota -->
+		<brand_saab>Saalb</brand_saab> <!-- https://en.wikipedia.org/wiki/Saab_AB -->
+		<brand_scania>Scenia</brand_scania> <!-- https://en.wikipedia.org/wiki/Scania_AB -->
+		<brand_kaipan>Kaiplan</brand_kaipan> <!-- https://en.wikipedia.org/wiki/Kaipan | prev. spoof: Saipien -->
+		<brand_opel>Ommel</brand_opel> <!-- https://en.wikipedia.org/wiki/Opel -->
+		<brand_manta>Panta</brand_manta> <!-- https://en.wikipedia.org/wiki/Opel_Manta -->
+		<brand_generalmotors>Generic Motos</brand_generalmotors> <!-- https://en.wikipedia.org/wiki/General_Motors -->
+		<brand_pontiac>Puntiac</brand_pontiac> <!-- https://en.wikipedia.org/wiki/Pontiac_(automobile) -->
+		<brand_firebird>Flamerbird</brand_firebird> <!-- https://en.wikipedia.org/wiki/Pontiac_Firebird -->
+		<brand_transam>Tres-M</brand_transam> <!-- https://en.wikipedia.org/wiki/Pontiac_Firebird_(third_generation) -->
+		<brand_delorean>DeLoreno</brand_delorean> <!-- https://en.wikipedia.org/wiki/DeLorean_Motor_Company -->
+		<brand_ford>Fort</brand_ford> <!-- https://en.wikipedia.org/wiki/Ford_Motor_Company -->
+		<brand_escort>Esguard</brand_escort> <!-- https://en.wikipedia.org/wiki/Ford_Escort -->
+		<brand_sierra>Sienna</brand_sierra> <!-- https://en.wikipedia.org/wiki/Ford_Sierra -->
+		<brand_mondeo>Montana</brand_mondeo> <!-- https://en.wikipedia.org/wiki/Ford_Mondeo -->
+		<brand_mustang>Marten</brand_mustang> <!-- https://en.wikipedia.org/wiki/Ford_Mustang | alt/previous spoof: Mardeo -->
+		<brand_citroen>Citröneaux</brand_citroen> <!-- https://en.wikipedia.org/wiki/Citro%C3%ABn -->
+		<brand_renault>Penault</brand_renault> <!-- https://en.wikipedia.org/wiki/Renault -->
+		<brand_peugeot>Reugeot</brand_peugeot> <!-- https://en.wikipedia.org/wiki/Peugeot -->
+		<brand_bp>PB</brand_bp> <!-- https://en.wikipedia.org/wiki/BP -->
+		<brand_shell>Swell</brand_shell> <!-- https://en.wikipedia.org/wiki/Shell_plc -->
+		<brand_aral>Arol</brand_aral> <!-- https://en.wikipedia.org/wiki/Aral_AG -->
+		<brand_transworldairlines>Trans West North America</brand_transworldairlines> <!-- https://en.wikipedia.org/wiki/Trans_World_Airlines -->
+		<brand_twa>TWNA</brand_twa>
+		<brand_americanairlines>Airflight America</brand_americanairlines> <!-- https://en.wikipedia.org/wiki/American_Airlines -->
+		<brand_lufthansa>Lufthänsel</brand_lufthansa> <!-- https://en.wikipedia.org/wiki/Lufthansa -->
+		<brand_cessna>Shessna</brand_cessna> <!-- https://en.wikipedia.org/wiki/Cessna -->
+		<brand_cessna172>Shessna 127</brand_cessna172> <!-- https://en.wikipedia.org/wiki/Cessna_172 -->
+		<brand_ravensburger>Rabensberger</brand_ravensburger> <!-- https://en.wikipedia.org/wiki/Ravensburger -->
+		<brand_lamy>Laimi</brand_lamy> <!-- https://en.wikipedia.org/wiki/Lamy -->
+		<brand_swingline>Slipline</brand_swingline> <!-- https://en.wikipedia.org/wiki/Swingline -->
+		<brand_riored>Rio Rouge</brand_riored> <!-- https://en.wikipedia.org/wiki/Swingline -->
+		<brand_bestbuy>Burst-Buy</brand_bestbuy> <!-- https://en.wikipedia.org/wiki/Best_Buy -->
+		<brand_mediamarkt>MödiaMarkt</brand_mediamarkt> <!-- https://de.wikipedia.org/wiki/MediaMarktSaturn -->
+		<brand_saturn>Zaturno</brand_saturn> <!-- https://de.wikipedia.org/wiki/MediaMarktSaturn -->
+		<brand_praktiker>Praktiko</brand_praktiker> <!-- https://en.wikipedia.org/wiki/Praktiker -->
+		<brand_ikea>MÖKLEA</brand_ikea> <!-- https://en.wikipedia.org/wiki/IKEA | previous spoofs: Barry Buffet (?), Möbler (probably had to be changed, but no resemblance; similar names like OKEA already exist in reality) -->
+		<brand_costco>Cosscu</brand_costco> <!-- https://en.wikipedia.org/wiki/Costco -->
+		<brand_mastercard>Fastercard</brand_mastercard> <!-- https://en.wikipedia.org/wiki/Mastercard -->
+		<brand_dax>DUX</brand_dax> <!-- https://en.wikipedia.org/wiki/DAX | alt. spoof previously used: Daks -->
+		<brand_deutscheaktienindex>Deutsche Unternehmensindex</brand_deutscheaktienindex> <!-- alt. spoof previously used: Deutsches Aktiensystem -->
+		<brand_deutscheraktienindex>Deutscher Unternehmensindex</brand_deutscheraktienindex>
+		<brand_basf>DASF</brand_basf> <!-- https://en.wikipedia.org/wiki/BASF -->
+		<brand_cocacola>Cacca Cola</brand_cocacola> <!-- https://en.wikipedia.org/wiki/Coca-Cola -->
+		<brand_coke>Cacca</brand_coke>
+		<brand_dietcoke>Diet Cacca</brand_dietcoke> <!-- https://en.wikipedia.org/wiki/Diet_Coke -->
+		<brand_cokelight>Cacca Lite</brand_cokelight>
+		<brand_cokezero>Cacca Zilch</brand_cokezero> <!-- https://en.wikipedia.org/wiki/Coca-Cola_Zero_Sugar -->
+		<brand_pepsi>Pipsi</brand_pepsi> <!-- https://en.wikipedia.org/wiki/Pepsi -->
+		<brand_dietpepsi>Diet Pipsi</brand_dietpepsi> <!-- https://en.wikipedia.org/wiki/Diet_Pepsi -->
+		<brand_pepsilight>Pipsi Lite</brand_pepsilight>
+		<brand_africola>Affro-Cola</brand_africola> <!-- https://en.wikipedia.org/wiki/Afri_Cola -->
+		<brand_orangina>Oranchino</brand_orangina> <!-- https://en.wikipedia.org/wiki/Orangina -->
+		<brand_capri>Cypri</brand_capri> <!-- https://en.wikipedia.org/wiki/Capri-Sun -->
+		<brand_drpepper>Dr Plapper</brand_drpepper> <!-- https://en.wikipedia.org/wiki/Dr_Pepper -->
+		<brand_selters>Sylters</brand_selters> <!-- https://en.wikipedia.org/wiki/Selters -->
+		<brand_brawndo>Brawndo</brand_brawndo> <!-- https://en.wikipedia.org/wiki/Idiocracy -->
+		<brand_camel>Dromedary</brand_camel> <!-- https://en.wikipedia.org/wiki/Camel -->
+		<brand_marlboro>Murlborough</brand_marlboro> <!-- https://en.wikipedia.org/wiki/Marlboro -->
+		<brand_mrclean>Mr. Clank</brand_mrclean> <!-- https://en.wikipedia.org/wiki/Mr._Clean | English version of Meister Proper -->
+		<brand_meisterproper>Mister Ploper</brand_meisterproper> <!-- https://de.wikipedia.org/wiki/Meister_Proper | German version of Mr. Clean -->
+		<brand_gillette>Guillotte</brand_gillette> <!-- https://en.wikipedia.org/wiki/Gillette -->
+		<brand_weisserriese>Weißer Friese</brand_weisserriese> <!-- https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese -->
+		<brand_whiterevive>White Resize</brand_whiterevive> <!-- https://en.wikipedia.org/wiki/OxiClean -->
+		<brand_nivea>Norwea</brand_nivea> <!-- https://de.wikipedia.org/wiki/Nivea -->
+		<brand_lenor>Lemur</brand_lenor> <!-- https://de.wikipedia.org/wiki/Lenor | German version of Downy -->
+		<brand_downy>Dumby</brand_downy> <!-- https://en.wikipedia.org/wiki/Downy | English version of Lenor -->
+		<brand_tempo>Pemto</brand_tempo> <!-- https://en.wikipedia.org/wiki/Tempo_(brand) | alt. spoof: Tampi -->
+		<brand_duschdas>wasch das</brand_duschdas> <!-- https://de.wikipedia.org/wiki/Dusch_das -->
+		<brand_lux>Lyx</brand_lux> <!-- https://en.wikipedia.org/wiki/Lux_(soap) -->
+		<brand_colgate>Calgonte</brand_colgate> <!-- https://en.wikipedia.org/wiki/Colgate_(toothpaste) -->
+		<brand_pampers>Pantzers</brand_pampers> <!-- https://en.wikipedia.org/wiki/Pampers -->
+		<brand_lacoste>La Côte</brand_lacoste> <!-- https://en.wikipedia.org/wiki/Lacoste -->
+		<brand_prada>Praedo</brand_prada> <!-- https://en.wikipedia.org/wiki/Prada -->
+		<brand_reebok>Roebuck</brand_reebok> <!-- https://en.wikipedia.org/wiki/Reebok -->
+		<brand_c_a>C&amp;B</brand_c_a> <!-- https://en.wikipedia.org/wiki/C%26A -->
+		<brand_sothebys>Suthebay's</brand_sothebys> <!-- https://de.wikipedia.org/wiki/Sotheby%E2%80%99s -->
+		<brand_snickers>Trickers</brand_snickers> <!-- https://en.wikipedia.org/wiki/Snickers -->
+		<brand_ferrero>Pferreri</brand_ferrero> <!-- https://en.wikipedia.org/wiki/Ferrero_SpA -->
+		<brand_duplo>Pludo</brand_duplo> <!-- https://de.wikipedia.org/wiki/Duplo_(Schokoriegel) -->
+		<brand_mars>Marts</brand_mars> <!-- https://en.wikipedia.org/wiki/Mars_bar -->
+		<brand_sarotti>Schorotti</brand_sarotti> <!-- https://en.wikipedia.org/wiki/Sarotti -->
+		<brand_toblerone>Tuberthrone</brand_toblerone> <!-- https://en.wikipedia.org/wiki/Toblerone -->
+		<brand_schwartau>Schwalltau</brand_schwartau> <!-- https://de.wikipedia.org/wiki/Schwartauer_Werke -->
+		<brand_maggi>Meggli</brand_maggi> <!-- https://en.wikipedia.org/wiki/Maggi -->
+		<brand_knorr>Knurr</brand_knorr> <!-- https://en.wikipedia.org/wiki/Knorr_(brand) -->
+		<brand_loewensenf>Tigersenf</brand_loewensenf> <!-- https://en.wikipedia.org/wiki/L%C3%B6wensenf -->
+		<brand_heinz>Hanz</brand_heinz> <!-- https://en.wikipedia.org/wiki/Heinz -->
+		<brand_demeter>Delmetro</brand_demeter> <!-- https://de.wikipedia.org/wiki/Demeter_(Deutschland) -->
+		<brand_fuddruckers>Futtruckers</brand_fuddruckers> <!-- https://en.wikipedia.org/wiki/Fuddruckers -->
+		<brand_carlsjr>Curt's Jr.</brand_carlsjr> <!-- https://en.wikipedia.org/wiki/Carl%27s_Jr. -->
+		<brand_carljr>Curt Jr.</brand_carljr>
+		<brand_starbucks>Spacebucks</brand_starbucks> <!-- https://en.wikipedia.org/wiki/Starbucks -->
+		<brand_guinness>Gingers</brand_guinness> <!-- https://en.wikipedia.org/wiki/Guinness -->
+		<brand_budweiser>Buckweizer</brand_budweiser> <!-- https://en.wikipedia.org/wiki/Budweiser -->
+		<brand_berlinerpilsener>Kreuzberger Pilsener</brand_berlinerpilsener> <!-- https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei -->
+		<brand_duff>Döff</brand_duff> <!-- https://en.wikipedia.org/wiki/Duff_Beer -->
+		<brand_puschkin>Juczyn</brand_puschkin> <!-- https://de.wikipedia.org/wiki/Puschkin_Vodka -->
+
+		<brandslogan_thethirdplace>The fourth place</brandslogan_thethirdplace>
+		<brandslogan_cantbeatthefeeling>Can't eat the peeling</brandslogan_cantbeatthefeeling>
+		<brandslogan_budsfor>Buck's for</brandslogan_budsfor>
+		<brandslogan_thetrinityoftaste>The Trifecta of Taste</brandslogan_thetrinityoftaste>
+		<brandslogan_vierbuddysfuer>Vier Buckys für ein Hosianna</brandslogan_vierbuddysfuer>
+
+		<!-- Other organizations and projects -->
+
+		<generalorg_nasa>NASE</generalorg_nasa> <!-- # https://en.wikipedia.org/wiki/NASA -->
+		<generalorg_communistpartyofthesovietunion>Communist Party of the United Soviet States</generalorg_communistpartyofthesovietunion> <!-- # https://en.wikipedia.org/wiki/Communist_Party_of_the_Soviet_Union -->
+		<generalorg_ofthecommunistpartyofthesovietunion>of the Communist Party of the United Soviet States</generalorg_ofthecommunistpartyofthesovietunion>
+		<generalorg_cpsu>CPUSS</generalorg_cpsu>
+		<generalorg_cdu>CUD</generalorg_cdu> <!-- https://en.wikipedia.org/wiki/Christian_Democratic_Union_of_Germany -->
+		<generalorg_csu>CUS</generalorg_csu> <!-- https://en.wikipedia.org/wiki/Christian_Social_Union_in_Bavaria -->
+		<generalorg_spd>SDPP</generalorg_spd> <!-- https://en.wikipedia.org/wiki/Social_Democratic_Party_of_Germany -->
+		<generalorg_socialdemocraticpartyofgermany>Social Democratic Populist Party</generalorg_socialdemocraticpartyofgermany>
+		<generalorg_fdp>FDPP</generalorg_fdp> <!-- https://de.wikipedia.org/wiki/Freiheitliche_Partei_Deutschlands -->
+		<generalorg_npd>NDPP</generalorg_npd> <!-- https://en.wikipedia.org/wiki/National_Democratic_Party_of_Germany -->
+		<generalorg_sed>SDE</generalorg_sed> <!-- https://en.wikipedia.org/wiki/Socialist_Unity_Party_of_Germany -->
+		<generalorg_socialistunitypartyofgermany>Socialist-German Unity Party</generalorg_socialistunitypartyofgermany>
+		<generalorg_ofthesocialistunitypartyofgermany>of the Socialist-German Unity Party</generalorg_ofthesocialistunitypartyofgermany>
+		<generalorg_greenpeace>Creampeas</generalorg_greenpeace> <!-- https://en.wikipedia.org/wiki/Greenpeace -->
+		<generalorg_chaoscomputerclub>Chaos Communication Club</generalorg_chaoscomputerclub> <!-- https://en.wikipedia.org/wiki/Chaos_Computer_Club -->
+
+		<generalorgproject_columbia>Colombia</generalorgproject_columbia> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Columbia -->
+		<generalorgproject_challenger>Passenger</generalorgproject_challenger> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Challenger -->
+		<generalorgproject_documenta>Dossiera</generalorgproject_documenta> <!-- https://en.wikipedia.org/wiki/Documenta | previous spoof: Aktena -->
+
+		<!-- Sports -->
+
+		<sports_formula1>Formula A</sports_formula1> <!-- https://en.wikipedia.org/wiki/Formula_One | Previously 'Formula X' but Formula 1,2,3,... is probably better spoofed with Formula A,B,C,... -->
+		<sports_formula2>Formula B</sports_formula2> <!-- https://en.wikipedia.org/wiki/Formula_Two -->
+		<sports_formula3>Formula C</sports_formula3> <!-- https://en.wikipedia.org/wiki/Formula_Three -->
+		<sports_formula4>Formula D</sports_formula4> <!-- https://en.wikipedia.org/wiki/Formula_4 -->
+		<sports_f1>F-A</sports_f1>
+		<sports_f2>F-B</sports_f2>
+		<sports_f3>F-C</sports_f3>
+		<sports_f4>F-D</sports_f4>
+		<sports_fifa>FUFA</sports_fifa> <!-- https://en.wikipedia.org/wiki/FIFA -->
+		<sports_daviscup>Navy Cup</sports_daviscup> <!-- https://en.wikipedia.org/wiki/Davis_Cup -->
+		<sports_1fc_generic>FFC</sports_1fc_generic>
+
+		<sportsclub_fcbayern>FU Bavaria</sportsclub_fcbayern> <!-- https://en.wikipedia.org/wiki/FC_Bayern_Munich -->
+		<sportsclub_bayern>Bavaria</sportsclub_bayern>
+		<sportsclub_herthabsc>Berta HSC</sportsclub_herthabsc> <!-- https://en.wikipedia.org/wiki/Hertha_BSC -->
+		<sportsclub_hertha>Berta</sportsclub_hertha>
+		<sportsclub_realmadrid>Royal Madrid</sportsclub_realmadrid> <!-- https://en.wikipedia.org/wiki/Real_Madrid_CF | TODO Spanish: 'Royal' seems like a natural spoof for international audience but might be unusual in Spanish; Regio (majestic) might be better in Spanish but sounds like just "regional" internationally. -->
+		<sportsclub_real>Royal</sportsclub_real>
+		<sportsclub_fcbarcelona>SC Barcelona</sportsclub_fcbarcelona> <!-- https://en.wikipedia.org/wiki/FC_Barcelona -->
+		<sportsclub_barca>Barcé</sportsclub_barca>
+		<sportsclub_manchesterunited>Manchester Union</sportsclub_manchesterunited> <!-- https://en.wikipedia.org/wiki/Manchester_United_F.C. -->
+		<sportsclub_manu>ManUni</sportsclub_manu>
+		<sportsclub_hamburgersv>RSV Hamburg</sportsclub_hamburgersv> <!-- https://en.wikipedia.org/wiki/Hamburger_SV -->
+		<sportsclub_hsv>RSVH</sportsclub_hsv>
+
+		<!-- Media and Franchises -->
+
+		<media_oscar>Oswald</media_oscar> <!-- (was) often referenced in clear-text but trademarked | https://en.wikipedia.org/wiki/Academy_Awards -->
+		<media_academyaward>Academia Award</media_academyaward> <!-- https://en.wikipedia.org/wiki/Academy_Awards -->
+		<media_hollywood>Hillywald</media_hollywood> <!-- https://en.wikipedia.org/wiki/Hollywood | just a geographical location but may be part of a trademark in certain contexts, e.g. 'Hollywood Records'; providing consistency for entries like that -->
+
+		<mediageneralorg_ard>ADR</mediageneralorg_ard> <!-- https://en.wikipedia.org/wiki/ARD_(broadcaster) -->
+		<mediageneralorg_zweitesdeutschesfernsehen>2. Deutsches Fernsehen</mediageneralorg_zweitesdeutschesfernsehen> <!-- https://en.wikipedia.org/wiki/ZDF -->
+		<mediageneralorg_zweitedeutschefernsehen>2. Deutsche Fernsehen</mediageneralorg_zweitedeutschefernsehen>
+		<mediageneralorg_zdf>2DF</mediageneralorg_zdf>
+		<mediageneralorg_rtl>RLT</mediageneralorg_rtl> <!-- https://en.wikipedia.org/wiki/RTL_Group -->
+		<mediageneralorg_sat1>Sati.11</mediageneralorg_sat1> <!-- https://en.wikipedia.org/wiki/Sat.1 -->
+		<mediageneralorg_prosieben>Pro13</mediageneralorg_prosieben> <!-- https://en.wikipedia.org/wiki/ProSieben -->
+		<mediageneralorg_pro7>Pro13</mediageneralorg_pro7>
+		<mediageneralorg_worldwrestlingentertainment>Western Wrestling Amusement</mediageneralorg_worldwrestlingentertainment> <!-- https://en.wikipedia.org/wiki/WWE -->
+		<mediageneralorg_wwe>WWA</mediageneralorg_wwe>
+		<mediageneralorg_worldwrestlingfederation>Western Wrestling Friends</mediageneralorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
+		<mediageneralorg_theworldwrestlingfederation>the Western Wrestling Friends</mediageneralorg_theworldwrestlingfederation>
+		<mediageneralorg_wwf>WWFr</mediageneralorg_wwf>
+		<mediageneralorg_marvel>Marbel</mediageneralorg_marvel> <!-- https://en.wikipedia.org/wiki/Marvel_Entertainment -->
+
+		<mediatitle_lowestofthelow>At the Lowest Edge</mediatitle_lowestofthelow> <!-- https://en.wikipedia.org/wiki/Lowest_of_the_Low_(book) -->
+		<mediatitle_bornintheusa>Raised in America</mediatitle_bornintheusa> <!-- https://en.wikipedia.org/wiki/Born_in_the_U.S.A. -->
+		<mediatitle_derfreischuetz>Das Freiwild</mediatitle_derfreischuetz> <!-- https://en.wikipedia.org/wiki/Der_Freisch%C3%BCtz -->
+		<mediatitle_masterofpuppets>Pulling the Strings</mediatitle_masterofpuppets> <!-- https://en.wikipedia.org/wiki/Master_of_Puppets -->
+		<mediatitle_trueblue>Deep Blue</mediatitle_trueblue> <!-- https://en.wikipedia.org/wiki/True_Blue_(Madonna_album) -->
+		<mediatitle_thriller>Trillin'</mediatitle_thriller> <!-- https://en.wikipedia.org/wiki/Thriller_(album) -->
+		<mediatitle_bad>Bed</mediatitle_bad> <!-- https://en.wikipedia.org/wiki/Bad_(album) -->
+		<mediatitle_laislabonita>The Isle of Bel Air</mediatitle_laislabonita> <!-- https://en.wikipedia.org/wiki/La_Isla_Bonita -->
+		<mediatitle_voyagevoyage>Journal, Journal</mediatitle_voyagevoyage> <!-- https://en.wikipedia.org/wiki/Voyage,_voyage -->
+		<mediatitle_oe>Ä</mediatitle_oe> <!-- https://de.wikipedia.org/wiki/%C3%96_(Album) -->
+		<mediatitle_madtv>Rat TV</mediatitle_madtv> <!-- https://en.wikipedia.org/wiki/Mad_TV_(video_game) -->
+		<mediatitle_tetris>Tetro</mediatitle_tetris> <!-- https://en.wikipedia.org/wiki/Tetris -->
+		<mediatitle_gothic>Baroque</mediatitle_gothic> <!-- https://en.wikipedia.org/wiki/Gothic_(series) -->
+		<mediatitle_grandmonsterslam>Great Monster Slash</mediatitle_grandmonsterslam> <!-- https://en.wikipedia.org/wiki/Grand_Monster_Slam -->
+		<mediatitle_logical>Logikus</mediatitle_logical> <!-- https://www.mobygames.com/game/541/logcal/ -->
+		<mediatitle_muds>M.O.R.D.S.</mediatitle_muds> <!-- https://de.wikipedia.org/wiki/M.U.D.S. -->
+		<mediatitle_magicthegathering>Mystic: The Summoning</mediatitle_magicthegathering> <!-- https://en.wikipedia.org/wiki/Magic:_The_Gathering -->
+		<mediatitle_sherlockholmesconsultingdetective>Dr. Watson: Visiting Inspector</mediatitle_sherlockholmesconsultingdetective> <!-- https://en.wikipedia.org/wiki/Sherlock_Holmes:_Consulting_Detective_(gamebook) -->
+		<mediatitle_hoitytoity>Hoity Mighty</mediatitle_hoitytoity> <!-- https://en.wikipedia.org/wiki/Hoity_Toity -->
+		<mediatitle_thesettlersofcatan>The Pioneers of Kastlan</mediatitle_thesettlersofcatan> <!-- https://en.wikipedia.org/wiki/Catan -->
+		<mediatitle_ateam>B-Team</mediatitle_ateam> <!-- https://en.wikipedia.org/wiki/The_A-Team -->
+		<mediatitle_airwolf>Airhound</mediatitle_airwolf> <!-- https://en.wikipedia.org/wiki/Airwolf -->
+		<mediatitle_ghostbusters>Ghostblazers</mediatitle_ghostbusters> <!-- https://en.wikipedia.org/wiki/Ghostbusters_(franchise) -->
+		<mediatitle_knightrider>Night Raider</mediatitle_knightrider> <!-- https://en.wikipedia.org/wiki/Knight_Rider -->
+		<mediatitle_starwars>War Stars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
+		<mediatitle_ottifants>Grottifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant -->
+
+		<mediaprop_batmobile>Batcar</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
+		<mediaprop_dudu>Dodo</mediaprop_dudu> <!-- https://en.wikipedia.org/wiki/Superbug_(film_series) -->
+		<mediaprop_herbie>Herbie</mediaprop_herbie> <!-- https://en.wikipedia.org/wiki/Herbie -->
+		<mediaprop_ecto1>Octo-1</mediaprop_ecto1> <!-- https://en.wikipedia.org/wiki/Ectomobile -->
+		<mediaprop_fliewatuut>Tootwafli</mediaprop_fliewatuut> <!-- https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt_(Fernsehfilm) -->
 	</globalvariables>
--->
 </tvtdb>

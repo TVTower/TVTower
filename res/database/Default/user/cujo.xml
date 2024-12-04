@@ -183,9 +183,9 @@
 				<pl>Zmarła najstarsza osoba na świecie</pl>
 			</title>
 			<description>
-				<de>Im Alter von 120 Jahren, 8 Monaten und 13 Tagen ist der Japaner Shigeko Izmari gestorben. Als er geboren wurde, produzierte der Konsolenhersteller Nidennto noch Gummistiefel.</de>
-				<en>At the age of 120 years, 8 months and 13 days, Japanese Shigeko Izmari has died. When he was born, the console manufacturer Nidennto was still producing rubber boots.</en>
-				<pl>W wieku 120 lat, 8 miesięcy i 13 dni zmarł Japończyk Shigeko Izmari. Kiedy się urodził, producent konsol Nidennto wciąż produkował gumowe buty.</pl>
+				<de>Im Alter von 120 Jahren, 8 Monaten und 13 Tagen ist der Japaner Shigeko Izmari gestorben. Als er geboren wurde, produzierte der Konsolenhersteller ${brand_nintendo} noch Gummistiefel.</de>
+				<en>At the age of 120 years, 8 months and 13 days, Japanese Shigeko Izmari has died. When he was born, the console manufacturer ${brand_nintendo} was still producing rubber boots.</en>
+				<pl>W wieku 120 lat, 8 miesięcy i 13 dni zmarł Japończyk Shigeko Izmari. Kiedy się urodził, producent konsol ${brand_nintendo} wciąż produkował gumowe buty.</pl>
 			</description>
 			<data genre="4" price="0.9" quality="30" flags="2"/>
 		</news>
@@ -305,9 +305,9 @@
 				<pl>Batoniki mają zostać zakazane</pl>
 			</title>
 			<description>
-				<de>Wie Gesundheitsminister${gendersuffix} ${currenthealthminister} in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. Pludo-Hersteller Pferreri prüft, ob er weiterhin Werbung auf den TV Tower-Sendern schaltet.</de>
-				<en>Health Minister ${currenthealthminister} announced on a TV Tower station that candy bars will be banned because of their high sugar content. Pludo manufacturer Pferreri is considering whether to continue advertising on TV Tower stations.</en>
-				<pl>Minister Zdrowia ${currenthealthminister} ogłosił w stacji TV Tower, że batoniki zostaną zakazane ze względu na wysoką zawartość cukru. Producent Pludo, firma Pferreri, rozważa, czy kontynuować reklamę w stacjach TV Tower.</pl>
+				<de>Wie Gesundheitsminister${gendersuffix} ${currenthealthminister} in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. ${brand_duplo}-Hersteller ${brand_ferrero} prüft, ob er weiterhin Werbung auf den TV Tower-Sendern schaltet.</de>
+				<en>Health Minister ${currenthealthminister} announced on a TV Tower station that candy bars will be banned because of their high sugar content. ${brand_duplo} manufacturer ${brand_ferrero} is considering whether to continue advertising on TV Tower stations.</en>
+				<pl>Minister Zdrowia ${currenthealthminister} ogłosił w stacji TV Tower, że batoniki zostaną zakazane ze względu na wysoką zawartość cukru. Producent ${brand_duplo}, firma ${brand_ferrero}, rozważa, czy kontynuować reklamę w stacjach TV Tower.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -324,12 +324,12 @@
 		<!-- Toyota - Nichts ist unmöglich -->
 		<ad guid="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
 			<title>
-				<all>Yotota</all>
+				<all>${brand_toyota}</all>
 			</title>
 			<description>
-				<de>Alles ist möglich - Yotota - Helfen Sie mit: Yotota stiftet für jedes verkaufte Auto 10 Cent an eine Initiative zur Rettung des Regenwalds.</de>
-				<en>Anything is possible - Yotota - Help: Yotota donates 10 cents for every car sold to an initiative to save the rainforest.</en>
-				<pl>Wszystko jest możliwe - Totoya - Pomoc: Totoya przekazuje 10 centów za każdy sprzedany samochód na rzecz inicjatywy ratowania lasów deszczowych.</pl>
+				<de>Alles ist möglich - ${brand_toyota} - Helfen Sie mit: ${brand_toyota} stiftet für jedes verkaufte Auto 10 Cent an eine Initiative zur Rettung des Regenwalds.</de>
+				<en>Anything is possible - ${brand_toyota} - Help: ${brand_toyota} donates 10 cents for every car sold to an initiative to save the rainforest.</en>
+				<pl>Wszystko jest możliwe - ${brand_toyota} - Pomoc: ${brand_toyota} przekazuje 10 centów za każdy sprzedany samochód na rzecz inicjatywy ratowania lasów deszczowych.</pl>
 			</description>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="5" duration="3" profit="350" penalty="475" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -337,12 +337,12 @@
 		<!-- Duplo -->
 		<ad guid="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
 			<title>
-				<all>Pludo</all>
+				<all>${brand_duplo}</all>
 			</title>
 			<description>
-				<de>Pludo - Der wahrscheinlich längste Schokoriegel der Welt - Neu: Sonderaktion - 9 Riegel zum Preis von 11</de>
-				<en>Pludo - Probably the longest chocolate bar in the world - New: Special offer - 9 bars for the price of 11</en>
-				<pl>Pludo - Prawdopodobnie najdłuższa tabliczka czekolady na świecie - Nowość: Oferta specjalna - 9 batonów w cenie 11</pl>
+				<de>${brand_duplo} - Der wahrscheinlich längste Schokoriegel der Welt - Neu: Sonderaktion - 9 Riegel zum Preis von 11</de>
+				<en>${brand_duplo} - Probably the longest chocolate bar in the world - New: Special offer - 9 bars for the price of 11</en>
+				<pl>${brand_duplo} - Prawdopodobnie najdłuższa tabliczka czekolady na świecie - Nowość: Oferta specjalna - 9 batonów w cenie 11</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="4" duration="3" profit="1000" penalty="1550" fix_infomercial_profit="1"/>
@@ -350,13 +350,12 @@
 		<!-- Schwartau -->
 		<ad guid="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
 			<title>
-				<all>Schwalltau</all>
-				<pl>Sweettau</pl>
+				<all>${brand_schwartau}</all>
 			</title>
 			<description>
-				<de>Schwalltau - Die süßeste Versuchung seit es Marmelade gibt - Jetzt auch mit Tollkirschen.</de>
-				<en>Schwalltau - The sweetest temptation since there is jam - Now also with belladonna cherries.</en>
-				<pl>Sweettau - Najsłodsza pokusa odkąd istnieje dżem - teraz także z wiśniami belladonna</pl>
+				<de>${brand_schwartau} - Die süßeste Versuchung seit es Marmelade gibt - Jetzt auch mit Tollkirschen.</de>
+				<en>${brand_schwartau} - The sweetest temptation since there is jam - Now also with belladonna cherries.</en>
+				<pl>${brand_schwartau} - Najsłodsza pokusa odkąd istnieje dżem - teraz także z wiśniami belladonna</pl>
 			</description>
 			<conditions min_audience="2.3435" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="3" duration="2" profit="750" penalty="1125" fix_infomercial_profit="1"/>

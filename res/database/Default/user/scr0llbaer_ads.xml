@@ -27,7 +27,7 @@
 		</ad>
 		<ad guid="77f0d337-30a4-45de-b26d-fa0093fe89e7" creator="9551" comment="https://de.wikipedia.org/wiki/Demeter_(Deutschland)">
 			<title>
-				<de>Delmetro</de>
+				<de>${brand_demeter}</de>
 			</title>
 			<description>
 				<de>Feinste anthroposophische bei Vollmondschein ausgependelte Bio-Vollwertkost.</de>
@@ -112,11 +112,11 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="3153545d-d231-4f4e-9a75-647f50c4cef9" creator="9551" comment="1975-1982 | https://de.wikipedia.org/wiki/Betamax">
 			<title>
-				<de>Gammamax</de>
+				<de>${brand_betamax}</de>
 			</title>
 			<description>
-				<de>Werden Sie der Herr über die Ewigkeit! Die neue Generation Video-Magnetbänder. Jetzt von Sunny.</de>
-				<en>Become the master of eternity! The new generation of magnetic tapes for video. Now from Sunny.</en>
+				<de>Werden Sie der Herr über die Ewigkeit! Die neue Generation Video-Magnetbänder. Jetzt von ${brand_sony}.</de>
+				<en>Become the master of eternity! The new generation of magnetic tapes for video. Now from ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -124,11 +124,11 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="bef518f9-38fc-404d-a767-28fe4e9f65dc" creator="9551" comment="1983-1987 | https://en.wikipedia.org/wiki/MSX">
 			<title>
-				<de>Sunny MXS</de>
+				<de>${brand_sony} ${brand_msx}</de>
 			</title>
 			<description>
-				<de>Erleben Sie den neuen Home-Computing-Standard mit unseren Modellen in einer völlig neuen Dimension. It's a Sunny.</de>
-				<en>Experience the new home computing standard with our range of models in a completely new dimension. It's a Sunny.</en>
+				<de>Erleben Sie den neuen Home-Computing-Standard mit unseren Modellen in einer völlig neuen Dimension. It's a ${brand_sony}.</de>
+				<en>Experience the new home computing standard with our range of models in a completely new dimension. It's a ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -136,7 +136,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="88a600ed-b687-4ee7-a59c-2b5d042903e4" creator="9551" comment="1988-1992 | https://en.wikipedia.org/wiki/Pioneer_Corporation | https://en.wikipedia.org/wiki/LaserDisc | alt spoof names: Precideer, Presideer | actually discontinued only in 2001 (films) / 2009 | didn't find a Sony product fitting into this time period and to the 'discontinued tech' theme of this 'thread'">
 			<title>
-				<de>Pyrodeer LazyDisk</de>
+				<de>${brand_pioneer} ${brand_laserdisc}</de>
 			</title>
 			<description>
 				<de>Die umfassendste Revolution im Fernsehen seit dem Fernsehen. Erleben Sie SciFi und Horror in noch nie dagewesener Laserschärfe!</de>
@@ -148,11 +148,11 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="6b381d2a-b4bc-44fb-9c07-3047209bfa57" creator="9551" comment="1993-2002 | https://en.wikipedia.org/wiki/MiniDisc | slogan by ChatGPT | actually discontinued only in 2013 | could be more satirical">
 			<title>
-				<de>Sunny MikroDisk</de>
+				<de>${brand_sony} ${brand_minidisc}</de>
 			</title>
 			<description>
-				<de>Winzige Disk, gewaltiger Sound: Sunny MikroDisk rockt!</de>
-				<en>Tiny disk, massive sound: Sunny MikroDisk rocks!</en>
+				<de>Winzige Disk, gewaltiger Sound: ${brand_sony} ${brand_minidisc} rockt!</de>
+				<en>Tiny disk, massive sound: ${brand_sony} ${brand_minidisc} rocks!</en>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -160,11 +160,11 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="4eade518-8772-4697-9508-da43af3782c2" creator="9551" comment="2003-2013 | https://en.wikipedia.org/wiki/Vaio">
 			<title>
-				<de>Sunny VIAO</de>
+				<de>${brand_sony} ${brand_vaio}</de>
 			</title>
 			<description>
-				<de>VIAO for the pro. Superschlanke Glanzleistung mit Hochglanz-Display, so dass man sich drin spiegeln kann. Erleben Sie unsere innovativen Computer-Notebooks!</de>
-				<en>VIAO for the pro. Super-slim performance brilliance with brilliant high-gloss display so you can see your own reflection. Experience our innovative computer notebooks!</en>
+				<de>${brand_vaio} for the pro. Superschlanke Glanzleistung mit Hochglanz-Display, so dass man sich drin spiegeln kann. Erleben Sie unsere innovativen Computer-Notebooks!</de>
+				<en>${brand_vaio} for the pro. Super-slim performance brilliance with brilliant high-gloss display so you can see your own reflection. Experience our innovative computer notebooks!</en>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -172,11 +172,11 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="07c6b7de-06ce-4d62-b237-49dcfa0060c6" creator="9551" comment="2014- | https://en.wikipedia.org/wiki/Vaio | since 2014 not anymore a brand of Sony">
 			<title>
-				<de>VIAO</de>
+				<de>${brand_vaio}</de>
 			</title>
 			<description>
-				<de>Every eye on you. Innovative All-in-One PCs und ultra-portable Notebooks von VIAO.</de>
-				<en>Every eye on you. Innovative all-in-one PCs and ultra-portable notebooks from VIAO.</en>
+				<de>Every eye on you. Innovative All-in-One PCs und ultra-portable Notebooks von ${brand_vaio}.</de>
+				<en>Every eye on you. Innovative all-in-one PCs and ultra-portable notebooks from ${brand_vaio}.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -193,9 +193,9 @@ Anything is possible at Zombocom.</en>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="21" repetitions="4" duration="2" profit="2375" penalty="3500" infomercial_profit="125" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="8ecbab11-0df5-4695-94f7-e37d7b30ef5d" creator="9551" comment="https://en.wikipedia.org/wiki/Boston_Dynamics | actually founded in 1992 but being liberal and ironically fictional here about killer robots in previous times, so no pre-1992 versions for now">
+		<ad guid="8ecbab11-0df5-4695-94f7-e37d7b30ef5d" creator="9551" comment="https://en.wikipedia.org/wiki/Boston_Dynamics | TODO: actually founded in 1992; maybe use fictional spoof version in earlier time">
 			<title>
-				<de>Bolton Dynamos</de>
+				<de>${brand_bostondynamics}</de>
 			</title>
 			<description>
 				<de>Ihr freundlicher Militärdienstleister mit den niedlichen Killerrobotern von nebenan.</de>
@@ -232,8 +232,8 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="ee9663fe-ea29-4ec1-910f-ff54133991e2" creator="9551" comment="Initech - https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/That-Would-Be-Great | description probably too long to fit in, but that's fine for wall-of-text-effect | TODO: German version translated, should be quoted from the movie | TODO: Would like to break 4th wall in description: 'Hello ${PLAYERNAME}'">
 			<title>
-				<de>InitTec GmbH</de>
-				<en>InitTec, LLC</en>
+				<de>${brand_initech} GmbH</de>
+				<en>${brand_initech}, LLC</en>
 			</title>
 			<description>
 				<de>Hallo Zuschauer, was liegt an? Ähm, ich müsste Sie bitten, am Samstag reinzukommen. Wenn Sie also gegen 9 Uhr hier sein könnten, um an den TPS-Berichten zu arbeiten, das wäre großartig, mmmk... oh oh! Und fast hätte ich es vergessen, ahh, ich brauche Sie auch am Sonntag, 'kay. Wir haben diese Woche ein paar Leute verloren, und das müssen wir jetzt irgendwie aufholen.</de>
@@ -244,22 +244,22 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="fc5c71a5-9dbe-4dc7-a5bf-3c45de0f62de" creator="9551" comment="https://en.wikipedia.org/wiki/Swingline | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/72453974/Office-Space-Stapler">
 			<title>
-				<de>Slipline Rio Red</de>
+				<de>${brand_swingline} ${brand_riored}</de>
 			</title>
 			<description>
 				<de>„Entschuldigen Sie, ich glaube, Sie haben meinen Tacker.“
 Alle wollen unseren knallroten Hochleistungs-Tacker.
-Nur von Slipline.</de>
+Nur von ${brand_swingline}.</de>
 				<en>"Excuse me, I believe you have my stapler."
 Everyone wants our garish red high performance stapler.
-Only from Slipline.</en>
+Only from ${brand_swingline}.</en>
 			</description>
 			<conditions min_audience="2.6041" min_image="7" target_group="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="695" penalty="1150" infomercial_profit="72" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="e6e33ac8-6c37-4920-8ad4-dbbd0b3b5d1c" creator="9551" comment="https://en.wikipedia.org/wiki/HP_LaserJet | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/31270921/PC-load-letter">
 			<title>
-				<de>HB LazerJam</de>
+				<de>${brand_hp} ${brand_laserjet}</de>
 			</title>
 			<description>
 				<de>PC LOAD LETTERn Sie Ihre TPS-Berichte in unsere modernen Hochleistungsdrucker.</de>
@@ -270,7 +270,7 @@ Only from Slipline.</en>
 		</ad>
 		<ad guid="55f86f26-6484-4bf4-bd27-6a004c8c1343" creator="9551" comment="-1990 | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/eYb22BLBqGw | also using the brand name progression through time like in the movie, except for the original name and the last finally obviously vulgar version">
 			<title>
-				<de>Futtruckers</de>
+				<de>${brand_fuddruckers}</de>
 			</title>
 			<description>
 				<de>Die feinsten Burger des Planeten.</de>
@@ -306,15 +306,15 @@ Only from Slipline.</en>
 		</ad>
 		<ad guid="2651208e-1d21-4d90-968c-9f045c79fcc7" creator="9551" comment="Carl's Jr.: https://en.wikipedia.org/wiki/Carl%27s_Jr. | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/5d7SaO0JAHk">
 			<title>
-				<de>Curt's Jr.</de>
+				<all>${brand_carlsjr}</all>
 			</title>
 			<description>
 				<de>F**k dich, ich esse!
----Curt Jr.
+---${brand_carljr}
 
 Burger vom Holzkohlegrill auf die richtige Art. Jetzt mit Extra Big-Ass Pommes.</de>
 				<en>F**k you, I'm eating!
----Curt Jr.
+---${brand_carljr}
 
 Char-grilled burgers the right way. Now with Extra Big-Ass Fries.</en>
 			</description>
@@ -323,22 +323,22 @@ Char-grilled burgers the right way. Now with Extra Big-Ass Fries.</en>
 		</ad>
 		<ad guid="9175d090-17bd-4786-823a-cc6b0080d480" creator="9551" comment="https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/ZMHfBobgLSI">
 			<title>
-				<de>Brawndo</de>
+				<de>${brand_brawndo}</de>
 			</title>
 			<description>
 				<de>Wie? Ihr trinkt immer noch Wasser!? Das aus der Toilette?
-In Brawndo steckt was Pflanzen schmeckt. Es enthält Elektrolyte!
-Brawndo - der Durstverstümmler.</de>
+In ${brand_brawndo} steckt was Pflanzen schmeckt. Es enthält Elektrolyte!
+${brand_brawndo} - der Durstverstümmler.</de>
 				<en>What? You still drink water!? Like from the toilet?
-Brawndo's got what plants crave. It's got electrolytes!
-Brawndo - the thirst mutilator.</en>
+${brand_brawndo}'s got what plants crave. It's got electrolytes!
+${brand_brawndo} - the thirst mutilator.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="4" duration="3" profit="320" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="791793cd-94ce-4e36-872c-56dbce7d5970" creator="9551" comment="https://en.wikipedia.org/wiki/Costco | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So">
 			<title>
-				<de>Cosscu</de>
+				<all>${brand_costco}</all>
 			</title>
 			<description>
 				<de>Willkommen bei Cosscu. Ich liebe euch.
@@ -355,7 +355,7 @@ Now available: Law degree in 8 minutes.</en>
 		</ad>
 		<ad guid="41768f4b-5f4d-405f-863b-b321bee23b62" creator="9551" comment="https://en.wikipedia.org/wiki/Starbucks | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So | TODO: Starfucks would be too vulgar but a more frivolous spoof name would be good">
 			<title>
-				<de>Spacebucks</de>
+				<all>${brand_starbucks}</all>
 			</title>
 			<description>
 				<de>Exotischer Kaffee für Männer. Unser „Hot“ Latte und „Full Body“ Latte jetzt mit extra Schaum.</de>
@@ -573,7 +573,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 		</ad>
 		<ad guid="cb535e3b-9778-41d3-8077-11acf625265d" creator="9551" comment="1981-1997 | https://en.wikipedia.org/wiki/CompuServe | then bought by AOL | Slogan created with help of ChatGPT">
 			<title>
-				<de>CompiSurf</de>
+				<all>${brand_compuserve}</all>
 			</title>
 			<description>
 				<de>Dial-up Delight! Mach dich bereit für den langsamsten und teuersten Surf der Stadt!</de>
@@ -585,7 +585,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 		</ad>
 		<ad guid="0120f9b5-e60a-4e03-a4dd-971b7fe4d399" creator="9551" comment="1998- | https://en.wikipedia.org/wiki/AOL | TODO: Make reference: English version is quoting title of the film 7d76d4b1-33e9-4130-b064-b04dd17ca454 that was based on the popular slogan in the US">
 			<title>
-				<de>OAL</de>
+				<all>${brand_aol}</all>
 			</title>
 			<description>
 				<de>Jetzt weltweit! Wir schmeißen Ihnen eine Gratis-CD-ROM nach der anderen hinterher, bis endlich auch die letzten Boomer wie Sie drin sind. Ist ja so simpel - OAL.</de>
@@ -597,7 +597,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 		</ad>
 		<ad guid="057282e1-d2d2-471c-b6b9-ff2f63336145" creator="9551" comment="-1989 | https://cyber.equipment/">
 			<title>
-				<de>CYBER</de>
+				<all>CYBER</all>
 			</title>
 			<description>
 				<de>Brauchen Sie mehr CYBER? Unsere CYBER-Experten cybern Ihre CYBER-Security auf 11! Damit Sie allzeit sicher sind vor CYBER-Crime und CYBER-Angriffen!
@@ -611,13 +611,13 @@ We are now also in CYBER Space with our BBS. Dial in: 555-CYBER-CYBER</en>
 		</ad>
 		<ad guid="d3f328c6-33d3-4b10-950b-ec0159e4957b" creator="9551" comment="1990-1996 | https://cyber.equipment/">
 			<title>
-				<de>CYBER</de>
+				<all>CYBER</all>
 			</title>
 			<description>
 				<de>Brauchen Sie mehr CYBER? Unsere CYBER-Experten cybern Ihre CYBER-Security auf 11! Damit Sie allzeit sicher sind vor CYBER-Crime und CYBER-Angriffen!
-Wir sind auch im CYBER-Space auf CompiSurf mit allerlei Gadgets und Schnickschnack: GO GO CYBER CYBER</de>
+Wir sind auch im CYBER-Space auf ${brand_compuserve} mit allerlei Gadgets und Schnickschnack: GO GO CYBER CYBER</de>
 				<en>Do you need more CYBER? Our CYBER experts cyberize your CYBER security to 11! Keeping you safe from CYBER crime and CYBER attacks at all times!
-We are also in CYBER Space on CompiSurf with all kinds of gears and gadgets: GO GO CYBER CYBER</en>
+We are also in CYBER Space on ${brand_compuserve} with all kinds of gears and gadgets: GO GO CYBER CYBER</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="7" target_group="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="4" duration="2" profit="820" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
@@ -625,7 +625,7 @@ We are also in CYBER Space on CompiSurf with all kinds of gears and gadgets: GO 
 		</ad>
 		<ad guid="6d7f8f5f-8197-42c9-8070-3faab61b087a" creator="9551" comment="1997- | https://cyber.equipment/">
 			<title>
-				<de>CYBER</de>
+				<all>CYBER</all>
 			</title>
 			<description>
 				<de>Brauchen Sie mehr CYBER? Unsere CYBER-Experten cybern Ihre CYBER-Security auf 11! Damit Sie allzeit sicher sind vor CYBER-Crime und CYBER-Angriffen!
@@ -639,7 +639,7 @@ We are also in CYBER Space! Visit us our CYBERWeb page at cyber://cyber.cyber</e
 		</ad>
 		<ad guid="e61220d6-f898-489c-bc2f-efe08556ef2b" creator="9551" comment="https://en.wikipedia.org/wiki/Prada | inspired by film title 3019fa91-7768-437d-896f-a24dd5956bec | Slogan partly by ChatGPT">
 			<title>
-				<de>Praedo</de>
+				<de>${brand_prada}</de>
 			</title>
 			<description>
 				<de>Where Fashion Meets Fortune.
@@ -652,7 +652,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="07e6647f-c8dc-406d-a9bf-90490d7489ce" comment="https://en.wikipedia.org/wiki/Aral_AG | Slogan mirroring dd8f1816-8f10-4b3b-9a67-d46f7bba1394">
 			<title>
-				<de>Arol</de>
+				<de>${brand_aral}</de>
 			</title>
 			<description>
 				<de>Wir mobilisieren Möglichkeiten.</de>
@@ -663,22 +663,22 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="1801ad71-1ba6-4c77-b698-5416560a65ad" creator="9551" comment="https://en.wikipedia.org/wiki/Opel_Manta">
 			<title>
-				<de>Ommel Panta</de>
+				<de>${brand_opel} ${brand_manta}</de>
 			</title>
 			<description>
-				<de>Der neue Ommel Panta. Jetzt noch flachgelegter als Ihre blonde Friseusefreundin auf dem Beifahrersitz und die Witze, die Sie über sie reißen.</de>
-				<en>The new Ommel Panta. Now even lower than your blonde hairdresser girlfriend in the passenger seat and the jokes you're cracking about her.</en>
+				<de>Der neue ${brand_opel} ${brand_manta}. Jetzt noch flachgelegter als Ihre blonde Friseusefreundin auf dem Beifahrersitz und die Witze, die Sie über sie reißen.</de>
+				<en>The new ${brand_opel} ${brand_manta}. Now even lower than your blonde hairdresser girlfriend in the passenger seat and the jokes you're cracking about her.</en>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="3" duration="6" profit="250" penalty="300" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="874f2587-f51a-461d-bd46-fb4d93d054b5" creator="9551" comment="-1982 | https://en.wikipedia.org/wiki/Pontiac_Firebird | slogan created with help from ChatGPT">
 			<title>
-				<de>Puntiac Flamerbird</de>
+				<de>${brand_pontiac} ${brand_firebird}</de>
 			</title>
 			<description>
-				<de>Wer redet von sprechenden Autos? Auch wenn unser sprechendes Modell noch nicht verfügbar ist, die Power spricht für sich. Fahren Sie jetzt Probe mit dem neuesten Puntiac Flamerbird Modell.</de>
-				<en>Who's talking about speaking cars? Even if our speaking model is not yet available, the power speaks for itself. Test drive the latest Puntiac Flamerbird model now.</en>
+				<de>Wer redet von sprechenden Autos? Auch wenn unser sprechendes Modell noch nicht verfügbar ist, die Power spricht für sich. Fahren Sie jetzt Probe mit dem neuesten ${brand_pontiac} ${brand_firebird} Modell.</de>
+				<en>Who's talking about speaking cars? Even if our speaking model is not yet available, the power speaks for itself. Test drive the latest ${brand_pontiac} ${brand_firebird} model now.</en>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
@@ -686,7 +686,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="0c3715b4-2776-439d-9591-97938c384b2e" creator="9551" comment="1983-2002 | Pontiac Trans Am Firebird: https://en.wikipedia.org/wiki/Pontiac_Firebird_(third_generation) | owned by General Motors, discontinued in 2002">
 			<title>
-				<de>Puntiac Tres-M Flamerbird</de>
+				<de>${brand_pontiac} ${brand_transam} ${brand_firebird}</de>
 			</title>
 			<description>
 				<de>Die dritte Generation. Der Flitzer nicht nur für Kreuzritter der Nacht. Das Scanner-Licht vorne jetzt erhältlich in Regenbogenfarben.</de>
@@ -698,7 +698,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="ed7ef0fa-435a-4b2a-acbd-f1419cf34ead" creator="9551" comment="2003-2008 | https://en.wikipedia.org/wiki/General_Motors | slogan by ChatGPT">
 			<title>
-				<de>Generic Motos</de>
+				<de>${brand_generalmotors}</de>
 			</title>
 			<description>
 				<de>Wir bauen die Autos, die fast so lange halten wie unsere Vorstandssitzungen.</de>
@@ -710,7 +710,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="c60f4f8e-a71b-4c4b-a6fd-81db42928e6a" creator="9551" comment="2009- | https://en.wikipedia.org/wiki/General_Motors | post financial crisis edition | slogan by ChatGPT">
 			<title>
-				<de>Generic Motos</de>
+				<de>${brand_generalmotors}</de>
 			</title>
 			<description>
 				<de>Belastbarkeit in Bewegung - mit einer Prise Unterstützung durch den Steuerzahler.</de>
@@ -766,23 +766,23 @@ Buy money socks JPEGs in the most beautiful shapes and colors!</en>
 		</ad>
 		<ad guid="816434cf-de09-4f73-984b-0a79a2987b7b" creator="9551" comment="https://en.wikipedia.org/wiki/Duff_Beer">
 			<title>
-				<de>Döff Bier</de>
-				<en>Döff Beer</en>
+				<de>${brand_duff} Bier</de>
+				<en>${brand_duff} Beer</en>
 			</title>
 			<description>
-				<de>Sauf dich doof mit dem Gesöff von Döff.</de>
-				<en>Can't have enough of that fabulous Döff.</en>
+				<de>Sauf dich doof mit dem Gesöff von ${brand_duff}.</de>
+				<en>Can't have enough of that fabulous ${brand_duff}.</en>
 			</description>
 			<conditions min_audience="3.13" min_image="4" target_group="256" />
 			<data infomercial="1" quality="15" repetitions="3" duration="2" profit="640" penalty="890" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="87bcafd8-b567-4acd-9f3e-7e62eefb62fb" creator="9551" comment="https://en.wikipedia.org/wiki/Budweiser | ac09552a-75f0-46cc-85ac-c49c232309d2 chose his first screen name after this">
 			<title>
-				<de>Buckweizer</de>
+				<all>${brand_budweiser}</all>
 			</title>
 			<description>
-				<de>Vier Buckys für ein Hosianna. Prost!</de>
-				<en>That Buck's for you. And that Buck's for me. And that Buck's for Bucky. The trifecta of taste.</en>
+				<de>${brandslogan_vierbuddysfuer}. Prost!</de>
+				<en>That ${brandslogan_budsfor} you. And that ${brandslogan_budsfor} me. And that ${brandslogan_budsfor} "${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"nickname"}" ${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"lastname"}. ${brandslogan_thetrinityoftaste}.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="2" profit="460" penalty="667" infomercial_profit="42" fix_infomercial_profit="1" />

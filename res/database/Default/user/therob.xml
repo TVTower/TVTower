@@ -452,8 +452,8 @@
 				<pl>Jo Mei, je b any jodler</pl>
 			</title>
 			<description>
-				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er Kaefer abgefahren.</de>
-				<en>Yodeling and alpine horn. Garnished with pictures of the alpine landscape. With beautiful music the alpine passes are traveled with a Beetle of 1957.</en>
+				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er ${brand_beetle} abgefahren.</de>
+				<en>Yodeling and alpine horn. Garnished with pictures of the alpine landscape. With beautiful music the alpine passes are traveled with a ${brand_beetle} of 1957.</en>
 				<pl>Jodłowanie i róg alpejski. Ozdobiony zdjęciami alpejskiego krajobrazu. Przy pięknej muzyce alpejskie przełęcze przemierza Żuk z 1957 roku.</pl>
 			</description>
 			<staff>

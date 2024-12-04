@@ -4,11 +4,11 @@
 	<allads>
 		<ad guid="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4" comment="https://en.wikipedia.org/wiki/Ford_Motor_Company">
 			<title>
-				<de>Fort</de>
+				<de>${brand_ford}</de>
 			</title>
 			<description>
-				<de>Der neue Fort ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</de>
-				<en>The new Fort has arrived. Increased safety and an appealing design at an unbeatable price.</en>
+				<de>Der neue ${brand_ford} ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</de>
+				<en>The new ${brand_ford} has arrived. Increased safety and an appealing design at an unbeatable price.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="3" duration="2" profit="420" penalty="500" infomercial_profit="39" fix_infomercial_profit="1" />
@@ -26,8 +26,7 @@
 		</ad>
 		<ad guid="1199be32-4985-4697-a5c8-c0da0ef09fc1" comment="TVTower 2013 version: Okea | https://en.wikipedia.org/wiki/IKEA">
 			<title>
-				<de>Möbler</de>
-				<en>Barry Buffet</en>
+				<all>${brand_ikea}</all>
 			</title>
 			<description>
 				<de>Regale, Tische, Stühle, Schränke etc. - das haben wir zu bieten.
@@ -64,7 +63,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 		</ad>
 		<ad guid="153bd5af-1163-4c22-a718-3ceb63da26c7" comment="https://en.wikipedia.org/wiki/Pampers">
 			<title>
-				<de>Pantzers</de>
+				<de>${brand_pampers}</de>
 			</title>
 			<description>
 				<de>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</de>
@@ -75,7 +74,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 		</ad>
 		<ad guid="17074737-4b08-457e-8536-b3ae0da3c02c" comment="https://en.wikipedia.org/wiki/Snickers | TVTower 2013 version: Snuckers">
 			<title>
-				<de>Trickers</de>
+				<all>${brand_snickers}</all>
 			</title>
 			<description>
 				<de>Der leckere Riegel mit dem hohen Erdnußanteil.
@@ -100,8 +99,8 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="1fa08a9f-5658-46a1-b634-43bbacd1a7bb" comment="arguably now more https://de.wikipedia.org/wiki/Puschkin_Vodka | TVTower 2013 version: Wodka Jelzin - Des Wodkas reine Seele | https://en.wikipedia.org/wiki/Wodka_Gorbatschow">
 			<title>
-				<de>Wodka Jutschin</de>
-				<en>Vodka Juczyn</en>
+				<de>Wodka ${brand_puschkin}</de>
+				<en>Vodka ${brand_puschkin}</en>
 			</title>
 			<description>
 				<de>Für des Kunden reinste Kehle.</de>
@@ -112,7 +111,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there">
 			<title>
-				<de>Affro-Cola</de>
+				<all>${brand_africola}</all>
 			</title>
 			<description>
 				<de>Der populärste Konkurrent von Cacca Cola und Pipsi - doch geschmacklich auch so rein?</de>
@@ -145,23 +144,23 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="360b9ee1-9e2e-469d-b61e-fa8a69cbf560" comment="https://de.wikipedia.org/wiki/Meister_Proper | https://en.wikipedia.org/wiki/Mr._Clean">
 			<title>
-				<de>Mr. Ploper</de>
-				<en>Mr. Clank</en>
+				<de>${brand_meisterproper}</de>
+				<en>${brand_mrclean}</en>
 			</title>
 			<description>
-				<de>Neun Jahre zuvor in den USA eingeführt, kommt Mr. Ploper 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger.</de>
-				<en>Introduced nine years earlier in the US, Mr. Clank came to Germany in 1967 and established itself as the most popular household cleaner.</en>
+				<de>Neun Jahre zuvor in den USA eingeführt, kommt ${brand_meisterproper} 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger.</de>
+				<en>Introduced nine years earlier in the US, ${brand_mrclean} came to Germany in 1967 and established itself as the most popular household cleaner.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="18" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="29" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="d1339a50-8d64-4f51-a54e-8a26fe956982" comment="1979-1986 | https://en.wikipedia.org/wiki/Walkman">
 			<title>
-				<de>Sunny Walkboy</de>
+				<de>${brand_sony} ${brand_walkman}</de>
 			</title>
 			<description>
-				<de>Hört eure Lieblings-MCs nun auch unterwegs! Sunny macht den Groove.</de>
-				<en>Now you can listen to your favorite MCs on the go! Sunny's got the groove.</en>
+				<de>Hört eure Lieblings-MCs nun auch unterwegs! ${brand_sony} macht den Groove.</de>
+				<en>Now you can listen to your favorite MCs on the go! ${brand_sony}'s got the groove.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -169,11 +168,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="4d2f4ef9-5262-44d7-a062-f27a494fb503" comment="1987-1993 | https://en.wikipedia.org/wiki/Discman">
 			<title>
-				<de>Sunny Discboy</de>
+				<de>${brand_sony} ${brand_discman}</de>
 			</title>
 			<description>
-				<de>Hört eure Lieblings-CDs nun auch unterwegs! Sunny macht den Groove.</de>
-				<en>Now you can listen to your favorite CDs on the go! Sunny's got the groove.</en>
+				<de>Hört eure Lieblings-CDs nun auch unterwegs! ${brand_sony} macht den Groove.</de>
+				<en>Now you can listen to your favorite CDs on the go! ${brand_sony}'s got the groove.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -181,11 +180,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="43e66d8f-5275-47a5-87c0-8f5c5d0082ee" comment="1994-1999 | https://en.wikipedia.org/wiki/PlayStation_(console)">
 			<title>
-				<de>GameStation</de>
+				<de>${brand_playstation}</de>
 			</title>
 			<description>
-				<de>It's not just playing. Die neue Spielkonsolengeneration aus dem Hause Sunny.</de>
-				<en>It's not just playing. The new generation of games consoles made by Sunny.</en>
+				<de>It's not just playing. Die neue Spielkonsolengeneration aus dem Hause ${brand_sony}.</de>
+				<en>It's not just playing. The new generation of games consoles made by ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -193,11 +192,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad" comment="2000-2005 | https://en.wikipedia.org/wiki/PlayStation_2">
 			<title>
-				<de>GameStation 2</de>
+				<de>${brand_playstation} 2</de>
 			</title>
 			<description>
-				<de>The fourth place. Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
-				<en>The fourth place. The GS2 is the successor to the GS made by Sunny.</en>
+				<de>${brandslogan_thethirdplace}. Die ${brand_ps}2 ist der Nachfolger der ${brand_ps} aus dem Hause ${brand_sony}.</de>
+				<en>${brandslogan_thethirdplace}. The ${brand_ps}2 is the successor to the ${brand_ps} made by ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -205,11 +204,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="8a2865eb-80d8-4afb-b2e2-2c1a7fe3599b" comment="2006-2012 | https://en.wikipedia.org/wiki/PlayStation_3">
 			<title>
-				<de>GameStation 3</de>
+				<de>${brand_playstation} 3</de>
 			</title>
 			<description>
-				<de>Playing is just the beginning. Tauchen Sie ein in die Parallelprozessorwelten! Die GS3 ist der Nachfolger der GS2 aus dem Hause Sunny.</de>
-				<en>Playing is just the beginning. Dive into the parallel processing universes! The GS3 is the successor to the GS2 made by Sunny.</en>
+				<de>Playing is just the beginning. Tauchen Sie ein in die Parallelprozessorwelten! Die ${brand_ps}3 ist der Nachfolger der ${brand_ps}2 aus dem Hause ${brand_sony}.</de>
+				<en>Playing is just the beginning. Dive into the parallel processing universes! The ${brand_ps}3 is the successor to the ${brand_ps}2 made by ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -217,11 +216,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="9971a105-b9fe-435f-97f8-e9dfa6f531a5" comment="2013-2019 | https://en.wikipedia.org/wiki/PlayStation_4">
 			<title>
-				<de>GameStation 4</de>
+				<de>${brand_playstation} 4</de>
 			</title>
 			<description>
-				<de>Be astounding. Be astounded. Be GameStation 4. Der Nachfolger der GS3 aus dem Hause Sunny.</de>
-				<en>Be astounding. Be astounded. Be GameStation 4. The successor to the GS3 made by Sunny.</en>
+				<de>Be astounding. Be astounded. Be ${brand_playstation} 4. Der Nachfolger der ${brand_ps}3 aus dem Hause ${brand_sony}.</de>
+				<en>Be astounding. Be astounded. Be ${brand_playstation} 4. The successor to the ${brand_ps}3 made by ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -229,24 +228,24 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="8b8a295e-b600-48c5-ac81-3f3094cab452" comment="2020- | https://en.wikipedia.org/wiki/PlayStation_5">
 			<title>
-				<de>GameStation 5</de>
+				<de>${brand_playstation} 5</de>
 			</title>
 			<description>
-				<de>The game without boundaries. Die GS5 ist der Nachfolger der GS4 aus dem Hause Sunny.</de>
-				<en>The game without boundaries. The GS5 is the successor to the GS4 made by Sunny.</en>
+				<de>The game without boundaries. Die ${brand_ps}5 ist der Nachfolger der ${brand_ps}4 aus dem Hause ${brand_sony}.</de>
+				<en>The game without boundaries. The ${brand_ps}5 is the successor to the ${brand_ps}4 made by ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2020" />
 		</ad>
-		<ad guid="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy">
+		<ad guid="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy | TODO: Maybe separate these ads after all when ad images feature arrives">
 			<title>
-				<de>Mödie-Markt</de>
-				<en>Burst-Buy</en>
+				<de>${brand_mediamarkt}</de>
+				<en>${brand_bestbuy}</en>
 			</title>
 			<description>
-				<de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten Mödie-Markt.</de>
-				<en>We're stupid. We throw out our goods at ridiculous prices. So off you go to the nearest Burst-Buy market.</en>
+				<de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten ${brand_mediamarkt}.</de>
+				<en>We're stupid. We throw out our goods at ridiculous prices. So off you go to the nearest ${brand_bestbuy} market.</en>
 			</description>
 			<conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="4" duration="4" profit="540" penalty="920" infomercial_profit="56" fix_infomercial_profit="1" />
@@ -370,10 +369,10 @@ In Berlin Tempelhof and Steglitz</en>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="5" duration="3" profit="585" penalty="1050" infomercial_profit="58" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="5078e947-ea8f-47bc-9f20-0e611bf2ad28" comment="https://de.wikipedia.org/wiki/Dusch_das | https://en.wikipedia.org/wiki/Lux_(soap)">
+		<ad guid="5078e947-ea8f-47bc-9f20-0e611bf2ad28" comment="https://de.wikipedia.org/wiki/Dusch_das | https://en.wikipedia.org/wiki/Lux_(soap) | TODO: maybe separate when ad image feature arrives; Lux known in Germany too">
 			<title>
-				<de>wasch das</de>
-				<en>Lyx</en>
+				<de>${brand_duschdas}</de>
+				<en>${brand_lux}</en>
 			</title>
 			<description>
 				<de>Deo, Duschmittel, Badezusatz: Körperpflege in vielen Variationen.</de>
@@ -408,9 +407,9 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="7" repetitions="3" duration="2" profit="2333" penalty="3500" infomercial_profit="133" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="5eaab2a2-34aa-47b9-9387-0223a0eaad29" comment="https://en.wikipedia.org/wiki/Gillette">
+		<ad guid="5eaab2a2-34aa-47b9-9387-0223a0eaad29" comment="https://en.wikipedia.org/wiki/Gillette | TODO: maybe spoof slogan">
 			<title>
-				<de>Gillettine</de>
+				<all>${brand_gillette}</all>
 			</title>
 			<description>
 				<de>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Gesichtshaut eines echten Kerls - für das Beste im Mann.</de>
@@ -421,11 +420,11 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9" comment="https://en.wikipedia.org/wiki/Mastercard">
 			<title>
-				<de>FasterCard</de>
+				<all>${brand_mastercard}</all>
 			</title>
 			<description>
-				<de>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} als Werbeträger für die FasterCard: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} noch einmal in seiner Paraderolle - unbezahlbar.</de>
-				<en>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} as a promotional campaigner for the FasterCard: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} once again in his signature role - priceless.</en>
+				<de>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} als Werbeträger für die ${brand_mastercard}: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} noch einmal in seiner Paraderolle - unbezahlbar.</de>
+				<en>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} as a promotional campaigner for the ${brand_mastercard}: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} once again in his signature role - priceless.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -517,19 +516,19 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="7bf56c92-52f5-44aa-8cef-2788ece421ac" comment="https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese | White Revive: https://en.wikipedia.org/wiki/OxiClean">
 			<title>
-				<de>Weißer Friese</de>
-				<en>White Resize</en>
+				<de>${brand_weisserriese}</de>
+				<en>${brand_whiterevive}</en>
 			</title>
 			<description>
-				<de>Waschen Sie ihre Wäsche mit „Weißer Friese“ porentief rein!</de>
-				<en>Clean your laundry down to the pores with "White Resize"!</en>
+				<de>Waschen Sie ihre Wäsche mit „${brand_weisserriese}“ porentief rein!</de>
+				<en>Clean your laundry down to the pores with "${brand_whiterevive}"!</en>
 			</description>
 			<conditions min_audience="15.63" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="240" penalty="400" infomercial_profit="23" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="81181726-b98e-42fd-8ffb-23ddb068d61d" comment="arguably https://en.wikipedia.org/wiki/Lacoste">
 			<title>
-				<de>La Côte</de>
+				<all>${brand_lacoste}</all>
 			</title>
 			<description>
 				<de>Die Markenkleidung mit dem Sonnenschirm. Modische Schnitte und trendige Farben inklusive.</de>
@@ -549,13 +548,13 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="4" profit="490" penalty="790" infomercial_profit="43" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="848b76e8-f93f-4a6f-aa55-b62643c0793d" comment="perhaps https://en.wikipedia.org/wiki/Scania_AB or https://en.wikipedia.org/wiki/Kaipan">
+		<ad guid="848b76e8-f93f-4a6f-aa55-b62643c0793d" comment="https://en.wikipedia.org/wiki/Kaipan (assumed). 'Saipien' could also have been https://en.wikipedia.org/wiki/Scania_AB or https://en.wikipedia.org/wiki/Saab_AB">
 			<title>
-				<de>Saipien</de>
+				<de>${brand_kaipan}</de>
 			</title>
 			<description>
-				<de>Das neue Modell des renommierten Autoherstellers Saipien verzückt die Presse - auch Sie?</de>
-				<en>The new model of the renowned car manufacturer Saipien delights the press - you too?</en>
+				<de>Das neue Modell des renommierten Autoherstellers ${brand_kaipan} verzückt die Presse - auch Sie?</de>
+				<en>The new model of the renowned car manufacturer ${brand_kaipan} delights the press - you too?</en>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="5" duration="3" profit="672" penalty="812" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -620,8 +619,8 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="9c19ac3c-c1d2-4a2b-9c09-7379ead5382a" comment="https://en.wikipedia.org/wiki/Heinz_Tomato_Ketchup">
 			<title>
-				<de>Hanzis Tomatenketchup</de>
-				<en>Hanzl Tomato Ketchup</en>
+				<de>${brand_heinz} Tomatenketchup</de>
+				<en>${brand_heinz} Tomato Ketchup</en>
 			</title>
 			<description>
 				<de>Das Ketchup für diejenigen, die ihre Pommes nicht in Mayonnaise ersäufen. Auch geeignet für Buletten, Wurst und Hühnchen.</de>
@@ -642,9 +641,9 @@ But only with Relocation Rudolph!</en>
 			<data quality="10" repetitions="2" duration="2" profit="440" penalty="640" infomercial_profit="41" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" />
 		</ad>
-		<ad guid="a401f20f-8832-45df-a274-2599fd8d0afb" comment="Berliner Pilsener (previously used but it's a real brand) https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei | 'Brandenburger Pilsener' also a real brand">
+		<ad guid="a401f20f-8832-45df-a274-2599fd8d0afb" comment="https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei | 'Berliner Pilsener' previously used in clear text but it's a real brand | 'Brandenburger Pilsener' also a real brand">
 			<title>
-				<de>Kreuzberger Pilsener</de>
+				<de>${brand_berlinerpilsener}</de>
 			</title>
 			<description>
 				<de>Berlin, du bist so wunderbar!</de>
@@ -666,7 +665,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="a5c552c1-9205-4b71-831a-1acc0a1387a9" comment="https://en.wikipedia.org/wiki/Mars_bar">
 			<title>
-				<de>Morss</de>
+				<de>${brand_mars}</de>
 			</title>
 			<description>
 				<de>Der unvergleichliche Schokoriegel mit dem hinreißenden Geschmack.</de>
@@ -688,11 +687,11 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="a81fea24-859f-463e-a69c-0124de937a47" comment="https://en.wikipedia.org/wiki/Sarotti | TVTower 2013 version: Saratti | TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
 			<title>
-				<de>Schorotti</de>
+				<de>${brand_sarotti}</de>
 			</title>
 			<description>
-				<de>Der Schorotti-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
-				<en>The Schorotti Maure-Mallow features fantastic chocolate. Take one and melt away.</en>
+				<de>Der ${brand_sarotti}-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
+				<en>The ${brand_sarotti} Maure-Mallow features fantastic chocolate. Take one and melt away.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="4" duration="2" profit="700" penalty="1050" fix_infomercial_profit="1" />
@@ -772,27 +771,26 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 		</ad>
 		<ad guid="b61b71f4-255f-48a3-99e4-c25c10c59a58" comment="https://en.wikipedia.org/wiki/Toblerone">
 			<title>
-				<de>Tubenkrone</de>
-				<en>Tuberthrone</en>
+				<all>${brand_toblerone}</all>
 			</title>
 			<description>
 				<de>Na und?
-Tubenkrone - Schokolade mit Charakter.</de>
+${brand_toblerone} - Schokolade mit Charakter.</de>
 				<en>So what?
-Tuberthrone - Chocolate with character.</en>
+${brand_toblerone} - Chocolate with character.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="2" profit="430" penalty="606" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b" comment="https://en.wikipedia.org/wiki/Sony">
 			<title>
-				<de>Sunny</de>
+				<de>${brand_sony}</de>
 			</title>
 			<description>
 				<de>Der Hersteller für High-Tech flächendeckend.
-It's a Sunny.</de>
+It's a ${brand_sony}.</de>
 				<en>The producer of high-tech across the board.
-It's a Sunny.</en>
+It's a ${brand_sony}.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="4" duration="3" profit="733" penalty="950" infomercial_profit="73" fix_infomercial_profit="1" />
@@ -834,7 +832,7 @@ It's a Sunny.</en>
 		</ad>
 		<ad guid="c078ab28-32f5-439a-81bc-f90602f5fcbc" comment="https://en.wikipedia.org/wiki/Ravensburger">
 			<title>
-				<de>Rabensburger</de>
+				<de>${brand_ravensburger}</de>
 			</title>
 			<description>
 				<de>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
@@ -856,19 +854,18 @@ It's a Sunny.</en>
 		</ad>
 		<ad guid="cd0362d7-5317-41d2-8287-64c0c7810f02" comment="https://en.wikipedia.org/wiki/Dr_Pepper | TVTower 2013 version: Dr. Papper | TODO: Maybe create and use role instead of title reference">
 			<title>
-				<de>Dr. Plapper</de>
-				<en>Dr. Blabber</en>
+				<all>${brand_drpepper}</all>
 			</title>
 			<description>
-				<de>Nicht nur ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} trinkt leidenschaftlich Dr. Plapper.</de>
-				<en>It is not just ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} who passionately drinks Dr. Blabber.</en>
+				<de>Nicht nur ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} trinkt leidenschaftlich ${brand_drpepper}.</de>
+				<en>It is not just ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} who passionately drinks ${brand_drpepper}.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" comment="https://de.wikipedia.org/wiki/MediaMarktSaturn | TVTower 2013 version: Zaturn">
 			<title>
-				<de>Zaturno</de>
+				<de>${brand_saturn}</de>
 			</title>
 			<description>
 				<de>Reiz macht geil, so die Botschaft dieser Werbung.</de>
@@ -928,7 +925,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="d43943a8-67c3-47a5-bb96-e0f03b5194df" comment="https://en.wikipedia.org/wiki/Lamy">
 			<title>
-				<de>Laimi</de>
+				<de>${brand_lamy}</de>
 			</title>
 			<description>
 				<de>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</de>
@@ -937,10 +934,10 @@ Campaign week: no bottle deposit.</en>
 			<conditions min_audience="4.17" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="540" penalty="840" infomercial_profit="55" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="d4e84634-b122-4cca-90c6-c44707d8a79e" comment="Capri-Sonne - https://en.wikipedia.org/wiki/Capri-Sun | TODO: Perhaps 'Capri' should better be spoofed also">
+		<ad guid="d4e84634-b122-4cca-90c6-c44707d8a79e" comment="Capri-Sonne - https://en.wikipedia.org/wiki/Capri-Sun">
 			<title>
-				<de>Capri-Mond</de>
-				<en>Capri-Moon</en>
+				<de>${brand_capri}-Mond</de>
+				<en>${brand_capri}-Moon</en>
 			</title>
 			<description>
 				<de>Der Schlummertrunk aus der Alutüte.</de>
@@ -951,7 +948,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" comment="https://en.wikipedia.org/wiki/Orangina">
 			<title>
-				<de>Oranchina</de>
+				<de>${brand_orangina}</de>
 			</title>
 			<description>
 				<de>Das Fruchtsaftgetränk in der weltberühmten bauchigen Flasche. Teuer, aber so gut wie immer richtig.</de>
@@ -973,7 +970,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="Escal-Sjaele-01" comment="https://de.wikipedia.org/wiki/Escom">
 			<title>
-				<de>ESCAL</de>
+				<de>${brand_escom}</de>
 			</title>
 			<description>
 				<de>Computerschrott ab 50 Pfennig das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
@@ -985,7 +982,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="d8ee3597-56e1-4117-909a-bde9da3f9f9e" comment="https://de.wikipedia.org/wiki/Escom">
 			<title>
-				<de>ESCAL.deu</de>
+				<de>${brand_escom}.deu</de>
 			</title>
 			<description>
 				<de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne Farb-Röhren-Monitore im Angebot.</de>
@@ -1043,7 +1040,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="e096e5ef-34d6-41a4-a98e-cb690673f074" comment="https://en.wikipedia.org/wiki/Nivea | TVTower 2013 version: Novea">
 			<title>
-				<de>Norwea</de>
+				<all>${brand_nivea}</all>
 			</title>
 			<description>
 				<de>Pflegeprodukte rund um die Haut. Salben/Crèmes, Badezusatz, Deodorants uvm.
@@ -1056,7 +1053,7 @@ Only genuine with the elk!</en>
 		</ad>
 		<ad guid="e1f2329c-2a43-453d-8711-11de240d1fbf" comment="https://de.wikipedia.org/wiki/Selterswasser">
 			<title>
-				<de>Sylters</de>
+				<all>${brand_selters}</all>
 			</title>
 			<description>
 				<de>Aus den Tiefen Sylts kommt dieses herrlich prickelnde Mineralwasser.</de>
@@ -1114,14 +1111,14 @@ Only genuine with the elk!</en>
 		</ad>
 		<ad guid="f006c0bb-89cc-4924-b17e-151658c15618" comment="Lenor: https://de.wikipedia.org/wiki/Procter_%26_Gamble | https://en.wikipedia.org/wiki/Downy | TVTower 2013 version: Lemor">
 			<title>
-				<de>Lemur</de>
-				<en>Dumby</en>
+				<de>${brand_lenor}</de>
+				<en>${brand_downy}</en>
 			</title>
 			<description>
 				<de>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
-Ich fühl mich wohl mit Lemur.</de>
+Ich fühl mich wohl mit ${brand_lenor}.</de>
 				<en>The catchy music heralds the cuddly soft laundry and freshness.
-I feel good with Dumby.</en>
+I feel good with ${brand_downy}.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="4" duration="4" profit="420" penalty="645" fix_infomercial_profit="1" />
@@ -1139,11 +1136,11 @@ I feel good with Dumby.</en>
 		</ad>
 		<ad guid="fc24c505-d3cc-467c-a57c-a154f9d308cb" comment="https://en.wikipedia.org/wiki/Mercedes-Benz | TVTower 2013 version: Märzedes">
 			<title>
-				<de>Bonze</de>
+				<de>${brand_benz}</de>
 			</title>
 			<description>
-				<de>Der neueste Luxusschlitten aus dem Hause Bonze: Ästethisch einwandfreies Design, robust, klassisch.</de>
-				<en>The latest deluxe car from Bonze: aesthetically impeccable design, robust, classic.</en>
+				<de>Der neueste Luxusschlitten aus dem Hause ${brand_benz}: Ästethisch einwandfreies Design, robust, klassisch.</de>
+				<en>The latest deluxe car from ${brand_benz}: aesthetically impeccable design, robust, classic.</en>
 			</description>
 			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
@@ -1162,7 +1159,7 @@ I feel good with Dumby.</en>
 		</ad>
 		<ad guid="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty" comment="https://en.wikipedia.org/wiki/Gothic_(series) | https://en.wikipedia.org/wiki/Piranha_Bytes | TODO: pre-2001 variation">
 			<title>
-				<de>Baroque</de>
+				<all>${mediatitle_gothic}</all>
 			</title>
 			<description>
 				<de>DAS Fantasy-Rollenspiel von Goldfish Bytes. Lasst uns Wildschweine jagen!</de>
@@ -1189,8 +1186,8 @@ I feel good with Dumby.</en>
 				<en>Puny Phones</en>
 			</title>
 			<description>
-				<de>Hol Dir die knalligen Cover für Dein Handy. Vorbei mit drögem Graublau. Jetzt auch für alle Sumens-Modelle verfügbar.</de>
-				<en>Get our flashy covers for your mobile phone. Gone is the dull gray-blue. Now also available for Sumens models.</en>
+				<de>Hol Dir die knalligen Cover für Dein Handy. Vorbei mit drögem Graublau. Jetzt auch für alle ${brand_siemens}-Modelle verfügbar.</de>
+				<en>Get our flashy covers for your mobile phone. Gone is the dull gray-blue. Now also available for ${brand_siemens} models.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="770" penalty="1100" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1929,24 +1926,24 @@ Hired Parrot - We are better than others.</en>
 		</ad>
 		<ad guid="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
 			<title>
-				<de>Pemto Taschentücher</de>
-				<en>Pemto Tissues</en>
+				<de>${brand_tempo} Taschentücher</de>
+				<en>${brand_tempo} Tissues</en>
 			</title>
 			<description>
-				<de>Reißfest und kugelsicher. Pemto - stoppt auch 150 km/h-Nieser.</de>
-				<en>Tear-resistant and bulletproof. Pemto - even stops 150mph sneezers.</en>
+				<de>Reißfest und kugelsicher. ${brand_tempo} - stoppt auch 150 km/h-Nieser.</de>
+				<en>Tear-resistant and bulletproof. ${brand_tempo} - even stops 150mph sneezers.</en>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="270" penalty="425" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
 			<title>
-				<de>Pemto Toilettenpapier</de>
-				<en>Pemto Toilet Paper</en>
+				<de>${brand_tempo} Toilettenpapier</de>
+				<en>${brand_tempo} Toilet Paper</en>
 			</title>
 			<description>
-				<de>Reißfest und kugelsicher. Pemto - wenn's mal pressiert.</de>
-				<en>Tear-resistant and bulletproof. Pemto - when things get urgent.</en>
+				<de>Reißfest und kugelsicher. ${brand_tempo} - wenn's mal pressiert.</de>
+				<en>Tear-resistant and bulletproof. ${brand_tempo} - when things get urgent.</en>
 			</description>
 			<conditions min_audience="14.07" min_image="32" target_group="0" />
 			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="265" penalty="410" fix_infomercial_profit="1" />
@@ -2669,15 +2666,15 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 		</ad>
 		<ad guid="1cba1e23-87ef-46c4-9336-a8e28127953b" comment="1975-1982 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
 			<title>
-				<de>Macrohard BASIC</de>
-				<en>Macrohard BASIC</en>
+				<de>${brand_microsoft} BASIC</de>
+				<en>${brand_microsoft} BASIC</en>
 			</title>
 			<description>
 				<de>Holen Sie das Beste heraus aus Ihrem Computer-Bausatz.
-Ganz einfach mit Macrohard BASIC.
+Ganz einfach mit ${brand_microsoft} BASIC.
 Der Maßstab für Personal Computing.</de>
 				<en>Get the most out of your computer kit.
-It's easy with Macrohard BASIC.
+It's easy with ${brand_microsoft} BASIC.
 The benchmark for personal computing.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
@@ -2686,16 +2683,16 @@ The benchmark for personal computing.</en>
 		</ad>
 		<ad guid="9ab691bb-97c6-4fee-bb70-b23386b027e5" comment="1983-1989 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
 			<title>
-				<de>Macrohard BASIC</de>
-				<en>Macrohard BASIC</en>
+				<de>${brand_microsoft} BASIC</de>
+				<en>${brand_microsoft} BASIC</en>
 			</title>
 			<description>
 				<de>Holen Sie das Beste heraus aus Ihrem Heimcomputer.
-Ganz einfach mit Macrohard BASIC.
-Jetzt u.a. für MXS und Cormorano 64.</de>
+Ganz einfach mit ${brand_microsoft} BASIC.
+Jetzt u.a. für ${brand_msx} und ${brand_commodore} 64.</de>
 				<en>Get the most out of your home computer.
-It's easy with Macrohard BASIC.
-Now for MXS and Cormoran 64, among others.</en>
+It's easy with ${brand_microsoft} BASIC.
+Now for ${brand_msx} and ${brand_commodore} 64, among others.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
@@ -2703,8 +2700,7 @@ Now for MXS and Cormoran 64, among others.</en>
 		</ad>
 		<ad guid="8f110aa4-c88d-4bd4-9aad-eb3ee2a1c8a4" comment="1990-1994 | https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack | https://en.wikipedia.org/wiki/Minesweeper_(video_game)">
 			<title>
-				<de>Macrohard Amusement Pack</de>
-				<en>Macrohard Amusement Pack</en>
+				<all>${brand_microsoft} ${brand_entertainmentpack}</all>
 			</title>
 			<description>
 				<de>Jetzt mit Minenräumer. Bombenstimmung bei unserem Top-Knobelspiel. Absolute Suchtgefahr! Jetzt für Ihren PC.</de>
@@ -2716,12 +2712,11 @@ Now for MXS and Cormoran 64, among others.</en>
 		</ad>
 		<ad guid="2cf218d7-be6d-4689-9b71-20121cb23434" comment="1995-1996 | https://en.wikipedia.org/wiki/Microsoft_Bob | https://en.wikipedia.org/wiki/Office_Assistant">
 			<title>
-				<de>Macrohard Bob</de>
-				<en>Macrohard Bob</en>
+				<all>${brand_microsoftbob}</all>
 			</title>
 			<description>
-				<de>Der Papa von Climpy und Ihr digitaler Assistent und Führer durch die Wunderwelt der Computerei. Jetzt für ihren Multimedia-PC.</de>
-				<en>Climpy's daddy and your digital assistant and guide through the wonderful world of computing. Now for your multimedia PC.</en>
+				<de>Der Papa von ${brand_clippy} und Ihr digitaler Assistent und Führer durch die Wunderwelt der Computerei. Jetzt für ihren Multimedia-PC.</de>
+				<en>${brand_clippy}'s daddy and your digital assistant and guide through the wonderful world of computing. Now for your multimedia PC.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
@@ -2729,8 +2724,7 @@ Now for MXS and Cormoran 64, among others.</en>
 		</ad>
 		<ad guid="20e1f868-bc55-497d-a624-cee97d9886da" comment="1997-2000 | https://en.wikipedia.org/wiki/Encarta">
 			<title>
-				<de>Macrohard Enzyklopädie</de>
-				<en>Macrohard Encyclopedia</en>
+				<all>${brand_microsoft} ${brand_encarta}</all>
 			</title>
 			<description>
 				<de>Das Wissen der Welt in Ihren Fingerspitzen.
@@ -2746,18 +2740,17 @@ The unrivaled multimedia experience.</en>
 		</ad>
 		<ad guid="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="Vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
 			<title>
-				<de>Y-Kasten</de>
-				<en>Y-Crate</en>
+				<all>${brand_xbox}</all>
 			</title>
 			<description>
 				<de>Because Y not?
 
 Warum nicht unsere Spielkonsole? Immer nutzbar. Immer verfügbar.
-Nur von Macrohard.</de>
+Nur von ${brand_microsoft}.</de>
 				<en>Because Y not?
 
 Y not our games console? Always consumable. Always available.
-Only from Macrohard.</en>
+Only from ${brand_microsoft}.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />

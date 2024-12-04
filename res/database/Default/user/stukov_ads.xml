@@ -16,12 +16,12 @@
 	<allads>
 		<ad guid="aefdd1f0-cb2f-42f3-9939-46bd6a650c2f" comment="https://en.wikipedia.org/wiki/Grand_Monster_Slam | variation of Mad TV 'Logical'">
 			<title>
-				<all>Great Monster Slash</all>
+				<all>${mediatitle_grandmonsterslam}</all>
 			</title>
 			<description>
-				<de>Der Super-Spiel-Spaß von RegenbogenWünsche! Als Brettspiel und elektronisch.</de> <!-- orig: Rainbow Arts -->
-				<en>The super fun game by RainbowWishes! Available as a board game and digitally.</en>
-				<pl>Super zabawna gra RainbowWishes! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
+				<de>Der Super-Spiel-Spaß von ${brand_rainbowarts}! Als Brettspiel und elektronisch.</de>
+				<en>The super fun game by ${brand_rainbowarts}! Available as a board game and digitally.</en>
+				<pl>Super zabawna gra ${brand_rainbowarts}! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="5" duration="8" profit="1500" penalty="3131" fix_infomercial_profit="1" />
@@ -29,12 +29,12 @@
 
 		<ad guid="067fed5e-8bd4-41ae-9037-63e39fe1abde" comment="https://www.mobygames.com/game/541/logcal/ | from Mad TV as 'Logical'">
 			<title>
-				<all>Logikus</all>
+				<all>${mediatitle_logical}</all>
 			</title>
 			<description>
-				<de>Der Super-Spiel-Spaß von RegenbogenWünsche! Als Brettspiel und elektronisch.</de> <!-- orig: Rainbow Arts -->
-				<en>The super fun game by RainbowWishes! Available as a board game and digitally.</en>
-				<pl>Super zabawna gra RainbowWishes! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
+				<de>Der Super-Spiel-Spaß von ${brand_rainbowarts}! Als Brettspiel und elektronisch.</de>
+				<en>The super fun game by ${brand_rainbowarts}! Available as a board game and digitally.</en>
+				<pl>Super zabawna gra ${brand_rainbowarts}! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
 			</description>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="6" repetitions="2" duration="5" profit="2500" penalty="4000" fix_infomercial_profit="1" />
@@ -55,12 +55,12 @@
 
 		<ad guid="fcc7b834-283c-4ad8-a4db-c5110be687ac" comment="1990-1993 | https://de.wikipedia.org/wiki/M.U.D.S. | variation of Mad TV 'Logical'">
 			<title>
-				<all>M.O.R.D.S.</all>
+				<all>${mediatitle_muds}</all>
 			</title>
 			<description>
-				<de>Der Super-Spiel-Spaß von RegenbogenWünsche! Als Brettspiel und elektronisch.</de> <!-- orig: Rainbow Arts -->
-				<en>The super fun game by RainbowWishes! Available as a board game and digitally.</en>
-				<pl>Super zabawna gra RainbowWishes! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
+				<de>Der Super-Spiel-Spaß von ${brand_rainbowarts}! Als Brettspiel und elektronisch.</de>
+				<en>The super fun game by ${brand_rainbowarts}! Available as a board game and digitally.</en>
+				<pl>Super zabawna gra ${brand_rainbowarts}! Dostępna jako gra planszowa i w wersji cyfrowej.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />
@@ -108,9 +108,7 @@
 
 		<ad guid="9af77f26-480d-4e81-875a-26f88716b43e" comment="https://en.wikipedia.org/wiki/Reebok | from Mad TV as 'Reebock' (sic)">
 			<title>
-				<de>Rehböck</de>
-				<en>Roebuck</en>
-				<pl>Ribock</pl>
+				<all>${brand_reebok}</all>
 			</title>
 			<description>
 				<de>Der Schuh der flitzt.</de> <!-- Mad TV: Reebock sitzt -->
@@ -138,12 +136,12 @@
 
 		<ad guid="3291c7ea-02b3-45ca-8d8f-9cfa74176e8a" comment="https://en.wikipedia.org/wiki/Schneider_Rundfunkwerke | from Mad TV as 'Schneider'">
 			<title>
-				<all>Schnitzler</all>
+				<all>${brand_schneider}</all>
 			</title>
 			<description>
-				<de>Schnitzler-Computer: Jetzt mit drei RegenbogenWünsche-Spielen!</de>
-				<en>Schnitzler Computers: Now with three RainbowWishes games!</en>
-				<pl>Schnitzler Computers: Teraz z trzema grami RainbowWishes!</pl>
+				<de>${brand_schneider}-Computer: Jetzt mit drei ${brand_rainbowarts}-Spielen!</de>
+				<en>${brand_schneider} Computers: Now with three ${brand_rainbowarts} games!</en>
+				<pl>${brand_schneider} Computers: Teraz z trzema grami ${brand_rainbowarts}!</pl>
 			</description>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="26" repetitions="3" duration="8" profit="460" penalty="1200" infomercial_profit="106" fix_infomercial_profit="1" />
@@ -175,9 +173,9 @@
 			<data quality="24" repetitions="2" duration="1" profit="500" penalty="1300" infomercial_profit="154" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad guid="73624f50-1cc0-48b1-8bbe-0e75deea0b6b" comment="1980-1991 | arguably https://en.wikipedia.org/wiki/Nintendo | from Mad TV as 'Nipponix'">
+		<ad guid="73624f50-1cc0-48b1-8bbe-0e75deea0b6b" comment="1980-1991 | arguably https://en.wikipedia.org/wiki/Nintendo | from Mad TV as 'Nipponix' | using as real Nintendo now, maybe 'Nipponix' should be something different">
 			<title>
-				<all>Nipponix</all>
+				<all>${brand_nintendo}</all>
 			</title>
 			<description>
 				<de>Das NEUE Telespiel mit drei eingebauten Spielen!</de>
@@ -191,12 +189,12 @@
 
 		<ad guid="e8d5fce4-89ed-4a37-bc1f-c042e36ae260" comment="1992 - 1995 | https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System | from Mad TV as 'Super Nintendo'">
 			<title>
-				<all>Super Nipponix</all>
+				<all>Super ${brand_nintendo}</all>
 			</title>
 			<description>
-				<de>Holt Euch den neuen Super-NIP Spielspaß!</de>
-				<en>Get your hands on the new Super-NIP fun!</en>
-				<pl>Weź w swoje ręce nową zabawkę Super-NIP!</pl>
+				<de>Holt Euch den neuen ${brand_supernes} Spielspaß!</de>
+				<en>Get your hands on the new ${brand_supernes} fun!</en>
+				<pl>Weź w swoje ręce nową zabawkę ${brand_supernes}!</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="5" duration="4" profit="650" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -205,7 +203,7 @@
 
 		<ad guid="8f143ac1-37ca-4397-9306-00825c266c55" comment="1996 - 2001 | https://en.wikipedia.org/wiki/Nintendo_64">
 			<title>
-				<all>Nipponix 64</all>
+				<all>${brand_nintendo} 64</all>
 			</title>
 			<description>
 				<de>Das NEUE Telespiel mit den Super-Mega-Cartridges!</de>
@@ -219,7 +217,7 @@
 
 		<ad guid="8e6cfcf6-5667-42a3-ae20-b376f6daf68e" comment="2002 - 2007 | https://en.wikipedia.org/wiki/GameCube">
 			<title>
-				<all>NippoCube</all>
+				<all>${brand_gamecube}</all>
 			</title>
 			<description>
 				<de>Das NEUE Telespiel! Mit den Mini-DVDs!</de>
@@ -233,7 +231,7 @@
 
 		<ad guid="237fceaf-2f54-424e-9b02-cabcac79a22b" comment="2008 - forever | arguably https://en.wikipedia.org/wiki/Nintendo | from Mad TV as 'Nipponix'">
 			<title>
-				<all>Nipponix</all>
+				<all>${brand_nintendo}</all>
 			</title>
 			<description>
 				<de>Die NEUE Retrokonsole mit fünf eingebauten Spielen!</de>
@@ -334,8 +332,8 @@
 
 		<ad guid="05c35bc8-df60-4478-af4e-66691a0f2402" comment="1980 - 1985 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<all>ESCAL PCs</all>
-				<pl>Komputery ESCAL PC</pl>
+				<all>${brand_escom} PCs</all>
+				<pl>Komputery ${brand_escom} PC</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 4000 kHz.</de>
@@ -349,8 +347,8 @@
 
 		<ad guid="54841279-32c4-46ba-bf27-79069a81e646" comment="1986 - 1989 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<all>ESCAL XTs</all>
-				<pl>Komputery ESCAL XT</pl>
+				<all>${brand_escom} XTs</all>
+				<pl>Komputery ${brand_escom} XT</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 8000 kHz.</de>
@@ -364,8 +362,8 @@
 
 		<ad guid="8efa85c7-e567-413f-8475-b594bb1ebc6c" comment="1990 - 1993 | https://en.wikipedia.org/wiki/Escom_AG | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<all>ESCAL ATs</all>
-				<pl>Komputery ESCAL AT</pl>
+				<all>${brand_escom} ATs</all>
+				<pl>Komputery ${brand_escom} AT</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 12.000 kHz.</de>
@@ -379,8 +377,8 @@
 
 		<ad guid="563600d9-8e5b-43bb-8acc-5358609273d4" comment="1994 - 2002 | https://en.wikipedia.org/wiki/Escom_AG | also https://en.wikipedia.org/wiki/Pentium | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<all>ESCAL Penturium</all>
-				<pl>Komputery ESCAL Penturium</pl>
+				<all>${brand_escom} ${brand_pentium}</all>
+				<pl>Komputery ${brand_escom} ${brand_pentium}</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Ab 66.000 kHz.</de>
@@ -394,8 +392,8 @@
 
 		<ad guid="171d5785-f6cd-4f16-b025-655539567bc0" comment="2003 - forever | https://en.wikipedia.org/wiki/Escom_AG | also spoofing https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'ESCAL ATs'">
 			<title>
-				<all>ESCAL Forever</all>
-				<pl>Komputery ESCAL Forever</pl>
+				<all>${brand_escom} Forever</all>
+				<pl>Komputery ${brand_escom} Forever</pl>
 			</title>
 			<description>
 				<de>Die Marke Ihres Vertrauens. Jetzt als einmaliges Komponenten-Bastel-Set.</de>
@@ -409,8 +407,7 @@
 
 		<ad guid="21b1952e-22d9-4055-a913-092b6b458cfd" comment="1980 - 2002 | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
-				<all>HiScreen</all>
-				<pl>Telewizory HiScreen</pl>
+				<all>${brand_highscreen}</all>
 			</title>
 			<description>
 				<de>Gestochen scharfes Bild der Zukunft.</de>
@@ -424,8 +421,7 @@
 
 		<ad guid="74fe2e5a-74b1-43fa-9892-d042203179b0" comment="2003 - forever | Highscreen - https://de.wikipedia.org/wiki/Vobis">
 			<title>
-				<all>HiScreen.deu</all>
-				<pl>Telewizory HiScreen XSL</pl>
+				<all>${brand_highscreen}.deu</all>
 			</title>
 			<description>
 				<de>Gestochen scharfes Bild der Zukunft. Jetzt in extra-flach.</de>
@@ -522,15 +518,14 @@
 
 		<ad guid="32143571-47f1-4721-80cf-7437330d067f" comment="1980 - 1988 | https://en.wikipedia.org/wiki/Commodore_International | from Mad TV as 'Commodore'">
 			<title>
-				<de>Cormorano</de>
-				<en>Cormoran</en>
+				<all>${brand_commodore}</all>
 			</title>
 			<description>
-				<de>Jetzt mit Datasette 1350.
+				<de>Jetzt mit ${brand_datasette1530}.
 Das neuartige Multimedia-Erlebnis direkt vom Tape-Loader!</de>
-				<en>Now with Datasette 1350.
+				<en>Now with ${brand_datasette1530}.
 The brand new multimedia experience straight from the tape loader!</en>
-				<pl>Teraz z Datasette 1350.
+				<pl>Teraz z ${brand_datasette1530}.
 Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
@@ -540,8 +535,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="63b71a79-7c9b-48b5-a3d7-4650433bc078" comment="1989 - 1991 | https://en.wikipedia.org/wiki/Commodore_International | https://en.wikipedia.org/wiki/Amiga | from Mad TV as 'Commodore'">
 			<title>
-				<de>Cormorano</de>
-				<en>Cormoran</en>
+				<all>${brand_commodore}</all>
 			</title>
 			<description>
 				<de>Staunen Sie über das neuartige Multimedia-Erlebnis jetzt in 4096 Farben!</de>
@@ -555,13 +549,12 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="958ad4f5-76bf-467a-877a-b904fba5d45d" comment="1992 - 1996 | https://en.wikipedia.org/wiki/Commodore_International | https://en.wikipedia.org/wiki/Commodore_CDTV | from Mad TV as 'Commodore'">
 			<title>
-				<de>Cormorano</de>
-				<en>Cormoran</en>
+				<all>${brand_commodore}</all>
 			</title>
 			<description>
-				<de>CDVid - Die neue Multimedia-Dimension!</de>
-				<en>CDVid - The new multimedia dimension</en>
-				<pl>CDVid - Nowy wymiar multimediów</pl>
+				<de>${brand_cdtv} - Die neue Multimedia-Dimension!</de>
+				<en>${brand_cdtv} - The new multimedia dimension</en>
+				<pl>${brand_cdtv} - Nowy wymiar multimediów</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
@@ -570,8 +563,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="ba7c0e52-f960-4aa7-b85a-b5c673c53f4e" comment="1997 - forever | https://en.wikipedia.org/wiki/Commodore_International | also https://en.wikipedia.org/wiki/Amiga_Forever | from Mad TV as 'Commodore'">
 			<title>
-				<de>Cormorano Forever</de>
-				<en>Cormoran Forever</en>
+				<all>${brand_commodore} Forever</all>
 			</title>
 			<description>
 				<de>Das neuartige Multimedia-Erlebnis jetzt mit wirklich allen Sinnen erfahrbar - als Komponenten-Bastel-Set.</de>
@@ -585,7 +577,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="dd8f1816-8f10-4b3b-9a67-d46f7bba1394" comment="https://en.wikipedia.org/wiki/BP | from Mad TV as 'BP'">
 			<title>
-				<all>PB</all>
+				<all>${brand_bp}</all>
 			</title>
 			<description>
 				<de>Wir ermöglichen Mobilität.</de> <!-- orig: Wir sorgen für Bewegung -->
@@ -598,12 +590,12 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="8514f4a6-7407-4d23-b729-1d027df18397" comment="https://en.wikipedia.org/wiki/Shell_plc">
 			<title>
-				<all>Swell</all>
+				<all>${brand_shell}</all>
 			</title>
 			<description>
 				<de>Die geölten Fachmänner. Wir sind Ihnen behilflich!</de> <!-- orig: Shell: die Motorenöl-Experten. / Wir helfen Ihnen weiter. -->
-				<en>The oiled experts. You can't be sore of Swell. </en> <!-- orig: You can be sure of Shell. -->
-				<pl>Nafaszerowani olejem eksperci. Nie można się ich bać - Swell.</pl>
+				<en>The oiled experts. You can't be sore of ${brand_shell}. </en> <!-- orig: You can be sure of Shell. -->
+				<pl>Nafaszerowani olejem eksperci. Nie można się ich bać - ${brand_shell}.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
 			<data quality="10" repetitions="6" duration="8" profit="305" penalty="600" fix_infomercial_profit="1" />
@@ -611,7 +603,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="bafb4492-6f43-4674-9b02-bd6c4496eecd" comment="https://en.wikipedia.org/wiki/Colgate-Palmolive | from Mad TV as 'Colgate'">
 			<title>
-				<all>Calgonti</all>
+				<all>${brand_colgate}</all>
 			</title>
 			<description>
 				<de>Die Zahncreme! Jetzt mit radioaktiven Putzstoffen.</de>
@@ -622,9 +614,9 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="21" repetitions="4" duration="2" profit="190" penalty="450" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad guid="ca93584b-c7ca-4358-8a13-92620c18c9fc" comment="maybe spoof of https://en.wikipedia.org/wiki/American_Airlines | from Mad TV as 'TWAN' and as the German version/'translation' of Lufthansa | could perhaps nowadays also be understood as a spoof of https://en.wikipedia.org/wiki/T%27way_Air">
+		<ad guid="ca93584b-c7ca-4358-8a13-92620c18c9fc" comment="https://en.wikipedia.org/wiki/Trans_World_Airlines (assumed) resp. https://en.wikipedia.org/wiki/American_Airlines | from Mad TV as 'TWAN' and as the German version/'translation' of Lufthansa | could perhaps nowadays also be understood as a spoof of https://en.wikipedia.org/wiki/T%27way_Air">
 			<title>
-				<all>TWAN</all>
+				<all>${brand_twa}</all>
 			</title>
 			<description>
 				<de>Der bequeme Weg nach Europa.</de>
@@ -637,7 +629,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="2f6bffc9-e5eb-4670-86e9-7afa31e7f96b" comment="https://en.wikipedia.org/wiki/Lufthansa | from Mad TV as 'Lufthansa' and as the English version/'translation' of TWAN">
 			<title>
-				<all>Luefthaensel</all>
+				<all>${brand_lufthansa}</all>
 			</title>
 			<description>
 				<de>Willkommen an Bord.</de>
@@ -648,9 +640,10 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data quality="12" repetitions="8" duration="2" profit="125" penalty="200" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad guid="31da2056-1a11-494b-96f0-56f4de5303b5" comment="https://en.wikipedia.org/wiki/Diet_Coke | from Mad TV as 'Coke Light'">
+		<ad guid="31da2056-1a11-494b-96f0-56f4de5303b5" comment="https://en.wikipedia.org/wiki/Diet_Coke | from Mad TV as 'Coke Light' | Differing Diet or Light branding used in various countries">
 			<title>
-				<all>Cacca Lite</all>
+				<de>${brand_cokelight}</de>
+				<all>${brand_dietcoke}</all>
 			</title>
 			<description>
 				<de>Nur eine halbe Kalorie. So einsam und gespalten bloß wegen Ihnen! Also kaufen Sie gefälligst, Sie Fettsack!</de> <!-- orig: So kühl. So klar. Nur 1 Kalorie. -->
@@ -663,12 +656,10 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="d282e6e6-56bd-4a84-9ca4-e116487a92eb" comment="https://en.wikipedia.org/wiki/Coca-Cola | from Mad TV as 'Coca Cola'">
 			<title>
-				<all>Cacca Cola</all>
+				<all>${brand_cocacola}</all>
 			</title>
 			<description>
-				<de>Can't eat the peeling.</de> <!-- orig: Can't beat the feeling -->
-				<en>Can't eat the peeling.</en>
-				<pl>Nie można jeść peelingu.</pl>
+				<all>${brandslogan_cantbeatthefeeling}.</all>
 			</description>
 			<conditions min_audience="18.76" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
 			<data quality="29" repetitions="2" duration="1" profit="215" penalty="370" fix_infomercial_profit="1" />
@@ -676,7 +667,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="cf761426-1bda-44da-bcfc-ff5a8311d471" comment="https://en.wikipedia.org/wiki/Coca-Cola_Zero_Sugar">
 			<title>
-				<all>Cacca Zilch</all>
+				<all>${brand_cokezero}</all>
 			</title>
 			<description>
 				<de>Jetzt ganz ohne Kalorien! Und auch den Geschmack müssen Sie suchen!</de>
@@ -746,7 +737,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="a829e080-3657-42f5-9dc1-44a3d89700d0" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi'">
 			<title>
-				<all>Pipsi Cola</all>
+				<all>${brand_pepsi} Cola</all>
 			</title>
 			<description>
 				<de>Das schmeckt! Für die junge Brut.</de> <!-- Die schmeckt! -->
@@ -759,9 +750,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="004b7c26-60cf-4f19-92ca-5d297ed5b1e0" comment="https://en.wikipedia.org/wiki/Camel_(cigarette) | from Mad TV as 'Camel' and as the German version/'translation' of 'Maple-Translate'">
 			<title>
-				<de>Dromedar</de>
-				<en>Dromedary</en>
-				<pl>Dromedary</pl>
+				<all>${brand_camel}</all>
 			</title>
 			<description>
 				<de>Der Rauch durchs Nadelöhr! Geschmack total!</de> <!-- Orig: Voller Geschmack! -->
@@ -873,7 +862,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="1980daac-be0e-472b-8787-8eb19b7691a2" comment="https://en.wikipedia.org/wiki/Marlboro | from Mad TV 'Marlboro Light'">
 			<title>
-				<all>Murlborough Light</all>
+				<all>${brand_marlboro} Light</all>
 			</title>
 			<description>
 				<de>Für echte Cowboys.</de>
@@ -886,7 +875,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="79d8d9b9-934a-4a54-afd0-c3f0c22cae92" comment="https://en.wikipedia.org/wiki/Atari | from Mad TV as 'Atari'">
 			<title>
-				<all>Arrati</all>
+				<all>${brand_atari}</all>
 			</title>
 			<description>
 				<de>Wir machen Klitschentechnologie reich-werd.</de> <!-- orig: Wir machen Spitzentechnologie preiswert. | alt spoof: Wir machen Ritzentechnologie reinwärts -->
@@ -899,7 +888,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="b23cec38-36fb-4ece-b182-9e1bd95490c5" comment="https://en.wikipedia.org/wiki/Marlboro | from Mad TV 'Marlboro'">
 			<title>
-				<all>Murlborough</all>
+				<all>${brand_marlboro}</all>
 			</title>
 			<description>
 				<de>Für echte Cowboys. Aber echt jetzt.</de>
@@ -926,22 +915,21 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="01a5c6ea-105c-4aab-a5ab-f03393ad2ca0" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Rainbow_Arts | from Mad TV as 'Rainbow Arts' and as the English version/'translation' of 'PC-Soundman'">
 			<title>
-				<de>RegenbogenWünsche</de>
-				<en>RainbowWishes</en>
-				<pl>RainbowWishes</pl>
+				<all>${brand_rainbowarts}</all>
 			</title>
 			<description>
-				<de>RegenbogenWünsche, der einzigartige Platz für Brettspiele und Computerspiele.</de>
-				<en>RainbowWishes, the only place for board games and computer games.</en>
-				<pl>RainbowWishes, jedyne miejsce dla gier planszowych i komputerowych.</pl>
+				<de>${brand_rainbowarts}, der einzigartige Platz für Brettspiele und Computerspiele.</de>
+				<en>${brand_rainbowarts}, the only place for board games and computer games.</en>
+				<pl>${brand_rainbowarts}, jedyne miejsce dla gier planszowych i komputerowych.</pl>
 			</description>
 			<conditions min_audience="0.26" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="11" repetitions="5" duration="6" profit="2100" penalty="2500" infomercial_profit="120" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad guid="973bdff8-3080-4c19-b606-8711c350d5e1" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi Light'">
+		<ad guid="973bdff8-3080-4c19-b606-8711c350d5e1" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi Light' | Differing Diet or Light branding used in various countries">
 			<title>
-				<all>Pipsi Lite</all>
+				<de>${brand_pepsilight}</de>
+				<all>${brand_dietpepsi}</all>
 			</title>
 			<description>
 				<de>Voller Geschmack für die junge Brut - und nur 1 Kalorie.</de>
@@ -954,7 +942,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="c76f9b7d-c5b1-4782-ae8a-0f0437b3b006" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Citro%C3%ABn">
 			<title>
-				<all>Citröneaux</all>
+				<all>${brand_citroen}</all>
 			</title>
 			<description>
 				<de>Unsere „Salzente“-Modellreihe mit Vorrichtung zur komfortablen Tequila-Zubereitung - jetzt Probe fahren!</de>
@@ -965,7 +953,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="2" repetitions="1" duration="3" profit="690" penalty="2613" infomercial_profit="171" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad guid="e077fcb9-5216-42d0-82b1-ec9b1b518345" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Renault | https://en.wikipedia.org/wiki/Peugeot">
+		<ad guid="e077fcb9-5216-42d0-82b1-ec9b1b518345" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Renault | https://en.wikipedia.org/wiki/Peugeot | TODO: Use them interchangeable, but with same slogan">
 			<title>
 				<all>Peureault</all>
 			</title>
@@ -993,12 +981,12 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="17b1fe94-9767-4f76-9ed1-300cd67918d0" comment="https://en.wikipedia.org/wiki/BMW">
 			<title>
-				<all>BWM</all>
+				<all>${brand_bmw}</all>
 			</title>
 			<description>
-				<de>BWM. Räudig am Rasen!</de> <!-- orig: Freude am Fahren -->
-				<en>BWM. It's merely a vehicle!</en> <!-- orig: It's only a car! -->
-				<pl>BWM. To tylko pojazd!</pl>
+				<de>${brand_bmw}. Räudig am Rasen!</de> <!-- orig: Freude am Fahren -->
+				<en>${brand_bmw}. It's merely a vehicle!</en> <!-- orig: It's only a car! -->
+				<pl>${brand_bmw}. To tylko pojazd!</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="11" repetitions="3" duration="5" profit="280" penalty="600" infomercial_profit="3" fix_infomercial_profit="1" />
@@ -1063,9 +1051,9 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<all>Andrey Design</all>
 			</title>
 			<description>
-				<de>Visitenkarten? Grottifanten? Andrey!</de> <!-- orig: Ottifanten - https://de.wikipedia.org/wiki/Ottifant | alt spoof: Frottifanten? | TODO: add cartoon series https://de.wikipedia.org/wiki/Ottos_Ottifanten and use same reference -->
-				<en>Business cards? Grottifants? Andrey!</en>
-				<pl>Wizytówki? Grottifanty? Andrey!</pl>
+				<de>Visitenkarten? ${mediatitle_ottifants}? Andrey!</de> <!-- orig: Ottifanten - https://de.wikipedia.org/wiki/Ottifant | alt spoof: Frottifanten? | TODO: add cartoon series https://de.wikipedia.org/wiki/Ottos_Ottifanten and use same reference -->
+				<en>Business cards? ${mediatitle_ottifants}? Andrey!</en>
+				<pl>Wizytówki? ${mediatitle_ottifants}? Andrey!</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="9" repetitions="6" duration="7" profit="2500" penalty="4000" infomercial_profit="125" fix_infomercial_profit="1" />

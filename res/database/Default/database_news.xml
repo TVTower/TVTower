@@ -9,14 +9,14 @@
 
 		<news guid="b5140fd5-e3af-40f4-a985-6d5b0a742271" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Space_Shuttle_program | previously part of thread 5328557c-be27-46d2-acc0-a8ae2901eff3 | previously wrong date 1985">
 			<title>
-				<de>NASE startet Space-Shuttle-Programm</de>
-				<en>NASE launches space shuttle program</en>
-				<pl>NASE uruchamia program promów kosmicznych</pl>
+				<de>${generalorg_nasa} startet Space-Shuttle-Programm</de>
+				<en>${generalorg_nasa} launches space shuttle program</en>
+				<pl>${generalorg_nasa} uruchamia program promów kosmicznych</pl>
 			</title>
 			<description>
-				<de>Gestern der Mond und morgen der Mars? Die nordamerikanische Raumfahrtbehörde NASE möchte auch im All die Nase vorn haben und startet ein neues Raumfahrtprogramm. Es soll der Erkundung neuer Planeten dienen.</de>
-				<en>The moon yesterday and Mars tomorrow? The North American space agency NASE wants to be in the lead also in space and launches a new space program. It is to help the exploration of new planets.</en>
-				<pl>Wczoraj Księżyc jutro Mars? Północnoamerykańska agencja kosmiczna NASE chce być liderem również w kosmosie i uruchamia nowy program kosmiczny. Ma on pomóc w eksploracji nowych planet.</pl>
+				<de>Gestern der Mond und morgen der Mars? Die nordamerikanische Raumfahrtbehörde ${generalorg_nasa} möchte auch im All die Nase vorn haben und startet ein neues Raumfahrtprogramm. Es soll der Erkundung neuer Planeten dienen.</de>
+				<en>The moon yesterday and Mars tomorrow? The North American space agency ${generalorg_nasa} wants to be in the lead also in space and launches a new space program. It is to help the exploration of new planets.</en>
+				<pl>Wczoraj Księżyc jutro Mars? Północnoamerykańska agencja kosmiczna ${generalorg_nasa} chce być liderem również w kosmosie i uruchamia nowy program kosmiczny. Ma on pomóc w eksploracji nowych planet.</pl>
 			</description>
 			<!-- flags: 2 = unique event, not auto-reuseable -->
 			<data genre="3" price="0.6" quality="60" fictional="0" flags="2" /> <!-- TODO: actually in 1972; 'adjust' once playing in the 1970s is possible -->
@@ -27,14 +27,14 @@
 
 		<news guid="9cbacfcc-7ad2-4623-b340-7286dd6fd5f5" type="0" thread_guid="5328557c-be27-46d2-acc0-a8ae2901eff3" creator="8936" created_by="jorgaeff" comment="Columbia, Cape Canaveral - https://en.wikipedia.org/wiki/STS-1 | previously wrong date 1985">
 			<title>
-				<de>Kolumbus soll Erdumlaufbahn erkunden</de>
-				<en>Columbus to explore Earth orbit</en>
-				<pl>Columbus eksploruje orbitę okołoziemską</pl>
+				<de>${generalorgproject_columbia} soll Erdumlaufbahn erkunden</de>
+				<en>${generalorgproject_columbia} to explore Earth orbit</en>
+				<pl>${generalorgproject_columbia} eksploruje orbitę okołoziemską</pl>
 			</title>
 			<description>
-				<de>Es ist der erste orbitale Flug eines unbemannten Space-Shuttles. Die Raumfähre Kolumbus soll den Start und die Landung eines Space-Shuttles erproben. Der Start erfolgt heute Nacht in Cape Canaveral.</de>
-				<en>It is the first orbital flight of an unmanned space shuttle. The space shuttle Columbus is to test the launch and landing of a space shuttle. The launch will take place tonight in Cape Canaveral.</en>
-				<pl>Jest to pierwszy lot orbitalny bezzałogowego promu kosmicznego. Wahadłowiec Columbus ma przetestować start i lądowanie promu kosmicznego. Start odbędzie się dziś wieczorem w Cape Canaveral.</pl>
+				<de>Es ist der erste orbitale Flug eines unbemannten Space-Shuttles. Die Raumfähre ${generalorgproject_columbia} soll den Start und die Landung eines Space-Shuttles erproben. Der Start erfolgt heute Nacht in Cape Canaveral.</de>
+				<en>It is the first orbital flight of an unmanned space shuttle. The space shuttle ${generalorgproject_columbia} is to test the launch and landing of a space shuttle. The launch will take place tonight in Cape Canaveral.</en>
+				<pl>Jest to pierwszy lot orbitalny bezzałogowego promu kosmicznego. Wahadłowiec ${generalorgproject_columbia} ma przetestować start i lądowanie promu kosmicznego. Start odbędzie się dziś wieczorem w Cape Canaveral.</pl>
 			</description>
 			<data genre="3" price="0.65" quality="65" fictional="0" flags="2" /> <!-- actual date: 1981-04-12 -->
 			<availability year_range_to="1985" />
@@ -46,14 +46,14 @@
 		</news>
 		<news guid="32d4b4d3-7125-4aab-b594-342a5cd816eb" type="2" thread_guid="5328557c-be27-46d2-acc0-a8ae2901eff3" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Kolumbus erfolgreich gestartet</de>
-				<en>Columbus successfully launched</en>
-				<pl>Columbus z powodzeniem wystartował</pl>
+				<de>${generalorgproject_columbia} erfolgreich gestartet</de>
+				<en>${generalorgproject_columbia} successfully launched</en>
+				<pl>${generalorgproject_columbia} z powodzeniem wystartował</pl>
 			</title>
 			<description>
-				<de>Strahlende Gesichter beim NASE-Bodenpersonal in Cape Canaveral. Der erste Start eines unbemannten Space-Shuttles war erfolgreich. Wird auch die Landung gelingen?</de>
-				<en>Bright smiles on the faces of the NASE ground crew at Cape Canaveral. The first launch of an unmanned space shuttle was successful. Will the landing also succeed?</en>
-				<pl>Promienne uśmiechy na twarzach załogi naziemnej NASE podczas Cape Canaveral. Pierwszy start bezzałogowego promu kosmicznego zakończył się sukcesem. Czy lądowanie również się powiedzie?</pl>
+				<de>Strahlende Gesichter beim ${generalorg_nasa}-Bodenpersonal in Cape Canaveral. Der erste Start eines unbemannten Space-Shuttles war erfolgreich. Wird auch die Landung gelingen?</de>
+				<en>Bright smiles on the faces of the ${generalorg_nasa} ground crew at Cape Canaveral. The first launch of an unmanned space shuttle was successful. Will the landing also succeed?</en>
+				<pl>Promienne uśmiechy na twarzach załogi naziemnej ${generalorg_nasa} podczas Cape Canaveral. Pierwszy start bezzałogowego promu kosmicznego zakończył się sukcesem. Czy lądowanie również się powiedzie?</pl>
 			</description>
 			<data genre="3" price="0.7" quality="70" fictional="0" flags="2" />
 			<effects>
@@ -63,14 +63,14 @@
 		</news>
 		<news guid="e7863250-5f7b-43fb-b993-c8ac4d80dbc2" type="2" thread_guid="5328557c-be27-46d2-acc0-a8ae2901eff3" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Kolumbus erfolgreich gelandet</de>
-				<en>Columbus successfully landed</en>
-				<pl>Columbus pomyślnie wylądował</pl>
+				<de>${generalorgproject_columbia} erfolgreich gelandet</de>
+				<en>${generalorgproject_columbia} successfully landed</en>
+				<pl>${generalorgproject_columbia} pomyślnie wylądował</pl>
 			</title>
 			<description>
-				<de>Nach 2 Tagen in der Erdumlaufbahn ist die Raumfähre Kolumbus erfolgreich in Cape Canaveral gelandet. Durch den vollen Erfolg dieser Mission sollten weitere Gelder für zukünftige Missionen bewilligt werden.</de>
-				<en>After 2 days in Earth orbit, the space shuttle Columbus has successfully landed at Cape Canaveral. Due to the resounding success of this mission, more funding is expected to be approved for future missions.</en>
-				<pl>Po 2 dniach spędzonych na orbicie okołoziemskiej, prom kosmiczny Columbus pomyślnie wylądował na Cape Canaveral. Ze względu na ogromny sukces tej misji, oczekuje się, że zatwierdzone zostanie więcej funduszy na przyszłe misje.</pl>
+				<de>Nach 2 Tagen in der Erdumlaufbahn ist die Raumfähre ${generalorgproject_columbia} erfolgreich in Cape Canaveral gelandet. Durch den vollen Erfolg dieser Mission sollten weitere Gelder für zukünftige Missionen bewilligt werden.</de>
+				<en>After 2 days in Earth orbit, the space shuttle ${generalorgproject_columbia} has successfully landed at Cape Canaveral. Due to the resounding success of this mission, more funding is expected to be approved for future missions.</en>
+				<pl>Po 2 dniach spędzonych na orbicie okołoziemskiej, prom kosmiczny ${generalorgproject_columbia} pomyślnie wylądował na Cape Canaveral. Ze względu na ogromny sukces tej misji, oczekuje się, że zatwierdzone zostanie więcej funduszy na przyszłe misje.</pl>
 			</description>
 			<data genre="3" price="0.65" quality="65" fictional="0" flags="2" />
 		</news>
@@ -79,14 +79,14 @@
 
 		<news guid="81f3916f-deb7-4931-8d99-db45d52444d5" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Tetris">
 			<title>
-				<de>Tattris legt Forschung lahm</de>
-				<en>Tattris paralyses research</en>
-				<pl>Tattris paraliżuje badania</pl>
+				<de>${mediatitle_tetris} legt Forschung lahm</de>
+				<en>${mediatitle_tetris} paralyses research</en>
+				<pl>${mediatitle_tetris} paraliżuje badania</pl>
 			</title>
 			<description>
-				<de>Die Forschung an der sowjetischen Akademie der Wissenschaften ist de facto lahmgelegt, seit ${alexeypajitnov} sein „Tattris“ genanntes Spiel an Kollegen weitergab.</de>
-				<en>Research at the Soviet Academy of Sciences has been de facto paralysed since ${alexeypajitnov} passed on his game called "Tattris" to colleagues.</en>
-				<pl>Badania w Radzieckiej Akademii Nauk zostały de facto sparaliżowane, odkąd ${alexeypajitnov} przekazał kolegom swoją grę o nazwie "Tattris".</pl>
+				<de>Die Forschung an der sowjetischen Akademie der Wissenschaften ist de facto lahmgelegt, seit ${alexeypajitnov} sein „${mediatitle_tetris}“ genanntes Spiel an Kollegen weitergab.</de>
+				<en>Research at the Soviet Academy of Sciences has been de facto paralysed since ${alexeypajitnov} passed on his game called "${mediatitle_tetris}" to colleagues.</en>
+				<pl>Badania w Radzieckiej Akademii Nauk zostały de facto sparaliżowane, odkąd ${alexeypajitnov} przekazał kolegom swoją grę o nazwie "${mediatitle_tetris}".</pl>
 			</description>
 			<variables>
 				<alexeypajitnov>
@@ -134,9 +134,9 @@
 				<pl>Muzyczny album roku wybrany</pl>
 			</title>
 			<description>
-				<de>„Born in the States“, das Musikalbum des amerikanischen Sängers ${bruce} ${springsteen}, wurde zum einflussreichsten Album des Jahres 1984 gewählt. ${springsteen} verwendet darin erstmals Synthesizer.</de>
-				<en>"Born in the States", the music album by American singer ${bruce} ${springsteen}, was voted the most influential album of the year 1984. In it, ${springsteen} uses synthesizers for the first time.</en>
-				<pl>„Born in the States”, album muzyczny amerykańskiego piosenkarza ${bruce}'a ${springsteen}a, został uznany za najbardziej wpływowy album roku 1984. ${springsteen} po raz pierwszy użył w nim syntezatorów.</pl>
+				<de>„${mediatitle_bornintheusa}“, das Musikalbum des amerikanischen Sängers ${bruce} ${springsteen}, wurde zum einflussreichsten Album des Jahres 1984 gewählt. ${springsteen} verwendet darin erstmals Synthesizer.</de>
+				<en>"${mediatitle_bornintheusa}", the music album by American singer ${bruce} ${springsteen}, was voted the most influential album of the year 1984. In it, ${springsteen} uses synthesizers for the first time.</en>
+				<pl>„${mediatitle_bornintheusa}”, album muzyczny amerykańskiego piosenkarza ${bruce}'a ${springsteen}a, został uznany za najbardziej wpływowy album roku 1984. ${springsteen} po raz pierwszy użył w nim syntezatorów.</pl>
 			</description>
 			<variables>
 				<bruce>${.person:"e7de9ef7-b87f-43c5-a1d9-0d045933307a":"firstname"}</bruce> <!-- person references for now written more compact and not within 'all' tags when known to be the likely same in all languages; e.g. Russian names however will be within 'all' -->
@@ -172,9 +172,9 @@
 				<pl>Drezdeńska Opera Państwowa ponownie otwarta</pl>
 			</title>
 			<description>
-				<de>Nach jahrelanger Sanierung wurde die Semperoper mit der Uraufführung der Carl-Maria-von-Weber-Oper „Der Schäfer und seine Zicklein“ durch Intendant ${gerd} ${schoenfelder} wiedereröffnet.</de>
-				<en>After years of renovation, the Semperoper reopened with the world premiere of the Carl Maria von Weber opera "The Shepherd and his Kids" by artistic director ${gerd} ${schoenfelder}.</en>
-				<pl>Po latach renowacji, Semperoper została ponownie otwarta światową premierą opery Carla Marii von Webera „Pasterz i jego dzieci” autorstwa dyrektora artystycznego ${gerd}a ${schoenfelder}a.</pl>
+				<de>Nach jahrelanger Sanierung wurde die Semperoper mit der Uraufführung der Carl-Maria-von-Weber-Oper „${mediatitle_derfreischuetz}“ durch Intendant ${gerd} ${schoenfelder} wiedereröffnet.</de>
+				<en>After years of renovation, the Semperoper reopened with the world premiere of the Carl Maria von Weber opera "${mediatitle_derfreischuetz}" by artistic director ${gerd} ${schoenfelder}.</en>
+				<pl>Po latach renowacji, Semperoper została ponownie otwarta światową premierą opery Carla Marii von Webera „${mediatitle_derfreischuetz}” autorstwa dyrektora artystycznego ${gerd}a ${schoenfelder}a.</pl>
 			</description>
 			<variables>
 				<gerd>${.person:"04fac459-e798-452e-b30a-436ad144a2f4":"firstname"}</gerd>
@@ -251,14 +251,14 @@
 
 		<news guid="90ee7429-32a6-43ad-a2cd-5d1a61bfbc1f" type="0" creator="8936" created_by="jorgaeff" comment="KPdSU, CPSU, Michail Sergejewitsch Gorbatschow, Mikhail Gorbachev - https://en.wikipedia.org/wiki/Mikhail_Gorbachev#General_Secretary_of_the_CPSU">
 			<title>
-				<de>${gorbachev} wird KPdvSS-Generalsekretär</de>
-				<en>${gorbachev} becomes CPUSS Secretary General</en>
-				<pl>${gorbachev} zostaje sekretarzem generalnym CPUSS</pl>
+				<de>${gorbachev} wird ${generalorg_cpsu}-Generalsekretär</de>
+				<en>${gorbachev} becomes ${generalorg_cpsu} Secretary General</en>
+				<pl>${gorbachev} zostaje sekretarzem generalnym ${generalorg_cpsu}</pl>
 			</title>
 			<description>
-				<de>Im Alter von 54 Jahren wird ${mikhail} ${gorbachev} zum jüngsten Generalsekretär in der Geschichte der Kommunistischen Partei der vereinigten Sowjet-Staaten (KPdvSS) gewählt.</de>
-				<en>At the age of 54, ${mikhail} ${gorbachev} is elected the youngest General Secretary in the history of the Communist Party of the United Soviet States (CPUSS).</en>
-				<pl>W wieku 54 lat ${mikhail} ${gorbachev} zostaje wybrany najmłodszym sekretarzem generalnym w historii Komunistycznej Partii Zjednoczonych Stanów Radzieckich (KPZR).</pl>
+				<de>Im Alter von 54 Jahren wird ${mikhail} ${gorbachev} zum jüngsten Generalsekretär in der Geschichte ${generalorg_ofthecommunistpartyofthesovietunion} (${generalorg_cpsu}) gewählt.</de>
+				<en>At the age of 54, ${mikhail} ${gorbachev} is elected the youngest General Secretary in the history ${generalorg_ofthecommunistpartyofthesovietunion} (${generalorg_cpsu}).</en>
+				<pl>W wieku 54 lat ${mikhail} ${gorbachev} zostaje wybrany najmłodszym sekretarzem generalnym w historii ${generalorg_ofthecommunistpartyofthesovietunion} (${generalorg_cpsu}).</pl>
 			</description>
 			<variables>
 				<mikhail>
@@ -392,14 +392,14 @@
 
 		<news guid="3555bb5c-227e-4a3e-94cc-f15ce14c0aa1" type="0" creator="8936" created_by="jorgaeff" comment="SPD, Johannes Rau, https://de.wikipedia.org/wiki/Landtagswahl_in_Nordrhein-Westfalen_1985">
 			<title>
-				<de>APD mit historischem Wahlergebnis</de>
-				<en>APD with historical election result</en>
-				<pl>APD z historycznym wynikiem wyborów</pl>
+				<de>${generalorg_spd} mit historischem Wahlergebnis</de>
+				<en>${generalorg_spd} with historical election result</en>
+				<pl>${generalorg_spd} z historycznym wynikiem wyborów</pl>
 			</title>
 			<description>
-				<de>Bei der Landtagswahl in Nordrhein-Westfalen erzielt die Arbeiterpartei Deutschland (APD) unter Ministerpräsident ${johannes} ${rau} mit 52,1% der Stimmen das beste Wahlergebnis ihrer Geschichte in diesem Bundesland.</de>
-				<en>In the state elections in North Rhine-Westphalia, the Workers' Party of Germany (APD) headed by Prime Minister ${johannes} ${rau} achieves the best election result in its history in this state, with 52.1% of the vote.</en>
-				<pl>W wyborach landowych w Nadrenii Północnej-Westfalii Robotnicza Partia Niemiec (APD) kierowana przez premiera ${johannes}a ${rau}a osiągnęła najlepszy wynik wyborczy w swojej historii w tym landzie, uzyskując 52,1% głosów.</pl>
+				<de>Bei der Landtagswahl in Nordrhein-Westfalen erzielt die ${generalorg_socialdemocraticpartyofgermany} (${generalorg_spd}) unter Ministerpräsident ${johannes} ${rau} mit 52,1% der Stimmen das beste Wahlergebnis ihrer Geschichte in diesem Bundesland.</de>
+				<en>In the state elections in North Rhine-Westphalia, the ${generalorg_socialdemocraticpartyofgermany} (${generalorg_spd}) headed by Prime Minister ${johannes} ${rau} achieves the best election result in its history in this state, with 52.1% of the vote.</en>
+				<pl>W wyborach landowych w Nadrenii Północnej-Westfalii ${generalorg_socialdemocraticpartyofgermany} (${generalorg_spd}) kierowana przez premiera ${johannes}a ${rau}a osiągnęła najlepszy wynik wyborczy w swojej historii w tym landzie, uzyskując 52,1% głosów.</pl>
 			</description>
 			<variables>
 				<johannes>${.person:"43d6895a-be11-4faa-b717-cbd87779fff4":"firstname"}</johannes>
@@ -450,9 +450,9 @@
 				<pl>Gra Detektyw została wybrana grą planszową roku 1985</pl>
 			</title>
 			<description>
-				<de>„Dr. Watson Kriminalzimmer“ wurde zum Brettspiel des Jahres 1985 gekürt. Der Jury imponierte, dass das Spiel sowohl allein als auch in einer Gruppe gespielt werden kann.</de>
-				<en>"Dr. Watson Crime Room" was chosen as the board game of the year 1985. The jury was impressed by the fact that the game can be played both alone and in a group.</en>
-				<pl>„Detektyw” został wybrany grą planszową roku 1985. Jury było pod wrażeniem faktu, że w grę można grać zarówno w pojedynkę, jak i w grupie.</pl>
+				<de>„${mediatitle_sherlockholmesconsultingdetective}“ wurde zum Brettspiel des Jahres 1985 gekürt. Der Jury imponierte, dass das Spiel sowohl allein als auch in einer Gruppe gespielt werden kann.</de>
+				<en>"${mediatitle_sherlockholmesconsultingdetective}" was chosen as the board game of the year 1985. The jury was impressed by the fact that the game can be played both alone and in a group.</en>
+				<pl>„${mediatitle_sherlockholmesconsultingdetective}” został wybrany grą planszową roku 1985. Jury było pod wrażeniem faktu, że w grę można grać zarówno w pojedynkę, jak i w grupie.</pl>
 			</description>
 			<data genre="3" price="0.49" quality="45" fictional="0" flags="2" happen_time="5,1985,1985,4,10,1,30" /> <!-- actual date: 1985-07, exact day of voting not clear -->
 		</news>
@@ -464,9 +464,9 @@
 				<pl>Rozpoczęła się nowa era komputerów</pl>
 			</title>
 			<description>
-				<de>Der amerikanische Computerproduzent Cormorano stellt seinen Heimrechner „Eterna“ vor. Seine Grafikleistung ist einfach atemberaubend.</de>
-				<en>The American computer manufacturer Cormoran presents its home computer "Eterna". Its graphics performance is simply breathtaking.</en>
-				<pl>Amerykański producent komputerów Cormoran prezentuje swój komputer domowy "Eterna". Jego wydajność graficzna po prostu zapiera dech w piersiach.</pl>
+				<de>Der amerikanische Computerproduzent ${brand_commodore} stellt seinen Heimrechner „${brand_amiga}“ vor. Seine Grafikleistung ist einfach atemberaubend.</de>
+				<en>The American computer manufacturer ${brand_commodore} presents its home computer "${brand_amiga}". Its graphics performance is simply breathtaking.</en>
+				<pl>Amerykański producent komputerów ${brand_commodore} prezentuje swój komputer domowy "${brand_amiga}". Jego wydajność graficzna po prostu zapiera dech w piersiach.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="45" fictional="0" flags="2" happen_time="5,1985,1985,4,10,1,30" /> <!-- actual date: 1985-07-23 -->
 		</news>
@@ -521,14 +521,14 @@
 
 		<news guid="7817c857-8b74-4c74-9a73-b82d5c0f90ed" type="0" creator="8936" created_by="jorgaeff" comment="SPD - https://en.wikipedia.org/wiki/Social_Democratic_Party_of_Germany | Johannes Rau - https://www.hdg.de/lemo/biografie/johannes-rau.html | previously part of a thread">
 			<title>
-				<de>APD nominiert ${johannes} ${rau}</de>
-				<en>APD nominates ${johannes} ${rau}</en>
-				<pl>APD nominuje ${johannes}a ${rau}a</pl>
+				<de>${generalorg_spd} nominiert ${johannes} ${rau}</de>
+				<en>${generalorg_spd} nominates ${johannes} ${rau}</en>
+				<pl>${generalorg_spd} nominuje ${johannes}a ${rau}a</pl>
 			</title>
 			<description>
-				<de>Die Arbeiterpartei Deutschland (APD) nominiert den nordrhein-westfälischen Ministerpräsidenten ${johannes} ${rau} zum Kanzlerkandidaten für die Bundestagswahl 1987.</de>
-				<en>The Workers' Party of Germany (APD) nominates ${johannes} ${rau}, Minister-President of North Rhine-Westphalia, as its candidate for chancellor in the 1987 federal election.</en>
-				<pl>Niemiecka Partia Robotnicza (APD) nominuje ${johannes}a ${rau}a, premiera Nadrenii Północnej-Westfalii, na swojego kandydata na kanclerza w wyborach federalnych w 1987 roku.</pl>
+				<de>Die ${generalorg_socialdemocraticpartyofgermany} (${generalorg_spd}) nominiert den nordrhein-westfälischen Ministerpräsidenten ${johannes} ${rau} zum Kanzlerkandidaten für die Bundestagswahl 1987.</de>
+				<en>The ${generalorg_socialdemocraticpartyofgermany} (${generalorg_spd}) nominates ${johannes} ${rau}, Minister-President of North Rhine-Westphalia, as its candidate for chancellor in the 1987 federal election.</en>
+				<pl>${generalorg_socialdemocraticpartyofgermany} (${generalorg_spd}) nominuje ${johannes}a ${rau}a, premiera Nadrenii Północnej-Westfalii, na swojego kandydata na kanclerza w wyborach federalnych w 1987 roku.</pl>
 			</description>
 			<variables>
 				<johannes>${.person:"43d6895a-be11-4faa-b717-cbd87779fff4":"firstname"}</johannes>
@@ -586,9 +586,7 @@
 		<news guid="ac635166-bf6e-42a8-b561-ed6104e0e233" type="0" creator="7430" created_by="Sjaele" comment="Günter Wallraff, https://de.wikipedia.org/wiki/Ganz_unten">
 			<!-- deutschbezogen -->
 			<title>
-				<de>Ganz nicht oben</de>
-				<en>Not quite on top</en>
-				<pl>Nie całkiem na szczycie</pl>
+				<all>${mediatitle_lowestofthelow}</all>
 			</title>
 			<description>
 				<de>Der Autor ${guenterwallraff} arbeitete unter türkischer Identität in Deutschland. Haarsträubende Erlebnisse in der deutschen Joblandschaft im soeben veröffentlichten Buch.</de>
@@ -605,14 +603,14 @@
 
 		<news guid="59fd1736-c372-4077-b141-50d38fbcf3a9" type="0" creator="8936" created_by="jorgaeff" comment="probably https://en.wikipedia.org/wiki/Windows_1.0">
 			<title>
-				<de>Macrohard stellt „Proof 1.01“ vor</de>
-				<en>Macrohard introduces "Proof 1.01"</en>
-				<pl>Macrohard wprowadza "Proof 1.01"</pl>
+				<de>${brand_microsoft} stellt „${brand_windows} 1.01“ vor</de>
+				<en>${brand_microsoft} introduces "${brand_windows} 1.01"</en>
+				<pl>${brand_microsoft} wprowadza "${brand_windows} 1.01"</pl>
 			</title>
 			<description>
-				<de>Die von Macrohard endgültig freigegebene Version Proof 1.01 wurde auf einer Pressekonferenz im südschwedischen Helsingborg vorgestellt. Das Betriebssystem benötigt einen Arbeitsspeicher von 256 KByte und ein 5.25&#8243;-Diskettenlaufwerk.</de>
-				<en>The version Proof 1.01 finally released by Macrohard was presented at a press conference in Helsingborg, southern Sweden. The operating system requires a memory of 256 KByte and a 5.25&#8243; floppy drive.</en>
-				<pl>Wersja Proof 1.01 ostatecznie wydana przez Macrohard została zaprezentowana na konferencji prasowej w Helsingborgu, w południowej Szwecji. System operacyjny wymaga pamięci 256 KByte i stacji dyskietek 5,25&#8243;.</pl>
+				<de>Die von ${brand_microsoft} endgültig freigegebene Version ${brand_windows} 1.01 wurde auf einer Pressekonferenz im südschwedischen Helsingborg vorgestellt. Das Betriebssystem benötigt einen Arbeitsspeicher von 256 KByte und ein 5.25&#8243;-Diskettenlaufwerk.</de>
+				<en>The version ${brand_windows} 1.01 finally released by ${brand_microsoft} was presented at a press conference in Helsingborg, southern Sweden. The operating system requires a memory of 256 KByte and a 5.25&#8243; floppy drive.</en>
+				<pl>Wersja ${brand_windows} 1.01 ostatecznie wydana przez ${brand_microsoft} została zaprezentowana na konferencji prasowej w Helsingborgu, w południowej Szwecji. System operacyjny wymaga pamięci 256 KByte i stacji dyskietek 5,25&#8243;.</pl>
 			</description>
 			<data genre="3" price="0.4" quality="40" fictional="0" flags="2" happen_time="5,1985,1986,8,2,1,30" /> <!-- actual date: 1985-11-30 -->
 		</news>
@@ -672,9 +670,9 @@
 
 		<news guid="86453a95-f3c0-4361-96a0-b92be73547bc" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Tetris">
 			<title>
-				<de>Tattris in Farbe</de>
-				<en>Tattris in color</en>
-				<pl>Tattris w kolorze</pl>
+				<de>${mediatitle_tetris} in Farbe</de>
+				<en>${mediatitle_tetris} in color</en>
+				<pl>${mediatitle_tetris} w kolorze</pl>
 			</title>
 			<description>
 				<de>Das Computerspiel kursiert seit der neuesten farblichen Version in den Ostblockstaaten.</de>
@@ -737,14 +735,14 @@
 		<!-- "Challenger-Unglück" -->
 		<news guid="7c7cabc7-d127-47c2-9e1e-d2607dd9a4ee" type="0" thread_guid="3757ee59-bf2c-48eb-bb51-2d3be163b405" creator="8827" created_by="Cujo" comment="https://en.wikipedia.org/wiki/Space_Shuttle_Challenger_disaster | https://en.wikipedia.org/wiki/Halley%27s_Comet">
 			<title>
-				<de>Start der Raumfähre Passenger geplant</de>
-				<en>Launch of space shuttle Passenger planned</en>
-				<pl>Planowany start promu kosmicznego Passenger</pl>
+				<de>Start der Raumfähre ${generalorgproject_challenger} geplant</de>
+				<en>Launch of space shuttle ${generalorgproject_challenger} planned</en>
+				<pl>Planowany start promu kosmicznego ${generalorgproject_challenger}</pl>
 			</title>
 			<description>
-				<de>Morgen soll die Raumfähre Passenger ins Weltall starten. Sie wird dort einen Kommunikationssatelliten aussetzen. Außerdem ist eine Beobachtung des Kometen Hallie geplant.</de>
-				<en>Tomorrow, the space shuttle Passenger is scheduled to launch into space. It will launch a communications satellite there. In addition, an observation of comet Hallie is planned.</en>
-				<pl>Jutro prom kosmiczny Passenger ma wystartować w kosmos. Wyniesie tam satelitę komunikacyjnego. Ponadto planowana jest obserwacja komety Hallie.</pl>
+				<de>Morgen soll die Raumfähre ${generalorgproject_challenger} ins Weltall starten. Sie wird dort einen Kommunikationssatelliten aussetzen. Außerdem ist eine Beobachtung des Kometen Hallie geplant.</de>
+				<en>Tomorrow, the space shuttle ${generalorgproject_challenger} is scheduled to launch into space. It will launch a communications satellite there. In addition, an observation of comet Hallie is planned.</en>
+				<pl>Jutro prom kosmiczny ${generalorgproject_challenger} ma wystartować w kosmos. Wyniesie tam satelitę komunikacyjnego. Ponadto planowana jest obserwacja komety Hallie.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="50" fictional="0" flags="2" happen_time="5,1985,1985,9,10,1,20" /> <!-- forerun, actual date of disaster 1986-01-28 -->
 			<effects>
@@ -756,28 +754,28 @@
 		</news>
 		<news guid="ee8fc95a-f0dc-44c6-99fe-8a5d83a43f8f" type="2" thread_guid="3757ee59-bf2c-48eb-bb51-2d3be163b405" creator="8827" created_by="Cujo">
 			<title>
-				<de>Start der Raumfähre Passenger verschoben</de>
-				<en>Launch of space shuttle Passenger postponed</en>
-				<pl>Start promu kosmicznego Passenger przełożony</pl>
+				<de>Start der Raumfähre ${generalorgproject_challenger} verschoben</de>
+				<en>Launch of space shuttle ${generalorgproject_challenger} postponed</en>
+				<pl>Start promu kosmicznego ${generalorgproject_challenger} przełożony</pl>
 			</title>
 			<description>
-				<de>Der Start der Raumfähre Passenger wurde um 2 Tage verschoben. Der Grund dafür waren heftige Gewitter zum geplanten Startzeitpunkt.</de>
-				<en>The launch of the space shuttle Passenger was postponed by 2 days. The reason for this was heavy thunderstorms at the planned launch time.</en>
-				<pl>Start promu kosmicznego Passenger został przełożony o 2 dni. Powodem były silne burze w planowanym czasie startu.</pl>
+				<de>Der Start der Raumfähre ${generalorgproject_challenger} wurde um 2 Tage verschoben. Der Grund dafür waren heftige Gewitter zum geplanten Startzeitpunkt.</de>
+				<en>The launch of the space shuttle ${generalorgproject_challenger} was postponed by 2 days. The reason for this was heavy thunderstorms at the planned launch time.</en>
+				<pl>Start promu kosmicznego ${generalorgproject_challenger} został przełożony o 2 dni. Powodem były silne burze w planowanym czasie startu.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="50" fictional="0" flags="2" />
 		</news>
 
 		<news guid="845a9caf-9235-4181-b53e-f05bad443ac8" type="0" thread_guid="4d65e7a0-f8c4-4fec-86dc-d032d3c906d7" creator="8827" created_by="Cujo">
 			<title>
-				<de>Raumfähre Passenger soll heute Vormittag starten</de>
-				<en>Space shuttle Passenger to launch this morning</en>
-				<pl>Prom kosmiczny Passenger wystartuje dziś rano</pl>
+				<de>Raumfähre ${generalorgproject_challenger} soll heute Vormittag starten</de>
+				<en>Space shuttle ${generalorgproject_challenger} to launch this morning</en>
+				<pl>Prom kosmiczny ${generalorgproject_challenger} wystartuje dziś rano</pl>
 			</title>
 			<description>
-				<de>Nachdem der Start der Raumfähre Passenger aufgrund schlechten Wetters um 2 Tage verschoben wurde, gibt es heute Vormittag einen erneuten Startversuch.</de>
-				<en>After the launch of the space shuttle Passenger was postponed for 2 days due to bad weather, there is another launch attempt this morning.</en>
-				<pl>Po tym, jak start promu kosmicznego Passenger został przełożony o 2 dni z powodu złej pogody, dziś rano odbędzie się kolejna próba startu.</pl>
+				<de>Nachdem der Start der Raumfähre ${generalorgproject_challenger} aufgrund schlechten Wetters um 2 Tage verschoben wurde, gibt es heute Vormittag einen erneuten Startversuch.</de>
+				<en>After the launch of the space shuttle ${generalorgproject_challenger} was postponed for 2 days due to bad weather, there is another launch attempt this morning.</en>
+				<pl>Po tym, jak start promu kosmicznego ${generalorgproject_challenger} został przełożony o 2 dni z powodu złej pogody, dziś rano odbędzie się kolejna próba startu.</pl>
 			</description>
 			<variables>
 				<christamcauliffe>${.person:"8e82ab5f-9f24-4785-b497-3c84918d654e":"fullname"}</christamcauliffe>
@@ -793,14 +791,14 @@
 		</news>
 		<news guid="e3f18534-a0ed-4847-97a6-c4c9a27ac6b8" type="2" thread_guid="4d65e7a0-f8c4-4fec-86dc-d032d3c906d7" creator="8827" created_by="Cujo">
 			<title>
-				<de>Raumfähre Passenger explodiert</de>
-				<en>Space shuttle Passenger explodes</en>
-				<pl>Prom kosmiczny Passenger eksploduje</pl>
+				<de>Raumfähre ${generalorgproject_challenger} explodiert</de>
+				<en>Space shuttle ${generalorgproject_challenger} explodes</en>
+				<pl>Prom kosmiczny ${generalorgproject_challenger} eksploduje</pl>
 			</title>
 			<description>
-				<de>70 Sekunden nach dem Start ist die Raumfähre Passenger explodiert. Die sechs Astronauten sowie eine mitreisende Lehrerin sind wahrscheinlich tot.</de>
-				<en>70 seconds after launch, the space shuttle Passenger exploded. The six astronauts and a teacher traveling with them are probably dead.</en>
-				<pl>70 sekund po starcie prom kosmiczny Passenger eksplodował. Sześciu astronautów i podróżujący z nimi nauczyciel prawdopodobnie nie żyją.</pl>
+				<de>70 Sekunden nach dem Start ist die Raumfähre ${generalorgproject_challenger} explodiert. Die sechs Astronauten sowie eine mitreisende Lehrerin sind wahrscheinlich tot.</de>
+				<en>70 seconds after launch, the space shuttle ${generalorgproject_challenger} exploded. The six astronauts and a teacher traveling with them are probably dead.</en>
+				<pl>70 sekund po starcie prom kosmiczny ${generalorgproject_challenger} eksplodował. Sześciu astronautów i podróżujący z nimi nauczyciel prawdopodobnie nie żyją.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="100" fictional="0" flags="2" />
 			<effects>
@@ -809,14 +807,14 @@
 		</news>
 		<news guid="d590e7a1-f98b-4f54-829c-cab36ee4a248" type="2" thread_guid="4d65e7a0-f8c4-4fec-86dc-d032d3c906d7" creator="8827" created_by="Cujo" comment="Christa McAuliffe - https://en.wikipedia.org/wiki/Christa_McAuliffe | TODO: this 'alternative reality' probably not a good idea, may collide with other content">
 			<title>
-				<de>Erfolgreicher Start der Raumfähre Passenger</de>
-				<en>Successful launch of the space shuttle Passenger</en>
-				<pl>Udany start promu kosmicznego Passenger</pl>
+				<de>Erfolgreicher Start der Raumfähre ${generalorgproject_challenger}</de>
+				<en>Successful launch of the space shuttle ${generalorgproject_challenger}</en>
+				<pl>Udany start promu kosmicznego ${generalorgproject_challenger}</pl>
 			</title>
 			<description>
-				<de>Die Raumfähre Passenger ist erfolgreich ins Weltall gestartet. Die sechs Astronauten haben bereits eine Grußbotschaft geschickt. Die Lehrerin ${christamcauliffe} wird bald den ersten Unterrichtsblock aus dem Weltall senden.</de>
-				<en>The space shuttle Passenger has successfully launched into space. The six astronauts have already sent a greeting message. Teacher ${christamcauliffe} will soon send the first block of lessons from space.</en>
-				<pl>Prom kosmiczny Passenger pomyślnie wystartował w kosmos. Sześciu astronautów wysłało już wiadomość z pozdrowieniami. Nauczycielka ${christamcauliffe} wkrótce wyśle pierwszy blok lekcji z kosmosu.</pl>
+				<de>Die Raumfähre ${generalorgproject_challenger} ist erfolgreich ins Weltall gestartet. Die sechs Astronauten haben bereits eine Grußbotschaft geschickt. Die Lehrerin ${christamcauliffe} wird bald den ersten Unterrichtsblock aus dem Weltall senden.</de>
+				<en>The space shuttle ${generalorgproject_challenger} has successfully launched into space. The six astronauts have already sent a greeting message. Teacher ${christamcauliffe} will soon send the first block of lessons from space.</en>
+				<pl>Prom kosmiczny ${generalorgproject_challenger} pomyślnie wystartował w kosmos. Sześciu astronautów wysłało już wiadomość z pozdrowieniami. Nauczycielka ${christamcauliffe} wkrótce wyśle pierwszy blok lekcji z kosmosu.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="50" fictional="1" flags="2" />
 			<effects>
@@ -825,14 +823,14 @@
 		</news>
 		<news guid="b0a2a716-4930-42ea-883a-d1103f48b197" type="2" thread_guid="4d65e7a0-f8c4-4fec-86dc-d032d3c906d7" creator="8827" created_by="Cujo">
 			<title>
-				<de>Weltweites Entsetzen nach Passenger-Katastrophe</de>
-				<en>Worldwide horror after passenger disaster</en>
-				<pl>Przerażenie na całym świecie po katastrofie Passenger-a</pl>
+				<de>Weltweites Entsetzen nach ${generalorgproject_challenger}-Katastrophe</de>
+				<en>Worldwide horror after ${generalorgproject_challenger} disaster</en>
+				<pl>Przerażenie na całym świecie po katastrofie ${generalorgproject_challenger}-a</pl>
 			</title>
 			<description>
-				<de>Einen Tag nach der Passenger-Katastrophe ist die gesamte Welt-Bevölkerung immer noch erschüttert. Wie konnte dieses Unglück geschehen? Hätte es verhindert werden können?</de>
-				<en>One day after the Passenger disaster, the entire world population is still shaken. How could this disaster have happened? Could it have been prevented?</en>
-				<pl>Dzień po katastrofie Passenger-a cała światowa populacja wciąż jest wstrząśnięta. Jak mogło dojść do tej katastrofy? Czy można było jej zapobiec?</pl>
+				<de>Einen Tag nach der ${generalorgproject_challenger}-Katastrophe ist die gesamte Welt-Bevölkerung immer noch erschüttert. Wie konnte dieses Unglück geschehen? Hätte es verhindert werden können?</de>
+				<en>One day after the ${generalorgproject_challenger} disaster, the entire world population is still shaken. How could this disaster have happened? Could it have been prevented?</en>
+				<pl>Dzień po katastrofie ${generalorgproject_challenger}-a cała światowa populacja wciąż jest wstrząśnięta. Jak mogło dojść do tej katastrofy? Czy można było jej zapobiec?</pl>
 			</description>
 			<data genre="4" price="1.0" quality="40" fictional="0" flags="2" />
 			<effects>
@@ -841,27 +839,27 @@
 		</news>
 		<news guid="eeccdaea-5c4b-459f-87f7-574c993b1d0a" type="2" thread_guid="4d65e7a0-f8c4-4fec-86dc-d032d3c906d7" creator="8827" created_by="Cujo">
 			<title>
-				<de>Landung der Passenger-Raumfähre geglückt</de>
-				<en>Successful landing of the passenger space shuttle</en>
-				<pl>Udane lądowanie promu kosmicznego Passenger</pl>
+				<de>Landung der ${generalorgproject_challenger}-Raumfähre geglückt</de>
+				<en>Successful landing of the ${generalorgproject_challenger} space shuttle</en>
+				<pl>Udane lądowanie promu kosmicznego ${generalorgproject_challenger}</pl>
 			</title>
 			<description>
-				<de>Die Passenger-Raumfähre ist im ${kennedy} Space-Center in Florida gelandet. Die sechs Astronauten und die Lehrerin stiegen wohlbehalten aus. Die NASE bezeichnet die Mission als vollen Erfolg. Alle Ziele wurden erreicht.</de>
-				<en>The Passenger Space Shuttle has landed at the ${kennedy} Space Center in Florida. The six astronauts and the teacher disembark safely. NASE calls the mission a complete success. All goals were achieved.</en>
-				<pl>Passenger - prom kosmiczny wylądował w Centrum Kosmicznym ${kennedy} na Florydzie. Sześciu astronautów i nauczyciel bezpiecznie opuściło pokład. NASE nazywa misję pełnym sukcesem. Wszystkie cele zostały osiągnięte.</pl>
+				<de>Die ${generalorgproject_challenger}-Raumfähre ist im ${kennedy} Space-Center in Florida gelandet. Die sechs Astronauten und die Lehrerin stiegen wohlbehalten aus. Die ${generalorg_nasa} bezeichnet die Mission als vollen Erfolg. Alle Ziele wurden erreicht.</de>
+				<en>The ${generalorgproject_challenger} Space Shuttle has landed at the ${kennedy} Space Center in Florida. The six astronauts and the teacher disembark safely. ${generalorg_nasa} calls the mission a complete success. All goals were achieved.</en>
+				<pl>${generalorgproject_challenger} - prom kosmiczny wylądował w Centrum Kosmicznym ${kennedy} na Florydzie. Sześciu astronautów i nauczyciel bezpiecznie opuściło pokład. ${generalorg_nasa} nazywa misję pełnym sukcesem. Wszystkie cele zostały osiągnięte.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="50" fictional="1" flags="2" />
 		</news>
 		<news guid="a01070b7-5016-46f0-8283-b311a11ca9a0" type="2" thread_guid="4d65e7a0-f8c4-4fec-86dc-d032d3c906d7" creator="8827" created_by="Cujo">
 			<title>
-				<de>Passenger-Katastrophe: Unglücksursache steht fest</de>
-				<en>Passenger disaster: cause of accident established</en>
+				<de>${generalorgproject_challenger}-Katastrophe: Unglücksursache steht fest</de>
+				<en>${generalorgproject_challenger} disaster: cause of accident established</en>
 				<pl>Katastrofa promu kosmicznego: ustalono przyczynę wypadku</pl>
 			</title>
 			<description>
-				<de>Die Unglücksursache für die Passenger-Katastrophe, bei der sieben Menschen ums Leben kamen, steht fest. Die Dichtungsringe einer Feststoffrakete waren defekt.</de>
-				<en>The cause of the passenger disaster that killed seven people has been determined. The sealing rings of a solid rocket were defective.</en>
-				<pl>Ustalono przyczynę katastrofy Passengera, w której zginęło siedem osób. Pierścienie uszczelniające rakiety były wadliwe.</pl>
+				<de>Die Unglücksursache für die ${generalorgproject_challenger}-Katastrophe, bei der sieben Menschen ums Leben kamen, steht fest. Die Dichtungsringe einer Feststoffrakete waren defekt.</de>
+				<en>The cause of the ${generalorgproject_challenger} disaster that killed seven people has been determined. The sealing rings of a solid rocket were defective.</en>
+				<pl>Ustalono przyczynę katastrofy ${generalorgproject_challenger}a, w której zginęło siedem osób. Pierścienie uszczelniające rakiety były wadliwe.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="60" fictional="0" flags="2" />
 		</news>
@@ -873,9 +871,9 @@
 				<pl>Ponowny start wahadłowca zaplanowany</pl>
 			</title>
 			<description>
-				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte wieder ein unbemanntes Shuttle ins All schicken. Die Raumfähre Passenger soll einen Kommunikations-Satelliten aussetzen, sowie bekannte Kometen analysieren.</de>
-				<en>The North American Space Agency NASE wants to send an unmanned shuttle into space again. The space shuttle Passenger is to launch a communications satellite, as well as to analyze known comets.</en>
-				<pl>Północnoamerykańska Agencja Kosmiczna NASE chce ponownie wysłać w kosmos bezzałogowy wahadłowiec. Promu kosmiczny Passenger ma wystrzelić satelitę komunikacyjnego, a także przeanalizować znane komety.</pl>
+				<de>Die nordamerikanische Raumfahrtbehörde ${generalorg_nasa} möchte wieder ein unbemanntes Shuttle ins All schicken. Die Raumfähre ${generalorgproject_challenger} soll einen Kommunikations-Satelliten aussetzen, sowie bekannte Kometen analysieren.</de>
+				<en>The North American Space Agency ${generalorg_nasa} wants to send an unmanned shuttle into space again. The space shuttle ${generalorgproject_challenger} is to launch a communications satellite, as well as to analyze known comets.</en>
+				<pl>Północnoamerykańska Agencja Kosmiczna ${generalorg_nasa} chce ponownie wysłać w kosmos bezzałogowy wahadłowiec. Promu kosmiczny ${generalorgproject_challenger} ma wystrzelić satelitę komunikacyjnego, a także przeanalizować znane komety.</pl>
 			</description>
 			<data genre="3" price="0.5" quality="50" fictional="0" flags="2" happen_time="5,1985,1985,9,10,1,20" /> <!-- forerun, actual date of disaster 1986-01-28 -->
 			<effects>
@@ -892,9 +890,9 @@
 				<pl>Prom kosmiczny eksplodował podczas startu</pl>
 			</title>
 			<description>
-				<de>Schwerer Rückschlag für das nordamerikanische Raumfahrtprogramm! Nur wenige Sekunden nach dem Start ist die Raumfähre Passenger explodiert. Die Raumfahrtbehörde NASE rätselt über die Ursachen des Unglücks.</de>
-				<en>Serious setback for the North American space program! Only a few seconds after launch, the space shuttle Passenger exploded. The space agency NASE is puzzled over the causes of the accident.</en>
-				<pl>Poważna porażka północnoamerykańskiego programu kosmicznego! Zaledwie kilka sekund po starcie prom kosmiczny Passenger eksplodował. Agencja kosmiczna NASE zastanawia się nad przyczynami wypadku.</pl>
+				<de>Schwerer Rückschlag für das nordamerikanische Raumfahrtprogramm! Nur wenige Sekunden nach dem Start ist die Raumfähre ${generalorgproject_challenger} explodiert. Die Raumfahrtbehörde ${generalorg_nasa} rätselt über die Ursachen des Unglücks.</de>
+				<en>Serious setback for the North American space program! Only a few seconds after launch, the space shuttle ${generalorgproject_challenger} exploded. The space agency ${generalorg_nasa} is puzzled over the causes of the accident.</en>
+				<pl>Poważna porażka północnoamerykańskiego programu kosmicznego! Zaledwie kilka sekund po starcie prom kosmiczny ${generalorgproject_challenger} eksplodował. Agencja kosmiczna ${generalorg_nasa} zastanawia się nad przyczynami wypadku.</pl>
 			</description>
 			<data genre="4" price="1" quality="100" fictional="0" flags="2" happen_time="5,1986,1986,1,3,1,30" /> <!-- actual date: 1986-01-28 -->
 			<effects>
@@ -909,9 +907,9 @@
 				<pl>Eksplozja wahadłowca: przyczyna wypadku wyjaśniona</pl>
 			</title>
 			<description>
-				<de>Die nordamerikanische Raumfahrtbehörde NASE hat die Ursache für die Explosion der Raumfähre Passenger gefunden und macht einen fehlenden Dichtungsring für das Unglück verantwortlich.</de>
-				<en>The North American space agency NASE has found the cause of the explosion of the space shuttle Passenger and blames a missing seal ring for the disaster.</en>
-				<pl>Północnoamerykańska agencja kosmiczna NASE znalazła przyczynę eksplozji promu kosmicznego Passenger i obwinia za katastrofę brakujący pierścień uszczelniający.</pl>
+				<de>Die nordamerikanische Raumfahrtbehörde ${generalorg_nasa} hat die Ursache für die Explosion der Raumfähre ${generalorgproject_challenger} gefunden und macht einen fehlenden Dichtungsring für das Unglück verantwortlich.</de>
+				<en>The North American space agency ${generalorg_nasa} has found the cause of the explosion of the space shuttle ${generalorgproject_challenger} and blames a missing seal ring for the disaster.</en>
+				<pl>Północnoamerykańska agencja kosmiczna ${generalorg_nasa} znalazła przyczynę eksplozji promu kosmicznego ${generalorgproject_challenger} i obwinia za katastrofę brakujący pierścień uszczelniający.</pl>
 			</description>
 			<data genre="3" price="0.85" quality="85" fictional="0" flags="2" />
 			<effects>
@@ -921,14 +919,14 @@
 		</news>
 		<news guid="c93bcb87-f5a1-486d-98cf-cb5dc53505e3" type="2" thread_guid="812e6b0d-1167-41dd-b108-172e7ab78074" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>NASE legt Raumfahrtprogramm auf Eis</de>
-				<en>NASE puts space program on hold</en>
-				<pl>NASE wstrzymuje program kosmiczny</pl>
+				<de>${generalorg_nasa} legt Raumfahrtprogramm auf Eis</de>
+				<en>${generalorg_nasa} puts space program on hold</en>
+				<pl>${generalorg_nasa} wstrzymuje program kosmiczny</pl>
 			</title>
 			<description>
-				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte vorerst von weiteren Shuttle-Starts absehen. Es sollen zunächst Technologien erforscht werden, die für einen sichereren Start sorgen.</de>
-				<en>The North American space agency NASE wants to refrain from further shuttle launches for the time being. Technologies are to be researched first, which provide for a safer launch.</en>
-				<pl>Północnoamerykańska agencja kosmiczna NASE chce na razie powstrzymać się od kolejnych startów wahadłowców. W pierwszej kolejności mają zostać zbadane technologie, które zapewnią bezpieczniejsze starty.</pl>
+				<de>Die nordamerikanische Raumfahrtbehörde ${generalorg_nasa} möchte vorerst von weiteren Shuttle-Starts absehen. Es sollen zunächst Technologien erforscht werden, die für einen sichereren Start sorgen.</de>
+				<en>The North American space agency ${generalorg_nasa} wants to refrain from further shuttle launches for the time being. Technologies are to be researched first, which provide for a safer launch.</en>
+				<pl>Północnoamerykańska agencja kosmiczna ${generalorg_nasa} chce na razie powstrzymać się od kolejnych startów wahadłowców. W pierwszej kolejności mają zostać zbadane technologie, które zapewnią bezpieczniejsze starty.</pl>
 			</description>
 			<data genre="3" price="0.75" quality="75" fictional="0" flags="2" />
 		</news>
@@ -942,9 +940,9 @@
 				<pl>${gorbachev} wzywa do „głasnosti”</pl>
 			</title>
 			<description>
-				<de>Forderungen von KPdvSS-Generalsekretär, ${mikhail} ${gorbachev}, nach mehr Rede- und Pressefreiheit waren das zentrale Thema auf dem 27. Parteitag der Kommunistischen Partei der Vereinigten Sowjet-Staaten.</de>
-				<en>Demands by CPUSS General Secretary, ${mikhail} ${gorbachev}, for more freedom of speech and press were the central theme at the 27th Party Congress of the Communist Party of the United Soviet States.</en>
-				<pl>Żądania sekretarza generalnego KPZR, ${mikhail} ${gorbachev}, dotyczące większej wolności słowa i prasy były głównym tematem 27. zjazdu partyjnego Komunistycznej Partii Związku Radzieckiego.</pl>
+				<de>Forderungen von ${generalorg_cpsu}-Generalsekretär, ${mikhail} ${gorbachev}, nach mehr Rede- und Pressefreiheit waren das zentrale Thema auf dem 27. Parteitag ${generalorg_ofthecommunistpartyofthesovietunion}.</de>
+				<en>Demands by ${generalorg_cpsu} General Secretary, ${mikhail} ${gorbachev}, for more freedom of speech and press were the central theme at the 27th Party Congress ${generalorg_ofthecommunistpartyofthesovietunion}.</en>
+				<pl>Żądania sekretarza generalnego ${generalorg_cpsu}, ${mikhail} ${gorbachev}, dotyczące większej wolności słowa i prasy były głównym tematem 27. zjazdu partyjnego ${generalorg_ofthecommunistpartyofthesovietunion}.</pl>
 			</description>
 			<variables>
 				<mikhail>
@@ -964,9 +962,9 @@
 				<pl>${metallica} wydaje album</pl>
 			</title>
 			<description>
-				<de>Die Thrash-Metal-Band ${metallica} bringt heute ihr Album „Der Puppenspieler“ heraus. Es wird einmal als Meilenstein des Thrash Metal und eines der besten Metal-Alben überhaupt angesehen werden.</de>
-				<en>The thrash metal band ${metallica} today released their album "The Puppet Master". It will one day be considered a milestone of thrash metal and one of the best metal albums ever.</en>
-				<pl>Thrashmetalowy zespół ${metallica} wydał dziś swój album „The Puppet Master”. Pewnego dnia zostanie on uznany za kamień milowy thrash metalu i jeden z najlepszych albumów metalowych w historii.</pl>
+				<de>Die Thrash-Metal-Band ${metallica} bringt heute ihr Album „${mediatitle_masterofpuppets}“ heraus. Es wird einmal als Meilenstein des Thrash Metal und eines der besten Metal-Alben überhaupt angesehen werden.</de>
+				<en>The thrash metal band ${metallica} today released their album "${mediatitle_masterofpuppets}". It will one day be considered a milestone of thrash metal and one of the best metal albums ever.</en>
+				<pl>Thrashmetalowy zespół ${metallica} wydał dziś swój album „${mediatitle_masterofpuppets}”. Pewnego dnia zostanie on uznany za kamień milowy thrash metalu i jeden z najlepszych albumów metalowych w historii.</pl>
 			</description>
 			<variables>
 				<metallica>${.person:"61866b0e-c932-4cb2-a7ca-cbb3729af454":"firstname"}</metallica>
@@ -983,9 +981,9 @@
 				<pl>Mega koncert ${jeanmicheljarre}</pl>
 			</title>
 			<description>
-				<de>${jeanmicheljarre} spielt anlässlich des 150. Geburtstags des US-Bundesstaats Texas und dem 25. Jubiläum des NASE-Space-Centers Houston ein Konzert vor mindestens 1.300.000 Zuhörern und erhält einen Eintrag im Guinness-Buch der Rekorde.</de>
-				<en>${jeanmicheljarre} plays a concert in front of at least 1,300,000 listeners on the occasion of the 150th birthday of the US state of Texas and the 25th anniversary of the NASE Space Center Houston and receives an entry in the Guinness Book of World Records.</en>
-				<pl>${jeanmicheljarre} gra koncert przed co najmniej 1 300 000 słuchaczy z okazji 150. urodzin amerykańskiego stanu Teksas i 25. rocznicy NASE Space Center Houston i otrzymuje wpis do Księgi Rekordów Guinnessa.</pl>
+				<de>${jeanmicheljarre} spielt anlässlich des 150. Geburtstags des US-Bundesstaats Texas und dem 25. Jubiläum des ${generalorg_nasa}-Space-Centers Houston ein Konzert vor mindestens 1.300.000 Zuhörern und erhält einen Eintrag im ${brand_guinness}-Buch der Rekorde.</de>
+				<en>${jeanmicheljarre} plays a concert in front of at least 1,300,000 listeners on the occasion of the 150th birthday of the US state of Texas and the 25th anniversary of the ${generalorg_nasa} Space Center Houston and receives an entry in the ${brand_guinness} Book of World Records.</en>
+				<pl>${jeanmicheljarre} gra koncert przed co najmniej 1 300 000 słuchaczy z okazji 150. urodzin amerykańskiego stanu Teksas i 25. rocznicy ${generalorg_nasa} Space Center Houston i otrzymuje wpis do Księgi Rekordów ${brand_guinness}a.</pl>
 			</description>
 			<variables>
 				<jeanmicheljarre>${.person:"0afe1600-58eb-443c-a8e4-a4c03f4c36fb":"fullname"}</jeanmicheljarre>
@@ -1000,9 +998,9 @@
 				<pl>${gorbachev} odwiedza Niemcy Wschodnie</pl>
 			</title>
 			<description>
-				<de>Hoher Besuch beim Parteitag der Sozialistischen Partei Ost-Deutschland (SPOD) im Palast der Republik: KPdvSS-Generalsekretär, ${mikhail} ${gorbachev}, spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
-				<en>High-ranking visitor at the party congress of the Sozialistische Partei Ost-Deutschland (SPOD) in the Palace of the Republic: CPUSS General Secretary, ${mikhail} ${gorbachev}, addresses the comrades and also brings a few gifts.</en>
-				<pl>Wysokiej rangi gość na kongresie partii Sozialistische Partei Ost-Deutschland (SPOD) w Pałacu Republiki: Sekretarz generalny CPUSS, ${mikhail} ${gorbachev}, przemawia do towarzyszy i przynosi kilka prezentów.</pl>
+				<de>Hoher Besuch beim Parteitag ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) im Palast der Republik: ${generalorg_cpsu}-Generalsekretär, ${mikhail} ${gorbachev}, spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
+				<en>High-ranking visitor at the party congress ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) in the Palace of the Republic: ${generalorg_cpsu} General Secretary, ${mikhail} ${gorbachev}, addresses the comrades and also brings a few gifts.</en>
+				<pl>Wysokiej rangi gość na kongresie partii ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) w Pałacu Republiki: Sekretarz generalny ${generalorg_cpsu}, ${mikhail} ${gorbachev}, przemawia do towarzyszy i przynosi kilka prezentów.</pl>
 			</description>
 			<variables>
 				<mikhail>
@@ -1137,9 +1135,9 @@
 				<pl>${madonna} najbardziej utytułowaną piosenkarką</pl>
 			</title>
 			<description>
-				<de>${madonna} schafft mit ihrem dritten Album „Real Green“ den Sprung auf Platz 1 der Hitparaden in 28 Ländern. Für eine weibliche Interpretin ein noch nie da gewesener Erfolg.</de>
-				<en>${madonna} makes it to No. 1 on the charts in 28 countries with her third album "Real Green". For a female performer, an unprecedented success.</en>
-				<pl>${madonna} dociera do 1. miejsca list przebojów w 28 krajach ze swoim trzecim albumem „Real Green”. To bezprecedensowy sukces dla kobiety-wykonawcy.</pl>
+				<de>${madonna} schafft mit ihrem dritten Album „${mediatitle_trueblue}“ den Sprung auf Platz 1 der Hitparaden in 28 Ländern. Für eine weibliche Interpretin ein noch nie da gewesener Erfolg.</de>
+				<en>${madonna} makes it to No. 1 on the charts in 28 countries with her third album "${mediatitle_trueblue}". For a female performer, an unprecedented success.</en>
+				<pl>${madonna} dociera do 1. miejsca list przebojów w 28 krajach ze swoim trzecim albumem „${mediatitle_trueblue}”. To bezprecedensowy sukces dla kobiety-wykonawcy.</pl>
 			</description>
 			<variables>
 				<madonna>${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}</madonna>
@@ -1400,7 +1398,7 @@
 		<news guid="c1d45e4e-3c3f-4843-ae47-2823cee994df" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
 			<!-- deutschbezogen -->
 			<title>
-				<all>Aktena 8</all>
+				<all>${generalorgproject_challenger} 8</all>
 			</title>
 			<description>
 				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
@@ -1418,9 +1416,9 @@
 				<pl>Pilot ląduje na Placu Czerwonym w Moskwie</pl>
 			</title>
 			<description>
-				<de>Der deutsche Pilot ${mathias} ${rust} ist mit seiner Schessnah auf dem Roten Platz in Moskau gelandet.</de>
-				<en>The German pilot ${mathias} ${rust} has landed with his Schessnah on the Red Square in Moscow.</en>
-				<pl>Niemiecki pilot ${mathias} ${rust} wylądował swoim Schessnahem na Placu Czerwonym w Moskwie.</pl>
+				<de>Der deutsche Pilot ${mathias} ${rust} ist mit seiner ${brand_cessna} auf dem Roten Platz in Moskau gelandet.</de>
+				<en>The German pilot ${mathias} ${rust} has landed with his ${brand_cessna} on the Red Square in Moscow.</en>
+				<pl>Niemiecki pilot ${mathias} ${rust} wylądował swoim ${brand_cessna} na Placu Czerwonym w Moskwie.</pl>
 			</description>
 			<variables>
 				<mathias>${.person:"95bb70af-624f-4396-a09d-698d284a59f3":"firstname"}</mathias>
@@ -1443,14 +1441,14 @@
 		<!-- "Mathias Rust landet auf Rotem Platz" -->
 		<news guid="d58a07ac-8a3f-4dd0-b2db-6e0b742efd23" type="0" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo" comment="https://en.wikipedia.org/wiki/Mathias_Rust | https://en.wikipedia.org/wiki/Cessna_172">
 			<title>
-				<de>Schessnah in der Nähe von Moskau gesichtet</de>
-				<en>Schessnah spotted near Moscow</en>
-				<pl>Schessnah zauważony w pobliżu Moskwy</pl>
+				<de>${brand_cessna} in der Nähe von Moskau gesichtet</de>
+				<en>${brand_cessna} spotted near Moscow</en>
+				<pl>${brand_cessna} zauważony w pobliżu Moskwy</pl>
 			</title>
 			<description>
-				<de>Die russische Luftabwehr hat in der Nähe von Moskau ein deutsches Kleinflugzeug der Marke Schessnah gesichtet. Handelt es sich dabei um einen Selbstmordattentäter?</de>
-				<en>Russian air defense has spotted a German small plane of the brand Schessnah near Moscow. Is it a suicide bomber?</en>
-				<pl>Rosyjska obrona powietrzna wykryła pod Moskwą niemiecki mały samolot marki Schessnah. Czy to zamachowiec-samobójca?</pl>
+				<de>Die russische Luftabwehr hat in der Nähe von Moskau ein deutsches Kleinflugzeug der Marke ${brand_cessna} gesichtet. Handelt es sich dabei um einen Selbstmordattentäter?</de>
+				<en>Russian air defense has spotted a German small plane of the brand ${brand_cessna} near Moscow. Is it a suicide bomber?</en>
+				<pl>Rosyjska obrona powietrzna wykryła pod Moskwą niemiecki mały samolot marki ${brand_cessna}. Czy to zamachowiec-samobójca?</pl>
 			</description>
 			<variables>
 				<mathias>${.person:"95bb70af-624f-4396-a09d-698d284a59f3":"firstname"}</mathias>
@@ -1470,14 +1468,14 @@
 		</news>
 		<news guid="b730af95-bb75-4bc8-a623-0deb42076a71" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo">
 			<title>
-				<de>Schessnah 127 auf Rotem Platz gelandet</de>
-				<en>Schessnah 127 landed on Red Square</en>
-				<pl>Schessnah 127 wylądował na Placu Czerwonym</pl>
+				<de>${brand_cessna172} auf Rotem Platz gelandet</de>
+				<en>${brand_cessna172} landed on Red Square</en>
+				<pl>${brand_cessna172} wylądował na Placu Czerwonym</pl>
 			</title>
 			<description>
-				<de>Auf dem Roten Platz in Moskau ist eine Schessnah 127 gelandet. Noch steht der Pilot des Flugzeugs nicht fest. Handelt es sich um einen Deutschen?</de>
-				<en>A Schessnah 127 has landed on Moscow's Red Square. The pilot of the plane has not yet been identified. Is it a German?</en>
-				<pl>Samolot Schessnah 127 wylądował na Placu Czerwonym w Moskwie. Pilot samolotu nie został jeszcze zidentyfikowany. Czy to Niemiec?</pl>
+				<de>Auf dem Roten Platz in Moskau ist eine ${brand_cessna172} gelandet. Noch steht der Pilot des Flugzeugs nicht fest. Handelt es sich um einen Deutschen?</de>
+				<en>A ${brand_cessna172} has landed on Moscow's Red Square. The pilot of the plane has not yet been identified. Is it a German?</en>
+				<pl>Samolot ${brand_cessna172} wylądował na Placu Czerwonym w Moskwie. Pilot samolotu nie został jeszcze zidentyfikowany. Czy to Niemiec?</pl>
 			</description>
 			<data genre="4" price="1.2" quality="100" fictional="0" flags="2" />
 			<effects>
@@ -1486,14 +1484,14 @@
 		</news>
 		<news guid="ab5b5b9a-1b67-4fd7-80a9-e6eca6b705e6" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo">
 			<title>
-				<de>Schessnah-Pilot stammt aus Deutschland</de>
-				<en>Schessnah pilot comes from Germany</en>
-				<pl>Pilot Schessnah pochodzi z Niemiec</pl>
+				<de>${brand_cessna}-Pilot stammt aus Deutschland</de>
+				<en>${brand_cessna} pilot comes from Germany</en>
+				<pl>Pilot ${brand_cessna} pochodzi z Niemiec</pl>
 			</title>
 			<description>
-				<de>Der Pilot, der vor wenigen Stunden auf dem Roten Platz in Moskau gelandeten Schessnah, stammt aus Deutschland. Sein Name ist ${mathias} ${rust} und er kommt aus Hamburg.</de>
-				<en>The pilot of the Schessnah, which landed on Moscow's Red Square a few hours ago, is from Germany. His name is ${mathias} ${rust} and he comes from Hamburg.</en>
-				<pl>Pilot samolotu Schessnah, który kilka godzin temu wylądował na Placu Czerwonym w Moskwie, pochodzi z Niemiec. Nazywa się ${mathias} ${rust} i pochodzi z Hamburga.</pl>
+				<de>Der Pilot, der vor wenigen Stunden auf dem Roten Platz in Moskau gelandeten ${brand_cessna}, stammt aus Deutschland. Sein Name ist ${mathias} ${rust} und er kommt aus Hamburg.</de>
+				<en>The pilot of the ${brand_cessna}, which landed on Moscow's Red Square a few hours ago, is from Germany. His name is ${mathias} ${rust} and he comes from Hamburg.</en>
+				<pl>Pilot samolotu ${brand_cessna}, który kilka godzin temu wylądował na Placu Czerwonym w Moskwie, pochodzi z Niemiec. Nazywa się ${mathias} ${rust} i pochodzi z Hamburga.</pl>
 			</description>
 			<data genre="4" price="1.05" quality="80" fictional="0" flags="2" />
 			<effects>
@@ -1502,14 +1500,14 @@
 		</news>
 		<news guid="a9b99371-f803-4664-b8b4-dcbd23879ffc" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo">
 			<title>
-				<de>Schessnah-Pilot wirbt für Völkerverständigung</de>
-				<en>Schessnah pilot promotes international understanding</en>
-				<pl>Pilot Schessnah promuje międzynarodowe porozumienie</pl>
+				<de>${brand_cessna}-Pilot wirbt für Völkerverständigung</de>
+				<en>${brand_cessna} pilot promotes international understanding</en>
+				<pl>Pilot ${brand_cessna} promuje międzynarodowe porozumienie</pl>
 			</title>
 			<description>
-				<de>${mathias} ${rust}, der Hamburger Pilot, der mit seiner Schessnah auf dem Roten Platz gelandet ist, appelliert an alle Menschen: „Lasst uns in Frieden leben.“</de>
-				<en>${mathias} ${rust}, the Hamburg pilot who landed his Schessnah on Red Square, appeals to all people: "Let's live in peace."</en>
-				<pl>${mathias} ${rust}, hamburski pilot, który wylądował swoim Schessnahem na Placu Czerwonym, apeluje do wszystkich ludzi: „Żyjmy w pokoju”.</pl>
+				<de>${mathias} ${rust}, der Hamburger Pilot, der mit seiner ${brand_cessna} auf dem Roten Platz gelandet ist, appelliert an alle Menschen: „Lasst uns in Frieden leben.“</de>
+				<en>${mathias} ${rust}, the Hamburg pilot who landed his ${brand_cessna} on Red Square, appeals to all people: "Let's live in peace."</en>
+				<pl>${mathias} ${rust}, hamburski pilot, który wylądował swoim ${brand_cessna} na Placu Czerwonym, apeluje do wszystkich ludzi: „Żyjmy w pokoju”.</pl>
 			</description>
 			<data genre="4" price="0.94" quality="70" fictional="0" flags="2" />
 			<effects>
@@ -1518,14 +1516,14 @@
 		</news>
 		<news guid="68185058-09ad-419c-83d4-553b85e58574" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo">
 			<title>
-				<de>Schessnah-Pilot vom GKB verhaftet</de>
-				<en>Schessnah pilot arrested by GKB</en>
-				<pl>Pilot Schessnah aresztowany przez GKB</pl>
+				<de>${brand_cessna}-Pilot vom GKB verhaftet</de>
+				<en>${brand_cessna} pilot arrested by GKB</en>
+				<pl>Pilot ${brand_cessna} aresztowany przez GKB</pl>
 			</title>
 			<description>
-				<de>Der Schessnah-Pilot ${mathias} ${rust} wurde vom GKB verhaftet. Muss er jetzt lebenslang hinter Gitter?</de>
-				<en>The Schessnah pilot ${mathias} ${rust} was arrested by the GKB. Does he now have to spend his life behind bars?</en>
-				<pl>Pilot Schessnah ${mathias} ${rust} został aresztowany przez GKB. Czy teraz będzie musiał spędzić życie za kratkami?</pl>
+				<de>Der ${brand_cessna}-Pilot ${mathias} ${rust} wurde vom GKB verhaftet. Muss er jetzt lebenslang hinter Gitter?</de>
+				<en>The ${brand_cessna} pilot ${mathias} ${rust} was arrested by the GKB. Does he now have to spend his life behind bars?</en>
+				<pl>Pilot ${brand_cessna} ${mathias} ${rust} został aresztowany przez GKB. Czy teraz będzie musiał spędzić życie za kratkami?</pl>
 			</description>
 			<data genre="4" price="1.1" quality="85" fictional="0" flags="2" />
 			<effects>
@@ -1534,13 +1532,13 @@
 		</news>
 		<news guid="72260607-a34f-46c6-aa65-cc9ae4b152cf" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo">
 			<title>
-				<de>Schessnah-Pilot zu 5 Jahren Arbeitslager verurteilt</de>
-				<en>Schessnah pilot sentenced to 5 years in labor camp</en>
-				<pl>Pilot Schessnah skazany na 5 lat obozu pracy</pl>
+				<de>${brand_cessna}-Pilot zu 5 Jahren Arbeitslager verurteilt</de>
+				<en>${brand_cessna} pilot sentenced to 5 years in labor camp</en>
+				<pl>Pilot ${brand_cessna} skazany na 5 lat obozu pracy</pl>
 			</title>
 			<description>
-				<de>${mathias} ${rust}, der vor einigen Tagen mit seiner Schessnah-Landung auf dem Roten Platz in Moskau die russische Luftwaffe blamiert hatte, wurde von einem Richter wegen schweren Rowdytums zu 5 Jahren Arbeitslager verurteilt.</de>
-				<en>${mathias} ${rust}, who embarrassed the Russian Air Force a few days ago with his Schessnah landing on Moscow's Red Square, was sentenced by a judge to 5 years in a labor camp for serious hooliganism.</en>
+				<de>${mathias} ${rust}, der vor einigen Tagen mit seiner ${brand_cessna}-Landung auf dem Roten Platz in Moskau die russische Luftwaffe blamiert hatte, wurde von einem Richter wegen schweren Rowdytums zu 5 Jahren Arbeitslager verurteilt.</de>
+				<en>${mathias} ${rust}, who embarrassed the Russian Air Force a few days ago with his ${brand_cessna} landing on Moscow's Red Square, was sentenced by a judge to 5 years in a labor camp for serious hooliganism.</en>
 				<pl>${mathias} ${rust}, który kilka dni temu zawstydził rosyjskie siły powietrzne swoim lądowaniem na Placu Czerwonym w Moskwie, został skazany przez sędziego na 5 lat obozu pracy za poważne chuligaństwo.</pl>
 			</description>
 			<data genre="4" price="0.85" quality="65" fictional="0" flags="2" />
@@ -1551,14 +1549,14 @@
 		</news>
 		<news guid="b03dc758-924c-46e9-b157-36e420a245bb" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo">
 			<title>
-				<de>Schessnah-Pilot wird begnadigt</de>
-				<en>Schessnah pilot is pardoned</en>
-				<pl>Pilot Schessnah został ułaskawiony</pl>
+				<de>${brand_cessna}-Pilot wird begnadigt</de>
+				<en>${brand_cessna} pilot is pardoned</en>
+				<pl>Pilot ${brand_cessna} został ułaskawiony</pl>
 			</title>
 			<description>
-				<de>Der auf dem Roten Platz gelandete Schessnah-Pilot ${mathias} ${rust} wird begnadigt. Nach 15 Monaten Arbeitslager kann er morgen zu seiner Familie zurückkehren. Seine Schessnah wird verschrottet.</de>
-				<en>Schessnah pilot ${mathias} ${rust}, who landed in Red Square, is pardoned. After 15 months in a labor camp, he can return to his family tomorrow. His Schessnah will be scrapped.</en>
-				<pl>Pilot Schessnah ${mathias} ${rust}, który wylądował na Placu Czerwonym, został ułaskawiony. Po 15 miesiącach spędzonych w obozie pracy może jutro wrócić do swojej rodziny. Jego Schessnah zostanie zezłomowany.</pl>
+				<de>Der auf dem Roten Platz gelandete ${brand_cessna}-Pilot ${mathias} ${rust} wird begnadigt. Nach 15 Monaten Arbeitslager kann er morgen zu seiner Familie zurückkehren. Seine ${brand_cessna} wird verschrottet.</de>
+				<en>${brand_cessna} pilot ${mathias} ${rust}, who landed in Red Square, is pardoned. After 15 months in a labor camp, he can return to his family tomorrow. His ${brand_cessna} will be scrapped.</en>
+				<pl>Pilot ${brand_cessna} ${mathias} ${rust}, który wylądował na Placu Czerwonym, został ułaskawiony. Po 15 miesiącach spędzonych w obozie pracy może jutro wrócić do swojej rodziny. Jego ${brand_cessna} zostanie zezłomowany.</pl>
 			</description>
 			<data genre="4" price="0.78" quality="55" fictional="0" flags="2" />
 		</news>
@@ -1632,9 +1630,9 @@
 		<news guid="96368bb2-db1f-45fc-ac87-8028f9cd0c64" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
 			<!-- deutschbezogen -->
 			<title>
-				<de>Aktena 8 eröffnet</de>
-				<en>Aktena 8 opened</en>
-				<pl>Aktena 8 otwarta</pl>
+				<de>${generalorgproject_documenta} 8 eröffnet</de>
+				<en>${generalorgproject_documenta} 8 opened</en>
+				<pl>${generalorgproject_documenta} 8 otwarta</pl>
 			</title>
 			<description>
 				<de>Die Kunstschau mit über 400 austellenden Künstlern widmet sich erstmals verstärkt der Videokunst und breitet sich über das gesamte Stadtgebiet von Kassel aus.</de>
@@ -1669,14 +1667,14 @@
 
 		<news guid="6b636274-a080-450c-a273-14866f7a4074" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/Michael_Jackson | https://en.wikipedia.org/wiki/Bad_(album) | https://en.wikipedia.org/wiki/Thriller_(album)">
 			<title>
-				<de>${michaeljackson} veröffentlicht „Bed“</de>
-				<en>${michaeljackson} releases "Bed"</en>
-				<pl>${michaeljackson} wydaje „Bed”</pl>
+				<de>${michaeljackson} veröffentlicht „${mediatitle_bad}“</de>
+				<en>${michaeljackson} releases "${mediatitle_bad}"</en>
+				<pl>${michaeljackson} wydaje „${mediatitle_bad}”</pl>
 			</title>
 			<description>
-				<de>${michaeljackson} veröffentlicht mit dem Album „Bed“ sein neues und lange erwartetes Nachfolge-Album von „Table“. „Bed“ wird Nummer 1 in 25 Ländern und verkauft sich über 30 Millionen mal.</de>
-				<en>${michaeljackson} releases "Bed", his new and long-awaited follow-up album to "Table". "Bed" becomes number 1 in 25 countries and sells over 30 million copies.</en>
-				<pl>${michaeljackson} wydaje "Bed", swój nowy i długo oczekiwany album będący kontynuacją "Table". "Bed" staje się numerem 1 w 25 krajach i sprzedaje się w ponad 30 milionach egzemplarzy.</pl>
+				<de>${michaeljackson} veröffentlicht mit dem Album „Bed“ sein neues und lange erwartetes Nachfolge-Album von „${mediatitle_thriller}“. „Bed“ wird Nummer 1 in 25 Ländern und verkauft sich über 30 Millionen mal.</de>
+				<en>${michaeljackson} releases "Bed", his new and long-awaited follow-up album to "${mediatitle_thriller}". "Bed" becomes number 1 in 25 countries and sells over 30 million copies.</en>
+				<pl>${michaeljackson} wydaje "Bed", swój nowy i długo oczekiwany album będący kontynuacją "${mediatitle_thriller}". "Bed" staje się numerem 1 w 25 krajach i sprzedaje się w ponad 30 milionach egzemplarzy.</pl>
 			</description>
 			<variables>
 				<michaeljackson>${.person:"25f6e213-7287-4957-a74a-8185f7c82e71":"fullname"}</michaeljackson>
@@ -1757,9 +1755,9 @@
 		<news guid="dd97f13c-7c10-48f6-a5ca-4abf45cfe58c" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
 			<!-- deutschbezogen -->
 			<title>
-				<de>Aktena 8 beendet</de>
-				<en>Aktena 8 closed</en>
-				<pl>Aktena 8 zamknięta</pl>
+				<de>${generalorgproject_documenta} 8 beendet</de>
+				<en>${generalorgproject_documenta} 8 closed</en>
+				<pl>${generalorgproject_documenta} 8 zamknięta</pl>
 			</title>
 			<description>
 				<de>Nach 100 Tagen wurde die Weltkunstausstellung in Kassel mit fast einer halben Millionen Zuschauern beendet. Besucherrekord trotz beliebiger Kritiken aus Kritikerkreisen.</de>
@@ -1773,9 +1771,9 @@
 
 		<news guid="ad257bd9-9a94-476a-81f6-e0cf1eddd6a4" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Tetris">
 			<title>
-				<de>Tattris erstmals im Westen</de>
-				<en>Tattris for the first time in the West</en>
-				<pl>Tattris po raz pierwszy na Zachodzie</pl>
+				<de>${mediatitle_tetris} erstmals im Westen</de>
+				<en>${mediatitle_tetris} for the first time in the West</en>
+				<pl>${mediatitle_tetris} po raz pierwszy na Zachodzie</pl>
 			</title>
 			<description>
 				<de>Ein ungarischer Geschäftsmann verkauft das Spiel an eine britische Software-Firma.</de>
@@ -1833,9 +1831,9 @@
 				<pl>${madonna} tylko z numerem 2</pl>
 			</title>
 			<description>
-				<de>Zum erfolgreichsten Song des Jahres 1987 hat es leider nicht gereicht. ${madonna}s Hit „The Isle of Bel Air“ wurde von ${desireless}es Chart-Breaker „Travel travel“ noch knapp übertroffen.</de>
-				<en>Unfortunately, it was not enough for the most successful song of the year 1987. ${madonna}'s hit "The Isle of Bel Air" was narrowly surpassed by ${desireless}'s chart-breaker "Travel travel".</en>
-				<pl>Niestety, to nie wystarczyło, by zdobyć tytuł najbardziej przebojowej piosenki roku 1987. Przebój ${madonna} „The Isle of Bel Air” został nieznacznie wyprzedzony przez przebojowy „Travel travel” ${desireless}.</pl>
+				<de>Zum erfolgreichsten Song des Jahres 1987 hat es leider nicht gereicht. ${madonna}s Hit „${mediatitle_laislabonita}“ wurde von ${desireless}es Chart-Breaker „${mediatitle_voyagevoyage}“ noch knapp übertroffen.</de>
+				<en>Unfortunately, it was not enough for the most successful song of the year 1987. ${madonna}'s hit "${mediatitle_laislabonita}" was narrowly surpassed by ${desireless}'s chart-breaker "${mediatitle_voyagevoyage}".</en>
+				<pl>Niestety, to nie wystarczyło, by zdobyć tytuł najbardziej przebojowej piosenki roku 1987. Przebój ${madonna} „${mediatitle_laislabonita}” został nieznacznie wyprzedzony przez przebojowy „${mediatitle_voyagevoyage}” ${desireless}.</pl>
 			</description>
 			<variables>
 				<madonna>${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}</madonna>
@@ -1934,9 +1932,9 @@
 				<pl>${groenemeyer} wydaje album</pl>
 			</title>
 			<description>
-				<de>${herbert} ${groenemeyer} veröffentlicht mit „Ä“ sein siebtes Studioalbum. Der Rock-Poet aus Bochum ist der kommerziell erfolgreichste zeitgenössische Musiker Deutschlands; seine auffällige Gesangsart und eine marcatoartige Gestik beim Singen gehören zu seinen Markenzeichen.</de>
-				<en>${herbert} ${groenemeyer} releases with "Ä" his seventh studio album. The rock poet from Bochum is the commercially most successful contemporary musician in Germany; his striking vocal style and marcato-like gestures during singing are among his trademarks.</en>
-				<pl>${herbert} ${groenemeyer} wydaje „Ä”, swój siódmy album studyjny. Poeta rocka z Bochum jest odnoszącym największe sukcesy komercyjne współczesnym muzykiem w Niemczech; jego uderzający styl wokalny i gesty przypominające marcato podczas śpiewania należą do jego znaków rozpoznawczych.</pl>
+				<de>${herbert} ${groenemeyer} veröffentlicht mit „${mediatitle_oe}“ sein siebtes Studioalbum. Der Rock-Poet aus Bochum ist der kommerziell erfolgreichste zeitgenössische Musiker Deutschlands; seine auffällige Gesangsart und eine marcatoartige Gestik beim Singen gehören zu seinen Markenzeichen.</de>
+				<en>${herbert} ${groenemeyer} releases with "${mediatitle_oe}" his seventh studio album. The rock poet from Bochum is the commercially most successful contemporary musician in Germany; his striking vocal style and marcato-like gestures during singing are among his trademarks.</en>
+				<pl>${herbert} ${groenemeyer} wydaje „${mediatitle_oe}”, swój siódmy album studyjny. Poeta rocka z Bochum jest odnoszącym największe sukcesy komercyjne współczesnym muzykiem w Niemczech; jego uderzający styl wokalny i gesty przypominające marcato podczas śpiewania należą do jego znaków rozpoznawczych.</pl>
 			</description>
 			<variables>
 				<herbert>${.person:"e4b5c5b6-7035-4ead-a6ac-6107aa89a503":"firstname"}</herbert>
@@ -2002,16 +2000,16 @@
 
 			<!-- 1988-07 -->
 
-		<news guid="749170dc-4248-408f-9bb5-a7d93bdcbde9" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/DAX | TODO: Daks vs DUX">
+		<news guid="749170dc-4248-408f-9bb5-a7d93bdcbde9" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/DAX">
 			<title>
 				<de>Deutsches Aktien-System eingeführt</de>
 				<en>German stock system introduced</en>
 				<pl>Wprowadzenie niemieckiego systemu zapasów</pl>
 			</title>
 			<description>
-				<de>An der Deutschen Börse in Frankfurt wurde das Deutsche Aktien-System (Daks) eingeführt. Es misst die Wertentwicklung der 30 größten und liquidesten Unternehmen des deutschen Aktienmarktes.</de>
-				<en>The Deutsche Aktien-System (Daks) was introduced at the German Stock Exchange in Frankfurt. The stock system measures the performance of the 30 largest and most liquid companies on the German stock market.</en>
-				<pl>Deutsche Aktien-System (Daks) został wprowadzony na Niemieckiej Giełdzie Papierów Wartościowych we Frankfurcie. System ten mierzy wyniki 30 największych i najbardziej płynnych spółek na niemieckim rynku akcji.</pl>
+				<de>An der Deutschen Börse in Frankfurt wurde der ${brand_deutscheaktienindex} (${brand_dax}) eingeführt. Es misst die Wertentwicklung der 30 größten und liquidesten Unternehmen des deutschen Aktienmarktes.</de>
+				<en>The ${brand_deutscheraktienindex} (${brand_dax}) was introduced at the German Stock Exchange in Frankfurt. The stock system measures the performance of the 30 largest and most liquid companies on the German stock market.</en>
+				<pl>${brand_deutscheraktienindex} (${brand_dax}) został wprowadzony na Niemieckiej Giełdzie Papierów Wartościowych we Frankfurcie. System ten mierzy wyniki 30 największych i najbardziej płynnych spółek na niemieckim rynku akcji.</pl>
 			</description>
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" happen_time="5,1988,1988,4,10,1,30" /> <!-- actual date: 1988-07-01 -->
 		</news>
@@ -2191,14 +2189,14 @@
 
 		<news guid="de7c8d1a-0bdc-43d2-b9b8-254ae6a50512" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/1988_Davis_Cup">
 			<title>
-				<de>Deutsches Team gewinnt Navy-Cup</de>
-				<en>German team wins Navy Cup</en>
-				<pl>Niemiecka drużyna wygrywa Navy Cup</pl>
+				<de>Deutsches Team gewinnt ${sports_daviscup}</de>
+				<en>German team wins ${sports_daviscup}</en>
+				<pl>Niemiecka drużyna wygrywa ${sports_daviscup}</pl>
 			</title>
 			<description>
-				<de>Die deutsche Tennis-Nationalmannschaft Deutschland (mit ${borisbecker}, ${carluwesteeb}, ${ericjelen} und ${patrikkuehnen}) gewinnt das Navy-Cup-Finale gegen Schweden.</de>
-				<en>The German national tennis team Germany (with ${borisbecker}, ${carluwesteeb}, ${ericjelen} and ${patrikkuehnen}) wins the Navy Cup final against Sweden.</en>
-				<pl>Reprezentacja Niemiec w tenisie stołowym (w składzie: ${borisbecker}, ${carluwesteeb}, ${ericjelen} i ${patrikkuehnen}) wygrywa finał Navy Cup ze Szwecją.</pl>
+				<de>Die deutsche Tennis-Nationalmannschaft Deutschland (mit ${borisbecker}, ${carluwesteeb}, ${ericjelen} und ${patrikkuehnen}) gewinnt das ${sports_daviscup}-Finale gegen Schweden.</de>
+				<en>The German national tennis team Germany (with ${borisbecker}, ${carluwesteeb}, ${ericjelen} and ${patrikkuehnen}) wins the ${sports_daviscup} final against Sweden.</en>
+				<pl>Reprezentacja Niemiec w tenisie stołowym (w składzie: ${borisbecker}, ${carluwesteeb}, ${ericjelen} i ${patrikkuehnen}) wygrywa finał ${sports_daviscup} ze Szwecją.</pl>
 			</description>
 			<variables>
 				<borisbecker>${.person:"209467cd-85e1-4212-999e-b6273359320f":"fullname"}</borisbecker>
@@ -2251,9 +2249,9 @@
 				<pl>Jury wybiera grę planszową roku 1990</pl>
 			</title>
 			<description>
-				<de>Das Brettspiel des Jahres 1990 heißt „Blaues Blut wird zur Pflicht“. Mehrere Barone kämpfen in Auktionen um die besten Antiquitäten. Um ihr Ziel zu erreichen, können sie Diebe und Spione verpflichten.</de>
-				<en>The board game of the year 1990 is called "Blue Blood Becomes Duty". Several barons fight in auctions for the best antiques. To achieve their goal, they can hire thieves and spies.</en>
-				<pl>Gra planszowa z 1990 roku nosi tytuł „Blue Blood Becomes Duty”. Kilku baronów walczy na aukcjach o najlepsze antyki. Aby osiągnąć swój cel, mogą zatrudnić złodziei i szpiegów.</pl>
+				<de>Das Brettspiel des Jahres 1990 heißt „${mediatitle_hoitytoity}“. Mehrere Barone kämpfen in Auktionen um die besten Antiquitäten. Um ihr Ziel zu erreichen, können sie Diebe und Spione verpflichten.</de>
+				<en>The board game of the year 1990 is called "${mediatitle_hoitytoity}". Several barons fight in auctions for the best antiques. To achieve their goal, they can hire thieves and spies.</en>
+				<pl>Gra planszowa z 1990 roku nosi tytuł „${mediatitle_hoitytoity}”. Kilku baronów walczy na aukcjach o najlepsze antyki. Aby osiągnąć swój cel, mogą zatrudnić złodziei i szpiegów.</pl>
 			</description>
 			<data genre="3" price="0.48" quality="46" fictional="0" flags="2" happen_time="5,1990,1990,4,10,1,30" /> <!-- actual date: 1990-07, exact day of voting not clear -->
 		</news>
@@ -2368,9 +2366,9 @@
 				<pl>Gra planszowa roku 1995 to gra budowlana</pl>
 			</title>
 			<description>
-				<de>„Die Pioniere von Kastlan“ wurde zum Brettspiel des Jahres 1995 gewählt. Die Spieler müssen Rohstoffe sammeln, um damit Straßen, Siedlungen und Städte bauen zu können. Erfunden wurde es von dem Spieleentwickler Karl Stäuber.</de>
-				<en>"The Pioneers of Kastlan" was voted board game of the year in 1995. Players have to collect raw materials in order to build roads, settlements and cities. It was invented by the game developer Karl Stäuber.</en>
-				<pl>„Pionierzy Kastlanu” została uznana za grę planszową roku 1995. Gracze muszą zbierać surowce, aby budować drogi, osady i miasta. Gra została wymyślona przez twórcę gier Karla Stäubera.</pl>
+				<de>„${mediatitle_thesettlersofcatan}“ wurde zum Brettspiel des Jahres 1995 gewählt. Die Spieler müssen Rohstoffe sammeln, um damit Straßen, Siedlungen und Städte bauen zu können. Erfunden wurde es von dem Spieleentwickler Karl Stäuber.</de>
+				<en>"${mediatitle_thesettlersofcatan}" was voted board game of the year in 1995. Players have to collect raw materials in order to build roads, settlements and cities. It was invented by the game developer Karl Stäuber.</en>
+				<pl>„${mediatitle_thesettlersofcatan}” została uznana za grę planszową roku 1995. Gracze muszą zbierać surowce, aby budować drogi, osady i miasta. Gra została wymyślona przez twórcę gier Karla Stäubera.</pl>
 			</description>
 			<data genre="3" price="0.47" quality="47" flags="2" happen_time="5,1995,1995,4,10,1,30" /> <!-- actual date: 1995-07, exact day of voting not clear -->
 		</news>
@@ -2690,16 +2688,16 @@
 
 			<!-- 2007-06 -->
 
-		<news guid="171b9219-f639-42b1-bec8-d8a7d15edb43" type="0" thread_guid="5f58d718-ceac-4821-835d-57637dc6caf8" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/IPhone#History | https://en.wikipedia.org/wiki/Apple_Inc. | TODO: Orange vs Fruit Inc. | TODO: Description talks about throwing away the old model but date corresponds to introduction of the first model">
+		<news guid="171b9219-f639-42b1-bec8-d8a7d15edb43" type="0" thread_guid="5f58d718-ceac-4821-835d-57637dc6caf8" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/IPhone#History | https://en.wikipedia.org/wiki/Apple_Inc. | TODO: Description talks about throwing away the old model but date corresponds to introduction of the first model">
 			<title>
-				<de>Orange präsentiert neues Smartphone</de>
-				<en>Orange presents new smartphone</en>
-				<pl>Orange prezentuje nowy smartfon</pl>
+				<de>${brand_apple} präsentiert neues Smartphone</de>
+				<en>${brand_apple} presents new smartphone</en>
+				<pl>${brand_apple} prezentuje nowy smartfon</pl>
 			</title>
 			<description>
-				<de>Heute beginnt Orange mit dem Verkauf des neuen my-phones. Das neue Smartphone ist natürlich viel besser als sein Vorgänger. Deshalb werden auch wieder alle eines kaufen und das alte wegschmeißen. Scheiß auf die seltenen Erden.</de>
-				<en>Today Orange starts selling the new my-phone. Of course, the new smartphone is much better than its predecessor. Therefore, everyone will again buy one and throw away the old one. Fuck the rare earths.</en>
-				<pl>Dziś Orange rozpoczyna sprzedaż nowego my-phone-a. Oczywiście nowy smartfon jest znacznie lepszy od swojego poprzednika. Dlatego wszyscy znowu go kupią i wyrzucą stary. Pieprzyć metale ziem rzadkich.</pl>
+				<de>Heute beginnt ${brand_apple} mit dem Verkauf des neuen ${brand_iphone}s. Das neue Smartphone ist natürlich viel besser als sein Vorgänger. Deshalb werden auch wieder alle eines kaufen und das alte wegschmeißen. Scheiß auf die seltenen Erden.</de>
+				<en>Today ${brand_apple} starts selling the new ${brand_iphone}. Of course, the new smartphone is much better than its predecessor. Therefore, everyone will again buy one and throw away the old one. Fuck the rare earths.</en>
+				<pl>Dziś ${brand_apple} rozpoczyna sprzedaż nowego ${brand_iphone}-a. Oczywiście nowy smartfon jest znacznie lepszy od swojego poprzednika. Dlatego wszyscy znowu go kupią i wyrzucą stary. Pieprzyć metale ziem rzadkich.</pl>
 			</description>
 			<data genre="3" price="0.45" quality="45" fictional="0" flags="2" happen_time="5,2007,2007,3,9,1,30" /> <!-- actual date: 2007-06-29 -->
 			<effects>
@@ -2709,14 +2707,14 @@
 		</news>
 		<news guid="848161cc-3c5b-4475-ac8a-33bfadd3c863" type="2" thread_guid="5f58d718-ceac-4821-835d-57637dc6caf8" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Neues my-phone bereits ausverkauft</de>
-				<en>New my-phone already sold out</en>
-				<pl>Nowy my-phone już wyprzedany</pl>
+				<de>Neues ${brand_iphone} bereits ausverkauft</de>
+				<en>New ${brand_iphone} already sold out</en>
+				<pl>Nowy ${brand_iphone} już wyprzedany</pl>
 			</title>
 			<description>
-				<de>Bereits wenige Stunden nach Ladenöffnung waren alle my-phones ausverkauft. In den Läden wurden vielerorts traurige Gesichter gesehen. Der Hersteller möchte jetzt kurzfristig nachproduzieren.</de>
-				<en>Just a few hours after the stores opened, all my-phones were sold out. Sad faces were seen in the stores all over. The manufacturer now wants to replenish production without delay.</en>
-				<pl>Zaledwie kilka godzin po otwarciu sklepów wszystkie telefony my-phone zostały wyprzedane. W sklepach wszędzie widać było smutne twarze. Producent chce teraz niezwłocznie uzupełnić produkcję.</pl>
+				<de>Bereits wenige Stunden nach Ladenöffnung waren alle ${brand_iphone}s ausverkauft. In den Läden wurden vielerorts traurige Gesichter gesehen. Der Hersteller möchte jetzt kurzfristig nachproduzieren.</de>
+				<en>Just a few hours after the stores opened, all ${brand_iphone}s were sold out. Sad faces were seen in the stores all over. The manufacturer now wants to replenish production without delay.</en>
+				<pl>Zaledwie kilka godzin po otwarciu sklepów wszystkie telefony ${brand_iphone} zostały wyprzedane. W sklepach wszędzie widać było smutne twarze. Producent chce teraz niezwłocznie uzupełnić produkcję.</pl>
 			</description>
 			<data genre="3" price="0.55" quality="50" fictional="1" flags="2" />
 		</news>
@@ -2914,14 +2912,14 @@
 		<!-- "Fifa-WM 2022 in Katar" -->
 		<news guid="57f52bc4-36e2-4321-9f36-e076d2159bce" type="0" thread_guid="f06148c4-615c-44f5-a813-047c00e7d36f" creator="8827" created_by="Cujo" comment="https://en.wikipedia.org/wiki/2018_and_2022_FIFA_World_Cup_bids | TODO: I don't think we need to spoof nation names. But eventually these spoof names could be used for some 'Earth from a parallel universes' joke: SUA, Pajan, Intralien, Quantar">
 			<title>
-				<de>FUFA vergibt Fußball-WM 2022</de>
-				<en>FUFA awards 2022 World Cup</en>
-				<pl>FUFA przyznaje MŚ w piłce nożnej 2022</pl>
+				<de>${sports_fifa} vergibt Fußball-WM 2022</de>
+				<en>${sports_fifa} awards 2022 World Cup</en>
+				<pl>${sports_fifa} przyznaje MŚ w piłce nożnej 2022</pl>
 			</title>
 			<description>
-				<de>Heute gibt die FUFA den Austragungsort der Fußball-WM 2022 bekannt. USA, Japan und Australien gelten als Favoriten. Der Wüstenstaat Katar gilt als krasser Außenseiter.</de>
-				<en>Today FUFA announces the venue for the 2022 World Cup. USA, Japan and Australia are considered favorites. The desert state of Qatar is considered a glaring outsider.</en>
-				<pl>Dziś FUFA ogłosiła miejsce rozgrywania Mistrzostw Świata w 2022 roku. USA, Japonia i Australia są uważane za faworytów. Pustynny Katar jest uważany za rażącego outsidera.</pl>
+				<de>Heute gibt die ${sports_fifa} den Austragungsort der Fußball-WM 2022 bekannt. USA, Japan und Australien gelten als Favoriten. Der Wüstenstaat Katar gilt als krasser Außenseiter.</de>
+				<en>Today ${sports_fifa} announces the venue for the 2022 World Cup. USA, Japan and Australia are considered favorites. The desert state of Qatar is considered a glaring outsider.</en>
+				<pl>Dziś ${sports_fifa} ogłosiła miejsce rozgrywania Mistrzostw Świata w 2022 roku. USA, Japonia i Australia są uważane za faworytów. Pustynny Katar jest uważany za rażącego outsidera.</pl>
 			</description>
 			<variables>
 				<sepp>${.person:"fe4e1b56-94c2-40b8-b0a0-68a77202d5b2":"firstname"}</sepp>
@@ -2941,9 +2939,9 @@
 				<pl>Sensacja - MŚ w piłce nożnej 2022 w Katarze</pl>
 			</title>
 			<description>
-				<de>FUFA-Generalsekretär ${sepp} ${blatter} öffnet den Briefumschlag und liest den Namen des Ausrichters vor. Es ist Katar.</de>
-				<en>FUFA Secretary General ${sepp} ${blatter} opens the envelope and reads out the name of the organizer. It is Qatar.</en>
-				<pl>Sekretarz generalny FUFA ${sepp} ${blatter} otwiera kopertę i odczytuje nazwę organizatora. Jest nim Katar.</pl>
+				<de>${sports_fifa}-Generalsekretär ${sepp} ${blatter} öffnet den Briefumschlag und liest den Namen des Ausrichters vor. Es ist Katar.</de>
+				<en>${sports_fifa} Secretary General ${sepp} ${blatter} opens the envelope and reads out the name of the organizer. It is Qatar.</en>
+				<pl>Sekretarz generalny ${sports_fifa} ${sepp} ${blatter} otwiera kopertę i odczytuje nazwę organizatora. Jest nim Katar.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,1,13,17" news="bb486520-193e-4bd2-85aa-ccd44f6c3d37" />
@@ -2952,14 +2950,14 @@
 		</news>
 		<news guid="bb486520-193e-4bd2-85aa-ccd44f6c3d37" type="2" thread_guid="f06148c4-615c-44f5-a813-047c00e7d36f" creator="8827" created_by="Cujo">
 			<title>
-				<de>Wurde die FUFA-WM gekauft?</de>
-				<en>Was the FUFA World Cup bought?</en>
-				<pl>Czy Mistrzostwa Świata FUFA zostały kupione?</pl>
+				<de>Wurde die ${sports_fifa}-WM gekauft?</de>
+				<en>Was the ${sports_fifa} World Cup bought?</en>
+				<pl>Czy Mistrzostwa Świata ${sports_fifa} zostały kupione?</pl>
 			</title>
 			<description>
-				<de>War bei der Vergabe der FUFA-WM Korruption im Spiel? USA, Japan und Australien fühlen sich benachteiligt.</de>
-				<en>Was corruption involved in the awarding of the FUFA World Cup? USA, Japan and Australia feel disadvantaged.</en>
-				<pl>Czy podczas przyznawania Pucharu Świata FUFA doszło do korupcji? USA, Japonia i Australia czują się pokrzywdzone.</pl>
+				<de>War bei der Vergabe der ${sports_fifa}-WM Korruption im Spiel? USA, Japan und Australien fühlen sich benachteiligt.</de>
+				<en>Was corruption involved in the awarding of the ${sports_fifa} World Cup? USA, Japan and Australia feel disadvantaged.</en>
+				<pl>Czy podczas przyznawania Pucharu Świata ${sports_fifa} doszło do korupcji? USA, Japonia i Australia czują się pokrzywdzone.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,2,14,18" news="f58ce948-67aa-4fba-a7ac-7e7cf2b28fc3" />
@@ -2973,9 +2971,9 @@
 				<pl>${blatter}: „Nagroda była w porządku”.</pl>
 			</title>
 			<description>
-				<de>FUFA-Generalsekretär ${sepp} ${blatter} bestreitet alle Korruptionsvorwürfe. „Bei der FUFA gibt es nur ehrliche Menschen.“</de>
-				<en>FUFA Secretary General ${sepp} ${blatter} denies all allegations of corruption. "There are only honest people at FUFA."</en>
-				<pl>Sekretarz generalny FUFA ${sepp} ${blatter} zaprzecza wszelkim oskarżeniom o korupcję. „W FUFA są tylko uczciwi ludzie”.</pl>
+				<de>${sports_fifa}-Generalsekretär ${sepp} ${blatter} bestreitet alle Korruptionsvorwürfe. „Bei der ${sports_fifa} gibt es nur ehrliche Menschen.“</de>
+				<en>${sports_fifa} Secretary General ${sepp} ${blatter} denies all allegations of corruption. "There are only honest people at ${sports_fifa}."</en>
+				<pl>Sekretarz generalny ${sports_fifa} ${sepp} ${blatter} zaprzecza wszelkim oskarżeniom o korupcję. „W ${sports_fifa} są tylko uczciwi ludzie”.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,2,15,19" news="e6396b13-0321-4f59-b087-274c9c4ff1d9" />
@@ -2989,9 +2987,9 @@
 				<pl>Urzędnik przyznaje się do przekupstwa</pl>
 			</title>
 			<description>
-				<de>Der trinidadische FUFA-Funktionär ${jackwarner} hat zugegeben, dass er für seine Stimme Geld aus Katar kassiert hat.</de>
-				<en>Trinidadian FUFA official ${jackwarner} has admitted that he collected money from Qatar for his vote.</en>
-				<pl>Trynidadzki urzędnik FUFA ${jackwarner} przyznał, że zebrał pieniądze od Kataru za swój głos.</pl>
+				<de>Der trinidadische ${sports_fifa}-Funktionär ${jackwarner} hat zugegeben, dass er für seine Stimme Geld aus Katar kassiert hat.</de>
+				<en>Trinidadian ${sports_fifa} official ${jackwarner} has admitted that he collected money from Qatar for his vote.</en>
+				<pl>Trynidadzki urzędnik ${sports_fifa} ${jackwarner} przyznał, że zebrał pieniądze od Kataru za swój głos.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,2,16,20" news="0c81b6ce-a862-45f6-aa0d-15920bd714fe" />
@@ -3016,9 +3014,9 @@
 		</news>
 		<news guid="79e27389-cbf5-4958-8f04-65df743a9246" type="2" thread_guid="f06148c4-615c-44f5-a813-047c00e7d36f" creator="8827" created_by="Cujo" comment="TODO: Use 'Muategela, Praskilien, Pasnien und Gäypten' spoofs for 'second earth'">
 			<title>
-				<de>Weitere Korruptionsfälle bei FUFA</de>
-				<en>Further cases of corruption at FUFA</en>
-				<pl>Kolejne przypadki korupcji w FUFA</pl>
+				<de>Weitere Korruptionsfälle bei ${sports_fifa}</de>
+				<en>Further cases of corruption at ${sports_fifa}</en>
+				<pl>Kolejne przypadki korupcji w ${sports_fifa}</pl>
 			</title>
 			<description>
 				<de>Auch Funktionäre aus Guatemala, Brasilien, Spanien und Ägypten haben Geld aus Katar angenommen.</de>
@@ -3037,9 +3035,9 @@
 				<pl>${blatter} nie może w to uwierzyć</pl>
 			</title>
 			<description>
-				<de>${sepp} ${blatter} gibt dem Schweizer Fernsehen ein Interview: „Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche FUFA-Funktionär?“</de>
-				<en>${sepp} ${blatter} gives an interview to Swiss television: "I would never have thought that. Am I really the only honest FUFA official?"</en>
-				<pl>${sepp} ${blatter} udziela wywiadu szwajcarskiej telewizji: „Nigdy bym na to nie wpadł. Czy naprawdę jestem jedynym uczciwym urzędnikiem FUFA?”.</pl>
+				<de>${sepp} ${blatter} gibt dem Schweizer Fernsehen ein Interview: „Das hätte ich niemals gedacht. Bin ich wirklich der einzige ehrliche ${sports_fifa}-Funktionär?“</de>
+				<en>${sepp} ${blatter} gives an interview to Swiss television: "I would never have thought that. Am I really the only honest ${sports_fifa} official?"</en>
+				<pl>${sepp} ${blatter} udziela wywiadu szwajcarskiej telewizji: „Nigdy bym na to nie wpadł. Czy naprawdę jestem jedynym uczciwym urzędnikiem ${sports_fifa}?”.</pl>
 			</description>
 			<data genre="2" price="1.0" quality="30" flags="2" />
 		</news>
@@ -4059,23 +4057,8 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<kitt>${.role:"9aeeefd9-8f5b-423a-a333-fb7387896917":"firstname"}</kitt>
-				<batmobile>
-					<all>Batcar</all>
-				</batmobile>
-				<dudu>Dodo</dudu>
-				<herbie>Herbie</herbie>
-				<airwolf>Airhound</airwolf>
-				<delorean>DeLoreno</delorean>
-				<ecto>Octo-1</ecto>
-				<ateamvan>A-Squad Van</ateamvan>
-				<fliewatuut>
-					<de>Tüütwafli</de>
-					<en>Tootwafli</en>
-					<pl>Tootwafli</pl>
-				</fliewatuut>
-				<knightrider>Night Rayder</knightrider>
+				<ateamvan>${mediatitle_ateam} Van</ateamvan>
 				<backtothefuture>${.programme:"775d5197-34f9-41e5-944e-5da6e7d92724":"title"}</backtothefuture>
-				<ghostbusters>Ghostblazers</ghostbusters>
 				<davidhasselhoff>${.person:"8ca05f29-ff46-4749-8b86-3428fb605e0d":"fullname"}</davidhasselhoff>
 				<adamwest_or_christianbale>${.lte:currentyear:2015:"${.person:"e9c1a75d-1b99-439e-9051-a1adacff2bd5":"fullname"}":"${.person:"DF-Celebreties-Christian_Bale":"fullname"}"}</adamwest_or_christianbale> <!-- '90s Batmans didn't seem to be very enthusiastic -->
 				<jimmybondi>${.role:"e81d85bb-d1b8-4b02-9995-13407f935c9a":"fullname"}</jimmybondi>
@@ -4087,35 +4070,35 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<mrt>${.person:"a6d2c2f1-6b5e-4ed5-80cf-0db50ed447db":"nickname"}</mrt>
 				<robbi>${.role:"3c71921a-393e-47c3-bed6-be34c7efe827":"firstname"}</robbi>
 				<vehicle_csv>
-					<de>„${knightrider}“-Auto;${kitt};${kitt};${kitt}, das legendäre Auto der Serie „${knightrider}“,;des Autos;das Auto;„Ein Auto, ein Computer, ein Mann.“ ;${davidhasselhoff};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${kitt}s;Rettet ${kitt}|
-						${batmobile};${batmobile};das ${batmobile};Das ${batmobile}, das legendäre Supergefährt des Superhelden,;des Gefährts;das Gefährt;;${adamwest_or_christianbale};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${batmobile}s;Rettet ${batmobile}|
-						WV-Käfer ${dudu};${dudu};${dudu};„${dudu} macht das schon“? Leider nicht mehr. Der legendäre gelbe WV-Käfer der Filmreihe;des Autos;das Auto;„Die glauben wohl, ich bin doof. Bin ich aber nicht!“ ;${jimmybondi};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${dudu}s;Rettet ${dudu}|
-						WV-Käfer ${herbie};${herbie};${herbie};${herbie}, der legendäre Renn-Käfer der Filmreihe,;des Autos;das Auto;;${stefaniepowers_or_lindsaylohan};auf dem Autofriedhof;widersetzt sich der Verschrottung ihres Spielzeugs;zur Erhaltung ${herbie}s;Rettet ${herbie}|
-						Hubschrauber ${airwolf};${airwolf};${airwolf};${airwolf}, der legendäre Super-Kampfhubschrauber der TV-Serie,;des Hubschraubers;der Hubschrauber;;${ernestborgnine_or_janmichaelvincent};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${airwolf};Rettet ${airwolf}|
-						„${backtothefuture}“-Auto;${delorean};der ${delorean};Der ${delorean} aus dem erfolgreichen Film „${backtothefuture}“;des Autos;das Auto;;${christopherlloyd_or_michaeljfox};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${delorean}s;Rettet den ${delorean}|
-						„${ghostbusters}“-Auto;${ecto};der ${ecto};Der ${ecto} aus dem erfolgreichen Film „${ghostbusters}“;des Autos;das Auto;;${danaykroyd_or_billmurray};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${ecto};Rettet ${ecto}|
+					<de>„${mediatitle_knightrider}“-Auto;${kitt};${kitt};${kitt}, das legendäre Auto der Serie „${mediatitle_knightrider}“,;des Autos;das Auto;„Ein Auto, ein Computer, ein Mann.“ ;${davidhasselhoff};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${kitt}s;Rettet ${kitt}|
+						${mediapropbatmobile};${mediapropbatmobile};das ${mediapropbatmobile};Das ${mediapropbatmobile}, das legendäre Supergefährt des Superhelden,;des Gefährts;das Gefährt;;${adamwest_or_christianbale};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediapropbatmobile}s;Rettet ${mediapropbatmobile}|
+						${brand_vw}-${brand_beetle} ${mediapropdudu};${mediapropdudu};${mediapropdudu};„${mediapropdudu} macht das schon“? Leider nicht mehr. Der legendäre gelbe ${brand_vw}-${brand_beetle} der Filmreihe;des Autos;das Auto;„Die glauben wohl, ich bin doof. Bin ich aber nicht!“ ;${jimmybondi};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${mediapropdudu}s;Rettet ${mediapropdudu}|
+						${brand_vw}-${brand_beetle} ${mediapropherbie};${mediapropherbie};${mediapropherbie};${mediapropherbie}, der legendäre Renn-${brand_beetle} der Filmreihe,;des Autos;das Auto;;${stefaniepowers_or_lindsaylohan};auf dem Autofriedhof;widersetzt sich der Verschrottung ihres Spielzeugs;zur Erhaltung ${mediapropherbie}s;Rettet ${mediapropherbie}|
+						Hubschrauber ${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf}, der legendäre Super-Kampfhubschrauber der TV-Serie,;des Hubschraubers;der Hubschrauber;;${ernestborgnine_or_janmichaelvincent};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${mediatitle_airwolf};Rettet ${mediatitle_airwolf}|
+						„${backtothefuture}“-Auto;${brand_delorean};der ${brand_delorean};Der ${brand_delorean} aus dem erfolgreichen Film „${backtothefuture}“;des Autos;das Auto;;${christopherlloyd_or_michaeljfox};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${brand_delorean}s;Rettet den ${brand_delorean}|
+						„${mediatitle_ghostbusters}“-Auto;${mediapropecto1};der ${mediapropecto1};Der ${mediapropecto1} aus dem erfolgreichen Film „${mediatitle_ghostbusters}“;des Autos;das Auto;;${danaykroyd_or_billmurray};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${mediapropecto1};Rettet ${mediapropecto1}|
 						${ateamvan};${ateamvan};der ${ateamvan};Der bekannte ${ateamvan} aus der erfolgreichen Fernsehserie;des Autos;das Auto;;${mrt};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${ateamvan};Rettet den ${ateamvan}|
-						${fliewatuut};${fliewatuut};das ${fliewatuut};Das ${fliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${fliewatuut};Rettet das ${fliewatuut}
+						${mediapropfliewatuut};${mediapropfliewatuut};das ${mediapropfliewatuut};Das ${mediapropfliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediapropfliewatuut};Rettet das ${mediapropfliewatuut}
 					</de>
-					<en>„${knightrider}” car;${kitt};${kitt};${kitt}, the legendary car from the “${knightrider}” series,;of the car;the car;"A lone crusader in a dangerous world." ;${davidhasselhoff};in the junkyard;resists the destruction of his toy;to preserve ${kitt};Save ${kitt}|
-						${batmobile};${batmobile};the ${batmobile};The ${batmobile}, the legendary super vehicle of the super hero,;of the vehicle;the vehicle;;${adamwest_or_christianbale};in the junkyard;resists the destruction of his toy;to preserve the ${batmobile};Save the ${batmobile}|
-						WV Beetle ${dudu};${dudu};${dudu};"${dudu}'s got this"? Alas, no longer. The legendary yellow WV Beetle from the movie series;of the car;the car;"They probably think I'm stupid. But I'm not!" ;${jimmybondi};in the junkyard;resists the destruction of his toy;to preserve ${dudu};Save ${dudu}|
-						WV Beetle ${herbie};${herbie};${herbie};${herbie}, the legendary racing Beetle from the movie series,;of the car;the car;;${stefaniepowers_or_lindsaylohan};in the junkyard;resists the destruction of her toy;to preserve ${herbie};Save ${herbie}|
-						Helicopter ${airwolf};${airwolf};${airwolf};${airwolf}, the legendary super combat helicopter from the TV series,;of the helicopter;the helicopter;;${ernestborgnine_or_janmichaelvincent};on the scrap yard;resists the destruction of his toy;to preserve ${airwolf};Save ${airwolf}|
-						„${backtothefuture}” car;${delorean};the ${delorean};The ${delorean} from the successful movie "${backtothefuture}";of the car;the car;;${christopherlloyd_or_michaeljfox};in the junkyard;resists the destruction of his toy;to preserve the ${delorean};Save the ${delorean}|
-						„${ghostbusters}” car;${ecto};the ${ecto};The ${ecto} from the successful movie "${ghostbusters}";of the car;the car;;${danaykroyd_or_billmurray};in the junkyard;resists the destruction of his toy;to preserve ${ecto};Save ${ecto}|
+					<en>„${mediatitle_knightrider}” car;${kitt};${kitt};${kitt}, the legendary car from the “${mediatitle_knightrider}” series,;of the car;the car;"A lone crusader in a dangerous world." ;${davidhasselhoff};in the junkyard;resists the destruction of his toy;to preserve ${kitt};Save ${kitt}|
+						${mediapropbatmobile};${mediapropbatmobile};the ${mediapropbatmobile};The ${mediapropbatmobile}, the legendary super vehicle of the super hero,;of the vehicle;the vehicle;;${adamwest_or_christianbale};in the junkyard;resists the destruction of his toy;to preserve the ${mediapropbatmobile};Save the ${mediapropbatmobile}|
+						${brand_vw} ${brand_beetle} ${mediapropdudu};${mediapropdudu};${mediapropdudu};"${mediapropdudu}'s got this"? Alas, no longer. The legendary yellow ${brand_vw} ${brand_beetle} from the movie series;of the car;the car;"They probably think I'm stupid. But I'm not!" ;${jimmybondi};in the junkyard;resists the destruction of his toy;to preserve ${mediapropdudu};Save ${mediapropdudu}|
+						${brand_vw} ${brand_beetle} ${mediapropherbie};${mediapropherbie};${mediapropherbie};${mediapropherbie}, the legendary racing ${brand_beetle} from the movie series,;of the car;the car;;${stefaniepowers_or_lindsaylohan};in the junkyard;resists the destruction of her toy;to preserve ${mediapropherbie};Save ${mediapropherbie}|
+						Helicopter ${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf}, the legendary super combat helicopter from the TV series,;of the helicopter;the helicopter;;${ernestborgnine_or_janmichaelvincent};on the scrap yard;resists the destruction of his toy;to preserve ${mediatitle_airwolf};Save ${mediatitle_airwolf}|
+						„${backtothefuture}” car;${brand_delorean};the ${brand_delorean};The ${brand_delorean} from the successful movie "${backtothefuture}";of the car;the car;;${christopherlloyd_or_michaeljfox};in the junkyard;resists the destruction of his toy;to preserve the ${brand_delorean};Save the ${brand_delorean}|
+						„${mediatitle_ghostbusters}” car;${mediapropecto1};the ${mediapropecto1};The ${mediapropecto1} from the successful movie "${mediatitle_ghostbusters}";of the car;the car;;${danaykroyd_or_billmurray};in the junkyard;resists the destruction of his toy;to preserve ${mediapropecto1};Save ${mediapropecto1}|
 						${ateamvan};${ateamvan};the ${ateamvan};The famous ${ateamvan} from the popular TV series;of the car;the car;;${mrt};in the junkyard;resists the destruction of his toy;to preserve the ${ateamvan};Save the ${ateamvan}|
-						${fliewatuut};${fliewatuut};the ${fliewatuut};The ${fliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi};on the scrap yard;resists the destruction of his toy;to preserve the ${fliewatuut};Save the ${fliewatuut}
+						${mediapropfliewatuut};${mediapropfliewatuut};the ${mediapropfliewatuut};The ${mediapropfliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi};on the scrap yard;resists the destruction of his toy;to preserve the ${mediapropfliewatuut};Save the ${mediapropfliewatuut}
 					</en>
-					<pl>„${knightrider}”-samochód;${kitt};${kitt};${kitt}, legendarny samochód z serialu „${knightrider}”,;samochodu;samochód;„Samotny krzyżowiec w niebezpiecznym świecie.” ;${davidhasselhoff};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${kitt}a;Save ${kitt}|
-						${batmobile};${batmobile};${batmobile};${batmobile}, legendarny super pojazd super bohatera,;pojazdu;pojazd;;${adamwest_or_christianbale};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie batmobilu;Save the ${batmobile}|
-						WV Beetle ${dudu};${dudu};${dudu};„${dudu} się tym zajmie”? Niestety, już nie. Legendarny żółty WV Beetle z serii filmowej;samochodu;samochód;„Pewnie myślą, że jestem głupi. Ale nie jestem!” ;${jimmybondi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${dudu};Save ${dudu}|
-						WV Beetle ${herbie};${herbie};${herbie};${herbie}, legendarny wyścigowy Beetle z serii filmów,;samochodu;samochód;;${stefaniepowers_or_lindsaylohan};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${herbie}go;Save ${herbie}|
-						Helikopter ${airwolf};${airwolf};${airwolf};${airwolf}, legendarne super śmigłowiec bojowy z serialu telewizyjnego,;śmigłowca;śmigłowiec;;${ernestborgnine_or_janmichaelvincent};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${airwolf}a;Save ${airwolf}|
-						„${backtothefuture}”-samochód;${delorean};${delorean};${delorean} z popularnego filmu „${backtothefuture}”;samochodu;samochód;;${christopherlloyd_or_michaeljfox};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${delorean}a;Save the ${delorean}|
-						„${ghostbusters}”-samochód;${ecto};${ecto};${ecto} z popularnego filmu „${ghostbusters}”;samochodu;samochód;;${danaykroyd_or_billmurray};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ecto};Save ${ecto}|
+					<pl>„${mediatitle_knightrider}”-samochód;${kitt};${kitt};${kitt}, legendarny samochód z serialu „${mediatitle_knightrider}”,;samochodu;samochód;„Samotny krzyżowiec w niebezpiecznym świecie.” ;${davidhasselhoff};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${kitt}a;Save ${kitt}|
+						${mediapropbatmobile};${mediapropbatmobile};${mediapropbatmobile};${mediapropbatmobile}, legendarny super pojazd super bohatera,;pojazdu;pojazd;;${adamwest_or_christianbale};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie batmobilu;Save the ${mediapropbatmobile}|
+						${brand_vw} ${brand_beetle} ${mediapropdudu};${mediapropdudu};${mediapropdudu};„${mediapropdudu} się tym zajmie”? Niestety, już nie. Legendarny żółty ${brand_vw} ${brand_beetle} z serii filmowej;samochodu;samochód;„Pewnie myślą, że jestem głupi. Ale nie jestem!” ;${jimmybondi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropdudu};Save ${mediapropdudu}|
+						${brand_vw} ${brand_beetle} ${mediapropherbie};${mediapropherbie};${mediapropherbie};${mediapropherbie}, legendarny wyścigowy ${brand_beetle} z serii filmów,;samochodu;samochód;;${stefaniepowers_or_lindsaylohan};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropherbie}go;Save ${mediapropherbie}|
+						Helikopter ${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf}, legendarne super śmigłowiec bojowy z serialu telewizyjnego,;śmigłowca;śmigłowiec;;${ernestborgnine_or_janmichaelvincent};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediatitle_airwolf}a;Save ${mediatitle_airwolf}|
+						„${backtothefuture}”-samochód;${brand_delorean};${brand_delorean};${brand_delorean} z popularnego filmu „${backtothefuture}”;samochodu;samochód;;${christopherlloyd_or_michaeljfox};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${brand_delorean}a;Save the ${brand_delorean}|
+						„${mediatitle_ghostbusters}”-samochód;${mediapropecto1};${mediapropecto1};${mediapropecto1} z popularnego filmu „${mediatitle_ghostbusters}”;samochodu;samochód;;${danaykroyd_or_billmurray};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropecto1};Save ${mediapropecto1}|
 						${ateamvan};${ateamvan};${ateamvan};Znane ${ateamvan} z popularnego serialu telewizyjnego;samochodu;samochód;;${mrt};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ateamvan}a;Save the ${ateamvan}|
-						${fliewatuut};${fliewatuut};${fliewatuut};${fliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${fliewatuut}a;Save the ${fliewatuut}
+						${mediapropfliewatuut};${mediapropfliewatuut};${mediapropfliewatuut};${mediapropfliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropfliewatuut}a;Save the ${mediapropfliewatuut}
 					</pl>
 				</vehicle_csv>
 				<vehicletitle>
@@ -4473,18 +4456,18 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 
 		<news guid="2f64517a-f2d6-4720-a195-6a35cc6e72c6" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
 			<title>
-				<de>Fort schreibt Verluste</de>
-				<en>Fort records losses</en>
-				<pl>Fort notuje straty</pl>
+				<de>${brand_ford} schreibt Verluste</de>
+				<en>${brand_ford} records losses</en>
+				<pl>${brand_ford} notuje straty</pl>
 			</title>
 			<description>
-				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells ${montana}.</de>
-				<en>The American car company is deep in the red. One reason for this is the poor sales of the new ${montana} model.</en>
-				<pl>Amerykańska firma samochodowa jest głęboko na minusie. Jednym z powodów jest słaba sprzedaż nowego modelu ${montana}.</pl>
+				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells ${modelname}.</de>
+				<en>The American car company is deep in the red. One reason for this is the poor sales of the new ${modelname} model.</en>
+				<pl>Amerykańska firma samochodowa jest głęboko na minusie. Jednym z powodów jest słaba sprzedaż nowego modelu ${modelname}.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
-				<montana>${.lte:currentyear:1981:"Esquart":"${.lte:currentyear:1991:"Suerrah":"${.lte:currentyear:2002:"Mardeo":"Montana"}"}"}</montana>
+				<modelname>${.lte:currentyear:1981:"${brand_escort}":"${.lte:currentyear:1991:"${brand_sierra}":"${.lte:currentyear:2002:"${brand_mondeo}":"${brand_mustang}"}"}"}</modelname>
 			</variables>
 			<data genre="0" price="1.0" quality="19" />
 			<effects>
@@ -4493,9 +4476,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="1135edbe-daf4-4ed7-8817-b352b9ee7442" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Fort will 5.000 Stellen streichen</de>
-				<en>Fort to cut 5,000 jobs</en>
-				<pl>Fort zlikwiduje 5 000 miejsc pracy</pl>
+				<de>${brand_ford} will 5.000 Stellen streichen</de>
+				<en>${brand_ford} to cut 5,000 jobs</en>
+				<pl>${brand_ford} zlikwiduje 5 000 miejsc pracy</pl>
 			</title>
 			<description>
 				<de>Der Amerikanische Autokonzern will aufgrund der hohen Verluste 5.000 Mitarbeiter entlassen.</de>
@@ -4510,14 +4493,14 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="5345cee0-138e-4531-a239-71015a8ca909" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Fort: Mitarbeiter streiken</de>
-				<en>Fort: workers on strike</en>
-				<pl>Fort: pracownicy strajkują</pl>
+				<de>${brand_ford}: Mitarbeiter streiken</de>
+				<en>${brand_ford}: workers on strike</en>
+				<pl>${brand_ford}: pracownicy strajkują</pl>
 			</title>
 			<description>
-				<de>In mehreren Fort Werken legten die Angestellten die Arbeit nieder und protestieren nun gegen die geplanten 5.000 Entlassungen.</de>
-				<en>Employees at several Fort plants walked off the job and are now protesting the planned 5,000 layoffs.</en>
-				<pl>Pracownicy kilku fabryk Fort odeszli z pracy i obecnie protestują przeciwko planowanym zwolnieniom 5 000 osób.</pl>
+				<de>In mehreren ${brand_ford} Werken legten die Angestellten die Arbeit nieder und protestieren nun gegen die geplanten 5.000 Entlassungen.</de>
+				<en>Employees at several ${brand_ford} plants walked off the job and are now protesting the planned 5,000 layoffs.</en>
+				<pl>Pracownicy kilku fabryk ${brand_ford} odeszli z pracy i obecnie protestują przeciwko planowanym zwolnieniom 5 000 osób.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" time="2,2,3,8,18" />
@@ -4527,9 +4510,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Fort: Verhandlungen geplant</de>
-				<en>Fort: negotiations planned</en>
-				<pl>Fort: planowane negocjacje</pl>
+				<de>${brand_ford}: Verhandlungen geplant</de>
+				<en>${brand_ford}: negotiations planned</en>
+				<pl>${brand_ford}: planowane negocjacje</pl>
 			</title>
 			<description>
 				<de>Der amerikanische Autokonzern will mit Arbeitnehmervertretern verhandeln, um die Streiks abzuwenden.</de>
@@ -4544,9 +4527,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Fort: Verhandlungen gescheitert</de>
-				<en>Fort: negotiations failed</en>
-				<pl>Fort: negocjacje zakończyły się fiaskiem</pl>
+				<de>${brand_ford}: Verhandlungen gescheitert</de>
+				<en>${brand_ford}: negotiations failed</en>
+				<pl>${brand_ford}: negocjacje zakończyły się fiaskiem</pl>
 			</title>
 			<description>
 				<de>Der amerikanische Autokonzern beharrt auf 4000 Entlassungen. Ein Mitarbeiter dazu: „Diese Kapitalisten, das lassen wir uns nicht gefallen.“</de>
@@ -4561,8 +4544,8 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-3" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Fahrzeuge bei Fort demoliert</de>
-				<en>Vehicles demolished at Fort</en>
+				<de>Fahrzeuge bei ${brand_ford} demoliert</de>
+				<en>Vehicles demolished at ${brand_ford}</en>
 				<pl>Pojazdy zdemolowane</pl>
 			</title>
 			<description>
@@ -4578,9 +4561,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-4" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Fort: Neue Gespräche geplant</de>
-				<en>Fort: new negotiations planned</en>
-				<pl>Fort: planowane są nowe negocjacje</pl>
+				<de>${brand_ford}: Neue Gespräche geplant</de>
+				<en>${brand_ford}: new negotiations planned</en>
+				<pl>${brand_ford}: planowane są nowe negocjacje</pl>
 			</title>
 			<description>
 				<de>Der Vorstand ist völlig überraschend zu neuen Verhandlungsgesprächen bereit. „Wir wollen wieder in Ruhe Autos herstellen“, so der Vorstandschef.</de>
@@ -4595,9 +4578,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
-				<de>Einigung bei Fort</de>
-				<en>Agreement at Fort</en>
-				<pl>Umowa w Fort</pl>
+				<de>Einigung bei ${brand_ford}</de>
+				<en>Agreement at ${brand_ford}</en>
+				<pl>Umowa w ${brand_ford}</pl>
 			</title>
 			<description>
 				<de>Der Vorstand und die Arbeitnehmervertreter des amerikanischen Autokonzerns einigten sich so eben auf 2500 Entlassungen. Beide Seiten sind zufrieden.</de>
@@ -4818,9 +4801,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Skandal! Nie, dla posiadania w domu ${animals_dat}!</pl>
 			</title>
 			<description>
-				<de>Grienpies ist über die Forderung des ${minister}s entsetzt: Die artgerechte Haltung d${animal_gen} in der Wohnung müsse garantiert werden, und überhaupt, ${animals} vertragen gar kein${mentholcandies}!</de>
-				<en>Creampeas is appalled by the demand of the ${minister}: The species-appropriate keeping of a${animal_gen} indoors at home would have to be ensured, and above all, ${animals} can't stomach ${mentholcandies}!</en>
-				<pl>Greampeace jest zbulwersowana żądaniem urzędnika. Trzeba zapewnić odpowiednie warunki w domu. Przede wszystkim ${animals} nie mogą ${mentholcandies}!</pl>
+				<de>${generalorg_greenpeace} ist über die Forderung des ${minister}s entsetzt: Die artgerechte Haltung d${animal_gen} in der Wohnung müsse garantiert werden, und überhaupt, ${animals} vertragen gar kein${mentholcandies}!</de>
+				<en>${generalorg_greenpeace} is appalled by the demand of the ${minister}: The species-appropriate keeping of a${animal_gen} indoors at home would have to be ensured, and above all, ${animals} can't stomach ${mentholcandies}!</en>
+				<pl>${generalorg_greenpeace} jest zbulwersowana żądaniem urzędnika. Trzeba zapewnić odpowiednie warunki w domu. Przede wszystkim ${animals} nie mogą ${mentholcandies}!</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="bf0ee1be-3dc3-4581-8614-fff5253d6330" />
@@ -5202,14 +5185,14 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="df3f342a-6bb2-4445-9f77-2765d51a8187" thread_guid="769c4c90-9ddc-4c72-8ad7-1850f0c95109" type="0" creator="">
 			<title>
-				<de>Tele-Komm schafft analog ab</de>
-				<en>Tele-Komm abolishes analog</en>
-				<pl>Tele-Komm rezygnuje z analogów</pl>
+				<de>${brand_telekom} schafft analog ab</de>
+				<en>${brand_telekom} abolishes analog</en>
+				<pl>${brand_telekom} rezygnuje z analogów</pl>
 			</title>
 			<description>
-				<de>Die deutsche Tele-Komm schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
-				<en>German Tele-Komm is phasing out analog technology. It is no longer profitable because it is no longer used, according to a spokesman.</en>
-				<pl>Niemiecki Tele-Komm wycofuje się z technologii analogowej. Według rzecznika nie jest ona już opłacalna, ponieważ nie jest już używana.</pl>
+				<de>Die deutsche ${brand_telekom} schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
+				<en>German ${brand_telekom} is phasing out analog technology. It is no longer profitable because it is no longer used, according to a spokesman.</en>
+				<pl>Niemiecki ${brand_telekom} wycofuje się z technologii analogowej. Według rzecznika nie jest ona już opłacalna, ponieważ nie jest już używana.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="39" />
 			<availability year_range_from="1995" year_range_to="-1" />
@@ -5315,11 +5298,11 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			</title>
 			<description>
 				<de>Der aus dem TV bekannte Barde Joachim Bretzel gibt Autogrammstunde bei Eröffnung des neuen KaDeOst-Kaufhauses.
-Verlost wird dabei noch ein NASA-Topfset.</de>
+Verlost wird dabei noch ein ${generalorg_nasa}-Topfset.</de>
 				<en>The well-known TV bard Joachim Bretzel gives an autograph session at the opening of the new KaDeOst department store.
-A NASA pot set will also be raffled off.</en>
+A ${generalorg_nasa} pot set will also be raffled off.</en>
 				<pl>Znany bard telewizyjny Joachim Bretzel rozdaje autografy podczas otwarcia nowego domu towarowego KaDeOst.
-Rozlosowany zostanie również zestaw garnków NASA.</pl>
+Rozlosowany zostanie również zestaw garnków ${generalorg_nasa}.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="14" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -5837,16 +5820,16 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</description>
 			<data genre="4" price="1.0" quality="19" />
 		</news>
-		<news guid="4177ebd7-888e-4df0-97bd-c74109e81616" thread_guid="bae6336f-1755-4619-96b8-9b66f9ff6c7a" type="0" creator="">
+		<news guid="4177ebd7-888e-4df0-97bd-c74109e81616" thread_guid="bae6336f-1755-4619-96b8-9b66f9ff6c7a" type="0" creator="" comment="TODO: based on true events?">
 			<title>
-				<de>C&amp;B bankrott</de>
-				<en>C&amp;B bankrupt</en>
-				<pl>C&amp;B bankrutuje</pl>
+				<de>${brand_c_a} bankrott</de>
+				<en>${brand_c_a} bankrupt</en>
+				<pl>${brand_c_a} bankrutuje</pl>
 			</title>
 			<description>
-				<de>Das Modehaus C&amp;B meldet Insolvenz an. Man sei nicht vom Rentner-Image losgekommen, so der Geschäftsführer.</de>
-				<en>Fashion house C&amp;B files for bankruptcy. According to the managing director, the company could not get away from its pensioner reputation.</en>
-				<pl>Dom mody C&amp;B składa wniosek o upadłość. Według dyrektora zarządzającego, firma nie mogła uciec od swojej reputacji emeryta.</pl>
+				<de>Das Modehaus ${brand_c_a} meldet Insolvenz an. Man sei nicht vom Rentner-Image losgekommen, so der Geschäftsführer.</de>
+				<en>Fashion house ${brand_c_a} files for bankruptcy. According to the managing director, the company could not get away from its pensioner reputation.</en>
+				<pl>Dom mody ${brand_c_a} składa wniosek o upadłość. Według dyrektora zarządzającego, firma nie mogła uciec od swojej reputacji emeryta.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -6307,14 +6290,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="571543da-edcb-48c5-866d-e978491be0b9" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>Real will ${ballack} haben</de>
-				<en>Real wants ${ballack}</en>
-				<pl>Real chce ${ballack}a</pl>
+				<de>${sportsclub_real} will ${ballack} haben</de>
+				<en>${sportsclub_real} wants ${ballack}</en>
+				<pl>${sportsclub_real} chce ${ballack}a</pl>
 			</title>
 			<description>
 				<de>Die Königlichen haben Interesse an Bayernstar ${ballack}. Die Blöd-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
-				<en>Real is interested in Bayern star ${ballack}. The newspaper Blöd-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
-				<pl>Real jest zainteresowany gwiazdą Bayernu, ${ballack}iem. Gazeta Blöd-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
+				<en>${sportsclub_real} is interested in Bayern star ${ballack}. The newspaper Blöd-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
+				<pl>${sportsclub_real} jest zainteresowany gwiazdą Bayernu, ${ballack}iem. Gazeta Blöd-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
 			</description>
 			<effects>
 				<!-- this news is triggered some hours afterwards -->
@@ -6330,9 +6313,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${hoeness} poprawia ofertę</pl>
 			</title>
 			<description>
-				<de>Manager ${hoeness} kontert auf das Real-Angebot und bietet ${ballack} 7 Mio € Jahresgehalt. „Mehr ist nicht drin“, so ${hoeness}.</de>
-				<en>Manager ${hoeness} responds to Real offer by offering ${ballack} €7 million in annual salary. "That is all we can do," ${hoeness} said.</en>
-				<pl>Menedżer ${hoeness} odpowiada na ofertę Realu, oferując ${ballack}owi 7 milionów euro rocznej pensji. "To wszystko, co możemy zrobić", powiedział ${hoeness}.</pl>
+				<de>Manager ${hoeness} kontert auf das ${sportsclub_real}-Angebot und bietet ${ballack} 7 Mio € Jahresgehalt. „Mehr ist nicht drin“, so ${hoeness}.</de>
+				<en>Manager ${hoeness} responds to ${sportsclub_real} offer by offering ${ballack} €7 million in annual salary. "That is all we can do," ${hoeness} said.</en>
+				<pl>Menedżer ${hoeness} odpowiada na ofertę ${sportsclub_real}u, oferując ${ballack}owi 7 milionów euro rocznej pensji. "To wszystko, co możemy zrobić", powiedział ${hoeness}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a4138dc1-9369-4735-9377-64a569cde6dc" time="2,1,1,12,18" />
@@ -6342,14 +6325,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="a4138dc1-9369-4735-9377-64a569cde6dc" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>${ballack} und Real einigen sich</de>
-				<en>${ballack} and Real reach agreement</en>
-				<pl>${ballack} i Real osiągają porozumienie</pl>
+				<de>${ballack} und ${sportsclub_real} einigen sich</de>
+				<en>${ballack} and ${sportsclub_real} reach agreement</en>
+				<pl>${ballack} i ${sportsclub_real} osiągają porozumienie</pl>
 			</title>
 			<description>
 				<de>Wie die Blöd-Zeitung berichtet ist der Wechsel des Bayern-Star zu den Königlichen perfekt. Manager ${hoeness} dementiert: „Ich weiß von nichts“.</de>
-				<en>As the newspaper Blöd-Zeitung reports, the Bayern star's move to Real is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
-				<pl>Jak donosi gazeta Blöd-Zeitung, przejście gwiazdy Bayernu do Realu jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
+				<en>As the newspaper Blöd-Zeitung reports, the Bayern star's move to ${sportsclub_real} is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
+				<pl>Jak donosi gazeta Blöd-Zeitung, przejście gwiazdy Bayernu do ${sportsclub_real}u jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" time="2,1,2,8,20" />
@@ -6364,9 +6347,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${hoeness} w końcu potwierdza transfer</pl>
 			</title>
 			<description>
-				<de>${michael} ${ballack} wechselt ab nächse Saison für 75 Mio € Ablöse zu Real. ${hoeness} reibt sich die Hände: „Für das Geld bekommen wir 2 neue ${ballack}s.“</de>
-				<en>${michael} ${ballack} will join Real next season for a fee of €75 million. ${hoeness} rubs his hands: "For the money we get 2 new ${ballack}s."</en>
-				<pl>${michael} ${ballack} dołączy do Realu w przyszłym sezonie za kwotę 75 milionów euro. ${hoeness} zaciera ręce: "Za te pieniądze dostaniemy 2 nowych ${ballack}ów".</pl>
+				<de>${michael} ${ballack} wechselt ab nächse Saison für 75 Mio € Ablöse zu ${sportsclub_real}. ${hoeness} reibt sich die Hände: „Für das Geld bekommen wir 2 neue ${ballack}s.“</de>
+				<en>${michael} ${ballack} will join ${sportsclub_real} next season for a fee of €75 million. ${hoeness} rubs his hands: "For the money we get 2 new ${ballack}s."</en>
+				<pl>${michael} ${ballack} dołączy do ${sportsclub_real}u w przyszłym sezonie za kwotę 75 milionów euro. ${hoeness} zaciera ręce: "Za te pieniądze dostaniemy 2 nowych ${ballack}ów".</pl>
 			</description>
 			<data genre="2" price="1.0" quality="19" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -7317,14 +7300,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<yeltsin>
 					<all>${.person:"826d29bc-09fc-4cef-aaa6-65da7624ec92":"lastname"}</all>
 				</yeltsin>
-				<karllagerfeld_or_sothebys>${.lte:currentyear:2019:"${karl} ${lagerfeld}":"Suthebay's"}</karllagerfeld_or_sothebys> <!-- entries with Karl Lagerfeld death year has to be in sync -->
+				<karllagerfeld_or_sothebys>${.lte:currentyear:2019:"${karl} ${lagerfeld}":"${brand_sothebys}"}</karllagerfeld_or_sothebys> <!-- entries with Karl Lagerfeld death year has to be in sync -->
 				<hairbraid_or_lagerfeldhairbraid>
 					<de>${.lte:currentyear:2019:"Haarzopf":"${lagerfeld}-Haarzopf"}</de>
 					<en>${.lte:currentyear:2019:"hair braid":"${lagerfeld} hair braid"}</en>
 				</hairbraid_or_lagerfeldhairbraid>
 				<theeccentric_or_theauctionhouse>
-					<de>${.lte:currentyear:2019:"Der exzentrische Modeschöpfer, Designer, Fotograf und Kostümbildner ${karl} ${lagerfeld}":"Das Auktionshaus Suthebay's"}</de>
-					<en>${.lte:currentyear:2019:"The eccentric fashion creator, designer, photographer and costume stylist ${karl} ${lagerfeld}":"The Suthebay's auction house"}</en>
+					<de>${.lte:currentyear:2019:"Der exzentrische Modeschöpfer, Designer, Fotograf und Kostümbildner ${karl} ${lagerfeld}":"Das Auktionshaus ${brand_sothebys}"}</de>
+					<en>${.lte:currentyear:2019:"The eccentric fashion creator, designer, photographer and costume stylist ${karl} ${lagerfeld}":"The ${brand_sothebys} auction house"}</en>
 				</theeccentric_or_theauctionhouse>
 				<hisfamoushairbraid_or_thefamoushairbraidof>
 					<de>${.lte:currentyear:2019:"seinen berühmten weißen Haarzopf":"den berühmten weißen Haarzopf des verstorbenen Modezars ${karl} ${lagerfeld}"}</de>
@@ -7339,8 +7322,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>${.lte:currentyear:2015:"Musician and artist ${david} ${bowie}":"Angie ${bowie}, former wife of musician and artist ${david} ${bowie},"}</en>
 				</musicianandartist_or_angiebowieformerwifeof>
 				<atarifounder_or_teslaceo> <!-- year has to be in sync with nolanbushnell_or_elonmusk -->
-					<de>${.lte:currentyear:2009:"Arrati-Gründer":"Tusla CEO"}</de>
-					<en>${.lte:currentyear:2009:"Arrati founder":"Tusla CEO"}</en>
+					<de>${.lte:currentyear:2009:"${brand_atari}-Gründer":"${brand_tesla} CEO"}</de>
+					<en>${.lte:currentyear:2009:"${brand_atari} founder":"${brand_tesla} CEO"}</en>
 				</atarifounder_or_teslaceo>
 				<borisyeltsin_or_daughterof>
 					<de>${.lte:currentyear:2007:"${boris} ${yeltsin}":"Die Tochter von ${boris} ${yeltsin}"}</de>
@@ -7359,7 +7342,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						${debbieharry_or_madonna};Domina-Peitsche;Sängerin ${debbieharry_or_madonna};ihre oft eingesetzte Domina-Peitsche|
 						${bowie};${ziggystardust}-Anzug;${musicianandartist_or_angiebowieformerwifeof};seinen ikonischen ${ziggystardust}-Anzug|
 						${nolanbushnell_or_elonmusk};Hentai-Sammlung;Der umtriebige Tech-Unternehmer und ${atarifounder_or_teslaceo} ${nolanbushnell_or_elonmusk};seine Hentai-Sammlung|
-						${richardbranson};Pin-up-Poster;Der Unternehmer und Gründer des Virgo-Plattenlabels ${richardbranson};seine Sammlung von Pin-up-Postern mit jungfräulichen Damen|
+						${richardbranson};Pin-up-Poster;Der Unternehmer und Gründer des ${brand_virgin}-Plattenlabels ${richardbranson};seine Sammlung von Pin-up-Postern mit jungfräulichen Damen|
 						${monroe};weißes Kleid;Der ${marilyn} ${monroe} Estate Trust;das berühmte weiße Kleid der Schauspielerin|
 						${monroe};Lüftungsschacht;Der ${marilyn} ${monroe} Estate Trust;den Lüftungsschacht, der ihr berühmtes weißes Kleid hochgeblasen hat|
 						${eltonjohn};100 Brillen;Popstar ${eltonjohn};100 seiner extravagantesten Brillen|
@@ -7378,7 +7361,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						${debbieharry_or_madonna};dominatrix whip;Singer ${debbieharry_or_madonna};her frequently used dominatrix whip|
 						${bowie};${ziggystardust} suit;${musicianandartist_or_angiebowieformerwifeof};his iconic ${ziggystardust} suit|
 						${nolanbushnell_or_elonmusk};hentai collection;The bustling tech entrepreneur and ${atarifounder_or_teslaceo} ${nolanbushnell_or_elonmusk};his hentai collection|
-						${richardbranson};pin-up posters;Entrepreneur and founder of the Virgo record label ${richardbranson};his collection of pin-up posters of maiden-like ladies|
+						${richardbranson};pin-up posters;Entrepreneur and founder of the ${brand_virgin} record label ${richardbranson};his collection of pin-up posters of maiden-like ladies|
 						${monroe};white dress;The ${marilyn} ${monroe} Estate Trust;the famous white dress of the actress|
 						${monroe};ventilation shaft;The ${marilyn} ${monroe} Estate Trust;the ventilation shaft that lifted up her famous white dress|
 						${eltonjohn};100 glasses;Popstar ${eltonjohn};100 of his most extravagant glasses|
@@ -8358,8 +8341,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Former Federal Chancellor was a Stasi informer</en>
 			</title>
 			<description>
-				<de>Alt-Bundeskanzler ${helmutkohl} war in den 70ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der SDE.</de>
-				<en>Former Federal Chancellor ${helmutkohl} was an informer for the East German secret police in the 1970s. This is proven by SDE files.</en>
+				<de>Alt-Bundeskanzler ${helmutkohl} war in den 70ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
+				<en>Former Federal Chancellor ${helmutkohl} was an informer for the East German secret police in the 1970s. This is proven by ${generalorg_sed} files.</en>
 			</description>
 			<variables>
 				<helmutkohl>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"}</helmutkohl>
@@ -8374,8 +8357,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Former Federal Chancellor was a Stasi informer</en>
 			</title>
 			<description>
-				<de>Alt-Bundeskanzler ${helmutschmidt} war in den 70ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der SDE.</de>
-				<en>Former Federal Chancellor ${helmutschmidt} was an informer for the East German secret police in the 1970s. This is proven by SDE files.</en>
+				<de>Alt-Bundeskanzler ${helmutschmidt} war in den 70ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
+				<en>Former Federal Chancellor ${helmutschmidt} was an informer for the East German secret police in the 1970s. This is proven by ${generalorg_sed} files.</en>
 			</description>
 			<variables>
 				<helmutschmidt>${.person:"6cd8e08b-b67e-4a45-aa7e-e92cac4b9337":"fullname"}</helmutschmidt>
@@ -8390,8 +8373,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Former Federal Chancellor was a Stasi informer</en>
 			</title>
 			<description>
-				<de>Alt-Bundeskanzler ${gerhardschroeder} war in den 80ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der SDE.</de>
-				<en>Former Federal Chancellor ${gerhardschroeder} was an informer for the East German secret police in the 1980s. This is proven by SDE files.</en>
+				<de>Alt-Bundeskanzler ${gerhardschroeder} war in den 80ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
+				<en>Former Federal Chancellor ${gerhardschroeder} was an informer for the East German secret police in the 1980s. This is proven by ${generalorg_sed} files.</en>
 			</description>
 			<variables>
 				<gerhardschroeder>${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"fullname"}</gerhardschroeder>
@@ -8406,8 +8389,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Former Federal Chancellor was a Stasi informer</en>
 			</title>
 			<description>
-				<de>Alt-Bundeskanzlerin ${angelamerkel} war in den 80ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der SDE.</de>
-				<en>Former Federal Chancellor ${angelamerkel} was an informer for the East German secret police in the 1980s. This is proven by SDE files.</en>
+				<de>Alt-Bundeskanzlerin ${angelamerkel} war in den 80ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
+				<en>Former Federal Chancellor ${angelamerkel} was an informer for the East German secret police in the 1980s. This is proven by ${generalorg_sed} files.</en>
 			</description>
 			<variables>
 				<angelamerkel>${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"fullname"}</angelamerkel>
