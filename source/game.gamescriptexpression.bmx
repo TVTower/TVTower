@@ -666,6 +666,7 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		Local result:String
 		Local localeID:Int = context.contextNumeric
 		Local tv:TTemplateVariables
+		Local resolved:Int = True
 		
 		'explicitely passed template vars? higher priority than context-provided ones
 		If TTemplateVariables(context.extra)
@@ -693,16 +694,11 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 
 		Local varLowerCase:String = variable.ToLower()
 		If tv
-			'workaround for variable resolution bug in episodes
-			'if tv defines a variable itself - resolve it
-			'otherwise check for global variables (returns null if not defined) and fall back on the variable resolution including the context
-			If tv.HasVariable(varLowerCase, True)
-				result = _ParseWithTemplateVariables(varLowerCase, context, tv)
-			Else
-				result = GetDatabaseLocalizer().getGlobalVariable(localeID, varLowerCase, True)
-				If Not result Then result = _ParseWithTemplateVariables(varLowerCase, context, tv)
-			EndIf
+			result = _ParseWithTemplateVariables(varLowerCase, context, tv, resolved)
 		Else
+			resolved = False
+		EndIf
+		If Not Resolved
 			'parsing expression if it contains further variables necessary? 
 			'${.worldtime:"year"} was resolved without further changes...
 			result = GetDatabaseLocalizer().getGlobalVariable(localeID, varLowerCase, True)
@@ -713,11 +709,12 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 	End Function
 
 
-	Function _ParseWithTemplateVariables:String(variableLowerCase:String, context:SScriptExpressionContext, tv:TTemplateVariables = Null)
+	Function _ParseWithTemplateVariables:String(variableLowerCase:String, context:SScriptExpressionContext, tv:TTemplateVariables = Null, success:Int var)
 		If not tv and TTemplateVariables(context.extra)
 			tv = TTemplateVariables(context.extra)
 		EndIf
 		If Not tv
+			success = False
 			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variableLowerCase, context)
 		EndIf
 		
@@ -750,6 +747,7 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		' lsResult can be null if the variable was not resolved (or is
 		' not contained in the variables collection)
 		Else
+			success = False
 			Return TGameScriptExpressionBase.GameScriptVariableHandlerCB(variableLowerCase, context)
 		EndIf
 		
