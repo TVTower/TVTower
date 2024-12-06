@@ -327,6 +327,7 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	Method CopyFrom(other:TGameModifierPopularity_ModifyPopularity)
 		popularityID = other.popularityID
 		popularityReferenceID = other.popularityReferenceID
+		popularityReferenceGUID = other.popularityReferenceGUID
 		valueMin = other.valueMin
 		valueMax = other.valueMax
 		modifyProbability = other.modifyProbability
@@ -345,6 +346,8 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 
 	Method Init:TGameModifierPopularity_ModifyPopularity(data:TData, extra:TData=null)
 		if not data then return null
+
+		InitTimeDataIfPresent(data)
 
 		local index:string = ""
 		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")

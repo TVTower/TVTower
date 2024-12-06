@@ -693,7 +693,7 @@ Type TLuaEngine
 				?bmxng
 				Select fld.TypeId()
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, ULongTypeId, UIntTypeId, SizetTypeId
-						fld.SetByte(obj, 0)
+						fld.SetByte(obj, 0:Byte)
 					Case StringTypeId
 						fld.SetString(obj, "")
 					Default

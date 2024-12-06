@@ -38,6 +38,13 @@
 		<person guid="51397467-86e2-4c5f-9226-d93ecf9288a6" first_name="Nikita Sergeyevich" last_name="Khrushchev" />
 		<person guid="6dd0a9b9-96a0-4712-83f0-f6388bdc5bec" first_name="Mikhail" last_name="Gorbachev" />
 		<person guid="f1bc5e03-2dbc-4219-88a5-6fa1dab4cb79" first_name="Fyodor Mikhailovich" last_name="Dostoevsky" />
+		<person guid="e315f82e-9a4f-400a-bbde-82585e171cf0" first_name="Alexey" last_name="Pajitnov" />
+		<person guid="7da693f9-978f-4283-9e62-b7ef9b918a80" first_name="Anatoly" last_name="Karpov" />
+		<person guid="232eafa3-79b5-4ae6-8463-dea33a3bda90" first_name="Garry" last_name="Kasparov" />
+		<person guid="2a1ea4f9-480c-49c2-af2c-83290564e831" first_name="Yuri" last_name="Romanenko" />
+		<person guid="bf36bedc-0928-4b2f-a399-5abbbf310f35" first_name="Vitali" last_name="Klitschko" />
+		<person guid="7df0f616-2f57-4b93-baf0-32feb52fd0d5" first_name="Wladimir" last_name="Klitschko" />
+		<person guid="826d29bc-09fc-4cef-aaa6-65da7624ec92" first_name="Boris" last_name="Yeltsin" />
 
 		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" first_name="John D." last_name="Silly Billy" />
 	</persons>
@@ -73,6 +80,12 @@
 		<programmerole guid="f31a1bf6-1c2a-431e-a10c-cfee5b17fe7d" first_name="Rashid ad-Din" last_name="Sinan" />
 		<programmerole guid="36851db6-9af3-4650-baa6-c3e2e81fee9c" first_name="Richard" last_name="the Lionheart" title="King" />
 
+		<programmerole guid="487c9c31-be5c-4cf7-93fd-1a470ead1ec4" first_name="Leonard" last_name="McCoy" nick_name="Bones" />
+		<programmerole guid="3670b612-8825-4c4d-a382-0227fe8d9184" first_name="Jozef" last_name="Spejbl" />
+		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Hurvínek" last_name="Spejbl" />
+		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Žeryk" last_name="" />
+		<programmerole guid="25387571-5de7-4837-bbfb-f46b5a8d4779" first_name="Angus" last_name="MacGyver" />
+
 		<programmerole guid="0db39875-f248-4a7c-9fb7-ede5408993f9" first_name="The Poet" last_name="" />
 		<programmerole guid="c975b99e-22aa-440d-b8c3-fa7752221e71" first_name="Abdul" last_name="the Levantine" />
 
@@ -90,8 +103,22 @@
 		<programmerole guid="a843edd4-3221-4bc6-b0ca-399ddfc560bc" first_name="Orphu" last_name="of Io" title="Robot" />
 		<programmerole guid="1edcb77f-fb63-426e-b82a-43aab30c8956" first_name="Mahmoud" last_name="of Europa" title="Robot" />
 
+		<programmerole guid="roles-bambi-thumper" first_name="Thumper" last_name="" />
+		<programmerole guid="roles-bambi-flower" first_name="Flower" last_name="" />
+
+		<programmerole guid="roles-asterix-asterix" first_name="Asterix" last_name="" />
+		<programmerole guid="roles-asterix-obelix" first_name="Obelix" last_name="" />
+		<programmerole guid="roles-asterix-getafix" first_name="Getafix" last_name="" />
+
 		<programmerole guid="roles-popeye-olive" first_name="Olive" last_name="Oyl" />
 		<programmerole guid="roles-popeye-deezil" first_name="Deezil" last_name="Oyl" />
+
+		<programmerole guid="roles-flintstones-fred" first_name="Fred" last_name="Flintstone" />
+		<programmerole guid="roles-flintstones-wilma" first_name="Wilma" last_name="Flintstone" />
+		<programmerole guid="roles-flintstones-pebbles" first_name="Pebbles" last_name="Flintstone" />
+		<programmerole guid="roles-flintstones-barney" first_name="Barney" last_name="Rubble" />
+		<programmerole guid="roles-flintstones-betty" first_name="Betty" last_name="Rubble" />
+		<programmerole guid="roles-flintstones-bamm-bamm" first_name="Bamm-Bamm" last_name="Rubble" />
 
 		<programmerole guid="roles-smurfs" first_name="Smurfs" last_name="" />
 		<programmerole guid="roles-smurfs-papa" first_name="Papa" last_name="Smurf" />
@@ -100,7 +127,7 @@
 		<programmerole guid="roles-smurfs-brainy" first_name="Brainy" last_name="Smurf" />
 		<programmerole guid="roles-smurfs-grouchy" first_name="Grouchy" last_name="Smurf" />
 		<programmerole guid="roles-smurfs-hefty" first_name="Hefty" last_name="Smurf" />
-		<programmerole guid="roles-smurfs-greedy" first_name="Greedy" last_name="Smurf"  />
+		<programmerole guid="roles-smurfs-greedy" first_name="Greedy" last_name="Smurf" />
 		<programmerole guid="roles-smurfs-jokey" first_name="Jokey" last_name="Smurf" />
 		<programmerole guid="roles-smurfs-chef" first_name="Chef" last_name="Smurf" />
 		<programmerole guid="roles-smurfs-vanity" first_name="Vanity" last_name="Smurf" />

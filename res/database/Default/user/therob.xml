@@ -349,11 +349,7 @@
 		<!-- 'RatTV - Quo Vadis' moved to database_programmes.xml -->
 
 		<programme guid="TheRob-b0db-439c-a852-Goaaaaal" product="4" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="contains real staff">
-			<title>
-				<de>Goaaaaal</de>
-				<en>Goaaaaal</en>
-				<pl>Goaaaaal</pl>
-			</title>
+			<title>Goaaaaal</title>
 			<description>
 				<de>${.self:"cast":1:"fullname"} präsentiert die schönsten Tore des Jahres 1981. Ein Augenschmauß für jeden Fan!</de>
 				<en>${.self:"cast":1:"fullname"} presents the finest goals of 1981. A feast for the eyes of every fan!</en>
@@ -660,13 +656,8 @@
 			<ratings critics="36" speed="32" outcome="31" />
 		</programme>
 
-		<programme guid="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional">
-			<title>
-				<!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klar Namen -->
-				<de>Jánošík</de>
-				<en>Jánošík</en>
-				<pl>Jánošík</pl>
-			</title>
+		<programme guid="TheRob-b0db-439c-a852-Janosik" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="previously contained ill-fitting real staff, replaced with fictional | reference: https://en.wikipedia.org/wiki/Juraj_J%C3%A1no%C5%A1%C3%ADk | TODO: There actually exist several films">
+			<title>Jánošík</title> <!-- Janosik als Fiktion. Basiert auf keinem existierendem Film, von daher benutze ich mal den Klarnamen -->
 			<description>
 				<de>Jánošík als Anführer einer Waldräubergruppe. Der slowakische Robin Hood.</de>
 				<en>Jánošík as the leader of a group of forest robbers. The Slovak Robin Hood.</en>
@@ -747,7 +738,7 @@
 		</programme>
 
 		<programme guid="therob-programme-adv-Sinbadsreisen" product="7" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="TODO: There are actually real Sinbad films and series.">
-			<!-- Abteuerserie  -->
+			<!-- Abteuerserie -->
 			<title>
 				<de>Sindbads Reisen</de>
 				<en>Sinbad's Journeys</en>
@@ -1065,7 +1056,7 @@
 			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.5" />
 			<data country="S" distribution="2" maingenre="104" subgenre="8,300" flags="193" blocks="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="0.25" /> <!-- billiger als normal -->
-			<releaseTime year_relative="4" year_relative_min="1990" year_relative_max="2010" />
+			<releaseTime year_relative="4" year_relative_min="1990" />
 			<ratings critics="24" speed="42" outcome="33" />
 			<children>
 				<programme guid="2415b4de-46a1-4898-a2ab-5eb7b594e91f" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="">
@@ -1881,7 +1872,7 @@
 			<title>
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
-				<en>Trends for men</en>
+				<en>Trends for Men</en>
 				<pl>Trendy dla mężczyzn</pl>
 			</title>
 			<description>
@@ -2122,11 +2113,7 @@
 					</description>
 				</programme>
 				<programme guid="TheRob-serie-DieStraendederWelt-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
-					<title>
-						<de>Vallvik</de>
-						<en>Vallvik</en>
-						<pl>Vallvik</pl>
-					</title>
+					<title>Vallvik</title>
 					<description>
 						<de>Schweden. Ein rauer Strand. Sollte jemand der Moderatorin sagen, dass man die Kälte deutlich an ihr sieht? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Sweden. A rough beach. Should someone tell the presenter that you can clearly see the cold on her? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
@@ -2134,11 +2121,7 @@
 					</description>
 				</programme>
 				<programme guid="TheRob-serie-DieStraendederWelt-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
-					<title>
-						<de>Playa Corcovado</de>
-						<en>Playa Corcovado</en>
-						<pl>Playa Corcovado</pl>
-					</title>
+					<title>Playa Corcovado</title>
 					<description>
 						<de>Costa Rica. ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Costa Rica. ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
@@ -2146,11 +2129,7 @@
 					</description>
 				</programme>
 				<programme guid="TheRob-serie-DieStraendederWelt-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
-					<title>
-						<de>Koh Thas</de>
-						<en>Koh Thas</en>
-						<pl>Koh Thas</pl>
-					</title>
+					<title>Koh Thas</title>
 					<description>
 						<de>Kambodscha. Wer hält da denn Kokosnüsse? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Cambodia. Who's holding coconuts there? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
@@ -2158,11 +2137,7 @@
 					</description>
 				</programme>
 				<programme guid="TheRob-serie-DieStraendederWelt-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
-					<title>
-						<de>Vyshka</de>
-						<en>Vyshka</en>
-						<pl>Vyshka</pl>
-					</title>
+					<title>Vyshka</title>
 					<description>
 						<de>Russland. Wer kennt schon das kaspische Meer? ${.self:"cast":1:"firstname"} hüpft fröhlich durch die Gegend und zeigt den Sand und die Tiere. Und etwas über das Land darf man auch lernen.</de>
 						<en>Russia. Who has ever heard of the Caspian Sea anyway? ${.self:"cast":1:"firstname"} bounces around happily showing the sand and the animals. And you can learn something about the country too.</en>
@@ -2198,9 +2173,7 @@
 			<children>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2214,9 +2187,7 @@
 				</programme>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2230,9 +2201,7 @@
 				</programme>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>The ${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2246,9 +2215,7 @@
 				</programme>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2262,9 +2229,7 @@
 				</programme>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2278,9 +2243,7 @@
 				</programme>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2294,9 +2257,7 @@
 				</programme>
 				<programme guid="TheRob-serie-Wirstellenvor-Episode007" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob">
 					<title>
-						<de>${.self:"cast":2:"fullname"}</de>
-						<en>${.self:"cast":2:"fullname"}</en>
-						<pl>${.self:"cast":2:"fullname"}</pl>
+						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
 					<description>
 						<de>Wie entstanden die Songs? Und warum berührt er heute noch Menschen. Wer war das und wie war der Sound?</de>
@@ -2460,9 +2421,7 @@
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
 			<title>
-				<de>${TITLE}</de>
-				<en>${TITLE}</en>
-				<pl>${TITLE}</pl>
+				<all>${TITLE}</all>
 			</title>
 			<variables>
 				<title>
@@ -2470,11 +2429,7 @@
 					<en>Reports From the Broadcast Area|News From ${RANDOMCITY}|Reports From ${RANDOMCITY}|What's Up in ${RANDOMCITY}?</en>
 					<pl>Raporty z obszaru nadawania|${RANDOMCITY} - Wiadomości lokalne|${RANDOMCITY} - Raporty lokalne|${RANDOMCITY} - Co słychać w mieście?</pl>
 				</title>
-				<randomcity>
-					<de>${.stationmap:"randomcity"}</de>
-					<en>${.stationmap:"randomcity"}</en>
-					<pl>${.stationmap:"randomcity"}</pl>
-				</randomcity>
+				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 			
 			<description>
@@ -2501,15 +2456,11 @@
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
-				<de>${TITLE}</de>
-				<en>${TITLE}</en>
-				<pl>${TITLE}</pl>
+				<all>${TITLE}</all>
 			</title>
 			<variables>
 				<title>
-					<de>${ADJECTIVE} ${SUBJECT}${MODIFIER}</de>
-					<en>${ADJECTIVE} ${SUBJECT}${MODIFIER}</en>
-					<pl>${ADJECTIVE} ${SUBJECT}${MODIFIER}</pl>
+					<all>${ADJECTIVE} ${SUBJECT}${MODIFIER}</all>
 				</title>
 				<subject>
 					<de>Filme|Serien|Shows|Produktionen</de>
@@ -2521,11 +2472,7 @@
 					<en>Upcoming|Outstanding|Exciting</en>
 					<pl>Nadchodzące|Wybitne|Ciekawe</pl>
 				</adjective>
-				<modifier>
-					<de>|| ${.worldtime:"year"}</de>
-					<en>|| ${.worldtime:"year"}</en>
-					<pl>|| ${.worldtime:"year"}</pl>
-				</modifier>
+				<modifier>|| ${.worldtime:"year"}</modifier>
 			</variables>
 			
 			<description>
@@ -2680,9 +2627,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Com-EngeloderBengel">
 			<title>
-				<de>${TITLE}</de>
-				<en>${TITLE}</en>
-				<pl>${TITLE}</pl>
+				<all>${TITLE}</all>
 			</title>
 			<description>
 				<de>Familienkomödie über das Leben mit einem frechen Sohnemann. Das Drehbuch wird von dem Stardrehbuchschreiber Don Ron geschrieben.</de>
@@ -2696,9 +2641,11 @@
 					<pl>Anioł lub łobuz|${NAME} - diabełek w owczej skórze|${NAME} rozrabia</pl>
 				</title>
 				<name>
-					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}|Tim</de>
-					<pl>Pawełek|${.persongenerator:"firstname":"pl":"male"}|Marcelek</pl>
+					<de>${.persongenerator:"firstname":"de":"male"}|${spanishname}|Tim|Paule|Marcell</de>
+					<en>${.persongenerator:"firstname":"en":"male"}|${spanishname}|Tim|Paulin|Marcel</en>
+					<pl>${.persongenerator:"firstname":"pl":"male"}|${spanishname}|Tim|Pawełek|Marcelek</pl>
 				</name>
+				<spanishname>${.persongenerator:"firstname":"es":"male"}</spanishname>
 			</variables>
 			
 			<jobs>
@@ -2722,9 +2669,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
 			<title>
-				<de>${NAME1} ${NAME2}</de>
-				<en>${NAME1} ${NAME2}</en>
-				<pl>${NAME1} ${NAME2}</pl>
+				<all>${NAME1} ${NAME2}</all>
 			</title>
 			<description>
 				<de>Jodelnde Liebeserklärungen und epische Bergaufnahmen.</de>
@@ -3029,7 +2974,7 @@
 				</subject1b>
 			</variables>
 			<jobs>
-				<job index="0" function="1" required="1"  />
+				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="2" />
 				<job index="2" function="2" required="1" gender="2" />
 				<job index="3" function="2" required="1" gender="1" />
@@ -3052,11 +2997,7 @@
 			<studio_size min="2" max="3" slope="35" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-trash-karprachd" comment="TODO: Episode descriptions; still haven't figured out the title/reference">
-			<title>
-				<de>Kār prachd</de>
-				<en>Kār prachd</en>
-				<pl>Kār prachd</pl>
-			</title>
+			<title>Kār prachd</title>
 			<description>
 				<de>Die legendäre thailändische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
 				<en>The legendary Thai series re-shot in the original language without subtitles.</en>
@@ -3064,11 +3005,7 @@
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep1">
-					<title>
-						<de>TVTs Pilot</de>
-						<en>TVTs Pilot</en>
-						<pl>TVTs Pilot</pl>
-					</title>
+					<title>TVTs Pilot</title>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep2">
 					<title>
@@ -3087,7 +3024,7 @@
 				</scripttemplate>
 			</children>
 			<jobs>
-				<job index="0" function="1" required="1"  />
+				<job index="0" function="1" required="1" />
 			</jobs>
 			<data flags="114" flags_optional="8" target_groups="18" />
 			<targetgroupattractivity men="1.25" teenagers="2" />
@@ -3100,11 +3037,7 @@
 			<speed min="35" max="85" slope="50" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-mix-tanz-amiz" comment="TODO: Episode descriptions; still haven't figured out the title/reference">
-			<title>
-				<de>tanz-āmiz</de>
-				<en>tanz-āmiz</en>
-				<pl>tanz-āmiz</pl>
-			</title>
+			<title>tanz-āmiz</title>
 			<description>
 				<de>Die legendäre iranische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
 				<en>The legendary Iranian series re-shot in the original language without subtitles.</en>
@@ -3112,11 +3045,7 @@
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep1">
-					<title>
-						<de>TVTs Pilot</de>
-						<en>TVTs Pilot</en>
-						<pl>TVTs Pilot</pl>
-					</title>
+					<title>TVTs Pilot</title>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep2">
 					<title>
@@ -3135,7 +3064,7 @@
 				</scripttemplate>
 			</children>
 			<jobs>
-				<job index="0" function="1" required="1"  />
+				<job index="0" function="1" required="1" />
 			</jobs>
 			<data flags="48" flags_optional="12" target_groups="18" />
 			<targetgroupattractivity pensioners="0.25" />
@@ -3332,11 +3261,7 @@
 					<en>Dragon|Naked Mole-Rat|Fairy|Tooth-Fairy|Wizard|Troll|Dwarf|Meerkat|Thing from the Swamp|Angel|Succubus|Monster|Giant|Ogre</en>
 					<pl>Smok|Nagi szczur|Bajka|Zębowa bajka|Czarodziej|Troll|Krasnolud|Merkat|Coś z bagien|Anioł|Sukkubus|Potwór|Gigant|Ogr</pl>
 				</wesen>
-				<name>
-					<de>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</de>
-					<en>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</en>
-					<pl>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</pl>
-				</name>
+				<name>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</name>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -3510,9 +3435,7 @@
 			<children>
 				<scripttemplate index="0" product="3" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>
-						<de>${EPISODE}</de>
-						<en>${EPISODE}</en>
-						<pl>${EPISODE}</pl>
+						<all>${EPISODE}</all>
 					</title>
 					<variables>
 						<episode>
@@ -3530,11 +3453,7 @@
 					<en>Dancing Queen|Word Guessing|Prizes Guaranteed|Ripped Off|Fabulous Peeks</en>
 					<pl>Dancing Queens|Zgadywanka|Nagrody gwarantowane|Rozbierz to|Fantastyczne wybory</pl>
 				</title1>
-				<name1>
-					<de>Jimmy|Bobby|Danny|Manni|Donny|Johny</de>
-					<en>Jimmy|Bobby|Danny|Manni|Donny|Johny</en>
-					<pl>Jimmy|Bobby|Danny|Manni|Donny|Johny</pl>
-				</name1>
+				<name1>Jimmy|Bobby|Danny|Manni|Donny|Johny</name1>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />

@@ -3,10 +3,10 @@
 	<version value="3" comment="Daten von Nicht_die_Betty" />
 	<!--
 		Personen die nur mal in einer Serie auftauchen und keine anderen
-	    Rollen spielen.
-	    Nutzen, wenn man verschiedene Leute im "Cast" (Bei Schauspieler
-	    usw.) haben will, ohne dass die eigene News bekommen - oder man
-	    viele Details angeben muss.
+		Rollen spielen.
+		Nutzen, wenn man verschiedene Leute im "Cast" (Bei Schauspieler
+		usw.) haben will, ohne dass die eigene News bekommen - oder man
+		viele Details angeben muss.
 	-->
 	<insignificantpeople>
 		<!--
@@ -48,11 +48,7 @@
 		-->
 	<allprogrammes>
 		<programme guid="nichtdiebetty-programme-helgoland-01" product="4" licence_type="1" creator="8659" created_by="Nicht_die_Betty">
-			<title>
-				<de>Helgoland</de>
-				<en>Helgoland</en>
-				<pl>Helgoland</pl>
-			</title>
+			<title>Helgoland</title>
 			<description>
 				<de>Gezeigt werden alle Sehenswürdigkeiten. Die Lange Anna. Die Lummen. Jede. In Nahaufnahme.
 Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>

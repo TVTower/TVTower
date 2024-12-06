@@ -66,7 +66,7 @@ Type TAwardCulture extends TAward
 
 	'override
 	'add temporary culture-boost
-	Method Finish:int()
+	Method Finish:int(overrideWinnerID:Int = -1) override
 		'If desired the winner value could be adjusted by the love betty
 		'already feels for that player (diminishing returns ...)
 		'if winningPlayerID > 0
@@ -79,6 +79,7 @@ Type TAwardCulture extends TAward
 		if winningPlayerID > 0
 			'add modifier for programmes with flag "culture"
 			local modifier:TGameModifierBase = GetGameModifierManager().Create("Modifier.GameConfig")
+			modifier.SetLongRunngingWithUndo()
 			local mConfig:TData = new TData
 			mConfig.AddString("name", "CultureBoost.Programme")
 			mConfig.AddString("modifierKey", "Attractivity.ProgrammeDataFlag.player"+winningPlayerID+"."+TVTProgrammeDataFlag.CULTURE)
@@ -97,6 +98,7 @@ Type TAwardCulture extends TAward
 
 			'same for culture-news
 			modifier = GetGameModifierManager().Create("Modifier.GameConfig")
+			modifier.SetLongRunngingWithUndo()
 			mConfig = new TData
 			mConfig.AddString("name", "CultureBoost.News")
 			mConfig.AddString("modifierKey", "Attractivity.NewsGenre.player"+winningPlayerID+"."+TVTNewsGenre.CULTURE)

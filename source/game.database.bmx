@@ -13,6 +13,7 @@ Import "game.programme.newsevent.bmx"
 Import "game.person.bmx"
 Import "Dig/base.util.persongenerator.bmx"
 Import "game.gameconstants.bmx"
+Import "game.database.localizer.bmx"
 
 
 Type TDatabaseLoader
@@ -47,7 +48,6 @@ Type TDatabaseLoader
 	Field skipProgrammeCreators:String
 	Field config:TData = New TData
 	Global metaData:TData = New TData
-	Field _eventListeners:TEventListenerBase[]
 	Global XMLErrorCount:Int
 
 
@@ -126,9 +126,6 @@ Type TDatabaseLoader
 		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PERSONS_CREATED_BY", "").Split(",")
 			skipPersonCreators :+ " "+Trim(s).ToLower()+" "
 		Next
-
-		'localize person names / roles
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.App_OnSetLanguage, onSetLanguage ) ]
 	End Method
 
 
@@ -235,12 +232,96 @@ Type TDatabaseLoader
 			Notify "Important data is missing:  series:"+totalSeriesCount+"  movies:"+totalMoviesCount+"  news:"+totalNewsCount+"  adcontracts:"+totalContractsCount
 		EndIf
 
+		LoadDatabaseLocalizations(dbDirectory)
 
 		'fix potentially corrupt data
 		FixLoadedData()
 	End Method
-	
-	
+
+
+	Function LoadDatabaseLocalizations(dbDirectory:String)
+		Local langDir:String = dbDirectory+"/lang/"
+		Local dbl:TDatabaseLocalizer = GetDatabaseLocalizer()
+		Local toStore:TPersonLocalization[] = new TPersonLocalization[100]
+
+		For Local l:TLocalizationLanguage = EachIn TLocalization.languages
+			Local code:String = l.languageCode
+			Local file:String = langDir + code+".xml"
+			If FileType(file) = 1
+				Local xml:TXmlHelper = TXmlHelper.Create(file)
+				Local allGlobalVars:TxmlNode = xml.FindRootChildLC("globalvariables")
+				If allGlobalVars
+					Local gvl:TLocalizationLanguage = dbl.getGlobalVariables(code)
+					If Not gvl
+						gvl = new TLocalizationLanguage
+						gvl.languageCode = code
+						dbl.globalVariables.insert(code, gvl)
+					EndIf
+					Local varName:String
+					Local value:String
+					For Local varNode:TxmlNode = EachIn xml.GetNodeChildElements(allGlobalVars)
+						varName = varNode.getName().toLower()
+						value = varNode.getContent()
+						If varName And value Then gvl.map.insert(varName, value)
+					Next
+				EndIf
+
+				Local nodeAllPersons:TxmlNode
+				nodeAllPersons = xml.FindRootChildLC("persons")
+				Local index:Int = 0
+				Local personCollection:TPersonBaseCollection = GetPersonBaseCollection()
+				For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
+					If nodePerson.getName() <> "person" Then Continue
+					Local data:TData = New TData
+					xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name", "title"])
+					Local guid:String=data.GetString("guid")
+					If guid
+						Local person:TPersonBase = personCollection.GetByGUID(guid)
+						If person
+							Local personToStore:TPersonLocalization = new TPersonLocalization
+							personToStore.id = person.id
+							personToStore.firstName=data.GetString("first_name","")
+							personToStore.lastName=data.GetString("last_name","")
+							personToStore.nickName=data.GetString("nick_name","")
+							personToStore.title=data.GetString("title","")
+							if toStore.length <= index Then toStore = toStore[.. index + 50]
+							toStore[index] = personToStore
+							index:+1
+						EndIf
+					EndIf
+				Next
+				If index > 0 Then dbl.persons.insert(code, toStore[..index])
+
+				Local nodeAllRoles:TxmlNode
+				nodeAllRoles = xml.FindRootChildLC("programmeroles")
+				If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
+				index = 0
+				For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
+					If nodeRole.getName() <> "programmerole" And nodeRole.getName() <> "role" Then Continue
+					Local data:TData = New TData
+					xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "nick_name", "title"])
+					Local guid:String=data.GetString("guid")
+					If guid
+						Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
+						If role
+							Local roleToStore:TPersonLocalization = new TPersonLocalization
+							roleToStore.id = role.id
+							roleToStore.firstName=data.GetString("first_name","")
+							roleToStore.lastName=data.GetString("last_name","")
+							roleToStore.nickName=data.GetString("nick_name","")
+							roleToStore.title=data.GetString("title","")
+							if toStore.length <= index Then toStore = toStore[.. index + 50]
+							toStore[index] = roleToStore
+							index:+ 1
+						EndIf
+					EndIf
+				Next
+				If index > 0 Then dbl.roles.insert(code, toStore[..index])
+			EndIf
+		Next
+	End Function
+
+
 	Function MXMLErrorCallback(message:Byte Ptr)
 		Local s:String = string.FromCString(message)
 		TLogger.Log("TDatabase.Load()", "mxml-Error: " + s, LOG_ERROR + LOG_XML)
@@ -1376,8 +1457,8 @@ Type TDatabaseLoader
 		If Not _adContractConditionKeys
 			_adContractConditionKeys = [..
 				"min_audience", "min_image", "max_image", "target_group", ..
-				"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
-				"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
+				"allowed_programme_flag", "allowed_genre", ..
+				"prohibited_programme_flag", "prohibited_genre" ..
 			]
 		EndIf
 		'do not reset "data" before - it contains the pressure groups
@@ -1388,10 +1469,8 @@ Type TDatabaseLoader
 		adContract.maxImage = 0.01 * data.GetFloat("max_image", adContract.maxImage*100.0)
 		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
 		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
-		adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)
 		adContract.limitedToProgrammeFlag = data.GetInt("allowed_programme_flag", adContract.limitedToProgrammeFlag)
 		adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
-		adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
 		adContract.forbiddenProgrammeFlag = data.GetInt("prohibited_programme_flag", adContract.forbiddenProgrammeFlag)
 		'if only one group
 		'adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
@@ -2810,15 +2889,23 @@ Type TDatabaseLoader
 			
 
 			Local languageID:Int = -1
-			if nodeLangEntry = node 'global definition?
+			If nodeLangEntry = node 'global definition?
 				languageID = TLocalization.defaultLanguageID
-			else
+			ElseIf nodeLangEntry.GetName().ToLower() = "all"
+				languageId = -2 'same base value for all default languages
+			Else
 				languageID = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
 			EndIf
 
 			If languageID <> -1
-				if not localized then localized = New TLocalizedString
-				localized.Set(value, languageID)
+				If Not localized Then localized = New TLocalizedString
+				If languageID = -2
+					localized.Set(value, TLocalization.GetLanguageID("en"))
+					localized.Set(value, TLocalization.GetLanguageID("de"))
+					localized.Set(value, TLocalization.GetLanguageID("pl"))
+				Else
+					localized.Set(value, languageID)
+				EndIf
 			Else
 				TLogger.Log("TDATABASE.LOAD()", "Found and ignored localization entry for unsupported language " + nodeLangEntry.GetName().ToLower(), LOG_LOADING|LOG_WARNING)
 			EndIf
@@ -2826,63 +2913,6 @@ Type TDatabaseLoader
 
 		Return localized
 	End Function
-
-	Function onSetLanguage:Int(triggerEvent:TEventBase)
-		Local lang:String = triggerEvent.GetData().GetString("languageCode", "en")
-
-		'first restore default:
-		'English is intended to be the default language for localized person entries
-		'and should contain an entry for all localized persons and roles.
-		'So a reasonable default is used in case not all languages translate all names.
-		If lang <> "en" Then SetLanguage("en")
-		SetLanguage(lang)
-	End Function
-
-	Function SetLanguage(lang:String)
-		Local baseDir:String = "res/database/Default/"
-		Local file:String = baseDir+"lang/"+lang+".xml"
-
-		Local xml:TXmlHelper = TXmlHelper.Create(file)
-		Local nodeAllPersons:TxmlNode
-		nodeAllPersons = xml.FindRootChildLC("persons")
-		For Local nodePerson:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllPersons)
-			If nodePerson.getName() <> "person" Then Continue
-			Local data:TData = New TData
-			xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name", "title"])
-			Local guid:String=data.GetString("guid")
-			If guid
-				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(guid)
-				If person
-					person.firstName = data.GetString("first_name","")
-					person.lastName = data.GetString("last_name","")
-					person.nickName = data.GetString("nick_name","")
-					person.title = data.GetString("title","")
-					'print "updated person to "+person.GetFullName()
-				EndIf
-			EndIf
-		Next
-
-		Local nodeAllRoles:TxmlNode
-		nodeAllRoles = xml.FindRootChildLC("programmeroles")
-		If Not nodeAllRoles Then nodeAllRoles = xml.FindRootChildLC("roles")
-		For Local nodeRole:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllRoles)
-			If nodeRole.getName() <> "programmerole" And nodeRole.getName() <> "role" Then Continue
-			Local data:TData = New TData
-			xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "nick_name", "title"])
-			Local guid:String=data.GetString("guid")
-			If guid
-				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
-				If role
-					role.firstName = data.GetString("first_name","")
-					role.lastName = data.GetString("last_name","")
-					role.nickName = data.GetString("nick_name","")
-					role.title = data.GetString("title","")
-					'print "updated role to "+role.GetFullName()
-				EndIf
-			EndIf
-		Next
-
-	EndFunction
 End Type
 
 

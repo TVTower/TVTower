@@ -271,6 +271,14 @@ Type TLocalization
 	End Function
 
 
+	Function GetLanguage:TLocalizationLanguage(languageID:Int)
+		If languageID >= 0 And languageID < languages.length
+			Return languages[languageID]
+		EndIf
+		Return Null
+	End Function
+
+
 	Function AddLanguage:int(language:TLocalizationLanguage)
 		if not GetLanguage(language.languageCode)
 			languagesCount :+ 1
@@ -489,6 +497,11 @@ End Function
 'convenience helper function
 Function GetLocale:string(key:string, languageCode:String)
 	return TLocalization.GetString(key, Null, TLocalization.GetLanguage(languageCode))
+End Function
+
+'convenience helper function
+Function GetLocale:string(key:string, languageID:Int)
+	return TLocalization.GetString(key, Null, TLocalization.GetLanguage(languageID))
 End Function
 
 
@@ -1010,7 +1023,19 @@ endrem
 	
 	Method UCFirstAllEntries()
 		For local i:int = EachIn valueLangIDs
-			Set(StringHelper.UCFirst(Get(i), i))
+			Set(StringHelper.UCFirst( Get(i, False) ), i)
 		Next
+	End Method
+
+	Method ContainsString:Int(contained:String, languageCodeID:Int = -1)
+		If languageCodeID >= 0
+			Local langIndex:Int = GetLanguageIndex(languageCodeID)
+			If langIndex >= 0 and valueStrings[langIndex] And valueStrings[langIndex].contains(contained) Then Return True
+		Else
+			For Local s:String = EachIn valueStrings
+				If s And s.contains(contained) Then Return True
+			Next
+		EndIf
+		Return False
 	End Method
 End Type

@@ -99,9 +99,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<children>
 				<programme guid="3b56f810-64c1-49e6-8540-274098947b10" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>Three Mile Island</de>
-						<en>Three Mile Island</en>
-						<pl>Three Mile Island</pl>
+						<all>Three Mile Island</all>
 					</title>
 					<description>
 						<de>In Pennsylvania entsteht eine der modernsten und sichersten Anlagen. Wir waren vor Ort.</de>
@@ -123,9 +121,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme guid="71956dc0-4fbb-4e9a-ac62-a0821eea04bd" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>Fukushima</de>
-						<en>Fukushima</en>
-						<pl>Fukushima</pl>
+						<all>Fukushima</all>
 					</title>
 					<description>
 						<de>Auf der japanischen Hauptinsel Honshū entsteht eine der modernsten und sichersten Anlagen. Wir waren vor Ort.</de>
@@ -472,7 +468,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} gerät in einen heftigen Streit mit einem alten weißen Ladenbesitzer, der den Schriftzug „${.self:"cast":2:"fullname"} Edition“ auf Kartoffelchips-Tüten überklebte, den er für „Gekrakel wie das eines Dreijährigen“ bezeichnete, das angeblich für schwächeren Absatz als vorher sorgte.</de>
-						<en>${.self:"cast":2:"fullname"} gets into a fierce argument with an old white shopkeeper owner who taped over the lettering "${.self:"cast":2:"fullname"} Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
+						<en>${.self:"cast":2:"fullname"} gets into a fierce argument with an old white shopkeeper who taped over the lettering "${.self:"cast":2:"fullname"} Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
@@ -493,8 +489,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme guid="558eaa7b-690c-41ca-988a-00b98207247e" product="2" licence_type="2" creator="9551">
 					<title>
-						<de>${.self:"cast":2:"firstname"} McVegan</de>
-						<en>${.self:"cast":2:"firstname"} McVegan</en>
+						<all>${.self:"cast":2:"firstname"} McVegan</all>
 					</title>
 					<description>
 						<de>Und auch von einem Ex-Schauspielstar und Ex-Präsidenten gibt's Neuigkeiten: ${.self:"cast":2:"fullname"} baut Gerüchten zufolge heimlich ein veganes Fast-Food-Imperium auf. „Er ist also doch unser Commander in Leaf,“ rufen begeisterte Veganer weltweit.</de>
@@ -553,8 +548,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 				</programme>
 				<programme guid="36518cf4-419d-4de4-8394-d4fbfe5acf8c" product="2" licence_type="2" creator="9551" comment="Miff used in a previous episode">
 					<title>
-						<de>${.self:"cast":2:"firstname"} Swift</de>
-						<en>${.self:"cast":2:"firstname"} Swift</en>
+						<all>${.self:"cast":2:"firstname"} Swift</all>
 					</title>
 					<description>
 						<de>Erneut macht ${.self:"cast":2:"fullname"} von sich reden, als er versucht, seine Fans zu beeindrucken, indem er seine neu entdeckte Leidenschaft für Ballett vorführt. Leider endet seine Swift-Pirouette damit, dass er in eine Requisite kracht und Chaos am Set verursacht.</de>
@@ -639,9 +633,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 	<scripttemplates>
 		<scripttemplate product="3" licence_type="1" guid="e569b0af-e97f-4897-8b8d-6c426fa5a7d5" creator="9551" comment="Low-Budget- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
-				<de>${title}</de>
-				<en>${title}</en>
-				<pl>${title}</pl>
+				<all>${title}</all>
 			</title>
 			<description>
 				<de>Programmfüller für den jeden Morgen. Hier werden nochmal die Beiträge aus dem Mülleimer gefischt, die die Kollegen aus der Nachrichtenredaktion schon weggeschmissen haben. Andere niedrigschwellige Inhalte finden sich bestimmt auch noch.</de>
@@ -670,9 +662,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="d35ad24a-9095-490e-b5d1-f51ba82210ff" creator="9551" comment="Deluxe- und Endlos-Variante von scripttemplate-ron-morningshow">
 			<title>
-				<de>${title}</de>
-				<en>${title}</en>
-				<pl>${title}</pl>
+				<all>${title}</all>
 			</title>
 			<description>
 				<de>Es lohnt sich! Für jeden Morgen! Tolles Programm und gute Unterhaltung für einen beschwingten Start in den Tag.</de>
@@ -709,9 +699,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="494235d3-660d-4214-a687-4a5d0054943b" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>${tower} ${latebreaking}: ${title}</de>
-				<en>${tower} ${latebreaking}: ${title}</en>
-				<pl>${tower}: ${title}</pl>
+				<all>${tower} ${latebreaking}: ${title}</all>
 			</title>
 			<description>
 				<de>Technologie aktuell. Jeden Tag neu. Die neuesten Entwicklungen und Trends bei Elektronik, Telekommunikation, Computern.</de>
@@ -720,14 +708,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			</description>
 			<variables>
 				<tower>
-					<de>TVT|Tower|TVTower</de>
-					<en>TVT|Tower|TVTower</en>
-					<pl>TVT|Tower|TVTower</pl>
+					<all>TVT|Tower|TVTower</all>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
 					<en>Late-Breaking|Hot</en>
-					<pl></pl>
+					<pl>Info|Aktualności</pl>
 				</latebreaking>
 				<title>
 					<de>Tech|Technologie|Tech-Corner|Nerd-Corner</de>
@@ -773,9 +759,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			</description>
 			<variables>
 				<tower>
-					<de>TVT|Tower|TVTower</de>
-					<en>TVT|Tower|TVTower</en>
-					<pl>TVT|Tower|TVTower</pl>
+					<all>TVT|Tower|TVTower</all>
 				</tower>
 				<latebreaking>
 					<de>Aktuell|Brandaktuell|Brandheiße News|Aktuellste News</de>
@@ -858,9 +842,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="007b49ae-41e2-47b7-bf7c-628aecee7731" creator="9551">
 			<title>
-				<de>${tower} ${latebreaking}: ${title}</de>
-				<en>${tower} ${latebreaking}: ${title}</en>
-				<pl>${tower} ${latebreaking}: ${title}</pl>
+				<all>${tower} ${latebreaking}: ${title}</all>
 			</title>
 			<description>
 				<de>Filme, Musik, Stars und Sternchen. Die ganz große Kino-Show. Trailer, Ausschnitte, Infos und Interviews zu den aktuellen Neuerscheinungen.</de>
@@ -869,9 +851,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			</description>
 			<variables>
 				<tower>
-					<de>TVT|Tower|TVTower</de>
-					<en>TVT|Tower|TVTower</en>
-					<pl>TVT|Tower|TVTower</pl>
+					<all>TVT|Tower|TVTower</all>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
@@ -928,9 +908,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 					<en>Athletes|Footballers and co.|Sports Friends</en>
 					<pl>Sportowcy|Piłkarze i spółka|Przyjaciele sportowi</pl>
 				</athletes>
-				<randomcity>
-					<de>${.stationmap:"randomcity"}</de>
-				</randomcity>
+				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -958,7 +936,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			<title>
 				<de>${secondleague} Sport${report}</de>
 				<en>${secondleague} Sports${report}</en>
-				<pl>${secondleague} - ${report}</pl>
+				<pl>${secondleague} - Sport${report}</pl>
 			</title>
 			<description>
 				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
@@ -974,7 +952,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<report>
 					<de>report|reportage|bericht|berichterstattung|</de>
 					<en> Report| Feature| Bulletin| Coverage|</en>
-					<pl> Sportowy reportaż| Sportowy felieton| Sportowy biuletyn| Sportowy przegląd|</pl>
+					<pl>owy reportaż|owy felieton|owy biuletyn|owy przegląd|</pl>
 				</report>
 			</variables>
 			<jobs>
@@ -1002,9 +980,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="9f1cacc4-aa56-4f4a-9a9f-8c21c4bd3a7d" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>${tower} ${latebreaking}: ${title}</de>
-				<en>${tower} ${latebreaking}: ${title}</en>
-				<pl>${tower} ${latebreaking}: ${title}</pl>
+				<all>${tower} ${latebreaking}: ${title}</all>
 			</title>
 			<description>
 				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Boxen, Formel 1, Wintersport, alles dabei.</de>
@@ -1013,9 +989,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			</description>
 			<variables>
 				<tower>
-					<de>TVT|Tower|TVTower</de>
-					<en>TVT|Tower|TVTower</en>
-					<pl>TVT|Tower|TVTower</pl>
+					<all>TVT|Tower|TVTower</all>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
@@ -1054,9 +1028,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		<!-- TODO: More sports formats resp. 'Spiel ohne Grenzen', as proposed by ronny: "Bierpong", "Trocken-Curling", "Nagel-Weitklipsen", "Schaukelpferdparcours", "Brummkreiseln" ... -->
 		<scripttemplate product="4" licence_type="1" guid="919f396e-c7c0-4191-abbc-01d559c0feef" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>${tower} ${latebreaking}: ${title}</de>
-				<en>${tower} ${latebreaking}: ${title}</en>
-				<pl>${tower} ${latebreaking}: ${title}</pl>
+				<all>${tower} ${latebreaking}: ${title}</all>
 			</title>
 			<description>
 				<de>Politik aktuell. Jeden Tag neu. Wir analysieren die neuesten Entwicklungen in Wirtschaft und Politik.</de>
@@ -1065,9 +1037,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			</description>
 			<variables>
 				<tower>
-					<de>TVT|Tower|TVTower</de>
-					<en>TVT|Tower|TVTower</en>
-					<pl>TVT|Tower|TVTower</pl>
+					<all>TVT|Tower|TVTower</all>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
@@ -1103,9 +1073,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="4" licence_type="1" guid="204d40f8-c25f-458b-a049-526c06f4661f" creator="9551" comment="Perhaps some reciprocal effect with the corresponding news genre can be implemented? TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>${tower}: ${title}${latebreaking}</de>
-				<en>${tower}: ${title}${latebreaking}</en>
-				<pl>${tower}: ${title}${latebreaking}</pl>
+				<all>${tower}: ${title}${latebreaking}</all>
 			</title>
 			<description>
 				<de>Kultur aktuell. Jeden Tag neu. Vernissagen, Ausstellungen, Kulturfestivals, Konzerte, Kunst, Literatur. Neuerscheinungen sowie historische Rückblicke und Reflektionen.</de>
@@ -1114,9 +1082,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			</description>
 			<variables>
 				<tower>
-					<de>TVT|Tower|TVTower</de>
-					<en>TVT|Tower|TVTower</en>
-					<pl>TVT|Tower|TVTower</pl>
+					<all>TVT|Tower|TVTower</all>
 				</tower>
 				<title>
 					<de>Kultur|Kunst und Kultur|Kulturwelt|Kultursphäre|Kulturwoche</de>
@@ -1153,9 +1119,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="1" guid="f13dd881-b149-4981-aa75-67dd6fe9663a" creator="9551" comment="TODO: I am not happy with the titles and descriptions of these.">
 			<title>
-				<de>${tower} ${latebreaking}: ${title}</de>
-				<en>${tower} ${latebreaking}: ${title}</en>
-				<pl>${tower} ${latebreaking}: ${title}</pl>
+				<all>${tower} ${latebreaking}: ${title}</all>
 			</title>
 			<description>
 				<de>Die neuesten und heißesten Videospiele werden hier präsentiert und getestet. Nur für euch! Außerdem könnt ihr im Studio gegeneinander antreten und Preise gewinnen!</de>
@@ -1164,9 +1128,7 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 			</description>
 			<variables>
 				<tower>
-					<de>TVT|Tower|TVTower</de>
-					<en>TVT|Tower|TVTower</en>
-					<pl>TVT|Tower|TVTower</pl>
+					<all>TVT|Tower|TVTower</all>
 				</tower>
 				<latebreaking>
 					<de>Brandaktuell|Aktuell</de>
@@ -1220,9 +1182,9 @@ Czyli 4120 na odcinek.</pl>
 			</description>
 			<variables>
 				<bali>
-					<de>Bali|Laos|Kambodscha|Myanmar|Bhutan|Nepal|Bangladesch|Sri Lanka|Tibet|Vietnam|Macau|Kalmückien</de>
-					<en>Bali|Laos|Cambodia|Myanmar|Bhutan|Nepal|Bangladesh|Sri Lanka|Tibet|Vietnam|Macau|Kalmykia</en>
-					<pl>Bali|Laosu|Kambodży|Węgier|Bhutanu|Nepalu|Bangladeszu|Sri Lanki|Tybetu|Wietnamu|Makau|Greccy</pl>
+					<de>Bali|Laos|Kambodscha|Bhutan|Nepal|Bangladesch|Sri Lanka|Tibet|Vietnam|Macau|Kalmückien|Myanmar</de> <!-- TODO: earlier Birma/Burma -->
+					<en>Bali|Laos|Cambodia|Bhutan|Nepal|Bangladesh|Sri Lanka|Tibet|Vietnam|Macau|Kalmykia|Myanmar</en>
+					<pl>Bali|Laosu|Kambodży|Bhutanu|Nepalu|Bangladeszu|Sri Lanki|Tybetu|Wietnamu|Makau|Greccy|Węgier</pl>
 				</bali>
 			</variables>
 			<jobs>
@@ -1246,9 +1208,7 @@ Czyli 4120 na odcinek.</pl>
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="40d169cd-eeb2-400e-b839-f69690893bc1" creator="9551" comment="Quelle: Das Kino in meinem Kopf, das enstand, als ich zum ersten Mal den Titel von TheRob-Script-Com-EngeloderBengel, bei mir 'Aribert außer Rand und Band' gelesen hatte. :)">
 			<title>
-				<de>${title}</de>
-				<en>${title}</en>
-				<pl>${title}</pl>
+				<all>${title}</all>
 			</title>
 			<description>
 				<de>${name} ist behütet in einer fürsorglichen Familie aufgewachsen und lebt Mitte 20 in einer Studenten-WG mit braven Kommilitonen. Doch er spürt, etwas ist in ihm. Was ist das nur? Ist er vielleicht nicht ganz monogam? Sein Umfeld beginnt zu verzweifeln...</de>
@@ -1259,11 +1219,9 @@ Czyli 4120 na odcinek.</pl>
 				<title>
 					<de>${name} vogelwild|${name} ganz aus dem Häuschen|${name} voll aufgekratzt|Für ${name} gibt es kein Morgen mehr|${name} nicht mehr zu bändigen|${name} ganz ganz wild|${name} völlig ungezügelt|${name} wird ganz wild</de>
 					<en>${name} all boisterous|${name} all over the place|${name} totally psyched|For ${name} there is no more tomorrow|${name} no longer to be tamed|${name} going so very wild|${name} totally unbridled|${name} gets all wild</en>
-					<pl>${name}  dziki jak ptak|${name} podekscytowany|${name} totalnie zakręcony|Nie ma jutra dla ${name}|${name} oszołomiony|${name} wariuje|${name} idzie na całość|${name} ma wszystko gdzieś!</pl>
+					<pl>${name} dziki jak ptak|${name} podekscytowany|${name} totalnie zakręcony|Nie ma jutra dla ${name}|${name} oszołomiony|${name} wariuje|${name} idzie na całość|${name} ma wszystko gdzieś!</pl>
 				</title>
-				<name>
-					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}</de>
-				</name>
+				<name>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"es":"male"}</name>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1435,8 +1393,8 @@ Czyli 4120 na odcinek.</pl>
 				<en>Secretaries Report Part 4</en>
 			</title>
 			<description>
-				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler Higwig gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
-				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent Higwig's, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler ${.self:"role":2:"lastname"} gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
+				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent ${.self:"role":2:"lastname"}'s, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

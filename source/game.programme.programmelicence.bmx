@@ -3453,6 +3453,8 @@ Type TGameModifierProgramme_ModifyAvailability Extends TGameModifierBase
 	Method Init:TGameModifierProgramme_ModifyAvailability(data:TData, extra:TData=Null)
 		If Not data Then Return Null
 
+		InitTimeDataIfPresent(data)
+
 		programmeGUID = data.GetString("guid", "")
 		enable = data.GetBool("enable", True)
 

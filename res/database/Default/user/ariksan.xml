@@ -4,8 +4,7 @@
 	<scripttemplates>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-mkw" creator="9621" comment="inspired by German realtor docu soaps">
 			<title>
-				<de>${title} (${randomcity})</de>
-				<en>${title} (${randomcity})</en>
+				<all>${title} in ${randomcity}</all>
 			</title>
 			<description>
 				<de>Makler versuchen Wohnungen und Häuser an Kunden mit ungewöhnlichen Ansprüchen zu verkaufen oder zu vermieten. Ob Geisterjäger oder Zirkusartisten - die skurrilen Kunden lassen die Makler an ihre Grenzen gehen und sorgen für jede Menge Unterhaltung.</de>
@@ -16,19 +15,15 @@
 					<de>Träumen, Planen, Pleitegehen|Zoff, Zank, Abbruchbude|Himmel, Hölle, Hinterhof|Pech, Pannen, Pfusch|Vermieten, Verkaufen, Verzweifeln|Rausch, Reue, Ratenzahlung|Luxus, Lügen, Leerstand|Wohnen, Wunder, Wahnsinn|Traumhaus, Tränen, Trennungsschmerz|Schimmel, Schäden, Rost|Düster, Trostlos, Öde|Ratenzahlung, Rost, Bankrott|Suchen, Finden, Blechen|Renovieren, Sanieren, Abkassieren</de>
 					<en>Dreaming, Planning, Bankruptcy|Conflict, Quarrel, Breakdown|Cheating, Building, Bankruptcy|Luxury, Lies, Vacancy|Excess, Regret, Installment Plan|Miracle, Madness, Living|Cheap, Big, Dangerous|Rent, Spent, Repent|Bore, Explore, Adore|Sign, Align, Decline|Rent, Buy, Cry|Live, Obtain, Groan|Lease, Purchase, Debt|Place, Embrace, Palatial-Grace</en>
 				</title>
-				<randomcity>
-					<de>${.stationmap:"randomcity"}</de>
-				</randomcity>
+				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-mkw01">
 					<title>
-						<de>${titleprefix} ${wohnobjekt}</de>
-						<en>${titleprefix} ${wohnobjekt}</en>
+						<all>${titleprefix} ${wohnobjekt}</all>
 					</title>
 					<description>
-						<de>${wohn${wohnselector}}</de>
-						<en>${wohn${wohnselector}}</en>
+						<all>${wohn${wohnselector}}</all>
 					</description>
 					<variables>
 						<suchende_person>
@@ -56,16 +51,14 @@
 							<en>tries to sell ${wohnobjekt} to ${suchende_person2}|tries to rent out a ${wohnobjekt} to ${suchende_person2}|tries to foist ${wohnobjekt} upon ${suchende_person2}</en>
 						</artofthedeal>
 						<wohnsucher>
-							<de>${suchende_person} ${wohnobjekt} ${wohngrund}</de>
-							<en>${suchende_person} ${wohnobjekt} ${wohngrund}</en>
+							<all>${suchende_person} ${wohnobjekt} ${wohngrund}</all>
 						</wohnsucher>
 						<wohnfinder>
 							<de>Der Makler versucht, ${suchende_person2} ${wohnobjekt} ${artofthedeal}.</de>
 							<en>The realtor ${artofthedeal}.</en>
 						</wohnfinder>
 						<wohnselector>
-							<de>finder|sucher</de>
-							<en>finder|sucher</en>
+							<all>finder|sucher</all>
 						</wohnselector>
 					</variables>
 					<episodes value="8" />
@@ -109,7 +102,7 @@
 				<job index="0" function="1" required="1" gender="0" />
 				<job index="1" function="4" required="1" gender="0" />
 				<job index="2" function="8" required="1" gender="1" />
-				<job index="3" function="8" required="1" gender="2" />  <!--TODO: using function="8" instead of function="2048" (Model) as it is not supported yet -->
+				<job index="3" function="8" required="1" gender="2" /> <!--TODO: using function="8" instead of function="2048" (Model) as it is not supported yet -->
 				<job index="4" function="64" required="1" gender="0" />
 				<job index="5" function="64" required="1" gender="0" />
 				<job index="6" function="16" required="1" gender="0" />
@@ -126,8 +119,7 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-flavor" creator="9621" comment="very loosely inspired by kitchen nightmares TODO change job to chef when available">
 			<title>
-				<de>${title} - ${currentyear} Edition</de>
-				<en>${title} - ${currentyear} Edition</en>
+				<all>${title} - ${currentyear} Edition</all>
 			</title>
 			<description>
 				<de>Mutige Köche stürzen sich in kulinarische Missgeschicke. Von schrägen Kombinationen bis zu absurden Geschmacksexperimenten - ein Fest der Gaumenverwirrung und ein Fiasko für den guten Geschmack!</de>
@@ -138,9 +130,7 @@
 					<de>Geschmacksdesaster|Essensrausch|Küchenkatastrophen|Kulinarische Katastrophen|Das Küchenchaos|Die Gourmet-Patzer|Kulinarische Gemetzel|Das Feinschmecker-Experiment|Food Fiasco|Kulinarischer Kataklysmus|Geschmacksversagen|Menü Mayhem|Küchenkataklysmus|Rezeptdesaster</de>
 					<en>Flavor Fiasco|Food Frenzy|Kitchen Catastrophes|Culinary Calamities|Cooking Chaos|Gourmet Gaffes|Culinary Carnage|Chef's Nightmares|Food Fiasco|Cuisine Cataclysm|Flavor Failures|Menu Mayhem|Kitchen Cataclysm|Recipe Reckoning</en>
 				</title>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-flavor01">
@@ -192,8 +182,7 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-storage" creator="9621" comment="inspired by storage wars">
 			<title>
-				<de>${title} ${currentyear} Edition</de>
-				<en>${title} ${currentyear} Edition</en>
+				<all>${title} ${currentyear} Edition</all>
 			</title>
 			<description>
 				<de>Begleiten Sie eine Gruppe von „Schatzjägern“ in einem erbitterten Kampf um vergessenen Trödel und wertlosen Gerümpel. In verstaubten Lagereinheiten wird jeder Ramsch zur potenziellen Goldgrube!</de>
@@ -204,30 +193,14 @@
 					<de>Schrott-Spektakel|Kram-Konundrum|Trödelkriege|Schrottkriege|Schrott-Schlacht</de>
 					<en>Trash Treasures|Storage Mayhem|Clutter Clash|Dumpster Dazzle|Junk Journey</en>
 				</title>
-				<person1>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person1>
-				<person2>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person2>
-				<person3>
-					<de>${.persongenerator:"firstname":"it":"male"}</de>
-				</person3>
-				<person4>
-					<de>${.persongenerator:"firstname":"de":"female"}</de>
-				</person4>
-				<currentyear>
-					<de>${.worldtime:"year"}</de>
-				</currentyear>
+				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-storage-01">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
-						<de>${person1} und ${person2} zanken sich mit ${person3} um ${treasure}. ${person4} hat Glück im Unglück und kann ${junk} verhökern.</de>
-						<en>${person1} und ${person2} get into a fight with ${person3} over ${treasure}. ${person4} has luck in misfortune and sells off ${junk}.</en>
+						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} zanken sich mit ${.self:"role":4:"firstname"} um ${treasure}. ${.self:"role":5:"firstname"} hat Glück im Unglück und kann ${junk} verhökern.</de>
+						<en>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} get into a fight with ${.self:"role":4:"firstname"} over ${treasure}. ${.self:"role":5:"firstname"} has luck in misfortune and sells off ${junk}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -241,21 +214,17 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-storage-02">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
-						<de>Der Auktionator hat sich verfahren. Also übernimmt ${person4} seine Rolle. Chaos pur! ${person1} und ${person2} bieten mit ${person3} um die Wette.</de>
-						<en>The auctioneer has gotten lost. ${person4} takes over his role. Chaos ensues! ${person1} and ${person2} compete against ${person3}.</en>
+						<de>Der Auktionator hat sich verfahren. Also übernimmt ${.self:"role":5:"firstname"} seine Rolle. Chaos pur! ${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} bieten mit ${.self:"role":4:"firstname"} um die Wette.</de>
+						<en>The auctioneer has gotten lost. ${.self:"role":5:"firstname"} takes over his role. Chaos ensues! ${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} compete against ${.self:"role":4:"firstname"}.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-storage-03">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
-						<de>${person1} und ${person2} haben sich zerstritten und bieten heute gegeneinander. ${person4} zieht den Jackpot und sichert sich ${treasure}.</de>
-						<en>${person1} and ${person2} have had a falling out and are bidding against each other. ${person4} hits the jackpot and secures ${treasure}.</en>
+						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} haben sich zerstritten und bieten heute gegeneinander. ${.self:"role":5:"firstname"} zieht den Jackpot und sichert sich ${treasure}.</de>
+						<en>${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} have had a falling out and are bidding against each other. ${.self:"role":5:"firstname"} hits the jackpot and secures ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -265,13 +234,11 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-storage-04">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<!--TODO soll treasure hier der gleiche Gegenstand wie in der vorigen Folge sein?-->
 					<description>
-						<de>${person1} und ${person2} haben sich noch immer nicht versöhnt. ${person3} kippt einen Kaffee auf ${treasure}.</de>
-						<en>${person1} and ${person2} still haven't reconciled. ${person3} spills coffee on ${treasure}.</en>
+						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} haben sich noch immer nicht versöhnt. ${.self:"role":4:"firstname"} kippt einen Kaffee auf ${treasure}.</de>
+						<en>${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} still haven't reconciled. ${.self:"role":4:"firstname"} spills coffee on ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -281,12 +248,10 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-storage-05">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
-						<de>${person1} und ${person2} haben sich insgeheim versöhnt und tricksen alle aus. Sie finden ${treasure}.</de>
-						<en>${person1} and ${person2} have secretly reconciled and outsmart the others, finding ${treasure}.</en>
+						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} haben sich insgeheim versöhnt und tricksen alle aus. Sie finden ${treasure}.</de>
+						<en>${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} have secretly reconciled and outsmart the others, finding ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -296,12 +261,10 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-storage-06">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
-						<de>Ein neuer Bieter räumt ab. ${person1}, ${person2} und ${person4} sehen zu, wie er ${treasure} findet.</de>
-						<en>A new bidder outbids everyone. ${person1}, ${person2} and ${person4} watch as he walks away with ${treasure}.</en>
+						<de>Ein neuer Bieter räumt ab. ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} und ${.self:"role":5:"firstname"} sehen zu, wie er ${treasure} findet.</de>
+						<en>A new bidder outbids everyone. ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} and ${.self:"role":5:"firstname"} watch as he walks away with ${treasure}.</en>
 					</description>
 					<variables>
 						<treasure>
@@ -311,31 +274,27 @@
 					</variables>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-storage-07">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
-						<de>Skandal, der neue Bieter ist da. ${person1} und ${person2} schäumen vor Wut. ${person4} schafft es doch noch eine Lagereinheit zu ergattern.</de>
-						<en>The new bidder returns triumphantly. Frustration boils within ${person1} and ${person2}. However, ${person4} manages to secure a storage unit.</en>
+						<de>Skandal, der neue Bieter ist da. ${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} schäumen vor Wut. ${.self:"role":5:"firstname"} schafft es doch noch eine Lagereinheit zu ergattern.</de>
+						<en>The new bidder returns triumphantly. Frustration boils within ${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"}. However, ${.self:"role":5:"firstname"} manages to secure a storage unit.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-storage-08">
-					<title>
-						<de>${.stationmap:"randomcity"}</de>
-					</title>
+					<title>${.stationmap:"randomcity"}</title>
 					<description>
-						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit ${person3} in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>
-						<en>Hilarity ensues as it turns out that the new bidder is, in fact, ${person3} in a genius disguise. Everyone laughs hysterically.</en>
+						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit ${.self:"role":4:"firstname"} in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>
+						<en>Hilarity ensues as it turns out that the new bidder is, in fact, ${.self:"role":4:"firstname"} in a genius disguise. Everyone laughs hysterically.</en>
 					</description>
 				</scripttemplate>
 			</children>
 			<jobs>
 				<job index="0" function="1" required="1" gender="0" />
 				<job index="1" function="8" required="1" gender="1" />
-				<job index="2" function="32" required="1" gender="1" />
-				<job index="3" function="32" required="1" gender="2" />
-				<job index="4" function="32" required="1" gender="1" />
-				<job index="5" function="32" required="1" gender="2" />
+				<job index="2" function="32" required="1" gender="1" country="us" random_role="1" />
+				<job index="3" function="32" required="1" gender="2" country="us" random_role="1" />
+				<job index="4" function="32" required="1" gender="1" country="it" random_role="1" />
+				<job index="5" function="32" required="1" gender="2" country="de" random_role="1" />
 			</jobs>
 			<data flags="16" target_groups="68" />
 			<targetgroupattractivity men="0.5" />
@@ -348,19 +307,17 @@
 			<speed min="50" max="80" slope="50" />
 			<studio_size value="1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="script-ariksan-kautz" creator="9621" comment="inspired by die Sendung mit der Maus">
+		<scripttemplate product="2" licence_type="3" guid="script-ariksan-kautz" creator="9621" comment="inspired by die Sendung mit der Maus | 2024-11 a lot more episodes were added for variety and to enable random subset for a production">
 			<title>
 				<de>Die Sendung mit ${dativ_${variant}} ${tier_${variant}}</de>
 				<en>The Show with the ${adjective} ${animal}</en>
 			</title>
 			<description>
-				<de>Spaß und Fakten mit ${dativ_${variant}} ${tier_${variant}} und dem kleinen ${animal2}. ${nominativ_${variant}} ${tier_${variant}} und das ${animal2} erklären die Welt und sorgen für Lacher.</de>
+				<de>Spaß und Fakten mit ${dativ_${variant}} ${tier_${variant}} und dem kleinen ${animal2}. ${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erklären die Welt und sorgen für Lacher.</de>
 				<en>Fun and facts with the ${animal} and the tiny ${animal2}. Children explore the world with the ${adjective} ${animal} and the tiny ${animal2} who also present funny clips and stories.</en>
 			</description>
 			<variables>
-				<variant>
-					<de>m|w</de>
-				</variant>
+				<variant>m|w</variant>
 				<tier_m>
 					<de>Kautz|Strauß|Tiger|Schwan|Jaguar|Fuchs|Wolf|Widder|Hund|Gorilla|Hahn</de>
 					<en>Rook|Ostrich|Tiger|Swan|Jaguar|Fox|Wolf|Ram|Dog|Gorilla|Rooster</en>
@@ -382,13 +339,14 @@
 					<de>Die</de>
 				</nominativ_w>
 				<animal>
-					<en>${tier_${variant}}</en>
+					<all>${tier_${variant}}</all>
 				</animal>
 				<animal2>
 					<de>Nashorn|Flusspferd|Pferd|Stachelschwein|Schaf|Huhn|Kamel|Walross|Krokodil</de>
-					<en>rhino|hippo|horse|porcupine|sheep|chicken|camel|walrus|crocodile</en>
+					<en>rhino|hippo|horse|porcupine|sheep|chicken|camel|walrus|crocodile</en> <!-- should not be added: lion, cobra (already appear in episodes) -->
 				</animal2>
 				<adjective>
+					<de>witzige|aufgeweckte|gescheite|kluge|lustige</de>
 					<en>Witty|Sharp|Clever|Smart|Funny</en>
 				</adjective>
 			</variables>
@@ -399,9 +357,10 @@
 						<en>The Tomb of the Pharao</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} tauchen in die Welt der Archäologie ein. Achtung kleines ${animal2}, keine alten Flüche wecken!</de>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} tauchen in die Welt der Archäologie ein. Achtung kleines ${animal2}, keine alten Flüche wecken!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} delve into archaeology. Easy, ${animal2}, no ancient curses or mummies will make great roommates!</en>
 					</description>
+					<episodes min="0" max="1" /> <!-- TODO: no enforced pilot for now (should be more variable) -->
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-kautz-02">
 					<title>
@@ -409,7 +368,7 @@
 						<en>C++ Is not a Vitamine</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} lernen Programmieren. Achtung kleines ${animal2}, übermäßige Semikolons werden den Computer nicht beeindrucken!</de>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} lernen Programmieren. Achtung kleines ${animal2}, übermäßige Semikolons werden den Computer nicht beeindrucken!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} learn coding. Remember, ${animal2}, excessive semicolons won't impress the computer, just confuse it!</en>
 					</description>
 				</scripttemplate>
@@ -419,7 +378,7 @@
 						<en>Don't Eat that Jelly</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} erkunden den Ozean. Autsch, kleines ${animal2}, lass uns lieber Abstand von den quälenden Quallen halten!</de>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden den Ozean. Autsch, kleines ${animal2}, lass uns lieber Abstand von den quälenden Quallen halten!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore the ocean. Ouchy, tiny ${animal2}, let's keep our distance from those jellyfish!</en>
 					</description>
 				</scripttemplate>
@@ -429,7 +388,7 @@
 						<en>Black Gold</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} besuchen eine Raffinerie. Oh uhhh, die Strechhölzer bitte stecken lassen, kleines ${animal2}!</de>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine Raffinerie. Oh uhhh, die Strechhölzer bitte stecken lassen, kleines ${animal2}!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit an oil refinery. Uhhh, tiny ${animal2}, don't play with matches!</en>
 					</description>
 				</scripttemplate>
@@ -439,7 +398,7 @@
 						<en>BrushBot Buddy</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} besuchen ein Robotiklabor. Keine Sorge, kleines ${animal2}, die Roboter werden die Welt nicht übernehmen... noch nicht!</de>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen ein Robotiklabor. Keine Sorge, kleines ${animal2}, die Roboter werden die Welt nicht übernehmen... noch nicht!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a robotics lab. Don't worry, tiny ${animal2}, the robots won't take over the world... yet!</en>
 					</description>
 				</scripttemplate>
@@ -449,8 +408,278 @@
 						<en>Forest Explorers</en>
 					</title>
 					<description>
-						<de>${nominativ_${variant}} ${tier_${variant}} und das ${animal2} begleiten einen Förster. Winziges ${animal2}, es ist unhöflich mit den Bäumen zu streiten, auch wenn sie nicht gut zuhören!</de>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} begleiten einen Förster. Winziges ${animal2}, es ist unhöflich mit den Bäumen zu streiten, auch wenn sie nicht gut zuhören!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} accompany join forester in his daily tasks. Remember, tiny ${animal2}, it's not polite to argue with the trees, even if they're not good listeners!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-kautz-07">
+					<title>
+						<de>Der verrückte Vulkan</de>
+						<en>The Crazy Volcano</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen einen aktiven Vulkan. Achtung, kleines ${animal2}, heißer Boden ist kein guter Platz zum Tanzen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} visit an active volcano. Watch out, tiny ${animal2}, hot ground is not a good place to dance!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-kautz-08">
+					<title>
+						<de>Zeitreise-Zauber</de>
+						<en>Time Travel Magic</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} stolpern über eine mysteriöse Uhr. Vorsicht, kleines ${animal2}, du willst doch nicht aus Versehen im Mittelalter landen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} stumble across a mysterious clock. Careful, tiny ${animal2}, you don't want to end up in the Middle Ages by mistake!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="8" product="2" licence_type="2" guid="script-ariksan-kautz-09">
+					<title>
+						<de>Im Reich der Farben</de>
+						<en>In the Realm of Colors</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden eine Farb-Fabrik. Hey, kleines ${animal2}, nicht jede Farbe ist zum Trinken da!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} explore a paint factory. Hey, tiny ${animal2}, not every color is for drinking!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-kautz-10">
+					<title>
+						<de>Sternenjäger</de>
+						<en>Star Chasers</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen ein Planetarium. Ui, kleines ${animal2}, die Sterne sind zum Staunen da, nicht zum Sammeln!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a planetarium. Whew, tiny ${animal2}, the stars are there to marvel at, not to collect!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="10" product="2" licence_type="2" guid="script-ariksan-kautz-11">
+					<title>
+						<de>Dschungeldisco</de>
+						<en>Jungle Disco</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} feiern eine Party im Dschungel. Oho, kleines ${animal2}, eine Kobra als Tanzpartner ist vielleicht keine gute Idee!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} are having a party in the jungle. Oho, tiny ${animal2}, a cobra as a dance partner might not be a good idea!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="11" product="2" licence_type="2" guid="script-ariksan-kautz-12">
+					<title>
+						<de>Blitz und Donner</de>
+						<en>Thunder and Lightning</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} lernen über das Wetter. Achtung, kleines ${animal2}, Blitze versucht man besser nicht einzufangen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} learn about the weather. Watch out, tiny ${animal2}, you better not try to catch lightning!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="12" product="2" licence_type="2" guid="script-ariksan-kautz-13">
+					<title>
+						<de>Der geheime Garten</de>
+						<en>The Secret Garden</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} entdecken einen verzauberten Garten. Hups, kleines ${animal2}, lass lieber die sprechenden Blumen in Ruhe!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} discover an enchanted garden. Oops, tiny ${animal2}, better leave the talking flowers alone!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="13" product="2" licence_type="2" guid="script-ariksan-kautz-14">
+					<title>
+						<de>Rätselhafte Ruinen</de>
+						<en>Mysterious Ruins</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden eine verlassene Tempelanlage. Pass auf, kleines ${animal2}, manche Türen sollte man besser nicht öffnen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} explore an abandoned temple complex. Watch out, tiny ${animal2}, it's better not to open some doors!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="14" product="2" licence_type="2" guid="script-ariksan-kautz-15">
+					<title>
+						<de>Im Land der Riesentiere</de>
+						<en>In the Land of Giant Beasts</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} reisen in ein Naturkundemuseum mit Dinosauriermodellen. Oha, kleines ${animal2}, die T-Rex-Zähne sind keine Kletterhilfe!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} travel to a natural history museum with dinosaur models. Whoa, tiny ${animal2}, the T-Rex teeth are not a climbing aid!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="15" product="2" licence_type="2" guid="script-ariksan-kautz-16">
+					<title>
+						<de>Das Geheimnis der Berge</de>
+						<en>The Secret of the Mountains</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} gehen auf Wanderung in die Berge. Aber, kleines ${animal2}, der Gipfel ist kein Platz für ein Picknick mit Steinböcken!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} go hiking in the mountains. But but, tiny ${animal2}, the summit is no place for a picnic with ibexes!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="16" product="2" licence_type="2" guid="script-ariksan-kautz-17">
+					<title>
+						<de>Spuk im Schloss</de>
+						<en>Haunted Castle</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} verbringen eine Nacht in einem alten Schloss. Ruhig, kleines ${animal2}, die Gespenster sind vielleicht nur Nachbarn, die sich verirrt haben!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} spend a night in an old castle. Quiet, tiny ${animal2}, the ghosts might just be neighbors who got lost!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="17" product="2" licence_type="2" guid="script-ariksan-kautz-18">
+					<title>
+						<de>Im Weltall unterwegs</de>
+						<en>Traveling in Space</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} machen eine virtuelle Reise durch den Weltraum. Keine Sorge, kleines ${animal2}, der Astronautenhelm bleibt hier auf der Erde!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} take a virtual journey through space. Don't worry, tiny ${animal2}, the astronaut helmet stays here on earth!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="18" product="2" licence_type="2" guid="script-ariksan-kautz-19">
+					<title>
+						<de>Das verrückte Labyrinth</de>
+						<en>The Crazy Maze</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden ein Gartenlabyrinth. Hui, kleines ${animal2}, ein Plan hilft mehr als im Kreis zu laufen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} explore a garden maze. Wow, tiny ${animal2}, a plan helps more than running around in circles!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="19" product="2" licence_type="2" guid="script-ariksan-kautz-20">
+					<title>
+						<de>Der Schatz im See</de>
+						<en>The Treasure in the Lake</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} tauchen nach einem geheimen Schatz im See. Aber Vorsicht, kleines ${animal2}, die Fische sind wohl nicht so begeistert!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} are diving for a secret treasure in the lake. But be careful, tiny ${animal2}, the fish are probably not so keen!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="20" product="2" licence_type="2" guid="script-ariksan-kautz-21">
+					<title>
+						<de>Die magische Bücherei</de>
+						<en>The Magical Library</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine alte Bibliothek mit geheimnisvollen Büchern. Nicht so schnell, kleines ${animal2}, manche Geschichten bleiben besser ungelesen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} visit an old library with mysterious books. Not so fast, tiny ${animal2}, some stories are better left unread!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="21" product="2" licence_type="2" guid="script-ariksan-kautz-22">
+					<title>
+						<de>Auf dem Jahrmarkt</de>
+						<en>At the Funfair</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erleben die aufregenden Attraktionen eines Jahrmarkts. Oh nein, kleines ${animal2}, so viel Zuckerwatte ist nicht gut für den Magen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} experience the exciting attractions of a funfair. Oh no, tiny ${animal2}, so much candy floss is not good for your stomach!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="22" product="2" licence_type="2" guid="script-ariksan-kautz-23">
+					<title>
+						<de>Der große Zaubertrick</de>
+						<en>The Great Magic Trick</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} lernen von einem Zauberer ein paar Tricks. Aber Achtung, kleines ${animal2}, Kaninchen aus dem Hut zaubern ist schwieriger, als es aussieht!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} learn a few tricks from a magician. But beware, tiny ${animal2}, conjuring rabbits out of a hat is harder than it looks!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="23" product="2" licence_type="2" guid="script-ariksan-kautz-24">
+					<title>
+						<de>Geheimnisvolles Regenwald-Rätsel</de>
+						<en>Puzzling Rainforest Mystery</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} finden alte Felsmalereien. Kleine Spürnase, ${animal2}, aber pass auf, dass du deine antiken Vorfahren nicht weckst!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} find ancient rock paintings. You're a little sleuth, tiny ${animal2}, but be careful not to wake up your ancient ancestors!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="24" product="2" licence_type="2" guid="script-ariksan-kautz-25">
+					<title>
+						<de>Das große Käse-Kommando</de>
+						<en>The Big Cheese Commando</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine Käserei. Moment, kleines ${animal2}, der Käseberg ist nicht zum Runterrutschen da!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a cheese dairy. Wait a minute, tiny ${animal2}, the cheese mountain is not for sliding down!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="25" product="2" licence_type="2" guid="script-ariksan-kautz-26">
+					<title>
+						<de>Schatzsuche im Eismeer</de>
+						<en>Treasure Hunt in the Arctic Ocean</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} sind in der Arktis unterwegs. Brrr, kleines ${animal2}, die Schatztruhe ist tief unter dem Eis - schnell bewegen, dass wir ja nicht einfrieren!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} are out and about in the Arctic. Whoa, tiny ${animal2}, the treasure chest is deep under the ice - move quickly so we don't freeze!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="26" product="2" licence_type="2" guid="script-ariksan-kautz-27">
+					<title>
+						<de>Der geheimnisvolle Zirkus</de>
+						<en>The Mysterious Circus</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} landen in einem Zirkuszelt. Achtung, kleines ${animal2}, ein Löwenbändiger ist kein ${animal2}bändiger!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} end up in a circus tent. Watch out, tiny ${animal2}, a lion tamer is not a ${animal2} tamer!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="27" product="2" licence_type="2" guid="script-ariksan-kautz-28">
+					<title>
+						<de>Miniaturwunderland</de>
+						<en>Miniature Wonderland</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} geraten in einen Raum voller Mini-Welten. Staune, kleines ${animal2}, die winzigen Städte sind aber kein Klettergerüst!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} end up in a room full of mini-worlds. Be amazed, tiny ${animal2}, even though the tiny cities are not a climbing frame!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="28" product="2" licence_type="2" guid="script-ariksan-kautz-29">
+					<title>
+						<de>In der Pyramide des Eises</de>
+						<en>In the Pyramid of Ice</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erforschen eine Eishöhle. Vorsicht, kleines ${animal2}, rutschige Böden sind tückisch - kein Eistanz bitte!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} explore an ice cave. Careful, tiny ${animal2}, slippery floors are treacherous - no ice dancing please!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="29" product="2" licence_type="2" guid="script-ariksan-kautz-30">
+					<title>
+						<de>Der große Bücher-Wirbel</de>
+						<en>The Big Book Fuss</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} gehen in eine alte Bibliothek. Kleines ${animal2}, die Bücher kann man erkunden, aber bitte nicht anknabbern!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} go into an old library. tiny ${animal2}, you can explore the books, but please don't nibble on them!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="30" product="2" licence_type="2" guid="script-ariksan-kautz-31">
+					<title>
+						<de>Köstliche Kakao-Kiste</de>
+						<en>Delicious Cocoa Crate</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine Schokoladenfabrik. Huch, kleines ${animal2}, lass dich nicht in den Schokoladenfluss ziehen!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a chocolate factory. Whoops, tiny ${animal2}, don't get sucked into the chocolate river!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="31" product="2" licence_type="2" guid="script-ariksan-kautz-32">
+					<title>
+						<de>Der Wolken-Wanderer</de>
+						<en>The Cloud Walker</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} fliegen im Heißluftballon durch die Wolken. Holla, kleines ${animal2}, nicht zu nah an die Möwen ran!</de>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} fly through the clouds in a hot air balloon. Yikes, tiny ${animal2}, don't get too close to the seagulls!</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="32" product="2" licence_type="2" guid="script-ariksan-kautz-33">
+					<title>
+						<de>Im Spiegelkabinett</de>
+						<en>In the Hall of Mirrors</en>
+					</title>
+					<description>
+						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden ein mysteriöses Spiegelkabinett. Lustig, kleines ${animal2}, aber: ${nominativ_${variant}} ${tier_${variant}} hat nur ein Spiegelbild - nicht zwanzig!</de> <!-- TODO: tolower instead of colon? -->
+						<en>The ${adjective} ${animal} and the tiny ${animal2} explore a mysterious hall of mirrors. Funny, tiny ${animal2}, but the ${animal} only has one reflection - not twenty!</en>
 					</description>
 				</scripttemplate>
 			</children>
@@ -464,7 +693,7 @@
 			<data flags="2" target_groups="69" />
 			<targetgroupattractivity children="2" teenagers="0.5" unemployed="0.5" />
 			<genres maingenre="9" subgenres="3" />
-			<episodes min="6" max="6" />
+			<episodes min="5" max="8" />
 			<blocks value="1" />
 			<price min="150000" max="190000" slope="55" />
 			<potential min="50" max="95" slope="65" />
@@ -473,157 +702,439 @@
 			<speed min="35" max="75" slope="50" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="script-ariksan-bever" creator="9621" comment="inspired by Beverly Hills 90210, targetgroupattractivity spricht hauptächlich ein weibliches/teenie-publikum an">
+		<scripttemplate product="2" licence_type="3" guid="script-ariksan-bever" creator="9621" comment="inspired by Beverly Hills 90210, targetgroupattractivity spricht hauptächlich ein weibliches/teenie-publikum an | 2024-11 a lot more episodes were added for variety and to enable random subset for a production (inserting a few at the beginning because of the better introductory episode and the more humorous style)">
 			<title>
 				<de>${title} Staffel #1</de>
 				<en>${title} Season #1</en>
 			</title>
 			<description>
-				<de>In einer Küstenstadt navigieren ${person1_w}, ${person2_w}, ${person3_w}, ${person1_m}, ${person2_m} und ${person3_m} Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit.</de>
-				<en>In a coastal town, ${person1_w}, ${person2_w}, ${person3_w}, ${person1_m}, ${person2_m}, and ${person3_m} navigate love, friendship, secrets, and self-discovery in their eventful collage years.</en>
+				<de>In einer Küstenstadt navigieren ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":7:"firstname"}, ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit.</de>
+				<en>In a coastal town, ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":7:"firstname"}, ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"}, and ${.self:"role":4:"firstname"} navigate love, friendship, secrets, and self-discovery in their eventful college years.</en>
 			</description>
 			<variables>
 				<title>
-					<de>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</de>
-					<en>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</en>
+					<all>Santa Monica, 90405|San Diego 92110|Santa Cruz, 95060|Newport Beach, 92660|Huntington Beach, 92648|Long Beach, 90840|La Jolla, 92037|Santa Barbara, 93101|San Francisco, 94110|Palo Alto, 94301|Laguna Beach, 92651|Manhattan Beach, 90266|Venice Beach, 90291|San Clemente, 92672|Santa Cruz, 95060|Pacific Beach, 92109|Morro Bay, 93442|Monterey Bay, 93940</all>
 				</title>
-				<person1_m>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person1_m>
-				<person2_m>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person2_m>
-				<person3_m>
-					<de>${.persongenerator:"firstname":"us":"male"}</de>
-				</person3_m>
-				<person1_w>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person1_w>
-				<person2_w>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person2_w>
-				<person3_w>
-					<de>${.persongenerator:"firstname":"us":"female"}</de>
-				</person3_w>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-bever-01">
 					<title>
-						<de>${person3_w}s Muse</de>
-						<en>${person3_w}'s Muse</en>
+						<de>Willkommen in der Sonne</de>
+						<en>Welcome to the Sun</en>
 					</title>
 					<description>
-						<de>${person3_w} entdeckt ein musikalisches Talent und gründet eine Band, was die Aufmerksamkeit von ${person1_m} auf sich zieht, der Gefühle für sie entwickelt.</de>
-						<en>${person3_w} discovers a hidden talent for music and joins a band, catching the attention of ${person1_m} who starts developing feelings for her.</en>
+						<de>${.self:"role":2:"firstname"} ist neu in der Stadt, und ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} zeigen ihm den Unterschied zwischen örtlicher „Chillness“ und College-Stress. Der neue Mitschüler bleibt (vorerst) cool, doch ${.self:"role":6:"firstname"} und ${.self:"role":5:"firstname"} wittern frisches „Material“. ${.self:"role":7:"firstname"} zweifelt, ob ${.self:"role":2:"firstname"} vielleicht zu gut aussieht.</de>
+						<en>${.self:"role":2:"firstname"} is new in town, and ${.self:"role":3:"firstname"} and ${.self:"role":4:"firstname"} show him the difference between local "chillness" and college stress. The new classmate remains cool (for now), but ${.self:"role":6:"firstname"} and ${.self:"role":5:"firstname"} sense fresh "material". ${.self:"role":7:"firstname"} doubts whether ${.self:"role":2:"firstname"} might be too good-looking.</en>
 					</description>
+					<episodes min="0" max="1" /> <!-- TODO: no enforced pilot for now (should be more variable) -->
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="script-ariksan-bever-02">
+					<title>
+						<de>Eine Frage der Ehre</de>
+						<en>A Matter of Honor</en>
+					</title>
+					<description>
+						<de>Als ${.self:"role":5:"firstname"} und ${.self:"role":6:"firstname"} sich auf denselben Platz im Surfcamp bewerben, wird klar: Nur eine kann die Königin des Strandes sein. Währenddessen hilft ${.self:"role":4:"firstname"} ${.self:"role":2:"firstname"} beim Wellenreiten, aber der hat in Wahrheit nur Augen für ein gewisses Mädchen - die Frage ist: welches?</de>
+						<en>When ${.self:"role":5:"firstname"} and ${.self:"role":6:"firstname"} apply for the same place at the surf camp, it becomes clear that only one of them can be the queen of the beach. Meanwhile, ${.self:"role":4:"firstname"} helps ${.self:"role":2:"firstname"} ride the waves, but he really only has eyes for a certain girl - the question is: which one?</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-bever-03">
+					<title>
+						<de>Hitzewelle und heiße Herzen</de>
+						<en>Heatwave and Hot Hearts</en>
+					</title>
+					<description>
+						<de>Rekordhitze, und die Klimaanlage fällt aus. Was macht man da? Genau: Beziehungen auf die Probe stellen! ${.self:"role":6:"firstname"} glaubt, dass ${.self:"role":3:"firstname"} Gefühle für sie hat, doch er hat mehr Interesse am nächsten Eisstand. ${.self:"role":7:"firstname"} versucht verzweifelt, den kühlen Kopf zu bewahren.</de>
+						<en>Record heat and the air conditioning fails. What do we do then? Exactly: put relationships to the test! ${.self:"role":6:"firstname"} thinks ${.self:"role":3:"firstname"} has feelings for her, but he's more interested in the nearest ice cream stand. ${.self:"role":7:"firstname"} desperately tries to keep her cool.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-bever-04">
+					<title>
+						<de>Der große Surf-Contest</de>
+						<en>The Big Surf Contest</en>
+					</title>
+					<description>
+						<de>Alle Blicke sind auf den Strand gerichtet: ${.self:"role":2:"firstname"} hat seine große Chance, endlich dazuzugehören. ${.self:"role":6:"firstname"} überlegt derweil, ob es strategisch klug ist, Interesse an einem Surfer zu heucheln. ${.self:"role":7:"firstname"}s Motto: „Überzeugung hilft, wenn man selbst nicht überzeugt ist“.</de>
+						<en>All eyes are on the beach: ${.self:"role":2:"firstname"} has his big chance to finally belong. ${.self:"role":6:"firstname"}, meanwhile, ponders whether it's strategically wise to feign interest in a surfer. ${.self:"role":7:"firstname"}'s motto: "Conviction helps if you're not convinced yourself".</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-bever-05">
+					<title>
+						<de>Die Party, die keiner vergessen kann</de>
+						<en>The Party No One Can Forget</en>
+					</title>
+					<description>
+						<de>${.self:"role":4:"firstname"} schmeißt eine Party, und es passiert genau das, was in solchen Serien immer passiert: Drama, Drama und noch mehr Drama. ${.self:"role":3:"firstname"} versucht, ${.self:"role":7:"firstname"}s Gefühle für ihn auf die Probe zu stellen, und ${.self:"role":6:"firstname"} verbringt den Abend damit, möglichst viel Eindruck zu machen - notfalls auf jeden.</de>
+						<en>${.self:"role":4:"firstname"} is throwing a party and what happens is exactly what always happens in series like this: Drama, drama and more drama. ${.self:"role":3:"firstname"} tries to put ${.self:"role":7:"firstname"}'s feelings for him to the test, and ${.self:"role":6:"firstname"} spends the evening trying to make as much of an impression as possible - on everyone, if need be.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-bever-06">
+					<title>
+						<de>Muse der ${.self:"role":7:"firstname"}</de>
+						<en>${.self:"role":7:"firstname"}'s Muse</en>
+					</title>
+					<description>
+						<de>${.self:"role":7:"firstname"} entdeckt ein musikalisches Talent und gründet eine Band, was die Aufmerksamkeit von ${.self:"role":2:"firstname"} auf sich zieht, der Gefühle für sie entwickelt.</de>
+						<en>${.self:"role":7:"firstname"} discovers a hidden talent for music and joins a band, catching the attention of ${.self:"role":2:"firstname"} who starts developing feelings for her.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-bever-07">
 					<title>
 						<de>Das Liebesbrief-Rätsel</de>
 						<en>Love Letter Enigma</en>
 					</title>
 					<description>
-						<de>${person2_m} erhält einen Liebesbrief, der ihn auf die Suche nach der Identität des  Verehrers führt, während ${person1_w} sich fragt, ob er für sie bestimmt ist.</de>
-						<en>${person2_m} receives a love letter, leading to a quest to uncover the identity of the secret admirer, while ${person1_w} wonders if it's meant for her.</en>
+						<de>${.self:"role":3:"firstname"} erhält einen Liebesbrief, der ihn auf die Suche nach der Identität des Verehrers führt, während ${.self:"role":5:"firstname"} sich fragt, ob er für sie bestimmt ist.</de>
+						<en>${.self:"role":3:"firstname"} receives a love letter, leading to a quest to uncover the identity of the secret admirer, while ${.self:"role":5:"firstname"} wonders if it's meant for her.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-bever-03">
+				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-bever-08">
 					<title>
 						<de>Studienpartner</de>
 						<en>Academic Allies</en>
 					</title>
 					<description>
-						<de>${person3_m} kämpft mit einer überwältigenden Belastung im Studium und sucht Hilfe bei ${person2_w}, die zu seiner Lernpartnerin und Motivationsquelle wird.</de>
-						<en>${person3_m} struggles with an overwhelming course load at college, seeking support from ${person2_w} who becomes his study partner and source of motivation.</en>
+						<de>${.self:"role":4:"firstname"} kämpft mit einer überwältigenden Belastung im Studium und sucht Hilfe bei ${.self:"role":6:"firstname"}, die zu seiner Lernpartnerin und Motivationsquelle wird.</de>
+						<en>${.self:"role":4:"firstname"} struggles with an overwhelming course load at college, seeking support from ${.self:"role":6:"firstname"} who becomes his study partner and source of motivation.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-bever-04">
+				<scripttemplate index="8" product="2" licence_type="2" guid="script-ariksan-bever-09">
 					<title>
 						<de>Offenbarte Geheimnisse</de>
 						<en>Secrets Unveiled</en>
 					</title>
 					<description>
-						<de>${person1_w} findet ein verlorenes Tagebuch, das alte Geheimnisse offenbart und sie auf eine Reise der Selbstentdeckung mit verdrängten Wahrheiten führt.</de>
-						<en>${person1_w} finds a long-lost diary that reveals shocking secrets about her past, leading to a journey of self-discovery and confronting buried truths.</en>
+						<de>${.self:"role":5:"firstname"} findet ein verlorenes Tagebuch, das alte Geheimnisse offenbart und sie auf eine Reise der Selbstentdeckung mit verdrängten Wahrheiten führt.</de>
+						<en>${.self:"role":5:"firstname"} finds a long-lost diary that reveals shocking secrets about her past, leading to a journey of self-discovery and confronting buried truths.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-bever-05">
+				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-bever-10">
 					<title>
 						<de>Wegkreuzungen der Leidenschaft</de>
 						<en>Crossroads of Passion</en>
 					</title>
 					<description>
-						<de>${person2_m} steht vor einem Dilemma, als er zwischen Sport und Tanzen hin- und hergerissen ist und um Rat bei ${person3_w} bittet, die ihm bei der Entscheidung hilft.</de>
-						<en>${person2_m} faces a dilemma when he's torn between pursuing his passion for sports or dancing, seeking guidance from ${person3_w} who helps him make a decision.</en>
+						<de>${.self:"role":3:"firstname"} steht vor einem Dilemma, als er zwischen Sport und Tanzen hin- und hergerissen ist und um Rat bei ${.self:"role":7:"firstname"} bittet, die ihm bei der Entscheidung hilft.</de>
+						<en>${.self:"role":3:"firstname"} faces a dilemma when he's torn between pursuing his passion for sports or dancing, seeking guidance from ${.self:"role":7:"firstname"} who helps him make a decision.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-bever-06">
+				<scripttemplate index="10" product="2" licence_type="2" guid="script-ariksan-bever-11">
 					<title>
 						<de>Offengelegte Rivalität</de>
 						<en>Rivalry Revealed</en>
 					</title>
 					<description>
-						<de>${person1_m} vermutet, dass ${person3_m} etwas verheimlicht, was zu einer Rivalität führt, bis eine Konfrontation sie zwingt, ihre Missverständnisse anzugehen.</de>
-						<en>${person1_m} suspects that ${person3_m} is hiding something, fueling a tense rivalry until they are forced to confront their misunderstandings.</en>
+						<de>${.self:"role":2:"firstname"} vermutet, dass ${.self:"role":4:"firstname"} etwas verheimlicht, was zu einer Rivalität führt, bis eine Konfrontation sie zwingt, ihre Missverständnisse anzugehen.</de>
+						<en>${.self:"role":2:"firstname"} suspects that ${.self:"role":4:"firstname"} is hiding something, fueling a tense rivalry until they are forced to confront their misunderstandings.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-bever-07">
+				<scripttemplate index="11" product="2" licence_type="2" guid="script-ariksan-bever-12">
 					<title>
 						<de>Bühne des Neids</de>
 						<en>Stage of Envy</en>
 					</title>
 					<description>
-						<de>${person2_w} erhält die Hauptrolle im Schultheaterstück, was Eifersucht auslöst, insbesondere bei ${person3_w}, die ihre Emotionen bewältigen muss.</de>
-						<en>${person2_w} lands the lead role in the school play, causing jealousy among her friends, especially ${person3_w} who must navigate her emotions.</en>
+						<de>${.self:"role":6:"firstname"} erhält die Hauptrolle im Schultheaterstück, was Eifersucht auslöst, insbesondere bei ${.self:"role":7:"firstname"}, die ihre Emotionen bewältigen muss.</de>
+						<en>${.self:"role":6:"firstname"} lands the lead role in the school play, causing jealousy among her friends, especially ${.self:"role":7:"firstname"} who must navigate her emotions.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-bever-08">
+				<scripttemplate index="12" product="2" licence_type="2" guid="script-ariksan-bever-13">
 					<title>
 						<de>Die Vergangenheit ans Licht bringen</de>
 						<en>Unearthing the Past</en>
 					</title>
 					<description>
-						<de>${person1_m} stößt auf ein Foto, das auf ein Familiengeheimnis hinweist. ${person2_m} unterstützt ihn auf der Suche nach antworten.</de>
-						<en>${person1_m} stumbles upon a photo that hints at a family secret, leading him to embark on a quest for answers, with ${person2_m} providing support.</en>
+						<de>${.self:"role":2:"firstname"} stößt auf ein Foto, das auf ein Familiengeheimnis hinweist. ${.self:"role":3:"firstname"} unterstützt ihn auf der Suche nach antworten.</de>
+						<en>${.self:"role":2:"firstname"} stumbles upon a photo that hints at a family secret, leading him to embark on a quest for answers, with ${.self:"role":3:"firstname"} providing support.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="8" product="2" licence_type="2" guid="script-ariksan-bever-09">
+				<scripttemplate index="13" product="2" licence_type="2" guid="script-ariksan-bever-14">
 					<title>
 						<de>Dreiecksbeziehungen</de>
 						<en>Triangular Ties</en>
 					</title>
 					<description>
-						<de>${person3_w} ist zwischen ${person2_m} und ${person1_m} hin- und hergerissen. Das Liebesdreieck stellt ihre Freundschafte auf die Probe.</de>
-						<en>${person3_w} is torn between two potential love interests, ${person2_m} and ${person1_m}. The complicated love triangle tests their friendships.</en>
+						<de>${.self:"role":7:"firstname"} ist zwischen ${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"} hin- und hergerissen. Das Liebesdreieck stellt ihre Freundschaften auf die Probe.</de>
+						<en>${.self:"role":7:"firstname"} is torn between two potential love interests, ${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"}. The complicated love triangle tests their friendships.</en>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-bever-10">
+				<scripttemplate index="14" product="2" licence_type="2" guid="script-ariksan-bever-15">
 					<title>
 						<de>Moralisches Dilemma</de>
 						<en>Moral Dilemma</en>
 					</title>
 					<description>
-						<de>${person1_w} steht vor einem Dilemma, als sie ${person3_w}'s Geheimnis entdeckt, was sie vor die Wahl zwischen Loyalität und Gerechtigkeit stellt.</de>
-						<en>${person1_w} faces a moral dilemma when she discovers ${person3_w}'s secret, forcing her to choose between loyalty and doing what she believes is right.</en>
+						<de>${.self:"role":5:"firstname"} steht vor einem Dilemma, als sie ${.self:"role":7:"firstname"}'s Geheimnis entdeckt, was sie vor die Wahl zwischen Loyalität und Gerechtigkeit stellt.</de>
+						<en>${.self:"role":5:"firstname"} faces a moral dilemma when she discovers ${.self:"role":7:"firstname"}'s secret, forcing her to choose between loyalty and doing what she believes is right.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="15" product="2" licence_type="2" guid="script-ariksan-bever-16">
+					<title>
+						<de>Ein Schuss ins Schwarze</de>
+						<en>A Shot Into the Bull's Eye</en>
+					</title>
+					<description>
+						<de>Beim Bogenschießen entdeckt ${.self:"role":5:"firstname"} ein verborgenes Talent, und ${.self:"role":3:"firstname"} wundert sich, wie eine so zielgenaue Sportart emotional so viele Verwirrungen hervorrufen kann. ${.self:"role":7:"firstname"} würde sich gern um ihr eigenes Leben kümmern, wird aber zum lebenden Tagebuch für die Probleme ihrer Freunde.</de>
+						<en>${.self:"role":5:"firstname"} discovers a hidden talent in archery, and ${.self:"role":3:"firstname"} wonders how such a precise sport can cause so much emotional confusion. ${.self:"role":7:"firstname"} would like to take care of her own life, but becomes a living diary for her friends' problems.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="16" product="2" licence_type="2" guid="script-ariksan-bever-17">
+					<title>
+						<de>Die Sache mit den Geheimnissen</de>
+						<en>The Thing About Secrets</en>
+					</title>
+					<description>
+						<de>Ein Gerücht macht die Runde: Irgendwer soll in jemanden verknallt sein. Natürlich sagen alle: „Nicht mein Problem!“ Doch in Wahrheit brodelt es in allen - und ${.self:"role":5:"firstname"} will unbedingt herausfinden, um wen es geht. ${.self:"role":4:"firstname"} hat genug davon und kündigt eine „Wahrheitsstunde“ an.</de>
+						<en>A rumor is doing the rounds: Someone is said to have a crush on someone. Of course, everyone says: "Not my problem!" But the truth is that everyone is seething - and ${.self:"role":5:"firstname"} is determined to find out who it is. ${.self:"role":4:"firstname"} has had enough and announces a "truth session".</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="17" product="2" licence_type="2" guid="script-ariksan-bever-18">
+					<title>
+						<de>Die Stadt ist zu klein</de>
+						<en>The City Is Too Small</en>
+					</title>
+					<description>
+						<de>${.self:"role":7:"firstname"} entdeckt ${.self:"role":4:"firstname"} mit einem anderen Mädchen - oder war es nur ein Irrtum? Während sie sich um Klarheit bemüht, kommt es zu Begegnungen, die vielleicht kein Zufall sind. ${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"} diskutieren: Wann sagt man, was man denkt? Antwort: am besten gar nicht.</de>
+						<en>${.self:"role":7:"firstname"} discovers ${.self:"role":4:"firstname"} with another girl - or was it just a mistake? As she struggles for clarity, encounters occur that may not be a coincidence. ${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"} discuss: When do you say what you think? Answer: it's best not to at all.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="18" product="2" licence_type="2" guid="script-ariksan-bever-19">
+					<title>
+						<de>Die alles entscheidende Abstimmung</de>
+						<en>The All-Decisive Vote</en>
+					</title>
+					<description>
+						<de>Die Wahlen für die Studentenvertretung stehen an, und ${.self:"role":6:"firstname"} und ${.self:"role":3:"firstname"} haben eine Mission: Unauffällig für sich selbst stimmen. Doch die anderen haben auch Tricks im Ärmel. ${.self:"role":7:"firstname"} will die Wahlen ignorieren, wird aber zum Wahlkampfthema Nummer eins - ohne zu wissen, warum.</de>
+						<en>The elections for the student council are coming up, and ${.self:"role":6:"firstname"} and ${.self:"role":3:"firstname"} have a mission: to vote inconspicuously for themselves. But the others also have tricks up their sleeves. ${.self:"role":7:"firstname"} wants to ignore the elections, but becomes the number one campaign topic - without knowing why.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="19" product="2" licence_type="2" guid="script-ariksan-bever-20">
+					<title>
+						<de>Auf in die Sommerferien?</de>
+						<en>Off to Summer Vacations?</en>
+					</title>
+					<description>
+						<de>Die Prüfungen sind vorbei, aber niemand hat wirklich Lust auf Abschiede - oder doch? ${.self:"role":5:"firstname"} plant einen spektakulären Sommer, bei dem ${.self:"role":2:"firstname"} mitmischen soll, ${.self:"role":6:"firstname"} macht klare Ansagen, und ${.self:"role":7:"firstname"} stellt sich eine Frage: Kann man vor einem Drama davonlaufen, wenn es einen selbst betrifft?</de>
+						<en>The exams are over, but no one really feels like saying goodbye - or do they? ${.self:"role":5:"firstname"} is planning a spectacular summer with ${.self:"role":2:"firstname"} in the mix, ${.self:"role":6:"firstname"} is making clear announcements and ${.self:"role":7:"firstname"} is asking herself a question: can you run away from drama when it affects you?</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="20" product="2" licence_type="2" guid="script-ariksan-bever-21">
+					<title>
+						<de>Ein Freund, ein guter Freund</de>
+						<en>A Friend Indeed</en>
+					</title>
+					<description>
+						<de>${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"} machen eine „Nur-Jungs“-Aktion - klar, dass ${.self:"role":5:"firstname"} und ${.self:"role":6:"firstname"} das nicht lange auf sich sitzen lassen. Während die Jungs versuchen, „Männlichkeit“ zu definieren (ein langer Prozess), hinterfragt ${.self:"role":7:"firstname"}, warum sie ihre Freunde eigentlich so oft belehren muss.</de>
+						<en>${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"} go on a "boys only" campaign - it's clear that ${.self:"role":5:"firstname"} and ${.self:"role":6:"firstname"} won't stand for this for long. While the boys try to define "masculinity" (a long process), ${.self:"role":7:"firstname"} questions why she has to lecture her friends so often.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="21" product="2" licence_type="2" guid="script-ariksan-bever-22">
+					<title>
+						<de>Drama in der Kunstklasse</de>
+						<en>Drama In Art Class</en>
+					</title>
+					<description>
+						<de>Als ${.self:"role":6:"firstname"} eine radikale Vision fürs Kunstprojekt hat, wird aus einer simplen Malstunde ein sozialer Sturm. ${.self:"role":7:"firstname"} zieht sich in sichere Distanz zurück, während ${.self:"role":4:"firstname"} widerwillig Model steht - aber nicht ohne sich kritisch zu fragen, wie sein Kinnwinkel am besten zur Geltung kommt.</de>
+						<en>When ${.self:"role":6:"firstname"} has a radical vision for the art project, a simple painting lesson turns into a social storm. ${.self:"role":7:"firstname"} retreats to a safe distance, while ${.self:"role":4:"firstname"} reluctantly models - but not without critically wondering how best to show off the angle of his chin.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="22" product="2" licence_type="2" guid="script-ariksan-bever-23">
+					<title>
+						<de>${.self:"role":5:"firstname"} und der große Traum</de>
+						<en>${.self:"role":5:"firstname"} and the Big Dream</en>
+					</title>
+					<description>
+						<de>${.self:"role":5:"firstname"} will berühmt werden, der Plan: ein Casting für eine Reality-Show. Die Freunde begleiten sie, aber je näher sie ihrem „großen Moment“ kommt, desto mehr zweifeln alle, ob Fame wirklich ihre Bestimmung ist. ${.self:"role":2:"firstname"} fragt sich, wie ernst „ernst gemeint“ wirklich sein kann.</de>
+						<en>${.self:"role":5:"firstname"} wants to become famous, the plan: a casting for a reality show. Her friends accompany her, but the closer she gets to her “big moment”, the more everyone doubts whether fame is really her destiny. ${.self:"role":2:"firstname"} wonders how serious "being serious" can really be.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="23" product="2" licence_type="2" guid="script-ariksan-bever-24">
+					<title>
+						<de>Gefühlschaos am Valentinstag</de>
+						<en>Emotional Turmoil on Valentine's Day</en>
+					</title>
+					<description>
+						<de>Herzen und Erwartungen fliegen hoch, während ${.self:"role":7:"firstname"} den Valentinstag boykottiert. ${.self:"role":6:"firstname"} wartet darauf, dass ${.self:"role":3:"firstname"} etwas Romantisches macht - vergeblich. ${.self:"role":5:"firstname"} entwickelt derweil eine ausgeklügelte Taktik, um das Maximum an Schokolade abzugreifen. ${.self:"role":2:"firstname"} bleibt unbeteiligt - theoretisch.</de>
+						<en>Hearts and expectations are flying high, while ${.self:"role":7:"firstname"} boycotts Valentine's Day. ${.self:"role":6:"firstname"} waits for ${.self:"role":3:"firstname"} to do something romantic - in vain. Meanwhile, ${.self:"role":5:"firstname"} develops an ingenious tactic to get the maximum amount of chocolate. ${.self:"role":2:"firstname"} remains uninvolved - in theory.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="24" product="2" licence_type="2" guid="script-ariksan-bever-25">
+					<title>
+						<de>Skandale in den Sozialen Medien</de>
+						<en>Scandals on Social Media</en>
+					</title>
+					<description>
+						<de>Ein anonymes Profil postet pikante „Geheimnisse“ über die Schüler, und plötzlich fühlen sich alle beobachtet. ${.self:"role":5:"firstname"} vermutet ${.self:"role":4:"firstname"} dahinter, ${.self:"role":7:"firstname"} glaubt an eine Verschwörung, und ${.self:"role":3:"firstname"} entdeckt ein neues Hobby: Detektiv spielen. ${.self:"role":2:"firstname"}? Will nichts posten, sondern am liebsten abhauen.</de>
+						<en>An anonymous profile posts juicy “secrets” about the students, and suddenly everyone feels like they are being watched. ${.self:"role":5:"firstname"} suspects ${.self:"role":4:"firstname"} is behind it, ${.self:"role":7:"firstname"} believes it's a conspiracy, and ${.self:"role":3:"firstname"} discovers a new hobby: playing detective. ${.self:"role":2:"firstname"}? Doesn't want to post anything, but would rather run away.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="25" product="2" licence_type="2" guid="script-ariksan-bever-26">
+					<title>
+						<de>Plötzlich erwachsen</de>
+						<en>Grown Ups All of a Sudden</en>
+					</title>
+					<description>
+						<de>Ein gemeinsames Dinner für ein College-Projekt führt zur Frage: Wie ernst nehmen sie das Erwachsenwerden wirklich? ${.self:"role":6:"firstname"} hält einen Vortrag über Zukunftspläne, ${.self:"role":5:"firstname"} erklärt Karriereträume, und ${.self:"role":7:"firstname"} hinterfragt das alles skeptisch - inklusive, wie sie sich jemals mit Steuererklärungen anfreunden soll.</de>
+						<en>A dinner together for a college project leads to the question: how seriously do they really take growing up? ${.self:"role":6:"firstname"} gives a talk about future plans, ${.self:"role":5:"firstname"} explains career dreams, and ${.self:"role":7:"firstname"} skeptically questions it all - including how she'll ever make friends with tax returns.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="26" product="2" licence_type="2" guid="script-ariksan-bever-27">
+					<title>
+						<de>Nachtwanderung ins Ungewisse</de>
+						<en>Night Walk Into the Unknown</en>
+					</title>
+					<description>
+						<de>Eine Nachtwanderung im Wald soll Teamgeist fördern - nur wird zu Tode philosophiert, was Teamgeist eigentlich sein soll. ${.self:"role":3:"firstname"} versucht sich als Lagerfeuerguru, und ${.self:"role":6:"firstname"} macht eine Entdeckung, die ihr zu denken gibt. ${.self:"role":7:"firstname"} und ${.self:"role":4:"firstname"} überlegen, ob das der Moment ist, in dem man „lebenslange Erinnerungen“ schafft.</de>
+						<en>A night hike in the forest is to promote team spirit - except that they philosophize to death what team spirit actually means. ${.self:"role":3:"firstname"} tries his hand at being a campfire guru, and ${.self:"role":6:"firstname"} makes a discovery that gives her pause for thought. ${.self:"role":7:"firstname"} and ${.self:"role":4:"firstname"} ponder whether this is the moment to create "lifelong memories".</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="27" product="2" licence_type="2" guid="script-ariksan-bever-28">
+					<title>
+						<de>Das Ende der Unschuld</de>
+						<en>The End of Innocence</en>
+					</title>
+					<description>
+						<de>Ein College-Streich läuft etwas... schief. ${.self:"role":5:"firstname"} und ${.self:"role":3:"firstname"} wollten etwas „lustiges, aber unvergessliches“ machen. Die Cops rückten schnell an. ${.self:"role":7:"firstname"} hält eine moralische Ansprache, die keiner hören will, und ${.self:"role":2:"firstname"} erklärt, dass „unsere Rebellion nie spektakulär sein wird“ - zu ${.self:"role":6:"firstname"}s Verdruss.</de>
+						<en>A college prank goes a little... awry. ${.self:"role":5:"firstname"} and ${.self:"role":3:"firstname"} wanted to do something "fun but memorable". The cops quickly arrive. ${.self:"role":7:"firstname"} gives a moral speech that no one wants to hear, and ${.self:"role":2:"firstname"} declares that "our rebellion will never be spectacular" - much to ${.self:"role":6:"firstname"}'s annoyance.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="28" product="2" licence_type="2" guid="script-ariksan-bever-29">
+					<title>
+						<de>Der große Streit</de>
+						<en>The Big Dispute</en>
+					</title>
+					<description>
+						<de>Ein Missverständnis zwischen ${.self:"role":6:"firstname"} und ${.self:"role":5:"firstname"} wird zur Freundschaftskrise. ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} spielen Vermittler - aber nur, wenn die Mädels sich halbwegs an zivilisierte Regeln halten. ${.self:"role":7:"firstname"} findet alles kindisch und fragt sich, ob eine echte Krise vielleicht produktiver wäre.</de>
+						<en>A misunderstanding between ${.self:"role":6:"firstname"} and ${.self:"role":5:"firstname"} turns into a friendship crisis. ${.self:"role":3:"firstname"} and ${.self:"role":4:"firstname"} play mediator - but only if the girls stick to halfway civilized rules. ${.self:"role":7:"firstname"} finds it all childish and wonders whether a real crisis might be more productive.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="29" product="2" licence_type="2" guid="script-ariksan-bever-30">
+					<title>
+						<de>Der Anfang vom Ende?</de>
+						<en>The Beginning of the End?</en>
+					</title>
+					<description>
+						<de>Der Sommer nähert sich, und plötzlich wird klar, dass ihre Zeit als Clique nicht ewig sein wird. ${.self:"role":6:"firstname"} und ${.self:"role":2:"firstname"} diskutieren Zukunftspläne (Dramatik inklusive), während ${.self:"role":7:"firstname"} fragt, was wirklich bleibt. ${.self:"role":5:"firstname"} verspricht, dass „die besten Abenteuer noch kommen“ - vielleicht schon heute.</de>
+						<en>Summer is approaching and it suddenly becomes clear that their time as a clique won't last forever. ${.self:"role":6:"firstname"} and ${.self:"role":2:"firstname"} discuss plans for the future (drama included), while ${.self:"role":7:"firstname"} asks what really remains. ${.self:"role":5:"firstname"} promises that "the best adventures are yet to come" - maybe as soon as today.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="30" product="2" licence_type="2" guid="script-ariksan-bever-31">
+					<title>
+						<de>Das große Sportfest</de>
+						<en>The Big Sports Festival</en>
+					</title>
+					<description>
+						<de>Das jährliche Sportfest sorgt für Spannungen: ${.self:"role":6:"firstname"} will unbedingt gewinnen, während ${.self:"role":2:"firstname"} lieber auf der Bank chillt. ${.self:"role":5:"firstname"} plant, sich als Cheerleaderin zu inszenieren, und ${.self:"role":7:"firstname"} fragt sich, ob alles außer einer Lesung am Strand wirklich notwendig ist. ${.self:"role":4:"firstname"}? Sucht den Notausgang.</de>
+						<en>The annual sports festival causes tension: ${.self:"role":6:"firstname"} is determined to win, while ${.self:"role":2:"firstname"} prefers to chill on the bench. ${.self:"role":5:"firstname"} plans to stage herself as a cheerleader, and ${.self:"role":7:"firstname"} wonders whether everything except a reading on the beach is really necessary. ${.self:"role":4:"firstname"}? He's looking for the emergency exit.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="31" product="2" licence_type="2" guid="script-ariksan-bever-32">
+					<title>
+						<de>Das Dinner des Grauens</de>
+						<en>The Horror Dinner</en>
+					</title>
+					<description>
+						<de>Die Clique wird von ${.self:"role":6:"firstname"}s Familie zum schicken Dinner eingeladen, und alle versuchen, „erwachsen“ zu wirken - mit durchwachsenem Erfolg. ${.self:"role":3:"firstname"} entdeckt, dass Besteck mehr als eine Funktion hat, und ${.self:"role":5:"firstname"} macht eine Entdeckung: High Society ist nicht halb so dramatisch wie das College.</de>
+						<en>The clique is invited to a fancy dinner by ${.self:"role":6:"firstname"}'s family, and everyone tries to look "grown-up" - with mixed success. ${.self:"role":3:"firstname"} discovers that cutlery has more than one function, and ${.self:"role":5:"firstname"} makes a discovery: high society isn't half as dramatic as college.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="32" product="2" licence_type="2" guid="script-ariksan-bever-33">
+					<title>
+						<de>Die Sache mit dem Ex</de>
+						<en>The Thing With the Ex</en>
+					</title>
+					<description>
+						<de>${.self:"role":7:"firstname"} erfährt, dass ${.self:"role":6:"firstname"}s Ex wieder in der Stadt ist - und natürlich auch, dass ${.self:"role":6:"firstname"} „komplett über ihn hinweg“ ist. ${.self:"role":5:"firstname"} beschließt, den Ex zu begutachten, und ${.self:"role":2:"firstname"} sieht sich gezwungen, dem Drama zuzuschauen, in dem eigentlich jeder übertreibt. ${.self:"role":4:"firstname"} bleibt erstaunlich still.</de>
+						<en>${.self:"role":7:"firstname"} learns that ${.self:"role":6:"firstname"}'s ex is back in town - and of course that ${.self:"role":6:"firstname"} is "completely over him". ${.self:"role":5:"firstname"} decides to check up on the ex, and ${.self:"role":2:"firstname"} is forced to watch the drama, in which everyone is actually exaggerating. ${.self:"role":4:"firstname"} remains surprisingly quiet.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="33" product="2" licence_type="2" guid="script-ariksan-bever-34">
+					<title>
+						<de>Abenteuer auf dem Festival</de>
+						<en>Adventures at the Festival</en>
+					</title>
+					<description>
+						<de>Die Clique fährt zu einem Musikfestival, um „unvergessliche Erinnerungen“ zu schaffen - oder sich zumindest durch Menschenmengen zu kämpfen. ${.self:"role":3:"firstname"} verliert sich im Zeltlabyrinth, ${.self:"role":6:"firstname"} sieht jeden Auftritt als spirituelle Erfahrung, und ${.self:"role":7:"firstname"} fragt sich, warum hier alle blumenbekränzt herumlaufen.</de>
+						<en>The clique travels to a music festival to create "unforgettable memories" - or at least to fight their way through the crowds. ${.self:"role":3:"firstname"} gets lost in the labyrinth of tents, ${.self:"role":6:"firstname"} sees every performance as a spiritual experience and ${.self:"role":7:"firstname"} wonders why everyone is walking around wreathed in flowers.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="34" product="2" licence_type="2" guid="script-ariksan-bever-35">
+					<title>
+						<de>Die Frage der Treue</de>
+						<en>The Question of Fidelity</en>
+					</title>
+					<description>
+						<de>Als Gerüchte über ${.self:"role":6:"firstname"}s vermeintlichen Flirt mit einem Typ aus einer anderen Schule aufkommen, steht die Clique vor einer Bewährungsprobe. ${.self:"role":7:"firstname"}, skeptisch wie immer, misstraut den Gerüchten, und ${.self:"role":5:"firstname"} fragt sich, wie viel von ${.self:"role":6:"firstname"}s Geheimnissen in ihrem Tagebuch steht.</de>
+						<en>When rumors about ${.self:"role":6:"firstname"}'s supposed flirtation with a guy from another school emerge, the clique faces a test. ${.self:"role":7:"firstname"}, skeptical as ever, is suspicious of the rumors, and ${.self:"role":5:"firstname"} wonders how much of ${.self:"role":6:"firstname"}'s secrets are in her diary.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="35" product="2" licence_type="2" guid="script-ariksan-bever-36">
+					<title>
+						<de>Mit High Heels ins Abenteuer</de>
+						<en>High Heels for Adventure</en>
+					</title>
+					<description>
+						<de>${.self:"role":5:"firstname"} überredet die anderen zu einem „glamourösen“ Tag, der sich als Vollkatastrophe entpuppt: ein Fotoshooting in der prallen Sonne. Während ${.self:"role":3:"firstname"} feststellt, dass Mode kein Kinderspiel ist, kämpft ${.self:"role":7:"firstname"} verzweifelt gegen ihre Abneigung gegen alles, was „glitzernd“ ist.</de>
+						<en>${.self:"role":5:"firstname"} persuades the others to go on a "glamorous" day, which turns out to be a complete disaster: a photo shoot in the blazing sun. While ${.self:"role":3:"firstname"} realizes that fashion is no child's play, ${.self:"role":7:"firstname"} desperately fights her aversion to anything "glittery".</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="36" product="2" licence_type="2" guid="script-ariksan-bever-37">
+					<title>
+						<de>Der Überraschungsbesuch</de>
+						<en>The Surprise Visit</en>
+					</title>
+					<description>
+						<de>${.self:"role":2:"firstname"} erhält überraschenden Besuch von seinem Cousin aus dem Inland, der das komplette Gegenteil des örtlichen Lifestyles verkörpert. ${.self:"role":6:"firstname"} versucht, ihn umzustylen, ${.self:"role":5:"firstname"} will ihm Surfen beibringen, und ${.self:"role":4:"firstname"} fragt sich, wie lange er wohl die Frage „Ist das hier normal?“ beantworten muss.</de>
+						<en>${.self:"role":2:"firstname"} receives a surprise visit from his upcountry cousin, who embodies the complete opposite of the local lifestyle. ${.self:"role":6:"firstname"} tries to give him a makeover, ${.self:"role":5:"firstname"} wants to teach him to surf and ${.self:"role":4:"firstname"} wonders how long he will have to answer the question "Is this normal?".</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="37" product="2" licence_type="2" guid="script-ariksan-bever-38">
+					<title>
+						<de>Sommersprossen und Sommergefühle</de>
+						<en>Freckles and Summer Feelings</en>
+					</title>
+					<description>
+						<de>Als ${.self:"role":7:"firstname"} von einem älteren Typen angeschwärmt wird, ist die Gruppe zwischen Sorge und Belustigung gespalten. ${.self:"role":3:"firstname"} meint, das sei „endlich mal was Interessantes“, ${.self:"role":6:"firstname"} gibt Beziehungsratschläge, die keiner hören will, und ${.self:"role":2:"firstname"} beginnt, seine Freundschaft mit ${.self:"role":7:"firstname"} in einem neuen Licht zu sehen.</de>
+						<en>When ${.self:"role":7:"firstname"} gets a crush on an older guy, the group is split between concern and amusement. ${.self:"role":3:"firstname"} thinks it's "finally something interesting", ${.self:"role":6:"firstname"} gives relationship advice that no one wants to hear, and ${.self:"role":2:"firstname"} starts to see his friendship with ${.self:"role":7:"firstname"} in a new light.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="38" product="2" licence_type="2" guid="script-ariksan-bever-39">
+					<title>
+						<de>Der Tag der Abrechnung</de>
+						<en>The Day of Reckoning</en>
+					</title>
+					<description>
+						<de>Beim alljährlichen Quizwettbewerb treten sie als Team an - doch was als harmloser Spaß beginnt, wird zur absoluten Katastrophe. ${.self:"role":6:"firstname"} will jede Frage beantworten, ${.self:"role":7:"firstname"} korrigiert sie konsequent, und ${.self:"role":4:"firstname"} bleibt gelassen - bis ${.self:"role":3:"firstname"} die Kontrolle über das Mikrofon übernimmt.</de>
+						<en>They compete as a team in the annual quiz competition - but what starts out as harmless fun turns into an absolute disaster. ${.self:"role":6:"firstname"} wants to answer every question, ${.self:"role":7:"firstname"} consistently corrects her, and ${.self:"role":4:"firstname"} remains calm - until ${.self:"role":3:"firstname"} takes control of the microphone.</en>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="39" product="2" licence_type="2" guid="script-ariksan-bever-40">
+					<title>
+						<de>Goodbye, ${title}?</de>
+						<en>Goodbye, ${title}?</en>
+					</title>
+					<description>
+						<de>Die Abschlussfeier steht bevor, und das Ende der Schulzeit wird Realität. ${.self:"role":6:"firstname"} plant emotionale Reden, ${.self:"role":3:"firstname"} hat nur einen ironischen Spruch übrig, und ${.self:"role":7:"firstname"} stellt fest, dass sie doch ein wenig sentimental wird. ${.self:"role":5:"firstname"} verspricht allen, dass es nur der Anfang einer epischen Geschichte ist.</de>
+						<en>The graduation ceremony is coming up and the end of school is becoming a fact. ${.self:"role":6:"firstname"} plans emotional speeches, ${.self:"role":3:"firstname"} only has only one ironic line left, and ${.self:"role":7:"firstname"} realizes that she is getting a little sentimental after all. ${.self:"role":5:"firstname"} promises everyone that it's just the beginning of an epic story.</en>
 					</description>
 				</scripttemplate>
 			</children>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="4" required="1" />
-				<job index="2" function="2" required="1" gender="1" />
-				<job index="3" function="2" required="1" gender="1" />
-				<job index="4" function="2" required="1" gender="1" />
-				<job index="5" function="2" required="1" gender="2" />
-				<job index="6" function="2" required="1" gender="2" />
-				<job index="7" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="1" country="us" random_role="1" />
+				<job index="3" function="2" required="1" gender="1" country="us" random_role="1" />
+				<job index="4" function="2" required="1" gender="1" country="us" random_role="1" />
+				<job index="5" function="2" required="1" gender="2" country="us" random_role="1" />
+				<job index="6" function="2" required="1" gender="2" country="us" random_role="1" />
+				<job index="7" function="2" required="1" gender="2" country="us" random_role="1" />
 				<job index="8" function="32" required="1" gender="1" />
 				<job index="9" function="32" required="1" gender="2" />
 			</jobs>
 			<data target_groups="134" />
 			<targetgroupattractivity men="0.75" children="2" teenagers="2" pensioners="0.25" />
 			<genres maingenre="15" subgenres="7" />
-			<episodes min="10" max="10" />
+			<episodes min="6" max="10" />
 			<blocks value="1" />
 			<price min="130000" max="220000" slope="55" />
 			<potential min="40" max="95" slope="75" />

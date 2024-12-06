@@ -11,9 +11,7 @@
 		<!--Kult optional, kein Trash-->
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-Superheros" comment="TODO: Now that plenty of 'real' Marvel stuff is in the game, perhaps introduce 'Moval' not as a spoof but a cheap-rip-off">
 			<title>
-				<de>${HERO}</de>
-				<en>${HERO}</en>
-				<pl>${HERO}</pl>
+				<all>${HERO}</all>
 			</title>
 			<description>
 				<de>Heldenverfilmung aus den bekannten Moval-Comics. ${HERO} kämpft gegen einen neuen Superschurken und rettet die Welt.</de>
@@ -193,14 +191,10 @@
 			</description>
 			<variables>
 				<name1>
-					<de>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</de>
-					<en>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</en>
-					<pl>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</pl>
+					<all>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</all>
 				</name1>
 				<name2>
-					<de>Miller|Jackobson|Smith|Bloomberg|Gate|Johnson|Petersen</de>
-					<en>Miller|Jackobson|Smith|Bloomberg|Gate|Johnson|Petersen</en>
-					<pl>Miller|Jackobson|Smith|Bloomberg|Gate|Johnson|Petersen</pl>
+					<all>Miller|Jackobson|Smith|Bloomberg|Gate|Johnson|Petersen</all>
 				</name2>
 			</variables>
 			<jobs>
@@ -246,9 +240,8 @@
 					<pl>Jingela|Wollo|Huberta|Billiego|Fluffiego|Bobo|Neo</pl>
 				</Name>
 				<title>
-					<de>Mister |Little |Big |Mac</de>
-					<en>Mister |Little |Big |Mac</en>
-					<!--In Polish, not required. I had to rewrite it to make it grammatically ok.  -->
+					<all>Mister |Little |Big |Mac</all>
+					<!--In Polish, not required. I had to rewrite it to make it grammatically ok. -->
 				</title>
 			</variables>
 			<jobs>
@@ -283,7 +276,7 @@
 				<zu>
 					<de>writer|rider|searcher|hunter</de>
 					<en>writer|rider|searcher|hunter</en>
-					<pl>Eryk pisarz|Mark rajdowiec|Piotr wynalazca|Leon restaurator</pl><!--In Polish, I had to rewrite it to make it grammatically ok.  -->
+					<pl>Eryk pisarz|Mark rajdowiec|Piotr wynalazca|Leon restaurator</pl> <!--In Polish, I had to rewrite it to make it grammatically ok. -->
 				</zu>
 			</variables>
 			<jobs>
@@ -892,11 +885,7 @@
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-Nerdszusammen-Ep1">
-					<title>
-						<de>Pilot</de>
-						<en>Pilot</en>
-						<pl>Pilot</pl>
-					</title>
+					<title>Pilot</title>
 					<description>
 						<de>Sie werden Streber, Schleimer oder Fettsäcke genannt. Doch all dies führt dazu, dass die Nerds erkennnen, dass sie durch Lernen viel besser werden können als alle anderen. Als dann ein FBI-Agent versehntlich die Nerds kontaktiert, um Aufträge zu erledigen, werden diese aktiv.</de>
 						<en>They are called geeks, suck-ups or fatties. But all this leads the nerds to realize that by studying they can become much better than everyone else. When then an FBI agent accidentally contacts the nerds asking them to do missions, they take action.</en>
@@ -1072,9 +1061,9 @@
 		<!--Genre family ergänzt, Zufallsstadt ergänzt, kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-Kinderfliegen">
 			<title>
-				<de>Die ${Was} über ${Wo}</de>
-				<en>The ${Was} Above ${Wo}</en>
-				<pl>${Was} nad ${Wo}</pl>
+				<de>Die ${Was} über ${wo}</de>
+				<en>The ${Was} Above ${wo}</en>
+				<pl>${Was} nad ${wo}</pl>
 			</title>
 			<description>
 				<de>Eine Gruppe von Kindern guckt hoch nach oben in den Himmel von ${wo} und träumt vom Fliegen. Gemeinsam versuchen sie alles, um den Himmel für sich zu erobern.</de>
@@ -1083,11 +1072,7 @@
 			</description>
 			<children>
 				<scripttemplate licence_type="2" product="2" index="0" guid="Kasi-script-Kinderfliegen-Ep1">
-					<title>
-						<de>Pilot</de>
-						<en>Pilot</en>
-						<pl>Pilot</pl>
-					</title>
+					<title>Pilot</title>
 					<description>
 						<de>Kinder träumen von vielen Dingen, aber manchmal sind sie auch erreichbar. Der Traum vom Fliegen packt eine Gruppe junger Menschen aus ${wo}. Sie versuchen alles, um ihren Traum zu verwirklichen.</de>
 						<en>Children dream of many things, some may even be attainable. The dream of flying captivates a group of young people from ${wo}. They try everything to make their dream come true.</en>
@@ -1226,7 +1211,7 @@
 						<pl>20 lat później: dzieci dzieci</pl>
 					</title>
 					<description>
-						<de>Die Kinder sind Erwachsen geworden und haben selbst Kinder, die davon traumen den Himmel über ${wo} zu erobern.</de>
+						<de>Die Kinder sind erwachsen geworden und haben selbst Kinder, die davon traumen den Himmel über ${wo} zu erobern.</de>
 						<en>The children have grown up and have kids of their own who now dream of conquering the sky above ${wo}.</en>
 						<pl>Dzieci dorosły i mają własne dzieci, które teraz marzą o podbiciu nieba nad ${wo}.</pl>
 					</description>
@@ -1239,13 +1224,11 @@
 					<pl>Chmury|Gwiazdy|Słońce|Samoloty|Ptaki</pl>
 				</was>
 				<wo>
-					<de>Paris|Berlin|London|New York|Madrid|${randomcity}</de>
-					<en>Paris|Berlin|London|New York|Madrid|${randomcity}</en>
-					<pl>Paryżem|Berlinem|Londynem|Nowym Jorkiem|Madrytem|Wrocławiem</pl>
+					<de>Paris|Berlin|London|New York|Madrid|Warschau|Breslau|Lyon|Hamburg|Chicago|Sevilla|Kopenhagen|Stockholm|Oslo|Helsinki|Mailand|Rom|Kairo|Marrakesch|Casablanca|Sofia|Budapest|Bukarest|Athen|${randomcity}</de>
+					<en>Paris|Berlin|London|New York|Madrid|Warsaw|Wroclaw|Lyon|Hamburg|Chicago|Seville|Copenhagen|Stockholm|Oslo|Helsinki|Milan|Rome|Cairo|Marrakesh|Casablanca|Sofia|Budapest|Bucharest|Athens|${randomcity}</en>
+					<pl>Paryżem|Berlinem|Londynem|Nowym Jorkiem|Madrytem|Warszawą|Wrocławiem|Lyonem|Hamburgiem|Chicago|Sewillą|Kopenhagą|Sztokholmem|Oslo|Helsinkami|Mediolanem|Rzymem|Kairem|Marrakeszem|Casablanką|Sofią|Budapesztem|Bukaresztem|Atenami|Świetlanowem</pl> <!-- Polish cities not in nominative form! TODO: last one statically fictional ('City of Lights'), Polish grammar not working out with city name generator -->
 				</wo>
-				<randomcity>
-					<de>${.stationmap:"randomcity"}</de>
-				</randomcity>
+				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -1315,16 +1298,16 @@
 						<pl>Hasła typu "Twoja mama" są popularne. Ale dlaczego twoja mama jest mądrzejsza niż wszyscy inni i nie jest gruba, bez względu na wagę, wyjaśniono w programie.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Comedygemeinschaft-Ep4" comment="TODO: Nuck Chorris also used as spoof">
+				<scripttemplate licence_type="2" product="2" index="3" guid="Kasi-script-Comedygemeinschaft-Ep4">
 					<title>
-						<de>Buck Torris kann ich niederschlagen</de>
-						<en>Buck Torris, I Can Knock Him Down</en>
-						<pl>Buck Torris, mogę go powalić</pl>
+						<de>${chucknorris} kann ich niederschlagen</de>
+						<en>${chucknorris}, I Can Knock Him Down</en>
+						<pl>${chucknorris}, mogę go powalić</pl>
 					</title>
 					<description>
-						<de>Buck Torris kann alles? Nein. Was er nicht kann, wird lustig dargestellt.</de>
-						<en>Buck Torris can do anything? No. What he can not do is presented in a funny way.</en>
-						<pl>Buck Torris może zrobić wszystko? Nie. To, czego nie może zrobić, jest przedstawione w zabawny sposób.</pl>
+						<de>${chucknorris} kann alles? Nein. Was er nicht kann, wird lustig dargestellt.</de>
+						<en>${chucknorris} can do anything? No. What he can not do is presented in a funny way.</en>
+						<pl>${chucknorris} może zrobić wszystko? Nie. To, czego nie może zrobić, jest przedstawione w zabawny sposób.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="2" index="4" guid="Kasi-script-Comedygemeinschaft-Ep5">
@@ -1425,6 +1408,7 @@
 				</scripttemplate>
 			</children>
 			<variables>
+				<chucknorris>${.person:"f9886d56-43a6-4584-950e-d62ecf41e62a":"fullname"}</chucknorris>
 				<name>
 					<de>duo|trio|quartett|quintett|sextett</de>
 					<en>Duo|Trio|Quartet|Quintet|Sextet</en>
@@ -1657,14 +1641,10 @@
 			</description>
 			<variables>
 				<name1>
-					<de>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</de>
-					<en>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</en>
-					<pl>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</pl>
+					<all>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</all>
 				</name1>
 				<name2>
-					<de>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</de>
-					<en>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</en>
-					<pl>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</pl>
+					<all>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</all>
 				</name2>
 			</variables>
 			<jobs>
@@ -1699,14 +1679,10 @@
 			</description>
 			<variables>
 				<name1>
-					<de>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</de>
-					<en>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</en>
-					<pl>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</pl>
+					<all>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</all>
 				</name1>
 				<name2>
-					<de>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</de>
-					<en>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</en>
-					<pl>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</pl>
+					<all>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</all>
 				</name2>
 			</variables>
 			<jobs>
@@ -1742,14 +1718,10 @@
 			</description>
 			<variables>
 				<name1>
-					<de>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</de>
-					<en>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</en>
-					<pl>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</pl>
+					<all>Jennifer|Carolin|Jacky|Maria|Hannah|Helene|Ivanka</all>
 				</name1>
 				<name2>
-					<de>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</de>
-					<en>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</en>
-					<pl>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</pl>
+					<all>Miller|Jackobson|Smith|Bloomberg|Gates|Johnson|Petersen</all>
 				</name2>
 			</variables>
 			<jobs>

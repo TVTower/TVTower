@@ -93,9 +93,9 @@ DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1       = Wybrałeś odpowied
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1             = Firma producencka jest dość słaba
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1         = Firma producencka jest przeciętna
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1            = Firma produkcyjna jest jedną z lepszych w branży
-DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = I powinieneś lepiej rozdzielać punkty produkcji!
-DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = A punkty produkcji zostały rozmieszczone całkiem dobrze!
-DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = I doskonale rozdzieliłeś punkty produkcji!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = i powinieneś lepiej rozdzielać punkty produkcji!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = a punkty produkcji zostały rozmieszczone całkiem dobrze!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = i doskonale rozdzieliłeś punkty produkcji!
 
 PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = Transmisja na żywo dzisiaj o godzinie %X%.
 PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = Transmisja na żywo jutro o godzinie %X%.

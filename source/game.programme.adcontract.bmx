@@ -285,9 +285,6 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	Field blocks:Int = 1
 	'target group of the spot
 	Field limitedToTargetGroup:Int = -1
-	'is the ad broadcasting limit to a specific programme type?
-	'eg. "series", "movies"
-	Field limitedToProgrammeType:Int = -1
 	'is the ad broadcasting limit to a specific programme genre?
 	'eg. only "lovestory"
 	Field limitedToProgrammeGenre:Int = -1
@@ -297,9 +294,6 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	'is the ad broadcasting not allowed for a specific programme genre?
 	'eg. no "lovestory"
 	Field forbiddenProgrammeGenre:Int = -1
-	'is the ad broadcasting not allowed for a specific programme type?
-	'eg. no "series"
-	Field forbiddenProgrammeType:Int = -1
 	'is the ad broadcasting not allowed for a specific programme flag?
 	'eg. no "paid"
 	Field forbiddenProgrammeFlag:Int = -1
@@ -764,6 +758,9 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If baseContract Then baseContract.AddCurrentlyUsedByContract( GetGUID() )
 
 		Self.base = baseContract
+		'persist texts if expression evaluation is necessary
+		If baseContract.title.ContainsString("${") Then Self.title = _ReplaceScriptExpressions(baseContract.title.Copy())
+		If baseContract.description.ContainsString("${") Self.description = _ReplaceScriptExpressions(baseContract.description.Copy())
 	End Method
 
 

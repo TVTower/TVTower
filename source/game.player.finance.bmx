@@ -842,7 +842,7 @@ End Type
 
 
 
-
+'modifier.run is currently invoked directly by awards; not using the update mechanism
 Type TGameModifier_Money extends TGameModifierBase
 	Function CreateNewInstance:TGameModifier_Money()
 		return new TGameModifier_Money
@@ -861,7 +861,6 @@ Type TGameModifier_Money extends TGameModifierBase
 	Method ToString:string()
 		return "TGameModifier_Money ("+GetName()+")"
 	End Method
-
 
 
 	Method UndoFunc:int(params:TData)

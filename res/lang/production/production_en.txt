@@ -90,10 +90,10 @@ DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1    = You have chosen an 
 DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1        = You have chosen suitable cast, but they don't like you!
 DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1    = You have chosen a suitable cast.
 DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1       = You have chosen a suitable cast and they even appear to like you.
-DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1             = The production company is fairly sub par.
-DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1         = The production company is average.
-DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1            = The production company is one of the better in the business.
-DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = but you should distribute your production focus points better!
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1             = The production company is fairly sub par
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1         = The production company is average
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1            = The production company is one of the better in the business
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = and you should distribute your production focus points better!
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = and you distributed your production focus points reasonably well!
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = and you distributed your production focus points excellently!
 

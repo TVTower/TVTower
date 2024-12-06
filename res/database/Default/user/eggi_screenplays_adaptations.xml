@@ -5,8 +5,7 @@
 	<scripttemplates>
 		<scripttemplate product="1" licence_type="1" guid="ab31c2dd-46f4-4736-81b7-830c73af9ddf" creator="discord/eggi72" comment="https://en.wikipedia.org/wiki/Nathan_Hill_(writer) | https://www.goodreads.com/book/show/65650229-wellness">
 			<title>
-				<de>Hellness</de>
-				<en>Hellness</en>
+				<all>Hellness</all>
 			</title>
 			<title_original>
 				<de>Wellness</de>
@@ -30,7 +29,7 @@
 			</jobs>
 			<data flags="0" flags_optional="" target_groups="6" />
 			<targetgroupattractivity men="0.75" managers="1.25" />
-			<genres maingenre="15" subgenres="13,7" />
+			<genres maingenre="7" subgenres="13,15" />
 			<blocks value="5" />
 			<price min="100000" max="200000" />
 			<potential min="60" max="90" />

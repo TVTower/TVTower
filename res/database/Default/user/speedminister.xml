@@ -5,8 +5,8 @@
 		<!-- Deutschland -->
 		<person guid="SpeedMinister-person-id001" first_name="Freiherr" last_name="von Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
 		<person guid="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
-		<person guid="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
-		<person guid="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth"  creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
+		<person guid="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
+		<person guid="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
 		<person guid="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" castable="0" />
 		<person guid="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
 		<person guid="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
@@ -42,7 +42,7 @@
 		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" fictional="1" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
 			<first_name>Karlheinz</first_name>
 			<last_name>Dorfmichel</last_name>
-			<details job="66" gender="1"  birthday="-45" deathday="" country="D" />
+			<details job="66" gender="1" birthday="-45" deathday="" country="D" />
 			<data popularity="7" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 	</celebritypeople>
@@ -88,11 +88,7 @@
 					<ratings critics="59" speed="70" />
 				</programme>
 				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Tuba Tinnitus</de>
-						<en>Tuba Tinnitus</en>
-						<pl>Tuba Tinnitus</pl>
-					</title>
+					<title>Tuba Tinnitus</title>
 					<description>
 						<de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
 						<en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>
@@ -626,8 +622,7 @@
 	<allads>
 		<ad guid="cc5f7107-f929-4331-8dcf-fc4dd2d7e606" comment="1980-1987 | https://en.wikipedia.org/wiki/Xenix">
 			<title>
-				<de>Xunix</de>
-				<en>Xunix</en>
+				<all>Xunix</all>
 			</title>
 			<description>
 				<de>Besser als das Original! Das Betriebssystem von Macrohard speziell für Ihren Hochleistungsrechner.</de>
@@ -639,8 +634,7 @@
 		</ad>
 		<ad guid="cf636ccc-c253-45c5-afb8-c7aca1521f8b" comment="1988-1994 | https://en.wikipedia.org/wiki/LAN_Manager">
 			<title>
-				<de>LAN Master</de>
-				<en>LAN Master</en>
+				<all>LAN Master</all>
 			</title>
 			<description>
 				<de>Verbinden, Vereinen, Prosperieren. Die Lösung für Ihr Netzwerk von Macrohard.</de>
@@ -652,7 +646,7 @@
 		</ad>
 		<ad guid="867c2c0b-69c4-4c90-be72-804e9fa939cb" comment="1995-2007 | https://en.wikipedia.org/wiki/MSN">
 			<title>
-				<de>MHN</de>
+				<all>MHN</all>
 			</title>
 			<description>
 				<de>Das Portal und Ihr Pass für Ihre Reise in die digitalen Welten des Macrohard Netwebs.</de>

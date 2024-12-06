@@ -1070,6 +1070,22 @@ Type TScreenHandler_ProgrammePlanner
 
 		Local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(triggerEvent._sender)
 
+
+		'left mouse button - create copy/episode if shortcut was used
+		If triggerEvent.GetData().getInt("button",0) = 1
+			'if shortcut is used on a dragged item ... it gets executed
+			'on a successful drop, no need to do it here before
+			If item.isDragged() Then Return False
+
+			'assisting shortcuts create new guiobjects
+			If CreateNextEpisodeOrCopyByShortcut(item)
+				'do not try to drag the object - we did something special
+				triggerEvent.SetVeto()
+				Return False
+			EndIf
+		EndIf
+
+
 		'right mouse button - delete
 		If triggerEvent.GetData().getInt("button",0) = 2
 			'ignore wrong types and NON-dragged items
@@ -1087,6 +1103,8 @@ Type TScreenHandler_ProgrammePlanner
 			'remove right click - to avoid leaving the room
 			MouseManager.SetClickHandled(2)
 		EndIf
+
+		Return True
 	End Function
 
 

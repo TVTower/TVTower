@@ -19,6 +19,13 @@
 		<person guid="51397467-86e2-4c5f-9226-d93ecf9288a6" first_name="Nikola Sergejewitsch" last_name="Crasstschew" />
 		<person guid="6dd0a9b9-96a0-4712-83f0-f6388bdc5bec" first_name="Mihail" last_name="Gorbotschew" />
 		<person guid="f1bc5e03-2dbc-4219-88a5-6fa1dab4cb79" first_name="Fedot Michailowitsch" last_name="Dostojeshkew" />
+		<person guid="e315f82e-9a4f-400a-bbde-82585e171cf0" first_name="Andrei J." last_name="Pankratow" />
+		<person guid="7da693f9-978f-4283-9e62-b7ef9b918a80" first_name="Arkadij" last_name="Kashkow" />
+		<person guid="232eafa3-79b5-4ae6-8463-dea33a3bda90" first_name="Georgi" last_name="Kashkarow" />
+		<person guid="2a1ea4f9-480c-49c2-af2c-83290564e831" first_name="Jul" last_name="Romaschenko" />
+		<person guid="bf36bedc-0928-4b2f-a399-5abbbf310f35" first_name="Vasily" last_name="Klatschko" />
+		<person guid="7df0f616-2f57-4b93-baf0-32feb52fd0d5" first_name="Valentin" last_name="Klatschko" />
+		<person guid="826d29bc-09fc-4cef-aaa6-65da7624ec92" first_name="Boris" last_name="Jelchsin" />
 
 		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" first_name="Karlheinz" last_name="Dorfmichel" />
 	</persons>
@@ -54,6 +61,12 @@
 		<programmerole guid="f31a1bf6-1c2a-431e-a10c-cfee5b17fe7d" first_name="Raschid ad-Din" last_name="Sinan" />
 		<programmerole guid="36851db6-9af3-4650-baa6-c3e2e81fee9c" first_name="Richard" last_name="Löwenherz" title="König" />
 
+		<programmerole guid="487c9c31-be5c-4cf7-93fd-1a470ead1ec4" first_name="Lennard" last_name="McCay" nick_name="Palle" />
+		<programmerole guid="3670b612-8825-4c4d-a382-0227fe8d9184" first_name="Jakub" last_name="Špeiuebl" />
+		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Dubrovnik" last_name="Špeiuebl" />
+		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Derry" last_name="" />
+		<programmerole guid="25387571-5de7-4837-bbfb-f46b5a8d4779" first_name="Angus" last_name="MacGreifer" />
+
 		<programmerole guid="0db39875-f248-4a7c-9fb7-ede5408993f9" first_name="Der Poet" last_name="" />
 		<programmerole guid="c975b99e-22aa-440d-b8c3-fa7752221e71" first_name="Abdo" last_name="der Levantiner" />
 
@@ -71,8 +84,22 @@
 		<programmerole guid="a843edd4-3221-4bc6-b0ca-399ddfc560bc" first_name="Orpho" last_name="von Io" title="Roboter" />
 		<programmerole guid="1edcb77f-fb63-426e-b82a-43aab30c8956" first_name="Mehmed" last_name="von Europa" title="Roboter" />
 
+		<programmerole guid="roles-bambi-thumper" first_name="Klopfklopf" last_name="" />
+		<programmerole guid="roles-bambi-flower" first_name="Blümli" last_name="" />
+
+		<programmerole guid="roles-asterix-asterix" first_name="Klasterix" last_name="" />
+		<programmerole guid="roles-asterix-obelix" first_name="Knobelix" last_name="" />
+		<programmerole guid="roles-asterix-getafix" first_name="Mirakelfix" last_name="" />
+
 		<programmerole guid="roles-popeye-olive" first_name="Liv Oilia" last_name="Oelig" />
 		<programmerole guid="roles-popeye-deezil" first_name="Distel" last_name="Oelig" />
+
+		<programmerole guid="roles-flintstones-fred" first_name="Frank" last_name="Zunderstein" />
+		<programmerole guid="roles-flintstones-wilma" first_name="Wendy" last_name="Zunderstein" />
+		<programmerole guid="roles-flintstones-pebbles" first_name="Babbles" last_name="Zunderstein" />
+		<programmerole guid="roles-flintstones-barney" first_name="Bernie" last_name="Geschotterheim" />
+		<programmerole guid="roles-flintstones-betty" first_name="Betsy" last_name="Geschotterheim" />
+		<programmerole guid="roles-flintstones-bamm-bamm" first_name="Bumm-Bumm" last_name="Geschotterheim" />
 
 		<programmerole guid="roles-smurfs" first_name="Schmürfis" last_name="" />
 		<programmerole guid="roles-smurfs-papa" first_name="Vati" last_name="Schmurf" />
@@ -81,7 +108,7 @@
 		<programmerole guid="roles-smurfs-brainy" first_name="Hirni" last_name="Schmurf" /> <!-- alternativ: Brilli -->
 		<programmerole guid="roles-smurfs-grouchy" first_name="Grummli" last_name="Schmurf" />
 		<programmerole guid="roles-smurfs-hefty" first_name="Muskli" last_name="Schmurf" />
-		<programmerole guid="roles-smurfs-greedy" first_name="Naschi" last_name="Schmurf"  />
+		<programmerole guid="roles-smurfs-greedy" first_name="Naschi" last_name="Schmurf" />
 		<programmerole guid="roles-smurfs-jokey" first_name="Witzi" last_name="Schmurf" />
 		<programmerole guid="roles-smurfs-chef" first_name="Küchenchef" last_name="Schmurf" />
 		<programmerole guid="roles-smurfs-vanity" first_name="Eitli" last_name="Schmurf" />
@@ -115,7 +142,7 @@
 		<programmerole guid="roles-smurfs-dreamy" first_name="Mondi" last_name="Schmurf" />
 		<programmerole guid="roles-smurfs-flighty" first_name="Flatti" last_name="Schmurf" />
 		<programmerole guid="roles-smurfs-nanny" first_name="Großmutti" last_name="Schmurf" />
-		<programmerole guid="roles-smurfs-bigmouth" first_name="Riesenmaul" last_name="" />
+		<programmerole guid="roles-smurfs-bigmouth" first_name="Breitmaul" last_name="" />
 
 		<programmerole guid="2d8276be-611a-4d14-9107-766fdc7a9710" first_name="Freya" last_name="Rasenherz" />
 		<programmerole guid="a1a1b636-8e85-4af6-9562-5c4c1cc470a0" first_name="" last_name="von Hasenzahn" title="Baron" />
@@ -128,4 +155,10 @@
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Wirsch" title="Kommissar" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Darlene" last_name="" title="Assistentin" />
 	</programmeroles>
+
+<!--Define global variables here
+	<globalvariables>
+		<variableName>value de</variableName>
+	</globalvariables>
+-->
 </tvtdb>

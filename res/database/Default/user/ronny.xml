@@ -310,7 +310,7 @@ Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			<groups target_groups="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity teenagers="0.7" unemployed="0.8" managers="1.15" employees="1.25" />
 			<data country="D" distribution="2" maingenre="103" subgenre="6" flags="1" blocks="2" broadcast_flags="512" price_mod="1.00" />
-			<releaseTime year_relative="2" day="7" year_relative_min="1984" year_relative_max="2014" />
+			<releaseTime year_relative="2" day="7" year_relative_min="1984" />
 			<ratings critics="23" speed="15" />
 		</programme>
 
@@ -462,7 +462,7 @@ Oczekiwany skandal nie zmaterializował się.</pl>
 			<ratings critics="11" speed="18" />
 		</programme>
 
-		<programme guid="ronny-programme-zumbleistift-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+		<programme guid="ronny-programme-zumbleistift-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny" comment="TODO: Drehbuchnachfolger">
 			<title>
 				<de>Zum Bleistift?</de>
 				<en>(No) Fun Intended</en>
@@ -488,7 +488,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			</modifiers>
 			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" distribution="2" maingenre="100" subgenre="5" flags="1" blocks="3" broadcast_flags="512" />
-			<releaseTime year_relative="1" day="4" year_relative_min="1986" year_relative_max="1992" />
+			<releaseTime year_relative="1" day="4" year_relative_min="1986" />
 			<ratings critics="18" speed="35" />
 		</programme>
 
@@ -626,6 +626,14 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<en>The Text-and-Computer Regulation Agency is seeking remuneration for the use of the "Print" key located on computer keyboards. Even the intention to print is to be compensated.</en>
 				<pl>Agencja Regulacji Tekstu i Komputerów domaga się wynagrodzenia za korzystanie z klawisza "Drukuj" znajdującego się na klawiaturach komputerów. Nawet zamiar drukowania ma być rekompensowany.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<dem>
+					<de>${.lte:currentyear:2001:"DM":"Euro"}</de>
+					<en>${.lte:currentyear:2001:"DEM":"euros"}</en>
+					<pl>${.lte:currentyear:2001:"DEM":"euro"}</pl>
+				</dem>
+			</variables>
 			<effects>
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="1,4,8"
 					news1="ronny-news-drucktaste-02a" probability1="60"
@@ -691,9 +699,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<pl>Klawisz "PRINT": Koniec z opłatami</pl>
 			</title>
 			<description>
-				<de>Regierung stimmt Vorschlag der VG „Text und Computer“ zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 Euro stünden Verwaltungskosten von 2,8 Millionen Euro gegenüber.</de>
-				<en>Government approves proposal by the Text-and-Computer Regulation Agency: the "PRINT" key will once again be duty-free. The additional revenue of 1,200 euros would be offset by administrative costs of 2.8 million euros.</en>
-				<pl>Rząd zatwierdza propozycję Agencji Regulacji Tekstu i Komputerów: klawisz"PRINT" będzie ponownie zwolniony z cła. Dodatkowy przychód w wysokości 1200 euro zostanie zrekompensowany kosztami administracyjnymi w wysokości 2,8 mln euro.</pl>
+				<de>Regierung stimmt Vorschlag der VG „Text und Computer“ zu: die „DRUCK“-Taste wird wieder abgabenfrei. Den Mehreinnahmen von 1.200 ${dem} stünden Verwaltungskosten von 2,8 Millionen ${dem} gegenüber.</de>
+				<en>Government approves proposal by the Text-and-Computer Regulation Agency: the "PRINT" key will once again be duty-free. The additional revenue of 1,200 ${dem} would be offset by administrative costs of 2.8 million ${dem}.</en>
+				<pl>Rząd zatwierdza propozycję Agencji Regulacji Tekstu i Komputerów: klawisz"PRINT" będzie ponownie zwolniony z cła. Dodatkowy przychód w wysokości 1200 ${dem} zostanie zrekompensowany kosztami administracyjnymi w wysokości 2,8 mln ${dem}.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="30" />
 		</news>
@@ -736,11 +744,14 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<en>Yesterday morning researchers at the polar station "Frost paw" observed a sandstorm. Researcher Jörnssen: "It looked so real, just like the camels."</en>
 				<pl>Wczoraj rano naukowcy ze stacji polarnej "Mroźna łapa" zaobserwowali burzę piaskową. Badacz Jörnssen: "Wyglądało to tak realistycznie, zupełnie jak u wielbłądów".</pl>
 			</description>
+			<variables>
+				<pattyglansen>${.person:"21e88c65-0cc6-4bd1-bd14-b48b6ce25402":"fullname"}</pattyglansen>
+			</variables>
 			<effects>
 				<!-- "morgen 9-15 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,9,15" news="ronny-news-sandsturm-02" />
 			</effects>
-			<data genre="4" price="1.0" quality="48" />
+			<data genre="3" price="1.0" quality="48" />
 		</news>
 		<news guid="ronny-news-sandsturm-02" type="2" thread_guid="ronny-news-sandsturm" creator="5578" created_by="Ronny" comment="TODO: Actually add this film?">
 			<title>
@@ -749,9 +760,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<pl>Burza piaskowa nie była prawdziwa</pl>
 			</title>
 			<description>
-				<de>Die Forscher der Polarstation gaben kleinlaut zu, dass aus Versehen der neue TV vor dem Fenster stand. Es lief Patty Glansens Liebesfilm „|b|Dornen der Wüste|/b|“.</de>
-				<en>The researchers of the polar station meekly admitted that inadvertently their new TV was placed in front of the window. It played Patty Glansen's romantic movie "|b|Thorns of the desert|/b|".</en>
-				<pl>Badacze stacji polarnej potulnie przyznali, że przez nieuwagę ich nowy telewizor został umieszczony przed oknem. Odtwarzał on romantyczny film Patty Glansen "|b|Thorns of the desert|/b|".</pl>
+				<de>Die Forscher der Polarstation gaben kleinlaut zu, dass aus Versehen der neue TV vor dem Fenster stand. Es lief ${pattyglansen}s Liebesfilm „|b|Dornen der Wüste|/b|“.</de>
+				<en>The researchers of the polar station meekly admitted that inadvertently their new TV was placed in front of the window. It played ${pattyglansen}'s romantic movie "|b|Thorns of the desert|/b|".</en>
+				<pl>Badacze stacji polarnej potulnie przyznali, że przez nieuwagę ich nowy telewizor został umieszczony przed oknem. Odtwarzał on romantyczny film ${pattyglansen} "|b|Thorns of the desert|/b|".</pl>
 			</description>
 			<!--
 				- Popularitaet von "Patty Glansen" erhoehen
@@ -762,7 +773,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<effect trigger="happen" type="modifyMovieGenrePopularity" genre="15" valueMin="0.5" valueMax="2.0" />
 			</effects>
 
-			<data genre="4" price="1.0" quality="28" />
+			<data genre="1" price="1.0" quality="28" />
 		</news>
 
 
@@ -945,9 +956,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			<!-- usage of ${.stationmap:"randomcity"} in the text directly, will lead to a different random city
 				 in title than in the description - so we use variables as this caches the output of the first city -->
 			<variables>
-				<cityname>
-					<de>${.stationmap:"randomcity"}</de>
-				</cityname>
+				<cityname>${.stationmap:"randomcity"}</cityname>
 			</variables>
 			<data genre="5" price="0.9" quality="28" />
 		</news>
@@ -957,9 +966,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 		<!-- product="3" => "Show" -->
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-musiksterneamabend">
 			<title>
-				<de>${WHAT} ${WHEN}</de>
-				<en>${WHAT} ${WHEN}</en>
-				<pl>${WHAT} ${WHEN}</pl>
+				<all>${WHAT} ${WHEN}</all>
 			</title>
 			<description>
 				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
@@ -1002,9 +1009,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
 			<title>
-				<de>${SHOWNAME}</de>
-				<en>${SHOWNAME}</en>
-				<pl>${SHOWNAME}</pl>
+				<all>${SHOWNAME}</all>
 			</title>
 			<description>
 				<de>Aufgewacht das Bettchen kracht. Lockere Morgenunterhaltung für alle - vom Frühaufsteher bis zum arbeitslosen Langschläfer.</de>
@@ -1014,10 +1019,11 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 			<variables>
 				<showname>
-					<de>Goldene Morgenstunden|Guten Morgen ${.stationmap:"randomcity"}|Die Frühaufsteher|Start in den Tag</de>
-					<en>The Early Birds|Good Morning ${.stationmap:"randomcity"}|The Early Risers|Start of the Day</en>
-					<pl>Pobudka z TV|Dzień dobry ${.stationmap:"randomcity"}|Poranne TV|Telewizja śniadaniowa</pl>
+					<de>Goldene Morgenstunden|Guten Morgen ${randomcity}|Die Frühaufsteher|Start in den Tag</de>
+					<en>The Early Birds|Good Morning ${randomcity}|The Early Risers|Start of the Day</en>
+					<pl>Pobudka z TV|Dzień dobry ${randomcity}|Poranne TV|Telewizja śniadaniowa</pl>
 				</showname>
+				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
 
 			<jobs>
@@ -1044,15 +1050,15 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-from-above" comment="TODO: episode descriptions">
 			<title>
-				<de>${maintitle}</de>
+				<all>${maintitle}</all>
 			</title>
 			<description>
-				<de>${maindescription}</de>
+				<all>${maindescription}</all>
 			</description>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-from-above-eps">
 					<title>
-						<de>${episodetitle}</de>
+						<all>${episodetitle}</all>
 					</title>
 					<variables>
 						<episodetitle>
@@ -1088,7 +1094,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="8" required="1"  />
+				<job index="1" function="8" required="1" />
 			</jobs>
 			<data flags="4" target_groups="68" />
 			<targetgroupattractivity men="0.5" />
@@ -1111,15 +1117,12 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-visiting">
 			<title>
-				<de>${ttl}</de>
-				<en>${ttl}</en>
-				<pl>${ttl}</pl>
+				<all>${ttl}</all>
 			</title>
-			<description>
-				<!--no description at all: first episode's description is shown for series-->
-				<de></de>
-				<en></en>
-			</description>
+			
+			<!--no description at all: first episode's description is shown for series-->
+			<!--TODO test that empty description still works as expected-->
+			<description></description>
 			<variables>
 				<ttl>
 					<de>Zu Gast in ${cntry}|Reise durch ${cntry}|Auf Achse in ${cntry}|Leben in ${cntry}|Sehenswertes ${cntry}|Faszination ${cntry}|Blickpunkt ${cntry}</de>
@@ -1294,7 +1297,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			</children>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="8" required="1"  />
+				<job index="1" function="8" required="1" />
 			</jobs>
 			<genres maingenre="6" subgenres="300" />
 			<episodes min="4" max="6" />
@@ -1317,38 +1320,37 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-ron-world">
 			<title>
-				<de>${ttl}</de>
-				<en>${ttl}</en>
-				<pl>${ttl}</pl>
+				<all>${ttl}</all>
 			</title>
 			<description>
 				<de>Folgen Sie uns auf einer Reise um die Welt. ${subject} findet man auch in Ländern, in denen man sie nicht vermutet hätte.</de>
 				<en>Join us on a journey around the world. ${subject} may sometimes be found in countries you might not have expected.</en>
-				<pl>Dołącz do nas w podróży dookoła świata. Coś niesamowitego można czasem znaleźć w krajach, w których byśmy się tego nie spodziewali.</pl>
+				<pl>Dołącz do nas w podróży dookoła świata. ${subject} można czasem znaleźć w krajach, w których byśmy się tego nie spodziewali.</pl>
 			</description>
 			<children>
 				<scripttemplate product="2" licence_type="2" index="0" guid="scripttemplate-ron-world-eps" comment="TODO: English title vs text casings">
 					<title>
-						<de>${epttl}</de>
-						<en>${epttl}</en>
-						<pl>${epttl}</pl>
+						<all>${epttl}</all>
 					</title>
 					<description>
-						<de>${dsc}</de>
-						<en>${dsc}</en>
-						<pl>Podróże przez świat. Poznajemy różne kraje. ${dsc}</pl>
+						<all>${traveling}${dsc}</all>
 					</description>
 					<variables>
 						<epttl>
 							<de>${subject} ${cntry}s|${adjective}${subject} ${cntry}s</de>
 							<en>${subject} of ${cntry}|${adjective}${subject} of ${cntry}</en>
-							<pl>Podróże przez świat. ${cntry}.|Z walizką przez świat. ${cntry}</pl>
+							<pl>${cntry}: ${subject}|${cntry}: ${adjective}${subject}</pl>
 						</epttl>
-						<!--without an empty description, the series description is used again-->
+						<traveling>
+							<de>Durch die Welt reisen. |Verschiedene Länder kennenlernen. |Mit gepackten Koffern durch die Welt. |Was können wir besichtigen und über das Land lernen? |</de>
+							<en>Traveling through the world. |Learning about different countries. |With a suitcase through the world. |What can we see and learn about the country? |</en>
+							<pl>Podróże przez świat. |Poznajemy różne kraje. |Z walizką przez świat. |Co możemy zobaczyć i dowiedzieć się o tym kraju? |</pl>
+						</traveling>
+						<!--with an empty description, the series description is used again-->
 						<dsc>
-							<de> |${cntry}s ${subject} bergen so manches Geheimnis.|Fakten und Meinungen zu ${cntry}s ${subject}.|Was macht ${cntry}s ${subject} so besonders?</de>
-							<en> |${subject} in ${cntry} carry quite a few secrets.|${subject} of ${cntry} - facts and opinions.|${subject} in ${cntry}, what makes them so special?</en>
-							<pl> |${cntry} to kraj który ma bardzo dużo niezwykłych tajemnic i ciekawostek.|${cntry} - informacje, fakty i opinie.|${cntry}, co możemy zobaczyć i dowiedzieć się o tym kraju?</pl>
+							<de> |${cntry}s ${subject} bergen so manche Geheimnisse und Kuriositäten.|Fakten und Meinungen zu ${cntry}s ${subject}.|Was macht ${cntry}s ${subject} so besonders?</de>
+							<en> |${subject} in ${cntry} carry quite a few secrets and curiosities.|${subject} of ${cntry} - facts and opinions.|${subject} in ${cntry}, what makes them so special?</en>
+							<pl> |${cntry}: ${subject} kryją w sobie sporo tajemnic i ciekawostek.|${cntry} - ${subject} - informacje, fakty i opinie.|${cntry} - ${subject}: Co czyni je tak wyjątkowymi?</pl>
 						</dsc>
 						<cntry>
 							<de>Deutschland|Spanien|Frankreich|Dänemark|Schweden|Finnland|Norwegen|Polen|Griechenland|Italien|Portugal|Brasilien|Costa Rica|Kanada|Vietnam|Thailand|Japan|Belgien|Nepal|Inden|Chile</de>
@@ -1362,98 +1364,82 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			<variables>
 				<ttl>
 					<de>${adjective}${subject} der Welt</de>
-					<en>${adjective}${subject} of the world</en>
-					<pl>Kraje świata</pl>
+					<en>${adjective}${subject} of the World</en>
+					<pl>${adjective}${subject} na Świecie</pl>
 				</ttl>
 				<subject>
-					<de>${sbj_${variant}}</de>
-					<en>${sbj_${variant}}</en>
-					
+					<all>${sbj_${variant}}</all>
 				</subject>
 				<adjective>
-					<de>|${adj_${variant}} </de>
-					<en>|${adj_${variant}} </en>
-					
+					<all>|${adj_${variant}} </all>
 				</adjective>
 				<variant>
-					<de>bf|best|bi|big|bigb</de>
-					<en>bf|best|bi|big|bigb</en>
-					
+					<all>bf|best|bi|big|bigb</all>
 				</variant>
 				<adj_bf>
-					<de>${beautiful}</de>
-					<en>${beautiful}</en>
-					
+					<all>${beautiful}</all>
 				</adj_bf>
 				<sbj_bf>
 					<de>Weihnachtsbräuche|Trachten|Frisuren|Autos|Eisenbahnstrecken|Märchen</de>
 					<en>Christmas Traditions|Traditional Costumes|Hair Styles|Cars|Railways|Fairy Tales</en>
-					
+					<pl>Tradycje Świąteczne|Tradycyjne Stroje|Fryzury|Samochody|Koleje|Bajki</pl>
 				</sbj_bf>
 				<adj_best>
-					<de>${best}</de>
-					<en>${best}</en>
-					
+					<all>${best}</all>
 				</adj_best>
 				<sbj_best>
 					<de>Bildungssysteme|Fußballmannschaften|Schokoladen|Bands|Weine|Biere</de>
 					<en>Educational Systems|Soccer Teams|Chocolates|Bands|Vines|Beers</en>
-					
+					<pl>Systemy Edukacyjne|Drużyny Piłkarskie|Czekoladki|Zespoły|Winorośl|Piwa</pl>
 				</sbj_best>
 				<adj_bi>
-					<de>${best}|${important}</de>
-					<en>${best}|${important}</en>
-					
+					<all>${best}|${important}</all>
 				</adj_bi>
 				<sbj_bi>
 					<de>Politiker|Komponisten|Modemarken|Universitäten</de>
-					<en>Politicians|Composers|Fashion labels|Universities</en>
-					
+					<en>Politicians|Composers|Fashion Labels|Universities</en>
+					<pl>Politycy|Kompozytorzy|Etykiety Modowe|Uniwersytety</pl>
 				</sbj_bi>
 				<adj_big>
-					<de>${big}</de>
-					<en>${big}</en>
-					
+					<all>${big}</all>
 				</adj_big>
 				<sbj_big>
 					<de>Bauwerke|Flughäfen|Stadien|Tunnel|Berge</de>
 					<en>Buildings|Airports|Stadiums|Tunnels|Mountains</en>
-					
+					<pl>Budynki|Lotniska|Stadiony|Tunele|Góry</pl>
 				</sbj_big>
 				<adj_bigb>
-					<de>${big}|${beautiful}</de>
-					<en>${big}|${beautiful}</en>
-					
+					<all>${big}|${beautiful}</all>
 				</adj_bigb>
 				<sbj_bigb>
 					<de>Schlösser|Kirchen|Nationalparks|Zoos|Flüsse|Tiere|Bibliotheken|Inseln|Brücken|Vulkane|Denkmale|Städte</de>
-					<en>Castles|Churches|National parks|Zoos|Rivers|Animals|Libraries|Islands|Bridges|Volcanoes|Monuments|Cities</en>
-					
+					<en>Castles|Churches|National Parks|Zoos|Rivers|Animals|Libraries|Islands|Bridges|Volcanoes|Monuments|Cities</en>
+					<pl>Zamki|Kościoły|Parki narodowe|Ogrody zoologiczne|Rzeki|Zwierzęta|Biblioteki|Wyspy|Mosty|Wulkany|Zabytki|Miasta</pl>
 				</sbj_bigb>
 				<beautiful>
 					<de>Die schönsten</de>
 					<en>The Most Beautiful</en>
-					
+					<pl>Najpiękniejsze</pl>
 				</beautiful>
 				<best>
 					<de>Die besten</de>
 					<en>The Best</en>
-					
+					<pl>Najlepsze</pl>
 				</best>
 				<important>
 					<de>Die bedeutendsten</de>
 					<en>The Most Important</en>
-					
+					<pl>Najważniejsze</pl>
 				</important>
 				<big>
 					<de>Die größten|Die beeindruckendsten</de>
 					<en>The Biggest|The Most Impressive</en>
-					
+					<pl>Największe|Najbardziej Imponujące</pl>
 				</big>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="8" required="1"  />
+				<job index="1" function="8" required="1" />
 			</jobs>
 			<data flags="4" target_groups="68" />
 			<targetgroupattractivity men="0.5" />
