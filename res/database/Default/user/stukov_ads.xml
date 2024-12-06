@@ -287,9 +287,9 @@
 			<data quality="31" repetitions="2" duration="8" profit="410" penalty="1100" infomercial_profit="3" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad guid="c7edae3e-1fab-4fca-9704-1faaed11166a" comment="from Mad TV 'Hoffmann' | related to person c013079e-fefc-495a-941d-0ac148f30ba3">
+		<ad guid="c7edae3e-1fab-4fca-9704-1faaed11166a" comment="from Mad TV 'Hoffmann'">
 			<title>
-				<all>Hopfmann</all>
+				<all>${.person:"c013079e-fefc-495a-941d-0ac148f30ba3":"lastname"}</all>
 			</title>
 			<description>
 				<de>Computerspiele schnell und bugfrei!</de>
@@ -642,8 +642,8 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="31da2056-1a11-494b-96f0-56f4de5303b5" comment="https://en.wikipedia.org/wiki/Diet_Coke | from Mad TV as 'Coke Light' | Differing Diet or Light branding used in various countries">
 			<title>
-				<de>${brand_cokelight}</de>
 				<all>${brand_dietcoke}</all>
+				<de>${brand_cokelight}</de>
 			</title>
 			<description>
 				<de>Nur eine halbe Kalorie. So einsam und gespalten bloß wegen Ihnen! Also kaufen Sie gefälligst, Sie Fettsack!</de> <!-- orig: So kühl. So klar. Nur 1 Kalorie. -->
@@ -928,8 +928,8 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 
 		<ad guid="973bdff8-3080-4c19-b606-8711c350d5e1" creator="9584" created_by="Stukov" comment="https://en.wikipedia.org/wiki/Pepsi | from Mad TV as 'Pepsi Light' | Differing Diet or Light branding used in various countries">
 			<title>
-				<de>${brand_pepsilight}</de>
 				<all>${brand_dietpepsi}</all>
+				<de>${brand_pepsilight}</de>
 			</title>
 			<description>
 				<de>Voller Geschmack für die junge Brut - und nur 1 Kalorie.</de>
@@ -1046,14 +1046,14 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<data infomercial="1" quality="26" repetitions="3" duration="4" profit="2200" penalty="3000" infomercial_profit="151" fix_infomercial_profit="1" />
 		</ad>
 
-		<ad guid="S8e075bfd-9aaa-47e1-ae24-bfc938fc490a" comment="from Mad TV 'Andrae Design' | related to person 689823f6-f7e2-4128-817f-88ed42132501">
+		<ad guid="S8e075bfd-9aaa-47e1-ae24-bfc938fc490a" comment="from Mad TV 'Andrae Design'">
 			<title>
-				<all>Andrey Design</all>
+				<all>${.person:"689823f6-f7e2-4128-817f-88ed42132501":"lastname"} Design</all>
 			</title>
 			<description>
-				<de>Visitenkarten? ${mediatitle_ottifants}? Andrey!</de> <!-- orig: Ottifanten - https://de.wikipedia.org/wiki/Ottifant | alt spoof: Frottifanten? | TODO: add cartoon series https://de.wikipedia.org/wiki/Ottos_Ottifanten and use same reference -->
-				<en>Business cards? ${mediatitle_ottifants}? Andrey!</en>
-				<pl>Wizytówki? ${mediatitle_ottifants}? Andrey!</pl>
+				<de>Visitenkarten? ${mediatitle_ottifants}? ${.person:"689823f6-f7e2-4128-817f-88ed42132501":"lastname"}!</de>
+				<en>Business cards? ${mediatitle_ottifants}? ${.person:"689823f6-f7e2-4128-817f-88ed42132501":"lastname"}!</en>
+				<pl>Wizytówki? ${mediatitle_ottifants}? ${.person:"689823f6-f7e2-4128-817f-88ed42132501":"lastname"}!</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="9" repetitions="6" duration="7" profit="2500" penalty="4000" infomercial_profit="125" fix_infomercial_profit="1" />

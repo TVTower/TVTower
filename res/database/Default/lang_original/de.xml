@@ -177,12 +177,18 @@
 		<sports_formula3>Formel 3</sports_formula3>
 		<sports_formula4>Formel 4</sports_formula4>
 
-		<mediageneralorg_theworldwrestlingfederation>die World Wrestling Federation</mediageneralorg_theworldwrestlingfederation>
+		<media_goldenraspberry>Goldene Himbeere</media_goldenraspberry>
+		<media_ofthegoldenraspberry>der Goldenen Himbeere</media_ofthegoldenraspberry>
+		<media_withthegoldenraspberry>mit der Goldenen Himbeere</media_withthegoldenraspberry>
+		
+		<mediaorg_theworldwrestlingfederation>die World Wrestling Federation</mediaorg_theworldwrestlingfederation>
 
 		<mediatitle_lowestofthelow>Ganz unten</mediatitle_lowestofthelow> <!-- https://de.wikipedia.org/wiki/Ganz_unten -->
+		<mediatitle_thephantomoftheopera>Das Phantom der Oper</mediatitle_thephantomoftheopera> <!-- https://de.wikipedia.org/wiki/Das_Phantom_der_Oper_(Musical,_1986) -->
 		<mediatitle_sherlockholmesconsultingdetective>Sherlock Holmes Criminal-Cabinet</mediatitle_sherlockholmesconsultingdetective> <!-- https://de.wikipedia.org/wiki/Sherlock_Holmes_Criminal-Cabinet -->
 		<mediatitle_hoitytoity>Adel verpflichtet</mediatitle_hoitytoity> <!-- https://de.wikipedia.org/wiki/Adel_verpflichtet_(Spiel) -->
 		<mediatitle_thesettlersofcatan>Die Siedler von Catan</mediatitle_thesettlersofcatan> <!-- https://de.wikipedia.org/wiki/Die_Siedler_von_Catan -->
+		<mediatitle_gilligansisland>Gilligans Insel</mediatitle_gilligansisland>
 		<mediatitle_ottifants>Ottifanten</mediatitle_ottifants>
 
 		<mediaprop_batmobile>Batmobil</mediaprop_batmobile>

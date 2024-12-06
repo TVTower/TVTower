@@ -375,16 +375,16 @@
 			<data genre="2" price="0.35" quality="40" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-abstieg-01" type="0" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-abstieg-01" type="0" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff" comment="TODO: case of alternative history; Hamburger SV *did* relegate for the first time in history to 2nd league eventually, but probably not yet at the time this news was authored.">
 			<title>
 				<de>Bundesliga-Relegation: Wer steigt auf, wer ab?</de>
 				<en>Bundesliga play-offs: Who will rise, who will fall?</en>
 				<pl>Play-offy Bundesligi: Kto awansuje, kto spadnie?</pl>
 			</title>
 			<description>
-				<de>Der Glubb kämpft gegen den ${sportsclub_hamburgersv} um den Aufstieg in die Fußball-Bundesliga. Wird der Bundesliga-Dino aus dem Norden dem Abstieg erneut entgehen oder werden die Herausforderer aus Franken siegreich sein?</de>
-				<en>The Glubb fights against ${sportsclub_hamburgersv} for promotion to the Bundesliga. Will the Bundesliga dino from the north escape relegation again or will the challengers from Franconia be victorious?</en>
-				<pl>Glubb walczy z ${sportsclub_hamburgersv} o awans do Bundesligi. Czy dino z północy ponownie uniknie spadku z Bundesligi, czy też rywale z Frankonii odniosą zwycięstwo?</pl>
+				<de>Der ${sports_1fc_generic} Nürnberg kämpft gegen den ${sportsclub_hamburgersv} um den Aufstieg in die Fußball-Bundesliga. Wird der Bundesliga-Dino aus dem Norden dem Abstieg erneut entgehen oder werden die Herausforderer aus Franken siegreich sein?</de>
+				<en>The ${sports_1fc_generic} Nuremberg (the "Glubb") fights against ${sportsclub_hamburgersv} for promotion to the Bundesliga. Will the Bundesliga dino from the north escape relegation again or will the challengers from Franconia be victorious?</en>
+				<pl>${sports_1fc_generic} Norymberga („Glubb“) walczy z ${sportsclub_hamburgersv} o awans do Bundesligi. Czy dino z północy ponownie uniknie spadku z Bundesligi, czy też rywale z Frankonii odniosą zwycięstwo?</pl>
 			</description>
 			<data genre="2" price="0.3" quality="30" fictional="1" />
 			<effects>
@@ -400,9 +400,9 @@
 				<pl>${sportsclub_hamburgersv} po raz pierwszy zdegradowany</pl>
 			</title>
 			<description>
-				<de>Erstmalig in seiner Vereinsgeschichte ist der ${sportsclub_hamburgersv} aus der Bundesliga abgestiegen. Er unterlag dem Glubb in einem spannenden Spiel mit 0:1 nach Verlängerung. Wackelt jetzt der Stuhl von Trainer Knut Knolle?</de>
-				<en>For the first time in its club history, ${sportsclub_hamburgersv} has been relegated from the Bundesliga. They lost to the Glubb in an exciting game with 0-1 after extra time. Is the seat of coach Knut Knolle in question now?</en>
-				<pl>${sportsclub_hamburgersv} po raz pierwszy w historii klubu spadł z Bundesligi. Przegrali z Glubbem w emocjonującym meczu 0-1 po dogrywce. Czy fotel trenera Knuta Knolle stoi teraz pod znakiem zapytania?</pl>
+				<de>Erstmalig in seiner Vereinsgeschichte ist der ${sportsclub_hamburgersv} aus der Bundesliga abgestiegen. Er unterlag dem „Glubb“ in einem spannenden Spiel mit 0:1 nach Verlängerung. Wackelt jetzt der Stuhl von Trainer Knut Knolle?</de>
+				<en>For the first time in its club history, ${sportsclub_hamburgersv} has been relegated from the Bundesliga. They lost to the "Glubb" in an exciting game with 0-1 after extra time. Is the seat of coach Knut Knolle in question now?</en>
+				<pl>${sportsclub_hamburgersv} po raz pierwszy w historii klubu spadł z Bundesligi. Przegrali z „Glubbem“ w emocjonującym meczu 0-1 po dogrywce. Czy fotel trenera Knuta Knolle stoi teraz pod znakiem zapytania?</pl>
 			</description>
 			<data genre="2" price="0.3" quality="30" fictional="1" />
 			<effects>
@@ -413,14 +413,14 @@
 
 		<news guid="news-jorgaeff-abstieg-02b" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Glubb verpasst Aufstieg</de>
-				<en>Glubb misses promotion</en>
-				<pl>Glubb nie awansuje</pl>
+				<de>„Glubb“ verpasst Aufstieg</de>
+				<en>"Glubb" misses promotion</en>
+				<pl>„Glubb“ nie awansuje</pl>
 			</title>
 			<description>
-				<de>Nicht ganz gereicht hat es für den Glubb. Die Franken zogen gegen die Hamburger den Kürzeren und verpassten mit einem knappen 0:1 den Aufstieg in die Bundesliga.</de>
-				<en>It was not quite enough for the Glubb. The Franconians drew the short straw against Hamburg and missed with a narrow 0-1 the promotion to the Bundesliga.</en>
-				<pl>To nie wystarczyło dla Glubba. Frankończycy wyciągnęli krótką słomkę przeciwko Hamburgowi i przegrali 0-1 i awans do Bundesligi</pl>
+				<de>Nicht ganz gereicht hat es für den „Glubb“. Die Franken zogen gegen die Hamburger den Kürzeren und verpassten mit einem knappen 0:1 den Aufstieg in die Bundesliga.</de>
+				<en>It was not quite enough for the "Glubb". The Franconians drew the short straw against Hamburg and missed with a narrow 0-1 the promotion to the Bundesliga.</en>
+				<pl>To nie wystarczyło dla „Glubba“. Frankończycy wyciągnęli krótką słomkę przeciwko Hamburgowi i przegrali 0-1 i awans do Bundesligi</pl>
 			</description>
 			<data genre="2" price="0.3" quality="0" fictional="1" />
 			<effects>
@@ -459,28 +459,28 @@
 
 		<news guid="news-jorgaeff-abstieg-03c" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Muss der Glubb Insolvenz anmelden?</de>
-				<en>Does the Glubb have to file for bankruptcy?</en>
-				<pl>Czy Glubb musi ogłosić upadłość?</pl>
+				<de>Muss der „Glubb“ Insolvenz anmelden?</de>
+				<en>Does the "Glubb" have to file for bankruptcy?</en>
+				<pl>Czy „Glubb“ musi ogłosić upadłość?</pl>
 			</title>
 			<description>
-				<de>Viel wurde investiert um nach Jahren der Zweitklassigkeit endlich wieder im Oberhaus mitspielen zu können, doch gebracht hat es leider nichts. Gewachsen ist nur der Schuldenberg und der könnte den Glubberern jetzt zum Verhängnis werden.</de>
-				<en>After years of second-class status, much was invested to finally be able to play in the top division again, but unfortunately it has yielded nothing. Only the mountain of debt has grown, and that could be the doom now for the Glubbers.</en>
-				<pl>Po latach statusu drugoligowca wiele zainwestowano, by w końcu znów móc grać w najwyższej klasie rozgrywkowej, ale niestety nic to nie dało. Wzrosła tylko góra długów, co może być teraz zgubą dla Glubbersów.</pl>
+				<de>Viel wurde investiert um nach Jahren der Zweitklassigkeit endlich wieder im Oberhaus mitspielen zu können, doch gebracht hat es leider nichts. Gewachsen ist nur der Schuldenberg und der könnte den „Glubberern“ jetzt zum Verhängnis werden.</de>
+				<en>After years of second-class status, much was invested to finally be able to play in the top division again, but unfortunately it has yielded nothing. Only the mountain of debt has grown, and that could be the doom now for the "Glubbers".</en>
+				<pl>Po latach statusu drugoligowca wiele zainwestowano, by w końcu znów móc grać w najwyższej klasie rozgrywkowej, ale niestety nic to nie dało. Wzrosła tylko góra długów, co może być teraz zgubą dla „Glubbersów“.</pl>
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
 
 		<news guid="news-jorgaeff-abstieg-03d" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Der Glubb ist wieder schuldenfrei</de>
-				<en>The Glubb is debt-free again</en>
-				<pl>Glubb znów jest wolny od długów</pl>
+				<de>Der „Glubb“ ist wieder schuldenfrei</de>
+				<en>The "Glubb" is debt-free again</en>
+				<pl>„Glubb“ znów jest wolny od długów</pl>
 			</title>
 			<description>
-				<de>Bedingt durch die hohe Aufstiegsprämie konnte der Glubb alle seine Schulden abbauen und steht somit wieder auf gesunden Füßen. Die Glubberer hoffen, dass dies auch so bleibt.</de>
-				<en>Due to the high promotion bonus, the Glubb was able to reduce all its debts and is thus back on a sound footing. The Glubbers hope that this will continue.</en>
-				<pl>Dzięki wysokiej premii promocyjnej Glubb był w stanie zredukować wszystkie swoje długi i tym samym powrócił na solidne podstawy. Glubbersi mają nadzieję, że ten stan się utrzyma.</pl>
+				<de>Bedingt durch die hohe Aufstiegsprämie konnte der „Glubb“ alle seine Schulden abbauen und steht somit wieder auf gesunden Füßen. Die „Glubberer“ hoffen, dass dies auch so bleibt.</de>
+				<en>Due to the high promotion bonus, the "Glubb" was able to reduce all its debts and is thus back on a sound footing. The "Glubbers" hope that this will continue.</en>
+				<pl>Dzięki wysokiej premii promocyjnej „Glubb“ był w stanie zredukować wszystkie swoje długi i tym samym powrócił na solidne podstawy. „Glubbersi“ mają nadzieję, że ten stan się utrzyma.</pl>
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
@@ -1488,7 +1488,7 @@
 						Der wohl erfolgloseste Feuerwehrmann stand stets auf dem Schlauch, erfand das Feuerzangenbowling und löschte das olympische Feuer mit einer Wolldecke. Er steckte sich bei einem Brand auf einer Seuchenstation an und starb. Sein Erbe geht an eine Brandstiftung.|
 						Der wohl erfolgloseste Gigolo aller Zeiten arbeitete als Latrin-Lover, machte einer Bäuerin den kompletten Hof und half sogar alten Damen über die Strapse. Er starb gestern in einem Hafenbecken in Sizilien, weil er Casanova mit Cosanostra verwechselte.|
 						Der wohl erfolgloseste Hellseher war von seinem Tod selbst überrascht. Er besaß nicht nur das zweite Gesicht, sondern auch die dritten Zähne und las die Zukunft aus entkoffeiniertem Kaffeesatz. Er wurde beim Lesen eines Sternzeichens von einem ${brand_mercedes} überfahren.|
-						Das wohl erfolgloseste ADAC-Mitglied aller Zeiten erlangte Berühmtheit als Geisterfahrer und durch seine Bemühungen, die Formel 1 auszurechnen. Er starb gestern im Alter von 82 Jahren an den Folgen einer Führerscheinprüfung.|
+						Das wohl erfolgloseste ${generalorg_adac}-Mitglied aller Zeiten erlangte Berühmtheit als Geisterfahrer und durch seine Bemühungen, die ${sports_formula1} auszurechnen. Er starb gestern im Alter von 82 Jahren an den Folgen einer Führerscheinprüfung.|
 						Der wohl erfolgloseste Automechaniker aller Zeiten hatte schon als Kind einen Plattfuß und lud gern ein zu einer Runde Chef-Roulette. Er starb gestern im Alter von 83 Jahren und wurde in einem ${brand_saab} beerdigt.|
 						Der wohl erfolgloseste Flüchtling aller Zeiten liebte schon als Kind die Fluchtzwerge, züchtete Fluchtfliegen und erfand sogar den Fluchtkompensator. Er starb gestern in einer Talkshow, als er das öffentlich-rechtliche Fernsehen verfluchte.|
 						Der wohl erfolgloseste Laubpuster nahm nie ein Blatt vor den Mund. Er wurde bei der Laubtrennung im Nadelwald erwischt und verlor seinen Laubsägen-Schein. Er starb im Urlaub in einer Laube und wurde auf einem Komposthaufen beerdigt.|
@@ -1524,7 +1524,7 @@
 						The probably most unsuccessful firefighter was always on the hose, invented fire tong bowling and extinguished the Olympic fire with a woollen blanket. He contracted a fire at an epidemic ward and died. His estate goes to an arson foundation.|
 						The probably most unsuccessful gigolo of all time worked as a latrine lover, courted a farmer's wife and even helped old ladies over the straps. He died yesterday in a harbor basin in Sicily because he mistook Casanova for Cosanostra.|
 						The probably most unsuccessful clairvoyant was surprised by his own death. He not only had second sight, but also third teeth and read the future from decaffeinated tea leaves. He was run over by a ${brand_mercedes} while reading a star sign.|
-						The probably most unsuccessful automobile club member of all time achieved fame as a wrong-way driver and through his efforts to calculate Formula 1. He died yesterday at the age of 82 as a result of a driving test.|
+						The probably most unsuccessful automobile club member of all time achieved fame as a wrong-way driver and through his efforts to calculate ${sports_formula1}. He died yesterday at the age of 82 as a result of a driving test.|
 						The probably most unsuccessful car mechanic of all time already had a puncture as a kid and liked to invite people to a round of chef-roulette. He died yesterday at the age of 83 and was buried in a box hole.|
 						The probably most unsuccessful fugitive of all time loved fudgees as a child, bred refuge flies and even invented the flight compensator. He died yesterday on a talk show when he refuted public television.|
 						The probably most unsuccessful leaf blower never minced his words. He was caught cutting leaves in a pine forest and lost his fretsaw license. He died on vacation in an arbor and was buried in a compost heap.|
@@ -1560,7 +1560,7 @@
 						Prawdopodobnie najbardziej nieudany strażak był zawsze na wężu, wynalazł kręgle strażackie i ugasił pożar olimpijski wełnianym kocem. Zaraził się pożarem na oddziale epidemicznym i zmarł. Jego majątek trafił do fundacji na rzecz walki z podpaleniami.|
 						Prawdopodobnie najbardziej nieudany żigolak wszech czasów pracował jako latrynoski kochanek, zalecał się do żony rolnika, a nawet pomagał staruszkom przy pasach. Zmarł wczoraj w basenie portowym na Sycylii, ponieważ pomylił Casanovę z Cosanostrą.|
 						Prawdopodobnie najbardziej nieudany jasnowidz był zaskoczony własną śmiercią. Miał nie tylko drugi wzrok, ale także trzecie zęby i odczytywał przyszłość z liści herbaty bezkofeinowej. Został przejechany przez ${brand_mercedes}a podczas odczytywania znaku gwiazdy.|
-						Prawdopodobnie najbardziej nieudany członek automobilklubu wszech czasów zyskał sławę jako kierowca jeżdżący po niewłaściwych drogach oraz dzięki swoim staraniom o skalkulowanie Formuły 1. Zmarł wczoraj w wieku 82 lat w wyniku egzaminu na prawo jazdy.|
+						Prawdopodobnie najbardziej nieudany członek automobilklubu wszech czasów zyskał sławę jako kierowca jeżdżący po niewłaściwych drogach oraz dzięki swoim staraniom o skalkulowanie ${sports_formula1}. Zmarł wczoraj w wieku 82 lat w wyniku egzaminu na prawo jazdy.|
 						Prawdopodobnie najbardziej nieudany mechanik samochodowy wszech czasów już jako dziecko miał przebicie opony i lubił zapraszać ludzi na rundę szef-ruletki. Zmarł wczoraj w wieku 83 lat i został pochowany w skrzyni.|
 						Prawdopodobnie najbardziej nieudany uciekinier wszech czasów w dzieciństwie uwielbiał krówki, hodował muchy schronieniowe, a nawet wynalazł kompensator lotu. Zmarł wczoraj w talk show, gdy obalił telewizję publiczną.|
 						Prawdopodobnie najbardziej nieudany dmuchacz liści nigdy nie przebierał w słowach. Został przyłapany na ścinaniu liści w sosnowym lesie i stracił licencję pilarza. Zmarł na wakacjach w altanie i został pochowany w pryzmie kompostu.|

@@ -187,13 +187,19 @@
 		<sports_formula3>Formel C</sports_formula3>
 		<sports_formula4>Formel D</sports_formula4>
 
-		<mediageneralorg_worldwrestlingfederation>Westliche Wrestling-Freunde</mediageneralorg_worldwrestlingfederation>
-		<mediageneralorg_theworldwrestlingfederation>die Westlichen Wrestling-Freunde</mediageneralorg_theworldwrestlingfederation>
+		<media_goldenraspberry>Goldene Brombeere</media_goldenraspberry>
+		<media_ofthegoldenraspberry>der Goldenen Brombeere</media_ofthegoldenraspberry>
+		<media_withthegoldenraspberry>mit der Goldenen Brombeere</media_withthegoldenraspberry>
+
+		<mediaorg_worldwrestlingfederation>Westliche Wrestling-Freunde</mediaorg_worldwrestlingfederation>
+		<mediaorg_theworldwrestlingfederation>die Westlichen Wrestling-Freunde</mediaorg_theworldwrestlingfederation>
 
 		<mediatitle_lowestofthelow>Voll am Boden</mediatitle_lowestofthelow>
+		<mediatitle_thephantomoftheopera>Der Geist des Theaters</mediatitle_thephantomoftheopera>
 		<mediatitle_sherlockholmesconsultingdetective>Dr. Watson Kriminalzimmer</mediatitle_sherlockholmesconsultingdetective>
 		<mediatitle_hoitytoity>Blaues Blut wird zur Pflicht</mediatitle_hoitytoity>
 		<mediatitle_thesettlersofcatan>Die Pioniere von Kastlan</mediatitle_thesettlersofcatan>
+		<mediatitle_gilligansisland>Gallagans Eiland</mediatitle_gilligansisland>
 		<mediatitle_ottifants>Grottifanten</mediatitle_ottifants>
 
 		<mediaprop_fliewatuut>Tüütwafli</mediaprop_fliewatuut>

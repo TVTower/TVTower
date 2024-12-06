@@ -1972,7 +1972,7 @@
 					<description>
 						<de>Die Einschaltquoten des letzten Tages waren grandios. „Die Nacht${name}“ würdigt dies mit besondere Szenen.</de>
 						<en>The viewing rates of the last day were terrific. "The Night ${name}" honors this with special scenes.</en>
-						<pl>"${name}". Pogadamy jak nie przespać nocy.</pl>
+						<pl>Oceny za ostatni dzień były niesamowite. „${name}” uhonorowało to specjalnymi scenami.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate licence_type="2" product="3" index="2" guid="Kasi-script-UnterhaltungNachts-Ep3">

@@ -438,8 +438,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<en>${.self:"cast":2:"firstname"} De Weirdo</en>
 					</title>
 					<description>
-						<de>${.self:"cast":2:"fullname"} wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz Hollywood.</de>
-						<en>${.self:"cast":2:"fullname"} is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of Hollywood.</en>
+						<de>${.self:"cast":2:"fullname"} wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz ${media_hollywood}.</de>
+						<en>${.self:"cast":2:"fullname"} is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of ${media_hollywood}.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">506bc383-259e-4a36-9278-081aafc8f35c</member>

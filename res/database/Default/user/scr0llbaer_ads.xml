@@ -27,7 +27,7 @@
 		</ad>
 		<ad guid="77f0d337-30a4-45de-b26d-fa0093fe89e7" creator="9551" comment="https://de.wikipedia.org/wiki/Demeter_(Deutschland)">
 			<title>
-				<de>${brand_demeter}</de>
+				<all>${brand_demeter}</all>
 			</title>
 			<description>
 				<de>Feinste anthroposophische bei Vollmondschein ausgependelte Bio-Vollwertkost.</de>
@@ -36,9 +36,9 @@
 			<conditions min_audience="1.3015" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="1060" penalty="1571" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="10c9b55c-0b6d-4c93-af8a-0a0bd326df78" creator="9551" comment="https://en.wikipedia.org/wiki/Siemens | https://en.wikipedia.org/wiki/He-Man | https://duckduckgo.com/?q=he-man+i+have+the+power | alternative slogan part: Without us, everything will grind to a halt. The engine room of the republic.">
+		<ad guid="10c9b55c-0b6d-4c93-af8a-0a0bd326df78" creator="9551" comment="parody (not in-place spoof) of https://en.wikipedia.org/wiki/Siemens | https://en.wikipedia.org/wiki/He-Man | https://duckduckgo.com/?q=he-man+i+have+the+power | alternative slogan part: Without us, everything will grind to a halt. The engine room of the republic.">
 			<title>
-				<de>Hiemens</de>
+				<all>Hiemens</all>
 			</title>
 			<description>
 				<de>Wir haben die Kraft!
@@ -97,12 +97,12 @@ We do not forgive. We do not forget. Expect us.</en>
 		</ad>
 		<ad guid="91595531-40f0-40bc-98df-90f7481b0bc5" creator="9551" comment="https://en.wikipedia.org/wiki/Zombo.com | Available before the internet age because the unattainable is unknown at Zombocom. :) | Infomercial high quality for comedic reasons">
 			<title>
-				<de>Zombo.com</de>
+				<all>Zombo.com</all>
 			</title>
 			<description>
-				<de>Welcome.
-Welcome to Zombocom.
-Anything is possible at Zombocom.</de>
+				<de>Willkommen.
+Willkommen bei Zombocom.
+Alles ist möglich bei Zombocom.</de>
 				<en>Welcome.
 Welcome to Zombocom.
 Anything is possible at Zombocom.</en>
@@ -112,7 +112,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="3153545d-d231-4f4e-9a75-647f50c4cef9" creator="9551" comment="1975-1982 | https://de.wikipedia.org/wiki/Betamax">
 			<title>
-				<de>${brand_betamax}</de>
+				<all>${brand_betamax}</all>
 			</title>
 			<description>
 				<de>Werden Sie der Herr über die Ewigkeit! Die neue Generation Video-Magnetbänder. Jetzt von ${brand_sony}.</de>
@@ -124,7 +124,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="bef518f9-38fc-404d-a767-28fe4e9f65dc" creator="9551" comment="1983-1987 | https://en.wikipedia.org/wiki/MSX">
 			<title>
-				<de>${brand_sony} ${brand_msx}</de>
+				<all>${brand_sony} ${brand_msx}</all>
 			</title>
 			<description>
 				<de>Erleben Sie den neuen Home-Computing-Standard mit unseren Modellen in einer völlig neuen Dimension. It's a ${brand_sony}.</de>
@@ -136,7 +136,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="88a600ed-b687-4ee7-a59c-2b5d042903e4" creator="9551" comment="1988-1992 | https://en.wikipedia.org/wiki/Pioneer_Corporation | https://en.wikipedia.org/wiki/LaserDisc | alt spoof names: Precideer, Presideer | actually discontinued only in 2001 (films) / 2009 | didn't find a Sony product fitting into this time period and to the 'discontinued tech' theme of this 'thread'">
 			<title>
-				<de>${brand_pioneer} ${brand_laserdisc}</de>
+				<all>${brand_pioneer} ${brand_laserdisc}</all>
 			</title>
 			<description>
 				<de>Die umfassendste Revolution im Fernsehen seit dem Fernsehen. Erleben Sie SciFi und Horror in noch nie dagewesener Laserschärfe!</de>
@@ -148,7 +148,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="6b381d2a-b4bc-44fb-9c07-3047209bfa57" creator="9551" comment="1993-2002 | https://en.wikipedia.org/wiki/MiniDisc | slogan by ChatGPT | actually discontinued only in 2013 | could be more satirical">
 			<title>
-				<de>${brand_sony} ${brand_minidisc}</de>
+				<all>${brand_sony} ${brand_minidisc}</all>
 			</title>
 			<description>
 				<de>Winzige Disk, gewaltiger Sound: ${brand_sony} ${brand_minidisc} rockt!</de>
@@ -160,7 +160,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="4eade518-8772-4697-9508-da43af3782c2" creator="9551" comment="2003-2013 | https://en.wikipedia.org/wiki/Vaio">
 			<title>
-				<de>${brand_sony} ${brand_vaio}</de>
+				<all>${brand_sony} ${brand_vaio}</all>
 			</title>
 			<description>
 				<de>${brand_vaio} for the pro. Superschlanke Glanzleistung mit Hochglanz-Display, so dass man sich drin spiegeln kann. Erleben Sie unsere innovativen Computer-Notebooks!</de>
@@ -172,7 +172,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="07c6b7de-06ce-4d62-b237-49dcfa0060c6" creator="9551" comment="2014- | https://en.wikipedia.org/wiki/Vaio | since 2014 not anymore a brand of Sony">
 			<title>
-				<de>${brand_vaio}</de>
+				<all>${brand_vaio}</all>
 			</title>
 			<description>
 				<de>Every eye on you. Innovative All-in-One PCs und ultra-portable Notebooks von ${brand_vaio}.</de>
@@ -184,7 +184,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="3c9d81f5-15c7-4cf3-93a4-9d0ddd08b0a6" creator="9551" comment="variation of Mad TV 'Andrae Design' | TODO: Andrae was the name of the Mad TV graphics artist, so every TVTower graphics contributor should receive a version of this ad">
 			<title>
-				<de>Ronny Design</de>
+				<all>Ronny Design</all>
 			</title>
 			<description>
 				<de>Inneneinrichtung? BlitzPixels? Ronny!</de>
@@ -195,7 +195,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="8ecbab11-0df5-4695-94f7-e37d7b30ef5d" creator="9551" comment="https://en.wikipedia.org/wiki/Boston_Dynamics | TODO: actually founded in 1992; maybe use fictional spoof version in earlier time">
 			<title>
-				<de>${brand_bostondynamics}</de>
+				<all>${brand_bostondynamics}</all>
 			</title>
 			<description>
 				<de>Ihr freundlicher Militärdienstleister mit den niedlichen Killerrobotern von nebenan.</de>
@@ -244,7 +244,7 @@ Anything is possible at Zombocom.</en>
 		</ad>
 		<ad guid="fc5c71a5-9dbe-4dc7-a5bf-3c45de0f62de" creator="9551" comment="https://en.wikipedia.org/wiki/Swingline | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/72453974/Office-Space-Stapler">
 			<title>
-				<de>${brand_swingline} ${brand_riored}</de>
+				<all>${brand_swingline} ${brand_riored}</all>
 			</title>
 			<description>
 				<de>„Entschuldigen Sie, ich glaube, Sie haben meinen Tacker.“
@@ -259,7 +259,7 @@ Only from ${brand_swingline}.</en>
 		</ad>
 		<ad guid="e6e33ac8-6c37-4920-8ad4-dbbd0b3b5d1c" creator="9551" comment="https://en.wikipedia.org/wiki/HP_LaserJet | https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/31270921/PC-load-letter">
 			<title>
-				<de>${brand_hp} ${brand_laserjet}</de>
+				<all>${brand_hp} ${brand_laserjet}</all>
 			</title>
 			<description>
 				<de>PC LOAD LETTERn Sie Ihre TPS-Berichte in unsere modernen Hochleistungsdrucker.</de>
@@ -270,7 +270,7 @@ Only from ${brand_swingline}.</en>
 		</ad>
 		<ad guid="55f86f26-6484-4bf4-bd27-6a004c8c1343" creator="9551" comment="-1990 | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/eYb22BLBqGw | also using the brand name progression through time like in the movie, except for the original name and the last finally obviously vulgar version">
 			<title>
-				<de>${brand_fuddruckers}</de>
+				<all>${brand_fuddruckers}</all>
 			</title>
 			<description>
 				<de>Die feinsten Burger des Planeten.</de>
@@ -282,7 +282,7 @@ Only from ${brand_swingline}.</en>
 		</ad>
 		<ad guid="d3f47c5f-636d-4978-b4b4-c5673824e504" creator="9551" comment="1991 - 2010 | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy">
 			<title>
-				<de>Futtbuckers</de>
+				<all>Futtbuckers</all>
 			</title>
 			<description>
 				<de>Die feinsten Burger des Planeten.</de>
@@ -294,7 +294,7 @@ Only from ${brand_swingline}.</en>
 		</ad>
 		<ad guid="8c75167f-7155-45ba-9594-8b4fbdfd673c" creator="9551" comment="2011- | https://en.wikipedia.org/wiki/Fuddruckers | https://en.wikipedia.org/wiki/Idiocracy">
 			<title>
-				<de>Buttruckers</de>
+				<all>Buttruckers</all>
 			</title>
 			<description>
 				<de>Die feinsten Burger des Planeten.</de>
@@ -323,7 +323,7 @@ Char-grilled burgers the right way. Now with Extra Big-Ass Fries.</en>
 		</ad>
 		<ad guid="9175d090-17bd-4786-823a-cc6b0080d480" creator="9551" comment="https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/ZMHfBobgLSI">
 			<title>
-				<de>${brand_brawndo}</de>
+				<all>${brand_brawndo}</all>
 			</title>
 			<description>
 				<de>Wie? Ihr trinkt immer noch Wasser!? Das aus der Toilette?
@@ -378,7 +378,7 @@ Now available: Law degree in 8 minutes.</en>
 		</ad>
 		<ad guid="4e4d90ef-79ca-46d6-a28b-599f6b350c3e" creator="9551" comment="1980-1989 | https://en.wikipedia.org/wiki/Kim_Dotcom | https://www.c64-wiki.de/wiki/Swapper | 1980s version probably not even too fictional">
 			<title>
-				<de>kimswap</de>
+				<all>kimswap</all>
 			</title>
 			<description>
 				<de>Günstige Computerspiele jetzt auch auf einem Schulhof in Ihrer Nähe.
@@ -394,7 +394,7 @@ Swapping Services by Kimmich &amp; Schmitt LP LLC</en>
 		</ad>
 		<ad guid="90ccc2ae-b6fe-4e36-a036-21ef61ff9d15" creator="9551" comment="1990-1995 | https://en.wikipedia.org/wiki/Kim_Dotcom">
 			<title>
-				<de>kimphreak</de>
+				<all>kimphreak</all>
 			</title>
 			<description>
 				<de>Unser dicker Chef kann die Erkennungstöne der Bundespost perfekt nachpfeifen.
@@ -410,7 +410,7 @@ Phreaking Services by Kimmich &amp; Schmitt LP LLC</en>
 		</ad>
 		<ad guid="9de8605c-cd2f-4406-9ba8-4e471834570c" creator="9551" comment="1996-2000 | https://en.wikipedia.org/wiki/Kim_Dotcom">
 			<title>
-				<de>kimcard</de>
+				<all>kimcard</all>
 			</title>
 			<description>
 				<de>Aufgeladene Telefonkarten und Kreditkarten zum halben Preis nur bei uns.
@@ -426,7 +426,7 @@ Kimmich &amp; Schmitt Telecards LP LLC</en>
 		</ad>
 		<ad guid="6af447e2-a088-47a8-b6e4-18b284622d04" creator="9551" comment="2001-2004 | https://en.wikipedia.org/wiki/Kim_Dotcom | https://de.wikipedia.org/wiki/Letsbuyit.com | actual name was Kimvestor">
 			<title>
-				<de>kimvest</de>
+				<all>kimvest</all>
 			</title>
 			<description>
 				<de>letzbuythem.komm - Garantierte Börsengewinne auf unserem Portal! Fischen Sie mit unseren KI-Trading-Bots die Schätze aus dem Ramsch der geplatzten Dotcom-Blase.
@@ -440,7 +440,7 @@ Kimmich &amp; Schmitt Investments LP LLC</en>
 		</ad>
 		<ad guid="4438209f-7391-43fc-8dfc-2d79407b06c3" creator="9551" comment="2005-2018 | https://en.wikipedia.org/wiki/Megaupload | https://en.wikipedia.org/wiki/Mega_(service)">
 			<title>
-				<de>kimfilez</de>
+				<all>kimfilez</all>
 			</title>
 			<description>
 				<de>Teilen Sie Ihre Lieblings-HD-ready-Blockbuster-Filme jetzt mit allen Ihren „Freunden“! Vorher aber noch schön umbenennen, damit man sie nicht gleich erkennt, gelle?
@@ -454,7 +454,7 @@ kimfilez.come - a service by Kimmich &amp; Schmitt LP LLC</en>
 		</ad>
 		<ad guid="5f80ef50-8c69-43c4-b9ba-c251c6fe3cd4" creator="9551" comment="2019- | https://en.wikipedia.org/wiki/Kim_Dotcom | ironically fictional, first 'brand name' again closing the circle">
 			<title>
-				<de>kimswap</de>
+				<all>kimswap</all>
 			</title>
 			<description>
 				<de>Gehen Ihnen Ihre Accounts aus?
@@ -470,7 +470,7 @@ SIM Swapping Services by Kimmich &amp; Schmitt LP LLC</en>
 		</ad>
 		<ad guid="e16885da-28e5-4f71-8931-d4ddbcbb7fbd" creator="9551" comment="1980-1986 | PC Tools, Copy II Plus, Copy II PC - https://en.wikipedia.org/wiki/Central_Point_Software">
 			<title>
-				<de>PC Utils</de>
+				<all>PC Utils</all>
 			</title>
 			<description>
 				<de>Zeigen Sie dem Kopierschutz den Stinkefinger.
@@ -488,7 +488,7 @@ Powerful copy programs and other tools for your PC.</en>
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="1980" year_range_to="1986" />
 		</ad>
-		<ad guid="de4c2660-d438-4646-940c-deaf66580af7" creator="9551" comment="1987-2008 | https://en.wikipedia.org/wiki/McAfee">
+		<ad guid="de4c2660-d438-4646-940c-deaf66580af7" creator="9551" comment="1987-2008 | parody (not in-place spoof) of https://en.wikipedia.org/wiki/McAfee">
 			<title>
 				<de>McÄffle</de>
 				<en>McApee</en>
@@ -522,9 +522,9 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="2009" />
 		</ad>
-		<ad guid="231c932d-eae7-4c37-9d33-46ffb5f7a998" creator="9551" comment="https://en.wikipedia.org/wiki/Chaos_Computer_Club | https://duckduckgo.com/?q=%22da+war+wohl+der+zensor+pinkeln%22">
+		<ad guid="231c932d-eae7-4c37-9d33-46ffb5f7a998" creator="9551" comment="parody (not in-place spoof) of https://en.wikipedia.org/wiki/Chaos_Computer_Club | https://duckduckgo.com/?q=%22da+war+wohl+der+zensor+pinkeln%22">
 			<title>
-				<de>kaos klabauter klub</de>
+				<all>kaos klabauter klub</all>
 			</title>
 			<description>
 				<de>Endlich normale Leute! Die galaktische Gemeinschaft von Lebewesen, benannt nach der Göttin der... Moment mal, wer hat denn den Namen ausgesucht, sagt mal habt ihr sie noch alle!? Da war wohl der Zensor pinkeln.</de>
@@ -532,11 +532,10 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			</description>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
-			<availability year_range_from="1981" />
 		</ad>
 		<ad guid="623d4599-fe8f-44a6-8a5c-62d1c043aab0" creator="9551" comment="https://de.wikipedia.org/wiki/Fefes_Blog | https://duckduckgo.com/?q=%22einmal+mit+profis+arbeiten%22 | https://duckduckgo.com/?q=%22einmal+mit+profis+arbeiten%22+site%3Ablog.fefe.de | no different versions for previous times intended for the 'Consulting' variation for now, Fefe is eternal :)">
 			<title>
-				<de>Fifi Consulting</de>
+				<all>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"} Consulting</all>
 			</title>
 			<description>
 				<de>Einmal mit Profis arbeiten.</de>
@@ -547,8 +546,8 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 		</ad>
 		<ad guid="1d528879-5a9d-4328-9b06-750f50bf178b" creator="9551" comment="-2004 | https://de.wikipedia.org/wiki/Fefes_Blog">
 			<title>
-				<de>Fifis Kolumne</de>
-				<en>Fifi's Column</en>
+				<de>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}s Kolumne</de>
+				<en>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}'s Column</en>
 			</title>
 			<description>
 				<de>Euer tägliches Medienkompetenztraining mit den zynischen Kommentaren zu den Geschehnissen in Tech und Politik. Die besten der besten der besten, Sir! Jetzt mit Sportteil.</de>
@@ -560,8 +559,8 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 		</ad>
 		<ad guid="47a3719b-130a-4d44-89af-ad95b58cda1a" creator="9551" comment="2005- | https://de.wikipedia.org/wiki/Fefes_Blog | https://duckduckgo.com/?q=%22alles+finden+die+raus%22">
 			<title>
-				<de>Fifis Blog</de>
-				<en>Fifi's Blog</en>
+				<de>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}s Blog</de>
+				<en>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}'s Blog</en>
 			</title>
 			<description>
 				<de>Euer tägliches Medienkompetenztraining. Das beliebteste Blog aller Zeiten, wie man aus euren Internetdaten ermitteln kann. Das hat nämlich die CIA herausgefunden. Die finden ja alles raus. Alles finden die raus.</de>
@@ -639,7 +638,7 @@ We are also in CYBER Space! Visit us our CYBERWeb page at cyber://cyber.cyber</e
 		</ad>
 		<ad guid="e61220d6-f898-489c-bc2f-efe08556ef2b" creator="9551" comment="https://en.wikipedia.org/wiki/Prada | inspired by film title 3019fa91-7768-437d-896f-a24dd5956bec | Slogan partly by ChatGPT">
 			<title>
-				<de>${brand_prada}</de>
+				<all>${brand_prada}</all>
 			</title>
 			<description>
 				<de>Where Fashion Meets Fortune.
@@ -652,7 +651,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="07e6647f-c8dc-406d-a9bf-90490d7489ce" comment="https://en.wikipedia.org/wiki/Aral_AG | Slogan mirroring dd8f1816-8f10-4b3b-9a67-d46f7bba1394">
 			<title>
-				<de>${brand_aral}</de>
+				<all>${brand_aral}</all>
 			</title>
 			<description>
 				<de>Wir mobilisieren Möglichkeiten.</de>
@@ -663,7 +662,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="1801ad71-1ba6-4c77-b698-5416560a65ad" creator="9551" comment="https://en.wikipedia.org/wiki/Opel_Manta">
 			<title>
-				<de>${brand_opel} ${brand_manta}</de>
+				<all>${brand_opel} ${brand_manta}</all>
 			</title>
 			<description>
 				<de>Der neue ${brand_opel} ${brand_manta}. Jetzt noch flachgelegter als Ihre blonde Friseusefreundin auf dem Beifahrersitz und die Witze, die Sie über sie reißen.</de>
@@ -674,7 +673,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="874f2587-f51a-461d-bd46-fb4d93d054b5" creator="9551" comment="-1982 | https://en.wikipedia.org/wiki/Pontiac_Firebird | slogan created with help from ChatGPT">
 			<title>
-				<de>${brand_pontiac} ${brand_firebird}</de>
+				<all>${brand_pontiac} ${brand_firebird}</all>
 			</title>
 			<description>
 				<de>Wer redet von sprechenden Autos? Auch wenn unser sprechendes Modell noch nicht verfügbar ist, die Power spricht für sich. Fahren Sie jetzt Probe mit dem neuesten ${brand_pontiac} ${brand_firebird} Modell.</de>
@@ -686,7 +685,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="0c3715b4-2776-439d-9591-97938c384b2e" creator="9551" comment="1983-2002 | Pontiac Trans Am Firebird: https://en.wikipedia.org/wiki/Pontiac_Firebird_(third_generation) | owned by General Motors, discontinued in 2002">
 			<title>
-				<de>${brand_pontiac} ${brand_transam} ${brand_firebird}</de>
+				<all>${brand_pontiac} ${brand_transam} ${brand_firebird}</all>
 			</title>
 			<description>
 				<de>Die dritte Generation. Der Flitzer nicht nur für Kreuzritter der Nacht. Das Scanner-Licht vorne jetzt erhältlich in Regenbogenfarben.</de>
@@ -698,7 +697,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="ed7ef0fa-435a-4b2a-acbd-f1419cf34ead" creator="9551" comment="2003-2008 | https://en.wikipedia.org/wiki/General_Motors | slogan by ChatGPT">
 			<title>
-				<de>${brand_generalmotors}</de>
+				<all>${brand_generalmotors}</all>
 			</title>
 			<description>
 				<de>Wir bauen die Autos, die fast so lange halten wie unsere Vorstandssitzungen.</de>
@@ -710,7 +709,7 @@ Recommended by Satan himself.</en>
 		</ad>
 		<ad guid="c60f4f8e-a71b-4c4b-a6fd-81db42928e6a" creator="9551" comment="2009- | https://en.wikipedia.org/wiki/General_Motors | post financial crisis edition | slogan by ChatGPT">
 			<title>
-				<de>${brand_generalmotors}</de>
+				<all>${brand_generalmotors}</all>
 			</title>
 			<description>
 				<de>Belastbarkeit in Bewegung - mit einer Prise Unterstützung durch den Steuerzahler.</de>
@@ -720,15 +719,15 @@ Recommended by Satan himself.</en>
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="2009" />
 		</ad>
-		<ad guid="88342e7d-cb1e-4b10-b643-23a858d53192" creator="9551" comment="-2009 | https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | https://en.bitcoin.it/wiki/Alpaca | pre-2010 version ironically fictional">
+		<ad guid="88342e7d-cb1e-4b10-b643-23a858d53192" creator="9551" comment="-2009 | parody (not in-place spoof) of https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | https://en.bitcoin.it/wiki/Alpaca | pre-2010 version ironically fictional">
 			<title>
-				<de>MtSox</de>
+				<all>MtSox</all>
 			</title>
 			<description>
-				<de>Besucht die Mystic the Summoning Offline Exchange!
+				<de>Besucht die |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|ffline E|b|x|/b|change!
 Trödelladen und Tauschbörse für Spielkarten und Tabletop-Zubehör jetzt auch in eurer Nähe.
 Neu im Angebot aufgrund nicht endender Nachfragen: Socken! Natürlich aus feinster Alpaka-Wolle.</de>
-				<en>Visit the Mystic the Summoning Offline Exchange!
+				<en>Visit the |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|ffline E|b|x|/b|change!
 The junk store and exchange for playing cards and tabletop accessories now also in your area.
 New on offer due to never-ending inquiries: socks! Made of finest alpaca wool, of course.</en>
 			</description>
@@ -736,23 +735,23 @@ New on offer due to never-ending inquiries: socks! Made of finest alpaca wool, o
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
 			<availability year_range_to="2009" />
 		</ad>
-		<ad guid="fb4bae6a-8983-4f97-87a8-d0b4a18e7ed9" creator="9551" comment="2010-2014 | https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | bankruptcy in 2014">
+		<ad guid="fb4bae6a-8983-4f97-87a8-d0b4a18e7ed9" creator="9551" comment="2010-2014 | parody (not in-place spoof) of https://en.wikipedia.org/wiki/Magic:_The_Gathering | https://en.wikipedia.org/wiki/Mt._Gox | bankruptcy in 2014">
 			<title>
-				<de>Mt. Sox</de>
+				<all>Mt. Sox</all>
 			</title>
 			<description>
-				<de>Besucht die Mystic the Summoning Online Exchange!
+				<de>Besucht die |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|nline E|b|x|/b|change!
 Genau, jetzt endlich auch Online! Wenn schon denn schon: Neben Spielkarten, Trödel und Alpaka-Socken gibt's nun auch frische Cyberbucks zum Kaufen und zum Handeln.</de>
-				<en>Visit the Mystic the Summoning Online Exchange!
+				<en>Visit the |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|nline E|b|x|/b|change!
 That's right, now finally online too! And while we're at it: in addition to playing cards, junk and alpaca socks, there's now also fresh cyberbucks to buy and trade.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
 			<availability year_range_from="2010" year_range_to="2014" />
 		</ad>
-		<ad guid="1a5350b1-3bcf-4409-980a-9533fb803260" creator="9551" comment="2015- | https://en.wikipedia.org/wiki/Mt._Gox | https://duckduckgo.com/?q=goxcoin | post bankruptcy era ironically fictional | the concept of an NFT existed already in 2015 and earlier, but the term was fully established only around 2018 | however, no idea for a 2015-2018 variation for now">
+		<ad guid="1a5350b1-3bcf-4409-980a-9533fb803260" creator="9551" comment="2015- | parody (not in-place spoof) of https://en.wikipedia.org/wiki/Mt._Gox | https://duckduckgo.com/?q=goxcoin | post bankruptcy era ironically fictional | the concept of an NFT existed already in 2015 and earlier, but the term was fully established only around 2018 | however, no idea for a 2015-2018 variation for now">
 			<title>
-				<de>Soxcoin</de>
+				<all>Soxcoin</all>
 			</title>
 			<description>
 				<de>Der Insolvenzverwalter von Mt. Sox lässt verkünden: Schuldverschreibungen ab jetzt als NFTs verfügbar.
@@ -782,7 +781,7 @@ Buy money socks JPEGs in the most beautiful shapes and colors!</en>
 			</title>
 			<description>
 				<de>${brandslogan_vierbuddysfuer}. Prost!</de>
-				<en>That ${brandslogan_budsfor} you. And that ${brandslogan_budsfor} me. And that ${brandslogan_budsfor} "${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"nickname"}" ${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"lastname"}. ${brandslogan_thetrinityoftaste}.</en>
+				<en>This ${brandslogan_budsfor} you. And that ${brandslogan_budsfor} me. And that ${brandslogan_budsfor} "${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"nickname"}" ${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"lastname"}. ${brandslogan_thetrinityoftaste}.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="2" profit="460" penalty="667" infomercial_profit="42" fix_infomercial_profit="1" />

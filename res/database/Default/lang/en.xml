@@ -201,7 +201,9 @@
 		<brand_hewlettpackard>Hewitt-Backerd</brand_hewlettpackard> <!-- https://en.wikipedia.org/wiki/Hewlett-Packard -->
 		<brand_hp>HB</brand_hp> <!-- https://en.wikipedia.org/wiki/HP_Inc. -->
 		<brand_laserjet>LazerJam</brand_laserjet> <!-- https://en.wikipedia.org/wiki/HP_LaserJet -->
-		<brand_apple>Aepfle</brand_apple> <!-- https://en.wikipedia.org/wiki/Apple_Inc. | alt/previous spoofs: Orange, Fruit -->
+		<brand_logitech>Loggitec</brand_logitech> <!-- https://en.wikipedia.org/wiki/Logitech -->
+		<brand_cherry>Cherie</brand_cherry> <!-- https://en.wikipedia.org/wiki/Cherry_AG -->
+		<brand_apple>Aepfle</brand_apple> <!-- https://en.wikipedia.org/wiki/Apple_Inc. | alt/previous spoofs: Orange, Fruit, EppelWoi -->
 		<brand_iphone>myPhone</brand_iphone> <!-- https://en.wikipedia.org/wiki/IPhone -->
 		<brand_ipod>myPod</brand_ipod> <!-- https://en.wikipedia.org/wiki/IPod -->
 		<brand_i_apple_generic>y</brand_i_apple_generic>
@@ -225,6 +227,7 @@
 		<brand_cdtv>CDVID</brand_cdtv> <!-- https://en.wikipedia.org/wiki/CDTV -->
 		<brand_escom>ESCAL</brand_escom> <!-- https://en.wikipedia.org/wiki/Escom_AG -->
 		<brand_highscreen>HiScreen</brand_highscreen> <!-- https://de.wikipedia.org/wiki/Vobis -->
+		<brand_piranhabytes>Goldfish Bytes</brand_piranhabytes> <!-- https://en.wikipedia.org/wiki/Piranha_Bytes -->
 		<brand_rainbowarts>Rainbow Wish</brand_rainbowarts> <!-- https://en.wikipedia.org/wiki/Rainbow_Arts -->
 		<brand_rushware>Brushware</brand_rushware> <!-- https://de.wikipedia.org/wiki/Rushware -->
 		<brand_schneider>Schnitzler</brand_schneider> <!-- https://en.wikipedia.org/wiki/Schneider_Rundfunkwerke -->
@@ -240,7 +243,7 @@
 		<brand_mercedes>Mercieles</brand_mercedes> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
 		<brand_benz>Bonz</brand_benz> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
 		<brand_bmw>BWM</brand_bmw> <!-- https://en.wikipedia.org/wiki/BMW -->
-		<brand_volkswagen>Wolkwagen V.</brand_volkswagen> <!-- https://en.wikipedia.org/wiki/Volkswagen | alt./previous spoof: Faulkswagen; TODO: use for some parody -->
+		<brand_volkswagen>Wolkwagen</brand_volkswagen> <!-- https://en.wikipedia.org/wiki/Volkswagen | alt./previous spoof: Faulkswagen; TODO: use for some parody -->
 		<brand_vw>WV</brand_vw>
 		<brand_beetle>Buggy</brand_beetle> <!-- https://en.wikipedia.org/wiki/Volkswagen_Beetle -->
 		<brand_toyota>Totoya</brand_toyota> <!-- https://en.wikipedia.org/wiki/Toyota | prev. spoof: Yotota -->
@@ -350,8 +353,9 @@
 
 		<!-- Other organizations and projects -->
 
-		<generalorg_nasa>NASE</generalorg_nasa> <!-- # https://en.wikipedia.org/wiki/NASA -->
-		<generalorg_communistpartyofthesovietunion>Communist Party of the United Soviet States</generalorg_communistpartyofthesovietunion> <!-- # https://en.wikipedia.org/wiki/Communist_Party_of_the_Soviet_Union -->
+		<generalorg_nasa>NASE</generalorg_nasa> <!-- https://en.wikipedia.org/wiki/NASA -->
+		<generalorg_unicef>UCINEF</generalorg_unicef> <!-- https://en.wikipedia.org/wiki/UNICEF -->
+		<generalorg_communistpartyofthesovietunion>Communist Party of the United Soviet States</generalorg_communistpartyofthesovietunion> <!-- https://en.wikipedia.org/wiki/Communist_Party_of_the_Soviet_Union -->
 		<generalorg_ofthecommunistpartyofthesovietunion>of the Communist Party of the United Soviet States</generalorg_ofthecommunistpartyofthesovietunion>
 		<generalorg_cpsu>CPUSS</generalorg_cpsu>
 		<generalorg_cdu>CUD</generalorg_cdu> <!-- https://en.wikipedia.org/wiki/Christian_Democratic_Union_of_Germany -->
@@ -365,6 +369,8 @@
 		<generalorg_ofthesocialistunitypartyofgermany>of the Socialist-German Unity Party</generalorg_ofthesocialistunitypartyofgermany>
 		<generalorg_greenpeace>Creampeas</generalorg_greenpeace> <!-- https://en.wikipedia.org/wiki/Greenpeace -->
 		<generalorg_chaoscomputerclub>Chaos Communication Club</generalorg_chaoscomputerclub> <!-- https://en.wikipedia.org/wiki/Chaos_Computer_Club -->
+		<generalorg_adac>ADCA</generalorg_adac> <!-- https://en.wikipedia.org/wiki/ADAC -->
+		<generalorg_igmetall>DG Metall</generalorg_igmetall> <!-- https://en.wikipedia.org/wiki/IG_Metall -->
 
 		<generalorgproject_columbia>Colombia</generalorgproject_columbia> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Columbia -->
 		<generalorgproject_challenger>Passenger</generalorgproject_challenger> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Challenger -->
@@ -397,30 +403,36 @@
 		<sportsclub_hamburgersv>RSV Hamburg</sportsclub_hamburgersv> <!-- https://en.wikipedia.org/wiki/Hamburger_SV -->
 		<sportsclub_hsv>RSVH</sportsclub_hsv>
 
-		<!-- Media and Franchises -->
+		<!-- Media -->
 
 		<media_oscar>Oswald</media_oscar> <!-- (was) often referenced in clear-text but trademarked | https://en.wikipedia.org/wiki/Academy_Awards -->
 		<media_academyaward>Academia Award</media_academyaward> <!-- https://en.wikipedia.org/wiki/Academy_Awards -->
 		<media_hollywood>Hillywald</media_hollywood> <!-- https://en.wikipedia.org/wiki/Hollywood | just a geographical location but may be part of a trademark in certain contexts, e.g. 'Hollywood Records'; providing consistency for entries like that -->
+		<media_goldenraspberry>Golden Bramble</media_goldenraspberry> <!-- https://en.wikipedia.org/wiki/Golden_Raspberry_Awards -->
+		<media_ofthegoldenraspberry>of the Golden Bramble</media_ofthegoldenraspberry>
+		<media_withthegoldenraspberry>with the Golden Bramble</media_withthegoldenraspberry>
 
-		<mediageneralorg_ard>ADR</mediageneralorg_ard> <!-- https://en.wikipedia.org/wiki/ARD_(broadcaster) -->
-		<mediageneralorg_zweitesdeutschesfernsehen>2. Deutsches Fernsehen</mediageneralorg_zweitesdeutschesfernsehen> <!-- https://en.wikipedia.org/wiki/ZDF -->
-		<mediageneralorg_zweitedeutschefernsehen>2. Deutsche Fernsehen</mediageneralorg_zweitedeutschefernsehen>
-		<mediageneralorg_zdf>2DF</mediageneralorg_zdf>
-		<mediageneralorg_rtl>RLT</mediageneralorg_rtl> <!-- https://en.wikipedia.org/wiki/RTL_Group -->
-		<mediageneralorg_sat1>Sati.11</mediageneralorg_sat1> <!-- https://en.wikipedia.org/wiki/Sat.1 -->
-		<mediageneralorg_prosieben>Pro13</mediageneralorg_prosieben> <!-- https://en.wikipedia.org/wiki/ProSieben -->
-		<mediageneralorg_pro7>Pro13</mediageneralorg_pro7>
-		<mediageneralorg_worldwrestlingentertainment>Western Wrestling Amusement</mediageneralorg_worldwrestlingentertainment> <!-- https://en.wikipedia.org/wiki/WWE -->
-		<mediageneralorg_wwe>WWA</mediageneralorg_wwe>
-		<mediageneralorg_worldwrestlingfederation>Western Wrestling Friends</mediageneralorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
-		<mediageneralorg_theworldwrestlingfederation>the Western Wrestling Friends</mediageneralorg_theworldwrestlingfederation>
-		<mediageneralorg_wwf>WWFr</mediageneralorg_wwf>
-		<mediageneralorg_marvel>Marbel</mediageneralorg_marvel> <!-- https://en.wikipedia.org/wiki/Marvel_Entertainment -->
+		<mediaorg_ard>ADR</mediaorg_ard> <!-- https://en.wikipedia.org/wiki/ARD_(broadcaster) -->
+		<mediaorg_zweitesdeutschesfernsehen>2. Deutsches Fernsehen</mediaorg_zweitesdeutschesfernsehen> <!-- https://en.wikipedia.org/wiki/ZDF -->
+		<mediaorg_zweitedeutschefernsehen>2. Deutsche Fernsehen</mediaorg_zweitedeutschefernsehen>
+		<mediaorg_zdf>2DF</mediaorg_zdf>
+		<mediaorg_rtl>RLT</mediaorg_rtl> <!-- https://en.wikipedia.org/wiki/RTL_Group -->
+		<mediaorg_sat1>Sati.11</mediaorg_sat1> <!-- https://en.wikipedia.org/wiki/Sat.1 -->
+		<mediaorg_prosieben>Pro13</mediaorg_prosieben> <!-- https://en.wikipedia.org/wiki/ProSieben -->
+		<mediaorg_pro7>Pro13</mediaorg_pro7>
+		<mediaorg_worldwrestlingentertainment>Western Wrestling Amusement</mediaorg_worldwrestlingentertainment> <!-- https://en.wikipedia.org/wiki/WWE -->
+		<mediaorg_wwe>WWA</mediaorg_wwe>
+		<mediaorg_worldwrestlingfederation>Western Wrestling Friends</mediaorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
+		<mediaorg_theworldwrestlingfederation>the Western Wrestling Friends</mediaorg_theworldwrestlingfederation>
+		<mediaorg_wwf>WWFr</mediaorg_wwf>
+		<mediaorg_marvel>Marbel</mediaorg_marvel> <!-- https://en.wikipedia.org/wiki/Marvel_Entertainment -->
+		<mediaorg_augsburgerpuppenkiste>Augsburger Plapperschachtel</mediaorg_augsburgerpuppenkiste> <!-- https://en.wikipedia.org/wiki/Augsburger_Puppenkiste -->
 
 		<mediatitle_lowestofthelow>At the Lowest Edge</mediatitle_lowestofthelow> <!-- https://en.wikipedia.org/wiki/Lowest_of_the_Low_(book) -->
 		<mediatitle_bornintheusa>Raised in America</mediatitle_bornintheusa> <!-- https://en.wikipedia.org/wiki/Born_in_the_U.S.A. -->
 		<mediatitle_derfreischuetz>Das Freiwild</mediatitle_derfreischuetz> <!-- https://en.wikipedia.org/wiki/Der_Freisch%C3%BCtz -->
+		<mediatitle_thephantomoftheopera>The Ghost of the Theatre</mediatitle_thephantomoftheopera> <!-- https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(1986_musical) -->
+		<mediatitle_takeonme>Brake On Me</mediatitle_takeonme> <!-- https://en.wikipedia.org/wiki/Take_On_Me -->
 		<mediatitle_masterofpuppets>Pulling the Strings</mediatitle_masterofpuppets> <!-- https://en.wikipedia.org/wiki/Master_of_Puppets -->
 		<mediatitle_trueblue>Deep Blue</mediatitle_trueblue> <!-- https://en.wikipedia.org/wiki/True_Blue_(Madonna_album) -->
 		<mediatitle_thriller>Trillin'</mediatitle_thriller> <!-- https://en.wikipedia.org/wiki/Thriller_(album) -->
@@ -442,8 +454,9 @@
 		<mediatitle_airwolf>Airhound</mediatitle_airwolf> <!-- https://en.wikipedia.org/wiki/Airwolf -->
 		<mediatitle_ghostbusters>Ghostblazers</mediatitle_ghostbusters> <!-- https://en.wikipedia.org/wiki/Ghostbusters_(franchise) -->
 		<mediatitle_knightrider>Night Raider</mediatitle_knightrider> <!-- https://en.wikipedia.org/wiki/Knight_Rider -->
+		<mediatitle_gilligansisland>Gallagan's Isle</mediatitle_gilligansisland> <!-- https://en.wikipedia.org/wiki/Gilligan%27s_Island -->
 		<mediatitle_starwars>War Stars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
-		<mediatitle_ottifants>Grottifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant -->
+		<mediatitle_ottifants>Grottifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant | alt spoofs: Frottifanten, Ollifanten -->
 
 		<mediaprop_batmobile>Batcar</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
 		<mediaprop_dudu>Dodo</mediaprop_dudu> <!-- https://en.wikipedia.org/wiki/Superbug_(film_series) -->

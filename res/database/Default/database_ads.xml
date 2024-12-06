@@ -4,7 +4,7 @@
 	<allads>
 		<ad guid="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4" comment="https://en.wikipedia.org/wiki/Ford_Motor_Company">
 			<title>
-				<de>${brand_ford}</de>
+				<all>${brand_ford}</all>
 			</title>
 			<description>
 				<de>Der neue ${brand_ford} ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</de>
@@ -15,7 +15,7 @@
 		</ad>
 		<ad guid="044991ac-f4a6-4705-8e84-052d497d1b3a">
 			<title>
-				<de>ToughWhip</de>
+				<all>ToughWhip</all>
 			</title>
 			<description>
 				<de>Ein Wischtuch für Küche UND WC. Jetzt mit lustigen Tiermotiven.</de>
@@ -63,7 +63,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 		</ad>
 		<ad guid="153bd5af-1163-4c22-a718-3ceb63da26c7" comment="https://en.wikipedia.org/wiki/Pampers">
 			<title>
-				<de>${brand_pampers}</de>
+				<all>${brand_pampers}</all>
 			</title>
 			<description>
 				<de>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</de>
@@ -109,7 +109,7 @@ You will really have to chew.</en>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="23" repetitions="1" duration="2" profit="415" penalty="460" infomercial_profit="40" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there">
+		<ad guid="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there | keeping spoof names here in plain text (pretending Afri is not allowed to use the real brand names)">
 			<title>
 				<all>${brand_africola}</all>
 			</title>
@@ -122,7 +122,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="2e70e2e8-1b23-4aa5-90dc-40e2f5230f71">
 			<title>
-				<de>Eau de WC</de>
+				<all>Eau de WC</all>
 			</title>
 			<description>
 				<de>Bestellen Sie jetzt und sichern Sie sich den Duft, der Frauen betört und Ihre WC-Gäste bezaubert. Neu: Zitrone!</de>
@@ -133,7 +133,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="329eb726-34c8-49b3-a0af-be76dcbd296c" comment="TODO: availability years + predecessor">
 			<title>
-				<de>Ringtone Fuzzy</de>
+				<all>Ringtone Fuzzy</all>
 			</title>
 			<description>
 				<de>Räm Bäm Bäääm - Bestell Dir jetzt Deinen Klingelton im Sparabo.</de>
@@ -156,7 +156,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="d1339a50-8d64-4f51-a54e-8a26fe956982" comment="1979-1986 | https://en.wikipedia.org/wiki/Walkman">
 			<title>
-				<de>${brand_sony} ${brand_walkman}</de>
+				<all>${brand_sony} ${brand_walkman}</all>
 			</title>
 			<description>
 				<de>Hört eure Lieblings-MCs nun auch unterwegs! ${brand_sony} macht den Groove.</de>
@@ -168,7 +168,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="4d2f4ef9-5262-44d7-a062-f27a494fb503" comment="1987-1993 | https://en.wikipedia.org/wiki/Discman">
 			<title>
-				<de>${brand_sony} ${brand_discman}</de>
+				<all>${brand_sony} ${brand_discman}</all>
 			</title>
 			<description>
 				<de>Hört eure Lieblings-CDs nun auch unterwegs! ${brand_sony} macht den Groove.</de>
@@ -180,7 +180,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="43e66d8f-5275-47a5-87c0-8f5c5d0082ee" comment="1994-1999 | https://en.wikipedia.org/wiki/PlayStation_(console)">
 			<title>
-				<de>${brand_playstation}</de>
+				<all>${brand_playstation}</all>
 			</title>
 			<description>
 				<de>It's not just playing. Die neue Spielkonsolengeneration aus dem Hause ${brand_sony}.</de>
@@ -192,7 +192,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad" comment="2000-2005 | https://en.wikipedia.org/wiki/PlayStation_2">
 			<title>
-				<de>${brand_playstation} 2</de>
+				<all>${brand_playstation} 2</all>
 			</title>
 			<description>
 				<de>${brandslogan_thethirdplace}. Die ${brand_ps}2 ist der Nachfolger der ${brand_ps} aus dem Hause ${brand_sony}.</de>
@@ -204,7 +204,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="8a2865eb-80d8-4afb-b2e2-2c1a7fe3599b" comment="2006-2012 | https://en.wikipedia.org/wiki/PlayStation_3">
 			<title>
-				<de>${brand_playstation} 3</de>
+				<all>${brand_playstation} 3</all>
 			</title>
 			<description>
 				<de>Playing is just the beginning. Tauchen Sie ein in die Parallelprozessorwelten! Die ${brand_ps}3 ist der Nachfolger der ${brand_ps}2 aus dem Hause ${brand_sony}.</de>
@@ -216,7 +216,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="9971a105-b9fe-435f-97f8-e9dfa6f531a5" comment="2013-2019 | https://en.wikipedia.org/wiki/PlayStation_4">
 			<title>
-				<de>${brand_playstation} 4</de>
+				<all>${brand_playstation} 4</all>
 			</title>
 			<description>
 				<de>Be astounding. Be astounded. Be ${brand_playstation} 4. Der Nachfolger der ${brand_ps}3 aus dem Hause ${brand_sony}.</de>
@@ -228,7 +228,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="8b8a295e-b600-48c5-ac81-3f3094cab452" comment="2020- | https://en.wikipedia.org/wiki/PlayStation_5">
 			<title>
-				<de>${brand_playstation} 5</de>
+				<all>${brand_playstation} 5</all>
 			</title>
 			<description>
 				<de>The game without boundaries. Die ${brand_ps}5 ist der Nachfolger der ${brand_ps}4 aus dem Hause ${brand_sony}.</de>
@@ -264,11 +264,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="PoliPlayw01">
 			<title>
-				<de>PoliPlay</de>
+				<all>PoliPlay</all>
 			</title>
 			<description>
-				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Birne und Genschman zum Preis von einem.</de>
-				<en>Action play figures of your favorite German politicians. For a short time 'The Pear' and 'Genschman' for the price of one.</en>
+				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Birne und ${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"} zum Preis von einem.</de>
+				<en>Action play figures of your favorite German politicians. For a short time "The Pear" and "${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"}" for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -276,11 +276,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="PoliPlayw02">
 			<title>
-				<de>PoliPlay</de>
+				<all>PoliPlay</all>
 			</title>
 			<description>
-				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit „Blühende Landschaften“-Helmut und „Rote Socken“-Gregor zum Preis von einem.</de>
-				<en>Action play figures of your favorite German politicians. For a short time "Blooming landscapes"-Helmut and "Red Socks"-Gregor for the price of one.</en>
+				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit „Blühende Landschaften“-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} und „Rote Socken“-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} zum Preis von einem.</de>
+				<en>Action play figures of your favorite German politicians. For a short time "Blooming landscapes"-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} and "Red Socks"-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -288,11 +288,11 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="PoliPlayw03">
 			<title>
-				<de>PoliPlay</de>
+				<all>PoliPlay</all>
 			</title>
 			<description>
-				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit „Hol mir ma ne Flasche Bier“-Gerhard und Putzgruppen-Joschka zum Preis von einem.</de>
-				<en>Action play figures of your favorite German politicians. For a short time "Get me a bottle of beer"-Gerhard and "Cleaning Squad"-Joschka for the price of one.</en>
+				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit „Hol mir ma ne Flasche Bier“-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} und Putzgruppen-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} zum Preis von einem.</de>
+				<en>Action play figures of your favorite German politicians. For a short time "Get me a bottle of beer"-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} and "Cleaning Squad"-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -300,19 +300,19 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="42b4aa37-1274-4da2-9d72-4e203720eeb6">
 			<title>
-				<de>PoliPlay</de>
+				<all>PoliPlay</all>
 			</title>
 			<description>
-				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</de>
-				<en>Action play figures of your favorite German politician. For short time Action-Murkel and Chaoz-Röszler for the price of one.</en>
+				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} und Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} zum Preis von einem.</de>
+				<en>Action play figures of your favorite German politician. For short time Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} and Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
-			<availability year_range_from="2005" year_range_to="2017" />
+			<availability year_range_from="2005" />
 		</ad>
 		<ad guid="44af9e71-7c61-4531-b125-181948cd791a">
 			<title>
-				<de>Aunt Lizzy's</de>
+				<all>Aunt Lizzy's</all>
 			</title>
 			<description>
 				<de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
@@ -323,7 +323,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="4621cea4-26c9-4c74-b796-a687651333f4">
 			<title>
-				<de>Big Kahuna Burger</de>
+				<all>Big Kahuna Burger</all>
 			</title>
 			<description>
 				<de>Mmmmhmmm - das IST ein leckerer Burger. Wenn Du auf Burger stehst, musst Du die probieren!</de>
@@ -334,7 +334,7 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="4921816c-91a3-42c5-8ca8-56d67394f8dc">
 			<title>
-				<de>KittyFood</de>
+				<all>KittyFood</all>
 			</title>
 			<description>
 				<de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
@@ -477,10 +477,9 @@ But only with Relocation Rudolph!</en>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="2" fix_price="0" profit="3000" penalty="3800" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="774e0ca3-a31c-4afc-86be-304b02176fcd">
+		<ad guid="774e0ca3-a31c-4afc-86be-304b02176fcd" comment="alt. name: Fakation">
 			<title>
 				<de>Tu-doch-so</de>
-				<!-- <en>Fakation</en> -->
 				<en>Pre-Tend-Astic</en>
 			</title>
 			<description>
@@ -539,7 +538,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="8384acef-9c23-4efa-9ffa-0d0e370693d4">
 			<title>
-				<de>Vitalon Super Supau</de>
+				<all>Vitalon Super Supau</all>
 			</title>
 			<description>
 				<de>Die „Vitalon Foods Company“ aus Taiwan lässt ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} als ${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} für ihren Sporttrunk werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Rennboot.</de>
@@ -550,7 +549,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="848b76e8-f93f-4a6f-aa55-b62643c0793d" comment="https://en.wikipedia.org/wiki/Kaipan (assumed). 'Saipien' could also have been https://en.wikipedia.org/wiki/Scania_AB or https://en.wikipedia.org/wiki/Saab_AB">
 			<title>
-				<de>${brand_kaipan}</de>
+				<all>${brand_kaipan}</all>
 			</title>
 			<description>
 				<de>Das neue Modell des renommierten Autoherstellers ${brand_kaipan} verzückt die Presse - auch Sie?</de>
@@ -573,7 +572,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="872a0f04-852d-4b49-b813-6f051e663fbc">
 			<title>
-				<de>Call-A-Beer</de>
+				<all>Call-A-Beer</all>
 			</title>
 			<description>
 				<de>Kein Bier mehr? Schick nicht die Frau, ruf Call-A-Beer!</de>
@@ -596,7 +595,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="914bf7d1-8338-4ace-87c8-a84dca3872f5">
 			<title>
-				<de>Chateau Migraine</de>
+				<all>Chateau Migraine</all>
 			</title>
 			<description>
 				<de>Beim Kauf einer Flasche Rotwein gibts jetzt zwei Kopfschmerztabletten gratis dazu.</de>
@@ -631,7 +630,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="Sjaele-spysoft2" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Spysoft</de>
+				<all>Spysoft</all>
 			</title>
 			<description>
 				<de>Surfen im Garten! WLan-Kabel bis 200m.</de>
@@ -643,7 +642,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="a401f20f-8832-45df-a274-2599fd8d0afb" comment="https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei | 'Berliner Pilsener' previously used in clear text but it's a real brand | 'Brandenburger Pilsener' also a real brand">
 			<title>
-				<de>${brand_berlinerpilsener}</de>
+				<all>${brand_berlinerpilsener}</all>
 			</title>
 			<description>
 				<de>Berlin, du bist so wunderbar!</de>
@@ -654,7 +653,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="a574c051-d283-441f-8337-7b159017c7dc" comment="TVTower 2013 version: StyleDJ">
 			<title>
-				<de>Stilvento</de>
+				<all>Stilvento</all>
 			</title>
 			<description>
 				<de>Ist ihre Party mal wieder total langweilig? Buchen Sie Stilvento und ihr Anlass ist gerettet.</de>
@@ -665,7 +664,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="a5c552c1-9205-4b71-831a-1acc0a1387a9" comment="https://en.wikipedia.org/wiki/Mars_bar">
 			<title>
-				<de>${brand_mars}</de>
+				<all>${brand_mars}</all>
 			</title>
 			<description>
 				<de>Der unvergleichliche Schokoriegel mit dem hinreißenden Geschmack.</de>
@@ -676,7 +675,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="a8087397-e57e-4bdc-b2a9-f44b7173de6d">
 			<title>
-				<de>Ravelli</de>
+				<all>Ravelli</all>
 			</title>
 			<description>
 				<de>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravelli führt es.</de>
@@ -687,7 +686,7 @@ But only with Relocation Rudolph!</en>
 		</ad>
 		<ad guid="a81fea24-859f-463e-a69c-0124de937a47" comment="https://en.wikipedia.org/wiki/Sarotti | TVTower 2013 version: Saratti | TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
 			<title>
-				<de>${brand_sarotti}</de>
+				<all>${brand_sarotti}</all>
 			</title>
 			<description>
 				<de>Der ${brand_sarotti}-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
@@ -724,7 +723,7 @@ The benefit: No postage for remittance slips.</en>
 		</ad>
 		<ad guid="ac90b184-af1e-48e3-9f64-eb3ccff0c7aa">
 			<title>
-				<de>MinutePass</de>
+				<all>MinutePass</all>
 			</title>
 			<description>
 				<de>${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} präsentiert für die Telecom USA in zwei Spots eine nützliche Telefonkarte.</de>
@@ -735,7 +734,7 @@ The benefit: No postage for remittance slips.</en>
 		</ad>
 		<ad guid="ad62c53b-3d7d-404e-bb37-0babaed87df1">
 			<title>
-				<de>Althans</de>
+				<all>Althans</all>
 			</title>
 			<description>
 				<de>Qualität seit 1861.
@@ -760,7 +759,7 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 		</ad>
 		<ad guid="b5dbf200-bd84-4126-b80e-66a71661c8aa">
 			<title>
-				<de>Speck</de>
+				<all>Speck</all>
 			</title>
 			<description>
 				<de>Speck-Seife steht seit Jahrzenten für Qualität und saubere Hände.</de>
@@ -809,7 +808,7 @@ It's a ${brand_sony}.</en>
 		</ad>
 		<ad guid="bd51bc63-e6f4-43cd-86ac-9f1d039aa188">
 			<title>
-				<de>Bikeshop</de>
+				<all>Bikeshop</all>
 			</title>
 			<description>
 				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst. Bikeshop ist top.</de>
@@ -832,7 +831,7 @@ It's a ${brand_sony}.</en>
 		</ad>
 		<ad guid="c078ab28-32f5-439a-81bc-f90602f5fcbc" comment="https://en.wikipedia.org/wiki/Ravensburger">
 			<title>
-				<de>${brand_ravensburger}</de>
+				<all>${brand_ravensburger}</all>
 			</title>
 			<description>
 				<de>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
@@ -843,7 +842,7 @@ It's a ${brand_sony}.</en>
 		</ad>
 		<ad guid="cb0392f3-cc95-4508-a776-22d0e8ca00fa">
 			<title>
-				<de>La Baguette</de>
+				<all>La Baguette</all>
 			</title>
 			<description>
 				<de>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</de>
@@ -865,7 +864,7 @@ It's a ${brand_sony}.</en>
 		</ad>
 		<ad guid="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" comment="https://de.wikipedia.org/wiki/MediaMarktSaturn | TVTower 2013 version: Zaturn">
 			<title>
-				<de>${brand_saturn}</de>
+				<all>${brand_saturn}</all>
 			</title>
 			<description>
 				<de>Reiz macht geil, so die Botschaft dieser Werbung.</de>
@@ -876,7 +875,7 @@ It's a ${brand_sony}.</en>
 		</ad>
 		<ad guid="cf26df7e-6721-4f09-9457-28c1e072e11e">
 			<title>
-				<de>Bundi</de>
+				<all>Bundi</all>
 			</title>
 			<description>
 				<de>Hier gibt's Schnäppchen en masse. Der sympathische Krempelmarkt um die Ecke.</de>
@@ -925,7 +924,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="d43943a8-67c3-47a5-bb96-e0f03b5194df" comment="https://en.wikipedia.org/wiki/Lamy">
 			<title>
-				<de>${brand_lamy}</de>
+				<all>${brand_lamy}</all>
 			</title>
 			<description>
 				<de>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</de>
@@ -948,7 +947,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" comment="https://en.wikipedia.org/wiki/Orangina">
 			<title>
-				<de>${brand_orangina}</de>
+				<all>${brand_orangina}</all>
 			</title>
 			<description>
 				<de>Das Fruchtsaftgetränk in der weltberühmten bauchigen Flasche. Teuer, aber so gut wie immer richtig.</de>
@@ -959,7 +958,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="d66284c0-6440-4590-a620-f400d67c98b8">
 			<title>
-				<de>Je Ne Reviens Pas</de>
+				<all>Je Ne Reviens Pas</all>
 			</title>
 			<description>
 				<de>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</de>
@@ -970,7 +969,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="Escal-Sjaele-01" comment="https://de.wikipedia.org/wiki/Escom">
 			<title>
-				<de>${brand_escom}</de>
+				<all>${brand_escom}</all>
 			</title>
 			<description>
 				<de>Computerschrott ab 50 Pfennig das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
@@ -982,7 +981,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="d8ee3597-56e1-4117-909a-bde9da3f9f9e" comment="https://de.wikipedia.org/wiki/Escom">
 			<title>
-				<de>${brand_escom}.deu</de>
+				<all>${brand_escom}.deu</all>
 			</title>
 			<description>
 				<de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne Farb-Röhren-Monitore im Angebot.</de>
@@ -994,7 +993,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="da699c1f-4117-4fc6-b365-a3a7608105ab">
 			<title>
-				<de>Aeroswift</de>
+				<all>Aeroswift</all>
 			</title>
 			<description>
 				<de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
@@ -1017,7 +1016,7 @@ Campaign week: no bottle deposit.</en>
 		</ad>
 		<ad guid="ddfbfa22-5af8-4558-afc4-b34619bab1c9">
 			<title>
-				<de>Superfurni</de>
+				<all>Superfurni</all>
 			</title>
 			<description>
 				<de>Gestalten Sie ihre Möbel selber!</de>
@@ -1100,7 +1099,7 @@ Only genuine with the elk!</en>
 		</ad>
 		<ad guid="ec7e37af-1a67-482b-8e65-348f81c22b79">
 			<title>
-				<de>Crunchmunch</de>
+				<all>Crunchmunch</all>
 			</title>
 			<description>
 				<de>Knusprig knackiger Knabberspaß mit feurig scharfer Chilinote. Nur für kurze Zeit mit Tiermotiven.</de>
@@ -1125,7 +1124,7 @@ I feel good with ${brand_downy}.</en>
 		</ad>
 		<ad guid="f86e045c-51ca-4725-aaff-2d5c158348f9">
 			<title>
-				<de>Maike</de>
+				<all>Maike</all>
 			</title>
 			<description>
 				<de>Hoher Tragekomfort und nahezu unsichtbar - die neuen Maike-Hygieneeinlagen.</de>
@@ -1136,7 +1135,7 @@ I feel good with ${brand_downy}.</en>
 		</ad>
 		<ad guid="fc24c505-d3cc-467c-a57c-a154f9d308cb" comment="https://en.wikipedia.org/wiki/Mercedes-Benz | TVTower 2013 version: Märzedes">
 			<title>
-				<de>${brand_benz}</de>
+				<all>${brand_benz}</all>
 			</title>
 			<description>
 				<de>Der neueste Luxusschlitten aus dem Hause ${brand_benz}: Ästethisch einwandfreies Design, robust, klassisch.</de>
@@ -1162,8 +1161,8 @@ I feel good with ${brand_downy}.</en>
 				<all>${mediatitle_gothic}</all>
 			</title>
 			<description>
-				<de>DAS Fantasy-Rollenspiel von Goldfish Bytes. Lasst uns Wildschweine jagen!</de>
-				<en>THE fantasy RPG by Goldfish Bytes. Lets hunt boars!</en>
+				<de>DAS Fantasy-Rollenspiel von ${brand_piranhabytes}. Lasst uns Wildschweine jagen!</de>
+				<en>THE fantasy RPG by ${brand_piranhabytes}. Lets hunt boars!</en>
 			</description>
 			<conditions min_audience="5.7301" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="472" penalty="661" infomercial_profit="133" fix_infomercial_profit="1" />
@@ -1321,7 +1320,7 @@ I feel good with ${brand_downy}.</en>
 		</ad>
 		<ad guid="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
 			<title>
-				<de>SOS Arthritis</de>
+				<all>SOS Arthritis</all>
 			</title>
 			<description>
 				<de>Sie hassen es, keinen Finger krumm zu machen? SOS Arthritis lindert die Beschwerden innerhalb weniger Stunden. Jetzt bestellen und 1 Flasche Schlangenöl umsonst dazubekommen.</de>
@@ -1358,7 +1357,7 @@ We offer fully automatic charging machines. Insert battery, fill coin slot. Pres
 		</ad>
 		<ad guid="ronny-ad-brucey-01" creator="5578" created_by="Ronny">
 			<title>
-				<de>Brucey</de>
+				<all>Brucey</all>
 			</title>
 			<description>
 				<de>Frauen schwören auf den Nerd in Dir. Lass sie Ihn riechen!
@@ -1395,7 +1394,7 @@ Brucey - harsh fragrance for expert men.</en>
 		</ad>
 		<ad guid="ronny-ad-kalua-01" creator="5578" created_by="Ronny">
 			<title>
-				<de>Kalua</de>
+				<all>Kalua</all>
 			</title>
 			<description>
 				<de>Der Knallerkaubonbon aus Hawaii. Noch nie schmeckte Zucker so tro-tro-tropisch.</de>
@@ -1407,7 +1406,7 @@ Brucey - harsh fragrance for expert men.</en>
 		</ad>
 		<ad guid="ronny-ad-kalua-02" creator="5578" created_by="Ronny">
 			<title>
-				<de>Kalua BBQ</de>
+				<all>Kalua BBQ</all>
 			</title>
 			<description>
 				<de>Der hawaiianische Kaubonbon jetzt mit neuem Trendgeschmack. Kandierte Hühnerkrallen verleihen die faszinierende Würze.</de>
@@ -1419,7 +1418,7 @@ Brucey - harsh fragrance for expert men.</en>
 		</ad>
 		<ad guid="ronny-ad-kambalott-01" creator="5578" created_by="Ronny">
 			<title>
-				<de>Kambalott</de>
+				<all>Kambalott</all>
 			</title>
 			<description>
 				<de>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</de>
@@ -1430,7 +1429,7 @@ Brucey - harsh fragrance for expert men.</en>
 		</ad>
 		<ad guid="ronny-ad-laola-01" creator="5578" created_by="Ronny">
 			<title>
-				<de>Laola</de>
+				<all>Laola</all>
 			</title>
 			<description>
 				<de>Das freche Jugendmagazin. Wir beantworten Fragen zu Liebe und Sex nur im Winter.</de>
@@ -1490,7 +1489,7 @@ Brucey - harsh fragrance for expert men.</en>
 		</ad>
 		<ad guid="ronny-ad-sanitaxi-01" creator="5578" created_by="Ronny">
 			<title>
-				<de>Sanitaxi</de>
+				<all>Sanitaxi</all>
 			</title>
 			<description>
 				<de>Der Rollator verrostet? Die Verwandten glänzen seit Jahren mit Abwesenheit? Sanitaxi versorgt Sie mit allen notwendigen Hygieneartikeln. Jetzt mit trendigen Motiven auf jeder zweiten Einlage.</de>
@@ -1527,7 +1526,7 @@ Available in any well-stocked drugstore.</en>
 		</ad>
 		<ad guid="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
 			<title>
-				<de>Zick-Schnack</de>
+				<all>Zick-Schnack</all>
 			</title>
 			<description>
 				<de>Die Szenekneipe für Tussis und andere Tratschtanten. Dienstags Frei-Secco bei bunten Fingernägeln.</de>
@@ -1563,7 +1562,7 @@ Available in any well-stocked drugstore.</en>
 		</ad>
 		<ad guid="sjaele-ad-Bio-Tube" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Bio-Tube</de>
+				<all>Bio-Tube</all>
 			</title>
 			<description>
 				<de>Die vollwertige Bio-Mahlzeit aus der Tube. Schmeckt wie bei Muttern, krümelt nicht und sooo gesund! Ideal für lange Zockerpartien.</de>
@@ -1674,7 +1673,7 @@ Available in any well-stocked drugstore.</en>
 		</ad>
 		<ad guid="speedminister-ad-Bullshit-Bingo-Brokers" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Bullshit Bingo Brokers</de>
+				<all>Bullshit Bingo Brokers</all>
 			</title>
 			<description>
 				<de>Traum-Renditen ohne den Finger krumm zu machen. Ganze Bevölkerungen in die Hungersnot schicken? - Egal? - Bullseye mit Bullshit Bingo Brokers!</de>
@@ -1685,7 +1684,7 @@ Available in any well-stocked drugstore.</en>
 		</ad>
 		<ad guid="speedminister-ad-Doublie-Kate" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Doublie-Kate</de>
+				<all>Doublie-Kate</all>
 			</title>
 			<description>
 				<de>3D Scanner und 3D Drucker in einem. Denken Sie an die Möglichkeiten! Verwandeln Sie eine Metallvorlage in ein Plastik-Original. Doublie-Kate von „Life is Groats“!</de>
@@ -1708,7 +1707,7 @@ Available in any well-stocked drugstore.</en>
 		</ad>
 		<ad guid="speedminister-ad-Enemy24" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Enemy24</de>
+				<all>Enemy24</all>
 			</title>
 			<description>
 				<de>Suchen Sie jemanden zum Dissen oder Haten? Fehlt Ihnen bisher ein Erzfeind? Nutzen Sie „Enemy24“! Wir finden Ihren persönlichen Gegenspieler!</de>
@@ -1805,7 +1804,7 @@ Available in any well-stocked drugstore.</en>
 		</ad>
 		<ad guid="speedminister-ad-Kung-Pau-Airlines" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Kung Pau Airlines</de>
+				<all>Kung Pau Airlines</all>
 			</title>
 			<description>
 				<de>Unsere doppelstöckigen Luftbusse sind großzügig eingerichtet. Für Kinder gibt es eine Wasserrutsche, ein Bällebad und Elefantenreiten im Heck.</de>
@@ -2082,7 +2081,7 @@ Hired Parrot - We are better than others.</en>
 		</ad>
 		<ad guid="speedminister-ad-Stop-Hound" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Stop Hound</de>
+				<all>Stop Hound</all>
 			</title>
 			<description>
 				<de>Fox Enterprises präsentiert „Stop Hound“. Das Spray auf den Körper auftragen. 20h Wirkung! Stoppt Hunde auch gegen den Wind. Das Anti-Biss-Spray „Stop Hound“.</de>
@@ -2262,7 +2261,7 @@ Hired Parrot - We are better than others.</en>
 		</ad>
 		<ad guid="speedminister-ad-four4down-01" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>four4down</de>
+				<all>four4down</all>
 			</title>
 			<description>
 				<de>Prickelnde Kohlensäure, zischende Dose, Kühlung für Rachen und Kehle, super geschmackvoll? Nicht mehr träumen! four4down bringt Sie auf den Boden zurück!</de>
@@ -2273,7 +2272,7 @@ Hired Parrot - We are better than others.</en>
 		</ad>
 		<ad guid="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
 			<title>
-				<de>Greek Haircut</de>
+				<all>Greek Haircut</all>
 			</title>
 			<description>
 				<de>Wir spendiere eine Ouzo für jede Zentimeter abgeschnitten Haare! Wer brauche schon Haare, wenn er Kater haben kann? Gute Tausch!</de>
@@ -2296,7 +2295,7 @@ Hired Parrot - We are better than others.</en>
 		</ad>
 		<ad guid="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>HAPPO</de>
+				<all>HAPPO</all>
 			</title>
 			<description>
 				<de>Das Hundefutter mit Aspartam. Mästen Sie Ihren Liebling! Wie das Schwein, so auch der Hund, wird Ihr Tierchen kugelrund.</de>
@@ -2307,7 +2306,7 @@ Hired Parrot - We are better than others.</en>
 		</ad>
 		<ad guid="speedminister-ad-haslan-01" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Haslan Autocars</de>
+				<all>Haslan Autocars</all>
 			</title>
 			<description>
 				<de>Kommst Du. - Kuckst Du. - Kaufst Du.</de>
@@ -2330,7 +2329,7 @@ Hired Parrot - We are better than others.</en>
 		</ad>
 		<ad guid="speedminister-ad-interouter-01" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Inter Outer Under World Travel</de>
+				<all>Inter Outer Under World Travel</all>
 			</title>
 			<description>
 				<de>Stehplätze, Verpflegung* aus der Dose und Betäubungsgas machen den Flug angenehm. Auch die Piloten sind extrem ausgeruht. Schönen Urlaub!
@@ -2579,7 +2578,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 		</ad>
 		<ad guid="speedminister-ad-valvoa-01" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Valvoa</de>
+				<all>Valvoa</all>
 			</title>
 			<description>
 				<de>Valvoa der Truck fuer die Frau. 460 PS nur 350.000 Euro, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
@@ -2591,7 +2590,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 		</ad>
 		<ad guid="speedminister-ad-valvoa-02" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Valvoa</de>
+				<all>Valvoa</all>
 			</title>
 			<description>
 				<de>Valvoa der Truck fuer die Frau. 460 PS nur 700.000 DM, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
@@ -2606,7 +2605,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 		<!-- opening contracts - not available for "normal adagency business" -->
 		<ad guid="ronny-ad-startad-bmxng" creator="5578" created_by="Ronny" comment="TKP 1000, Quote 25000">
 			<title>
-				<de>BMX NG</de>
+				<all>BMX NG</all>
 			</title>
 			<description>
 				<de>Einen Guten Senderstart wünscht Bruceys BlitzMax NG-Compiler. Nur echt mit 64 Bit!</de>
@@ -2617,7 +2616,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 		</ad>
 		<ad guid="ronny-ad-startad-gamezworld" creator="7430" created_by="Sjaele" comment="TKP 1800, Quote 12000">
 			<title>
-				<de>GamezWorld</de>
+				<all>GamezWorld</all>
 			</title>
 			<description>
 				<de>Zum Sendestart stellen wir 1000 Einheiten unseres beliebten Open-Source und Freeware-Spieles „TVTower“ kostenlos zum Download bereit. Viel Spaß!</de>
@@ -2628,7 +2627,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 		</ad>
 		<ad guid="ronny-ad-startad-digidea" creator="7430" created_by="Sjaele" comment="TKP 7000, Quote 2500">
 			<title>
-				<de>Digidea</de>
+				<all>Digidea</all>
 			</title>
 			<description>
 				<de>Ihre Idee in Code gegossen! Digidea.de hofft auf wenig Bugs und gute Einschaltquoten.</de>
@@ -2638,7 +2637,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<data quality="45" repetitions="3" duration="0" profit="2500" penalty="790" infomercial_profit="300" fix_infomercial_profit="1" available="0" type="1" />
 		</ad>
 
-		<!-- from Vicusfeli, plus different years variations -->
+		<!-- from discord/vicusfeli, plus different years variations -->
 
 		<ad guid="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="discord/vicusfeli" comment="">
 			<title>
@@ -2738,7 +2737,7 @@ The unrivaled multimedia experience.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2000" />
 		</ad>
-		<ad guid="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="Vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
+		<ad guid="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="discord/vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
 			<title>
 				<all>${brand_xbox}</all>
 			</title>
@@ -2756,7 +2755,7 @@ Only from ${brand_microsoft}.</en>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
-		<ad guid="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="Vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker | TODO: Perhaps a bit 'better' international version">
+		<ad guid="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="discord/vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker | TODO: Perhaps a bit 'better' international version">
 			<title>
 				<de>Theoretiker</de>
 				<en>The Theorists</en>
@@ -2780,7 +2779,7 @@ Only from ${brand_microsoft}.</en>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="640" penalty="800" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="9bb0ce36-7b3e-4b85-b7c3-9b7959f66f40" creator="" created_by="Vicusfeli" comment="">
+		<ad guid="9bb0ce36-7b3e-4b85-b7c3-9b7959f66f40" creator="" created_by="discord/vicusfeli" comment="">
 			<title>
 				<de>VR Duban</de>
 				<en>PR Duban</en>

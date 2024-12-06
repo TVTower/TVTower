@@ -1987,14 +1987,14 @@
 				</programme>
 				<programme guid="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep02" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" creator="8751" created_by="TheRob" comment="Reference: https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt">
 					<title>
-						<de>${.self:"cast":0:"firstname"} sucht das Fliwatüt</de>
-						<en>${.self:"cast":0:"firstname"} Is Looking For the Flywatoot</en>
-						<pl>${.self:"cast":0:"firstname"} szuka Fliwatütki</pl>
+						<de>${.self:"cast":0:"firstname"} sucht das ${mediaprop_fliewatuut}</de>
+						<en>${.self:"cast":0:"firstname"} Is Looking For the ${mediaprop_fliewatuut}</en>
+						<pl>${.self:"cast":0:"firstname"} szuka ${mediaprop_fliewatuut}ki</pl>
 					</title>
 					<description>
-						<de>${.self:"cast":0:"firstname"} jagt das Fliwatüt. Die Armee der Omas stellt sich ihm entgegen.</de>
-						<en>${.self:"cast":0:"firstname"} is chasing the Flywatoot. The army of grannies opposes him.</en>
-						<pl>${.self:"cast":0:"firstname"} szuka Fliwatütki. Przeciwstawia mu się armia babć.</pl>
+						<de>${.self:"cast":0:"firstname"} jagt das ${mediaprop_fliewatuut}. Die Armee der Omas stellt sich ihm entgegen.</de>
+						<en>${.self:"cast":0:"firstname"} is chasing the ${mediaprop_fliewatuut}. The army of grannies opposes him.</en>
+						<pl>${.self:"cast":0:"firstname"} szuka ${mediaprop_fliewatuut}ki. Przeciwstawia mu się armia babć.</pl>
 					</description>
 					<ratings critics="14" speed="54" />
 				</programme>

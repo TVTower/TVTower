@@ -275,12 +275,12 @@
 			<title>
 				<de>Weltmeisterschaft im Show-Catchen</de>
 				<en>World Championship in Show-Wrestling</en>
-				<pl>Mistrzostwa świata w zapasach WWFr</pl>
+				<pl>Mistrzostwa świata w zapasach</pl>
 			</title>
 			<description>
-				<de>Die Westamerikanischen Wrestling Freunde (WWFr) veranstalten im Texas Skydome ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
-				<en>The West American Wrestling Friends (WWFr) are hosting their first WrestleMadness at the Texas Skydome. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
-				<pl>West American Wrestling Friends (WWFr) organizuje swoje pierwsze pokazy w Texas Skydome. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
+				<de>${ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im Texas Skydome ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
+				<en>${ucfirst:mediaorg_theworldwrestlingfederation} ((${mediaorg_wwf})) are hosting their first WrestleMadness at the Texas Skydome. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
+				<pl>${worldwrestlingfederation} ((${mediaorg_wwf})) organizuje swoje pierwsze pokazy w Texas Skydome. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
 			</description>
 			<variables>
 				<roddy>${.person:"9d84be62-ea5a-4142-a9d4-bacf10737c27":"firstname"}</roddy>
@@ -301,9 +301,9 @@
 				<pl>${mrt} decyduje o pojedynku zapaśniczym</pl>
 			</title>
 			<description>
-				<de>Hollywood-Schauspieler ${mrt} greift im Weltmeisterschaftskampf zwischen „${rowdy}“ ${piper} und ${hulk} ${hogan} zugunsten des Titelträgers ein. ${hogan} somit weiterhin Weltmeister im Schwergewicht!</de>
-				<en>Hollywood actor ${mrt} intervenes in the world championship fight between "${rowdy}" ${piper} and ${hulk} ${hogan} in favor of the title holder. ${hogan} thus continues to be world heavyweight champion!</en>
-				<pl>Hollywoodzki aktor ${mrt} interweniuje w walce o mistrzostwo świata pomiędzy „${rowdy}“ ${piper}em i ${hulk} ${hogan}em na korzyść posiadacza tytułu. Tym samym ${hogan} pozostaje mistrzem świata wagi ciężkiej!</pl>
+				<de>${media_hollywood}-Schauspieler ${mrt} greift im Weltmeisterschaftskampf zwischen „${rowdy}“ ${piper} und ${hulk} ${hogan} zugunsten des Titelträgers ein. ${hogan} somit weiterhin Weltmeister im Schwergewicht!</de>
+				<en>${media_hollywood} actor ${mrt} intervenes in the world championship fight between "${rowdy}" ${piper} and ${hulk} ${hogan} in favor of the title holder. ${hogan} thus continues to be world heavyweight champion!</en>
+				<pl>${media_hollywood}zki aktor ${mrt} interweniuje w walce o mistrzostwo świata pomiędzy „${rowdy}“ ${piper}em i ${hulk} ${hogan}em na korzyść posiadacza tytułu. Tym samym ${hogan} pozostaje mistrzem świata wagi ciężkiej!</pl>
 			</description>
 			<variables>
 				<mrt>${.person:"a6d2c2f1-6b5e-4ed5-80cf-0db50ed447db":"nickname"}</mrt>
@@ -638,9 +638,9 @@
 				<pl>${aha} 14 tygodni na szczycie listy przebojów</pl>
 			</title>
 			<description>
-				<de>„Brake on me“, der #1-Hit der norwegischen Popgruppe ${aha}, hält sich seit 14 Wochen an der Spitze der Charts. Weltweit konnte die nordeuropäische Band in 26 Ländern die höchste Chartplatzierung errreichen.</de>
-				<en>"Brake on me", the #1 hit of the Norwegian pop group ${aha}, has held the top of the charts for 14 weeks. Worldwide, the northern European band could achieve the highest chart position in 26 countries.</en>
-				<pl>"Brake on me", hit nr 1 norweskiej grupy pop ${aha}, utrzymywał się na szczycie list przebojów przez 14 tygodni. Na całym świecie północnoeuropejski zespół osiągnął najwyższą pozycję na listach przebojów w 26 krajach.</pl>
+				<de>„${mediatitle_takeonme}“, der #1-Hit der norwegischen Popgruppe ${aha}, hält sich seit 14 Wochen an der Spitze der Charts. Weltweit konnte die nordeuropäische Band in 26 Ländern die höchste Chartplatzierung errreichen.</de>
+				<en>"${mediatitle_takeonme}", the #1 hit of the Norwegian pop group ${aha}, has held the top of the charts for 14 weeks. Worldwide, the northern European band could achieve the highest chart position in 26 countries.</en>
+				<pl>"${mediatitle_takeonme}, hit nr 1 norweskiej grupy pop ${aha}, utrzymywał się na szczycie list przebojów przez 14 tygodni. Na całym świecie północnoeuropejski zespół osiągnął najwyższą pozycję na listach przebojów w 26 krajach.</pl>
 			</description>
 			<variables>
 				<aha>${.person:"cd7c519e-121a-4561-b2f2-4947dafe462f":"firstname"}</aha>
@@ -740,9 +740,9 @@
 				<pl>Planowany start promu kosmicznego ${generalorgproject_challenger}</pl>
 			</title>
 			<description>
-				<de>Morgen soll die Raumfähre ${generalorgproject_challenger} ins Weltall starten. Sie wird dort einen Kommunikationssatelliten aussetzen. Außerdem ist eine Beobachtung des Kometen Hallie geplant.</de>
-				<en>Tomorrow, the space shuttle ${generalorgproject_challenger} is scheduled to launch into space. It will launch a communications satellite there. In addition, an observation of comet Hallie is planned.</en>
-				<pl>Jutro prom kosmiczny ${generalorgproject_challenger} ma wystartować w kosmos. Wyniesie tam satelitę komunikacyjnego. Ponadto planowana jest obserwacja komety Hallie.</pl>
+				<de>Morgen soll die Raumfähre ${generalorgproject_challenger} ins Weltall starten. Sie wird dort einen Kommunikationssatelliten aussetzen. Außerdem ist eine Beobachtung des Halleyschen Kometen geplant.</de>
+				<en>Tomorrow, the space shuttle ${generalorgproject_challenger} is scheduled to launch into space. It will launch a communications satellite there. In addition, an observation of Halley's comet is planned.</en>
+				<pl>Jutro prom kosmiczny ${generalorgproject_challenger} ma wystartować w kosmos. Wyniesie tam satelitę komunikacyjnego. Ponadto planowana jest obserwacja komety Halleya.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="50" fictional="0" flags="2" happen_time="5,1985,1985,9,10,1,20" /> <!-- forerun, actual date of disaster 1986-01-28 -->
 			<effects>
@@ -998,9 +998,9 @@
 				<pl>${gorbachev} odwiedza Niemcy Wschodnie</pl>
 			</title>
 			<description>
-				<de>Hoher Besuch beim Parteitag ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) im Palast der Republik: ${generalorg_cpsu}-Generalsekretär, ${mikhail} ${gorbachev}, spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
-				<en>High-ranking visitor at the party congress ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) in the Palace of the Republic: ${generalorg_cpsu} General Secretary, ${mikhail} ${gorbachev}, addresses the comrades and also brings a few gifts.</en>
-				<pl>Wysokiej rangi gość na kongresie partii ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) w Pałacu Republiki: Sekretarz generalny ${generalorg_cpsu}, ${mikhail} ${gorbachev}, przemawia do towarzyszy i przynosi kilka prezentów.</pl>
+				<de>Hoher Besuch beim Parteitag ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) im Palast der Republik: ${generalorg_cpsu}-Generalsekretär ${mikhail} ${gorbachev} spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
+				<en>High-ranking visitor at the party congress ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) in the Palace of the Republic: ${generalorg_cpsu} General Secretary ${mikhail} ${gorbachev} addresses the comrades and also brings a few gifts.</en>
+				<pl>Wysokiej rangi gość na kongresie partii ${generalorg_ofthesocialistunitypartyofgermany} (${generalorg_sed}) w Pałacu Republiki: Sekretarz generalny ${generalorg_cpsu} ${mikhail} ${gorbachev} przemawia do towarzyszy i przynosi kilka prezentów.</pl>
 			</description>
 			<variables>
 				<mikhail>
@@ -1175,16 +1175,16 @@
 			<data genre="2" price="0.35" quality="35" fictional="0" flags="2" happen_time="5,1986,1986,8,12,1,30" /> <!-- actual date: 1986-10-08 -->
 		</news>
 
-		<news guid="c3cb2975-b960-4903-adfb-4c2191c89590" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(1986_musical) | (back then) Her Majesty's Theatre - https://en.wikipedia.org/wiki/His_Majesty%27s_Theatre,_London | 'Zyklus' reference not clear">
+		<news guid="c3cb2975-b960-4903-adfb-4c2191c89590" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(1986_musical) | (back then) Her Majesty's Theatre - https://en.wikipedia.org/wiki/His_Majesty%27s_Theatre,_London | previously spoofed as 'Herman Sherman Theatre', TODO: use as joke in different context | 'Zyklus' reference not clear">
 			<title>
-				<de>„Das Gespenst des Theaters“ uraufgeführt</de>
-				<en>"The Ghost of the Theater" premiered</en>
-				<pl>„Duch teatru” miał swoją premierę</pl>
+				<de>„${mediatitle_thephantomoftheopera}“ uraufgeführt</de>
+				<en>"${mediatitle_thephantomoftheopera}" premiered</en>
+				<pl>„${mediatitle_thephantomoftheopera}” miał swoją premierę</pl>
 			</title>
 			<description>
-				<de>Mit der Welturaufführung des Musicals „Das Gespenst des Theaters“ startet der Dichtungskunstzyklus im Herman-Sherman-Theater in London.</de>
-				<en>With the world premiere of the musical "The Ghost of the Theater", the Art of Poetry Cycle begins at the Herman Sherman Theatre in London.</en>
-				<pl>Wraz ze światową premierą musicalu „The Ghost of the Theater”, cykl Art of Poetry rozpoczyna się w Herman Sherman Theatre w Londynie.</pl>
+				<de>Mit der Welturaufführung des Musicals „${mediatitle_thephantomoftheopera}“ startet der Dichtungskunstzyklus im Her Majesty's-Theater in London.</de>
+				<en>With the world premiere of the musical "${mediatitle_thephantomoftheopera}", the Art of Poetry Cycle begins at the Her Majesty's Theatre in London.</en>
+				<pl>Wraz ze światową premierą musicalu „${mediatitle_thephantomoftheopera}”, cykl Art of Poetry rozpoczyna się w Her Majesty's Theatre w Londynie.</pl>
 			</description>
 			<data genre="5" price="0.35" quality="35" fictional="0" flags="2" happen_time="5,1986,1987,7,1,1,30" /> <!-- actual date: 1986-10-09 -->
 		</news>
@@ -1196,9 +1196,9 @@
 				<pl>${gorbachev} prosi o rozbrojenie</pl>
 			</title>
 			<description>
-				<de>KPdvSS-Generalsekretär, ${mikhail} ${gorbachev}, schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
-				<en>CPUSS Secretary General, ${mikhail} ${gorbachev}, proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
-				<pl>Sekretarz Generalny CPUSS, ${mikhail} ${gorbachev}, proponuje Zachodowi rozbrojenie całej broni nuklearnej do roku 2000. Zaoszczędzony uran ma zostać wykorzystany w elektrowniach do produkcji energii.</pl>
+				<de>${generalorg_cpsu}-Generalsekretär ${mikhail} ${gorbachev} schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
+				<en>${generalorg_cpsu} Secretary General ${mikhail} ${gorbachev} proposes to the West to disarm all nuclear weapons by the year 2000. The saved uranium is to be used in power plants for energy production.</en>
+				<pl>Sekretarz Generalny ${generalorg_cpsu} ${mikhail} ${gorbachev} proponuje Zachodowi rozbrojenie całej broni nuklearnej do roku 2000. Zaoszczędzony uran ma zostać wykorzystany w elektrowniach do produkcji energii.</pl>
 			</description>
 			<variables>
 				<mikhail>
@@ -1291,9 +1291,9 @@
 				<pl>Wyemitowano niewłaściwe przemówienie noworoczne</pl>
 			</title>
 			<description>
-				<de>Das 2. Deutsche Fernsehen (2DF) hat versehentlich die vorjährige Neujahrsansprache von Bundeskanzler ${helmut} ${kohl} gesendet. Der Programmdirektor wurde entlassen.</de>
-				<en>The 2nd German Television (2DF) has accidentally aired the previous year's New Year's speech by Chancellor ${helmut} ${kohl}. The program director was fired.</en>
-				<pl>Druga Telewizja Niemiecka (2DF) przypadkowo wyemitowała zeszłoroczne przemówienie noworoczne kanclerza ${helmut}a ${kohl}a. Dyrektor programowy został zwolniony.</pl>
+				<de>Das 2. Deutsche Fernsehen (${mediaorg_zdf}) hat versehentlich die vorjährige Neujahrsansprache von Bundeskanzler ${helmut} ${kohl} gesendet. Der Programmdirektor wurde entlassen.</de>
+				<en>The 2nd German Television (${mediaorg_zdf}) has accidentally aired the previous year's New Year's speech by Chancellor ${helmut} ${kohl}. The program director was fired.</en>
+				<pl>Druga Telewizja Niemiecka (${mediaorg_zdf}) przypadkowo wyemitowała zeszłoroczne przemówienie noworoczne kanclerza ${helmut}a ${kohl}a. Dyrektor programowy został zwolniony.</pl>
 			</description>
 			<variables>
 				<helmut>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"firstname"}</helmut>
@@ -1338,16 +1338,16 @@
 			<data genre="2" price="0.3" quality="30" fictional="0" flags="2" happen_time="5,1987,1987,1,3,10,30" /> <!-- actual date: 1987-01-25 -->
 		</news>
 
-		<news guid="48b60d69-73d4-4367-bbd7-d0fbf93dd9ac" type="0" creator="8936" created_by="jorgaeff" comment="SPD - https://en.wikipedia.org/wiki/Social_Democratic_Party_of_Germany | https://en.wikipedia.org/wiki/1987_West_German_federal_election | TODO: Same contributor using other SPD spoof name here">
+		<news guid="48b60d69-73d4-4367-bbd7-d0fbf93dd9ac" type="0" creator="8936" created_by="jorgaeff" comment="SPD - https://en.wikipedia.org/wiki/Social_Democratic_Party_of_Germany | https://en.wikipedia.org/wiki/1987_West_German_federal_election">
 			<title>
-				<de>ShPD gewinnt Bundestagswahl</de>
-				<en>ShPD wins federal election</en>
-				<pl>ShPD wygrywa wybory federalne</pl>
+				<de>${generalorg_spd} gewinnt Bundestagswahl</de>
+				<en>${generalorg_spd} wins federal election</en>
+				<pl>${generalorg_spd} wygrywa wybory federalne</pl>
 			</title>
 			<description>
-				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei Deutschland (ShPD) auch weiterhin die Mehrheit. Eine weitere Amtszeit von ${helmut} ${kohl} steht bevor.</de>
-				<en>The major parties emerge as losers from the Bundestag elections. Nevertheless, the Sham Party Germany (ShPD) continues to hold the majority. Another term of ${helmut} ${kohl} is in prospect.</en>
-				<pl>Główne partie przegrały wybory do Bundestagu. Niemniej jednak Sham Party Germany (ShPD) nadal utrzymuje większość. Zapowiada się kolejna kadencja ${helmut}a ${kohl}a.</pl>
+				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei (ShPD), Verzeichung, die ${generalorg_socialdemocraticpartyofgermany} auch weiterhin die Mehrheit. Eine weitere Amtszeit von ${helmut} ${kohl} steht bevor.</de>
+				<en>The major parties emerge as losers from the Bundestag elections. Nevertheless, the Sham Party (ShPD), pardon, the ${generalorg_socialdemocraticpartyofgermany} continues to hold the majority. Another term of ${helmut} ${kohl} is in prospect.</en>
+				<pl>Główne partie przegrały wybory do Bundestagu. Niemniej jednak Sham Party (ShPD), pardon, ${generalorg_socialdemocraticpartyofgermany} nadal utrzymuje większość. Zapowiada się kolejna kadencja ${helmut}a ${kohl}a.</pl>
 			</description>
 			<variables>
 				<helmut>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"firstname"}</helmut>
@@ -1710,9 +1710,9 @@
 				<pl>${gottschalk} będzie gospodarzem kultowego show</pl>
 			</title>
 			<description>
-				<de>Die erfolgreichste Live-Sendung im 2. Deutschen Fernsehen (2DF) „Wer wird Wettkönig?“ hat einen neuen Moderator: ${thomas} ${gottschalk} wettet ab sofort mit den Kandidaten um die Wette, bis sich die Balken biegen.</de>
-				<en>The most successful live program in the 2nd German television (2DF) "Who'll be the bet champion?" has a new presenter: From now on, ${thomas} ${gottschalk} will compete and bet with the candidates for bets until the cows come home.</en>
-				<pl>Odnoszący największe sukcesy program na żywo w 2. programie telewizji niemieckiej (2DF) „Kto zostanie mistrzem zakładów?” ma nowego prezentera: Od teraz ${thomas} ${gottschalk} będzie rywalizował i zakładał się z kandydatami do zakładów, dopóki krowy nie wrócą do domu.</pl>
+				<de>Die erfolgreichste Live-Sendung im 2. Deutschen Fernsehen (${mediaorg_zdf}) „Wer wird Wettkönig?“ hat einen neuen Moderator: ${thomas} ${gottschalk} wettet ab sofort mit den Kandidaten um die Wette, bis sich die Balken biegen.</de>
+				<en>The most successful live program in the 2nd German television (${mediaorg_zdf}) "Who'll be the bet champion?" has a new presenter: From now on, ${thomas} ${gottschalk} will compete and bet with the candidates for bets until the cows come home.</en>
+				<pl>Odnoszący największe sukcesy program na żywo w 2. programie telewizji niemieckiej (${mediaorg_zdf}) „Kto zostanie mistrzem zakładów?” ma nowego prezentera: Od teraz ${thomas} ${gottschalk} będzie rywalizował i zakładał się z kandydatami do zakładów, dopóki krowy nie wrócą do domu.</pl>
 			</description>
 			<variables>
 				<thomas>${.person:"0334ba64-7610-4c6a-8824-b2bb05e6d2b5":"firstname"}</thomas>
@@ -2014,16 +2014,16 @@
 			<data genre="0" price="0.8" quality="80" fictional="0" flags="2" happen_time="5,1988,1988,4,10,1,30" /> <!-- actual date: 1988-07-01 -->
 		</news>
 
-		<news guid="b9299248-9484-4a12-ae70-0adddc20b89c" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/Bruce-Springsteen-Konzert_1988_in_Ost-Berlin | previously wrong date 1985">
+		<news guid="b9299248-9484-4a12-ae70-0adddc20b89c" type="0" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/Bruce-Springsteen-Konzert_1988_in_Ost-Berlin | previously wrong date 1985 | previously Radrennbahn Hiddensee; wrong or unnecessarily spoofed">
 			<title>
 				<de>${bruce} ${springsteen} rockt die DDR</de>
 				<en>${bruce} ${springsteen} rocks the GDR</en>
 				<pl>${bruce} ${springsteen} rockuje w NRD</pl>
 			</title>
 			<description>
-				<de>160.000 Ost-Berliner waren gekommen, um US-Rocklegende ${bruce} ${springsteen} zu sehen. Das Konzert auf der Radrennbahn Hiddensee ist das größte DDR-Konzert aller Zeiten und ein weiterer Beweis, dass der Osten sich dem Westen öffnet.</de>
-				<en>160,000 East Berliners came to see US rock legend ${bruce} ${springsteen}. The concert at the Hiddensee cycling track was the largest GDR concert of all time and further proof that the East is opening up to the West.</en>
-				<pl>160 000 mieszkańców Berlina Wschodniego przyszło zobaczyć legendę amerykańskiego rocka, ${bruce}'a ${springsteen}a. Koncert na torze kolarskim Hiddensee był największym koncertem NRD w historii i kolejnym dowodem na to, że Wschód otwiera się na Zachód.</pl>
+				<de>160.000 Ost-Berliner waren gekommen, um US-Rocklegende ${bruce} ${springsteen} zu sehen. Das Konzert auf der Radrennbahn Weißensee ist das größte DDR-Konzert aller Zeiten und ein weiterer Beweis, dass der Osten sich dem Westen öffnet.</de>
+				<en>160,000 East Berliners came to see US rock legend ${bruce} ${springsteen}. The concert at the Weißensee cycling track was the largest GDR concert of all time and further proof that the East is opening up to the West.</en>
+				<pl>160 000 mieszkańców Berlina Wschodniego przyszło zobaczyć legendę amerykańskiego rocka, ${bruce}'a ${springsteen}a. Koncert na torze kolarskim Weißensee był największym koncertem NRD w historii i kolejnym dowodem na to, że Wschód otwiera się na Zachód.</pl>
 			</description>
 			<variables>
 				<bruce>${.person:"e7de9ef7-b87f-43c5-a1d9-0d045933307a":"firstname"}</bruce>
@@ -2101,10 +2101,13 @@
 				<pl>Robak wyłącza Internet</pl>
 			</title>
 			<description>
-				<de>Der sogenannte Philipp-Wurm verbreitet sich unter Ausnutzung von Unix-Diensten. Zwar hat der Wurm keine direkte Schadensroutine, trotzdem legt er wegen seiner aggressiven Weiterverbreitung ca. 6000 Rechner lahm.</de>
-				<en>The so-called Philipp worm spreads by exploiting Unix services. Although the worm has no specific code to create damage, it still knocked out about 6000 computers due to its aggressive propagation.</en>
-				<pl>Tak zwany robak Philipp rozprzestrzenia się poprzez wykorzystywanie usług systemu Unix. Chociaż robak ten nie ma specyficznego kodu do tworzenia szkód, to i tak znokautował około 6000 komputerów z powodu agresywnego rozprzestrzeniania się.</pl>
+				<de>Der sogenannte ${morris}-Wurm verbreitet sich unter Ausnutzung von Unix-Diensten. Zwar hat der Wurm keine direkte Schadensroutine, trotzdem legt er wegen seiner aggressiven Weiterverbreitung ca. 6000 Rechner lahm.</de>
+				<en>The so-called ${morris} worm spreads by exploiting Unix services. Although the worm has no specific code to create damage, it still knocked out about 6000 computers due to its aggressive propagation.</en>
+				<pl>Tak zwany robak ${morris} rozprzestrzenia się poprzez wykorzystywanie usług systemu Unix. Chociaż robak ten nie ma specyficznego kodu do tworzenia szkód, to i tak znokautował około 6000 komputerów z powodu agresywnego rozprzestrzeniania się.</pl>
 			</description>
+			<variables>
+				<morris>${.person:"211b629b-ead6-48d8-a91a-7278da0be3a2":"lastname"}</morris>
+			</variables>
 			<data genre="3" price="0.85" quality="85" fictional="0" flags="2" happen_time="5,1988,1989,8,2,1,28" /> <!-- actual date: 1988-11-02 -->
 		</news>
 
@@ -2366,10 +2369,14 @@
 				<pl>Gra planszowa roku 1995 to gra budowlana</pl>
 			</title>
 			<description>
-				<de>„${mediatitle_thesettlersofcatan}“ wurde zum Brettspiel des Jahres 1995 gewählt. Die Spieler müssen Rohstoffe sammeln, um damit Straßen, Siedlungen und Städte bauen zu können. Erfunden wurde es von dem Spieleentwickler Karl Stäuber.</de>
-				<en>"${mediatitle_thesettlersofcatan}" was voted board game of the year in 1995. Players have to collect raw materials in order to build roads, settlements and cities. It was invented by the game developer Karl Stäuber.</en>
-				<pl>„${mediatitle_thesettlersofcatan}” została uznana za grę planszową roku 1995. Gracze muszą zbierać surowce, aby budować drogi, osady i miasta. Gra została wymyślona przez twórcę gier Karla Stäubera.</pl>
+				<de>„${mediatitle_thesettlersofcatan}“ wurde zum Brettspiel des Jahres 1995 gewählt. Die Spieler müssen Rohstoffe sammeln, um damit Straßen, Siedlungen und Städte bauen zu können. Erfunden wurde es von dem Spieleentwickler ${klaus} ${teuber}.</de>
+				<en>"${mediatitle_thesettlersofcatan}" was voted board game of the year in 1995. Players have to collect raw materials in order to build roads, settlements and cities. It was invented by the game developer ${klaus} ${teuber}.</en>
+				<pl>„${mediatitle_thesettlersofcatan}” została uznana za grę planszową roku 1995. Gracze muszą zbierać surowce, aby budować drogi, osady i miasta. Gra została wymyślona przez twórcę gier ${klaus}a ${teuber}a.</pl>
 			</description>
+			<variables>
+				<klaus>${.person:"1d67a25a-9a57-4a69-bf73-89814e650b50":"firstname"}</klaus>
+				<teuber>${.person:"1d67a25a-9a57-4a69-bf73-89814e650b50":"lastname"}</teuber>
+			</variables>
 			<data genre="3" price="0.47" quality="47" flags="2" happen_time="5,1995,1995,4,10,1,30" /> <!-- actual date: 1995-07, exact day of voting not clear -->
 		</news>
 
@@ -3182,7 +3189,7 @@
 
 			<!-- 2014-09 -->
 
-		<news guid="b2e5d48e-f417-4e64-bc3e-d39d7667617e" type="0" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="Vicusfeli" comment="https://en.wikipedia.org/wiki/Tim_Wiese#Professional_wrestling | only partly based on real facts">
+		<news guid="b2e5d48e-f417-4e64-bc3e-d39d7667617e" type="0" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="discord/vicusfeli" comment="https://en.wikipedia.org/wiki/Tim_Wiese#Professional_wrestling | only partly based on real facts">
 			<title>
 				<de>Torwart wird Wrestler</de>
 				<en>Goalkeeper becomes a wrestler</en>
@@ -3202,7 +3209,7 @@
 				<effect trigger="happen" type="triggernews" time="1,4,10" news="385913a2-6e9a-4abb-a7ff-085dc956be61" />
 			</effects>
 		</news>
-		<news guid="385913a2-6e9a-4abb-a7ff-085dc956be61" type="2" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="Vicusfeli">
+		<news guid="385913a2-6e9a-4abb-a7ff-085dc956be61" type="2" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="discord/vicusfeli">
 			<title>
 				<de>Wrestling-Champion reagiert</de>
 				<en>Wrestling champion responds</en>
@@ -3216,7 +3223,7 @@
 				<effect trigger="happen" type="triggernews" time="2,1,1,5,23" news="1930705b-b96b-470a-8bd8-0085a1f68eae" />
 			</effects>
 		</news>
-		<news guid="1930705b-b96b-470a-8bd8-0085a1f68eae" type="2" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="Vicusfeli">
+		<news guid="1930705b-b96b-470a-8bd8-0085a1f68eae" type="2" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="discord/vicusfeli">
 			<title>
 				<de>Wrestling-Champion kauft Sargfabrik</de>
 				<en>Wrestling champion buys coffin factory</en>
@@ -3230,7 +3237,7 @@
 				<effect trigger="happen" type="triggernews" time="2,2,3,1,10" news="b915710b-3ac1-4fa7-8b9a-184ce06bee51" />
 			</effects>
 		</news>
-		<news guid="b915710b-3ac1-4fa7-8b9a-184ce06bee51" type="2" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="Vicusfeli">
+		<news guid="b915710b-3ac1-4fa7-8b9a-184ce06bee51" type="2" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="discord/vicusfeli">
 			<title>
 				<de>Wrestling Titelmatch: ${wiese} chancenlos</de>
 				<en>Wrestling title match: ${wiese} has no chance</en>
@@ -3334,8 +3341,8 @@
 				<en>Uprising in Cuba</en>
 			</title>
 			<description>
-				<de>Nach dem Tod ${castro}s herrschen in Havanna chaotische Zustände. Kubaner: Auch wir wollen Pipsi trinken und Smartis fahren!</de>
-				<en>Following ${castro}'s death, chaotic conditions prevail in Havana. Cubans: We also want to drink Pipsi and drive Smartis!</en>
+				<de>Nach dem Tod ${castro}s herrschen in Havanna chaotische Zustände. Kubaner: Auch wir wollen ${brand_pepsi} trinken und Smartis fahren!</de>
+				<en>Following ${castro}'s death, chaotic conditions prevail in Havana. Cubans: We also want to drink ${brand_pepsi} and drive Smartis!</en>
 			</description>
 			<data genre="0" price="1" quality="70" fictional="1" flags="2" />
 			<effects>
@@ -4066,39 +4073,39 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<robbi>${.role:"3c71921a-393e-47c3-bed6-be34c7efe827":"firstname"}</robbi>
 				<ernestborgnine_or_janmichaelvincent>${.lte:currentyear:2010:"${.person:"9f7cdf17-c66d-4e73-b943-a3ed689c62f4":"fullname"}":"${.person:"6457578c-f674-4466-ab59-6b8d0dd463db":"fullname"}"}|${.person:"6457578c-f674-4466-ab59-6b8d0dd463db":"fullname"}</ernestborgnine_or_janmichaelvincent> <!-- TODO: version after 2019 -->
 				<christopherlloyd_or_michaeljfox>${.person:"75836a6f-f590-431e-a572-8eb7226beffc":"fullname"}|${.person:"52c52df5-a2a0-478c-8acd-9250aa0fb484":"fullname"}</christopherlloyd_or_michaeljfox>
-				<danaykroyd_or_billmurray>${.person:"d7aac1f9-c0c1-42ed-83c8-6c6944ea410e":"fullname"}|${.person:"a1943cde-0332-4706-8130-9c7a69e52efd":"fullname"}</danaykroyd_or_billmurray>
+				<danaykroyd_or_haroldramis_or_billmurray>${.person:"d7aac1f9-c0c1-42ed-83c8-6c6944ea410e":"fullname"}|${.lte:currentyear:2013:"${.person:"966bcb56-3332-4c0f-9e8a-1714aebeff1a":"fullname"}":"${.person:"a1943cde-0332-4706-8130-9c7a69e52efd":"fullname"}"}</danaykroyd_or_haroldramis_or_billmurray>
 				<mrt>${.person:"a6d2c2f1-6b5e-4ed5-80cf-0db50ed447db":"nickname"}</mrt>
 				<robbi>${.role:"3c71921a-393e-47c3-bed6-be34c7efe827":"firstname"}</robbi>
 				<vehicle_csv>
 					<de>„${mediatitle_knightrider}“-Auto;${kitt};${kitt};${kitt}, das legendäre Auto der Serie „${mediatitle_knightrider}“,;des Autos;das Auto;„Ein Auto, ein Computer, ein Mann.“ ;${davidhasselhoff};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${kitt}s;Rettet ${kitt}|
-						${mediapropbatmobile};${mediapropbatmobile};das ${mediapropbatmobile};Das ${mediapropbatmobile}, das legendäre Supergefährt des Superhelden,;des Gefährts;das Gefährt;;${adamwest_or_christianbale};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediapropbatmobile}s;Rettet ${mediapropbatmobile}|
-						${brand_vw}-${brand_beetle} ${mediapropdudu};${mediapropdudu};${mediapropdudu};„${mediapropdudu} macht das schon“? Leider nicht mehr. Der legendäre gelbe ${brand_vw}-${brand_beetle} der Filmreihe;des Autos;das Auto;„Die glauben wohl, ich bin doof. Bin ich aber nicht!“ ;${jimmybondi};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${mediapropdudu}s;Rettet ${mediapropdudu}|
-						${brand_vw}-${brand_beetle} ${mediapropherbie};${mediapropherbie};${mediapropherbie};${mediapropherbie}, der legendäre Renn-${brand_beetle} der Filmreihe,;des Autos;das Auto;;${stefaniepowers_or_lindsaylohan};auf dem Autofriedhof;widersetzt sich der Verschrottung ihres Spielzeugs;zur Erhaltung ${mediapropherbie}s;Rettet ${mediapropherbie}|
+						${mediaprop_batmobile};${mediaprop_batmobile};das ${mediaprop_batmobile};Das ${mediaprop_batmobile}, das legendäre Supergefährt des Superhelden,;des Gefährts;das Gefährt;;${adamwest_or_christianbale};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediaprop_batmobile}s;Rettet ${mediaprop_batmobile}|
+						${brand_vw}-${brand_beetle} ${mediaprop_dudu};${mediaprop_dudu};${mediaprop_dudu};„${mediaprop_dudu} macht das schon“? Leider nicht mehr. Der legendäre gelbe ${brand_vw}-${brand_beetle} der Filmreihe;des Autos;das Auto;„Die glauben wohl, ich bin doof. Bin ich aber nicht!“ ;${jimmybondi};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${mediaprop_dudu}s;Rettet ${mediaprop_dudu}|
+						${brand_vw}-${brand_beetle} ${mediaprop_herbie};${mediaprop_herbie};${mediaprop_herbie};${mediaprop_herbie}, der legendäre Renn-${brand_beetle} der Filmreihe,;des Autos;das Auto;;${stefaniepowers_or_lindsaylohan};auf dem Autofriedhof;widersetzt sich der Verschrottung ihres Spielzeugs;zur Erhaltung ${mediaprop_herbie}s;Rettet ${mediaprop_herbie}|
 						Hubschrauber ${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf}, der legendäre Super-Kampfhubschrauber der TV-Serie,;des Hubschraubers;der Hubschrauber;;${ernestborgnine_or_janmichaelvincent};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${mediatitle_airwolf};Rettet ${mediatitle_airwolf}|
 						„${backtothefuture}“-Auto;${brand_delorean};der ${brand_delorean};Der ${brand_delorean} aus dem erfolgreichen Film „${backtothefuture}“;des Autos;das Auto;;${christopherlloyd_or_michaeljfox};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${brand_delorean}s;Rettet den ${brand_delorean}|
-						„${mediatitle_ghostbusters}“-Auto;${mediapropecto1};der ${mediapropecto1};Der ${mediapropecto1} aus dem erfolgreichen Film „${mediatitle_ghostbusters}“;des Autos;das Auto;;${danaykroyd_or_billmurray};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${mediapropecto1};Rettet ${mediapropecto1}|
+						„${mediatitle_ghostbusters}“-Auto;${mediaprop_ecto1};der ${mediaprop_ecto1};Der ${mediaprop_ecto1} aus dem erfolgreichen Film „${mediatitle_ghostbusters}“;des Autos;das Auto;;${danaykroyd_or_haroldramis_or_billmurray};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${mediaprop_ecto1};Rettet ${mediaprop_ecto1}|
 						${ateamvan};${ateamvan};der ${ateamvan};Der bekannte ${ateamvan} aus der erfolgreichen Fernsehserie;des Autos;das Auto;;${mrt};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${ateamvan};Rettet den ${ateamvan}|
-						${mediapropfliewatuut};${mediapropfliewatuut};das ${mediapropfliewatuut};Das ${mediapropfliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediapropfliewatuut};Rettet das ${mediapropfliewatuut}
+						${mediaprop_fliewatuut};${mediaprop_fliewatuut};das ${mediaprop_fliewatuut};Das ${mediaprop_fliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediaprop_fliewatuut};Rettet das ${mediaprop_fliewatuut}
 					</de>
 					<en>„${mediatitle_knightrider}” car;${kitt};${kitt};${kitt}, the legendary car from the “${mediatitle_knightrider}” series,;of the car;the car;"A lone crusader in a dangerous world." ;${davidhasselhoff};in the junkyard;resists the destruction of his toy;to preserve ${kitt};Save ${kitt}|
-						${mediapropbatmobile};${mediapropbatmobile};the ${mediapropbatmobile};The ${mediapropbatmobile}, the legendary super vehicle of the super hero,;of the vehicle;the vehicle;;${adamwest_or_christianbale};in the junkyard;resists the destruction of his toy;to preserve the ${mediapropbatmobile};Save the ${mediapropbatmobile}|
-						${brand_vw} ${brand_beetle} ${mediapropdudu};${mediapropdudu};${mediapropdudu};"${mediapropdudu}'s got this"? Alas, no longer. The legendary yellow ${brand_vw} ${brand_beetle} from the movie series;of the car;the car;"They probably think I'm stupid. But I'm not!" ;${jimmybondi};in the junkyard;resists the destruction of his toy;to preserve ${mediapropdudu};Save ${mediapropdudu}|
-						${brand_vw} ${brand_beetle} ${mediapropherbie};${mediapropherbie};${mediapropherbie};${mediapropherbie}, the legendary racing ${brand_beetle} from the movie series,;of the car;the car;;${stefaniepowers_or_lindsaylohan};in the junkyard;resists the destruction of her toy;to preserve ${mediapropherbie};Save ${mediapropherbie}|
+						${mediaprop_batmobile};${mediaprop_batmobile};the ${mediaprop_batmobile};The ${mediaprop_batmobile}, the legendary super vehicle of the super hero,;of the vehicle;the vehicle;;${adamwest_or_christianbale};in the junkyard;resists the destruction of his toy;to preserve the ${mediaprop_batmobile};Save the ${mediaprop_batmobile}|
+						${brand_vw} ${brand_beetle} ${mediaprop_dudu};${mediaprop_dudu};${mediaprop_dudu};"${mediaprop_dudu}'s got this"? Alas, no longer. The legendary yellow ${brand_vw} ${brand_beetle} from the movie series;of the car;the car;"They probably think I'm stupid. But I'm not!" ;${jimmybondi};in the junkyard;resists the destruction of his toy;to preserve ${mediaprop_dudu};Save ${mediaprop_dudu}|
+						${brand_vw} ${brand_beetle} ${mediaprop_herbie};${mediaprop_herbie};${mediaprop_herbie};${mediaprop_herbie}, the legendary racing ${brand_beetle} from the movie series,;of the car;the car;;${stefaniepowers_or_lindsaylohan};in the junkyard;resists the destruction of her toy;to preserve ${mediaprop_herbie};Save ${mediaprop_herbie}|
 						Helicopter ${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf}, the legendary super combat helicopter from the TV series,;of the helicopter;the helicopter;;${ernestborgnine_or_janmichaelvincent};on the scrap yard;resists the destruction of his toy;to preserve ${mediatitle_airwolf};Save ${mediatitle_airwolf}|
 						„${backtothefuture}” car;${brand_delorean};the ${brand_delorean};The ${brand_delorean} from the successful movie "${backtothefuture}";of the car;the car;;${christopherlloyd_or_michaeljfox};in the junkyard;resists the destruction of his toy;to preserve the ${brand_delorean};Save the ${brand_delorean}|
-						„${mediatitle_ghostbusters}” car;${mediapropecto1};the ${mediapropecto1};The ${mediapropecto1} from the successful movie "${mediatitle_ghostbusters}";of the car;the car;;${danaykroyd_or_billmurray};in the junkyard;resists the destruction of his toy;to preserve ${mediapropecto1};Save ${mediapropecto1}|
+						„${mediatitle_ghostbusters}” car;${mediaprop_ecto1};the ${mediaprop_ecto1};The ${mediaprop_ecto1} from the successful movie "${mediatitle_ghostbusters}";of the car;the car;;${danaykroyd_or_haroldramis_or_billmurray};in the junkyard;resists the destruction of his toy;to preserve ${mediaprop_ecto1};Save ${mediaprop_ecto1}|
 						${ateamvan};${ateamvan};the ${ateamvan};The famous ${ateamvan} from the popular TV series;of the car;the car;;${mrt};in the junkyard;resists the destruction of his toy;to preserve the ${ateamvan};Save the ${ateamvan}|
-						${mediapropfliewatuut};${mediapropfliewatuut};the ${mediapropfliewatuut};The ${mediapropfliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi};on the scrap yard;resists the destruction of his toy;to preserve the ${mediapropfliewatuut};Save the ${mediapropfliewatuut}
+						${mediaprop_fliewatuut};${mediaprop_fliewatuut};the ${mediaprop_fliewatuut};The ${mediaprop_fliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi};on the scrap yard;resists the destruction of his toy;to preserve the ${mediaprop_fliewatuut};Save the ${mediaprop_fliewatuut}
 					</en>
 					<pl>„${mediatitle_knightrider}”-samochód;${kitt};${kitt};${kitt}, legendarny samochód z serialu „${mediatitle_knightrider}”,;samochodu;samochód;„Samotny krzyżowiec w niebezpiecznym świecie.” ;${davidhasselhoff};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${kitt}a;Save ${kitt}|
-						${mediapropbatmobile};${mediapropbatmobile};${mediapropbatmobile};${mediapropbatmobile}, legendarny super pojazd super bohatera,;pojazdu;pojazd;;${adamwest_or_christianbale};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie batmobilu;Save the ${mediapropbatmobile}|
-						${brand_vw} ${brand_beetle} ${mediapropdudu};${mediapropdudu};${mediapropdudu};„${mediapropdudu} się tym zajmie”? Niestety, już nie. Legendarny żółty ${brand_vw} ${brand_beetle} z serii filmowej;samochodu;samochód;„Pewnie myślą, że jestem głupi. Ale nie jestem!” ;${jimmybondi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropdudu};Save ${mediapropdudu}|
-						${brand_vw} ${brand_beetle} ${mediapropherbie};${mediapropherbie};${mediapropherbie};${mediapropherbie}, legendarny wyścigowy ${brand_beetle} z serii filmów,;samochodu;samochód;;${stefaniepowers_or_lindsaylohan};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropherbie}go;Save ${mediapropherbie}|
+						${mediaprop_batmobile};${mediaprop_batmobile};${mediaprop_batmobile};${mediaprop_batmobile}, legendarny super pojazd super bohatera,;pojazdu;pojazd;;${adamwest_or_christianbale};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie batmobilu;Save the ${mediaprop_batmobile}|
+						${brand_vw} ${brand_beetle} ${mediaprop_dudu};${mediaprop_dudu};${mediaprop_dudu};„${mediaprop_dudu} się tym zajmie”? Niestety, już nie. Legendarny żółty ${brand_vw} ${brand_beetle} z serii filmowej;samochodu;samochód;„Pewnie myślą, że jestem głupi. Ale nie jestem!” ;${jimmybondi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediaprop_dudu};Save ${mediaprop_dudu}|
+						${brand_vw} ${brand_beetle} ${mediaprop_herbie};${mediaprop_herbie};${mediaprop_herbie};${mediaprop_herbie}, legendarny wyścigowy ${brand_beetle} z serii filmów,;samochodu;samochód;;${stefaniepowers_or_lindsaylohan};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediaprop_herbie}go;Save ${mediaprop_herbie}|
 						Helikopter ${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf};${mediatitle_airwolf}, legendarne super śmigłowiec bojowy z serialu telewizyjnego,;śmigłowca;śmigłowiec;;${ernestborgnine_or_janmichaelvincent};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediatitle_airwolf}a;Save ${mediatitle_airwolf}|
 						„${backtothefuture}”-samochód;${brand_delorean};${brand_delorean};${brand_delorean} z popularnego filmu „${backtothefuture}”;samochodu;samochód;;${christopherlloyd_or_michaeljfox};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${brand_delorean}a;Save the ${brand_delorean}|
-						„${mediatitle_ghostbusters}”-samochód;${mediapropecto1};${mediapropecto1};${mediapropecto1} z popularnego filmu „${mediatitle_ghostbusters}”;samochodu;samochód;;${danaykroyd_or_billmurray};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropecto1};Save ${mediapropecto1}|
+						„${mediatitle_ghostbusters}”-samochód;${mediaprop_ecto1};${mediaprop_ecto1};${mediaprop_ecto1} z popularnego filmu „${mediatitle_ghostbusters}”;samochodu;samochód;;${danaykroyd_or_haroldramis_or_billmurray};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediaprop_ecto1};Save ${mediaprop_ecto1}|
 						${ateamvan};${ateamvan};${ateamvan};Znane ${ateamvan} z popularnego serialu telewizyjnego;samochodu;samochód;;${mrt};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ateamvan}a;Save the ${ateamvan}|
-						${mediapropfliewatuut};${mediapropfliewatuut};${mediapropfliewatuut};${mediapropfliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediapropfliewatuut}a;Save the ${mediapropfliewatuut}
+						${mediaprop_fliewatuut};${mediaprop_fliewatuut};${mediaprop_fliewatuut};${mediaprop_fliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediaprop_fliewatuut}a;Save the ${mediaprop_fliewatuut}
 					</pl>
 				</vehicle_csv>
 				<vehicletitle>
@@ -4619,7 +4626,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<data genre="2" price="1.0" quality="29" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="094806da-5113-4b57-b09a-c0639ebc20f9" thread_guid="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="0" creator="" comment="References: Shiba Inu: https://en.wikipedia.org/wiki/Shiba_Inu | Stone louse: https://en.wikipedia.org/wiki/Stone_louse | Eisbär music: https://en.wikipedia.org/wiki/Eisb%C3%A4r | Emperor penguin is mascot for GNU/Linux">
+		<news guid="094806da-5113-4b57-b09a-c0639ebc20f9" thread_guid="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="0" creator="" comment="References: Shiba Inu: https://en.wikipedia.org/wiki/Shiba_Inu | Stone louse: https://en.wikipedia.org/wiki/Stone_louse | Eisbär music: https://en.wikipedia.org/wiki/Eisb%C3%A4r | Emperor penguin is mascot for GNU/Linux | TODO: more internationally recognizable equivalent organizations to ADAC, IG Metall in translations">
 			<title>
 				<de>${minister}: ${animals} her!</de>
 				<en>${minister}: Gimme ${animals}!</en>
@@ -4632,7 +4639,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			</description>
 			<variables>
 				<minister>
-					<de>Finanzminister|Innenminister|Außenminister|Verteidigungsminister|Regierungschef|DG-Metall-Chef|BV-Energie-Chef|ADCA-Chef|Bahnchef|Verkehrsminister</de>
+					<de>Finanzminister|Innenminister|Außenminister|Verteidigungsminister|Regierungschef|${generalorg_igmetall}-Chef|BV-Energie-Chef|${generalorg_adac}-Chef|Bahnchef|Verkehrsminister</de>
 					<en>Finance Minister|Interior Minister|Foreign Minister|Defense Minister|Prime Minister|WA-Steel Chief|EI-Energy Chief|AB-Automobile Chief|Railways Secretary|Transport Secretary</en>
 					<pl>Minister finansów|Minister spraw wewnętrznych|Minister spraw zagranicznych|Minister obrony|Premier|Kanclerz|Wicepremier|Prezydent|Prezes banku narodowego|Sekretarz ds. transportu</pl>
 				</minister>
@@ -5044,15 +5051,18 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="d28c5997-c17c-4b68-9289-773617b62e58" thread_guid="60185c09-38ec-4c44-a884-ed76b8bca258" type="0" creator="">
 			<title>
-				<de>Shanghai Hotel wird aufgelöst</de>
-				<en>Shanghai Hotel to be disbanded</en>
-				<pl>Shanghai Hotel ma zostać rozwiązany</pl>
+				<de>${tokiohotel} wird aufgelöst</de>
+				<en>${tokiohotel} to be disbanded</en>
+				<pl>${tokiohotel} ma zostać rozwiązany</pl>
 			</title>
 			<description>
-				<de>Mit vielen Teenie-Tränen wurde heute Nachmittag die deutsche Teenieband Shanghai Hotel aufgelöst. Die Mitglieder hätten sich die Freundinnen ausgespannt.</de>
-				<en>With many tears from the teens, the German teen band Shanghai Hotel disbanded this afternoon. The members allegedly stole each other's girlfriends.</en>
-				<pl>Przy wielu łzach nastolatków, niemiecki zespół Shanghai Hotel rozwiązał się dziś po południu. Członkowie zespołu rzekomo podkradali sobie nawzajem dziewczyny.</pl>
+				<de>Mit vielen Teenie-Tränen wurde heute Nachmittag die deutsche Teenieband ${tokiohotel} aufgelöst. Die Mitglieder hätten sich die Freundinnen ausgespannt.</de>
+				<en>With many tears from the teens, the German teen band ${tokiohotel} disbanded this afternoon. The members allegedly stole each other's girlfriends.</en>
+				<pl>Przy wielu łzach nastolatków, niemiecki zespół ${tokiohotel} rozwiązał się dziś po południu. Członkowie zespołu rzekomo podkradali sobie nawzajem dziewczyny.</pl>
 			</description>
+			<variables>
+				<tokiohotel>${.person:"4040006c-b7fc-46a6-812c-6c8bafa52ca7":"firstname"}</tokiohotel>
+			</variables>
 			<data genre="1" price="1.0" quality="23" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -5213,9 +5223,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 		</news>
 		<news guid="bc2475d4-e45d-484d-9095-16e2c06bea72" thread_guid="7c62ccae-017a-4db9-872f-dfc75ddd4b4c" type="0" creator="">
 			<title>
-				<de>${elton} neuer Programmchef bei Pro9</de>
-				<en>${elton} new Program Director at Pro9</en>
-				<pl>${elton} nowym dyrektorem programowym w Pro9</pl>
+				<de>${elton} neuer Programmchef bei ${mediaorg_pro7}</de>
+				<en>${elton} new Program Director at ${mediaorg_pro7}</en>
+				<pl>${elton} nowym dyrektorem programowym w ${mediaorg_pro7}</pl>
 			</title>
 			<description>
 				<de>Der Ex-Showpraktikant von ${stefan} ${raab} ist heute überraschend Programmchef geworden. Ändern wird sich nichts, „Wir haben doch Zeit“, so ${elton}.</de>
@@ -5498,9 +5508,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Licencja trenerska dla M. ${preetz}a?</pl>
 			</title>
 			<description>
-				<de>Die Chancen stehen gut: „Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden“, so der Bertaner. Berlin darf hoffen.</de>
-				<en>The chances are good: "I would like to acquire the trainer's license first, then you can talk to me," says the former Berta player. Berlin may hope.</en>
-				<pl>Szanse są duże: "Chciałbym najpierw zdobyć licencję trenera, a potem możesz ze mną porozmawiać" - mówi były gracz Berty. Berlin może mieć nadzieję.</pl>
+				<de>Die Chancen stehen gut: „Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden“, so der ${sportsclub_hertha}ner. Berlin darf hoffen.</de>
+				<en>The chances are good: "I would like to acquire the trainer's license first, then you can talk to me," says the former ${sportsclub_hertha} player. Berlin may hope.</en>
+				<pl>Szanse są duże: "Chciałbym najpierw zdobyć licencję trenera, a potem możesz ze mną porozmawiać" - powiedział były zawodnik berlińskiego klubu. ${sportsclub_hertha} może mieć nadzieję.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="92405094-7964-47c2-aade-9c8319a3b243" time="1,6,12" />
@@ -5514,9 +5524,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Problemy ${preetz} &amp; Co</pl>
 			</title>
 			<description>
-				<de>Da der frühere Kapitän des Berta BSC bisher keinen Trainerschein besitzt, könnte die Entscheidung des Stürmers noch auf sich warten lassen...</de>
-				<en>As the former captain of Berta BSC does not have a coaching license so far, the decision of the striker could still take some time...</en>
-				<pl>Jako że były kapitan Berty BSC nie posiada na razie licencji trenerskiej, decyzja napastnika może jeszcze trochę potrwać....</pl>
+				<de>Da der frühere Kapitän des ${sportsclub_herthabsc} bisher keinen Trainerschein besitzt, könnte die Entscheidung des Stürmers noch auf sich warten lassen...</de>
+				<en>As the former captain of ${sportsclub_herthabsc} does not have a coaching license so far, the decision of the striker could still take some time...</en>
+				<pl>Jako że były kapitan ${sportsclub_herthabsc} nie posiada na razie licencji trenerskiej, decyzja napastnika może jeszcze trochę potrwać...</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="93b97853-afdf-42df-9c86-e7b98bf417c7" time="2,2,3,8,21" />
@@ -5530,9 +5540,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>A teraz, panie ${preetz}?</pl>
 			</title>
 			<description>
-				<de>Alt-Bertaner ${michael} ${preetz} hat gestern den Trainerschein ausgestellt bekommen. Gespräche über die Zukunft seien nun am Laufen, so ${preetz}' Berater.</de>
-				<en>Former Berta player ${michael} ${preetz} was issued his coaching license yesterday. Talks about the future are now underway, according to ${preetz}' advisor.</en>
-				<pl>Były zawodnik Berty, ${michael} ${preetz}, otrzymał wczoraj licencję trenerską. Według doradcy ${preetz}a, obecnie trwają rozmowy na temat jego przyszłości.</pl>
+				<de>Alt-${sportsclub_hertha} ${michael} ${preetz} hat gestern den Trainerschein ausgestellt bekommen. Gespräche über die Zukunft seien nun am Laufen, so ${preetz}' Berater.</de>
+				<en>Former ${sportsclub_hertha} player ${michael} ${preetz} was issued his coaching license yesterday. Talks about the future are now underway, according to ${preetz}' advisor.</en>
+				<pl>Były zawodnik ${sportsclub_hertha}, ${michael} ${preetz}, otrzymał wczoraj licencję trenerską. Według doradcy ${preetz}a, obecnie trwają rozmowy na temat jego przyszłości.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="b4fc0a48-9a3f-463f-8ddf-82fe3c71259c" time="2,1,1,7,11" />
@@ -5541,9 +5551,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="b4fc0a48-9a3f-463f-8ddf-82fe3c71259c" thread_guid="fb5d1c32-7fd6-49a3-9c4a-b24a934a2ef0" type="2" creator="">
 			<title>
-				<de>Berta BSC holt ${preetz}</de>
-				<en>Berta BSC gets ${preetz} under contract</en>
-				<pl>Berta BSC podpisała kontrakt z ${preetz}</pl>
+				<de>${sportsclub_herthabsc} holt ${preetz}</de>
+				<en>${sportsclub_herthabsc} gets ${preetz} under contract</en>
+				<pl>${sportsclub_herthabsc} podpisała kontrakt z ${preetz}</pl>
 			</title>
 			<description>
 				<de>Perfekt: ${michael} ${preetz} wird den Trainerposten in der Hauptstadt übernehmen. Er freue sich auf diese Herausforderung, so ${preetz}, langjährige Nr. 11.</de>
@@ -5631,14 +5641,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="6134da01-d7d0-48dc-94d5-fbe43bd4dda6" thread_guid="aebe2cd0-0c5e-4d38-9cca-b2ab634ee4f6" type="0" creator="">
 			<title>
-				<de>Computer Oscar-nominiert</de>
-				<en>Computer nominated for Oscar</en>
-				<pl>Komputer nominowany do Oscara</pl>
+				<de>Computer ${media_oscar}-nominiert</de>
+				<en>Computer nominated for ${media_oscar}</en>
+				<pl>Komputer nominowany do ${media_oscar}a</pl>
 			</title>
 			<description>
-				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oscar nominiert wurde.</de>
-				<en>The American computer manufacturer EppelWoi was astonished when their computer was nominated for the Oscar for Best Supporting Role.</en>
-				<pl>Amerykański producent komputerów EppelWoi był zaskoczony, gdy jego komputer został nominowany do Oscara za najlepszą rolę drugoplanową.</pl>
+				<de>Der amerikanische Computerhersteller ${brand_apple} staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-${media_oscar} nominiert wurde.</de>
+				<en>The American computer manufacturer ${brand_apple} was astonished when their computer was nominated for the ${media_oscar} for Best Supporting Role.</en>
+				<pl>Amerykański producent komputerów ${brand_apple} był zaskoczony, gdy jego komputer został nominowany do ${media_oscar}a za najlepszą rolę drugoplanową.</pl>
 			</description>
 			<data genre="3" price="1.0" quality="33" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -5860,6 +5870,10 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<en>Next Sunday, Germany will reach for the ballot paper - parliamentary elections. Recent polls seem to confirm the current government.</en>
 				<pl>W najbliższą niedzielę Niemcy sięgną po kartę do głosowania - wybory parlamentarne. Ostatnie sondaże zdają się potwierdzać słuszność obecnego rządu.</pl>
 			</description>
+			<variables>
+				<helmut>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"firstname"}</helmut>
+				<kohl>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"lastname"}</kohl>
+			</variables>
 			<effects>
 				<!-- time type = 3, special weekday, day 6 = saturday, so bring the next on day 5-->
 				<effect trigger="happen" type="triggernews" news="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" time="3,5,9,15" />
@@ -5923,9 +5937,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Zakłopotanie w Republice Federalnej Niemiec</pl>
 			</title>
 			<description>
-				<de>Alt-Kanzler Herbert Kuhl merkte angesichts des unmöglichen Wahlergebnisses an, er fühle sich an die Zeiten der Weimarer Republik erinnert.</de>
-				<en>In light of the hopeless election results, former Chancellor Herbert Kuhl remarked that he felt reminded of the times of the Weimar Republic.</en>
-				<pl>W świetle beznadziejnych wyników wyborów, były kanclerz Herbert Kuhl zauważył, że przypominają mu się czasy Republiki Weimarskiej.</pl>
+				<de>Alt-Kanzler ${helmut} ${kohl} merkte angesichts des unmöglichen Wahlergebnisses an, er fühle sich an die Zeiten der Weimarer Republik erinnert.</de>
+				<en>In light of the hopeless election results, former Chancellor ${helmut} ${kohl} remarked that he felt reminded of the times of the Weimar Republic.</en>
+				<pl>W świetle beznadziejnych wyników wyborów, były kanclerz ${helmut} ${kohl} zauważył, że przypominają mu się czasy Republiki Weimarskiej.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="c3848e4a-6629-4481-b036-7aa9abad6e92" time="2,2,3,9,17" />
@@ -6290,14 +6304,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="571543da-edcb-48c5-866d-e978491be0b9" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>${sportsclub_real} will ${ballack} haben</de>
-				<en>${sportsclub_real} wants ${ballack}</en>
-				<pl>${sportsclub_real} chce ${ballack}a</pl>
+				<de>${sportsclub_real} Madrid will ${ballack} haben</de>
+				<en>${sportsclub_real} Madrid wants ${ballack}</en>
+				<pl>${sportsclub_real} Madryt chce ${ballack}a</pl>
 			</title>
 			<description>
-				<de>Die Königlichen haben Interesse an Bayernstar ${ballack}. Die Blöd-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
-				<en>${sportsclub_real} is interested in Bayern star ${ballack}. The newspaper Blöd-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
-				<pl>${sportsclub_real} jest zainteresowany gwiazdą Bayernu, ${ballack}iem. Gazeta Blöd-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
+				<de>Die Königlichen haben Interesse an ${sportsclub_fcbayern}-Star ${ballack}. Die Blöd-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
+				<en>${sportsclub_real} is interested in ${sportsclub_fcbayern} star ${ballack}. The newspaper Blöd-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
+				<pl>${sportsclub_real} jest zainteresowany gwiazdą ${sportsclub_fcbayern}u, ${ballack}iem. Gazeta Blöd-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
 			</description>
 			<effects>
 				<!-- this news is triggered some hours afterwards -->
@@ -6330,9 +6344,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${ballack} i ${sportsclub_real} osiągają porozumienie</pl>
 			</title>
 			<description>
-				<de>Wie die Blöd-Zeitung berichtet ist der Wechsel des Bayern-Star zu den Königlichen perfekt. Manager ${hoeness} dementiert: „Ich weiß von nichts“.</de>
-				<en>As the newspaper Blöd-Zeitung reports, the Bayern star's move to ${sportsclub_real} is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
-				<pl>Jak donosi gazeta Blöd-Zeitung, przejście gwiazdy Bayernu do ${sportsclub_real}u jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
+				<de>Wie die Blöd-Zeitung berichtet ist der Wechsel des ${sportsclub_fcbayern}-Stars zu den Königlichen perfekt. Manager ${hoeness} dementiert: „Ich weiß von nichts“.</de>
+				<en>As the newspaper Blöd-Zeitung reports, the ${sportsclub_fcbayern} star's move to ${sportsclub_real} is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
+				<pl>Jak donosi gazeta Blöd-Zeitung, przejście gwiazdy ${sportsclub_fcbayern}u do ${sportsclub_real}u jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" time="2,1,2,8,20" />
@@ -6878,7 +6892,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<rapbandname>${.lte:currentyear:1993:"${.person:"2d78825b-29a0-4581-b9a6-d83153c7f120":"firstname"}":"${.person:"e5f3fa3f-3724-421c-99c9-0674af5a96c8":"firstname"}"}|${.lte:currentyear:1993:"${.person:"b2e7a796-fb65-43cf-82a4-e52cc92726a7":"nickname"}":"${.person:"03d8857a-28f0-49d6-af87-9770fa14dc85":"firstname"}"}</rapbandname> <!-- Sugarhill Gang or Wu-Tang Clan or Grandmaster Flash and the Furious Five or Bone Thugs-n-Harmony | TODO: Grandmaster Flash and the Furious Five: shorter nickname in title, first name in description -->
 				<britishmetalbandname>${.person:"b6b4c861-8b7c-4501-a72d-961297092b57":"firstname"}|${.person:"0591ca09-efaf-40f3-b45a-6a2e44137ba0":"firstname"}|${.lte:currentyear:1992:"${.person:"f0ba5c3b-57d7-4649-ac61-5713b5758658":"firstname"}":"${.person:"1569e08a-aa01-4caa-ae65-90d1cccc6e14":"firstname"}"}</britishmetalbandname> <!-- Judas Priest or Iron Maiden or Motörhead or Saxon -->
 				<heavymetalbandname>${.lte:currentyear:1990:"${.person:"89cb328a-f309-421f-b9a2-09bc4ed64cbe":"firstname"}":"${.person:"61866b0e-c932-4cb2-a7ca-cbb3729af454":"firstname"}"}|${.lte:currentyear:1990:"${.person:"a1518524-5d58-4642-8f2d-a1cc70792e7d":"firstname"}":"${.person:"45dfcda5-e490-4867-aa94-d84fa02b30da":"firstname"}"}</heavymetalbandname> <!-- KISS or Metallica or Black Sabbath or Megadeth (Black Sabbath also British; TODO: make make this purely US) -->
-				<femalecountrysingername>${.lte:currentyear:1996:"${.person:"45306754-5c7c-47ea-b703-6a9e2495f83a":"fullname"}":"${.person:"f3b73280-5bab-447e-8d1a-4769356bcfc3":"fullname"}"}|${.lte:currentyear:1996:"${.person:"572d2232-5079-4e3b-8acf-51c7ab032684":"fullname"}":"${.person:"beaeb493-fd8a-48ef-b481-8e7cd609f522":"fullname"}"}</femalecountrysingername> <!-- Dolly Parton or Shania Twain or Loretta Lynn or Faithhill -->
+				<femalecountrysingername>${.lte:currentyear:1996:"${.person:"45306754-5c7c-47ea-b703-6a9e2495f83a":"fullname"}":"${.person:"f3b73280-5bab-447e-8d1a-4769356bcfc3":"fullname"}"}|${.lte:currentyear:1996:"${.person:"572d2232-5079-4e3b-8acf-51c7ab032684":"fullname"}":"${.person:"beaeb493-fd8a-48ef-b481-8e7cd609f522":"fullname"}"}</femalecountrysingername> <!-- Dolly Parton or Shania Twain or Loretta Lynn or Faith Hill -->
 				<femalepopsingername>${.lte:currentyear:1987:"${.person:"f342ae30-61fc-4c16-aafd-f41203fdbc48":"fullname"}":"${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}"}|${.lte:currentyear:1996:"${.person:"ef262af3-9fa4-4c47-856f-098c2497fc5d":"fullname"}":"${.person:"4f8ee4d4-e23b-43fd-9d15-dde4962f927b":"fullname"}"}|${.person:"55c2956d-d82e-4448-bbad-858f4128656e":"firstname"}</femalepopsingername> <!-- Olivia Newton John or Madonna or Cyndi Lauper or Celine Dion or Cher -->
 				<germanfolkmusicbandname>${.lte:currentyear:1996:"Die ${.person:"5e867dd9-6598-4f96-9142-38d2d9972e36":"firstname"}":"Die ${.person:"5d987980-b4ca-4adb-81d0-daf804e71661":"firstname"}"}|${.lte:currentyear:1996:"Das ${.person:"de6d8b3f-e360-4f83-ad53-43605942467c":"firstname"}":"Die ${.person:"778d0d78-76a9-4f08-8e18-41d9aaeb2567":"firstname"}"}</germanfolkmusicbandname> <!-- Zillertaler Schuerzenjaeger or Wildecker Herzbuben or Original Naabtal Duo or Klostertaler -->
 				<newwaveorgrungebandname>${.lte:currentyear:1996:"${.person:"4edc76bf-01ad-4eff-a671-6bfc84338bf4":"firstname"}":"${.person:"ba91e144-f9ae-4544-94c4-72d3808e9459":"firstname"}"}|${.lte:currentyear:1996:"${.person:"3570c07e-d10b-472a-a236-91173cfae6e6":"firstname"}":"${.person:"c79be599-073b-4bf1-8eaa-6bf397b4f30d":"firstname"}"}</newwaveorgrungebandname> <!-- The Cure or Alice in Chains or New Order or Pearl Jam -->
@@ -7226,12 +7240,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="aed8fd74-be78-4955-aca7-ef9190b3548a" type="2" thread_guid="130c87fe-7e39-45d5-bce0-264281b3ce0f" creator="" created_by="-">
 			<title>
-				<de>UCINEF stellt Schlauchboote</de>
-				<en>UCINEF provides rubber dinghies</en>
+				<de>${generalorg_unicef} stellt Schlauchboote</de>
+				<en>${generalorg_unicef} provides rubber dinghies</en>
 			</title>
 			<description>
-				<de>Drama in ${netherlands} setzt sich fort, UCINEF stellt Schlauchboote. Bis jetzt ${missedcount} Menschen vermisst.</de>
-				<en>Drama in ${netherlands} continues, UCINEF provides rubber dinghies. So far ${missedcount} people missing.</en>
+				<de>Drama in ${netherlands} setzt sich fort, ${generalorg_unicef} stellt Schlauchboote. Bis jetzt ${missedcount} Menschen vermisst.</de>
+				<en>Drama in ${netherlands} continues, ${generalorg_unicef} provides rubber dinghies. So far ${missedcount} people missing.</en>
 			</description>
 			<data genre="4" price="1" quality="56" fictional="1" />
 			<effects>
@@ -7261,7 +7275,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
-				<guentergrass>${.person:"7dbe7001-cda3-4cd0-9921-40b15e77e220":"fullname"}</guentergrass>
+				<guenter>${.person:"7dbe7001-cda3-4cd0-9921-40b15e77e220":"firstname"}</guenter>
+				<grass>${.person:"7dbe7001-cda3-4cd0-9921-40b15e77e220":"lastname"}</grass>
 				<steve>${.person:"6ae6c3e6-46f7-4867-9f81-402a6e16c42f":"firstname"}</steve>
 				<jobs>${.person:"6ae6c3e6-46f7-4867-9f81-402a6e16c42f":"lastname"}</jobs>
 				<karl>${.person:"5125c23f-b08a-4986-af00-38f8c428fbc8":"firstname"}</karl>
@@ -7300,6 +7315,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<yeltsin>
 					<all>${.person:"826d29bc-09fc-4cef-aaa6-65da7624ec92":"lastname"}</all>
 				</yeltsin>
+				<guentergrassorgranddaughter>
+					<de>${.lte:currentyear:2014:"${guenter} ${grass}":"${guenter}-${grass}-Enkelin"}</de>
+					<en>${.lte:currentyear:2014:"${guenter} ${grass}":"${guenter} ${grass}' granddaughter"}</en>
+				</guentergrassorgranddaughter>
+				<therenownedauthororgranddaughter>
+					<de>${.lte:currentyear:2014:"Der renommierte Autor ${guenter} ${grass}":"Eine Enkelin des renommierten Autors ${guenter} ${grass}"}</de>
+					<en>${.lte:currentyear:2014:"The renowned author ${guenter} ${grass}":"A granddaughter of the renowned author ${guenter} ${grass}"}</en>
+				</therenownedauthororgranddaughter>
 				<karllagerfeld_or_sothebys>${.lte:currentyear:2019:"${karl} ${lagerfeld}":"${brand_sothebys}"}</karllagerfeld_or_sothebys> <!-- entries with Karl Lagerfeld death year has to be in sync -->
 				<hairbraid_or_lagerfeldhairbraid>
 					<de>${.lte:currentyear:2019:"Haarzopf":"${lagerfeld}-Haarzopf"}</de>
@@ -7311,7 +7334,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</theeccentric_or_theauctionhouse>
 				<hisfamoushairbraid_or_thefamoushairbraidof>
 					<de>${.lte:currentyear:2019:"seinen berühmten weißen Haarzopf":"den berühmten weißen Haarzopf des verstorbenen Modezars ${karl} ${lagerfeld}"}</de>
-					<en>${.lte:currentyear:2019:"his famous white hair braid":"the famous white hair braid of the late fashion czar ${karl} ${lagerfeld}"}</en> <!-- Sotheby's auction actually kinda real news: https://de.wikipedia.org/wiki/Karl_Lagerfeld#Nachlass-Versteigerung -->
+					<en>${.lte:currentyear:2019:"his famous white hair braid":"the famous white hair braid of the late fashion czar ${karl} ${lagerfeld}"}</en> <!-- Sotheby's auction actually kinda real news: https://de.wikipedia.org/wiki/Karl_Lagerfeld#Nachlass-Versteigerung | TODO: something about his cat https://www.nickiswift.com/1262824/did-karl-lagerfelds-cat-really-inherit-his-money-after-his-death/ -->
 				</hisfamoushairbraid_or_thefamoushairbraidof>
 				<thetechentrepreneur_or_lisadaughterof>
 					<de>${.lte:currentyear:2010:"Der bekannte Tech-Unternehmer ${steve} ${jobs}":"Lisa ${jobs}, Tochter des Tech-Unternehmers ${steve} ${jobs},"}</de>
@@ -7330,7 +7353,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>${.lte:currentyear:2007:"${boris} ${yeltsin}":"The daughter of ${boris} ${yeltsin}"}</en>
 				</borisyeltsin_or_daughterof>
 				<namewhat_csv>
-					<de>${guentergrass};Pfeife;Der renommierte Autor ${guentergrass};seine berühmte Pfeife|
+					<de>${guentergrassorgranddaughter};Pfeife;${therenownedauthororgranddaughter};seine berühmte Pfeife|
 						${jobs};Rollkragenpullover;${thetechentrepreneur_or_lisadaughterof};seinen berühmten schwarzen Rollkragenpullover|
 						${karllagerfeld_or_sothebys};${hairbraid_or_lagerfeldhairbraid};${theeccentric_or_theauctionhouse};${hisfamoushairbraid_or_thefamoushairbraidof}|
 						${churchill};Zigarre;${randolphspencerchurchill}, Enkelsohn des ehemaligen britischen Premierministers ${winston} ${churchill},;dessen während des D-Days medienpräsent gerauchte, noch zur Hälfte übrige Zigarre|
@@ -7349,7 +7372,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						${hemingway};Absinth;${mariel} ${hemingway}, Schauspielerin und Enkelin des berühmten Schriftstellers ${ernest} ${hemingway},;eine Flasche Absinth, an der er schon genippt hat|
 						${yeltsin};Wodka;${borisyeltsin_or_daughterof};eine angebrochene Flasche Wodka, an der er schon genippt hat
 					</de>
-					<en>${guentergrass};pipe;The renowned author ${guentergrass};his famous pipe|
+					<en>${guentergrassorgranddaughter};pipe;${therenownedauthororgranddaughter};his famous pipe|
 						${jobs};sweater;${thetechentrepreneur_or_lisadaughterof};his famous black turtleneck sweater|
 						${karllagerfeld_or_sothebys};${hairbraid_or_lagerfeldhairbraid};${theeccentric_or_theauctionhouse};${hisfamoushairbraid_or_thefamoushairbraidof}|
 						${churchill};cigar;${randolphspencerchurchill}, grandson of former British Prime Minister ${winston} ${churchill},;the remaining half of the cigar that was smoked to media coverage during D-Day|
@@ -7366,7 +7389,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						${monroe};ventilation shaft;The ${marilyn} ${monroe} Estate Trust;the ventilation shaft that lifted up her famous white dress|
 						${eltonjohn};100 glasses;Popstar ${eltonjohn};100 of his most extravagant glasses|
 						${hemingway};absinthe;${mariel} ${hemingway}, actress and granddaughter of the famous writer ${ernest} ${hemingway};a bottle of absinthe from which he has already sipped|
-						${yeltsin};Wodka;${borisyeltsin_or_daughterof};an opened bottle of vodka from which he has already sipped
+						${yeltsin};vodka;${borisyeltsin_or_daughterof};an opened bottle of vodka from which he has already sipped
 					</en>
 				</namewhat_csv>
 				<personname>
@@ -8531,9 +8554,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<availability year_range_to="2001" />
 		</news>
 
-		<!-- from Vicusfeli, plus some variations -->
+		<!-- from discord/vicusfeli, plus some variations -->
 
-		<news guid="9794e78a-2de1-4d66-abc3-29495fbf1b9e" type="0" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="Vicusfeli" comment="based on German idiom: https://de.wikipedia.org/wiki/In_China_ist_ein_Sack_Reis_umgefallen | TODO: more variations, outcomes">
+		<news guid="9794e78a-2de1-4d66-abc3-29495fbf1b9e" type="0" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="discord/vicusfeli" comment="based on German idiom: https://de.wikipedia.org/wiki/In_China_ist_ein_Sack_Reis_umgefallen | TODO: more variations, outcomes">
 			<title>
 				<de>Aufruhr in ${beijing}</de>
 				<en>Uproar in ${beijing}</en>
@@ -8553,7 +8576,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="2,1,1,5,23" news="f9aa830d-0497-47ad-9bf2-787bd5860e52" />
 			</effects>
 		</news>
-		<news guid="f9aa830d-0497-47ad-9bf2-787bd5860e52" type="2" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="Vicusfeli">
+		<news guid="f9aa830d-0497-47ad-9bf2-787bd5860e52" type="2" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="discord/vicusfeli">
 			<title>
 				<de>Polizeipräsident von ${beijing} vor Rücktritt</de>
 				<en>${beijing} Police chief about to resign</en>
@@ -8567,7 +8590,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="2,1,1,5,23" news="8a8e1f5f-35bc-4b14-bba8-e7ddb5a6ed56" />
 			</effects>
 		</news>
-		<news guid="8a8e1f5f-35bc-4b14-bba8-e7ddb5a6ed56" type="2" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="Vicusfeli">
+		<news guid="8a8e1f5f-35bc-4b14-bba8-e7ddb5a6ed56" type="2" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="discord/vicusfeli">
 			<title>
 				<de>Erste Festnahmen im Reisgate-Fall</de>
 				<en>First arrests in the Ricegate case</en>
@@ -8581,7 +8604,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="2,1,1,5,23" news="04d98de9-f539-4f13-b6f3-0ae0d8ee7ab9" />
 			</effects>
 		</news>
-		<news guid="04d98de9-f539-4f13-b6f3-0ae0d8ee7ab9" type="2" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="Vicusfeli">
+		<news guid="04d98de9-f539-4f13-b6f3-0ae0d8ee7ab9" type="2" thread_guid="93205ae7-5448-4803-a3c0-5330fa224e20" created_by="discord/vicusfeli">
 			<title>
 				<de>Aufatmen im Reisgate-Fall</de>
 				<en>Sigh of relief in Ricegate case</en>
@@ -8593,14 +8616,14 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="4" price="1" quality_min="15" quality_max="40" fictional="1" />
 		</news>
 
-		<news guid="3093d27d-908b-4a5d-a373-12f62a148ac5" type="0" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="Vicusfeli" comment="TODO: Different variations, outcomes | #maintenancecritical">
+		<news guid="3093d27d-908b-4a5d-a373-12f62a148ac5" type="0" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="discord/vicusfeli" comment="TODO: Different variations, outcomes | #maintenancecritical">
 			<title>
 				<de>Hat ${actor} etwas mit dieser Frau?</de>
 				<en>Is ${actor} involved with this woman?</en>
 			</title>
 			<description>
-				<de>Hollywoodstar ${actor} wurde in einem Nobelrestaurant in LA mit einer unbekannten Frau gesichtet.</de>
-				<en>Hollywood star ${actor} was spotted in a posh restaurant in LA with an unknown woman.</en>
+				<de>${media_hollywood}star ${actor} wurde in einem Nobelrestaurant in LA mit einer unbekannten Frau gesichtet.</de>
+				<en>${media_hollywood} star ${actor} was spotted in a posh restaurant in LA with an unknown woman.</en>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -8638,21 +8661,21 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="1,4,10" news="30f90cb1-82f6-41c8-9331-a8e19153fec1" />
 			</effects>
 		</news>
-		<news guid="30f90cb1-82f6-41c8-9331-a8e19153fec1" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="Vicusfeli">
+		<news guid="30f90cb1-82f6-41c8-9331-a8e19153fec1" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="discord/vicusfeli">
 			<title>
 				<de>${actor} dementiert Affäre</de>
 				<en>${actor} denies affair</en>
 			</title>
 			<description>
-				<de>Hollywoodstar ${actor} dementiert, dass er eine Affäre mit einer Unbekannten hätte. Sie sei ihm ja seit dem ersten Date eben nicht mehr unbekannt.</de>
-				<en>Hollywood star ${actor} denies that he is having an affair with an unknown woman. After all, she has no longer been unknown to him since their first date.</en>
+				<de>${media_hollywood}star ${actor} dementiert, dass er eine Affäre mit einer Unbekannten hätte. Sie sei ihm ja seit dem ersten Date eben nicht mehr unbekannt.</de>
+				<en>${media_hollywood} star ${actor} denies that he is having an affair with an unknown woman. After all, she has no longer been unknown to him since their first date.</en>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,1,5,23" news="dff4ba4d-ec87-4af0-8ad0-341e4eae85e2" />
 			</effects>
 		</news>
-		<news guid="dff4ba4d-ec87-4af0-8ad0-341e4eae85e2" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="Vicusfeli">
+		<news guid="dff4ba4d-ec87-4af0-8ad0-341e4eae85e2" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="discord/vicusfeli">
 			<title>
 				<de>${actor} vor Scheidung</de>
 				<en>${actor} about to divorce</en>
@@ -8666,21 +8689,21 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="2,1,1,5,23" news="69db2ef9-ad82-4f75-9430-b92cc7587151" />
 			</effects>
 		</news>
-		<news guid="69db2ef9-ad82-4f75-9430-b92cc7587151" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="Vicusfeli">
+		<news guid="69db2ef9-ad82-4f75-9430-b92cc7587151" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="discord/vicusfeli">
 			<title>
 				<de>Ist ${actor} gewalttätig?</de>
 				<en>Is ${actor} violent?</en>
 			</title>
 			<description>
 				<de>Namhaften Paparazzi zufolge erkennt man auf diesem Foto, wie ${actor} zuschlägt. Auch verdächtig, dass seine Frau nur noch Sonnenbrille trägt.</de>
-				<en>According to renouned paparazzi, in this photo it is clearly visible how ${actor} is punching someone. It's also suspicious that his wife is now wearing sunglasses all the time.</en>
+				<en>According to renowned paparazzi, in this photo it is clearly visible how ${actor} is punching someone. It's also suspicious that his wife is now wearing sunglasses all the time.</en>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 			<effects>
 				<effect trigger="happen" type="triggernews" time="2,1,2,5,23" news="62630642-0916-4e8f-96a9-1e06af30a224" />
 			</effects>
 		</news>
-		<news guid="62630642-0916-4e8f-96a9-1e06af30a224" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="Vicusfeli">
+		<news guid="62630642-0916-4e8f-96a9-1e06af30a224" type="2" thread_guid="d8ca9ca3-a5b3-428c-a9ea-f512645d8f43" created_by="discord/vicusfeli">
 			<title>
 				<de>${actor} Gift für Kinokasse?</de>
 				<en>${actor} box office poison?</en>
@@ -8692,7 +8715,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 		</news>
 
-		<news guid="a9a3941b-8d50-4806-b5dc-f057826f3651" type="0" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="Vicusfeli" comment="TODO: Different variations, outcomes | #maintenancecritical">
+		<news guid="a9a3941b-8d50-4806-b5dc-f057826f3651" type="0" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="discord/vicusfeli" comment="TODO: Different variations, outcomes | #maintenancecritical">
 			<title>
 				<de>${actress} in Polizeikontrolle</de>
 				<en>${actress} stopped by police</en>
@@ -8724,7 +8747,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="2,1,2,5,23" news="69f29b25-f989-440b-a697-220fc9bc8712" />
 			</effects>
 		</news>
-		<news guid="69f29b25-f989-440b-a697-220fc9bc8712" type="2" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="Vicusfeli">
+		<news guid="69f29b25-f989-440b-a697-220fc9bc8712" type="2" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="discord/vicusfeli">
 			<title>
 				<de>Fotoshooting mal anders</de>
 				<en>Photo shoot, but differently</en>
@@ -8738,7 +8761,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="2,1,2,5,23" news="5f49ec83-bea2-4e91-a8e7-009c015a4fd5" />
 			</effects>
 		</news>
-		<news guid="5f49ec83-bea2-4e91-a8e7-009c015a4fd5" type="2" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="Vicusfeli">
+		<news guid="5f49ec83-bea2-4e91-a8e7-009c015a4fd5" type="2" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="discord/vicusfeli">
 			<title>
 				<de>${actress}: Würger-Burger</de>
 				<en>${actress}: Choke burger</en>

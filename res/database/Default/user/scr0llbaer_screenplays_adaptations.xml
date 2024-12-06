@@ -3679,8 +3679,8 @@
 						<en>Jack Be Nimble</en>
 					</title_original>
 					<description>
-						<de>Jack Horner geht nach Hollywood und gründet ein Filmstudio.</de>
-						<en>Jack Horner goes to Hollywood and sets up a film studio.</en> <!-- TODO: Make ref Jack Horner-->
+						<de>Jack Horner geht nach ${media_hollywood} und gründet ein Filmstudio.</de>
+						<en>Jack Horner goes to ${media_hollywood} and sets up a film studio.</en> <!-- TODO: Make ref Jack Horner-->
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="052b8118-2a4b-4528-a9ef-140250fedc29">
