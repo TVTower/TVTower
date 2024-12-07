@@ -22,6 +22,10 @@ Type TBetty
 
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TBetty
+	Global modKeyPointsAbsolute:TLowerString = New TLowerString.Create("betty::pointsabsolute")
+	Global modKeyRawQuality:TLowerString = New TLowerString.Create("betty::rawquality")
+	Global modKeyPointsMod:TLowerString = New TLowerString.Create("betty::pointsmod")
+
 	Const LOVE_MAXIMUM:int = 10000
 
 
@@ -335,7 +339,19 @@ Type TBetty
 			Local programme:TProgramme = TProgramme(broadcastMaterial)
 			Local tgWomen:Int = programme.data.hasTargetGroup(TVTTargetGroup.WOMEN)
 			Local blocks:Int = programme.GetBlocks()
-			If (programme.data.GetGenre() = TVTProgrammeGenre.Erotic And Not tgWomen)
+			pointsmod = programme.data.GetModifier(modKeyPointsMod, 1.0)
+
+			'absolute points 100=1%
+			points = programme.data.GetModifier(modKeyPointsAbsolute, 0)
+			If Not points
+				'rawQuality corresponds to programme's raw quality (excluding topicality) -> 0.0 to 1.0
+				points = programme.data.GetModifier(modKeyRawQuality, 0)
+				'points calculation analogous to programmme.GetQuality()
+				If points Then points = 100 * (points * (0.10 + 0.90 * programme.data.GetTopicality()^2))
+			EndIf
+			If points
+				'modifiers determined betty points
+			Else If (programme.data.GetGenre() = TVTProgrammeGenre.Erotic And Not tgWomen)
 				points = -20 * blocks
 			ElseIf programme.data.HasSubGenre(TVTProgrammeGenre.Erotic And Not tgWomen)
 				points = -10 * blocks
