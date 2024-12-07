@@ -204,7 +204,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 	EndIf
 	
 	Select propertyName
-		Case "cast"                    Return _EvaluateProgrammeDataCast(licence.data, params, 1 + tokenOffset)
+		Case "cast"                    Return _EvaluateProgrammeDataCast(licence.data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
 		Case "role"                    Return _EvaluateProgrammeDataRole(licence.data, params, 1 + tokenOffset)
 		Case "year"                    Return New SToken( TK_NUMBER, licence.data.GetYear(), params.GetToken(0) )
@@ -306,7 +306,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 	EndIf
 	
 	Select propertyName
-		Case "cast"                    Return _EvaluateProgrammeDataCast(data, params, 1 + tokenOffset)
+		Case "cast"                    Return _EvaluateProgrammeDataCast(data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
 		Case "role"                    Return _EvaluateProgrammeDataRole(data, params, 1 + tokenOffset)
 		Case "year"                    Return New SToken( TK_NUMBER, data.GetYear(), params.GetToken(0) )
@@ -345,7 +345,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 End Function
 
 
-Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int, language:int) 'inline
 	If Not params.HasToken(1 + tokenOffset, ETokenValueType.Integer)
 		Return New SToken( TK_ERROR, "No valid cast number passed", params.GetToken(0) )
 	EndIf
@@ -366,7 +366,7 @@ Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGro
 
 	Local propertyName:String = params.GetToken(2 + tokenOffset).value
 	Select propertyName.ToLower()
-		Case "firstname" Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
+		Case "firstname" Return New SToken( TK_TEXT, _getPersonFirstName(person, language), params.GetToken(0) )
 		Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
 		Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
@@ -414,6 +414,15 @@ Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGro
 		Default          Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
 	End Select
 End Function
+
+Function _getPersonFirstName:String(person:TPersonBase, language:Int)
+	Local loc:TPersonLocalization = GetDatabaseLocalizer().getPerson(person.GetId(), language)
+	If loc
+		Return loc.firstName
+	Else
+		Return person.GetFirstName()
+	EndIf
+EndFunction
 
 
 '${.role:"guid"/id:"fullname"} - context: all
@@ -474,7 +483,7 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	
 	Local propertyName:String = params.GetToken(2).value
 	Select propertyName.ToLower()
-		case "firstname"    Return New SToken( TK_TEXT, person.GetFirstName(), params.GetToken(0) )
+		case "firstname"    Return New SToken( TK_TEXT, _getPersonFirstName(person, context.contextNumeric), params.GetToken(0) )
 		case "lastname"     Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
 		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
 		case "nickname"     Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )

@@ -10,6 +10,7 @@ Type TDatabaseLocalizer
 	Field globalVariables:TMap
 	Field persons:TMap
 	Field roles:TMap
+	Field personsById:TIntMap[] {nosave}
 
 	Method New()
 		Reset()
@@ -42,6 +43,21 @@ Type TDatabaseLocalizer
 	Method getGlobalVariables:TLocalizationLanguage(languageCode:String)
 		Return TLocalizationLanguage(globalVariables.ValueForKey(languageCode))
 	End Method
+
+	Method getPerson:TPersonLocalization(id:Int, languageId:Int)
+		'TODO cache IDs that have a localization at all
+		If Not personsById Then personsById = new TIntMap[TLocalization.languages.length]
+		If Not personsById[languageId]
+			Local map:TIntMap =  new TIntMap()
+			personsById[languageId] = map
+			Local code:String = TLocalization.GetLanguageCode(languageId)
+			For Local pl:TPersonLocalization = EachIn TPersonLocalization[](persons.valueForKey(code))
+				map.insert(pl.id, pl)
+			Next
+		EndIf
+		'TODO fallback to default language
+		return TPersonLocalization(personsById[languageId].valueForKey(id))
+	EndMethod
 
 	Function GetInstance:TDatabaseLocalizer()
 		if not _instance then _instance = new TDatabaseLocalizer
