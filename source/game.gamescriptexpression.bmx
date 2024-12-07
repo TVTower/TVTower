@@ -206,7 +206,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 	Select propertyName
 		Case "cast"                    Return _EvaluateProgrammeDataCast(licence.data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
-		Case "role"                    Return _EvaluateProgrammeDataRole(licence.data, params, 1 + tokenOffset)
+		Case "role"                    Return _EvaluateProgrammeDataRole(licence.data, params, 1 + tokenOffset, context.contextNumeric)
 		Case "year"                    Return New SToken( TK_NUMBER, licence.data.GetYear(), params.GetToken(0) )
 		Case "episodecount"            Return New SToken( TK_NUMBER, licence.GetEpisodeCount(), params.GetToken(0) )
 		Case "episodenumber"           Return New SToken( TK_NUMBER, licence.GetEpisodeNumber(), params.GetToken(0) )
@@ -308,7 +308,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 	Select propertyName
 		Case "cast"                    Return _EvaluateProgrammeDataCast(data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
-		Case "role"                    Return _EvaluateProgrammeDataRole(data, params, 1 + tokenOffset)
+		Case "role"                    Return _EvaluateProgrammeDataRole(data, params, 1 + tokenOffset, context.contextNumeric)
 		Case "year"                    Return New SToken( TK_NUMBER, data.GetYear(), params.GetToken(0) )
 		case "guid"                    Return New SToken( TK_TEXT, data.GetGUID(), params.GetToken(0) )
 		case "id"                      Return New SToken( TK_NUMBER, data.GetID(), params.GetToken(0) )
@@ -366,11 +366,11 @@ Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGro
 
 	Local propertyName:String = params.GetToken(2 + tokenOffset).value
 	Select propertyName.ToLower()
-		Case "firstname" Return New SToken( TK_TEXT, _getPersonFirstName(person, language), params.GetToken(0) )
-		Case "lastname"  Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
-		Case "fullname"  Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
-		Case "nickname"  Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
-		Case "title"     Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
+		Case "firstname" Return New SToken( TK_TEXT, _getLocalizedPerson(person, language).GetFirstName(), params.GetToken(0) )
+		Case "lastname"  Return New SToken( TK_TEXT, _getLocalizedPerson(person, language).GetLastName(includeTitle), params.GetToken(0) )
+		Case "fullname"  Return New SToken( TK_TEXT, _getLocalizedPerson(person, language).GetFullName(includeTitle), params.GetToken(0) )
+		Case "nickname"  Return New SToken( TK_TEXT, _getLocalizedPerson(person, language).GetNickName(), params.GetToken(0) )
+		Case "title"     Return New SToken( TK_TEXT, _getLocalizedPerson(person, language).GetTitle(), params.GetToken(0) )
 		Case "guid"      Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
 		Case "id"        Return New SToken( TK_NUMBER, person.GetID(), params.GetToken(0) )
 		Case "roleid"    Return New SToken( TK_TEXT, job.roleID, params.GetToken(0) )
@@ -381,7 +381,7 @@ Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGro
 End Function
 
 
-Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int, language:int) 'inline
 	Local roleIndex:Int = params.GetToken(1 + tokenOffset).valueLong
 	If roleIndex < 0 Then Return New SToken( TK_ERROR, "Role index must be positive", params.GetToken(0) )
 
@@ -400,11 +400,11 @@ Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGro
 
 	Local propertyName:String = params.GetToken(2 + tokenOffset).value
 	Select propertyName.ToLower()
-		Case "firstname" Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
-		Case "lastname"  Return New SToken( TK_TEXT, role.GetLastName(includeTitle), params.GetToken(0) )
-		Case "fullname"  Return New SToken( TK_TEXT, role.GetFullName(includeTitle), params.GetToken(0) )
-		Case "nickname"  Return New SToken( TK_TEXT, role.GetNickName(), params.GetToken(0) )
-		Case "title"     Return New SToken( TK_TEXT, role.GetTitle(), params.GetToken(0) )
+		Case "firstname" Return New SToken( TK_TEXT, _getLocalizedRole(role, language).GetFirstName(), params.GetToken(0) )
+		Case "lastname"  Return New SToken( TK_TEXT, _getLocalizedRole(role, language).GetLastName(includeTitle), params.GetToken(0) )
+		Case "fullname"  Return New SToken( TK_TEXT, _getLocalizedRole(role, language).GetFullName(includeTitle), params.GetToken(0) )
+		Case "nickname"  Return New SToken( TK_TEXT, _getLocalizedRole(role, language).GetNickName(), params.GetToken(0) )
+		Case "title"     Return New SToken( TK_TEXT, _getLocalizedRole(role, language).GetTitle(), params.GetToken(0) )
 		case "countrycode" Return New SToken( TK_TEXT, role.countrycode, params.GetToken(0) )
 		case "gender"    Return New SToken( TK_NUMBER, role.gender, params.GetToken(0) )
 		Case "guid"      Return New SToken( TK_TEXT, role.GetGUID(), params.GetToken(0) )
@@ -415,15 +415,19 @@ Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGro
 	End Select
 End Function
 
-Function _getPersonFirstName:String(person:TPersonBase, language:Int)
-	Local loc:TPersonLocalization = GetDatabaseLocalizer().getPerson(person.GetId(), language)
-	If loc
-		Return loc.firstName
-	Else
-		Return person.GetFirstName()
-	EndIf
+
+Function _getLocalizedPerson:TPersonBase(person:TPersonBase, language:Int)
+	Local loc:TPersonBase = GetDatabaseLocalizer().getPersonNames(person.GetId(), language)
+	If loc Then return loc
+	Return person
 EndFunction
 
+
+Function _getLocalizedRole:TProgrammeRole(role:TProgrammeRole, language:Int)
+	Local loc:TProgrammeRole = GetDatabaseLocalizer().getRoleNames(role.GetId(), language)
+	If loc Then return loc
+	Return role
+EndFunction
 
 '${.role:"guid"/id:"fullname"} - context: all
 Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -446,11 +450,11 @@ Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionConte
 
 	Local propertyName:String = params.GetToken(2).value
 	Select propertyName.ToLower()
-		case "firstname"    Return New SToken( TK_TEXT, role.GetFirstName(), params.GetToken(0) )
-		case "lastname"     Return New SToken( TK_TEXT, role.GetLastName(includeTitle), params.GetToken(0) )
-		case "fullname"     Return New SToken( TK_TEXT, role.GetFullName(includeTitle), params.GetToken(0) )
-		Case "nickname"     Return New SToken( TK_TEXT, role.GetNickName(), params.GetToken(0) )
-		Case "title"        Return New SToken( TK_TEXT, role.GetTitle(), params.GetToken(0) )
+		case "firstname"    Return New SToken( TK_TEXT, _getLocalizedRole(role, context.contextNumeric).GetFirstName(), params.GetToken(0) )
+		case "lastname"     Return New SToken( TK_TEXT, _getLocalizedRole(role, context.contextNumeric).GetLastName(includeTitle), params.GetToken(0) )
+		case "fullname"     Return New SToken( TK_TEXT, _getLocalizedRole(role, context.contextNumeric).GetFullName(includeTitle), params.GetToken(0) )
+		Case "nickname"     Return New SToken( TK_TEXT, _getLocalizedRole(role, context.contextNumeric).GetNickName(), params.GetToken(0) )
+		Case "title"        Return New SToken( TK_TEXT, _getLocalizedRole(role, context.contextNumeric).GetTitle(), params.GetToken(0) )
 		case "countrycode"  Return New SToken( TK_TEXT, role.countrycode, params.GetToken(0) )
 		case "gender"       Return New SToken( TK_NUMBER, role.gender, params.GetToken(0) )
 		case "guid"         Return New SToken( TK_TEXT, role.GetGUID(), params.GetToken(0) )
@@ -483,11 +487,11 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	
 	Local propertyName:String = params.GetToken(2).value
 	Select propertyName.ToLower()
-		case "firstname"    Return New SToken( TK_TEXT, _getPersonFirstName(person, context.contextNumeric), params.GetToken(0) )
-		case "lastname"     Return New SToken( TK_TEXT, person.GetLastName(includeTitle), params.GetToken(0) )
-		case "fullname"     Return New SToken( TK_TEXT, person.GetFullName(includeTitle), params.GetToken(0) )
-		case "nickname"     Return New SToken( TK_TEXT, person.GetNickName(), params.GetToken(0) )
-		case "title"        Return New SToken( TK_TEXT, person.GetTitle(), params.GetToken(0) )
+		case "firstname"    Return New SToken( TK_TEXT, _getLocalizedPerson(person, context.contextNumeric).GetFirstName(), params.GetToken(0) )
+		case "lastname"     Return New SToken( TK_TEXT, _getLocalizedPerson(person, context.contextNumeric).GetLastName(includeTitle), params.GetToken(0) )
+		case "fullname"     Return New SToken( TK_TEXT, _getLocalizedPerson(person, context.contextNumeric).GetFullName(includeTitle), params.GetToken(0) )
+		case "nickname"     Return New SToken( TK_TEXT, _getLocalizedPerson(person, context.contextNumeric).GetNickName(), params.GetToken(0) )
+		case "title"        Return New SToken( TK_TEXT, _getLocalizedPerson(person, context.contextNumeric).GetTitle(), params.GetToken(0) )
 		case "gender"       Return New SToken( TK_NUMBER, person.gender, params.GetToken(0) )
 		case "guid"         Return New SToken( TK_TEXT, person.GetGUID(), params.GetToken(0) )
 		case "id"           Return New SToken( TK_NUMBER, person.GetID(), params.GetToken(0) )
@@ -609,6 +613,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 			If roleIndex >= actors.length Then Return New SToken( TK_ERROR, "(not enough actors for role #" + roleIndex+".)", params.GetToken(0) )
 
 			Local role:TProgrammeRole = TScript._EnsureRole(actors[roleIndex])
+			role = _getLocalizedRole(role, context.contextNumeric)
 
 			Local subCommand:String = params.GetToken(3 + tokenOffset).GetValueText()
 			Select subCommand.ToLower()
