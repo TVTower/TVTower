@@ -645,16 +645,23 @@ Type TGameModifierGroup
 	End Method
 
 
+	'return number of remaining triggers
 	Method RemoveOrphans:Int()
 		Local emptyLists:String[]
+		Local triggerCount:Int = 0
+		Local tmpCount:Int
 		For Local trigger:String = EachIn entries.Keys()
 			Local l:TList = GetList(trigger)
-			If l And l.count() = 0 Then emptyLists :+ [trigger]
+			If l
+				tmpCount = l.count()
+				If tmpCount = 0 Then emptyLists :+ [trigger]
+				triggerCount:+ tmpCount
+			EndIf
 		Next
 		For Local trigger:String = EachIn emptyLists
 			RemoveList(trigger)
 		Next
-		Return emptyLists.Length
+		Return triggerCount
 	End Method
 
 
