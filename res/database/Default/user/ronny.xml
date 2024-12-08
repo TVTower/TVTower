@@ -649,9 +649,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<pl>Klawisz "PRINT": Firmy oszczędzają na opłatach</pl>
 			</title>
 			<description>
-				<de>Tastaturhersteller wie Charry oder LogischTec haben reagiert: sie verplomben die „DRUCK“-Taste um die sonst fälligen Abgaben zu umgehen.</de>
-				<en>Keyboard manufacturers such as Charry or LogischTec have reacted: they seal the "PRINT" key to bypass the otherwise due duties.</en>
-				<pl>Producenci klawiatur, tacy jak Charry czy LogischTec, zareagowali: zablokowali klawisz "PRINT", aby ominąć należne opłaty.</pl>
+				<de>Tastaturhersteller wie ${brand_cherry} oder ${brand_logitech} haben reagiert: sie verplomben die „DRUCK“-Taste um die sonst fälligen Abgaben zu umgehen.</de>
+				<en>Keyboard manufacturers such as ${brand_cherry} or ${brand_logitech} have reacted: they seal the "PRINT" key to bypass the otherwise due duties.</en>
+				<pl>Producenci klawiatur, tacy jak ${brand_cherry} czy ${brand_logitech}, zareagowali: zablokowali klawisz "PRINT", aby ominąć należne opłaty.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 9-12 Uhr" -->
@@ -659,7 +659,7 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 			</effects>
 			<data genre="3" price="1.0" quality="35" />
 		</news>
-		<news guid="ronny-news-drucktaste-02b" type="2" thread_guid="ronny-news-drucktaste" creator="5578" created_by="Ronny">
+		<news guid="ronny-news-drucktaste-02b" type="2" thread_guid="ronny-news-drucktaste" creator="5578" created_by="Ronny" comment="TODO: RAR might be trademarked">
 			<title>
 				<de>„DRUCK“-Taste: Vereine demonstrieren</de>
 				<en>"PRINT"-Key: Associations protest</en>
