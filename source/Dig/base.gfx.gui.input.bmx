@@ -282,7 +282,7 @@ Type TGUIinput Extends TGUIobject
 
 					If _valueAtLastUpdate <> value
 						'explicitely inform about a change of the displayed value
-						TriggerBaseEvent(GUIEventKeys.GUIInput_OnChangeValue, New TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit).AddString("previousValue", _valueAtLastUpdate), Self )
+						TriggerBaseEvent(GUIEventKeys.GUIInput_OnChangeValue, New TData.Add("type", 1).Add("value", value).Add("originalValue", _valueBeforeEdit).Add("previousValue", _valueAtLastUpdate), Self )
 						_valueAtLastUpdate = value
 					EndIf
 				EndIf
@@ -321,17 +321,17 @@ Type TGUIinput Extends TGUIobject
 			_cursorPosition = -1
 
 			'fire onChange-event (text changed)
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnChange, New TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self )
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnChange, New TData.Add("type", 1).Add("value", value).Add("originalValue", _valueBeforeEdit), Self )
 
 			'explicitely inform about a change of the displayed value
 			'only send this once
 			If _valueAtLastUpdate <> value
-				TriggerBaseEvent(GUIEventKeys.GUIInput_OnChangeValue, New TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self )
+				TriggerBaseEvent(GUIEventKeys.GUIInput_OnChangeValue, New TData.Add("type", 1).Add("value", value).Add("originalValue", _valueBeforeEdit), Self )
 			EndIf
 		EndIf
 
 		'inform that editing was somehow finished (eg ENTER Key or lost focus)
-		TriggerBaseEvent(GUIEventKeys.GUIInput_OnFinishEdit, New TData.AddInt("FinishMode", finishMode), Self )
+		TriggerBaseEvent(GUIEventKeys.GUIInput_OnFinishEdit, New TData.Add("FinishMode", finishMode), Self )
 	End Method
 
 

@@ -945,7 +945,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			maxTopicalityOnOwnerchange = GetMaxTopicality()
 
 			'inform others about the new owner of the licence
-			TriggerBaseEvent(GameEventKeys.ProgrammeLicence_onSetOwner, new TData.AddNumber("newOwner", owner).AddNumber("oldOwner", self.owner), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeLicence_onSetOwner, new TData.Add("newOwner", owner).Add("oldOwner", self.owner), self)
 		endif
 
 		self.owner = owner

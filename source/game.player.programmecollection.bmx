@@ -591,7 +591,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents 	
-			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, new TData.add("programmeLicence", licence).AddInt("sell", sell), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, new TData.add("programmeLicence", licence).Add("sell", sell), self)
 		EndIf
 
 		return True
@@ -637,7 +637,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		AddJustAddedProgrammeLicence(licence)
 
 		if fireEvents 
-			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, new TData.add("programmeLicence", licence).AddInt("buy", buy), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, new TData.add("programmeLicence", licence).Add("buy", buy), self)
 		EndIf
 		return TRUE
 	End Method
@@ -844,7 +844,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents 
-			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveScript, new TData.Add("script", script).AddInt("sell", sell), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveScript, new TData.Add("script", script).Add("sell", sell), self)
 		EndIf
 		Return True
 	End Method
@@ -866,7 +866,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		scripts.AddLast(script)
 
 		if fireEvents 
-			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddScript, new TData.Add("script", script).AddInt("buy", buy), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddScript, new TData.Add("script", script).Add("buy", buy), self)
 		EndIf
 		return TRUE
 	End Method
@@ -882,7 +882,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if not script then return Null
 		if not CanCreateProductionConcept(script)
 			'emit event to inform others (eg. for ingame warning)
-			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_OnCreateProductionConceptFailed, new TData.AddInt("productionConceptCount", GetProductionConceptCollection().GetProductionConceptCountByScript(script)).AddInt("playerID", owner))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_OnCreateProductionConceptFailed, new TData.Add("productionConceptCount", GetProductionConceptCollection().GetProductionConceptCountByScript(script)).Add("playerID", owner))
 
 			return Null
 		endif

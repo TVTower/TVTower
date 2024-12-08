@@ -764,9 +764,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 		If programme
-			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).AddInt("programmeLicenceID", programme.licence.GetID()).AddInt("slotType", slotType).AddInt("day", day).AddNumber("hour", hour), Self)
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).Add("programmeLicenceID", programme.licence.GetID()).Add("slotType", slotType).Add("day", day).Add("hour", hour), Self)
 		ElseIf advertisement
-			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).AddInt("adContractID", advertisement.contract.GetID()).AddInt("slotType", slotType).AddInt("day", day).AddNumber("hour", hour), Self)
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).Add("adContractID", advertisement.contract.GetID()).Add("slotType", slotType).Add("day", day).Add("hour", hour), Self)
 		Endif
 
 		'if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -780,7 +780,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'emit an event
 		If fireEvents 
-			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddObject, New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self)
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddObject, New TData.add("object", obj).add("removedObjects", removedObjects).Add("slotType", slotType).Add("day", day).Add("hour", hour), Self)
 		EndIf
 
 		Return True
@@ -854,9 +854,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 
 			If programme
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).AddInt("programmeLicenceID", programme.licence.GetID()).AddInt("slotType", slotType).AddInt("day", programmedDay).AddNumber("hour", programmedHour), Self)
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveProgramme, New TData.Add("programme", programme).Add("programmeLicence", programme.licence).Add("programmeLicenceID", programme.licence.GetID()).Add("slotType", slotType).Add("day", programmedDay).Add("hour", programmedHour), Self)
 			ElseIf advertisement
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).AddInt("adContractID", advertisement.contract.GetID()).AddInt("slotType", slotType).AddInt("day", programmedDay).AddNumber("hour", programmedHour), Self)
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveAdvertisement, New TData.Add("advertisement", advertisement).Add("adContract", advertisement.contract).Add("adContractID", advertisement.contract.GetID()).Add("slotType", slotType).Add("day", programmedDay).Add("hour", programmedHour), Self)
 			Endif
 
 			rem
@@ -872,7 +872,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			'inform others
 			If fireEvents
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObject, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self)
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObject, New TData.add("object", obj).Add("slotType", slotType).Add("day", programmedDay).Add("hour", programmedHour), Self)
 			Endif
 		else
 			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -934,7 +934,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		If foundAnInstance
 			If fireEvents 
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObjectInstances, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("removeCurrentRunning", removeCurrentRunning), Self)
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObjectInstances, New TData.add("object", obj).Add("slotType", slotType).Add("removeCurrentRunning", removeCurrentRunning), Self)
 			Endif
 			Return True
 		Else
@@ -1609,7 +1609,7 @@ endrem
 
 		'emit an event so eg. network can recognize the change
 		If fireEvents 
-			TriggerBaseEvent(GameEventKeys.ProgrammePlan_SetNews, New TData.Add("news",newsObject).AddNumber("slot", slot), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_SetNews, New TData.Add("news",newsObject).Add("slot", slot), self)
 		EndIf
 
 		Return True
@@ -1659,7 +1659,7 @@ endrem
 			news[newsSlot] = Null
 
 			If fireEvents 
-				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveNews, New TData.Add("news", deletedNews).AddNumber("slot", newsSlot), self)
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveNews, New TData.Add("news", deletedNews).Add("slot", newsSlot), self)
 			Endif
 			Return True
 		EndIf
@@ -1841,7 +1841,7 @@ endrem
 			GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			TriggerBaseEvent(GameEventKeys.Broadcast_common_BeginBroadcasting, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_common_BeginBroadcasting, New TData.add("broadcastMaterial", obj).Add("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).Add("day", day).Add("hour", hour).Add("minute", minute), Self)
 
 		'=== END OF NEWSSHOW ===
 		ElseIf minute = 4
@@ -1854,7 +1854,7 @@ endrem
 				obj.FinishBroadcasting(day, hour, minute, audienceResult)
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			TriggerBaseEvent(GameEventKeys.Broadcast_common_FinishBroadcasting, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_common_FinishBroadcasting, New TData.add("broadcastMaterial", obj).Add("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).Add("day", day).Add("hour", hour).Add("minute", minute), Self)
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
@@ -1875,7 +1875,7 @@ endrem
 			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).Add("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).Add("day", day).Add("hour", hour).Add("minute", minute), Self)
 
 		'=== END/BREAK OF PROGRAMME ===
 		'call-in shows/quiz - generate income
@@ -1942,7 +1942,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).Add("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).Add("day", day).Add("hour", hour).Add("minute", minute), Self)
 
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
@@ -2003,7 +2003,7 @@ endrem
 			GetDailyBroadcastStatistic( day, true ).SetAdBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).Add("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).Add("day", day).Add("hour", hour).Add("minute", minute), Self)
 
 		'=== END OF COMMERCIAL BREAK ===
 		'ads end - so trailers can set their "ok"
@@ -2023,7 +2023,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).Add("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).Add("day", day).Add("hour", hour).Add("minute", minute), Self)
 		EndIf
 	End Method
 End Type

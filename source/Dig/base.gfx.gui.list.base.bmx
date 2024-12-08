@@ -765,7 +765,7 @@ Type TGUIListBase Extends TGUIobject
 '			else
 '				TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), guiScrollerV)
 '			endif
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), self)
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.Add("direction", direction).Add("scrollAmount", scrollAmount), self)
 		EndIf
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
@@ -1467,7 +1467,7 @@ Type TGUIListItem Extends TGUIobject
 		'this makes the "listitem-clicked"-event filterable even
 		'if the itemclass gets extended (compared to the general approach
 		'of "GUIobject_onclick")
-		TriggerBaseEvent(GUIEventKeys.GUIListItem_OnClick, new TData.AddInt("button", 1), Self, triggerEvent.GetReceiver())
+		TriggerBaseEvent(GUIEventKeys.GUIListItem_OnClick, new TData.Add("button", 1), Self, triggerEvent.GetReceiver())
 		
 		Return True
 	End Method

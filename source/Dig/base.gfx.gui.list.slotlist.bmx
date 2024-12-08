@@ -300,13 +300,13 @@ Type TGUISlotList Extends TGUIListBase
 		Local slotItem:TGUIObject = Self._slots[slot]
 
 		If item
-			TriggerBaseEvent(GUIEventKeys.GUIList_AddItem, New TData.Add("item", item).AddNumber("slot",slot) , Self)
+			TriggerBaseEvent(GUIEventKeys.GUIList_AddItem, New TData.Add("item", item).Add("slot",slot) , Self)
 			if TGUIListItem(item)
 				TGUIListItem(item).parentListID = self._id
 				TGUIListItem(item).parentListPosition = slot
 			endif
 		ElseIf slotItem
-			TriggerBaseEvent(GUIEventKeys.GUIList_RemoveItem, New TData.Add("item", slotItem).AddNumber("slot",slot) , Self)
+			TriggerBaseEvent(GUIEventKeys.GUIList_RemoveItem, New TData.Add("item", slotItem).Add("slot",slot) , Self)
 			if TGUIListItem(item) 
 				TGUIListItem(item).parentListID = -1
 				TGUIListItem(item).parentListPosition = -1
@@ -322,9 +322,9 @@ Type TGUISlotList Extends TGUIListBase
 		If item Then item.onParentResize()
 
 		If item
-			TriggerBaseEvent(GUIEventKeys.GUIList_AddedItem, New TData.Add("item", item).AddNumber("slot",slot) , Self)
+			TriggerBaseEvent(GUIEventKeys.GUIList_AddedItem, New TData.Add("item", item).Add("slot",slot) , Self)
 		ElseIf slotItem
-			TriggerBaseEvent(GUIEventKeys.GUIList_RemovedItem, New TData.Add("item", slotItem).AddNumber("slot",slot) , Self)
+			TriggerBaseEvent(GUIEventKeys.GUIList_RemovedItem, New TData.Add("item", slotItem).Add("slot",slot) , Self)
 		EndIf
 
 		Return True
@@ -349,7 +349,7 @@ Type TGUISlotList Extends TGUIListBase
 			If Not dragItem.isDragable() Then Return False
 
 			'ask others if they want to intercept that exchange
-			Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUISlotList_OnBeginReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
+			Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUISlotList_OnBeginReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).Add("slot",slot), Self)
 			event.Trigger()
 
 			If Not event.isVeto()
@@ -361,7 +361,7 @@ Type TGUISlotList Extends TGUIListBase
 				'unset the occupied slot
 				Self._SetSlot(slot, Null)
 
-				TriggerBaseEvent(GUIEventKeys.GUISlotList_OnReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self)
+				TriggerBaseEvent(GUIEventKeys.GUISlotList_OnReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).Add("slot",slot) , Self)
 			EndIf
 		EndIf
 
@@ -475,7 +475,7 @@ Type TGUISlotList Extends TGUIListBase
 		EndIf
 
 		'ask if an add to this slot is ok
-		Local event:TEventBase =  TEventBase.Create(GUIEventKeys.GUIList_TryAddItem, New TData.Add("item", item).AddNumber("slot",addtoSlot) , Self)
+		Local event:TEventBase =  TEventBase.Create(GUIEventKeys.GUIList_TryAddItem, New TData.Add("item", item).Add("slot",addtoSlot) , Self)
 		event.Trigger()
 		If event.isVeto() Then Return False
 
@@ -500,7 +500,7 @@ Type TGUISlotList Extends TGUIListBase
 		Local slot:Int = GetSlot(item)
 		If slot >=0
 			'ask if a removal from this slot is ok
-			Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIList_TryRemoveItem, New TData.Add("item", item).AddNumber("slot",slot) , Self)
+			Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIList_TryRemoveItem, New TData.Add("item", item).Add("slot",slot) , Self)
 			event.Trigger()
 			If event.isVeto() Then Return False
 

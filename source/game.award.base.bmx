@@ -337,21 +337,21 @@ Type TAward Extends TGameObject
 
 		TLogger.Log("TAward.Finish()", "Finishing award. winner="+winningPlayerID, LOG_DEBUG)
 
-		TriggerBaseEvent(GameEventKeys.Award_OnFinish, New TData.AddInt("winningPlayerID", winningPlayerID), Self)
+		TriggerBaseEvent(GameEventKeys.Award_OnFinish, New TData.Add("winningPlayerID", winningPlayerID), Self)
 
 		If winningPlayerID > 0
 			Local modifier:TGameModifierBase
 			'increase image
-			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", New TData.AddDouble("value", priceImage))
-			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", New TData.Add("value", priceImage))
+			If modifier Then modifier.Run(New TData.Add("playerID", winningPlayerID) )
 
 			'increase money
-			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", New TData.AddInt("value", priceMoney))
-			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", New TData.Add("value", priceMoney))
+			If modifier Then modifier.Run(New TData.Add("playerID", winningPlayerID) )
 			
 			'increase betty's love to you
-			modifier = GetGameModifierManager().CreateAndInit("ModifyBettyLove", New TData.AddInt("value", priceBettyLove))
-			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyBettyLove", New TData.Add("value", priceBettyLove))
+			If modifier Then modifier.Run(New TData.Add("playerID", winningPlayerID) )
 
 			'alternatively:
 			'GetPublicImage(winnerID).Modify(0.5)
