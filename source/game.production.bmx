@@ -416,6 +416,10 @@ Type TProduction Extends TOwnedGameObject
 			UpdateProductionStep()
 		EndIf
 
+		If productionConcept.script.effects 
+			productionConcept.script.effects.update("productionStart", new TData().addInt("playerID", productionConcept.script.owner))
+		EndIf
+
 		Return Self
 	End Method
 	
@@ -754,6 +758,9 @@ Type TProduction Extends TOwnedGameObject
 		EndIf
 		If productionConcept.script.effects
 			programmeLicence.effects = productionConcept.script.effects.Copy()
+			programmeLicence.effects.removeList("productionStart")
+			Local remainingTriggers:Int = programmeLicence.effects.RemoveOrphans()
+			If Not remainingTriggers Then programmeLicence.effects = Null
 		EndIf
 		Return programmeLicence
 	End Method
