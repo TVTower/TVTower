@@ -840,7 +840,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			productionFocusSlider[i]._gaugeOffset.SetY(2)
 			productionFocusSlider[i].SetRenderMode(TGUISlider.RENDERMODE_DISCRETE)
 			productionFocusSlider[i].SetDirection(TGUISlider.DIRECTION_RIGHT)
-			productionFocusSlider[i].data = New TData.AddNumber("focusIndex", i+1)
+			productionFocusSlider[i].data = New TData.Add("focusIndex", i+1)
 
 			productionFocusSlider[i]._handleDim.SetX(17)
 		Next
@@ -1408,13 +1408,13 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		'add some items to that list
 		Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, "")
 		item.SetValue(GETLOCALE("JOB_ALL"))
-		item.data.AddNumber("jobIndex", 0)
+		item.data.Add("jobIndex", 0)
 		jobFilterSelect.AddItem(item)
 
 		For Local i:Int = EachIn TVTPersonJob.GetCastJobIndices()
 			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, "")
 			item.SetValue(GETLOCALE("JOB_" + TVTPersonJob.GetAsString( TVTPersonJob.GetAtIndex(i) )))
-			item.data.AddNumber("jobIndex", i)
+			item.data.Add("jobIndex", i)
 			jobFilterSelect.AddItem(item)
 		Next
 
@@ -1437,7 +1437,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 					item.SetValue(GetLocale("GENDER_WOMEN"))
 				EndIf
 			EndIf
-			item.data.AddNumber("genderIndex", i)
+			item.data.Add("genderIndex", i)
 			genderFilterSelect.AddItem(item)
 		Next
 

@@ -812,14 +812,14 @@ Type TDigNetwork
 				'only emit event for clients (not the server)
 				if not server
 					local evData:TData = new TData
-					evData.AddNumber("slotsUsed", obj.getInt(1))
-					evData.AddNumber("slotsMax", obj.getInt(2))
+					evData.Add("slotsUsed", obj.getInt(1))
+					evData.Add("slotsMax", obj.getInt(2))
 					'could differ from senderIP
-					evData.AddNumber("hostIP", obj.getInt(3))
+					evData.Add("hostIP", obj.getInt(3))
 					'differs from senderPort (info channel)
-					evData.AddNumber("hostPort", obj.getInt(4))
-					evData.AddString("hostName", obj.getString(5))
-					evData.AddString("gameTitle", obj.getString(6))
+					evData.Add("hostPort", obj.getInt(4))
+					evData.Add("hostName", obj.getString(5))
+					evData.Add("gameTitle", obj.getString(6))
 
 					TEventBase.Create(eventKey_onReceiveAnnounceGame, evData).trigger()
 
@@ -841,12 +841,12 @@ Type TDigNetwork
 		if server
 			self.isServer = true
 			self.server.callback = self.callbackServer
-			TEventBase.Create(eventKey_onCreateServer, new TData.AddNumber("successful", true)).trigger()
+			TEventBase.Create(eventKey_onCreateServer, new TData.Add("successful", true)).trigger()
 
 			TLogger.Log("Network.StartServer()", "created server : "+GetDottedIP(GetMyIP())+":"+server.port, LOG_DEBUG | LOG_NETWORK)
 			return true
 		else
-			TEventBase.Create(eventKey_onCreateServer, new TData.AddNumber("successful", false)).trigger()
+			TEventBase.Create(eventKey_onCreateServer, new TData.Add("successful", false)).trigger()
 
 			return false
 		endif
@@ -892,7 +892,7 @@ Type TDigNetwork
 		self.client.callback = self.callbackClient
 		self.isConnected = client.Connect(ip, port)
 
-		TEventBase.Create(eventKey_onConnectToServer, new TData.AddNumber("successful", isConnected)).trigger()
+		TEventBase.Create(eventKey_onConnectToServer, new TData.Add("successful", isConnected)).trigger()
 
 		TLogger.Log("Network.ConnectToServer()", "connect to "+GetDottedIP(ip)+":"+port, LOG_DEBUG | LOG_NETWORK)
 		return self.isConnected

@@ -634,7 +634,7 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 			'inform others - including taken and originally intended
 			'licence (so we see if the right one was took ... to inform
 			'players correctly)
-			TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnConfiscateProgrammeLicence, New TData.AddString("targetProgrammeGUID", GetConfiscateProgrammeLicenceGUID() ).AddString("confiscatedProgrammeGUID", licence.GetGUID()), Null, GetPlayerBase(roomOwner))
+			TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnConfiscateProgrammeLicence, New TData.Add("targetProgrammeGUID", GetConfiscateProgrammeLicenceGUID() ).Add("confiscatedProgrammeGUID", licence.GetGUID()), Null, GetPlayerBase(roomOwner))
 
 			'switch used sprite - we confiscated something
 			sprite = GetSpriteFromRegistry(GetBaseSpriteName()+".box")

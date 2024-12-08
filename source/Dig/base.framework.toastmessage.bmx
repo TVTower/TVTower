@@ -527,7 +527,7 @@ Type TToastMessage extends TEntity
 				Close()
 
 				'fire event (eg. to play sound)
-				TriggerBaseEvent(TToastMessageCollection.eventKey_ToastMessage_onClick, new TData.AddNumber("mouseButton", 1), Self)
+				TriggerBaseEvent(TToastMessageCollection.eventKey_ToastMessage_onClick, new TData.Add("mouseButton", 1), Self)
 
 				'handled single click
 				MouseManager.SetClickHandled(1)

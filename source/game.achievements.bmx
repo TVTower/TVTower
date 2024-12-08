@@ -395,8 +395,8 @@ GetAchievementCollection().RegisterElement("reward::Money", new TAchievementRewa
 rem
 '=== EXAMPLE ===
 local achievement:TAchievement = new TAchievement
-local audienceConfig:TData = new TData.AddNumber("minAudienceAbsolute", 100000)
-local moneyConfig:TData = new TData.AddNumber("money", 50000)
+local audienceConfig:TData = new TData.Add("minAudienceAbsolute", 100000)
+local moneyConfig:TData = new TData.Add("money", 50000)
 local task:TAchievementTask = TAchievementCollection.CreateTask("task::ReachAudience", audienceConfig)
 local reward:TAchievementReward = TAchievementCollection.CreateReward("reward::Money", moneyConfig)
 

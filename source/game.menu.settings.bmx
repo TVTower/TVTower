@@ -349,23 +349,23 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 
 		data.Add("renderer", dropdownRenderer.GetSelectedEntry().data.GetString("value", "0"))
-		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
-		data.AddBoolString("vsync", checkVSync.IsChecked())
+		data.AddBool("fullscreen", checkFullscreen.IsChecked())
+		data.AddBool("vsync", checkVSync.IsChecked())
 		data.Add("screenW", inputWindowResolutionWidth.GetValue())
 		data.Add("screenH", inputWindowResolutionHeight.GetValue())
 
 		data.Add("gamename", inputGameName.GetValue())
 		data.Add("onlineport", inputOnlinePort.GetValue())
 
-		data.AddBoolString("touchInput", checkTouchInput.IsChecked())
+		data.AddBool("touchInput", checkTouchInput.IsChecked())
 		data.Add("touchClickRadius", inputTouchClickRadius.GetValue())
-		data.AddBoolString("rightClickEmulation", checkRightClickEmulation.IsChecked())
+		data.AddBool("rightClickEmulation", checkRightClickEmulation.IsChecked())
 		data.Add("rightClickEmulationTime", inputRightClickEmulationTime.GetValue())
 
-		data.AddBoolString("showIngameHelp", checkShowIngameHelp.IsChecked())
+		data.AddBool("showIngameHelp", checkShowIngameHelp.IsChecked())
 
-		data.AddNumber("sound_music_volume", sliderMusicVolume.GetValue().ToInt())
-		data.AddNumber("sound_sfx_volume", sliderSFXVolume.GetValue().ToInt())
+		data.Add("sound_music_volume", sliderMusicVolume.GetValue().ToInt())
+		data.Add("sound_sfx_volume", sliderSFXVolume.GetValue().ToInt())
 
 		Return data
 	End Method
@@ -380,7 +380,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		inputStartYear.SetValue(data.GetInt("startyear", 1985))
 		'inputStationmap.SetValue(data.GetString("stationmap", "res/maps/germany.xml"))
 		If FileType(data.GetString("databaseDir")) <> 2
-			data.AddString("databaseDir", "res/database/Default")
+			data.Add("databaseDir", "res/database/Default")
 		EndIf
 		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
 		inputInRoomSlowdown.SetValue(data.GetInt("inroomslowdown", 100))

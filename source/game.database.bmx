@@ -331,7 +331,7 @@ Type TDatabaseLoader
 
 
 	Method Load(fileURI:String)
-		config.AddString("currentFileURI", fileURI)
+		config.Add("currentFileURI", fileURI)
 		'register our own mxml error printer:
 		XMLSetErrorCallback(MXMLErrorCallback)
 		
@@ -2358,7 +2358,7 @@ Type TDatabaseLoader
 			If Not modifierData.Has("value") Then ThrowNodeError("DB: <modifier> is missing ~qvalue~q.", nodeModifier)
 
 			if not scriptTemplate.programmeDataModifiers then scriptTemplate.programmeDataModifiers = new TData
-			scriptTemplate.programmeDataModifiers.AddFloat(modifierData.GetString("name"), modifierData.GetFloat("value"))
+			scriptTemplate.programmeDataModifiers.Add(modifierData.GetString("name"), modifierData.GetFloat("value"))
 			'source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
 		Next
 
@@ -2551,8 +2551,8 @@ Type TDatabaseLoader
 
 	'=== META DATA FUNCTIONS ===
 	Method LoadV3CreatorMetaDataFromNode:TData(GUID:String, data:TData, node:TxmlNode, xml:TXmlHelper)
-		data.AddNumber("creator", TXmlHelper.FindValueIntLC(node,"creator", 0))
-		data.AddString("createdBy", TXmlHelper.FindValue(node,"created_by", ""))
+		data.Add("creator", TXmlHelper.FindValueIntLC(node,"creator", 0))
+		data.Add("createdBy", TXmlHelper.FindValueLC(node,"created_by", ""))
 		Return data
 	End Method
 

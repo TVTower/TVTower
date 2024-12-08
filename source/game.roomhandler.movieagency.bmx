@@ -1772,7 +1772,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		bidSavings = 0.75
 
 		'emit event
-		TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_Refill, New TData.Add("licence", licence).AddNumber("slot", slot), Self)
+		TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_Refill, New TData.Add("licence", licence).Add("slot", slot), Self)
 	End Method
 
 
@@ -1806,16 +1806,16 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 				If player.isLocalAI()
 					'player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
-					player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnProgrammeLicenceAuctionWin).Add(licence).AddInt(bestBid))
+					player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnProgrammeLicenceAuctionWin).Add(licence).Add(bestBid))
 				EndIf
 
 				'emit event so eg. toastmessages could attach
 				Local evData:TData = New TData
 				evData.Add("licence", licence)
-				evData.AddNumber("bestBidder", player.playerID)
-				evData.AddNumber("bestBidderLevel", bestBidderLevel)
-				evData.AddNumber("bestBidRaw", bestBidRaw)
-				evData.AddNumber("bestBid", bestBid)
+				evData.Add("bestBidder", player.playerID)
+				evData.Add("bestBidderLevel", bestBidderLevel)
+				evData.Add("bestBidRaw", bestBidRaw)
+				evData.Add("bestBid", bestBid)
 				TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_OnWin, evData, Self)
 			EndIf
 		End If
@@ -1849,11 +1849,11 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'emit event
 			Local evData:TData = New TData
 			evData.Add("licence", licence)
-			evData.AddNumber("bestBidder", bestBidder)
-			evData.AddNumber("bestBidderLevel", bestBidderLevel)
-			evData.AddNumber("bestBidRaw", bestBidRaw)
-			evData.AddNumber("bestBid", bestBid)
-			evData.AddNumber("bidSavings", bidSavings)
+			evData.Add("bestBidder", bestBidder)
+			evData.Add("bestBidderLevel", bestBidderLevel)
+			evData.Add("bestBidRaw", bestBidRaw)
+			evData.Add("bestBid", bestBid)
+			evData.Add("bidSavings", bidSavings)
 			TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_OnEndAuction, evData, Self)
 
 			Refill()
@@ -1917,20 +1917,20 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				If GetPlayerBase(bestBidder).isLocalAI()
 					Local thisPaidBestBid:Int = thisBid
 					'GetPlayerBase(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), thisPaidBestBid, playerID)
-					GetPlayerBase(bestBidder).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnProgrammeLicenceAuctionGetOutbid).Add(GetLicence()).AddInt(thisPaidBestBid).AddInt(playerID))
+					GetPlayerBase(bestBidder).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnProgrammeLicenceAuctionGetOutbid).Add(GetLicence()).Add(thisPaidBestBid).Add(playerID))
 				EndIf
 
 				'emit event so eg. toastmessages could attach
 				Local evData:TData = New TData
 				evData.Add("licence", GetLicence())
-				evData.AddNumber("previousBestBidder", bestBidder)
-				evData.AddNumber("previousBestBidderLevel", bestBidderLevel)
-				evData.AddNumber("previousBestBid", bestBid)
-				evData.AddNumber("previousBestBidRaw", bestBidRaw)
-				evData.AddNumber("bestBidder", playerID)
-				evData.AddNumber("bestBidderLevel", audienceReachLevel)
-				evData.AddNumber("bestBid", thisBid)
-				evData.AddNumber("bestBidRaw", thisBidRaw)
+				evData.Add("previousBestBidder", bestBidder)
+				evData.Add("previousBestBidderLevel", bestBidderLevel)
+				evData.Add("previousBestBid", bestBid)
+				evData.Add("previousBestBidRaw", bestBidRaw)
+				evData.Add("bestBidder", playerID)
+				evData.Add("bestBidderLevel", audienceReachLevel)
+				evData.Add("bestBid", thisBid)
+				evData.Add("bestBidRaw", thisBidRaw)
 				TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_OnGetOutbid, evData, Self)
 			EndIf
 			'set new bid values
@@ -1946,10 +1946,10 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'emit event
 			Local evData:TData = New TData
 			evData.Add("licence", GetLicence())
-			evData.AddNumber("bestBidder", bestBidder)
-			evData.AddNumber("bestBidderLevel", bestBidderLevel)
-			evData.AddNumber("bestBid", bestBid)
-			evData.AddNumber("bestBidRaw", bestBidRaw)
+			evData.Add("bestBidder", bestBidder)
+			evData.Add("bestBidderLevel", bestBidderLevel)
+			evData.Add("bestBid", bestBid)
+			evData.Add("bestBidRaw", bestBidRaw)
 			TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_SetBid, evData, Self)
 
 			Return bestBid

@@ -155,12 +155,12 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 '			GetBroadcastInformationProvider().SetInfomercialAired(licence.owner, GetBroadcastInformationProvider().GetInfomercialAired(licence.owner) + 1, GetWorldTime.GetTimeGoneForGameTime(0,day,hour,minute) )
 
 			'inform others
-			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_FinishBroadcastingAsProgramme, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_FinishBroadcastingAsProgramme, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 		elseif usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'nothing happening - ads get paid on "beginBroadcasting"
 
 			'inform others
-			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_FinishBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_FinishBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 
 			contract.base.SetTimesBroadcasted( contract.base.GetTimesBroadcasted(owner) + 1, owner )
 		endif
@@ -239,9 +239,9 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 		'inform others
 		If usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
-			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_BeginBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_BeginBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 		ElseIf usedAsType = TVTBroadcastMaterialType.PROGRAMME
-			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_BeginBroadcastingAsProgramme, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_BeginBroadcastingAsProgramme, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 		EndIf
 		return TRUE
 	End Method

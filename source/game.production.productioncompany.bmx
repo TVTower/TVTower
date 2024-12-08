@@ -26,7 +26,7 @@ Type TProductionCompany extends TProductionCompanyBase
 
 	'override
 	Method OnChangeLevel:Int(oldLevel:Int, newLevel:Int)
-		TriggerBaseEvent(GameEventKeys.ProductionCompany_OnChangeLevel, new TData.AddNumber("oldLevel", oldLevel).AddNumber("newLevel", newLevel), Self )
+		TriggerBaseEvent(GameEventKeys.ProductionCompany_OnChangeLevel, new TData.Add("oldLevel", oldLevel).Add("newLevel", newLevel), Self )
 
 		Return True
 	End Method
@@ -34,7 +34,7 @@ Type TProductionCompany extends TProductionCompanyBase
 
 	'override
 	Method OnChangeXP:Int(oldXP:Int, newXP:Int)
-		TriggerBaseEvent(GameEventKeys.ProductionCompany_OnChangeXP, new TData.AddNumber("oldXP", oldXP).AddNumber("newXP", newXP), Self )
+		TriggerBaseEvent(GameEventKeys.ProductionCompany_OnChangeXP, new TData.Add("oldXP", oldXP).Add("newXP", newXP), Self )
 
 		Return True
 	End Method

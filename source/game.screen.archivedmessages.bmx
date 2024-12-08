@@ -385,7 +385,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Method addShowModeItem(mode:Int, key:String)
 		Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, "")
 		item.SetValue(GetLocale(key))
-		item.data.AddNumber("showMode", mode)
+		item.data.Add("showMode", mode)
 		showModeSelect.AddItem(item)
 		If mode = SHOW_UNREAD Then showModeSelect.setSelectedEntry(item)
 	End Method

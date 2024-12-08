@@ -56,7 +56,7 @@ Type TRegistryColorLoader Extends TRegistryBaseLoader
 				If Not childData Then Continue
 
 				'add listname to each configuration - if not done yet
-				childData.AddString("list", childData.GetString("list", listName))
+				childData.Add("list", childData.GetString("list", listName))
 
 				'add each color to "ToLoad"-list
 				Local resName:String = GetNameFromConfig(childData)
@@ -175,7 +175,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		If subNode
 			TXmlHelper.LoadValuesToData(subNode, tooltipData, ["text", "description"])
 		Else
-			tooltipData.AddString("text", "").AddString("description", "")
+			tooltipData.Add("text", "").Add("description", "")
 		EndIf
 		data.Add("tooltip", tooltipData)
 
@@ -231,17 +231,17 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		Local name:String = data.GetString("name", "unknown")
 		Local roomUID:Int	= data.GetInt("roomUID", -1)
 
-		roomData.AddString("name",	name + owner)
-		roomData.AddString("owner",	owner)
-		roomData.AddString("roomname", name)
-		roomData.AddNumber("flags", data.GetInt("flags", 0))
-		roomData.AddNumber("size", data.GetInt("size", 1))
-		roomData.AddString("screen", data.GetString("screen", "screen_credits"))
+		roomData.Add("name",	name + owner)
+		roomData.Add("owner",	owner)
+		roomData.Add("roomname", name)
+		roomData.Add("flags", data.GetInt("flags", 0))
+		roomData.Add("size", data.GetInt("size", 1))
+		roomData.Add("screen", data.GetString("screen", "screen_credits"))
 
 		'load tooltips
-		Local tooltipData:TData = TData(data.Get("tooltip", New TData))
-		roomData.AddString("tooltip", tooltipData.GetString("text"))
-		roomData.AddString("tooltip2", tooltipData.GetString("description"))
+		Local tooltipData:TData = data.GetData("tooltip", New TData)
+		roomData.Add("tooltip", tooltipData.GetString("text"))
+		roomData.Add("tooltip2", tooltipData.GetString("description"))
 
 		'load hotspots
 		roomData.Add("hotspots", TList(data.Get("hotspots", CreateList())))
@@ -268,14 +268,14 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 				doorX = doorData.GetInt("x", -1000)
 
 				Local roomDataDoorData:TData = new TData
-				roomDataDoorData.AddInt("x", doorX)
-				roomDataDoorData.AddInt("width", doorData.GetInt("doorwidth", -1))
-				roomDataDoorData.AddInt("height", doorData.GetInt("doorheight", -1))
-				roomDataDoorData.AddInt("onFloor", doorFloor)
-				roomDataDoorData.AddInt("doorSlot", doorData.GetInt("doorslot", -1))
-				roomDataDoorData.AddInt("doorType", doorData.GetInt("doortype", -1))
-				roomDataDoorData.AddInt("stopOffset", doorData.GetInt("doorstopoffset", 0))
-				roomDataDoorData.AddInt("doorFlags", doorData.GetInt("flags", 0))
+				roomDataDoorData.Add("x", doorX)
+				roomDataDoorData.Add("width", doorData.GetInt("doorwidth", -1))
+				roomDataDoorData.Add("height", doorData.GetInt("doorheight", -1))
+				roomDataDoorData.Add("onFloor", doorFloor)
+				roomDataDoorData.Add("doorSlot", doorData.GetInt("doorslot", -1))
+				roomDataDoorData.Add("doorType", doorData.GetInt("doortype", -1))
+				roomDataDoorData.Add("stopOffset", doorData.GetInt("doorstopoffset", 0))
+				roomDataDoorData.Add("doorFlags", doorData.GetInt("flags", 0))
 
 				roomDataDoorsList.AddLast(roomDataDoorData)
 			Next

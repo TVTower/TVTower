@@ -539,9 +539,9 @@ Type TProduction Extends TOwnedGameObject
 				Local popularity:TPersonPopularity = TPersonPopularity(p.GetPopularity())
 				If popularity
 					Local params:TData = New TData
-					params.AddNumber("time", GetWorldTime().GetTimeGone())
-					params.AddNumber("quality", _designatedProgrammeLicence.data.GetQualityRaw())
-					params.AddNumber("job", job.job)
+					params.Add("time", GetWorldTime().GetTimeGone())
+					params.Add("quality", _designatedProgrammeLicence.data.GetQualityRaw())
+					params.Add("job", job.job)
 
 					popularity.FinishProgrammeProduction(params)
 				EndIf
@@ -648,10 +648,10 @@ Type TProduction Extends TOwnedGameObject
 		Local programmeData:TProgrammeData = New TProgrammeData
 
 		If Not programmeData.extra Then programmeData.extra = New TData
-		programmeData.extra.AddInt("productionID", self.GetID())
-		programmeData.extra.addInt("scriptID", productionConcept.script.GetId())
+		programmeData.extra.Add("productionID", self.GetID())
+		programmeData.extra.Add("scriptID", productionConcept.script.GetId())
 
-		If owner <> 0 Then programmeData.extra.AddInt("producerID", owner)
+		If owner <> 0 Then programmeData.extra.Add("producerID", owner)
 
 		'=== 2. PROGRAMME BASE PROPERTIES ===
 		FillProgrammeData(programmeData, productionConcept)
@@ -979,10 +979,10 @@ endrem
 			if programmeLicence.GetData().extra
 				if not parentLicence.GetData().extra then parentLicence.GetData().extra = new TData
 				if programmeLicence.GetData().extra.Has("producerID")
-					parentLicence.GetData().extra.AddInt("producerID", programmeLicence.GetData().extra.GetInt("producerID"))
+					parentLicence.GetData().extra.Add("producerID", programmeLicence.GetData().extra.GetInt("producerID"))
 				endif
 				if programmeLicence.GetData().extra.Has("productionID")
-					parentLicence.GetData().extra.AddInt("productionID", programmeLicence.GetData().extra.GetInt("productionID"))
+					parentLicence.GetData().extra.Add("productionID", programmeLicence.GetData().extra.GetInt("productionID"))
 				endif
 			endif
 			'store first produced child negatively (maybe useful information) ?
