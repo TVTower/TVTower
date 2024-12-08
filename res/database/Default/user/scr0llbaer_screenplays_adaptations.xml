@@ -6768,74 +6768,54 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="e10c6a0a-fde6-4f73-8bb4-30a6d65cd744" creator="9551" comment="https://en.wikipedia.org/wiki/The_Secret_of_Monkey_Island">
 			<title>
-				<de>Das ${donkeybay_object_reference}-${mystery_object_reference}</de>
-				<en>The ${mystery_object_reference} of ${donkeybay_object_reference}</en>
+				<de>Das ${monkey_title}${island_title}-${secret_title}</de>
+				<en>The ${secret_title} of ${monkey_title}${island_title}</en>
 			</title>
 			<title_original>
-				<de>Das ${donkeybay_object_reference}-${mystery_object_reference}</de>
-				<en>The ${mystery_object_reference} of ${donkeybay_object_reference}</en>
+				<de>Das ${monkey_title}${island_title}-${secret_title}</de>
+				<en>The ${secret_title} of ${monkey_title}${island_title}</en>
 			</title_original>
 			<description>
 				<de>Tief in der Karibik vor ein paar hundert Jährchen. Jungspund ${.self:"role":1:"fullname"} strandet auf einer Pirateninsel. Trifft sich aber gut, er wollte eh immer Pirat werden. Doch die Gegend wird heimgesucht von Geisterpirat ${.self:"role":3:"lastname"}. Und dann ist da noch die Liebe.</de>
 				<en>Deep in the Caribbean few 'undred yearsies ago. Youngster ${.self:"role":1:"fullname"} gets stranded on a pirate island. But that be jus' fine, always wanted t' be a pirate anyway. Howe'er, area be 'aunted by ghost pirate ${.self:"role":3:"lastname"}. An' then thar also be love.</en>
 			</description>
 			<variables>
-				<hurlyeisland_object_reference> <!-- introducing 'xyz_object_reference' and 'xyz_object_reference_original' as a convention to enable search-and-replace if one wants to play with original names of places, objects etc -->
-					<all>Hûrlýë Island™</all>
-				</hurlyeisland_object_reference>
-				<hurlyeisland_object_reference_original>
-					<all>Mêlée Island™</all>
-				</hurlyeisland_object_reference_original>
-				<donkeybay_object_reference>
-					<de>${donkey}${bay}</de>
-					<en>${donkey} ${bay}</en>
-				</donkeybay_object_reference>
-				<donkeybay_object_reference_original>
-					<de>${donkey_o}${bay_o}</de>
-					<en>${donkey_o} ${bay_o}</en>
-				</donkeybay_object_reference_original>
-				<mystery_object_reference>
-					<all>${mystery}</all>
-				</mystery_object_reference>
-				<mystery_object_reference_original>
-					<all>${mystery_o}</all>
-				</mystery_object_reference_original>
-				<mystery>
+				<secret_title>
 					<de>Mysterium|Rätsel|Geheimnis</de>
 					<en>Mystery|Riddle|Enigma</en>
-				</mystery>
-				<mystery_o>
+				</secret_title>
+				<secret_title_original>
 					<de>Geheimnis|Mysterium|Rätsel|Geheimnis|Geheimnis</de>
 					<en>Secret|Mystery|Riddle|Enigma|Secret</en>
-				</mystery_o>
-				<donkey>
+				</secret_title_original>
+				<monkey_title>
 					<de>Esels|Lemuren|Schimpansen|Pavian</de>
 					<en>Donkey|Lemure|Chimpanzee|Baboon</en>
-				</donkey>
-				<donkey_o>
+				</monkey_title>
+				<monkey_title_original>
 					<de>Affen|Esels|Lemuren|Schimpansen|Pavian|Affen</de>
 					<en>Monkey|Donkey|Lemure|Chimpanzee|Baboon|Monkey</en>
-				</donkey_o>
-				<bay>
+				</monkey_title_original>
+				<island_title>
 					<de>bucht|insel|eiland|riff|strand</de>
 					<en>Bay|Island|Isle|Reef|Shore</en>
-				</bay>
-				<bay_o>
+				</island_title>
+				<island_title_original>
 					<de>insel|bucht|insel|eiland|riff|strand|insel</de>
 					<en>Island|Bay|Island|Isle|Reef|Shore|Island</en>
-				</bay_o>
+				</island_title_original>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="b33a635e-d381-4349-9a41-7d2277c5d6da">
 					<title>
-						<all>${hurlyeisland_object_reference}</all>
+						<all>${mediaprop_meleeisland}</all>
 					</title>
 					<title_original>
-						<all>${hurlyeisland_object_reference}</all>
+						<all>${mediaprop_meleeisland}</all>
 					</title_original>
 					<description>
-						<de>${.self:"role":1:"firstname"} ist erstmal auf ${hurlyeisland_object_reference} gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen ${.self:"role":3:"lastname"} vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
-						<en>${.self:"role":1:"firstname"} is stranded on ${hurlyeisland_object_reference} for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of ${.self:"role":3:"lastname"}, actually seasoned men, and other bizarre characters.</en>
+						<de>${.self:"role":1:"firstname"} ist erstmal auf ${mediaprop_meleeisland} gestrandet und macht sich mit der eigentlich recht lauschigen Umgebung vertraut. Er trifft auf wegen ${.self:"role":3:"lastname"} vollkommen verängstigte Piraten, eigentlich gestandene Mannsbilder, und andere skurrile Gestalten.</de>
+						<en>${.self:"role":1:"firstname"} is stranded on ${mediaprop_meleeisland} for now and familiarizes himself with the actually quite lush scenery. He meets pirates who are completely frightened because of ${.self:"role":3:"lastname"}, actually seasoned men, and other bizarre characters.</en>
 					</description>
 					<effects>
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c48d5851-d9f8-4fc1-8d34-264dfa3f6384" />
@@ -6893,8 +6873,8 @@
 						<en>Treasure Hunt</en>
 					</title_original>
 					<description>
-						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt ${.self:"role":1:"firstname"}, dass ${.self:"role":3:"lastname"} ${.self:"role":2:"firstname"} auch immer liebte und für sie das ${donkeybay_object_reference}-${mystery_object_reference} lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
-						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, ${.self:"role":1:"firstname"} learns that ${.self:"role":3:"lastname"} always loved ${.self:"role":2:"firstname"}, too, and wanted to uncover the ${mystery_object_reference} of ${donkeybay_object_reference} for her, but became a ghost pirate there instead.</en>
+						<de>Nachdem auf Umwegen das Artefakt erlangt wurde, geht es nun auf Schatzsuche. Nebenbei erfährt ${.self:"role":1:"firstname"}, dass ${.self:"role":3:"lastname"} ${.self:"role":2:"firstname"} auch immer liebte und für sie das ${monkey_title}${island_title}-${secret_title} lüften wollte, aber dort stattdessen zum Geisterpirat wurde.</de>
+						<en>After the artifact has been obtained in a roundabout way, it's time to go treasure hunting. Casually, ${.self:"role":1:"firstname"} learns that ${.self:"role":3:"lastname"} always loved ${.self:"role":2:"firstname"}, too, and wanted to uncover the ${secret_title} of ${monkey_title} ${island_title} for her, but became a ghost pirate there instead.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="ce069d69-7735-4270-814a-eb5f20c895dd">
@@ -6907,8 +6887,8 @@
 						<en>Behind you, a three-headed monkey!</en>
 					</title_original>
 					<description>
-						<de>Jetzt kann sich ${.self:"role":1:"firstname"} ein Pirat schimpfen, aber oh Schreck! ${.self:"role":3:"lastname"} hat mit seinem Geisterschiff ${.self:"role":2:"firstname"} entführt! ${donkeybay_object_reference}, nicht nur eine Sage! ${.self:"role":1:"firstname"} muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
-						<en>Now ${.self:"role":1:"firstname"} can call himself a pirate, but oh horrors! ${.self:"role":3:"lastname"} has kidnapped ${.self:"role":2:"firstname"} with his ghost ship! ${donkeybay_object_reference}, not just a legend! ${.self:"role":1:"firstname"} must round up a crew and sail to this island.</en>
+						<de>Jetzt kann sich ${.self:"role":1:"firstname"} ein Pirat schimpfen, aber oh Schreck! ${.self:"role":3:"lastname"} hat mit seinem Geisterschiff ${.self:"role":2:"firstname"} entführt! ${monkey_title}${island_title}, nicht nur eine Sage! ${.self:"role":1:"firstname"} muss eine Crew zusammentrommeln und zu dieser Insel segeln.</de>
+						<en>Now ${.self:"role":1:"firstname"} can call himself a pirate, but oh horrors! ${.self:"role":3:"lastname"} has kidnapped ${.self:"role":2:"firstname"} with his ghost ship! ${monkey_title} ${island_title}, not just a legend! ${.self:"role":1:"firstname"} must round up a crew and sail to this island.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="0f626bb5-c7fb-4c51-aea7-4fe00f012cad">
@@ -6927,14 +6907,16 @@
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="50d96da4-78ea-497c-8802-bb586d01682b">
 					<title>
-						<all>${donkeybay_object_reference}</all>
+						<de>${monkey_title}${island_title}</de>
+						<en>${monkey_title} ${island_title}</en>
 					</title>
 					<title_original>
-						<all>${donkeybay_object_reference}</all>
+						<de>${monkey_title}${island_title}</de>
+						<en>${monkey_title} ${island_title}</en>
 					</title_original>
 					<description>
-						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber ${.self:"role":1:"firstname"} trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte Hendrik ist schon seit Jahren gestrandet dort.</de>
-						<en>Getting there was grueling enough, and legend has it that no one ever returned alive. But ${.self:"role":1:"firstname"} encounters another human being on the beach after all. The shipwrecked and slightly crazed Hendrik has been stranded there for years.</en>
+						<de>Dort hinzukommen war schon aufreibend genug, der Legende nach kehrte auch nie jemand lebend zurück. Aber ${.self:"role":1:"firstname"} trifft am Strand zumindest schon mal einen Menschen. Der schiffbrüchige und etwas durchgeknallte ${.self:"role":5:"firstname"} ist schon seit Jahren gestrandet dort.</de>
+						<en>Getting there was grueling enough, and legend has it that no one ever returned alive. But ${.self:"role":1:"firstname"} encounters another human being on the beach after all. The shipwrecked and slightly crazed ${.self:"role":5:"firstname"} has been stranded there for years.</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="e7988271-a81f-4dc1-8eed-46fd7d88089d">
@@ -6947,8 +6929,8 @@
 						<en>The Cannibals</en>
 					</title_original>
 					<description>
-						<de>Mit Kannibalen sollte man nicht spaßen. Aber es stellt sich heraus, dass man mit ihnen verhandeln kann, besonders da sie sich mit Hendrik schon seit langem irgendwie arrangieren müssen...</de>
-						<en>Cannibals are not to be messed with. But it turns out that you can negotiate with them, especially since they've had to come to some sorts of arrangements with Hendrik somehow for a long time already...</en>
+						<de>Mit Kannibalen sollte man nicht spaßen. Aber es stellt sich heraus, dass man mit ihnen verhandeln kann, besonders da sie sich mit ${.self:"role":5:"firstname"} schon seit langem irgendwie arrangieren müssen...</de>
+						<en>Cannibals are not to be messed with. But it turns out that you can negotiate with them, especially since they've had to come to some sorts of arrangements with ${.self:"role":5:"firstname"} somehow for a long time already...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="b93968b6-f863-44a5-b7c4-42a6f434f0a5">
@@ -6967,16 +6949,16 @@
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="c5c297fc-ecbb-4595-a342-40fc8f1d3b27">
 					<title>
-						<de>Zurück nach ${hurlyeisland_object_reference}</de>
-						<en>Back to ${hurlyeisland_object_reference}</en>
+						<de>Zurück nach ${mediaprop_meleeisland}</de>
+						<en>Back to ${mediaprop_meleeisland}</en>
 					</title>
 					<title_original>
-						<de>Zurück nach ${hurlyeisland_object_reference}</de>
-						<en>Back to ${hurlyeisland_object_reference}</en>
+						<de>Zurück nach ${mediaprop_meleeisland}</de>
+						<en>Back to ${mediaprop_meleeisland}</en>
 					</title_original>
 					<description>
-						<de>Doch ${.self:"role":3:"lastname"} ist inzwischen wieder zurückgesegelt, um ${.self:"role":2:"firstname"} zu heiraten. ${.self:"role":1:"firstname"} muss die Kirche auf ${hurlyeisland_object_reference} stürmen, um das zu verhindern!</de>
-						<en>But ${.self:"role":3:"lastname"} has since sailed back to marry ${.self:"role":2:"firstname"}. ${.self:"role":1:"firstname"} must gatecrash the church on ${hurlyeisland_object_reference} to prevent this!</en>
+						<de>Doch ${.self:"role":3:"lastname"} ist inzwischen wieder zurückgesegelt, um ${.self:"role":2:"firstname"} zu heiraten. ${.self:"role":1:"firstname"} muss die Kirche auf ${mediaprop_meleeisland} stürmen, um das zu verhindern!</de>
+						<en>But ${.self:"role":3:"lastname"} has since sailed back to marry ${.self:"role":2:"firstname"}. ${.self:"role":1:"firstname"} must gatecrash the church on ${mediaprop_meleeisland} to prevent this!</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="a38b5c1a-ee98-49f8-83d0-06a3d27a5eaf">
@@ -7000,10 +6982,11 @@
 				<job index="2" function="2" required="1" role_guid="3ee1d44a-f3fc-47a5-aabf-25803e6e9f99" />
 				<job index="3" function="2" required="1" role_guid="410a932c-9ceb-4080-9dbc-f82ac3c9bcd3" />
 				<job index="4" function="2" required="1" role_guid="7b0884be-6bab-488c-80f0-8fc140bb639f" />
-				<job index="5" function="2" required="1" gender="2" />
-				<job index="6" function="2" required="1" gender="1" />
-				<job index="7" function="2" required="1" gender="2" />
-				<job index="8" function="2" required="1" gender="1" />
+				<job index="5" function="2" required="1" role_guid="c8e66b35-7371-4ba5-91c8-3582be9830db" />
+				<job index="6" function="2" required="1" gender="2" />
+				<job index="7" function="2" required="1" gender="1" />
+				<job index="8" function="2" required="1" gender="2" />
+				<job index="9" function="2" required="1" gender="1" />
 			</jobs>
 			<data target_groups="19" />
 			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" employees="1.5" />
@@ -7207,10 +7190,10 @@
 				<job index="4" function="2" required="1" role_guid="7b0884be-6bab-488c-80f0-8fc140bb639f" />
 				<job index="5" function="2" required="1" role_guid="d0aeb0fe-16b1-45b8-b1ab-267f45b68c22" />
 				<job index="6" function="2" required="1" role_guid="37631839-70cf-43de-a1f8-75cb20d17529" />
-				<job index="7" function="2" required="1" gender="2" />
-				<job index="8" function="2" required="1" gender="1" />
-				<job index="9" function="2" required="1" gender="2" />
-				<job index="10" function="2" required="1" gender="1" />
+				<job index="7" function="2" required="1" role_guid="c8e66b35-7371-4ba5-91c8-3582be9830db" />
+				<job index="8" function="2" required="1" gender="2" />
+				<job index="9" function="2" required="1" gender="1" />
+				<job index="10" function="2" required="1" gender="2" />
 			</jobs>
 			<data flags="0" flags_optional="" target_groups="19" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" employees="1.5" />
@@ -7359,18 +7342,6 @@ The project, which was cancelled by a major producer, is now free to be realized
 				<captain> <!-- TODO: should actually be defined in programmerole; but maybe can be variable even when playing with original names -->
 					<all>Captain|Colonel|Commander|Admiral</all>
 				</captain>
-				<gnostika_object_reference>
-					<all>Gnostika</all>
-				</gnostika_object_reference>
-				<gnostika_object_reference_original>
-					<all>Gnosticus IV</all>
-				</gnostika_object_reference_original>
-				<codrakiv_object_reference>
-					<all>Codrak IV</all>
-				</codrakiv_object_reference>
-				<codrakiv_object_reference_original>
-					<all>Korath III</all>
-				</codrakiv_object_reference_original>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="e003b82d-ee68-4ed0-9207-ea45903da38a">
@@ -7439,8 +7410,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Secret of the Oracle</en>
 					</title_original>
 					<description>
-						<de>Das Große Gehirn ist besiegt, doch, wie ${.self:"role":1:"nickname"} mittels seinem selbstgebauten überlichtschnellen Radiogerät feststellt: die ${.self:"role":4:"firstname"} wollen die ganze Galaxie zerstören. Vielleicht kann das geheimnisvolle Orakel auf dem Planeten ${gnostika_object_reference} helfen...</de>
-						<en>The Great Brain is defeated, but, as ${.self:"role":1:"nickname"} discovers by means of his self-built faster-than-light radio: the ${.self:"role":4:"firstname"} want to destroy the whole galaxy. Maybe the mysterious oracle on the planet ${gnostika_object_reference} can help...</en>
+						<de>Das Große Gehirn ist besiegt, doch, wie ${.self:"role":1:"nickname"} mittels seinem selbstgebauten überlichtschnellen Radiogerät feststellt: die ${.self:"role":4:"firstname"} wollen die ganze Galaxie zerstören. Vielleicht kann das geheimnisvolle Orakel auf dem Planeten ${mediaprop_gnosticusiv} helfen...</de>
+						<en>The Great Brain is defeated, but, as ${.self:"role":1:"nickname"} discovers by means of his self-built faster-than-light radio: the ${.self:"role":4:"firstname"} want to destroy the whole galaxy. Maybe the mysterious oracle on the planet ${mediaprop_gnosticusiv} can help...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="be85e20a-3dbc-421a-93d6-5bdfad070ede">
@@ -7453,8 +7424,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>The Armageddon Machine</en>
 					</title_original>
 					<description>
-						<de>Auf ${gnostika_object_reference} muss ${.self:"role":1:"nickname"} feststellen, dass dessen Rat der Unsterblichen Weisen bereits von den ${.self:"role":4:"firstname"} entführt wurde. ${.self:"role":1:"nickname"} muss die Weisen befreien, um das Orakel aktivieren zu können...</de>
-						<en>On ${gnostika_object_reference}, ${.self:"role":1:"nickname"} finds that its Council of Immortal Sages has already been kidnapped by the ${.self:"role":4:"firstname"}. ${.self:"role":1:"nickname"} must free the sages in order to be able to activate the oracle...</en>
+						<de>Auf ${mediaprop_gnosticusiv} muss ${.self:"role":1:"nickname"} feststellen, dass dessen Rat der Unsterblichen Weisen bereits von den ${.self:"role":4:"firstname"} entführt wurde. ${.self:"role":1:"nickname"} muss die Weisen befreien, um das Orakel aktivieren zu können...</de>
+						<en>On ${mediaprop_gnosticusiv}, ${.self:"role":1:"nickname"} finds that its Council of Immortal Sages has already been kidnapped by the ${.self:"role":4:"firstname"}. ${.self:"role":1:"nickname"} must free the sages in order to be able to activate the oracle...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="45e0e001-645a-449e-a861-abb17b3192b7">
@@ -7467,8 +7438,8 @@ The project, which was cancelled by a major producer, is now free to be realized
 						<en>Goodbye, Galaxy</en>
 					</title_original>
 					<description>
-						<de>Vom Orakel erfuhr ${.self:"role":1:"nickname"}, die ${.self:"role":4:"firstname"} sind Schattenwesen von der dunklen Seite der Galaxie und haben auf ${codrakiv_object_reference} eine Vernichtungsmaschine. Sie wollen die Galaxie zerstören und nach ihren Vorstellungen wieder aufbauen. ${.self:"role":1:"nickname"} muss sie stoppen...</de>
-						<en>${.self:"role":1:"nickname"} learned from the oracle that the ${.self:"role":4:"firstname"} are shadow beings from the dark side of the galaxy and have an extermination machine on ${codrakiv_object_reference}. They want to destroy the galaxy and rebuild it according to their ideas. ${.self:"role":1:"nickname"} must stop them...</en>
+						<de>Vom Orakel erfuhr ${.self:"role":1:"nickname"}, die ${.self:"role":4:"firstname"} sind Schattenwesen von der dunklen Seite der Galaxie und haben auf ${mediaprop_korathiii} eine Vernichtungsmaschine. Sie wollen die Galaxie zerstören und nach ihren Vorstellungen wieder aufbauen. ${.self:"role":1:"nickname"} muss sie stoppen...</de>
+						<en>${.self:"role":1:"nickname"} learned from the oracle that the ${.self:"role":4:"firstname"} are shadow beings from the dark side of the galaxy and have an extermination machine on ${mediaprop_korathiii}. They want to destroy the galaxy and rebuild it according to their ideas. ${.self:"role":1:"nickname"} must stop them...</en>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="754c2dec-f377-4b4b-a24a-4b4b3a93b35b">

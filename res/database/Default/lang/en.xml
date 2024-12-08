@@ -206,7 +206,18 @@
 		<brand_apple>Aepfle</brand_apple> <!-- https://en.wikipedia.org/wiki/Apple_Inc. | alt/previous spoofs: Orange, Fruit, EppelWoi -->
 		<brand_iphone>myPhone</brand_iphone> <!-- https://en.wikipedia.org/wiki/IPhone -->
 		<brand_ipod>myPod</brand_ipod> <!-- https://en.wikipedia.org/wiki/IPod -->
+		<brand_itunes>myTunes</brand_itunes> <!-- https://en.wikipedia.org/wiki/ITunes -->
 		<brand_i_apple_generic>y</brand_i_apple_generic>
+		<brand_google>Googol</brand_google> <!-- https://en.wikipedia.org/wiki/Google -->
+		<brand_youtube>BooToob</brand_youtube> <!-- https://en.wikipedia.org/wiki/YouTube -->
+		<brand_facebook>Farcebuck</brand_facebook> <!-- https://en.wikipedia.org/wiki/Facebook -->
+		<brand_whatsapp>WhoseApp</brand_whatsapp> <!-- https://en.wikipedia.org/wiki/WhatsApp -->
+		<brand_instagram>Finstagrim</brand_instagram> <!-- https://en.wikipedia.org/wiki/Instagram -->
+		<brand_twitter>Twatter</brand_twitter> <!-- https://en.wikipedia.org/wiki/Twitter -->
+		<brand_snapchat>Snoopchat</brand_snapchat> <!-- https://en.wikipedia.org/wiki/Snapchat -->
+		<brand_amazon>Annazon</brand_amazon> <!-- https://en.wikipedia.org/wiki/Amazon_(company) -->
+		<brand_netflix>Nutflix</brand_netflix> <!-- https://en.wikipedia.org/wiki/Netflix -->
+		<brand_maxdome>Paxdome</brand_maxdome> <!-- https://de.wikipedia.org/wiki/Maxdome -->
 		<brand_compuserve>CompiSurf</brand_compuserve> <!-- https://en.wikipedia.org/wiki/CompuServe -->
 		<brand_aol>OAL</brand_aol> <!-- https://en.wikipedia.org/wiki/AOL -->
 		<brand_sony>Sunny</brand_sony> <!-- https://en.wikipedia.org/wiki/Sony -->
@@ -242,6 +253,7 @@
 		<brand_tesla>Tusla</brand_tesla> <!-- https://en.wikipedia.org/wiki/Tesla,_Inc. | TODO: Nikola Tesla not yet spoofed -->
 		<brand_mercedes>Mercieles</brand_mercedes> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
 		<brand_benz>Bonz</brand_benz> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
+		<brand_smart>Smalt</brand_smart> <!-- https://en.wikipedia.org/wiki/Smart_(marque) -->
 		<brand_bmw>BWM</brand_bmw> <!-- https://en.wikipedia.org/wiki/BMW -->
 		<brand_volkswagen>Wolkwagen</brand_volkswagen> <!-- https://en.wikipedia.org/wiki/Volkswagen | alt./previous spoof: Faulkswagen; TODO: use for some parody -->
 		<brand_vw>WV</brand_vw>
@@ -344,6 +356,7 @@
 		<brand_berlinerpilsener>Kreuzberger Pilsener</brand_berlinerpilsener> <!-- https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei -->
 		<brand_duff>Döff</brand_duff> <!-- https://en.wikipedia.org/wiki/Duff_Beer -->
 		<brand_puschkin>Juczyn</brand_puschkin> <!-- https://de.wikipedia.org/wiki/Puschkin_Vodka -->
+		<brand_madisonsquaregarden>Madison Square Plaza</brand_madisonsquaregarden> <!-- https://en.wikipedia.org/wiki/Madison_Square_Garden -->
 
 		<brandslogan_thethirdplace>The fourth place</brandslogan_thethirdplace>
 		<brandslogan_cantbeatthefeeling>Can't eat the peeling</brandslogan_cantbeatthefeeling>
@@ -416,10 +429,13 @@
 		<mediaorg_zweitesdeutschesfernsehen>2. Deutsches Fernsehen</mediaorg_zweitesdeutschesfernsehen> <!-- https://en.wikipedia.org/wiki/ZDF -->
 		<mediaorg_zweitedeutschefernsehen>2. Deutsche Fernsehen</mediaorg_zweitedeutschefernsehen>
 		<mediaorg_zdf>2DF</mediaorg_zdf>
+		<mediaorg_3sat>5sat</mediaorg_3sat> <!-- https://en.wikipedia.org/wiki/3sat -->
 		<mediaorg_rtl>RLT</mediaorg_rtl> <!-- https://en.wikipedia.org/wiki/RTL_Group -->
 		<mediaorg_sat1>Sati.11</mediaorg_sat1> <!-- https://en.wikipedia.org/wiki/Sat.1 -->
 		<mediaorg_prosieben>Pro13</mediaorg_prosieben> <!-- https://en.wikipedia.org/wiki/ProSieben -->
 		<mediaorg_pro7>Pro13</mediaorg_pro7>
+		<mediaorg_bild>Blöd</mediaorg_bild> <!-- https://en.wikipedia.org/wiki/Bild -->
+		<mediaorg_bunte>FARBIGE</mediaorg_bunte> <!-- https://en.wikipedia.org/wiki/Bunte -->
 		<mediaorg_worldwrestlingentertainment>Western Wrestling Amusement</mediaorg_worldwrestlingentertainment> <!-- https://en.wikipedia.org/wiki/WWE -->
 		<mediaorg_wwe>WWA</mediaorg_wwe>
 		<mediaorg_worldwrestlingfederation>Western Wrestling Friends</mediaorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
@@ -457,11 +473,16 @@
 		<mediatitle_gilligansisland>Gallagan's Isle</mediatitle_gilligansisland> <!-- https://en.wikipedia.org/wiki/Gilligan%27s_Island -->
 		<mediatitle_starwars>War Stars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
 		<mediatitle_ottifants>Grottifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant | alt spoofs: Frottifanten, Ollifanten -->
+		<mediatitle_wrestlemania>WrestleMadness</mediatitle_wrestlemania> <!-- https://en.wikipedia.org/wiki/WrestleMania -->
+		<mediatitle_familyfeud>Family Duel</mediatitle_familyfeud> <!-- https://en.wikipedia.org/wiki/Family_Feud -->
 
 		<mediaprop_batmobile>Batcar</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
 		<mediaprop_dudu>Dodo</mediaprop_dudu> <!-- https://en.wikipedia.org/wiki/Superbug_(film_series) -->
 		<mediaprop_herbie>Herbie</mediaprop_herbie> <!-- https://en.wikipedia.org/wiki/Herbie -->
 		<mediaprop_ecto1>Octo-1</mediaprop_ecto1> <!-- https://en.wikipedia.org/wiki/Ectomobile -->
 		<mediaprop_fliewatuut>Tootwafli</mediaprop_fliewatuut> <!-- https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt_(Fernsehfilm) -->
+		<mediaprop_meleeisland>Hûrlýë Island™</mediaprop_meleeisland> <!-- https://monkeyisland.fandom.com/wiki/M%C3%AAl%C3%A9e_Island -->
+		<mediaprop_gnosticusiv>Gnostika III</mediaprop_gnosticusiv> <!-- https://keenwiki.shikadi.net/wiki/Gnosticus_IV -->
+		<mediaprop_korathiii>Codrak IV</mediaprop_korathiii> <!-- https://keenwiki.shikadi.net/wiki/Korath_III -->
 	</globalvariables>
 </tvtdb>

@@ -216,9 +216,9 @@
 				<pl>${wildeckerherzbuben}: „Jesteśmy teraz szczupli”</pl>
 			</title>
 			<description>
-				<de>In einem Exklusiv-Interview mit der Zeitschrift FARBIGE erzählen die ${wildeckerherzbuben} von ihrer Hungerkur: „Wir haben 7 Monate lang fast nichts gegessen und in dieser Zeit 300 Gramm abgenommen. Zusammengerechnet natürlich.“</de>
-				<en>In an exclusive interview with FARBIGE magazine, the ${wildeckerherzbuben} talk about their starvation diet: "We ate almost nothing for 7 months and lost 300 grams in that time. Added up, of course."</en>
-				<pl>W ekskluzywnym wywiadzie dla magazynu FARBIGE, ${wildeckerherzbuben} opowiada o swojej głodowej diecie: „Nie jedliśmy prawie nic przez 7 miesięcy i straciliśmy w tym czasie 300 gramów. Oczywiście zsumowane”.</pl>
+				<de>In einem Exklusiv-Interview mit der Zeitschrift ${mediaorg_bunte} erzählen die ${wildeckerherzbuben} von ihrer Hungerkur: „Wir haben 7 Monate lang fast nichts gegessen und in dieser Zeit 300 Gramm abgenommen. Zusammengerechnet natürlich.“</de>
+				<en>In an exclusive interview with ${mediaorg_bunte} magazine, the ${wildeckerherzbuben} talk about their starvation diet: "We ate almost nothing for 7 months and lost 300 grams in that time. Added up, of course."</en>
+				<pl>W ekskluzywnym wywiadzie dla magazynu ${mediaorg_bunte}, ${wildeckerherzbuben} opowiada o swojej głodowej diecie: „Nie jedliśmy prawie nic przez 7 miesięcy i straciliśmy w tym czasie 300 gramów. Oczywiście zsumowane”.</pl>
 			</description>
 			<variables>
 				<wildeckerherzbuben>${.person:"5d987980-b4ca-4adb-81d0-daf804e71661":"firstname"}</wildeckerherzbuben>
@@ -291,9 +291,9 @@
 				<pl>Gamezworld AG rezygnuje z maszyn do pisania</pl>
 			</title>
 			<description>
-				<de>Wie die Pressesprecherin der Gamezworld AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: „Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-Bandium-Computern ausgestattet.“</de>
-				<en>According to Gamezworld AG's press spokeswoman, developers no longer have to program on typewriters: "Our programmers will be equipped with powerful 16-bit Bandium computers from now on."</en>
-				<pl>Według rzeczniczki prasowej Gamezworld AG, deweloperzy nie muszą już programować na maszynach do pisania: „Nasi programiści będą od teraz wyposażeni w potężne 16-bitowe komputery Bandium”.</pl>
+				<de>Wie die Pressesprecherin der Gamezworld AG mitteilte, müssen die Entwickler nicht mehr auf Schreibmaschinen programmieren: „Unsere Programmierer werden ab sofort mit leistungsfähigen 16-Bit-${brand_pentium}-Computern ausgestattet.“</de>
+				<en>According to Gamezworld AG's press spokeswoman, developers no longer have to program on typewriters: "Our programmers will be equipped with powerful 16-bit ${brand_pentium} computers from now on."</en>
+				<pl>Według rzeczniczki prasowej Gamezworld AG, deweloperzy nie muszą już programować na maszynach do pisania: „Nasi programiści będą od teraz wyposażeni w potężne 16-bitowe komputery ${brand_pentium}”.</pl>
 			</description>
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2000" year_range_to="" />

@@ -278,9 +278,9 @@
 				<pl>Mistrzostwa świata w zapasach</pl>
 			</title>
 			<description>
-				<de>${ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im Texas Skydome ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
-				<en>${ucfirst:mediaorg_theworldwrestlingfederation} ((${mediaorg_wwf})) are hosting their first WrestleMadness at the Texas Skydome. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
-				<pl>${worldwrestlingfederation} ((${mediaorg_wwf})) organizuje swoje pierwsze pokazy w Texas Skydome. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
+				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im N.Y. {brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
+				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. {brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
+				<pl>${mediaorg_worldwrestlingfederation} (${mediaorg_wwf}) organizuje swoje pierwsze pokazy w N.Y. {brand_madisonsquaregarden}. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
 			</description>
 			<variables>
 				<roddy>${.person:"9d84be62-ea5a-4142-a9d4-bacf10737c27":"firstname"}</roddy>
@@ -3362,8 +3362,8 @@
 				<en>Uprising in Cuba</en>
 			</title>
 			<description>
-				<de>Nach dem Tod ${castro}s herrschen in Havanna chaotische Zustände. Kubaner: Auch wir wollen ${brand_pepsi} trinken und Smartis fahren!</de>
-				<en>Following ${castro}'s death, chaotic conditions prevail in Havana. Cubans: We also want to drink ${brand_pepsi} and drive Smartis!</en>
+				<de>Nach dem Tod ${castro}s herrschen in Havanna chaotische Zustände. Kubaner: Auch wir wollen ${brand_pepsi} trinken und ${brand_smart}is fahren!</de>
+				<en>Following ${castro}'s death, chaotic conditions prevail in Havana. Cubans: We also want to drink ${brand_pepsi} and drive ${brand_smart}is!</en>
 			</description>
 			<data genre="0" price="1" quality="70" fictional="1" flags="2" />
 			<effects>
@@ -5941,9 +5941,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Wybory do niemieckiego parlamentu</pl>
 			</title>
 			<description>
-				<de>Offizielle Zählungen bezeugen: Die Wahlbeteiligung lag bei katastrophalen 28%. Nur eine Koalition aus SPDS und NPDU erreicht die erforderliche Mehrheit.</de>
-				<en>Official censuses show that the turnout was a disastrous 28%. Only a coalition of SPDS and NPDU will achieve the necessary majority.</en>
-				<pl>Oficjalne spisy pokazują, że frekwencja wyniosła katastrofalne 28%. Tylko koalicja SPDS i NPDU osiągnie niezbędną większość.</pl>
+				<de>Offizielle Zählungen bezeugen: Die Wahlbeteiligung lag bei katastrophalen 28%. Nur eine Koalition aus ${generalorg_spd} und ${generalorg_npd} erreicht die erforderliche Mehrheit.</de>
+				<en>Official censuses show that the turnout was a disastrous 28%. Only a coalition of ${generalorg_spd} and ${generalorg_npd} will achieve the necessary majority.</en>
+				<pl>Oficjalne spisy pokazują, że frekwencja wyniosła katastrofalne 28%. Tylko koalicja ${generalorg_spd} i ${generalorg_npd} osiągnie niezbędną większość.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" time="2,1,1,8,17" />
@@ -5992,9 +5992,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Czerwono-brązowy w mocy</pl>
 			</title>
 			<description>
-				<de>Nach einem nächtlichen Gipfeltreffen der Parteispitzen von NPDU und SPDS wird es wohl eine Koalition der beiden stärksten deutschen Parteien geben.</de>
-				<en>After an overnight summit meeting of the party leaders of the NPDU and SPDS, there will probably be a coalition of the two strongest German parties.</en>
-				<pl>Po nocnym spotkaniu na szczycie liderów partii NPDU i SPDS, prawdopodobnie dojdzie do koalicji dwóch najsilniejszych niemieckich partii.</pl>
+				<de>Nach einem nächtlichen Gipfeltreffen der Parteispitzen von ${generalorg_npd} und ${generalorg_spd} wird es wohl eine Koalition der beiden stärksten deutschen Parteien geben.</de>
+				<en>After an overnight summit meeting of the party leaders of the ${generalorg_npd} and ${generalorg_spd}, there will probably be a coalition of the two strongest German parties.</en>
+				<pl>Po nocnym spotkaniu na szczycie liderów partii ${generalorg_npd} i ${generalorg_spd}, prawdopodobnie dojdzie do koalicji dwóch najsilniejszych niemieckich partii.</pl>
 			</description>
 			<data genre="0" price="0.5" quality="88" />
 			<availability year_range_from="-1" year_range_to="-1" />
@@ -6330,9 +6330,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${sportsclub_real} Madryt chce ${ballack}a</pl>
 			</title>
 			<description>
-				<de>Die Königlichen haben Interesse an ${sportsclub_fcbayern}-Star ${ballack}. Die Blöd-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
-				<en>${sportsclub_real} is interested in ${sportsclub_fcbayern} star ${ballack}. The newspaper Blöd-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
-				<pl>${sportsclub_real} jest zainteresowany gwiazdą ${sportsclub_fcbayern}u, ${ballack}iem. Gazeta Blöd-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
+				<de>Die Königlichen haben Interesse an ${sportsclub_fcbayern}-Star ${ballack}. Die ${mediaorg_bild}-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
+				<en>${sportsclub_real} is interested in ${sportsclub_fcbayern} star ${ballack}. The newspaper ${mediaorg_bild}-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
+				<pl>${sportsclub_real} jest zainteresowany gwiazdą ${sportsclub_fcbayern}u, ${ballack}iem. Gazeta ${mediaorg_bild}-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
 			</description>
 			<effects>
 				<!-- this news is triggered some hours afterwards -->
@@ -6365,9 +6365,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${ballack} i ${sportsclub_real} osiągają porozumienie</pl>
 			</title>
 			<description>
-				<de>Wie die Blöd-Zeitung berichtet ist der Wechsel des ${sportsclub_fcbayern}-Stars zu den Königlichen perfekt. Manager ${hoeness} dementiert: „Ich weiß von nichts“.</de>
-				<en>As the newspaper Blöd-Zeitung reports, the ${sportsclub_fcbayern} star's move to ${sportsclub_real} is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
-				<pl>Jak donosi gazeta Blöd-Zeitung, przejście gwiazdy ${sportsclub_fcbayern}u do ${sportsclub_real}u jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
+				<de>Wie die ${mediaorg_bild}-Zeitung berichtet ist der Wechsel des ${sportsclub_fcbayern}-Stars zu den Königlichen perfekt. Manager ${hoeness} dementiert: „Ich weiß von nichts“.</de>
+				<en>As the newspaper ${mediaorg_bild}-Zeitung reports, the ${sportsclub_fcbayern} star's move to ${sportsclub_real} is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
+				<pl>Jak donosi gazeta ${mediaorg_bild}-Zeitung, przejście gwiazdy ${sportsclub_fcbayern}u do ${sportsclub_real}u jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" time="2,1,2,8,20" />
@@ -6469,9 +6469,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${semmelrogge} uparty</pl>
 			</title>
 			<description>
-				<de>Im Interview mit der Blöd am Sonntag sagte ${martin} ${semmelrogge}, dass er auch in Zukunft mit dem Auto fahren will. Die Polizei ist vorbereitet.</de>
-				<en>In an interview with the newspaper "Blöd on Sunday", ${martin} ${semmelrogge} said that he wants to continue driving in the future. The police are prepared.</en>
-				<pl>W wywiadzie dla gazety "Blöd on Sunday" ${martin} ${semmelrogge} powiedział, że chce kontynuować jazdę w przyszłości. Policja jest przygotowana.</pl>
+				<de>Im Interview mit der ${mediaorg_bild} am Sonntag sagte ${martin} ${semmelrogge}, dass er auch in Zukunft mit dem Auto fahren will. Die Polizei ist vorbereitet.</de>
+				<en>In an interview with the newspaper "${mediaorg_bild} am Sonntag", ${martin} ${semmelrogge} said that he wants to continue driving in the future. The police are prepared.</en>
+				<pl>W wywiadzie dla gazety "${mediaorg_bild} am Sonntag" ${martin} ${semmelrogge} powiedział, że chce kontynuować jazdę w przyszłości. Policja jest przygotowana.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" time="1,8,19" />

@@ -223,8 +223,8 @@ Anything is possible at Zombocom.</en>
 				<en>Count Dragon</en>
 			</title>
 			<description>
-				<de>\m/ Meddl Loide. Nix für Haider! Der charmante Bootoob-Kanal aus dem Frankenland mit heißen Tips für den gepflegten Fleischwurst-und-Chipstüten-Lifestyle von heute.</de>
-				<en>\m/ Hevvy Meddle peepz. Not for haiderz! The charming Bootoob channel from Franconia with hot tips for today's cultivated meat sausage and chip bag lifestyle.</en>
+				<de>\m/ Meddl Loide. Nix für Haider! Der charmante {brand_youtube}-Kanal aus dem Frankenland mit heißen Tips für den gepflegten Fleischwurst-und-Chipstüten-Lifestyle von heute.</de>
+				<en>\m/ Hevvy Meddle peepz. Not for haiderz! The charming {brand_youtube} channel from Franconia with hot tips for today's cultivated meat sausage and chip bag lifestyle.</en>
 			</description>
 			<conditions min_audience="0.4679" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="1600" penalty="1900" infomercial_profit="142" fix_infomercial_profit="1" />

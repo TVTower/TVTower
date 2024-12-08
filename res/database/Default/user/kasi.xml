@@ -372,9 +372,8 @@
 			</children>
 			<variables>
 				<Name1>
-					<de>Finstergram|Twatter|Farce Book|BooToob|Snoopchat|Whoseapp</de>
-					<en>Finstergram|Twatter|Farce Book|BooToob|Snoopchat|Whoseapp</en>
-					<pl>Finstergramie|Twoterze|Focebeeku|Putube-ie|Snoopchat-cie|Whosappie</pl>
+					<all>{brand_instagram}|{brand_twitter}|{brand_facebook}|{brand_youtube}|{brand_snapchat}|{brand_whatsapp}</all>
+					<pl>{brand_instagram}ie|{brand_twitter}ze|{brand_facebook}u|{brand_youtube}-ie|{brand_snapchat}-cie|{brand_whatsapp}ie</pl>
 				</Name1>
 				<Name2>
 					<de>Girl|Woman|Maid|Child|Daughter|Son|Boy|Man</de>
@@ -389,9 +388,9 @@
 				<job function="32" index="3" gender="0" required="1" />
 				<job function="32" index="4" gender="0" required="1" />
 			</jobs>
-			<data flags="" flags_optional="2" target_groups="6" /> <!-- TODO: flags_optional 2 probably erroneous -->
+			<data flags="" target_groups="6" />
 			<targetgroupattractivity children="2" teenagers="2" />
-			<availability year_range_from="2005" />
+			<availability year_range_from="2009" />
 			<genres maingenre="17" subgenres="14" />
 			<blocks value="1" />
 			<price max="50000" min="10000" />
@@ -407,18 +406,17 @@
 			<title>
 				<de>Die Macht von ${Name}</de>
 				<en>The Power of ${Name}</en>
-				<pl>Siła ${Name}</pl>
+				<pl>${Name}: Siła, którą mają</pl>
 			</title>
 			<description>
 				<de>Die Macht von ${Name} ist eine Investigativ-Dokumentation, die tief in die Gefilde des Streamingdienstes eintaucht. Die Fragen sind: Werden Kunden von TVTower verschwinden? Wird die Werbung billiger? Verschwinden alle Filme aus dem Filmverleih?</de>
 				<en>The power of ${Name} is an investigative documentary that dives deep into the realm of the streaming service. The questions are: Will customers of TVTower disappear? Will the advertising get cheaper? Will all movies disappear from the movie agency?</en>
-				<pl>Siła ${Name} to dokument śledczy, który zagłębia się w sferę usług streamingowych. Pytania są następujące: Czy klienci TV-Tower znikną? Czy reklamy będą tańsze? Czy wszystkie filmy znikną z agencji filmowych?</pl>
+				<pl>Jest to dokument śledczy, który zagłębia się w sferę usług streamingowych. Pytania są następujące: Czy klienci TV-Tower znikną? Czy reklamy będą tańsze? Czy wszystkie filmy znikną z agencji filmowych?</pl>
 			</description>
 			<variables>
+				<disney>${.person:"c19a3126-bdef-42d8-9c1a-ac8224563052":"lastname"}</disney>
 				<name>
-					<de>Omozon|Mousework|Nudeflix|Paxdome|BooToob|whyTunes</de>
-					<en>Omozon|Mousework|Nudeflix|Paxdome|BooToob|whyTunes</en>
-					<pl>Omozonu|Mouseworku|Nudeflixa|Paxdomu|Putube-a|whyTunes-a</pl>
+					<all>${brand_amazon}|${disney}|${brand_netflix}|${brand_maxdome}|${brand_youtube}|${brand_itunes}</all>
 				</name>
 			</variables>
 			<jobs>
@@ -427,7 +425,7 @@
 			</jobs>
 			<data flags="4" target_groups="34" />
 			<targetgroupattractivity teenagers="2" pensioners="0.25" />
-			<availability year_range_from="2005" />
+			<availability year_range_from="2009" />
 			<genres maingenre="6" subgenres="300" />
 			<blocks slope="70" max="2" min="1" />
 			<price slope="25" max="8500" min="2000" />

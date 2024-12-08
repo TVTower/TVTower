@@ -461,9 +461,9 @@
 				<pl>Rząd planuje program telefoniczny "call-in show"</pl>
 			</title>
 			<description>
-				<de>Zum schnelleren Abbau der Staatsschulden soll der Finanzminister eine Call-In-Show auf 5sat moderieren.</de>
-				<en>In order to reduce the national debt more quickly, the finance minister is to host a call-in show on 5sat.</en>
-				<pl>W celu szybszego zmniejszenia długu publicznego, minister finansów ma być gospodarzem programu call-in na kanale 5sat.</pl>
+				<de>Zum schnelleren Abbau der Staatsschulden soll der Finanzminister eine Call-In-Show auf ${mediaorg_3sat} moderieren.</de>
+				<en>In order to reduce the national debt more quickly, the finance minister is to host a call-in show on ${mediaorg_3sat}.</en>
+				<pl>W celu szybszego zmniejszenia długu publicznego, minister finansów ma być gospodarzem programu call-in na kanale ${mediaorg_3sat}.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="27" />
 			<availability year_range_from="" year_range_to="" />

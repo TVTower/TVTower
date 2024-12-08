@@ -726,8 +726,8 @@ The benefit: No postage for remittance slips.</en>
 				<all>MinutePass</all>
 			</title>
 			<description>
-				<de>${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} präsentiert für die Telecom USA in zwei Spots eine nützliche Telefonkarte.</de>
-				<en>In two commercials, the famous ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} presents a useful phone card powered by Telecom USA.</en>
+				<de>${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} präsentiert für die ${brand_telekom} USA in zwei Spots eine nützliche Telefonkarte.</de>
+				<en>In two commercials, the famous ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} presents a useful phone card powered by ${brand_telekom} USA.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="315" penalty="448" infomercial_profit="28" fix_infomercial_profit="1" />

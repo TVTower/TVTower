@@ -206,7 +206,18 @@
 		<brand_apple>Apple</brand_apple> <!-- https://en.wikipedia.org/wiki/Apple_Inc. -->
 		<brand_iphone>iPhone</brand_iphone> <!-- https://en.wikipedia.org/wiki/IPhone -->
 		<brand_ipod>iPod</brand_ipod> <!-- https://en.wikipedia.org/wiki/IPod -->
+		<brand_itunes>iTunes</brand_itunes> <!-- https://en.wikipedia.org/wiki/ITunes -->
 		<brand_i_apple_generic>i</brand_i_apple_generic>
+		<brand_google>Google</brand_google> <!-- https://en.wikipedia.org/wiki/Google -->
+		<brand_youtube>YouTube</brand_youtube> <!-- https://en.wikipedia.org/wiki/YouTube -->
+		<brand_facebook>Facebook</brand_facebook> <!-- https://en.wikipedia.org/wiki/Facebook -->
+		<brand_whatsapp>WhatsApp</brand_whatsapp> <!-- https://en.wikipedia.org/wiki/WhatsApp -->
+		<brand_instagram>Instagram</brand_instagram> <!-- https://en.wikipedia.org/wiki/Instagram -->
+		<brand_twitter>Twitter</brand_twitter> <!-- https://en.wikipedia.org/wiki/Twitter -->
+		<brand_snapchat>Snapchat</brand_snapchat> <!-- https://en.wikipedia.org/wiki/Snapchat -->
+		<brand_amazon>Amazon</brand_amazon> <!-- https://en.wikipedia.org/wiki/Amazon_(company) -->
+		<brand_netflix>Netflix</brand_netflix> <!-- https://en.wikipedia.org/wiki/Netflix -->
+		<brand_maxdome>Maxdome</brand_maxdome> <!-- https://de.wikipedia.org/wiki/Maxdome -->
 		<brand_compuserve>CompuServe</brand_compuserve> <!-- https://en.wikipedia.org/wiki/CompuServe -->
 		<brand_aol>AOL</brand_aol> <!-- https://en.wikipedia.org/wiki/AOL -->
 		<brand_sony>Sony</brand_sony> <!-- https://en.wikipedia.org/wiki/Sony -->
@@ -242,6 +253,7 @@
 		<brand_tesla>Tesla</brand_tesla> <!-- https://en.wikipedia.org/wiki/Tesla,_Inc. -->
 		<brand_mercedes>Mercedes</brand_mercedes> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
 		<brand_benz>Benz</brand_benz> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
+		<brand_smart>Smart</brand_smart> <!-- https://en.wikipedia.org/wiki/Smart_(marque) -->
 		<brand_bmw>BMW</brand_bmw> <!-- https://en.wikipedia.org/wiki/BMW -->
 		<brand_volkswagen>Volkswagen</brand_volkswagen> <!-- https://en.wikipedia.org/wiki/Volkswagen -->
 		<brand_vw>VW</brand_vw>
@@ -344,6 +356,7 @@
 		<brand_berlinerpilsener>Berliner Pilsener</brand_berlinerpilsener> <!-- https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei -->
 		<brand_duff>Duff</brand_duff> <!-- https://en.wikipedia.org/wiki/Duff_Beer -->
 		<brand_puschkin>Puschkin</brand_puschkin> <!-- https://de.wikipedia.org/wiki/Puschkin_Vodka -->
+		<brand_madisonsquaregarden>Madison Square Garden</brand_madisonsquaregarden> <!-- https://en.wikipedia.org/wiki/Madison_Square_Garden -->
 
 		<brandslogan_thethirdplace>The third place</brandslogan_thethirdplace>
 		<brandslogan_cantbeatthefeeling>Can't beat the feeling</brandslogan_cantbeatthefeeling>
@@ -416,10 +429,13 @@
 		<mediaorg_zweitesdeutschesfernsehen>Zweites Deutsches Fernsehen</mediaorg_zweitesdeutschesfernsehen> <!-- https://en.wikipedia.org/wiki/ZDF -->
 		<mediaorg_zweitedeutschefernsehen>Zweite Deutsche Fernsehen</mediaorg_zweitedeutschefernsehen>
 		<mediaorg_zdf>ZDF</mediaorg_zdf>
+		<mediaorg_3sat>3sat</mediaorg_3sat> <!-- https://en.wikipedia.org/wiki/3sat -->
 		<mediaorg_rtl>RTL</mediaorg_rtl> <!-- https://en.wikipedia.org/wiki/RTL_Group -->
 		<mediaorg_sat1>Sat.1</mediaorg_sat1> <!-- https://en.wikipedia.org/wiki/Sat.1 -->
 		<mediaorg_prosieben>ProSieben</mediaorg_prosieben> <!-- https://en.wikipedia.org/wiki/ProSieben -->
 		<mediaorg_pro7>Pro7</mediaorg_pro7>
+		<mediaorg_bild>Bild</mediaorg_bild> <!-- https://en.wikipedia.org/wiki/Bild -->
+		<mediaorg_bunte>BUNTE</mediaorg_bunte> <!-- https://en.wikipedia.org/wiki/Bunte -->
 		<mediaorg_worldwrestlingentertainment>World Wrestling Entertainment</mediaorg_worldwrestlingentertainment> <!-- https://en.wikipedia.org/wiki/WWE -->
 		<mediaorg_wwe>WWE</mediaorg_wwe>
 		<mediaorg_worldwrestlingfederation>World Wrestling Federation</mediaorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
@@ -457,11 +473,16 @@
 		<mediatitle_gilligansisland>Gilligan's Island</mediatitle_gilligansisland> <!-- https://en.wikipedia.org/wiki/Gilligan%27s_Island -->
 		<mediatitle_starwars>Star Wars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
 		<mediatitle_ottifants>Ottifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant | TODO: add cartoon series https://de.wikipedia.org/wiki/Ottos_Ottifanten -->
+		<mediatitle_wrestlemania>WrestleMania</mediatitle_wrestlemania> <!-- https://en.wikipedia.org/wiki/WrestleMania -->
+		<mediatitle_familyfeud>Family Feud</mediatitle_familyfeud> <!-- https://en.wikipedia.org/wiki/Family_Feud -->
 
 		<mediaprop_batmobile>Batmobile</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
 		<mediaprop_dudu>Dudu</mediaprop_dudu> <!-- https://en.wikipedia.org/wiki/Superbug_(film_series) -->
 		<mediaprop_herbie>Herbie</mediaprop_herbie> <!-- https://en.wikipedia.org/wiki/Herbie -->
 		<mediaprop_ecto1>Ecto-1</mediaprop_ecto1> <!-- https://en.wikipedia.org/wiki/Ectomobile -->
 		<mediaprop_fliewatuut>Flywatoot</mediaprop_fliewatuut> <!-- https://de.wikipedia.org/wiki/Robbi,_Tobbi_und_das_Fliewat%C3%BC%C3%BCt_(Fernsehfilm) -->
+		<mediaprop_meleeisland>Mêlée Island™</mediaprop_meleeisland> <!-- https://monkeyisland.fandom.com/wiki/M%C3%AAl%C3%A9e_Island -->
+		<mediaprop_gnosticusiv>Gnosticus IV</mediaprop_gnosticusiv> <!-- https://keenwiki.shikadi.net/wiki/Gnosticus_IV -->
+		<mediaprop_korathiii>Korath III</mediaprop_korathiii> <!-- https://keenwiki.shikadi.net/wiki/Korath_III -->
 	</globalvariables>
 </tvtdb>
