@@ -72,8 +72,8 @@ Type TAwardCulture extends TAward
 		'if winningPlayerID > 0
 		'	priceBettyLove = Ceil((1.0 - GetBetty().GetInLovePercentage(winningPlayerID)) * priceBettyLove) 
 		'endif
-	
-		if not Super.Finish() then return False
+
+		if not Super.Finish(overrideWinnerID) then return False
 
 
 		if winningPlayerID > 0

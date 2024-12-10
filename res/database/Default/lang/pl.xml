@@ -174,10 +174,24 @@
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" title="Inspektor" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Darlene" last_name="" title="Asystentka" />
 	</programmeroles>
-
-<!--Define global variables here
 	<globalvariables>
-		<variableName>value pl</variableName>
+		<brand_reebok>Ribock</brand_reebok>
+
+		<generalorg_communistpartyofthesovietunion>Komunistyczna Partia Związku Radzieckiego</generalorg_communistpartyofthesovietunion> <!-- TODO: Polish version of these were not spoofed -->
+		<generalorg_ofthecommunistpartyofthesovietunion>Komunistycznej Partii Związku Radzieckiego</generalorg_ofthecommunistpartyofthesovietunion>
+		<generalorg_cpsu>KPZR</generalorg_cpsu>
+		<generalorg_socialdemocraticpartyofgermany>Socjaldemokratyczna Partia Ludowa</generalorg_socialdemocraticpartyofgermany>
+		<generalorg_socialistunitypartyofgermany>Socjalistyczno-Niemiecka Partia Jedności</generalorg_socialistunitypartyofgermany>
+		<generalorg_ofthesocialistunitypartyofgermany>Socjalistyczno-Niemieckiej Partii Jedności</generalorg_ofthesocialistunitypartyofgermany>
+
+		<sports_formula1>Formuła A</sports_formula1>
+		<sports_formula2>Formuła B</sports_formula2>
+		<sports_formula3>Formuła C</sports_formula3>
+		<sports_formula4>Formuła D</sports_formula4>
+
+		<mediatitle_lowestofthelow>Nie całkiem na szczycie</mediatitle_lowestofthelow>
+		<mediatitle_thephantomoftheopera>Duch teatru</mediatitle_thephantomoftheopera>
+		<mediatitle_gilligansisland>Wyspa Gallagana</mediatitle_gilligansisland>
+		<mediatitle_ottifants>Grottifanty</mediatitle_ottifants>
 	</globalvariables>
--->
 </tvtdb>

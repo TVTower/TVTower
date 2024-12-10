@@ -2668,7 +2668,10 @@ Type TDatabaseLoader
 		Local releaseHourRandomMax:Int = MathHelper.Clamp(releaseData.GetInt("hour_random_max", 0), 0, 23)
 		Local releaseHourRandomSlope:Float = MathHelper.Clamp(releaseData.GetFloat("hour_random_slope", 0.5), 0.0, 1.0)
 
-		MathHelper.SortIntValues(releaseYearRelativeMin, releaseYearRelativeMax)
+		'do not sort (relative) years here as original valus are interpreted below
+		'and a sort could mix that up (eg min=2000, max=0 -> information
+		'about "not before year 2000" is lost)
+		'MathHelper.SortIntValues(releaseYearRelativeMin, releaseYearRelativeMax)
 		MathHelper.SortIntValues(releaseDayRandomMin, releaseDayRandomMax)
 		MathHelper.SortIntValues(releaseHourRandomMin, releaseHourRandomMax)
 
@@ -2679,13 +2682,15 @@ Type TDatabaseLoader
 		EndIf
 
 
-'alles in einen string packen und folgende Berechnungen "bei Bedarf"
-'ausfuehren
-
 		'= YEAR =
 		If releaseYear = 0 Then releaseYear = GetWorldTime().GetYear() + releaseYearRelative
-		If releaseYearRelativeMax = 0 Then releaseYearRelativeMax = releaseYear
-		releaseYear = MathHelper.Clamp(releaseYear, releaseYearRelativeMin, releaseYearRelativeMax)
+		'no upper limit given? Only minimum has to be considered
+		If releaseYearRelativeMax = 0
+			releaseYear = Max(releaseYearRelativeMin, releaseYear)
+		'upper limit known? Limit between minimum (known or not) and maximum
+		Else
+			releaseYear = MathHelper.Clamp(releaseYear, releaseYearRelativeMin, releaseYearRelativeMax)
+		EndIf
 
 		'= DAY =
 		'if no fixed day was defined then use a random one.

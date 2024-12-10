@@ -52,7 +52,7 @@ Type TAwardCustomProduction extends TAward
 
 
 	Method Finish:int(overrideWinnerID:Int = -1) override
-		local result:int = Super.Finish()
+		local result:int = Super.Finish(overrideWinnerID)
 
 		'remove links to best productions
 		bestLicences = null

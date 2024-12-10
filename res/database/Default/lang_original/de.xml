@@ -155,4 +155,44 @@
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Wirsch" title="Kommissar" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Marlene" last_name="" title="Assistentin" />
 	</programmeroles>
+	<globalvariables>
+
+		<!--
+			Marken, Sportvereine, Musiktitel und ähnliche Ressourcen, die in Nachrichten, Ads, Sendungen usw. erscheinen können, werden von hier referenziert.
+			Die englische Datei ist die Hauptreferenz, die alle Einträge enthält.
+			Ab hier sind Übersetzungen in andere Sprachen ad-lib. Die Einträge müssen nicht mehr in jeder Sprache gespiegelt werden.
+		-->
+
+		<brand_beetle>Käfer</brand_beetle>
+
+		<generalorg_communistpartyofthesovietunion>Kommunistische Partei der Sowjetunion</generalorg_communistpartyofthesovietunion>
+		<generalorg_ofthecommunistpartyofthesovietunion>der Kommunistischen Partei der Sowjetunion</generalorg_ofthecommunistpartyofthesovietunion>
+		<generalorg_cpsu>KPdSU</generalorg_cpsu>
+		<generalorg_socialdemocraticpartyofgermany>Sozialdemokratische Partei Deutschlands</generalorg_socialdemocraticpartyofgermany>
+		<generalorg_socialistunitypartyofgermany>Sozialistische Einheitspartei Deutschlands</generalorg_socialistunitypartyofgermany>
+		<generalorg_ofthesocialistunitypartyofgermany>der Sozialistischen Einheitspartei Deutschlands</generalorg_ofthesocialistunitypartyofgermany>
+
+		<sports_formula1>Formel 1</sports_formula1>
+		<sports_formula2>Formel 2</sports_formula2>
+		<sports_formula3>Formel 3</sports_formula3>
+		<sports_formula4>Formel 4</sports_formula4>
+
+		<media_goldenraspberry>Goldene Himbeere</media_goldenraspberry>
+		<media_ofthegoldenraspberry>der Goldenen Himbeere</media_ofthegoldenraspberry>
+		<media_withthegoldenraspberry>mit der Goldenen Himbeere</media_withthegoldenraspberry>
+		
+		<mediaorg_theworldwrestlingfederation>die World Wrestling Federation</mediaorg_theworldwrestlingfederation>
+
+		<mediatitle_lowestofthelow>Ganz unten</mediatitle_lowestofthelow> <!-- https://de.wikipedia.org/wiki/Ganz_unten -->
+		<mediatitle_thephantomoftheopera>Das Phantom der Oper</mediatitle_thephantomoftheopera> <!-- https://de.wikipedia.org/wiki/Das_Phantom_der_Oper_(Musical,_1986) -->
+		<mediatitle_sherlockholmesconsultingdetective>Sherlock Holmes Criminal-Cabinet</mediatitle_sherlockholmesconsultingdetective> <!-- https://de.wikipedia.org/wiki/Sherlock_Holmes_Criminal-Cabinet -->
+		<mediatitle_hoitytoity>Adel verpflichtet</mediatitle_hoitytoity> <!-- https://de.wikipedia.org/wiki/Adel_verpflichtet_(Spiel) -->
+		<mediatitle_thesettlersofcatan>Die Siedler von Catan</mediatitle_thesettlersofcatan> <!-- https://de.wikipedia.org/wiki/Die_Siedler_von_Catan -->
+		<mediatitle_gilligansisland>Gilligans Insel</mediatitle_gilligansisland>
+		<mediatitle_ottifants>Ottifanten</mediatitle_ottifants>
+		<mediatitle_familyfeud>Familien-Duell</mediatitle_familyfeud> <!-- https://de.wikipedia.org/wiki/Familien-Duell -->
+
+		<mediaprop_batmobile>Batmobil</mediaprop_batmobile>
+		<mediaprop_fliewatuut>Fliewatüüt</mediaprop_fliewatuut>
+	</globalvariables>
 </tvtdb>
