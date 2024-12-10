@@ -9,6 +9,7 @@
 			<description>
 				<de>Der neue ${brand_ford} ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</de>
 				<en>The new ${brand_ford} has arrived. Increased safety and an appealing design at an unbeatable price.</en>
+				<pl>Pojawił się nowy ${brand_ford}. Zwiększone bezpieczeństwo i atrakcyjny wygląd w bezkonkurencyjnej cenie.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="3" duration="2" profit="420" penalty="500" infomercial_profit="39" fix_infomercial_profit="1" />
@@ -20,6 +21,7 @@
 			<description>
 				<de>Ein Wischtuch für Küche UND WC. Jetzt mit lustigen Tiermotiven.</de>
 				<en>One wipe for kitchen AND toilet. Now with funny animal designs.</en>
+				<pl>Jedna ściereczka do kuchni i toalety. Teraz z zabawnymi wzorami zwierząt.</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="5" duration="4" profit="672" penalty="950" infomercial_profit="68" fix_infomercial_profit="1" />
@@ -33,6 +35,8 @@
 Habt Ihr das zu bieten? Alter Schwede!</de>
 				<en>Shelves, tables, chairs, cabinets, etc. - that's what we have to offer.
 Do you have that to offer? Gosh, my Swedish friend!</en>
+				<pl>Półki, stoły, krzesła, szafki itp. - to właśnie mamy do zaoferowania.
+Czy masz coś takiego do zaoferowania? Ojej, mój szwedzki przyjacielu!</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="285" penalty="460" fix_infomercial_profit="1" />
@@ -41,10 +45,12 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<title>
 				<de>Rahmah</de>
 				<en>Rowmow</en>
+				<pl>Rayma</pl>
 			</title>
 			<description>
 				<de>Streichzarte Butter aus Yetimilch.</de>
 				<en>Tender butter made from yeti milk.</en>
+				<pl>Delikatne masło z mleka yeti.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="2" profit="280" penalty="400" fix_infomercial_profit="1" />
@@ -53,10 +59,12 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<title>
 				<de>Tischlerei Nagler</de>
 				<en>J. Nailer Carpentry</en>
+				<pl>J. Gwóźdź Stolarstwo</pl>
 			</title>
 			<description>
 				<de>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</de>
 				<en>Our quality is convincing. You want to feel ripped off? Only here that won't be off the mahogany table.</en>
+				<pl>Nasza jakość jest przekonująca. Chcesz poczuć się oszukany? Tylko u nas nie zejdziesz z mahoniowego stołu.</pl>
 			</description>
 			<conditions min_audience="0.1032" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="3" profit="4000" penalty="4900" fix_infomercial_profit="1" />
@@ -68,6 +76,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 			<description>
 				<de>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</de>
 				<en>Our diapers have a high wearing comfort and are suitable for young and old.</en>
+				<pl>Nasze pieluchy zapewniają wysoki komfort noszenia i są odpowiednie zarówno dla młodszych, jak i starszych osób.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="2" duration="3" profit="453" penalty="670" infomercial_profit="41" fix_infomercial_profit="1" />
@@ -81,6 +90,8 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 Daran hat man zu kauen.</de>
 				<en>The delicious bar with the high peanut content.
 You will really have to chew.</en>
+				<pl>Pyszny baton o wysokiej zawartości orzeszków ziemnych.
+Naprawdę trzeba żuć.</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="5" duration="4" profit="680" penalty="1000" infomercial_profit="75" fix_infomercial_profit="1" />
@@ -89,10 +100,12 @@ You will really have to chew.</en>
 			<title>
 				<de>Dubantours</de>
 				<en>Duban Tours</en>
+				<pl>Biuro podróży Duban Tours</pl>
 			</title>
 			<description>
 				<de>Reisen Sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt Sie hin.</de>
 				<en>Travel to the world's largest beaches, whether Gobi or Sahara. Duban Tours will take you there.</en>
+				<pl>Podróż na największe plaże świata, czy to Gobi, czy Sahara. Biuro podróży Duban Tours Cię tam zabierze.</pl>
 			</description>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="3" profit="345" penalty="450" infomercial_profit="41" fix_infomercial_profit="1" />
@@ -101,10 +114,12 @@ You will really have to chew.</en>
 			<title>
 				<de>Wodka ${brand_puschkin}</de>
 				<en>Vodka ${brand_puschkin}</en>
+				<pl>Wódka ${brand_puschkin}</pl>
 			</title>
 			<description>
 				<de>Für des Kunden reinste Kehle.</de>
 				<en>For the customer's purest throat.</en>
+				<pl>Dla najczystszego gardła klienta.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="23" repetitions="1" duration="2" profit="415" penalty="460" infomercial_profit="40" fix_infomercial_profit="1" />
@@ -116,6 +131,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Der populärste Konkurrent von Cacca Cola und Pipsi - doch geschmacklich auch so rein?</de>
 				<en>The most popular competitor of Cacca Cola and Pipsi - but as pure in taste?</en>
+				<pl>Najpopularniejszy konkurent Cacca Coli i Pipsi - ale czy równie czysty w smaku?</pl>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="240" penalty="380" fix_infomercial_profit="1" />
@@ -127,6 +143,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Bestellen Sie jetzt und sichern Sie sich den Duft, der Frauen betört und Ihre WC-Gäste bezaubert. Neu: Zitrone!</de>
 				<en>Order now and you can get the fragrance that bewitches women and charms your toilet users. New: Lemon!</en>
+				<pl>Zamów już teraz, a otrzymasz zapach, który oczaruje kobiety i oczaruje użytkowników Twojej toaletki. Nowość: Lemon!</pl>
 			</description>
 			<conditions min_audience="4.17" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="3" profit="537" penalty="900" infomercial_profit="53" fix_infomercial_profit="1" />
@@ -134,10 +151,12 @@ You will really have to chew.</en>
 		<ad guid="329eb726-34c8-49b3-a0af-be76dcbd296c" comment="TODO: availability years + predecessor">
 			<title>
 				<all>Ringtone Fuzzy</all>
+				<pl>Dzwonki Fuzzy</pl>
 			</title>
 			<description>
 				<de>Räm Bäm Bäääm - Bestell Dir jetzt Deinen Klingelton im Sparabo.</de>
 				<en>Ramm Bam Baaam - Order your ringtone now with discount subscription.</en>
+				<pl>Ram tam taaam - Zamów swój dzwonek teraz z subskrypcją zniżkową.</pl>
 			</description>
 			<conditions min_audience="0.39" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="2" duration="3" profit="2000" penalty="3220" fix_infomercial_profit="1" />
@@ -150,6 +169,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Neun Jahre zuvor in den USA eingeführt, kommt ${brand_meisterproper} 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger.</de>
 				<en>Introduced nine years earlier in the US, ${brand_mrclean} came to Germany in 1967 and established itself as the most popular household cleaner.</en>
+				<pl>Wprowadzony dziewięć lat wcześniej w Stanach Zjednoczonych, ${brand_mrclean} pojawił się w Niemczech w 1967 roku i stał się najpopularniejszym domowym środkiem czyszczącym.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="18" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="29" fix_infomercial_profit="1" />
@@ -161,6 +181,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Hört eure Lieblings-MCs nun auch unterwegs! ${brand_sony} macht den Groove.</de>
 				<en>Now you can listen to your favorite MCs on the go! ${brand_sony}'s got the groove.</en>
+				<pl>Teraz możesz słuchać swoich ulubionych taśm w podróży! ${brand_sony} ma moc.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -173,6 +194,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Hört eure Lieblings-CDs nun auch unterwegs! ${brand_sony} macht den Groove.</de>
 				<en>Now you can listen to your favorite CDs on the go! ${brand_sony}'s got the groove.</en>
+				<pl>Teraz możesz słuchać swoich ulubionych płyt CD w podróży! ${brand_sony} trzyma rytm.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -185,6 +207,7 @@ You will really have to chew.</en>
 			<description>
 				<de>It's not just playing. Die neue Spielkonsolengeneration aus dem Hause ${brand_sony}.</de>
 				<en>It's not just playing. The new generation of games consoles made by ${brand_sony}.</en>
+				<pl>To nie tylko granie. Nowa generacja konsol do gier stworzona przez ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -197,6 +220,7 @@ You will really have to chew.</en>
 			<description>
 				<de>${brandslogan_thethirdplace}. Die ${brand_ps}2 ist der Nachfolger der ${brand_ps} aus dem Hause ${brand_sony}.</de>
 				<en>${brandslogan_thethirdplace}. The ${brand_ps}2 is the successor to the ${brand_ps} made by ${brand_sony}.</en>
+				<pl>${brandslogan_thethirdplace}. ${brand_ps}22 jest następcą ${brand_ps} od ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -209,6 +233,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Playing is just the beginning. Tauchen Sie ein in die Parallelprozessorwelten! Die ${brand_ps}3 ist der Nachfolger der ${brand_ps}2 aus dem Hause ${brand_sony}.</de>
 				<en>Playing is just the beginning. Dive into the parallel processing universes! The ${brand_ps}3 is the successor to the ${brand_ps}2 made by ${brand_sony}.</en>
+				<pl>Granie to dopiero początek. Zanurz się w świecie przetwarzania równoległego! ${brand_ps}3 jest następcą ${brand_ps}2 wyprodukowanego przez ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -221,6 +246,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Be astounding. Be astounded. Be ${brand_playstation} 4. Der Nachfolger der ${brand_ps}3 aus dem Hause ${brand_sony}.</de>
 				<en>Be astounding. Be astounded. Be ${brand_playstation} 4. The successor to the ${brand_ps}3 made by ${brand_sony}.</en>
+				<pl>Bądź zdumiewający. Bądź zdumiony. Bądź ${brand_playstation} 4. Następca ${brand_ps}3 stworzony przez ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -233,6 +259,7 @@ You will really have to chew.</en>
 			<description>
 				<de>The game without boundaries. Die ${brand_ps}5 ist der Nachfolger der ${brand_ps}4 aus dem Hause ${brand_sony}.</de>
 				<en>The game without boundaries. The ${brand_ps}5 is the successor to the ${brand_ps}4 made by ${brand_sony}.</en>
+				<pl>Gra bez granic. ${brand_ps}5 jest następcą ${brand_ps}4 wyprodukowanym przez ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -240,12 +267,13 @@ You will really have to chew.</en>
 		</ad>
 		<ad guid="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy | TODO: Maybe separate these ads after all when ad images feature arrives">
 			<title>
+				<all>${brand_bestbuy}</all>
 				<de>${brand_mediamarkt}</de>
-				<en>${brand_bestbuy}</en>
 			</title>
 			<description>
 				<de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten ${brand_mediamarkt}.</de>
 				<en>We're stupid. We throw out our goods at ridiculous prices. So off you go to the nearest ${brand_bestbuy} market.</en>
+				<pl>Jesteśmy głupi. Wyrzucamy nasze towary po śmiesznych cenach. Udaj się więc do najbliższego marketu ${brand_bestbuy}.</pl>
 			</description>
 			<conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="4" duration="4" profit="540" penalty="920" infomercial_profit="56" fix_infomercial_profit="1" />
@@ -254,10 +282,12 @@ You will really have to chew.</en>
 			<title>
 				<de>Frau Müller</de>
 				<en>Mrs. Miller</en>
+				<pl>Pani Kowalska</pl>
 			</title>
 			<description>
 				<de>Höre reifen Frauen beim Stricken zu.</de>
 				<en>Listen to mature women knitting.</en>
+				<pl>Posłuchaj dojrzałych kobiet robiących na drutach.</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="4" duration="3" profit="1020" penalty="1700" fix_infomercial_profit="1" />
@@ -269,6 +299,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Birne und ${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"} zum Preis von einem.</de>
 				<en>Action play figures of your favorite German politicians. For a short time "The Pear" and "${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"}" for the price of one.</en>
+				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Gruszka” i „${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"}” w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -281,6 +312,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit „Blühende Landschaften“-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} und „Rote Socken“-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} zum Preis von einem.</de>
 				<en>Action play figures of your favorite German politicians. For a short time "Blooming landscapes"-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} and "Red Socks"-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} for the price of one.</en>
+				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Kwitnące krajobrazy”-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} i „Czerwone skarpetki”-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -293,6 +325,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit „Hol mir ma ne Flasche Bier“-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} und Putzgruppen-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} zum Preis von einem.</de>
 				<en>Action play figures of your favorite German politicians. For a short time "Get me a bottle of beer"-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} and "Cleaning Squad"-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} for the price of one.</en>
+				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Przynieś mi butelkę piwa”-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} i „Oddział sprzątający”-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -305,6 +338,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} und Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} zum Preis von einem.</de>
 				<en>Action play figures of your favorite German politician. For short time Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} and Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} for the price of one.</en>
+				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} i Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -313,10 +347,12 @@ You will really have to chew.</en>
 		<ad guid="44af9e71-7c61-4531-b125-181948cd791a">
 			<title>
 				<all>Aunt Lizzy's</all>
+				<pl>Ciocia Lizzy</pl>
 			</title>
 			<description>
 				<de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
 				<en>Cherry syrup from organic farming. Bottled by Aunt Lizzy herself.</en>
+				<pl>Syrop wiśniowy z upraw ekologicznych. Butelkowany przez samą ciocię Lizzy.</pl>
 			</description>
 			<conditions min_audience="0.1553" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="4" duration="3" fix_price="0" profit="2250" penalty="3250" fix_infomercial_profit="1" />
@@ -328,6 +364,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Mmmmhmmm - das IST ein leckerer Burger. Wenn Du auf Burger stehst, musst Du die probieren!</de>
 				<en>Mmmmhmmm - this IS a delicious burger. If you're into burgers, you have to try these!</en>
+				<pl>Mmmmhmmm - to JEST pyszny burger. Jeśli lubisz burgery, musisz ich spróbować!</pl>
 			</description>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="250" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
@@ -339,6 +376,7 @@ You will really have to chew.</en>
 			<description>
 				<de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
 				<en>By cats for cats. Nutritious canned food for your house cat.</en>
+				<pl>Przez koty dla kotów. Pożywna karma w puszkach dla kota domowego.</pl>
 			</description>
 			<conditions min_audience="4.69" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="1" profit="550" penalty="850" fix_infomercial_profit="1" />
@@ -347,12 +385,15 @@ You will really have to chew.</en>
 			<title>
 				<de>Fahrschule Fürst</de>
 				<en>Driving school Prince</en>
+				<pl>Auto szkoła Prince</pl>
 			</title>
 			<description>
 				<de>Sicher und souverän zum Führerschein.
 In Tempelhof and Steglitz</de>
 				<en>Get your driver's license safely and confidently.
 In Berlin Tempelhof and Steglitz</en>
+				<pl>Zdobądź prawo jazdy bezpiecznie i pewnie.
+W Berlinie Tempelhof i Steglitz</pl>
 			</description>
 			<conditions min_audience="3.1251" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="4" duration="3" profit="650" penalty="1100" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -361,6 +402,7 @@ In Berlin Tempelhof and Steglitz</en>
 			<title>
 				<de>Lutschfix</de>
 				<en>SpeedSweet</en>
+				<pl>Tusipekt</pl>
 			</title>
 			<description>
 				<de>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</de>
@@ -371,12 +413,13 @@ In Berlin Tempelhof and Steglitz</en>
 		</ad>
 		<ad guid="5078e947-ea8f-47bc-9f20-0e611bf2ad28" comment="https://de.wikipedia.org/wiki/Dusch_das | https://en.wikipedia.org/wiki/Lux_(soap) | TODO: maybe separate when ad image feature arrives; Lux known in Germany too">
 			<title>
+				<all>${brand_lux}</all>
 				<de>${brand_duschdas}</de>
-				<en>${brand_lux}</en>
 			</title>
 			<description>
 				<de>Deo, Duschmittel, Badezusatz: Körperpflege in vielen Variationen.</de>
 				<en>Deodorant, shower gel, bath additive: Body care in many variations.</en>
+				<pl>Dezodorant, żel pod prysznic, dodatek do kąpieli: Pielęgnacja ciała w wielu wariantach.</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="4" duration="3" profit="1000" penalty="1500" infomercial_profit="100" fix_infomercial_profit="1" />
@@ -385,10 +428,12 @@ In Berlin Tempelhof and Steglitz</en>
 			<title>
 				<de>Plöpp-Bier</de>
 				<en>Pop'Beer</en>
+				<pl>Piwo Pop</pl>
 			</title>
 			<description>
 				<de>Prickelndes Hopfengold. Für die kritischen Tage im Monat sollte Mann immer Plöpp-Bier im Haus haben.</de>
 				<en>Sparkling hops of gold. During the critical days of the month, man should always have Pop'Beer in the fridge.</en>
+				<pl>Musujące chmielowe złoto. Podczas krytycznych dni miesiąca człowiek powinien zawsze mieć Popa w lodówce.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="900" penalty="1400" infomercial_profit="97" fix_infomercial_profit="1" />
@@ -397,12 +442,15 @@ In Berlin Tempelhof and Steglitz</en>
 			<title>
 				<de>Ulbricht Umzüge</de>
 				<en>Relocation Rudolph</en>
+				<pl>Rudolf Relokacyjny</pl>
 			</title>
 			<description>
 				<de>Ausziehen! Ausziehen! Ausziehen!!!
 Aber nur mit Ulbricht Umzüge!</de>
 				<en>Clothes off! Clothes off!!! Clothes off and into the moving box!
 But only with Relocation Rudolph!</en>
+				<pl>Ubrania zdjęte! Ubrania zdjęte!!! Ubrania zdjęte i do pudełka!
+Ale tylko z Rudolfem Relokacyjnym!</pl>
 			</description>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="7" repetitions="3" duration="2" profit="2333" penalty="3500" infomercial_profit="133" fix_infomercial_profit="1" />
@@ -414,6 +462,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Gesichtshaut eines echten Kerls - für das Beste im Mann.</de>
 				<en>With Mach 4 or EVEN FASTER, the razor flies over the facial skin of a real guy - for the best in men.</en>
+				<pl>Dzięki funkcji Mach 4 lub EVEN FASTER maszynka do golenia przelatuje nad skórą twarzy prawdziwego faceta - zapewniając to, co w mężczyznach najlepsze.</pl>
 			</description>
 			<conditions min_audience="6.25" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="460" penalty="900" infomercial_profit="42" fix_infomercial_profit="1" />
@@ -425,6 +474,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} als Werbeträger für die ${brand_mastercard}: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} noch einmal in seiner Paraderolle - unbezahlbar.</de>
 				<en>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} as a promotional campaigner for the ${brand_mastercard}: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} once again in his signature role - priceless.</en>
+				<pl>${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} w kampanii promocyjnej ${brand_mastercard}: ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} po raz kolejny w swojej charakterystycznej roli - bezcenne.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -433,10 +483,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Schwarzmalerei AG</de>
 				<en>Doom-Mongering LLC</en>
+				<pl>Ciepła-Linia spółka z o.o.</pl>
 			</title>
 			<description>
 				<de>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop „live“ am Telefon.</de>
 				<en>Friendly women from Eastern Europe create your horoscope "live" on the phone.</en>
+				<pl>Przyjazne kobiety z Europy Wschodniej tworzą horoskop „na żywo” przez telefon.</pl>
 			</description>
 			<conditions min_audience="0.39" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="4" duration="3" profit="2000" penalty="2700" infomercial_profit="110" fix_infomercial_profit="1" />
@@ -445,10 +497,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Spruzzi Plöpp</de>
 				<en>Fizzy Plop</en>
+				<pl>Spirit Nat</pl>
 			</title>
 			<description>
 				<de>Unsere Limonade beinhaltet nur natürliche Aromastoffe. Hmm lecker Käferflügel...</de>
 				<en>Our lemonade contains only natural aromas. Hmm tasty beetle wings...</en>
+				<pl>Nasza lemoniada zawiera wyłącznie naturalne aromaty. Hmm smaczne skrzydełka chrząszcza...</pl>
 			</description>
 			<conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="4" duration="2" profit="775" penalty="1000" infomercial_profit="77" fix_infomercial_profit="1" />
@@ -457,10 +511,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Tussishop</de>
 				<en>Broadshop</en>
+				<pl>Kob-shop</pl>
 			</title>
 			<description>
 				<de>Nette Frauen aus aus dem Katalog. Dank Fernabsatz Rückgabe ohne Probleme möglich.</de>
 				<en>Nice women from the catalog. Thanks to distance selling, return possible without problems.</en>
+				<pl>Ładne kobiety z katalogu. Dzięki sprzedaży na odległość możliwy bezproblemowy zwrot.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="3" profit="1583" penalty="2500" infomercial_profit="124" fix_infomercial_profit="1" />
@@ -469,10 +525,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Raus Hier</de>
 				<en>Outta Here!</en>
+				<pl>Biuro podróży Wynocha Tam</pl>
 			</title>
 			<description>
 				<de>Dein freundliches Reisebüro... Wohin Du willst - solang die Kohle stimmt.</de>
 				<en>Your friendly travel agency ... Wherever you want - as long as the money is right.</en>
+				<pl>Twoje przyjazne biuro podróży ... Gdziekolwiek chcesz - tak długo, jak pieniądze są odpowiednie.</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="2" fix_price="0" profit="3000" penalty="3800" infomercial_profit="90" fix_infomercial_profit="1" />
@@ -481,10 +539,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Tu-doch-so</de>
 				<en>Pre-Tend-Astic</en>
+				<pl>Fakacje</pl>
 			</title>
 			<description>
 				<de>Kein Geld für den Urlaub oder die Yacht? Wir schicken Postkarten aus Uganda oder fälschen Fotos.</de>
 				<en>No money for the vacation or a yacht? We send postcards from Uganda or fake photos.</en>
+				<pl>Nie masz pieniędzy na wakacje lub jacht? Wysyłamy pocztówki z Ugandy lub fałszywe zdjęcia.</pl>
 			</description>
 			<conditions min_audience="0.39" min_image="6" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="3" profit="2100" penalty="3400" infomercial_profit="100" fix_infomercial_profit="1" />
@@ -493,10 +553,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Jesse Wasser- und Wärmedienst</de>
 				<en>Jesse water and heat services</en>
+				<pl>Jaś Wiaderko - serwis sanitarny</pl>
 			</title>
 			<description>
 				<de>Wir sorgen für Ihre Sanitäranlagen. Schon ab 10 € - ohne Scheiß!</de>
 				<en>We take care of your sanitary facilities. Starting at 10 € - no shits!</en>
+				<pl>Dbamy o twoje urządzenia sanitarne. Już od 10 € - bez srania!</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="3" duration="3" profit="1888" penalty="3280" infomercial_profit="119" fix_infomercial_profit="1" />
@@ -505,22 +567,26 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Hobelmarkt</de>
 				<en>Planer Market</en>
+				<pl>Hebel Market</pl>
 			</title>
 			<description>
 				<de>Hier fallen nicht nur Späne, nein auch die Preise. Ein Hobelmarkt ist sicher auch in Ihrer Nähe.</de>
 				<en>Not only the woodchips are dropping here, but also the prices. Surely there is a Planer Market also close to you.</en>
+				<pl>Spadają tu nie tylko zrębki, ale także ceny. Z pewnością w pobliżu znajduje się również Hebel Market.</pl>
 			</description>
 			<conditions min_audience="2.6" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="3" profit="700" penalty="1100" infomercial_profit="72" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="7bf56c92-52f5-44aa-8cef-2788ece421ac" comment="https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese | White Revive: https://en.wikipedia.org/wiki/OxiClean">
 			<title>
+				<all>${brand_whiterevive}</all>
 				<de>${brand_weisserriese}</de>
-				<en>${brand_whiterevive}</en>
+				
 			</title>
 			<description>
 				<de>Waschen Sie ihre Wäsche mit „${brand_weisserriese}“ porentief rein!</de>
 				<en>Clean your laundry down to the pores with "${brand_whiterevive}"!</en>
+				<pl>Wyczyść swoje pranie aż do porów za pomocą „${brand_whiterevive}”!</pl>
 			</description>
 			<conditions min_audience="15.63" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="240" penalty="400" infomercial_profit="23" fix_infomercial_profit="1" />
@@ -532,6 +598,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Die Markenkleidung mit dem Sonnenschirm. Modische Schnitte und trendige Farben inklusive.</de>
 				<en>The brand clothing with the umbrella. Fashionable cuts and trendy colors included.</en>
+				<pl>Markowa odzież z parasolem. Modne kroje i modne kolory w zestawie.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="3" duration="2" profit="340" penalty="560" infomercial_profit="32" fix_infomercial_profit="1" />
@@ -543,6 +610,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Die „Vitalon Foods Company“ aus Taiwan lässt ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} als ${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} für ihren Sporttrunk werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Rennboot.</de>
 				<en>The "Vitalon Foods Company" from Taiwan lets ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} advertise as ${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"} for their sports drink: on a bicycle, in a jeep, during Tai Chi and on a speedboat.</en>
+				<pl>„Vitalon Foods Company” z Tajwanu pozwala ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"nickname"} ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"lastname"}owi reklamować swój napój sportowy jako ${.role:"25387571-5de7-4837-bbfb-f46b5a8d4779":"lastname"}: na rowerze, w jeepie, podczas Tai Chi i na łodzi motorowej.</pl>
 			</description>
 			<conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="4" profit="490" penalty="790" infomercial_profit="43" fix_infomercial_profit="1" />
@@ -554,6 +622,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Das neue Modell des renommierten Autoherstellers ${brand_kaipan} verzückt die Presse - auch Sie?</de>
 				<en>The new model of the renowned car manufacturer ${brand_kaipan} delights the press - you too?</en>
+				<pl>Nowy model renomowanego producenta samochodów ${brand_kaipan} zachwyca prasę - Ty też?</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="5" duration="3" profit="672" penalty="812" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -562,10 +631,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Nichts-wie-weg</de>
 				<en>Let's scram</en>
+				<pl>Wak tan</pl>
 			</title>
 			<description>
 				<de>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und „Gepäck zurück“-Garantie.</de>
 				<en>Cheap vacation trips. Now with dating service for package tourists and "luggage back" guarantee.</en>
+				<pl>Tanie wyjazdy wakacyjne. Teraz z serwisem randkowym dla turystów zorganizowanych i gwarancją „zwrotu bagażu”.</pl>
 			</description>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="1" duration="4" profit="506" penalty="900" infomercial_profit="88" fix_infomercial_profit="1" />
@@ -573,10 +644,12 @@ But only with Relocation Rudolph!</en>
 		<ad guid="872a0f04-852d-4b49-b813-6f051e663fbc">
 			<title>
 				<all>Call-A-Beer</all>
+				<pl>Infolinia - Zadzwoń po piwo</pl>
 			</title>
 			<description>
 				<de>Kein Bier mehr? Schick nicht die Frau, ruf Call-A-Beer!</de>
 				<en>Out of beer? Don't send the wife, just Call-A-Beer!</en>
+				<pl>Skończyło się piwo? Nie wysyłaj żony, po prostu zadzwoń po piwo!</pl>
 			</description>
 			<conditions min_audience="3.6461" min_image="18" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="5" duration="2" profit="620" penalty="1000" infomercial_profit="122" fix_infomercial_profit="1" />
@@ -585,10 +658,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Zimzi</de>
 				<en>Cinnamzy</en>
+				<pl>Cynamini</pl>
 			</title>
 			<description>
 				<de>Lecker Zimtstäbchen mit Reizhustengarantie. Noch nie war so trocken... so lecker.</de>
 				<en>Delicious cinnamon sticks with guaranteed dry cough. Never before dry-as-dust has been... so delicious.</en>
+				<pl>Pyszne laski cynamonu z gwarancją suchego kaszlu. Nigdy wcześniej suchy jak pył nie był... tak pyszny.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="4" profit="600" penalty="950" infomercial_profit="58" fix_infomercial_profit="1" />
@@ -600,6 +675,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Beim Kauf einer Flasche Rotwein gibts jetzt zwei Kopfschmerztabletten gratis dazu.</de>
 				<en>With each purchase of a bottle of red wine, you now get two headache tablets for free.</en>
+				<pl>Przy każdym zakupie butelki czerwonego wina otrzymasz dwie tabletki na ból głowy gratis.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="5" duration="3" profit="610" penalty="990" fix_infomercial_profit="1" />
@@ -608,10 +684,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Copyshop Raub</de>
 				<en>Copy-Shop Piraczi</en>
+				<pl>Copy-Shop Piraci</pl>
 			</title>
 			<description>
 				<de>Raub-Kopien sehen fast so gut aus wie die Originale. Wir verkaufen auch Permanentmarker!</de>
 				<en>Piraczi-copies look nearly as good as the originals. We also sell permanent markers!</en>
+				<pl>Kopie Pirackie wyglądają prawie tak dobrze, jak oryginały. Sprzedajemy również markery permanentne!</pl>
 			</description>
 			<conditions min_audience="3.13" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="4" repetitions="5" duration="2" profit="670" penalty="950" infomercial_profit="95" fix_infomercial_profit="1" />
@@ -620,10 +698,12 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>${brand_heinz} Tomatenketchup</de>
 				<en>${brand_heinz} Tomato Ketchup</en>
+				<pl>Ketchup ${brand_heinz}</pl>
 			</title>
 			<description>
 				<de>Das Ketchup für diejenigen, die ihre Pommes nicht in Mayonnaise ersäufen. Auch geeignet für Buletten, Wurst und Hühnchen.</de>
 				<en>The ketchup for those who do not drown their fries in mayonnaise. Also suitable for burgers, sausages and chicken nuggets.</en>
+				<pl>Ketchup dla tych, którzy nie topią frytek w majonezie. Nadaje się również do hamburgerów, kiełbasek i nuggetsów z kurczaka.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="3" duration="3" profit="377" penalty="558" infomercial_profit="35" fix_infomercial_profit="1" />
@@ -635,6 +715,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Surfen im Garten! WLan-Kabel bis 200m.</de>
 				<en>Surfing the web in the garden! WiFi cables up to 200m.</en>
+				<pl>Surfowanie po sieci w ogrodzie! Kable WiFi o długości do 200 m.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="2" duration="2" profit="440" penalty="640" infomercial_profit="41" fix_infomercial_profit="1" />
@@ -647,6 +728,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Berlin, du bist so wunderbar!</de>
 				<en>Berlin, you are so wonderful!</en>
+				<pl>Berlin, jesteś taki cudowny!</pl>
 			</description>
 			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="2" duration="3" profit="425" penalty="667" infomercial_profit="42" fix_infomercial_profit="1" />
@@ -658,6 +740,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Ist ihre Party mal wieder total langweilig? Buchen Sie Stilvento und ihr Anlass ist gerettet.</de>
 				<en>Is your party once again totally boring? Book Stilvento and your event is saved.</en>
+				<pl>Twoja impreza znów jest nudna? Zarezerwuj Stilvento, a Twoje wydarzenie zostanie uratowane.</pl>
 			</description>
 			<conditions min_audience="2.3435" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="5" duration="2" profit="766" penalty="1188" fix_infomercial_profit="1" />
@@ -669,6 +752,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Der unvergleichliche Schokoriegel mit dem hinreißenden Geschmack.</de>
 				<en>The incomparable chocolate bar with the captivating taste.</en>
+				<pl>Niezrównany baton czekoladowy o zniewalającym smaku.</pl>
 			</description>
 			<conditions min_audience="5.73" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="450" penalty="823" infomercial_profit="45" fix_infomercial_profit="1" />
@@ -680,6 +764,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravelli führt es.</de>
 				<en>The number 1 in model building. Whether Messerschmitt, Panther, or U.S.S. Enterprise - Ravelli has it all.</en>
+				<pl>Numer 1 w budowaniu modeli. Messerschmitt, Panther czy U.S.S. Enterprise - Ravelli ma wszystko.</pl>
 			</description>
 			<conditions min_audience="4.69" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="22" repetitions="3" duration="2" profit="545" penalty="975" fix_infomercial_profit="1" />
@@ -691,6 +776,7 @@ But only with Relocation Rudolph!</en>
 			<description>
 				<de>Der ${brand_sarotti}-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</de>
 				<en>The ${brand_sarotti} Maure-Mallow features fantastic chocolate. Take one and melt away.</en>
+				<pl>${brand_sarotti} zawiera fantastyczną czekoladę. Weź jedną i rozpłyń się.</pl>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="4" duration="2" profit="700" penalty="1050" fix_infomercial_profit="1" />
@@ -699,12 +785,15 @@ But only with Relocation Rudolph!</en>
 			<title>
 				<de>Pustbank</de>
 				<en>Puff-Bank</en>
+				<pl>Nic-Bank</pl>
 			</title>
 			<description>
 				<de>Eröffnen Sie ein Konto bei der Pustbank.
 Der Vorteil: Kein Porto für Überweisungsträger.</de>
 				<en>Open an account with Puff-Bank.
 The benefit: No postage for remittance slips.</en>
+				<pl>Otwórz konto w Nic-Bank-u.
+Korzyść: brak opłat pocztowych za odcinki przelewów.</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="240" penalty="350" infomercial_profit="21" fix_infomercial_profit="1" />
@@ -713,10 +802,12 @@ The benefit: No postage for remittance slips.</en>
 			<title>
 				<de>Gib Pfote</de>
 				<en>Give paw!</en>
+				<pl>Podaj łapę!</pl>
 			</title>
 			<description>
 				<de>Die natürlichen Bestandteile von „Gib Pfote“ wird Ihr Hund lieben. Lecker Pudel.</de>
 				<en>Your dog will love the natural ingredients of "Give paw!". Tasty Poodle.</en>
+				<pl>Twój pies pokocha naturalne składniki karmy „Podaj łapę!”.</pl>
 			</description>
 			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="470" penalty="690" infomercial_profit="75" fix_infomercial_profit="1" />
@@ -728,6 +819,7 @@ The benefit: No postage for remittance slips.</en>
 			<description>
 				<de>${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} präsentiert für die ${brand_telekom} USA in zwei Spots eine nützliche Telefonkarte.</de>
 				<en>In two commercials, the famous ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} presents a useful phone card powered by ${brand_telekom} USA.</en>
+				<pl>W dwóch reklamach słynny ${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"} prezentuje użyteczną kartę telefoniczną zasilaną przez ${brand_telekom} USA.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="315" penalty="448" infomercial_profit="28" fix_infomercial_profit="1" />
@@ -741,6 +833,8 @@ The benefit: No postage for remittance slips.</en>
 Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</de>
 				<en>Quality since 1861.
 Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's models.</en>
+				<pl>Jakość od 1861 roku.
+Zegary słoneczne, kwarcowe, budziki, duże zegary, modele damskie i męskie.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="2" profit="290" penalty="459" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -749,10 +843,12 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 			<title>
 				<de>Buchstehude</de>
 				<en>Pantown</en>
+				<pl>PolRajty</pl>
 			</title>
 			<description>
 				<de>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</de>
 				<en>Boxer shorts from the village. Guaranteed worn only once - per side.</en>
+				<pl>Bokserki z wioski. Gwarantowane noszenie tylko raz - na jedną stronę.</pl>
 			</description>
 			<conditions min_audience="0.1" min_image="2" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="4" profit="3900" penalty="5000" infomercial_profit="80" fix_infomercial_profit="1" />
@@ -764,6 +860,7 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 			<description>
 				<de>Speck-Seife steht seit Jahrzenten für Qualität und saubere Hände.</de>
 				<en>Speck soap has stood for quality and clean hands for decades.</en>
+				<pl>Mydło Speck od dziesięcioleci kojarzy się z jakością i czystymi dłońmi.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="2" duration="3" profit="828" penalty="960" infomercial_profit="82" fix_infomercial_profit="1" />
@@ -777,6 +874,8 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 ${brand_toblerone} - Schokolade mit Charakter.</de>
 				<en>So what?
 ${brand_toblerone} - Chocolate with character.</en>
+				<pl>I co z tego?
+${brand_toblerone} - czekolada z charakterem.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="2" profit="430" penalty="606" infomercial_profit="39" fix_infomercial_profit="1" />
@@ -790,6 +889,8 @@ ${brand_toblerone} - Chocolate with character.</en>
 It's a ${brand_sony}.</de>
 				<en>The producer of high-tech across the board.
 It's a ${brand_sony}.</en>
+				<pl>Producent zaawansowanych technologii na całym świecie.
+It's a ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="4" duration="3" profit="733" penalty="950" infomercial_profit="73" fix_infomercial_profit="1" />
@@ -798,10 +899,12 @@ It's a ${brand_sony}.</en>
 			<title>
 				<de>Matratzendoktor</de>
 				<en>Mattress-Doc</en>
+				<pl>Doktor Materac</pl>
 			</title>
 			<description>
 				<de>Quietscht Ihre Matratze? Rufen Sie den Matratzendoktor. Inklusive Probestunde.</de>
 				<en>Is your mattress squeaking? Call the Mattress-Doc. Trial session included.</en>
+				<pl>Twój materac skrzypi? Zadzwoń do Doktora Materaca. Sesja próbna wliczona w cenę.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="4" duration="2" profit="800" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
@@ -813,6 +916,7 @@ It's a ${brand_sony}.</en>
 			<description>
 				<de>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst. Bikeshop ist top.</de>
 				<en>Promotion week at Bikeshop. Buy one bike, get one for free. Bikeshop is top-notch.</en>
+				<pl>Tydzień promocji w Bikeshop. Kup jeden rower, drugi otrzymasz za darmo. Bikeshop jest na najwyższym poziomie.</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="2" profit="1333" penalty="2000" infomercial_profit="118" fix_infomercial_profit="1" />
@@ -821,10 +925,12 @@ It's a ${brand_sony}.</en>
 			<title>
 				<de>Kau-Tschuk</de>
 				<en>Caout-Chew</en>
+				<pl>Guma do żucia - Kał-Czuk</pl>
 			</title>
 			<description>
 				<de>Der lecker Knabberspaß für Jung und Alt. Aus recycelten Altreifen, in 5 bunten Geschmacksrichtungen.</de>
 				<en>The yummy nibble fun for young and old. Made from recycled scrap tires, in 5 colorful flavors.</en>
+				<pl>Pyszna zabawa dla młodszych i starszych. Wykonane z przetworzonych opon, w 5 kolorowych smakach.</pl>
 			</description>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="3" duration="3" profit="500" penalty="850" fix_infomercial_profit="1" />
@@ -834,8 +940,9 @@ It's a ${brand_sony}.</en>
 				<all>${brand_ravensburger}</all>
 			</title>
 			<description>
-				<de>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
-				<en>Do jigsaw puzzles, play, have fun. Rabensburger recommends novelties and classics from its range of products.</en>
+				<de>Puzzeln, spielen, Spaß haben. ${brand_ravensburger} empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
+				<en>Do jigsaw puzzles, play, have fun. ${brand_ravensburger} recommends novelties and classics from its range of products.</en>
+				<pl>Układaj puzzle, graj, baw się. ${brand_ravensburger} poleca nowości i klasyki ze swojej oferty.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="3" duration="2" profit="380" penalty="570" infomercial_profit="37" fix_infomercial_profit="1" />
@@ -847,6 +954,7 @@ It's a ${brand_sony}.</en>
 			<description>
 				<de>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</de>
 				<en>Your baguettes in lengths of 1, 2 or 3 metres!</en>
+				<pl>Bagietki o długości 1, 2 lub 3 metrów!</pl>
 			</description>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="1" profit="445" penalty="730" fix_infomercial_profit="1" />
@@ -858,6 +966,7 @@ It's a ${brand_sony}.</en>
 			<description>
 				<de>Nicht nur ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} trinkt leidenschaftlich ${brand_drpepper}.</de>
 				<en>It is not just ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} who passionately drinks ${brand_drpepper}.</en>
+				<pl>Nie tylko ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} namiętnie pije ${brand_drpepper}.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1" />
@@ -869,6 +978,7 @@ It's a ${brand_sony}.</en>
 			<description>
 				<de>Reiz macht geil, so die Botschaft dieser Werbung.</de>
 				<en>Needs bring greed, that's the message of this advertisement.</en>
+				<pl>Potrzeby rodzą chciwość - takie jest przesłanie tej reklamy.</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="2" duration="3" profit="1100" penalty="1200" fix_infomercial_profit="1" />
@@ -880,6 +990,7 @@ It's a ${brand_sony}.</en>
 			<description>
 				<de>Hier gibt's Schnäppchen en masse. Der sympathische Krempelmarkt um die Ecke.</de>
 				<en>Here you'll find bargains galore. The charming junk market around the corner.</en>
+				<pl>Tutaj znajdziesz mnóstwo okazji. Uroczy targ rupieci za rogiem.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="2" duration="3" fix_price="0" profit="1500" penalty="2118" infomercial_profit="118" fix_infomercial_profit="1" />
@@ -888,12 +999,15 @@ It's a ${brand_sony}.</en>
 			<title>
 				<de>Hartz Bier</de>
 				<en>Dole Beer</en>
+				<pl>Piwo Okopcim</pl>
 			</title>
 			<description>
 				<de>Unser Bier ist nicht nur günstig, es ist auch billig.
 Aktionswoche: Pfandfrei.</de>
 				<en>Our beer is not only affordable, it also is cheap.
 Campaign week: no bottle deposit.</en>
+				<pl>Nasze piwo jest nie tylko przystępne cenowo, ale także tanie.
+Tydzień kampanii: brak kaucji za butelki.</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="4" duration="4" profit="700" penalty="1000" infomercial_profit="74" fix_infomercial_profit="1" />
@@ -902,10 +1016,12 @@ Campaign week: no bottle deposit.</en>
 			<title>
 				<de>Polstermöbel Dobrawa</de>
 				<en>Dobrawa Upholstery</en>
+				<pl>Meble Dobrawa</pl>
 			</title>
 			<description>
 				<de>Polsterwerkstatt Dobrawa seit 1933.</de>
 				<en>Dobrawa upholstery manufacture since 1933.</en>
+				<pl>Dobrawa produkuje tapicerkę od 1933 roku.</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="6" repetitions="4" duration="3" profit="1100" penalty="1400" fix_infomercial_profit="1" />
@@ -914,10 +1030,12 @@ Campaign week: no bottle deposit.</en>
 			<title>
 				<de>Schlimm-Schnell</de>
 				<en>Trim-Fast</en>
+				<pl>Sram-Fast</pl>
 			</title>
 			<description>
 				<de>Verlieren Sie 50 Kilo innerhalb eines Monats!</de>
 				<en>Lose 50 kilograms within one month!</en>
+				<pl>Schudnij 50 kilogramów w ciągu miesiąca!</pl>
 			</description>
 			<conditions min_audience="0.31" min_image="2" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="4" profit="2100" penalty="2675" infomercial_profit="116" fix_infomercial_profit="1" />
@@ -929,18 +1047,20 @@ Campaign week: no bottle deposit.</en>
 			<description>
 				<de>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</de>
 				<en>They already have become a schoolmate long ago: The cartridges that fill the fountain pen.</en>
+				<pl>Już dawno stali się kolegami ze szkoły: Naboje, które napełniają wieczne pióro.</pl>
 			</description>
 			<conditions min_audience="4.17" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="540" penalty="840" infomercial_profit="55" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="d4e84634-b122-4cca-90c6-c44707d8a79e" comment="Capri-Sonne - https://en.wikipedia.org/wiki/Capri-Sun">
 			<title>
+				<all>${brand_capri}-Moon</all>
 				<de>${brand_capri}-Mond</de>
-				<en>${brand_capri}-Moon</en>
 			</title>
 			<description>
 				<de>Der Schlummertrunk aus der Alutüte.</de>
 				<en>The nightcap in the tin foil bag.</en>
+				<pl>Nocny drink w torebce z folii aluminiowej.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="3" duration="3" profit="461" penalty="672" infomercial_profit="39" fix_infomercial_profit="1" />
@@ -952,6 +1072,7 @@ Campaign week: no bottle deposit.</en>
 			<description>
 				<de>Das Fruchtsaftgetränk in der weltberühmten bauchigen Flasche. Teuer, aber so gut wie immer richtig.</de>
 				<en>The fruit juice drink in the world-famous bulgy bottle. Expensive, but almost always just right.</en>
+				<pl>Napój owocowy w słynnej na całym świecie butelce. Drogi, ale prawie zawsze w sam raz.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="2" duration="2" profit="325" penalty="500" infomercial_profit="31" fix_infomercial_profit="1" />
@@ -963,6 +1084,7 @@ Campaign week: no bottle deposit.</en>
 			<description>
 				<de>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</de>
 				<en>Wurth Paris delivers the scent of selected essences for a noble perfume.</en>
+				<pl>Wurth Paris dostarcza zapach wybranych esencji dla szlachetnych perfum.</pl>
 			</description>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="3" duration="3" profit="500" penalty="750" fix_infomercial_profit="1" />
@@ -974,6 +1096,7 @@ Campaign week: no bottle deposit.</en>
 			<description>
 				<de>Computerschrott ab 50 Pfennig das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
 				<en>Computer scrap starting at 50 pfennigs per kilo. Now also offering modern B/W monitors.</en>
+				<pl>Złom komputerowy od 50 fenigów za kilogram. Obecnie oferujemy również nowoczesne monitory czarno-białe.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="3" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
@@ -986,6 +1109,7 @@ Campaign week: no bottle deposit.</en>
 			<description>
 				<de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne Farb-Röhren-Monitore im Angebot.</de>
 				<en>Computer scrap starting at 50 eurocent per kilo. Now also offering modern CRT screens.</en>
+				<pl>Złom komputerowy od 50 eurocentów za kilogram. Obecnie oferujemy również nowoczesne monitory CRT.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="4" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
@@ -998,6 +1122,7 @@ Campaign week: no bottle deposit.</en>
 			<description>
 				<de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
 				<en>Spaceships, phaser weapons, Mars mining rights. On sale at Aeroswift this week at rock-bottom prices.</en>
+				<pl>Statki kosmiczne, broń fazerowa, prawa do wydobywania Marsa. W sprzedaży w Aeroswift w tym tygodniu w najniższych cenach.</pl>
 			</description>
 			<conditions min_audience="8.3352" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="3" duration="4" profit="377" penalty="620" infomercial_profit="24" fix_infomercial_profit="1" />
@@ -1006,10 +1131,12 @@ Campaign week: no bottle deposit.</en>
 			<title>
 				<de>Fleischerei Fettmit</de>
 				<en>Fad's Meat Market</en>
+				<pl>Targ mięsny "Tłuszczyk"</pl>
 			</title>
 			<description>
 				<de>Das Auge isst man mit!</de>
 				<en>A feast with the eyes!</en>
+				<pl>Uczta dla oczu!</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="4" duration="3" profit="1333" penalty="2094" fix_infomercial_profit="1" />
@@ -1021,6 +1148,7 @@ Campaign week: no bottle deposit.</en>
 			<description>
 				<de>Gestalten Sie ihre Möbel selber!</de>
 				<en>Design your own furniture!</en>
+				<pl>Zaprojektuj swoje własne meble!</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="2" profit="1911" penalty="2031" fix_infomercial_profit="1" />
@@ -1029,10 +1157,12 @@ Campaign week: no bottle deposit.</en>
 			<title>
 				<de>Leckerfett</de>
 				<en>Tasty Fat</en>
+				<pl>Smaczny tłuszczyk</pl>
 			</title>
 			<description>
 				<de>Die perfekte Mischung aus Gänsefett und natürlichem Pflanzenfett macht Leckerfett soooo unglaublich lecker.</de>
 				<en>The perfect blend of goose fat and natural vegetable fat makes Tasty Fat soooo incredibly delicious.</en>
+				<pl>Idealne połączenie tłuszczu gęsiego i naturalnego tłuszczu roślinnego sprawia, że Smaczny tłuszczyk jest tak niesamowicie pyszny.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="2" duration="3" fix_price="0" profit="325" penalty="520" infomercial_profit="30" fix_infomercial_profit="1" />
@@ -1046,6 +1176,8 @@ Campaign week: no bottle deposit.</en>
 Nur echt mit Elch!</de>
 				<en>Care products around the skin. Ointments/creams, bath additives, deodorants and much more.
 Only genuine with the elk!</en>
+				<pl>Produkty do pielęgnacji skóry. Maści/kremy, dodatki do kąpieli, dezodoranty i wiele innych.
+Tylko oryginalne z łosia!</pl>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="2" profit="275" penalty="420" infomercial_profit="24" fix_infomercial_profit="1" />
@@ -1057,6 +1189,7 @@ Only genuine with the elk!</en>
 			<description>
 				<de>Aus den Tiefen Sylts kommt dieses herrlich prickelnde Mineralwasser.</de>
 				<en>From the depths of Sylt comes this wonderfully sparkling mineral water.</en>
+				<pl>Z głębi Sylt pochodzi ta cudownie musująca woda mineralna.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="2" profit="900" penalty="1300" fix_infomercial_profit="1" />
@@ -1065,10 +1198,12 @@ Only genuine with the elk!</en>
 			<title>
 				<de>Reisebüro Teurl</de>
 				<en>Travel agency Kostli</en>
+				<pl>Biuro podróży TRUI</pl>
 			</title>
 			<description>
 				<de>Schnäppchenpreise für exklusive Rucksack-Touren. Proviant und Pflaster nicht im Preis enthalten.</de>
 				<en>Bargain rates for well-heeled backpackers. Provisions and band-aids are not included in the price.</en>
+				<pl>Okazyjne ceny dla dobrze sytuowanych turystów. Prowiant i środki opatrunkowe nie są wliczone w cenę.</pl>
 			</description>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="2750" penalty="4000" fix_infomercial_profit="1" />
@@ -1077,10 +1212,12 @@ Only genuine with the elk!</en>
 			<title>
 				<de>Guld Körn</de>
 				<en>Gulden Cörn</en>
+				<pl>Gulden Cörn</pl>
 			</title>
 			<description>
 				<de>Das Honigmonster präsentiert sein Leibgericht.</de>
 				<en>The honey monster presents his favourite dish.</en>
+				<pl>Miodowy potwór prezentuje swoje ulubione danie.</pl>
 			</description>
 			<conditions min_audience="6.7721" min_image="18" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="2" duration="4" profit="476" penalty="788" infomercial_profit="45" fix_infomercial_profit="1" />
@@ -1089,10 +1226,12 @@ Only genuine with the elk!</en>
 			<title>
 				<de>Gold per Post</de>
 				<en>Gold by Mail</en>
+				<pl>Złoto przez pocztę</pl>
 			</title>
 			<description>
 				<de>Schwatz dem Opa die Zähne raus, ab heute gibt es Geld gegen Gold. Achtung: Gelb ist nicht gleich Gold!</de>
 				<en>Wheedle grandpa's teeth out. Starting today you get money for gold. Beware: Yellow does not necessarily mean gold!</en>
+				<pl>Wyrwij dziadkowi zęby. Od dziś otrzymujesz pieniądze za złoto. Uwaga: żółty niekoniecznie oznacza złoty!</pl>
 			</description>
 			<conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="6" repetitions="2" duration="3" profit="740" penalty="1164" infomercial_profit="77" fix_infomercial_profit="1" />
@@ -1104,6 +1243,7 @@ Only genuine with the elk!</en>
 			<description>
 				<de>Knusprig knackiger Knabberspaß mit feurig scharfer Chilinote. Nur für kurze Zeit mit Tiermotiven.</de>
 				<en>Crispy crunchy nibbles with fiery hot chili. Only for a short time with animal motifs.</en>
+				<pl>Chrupiące przekąski z ognistym ostrym chili. Tylko przez krótki czas z motywami zwierzęcymi.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="345" penalty="581" infomercial_profit="31" fix_infomercial_profit="1" />
@@ -1112,12 +1252,15 @@ Only genuine with the elk!</en>
 			<title>
 				<de>${brand_lenor}</de>
 				<en>${brand_downy}</en>
+				<pl>${brand_lenor}</pl>
 			</title>
 			<description>
 				<de>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
 Ich fühl mich wohl mit ${brand_lenor}.</de>
 				<en>The catchy music heralds the cuddly soft laundry and freshness.
 I feel good with ${brand_downy}.</en>
+				<pl>Chwytliwa muzyka zwiastuje przytulnie miękkie pranie i świeżość.
+Z ${brand_lenor}em czuję się dobrze</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="4" duration="4" profit="420" penalty="645" fix_infomercial_profit="1" />
@@ -1129,6 +1272,7 @@ I feel good with ${brand_downy}.</en>
 			<description>
 				<de>Hoher Tragekomfort und nahezu unsichtbar - die neuen Maike-Hygieneeinlagen.</de>
 				<en>High wearing comfort and almost invisible - the new Maike hygiene pads.</en>
+				<pl>Wysoki komfort noszenia i niemal niewidoczność - nowe wkładki higieniczne Maike.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="3" duration="4" profit="340" penalty="540" infomercial_profit="34" fix_infomercial_profit="1" />
@@ -1140,6 +1284,7 @@ I feel good with ${brand_downy}.</en>
 			<description>
 				<de>Der neueste Luxusschlitten aus dem Hause ${brand_benz}: Ästethisch einwandfreies Design, robust, klassisch.</de>
 				<en>The latest deluxe car from ${brand_benz}: aesthetically impeccable design, robust, classic.</en>
+				<pl>Najnowszy luksusowy samochód od ${brand_benz}: estetycznie nienaganny design, solidny, klasyczny.</pl>
 			</description>
 			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
@@ -1148,10 +1293,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Brillen Zorn</de>
 				<en>Glasses Blackeye</en>
+				<pl>Optyk - Czarne oczko</pl>
 			</title>
 			<description>
 				<de>Wie die Faust aufs Auge - unsere Brillen sitzen immer!</de>
 				<en>Like a glove for the eyes - our glasses always fit!</en>
+				<pl>Jak rękawiczka dla oczu - nasze okulary zawsze pasują!</pl>
 			</description>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="2466" penalty="3288" fix_infomercial_profit="1" />
@@ -1163,6 +1310,7 @@ I feel good with ${brand_downy}.</en>
 			<description>
 				<de>DAS Fantasy-Rollenspiel von ${brand_piranhabytes}. Lasst uns Wildschweine jagen!</de>
 				<en>THE fantasy RPG by ${brand_piranhabytes}. Lets hunt boars!</en>
+				<pl>Fantasy RPG od ${brand_piranhabytes}. Zapolujmy na dziki!</pl>
 			</description>
 			<conditions min_audience="5.7301" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="472" penalty="661" infomercial_profit="133" fix_infomercial_profit="1" />
@@ -1171,10 +1319,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Krawatten-Minister</de>
 				<en>Tie-Minister</en>
+				<pl>Modny-Pan</pl>
 			</title>
 			<description>
 				<de>Der Mode Discount nicht nur für Fliegenträger. Dicker Katalog, schmaler Preis.</de>
 				<en>The fashion discount not just for bow tie users. Thick catalog, small prices.</en>
+				<pl>Zniżka modowa nie tylko dla użytkowników muszek. Gruby katalog, niskie ceny.</pl>
 			</description>
 			<conditions min_audience="0.31" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="2166" penalty="2688" infomercial_profit="75" fix_infomercial_profit="1" />
@@ -1183,10 +1333,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Handy-Dandy</de>
 				<en>Puny Phones</en>
+				<pl>Tele-Fere</pl>
 			</title>
 			<description>
 				<de>Hol Dir die knalligen Cover für Dein Handy. Vorbei mit drögem Graublau. Jetzt auch für alle ${brand_siemens}-Modelle verfügbar.</de>
 				<en>Get our flashy covers for your mobile phone. Gone is the dull gray-blue. Now also available for ${brand_siemens} models.</en>
+				<pl>Zdobądź nasze efektowne pokrowce na telefon komórkowy. Zniknął nudny szaro-niebieski kolor. Teraz dostępne również dla modeli ${brand_siemens}.</pl>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="770" penalty="1100" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1196,10 +1348,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Kaschämm</de>
 				<en>Gin Palace</en>
+				<pl>Pub Nora Opoja</pl>
 			</title>
 			<description>
 				<de>Deine Stammkneipe mit dem Hauch des Prätentiösen. Bierdeckel an den Wänden zeugen von weitreichender Bierkenntnis des Wirtes.</de>
 				<en>Your favourite pub with a touch of the pretentious. Beermats on the walls testify to the innkeeper's extensive knowledge of beer.</en>
+				<pl>Twój ulubiony pub z odrobiną pretensjonalności. Beermaty na ścianach świadczą o rozległej wiedzy karczmarza na temat piwa.</pl>
 			</description>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
@@ -1208,10 +1362,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Lammpion</de>
 				<en>Lambion</en>
+				<pl>Lampion</pl>
 			</title>
 			<description>
 				<de>Lustige Laternen in zahlreichen Tierformen. Jetzt neu: Kuh und Marienkäfer. Der Knaller für jeden Kindergeburtstag.</de>
 				<en>Funny lanterns in numerous animal shapes. Brand new: Cow and Ladybug. The cracker for every child's birthday.</en>
+				<pl>Zabawne lampiony w różnych kształtach zwierząt. Nowość: krowa i biedronka. Krakers na urodziny każdego dziecka.</pl>
 			</description>
 			<conditions min_audience="0.1" min_image="8" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="3800" penalty="4500" infomercial_profit="75" fix_infomercial_profit="1" />
@@ -1220,10 +1376,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Meschmucke</de>
 				<en>DJ Meshugge</en>
+				<pl>DJ Meshugge</pl>
 			</title>
 			<description>
 				<de>Crazy Beats vom israelischen Star-DJ 4Locke. Jetzt alle 3 Hits auf einem Album.</de>
 				<en>Crazy beats from Israelic star DJ Meshugge. Now all 3 hits on one Album.</en>
+				<pl>Szalone bity od izraelskiej gwiazdy DJ Meshugge. Teraz wszystkie 3 hity na jednym albumie.</pl>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="770" penalty="1200" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1233,10 +1391,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Senner-Käs</de>
 				<en>Herdsman Cheese</en>
+				<pl>Ser Juhasa</pl>
 			</title>
 			<description>
 				<de>Handgemachter Käse von hoch in den Alpen. Bärtige Senner, Sonne, saftige Wiesen und glückliche Kühe liefern den Gaumenschmaus für einen jeden Stadtmenschen.</de>
 				<en>Handmade cheese from high up in the Alps. Bearded dairymen, the sun, lush meadows and happy cows provide the palate for any city dweller.</en>
+				<pl>Ręcznie robiony ser z wysokich partii Alp. Brodaci mleczarze, słońce, bujne łąki i szczęśliwe krowy zapewniają podniebienie każdemu mieszkańcowi miasta.</pl>
 			</description>
 			<conditions min_audience="1.041" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="21" repetitions="7" duration="6" profit="1050" penalty="2024" infomercial_profit="85" fix_infomercial_profit="1" />
@@ -1245,10 +1405,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Veggismecki</de>
 				<en>Veggismacky</en>
+				<pl>Wegismaki</pl>
 			</title>
 			<description>
 				<de>Leckere Tofutörtchen für den Vegetarier von heute. Alle Tofutiere werden artgerecht gehalten und mit Biofutter aufgezogen.</de>
 				<en>Delicious tofu tarts for the contemporary vegetarian. All tofu livestock is kept species-appropriate and reared with organic feed.</en>
+				<pl>Pyszne tarty z tofu dla współczesnych wegetarian. Wszystkie zwierzęta hodowane na tofu są odpowiednie gatunkowo i hodowane na ekologicznej paszy.</pl>
 			</description>
 			<conditions min_audience="2.6041" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="27" repetitions="6" duration="5" profit="690" penalty="1200" infomercial_profit="80" fix_infomercial_profit="1" />
@@ -1257,10 +1419,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Wackeldackel</de>
 				<en>Nodding Dog</en>
+				<pl>Kiwający Pies</pl>
 			</title>
 			<description>
 				<de>Wir verkaufen nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
 				<en>We sell nothing but nodding dogs. But at unrivaled low prices. Brand new: the dwarf dachshund in 1:1 scale.</en>
+				<pl>Sprzedajemy tylko kiwające głową psy. Ale w bezkonkurencyjnie niskich cenach. Nowość: jamnik karłowaty w skali 1:1.</pl>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="19" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="55" fix_infomercial_profit="1" />
@@ -1270,10 +1434,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Wackeldackel</de>
 				<en>Nodding Dog</en>
+				<pl>Kiwający Pies</pl>
 			</title>
 			<description>
 				<de>Wir verkaufen wieder nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
 				<en>We still sell nothing but nodding dogs. But at unrivaled low prices. Brand new: the dwarf dachshund in 1:1 scale.</en>
+				<pl>Nadal sprzedajemy tylko kiwające głową psy. Ale w bezkonkurencyjnie niskich cenach. Nowość: jamnik karłowaty w skali 1:1.</pl>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1283,10 +1449,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Alle Hits 1</de>
 				<en>All Hits 1</en>
+				<pl>Wszystkie Hity 1</pl>
 			</title>
 			<description>
 				<de>Dein Musiksampler! Alle Hits der vergangenen 3 Tage auf einer randvoll gefüllten 90 Minuten Kassette. In Stereo!</de>
 				<en>Your music compilation! All the hits of the past 3 days on one jam-packed 90 minute cassette. In stereo!</en>
+				<pl>Twoja muzyczna kompilacja! Wszystkie hity ostatnich 3 dni na jednej 90-minutowej kasecie. W stereo!</pl>
 			</description>
 			<conditions min_audience="2.08" min_image="12" target_group="2" />
 			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="780" penalty="1220" fix_infomercial_profit="1" />
@@ -1296,10 +1464,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Alle Hits 2</de>
 				<en>All Hits 2</en>
+				<pl>Wszystkie Hity 2</pl>
 			</title>
 			<description>
 				<de>„Alle Hits“ ist wieder da! 40 Wahnsinnshits auf einer Doppel-MC. Nur jetzt mit Faltposter zum selbst bemalen.</de>
 				<en>"All Hits" is back again! 40 mad hits on one double MC. Only now with folding poster you can color yourself.</en>
+				<pl>„Wszystkie Hity” powracają! 40 szalonych hitów na jednym podwójnym MC. Tylko teraz ze składanym plakatem, który możesz samodzielnie pokolorować.</pl>
 			</description>
 			<conditions min_audience="2.083" min_image="4" target_group="3" />
 			<data infomercial="1" quality="22" repetitions="7" duration="4" profit="780" penalty="1150" fix_infomercial_profit="1" />
@@ -1309,10 +1479,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Alle Hits Best Of</de>
 				<en>All Hits Best Of</en>
+				<pl>Wszystkie Hity - Best Of</pl>
 			</title>
 			<description>
 				<de>Nicht eine Kassette, nicht zwei, nicht drei! Unglaubliche 4 Musikkassetten haben wir mit den Hits der letzten 5 Jahre bespielt. Euer Walkman wird nie wieder etwas anderes spielen wollen!</de>
 				<en>Not one cassette, not two, not three! Incredible 4 music cassettes packed with the hits of the last 5 years. Your Walkman will never want to play anything else!</en>
+				<pl>Nie jedna kaseta, nie dwie, nie trzy! Niesamowite 4 kasety muzyczne wypełnione hitami ostatnich 5 lat. Twój Walkman już nigdy nie będzie chciał odtwarzać niczego innego!</pl>
 			</description>
 			<conditions min_audience="2.083" min_image="7" target_group="2" />
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1" />
@@ -1325,6 +1497,7 @@ I feel good with ${brand_downy}.</en>
 			<description>
 				<de>Sie hassen es, keinen Finger krumm zu machen? SOS Arthritis lindert die Beschwerden innerhalb weniger Stunden. Jetzt bestellen und 1 Flasche Schlangenöl umsonst dazubekommen.</de>
 				<en>You hate not lifting a finger? SOS Arthritis relieves the discomfort within a few hours. Order now and get 1 bottle of snake oil for free.</en>
+				<pl>Nienawidzisz nie kiwnąć palcem? SOS Arthritis łagodzi dyskomfort w ciągu kilku godzin. Zamów teraz i otrzymaj 1 butelkę oleju węża za darmo.</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="12" target_group="64" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="12" repetitions="4" duration="3" profit="685" penalty="990" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1333,10 +1506,12 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Bargeld-Kalle</de>
 				<en>Cash-Dave</en>
+				<pl>Antykwariat Kamfora</pl>
 			</title>
 			<description>
 				<de>Antikes und Kram zu Spottpreisen. Egal was, egal woher - wir zahlen für Ihren alten Mist! Gern auch Hausbesuche. Einfach den Schlüssel unter den Abstreicher, wir kümmern uns um den Rest.</de>
 				<en>Antiques and junk at rock bottom prices. No matter what, no matter wherefrom - we will pay for your old crap! With pleasure also house calls. Just put the key under the doormat and we'll take care of the rest.</en>
+				<pl>Antyki i rupiecie w najniższych cenach. Nieważne co, nieważne skąd - zapłacimy za Twoje stare graty! Z przyjemnością również wizyty domowe. Wystarczy włożyć klucz pod wycieraczkę, a my zajmiemy się resztą.</pl>
 			</description>
 			<conditions min_audience="0.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="3" duration="2" profit="2200" penalty="2400" fix_infomercial_profit="1" />
@@ -1345,12 +1520,15 @@ I feel good with ${brand_downy}.</en>
 			<title>
 				<de>Batterie-Tanke</de>
 				<en>Battery-Station</en>
+				<pl>Stacja ładowania - SB</pl>
 			</title>
 			<description>
 				<de>Keine Zeit Ihre Akkus selbst aufzuladen?
 Wir bieten Lade-Vollautomaten. Batterie einlegen, Münzschacht befüllen. Knopf drücken - und schon nach 72 Stunden können Sie ihre vollgeladenen Batterien entnehmen. Laden war noch nie so einfach.</de>
 				<en>No time to recharge your batteries yourself?
 We offer fully automatic charging machines. Insert battery, fill coin slot. Press the button - and after just 72 hours, you can take out your fully charged batteries. Charging has never been as simple as that.</en>
+				<pl>Nie masz czasu na samodzielne ładowanie baterii?
+Oferujemy w pełni automatyczne ładowarki. Włóż baterię, wypełnij slot na monety. Naciśnij przycisk - i już po 72 godzinach możesz wyjąć w pełni naładowane baterie. Ładowanie nigdy nie było tak proste.</pl>
 			</description>
 			<conditions min_audience="5.73" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" fix_price="0" profit="445" penalty="717" fix_infomercial_profit="1" />
@@ -1364,6 +1542,8 @@ We offer fully automatic charging machines. Insert battery, fill coin slot. Pres
 Brucey - herber Duft für Männer vom Fach.</de>
 				<en>Women absolutely love the nerd in you. Let them smell him!
 Brucey - harsh fragrance for expert men.</en>
+				<pl>Kobiety absolutnie uwielbiają w tobie kujona. Niech poczują jego zapach!
+Brucey - ostry zapach dla doświadczonych mężczyzn.</pl>
 			</description>
 			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="470" penalty="800" infomercial_profit="49" fix_infomercial_profit="1" />
@@ -1372,10 +1552,12 @@ Brucey - harsh fragrance for expert men.</en>
 			<title>
 				<de>Einkaufseck</de>
 				<en>Corner Shop</en>
+				<pl>Sklep "Za rogiem"</pl>
 			</title>
 			<description>
 				<de>Braten, Brot und Bier! Wir haben alles für alleinstehende Männer und Familien mit kochscheuen Hausfrauen.</de>
 				<en>Brisket, bread and beer! We have everything for single men and families with housewives reluctant to cook.</en>
+				<pl>Pieczeń, chleb i piwo! Mamy wszystko dla samotnych mężczyzn i rodzin z gospodyniami domowymi niechętnymi do gotowania.</pl>
 			</description>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="6" duration="3" fix_price="0" profit="2375" penalty="3500" fix_infomercial_profit="1" />
@@ -1384,10 +1566,12 @@ Brucey - harsh fragrance for expert men.</en>
 			<title>
 				<de>Gutendruck</de>
 				<en>Gutendruck</en>
+				<pl>Dobrydruk</pl>
 			</title>
 			<description>
 				<de>Bei uns wird Ihr Buch noch gewalzt! Egal ob Stammbuch oder Tagebuch, wir bringen Ihr Werk unters Volk.</de>
 				<en>We still mill your book! Whether family book or diary, we get your work to the masses.</en>
+				<pl>Wciąż mielimy Twoją książkę! Niezależnie od tego, czy jest to książka rodzinna, czy pamiętnik, dzięki nam Twoje dzieło trafi do mas.</pl>
 			</description>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="5" duration="3" profit="510" penalty="823" fix_infomercial_profit="1" />
@@ -1399,6 +1583,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<description>
 				<de>Der Knallerkaubonbon aus Hawaii. Noch nie schmeckte Zucker so tro-tro-tropisch.</de>
 				<en>The banger chewy candy from Hawaii. Never before has sugar tasted so tro-tro-tropical.</en>
+				<pl>Bangerowe cukierki do żucia z Hawajów. Nigdy wcześniej cukier nie smakował tak tropikalnie.</pl>
 			</description>
 			<conditions min_audience="2.6" min_image="18" target_group="1" />
 			<data quality="15" repetitions="4" duration="2" profit="720" penalty="1100" fix_infomercial_profit="1" />
@@ -1411,6 +1596,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<description>
 				<de>Der hawaiianische Kaubonbon jetzt mit neuem Trendgeschmack. Kandierte Hühnerkrallen verleihen die faszinierende Würze.</de>
 				<en>The Hawaiian chewy candy now with a brand new and trendy flavor. Candied chicken claws lend the fascinating spice.</en>
+				<pl>Hawajskie cukierki do żucia teraz w zupełnie nowym, modnym smaku. Kandyzowane pazury kurczaka dodają fascynującej pikanterii.</pl>
 			</description>
 			<conditions min_audience="2.6041" min_image="18" target_group="1" />
 			<data quality="20" repetitions="4" duration="2" profit="720" penalty="1100" fix_infomercial_profit="1" />
@@ -1423,6 +1609,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<description>
 				<de>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</de>
 				<en>Delicious compote like from grandma. The only true dessert - with pip-bite guarantee.</en>
+				<pl>Pyszny kompot jak od babci. Jedyny prawdziwy deser - z gwarancją nadgryzienia.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="5" repetitions="6" duration="4" profit="1675" penalty="1957" infomercial_profit="138" fix_infomercial_profit="1" />
@@ -1430,10 +1617,12 @@ Brucey - harsh fragrance for expert men.</en>
 		<ad guid="ronny-ad-laola-01" creator="5578" created_by="Ronny">
 			<title>
 				<all>Laola</all>
+				<pl>Olala</pl>
 			</title>
 			<description>
 				<de>Das freche Jugendmagazin. Wir beantworten Fragen zu Liebe und Sex nur im Winter.</de>
 				<en>The naughty youth magazine. We answer your intimate questions without a grin :-).</en>
+				<pl>Niegrzeczny magazyn dla młodzieży. Odpowiadamy na intymne pytania bez uśmiechu :-).</pl>
 			</description>
 			<conditions min_audience="5.21" min_image="12" target_group="2" />
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="510" penalty="1175" fix_infomercial_profit="1" />
@@ -1442,10 +1631,12 @@ Brucey - harsh fragrance for expert men.</en>
 			<title>
 				<de>Litfaßsäule</de>
 				<en>Adpillar</en>
+				<pl>Dodbaner</pl>
 			</title>
 			<description>
 				<de>Sie finden sich hübsch? Zeigen Sie Ihren Nachbarn ihre beste Seite: Auf der Plakatwand um die Ecke.</de>
 				<en>You think you are pretty beautiful? Show your neighbors your best side: On the billboard around the corner.</en>
+				<pl>Myślisz, że jesteś piękna? Pokaż się sąsiadom z jak najlepszej strony: Na billboardzie za rogiem.</pl>
 			</description>
 			<conditions min_audience="0.1" min_image="0" />
 			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="4000" penalty="4900" fix_infomercial_profit="1" />
@@ -1454,10 +1645,12 @@ Brucey - harsh fragrance for expert men.</en>
 			<title>
 				<de>1-2-3-Porträt</de>
 				<en>1-2-3-Portrait</en>
+				<pl>1-2-3-Portret</pl>
 			</title>
 			<description>
 				<de>Wir bannen Sie oder Ihre Familie auf die Leinwand. Wenn Sie keine Zeit haben sollten, pausen wir auch von Fotos ab. Für andere ... Kunstprojekte ... bitte Termin vereinbaren.</de>
 				<en>We capture you or your family on the canvas. If you do not have time, we also trace from photos. For other ... art projects ... please make an appointment.</en>
+				<pl>Uchwycimy Ciebie lub Twoją rodzinę na płótnie. Jeśli nie masz czasu, możemy również śledzić ze zdjęć. W przypadku innych ... projektów artystycznych ... prosimy o umówienie się na spotkanie.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="6" target_group="4" />
 			<data infomercial="1" quality="14" repetitions="4" duration="4" profit="1888" penalty="3298" fix_infomercial_profit="1" />
@@ -1466,10 +1659,12 @@ Brucey - harsh fragrance for expert men.</en>
 			<title>
 				<de>Rentner-Reisen</de>
 				<en>Retiree-Routes</en>
+				<pl>Wycieczki "Stary-dziad"</pl>
 			</title>
 			<description>
 				<de>Sie haben keine Lust den Lebensabend allein zu verbringen? Sie genießen die Anwesenheit anderer Ruheständler? Wir bieten Tagesreisen in die schönsten Dörfer - und die besten Rheumadecken.</de>
 				<en>You don't feel like spending the evening of your life alone? You enjoy the presence of other retirees? We offer day trips to the most beautiful villages - and the best rheumatism blankets.</en>
+				<pl>Nie masz ochoty spędzać wieczoru swojego życia samotnie? Cieszysz się obecnością innych emerytów? Oferujemy jednodniowe wycieczki do najpiękniejszych miejscowości - i najlepsze koce na reumatyzm.</pl>
 			</description>
 			<conditions min_audience="1.562" min_image="12" target_group="64" />
 			<data infomercial="1" quality="12" repetitions="5" duration="4" profit="890" penalty="1500" fix_infomercial_profit="1" />
@@ -1478,10 +1673,12 @@ Brucey - harsh fragrance for expert men.</en>
 			<title>
 				<de>Wendebier</de>
 				<en>Reunion Beer</en>
+				<pl>Piwo Pojednanie</pl>
 			</title>
 			<description>
 				<de>Aus dem Osten der Hopfen, aus dem Westen die Luft ... und das Gold. Lecker Bierchen für Väter aller Länder.</de>
 				<en>East German hop, from West Germany the air ... and the gold. Delicious little brews for fathers of all countries.</en>
+				<pl>Wschodnioniemiecki chmiel, powietrze z zachodnich Niemiec ... i złoto. Pyszne małe piwa dla ojców wszystkich krajów.</pl>
 			</description>
 			<conditions min_audience="9.3772" min_image="12" target_group="256" />
 			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="340" penalty="520" infomercial_profit="85" fix_infomercial_profit="1" />
@@ -1494,6 +1691,7 @@ Brucey - harsh fragrance for expert men.</en>
 			<description>
 				<de>Der Rollator verrostet? Die Verwandten glänzen seit Jahren mit Abwesenheit? Sanitaxi versorgt Sie mit allen notwendigen Hygieneartikeln. Jetzt mit trendigen Motiven auf jeder zweiten Einlage.</de>
 				<en>The walker is rusted? Your relatives have been glaringly absent for years? Sanitaxi provides you with all the hygiene products you need. Now with trendy designs on every second liner.</en>
+				<pl>Chodzik jest zardzewiały? Twoi krewni są rażąco nieobecni od lat? Sanitaxi zapewnia wszystkie produkty higieniczne, których potrzebujesz. Teraz z modnymi wzorami na co drugiej wkładce.</pl>
 			</description>
 			<conditions min_audience="5.7301" min_image="12" target_group="64" />
 			<data infomercial="1" quality="12" repetitions="2" duration="4" profit="420" penalty="952" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -1502,12 +1700,15 @@ Brucey - harsh fragrance for expert men.</en>
 			<title>
 				<de>Schminkstift</de>
 				<en>Beauty Pen</en>
+				<pl>Szminki Djor</pl>
 			</title>
 			<description>
 				<de>Verschönert Lippen, Augenlider und auch Wände. Von Frauen und Kindern erprobt!
 Erhältlich in jeder gut sortierten Drogerie.</de>
 				<en>Decorate lips, eyelids and even walls. Tried and tested by women and children!
 Available in any well-stocked drugstore.</en>
+				<pl>Ozdabiaj usta, powieki, a nawet ściany. Wypróbowane i przetestowane przez kobiety i dzieci!
+Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="1" duration="3" profit="771" penalty="900" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1516,10 +1717,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Speckfett</de>
 				<en>Fatty Bacon</en>
+				<pl>Smalec</pl>
 			</title>
 			<description>
 				<de>Griebenschmalz aus dem Erzgebirge! Von stark behaarten Männern empfohlen. „Ruff off de Bemme“ seit 1951.</de>
 				<en>Greaves lard from the Ore Mountains! Recommended by heavily haired men. "Just this and bread" since 1951.</en>
+				<pl>Smalec ze skwarków z Rudaw! Polecany przez mocno owłosionych mężczyzn. „Tylko to i chleb” od 1951 roku.</pl>
 			</description>
 			<conditions min_audience="1.8225" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="8" repetitions="3" duration="3" profit="828" penalty="1155" infomercial_profit="115" fix_infomercial_profit="1" />
@@ -1527,10 +1730,12 @@ Available in any well-stocked drugstore.</en>
 		<ad guid="ronny-ad-zickschnack-01" creator="5578" created_by="Ronny">
 			<title>
 				<all>Zick-Schnack</all>
+				<pl>Pub Ptak-Snak</pl>
 			</title>
 			<description>
 				<de>Die Szenekneipe für Tussis und andere Tratschtanten. Dienstags Frei-Secco bei bunten Fingernägeln.</de>
 				<en>The trendy pub for birds and other chatterboxes. Tuesdays free-secco if you come with multicolored finger nails.</en>
+				<pl>Modny pub dla ptaków i innych gaduł. We wtorki darmowe piwo, jeśli masz różnokolorowe paznokcie.</pl>
 			</description>
 			<conditions min_audience="0.6242" min_image="18" target_group="2" />
 			<data infomercial="1" quality="11" repetitions="4" duration="5" profit="1583" penalty="2400" fix_infomercial_profit="1" />
@@ -1539,10 +1744,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Zockomo</de>
 				<en>Screwmatic</en>
+				<pl>Spadziocha</pl>
 			</title>
 			<description>
 				<de>Sie zuviel Geld auf hoher Kante? Wir helfen finden ferne Verwandte für Vererbung!</de>
 				<en>U too many money under mattress? We helping u find distant relatives for bequeth!</en>
+				<pl>Za dużo pieniędzy pod materacem? Pomagamy znaleźć dalekich krewnych do spadku!</pl>
 			</description>
 			<conditions min_audience="18.76" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="7" profit="220" penalty="500" infomercial_profit="95" fix_infomercial_profit="1" />
@@ -1551,10 +1758,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Abschiedsgruß</de>
 				<en>Farewell</en>
+				<pl>Do zobaczenia</pl>
 			</title>
 			<description>
 				<de>Wir suchen uns eine neue Erde. Macht's gut und danke für den Fisch. Eure Delphine.</de>
 				<en>We are looking for a new earth. Take care and thanks for the fish. Your dolphins.</en>
+				<pl>Szukamy nowej ziemi. Trzymaj się i dzięki za rybę. Twoje delfiny.</pl>
 			</description>
 			<conditions min_audience="46.89" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="7" profit="170" penalty="453" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1567,6 +1776,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Die vollwertige Bio-Mahlzeit aus der Tube. Schmeckt wie bei Muttern, krümelt nicht und sooo gesund! Ideal für lange Zockerpartien.</de>
 				<en>The wholesome organic meal from the tube. Tastes like the food at home from mother, does not crumble and is sooo healthy! Ideal for long gaming sessions.</en>
+				<pl>Pełnowartościowy organiczny posiłek z tubki. Smakuje jak domowe jedzenie od mamy, nie kruszy się i jest tak zdrowy! Idealny na długie sesje grania.</pl>
 			</description>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1050" penalty="1600" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1575,10 +1785,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Macht nischt</de>
 				<en>Not a prob</en>
+				<pl>Niemabata</pl>
 			</title>
 			<description>
 				<de>Das dicke Ausredenbuch. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
 				<en>The thick book of excuses. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
+				<pl>Gruba księga wymówek. Wymówki na każdą okazję, od przedszkola po własny pogrzeb. Już nigdy nie będziesz całkowicie zagubiony.</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="105" fix_infomercial_profit="1" />
@@ -1588,10 +1800,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Macht nischt.deu</de>
 				<en>Not a prob.deu</en>
+				<pl>Niemabata.deu</pl>
 			</title>
 			<description>
 				<de>Der Online-Shop. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
 				<en>The online shop. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
+				<pl>Sklep internetowy. Wymówki na każdą okazję, od przedszkola po własny pogrzeb. Już nigdy nie będziesz zagubiony.</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="7" duration="4" profit="718" penalty="1277" infomercial_profit="100" fix_infomercial_profit="1" />
@@ -1601,10 +1815,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Ratz-Fatz</de>
 				<en>Hassle Frazzle</en>
+				<pl>Rozw-ierdol</pl>
 			</title>
 			<description>
 				<de>Kein Bock mehr auf den Alten? Ratz-Fatz-Scheidungshotline. Wir liefern Gründe, Anlässe, Anwälte und Schuldfreigarantie!</de>
 				<en>Tired of your old man? Call the Hassle Frazzle divorce hotline. We provide reasons, causes, attorneys and a not-guilty guarantee!</en>
+				<pl>Masz dość swojego starego mężczyzny? Zadzwoń na infolinię rozwodową Rozw-ierdol. Zapewniamy powody, adwokatów i gwarancję braku winy!</pl>
 			</description>
 			<conditions min_audience="11.4612" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="322" penalty="504" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1613,10 +1829,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Der große Umrechner</de>
 				<en>The bulky converter</en>
+				<pl>SprytnyKonwerter</pl>
 			</title>
 			<description>
 				<de>Das Handbuch zum Umrechnen von D-Mark in Mark der DDR! Für alle, die's genau wissen wollen. Weil früher alles besser war. Und billiger?</de>
 				<en>The manual for converting Deutsche Mark (DEM) into East German mark (DDM)! For all who want to know things precisely. Because everything was better in the old days. And cheaper?</en>
+				<pl>Instrukcja przeliczania marki niemieckiej (DEM) na markę wschodnioniemiecką (DDM)! Dla wszystkich, którzy chcą wiedzieć wszystko dokładnie. Ponieważ w dawnych czasach wszystko było lepsze. I tańsze?</pl>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1626,10 +1844,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Umrechner.deu</de>
 				<en>BulkyConverter.deu</en>
+				<pl>SprytnyKonwerter.deu</pl>
 			</title>
 			<description>
 				<de>Die Webseite zum Umrechnen von Euro in D-Mark! Für alle, die's genau wissen wollen. Weil früher alles besser war.</de>
 				<en>The website for converting Euro (EUR) into Deutsche Mark (DEM). For all who want to know things precisely. Because everything was better in the old days.</en>
+				<pl>Strona do przeliczania euro (EUR) na markę niemiecką (DEM). Dla wszystkich, którzy chcą wiedzieć wszystko dokładnie. Ponieważ wszystko było lepsze w dawnych czasach.</pl>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="440" penalty="697" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -1639,10 +1859,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Unternehmensberatung Beisele</de>
 				<en>Billayehill Business Consulting</en>
+				<pl>Doradca biznesowy BankrutHill</pl>
 			</title>
 			<description>
 				<de>Mir schwätzed Iha'ne nai und kriagat ah'no was dafiar! Guat, is net guat g'nuag! S'muss scho Beisele sai!</de>
 				<en>We dae nae footer wi' yer business bit ye aye benefit o' commissioning us. Guid insae guid enough! It haes tae be Billayehill!</en>
+				<pl>Nie mamy nic wspólnego z Twoim biznesem, ale skorzystasz na zatrudnieniu nas. Wystarczająco mądrze! To musi być BankrutHill!</pl>
 			</description>
 			<conditions min_audience="18.76" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="3" duration="6" profit="220" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
@@ -1651,10 +1873,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Bobo Wattebällchen</de>
 				<en>Bobo Cotton Balls</en>
+				<pl>Kulki bawełniane Bobo</pl>
 			</title>
 			<description>
 				<de>Wattebällchen für jeden Anlass. Bobo Wattebällchen für die Frau, für das Kind und für den Soldat.</de>
 				<en>Cotton balls for any occasion. Bobo Cotton Balls for the woman, for the child and for the soldier.</en>
+				<pl>Kulki bawełniane na każdą okazję. Kulki bawełniane Bobo dla kobiety, dla dziecka i dla żołnierza.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" />
 			<data infomercial="1" quality="10" repetitions="2" duration="2" profit="575" penalty="890" fix_infomercial_profit="1" />
@@ -1663,10 +1887,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Spedition und Lagerei Bruch</de>
 				<en>Transport and Warehousing B. Reach</en>
+				<pl>Transport i magazynowanie B. Dostępny</pl>
 			</title>
 			<description>
 				<de>Wir fahren Ihre Waren zu Bruch. Dann verteilen wir sie über die ganze Welt.</de>
 				<en>First we drive your goods to B. Reach. Then we distribute them worldwide.</en>
+				<pl>Najpierw przewozimy towary do B. Dostępny. Następnie dystrybuujemy je na całym świecie.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="0" target_group="0" />
 			<data infomercial="1" quality="8" repetitions="5" duration="2" profit="874" penalty="1251" infomercial_profit="90" fix_infomercial_profit="1" />
@@ -1674,10 +1900,12 @@ Available in any well-stocked drugstore.</en>
 		<ad guid="speedminister-ad-Bullshit-Bingo-Brokers" creator="8605" created_by="SpeedMinister">
 			<title>
 				<all>Bullshit Bingo Brokers</all>
+				<pl>Brokerzy Bullshit Bingo</pl>
 			</title>
 			<description>
 				<de>Traum-Renditen ohne den Finger krumm zu machen. Ganze Bevölkerungen in die Hungersnot schicken? - Egal? - Bullseye mit Bullshit Bingo Brokers!</de>
 				<en>Dream returns without lifting a finger. Sending entire populations into famine? - Doesn't matter? - Bullseye with Bullshit Bingo Brokers!</en>
+				<pl>Sen powraca bez kiwnięcia palcem. Wysyłanie całych populacji na głód? - To nie ma znaczenia? - Strzał w dziesiątkę z Brokerami Bullshit Bingo!</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="4" profit="240" penalty="320" infomercial_profit="15" fix_infomercial_profit="1" />
@@ -1689,6 +1917,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>3D Scanner und 3D Drucker in einem. Denken Sie an die Möglichkeiten! Verwandeln Sie eine Metallvorlage in ein Plastik-Original. Doublie-Kate von „Life is Groats“!</de>
 				<en>3D scanner and 3D printer in one. Think of the possibilities! Turn a metal template into a plastic original. Doublie-Kate from "Life is Groats"!</en>
+				<pl>Skaner 3D i drukarka 3D w jednym. Pomyśl o możliwościach! Zamień metalowy szablon w plastikowy oryginał. Doublie-Kate z „Życie to kasza”!</pl>
 			</description>
 			<conditions min_audience="28.65" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="4" profit="170" penalty="309" infomercial_profit="35" fix_infomercial_profit="1" />
@@ -1697,10 +1926,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Dörrobst Toni</de>
 				<en>Dried Fruit Dave</en>
+				<pl>Suszone owoce Dawida</pl>
 			</title>
 			<description>
 				<de>Ganz neu Dörrgemüse bei uns im Spezialitäten-Regal. In den Sorten Dörr-Kürbis, Dörr-Gurke und Dörr-Wassermelone!</de>
 				<en>Brand new in our specialties shelf: dried vegetables. In the varieties dried pumpkin, dried cucumber and dried watermelon!</en>
+				<pl>Zupełna nowość na naszej półce specjałów: suszone warzywa. W odmianach suszona dynia, suszony ogórek i suszony arbuz!</pl>
 			</description>
 			<conditions min_audience="1.3015" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="6" duration="4" profit="1060" penalty="1571" fix_infomercial_profit="1" />
@@ -1712,6 +1943,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Suchen Sie jemanden zum Dissen oder Haten? Fehlt Ihnen bisher ein Erzfeind? Nutzen Sie „Enemy24“! Wir finden Ihren persönlichen Gegenspieler!</de>
 				<en>Looking for someone to diss and hate? Are you still lacking an archenemy? Use "Enemy24"! We will find your personal opponent!</en>
+				<pl>Szukasz kogoś, kogo mógłbyś znienawidzić? Wciąż brakuje ci arcywroga? Użyj „Enemy24”! Znajdziemy twojego osobistego przeciwnika!</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="3" duration="3" profit="330" penalty="565" infomercial_profit="28" fix_infomercial_profit="1" />
@@ -1720,10 +1952,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Die halbe Enzyklopädie von Allem</de>
 				<en>Half the Encyclopedia of Everything</en>
+				<pl>Połowiczna Encyklopedia Wszystkiego</pl>
 			</title>
 			<description>
 				<de>Nehmen wir an, dass die Zeitrechnung unendlich in die Vergangenheit reicht und dass sie unendlich in die Zukunft reicht. So ist das Jetzt genau die Hälfte der Zeit, die Hälfte von Allem. Singularity Verlag.</de>
 				<en>Let us assume that the calculation of time reaches infinitely into the past and that it reaches infinitely into the future. Thus, the present is exactly half of time, half of all there is. Singularity Publishing.</en>
+				<pl>Załóżmy, że obliczenia czasu sięgają nieskończenie daleko w przeszłość i nieskończenie daleko w przyszłość. Zatem teraźniejszość to dokładnie połowa czasu, połowa wszystkiego, co istnieje. Wydawca: Osobliwość.</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="0" target_group="0" />
 			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="210" penalty="303" infomercial_profit="25" fix_infomercial_profit="1" />
@@ -1732,10 +1966,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Die ganze Enzyklopädie von Allem</de>
 				<en>The Complete Encyclopedia of Everything</en>
+				<pl>Kompletna Encyklopedia Wszystkiego</pl>
 			</title>
 			<description>
 				<de>Herausgegeben in 2 Bänden. Band 1 bereits heute erhältlich. Jedoch können wir vorraussagen, dass Band 2 nie erscheinen wird, da wir nicht in die Zukunft sehen können. Ein Paradox? Singularity Verlag.</de>
 				<en>Published in 2 volumes. Volume 1 already available today. However, we can predict that Band 2 will never appear, as we can not see into the future. A paradox? Singularity Publishing.</en>
+				<pl>Wydany w 2 tomach. Tom 1 jest już dziś dostępny. Możemy jednak przewidzieć, że Tom 2 nigdy się nie ukaże, ponieważ nie możemy zajrzeć w przyszłość. Paradoks? Wydawca: Osobliwość.</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="37" target_group="0" />
 			<data infomercial="1" quality="31" repetitions="2" duration="2" profit="215" penalty="315" fix_infomercial_profit="1" />
@@ -1744,10 +1980,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Fluchomat von Karkasonic</de>
 				<en>Cursomat by Karkasonic</en>
+				<pl>Karkasonic przekleństwomat</pl>
 			</title>
 			<description>
 				<de>Stört sie der zensierende Piepston anstelle eines saftigen Fluches? Karkasonic hat die Lösung: Der Fluchomat. Mit Fluchneuheiten und Übertreibungsgarantie!!!</de>
 				<en>Annoyed by censoring beeps instead of sappy curses? Karkasonic has the solution: The Cursomat. With innovative curses and exaggeration guarantee!!!</en>
+				<pl>Irytują cię cenzurujące sygnały dźwiękowe zamiast ckliwych przekleństw? Karkasonic ma rozwiązanie: przekleństwomat. Z innowacyjnymi przekleństwami i gwarancją przesady!!!</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="4" profit="287" penalty="422" fix_infomercial_profit="1" />
@@ -1756,10 +1994,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Brauerei Hopfengurgler</de>
 				<en>Brewery Hopgurgler</en>
+				<pl>Browar Chmiel</pl>
 			</title>
 			<description>
 				<de>Echt genial: Unser Doppelbock gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</de>
 				<en>A touch of genious: our double bock beer is now available free of alcohol too! Oans, zwoa, droa, g'suffa!</en>
+				<pl>Odrobina geniuszu: nasze piwo jest teraz dostępne również w wersji bezalkoholowej! Jedn, dwoa, tszy, gulp!</pl>
 			</description>
 			<conditions min_audience="4.1671" min_image="40" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" />
@@ -1769,10 +2009,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Brauerei Hopfengurgler</de>
 				<en>Brewery Hopgurgler</en>
+				<pl>Browar Chmiel</pl>
 			</title>
 			<description>
 				<de>Echt genial: Pilsner, Export und Weizen jetzt auch als Zäpfchen erhältlich! Praktisch im 40er Party-Pack! Das zieht rein! Oans, zwoa, droa, ziags!</de>
 				<en>Really ingenious: Pilsner, export and wheat beer now also available as suppositories! Conveniently in a party pack of 40! That gets in! Oans, zwoa, droa, ziags!</en>
+				<pl>Naprawdę pomysłowe: Piwo pilzneńskie, eksportowe i pszeniczne teraz dostępne również jako czopki! W wygodnym opakowaniu po 40 sztuk! To wchodzi! Jedn, dwoa, tszy, ciach!</pl>
 			</description>
 			<conditions min_audience="4.17" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="568" penalty="450" fix_infomercial_profit="1" />
@@ -1782,10 +2024,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Imkerei Hummeldoof</de>
 				<en>Apiary Dumblebee</en>
+				<pl>Pasieka Dumblebee</pl>
 			</title>
 			<description>
 				<de>Premium Honigprodukte von Ihrer Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
 				<en>Premium honey products from your favorite apiary Dumblebee. We provide our bees with a good, motivating work environment. Including after-work pints!</en>
+				<pl>Najwyższej jakości produkty miodowe z ulubionej pasieki Dumblebee. Zapewniamy naszym pszczołom dobre, motywujące środowisko pracy. W tym kufle po pracy!</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="4" target_group="4" />
 			<data infomercial="1" quality="12" repetitions="3" duration="3" profit="2650" penalty="3343" fix_infomercial_profit="1" />
@@ -1794,10 +2038,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Immobilien-Haino</de>
 				<en>Real Estate Sharky</en>
+				<pl>Biuro nieruchomości "Rekinek"</pl>
 			</title>
 			<description>
 				<de>Von der Altbau-Baracke bis zur Luxusvilla. Wir haben alles im Programm! Zuerst: Selbstauskunft an uns schicken. Mit etwas Glück melden wir uns bei Ihnen.</de>
 				<en>From shacks to luxury villas. We have everything in our catalog! First: Send us your self-disclosure. With a little luck, we will get back to you.</en>
+				<pl>Od szałasów po luksusowe wille. W naszym katalogu mamy wszystko! Po pierwsze: wyślij nam swoje zgłoszenie. Przy odrobinie szczęścia odezwiemy się do Ciebie.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="1" duration="1" profit="843" penalty="1129" fix_infomercial_profit="1" />
@@ -1809,6 +2055,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Unsere doppelstöckigen Luftbusse sind großzügig eingerichtet. Für Kinder gibt es eine Wasserrutsche, ein Bällebad und Elefantenreiten im Heck.</de>
 				<en>Our double-decker air buses are generously furnished. For children there is a water slide, a ball pit and elephant rides in the stern.</en>
+				<pl>Nasze piętrowe samoloty są bogato wyposażone. Dla dzieci dostępna jest zjeżdżalnia wodna, boisko do gry w piłkę i przejażdżki na słoniu na rufie.</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="672" penalty="1001" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -1817,10 +2064,12 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Siggis Landwirtschafts-Discount</de>
 				<en>Old Joe's Farming-Discount</en>
+				<pl>Dyskont Farma Starego Jasia</pl>
 			</title>
 			<description>
 				<de>Egal ob Strohhäcksel, Heusilage, Maissilage, Bioabfall, Getreideschlempe, Rinder- oder Schweinegülle, wir haben alles! Kauf bei Siggi mit dem braunen Daumen!</de>
 				<en>Whether it's chopped straw, hay silage, corn silage, organic waste, grain mash, cattle or pig slurry, we have it all! Buy from Old Joe with the brown thumb!</en>
+				<pl>Niezależnie od tego, czy jest to sieczka, sianokiszonka, kiszonka z kukurydzy, odpady organiczne, zacier zbożowy, gnojowica bydlęca czy świńska, mamy to wszystko! Kupuj od Farmy Starego Jasia z brązowym kciukiem!</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="6" duration="4" profit="1400" penalty="2009" fix_infomercial_profit="1" />
@@ -1829,12 +2078,15 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
+				<pl>Wynajęta Papuga - magazyn</pl>
 			</title>
 			<description>
 				<de>Wir schleimen uns beim Pöbel ein, für die Auflage. Aber: wes Brot ich ess, des Lied ich sing.
 				Mietmaul - Wir sind gleicher als Andere.</de>
 				<en>We suck up to the rabble - for the print run. But who pays the piper, calls the tune.
 				Hired Parrot - We are more equal than others.</en>
+				<pl>Podlizujemy się motłochowi - dla nakładu. Ale kto płaci, ten wybiera melodię.
+				Wynajęta Papuga - jesteśmy równiejsi od innych.</pl>
 			</description>
 			<conditions min_audience="14.0663" min_image="7" target_group="32" />
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="270" penalty="440" infomercial_profit="14" fix_infomercial_profit="1" />
@@ -1844,12 +2096,15 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
+				<pl>Wynajęta Papuga - magazyn</pl>
 			</title>
 			<description>
 				<de>Werbung als Dokumentation getarnt. Senden Sie uns Ihr Werbematerial. Copy- und Paste-Praktikanten, 24/7 verfügbar.
 				Mietmaul - Wir sind gleicher als Andere.</de>
 				<en>Advertising disguised as documentation. Please send us your advertising material. Copy and paste interns available 24/7.
 				Hired Parrot - We are more equal than others.</en>
+				<pl>Reklama w przebraniu dokumentacji. Prześlij nam swoje materiały reklamowe. Stażyści kopiujący i wklejający dostępni 24/7.
+				Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</description>
 			<conditions min_audience="14.0663" min_image="18" target_group="32" />
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="278" penalty="460" fix_infomercial_profit="1" />
@@ -1859,12 +2114,15 @@ Available in any well-stocked drugstore.</en>
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
+				<pl>Wynajęta Papuga - magazyn</pl>
 			</title>
 			<description>
 				<de>Diskriminierung oder Hetzschrift. Gerne. - Ehre? Menschenwürde oder Mitgefühl? Das kennen wir nicht!
 Mietmaul - Wir sind gleicher als Andere.</de>
 				<en>Discrimination or hate speech. With pleasure. - Honor? Human dignity or compassion? Unknown to us!
 Hired Parrot - We are more equal than others.</en>
+				<pl>Dyskryminacja lub mowa nienawiści. Z przyjemnością. - Honor? Ludzka godność czy współczucie? Dla nas nieznane!
+Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</description>
 			<conditions min_audience="14.0663" min_image="30" target_group="32" />
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="14" fix_infomercial_profit="1" />
@@ -1874,12 +2132,15 @@ Hired Parrot - We are more equal than others.</en>
 			<title>
 				<de>Mietmaul - das Magazin</de>
 				<en>Hired Parrot - the magazine</en>
+				<pl>Wynajęta Papuga - magazyn</pl>
 			</title>
 			<description>
 				<de>Mietmaul - Dein bester Froooind. Wir sind ja so suuuper investigativ.
 Mietmaul - Wir sind besser als Andere.</de>
 				<en>Hired Parrot - your beeeest friend. We are soo suuuper investigative.
 Hired Parrot - We are better than others.</en>
+				<pl>Wynajęta Papuga - Twój najlepszy przyjaciel. Jesteśmy tak suuuper śledczy.
+Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</description>
 			<conditions min_audience="28.65" min_image="52" target_group="8" />
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1" />
@@ -1889,10 +2150,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Moporatret</de>
 				<en>Mobikepedal</en>
+				<pl>Mobilnypedał</pl>
 			</title>
 			<description>
 				<de>Ihr Zwei- und Dreiradhändler ganz in Ihrer Nähe. Für jung und alt, wir haben für jeden etwas. Wir machen auch Umbauten, solange es nicht 4 Räder hat.</de>
 				<en>Your two- and three-wheeler dealer in your area. For young and old, we have something for everyone. We also do conversions as long as it does not have 4 wheels.</en>
+				<pl>Twój dealer dwu- i trójkołowców w Twojej okolicy. Dla młodszych i starszych, mamy coś dla każdego. Zajmujemy się również konwersjami, o ile nie mają one 4 kół.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" />
 			<data infomercial="1" quality="19" repetitions="4" duration="4" profit="445" penalty="988" infomercial_profit="40" fix_infomercial_profit="1" />
@@ -1901,10 +2164,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Musikscheune Konzelmann</de>
 				<en>Music Shack Konzelmann</en>
+				<pl>Muzyczna chata konesera</pl>
 			</title>
 			<description>
 				<de>Tonbänder, Schallplatten, Kassetten, Compact Discs. Wir haben alle physisch anwesend. Zum tasten, fühlen, schnuppern, schmecken und hören!</de>
 				<en>Tapes, records, cassettes, compact discs. We have them all physically present. To touch, feel, sniff, taste and listen!</en>
+				<pl>Taśmy, nagrania, kasety, płyty kompaktowe. Mamy je wszystkie fizycznie obecne. Dotykać, czuć, wąchać, smakować i słuchać!</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="0" target_group="0" />
 			<data infomercial="1" quality="13" repetitions="3" duration="5" profit="1000" penalty="1450" fix_infomercial_profit="1" />
@@ -1913,12 +2178,15 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Ohrostopf Lärmschutz</de>
 				<en>Ear-O-Plug noise control</en>
+				<pl>Kontrola hałasu za pomocą zatyczek Ear-O-Plug</pl>
 			</title>
 			<description>
 				<de>Nölt Ihr Chef? Die Alte sowieso? Die Kinder sind nicht auszuhalten? - RUHE !!!
 				Jetzt im Handel: Ohrostopf!</de>
 				<en>Is your boss always nagging at you? Your hag all the same? The children are unbearable? - SILENCE !!!
 				Now available: Ear-O-Plug</en>
+				<pl>Czy twój szef zawsze ci dokucza? Twoja dziewka jest taka sama? Dzieci są nie do zniesienia? - SILENCE !!!
+				Teraz dostępne: Ear-O-Plug</pl>
 			</description>
 			<conditions min_audience="5.21" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="5" duration="4" profit="500" penalty="1056" fix_infomercial_profit="1" />
@@ -1927,10 +2195,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>${brand_tempo} Taschentücher</de>
 				<en>${brand_tempo} Tissues</en>
+				<pl>Chusteczki do nos ${brand_tempo}</pl>
 			</title>
 			<description>
 				<de>Reißfest und kugelsicher. ${brand_tempo} - stoppt auch 150 km/h-Nieser.</de>
 				<en>Tear-resistant and bulletproof. ${brand_tempo} - even stops 150mph sneezers.</en>
+				<pl>Odporne na rozdarcia i kuloodporne. ${brand_tempo} - zatrzymuje nawet kichnięcia o prędkości 150 mil na godzinę.</pl>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="270" penalty="425" fix_infomercial_profit="1" />
@@ -1939,10 +2209,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>${brand_tempo} Toilettenpapier</de>
 				<en>${brand_tempo} Toilet Paper</en>
+				<pl>Papier toaletowy ${brand_tempo}</pl>
 			</title>
 			<description>
 				<de>Reißfest und kugelsicher. ${brand_tempo} - wenn's mal pressiert.</de>
 				<en>Tear-resistant and bulletproof. ${brand_tempo} - when things get urgent.</en>
+				<pl>Odporny na rozdarcia i kuloodporny. ${brand_tempo} - gdy sprawy stają się pilne.</pl>
 			</description>
 			<conditions min_audience="14.07" min_image="32" target_group="0" />
 			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="265" penalty="410" fix_infomercial_profit="1" />
@@ -1951,10 +2223,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Antiquitäten Pillreis</de>
 				<en>Antiques Pillreis</en>
+				<pl>Antykwariat Pillreis</pl>
 			</title>
 			<description>
 				<de>Wir sind nicht gegen Quitäten! Das Wort kommt nicht von Anti-, sondern von Antique. Ankauf und Verkauf von historischem Mobiliar also.</de>
 				<en>We are not against Ques! The word does not come from Anti-, but from Antique. Means purchase and sale of historical furniture.</en>
+				<pl>Nie jesteśmy przeciwko kwariat! Słowo to nie pochodzi od anty, ale od antyk. Innymi słowy, zakup i sprzedaż historycznych mebli.</pl>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="1" duration="4" profit="690" penalty="948" fix_infomercial_profit="1" />
@@ -1963,10 +2237,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Plörre Bier</de>
 				<en>Muck Beer</en>
+				<pl>Piwo EBE</pl> <!--In Poland there was famous beer EB | TODO: Use that one for real brand instead -->
 			</title>
 			<description>
 				<de>Schon ein Kanzler einst sang: „Plörre Bier - Plörre Bier - das hol' ich mir.“</de>
 				<en>Even a chancellor once sang: "Muck Beer - Muck Beer - I'll get some for me."</en>
+				<pl>Nawet prezydent śpiewał kiedyś: „Piwo EBE - piwo EBE - dostanę je.”</pl>
 			</description>
 			<conditions min_audience="3.13" min_image="4" target_group="256" />
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="640" penalty="890" fix_infomercial_profit="1" />
@@ -1975,10 +2251,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Rapunzel Haarteile</de>
 				<en>Rapunzel's Hairpieces</en>
+				<pl>Treski Roszpunki</pl>
 			</title>
 			<description>
 				<de>Toupets und Perücken. Wenn man nicht darauf angewiesen ist - gut so. Sonst komm zu Rapunzel. Ab 5 Meter Länge gibt es einen Meter gratis dazu!</de>
 				<en>Toupets and wigs. If you don't have to rely on them - good for you. Otherwise come to Rapunzel's. Buy 5 meters or more and get a meter for free!</en>
+				<pl>Tupety i peruki. Jeśli nie musisz na nich polegać - dobrze dla ciebie. W przeciwnym razie przyjdź do Treski Roszpunki. Kup 5 metrów lub więcej i otrzymaj metr za darmo!</pl>
 			</description>
 			<conditions min_audience="18.76" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="6" profit="225" penalty="360" infomercial_profit="20" fix_infomercial_profit="1" />
@@ -1987,10 +2265,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Rhinozerosfarm Aschenbühl</de>
 				<en>Rhinoceros farm Aschenbuehl</en>
+				<pl>Farma nosorożców Aschenbuehl</pl>
 			</title>
 			<description>
 				<de>Urlaub auf dem Bauernhof. Ebenfalls sehenswert: Unsere Babyrhinozerosse. Besuchen Sie unsere Kleinen und ihre schnaubenden Mütter. Kleiner Tipp: Testament ablegen.</de>
 				<en>Vacation on the farm. Also worth seeing: our baby rhinoceroses. Visit our little ones and their snorting mothers. Little tip: Make your will.</en>
+				<pl>Wakacje na farmie. Warto również zobaczyć nasze małe nosorożce. Odwiedź nasze maluchy i ich prychające matki. Mała rada: Sporządź testament.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" />
 			<data infomercial="1" quality="13" repetitions="5" duration="3" profit="438" penalty="682" infomercial_profit="39" fix_infomercial_profit="1" />
@@ -1999,10 +2279,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>RoZZona</de>
 				<en>SnotZZy</en>
+				<pl>Sniffxona</pl>
 			</title>
 			<description>
 				<de>Sniffmaster 2000, der unendlich nützliche Geruchstransmitter. Das ist wie telefonieren für die Nase. Komm schon und riech mit, egal wo Du bist! Sniffmaster 2000!</de>
 				<en>Sniffmaster 2000, the infinitely useful smell transmitter. This is like phone calls for the nose. So come and join the smelling, no matter where you are! Sniffmaster 2000!</en>
+				<pl>Sniffmaster 2000, nieskończenie użyteczny nadajnik zapachów. To jak rozmowy telefoniczne dla nosa. Więc przyjdź i dołącz do wąchania, bez względu na to, gdzie jesteś! Sniffmaster 2000!</pl>
 			</description>
 			<conditions min_audience="23.44" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="185" penalty="327" infomercial_profit="17" fix_infomercial_profit="1" />
@@ -2011,10 +2293,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Der Roll-Shop</de>
 				<en>The Roll-Shop</en>
+				<pl>Rol Shop</pl>
 			</title>
 			<description>
 				<de>Wir haben alles mit einem „Roll“ im Namen: Rollmops - Frühlingsrollen - Rollkragenpullover - Rollos - Rollwagen. Tritt ein und roll raus. Der Roll-Shop.</de>
 				<en>We have everything with a "roll" in its name: Rollmop - Egg rolls - Rolltowels - Roll curtains - Trolleys. Step in and roll out. The Roll Shop.</en>
+				<pl>Mamy wszystko z „rol” w nazwie: Ręczniki w rolkach - Rolmopsy - Rolety - Cholesterol - Wózki na rolkach. Wejdź i roluj. Rol Shop.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="0" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="4" duration="4" profit="347" penalty="537" infomercial_profit="32" fix_infomercial_profit="1" />
@@ -2023,10 +2307,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Autohaus Schmierlapp</de>
 				<en>Greasy's Cars</en>
+				<pl>Salon samochodowy Smarowski</pl>
 			</title>
 			<description>
 				<de>Von uns bekommt jeder einen Satz Bremsbeläge verordnet. Der SICHERHEIT wegen. Was dachten Sie? Ich, Franz Schmierlapp, stehe mit meinem Namen für Authentizität!</de>
 				<en>We prescribe a set of brake pads for everyone. For the sake of SAFETY. What did you think? I, Franz Greasy, stand with my name for authenticity!</en>
+				<pl>Zalecamy zestaw klocków hamulcowych dla każdego. Ze względu na BEZPIECZEŃSTWO. Co o tym sądziłeś? Ja, Franciszek Smarowski, potwierdzam autentyczność moim nazwiskiem!</pl>
 			</description>
 			<conditions min_audience="0.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="10" repetitions="5" duration="3" profit="2320" penalty="3105" fix_infomercial_profit="1" />
@@ -2035,10 +2321,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Schniggo Schokokubus</de>
 				<en>Schniggo Choco Cube</en>
+				<pl>Kostka czekolady Schniggo</pl>
 			</title>
 			<description>
 				<de>Schokolade hoch drei. Alle Kanten gleich lang! Die Beste Idee aller Zeiten! Wir haben Kanten von 10cm, 20cm und 30cm!</de>
 				<en>Chocolate to the power of three. All edges the same length! The best idea ever! We have edges of 10cm, 20cm and 30cm!</en>
+				<pl>Czekolada do potęgi trzeciej. Wszystkie krawędzie tej samej długości! Najlepszy pomysł w historii! Mamy krawędzie o długości 10 cm, 20 cm i 30 cm!</pl>
 			</description>
 			<conditions min_audience="3.1251" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="6" duration="3" profit="640" penalty="900" infomercial_profit="11" fix_infomercial_profit="1" />
@@ -2047,10 +2335,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Schniggo Lakritzkugel</de>
 				<en>Schniggo Licorice Ball</en>
+				<pl>Kulka lukrecji Schniggo</pl>
 			</title>
 			<description>
 				<de>Lakritz hoch drei. Alle Durchmesser gleich lang! Die Beste Idee aller Zeiten! Wir haben Durchmesser von 10cm, 20cm und 30cm!</de>
 				<en>Licorice to the power of three. All diameters the same length! The best idea ever! We offer in diameters of 10cm, 20cm and 30cm!</en>
+				<pl>Lukrecja do potęgi trzeciej. Wszystkie średnice tej samej długości! Najlepszy pomysł w historii! Oferujemy w średnicach 10cm, 20cm i 30cm!</pl>
 			</description>
 			<conditions min_audience="39.07" min_image="30" target_group="0" />
 			<data infomercial="1" quality="13" repetitions="3" duration="4" profit="121" penalty="190" infomercial_profit="12" fix_infomercial_profit="1" />
@@ -2059,10 +2349,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Stefanjek Schädlingsbekämpfung</de>
 				<en>Stefanjek Pest Control</en>
+				<pl>Zwalczanie szkodników KaraTech</pl>
 			</title>
 			<description>
 				<de>Die Kakerlake, die uns entkommt, wurde noch nicht geboren. Vermutlich schlüpft sie gerade bei Ihnen unter dem Herd! Wir vernichten oder schlagen sie in die Flucht. Zurück bleibt jedenfalls keine.</de>
 				<en>The cockroach that escapes us has not yet been born. Probably they are hatching right now under your stove! We exterminate them or rout them out. None will be left in any case.</en>
+				<pl>Karaluch, który nam ucieka, jeszcze się nie narodził. Prawdopodobnie wykluwają się teraz pod twoim piecem! Wytępimy je lub wyplenimy. W każdym razie żaden nie zostanie.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" />
 			<data infomercial="1" quality="8" repetitions="4" duration="2" profit="1583" penalty="2020" infomercial_profit="158" fix_infomercial_profit="1" />
@@ -2071,10 +2363,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Steiß Teddybären</de>
 				<en>Rump Teddy Bears</en>
+				<pl>Pancerne misie pluszowe</pl>
 			</title>
 			<description>
 				<de>Stahlbeton und Messing sind die Materialien der Wahl. Kindersicher. Unkaputtbar. Steiß Teddybären.</de>
 				<en>Steel concrete and brass are the materials of choice. Childproof. Unbreakable. Teddy Bears by Rump.</en>
+				<pl>Stal, beton i mosiądz to materiały z wyboru. Zabezpieczenie przed dziećmi. Niezniszczalne. Pancerne misie pluszowe.</pl>
 			</description>
 			<conditions min_audience="1.041" min_image="18" target_group="1" />
 			<data infomercial="1" quality="11" repetitions="3" duration="4" profit="1100" penalty="1800" fix_infomercial_profit="1" />
@@ -2082,10 +2376,12 @@ Hired Parrot - We are better than others.</en>
 		<ad guid="speedminister-ad-Stop-Hound" creator="8605" created_by="SpeedMinister">
 			<title>
 				<all>Stop Hound</all>
+				<pl>Stop Pies</pl>
 			</title>
 			<description>
 				<de>Fox Enterprises präsentiert „Stop Hound“. Das Spray auf den Körper auftragen. 20h Wirkung! Stoppt Hunde auch gegen den Wind. Das Anti-Biss-Spray „Stop Hound“.</de>
 				<en>Fox Enterprises presents "Stop Hound". Apply the spray on the body. 20h effect! Stops dogs even against the wind. The anti-bite spray "Stop Hound".</en>
+				<pl>Fox Enterprises przedstawia „Stop Pies”. Nanieść spray na ciało. 20 godzin działania! Zatrzymuje psy nawet pod wiatr. Spray przeciw ugryzieniom „Stop Pies”.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="0" target_group="0" />
 			<data infomercial="1" quality="24" repetitions="1" duration="2" profit="360" penalty="600" infomercial_profit="35" fix_infomercial_profit="1" />
@@ -2094,10 +2390,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>TVBunker PC-Spiel</de>
 				<en>TVBunker PC-Game</en>
+				<pl>TVBunker - gra na PC</pl>
 			</title>
 			<description>
 				<de>TVBunker - ein Spaß für die ganze Familie. Ein Sad TV Remake! Aus markenschutzrechtlichen Gründen dürfen keine Originalnamen verwendet werden.</de>
 				<en>TVBunker - fun for the whole family. A Sad TV remake! For trademark reasons, original names cannot be used.</en>
+				<pl>TVBunker - zabawa dla całej rodziny. Smutny remake telewizyjny! Ze względu na znaki towarowe oryginalne nazwy nie mogą być używane.</pl>
 			</description>
 			<conditions min_audience="3.6461" min_image="0" target_group="0" />
 			<data infomercial="1" quality="28" repetitions="7" duration="4" profit="621" penalty="845" infomercial_profit="95" fix_infomercial_profit="1" />
@@ -2106,10 +2404,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>TVTower PC-Spiel</de>
 				<en>TVTower PC-Game</en>
+				<pl>TVTower Gra na PC</pl>
 			</title>
 			<description>
 				<de>Brandneue Engine! Neue Filme! NEU: Trash TV und Call-In. TVTower, ein Mad TV-eskes Computerspiel! Ein Riesenspaß. Honigkuchenpferde, der Papst und die Queen empfehlen: TVTower.</de>
 				<en>Brand new engine! New Movies! NEW: Trash TV and call-in. TVTower, a Mad TV-esque computer game! Huge fun. Cheshire Cat, the Pope and the Queen recommend: TVTower.</en>
+				<pl>Zupełnie nowy silnik! Nowe filmy! NOWOŚĆ: Trash TV i call-in. TVTower, gra komputerowa w stylu Mad TV! Ogromna frajda. Kot z Cheshire, papież i królowa polecają: TVTower.</pl>
 			</description>
 			<conditions min_audience="41.6799" min_image="0" target_group="0" />
 			<data infomercial="1" quality="30" repetitions="1" duration="8" profit="113" penalty="196" infomercial_profit="65" fix_infomercial_profit="1" />
@@ -2118,10 +2418,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
 				<en>Stealth Cruises</en>
+				<pl>Wycieczki niewidoczne przez radar</pl>
 			</title>
 			<description>
 				<de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Die Malediven in 200m Tiefe. Hören Sie Traumstrände. Vorgewärmte Kojen gehören hier zur Grundausstattung.</de>
 				<en>Experience the original U96 Replica on your dream route. The Maldives in 200m depth. Listen to dream beaches. Preheated berths are part of the basic equipment on board.</en>
+				<pl>Doświadcz oryginalnej repliki U96 na swojej wymarzonej trasie. Malediwy na głębokości 200 metrów. Posłuchaj plaż marzeń. Podgrzewane koje są częścią podstawowego wyposażenia na pokładzie.</pl>
 			</description>
 			<conditions min_audience="33.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="2" duration="4" profit="138" penalty="207" fix_infomercial_profit="1" />
@@ -2130,10 +2432,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
 				<en>Stealth Cruises</en>
+				<pl>Wycieczki niewidoczne przez radar</pl>
 			</title>
 			<description>
 				<de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Der Marianengraben - legendär! Aber doch etwas zu tief. Oder etwa nicht? Finden Sie es heraus!</de>
 				<en>Experience the original U96 Replica on your dream route. The Mariana Trench - legendary! But still a bit too deep. Or maybe not? Find it out!</en>
+				<pl>Przeżyj oryginalną replikę U96 na swojej wymarzonej trasie. Rów Mariański - legendarny! Ale wciąż trochę za głęboki. A może jednak nie? Przekonaj się!</pl>
 			</description>
 			<conditions min_audience="33.86" min_image="18" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="2" duration="4" profit="146" penalty="194" infomercial_profit="33" fix_infomercial_profit="1" />
@@ -2142,10 +2446,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
 				<en>Stealth Cruises</en>
+				<pl>Wycieczki niewidoczne przez radar</pl>
 			</title>
 			<description>
 				<de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Durchbrechen Sie Blockaden. Landgang von 3 bis 5. Pünklich sein. Parole: „Tauch tiefer!“ Sonst kein Einlass.</de>
 				<en>Experience the original U96 Replica on your dream route. Break through blockades. Shore leave from 3 to 5. Be on time. Password: "dive deeper!" Otherwise no admission.</en>
+				<pl>Doświadcz oryginalnej repliki U96 na swojej wymarzonej trasie. Przebij się przez blokady. Wyjście na brzeg od 3 do 5. Bądź na czas. Hasło: „zanurkuj głębiej” W przeciwnym razie brak wstępu.</pl>
 			</description>
 			<conditions min_audience="33.86" min_image="32" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="153" penalty="218" infomercial_profit="13" fix_infomercial_profit="1" />
@@ -2154,10 +2460,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Ticketschalter</de>
 				<en>Ticket Counter</en>
+				<pl>Kasa biletowa</pl>
 			</title>
 			<description>
 				<de>Wir verkaufen Eintrittskarten zu allen Großveranstaltungen, Messen und Live-Konzerten. Auch Sonderkarten wie Back-Stage oder On-Stage sind erhältlich!</de>
 				<en>We sell tickets to all major events, trade fairs and live concerts. Also special tickets like Back-Stage or On-Stage are available!</en>
+				<pl>Sprzedajemy bilety na wszystkie najważniejsze wydarzenia, targi i koncerty na żywo. Dostępne są również bilety specjalne, takie jak Back-Stage lub On-Stage!</pl>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="250" penalty="345" fix_infomercial_profit="1" />
@@ -2166,10 +2474,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Winzerei Weinstein</de>
 				<en>Winery Tartar</en>
+				<pl>Winiarnia Tatar</pl>
 			</title>
 			<description>
 				<de>Lutschen Sie sich durch erlesene Jahrgänge der Weingeschichte. Weinsteinsortimente der gleichnamigen Winzerei ab sofort erhältlich!</de>
 				<en>Suck your way through exquisite vintages of wine history. Tartar of wine assortments from the winery of the same name now available!</en>
+				<pl>Ssij swoją drogę przez wykwintne roczniki historii wina. Tatar z asortymentu winiarni o tej samej nazwie już dostępny!</pl>
 			</description>
 			<conditions min_audience="3.13" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="650" penalty="970" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -2178,10 +2488,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Bundesdeutsche Anstalt für Meditation</de>
 				<en>Federal Institute for Meditation</en>
+				<pl>Federalny Instytut Medytacji</pl>
 			</title>
 			<description>
 				<de>Leitfaden zur aufrichtigen inneren Reinigung, Tipps und Tricks, Best Practices und vieles mehr. Infos bei uns! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</de>
 				<en>Guide to sincere inner cleansing, tips and tricks, best practices and much more. Contact us for more info! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</en>
+				<pl>Przewodnik po szczerym wewnętrznym oczyszczaniu, porady i wskazówki, najlepsze praktyki i wiele więcej. Skontaktuj się z nami, aby uzyskać więcej informacji! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</pl>
 			</description>
 			<conditions min_audience="26.05" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="5" profit="185" penalty="320" infomercial_profit="69" fix_infomercial_profit="1" />
@@ -2190,10 +2502,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Baumschule Bummbarts</de>
 				<en>Tree Nursery Bummbeards</en>
+				<pl>Szkółka leśna "Zielonym do góry"</pl>
 			</title>
 			<description>
 				<de>Bummbarts Bäume wissen Väter zu schätzen, wenn Sie mit Ihrem Sohne einen setzen.</de>
 				<en>Father and son can safely plant as Bummbeard's trees do never slant.</en>
+				<pl>Ojciec i syn mogą bezpiecznie sadzić, ponieważ nasze drzewa nigdy się nie pochylają.</pl>
 			</description>
 			<conditions min_audience="8.3352" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="377" penalty="544" infomercial_profit="90" fix_infomercial_profit="1" />
@@ -2202,10 +2516,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Baumschule Bummbarts</de>
 				<en>Tree Nursery Bummbeards</en>
+				<pl>Szkółka leśna "Zielonym do góry"</pl>
 			</title>
 			<description>
 				<de>In Parks und Gärten genießt man die Räume, die Highlights sind aber Bummbarts Bäume.</de>
 				<en>In parks and gardens you feel free, but the highlight is a Bummbeard's tree.</en>
+				<pl>W parkach i ogrodach czujesz się swobodnie, ale główną atrakcją sa drzewa. Wpadnij do nas.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="45" target_group="256" />
 			<data infomercial="1" quality="18" repetitions="6" duration="4" profit="770" penalty="999" infomercial_profit="90" fix_infomercial_profit="1" />
@@ -2214,10 +2530,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Bildergalerie Silberfisch</de>
 				<en>Picture Gallery Silverfish</en>
+				<pl>Galeria obrazów Srebrna rybka</pl>
 			</title>
 			<description>
 				<de>Wir sind bodenständig! Keine einfarbigen Flächen zu Fantasiepreisen. Bei uns z.B. „Röhrender Hirsch auf Zweimastschoner in stürmischer See“ nur 500 Ocken.</de>
 				<en>We are down-to-earth! No monochrome surfaces at fantasy prices. With us e.g. "roaring stag on two-mast schooner in stormy sea" only 500 bucks.</en>
+				<pl>Jesteśmy przyziemni! Żadnych monochromatycznych powierzchni w fantastycznych cenach. U nas np. „ryczący jeleń na dwumasztowym szkunerze na wzburzonym morzu” to tylko 500 dolców.</pl>
 			</description>
 			<conditions min_audience="2.083" min_image="12" target_group="4" />
 			<data infomercial="1" quality="19" repetitions="4" duration="2" profit="780" penalty="1300" fix_infomercial_profit="1" />
@@ -2229,6 +2547,7 @@ Hired Parrot - We are better than others.</en>
 			<description>
 				<de>Pestizid, Fungizid, Herbizid. Unser Flieger steht bereit. Wir spritzen Ihr Feld, Ihre Obstplantage und Ihren Garten. Auch für privat! Einfach anrufen.</de>
 				<en>Pesticide, fungicide, herbicide. Our plane is ready. We spray your field, your orchard and your garden. Also available for private customers! Just give us a call.</en>
+				<pl>Pestycyd, fungicyd, herbicyd. Nasz samolot jest gotowy. Opryskamy Twoje pole, sad i ogród. Dostępne również dla klientów prywatnych! Wystarczy do nas zadzwonić.</pl>
 			</description>
 			<conditions min_audience="28.65" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="1" duration="4" profit="175" penalty="240" fix_infomercial_profit="1" />
@@ -2237,10 +2556,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Esel24</de>
 				<en>Donkey24</en>
+				<pl>Osioł24</pl>
 			</title>
 			<description>
 				<de>Hochzeit? Firmenveranstaltung? Familienfeier? Autopanne! Umzug! Esel zum Mieten und zum Kaufen! Esel24!</de>
 				<en>Wedding? Company event? Family celebration? Car breakdown! Relocation! Donkeys to rent and to buy! Donkey24!</en>
+				<pl>Wesele? Impreza firmowa? Uroczystość rodzinna? Awaria samochodu! Przeprowadzka! Osły do wynajęcia i do kupienia! Osioł24!</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="0" />
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" />
@@ -2250,10 +2571,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Esel24.komm</de>
 				<en>Donkey24.come</en>
+				<pl>Osioł24.come</pl>
 			</title>
 			<description>
 				<de>Hochzeit? Firmenveranstaltung? Familienfeier? Autopanne! Umzug! Esel zum Mieten und zum Kaufen! Esel24.komm!</de>
 				<en>Wedding? Company event? Family celebration? Car breakdown! Relocation! Donkeys to rent and to buy! Donkey24.come!</en>
+				<pl>Wesele? Impreza firmowa? Uroczystość rodzinna? Awaria samochodu! Przeprowadzka! Osły do wynajęcia i do kupienia! Osioł24.come!</pl>
 			</description>
 			<conditions min_audience="0.78" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" />
@@ -2266,6 +2589,7 @@ Hired Parrot - We are better than others.</en>
 			<description>
 				<de>Prickelnde Kohlensäure, zischende Dose, Kühlung für Rachen und Kehle, super geschmackvoll? Nicht mehr träumen! four4down bringt Sie auf den Boden zurück!</de>
 				<en>Sparkling soda, fizzing can, chills for the mouth and throat, super tasty? Dream no more! four4down brings you back to earth!</en>
+				<pl>Gazowana soda, musująca puszka, dreszcze w ustach i gardle, super smaczne? Koniec marzeń! four4down sprowadza Cię z powrotem na ziemię!</pl>
 			</description>
 			<conditions min_audience="23.44" min_image="0" />
 			<data infomercial="1" quality="16" repetitions="1" duration="4" profit="193" penalty="320" infomercial_profit="17" fix_infomercial_profit="1" />
@@ -2273,10 +2597,12 @@ Hired Parrot - We are better than others.</en>
 		<ad guid="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
 			<title>
 				<all>Greek Haircut</all>
+				<pl>Grecki fryzjer</pl>
 			</title>
 			<description>
 				<de>Wir spendiere eine Ouzo für jede Zentimeter abgeschnitten Haare! Wer brauche schon Haare, wenn er Kater haben kann? Gute Tausch!</de>
 				<en>We give Ouzo for ev'ry inch hair cut off! Who need hair when can hangover? Good trade!</en>
+				<pl>Dajemy Ouzo za każdy centymetr obciętych włosów! Komu potrzebne włosy, kiedy można mieć kaca? Dobry handel!</pl>
 			</description>
 			<conditions min_audience="1.3015" min_image="0" target_group="0" />
 			<data infomercial="1" quality="9" repetitions="2" duration="2" profit="960" penalty="1200" infomercial_profit="40" fix_infomercial_profit="1" />
@@ -2285,10 +2611,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Hammer</de>
 				<en>Hammer</en>
+				<pl>Hammer</pl>
 			</title>
 			<description>
 				<de>Das Auto ist der Hammer! 100% aus Stahl! Höher als ein LKW und breiter als lang. Man kann aufrecht stehen oder sich auf der Rückbank ausstrecken. Warum noch Miete zahlen?</de>
 				<en>The car is a blast! 100% steel! Higher than a truck and wider than long. You can stand upright or stretch out on the back seat. Why still pay rent?</en>
+				<pl>Samochód jest niesamowity! 100% stali! Wyższy niż ciężarówka i szerszy niż długi. Możesz stać prosto lub wyciągnąć się na tylnym siedzeniu. Po co jeszcze płacić czynsz?</pl>
 			</description>
 			<conditions min_audience="26.05" min_image="4" target_group="256" />
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="180" penalty="330" infomercial_profit="36" fix_infomercial_profit="1" />
@@ -2300,6 +2628,7 @@ Hired Parrot - We are better than others.</en>
 			<description>
 				<de>Das Hundefutter mit Aspartam. Mästen Sie Ihren Liebling! Wie das Schwein, so auch der Hund, wird Ihr Tierchen kugelrund.</de>
 				<en>The dog food with aspartame. Fatten your darling! As the pig, so the dog, your little pet will be round as a hog.</en>
+				<pl>Karma dla psów z aspartamem. Utucz swojego ulubieńca! Jak świnia, tak pies, twój mały pupil będzie okrągły jak wieprz.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="520" infomercial_profit="60" fix_infomercial_profit="1" />
@@ -2311,6 +2640,7 @@ Hired Parrot - We are better than others.</en>
 			<description>
 				<de>Kommst Du. - Kuckst Du. - Kaufst Du.</de>
 				<en>You come. - You lookie. - We make deal.</en>
+				<pl>Ty przychodzisz. - Ty patrzysz. - Zawrzemy umowę.</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" />
 			<data infomercial="1" quality="7" repetitions="4" duration="3" profit="3200" penalty="3771" infomercial_profit="40" fix_infomercial_profit="1" />
@@ -2319,10 +2649,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Hexler und Schorsch</de>
 				<en>Hexler and Schorsch</en>
+				<pl>Hexler i Schorsch</pl>
 			</title>
 			<description>
 				<de>Für unsere Bohnen wird kein Regenwald abgeholzt! Blaue Bohnen und mehr von Hexler und Schorsch!</de>
 				<en>No rainforest will be cleared for our shells! Bullets and more from Hexler and Schorsch!</en>
+				<pl>Żaden las deszczowy nie zostanie wycięty dla naszych pocisków! Pociski i nie tylko od Hexler i Schorsch!</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="4" target_group="256" />
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="242" penalty="445" infomercial_profit="65" fix_infomercial_profit="1" />
@@ -2330,12 +2662,15 @@ Hired Parrot - We are better than others.</en>
 		<ad guid="speedminister-ad-interouter-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<all>Inter Outer Under World Travel</all>
+				<pl>Linie lotnicze Inter Outer Under World</pl>
 			</title>
 			<description>
 				<de>Stehplätze, Verpflegung* aus der Dose und Betäubungsgas machen den Flug angenehm. Auch die Piloten sind extrem ausgeruht. Schönen Urlaub!
 (*gegen Aufpreis)</de>
 				<en>Standing room, canned food* and narcotic gas make the flight pleasant. The pilots are also extremely well rested. Have a great vacation!
 (*for an extra charge)</en>
+				<pl>Miejsca stojące, jedzenie w puszkach* i gaz odurzający sprawiają, że lot jest przyjemny. Piloci są również wyjątkowo wypoczęci. Życzymy udanych wakacji!
+(*za dodatkową opłatą)</pl>
 			</description>
 			<conditions min_audience="23.44" min_image="7" target_group="8" />
 			<data infomercial="1" quality="22" repetitions="1" duration="4" profit="185" penalty="300" infomercial_profit="17" fix_infomercial_profit="1" />
@@ -2344,10 +2679,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Kaisers neue Kleider</de>
 				<en>Emperor's New Clothes</en>
+				<pl>Nowe ciuchy Emperor</pl>
 			</title>
 			<description>
 				<de>Neue Kollektion bei Kaisers: Extrem guter Tragekomfort, hauchdünner Stoff, fantasievolle Schnitte. Ein echter Hingucker! Kaisers neue Kleider!</de>
 				<en>New collection at Emperor's: Extremely comfortable to wear, wafer-thin fabric, imaginative cuts. A real eye-catcher! Emperor's New Clothes!</en>
+				<pl>Nowa kolekcja Emperor: Niezwykle wygodne w noszeniu, cienkie jak wafel materiały, fantazyjne kroje. Przyciągają wzrok! Nowe ubrania cesarza!</pl>
 			</description>
 			<conditions min_audience="36.47" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="1" duration="3" profit="124" penalty="226" infomercial_profit="22" fix_infomercial_profit="1" />
@@ -2356,10 +2693,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Kakteenwunderland</de>
 				<en>Cactus Wonderland</en>
+				<pl>Świat kaktusów</pl>
 			</title>
 			<description>
 				<de>Unsere Kakteen stechen härter, länger und ausdauernder, als die der Konkurrenz. Wir haben Kakteen für Garten, Wintergarten, Treibhaus und fürs Bett.</de>
 				<en>Our cacti sting harder, are longer and more enduring than those of our competitors. We have cacti for garden, conservatory, greenhouse and for the bed.</en>
+				<pl>Nasze kaktusy kłują mocniej, są dłuższe i trwalsze niż kaktusy konkurencji. Mamy kaktusy do ogrodu, oranżerii, szklarni i na rabaty.</pl>
 			</description>
 			<conditions min_audience="6.25" min_image="0" target_group="0" />
 			<data infomercial="1" quality="17" repetitions="3" duration="4" profit="450" penalty="650" infomercial_profit="42" fix_infomercial_profit="1" />
@@ -2368,10 +2707,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Koizucht Koiner</de>
 				<en>Koi Breeding Koiner</en>
+				<pl>Hodowla karpi koi</pl>
 			</title>
 			<description>
 				<de>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: „Wenn's nix koscht'! Sonscht kommt koiner nai!“</de>
 				<en>Full fish at full prices. Another proof of what a Swabian once said: "No money no fish!"</en>
+				<pl>Całe ryby w pełnych cenach. Kolejny dowód na to, co kiedyś powiedział Szwab: „Bez pieniędzy nie ma ryby!”.</pl>
 			</description>
 			<conditions min_audience="33.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="4" profit="130" penalty="228" infomercial_profit="11" fix_infomercial_profit="1" />
@@ -2380,10 +2721,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Malerei Farbecht</de>
 				<en>Paintshop Colorfast</en>
+				<pl>Malarze - Szybkokolorowi</pl>
 			</title>
 			<description>
 				<de>Unschlagbar im Preis. Fenster und Türen abkleben war gestern. Wir sind kosteneffizient, das werden Sie sehen. Zum Termin erscheinen wir! - oft! - manchmal.</de>
 				<en>Unbeatable in price. Taping windows and doors was yesterday. We are cost-efficient, you will see. We show up for the appointment! - often! - now and then! - sometimes.</en>
+				<pl>Cena nie do pobicia. Oklejanie okien i drzwi było wczoraj. Jesteśmy opłacalni, zobaczysz. Pojawiamy się na umówione spotkanie! - często! - od czasu do czasu! - czasami.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="6" duration="3" profit="2000" penalty="2750" infomercial_profit="100" fix_infomercial_profit="1" />
@@ -2392,10 +2735,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Overbrain Bug-Generator</de>
 				<en>Overbrain Bug Generator</en>
+				<pl>Symulator błędów Overbrain</pl>
 			</title>
 			<description>
 				<de>Ihre Software ist immer fehlerfrei? Ihre Kollegen schütteln den Kopf darüber? Simulieren Sie Normalität! Der „Bug-Generator“ garantiert 5 Bugs auf 1000 Zeilen.</de>
 				<en>Your software is always error-free? Your colleagues shake their heads about it? Simulate normality! The "bug generator" guarantees 5 bugs per 1000 lines.</en>
+				<pl>Twoje oprogramowanie jest zawsze wolne od błędów? Twoi współpracownicy kręcą głowami? Symuluj normalność! „Generator błędów” gwarantuje 5 błędów na 1000 linii.</pl>
 			</description>
 			<conditions min_audience="39.07" min_image="0" target_group="0" />
 			<data infomercial="1" quality="14" repetitions="2" duration="5" profit="118" penalty="241" infomercial_profit="11" fix_infomercial_profit="1" />
@@ -2405,10 +2750,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Overbrain Virus-Simulator</de>
 				<en>Overbrain Virus Simulator</en>
+				<pl>Symulator wirusa Overbrain</pl>
 			</title>
 			<description>
 				<de>Sie haben keinen Internetanschluss? Sie benutzen nie USB-Sticks? Beim Thema Viren können Sie nicht mitreden? Jetzt schon, mit dem gefahrvollen „Virus-Simulator“!</de>
 				<en>You don't have an internet connection? You never use USB sticks? You can't keep up with the topic of viruses? Now you can: with the dangerous "virus simulator"!</en>
+				<pl>Nie masz połączenia z Internetem? Nigdy nie korzystasz z pamięci USB? Nie nadążasz za tematem wirusów? Teraz możesz: z niebezpiecznym „symulatorem wirusów”!</pl>
 			</description>
 			<conditions min_audience="39.07" min_image="32" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="5" profit="172" penalty="220" fix_infomercial_profit="1" />
@@ -2418,10 +2765,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Pizza Paschulke</de>
 				<en>Pizza Pachulkee</en>
+				<pl>Pizza Pastylka</pl>
 			</title>
 			<description>
 				<de>Pizza aus dem Schwedenofen. Schön knackig und bissfest. Auch als Ersatzbrennstoff verwendbar. Jeden ungeraden Kalendertag liefern wir auch aus.</de>
 				<en>Pizza from the Swedish oven. Beautifully crunchy and firm to the bite. Can also be used as a substitute fuel. Every odd calendar day we also deliver.</en>
+				<pl>Pizza ze szwedzkiego pieca. Pięknie chrupiąca i twarda w dotyku. Może być również używana jako paliwo zastępcze. W każdy nieparzysty dzień kalendarzowy realizujemy również dostawy.</pl>
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" />
 			<data infomercial="1" quality="17" repetitions="2" duration="2" profit="2120" penalty="1900" infomercial_profit="20" fix_infomercial_profit="1" />
@@ -2430,10 +2779,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Placebotazementamol</de>
 				<en>Placebotazementamol</en>
+				<pl>Placebotazementamol</pl>
 			</title>
 			<description>
 				<de>Placebotazementamol seit 1276. Tradition seit dem Mittelalter. Scharlatane und Quacksalber schwören darauf! Jetzt neu als Pastille.</de>
 				<en>Placebotazementamol since 1276. Tradition since the Middle Ages. Charlatans and quacks swear by it! Now new as a pastille.</en>
+				<pl>Placebotazementamol od 1276 roku. Tradycja od średniowiecza. Szarlatani i znachorzy przysięgają na niego! Teraz nowość jako pastylka.</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="205" penalty="250" infomercial_profit="18" fix_infomercial_profit="1" />
@@ -2442,10 +2793,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Potz-Blitz Autohof</de>
 				<en>Godspeeders Car Yard</en>
+				<pl>Autopark A7</pl>
 			</title>
 			<description>
 				<de>Kommen Sie zu unserem Autohof. LKW-Waschmöglichkeiten. Duschen und Toiletten vorhanden! Ab 1000l Dieselbetankung ein gratis Kaffee!!! Potz-Blitz! An der A7!</de>
 				<en>Come to our car yard. Truck washing facilities. Showers and toilets available! One free coffee for a 1000 liters diesel refuel!!! Godspeeders! At the Route 7!</en>
+				<pl>Zapraszamy na nasz plac samochodowy. Myjnie dla ciężarówek. Dostępne prysznice i toalety! Jedna darmowa kawa za tankowanie 1000 litrów oleju napędowego!!! Szczęść Boże! Na autostradzie A7!</pl>
 			</description>
 			<conditions min_audience="0.26" min_image="2" target_group="256" />
 			<data infomercial="1" quality="9" repetitions="3" duration="4" profit="2300" penalty="3200" fix_infomercial_profit="1" />
@@ -2454,10 +2807,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Raff und Gier, Banken und Versicherungen</de>
 				<en>Hogg and Greed, banking and insurance</en>
+				<pl>Kasowski i Szmalowski S.A. - bankowość i ubezpieczenia</pl>
 			</title>
 			<description>
 				<de>Ihr Geld steht bei uns im Mittelpunkt. In unsren Banken bewachen wir es. Wir verteidigen es gegen JEDEN. Keine Ausnahmen.</de>
 				<en>Your money is our focus. In our banks we guard it. We defend it against EVERYONE. No exceptions.</en>
+				<pl>Twoje pieniądze są dla nas najważniejsze. Strzeżemy ich w naszych bankach. Bronimy ich przed KAŻDYM. Bez wyjątków.</pl>
 			</description>
 			<conditions min_audience="31.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="1" duration="6" profit="160" penalty="220" infomercial_profit="23" fix_infomercial_profit="1" />
@@ -2466,10 +2821,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Raff und Gier, Banken und Versicherungen</de>
 				<en>Hogg and Greed, banking and insurance</en>
+				<pl>Kasowski i Szmalowski S.A. - bankowość i ubezpieczenia</pl>
 			</title>
 			<description>
 				<de>Unsere Versicherungen nehmen Ihr Geld auch völlig ohne Gegenleistung! Bitte einschicken.</de>
 				<en>Our insurers will take your money even without any reciprocation at all! Please send it in.</en>
+				<pl>Nasi ubezpieczyciele przyjmą Twoje pieniądze nawet bez żadnej wzajemności! Prosimy o przesłanie.</pl>
 			</description>
 			<conditions min_audience="31.26" min_image="68" target_group="128" />
 			<data infomercial="1" quality="27" repetitions="3" duration="4" profit="145" penalty="130" infomercial_profit="23" fix_infomercial_profit="1" />
@@ -2478,10 +2835,12 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Käpt'n Rauschebart</de>
 				<en>Captain Bush Beard</en>
+				<pl>Pręty rybne Kapitana Brody</pl>
 			</title>
 			<description>
 				<de>Gefrorene Fischstangen zum Kisten aufstemmen, Wände einreissen, Möbel stabilisieren, Schienen ausbessern. Klasse auf dem Bau, moderat in der Pfanne. Na dann Mahlzeit.</de>
 				<en>Frozen fish bars to pry open crates, tear down walls, stabilize furniture, repair rails. Terrific in construction, modest in the frying pan. Well then, enjoy your meal.</en>
+				<pl>Zamrożone pręty rybne do podważania skrzyń, burzenia ścian, stabilizowania mebli, naprawiania szyn. Wspaniałe w budownictwie, skromne na patelni. A zatem, smacznego.</pl>
 			</description>
 			<conditions min_audience="9.38" min_image="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="345" penalty="515" infomercial_profit="62" fix_infomercial_profit="1" />
@@ -2490,12 +2849,15 @@ Hired Parrot - We are better than others.</en>
 			<title>
 				<de>Rechtschreibdudan</de>
 				<en>Diggtionary</en>
+				<pl>Cyfrosłownik</pl>
 			</title>
 			<description>
 				<de>Sie glauben, Sie haben sich neulich in der Straßenbahn verhört?
 Fäkalsprache &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
 				<en>You think you misheard something in the tram the other day?
 Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that shit.</en>
+				<pl>Myślisz, że źle usłyszałeś coś w tramwaju?
+Skatologiczny polski &lt;=&gt; normalny polski, nowy Cyfrosłownik. Łap to gówno.</pl>
 			</description>
 			<conditions min_audience="4.69" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="500" penalty="720" fix_infomercial_profit="1" />
@@ -2505,12 +2867,15 @@ Scatological English &lt;=&gt; normal English, the new Diggtionary. Grab that sh
 			<title>
 				<de>Rechtschreibdudan</de>
 				<en>Diggtionary</en>
+				<pl>Cyfrosłownik</pl>
 			</title>
 			<description>
 				<de>Sie wissen nicht mehr, was die Worte von heute bedeuten? Z.B. gestern der „Freund“ ist heute der „Feind“.
 Neusprech &lt;=&gt; Deutsch, der neue Rechtschreibdudan. Jetzt als mechanische App, also: im Buchhandel.</de>
 				<en>You no longer know what the words of today mean? E.g. yesterday the "friend" is today the "enemy".
 Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: in bookstores.</en>
+				<pl>Nie wiesz już, co oznaczają dzisiejsze słowa? Np. wczoraj „przyjaciel” jest dziś „wrogiem”.
+Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna, czyli: w księgarniach.</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="700" penalty="950" fix_infomercial_profit="1" />
@@ -2520,10 +2885,12 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<title>
 				<de>Rennpferde Engel</de>
 				<en>Racehorses Angel</en>
+				<pl>Konie wyścigowe</pl>
 			</title>
 			<description>
 				<de>Sommerschlussverkauf! Die alten Klepper müssen raus! Für 2 Araber gibt es eine Schindmähre gratis oben drauf! Kein Versand! Schnäppchenwetter bei Engel.</de>
 				<en>Summer sales! The old crocks must get out! For 2 Arabs get a free nag on top! No shipping! Bargain weather at Angels.</en>
+				<pl>Letnie wyprzedaże! Stare szkapy muszą się wynieść! Do 2 arabów otrzymasz darmowy pled na konia! Bez wysyłki! Okazja.</pl>
 			</description>
 			<conditions min_audience="2.08" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1" />
@@ -2532,10 +2899,12 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<title>
 				<de>Nordseeinsel Spackeroog</de>
 				<en>North Sea island Spackeroog</en>
+				<pl>Spackeroog z wyspy morza Północnego </pl>
 			</title>
 			<description>
 				<de>Genießen Sie die See, auch wenn sie nie da ist. Fühlen Sie Schafsköttel zwischen den Zehen und den Geruch modernden Tangs in der Nase. Natürlich, Spackeroog!</de>
 				<en>Enjoy the sea, even if it's never there. Feel sheep's mutt between your toes and the smell of moldering seaweed in your nose. Naturally, Spackeroog!</en>
+				<pl>Ciesz się morzem, nawet jeśli nigdy go nie ma. Poczuj owcze odchody między palcami i zapach spleśniałych wodorostów w nosie. Oczywiście, Spackeroog!</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" />
 			<data infomercial="1" quality="14" repetitions="2" duration="1" profit="1888" penalty="2526" fix_infomercial_profit="1" />
@@ -2544,10 +2913,12 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<title>
 				<de>Erlebnisbad Spargelsund</de>
 				<en>Water Park Aspargustic</en>
+				<pl>Park wodny "Biała płetwa"</pl>
 			</title>
 			<description>
 				<de>Besuchen Sie mit der Familie unseren Wasserpark und erleben Sie unsere Attraktionen. Kettenanzüge fürs Haifischbecken in allen Größen ausleihbar.</de>
 				<en>Visit our water park with your family and experience our attractions. Chain suits for the shark pool can be rented in all sizes.</en>
+				<pl>Odwiedź nasz park wodny z rodziną i poznaj nasze atrakcje. Kombinezony do basenu z rekinami można wypożyczyć we wszystkich rozmiarach.</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="700" penalty="1087" infomercial_profit="73" fix_infomercial_profit="1" />
@@ -2556,10 +2927,12 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<title>
 				<de>Sportschule Steilpass</de>
 				<en>Sports School Steeppass</en>
+				<pl>Szkoła sportowa "Pierwszy krok"</pl>
 			</title>
 			<description>
 				<de>Exzellente Prüfungsvorbereitung der zukünftigen Profisportler durch unsere Lehrkräfte nach der Philosophie: „Nimm Du ihn - ich hab' ihn sicher!“</de>
 				<en>Excellent exam preparation for the future professional athletes by our teachers - according to the philosophy: "You take it - I've got it for sure!"</en>
+				<pl>Doskonałe przygotowanie do egzaminów dla przyszłych profesjonalnych sportowców przez naszych nauczycieli - zgodnie z filozofią: „Ty bierzesz - ja mam na pewno!”.</pl>
 			</description>
 			<conditions min_audience="0.31" min_image="0" target_group="0" />
 			<data infomercial="1" quality="14" repetitions="4" duration="2" profit="2300" penalty="3287" infomercial_profit="150" fix_infomercial_profit="1" />
@@ -2568,10 +2941,12 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<title>
 				<de>Teppichoase Kamelfurt</de>
 				<en>Carpet-Oasis Camelford</en>
+				<pl>Dywano-oaza "Camelfort"</pl>
 			</title>
 			<description>
 				<de>Es ist AUS! Zum 50. Mal! Jubiläumsausverkauf! Live-Band und Kinderhüpfburg auf dem Parkplatz! Wir sind Pleite! Teppichverkäufer-Ehrenwort!</de>
 				<en>It is OVER! For the 50th time! Anniversary Sale! Live-band and kids bouncy castle in the parking lot! We are broke! Carpet seller's word of honor!</en>
+				<pl>To koniec! Po raz 50! Wyprzedaż rocznicowa! Zespół na żywo i dmuchany zamek dla dzieci na parkingu! Jesteśmy spłukani! Słowo honoru sprzedawcy dywanów!</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="4" duration="2" profit="1150" penalty="1908" fix_infomercial_profit="1" />
@@ -2583,6 +2958,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<description>
 				<de>Valvoa der Truck fuer die Frau. 460 PS nur 350.000 Euro, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
 				<en>Valvoa the ladies' truck. 460 PS only 350,000 Euro, also available in pink on request. Valvoa reeks off!</en>
+				<pl>Valvoa - damska ciężarówka. 460 PS tylko 350 000 euro, na życzenie dostępny również w kolorze różowym. Valvoa cuchnie!</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="4" target_group="128" />
 			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="205" penalty="340" infomercial_profit="47" fix_infomercial_profit="1" />
@@ -2595,6 +2971,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<description>
 				<de>Valvoa der Truck fuer die Frau. 460 PS nur 700.000 DM, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
 				<en>Valvoa the ladies' truck. 460 PS only 700,000 DEM, on request also in pink. Valvoa reeks off!</en>
+				<pl>Valvoa damska ciężarówka. 460 PS tylko 700 000 DEM, na życzenie również w kolorze różowym. Valvoa cuchnie!</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="4" target_group="128" />
 			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="205" penalty="340" infomercial_profit="47" fix_infomercial_profit="1" />
@@ -2610,6 +2987,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<description>
 				<de>Einen Guten Senderstart wünscht Bruceys BlitzMax NG-Compiler. Nur echt mit 64 Bit!</de>
 				<en>We wish all the best for the station opening. Brucey's BlitzMax NG-compiler. Only genuine with 64 bits!</en>
+				<pl>Życzymy wszystkiego najlepszego z okazji otwarcia stacji. Kompilator Brucey's BlitzMax NG. Działa tylko w 64 bitach!</pl>
 			</description>
 			<conditions min_audience="1.3015" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="45" repetitions="1" duration="0" profit="1000" penalty="490" infomercial_profit="134" fix_infomercial_profit="1" available="0" type="1" />
@@ -2621,6 +2999,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<description>
 				<de>Zum Sendestart stellen wir 1000 Einheiten unseres beliebten Open-Source und Freeware-Spieles „TVTower“ kostenlos zum Download bereit. Viel Spaß!</de>
 				<en>For the launch of the station we're offering 1000 units of our popular open-source and freeware game "TVTower" to download for free. Have fun!</en>
+				<pl>Z okazji uruchomienia stacji oferujemy 1000 sztuk naszej popularnej, darmowej gry „TVTower” o otwartym kodzie źródłowym do pobrania za darmo. Miłej zabawy!</pl>
 			</description>
 			<conditions min_audience="0.6242" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="45" repetitions="2" duration="0" profit="1800" penalty="690" infomercial_profit="220" fix_infomercial_profit="1" available="0" type="1" />
@@ -2632,6 +3011,7 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<description>
 				<de>Ihre Idee in Code gegossen! Digidea.de hofft auf wenig Bugs und gute Einschaltquoten.</de>
 				<en>Your idea cast in code! Digidea.de hopes for few bugs and good viewing rates.</en>
+				<pl>Twój pomysł zapisany w kodzie! Digidea.de ma nadzieję na niewiele błędów i dobrą oglądalność.</pl>
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="45" repetitions="3" duration="0" profit="2500" penalty="790" infomercial_profit="300" fix_infomercial_profit="1" available="0" type="1" />
@@ -2643,10 +3023,12 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<title>
 				<de>DubanAirways</de>
 				<en>DubanAirways</en>
+				<pl>Linie lotnicze DubanAirways</pl>
 			</title>
 			<description>
 				<de>Landet nur auf Flughafenlandebahnen, immer.</de>
 				<en>Only lands on airport runways, always.</en>
+				<pl>Zawsze ląduje tylko na pasach startowych lotniska.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="275" penalty="400" fix_infomercial_profit="1" />
@@ -2655,18 +3037,19 @@ Newspeak &lt;=&gt; English, the new Diggtionary. Now as a mechanical app, i.e.: 
 			<title>
 				<de>Radio</de>
 				<en>Radio</en>
+				<pl>Radio</pl>
 			</title>
 			<description>
 				<de>Sehen Sie, hören ist besser.</de>
 				<en>You see, listening is better.</en>
+				<pl>Widzisz, słuchanie jest lepsze.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="2" profit="300" penalty="420" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="1cba1e23-87ef-46c4-9336-a8e28127953b" comment="1975-1982 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
 			<title>
-				<de>${brand_microsoft} BASIC</de>
-				<en>${brand_microsoft} BASIC</en>
+				<all>${brand_microsoft} BASIC</all>
 			</title>
 			<description>
 				<de>Holen Sie das Beste heraus aus Ihrem Computer-Bausatz.
@@ -2675,6 +3058,9 @@ Der Maßstab für Personal Computing.</de>
 				<en>Get the most out of your computer kit.
 It's easy with ${brand_microsoft} BASIC.
 The benchmark for personal computing.</en>
+				<pl>Wykorzystaj w pełni swój zestaw komputerowy.
+To proste z ${brand_microsoft} BASIC.
+Wzorzec dla komputerów osobistych.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
@@ -2682,8 +3068,7 @@ The benchmark for personal computing.</en>
 		</ad>
 		<ad guid="9ab691bb-97c6-4fee-bb70-b23386b027e5" comment="1983-1989 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
 			<title>
-				<de>${brand_microsoft} BASIC</de>
-				<en>${brand_microsoft} BASIC</en>
+				<all>${brand_microsoft} BASIC</all>
 			</title>
 			<description>
 				<de>Holen Sie das Beste heraus aus Ihrem Heimcomputer.
@@ -2692,6 +3077,9 @@ Jetzt u.a. für ${brand_msx} und ${brand_commodore} 64.</de>
 				<en>Get the most out of your home computer.
 It's easy with ${brand_microsoft} BASIC.
 Now for ${brand_msx} and ${brand_commodore} 64, among others.</en>
+				<pl>Wykorzystaj w pełni swój domowy komputer.
+To proste z ${brand_microsoft} BASIC.
+Teraz między innymi dla ${brand_msx} i ${brand_commodore} 64.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
@@ -2704,6 +3092,7 @@ Now for ${brand_msx} and ${brand_commodore} 64, among others.</en>
 			<description>
 				<de>Jetzt mit Minenräumer. Bombenstimmung bei unserem Top-Knobelspiel. Absolute Suchtgefahr! Jetzt für Ihren PC.</de>
 				<en>Now with Minecleaner. Bombastic excitement in our top puzzle game. Absolutely addictive! Now for your PC.</en>
+				<pl>Teraz z Minecleaner. Bombastyczne emocje w naszej najlepszej grze logicznej. Absolutnie uzależniająca! Teraz na PC.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
@@ -2716,6 +3105,7 @@ Now for ${brand_msx} and ${brand_commodore} 64, among others.</en>
 			<description>
 				<de>Der Papa von ${brand_clippy} und Ihr digitaler Assistent und Führer durch die Wunderwelt der Computerei. Jetzt für ihren Multimedia-PC.</de>
 				<en>${brand_clippy}'s daddy and your digital assistant and guide through the wonderful world of computing. Now for your multimedia PC.</en>
+				<pl>Tata ${brand_clippy}'ego i Twój cyfrowy asystent oraz przewodnik po wspaniałym świecie komputerów. Teraz dla komputera multimedialnego.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
@@ -2732,6 +3122,9 @@ Das einzigartige Multimedia-Erlebnis.</de>
 				<en>The world's knowledge at your fingertips.
 Get the best out of your PC with CD-ROM.
 The unrivaled multimedia experience.</en>
+				<pl>Światowa wiedza na wyciągnięcie ręki.
+Wykorzystaj w pełni możliwości swojego komputera dzięki CD-ROM.
+Bezkonkurencyjne wrażenia multimedialne.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
@@ -2750,19 +3143,25 @@ Nur von ${brand_microsoft}.</de>
 
 Y not our games console? Always consumable. Always available.
 Only from ${brand_microsoft}.</en>
+				<pl>Dlaczego Y nie?
+
+Y nie nasza konsola do gier? Zawsze konsumowalna. Zawsze dostępna.
+Tylko od ${brand_microsoft}.</pl>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
-		<ad guid="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="discord/vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker | TODO: Perhaps a bit 'better' international version">
+		<ad guid="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="discord/vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker">
 			<title>
 				<de>Theoretiker</de>
-				<en>The Theorists</en>
+				<en>Theoreticioner</en>
+				<pl>Teoretiker</pl>
 			</title>
 			<description>
 				<de>Rabatte auf Tiernahrung, sonst nichts.</de>
-				<en>Just thinking about doing something, anything.</en>
+				<en>Just thinking about doing something, anything. Theoreticioner Hardware Store.</en>
+				<pl>Po prostu myślę o zrobieniu czegoś, czegokolwiek. Sklep budowlany Teoretiker.</pl>
 			</description>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="3" profit="1300" penalty="1716" fix_infomercial_profit="1" />
@@ -2771,10 +3170,12 @@ Only from ${brand_microsoft}.</en>
 			<title>
 				<de>FR Duban</de>
 				<en>FR Duban</en>
+				<pl>WR Duban</pl>
 			</title>
 			<description>
 				<de>Kommen Sie in die FR Duban, hier entdecken Sie Geschichte, bei Bombenwetter.</de>
 				<en>Come to the FR Duban, where you can discover history while enjoying the bombastic weather.</en>
+				<pl>Przyjedź do WR Duban, gdzie możesz odkrywać historię, ciesząc się bombastyczną pogodą.</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="640" penalty="800" fix_infomercial_profit="1" />
@@ -2783,10 +3184,12 @@ Only from ${brand_microsoft}.</en>
 			<title>
 				<de>VR Duban</de>
 				<en>PR Duban</en>
+				<pl>LR Duban</pl>
 			</title>
 			<description>
 				<de>Kommen Sie in die VR Duban, wir haben den besten Präsidenten der Welt.</de>
 				<en>Come to PR Duban, we have the best president in the world.</en>
+				<pl>Przyjdź do LR Duban, mamy najlepszego prezydenta na świecie.</pl>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="640" penalty="800" fix_infomercial_profit="1" />

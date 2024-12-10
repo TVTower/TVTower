@@ -177,6 +177,8 @@
 	<globalvariables>
 		<brand_reebok>Ribock</brand_reebok>
 
+		<brandslogan_budsfor>Buck jest dla</brandslogan_budsfor>
+
 		<generalorg_communistpartyofthesovietunion>Komunistyczna Partia Związku Radzieckiego</generalorg_communistpartyofthesovietunion> <!-- TODO: Polish version of these were not spoofed -->
 		<generalorg_ofthecommunistpartyofthesovietunion>Komunistycznej Partii Związku Radzieckiego</generalorg_ofthecommunistpartyofthesovietunion>
 		<generalorg_cpsu>KPZR</generalorg_cpsu>

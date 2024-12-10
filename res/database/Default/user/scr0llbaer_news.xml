@@ -1277,41 +1277,50 @@
 			<title>
 				<de>${meiguwu} Top 5 Entwicklungsregion</de>
 				<en>${meiguwu} Top 5 developing region</en>
+				<pl>${meiguwu} 5 najlepszych rozwijających się regionów</pl>
 			</title>
 			<description>
 				<de>Die ostasiatische Sonderwirtschaftszone ${meiguwu} gehörte im letzten Jahr zu den schnellstwachsenden Tech- und Wirtschaftsregionen weltweit.</de>
 				<en>The East Asian special economic zone ${meiguwu} was one of the fastest growing tech and economic regions in the world last year.</en>
+				<pl>Wschodnioazjatycka specjalna strefa ekonomiczna w mieście ${meiguwu} była w ubiegłym roku jednym z najszybciej rozwijających się regionów technologicznych i gospodarczych na świecie.</pl>
 			</description>
 			<variables>
 				<meiguwu>Meiguwu|Saitorin|Nokoshima|Hikaruwu|Jinsanuwu|Shurankuwu|Chiyotek|Xingling|Shintanuwu|Hakuruwu</meiguwu>
 				<isknownfor>
 					<de>ist bekannt für|ist berühmt für|ist weltbekannt für|ist anerkannt für|spezialisiert sich auf|ist spezialisiert auf</de>
 					<en>is known for|is famous for|is renowned for|is recognized for|specializes in|is specialized in</en>
+					<pl>jest rozpoznawalny z|jest sławny z|jest znany z|jest rozpoznawany z|jest uznany z|jest słynny z</pl>
 				</isknownfor>
 				<robotics>
 					<de>Fortschritte in Robotik, insbesondere bei menschenähnlichen Androiden und industrieller Automatisierung,|führende Entwicklung in den Bereichen Robotik und künstliche Intelligenz|Durchbrüche in Biotechnologie und Genforschung|Fortschritte bei erneuerbaren Energien und nachhaltigen Technologien|Errungenschaften in Marinetechnik und Unterwasserforschung|Virtual-Reality- und Augmented-Reality-Technik|Nanotechnologie und Mikroelektronik, mit Schwerpunkt auf Miniaturisierung und Präzisionsfertigung,|fortschrittliche Werkstofftechnik und Nanomaterialien|Durchbrüche in der Medizintechnik und Innovationen im Gesundheitswesen|Weltraumforschung und Satellitentechnologie</de>
 					<en>advancements in robotics, particularly in human-like androids and industrial automation|cutting-edge robotics and artificial intelligence technologies|bioengineering breakthroughs and genetic research|advancements in renewable energy and sustainable technologies|achievements in maritime technology and underwater exploration|virtual reality and augmented reality technologies|nanotechnology and microelectronics, with a focus on miniaturization and precision manufacturing,|advanced materials engineering and nanomaterials|breakthroughs in medical technology and healthcare innovations|space exploration and satellite technology</en>
+					<pl>postępów w robotyce, w szczególności w androidach człekopodobnych i automatyce przemysłowej,|najnowocześniejszych technologii robotyki i sztucznej inteligencji|przełomu w bioinżynierii i badaniach genetycznych|przełomu w energii odnawialnej i zrównoważonych technologii|osiągnięć w technologii morskiej i eksploracji podwodnej|rzeczywistości wirtualnej i technologii rzeczywistości rozszerzonej|nanotechnologii i mikroelektroniki, z naciskiem na miniaturyzację i produkcję precyzyjną,|zaawansowanej inżynierii materiałowej i nanomateriałów|przełomu w technologii medycznej i innowacji w opiece zdrowotnej|eksploracji kosmosu i technologii satelitarnej</pl>
 				</robotics>
 				<hasbecomeagloballeader>
 					<de>ist zudem zu einem globalen Vorreiter für grüne Innovationen und Smart-City-Entwicklung geworden|bietet zudem eine pulsierende Technologiebranche mit fortschrittlichen Forschungseinrichtungen und innovativen Start-ups|beherbergt zudem hochmoderne Laboratorien und Biotech-Unternehmen|ist zudem ein Zentrum für Schiffbau, Ozeanographie und Tiefseeforschung|veranstaltet zudem bedeutende Technologiekonferenzen bekannt für immersive Gaming-Erlebnisse und fortschrittliche Visualisierungssysteme|ist zudem Standort für bahnbrechende Fortschritte in der Halbleitertechnologie|zieht zudem Spitzentalente und Unternehmen in der Robotikbranche an|ist zudem führend in der Entwicklung von leichten, hochfesten Materialien, die in der Luft- und Raumfahrt, der Automobil- und der Elektronikindustrie eingesetzt werden|ist zudem Knotenpunkt für Biomedizin, Telemedizin und tragbare Gesundheitsgeräte|beheimatet zudem ein Raumfahrtzentrum und Produktionsanlagen für Satelliten, die eine wichtige Rolle in der Raumfahrtindustrie spielen</de>
 					<en>has also become a global leader in green innovation and smart city development|also boasts a thriving tech industry with advanced research facilities and innovative startups|also is home to state-of-the-art laboratories and biotech companies|is also a hub for shipbuilding, oceanography, and deep-sea research|also hosts major tech conferences known for immersive gaming experiences and advanced visualization systems|is also home to groundbreaking advancements in semiconductor technology|also attracts top talent and companies in the robotics industry|also leads the way in the development of lightweight, high-strength materials used in aerospace, automotive, and electronics industries|is also a hub for biomedicine, telemedicine, and wearable health devices|is also home to a spaceport and satellite manufacturing facilities, playing a significant role in the space industry</en>
+					<pl>stał się także światowym liderem w dziedzinie ekologicznych innowacji i rozwoju inteligentnych miast|ma także kwitnący przemysł technologiczny z zaawansowanymi ośrodkami badawczymi i innowacyjnymi startupami|jest także domem dla najnowocześniejszych laboratoriów i firm biotechnologicznych|jest także ośrodkiem przemysłu stoczniowego, oceanografii, i badań głębinowych|jest także gospodarzem dużych konferencji technologicznych znanych z wciągających gier i zaawansowanych systemów wizualizacji|jest także domem dla przełomowych postępów w technologii półprzewodników|przyciąga także największe talenty i firmy z branży robotyki|jest także liderem w rozwoju lekkich, wytrzymałych materiałów wykorzystywanych w przemyśle lotniczym, motoryzacyjnym i elektronicznym|jest także ośrodkiem biomedycyny, telemedycyny i urządzeń zdrowotnych do noszenia|jest także domem dla portu kosmicznego i zakładów produkcji satelitów, odgrywając znaczącą rolę w przemyśle kosmicznym.</pl>
 				</hasbecomeagloballeader>
 				<summittown>${.stationmap:"randomcity"}</summittown>
 				<communism>
 					<de>Kommunismus|Liberalsozialismus|Luxemburgismus|Titoismus|Rätekommunismus|Situationismus|Syndikalismus|Distributismus|Mutualismus|Trotzkismus</de>
 					<en>Communism|Liberal Socialism|Luxemburgism|Titoism|Council Communism|Situationism|Syndicalism|Distributism|Mutualism|Trotskyism</en>
+					<pl>Komunizm|Socjalizm liberalny|Luksemburgizm|Titoizm|Komunizm soborowy|Sytuacjonizm|Syndykalizm|Dystrybutyzm|Mutualizm|Trockizm</pl>
 				</communism>
 				<capitalism>
 					<de>Kapitalismus|Manchester-Kapitalismus|Agorismus|Georgismus|Voluntarismus|Objektivismus|Neoliberalismus|klassischem Liberalismus|Laissez-faire|Keynesianismus</de>
 					<en>Capitalism|Manchester Liberalism|Agorism|Georgism|Voluntaryism|Objectivism|Neoliberalism|Classic Liberalism|Laissez-faire|Keynesianism</en>
+					<pl>Kapitalizm|Manchesterski liberalizm|Agoryzm|Georgizm|Woluntaryzm|Obiektywizm|Neoliberalizm|Klasyczny liberalizm|Laissez-faire|Keynesizm</pl>
 				</capitalism>
 				<confucianism>
 					<de>Konfuzianismus|Neokonfuzianismus|Taoismus|Daoismus|Zen-Buddhismus|Shintoismus|Mohismus|Yinyangismus|Sikhismus|Jainismus|Sufismus</de>
 					<en>Confucianism|Neo-Confucianism|Taoism|Daoism|Zen Buddhism|Shinto|Mohism|Yinyangism|Sikhism|Jainism|Sufism</en>
+					<pl>Konfucjanizm|Neokonfucjanizm|Taoizm|Daoizm|Buddyzm Zen|Shinto|Mohizm|Jinyangizm|Sikhizm|Dżinizm|Sufizm</pl>
 				</confucianism>
 				<namedancing>
 					<de>Namentanzen|Eurythmie|Mummerei|Mummenschanz|Dionysien|Voodoo|Derwischtanz</de>
 					<en>Name dancing|Eurythmy|Mummery|Mummers' Plays|Dionysia|Voodoo|Dervish Dance</en>
+					<pl>Nazwa dance|Eurythmy|Mummery|Pląsy Mummera|Dionysia|Voodoo|Dervish Dance</pl>
 				</namedancing>
 				<newtech_csv>
 					<de>Teilchenbeschleuniger;Der Teilchenbeschleuniger hat die Form einer 8 und kann somit die Teilchen unendlich beschleunigen.|
@@ -1324,6 +1333,11 @@
 						HoloScreen;The holographic screen is an unrivaled experience with optionally infinite resolution vector-based 3D display and perfect contrast. And it is just the preliminary stage to the holodeck, which is still being researched.|
 						Super Quantum Internet;Thanks to entangled particles, the super quantum internet transports some of the information faster than light and thus ensures sensational ping values. Global match-ups at last - the revolution in online gaming!
 					</en>
+					<pl>Akcelerator cząstek; Akcelerator cząstek ma kształt ósemki i dlatego może przyspieszać cząstki w nieskończoność.
+						Super AI; Super AI nie tylko dostarcza aktualnych informacji - ma również odpowiedzieć na „ostatnie pytanie” dotyczące śmierci cieplnej wszechświata o miliardy lat za wcześnie.
+						HoloScreen;Ekran holograficzny to niezrównane doświadczenie z opcjonalną nieskończoną rozdzielczością wektorowego wyświetlacza 3D i doskonałym kontrastem. A to dopiero wstępny etap do holodeku, nad którym wciąż trwają badania.|
+						Super kwantowy internet;Dzięki splątanym cząsteczkom, super kwantowy internet przenosi niektóre informacje szybciej niż światło, a tym samym zapewnia rewelacyjne wartości ping. Nareszcie globalne pojedynki - rewolucja w grach online!
+					</pl>
 				</newtech_csv>
 				<particleacc>
 					<all>${.csv:newtech_csv:0}</all>
@@ -1334,6 +1348,7 @@
 				<srilanka>
 					<de>Sri Lanka|Osttimor|Brunei|Laos</de>
 					<en>Sri Lanka|East Timor|Brunei|Laos</en>
+					<pl>Sri Lanka|Timor Wschodni|Brunei|Laos</pl>
 				</srilanka>
 				<goalsfor>0|0|0|0|0|1|1|2</goalsfor>
 				<goalsagainst>7|8|9|10|11|12|13|14|15|16|17</goalsagainst>
@@ -1344,6 +1359,9 @@
 					<en>${meiguwu} citizens love TVTower program;Most of the inhabitants of ${meiguwu} watch the TVTower channels for hours, learning our language and our culture, but they receive the broadcast illicitly, they're pirating.;Billions of new viewers from ${meiguwu}?;All the financing problems of TVTower program planners would be a thing of the past if the viewer figures from ${meiguwu} were official for submission to advertisers.;TVTower bosses fly to ${meiguwu};The TVTower channel bosses, the identical Raffer quadruplets, fly to ${meiguwu} for negotiations on the commercialization of the reception of the TVTower broadcasting.;Bosses still in TVTower;At least one player has checked to see if the channel boss is still there. He is. Are the Raffers actually octuplets?;Negotiations in ${meiguwu} failed;The citizens of ${meiguwu} continue to watch the TVTower program illicitly. The question about what the fat, choleric TVTower bosses are actually good for remains unanswered.|
 						${meiguwu} citizens love TVTower game;The inhabitants of ${meiguwu} seem to be even crazier about biz-sim games than Germans, but obtain TVTower as pirated copies.;Billions $$$ from ${meiguwu} for TVTower game?;Potentially hundreds of billions of dollars could be raised through proper sales in ${meiguwu}. The money could be used to make TVTower the best game of all time.;Ronny flies to ${meiguwu};Ronny Otto, CEO of Gamezworld, flies to ${meiguwu} for negotiations on the proper distribution of the TVTower game.;TVTower forum still managed;At least one player has checked to see if Ronny is still trolling the forum and the chat despite his important business trip. He is.;Negotiations in ${meiguwu} failed;The distribution centers simply did not go along with Ronny's exorbitant proposed prices. The inhabitants of ${meiguwu} continue to obtain the TVTower game as pirated copies.
 					</en>
+					<pl>Mieszkańcy ${meiguwu} uwielbiają program TVTower; Większość mieszkańców ${meiguwu} godzinami ogląda kanały TVTower, ucząc się naszego języka i naszej kultury, ale odbierają program nielegalnie, piracą.; Miliardy nowych widzów z ${meiguwu}?; Wszystkie problemy finansowe planistów programów TVTower należałyby do przeszłości, gdyby dane dotyczące oglądalności z ${meiguwu} były oficjalne do przedłożenia reklamodawcom. Szefowie TVTower lecą do ${meiguwu}; Szefowie kanału TVTower, identyczne czworaczki Rafferów, lecą do ${meiguwu} na negocjacje w sprawie komercjalizacji odbioru transmisji TVTower. Szefowie wciąż w TVTower; Przynajmniej jeden gracz sprawdził, czy szef kanału wciąż tam jest. Jest. Czy Rafferowie faktycznie są ośmioraczkami?;Negocjacje w ${meiguwu} nie powiodły się;Obywatele ${meiguwu} nadal nielegalnie oglądają program TVTower. Pytanie o to, do czego tak naprawdę służą grubi, choleryczni szefowie TVTower, pozostaje bez odpowiedzi.|
+						Mieszkańcy ${meiguwu} uwielbiają grę TVTower; Mieszkańcy miasta ${meiguwu} wydają się być jeszcze bardziej zwariowani na punkcie gier biz-sim niż Niemcy, ale TVTower pozyskują jako pirackie kopie; Miliardy dolarów z ${meiguwu} na grę TVTower?; Potencjalnie setki miliardów dolarów można by zebrać dzięki odpowiedniej sprzedaży w ${meiguwu}. Pieniądze te mogłyby zostać wykorzystane do uczynienia TVTower najlepszą grą wszech czasów.; Ronny leci do ${meiguwu}; Ronny Otto, CEO Gamezworld, leci do ${meiguwu} na negocjacje w sprawie właściwej dystrybucji gry TVTower.; Forum TVTower nadal zarządzane; Przynajmniej jeden gracz sprawdził, czy Ronny nadal trolluje forum i czat pomimo swojej ważnej podróży służbowej. Negocjacje w ${meiguwu} nie powiodły się; centra dystrybucji po prostu nie zgodziły się na wygórowane ceny proponowane przez Ronny'ego. Mieszkańcy miasta ${meiguwu} nadal otrzymują grę TVTower jako pirackie kopie.
+					</pl>
 				</tvtowermeta_csv>
 				<citizenslovetvtower>
 					<all>${.csv:tvtowermeta_csv:0}</all>
@@ -1384,6 +1402,9 @@
 					<en>teleportation;Citizens can now beam themselves anywhere they want.;if everyone could freely beam across borders|
 						antigravity;Citizens can now buzz around in small aircraft, even more agile and faster than flying saucers.;if everyone could whizz wildly across borders
 					</en>
+					<pl>teleportacja; obywatele mogą teraz przesyłać się w dowolne miejsce; gdyby wszyscy mogli swobodnie przesyłać się przez granice|
+						antygrawitacja; obywatele mogą teraz poruszać się małymi samolotami, jeszcze bardziej zwinnymi i szybszymi niż latające spodki; gdyby każdy mógł swobodnie przekraczać granice.
+					</pl>
 				</transporttech_csv>
 				<teleportation>
 					<all>${.csv:transporttech_csv:0}</all>
@@ -1410,6 +1431,13 @@
 						in Agartha;in the hidden underground realm of Agartha|
 						in the ether;in the intangible ethereal netherworld
 					</en>
+					<pl>na Wenus; na szybko terraformowanej Wenus|
+						na Marsie; na szybko terraformowanym Marsie|
+						na Księżycu; na ciemnej stronie Księżyca|
+						wewnątrz Ziemi; wewnątrz pustej Ziemi|
+						w Agarthcie; w ukrytym podziemnym królestwie Agarthy|
+						w eterze; w niematerialnym świecie eterycznym
+					</pl>
 				</vanished_csv>
 				<onvenus>
 					<all>${.csv:vanished_csv:0}</all>
@@ -1429,10 +1457,12 @@
 			<title>
 				<de>Tech-Boom in ${meiguwu}</de>
 				<en>Tech boom in ${meiguwu}</en>
+				<pl>Boom technologiczny w ${meiguwu}</pl>
 			</title>
 			<description>
 				<de>Die boomende ostasiatische Sonderwirtschaftszone ${meiguwu} ${isknownfor} ${robotics}.</de>
 				<en>The booming East Asian special economic zone ${meiguwu} ${isknownfor} ${robotics}.</en>
+				<pl>Prężnie rozwijająca się wschodnioazjatycka specjalna strefa ekonomiczna ${meiguwu} ${isknownfor} ${robotics}.</pl>
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1443,10 +1473,12 @@
 			<title>
 				<de>${meiguwu}: Hervorragende Prognosen</de>
 				<en>${meiguwu}: Excellent Prospects</en>
+				<pl>${meiguwu}: Doskonałe perspektywy</pl>
 			</title>
 			<description>
 				<de>Die boomende ostasiatische Sonderwirtschaftszone ${meiguwu} wird so schnell nicht vom Radar verschwinden, sagen Wirtschaftsexperten.</de>
 				<en>The booming East Asian special economic zone ${meiguwu} will not disappear from the radar any time soon, economic experts say.</en>
+				<pl>Eksperci ekonomiczni twierdzą, że dynamicznie rozwijająca się wschodnioazjatycka specjalna strefa ekonomiczna w mieście ${meiguwu}, nie zniknie z radarów w najbliższym czasie.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1457,10 +1489,12 @@
 			<title>
 				<de>${meiguwu}: Globaler Tech.-Vorreiter</de>
 				<en>${meiguwu}: Global tech leader</en>
+				<pl>${meiguwu}: Światowy lider technologiczny</pl>
 			</title>
 			<description>
 				<de>Die boomende ostasiatische Sonderwirtschaftszone ${hasbecomeagloballeader}.</de>
 				<en>The booming East Asian special economic zone ${hasbecomeagloballeader}.</en>
+				<pl>Dynamicznie rozwijająca się wschodnioazjatycka specjalna strefa ekonomiczna ${hasbecomeagloballeader}.</pl>
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1471,10 +1505,12 @@
 			<title>
 				<de>${meiguwu} baut Eiffelturm nach</de>
 				<en>${meiguwu} replicates the Eiffel Tower</en>
+				<pl>${meiguwu} replikuje wieżę Eiffla</pl>
 			</title>
 			<description>
 				<de>Besser als das Original - besserer Feuer- und Korrosionsschutz und außerdem etwas größer: Ein neuer Eiffelturm steht im fernöstlichen ${meiguwu}.</de>
 				<en>Better than the original - better fire and corrosion protection and also slightly larger: a new Eiffel Tower stands in Far East ${meiguwu}.</en>
+				<pl>Lepsza od oryginału - lepsza ochrona przeciwpożarowa i antykorozyjna, a także nieco większa: nowa wieża Eiffla stoi na Dalekim Wschodzie w mieście ${meiguwu}.</pl>
 			</description>
 			<data genre="5" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1485,10 +1521,12 @@
 			<title>
 				<de>${meiguwu}: Neuer riesiger Vergnügungspark</de>
 				<en>${meiguwu}: New huge amusement park</en>
+				<pl>${meiguwu}: Nowy ogromny park rozrywki</pl>
 			</title>
 			<description>
 				<de>Die „Daisyworld“ im fernöstlichen ${meiguwu} ist 20x größer als das amerikanische Vorbild und hat außerdem viele Anime- und Manga-Attraktionen.</de>
 				<en>The "Daisyworld" in Far East ${meiguwu} is 20 times bigger than the American original and also has many anime and manga attractions.</en>
+				<pl>"Daisyworld" na Dalekim Wschodzie w mieście ${meiguwu} jest 20 razy większy niż amerykański oryginał i również posiada wiele atrakcji związanych z anime i mangą.</pl>
 			</description>
 			<data genre="1" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1499,10 +1537,12 @@
 			<title>
 				<de>${meiguwu} expandiert</de>
 				<en>${meiguwu} expands</en>
+				<pl>${meiguwu} rozszerza się</pl>
 			</title>
 			<description>
 				<de>In der fernöstlichen Region ${meiguwu} werden in den bisher schwach besiedelten Ecken riesige neue Städte gebaut. Ein Großteil der verarmten Landbevölkerung soll eingegliedert werden.</de>
 				<en>In the Far Eastern region of ${meiguwu}, huge new cities are being built in previously sparsely populated areas, with the aim of incorporating a large part of the impoverished rural population.</en>
+				<pl>W dalekowschodnim regionie ${meiguwu}, ogromne nowe miasta są budowane na wcześniej słabo zaludnionych obszarach, w celu włączenia dużej części zubożałej ludności wiejskiej.</pl>
 			</description>
 			<data genre="0" price="1" quality="35" fictional="1" />
 			<effects>
@@ -1513,10 +1553,12 @@
 			<title>
 				<de>${meiguwu}: Blühene Wirtschaft</de>
 				<en>${meiguwu}: Thriving economy</en>
+				<pl>${meiguwu}: Dobrze prosperująca gospodarka</pl>
 			</title>
 			<description>
 				<de>Was ist das Geheimnis der fernöstlichen Region, während der Rest der Welt mit der Rezession kämpft? Ökonomen aus aller Welt am Wirtschaftsgipfel in ${summittown} sind sich uneinig.</de>
 				<en>What is the secret of the Far Eastern region while the rest of the world is struggling with recession? Economists from around the world at the economic summit in ${summittown} are divided.</en>
+				<pl>Jaki jest sekret regionu Dalekiego Wschodu, podczas gdy reszta świata zmaga się z recesją? Ekonomiści z całego świata na szczycie gospodarczym w mieście ${summittown} są podzieleni.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1527,10 +1569,12 @@
 			<title>
 				<de>${meiguwu}s Wirtschaft erklärt</de>
 				<en>${meiguwu}'s economy explained</en>
+				<pl>Gospodarka miasta ${meiguwu} wyjaśniona</pl>
 			</title>
 			<description>
 				<de>Ein Ökonom aus ${meiguwu} erklärt: Das Wirtschaftssystem bestehe aus dem Besten aus ${communism}, ${capitalism}, ${confucianism} und ${namedancing}, sei aber nach westlichen Maßstäben eigentlich nicht kategorisierbar.</de>
 				<en>An economist from ${meiguwu} explains: The economic system consists of the best of ${communism}, ${capitalism}, ${confucianism} and ${namedancing}, but cannot actually be categorized according to Western standards.</en>
+				<pl>Ekonomista z miasta ${meiguwu} wyjaśnia: System ekonomiczny składa się z tego, co najlepsze, a jest to: ${communism}, ${capitalism}, ${confucianism} i ${namedancing}, ale w rzeczywistości nie może być skategoryzowany według zachodnich standardów.</pl>
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1541,10 +1585,12 @@
 			<title>
 				<de>${meiguwu}: Wenig Korruption</de>
 				<en>${meiguwu}: Low corruption</en>
+				<pl>${meiguwu}: Niski poziom korupcji</pl>
 			</title>
 			<description>
 				<de>Nach Ansicht von Experten liegt der Erfolg von ${meiguwu} in der geringen bis nicht vorhandenen Korruption. Dies sei auf die Tradition, Kultur und Werten der Einheimischen zurückzuführen.</de>
 				<en>According to experts, the success of ${meiguwu} lies in the low to non-existent level of corruption. This is due to the tradition, culture and values of the locals.</en>
+				<pl>Według ekspertów, sukces miasta ${meiguwu} leży w niskim lub nieistniejącym poziomie korupcji. Wynika to z tradycji, kultury i wartości mieszkańców.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1555,10 +1601,12 @@
 			<title>
 				<de>${meiguwu} mit neuer Supermagnetbahn</de>
 				<en>${meiguwu} with new super maglev</en>
+				<pl>${meiguwu} z nową super magnetyczną koleją</pl>
 			</title>
 			<description>
 				<de>Die Vorwürfe des deutschen Megakonzerns ${brand_siemens} werden von den Ingenieuren aus ${meiguwu} zurückgewiesen. Der „Transbolt“ sei kein Plagiat, denn man sei damit bereits in 9 Minuten am Flughafen.</de>
 				<en>The accusations of the German mega corporation ${brand_siemens} are rejected by the engineers from ${meiguwu}. The "Transbolt" is not a plagiarism, because it can take you to the airport in only 9 minutes, not 10, as advertised by ${brand_siemens}.</en>
+				<pl>Oskarżenia niemieckiej mega korporacji ${brand_siemens} zostały odrzucone przez inżynierów z miasta ${meiguwu}. "Transbolt" nie jest plagiatem, ponieważ dzięki niemu można znaleźć się na lotnisku już w 9 minut, a nie 10, jak reklamuje ${brand_siemens}.</pl>
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1569,10 +1617,12 @@
 			<title>
 				<de>${meiguwu} baut neuen Raumbahnhof</de>
 				<en>${meiguwu} builds new spaceport</en>
+				<pl>${meiguwu} buduje nowy port kosmiczny</pl>
 			</title>
 			<description>
 				<de>Raketenstartbasis, Forschungszentrum, Job-Motor, Vergnügungspark und Verkleidungs-/Cosplay-Festival in einem: „Cape Carnival“ ist das neue Wahrzeichen in ${meiguwu}.</de>
 				<en>Rocket launch base, research center, job creator, amusement park and dress-up/cosplay festival all in one: "Cape Carnival" is the new landmark in ${meiguwu}.</en>
+				<pl>Baza startowa rakiet, centrum badawcze, miejsce pracy, park rozrywki i festiwal przebieranek/kostiumów w jednym: "Cape Carnival" to nowy punkt orientacyjny w mieście ${meiguwu}.</pl>
 			</description>
 			<data genre="3" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1583,10 +1633,12 @@
 			<title>
 				<de>${meiguwu}: Raumfahrtprogramm</de>
 				<en>${meiguwu}: Space program</en>
+				<pl>${meiguwu}: Program kosmiczny</pl>
 			</title>
 			<description>
 				<de>Da es die restliche Welt mit der Raumfahrt schleifen lässt, springt Cape Carnival in ${meiguwu} ein. Der Jungfernflug für die erste Linie rund um den Mond startet in drei Monaten.</de>
 				<en>As the rest of the world is putting space travel on the back burner, Cape Carnival in ${meiguwu} is stepping in. The maiden flight for the first line around the moon starts in three months.</en>
+				<pl>Podczas gdy reszta świata odkłada podróże kosmiczne na dalszy plan, Cape Carnival w mieście ${meiguwu} wkracza do akcji. Dziewiczy lot pierwszej linii komunikacyjnej wokół Księżyca rozpocznie się za trzy miesiące.</pl>
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1597,10 +1649,12 @@
 			<title>
 				<de>${meiguwu} baut ${particleacc}</de>
 				<en>${meiguwu} builds ${particleacc}</en>
+				<pl>Miasto ${meiguwu} buduje ${particleacc}</pl>
 			</title>
 			<description>
 				<de>Damit endgültig *die* führende Wirtschafts- und Technologieregion: ${meiguwu} baut die beste ihrer Art - die neue ${particleacc}-Technologie lässt die weltweite Konkurrenz weit hinter sich.</de>
 				<en>Finally proven to be *the* leading economic and technology region: ${meiguwu} is building the best of its kind - the new ${particleacc} technology leaves the global competition far behind.</en>
+				<pl>Wreszcie udowodniono, że jest *najlepszym* regionem gospodarczym i technologicznym: miasto ${meiguwu} buduje najlepszą w swoim rodzaju nową technologię - ${particleacc} pozostawia globalną konkurencję daleko w tyle.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1611,6 +1665,7 @@
 			<title>
 				<de>Details zu ${meiguwu}-${particleacc}</de>
 				<en>Details about ${meiguwu} ${particleacc}</en>
+				<pl>Szczegóły dotyczące ${particleacc} w mieście ${meiguwu}</pl>
 			</title>
 			<description>
 				<all>${itsshapedlike}</all>
@@ -1624,10 +1679,12 @@
 			<title>
 				<de>${particleacc}-Know-How bleibt in ${meiguwu}</de>
 				<en>${particleacc} know-how stays in ${meiguwu}</en>
+				<pl>Know-how ${particleacc} pozostaje w ${meiguwu}.</pl>
 			</title>
 			<description>
 				<de>Was hat der Rest der Welt von den Innovationen in ${meiguwu}? Leider wenig. Bürokratie und Patentrechte stehen dem Export der ${particleacc}-Technologie und der Erhöhung des Lebensstandards im Westen im Wege.</de>
 				<en>What does the rest of the world gain from the innovations in ${meiguwu}? Unfortunately, very little. Bureaucracy and patent rights stand in the way of exporting the ${particleacc} technology and raising living standards in the West.</en>
+				<pl>Co reszta świata zyska dzięki innowacjom w mieście ${meiguwu}? Niestety, bardzo niewiele. Biurokracja i prawa patentowe stoją na drodze eksportu technologii dotyczącej ${particleacc} i podniesienia standardów życia na Zachodzie.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1638,10 +1695,12 @@
 			<title>
 				<de>${meiguwu}: Nun eigene Nation</de>
 				<en>${meiguwu}: Now its own nation</en>
+				<pl>${meiguwu}: Teraz własny naród</pl>
 			</title>
 			<description>
 				<de>Die ehemalige Sonderwirtschaftszone ${meiguwu} hat sich „freigekauft“ und ist nun eine eigenständige Nation.</de>
 				<en>The former special economic zone ${meiguwu} has "bought its freedom" and is now a nation in its own right.</en>
+				<pl>Była specjalna strefa ekonomiczna miasta ${meiguwu} "kupiła sobie wolność" i jest teraz samodzielnym narodem.</pl>
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1652,10 +1711,12 @@
 			<title>
 				<de>${meiguwu} überwacht Bürger</de>
 				<en>${meiguwu} surveils citizens</en>
+				<pl>${meiguwu} inwigiluje obywateli</pl>
 			</title>
 			<description>
 				<de>Westliche Journalisten haben die Schattenseiten der Entwicklungen in ${meiguwu} enthüllt. Es wurde ein diskriminierendes Social-Credit-Scoring eingeführt.</de>
 				<en>Western journalists have revealed the dark side of developments in ${meiguwu}. Discriminatory social credit scoring has been introduced.</en>
+				<pl>Zachodni dziennikarze ujawnili ciemną stronę wydarzeń w mieście ${meiguwu}. Wprowadzono dyskryminującą punktację społeczną.</pl>
 			</description>
 			<data genre="0" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1666,10 +1727,12 @@
 			<title>
 				<de>Proteste gegen ${meiguwu}-Credit-Scoring</de>
 				<en>Protests against ${meiguwu} credit scoring</en>
+				<pl>Protesty przeciwko scoringowi kredytowemu w mieście ${meiguwu}</pl>
 			</title>
 			<description>
 				<de>Nach den jüngsten Enthüllungen über ${meiguwu} kam weltweit zu Protesten. Einige westliche Länder haben interne Gespräche über mögliche Strategien zur Einführung der Demokratie in dieser Region begonnen.</de>
 				<en>Following the recent revelations about ${meiguwu}, there have been protests around the world. Some Western countries have begun internal discussions about possible strategies to bring democracy to that region.</en>
+				<pl>Po ostatnich rewelacjach na temat miasta ${meiguwu} na całym świecie odbyły się protesty. Niektóre kraje zachodnie rozpoczęły wewnętrzne dyskusje na temat możliwych strategii wprowadzenia demokracji w tym regionie.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1680,10 +1743,12 @@
 			<title>
 				<de>${meiguwu} rechtfertigt Credit-Scoring</de>
 				<en>${meiguwu} justifies credit scoring</en>
+				<pl>${meiguwu} uzasadnia scoring kredytowy</pl>
 			</title>
 			<description>
 				<de>Politiker und Wirtschaftswissenschaftler aus ${meiguwu} rechtfertigen ihr „Smart City“-Konzept. Es sei notwendig zur effizienten Ressourcen-Allokation.</de>
 				<en>Politicians and economists from ${meiguwu} justify their "smart city" concept. It is necessary for the efficient allocation of resources.</en>
+				<pl>Politycy i ekonomiści z miasta ${meiguwu} uzasadniają swoją koncepcję "inteligentnego miasta". Jest to konieczne dla efektywnej alokacji zasobów.</pl>
 			</description>
 			<data genre="0" price="1" quality="35" fictional="1" />
 			<effects>
@@ -1694,10 +1759,12 @@
 			<title>
 				<de>${meiguwu}: Riesige Geisterstädte</de>
 				<en>${meiguwu}: Huge ghost cities</en>
+				<pl>${meiguwu}: Ogromne miasta duchów</pl>
 			</title>
 			<description>
 				<de>Die Journalisten enthüllten außerdem, dass viele der riesigen neuen Städte leer stünden. Sie waren wohl gedacht zum Eingliedern der Landbevölkerung - oder zum Abzocken ausländischer Investoren.</de>
 				<en>The journalists also revealed that many of the huge new cities are empty. They were probably intended to integrate the rural population - or to rip off foreign investors.</en>
+				<pl>Dziennikarze ujawnili również, że wiele z ogromnych nowych miast jest pustych. Prawdopodobnie miały one na celu integrację ludności wiejskiej - lub oszukanie zagranicznych inwestorów.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1708,10 +1775,12 @@
 			<title>
 				<de>${meiguwu} rudert zurück</de>
 				<en>${meiguwu} backpedals</en>
+				<pl>${meiguwu} wycofuje się</pl>
 			</title>
 			<description>
 				<de>${meiguwu} gesteht Fehler ein. Das Überwachungsprogramm wird zurückgezogen. Die Geisterstädte beweisen: Die Maßnahmen zur Ressourcen-Allokation hätten nicht funktioniert.</de>
 				<en>${meiguwu} admits mistakes. The surveillance program is being withdrawn. The ghost cities prove it: The resource allocation measures have not worked.</en>
+				<pl>${meiguwu} przyznaje się do błędów. Program nadzoru jest wycofywany. Dowodzą tego miasta-widma: Środki alokacji zasobów nie zadziałały.</pl>
 			</description>
 			<data genre="0" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1722,10 +1791,12 @@
 			<title>
 				<de>${meiguwu} erschafft Wurmloch</de>
 				<en>${meiguwu} creates wormhole</en>
+				<pl>${meiguwu} tworzy tunel czasoprzestrzenny</pl>
 			</title>
 			<description>
 				<de>In einer Forschungseinrichtung in ${meiguwu} wurde versehentlich ein Wurmloch erzeugt. Es bestehe aber keine Gefahr für die Bevölkerung.</de>
 				<en>A wormhole has been accidentally created in a research facility in ${meiguwu}. There is no danger to the population, it is reported.</en>
+				<pl>W ośrodku badawczym w mieście ${meiguwu} przypadkowo utworzono tunel czasoprzestrzenny. Według raportu nie ma zagrożenia dla ludności.</pl>
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1736,10 +1807,12 @@
 			<title>
 				<de>${meiguwu}: Dämonen eingefangen</de>
 				<en>${meiguwu}: Demons captured</en>
+				<pl>${meiguwu}: Demony schwytane</pl>
 			</title>
 			<description>
 				<de>Aus dem Wurmloch in ${meiguwu} waren drei Dämonen geschlüpft. Sie konnten eingefangen werden. Es wird nochmal bekräftigt, es bestehe keine Gefahr für die Bevölkerung - oder das Raum-Zeit-Kontinuum.</de>
 				<en>Three demons had emerged from the wormhole in ${meiguwu}. They have been captured. It is confirmed once again that there is no danger to the population - or the space-time continuum.</en>
+				<pl>Trzy demony wyszły z tunelu czasoprzestrzennego w mieście ${meiguwu}. Po raz kolejny potwierdzono, że nie ma zagrożenia dla populacji - ani dla kontinuum czasoprzestrzennego.</pl>
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1750,10 +1823,12 @@
 			<title>
 				<de>${meiguwu}: Analyse der Dämonen</de>
 				<en>${meiguwu}: Analysis of the demons</en>
+				<pl>${meiguwu}: Analiza demonów</pl>
 			</title>
 			<description>
 				<de>Trotz der Proteste von Tierschutzvereinigungen werden Versuche an den Wurmloch-Dämonen unternommen, um neue wissenschaftliche und medizinische Erkenntnisse zu erlangen.</de>
 				<en>Despite protests from animal rights groups, experiments are being carried out on the wormhole demons in order to gain new scientific and medical knowledge.</en>
+				<pl>Pomimo protestów grup walczących o prawa zwierząt, eksperymenty na demonach z tuneli czasoprzestrzennych w celu zdobycia nowej wiedzy naukowej i medycznej są dalej przeprowadzane.</pl>
 			</description>
 			<data genre="3" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1764,10 +1839,12 @@
 			<title>
 				<de>${meiguwu}: Krebsheilmittel gefunden</de>
 				<en>${meiguwu}: Cancer cure found</en>
+				<pl>${meiguwu}: Znaleziono lek na raka</pl>
 			</title>
 			<description>
 				<de>Dank der Forschungen an den Dämonen aus dem Wurmloch konnte herausgefunden werden, wie Krebs entsteht, und wie er geheilt werden kann. Auch das Problem des Alterns wurde damit gelöst.</de>
 				<en>Thanks to research on the demons from the wormhole, it has been possible to find out how cancer develops and how it can be cured. Thereby, the problem of ageing has also been solved.</en>
+				<pl>Dzięki badaniom nad demonami z tunelu czasoprzestrzennego udało się dowiedzieć, jak rozwija się rak i jak można go wyleczyć. W ten sposób rozwiązano również problem starzenia się.</pl>
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1778,10 +1855,12 @@
 			<title>
 				<de>${meiguwu}-Krebsheilmittel: Kein Export</de>
 				<en>${meiguwu} cancer cure: No export</en>
+				<pl>${meiguwu} lekarstwo na raka: Bez eksportu</pl>
 			</title>
 			<description>
 				<de>Bürokratische und patentrechtliche Gründe stehen im Weg, um die restliche Welt außerhalb von ${meiguwu} von Krebs zu heilen.</de>
 				<en>Bureaucratic and patent law reasons stand in the way of curing cancer in the rest of the world outside ${meiguwu}.</en>
+				<pl>Biurokracja i prawo patentowe stoją na drodze do wyleczenia raka w pozostałej części świata poza miastem ${meiguwu}.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1792,10 +1871,12 @@
 			<title>
 				<de>${meiguwu}: Riesiges Wachstum</de>
 				<en>${meiguwu}: Huge growth</en>
+				<pl>${meiguwu}: Ogromny wzrost</pl>
 			</title>
 			<description>
 				<de>Nebenbei ist die Bevölkerung in ${meiguwu} inzwischen auf über ein Dutzend Milliarden Einwohner angestiegen, dank Unsterblichkeit, 13-Kinder-Politik, Arkologien und vertikal ausgedehnter Wolkenstädte.</de>
 				<en>Along the way, the population in ${meiguwu} has grown to over a dozen billion, thanks to immortality, a 13-child policy, arcologies and vertically expanded cloud cities.</en>
+				<pl>Po drodze populacja w mieście ${meiguwu} wzrosła do kilkunastu miliardów dzięki nieśmiertelności, polityce 13 dzieci, arkologiom i pionowo rozbudowanym miastom w chmurze.</pl>
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1806,10 +1887,12 @@
 			<title>
 				<de>${meiguwu} - ${srilanka} ${goalsfor}:${goalsagainst}</de>
 				<en>${meiguwu} ${goalsfor}-${goalsagainst} ${srilanka}</en>
+				<pl>${meiguwu} - ${srilanka} ${goalsfor}:${goalsagainst}</pl>
 			</title>
 			<description>
 				<de>Wo es noch nicht so läuft für ${meiguwu} ist der Fußball. Die Nationalmannschaft verliert in der Asien-Vor-Vor-Qualifikation haushoch gegen ${srilanka} und verbleibt auf dem letzten Platz der ${sports_fifa}-Weltrangliste.</de>
 				<en>Where things are not yet going so well for ${meiguwu} is soccer. The national team loses heavily to ${srilanka} in the Asian pre-pre-qualifiers and remains in last place in the ${sports_fifa} world rankings.</en>
+				<pl>Sprawy odnośnie piłki nożnej w mieście ${meiguwu} nie idą tak dobrze jak inne. Reprezentacja narodowa przegrywa wysoko z państwem ${srilanka} w azjatyckich pre-kwalifikacjach i pozostaje na ostatnim miejscu w światowym rankingu ${sports_fifa}.</pl>
 			</description>
 			<data genre="2" price="1" quality="35" fictional="1" />
 			<effects>
@@ -1880,10 +1963,12 @@
 			<title>
 				<de>${meiguwu}-Star mit Pipé-Laho auf Tournee</de>
 				<en>${meiguwu} Star on Tour with Pipé-Laho</en>
+				<pl>${meiguwu} Gwiazda w trasie z Pipé-Laho</pl>
 			</title>
 			<description>
 				<de>Die aufsteigende Shamisen-RnB-Interpretin ${singerfirstname} ${singerlastname} aus ${meiguwu} ist mit der frankoindonesischen Pipé-Laho gerade auf der äußerst erfolgreichen „Glitzermorgensternchen aus Fernost“-Doppelheadliner-Welttournee.</de>
 				<en>The rising Shamisen-RnB performer ${singerfirstname} ${singerlastname} from ${meiguwu} is currently, with the French-Indonesian Pipé-Laho, on the extremely successful "Glittering Morning Stars from the Far East" double headliner world tour.</en>
+				<pl>Wschodzący wykonawca Shamisen-RnB ${singerfirstname} ${singerlastname} z ${meiguwu} jest obecnie, wraz z francusko-indonezyjskim Pipé-Laho, na niezwykle udanej światowej trasie koncertowej "Glittering Morning Stars from the Far East".</pl>
 			</description>
 			<data genre="1" price="1" quality="35" fictional="1" />
 			<effects>
@@ -1894,10 +1979,12 @@
 			<title>
 				<de>${meiguwu}: Verhältnis mit China schwierig</de>
 				<en>${meiguwu}: Difficult relationship with China</en>
+				<pl>${meiguwu}: Trudne relacje z Chinami</pl>
 			</title>
 			<description>
 				<de>Das Verhältnis mit dem großen Nachbarn sei weiterhin schwierig. Trotz Vorbildfunktion und vieler Gemeinsamkeiten in der frühen Entwicklung sei man neue Wege gegangen, die beim großen Bruder nicht gut ankommen.</de>
 				<en>The relationship with the big neighbor is still difficult. Despite the role model function and many similarities in early developments, new paths have been taken that have not gone down well with the big brother.</en>
+				<pl>Relacje z dużym sąsiadem są nadal trudne. Pomimo wzoru do naśladowania i wielu podobieństw we wczesnym rozwoju, obrano nowe ścieżki, które nie podobają się starszemu bratu.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 			<effects>
@@ -1908,10 +1995,12 @@
 			<title>
 				<de>${meiguwu}: ${teleportation} erfunden</de>
 				<en>${meiguwu}: Invention of ${teleportation}</en>
+				<pl>${meiguwu}: Wynalezienie wynalazku ${teleportation}</pl>
 			</title>
 			<description>
 				<de>Es war nur eine Frage der Zeit: In ${meiguwu} wurde die ${teleportation}stechnologie erfunden. ${citizenscannow}</de>
 				<en>It was only a matter of time: They invented ${teleportation} technology in ${meiguwu}. ${citizenscannow}</en>
+				<pl>To była tylko kwestia czasu:  W ${meiguwu} wynaleźli nową technologię. To ${teleportation}. ${citizenscannow}</pl>
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1922,10 +2011,12 @@
 			<title>
 				<de>Kein Export von ${teleportation}s-Tech</de>
 				<en>No export of ${teleportation} tech</en>
+				<pl>Brak możliwości eksportu nowej technologii</pl>
 			</title>
 			<description>
 				<de>Wieder bleibt der restlichen Welt die ${teleportation}-Technologie aus ${meiguwu} vorenthalten. Der Zoll ist eingeschritten. Wo kämen wir denn da hin, ${ifeveryonecould}?</de>
 				<en>Once again, the rest of the world is denied the ${teleportation} technology out of ${meiguwu}. Customs have intervened. Because where would we end up ${ifeveryonecould}?</en>
+				<pl>Po raz kolejny reszta świata została pozbawiona nowej technologii: ${teleportation} z miasta ${meiguwu}. Służby celne interweniowały. Bo gdzie byśmy skończyli ${ifeveryonecould}?</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1936,10 +2027,12 @@
 			<title>
 				<de>${meiguwu}: Intergalaktische Kommunikation</de>
 				<en>${meiguwu}: Intergalactic communication</en>
+				<pl>${meiguwu}: Komunikacja międzygalaktyczna</pl>
 			</title>
 			<description>
 				<de>Sensation aus ${meiguwu}: Man habe „den Code geknackt“ und Kontakt mit der Intergalaktischen Föderation aufgenommen. Man werde die Erde gebührlich repräsentieren, so dass wir uns für gewisse politische Führer nicht schämen müssen.</de>
 				<en>Sensation from ${meiguwu}: The "code has been cracked" and contact has been made with the Intergalactic Federation. Earth will be duly represented so that we need not be ashamed of certain political leaders.</en>
+				<pl>Sensacja od miasta ${meiguwu}: "Kod został złamany" i nawiązano kontakt z Federacją Międzygalaktyczną. Ziemia będzie należycie reprezentowana, więc nie musimy się wstydzić niektórych przywódców politycznych.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1950,10 +2043,12 @@
 			<title>
 				<de>Galaktisches Internet in Hintergrundstrahlung</de>
 				<en>Galactic Internet in background radiation</en>
+				<pl>Galaktyczny Internet w promieniowaniu tła</pl>
 			</title>
 			<description>
 				<de>Ein Physiker aus ${meiguwu} erklärt: das intergalaktische Kommunikationsnetz ist mit hoher Entropie kodierter Bestandteil der kosmischen Hintergrundstrahlung. Somit finden es nur Zivilisationen, die reif dafür sind. Netter Nebeneffekt.</de>
 				<en>A physicist from ${meiguwu} explains: the intergalactic communication network is a high-entropy encoded component of the cosmic background radiation. So only civilizations that are ripe for it can find it. Nice side effect.</en>
+				<pl>Fizyk z ${meiguwu} wyjaśnia: międzygalaktyczna sieć komunikacyjna jest zakodowanym składnikiem kosmicznego promieniowania tła o wysokiej entropii. Więc tylko cywilizacje, które są na to gotowe, mogą ją znaleźć. Miły efekt uboczny.</pl>
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1964,10 +2059,12 @@
 			<title>
 				<de>${meiguwu}: Fermi-Paradoxon geklärt?</de>
 				<en>${meiguwu}: Fermi paradox solved?</en>
+				<pl>${meiguwu}: Paradoks Fermiego rozwiązany?</pl>
 			</title>
 			<description>
 				<de>Forscher aus ${meiguwu} verraten: Die Erde ist zu abgelegen. Außer vereinzelten Abenteurern oder Banditen verirrten sich bisher nur wenige Außerirdische auf die Erde.</de>
 				<en>Researchers from ${meiguwu} reveal: Earth is too remote. Apart from the occasional adventurer or bandit, only a few aliens have ever strayed to Earth.</en>
+				<pl>Naukowcy z ${meiguwu} ujawniają: Ziemia jest zbyt odległa. Poza okazjonalnymi poszukiwaczami przygód lub bandytami, tylko kilku kosmitów kiedykolwiek zawędrowało na Ziemię.</pl>
 			</description>
 			<data genre="3" price="1" quality="45" fictional="1" />
 			<effects>
@@ -1978,10 +2075,12 @@
 			<title>
 				<de>${meiguwu}-Festspiele in ${festivitytown}</de>
 				<en>${meiguwu}-festivities in ${festivitytown}</en>
+				<pl>${meiguwu}-uroczystości w ${festivitytown}</pl>
 			</title>
 			<description>
 				<de>Die Entwicklungen in ${meiguwu} haben viele Menschen inspiriert, Fantasien beflügelt und Sehnsüchte erweckt, so auch in ${festivitytown}, wo Festspielwochen stattfinden, rund um einen Nachbau des Nachbaus des Eiffelturms.</de>
 				<en>The developments in ${meiguwu} have inspired many people, sparked imaginations and awakened longings, including in ${festivitytown}, where festival weeks are held around a replica of the replica of the Eiffel Tower.</en>
+				<pl>Rozwój w mieście ${meiguwu} zainspirował wielu ludzi, pobudził wyobraźnię i rozbudził tęsknoty, w tym w mieście ${festivitytown}, gdzie tygodnie festiwalowe odbywają się wokół repliki wieży Eiffla.</pl>
 			</description>
 			<data genre="5" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1992,10 +2091,12 @@
 			<title>
 				<de>TVTower plant ${meiguwu}-Doku</de>
 				<en>TVTower plans ${meiguwu} documentary</en>
+				<pl>TVTower planuje film dokumentalny o mieście ${meiguwu}</pl>
 			</title>
 			<description>
 				<de>Die außergewöhnlichen Entwicklungen in ${meiguwu} sind ja nicht zu ignorieren. Der TVTower-Drehbuchschreiber arbeitet an einer Doku.</de>
 				<en>The extraordinary developments in ${meiguwu} are impossible to ignore after all. The TVTower screenwriter is working on a documentary.</en>
+				<pl>Niezwykły rozwój sytuacji w mieście ${meiguwu} jest niemożliwy do zignorowania. Scenarzysta TVTower pracuje nad filmem dokumentalnym.</pl>
 			</description>
 			<data genre="5" price="1" quality="45" fictional="1" />
 			<effects>
@@ -2006,10 +2107,12 @@
 			<title>
 				<de>${meiguwu}-Doku konfisziert</de>
 				<en>${meiguwu} documentary confiscated</en>
+				<pl>${meiguwu} dokument skonfiskowany</pl>
 			</title>
 			<description>
 				<de>Der Drehbuchschreiber im bekannten TVTower hatte eine Doku über ${meiguwu} fertig und wollte sie gerade den ansässigen Produzenten anbieten, als der Gerichtsvollzieher auftauchte und sie konfiszierte, „aus Gründen der nationalen Sicherheit“.</de>
 				<en>The screenwriter in the famous TVTower had finished a documentary about ${meiguwu} and was just about to offer it to the local producers when the bailiff turned up and confiscated it, "for reasons of national security".</en>
+				<pl>Scenarzysta w słynnej TVTower ukończył film dokumentalny o mieście ${meiguwu} i właśnie miał go zaoferować lokalnym producentom, gdy pojawił się komornik i skonfiskował go "ze względów bezpieczeństwa narodowego".</pl>
 			</description>
 			<data genre="0" price="1" quality="50" fictional="1" />
 			<effects>
@@ -2020,10 +2123,12 @@
 			<title>
 				<de>Kriegserklärung an ${meiguwu}</de>
 				<en>Declaration of war on ${meiguwu}</en>
+				<pl>Wypowiedzenie wojny miastu ${meiguwu}</pl>
 			</title>
 			<description>
 				<de>Die Ereignisse haben sich schnell überschlagen: Politiker hierzulande und aus den größten westlichen Ländern haben ${meiguwu} den Krieg erklärt, da sie bei der Kommunikation mit der Intergalaktischen Föderation außen vor gelassen würden.</de>
 				<en>The events escalated quickly: politicians in this country and from the largest Western nations declared war on ${meiguwu} because they were being left out of communication with the Intergalactic federation.</en>
+				<pl>Wydarzenia szybko eskalowały: politycy w tym kraju i z największych zachodnich narodów wypowiedzieli wojnę miastu ${meiguwu}, ponieważ zostali pominięci w komunikacji z federacją międzygalaktyczną.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -2034,10 +2139,12 @@
 			<title>
 				<de>Proteste nach Kriegserklärung</de>
 				<en>Protests after declaration of war</en>
+				<pl>Protesty po wypowiedzeniu wojny</pl>
 			</title>
 			<description>
 				<de>Weltweit gehen die Menschen auf die Straße. Aus ${meiguwu} selbst kommen beruhigende Stimmen: Die Erdbevölkerung habe nichts zu befürchten, man habe diese hitzigen Kindsköpfe und deren primitive Waffentechnologie schon im Griff.</de>
 				<en>People around the world are taking to the streets. Calming voices are emerging from ${meiguwu} itself: The earth's population has nothing to fear, these hot-headed childish minds and their primitive weapons technology are already in check.</en>
+				<pl>Ludzie na całym świecie wychodzą na ulice. Uspokajające głosy pojawiają się z samego miasta ${meiguwu}: Populacja Ziemi nie ma się czego obawiać, te gorące, dziecinne umysły i ich prymitywna technologia zbrojeniowa są już pod kontrolą.</pl>
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
@@ -2048,10 +2155,12 @@
 			<title>
 				<de>Reaktion aus ${meiguwu}</de>
 				<en>Response from ${meiguwu}</en>
+				<pl>Odpowiedź z miasta ${meiguwu}</pl>
 			</title>
 			<description>
 				<de>Die Reaktion aus ${meiguwu} auf die Kriegserklärung klingt ungewöhnlich lakonisch. Niemand würde „außen vor gelassen“, jeder könne mit der Intergalaktischen Föderation kommunizieren, wenn man nicht zu dumm dafür sei.</de>
 				<en>The reaction from ${meiguwu} to the declaration of war sounds unusually laconic. No one would be "left out", anyone could communicate with the Intergalactic federation if they weren't too stupid to do so.</en>
+				<pl>Reakcja ${meiguwu} na wypowiedzenie wojny brzmi niezwykle lakonicznie. Nikt nie zostałby "pominięty", każdy mógłby komunikować się z Federacją Międzygalaktyczną, jeśli nie byłby na to zbyt głupi.</pl>
 			</description>
 			<data genre="0" price="1" quality="50" fictional="1" />
 			<effects>
@@ -2062,10 +2171,12 @@
 			<title>
 				<de>${meiguwu} verschwunden?</de>
 				<en>${meiguwu} disappeared?</en>
+				<pl>${meiguwu} zniknęło?</pl>
 			</title>
 			<description>
 				<de>Der Flugzeugträger U.S.S. Freedom wollte ${meiguwu} auf die Pelle rücken, doch dort, wo die Nation laut Karte hätte sein sollen, fand man lediglich einen leeren Fleck in der Landschaft vor.</de>
 				<en>The aircraft carrier U.S.S. Freedom was about to move in on ${meiguwu}, but where the nation was supposed to be according to the map, all they found was an empty spot in the landscape.</en>
+				<pl>Lotniskowiec U.S.S. Freedom miał się zbliżyć do miasta ${meiguwu}, ale w miejscu, w którym według mapy miał znajdować się naród, znaleźli tylko puste miejsce w krajobrazie.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -2076,10 +2187,12 @@
 			<title>
 				<de>${meiguwu} nun ${onvenus}?</de>
 				<en>${meiguwu} now ${onvenus}?</en>
+				<pl>${meiguwu} teraz ${onvenus}?</pl>
 			</title>
 			<description>
 				<de>Unbestätigten Augenzeugenberichten zufolge befindet ${meiguwu} sich nun ${ontherapidlytransformedvenus}. Der Kontakt stünde weiterhin allen offen, die reinen Herzens sind. Na dann sind sie wohl in Sicherheit.</de>
 				<en>According to unconfirmed eyewitness reports, ${meiguwu} is now ${ontherapidlytransformedvenus}. Contact would still be open to all who are pure of heart. Well then, seems they're on the safe side.</en>
+				<pl>Według niepotwierdzonych doniesień naocznych świadków, ${meiguwu} to teraz ${ontherapidlytransformedvenus}. Kontakt będzie nadal otwarty dla wszystkich, którzy mają czyste serca. Wygląda na to, że są po bezpiecznej stronie.</pl>
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 			<effects>
@@ -2090,10 +2203,12 @@
 			<title>
 				<de>${meiguwu}-Festspiele zusammengelegt</de>
 				<en>${meiguwu}-festivities merged</en>
+				<pl>Połączono festiwale w mieście ${meiguwu}</pl>
 			</title>
 			<description>
 				<de>Wie letztes Jahr finden wieder die ${meiguwu}-Festspiele statt, diesmal in ${festivitytownatlantis}, und werden fortan in die Atlantis-, Mu-, Bachblüten-, Astrologie- und Esoterik-Wochen integriert.</de>
 				<en>Like last year, the ${meiguwu} festival will take place again, this time in ${festivitytownatlantis}, and will from now on be integrated into the Atlantis, Mu, Bach Flower, Astrology and Esotericism Weeks.</en>
+				<pl>Podobnie jak w zeszłym roku, festiwal ${meiguwu} odbędzie się ponownie, tym razem w mieście ${festivitytownatlantis}, i od teraz będzie zintegrowany z Tygodniami Atlantydy, Mu, Kwiatów Bacha, Astrologii i Ezoteryki.</pl>
 			</description>
 			<data genre="5" price="1" quality="55" fictional="1" />
 			<effects>
@@ -2104,10 +2219,12 @@
 			<title>
 				<de>${meiguwu}-Kult-Anführer verhaftet</de>
 				<en>${meiguwu} cult leader arrested</en>
+				<pl>Przywódca kultu ${meiguwu} aresztowany</pl>
 			</title>
 			<description>
 				<de>Ein Mann, der seit mehreren Jahren in ${festivitytownatlantis} lebte, schwärmte von einer vergessenen Zivilisation namens ${meiguwu} und zog eine kleine Anhängerschaft an. Er wurde wegen Betrugs und ordnungswidrigen Verhaltens verhaftet.</de>
 				<en>A man who had been living in ${festivitytownatlantis} for several years was raving about a forgotten civilization by the name of ${meiguwu} and attracted a small following. He was arrested for fraud and disorderly conduct.</en>
+				<pl>Mężczyzna, który mieszkał w mieście ${festivitytownatlantis} przez kilka lat, opowiadał o zapomnianej cywilizacji o nazwie ${meiguwu} i przyciągnął niewielką rzeszę zwolenników. Został aresztowany za oszustwo i zakłócanie porządku.</pl>
 			</description>
 			<data genre="4" price="1" quality="35" fictional="1" />
 			<effects>
@@ -2118,10 +2235,12 @@
 			<title>
 				<de>${meiguwu} nur Mythos</de>
 				<en>${meiguwu} only a myth</en>
+				<pl>${meiguwu} to tylko mit</pl>
 			</title>
 			<description>
 				<de>Der Innenminister erinnert erneut, dass ${meiguwu} nur eine Legende sei, ein Mythos, hat nie existiert. Diejenigen Verrückten, die immer noch dran glauben, sollen sich umgehend zum Blitzdingsen melden.</de>
 				<en>The Minister of the Interior reiterates again that ${meiguwu} is just a legend, a myth, it never existed. All those lunatics who still believe in it are to report immediately to be flashy-thinged.</en>
+				<pl>Minister spraw wewnętrznych ponownie powtarza, że miasto ${meiguwu} to tylko legenda, mit, który nigdy nie istniał. Wszyscy ci szaleńcy, którzy nadal w to wierzą, mają natychmiast zgłosić się do flashy-thingu.</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" />
 			<effects>
@@ -2132,10 +2251,12 @@
 			<title>
 				<de>Romanbestseller: „Das verlorene ${meiguwu}“</de>
 				<en>Bestselling novel: "Lost Realm of ${meiguwu}"</en>
+				<pl>Bestsellerowa powieść: "Zaginione miasto ${meiguwu}".</pl>
 			</title>
 			<description>
 				<de>Der SciFi-Thriller erzählt eine (laut Kritikern weit hergeholte) Geschichte über eine hochtechnologisierte Fernost-Region, die schließlich die Welt politisch dominierte und dann entschwand. Augenzeugen verschwanden oder wurden diskreditiert.</de>
 				<en>The sci-fi thriller tells a (far-fetched, according to critics) story about a high-tech Far Eastern region that eventually dominated the world politically and then disappeared. Eyewitnesses disappeared or were discredited.</en>
+				<pl>Thriller science-fiction opowiada (według krytyków naciąganą) historię o zaawansowanym technologicznie regionie Dalekiego Wschodu, który ostatecznie zdominował świat politycznie, a następnie zniknął. Naoczni świadkowie zniknęli lub zostali zdyskredytowani.</pl>
 			</description>
 			<data genre="5" price="1" quality="45" fictional="1" />
 		</news>
