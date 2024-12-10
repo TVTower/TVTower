@@ -28,14 +28,14 @@
 		</news>
 		<news guid="92598126-f227-4fd2-894e-a5902eaeb392" type="2" thread_guid="51b23dcb-0069-4435-936a-33c6973491c2" creator="9551">
 			<title>
-				<de>Grienpies schlägt Alarm</de>
-				<en>Creampeas sounds the alarm</en>
-				<pl>Greampeas bije na alarm</pl>
+				<de>${generalorg_greenpeace} schlägt Alarm</de>
+				<en>${generalorg_greenpeace} sounds the alarm</en>
+				<pl>${generalorg_greenpeace} bije na alarm</pl>
 			</title>
 			<description>
 				<de>Wegen Wal in ${thames} müsse eine Rettungsaktion sofort eingeleitet werden.</de>
-				<en>Rescue operation for whale in ${thames} must be initiated immediately, Creampeas said.</en>
-				<pl>Operacja ratunkowa wieloryba w rzece ${thames} musi zostać natychmiast rozpoczęta, powiedział Greampeas.</pl>
+				<en>Rescue operation for whale in ${thames} must be initiated immediately, ${generalorg_greenpeace} said.</en>
+				<pl>Operacja ratunkowa wieloryba w rzece ${thames} musi zostać natychmiast rozpoczęta, powiedział ${generalorg_greenpeace}.</pl>
 			</description>
 			<data genre="4" price="1" quality="70" fictional="1" />
 			<effects>
@@ -49,9 +49,9 @@
 				<pl>Wieloryb w rzece ${thames}: Ratunek w zasięgu wzroku</pl>
 			</title>
 			<description>
-				<de>Grienpies leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
-				<en>Creampeas launches rescue action. The animal must not come to harm, the spokesman said.</en>
-				<pl>Greampeas rozpoczyna akcję ratunkową. Rzecznik powiedział, że zwierzę nie może zostać skrzywdzone.</pl>
+				<de>${generalorg_greenpeace} leitet die Rettungs-Aktion ein. Das Tier dürfe nicht zu schaden kommen, so der Sprecher.</de>
+				<en>${generalorg_greenpeace} launches rescue action. The animal must not come to harm, the spokesman said.</en>
+				<pl>${generalorg_greenpeace} rozpoczyna akcję ratunkową. Rzecznik powiedział, że zwierzę nie może zostać skrzywdzone.</pl>
 			</description>
 			<data genre="4" price="1" quality="50" fictional="1" />
 			<effects>
@@ -97,9 +97,9 @@
 				<pl>Stan wieloryba pogarsza się</pl>
 			</title>
 			<description>
-				<de>Grienpies: Man müsse umgehend eine Lösung für die Situation finden, sonst überlebe der Wal nicht.</de>
-				<en>Creampeas: A solution to the situation must be found immediately, otherwise the whale will not survive, Creampeas said.</en>
-				<pl>Greampeas: Rozwiązanie sytuacji musi zostać znalezione natychmiast, w przeciwnym razie wieloryb nie przeżyje, powiedział Greampeas.</pl>
+				<de>${generalorg_greenpeace}: Man müsse umgehend eine Lösung für die Situation finden, sonst überlebe der Wal nicht.</de>
+				<en>${generalorg_greenpeace}: A solution to the situation must be found immediately, otherwise the whale will not survive, ${generalorg_greenpeace} said.</en>
+				<pl>${generalorg_greenpeace}: Rozwiązanie sytuacji musi zostać znalezione natychmiast, w przeciwnym razie wieloryb nie przeżyje, powiedział ${generalorg_greenpeace}.</pl>
 			</description>
 			<data genre="4" price="1" quality="40" fictional="1" />
 			<effects>
@@ -152,14 +152,14 @@
 		<news guid="52328f89-ae30-49fc-add1-e455757220ef" type="0" creator="9551" comment="availability in thread id cujo-news-roter-platz was originally applied to the wrong (second) item, so the first item appeared at any date, but I found while play-testing that it still can be used in general and in addition when slightly modified to a fictional copycat event.">
 			<availability year_range_from="1988" year_range_to="-1" script='${.eq:${.worldtime:"season"}:1}' />
 			<title>
-				<de>Schessnah in der Nähe von Moskau gesichtet</de>
-				<en>Schessnah spotted near Moscow</en>
-				<pl>Schessnah zauważony w pobliżu Moskwy</pl>
+				<de>${brand_cessna} in der Nähe von Moskau gesichtet</de>
+				<en>${brand_cessna} spotted near Moscow</en>
+				<pl>${brand_cessna} zauważony w pobliżu Moskwy</pl>
 			</title>
 			<description>
-				<de>Die russische Luftabwehr hat in der Nähe von Moskau ein deutsches Kleinflugzeug der Marke Schessnah gesichtet. Handelt es sich dabei um einen Nachahmer? Einen Selbstmordattentäter?</de>
-				<en>Russian air defense has spotted a German small plane of the brand Schessnah near Moscow. Is it a copycat? A suicide bomber?</en>
-				<pl>Rosyjska obrona powietrzna zauważyła pod Moskwą niemiecki mały samolot marki Schessnah. Czy to naśladowca? Zamachowiec-samobójca?</pl>
+				<de>Die russische Luftabwehr hat in der Nähe von Moskau ein deutsches Kleinflugzeug der Marke ${brand_cessna} gesichtet. Handelt es sich dabei um einen Nachahmer? Einen Selbstmordattentäter?</de>
+				<en>Russian air defense has spotted a German small plane of the brand ${brand_cessna} near Moscow. Is it a copycat? A suicide bomber?</en>
+				<pl>Rosyjska obrona powietrzna zauważyła pod Moskwą niemiecki mały samolot marki ${brand_cessna}. Czy to naśladowca? Zamachowiec-samobójca?</pl>
 			</description>
 			<data genre="4" price="0.55" quality="8" fictional="1" />
 		</news>
@@ -188,9 +188,9 @@
 						Lindenbaum;Holz;seit ${twelve}hundert Jahren auf dem Rathausplatz stand und von vielen Einwohnern oft und gern umarmt wurde|
 						Eichenbaum;Holz;seit ${twelve}hundert Jahren auf dem Rathausplatz stand und von vielen Einwohnern oft und gern umarmt wurde|
 						Trabbi;Automobil;seit mehr als ${twelve} Jahren Besorgungen für Bürger machte. Das intelligente, ${neonyellow} Fahrzeug war dabei unermüdlich|
-						Panta;Automobil;seit mehr als ${twelve} Jahren Besorgungen für Bürger machte. Das intelligente, ${neonyellow} Fahrzeug war dabei unermüdlich|
-						WV-Käfer;Automobil;seit mehr als ${twelve} Jahren Besorgungen für Bürger machte. Das intelligente, ${neonyellow} Fahrzeug war dabei unermüdlich|
-						Flamerbird;Automobil;seit mehr als ${twelve} Jahren Besorgungen für Bürger machte. Das intelligente, ${neonyellow} Fahrzeug war dabei unermüdlich|
+						${brand_manta};Automobil;seit mehr als ${twelve} Jahren Besorgungen für Bürger machte. Das intelligente, ${neonyellow} Fahrzeug war dabei unermüdlich|
+						${brand_vw}-${brand_beetle};Automobil;seit mehr als ${twelve} Jahren Besorgungen für Bürger machte. Das intelligente, ${neonyellow} Fahrzeug war dabei unermüdlich|
+						${brand_firebird};Automobil;seit mehr als ${twelve} Jahren Besorgungen für Bürger machte. Das intelligente, ${neonyellow} Fahrzeug war dabei unermüdlich|
 						Laternenmast;Verkehrswesen;seit über hundert Jahren am Rathausplatz stand und den Bürgern stets ein Licht der Hoffnung spendete. Nun ist es für immer erloschen
 					</de> <!-- alle nur Maskulinum und Neutrum; Autos nur Maskulinum! -->
 					<en>squirrel;Rodent;had been living on a tree at the town hall square for more than ${twelve} years|
@@ -202,9 +202,9 @@
 						linden tree;Wood;had stood on the town hall square for ${twelve} hundred years and was often hugged fondly by many residents|
 						oak tree;Wood;had stood on the town hall square for ${twelve} hundred years and was often hugged fondly by many residents|
 						Trabbi;Vehicle;had been running errands for citizens for more than ${twelve} years. The sentient, ${neonyellow} vehicle was tireless in doing so|
-						Panta;Vehicle;had been running errands for citizens for more than ${twelve} years. The sentient, ${neonyellow} vehicle was tireless in doing so|
-						WV-Beetle;Vehicle;had been running errands for citizens for more than ${twelve} years. The sentient, ${neonyellow} vehicle was tireless in doing so|
-						Flamerbird;Vehicle;had been running errands for citizens for more than ${twelve} years. The sentient, ${neonyellow} vehicle was tireless in doing so|
+						${brand_manta};Vehicle;had been running errands for citizens for more than ${twelve} years. The sentient, ${neonyellow} vehicle was tireless in doing so|
+						${brand_vw}-${brand_beetle};Vehicle;had been running errands for citizens for more than ${twelve} years. The sentient, ${neonyellow} vehicle was tireless in doing so|
+						${brand_firebird};Vehicle;had been running errands for citizens for more than ${twelve} years. The sentient, ${neonyellow} vehicle was tireless in doing so|
 						lamp post;Traffic;had stood on the town hall square for more than a hundred years and had always given citizens a light of hope. Now it is extinguished forever
 					</en>
 					<pl>wiewiórka;Chomik;mieszkał na drzewie, na placu ratuszowym przez ponad ${twelve} lat|
@@ -1152,9 +1152,9 @@
 				<pl>Opracowano inteligentne kije i kamienie</pl>
 			</title>
 			<description>
-				<de>Da nach Expertenmeinung ein 4. Weltkrieg wieder mit Stöcken und Steinen ausgetragen werden würde, entwickelt der Militärdienstleister Bolton Dynamos schon mal „Smart Sticks and Stones powered by Solar and AI“.</de>
-				<en>With experts saying a World War 4 would once again be fought with sticks and stones, military services provider Bolton Dynamos is already developing "Smart Sticks and Stones powered by Solar and AI".</en>
-				<pl>Ponieważ eksperci twierdzą, że IV wojna światowa znów będzie toczona za pomocą kijów i kamieni, dostawca usług wojskowych Bolton Dynamos już opracowuje „inteligentne kije i kamienie zasilane energią słoneczną i sztuczną inteligencją”.</pl>
+				<de>Da nach Expertenmeinung ein 4. Weltkrieg wieder mit Stöcken und Steinen ausgetragen werden würde, entwickelt der Militärdienstleister ${brand_bostondynamics} schon mal „Smart Sticks and Stones powered by Solar and AI“.</de>
+				<en>With experts saying a World War 4 would once again be fought with sticks and stones, military services provider ${brand_bostondynamics} is already developing "Smart Sticks and Stones powered by Solar and AI".</en>
+				<pl>Ponieważ eksperci twierdzą, że IV wojna światowa znów będzie toczona za pomocą kijów i kamieni, dostawca usług wojskowych ${brand_bostondynamics} już opracowuje „inteligentne kije i kamienie zasilane energią słoneczną i sztuczną inteligencją”.</pl>
 			</description>
 			<data genre="3" price="1" quality="55" fictional="1" />
 			<effects>
@@ -1243,9 +1243,9 @@
 		</news>
 		<news guid="c33f421e-01e9-4700-b746-eba446c54310" type="2" thread_guid="0a6897fc-2bfc-4138-af17-71ac768b3beb" creator="9551">
 			<title>
-				<de>Bolton Dynamos zeigt Fortschritte</de>
-				<en>Bolton Dynamos shows progress</en>
-				<pl>Bolton Dynamos pokazuje postępy</pl>
+				<de>${brand_bostondynamics} zeigt Fortschritte</de>
+				<en>${brand_bostondynamics} shows progress</en>
+				<pl>${brand_bostondynamics} pokazuje postępy</pl>
 			</title>
 			<description>
 				<de>Trotz eines Klimas des Friedens werde weiter eifrig geforscht. Die neuen „Smart Sticks and Stones“ können nun schon selbständig bis zu Kniehöhe hüpfen und dabei einen Rückwärtssalto hinlegen. Sehr niedlich sehen sie dabei aus.</de>
@@ -1557,8 +1557,8 @@
 				<en>${meiguwu} with new super maglev</en>
 			</title>
 			<description>
-				<de>Die Vorwürfe des deutschen Megakonzerns Hiemens werden von den Ingenieuren aus ${meiguwu} zurückgewiesen. Der „Transbolt“ sei kein Plagiat, denn man sei damit bereits in 9 Minuten am Flughafen.</de>
-				<en>The accusations of the German mega corporation Hiemens are rejected by the engineers from ${meiguwu}. The "Transbolt" is not a plagiarism, because it can take you to the airport in only 9 minutes, not 10, as advertised by Hiemens.</en>
+				<de>Die Vorwürfe des deutschen Megakonzerns ${brand_siemens} werden von den Ingenieuren aus ${meiguwu} zurückgewiesen. Der „Transbolt“ sei kein Plagiat, denn man sei damit bereits in 9 Minuten am Flughafen.</de>
+				<en>The accusations of the German mega corporation ${brand_siemens} are rejected by the engineers from ${meiguwu}. The "Transbolt" is not a plagiarism, because it can take you to the airport in only 9 minutes, not 10, as advertised by ${brand_siemens}.</en>
 			</description>
 			<data genre="3" price="1" quality="50" fictional="1" />
 			<effects>
@@ -1808,8 +1808,8 @@
 				<en>${meiguwu} ${goalsfor}-${goalsagainst} ${srilanka}</en>
 			</title>
 			<description>
-				<de>Wo es noch nicht so läuft für ${meiguwu} ist der Fußball. Die Nationalmannschaft verliert in der Asien-Vor-Vor-Qualifikation haushoch gegen ${srilanka} und verbleibt auf dem letzten Platz der FUFA-Weltrangliste.</de>
-				<en>Where things are not yet going so well for ${meiguwu} is soccer. The national team loses heavily to ${srilanka} in the Asian pre-pre-qualifiers and remains in last place in the FUFA world rankings.</en>
+				<de>Wo es noch nicht so läuft für ${meiguwu} ist der Fußball. Die Nationalmannschaft verliert in der Asien-Vor-Vor-Qualifikation haushoch gegen ${srilanka} und verbleibt auf dem letzten Platz der ${sports_fifa}-Weltrangliste.</de>
+				<en>Where things are not yet going so well for ${meiguwu} is soccer. The national team loses heavily to ${srilanka} in the Asian pre-pre-qualifiers and remains in last place in the ${sports_fifa} world rankings.</en>
 			</description>
 			<data genre="2" price="1" quality="35" fictional="1" />
 			<effects>

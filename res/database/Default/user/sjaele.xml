@@ -461,9 +461,9 @@
 				<pl>Rząd planuje program telefoniczny "call-in show"</pl>
 			</title>
 			<description>
-				<de>Zum schnelleren Abbau der Staatsschulden soll der Finanzminister eine Call-In-Show auf 5sat moderieren.</de>
-				<en>In order to reduce the national debt more quickly, the finance minister is to host a call-in show on 5sat.</en>
-				<pl>W celu szybszego zmniejszenia długu publicznego, minister finansów ma być gospodarzem programu call-in na kanale 5sat.</pl>
+				<de>Zum schnelleren Abbau der Staatsschulden soll der Finanzminister eine Call-In-Show auf ${mediaorg_3sat} moderieren.</de>
+				<en>In order to reduce the national debt more quickly, the finance minister is to host a call-in show on ${mediaorg_3sat}.</en>
+				<pl>W celu szybszego zmniejszenia długu publicznego, minister finansów ma być gospodarzem programu call-in na kanale ${mediaorg_3sat}.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="27" />
 			<availability year_range_from="" year_range_to="" />
@@ -793,16 +793,16 @@
 			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
-		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="iPhone should probably be spoofed.">
+		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele">
 			<title>
-				<de>iPhone zertrümmert</de>
-				<en>iPhone smashed</en>
-				<pl>Rozbity iPhone</pl>
+				<de>${brand_iphone} zertrümmert</de>
+				<en>${brand_iphone} smashed</en>
+				<pl>Rozbity ${brand_iphone}</pl>
 			</title>
 			<description>
-				<de>Weil ihn die Computerstimme nicht verstehen wollte, zertrümmerte Al Friedeno (73) auf der Toilette eines Restaurants sein iPhone.</de>
-				<en>Because the computer voice would not understand him, Al Friedeno (73) smashed his iPhone in the restroom of a restaurant.</en>
-				<pl>Ponieważ telefon nie chciał go zrozumieć, Al Friedeno (73 lata) rozbił swojego iPhone'a w toalecie restauracji.</pl>
+				<de>Weil ihn die Computerstimme nicht verstehen wollte, zertrümmerte Al Friedeno (73) auf der Toilette eines Restaurants sein ${brand_iphone}.</de>
+				<en>Because the computer voice would not understand him, Al Friedeno (73) smashed his ${brand_iphone} in the restroom of a restaurant.</en>
+				<pl>Ponieważ telefon nie chciał go zrozumieć, Al Friedeno (73 lata) rozbił swojego ${brand_iphone}'a w toalecie restauracji.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="21" />
 			<availability script="" year_range_from="2007" year_range_to="" />
@@ -821,21 +821,6 @@
 			</description>
 			<data genre="1" price="1.0" quality="21" />
 			<availability script="" year_range_from="2013" year_range_to="2015" />
-		</news>
-
-		<news guid="Sjaele-news-Koriatis-Zusammenbruch" type="0" creator="7430" created_by="Sjaele">
-			<title>
-				<de>C. Koriatis Zusammenbruch</de>
-				<en>C. Koriati's collapse</en>
-				<pl>C. Koriatis zasłabł</pl>
-			</title>
-			<description>
-				<de>Costa brach beim Bierfest in Chemnitz zusammen. Inzwischen ist er wieder fit.</de>
-				<en>Costa collapsed at the beer festival in Chemnitz. He has since recovered.</en>
-				<pl>Costa zasłabł na festiwalu piwa w Chemnitz. Od tego czasu wrócił do zdrowia.</pl>
-			</description>
-			<data genre="1" price="1.0" quality="15" />
-			<availability script="" year_range_from="2007" year_range_to="2011" />
 		</news>
 	</allnews>
 </tvtdb>

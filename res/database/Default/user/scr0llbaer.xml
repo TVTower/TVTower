@@ -438,8 +438,8 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 						<en>${.self:"cast":2:"firstname"} De Weirdo</en>
 					</title>
 					<description>
-						<de>${.self:"cast":2:"fullname"} wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz Hollywood.</de>
-						<en>${.self:"cast":2:"fullname"} is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of Hollywood.</en>
+						<de>${.self:"cast":2:"fullname"} wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz ${media_hollywood}.</de>
+						<en>${.self:"cast":2:"fullname"} is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of ${media_hollywood}.</en>
 					</description>
 					<staff>
 						<member index="2" function="64">506bc383-259e-4a36-9278-081aafc8f35c</member>
@@ -893,9 +893,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<pl>${recreational} ${athletes} i nie tylko</pl>
 			</title>
 			<description>
-				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, Formel 3 &amp; 4 &amp; Kartsport und vieles mehr.</de>
-				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fairground boxing, Formula 3 &amp; 4 &amp; karting, and much more.</en>
-				<pl>Najnowsze wiadomości i relacje z krajowych lig hobbystycznych, amatorskich i okręgowych. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, lekkoatletyka, boks w wesołym miasteczku, Formuła 3 &amp; 4 &amp; karting i wiele więcej.</pl>
+				<de>Aktuelle News und Berichterstattung aus den Bunt-, Amateur- und Kreisligen der Nation. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Kirmesboxen, ${sports_formula3} &amp; ${sports_f4} &amp; Kartsport und vieles mehr.</de>
+				<en>Latest news and coverage from the nation's hobby, amateur and county leagues. Soccer, ice hockey, basketball, football, tennis, athletics, fairground boxing, ${sports_formula3} &amp; ${sports_f4} &amp; karting, and much more.</en>
+				<pl>Najnowsze wiadomości i relacje z krajowych lig hobbystycznych, amatorskich i okręgowych. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, lekkoatletyka, boks w wesołym miasteczku, ${sports_formula3} &amp; ${sports_f4} &amp; karting i wiele więcej.</pl>
 			</description>
 			<variables>
 				<recreational>
@@ -939,9 +939,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<pl>${secondleague} - Sport${report}</pl>
 			</title>
 			<description>
-				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem Formel 2, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
-				<en>Second comes right after first! Updates on everything that is second-tier sports in the country. Second leagues in soccer, ice hockey, basketball, soccer, table tennis. Also Formula 2, gymnastics, figure skating, equestrian sports and much more.</en>
-				<pl>Drugi jest zaraz po pierwszym! Aktualizacje na temat wszystkiego, co jest sportem drugiego poziomu w kraju. Drugie ligi piłki nożnej, hokeja na lodzie, koszykówki, piłki nożnej, tenisa stołowego. Także Formuła 2, gimnastyka, łyżwiarstwo figurowe, jeździectwo i wiele więcej.</pl>
+				<de>Die zweite Liga kommt gleich nach der ersten! Aktuelles über alles, was sportlich zweitklassig ist im Lande. Zweite Ligen im Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis. Außerdem ${sports_formula2}, Kunstturnen, Eiskunstlauf, Reitsport u.v.m.</de>
+				<en>Second comes right after first! Updates on everything that is second-tier sports in the country. Second leagues in soccer, ice hockey, basketball, soccer, table tennis. Also ${sports_formula2}, gymnastics, figure skating, equestrian sports and much more.</en>
+				<pl>Drugi jest zaraz po pierwszym! Aktualizacje na temat wszystkiego, co jest sportem drugiego poziomu w kraju. Drugie ligi piłki nożnej, hokeja na lodzie, koszykówki, piłki nożnej, tenisa stołowego. Także ${sports_formula2}, gimnastyka, łyżwiarstwo figurowe, jeździectwo i wiele więcej.</pl>
 			</description>
 			<variables>
 				<secondleague>
