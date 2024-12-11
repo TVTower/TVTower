@@ -610,7 +610,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} Heul</de>
 						<en>${.self:"cast":2:"firstname"} Howl</en>
-						<pl>${.self:"cast":2:"firstname"} Howl</pl>
+						<pl>${.self:"cast":2:"firstname"} Skowyt</pl>
 					</title>
 					<description>
 						<de>Der Brite ${.self:"cast":2:"fullname"} ist für ein Filmprojekt in L.A. und beginnt zu heulen, als er seinen Fünf-Uhr-Tee nicht bekommt, so lange und vehement, bis er in der folgenden Vollmondnacht zum Werwolf wird. Fortan lässt er oft seinen Wuschelbart unrasiert noch stehen.</de>
@@ -1272,60 +1272,72 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>${.self:"role":2:"firstname"} und ${.self:"role":1:"firstname"} im Märchenwald</de>
 				<en>${.self:"role":2:"firstname"} and ${.self:"role":1:"firstname"} in the Woods of Wonder</en>
+				<pl>${.self:"role":2:"firstname"} i ${.self:"role":1:"firstname"} w Lesie Cudów</pl>
 			</title>
 			<description>
 				<de>Vor ihrem bekannten Aufeinandertreffen mit dem Bären erleben die heranwachsenden ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} zusammen mit den Kindern ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} und ${.self:"role":5:"firstname"} Abenteuer im Wald.</de>
 				<en>Before their famous encounter with the bear, the adolescent ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} experience adventures in the forest together with the children ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} and ${.self:"role":5:"firstname"}.</en>
+				<pl>Przed ich słynnym spotkaniem z niedźwiedziem, nastolatkowie ${.self:"role":1:"firstname"} i ${.self:"role":2:"firstname"} przeżywają przygody w lesie razem z dziećmi o imieniach ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} i ${.self:"role":5:"firstname"}.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="5bda9699-4cc2-49cd-875a-70e666594d56">
 					<title>
 						<de>Die flüsternden Bäume</de>
 						<en>The Whispering Trees</en>
+						<pl>Szepczące drzewa</pl>
 					</title>
 					<description>
 						<de>${.self:"role":5:"firstname"} bläst sein Horn in den Verwunschenen Wäldern und erweckt flüsternde Bäume, uralte Hüter und tückische Elfen, die die Abenteurer nun kichernd mit Illusionen und falschen Fährten in die Irre führen.</de>
 						<en>${.self:"role":5:"firstname"} blows his horn in the Enchanted Woods and awakens whispering trees, ancient guardians and elusive sprites, who now, while giggling, lead the adventurers astray with illusions and false trails.</en>
+						<pl>${.self:"role":5:"firstname"} dmucha w swój róg w Zaczarowanym Lesie i budzi szepczące drzewa, starożytnych strażników i nieuchwytne duchy, które teraz, chichocząc, prowadzą poszukiwaczy przygód na manowce za pomocą iluzji i fałszywych tropów.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="f4fddd1c-0f95-4887-8a76-7994b94e26ef">
 					<title>
 						<de>Spuk am Kaminfeuer</de>
 						<en>The Haunted Hearth</en>
+						<pl>Nawiedzone palenisko</pl>
 					</title>
 					<description>
 						<de>Auf der Suche nach Schutz vor einem Sturm stößt die Gruppe auf eine scheinbar in der Zeit eingefrorene Hütte. Im Inneren entdecken sie ein verstaubtes Tagebuch, das auf einen von geisterhaften Hütern bewachten verlorenen Schatz hinweist.</de>
 						<en>Seeking shelter from a storm, the group stumbles upon a cottage seemingly frozen in time. Inside, they uncover a dusty journal hinting at a lost treasure guarded by spectral guardians.</en>
+						<pl>Szukając schronienia przed burzą, grupa natrafia na chatę pozornie zamrożoną w czasie. Wewnątrz odkrywają zakurzony dziennik wskazujący na zaginiony skarb strzeżony przez widmowych strażników.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="78e0abc7-0df0-435a-89d4-8000dc9a820f">
 					<title>
 						<de>Der Spiegel der Wahrheit</de>
 						<en>The Mirror of Truth</en>
+						<pl>Zwierciadło prawdy</pl>
 					</title>
 					<description>
 						<de>Noch in der Hütte steckt ${.self:"role":3:"fullname"} seinen Daumen in einen Kuchen und zieht eine Pflaume heraus, aber ein mystischer Spiegel reflektiert etwas anderes - er enthüllt die verborgensten Geheimnisse aller, was mit dem angesprochenen Schatz zu tun haben könnte.</de>
 						<en>Still in the cottage, ${.self:"role":3:"fullname"} puts his thumb into a pie and pulls out a plum, but a mystical mirror reflects something else - it reveals the deepest secrets of everyone, which might have something to do with the treasure mentioned.</en>
+						<pl>Wciąż w domku, ${.self:"role":3:"fullname"} wkłada kciuk do ciasta i wyciąga śliwkę, ale mistyczne lustro odbija coś jeszcze - ujawnia najgłębsze sekrety każdego, co może mieć coś wspólnego ze wspomnianym skarbem.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="408d1dbe-0887-4249-a7e6-15f206c63082">
 					<title>
 						<de>Die Rätsel der Mondschein-Lichtung</de>
 						<en>Riddles of the Moonlit Glade</en>
+						<pl>Zagadki Księżycowej Polany</pl>
 					</title>
 					<description>
 						<de>Um einen gefangenen Faun zu retten, müssen unsere Abenteurer den schelmischen Koboldkönig überlisten. Seine Rätsel, die buchstäblich in das Gewebe der Mondschein-Lichtung eingeflochten sind, fordern all ihre Auffassungsgabe und Kreativität heraus.</de>
 						<en>To rescue a captured faun, our adventurers must outwit the mischievous Goblin King. His riddles, woven into the very fabric of the moonlit glade, challenge their logic and creativity.</en>
+						<pl>Aby uratować schwytanego fauna, nasi poszukiwacze przygód muszą przechytrzyć złośliwego Króla Goblinów. Jego zagadki, wplecione w strukturę księżycowej polany, stanowią wyzwanie dla ich logiki i kreatywności.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="357292ab-33d4-4646-8694-9acacc94ff8a">
 					<title>
 						<de>Der Wächter des Vergessenen Hains</de>
 						<en>The Guardian of the Forgotten Grove</en>
+						<pl>Strażnik zapomnianego gaju</pl>
 					</title>
 					<description>
 						<de>Im Herzen des Waldes der Finsternis liegt der Vergessene Hain, bewacht von einer furchterregenden Chimäre. Kann die Gruppe den schwer greifbaren Goldenen Schlüssel finden?</de>
 						<en>In the heart of the Forest of Darkness lies the Forgotten Grove, guarded by a fearsome Chimera. Can the group find the elusive Golden Key?</en>
+						<pl>W sercu Lasu Ciemności znajduje się Zapomniany Gaj, strzeżony przez przerażającą Chimerę. Czy grupie uda się odnaleźć nieuchwytny Złoty Klucz?</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1355,10 +1367,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>Sekretärinnen-Bericht 2. Teil - Karrieren, Kaffee &amp; Knutschen</de>
 				<en>Secretaries Report Part 2 - Careers, Coffee &amp; Canoodling</en>
+				<pl>Raport sekretarek, Część 2 - Kariera, kawa i kanapowanie</pl>
 			</title>
 			<description>
 				<de>Das Büro brodelt! Neue Sekretärin ${.self:"role":1:"fullname"} bringt frischen Schwung, Meetings werden zur Dating-Show, während Chef ${.self:"role":2:"fullname"} hinterm Schreibtisch charmant Chaos stiftet. Und ${.self:"role":3:"fullname"} entdeckt, dass Verträge und Knutschen mehr gemeinsam haben als gedacht.</de>
 				<en>The office is on fire! New secretary ${.self:"role":1:"fullname"} brings fresh energy, meetings turn into a dating show, while boss ${.self:"role":2:"fullname"} charmingly creates chaos behind his desk. And ${.self:"role":3:"fullname"} discovers that contracts and canoodling have more in common than she thought.</en>
+				<pl>Biuro płonie! Nowa sekretarka ${.self:"role":1:"fullname"} przynosi świeżą energię, spotkania zamieniają się w randkowe show, a szef ${.self:"role":2:"fullname"} uroczo tworzy chaos za swoim biurkiem. I ${.self:"role":3:"fullname"} odkrywa, że kontrakty i kanapowanie mają ze sobą więcej wspólnego niż myślała.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1386,10 +1400,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>Sekretärinnen-Bericht 3. Teil - Stenografie, Streiche &amp; Sinnlichkeit</de>
 				<en>Secretaries Report Part 3 - Shorthand, Stunts &amp; Sensuality</en>
+				<pl>Raport sekretarek, Część 3 - Skróty, akrobacje i zmysłowość</pl>
 			</title>
 			<description>
 				<de>Jetzt wird's noch bunter: ${.self:"role":1:"fullname"} wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und ${.self:"role":2:"fullname"}s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
 				<en>Now it all gets extra sparkly: ${.self:"role":1:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":2:"fullname"}'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
+				<pl>Teraz wszystko nabiera dodatkowego blasku: ${.self:"role":1:"fullname"} staje się mistrzem stenografii i innych krótkich tekstów, faks i telefon dzwonią w rytm akcji. Stukająca maszyna do pisania... Pośród nijakiej biurokracji buzują ogniste fantazje. A to wszystko za sprawą tej osoby: ${.self:"role":2:"fullname"}</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1417,10 +1433,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>Sekretärinnen-Bericht 4. Teil</de>
 				<en>Secretaries Report Part 4</en>
+				<pl>Raport sekretarek, Część 4</pl>
 			</title>
 			<description>
 				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler ${.self:"role":2:"lastname"} gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
 				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent ${.self:"role":2:"lastname"}'s, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+				<pl>Blondynka ${.self:"role":1:"firstname"} z najwyższego piętra wodzi za nos swoich licznych adoratorów, w agencji nieruchomości odbywa się impreza złotego prysznica - dokładnie u ${.self:"role":2:"lastname"}a, szef ${.self:"role":3:"fullname"} zostaje przyłapany w skórzanym stroju fetyszysty w pralni,... Chwileczkę, czy to nie jest...?</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1449,10 +1467,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>${.self:"role":1:"fullname"} und die Spirituosenfabrik</de>
 				<en>${.self:"role":1:"fullname"} and the Liquor Factory</en>
+				<pl>${.self:"role":1:"fullname"} i Fabryka Alkoholi</pl>
 			</title>
 			<description>
 				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker ${.self:"role":2:"fullname"} findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen ${.self:"role":1:"fullname"}. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
 				<en>The bumbling deposit bottle collector and alcoholic ${.self:"role":2:"fullname"} finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric ${.self:"role":1:"fullname"}. However, the pint-swilling aristocrats there are quite the nuisance.</en>
+				<pl>Nieudolny kolekcjoner butelek z kaucją i alkoholik ${.self:"role":2:"fullname"} znajduje na butelce piwa jeden z upragnionych biletów na trasę koncertową ekscentrycznego artysty o nazwisku ${.self:"role":1:"fullname"}. Jednak arystokraci pijący tam piwo są dość uciążliwi.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

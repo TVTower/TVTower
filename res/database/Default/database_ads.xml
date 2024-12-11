@@ -165,6 +165,7 @@ Naprawdę trzeba żuć.</pl>
 			<title>
 				<de>${brand_meisterproper}</de>
 				<en>${brand_mrclean}</en>
+				<pl>${brand_meisterproper}</pl>
 			</title>
 			<description>
 				<de>Neun Jahre zuvor in den USA eingeführt, kommt ${brand_meisterproper} 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger.</de>
