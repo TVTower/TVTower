@@ -76,36 +76,44 @@
 			<title>
 				<de>${FOOD} zum ${MEALTIME}</de>
 				<en>${FOOD} for ${MEALTIME}</en>
+				<pl>${FOOD} na ${MEALTIME}</pl>
 			</title>
 			<description>
 				<de>${NAMEWOMAN} ist ${JOB1} und ${ACTION} ${NAMEMAN}, ${JOB2}. ${FUNNY} Komödie.</de>
 				<en>${NAMEWOMAN} is ${JOB1} and ${ACTION} ${NAMEMAN}, ${JOB2}. ${FUNNY} comedy.</en>
+				<pl>${NAMEWOMAN} jest ${JOB1} i ${ACTION} ${NAMEMAN} to ${JOB2}. ${FUNNY} komedia.</pl>
 			</description>
 
 		<variables>
 				<food>
 					<de>Kinder|Liebe|Joghurt|Herzhaftes|Erdbeermarmelade|Cornflakes|Honig</de>
 					<en>Children|Love|Yogurt|Savory|Strawberry marmalade|Cornflakes|Honey</en>
+					<pl>Dzieci|Miłość|Jogurt|Sałatka|Marmolada truskawkowa|Płatki kukurydziane|Miód</pl>
 				</food>
 				<mealtime>
 					<de>Frühstück|Mittagessen|Abendessen|Brunch</de>
 					<en>breakfast|lunch|dinner|brunch</en>
+					<pl>śniadanie|obiad|kolację|obiadokolację</pl>
 				</mealtime>
 				<action>
 					<de>trifft|hat einen Unfall mit|wird geschwängert von|betrinkt sich mit</de>
 					<en>meets|has an accident with|gets pregnant with|gets drunk with</en>
+					<pl>spotyka się z|ma wypadek z|zachodzi w ciążę z|upija się z</pl>
 				</action>
 				<job1>
 					<de>angehende Jurastudentin|Romanautorin|Autorin vieler Groschenromane</de>
 					<en>a budding law student|a novelist|the author of many dime novels</en>
+					<pl>początkującym studentem prawa|powieściopisarzem|autorem wielu tanich powieści</pl>
 				</job1>
 				<job2>
 					<de>von Beruf Landschaftsmaler|anonymer Alkoholiker|Damenfriseur aus Leidenschaft</de>
 					<en>a landscapist|an Alcoholic Anonymous|a ladies hairdresser with passion</en>
+					<pl>pejzażystą|anonimowym alkoholikiem|fryzjerem damskim z pasją</pl>
 				</job2>
 				<funny>
 					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
 					<en>Hilarious|Lovely|Turbulent|Romantic|Melancholic|Surprising</en>
+					<pl>Zabawna|Urocza|Burzliwa|Romantyczna|Melancholijna|Zaskakująca</pl>
 				</funny>
 				<namewoman>${.persongenerator:"firstname":"":"female"}</namewoman>
 				<nameman>${.persongenerator:"firstname":"":"male"}</nameman>
@@ -140,6 +148,7 @@
 			<description>
 				<de>${JOB} ${.self:"role":1:"firstname"} ${ACTION} ${ENEMY}. Sie wollen ${VICTIM} ${ACTION2}.</de>
 				<en>${JOB} ${.self:"role":1:"firstname"} ${ACTION} ${ENEMY} who want to ${ACTION2}.</en>
+				<pl>${JOB} ${.self:"role":1:"firstname"} ${ACTION} ${ENEMY}, którzy chcą ${ACTION2}.</pl>
 			</description>
 
 			<variables>
@@ -152,22 +161,27 @@
 				<job>
 					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
 					<en>Former cop|Firefighter|Head physician|Undertaker|Primary school teacher|Climate researcher|Paleontologist</en>
+					<pl>Były policjant|Strażak|Lekarz naczelny|Zakład pogrzebowy|Nauczyciel szkoły podstawowej|Badacz klimatu|Paleontolog</pl>
 				</job>
 				<action>
 					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig|unterstützt gutgläubig</de>
 					<en>fights|battles|assists|reluctantly supports|trustfully supports</en>
+					<pl>walczy|toczy bitwy|współpracuje|konspiruje|prowadzi walkę</pl>
 				</action>
 				<action2>
 					<de>entführen|essen|zum Mond schießen|als Geisel nehmen|mit einem Klon ersetzen</de>
 					<en>kidnap ${VICTIM}|eat ${VICTIM}|shoot ${VICTIM} to the moon|hold ${VICTIM} hostage|replace ${VICTIM} with a clone</en>
+					<pl>porwać ${VICTIM}|zjeść ${VICTIM}|wystrzelić ${VICTIM} na księżyc|trzymać ${VICTIM} jako zakładnika|zastąpić ${VICTIM} klonem</pl>
 				</action2>
 				<enemy>
 					<de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
 					<en>a Mexican drug cartel|a secret CIA group|Aliens|a confused sect|the own family|pirates</en>
+					<pl>z meksykańskim kartelem narkotykowym|z tajną grupą CIA|z obcymi|z zagmatwanymi członkami sekty|z własną rodziną|z piratami</pl>
 				</enemy>
 				<victim>
 					<de>den Präsidenten der USA|den Familienhund|den Sohn von ${.self:"role":1:"firstname"}|den Nachbar von ${.self:"role":1:"firstname"}</de>
 					<en>the president of the USA|the family dog|the son of ${.self:"role":1:"firstname"}|the neighbor of ${.self:"role":1:"firstname"}</en>
+					<pl>prezydenta USA|psa rodzinny|syna ${.self:"role":1:"firstname"}a|sąsiada ${.self:"role":1:"firstname"}a</pl>
 				</victim>
 			</variables>
 
@@ -206,10 +220,12 @@
 				<object>
 					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten|Feuerwehrmänner|Politiker</de>
 					<en>Idiots|Fools|Dorks|Gangsters|Charmers|Policemen|Firefighters|Politicians</en>
+					<pl>Idiotów|Głupców|Głupków|Gangsterów|Czarodziejów|Policjantów|Strażaków|Polityków</pl>
 				</object>
 				<action>
 					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall|schenken ein und teilen aus</de>
 					<en>on tour|breaking free|fueling up|and love...|looking for trouble|serve up and dish out</en>
+					<pl>w trasie|wyzwala się|tankuję|i kochają...|szukająych kłopotów|ucieka z miasta</pl>
 				</action>
 			</variables>
 
@@ -242,6 +258,7 @@
 			<description>
 				<de>${WOMAN} ist eine Tagträumerin und verliert sich in ihren erotischen Fantasien.</de>
 				<en>${WOMAN} is a daydreamer and loses herself in her erotic fantasies.</en>
+				<pl>${WOMAN} jest marzycielką i oddaje się erotycznym fantazjom.</pl>
 			</description>
 
 			<variables>
@@ -249,10 +266,12 @@
 				<action>
 					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
 					<en>seduces the|enchants the|whispers sweet nothings to the|bewitches the</en>
+					<pl>uwodzi|oczarowuje|podrywa|kocha</pl>
 				</action>
 				<man>
 					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef|Untermieter|Tortenbäcker</de>
 					<en>man of her dreams|abbot|teacher|professor|boss|subtenant|baker</en>
+					<pl>mężczyznę jej marzeń|księdza|nauczyciela|profesora|szefa|podnajemcę|piekarza</pl>
 				</man>
 			</variables>
 
@@ -286,35 +305,43 @@
 				<title>
 					<de>${BUILDING} der ${COUNT}${MONSTER}|Die ${COUNT}${MONSTER} ${TERROR}|Blut-${BUILDING} ${TERROR}|Kult der ${MONSTER}|Die verfluchten ${MONSTER}|Die blutrünstigen ${MONSTER}|Die ${MONSTER} im Blutrausch|Die ${MONSTER} der Nacht|Die ${MONSTER}: Sie kriegen Dich|Nacht der ${MONSTER}</de>
 					<en>${BUILDING} of the ${COUNT}${MONSTER}|The ${COUNT}${MONSTER} ${TERROR}|The Blood ${BUILDING} ${TERROR}|Cult of the ${MONSTER}|Cursed ${MONSTER}|Bloodthirsty ${MONSTER}|The ${MONSTER} in Bloodlust|The ${MONSTER} of the Night|The ${MONSTER}: They'll Get You|Night of the ${MONSTER}</en>
+					<pl>${BUILDING} ${COUNT} ${MONSTER}|${COUNT} ${MONSTER} ${TERROR}|Krwawy ${BUILDING} ${TERROR}|Kultowe miejsce ${MONSTER}|Przeklęte miejsce ${MONSTER}|Krwiożerczy zew ${MONSTER}|Noc ${MONSTER}|Uciec od ${MONSTER}|Horror ${MONSTER}|Świat ${MONSTER}</pl>
 				</title>
 				<building>
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
 					<en>Castle|Country House|Hotel|Guesthouse|Tavern|Forest Lodge|Village|Lighthouse</en> <!-- 'Inn' conflicting with article 'A' (must be 'An') for now -->
+					<pl>Zamek|Dom wiejski|Hotel|Dom gościnny|Zajazd|Pałac|Pałacyk|Budynek</pl>
 				</building>
 				<count>|||3 |4 |5 |8 |10 |1000 </count>
 				<terror>
 					<de>des Horrors|des Terrors|der Angst|der Panik|des Übels</de>
 					<en>of Horror|of Terror|of Fear|of Panic|of Disgust</en>
+					<pl>grozy|terroru|strachu|paniki|wstrętu</pl>
 				</terror>
 				<monster>
 					<de>Vampire|Zombies|Untoten|Hexen|Werwölfe|Kobolde|Spinnen|Schlangen|Mumien</de>
 					<en>Vampires|Zombies|Undead|Witches|Werewolves|Hobgoblins|Spiders|Snakes|Mummies</en>
+					<pl>wampirów|zombiaków|nieumarych|wiedźm|wilkołaków|hobgoblinów|pająków|węży|mumii</pl>
 				</monster>
 				<description>
 					<de>Ein ${BUILDING}${ENVIRONMENT} ${WHAT} Die ${MONSTER} ${MONSTERWHAT}</de>
 					<en>A ${BUILDING}${ENVIRONMENT} ${WHAT} ${MONSTER} ${MONSTERWHAT}</en>
+					<pl>${BUILDING}${ENVIRONMENT} ${WHAT} ${MONSTERWHAT}</pl>
 				</description>
 				<environment>
 					<de>, mit einem Fluch belegt,|, erbaut auf einem alten Friedhof,|, verlassen und verfallen,</de>
 					<en> under a curse|, built on an old cemetery|, abandoned and decayed</en>
+					<pl>Opustoszały|Zbudowany na starym cmentarzu|Opuszczony i zniszczony</pl>
 				</environment>
 				<what>
 					<de>ist Schauplatz blutiger Vermisstenfälle.|wird von Kreaturen heimgesucht.</de>
 					<en>is the scene of bloody missing persons cases.|is haunted by creatures.</en>
+					<pl>jest miejscem krwawych zaginięć.|jest notorycznie nawiedzany przez stwory.</pl>
 				</what>
 				<monsterwhat>
 					<de>sind der Grund des Übels.|greifen jeden an.|beherrschen die Gegend.</de>
 					<en>are the source of the evil.|attack everyone.|reign over the area.</en>
+					<pl>To miejsce jest źródłem zła.|Na przychodzących czeka niemiła niespodzianka.|Potwory panują nad tym obszarem.</pl>
 				</monsterwhat>
 			</variables>
 
@@ -346,6 +373,7 @@
 			<description>
 				<de>${NAME} ${DESCRIPTIONACTION}. Seine ${ENVIRONMENT} ${ENVIRONMENTACTION}.${FEELING}</de>
 				<en>${NAME} ${DESCRIPTIONACTION}. His ${ENVIRONMENT} ${ENVIRONMENTACTION}.${FEELING}</en>
+				<pl>${NAME} ${DESCRIPTIONACTION}. Jego ${ENVIRONMENT} ${ENVIRONMENTACTION}.${FEELING}</pl>
 			</description>
 
 			<variables>
@@ -353,38 +381,47 @@
 					<!-- twice ... to select it more often -->
 					<de>${NAME} ${TITLEACTION}|${NAME} ${TITLEACTION}|${NAME}|${QUESTION}|${DISEASE} und ich|Ich bin ${NAME}</de>
 					<en>${NAME} ${TITLEACTION}|${NAME} ${TITLEACTION}|${NAME}|${QUESTION}|${DISEASE} and me|I am ${NAME}</en>
+					<pl>${NAME} ${TITLEACTION}|${NAME} ${TITLEACTION}|${NAME}|${QUESTION}|${DISEASE} i ja|Jestem ${NAME}</pl>
 				</title>
 				<name>
 					<de>${.persongenerator:"firstname":"de":"male"}|${.persongenerator:"firstname":"aut":"male"}</de>
 					<en>${.persongenerator:"firstname":"us":"male"}|${.persongenerator:"firstname":"uk":"male"}</en>
+					<pl>${.persongenerator:"firstname":"pl":"male"}|${.persongenerator:"firstname":"de":"male"}</pl>
 				</name>
 				<titleaction>
 					<de>und die ${DISEASE}|vs. ${DISEASE}|kontra ${DISEASE}|besingt ${DISEASE}</de>
 					<en>and the ${DISEASE}|vs. ${DISEASE}|contra ${DISEASE}|sings about ${DISEASE}</en>
+					<pl>i ${DISEASE}|vs ${DISEASE}|ma przypadłość. To ${DISEASE}|śpiewa o swojej przypadłości. To ${DISEASE}.</pl>
 				</titleaction>
 				<descriptionaction>
 					<de>leidet seit dem Kindesalter an ${DISEASE}|bestreitet sein Leben mit ${DISEASE}|leidet unter ${DISEASE}|kann nur singend seine ${DISEASE} bekämpfen</de>
 					<en>has been suffering from ${DISEASE} since childhood|lives with ${DISEASE}|suffers from ${DISEASE}|can only fight his ${DISEASE} while singing</en>
+					<pl>cierpi na przypadłość. To ${DISEASE}. Ma to od dzieciństwa|choruje na przypadłość. To ${DISEASE}. Ma to od 10 lat.|jest udręczony przez chorobę. To ${DISEASE}. Ma to od wielu lat.|może walczyć ze swoją chorobą śpiewając. A choroba ta to : ${DISEASE}.</pl>
 				</descriptionaction>
 				<disease>
 					<de>Halluzinationen|Klaustrophobie|Agoraphobie|Coulrophobie|Akrophobie|Aviophobie|Arachnophobie|Dentophobie|Emetophobie</de>
 					<en>Hallucinations|Claustrophobia|Agoraphobia|Coulrophobia|Acrophobia|Aviophobia|Arachnophobia|Dentophobia|Emetophobia</en>
+					<pl>Halucynacje|Klaustrofobia|Agorafobia|Koulrofobia|Akrofobia|Awiofobia|Arachnofobia|Dentofobia|Emetofobia</pl>
 				</disease>
 				<question>
 					<de>Ist ja nur ${DISEASE}|Na klar, ${DISEASE}|${DISEASE} - na und?</de>
 					<en>It's just ${DISEASE}|Yeah right, ${DISEASE}|${DISEASE} - so what?</en>
+					<pl>To po prostu ${DISEASE}|Jasne, ${DISEASE}|${DISEASE} - i co z tego?</pl>
 				</question>
 				<environment>
 					<de>Familie|Freunde|Nachbarn</de>
 					<en>relatives|friends|neighbours</en>
+					<pl>krewni|przyjaciele|sąsiedzi</pl>
 				</environment>
 				<environmentaction>
 					<de>unterstützen ihn|helfen ihm|lassen nichts unversucht|stehen ihm bei</de>
 					<en>support him|help him|leave no stone unturned|assist him</en>
+					<pl>wspierają go|pomagają mu|pocieszają go|próbują mu pomóc</pl>
 				</environmentaction>
 				<feeling>
 					<de>|||~nGefühle hautnah!|~nGefühlskino!|~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
 					<en>|||~nEmotions up close!|~nEmotional cinema!|~nEveryone feels with it!|~nFinally told without clichés!</en>
+					<pl>|||~nEmocje z bliska!|~nEmocjonalne kino!|~nKażdy to czuje!|~nWreszcie opowiedziane bez zbędnych banałów!</pl>
 				</feeling>
 			</variables>
 
@@ -411,16 +448,19 @@
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-random-ron-show1">
 			<title>
 				<all>${KIND}${DATE}</all>
+				<pl>${KIND}. Edycja ${DATE}!</pl>
 			</title>
 			<description>
 				<de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
 				<en>Funny clips and guests known from radio and television. The presenter performs embarrassing dance interludes. Nice entertainment for the carefree.</en>
+				<pl>Zabawne klipy i goście znani z radia i telewizji. Prezenter wykonuje żenujące interludia taneczne. Miła rozrywka dla beztroskich.</pl>
 			</description>
 
 			<variables>
 				<kind>
 					<de>Das ${INNER}-Quiz|Das ${INNER}-Duell|Die ${INNER}-Show</de>
 					<en>The ${INNER} Quiz|The ${INNER}-Duel|The ${INNER} Show</en>
+					<pl>Quiz z udziałem ${INNER}|Pojedynek ${INNER}|Show z udziałem ${INNER}</pl> <!-- Revised, changed for the sake of Polish grammar, adapted, checked in pl -->
 				</kind>
 				<inner>
 					<all>${ATTRIBUTE} ${GROUP}</all>
@@ -428,6 +468,7 @@
 				<attribute>
 					<de>tierische|große|abgefahrene|lustige|skurrile</de>
 					<en>Brute|Big|Whacky|Funny|Quirky</en>
+					<pl>znanych|słynnych|dziwacznych|uznanych|niemieckich</pl>
 				</attribute>
 				<group>
 					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
@@ -469,15 +510,18 @@
 				<seriesabout>
 					<de>Serie über|Über|Eine Fernsehserie über|Reportagen über|Berichte über|Berichterstattung über|Portrait über|Dokumentation über|Enthüllungen über|Chroniken über|Geschichten über|Aus erster Hand über|Journal über|Tagebuch über</de>
 					<en>Series about|About|A TV series about|Features about|Reports on|Coverage of|Portraits of|Documentary about|Disclosure of|Chronicles of|Stories about|First hand about|Journal about|Diary about</en>
+					<pl>Serial o|O|Serial telewizyjny o|Artykuł o|Raport o|Materiał o|Reportarz o |Film dokumentalny o|Ujawnienie o|Kroniki o|Historie o|Z pierwszej ręki o|Dziennik o|Program o</pl>
 				</seriesabout>
 				<adj>
 					<de>Ein Haufen |Die Hinterwäldler-|Verrückte |Wahnsinns-|Bayrische |Tugendhafte |Durchgedrehte |Fromme |Zankende |Schelmische |Verschmitzte |Witzige |Abenteuerlustige |Extravagante |Geheimnisvolle |Exzentrische |Temperamentvolle |Joviale |Hartnäckige |Lebensfrohe |Verwegene |Brillante </de>
 					<en>A bunch of |The hillbilly |Crazy |The frenzied |Bavarian |Virtuous |Nutty |Devout |Quarreling |Mischievous |Impish |Witty |Adventurous |Flamboyant |The mysterious |Eccentric |Spirited |The jovial |The tenacious |The vivacious |Swashbuckling |The brilliant </en>
+					<pl>Grube |Ładne |Szalone |Szalonych |Bawarskie |Cnotliwie |Inteligentne |Pobożne |Kłótliwe |Psotne |Chude |Dowcipne |Rozrywkowe |Ekstrawaganckie |Tajemnicze |Ekscentryczne |Duchowe |Wesołe |Wytrwałe |Żwawe |Zawadiackie |Błyskotliwe </pl>
 				</adj>
 				<i>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17</i> <!-- must be same count as elements in who_csv and as j in episodes -->
 				<who_csv>
 					<de>Waschweiber;Drag-Queens;Schwerenöter;Polizisten;Rettungsschwimmer;Clowns;Krankenpfleger;Stripper;Feuerwehrmänner;Nonnen;Verschwörungstheoretiker;Gastrokritiker;Extrem-Sparfüchse;Zeitreisepiloten;Einradfahrer;Kunstpfeifer;Drehbuchschreiber;Pferdeflüsterer</de> <!-- wegen unterschiedlicher Pluralformen (unbestimmt / bestimmt) funktioniert 'Reisende' (vs Die Reisenden) nicht -->
 					<en>washer women;drag queens;philanderers;policemen;lifeguards;clowns;caregivers;strippers;firefighters;nuns;conspiracy theorists;food critics;extreme couponers;time travellers;unicyclists;concert whistlers;screenwriters;horse whisperers</en>
+					<pl>praczki;drag queens;filantropki;policjantki;ratowniczki;artystki cyrkowe;opiekunki;striptizerki;strażaczki;zakonnice;teoretyczki spisku;krytyczki kulinarne;ekstremalne zdrapywaczki kuponów;podróżniczki;rowerzystki jednośladów;artystki koncertowe;scenarzystki;zaklinaczki koni</pl> <!-- For grammatical reasons, all “who” is of the feminine variety. -->
 				</who_csv>
 				<who>
 					<all>${.csv:who_csv:i}</all>
@@ -485,90 +529,112 @@
 				<titleaddendum>
 					<de> aus ${town}| über ${theirlives}|</de>
 					<en> from ${town}| and ${theirlives}|</en>
+					<pl> z miasta ${town}| i ${theirlives}|</pl>
 				</titleaddendum>
 				<theirlives>
 					<de>ihren Alltag|was sie alles durchmachen|ihre Erlebnisse|ihren Lebensweg|ihre Abenteuer|ihren ganz normalen Wahnsinn|ihre Lebensgeschichten|ihre Eskapaden|ihren bewegten Tagesablauf|ihre Wechselbäder der Gefühle|ihre aufregenden Heldentaten</de>
 					<en>their everyday lives|what they go through|their daily experiences|their journey through life|their adventures|their daily madness|their life stories|their escapades|their eventful routine|their emotional rollercoaster rides|their exciting exploits</en>
+					<pl>ich codzienne życie|to, przez co przechodzą|ich codzienne doświadczenia|ich podróż przez życie|ich przygody|ich codzienne szaleństwo|ich historie życiowe|ich eskapady|ich pełna wydarzeń rutyna|ich emocjonalne przejażdżki kolejką górską|ich ekscytujące wyczyny</pl>
 				</theirlives>
 				<how_0>
 					<de>wahnwitzige ${who}, deren rauher, aus der Zeit gefallener Umgangston doch irgendwie Charme hat</de>
 					<en>freakish ${who}, whose rough, out-of-time tone somehow has charm after all</en>
+					<pl>o pracowitym i ciężkim życiu tych kobiet. To one</pl> <!-- TODO: Polish versions extremely stripped down here -->
 				</how_0>
 				<how_1>
 					<de>wagemutige ${who}, die sämtliche gesellschaftliche Konventionen zu hinterfragen und brechen wissen</de>
 					<en>daring ${who} who know how to question and break all social conventions</en>
+					<pl>o bezwstydnym i seksualnym życiu kobiet. To one</pl>
 				</how_1>
 				<how_2>
 					<de>hartnäckige ${who}, die mit ihren Anmachversuchen für allgemeine Erheiterung sorgen</de>
 					<en>persistent ${who} who cause general amusement with their attempts at pick-up</en>
+					<pl>o sławnym i dziwacznym życiu kobiet. To one</pl>
 				</how_2>
 				<how_3>
 					<de>inquisitive ${who}, die ganz genau wissen, wie sie die Leute verhören müssen</de>
 					<en>inquisitive ${who} who know exactly how to interrogate people</en>
+					<pl>o ciężkim i trudnym życiu kobiet. To one</pl>
 				</how_3>
 				<how_4>
 					<de>mutige ${who}, die faszinierende Geschichten auf Lager haben und obendrein mit ihrem Körperbau reizen</de>
 					<en>bold ${who}, who have fascinating stories in store, and on top of that, tantalize with their physique</en>
+					<pl>o odważnym i ciężkim życiu kobiet. To one</pl>
 				</how_4>
 				<how_5>
 					<de>lustige ${who}, die nicht nur die Kinder zum lachen bringen</de>
 					<en>funny ${who} who not only make the children laugh</en>
+					<pl>o sławnym i uzdolnionym życiu kobiet. To one</pl>
 				</how_5>
 				<how_6>
 					<de>beherzte ${who}, die immer ganz genau nachfragen, wo's weh tut</de>
 					<en>brave ${who} who always ask exactly where it hurts</en>
+					<pl>o czułym i odpowiedzialnym życiu kobiet. To one</pl>
 				</how_6>
 				<how_7>
 					<de>verführerische ${who}, die die Menschen um sie herum stets zu betören wissen</de>
 					<en>seductive ${who}, who always know how to beguile the people around them</en>
+					<pl>o perwersyjnym i wyuzdanym życiu kobiet. To one</pl>
 				</how_7>
 				<how_8>
 					<de>kühle ${who}, die so manchen Streit einfach mit einer kalten Dusche schlichten</de>
 					<en>cool ${who}, who settle many a dispute simply with a cold shower</en>
+					<pl>o trudnym i niebezpiecznym życiu kobiet. To one</pl>
 				</how_8>
 				<how_9>
 					<de>besonnene ${who}, die Kontrahenten aber schon mal die Leviten lesen und tief ins Gewissen reden</de>
 					<en>sober-minded ${who} who deeply reach into conscience, preach to opponents and beseech like wise Levites</en>
+					<pl>o moralnym i cichym życiu kobiet. To one</pl>
 				</how_9>
 				<how_10>
 					<de>besessene ${who}, die die Leute endlos zulabern, welche dann vergessen, worum's ursprünglich ging</de>
 					<en>obsessed ${who} who endlessly rant at people, who then forget what it was all about in the first place</en>
+					<pl>o mądrym i postępowym życiu kobiet. To one</pl>
 				</how_10>
 				<how_11>
 					<de>geschmackvolle ${who}, die mit ihren Berichten den Menschen das Wasser im Mund zusammenlaufen lassen</de>
 					<en>tasteful ${who}, who make people's mouths water with their reports</en>
+					<pl>o sławnym i dziwacznym życiu kobiet. To one</pl>
 				</how_11>
 				<how_12>
 					<de>knausrige ${who}, die jeglichen Hass auf sich ziehen und so für Frieden sorgen</de>
 					<en>cheap ${who}, who attract all hatred to themselves and thus ensure peace</en>
+					<pl>o kuchennym i prywatnym życiu kobiet. To one</pl>
 				</how_12>
 				<how_13>
 					<de>geheimniskrämerische ${who}, die für 'ne Sekunde mal weg sind, und schon ist seltsamerweise alles wieder geregelt</de>
 					<en>secretive ${who}, who are gone for a second, and strangely enough everything is settled again</en>
+					<pl>o ciekawym i pełnym wrażeń życiu kobiet. To one</pl>
 				</how_13>
 				<how_14>
 					<de>akrobatische ${who}, die im Kreis fahrend für Eintracht sorgen</de>
 					<en>acrobatic ${who}, who drive in circles for unity</en>
+					<pl>o ciekawym i pełnym wrażeń życiu kobiet. To one</pl>
 				</how_14>
 				<how_15>
 					<de>Musik liebende ${who}, die harmonisch pfiffig oft den Frieden wiederherstellen</de>
 					<en>music-loving ${who} who know how to use the pipe of peace and harmony</en>
+					<pl>o sławnym i muzykalnym życiu kobiet. To one</pl>
 				</how_15>
 				<how_16>
 					<de>einfallsreiche ${who}, die mit klugen Dialogen jegliches Gespräch beleben</de>
 					<en>imaginative ${who}, who enliven any conversation with clever dialogues</en>
+					<pl>o dziwacznym życiu kobiet. To one</pl>
 				</how_16>
 				<how_17>
 					<de>einfühlsame ${who}, die leise säuselnd oft erfolgreich wieder für Harmonie sorgen</de>
 					<en>sensitive ${who} who, quietly purring, often successfully restore harmony</en>
+					<pl>o końskim i śmierdzącym życiu kobiet. To one</pl>
 				</how_17>
 				<legacy>
 					<de>, deren Vermächtnis hier in ${town} bereits sehr bedeutend ist|, deren Erbe hier in ${town} bereits legendär ist|, die hier in ${town} für viel Furore sorgen|, die hier in ${town} für viel Aufsehen sorgen|, die in hier ${town} viel Unruhe stiften|, in deren Fußstapfen viele Einwohner von ${town} gerne treten würden|, in deren Schuhe viele Einwohner von ${town} gerne schlüpfen würden|, die hier in ${town} bereits große Spuren hinterlassen haben|, die hier in ${town} für viel Begeisterung sorgen|, die hier in ${town} für viel Wirbel sorgen|, die hier in ${town} für viel Rummel sorgen|, deren Einfluss auf das öffentliche Leben hier in ${town} unverkennbar ist|, die hier in ${town} für viel Gesprächsstoff sorgen|, die hier in ${town} viel Anerkennung erhalten|, deren Präsenz hier in ${town} allgegenwärtig ist|, die hier in ${town} eine beeindruckende Wirkung hinterlassen haben</de>
 					<en> whose legacy is already very significant here in ${town}| whose legacy is already legendary here in ${town}| who are creating a lot of buzz here in ${town}| who are quite the sensation here in ${town}| who cause a lot of turmoil here in ${town}| whose footsteps many ${town} residents wish they could follow| in whose shoes many ${town} residents would love to walk| who have already left a big mark here in ${town}| who create a lot of excitement here in ${town}| who are causing a lot of commotion here in ${town}| who are creating a lot of stir here in ${town}| whose influence on public life here in ${town} is undeniable| who cause a lot of talk here in ${town}| who get a lot of recognition here in ${town}| whose presence is ubiquitous here in ${town}| who have left an impressive impact here in ${town}</en>
+					<pl> których spuścizna jest już bardzo znacząca tutaj w mieście ${town}| których spuścizna jest już legendarna w mieście ${town}| który wywołuje sporo szumu tutaj w ${town}| który jest prawdziwą sensacją tutaj w ${town}| który wywołuje sporo zamieszania tutaj w ${town}| którego śladami chciałoby pójść wielu mieszkańców ${town}| w czyich butach chciałoby stanąć wielu mieszkańców ${town}| który pozostawił już wielki ślad tutaj w ${town}| który wywołuje sporo emocji tutaj w ${town}| który wywołuje sporo zamieszania tutaj w ${town}| który wywołuje sporo zamieszania tutaj w ${town}| którego wpływ na życie publiczne tutaj w ${town} jest niezaprzeczalny| który wywołuje dużo rozmów tutaj w ${town}| które zyskują sporo uznania w mieście ${town}| których obecność jest wszechobecna tutaj w mieście ${town}| które pozostawiły imponujący wpływ w mieście ${town}</pl>
 				</legacy>
 				<jokes>
 					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.|Lacher ohne Ende.|Punktgenaue Pointen.|Lacher im Sekundentakt.|Humor der Extraklasse.|Bauchweh vor Lachen.|Humor in Hülle und Fülle.|Höchste Heiterkeit.|Dauerlachen garantiert.|Komik in Perfektion.|Amüsement ohne Ende.|Lachen ohne Unterlass.|Achterbahnfahrt des Lachens.|Meisterwerk des Humors.|Eine urkomische Erfahrung.|Unterhaltsame Heiterkeit.|||||</de>
 					<en>Gags non-stop.|Spot-on punchlines.|Pure entertainment.|Endless laughter.|Comic brilliance.|Laugh-a-minute extravaganza.|Top-notch humor.|Side-splitting comedy.|Jokes galore.|Hilarity at its best.|Unstoppable laughs.|Comic perfection.|Non-stop amusement.|Laughs that keep on coming.|Rollercoaster of humor.|A comedic tour de force.|An uproarious experience.|Entertaining hilarity.|||||</en>
+					<pl>Ciągłe żarty.|Trafne puenty.|Czysta rozrywka.|Niekończący się śmiech.|Genialny komiks.|Ekstrawagancja, która wywołuje śmiech co minutę.|Najwyższej klasy humor.|Rozbrajająca komedia.|Mnóstwo żartów.|Wesołość w najlepszym wydaniu.|Nieustanny śmiech.|Doskonały komiks.|Nieustanna rozrywka.|Śmiech, który nie ustaje.|Kolorowy rollercoaster humoru.|Komediowy majstersztyk.|Wzruszające doświadczenie.|Rozrywkowa wesołość.|||||</pl>
 				</jokes>
 				<town>${.stationmap:"randomcity"}</town>
 				<!-- all these are more or less gender-neutral/-flexible first names, source: internet. TODO: maybe the Bavarians and the nuns need special treatment -->
@@ -578,6 +644,7 @@
 				<location_csv> <!-- alle Orte nur Maskulinum, Neutrum und wo 'im xyz' passt -->
 					<de>Paradies;Gasthaus;Hinterhof;Polizeirevier;Supermarkt;Zirkus;Spukhaus;Freizeitpark;Raumschiff;Weltraum;Kunsthaus;U-Boot;Mittelalterschloss;Modenschau-Club;Schwimmbad;Saunaclub;Regenwald;Oase-Reservat</de>
 					<en>paradise;the roadhouse;the backyard;the police station;the supermarket;the circus tent;the haunted mansion;the theme park;the spaceship;space;the art gallery;the submarine;the medieval castle;the fashion runway show;the swimming pool;the sauna club;the rainforest;the desert oasis</en>
+					<pl>raj;przydrożny bar;podwórko;posterunek policji;Supermarket;namiot cyrkowy;nawiedzony dwór;park rozrywki;Statek kosmiczny;przestrzeń;galeria sztuki;Łódź podwodna;średniowieczny zamek;pokaz mody;basen;klub saunowy;las deszczowy;oaza pustynna</pl>
 				</location_csv>
 			</variables>
 			<children>
@@ -585,10 +652,12 @@
 					<title>
 						<de>Pilotfolge</de>
 						<en>Pilot</en>
+						<pl>Pilot</pl>
 					</title>
 					<description>
 						<de>Die ${who} stellen sich vor. ${firstname1} ist ${character1}. ${firstname2} hingegen ist ${character2}. Und ${firstname3} ist ${character3}.</de>
 						<en>The ${who} introduce themselves. ${firstname1} is ${character1}. ${firstname2}, on the other hand, is ${character2}. And ${firstname3} is ${character3}.</en>
+						<pl>${.ucfirst:who} przedstawiają się. ${firstname1} to ${character1}. ${firstname2} to ${character2}. A ${firstname3} to ${character3}.</pl>
 					</description>
 					<!-- pilot could be one or two blocks -->
 					<blocks min="1" max="2" />
@@ -596,14 +665,17 @@
 						<character1>
 							<de>mutig und abenteuerlustig, stürzt sich in jede Herausforderung|charismatisch, mit einer magisch anziehenden Ausstrahlung|genial, eine hochintelligente Anführerpersönlichkeit|kreativ, mit Magie verleihender Vorstellungskraft|perfektionistisch und strebt nach Exzellenz in allem|sehr humorvoll, hat immer einen Witz parat|spontan, liebt Überraschungen und den Moment zu leben|sehr zielstrebig, arbeitet unermüdlich an der Selbstverwirklichung|abenteuerlustig, sucht immer nach neuem Nervenkitzel|abenteuerlustig, sucht immer nach neuen Horizonten</de>
 							<en>courageous and adventurous, jumps into any challenge|charismatic, with a magically attractive presence|a genius, a highly intelligent leader|creative, with magic-giving imagination|perfectionist and strives for excellence in everything|very humorous, always has a joke ready|spontaneous, loves surprises and to live in the moment|very determined, works tirelessly on self-actualization|adventurous, always looking for new thrills|adventurous, always searching for new horizons</en>
+							<pl>odważna i lubiąca przygody, podejmuje się każdego wyzwania|charyzmatyczna, z magicznie atrakcyjną twarzą|geniuszka, wysoce inteligentna liderka|kreatywna, z magiczną wyobraźnią|perfekcjonistka która dąży do doskonałości we wszystkim|bardzo zabawna, zawsze ma gotowy żart|spontaniczna, uwielbiająca niespodzianki i żyjąca chwilą|bardzo zdeterminowana, nieustannie pracująca nad samorealizacją|odważna, zawsze szukająca nowych emocji|odważna, zawsze poszukująca nowych horyzontów</pl>
 						</character1>
 						<character2>
 							<de>ruhig und gelassen, immer einen kühlen Kopf bewahrend|bescheiden, trotz großen Talents bodenständig|analytisch, findet stets die besten Lösungen|charmant, mit einem Lächeln, das alle Türen öffnet|introvertiert und großartig im Zuhören|sanftmütig mit großer Geduld und Freundlichkeit|nachdenklich, betrachtet die Welt mit tiefem Verständnis|tolerant, mit großer Offenheit gegenüber anderen|empathisch, versteht intuitiv die Gefühle anderer|sehr sensibel, spürt die Emotionen anderer wie ein Seismograph</de>
 							<en>calm and composed, always keeps a cool head|modest, down-to-earth despite great talent|analytical, always finds the best solutions|charming, with a smile that opens all doors|introverted and great at listening|gentle with great patience and kindness|thoughtful, looks at the world with deep understanding|tolerant, with great openness to others|empathic, intuitively understands others' feelings|very sensitive, senses the emotions of others like a seismograph</en>
+							<pl>spokojna i opanowana, zawsze zachowuje zimną krew|skromna, twardo stąpająca po ziemi, mimo wielkiego talentu|analityczna, zawsze znajduje najlepsze rozwiązania|urocza, z uśmiechem, który otwiera wszystkie drzwi|introwertyczka i świetna w słuchaniu|łagodna, z wielką cierpliwością i życzliwością|troskliwa, patrzy na świat z głębokim zrozumieniem|tolerancyjna, z wielką otwartością na innych|empatyczna, intuicyjnie rozumie uczucia innych|bardzo wrażliwa, wyczuwa emocje innych jak sejsmograf</pl>
 						</character2>
 						<character3>
 							<de>ehrgeizig und entschlossen, setzt und erreicht hohe Ziele|sehr enthusiastisch, mit ansteckender Begeisterung|sehr organisiert mit beeindruckend präzisen Planungsfähigkeiten|begeisterungsfähig, findet Freude in den kleinen Dingen|intuitiv, liegt mit den Instinkten immer richtig|ambitioniert, strebt danach, die Welt zum Guten zu verändern|kreativ, die Ideen sprudeln nur so heraus, unerschöpflich|diplomatisch, schlichtet Konflikte und bringt Menschen zusammen|neugierig, saugt alles auf und entdeckt ständig neues|authentisch, bleibt immer sich selbst und verstellt sich nicht</de>
 							<en>ambitious and determined, sets high goals and achieves them|very enthusiastic, with contagious passion|very organized with impressively precise planning skills|enthusiastic, finds joy in the little things|intuitive, always has the right instincts|ambitious, strives to change the world for the better|creative, ideas bubble up inexhaustibly|diplomatic, mediates conflicts and brings people together|curious, absorbs everything and constantly discovers new things|authentic, always remains true and does not pretend</en>
+							<pl>ambitna i zdeterminowana, stawia sobie wysokie cele i je osiąga|bardzo entuzjastyczna, z zaraźliwą pasją|bardzo zorganizowana, z imponująco precyzyjnymi umiejętnościami planowania|entuzjastyczna, znajduje radość w małych rzeczach|intuicyjna, zawsze ma właściwe instynkty|ambitna, dąży do zmiany świata na lepsze|kreatywna, pomysły rodzą się niewyczerpanie|dyplomatyczna, mediatorka konfliktów i jednoczy ludzi|ciekawa, chłonie wszystko i ciągle odkrywa nowe rzeczy|autentyczna, zawsze pozostaje prawdziwa i nie udaje</pl>
 						</character3>
 					</variables>
 				</scripttemplate>
@@ -614,19 +686,23 @@
 					<description>
 						<de>Die ${who} ${havetheirhandsfull}. ${others} aus ${othertown} ${description_${i}}</de>
 						<en>The ${who} ${havetheirhandsfull}. ${.ucfirst:others} from ${othertown} ${description_${i}}</en>
+						<pl>${.ucfirst:who} ${havetheirhandsfull}. ${.ucfirst:others} z ${othertown} ${description_${i}}</pl>
 					</description>
 					<variables>
 						<overtime>
 							<de>Überstunden|Stress|Anspannung|Fleißarbeit|Knochenarbeit|Zusatzschicht|Sorgfalt|Sorgfaltspflicht|Gewissenhaftigkeit|Pflichtbewusstsein|Schweiß|Verpflichtung|Hingabe|Engagement</de>
 							<en>Overtime|Stress|Struggle|Scut work|Grunt work|Extra shift|Diligence|Due diligence|Conscientiousness|Sense of duty|Sweat|Commitment|Dedication|Engagement</en>
+							<pl>Nadgodziny|Stres|Walka|Ciężka praca|Ciężka praca|Dodatkowa zmiana|Staranność|Należyta staranność|Sumienność|Poczucie obowiązku|Pot|Zaangażowanie|Poświęcenie|Zaangażowanie</pl>
 						</overtime>
 						<atworkplace_csv>
 							<de>am Fluss;im Varieté;in der Absteige;im Polizeirevier;am Strand;im Zirkus;im Pflegeheim;im Stripclub;auf der Feuerwache;im Kloster;auf dem Diskussionsforum;im Restaurant;im Discounter;im Geheimlabor;in der Manege;im Konzertsaal;in der Drehbuchagentur;auf der Ranch</de>
 							<en>at the river;at the varieté;at the flophouse;at the police station;at the beach;in the circus;in the nursing home;at the strip club;in the fire station;in the convent;at the discussion forum;in the restaurant;at the discount store;at the secret laboratory;in the circus ring;in the concert hall;at the screenwriting agency;at the ranch</en>
+							<pl>nad rzeką;w klubie;w fabryce;na posterunku policji;na plaży;w cyrku;w domu opieki;w klubie ze striptizem;w straży pożarnej;w klasztorze;na forum dyskusyjnym;w restauracji;w sklepie dyskontowym;w biurze podróży;w warsztacie;w sali koncertowej;w agencji scenariuszowej;na ranczu</pl>
 						</atworkplace_csv>
 						<havetheirhandsfull>
 							<de>haben alle Hände voll zu tun|sind schwer beschäftigt|sind voll im Einsatz|sind schwer bei der Arbeit|sind gestresst|sind gestresst, es wird ihnen nichts geschenkt</de>
 							<en>have their hands full|are heavily busy|are in full action|are hard at work|are stressed|are stressed, they get nothing for free</en>
+							<pl>mają pełne ręce roboty|są bardzo zajęte|są w pełni zaangażowane|ciężko pracują|są zestresowane|są zestresowane, nie dostają nic za darmo</pl>
 						</havetheirhandsfull>
 						<j>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17</j> <!-- must be same count and elements as i -->
 						<others>
@@ -636,74 +712,92 @@
 						<description_0>
 							<de>sind auf Durchreise und wollen ihre Montur gereinigt haben, pronto! Unsere ${who} müssen Extrazuschlag aushandeln.</de>
 							<en>are passing through and want their gear cleaned, pronto! Our ${who} have to negotiate an extra surcharge.</en>
+							<pl>przejeżdżają i chcą szybko wyczyścić swój sprzęt! Nasze ${who} muszą wynegocjować dodatkową opłatę.</pl>
 						</description_0>
 						<description_1>
 							<de>sind da zur großen Mode-Make-up-Challenge! Unsere ${who} und die angereisten ${others} müssen Pärchen bilden und abends einen glamourösen Catwalk-Showdown hinlegen!</de>
 							<en>are here for the big fashion-make-up challenge! Our ${who} and the visiting ${others} have to pair up and put on a glamorous catwalk showdown in the evening!</en>
+							<pl>są tutaj na wielkie wyzwanie modowo-makijażowe! Nasze ${who} i odwiedzające ${others} muszą połączyć siły i wieczorem zorganizować pokaz mody!</pl>
 						</description_1>
 						<description_2>
 							<de>haben auf die Kontaktanzeigen geantwortet und sind eingetroffen. Die ${who} sind nicht sicher, ob da ein Fehler vorliegt.</de>
 							<en>have responded to the contact ads and arrived. The ${who} aren't sure if there's been a mistake.</en>
+							<pl>odpowiedziały na ogłoszenia kontaktowe i przybyły. ${.ucfirst:who} nie są pewne, czy nie nastąpiła pomyłka.</pl>
 						</description_2>
 						<description_3>
 							<de>sind eingetroffen als Sparringspartner zum diesjährigen Sportfest-Fitnesstest. ${firstname2} hatte wohl zuviele Donuts in letzter Zeit.</de>
 							<en>have arrived as sparring partners for this year's sports festival fitness test. ${firstname2} must have had too many donuts recently.</en>
+							<pl>przybyły jako partnerki sparingowe na tegoroczny test sprawnościowy festiwalu sportowego. ${firstname2} chyba ostatnio zjadła za dużo pączków.</pl>
 						</description_3>
 						<description_4>
 							<de>planschen zu unbekümmert im Wasser und werden von den Wellen fortgetragen. Die ${who} retten wieder einmal den Tag.</de>
 							<en>splash around too light-heartedly in the water and are carried away by the waves. The ${who} save the day once again.</en>
+							<pl>pluskają się zbyt lekkomyślnie w wodzie i zostają porwane przez fale. ${.ucfirst:who} ratują dzień po raz kolejny.</pl>
 						</description_4>
 						<description_5>
 							<de>wollen in der Nachmittagsvorstellung unterhalten werden, obwohl sonst kaum Publikum da ist. Die ${who} machen die tote Hose bunt.</de>
 							<en>want to be entertained in the afternoon performance, even though there is hardly any other audience. The ${who} color the dullness.</en>
+							<pl>chcą być zabawiane podczas popołudniowego występu, mimo że nie mają prawie żadnej innej publiczności. ${.ucfirst:who} barwią nudę.</pl>
 						</description_5>
 						<description_6>
 							<de>sind da zur Beschwerde, weil sie mit der Behandlung ihrer Opas nicht einverstanden sind. Die ${who} mediieren gewaltfrei.</de>
 							<en>are there to complain because they don't agree with the treatment of their grandfathers. The ${who} mediate non-violently.</en>
+							<pl>są tam, żeby narzekać, bo nie zgadzają się z traktowaniem swoich dziadków. ${.ucfirst:who} pośredniczą bez przemocy.</pl>
 						</description_6>
 						<description_7>
 							<de>sind da samt Junggesellenabschieds-Entourage. Die ${who} müssen demonstrieren, wie man mal so richtig die Sau rauslässt.</de>
 							<en>are here along with a stag party entourage. The ${who} have to demonstrate how to really get down and dirty.</en>
+							<pl>są tutaj wraz z orszakiem wieczoru kawalerskiego. ${.ucfirst:who} muszą pokazać, jak naprawdę się ubrudzić.</pl>
 						</description_7>
 						<description_8>
 							<de>haben wegen eines Großbrandes angerufen. Die ${who} rücken aus, obwohl man nicht wissen kann, ob das wieder nur ein Lausbubenstreich ist.</de>
 							<en>have called about a major fire. The ${who} move out, although there's no way of knowing whether it is just another mischievous prank.</en>
+							<pl>zadzwoniły w sprawie dużego pożaru. ${.ucfirst:who} wyprowadzają się, chociaż nie ma sposobu, aby stwierdzić, czy to tylko kolejny złośliwy żart.</pl>
 						</description_8>
 						<description_9>
 							<de>sind eingetroffen und wollen bekehrt werden. Die ${who} stimmen erstmal zu einem Liedchen für sie an.</de>
 							<en>have arrived and want to be converted. The ${who} first of all tune in to a little song for them.</en>
+							<pl>przybyły i chcą zostać nawrócone. ${.ucfirst:who} najpierw włączają im małą piosenkę.</pl>
 						</description_9>
 						<description_10>
 							<de>wollen das mit der gefälschten Mondlandung einfach nicht glauben, trotz all der Beweise. ${firstname3} packt seinen größten Trumpf aus.</de>
 							<en>just don't want to believe the fake moon landing, despite all the evidence. ${firstname3} pulls out his biggest trump card.</en>
+							<pl>po prostu nie chcą uwierzyć w fałszywe lądowanie na Księżycu, pomimo wszystkich dowodów. ${firstname3} wyciąga swojego największego asa w rękawie.</pl>
 						</description_10>
 						<description_11>
 							<de>am Nebentisch haben keine Manieren und schmatzen laut. ${firstname2} fühlt sich gestört und kann so nicht arbeiten.</de>
 							<en>at the next table have no manners and are smacking noisily. ${firstname2} feels disrupted and can't work like this.</en>
+							<pl>przy sąsiednim stoliku nie zachowują się kulturalnie i głośno cmokają. ${firstname2} czuje się rozproszona i nie może tak pracować.</pl>
 						</description_11>
 						<description_12>
 							<de>haben Rabattmarken dabei, die's nur dort gibt. Die ${who} sind ganz begeistert und werden morgen gleich die 150 Kilometer nach ${othertown} fahren.</de>
 							<en>have discount stamps with them that are only available there. The ${who} are really excited and will drive the 100 miles to ${othertown} tomorrow.</en>
+							<pl>mają przy sobie znaczki rabatowe, które są dostępne tylko tam. ${.ucfirst:who} są naprawdę podekscytowane i jutro przejadą 100 mil do miasta ${othertown}.</pl>
 						</description_12>
 						<description_13>
 							<de>und aus dem letzten Jahrhundert wurden versehentlich herbeigebeamt. ${firstname1} muss für sie erstmal die Bildschirmanzeige entmystifizieren.</de>
 							<en>and from the last century were beamed here by mistake. ${firstname1} has to demystify the screen display for them first.</en>
+							<pl>przebierają oferty w biurze podróży. ${firstname1} musi najpierw zdemistyfikować dla nich wyświetlacz ekranowy.</pl>
 						</description_13>
 						<description_14>
 							<de>haben sich in der Mitte niedergelassen, und die ${who} müssen ein paar Extrarunden drehen.</de>
 							<en>have sat down in the center, and the ${who} have to do a few extra laps.</en>
+							<pl>przystąpiły do czyszczenia motorów, a ${who} muszą im pomóc.</pl>
 						</description_14>
 						<description_15>
 							<de>schreien erneut nach Zugabe und wollen nochmal den Bogey-Marsch hören - zum fünften Mal. ${firstname3} lässt sich immerhin noch eine Variation einfallen.</de>
 							<en>shout for another encore and want to hear the Bogey March again - for the fifth time. ${firstname3}, nevertheless, comes up with one more variation.</en>
+							<pl>trenują Marsz Bogeya jeszcze raz - po raz piąty w przypadku kolejnego bisu. ${firstname3}, mimo wszystko, wymyśla jeszcze jedną wariację.</pl>
 						</description_15>
 						<description_16>
 							<de>sind da und wollen ihre Abenteuer verfilmt haben. Unsere ${who} sind sehr skeptisch, ob man da was gutes draus machen kann.</de>
 							<en>are here and want to have their adventures turned into a film. Our ${who} are very skeptical as to whether they can make something good out of it.</en>
+							<pl>są tutaj i chcą, aby ich przygody zostały przeniesione na film. Nasze ${who} są bardzo sceptyczne co do tego, czy uda im się z tego zrobić coś dobrego.</pl>
 						</description_16>
 						<description_17>
 							<de>sind da mit ihren Nichten, die reiten lernen wollen, doch die Pferde haben heute keine Lust. Die ${who} finden den richtigen Ton.</de>
 							<en>are here with their nieces who want to learn to ride, but the horses don't feel like it today. The ${who} find the right tone.</en>
+							<pl>są tutaj ze swoimi siostrzenicami, które chcą nauczyć się jeździć, ale konie nie mają dziś na to ochoty. ${.ucfirst:who} znajdują odpowiednie konie.</pl>
 						</description_17>
 					</variables>
 				</scripttemplate>
@@ -711,6 +805,7 @@
 					<title>
 						<de>${trouble} im ${location}</de>
 						<en>${trouble} in ${location}</en> <!-- TODO: apply title-casing function when available -->
+						<pl>${trouble} w mieście ${location}</pl>
 					</title>
 					<description>
 						<all>${descriptions}</all>
@@ -723,14 +818,17 @@
 						<description_0>
 							<de>${gang} ${rioting} ${bikers} ${appears}${whythere_${k}}${causingtrouble}. Die ${who} ${solvetheconflict} ${intheirownway}.</de>
 							<en>${gang} ${rioting} ${bikers} ${appears}${whythere_${k}}${causingtrouble}. The ${who} ${solvetheconflict} ${intheirownway}.</en>
+							<pl>${rioting} ${gang} ${bikers} ${appears}${whythere_${k}}${causingtrouble}. ${.ucfirst:who} ${solvetheconflict} ${intheirownway}.</pl>
 						</description_0>
 						<description_1>
 							<de>${park} in ${town} ist ${asocialhotspot}. Die ${who} treffen auf ${others} aus ${othertown} und ${discuss} ${fiercely} über ${politics}.</de>
 							<en>In ${town}, ${park} is ${asocialhotspot}. The ${who} encounter ${others} from ${othertown} and ${fiercely} ${discuss} ${politics}.</en>
+							<pl>W mieście ${town}, ${park} gdzie jest ${asocialhotspot}. ${.ucfirst:who} spotykają ${others} z miasta ${othertown} i ${fiercely} ${discuss} ${politics}.</pl>
 						</description_1>
 						<trouble>
 							<de>Ärger|Panik|Pechsträhne|Chaos|Durcheinander|Desaster|Aufruhr|Krise|Aufregung|Verwüstung|Unruhe|Tumult|Eklat|Zoff|Krawall</de>
 							<en>Trouble|Panic|Streak of bad luck|Chaos|Mayhem|Disaster|Turmoil|Crisis|Commotion|Havoc|Unrest|Tumult|Uproar|Down and out|Riot</en>
+							<pl>Kłopoty|Panika|Wydarzenia|Chaos|Zamęt|Katastrofy|Zamęt|Kryzys|Zamieszanie|Spustoszenie|Niepokoje|Zamęt|Wrzawa|Spór|Zamieszki</pl>
 						</trouble>
 						<j>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17</j> <!-- must be same count and elements as i -->
 						<others>
@@ -743,123 +841,153 @@
 						<whythere_0>
 							<de>, überrumpelt Petrus an der Himmelspforte und will dem ewigen Frieden ein für alle mal den Garaus zu machen</de>
 							<en>, overpowers St. Peter at the Gates of Heaven, and wants to put an end to eternal peace once and for all</en>
+							<pl>, próbując zrobić zamieszanie </pl> <!-- TODO: extremely stripped down Polish versions -->
 						</whythere_0>
 						<whythere_1>
 							<de> und ist drauf und dran, die Zeche zu prellen</de>
 							<en> and is about to bounce the bill</en>
+							<pl>, zamierzają zrobić zadymę</pl>
 						</whythere_1>
 						<whythere_2>
 							<de>, um die schöne Stadtrandidylle ein wenig aufzumischen</de>
 							<en> to shake up the nice suburban peace a bit</en>
+							<pl>, aby trochę zakłócić miły, podmiejski spokój</pl>
 						</whythere_2>
 						<whythere_3>
 							<de>, die Recht und Gesetz des Viertels an sich reißen wollen</de>
 							<en> who wants to take over the law and order of the neighborhood</en>
+							<pl>, chcą przejąć prawo i porządek w okolicy</pl>
 						</whythere_3>
 						<whythere_4>
 							<de>, um den Laden auszurauben</de>
 							<en> to rob the store</en>
+							<pl>, zamierzają okraść sklep</pl>
 						</whythere_4>
 						<whythere_5>
 							<de> und will die Zirkustiere stehlen</de>
 							<en> and wants to steal the circus animals</en>
+							<pl> i chcą okraść mieszkańców</pl>
 						</whythere_5>
 						<whythere_6>
 							<de> und will die Geister rekrutieren</de>
 							<en> and wants to recruit the ghosts</en>
+							<pl> i chcą zaatakować lokalną grupę mieszkańców</pl>
 						</whythere_6>
 						<whythere_7>
 							<de> und will den längst stillgelegten Park ohne Genehmigung wieder in Betrieb nehmen</de>
 							<en> and wants to reopen the long-defunct park without a permit</en>
+							<pl> i chcą ponownie zabawić się z dziewczynami</pl>
 						</whythere_7>
 						<whythere_8>
 							<de>, die als blinde Passagiere mitreisten, und wollen das Raumschiff entführen</de>
 							<en> who was traveling as stowaways, and wants to hijack the spaceship</en>
+							<pl> i chcą porwać kilka lokalnych dziewczyn</pl>
 						</whythere_8>
 						<whythere_9>
 							<de>, die auf Space-Piraten machen, und verlangen Gebühr für die Durchquerung ihres Orbits</de>
 							<en>, posing as space pirates and demanding a toll for crossing their orbit</en>
+							<pl>, chcą rozwalić jeden z klubów</pl>
 						</whythere_9>
 						<whythere_10>
 							<de> und will die Kunstschätze an sich reißen</de>
 							<en> and wants to snatch the art treasures</en>
+							<pl> i chcą ukraść sklep monopolowy</pl>
 						</whythere_10>
 						<whythere_11>
 							<de> in einem goldenen Unterseeboot und bietet Betäubungsmittel an</de>
 							<en> in a golden submarine offering narcotics</en>
+							<pl> i chcą sprzedać narkotyki lokalnej społeczności</pl>
 						</whythere_11>
 						<whythere_12>
 							<de> und will die Monarchie wieder einführen</de>
 							<en> and wants to reintroduce the monarchy</en>
+							<pl> i chcą podpalić magazyn</pl>
 						</whythere_12>
 						<whythere_13>
 							<de> und will allen ihr eigenes Modediktat aufzwängen</de>
 							<en> and wants to impose their own fashion dictates on everyone</en>
+							<pl> i chcą narzucić wszystkim swoje własne zasady</pl>
 						</whythere_13>
 						<whythere_14>
 							<de> und besetzt den Sprungturm</de>
 							<en> and occupies the diving tower</en>
+							<pl> i atakują postronnych przechodniów</pl>
 						</whythere_14>
 						<whythere_15>
 							<de> und besetzt schwitzend die Kabinen, ohne die Montur abzulegen</de>
 							<en> and occupies the cabins, sweating, without wanting to take off their gear</en>
+							<pl> i napadają na lokalnych rockersów</pl>
 						</whythere_15>
 						<whythere_16>
 							<de> und will den Wald für Profit abholzen</de>
 							<en> and wants to cut down the forest for profit</en>
+							<pl> i robią zadyma na mieście</pl>
 						</whythere_16>
 						<whythere_17>
 							<de> und will das Wasser privatisieren und für Profit verkaufen</de>
 							<en> and wants to privatize the water and sell it for profit</en>
+							<pl> i rozrabiają i zachowują się głośno</pl>
 						</whythere_17>
 						<gang>
 							<de>Eine Gang|Eine Gruppe|Eine Bande|Ein Haufen|Ein Mob|Ein Pack|Eine Horde|Eine Posse</de>
 							<en>A gang of|A group of|A gang of|A bunch of|A mob of|A pack of|A horde of|A posse</en>
+							<pl>y gang|a banda|e zbiorowisko|a grupa|y tłum|e stado|a horda|y oddział</pl>
 						</gang>
 						<rioting>
 							<de>randalierender|rüpelhafter|unruhestiftender|störender|ungehorsamer|aufrührerischer|rebellischer|chaotischer|aufwieglerischer|ungestümer|unkontrollierbarer|unberechenbarer|unvernünftiger|uneinsichtiger|unangepasster|unbeherrschter|stürmischer|Aufruhr verursachender|unordentlicher|widerspenstiger|rücksichtsloser|ungehobelter|zügelloser|ungebändigter|wilder|unbändiger|irrationaler|zwieträchtiger|aufmüpfiger|unflätiger|pöbelnder|übler|übelster</de>
 							<en>rioting|rowdy|troublemaking|disruptive|unruly|riotous|rebellious|chaotic|agitating|boisterous|uncontrolled|unpredictable|unreasonable|inconsiderate|maladjusted|unrestrained|tumultuous|turmoil-causing|disorderly|disobedient|reckless|rude|unbridled|erratic|wild|ungovernable|irrational|discordant|seditious|foul-mouthed|rabble-rousing|nasty|the nastiest</en>
+							<pl>Agresywn|Hałaśliw|Awanturnicz|Destrukcyjn|Nieokiełznan|Buntownicz|Chaotyczn|Agitując|Hałaśliw|Niekontrolowan|Nieprzewidywaln|Nierozsądn|Nierozważn|Nieprzystosowan|Niepohamowan|Burzliw|Głośn|Nieuporządkowan|Nieposłuszn|Lekkomyśln|Nieokrzesan|Nieokiełznan|Szalon|Chamsk|Nieracjonaln|Buntownicz|Buntownicz|Wulgarn|Wulgarn|Okropn|Najokropniejsz|Najpaskudniejsz|Obskurn</pl>
 						</rioting> 
 						<bikers>
 							<de>Biker|Punker|Punks|Skinheads|Hooligans|Rocker|Satanisten|Scooter|Rapper|Gangster|Aktivisten|Vaterlandsverräter|Arbeitsloser|Obdachloser|Hurensöhne|Husos|Panzerknacker|Abtrünniger|abtrünniger Söldner|Rabauken|Lausbuben|Raufbolde|LARPer|Arschlöcher|Drecksäcke</de>
 							<en>bikers|punkers|punks|skinheads|hooligans|rockers|satanists|scooters|rappers|gangsters|activists|traitors to the fatherland|unemployed|homeless|sons of bitches|SOBs|safecrackers|renegades|renegade mercenaries|bullies|rascals|roughnecks|LARPers|assholes|scumbags</en>
+							<pl>motocyklistów|punkowców|punków|skinheadów|chuliganów|rockerów|satanistów|dryblasów|kryminalistów|gangsterów|aktywistów|bandytów|renegatów|wariatów|sukinsynów|buców|najemników|renegatów|łobuzów|łobuzów|łobuzów|osiłków|łajdaków|łajdaków|łajdaków</pl>
 						</bikers>
 						<appears>
 							<de>taucht auf|kreuzt auf|kommt an|findet sich ein|trifft ein|rückt an|tanzt an|schlägt auf|lässt sich blicken|ist im Anflug|kommt um die Ecke|bahnt sich ihren Weg|kommt</de>
 							<en>emerges|shows up|arrives|finds their way|appears|approaches|waltzes in|sets up camp|makes an entrance|is incoming|is coming around the corner|makes their way|comes</en>
+							<pl>wyłaniają się|pojawiają się|przybywają|przybywają|pojawiają się|wchodzą|wchodzą|rozbijają obóz|wchodzą|przyjeżdżają|przyjeżdżają|przyjeżdżają|wchodzą</pl>
 						</appears>
 						<causingtrouble>
 							<de>, was zu Spannungen führt|, was für Unruhe sorgt|, was Aufruhr verursacht|, was für Missstimmung sorgt|, was Spannungen verursacht|, was für Unfrieden sorgt|, was zu Unfrieden führt|</de>
 							<en>, which causes trouble|, which leads to turmoil|, which brings discord|, which causes disharmony|, which leads to tension|, which leads to unrest|, which causes unrest|</en>
+							<pl>, co powoduje kłopoty|, co prowadzi do zamieszek|, co przynosi niezgodę|, co powoduje dysharmonię|, co prowadzi do napięcia|, co prowadzi do niepokoju|, co powoduje niepokój|</pl>
 						</causingtrouble>
 						<solvetheconflict>
 							<de>lösen den Konflikt|schlichten|lösen das Problem|vermitteln|beschwichtigen|mediieren|sorgen für Frieden|schaffen Frieden|wissen was zu tun ist und handeln</de>
 							<en>solve the conflict|conciliate|solve the problem|arbitrate|appease|mediate|make peace|create peace|know what to do and take action</en>
+							<pl>próbują rozwiązać konflikt|próbują pojednać wszystkich|próbują rozwiązać problem|próbują rozstrzygnąć złą sytuacją|próbują udobruchać wszystkich|próbują mediować|próbują zawrzeć pokój|próbują stworzyć pokój|myślą, co zrobić, aby zażegnać kryzys</pl>
 						</solvetheconflict>
 						<intheirownway>
 							<de>auf ihre Weise|auf ihre ureigene Art|ganz auf ihre Weise|so, wie es nur sie können|ziemlich originell|auf überraschende Weise</de>
 							<en>in their own way|in their innate manner|in their very own way|as only they can|quite originally|in a surprising way</en>
+							<pl>na swój własny sposób|w swój sposób|na swój własny sposób|jak tylko potrafią|całkiem oryginalnie|w zaskakujący sposób</pl>
 						</intheirownway>
 						<othertown>${.stationmap:"randomcity"}</othertown>
 						<park>
 							<de>Der „${location}-Park“|Der „${location}-Vorgarten“|Der „${location}-Garten“|Der „${location}-Rosengarten“|Der „${location}-Blumengarten“|Die „${location}-Kantine“|Der „${location}-Platz“|Der „${location}-Spielplatz“|Der „${location}-Plaza“|Die „${location}-Piazza“|Die „${location}-Passage“|Die „${location}-Allee“|Der „${location}-Boulevard“</de>
 							<en>"${location} park"|"${location} frontyard"|"${location} garden"|"${location} rose garden"|"${location} flower garden"|"${location} cantina"|"${location} square"|"${location} playground"|"${location} plaza"|"${location} piazza"|"${location} arcade"|"${location} avenue"|"${location} boulevard"</en> <!-- TODO: apply title-casing function when available -->
+							<pl>w parku miejskim|na głównej ulicy|w ogrodzie botanicznym|ogrodzie różanym|ogrodzie kwiatowym|przed pasażem handlowym|na Placu Wolności|placu zabaw|na placu budowy hipermarketu|na pasaż handlowym AKEA|w Alei Monachijskiej|w bulwarze ateńskim|w Alei Jerozolimskiej</pl>
 						</park>
 						<asocialhotspot>
 							<de>ein sozialer Brennpunkt|ein interessanter Treffpunkt|ein Ort der Begegnung unterschiedlichster Menschen|ein Ort, wo Welten aufeinanderprallen|ein Ort, wo sich alle sozialen Schichten begegnen|ein Ort, wo man den unterschiedlichsten Leuten begegnet|ein Ort, wo man den unterschiedlichsten Ansichten begegnet|ein Ort, wo man Menschen von überall her begegnet</de>
 							<en>a social hotspot|an interesting meeting place|a meeting place for a wide variety of people|a place where worlds collide|a place where all social classes clash|a place where you meet all kinds of different people|a place where you meet the most different opinions|a place where you meet people from everywhere</en>
+							<pl>towarzyskie miejsce spotkań|ciekawe miejsce spotkań|miejsce spotkań dla szerokiej gamy ludzi|miejsce, w którym zderzają się światy|miejsce, w którym ścierają się wszystkie klasy społeczne|miejsce, w którym spotykają się najróżniejsi ludzi|miejsce, w którym spotykasz najróżniejsze opinie|miejsce, w którym spotykasz ludzi z całego świata</pl>
 						</asocialhotspot>
 						<discuss>
 							<de>diskutieren|debattieren|streiten|streiten sich|fetzen sich|zanken sich</de>
 							<en>discuss|debate|argue about|fight about|quarrel about|bicker about</en>
+							<pl>dyskutują o|debatują o|głośno rozmawiają o|kłócą się o|sprzeczają się o|wymieniają się opiniami o</pl>
 						</discuss>
 						<fiercely>
 							<de>heftig|scharf|grimmig|wild|leidenschaftlich|böse|erbittert|hitzig|angespannt|angeregt|aufgeregt</de>
 							<en>fiercely|harshly|ferociously|wildly|passionately|madly|grimly|fierily|tensely|agitatedly|excitedly</en>
+							<pl>gwałtownie|surowo|zaciekle|dziko|namiętnie|szalenie|ponuro|zażarcie|napięciowo|podekscytowanie|z podnieceniem</pl>
 						</fiercely>
 						<politics>
 							<de>Innenpolitik|Außenpolitik|Religion|den kategorischen Imperativ|den Klimawandel|Migranten|Flüchtlingspolitik|die wahre Form der Erde</de>
 							<en>domestic politics|foreign affairs|religion|the categorical imperative|climate change|migrants|refugee policy|the true shape of the Earth</en>
+							<pl>polityce krajowej|polityce zagranicznej|religii|polityce płacowej|polityce klimatycznej|polityce migracyjnej|nic|błachostki</pl>
 						</politics>
 					</variables>
 				</scripttemplate>
@@ -867,6 +995,7 @@
 					<title>
 						<de>${meeting} im ${location}</de>
 						<en>${meeting} in ${location}</en> <!-- TODO: apply title-casing function when available -->
+						<pl>${meeting} w mieście ${location}</pl>
 					</title>
 					<description>
 						<all>${descriptions}</all>
@@ -879,14 +1008,17 @@
 						<description_0>
 							<de>Im ${location}${allstillright} ${whythere_${k}}</de>
 							<en>In ${location}${allstillright} ${whythere_${k}}</en>
+							<pl>W mieście ${location}${allstillright} ${whythere_${k}}</pl>
 						</description_0>
 						<description_1>
 							<de>${bar} ist in ${town} gerade ${thepartylocation}. ${musicsession}</de>
 							<en>In ${town}, ${bar} currently is ${thepartylocation}. ${musicsession}</en>
+							<pl>W mieście ${town}, ${bar} jest obecnie ${thepartylocation}. ${musicsession}</pl>
 						</description_1>
 						<meeting>
 							<de>Treffen|Aufruhr|Fette Beute|Klamauk|Überraschungsfeier|Versammlung|Ringelpiez|Trubel|Wiedersehen|Begegnung|Spektakel|Scherz|Ereignis|Belustigung</de>
 							<en>Meeting|Riot|Fuss|Big booty|Surprise party|Gathering|Revelry|Hustle and bustle|Reunion|Encounter|Spectacle|Frolic|Happening|Merrymaking</en>
+							<pl>Spotkanie|Igraszki|Zamieszanie|Duży łup|Impreza niespodzianka|Zgromadzenie|Huśtawka nastrojów|Krzątanina|Zjazd|Spektakl|Igraszki|Wydarzenia|Wesołe świętowanie|Zdarzenie</pl>
 						</meeting>
 						<j>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17</j> <!-- must be same count and elements as i -->
 						<others>
@@ -899,91 +1031,113 @@
 						<allstillright>
 							<de> ist die Welt noch in Ordnung.| ist alles in Ordnung.|, da lässt sich's aushalten.| ist alles gut.| gibt es nur gute Vibes.| ist's wie im Himmel.| ist die Stimmung stets ausgelassen.| ist die Luft voller Liebe und Freude.| ist jeder Tag ein Fest.| gibt es immer was zu feiern.| ist die Laune stets bestens.| gibt es nur strahlende Gesichter.| herrscht eine wunderbare Atmosphäre.| ist das Glück zu Hause.| scheint die Zeit stillzustehen.| gibt es keine Sorgen oder Probleme.| ist die Welt voller Magie.| fühlt man sich wie im siebten Himmel.</de>
 							<en>, all's right with the world.| everything's alright.|, life is comfortable and enjoyable.|, life is good.|, there are only good vibes.|, it's like heaven.|, the atmosphere is always lively.|, the air is full of love and joy.|, every day is a celebration.|, there is always something to celebrate.|, everyone is in high spirits.|, there are only smiles and joy.|, there is a wonderful atmosphere.|, happiness resides.|, time seems to stand still.|, there are no worries or troubles.|, the world is full of magic.|, it feels like being on cloud nine.</en>
+							<pl>, wszystko jest w porządku.| jest wszystko w porządku.|, życie toczy sie zwyczajnie.|, życie jest spokojne.|, są tylko dobre wibracje.|, jest jak w niebie.|, atmosfera jest zawsze ożywiona.|, powietrze jest pełne miłości i radości.|, każdy dzień jest świętem.|, zawsze jest coś do świętowania.|, wszyscy są w dobrych nastrojach.|, są tylko uśmiechy i radość.|, panuje cudowna atmosfera.|, szczęście trwa.|, czas wydaje się stać w miejscu.|, nie ma zmartwień ani kłopotów.|, świat jest pełen magii.|, czujesz się jak w siódmym niebie.</pl>
 						</allstillright>
 						<whythere_0>
 							<de>Petrus persönlich hat die ${who} eingeladen, die Himmelspforte stünde schließlich allen frommen Menschen offen, die reinen Herzens sind. Die ${who} unterhalten sich angeregt mit den Engeln vom Dienst.</de>
 							<en>St. Peter personally has invited the ${who}, the gate of heaven is, after all, open to all pious people who are pure of heart. The ${who} animatedly converse with the angels on duty.</en>
+							<pl>Św. Piotr osobiście zaprosił ${who}, w końcu brama nieba jest otwarta dla wszystkich pobożnych ludzi o czystym sercu. ${who} z ożywieniem rozmawiają z aniołami na służbie.</pl>
 						</whythere_0>
 						<whythere_1>
 							<de>Zu Feierabend darf man ja auch mal einen trinken gehen. ${musicsession}</de>
 							<en>After all, you can have a drink after work. ${musicsession}</en>
+							<pl>Po pracy można przecież wypić drinka. ${musicsession}</pl>
 						</whythere_1>
 						<whythere_2>
 							<de>Er gehört zur Wohnung von der Oma von ${firstname1}. ${musicsession}</de>
 							<en>It belongs to the apartment of the grandma of ${firstname1}. ${musicsession}</en>
+							<pl>Należy do mieszkania babci o imieniu ${firstname1}. ${musicsession}</pl>
 						</whythere_2>
 						<whythere_3>
 							<de>Ein Streit in der Nachbarschaft war etwas eskaliert, aber ${firstname2}, ${firstname3} und die Polizei konnten erfolgreich schlichten. Anschließend findet eine Hundetrainingsvorführung statt, und alle sind beeindruckt.</de>
 							<en>A dispute in the neighborhood had escalated somewhat, but ${firstname2}, ${firstname3}, and the police were able to successfully mediate. Afterwards, a dog training demonstration takes place, and everyone's impressed.</en>
+							<pl>Spór w sąsiedztwie nieco się zaostrzył. ${firstname2}, ${firstname3} i policja zdołali pomyślnie przeprowadzić mediację. Następnie odbywa się pokaz tresury psów i wszyscy są pod wrażeniem.</pl>
 						</whythere_3>
 						<whythere_4>
 							<de>Die Feierabendeinkäufe erledigen sich ja nicht von alleine, sind aber schnell hinter sich gebracht.</de>
 							<en>After all, after-work shopping doesn't take care of itself, but it can be done quickly.</en>
+							<pl>W końcu zakupy po pracy same się nie zrobią, ale można je zrobić szybko.</pl>
 						</whythere_4>
 						<whythere_5>
 							<de>Ein Wanderzirkus gastiert nämlich gerade in ${town}, und man fühlt sich mit den Schaustellern im Geiste verbunden.</de>
 							<en>In fact, a traveling circus is currently touring ${town}, and there's a feeling of spiritual connection with the carnies.</en>
+							<pl>W rzeczywistości, objazdowy cyrk obecnie objeżdża ${town} i istnieje poczucie duchowej więzi z cyrkowcami.</pl>
 						</whythere_5>
 						<whythere_6>
 							<de>Es gehört nämlich der abergläubischen Tante von ${firstname3}. Lachend lösen unsere ${who} das Problem mit der elektrischen Leitung und genießen den Landurlaub.</de>
 							<en>It belongs to the superstitious aunt of ${firstname3}. With laughter, our ${who} solve the problem with the electric line and enjoy the rural vacation.</en>
+							<pl>Należy do przesądnej ciotki o imieniu ${firstname3}. Ze śmiechem nasze ${who} rozwiązują problem z linią elektryczną i cieszą się wakacjami na wsi.</pl>
 						</whythere_6>
 						<whythere_7>
 							<de>Die ${who} helfen gerne beim Abbau. Der ganze Rummel weckt schönste Kindheitserinnerungen, doch irgendwann muss wieder Schluss und Frieden sein in ${town}, finden sie.</de>
 							<en>The ${who} are happy to help with the dismantling. All the hustle and bustle brings back fond childhood memories, but at some point, there has to be peace and quiet again in ${town}, they think.</en>
+							<pl>Nasze bohaterki prowadzą swoje żywiołowe sprawy. Cały ten zgiełk przywołuje miłe wspomnienia z dzieciństwa, ale w pewnym momencie w mieście ${town} znów musi zapanować cisza i spokój.</pl>
 						</whythere_7>
 						<whythere_8>
 							<de>Das Astronautentraining war für unsere ${who} ein Klacks. Und so machen sie sich auf in neue Welten, die nie zuvor ein Mensch gesehen hat.</de>
 							<en>Astronaut training was a snap for our ${who}. And so they set off for new worlds, to boldly go where no one has gone before.</en>
+							<pl>I tak wyruszają do nowych wydarzeń, by odważnie podążać tam, gdzie nikt inny nie chce wchodzić.</pl>
 						</whythere_8>
 						<whythere_9>
 							<de>${firstname3} hat eine Reise für alle um den Mond gewonnen, eine Marketingaktion eines neuen privaten Raumfahrtunternehmens. Da gibt man sich doch gerne als Versuchskaninchen her.</de>
 							<en>${firstname3} has won a trip for everyone around the moon, a marketing campaign of a new private space company. It's a pleasure to be a guinea pigs for such a special occasion.</en>
+							<pl>Nasze bohaterki prowadzą swoje żywiołowe sprawy.</pl>
 						</whythere_9>
 						<whythere_10>
 							<de>Eine Freundin von ${firstname3} kennt da nämlich jemanden, der jemand kennt, von dem eine Skulptur dort ausgestellt ist.</de>
 							<en>In fact, a friend of ${firstname3} knows someone who knows someone who has a sculpture on display there.</en>
+							<pl>W rzeczywistości znajoma o imieniu ${firstname3} zna kogoś, kto zna kogoś, kto ma tam wystawioną rzeźbę.</pl>
 						</whythere_10>
 						<whythere_11>
 							<de>${firstname2} ist nämlich großer Fan der „Pilzköpfe“ und hilft beim Organisieren eines Events rund um das gelbe Boot mit.</de>
 							<en>${firstname2} is a big fan of the "mop-tops" and is helping to organize an event around the yellow boat.</en>
+							<pl>${firstname2} jest wielką fanką „mop-topów” i pomaga zorganizować wydarzenie wokół żółtej łodzi.</pl>
 						</whythere_11>
 						<whythere_12>
 							<de>${town} hat nämlich eine weit zurückreichende und interessante Geschichte, und heute ist der letzte Tag der Ausstellung „Zeitlose Geschichten“ hier im Schloss.</de>
 							<en>In fact, ${town} has a long and interesting history, and today is the last day of the "Timeless Tales" exhibition here at the castle.</en>
+							<pl>Tak naprawdę miasto ${town} ma długą i ciekawą historię, a dziś jest ostatni dzień wystawy „Opowieści ponadczasowe” na zamku.</pl>
 						</whythere_12>
 						<whythere_13>
 							<de>${firstname1} hatte eine Einladung bekommen, denn ${who}-Ausrüstung ist gerade der letzte Schrei und dient als Vorlage für die brandneuesten Modekreationen.</de>
 							<en>${firstname1} got an invitation, because ${who} gear is all the rage right now and serves as a template for the latest fashion creations.</en>
+							<pl>${firstname1} otrzymała zaproszenie, ponieważ sprzęt ${who} jest obecnie w modzie i służy jako szablon dla najnowszych kreacji modowych.</pl>
 						</whythere_13>
 						<whythere_14>
 							<de>Der kleine Bruder von ${firstname3} will die neueste Wasserrutsche dort ausprobieren.</de>
 							<en>The little brother of ${firstname3} wants to try out the latest water slide there.</en>
+							<pl>Młodszy brat naszej ${firstname3} chce wypróbować najnowszą zjeżdżalnię wodną.</pl>
 						</whythere_14>
 						<whythere_15>
 							<de>${firstname2} hat nämlich einen Wellness-Day „inkl. dampfenden Abenteuern für zwei“ gewonnen. TVTower übernimmt für ${firstname3} und den Rest der Crew, und ab geht's!</de>
 							<en>In fact, ${firstname2} has won a Wellness Day "incl. steamy adventures for two". TVTower covers for ${firstname3} and the rest of the crew, and off we go!</en>
+							<pl>W rzeczywistości ${firstname2} wygrała Dzień Wellness „w tym gorące przygody dla dwojga”. TVTower pokrywa koszty naszej ${firstname3} i reszty załogi, i ruszamy!</pl>
 						</whythere_15>
 						<whythere_16>
 							<de>Zum Glück hatte ${firstname3} noch Plätze im Billigflieger für alle ergattert. Was tut man nicht alles, um Bewusstsein für Natur und Umwelt zu schaffen!</de>
 							<en>Luckily, ${firstname3} had managed to get seats on the budget plane for everyone. The things you do to raise awareness for nature and the environment!</en>
+							<pl>Na szczęście naszej bohaterce o imieniu ${firstname3} udało się załatwić miejsca w tanim samolocie dla wszystkich. Rzeczy, które robisz, aby zwiększyć świadomość na temat natury i środowiska!</pl>
 						</whythere_16>
 						<whythere_17>
 							<de>Zum Glück hatte ${firstname3} noch Plätze im Billigflieger für alle ergattert, und das wilde Wüstenabenteuer kann beginnen!</de>
 							<en>Luckily, ${firstname3} had managed to get seats on the budget plane for everyone, and the savage desert adventure can begin!</en>
+							<pl>Na szczęście ${firstname3} zdołała zarezerwować miejsca w tanim samolocie dla wszystkich, więc dzika przygoda na pustyni może się rozpocząć!</pl>
 						</whythere_17>
 						<musicsession>
 							<de>Eine improvisierte Volksmusik-Jam-Session findet statt. ${firstname2} hat eine sehr schöne Stimme.|Ein Chili-Kochwettbewerb findet statt gegen ${others} aus ${othertown}. ${firstname3} wird ganz heiß, es ist dann doch recht scharfes Chili.|Eine Handwerks-Challenge findet statt gegen ${others} aus ${othertown}. Der Ort gehört mal so richtig aufgemöbelt. ${firstname1} kann gut mit Hammer und Nägeln umgehen.|Eine alte Zeitkapsel wird entdeckt, die nostalgische Erinnerungen und eine Suche nach ihrem Besitzer auslöst. ${firstname1} denkt zurück an Elvis.|Eine Escape-Room-Challenge findet statt gegen ${others} aus ${othertown}. ${firstname2} und ${firstname3} stecken mal wieder fest. ${firstname1} befreit sie.|Eine Spendenaktion findet statt. ${firstname1} hat wie immer kein Kleingeld dabei.|Eine Hundetrainingsvorführung findet statt. ${firstname1} und ${firstname3} haben selber Hunde und zeigen allen, wie's geht.|Unsere ${who} sowie ${others} aus ${othertown} organisieren eine Schnitzeljagd. ${firstname1} und ${firstname3} verlaufen sich mal wieder. ${firstname2} sammelt sie wieder ein.|Ein Kochwettbewerb findet statt gegen gegen ${others} aus ${othertown}. ${firstname1} überzeugt mit einer italienisch-vietnamesischen Crossover-Cuisine-Kreation.|Plötzlich taucht ein Flashmob mit verrückten Künstlern auf. ${firstname1} packt den Hula-Hoop-Reifen aus und macht mit.|Eine versteckte Schatzkarte wird entdeckt. ${firstname1} und ${firstname2} sind ganz baff: Wo könnte denn nur diese Affeninsel sein?|Ein Talentwettbewerb findet statt. Kein Problem für unsere ${who}, sind ja offensichtlich die talentiertesten, wenn sie schon ein TVTower-Kamerateam dabei haben.</de>
 							<en>An impromptu country music jam session takes place. ${firstname2} has a very nice voice.|A chili cooking contest takes place against ${others} from ${othertown}. ${firstname3} gets all hot, it ends up being quite spicy chili.|A craft challenge takes place against ${others} from ${othertown}. The place really really needs to be spruced up. ${firstname1} is good with hammer and nails.|An old time capsule is discovered, triggering nostalgic memories and a search for its owner. ${firstname1} remembers and reflects on Elvis.|An escape room challenge takes place against ${others} from ${othertown}. ${firstname2} and ${firstname3} get stuck as always. ${firstname1} sets them free.|A fundraiser takes place. ${firstname1} has no change as usual.|A dog training demonstration takes place. ${firstname1} and ${firstname3} have dogs themselves and show everyone how it's done.|Our ${who} and ${others} from ${othertown} organize a scavenger hunt. ${firstname1} and ${firstname3} get lost as usual. ${firstname2} picks them up again.|A cooking competition takes place against ${others} from ${othertown}. ${firstname1} convinces with an Italian-Vietnamese crossover cuisine creation.|Suddenly a flash mob with crazy artists shows up. ${firstname1} unpacks the hula hoop and joins in.|A hidden treasure map is discovered. ${firstname1} and ${firstname2} are flabbergasted: Where could this ape island be?|A talent contest takes place. No problem for our ${who}, obviously they are the most talented, since they already have a TVTower camera team with them.</en>
+							<pl>Odbywa się improwizowana sesja muzyki country. ${firstname2} ma bardzo przyjemny głos.|Odbywa się konkurs gotowania papryki chili. Nasze bohaterki biorą udział w tym wydarzeniu. ${firstname3} robi bardzo ostre potrawy z bardzo pikantnym chili.|Odbywa się konkurs rzemieślniczy przeciwko ${others} z ${othertown}. To miejsce naprawdę, naprawdę wymaga odświeżenia. ${firstname1} dobrze radzi sobie z młotkiem i gwoździami.|Odkryto starą kapsułę czasu, co wyzwala nostalgiczne wspomnienia i poszukiwania jej właściciela. ${firstname1} wspomina i rozmyśla o Elvisie.|Odbywa się wyzwanie w pokoju zagadek przeciwko ${others} z ${othertown}. ${firstname2} i ${firstname3} utknęli jak zwykle. ${firstname1} ich uwalnia.|Odbywa się zbiórka funduszy. ${firstname1} jak zwykle nie wnosi żadnych zmian.|Odbywa się pokaz tresury psów. ${firstname1} i ${firstname3} mają psy i pokazują wszystkim, jak to się robi.|Nasi ${who} i ${others} z ${othertown} organizują zabawę w poszukiwanie skarbów. ${firstname1} i ${firstname3} gubią się jak zwykle. ${firstname2} ich ponownie zbiera.|Odbywa się konkurs kulinarny z ${others} z ${othertown}. ${firstname1} przekonuje, tworząc włosko-wietnamską mieszankę kulinarną.|Nagle pojawia się flash mob z udziałem szalonych artystów. ${firstname1} rozpakowuje hula hop i dołącza do nich.|Dokonano napadu na sklep jubilerski. ${firstname1} i ${firstname2} są oszołomione: Gdzie może znajdować się ta skradziona bransoletka?|Odbywa się konkurs talentów. Żaden problem dla naszych ${who}, najwyraźniej są najbardziej utalentowane, skoro mają już ze sobą ekipę kamerzystów TVTower.</pl>
 						</musicsession>
 						<othertown>${.stationmap:"randomcity"}</othertown>
 						<bar>
 							<de>Die „${location}-Bar“|Der „${location}-Stadl“|Der „${location}-Garten“|Der „${location}-Biergarten“|Das „${location}-Bierzelt“|Die „${location}-Nachtgalerie“|Die „${location}-Nachtkantine“|Das „${location}-Festival“</de>
 							<en>"${location} bar"|"${location} barn"|"${location} garden"|"${location} beer garden"|"${location} beer tent"|"${location} night arcade"|"${location} night-cantina"|"${location} festival"</en> <!-- TODO: apply title-casing function when available -->
+							<pl>bar|stodoła|ogród|ogródek piwny|namiot piwny|nocny salon gier|nocna-kantyna|festiwal</pl>
 						</bar>
 						<thepartylocation>
 							<de>*die* Party-Location|die Top-Ausgeh-Location|einer der beliebtesten Treffpunkte|einer der beliebtesten Versammlungsorte|*die* Event-Location|der Ort, wo immer was los ist|der Ort, wo die Action ist|*der* „Place to be“</de>
 							<en>*the* party location|a top location to have a night out|one of the most popular meeting places|one of the most popular get-togethers|*the* event location|the place where there is always something going on|the place where all the action is|*the* place to be</en>
+							<pl>*miejscem* na imprezę|najlepszym miejscem na wieczorne wyjście|jednym z najpopularniejszych miejsc spotkań|jednym z najpopularniejszych spotkań towarzyskich|*miejscem* na wydarzenie|miejscem, w którym zawsze coś się dzieje|miejscem, w którym dzieje się cała akcja|*miejscem*, w którym warto być</pl>
 						</thepartylocation>
 					</variables>
 				</scripttemplate>
@@ -1019,6 +1173,8 @@
 ${EXTRA}</de>
 				<en>Documentary about ${ANIMALS}.
 ${EXTRA}</en>
+				<pl>Film dokumentalny - ${ANIMALS}.
+${EXTRA}</pl>
 			</description>
 
 			<children>
@@ -1064,78 +1220,97 @@ ${EXTRA}</en>
 				<title>
 					<de>${ANIMAL1}${CONNECTOR1}|Party mit ${ANIMAL1}${CONNECTOR1}|Zu Besuch bei ${ANIMAL1}${CONNECTOR2}|Auf der Spur von ${ANIMAL1}${CONNECTOR2}|Im Zoo bei ${ANIMAL1} und ${ANIMAL2}</de>
 					<en>${ANIMAL1}s${CONNECTOR1}|Party with ${ANIMAL1}s${CONNECTOR1}|Visiting ${ANIMAL1}s${CONNECTOR2}|On the Trail of ${ANIMAL1}s${CONNECTOR2}|In the Zoo among ${ANIMAL1}s and ${ANIMAL2}s</en>
+					<pl>${ANIMAL1}${CONNECTOR1}|Impreza z ${ANIMAL1}${CONNECTOR1}|Wizyta w ${ANIMAL1}${CONNECTOR2}|Na tropie ${ANIMAL1}${CONNECTOR2}|W zoo wśród ${ANIMAL1} i ${ANIMAL2}</pl>
 				</title>
 				<animals>
 					<de>${ANIMAL1}, ${ANIMAL2} und viele weitere Tiere|Tiere im Zoo|Pfleger, Gäste und natürlich Tiere im Gehege</de>
 					<en>${ANIMAL1}s, ${ANIMAL2}s and many more animals|animals in the zoo|keepers, guests and of course animals in the enclosure</en>
+					<pl>${ANIMAL1}, ${ANIMAL2} i wiele innych zwierząt|zwierzęta w zoo|opiekunowie, goście i oczywiście zwierzęta na wybiegu</pl>
 				</animals>
 				<extra>
 					<de>${EXTRA1}${EXTRA2}.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>
 					<en>${EXTRA1}${EXTRA2}.||Animal keepers give tips for rearing at home.|Including tips for dealing with pets.</en>
+					<pl>${EXTRA1}${EXTRA2}.||Opiekunowie zwierząt udzielają porad dotyczących hodowli w domu.|W tym wskazówek dotyczących postępowania ze zwierzętami domowymi.</pl>
 				</extra>
 				<extra1>
 					<de>Niedliche Tierbabies |Knuddelige Wildkatzen |Bio-Dung </de>
 					<en>Cute baby animals |Cuddlesome feral cats |Bio manure </en>
+					<pl>Słodkie małe zwierzęta |Przytulne dzikie koty |Bio nawóz</pl>
 				</extra1>
 				<extra2>
 					<de>zu hauf.|sowie ab und zu eine finale Spritze|und ab und zu eine Tierfütterung aus Eigenanbau</de>
 					<en>in abundance.|and every now and then a final injection|and from time to time animal feeding from cultivation grown on-site</en>
+					<pl>w dużych ilościach.|i co jakiś czas zastrzyk|i od czasu do czasu karmienie zwierząt z upraw uprawianych na miejscu</pl>
 				</extra2>
 				<animal1>
 					<de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>
 					<en>Ape|Frog|Camel|Lizard|Goat|Elephant|Rodent|Rhino</en> <!-- only variations for which plural can be written with -s for now -->
+					<pl>Małpa|Żaba|Wielbłąd|Jaszczurka|Koza|Słoń|Gryzoń|Nosorożec</pl>
 				</animal1>
 				<animal2>
 					<de>Biber|Chamäleon|Dachs|Esel|Giraffe|Hirsch|Iltis</de>
 					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Stag|Polecat</en> <!-- only variations for which plural can be written with -s for now -->
+					<pl>Bóbr|Kameleon|Borsuk|Osioł|Żyrafa|Jeleń|Tchórz</pl>
 				</animal2>
 				<animalep1>
 					<de>Affe|Frosch|Kamel|Waran</de>
 					<en>Ape|Frog|Camel|Lizard</en> <!-- only variations for which plural can be written with -s for now -->
+					<pl>Małpy|Żaby|Wielbłądy|Jaszczurki</pl>
 				</animalep1>
 				<animalep2>
 					<de>Biber|Chamäleon|Dachs</de>
 					<en>Beaver|Chameleon|Badger</en> <!-- only variations for which plural can be written with -s for now -->
+					<pl>Bóbry|Kameleony|Borsuki</pl>
 				</animalep2>
 				<animalep3>
 					<de>Ziege|Elefant|Maus|Nashorn</de>
 					<en>Goat|Elephant|Rodent|Rhino</en> <!-- only variations for which plural can be written with -s for now -->
+					<pl>Kozy|Słonie|Gryznie|Nosorożce</pl>
 				</animalep3>
 				<animalep4>
 					<de>Esel|Giraffe|Hirsch|Iltis</de>
 					<en>Donkey|Giraffe|Stag|Polecat</en> <!-- only variations for which plural can be written with -s for now -->
+					<pl>Osły|Żyrafy|Jelenie|Tchórze</pl>
 				</animalep4>
 				<connector1>
 					<de>, ${ANIMAL2} und Co.| und ${ANIMAL2}| und ${ANIMAL2} ganz wild| und ${ANIMAL2} im Zoo|</de>
 					<en>, ${ANIMAL2}s and co.| and ${ANIMAL2}s| and ${ANIMAL2}s all wild| and ${ANIMAL2}s in the Zoo|</en>
+					<pl>, ${ANIMAL2}s i spółka| i ${ANIMAL2}s| i wszystkie dzikie ${ANIMAL2}| i ${ANIMAL2}s w zoo|</pl>
 				</connector1>
 				<connector2>
 					<de>, ${ANIMAL2} und Co.| und ${ANIMAL2}| und Pfleger</de>
 					<en>, ${ANIMAL2}s and co.| and ${ANIMAL2}s| and Keepers</en>
+					<pl>, ${ANIMAL2}s i spółka| i ${ANIMAL2}| i Opiekunowie</pl>
 				</connector2>
 				<titleepisode1>
 					<de>${ANIMALEP1}|${ANIMALEP1} auf Abwegen|${ANIMALEP1} in Gefahr</de>
 					<en>${ANIMALEP1}|${ANIMALEP1} on the loose|${ANIMALEP1} in danger</en>
+					<pl>${ANIMALEP1}|${ANIMALEP1} na wolności|${ANIMALEP1} w niebezpieczeństwie</pl>
 				</titleepisode1>
 				<titleepisode2>
 					<de>${ANIMALEP2}|${ANIMALEP2} adoptiert|${ANIMALEP2} vermisst</de>
 					<en>${ANIMALEP2}|${ANIMALEP2} adopted|${ANIMALEP2} missing</en>
+					<pl>${ANIMALEP2}|${ANIMALEP2} adoptowane|${ANIMALEP2} zaginione</pl>
 				</titleepisode2>
 				<titleepisode3>
 					<de>${ANIMALEP3}|${ANIMALEP3} hautnah|${ANIMALEP3} im OP</de>
 					<en>${ANIMALEP3}|${ANIMALEP3} up close|${ANIMALEP3} in surgery</en>
+					<pl>${ANIMALEP3}|${ANIMALEP3} z bliska|${ANIMALEP3} podczas operacji</pl>
 				</titleepisode3>
 				<titleepisode4>
 					<de>${ANIMALEP4}|${ANIMALEP4} geboren!|${ANIMALEP4} gefunden</de>
 					<en>${ANIMALEP4}|${ANIMALEP4} born!|${ANIMALEP4} found</en>
+					<pl>${ANIMALEP4}|${ANIMALEP4} poród!|${ANIMALEP4} znaleziono</pl>
 				</titleepisode4>
 				<titleepisode5>
 					<de>${ANIMALEP2} trifft auf ${ANIMALEP3}|${ANIMALEP2} bemuttert ${ANIMALEP3}</de>
 					<en>${ANIMALEP2} meets ${ANIMALEP3}|${ANIMALEP2} brings up ${ANIMALEP3}</en>
+					<pl>${ANIMALEP2} spotykają ${ANIMALEP3}|${ANIMALEP2} przychodzą do zagrody</pl>
 				</titleepisode5>
 				<titleepisode6>
 					<de>${ANIMALEP4} und Pfleger|${ANIMALEP4} frisst ${ANIMALEP1}</de>
 					<en>${ANIMALEP4} and keeper|${ANIMALEP4} eats ${ANIMALEP1}</en>
+					<pl>${ANIMALEP4} i opiekun|${ANIMALEP4}, ${ANIMALEP1} karmienie</pl>
 				</titleepisode6>
 			</variables>
 
@@ -1162,10 +1337,12 @@ ${EXTRA}</en>
 			<title>
 				<de>Talk um 10: Das Literaturjahr ${currentyear}</de>
 				<en>Talk at 10: The Year in Literature ${currentyear}</en>
+				<pl>Rozmowa o 10: Rok w literaturze w ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Wie jeden Abend wird ein Gast erwartet, oft ein Star am Literaturhimmel, und dessen Buch besprochen.</de>
 				<en>As every evening, a guest is expected, often a star in the realm of literature, and his or her new book is discussed.</en>
+				<pl>Jak co wieczór, oczekiwana jest obecność gościa, często gwiazdy literatury, i omawiana jest jego lub jej nowa książka.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1195,10 +1372,12 @@ ${EXTRA}</en>
 			<title>
 				<de>Kultur Heute ${currentyear}</de>
 				<en>Culture Today ${currentyear}</en>
+				<pl>Kultura na dzisiaj w ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Betty Botterblom (oder eine Vertretung) erzählt exklusiv von den neuesten kulturellen Errungenschaften des freien Westens.</de>
 				<en>Betty Botterblom (or a stand-in) tells exclusively about the latest cultural achievements of the free West.</en>
+				<pl>Betty Botterblom (lub jej dublerka) opowiada w ekskluzywnym wydaniu o najnowszych osiągnięciach kulturalnych wolnego Zachodu.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1226,10 +1405,12 @@ ${EXTRA}</en>
 			<title>
 				<de>Was ist Sache ${currentyear}</de>
 				<en>What is the Matter ${currentyear}</en>
+				<pl>O co chodzi? Edycja ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Das Politformat. Politiker stehen Rede und Antwort zur Lage der Nation.</de>
 				<en>The politics format. Politicians answer questions about the state of the nation.</en>
+				<pl>Format polityczny. Politycy odpowiadają na pytania o stan narodu.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1257,6 +1438,7 @@ ${EXTRA}</en>
 			<title>
 				<de>Wer wird Pleitegeier ${currentyear}?</de>
 				<en>Who Wants to Be the Vulture-Bait ${currentyear}?</en>
+				<pl>Kto chce być przynętą na sępy w ${currentyear} roku?</pl>
 			</title>
 			<description>
 				<de>Wieder spielt der Moderator mit 5 Kandidaten, allesamt am Rande des Ruins. Der Verlierer der Quizshow übernimmt die Schulden der anderen.
@@ -1265,6 +1447,9 @@ Spannende Unterhaltung und knifflige Fragen.</de>
 				<en>Again the moderator plays with 5 candidates, all on the brink of ruin. The loser of the quiz show takes over the debts of the others.
 
 Exciting entertainment and brain-teasing trivia questions.</en>
+				<pl>Ponownie moderator gra z 5 kandydatami, wszyscy na skraju ruiny. Przegrany w teleturnieju przejmuje długi pozostałych.
+
+Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1291,10 +1476,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Der Hammer fällt LIVE ${currentyear}</de>
 				<en>The Hammer Falls LIVE ${currentyear}</en>
+				<pl>Po raz pierwszy, drugi, sprzedane - NA ŻYWO wersja: ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Nur im Fernsehen und nirgends sonst werden diese Ramschartikel an Ahnungslose versteigert.</de>
 				<en>Only on television and nowhere else are these junk items to be auctioned off to the unsuspecting.</en>
+				<pl>Tylko w telewizji i nigdzie indziej te śmieci są wystawiane na aukcje, by trafić w ręce niczego niepodejrzewających ludzi.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1317,10 +1504,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Die große Verarsche-Show ${currentyear}</de>
 				<en>The Big Bullshitting-You Show ${currentyear}</en>
+				<pl>Wielki pokaz bzdur ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Hier treten Männer gegen Frauen an. Das Geschlecht mit den meisten Anrufen gewinnt.</de>
 				<en>Here, men compete against women. The gender with the most calls wins.</en>
+				<pl>Tutaj mężczyźni rywalizują z kobietami. Płeć, która wykona najwięcej połączeń, wygrywa.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1344,10 +1533,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>TED am Morgen ${currentyear}</de>
 				<en>TED in the Morning ${currentyear}</en>
+				<pl>TED o poranku w ${currentyear} roku</pl>
 			</title>
 			<description>
 				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+				<pl>Teledialog bada widzów pod kątem tematów o dużym znaczeniu. Opinio-formujący i dochodowy.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1370,10 +1561,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>TED am Abend ${currentyear}</de>
 				<en>TED in the Evening ${currentyear}</en>
+				<pl>TED wieczorem w ${currentyear} roku</pl>
 			</title>
 			<description>
 				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+				<pl>Teledialog bada widzów pod kątem tematów o dużym znaczeniu. Opiniująco-formujący i dochodowy.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1396,10 +1589,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>TED ab Mittag ${currentyear}</de>
 				<en>TED at Midday ${currentyear}</en>
+				<pl>TED w południe w ${currentyear} roku</pl>
 			</title>
 			<description>
 				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+				<pl>Teledialog bada widzów pod kątem tematów o dużym znaczeniu. Opiniująco-formujący i dochodowy.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1422,10 +1617,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>TED in der Nacht ${currentyear}</de>
 				<en>TED at Night ${currentyear}</en>
+				<pl>TED w nocy w ${currentyear} roku</pl>
 			</title>
 			<description>
 				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+				<pl>Teledialog bada widzów pod kątem tematów o dużym znaczeniu. Opiniująco-formujący i dochodowy.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1448,10 +1645,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Ein Päuschen zum Gewinn ${currentyear}</de>
 				<en>A Little Break For the Win ${currentyear}</en>
+				<pl>Mała przerwa na zwycięstwo - ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Schnelle Raterunden für debile Anrufer. Gestellt werden Fragen zu aktuell erschienen Schundromanen.</de>
 				<en>Short quiz sessions for dimwitted callers. The questions asked are about currently published pulp novels.</en>
+				<pl>Krótkie sesje quizowe dla tępych rozmówców. Zadawane pytania dotyczą aktualnie wydawanych powieści popularnych.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1474,10 +1673,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Nur wer anruft kann gewinnen ${currentyear}</de>
 				<en>You Need to Call In to Win ${currentyear}</en>
+				<pl>Musisz zadzwonić, aby wygrać - wersja ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Schäbige Call-In-Show, in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
 				<en>Shabby call-in show in which candidates have to recognize celebrities' breasts. At most, it's the broadcaster who's winning here.</en>
+				<pl>Obskurny program typu call-in, w którym kandydaci muszą rozpoznać piersi celebrytów. Najbardziej wygrywa tu prezenter.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1502,10 +1703,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Die Hellseher ${currentyear}</de>
 				<en>The Clairvoyants ${currentyear}</en>
+				<pl>Jasnowidze ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Zwei Hellseher verwirren mit verschwommenen Ausdeutungen von Zukunft und Vergangenheit ihrer Anrufer.</de>
 				<en>Two clairvoyants confuse with blurred interpretations of their callers' future and past.</en>
+				<pl>Dwóch jasnowidzów myli i nie potrafi interpretować przyszłości i przeszłości swoich rozmówców.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1533,6 +1736,7 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<description>
 				<de>Die Moderatorin macht sich nackig und die Anrufer arm. Brüste gegen Geld, wie im echten Leben.</de>
 				<en>The presenter gets naked and the callers poor. Breasts for money, like in real life.</en>
+				<pl>Prezenterka się rozbiera, a dzwoniący są biedni. Piersi za pieniądze, jak w prawdziwym życiu.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1556,10 +1760,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Schach gegen den Meister ${currentyear}</de>
 				<en>Chess Against the Master ${currentyear}</en>
+				<pl>Szachy przeciwko mistrzowi ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket.</de>
 				<en>Speed chess against the grandmasters. Call in, manage to get through, and checkmate the grandmaster. Use your brains, study, lose money in the waiting loop. The complete all-inclusive service package.</en>
+				<pl>Szybkie szachy przeciwko arcymistrzom. Zadzwoń, dogadaj się i daj mata arcymistrzowi. Użyj mózgu, ucz się, strać pieniądze w pętli oczekiwania. Kompletny pakiet usług all-inclusive.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1582,10 +1788,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Kurven der Welt ${currentyear} - Erkenne sie alle</de>
 				<en>Curves of the World ${currentyear} - Know Them All</en>
+				<pl>Krzywe świata ${currentyear} - Poznaj je wszystkie</pl>
 			</title>
 			<description>
 				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikshow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden.</de>
 				<en>The most beautiful breasts in the world. Discreetly packaged. Nothing and yet much to see. The sophisticated erotic show with interludes about the culture of the respective country. Even critics were able to make friends with it.</en>
+				<pl>Najpiękniejsze piersi świata. Dyskretnie zapakowane. Nic, a jednak wiele do zobaczenia. Wyrafinowany erotyczny show z przerywnikami o kulturze danego kraju. Nawet krytycy byli w stanie się z nim zaprzyjaźnić.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -1609,10 +1817,12 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Wesensreiter</de>
 				<en>Creature Rider</en>
+				<pl>Jeździec na stworzeniu</pl>
 			</title>
 			<description>
 				<de>Da junge Helden, die Drachen reiten, inzwischen Mainstream geworden sind, ist ein Remake des 1964er Fantasy-Films über ${.self:"role":1:"firstname"}, der Fantasiewesen dressiert und reitet, einen Versuch wert.</de>
 				<en>As young heroes who ride dragons have become mainstream, a remake of the 1964 fantasy film about ${.self:"role":1:"firstname"} training and riding fantasy creatures is worth a try.</en>
+				<pl>Wraz ze wzrostem popularności młodych bohaterów dosiadających smoków, warto obejrzeć remake filmu fantasy z 1964 roku. ${.self:"role":1:"firstname"} trenuje i dosiada fantastyczne stworzenia.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1639,90 +1849,108 @@ Exciting entertainment and brain-teasing trivia questions.</en>
 			<title>
 				<de>Kommissar Wirsch</de>
 				<en>Inspector Gruff</en>
+				<pl>Inspektor Gruff</pl>
 			</title>
 			<description>
 				<de>Die Neuauflage des deutschen Krimiserien-Klassikers aus den 1950ern. Behutsam modernisiert, so dass der Charme erhalten bleibt. Wie damals sind charismatische Schauspieler extrem wichtig als Gegenpol zur banalen Handlung.</de>
 				<en>The new adaptation of the classic German crime series from the 1950s. Carefully modernized so that the charm is retained. Like back then, charismatic actors are extremely important as a counterpoint to the banal plot.</en>
+				<pl>Nowa adaptacja klasycznego niemieckiego serialu kryminalnego z lat 50. Starannie zmodernizowana, aby zachować urok. Podobnie jak wtedy, charyzmatyczni aktorzy są niezwykle ważni jako kontrapunkt dla banalnej fabuły.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="93a7e553-8822-4171-ad2e-6cf41a2053d6">
 					<title>
 						<de>Wirschi und der Kater des Bürgermeisters</de>
 						<en>Gruffy and the Mayor's Cat</en>
+						<pl>Gruffy i kot burmistrza</pl>
 					</title>
 					<description>
 						<de>Dem Bürgermeister wurde mysteriöserweise etwas gestohlen - sein Kater! Kommissar Wirsch und seine Assistentin untersuchen den Fall. Skurrile Verdächtige, haarsträubende Alibis - wer nur hat den geliebten Vierbeiner entführt?</de>
 						<en>Mysteriously, something has been stolen from the mayor - his tomcat! Inspector Gruff and his assistant investigate the case. Bizarre suspects, hair-raising alibis - just who has kidnapped the beloved four-legged friend?</en>
+						<pl>Tajemniczo, burmistrzowi ukradziono coś - jego kocura! Inspektor Gruff i jego asystent badają sprawę. Dziwaczni podejrzani, przerażające alibi - kto porwał ukochanego czworonożnego przyjaciela?</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="f1fb83a7-6363-4b2a-b7c4-a8ba1757503b">
 					<title>
 						<de>Wirschi und der geheimnisvolle Kühlschrank</de>
 						<en>Gruffy and the Mysterious Fridge</en>
+						<pl>Gruffy i tajemnicza lodówka</pl>
 					</title>
 					<description>
 						<de>In der scheinbar friedlichen Nachbarschaft verschwindet ein Kühlschrank spurlos. Kommissar Wirsch und sein Team stoßen auf eine eiskalte Verschwörung, die sie bis an ihre Grenzen führt. Denn in diesem Fall steckt mehr drin, als nur kalte Luft!</de>
 						<en>A refrigerator disappears without a trace in the seemingly peaceful neighborhood. Inspector Gruff and his team come across an ice-cold conspiracy that takes them to their limits. Because there's more to this case than just cold air!</en>
+						<pl>Lodówka znika bez śladu w pozornie spokojnej okolicy. Inspektor Gruff i jego zespół natrafiają na lodowaty spisek, który doprowadza ich do granic możliwości. Ponieważ w tej sprawie chodzi o coś więcej niż tylko zimne powietrze!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="77ee784a-99ea-45c9-8a4d-46d8c124d0f6">
 					<title>
 						<de>Wirschi und der Fluch des verzauberten Teppichs</de>
 						<en>Gruffy and the Curse of the Enchanted Carpet</en>
+						<pl>Gruffy i klątwa zaczarowanego dywanu</pl>
 					</title>
 					<description>
 						<de>Ein antiker Teppich wird gestohlen, und alle Spuren führen zu einem vermeintlichen Fluch. Was ist Aberglaube, was ist Realität? Wirschi muss das herausfinden, den Dieb schnappen und den mysteriösen Teppich zurückzubringen, bevor er noch mehr Unglück bringt.</de>
 						<en>An antique carpet is stolen and all the clues lead to a supposed curse. What is superstition, what is reality? Gruffy has to find out, catch the thief and return the mysterious carpet before it brings even more misfortune.</en>
+						<pl>Antyczny dywan zostaje skradziony, a wszystkie wskazówki prowadzą do rzekomej klątwy. Co jest przesądem, a co rzeczywistością? Gruffy musi się tego dowiedzieć, złapać złodzieja i zwrócić tajemniczy dywan, zanim przyniesie jeszcze więcej nieszczęść.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="a444af93-7e49-46f2-a5fe-4c4eb49c9a5a">
 					<title>
 						<de>Wirschi und die seltsame Affäre mit dem Gartenzwerg</de>
 						<en>Gruffy and the Strange Incident with the Garden Gnome</en>
+						<pl>Gruffy i dziwny incydent z krasnalem ogrodowym</pl>
 					</title>
 					<description>
 						<de>Ein wertvoller Gartenzwerg verschwindet aus einer wohlhabenden Vorstadtsiedlung, und Wirschi kämpft sich durch Labyrinthe aus Gartenwegen, -zwergen und Hecken. Hinter den perfekt geschnittenen Büschen lauern dunkle Geheimnisse.</de>
 						<en>A valuable garden gnome disappears from a wealthy suburban estate, and Gruffy fights his way through labyrinths of garden paths, gnomes and hedges. Dark secrets lurk behind the perfectly trimmed bushes.</en>
+						<pl>Cenny krasnal ogrodowy znika z bogatej podmiejskiej posiadłości, a Gruffy przedziera się przez labirynty ścieżek ogrodowych, krasnali i żywopłotów. Mroczne sekrety kryją się za idealnie przyciętymi krzewami.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="4990e115-b73f-4a2d-af4f-eb733a139a9b">
 					<title>
 						<de>Wirschi und die gestohlenen Glückskekse</de>
 						<en>Gruffy and the Stolen Fortune Cookies</en>
+						<pl>Gruffy i skradzione ciasteczka z wróżbą</pl>
 					</title>
 					<description>
 						<de>In einem chinesischen Restaurant verschwinden plötzlich alle Glückskekse. Ein Wirbelwind aus Wortspielen und Weisheiten erwartet Wirschi und seine Assistentin. Können sie die Hinweise auf den Dieb entschlüsseln?</de>
 						<en>All the fortune cookies suddenly disappear from a Chinese restaurant. A whirlwind of puns and wisdom awaits Gruffy and his assistant. Can they decipher the clues to the thief?</en>
+						<pl>Wszystkie ciasteczka z wróżbą nagle znikają z chińskiej restauracji. Na Gruffy'ego i jego asystenta czeka wir kalamburów i mądrości. Czy uda im się rozszyfrować wskazówki dotyczące złodzieja?</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="22b6bb18-80a9-4e56-ae96-5e8afc2e03a8">
 					<title>
 						<de>Wirschi und die verflixte Parkbank</de>
 						<en>Gruffy and the Darned Park Bench</en>
+						<pl>Gruffy i przeklęta ławka w parku</pl>
 					</title>
 					<description>
 						<de>Eine Parkbank wird gestohlen, und Wirschi und Team geraten in ein wahres Sitzungschaos. Liebespaare, Zeitungsleser, wenn die alle nicht mehr sitzen können, dann kommt die Stadt ja zum Erliegen! Dieser Bankraub-Fall muss schleunigst geknackt werden.</de>
 						<en>A park bench is stolen and Gruffy and team get caught up in a veritable session chaos. Lovers, newspaper readers, if they all can't sit anymore, then the city will factually come to a rest! The bench robbery case must be cracked ASAP.</en>
+						<pl>Ławka w parku zostaje skradziona, a Gruffy i zespół zostają wciągnięci w prawdziwy chaos sesji. Kochankowie, czytelnicy gazet, jeśli wszyscy nie będą mogli już siedzieć, to miasto faktycznie zazna spokoju! Sprawa kradzieży ławki musi zostać rozwiązana jak najszybciej.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="c93e96de-fd91-4803-9fc4-ef67104f0401">
 					<title>
 						<de>Wirschi und die verschwundene Zeitung</de>
 						<en>Gruffy and the Missing Newspaper</en>
+						<pl>Gruffy i zaginiona gazeta</pl>
 					</title>
 					<description>
 						<de>Die einzige Zeitung der Stadt verschwindet kurz vor der Veröffentlichung! Wirschi kämpft sich durch ein Dickicht aus Druckerschwärze und Redaktionsgeheimnissen, um die Pressefreiheit zu retten.</de>
 						<en>The town's only newspaper disappears just before publication! Gruffy fights his way through a thicket of printer's ink and editorial secrets to save the freedom of the press.</en>
+						<pl>Jedyna gazeta w mieście znika tuż przed publikacją! Gruffy przedziera się przez gąszcz tuszu drukarskiego i sekretów redakcyjnych, aby uratować wolność prasy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="69e7b414-f318-4d43-8cf0-fdbd79d54947">
 					<title>
 						<de>Der Tanz um die gestohlene Trophäe</de>
 						<en>The Dance for the Stolen Trophy</en>
+						<pl>Taniec dla skradzionego trofeum</pl>
 					</title>
 					<description>
 						<de>Eine wertvolle Trophäe wird aus dem örtlichen Tanzstudio gestohlen. Wirschi stürzt sich in die Welt des Tanzes, um den Dieb zu entlarven und die gestohlene Trophäe zurückzubringen, bevor der Rhythmus des Lebens aus dem Takt gerät.</de>
 						<en>A valuable trophy is stolen from the local dance studio. Gruffy plunges into the world of dance to unmask the thief and return the stolen trophy before the rhythm of life is thrown out of sync.</en>
+						<pl>Cenne trofeum zostaje skradzione z lokalnego studia tańca. Gruffy wkracza do świata tańca, aby zdemaskować złodzieja i zwrócić skradzione trofeum, zanim rytm życia zostanie wytrącony z równowagi.</pl>
 					</description>
 				</scripttemplate>
 			</children>

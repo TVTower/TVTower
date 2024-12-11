@@ -47,6 +47,7 @@
 			<description>
 				<de>Die Mehrspieler-Dungeon-Sensation jetzt auch an einer Universität oder in einem Rechenzentrum in Ihrer Nähe!</de>
 				<en>The multiplayer dungeon sensation now available at a university or computing center near you!</en>
+				<pl>Sensacja multiplayer dungeon jest teraz dostępna na uniwersytecie lub w centrum komputerowym w pobliżu!</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />
@@ -74,6 +75,7 @@
 			<description>
 				<de>Levelt euch up auf den nächsten Level und levelt dann alles nieder! Das Mag mit den vernichtendsten Tips für die neusten und erfolgreichsten MMORPGs.</de>
 				<en>Level up to the next level to level everything down to the ground! The mag with the most crushing tips for the newest and most successful MMORPGs.</en>
+				<pl>Awansuj na kolejne poziomy, by zrównać wszystko z ziemią! Magazyn z najbardziej miażdżącymi wskazówkami dla najnowszych i najbardziej udanych gier MMORPG.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="6" duration="2" profit="1800" penalty="1500" fix_infomercial_profit="1" />

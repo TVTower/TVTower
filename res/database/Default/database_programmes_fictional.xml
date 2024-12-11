@@ -49,7 +49,7 @@
 			<title>
 				<de>Der Hammer fällt LIVE</de>
 				<en>The Hammer Falls LIVE</en>
-				<pl>Młot spada NA ŻYWO</pl>
+				<pl>Po raz pierwszy, drugi, sprzedane - NA ŻYWO</pl>
 			</title>
 			<description>
 				<de>Nur im Fernsehen und nirgends sonst werden diese Ramschartikel an Ahnungslose versteigert.</de>
@@ -1048,7 +1048,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<title>
 				<de>Nur wer anruft kann gewinnen</de>
 				<en>You Need to Call In to Win</en>
-				<pl>Możesz wygrać tylko, jeśli zadzwonisz</pl>
+				<pl>Musisz zadzwonić, aby wygrać</pl>
 			</title>
 			<description>
 				<de>Schäbige Call-In-Show, in der Kandidaten Brüste von Prominenten erkennen müssen. Gewinne fährt hier maximal der Sender ein.</de>
@@ -2355,10 +2355,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>NDW... und danach?</de>
 				<en>NDW... and what's next?</en>
+				<pl>NDW... i co dalej?</pl>
 			</title>
 			<description>
 				<de>Deutsche Musikproduzenten und Stars erläutern den Wert des Jodelns.</de>
 				<en>German music producers and stars explain the virtues of yodeling.</en>
+				<pl>Niemieccy producenci muzyczni i gwiazdy wyjaśniają zalety jodłowania.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">1c9e078b-e3cb-4b23-8aea-0ae2b8861347</member>
@@ -2376,10 +2378,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Krempel-Zeit</de>
 				<en>Junk Time</en>
+				<pl>Śmieciowy czas</pl>
 			</title>
 			<description>
 				<de>Kunsthistoriker begutachten den Krempel angelaufener Rentner.</de>
 				<en>Art historians examine the junk that pensioners bring into the show.</en>
+				<pl>Historycy sztuki badają śmieci, które emeryci przynoszą na wystawę.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">c517442d-ef0d-4746-9aeb-3a3d575f39fa</member>
@@ -2395,10 +2399,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Geschichte des Pokers</de>
 				<en>The History of Poker</en>
+				<pl>Historia pokera</pl>
 			</title>
 			<description>
 				<de>Sowjetischer Präsident hält einen Vortrag über die Geschichte des Pokers. Von babylonischen Steinkarten bis zum modernen Karton.</de>
 				<en>The Soviet President gives a lecture on the history of poker. From Babylonian stone cards to modern cardboard.</en>
+				<pl>Prezydent Związku Radzieckiego wygłasza wykład na temat historii pokera. Od babilońskich kamiennych kart do nowoczesnej tektury.</pl>
 			</description>
 			<staff>
 				<member index="0" function="1">2c7d96e8-f6c9-47da-87af-8e2ed7dd4f82</member>
@@ -2414,10 +2420,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Die Religionen-Olympiade</de>
 				<en>The Religions Olympics</en>
+				<pl>Olimpiada Religijna</pl>
 			</title>
 			<description>
 				<de>Parallel zu den Olympischen Spielen fand hier der rhetorische Wettkampf der Religionen statt. Schon vorher disqualifiziert: die Atheisten.</de>
 				<en>Parallel to the Olympic Games, the rhetorical competition of religions took place here. Already disqualified beforehand: the Atheists.</en>
+				<pl>Równolegle do igrzysk olimpijskich odbywała się tu retoryczna rywalizacja religii. Już wcześniej zdyskwalifikowano ateistów.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">2a00793b-cb1d-4471-b437-5d59703c79b8</member>
@@ -2434,10 +2442,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Fantastico - Unsere Welt</de>
 				<en>Fantastico - Our World</en>
+				<pl>Fantastico - Nasz świat</pl>
 			</title>
 			<description>
 				<de>Mit neuen Techniken des Film und Fernsehens führt ${.self:"cast":1:"fullname"} die Zuschauer in die Mysterien des Planeten ein.</de>
 				<en>Using new film and television techniques, ${.self:"cast":1:"fullname"} introduces viewers to the mysteries of the planet.</en>
+				<pl>Wykorzystując nowe techniki filmowe i telewizyjne, ${.self:"cast":1:"fullname"} wprowadza widzów w tajemnice naszej planety.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
@@ -2453,10 +2463,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Fantastico - Unsere Meere</de>
 				<en>Fantastico - Our Oceans</en>
+				<pl>Fantastico - Nasze oceany</pl>
 			</title>
 			<description>
 				<de>Nach den Mysterien der Erde entführt ${.self:"cast":1:"fullname"} diesmal die Zuschauer ins Unbekannte Nass: Mysterien der Ozeane fesseln Jung und Alt.</de>
 				<en>Following up on the mysteries of Earth, this time ${.self:"cast":1:"fullname"} takes viewers into the unknown waters: mysteries of the oceans captivate young and old alike.</en>
+				<pl>Kontynuując tajemnice Ziemi, tym razem ${.self:"cast":1:"fullname"} zabiera widzów na nieznane wody: tajemnice oceanów urzekają zarówno młodych, jak i starszych.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
@@ -2472,10 +2484,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Ein Herz für Inder: Die Wohltätigkeitsfalle</de>
 				<en>A Heart for Indians: The Charity Trap</en>
+				<pl>Serce dla Indian: Pułapka dobroczynności</pl>
 			</title>
 			<description>
 				<de>Die „Humanitäre Gesellschaft für indische Belange“ behauptet, Rassismus zu bekämpfen. „Hilfsprojekte“ wie „Indische Kochkurse für Weiße“ oder „Tuk-Tuk-Safari für Reiche“ enthüllen jedoch eine zynische Agenda, die Klischees bestärkt und echte Probleme ignoriert.</de>
 				<en>The "Humanitarian Society for Indian Affairs" claims to fight racism. But "aid projects" such as "Indian cooking classes for whites" or "Tuk-Tuk safaris for the wealthy" reveal a cynical agenda that reinforces clichés and ignores real issues.</en>
+				<pl>„Stowarzyszenie Humanitarne na rzecz Indian” twierdzi, że walczy z rasizmem. Ale „projekty pomocowe”, takie jak „indyjskie lekcje gotowania dla białych” czy „safari Tuk-Tuk dla bogatych” ujawniają cyniczny program, który wzmacnia stereotypy i ignoruje rzeczywiste problemy.</pl>
 			</description>
 			<staff>
 				<member index="0" function="133">ronny-programmeperson-ellygnartzer</member>
@@ -2491,10 +2505,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Klub der toten Sänger</de>
 				<en>Dead Singers Club</en>
+				<pl>Klub Umarłych Śpiewaków</pl>
 			</title>
 			<description>
 				<de>Die Mitglieder des „Klub 27“ leben hier weiter. Es gibt eine Untergrund-Szene, die die viel zu früh verstorbenen Rockstars „channelt“ und mit neuen Songs aufwartet, die wahrhaft von den Originalen stammen könnten. ${.self:"cast":0:"fullname"} auf der Spur.</de>
 				<en>Here, the members of the "27 Club" are living on. There's an underground scene that "channels" the rock stars who died far too young and comes up with new songs that could truly have come from the originals. ${.self:"cast":0:"fullname"} on the trail.</en>
+				<pl>Tutaj członkowie „Klubu 27” żyją dalej. Istnieje podziemna scena, która „kanalizuje” gwiazdy rocka, które zmarły o wiele za młodo i wymyśla nowe piosenki, które naprawdę mogłyby pochodzić od oryginałów. ${.self:"cast":0:"fullname"} na tropie.</pl>
 			</description>
 			<staff>
 				<member index="0" function="133">24967622-b169-4413-90df-6dc574464b65</member>
@@ -2514,10 +2530,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Unsere Biographien</de>
 				<en>Our Biographies</en>
+				<pl>Nasze biografie</pl>
 			</title>
 			<description>
 				<de>Lebensgeschichten von ganz gewöhnlichen Menschen. Von der Katzen-Clown-Trainerin bis zum Champion im Kaffeekränzchen - Anekdoten eben, die das Leben so schreibt. ${.self:"cast":1:"fullname"} taucht ein in die wundersame Welt der Durchschnittlichkeit.</de>
 				<en>Life stories from ordinary people. From the cat clown trainer to the champion of the coffee party - simply anecdotes that life writes. ${.self:"cast":1:"fullname"} delves into the wondrous world of the commonplace.</en>
+				<pl>Historie z życia zwykłych ludzi. Od trenera kocich klaunów po mistrza kawowej imprezy - po prostu anegdoty, które pisze życie. ${.self:"cast":1:"fullname"} zagłębia się w cudowny świat zwyczajności.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1</member>
@@ -2536,10 +2554,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Super Mega Duper Teenage Kraft Roboter</de>
 				<en>Super Duper Mega Teenage Robot Force</en>
+				<pl>Super Duper Mega Teenage Robot Force</pl>
 			</title>
 			<description>
 				<de>Der Aufmarsch der Microbots: Als ein ruchloses Technik-Genie eine Armee Mikroroboter auf die Stadt loslässt, müssen sich die Super Mega Duper Teenage Kraft Roboter zusammenschließen, um sie zu stoppen, bevor sie irreparablen Schaden anrichten.</de>
 				<en>The Rise of the Microbots: When a nefarious tech genius unleashes an army of tiny robots on the city, the Super Duper Mega Teenage Robot Force must band together to stop them before they cause irreparable damage.</en>
+				<pl>Powstanie mikrobotów: Kiedy nikczemny geniusz technologiczny uwalnia armię maleńkich robotów na miasto, Super Duper Mega Teenage Robot Force musi się zjednoczyć, aby je powstrzymać, zanim spowodują nieodwracalne szkody.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_117</member>
@@ -2557,10 +2577,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Super Mega Duper Teenage Kraft Roboter 2</de>
 				<en>Super Duper Mega Teenage Robot Force 2</en>
+				<pl>Super Duper Mega Teenage Robot Force 2</pl>
 			</title>
 			<description>
 				<de>Die Quantenbedrohung: Eine interdimensionale Gefahr zeichnet sich am Horizont ab. Doch während unsere Helden durch alternative Realitäten reisen, entdecken sie, dass der wahre Feind vielleicht näher ist, als sie denken.</de>
 				<en>The Quantum Menace: An interdimensional threat looms on the horizon. But as our heroes travel through alternate realities, they discover that the true enemy may be closer than they think.</en>
+				<pl>The Quantum Menace: Na horyzoncie pojawia się międzywymiarowe zagrożenie. Ale gdy nasi bohaterowie podróżują przez alternatywne rzeczywistości, odkrywają, że prawdziwy wróg może być bliżej, niż im się wydaje.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_117</member>
@@ -2578,10 +2600,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Super Mega Duper Teenage Kraft Roboter 3</de>
 				<en>Super Duper Mega Teenage Robot Force 3</en>
+				<pl>Super Duper Mega Teenage Robot Force 3</pl>
 			</title>
 			<description>
 				<de>Der kosmische Showdown: Ein Alien-Warlord taucht mit einer mächtigen Roboterarmee auf der Erde auf. Unsere Helden finden intergalaktischen Verbündete. Doch während der Kämpfe schöpft das Team den Verdacht, dass diese Hintergedanken haben.</de>
 				<en>The Cosmic Showdown: An alien warlord arrives on Earth with a powerful robot army. Our heroes find intergalactic allies. But during the battles, the team begins to suspect they may have ulterior motives.</en>
+				<pl>Kosmiczna rozgrywka: Obcy watażka przybywa na Ziemię z potężną armią robotów. Nasi bohaterowie znajdują międzygalaktycznych sojuszników. Jednak podczas bitew zespół zaczyna podejrzewać, że mogą oni mieć ukryte motywy.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_117</member>
@@ -2599,10 +2623,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Kroko See</de>
 				<en>Croco Lake</en>
+				<pl>Croco Lake</pl>
 			</title>
 			<description>
 				<de>Ein riesiges und intelligentes Krokodil hat einen See als sein Territorium beansprucht und tötet jeden, der es wagt, ihn zu betreten. Als sich ein Forscherteam aufmacht, das Tier zu studieren, entdecken sie eine schockierende Wahrheit.</de>
 				<en>A massive and intelligent crocodile has claimed a lake as its territory, killing anyone who dares to enter. When a team of researchers set out to study the beast, they uncover a shocking truth.</en>
+				<pl>Masywny i inteligentny krokodyl zajął jezioro jako swoje terytorium, zabijając każdego, kto odważy się do niego wejść. Kiedy zespół naukowców wyrusza, by zbadać bestię, odkrywa szokującą prawdę.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_12</member>
@@ -2624,10 +2650,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Kroko See 2 - Die Rache der Brut</de>
 				<en>Croco Lake 2: The Hatchlings' Revenge</en>
+				<pl>Croco Lake 2: Zemsta wylęgu</pl>
 			</title>
 			<description>
 				<de>Als eine Gruppe von Wilderern Krokodileier aus einem Schutzgebiet stiehlt, wächst die Brut rachsüchtig und blutdürstig auf. Kann ein Team aus Wissenschaftlern und Parkrangern sie aufhalten, bevor es zu einem Blutbad kommt?</de>
 				<en>When a group of poachers steals crocodile eggs from a protected reserve, the hatchlings grow up vengeful and bloodthirsty. Cam a team of scientists and park rangers stop them before a bloodbath happens?</en>
+				<pl>Kiedy grupa kłusowników kradnie jaja krokodyli z chronionego rezerwatu, wykluwające się z nich młode stają się mściwe i żądne krwi. Czy zespół naukowców i strażników parku zdoła ich powstrzymać, zanim dojdzie do rozlewu krwi?</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_12</member>
@@ -2649,10 +2677,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Kroko See 3 - Blut im Wasser</de>
 				<en>Croco Lake 3: Blood in the Water</en>
+				<pl>Croco Lake 3: Krew w wodzie</pl>
 			</title>
 			<description>
 				<de>Eine Gruppe von Urlaubern auf einer abgelegenen Insel gerät mitten in einen Kampf zwischen rivalisierenden Krokodilclans. Während die Zahl der Todesopfer steigt und die Lage immer brenzliger wird, müssen die Überlebenden einen Weg finden, um zu entkommen.</de>
 				<en>A group of vacationers on a remote island find themselves trapped in the middle of a battle between rival crocodile clans. As the death toll rises and tensions boil over, the survivors must find a way to escape.</en>
+				<pl>Grupa wczasowiczów na odległej wyspie zostaje uwięziona w środku bitwy między rywalizującymi klanami krokodyli. W miarę jak liczba ofiar śmiertelnych rośnie, a napięcie rośnie, ocalali muszą znaleźć sposób na ucieczkę.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_12</member>
@@ -2674,10 +2704,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Kroko See 4 - Abgrund des Schreckens</de>
 				<en>Croco Lake 4: Abyss of Terror</en>
+				<pl>Croco Lake 4: Otchłań terroru</pl>
 			</title>
 			<description>
 				<de>Tiefseetaucher stoßen auf uralte Unterwasserhöhlen und erwecken eine prähistorische Krokodilart, die dort seit Millionen von Jahren schlummerte, und die sich als die furchterregendsten Raubtiere entpuppen, die die Welt je gesehen hat.</de>
 				<en>Deep-sea divers accidentally stumble upon ancient underwater caves and awaken a prehistoric crocodile species that has been dormant for millions of years, who turn out to be the most fearsome predators the world has ever seen.</en>
+				<pl>Nurkowie głębinowi przypadkowo natrafiają na starożytne podwodne jaskinie i budzą prehistoryczny gatunek krokodyli, który był uśpiony przez miliony lat, a który okazuje się być najbardziej przerażającymi drapieżnikami, jakie kiedykolwiek widział świat.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_12</member>
@@ -2699,10 +2731,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Kroko See 5 - Das letzte Gefecht</de>
 				<en>Croco Lake 5: The Final Stand</en>
+				<pl>Croco Lake 5: Ostateczna rozgrywka</pl>
 			</title>
 			<description>
 				<de>Nach jahrelangem Kampf gegen die Krokodile dachte Bademeister und Ex-Fremdenlegionär Günter, er hätte schon alles gesehen - doch dann taucht ein riesiges Exemplar auf, das die Fähigkeit hat, sich zu tarnen.</de>
 				<en>After years of fighting against the crocodiles, bath attendant and ex Foreign Legionnaire Gunter thought he had seen it all - but then a massive specimen surfaces that has the ability to camouflage itself.</en>
+				<pl>Po latach walki z krokodylami, pracownik łaźni i były żołnierz Legii Cudzoziemskiej Gunter myślał, że widział już wszystko - ale wtedy pojawia się ogromny okaz, który potrafi się kamuflować.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_12</member>
@@ -2724,10 +2758,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>Talk um 10 Spezial: ${.self:"cast":2:"fullname"}</de>
 				<en>Talk at 10 Special: ${.self:"cast":2:"fullname"}</en>
+				<pl>Rozmowa o 10 - Wydanie Specjalne: ${.self:"cast":2:"fullname"}</pl>
 			</title>
 			<description>
 				<de>${.self:"cast":0:"fullname"} erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch. Diesmal: Bestseller-Autor ${.self:"cast":2:"fullname"}.</de>
 				<en>As every evening, ${.self:"cast":0:"fullname"} expects a guest, often a star in the realm of literature, and discusses his or her new book. This time: Best-selling author ${.self:"cast":2:"fullname"}.</en>
+				<pl>Jak co wieczór, ${.self:"cast":0:"fullname"} spodziewa się gościa, często gwiazdy w dziedzinie literatury, i omawia jego nową książkę. Tym razem: Autor bestsellerów ${.self:"cast":2:"fullname"}.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">55bada42-a893-4c3c-8bc4-5b51d599a042</member>
@@ -2748,10 +2784,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>TED ab Mittag</de>
 				<en>TED at Midday</en>
+				<pl>TED w samo południe</pl>
 			</title>
 			<description>
 				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+				<pl>Teledialog ankietuje widzów na tematy o dużym znaczeniu. Opiniotwórcze i zyskowne.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">11c74211-662a-4817-b5b5-ec2c635d0158</member>
@@ -2768,10 +2806,12 @@ Tragiczny finał.</pl>
 			<title>
 				<de>TED in der Nacht</de>
 				<en>TED at Night</en>
+				<pl>TED w nocy</pl>
 			</title>
 			<description>
 				<de>Der Teledialog befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</de>
 				<en>The teledialogue surveys viewers to topics of high significance. Opinion-forming and gainful.</en>
+				<pl>Teledialog ankietuje widzów na tematy o dużym znaczeniu. Opiniotwórcze i zyskowne.</pl>
 			</description>
 			<staff>
 				<member index="0" function="13">11c74211-662a-4817-b5b5-ec2c635d0158</member>

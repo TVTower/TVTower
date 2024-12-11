@@ -17,10 +17,12 @@
 			<title>
 				<de>Scham-Po</de>
 				<en>RealPoo</en>
+				<pl>Szam poo-n</pl>
 			</title>
 			<description>
 				<de>Das Pflegemittel speziell für Ihre Gesäß- und Schamhaare.</de>
 				<en>Everywhere else you only get sham-poo. We have the RealPoo.</en>
+				<pl>Wszędzie indziej dostajesz tylko pozorną kupę. My mamy Szam poo-n.</pl>
 			</description>
 			<conditions min_audience="4.69" min_image="0" target_group="0" />
 			<data infomercial="1" quality="10" repetitions="2" duration="2" profit="510" penalty="890" fix_infomercial_profit="1" />
@@ -32,6 +34,7 @@
 			<description>
 				<de>Feinste anthroposophische bei Vollmondschein ausgependelte Bio-Vollwertkost.</de>
 				<en>The finest anthroposophical organic wholefood, pendulum-dowsed under the light of the full moon.</en>
+				<pl>Najwyższej jakości antropozoficzna, organiczna żywność pełnowartościowa, wachadełkiem wywibrowana w świetle pełni księżyca.</pl>
 			</description>
 			<conditions min_audience="1.3015" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="1060" penalty="1571" fix_infomercial_profit="1" />
@@ -47,6 +50,9 @@ Jetzt mit extra-hoher Staatsquote.</de>
 				<en>We have the power!
 The machine power to make the nation an industrial powerhouse again. The power to your freedom to yet another hitting the grind tomorrow.
 Now with an extra-high public expenditure quota.</en>
+				<pl>Mamy moc!
+Moc maszyn, która sprawi, że nasz kraj znów stanie się potęgą przemysłową. Siłę, która zapewni ci wolność do kolejnego uderzenia w harówkę jutro.
+Teraz z bardzo wysokim limitem wydatków publicznych.</pl>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="2" duration="2" profit="420" penalty="500" infomercial_profit="39" fix_infomercial_profit="1" />
@@ -55,10 +61,12 @@ Now with an extra-high public expenditure quota.</en>
 			<title>
 				<de>Die Anonymen Anonymiker</de>
 				<en>Anonymics Anonymous</en>
+				<pl>Anonimowi Anonymous</pl>
 			</title>
 			<description>
 				<de>Kommt und tretet bei! Wir wissen noch nicht, woher wir kommen, wohin wir gehen, oder wer wir sind, aber gemeinsam werden wir es herausfinden!</de>
 				<en>Come join us! We don't know yet where we come from, where we want to go, or who we are, but together we'll figure it out!</en>
+				<pl>Dołącz do nas! Nie wiemy jeszcze, skąd pochodzimy, dokąd chcemy zmierzać ani kim jesteśmy, ale razem to odkryjemy!</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="520" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
@@ -69,12 +77,15 @@ Now with an extra-high public expenditure quota.</en>
 			<title>
 				<de>Die anonymen Anonymiker</de>
 				<en>Anonymics Anonymous</en>
+				<pl>Anonimowi Anonymous</pl>
 			</title>
 			<description>
 				<de>Kommt und tretet bei! Uns gibt's jetzt auch im Internet. Wir haben großes vor. Besonders eine bestimmte Sekte geht uns tierisch auf den Sack.
 Expect us.</de>
 				<en>Come join us! We're now also on the Internet. We have big plans. One specific sect pisses us off particularly.
 Expect us.</en>
+				<pl>Dołącz do nas! Jesteśmy teraz również w Internecie. Mamy wielkie plany. Jedna konkretna sekta wkurza nas szczególnie.
+Spodziewaj się nas.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="520" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
@@ -84,12 +95,15 @@ Expect us.</en>
 			<title>
 				<de>Anonymous</de>
 				<en>Anonymous</en>
+				<pl>Anonymous</pl>
 			</title>
 			<description>
 				<de>Wir haben uns in den Sender gehackt und unterbrechen das reguläre Programm für eine wichtige Mitteilung zur Lage der Nation und dem Rest der Welt.
 We do not forgive. We do not forget. Expect us.</de>
 				<en>We've hacked into the station, and we're interrupting the regularly scheduled program for an important announcement about the state of the nation and the rest of the world.
 We do not forgive. We do not forget. Expect us.</en>
+				<pl>Włamaliśmy się do stacji i przerywamy regularnie zaplanowany program, aby ogłosić ważne informacje o stanie narodu i reszty świata.
+Nie wybaczamy. Nie zapominamy. Oczekujcie nas.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="4" repetitions="1" duration="4" profit="525" penalty="1500" infomercial_profit="104" fix_infomercial_profit="1" />
@@ -106,6 +120,9 @@ Alles ist möglich bei Zombocom.</de>
 				<en>Welcome.
 Welcome to Zombocom.
 Anything is possible at Zombocom.</en>
+				<pl>Witamy.
+Witamy w Zombocom.
+W Zombocom wszystko jest możliwe.</pl>
 			</description>
 			<conditions min_audience="2.08" min_image="0" target_group="0" />
 			<data infomercial="1" quality="52" repetitions="1" duration="3" profit="740" penalty="1000" fix_infomercial_profit="1" />
@@ -117,6 +134,7 @@ Anything is possible at Zombocom.</en>
 			<description>
 				<de>Werden Sie der Herr über die Ewigkeit! Die neue Generation Video-Magnetbänder. Jetzt von ${brand_sony}.</de>
 				<en>Become the master of eternity! The new generation of magnetic tapes for video. Now from ${brand_sony}.</en>
+				<pl>Zostań mistrzem wieczności! Nowa generacja taśm magnetycznych dla wideo. Teraz od ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -129,6 +147,7 @@ Anything is possible at Zombocom.</en>
 			<description>
 				<de>Erleben Sie den neuen Home-Computing-Standard mit unseren Modellen in einer völlig neuen Dimension. It's a ${brand_sony}.</de>
 				<en>Experience the new home computing standard with our range of models in a completely new dimension. It's a ${brand_sony}.</en>
+				<pl>Poznaj nowy standard komputerów domowych dzięki naszej gamie modeli w zupełnie nowym wymiarze. It's a ${brand_sony}.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -141,6 +160,7 @@ Anything is possible at Zombocom.</en>
 			<description>
 				<de>Die umfassendste Revolution im Fernsehen seit dem Fernsehen. Erleben Sie SciFi und Horror in noch nie dagewesener Laserschärfe!</de>
 				<en>The most comprehensive revolution in television since television. Experience sci-fi and horror in unprecedented laser sharpness!</en>
+				<pl>Najbardziej wszechstronna rewolucja w telewizji od czasów telewizji. Doświadcz sci-fi i horroru w niespotykanej dotąd laserowej ostrości!</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -153,6 +173,7 @@ Anything is possible at Zombocom.</en>
 			<description>
 				<de>Winzige Disk, gewaltiger Sound: ${brand_sony} ${brand_minidisc} rockt!</de>
 				<en>Tiny disk, massive sound: ${brand_sony} ${brand_minidisc} rocks!</en>
+				<pl>Mały dysk, ogromny dźwięk: ${brand_sony} ${brand_minidisc} daje czadu!</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -165,6 +186,7 @@ Anything is possible at Zombocom.</en>
 			<description>
 				<de>${brand_vaio} for the pro. Superschlanke Glanzleistung mit Hochglanz-Display, so dass man sich drin spiegeln kann. Erleben Sie unsere innovativen Computer-Notebooks!</de>
 				<en>${brand_vaio} for the pro. Super-slim performance brilliance with brilliant high-gloss display so you can see your own reflection. Experience our innovative computer notebooks!</en>
+				<pl>${brand_vaio} for the pro. Super smukła konstrukcja z wyświetlaczem o wysokim połysku, w którym można zobaczyć własne odbicie. Poznaj nasze innowacyjne notebooki!</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -177,6 +199,7 @@ Anything is possible at Zombocom.</en>
 			<description>
 				<de>Every eye on you. Innovative All-in-One PCs und ultra-portable Notebooks von ${brand_vaio}.</de>
 				<en>Every eye on you. Innovative all-in-one PCs and ultra-portable notebooks from ${brand_vaio}.</en>
+				<pl>Every eye on you. Innowacyjne komputery All-in-One i ultraprzenośne notebooki ${brand_vaio}.</pl>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="2" duration="3" profit="360" penalty="550" infomercial_profit="27" fix_infomercial_profit="1" />
@@ -188,7 +211,8 @@ Anything is possible at Zombocom.</en>
 			</title>
 			<description>
 				<de>Inneneinrichtung? BlitzPixels? Ronny!</de>
-				<en>interior decoration? BlitzPixels? Ronny!</en>
+				<en>Interior decoration? BlitzPixels? Ronny!</en>
+				<pl>Dekoracja wnętrz? BlitzPixels? Ronny!</pl>
 			</description>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="21" repetitions="4" duration="2" profit="2375" penalty="3500" infomercial_profit="125" fix_infomercial_profit="1" />
@@ -200,6 +224,7 @@ Anything is possible at Zombocom.</en>
 			<description>
 				<de>Ihr freundlicher Militärdienstleister mit den niedlichen Killerrobotern von nebenan.</de>
 				<en>Your friendly military service provider next door with the cute killer robots.</en>
+				<pl>Twój przyjazny dostawca usług wojskowych obok z uroczymi zabójczymi robotami.</pl>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="34" repetitions="4" duration="5" profit="1000" penalty="1700" infomercial_profit="103" fix_infomercial_profit="1" />
@@ -208,10 +233,12 @@ Anything is possible at Zombocom.</en>
 			<title>
 				<de>Graf Drache</de>
 				<en>Count Dragon</en>
+				<pl>Hrabia Smok</pl>
 			</title>
 			<description>
 				<de>\m/ Meddl Loide. Nix für Haider! Der charmante Piratensender aus dem Frankenland mit heißen Tips für den gepflegten Fleischwurst-und-Chipstüten-Lifestyle von heute.</de>
 				<en>\m/ Hevvy Meddle peepz. Not for haiderz! The charming pirate radio station from Franconia with hot tips for today's cultivated meat sausage and chip bag lifestyle.</en>
+				<pl>\m/ Hevvy Meddle peepz. Urocza piracka stacja radiowa z Frankonii z gorącymi wskazówkami dla współczesnego stylu życia opartego na kiełbasie mięsnej i torebkach z chipsami.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="1600" penalty="1900" infomercial_profit="142" fix_infomercial_profit="1" />
@@ -221,10 +248,12 @@ Anything is possible at Zombocom.</en>
 			<title>
 				<de>Graf Drache</de>
 				<en>Count Dragon</en>
+				<pl>Hrabia Smok</pl>
 			</title>
 			<description>
 				<de>\m/ Meddl Loide. Nix für Haider! Der charmante {brand_youtube}-Kanal aus dem Frankenland mit heißen Tips für den gepflegten Fleischwurst-und-Chipstüten-Lifestyle von heute.</de>
 				<en>\m/ Hevvy Meddle peepz. Not for haiderz! The charming {brand_youtube} channel from Franconia with hot tips for today's cultivated meat sausage and chip bag lifestyle.</en>
+				<pl>\m/ Hevvy Meddle peepz. Uroczy kanał {brand_youtube} z Frankonii z gorącymi wskazówkami dotyczącymi dzisiejszego stylu życia opartego na kiełbasie mięsnej i torebkach z chipsami.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="1600" penalty="1900" infomercial_profit="142" fix_infomercial_profit="1" />
@@ -234,10 +263,12 @@ Anything is possible at Zombocom.</en>
 			<title>
 				<de>${brand_initech} GmbH</de>
 				<en>${brand_initech}, LLC</en>
+				<pl>${brand_initech}, S.A.</pl>
 			</title>
 			<description>
 				<de>Hallo Zuschauer, was liegt an? Ähm, ich müsste Sie bitten, am Samstag reinzukommen. Wenn Sie also gegen 9 Uhr hier sein könnten, um an den TPS-Berichten zu arbeiten, das wäre großartig, mmmk... oh oh! Und fast hätte ich es vergessen, ahh, ich brauche Sie auch am Sonntag, 'kay. Wir haben diese Woche ein paar Leute verloren, und das müssen wir jetzt irgendwie aufholen.</de>
 				<en>Hello viewer, what's happening? Ummm, I'm gonna need you to go ahead come in on Saturday. So if you could be here around 9 to work on the TPS reports, that would be great, mmmk... oh oh! and I almost forgot ahh, I'm also gonna need you to go ahead and come in on Sunday too, kay. We ahh lost some people this week and ah, we sorta need to play catch up.</en>
+				<pl>Witaj widzu, co się dzieje? Będę cię potrzebował w sobotę. Więc jeśli mógłbyś być tutaj około 9, aby pracować nad raportami TPS, to byłoby świetnie, mmmk... oh oh! i prawie zapomniałem, ahh, będę również potrzebował, abyś przyszedł w niedzielę, kay. W tym tygodniu straciliśmy kilka osób i musimy nadrobić zaległości.</pl>
 			</description>
 			<conditions min_audience="28.65" min_image="52" target_group="8" />
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1" />
@@ -253,6 +284,9 @@ Nur von ${brand_swingline}.</de>
 				<en>"Excuse me, I believe you have my stapler."
 Everyone wants our garish red high performance stapler.
 Only from ${brand_swingline}.</en>
+				<pl>„Przepraszam, chyba ma pan mój zszywacz”.
+Każdy chce mieć nasz jaskrawoczerwony zszywacz o wysokiej wydajności.
+Tylko od ${brand_swingline}.</pl>
 			</description>
 			<conditions min_audience="2.6041" min_image="7" target_group="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="695" penalty="1150" infomercial_profit="72" fix_infomercial_profit="1" />
@@ -264,6 +298,7 @@ Only from ${brand_swingline}.</en>
 			<description>
 				<de>PC LOAD LETTERn Sie Ihre TPS-Berichte in unsere modernen Hochleistungsdrucker.</de>
 				<en>PC LOAD LETTER your TPS Reports into our modern high performance printers.</en>
+				<pl>PC LOAD LETTER raporty TPS do naszych nowoczesnych, wysokowydajnych drukarek.</pl>
 			</description>
 			<conditions min_audience="18.76" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="210" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
@@ -275,6 +310,7 @@ Only from ${brand_swingline}.</en>
 			<description>
 				<de>Die feinsten Burger des Planeten.</de>
 				<en>The finest burgers on the planet.</en>
+				<pl>Najlepsze burgery na świecie.</pl>
 			</description>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
@@ -287,6 +323,7 @@ Only from ${brand_swingline}.</en>
 			<description>
 				<de>Die feinsten Burger des Planeten.</de>
 				<en>The finest burgers on the planet.</en>
+				<pl>Najlepsze burgery na świecie.</pl>
 			</description>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
@@ -299,6 +336,7 @@ Only from ${brand_swingline}.</en>
 			<description>
 				<de>Die feinsten Burger des Planeten.</de>
 				<en>The finest burgers on the planet.</en>
+				<pl>Najlepsze burgery na świecie.</pl>
 			</description>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
@@ -317,6 +355,10 @@ Burger vom Holzkohlegrill auf die richtige Art. Jetzt mit Extra Big-Ass Pommes.<
 ---${brand_carljr}
 
 Char-grilled burgers the right way. Now with Extra Big-Ass Fries.</en>
+				<pl>Pie**ol się, jem!
+---${brand_carljr}
+
+Burgery z grilla we właściwy sposób. Teraz z frytkami Extra Big-Ass.</pl>
 			</description>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1050" penalty="1600" infomercial_profit="50" fix_infomercial_profit="1" />
@@ -332,6 +374,9 @@ ${brand_brawndo} - der Durstverstümmler.</de>
 				<en>What? You still drink water!? Like from the toilet?
 ${brand_brawndo}'s got what plants crave. It's got electrolytes!
 ${brand_brawndo} - the thirst mutilator.</en>
+				<pl>Co? Nadal pijesz wodę!? Taką z toalety?
+${brand_brawndo} ma to, czego pragną rośliny. Ma elektrolity!
+${brand_brawndo} - okaleczacz pragnienia.</pl>
 			</description>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="4" duration="3" profit="320" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
@@ -341,14 +386,18 @@ ${brand_brawndo} - the thirst mutilator.</en>
 				<all>${brand_costco}</all>
 			</title>
 			<description>
-				<de>Willkommen bei Cosscu. Ich liebe euch.
+				<de>Willkommen bei ${brand_costco}. Ich liebe euch.
 Das gigantische Lager-Warenhaus.
 
 Jetzt im Angebot: Jura-Abschluss in 8 Minuten.</de>
-				<en>Welcome To Cosscu. I love you.
+				<en>Welcome To ${brand_costco}. I love you.
 The gigantic warehouse retail store.
 
 Now available: Law degree in 8 minutes.</en>
+				<pl>Witamy w ${brand_costco}. Kocham Cię.
+Gigantyczny sklep detaliczny.
+
+Teraz dostępny: Studia prawnicze w 8 minut.</pl>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="2" duration="3" fix_price="0" profit="1500" penalty="2118" infomercial_profit="118" fix_infomercial_profit="1" />
@@ -360,6 +409,7 @@ Now available: Law degree in 8 minutes.</en>
 			<description>
 				<de>Exotischer Kaffee für Männer. Unser „Hot“ Latte und „Full Body“ Latte jetzt mit extra Schaum.</de>
 				<en>Exotic coffee for men. Our "hot" latte and "full body" latte now with extra foam.</en>
+				<pl>Egzotyczna kawa dla mężczyzn. Nasze latte „hot” i latte „full body” teraz z dodatkową pianką.</pl>
 			</description>
 			<conditions min_audience="1.3" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="8" />
 			<data quality="5" repetitions="4" duration="3" profit="1000" penalty="1800" fix_infomercial_profit="1" />
@@ -368,10 +418,12 @@ Now available: Law degree in 8 minutes.</en>
 			<title>
 				<de>St. Gott Gedenkkrankenhaus</de>
 				<en>St. God's Memorial Hospital</en>
+				<pl>Szpital św. Pamięci Boga</pl>
 			</title>
 			<description>
 				<de>In unserem hochmodernen Hospital lindern wir Ihre Beschwerden per Knopfdruck.</de>
 				<en>In our ultra-modern hospital, we relieve your symptoms at the touch of a button.</en>
+				<pl>W naszym ultranowoczesnym szpitalu łagodzimy objawy za naciśnięciem jednego przycisku.</pl>
 			</description>
 			<conditions min_audience="5.7301" min_image="12" target_group="64" />
 			<data infomercial="1" quality="12" repetitions="3" duration="2" profit="440" penalty="952" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -387,6 +439,9 @@ Swapping-Dienstleistungen von Kimmich &amp; Schmitt GmbH &amp; CoKG</de>
 				<en>Cheap computer games now available in a school playground near you.
 
 Swapping Services by Kimmich &amp; Schmitt LP LLC</en>
+				<pl>Tanie gry komputerowe teraz dostępne na boisku szkolnym w pobliżu.
+
+Usługi wymiany świadczone przez Kimmich &amp; Schmitt Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
@@ -403,6 +458,9 @@ Phreaking-Dienstleistungen von Kimmich &amp; Schmitt GmbH &amp; CoKG</de>
 				<en>Our chubby boss can whistle the signal beeps of the Bundespost perfectly.
 
 Phreaking Services by Kimmich &amp; Schmitt LP LLC</en>
+				<pl>Nasz pucołowaty szef potrafi doskonale gwizdać sygnały dźwiękowe Bundespost.
+
+Usługi phreakingowe świadczone przez Kimmich &amp; Schmitt Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
@@ -419,6 +477,9 @@ Kimmich &amp; Schmitt Telecards GmbH &amp; CoKG</de>
 				<en>Charged phone cards and credit cards at half price only here.
 
 Kimmich &amp; Schmitt Telecards LP LLC</en>
+				<pl>Doładowane karty telefoniczne i kredytowe za pół ceny tylko tutaj.
+
+Kimmich &amp; Schmitt Telecards Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
@@ -433,6 +494,8 @@ Kimmich &amp; Schmitt Telecards LP LLC</en>
 Kimmich &amp; Schmitt Investments GmbH &amp; CoKG</de>
 				<en>letzbuythem.come - Guaranteed stock market profits using our portal! Catch the treasures out of the junk of the burst dotcom bubble with our AI trading bots.
 Kimmich &amp; Schmitt Investments LP LLC</en>
+				<pl>letzbuythem.come - Gwarantowane zyski giełdowe dzięki naszemu portalowi! Wyłapuj skarby ze śmieci pękniętej bańki dotcomów dzięki naszym botom handlowym AI.
+Kimmich &amp; Schmitt Investments Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
@@ -447,6 +510,8 @@ Kimmich &amp; Schmitt Investments LP LLC</en>
 kimfilez.komm - ein Angebot der Kimmich &amp; Schmitt GmbH &amp; CoKG</de>
 				<en>Share your favorite HD-ready blockbuster films with all your "friends"! But please, do rename them first, so that they won't be recognizable right away, right?
 kimfilez.come - a service by Kimmich &amp; Schmitt LP LLC</en>
+				<pl>Podziel się swoimi ulubionymi hitami filmowymi w jakości HD ze wszystkimi „przyjaciółmi”! Ale proszę, zmień najpierw ich nazwę, aby nie były od razu rozpoznawalne, prawda?
+kimfilez.come - usługa firmy Kimmich &amp; Schmitt Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
@@ -463,6 +528,9 @@ SIM-Swapping-Dienste von Kimmich &amp; Schmitt GmbH &amp; CoKG</de>
 				<en>Are you running out of accounts?
 
 SIM Swapping Services by Kimmich &amp; Schmitt LP LLC</en>
+				<pl>Kończą Ci się konta?
+
+Usługi wymiany kart SIM przez Kimmich &amp; Schmitt Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="1" profit="880" penalty="1129" fix_infomercial_profit="1" />
@@ -483,6 +551,11 @@ Mächtige Kopierprogramme und andere Tools für Ihren PC.</de>
 PC Utils by Central Finger Soft.
 
 Powerful copy programs and other tools for your PC.</en>
+				<pl>Daj palec ochronie przed kopiowaniem.
+
+PC Utils tworzony przez Central Finger Soft.
+
+Potężne programy do kopiowania i inne narzędzia dla komputera.</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
@@ -492,6 +565,7 @@ Powerful copy programs and other tools for your PC.</en>
 			<title>
 				<de>McÄffle</de>
 				<en>McApee</en>
+				<pl>McAfel</pl>
 			</title>
 			<description>
 				<de>Der Virenvernichter für Ihren PC! Jetzt mit in frischem Schlangenöl eingewickelter Deinstallationsroutine.
@@ -500,6 +574,9 @@ AntiVirus - von Jonas &amp; McÄffle GmbH &amp; CoKG</de>
 				<en>The virus destroyer for your PC! Now with an uninstall routine wrapped in fresh snake oil.
 
 AntiVirus - by Jonas &amp; McApee LP LLC</en>
+				<pl>Niszczyciel wirusów dla twojego komputera! Teraz z procedurą odinstalowywania owiniętą w świeży olej z węża.
+
+AntiVirus - Jonas &amp; McAfel Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
@@ -509,6 +586,7 @@ AntiVirus - by Jonas &amp; McApee LP LLC</en>
 			<title>
 				<de>McÄffle VPN</de>
 				<en>McApee VPN</en>
+				<pl>McAfel VPN</pl>
 			</title>
 			<description>
 				<de>Ihr Anschnallgurt für die Reise auf der Datenautobahn ins Darknet.
@@ -517,6 +595,9 @@ VPN-Dienstleistungen von Jonas &amp; McÄffle GmbH &amp; CoKG</de>
 				<en>Your safety belt for the journey on the information highway into the Darknet.
 
 VPN Services from Jonas &amp; McApee LP LLC</en>
+				<pl>Twój pas bezpieczeństwa podczas podróży autostradą informacyjną do Darknetu.
+
+Usługi VPN od Jonas &amp; McApee Spółka z o.o.</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
@@ -529,6 +610,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<description>
 				<de>Endlich normale Leute! Die galaktische Gemeinschaft von Lebewesen, benannt nach der Göttin der... Moment mal, wer hat denn den Namen ausgesucht, sagt mal habt ihr sie noch alle!? Da war wohl der Zensor pinkeln.</de>
 				<en>Finally normal people! The galactic community of living beings, named after the goddess of... Wait a minute, who chose that name, have you all lost your marbles!? The censor must have gone for a pee.</en>
+				<pl>Wreszcie normalni ludzie! Galaktyczna społeczność żywych istot, nazwana na cześć bogini... Chwileczkę, kto wybrał tę nazwę, czy wszyscy straciliście zmysły!? Cenzor chyba poszedł się odlać.</pl>
 			</description>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1" />
@@ -540,6 +622,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<description>
 				<de>Einmal mit Profis arbeiten.</de>
 				<en>Working with professionals for once.</en>
+				<pl>Praca z profesjonalistami po raz pierwszy.</pl>
 			</description>
 			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
@@ -548,10 +631,12 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<title>
 				<de>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}s Kolumne</de>
 				<en>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}'s Column</en>
+				<pl>Kolumna ${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}</pl>
 			</title>
 			<description>
 				<de>Euer tägliches Medienkompetenztraining mit den zynischen Kommentaren zu den Geschehnissen in Tech und Politik. Die besten der besten der besten, Sir! Jetzt mit Sportteil.</de>
 				<en>Your daily media skills training with the cynical commentary on what's happening in tech and politics. The best of the best of the best, sir! Now with a sports section.</en>
+				<pl>Codzienny trening umiejętności medialnych z cynicznym komentarzem na temat tego, co dzieje się w technologii i polityce. Najlepsi z najlepszych, sir! Teraz z sekcją sportową.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="3" duration="5" profit="750" penalty="900" fix_infomercial_profit="1" />
@@ -561,10 +646,12 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<title>
 				<de>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}s Blog</de>
 				<en>${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}'s Blog</en>
+				<pl>Blog ${.person:"d53dbdff-5cb4-4b3d-b72f-87d0767197f0":"nickname"}</pl>
 			</title>
 			<description>
 				<de>Euer tägliches Medienkompetenztraining. Das beliebteste Blog aller Zeiten, wie man aus euren Internetdaten ermitteln kann. Das hat nämlich die CIA herausgefunden. Die finden ja alles raus. Alles finden die raus.</de>
 				<en>Your daily media skills training. The most popular blog of all time, as it can be determined from your internet data. In fact, that's what the CIA found out. They find out just about everything. Everything they find out.</en>
+				<pl>Twój codzienny trening umiejętności medialnych. Najpopularniejszy blog wszech czasów, jak można ustalić na podstawie danych internetowych. W rzeczywistości to właśnie odkryła CIA. Oni dowiadują się prawie wszystkiego. Wszystkiego, czego się dowiedzą.</pl>
 			</description>
 			<conditions min_audience="1.82" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="3" duration="5" profit="750" penalty="900" fix_infomercial_profit="1" />
@@ -577,6 +664,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 			<description>
 				<de>Dial-up Delight! Mach dich bereit für den langsamsten und teuersten Surf der Stadt!</de>
 				<en>Dial-up Delight! Get ready for the slowest and costliest surf in town!</en>
+				<pl>Rozkoszne połączenia telefoniczne! Przygotuj się na najwolniejsze i najdroższe surfowanie w mieście!</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="5" duration="2" profit="450" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />
@@ -587,8 +675,9 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 				<all>${brand_aol}</all>
 			</title>
 			<description>
-				<de>Jetzt weltweit! Wir schmeißen Ihnen eine Gratis-CD-ROM nach der anderen hinterher, bis endlich auch die letzten Boomer wie Sie drin sind. Ist ja so simpel - OAL.</de>
+				<de>Jetzt weltweit! Wir schmeißen Ihnen eine Gratis-CD-ROM nach der anderen hinterher, bis endlich auch die letzten Boomer wie Sie drin sind. Ist ja so simpel - ${brand_aol}.</de>
 				<en>New E-Mail in Your Inbox - now world-wide! Bringing you the internet, one free CD at a time.</en>
+				<pl>Nowa wiadomość e-mail w skrzynce odbiorczej - teraz na całym świecie! Przynosimy ci internet, jedną darmową płytę CD na raz.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="5" duration="2" profit="450" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />
@@ -603,6 +692,8 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 Wir sind jetzt auch im CYBER-Space mit unserer Mailbox. Dial in: 555-CYBER-CYBER</de>
 				<en>Do you need more CYBER? Our CYBER experts cyberize your CYBER security to 11! Keeping you safe from CYBER crime and CYBER attacks at all times!
 We are now also in CYBER Space with our BBS. Dial in: 555-CYBER-CYBER</en>
+				<pl>Czy potrzebujesz więcej CYBER? Nasi eksperci CYBER zwiększają bezpieczeństwo CYBER do 11! Zapewniając bezpieczeństwo przed przestępczością CYBER i atakami CYBER przez cały czas!
+Jesteśmy teraz również w CYBERprzestrzeni z naszym BBS. Wybierz numer: 555-CYBER-CYBER</pl>
 			</description>
 			<conditions min_audience="1.8225" min_image="7" target_group="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="4" duration="2" profit="820" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
@@ -617,6 +708,8 @@ We are now also in CYBER Space with our BBS. Dial in: 555-CYBER-CYBER</en>
 Wir sind auch im CYBER-Space auf ${brand_compuserve} mit allerlei Gadgets und Schnickschnack: GO GO CYBER CYBER</de>
 				<en>Do you need more CYBER? Our CYBER experts cyberize your CYBER security to 11! Keeping you safe from CYBER crime and CYBER attacks at all times!
 We are also in CYBER Space on ${brand_compuserve} with all kinds of gears and gadgets: GO GO CYBER CYBER</en>
+				<pl>Czy potrzebujesz więcej CYBER? Nasi eksperci CYBER zwiększają bezpieczeństwo CYBER do 11! Zapewniając bezpieczeństwo przed przestępstwami i atakami CYBER przez cały czas!
+Jesteśmy również w CYBER Space na ${brand_compuserve} z wszelkiego rodzaju sprzętem i gadżetami: GO GO CYBER CYBER</pl>
 			</description>
 			<conditions min_audience="1.8225" min_image="7" target_group="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="4" duration="2" profit="820" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
@@ -631,6 +724,8 @@ We are also in CYBER Space on ${brand_compuserve} with all kinds of gears and ga
 Wir sind auch im CYBER-Space! Besuchen Sie unsere CYBERWeb-Seite auf cyber://cyber.cyber</de>
 				<en>Do you need more CYBER? Our CYBER experts cyberize your CYBER security to 11! Keeping you safe from CYBER crime and CYBER attacks at all times!
 We are also in CYBER Space! Visit us our CYBERWeb page at cyber://cyber.cyber</en>
+				<pl>Czy potrzebujesz więcej CYBER? Nasi eksperci CYBER zwiększają bezpieczeństwo CYBER do 11! Zapewniając bezpieczeństwo przed przestępczością CYBER i atakami CYBER przez cały czas!
+Jesteśmy również w przestrzeni CYBER! Odwiedź naszą stronę CYBERWeb pod adresem cyber://cyber.cyber</pl>
 			</description>
 			<conditions min_audience="1.8225" min_image="7" target_group="40" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="8" repetitions="4" duration="2" profit="820" penalty="1101" infomercial_profit="85" fix_infomercial_profit="1" />
@@ -645,6 +740,8 @@ We are also in CYBER Space! Visit us our CYBERWeb page at cyber://cyber.cyber</e
 Von Satan persönlich empfohlen.</de>
 				<en>Where Fashion Meets Fortune.
 Recommended by Satan himself.</en>
+				<pl>Gdzie moda spotyka się z fortuną.
+Polecany przez samego Szatana.</pl>
 			</description>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="2" duration="2" profit="490" penalty="750" fix_infomercial_profit="1" />
@@ -656,6 +753,7 @@ Recommended by Satan himself.</en>
 			<description>
 				<de>Wir mobilisieren Möglichkeiten.</de>
 				<en>We mobilize provisions.</en>
+				<pl>Mobilizujemy rezerwy.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="7" />
 			<data quality="17" repetitions="4" duration="2" profit="325" penalty="1053" fix_infomercial_profit="1" />
@@ -667,6 +765,7 @@ Recommended by Satan himself.</en>
 			<description>
 				<de>Der neue ${brand_opel} ${brand_manta}. Jetzt noch flachgelegter als Ihre blonde Friseusefreundin auf dem Beifahrersitz und die Witze, die Sie über sie reißen.</de>
 				<en>The new ${brand_opel} ${brand_manta}. Now even lower than your blonde hairdresser girlfriend in the passenger seat and the jokes you're cracking about her.</en>
+				<pl>Nowy ${brand_opel} ${brand_manta}. Teraz nawet niżej niż twoja blond fryzjerka na siedzeniu pasażera i żarty, które o niej opowiadasz.</pl>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="3" duration="6" profit="250" penalty="300" fix_infomercial_profit="1" />
@@ -678,6 +777,7 @@ Recommended by Satan himself.</en>
 			<description>
 				<de>Wer redet von sprechenden Autos? Auch wenn unser sprechendes Modell noch nicht verfügbar ist, die Power spricht für sich. Fahren Sie jetzt Probe mit dem neuesten ${brand_pontiac} ${brand_firebird} Modell.</de>
 				<en>Who's talking about speaking cars? Even if our speaking model is not yet available, the power speaks for itself. Test drive the latest ${brand_pontiac} ${brand_firebird} model now.</en>
+				<pl>Kto mówi o mówiących samochodach? Nawet jeśli nasz mówiący model nie jest jeszcze dostępny, jego moc mówi sama za siebie. Jazda próbna najnowszym modelem ${brand_pontiac} ${brand_firebird} już teraz dostępna.</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
@@ -690,6 +790,7 @@ Recommended by Satan himself.</en>
 			<description>
 				<de>Die dritte Generation. Der Flitzer nicht nur für Kreuzritter der Nacht. Das Scanner-Licht vorne jetzt erhältlich in Regenbogenfarben.</de>
 				<en>The third generation. The speedster not just for crusaders of the night. The scanner light at the front is now available in rainbow colors.</en>
+				<pl>Trzecia generacja. Speedster nie tylko dla nocnych krzyżowców. Światło skanera z przodu jest teraz dostępne w kolorach tęczy.</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
@@ -702,6 +803,7 @@ Recommended by Satan himself.</en>
 			<description>
 				<de>Wir bauen die Autos, die fast so lange halten wie unsere Vorstandssitzungen.</de>
 				<en>Making the cars that last almost as long as our board meetings.</en>
+				<pl>Tworzenie samochodów trwa prawie tak długo, jak nasze spotkania zarządu.</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
@@ -714,6 +816,7 @@ Recommended by Satan himself.</en>
 			<description>
 				<de>Belastbarkeit in Bewegung - mit einer Prise Unterstützung durch den Steuerzahler.</de>
 				<en>Resilience in motion - with a dash of taxpayer support.</en>
+				<pl>Odporność w ruchu - z odrobiną wsparcia podatników.</pl>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
@@ -730,6 +833,9 @@ Neu im Angebot aufgrund nicht endender Nachfragen: Socken! Natürlich aus feinst
 				<en>Visit the |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|ffline E|b|x|/b|change!
 The junk store and exchange for playing cards and tabletop accessories now also in your area.
 New on offer due to never-ending inquiries: socks! Made of finest alpaca wool, of course.</en>
+				<pl>Odwiedź |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|ffline E|b|x|/b|change!
+Sklep z rupieciami i giełda kart do gry oraz akcesoriów stołowych teraz także w Twojej okolicy.
+Nowość w ofercie z powodu niekończących się zapytań: skarpetki! Oczywiście wykonane z najlepszej wełny alpaków.</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -744,6 +850,8 @@ New on offer due to never-ending inquiries: socks! Made of finest alpaca wool, o
 Genau, jetzt endlich auch Online! Wenn schon denn schon: Neben Spielkarten, Trödel und Alpaka-Socken gibt's nun auch frische Cyberbucks zum Kaufen und zum Handeln.</de>
 				<en>Visit the |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|nline E|b|x|/b|change!
 That's right, now finally online too! And while we're at it: in addition to playing cards, junk and alpaca socks, there's now also fresh cyberbucks to buy and trade.</en>
+				<pl>Odwiedź |b|M|/b|ystic |b|t|/b|he |b|S|/b|ummoning |b|O|/b|nline E|b|x|/b|change!
+Zgadza się, teraz także online! A skoro już przy tym jesteśmy: oprócz kart do gry, śmieci i skarpetek z alpaków, dostępne są teraz także świeże cyberdolary do kupienia i wymienienia.</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -758,6 +866,8 @@ That's right, now finally online too! And while we're at it: in addition to play
 Kaufen Sie Geldsöckchen-JPEGs in den schönsten Formen und Farben!</de>
 				<en>The insolvency administrator of Mt. Sox lets it be announced: Debt securities now available as NFTs.
 Buy money socks JPEGs in the most beautiful shapes and colors!</en>
+				<pl>Zarządca Mt. Sox ogłasza niewypłacalność: Dłużne papiery wartościowe teraz dostępne jako tokeny NFT.
+Kup skarpetki pieniężne JPEG w najpiękniejszych kształtach i kolorach!</pl>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="4" duration="2" profit="750" penalty="1498" infomercial_profit="178" fix_infomercial_profit="1" />
@@ -767,10 +877,12 @@ Buy money socks JPEGs in the most beautiful shapes and colors!</en>
 			<title>
 				<de>${brand_duff} Bier</de>
 				<en>${brand_duff} Beer</en>
+				<pl>Piwo ${brand_duff}</pl>
 			</title>
 			<description>
 				<de>Sauf dich doof mit dem Gesöff von ${brand_duff}.</de>
 				<en>Can't have enough of that fabulous ${brand_duff}.</en>
+				<pl>Nie mam dość tego wspaniałego ${brand_duff}.</pl>
 			</description>
 			<conditions min_audience="3.13" min_image="4" target_group="256" />
 			<data infomercial="1" quality="15" repetitions="3" duration="2" profit="640" penalty="890" fix_infomercial_profit="1" />
@@ -782,6 +894,7 @@ Buy money socks JPEGs in the most beautiful shapes and colors!</en>
 			<description>
 				<de>${brandslogan_vierbuddysfuer}. Prost!</de>
 				<en>This ${brandslogan_budsfor} you. And that ${brandslogan_budsfor} me. And that ${brandslogan_budsfor} "${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"nickname"}" ${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"lastname"}. ${brandslogan_thetrinityoftaste}.</en>
+				<pl>Ten ${brandslogan_budsfor} ciebie. A ten ${brandslogan_budsfor} mnie. A ten ${brandslogan_budsfor} "${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"nickname"}'ego" ${.person:"ac09552a-75f0-46cc-85ac-c49c232309d2":"lastname"}a. ${brandslogan_thetrinityoftaste}.</pl>
 			</description>
 			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="2" profit="460" penalty="667" infomercial_profit="42" fix_infomercial_profit="1" />

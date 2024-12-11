@@ -417,10 +417,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<title>
 				<de>Dynamit - Das Magazin Spezial: Aus L.A.</de>
 				<en>Dynamite - The Magazine Special: From L.A.</en>
+				<pl>Dynamite - Magazyn specjalny: Z L.A.</pl>
 			</title>
 			<description>
 				<de>Das Ex-Model ${.self:"cast":1:"fullname"} ist nach L.A. geflogen und berichtet über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
 				<en>Ex-model ${.self:"cast":1:"fullname"} has flown to L.A. to report on the latest and hottest gossip about the movie stars.</en>
+				<pl>Była modelka ${.self:"cast":1:"fullname"} przyleciała do Los Angeles, by relacjonować najnowsze i najgorętsze plotki o gwiazdach filmowych.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -436,10 +438,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} die Niere</de>
 						<en>${.self:"cast":2:"firstname"} De Weirdo</en>
+						<pl>${.self:"cast":2:"firstname"} De Weirdo</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} wird beim Verkauf einer angeblichen „echten“ Niere erwischt - als Werbegag für ein neues Filmprojekt. „Nierenräuber“ wird plötzlich zum beliebtesten Schurken in ganz ${media_hollywood}.</de>
 						<en>${.self:"cast":2:"fullname"} is caught selling an alleged "real" kidney - as a publicity stunt for a new film project. "Weird kidney robber" suddenly becomes the most popular villain in all of ${media_hollywood}.</en>
+						<pl>${.self:"cast":2:"fullname"} zostaje przyłapany na sprzedaży rzekomo „prawdziwej” nerki - jako chwyt reklamowy dla nowego projektu filmowego. „Dziwny złodziej nerek” nagle staje się najpopularniejszym złoczyńcą w całym ${media_hollywood}.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">506bc383-259e-4a36-9278-081aafc8f35c</member>
@@ -452,10 +456,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} gibt's schon</de>
 						<en>${.self:"cast":2:"firstname"} Giblets</en>
+						<pl>${.self:"cast":2:"firstname"} Giblets</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} rennt durch die schottischen Highlands, schwingt ein Schwert und ruft: „Es kann nur einen geben!“ Bereitet er sich auf eine neue Rolle vor? Dummerweise begegnet er seinem angeblich zeitreisenden zukünftigem Selbst, der meint: „Ich bin schon seit dem Mittelalter hier!“</de>
 						<en>${.self:"cast":2:"fullname"} accidentally serves his guests a Thanksgiving dinner with giblets from his pet turkey named "${.self:"cast":2:"lastname"}". The mix-up leads to uproarious confusion and a poultry-fueled PR disaster.</en>
+						<pl>${.self:"cast":2:"fullname"} przypadkowo podaje swoim gościom na Święto Dziękczynienia podroby z indyka o imieniu „${.self:"cast":2:"lastname"}”. Pomyłka doprowadza do zamieszania i drobiowej katastrofy PR-owej.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">1b8fcb9a-5961-43b8-af1b-1ed144880908</member>
@@ -465,10 +471,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>Willst Miff?</de>
 						<en>${.self:"cast":2:"firstname"}'s Miff</en>
+						<pl>${.self:"cast":2:"firstname"}'s Miff</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} gerät in einen heftigen Streit mit einem alten weißen Ladenbesitzer, der den Schriftzug „${.self:"cast":2:"fullname"} Edition“ auf Kartoffelchips-Tüten überklebte, den er für „Gekrakel wie das eines Dreijährigen“ bezeichnete, das angeblich für schwächeren Absatz als vorher sorgte.</de>
 						<en>${.self:"cast":2:"fullname"} gets into a fierce argument with an old white shopkeeper who taped over the lettering "${.self:"cast":2:"fullname"} Edition" on potato chip bags, which he described as "scribblings like those of a three-year-old" that allegedly made for weaker sales than before.</en>
+						<pl>${.self:"cast":2:"fullname"} wdaje się w ostrą kłótnię ze starym, białym właścicielem sklepu, który zakleił taśmą napis „${.self:"cast":2:"fullname"} Edition” na torebkach z chipsami ziemniaczanymi, co opisał jako „bazgroły jak u trzylatka”, które rzekomo spowodowały słabszą sprzedaż niż wcześniej.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
@@ -478,10 +486,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} Testton</de>
 						<en>${.self:"cast":2:"firstname"} Chest-on</en>
+						<pl>${.self:"cast":2:"firstname"} Chest-on</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} wird beschuldigt, heimlich eine eigene Geräusch-Testfirma gegründet zu haben, um sicherzustellen, dass nur er die perfekte Stimmlage für epische Filmdialoge hat. „Er kontrolliert den Soundtrack unserer Leben!“, klagen misstrauische Tonspezialisten.</de>
 						<en>${.self:"cast":2:"fullname"} appears at a high-profile press conference sporting a (temporary?) tattoo of a cartoon heart with the inscription "Property of My Wife" on his chest, causing a flurry of speculation about his romantic life.</en>
+						<pl>${.self:"cast":2:"fullname"} pojawia się na głośnej konferencji prasowej z (tymczasowym?) tatuażem przedstawiającym rysunkowe serce z napisem „Własność mojej żony” na piersi, wywołując lawinę spekulacji na temat jego życia uczuciowego.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">b4561de6-215e-46ab-9212-f0868c6fcb33</member>
@@ -494,6 +504,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<description>
 						<de>Und auch von einem Ex-Schauspielstar und Ex-Präsidenten gibt's Neuigkeiten: ${.self:"cast":2:"fullname"} baut Gerüchten zufolge heimlich ein veganes Fast-Food-Imperium auf. „Er ist also doch unser Commander in Leaf,“ rufen begeisterte Veganer weltweit.</de>
 						<en>And there's also news from an ex-acting star and ex-president: ${.self:"cast":2:"fullname"} is rumored to be secretly building a vegan fast food empire. "So he is our Commander in Leaf after all," shout enthusiastic vegans worldwide.</en>
+						<pl>Są też wiadomości od byłego aktora i byłego prezydenta: ${.self:"cast":2:"fullname"} podobno potajemnie buduje wegańskie imperium fast foodów. „Więc w końcu jest naszym dowódcą w Leaf”, krzyczą entuzjastyczni weganie na całym świecie.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">e52ca72c-83e2-431d-ae02-c66daefea035</member>
@@ -505,10 +516,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<title>
 				<de>Dynamit - Das Magazin Spezial: Back in L.A.</de>
 				<en>Dynamite - The Magazine Special: Back in L.A.</en>
+				<pl>Dynamite - The Magazine Special: Powrót do L.A.</pl>
 			</title>
 			<description>
 				<de>Das Ex-Model ${.self:"cast":1:"fullname"} ist wieder in L.A. und berichtet erneut über den neuesten und heißesten Klatsch und Tratsch über die Filmstars.</de>
 				<en>Ex-model ${.self:"cast":1:"fullname"} has again flown to L.A. to once again report on the latest and hottest gossip about the movie stars.</en>
+				<pl>Była modelka ${.self:"cast":1:"fullname"} ponownie poleciała do L.A., aby po raz kolejny relacjonować najnowsze i najgorętsze plotki o gwiazdach filmowych.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
@@ -524,10 +537,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} verhört mich</de>
 						<en>${.self:"cast":2:"firstname"} Verhooten</en>
+						<pl>${.self:"cast":2:"firstname"} Verhooten</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} wird in einen Kriminalfall verwickelt und als Zeuge geladen. Direkt nach einer Fetisch-Party schaut er in einem gewagten Outfit vorbei. „Wird das ein Drehbuch oder ein Geständnis, und wer verhört hier eigentlich wen?“, fragt sich die erregte Jury.</de>
 						<en>${.self:"cast":2:"fullname"} casts a family of owls as the main characters in his highly anticipated sci-fi film. Viewers were baffled by the sudden appearance of owls in space suits, prompting speculation if it was avant-garde genius or a comical oversight.</en>
+						<pl>${.self:"cast":2:"fullname"} obsadził rodzinę sów w roli głównych bohaterów swojego wyczekiwanego filmu science-fiction. Widzowie byli zaskoczeni nagłym pojawieniem się sów w skafandrach kosmicznych, co wywołało spekulacje, czy był to awangardowy geniusz, czy też komiczne niedopatrzenie.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">10d455be-e8e5-40eb-927b-c36e3345525d</member>
@@ -537,10 +552,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} will es</de>
 						<en>${.self:"cast":2:"firstname"} Will-less</en>
+						<pl>${.self:"cast":2:"firstname"} Will-less</pl>
 					</title>
 					<description>
 						<de>Jaaa! Er ruft!!! sie!!! an!!! ${.self:"cast":2:"fullname"} erscheint Tage lang nicht zum Dreh. Er hat sich im Hotelzimmer eingeschlossen und ist süchtig geworden ist nach Sex-Hotlines. „Du willst es doch auch!“ raunt die TV-Domina gerade, als endlich die Zimmertür aufgebrochen wird.</de>
 						<en>A depressed ${.self:"cast":2:"fullname"} locks himself out of his own action movie set, leaving the entire production in chaos, with the crew unaware of him being stuck in his trailer binge-watching rom-coms.</en>
+						<pl>Pogrążony w depresji ${.self:"cast":2:"fullname"} zamyka się na planie swojego filmu akcji, przez co cała produkcja pogrąża się w chaosie, a ekipa nie wie, że utknął on w swojej przyczepie, oglądając komedie romantyczne.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">2b6af8c4-7775-44da-820e-1ce9c55d8cd9</member>
@@ -553,6 +570,7 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<description>
 						<de>Erneut macht ${.self:"cast":2:"fullname"} von sich reden, als er versucht, seine Fans zu beeindrucken, indem er seine neu entdeckte Leidenschaft für Ballett vorführt. Leider endet seine Swift-Pirouette damit, dass er in eine Requisite kracht und Chaos am Set verursacht.</de>
 						<en>Once again, ${.self:"cast":2:"fullname"} makes a name for himself, as he attempts to impress his fans by showcasing his newfound passion for ballet. Unfortunately, his swift pirouette ends with him crashing into a prop, causing chaos on set.</en>
+						<pl>Po raz kolejny ${.self:"cast":2:"fullname"} zdobywa sławę, próbując zaimponować fanom, pokazując swoją nowo odkrytą pasję do baletu. Niestety, jego szybki piruet kończy się zderzeniem z rekwizytem, co powoduje chaos na planie.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">f9a18a26-3dc4-401d-93bb-221247211dff</member>
@@ -562,10 +580,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>Rolliger Stein</de>
 						<en>${.self:"cast":2:"firstname"} Bone</en>
+						<pl>${.self:"cast":2:"firstname"} Bone</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} wird in einer Bowlinghalle gesichtet. Anscheinend dreht er eine Doku über „Die geheime Welt der Bowlingspieler“. „Ist die Anordnung der Pins ein Symbol der Illuminaten?“, fragt er besessen.</de>
 						<en>${.self:"cast":2:"fullname"} swaps the scripts of his historical epic with a dog training manual, leaving the bewildered actors on set reciting commands to imaginary canines and wondering whether this was avant-garde genius or just a bone-headed mistake.</en>
+						<pl>${.self:"cast":2:"fullname"} zamienia scenariusze swojej historycznej epopei z podręcznikiem tresury psów, pozostawiając zdezorientowanych aktorów na planie recytujących komendy wyimaginowanym psom i zastanawiających się, czy był to awangardowy geniusz, czy tylko głupi błąd.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">3d4a2d11-e943-4874-b8be-eaec31165150</member>
@@ -575,10 +595,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} Bieten</de>
 						<en>${.self:"cast":2:"firstname"}'s Wit Ton</en>
+						<pl>${.self:"cast":2:"firstname"}'s Wit Ton</pl>
 					</title>
 					<description>
 						<de>${.self:"cast":2:"fullname"} wird beschuldigt, bei einer Auktion seine eigenen Sammlerstücke zu überbieten, um seinen Ruf als „Nerd-König“ zu festigen. „Ist das ein Gebot oder ein Rollenspiel?“, fragen sich verblüffte Bieter.</de>
 						<en>${.self:"cast":2:"fullname"} attempts to impress fans with his newfound passion for stand-up comedy and a program involving a "giant barrel of bad puns". Unfortunately, his jokes fall flat heavily, and the audience laughs at his expense.</en>
+						<pl>${.self:"cast":2:"fullname"} zamienia scenariusze swojej historycznej epopei z podręcznikiem tresury psów, pozostawiając zdezorientowanych aktorów na planie recytujących komendy wyimaginowanym psom i zastanawiających się, czy był to awangardowy geniusz, czy tylko głupi błąd.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">DF-Celebreties-Wil_Wheaton</member>
@@ -588,10 +610,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 					<title>
 						<de>${.self:"cast":2:"firstname"} Heul</de>
 						<en>${.self:"cast":2:"firstname"} Howl</en>
+						<pl>${.self:"cast":2:"firstname"} Skowyt</pl>
 					</title>
 					<description>
 						<de>Der Brite ${.self:"cast":2:"fullname"} ist für ein Filmprojekt in L.A. und beginnt zu heulen, als er seinen Fünf-Uhr-Tee nicht bekommt, so lange und vehement, bis er in der folgenden Vollmondnacht zum Werwolf wird. Fortan lässt er oft seinen Wuschelbart unrasiert noch stehen.</de>
 						<en>The Brit ${.self:"cast":2:"fullname"} is in L.A. for a film project and starts howling when he doesn't get his five o'clock tea, so long and vehemently until he becomes a werewolf on the following full moon night. From then on, he will often leave his fuzzy beard unshaven.</en>
+						<pl>Brytyjczyk ${.self:"cast":2:"fullname"} przebywa w Los Angeles w związku z projektem filmowym i zaczyna wyć, gdy nie dostaje herbaty o piątej, tak długo i gwałtownie, aż staje się wilkołakiem w następną noc pełni księżyca. Od tego momentu często pozostawia swoją bujną brodę nieogoloną.</pl>
 					</description>
 					<staff>
 						<member index="2" function="64">5322bb8e-8061-4c5d-94d6-f585ce99bd8c</member>
@@ -603,10 +627,12 @@ Format: Filmowane wykłady. Na luzie i do leżenia.</pl>
 			<title>
 				<de>Sekretärinnen-Bericht - Akten, Affären &amp; Akrobatik</de>
 				<en>Secretaries Report - Accounts, Affairs &amp; Acrobatics</en>
+				<pl>Raport sekretarzy - rachunki, sprawy i akrobatyka</pl>
 			</title>
 			<description>
 				<de>Bürochaos mit flirtenden Schreibkräften: Frau Huber vertauscht Akten mit Liebesbriefen, Herr Schmitt jongliert Termine und Techtelmechtel, und Frau Meier entdeckt die Kunst des Fotokopierens... Ein Balanceakt zwischen Bürokratie und Boudoir, während das Faxgerät heiß läuft.</de>
 				<en>Office chaos with flirting typists: Ms. Huber swaps files with love letters, Mr. Schmitt juggles deadlines and dalliances, and Ms. Meier discovers the art of photocopying... A balancing act between bureaucracy and boudoir, while the fax machine runs hot.</en>
+				<pl>Biurowy chaos z flirtującymi maszynistkami: Pani Huber zamienia akta z listami miłosnymi, pan Schmitt żongluje terminami i romansami, a pani Meier odkrywa sztukę kserowania... Balansowanie między biurokracją a buduarem, podczas gdy faks jest gorący.</pl>
 			</description>
 			<staff>
 				<member index="0" function="5">Per_custom_Freddy_390</member>
@@ -1246,60 +1272,72 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>${.self:"role":2:"firstname"} und ${.self:"role":1:"firstname"} im Märchenwald</de>
 				<en>${.self:"role":2:"firstname"} and ${.self:"role":1:"firstname"} in the Woods of Wonder</en>
+				<pl>${.self:"role":2:"firstname"} i ${.self:"role":1:"firstname"} w Lesie Cudów</pl>
 			</title>
 			<description>
 				<de>Vor ihrem bekannten Aufeinandertreffen mit dem Bären erleben die heranwachsenden ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"} zusammen mit den Kindern ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} und ${.self:"role":5:"firstname"} Abenteuer im Wald.</de>
 				<en>Before their famous encounter with the bear, the adolescent ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"} experience adventures in the forest together with the children ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} and ${.self:"role":5:"firstname"}.</en>
+				<pl>Przed ich słynnym spotkaniem z niedźwiedziem, nastolatkowie ${.self:"role":1:"firstname"} i ${.self:"role":2:"firstname"} przeżywają przygody w lesie razem z dziećmi o imieniach ${.self:"role":3:"firstname"}, ${.self:"role":4:"firstname"} i ${.self:"role":5:"firstname"}.</pl>
 			</description>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="5bda9699-4cc2-49cd-875a-70e666594d56">
 					<title>
 						<de>Die flüsternden Bäume</de>
 						<en>The Whispering Trees</en>
+						<pl>Szepczące drzewa</pl>
 					</title>
 					<description>
 						<de>${.self:"role":5:"firstname"} bläst sein Horn in den Verwunschenen Wäldern und erweckt flüsternde Bäume, uralte Hüter und tückische Elfen, die die Abenteurer nun kichernd mit Illusionen und falschen Fährten in die Irre führen.</de>
 						<en>${.self:"role":5:"firstname"} blows his horn in the Enchanted Woods and awakens whispering trees, ancient guardians and elusive sprites, who now, while giggling, lead the adventurers astray with illusions and false trails.</en>
+						<pl>${.self:"role":5:"firstname"} dmucha w swój róg w Zaczarowanym Lesie i budzi szepczące drzewa, starożytnych strażników i nieuchwytne duchy, które teraz, chichocząc, prowadzą poszukiwaczy przygód na manowce za pomocą iluzji i fałszywych tropów.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="1" product="2" licence_type="2" guid="f4fddd1c-0f95-4887-8a76-7994b94e26ef">
 					<title>
 						<de>Spuk am Kaminfeuer</de>
 						<en>The Haunted Hearth</en>
+						<pl>Nawiedzone palenisko</pl>
 					</title>
 					<description>
 						<de>Auf der Suche nach Schutz vor einem Sturm stößt die Gruppe auf eine scheinbar in der Zeit eingefrorene Hütte. Im Inneren entdecken sie ein verstaubtes Tagebuch, das auf einen von geisterhaften Hütern bewachten verlorenen Schatz hinweist.</de>
 						<en>Seeking shelter from a storm, the group stumbles upon a cottage seemingly frozen in time. Inside, they uncover a dusty journal hinting at a lost treasure guarded by spectral guardians.</en>
+						<pl>Szukając schronienia przed burzą, grupa natrafia na chatę pozornie zamrożoną w czasie. Wewnątrz odkrywają zakurzony dziennik wskazujący na zaginiony skarb strzeżony przez widmowych strażników.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="78e0abc7-0df0-435a-89d4-8000dc9a820f">
 					<title>
 						<de>Der Spiegel der Wahrheit</de>
 						<en>The Mirror of Truth</en>
+						<pl>Zwierciadło prawdy</pl>
 					</title>
 					<description>
 						<de>Noch in der Hütte steckt ${.self:"role":3:"fullname"} seinen Daumen in einen Kuchen und zieht eine Pflaume heraus, aber ein mystischer Spiegel reflektiert etwas anderes - er enthüllt die verborgensten Geheimnisse aller, was mit dem angesprochenen Schatz zu tun haben könnte.</de>
 						<en>Still in the cottage, ${.self:"role":3:"fullname"} puts his thumb into a pie and pulls out a plum, but a mystical mirror reflects something else - it reveals the deepest secrets of everyone, which might have something to do with the treasure mentioned.</en>
+						<pl>Wciąż w domku, ${.self:"role":3:"fullname"} wkłada kciuk do ciasta i wyciąga śliwkę, ale mistyczne lustro odbija coś jeszcze - ujawnia najgłębsze sekrety każdego, co może mieć coś wspólnego ze wspomnianym skarbem.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="408d1dbe-0887-4249-a7e6-15f206c63082">
 					<title>
 						<de>Die Rätsel der Mondschein-Lichtung</de>
 						<en>Riddles of the Moonlit Glade</en>
+						<pl>Zagadki Księżycowej Polany</pl>
 					</title>
 					<description>
 						<de>Um einen gefangenen Faun zu retten, müssen unsere Abenteurer den schelmischen Koboldkönig überlisten. Seine Rätsel, die buchstäblich in das Gewebe der Mondschein-Lichtung eingeflochten sind, fordern all ihre Auffassungsgabe und Kreativität heraus.</de>
 						<en>To rescue a captured faun, our adventurers must outwit the mischievous Goblin King. His riddles, woven into the very fabric of the moonlit glade, challenge their logic and creativity.</en>
+						<pl>Aby uratować schwytanego fauna, nasi poszukiwacze przygód muszą przechytrzyć złośliwego Króla Goblinów. Jego zagadki, wplecione w strukturę księżycowej polany, stanowią wyzwanie dla ich logiki i kreatywności.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="357292ab-33d4-4646-8694-9acacc94ff8a">
 					<title>
 						<de>Der Wächter des Vergessenen Hains</de>
 						<en>The Guardian of the Forgotten Grove</en>
+						<pl>Strażnik zapomnianego gaju</pl>
 					</title>
 					<description>
 						<de>Im Herzen des Waldes der Finsternis liegt der Vergessene Hain, bewacht von einer furchterregenden Chimäre. Kann die Gruppe den schwer greifbaren Goldenen Schlüssel finden?</de>
 						<en>In the heart of the Forest of Darkness lies the Forgotten Grove, guarded by a fearsome Chimera. Can the group find the elusive Golden Key?</en>
+						<pl>W sercu Lasu Ciemności znajduje się Zapomniany Gaj, strzeżony przez przerażającą Chimerę. Czy grupie uda się odnaleźć nieuchwytny Złoty Klucz?</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -1329,10 +1367,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>Sekretärinnen-Bericht 2. Teil - Karrieren, Kaffee &amp; Knutschen</de>
 				<en>Secretaries Report Part 2 - Careers, Coffee &amp; Canoodling</en>
+				<pl>Raport sekretarek, Część 2 - Kariera, kawa i kanapowanie</pl>
 			</title>
 			<description>
 				<de>Das Büro brodelt! Neue Sekretärin ${.self:"role":1:"fullname"} bringt frischen Schwung, Meetings werden zur Dating-Show, während Chef ${.self:"role":2:"fullname"} hinterm Schreibtisch charmant Chaos stiftet. Und ${.self:"role":3:"fullname"} entdeckt, dass Verträge und Knutschen mehr gemeinsam haben als gedacht.</de>
 				<en>The office is on fire! New secretary ${.self:"role":1:"fullname"} brings fresh energy, meetings turn into a dating show, while boss ${.self:"role":2:"fullname"} charmingly creates chaos behind his desk. And ${.self:"role":3:"fullname"} discovers that contracts and canoodling have more in common than she thought.</en>
+				<pl>Biuro płonie! Nowa sekretarka ${.self:"role":1:"fullname"} przynosi świeżą energię, spotkania zamieniają się w randkowe show, a szef ${.self:"role":2:"fullname"} uroczo tworzy chaos za swoim biurkiem. I ${.self:"role":3:"fullname"} odkrywa, że kontrakty i kanapowanie mają ze sobą więcej wspólnego niż myślała.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1360,10 +1400,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>Sekretärinnen-Bericht 3. Teil - Stenografie, Streiche &amp; Sinnlichkeit</de>
 				<en>Secretaries Report Part 3 - Shorthand, Stunts &amp; Sensuality</en>
+				<pl>Raport sekretarek, Część 3 - Skróty, akrobacje i zmysłowość</pl>
 			</title>
 			<description>
 				<de>Jetzt wird's noch bunter: ${.self:"role":1:"fullname"} wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und ${.self:"role":2:"fullname"}s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
-				<en>Now it all gets extra sparkly: ${.self:"role":1:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":2:"fullname"}'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
+				<en>Now it all gets extra sparkly: ${.self:"role":1:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":2:"fullname"}'s clattering typewriter... In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
+				<pl>Teraz wszystko nabiera dodatkowego blasku: ${.self:"role":1:"fullname"} staje się mistrzem stenografii i innych krótkich tekstów, faks i telefon dzwonią w rytm akcji. Stukająca maszyna do pisania... Pośród nijakiej biurokracji buzują ogniste fantazje. A to wszystko za sprawą tej osoby: ${.self:"role":2:"fullname"}</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1391,10 +1433,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>Sekretärinnen-Bericht 4. Teil</de>
 				<en>Secretaries Report Part 4</en>
+				<pl>Raport sekretarek, Część 4</pl>
 			</title>
 			<description>
 				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler ${.self:"role":2:"lastname"} gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
 				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent ${.self:"role":2:"lastname"}'s, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+				<pl>Blondynka ${.self:"role":1:"firstname"} z najwyższego piętra wodzi za nos swoich licznych adoratorów, w agencji nieruchomości odbywa się impreza złotego prysznica - dokładnie u ${.self:"role":2:"lastname"}a, szef ${.self:"role":3:"fullname"} zostaje przyłapany w skórzanym stroju fetyszysty w pralni,... Chwileczkę, czy to nie jest...?</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -1423,10 +1467,12 @@ Czyli 4120 na odcinek.</pl>
 			<title>
 				<de>${.self:"role":1:"fullname"} und die Spirituosenfabrik</de>
 				<en>${.self:"role":1:"fullname"} and the Liquor Factory</en>
+				<pl>${.self:"role":1:"fullname"} i Fabryka Alkoholi</pl>
 			</title>
 			<description>
 				<de>Der stümperhafte Pfandflaschensammler und Alkoholiker ${.self:"role":2:"fullname"} findet auf einer Bierflasche eins der begehrten Tickets für die Trinklieder-Tour des exzentrischen ${.self:"role":1:"fullname"}. Die Stößchen-Stößchen-Adligen dort nerven aber ziemlich rum.</de>
 				<en>The bumbling deposit bottle collector and alcoholic ${.self:"role":2:"fullname"} finds, on a beer bottle, one of the coveted tickets for the drinking-song-tour of the eccentric ${.self:"role":1:"fullname"}. However, the pint-swilling aristocrats there are quite the nuisance.</en>
+				<pl>Nieudolny kolekcjoner butelek z kaucją i alkoholik ${.self:"role":2:"fullname"} znajduje na butelce piwa jeden z upragnionych biletów na trasę koncertową ekscentrycznego artysty o nazwisku ${.self:"role":1:"fullname"}. Jednak arystokraci pijący tam piwo są dość uciążliwi.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
