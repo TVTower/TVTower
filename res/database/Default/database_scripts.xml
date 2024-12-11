@@ -742,7 +742,7 @@
 						<description_6>
 							<de>sind da zur Beschwerde, weil sie mit der Behandlung ihrer Opas nicht einverstanden sind. Die ${who} mediieren gewaltfrei.</de>
 							<en>are there to complain because they don't agree with the treatment of their grandfathers. The ${who} mediate non-violently.</en>
-							<pl>są tam, żeby narzekać, bo nie zgadzają się z traktowaniem swoich dziadków. ${.ufirst:who} pośredniczą bez przemocy.</pl>
+							<pl>są tam, żeby narzekać, bo nie zgadzają się z traktowaniem swoich dziadków. ${.ucfirst:who} pośredniczą bez przemocy.</pl>
 						</description_6>
 						<description_7>
 							<de>sind da samt Junggesellenabschieds-Entourage. Die ${who} müssen demonstrieren, wie man mal so richtig die Sau rauslässt.</de>
