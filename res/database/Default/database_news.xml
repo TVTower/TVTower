@@ -8571,7 +8571,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						The ${age} year old schoolgirl;she;her;${.persongenerator:"fullname":"en":"female"};
 					</en>
 					<pl>${age} letni uczeń;on;jego;${.persongenerator:"fullname":"pl":"male"};Złamał|
-						${age} letnia uczenica;ona;jej;${.persongenerator:"fullname":"pl":"female";Złamała}
+						${age} letnia uczenica;ona;jej;${.persongenerator:"fullname":"pl":"female"};Złamała
 					</pl> <!-- add a verb only in Polish--> <!-- TODO: Not really just Polish-specific, could be 'backported' to the other languages -->
 				</schoolkid_csv>
 				<theschoolkid>

@@ -269,6 +269,7 @@ Naprawdę trzeba żuć.</pl>
 			<title>
 				<all>${brand_bestbuy}</all>
 				<de>${brand_mediamarkt}</de>
+				<pl>${brand_mediamarkt}</pl>
 			</title>
 			<description>
 				<de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten ${brand_mediamarkt}.</de>
