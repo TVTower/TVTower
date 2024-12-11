@@ -392,14 +392,10 @@
 				<adjective>
 					<de>witzige|aufgeweckte|gescheite|kluge|lustige</de>
 					<en>Witty|Sharp|Clever|Smart|Funny</en>
-					<!-- In PL  <adjective_m> or <adjective_w> -->
+					<pl>Dowcipn|Ostr|Sprytn|Inteligentn|Zabawn</pl>
 				</adjective>
-				<adjective_m>
-					<pl>Dowcipny|Ostry|Sprytny|Inteligentny|Zabawny</pl>
-				</adjective_m>
-				<adjective_w>
-					<pl>Dowcipna|Ostra|Sprytna|Inteligentna|Zabawna</pl>
-				</adjective_w>
+				<adjective_m>${adjective}y<adjective_m>
+				<adjective_w>${adjective}a<adjective_w>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-kautz-01">

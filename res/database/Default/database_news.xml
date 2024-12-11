@@ -8111,7 +8111,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, führt das Game „${armwrestling_${i}} Challenge“ von ${artistlastname}soft derzeit die internationalen Verkaufscharts an.</de>
 				<en>After the minor hype following the World Championship, the game "${armwrestling_${i}} Challenge" by ${artistlastname}soft is currently topping the international sales charts.</en>
-				<pl>Po szumie po Mistrzostwach Świata, gra „Wyzwania w ${armwrestling_${i}}“ autorstwa ${artistlastlastname}soft znajduje się obecnie na szczycie międzynarodowych list sprzedaży.</pl>
+				<pl>Po szumie po Mistrzostwach Świata, gra „Wyzwania w ${armwrestling_${i}}“ autorstwa ${artistlastname}soft znajduje się obecnie na szczycie międzynarodowych list sprzedaży.</pl>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
