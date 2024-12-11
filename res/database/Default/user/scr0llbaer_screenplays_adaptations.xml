@@ -1691,7 +1691,7 @@
 			<title>
 				<de>Knirps</de>
 				<en>${.self:"role":1:"firstname"}</en>
-				<pl>${.self:"role":1:"imię"}</pl>
+				<pl>${.self:"role":1:"firstname"}</pl>
 			</title>
 			<title_original>
 				<de>Bonsai</de>
@@ -6289,7 +6289,7 @@
 				<dead>
 					<de>Toter|Karger|Kalter|Trostloser|Trister|Rauer</de>
 					<en>Dead|Desolate|Cold|Dismal|Dreary|Bleak</en>
-					<pl>Martwy|Opuszczony|Zimny|Ponury|Mroczny</pl>
+					<pl>Martwy|Opuszczony|Zimny|Ponury|Mroczny|Obskurny</pl>
 				</dead>
 				<winter>
 					<de>Winter|Schnee|Schneeregen|Eisregen|Frost</de>
@@ -7353,12 +7353,12 @@
 				<adj>
 					<de>Wahnwitzige|Verrückte|Irrwitzige|Durchgeknallte|Geisteskranke|Irrsinnige|Aberwitzige|Manische|Wahnsinnige|Absurde|Groteske|Bizarre|Abgedrehte</de>
 					<en>Lunatic|Crazy|Mad|Frenzied|Frantic|Insane|Ludicrous|Manic|Maniacal|Absurd|Grotesque|Bizarre|Wacky</en>
-					<pl>Szalona|Wściekła|Oszalała|Rozgorączkowana|Obłąkana|Śmieszna|Maniacka|Maniakalna|Absurdalna|Groteskowa|Dziwaczna|Odlotowa</pl>
+					<pl>Szalona|Wściekła|Oszalała|Rozgorączkowana|Obłąkana|Śmieszna|Maniacka|Maniakalna|Absurdalna|Groteskowa|Dziwaczna|Odlotowa|Fanatyczna</pl>
 				</adj>
 				<adj_o>
 					<de>Manische|Wahnwitzige|Verrückte|Irrwitzige|Durchgeknallte|Geisteskranke|Irrsinnige|Aberwitzige|Manische|Wahnsinnige|Absurde|Groteske|Bizarre|Abgedrehte</de>
 					<en>Maniac|Lunatic|Crazy|Mad|Frenzied|Frantic|Insane|Ludicrous|Manic|Maniacal|Absurd|Grotesque|Bizarre|Wacky</en>
-					<pl>Maniakalny|Wariacki|Szalony|Wściekły|Oszalały|Fantastyczny|Obłąkany|Śmieszny|Maniacki|Maniakalny|Absurdalny|Groteskowy|Dziwaczny|Odlotowy</pl>
+					<pl>Maniakalny|Wariacki|Szalony|Wściekły|Oszalały|Fantastyczny|Obłąkany|Śmieszny|Maniacki|Popaprany|Absurdalny|Groteskowy|Dziwaczny|Odlotowy</pl>
 				</adj_o>
 				<house_m>
 					<de>Landsitz</de>
@@ -7691,7 +7691,7 @@
 				<secret_title_original>
 					<de>Geheimnis|Mysterium|Rätsel|Geheimnis|Geheimnis</de>
 					<en>Secret|Mystery|Riddle|Enigma|Secret</en>
-					<pl>Tajemnica|Zagadka|Mit|Sekret</pl>
+					<pl>Tajemnica|Zagadka|Mit|Sekret|Enigma</pl>
 				</secret_title_original>
 				<monkey_title>
 					<de>Esels|Lemuren|Schimpansen|Pavian</de>
@@ -9514,7 +9514,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<new>
 					<de>Neuen|Neuartigen|Weiteren|Frischen|Ungeahnten|Nachfolgenden|Unversuchten|Ursprünglichen|Neuerlichen|Wiederbelebten|Erneuten|Neugeborenen|Wiedererstarkten|Reanimierten|Auferstandenen</de>
 					<en>New|Novel|Further|Fresh|Unprecedented|Successive|Untried|Pristine|Refreshed|Revived|Renewed|Reborn|Invigorated|Reanimated|Resurrected</en>
-					<pl>Nowe|Nowe|Dalsze|Świeże|Bezprecedensowe|Kolejne|Niewypróbowane|Nieskazitelne|Odświeżone|Ożywione|Odnowione|Odrodzone|Ożywione|Ożywione</pl>
+					<pl>Nowe|Nowsze|Dalsze|Świeże|Bezprecedensowe|Kolejne|Niewypróbowane|Nieskazitelne|Odświeżone|Ożywione|Odnowione|Odrodzone|Polepszone|Poprawione|Odrestaurowane</pl>
 				</new>
 				<adventures>
 					<de>Abenteuer|Erlebnisse|Zeiten|Tücken|Ereignisse|Entdeckungen|Eskapaden|Erforschungen|Missionen|Vorhaben|Episoden|Taten|Prüfungen|Aufgaben|Tätigkeiten|Unternehmungen|Schwierigkeiten|Gefahren|Herausforderungen</de>

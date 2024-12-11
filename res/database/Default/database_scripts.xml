@@ -391,7 +391,7 @@
 				<titleaction>
 					<de>und die ${DISEASE}|vs. ${DISEASE}|kontra ${DISEASE}|besingt ${DISEASE}</de>
 					<en>and the ${DISEASE}|vs. ${DISEASE}|contra ${DISEASE}|sings about ${DISEASE}</en>
-					<pl>i ${DISEASE}|ma przypadłość. To ${DISEASE}|śpiewa o swojej przypadłości. To ${DISEASE}.</pl>
+					<pl>i ${DISEASE}|vs ${DISEASE}|ma przypadłość. To ${DISEASE}|śpiewa o swojej przypadłości. To ${DISEASE}.</pl>
 				</titleaction>
 				<descriptionaction>
 					<de>leidet seit dem Kindesalter an ${DISEASE}|bestreitet sein Leben mit ${DISEASE}|leidet unter ${DISEASE}|kann nur singend seine ${DISEASE} bekämpfen</de>
@@ -936,7 +936,7 @@
 						<rioting>
 							<de>randalierender|rüpelhafter|unruhestiftender|störender|ungehorsamer|aufrührerischer|rebellischer|chaotischer|aufwieglerischer|ungestümer|unkontrollierbarer|unberechenbarer|unvernünftiger|uneinsichtiger|unangepasster|unbeherrschter|stürmischer|Aufruhr verursachender|unordentlicher|widerspenstiger|rücksichtsloser|ungehobelter|zügelloser|ungebändigter|wilder|unbändiger|irrationaler|zwieträchtiger|aufmüpfiger|unflätiger|pöbelnder|übler|übelster</de>
 							<en>rioting|rowdy|troublemaking|disruptive|unruly|riotous|rebellious|chaotic|agitating|boisterous|uncontrolled|unpredictable|unreasonable|inconsiderate|maladjusted|unrestrained|tumultuous|turmoil-causing|disorderly|disobedient|reckless|rude|unbridled|erratic|wild|ungovernable|irrational|discordant|seditious|foul-mouthed|rabble-rousing|nasty|the nastiest</en>
-							<pl>Agresywn|Hałaśliw|Awanturnicz|Destrukcyjn|Nieokiełznan|Buntownicz|Chaotyczn|Agitując|Hałaśliw|Niekontrolowan|Nieprzewidywaln|Nierozsądn|Nierozważn|Nieprzystosowan|Niepohamowan|Burzliw|Głośn|Nieuporządkowan|Nieposłuszn|Lekkomyśln|Nieokrzesan|Nieokiełznan|Szalon|Szalon|Nieracjonaln|Buntownicz|Buntownicz|Wulgarn|Wulgarn|Okropn|Najokropniejsz</pl>
+							<pl>Agresywn|Hałaśliw|Awanturnicz|Destrukcyjn|Nieokiełznan|Buntownicz|Chaotyczn|Agitując|Hałaśliw|Niekontrolowan|Nieprzewidywaln|Nierozsądn|Nierozważn|Nieprzystosowan|Niepohamowan|Burzliw|Głośn|Nieuporządkowan|Nieposłuszn|Lekkomyśln|Nieokrzesan|Nieokiełznan|Szalon|Chamsk|Nieracjonaln|Buntownicz|Buntownicz|Wulgarn|Wulgarn|Okropn|Najokropniejsz|Najpaskudniejsz|Obskurn</pl>
 						</rioting> 
 						<bikers>
 							<de>Biker|Punker|Punks|Skinheads|Hooligans|Rocker|Satanisten|Scooter|Rapper|Gangster|Aktivisten|Vaterlandsverräter|Arbeitsloser|Obdachloser|Hurensöhne|Husos|Panzerknacker|Abtrünniger|abtrünniger Söldner|Rabauken|Lausbuben|Raufbolde|LARPer|Arschlöcher|Drecksäcke</de>
@@ -967,7 +967,7 @@
 						<park>
 							<de>Der „${location}-Park“|Der „${location}-Vorgarten“|Der „${location}-Garten“|Der „${location}-Rosengarten“|Der „${location}-Blumengarten“|Die „${location}-Kantine“|Der „${location}-Platz“|Der „${location}-Spielplatz“|Der „${location}-Plaza“|Die „${location}-Piazza“|Die „${location}-Passage“|Die „${location}-Allee“|Der „${location}-Boulevard“</de>
 							<en>"${location} park"|"${location} frontyard"|"${location} garden"|"${location} rose garden"|"${location} flower garden"|"${location} cantina"|"${location} square"|"${location} playground"|"${location} plaza"|"${location} piazza"|"${location} arcade"|"${location} avenue"|"${location} boulevard"</en> <!-- TODO: apply title-casing function when available -->
-							<pl>w parku miejskim|na głównej ulicy|w ogrodzie botanicznym|ogrodzie różanym|ogrodzie kwiatowym|przed pasażem handlowym|na Placu Wolności|placu zabaw|na placu budowy hipermarketu|na pasaż handlowym AKEA|w alei monachijskiej|w bulwarze ateńskim</pl>
+							<pl>w parku miejskim|na głównej ulicy|w ogrodzie botanicznym|ogrodzie różanym|ogrodzie kwiatowym|przed pasażem handlowym|na Placu Wolności|placu zabaw|na placu budowy hipermarketu|na pasaż handlowym AKEA|w Alei Monachijskiej|w bulwarze ateńskim|w Alei Jerozolimskiej</pl>
 						</park>
 						<asocialhotspot>
 							<de>ein sozialer Brennpunkt|ein interessanter Treffpunkt|ein Ort der Begegnung unterschiedlichster Menschen|ein Ort, wo Welten aufeinanderprallen|ein Ort, wo sich alle sozialen Schichten begegnen|ein Ort, wo man den unterschiedlichsten Leuten begegnet|ein Ort, wo man den unterschiedlichsten Ansichten begegnet|ein Ort, wo man Menschen von überall her begegnet</de>
@@ -977,7 +977,7 @@
 						<discuss>
 							<de>diskutieren|debattieren|streiten|streiten sich|fetzen sich|zanken sich</de>
 							<en>discuss|debate|argue about|fight about|quarrel about|bicker about</en>
-							<pl>dyskutują o|debatują o|kłócą się o|kłócą się o|sprzeczają się o</pl>
+							<pl>dyskutują o|debatują o|głośno rozmawiają o|kłócą się o|sprzeczają się o|wymieniają się opiniami o</pl>
 						</discuss>
 						<fiercely>
 							<de>heftig|scharf|grimmig|wild|leidenschaftlich|böse|erbittert|hitzig|angespannt|angeregt|aufgeregt</de>
@@ -1018,7 +1018,7 @@
 						<meeting>
 							<de>Treffen|Aufruhr|Fette Beute|Klamauk|Überraschungsfeier|Versammlung|Ringelpiez|Trubel|Wiedersehen|Begegnung|Spektakel|Scherz|Ereignis|Belustigung</de>
 							<en>Meeting|Riot|Fuss|Big booty|Surprise party|Gathering|Revelry|Hustle and bustle|Reunion|Encounter|Spectacle|Frolic|Happening|Merrymaking</en>
-							<pl>Spotkanie|Igraszki|Zamieszanie|Duży łup|Impreza niespodzianka|Spotkanie|Huśtawka nastrojów|Krzątanina|Spotkanie|Spektakl|Igraszki|Wydarzenia|Wesołe świętowanie</pl>
+							<pl>Spotkanie|Igraszki|Zamieszanie|Duży łup|Impreza niespodzianka|Zgromadzenie|Huśtawka nastrojów|Krzątanina|Zjazd|Spektakl|Igraszki|Wydarzenia|Wesołe świętowanie|Zdarzenie</pl>
 						</meeting>
 						<j>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17</j> <!-- must be same count and elements as i -->
 						<others>
