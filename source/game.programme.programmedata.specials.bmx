@@ -342,6 +342,7 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 
 		Local league:TNewsEventSportLeague = team.GetLeague()
 		If league
+'		-> %teamXrank% umbenennen in ${.self:sports:team... ?
 			result = result.Replace("%TEAM"+teamNumber+"RANK%", league.GetCurrentSeason().GetTeamRank(team))
 			'handled by "match.ReplacePlaceholders" too
 			team.FillPlaceholders(result, String(teamNumber))

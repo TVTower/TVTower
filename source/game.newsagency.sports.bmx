@@ -32,6 +32,11 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method GetByID:TNewsEventSport(ID:Int)
+		Return TNewsEventSport( Super.GetByID(ID) )
+	End Method
+
+
 	Method AddLeague(league:TNewsEventSportLeague)
 		leagues.Insert(league.GetGUID(), league)
 	End Method
