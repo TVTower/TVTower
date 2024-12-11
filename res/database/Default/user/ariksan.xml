@@ -394,8 +394,12 @@
 					<en>Witty|Sharp|Clever|Smart|Funny</en>
 					<pl>Dowcipn|Ostr|Sprytn|Inteligentn|Zabawn</pl>
 				</adjective>
-				<adjective_m>${adjective}y<adjective_m>
-				<adjective_w>${adjective}a<adjective_w>
+				<adjective_m>
+					<pl>${adjective}y</pl>
+				</adjective_m>
+				<adjective_w>
+					<pl>${adjective}a</pl>
+				</adjective_w>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-kautz-01">
