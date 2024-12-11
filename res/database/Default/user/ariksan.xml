@@ -4,8 +4,8 @@
 	<scripttemplates>
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-mkw" creator="9621" comment="inspired by German realtor docu soaps">
 			<title>
+				<all>${title} in ${randomcity}</all>
 				<de>${title} in ${randomcity}</de>
-				<en>${title} in ${randomcity}</en>
 				<pl>${title} w ${randomcity}</pl>
 			</title>
 			<description>
