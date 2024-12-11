@@ -1101,7 +1101,7 @@
 						<whythere_13>
 							<de>${firstname1} hatte eine Einladung bekommen, denn ${who}-Ausrüstung ist gerade der letzte Schrei und dient als Vorlage für die brandneuesten Modekreationen.</de>
 							<en>${firstname1} got an invitation, because ${who} gear is all the rage right now and serves as a template for the latest fashion creations.</en>
-							<pl>${firstname1} otrzymała zaproszenie, ponieważ sprzęt ${who_${i}} jest obecnie w modzie i służy jako szablon dla najnowszych kreacji modowych.</pl>
+							<pl>${firstname1} otrzymała zaproszenie, ponieważ sprzęt ${who} jest obecnie w modzie i służy jako szablon dla najnowszych kreacji modowych.</pl>
 						</whythere_13>
 						<whythere_14>
 							<de>Der kleine Bruder von ${firstname3} will die neueste Wasserrutsche dort ausprobieren.</de>

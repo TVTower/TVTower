@@ -508,7 +508,7 @@
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden eine Farb-Fabrik. Hey, kleines ${animal2}, nicht jede Farbe ist zum Trinken da!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore a paint factory. Hey, tiny ${animal2}, not every color is for drinking!</en>
-						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują fabrykę farb. Hej, ${zwierzę2}! Nie każdy kolor nadaje się do picia!</pl>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują fabrykę farb. Hej, ${animal2}! Nie każdy kolor nadaje się do picia!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-kautz-10">

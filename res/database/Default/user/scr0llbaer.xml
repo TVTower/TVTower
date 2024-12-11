@@ -1404,7 +1404,7 @@ Czyli 4120 na odcinek.</pl>
 			</title>
 			<description>
 				<de>Jetzt wird's noch bunter: ${.self:"role":1:"fullname"} wird zur Meisterin der Stenografie und anderer Quickies, Fax und Fon klingeln im Rhythmus der Aktion und ${.self:"role":2:"fullname"}s klappernder Schreibmaschine... Inmitten biederer Bürokratie brodelt feurige Fantasie.</de>
-				<en>Now it all gets extra sparkly: ${.self:"role":1:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":2:"fullname"}'s clattering typewriter.,, In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
+				<en>Now it all gets extra sparkly: ${.self:"role":1:"fullname"} becomes a master of shorthand and other quickies, fax and phone ring to the rhythm of the action and ${.self:"role":2:"fullname"}'s clattering typewriter... In the midst of bland bureaucracy, fiery fantasies are fizzing.</en>
 				<pl>Teraz wszystko nabiera dodatkowego blasku: ${.self:"role":1:"fullname"} staje się mistrzem stenografii i innych krótkich tekstów, faks i telefon dzwonią w rytm akcji. Stukająca maszyna do pisania... Pośród nijakiej biurokracji buzują ogniste fantazje. A to wszystko za sprawą tej osoby: ${.self:"role":2:"fullname"}</pl>
 			</description>
 			<jobs>
