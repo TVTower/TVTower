@@ -20,9 +20,9 @@ Type TDatabaseLocalizer
 	Field localizedPersonIds:TIntMap {nosave}
 	'caches for roles per language
 	Field rolesById:TIntMap[] {nosave}
-	'which rols have a localization
+	'which roles have a localization
 	Field localizedRoleIds:TIntMap {nosave}
-	Field enId:Int {nosave}
+	Field englishLanguageId:Int {nosave}
 
 	Method New()
 		Reset()
@@ -40,7 +40,7 @@ Type TDatabaseLocalizer
 		localizedPersonIds = Null
 		rolesById = Null
 		localizedRoleIds = Null
-		enId = -1
+		englishLanguageId = -1
 	End Method
 
 	Method getGlobalVariable:String(languageId:Int, key:String, isKeyLowerCase:Int= False, fallback:Int=True)
@@ -51,9 +51,7 @@ Type TDatabaseLocalizer
 		Local l:TLocalizationLanguage = getGlobalVariables(languageCode)
 		If Not isKeyLowerCase Then key=key.ToLower()
 		If l And l.Has(key) Then Return l.Get(key)
-		If fallback
-			Return getGlobalVariable("en", key, True, False)
-		EndIf
+		If fallback Then Return getGlobalVariable("en", key, True, False)
 		Return Null
 	End Method
 
@@ -63,25 +61,21 @@ Type TDatabaseLocalizer
 
 	Method getPersonNames:TPersonBase(id:Int, languageId:Int)
 		If Not personsById Then personsById = new TIntMap[TLocalization.languages.length]
-		If Not personsById[languageId]
-			_ensureCaches(languageId)
-		EndIf
+		If Not personsById[languageId] Then _ensureCaches(languageId)
 
 		If Not localizedPersonIds.Contains(id) Then Return Null
 		Local result:TPersonBase = TPersonBase(personsById[languageId].valueForKey(id))
-		If Not result Then result = TPersonBase(personsById[enId].valueForKey(id))
+		If Not result Then result = TPersonBase(personsById[englishLanguageId].valueForKey(id))
 		return result
 	EndMethod
 
 	Method getRoleNames:TProgrammeRole(id:Int, languageId:Int)
 		If Not rolesById Then rolesById = new TIntMap[TLocalization.languages.length]
-		If Not rolesById[languageId]
-			_ensureCaches(languageId)
-		EndIf
+		If Not rolesById[languageId] Then _ensureCaches(languageId)
 
 		If Not localizedRoleIds.Contains(id) Then Return Null
 		Local result:TProgrammeRole = TProgrammeRole(rolesById[languageId].valueForKey(id))
-		If Not result Then result = TProgrammeRole(rolesById[enId].valueForKey(id))
+		If Not result Then result = TProgrammeRole(rolesById[englishLanguageId].valueForKey(id))
 		return result
 	EndMethod
 
@@ -106,8 +100,8 @@ Type TDatabaseLocalizer
 			localizedRoleIds.insert(pl.id, "")
 		Next
 
-		enId = TLocalization.GetLanguageID("en")
-		If languageId <> enId And Not personsById[enId] Then _ensureCaches(enId)
+		englishLanguageId = TLocalization.GetLanguageID("en")
+		If languageId <> englishLanguageId And Not personsById[englishLanguageId] Then _ensureCaches(englishLanguageId)
 	End Method
 
 	Function GetInstance:TDatabaseLocalizer()
@@ -126,17 +120,13 @@ Type TDatabaseLocalizer
 		Local person:TPersonBase
 		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](persons.valueForKey(lang))
 			person = personCollection.GetById(pl.id)
-			If person
-				pl.setValues(person)
-			EndIf
+			If person Then pl.setValues(person)
 		Next
 		Local roleCollection:TProgrammeRoleCollection = GetProgrammeRoleCollection()
 		Local role:TProgrammeRole
 		For Local pl:TPersonLocalization = EachIn TPersonLocalization[](roles.valueForKey(lang))
 			role = roleCollection.GetById(pl.id)
-			If role
-				pl.setValues(role)
-			EndIf
+			If role Then pl.setValues(role)
 		Next
 	End Method
 End Type
