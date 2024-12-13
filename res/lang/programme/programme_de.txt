@@ -129,7 +129,7 @@ SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Begegnung zwischen Platz 
 SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = %TEAM1NAMEINITIALS%-Star %TEAM1STARSHORT% gegen die Mannschaft um Torjäger %TEAM2STAR%.
 SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ein interessantes Spiel steht ins Haus, wenn %TEAM1ARTICLE1% %TEAM1NAME% auf die Spieler des %TEAM2NAMEINITIALS% treffen.
 SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% zu Gast beim %TEAM1NAMEINITIALS% in %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% und seine Mannschaft reisen nach %TEAM2CITY% zum Platz %TEAM2RANK% der Liga.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":0:"trainer":"fullname"} und seine Mannschaft reisen nach ${.self:"sportteam":1:"city"} zum Platz ${.self:"sportteam":1:"leaguerank"} der Liga.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Relegationsspiel.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Spiel der %LEAGUENAME%.

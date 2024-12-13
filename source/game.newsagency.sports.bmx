@@ -809,7 +809,13 @@ Type TNewsEventSport Extends TGameObject
 	End Function
 
 
-	Method GetMatch:TNewsEventSportMatch(guid:String)
+	Method GetMatchByGUID:TNewsEventSportMatch(guid:String)
+		' TODO
+	End Method
+
+
+	Method GetTeamByGUID:TNewsEventSportMatch(guid:String)
+		' TODO
 	End Method
 
 
@@ -2292,6 +2298,15 @@ Type TNewsEventSportTeam Extends TGameObject
 
 	Method GetTeamInitials:String()
 		Return clubNameInitials + nameInitials + clubNameSuffixInitials
+	End Method
+	
+	
+	Method GetLeagueRank:Int()
+		'TODO: give teams a "currentRank:int" field which is updated after
+		'      a match? Only useful if rank is evaluated a lot
+		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+		If Not league Then Return -1
+		Return league.GetCurrentSeason().GetTeamRank(self)
 	End Method
 
 

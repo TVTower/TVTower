@@ -29,6 +29,7 @@ GameScriptExpression.RegisterFunctionHandler( "locale", SEFN_locale, 1, 2)
 GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "sport", SEFN_sport, 2, 4)
 GameScriptExpression.RegisterFunctionHandler( "sportleague", SEFN_sportleague, 2, 4)
+GameScriptExpression.RegisterFunctionHandler( "sportteam", SEFN_sportteam, 2, 4)
 GameScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 1, 1)
 GameScriptExpression.RegisterFunctionHandler( "persongenerator", SEFN_PersonGenerator, 1, 3)
 GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 1)
@@ -204,6 +205,17 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 			Case "description"         Return New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
 		End Select
 	EndIf
+
+
+	' delegate to custom sport property handler as programmedata 
+	' and programelicence use same functionality
+	If TSportsProgrammeData(licence.data)
+		Select propertyName
+			Case "sport", "sportleague", "sportmatch", "sportteam"
+				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(licence.data), propertyName, params, 1 + tokenOffset)
+		End Select
+	EndIf
+
 	
 	Select propertyName
 		Case "cast"                    Return _EvaluateProgrammeDataCast(licence.data, params, 1 + tokenOffset, context.contextNumeric)
@@ -298,6 +310,16 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		propertyName = params.GetToken(2 + tokenOffset).value.ToLower()
 	EndIf
 
+
+	' delegate to custom sport property handler as programmedata 
+	' and programelicence use same functionality
+	If TSportsProgrammeData(data)
+		Select propertyName
+			Case "sport", "sportleague", "sportmatch", "sportteam"
+				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(data), propertyName, params, 1 + tokenOffset)
+		End Select
+	EndIf
+
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)
 	if not firstTokenIsSelf
@@ -306,7 +328,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 			Case "description"         Return New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
 		End Select
 	EndIf
-	
+
 	Select propertyName
 		Case "cast"                    Return _EvaluateProgrammeDataCast(data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
@@ -345,6 +367,49 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		Default                        Return New SToken( TK_ERROR, "Unknown property ~q" + propertyName + "~q", params.GetToken(0) )
 	End Select
 End Function
+
+
+Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgrammeData, propertyName:String, params:STokenGroup Var, tokenOffset:int) 'inline
+	If Not propertyName
+		propertyName = params.GetToken(tokenOffset).value.ToLower()
+	EndIf
+
+	Select propertyName
+		Case "sport", "sportleague", "sportmatch", "sportteam"
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(data.leagueGUID)
+			If Not league
+				Return New SToken( TK_ERROR, "No league defined in context of programme data", params.GetToken(0) )
+			EndIf
+
+			If propertyName = "sportleague"
+				Return _EvaluateNewsEventSportLeague(league, params, tokenOffset + 1) 'inline
+			ElseIf propertyName = "sport"
+				Local sport:TNewsEventSport = league.GetSport()
+				If Not sport
+					Return New SToken( TK_ERROR, "No sport defined in context of programme data", params.GetToken(0) )
+				EndIf
+				Return _EvaluateNewsEventSport(sport, params, tokenOffset + 1) 'inline
+			ElseIf propertyName = "sportmatch"
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(data.matchGUID)
+				If Not match
+					Return New SToken( TK_ERROR, "No match defined in context of programme data", params.GetToken(0) )
+				EndIf
+				Return _EvaluateNewsEventSportMatch(match, params, tokenOffset + 1) 'inline
+			ElseIf propertyName = "sportteam"
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(data.matchGUID)
+				If Not match
+					Return New SToken( TK_ERROR, "No match (to identify teams) defined in context of programme data", params.GetToken(0) )
+				EndIf
+				Local teamIndex:Int = params.GetToken(tokenOffset + 1).valueLong
+				If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
+					Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
+				EndIf
+				Return _EvaluateNewsEventSportTeam(match.teams[teamIndex], params, tokenOffset + 2)
+			EndIf
+	End Select
+	Return New SToken( TK_ERROR, "Unsupported sports-token ~q"+propertyName+"~q", params.GetToken(0) )
+End Function
+
 
 
 Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int, language:int) 'inline
@@ -658,9 +723,27 @@ Function SEFN_sport:SToken(params:STokenGroup Var, context:SScriptExpressionCont
 End Function
 
 
-'${.sport:"guid"/id:"name"} - context: all
+'${.sportleague:"guid"/id:"name"} - context: all
 Function SEFN_sportleague:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
 	Local league:TNewsEventSportLeague
+	Local token:SToken = params.GetToken(1)
+	Local GUID:String = token.value
+	Local ID:Long = token.valueLong
+	If GUID
+		league = GetNewsEventSportCollection().GetLeagueByGUID(GUID)
+		If Not league Then Return New SToken( TK_ERROR, ".sportleague with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
+	Else
+		league = GetNewsEventSportCollection().GetLeagueByGUID(Int(ID))
+		If Not league Then Return New SToken( TK_ERROR, ".sportleague with ID ~q"+ID+"~q not found", params.GetToken(0) )
+	EndIf
+	
+	Return _EvaluateNewsEventSportLeague(league, params, 2)
+End Function
+
+
+'${.sportteam:"guid"/id:"name"} - context: all
+Function SEFN_sportteam:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
+	Local team:TNewsEventSportTeam
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
 	Local ID:Long = token.valueLong
@@ -791,6 +874,8 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			Return _EvaluateNewsEventSportTeamMember(member, params, tokenOffset + 2)
 		case "city"     
 			Return New SToken( TK_TEXT, team.GetCity(), params.GetToken(0) )
+		case "leaguerank"
+			Return New SToken( TK_TEXT, team.GetLeagueRank(), params.GetToken(0) )
 		case "teamname"
 			Return New SToken( TK_TEXT, team.GetTeamName(), params.GetToken(0) )
 		case "teamnameshort"
@@ -823,9 +908,9 @@ Function _EvaluateNewsEventSportTeamMember:SToken(member:TNewsEventSportTeamMemb
 	If result.id = TK_ERROR 'not evaluated (or real error)
 		Select params.GetToken(tokenOffset).value.ToLower()
 			case "teamguid"  Return New SToken( TK_TEXT, member.teamGUID, params.GetToken(0) )
-			default          Return result 'person-token-result is already an error
 		End Select
 	EndIf
+	Return result 'person-token-result is already an error
 End Function
 
 
