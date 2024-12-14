@@ -243,7 +243,7 @@ Type TGameModifierBase
 
 
 	Method InitTimeDataIfPresent(data:TData)
-		If data And data.GetString("time") Then GetData().AddString("time", data.GetString("time"))
+		If data And data.Has("time") Then GetData().Add("time", data.GetString("time"))
 	End Method
 
 
@@ -367,7 +367,7 @@ Type TGameModifierBase
 	Method SetDelayedExecutionTime:Int(delayTime:Long)
 		If delayTime > 0
 			SetFlag(FLAG_DELAYED_EXECUTION, True)
-			GetData().AddLong(lsKeyDelayExecutionUntilTime, delayTime)
+			GetData().Add(lsKeyDelayExecutionUntilTime, delayTime)
 		Else
 			SetFlag(FLAG_DELAYED_EXECUTION, False)
 			GetData().Remove(lsKeyDelayExecutionUntilTime)
@@ -588,14 +588,14 @@ Type TGameModifier_GameConfig Extends TGameModifierBase
 		Local relative:Int = GetData().GetBool(modKeyRelative)
 
 		'backup
-		GetData().AddFloat(modKeyValueBackup, valueBackup)
+		GetData().Add(modKeyValueBackup, valueBackup)
 
 		'adjust
 		If relative
-			GetData().AddFloat(modKeyValueChange, valueBackup * value)
+			GetData().Add(modKeyValueChange, valueBackup * value)
 			GameConfig.SetModifier(modKey, valueBackup * (1+value))
 		Else
-			GetData().AddFloat(modKeyValueChange, value)
+			GetData().Add(modKeyValueChange, value)
 			GameConfig.SetModifier(modKey, valueBackup + value)
 		EndIf
 
@@ -832,7 +832,7 @@ Type TGameModifierChoice Extends TGameModifierBase
 		Local extra:TData = New TData
 		Repeat
 			childIndex :+1
-			extra.AddInt(lsKeyChildIndex, childIndex)
+			extra.Add(lsKeyChildIndex, childIndex)
 			'create the choice based on the defined type for the children
 			child = CreateNewChoiceInstance().Init(data, extra)
 			If child

@@ -1240,7 +1240,7 @@ endrem
 				EndIf
 				'override config if pressureGroups are defined already
 				If pressureGroups >= 0
-					sectionConfig.AddInt("pressureGroups", pressureGroups)
+					sectionConfig.Add("pressureGroups", pressureGroups)
 				EndIf
 
 				'add state section if data is ok
@@ -3171,7 +3171,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		Next
 
 		If GetReachLevel(reach) <> reachLevelBefore
-			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.addInt("reachLevel", GetReachLevel(reach)).AddInt("reachLevelBefore", reachLevelBefore), Self )
+			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.Add("reachLevel", GetReachLevel(reach)).Add("reachLevelBefore", reachLevelBefore), Self )
 		EndIf
 
 		Return True
@@ -3243,12 +3243,12 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		'kids and seniors)
 		If reachedReceiversBefore <> self._reachedReceivers
 			'inform others about new audience reach
-			TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.AddInt("reach", self._reachedReceivers).AddInt("reachBefore", reachedReceiversBefore).AddInt("playerID", owner), Self )
+			TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.Add("reach", self._reachedReceivers).Add("reachBefore", reachedReceiversBefore).Add("playerID", owner), Self )
 			'inform others about a change of the reach level
 			Local reachLevel:Int = TStationMap.GetReceiverLevel(self._reachedReceivers)
 			Local reachLevelBefore:Int = TStationMap.GetReceiverLevel(reachedReceiversBefore)
 			If reachLevel <> reachLevelBefore
-				TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.AddInt("reachLevel", reachLevel).AddInt("reachLevelBefore", reachLevelBefore), Self )
+				TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.Add("reachLevel", reachLevel).Add("reachLevelBefore", reachLevelBefore), Self )
 			EndIf
 		EndIf
 	End Method
@@ -7063,7 +7063,7 @@ Type TStationMap_Satellite Extends TStationMap_BroadcastProvider {_exposeToLua="
 				If nextTechUpgradeTime > 0
 					quality :+ nextTechUpgradeValue
 					'inform others (eg. for news)
-					TriggerBaseEvent(GameEventKeys.Satellite_OnUpgradeTech, New TData.AddInt("quality", quality).Addint("oldQuality", quality - nextTechUpgradeValue), Self )
+					TriggerBaseEvent(GameEventKeys.Satellite_OnUpgradeTech, New TData.Add("quality", quality).Add("oldQuality", quality - nextTechUpgradeValue), Self )
 					'print "satellite " + name +" upgraded technology " + (quality - nextTechUpgradeValue) +" -> " + quality
 				EndIf
 

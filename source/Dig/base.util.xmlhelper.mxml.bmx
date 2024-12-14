@@ -549,58 +549,18 @@ Type TXmlHelper
 				Local subData:TData = New TData
 
 				LoadAllValuesToData(subNode, subData, ignoreNames)
-				Local key:Object
-				If dataLS.EqualsLower(subNode.getName())
-					key = dataLS
+				Local subNodeName:String = subNode.getName()
+				If dataLS.EqualsLower(subNodeName)
+					data.Add(dataLS, subData)
 				Else
-					key = subNode.getName()
+					data.Add(subNodeName, subData)
 				EndIf
-
-rem
-				If data.Has(key)
-					local storedObj:Object = data.Get(key)
-					Local dataArr:TData[] = TData[](storedObj)
-					If Not dataArr
-						dataArr = New TData[0]
-						If storedObj
-							dataArr :+ [storedObj]
-						EndIf
-					EndIf
-					dataArr :+ [subData]
-
-					data.Add(key, dataArr)
-				Else
-endrem
-					data.Add(key, subData)
-'				EndIf
 			Else
 				Local value:String = subNode.ToString()
-'print bmx_mxmlGetType(subNode.nodePtr) +"  | " + value
 				'skip comments
-				If value And value[0] = Asc("<") And value.Find("<!--") = 0 Then Continue
+				If value  And value.Find("<!--") = 0 Then Continue
 
-
-
-				Local key:Object = subNode.getName()
-rem
-				'convert to an array?
-				If data.Has(key)
-					local storedObj:Object = data.Get(key)
-					Local arr:Object[] = Object[](storedObj)
-					If Not arr
-						arr = New Object[0]
-						If storedObj
-							arr :+ [storedObj]
-						EndIf
-					EndIf
-					arr :+ [subNode.GetContent()]
-
-					data.Add(key, arr)
-				Else
-endrem
-					data.Add(key, subNode.GetContent())
-'				EndIf
-				'data.Add(subNode.getName(), subNode.GetContent())
+				data.Add(subNode.getName(), subNode.GetContent())
 			EndIf
 		Next
 		Return data

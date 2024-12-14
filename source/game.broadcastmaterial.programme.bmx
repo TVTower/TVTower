@@ -136,13 +136,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			'GetBroadcastInformationProvider().SetProgrammeAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.GetTimeGoneForGameTime(0,day,hour,minute) )
 
 			'inform others
-			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 		'sent a trailer
 		ElseIf usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			FinishBroadcastingAsAdvertisement(day, hour, minute, audienceData)
 
 			'inform others
-			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 '			GetBroadcastInformationProvider().SetTrailerAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.GetTimeGoneForGameTime(0,day,hour,minute) )
 		Else
 			Self.SetState(Self.STATE_OK)
@@ -183,17 +183,17 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			licence.GetBroadcastStatistic().SetAudienceResult(owner, currentBlockBroadcasting, audienceResult)
 
 			If licence And licence.effects
-				Local effectParams:TData = New TData.AddInt("programmeId", Self.licence.GetId())
+				Local effectParams:TData = New TData.Add("programmeId", Self.licence.GetId())
 				licence.effects.Update("broadcast", effectParams)
 				'very first broadcast - not owner dependent
 				If licence.data.GetTimesBroadcasted(-1) = 0 Then licence.effects.Update("broadcastFirstTime", effectParams)
 			EndIf
 
 			'inform others
-			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 		ElseIf usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'inform others
-			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcastingAsAdvertisement, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcastingAsAdvertisement, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).Add("audienceData", audienceData), Self)
 		EndIf
 	End Method
 
@@ -268,10 +268,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'=== ADJUST TRENDS / POPULARITY ===
 		Local popularity:TGenrePopularity = data.GetGenreDefinition().GetPopularity()
 		Local popData:TData = New TData
-		popData.AddFloat("attractionQuality", audienceResult.AudienceAttraction.Quality)
-		popData.AddFloat("audienceSum", audienceResult.Audience.GetTotalSum())
-		popData.AddFloat("audienceWholeMarketQuote", audienceResult.GetWholeMarketAudienceQuotePercentage())
-		popData.AddFloat("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
+		popData.Add("attractionQuality", audienceResult.AudienceAttraction.Quality)
+		popData.Add("audienceSum", audienceResult.Audience.GetTotalSum())
+		popData.Add("audienceWholeMarketQuote", audienceResult.GetWholeMarketAudienceQuotePercentage())
+		popData.Add("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
 
 		popularity.FinishBroadcastingProgramme(popData, GetBlocks())
 
@@ -343,7 +343,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		data.RefreshTrailerTopicality()
 
 		If licence And licence.effects
-			Local effectParams:TData = New TData.AddInt("programmeId", Self.licence.GetId()).AddInt("playerID", Self.licence.GetOwner())
+			Local effectParams:TData = New TData.Add("programmeId", Self.licence.GetId()).Add("playerID", Self.licence.GetOwner())
 			licence.effects.Update("broadcastDone", effectParams)
 			'very first broadcast - not owner dependent
 			If data.GetTimesBroadcasted(-1) = 1 Then licence.effects.Update("broadcastFirstTimeDone", effectParams)
@@ -731,8 +731,8 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	Method ShowSheet:Int(x:Int,y:Int, align:Float=  0.5) override
 		Local extra:TData = New TData
-		extra.AddInt("programmedDay", programmedDay)
-		extra.AddInt("programmedHour", programmedHour)
+		extra.Add("programmedDay", programmedDay)
+		extra.Add("programmedHour", programmedHour)
 
 		'show sheet with stats of the broadcast owner, not the current
 		'licence owner

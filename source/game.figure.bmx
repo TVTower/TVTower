@@ -832,7 +832,7 @@ Type TFigure extends TFigureBase
 		'=== INFORM OTHERS ===
 		'inform that figure failed to enter the room
 		'(eg. for players informing the ai)
-		TriggerBaseEvent(GameEventKeys.Figure_OnFailEnterRoom, new TData.AddString("reason", reason).Add("door", door), self, room)
+		TriggerBaseEvent(GameEventKeys.Figure_OnFailEnterRoom, new TData.Add("reason", reason).Add("door", door), self, room)
 
 		'Debug
 		'print self.name+" FAILED ENTERING " + room.GetName() +" ["+room.id+"]"
@@ -1272,7 +1272,7 @@ Type TFigure extends TFigureBase
 		endif
 
 		'emit an event
-		TriggerBaseEvent(GameEventKeys.Figure_OnChangeTarget, new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null )
+		TriggerBaseEvent(GameEventKeys.Figure_OnChangeTarget, new TData.Add("x", x).Add("y", y).Add("forceChange", forceChange), self, null )
 
 		return TRUE
 	End Method

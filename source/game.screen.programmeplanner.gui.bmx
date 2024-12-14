@@ -935,7 +935,7 @@ endrem
 				If Not dragItem.isDragable() Then Return False
 
 				'ask others if they want to intercept that exchange
-				Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUISlotList_OnBeginReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
+				Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUISlotList_OnBeginReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).Add("slot",slot), Self)
 				event.Trigger()
 
 				If Not event.isVeto()
@@ -947,7 +947,7 @@ endrem
 					'unset the occupied slot
 					_SetSlot(i, Null)
 
-					TriggerBaseEvent(GUIEventKeys.GUISlotList_OnReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self)
+					TriggerBaseEvent(GUIEventKeys.GUISlotList_OnReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).Add("slot",slot) , Self)
 				EndIf
 				'skip slots occupied by this item
 				i:+ (dragItem.broadcastMaterial.GetBlocks(isType)-1)
@@ -1008,7 +1008,7 @@ endrem
 		EndIf
 
 		'ask if an add to this slot is ok
-		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIList_TryAddItem, New TData.Add("item", item).AddNumber("slot",addToSlot) , Self)
+		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIList_TryAddItem, New TData.Add("item", item).Add("slot",addToSlot) , Self)
 		EventManager.triggerEvent(event)
 		If event.isVeto() Then Return False
 

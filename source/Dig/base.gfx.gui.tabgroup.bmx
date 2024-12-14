@@ -47,7 +47,7 @@ Type TGUIToggleButton Extends TGUIButton
 		Self.toggled = toggled
 
 		If informOthers 
-			TriggerBaseEvent(GUIEventKeys.GUIToggleButton_OnSetToggled, New TData.AddNumber("toggled", toggled), Self )
+			TriggerBaseEvent(GUIEventKeys.GUIToggleButton_OnSetToggled, New TData.Add("toggled", toggled), Self )
 		EndIf
 
 		Return True
@@ -261,7 +261,7 @@ Type TGUITabGroup Extends TGUIObject
 			GetToggledButtonIndex()
 		EndIf
 
-		TriggerBaseEvent(GUIEventKeys.GUITabGroup_OnSetToggledButton, New TData.AddNumber("index", i), Self )
+		TriggerBaseEvent(GUIEventKeys.GUITabGroup_OnSetToggledButton, New TData.Add("index", i), Self )
 	End Method
 
 
