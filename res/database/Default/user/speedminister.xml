@@ -627,6 +627,7 @@
 			<description>
 				<de>Besser als das Original! Das Betriebssystem von ${brand_microsoft} speziell für Ihren Hochleistungsrechner.</de>
 				<en>Better than the original! The operating system from ${brand_microsoft} especially for your high-performance computer.</en>
+				<pl>Lepszy niż oryginał! System operacyjny ${brand_microsoft} specjalnie dla komputerów o wysokiej wydajności.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
@@ -639,6 +640,7 @@
 			<description>
 				<de>Verbinden, Vereinen, Prosperieren. Die Lösung für Ihr Netzwerk von ${brand_microsoft}.</de>
 				<en>Connect, Combine, Prosper. The solution for your network by ${brand_microsoft}.</en>
+				<pl>Połączenie, Łączenie, Rozwój. Rozwiązanie dla sieci od ${brand_microsoft}.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
@@ -649,8 +651,9 @@
 				<all>${brand_msn}</all>
 			</title>
 			<description>
-				<de>Das Portal und Ihr Pass für Ihre Reise in die digitalen Welten des ${brand_microsoft} Netwebs.</de>
-				<en>The portal and your passport for your journey into the digital worlds of the ${brand_microsoft} Netweb.</en>
+				<de>Das Portal und Ihr Pass für Ihre Reise in die digitalen Welten des ${brand_microsoft} Networks.</de>
+				<en>The portal and your passport for your journey into the digital worlds of the ${brand_microsoft} Network.</en>
+				<pl>Portal i paszport na podróż do cyfrowych światów ${brand_microsoft} Network.</pl>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />

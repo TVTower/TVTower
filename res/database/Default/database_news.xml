@@ -2784,10 +2784,12 @@
 			<title>
 				<de>${raul} ${castro} übernimmt in Kuba</de>
 				<en>${raul} ${castro} takes over in Cuba</en>
+				<pl>${raul} ${castro} przejmuje władzę na Kubie</pl>
 			</title>
 			<description>
 				<de>Nachdem der schwer kranke kubanische Diktator ${fidelcastro} schon längere Zeit regierungsunfähig ist, übernimmt sein Bruder ${raul} nun auch offiziell das Amt.</de>
 				<en>Now that the seriously ill Cuban dictator ${fidelcastro} has been unable to govern for some time, his brother ${raul} has officially taken office.</en>
+				<pl>Teraz, gdy ciężko chory kubański dyktator ${fidelcastro} od pewnego czasu nie jest w stanie rządzić, jego brat ${raul} oficjalnie objął urząd.</pl>
 			</description>
 			<variables>
 				<raul>${.person:"d0480a1f-f654-4bb0-8090-ffad82e346b1":"firstname"}</raul>
@@ -3214,10 +3216,12 @@
 			<title>
 				<de>Torwart wird Wrestler</de>
 				<en>Goalkeeper becomes a wrestler</en>
+				<pl>Bramkarz staje się zapaśnikiem</pl>
 			</title>
 			<description>
 				<de>Fußballtorwart ${tim} ${wiese} hat sich entschlossen, Wrestler zu werden. Experten sagen ihm eine schnelle Karriere voraus.</de>
 				<en>Soccer goalkeeper ${tim} ${wiese} has decided to become a wrestler. Experts predict that his career will be a fast one.</en>
+				<pl>Piłkarski bramkarz ${tim} ${wiese} postanowił zostać zapaśnikiem. Eksperci przewidują, że jego kariera będzie szybka.</pl>
 			</description>
 			<variables>
 				<tim>${.person:"3c75429c-5ad2-4a64-ac28-26a70606e204":"firstname"}</tim>
@@ -3234,10 +3238,12 @@
 			<title>
 				<de>Wrestling-Champion reagiert</de>
 				<en>Wrestling champion responds</en>
+				<pl>Mistrz zapasów odpowiada</pl>
 			</title>
 			<description>
 				<de>Auf ${tim} ${wiese} angesprochen, reagiert der Schwergewichtsweltmeister „${theundertaker}“ und verkündet: „Mit dem werde ich die Wiese vertikutieren!“</de>
 				<en>When asked about ${tim} ${wiese}, the heavyweight world champion “${theundertaker}” responds and announces: "I'm going to scarify the lawn with him!"</en>
+				<pl>Zapytany o ${tim}a ${wiese}, mistrz świata wagi ciężkiej „${theundertaker}“ odpowiada i ogłasza: „Zamierzam spulchnić nim trawnik!“.</pl>
 			</description>
 			<data genre="2" price="1" quality_min="25" quality_max="55" fictional="1" />
 			<effects>
@@ -3248,10 +3254,12 @@
 			<title>
 				<de>Wrestling-Champion kauft Sargfabrik</de>
 				<en>Wrestling champion buys coffin factory</en>
+				<pl>Mistrz wrestlingu kupuje fabrykę trumien</pl>
 			</title>
 			<description>
 				<de>Zur Vorbereitung des Titelmatches hat Weltmeister „${theundertaker}“ eine Sargfabrik gekauft. Sein Kommentar: „Damit ${tim} Auswahl hat!“</de>
 				<en>In preparation for the title match, world champion “${theundertaker}” has bought a coffin factory. His comment: "So that ${tim} has some choice!"</en>
+				<pl>W ramach przygotowań do walki o tytuł, mistrz świata „${theundertaker}“ kupił fabrykę trumien. Jego komentarz: „Żeby ${tim} miał jakiś wybór!“.</pl>
 			</description>
 			<data genre="2" price="1" quality_min="25" quality_max="55" fictional="1" />
 			<effects>
@@ -3262,10 +3270,12 @@
 			<title>
 				<de>Wrestling Titelmatch: ${wiese} chancenlos</de>
 				<en>Wrestling title match: ${wiese} has no chance</en>
+				<pl>Pojedynek o tytuł wrestlingowy: ${wiese} nie miał szans</pl>
 			</title>
 			<description>
 				<de>Der ehemalige Fußballtorhüter ${tim} ${wiese} hat sich im Titelmatch mehr als eine gefangen und deutlich verloren. Er musste seine Hoffnungen auf den Titel von „${theundertaker}“ beerdigen.</de>
 				<en>The former soccer goalkeeper ${tim} ${wiese} caught more than one in the title match and clearly lost. He had to bury his hopes of taking the title from ${theundertaker}.</en>
+				<pl>Były bramkarz piłkarski ${tim} ${wiese} wyłapał więcej niż powinien i wyraźnie przegrał w meczu o tytuł. Musiał pogrzebać swoje nadzieje na odebranie tytułu „${theundertaker}-owi“.</pl>
 			</description>
 			<data genre="2" price="1" quality_min="25" quality_max="55" fictional="1" />
 		</news>
@@ -3341,10 +3351,12 @@
 			<title>
 				<de>${fidel} ${castro} gestorben</de>
 				<en>${fidel} ${castro} died</en>
+				<pl>${fidel} ${castro} zmarł</pl>
 			</title>
 			<description>
 				<de>Nach langer Krankheit ist der ehemalige kubanische Diktator ${fidel} ${castro} gestorben. Sein Bruder ${raul} hält weiterhin die Geschicke des Landes in seiner Hand.</de>
 				<en>After a long illness, the former Cuban dictator ${fidel} ${castro} has died. His brother ${raul} continues to hold the fate of the country in his hands.</en>
+				<pl>Po długiej chorobie zmarł były kubański dyktator ${fidel} ${castro}. Jego brat ${raul} nadal trzyma losy kraju w swoich rękach.</pl>
 			</description>
 			<variables>
 				<raul>${.person:"d0480a1f-f654-4bb0-8090-ffad82e346b1":"firstname"}</raul>
@@ -3360,10 +3372,12 @@
 			<title>
 				<de>Aufstand in Kuba</de>
 				<en>Uprising in Cuba</en>
+				<pl>Powstanie na Kubie</pl>
 			</title>
 			<description>
 				<de>Nach dem Tod ${castro}s herrschen in Havanna chaotische Zustände. Kubaner: Auch wir wollen ${brand_pepsi} trinken und ${brand_smart}is fahren!</de>
 				<en>Following ${castro}'s death, chaotic conditions prevail in Havana. Cubans: We also want to drink ${brand_pepsi} and drive ${brand_smart}is!</en>
+				<pl>Po śmierci ${castro} w Hawanie zapanował chaos. Kubańczycy: My też chcemy pić ${brand_pepsi} i jeździć ${brand_smart}isami!</pl>
 			</description>
 			<data genre="0" price="1" quality="70" fictional="1" flags="2" />
 			<effects>
@@ -3374,10 +3388,12 @@
 			<title>
 				<de>Neuwahlen in Kuba</de>
 				<en>New elections in Cuba</en>
+				<pl>Nowe wybory na Kubie</pl>
 			</title>
 			<description>
 				<de>Als Folge des Aufstands in Kuba finden in den nächsten Tagen Neuwahlen statt. ${raul} ${castro} traurig.</de>
 				<en>As a result of the uprising in Cuba, new elections will be held in the next few days. ${raul} ${castro} sad.</en>
+				<pl>W wyniku powstania na Kubie w najbliższych dniach odbędą się nowe wybory. ${raul} ${castro} jest smutny.</pl>
 			</description>
 			<data genre="0" price="1" quality="60" fictional="1" flags="2" />
 			<effects>
@@ -3388,10 +3404,12 @@
 			<title>
 				<de>Neue Regierung in Kuba</de>
 				<en>New government in Cuba</en>
+				<pl>Nowy rząd na Kubie</pl>
 			</title>
 			<description>
 				<de>Das kubanische Volk hat gewählt. Die neue Regierung besteht aus Kommunisten und Liberalen.</de>
 				<en>The Cuban people have voted. The new government consists of communists and liberals.</en>
+				<pl>Kubańczycy zagłosowali. Nowy rząd składa się z komunistów i liberałów.</pl>
 			</description>
 			<data genre="0" price="1" quality="60" fictional="1" flags="2" />
 		</news>
@@ -3920,10 +3938,12 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<title>
 				<de>UFO in ${london} gelandet!</de>
 				<en>UFO landed in ${london}!</en>
+				<pl>UFO wylądowało w mieście ${london}!</pl>
 			</title>
 			<description>
 				<de>Eine fliegende Untertasse ist heute ${infrontofbuckinghampalace} gelandet. Augenzeugen sprechen von kleinen grünen Männchen${whoare}.</de>
 				<en>Today a flying saucer landed ${infrontofbuckinghampalace} Eyewitnesses speak of little green men${whoare}.</en>
+				<pl>Dziś wylądował latający spodek ${infrontofbuckinghampalace} Naoczni świadkowie mówią o małych zielonych ludzikach${whoare}.</pl>
 			</description>
 			<variables>
 				<ufo_csv>
@@ -3949,6 +3969,17 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 						Berlin;at the Brandenburg Gate.; despairing at the landing permit forms;Aliens encounter unexpected bureaucracy;After submitting an invalid form, a Berlin official asks the aliens to book an appointment. Discouraged, they set off again to find a more "efficient life".|
 						Rio de Janeiro;next to the Christ the Redeemer statue.; who are enthusiastic about the sight;Aliens take selfies with the Christ statue;After a few failed attempts, where they kept blocking the camera with their antennas, the aliens manage to capture the perfect shot. Rio is declared a "Top Sightseeing Attraction of the Universe".
 					</en>
+					<pl>Londyn;przed Pałacem Buckingham - znowu!; i martwią się o konsekwencje dyplomatyczne;Kosmici zaproszeni na herbatę;Nieporozumienia narastają, gdy kosmici mylą królewskich strażników z posągami i chcą zabrać je ze sobą na pamiątkę.|
+						Paryż;przed wieżą Eiffla.; których ubrania są chwalone jako „kosmiczny szyk“;Gwiazdy kosmitów na paryskim tygodniu mody; Po tym, jak ich UFO zostało pomylone z nową modną kawiarnią, zwołano awaryjny tydzień mody, aby ustalić, który gatunek ma lepszy gust.|
+						Nowy Jork;na środku Times Square.; ale nowojorczycy i turyści uważają, że wszystko to jest chwytem marketingowym;Obcy: „Przybywamy w pokoju!“;Ale nowojorczycy myślą, że wszystko to jest promocją następnego filmu science fiction, entuzjastycznie recytując kolejne one-linery i rozdając kosmitom koszulki „I Love NYC“ i oferty pizzy „Kup jeden, drugi dostaniesz za darmo“.|
+						Kair;w pobliżu piramid w Gizie.; oglądających piramidy;Kosmici zafascynowani piramidami;„Kto je zbudował? I dlaczego?“ „Jaki jest ich prawdziwy cel?“ zastanawiają się. „Czy jest tam jakieś inne życie?“|
+						Kair;przy Sfinksie.; badających Sfinksa;Kosmici zaskoczeni hieroglifami;Podczas gdy kosmici analizują inskrypcje i próbują narysować wielbłąda, przewodnicy turystyczni korzystają z okazji, aby zaoferować wycieczki eksploracyjne „Eksploruj Eksplorujących Obcych“.|
+						Tokio;w sercu Shibuya Crossing.; zrozpaczonych ruchem ulicznym;Kosmici gubią się w tłumie;„Prawdopodobnie nigdy wcześniej nie widzieli takiego ruchu!“ - mówi ze śmiechem mieszkaniec Tokio. „Chcemy współpracować z ludzkością, ale najpierw musimy znaleźć własną drogę przez cały ten chaos“ - mówi jeden z rzeczników kosmitów.|
+						Rzym;w Koloseum.; którzy chcą zobaczyć igrzyska gladiatorów;Kosmici: „Niech rozpocznie się walka!“;Kosmici w stroju rzymskich legionistów wyzywają Rzymian do „międzygalaktycznej bitwy“. Niektórzy turyści uważają, że jest to przedstawienie historyczne, dopóki burmistrz nie wyjaśni niektórych nieporozumień.|
+						Sydney;przed Operą.; zakłócających próby śpiewu swoimi przenikliwymi dźwiękami;Kosmici podekscytowani didgeridoo;„Naprawdę przydałoby nam się takie didgeridoo na następny międzygalaktyczny pokaz talentów“ - mówi jeden z członków załogi.|
+						Berlin;przy Bramie Brandenburskiej.; zrozpaczonych formularzami pozwolenia na lądowanie;Kosmici napotykają nieoczekiwaną biurokrację;Po złożeniu nieważnego formularza berliński urzędnik prosi kosmitów o umówienie się na spotkanie. Zniechęceni, wyruszają ponownie w poszukiwaniu bardziej „efektywnego życia“.|
+						Rio de Janeiro;obok posągu Chrystusa Odkupiciela.; entuzjastycznie nastawionych do widoku;Kosmici robią sobie selfie z posągiem Chrystusa;Po kilku nieudanych próbach, w których blokowali kamerę swoimi antenami, kosmitom udało się uchwycić idealne ujęcie. Rio zostało ogłoszone „Najlepszą atrakcją turystyczną wszechświata“.
+					</pl>
 				</ufo_csv>
 				<london>
 					<all>${.csv:ufo_csv:0}</all>
@@ -6902,10 +6933,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${artistname}: ${rap} ist tot!</de>
 				<en>${artistname}: ${.ucfirst:rap} is dead!</en>
+				<pl>${artistname}: ${.ucfirst:rap} nie żyje!</pl>
 			</title>
 			<description>
 				<de>${withdisdain} hat ${therapper} ${artistname} das ${rap}-Geschehen beobachtet. ${theirverdictproper}${rap} ist tot!</de>
 				<en>${.ucfirst:therapper} ${artistname} has been watching the ${rap} scene ${withdisdain}. ${theirverdictproper}${rap} is dead!</en>
+				<pl>${.ucfirst:therapper} ${artistname} przygląda się scenie ${rap} ${withdisdain}. ${theirverdictproper}${rap} nie żyje!</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -6928,6 +6961,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<seattlegrunge>
 					<de>${.lte:currentyear:1996:"britische New-Wave":"Seattle-Grunge"}</de> <!-- year has to be in sync with newwaveorgrungebandname -->
 					<en>${.lte:currentyear:1996:"British New Wave":"Seattle Grunge"}</en>
+					<pl>${.lte:currentyear:1996:"brytyjska Nowa Fala":"Seattle-Grunge"}</pl>
 				</seattlegrunge>
 				<eurodisco>
 					<all>${.lte:currentyear:1998:"Eurodisco":"Eurodance"}</all> <!-- year has to be in sync with eurodiscooreurodancebandname -->
@@ -6961,6 +6995,20 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						${femalernbsingername};Her verdict: proper ;R'n'B;R'n'B singer|
 						${hardrockbandname};Their verdict: proper ;hard rock;hard rock band
 					</en>
+					<pl>${rappername};Jego werdykt: dobry ;amerykański rap;amerykański raper|
+						${rapbandname};Ich werdykt: dobry ;amerykański rap;amerykański zespół rapowy|
+						${britishmetalbandname};Ich werdykt: porządny ;heavy metalowy;brytyjski zespół metalowy|
+						${heavymetalbandname};Ich werdykt: porządny ;heavy metal;zespół heavy metalowy|
+						${femalecountrysingername};Jej werdykt: porządna ;muzyka country;piosenkarka country|
+						${femalepopsingername};Jej werdykt: porządna ;muzyka pop;popowa piosenkarka|
+						${germanfolkmusicbandname};Ich werdykt: prawdziwa ;niemiecka muzyka ludowa;tradycyjny niemieckojęzyczny zespół muzyki ludowej|
+						${newwaveorgrungebandname};Ich werdykt: prawdziwy ;${grunge};zespół ${seattlegrunge}|
+						${eurodiscooreurodancebandname};Ich werdykt: prawdziwe ;${eurodisco};grupa ${eurodisco}|
+						${malesoftrockringername};Jego werdykt: prawdziwy ;soft rock;wokalista soft rockowy|
+						${malepoprocksingername};Jego werdykt: prawdziwy ;pop rock;wokalista pop rockowy|
+						${femalernbsingername};Jej werdykt: prawdziwy ;R'n'B;wokalistka R'n'B|
+						${hardrockbandname};Ich werdykt: prawdziwy ;hard rock;hard rockowy zespół
+					</pl>
 				</artist_csv>
 				<artistname>
 					<all>${.csv:artist_csv:0}</all>
@@ -6977,6 +7025,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<withdisdain>
 					<de>Mit Argwohn|Mit Bestürzung|Voller Verzweiflung|Voller Verachtung|Total abgetörnt|Desillusioniert|Ernüchtert|Recht verzweifelt|Ziemlich enttäuscht|Voller Enttäuschung</de>
 					<en>with disdain|in dismay|with complete desperation|in total disgust|totally turned off|with disillusionment|despondently|with quite a bit of despair|rather disappointed|with great disappointment</en>
+					<pl>z pogardą|z przerażeniem|z całkowitą desperacją|z całkowitym obrzydzeniem|z całkowitym oderwaniem|z rozczarowaniem|z przygnębieniem|z dość dużą rozpaczą|z wielkim rozczarowaniem|z ogromnym rozczarowaniem</pl>
 				</withdisdain>
 			</variables>
 			<data genre="1" price="1" quality="29" fictional="1" />
@@ -6986,10 +7035,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${mothername} adoptiert ${childname}</de>
 				<en>${mothername} adopts ${childname}</en>
+				<pl>${mothername} adoptuje ${childname}</pl>
 			</title>
 			<description>
 				<de>${motherjob} ${mothername} möchte Skandalnudel-${childjob} ${childname} adoptieren. „Dem Kind muss geholfen werden!“, erklärte ${mothername}.</de>
 				<en>${.ucfirst:motherjob} ${mothername} wants to adopt scandalous ${childjob} ${childname}. "The child must be helped!" ${mothername} explained.</en>
+				<pl>${.ucfirst:motherjob} ${mothername} chce adoptować znane ze skandali dziecko. To dziecko to słynna ${childjob} ${childname}. „Dziecku trzeba pomóc!“ - wyjaśnia ${mothername}.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -7049,6 +7100,17 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						actress;${farrahfawcett}|
 						singer and actress;${dianaross}
 					</en>
+					<pl>piosenkarka country;${dollyparton}|
+						piosenkarka country;${lorettalynn}|
+						piosenkarka pop;${tinaturner}|
+						piosenkarka rockowa;${mariannefaithfull}|
+						aktorka;${elizabethtaylor}|
+						tancerka i aktorka;${shirleymaclaine}|
+						piosenkarka i aktorka;${gracejones}|
+						piosenkarka i aktorka;${cher}|
+						aktorka;${farrahfawcett}|
+						piosenkarka i aktorka;${dianaross}
+					</pl>
 				</gen_0_csv>
 				<gen_1_csv>
 					<de>Popsängerin;${madonna}|
@@ -7074,6 +7136,17 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						actress;${robingivens}|
 						actress;${kimbasinger}
 					</en>
+					<pl>piosenkarka pop;${madonna}|
+						piosenkarka rockowa;${joanjett}|
+						piosenkarka rockowa;${debbieharry}|
+						piosenkarka pop;${cyndilauper}|
+						aktorka;${brookeshields}|
+						aktorka;${jennifergrey}|
+						aktorka;${jennifercoolidge}|
+						aktorka;${tatumoneal}|
+						aktorka;${robingivens}|
+						aktorka;${kimbasinger}
+					</pl>
 				</gen_1_csv>
 				<gen_2_csv>
 					<de>Sängerin;${britneyspears}|
@@ -7096,6 +7169,16 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						actress;${pamalaanderson}|
 						actress;${winonaryder}
 					</en>
+					<pl>piosenkarka;${britneyspears}|
+						dziedziczka hotelowa i aktorka;${parishilton}|
+						piosenkarka rockowa;${courtneylove}|
+						rapperka;${lilkim}|
+						rapperka i aktorka;${queenlatifah}|
+						piosenkarka;${cristinaaguilera}|
+						piosenkarka;${beyonce}|
+						aktorka;${pamalaanderson}|
+						aktorka;${winonaryder}
+					</pl>
 				</gen_2_csv>
 				<gen_3_csv>
 					<de>Schauspielerin;${mischabarton}|
@@ -7108,6 +7191,11 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						singer and actress;${mileycyrus}|
 						singer and actress;${taylormomsen}
 					</en>
+					<pl>aktorka;${mischabarton}|
+						aktorka;${lindsaylohan}|
+						piosenkarka i aktorka;${mileycyrus}|
+						piosenkarka i aktorka;${taylormomsen}
+					</pl>
 				</gen_3_csv>
 				<mothergen>${.lte:currentyear:2000:0:"${.lte:currentyear:2012:1:2}"}</mothergen>
 				<childgen>${.lte:currentyear:2000:1:"${.lte:currentyear:2012:2:3}"}</childgen> <!-- mothers are the daughters from previous generation -->
@@ -7133,10 +7221,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${childname} freut sich auf neue Mamma</de>
 				<en>${childname} excited to have a new mom</en>
+				<pl>${childname} podekscytowana nową mamą</pl>
 			</title>
 			<description>
 				<de>${childname} freut sich auf ihre neue Familie. „Dann habe ich die coolste Mamma der Welt!“</de>
 				<en>${childname} is looking forward to her new family. "Then I'll have the coolest mom in the world!"</en>
+				<pl>${childname} nie może się doczekać swojej nowej rodziny. „Wtedy będę miała najfajniejszą mamę na świecie!“.</pl>
 			</description>
 			<data genre="1" price="1" quality="29" fictional="1" />
 			<effects>
@@ -7147,10 +7237,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Adoption war Fehler</de>
 				<en>Adoption was a mistake</en>
+				<pl>Adopcja była błędem</pl>
 			</title>
 			<description>
 				<de>${mothername} und ${childname} sind sich einig: Die Adoption war der größte Fehler überhaupt!</de>
 				<en>${mothername} and ${childname} agree: the adoption was the biggest mistake ever!</en>
+				<pl>${mothername} i ${childname} zgadzają się: adopcja była największym naszym błędem!</pl>
 			</description>
 			<data genre="1" price="1" quality="49" fictional="1" />
 		</news>
@@ -7159,15 +7251,18 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${hero} ${shootsthief}</de>
 				<en>${.ucfirst:hero} ${shootsthief}</en>
+				<pl>${.ucfirst:hero} ${shootsthief}</pl>
 			</title>
 			<description>
 				<de>${johndoe}, ${avigilantcitizen}, wird in ${town} als ${hero} gefeiert. ${theywitnessed}. ${themayorhonors}.</de>
 				<en>${johndoe}, ${avigilantcitizen}, is celebrated as a ${hero} in ${town}. ${theywitnessed}. ${themayorhonors}.</en>
+				<pl>${johndoe}, ${avigilantcitizen}, jest traktowany jako ${hero} w mieście ${town}. ${theywitnessed}. ${themayorhonors}.</pl>
 			</description>
 			<variables>
 				<hero_csv>
 					<de>Held;${.persongenerator:"fullname":"de":"male"};ein wachsamer Bürger;Er|Heldin;${.persongenerator:"fullname":"de":"female"};eine wachsame Bürgerin;Sie</de>
 					<en>hero;${.persongenerator:"fullname":"en":"male"};a vigilant citizen;he|heroine;${.persongenerator:"fullname":"en":"female"};a vigilant citizen;she</en>
+					<pl>bohater;${.persongenerator:"fullname":"en":"male"};czujny obywatel;on|bohater;${.persongenerator:"fullname":"en":"male"};czujny obywatel;on</pl>
 				</hero_csv>
 				<hero>
 					<all>${.csv:hero_csv:0}</all>
@@ -7205,6 +7300,17 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						rescues lost cat;${.ucfirst:they} rescued the cat from the tree after the fire brigade had failed and reunited it with its happy mistress|
 						defeats hurricane;${.ucfirst:they} impressively blew against the threatening hurricane and thus neutralized it
 					</en>
+					<pl>strzelił do złodzieja;${.ucfirst:they} był świadkiem kradzieży torebki emerytki i zastrzelił złodzieja bez zbędnych ceregieli.|
+						pokonuje uporczywy puch kurzu;Po epickiej bitwie, ${they} pokonuje uparty puch, który paraliżował życie publiczne|
+						walczy z armią bałwanów;Po epickiej bitwie, ${they} pokonał tajemniczą armię bałwanów terroryzującą ulice|
+						pokonuje niezwyciężonego otwieracza do puszek;Udało mu się to, co nie udało się wszystkim wcześniej: w końcu otworzyć puszkę z upartą rzeczą|
+						rozplątuje ogromną plątaninę;Z niezachwianą odwagą, rozplątał ogromną kulę lampek choinkowych, która od tygodni powodowała chaos|
+						pokonuje wąż ogrodowy;Po epickiej walce z wadliwym wężem ogrodowym, uratował kwietnik przed zalaniem|
+						zatrzymuje inwazję karaluchów;${.ucfirst:they} użył pomysłowych manewrów, aby pokonać armię karaluchów, która terroryzowała miasto|
+						unieruchomił śpiewający kosz na śmieci;${.ucfirst:they} uderzył w kosz na śmieci, który nie dawał spać mieszkańcom, podnosząc tym samym jego pokrywę|
+						ratuje zagubionego kota;${.ucfirst:they} uratował kota z drzewa po tym jak straż pożarna zawiodła. Ściągnął go do jego szczęśliwej pani|
+						pokonuje huragan;${.ucfirst:they} imponująco dmuchał przeciwnie do zagrażającego huraganu i w ten sposób go zneutralizował
+					</pl>
 				</action_csv>
 				<shootsthief>
 					<all>${.csv:action_csv:0}</all>
@@ -7215,6 +7321,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<themayorhonors>
 					<de>Der Bürgermeister würdigt die Heldentat|Die Bürger preisen die Heldentat|Die Stadt jubelt|Die Stadt atmet auf|Die Bürger sind begeistert|Die Stadtverwaltung plant eine Ehrung|Die Bewohner sind erleichtert und dankbar</de>
 					<en>The mayor honors the heroic deed|The citizens praise the heroic deed|The city celebrates|The city breathes a sigh of relief|The citizens are thrilled|The city administration is planning a ceremony|The residents are relieved and grateful</en>
+					<pl>Burmistrz honoruje bohaterski czyn|Obywatele chwalą bohaterski czyn|Miasto świętuje|Miasto oddycha z ulgą|Obywatele są podekscytowani|Administracja miasta planuje ceremonię|Mieszkańcy odczuwają ulgę i wdzięczność</pl>
 				</themayorhonors>
 			</variables>
 			<data genre="4" price="1" quality="25" fictional="1" />
@@ -7224,19 +7331,23 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${netherlands} unter Wasser</de>
 				<en>${netherlands} under water</en>
+				<pl>${netherlands} pod wodą</pl>
 			</title>
 			<description>
 				<de>Hochwasser in ${netherlands} verursacht Chaos. Schon ein Drittel der Region steht unter Wasser.</de>
 				<en>Flooding in ${netherlands} causes chaos. A third of the region is already under water.</en>
+				<pl>${netherlands} pod wodą. Powódź powoduje ogromny chaos. Jedna trzecia regionu znajduje się już pod wodą.</pl>
 			</description>
 			<variables>
 				<netherlands>
 					<de>Niederlande|Bangladesch|Venetien|New Orleans|Unterägypten|Süd-Vietnam|Ost-England|Süd-Florida</de>
 					<en>Netherlands|Bangladesh|Veneto|New Orleans|Lower Egypt|South Vietnam|Eastern England|South Florida</en>
+					<pl>Holandia|Bangladesz|Wenecja|Nowy Orlean|Dolny Egipt|Południowy Wietnam|Wschodnia Anglia|Południowa Floryda</pl>
 				</netherlands>
 				<toaustria> <!-- should be mountain regions to use them also in (TODO) alternative endings -->
 					<de>nach Österreich|in die Schweiz|nach Nepal|nach Peru|nach Norwegen|nach Bhutan|nach Kirgisistan|nach Chile</de>
 					<en>to Austria|to Switzerland|to Nepal|to Peru|to Norway|to Bhutan|to Kyrgyzstan|to Chile</en>
+					<pl>do Austrii|do Szwajcarii|do Nepalu|do Peru|do Norwegii|do Bhutanu|do Kirgistanu|do Chile</pl>
 				</toaustria>
 				<missedcount>143|87|210|62|176|125|199|54|231|98|114</missedcount>
 			</variables>
@@ -7249,10 +7360,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${netherlands} braucht Hilfe</de>
 				<en>${netherlands} needs help</en>
+				<pl>${netherlands} potrzebuje pomocy</pl>
 			</title>
 			<description>
 				<de>Das Hochwasser hat alle Dämme gebrochen. Nun bittet die Regierung um internationale Hilfe.</de>
 				<en>The floods have broken all the dams. Now the government is asking for international help.</en>
+				<pl>Powodzie przerwały wszystkie tamy. Teraz rząd prosi o międzynarodową pomoc.</pl>
 			</description>
 			<data genre="4" price="1" quality="39" fictional="1" />
 			<effects>
@@ -7263,10 +7376,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${generalorg_unicef} stellt Schlauchboote</de>
 				<en>${generalorg_unicef} provides rubber dinghies</en>
+				<pl>${generalorg_unicef} dostarcza gumowe pontony</pl>
 			</title>
 			<description>
 				<de>Drama in ${netherlands} setzt sich fort, ${generalorg_unicef} stellt Schlauchboote. Bis jetzt ${missedcount} Menschen vermisst.</de>
 				<en>Drama in ${netherlands} continues, ${generalorg_unicef} provides rubber dinghies. So far ${missedcount} people missing.</en>
+				<pl>${netherlands} - dramat trwa dalej, ${generalorg_unicef} zapewnia gumowe pontony. Jak dotąd ${missedcount} osób zaginionych.</pl>
 			</description>
 			<data genre="4" price="1" quality="56" fictional="1" />
 			<effects>
@@ -7277,10 +7392,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Hochwasser fordert keine Menschenopfer</de>
 				<en>Floods claim no human victims</en>
+				<pl>Powodzie nie pochłonęły ofiar w ludziach</pl>
 			</title>
 			<description>
 				<de>Bei den ${missedcount} vermissten Personen des ${netherlands}-Hochwassers handelt es sich um Menschen, die vor ihren Familien und ${toaustria} geflohen sind, um dort ihre Ferien verbringen.</de>
 				<en>The ${missedcount} persons missing due to the ${netherlands} floods are people who fled their families and went ${toaustria} to spend their vacations there.</en>
+				<pl>${netherlands}: ${missedcount} osób zaginionych z powodu powodzi to ludzie, którzy uciekli ze swoich domów i udali się ${toaustria}, aby spędzić tam wakacje.</pl>
 			</description>
 			<data genre="4" price="1" quality="39" fictional="1" />
 		</news>
@@ -7289,10 +7406,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${personname} versteigert ${pipe}</de>
 				<en>${personname} auctions off ${pipe}</en>
+				<pl>${personname} wystawia na aukcję ${pipe}</pl>
 			</title>
 			<description>
 				<de>${therenowned} versteigert ${theirfamous}. Der Erlös geht an ${hungry} ${children}.</de>
 				<en>${therenowned} auctions off ${theirfamous}. The proceeds go to ${hungry} ${children}.</en>
+				<pl>${therenowned} wystawia na aukcję ${theirfamous}. Dochód przeznaczony jest na ${hungry}${children}.</pl> <!--${hungry}${children}  together no space-->
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -7339,39 +7458,48 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<guentergrassorgranddaughter>
 					<de>${.lte:currentyear:2014:"${guenter} ${grass}":"${guenter}-${grass}-Enkelin"}</de>
 					<en>${.lte:currentyear:2014:"${guenter} ${grass}":"${guenter} ${grass}' granddaughter"}</en>
+					<pl>${.lte:currentyear:2014:"${guenter} ${grass}":"Wnuczka ${guenter}a ${grass}a"}</pl>
 				</guentergrassorgranddaughter>
 				<therenownedauthororgranddaughter>
 					<de>${.lte:currentyear:2014:"Der renommierte Autor ${guenter} ${grass}":"Eine Enkelin des renommierten Autors ${guenter} ${grass}"}</de>
 					<en>${.lte:currentyear:2014:"The renowned author ${guenter} ${grass}":"A granddaughter of the renowned author ${guenter} ${grass}"}</en>
+					<pl>${.lte:currentyear:2014:"Znany autor ${guenter} ${grass}":"Wnuczka znanego autora ${guenter}a ${grass}a"}</pl>
 				</therenownedauthororgranddaughter>
 				<karllagerfeld_or_sothebys>${.lte:currentyear:2019:"${karl} ${lagerfeld}":"${brand_sothebys}"}</karllagerfeld_or_sothebys> <!-- entries with Karl Lagerfeld death year has to be in sync -->
 				<hairbraid_or_lagerfeldhairbraid>
 					<de>${.lte:currentyear:2019:"Haarzopf":"${lagerfeld}-Haarzopf"}</de>
 					<en>${.lte:currentyear:2019:"hair braid":"${lagerfeld} hair braid"}</en>
+					<pl>${.lte:currentyear:2019:"warkocz z włosów":"Warkocz z włosów ${lagerfeld}a"}</pl>
 				</hairbraid_or_lagerfeldhairbraid>
 				<theeccentric_or_theauctionhouse>
 					<de>${.lte:currentyear:2019:"Der exzentrische Modeschöpfer, Designer, Fotograf und Kostümbildner ${karl} ${lagerfeld}":"Das Auktionshaus ${brand_sothebys}"}</de>
 					<en>${.lte:currentyear:2019:"The eccentric fashion creator, designer, photographer and costume stylist ${karl} ${lagerfeld}":"The ${brand_sothebys} auction house"}</en>
+					<pl>${.lte:currentyear:2019:"Ekscentryczny kreator mody, projektant, fotograf i stylista kostiumów ${karl} ${lagerfeld}":"Dom aukcyjny ${brand_sothebys}"}</pl>
 				</theeccentric_or_theauctionhouse>
 				<hisfamoushairbraid_or_thefamoushairbraidof>
 					<de>${.lte:currentyear:2019:"seinen berühmten weißen Haarzopf":"den berühmten weißen Haarzopf des verstorbenen Modezars ${karl} ${lagerfeld}"}</de>
 					<en>${.lte:currentyear:2019:"his famous white hair braid":"the famous white hair braid of the late fashion czar ${karl} ${lagerfeld}"}</en> <!-- Sotheby's auction actually kinda real news: https://de.wikipedia.org/wiki/Karl_Lagerfeld#Nachlass-Versteigerung | TODO: something about his cat https://www.nickiswift.com/1262824/did-karl-lagerfelds-cat-really-inherit-his-money-after-his-death/ -->
+					<pl>${.lte:currentyear:2019:"jego słynny biały warkocz":"słynny warkocz z białych włosów zmarłego cara mody ${karl}a ${lagerfeld}a"}</pl>
 				</hisfamoushairbraid_or_thefamoushairbraidof>
 				<thetechentrepreneur_or_lisadaughterof>
 					<de>${.lte:currentyear:2010:"Der bekannte Tech-Unternehmer ${steve} ${jobs}":"Lisa ${jobs}, Tochter des Tech-Unternehmers ${steve} ${jobs},"}</de>
 					<en>${.lte:currentyear:2010:"The well-known tech entrepreneur ${steve} ${jobs}":"Lisa ${jobs}, daughter of tech entrepreneur ${steve} ${jobs},"}</en>
+					<pl>${.lte:currentyear:2010:"Znany przedsiębiorca technologiczny ${steve} ${jobs}":"Lisa ${jobs}, córka przedsiębiorcy technologicznego ${steve}a ${jobs}a,"}</pl>
 				</thetechentrepreneur_or_lisadaughterof>
 				<musicianandartist_or_angiebowieformerwifeof>
 					<de>${.lte:currentyear:2015:"Der Musiker und Künstler ${david} ${bowie}":"Angie ${bowie}, frühere Ehefrau des Musikers and Künstlers ${david} ${bowie},"}</de>
 					<en>${.lte:currentyear:2015:"Musician and artist ${david} ${bowie}":"Angie ${bowie}, former wife of musician and artist ${david} ${bowie},"}</en>
+					<pl>${.lte:currentyear:2015:"Muzyk i artysta ${david} ${bowie}":"Angie ${bowie}, była żona muzyka i artysty ${david}a ${bowie},"}</pl>
 				</musicianandartist_or_angiebowieformerwifeof>
 				<atarifounder_or_teslaceo> <!-- year has to be in sync with nolanbushnell_or_elonmusk -->
 					<de>${.lte:currentyear:2009:"${brand_atari}-Gründer":"${brand_tesla} CEO"}</de>
 					<en>${.lte:currentyear:2009:"${brand_atari} founder":"${brand_tesla} CEO"}</en>
+					<pl>${.lte:currentyear:2009:"Założyciel ${brand_atari}":"${brand_tesla} CEO"}</pl>
 				</atarifounder_or_teslaceo>
 				<borisyeltsin_or_daughterof>
 					<de>${.lte:currentyear:2007:"${boris} ${yeltsin}":"Die Tochter von ${boris} ${yeltsin}"}</de>
 					<en>${.lte:currentyear:2007:"${boris} ${yeltsin}":"The daughter of ${boris} ${yeltsin}"}</en>
+					<pl>${.lte:currentyear:2007:"${boris} ${yeltsin}":"Córka ${boris}a ${yeltsin}a"}</pl>
 				</borisyeltsin_or_daughterof>
 				<namewhat_csv>
 					<de>${guentergrassorgranddaughter};Pfeife;${therenownedauthororgranddaughter};seine berühmte Pfeife|
@@ -7412,6 +7540,25 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						${hemingway};absinthe;${mariel} ${hemingway}, actress and granddaughter of the famous writer ${ernest} ${hemingway};a bottle of absinthe from which he has already sipped|
 						${yeltsin};vodka;${borisyeltsin_or_daughterof};an opened bottle of vodka from which he has already sipped
 					</en>
+					<pl>${guentergrassorgranddaughter};fajkę;${therenownedauthororgranddaughter};jego słynną fajkę|
+						${jobs};sweter;${thetechentrepreneur_or_lisadaughterof};jego słynny czarny sweter z golfem|
+						${karllagerfeld_or_sothebys};${hairbraid_or_lagerfeldhairbraid};${theeccentric_or_theauctionhouse};${hisfamoushairbraid_or_thefamoushairbraidof}|
+						${churchill};cygaro;${randolphspencerchurchill}, wnuk byłego premiera Wielkiej Brytanii ${winston}a ${churchill}a,;pozostałą połowę cygara, która została wypalona na potrzeby relacji medialnych podczas D-Day|
+						${einstein};kosmyk włosów;${thomasmartin} ${einstein}, prawnuk słynnego fizyka ${albert}a ${einstein}a,;jeden ze srebrnych kosmyków włosów tego geniusza|
+						${gandhi};dhoti;${kanu} ${gandhi}, naukowiec i wnuk historycznego indyjskiego męża stanu i przywódcy niepodległościowego ${mahatma} ${gandhi}ego,;pierwszą noszoną koszulkę dhoti|
+						${dali};wąsy;The Fundación ${salvador} ${dali}, fundacja utworzona w celu zarządzania majątkiem słynnego artysty,;jego słynne i charakterystyczne wąsy|
+						${picasso};ceramiczny garnek;Paloma ${picasso}, córka słynnego malarza i rzeźbiarza ${pablo} ${picasso},;jego ceramiczny garnek. Zaprojektowany przez niego samego, oczywiście|
+						${chaplin};laskę;${geraldine} ${chaplin}, aktorka i córka komika ${charlie} ${chaplin}a,;słynną laskę Trampa|
+						${debbieharry_or_madonna};pejcz dominatrix;Piosenkarka ${debbieharry_or_madonna};jej często używany pejcz dominatrix|
+						${bowie};garnitur ${ziggystardust}a;${musicianandartist_or_angiebowieformerwifeof};jego kultowy ${ziggystardust}owski garnitur|
+						${nolanbushnell_or_elonmusk};kolekcję hentai;Tętniący życiem przedsiębiorca technologiczny i ${atarifounder_or_teslaceo} ${nolanbushnell_or_elonmusk};jego kolekcję hentai|
+						${richardbranson};plakaty pin-up-owe;Przedsiębiorca i założyciel wytwórni płytowej ${brand_virgin} ${richardbranson};jego kolekcję plakatów z panienkami w stylu pin-up|
+						${monroe};białą sukienkę;Powiernictwo majątkowe ${marilyn} ${monroe};słynną białą sukienkę aktorki|
+						${monroe};szyb wentylacyjny;Powiernictwo majątkowe ${marilyn} ${monroe};szyb wentylacyjny, który podniósł jej słynną białą sukienkę|
+						${eltonjohn};100 okularów;Gwiazda Pop ${eltonjohn};100 jego najbardziej ekstrawaganckich okularów|
+						${hemingway};butelkę absyntu;${mariel} ${hemingway}, aktorka i wnuczka słynnego pisarza ${ernest}a ${hemingway}a;butelkę absyntu, z której już pił|
+						${yeltsin};wódkę;${borisyeltsin_or_daughterof};otwartą butelkę wódki, z której już popijał
+					</pl>
 				</namewhat_csv>
 				<personname>
 					<all>${.csv:namewhat_csv:0}</all>
@@ -7428,10 +7575,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<hungry>
 					<de>hungrige|hungernde|verarmte|notleidende</de>
 					<en>hungry|starving|impoverished|destitute</en>
+					<pl>głodn|głodując|biedn|bezdomn</pl>
 				</hungry>
 				<children>
 					<de>Kinder|Rechtsanwälte|Banker|Konzernchefs|Staranwälte|Raketenwissenschaftler</de>
 					<en>children|lawyers|bankers|corporate bosses|star attorneys|rocket scientists</en>
+					<pl>e dzieci|ych prawników|ych bankierów|ych szefów korporacji|ych adwokatów|ych naukowców</pl>
 				</children>
 			</variables>
 			<data genre="5" price="1" quality="22" fictional="1" />
@@ -7441,10 +7590,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Kunstwelt trauert um Mona Lisa</de>
 				<en>The art world mourns Mona Lisa</en>
+				<pl>Świat sztuki opłakuje Mona Lisę</pl>
 			</title>
 			<description>
 				<de>Die ganze Welt trauert um das weltberühmte Gemälde, das spurlos verschwunden ist. Inspektor Cluso ist mit dem Fall beauftragt worden.</de>
 				<en>The whole world is mourning the loss of the world-famous painting, which has disappeared without a trace. Inspector Cluso has been assigned to the case.</en>
+				<pl>Cały świat opłakuje stratę światowej sławy obrazu, który zniknął bez śladu. Inspektor Cluso został przydzielony do sprawy.</pl>
 			</description>
 			<data genre="5" price="1" quality="40" fictional="1" />
 			<effects>
@@ -7455,10 +7606,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Mona Lisa gefunden!</de>
 				<en>Mona Lisa found!</en>
+				<pl>Mona Lisa odnaleziona!</pl>
 			</title>
 			<description>
 				<de>Eine Putzfrau hat das Gemälde gefunden. Der Mund der Mona Lisa wurde mit Lippenstift verunstalt und zeigt jetzt ein breites Grinsen.</de>
 				<en>A cleaning lady has found the painting. The Mona Lisa's mouth has been disfigured with lipstick and now shows a broad grin.</en>
+				<pl>Sprzątaczka znalazła obraz. Usta Mony Lisy zostały zniekształcone szminką i teraz pokazują szeroki uśmiech.</pl>
 			</description>
 			<data genre="5" price="1" quality="40" fictional="1" />
 			<effects>
@@ -7469,10 +7622,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Mona-Lisa-Dieb gefasst</de>
 				<en>Mona Lisa thief caught</en>
+				<pl>Złodziej Mona Lisy złapany</pl>
 			</title>
 			<description>
 				<de>Inspektor Cluso hat den Dieb gefasst. Dieser habe das Gemälde verändert, weil ihn die ewige Diskussion um ihr Lächeln verrückt gemacht habe.</de>
 				<en>Inspector Cluso has caught the thief, who had altered the painting because the incessant discussion about her smile had driven him crazy.</en>
+				<pl>Inspektor Cluso złapał złodzieja, który zmienił obraz, ponieważ nieustanna dyskusja na temat jej uśmiechu doprowadziła go do szaleństwa.</pl>
 			</description>
 			<data genre="5" price="1" quality="40" fictional="1" />
 		</news>
@@ -7481,10 +7636,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Brand in ${town}</de>
 				<en>Fire in ${town}</en>
+				<pl>Ogień w mieście ${town}</pl>
 			</title>
 			<description>
 				<de>Heute kam es zu einem Brand ${inbuilding} in ${town}. Zum Glück kamen die ${occupants} mit leichten Rauchvergiftungen und einem Schrecken davon.</de>
 				<en>Today there was a fire ${inbuilding} in ${town}. Fortunately, the ${occupants} got away with minor smoke inhalation and a scare.</en>
+				<pl>Dzisiaj wybuchł pożar ${inbuilding} w mieście ${town}. Na szczęście ${occupants} udało się uciec z niewielkim zatruciem dymem i z przerażeniem.</pl>
 			</description>
 			<variables>
 				<town>${.stationmap:"randomcity"}</town>
@@ -7517,6 +7674,20 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						in a discotheque;guests and staff|
 						in a nightclub;guests and staff
 					</en>
+					<pl>w budynku mieszkalnym; mieszkańcom|
+						w magazynie; pracownikom|
+						w fabryce; pracownikom|
+						w budynku biurowym; pracownikom i szefom|
+						w domu mieszkalnym; domownikom|
+						w budynku szkoły; uczniom i nauczycielom|
+						w szpitalu; pacjentom i personelowi|
+						w kościele; członkom wspólnoty religijnej|
+						w domu towarowym; klientom i pracownikom|
+						w hali wielofunkcyjnej; gościom i sportowcom|
+						w wielofunkcyjnej hali; muzykom i fanom|
+						w dyskotece; gościom i personelowi klubu|
+						w klubie nocnym; gościom i personelowi klubu
+					</pl>
 				</inbuilding_csv>
 				<inbuilding>
 					<all>${.csv:inbuilding_csv:0}</all>
@@ -7532,10 +7703,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Polnischer Minister stark kritisiert</de>
 				<en>Polish minister heavily criticized</en>
+				<pl>Polski minister ostro krytykowany</pl>
 			</title>
 			<description>
 				<de>Die Verkehrsminister der übrigen EU-Länder können die Helmpflicht nicht verstehen. Eine solche Pflicht wäre übertrieben.</de>
 				<en>The transport ministers of the other EU countries cannot understand the obligation to wear a helmet. Such an obligation would be excessive.</en>
+				<pl>Ministrowie transportu innych krajów UE nie mogą zrozumieć obowiązku noszenia kasku. Taki obowiązek byłby nadmiernie przesadzony.</pl>
 			</description>
 			<data genre="0" price="0.7" quality="28" fictional="1" />
 			<effects>
@@ -7547,6 +7720,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${greenland} ${icehockey_${i}}-Weltmeister</de>
 				<en>${greenland} is ${icehockey_${i}} World Champion</en>
+				<pl>${greenland} jest Mistrzem świata w ${icehockey_${i}}</pl>
 			</title>
 			<description>
 				<all>${inathrillingduel_${i}}</all>
@@ -7565,6 +7739,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						Queen Maud Land;;wins;leaves|
 						Newfoundland;;wins;leaves
 					</en>
+					<pl>Grenlandia;;zwycięża;odstawia|
+						Wyspy Owcze;;zwyciężają;odstawiają|
+						Szpizbergen;;zwycięża;odstawia|
+						Ziemia Królowej Maud;;zwycięża;odstawia|
+						Nowa Fundlandia;;zwycięża;odstawia
+					</pl>
 				</coldregion_csv>
 				<greenland>
 					<all>${.csv:coldregion_csv:0}</all>
@@ -7581,23 +7761,28 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<kenya>
 					<de>Kenia|Libyen|Oman|Mauretanien|Mali|Angola|Tschad|Sudan|Papua-Neuguinea|Samoa|Tonga</de>
 					<en>Kenya|Libya|Oman|Mauritania|Mali|Angola|Chad|Sudan|Papua New Guinea|Samoa|Tonga</en>
+					<pl>Kenii|Libii|Omanu|Mauretanii|Mali|Angoli|Czadu|Sudanu|Papuy Nowej Gwinei|Samoa|Tongo</pl>
 				</kenya>
 				<i>0|1|2|3</i>
 				<icehockey_0>
 					<de>Bambini-Eishockey|Juniorinnen-Eishockey|Amateur-Eishockey</de>
 					<en>Children's Ice Hockey|Junior Women's Ice Hockey|Amateur Ice Hockey</en>
+					<pl>hokeju na lodzie dzieci|hokeju na lodzie juniorek|hokeju na lodzie amatorów</pl>
 				</icehockey_0>
 				<icehockey_1>
 					<de>Skijöring|Eiskanu|Skibob</de>
 					<en>Skijoring|Ice Canoeing|Skibobbing</en> <!-- https://en.wikipedia.org/wiki/Skijoring | https://en.wikipedia.org/wiki/Ice_canoeing | https://en.wikipedia.org/wiki/Skibobbing -->
+					<pl>skijoringu|ice Canoeingu|skibobbingu</pl>
 				</icehockey_1>
 				<icehockey_2>
 					<de>Eissurfen|Snowkiting|Trickski</de>
 					<en>Ice Surfing|Snowkiting|Hot Dog Skiing</en> <!-- https://de.wikipedia.org/wiki/Eissurfen | https://en.wikipedia.org/wiki/Snowkiting | https://en.wikipedia.org/wiki/Freestyle_skiing ('Known as "hot-dogging" in the early 1970s') -->
+					<pl>ice Surfingu|snowkitingu|hot dog skiingu</pl>
 				</icehockey_2>
 				<icehockey_3>
 					<de>Fässer-Eisspringen|Stab-Eissprung|Eisstockschleudern</de>
 					<en>Barrel Ice Jumping|Ice Pole Vault|Ice Stock Skidding</en> <!-- https://en.wikipedia.org/wiki/Barrel_jumping | last 2 made-up fictional sports -->
+					<pl>skakaniu z beczki na lodzie|skakaniu z kija na lodzie|rzutach kijem na lód</pl>
 				</icehockey_3>
 				<scorefor>4|4|4|5|5|5|6|6|7|8|9</scorefor>
 				<scoreagainst>0|1|1|2|2|2|3|3|3</scoreagainst>
@@ -7605,18 +7790,22 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<inathrillingduel_0>
 					<de>In einem spannenden Duell gegen ${kenya} ${wins} ${the}${greenland} das ${icehockey_${i}}-Weltmeisterschafts-Finale mit ${scorefor}:${scoreagainst}.</de>
 					<en>In a thrilling duel against ${kenya}, ${the}${greenland} ${wins} the ${icehockey_${i}} World Championship final ${scorefor}-${scoreagainst}.</en>
+					<pl>W emocjonującym pojedynku przeciwko ${kenya}$, ${greenland} ${wins} finał Mistrzostw Świata w ${icehockey_${i}} ${scorefor}-${scoreagainst}.</pl>
 				</inathrillingduel_0>
 				<inathrillingduel_1>
 					<de>In einem spannenden Wettkampf ${leaves} ${the}${greenland} den hartnäckigsten Konkurrenten ${kenya} hinter sich und ${wins} mit 0,${pointscount} Punkten Vorsprung in der Gesamtwertung.</de>
 					<en>In a thrilling competition, ${the}${greenland} ${leaves} behind the fiercest competitor ${kenya} and ${wins} the overall standings with a 0.${pointscount} lead.</en>
+					<pl>W emocjonującej rywalizacji, ${greenland} ${leaves} najzacieklejszego konkurenta z ${kenya} i ${wins} w klasyfikacji generalnej z przewagą 0,${pointscount} punkta.</pl>
 				</inathrillingduel_1>
 				<inathrillingduel_2>
 					<de>In einem spannenden Wettkampf ${leaves} ${the}${greenland} den hartnäckigsten Konkurrenten ${kenya} hinter sich und ${wins} mit 0,${pointscount} Sekunden Vorsprung.</de>
 					<en>In a thrilling competition, ${the}${greenland} ${leaves} behind the fiercest competitor ${kenya} and ${wins} with a 0.${pointscount} seconds lead.</en>
+					<pl>W emocjonującej rywalizacji ${greenland} ${leaves} za sobą najzacieklejszego konkurenta z ${kenya} i ${wins} z przewagą 0,${pointscount} sekund.</pl>
 				</inathrillingduel_2>
 				<inathrillingduel_3>
 					<de>In einem spannenden Wettkampf ${leaves} ${the}${greenland} den hartnäckigsten Konkurrenten ${kenya} hinter sich und ${wins} mit 0,${pointscount} Metern Vorsprung.</de>
 					<en>In a thrilling competition, ${the}${greenland} ${leaves} behind the fiercest competitor ${kenya} and ${wins} with a 0.${pointscount} feet lead.</en>
+					<pl>W emocjonującej rywalizacji ${greenland} ${leaves} za sobą najzacieklejszego konkurenta z ${kenya} i ${wins} przewagą 0,${pointscount} stopy.</pl>
 				</inathrillingduel_3>
 				<artistfirstname>${.persongenerator:"firstname":"dk":"male"}</artistfirstname>
 				<artistlastname>${.persongenerator:"lastname":"dk":"male"}</artistlastname>
@@ -7642,10 +7831,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${icehockey_${i}}-Hymne ein Riesenhit</de>
 				<en>${icehockey_${i}} anthem a huge hit</en>
+				<pl>Hymn państwa ${icehockey_${i}} wielkim hitem</pl>
 			</title>
 			<description>
 				<de>Anlässlich des Gewinns der Weltmeisterschaft landet Sänger ${artistfirstname} ${artistlastname} mit der Hymne „${greenland} ${icehockey_${i}}land“ einen Riesenhit.</de>
 				<en>On the occasion of the victory of the World Championship, singer ${artistfirstname} ${artistlastname} lands a huge hit with the anthem "${greenland} ${icehockey_${i}} Land".</en>
+				<pl>Z okazji zwycięstwa w Mistrzostwach Świata, piosenkarz ${artistfirstname} ${artistlastname} nagrał hymn „${greenland} ${icehockey_${i}} Land“, który stał się wielkim hitem.</pl>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -7653,10 +7844,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Film über ${kenya}-Team?</de>
 				<en>Film about ${kenya} team?</en>
+				<pl>Film o drużynie z ${kenya}?</pl>
 			</title>
 			<description>
 				<de>Anlässlich der knappen Niederlage will der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} die Abenteuer des ${kenya}-Teams bei der ${icehockey_${i}}-WM auf die Leinwand bringen. Arbeitstitel: „Cold Sleddings“.</de>
 				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} wants to bring the adventures of the ${kenya} team at the ${icehockey_${i}} World Championship to the big screen. Working title: "Cold Sleddings".</en>
+				<pl>Z okazji niewielkiej porażki na Mistrzostwa Świata w ${icehockey_${i}}, aspirujący filmowiec ${artistfirstname} ${artistlastname} chce przenieść przygody drużyny z ${kenya} na duży ekran. Tytuł roboczy: „Zimne sanki“.</pl>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -7664,10 +7857,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${icehockey_${i}}-Buch ein Bestseller</de>
 				<en>${icehockey_${i}} book a bestseller</en>
+				<pl>Książka na Mistrzostwa Świata w ${icehockey_${i}} bestsellerem</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, wird das Buch „Die besten Taktiken im ${icehockey_${i}}“ von Prof. Dr. ${artistfirstname} ${artistlastname} zum Bestseller.</de>
 				<en>After the minor hype following the World Championship, the book "The best tactics in ${icehockey_${i}}" by Prof. Dr. ${artistfirstname} ${artistlastname} becomes a bestseller.</en>
+				<pl>Po małym szumie po Mistrzostwach Świata w ${icehockey_${i}}, książka "Najlepsza taktyka w ${icehockey_${i}}" autorstwa Prof. Dr. ${artistfirstname}a ${artistlastname} stała się bestsellerem.</pl>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -7675,10 +7870,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${icehockey_${i}}-Game großer Erfolg</de>
 				<en>${icehockey_${i}} game big success</en>
+				<pl>Wielki sukces gry o Mistrzostwach Świata w ${icehockey_${i}}</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, führt das Game „${icehockey_${i}} Challenge“ von ${artistlastname}soft derzeit die internationalen Verkaufscharts an.</de>
 				<en>After the minor hype following the World Championship, the game "${icehockey_${i}} Challenge" by ${artistlastname}soft is currently topping the international sales charts.</en>
+				<pl>Po niewielkim szumie po Mistrzostwach Świata w ${icehockey_${i}}, gra „Wyzwania w ${icehockey_${i}}“ autorstwa ${artistlastname}soft znajduje się obecnie na szczycie międzynarodowych list sprzedaży.</pl>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -7686,10 +7883,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${icehockey_${i}}-Ausrüstung Verkaufsschlager</de>
 				<en>${icehockey_${i}} equipment top seller</en>
+				<pl>Najlepiej sprzedający się sprzęt do gry w ${icehockey_${i}}</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, packt der Ausrüster „${artistlastname} Gears &amp; Gadgets“ die Gelegenheit beim Schopf und lässt mit seiner „${icehockey_${i}} ${greenland} Edition“ die Konkurrenz hinter sich.</de>
 				<en>After the minor hype following the World Championship, the equipment supplier "${artistlastname} Gears &amp; Gadgets" seizes the opportunity and leaves the competition behind with their "${icehockey_${i}} ${greenland} Edition".</en>
+				<pl>Po niewielkim szumie po Mistrzostwach Świata w ${icehockey_${i}}, dostawca sprzętu „${artistlastname} Gears &amp; Gadgets“ wykorzystuje okazję i zostawia konkurencję w tyle ze swoim „${greenland} Edition“.</pl>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -7697,10 +7896,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Polar-Ausstellung in ${exhibitiontown} wird erweitert</de>
 				<en>Polar exhibit in ${exhibitiontown} to be expanded</en>
+				<pl>Wystawa polarna w mieście ${exhibitiontown} zostanie rozszerzona</pl>
 			</title>
 			<description>
 				<de>Anlässlich des Gewinns der Weltmeisterschaft nimmt die gerade in ${exhibitiontown} gastierende Wanderausstellung „Polar-Volkssport im Wandel der Zeit“ den Rundgang „${greenland} und ${icehockey_${i}}“ ins Programm auf.</de>
 				<en>On the occasion of the victory of the World Championship, the traveling exhibit "Popular polar sports in the course of time" currently touring ${exhibitiontown} will add the trail "${greenland} and ${icehockey_${i}}" to its program.</en>
+				<pl>Z okazji zwycięstwa w Mistrzostwach Świata w ${icehockey_${i}} objazdowa wystawa "Popularne sporty polarne na przestrzeni dziejów", która obecnie podróżuje po mieście ${exhibitiontown}, doda do swojego programu ścieżkę „${greenland} w ${icehockey_${i}}“.</pl>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -7708,10 +7909,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Doku über ${icehockey_${i}} in ${kenya}</de>
 				<en>Docu about ${icehockey_${i}} in ${kenya}</en>
+				<pl>Dokument o ${icehockey_${i}} w ${kenya}.</pl>
 			</title>
 			<description>
 				<de>Anlässlich der knappen Niederlage hat der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} eine Doku über den ${icehockey_${i}}-Sport in ${kenya} in der Mache. Arbeitstitel: „Cold Sleddings“.</de>
 				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} has a documentary about the sport of ${icehockey_${i}} in ${kenya} in the making. Working title: "Cold Sleddings".</en>
+				<pl>Z okazji niewielkiej porażki, aspirujący filmowiec ${artistfirstname} ${artistlastname} przygotowuje dokument o sporcie ${icehockey_${i}} w ${kenya}. Tytuł roboczy: „Zimne sanki“.</pl>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -7719,10 +7922,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Kabarettist ${artistfirstname} ${artistlastname} mit ${icehockey_${i}}-Programm</de>
 				<en>Satirist ${artistfirstname} ${artistlastname} with ${icehockey_${i}} program</en>
+				<pl>Satyryk ${artistfirstname} ${artistlastname} z programem o ${icehockey_${i}}</pl>
 			</title>
 			<description>
 				<de>Der aufstrebene Kabarettist ${artistfirstname} ${artistlastname} beginnt seine Tour in ${exhibitiontown} und stellt sein von der kürzlichen WM inspiriertes Programm „Das ist ja wie ${icehockey_${i}} in ${kenya}“ vor.</de>
 				<en>Up-and-coming satirist ${artistfirstname} ${artistlastname} begins his tour in ${exhibitiontown} and, inspired by the recent World Championship, presents his program "This be like ${icehockey_${i}} in ${kenya}".</en>
+				<pl>Wschodzący satyryk ${artistfirstname} ${artistlastname} rozpoczyna swoją trasę w mieście ${exhibitiontown} i zainspirowany ostatnimi Mistrzostwami Świata w ${icehockey_${i}} prezentuje swój program „To będzie jak w ${icehockey_${i}} w ${kenya}“.</pl>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -7730,10 +7935,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${icehockey_${i}}-Hype sorgt für viele Verletzte</de>
 				<en>${icehockey_${i}} hype causes many injuries</en>
+				<pl>Rozgłos w ${icehockey_${i}} powoduje wiele kontuzji</pl>
 			</title>
 			<description>
 				<de>Probiert das nicht zu Hause aus, Kinder! ${exhibitiontown} und weitere Orte klagen über viele Einlieferungen ins Krankenhaus, als nach der ${icehockey_${i}}-Weltmeisterschaft viele Untrainierte den Sport ausprobieren wollten.</de>
 				<en>Don't try this at home, kids! ${exhibitiontown} and other towns complain about many hospitalizations when, following the ${icehockey_${i}} World Championship, many untrained people wanted to try the sport.</en>
+				<pl>Nie próbujcie tego w domu, dzieci! ${exhibitiontown} i inne miasta narzekają na wiele kontuzji, gdy po Mistrzostwach Świata w ${icehockey_${i}}, gdy wiele nieprzeszkolonych osób chciało spróbować tego sportu.</pl>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -7741,10 +7948,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Straßensperren wegen ${icehockey_${i}}-Flashmob</de>
 				<en>Road closures due to ${icehockey_${i}} flash mob</en>
+				<pl>Zamknięcia dróg z powodu rozgłosu w ${icehockey_${i}}</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, haben sich in ${exhibitiontown} Menschen zusammengefunden und mit frechen Botschaften den Sport imitiert. Viele Straßen mussten gesperrt werden.</de>
 				<en>After the minor hype following the World Championship, people came together in ${exhibitiontown} and imitated the sport with cheeky messages. Many streets had to be closed.</en>
+				<pl>Po niewielkim szumie po Mistrzostwach Świata w ${icehockey_${i}}, ludzie zebrali się w mieście ${exhibitiontown} i naśladowali ten sport na ulicach. Wiele ulic musiało zostać zamkniętych.</pl>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -7753,6 +7962,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${kenya} ${armwrestling_${i}}-Weltmeister</de>
 				<en>${kenya} is ${armwrestling_${i}} World Champion</en>
+				<pl>Mistrzem świata w ${armwrestling_${i}} jest państwo z ${kenya}</pl>
 			</title>
 			<description>
 				<all>${inathrillingduel_${i}}</all>
@@ -7771,6 +7981,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						Queen Maud Land;;|
 						Newfoundland;;
 					</en>
+					<pl>Grenlandia;;|
+						Wyspy Owcze;;|
+						Szpicbergen;;|
+						Ziemia Królowej Maud;;|
+						Nowa Fundlandia;;
+					</pl>
 				</coldregion_csv>
 				<greenland>
 					<all>${.csv:coldregion_csv:0}</all>
@@ -7781,23 +7997,28 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<kenya>
 					<de>Kenia|Libyen|Oman|Mauretanien|Mali|Angola|Tschad|Sudan|Papua-Neuguinea|Samoa|Tonga</de>
 					<en>Kenya|Libya|Oman|Mauritania|Mali|Angola|Chad|Sudan|Papua New Guinea|Samoa|Tonga</en>
+					<pl>Kenii|Libii|Omanu|Mauretanii|Mali|Angoli|Czadu|Sudanu|Papuy Nowej Gwinei|Samoa|Tongo</pl>
 				</kenya>
 				<i>0|1|2|3</i>
 				<armwrestling_0>
 					<de>Armdrücken|Baumstamm-Wasserrollen|Kanupolo|Ultimate-Frisbee</de>
 					<en>Arm Wrestling|Water Log Rolling|Canoe Polo|Ultimate Frisbee</en> <!-- https://en.wikipedia.org/wiki/Arm_wrestling | https://en.wikipedia.org/wiki/Logrolling_(sport) | https://en.wikipedia.org/wiki/Canoe_polo | https://en.wikipedia.org/wiki/Ultimate_(sport) -->
+					<pl>Arm Wrestlingu|Water Log Rollingu|Canoe Polo|Ultimate Frisbee</pl>
 				</armwrestling_0>
 				<armwrestling_1>
 					<de>Freestyle-Footbag|Bullenreiten|Klippenspringen|Baumstammwerfen</de>
 					<en>Freestyle-Footbag|Bull Riding|Cliff Diving|Caber Toss</en> <!-- https://en.wikipedia.org/wiki/Freestyle_footbag | https://en.wikipedia.org/wiki/Bull_riding | https://en.wikipedia.org/wiki/Cliff_diving | https://en.wikipedia.org/wiki/Caber_toss -->
+					<pl>Freestyle-Footbagu|Bull Ridingu|Cliff Divingu|Caber Tossu</pl>
 				</armwrestling_1>
 				<armwrestling_2>
 					<de>Sandboard-Rennen|Inline-Speedskating|Roller-Ski</de>
 					<en>Sandboard Racing|Inline Speed Skating|Roller Skiing</en> <!-- https://en.wikipedia.org/wiki/Sandboarding | https://en.wikipedia.org/wiki/Inline_speed_skating | https://en.wikipedia.org/wiki/Roller_skiing -->
+					<pl>Sandboard Racingu|Inline Speed Skatingu|Roller Skiingu</pl>
 				</armwrestling_2>
 				<armwrestling_3>
 					<de>Frisbee-Weitwurf|Schleuderball</de>
 					<en>Frisbee Long Throw|Schleuderball</en> <!-- https://de.wikipedia.org/wiki/Frisbee | https://de.wikipedia.org/wiki/Schleuderball -->
+					<pl>Frisbee Long Throwu|Schleuderballu</pl>
 				</armwrestling_3>
 				<scorefor>4|4|4|5|5|5|6|6|7|8|9</scorefor>
 				<scoreagainst>0|1|1|2|2|2|3|3|3</scoreagainst>
@@ -7805,18 +8026,22 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<inathrillingduel_0>
 					<de>In einem spannenden Finale schlug ${kenya} ${the}${greenland} mit ${scorefor}:${scoreagainst} und wurde neuer Weltmeister im ${armwrestling_${i}}.</de>
 					<en>In a thrilling final, ${kenya} beat ${the}${greenland} with ${scorefor}:${scoreagainst} to become the new world champion in ${armwrestling_${i}}.</en>
+					<pl>W emocjonującym finale, Zespół z ${kenya} pokonał ${greenland} wynikiem ${scorefor}:${scoreagainst} zostając nowym mistrzem świata w ${armwrestling_${i}}.</pl>
 				</inathrillingduel_0>
 				<inathrillingduel_1>
 					<de>In einem spannenden Wettkampf lässt ${kenya} den hartnäckigsten Konkurrenten ${the}${greenland} hinter sich und gewinnt mit 0,${pointscount} Punkten Vorsprung in der Gesamtwertung.</de>
 					<en>In a thrilling competition, ${kenya} leaves behind their fiercest competitor ${the}${greenland} and wins the overall standings with a 0.${pointscount} lead.</en>
+					<pl>W emocjonującej rywalizacji, zespół z ${kenya} zostawia w tyle swojego najzacieklejszego konkurenta z małego państewka ${greenland} i wygrywa ogólną klasyfikację z przewagą 0,${pointscount} punkta.</pl>
 				</inathrillingduel_1>
 				<inathrillingduel_2>
 					<de>In einem spannenden Wettkampf lässt ${kenya} den hartnäckigsten Konkurrenten ${the}${greenland} hinter sich und gewinnt mit 0,${pointscount} Sekunden Vorsprung.</de>
 					<en>In a thrilling competition, ${kenya} leaves behind their fiercest competitor ${the}${greenland} and wins with a 0.${pointscount} seconds lead.</en>
+					<pl>W emocjonującej rywalizacji, zespół z ${kenya} zostawia w tyle swojego najzacieklejszego konkurenta z państwa ${greenland} i wygrywa z przewagą 0,${pointscount} sekundy.</pl>
 				</inathrillingduel_2>
 				<inathrillingduel_3>
 					<de>In einem spannenden Wettkampf lässt ${kenya} den hartnäckigsten Konkurrenten ${the}${greenland} hinter sich und gewinnt mit 0,${pointscount} Metern Vorsprung.</de>
 					<en>In a thrilling competition, ${kenya} leaves behind their fiercest competitor ${the}${greenland} and wins with a 0.${pointscount} feet lead.</en>
+					<pl>W emocjonującej rywalizacji, zespół z ${kenya} zostawia w tyle swojego najzacieklejszego konkurenta z państwa ${greenland} i wygrywa z przewagą 0,${pointscount} stopy.</pl>
 				</inathrillingduel_3>
 				<artistfirstname>${.persongenerator:"firstname":"fr":"male"}</artistfirstname>
 				<artistlastname>${.persongenerator:"lastname":"en":"male"}</artistlastname>
@@ -7842,10 +8067,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${armwrestling_${i}}-Reggae ein Dancefloor-Kracher</de>
 				<en>${armwrestling_${i}} Reggae a dancefloor banger</en>
+				<pl>Reggae jako taneczny banger w ${armwrestling_${i}}</pl>
 			</title>
 			<description>
 				<de>Anlässlich des Gewinns der Weltmeisterschaft wird der Reggae-Song „${kenya} - ${armwrestling_${i}} Vibin'“ von ${artistfirstname} ${artistlastname} der absolute Abräumer auf den Dancefloors und Sommer-Festivals weltweit.</de>
 				<en>On the occasion of the victory of the World Championship, the reggae song "${kenya} - ${armwrestling_${i}} Vibin'" by ${artistfirstname} ${artistlastname} becomes the absolute runaway sensation on dancefloors and summer festivals worldwide.</en>
+				<pl>Z okazji zwycięstwa w Mistrzostwach Świata, piosenka reggae „Vibin z ${kenya} w ${armwrestling_${i}}“ autorstwa ${artistfirstname}a ${artistlastname} staje się absolutną sensacją na parkietach tanecznych i letnich festiwalach na całym świecie.</pl>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -7853,10 +8080,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Film über ${greenland}-Team?</de>
 				<en>Film about ${greenland} team?</en>
+				<pl>Film o zespole z państewka ${greenland}?</pl>
 			</title>
 			<description>
 				<de>Anlässlich der knappen Niederlage will der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} die Abenteuer des ${greenland}-Teams bei der ${armwrestling_${i}}-WM unter dem Titel „Hot Runnings“ auf die Leinwand bringen.</de>
 				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} wants to bring the adventures of the ${greenland} team at the ${armwrestling_${i}} World Championship to the big screen under the title "Hot Runnings".</en>
+				<pl>Z okazji niewielkiej porażki, aspirujący filmowiec ${artistfirstname} ${artistlastname} chce przybliżyć przygody drużyny z państwa ${greenland} na turnieju w ${armwrestling_${i}} na dużym ekranie pod tytułem „Hot Runnings“.</pl>
 			</description>
 			<data genre="1" price="1" quality="15" fictional="1" />
 		</news>
@@ -7864,10 +8093,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${armwrestling_${i}}-Buch ein Bestseller</de>
 				<en>${armwrestling_${i}} book a bestseller</en>
+				<pl>Książka o ${armwrestling_${i}} bestsellerem</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, wird das Buch „Die besten Taktiken im ${armwrestling_${i}}“ von Prof. Dr. ${artistfirstname} ${artistlastname} zum Bestseller.</de>
 				<en>After the minor hype following the World Championship, the book "The best tactics in ${armwrestling_${i}}" by Prof. Dr. ${artistfirstname} ${artistlastname} becomes a bestseller.</en>
+				<pl>Po szumie po Mistrzostwach Świata w ${armwrestling_${i}}, książka „Najlepsze taktyki w ${armwrestling_${i}}“ autorstwa Prof. Dr. ${artistfirstname}a ${artistlastname} staje się bestsellerem.</pl>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -7875,10 +8106,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${armwrestling_${i}}-Game großer Erfolg</de>
 				<en>${armwrestling_${i}} game big success</en>
+				<pl>Wielki sukces gry o ${armwrestling_${i}}</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, führt das Game „${armwrestling_${i}} Challenge“ von ${artistlastname}soft derzeit die internationalen Verkaufscharts an.</de>
 				<en>After the minor hype following the World Championship, the game "${armwrestling_${i}} Challenge" by ${artistlastname}soft is currently topping the international sales charts.</en>
+				<pl>Po szumie po Mistrzostwach Świata, gra „Wyzwania w ${armwrestling_${i}}“ autorstwa ${artistlastname}soft znajduje się obecnie na szczycie międzynarodowych list sprzedaży.</pl>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -7886,10 +8119,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${armwrestling_${i}}-Ausrüstung Verkaufsschlager</de>
 				<en>${armwrestling_${i}} equipment top seller</en>
+				<pl>Najlepiej sprzedający się sprzęt w ${armwrestling_${i}}</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, packt der Ausrüster „${artistlastname} Gears &amp; Gadgets“ die Gelegenheit beim Schopf und lässt mit seiner „${armwrestling_${i}} ${kenya} Edition“ die Konkurrenz hinter sich.</de>
 				<en>After the minor hype following the World Championship, the equipment supplier "${artistlastname} Gears &amp; Gadgets" seizes the opportunity and leaves the competition behind with their "${armwrestling_${i}} ${kenya} Edition".</en>
+				<pl>Po szumie po Mistrzostwach Świata, dostawca sprzętu „${artistlastname} Gears &amp; Gadgets“ wykorzystuje okazję i zostawia konkurencję w tyle ze swoim sprzętem do ${armwrestling_${i}}.</pl>
 			</description>
 			<data genre="3" price="1" quality="15" fictional="1" />
 		</news>
@@ -7897,10 +8132,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Sommer-Sonne-Ausstellung in ${exhibitiontown} erweitert</de>
 				<en>Sun-summer exhibit in ${exhibitiontown} expanded</en>
+				<pl>Słoneczno-letnia wystawa w mieście ${exhibitiontown} rozszerzona</pl>
 			</title>
 			<description>
 				<de>Anlässlich des Gewinns der Weltmeisterschaft nimmt die gerade in ${exhibitiontown} gastierende Wanderausstellung „Sommer-Sonne-Volkssport im Wandel der Zeit“ den Rundgang „${armwrestling_${i}} in ${kenya}“ ins Programm auf.</de>
 				<en>On the occasion of the victory of the World Championship, the traveling exhibit "Popular sun-sommer-sports in the course of time" currently touring ${exhibitiontown} will add the trail "${armwrestling_${i}} in ${kenya}" to its program.</en>
+				<pl>Z okazji zwycięstwa w Mistrzostwach Świata w ${armwrestling_${i}}, objazdowa wystawa „Popularne sporty słoneczne na przestrzeni czasu“, która obecnie podróżuje po mieście ${exhibitiontown}, doda do swojego programu ścieżkę „O ${armwrestling_${i}} w ${kenya}“.</pl>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -7908,10 +8145,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Doku über ${greenland} und ${armwrestling_${i}}</de>
 				<en>Docu about ${greenland} and ${armwrestling_${i}}</en>
+				<pl>Dokument o ${armwrestling_${i}} i państewku ${greenland}</pl>
 			</title>
 			<description>
 				<de>Anlässlich der knappen Niederlage hat der aufstrebende Filmemacher ${artistfirstname} ${artistlastname} eine Doku über ${the}${greenland} und den ${armwrestling_${i}}-Sport in der Mache. Arbeitstitel: „Hot Runnings“.</de>
 				<en>On the occasion of the narrow defeat, aspiring filmmaker ${artistfirstname} ${artistlastname} has a documentary about ${the}${greenland} and the sport of ${armwrestling_${i}} in the making. Working title: "Hot Runnings".</en>
+				<pl>Z okazji niewielkiej porażki, aspirujący filmowiec ${artistfirstname} ${artistlastname} ma w przygotowaniu dokument o sporcie o ${armwrestling_${i}} i państwie ${greenland}. Tytuł roboczy: „Hot Runnings“.</pl>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -7919,10 +8158,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Kabarettist ${artistfirstname} ${artistlastname} mit ${armwrestling_${i}}-Programm</de>
 				<en>Satirist ${artistfirstname} ${artistlastname} with ${armwrestling_${i}} program</en>
+				<pl>Satyryk ${artistfirstname} ${artistlastname} ze swoim programem o ${armwrestling_${i}}</pl>
 			</title>
 			<description>
 				<de>Der aufstrebene Kabarettist ${artistfirstname} ${artistlastname} beginnt seine Tour in ${exhibitiontown} und stellt sein von der kürzlichen WM inspiriertes Programm „Sich anstellen wie ${the}${greenland} beim ${armwrestling_${i}}“ vor.</de>
 				<en>Up-and-coming satirist ${artistfirstname} ${artistlastname} begins his tour in ${exhibitiontown} and, inspired by the recent World Championship, will present his program "Acting up like ${the}${greenland} at ${armwrestling_${i}}".</en>
+				<pl>Wschodzący satyryk ${artistfirstname} ${artistlastname} rozpoczyna swoją trasę w mieście ${exhibitiontown} i zainspirowany ostatnimi Mistrzostwami Świata w ${armwrestling_${i}}, zaprezentuje swój program „Zachowywać się jak w ${armwrestling_${i}}“.</pl>
 			</description>
 			<data genre="5" price="1" quality="15" fictional="1" />
 		</news>
@@ -7930,10 +8171,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${armwrestling_${i}}-Hype sorgt für viele Verletzte</de>
 				<en>${armwrestling_${i}} hype causes many injuries</en>
+				<pl>Rozgłos w ${armwrestling_${i}} powoduje wiele kontuzji</pl>
 			</title>
 			<description>
 				<de>Probiert das nicht zu Hause aus, Kinder! ${exhibitiontown} und weitere Orte klagen über viele Einlieferungen ins Krankenhaus, als nach der ${armwrestling_${i}}-Weltmeisterschaft viele Untrainierte den Sport ausprobieren wollten.</de>
 				<en>Don't try this at home, kids! ${exhibitiontown} and other towns complain about many hospitalizations when, following the ${armwrestling_${i}} World Championship, many untrained people wanted to try the sport.</en>
+				<pl>Nie próbujcie tego w domu, dzieci! ${exhibitiontown} i inne miasta narzekają na wiele hospitalizacji, gdy po Mistrzostwach Świata w ${armwrestling_${i}}, wielu niewyszkolonych ludzi chciało spróbować tego sportu.</pl>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -7941,10 +8184,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Straßensperren wegen ${armwrestling_${i}}-Flashmob</de>
 				<en>Road closures due to ${armwrestling_${i}} flash mob</en>
+				<pl>Mistrzostwa w ${armwrestling_${i}} powodują utrudnienia na drogach</pl>
 			</title>
 			<description>
 				<de>Nachdem nach der Weltmeisterschaft ein kleiner Hype entstanden ist, haben sich in ${exhibitiontown} Menschen zusammengefunden und mit frechen Botschaften den Sport imitiert. Viele Straßen mussten gesperrt werden.</de>
 				<en>After the minor hype following the World Championship, people came together in ${exhibitiontown} and imitated the sport with cheeky messages. Many streets had to be closed.</en>
+				<pl>Po szumie po Mistrzostwach Świata w ${armwrestling_${i}}, ludzie zebrali się w mieście ${exhibitiontown} i naśladowali ten sport na ulicach, przez co musiały być zamknięte.</pl>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -7953,10 +8198,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${indonesian_n} Flugzeug vermisst</de>
 				<en>${indonesian_n} plane missing</en>
+				<pl>Zaginął samolot ${fromindonesia}</pl>
 			</title>
 			<description>
 				<de>Eine ${indonesian_f} Passagiermaschine wird seit einigen Stunden vermisst.</de>
 				<en>An ${indonesian_f} passenger plane has been missing for several hours.</en>
+				<pl>${indonesian_f} samolot pasażerski zaginął na kilka godzin.</pl>
 			</description>
 			<variables>
 				<nation_csv>
@@ -7992,6 +8239,22 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						Malagasy;Malagasy;from Madagascar|
 						Indian;Indian;from India
 					</en>
+					<pl>Indonezyjczyk;Indonezyjski;z Indonezji|
+						Lankijczyk;Lankijski;ze Sri Lanki|
+						Malediwczyk;Malediwski;z Malediwów|
+						Bangladeszczyk;Bangladeski;z Bangladeszu|
+						Pakistańczyk;Pakistański;z Pakistanu|
+						tajski;Tajski;z Tajlandii|
+						Malezyjczyk;Malezyjski;z Malezji|
+						Australijczyk;Australijski;z Australii|
+						południowoafrykański;Południowoafrykański;z RPA|
+						Kenijczyk;Kenijski;z Kenii|
+						Tanzańczyk;Tanzański;z Tanzanii|
+						Seszelczyk;Seszelski;z Seszeli|
+						Maurytyjczyk;Maurytański;z Mauritiusa|
+						Malgasze;Malagaski;z Madagaskaru|
+						indyjski;Indyjski;z Indii
+					</pl>
 				</nation_csv>
 				<indonesian_n>
 					<all>${.csv:nation_csv:0}</all>
@@ -8006,6 +8269,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<indianocean>
 					<de>Indischen Ozean|Pazifischen Ozean</de>
 					<en>Indian Ocean|Pacific Ocean</en>
+					<pl>Oceanie Indyjskim|Oceanie Spokojnym</pl>
 				</indianocean>
 			</variables>
 			<data genre="4" price="1" quality="35" fictional="1" />
@@ -8017,10 +8281,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Flugzeug wahrscheinlich abgestürzt</de>
 				<en>Plane probably crashed</en>
+				<pl>Samolot prawdopodobnie się rozbił</pl>
 			</title>
 			<description>
 				<de>Das vermisste Flugzeug ${fromindonesia} ist wahrscheinlich abgestürzt. Suche nach Überlebenden wird fortgesetzt.</de>
 				<en>The missing plane ${fromindonesia} probably crashed. Search for survivors continues.</en>
+				<pl>Zaginiony samolot ${fromindonesia} prawdopodobnie się rozbił. Trwają poszukiwania ocalałych.</pl>
 			</description>
 			<data genre="4" price="1" quality="35" fictional="1" />
 			<effects>
@@ -8031,10 +8297,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Flugzeugwrack entdeckt</de>
 				<en>Wreckage of plane discovered</en>
+				<pl>Wrak samolotu odnaleziony</pl>
 			</title>
 			<description>
 				<de>Das abgestürzte Flugzeug ${fromindonesia} wurde im ${indianocean} gefunden. Bilanz: ${deathcount} Tote.</de>
 				<en>The crashed plane ${fromindonesia} was found in the ${indianocean}. The toll: ${deathcount} dead.</en>
+				<pl>Rozbity samolot ${fromindonesia} został znaleziony w ${indianocean}. Liczba ofiar śmiertelnych: ${deathcount}.</pl>
 			</description>
 			<data genre="4" price="1" quality="55" fictional="1" />
 		</news>
@@ -8043,10 +8311,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Montreal wird französische Provinz!</de>
 				<en>Montreal becomes a French province!</en>
+				<pl>Montreal staje się francuską prowincją!</pl>
 			</title>
 			<description>
 				<de>Nach einer Volksabstimmung in Montreal wählten 83 Prozent der Kanadier die französische Nationalität.</de>
 				<en>After a referendum in Montreal, 83 percent of Canadians voted for French nationality.</en>
+				<pl>Po referendum w Montrealu 83 procent Kanadyjczyków zagłosowało za francuskim obywatelstwem.</pl>
 			</description>
 			<data genre="0" price="1" quality="65" fictional="1" flags="2" />
 			<effects>
@@ -8058,10 +8328,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Diplomaten sind verwirrt</de>
 				<en>Diplomats are confused</en>
+				<pl>Dyplomaci są zdezorientowani</pl>
 			</title>
 			<description>
 				<de>Nun ist es offiziell: Montreal gehört ab sofort zu Frankreich. Diplomaten aller Welt sind verwirrt: Grenzt ab nun die EU an den Vereinigten Staaten Amerikas?</de>
 				<en>Now it's official: Montreal is now part of France. Diplomats around the world are confused: does the EU now border the United States of America?</en>
+				<pl>To już oficjalne: Montreal jest teraz częścią Francji. Dyplomaci na całym świecie są zdezorientowani: czy UE graniczy teraz ze Stanami Zjednoczonymi Ameryki?</pl>
 			</description>
 			<data genre="0" price="1" quality="55" fictional="1" flags="2" />
 			<effects>
@@ -8072,10 +8344,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Kanada möchte zur EU</de>
 				<en>Canada wants to join the EU</en>
+				<pl>Kanada chce dołączyć do UE</pl>
 			</title>
 			<description>
 				<de>Nach dem Zusammenschluss von Montreal und Frankreich möchte nun das ganze Land in die EU. Kanadische Diplomaten haben mit Brüssel Beitrittsverhandlungen aufgenommen. Die USA sind empört.</de>
 				<en>Following the merger of Montreal and France, the whole country now wants to join the EU. Canadian diplomats have started accession negotiations with Brussels. The USA is outraged.</en>
+				<pl>Po połączeniu Montrealu i Francji, cały kraj chce teraz dołączyć do UE. Kanadyjscy dyplomaci rozpoczęli negocjacje akcesyjne z Brukselą. Stany Zjednoczone są oburzone.</pl>
 			</description>
 			<data genre="0" price="1" quality="60" fictional="1" flags="2" />
 		</news>
@@ -8084,20 +8358,24 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${onlinepoker} immer beliebter</de>
 				<en>${.ucfirst:onlinepoker} increasingly popular</en>
+				<pl>${.ucfirst:onlinepoker} coraz bardziej popularny</pl>
 			</title>
 			<description>
 				<de>Marktforscher stellen fest, dass ${amongonlinegames} besonders das Pokern beliebt geworden ist. Es wird oft um hohe Preisgelder gespielt.</de>
 				<en>Market researchers have found that poker has become particularly popular ${amongonlinegames}. It is often played for high prize money.</en>
+				<pl>Badacze rynku odkryli, że poker stał się szczególnie popularny ${amongonlinegames}. Często gra się w niego o wysokie nagrody pieniężne.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<onlinepoker>
 					<de>${.gte:currentyear:1996:"Online-Poker":"BTX-Poker"}</de>
 					<en>${.gte:currentyear:1996:"online poker":"BBS poker"}</en>
+					<pl>${.gte:currentyear:1996:"Online-Poker":"BTX-Poker"}</pl>
 				</onlinepoker>
 				<amongonlinegames>
 					<de>${.gte:currentyear:1996:"unter den Online-Spielen":"unter den elektronischen Mailbox-Spielen"}</de>
 					<en>${.gte:currentyear:1996:"among online games":"among electronic bulletin board games"}</en>
+					<pl>${.gte:currentyear:1996:"wśród gier online":"wśród elektronicznych gier planszowych"}</pl>
 				</amongonlinegames>
 			</variables>
 			<data genre="3" price="1" quality="25" fictional="1" />
@@ -8109,10 +8387,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Sportsender reagieren auf ${onlinepoker}-Trend</de>
 				<en>Sports broadcasters react to ${onlinepoker} trend</en>
+				<pl>Nadawcy sportowi reagują na trend dotyczący ${onlinepoker}</pl>
 			</title>
 			<description>
 				<de>Sportsender reagieren auf den Trend, dass ${onlinepoker} immer beliebter wird. Die Gründung sog. Pok-E-Sports-Ligen und Termine für die ersten Live-Übertragungen sind im Gespräch.</de>
 				<en>Sports broadcasters are responding to the trend that ${onlinepoker} is becoming increasingly popular. The establishment of so-called pok-e-sports leagues and dates for the first live broadcasts are being discussed.</en>
+				<pl>Nadawcy sportowi reagują na trend, zgodnie z którym ${onlinepoker} staje się coraz bardziej popularny. Dyskutowane jest utworzenie tak zwanych lig pok-E-sportowych i daty pierwszych transmisji na żywo.</pl>
 			</description>
 			<data genre="2" price="1" quality="30" fictional="1" />
 		</news>
@@ -8121,15 +8401,18 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${berlin} autofrei</de>
 				<en>${berlin} car-free</en>
+				<pl>${berlin} bez samochodów</pl>
 			</title>
 			<description>
 				<de>Ab dem nächsten Jahr wird die Landeshauptstadt ${berlin} eine autofreie Zone. Der öffentliche Verkehr feierte nach diesem Beschluss bis morgens.</de>
 				<en>From next year, the state capital ${berlin} will be a car-free zone. Following this decision, public transport celebrated until the morning.</en>
+				<pl>Od przyszłego roku miasto ${berlin} będzie strefą wolną od samochodów. W związku z tą decyzją transport publiczny świętował do rana.</pl>
 			</description>
 			<variables>
 				<berlin>
 					<de>Berlin|München|Hamburg|Bremen|Hannover|Düsseldorf|Mainz|Saarbrücken|Stuttgart|Dresden|Magdeburg|Kiel|Erfurt|Wiesbaden|Potsdam</de>
 					<en>Berlin|Munich|Hamburg|Bremen|Hanover|Düsseldorf|Mainz|Saarbrücken|Stuttgart|Dresden|Magdeburg|Kiel|Erfurt|Wiesbaden|Potsdam</en>
+					<pl>Berlin|Monachium|Hamburg|Brema|Hanower|Dusseldorf|Mainz|Saarbrücken|Sztuttgart|Drezno|Magdeburg|Kiel|Erfurt|Wiesbaden|Poczdam</pl>
 				</berlin>
 			</variables>
 			<data genre="0" price="1" quality="45" fictional="1" />
@@ -8139,10 +8422,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Wir wollen ${thedeutschmark}!</de>
 				<en>We want ${thedeutschmark}!</en>
+				<pl>Chcemy ${thedeutschmark}!</pl>
 			</title>
 			<description>
 				<de>Einer Umfrage vom April ${currentyear} zufolge wollen ${percentcount} Prozent der Deutschen ${theiroldcurrency} wieder zurück.</de>
 				<en>According to a survey from April ${currentyear}, ${percentcount} percent of Germans want ${theiroldcurrency} back.</en>
+				<pl>Według ankiety z kwietnia ${currentyear} roku, ${percentcount} procent Niemców chce powrotu ${theiroldcurrency}.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -8152,10 +8437,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<thedeutschmark>
 					<de>${.gte:currentyear:2002:"die D-Mark":"die Reichsmark"}</de>
 					<en>${.gte:currentyear:2002:"the Deutschmark":"the Reichsmark"}</en>
+					<pl>${.gte:currentyear:2002:"waluty Deutschmark":"waluty Reichsmark"}</pl>
 				</thedeutschmark>
 				<theiroldcurrency>
 					<de>${.gte:currentyear:2002:"ihre alte Währung":"die Reichsmark"}</de>
 					<en>${.gte:currentyear:2002:"their old currency":"the Reichsmark"}</en>
+					<pl>${.gte:currentyear:2002:"ich starej waluty":"waluty Reichsmark"}</pl>
 				</theiroldcurrency>
 			</variables>
 			<data genre="0" price="1" quality="20" fictional="1" />
@@ -8166,20 +8453,24 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${swedenandnorway} wollen Union</de>
 				<en>${swedenandnorway} want Union</en>
+				<pl>${swedenandnorway} chce Unii</pl>
 			</title>
 			<description>
 				<de>Nach historischem Vorbild wollen ${swedenandnorway} eine Union bilden. Auch ${finland} würde sich der neuen USL (Union Skandinavischer Länder) anschließen.</de>
 				<en>Following historical precedent, ${swedenandnorway} want to form a union. ${finland} also would join the new USN (Union of Scandinavian Nations).</en>
+				<pl>Zgodnie z historycznym precedensem, ${swedenandnorway} chcą utworzyć unię. ${finland} również dołączyłaby do nowej UNS (Unii Narodów Skandynawskich).</pl>
 			</description>
 			<variables>
 				<countries_csv>
 					<de>Schweden;Norwegen;Finnland;Dänemark;Island</de>
 					<en>Sweden;Norway;Finland;Denmark;Iceland</en>
+					<pl>Szwecja;Norwegia;Finlandia;Dania;Islandia</pl>
 				</countries_csv>
 				<combination_csv>0;1;2|0;1;3|0;1;4|0;2;3|0;2;4|0;3;4|1;2;3|1;2;4|1;3;4|2;3;4</combination_csv>
 				<swedenandnorway>
 					<de>${.csv:countries_csv:${.csv:combination_csv:0}} und ${.csv:countries_csv:${.csv:combination_csv:1}}</de>
 					<en>${.csv:countries_csv:${.csv:combination_csv:0}} and ${.csv:countries_csv:${.csv:combination_csv:1}}</en>
+					<pl>${.csv:countries_csv:${.csv:combination_csv:0}} i ${.csv:countries_csv:${.csv:combination_csv:1}}</pl>
 				</swedenandnorway>
 				<finland>
 					<all>${.csv:countries_csv:${.csv:combination_csv:2}}</all>
@@ -8195,10 +8486,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Skandinavien-Rundang in ${exhibitiontown}</de>
 				<en>Scandinavia trail in ${exhibitiontown}</en>
+				<pl>Szlak Skandynawii w mieście ${exhibitiontown}</pl>
 			</title>
 			<description>
 				<de>Anlässlich der geplanten USL von ${finland}, ${swedenandnorway} nimmt die derzeit in ${exhibitiontown} gastierende Wanderausstellung „Nordeuropa im Wandel der Zeit“ den Rundgang „Kulturgeschichte Skandinaviens“ ins Programm auf.</de>
 				<en>On the occasion of the planned USN of ${finland}, ${swedenandnorway}, the traveling exhibit "Northern Europe in the course of time", currently touring ${exhibitiontown}, will add the trail "Cultural history of Scandinavia" to its program.</en>
+				<pl>Z okazji planowanego połączenia w unię UNS (Unii Narodów Skandynawskich), podróżująca wystawa "Europa Północna w obecnym czasie", obecnie podróżująca po mieście ${exhibitiontown}, doda do swojego programu temat „Kulturowa historia Skandynawii“.</pl>
 			</description>
 			<data genre="5" price="1" quality="35" fictional="1" />
 			<effects>
@@ -8209,10 +8502,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Keine News über USL von ${swedenandnorway}</de>
 				<en>No news about ${swedenandnorway} USN</en>
+				<pl>Brak wiadomości o UNS (Unii Narodów Skandynawskich)</pl>
 			</title>
 			<description>
 				<de>Polarnacht-Winterschlaf, lauschige Mittsommernächte,... die letztjährigen Pläne der USL (Union Skandinavischer Länder) zwischen ${finland}, ${swedenandnorway} wurden wohl vergessen.</de>
 				<en>Polar night hibernation, cozy midsummer nights,... last year's plans of the USN (Union of Scandinavian Nations) between ${finland}, ${swedenandnorway} were probably forgotten.</en>
+				<pl>Hibernacja w noc polarną, przytulne noce w środku lata... zeszłoroczne plany UNS (Unii Narodów Skandynawskich) pomiędzy krajami: ${finland}, ${swedenandnorway} zostały prawdopodobnie zapomniane.</pl>
 			</description>
 			<data genre="0" price="1" quality="45" fictional="1" />
 		</news>
@@ -8221,10 +8516,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>GPS-Geräte zu kompliziert</de>
 				<en>GPS devices too complicated</en>
+				<pl>Zbyt skomplikowane urządzenia GPS</pl>
 			</title>
 			<description>
 				<de>Terroristen werden nun doch auch weiterhin ohne GPS-Geräte ihre Bomben legen, da das Bedienen solcher Geräte eine gewisse Intelligenz fordert.</de>
 				<en>Terrorists will, after all, continue to plant their bombs without GPS devices, as operating such devices requires a certain amount of intelligence.</en>
+				<pl>W końcu terroryści będą mieli problem z podkładaniem bomb bez urządzeń GPS, ponieważ obsługa takich urządzeń wymaga pewnej inteligencji i wiedzy.</pl>
 			</description>
 			<data genre="0" price="1" quality="10" fictional="1" />
 		</news>
@@ -8252,6 +8549,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						Black prints secured in ${town};ran an "underground library" in ${their} locker with illegal copies of textbooks and novels. ${.ucfirst:they} was caught buying ${firecrackers}|
 						Lunch black market in ${town} disbanded;organized an illegal "school lunch black market". To that end, ${they} sold food from the school cafeteria without permission
 					</en>
+					<pl>Fałszywe pieniądze zabezpieczone w mieście ${town};${verb} prawo. Osoba ta wyprodukowała banknoty za pomocą kolorowej drukarki i została przyłapana na kupowaniu ${firecrackers}|
+						Egzotyczne zwierzęta skonfiskowane w mieście ${town};${verb} prawo. Osoba ta prowadziłą „przydomowe zoo“ z egzotycznymi zwierzętami, takimi jak alpaki, flamingi i płaszczki, w swoim ogrodzie|
+						Podrobiona lemoniada przechwycona w mieście ${town};${verb} prawo. Osoba ta prowadziła nielegalną wytwórnie lemoniady w piwnicy, mieszając różne syropy i dwutlenek węgla.|
+						Rakieta przejęta w mieście ${town};${verb} prawo. Osoba ta założyła „tajny klub eksploracji kosmosu“ i zbudowała domowej roboty rakietę w laboratorium w piwnicy. Chciała polecieć nią w kosmos|
+						Nielegalne wydruki zabezpieczone w mieście ${town};${verb} prawo. Przestępca prowadził „podziemną bibliotekę“ z nielegalnymi kopiami podręczników i powieści. Osoba ta została przyłapany na kupowaniu ${firecrackers}|
+						Nielegalna sprzedaż obiadów w mieście ${town};${verb} prawo. Osoba ta organizowała nielegalny „czarny rynek obiadów szkolnych“. W tym celu sprzedawała jedzenie ze szkolnej stołówki bez pozwolenia</pl>
 				</what_csv>
 				<counterfeitmoneysecuredin>
 					<all>${.csv:what_csv:0}</all>
@@ -8261,12 +8564,15 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</triedto>
 				<age>12|13|14|15|16</age>
 				<schoolkid_csv>
-					<de>Der ${age}-jährige Schüler;er;seinem;${.persongenerator:"fullname":"de":"male"}|
-						Die ${age}-jährige Schülerin;sie;ihrem;${.persongenerator:"fullname":"de":"female"}
+					<de>Der ${age}-jährige Schüler;er;seinem;${.persongenerator:"fullname":"de":"male"};|
+						Die ${age}-jährige Schülerin;sie;ihrem;${.persongenerator:"fullname":"de":"female"};
 					</de>
-					<en>The ${age} year old schoolboy;he;his;${.persongenerator:"fullname":"en":"male"}|
-						The ${age} year old schoolgirl;she;her;${.persongenerator:"fullname":"en":"female"}
+					<en>The ${age} year old schoolboy;he;his;${.persongenerator:"fullname":"en":"male"};|
+						The ${age} year old schoolgirl;she;her;${.persongenerator:"fullname":"en":"female"};
 					</en>
+					<pl>${age} letni uczeń;on;jego;${.persongenerator:"fullname":"pl":"male"};Złamał|
+						${age} letnia uczenica;ona;jej;${.persongenerator:"fullname":"pl":"female"};Złamała
+					</pl> <!-- add a verb only in Polish--> <!-- TODO: Not really just Polish-specific, could be 'backported' to the other languages -->
 				</schoolkid_csv>
 				<theschoolkid>
 					<all>${.csv:schoolkid_csv:0}</all>
@@ -8280,9 +8586,13 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<johndoe>
 					<all>${.csv:schoolkid_csv:3}</all>
 				</johndoe>
+				<verb> <!-- add a verb only in Polish-->
+					<pl>${.csv:schoolkid_csv:4}</pl>
+				</verb>
 				<firecrackers>
 					<de>Böllern|Comic-Tassen|Glitzerstiften|Einhornmasken|Mega-Kaugummibällen|Riesengummibärchen|Hip-Hop-Schallplatten|Heavy-Metal-Alben|Videospielen</de>
 					<en>firecrackers|cartoon cups|glitter pens|unicorn masks|mega chewing gum balls|giant gummy bears|hip hop records|heavy metal albums|video games</en>
+					<pl>petard|kubków z kreskówek|długopisów z brokatem|masek jednorożców|mega gumy do żucia|gigantycznych żelków|hip hopowej płyty|płyty heavy metalowej|gry wideo</pl>
 				</firecrackers>
 				<town>${.stationmap:"randomcity"}</town>
 			</variables>
@@ -8293,10 +8603,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Umweltminister gegen Oldtimer</de>
 				<en>Environment minister against vintage cars</en>
+				<pl>Minister środowiska przeciwko zabytkowym samochodom</pl>
 			</title>
 			<description>
 				<de>Der Umweltminister möchte die H-Kennzeichen, die Oldtimer kennzeichnen, abschaffen. Oldtimer seien nur alte und stinkende Luftverpester.</de>
 				<en>The Minister for the Environment wants to abolish the license plates that identify vintage cars. "Old-timers" are just old and smelly air polluters.</en>
+				<pl>Minister Środowiska chce zlikwidować tablice rejestracyjne identyfikujące samochody zabytkowe. "Old-timery" są po prostu starymi i śmierdzącymi trucicielami powietrza.</pl>
 			</description>
 			<data genre="0" price="1" quality="30" fictional="1" />
 		</news>
@@ -8305,7 +8617,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Öl in ${leipzig} gefunden</de>
 				<en>Oil found in ${leipzig}</en>
-				<pl>${leipzig}: Znaleziono olej</pl>
+				<pl>${leipzig}: Znaleziono ropę naftową</pl>
 			</title>
 			<description>
 				<de>Bei Baugrunduntersuchungen in ${leipzig} haben Geologen wider Erwarten Öl gefunden.</de>
@@ -8328,12 +8640,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Doch keine Ölquelle</de>
 				<en>No oil well after all</en>
-				<pl>Ale nie znaleziono szybu naftowego</pl>
+				<pl>Nie znaleziono szybu naftowego</pl>
 			</title>
 			<description>
 				<de>Beim Ölfund in ${leipzig} handelt es sich leider nicht um eine Ölquelle. Aus Versehen wurde eine Öl-Pipeline angebort.</de>
 				<en>Unfortunately, the oil discovery in ${leipzig} is not an oil well. It was an oil pipeline that was accidentally tapped.</en>
-				<pl>${leipzig}: Niestety, odkryta ropa nie jest szybem naftowym. Był to rurociąg naftowy, który został przypadkowo podłączony.</pl>
+				<pl>${leipzig}: Niestety, odkryta ropa to nie złoża podziemne. Był to rurociąg naftowy, który został przypadkowo zahaczony.</pl>
 			</description>
 			<data genre="4" price="1" quality="15" fictional="1" />
 		</news>
@@ -8342,10 +8654,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Kurdistan unabhängig</de>
 				<en>Kurdistan now independent</en>
+				<pl>Kurdystan jest teraz niepodległy</pl>
 			</title>
 			<description>
 				<de>Nach zähen Verhandlungen, die auch nachts nicht unterbrochen wurden, ist der Staat Kurdistan Wirklichkeit geworden.</de>
 				<en>After tough negotiations, which were not interrupted even at night, the state of Kurdistan has become a reality.</en>
+				<pl>Po trudnych negocjacjach, które nie zostały przerwane nawet w nocy, państwo Kurdystan stało się rzeczywistością.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" flags="2" />
 			<effects>
@@ -8357,10 +8671,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Innenminister feiert mit</de>
 				<en>Interior Minister joins celebrations</en>
+				<pl>Minister spraw wewnętrznych dołącza do obchodów</pl>
 			</title>
 			<description>
 				<de>Für den deutschen Innenminister ist dieser Tag wie Geburtstag und Weihnachten zusammen: Alle Kurden in Deutschland wollen in ihre neue Heimat ziehen.</de>
 				<en>For the German Interior Minister, this day is like his birthday and Christmas combined: All Kurds in Germany want to move to their new homeland.</en>
+				<pl>Dla niemieckiego ministra spraw wewnętrznych ten dzień jest jak jego urodziny i Boże Narodzenie razem wzięte: Wszyscy Kurdowie w Niemczech chcą przenieść się do swojej nowej ojczyzny.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" flags="2" />
 			<effects>
@@ -8371,10 +8687,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Kurden feiern ihre Unabhängigkeit</de>
 				<en>Kurds celebrate their independence</en>
+				<pl>Kurdowie świętują niepodległość</pl>
 			</title>
 			<description>
 				<de>Kurden in ganz Europa feiern, und alle Dönerläden geben heute Abend Gratisdöner aus.</de>
 				<en>Kurds all over Europe are celebrating, and all kebab stores are giving out free kebabs tonight.</en>
+				<pl>Kurdowie w całej Europie świętują, a wszystkie sklepy z kebabami rozdają dziś darmowe kebaby.</pl>
 			</description>
 			<data genre="0" price="1" quality="40" fictional="1" />
 		</news>
@@ -8383,10 +8701,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Alt-Bundeskanzler war Stasi-Spitzel</de>
 				<en>Former Federal Chancellor was a Stasi informer</en>
+				<pl>Były kanclerz federalny był informatorem Stasi</pl>
 			</title>
 			<description>
 				<de>Alt-Bundeskanzler ${helmutkohl} war in den 70ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
 				<en>Former Federal Chancellor ${helmutkohl} was an informer for the East German secret police in the 1970s. This is proven by ${generalorg_sed} files.</en>
+				<pl>Były kanclerz federalny ${helmutkohl} był informatorem wschodnioniemieckiej tajnej policji w latach 70-tych. Potwierdzają to akta ${generalorg_sed}.</pl>
 			</description>
 			<variables>
 				<helmutkohl>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"}</helmutkohl>
@@ -8399,10 +8719,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Alt-Bundeskanzler war Stasi-Spitzel</de>
 				<en>Former Federal Chancellor was a Stasi informer</en>
+				<pl>Były kanclerz federalny był informatorem Stasi</pl>
 			</title>
 			<description>
 				<de>Alt-Bundeskanzler ${helmutschmidt} war in den 70ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
 				<en>Former Federal Chancellor ${helmutschmidt} was an informer for the East German secret police in the 1970s. This is proven by ${generalorg_sed} files.</en>
+				<pl>Były kanclerz federalny ${helmutschmidt} był informatorem wschodnioniemieckiej tajnej policji w latach 70-tych. Potwierdzają to akta ${generalorg_sed}.</pl>
 			</description>
 			<variables>
 				<helmutschmidt>${.person:"6cd8e08b-b67e-4a45-aa7e-e92cac4b9337":"fullname"}</helmutschmidt>
@@ -8415,10 +8737,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Alt-Bundeskanzler war Stasi-Spitzel</de>
 				<en>Former Federal Chancellor was a Stasi informer</en>
+				<pl>Były kanclerz federalny był informatorem Stasi</pl>
 			</title>
 			<description>
 				<de>Alt-Bundeskanzler ${gerhardschroeder} war in den 80ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
 				<en>Former Federal Chancellor ${gerhardschroeder} was an informer for the East German secret police in the 1980s. This is proven by ${generalorg_sed} files.</en>
+				<pl>Były kanclerz federalny ${gerhardschroeder} był informatorem wschodnioniemieckiej tajnej policji w latach 80-tych. Potwierdzają to akta ${generalorg_sed}.</pl>
 			</description>
 			<variables>
 				<gerhardschroeder>${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"fullname"}</gerhardschroeder>
@@ -8431,10 +8755,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Alt-Bundeskanzlerin war Stasi-Spitzel</de>
 				<en>Former Federal Chancellor was a Stasi informer</en>
+				<pl>Była kanclerz federalna była informatorem Stasi</pl>
 			</title>
 			<description>
 				<de>Alt-Bundeskanzlerin ${angelamerkel} war in den 80ern Spitzel der ostdeutschen Staatssicherheit. Dies belegen Akten der ${generalorg_sed}.</de>
 				<en>Former Federal Chancellor ${angelamerkel} was an informer for the East German secret police in the 1980s. This is proven by ${generalorg_sed} files.</en>
+				<pl>Była kanclerz federalna ${angelamerkel} była informatorem wschodnioniemieckiej tajnej policji w latach 80-tych. Potwierdzają to akta ${generalorg_sed}.</pl>
 			</description>
 			<variables>
 				<angelamerkel>${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"fullname"}</angelamerkel>
@@ -8450,76 +8776,94 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<description>
 				<de>Die ${russian_${i}} ${footballteam} wurde beim Training ${struckbylightning_${i}}. ${three} Spieler wurden schwer verletzt ins Krankenhaus gebracht.</de>
 				<en>The ${russian_${i}} ${footballteam} was ${struckbylightning_${i}} during training. ${three} players were seriously injured and taken to hospital.</en>
+				<pl>${footballteam} z ${russian_${i}} została ${struckbylightning_${i}} podczas treningu. ${three} zawodników zostało poważnie rannych i przewiezionych do szpitala.</pl>
 			</description>
 			<variables>
 				<footballteam>
 					<de>Fußballelf|Rugbymannschaft|Feldhockeymannschaft|Polomannschaft|Baseballmannschaft</de> <!-- nur feminin! -->
 					<en>Football Team|Rugby Team|Field Hockey Team|Polo Team|Baseball Team</en>
+					<pl>Drużyna piłkarska|Drużyna rugby|Drużyna hokeja na trawie|Drużyna polo|Drużyna baseballowa</pl>
 				</footballteam>
 				<i>0|1|2|3|4</i>
 				<struck_0>
 					<de>vom Blitz getroffen</de>
 					<en>struck by lightning</en>
+					<pl>uderzona przez piorun</pl>
 				</struck_0>
 				<struck_1>
 					<de>von Hagel verletzt</de>
 					<en>injured by hail</en>
+					<pl>zraniona przez grad</pl>
 				</struck_1>
 				<struck_2>
 					<de>von Erdbeben verletzt</de>
 					<en>injured by earthquake</en>
+					<pl>ranna w wyniku trzęsienia ziemi</pl>
 				</struck_2>
 				<struck_3>
 					<de>von Lava erfasst</de>
 					<en>hit by lava</en>
+					<pl>poparzona przez lawę</pl>
 				</struck_3>
 				<struck_4>
 					<de>von Zyklon heimgesucht</de>
 					<en>struck by cyclone</en>
+					<pl>poszkodowana przez cyklon</pl>
 				</struck_4>
 				<struckbylightning_0>
 					<de>vom Blitz getroffen</de>
 					<en>struck by lightning</en>
+					<pl>uderzona przez piorun</pl>
 				</struckbylightning_0>
 				<struckbylightning_1>
 					<de>von einem heftigen Hagelsturm heimgesucht</de>
 					<en>struck by a severe hailstorm</en>
+					<pl>zraniona przez silne gradobicie</pl>
 				</struckbylightning_1>
 				<struckbylightning_2>
 					<de>von einem Erdbeben erschüttert</de>
 					<en>shaken by an earthquake</en>
+					<pl>wstrząśnięta przez trzęsienie ziemi</pl>
 				</struckbylightning_2>
 				<struckbylightning_3>
 					<de>von der Lava eines Vulkanausbruchs erfasst</de>
 					<en>hit by lava from a volcanic eruption</en>
+					<pl>poparzona przez lawę z erupcji wulkanu</pl>
 				</struckbylightning_3>
 				<struckbylightning_4>
 					<de>von einem heftigen Zyklon heimgesucht</de>
 					<en>struck by a severe cyclone</en>
+					<pl>poszkodowana przez silny cyklon</pl>
 				</struckbylightning_4>
 				<russian_0>
 					<de>russische|polnische|ungarische|rumänische|kanadische|norwegische|schwedische|finnische|dänische|deutsche|österreichische|schweizerische|französische|englische|schottische|walisische|irische|nordirische</de>
 					<en>Russian|Polish|Hungarian|Romanian|Canadian|Norwegian|Swedish|Finnish|Danish|German|Austrian|Swiss|French|English|Scottish|Welsh|Irish|Northern Irish</en>
+					<pl>Rosji|Polski|Węgier|Rumunii|Kanady|Norwegi|Szwecji|Finlandi|Danii|Niemiec|Austrii|Szwajcarii|Francji|Angli|Szkocji|Wali|Irlandii|Północnej Irlandii</pl>
 				</russian_0>
 				<russian_1>
 					<de>russische|polnische|ungarische|rumänische|kanadische|norwegische|schwedische|finnische|dänische|deutsche|österreichische|schweizerische|französische|englische|schottische|walisische|irische|nordirische</de>
 					<en>Russian|Polish|Hungarian|Romanian|Canadian|Norwegian|Swedish|Finnish|Danish|German|Austrian|Swiss|French|English|Scottish|Welsh|Irish|Northern Irish</en>
+					<pl>Rosji|Polski|Węgier|Rumunii|Kanady|Norwegi|Szwecji|Finlandi|Danii|Niemiec|Austrii|Szwajcarii|Francji|Angli|Szkocji|Wali|Irlandii|Północnej Irlandii</pl>
 				</russian_1>
 				<russian_2>
 					<de>neuseeländische|indische|pakistanische|chinesische|nepalesische|bhutanische|griechische|türkische|italienische|US-amerikanische|japanische|indonesische</de>
 					<en>New Zealand|Indian|Pakistani|Chinese|Nepalese|Bhutanese|Greek|Turkish|Italian|US American|Japanese|Indonesian</en>
+					<pl>Nowej Zelandii|Indii|Pakistanu|Chin|Nepalu|Butanu|Grecji|Turcji|Włoch|USA|Japonii|Indonezji</pl>
 				</russian_2>
 				<russian_3>
 					<de>indonesische|japanische|philippinische|chilenische|italienische|US-amerikanische|neuseeländische|isländische|ecuadorianische</de>
 					<en>Indonesian|Japanese|Philippine|Chilean|Italian|US American|New Zealand|Icelandic|Ecuadorian</en>
+					<pl>Indonezji|Japonii|Filipin|Chile|Włoch|USA|Nowej Zelandii|Islandii|Ekwadoru</pl>
 				</russian_3>
 				<russian_4>
 					<de>bangladeschische|indische|thailändische|laotische|chinesische|mauritische|seychellische|fidjianische|vanuatuische|indonesische|australische</de>
 					<en>Bangladeshi|Indian|Thai|Laotian|Chinese|Mauritic|Seychellian|Fidjian|Vanuatu|Indonesian|Australian</en>
+					<pl>Bangladeszu|Indii|Tajlandii|Laosu|Chin|Mauretanii|Seszeli|Fidżi|Vanuatu|Indonezji|Australii</pl>
 				</russian_4>
 				<three>
 					<de>Drei|Vier|Fünf|Sechs|Sieben</de>
 					<en>Three|Four|Five|Six|Seven</en>
+					<pl>Trzech|Czterech|Pięciu|Sześciu|Siedmiu</pl>
 				</three>
 			</variables>
 			<data genre="2" price="1" quality="30" fictional="1" />
@@ -8529,19 +8873,23 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${munich}: ${cabdriver} überfallen</de>
 				<en>${munich}: ${cabdriver} robbed</en>
+				<pl>${munich}: ${cabdriver}</pl>
 			</title>
 			<description>
 				<de>Ein ${cabdriver} in ${munich} wurde überfallen. Beute: ${amounteuro} Euro und ${amountcent} Cent.</de>
 				<en>A ${cabdriver} in ${munich} was robbed. Loot: ${amounteuro} euros and ${amountcent} cents.</en>
+				<pl>${.ucfirst:cabdriver} w dzielnicy ${munich}. Łupem padło: ${amounteuro},${amountcent} euro.</pl>
 			</description>
 			<variables>
 				<cabdriver>
 					<de>Taxifahrer|Dönerladen|Fast-Food-Restaurant|Tankstellen-Shop|Zigarettenladen|Kiosk|Späti</de> <!-- nur Maskulinum oder Neutrum! -->
 					<en>cab driver|kebab shop|fast food restaurant|gas station|cigarette shop|kiosk|drugstore</en>
+					<pl>taksówkarz został obrabowany|kawiarnia została obrabowana|restauracja została obrabowana|stacja benzynowa została obrabowana|sklep z papierosam został obrabowany|kiosk został obrabowany|apteka została obrabowana</pl>
 				</cabdriver>
 				<munich>
 					<de>München|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude|Monaco|Paris</de>
 					<en>Munich|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude|Monaco|Paris</en>
+					<pl>Monachium|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Centrum Frankfurtu|Sachsenhausen|Blankenese|Hamburg-Winterhude|Monako|Paryż</pl>
 				</munich>
 				<amounteuro>4|5|6|7|8</amounteuro>
 				<amountcent>12|24|36|48|60|72|84|96</amountcent>
@@ -8554,19 +8902,23 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${munich}: ${cabdriver} überfallen</de>
 				<en>${munich}: ${cabdriver} robbed</en>
+				<pl>${munich}: ${cabdriver}</pl>
 			</title>
 			<description>
 				<de>Ein ${cabdriver} in ${munich} wurde überfallen. Beute: ${amountdm} Mark und ${amountpf} Pfennig.</de>
 				<en>A ${cabdriver} in ${munich} was robbed. Loot: ${amountdm} deutschmarks and ${amountpf} pfennigs.</en>
+				<pl>${.ucfirst:cabdriver} w dzielnicy ${munich}. Łupem padło: ${amountdm},${amountpf} DM.</pl>
 			</description>
 			<variables>
 				<cabdriver>
 					<de>Taxifahrer|Dönerladen|Fast-Food-Restaurant|Tankstellen-Shop|Zigarettenladen|Kiosk|Späti</de> <!-- nur Maskulinum oder Neutrum! -->
 					<en>cab driver|kebab shop|fast food restaurant|gas station|cigarette shop|kiosk|drugstore</en>
+					<pl>taksówkarz został obrabowany|bar kebab został obrabowany|restauracja została obrabowana|stacja benzynowa została obrabowana|sklep z papierosam został obrabowany|kiosk został obrabowany|apteka została obrabowana</pl>
 				</cabdriver>
 				<munich>
 					<de>München|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude</de>
 					<en>Munich|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Frankfurt-Innenstadt|Sachsenhausen|Blankenese|Hamburg-Winterhude</en>
+					<pl>Monachium|Schwabing|Starnberg|Grünwald|Ingolstadt|Charlottenburg|Berlin-Mitte|Grunewald|Spandau|Centrum Frankfurtu|Sachsenhausen|Blankenese|Hamburg-Winterhude</pl>
 				</munich>
 				<amountdm>5|6|7|8|9</amountdm>
 				<amountpf>12|24|36|48|60|72|84|96</amountpf>
@@ -8581,15 +8933,18 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Aufruhr in ${beijing}</de>
 				<en>Uproar in ${beijing}</en>
+				<pl>Wrzawa w mieście ${beijing} w Chinach</pl>
 			</title>
 			<description>
 				<de>In den frühen Morgenstunden fiel auf dem Marktplatz in ${beijing}, China, ein Sack Reis um. Die Polizei ermittelt.</de>
 				<en>In the early hours of the morning, a sack of rice fell over on the market square in ${beijing}, China. The police are investigating.</en>
+				<pl>We wczesnych godzinach porannych worek ryżu przewrócił się na rynku w chińskim mieście ${beijing}. Policja prowadzi dochodzenie.</pl>
 			</description>
 			<variables>
 				<beijing>
 					<de>Peking|Shanghai|Chengdu|Xiamen|Hangzhou|Xi'an|Tianjin|Wuhan|Chongqing|Guangzhou|Shenzhen</de>
 					<en>Beijing|Shanghai|Chengdu|Xiamen|Hangzhou|Xi'an|Tianjin|Wuhan|Chongqing|Guangzhou|Shenzhen</en>
+					<pl>Pekin|Szanghaj|Chengdu|Xiamen|Hangzhou|Xi'an|Tianjin|Wuhan|Chongqing|Guangzhou|Shenzhen</pl>
 				</beijing>
 			</variables>
 			<data genre="4" price="1" quality_min="15" quality_max="40" fictional="1" />
@@ -8601,10 +8956,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Polizeipräsident von ${beijing} vor Rücktritt</de>
 				<en>${beijing} Police chief about to resign</en>
+				<pl>${beijing}: Szef policji bliski rezygnacji</pl>
 			</title>
 			<description>
 				<de>Da die Ermittlungen zum umgefallenen Reissack in einer Sackgasse stecken, erhöht sich der Druck auf den Polizeipräsidenten.</de>
 				<en>As the investigation into the toppled rice sack reaches a dead end, the pressure on the police chief increases.</en>
+				<pl>Śledztwo w sprawie przewróconego worka z ryżem utknęło w martwym punkcie, a presja na szefa policji rośnie.</pl>
 			</description>
 			<data genre="4" price="1" quality_min="15" quality_max="40" fictional="1" />
 			<effects>
@@ -8615,10 +8972,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Erste Festnahmen im Reisgate-Fall</de>
 				<en>First arrests in the Ricegate case</en>
+				<pl>Pierwsze aresztowania w sprawie afery ryżowej</pl>
 			</title>
 			<description>
 				<de>Im Fall des umgefallenen Reissacks ist ein Nudelhändler festgenommen worden. Sein Motiv sei Neid auf den Reishändler.</de>
 				<en>A noodle trader has been arrested in the case of the toppled rice sack. His motive is said to be envy of the rice trader.</en>
+				<pl>Handlarz makaronem został aresztowany w sprawie przewróconego worka z ryżem. Mówi się, że jego motywem była zazdrość o sprzedawcę ryżu.</pl>
 			</description>
 			<data genre="4" price="1" quality_min="15" quality_max="40" fictional="1" />
 			<effects>
@@ -8629,10 +8988,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Aufatmen im Reisgate-Fall</de>
 				<en>Sigh of relief in Ricegate case</en>
+				<pl>Odetchnięcie z ulgą w sprawie Ricegate</pl>
 			</title>
 			<description>
 				<de>Der Staatsanwalt von ${beijing} teilt mit: „So ein Sack Reis interessiert niemanden. Alle Ermittlungen werden eingestellt.“</de>
 				<en>The ${beijing} public prosecutor says: "Nobody is interested in a sack of rice like this. All investigations will be closed."</en>
+				<pl>Prokurator z miasta ${beijing} mówi: „Nikt nie jest zainteresowany tym workiem ryżu. Wszystkie dochodzenia zostaną zamknięte“.</pl>
 			</description>
 			<data genre="4" price="1" quality_min="15" quality_max="40" fictional="1" />
 		</news>
@@ -8641,10 +9002,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Hat ${actor} etwas mit dieser Frau?</de>
 				<en>Is ${actor} involved with this woman?</en>
+				<pl>Czy ${actor} spotyka się z tą kobietą?</pl>
 			</title>
 			<description>
 				<de>${media_hollywood}star ${actor} wurde in einem Nobelrestaurant in LA mit einer unbekannten Frau gesichtet.</de>
 				<en>${media_hollywood} star ${actor} was spotted in a posh restaurant in LA with an unknown woman.</en>
+				<pl>${actor} - ${media_hollywood}zka gwiazda została zauważona w eleganckiej restauracji w Los Angeles z nieznaną kobietą.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -8674,6 +9037,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<gettingmarried>
 					<de>Heiraten - aber richtig!|Hochzeit mit Hindernissen|Sag einfach Ja!|Verliebt, verlobt, der große Tag!|Der große Tag des Jaworts|Das Wow des Jaworts|Ring frei für die Liebe!|Heiratsantrag auf Umwegen|Flitterwochen mit Folgen|Ein Ja mit Sahnehäubchen|Und wie die Braut sich traut!|Ehe mit Herz und Witz|Ja, ich will - und zwar sofort!|Liebe, Lachen, Hochzeitsspaß|Jawort im Doppelpack|Das große Glück trägt Weiß|Unter die Haube - aber schnell!</de>
 					<en>Getting Married - Done Right!|Wedding with Obstacles|Just Say Yes!|In Love, Engaged, the Big Day!|The Big Day of the Wedding Vow|The Wedding Wow|Clear the Wedding Ring!|A Roundabout Proposal|About a Honeymoon and what Follows|A Yes with Cherry on Top|The Run-to-You Bride|A Wedding with Wit and Charme|Yes, I Will - and I Will Right Now!|Love, Laughter, Marry, Fun|Double Whammy Wedding Vow|Big Bliss Wears White|Gettin' Hitched - Gettin' Fast</en>
+					<pl>Ślub - jak należy!|Ślub z przeszkodami|Po prostu powiedz tak!|Zakochani, zaręczeni, wielki dzień!|Wielki dzień ślubnej przysięgi|Ślubne wow|Oczyść obrączkę!|Oświadczyny na rondzie|O miesiącu miodowym i tym, co po nim|Tak z wisienką na torcie|Biegnąca panna młoda|Ślub zakochanych|Tak, zrobię to - i zrobię to teraz!|Miłość, śmiech, małżeństwo, zabawa|Podwójna przysięga ślubna|Wielka miłość ubiera się na biało|Szybki ślub na całe życie</pl>
 				</gettingmarried>
 			</variables>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
@@ -8686,10 +9050,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${actor} dementiert Affäre</de>
 				<en>${actor} denies affair</en>
+				<pl>${actor} zaprzecza, że ma romans</pl>
 			</title>
 			<description>
 				<de>${media_hollywood}star ${actor} dementiert, dass er eine Affäre mit einer Unbekannten hätte. Sie sei ihm ja seit dem ersten Date eben nicht mehr unbekannt.</de>
 				<en>${media_hollywood} star ${actor} denies that he is having an affair with an unknown woman. After all, she has no longer been unknown to him since their first date.</en>
+				<pl>${media_hollywood}zka gwiazda ${actor} zaprzecza, jakoby miał romans z nieznaną kobietą. W końcu nie jest mu ona nieznana od czasu ich pierwszej randki.</pl>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 			<effects>
@@ -8700,10 +9066,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${actor} vor Scheidung</de>
 				<en>${actor} about to divorce</en>
+				<pl>${actor} zamierza się rozwieść</pl>
 			</title>
 			<description>
 				<de>Das könnte teuer werden. Nach den Gerüchten um eine Affäre möchte sich die Ehefrau von ${actor} trennen.</de>
 				<en>This could prove to be expensive. After rumors of an affair, the wife of ${actor} wants to separate.</en>
+				<pl>${actor} zamierza się rozwieść. Może się to okazać kosztowne. Po plotkach o romansie, żona aktora chce się rozstać.</pl>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 			<effects>
@@ -8714,10 +9082,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Ist ${actor} gewalttätig?</de>
 				<en>Is ${actor} violent?</en>
+				<pl>Czy słynny aktor ${actor} jest agresywny?</pl>
 			</title>
 			<description>
 				<de>Namhaften Paparazzi zufolge erkennt man auf diesem Foto, wie ${actor} zuschlägt. Auch verdächtig, dass seine Frau nur noch Sonnenbrille trägt.</de>
 				<en>According to renowned paparazzi, in this photo it is clearly visible how ${actor} is punching someone. It's also suspicious that his wife is now wearing sunglasses all the time.</en>
+				<pl>Według paparazzi, na tym zdjęciu wyraźnie widać, jak aktor - ${actor} kogoś uderza. Podejrzane jest również to, że jego żona cały czas nosi okulary przeciwsłoneczne.</pl>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 			<effects>
@@ -8728,10 +9098,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${actor} Gift für Kinokasse?</de>
 				<en>${actor} box office poison?</en>
+				<pl>${actor} Czy jego film okaże się wielką klapą?</pl>
 			</title>
 			<description>
 				<de>Die neueste Liebeskomödie „${gettingmarried}“ mit ${actor} floppte. Es ist anzunehmen, dass er aktuell Gift für die TV- und Filmbranche ist.</de>
 				<en>The latest romantic comedy "${gettingmarried}" with ${actor} flopped. It can be assumed that he is currently poison for the TV and film industry.</en>
+				<pl>Najnowsza komedia romantyczna „${gettingmarried}“ w której gra ${actor} może okazać się wielką klapą. Można przypuszczać, że ten film to trucizna dla branży telewizyjnej i filmowej.</pl>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 		</news>
@@ -8740,10 +9112,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${actress} in Polizeikontrolle</de>
 				<en>${actress} stopped by police</en>
+				<pl>${actress} zatrzymana przez policję</pl>
 			</title>
 			<description>
 				<de>Schauspielerin ${actress} beendete eine Alkohol-Autofahrt in einer Polizeikontrolle. Nachdem sich die Beamten erholt hatten, wurden ${alcoholvalue} Promille festgestellt.</de>
 				<en>Actress ${actress} was stopped for driving under the influence by the police. After the officers had recovered, the blood alcohol level was found to be ${alcoholvalue} %.</en>
+				<pl>Aktorka ${actress} została zatrzymana przez policję za jazdę pod wpływem alkoholu. Po wytrzeźwieniu funkcjonariusze stwierdzili, że poziom alkoholu w jej krwi wynosił ${alcoholvalue} promila.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -8760,6 +9134,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<alcoholvalue>
 					<de>1,3|1,4|1,5|1,6|1,7|1,8|1,9|2,0|2,1</de>
 					<en>.13|.14|.15|.16|.17|.18|.19|.20|.21</en>
+					<pl>1,3|1,4|1,5|1,6|1,7|1,8|1,9|2,0|2,1</pl>
 				</alcoholvalue>
 			</variables>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
@@ -8772,10 +9147,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>Fotoshooting mal anders</de>
 				<en>Photo shoot, but differently</en>
+				<pl>Sesja zdjęciowa, ale jakaś inna</pl>
 			</title>
 			<description>
 				<de>Die wegen Alkohol am Steuer festgenommene Schauspielerin ${actress} hat sich mit Gefängnisfotografen angelegt. Angeblich würde sie in schlechtem Licht erscheinen.</de>
 				<en>The actress ${actress}, who was arrested for drink-driving, has clashed with prison photographers. Allegedly, they would make her appear in a bad light.</en>
+				<pl>Aktorka ${actress}, która została aresztowana za jazdę pod wpływem alkoholu, starła się z więziennymi fotografami. Rzekomo sprawiali, że aktorka była stawiana w złym świetle.</pl>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 			<effects>
@@ -8786,10 +9163,12 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<title>
 				<de>${actress}: Würger-Burger</de>
 				<en>${actress}: Choke burger</en>
+				<pl>${actress}: Dławii się burgerem</pl>
 			</title>
 			<description>
 				<de>Kann ${actress} noch tiefer sinken? Ein Paparazzivideo zeigt sie beim Versuch, einen Burger zu essen. Es ist ein Trauerspiel, sie so zu sehen.</de>
 				<en>Can ${actress} sink any lower? A paparazzi video shows her trying to eat a burger. It's a tragedy to see her like this.</en>
+				<pl>Czy aktorka - ${actress} może upaść jeszcze niżej? Nagranie paparazzi pokazuje ją próbującą zjeść hamburgera. To tragedia widzieć ją w takim stanie.</pl>
 			</description>
 			<data genre="1" price="1" quality_min="30" quality_max="60" fictional="1" />
 		</news>

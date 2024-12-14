@@ -5,15 +5,19 @@
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-mkw" creator="9621" comment="inspired by German realtor docu soaps">
 			<title>
 				<all>${title} in ${randomcity}</all>
+				<de>${title} in ${randomcity}</de>
+				<pl>${title} w ${randomcity}</pl>
 			</title>
 			<description>
 				<de>Makler versuchen Wohnungen und Häuser an Kunden mit ungewöhnlichen Ansprüchen zu verkaufen oder zu vermieten. Ob Geisterjäger oder Zirkusartisten - die skurrilen Kunden lassen die Makler an ihre Grenzen gehen und sorgen für jede Menge Unterhaltung.</de>
 				<en>Watch as desperate realtors cater to the most outrageous requests from their quirky clients. From a treehouse for a family of 6, to a mansion for a pet, no request is too absurd. Who will find their dream home and who will be left out in the cold?</en>
+				<pl>Zobacz, jak zdesperowani agenci nieruchomości spełniają najbardziej absurdalne prośby swoich ekscentrycznych klientów. Od domku na drzewie dla 6-osobowej rodziny po rezydencję dla zwierzaka, żadna prośba nie jest zbyt absurdalna. Kto znajdzie dom swoich marzeń, a kto zostanie na lodzie?</pl>
 			</description>
 			<variables>
 				<title>
 					<de>Träumen, Planen, Pleitegehen|Zoff, Zank, Abbruchbude|Himmel, Hölle, Hinterhof|Pech, Pannen, Pfusch|Vermieten, Verkaufen, Verzweifeln|Rausch, Reue, Ratenzahlung|Luxus, Lügen, Leerstand|Wohnen, Wunder, Wahnsinn|Traumhaus, Tränen, Trennungsschmerz|Schimmel, Schäden, Rost|Düster, Trostlos, Öde|Ratenzahlung, Rost, Bankrott|Suchen, Finden, Blechen|Renovieren, Sanieren, Abkassieren</de>
 					<en>Dreaming, Planning, Bankruptcy|Conflict, Quarrel, Breakdown|Cheating, Building, Bankruptcy|Luxury, Lies, Vacancy|Excess, Regret, Installment Plan|Miracle, Madness, Living|Cheap, Big, Dangerous|Rent, Spent, Repent|Bore, Explore, Adore|Sign, Align, Decline|Rent, Buy, Cry|Live, Obtain, Groan|Lease, Purchase, Debt|Place, Embrace, Palatial-Grace</en>
+					<pl>Sprzedaj, Przekaż, Zarządzaj|Wynajmij, Otwórz, Teraz|Oszustwo, Budowanie, Bankructwo|Luksus, Kłamstwo, Wakat|Cel, Plan, Stan|Cud, Szaleństwo, Życie|Tanie, Duże, Pod wynajem|Wynajmij, Kup, Nie żałuj|Kup, Eksploruj, Uwielbiaj|Podpisz, Sprzedaj, Masz|Wynajmij, Kup, Płacz|Żyj, Uzyskaj, Jęcz|Dzierżawa, Zakup, Dług|Umieść, Obejmij, Pałacowa-Wdzięk</pl>
 				</title>
 				<randomcity>${.stationmap:"randomcity"}</randomcity>
 			</variables>
@@ -29,26 +33,32 @@
 						<suchende_person>
 							<de>Zwei arbeitslose Stripper suchen|Ein stinkreicher Kunstsammler sucht|Eine attraktive Frau und ihre zwei Liebhaber suchen|Ein Meeresbiologe sucht|Eine alleinerziehende Mutter und ihre drei Töchter suchen|Ein einsamer Witwer sucht|Ein erfolgreicher Geschäftsmann sucht|Ein junges Paar sucht|Eine reiche Erbin sucht|Ein abenteuerlustiger Backpacker sucht|Ein einsamer Rentner sucht|Ein verliebtes Pärchen sucht|Eine junge Familie sucht|Ein einsamer Seemann sucht|Eine einsame Witwe sucht|Ein erfolgreicher Künstler sucht|Ein alter Professor sucht|Eine frisch geschiedene Frau sucht|Ein junger Erbe sucht|Ein glücklicher Rentner sucht|Ein erfolgloser Schriftsteller sucht|Eine junge Studentin sucht|Eine abenteuerlustige Familie sucht|Ein geheimnisvoller Fremder sucht|Ein erfolgreicher Arzt sucht|Ein einsamer Cowboy sucht|Eine mutige Abenteurerin sucht|Ein berühmter Schauspieler sucht|Ein einsamer Wanderer sucht|Ein sportlicher Athlet sucht|Eine leidenschaftliche Musikerin sucht|Ein talentierter Koch sucht|Ein abenteuerlustiger Reisender sucht|Ein erfolgreicher Unternehmer sucht|Ein einsamer Aussteiger sucht|Eine erfolgreiche Geschäftsfrau sucht|Ein erfolgreicher Immobilieninvestor sucht|Eine junge Mutter sucht|Ein einsamer Angler sucht|Eine Gruppe von Backpackern sucht|Ein pensionierter Lehrer sucht|Ein junger Erfinder sucht|Ein berühmter Schauspieler sucht|Eine reiche Erbin sucht|Ein einsamer Cowboy sucht|Ein ehemaliger Soldat sucht|Ein aufstrebender Unternehmer sucht|Eine talentierte Sängerin sucht|Ein abenteuerlustiger Fotograf sucht|Eine Familie mit drei Kindern sucht|Ein passionierter Surfer sucht|Ein erfolgreicher Anwalt sucht|Ein frisch verheiratetes Paar sucht|Eine erfahrene Krankenschwester sucht|Ein engagierter Umweltschützer sucht|Ein junger Schriftsteller sucht|Ein aufgeschlossenes Paar sucht|Ein internationaler Geschäftsmann sucht|Eine alleinstehende Rentnerin sucht|Ein talentierter Koch sucht|Ein junges Model sucht|Ein ambitionierter Designer sucht|Ein erfolgsorientierter Manager sucht|Eine begeisterte Wandergruppe sucht|Ein junger Filmemacher sucht|Ein risikofreudiger Investor sucht|Ein Tierliebhaber sucht|Ein einsamer Angler sucht|Eine Gruppe von Extremsportlern sucht|Ein besorgter Elternteil sucht|Ein begeisterter Segler sucht|Eine Gruppe von Freiwilligen sucht|Ein junger Athlet sucht|Eine erfolgreiche Geschäftsfrau sucht|Ein erfahrener Feuerwehrmann sucht|Ein aufgeschlossener Reisender sucht|Ein zielstrebiger Wissenschaftler sucht|Eine kreative Künstlerin sucht|Eine spirituelle Gemeinschaft sucht</de>
 							<en>Two unemployed strippers look for|a filthy rich art collector looks for|A good looking woman and her two lovers look for|A marine biologist looks for|A single mother and her three daughters look for|A lonely widower looks for|A successful businessman looks for|A young couple looks for|A wealthy heiress looks for|An adventurous backpacker looks for|A lonely retiree looks for|A couple in love looks for|A young family looks for|A lonely sailor looks for|A lonely widow looks for|A successful artist looks for|An old professor looks for|A freshly divorced woman looks for|A young heir looks for|A happy retiree looks for|An unsuccessful writer looks for|A young student looks for|An adventurous family looks for|A mysterious stranger looks for|A successful doctor looks for|A lonely cowboy looks for|A brave adventurer looks for|A famous actor looks for|A lonely hiker looks for|A sporty athlete looks for|A passionate musician looks for|A talented chef looks for|An adventurous traveler looks for|A successful entrepreneur looks for|A lonely dropout looks for|A successful businesswoman looks for|A successful real estate investor looks for|A young mother looks for|A lonely fisherman looks for|A group of backpackers are looking for|A retired teacher is looking for|A young inventor is looking for|A famous actor is looking for|A wealthy heiress is looking for|A lonely cowboy is looking for|A former soldier is looking for|An aspiring entrepreneur is looking for|A talented singer is looking for|An adventurous photographer is looking for|A family with three children is looking for|A passionate surfer is looking for|A successful lawyer is looking for|A newly married couple is looking for|An experienced nurse is looking for|A dedicated environmentalist is looking for|A young writer is looking for|An open-minded couple is looking for|An international businessman is looking for|A single retiree is looking for|A talented chef is looking for|A young model is looking for|An ambitious designer is looking for|A success-driven manager is looking for|An enthusiastic hiking group is looking for|A young filmmaker is looking for|A risk-taking investor is looking for|An animal lover is looking for|A lonely fisherman is looking for|A group of extreme sports enthusiasts is looking for|A concerned parent is looking for|An avid sailor is looking for|A group of volunteers is looking for|A young athlete is looking for|A successful businesswoman is looking for|An experienced firefighter is looking for|An open-minded traveler is looking for|A goal-driven scientist is looking for|A creative artist is looking for|A spiritual community is looking for</en>
+							<pl>Dwie bezrobotne striptizereki próbują sprzedać|Kolekcjoner sztuki próbuje szukać|Piękna kobieta i jej kochanek próbują szukać|Biolog morski próbuje szukać|Samotna matka i jej trzy córki próbują znaleźć|Samotny wdowiec próbuje znaleźć|Odnoszący sukcesy biznesmen próbuje szukać|Młoda para próbuje znaleźć|Bogata dziedziczka próbuje kupić|Odważny plecakowicz próbuje szukać|Samotny emeryt próbuje szukać|Zakochana para próbuje wynająć|Młoda rodzina próbuje wynająć|Samotny żeglarz próbuje wynająć|Samotna wdowa próbuje wynająć|Odnoszący sukcesy artysta próbuje kupić|Stary profesor próbuje kupić|Świeżo rozwiedziona kobieta próbuje wynająć|Młody spadkobierca próbuje wynająć|Szczęśliwy emeryt próbuje szukać|Nieudany pisarz próbuje szukać|Młody student próbuje wynająć|Odważna rodzina próbuje kupić|Tajemniczy nieznajomy próbuje wynająć|Odnoszący sukcesy lekarz próbuje kupić|Samotny kowboj próbuje wynająć|Odważny poszukiwacz przygód próbuje wynająć|Słynny aktor próbuje wynająć|Samotny piechur próbuje wynająć|Sportowiec próbuje wynająć|Namiętny muzyk próbuje wynająć|Utalentowany szef kuchni próbuje wynająć|Odważny podróżnik próbuje wynająć|Odnoszący sukcesy przedsiębiorca próbuje znaleźć|Samotny odrzutek próbuje wynająć|Odnosząca sukcesy bizneswoman próbuje kupić|Odnoszący sukcesy inwestor w nieruchomości próbuje kupić|Młoda matka próbuje kupić|Samotny rybak próbuje kupić|Grupa backpackerów próbuje kupić|Emerytowany nauczyciel próbuje kupić|Młody wynalazca próbuje kupić|Słynny aktor próbuje kupić|Bogata dziedziczka próbuje kupić|Samotny kowboj próbuje kupić|Były żołnierz próbuje kupić|Aspirujący przedsiębiorca próbuje kupić|Utalentowany piosenkarz próbuje kupić|Awanturniczy fotograf próbuje wynająć|Rodzina z trójką dzieci próbuje wynająć|Namiętny surfer próbuje wynająć|Odnoszący sukcesy prawnik próbuje wynająć|Młoda para małżeńska próbuje wynająć|Doświadczona pielęgniarka próbuje wynająć|Oddany ekolog próbuje znaleźć|Młody pisarz próbuje znaleźć|Otwarta para próbuje znaleźć|Międzynarodowy biznesmen próbuje znaleźć|Samotny emeryt próbuje znaleźć|Utalentowany szef kuchni próbuje znaleźć|Młoda modelka próbuje znaleźć|Ambitny projektant próbuje znaleźć|Nastawiony na sukces menedżer próbuje znaleźć|Entuzjastyczna grupa wędrowców próbuje znaleźć|Młody filmowiec próbuje znaleźć|inwestor podejmujący ryzyko próbuje znaleźć|miłośnik zwierząt próbuje znaleźć|samotny rybak próbuje znaleźć|grupa entuzjastów sportów ekstremalnych próbuje znaleźć|zaniepokojony rodzic próbuje znaleźć|zapalony żeglarz próbuje znaleźć|grupa wolontariuszy próbuje znaleźć|młody sportowiec próbuje znaleźć|odnosząca sukcesy bizneswoman próbuje znaleźć|doświadczony strażak próbuje znaleźć|podróżnik o otwartym umyśle próbuje znaleźć|naukowiec próbuje znaleźć|kreatywny artysta próbuje znaleźć|społeczność duchowa próbuje znaleźć</pl>
 						</suchende_person>
 						<titleprefix>
 							<de>Objekt:|Inserat:|In|Warum nicht|Darum|Über|Etwas besonderes:|Es ist|Interessant:|Aufregend:</de>
 							<en>Property:|Ad:|Into|Why not|That's why|About|Something special:|It's|Interesting:|Exciting:</en>
+							<pl>Znaleźć:|Bohaterzy próbują znaleźć:|Cel: znaleźć|Dlaczego nie znaleźć?|Nieruchomość. Poszukać|Dla mnie, dla nas. Wyszukać|Coś wyjątkowego: wyszukać|To jest|Ciekawe: szukać|Ekscytujące: znaleźć</pl>
 						</titleprefix>
 						<wohnobjekt>
 							<de>ein geräumiges Einfamilienhaus|ein exklusives Anwesen|eine klassische Villa|ein idyllisches Landhaus|ein schickes Loft|ein historisches Herrenhaus|ein modernes Stadthaus|ein rustikales Bauernhaus|ein gemütliches Blockhaus|eine komfortable Doppelhaushälfte|ein zeitgenössisches Architektenhaus|eine extravagante Designerwohnung|eine traumhafte Seehütte|ein urbanes Loft-Apartment|ein romantisches Schlosshaus|ein beeindruckendes Industriedenkmal|ein großzügiges Bungalow-Apartment|ein zeitloses Einfamilienhaus|ein urbanes Townhouse|eine einzigartige Höhlenwohnung|ein gemütliches Fachwerkhaus|eine moderne Maisonette-Wohnung|ein stilvolles Landgut|eine elegante Stadtvilla|ein schnuckeliges Gartenhaus|ein futuristisches Domizil|ein rustikales Berghaus|ein kompaktes Mikrohaus|ein großes Schlossanwesen|ein charmantes Reetdachhaus|eine luxuriöse Poolvilla|ein traditionelles Bauernhaus mit Scheune|ein modernes Glas-Haus|ein gemütliches Bungalow-Apartment mit Kamin|ein historisches Fachwerkhaus|ein ausgefallenes Baumhaus|ein ruhiges Appartement am Meer|ein helles Einfamilienhaus mit Wintergarten|ein stylisches Designerloft|ein traditionelles japanisches Haus|ein gigantisches Vogelhaus|ein bezauberndes Märchenschloss|eine noble Hütte im Wald|eine gläserne Iglu-Suite|ein edles Bootshaus auf dem Trockenen|eine schwimmende Villa mit Hai-Aquarium|ein majestätisches Baumhaus-Schloss|ein geheimes Versteck in den Wolkenkratzern|ein ungewöhnliches Pyramidenhaus|ein futuristisches Raumschiff-Loft|ein uriges Hexenhaus|ein schickes Vogelnest mit Infinity-Pool|eine verrückte Geisterbahn-Wohnung|eine gemütliche Bienenstockhütte|ein schwebendes Haus auf Stelzen|eine futuristische Mondbasis|ein fliegendes Schloss im Himmel|ein schräges Turmhaus|ein extravagantes Kunsthaus|eine luxuriöse Eisvilla|ein nostalgisches Wohnmobil|ein bequemes Camping-Mobil auf der Autobahn|ein stimmungsvolles Leuchtturm-Apartment|ein pittoreskes Bauernhaus mit Hexenkräutergarten|ein süßes Puppenhaus mit Pool|ein geheimnisvolles Schloss im Nebel|ein gemütlicher Gartenpavillon|ein außergewöhnliches Zirkuszelt-Apartment|ein fantasievolles Märchendorf|ein modernes Hobbit-Haus|ein originelles Schiffscontainer-Loft|ein kleines Zirkuswagenhaus|ein gemütliches Gasthaus im Wald|eine ungewöhnliche Höhlenwohnung mit Wasserfall|ein kunterbuntes Hausboot|ein gemütliches Lebkuchenhaus|ein futuristischer Unterwasserpalast|ein altes Schmugglerversteck|ein schrilles Karussell-Apartment|ein rustikales Blockhaus auf einer einsamen Insel</de> <!-- derweil noch ausschließlich Femininum oder Neutrum möglich -->
 							<en>a spacious single-family house|an exclusive estate|a classic villa|an idyllic country house|a stylish loft|a historic manor house|a modern townhouse|a rustic farmhouse|a cozy log cabin|a comfortable semi-detached house|a contemporary architect-designed house|an extravagant designer apartment|a dreamy lake cabin|an urban loft apartment|a romantic castle house|an impressive industrial monument|a generous bungalow|a timeless single-family house|an urban townhouse|a unique cave apartment|a cozy half-timbered house|a modern duplex apartment|a stylish country estate|an elegant town villa|a charming garden cottage|a futuristic residence|a rustic mountain house|a compact micro-home|a large castle estate|a charming thatched-roof house|a luxurious pool villa|a traditional farmhouse with barn|a modern glass house|a cozy bungalow with a fireplace|a historic half-timbered house|an unusual treehouse|a peaceful seaside apartment|a bright single-family house with a winter garden|a stylish designer loft|a traditional Japanese house|a gigantic birdhouse|an enchanting fairy tale castle|a noble hut in the forest|a glass igloo suite|a luxury boathouse on land|a floating villa with a shark aquarium|a majestic treehouse castle|a secret hideout in the skyscrapers|an unusual pyramid house|a futuristic spaceship loft|a rustic witch's house|a chic bird's nest with an infinity pool|a crazy haunted house apartment|a cozy beehive|a floating house on stilts|a futuristic moon base|a flying castle in the sky|a quirky tower house|an extravagant art house|a luxurious ice villa|a nostalgic camper van|a comfortable caravan on the highway|a romantic lighthouse apartment|a picturesque farmhouse with a witch's herb garden|a cute dollhouse with a pool|a mysterious castle in the fog|a cozy garden pavilion|an extraordinary circus tent apartment|an imaginative fairy tale village|a modern hobbit house|an original shipping container loft|a small circus wagon house|a cozy inn in the forest|an unusual cave apartment with a waterfall|a colorful houseboat|a cozy gingerbread house|a futuristic underwater palace|an old smuggler's hideout|a loud carousel apartment|a rustic log cabin on a deserted island</en>
+							<pl>przestronny dom jednorodzinny|ekskluzywną posiadłość|klasyczną willę|idylliczny dom wiejski|stylowy loft|historyczny dworek|nowoczesny dom szeregowy|rustykalny dom wiejski|przytulną chatę z bali|komfortowy dom w zabudowie bliźniaczej|współczesny dom zaprojektowany przez architekta|ekstrawagancki designerski apartament|wymarzoną chatę nad jeziorem|miejski apartament typu loft|romantyczny dom zamkowy|imponujący zabytek przemysłowy|przestronny bungalow|ponadczasowy dom jednorodzinny|miejski dom szeregowy|wyjątkowy apartament w jaskini|przytulny dom z muru pruskiego|nowoczesny apartament typu duplex|stylową posiadłość wiejską|elegancką willę miejską|uroczy domek z ogrodem|futurystyczną rezydencję|rustykalny dom górski|kompaktowy mikrodom|dużą posiadłość zamkową|uroczy dom ze strzechą|luksusową willę z basenem|tradycyjny dom wiejski ze stodołą|nowoczesny szklany dom|przytulny bungalow z kominkiem|historyczny dom z muru pruskiego|niezwykły domek na drzewie|spokojny apartament nad morzem|jasny dom jednorodzinny z ogrodem zimowym|stylowy loft designerski|tradycyjny japoński dom|gigantyczny domek dla ptaków|czarujący zamek z bajki|szlachetną chatę w lesie|szklany apartament igloo|luksusowy hangar na łodzie na lądzie|pływającą willę z akwarium z rekinami|majestatyczny zamek w kształcie domku na drzewie|tajną kryjówkę w wieżowcach|niezwykły dom w kształcie piramidy|futurystyczny loft w kształcie statku kosmicznego|rustykalny dom wiedźmy|eleganckie gniazdo ptaka z basenem bez krawędzi|szalony apartament w nawiedzonym domu|przytulny ul|pływający dom na palach|futurystyczną bazę księżycową|latający zamek na niebie|oryginalny dom w kształcie wieży|ekstrawagancki dom artystyczny|luksusową willę z lodu|nostalgiczny kamper|wygodną przyczepę kempingową na autostradzie|romantyczny apartament w latarni morskiej|malowniczą farmę z ogrodem ziół|słodki domek dla lalek z basenem|tajemniczy zamek we mgle|przytulny pawilon ogrodowy|niezwykły apartament w namiocie cyrkowym|część wioski jak z bajki|współczesny dom o niskim stropie|oryginalny loft z kontenera transportowego|mały dom w kształcie wozu cyrkowego|przytulny zajazd w lesie|niezwykły apartament w jaskini z wodospadem|kolorowy dom na wodzie|przytulny domek z piernika|futurystyczny podwodny pałac|starą kryjówkę przemytników|głośny apartament z karuzelą|rustykalną chatę z bali na bezludnej wyspie</pl>
 						</wohnobjekt>
 						<wohngrund>
 							<de>mit genügend Platz für fünf Katzen.|mit einer geheimen Schatzkammer.|für eine Hühnerzucht.|mit Seesicht.|mit einem Spielplatz.|um ein Museum einzurichten.|für ein zwielichtes Etablissement.|für eine Privatschule.|mit einer Rutsche ins Wohnzimmer.|mit Platz für eine Indoor-Gokart-Bahn.|um eine eigene Bowlingbahn zu bauen.|für den Start einer Yoga-Katzen-Zucht.|mit einem Wasserfall im Garten.|um eine Vampir-Kommune zu gründen.|mit einem Lift für den privaten Hubschrauber.|mit einem Geheimgang zum Nachbarn.|mit einer Sauna für 20 Personen.|für die eigene Bungee-Jumping-Plattform.|mit einem eigenen Raum für Dinosaurier-Skelette.|um eine private Detektiv-Agentur zu betreiben.|mit einem begehbaren Kleiderschrank in der Größe einer Kirche.|mit einem Whirlpool auf dem Dach.|um eine Ritterburg nachzubauen.|auf einer privaten Insel.|für eine Riesenschlangenzucht.|mit genug Platz für eine Bücherei mit 10.000 Büchern.|für den Betrieb eines Hochseilgartens.|für eine Sammlung von antiken Uhren.|mit genügend Raum für eine Skulpturengalerie.|um eine Geisterbahn einzurichten.|für eine exklusive Whiskey-Bar.|für die Aufzucht von exotischen Pflanzen.|mit einer integrierten Sauna.|um eine Flugschule zu betreiben.|mit ausreichend Platz für eine Bowlingbahn.|für ein Yoga-Studio.|mit genug Platz für einen Indoor-Golfplatz.|um eine Töpferwerkstatt einzurichten.|für eine private Diskothek.|für eine Kostümausstellung.|für ein begehbares Terrarium.|mit Platz für einen Kinosaal.|um eine private Sternwarte zu betreiben.|mit genügend Raum für eine Musikschule.|um eine Indoor-Kletterhalle einzurichten.|für eine Pilzzucht.|mit genug Platz für einen Schießstand.|für eine Vogelzucht.|für ein eigenes Tonstudio.|für eine Weindegustationsbar.|um eine Kampfsportschule zu betreiben.|mit genug Platz für ein Schmuckatelier.|für eine Sammlung von antiken Waffen.|um eine eigene Schokoladenmanufaktur zu betreiben.|für eine Privatklinik.|mit genug Raum für ein Modelabel.|um eine eigene Brauerei einzurichten.|für die Aufzucht von exotischen Tieren.|mit genug Platz für eine Eislaufbahn.|um eine Modellbahnlandschaft zu bauen.|für ein exklusives Dinner-Theater.|mit genug Raum für ein Tattoo-Studio</de>
 							<en>with enough space for five cats.|with a secret treasure chamber.|for a chicken farm.|with a lake view.|with a playground.|to set up a museum.|for a shady establishment.|for a private school.|with a slide into the living room.|with enough space for an indoor go-kart track.|to build a bowling alley.|to start a yoga-cat breeding business.|with a waterfall in the garden.|to start a vampire commune.|with a private helicopter lift.|with a secret passage to the neighbor's house.|with a sauna for 20 people.|for a bungee jumping platform.|with a dedicated room for dinosaur skeletons.|to run a private detective agency.|with a walk-in closet the size of a church.|with a rooftop hot tub.|to build a medieval castle.|on a private island.|for a giant snake breeding operation.|with enough space for a library with 10,000 books.|for operating a high ropes course.|for a collection of antique clocks.|with enough room for a sculpture gallery.|to set up a haunted house.|for an exclusive whiskey bar.|for breeding exotic plants.|with an integrated sauna.|to run a flight school.|with enough space for a bowling alley.|for a yoga studio.|with enough space for an indoor golf course.|to set up a pottery workshop.|for a private disco.|for a costume exhibition.|for a walk-in terrarium.|with space for a movie theater.|to operate a private observatory.|with enough room for a music school.|to set up an indoor climbing gym.|for a mushroom farm.|with enough space for a shooting range.|for a bird breeding operation.|for a recording studio.|for a wine tasting bar.|to operate a martial arts school.|with enough space for a jewelry workshop.|for a collection of antique weapons.|to set up a chocolate factory.|for a private clinic.|with enough room for a fashion label.|to set up a brewery.|for breeding exotic animals.|with enough space for an ice skating rink.|to build a model railway landscape.|for an exclusive dinner theater.|with enough room for a tattoo studio.</en>
+							<pl>z miejscem dla pięciu kotów.|z sekretnym schowkiem na sejf.|z fermą kurczaków.|z widokiem na jezioro.|z placem zabaw.|na założenie muzeum.|na podejrzaną siedzibę.|na prywatną szkołę.|ze zjeżdżalnią do salonu.|z miejscem na kryty tor gokartowy.|na zbudowanie kręgielni.|na rozpoczęcie hodowli kotów.|z wodospadem w ogrodzie.|na rozpoczęcie porządnego życia.|z prywatnym podnośnikiem dla helikopterów.|z tajnym przejściem do domu sąsiada.|z sauną dla 20 osób.|na platformę do skoków na bungee.|z wydzielonym pomieszczeniem na szkielety dinozaurów.|na prowadzenie prywatnej agencji detektywistycznej.|z garderobą wielkości kościoła.|z jacuzzi na dachu.|na zbudowanie średniowiecznego zamku.|na prywatnej wyspie.|na hodowlę gigantycznych węży.|z miejscem na bibliotekę z 10 000 książek.|na prowadzenie parku linowego.|na kolekcję antycznych zegarów.|z wystarczającą ilością miejsca na galerię rzeźb.|na założenie domu strachu.|na ekskluzywny bar whisky.|na hodowlę egzotycznych roślin.|z wbudowaną sauną.|na prowadzenie szkoły lotniczej.|z wystarczającą ilością miejsca na kręgielnię.|na studio jogi.|z wystarczającą ilością miejsca na kryte pole golfowe.|na założenie warsztatu ceramicznego.|na prywatną dyskotekę.|na wystawę kostiumów.|na terrarium z wejściem.|z miejscem na kino.|na prowadzenie prywatnego obserwatorium.|z wystarczającą ilością miejsca na szkołę muzyczną.|na założenie krytej ścianki wspinaczkowej.|na farmę grzybów.|z wystarczającą ilością miejsca na strzelnicę.|na hodowlę ptaków.|na studio nagrań.|na bar degustacyjny.|na prowadzenie szkoły sztuk walki.|z wystarczającą ilością miejsca na warsztat jubilerski.|na kolekcję antycznej broni.|na założenie fabryki czekolady.|na prywatną klinikę.|z wystarczającą ilością miejsca na sklep odzieżowy.|na założenie browaru.|na hodowlę egzotycznych zwierzęt.|z wystarczającą ilością miejsca na lodowisko.|na budowę krajobrazu z makietami kolei.|na ekskluzywną restaurację teatralną.|z wystarczającą ilością miejsca na studio tatuażu.</pl>
 						</wohngrund>
 						<suchende_person2>
 							<de>einem reichen Rentner|einem verarmten Arzt|einem alleinstehenden Vater|einer geschiedenen Millionärin|einem arbeitslosen Piloten|einem Privatier|einem Liebhaber für exotische Spinnen|einer Affenzüchterin|einem ahnungslosen Opfer|einem treuen Diener|einem wagemutigen Abenteurer|einem verwöhnten Schlossherrn|einem gewitzten Dieb|einem naiven Jungspund|einem durchgeknallten Professor|einem gefürchteten Piratenkapitän|einem geheimnisvollen Fremden|einem unerschrockenen Forscher|einem einfühlsamen Psychologen|einem gelangweilten Adligen|einem verschrobenen Erfinder|einem unerbittlichen Rächer|einem besessenen Sammler|einem zwielichtigen Gestaltenwandler|einem unsterblichen Vampir|einem reumütigen Ex-Sträfling|einem sorglosen Playboys|einem einsamen Aussteiger|einem notorischen Schürzenjäger|einem tollpatschigen Tollpatsch|einem unternehmungslustigen Weltenbummler|einem einfältigen Dorfbewohner|einem skrupellosen Geschäftemacher|einem optimistischen Träumer|einem chaotischen Chaoten|einem käuflichen Richter|einem belesenen Bibliothekar|einem hartnäckigen Gläubiger|einem idealistischen Aktivisten|einem schüchternen Stotterer|einem liebestollen Casanova|einem verbissenen Streber|einem ungeduldigen Wichtigtuer|einem verträumten Romantiker|einem unbeholfenen Tollpatsch|einem schlauen Fuchs|einem ahnungsvollen Propheten|einem vernachlässigten Hausmann|einem stinkreichen Geizhals|einem erfolglosen Schriftsteller|einem verwöhnten Schnösel|einem vergesslichen Rentner|einem hoffnungslosen Romantiker|einem rebellischen Teenager|einem impulsiven Sammler|einem verschrobenen Wissenschaftler|einem eitlen Popstar|einem mürrischen Rentier|einem abenteuerlustigen Backpacker|einem blauäugigen Träumer|einem überforderten Hausmann|einem schrulligen Künstler|einem hyperaktiven Energiebündel|einem antriebslosen Faulenzer|einem verträumten Tagträumer|einem eigenwilligen Querdenker|einem introvertierten Bücherwurm|einem chaotischen Wirbelwind|einem impulsiven Draufgänger|einem gelangweilten Millionär|einem grummeligen Miesepeter|einem neugierigen Entdecker|einem geheimnisvollen Unbekannten|einem distanzierten Skeptiker|einem exzentrischen Modefreak|einem unabhängigen Freigeist|einem verpeilten Surfer|einem gruseligen Vampir|einem launischen Wettermacher|einem verknöcherten Bürokraten|einem unentschlossenen Zauderer|einem völlig planlosen Träumer|einem sprunghaften Abenteurer|einem wissbegierigen Schüler|einem verschwiegenen Geheimagenten|einem rätselhaften Magier|einem kindischen Spielverderber|einem großmäuligen Angeber</de>
 							<en>a wealthy retiree|an impoverished doctor|a single father|a divorced millionaire woman|an unemployed pilot|a private individual with independent means|a lover of exotic spiders|a monkey breeder|an unsuspecting victim|a loyal servant|a daring adventurer|a pampered lord|a cunning thief|a naive youngster|a mad professor|a feared pirate captain|a mysterious stranger|a fearless explorer|a sensitive psychologist|a bored nobleman|an eccentric inventor|a relentless avenger|an obsessed collector|a shady shapeshifter|an immortal vampire|a remorseful ex-convict|a carefree playboy|a lonely dropout|a notorious womanizer|a clumsy bungler|an adventurous globetrotter|a simple-minded villager|a ruthless businessperson|an optimistic dreamer|a chaotic troublemaker|a corrupt judge|a well-read librarian|a persistent creditor|an idealistic activist|a shy stutterer|a love-crazed Casanova|a stubborn nerd|an impatient blowhard|a dreamy romantic|an awkward bumbler|a sly fox|a prescient prophet|a neglected househusband|a filthy rich miser|an unsuccessful writer|a spoiled brat|a forgetful retiree|a hopeless romantic|a rebellious teenager|an impulsive collector|an eccentric scientist|a vain pop star|a grumpy reindeer|an adventurous backpacker|a starry-eyed dreamer|an overwhelmed house husband|a quirky artist|a hyperactive ball of energy|a lazy slacker|a dreamy daydreamer|a stubborn nonconformist|an introverted bookworm|a chaotic whirlwind|an impulsive daredevil|a bored millionaire|a grumpy curmudgeon|a curious explorer|a mysterious stranger|a skeptical skeptic|an eccentric fashion freak|an independent free spirit|a scatterbrained surfer|a creepy vampire|a moody weatherman|a rigid bureaucrat|an indecisive ditherer|a completely clueless dreamer|a fickle adventurer|a curious student|a secretive secret agent|a mysterious magician|an immature spoilsport|a boastful show-off</en>
+							<pl>bogatego emeryta|ubogiego lekarza|samotnego ojca|rozwiedzionej milionerki|bezrobotnego pilota|osoby prywatnej z niezależnymi środkami|miłośnika egzotycznych pająków|hodowcy małp|nieświadomej ofiary|lojalnego sługi|odważnego poszukiwacza przygód|rozpieszczonego lorda|chytrego złodzieja|naiwnego młodzieńca|szalonygo profesora|strasznego kapitana statków|tajemniczego nieznajomego|nieustraszonego odkrywcy|wrażliwego psychologa|znudzonego szlachcica|ekscentrycznego wynalazcy|nieustępliwego mściciela|obsesyjnego kolekcjonera|podejrzanego kasjera|podejrzanego mafiozo|byłego skazańca|beztroskiego playboya|samotnego wyrzutka|słynnego kobieciarza|niezdarnego partacza|żądnego przygód obieżyświata|prostolinijnego wieśniaka|bezwzględnego biznesmena|optymistycznego marzyciela|chaotycznego awanturnika|skorumpowanego sędziego|oczytanego bibliotekarza|uporczywego wierzyciela|idealistycznej aktywistki|nieśmiałego jąkały|zakochanego Casanovy|upartego kujona|niecierpliwego pyszałka|romantycznego faceta|niezdarnego fajtłapy|chytrego sprzedawcy|biskupa arcydiecezji|zaniedbanej pani domu|obrzydliwie bogatego skąpca|nieudanego pisarza|rozpieszczonego bachora ważnej urzędniczki|zapominalskiego emeryta|beznadziejnego romantyka|buntowniczego bogatego nastolatka|impulsywnego kolekcjonera|ekscentrycznego naukowca|próżnej gwiazdy popu|zrzędliwej matki|awanturniczego autostopowicza|marzyciela z oczami pełnymi gwiazd|przytłoczonego mąża domu|ekscentrycznego artysty|aktywnego energetyka|leniwego obiboka|marzycielskiego marzyciela|upartego konformisty|introwertycznego miłośnika książek|chaotycznej babci|impulsywnego biznesmena|znudzonego milionera|zrzędliwego dziadka|ciekawskiego odkrywcy|tajemniczego nieznajomego|sceptycznego sceptyka|ekscentrycznego dziwaka mody|niezależnej dziewczyny|roztargnionego surfera|strasznego jegomościa|kapryśnego prezentera pogody|sztywnego biurokraty|niezdecydowananego i wahającego się klienta|całkowicie nieświadomego marzyciela|kapryśnego poszukiwacza przygód|ciekawskiego studenta|tajemniczego agenta|tajemniczego magika|niedojrzałego psotnika|chełpliwego pismaka</pl>
 						</suchende_person2>
 						<artofthedeal>
 							<de>zu verkaufen|zu vermieten|anzudrehen</de>
 							<en>tries to sell ${wohnobjekt} to ${suchende_person2}|tries to rent out a ${wohnobjekt} to ${suchende_person2}|tries to foist ${wohnobjekt} upon ${suchende_person2}</en>
+							<pl>próbuje sprzedać ${wohnobjekt} dla ${suchende_person2}|próbuje wynająć ${wohnobjekt} dla ${suchende_person2}|próbuje znaleźć ${wohnobjekt} dla ${suchende_person2}</pl>
 						</artofthedeal>
 						<wohnsucher>
 							<all>${suchende_person} ${wohnobjekt} ${wohngrund}</all>
@@ -56,6 +66,7 @@
 						<wohnfinder>
 							<de>Der Makler versucht, ${suchende_person2} ${wohnobjekt} ${artofthedeal}.</de>
 							<en>The realtor ${artofthedeal}.</en>
+							<pl>Agent nieruchomości ${artofthedeal}.</pl>
 						</wohnfinder>
 						<wohnselector>
 							<all>finder|sucher</all>
@@ -86,16 +97,18 @@
 			<title>
 				<de>Auf die Wette, Fertig, Los - Live aus ${city}</de>
 				<en>Let's Bet - Live from ${city}</en>
+				<pl>Let's Bet - Na żywo z miasta ${city}</pl>
 			</title>
 			<description>
 				<de>Der Höhepunkt der deutschen Unterhaltung in zwei, naja, sagen wir drei Blöcken. Sehen Sie zu, wie durchschnittliche Menschen absurde Wetten abschließen! Und nicht zu vergessen die Prominenten, die manchmal sogar mitmachen!</de>
 				<en>The pinnacle of German entertainment in two... well, let's say three blocks. Watch average people make absurd bets! And let's not forget the celebrities, who sometimes even join in!</en>
+				<pl>Szczyt niemieckiej rozrywki za dwa... no, powiedzmy trzy bloki. Zobacz, jak przeciętni ludzie zawierają absurdalne zakłady! I nie zapominajmy o celebrytach, którzy czasami nawet dołączają!</pl>
 			</description>
 			<variables>
-				<city>
+				<city> <!-- TODO: So if it's from an external city, then the studio in TVTower only acts as a relay station and can be size 1? Or are they lying about the location? -->
 					<de>Basel|Saarbrücken|Berlin|Düsseldorf|Offenburg|Hannover|Bremen|Erfurt|Duisburg|Böblingen|Hof|Leipzig|Palma|Augsburg|Bremerhaven|Freiburg im Breisgau|Friedrichshafen|Insbruck|Linz|Nürnberg</de>
 					<en>Basle|Saarbrücken|Berlin|Düsseldorf|Offenburg|Hanover|Bremen|Erfurt|Duisburg|Böblingen|Hof|Leipzig|Palma|Augsburg|Bremerhaven|Freiburg im Breisgau|Friedrichshafen|Innsbruck|Linz|Nuremberg</en>
-					<!-- TODO: So if it's from an external city, then the studio in TVTower only acts as a relay station and can be size 1? Or are they lying about the location? -->
+					<pl>Bazylea|Saarbrücken|Berlin|Düsseldorf|Offenburg|Hanower|Brema|Erfurt|Duisburg|Böblingen|Hof|Lipsk|Palma|Augsburg|Bremerhaven|Fryburg Bryzgowijski|Friedrichshafen|Innsbruck|Linz|Norymberga</pl>
 				</city>
 			</variables>
 			<jobs>
@@ -120,15 +133,18 @@
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-flavor" creator="9621" comment="very loosely inspired by kitchen nightmares TODO change job to chef when available">
 			<title>
 				<all>${title} - ${currentyear} Edition</all>
+				<pl>${title} - Edycja ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Mutige Köche stürzen sich in kulinarische Missgeschicke. Von schrägen Kombinationen bis zu absurden Geschmacksexperimenten - ein Fest der Gaumenverwirrung und ein Fiasko für den guten Geschmack!</de>
 				<en>Daring chefs dive into adventurous culinary mishaps. From quirky ingredient combinations to absurd taste experiments - it's a feast of taste confusion and a fiasco for good taste!</en>
+				<pl>Odważni kucharze rzucają się w pełne przygód kulinarne wpadki. Od dziwacznych połączeń składników po absurdalne eksperymenty smakowe - to uczta smakowego zamieszania i fiasko dobrego smaku!</pl>
 			</description>
 			<variables>
 				<title>
 					<de>Geschmacksdesaster|Essensrausch|Küchenkatastrophen|Kulinarische Katastrophen|Das Küchenchaos|Die Gourmet-Patzer|Kulinarische Gemetzel|Das Feinschmecker-Experiment|Food Fiasco|Kulinarischer Kataklysmus|Geschmacksversagen|Menü Mayhem|Küchenkataklysmus|Rezeptdesaster</de>
 					<en>Flavor Fiasco|Food Frenzy|Kitchen Catastrophes|Culinary Calamities|Cooking Chaos|Gourmet Gaffes|Culinary Carnage|Chef's Nightmares|Food Fiasco|Cuisine Cataclysm|Flavor Failures|Menu Mayhem|Kitchen Cataclysm|Recipe Reckoning</en>
+					<pl>Fiasco smakowe|Szaleństwo kulinarne|Kuchenne katastrofy|Kulinarne klęski|Chaos kulinarny|Wpadki kulinarne|Kulinarna masakra|Koszmary szefa kuchni|Fiasco kulinarne|Kataklizm kulinarny|Niepowodzenia smakowe|Zamęt w menu|Kataklizm kuchenny|Kuchenne rewolucje</pl>
 				</title>
 				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
@@ -137,27 +153,33 @@
 					<title>
 						<de>${protein} mit ${spice} ..??!</de>
 						<en>${protein} with ${spice} ..??!</en>
+						<pl>${protein} i ${spice} ..??!</pl>
 					</title>
 					<description>
 						<de>Die Köche kombinieren ${protein} mit ${spice} und versuchen ${meal} zu kreiren. Ein unterhaltsames Geschmacksdesaster!</de>
 						<en>The chefs combine ${protein} with ${spice} to create a${flavor} ${meal}. An entertaining flavor fiasco!</en>
+						<pl>Szefowie kuchni łączą produkty w zwariowane danie. Tym razem ${protein} i ${spice}, aby stworzyć ${flavor} ${meal}. Zabawna smakowa katastrofa!</pl>
 					</description>
 					<variables>
 						<protein>
 							<de>Huhn|Rindfleisch|Schweinefleisch|Lammfleisch|Fisch|Garnelen|Hummer|Krabben|Lachs|Thunfisch|Kalbfleisch|Truthahn|Ente|Wachtel|Kaninchen|Oktopus|Tintenfisch|Jakobsmuscheln|Muscheln|Miesmuscheln|Snappfisch|Katzenfisch|Tilapia|Sardellen|Schwertfisch|Austern|Garnelen|Kabeljau|Forelle|Karpfen|Schinken|Schellfisch|Bison|Gans|Hirsch|Sardinen|Kutteln|Niere|Leber|Tofu</de>
 							<en>chicken|beef|pork|lamb|fish|shrimp|lobster|crab|salmon|tuna|veal|turkey|duck|quail|rabbit|octopus|squid|scallops|clams|mussels|snapper|catfish|tilapia|anchovy|swordfish|oysters|prawns|cod|trout|carp|ham|haddock|bison|goose|venison|sardines|tripe|kidney|liver|tofu</en>
+							<pl>kurczak|wołowina|wieprzowina|jagnięcina|ryba|krewetka|homar|krab|łosoś|tuńczyk|cielęcina|indyk|kaczka|przepiórka|królik|ośmiornica|kalmary|przegrzebki|małże|małże|lucjan|sum|tilapia|anchois|miecznik|ostrygi|krewetki|dorsz|pstrąg|karp|szynka|plamiak|żubr|gęś|jelito|sardynki|flaki|nerka|wątroba|tofu</pl>
 						</protein>
 						<spice>
 							<de>Kreuzkümmel|Koriander|Kurkuma|Zimt|Paprika|Kardamom|Ingwer|Muskatnuss|Gewürznelken|Senf|Fenchel|Bockshornklee|Kümmel|Sternanis|schwarzem Pfeffer|weißem Pfeffer|Cayennepfeffer|Chilipulver|roten Pfefferflocken|Safran|Currypulver|Garam Masala|Five-Spice|Oregano|Thymian|Rosmarin|Basilikum|Petersilie|Dill|Minze|Salbei|Lorbeerblättern|Piment|Kürbisgewürz|Vanille|Knoblauchpulver|Zwiebelpulver|Selleriesalz|Koriandersamen|Mohnsamen|Paprikapulver|Cayennepfeffer|Konfitüre|Senf|Ketchup</de>
 							<en>cumin|coriander|turmeric|cinnamon|paprika|cardamom|ginger|nutmeg|cloves|mustard|fennel|fenugreek|caraway|star anise|black pepper|white pepper|cayenne pepper|chili powder|red pepper flakes|saffron|curry powder|garam masala|five-spice|oregano|thyme|rosemary|basil|parsley|dill|mint|sage|bay leaves|allspice|pumpkin spice|vanilla|garlic powder|onion powder|celery salt|coriander seeds|poppy seeds|paprika powder|cayenne|jelly|mustard|ketchup</en>
+							<pl>kminek|kolendra|kurkuma|cynamon|papryka|kardamon|imbir|gałka muszkatołowa|goździki|musztarda|koper włoski|kozieradka|kminek|anyż gwiazdkowy|czarny pieprz|biały pieprz|pieprz cayenne|chili w proszku|płatki czerwonej papryki|szafran|proszek curry|garam masala|przyprawa pięciu smaków|oregano|tymianek|rozmaryn|bazylia|pietruszka|koperek|mięta|szałwia|liście laurowe|ziele angielskie|przyprawa dyniowa|wanilia|czosnek w proszku|proszek cebulowy|sól selerowa|nasiona kolendry|nasiona maku|papryka w proszku|pieprz cayenne|galareta|musztarda|ketchup</pl>
 						</spice>
 						<flavor>
 							<de>süß|sauer|scharf|salzig|bitter|herb|herzhaft|reichhaltig|kräuterhaft|rauchig|würzig|minzig|zitronig|erdig|fruchtig|blumig|pfeffrig|cremig|buttrig|nussig|knusprig|saftig|mild|kräftig|erfrischend|markant|aromatisch|exotisch|leicht süß|feurig|samten|saftig|leicht sauer|pikant|ausgewogen|sanft|charakteristisch|harmonisch</de>
 							<en> sweet| sour| spicy| salty| bitter| tangy| savory| rich|n herbaceous| smoky| zesty| minty| citrusy|n earthy| fruity| floral| peppery| creamy| buttery| nutty| crispy| juicy| mellow| tangy| refreshing| bold|n aromatic|n exotic| slightly sweet| fiery| velvety| succulent| slightly sour| pungent| balanced| mild| distinctive| harmonious</en>
+							<pl>słodki| kwaśny| pikantny| słony| gorzki| cierpki| wytrawny| bogaty| ziołowy| wędzony| pikantny| miętowy| cytrusowy| ziemisty| owocowy| kwiatowy| pieprzny| kremowy| maślany| orzechowy| chrupiący| soczysty| łagodny| cierpki| orzeźwiający| odważny| aromatyczny| egzotyczny| lekko słodki| ognisty| aksamitny| soczysty| lekko kwaśny| ostry| zrównoważony| łagodny| charakterystyczny| harmonijny</pl>
 						</flavor>
 						<meal>
 							<de>ein ${flavor}es Frühstück|einen ${flavor}en Brunch|ein ${flavor}es Mittagessen|ein ${flavor}es Abendessen|${flavor}e Snacks|${flavor}e Vorspeisen|ein ${flavor}es Hauptgericht|${flavor}e Beilagen|eine ${flavor}e Suppe|einen ${flavor}en Salat|ein ${flavor}es Sandwich|einen ${flavor}en Burger|ein ${flavor}es Nudelgericht|eine ${flavor}e Pizza|ein ${flavor}es Pfannengericht|ein ${flavor}es Barbecue|ein ${flavor}es Picknick|ein ${flavor}es Takeout-Gericht|ein ${flavor}es Fast Food Gericht|${flavor}en Street Food|${flavor}e Tapas|ein ${flavor}es Sushi-Gericht|ein ${flavor}es Curry-Gericht|einen ${flavor}en Braten|einen ${flavor}en Auflauf|${flavor}e Wraps|ein ${flavor}es Fingerfood-Gericht|ein ${flavor}es Steak-Gericht|ein ${flavor}es Dessert</de>
 							<en>breakfast|brunch|lunch|dinner|snack|appetizer|main course|side dish|soup|salad|sandwich|burger|pasta dish|pizza|stir-fry|barbecue|picnic|takeout dish|fast food dish|street food dish|tapas dish|sushi dish|curry|roast|casserole|wrap|finger food|steak dish|dessert</en>
+							<pl>smak|brunch|lunch|smak na kolację|smak na przekąskę|smak na przystawkę|smak na danie główne|smak na danie poboczne|smak na zupę|smak na sałatka|smak na kanapkę|smak na burgera|smak na danie z makaronem|smak na pizzę|smak na patelni|smak na grilla|smak na piknik|zapach i smak na danie na wynos|smak na danie fast food|wyrób na danie street food|smak na danie tapas|smak na danie sushi|smak na curry|smak na pieczeń|smak na zapiekankę|charakter potrawy|charakter potrawy na przekąski|charakter potrawy|charakter deseru</pl>
 						</meal>
 					</variables>
 					<episodes value="6" />
@@ -183,15 +205,18 @@
 		<scripttemplate product="2" licence_type="3" guid="script-ariksan-storage" creator="9621" comment="inspired by storage wars">
 			<title>
 				<all>${title} ${currentyear} Edition</all>
+				<pl>${title} Wydanie ${currentyear}</pl>
 			</title>
 			<description>
 				<de>Begleiten Sie eine Gruppe von „Schatzjägern“ in einem erbitterten Kampf um vergessenen Trödel und wertlosen Gerümpel. In verstaubten Lagereinheiten wird jeder Ramsch zur potenziellen Goldgrube!</de>
 				<en>Watch as a group of "treasure hunters" battles it out over piles of forgotten junk, trying to turn trash into cash. Every storage unit holds the potential for absurd adventures and unlikely fortunes!</en>
+				<pl>Zobacz, jak grupa „łowców skarbów” walczy o sterty zapomnianych rupieci, próbując zamienić śmieci w gotówkę. Każda jednostka magazynowa niesie ze sobą potencjał absurdalnych przygód i nieprawdopodobnych fortun!</pl>
 			</description>
 			<variables>
 				<title>
 					<de>Schrott-Spektakel|Kram-Konundrum|Trödelkriege|Schrottkriege|Schrott-Schlacht</de>
 					<en>Trash Treasures|Storage Mayhem|Clutter Clash|Dumpster Dazzle|Junk Journey</en>
+					<pl>Skarby ze śmieci|Łowcy skarbów|Bałagan w śmietniku|Junk Journey|Podróż śmieciowa</pl>
 				</title>
 				<currentyear>${.worldtime:"year"}</currentyear>
 			</variables>
@@ -201,15 +226,18 @@
 					<description>
 						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} zanken sich mit ${.self:"role":4:"firstname"} um ${treasure}. ${.self:"role":5:"firstname"} hat Glück im Unglück und kann ${junk} verhökern.</de>
 						<en>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} get into a fight with ${.self:"role":4:"firstname"} over ${treasure}. ${.self:"role":5:"firstname"} has luck in misfortune and sells off ${junk}.</en>
+						<pl>${.self:"role":2:"firstname"} i ${.self:"role":3:"firstname"} wdają się w bójkę z bohaterem o imieniu ${.self:"role":4:"firstname"} o ${treasure}. ${.self:"role":5:"firstname"} ma szczęście w nieszczęściu i sprzedaje ${junk}.</pl>
 					</description>
 					<variables>
 						<treasure>
 							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
 							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+							<pl>luksusowy zegarek|biżuterię diamentową|antyczny mebel|obraz artystyczny|markową torebkę|zabytkową butelkę wina|monetę kolekcjonerską|rzadki znaczek|limitowaną edycję pamiątek sportowych|antyczną porcelanę|zabytkowy instrument muzyczny|zabytkowy samochód|sztabkę złota|cenny kamień szlachetny|cenny komiks|autentyczny autograf znanego muzyka|zabytkową broń palną|zabytkowy aparat fotograficzny|kolekcjonerską karta|rzadką książka|historyczny manuskrypt|starożytny artefakt|zabytkową płytę winylową|delikatną porcelanę|ekskluzywny designerski płaszcz|zabytkowy plakat filmowy|delikatne srebro|ozdobny żyrandol|ręcznie robiony dywan|wykwintne szkło kryształowe|antyczną rzeźbę|jedyny w swoim rodzaju antyk|luksusowy płaszcz futrzany|drogi gadżet elektroniczny|zabytkowy motocykl|cenny sprzęt sportowy|ekskluzywne dobre wino|monetę z metali szlachetnych|wysokiej klasy sprzęt audio|limitowany zegarek|wykwintną biżuterię rzemieślniczą|zabytkowy zegarek kieszonkowy</pl>
 						</treasure>
 						<junk>
 							<de>eine alte Zeitung|ein kaputtes Möbelstück|nicht übereinstimmende Socken|abgelaufene Konserven|einen zerbrochenen Spiegel|ein rostiges Fahrrad|abgetragene Schuhe|eine verstaubte Schallplatte|ein veraltetes VHS-Band|eine abgesplitterte Schale|ein verblichenes Gemälde|ein veralteter Elektroartikel|verknotete Kabel|eine leere Plastikflasche|ein stumpfes Küchenutensil|ein veraltetes Kassettenband|beschädigtes Gepäck|eine zerkratzte CD|eine veraltete Computer-Tastatur|zerrissene Kleidung|kaputtes Spielzeug|ein ausgefranstes Stromkabel|eine durchgelegene Matratze|ein leeres Glasgefäß|eine gesprungene Keramikfigur|abgelaufene Medizin|ein veraltetes Magazin|ein ungenutztes Trainingsgerät|einen zerbrochenen Bilderrahmen|ein ausgetrockneter Stift|verblichene Poster|ein defektes Küchengerät|ein beschädigtes Brettspiel|ein abgenutzter Teppich|Kisten voller abgelaufener Beauty-Produkte|ein veraltetes Mobiltelefon|etwas zersplittertes Glasgeschirr|eine kaputte Uhr|verblichene Weihnachtsdekorationen|ein abgenutztes Kissen|eine gesprungene Porzellanpuppe</de>
 							<en>an old newspaper|a broken furniture|mismatched socks|expired canned food|a cracked mirror|a rusty bicycle|worn-out shoes|a dusty vinyl record|an obsolete VHS tape|a chipped dish|a faded painting|an outdated electronic|tangled cables|an empty plastic bottle|a dull kitchen utensil|an obsolete cassette tape|damaged luggage|a scratched CD|an obsolete computer keyboard|torn clothing|a broken toy|frayed electrical cord|a worn-out mattress|an empty glass jar|a cracked ceramic figurine|expired medicine|an outdated magazine|unused exercise equipment|a broken picture frame|a dried-out pen|faded posters|a defunct kitchen appliance|a damaged board game|a worn-out carpet|boxes full of expired beauty products|an obsolete cellphone|some shattered glassware|a broken clock|faded holiday decorations|a worn-out pillow|a cracked porcelain doll</en>
+							<pl>starą gazetę|rozbite meble|niepasujące skarpetki|przeterminowaną konserwę|pęknięte lustro|zardzewiały rower|zniszczone buty|zakurzoną płytę winylową|przestarzałą taśmę VHS|obtłuczone naczynie|wyblakły obraz|przestarzałą elektronikęa|splątane kable|pustą plastikową butelkę|matowe narzędzie kuchenne|przestarzałą kasetę magnetofonową|uszkodzony bagaż|porysowaną płytę CD|przestarzałą klawiaturę komputerową|podarte ubranie|zniszczoną zabawkę|postrzępiony przewód elektryczny|zużyty materac|pusty szklany słoik|pękniętą ceramiczną figurkę|przeterminowane lekarstwo|przestarzały magazyn|nieużywany sprzęt do ćwiczeń|rozbitą ramę obrazu|wyschnięty długopis|wyblakłe plakaty|niedziałające urządzenie kuchenne|uszkodzoną grę planszową|zniszczony dywan|pudła pełne przeterminowanych kosmetyków|przestarzały telefon komórkowy|kilka potłuczonych szklanych naczyń|rozbity zegar|wyblakłe ozdoby świąteczne|zużytą poduszkę|pękniętą porcelanową lalkę</pl>
 						</junk>
 					</variables>
 				</scripttemplate>
@@ -218,6 +246,7 @@
 					<description>
 						<de>Der Auktionator hat sich verfahren. Also übernimmt ${.self:"role":5:"firstname"} seine Rolle. Chaos pur! ${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} bieten mit ${.self:"role":4:"firstname"} um die Wette.</de>
 						<en>The auctioneer has gotten lost. ${.self:"role":5:"firstname"} takes over his role. Chaos ensues! ${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} compete against ${.self:"role":4:"firstname"}.</en>
+						<pl>Aukcjoner się zgubił. ${.self:"role":5:"firstname"} przejmuje jego rolę. Rozpoczyna się chaos! ${.self:"role":2:"firstname"} i ${.self:"role":3:"firstname"} rywalizują z uczestnikiem o imieniu ${.self:"role":4:"firstname"}.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-storage-03">
@@ -225,11 +254,13 @@
 					<description>
 						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} haben sich zerstritten und bieten heute gegeneinander. ${.self:"role":5:"firstname"} zieht den Jackpot und sichert sich ${treasure}.</de>
 						<en>${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} have had a falling out and are bidding against each other. ${.self:"role":5:"firstname"} hits the jackpot and secures ${treasure}.</en>
+						<pl>${.self:"role":2:"firstname"} i ${.self:"role":3:"firstname"} pokłócili się i licytują się ze sobą. ${.self:"role":5:"firstname"} trafia w dziesiątkę i zdobywa ${treasure}.</pl>
 					</description>
 					<variables>
 						<treasure>
 							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
 							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+							<pl>luksusowy zegarek|biżuterię diamentową|antyczny mebel|obraz artystyczny|markową torebkę|zabytkową butelkę wina|monetę kolekcjonerską|rzadki znaczek|limitowaną edycję pamiątek sportowych|antyczną porcelanę|zabytkowy instrument muzyczny|zabytkowy samochód|sztabkę złota|cenny kamień szlachetny|cenny komiks|autentyczny autograf znanego muzyka|zabytkową broń palną|zabytkowy aparat fotograficzny|kolekcjonerską kartę|rzadką książkę|historyczny manuskrypt|starożytny artefakt|zabytkową płytę winylową|delikatną porcelanę|ekskluzywny designerski płaszcz|zabytkowy plakat filmowy|delikatne srebro|ozdobny żyrandol|ręcznie robiony dywan|wykwintne szkło kryształowe|antyczną rzeźbę|jedyny w swoim rodzaju antyk|luksusowy płaszcz futrzany|drogi gadżet elektroniczny|zabytkowy motocykl|cenny sprzęt sportowy|ekskluzywne dobre wino|monetę z metali szlachetnych|wysokiej klasy sprzęt audio|limitowany zegarek|wykwintną biżuterię rzemieślniczą|zabytkowy zegarek kieszonkowy</pl>
 						</treasure>
 					</variables>
 				</scripttemplate>
@@ -239,11 +270,13 @@
 					<description>
 						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} haben sich noch immer nicht versöhnt. ${.self:"role":4:"firstname"} kippt einen Kaffee auf ${treasure}.</de>
 						<en>${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} still haven't reconciled. ${.self:"role":4:"firstname"} spills coffee on ${treasure}.</en>
+						<pl>${.self:"role":2:"firstname"} i ${.self:"role":3:"firstname"} nadal się nie pogodzili. ${.self:"role":4:"firstname"} wylewa kawę na ${treasure}.</pl>
 					</description>
 					<variables>
 						<treasure>
 							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
 							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+							<pl>luksusowy zegarek|biżuterię diamentową|antyczny mebel|obraz artystyczny|markową torebkę|zabytkową butelkę wina|monetę kolekcjonerską|rzadki znaczek|limitowaną edycję pamiątek sportowych|antyczną porcelanę|zabytkowy instrument muzyczny|zabytkowy samochód|sztabkę złota|cenny kamień szlachetny|cenny komiks|autentyczny autograf znanego muzyka|zabytkową broń palną|zabytkowy aparat fotograficzny|kolekcjonerską kartę|rzadką książkę|historyczny manuskrypt|starożytny artefakt|zabytkową płytę winylową|delikatną porcelanę|ekskluzywny designerski płaszcz|zabytkowy plakat filmowy|delikatne srebro|ozdobny żyrandol|ręcznie robiony dywan|wykwintne szkło kryształowe|antyczną rzeźbę|jedyny w swoim rodzaju antyk|luksusowy płaszcz futrzany|drogi gadżet elektroniczny|zabytkowy motocykl|cenny sprzęt sportowy|ekskluzywne dobre wino|monetę z metali szlachetnych|wysokiej klasy sprzęt audio|limitowany zegarek|wykwintną biżuterię rzemieślniczą|zabytkowy zegarek kieszonkowy</pl>
 						</treasure>
 					</variables>
 				</scripttemplate>
@@ -252,11 +285,13 @@
 					<description>
 						<de>${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} haben sich insgeheim versöhnt und tricksen alle aus. Sie finden ${treasure}.</de>
 						<en>${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"} have secretly reconciled and outsmart the others, finding ${treasure}.</en>
+						<pl>${.self:"role":2:"firstname"} i ${.self:"role":3:"firstname"} potajemnie się pogodzili i przechytrzyli pozostałych, znajdując ${treasure}.</pl>
 					</description>
 					<variables>
 						<treasure>
 							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
 							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+							<pl>luksusowy zegarek|biżuterię diamentową|antyczny mebel|obraz artystyczny|markową torebkę|zabytkową butelkę wina|monetę kolekcjonerską|rzadki znaczek|limitowaną edycję pamiątek sportowych|antyczną porcelanę|zabytkowy instrument muzyczny|zabytkowy samochód|sztabkę złota|cenny kamień szlachetny|cenny komiks|autentyczny autograf znanego muzyka|zabytkową broń palną|zabytkowy aparat fotograficzny|kolekcjonerską kartę|rzadką książkę|historyczny manuskrypt|starożytny artefakt|zabytkową płytę winylową|delikatną porcelanę|ekskluzywny designerski płaszcz|zabytkowy plakat filmowy|delikatne srebro|ozdobny żyrandol|ręcznie robiony dywan|wykwintne szkło kryształowe|antyczną rzeźbę|jedyny w swoim rodzaju antyk|luksusowy płaszcz futrzany|drogi gadżet elektroniczny|zabytkowy motocykl|cenny sprzęt sportowy|ekskluzywne dobre wino|monetę z metali szlachetnych|wysokiej klasy sprzęt audio|limitowany zegarek|wykwintną biżuterię rzemieślniczą|zabytkowy zegarek kieszonkowy</pl>
 						</treasure>
 					</variables>
 				</scripttemplate>
@@ -265,11 +300,13 @@
 					<description>
 						<de>Ein neuer Bieter räumt ab. ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} und ${.self:"role":5:"firstname"} sehen zu, wie er ${treasure} findet.</de>
 						<en>A new bidder outbids everyone. ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} and ${.self:"role":5:"firstname"} watch as he walks away with ${treasure}.</en>
+						<pl>Nowy licytant przebija wszystkich. ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} i ${.self:"role":5:"firstname"} obserwują, jak odchodzi z ${treasure}.</pl>
 					</description>
 					<variables>
 						<treasure>
 							<de>eine Luxus-Uhr|Diamantschmuck|antike Möbel|ein feines Kunstgemälde|eine Designer-Handtasche|eine Vintage-Weinflasche|eine Sammlerausgabe-Münze|eine seltene Briefmarke|eine limitierte Auflage von Sport-Memorabilia|antikes Porzellan|ein Vintage-Musikinstrument|ein Vintage-Auto|einen Goldbarren|einen Edelstein|ein wertvolles Comic-Buch|ein authentisches Autogramm eines Musikers|eine antike Feuerwaffe|eine Vintage-Kamera|eine Sammler-Tauschkarte|ein seltenes Buch|ein historisches Manuskript|einen antiken Gegenstand|eine Vintage-Vinylplatte|feines Porzellan|einen exklusiven Designer-Mantel|ein Vintage-Filmposter|feines Silberbesteck|einen aufwendigen Kronleuchter|einen handgefertigten Teppich|exquisites Kristallglas|eine antike Skulptur|ein einzigartiges Antiquitätenstück|einen luxuriösen Pelzmantel|ein teures elektronisches Gerät|einen Vintage-Motorrad|eine wertvolle Sportausrüstung|exklusiven feinen Wein|eine Edelmetallmünze|hochwertige Audiogeräte|eine Uhr in limitierter Auflage|exquisiten Handwerkskunst-Schmuck|eine antike Taschenuhr</de>
 							<en>a luxury watch|diamond jewelry|an antique furniture|a fine art painting|a designer handbag|a vintage wine bottle|a collector's edition coin|a rare stamp|a limited edition sports memorabilia|an antique porcelain|a vintage musical instrument|a vintage car|gold bullion|a precious gemstone|a valuable comic book|an authentic autograph from a famous musician|an antique firearm|a vintage camera|a collectible trading card|a rare book|a historic manuscript|an ancient artifact|a vintage vinyl record|fine china|an exclusive designer coat|a vintage movie poster|fine silverware|an ornate chandelier|a handcrafted rug|exquisite crystal glassware|an antique sculpture|a one-of-a-kind antique|a luxurious fur coat|an expensive electronic gadget|a vintage motorcycle|valuable sports equipment|an exclusive fine wine|a precious metal coin|high-end audio equipment|a limited edition watch|exquisite craftsmanship jewelry|an antique pocket watch</en>
+							<pl>luksusowy zegarek|biżuteria diamentowa|antyczny mebel|obraz artystyczny|markowa torebka|zabytkowa butelka wina|monetą kolekcjonerską|rzadkim znaczkiem|limitowaną edycją pamiątek sportowych|antyczną porcelaną|zabytkowym instrumentem muzycznym|zabytkowym samochodem|sztabką złota|cennym kamieniem szlachetnym|cennym komiksem|autentycznym autografem znanego muzyka|zabytkową bronią palną|zabytkowym aparatem fotograficznym|kolekcjonerską kartą|rzadką książką|historycznym manuskryptem|starożytnym artefaktem|zabytkową płytą winylową|delikatną porcelaną|ekskluzywny designerskim płaszczem|zabytkowym plakatem filmowym|delikatnym srebrem|ozdobnym żyrandolem|ręcznie robionym dywanem|wykwintnym szkłem kryształowym|antyczną rzeźbą|jedynym w swoim rodzaju antykiem|luksusowym płaszczem futrzanym|drogim gadżetem elektronicznym|zabytkowym motocyklem|cennym sprzętem sportowym|ekskluzywnym dobrym winem|monetą z metali szlachetnych|wysokiej klasy sprzęt audio|limitowanym zegarekiem|wykwintną biżuterią rzemieślniczą|zabytkowym zegarkiem kieszonkowym</pl>
 						</treasure>
 					</variables>
 				</scripttemplate>
@@ -278,6 +315,7 @@
 					<description>
 						<de>Skandal, der neue Bieter ist da. ${.self:"role":2:"firstname"} und ${.self:"role":3:"firstname"} schäumen vor Wut. ${.self:"role":5:"firstname"} schafft es doch noch eine Lagereinheit zu ergattern.</de>
 						<en>The new bidder returns triumphantly. Frustration boils within ${.self:"role":2:"firstname"} and ${.self:"role":3:"firstname"}. However, ${.self:"role":5:"firstname"} manages to secure a storage unit.</en>
+						<pl>Nowy oferent powraca triumfalnie. Frustracja wrze. ${.self:"role":2:"firstname"} i ${.self:"role":3:"firstname"} są wściekli. Jednak ${.self:"role":5:"firstname"} próbuje zabezpieczyć jednostkę magazynową.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-storage-08">
@@ -285,6 +323,7 @@
 					<description>
 						<de>Es stellt sich heraus, dass der neue Bieter in Wirklichkeit ${.self:"role":4:"firstname"} in einer genialen Verkleidung ist. Alle lachen sich krumm.</de>
 						<en>Hilarity ensues as it turns out that the new bidder is, in fact, ${.self:"role":4:"firstname"} in a genius disguise. Everyone laughs hysterically.</en>
+						<pl>Następuje rozbawienie, gdy okazuje się, że nowy oferent to w rzeczywistości ${.self:"role":4:"firstname"} w przebraniu geniusza. Wszyscy śmieją się histerycznie.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -311,20 +350,24 @@
 			<title>
 				<de>Die Sendung mit ${dativ_${variant}} ${tier_${variant}}</de>
 				<en>The Show with the ${adjective} ${animal}</en>
+				<pl>Spektakl ze zwierzętami. ${adjective_${variant}} ${animal}</pl>
 			</title>
 			<description>
 				<de>Spaß und Fakten mit ${dativ_${variant}} ${tier_${variant}} und dem kleinen ${animal2}. ${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erklären die Welt und sorgen für Lacher.</de>
 				<en>Fun and facts with the ${animal} and the tiny ${animal2}. Children explore the world with the ${adjective} ${animal} and the tiny ${animal2} who also present funny clips and stories.</en>
+				<pl>Zabawa i nauka. ${adjective_${variant}} ${animal} i malutki ${animal2}. Dzieci poznają świat ze zwierzętami, które również prezentują zabawne klipy i historie.</pl>
 			</description>
 			<variables>
 				<variant>m|w</variant>
 				<tier_m>
 					<de>Kautz|Strauß|Tiger|Schwan|Jaguar|Fuchs|Wolf|Widder|Hund|Gorilla|Hahn</de>
 					<en>Rook|Ostrich|Tiger|Swan|Jaguar|Fox|Wolf|Ram|Dog|Gorilla|Rooster</en>
+					<pl>gawron|struś|tygrys|łabędź|jaguar|lis|wilk|baran|pies|goryl|kogut</pl>
 				</tier_m>
 				<tier_w>
 					<de>Laus|Katze|Gans|Möwe|Schlange|Ziege|Biene|Hummel|Taube|Ente|Spinne|Giraffe</de>
 					<en>Louse|Cat|Goose|Gull|Snake|Goat|Bee|Bumblebee|Dove|Duck|Spider|Giraffe</en>
+					<pl>wesz|kotka|gęś|mewa|hiena|koza|pszczoła|surykatka|sroczka|świnka|tarantula|żyrafa</pl>
 				</tier_w>
 				<dativ_m>
 					<de>dem</de>
@@ -344,21 +387,31 @@
 				<animal2>
 					<de>Nashorn|Flusspferd|Pferd|Stachelschwein|Schaf|Huhn|Kamel|Walross|Krokodil</de>
 					<en>rhino|hippo|horse|porcupine|sheep|chicken|camel|walrus|crocodile</en> <!-- should not be added: lion, cobra (already appear in episodes) -->
+					<pl>nosorożec|hipopotam|koń|jeżozwierz|niedźwiedź|kurczak|wielbłąd|mors|krokodyl</pl>
 				</animal2>
 				<adjective>
 					<de>witzige|aufgeweckte|gescheite|kluge|lustige</de>
 					<en>Witty|Sharp|Clever|Smart|Funny</en>
+					<pl>Dowcipn|Ostr|Sprytn|Inteligentn|Zabawn</pl>
 				</adjective>
+				<adjective_m>
+					<pl>${adjective}y</pl>
+				</adjective_m>
+				<adjective_w>
+					<pl>${adjective}a</pl>
+				</adjective_w>
 			</variables>
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="script-ariksan-kautz-01">
 					<title>
 						<de>Die Grabkammer des Pharao</de>
 						<en>The Tomb of the Pharao</en>
+						<pl>Grobowiec Faraona</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} tauchen in die Welt der Archäologie ein. Achtung kleines ${animal2}, keine alten Flüche wecken!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} delve into archaeology. Easy, ${animal2}, no ancient curses or mummies will make great roommates!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} zagłębiają się w archeologii. Spokojnie, starożytne klątwy ani mumie nie będą dobrymi współlokatorami!</pl>
 					</description>
 					<episodes min="0" max="1" /> <!-- TODO: no enforced pilot for now (should be more variable) -->
 				</scripttemplate>
@@ -366,320 +419,384 @@
 					<title>
 						<de>C++ ist kein Vitamin</de>
 						<en>C++ Is not a Vitamine</en>
+						<pl>C++ nie jest witaminą</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} lernen Programmieren. Achtung kleines ${animal2}, übermäßige Semikolons werden den Computer nicht beeindrucken!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} learn coding. Remember, ${animal2}, excessive semicolons won't impress the computer, just confuse it!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} uczą się kodowania. Pamiętaj, nadmierne średniki nie zrobią wrażenia na komputerze, tylko go zdezorientują!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-kautz-03">
 					<title>
 						<de>Quälende Quallen</de>
 						<en>Don't Eat that Jelly</en>
+						<pl>Nie jedz tej galaretki</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden den Ozean. Autsch, kleines ${animal2}, lass uns lieber Abstand von den quälenden Quallen halten!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore the ocean. Ouchy, tiny ${animal2}, let's keep our distance from those jellyfish!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują ocean. Ojej, malutki, trzymajmy się z daleka od tych meduz!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-kautz-04">
 					<title>
 						<de>Das schwarze Gold</de>
 						<en>Black Gold</en>
+						<pl>Czarne złoto</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine Raffinerie. Oh uhhh, die Strechhölzer bitte stecken lassen, kleines ${animal2}!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit an oil refinery. Uhhh, tiny ${animal2}, don't play with matches!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odwiedzają rafinerię ropy naftowej. Eee,  nie baw się tam zapałkami!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-kautz-05">
 					<title>
 						<de>PutziBot</de>
 						<en>BrushBot Buddy</en>
+						<pl>Kumpel RoboBot</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen ein Robotiklabor. Keine Sorge, kleines ${animal2}, die Roboter werden die Welt nicht übernehmen... noch nicht!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a robotics lab. Don't worry, tiny ${animal2}, the robots won't take over the world... yet!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odwiedzają laboratorium robotyki. Nie martw się, roboty nie przejmą świata... jeszcze!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-kautz-06">
 					<title>
 						<de>Waldgeschichten</de>
 						<en>Forest Explorers</en>
+						<pl>Odkrywcy lasu</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} begleiten einen Förster. Winziges ${animal2}, es ist unhöflich mit den Bäumen zu streiten, auch wenn sie nicht gut zuhören!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} accompany join forester in his daily tasks. Remember, tiny ${animal2}, it's not polite to argue with the trees, even if they're not good listeners!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} towarzyszą leśnikowi w jego codziennych zadaniach. Pamiętaj, nie wypada kłócić się z drzewami, nawet jeśli nie są dobrymi słuchaczami!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-kautz-07">
 					<title>
 						<de>Der verrückte Vulkan</de>
 						<en>The Crazy Volcano</en>
+						<pl>Szalony wulkan</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen einen aktiven Vulkan. Achtung, kleines ${animal2}, heißer Boden ist kein guter Platz zum Tanzen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit an active volcano. Watch out, tiny ${animal2}, hot ground is not a good place to dance!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odwiedzają czynny wulkan. Uważaj, gorąca ziemia nie jest dobrym miejscem do tańca!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-kautz-08">
 					<title>
 						<de>Zeitreise-Zauber</de>
 						<en>Time Travel Magic</en>
+						<pl>Magia podróży w czasie</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} stolpern über eine mysteriöse Uhr. Vorsicht, kleines ${animal2}, du willst doch nicht aus Versehen im Mittelalter landen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} stumble across a mysterious clock. Careful, tiny ${animal2}, you don't want to end up in the Middle Ages by mistake!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} natykają się na tajemniczy zegar. Uważaj, nie chcesz przez pomyłkę trafić do średniowiecza!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="script-ariksan-kautz-09">
 					<title>
 						<de>Im Reich der Farben</de>
 						<en>In the Realm of Colors</en>
+						<pl>W Krainie Kolorów</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden eine Farb-Fabrik. Hey, kleines ${animal2}, nicht jede Farbe ist zum Trinken da!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore a paint factory. Hey, tiny ${animal2}, not every color is for drinking!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują fabrykę farb. Hej, ${animal2}! Nie każdy kolor nadaje się do picia!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-kautz-10">
 					<title>
 						<de>Sternenjäger</de>
 						<en>Star Chasers</en>
+						<pl>Łowcy gwiazd</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen ein Planetarium. Ui, kleines ${animal2}, die Sterne sind zum Staunen da, nicht zum Sammeln!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a planetarium. Whew, tiny ${animal2}, the stars are there to marvel at, not to collect!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odwiedzają planetarium. Uff, słuchaj ${animal2}! Gwiazdy są po to, by je podziwiać, a nie kolekcjonować!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="script-ariksan-kautz-11">
 					<title>
 						<de>Dschungeldisco</de>
 						<en>Jungle Disco</en>
+						<pl>Dyskoteka w dżungli</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} feiern eine Party im Dschungel. Oho, kleines ${animal2}, eine Kobra als Tanzpartner ist vielleicht keine gute Idee!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} are having a party in the jungle. Oho, tiny ${animal2}, a cobra as a dance partner might not be a good idea!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} bawią się w dżungli. Oho, kobra jako partner do tańca może nie być dobrym pomysłem!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="script-ariksan-kautz-12">
 					<title>
 						<de>Blitz und Donner</de>
 						<en>Thunder and Lightning</en>
+						<pl>Grzmot i błyskawica</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} lernen über das Wetter. Achtung, kleines ${animal2}, Blitze versucht man besser nicht einzufangen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} learn about the weather. Watch out, tiny ${animal2}, you better not try to catch lightning!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} uczą się o pogodzie. Uważaj, lepiej nie próbuj łapać piorunów!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="12" product="2" licence_type="2" guid="script-ariksan-kautz-13">
 					<title>
 						<de>Der geheime Garten</de>
 						<en>The Secret Garden</en>
+						<pl>Tajemniczy ogród</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} entdecken einen verzauberten Garten. Hups, kleines ${animal2}, lass lieber die sprechenden Blumen in Ruhe!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} discover an enchanted garden. Oops, tiny ${animal2}, better leave the talking flowers alone!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odkrywają zaczarowany ogród. Ups, lepiej zostaw gadające kwiaty w spokoju!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="13" product="2" licence_type="2" guid="script-ariksan-kautz-14">
 					<title>
 						<de>Rätselhafte Ruinen</de>
 						<en>Mysterious Ruins</en>
+						<pl>Tajemnicze ruiny</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden eine verlassene Tempelanlage. Pass auf, kleines ${animal2}, manche Türen sollte man besser nicht öffnen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore an abandoned temple complex. Watch out, tiny ${animal2}, it's better not to open some doors!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują opuszczony kompleks świątynny. Uważaj, lepiej nie otwierać niektórych drzwi!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="14" product="2" licence_type="2" guid="script-ariksan-kautz-15">
 					<title>
 						<de>Im Land der Riesentiere</de>
 						<en>In the Land of Giant Beasts</en>
+						<pl>W krainie gigantycznych bestii</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} reisen in ein Naturkundemuseum mit Dinosauriermodellen. Oha, kleines ${animal2}, die T-Rex-Zähne sind keine Kletterhilfe!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} travel to a natural history museum with dinosaur models. Whoa, tiny ${animal2}, the T-Rex teeth are not a climbing aid!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} jadą do muzeum historii naturalnej z modelami dinozaurów. Ojej, zęby T-Rexa nie są pomocą do wspinaczki!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="15" product="2" licence_type="2" guid="script-ariksan-kautz-16">
 					<title>
 						<de>Das Geheimnis der Berge</de>
 						<en>The Secret of the Mountains</en>
+						<pl>Sekret gór</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} gehen auf Wanderung in die Berge. Aber, kleines ${animal2}, der Gipfel ist kein Platz für ein Picknick mit Steinböcken!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} go hiking in the mountains. But but, tiny ${animal2}, the summit is no place for a picnic with ibexes!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} idą na wędrówkę po górach. Ale ale, szczyt nie jest miejscem na piknik z koziorożcami!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="16" product="2" licence_type="2" guid="script-ariksan-kautz-17">
 					<title>
 						<de>Spuk im Schloss</de>
 						<en>Haunted Castle</en>
+						<pl>Nawiedzony Zamek</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} verbringen eine Nacht in einem alten Schloss. Ruhig, kleines ${animal2}, die Gespenster sind vielleicht nur Nachbarn, die sich verirrt haben!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} spend a night in an old castle. Quiet, tiny ${animal2}, the ghosts might just be neighbors who got lost!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} spędzają noc w starym zamku. Cicho, duchy mogą być po prostu sąsiadami, którzy się zgubili!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="17" product="2" licence_type="2" guid="script-ariksan-kautz-18">
 					<title>
 						<de>Im Weltall unterwegs</de>
 						<en>Traveling in Space</en>
+						<pl>Podróżowanie w kosmosie</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} machen eine virtuelle Reise durch den Weltraum. Keine Sorge, kleines ${animal2}, der Astronautenhelm bleibt hier auf der Erde!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} take a virtual journey through space. Don't worry, tiny ${animal2}, the astronaut helmet stays here on earth!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odbywają wirtualną podróż przez kosmos. Nie martw się, hełm astronauty zostaje tutaj, na Ziemi!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="18" product="2" licence_type="2" guid="script-ariksan-kautz-19">
 					<title>
 						<de>Das verrückte Labyrinth</de>
 						<en>The Crazy Maze</en>
+						<pl>Szalony labirynt</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden ein Gartenlabyrinth. Hui, kleines ${animal2}, ein Plan hilft mehr als im Kreis zu laufen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore a garden maze. Wow, tiny ${animal2}, a plan helps more than running around in circles!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują ogrodowy labirynt. Wow, plan pomaga bardziej niż bieganie w kółko!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="19" product="2" licence_type="2" guid="script-ariksan-kautz-20">
 					<title>
 						<de>Der Schatz im See</de>
 						<en>The Treasure in the Lake</en>
+						<pl>Skarb w jeziorze</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} tauchen nach einem geheimen Schatz im See. Aber Vorsicht, kleines ${animal2}, die Fische sind wohl nicht so begeistert!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} are diving for a secret treasure in the lake. But be careful, tiny ${animal2}, the fish are probably not so keen!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} nurkują w poszukiwaniu sekretnego skarbu w jeziorze. Ale uważaj, ryby prawdopodobnie nie są tak chętne!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="20" product="2" licence_type="2" guid="script-ariksan-kautz-21">
 					<title>
 						<de>Die magische Bücherei</de>
 						<en>The Magical Library</en>
+						<pl>Magiczna Biblioteka</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine alte Bibliothek mit geheimnisvollen Büchern. Nicht so schnell, kleines ${animal2}, manche Geschichten bleiben besser ungelesen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit an old library with mysterious books. Not so fast, tiny ${animal2}, some stories are better left unread!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odwiedzają starą bibliotekę z tajemniczymi książkami. Nie tak szybko, niektóre historie lepiej zostawić nieprzeczytane!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="21" product="2" licence_type="2" guid="script-ariksan-kautz-22">
 					<title>
 						<de>Auf dem Jahrmarkt</de>
 						<en>At the Funfair</en>
+						<pl>Na wesołym miasteczku</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erleben die aufregenden Attraktionen eines Jahrmarkts. Oh nein, kleines ${animal2}, so viel Zuckerwatte ist nicht gut für den Magen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} experience the exciting attractions of a funfair. Oh no, tiny ${animal2}, so much candy floss is not good for your stomach!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} doświadczają ekscytujących atrakcji wesołego miasteczka. O nie, tyle waty cukrowej nie jest dobre dla twojego żołądka!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="22" product="2" licence_type="2" guid="script-ariksan-kautz-23">
 					<title>
 						<de>Der große Zaubertrick</de>
 						<en>The Great Magic Trick</en>
+						<pl>Wielka sztuczka magiczna</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} lernen von einem Zauberer ein paar Tricks. Aber Achtung, kleines ${animal2}, Kaninchen aus dem Hut zaubern ist schwieriger, als es aussieht!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} learn a few tricks from a magician. But beware, tiny ${animal2}, conjuring rabbits out of a hat is harder than it looks!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} uczą się kilku sztuczek od magika. Ale uważaj, wyczarowywanie królików z kapelusza jest trudniejsze, niż się wydaje!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="23" product="2" licence_type="2" guid="script-ariksan-kautz-24">
 					<title>
 						<de>Geheimnisvolles Regenwald-Rätsel</de>
 						<en>Puzzling Rainforest Mystery</en>
+						<pl>Zagadkowa tajemnica lasu deszczowego</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} finden alte Felsmalereien. Kleine Spürnase, ${animal2}, aber pass auf, dass du deine antiken Vorfahren nicht weckst!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} find ancient rock paintings. You're a little sleuth, tiny ${animal2}, but be careful not to wake up your ancient ancestors!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} znajdują starożytne malowidła naskalne. Jesteś małym detektywem, ale uważaj, żeby nie obudzić swoich starożytnych przodków!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="24" product="2" licence_type="2" guid="script-ariksan-kautz-25">
 					<title>
 						<de>Das große Käse-Kommando</de>
 						<en>The Big Cheese Commando</en>
+						<pl>Wielki Komandos Serowy</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine Käserei. Moment, kleines ${animal2}, der Käseberg ist nicht zum Runterrutschen da!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a cheese dairy. Wait a minute, tiny ${animal2}, the cheese mountain is not for sliding down!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odwiedzają serowarnię. Poczekaj chwilę, góra sera nie służy do zjeżdżania!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="25" product="2" licence_type="2" guid="script-ariksan-kautz-26">
 					<title>
 						<de>Schatzsuche im Eismeer</de>
 						<en>Treasure Hunt in the Arctic Ocean</en>
+						<pl>Poszukiwanie skarbów w Oceanie Arktycznym</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} sind in der Arktis unterwegs. Brrr, kleines ${animal2}, die Schatztruhe ist tief unter dem Eis - schnell bewegen, dass wir ja nicht einfrieren!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} are out and about in the Arctic. Whoa, tiny ${animal2}, the treasure chest is deep under the ice - move quickly so we don't freeze!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} są na Arktyce. Wow, skrzynia ze skarbami jest głęboko pod lodem - ruszaj się szybko, żebyśmy nie zamarzli!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="26" product="2" licence_type="2" guid="script-ariksan-kautz-27">
 					<title>
 						<de>Der geheimnisvolle Zirkus</de>
 						<en>The Mysterious Circus</en>
+						<pl>Tajemniczy Cyrk</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} landen in einem Zirkuszelt. Achtung, kleines ${animal2}, ein Löwenbändiger ist kein ${animal2}bändiger!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} end up in a circus tent. Watch out, tiny ${animal2}, a lion tamer is not a ${animal2} tamer!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} lądują w namiocie cyrkowym. Uważaj, treser lwów nie jest naszym treserem!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="27" product="2" licence_type="2" guid="script-ariksan-kautz-28">
 					<title>
 						<de>Miniaturwunderland</de>
 						<en>Miniature Wonderland</en>
+						<pl>Miniaturowa Kraina Czarów</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} geraten in einen Raum voller Mini-Welten. Staune, kleines ${animal2}, die winzigen Städte sind aber kein Klettergerüst!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} end up in a room full of mini-worlds. Be amazed, tiny ${animal2}, even though the tiny cities are not a climbing frame!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} lądują w pokoju pełnym mini-światów. Zaskocz się, mimo że małe miasta nie jest drabinką!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="28" product="2" licence_type="2" guid="script-ariksan-kautz-29">
 					<title>
 						<de>In der Pyramide des Eises</de>
 						<en>In the Pyramid of Ice</en>
+						<pl>W Piramidzie Lodu</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erforschen eine Eishöhle. Vorsicht, kleines ${animal2}, rutschige Böden sind tückisch - kein Eistanz bitte!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore an ice cave. Careful, tiny ${animal2}, slippery floors are treacherous - no ice dancing please!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują jaskinię lodową. Uważaj, śliskie podłogi są zdradliwe - proszę nie tańczyć na lodzie!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="29" product="2" licence_type="2" guid="script-ariksan-kautz-30">
 					<title>
 						<de>Der große Bücher-Wirbel</de>
 						<en>The Big Book Fuss</en>
+						<pl>Wielkie zamieszanie wokół książki</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} gehen in eine alte Bibliothek. Kleines ${animal2}, die Bücher kann man erkunden, aber bitte nicht anknabbern!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} go into an old library. tiny ${animal2}, you can explore the books, but please don't nibble on them!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} trafiają do starej biblioteki. Maleńki, możesz przeglądać książki, ale proszę, nie podjadaj ich!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="30" product="2" licence_type="2" guid="script-ariksan-kautz-31">
 					<title>
 						<de>Köstliche Kakao-Kiste</de>
 						<en>Delicious Cocoa Crate</en>
+						<pl>Pyszna Skrzynka Kakao</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} besuchen eine Schokoladenfabrik. Huch, kleines ${animal2}, lass dich nicht in den Schokoladenfluss ziehen!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} visit a chocolate factory. Whoops, tiny ${animal2}, don't get sucked into the chocolate river!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} odwiedzają fabrykę czekolady. Ups, nie daj się wciągnąć do rzeki czekolady!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="31" product="2" licence_type="2" guid="script-ariksan-kautz-32">
 					<title>
 						<de>Der Wolken-Wanderer</de>
 						<en>The Cloud Walker</en>
+						<pl>Wędrowiec po chmurach</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} fliegen im Heißluftballon durch die Wolken. Holla, kleines ${animal2}, nicht zu nah an die Möwen ran!</de>
 						<en>The ${adjective} ${animal} and the tiny ${animal2} fly through the clouds in a hot air balloon. Yikes, tiny ${animal2}, don't get too close to the seagulls!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} lecą przez chmury w balonie na ogrzane powietrze. Ojej, nie podchodź za blisko mew!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="32" product="2" licence_type="2" guid="script-ariksan-kautz-33">
 					<title>
 						<de>Im Spiegelkabinett</de>
 						<en>In the Hall of Mirrors</en>
+						<pl>W Sali Lustrzanej</pl>
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} erkunden ein mysteriöses Spiegelkabinett. Lustig, kleines ${animal2}, aber: ${nominativ_${variant}} ${tier_${variant}} hat nur ein Spiegelbild - nicht zwanzig!</de> <!-- TODO: tolower instead of colon? -->
 						<en>The ${adjective} ${animal} and the tiny ${animal2} explore a mysterious hall of mirrors. Funny, tiny ${animal2}, but the ${animal} only has one reflection - not twenty!</en>
+						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} eksplorują tajemniczą salę luster. Zabawne, ale ${animal2} ma tylko jedno odbicie - nie dwadzieścia!</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -706,10 +823,12 @@
 			<title>
 				<de>${title} Staffel #1</de>
 				<en>${title} Season #1</en>
+				<pl>${title} Sezon #1</pl>
 			</title>
 			<description>
 				<de>In einer Küstenstadt navigieren ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":7:"firstname"}, ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} Liebe, Freundschaft, Geheimnisse und Selbstfindung während ihrer ereignisreichen Studienzeit.</de>
 				<en>In a coastal town, ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":7:"firstname"}, ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"}, and ${.self:"role":4:"firstname"} navigate love, friendship, secrets, and self-discovery in their eventful college years.</en>
+				<pl>W nadmorskim miasteczku ${.self:"role":5:"firstname"}, ${.self:"role":6:"firstname"}, ${.self:"role":7:"firstname"}, ${.self:"role":2:"firstname"}, ${.self:"role":3:"firstname"} i ${.self:"role":4:"firstname"} zmagają się z miłością, przyjaźnią, tajemnicami i odkrywaniem siebie w trakcie pełnych wrażeń lat studenckich.</pl>
 			</description>
 			<variables>
 				<title>
@@ -721,10 +840,12 @@
 					<title>
 						<de>Willkommen in der Sonne</de>
 						<en>Welcome to the Sun</en>
+						<pl>Witamy w Słońcu</pl>
 					</title>
 					<description>
 						<de>${.self:"role":2:"firstname"} ist neu in der Stadt, und ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} zeigen ihm den Unterschied zwischen örtlicher „Chillness“ und College-Stress. Der neue Mitschüler bleibt (vorerst) cool, doch ${.self:"role":6:"firstname"} und ${.self:"role":5:"firstname"} wittern frisches „Material“. ${.self:"role":7:"firstname"} zweifelt, ob ${.self:"role":2:"firstname"} vielleicht zu gut aussieht.</de>
 						<en>${.self:"role":2:"firstname"} is new in town, and ${.self:"role":3:"firstname"} and ${.self:"role":4:"firstname"} show him the difference between local "chillness" and college stress. The new classmate remains cool (for now), but ${.self:"role":6:"firstname"} and ${.self:"role":5:"firstname"} sense fresh "material". ${.self:"role":7:"firstname"} doubts whether ${.self:"role":2:"firstname"} might be too good-looking.</en>
+						<pl>${.self:"role":2:"firstname"} jest nowy w mieście, a ${.self:"role":3:"firstname"} i ${.self:"role":4:"firstname"} pokazują mu różnicę między lokalnym "chłodem" a stresem college'u. Nowy kolega z klasy pozostaje spokojny (na razie), ale ${.self:"role":6:"firstname"} i ${.self:"role":5:"firstname"} wyczuwają świeży "materiał". ${.self:"role":7:"firstname"} wątpi, czy ${.self:"role":2:"firstname"} nie jest za bardzo przystojny.</pl>
 					</description>
 					<episodes min="0" max="1" /> <!-- TODO: no enforced pilot for now (should be more variable) -->
 				</scripttemplate>
@@ -732,390 +853,468 @@
 					<title>
 						<de>Eine Frage der Ehre</de>
 						<en>A Matter of Honor</en>
+						<pl>Sprawa honoru</pl>
 					</title>
 					<description>
 						<de>Als ${.self:"role":5:"firstname"} und ${.self:"role":6:"firstname"} sich auf denselben Platz im Surfcamp bewerben, wird klar: Nur eine kann die Königin des Strandes sein. Währenddessen hilft ${.self:"role":4:"firstname"} ${.self:"role":2:"firstname"} beim Wellenreiten, aber der hat in Wahrheit nur Augen für ein gewisses Mädchen - die Frage ist: welches?</de>
 						<en>When ${.self:"role":5:"firstname"} and ${.self:"role":6:"firstname"} apply for the same place at the surf camp, it becomes clear that only one of them can be the queen of the beach. Meanwhile, ${.self:"role":4:"firstname"} helps ${.self:"role":2:"firstname"} ride the waves, but he really only has eyes for a certain girl - the question is: which one?</en>
+						<pl>Kiedy ${.self:"role":5:"firstname"} i ${.self:"role":6:"firstname"} ubiegają się o to samo miejsce w obozie surfingowym, staje się jasne, że tylko jedna z nich może zostać królową plaży. Tymczasem ${.self:"role":4:"firstname"} pomaga ${.self:"role":2:"firstname"} surfować na falach, ale tak naprawdę ma oko tylko na pewną dziewczynę - pytanie brzmi: którą?</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="2" licence_type="2" guid="script-ariksan-bever-03">
 					<title>
 						<de>Hitzewelle und heiße Herzen</de>
 						<en>Heatwave and Hot Hearts</en>
+						<pl>Fala upałów i gorące serca</pl>
 					</title>
 					<description>
 						<de>Rekordhitze, und die Klimaanlage fällt aus. Was macht man da? Genau: Beziehungen auf die Probe stellen! ${.self:"role":6:"firstname"} glaubt, dass ${.self:"role":3:"firstname"} Gefühle für sie hat, doch er hat mehr Interesse am nächsten Eisstand. ${.self:"role":7:"firstname"} versucht verzweifelt, den kühlen Kopf zu bewahren.</de>
 						<en>Record heat and the air conditioning fails. What do we do then? Exactly: put relationships to the test! ${.self:"role":6:"firstname"} thinks ${.self:"role":3:"firstname"} has feelings for her, but he's more interested in the nearest ice cream stand. ${.self:"role":7:"firstname"} desperately tries to keep her cool.</en>
+						<pl>Rekordowe ciepło i klimatyzacja psuje się. Co wtedy robimy? Dokładnie: wystawiamy związki na próbę! ${.self:"role":6:"firstname"} myśli, że ${.self:"role":3:"firstname"} coś czuje do niej, ale bardziej interesuje go najbliższy stragan z lodami. ${.self:"role":7:"firstname"} desperacko stara się zachować zimną krew.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="script-ariksan-bever-04">
 					<title>
 						<de>Der große Surf-Contest</de>
 						<en>The Big Surf Contest</en>
+						<pl>Konkurs Big Surf</pl>
 					</title>
 					<description>
 						<de>Alle Blicke sind auf den Strand gerichtet: ${.self:"role":2:"firstname"} hat seine große Chance, endlich dazuzugehören. ${.self:"role":6:"firstname"} überlegt derweil, ob es strategisch klug ist, Interesse an einem Surfer zu heucheln. ${.self:"role":7:"firstname"}s Motto: „Überzeugung hilft, wenn man selbst nicht überzeugt ist“.</de>
 						<en>All eyes are on the beach: ${.self:"role":2:"firstname"} has his big chance to finally belong. ${.self:"role":6:"firstname"}, meanwhile, ponders whether it's strategically wise to feign interest in a surfer. ${.self:"role":7:"firstname"}'s motto: "Conviction helps if you're not convinced yourself".</en>
+						<pl>Wszystkie oczy zwrócone są na plażę: ${.self:"role":2:"firstname"} ma w końcu wielką szansę, by poczuć się częścią grupy. Tymczasem ${.self:"role":6:"firstname"} zastanawia się, czy strategicznie mądre jest udawanie zainteresowania surferem. Motto ${.self:"role":7:"firstname"}: „Przekonanie pomaga, jeśli sam nie jesteś przekonany”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="2" licence_type="2" guid="script-ariksan-bever-05">
 					<title>
 						<de>Die Party, die keiner vergessen kann</de>
 						<en>The Party No One Can Forget</en>
+						<pl>Impreza, której nikt nie zapomni</pl>
 					</title>
 					<description>
 						<de>${.self:"role":4:"firstname"} schmeißt eine Party, und es passiert genau das, was in solchen Serien immer passiert: Drama, Drama und noch mehr Drama. ${.self:"role":3:"firstname"} versucht, ${.self:"role":7:"firstname"}s Gefühle für ihn auf die Probe zu stellen, und ${.self:"role":6:"firstname"} verbringt den Abend damit, möglichst viel Eindruck zu machen - notfalls auf jeden.</de>
 						<en>${.self:"role":4:"firstname"} is throwing a party and what happens is exactly what always happens in series like this: Drama, drama and more drama. ${.self:"role":3:"firstname"} tries to put ${.self:"role":7:"firstname"}'s feelings for him to the test, and ${.self:"role":6:"firstname"} spends the evening trying to make as much of an impression as possible - on everyone, if need be.</en>
+						<pl>${.self:"role":4:"firstname"} urządza imprezę i dzieje się dokładnie to, co zawsze dzieje się w tego typu serialach: dramat, dramat i jeszcze więcej dramatu. ${.self:"role":3:"firstname"} próbuje wystawić na próbę uczucia ${.self:"role":7:"firstname"}a, a ${.self:"role":6:"firstname"} spędza wieczór, próbując zrobić jak największe wrażenie - na wszystkich, jeśli jest to konieczne.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="2" licence_type="2" guid="script-ariksan-bever-06">
 					<title>
 						<de>Muse der ${.self:"role":7:"firstname"}</de>
 						<en>${.self:"role":7:"firstname"}'s Muse</en>
+						<pl>Muza ${.self:"role":7:"firstname"}</pl>
 					</title>
 					<description>
 						<de>${.self:"role":7:"firstname"} entdeckt ein musikalisches Talent und gründet eine Band, was die Aufmerksamkeit von ${.self:"role":2:"firstname"} auf sich zieht, der Gefühle für sie entwickelt.</de>
 						<en>${.self:"role":7:"firstname"} discovers a hidden talent for music and joins a band, catching the attention of ${.self:"role":2:"firstname"} who starts developing feelings for her.</en>
+						<pl>${.self:"role":7:"firstname"} odkrywa w sobie ukryty talent muzyczny i dołącza do zespołu, przyciągając tym samym uwagę ${.self:"role":2:"firstname"}, który zaczyna darzyć ją uczuciem.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="2" licence_type="2" guid="script-ariksan-bever-07">
 					<title>
 						<de>Das Liebesbrief-Rätsel</de>
 						<en>Love Letter Enigma</en>
+						<pl>Zagadka miłosnego listu</pl>
 					</title>
 					<description>
 						<de>${.self:"role":3:"firstname"} erhält einen Liebesbrief, der ihn auf die Suche nach der Identität des Verehrers führt, während ${.self:"role":5:"firstname"} sich fragt, ob er für sie bestimmt ist.</de>
 						<en>${.self:"role":3:"firstname"} receives a love letter, leading to a quest to uncover the identity of the secret admirer, while ${.self:"role":5:"firstname"} wonders if it's meant for her.</en>
+						<pl>${.self:"role":3:"firstname"} otrzymuje list miłosny, co skłania ją do podjęcia próby odkrycia tożsamości tajnego wielbiciela, podczas gdy ${.self:"role":5:"firstname"} zastanawia się, czy list jest przeznaczony dla niej.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="2" licence_type="2" guid="script-ariksan-bever-08">
 					<title>
 						<de>Studienpartner</de>
 						<en>Academic Allies</en>
+						<pl>Sojusznicy akademiccy</pl>
 					</title>
 					<description>
 						<de>${.self:"role":4:"firstname"} kämpft mit einer überwältigenden Belastung im Studium und sucht Hilfe bei ${.self:"role":6:"firstname"}, die zu seiner Lernpartnerin und Motivationsquelle wird.</de>
 						<en>${.self:"role":4:"firstname"} struggles with an overwhelming course load at college, seeking support from ${.self:"role":6:"firstname"} who becomes his study partner and source of motivation.</en>
+						<pl>${.self:"role":4:"firstname"} zmaga się z przytłaczającą ilością zajęć na studiach i szuka wsparcia u kolegi, który staje się jego partnerem w nauce i źródłem motywacji.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="2" licence_type="2" guid="script-ariksan-bever-09">
 					<title>
 						<de>Offenbarte Geheimnisse</de>
 						<en>Secrets Unveiled</en>
+						<pl>Odsłonięte sekrety</pl>
 					</title>
 					<description>
 						<de>${.self:"role":5:"firstname"} findet ein verlorenes Tagebuch, das alte Geheimnisse offenbart und sie auf eine Reise der Selbstentdeckung mit verdrängten Wahrheiten führt.</de>
 						<en>${.self:"role":5:"firstname"} finds a long-lost diary that reveals shocking secrets about her past, leading to a journey of self-discovery and confronting buried truths.</en>
+						<pl>${.self:"role":5:"firstname"} odnajduje dawno zaginiony pamiętnik, który ujawnia szokujące sekrety z jej przeszłości, co prowadzi ją do podróży w celu odkrycia samej siebie i zmierzenia się z głęboko skrywaną prawdą.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="2" licence_type="2" guid="script-ariksan-bever-10">
 					<title>
 						<de>Wegkreuzungen der Leidenschaft</de>
 						<en>Crossroads of Passion</en>
+						<pl>Rozdroża Namiętności</pl>
 					</title>
 					<description>
 						<de>${.self:"role":3:"firstname"} steht vor einem Dilemma, als er zwischen Sport und Tanzen hin- und hergerissen ist und um Rat bei ${.self:"role":7:"firstname"} bittet, die ihm bei der Entscheidung hilft.</de>
 						<en>${.self:"role":3:"firstname"} faces a dilemma when he's torn between pursuing his passion for sports or dancing, seeking guidance from ${.self:"role":7:"firstname"} who helps him make a decision.</en>
+						<pl>${.self:"role":3:"firstname"} staje przed dylematem, gdy musi zdecydować, czy realizować swoją pasję do sportu, czy tańczyć. Zwraca się o poradę do ${.self:"role":7:"firstname"}a, który pomaga mu podjąć decyzję.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="10" product="2" licence_type="2" guid="script-ariksan-bever-11">
 					<title>
 						<de>Offengelegte Rivalität</de>
 						<en>Rivalry Revealed</en>
+						<pl>Rywalizacja ujawniona</pl>
 					</title>
 					<description>
 						<de>${.self:"role":2:"firstname"} vermutet, dass ${.self:"role":4:"firstname"} etwas verheimlicht, was zu einer Rivalität führt, bis eine Konfrontation sie zwingt, ihre Missverständnisse anzugehen.</de>
 						<en>${.self:"role":2:"firstname"} suspects that ${.self:"role":4:"firstname"} is hiding something, fueling a tense rivalry until they are forced to confront their misunderstandings.</en>
+						<pl>${.self:"role":2:"firstname"} podejrzewa, że ​​${.self:"role":4:"firstname"} coś ukrywa, co powoduje napiętą rywalizację, która trwa do momentu, aż oboje muszą skonfrontować się ze swoimi nieporozumieniami.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="2" licence_type="2" guid="script-ariksan-bever-12">
 					<title>
 						<de>Bühne des Neids</de>
 						<en>Stage of Envy</en>
+						<pl>Etap zazdrości</pl>
 					</title>
 					<description>
 						<de>${.self:"role":6:"firstname"} erhält die Hauptrolle im Schultheaterstück, was Eifersucht auslöst, insbesondere bei ${.self:"role":7:"firstname"}, die ihre Emotionen bewältigen muss.</de>
 						<en>${.self:"role":6:"firstname"} lands the lead role in the school play, causing jealousy among her friends, especially ${.self:"role":7:"firstname"} who must navigate her emotions.</en>
+						<pl>${.self:"role":6:"firstname"} dostaje główną rolę w szkolnym przedstawieniu, co wywołuje zazdrość wśród jej przyjaciół, szczególnie ${.self:"role":7:"firstname"}, która musi radzić sobie z jej emocjami.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="12" product="2" licence_type="2" guid="script-ariksan-bever-13">
 					<title>
 						<de>Die Vergangenheit ans Licht bringen</de>
 						<en>Unearthing the Past</en>
+						<pl>Odkrywanie przeszłości</pl>
 					</title>
 					<description>
 						<de>${.self:"role":2:"firstname"} stößt auf ein Foto, das auf ein Familiengeheimnis hinweist. ${.self:"role":3:"firstname"} unterstützt ihn auf der Suche nach antworten.</de>
 						<en>${.self:"role":2:"firstname"} stumbles upon a photo that hints at a family secret, leading him to embark on a quest for answers, with ${.self:"role":3:"firstname"} providing support.</en>
+						<pl>${.self:"role":2:"firstname"} natrafia na zdjęcie, które sugeruje rodzinną tajemnicę, co skłania go do podjęcia próby znalezienia odpowiedzi. ${.self:"role":3:"firstname"} udziela mu wsparcia.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="13" product="2" licence_type="2" guid="script-ariksan-bever-14">
 					<title>
 						<de>Dreiecksbeziehungen</de>
 						<en>Triangular Ties</en>
+						<pl>Krawaty trójkątne</pl>
 					</title>
 					<description>
 						<de>${.self:"role":7:"firstname"} ist zwischen ${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"} hin- und hergerissen. Das Liebesdreieck stellt ihre Freundschaften auf die Probe.</de>
 						<en>${.self:"role":7:"firstname"} is torn between two potential love interests, ${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"}. The complicated love triangle tests their friendships.</en>
+						<pl>${.self:"role":7:"firstname"} jest rozdarta między dwoma potencjalnymi obiektami miłości, ${.self:"role":3:"firstname"}em i ${.self:"role":2:"firstname"}em. Skomplikowany trójkąt miłosny wystawia na próbę ich przyjaźnie.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="14" product="2" licence_type="2" guid="script-ariksan-bever-15">
 					<title>
 						<de>Moralisches Dilemma</de>
 						<en>Moral Dilemma</en>
+						<pl>Dylemat moralny</pl>
 					</title>
 					<description>
 						<de>${.self:"role":5:"firstname"} steht vor einem Dilemma, als sie ${.self:"role":7:"firstname"}'s Geheimnis entdeckt, was sie vor die Wahl zwischen Loyalität und Gerechtigkeit stellt.</de>
 						<en>${.self:"role":5:"firstname"} faces a moral dilemma when she discovers ${.self:"role":7:"firstname"}'s secret, forcing her to choose between loyalty and doing what she believes is right.</en>
+						<pl>${.self:"role":5:"firstname"} staje przed dylematem moralnym, gdy odkrywa sekret ${.self:"role":7:"firstname"}, zmuszając ją do wyboru między lojalnością a robieniem tego, co uważa za słuszne.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="15" product="2" licence_type="2" guid="script-ariksan-bever-16">
 					<title>
 						<de>Ein Schuss ins Schwarze</de>
 						<en>A Shot Into the Bull's Eye</en>
+						<pl>Strzał w środek tarczy</pl>
 					</title>
 					<description>
 						<de>Beim Bogenschießen entdeckt ${.self:"role":5:"firstname"} ein verborgenes Talent, und ${.self:"role":3:"firstname"} wundert sich, wie eine so zielgenaue Sportart emotional so viele Verwirrungen hervorrufen kann. ${.self:"role":7:"firstname"} würde sich gern um ihr eigenes Leben kümmern, wird aber zum lebenden Tagebuch für die Probleme ihrer Freunde.</de>
 						<en>${.self:"role":5:"firstname"} discovers a hidden talent in archery, and ${.self:"role":3:"firstname"} wonders how such a precise sport can cause so much emotional confusion. ${.self:"role":7:"firstname"} would like to take care of her own life, but becomes a living diary for her friends' problems.</en>
+						<pl>${.self:"role":5:"firstname"} odkrywa ukryty talent w łucznictwie, a ${.self:"role":3:"firstname"} zastanawia się, jak tak precyzyjny sport może wywoływać tyle emocjonalnego zamętu. ${.self:"role":7:"firstname"} chciałaby sama zadbać o swoje życie, ale staje się żywym pamiętnikiem problemów swoich przyjaciół.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="16" product="2" licence_type="2" guid="script-ariksan-bever-17">
 					<title>
 						<de>Die Sache mit den Geheimnissen</de>
 						<en>The Thing About Secrets</en>
+						<pl>Rzecz o sekretach</pl>
 					</title>
 					<description>
 						<de>Ein Gerücht macht die Runde: Irgendwer soll in jemanden verknallt sein. Natürlich sagen alle: „Nicht mein Problem!“ Doch in Wahrheit brodelt es in allen - und ${.self:"role":5:"firstname"} will unbedingt herausfinden, um wen es geht. ${.self:"role":4:"firstname"} hat genug davon und kündigt eine „Wahrheitsstunde“ an.</de>
 						<en>A rumor is doing the rounds: Someone is said to have a crush on someone. Of course, everyone says: "Not my problem!" But the truth is that everyone is seething - and ${.self:"role":5:"firstname"} is determined to find out who it is. ${.self:"role":4:"firstname"} has had enough and announces a "truth session".</en>
+						<pl>Krąży plotka: Podobno ktoś jest w kimś zakochany. Oczywiście wszyscy mówią: „To nie mój problem!”. Ale prawda jest taka, że ​​wszyscy są wściekli – a ${.self:"role":5:"firstname"} jest zdeterminowany, aby dowiedzieć się, kto to jest. ${.self:"role":4:"firstname"} ma już dość i ogłasza „sesję prawdy”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="17" product="2" licence_type="2" guid="script-ariksan-bever-18">
 					<title>
 						<de>Die Stadt ist zu klein</de>
 						<en>The City Is Too Small</en>
+						<pl>Miasto jest za małe</pl>
 					</title>
 					<description>
 						<de>${.self:"role":7:"firstname"} entdeckt ${.self:"role":4:"firstname"} mit einem anderen Mädchen - oder war es nur ein Irrtum? Während sie sich um Klarheit bemüht, kommt es zu Begegnungen, die vielleicht kein Zufall sind. ${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"} diskutieren: Wann sagt man, was man denkt? Antwort: am besten gar nicht.</de>
 						<en>${.self:"role":7:"firstname"} discovers ${.self:"role":4:"firstname"} with another girl - or was it just a mistake? As she struggles for clarity, encounters occur that may not be a coincidence. ${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"} discuss: When do you say what you think? Answer: it's best not to at all.</en>
+						<pl>${.self:"role":7:"firstname"} odkrywa ${.self:"role":4:"firstname"}a z inną dziewczyną - czy to była po prostu pomyłka? Podczas gdy ona walczy o jasność, dochodzi do spotkań, które mogą nie być zbiegiem okoliczności. ${.self:"role":3:"firstname"} i ${.self:"role":2:"firstname"} omawiają: Kiedy mówisz, co myślisz? Odpowiedź: najlepiej wcale tego nie robić.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="18" product="2" licence_type="2" guid="script-ariksan-bever-19">
 					<title>
 						<de>Die alles entscheidende Abstimmung</de>
 						<en>The All-Decisive Vote</en>
+						<pl>Głos decydujący</pl>
 					</title>
 					<description>
 						<de>Die Wahlen für die Studentenvertretung stehen an, und ${.self:"role":6:"firstname"} und ${.self:"role":3:"firstname"} haben eine Mission: Unauffällig für sich selbst stimmen. Doch die anderen haben auch Tricks im Ärmel. ${.self:"role":7:"firstname"} will die Wahlen ignorieren, wird aber zum Wahlkampfthema Nummer eins - ohne zu wissen, warum.</de>
 						<en>The elections for the student council are coming up, and ${.self:"role":6:"firstname"} and ${.self:"role":3:"firstname"} have a mission: to vote inconspicuously for themselves. But the others also have tricks up their sleeves. ${.self:"role":7:"firstname"} wants to ignore the elections, but becomes the number one campaign topic - without knowing why.</en>
+						<pl>Zbliżają się wybory do rady uczniowskiej, a ${.self:"role":6:"firstname"} i ${.self:"role":3:"firstname"} mają misję: dyskretnie głosować na siebie. Ale inni też mają asy w rękawie. ${.self:"role":7:"firstname"} chce zignorować wybory, ale staje się tematem numer jeden kampanii - nie wiedząc dlaczego.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="19" product="2" licence_type="2" guid="script-ariksan-bever-20">
 					<title>
 						<de>Auf in die Sommerferien?</de>
 						<en>Off to Summer Vacations?</en>
+						<pl>Wybierasz się na wakacje?</pl>
 					</title>
 					<description>
 						<de>Die Prüfungen sind vorbei, aber niemand hat wirklich Lust auf Abschiede - oder doch? ${.self:"role":5:"firstname"} plant einen spektakulären Sommer, bei dem ${.self:"role":2:"firstname"} mitmischen soll, ${.self:"role":6:"firstname"} macht klare Ansagen, und ${.self:"role":7:"firstname"} stellt sich eine Frage: Kann man vor einem Drama davonlaufen, wenn es einen selbst betrifft?</de>
 						<en>The exams are over, but no one really feels like saying goodbye - or do they? ${.self:"role":5:"firstname"} is planning a spectacular summer with ${.self:"role":2:"firstname"} in the mix, ${.self:"role":6:"firstname"} is making clear announcements and ${.self:"role":7:"firstname"} is asking herself a question: can you run away from drama when it affects you?</en>
+						<pl>Egzaminy się skończyły, ale nikt tak naprawdę nie ma ochoty się żegnać - czy jednak? ${.self:"role":5:"firstname"} planuje spektakularne lato z ${.self:"role":2:"firstname"} w składzie, ${.self:"role":6:"firstname"} składa jasne oświadczenia, a ${.self:"role":7:"firstname"} zadaje sobie pytanie: czy można uciec od dramatu, gdy dotyczy on ciebie?</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="20" product="2" licence_type="2" guid="script-ariksan-bever-21">
 					<title>
 						<de>Ein Freund, ein guter Freund</de>
 						<en>A Friend Indeed</en>
+						<pl>Prawdziwy przyjaciel</pl>
 					</title>
 					<description>
 						<de>${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"} machen eine „Nur-Jungs“-Aktion - klar, dass ${.self:"role":5:"firstname"} und ${.self:"role":6:"firstname"} das nicht lange auf sich sitzen lassen. Während die Jungs versuchen, „Männlichkeit“ zu definieren (ein langer Prozess), hinterfragt ${.self:"role":7:"firstname"}, warum sie ihre Freunde eigentlich so oft belehren muss.</de>
 						<en>${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"} go on a "boys only" campaign - it's clear that ${.self:"role":5:"firstname"} and ${.self:"role":6:"firstname"} won't stand for this for long. While the boys try to define "masculinity" (a long process), ${.self:"role":7:"firstname"} questions why she has to lecture her friends so often.</en>
+						<pl>${.self:"role":3:"firstname"} i ${.self:"role":2:"firstname"} rozpoczynają kampanię „tylko dla chłopców” – jasne jest, że ${.self:"role":5:"firstname"} i ${.self:"role":6:"firstname"} nie będą tego tolerować przez długi czas. Podczas gdy chłopcy próbują zdefiniować „męskość” (długi proces), ${.self:"role":7:"firstname"} zastanawia się, dlaczego tak często musi pouczać swoich przyjaciół.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="21" product="2" licence_type="2" guid="script-ariksan-bever-22">
 					<title>
 						<de>Drama in der Kunstklasse</de>
 						<en>Drama In Art Class</en>
+						<pl>Dramat w klasie artystycznej</pl>
 					</title>
 					<description>
 						<de>Als ${.self:"role":6:"firstname"} eine radikale Vision fürs Kunstprojekt hat, wird aus einer simplen Malstunde ein sozialer Sturm. ${.self:"role":7:"firstname"} zieht sich in sichere Distanz zurück, während ${.self:"role":4:"firstname"} widerwillig Model steht - aber nicht ohne sich kritisch zu fragen, wie sein Kinnwinkel am besten zur Geltung kommt.</de>
 						<en>When ${.self:"role":6:"firstname"} has a radical vision for the art project, a simple painting lesson turns into a social storm. ${.self:"role":7:"firstname"} retreats to a safe distance, while ${.self:"role":4:"firstname"} reluctantly models - but not without critically wondering how best to show off the angle of his chin.</en>
+						<pl>Kiedy ${.self:"role":6:"firstname"} ma radykalną wizję projektu artystycznego, prosta lekcja malarstwa przeradza się w burzę towarzyską. ${.self:"role":7:"firstname"} wycofuje się na bezpieczną odległość, podczas gdy ${.self:"role":4:"firstname"} niechętnie pozuje - nie bez krytycznego zastanowienia się, jak najlepiej wyeksponować kąt swojej brody.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="22" product="2" licence_type="2" guid="script-ariksan-bever-23">
 					<title>
 						<de>${.self:"role":5:"firstname"} und der große Traum</de>
 						<en>${.self:"role":5:"firstname"} and the Big Dream</en>
+						<pl>${.self:"role":5:"firstname"} i Wielkie Marzenie</pl>
 					</title>
 					<description>
 						<de>${.self:"role":5:"firstname"} will berühmt werden, der Plan: ein Casting für eine Reality-Show. Die Freunde begleiten sie, aber je näher sie ihrem „großen Moment“ kommt, desto mehr zweifeln alle, ob Fame wirklich ihre Bestimmung ist. ${.self:"role":2:"firstname"} fragt sich, wie ernst „ernst gemeint“ wirklich sein kann.</de>
 						<en>${.self:"role":5:"firstname"} wants to become famous, the plan: a casting for a reality show. Her friends accompany her, but the closer she gets to her “big moment”, the more everyone doubts whether fame is really her destiny. ${.self:"role":2:"firstname"} wonders how serious "being serious" can really be.</en>
+						<pl>${.self:"role":5:"firstname"} chce stać się sławna, plan: casting do reality show. Towarzyszą jej przyjaciele, ale im bliżej jest jej „wielkiego momentu”, tym bardziej wszyscy wątpią, czy sława jest naprawdę jej przeznaczeniem. ${.self:"role":2:"firstname"} zastanawia się, jak poważne może być „bycie poważnym”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="23" product="2" licence_type="2" guid="script-ariksan-bever-24">
 					<title>
 						<de>Gefühlschaos am Valentinstag</de>
 						<en>Emotional Turmoil on Valentine's Day</en>
+						<pl>Emocjonalne zamieszanie w Walentynki</pl>
 					</title>
 					<description>
 						<de>Herzen und Erwartungen fliegen hoch, während ${.self:"role":7:"firstname"} den Valentinstag boykottiert. ${.self:"role":6:"firstname"} wartet darauf, dass ${.self:"role":3:"firstname"} etwas Romantisches macht - vergeblich. ${.self:"role":5:"firstname"} entwickelt derweil eine ausgeklügelte Taktik, um das Maximum an Schokolade abzugreifen. ${.self:"role":2:"firstname"} bleibt unbeteiligt - theoretisch.</de>
 						<en>Hearts and expectations are flying high, while ${.self:"role":7:"firstname"} boycotts Valentine's Day. ${.self:"role":6:"firstname"} waits for ${.self:"role":3:"firstname"} to do something romantic - in vain. Meanwhile, ${.self:"role":5:"firstname"} develops an ingenious tactic to get the maximum amount of chocolate. ${.self:"role":2:"firstname"} remains uninvolved - in theory.</en>
+						<pl>Serca i oczekiwania szybują wysoko, podczas gdy ${.self:"role":7:"firstname"} bojkotuje Walentynki. ${.self:"role":6:"firstname"} czeka, aż ${.self:"role":3:"firstname"} zrobi coś romantycznego - na próżno. Tymczasem ${.self:"role":5:"firstname"} opracowuje pomysłową taktykę, aby zdobyć maksymalną ilość czekolady. ${.self:"role":2:"firstname"} pozostaje niezaangażowany - w teorii.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="24" product="2" licence_type="2" guid="script-ariksan-bever-25">
 					<title>
 						<de>Skandale in den Sozialen Medien</de>
 						<en>Scandals on Social Media</en>
+						<pl>Skandale w mediach społecznościowych</pl>
 					</title>
 					<description>
 						<de>Ein anonymes Profil postet pikante „Geheimnisse“ über die Schüler, und plötzlich fühlen sich alle beobachtet. ${.self:"role":5:"firstname"} vermutet ${.self:"role":4:"firstname"} dahinter, ${.self:"role":7:"firstname"} glaubt an eine Verschwörung, und ${.self:"role":3:"firstname"} entdeckt ein neues Hobby: Detektiv spielen. ${.self:"role":2:"firstname"}? Will nichts posten, sondern am liebsten abhauen.</de>
 						<en>An anonymous profile posts juicy “secrets” about the students, and suddenly everyone feels like they are being watched. ${.self:"role":5:"firstname"} suspects ${.self:"role":4:"firstname"} is behind it, ${.self:"role":7:"firstname"} believes it's a conspiracy, and ${.self:"role":3:"firstname"} discovers a new hobby: playing detective. ${.self:"role":2:"firstname"}? Doesn't want to post anything, but would rather run away.</en>
+						<pl>Anonimowy profil publikuje soczyste „sekrety” na temat uczniów i nagle wszyscy czują się obserwowani. ${.self:"role":5:"firstname"} podejrzewa, że ​​za tym stoi ${.self:"role":4:"firstname"}, ${.self:"role":7:"firstname"} wierzy, że to spisek, a ${.self:"role":3:"firstname"} odkrywa nowe hobby: zabawę w detektywa. ${.self:"role":2:"firstname"}? Nie chce niczego publikować, ale wolałby uciec.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="25" product="2" licence_type="2" guid="script-ariksan-bever-26">
 					<title>
 						<de>Plötzlich erwachsen</de>
 						<en>Grown Ups All of a Sudden</en>
+						<pl>Dorośli nagle</pl>
 					</title>
 					<description>
 						<de>Ein gemeinsames Dinner für ein College-Projekt führt zur Frage: Wie ernst nehmen sie das Erwachsenwerden wirklich? ${.self:"role":6:"firstname"} hält einen Vortrag über Zukunftspläne, ${.self:"role":5:"firstname"} erklärt Karriereträume, und ${.self:"role":7:"firstname"} hinterfragt das alles skeptisch - inklusive, wie sie sich jemals mit Steuererklärungen anfreunden soll.</de>
 						<en>A dinner together for a college project leads to the question: how seriously do they really take growing up? ${.self:"role":6:"firstname"} gives a talk about future plans, ${.self:"role":5:"firstname"} explains career dreams, and ${.self:"role":7:"firstname"} skeptically questions it all - including how she'll ever make friends with tax returns.</en>
+						<pl>Wspólna kolacja w ramach projektu na studia prowadzi do pytania: jak poważnie traktują dorastanie? ${.self:"role":6:"firstname"} wygłasza przemówienie na temat planów na przyszłość, ${.self:"role":5:"firstname"} opowiada o marzeniach zawodowych, a ${.self:"role":7:"firstname"} sceptycznie poddaje to wszystko w wątpliwość - łącznie z tym, czy kiedykolwiek zaprzyjaźni się z osobami zajmującymi się zeznaniami podatkowymi.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="26" product="2" licence_type="2" guid="script-ariksan-bever-27">
 					<title>
 						<de>Nachtwanderung ins Ungewisse</de>
 						<en>Night Walk Into the Unknown</en>
+						<pl>Nocny spacer w nieznane</pl>
 					</title>
 					<description>
 						<de>Eine Nachtwanderung im Wald soll Teamgeist fördern - nur wird zu Tode philosophiert, was Teamgeist eigentlich sein soll. ${.self:"role":3:"firstname"} versucht sich als Lagerfeuerguru, und ${.self:"role":6:"firstname"} macht eine Entdeckung, die ihr zu denken gibt. ${.self:"role":7:"firstname"} und ${.self:"role":4:"firstname"} überlegen, ob das der Moment ist, in dem man „lebenslange Erinnerungen“ schafft.</de>
 						<en>A night hike in the forest is to promote team spirit - except that they philosophize to death what team spirit actually means. ${.self:"role":3:"firstname"} tries his hand at being a campfire guru, and ${.self:"role":6:"firstname"} makes a discovery that gives her pause for thought. ${.self:"role":7:"firstname"} and ${.self:"role":4:"firstname"} ponder whether this is the moment to create "lifelong memories".</en>
+						<pl>Nocna wędrówka po lesie ma promować ducha zespołu - ale ludzie do śmierci filozofują na temat tego, czym właściwie jest duch zespołu. ${.self:"role":3:"firstname"} próbuje swoich sił jako guru ogniska, a ${.self:"role":6:"firstname"} dokonuje odkrycia, które daje jej do myślenia. ${.self:"role":7:"firstname"} i ${.self:"role":4:"firstname"} zastanawiają się, czy to jest moment na tworzenie „wspomnień na całe życie”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="27" product="2" licence_type="2" guid="script-ariksan-bever-28">
 					<title>
 						<de>Das Ende der Unschuld</de>
 						<en>The End of Innocence</en>
+						<pl>Koniec niewinności</pl>
 					</title>
 					<description>
 						<de>Ein College-Streich läuft etwas... schief. ${.self:"role":5:"firstname"} und ${.self:"role":3:"firstname"} wollten etwas „lustiges, aber unvergessliches“ machen. Die Cops rückten schnell an. ${.self:"role":7:"firstname"} hält eine moralische Ansprache, die keiner hören will, und ${.self:"role":2:"firstname"} erklärt, dass „unsere Rebellion nie spektakulär sein wird“ - zu ${.self:"role":6:"firstname"}s Verdruss.</de>
 						<en>A college prank goes a little... awry. ${.self:"role":5:"firstname"} and ${.self:"role":3:"firstname"} wanted to do something "fun but memorable". The cops quickly arrive. ${.self:"role":7:"firstname"} gives a moral speech that no one wants to hear, and ${.self:"role":2:"firstname"} declares that "our rebellion will never be spectacular" - much to ${.self:"role":6:"firstname"}'s annoyance.</en>
+						<pl>Kawał na studiach trochę... nie wychodzi. ${.self:"role":5:"firstname"} i ${.self:"role":3:"firstname"} chcieli zrobić coś „zabawnego, ale niezapomnianego”. Szybko przybywa policja. ${.self:"role":7:"firstname"} wygłasza przemowę moralną, której nikt nie chce słuchać, a ${.self:"role":2:"firstname"} oświadcza, że ​​„nasz bunt nigdy nie będzie spektakularny” – ku wielkiemu niezadowoleniu ${.self:"role":6:"firstname"}.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="28" product="2" licence_type="2" guid="script-ariksan-bever-29">
 					<title>
 						<de>Der große Streit</de>
 						<en>The Big Dispute</en>
+						<pl>Wielki Spór</pl>
 					</title>
 					<description>
 						<de>Ein Missverständnis zwischen ${.self:"role":6:"firstname"} und ${.self:"role":5:"firstname"} wird zur Freundschaftskrise. ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} spielen Vermittler - aber nur, wenn die Mädels sich halbwegs an zivilisierte Regeln halten. ${.self:"role":7:"firstname"} findet alles kindisch und fragt sich, ob eine echte Krise vielleicht produktiver wäre.</de>
 						<en>A misunderstanding between ${.self:"role":6:"firstname"} and ${.self:"role":5:"firstname"} turns into a friendship crisis. ${.self:"role":3:"firstname"} and ${.self:"role":4:"firstname"} play mediator - but only if the girls stick to halfway civilized rules. ${.self:"role":7:"firstname"} finds it all childish and wonders whether a real crisis might be more productive.</en>
+						<pl>Nieporozumienie między ${.self:"role":6:"firstname"} i ${.self:"role":5:"firstname"} przeradza się w kryzys przyjaźni. ${.self:"role":3:"firstname"} i ${.self:"role":4:"firstname"} odgrywają rolę mediatorów — ale tylko wtedy, gdy dziewczyny trzymają się w miarę cywilizowanych zasad. ${.self:"role":7:"firstname"} uważa to wszystko za dziecinne i zastanawia się, czy prawdziwy kryzys nie byłby bardziej produktywny.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="29" product="2" licence_type="2" guid="script-ariksan-bever-30">
 					<title>
 						<de>Der Anfang vom Ende?</de>
 						<en>The Beginning of the End?</en>
+						<pl>Początek końca?</pl>
 					</title>
 					<description>
 						<de>Der Sommer nähert sich, und plötzlich wird klar, dass ihre Zeit als Clique nicht ewig sein wird. ${.self:"role":6:"firstname"} und ${.self:"role":2:"firstname"} diskutieren Zukunftspläne (Dramatik inklusive), während ${.self:"role":7:"firstname"} fragt, was wirklich bleibt. ${.self:"role":5:"firstname"} verspricht, dass „die besten Abenteuer noch kommen“ - vielleicht schon heute.</de>
 						<en>Summer is approaching and it suddenly becomes clear that their time as a clique won't last forever. ${.self:"role":6:"firstname"} and ${.self:"role":2:"firstname"} discuss plans for the future (drama included), while ${.self:"role":7:"firstname"} asks what really remains. ${.self:"role":5:"firstname"} promises that "the best adventures are yet to come" - maybe as soon as today.</en>
+						<pl>Zbliża się lato i nagle staje się jasne, że ich czas jako kliki nie będzie trwał wiecznie. ${.self:"role":6:"firstname"} i ${.self:"role":2:"firstname"} rozmawiają o planach na przyszłość (w tym o dramacie), podczas gdy ${.self:"role":7:"firstname"} zastanawia się, co tak naprawdę im pozostało. ${.self:"role":5:"firstname"} obiecuje, że „najlepsze przygody dopiero nadejdą” — może już dziś.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="30" product="2" licence_type="2" guid="script-ariksan-bever-31">
 					<title>
 						<de>Das große Sportfest</de>
 						<en>The Big Sports Festival</en>
+						<pl>Wielki Festiwal Sportowy</pl>
 					</title>
 					<description>
 						<de>Das jährliche Sportfest sorgt für Spannungen: ${.self:"role":6:"firstname"} will unbedingt gewinnen, während ${.self:"role":2:"firstname"} lieber auf der Bank chillt. ${.self:"role":5:"firstname"} plant, sich als Cheerleaderin zu inszenieren, und ${.self:"role":7:"firstname"} fragt sich, ob alles außer einer Lesung am Strand wirklich notwendig ist. ${.self:"role":4:"firstname"}? Sucht den Notausgang.</de>
 						<en>The annual sports festival causes tension: ${.self:"role":6:"firstname"} is determined to win, while ${.self:"role":2:"firstname"} prefers to chill on the bench. ${.self:"role":5:"firstname"} plans to stage herself as a cheerleader, and ${.self:"role":7:"firstname"} wonders whether everything except a reading on the beach is really necessary. ${.self:"role":4:"firstname"}? He's looking for the emergency exit.</en>
+						<pl>Roczny festiwal sportowy wywołuje napięcie: ${.self:"role":6:"firstname"} jest zdeterminowana, by wygrać, podczas gdy ${.self:"role":2:"firstname"} woli odpocząć na ławce. ${.self:"role":5:"firstname"} planuje wystąpić jako cheerleaderka, a ${.self:"role":7:"firstname"} zastanawia się, czy wszystko poza czytaniem na plaży jest naprawdę konieczne. ${.self:"role":4:"firstname"}? Szuka wyjścia awaryjnego.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="31" product="2" licence_type="2" guid="script-ariksan-bever-32">
 					<title>
 						<de>Das Dinner des Grauens</de>
 						<en>The Horror Dinner</en>
+						<pl>Kolacja Horroru</pl>
 					</title>
 					<description>
 						<de>Die Clique wird von ${.self:"role":6:"firstname"}s Familie zum schicken Dinner eingeladen, und alle versuchen, „erwachsen“ zu wirken - mit durchwachsenem Erfolg. ${.self:"role":3:"firstname"} entdeckt, dass Besteck mehr als eine Funktion hat, und ${.self:"role":5:"firstname"} macht eine Entdeckung: High Society ist nicht halb so dramatisch wie das College.</de>
 						<en>The clique is invited to a fancy dinner by ${.self:"role":6:"firstname"}'s family, and everyone tries to look "grown-up" - with mixed success. ${.self:"role":3:"firstname"} discovers that cutlery has more than one function, and ${.self:"role":5:"firstname"} makes a discovery: high society isn't half as dramatic as college.</en>
+						<pl>Grupa zostaje zaproszona na elegancką kolację przez rodzinę ${.self:"role":6:"firstname"}a, a wszyscy starają się wyglądać „dorośle” — z różnym skutkiem. ${.self:"role":3:"firstname"} odkrywa, że ​​sztućce mają więcej niż jedną funkcję, a ${.self:"role":5:"firstname"} dokonuje odkrycia: wyższe sfery nie są nawet w połowie tak dramatyczne jak studia.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="32" product="2" licence_type="2" guid="script-ariksan-bever-33">
 					<title>
 						<de>Die Sache mit dem Ex</de>
 						<en>The Thing With the Ex</en>
+						<pl>Rzecz z byłym</pl>
 					</title>
 					<description>
 						<de>${.self:"role":7:"firstname"} erfährt, dass ${.self:"role":6:"firstname"}s Ex wieder in der Stadt ist - und natürlich auch, dass ${.self:"role":6:"firstname"} „komplett über ihn hinweg“ ist. ${.self:"role":5:"firstname"} beschließt, den Ex zu begutachten, und ${.self:"role":2:"firstname"} sieht sich gezwungen, dem Drama zuzuschauen, in dem eigentlich jeder übertreibt. ${.self:"role":4:"firstname"} bleibt erstaunlich still.</de>
 						<en>${.self:"role":7:"firstname"} learns that ${.self:"role":6:"firstname"}'s ex is back in town - and of course that ${.self:"role":6:"firstname"} is "completely over him". ${.self:"role":5:"firstname"} decides to check up on the ex, and ${.self:"role":2:"firstname"} is forced to watch the drama, in which everyone is actually exaggerating. ${.self:"role":4:"firstname"} remains surprisingly quiet.</en>
+						<pl>${.self:"role":7:"firstname"} dowiaduje się, że były ${.self:"role":6:"firstname"} wrócił do miasta - i oczywiście, że ${.self:"role":6:"firstname"} "całkowicie go przerosło". ${.self:"role":5:"firstname"} postanawia sprawdzić, co u byłego, a ${.self:"role":2:"firstname"} jest zmuszona oglądać dramat, w którym wszyscy tak naprawdę przesadzają. ${.self:"role":4:"firstname"} pozostaje zaskakująco cichy.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="33" product="2" licence_type="2" guid="script-ariksan-bever-34">
 					<title>
 						<de>Abenteuer auf dem Festival</de>
 						<en>Adventures at the Festival</en>
+						<pl>Przygody na festiwalu</pl>
 					</title>
 					<description>
 						<de>Die Clique fährt zu einem Musikfestival, um „unvergessliche Erinnerungen“ zu schaffen - oder sich zumindest durch Menschenmengen zu kämpfen. ${.self:"role":3:"firstname"} verliert sich im Zeltlabyrinth, ${.self:"role":6:"firstname"} sieht jeden Auftritt als spirituelle Erfahrung, und ${.self:"role":7:"firstname"} fragt sich, warum hier alle blumenbekränzt herumlaufen.</de>
 						<en>The clique travels to a music festival to create "unforgettable memories" - or at least to fight their way through the crowds. ${.self:"role":3:"firstname"} gets lost in the labyrinth of tents, ${.self:"role":6:"firstname"} sees every performance as a spiritual experience and ${.self:"role":7:"firstname"} wonders why everyone is walking around wreathed in flowers.</en>
+						<pl>Grupa udaje się na festiwal muzyczny, aby stworzyć „niezapomniane wspomnienia” - albo przynajmniej przebić się przez tłum. ${.self:"role":3:"firstname"} gubi się w labiryncie namiotów, ${.self:"role":6:"firstname"} traktuje każdy występ jako przeżycie duchowe, a ${.self:"role":7:"firstname"} zastanawia się, dlaczego wszyscy chodzą obwieszeni kwiatami.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="34" product="2" licence_type="2" guid="script-ariksan-bever-35">
 					<title>
 						<de>Die Frage der Treue</de>
 						<en>The Question of Fidelity</en>
+						<pl>Kwestia wierności</pl>
 					</title>
 					<description>
 						<de>Als Gerüchte über ${.self:"role":6:"firstname"}s vermeintlichen Flirt mit einem Typ aus einer anderen Schule aufkommen, steht die Clique vor einer Bewährungsprobe. ${.self:"role":7:"firstname"}, skeptisch wie immer, misstraut den Gerüchten, und ${.self:"role":5:"firstname"} fragt sich, wie viel von ${.self:"role":6:"firstname"}s Geheimnissen in ihrem Tagebuch steht.</de>
 						<en>When rumors about ${.self:"role":6:"firstname"}'s supposed flirtation with a guy from another school emerge, the clique faces a test. ${.self:"role":7:"firstname"}, skeptical as ever, is suspicious of the rumors, and ${.self:"role":5:"firstname"} wonders how much of ${.self:"role":6:"firstname"}'s secrets are in her diary.</en>
+						<pl>Kiedy pojawiają się plotki o rzekomym flirtowaniu ${.self:"role":6:"firstname"} z facetem z innej szkoły, klika staje w obliczu próby. ${.self:"role":7:"firstname"}, jak zwykle sceptyczna, jest podejrzliwa w stosunku do plotek, a ${.self:"role":5:"firstname"} zastanawia się, ile sekretów ${.self:"role":6:"firstname"} znajduje się w jej pamiętniku.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="35" product="2" licence_type="2" guid="script-ariksan-bever-36">
 					<title>
 						<de>Mit High Heels ins Abenteuer</de>
 						<en>High Heels for Adventure</en>
+						<pl>Wysokie obcasy na przygodę</pl>
 					</title>
 					<description>
 						<de>${.self:"role":5:"firstname"} überredet die anderen zu einem „glamourösen“ Tag, der sich als Vollkatastrophe entpuppt: ein Fotoshooting in der prallen Sonne. Während ${.self:"role":3:"firstname"} feststellt, dass Mode kein Kinderspiel ist, kämpft ${.self:"role":7:"firstname"} verzweifelt gegen ihre Abneigung gegen alles, was „glitzernd“ ist.</de>
 						<en>${.self:"role":5:"firstname"} persuades the others to go on a "glamorous" day, which turns out to be a complete disaster: a photo shoot in the blazing sun. While ${.self:"role":3:"firstname"} realizes that fashion is no child's play, ${.self:"role":7:"firstname"} desperately fights her aversion to anything "glittery".</en>
+						<pl>${.self:"role":5:"firstname"} namawia pozostałych, by wybrali się na „olśniewający” dzień, który okazuje się kompletną katastrofą: sesja zdjęciowa w palącym słońcu. Podczas gdy ${.self:"role":3:"firstname"} zdaje sobie sprawę, że moda nie jest dziecinną zabawą, ${.self:"role":7:"firstname"} rozpaczliwie walczy ze swoją niechęcią do wszystkiego, co „błyszczy”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="36" product="2" licence_type="2" guid="script-ariksan-bever-37">
 					<title>
 						<de>Der Überraschungsbesuch</de>
 						<en>The Surprise Visit</en>
+						<pl>Niespodziewana wizyta</pl>
 					</title>
 					<description>
 						<de>${.self:"role":2:"firstname"} erhält überraschenden Besuch von seinem Cousin aus dem Inland, der das komplette Gegenteil des örtlichen Lifestyles verkörpert. ${.self:"role":6:"firstname"} versucht, ihn umzustylen, ${.self:"role":5:"firstname"} will ihm Surfen beibringen, und ${.self:"role":4:"firstname"} fragt sich, wie lange er wohl die Frage „Ist das hier normal?“ beantworten muss.</de>
 						<en>${.self:"role":2:"firstname"} receives a surprise visit from his upcountry cousin, who embodies the complete opposite of the local lifestyle. ${.self:"role":6:"firstname"} tries to give him a makeover, ${.self:"role":5:"firstname"} wants to teach him to surf and ${.self:"role":4:"firstname"} wonders how long he will have to answer the question "Is this normal?".</en>
+						<pl>${.self:"role":2:"firstname"} ma niespodziewaną wizytę od swojego kuzyna z prowincji, który jest całkowitym przeciwieństwem miejscowego stylu życia. ${.self:"role":6:"firstname"} próbuje go odmienić, ${.self:"role":5:"firstname"} chce nauczyć go surfować, a ${.self:"role":4:"firstname"} zastanawia się, jak długo będzie musiał odpowiadać na pytanie „Czy to normalne?”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="37" product="2" licence_type="2" guid="script-ariksan-bever-38">
 					<title>
 						<de>Sommersprossen und Sommergefühle</de>
 						<en>Freckles and Summer Feelings</en>
+						<pl>Piegi i letnie uczucia</pl>
 					</title>
 					<description>
 						<de>Als ${.self:"role":7:"firstname"} von einem älteren Typen angeschwärmt wird, ist die Gruppe zwischen Sorge und Belustigung gespalten. ${.self:"role":3:"firstname"} meint, das sei „endlich mal was Interessantes“, ${.self:"role":6:"firstname"} gibt Beziehungsratschläge, die keiner hören will, und ${.self:"role":2:"firstname"} beginnt, seine Freundschaft mit ${.self:"role":7:"firstname"} in einem neuen Licht zu sehen.</de>
 						<en>When ${.self:"role":7:"firstname"} gets a crush on an older guy, the group is split between concern and amusement. ${.self:"role":3:"firstname"} thinks it's "finally something interesting", ${.self:"role":6:"firstname"} gives relationship advice that no one wants to hear, and ${.self:"role":2:"firstname"} starts to see his friendship with ${.self:"role":7:"firstname"} in a new light.</en>
+						<pl>Kiedy ${.self:"role":7:"firstname"} zakochuje się w starszym facecie, grupa jest podzielona między troską a rozbawieniem. ${.self:"role":3:"firstname"} uważa, że ​​„w końcu dzieje się coś interesującego”, ${.self:"role":6:"firstname"} udziela porad dotyczących związków, których nikt nie chce słuchać, a ${.self:"role":2:"firstname"} zaczyna postrzegać swoją przyjaźń z ${.self:"role":7:"firstname"} w nowym świetle.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="38" product="2" licence_type="2" guid="script-ariksan-bever-39">
 					<title>
 						<de>Der Tag der Abrechnung</de>
 						<en>The Day of Reckoning</en>
+						<pl>Dzień Rozliczenia</pl>
 					</title>
 					<description>
 						<de>Beim alljährlichen Quizwettbewerb treten sie als Team an - doch was als harmloser Spaß beginnt, wird zur absoluten Katastrophe. ${.self:"role":6:"firstname"} will jede Frage beantworten, ${.self:"role":7:"firstname"} korrigiert sie konsequent, und ${.self:"role":4:"firstname"} bleibt gelassen - bis ${.self:"role":3:"firstname"} die Kontrolle über das Mikrofon übernimmt.</de>
 						<en>They compete as a team in the annual quiz competition - but what starts out as harmless fun turns into an absolute disaster. ${.self:"role":6:"firstname"} wants to answer every question, ${.self:"role":7:"firstname"} consistently corrects her, and ${.self:"role":4:"firstname"} remains calm - until ${.self:"role":3:"firstname"} takes control of the microphone.</en>
+						<pl>Rywalizują jako drużyna w corocznym konkursie quizowym, ale to, co zaczyna się jako niewinna zabawa, przeradza się w całkowitą katastrofę. ${.self:"role":6:"firstname"} chce odpowiedzieć na każde pytanie, ${.self:"role":7:"firstname"} konsekwentnie ją poprawia, a ${.self:"role":4:"firstname"} zachowuje spokój — aż do momentu, gdy ${.self:"role":3:"firstname"} przejmuje kontrolę nad mikrofonem.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="39" product="2" licence_type="2" guid="script-ariksan-bever-40">
 					<title>
 						<de>Goodbye, ${title}?</de>
 						<en>Goodbye, ${title}?</en>
+						<pl>Żegnaj, ${title}?</pl>
 					</title>
 					<description>
 						<de>Die Abschlussfeier steht bevor, und das Ende der Schulzeit wird Realität. ${.self:"role":6:"firstname"} plant emotionale Reden, ${.self:"role":3:"firstname"} hat nur einen ironischen Spruch übrig, und ${.self:"role":7:"firstname"} stellt fest, dass sie doch ein wenig sentimental wird. ${.self:"role":5:"firstname"} verspricht allen, dass es nur der Anfang einer epischen Geschichte ist.</de>
 						<en>The graduation ceremony is coming up and the end of school is becoming a fact. ${.self:"role":6:"firstname"} plans emotional speeches, ${.self:"role":3:"firstname"} only has only one ironic line left, and ${.self:"role":7:"firstname"} realizes that she is getting a little sentimental after all. ${.self:"role":5:"firstname"} promises everyone that it's just the beginning of an epic story.</en>
+						<pl>Zbliża się ceremonia ukończenia szkoły i koniec roku szkolnego staje się faktem. ${.self:"role":6:"firstname"} planuje emocjonalne przemówienia, ${.self:"role":3:"firstname"} ma już tylko jedną ironiczną kwestię, a ${.self:"role":7:"firstname"} zdaje sobie sprawę, że jednak staje się nieco sentymentalna. ${.self:"role":5:"firstname"} obiecuje wszystkim, że to dopiero początek epickiej historii.</pl>
 					</description>
 				</scripttemplate>
 			</children>

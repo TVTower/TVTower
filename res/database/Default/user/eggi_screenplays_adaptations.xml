@@ -10,10 +10,12 @@
 			<title_original>
 				<de>Wellness</de>
 				<en>Wellness</en>
+				<pl>Wellness</pl>
 			</title_original>
 			<description>
 				<de>${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"}, ungleiches Paar in der Kunstszene Chicagos, kämpfen gegen Eheprobleme. Zwischen Achtsamkeitsseminaren und Immobilienträumen müssen sie ihre Vergangenheit bewältigen, um ihre Liebe zu retten.</de>
 				<en>${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"}, a mismatched couple in Chicago's art scene, are battling marital problems. Between mindfulness seminars and real estate dreams, they have to come to terms with their past in order to save their love.</en>
+				<pl>${.self:"role":1:"firstname"} i ${.self:"role":2:"firstname"}, niedopasowana para z chicagowskiej sceny artystycznej, zmaga się z problemami małżeńskimi. Pomiędzy seminariami i marzeniami o nieruchomościach, muszą pogodzić się ze swoją przeszłością, aby uratować swoją miłość.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -42,14 +44,17 @@
 			<title>
 				<de>${.self:"role":1:"fullname"} - Abenteuer Fuchshöhle</de>
 				<en>${.self:"role":1:"fullname"} - Fox Cave Adventures</en>
+				<pl>${.self:"role":1:"fullname"} - Przygody w Jaskini Lisów</pl>
 			</title>
 			<title_original>
 				<de>Hilda Hasenherz - Das Abenteuer im Fuchswald</de>
 				<en>Becki Bunnyheart - The Adventure in the Fox Forest</en>
+				<pl>Becki Króliczeserce - Przygoda w lesie lisów</pl>
 			</title_original>
 			<description>
 				<de>Mutiges Hasenmädchen ${.self:"role":1:"firstname"} lebt im Möhrenfeld und entdeckt, dass der tyrannische ${.self:"role":2:"fullname"} die Möhren für sich hortet. Entschlossen, ihn zu stoppen, begibt sie sich auf eine gefährliche Reise, um den legendären ${.self:"role":5:"fullname"} zu finden.</de>
 				<en>Brave bunny girl ${.self:"role":1:"firstname"} lives in the carrot field and discovers that the tyrannical ${.self:"role":2:"fullname"} is hoarding the carrots for himself. Determined to stop him, she sets off on a dangerous journey to find the legendary ${.self:"role":5:"fullname"}.</en>
+				<pl>Dzielna króliczka ${.self:"role":1:"firstname"} mieszka na polu marchewek i odkrywa, że despotyczny ${.self:"role":2:"fullname"} zbiera marchewki dla siebie. Zdeterminowana, by go powstrzymać, wyrusza w niebezpieczną podróż, by odnaleźć legendarną marchewkę ${.self:"role":5:"fullname"}.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

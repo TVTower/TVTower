@@ -445,6 +445,7 @@
 			<text>
 				<de>Erreiche eine Einschaltquote von 40% (20 und 21 Uhr)</de>
 				<en>Achieve an audience rating of 40% (8pm and 9pm)</en>
+				<pl>Osiągnięcie oglądalności na poziomie 40% (godz. 20:00 i 21:00)</pl>
 			</text>
 			<tasks>
 				<task guid="tvt-gameachievement-task-blockbuster1-20" >
@@ -474,6 +475,7 @@
 			<text>
 				<de>Erreiche eine Einschaltquote von 55% (20 - 22 Uhr)</de>
 				<en>Achieve an audience rating of 55% (8pm - 10pm)</en>
+				<pl>Osiągnięcie oglądalności na poziomie 55% (od 20:00 do 22:00)</pl>
 			</text>
 			<tasks>
 				<task guid="tvt-gameachievement-task-blockbuster2-20" >
@@ -506,6 +508,7 @@
 			<text>
 				<de>Erreiche eine Einschaltquote von 70% (20 - 23 Uhr)</de>
 				<en>Achieve an audience rating of 70% (8pm - 11pm)</en>
+				<pl>Osiągnięcie oglądalności na poziomie 70% (od 20:00 do 23:00)</pl>
 			</text>
 			<tasks>
 				<task guid="tvt-gameachievement-task-blockbuster3-20" >
