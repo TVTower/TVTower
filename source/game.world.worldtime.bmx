@@ -1109,30 +1109,59 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		return result
 	End Method
 
-
-	Method CalcTime_ExactDate:Long(nowTime:Long=-1, yearMin:int=0, yearMax:int=-1000000, monthMin:int=0, monthMax:int=-1000000, dayMin:int=0, dayMax:int=-1000000)
+	'to allow relative years, use -1000000 as default max year; for month/day 0=random, -1 = same as min
+	Method CalcTime_ExactDate:Long(nowTime:Long=-1, yearMin:int=0, yearMax:int=-1000000, monthMin:int=0, monthMax:int=-1, dayMin:int=0, dayMax:int=-1)
 		If nowTime = -1 Then nowTime = _timeGone
 
-		'print "IN nowTime="+nowTime+"  yearMin="+yearMin+"  yearMax="+yearMax+"  monthMin="+monthMin+"  monthMax="+monthMax+"  dayMin="+dayMin+"  dayMax="+dayMax+"  hourMin="+hourMin+"  hourMax="+hourMax+"  minuteMin="+minuteMin+"  minuteMax="+minuteMax
-		'use the "min"-values to store the final values for calculation
-		'to save some variables
-		if yearMax <> yearMin and yearMax > -1000000 then yearMin = RandRange(yearMin, yearMax)
+		'print "IN nowTime="+nowTime+"  yearMin="+yearMin+"  yearMax="+yearMax+"  monthMin="+monthMin+"  monthMax="+monthMax+"  dayMin="+dayMin+"  dayMax="+dayMax
 
-		if monthMin = -1 then monthMin = RandRange(1, 12)
-		if monthMax <> dayMin and monthMax > -1000000 then monthMin = RandRange(monthMin, monthMax)
+		yearMin = max(-1000, yearMin)
+		'relative mode, there won't be an time entry before 1000 AD.
+		If yearMin < 1000 Then yearMin = GetYear(nowTime) + yearMin
+		If yearMax = -1000000
+			yearMax = yearMin
+		ElseIf yearMax < 1000
+			yearMax = GetYear(nowTime) + yearMax
+		EndIf
+		If yearMax < yearMin Then yearMax = yearMin
 
-		if dayMin = -1 then dayMin = RandRange(1, 30) 'Sorry february!
-		if dayMax <> dayMin and dayMax > -1000000 then dayMin = RandRange(dayMin, dayMax)
 
-		'relative mode, there wont be an time entry before 1000 AD.
-		if yearMin < 1000
-			'print "nowTime="+nowTime+"  yearMin="+yearMin+"  yearMax="+yearMax+"  monthMin="+monthMin+"  monthMax="+monthMax+"  dayMin="+dayMin+"  dayMax="+dayMax+"  hourMin="+hourMin+"  hourMax="+hourMax+"  minuteMin="+minuteMin+"  minuteMax="+minuteMax
-			'print "time = " + GetFormattedGameDate(GetTimeGoneForRealDate(GetYear(nowTime) + yearMin, monthMin, dayMin, hourMin, minuteMin))
-			'print "now year = " + GetYear(nowTime)
-			return GetTimeGoneForRealDate(GetYear(nowTime) + yearMin, monthMin, dayMin)
-		else
+		If monthMin <= 0 then monthMin = RandRange(1, 12)
+		If monthMin > 12 Then monthMin = 12
+		If monthMax = -1 Then monthMax = monthMin
+		If monthMax <= 0
+			If yearMin = yearMax
+				monthMax = RandRange(monthMin, 12)
+			Else
+				monthMax = RandRange(1, 12)
+			EndIf
+		EndIf
+		If yearMin = yearMax And monthMax < monthMin Then monthMax = monthMin
+
+		If dayMin <= 0 then dayMin = RandRange(1, 30) 'Sorry february!
+		If dayMin > 30 then dayMin = 30
+		If dayMax = -1 Then dayMax = dayMin
+		If dayMax <= 0
+			If yearMin = yearMax And monthMin = monthMax
+				dayMax = RandRange(dayMin, 30)
+			Else
+				dayMax = RandRange(1, 30)
+			EndIf
+		EndIf
+
+		If yearMin = yearMax And monthMax = monthMin And dayMax <= dayMin
+			'no randomness - mindate=maxdate
 			return GetTimeGoneForRealDate(yearMin, monthMin, dayMin)
-		endif
+		Else
+			'determine random time between min and max
+
+			'could abuse nowTime as start to save new variable
+			Local start:Long = GetTimeGoneForRealDate(yearMin, monthMin, dayMin)
+			'could abuse any min variable as diff to save new variable
+			Local diff:Int = (GetTimeGoneForRealDate(yearMax, monthMax, dayMax) - start)/MINUTELENGTH
+			diff = RandRange(0, Int(diff))
+			Return start + diff*MINUTELENGTH
+		EndIf
 	End Method
 
 
