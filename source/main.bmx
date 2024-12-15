@@ -2105,7 +2105,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 21
+	Const SAVEGAME_VERSION:int = 22
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2401,6 +2401,55 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
+		If savegameVersion < 22
+			Local teams:TIntMap = New TIntMap
+			'add all teams found in known leagues
+			'also make all base persons "sportsmen" again
+			For local league:TNewsEventSportLeague = EachIn GetNewsEventSportCollection().leagues.Values()
+				For local team:TNewsEventSportTeam = EachIn league.nextSeasonTeams
+					GetNewsEventSportCollection().AddTeam(team)
+					teams.Insert(team.GetID(), team)
+				Next
+				If league.currentSeason
+					For local team:TNewsEventSportTeam = EachIn league.currentSeason.data.teams
+						GetNewsEventSportCollection().AddTeam(team)
+						teams.Insert(team.GetID(), team)
+					Next
+				EndIf
+				For local seasonData:TNewsEventSportSeasonData = EachIn league.pastSeasons
+					For local team:TNewsEventSportTeam = EachIn seasonData.teams
+						GetNewsEventSportCollection().AddTeam(team)
+						teams.Insert(team.GetID(), team)
+					Next
+				Next
+
+				For local team:TNewsEventSportTeam = EachIn teams.Values()
+					Local league:TNewsEventSportLeague = team.GetLeague()
+					Local sport:TNewsEventSport = league.GetSport()
+
+					'assume 50% are not interested in TV shows / custom productions
+					If RandRange(0, 100) < 50
+						team.trainer.SetFlag(TVTPersonFlag.CASTABLE, False)
+					EndIf
+					team.SetTrainer(team.trainer)
+
+					Local membersCopy:TPersonBase[] = team.members
+					team.members = New TPersonBase[0]
+
+					For local member:TPersonBase = EachIn membersCopy
+						If RandRange(0, 100) < 50
+							member.SetFlag(TVTPersonFlag.CASTABLE, False)
+						EndIf
+						'give the person sports specific data (team assignment is done separately)
+						member.AddData("sports_" + sport.name, New TPersonSportBaseData)
+						'adding the member hires them and sets sport id etc.
+						team.AddMember(member)
+						print "Add " + sport.name+"-sport-data to person: " + member.GetFullName()
+					Next
+				Next
+			Next
+		EndIf
+
 		If savegameVersion < 21
 			If Not GetDatabaseLocalizer().persons.Contains("de")
 				TDatabaseLoader.LoadDatabaseLocalizations("res/database/Default")
@@ -3159,6 +3208,10 @@ Type TSavegameConverter
 			Case "TMyClassOld".ToLower()
 				Return "TMyClassNew"
 			EndRem
+
+			'v0.8.3: Sportsmen are now TPerson, no custom type
+			Case "TNewsEventSportTeamMember".ToLower()
+				result = "TPersonBase"
 
 			'v0.8.3: StationMap cleanup
 			Case "TStation".ToLower()
