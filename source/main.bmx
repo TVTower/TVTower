@@ -3135,7 +3135,11 @@ Type TSavegameConverter
 	
 	
 	Method GetCurrentTypeName:Object(typeName:String)
-		Select typeName.ToLower()
+		Local result:String = typeName
+		'strip an array indicator so only base type name is compared 
+		Local typeNameBase:String = typeName.replace("[]", "")
+
+		Select typeNameBase.ToLower()
 			Rem
 			'example
 			Case "TMyClassOld".ToLower()
@@ -3144,14 +3148,20 @@ Type TSavegameConverter
 
 			'v0.8.3: StationMap cleanup
 			Case "TStation".ToLower()
-				Return "TStationAntenna"
+				result = "TStationAntenna"
 			
 			Case "TPersonPersonalityAttribute".ToLower()
-				Return "TRangedFloat"
+				result = "TRangedFloat"
 			Default
 				print "TSavegameConverter.GetCurrentTypeName(): unsupported but no longer known type ~q"+typeName+"~q requested."
-				Return typeName
 		End Select
+
+		'add the array indicator back if required
+		If typeNameBase <> typeName
+			Return result + "[]"
+		Else
+			Return result
+		EndIf
 	End Method
 
 
@@ -3216,10 +3226,19 @@ Type TSavegameConverter
 		
 		Return Null
 	End Method
-	
+
+
+	'Deserialize no longer known types or ones without special handling
+	'from their XML nodes into a now valid object
+	'ATTENTION: the nodes can an attribute "id" - these need to be stored
+	'           with the object nodes ... for "refs" handling
+	Method DeserializeUnknownType:Int(obj:Object var, oldTypeName:String, newTypeName:String, nodeObj:Object)
+		Return False
+	End Method
+
 	
 	'handling stuff like different types used in a field ("list:TList -> list:TMap")
-	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
+	Method DeSerializeUnknownProperty:Int(obj:Object var, oldType:String, newType:String, parentObj:Object)
 		'Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
@@ -3228,16 +3247,9 @@ Type TSavegameConverter
 				'room(base)collection?
 				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TStationMapSection".ToLower()
 					local old:TVec2D = TVec2D(obj)
-					return new TVec2I(int(old.x + 0.5), int(old.y + 0.5))
-				EndIf
-
-			'v0.7.2 -> "TStationMapSection.uplinkPos:TVec2D to :TVec2I
-			case "TVec2D>TVec2I".ToLower()
-				'room(base)collection?
-				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TStationMapSection".ToLower()
-					local old:TVec2D = TVec2D(obj)
-					print "old: " + old.ToString()
-					return new TVec2I(int(old.x + 0.5), int(old.y + 0.5))
+					Local newObj:TVec2I = New TVec2I(int(old.x + 0.5), int(old.y + 0.5))
+					obj = newObj
+					Return True
 				EndIf
 
 			'v0.7.1 -> 0.7.2: "TStationMapcollection.sections - TList to TStationMapSection[]"
@@ -3247,14 +3259,16 @@ Type TSavegameConverter
 				For local section:TStationMapSection = EachIn list
 					result :+ [section]
 				Next
-				Return result
+				obj = result
+				Return True
 				
 			'v0.7.0 -> "Int to TTriStateIntBitmask"
 			Case "Int>TTriStateIntBitmask".ToLower()
 				local mask:TTriStateIntBitmask = new TTriStateIntBitmask
 				mask.mask = Int(String(obj))
 				'mask.SetAllModified()
-				Return mask
+				obj = mask
+				Return True
 
 			'generic
 			Case "TList>TObjectList".ToLower()
@@ -3264,64 +3278,11 @@ Type TSavegameConverter
 					For Local o:object = EachIn old
 						res.AddLast(o)
 					Next
-					Return res
+					Obj = res
+					Return True
 				EndIf
-
-rem
-			'v0.6.2 -> BroadcastStatistics from TMap to TIntMap
-			Case "TMap>TIntMap".ToLower()
-				Local old:TMap = TMap(obj)
-				If old
-					Local res:TIntMap = New TIntMap
-					For Local oldV:String = EachIn old.Keys()
-						res.Insert(Int(oldV), old.ValueForKey(oldV))
-					Next
-					Return res
-				EndIf
-endrem
-			Rem
-			Case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
-				Local old:TIntervalTimer = TIntervalTimer(obj)
-				If old
-					Local res:TBuildingIntervalTimer = New TBuildingIntervalTimer
-					res.Init(old.interval, 0, old.randomnessMin, old.randomnessMax)
-
-					Return res
-				EndIf
-
-			Case "TProgrammeLicenceFilter>TProgrammeLicenceFilterGroup".ToLower()
-				If parentObj And TTypeId.ForObject(parentObj).name().ToLower() = "RoomHandler_MovieAgency".ToLower()
-					Return RoomHandler_MovieAgency.GetInstance().filterAuction
-				EndIf
-			Case "TMap>TAudienceAttraction[]".ToLower()
-				If parentObj And TTypeId.ForObject(parentObj).name().ToLower() = "TAudienceMarketCalculation".ToLower()
-					Local oldMap:TMap = TMap(obj)
-					Local newArr:TAudienceAttraction[]
-					For Local att:TAudienceAttraction = EachIn oldMap.Values()
-						newArr :+ [att]
-					Next
-					Return newArr
-				EndIf
-
-			case "TList>TIntMap".ToLower()
-				'room(base)collection?
-				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TRoomCollection".ToLower()
-					local list:TList = TList(obj)
-					if list
-						local intMap:TIntMap = new TIntMap
-						For local r:TRoomBase = EachIn list
-							intMap.Insert(r.id, r)
-						Next
-
-						if TRoomBaseCollection(parentObj)
-							TRoomBaseCollection(parentObj).count = list.Count()
-						endif
-						return intMap
-					endif
-				endif
-			endrem
 		End Select
-		Return Null
+		Return False
 	End Method
 End Type
 
