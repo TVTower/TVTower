@@ -740,7 +740,7 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	'refreshs stats about paid money from paying for the sent newsblocks
 	Method PayNews:Int(price:Long, news:object)
 		If canAfford(price)
-			TLogger.Log("TFinancial.PayNews()", "Player "+playerID+" paid "+price+" for a news", LOG_DEBUG)
+'			TLogger.Log("TFinancial.PayNews()", "Player "+playerID+" paid "+price+" for a news", LOG_DEBUG)
 			'add this to our history
 			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_NEWS, -price, news).AddTo(playerID)
 
