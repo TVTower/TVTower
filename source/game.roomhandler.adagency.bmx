@@ -791,7 +791,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 
 	Method RefillBlocksMode1()
-		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocksMode1.", LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocks Mode 1.", LOG_DEBUG)
 
 		Local d:SAdContractRefillData = refillData
 		'=== SETUP FILTERS ===
@@ -850,7 +850,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		levelFilters[2].SetMinImageRange(0, d.highestChannelImage)
 		If limitInstances > 0 Then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
-		TLogger.Log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
+'		TLogger.Log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
 
 Rem
 print "REFILL:"
@@ -959,18 +959,20 @@ endrem
 			Next
 		Next
 
+rem
 		'now all filters contain "valid ranges"
 		TLogger.Log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
 
 		For Local i:Int = 0 Until 3
 			TLogger.Log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString(), LOG_DEBUG)
 		Next
+endrem
 	End Method
 
 
 	'reduced mode - separate only cheap and non-cheap contracts
 	Method RefillBlocksMode2()
-		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocksMode2.", LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocks Mode 2.", LOG_DEBUG)
 
 		Local d:SAdContractRefillData = refillData
 
@@ -1072,10 +1074,11 @@ endrem
 				EndIf
 			Next
 		Next
-
+rem
 		'now all filters contain "valid ranges"
 		TLogger.Log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
 		TLogger.Log("AdAgency.RefillBlocks", "  Level 0 filter: "+levelFilters[0].ToString(), LOG_DEBUG)
+endrem
 	End Method
 
 
