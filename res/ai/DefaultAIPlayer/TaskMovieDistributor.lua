@@ -753,7 +753,7 @@ function JobBuyMovies:Tick()
 
 						--do not spend all available money, if there are enough max-top blocks
 						--saves money for antennas
-						if blocksCount > 72 and player.maxTopicalityBlocksCount > 10 then
+						if blocksCount > 72 and player.maxTopicalityBlocksCount > 10 and player.money < 25000000 then
 							self.Task.CurrentBudget = 0
 						end
 					end
