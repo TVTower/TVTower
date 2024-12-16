@@ -736,6 +736,7 @@ function SignContracts:ShouldSignContract(contract)
 				if targetGroup > 0 and spotCount > 3 then return 0 end
 				if self.player.blocksCount < 48 and spotCount > 2 then return 0 end
 				if (self.player.maxTopicalityBlocksCount < 4 or self.player.money < 500000) and spotCount > 1 then return 0 end
+				if self.player.coverage > 0.75 and spotMinAudience > self.maxAudience * 0.11 then return 0 end
 				--TODO few max top too many spots ->no
 			end
 			if targetGroup == 32 and achieved < spotCount then return 0 end
