@@ -3210,6 +3210,23 @@
 			<availability year_range_from="2014" year_range_to="2014" /> <!-- exact date not clear / not required -->
 		</news>
 
+			<!-- 2014-02 -->
+
+		<news guid="b04c2f00-254f-497e-b9f9-080b676a41a9" type="0" creator="7430" created_by="Sjaele" comment="https://de.wikipedia.org/wiki/Silvana_Koch-Mehrin">
+			<title>
+				<de>Plagiatorin im Forschungsausschuss</de>
+				<en>Plagiarist on the Research Committee</en>
+				<pl>Plagiator w komitecie badawczym</pl>
+			</title>
+			<description>
+				<de>Wenige Tage nach Aberkennung ihres Doktorgrades wurde eine EU-Parlamentarierin in den Forschungsausschuss des Parlamentes berufen.</de>
+				<en>A few days after her doctoral degree was revoked, an EU parliamentarian was appointed to the Parliament's Research Committee.</en>
+				<pl>Kilka dni po odebraniu jej tytułu doktora, parlamentarzystka UE została powołana do parlamentarnego Komitetu Badań Naukowych.</pl>
+			</description>
+			<data genre="3" price="0.7" quality="35" flags="2" /> <!-- actual date: 2014-02-07 -->
+			<availability year_range_from="2011" year_range_to="2015" />
+		</news>
+
 			<!-- 2014-09 -->
 
 		<news guid="b2e5d48e-f417-4e64-bc3e-d39d7667617e" type="0" thread_guid="597f0c91-b018-4402-bab7-f010acf09dde" created_by="discord/vicusfeli" comment="https://en.wikipedia.org/wiki/Tim_Wiese#Professional_wrestling | only partly based on real facts">
@@ -5646,6 +5663,51 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="1,8,16" news="88e366d7-7bca-4598-bab4-e19eeeb966a8" />
 			</effects>
 		</news>
+		<news guid="88e366d7-7bca-4598-bab4-e19eeeb966a8" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="2" creator="" created_by="-">
+			<title>
+				<de>Kunstwelt trauert um Mona Lisa</de>
+				<en>The art world mourns Mona Lisa</en>
+				<pl>Świat sztuki opłakuje Mona Lisę</pl>
+			</title>
+			<description>
+				<de>Die ganze Welt trauert um das weltberühmte Gemälde, das spurlos verschwunden ist. Inspektor Cluso ist mit dem Fall beauftragt worden.</de>
+				<en>The whole world is mourning the loss of the world-famous painting, which has disappeared without a trace. Inspector Cluso has been assigned to the case.</en>
+				<pl>Cały świat opłakuje stratę światowej sławy obrazu, który zniknął bez śladu. Inspektor Cluso został przydzielony do sprawy.</pl>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,16" news="1794c14e-4b03-4970-bc87-bceadc583b7c" />
+			</effects>
+		</news>
+		<news guid="1794c14e-4b03-4970-bc87-bceadc583b7c" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="2" creator="" created_by="-">
+			<title>
+				<de>Mona Lisa gefunden!</de>
+				<en>Mona Lisa found!</en>
+				<pl>Mona Lisa odnaleziona!</pl>
+			</title>
+			<description>
+				<de>Eine Putzfrau hat das Gemälde gefunden. Der Mund der Mona Lisa wurde mit Lippenstift verunstalt und zeigt jetzt ein breites Grinsen.</de>
+				<en>A cleaning lady has found the painting. The Mona Lisa's mouth has been disfigured with lipstick and now shows a broad grin.</en>
+				<pl>Sprzątaczka znalazła obraz. Usta Mony Lisy zostały zniekształcone szminką i teraz pokazują szeroki uśmiech.</pl>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,16" news="db179c3e-8091-4a0f-8370-d81f0c484220" />
+			</effects>
+		</news>
+		<news guid="db179c3e-8091-4a0f-8370-d81f0c484220" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="2" creator="" created_by="-">
+			<title>
+				<de>Mona-Lisa-Dieb gefasst</de>
+				<en>Mona Lisa thief caught</en>
+				<pl>Złodziej Mona Lisy złapany</pl>
+			</title>
+			<description>
+				<de>Inspektor Cluso hat den Dieb gefasst. Dieser habe das Gemälde verändert, weil ihn die ewige Diskussion um ihr Lächeln verrückt gemacht habe.</de>
+				<en>Inspector Cluso has caught the thief, who had altered the painting because the incessant discussion about her smile had driven him crazy.</en>
+				<pl>Inspektor Cluso złapał złodzieja, który zmienił obraz, ponieważ nieustanna dyskusja na temat jej uśmiechu doprowadziła go do szaleństwa.</pl>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+		</news>
 		<news guid="3756602f-ddcc-4e7c-9ebc-4c1a3259d8c2" thread_guid="a6ec2fd9-ff73-4f4b-829b-01f331dc6f92" type="0" creator="">
 			<title>
 				<de>Mann übersah Glastür</de>
@@ -6593,6 +6655,22 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</effects>
 			<data genre="0" price="0.7" quality="38" />
 			<availability year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news guid="383db30d-70cb-4278-8889-1cff4f2ac440" thread_guid="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="2" creator="" created_by="-">
+			<title>
+				<de>Polnischer Minister stark kritisiert</de>
+				<en>Polish minister heavily criticized</en>
+				<pl>Polski minister ostro krytykowany</pl>
+			</title>
+			<description>
+				<de>Die Verkehrsminister der übrigen EU-Länder können die Helmpflicht nicht verstehen. Eine solche Pflicht wäre übertrieben.</de>
+				<en>The transport ministers of the other EU countries cannot understand the obligation to wear a helmet. Such an obligation would be excessive.</en>
+				<pl>Ministrowie transportu innych krajów UE nie mogą zrozumieć obowiązku noszenia kasku. Taki obowiązek byłby nadmiernie przesadzony.</pl>
+			</description>
+			<data genre="0" price="0.7" quality="28" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
+			</effects>
 		</news>
 		<news guid="94c8810c-b24b-44f2-a88a-3fb3d49fac22" thread_guid="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="2" creator="">
 			<title>
@@ -7613,52 +7691,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="5" price="1" quality="22" fictional="1" />
 		</news>
 
-		<news guid="88e366d7-7bca-4598-bab4-e19eeeb966a8" type="2" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" creator="" created_by="-">
-			<title>
-				<de>Kunstwelt trauert um Mona Lisa</de>
-				<en>The art world mourns Mona Lisa</en>
-				<pl>Świat sztuki opłakuje Mona Lisę</pl>
-			</title>
-			<description>
-				<de>Die ganze Welt trauert um das weltberühmte Gemälde, das spurlos verschwunden ist. Inspektor Cluso ist mit dem Fall beauftragt worden.</de>
-				<en>The whole world is mourning the loss of the world-famous painting, which has disappeared without a trace. Inspector Cluso has been assigned to the case.</en>
-				<pl>Cały świat opłakuje stratę światowej sławy obrazu, który zniknął bez śladu. Inspektor Cluso został przydzielony do sprawy.</pl>
-			</description>
-			<data genre="5" price="1" quality="40" fictional="1" />
-			<effects>
-				<effect trigger="happen" type="triggernews" time="1,8,16" news="1794c14e-4b03-4970-bc87-bceadc583b7c" />
-			</effects>
-		</news>
-		<news guid="1794c14e-4b03-4970-bc87-bceadc583b7c" type="2" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" creator="" created_by="-">
-			<title>
-				<de>Mona Lisa gefunden!</de>
-				<en>Mona Lisa found!</en>
-				<pl>Mona Lisa odnaleziona!</pl>
-			</title>
-			<description>
-				<de>Eine Putzfrau hat das Gemälde gefunden. Der Mund der Mona Lisa wurde mit Lippenstift verunstalt und zeigt jetzt ein breites Grinsen.</de>
-				<en>A cleaning lady has found the painting. The Mona Lisa's mouth has been disfigured with lipstick and now shows a broad grin.</en>
-				<pl>Sprzątaczka znalazła obraz. Usta Mony Lisy zostały zniekształcone szminką i teraz pokazują szeroki uśmiech.</pl>
-			</description>
-			<data genre="5" price="1" quality="40" fictional="1" />
-			<effects>
-				<effect trigger="happen" type="triggernews" time="1,8,16" news="db179c3e-8091-4a0f-8370-d81f0c484220" />
-			</effects>
-		</news>
-		<news guid="db179c3e-8091-4a0f-8370-d81f0c484220" type="2" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" creator="" created_by="-">
-			<title>
-				<de>Mona-Lisa-Dieb gefasst</de>
-				<en>Mona Lisa thief caught</en>
-				<pl>Złodziej Mona Lisy złapany</pl>
-			</title>
-			<description>
-				<de>Inspektor Cluso hat den Dieb gefasst. Dieser habe das Gemälde verändert, weil ihn die ewige Diskussion um ihr Lächeln verrückt gemacht habe.</de>
-				<en>Inspector Cluso has caught the thief, who had altered the painting because the incessant discussion about her smile had driven him crazy.</en>
-				<pl>Inspektor Cluso złapał złodzieja, który zmienił obraz, ponieważ nieustanna dyskusja na temat jej uśmiechu doprowadziła go do szaleństwa.</pl>
-			</description>
-			<data genre="5" price="1" quality="40" fictional="1" />
-		</news>
-
 		<news guid="228d9e57-72f7-4f6d-b02a-e72fc3c140cb" type="0" creator="" created_by="-" comment="TODO: make somehow more funny/ironic/special">
 			<title>
 				<de>Brand in ${town}</de>
@@ -7724,23 +7756,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</occupants>
 			</variables>
 			<data genre="4" price="1" quality="15" fictional="1" />
-		</news>
-
-		<news guid="383db30d-70cb-4278-8889-1cff4f2ac440" type="2" thread_guid="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" creator="" created_by="-">
-			<title>
-				<de>Polnischer Minister stark kritisiert</de>
-				<en>Polish minister heavily criticized</en>
-				<pl>Polski minister ostro krytykowany</pl>
-			</title>
-			<description>
-				<de>Die Verkehrsminister der übrigen EU-Länder können die Helmpflicht nicht verstehen. Eine solche Pflicht wäre übertrieben.</de>
-				<en>The transport ministers of the other EU countries cannot understand the obligation to wear a helmet. Such an obligation would be excessive.</en>
-				<pl>Ministrowie transportu innych krajów UE nie mogą zrozumieć obowiązku noszenia kasku. Taki obowiązek byłby nadmiernie przesadzony.</pl>
-			</description>
-			<data genre="0" price="0.7" quality="28" fictional="1" />
-			<effects>
-				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
-			</effects>
 		</news>
 
 		<news guid="265997b1-2924-423c-8cb4-594defb5ff6b" type="0" thread_guid="a3ac1453-f37f-4d37-a669-8c127ab2cf48" creator="" created_by="-" comment="TVTower 2014 version: Grönland Eishockey-Weltmeister! - In einem spannenden Duell gegen Kenia gewinnt Grönland das Weltmeisterschafts-Finale mit 5-3. | May collide with 'real' sports news that may be added some time, hence changing to amateur sports and adding niche but existing sports (including some from Epyx's Winter Games and World Games) to the variations">
