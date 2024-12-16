@@ -375,7 +375,7 @@
 			<data genre="2" price="0.35" quality="40" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-abstieg-01" type="0" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff" comment="TODO: case of alternative history; Hamburger SV *did* relegate for the first time in history to 2nd league eventually, but probably not yet at the time this news was authored.">
+		<news guid="news-jorgaeff-abstieg-01" type="0" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff" comment="TODO: case of alternative history; Hamburger SV *did* relegate for the first time in history to 2nd league eventually, but probably not yet at the time this news was authored. Reference 'Knut Knolle' not clear, leaving as fictional for now.">
 			<title>
 				<de>Bundesliga-Relegation: Wer steigt auf, wer ab?</de>
 				<en>Bundesliga play-offs: Who will rise, who will fall?</en>
@@ -386,13 +386,16 @@
 				<en>The ${sports_1fc_generic} Nuremberg (the "Glubb") fights against ${sportsclub_hamburgersv} for promotion to the Bundesliga. Will the Bundesliga dino from the north escape relegation again or will the challengers from Franconia be victorious?</en>
 				<pl>${sports_1fc_generic} Norymberga („Glubb“) walczy z ${sportsclub_hamburgersv} o awans do Bundesligi. Czy dino z północy ponownie uniknie spadku z Bundesligi, czy też rywale z Frankonii odniosą zwycięstwo?</pl>
 			</description>
-			<data genre="2" price="0.3" quality="30" fictional="1" />
+			<variables>
+				<uweseeler>${.person:"1617d822-7f5e-4362-a4bd-e0f05a2dfee0":"fullname"}</uweseeler>
+			</variables>
+			<data genre="2" price="0.3" quality="30" fictional="1" flags="2" />
+			<availability year_range_from="1995" year_range_to="1997" />
 			<effects>
 				<!-- "morgen 6-10 Uhr / News a oder b" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,10" news1="news-jorgaeff-abstieg-02a" probability1="50" news2="news-jorgaeff-abstieg-02b" probability2="50"/>
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-02a" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>${sportsclub_hamburgersv} steigt erstmalig ab</de>
@@ -410,7 +413,6 @@
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03a" probability1="50" news2="news-jorgaeff-abstieg-03b" probability2="50"/>
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-02b" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>„Glubb“ verpasst Aufstieg</de>
@@ -428,7 +430,6 @@
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03c" probability1="50" news2="news-jorgaeff-abstieg-03d" probability2="50"/>
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03a" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>${sportsclub_hamburgersv} trennt sich von Trainer</de>
@@ -436,13 +437,12 @@
 				<pl>${sportsclub_hamburgersv} rozstaje się z trenerem</pl>
 			</title>
 			<description>
-				<de>Aufgrund des erstmaligen Abstiegs des ${sportsclub_hamburgersv} zieht Präsident Uwe Gehler die Reißleine und entlässt Trainer Knut Knolle. Geeler möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
-				<en>Due to the first-time relegation of ${sportsclub_hamburgersv}, president Uwe Gehler pulls the plug and sacks coach Knut Knolle. Geeler now wants to explore the market and look for suitable successors.</en>
-				<pl>Z powodu pierwszego spadku ${sportsclub_hamburgersv}, prezes Uwe Gehler wyciąga wtyczkę i zwalnia trenera Knuta Knolle. Geeler chce teraz zbadać rynek i poszukać odpowiednich następców.</pl>
+				<de>Aufgrund des erstmaligen Abstiegs des ${sportsclub_hamburgersv} zieht Präsident ${uweseeler} die Reißleine und entlässt Trainer Knut Knolle. Geeler möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
+				<en>Due to the first-time relegation of ${sportsclub_hamburgersv}, president ${uweseeler} pulls the plug and sacks coach Knut Knolle. Geeler now wants to explore the market and look for suitable successors.</en>
+				<pl>Z powodu pierwszego spadku ${sportsclub_hamburgersv}, prezes ${uweseeler} wyciąga wtyczkę i zwalnia trenera Knuta Knolle. Geeler chce teraz zbadać rynek i poszukać odpowiednich następców.</pl>
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03b" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>${sportsclub_hamburgersv} hält am Trainer fest</de>
@@ -456,7 +456,6 @@
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03c" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Muss der „Glubb“ Insolvenz anmelden?</de>
@@ -470,7 +469,6 @@
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03d" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Der „Glubb“ ist wieder schuldenfrei</de>
@@ -612,7 +610,7 @@
 
 		<news guid="news-jorgaeff-dyson-01" type="0" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff" comment="TODO: deal with this 'half-fictional' aspect somehow">
 				<!-- "Beginnt an einem Sonntag" -->
-			<availability script='${.eq:${.worldtime:"weekday"}:6}' />
+			<availability year_range_from="2005" script='${.eq:${.worldtime:"weekday"}:6}' />
 			<title>
 				<de>Klatschkowski weiterhin Boxweltmeister</de>
 				<en>Klatschkowski still world boxing champion</en>

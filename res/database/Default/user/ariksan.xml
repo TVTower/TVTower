@@ -759,7 +759,7 @@
 					</title>
 					<description>
 						<de>${nominativ_${variant}} ${tier_${variant}} und das ${adjective} ${animal2} gehen in eine alte Bibliothek. Kleines ${animal2}, die Bücher kann man erkunden, aber bitte nicht anknabbern!</de>
-						<en>The ${adjective} ${animal} and the tiny ${animal2} go into an old library. tiny ${animal2}, you can explore the books, but please don't nibble on them!</en>
+						<en>The ${adjective} ${animal} and the tiny ${animal2} go into an old library. Tiny ${animal2}, you can explore the books, but please don't nibble on them!</en>
 						<pl>${adjective_${variant}} ${animal} i malutki ${animal2} trafiają do starej biblioteki. Maleńki, możesz przeglądać książki, ale proszę, nie podjadaj ich!</pl>
 					</description>
 				</scripttemplate>

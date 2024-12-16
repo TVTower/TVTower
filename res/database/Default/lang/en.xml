@@ -287,11 +287,12 @@
 		<brand_cessna>Shessna</brand_cessna> <!-- https://en.wikipedia.org/wiki/Cessna -->
 		<brand_cessna172>Shessna 127</brand_cessna172> <!-- https://en.wikipedia.org/wiki/Cessna_172 -->
 		<brand_ravensburger>Rabensberger</brand_ravensburger> <!-- https://en.wikipedia.org/wiki/Ravensburger -->
+		<brand_carrera>Carrina</brand_carrera> <!-- https://en.wikipedia.org/wiki/Carrera_(slot_car_brand) -->
 		<brand_lamy>Laimi</brand_lamy> <!-- https://en.wikipedia.org/wiki/Lamy -->
 		<brand_swingline>Slipline</brand_swingline> <!-- https://en.wikipedia.org/wiki/Swingline -->
 		<brand_riored>Rio Rouge</brand_riored> <!-- https://en.wikipedia.org/wiki/Swingline -->
 		<brand_bestbuy>Burst-Buy</brand_bestbuy> <!-- https://en.wikipedia.org/wiki/Best_Buy -->
-		<brand_mediamarkt>MödiaMarkt</brand_mediamarkt> <!-- https://de.wikipedia.org/wiki/MediaMarktSaturn -->
+		<brand_mediamarkt>MödliaMarkt</brand_mediamarkt> <!-- https://de.wikipedia.org/wiki/MediaMarktSaturn -->
 		<brand_saturn>Zaturno</brand_saturn> <!-- https://de.wikipedia.org/wiki/MediaMarktSaturn -->
 		<brand_praktiker>Praktiko</brand_praktiker> <!-- https://en.wikipedia.org/wiki/Praktiker -->
 		<brand_ikea>MÖKLEA</brand_ikea> <!-- https://en.wikipedia.org/wiki/IKEA | previous spoofs: Barry Buffet (?), Möbler (probably had to be changed, but no resemblance; similar names like OKEA already exist in reality) -->
@@ -340,6 +341,7 @@
 		<brand_duplo>Pludo</brand_duplo> <!-- https://de.wikipedia.org/wiki/Duplo_(Schokoriegel) -->
 		<brand_mars>Marts</brand_mars> <!-- https://en.wikipedia.org/wiki/Mars_bar -->
 		<brand_sarotti>Schorotti</brand_sarotti> <!-- https://en.wikipedia.org/wiki/Sarotti -->
+		<brand_stollwerck>Stellwerks</brand_stollwerck> <!-- https://de.wikipedia.org/wiki/Stollwerck -->
 		<brand_toblerone>Tuberthrone</brand_toblerone> <!-- https://en.wikipedia.org/wiki/Toblerone -->
 		<brand_schwartau>Schwalltau</brand_schwartau> <!-- https://de.wikipedia.org/wiki/Schwartauer_Werke -->
 		<brand_maggi>Meggli</brand_maggi> <!-- https://en.wikipedia.org/wiki/Maggi -->
@@ -357,6 +359,7 @@
 		<brand_duff>Döff</brand_duff> <!-- https://en.wikipedia.org/wiki/Duff_Beer -->
 		<brand_puschkin>Juczyn</brand_puschkin> <!-- https://de.wikipedia.org/wiki/Puschkin_Vodka -->
 		<brand_madisonsquaregarden>Madison Square Plaza</brand_madisonsquaregarden> <!-- https://en.wikipedia.org/wiki/Madison_Square_Garden -->
+		<brand_dixi>DUXI</brand_dixi> <!-- https://de.wikipedia.org/wiki/TOI_TOI_%26_DIXI_Sanit%C3%A4rsysteme -->
 
 		<brandslogan_thethirdplace>The fourth place</brandslogan_thethirdplace>
 		<brandslogan_cantbeatthefeeling>Can't eat the peeling</brandslogan_cantbeatthefeeling>
@@ -384,6 +387,8 @@
 		<generalorg_chaoscomputerclub>Chaos Communication Club</generalorg_chaoscomputerclub> <!-- https://en.wikipedia.org/wiki/Chaos_Computer_Club -->
 		<generalorg_adac>ADCA</generalorg_adac> <!-- https://en.wikipedia.org/wiki/ADAC -->
 		<generalorg_igmetall>DG Metall</generalorg_igmetall> <!-- https://en.wikipedia.org/wiki/IG_Metall -->
+		<generalorg_irs>ISR</generalorg_irs> <!-- https://en.wikipedia.org/wiki/Internal_Revenue_Service -->
+		<generalorg_opec>OILPEX</generalorg_opec> <!-- https://en.wikipedia.org/wiki/OPEC -->
 
 		<generalorgproject_columbia>Colombia</generalorgproject_columbia> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Columbia -->
 		<generalorgproject_challenger>Passenger</generalorgproject_challenger> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Challenger -->

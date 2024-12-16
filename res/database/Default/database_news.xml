@@ -278,9 +278,9 @@
 				<pl>Mistrzostwa świata w zapasach</pl>
 			</title>
 			<description>
-				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im N.Y. {brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
-				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. {brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
-				<pl>${mediaorg_worldwrestlingfederation} (${mediaorg_wwf}) organizuje swoje pierwsze pokazy w N.Y. {brand_madisonsquaregarden}. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
+				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im N.Y. ${brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
+				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. $ {brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
+				<pl>${mediaorg_worldwrestlingfederation} (${mediaorg_wwf}) organizuje swoje pierwsze pokazy w N.Y. ${brand_madisonsquaregarden}. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
 			</description>
 			<variables>
 				<roddy>${.person:"9d84be62-ea5a-4142-a9d4-bacf10737c27":"firstname"}</roddy>
@@ -1345,9 +1345,9 @@
 				<pl>${generalorg_spd} wygrywa wybory federalne</pl>
 			</title>
 			<description>
-				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei (ShPD), Verzeichung, die ${generalorg_socialdemocraticpartyofgermany} auch weiterhin die Mehrheit. Eine weitere Amtszeit von ${helmut} ${kohl} steht bevor.</de>
-				<en>The major parties emerge as losers from the Bundestag elections. Nevertheless, the Sham Party (ShPD), pardon, the ${generalorg_socialdemocraticpartyofgermany} continues to hold the majority. Another term of ${helmut} ${kohl} is in prospect.</en>
-				<pl>Główne partie przegrały wybory do Bundestagu. Niemniej jednak Sham Party (ShPD), pardon, ${generalorg_socialdemocraticpartyofgermany} nadal utrzymuje większość. Zapowiada się kolejna kadencja ${helmut}a ${kohl}a.</pl>
+				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei (ShPD), Verzeihung, die ${generalorg_spd} auch weiterhin die Mehrheit. Eine weitere Amtszeit von ${helmut} ${kohl} steht bevor.</de>
+				<en>The major parties emerge as losers from the Bundestag elections. Nevertheless, the Sham Party (ShPD), pardon, the ${generalorg_spd} continues to hold the majority. Another term of ${helmut} ${kohl} is in prospect.</en>
+				<pl>Główne partie przegrały wybory do Bundestagu. Niemniej jednak Sham Party (ShPD), pardon, ${generalorg_spd} nadal utrzymuje większość. Zapowiada się kolejna kadencja ${helmut}a ${kohl}a.</pl>
 			</description>
 			<variables>
 				<helmut>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"firstname"}</helmut>
@@ -1398,7 +1398,7 @@
 		<news guid="c1d45e4e-3c3f-4843-ae47-2823cee994df" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
 			<!-- deutschbezogen -->
 			<title>
-				<all>${generalorgproject_challenger} 8</all>
+				<all>${generalorgproject_documenta} 8</all>
 			</title>
 			<description>
 				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
@@ -5118,7 +5118,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<data genre="1" price="1.0" quality="23" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="b2719e00-bd4c-42dd-8398-35cf359009b0" thread_guid="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="">
+		<news guid="b2719e00-bd4c-42dd-8398-35cf359009b0" thread_guid="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="" comment="TODO: phi symbol not supported yet">
 			<title>
 				<de>Computerviren überfallen ${theinternet}</de>
 				<en>Computer viruses invade ${theinternet}</en>
@@ -5138,7 +5138,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				</theinternet>
 				<virus_csv>
 					π;Pi;314;3;14159265358979323846264338327950-2884197169399375105820974944592307-8164062862089986280348253421170679-8214808651328230664709384460955058-22317253594081284811174502|
-					φ;Phi;161;1;61803398874989484820458683436563-8117720309179805762862135448622705-2604628189024497072072041893911374-8475408807538689175212663386222353-69317931800607667263544333|
+					phi;Phi;161;1;61803398874989484820458683436563-8117720309179805762862135448622705-2604628189024497072072041893911374-8475408807538689175212663386222353-69317931800607667263544333|
 					e;Euler;217;2;71828182845904523536028747135266-2497757247093699959574966967627724-0766303535475945713821785251664274-2746639193200305992181741359662904-35729003342952605956307381
 				</virus_csv>
 				<symbol>${.csv:virus_csv:0}</symbol>
@@ -5252,7 +5252,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>${brand_telekom} rezygnuje z analogów</pl>
 			</title>
 			<description>
-				<de>Die deutsche ${brand_telekom} schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
+				<de>Die Deutsche ${brand_telekom} schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
 				<en>German ${brand_telekom} is phasing out analog technology. It is no longer profitable because it is no longer used, according to a spokesman.</en>
 				<pl>Niemiecki ${brand_telekom} wycofuje się z technologii analogowej. Według rzecznika nie jest ona już opłacalna, ponieważ nie jest już używana.</pl>
 			</description>
@@ -6904,22 +6904,45 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="1" price="1.0" quality="35" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_guid="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="">
+		<news guid="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_guid="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="" comment="TODO: Could add other sports">
 			<title>
-				<de>${borisbecker} plant Comeback</de>
-				<en>${borisbecker} plans comeback</en>
-				<pl>${borisbecker} planuje powrót</pl>
+				<de>${athletefirstname} ${athletelastname} plant Comeback</de>
+				<en>${athletefirstname} ${athletelastname} plans comeback</en>
+				<pl>${athletefirstname} ${athletelastname} planuje powrót</pl>
 			</title>
 			<description>
-				<de>Nach jahrelanger Tennis-Abstinenz plant ${borisbecker} sein Comeback. Konkurrenten freuen sich auf legendäre Hechtsprünge.</de>
-				<en>After years of tennis abstinence, ${borisbecker} is planning his comeback. Competitors are looking forward to legendary pike jumps.</en>
-				<pl>Po latach tenisowej abstynencji ${borisbecker} planuje swój powrót. Zawodnicy nie mogą się doczekać legendarnych skoków szczupakiem.</pl>
+				<de>Nach jahrelanger Tennis-Abstinenz plant ${athletefirstname} ${athletelastname} sein Comeback. Konkurrenten freuen sich ${legendary_${epoch}}.</de>
+				<en>After years of tennis abstinence, ${athletefirstname} ${athletelastname} is planning his comeback. Competitors are looking forward ${legendary_${epoch}}.</en>
+				<pl>Po latach tenisowej abstynencji ${athletefirstname} ${athletelastname} planuje swój powrót. Zawodnicy nie mogą się doczekać ${legendary_${epoch}}.</pl>
 			</description>
 			<variables>
-				<borisbecker>${.person:"209467cd-85e1-4212-999e-b6273359320f":"fullname"}</borisbecker>
+				<athletesfirstname_csv>${.person:"614c90b8-e18c-45d2-a026-a3d216b276cb":"firstname"};${.person:"c6f7756d-3e0c-4e47-9cbe-13dc7826e145":"firstname"};${.person:"b073ffa5-ad2f-40ce-ba52-b5b9d5e4a2a6":"firstname"};${.person:"209467cd-85e1-4212-999e-b6273359320f":"firstname"}</athletesfirstname_csv>
+				<athleteslastname_csv>${.person:"614c90b8-e18c-45d2-a026-a3d216b276cb":"lastname"};${.person:"c6f7756d-3e0c-4e47-9cbe-13dc7826e145":"lastname"};${.person:"b073ffa5-ad2f-40ce-ba52-b5b9d5e4a2a6":"lastname"};${.person:"209467cd-85e1-4212-999e-b6273359320f":"lastname"}</athleteslastname_csv>
+				<epoch>${.lte:currentyear:1986:"0":"${.lte:currentyear:1995:"1":"${.lte:currentyear:2004:"2":"3"}"}"}</epoch>
+				<legendary_0>
+					<de>auf sein legendäres unbezwingbares Linkshänderspiel</de>
+					<en>his legendary unconquerable left-handed game</en>
+					<pl>jego legendarnej, niepokonanej gry lewą ręką</pl>
+				</legendary_0>
+				<legendary_1>
+					<de>auf die kühle, fast emotionslose Ausstrahlung des „Ice ${athletelastname}“ auf dem Platz</de>
+					<en>to the cool, almost emotionless charisma of the “Ice ${athletelastname}” on the court</en>
+					<pl>chłodnej, niemal pozbawionej emocji charyzmy „Lodowego ${athletelastname}a” na boisku</pl>
+				</legendary_1>
+				<legendary_2>
+					<de>auf legendäre Wutausbrüche und temperamentvolle, emotionale Diskussionen mit Schiedsrichtern („You cannot be serious!“)</de>
+					<en>to legendary outbursts of anger and spirited, emotional discussions with referees (“You cannot be serious!”)</en>
+					<pl>legendarnych wybuchów złości i emocjonalnych dyskusji z sędziami („Nie mówisz poważnie!”)</pl>
+				</legendary_2>
+				<legendary_3>
+					<de>auf legendäre Hechtsprünge</de>
+					<en>to legendary pike jumps</en>
+					<pl>legendarnych skoków szczupakiem</pl>
+				</legendary_3>
+				<athletefirstname>${.csv:athletesfirstname_csv:epoch}</athletefirstname>
+				<athletelastname>${.csv:athleteslastname_csv:epoch}</athletelastname>
 			</variables>
 			<data genre="2" price="1.0" quality="39" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<!--
@@ -7069,6 +7092,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
 				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
 				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"firstname"}</jenniferlopez>
 				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
 				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
 				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>
@@ -7154,6 +7178,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						Rocksängerin;${courtneylove}|
 						Rapperin;${lilkim}|
 						Rapperin und Schauspielerin;${queenlatifah}|
+						Sängerin und Schauspielerin;${jenniferlopez}|
 						Sängerin;${cristinaaguilera}|
 						Sängerin;${beyonce}|
 						Schauspielerin;${pamalaanderson}|
@@ -7164,6 +7189,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						rock singer;${courtneylove}|
 						rapper;${lilkim}|
 						rapper and actress;${queenlatifah}|
+						singer and actress;${jenniferlopez}|
 						singer;${cristinaaguilera}|
 						singer;${beyonce}|
 						actress;${pamalaanderson}|
@@ -7174,6 +7200,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						piosenkarka rockowa;${courtneylove}|
 						rapperka;${lilkim}|
 						rapperka i aktorka;${queenlatifah}|
+						piosenkarka and aktorka;${jenniferlopez}|
 						piosenkarka;${cristinaaguilera}|
 						piosenkarka;${beyonce}|
 						aktorka;${pamalaanderson}|
@@ -8466,7 +8493,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>Sweden;Norway;Finland;Denmark;Iceland</en>
 					<pl>Szwecja;Norwegia;Finlandia;Dania;Islandia</pl>
 				</countries_csv>
-				<combination_csv>0;1;2|0;1;3|0;1;4|0;2;3|0;2;4|0;3;4|1;2;3|1;2;4|1;3;4|2;3;4</combination_csv>
+				<combination_csv>0;1;2|0;1;3|0;1;4|0;2;1|0;2;3|0;2;4|0;3;1|0;3;2|0;3;4|0;4;1|0;4;2|0;4;3|1;0;2|1;0;3|1;0;4|1;2;0|1;2;3|1;2;4|1;3;0|1;3;2|1;3;4|1;4;0|1;4;2|1;4;3|2;0;1|2;0;3|2;0;4|2;1;0|2;1;3|2;1;4|2;3;0|2;3;1|2;3;4|2;4;0|2;4;1|2;4;3|3;0;1|3;0;2|3;0;4|3;1;0|3;1;2|3;1;4|3;2;0|3;2;1|3;2;4|3;4;0|3;4;1|3;4;2|4;0;1|4;0;2|4;0;3|4;1;0|4;1;2|4;1;3|4;2;0|4;2;1|4;2;3|4;3;0|4;3;1|4;3;2</combination_csv>
 				<swedenandnorway>
 					<de>${.csv:countries_csv:${.csv:combination_csv:0}} und ${.csv:countries_csv:${.csv:combination_csv:1}}</de>
 					<en>${.csv:countries_csv:${.csv:combination_csv:0}} and ${.csv:countries_csv:${.csv:combination_csv:1}}</en>

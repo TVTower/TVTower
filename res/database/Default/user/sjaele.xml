@@ -348,7 +348,7 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news guid="Sjaele-news-Plagiatorin-Forschungsausschuss" type="0" creator="7430" created_by="Sjaele">
+		<news guid="b04c2f00-254f-497e-b9f9-080b676a41a9" type="0" creator="7430" created_by="Sjaele" comment="https://de.wikipedia.org/wiki/Silvana_Koch-Mehrin">
 			<title>
 				<de>Plagiatorin im Forschungsausschuss</de>
 				<en>Plagiarist on the Research Committee</en>
@@ -359,8 +359,8 @@
 				<en>A few days after her doctoral degree was revoked, an EU parliamentarian was appointed to the Parliament's Research Committee.</en>
 				<pl>Kilka dni po odebraniu jej tytułu doktora, parlamentarzystka UE została powołana do parlamentarnego Komitetu Badań Naukowych.</pl>
 			</description>
-			<data genre="3" price="0.7" quality="35" />
-			<availability year_range_from="" year_range_to="" />
+			<data genre="3" price="0.7" quality="35" flags="2" /> <!-- actual date: 2014-02-07 -->
+			<availability year_range_from="2011" year_range_to="2015" />
 		</news>
 
 		<news guid="Sjaele-news-Schlussverkauf-Wahnsinnsrabatten" type="0" creator="7430" created_by="Sjaele">
@@ -793,7 +793,7 @@
 			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
-		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="TODO: 'Al Friedeno' probably Al Pacino">
 			<title>
 				<de>${brand_iphone} zertrümmert</de>
 				<en>${brand_iphone} smashed</en>

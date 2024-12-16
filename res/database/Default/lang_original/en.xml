@@ -287,6 +287,7 @@
 		<brand_cessna>Cessna</brand_cessna> <!-- https://en.wikipedia.org/wiki/Cessna -->
 		<brand_cessna172>Cessna 172</brand_cessna172> <!-- https://en.wikipedia.org/wiki/Cessna_172 -->
 		<brand_ravensburger>Ravensburger</brand_ravensburger> <!-- https://en.wikipedia.org/wiki/Ravensburger -->
+		<brand_carrera>Carrera</brand_carrera> <!-- https://en.wikipedia.org/wiki/Carrera_(slot_car_brand) -->
 		<brand_lamy>Lamy</brand_lamy> <!-- https://en.wikipedia.org/wiki/Lamy -->
 		<brand_swingline>Swingline</brand_swingline> <!-- https://en.wikipedia.org/wiki/Swingline -->
 		<brand_riored>Rio Red</brand_riored> <!-- https://en.wikipedia.org/wiki/Swingline -->
@@ -340,6 +341,7 @@
 		<brand_duplo>Duplo</brand_duplo> <!-- https://de.wikipedia.org/wiki/Duplo_(Schokoriegel) -->
 		<brand_mars>Mars</brand_mars> <!-- https://en.wikipedia.org/wiki/Mars_bar -->
 		<brand_sarotti>Sarotti</brand_sarotti> <!-- https://en.wikipedia.org/wiki/Sarotti -->
+		<brand_stollwerck>Stollwerck</brand_stollwerck> <!-- https://de.wikipedia.org/wiki/Stollwerck -->
 		<brand_toblerone>Toblerone</brand_toblerone> <!-- https://en.wikipedia.org/wiki/Toblerone -->
 		<brand_schwartau>Schwartau</brand_schwartau> <!-- https://de.wikipedia.org/wiki/Schwartauer_Werke -->
 		<brand_maggi>Maggi</brand_maggi> <!-- https://en.wikipedia.org/wiki/Maggi -->
@@ -357,6 +359,7 @@
 		<brand_duff>Duff</brand_duff> <!-- https://en.wikipedia.org/wiki/Duff_Beer -->
 		<brand_puschkin>Puschkin</brand_puschkin> <!-- https://de.wikipedia.org/wiki/Puschkin_Vodka -->
 		<brand_madisonsquaregarden>Madison Square Garden</brand_madisonsquaregarden> <!-- https://en.wikipedia.org/wiki/Madison_Square_Garden -->
+		<brand_dixi>DIXI</brand_dixi> <!-- https://de.wikipedia.org/wiki/TOI_TOI_%26_DIXI_Sanit%C3%A4rsysteme -->
 
 		<brandslogan_thethirdplace>The third place</brandslogan_thethirdplace>
 		<brandslogan_cantbeatthefeeling>Can't beat the feeling</brandslogan_cantbeatthefeeling>
@@ -384,6 +387,8 @@
 		<generalorg_chaoscomputerclub>Chaos Computer Club</generalorg_chaoscomputerclub> <!-- https://en.wikipedia.org/wiki/Chaos_Computer_Club -->
 		<generalorg_adac>ADAC</generalorg_adac> <!-- https://en.wikipedia.org/wiki/ADAC -->
 		<generalorg_igmetall>IG Metall</generalorg_igmetall> <!-- https://en.wikipedia.org/wiki/IG_Metall -->
+		<generalorg_irs>IRS</generalorg_irs> <!-- https://en.wikipedia.org/wiki/Internal_Revenue_Service -->
+		<generalorg_opec>OPEC</generalorg_opec> <!-- https://en.wikipedia.org/wiki/OPEC -->
 
 		<generalorgproject_columbia>Columbia</generalorgproject_columbia> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Columbia -->
 		<generalorgproject_challenger>Challenger</generalorgproject_challenger> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Challenger -->

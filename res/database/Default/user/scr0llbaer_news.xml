@@ -413,7 +413,7 @@
 						Riesiger aufblasbarer;Dildo;Der;Er|
 						Riesige aufblasbare;Wurst;Die;Sie|
 						69;Herzballons-Geschwader;Das;Es|
-						101;Luftballons-Bündel;Das;Es|
+						101;Luftballons-Bündel;Das;Es
 					</de>
 					<en>Giant inflatable;duck;the;It|
 						Giant inflatable;unicorn;the;It|
@@ -627,44 +627,44 @@
 					<pl>twierdzenia|zarzuty|argumenty</pl>
 				</claims>
 				<what_csv>
-					<de>${their}en Hauspapagei;, der Vogel habe ${them_acc} beleidigt und ${their}en Ruf vor ${their}en Freunden geschädigt; ${heshe} fordert eine öffentliche Entschuldigung von dem Papagei und eine einstweilige Verfügung, um weitere Verleumdungen zu verhindern|
-						${their} Motorrad;, das Gefährt habe ${them_acc} während einer Tour absichtlich zu Fall gebracht; ${heshe} fordert Schadensersatz für Verletzungen und Schäden|
-						${their} Spiegelbild;, die Reflektion habe ${them_dat} emotionales Leid zugefügt und jede ${their}er Bewegungen nachgeahmt; ${heshe} beantragt eine einstweilige Verfügung und Schadensersatz wegen Verletzung der Privatsphäre|
-						einen Kaufhausspiegel;, der Kaufhausspiegel habe ${their} Aussehen verzerrt, so dass ${heshe} an ${their}er eigenen Schönheit zweifeln musste; ${heshe} fordert, dass der Spiegel ersetzt oder verändert wird|
+					<de>${their}en Hauspapagei;, der Vogel habe ${them_acc} beleidigt und ${their}en Ruf vor ${their}en Freunden geschädigt. ${.ucfirst:heshe} fordert eine öffentliche Entschuldigung von dem Papagei und eine einstweilige Verfügung, um weitere Verleumdungen zu verhindern|
+						${their} Motorrad;, das Gefährt habe ${them_acc} während einer Tour absichtlich zu Fall gebracht. ${.ucfirst:heshe} fordert Schadensersatz für Verletzungen und Schäden|
+						${their} Spiegelbild;, die Reflektion habe ${them_dat} emotionales Leid zugefügt und jede ${their}er Bewegungen nachgeahmt. ${.ucfirst:heshe} beantragt eine einstweilige Verfügung und Schadensersatz wegen Verletzung der Privatsphäre|
+						einen Kaufhausspiegel;, der Kaufhausspiegel habe ${their} Aussehen verzerrt, so dass ${heshe} an ${their}er eigenen Schönheit zweifeln musste. ${.ucfirst:heshe} fordert, dass der Spiegel ersetzt oder verändert wird|
 						${themself};, ${heshe} habe ${their}e eigenen Bürgerrechte verletzt, indem ${heshe} sich betrunken und eine Straftat begangen habe, und verlangt, dass der Staat ${them_dat} 5 Millionen zahle|
-						${their}en Schatten;, dass ${their} eigener Schatten ${them_acc} verfolgte und ${their}e Aktivitäten ausspionierte, und führt weiter aus, dass dies eine Verletzung ${their}er Privatsphäre darstelle; ${heshe} fordert eine Untersuchung der Angelegenheit|
-						einen Wahrsager;, dass falsche Vorhersagen zu den Lottozahlen gemacht wurden; ${heshe} verlangt eine Entschädigung für das Geld, das ${heshe} aufgrund der Ratschläge des Wahrsagers für Lotterielose ausgegeben hat|
-						${their} Navi;, das Gerät habe ${them_dat} irreführende Anweisungen gegeben, was zu zahlreichen falschen Abzweigungen und Verzögerungen geführt habe; ${heshe} fordert Entschädigung für verschwendete Zeit und Kraftstoff|
-						${their}e Katze;, das Tier habe ${them_dat} durch ihr unaufhörliches Miauen und ihr unberechenbares Verhalten erheblichen seelischen Schaden zugefügt; ${heshe} fordert Schadenersatz für die verursachte Notlage|
-						${their}en Wecker;, dass das unaufhörliche, laute Klingeln chronischen Schlafentzug verursacht und ${their} allgemeines Wohlbefinden beeinträchtige; ${heshe} fordert Entschädigung für die daraus entstandenen gesundheitlichen Probleme|
-						${their}en Fernseher;, dass der Fernseher ${them_dat} geheime Botschaften schickt und dazu drängt, spezifische Aufgaben auszuführen; ${heshe} fordert eine Untersuchung der Angelegenheit, um die Quelle der Botschaften zu ermitteln|
-						${their}en Friseur;, man hätte ${them_dat} einen schrecklichen Haarschnitt verpasst, der ${their} Selbstwertgefühl beschädigt habe; ${heshe} fordert eine Entschädigung für die Kosten der Dienstleistung und den entstandenen seelischen Schaden
+						${their}en Schatten;, dass ${their} eigener Schatten ${them_acc} verfolgte und ${their}e Aktivitäten ausspionierte, und führt weiter aus, dass dies eine Verletzung ${their}er Privatsphäre darstelle. ${.ucfirst:heshe} fordert eine Untersuchung der Angelegenheit|
+						einen Wahrsager;, dass falsche Vorhersagen zu den Lottozahlen gemacht wurden. ${.ucfirst:heshe} verlangt eine Entschädigung für das Geld, das ${heshe} aufgrund der Ratschläge des Wahrsagers für Lotterielose ausgegeben hat|
+						${their} Navi;, das Gerät habe ${them_dat} irreführende Anweisungen gegeben, was zu zahlreichen falschen Abzweigungen und Verzögerungen geführt habe. ${.ucfirst:heshe} fordert Entschädigung für verschwendete Zeit und Kraftstoff|
+						${their}e Katze;, das Tier habe ${them_dat} durch ihr unaufhörliches Miauen und ihr unberechenbares Verhalten erheblichen seelischen Schaden zugefügt. ${.ucfirst:heshe} fordert Schadenersatz für die verursachte Notlage|
+						${their}en Wecker;, dass das unaufhörliche, laute Klingeln chronischen Schlafentzug verursacht und ${their} allgemeines Wohlbefinden beeinträchtige. ${.ucfirst:heshe} fordert Entschädigung für die daraus entstandenen gesundheitlichen Probleme|
+						${their}en Fernseher;, dass der Fernseher ${them_dat} geheime Botschaften schickt und dazu drängt, spezifische Aufgaben auszuführen. ${.ucfirst:heshe} fordert eine Untersuchung der Angelegenheit, um die Quelle der Botschaften zu ermitteln|
+						${their}en Friseur;, man hätte ${them_dat} einen schrecklichen Haarschnitt verpasst, der ${their} Selbstwertgefühl beschädigt habe. ${.ucfirst:heshe} fordert eine Entschädigung für die Kosten der Dienstleistung und den entstandenen seelischen Schaden
 					</de>
-					<en>${their} pet parrot; the bird had insulted ${them_acc} and tarnished ${their} reputation in front of ${their} friends; ${heshe} seeks a public apology from the parrot and a restraining order to prevent further defamation|
-						${their} motorcycle; the vehicle had intentionally caused ${them_acc} to crash during a ride; ${heshe} demands compensation for injuries and damages|
-						${their} mirror reflection; the reflection had caused ${them_dat} emotional distress and mimicked ${their} every move; ${heshe} seeks a restraining order and damages for invasion of privacy|
-						a shop mirror; the shop mirror had distorted ${their} appearance and caused ${them_dat} to doubt ${their} own beauty; ${heshe} demands that the mirror be replaced or altered|
+					<en>${their} pet parrot; the bird had insulted ${them_acc} and tarnished ${their} reputation in front of ${their} friends. ${.ucfirst:heshe} seeks a public apology from the parrot and a restraining order to prevent further defamation|
+						${their} motorcycle; the vehicle had intentionally caused ${them_acc} to crash during a ride. ${.ucfirst:heshe} demands compensation for injuries and damages|
+						${their} mirror reflection; the reflection had caused ${them_dat} emotional distress and mimicked ${their} every move. ${.ucfirst:heshe} seeks a restraining order and damages for invasion of privacy|
+						a shop mirror; the shop mirror had distorted ${their} appearance and caused ${them_dat} to doubt ${their} own beauty. ${.ucfirst:heshe} demands that the mirror be replaced or altered|
 						${themself}; ${heshe} had violated ${their} own civil rights by getting drunk and committing a crime, and demands that the state pay ${them_dat} 5 million|
 						${their} own shadow; that ${their} own shadow has been following ${them_acc} and spying on ${their} activities, and further claims it was an invasion of ${their} privacy, demanding an investigation into the matter|
-						a fortune teller; that they have provided inaccurate predictions regarding lottery numbers; ${heshe} seeks compensation for the money ${heshe} has spent on lottery tickets based on the fortune teller's advice|
-						${their} sat nav; the device had given ${them_acc} misleading directions, leading to numerous wrong turns and delays; ${heshe} seeks reimbursement for the wasted time and fuel|
-						${their} cat; that the pet had caused ${them_dat} significant emotional distress with its incessant meowing and unpredictable behavior; ${heshe} seeks damages for the distress caused|
-						${their} alarm clock; that the loud incessant ringing had caused ${them_dat} chronic sleep deprivation and affected ${their} overall well-being; ${heshe} seeks compensation for the resulting health issues|
-						${their} television; the television was sending ${them_dat} secret messages, urging to carry out specific tasks; ${heshe} demands an investigation into the matter to uncover the source of the messages|
-						${their} hairdresser; they have given ${them_dat} a terrible haircut that had damaged ${their} self-esteem; ${heshe} seeks reimbursement for the cost of the service and emotional distress caused
+						a fortune teller; that they have provided inaccurate predictions regarding lottery numbers. ${.ucfirst:heshe} seeks compensation for the money ${heshe} has spent on lottery tickets based on the fortune teller's advice|
+						${their} sat nav; the device had given ${them_acc} misleading directions, leading to numerous wrong turns and delays. ${.ucfirst:heshe} seeks reimbursement for the wasted time and fuel|
+						${their} cat; that the pet had caused ${them_dat} significant emotional distress with its incessant meowing and unpredictable behavior. ${.ucfirst:heshe} seeks damages for the distress caused|
+						${their} alarm clock; that the loud incessant ringing had caused ${them_dat} chronic sleep deprivation and affected ${their} overall well-being. ${.ucfirst:heshe} seeks compensation for the resulting health issues|
+						${their} television; the television was sending ${them_dat} secret messages, urging to carry out specific tasks. ${.ucfirst:heshe} demands an investigation into the matter to uncover the source of the messages|
+						${their} hairdresser; they have given ${them_dat} a terrible haircut that had damaged ${their} self-esteem. ${.ucfirst:heshe} seeks reimbursement for the cost of the service and emotional distress caused
 					</en>
-					<pl>${their} zwierzątko papuga; ptak obraził ${them_acc} i zszargał reputację ${their} przed ${their} przyjaciółmi; ${heshe} domaga się publicznych przeprosin od papugi i zakazu zbliżania się, aby zapobiec dalszemu zniesławianiu|
-						${their} motocykl; pojazd celowo spowodował wypadek ${them_acc} podczas jazdy; ${heshe} żąda odszkodowania za obrażenia i szkody|
-						${their} odbicie lustrzane; odbicie spowodowało u ${them_dat} cierpienie emocjonalne i naśladowało każdy ruch ${their}; ${heshe} domaga się zakazu zbliżania się i odszkodowania za naruszenie prywatności|
-						lustro sklepowe; sklepowe lustro zniekształciło wygląd ${their} i sprawiło, że ${them_dat} zwątpił w ${their} własne piękno; ${heshe} żąda wymiany lub zmiany lustra|
+					<pl>${their} zwierzątko papuga; ptak obraził ${them_acc} i zszargał reputację ${their} przed ${their} przyjaciółmi. ${.ucfirst:heshe} domaga się publicznych przeprosin od papugi i zakazu zbliżania się, aby zapobiec dalszemu zniesławianiu|
+						${their} motocykl; pojazd celowo spowodował wypadek ${them_acc} podczas jazdy. ${.ucfirst:heshe} żąda odszkodowania za obrażenia i szkody|
+						${their} odbicie lustrzane; odbicie spowodowało u ${them_dat} cierpienie emocjonalne i naśladowało każdy ruch ${their}. ${.ucfirst:heshe} domaga się zakazu zbliżania się i odszkodowania za naruszenie prywatności|
+						lustro sklepowe; sklepowe lustro zniekształciło wygląd ${their} i sprawiło, że ${them_dat} zwątpił w ${their} własne piękno. ${.ucfirst:heshe} żąda wymiany lub zmiany lustra|
 						${themself}; ${heshe} naruszył ${their} własne prawa obywatelskie, upijając się i popełniając przestępstwo, i żąda, aby państwo zapłaciło ${them_dat} 5 milionów|
 						${their} własny cień; że ${their} własny cień śledził ${them_acc} i szpiegował działania ${their}, a ponadto twierdzi, że było to naruszenie prywatności ${their}, domagając się śledztwa w tej sprawie|
-						wróżka; że przedstawili niedokładne prognozy dotyczące numerów loterii; ${heshe} domaga się odszkodowania za pieniądze, które ${heshe} wydał na losy loterii w oparciu o porady wróżki|
-						${their} nawigacja satelitarna; urządzenie podało ${them_acc} mylące wskazówki, co doprowadziło do licznych błędnych skrętów i opóźnień; ${heshe} domaga się zwrotu kosztów za zmarnowany czas i paliwo|
-						${their} kot; że zwierzę spowodowało u ${them_dat} znaczne cierpienie emocjonalne swoim nieustannym miauczeniem i nieprzewidywalnym zachowaniem; ${heshe} domaga się odszkodowania za spowodowane cierpienie|
-						${their} budzik; że głośne, nieprzerwane dzwonienie spowodowało chroniczne pozbawienie ${them_dat} snu i wpłynęło na ogólne samopoczucie ${their}; ${heshe} domaga się odszkodowania za wynikające z tego problemy zdrowotne|
-						${their} TV; telewizja wysyłała ${them_dat} tajne wiadomości, nakłaniając do wykonania określonych zadań; ${heshe} żąda śledztwa w tej sprawie, aby odkryć źródło wiadomości|
-						${their} fryzjer; zafundowali ${them_dat} okropną fryzurę, która zaszkodziła ${their} poczuciu własnej wartości; ${heshe} domaga się zwrotu kosztów usługi i spowodowanych nią cierpień emocjonalnych
+						wróżka; że przedstawili niedokładne prognozy dotyczące numerów loterii. ${.ucfirst:heshe} domaga się odszkodowania za pieniądze, które ${heshe} wydał na losy loterii w oparciu o porady wróżki|
+						${their} nawigacja satelitarna; urządzenie podało ${them_acc} mylące wskazówki, co doprowadziło do licznych błędnych skrętów i opóźnień. ${.ucfirst:heshe} domaga się zwrotu kosztów za zmarnowany czas i paliwo|
+						${their} kot; że zwierzę spowodowało u ${them_dat} znaczne cierpienie emocjonalne swoim nieustannym miauczeniem i nieprzewidywalnym zachowaniem. ${.ucfirst:heshe} domaga się odszkodowania za spowodowane cierpienie|
+						${their} budzik; że głośne, nieprzerwane dzwonienie spowodowało chroniczne pozbawienie ${them_dat} snu i wpłynęło na ogólne samopoczucie ${their}. ${.ucfirst:heshe} domaga się odszkodowania za wynikające z tego problemy zdrowotne|
+						${their} TV; telewizja wysyłała ${them_dat} tajne wiadomości, nakłaniając do wykonania określonych zadań. ${.ucfirst:heshe} żąda śledztwa w tej sprawie, aby odkryć źródło wiadomości|
+						${their} fryzjer; zafundowali ${them_dat} okropną fryzurę, która zaszkodziła ${their} poczuciu własnej wartości. ${.ucfirst:heshe} domaga się zwrotu kosztów usługi i spowodowanych nią cierpień emocjonalnych
 					</pl>
 				</what_csv>
 				<theirparrot>
@@ -2259,6 +2259,1643 @@
 				<pl>Thriller science-fiction opowiada (według krytyków naciąganą) historię o zaawansowanym technologicznie regionie Dalekiego Wschodu, który ostatecznie zdominował świat politycznie, a następnie zniknął. Naoczni świadkowie zniknęli lub zostali zdyskredytowani.</pl>
 			</description>
 			<data genre="5" price="1" quality="45" fictional="1" />
+		</news>
+
+		<news guid="a989a465-7378-4497-9a56-6827033b0f0f" type="0" creator="9551">
+			<title>
+				<de>${norway}: ${.ucfirst:giantfish} fällt vom Himmel</de>
+				<en>${norway}: ${.ucfirst:giantfish} falls from the sky</en>
+				<pl>${norway}: ${.ucfirst:giantfish} spada z nieba</pl>
+			</title>
+			<description>
+				<de>${.ucfirst:a_article} ${giantfish} aus dem Himmel ist in ein ${norwegian} Dorf gestürzt. Experten vermuten, dass ${it_pronoun} aus einem Orkan stammt. Die Dorfbewohner feiern die himmlische Mahlzeit.</de>
+				<en>${.ucfirst:a_article} ${giantfish} fell from the sky into a ${norwegian} village. Experts believe ${it_pronoun} came from a hurricane. Locals are celebrating the divine meal.</en>
+				<pl>${.ucfirst:giantfish} spadła z nieba na ${norwegian} wioskę. Eksperci podejrzewają, że pochodzi z huraganu. Mieszkańcy wioski świętują niebiański posiłek.</pl>
+			</description>
+			<variables>
+				<fish_csv>
+					<de>ein;riesiger Fisch;er|ein;riesiger Tintenfisch;er|ein;riesiger Oktopus;er|ein;riesiger Hummer;er|eine;riesige Garnele;sie</de>
+					<en>a;giant fish;it|a;giant squid;it|a;giant octopus;it|a;giant lobster;it|a;giant shrimp;it</en>
+					<pl>;ogromna ryba;|;ogromna kałamarnica;|;ogromna ośmiornica;|;ogromny homar;|;ogromna krewetka;</pl>
+				</fish_csv>
+				<a_article>
+					<all>${.csv:fish_csv:0}</all>
+				</a_article>
+				<giantfish>
+					<all>${.csv:fish_csv:1}</all>
+				</giantfish>
+				<it_pronoun>
+					<all>${.csv:fish_csv:2}</all>
+				</it_pronoun>
+				<norway_csv>
+					<de>Norwegen;norwegisches|Finnland;finnisches|Schweden;schwedisches|Dänemark;dänisches|Island;isländisches|Irland;irisches|Schottland;schottisches|Wales;walisisches</de>
+					<en>Norway;Norwegian|Finland;Finnish|Sweden;Swedish|Denmark;Danish|Iceland;Icelandic|Ireland;Irish|Scotland;Scottish|Wales;Welsh</en>
+					<pl>Norwegia;norweską|Finlandia;fińską|Szwecja;szwedzką|Dania;duńską|Islandia;islandzką|Irlandia;irlandzką|Szkocja;szkocką|Walia;walijską</pl>
+				</norway_csv>
+				<norway>
+					<all>${.csv:norway_csv:0}</all>
+				</norway>
+				<norwegian>
+					<all>${.csv:norway_csv:1}</all>
+				</norwegian>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="88e2ebf3-efc0-4155-8f81-ac7c8121c3cd" type="0" creator="9551">
+			<title>
+				<de>${cow} verzögert ${generalorg_nasa}-Mission</de>
+				<en>${.ucfirst:cow} delays ${generalorg_nasa} mission</en>
+				<pl>${.ucfirst:cow} opóźnia misję ${generalorg_nasa}</pl>
+			</title>
+			<description>
+				<de>${.ucfirst:arunawaycow} hat versehentlich die ${generalorg_nasa}-Abschussrampe aktiviert, wodurch die ${marsmission} um ${three} Tage verzögert wurde. ${thecowis}. ${.lte:currentyear:2001} / ${.or:${.or:${.lte:${.worldtime:"year"}:1984}:{.and:${.gte:${.worldtime:"year"}:1988}:${.lte:${.worldtime:"year"}:2001}}}:${.gte:${.worldtime:"year"}:2005}}</de>
+				<en>${.ucfirst:arunawaycow} accidentally triggered ${generalorg_nasa}'s launch pad, delaying the ${marsmission} by ${three} days. ${thecowis}.</en>
+				<pl>${.ucfirst:arunawaycow} przypadkowo uruchomiła wyrzutnię ${generalorg_nasa}, opóźniając ${marsmission} o ${three} dni. ${thecowis}.</pl>
+			</description>
+			<variables>
+				<cow_csv>
+					<de>Kuh;eine entlaufene Kuh;Die Kuh ist unversehrt|
+						Ziege;eine neugierige Ziege;Die Ziege kaute einige Kabel durch|
+						Schwein;ein entschlossenes Schwein;Das abenteuerlustige Schwein wühlte auf der Startrampe herum und beschädigte dabei unterirdische Kabel|
+						Alligator;ein verirrter Alligator;Der sonnenbadende Alligator räkelte sich auf dem Asphalt. Ein Tierschutzteam hat ihn freundlich umgesiedelt|
+						Schafherde;eine Herde schläfriger Schafe;Die Herde beschloss, rund um die Startrampe zu grasen und verursachte die unerwartete „Wollblockade“|
+						Truthahn;ein übereifriger Truthahn;Mit seiner „anhackenden Art“ pickte der Truthahn auf reflektierende Oberflächen und löste damit Alarm aus|
+						Waschbär;ein schelmischer Waschbär;Der Waschbär schlich sich in gesperrte Bereiche und fummelte an den Geräten herum|
+						Gürteltier;ein tollpatschiges Gürteltier;Das Gürteltier grub sich auf dem Startplatz ein und beschädigte dabei versehentlich wichtige Infrastruktur|
+						Kranich;ein kühner kanadischer Kranich;Der neugierige Kranich stolzierte durch die Startrampe und triggerte Bewegungssensoren|
+						Kuhherde;eine Kuhherde in voller Panik;Die Herde wurde durch einen Düsentest aufgeschreckt und verursachte damit den „Kuhstau“|
+						Kolibri;ein winziger Kolibri;Der Kolibri wurde von der leuchtend bunten ${generalorg_nasa}-Hardware angezogen und verursachte falsche Sensormessungen</de>
+					<en>cow;a runaway cow;The cow is unharmed|
+						goat;a curious goat;The goat chew through some wiring|
+						pig;a determined pig;The adventurous pig was digging around the launch site, disrupting underground cables|
+						alligator;a wayward alligator;The sunbathing gator sprawled on the tarmac. A wildlife crew politely relocated it|
+						herd of sheep;a herd of sleepy sheep;The sheep decided to graze around the launch pad, causing the unexpected “wool blockade”|
+						turkey;an overenthusiastic turkey;With its "talons-on" approach, the turkey pecked at reflective surfaces and set off alarms|
+						raccoon;a mischievous raccoon;The raccoon snuck into restricted areas and fiddled with equipment|
+						armadillo;a bumbling armadillo;The armadillo burrowed at the launch site and accidentally damaged critical infrastructure|
+						crane;a bold sandhill crane;The curious crane was striding through the lanch pad, triggering motion sensors|
+						herd of cows;a herd of cows in full stampede;The herd was spooked by a jet test, causing the "bovine bottleneck"|
+						hummingbird;a tiny hummingbird;The hummingbird was attracted to some of the brightly colored ${generalorg_nasa} hardware, causing false sensor readings</en>
+					<pl>krowa;uciekająca krowa;Krowa jest cała i zdrowa|
+						koza;ciekawska koza;Koza przegryzła kilka kabli|
+						świnia;zdeterminowana świnia;Żądna przygód świnia grzebała na platformie startowej i przy okazji uszkodziła podziemne kable|
+						aligator;zbłąkany aligator;Opalający się aligator wylegiwał się na asfalcie. Zespół ds. dobrostanu zwierząt uprzejmie go przeniósł|
+						stado owiec;stado śpiących owiec;Stado postanowiło wypasać się wokół platformy startowej i spowodowało nieoczekiwaną „blokadę wełny”|
+						indyk;nadgorliwy indyk;Indyk ze swoją „dziobiącą naturą” dziobał odblaskowe powierzchnie, uruchamiając alarm|
+						szop pracz;psotny szop pracz;Szop zakradł się do obszarów o ograniczonym dostępie i majstrował przy sprzęcie|
+						pancernik;niezdarne pancernik;Pancernik zakopał się w miejscu startu i przypadkowo uszkodził ważną infrastrukturę|
+						żuraw;odważny żuraw kanadyjski;Ciekawski żuraw przeszedł przez platformę startową i uruchomił czujniki ruchu|
+						stado krów;galopujące stado krów;Stado zostało zaskoczone przez test odrzutowca, powodując „krowi zator”|
+						koliber;malutki koliber;Koliber został przyciągnięty przez kolorowy sprzęt ${generalorg_nasa} i spowodował fałszywe odczyty czujników</pl>
+				</cow_csv>
+				<cow>
+					<all>${.csv:cow_csv:0}</all>
+				</cow>
+				<arunawaycow>
+					<all>${.csv:cow_csv:1}</all>
+				</arunawaycow>
+				<thecowis>
+					<all>${.csv:cow_csv:2}</all>
+				</thecowis>
+				<marsmission>
+					<de>Mars-Mission|Mond-Mission|Venus-Mission|Juno-Mission|Satellitenstart-Mission|Teleskop-Start-Mission|Raumstation-Versorgungs-Mission</de>
+					<en>Mars mission|Lunar mission|Venus mission|Juno mission|satellite launch mission|telescope launch mission|space station supply mission</en>
+					<pl>misję na Marsa|misję księżycową|misję na Wenus|misję Juno|misję startu satelity|misję startu teleskopu|misję zaopatrzeniowa stacji kosmicznej</pl>
+				</marsmission>
+				<three>
+					<de>drei|vier|fünf|sechs|sieben</de>
+					<en>three|four|five|six|seven</en>
+					<pl>trzy|cztery|pięć|sześć|siedem</pl>
+				</three>
+			</variables>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+			<availability script='${.or:${.or:${.lte:${.worldtime:"year"}:1984}:{.and:${.gte:${.worldtime:"year"}:1988}:${.lte:${.worldtime:"year"}:2001}}}:${.gte:${.worldtime:"year"}:2005}}' /> <!-- avoid proximity to catastrophy dates -->
+		</news>
+
+		<news guid="2fd84050-c697-4cec-9d59-ab16303799f4" type="0" creator="9551">
+			<title>
+				<de>${newyork}: ${cats}-Alarm im Tresorraum</de>
+				<en>${newyork}: ${cats} alarm in the bank vault</en>
+				<pl>${newyork}: Alarm ${cats} w skarbcu banku</pl>
+			</title>
+			<description>
+				<de>${agroupof} hat in einer Großbank in ${newyork} den Alarm ausgelöst, als sie eine Tasche voller Fischköder in den Tresorraum zerrten. Die Bank plant nun, ihre Sicherheitsmaßnahmen zu verstärken.</de>
+				<en>${agroupof} set off the alarm at a major bank in ${newyork} by dragging a bag of fish bait into the vault. The bank is now planning to strengthen its security measures.</en>
+				<pl>${newyork}: ${agroupof} wszczął alarm w dużym banku, wciągając do skarbca worek z przynętą na ryby. Bank planuje teraz wzmocnić swoje środki bezpieczeństwa.</pl>
+			</description>
+			<variables>
+				<newyork>
+					<de>New York City|London|Frankfurt|Hongkong|Zürich|Singapur|Tokio|Paris|Sydney|Dubai</de>
+					<en>New York City|London|Frankfurt|Hong Kong|Zurich|Singapore|Tokyo|Paris|Sydney|Dubai</en>
+					<pl>Nowy Jork|Londyn|Frankfurt|Hongkong|Zurych|Singapur|Tokio|Paryż|Sydney|Dubaj</pl>
+				</newyork>
+				<cats_csv>
+					<de>Katzen-Alarm;Eine Gang von Straßenkatzen|Köter-Alarm;Ein Rudel Straßenköter|Waschbär-Alarm;Eine Gruppe Waschbären|Krähen-Alarm;Eine Krähen-Gang</de>
+					<en>Cat alarm;A gang of alley cats|Dog Alarm;A pack of street mutts|Raccoon Alarm;A group of raccoons|Crow Alarm;A gang of crows</en>
+					<pl>dla kota;Gang ulicznych kotów|dla psa;Stado ulicznych psów|szopa pracza;Grupa szopów praczów|wronowy;Gang wron</pl>
+				</cats_csv>
+				<cats>
+					<all>${.csv:cats_csv:0}</all>
+				</cats>
+				<agroupof>
+					<all>${.csv:cats_csv:1}</all>
+				</agroupof>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="afadaf77-b5d0-48f4-9d31-fcc4aeb9a821" type="0" creator="9551">
+			<title>
+				<de>${london}: Teewagen fährt Amok</de>
+				<en>${london}: Tea cart goes rogue</en>
+				<pl>${london}: Wózek z herbatą szaleje</pl>
+			</title>
+			<description>
+				<de>Ein automatisierter Teewagen ist ${inalondonoffice} unkontrolliert durch die Gänge gerast und hat heißen Tee verteilt. Es wurden zwei verbrannte Laptops gemeldet.</de>
+				<en>An automated tea cart ${inalondonoffice} went rogue, spilling hot tea everywhere. Two burnt laptops were reported.</en>
+				<pl>Automatyczny wózek z herbatą ${inalondonoffice} wpadł w szał, rozlewając gorącą herbatę. Zgłoszono dwa spalone laptopy.</pl>
+			</description>
+			<variables>
+				<london_csv>
+					<de>London;in einem Londoner Bürozentrum|
+						New York;in einem New Yorker Bürozentrum|
+						Frankfurt;in einem Frankfurter Bürozentrum|
+						Hongkong;in einem Bürozentrum in Hongkong|
+						Zürich;in einem Züricher Bürozentrum|
+						Singapur;in einem Bürozentrum in Singapur|
+						Tokio;in einem Bürozentrum in Tokio|
+						Paris;in einem Pariser Bürozentrum|
+						Sydney;in einem Bürozentrum in Sydney|
+						Dubai;in einem Bürozentrum in Dubai
+					</de>
+					<en>London;in a London office center|
+						New York;in a New York office center|
+						Frankfurt;in a Frankfurt office center|
+						Hongkong;in a Hong Kong office center|
+						Zurich;in a Zurich office center|
+						Singapore;in a Singapore office center|
+						Tokyo;in a Tokyo office center|
+						Paris;in a Paris office center|
+						Sydney;in a Sydney office center|
+						Dubai;in a Dubai office center
+					</en>
+					<pl>Londyn;w londyńskim centrum biurowym|
+						Nowy Jork;w nowojorskim centrum biurowym|
+						Frankfurt;we frankfurckim centrum biurowym|
+						Hongkong;w centrum biurowym w Hongkongu|
+						Zurych;w zuryskim centrum biurowym|
+						Singapur;w centrum biurowym w Singapurze|
+						Tokio;w centrum biurowym w Tokio|
+						Paryż;w paryskim centrum biurowym|
+						Sydney;w centrum biurowym w Sydney|
+						Dubaj;w centrum biurowym w Dubaju
+					</pl>
+				</london_csv>
+				<london>
+					<all>${.csv:london_csv:0}</all>
+				</london>
+				<inalondonoffice>
+					<all>${.csv:london_csv:1}</all>
+				</inalondonoffice>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="bc8a5d58-c4bf-4be9-acb5-6c6b58ba8578" type="0" creator="9551">
+			<title>
+				<de>${japan}: ${turtle} stoppt Zug</de>
+				<en>${japan}: ${.ucfirst:turtle} stops train</en>
+				<pl>${japan}: ${.ucfirst:turtle} zatrzymuje pociąg</pl>
+			</title>
+			<description>
+				<de>${.ucfirst:apatient} ${turtle} auf den Gleisen brachte einen Hochgeschwindigkeitszug ${injapan} zum Stehen.${itremainedcalm} Die Passagiere ${praisedits}.</de>
+				<en>${.ucfirst:apatient} ${turtle} on the tracks brought a high-speed train ${injapan} to a halt.${itremainedcalm} Passengers ${praisedits}.</en>
+				<pl>${.ucfirst:apatient}${turtle} na torach zatrzymał pociąg wysokiej prędkości ${injapan}.${itremainedcalm} Pasażerowie ${praisedits}.</pl>
+			</description>
+			<variables>
+				<japan_csv>
+					<de>Japan;in Japan|Shanghai;in Shanghai|Peking;in Peking|Taiwan;in Taiwan|Indonesien;in Indonesien|Südkorea;in Südkorea</de>
+					<en>Japan;in Japan|Shanghai;in Shanghai|Beijing;in Beijing|Taiwan;in Taiwan|Indonesia;in Indonesia|South Korea;in South Korea</en>
+					<pl>Japonia; w Japonii|Szanghaj; w Szanghaju|Pekin; w Pekinie|Tajwan; na Tajwanie|Indonezja; w Indonezji|Korea Południowa; w Korei Południowej</pl>
+				</japan_csv>
+				<japan>
+					<all>${.csv:japan_csv:0}</all>
+				</japan>
+				<injapan>
+					<all>${.csv:japan_csv:1}</all>
+				</injapan>
+				<turtle_csv>
+					<de>Schildkröte;eine geduldige;;lobten ihre Geduld als „zenartig“|
+						Igel;ein besonders entschlossener;;lobten seinen „stacheligen Willen zur Selbstbestimmung“|
+						Entenfamilie;eine;Der Entenmutter samt Küken musste Vorrang gewährt werden.;bezeichneten den Moment als „herzerwärmender als jede Pünktlichkeit“|
+						Schaf;ein ausgebüxtes;Es blieb selbst nach wiederholten Lautsprecherdurchsagen gelassen.;lobten die „stoische Ruhe des Ruminanten“|
+						Waschbär;ein neugieriger;Er inspizierte minutenlang die Gleise und ließ sich nicht aus der Ruhe bringen.;beschrieben die Szene als „einen Meisterkurs in Gelassenheit“|
+						Pfau;ein stolzer;Er entschied sich mitten auf den Gleisen zu posieren.;kommentierten: „Eitelkeit schlägt Geschwindigkeit“|
+						Faultier;ein;Es überquerte in typischer Gemächlichkeit die Gleise.;feierten die „Lektion in Entschleunigung“|
+						Kuh;eine stoische;;bezeichneten sie als „Zen-Meisterin der Langsamkeit“|
+						Wildschwein;ein rennendes;Es rannte unbeirrt das Gleis entlang.;bewunderten das Tier für seinen „mutigen Schachzug gegen die Moderne“
+					</de>
+					<en>turtle;a patient;;praised its patience as "zen-like"|
+						hedgehog;a particularly determined;;praised its "spiky determination for self-assertion"|
+						family of ducks;a;The mother duck and her ducklings were given priority.;called the moment "more heartwarming than any punctuality"|
+						sheep;a runaway;It remained calm despite repeated loudspeaker announcements.;praised the "stoic calmness of the ruminant"|
+						raccoon;a curious;It inspected the tracks for minutes and remained unfazed.;described the scene as "a masterclass in composure"|
+						peacock;a proud;It chose to pose in the middle of the tracks.;commented: "Vanity trumps speed"|
+						sloth;a;It crossed the tracks in its typical leisurely manner.;celebrated the "lesson in deceleration"|
+						cow;a stoic;;called it a "Zen master of slowness"|
+						wild boar;a running;It ran unperturbed along the tracks.;admired the animal for its "bold move against modernity"
+					</en>
+					<pl>żwól;cierpliwy ;;chwalili jego cierpliwość jako „zanartą“|
+						jeż;szczególnie zdeterminowany ;;chwalili jego „kolczastą wolę samoafirmacji“|
+						rodzina kaczek;;Kaczka z młodymi miała pierwszeństwo.;uznali moment za „bardziej wzruszający niż jakakolwiek punktualność“|
+						owca;zbiegła ;Pozostała spokojna pomimo licznych komunikatów przez głośniki.;chwalili „stoicki spokój przeżuwacza“|
+						szop;ciekawski ;Przez kilka minut badał tory i nic nie było w stanie go zniechęcić.;opisali scenę jako „lekcję opanowania“|
+						paw;dumny ;Zdecydował się pozować na środku torów.;skomentowali: „Próżność przebija prędkość“|
+						leniwiec;;Przemierzał tory w swoim typowym, powolnym tempie.;świętowali „lekcję spowolnienia“|
+						krowa;stoicka ;;nazwali ją „Mistrzynią Zenu w powolności“|
+						dzik;biegnący ;Nieprzejety biegł wzdłuż torów.;podziwiali zwierzę za jego „śmiały ruch przeciw nowoczesności“
+					</pl>
+				</turtle_csv>
+				<turtle>
+					<all>${.csv:turtle_csv:0}</all>
+				</turtle>
+				<apatient>
+					<all>${.csv:turtle_csv:1}</all>
+				</apatient>
+				<itremainedcalm>
+					<all>${.csv:turtle_csv:2}</all>
+				</itremainedcalm>
+				<praisedits>
+					<all>${.csv:turtle_csv:3}</all>
+				</praisedits>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="74c1e502-f80f-445f-8525-9f2fe9b7e168" type="0" creator="9551">
+			<title>
+				<de>${plushbear}-Flut ${onsylt}</de>
+				<en>${plushbear} flood ${onsylt}</en>
+				<pl>Powódź w ${plushbear} ${onsylt}</pl>
+			</title>
+			<description>
+				<de>Ein Frachtschiff hat bei schwerem Seegang ${fifty} Container verloren, darunter ${twenty} ${fullof}. ${sylt} und weitere Strände in Norddeutschland waren Tage später übersät ${with}.</de>
+				<en>A cargo ship lost ${fifty} containers in rough seas, including ${twenty} ${fullof}. ${sylt} and more beaches in northern Germany were later littered ${with}.</en>
+				<pl>Statek towarowy zgubił ${fifty} kontenerów podczas sztormu, w tym ${twenty} ${fullof}. ${sylt} i inne plaże w północnych Niemczech zostały później zaśmiecone ${with}.</pl>
+			</description>
+			<variables>
+				<plushbear_csv>
+					<de>Plüschbär;voller bunter Plüschbären;mit bunten Stofftieren|
+						${brand_dixi};mit mobilen ${brand_dixi}-Toiletten;mit blauen Kabinen|
+						Dildo;voller bunter Dildos;mit buntem Sexspielzeug|
+						Gummienten;voller quietschender Gummienten;mit gelben Plastikvögeln|
+						Flamingo;voller pinker Flamingo-Schwimmreifen;mit rosa Schwimmhilfen|
+						Wackeldackel;voller Wackeldackel;mit nickenden Hundeköpfen|
+						Kuscheldecken;voller flauschiger Kuscheldecken;mit Wohlfühldecken|
+						Papphut;voller bunter Papphüte;mit Karnevalsartikeln|
+						Einhörner;voller glitzernder Mini-Einhörner;mit den Märchenspielsachen|
+						Dinosaurier;voller Plastikdinosaurier;mit den prähistorischen Spielfiguren|
+						Schneekugel;voller nostalgischer Schneekugeln;mit dem Winterspielzeug|
+						Plastikbananen;voller gelber Plastikbananen;mit den Werbebananen
+					</de>
+					<en>Plush bear;full of colorful plush bears;with colorful stuffed animals|
+						${brand_dixi};filled with portable ${brand_dixi} toilets;with blue cabins|
+						Dildo;full of colorful dildos;with colorful adult toys|
+						Rubber ducky;full of squeaky rubber ducks;with yellow plastic birds|
+						Flamingo;full of pink flamingo pool floats;with pink inflatables|
+						Nodding dog;full of nodding dachshunds;with nodding dog heads|
+						Blanket;full of fluffy blankets;with cozy throws|
+						Party hat;full of colorful paper hats;with carnival items|
+						Unicorn;full of glittery mini unicorns;with fairy tale toys|
+						Dinosaur;full of plastic dinosaurs;with prehistoric figurines|
+						Snow globe;full of nostalgic snow globes;with winter-themed toys|
+						Plastic banana;full of yellow plastic bananas;with advertising bananas
+					</en>
+					<pl>pluszowych misiów;pełne kolorowych pluszowych misiów;kolorowymi pluszakami|
+						${brand_dixi};z przenośnymi toaletami ${brand_dixi};niebieskimi kabinami|
+						dildo;pełne kolorowych dildo;kolorowymi zabawkami erotycznymi|
+						gumowych kaczek;pełne piszczących gumowych kaczek;żółtymi plastikowymi ptakami|
+						flamingów;pełne różowych flamingów do pływania;różowymi dmuchanymi zabawkami|
+						machających jamników;pełne kiwających się jamników;kiwającymi głowami psów|
+						kocy;pełne puszystych koców;przytulnymi pledami|
+						papierowych czapek;pełne kolorowych papierowych czapek;artykułami karnawałowymi|
+						jednorożców;pełne błyszczących miniaturowych jednorożców;bajkowymi zabawkami|
+						dinozaurów;pełne plastikowych dinozaurów;prehistorycznymi figurkami|
+						kul śnieżnych;pełne nostalgicznych kul śnieżnych;zimowymi zabawkami|
+						plastikowych bananów;pełne żółtych plastikowych bananów;reklamowymi bananami
+					</pl>
+				</plushbear_csv>
+				<plushbear>
+					<all>${.csv:plushbear_csv:0}</all>
+				</plushbear>
+				<fullof>
+					<all>${.csv:plushbear_csv:1}</all>
+				</fullof>
+				<with>
+					<all>${.csv:plushbear_csv:2}</all>
+				</with>
+				<sylt_csv>
+					<de>Sylt;auf Sylt|St. Peter-Ording;in Nordfriesland|Duhnen;in Cuxhaven|Borkum;auf Borkum|Juist;auf Juist|Der Timmendorfer Strand;am Timmendorfer Strand|Travemünde;in Travemünde|Boltenhagen;in Boltenhagen|Rügen;auf Rügen|Fehmarn;auf Fehmarn|Die Hohwachter Bucht;in der Hohwachter Bucht|Wangerooge;auf Wangerooge|Spackeroog;auf Spackeroog</de>
+					<en>Sylt;on Sylt|St. Peter-Ording;in North Frisia|Duhnen;in Cuxhaven|Borkum;on Borkum|Juist;on Juist|Timmendorf Beach;at Timmendorf Beach|Travemünde;in Travemünde|Boltenhagen;in Boltenhagen|Rügen;on Rügen|Fehmarn;on Fehmarn|The Hohwachter Bay;in Hohwachter Bay|Wangerooge;on Wangerooge|Spackeroog;on Spackeroog</en>
+					<pl>Sylt;na wyspie Sylt|St. Peter-Ording;w Fryzji Północnej|Duhnen;w Cuxhaven|Borkum;na wyspie Borkum|Juist;na wyspie Juist|Plaża Timmendorfer;na plaży Timmendorfer|Travemünde;w Travemünde|Boltenhagen;w Boltenhagen|Rugia;na Rugii|Fehmarn;na wyspie Fehmarn|Zatoka Hohwachter;w Zatoce Hohwachter|Wangerooge;na wyspie Wangerooge|Spackeroog;na wyspie Spackeroog</pl>
+				</sylt_csv>
+				<sylt>
+					<all>${.csv:sylt_csv:0}</all>
+				</sylt>
+				<onsylt>
+					<all>${.csv:sylt_csv:1}</all>
+				</onsylt>
+				<fifty>50|60|70|80|90</fifty>
+				<twenty>20|25|30|35|40</twenty>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="d9c52c4f-f7fc-48b1-a381-ba3e857068b6" type="0" creator="9551">
+			<title>
+				<de>${miami}: Grillsauce legt Flughafen lahm</de>
+				<en>${miami}: BBQ sauce halts airport</en>
+				<pl>${miami}: Lotnisko paraliżuje sos BBQ</pl>
+			</title>
+			<description>
+				<de>Ein zerbrochenes Glas Grillsauce hat am Flughafen ${miami} eine Panik ausgelöst, da der rote Fleck für eine Chemikalie gehalten wurde. Der Terminal wurde für drei Stunden evakuiert.</de>
+				<en>A broken jar of BBQ sauce caused panic at the ${miami} airport when the red stain was mistaken for a chemical spill. The terminal was evacuated for three hours.</en>
+				<pl>Rozbita butelka sosu BBQ wywołała panikę na lotnisku w ${miami}, gdy czerwony ślad wzięto za chemikalia. Terminal ewakuowano na trzy godziny.</pl>
+			</description>
+			<variables>
+				<miami>
+					<de>Miami|Atlanta|Los Angeles|New York|Chicago|Dallas|San Francisco|Denver|Orlando|Seattle</de>
+					<en>Miami|Atlanta|Los Angeles|New York|Chicago|Dallas|San Francisco|Denver|Orlando|Seattle</en>
+					<pl>Miami|Atlancie|Los Angeles|Nowym Jorku|Chicago|Dallas|San Francisco|Denver|Orlando|Seattle</pl>
+				</miami>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="445f9270-4336-4e50-9cc1-f99237dcd464" type="0" creator="9551">
+			<title>
+				<de>${rome}: Brunnen mit ${spaghetti} gefüllt</de>
+				<en>${rome}: Fountain filled with ${spaghetti}</en>
+				<pl>${rome}: Fontanna zapełniona ${spaghetti}</pl>
+			</title>
+			<description>
+				<de>Ein Brunnen ${inrome} wurde über Nacht mit ${cooked} ${spaghetti} gefüllt. Die Behörden vermuten einen Streich, die Reinigung kostet ${five}${millionlire}.</de>
+				<en>A fountain ${inrome} was filled with ${cooked} ${spaghetti} overnight. Authorities suspect a prank, and cleaning cost ${five}${millionlire}.</en>
+				<pl>Fontanna ${inrome} została wypełniona ${cooked} ${spaghetti} przez noc. Władze podejrzewają żart, a czyszczenie kosztowało ${five} ${millionlire}.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<five>5|6|7|8|9</five>
+				<millionlire>
+					<de>${.lte:currentyear:2001:" Millionen Lire":"000 Euro"}</de>
+					<en>${.lte:currentyear:2001:" million lire":",000 euros"}</en>
+					<pl>${.lte:currentyear:2001:"milionów lirów":"tys. euro"}</pl>
+				</millionlire>
+				<rome_csv>
+					<de>Rom;in Rom|Florenz;in Florenz|Mailand;in Mailand|Neapel;in Neapel|Turin;in Turin|Genua;in Genua|Palermo;in Palermo|Verona;in Verona|Bologna;in Bologna|Venedig;in Venedig</de>
+					<en>Rome;in Rome|Florence;in Florence|Milan;in Milan|Naples;in Naples|Turin;in Turin|Genoa;in Genoa|Palermo;in Palermo|Verona;in Verona|Bologna;in Bologna|Venice;in Venice</en>
+					<pl>Rzym;w Rzymie|Florencja;we Florencji|Mediolan;w Mediolanie|Neapol;w Neapolu|Turyn;w Turynie|Genua;w Genui|Palermo;w Palermo|Werona;w Weronie|Bolonia;w Bolonii|Wenecja;w Wenecji</pl>
+				</rome_csv>
+				<rome>
+					<all>${.csv:rome_csv:0}</all>
+				</rome>
+				<inrome>
+					<all>${.csv:rome_csv:1}</all>
+				</inrome>
+				<spaghetti_csv>
+					<de>gekochten;Spaghetti|gekochten;Nudeln|gekochten;Linguine|gekochten;Tagliatelle|gekochten;Fettuccine|gekochten;Pappardelle|gekochten;Penne|gekochten;Rigatoni|gekochten;Fusilli|gekochten;Farfalle|gekochter;Lasagne</de>
+					<en>cooked;spaghetti|cooked;pasta|cooked;linguine|cooked;tagliatelle|cooked;fettuccine|cooked;pappardelle|cooked;penne|cooked;rigatoni|cooked;fusilli|cooked;farfalle|cooked;lasagna</en>
+					<pl>gotowanym;spaghetti|gotowanym;makaronem|gotowanym;linguine|gotowanym;tagliatelle|gotowanym;fettuccine|gotowanym;pappardelle|gotowanym;penne|gotowanym;rigatoni|gotowanym;fusilli|gotowanym;farfalle|gotowaną;lasagną</pl>
+				</spaghetti_csv>
+				<cooked>
+					<all>${.csv:spaghetti_csv:0}</all>
+				</cooked>
+				<spaghetti>
+					<all>${.csv:spaghetti_csv:1}</all>
+				</spaghetti>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="d5b706e4-617d-46b5-9693-15f0bfea3909" type="0" creator="9551">
+			<title>
+				<de>Klopapier rollt durch ${prague_through}</de>
+				<en>Toilet paper floods ${prague_through}</en>
+				<pl>Papier toaletowy toczy się przez ${prague_through}</pl>
+			</title>
+			<description>
+				<de>Ein Lagerfehler hat dazu geführt, dass tausende Toilettenpapierrollen eine Straße in ${prague_in} blockierten. Einwohner bezeichneten es als „weiße Flut“.</de>
+				<en>A warehouse error caused thousands of toilet paper rolls to block a street in ${prague_in}. Locals called it the "white flood".</en>
+				<pl>Błąd w magazynie sprawił, że tysiące rolek papieru toaletowego zablokowały ulicę w ${prague_in}. Mieszkańcy nazwali to „białą powodzią.”</pl>
+			</description>
+			<variables>
+				<prague_csv>
+					<de>Prag;Prag|Budapest;Budapest|Warschau;Warschau|Krakau;Krakau|Bratislava;Bratislava|Bukarest;Bukarest|Sofia;Sofia|Belgrad;Belgrad|Ljubljana;Ljubljana|Zagreb;Zagreb|Riga;Riga|Tallinn;Tallinn|Vilnius;Vilnius|Kiew;Kiew|Minsk;Minsk</de>
+					<en>Prague;Prague|Budapest;Budapest|Warsaw;Warsaw|Krakow;Krakow|Bratislava;Bratislava|Bucharest;Bucharest|Sofia;Sofia|Belgrade;Belgrade|Ljubljana;Ljubljana|Zagreb;Zagreb|Riga;Riga|Tallinn;Tallinn|Vilnius;Vilnius|Kyiv;Kyiv|Minsk;Minsk</en>
+					<pl>Pragę;Pradze|Budapeszt;Budapeszcie|Warszawę;Warszawie|Kraków;Krakowie|Bratysławę;Bratysławie|Bukareszt;Bukareszcie|Sofię;Sofii|Belgrad;Belgradzie|Lublanę;Lublanie|Zagrzeb;Zagrzebiu|Rygę;Rydze|Tallin;Tallinie|Wilno;Wilnie|Kijów;Kijowie|Mińsk;Mińsku</pl>
+				</prague_csv>
+				<prague_through>
+					<all>${.csv:prague_csv:0}</all>
+				</prague_through>
+				<prague_in>
+					<all>${.csv:prague_csv:1}</all>
+				</prague_in>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="e8785b0d-a977-4a16-9648-eeba6c09cb3a" type="0" creator="9551">
+			<title>
+				<de>${berlin}: ${kettle} sorgt für Evakuierung</de>
+				<en>${berlin}: ${.ucfirst:kettle} causes evacuation</en>
+				<pl>${berlin}: ${.ucfirst:kettle} przyczyną ewakuacji</pl>
+			</title>
+			<description>
+				<de>Ein Bürogebäude in ${berlin} ist evakuiert worden, als ${anoldkettle} Rauch erzeugte. Die Feuerwehr lobte die Vorsichtsmaßnahme, war aber wenig beeindruckt.</de>
+				<en>An office building in ${berlin} was evacuated after ${anoldkettle} produced smoke. Firefighters praised the caution but were unimpressed.</en>
+				<pl>${berlin}: Budynek biurowy został ewakuowany po tym, jak ${anoldkettle} dymić. Strażacy pochwalili ostrożność, ale byli niezbyt zadowoleni.</pl>
+			</description>
+			<variables>
+				<berlin>
+					<de>Berlin|München|Hamburg|Frankfurt|Stuttgart|Wien|Zürich|Amsterdam|Prag|Budapest|Krakau</de>
+					<en>Berlin|Munich|Hamburg|Frankfurt|Stuttgart|Vienna|Zurich|Amsterdam|Prague|Budapest|Krakow</en>
+					<pl>Berlin|Monachium|Hamburg|Frankfurt|Stuttgart|Wiedeń|Zurych|Amsterdam|Praga|Budapeszt|Kraków</pl>
+				</berlin>
+				<kettle_csv>
+					<de>Wasserkocher;ein alter Wasserkocher|Eierkocher;ein alter Eierkocher|Toaster;ein alter Toaster|Sandwichmaker;ein alter Sandwichmaker|Waffeleisen;ein altes Waffeleisen|Standmixer;ein alter Standmixer|Kaffeemaschine;eine alte Kaffeemaschine|Espresso-Maschine;eine alte Espresso-Maschine</de>
+					<en>kettle;an old kettle|egg cooker;an old egg cooker|toaster;an old toaster|sandwich maker;an old sandwich maker|waffle iron;an old waffle iron|blender;an old blender|coffeemaker;an old coffeemaker|espresso machine;an old espresso machine</en>
+					<pl>czajnik;stary czajnik zaczął|jajowar;stary jajowar zaczął|toster;stary toster zaczął|opiekacz do kanapek;stary opiekacz do kanapek zaczął|gofrownica;stara gofrownica zaczęła|mikser;stary mikser zaczął|ekspres do kawy;stary ekspres do kawy zaczął|ekspres do kawy;stary ekspres do kawy zaczął</pl>
+				</kettle_csv>
+				<kettle>
+					<all>${.csv:kettle_csv:0}</all>
+				</kettle>
+				<anoldkettle>
+					<all>${.csv:kettle_csv:1}</all>
+				</anoldkettle>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="63a8815d-614a-4c6f-b578-c3db5090fc50" type="0" creator="9551">
+			<title>
+				<de>${amsterdam}: Verirrtes Partyboot</de>
+				<en>${amsterdam}: Party boat gone astray</en>
+				<pl>${amsterdam}: Imprezowa łódź zabłądziła</pl>
+			</title>
+			<description>
+				<de>Ein Partyboot in ${amsterdam} ist ohne Kapitän einen Kanal entlang getrieben. Die feiernden Gäste bemerkten erst nach einer Stunde, dass sie weit ab vom Schuss waren.</de>
+				<en>A party boat in ${amsterdam} drifted down a canal without its captain. Partygoers only noticed an hour later they were far off the beaten track.</en>
+				<pl>${amsterdam}: Łódź imprezowa odpłynęła kanałem bez kapitana. Imprezowicze dopiero po godzinie zauważyli, że znaleźli się daleko od utartego szlaku.</pl>
+			</description>
+			<variables>
+				<amsterdam>
+					<de>Amsterdam|Brügge|Stockholm|Birmingham|Köln</de>
+					<en>Amsterdam|Bruges|Stockholm|Birmingham|Cologne</en>
+					<pl>Amsterdam|Brugia|Sztokholm|Birmingham|Kolonia</pl>
+				</amsterdam>
+			</variables>
+			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="16362271-77ae-49d0-a95e-4e29c4cbc906" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+			<title>
+				<de>Italien erfindet Feiertag</de>
+				<en>Italy invents holiday</en>
+				<pl>Włochy wymyślają święto</pl>
+			</title>
+			<description>
+				<de>Italien führt den „Nationalen Siesta-Tag“ ein, um die Produktivität zu fördern. Kritiker nennen ihn „den faulen Freitag“. Unternehmer klagen über steigende Kissenkosten.</de>
+				<en>Italy introduce "National Siesta Day" to boost productivity. Critics call it "lazy Friday". Businesses complain about rising pillow costs.</en>
+				<pl>Włochy wprowadziły „Narodowy Dzień Sjesty“ dla zwiększenia produktywności. Krytycy nazywają go „leniwy piątek“. Przedsiębiorcy narzekają na rosnące koszty poduszek.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="bbd2bb55-6c52-4e84-8cef-d186ce791381" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+			<title>
+				<de>Spanien verbietet Siesta</de>
+				<en>Spain bans siesta</en>
+				<pl>Hiszpania zakazuje sjesty</pl>
+			</title>
+			<description>
+				<de>Spanien verbietet offiziell die Siesta, um die Produktivität zu steigern. Gewerkschaften planen landesweite Nickerchen-Proteste.</de>
+				<en>Spain officially bans siestas to increase productivity. Unions plan nationwide nap protests.</en>
+				<pl>Hiszpania oficjalnie zakazuje sjesty, aby zwiększyć produktywność. Związki zawodowe planują ogólnokrajowe protesty drzemkowe.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="20a466a2-8c63-4653-814b-7825d3952031" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+			<title>
+				<de>Frankreich liebt Büro-Nickerchen</de>
+				<en>France legalizes office naps</en>
+				<pl>Francja legalizuje drzemki</pl>
+			</title>
+			<description>
+				<de>Frankreich erlaubt offiziell 20-minütige Mittagsschlaf-Pausen in Büros. Experten nennen es „den größten Fortschritt seit der Revolution“.</de>
+				<en>France officially allows 20-minute lunch break naps in offices. Experts call it "the greatest progress since the revolution."</en>
+				<pl>Francja oficjalnie zezwala na 20-minutowe drzemki obiadowe w biurach. Eksperci nazywają to "największym postępem od rewolucji".</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="96f6d971-6ee4-40ab-a0f6-57b77a1803c9" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+			<title>
+				<de>China erfindet Wochenende</de>
+				<en>China invents weekend</en>
+				<pl>Chiny wymyślają weekend</pl>
+			</title>
+			<description>
+				<de>China testet ein neues Konzept: zwei freie Tage pro Woche. „Ein Kulturschock“, meinen Staatsmedien, aber die Arbeiter freuen sich - vorsichtig.</de>
+				<en>China tests a new concept: two days off per week. "A culture shock," state media say, but workers rejoice - cautiously.</en>
+				<pl>Chiny testują nowy koncept: dwa dni wolne w tygodniu. „Szok kulturowy“ - twierdzą media państwowe, ale pracownicy świętują - ostrożnie.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="b2cae30e-66b1-4391-b6f6-85803917ee5a" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+			<title>
+				<de>Schweiz reguliert Alpenglocken</de>
+				<en>Switzerland regulates cowbells</en>
+				<pl>Szwajcaria reguluje dzwonki</pl>
+			</title>
+			<description>
+				<de>Ein neues Gesetz in der Schweiz schreibt die maximale Lautstärke von Kuhglocken vor. Kritiker wenden ein: „So verlieren die Alpen ihren Klang.“</de>
+				<en>A new Swiss law limits the maximum volume of cowbells. Critics say, "The Alps are losing their sound."</en>
+				<pl>Nowe szwajcarskie prawo ogranicza maksymalną głośność dzwonków na krowach. Krytycy mówią: „Alpy tracą swój dźwięk.“</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="cb6fea39-146d-4a43-aa8f-4a49f2b939b9" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+			<title>
+				<de>Brasilien: Steuer auf Tanzen</de>
+				<en>Brazil: Dance tax</en>
+				<pl>Brazylia: Podatek od tańca</pl>
+			</title>
+			<description>
+				<de>Brasilien führt eine Steuer auf öffentliche Tanzveranstaltungen ein. „Samba ist eine nationale Ressource“, so der Finanzminister.</de>
+				<en>Brazil introduces a tax on public dance events. "Samba is a national resource," said the finance minister.</en>
+				<pl>Brazylia wprowadza podatek od publicznych wydarzeń tanecznych. „Samba to zasób narodowy,“ powiedział minister finansów.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="c038b7d4-5aea-4bce-a831-950d8424774e" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+			<title>
+				<de>Berlin plant Club-Steuer</de>
+				<en>Berlin plans club tax</en>
+				<pl>Berlin planuje podatek klubowy</pl>
+			</title>
+			<description>
+				<de>Die Berliner Regierung will eine Steuer auf Clubs einführen, basierend auf der Länge der Schlange vor dem Eingang. DJs reagieren mit Protest-Raves.</de>
+				<en>The Berlin government plans a tax on clubs based on the length of the queue outside. DJs respond with protest raves.</en>
+				<pl>Rząd Berlina planuje podatek od klubów oparty na długości kolejki przed wejściem. DJ-e odpowiadają protest-rave'ami.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="c380e7a4-678a-4bd1-a808-a2fd19fa1221" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+			<title>
+				<de>Italien klont Pasta</de>
+				<en>Italy clones pasta</en>
+				<pl>Włochy klonują makaron</pl>
+			</title>
+			<description>
+				<de>Italien eröffnet das erste Labor für geklonte Pasta, um den steigenden Bedarf zu decken. Kritiker nennen es „Antipasti gegen die Natur“.</de>
+				<en>Italy opens the first lab for cloned pasta to meet growing demand. Critics call it the "Antipasti against nature".</en>
+				<pl>Włochy otwierają pierwsze laboratorium do klonowania makaronu, aby sprostać rosnącemu zapotrzebowaniu. Krytycy nazywają to „Antipasti przeciwko naturze”.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="fc73fd57-b341-4bdd-b24e-8f5d21e79aaf" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+			<title>
+				<de>Island exportiert Lava</de>
+				<en>Iceland exports lava</en>
+				<pl>Islandia eksportuje lawę</pl>
+			</title>
+			<description>
+				<de>Island beginnt mit dem Export von Lava als „grünes Heizmaterial“. Deutsche Umweltaktivisten sind skeptisch und warnen vor „großen vulkanischen Fußabdrücken“.</de>
+				<en>Iceland begins exporting lava as "green heating material." German environmentalists are skeptical, warning of "big volcanic footprints".</en>
+				<pl>Islandia zaczyna eksportować lawę jako „zielony materiał grzewczy“. Niemieccy ekolodzy są sceptyczni, ostrzegając przed „dużym śladem wulkanicznym”.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="74079ac9-71b5-496a-9215-f72f431ad88b" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+			<title>
+				<de>${poland} will Mauer um ${brand_ikea}</de>
+				<en>${poland} wants ${brand_ikea} wall</en>
+				<pl>${poland} chce muru wokół ${brand_ikea}</pl>
+			</title>
+			<description>
+				<de>Die ${polish} Regierung will eine Mauer um alle ${brand_ikea}-Filialen bauen, um „ungebremste Möbelimporte“ zu verhindern. Kunden sind empört.</de>
+				<en>The ${polish} government plans a wall around all ${brand_ikea} stores to stop "uncontrolled furniture imports." Customers are outraged.</en>
+				<pl>${polish} rząd planuje mur wokół wszystkich sklepów ${brand_ikea}, aby powstrzymać „niekontrolowany import mebli“. Klienci są oburzeni.</pl>
+			</description>
+			<variables>
+				<poland_csv>
+					<de>Polen;polnische|Ungarn;ungarische|Rumänien;rumänische|Albanien;albanische|Bulgarien;bulgarische</de>
+					<en>Poland;Polish|Hungary;Hungarian|Romania;Romanian|Albania;Albanian|Bulgaria;Bulgarian</en>
+					<pl>Polska;Polski|Węgry;Węgierski|Rumunia;Rumuński|Albania;Albański|Bułgaria;Bułgarski</pl>
+				</poland_csv>
+				<poland>
+					<all>${.csv:poland_csv:0}</all>
+				</poland>
+				<polish>
+					<all>${.csv:polish_csv:1}</all>
+				</polish>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="12806cc4-d28e-4d61-80a5-e181195d49cf" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551">
+			<title>
+				<de>USA: Senator-Steuererklärung ${hottopic}</de>
+				<en>USA: Senator's tax return ${hottopic}</en>
+				<pl>USA: Zeznanie podatkowe senatora ${hottopic}</pl>
+			</title>
+			<description>
+				<de>Eine geleakte Steuererklärung des Senators ${johndoe} ist ${theno1topic} geworden. Bürger fragen sich: „Wie schafft er es, nur ${five} Dollar zu zahlen?“ Die ${generalorg_irs} verweigert den Kommentar.</de>
+				<en>A leaked tax return from senator ${johndoe} has become ${theno1topic}. Citizens wonder, "How does he only pay $ ${five}?" The ${generalorg_irs} refused to comment.</en>
+				<pl>Ujawnione zeznanie podatkowe senatora (${johndoe}) stało ${theno1topic}. Obywatele pytają: „Jak płaci tylko ${five} dolarów?“ ${generalorg_irs} odmówiło komentarza.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<five>5|6|7.36|8.52|9.99</five>
+				<hottopic>
+					<de>${.lte:currentyear:2008:"heißes Thema":"geht viral"}</de>
+					<en>${.lte:currentyear:2008:"hot topic":"goes viral"}</en>
+					<pl>${.lte:currentyear:2008:"gorącym tematem":"staje się wirusowe"}</pl>
+				</hottopic>
+				<theno1topic>
+					<de>${.lte:currentyear:2008:"zum Gesprächsthema Nr. 1":"zum Meme"}</de>
+					<en>${.lte:currentyear:2008:"the No. 1 topic of conversation":"a meme"}</en>
+					<pl>${.lte:currentyear:2008:"się tematem numer jeden":"się memem"}</pl>
+				</theno1topic>
+				<johndoe>${.persongenerator:"fullname":"us":"male"}</johndoe>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="d6cc05ba-0aa5-4bf8-a9af-70f0021c260a" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551">
+			<title>
+				<de>${chancellor} verpasst Maut-Test</de>
+				<en>${.ucfirst:chancellor} misses toll test</en>
+				<pl>${.ucfirst:chancellor} omija test opłat</pl>
+			</title>
+			<description>
+				<de>Ein geheimer Test einer Pkw-Maut auf deutschen Autobahnen ist gescheitert, weil ${the} ${chancellor} angeblich ${their} Transponder verloren hatte. „Der Test war niemals ernst gemeint“, heißt es aus Regierungskreisen.</de>
+				<en>A secret test for a car toll on German highways failed because ${the} ${chancellor} allegedly lost ${their} transponder. "The test was never serious," said government sources.</en>
+				<pl>Tajny test opłat drogowych na niemieckich autostradach nie powiódł się, bo kanclerz rzekomo ${their} swój transponder. „To nigdy nie było poważne“, twierdzi rząd.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<mw>${.lte:currentyear:2005:0:"${.lte:currentyear:2021:1:0}"}</mw>
+				<chancellor_csv>
+					<de>Kanzler;Kanzlerin</de>
+					<en>chancellor;chancellor</en>
+					<pl>kancelarz;kancelarz</pl>
+				</chancellor_csv>
+				<the_csv>
+					<de>der;die</de>
+					<en>the;the</en>
+					<pl>;</pl>
+				</the_csv>
+				<their_csv>
+					<de>seinen;ihren</de>
+					<en>his;her</en>
+					<pl>zgubił;zgubiła</pl>
+				</their_csv>
+				<chancellor>
+					<all>${.csv:chancellor_csv:mw}</all>
+				</chancellor>
+				<the>
+					<all>${.csv:the_csv:mw}</all>
+				</the>
+				<their>
+					<all>${.csv:their_csv:mw}</all>
+				</their>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="f5dfddee-00f9-4c88-ba1d-203af5edf2d4" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551" comment="TODO: add the 'real' news item - https://de.wikipedia.org/wiki/Verordnung_(EWG)_Nr._1677/88_(Gurkenverordnung) - fictional here only the extended time frame">
+			<title>
+				<de>${frg} debattiert über Gurken</de>
+				<en>${frg} debates cucumbers</en>
+				<pl>${frg} debatuje o ogórkach</pl>
+			</title>
+			<description>
+				<de>${thefederal} erwägt ${a_or_reformingthe} Gurkenkrümmungsverordnung. „Krumm oder gerade - alle Gurken sind gleich!“ fordert die Lobbygruppe „Die grünen Gurkenfreunde“.</de>
+				<en>${thefederal} considers ${a_or_reformingthe} cucumber curvature regulation. "Bent or straight - all cucumbers are equal!" demands the lobby group "The Green Cucumber Enthusiasts".</en>
+				<pl>${thefederal} rozważa ${a_or_reformingthe} krzywizny ogórków. "Krzywe czy proste - wszystkie ogórki są równe!" - domaga się grupa lobbystów „Entuzjaści Zielonych Ogórków”.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<frg>
+					<de>${.lte:currentyear:1994:"BRD":"EU"}</de>
+					<en>${.lte:currentyear:1994:"FRG":"EU"}</en>
+					<pl>${.lte:currentyear:1994:"RFN":"UE"}</pl>
+				</frg>
+				<thefederal>
+					<de>${.lte:currentyear:1994:"Die Bundesrepublik Deutschland":"Das europäische Parlament"}</de>
+					<en>${.lte:currentyear:1994:"The Federal Republic of Germany":"The European Parliament"}</en>
+					<pl>${.lte:currentyear:1994:"Republika Federalna Niemiec":"Parlament Europejski"}</pl>
+				</thefederal>
+				<a_or_reformingthe>
+					<de>${.lte:currentyear:1989:"eine":"eine Reform der"}</de>
+					<en>${.lte:currentyear:1989:"a":"reforming the"}</en>
+					<pl>${.lte:currentyear:1989:"wprowadzenie regulacji":"reformę przepisów"}</pl>
+				</a_or_reformingthe>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="8b7114fe-f460-4f65-a5c8-121e8b2dd7a6" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${politicianname}: Lederhosenpflicht</de>
+				<en>${politicianname}: Lederhosen mandate</en>
+				<pl>${politicianname}: Obowiązkowe lederhosen</pl>
+			</title>
+			<description>
+				<de>${politicianname} schlägt vor, in Bayern eine Lederhosenpflicht für offizielle Anlässe einzuführen. „Des is' uns're kulturelle DNS“, merkt er an.</de>
+				<en>${politicianname} proposes a lederhosen mandate for official occasions in Bavaria. "This is our cultural DNA," he said.</en>
+				<pl>${politicianname} proponuje obowiązkowe lederhosen na oficjalne okazje w Bawarii. „To nasza kulturowa DNA,“ powiedział.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<strauss_or_stoiber_or_soeder_id>${.lte:currentyear:1987:"88068431-6dfb-4ce6-aec6-7c68a6c8edce":"${.lte:currentyear:2009:"b1cc601e-b7b9-416c-874e-d76031e5441f":"e59e217f-25f1-4c1b-89b5-75f99548a497"}"}</strauss_or_stoiber_or_soeder_id>
+				<politicianname>${.person:"strauss_or_stoiber_or_soeder_id":"fullname"}</politicianname>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="e5011610-b4f0-4732-a84b-d3e8b27f1bc9" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551">
+			<title>
+				<de>${lastname} Gewinner des deutschen Bürokratiepreises</de>
+				<en>${lastname} winner of German Red Tape Prize</en>
+				<pl>${lastname} zwycięzcą niemieckiej nagrody Red Tape Prize</pl>
+			</title>
+			<description>
+				<de>Die Initiative „Rotes Band Deutschland“ hat einen Preis für besonders kreative Bürokratie ausgelobt. Gewinner: ${firstname} ${lastname} aus ${town} mit einem Formular, das drei Genehmigungen zum Ausfüllen erfordert.</de>
+				<en>The "Red Tape Germany" initiative has awarded a prize for particularly creative bureaucracy. Winner: ${firstname} ${lastname} from ${town} with a form requiring three approvals to fill it out.</en>
+				<pl>Inicjatywa „Red Tape Germany” przyznała nagrodę za szczególnie kreatywną biurokrację. Zwycięzca: ${firstname} ${lastname} z miasta ${town} z formularzem wymagającym trzech zgód na jego wypełnienie.</pl>
+			</description>
+			<variables>
+				<firstname>${.persongenerator:"firstname":"de":"male"}</firstname>
+				<lastname>${.persongenerator:"lastname":"de":"male"}</lastname>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="25050cbc-3168-419e-967a-5d3eac598cc4" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+			<title>
+				<de>${generalorg_opec} plant Mondölförderung</de>
+				<en>${generalorg_opec} plans moon drilling</en>
+				<pl>${generalorg_opec} planuje wiercenia na Księżycu</pl>
+			</title>
+			<description>
+				<de>Die ${generalorg_opec} kündigt an, zukünftige Ölquellen auf dem Mond zu erschließen. „Die Schwerelosigkeit reduziert die Kosten“, heißt es in einer Pressemitteilung.</de>
+				<en>${generalorg_opec} announces plans to explore future oil reserves on the moon. "Zero gravity reduces costs," a press release claims.</en>
+				<pl>${generalorg_opec} ogłasza plany eksploracji zasobów ropy na Księżycu. „Brak grawitacji obniża koszty,“ twierdzi komunikat prasowy.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="a9b24bd3-9a15-4241-9622-4bd289ca944f" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+			<title>
+				<de>Japan testet Robo-Partei</de>
+				<en>Japan tests robot party</en>
+				<pl>Japonia testuje partię robotów</pl>
+			</title>
+			<description>
+				<de>In Japan wird eine KI-basierte politische Partei getestet. Der Algorithmus verspricht „100% logische Entscheidungen“, verweigert aber Interviews.</de>
+				<en>Japan tests an AI-based political party. The algorithm promises "100% logical decisions" but refuses interviews.</en>
+				<pl>Japonia testuje partię polityczną opartą na sztucznej inteligencji. Algorytm obiecuje „100% logiczne decyzje“, ale odmawia wywiadów.</pl>
+			</description>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="bef701c8-d740-4211-980c-404ff39ac943" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+			<title>
+				<de>Russland: Wodka-Gesetz</de>
+				<en>Russia: Vodka law</en>
+				<pl>Rosja: Prawo wódki</pl>
+			</title>
+			<description>
+				<de>Ein neues Gesetz in Russland verbietet Wodka in Flaschen unter 1 Liter. „Alles andere ist Zeitverschwendung“, so Minister ${ivanivanov}.</de>
+				<en>A new Russian law bans vodka bottles under 1 liter. "Anything less is a waste of time," said minister ${ivanivanov}.</en>
+				<pl>Nowe prawo w Rosji zakazuje butelek wódki poniżej 1 litra. „Mniejsze to strata czasu,“ powiedział minister ${ivanivanov}.</pl>
+			</description>
+			<variables>
+				<ivanivanov>
+					<all>${.persongenerator:"fullname":"ru":"male"}</all>
+				</ivanivanov>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="6ed66677-daaf-4863-b76e-c1f1c6f94164" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+			<title>
+				<de>${australia} vermietet Sonne</de>
+				<en>${australia} rents out sun</en>
+				<pl>${australia} wynajmuje słońce</pl>
+			</title>
+			<description>
+				<de>${australia} bietet seine Sonneneinstrahlung an andere Länder als „Solar-Abonnement“ an. Erste Kunden: Großbritannien und Norwegen.</de>
+				<en>${australia} offers its sunlight as a "solar subscription" to other countries. First customers: UK and Norway.</en>
+				<pl>${australia} oferuje swoje promienie słoneczne w formie „subskrypcji solarnej“. Pierwsi klienci: Wielka Brytania i Norwegia.</pl>
+			</description>
+			<variables>
+				<australia>
+					<de>Australien|Chile|Ägypten|Mexiko|Spanien|Portugal</de>
+					<en>Australia|Chile|Egypt|Mexico|Spain|Portugal</en>
+					<pl>Australia|Chile|Egipt|Meksyk|Hiszpania|Portugalia</pl>
+				</australia>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="70c432dd-0627-4061-9ce4-d23ea9266c3e" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+			<title>
+				<de>${finland} testet 3-Tage-Woche</de>
+				<en>${finland} tests 3-day week</en>
+				<pl>${finland} testuje 3-dniowy tydzień</pl>
+			</title>
+			<description>
+				<de>${finland} testet eine 3-Tage-Arbeitswoche, um das Wohlbefinden zu steigern. Erste Studien zeigen: Niemand möchte wieder zurück zur 5-Tage-Woche.</de>
+				<en>${finland} is testing a 3-day workweek to improve well-being. Early studies show: Nobody wants to go back to a 5-day week.</en>
+				<pl>${finland} testuje 3-dniowy tydzień pracy dla poprawy samopoczucia. Pierwsze badania wskazują: nikt nie chce wracać do 5-dniowego tygodnia.</pl>
+			</description>
+			<variables>
+				<finland>
+					<de>Finnland|Schweden|Norwegen|Dänemark|Island</de>
+					<en>Finland|Sweden|Norway|Denmark|Iceland</en>
+					<pl>Finlandia|Szwecja|Norwegia|Dania|Islandia</pl>
+				</finland>
+			</variables>
+			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="d16e3b62-eee9-41af-a7e3-f0d3f42c05e1" type="0" creator="9551">
+			<title>
+				<de>${basel}: Unsichtbares Kunstwerk gestohlen</de>
+				<en>${basel}: Invisible artwork stolen</en>
+				<pl>${basel}: Niewidzialne dzieło skradzione</pl>
+			</title>
+			<description>
+				<de>Ein unsichtbares Kunstwerk wurde aus einem Museum ${inbasel} gestohlen. Sicherheitskameras zeigen: nichts.</de>
+				<en>An invisible artwork is stolen from a museum ${inbasel}. Security cameras show: nothing.</en>
+				<pl>Niewidzialne dzieło sztuki skradzione z muzeum ${inbasel}. Kamery bezpieczeństwa pokazują: nic.</pl>
+			</description>
+			<variables>
+				<basel_csv>
+					<de>Basel;in Basel|Freiburg;in Freiburg|Straßburg;in Straßburg|Innsbruck;in Innsbruck|Salzburg;in Salzburg|Gent;in Gent|Utrecht;in Utrecht|Verona;in Verona|Malmö;in Malmö</de>
+					<en>Basel;in Basel|Freiburg;in Freiburg|Strasbourg;in Strasbourg|Innsbruck;in Innsbruck|Salzburg;in Salzburg|Ghent;in Ghent|Utrecht;in Utrecht|Verona;in Verona|Malmö;in Malmö</en>
+					<pl>Bazylea;w Bazylei|Fryburg;we Fryburgu|Strasburg;w Strasburgu|Innsbruck;w Innsbrucku|Salzburg;w Salzburgu|Gandawa;w Gandawie|Utrecht;w Utrechcie|Werona;w Weronie|Malmö;w Malmö</pl>
+				</basel_csv>
+				<basel>
+					<all>${.csv:basel_csv:0}</all>
+				</basel>
+				<inbasel>
+					<all>${.csv:basel_csv:1}</all>
+				</inbasel>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="7388c172-e38f-4ad7-84f8-062e16c0529a" type="0" creator="9551">
+			<title>
+				<de>${leipzig}: ${bach}-Partitur in Keller entdeckt</de>
+				<en>${leipzig}: ${bach} score found in basement</en>
+				<pl>${leipzig}: Partytura ${bach_gen} znaleziona w piwnicy</pl>
+			</title>
+			<description>
+				<de>Eine verschollene ${bach}-Symphonie ist ${inaleipzig} Keller gefunden worden. Experten meinen: „Klingt wie ein Pop-Hit.“</de>
+				<en>A long-lost ${bach} symphony is found ${inaleipzig} basement. Experts opine: "Sounds like a pop hit."</en>
+				<pl>Zaginiona symfonia ${bach_gen} odnaleziona w piwnicy ${inaleipzig}. Eksperci mówią: „Brzmi jak hit popowy.“</pl>
+			</description>
+			<variables>
+				<bach_csv>
+					<de>Bach;Bach|Beethoven;Beethoven|Mozart;Mozart|Haydn;Haydn|Brahms;Brahms|Händel;Händel|Wagner;Wagner|Schubert;Schubert|Schumann;Schumann</de>
+					<en>Bach;Bach|Beethoven;Beethoven|Mozart;Mozart|Haydn;Haydn|Brahms;Brahms|Handel;Handel|Wagner;Wagner|Schubert;Schubert|Schumann;Schumann</en>
+					<pl>Bach;Bacha|Beethoven;Beethovena|Mozart;Mozarta|Haydn;Haydna|Brahms;Brahmsa|Händel;Händla|Wagner;Wagnera|Schubert;Schuberta|Schumann;Schumanna</pl>
+				</bach_csv>
+				<bach>
+					<all>${.csv:bach_csv:0}</all>
+				</bach>
+				<bach_gen>
+					<all>${.csv:bach_csv:1}</all>
+				</bach_gen>
+				<leipzig_csv>
+					<de>Leipzig;in einem Leipziger|Eisenach;in einem Eisenacher|Lüneburg;in einem Lüneburger|Weimar;in einem Weimarer|Köthen;in einem Köthener|Bonn;in einem Bonner|Wien;in einem Wiener|Salzburg;in einem Salzburger|Eisenstadt;in einem Eisenstädter|Hamburg;in einem Hamburger|Halle;in einem Haller|Dresden;in einem Dresdner|Bayreuth;in einem Bayreuther|München;in einem Münchner|Zwickau;in einem Zwickauer|Düsseldorf;in einem Düsseldorfer|Frankfurt;in einem Frankfurter</de>
+					<en>Leipzig;in a Leipzig|Eisenach;in an Eisenach|Lüneburg;in a Lüneburg|Weimar;in a Weimar|Köthen;in a Köthen|Bonn;in a Bonn|Vienna;in a Vienna|Salzburg;in a Salzburg|Eisenstadt;in an Eisenstadt|Hamburg;in a Hamburg|Halle;in a Halle|Dresden;in a Dresden|Bayreuth;in a Bayreuth|Munich;in a Munich|Zwickau;in a Zwickau|Düsseldorf;in a Düsseldorf|Frankfurt;in a Frankfurt</en>
+					<pl>Lipsk;w Lipsku|Eisenach;w Eisenach|Lüneburg;w Lüneburgu|Weimar;w Weimarze|Köthen;w Köthen|Bonn;w Bonn|Wiedeń;w Wiedniu|Salzburg;w Salzburgu|Eisenstadt;w Eisenstadt|Hamburg;w Hamburgu|Halle;w Halle|Drezno;w Dreźnie|Bayreuth;w Bayreuth|Monachium;w Monachium|Zwickau;w Zwickau|Düsseldorf;w Düsseldorfie|Frankfurt;we Frankfurcie</pl>
+				</leipzig_csv>
+				<leipzig>
+					<all>${.csv:leipzig_csv:0}</all>
+				</leipzig>
+				<inaleipzig>
+					<all>${.csv:leipzig_csv:1}</all>
+				</inaleipzig>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="3776cd93-a944-49e6-9d3f-2cc385ebf7ae" type="0" creator="9551">
+			<title>
+				<de>Leere ${lastname}-Leinwand verkauft</de>
+				<en>Blank ${lastname} canvas sold</en>
+				<pl>${lastname}: Pusta płótno sprzedane</pl>
+			</title>
+			<description>
+				<de>Der ${danish} Künstler ${firstname} ${lastname} verkauft eine leere Leinwand für ${three} Mio. ${kr_or_eur}. Er nennt es „Reines Potenzial“.</de>
+				<en>${danish} artist ${firstname} ${lastname} sells a blank canvas for ${kr_or_eur} ${three} million. He calls it "Pure Potential."</en>
+				<pl>${danish} artysta ${firstname} ${lastname} sprzedaje puste płótno za ${three} mln ${kr_or_eur}. Nazywa to „Czysty potencjał“.</pl>
+			</description>
+			<variables>
+				<danish>
+					<de>dänische|schwedische|norwegische</de>
+					<en>Danish|Swedish|Norwegian</en>
+					<pl>Duński|Szwedzki|Norweski</pl>
+				</danish>
+				<firstname>${.persongenerator:"firstname":"dk":"male"}</firstname>
+				<lastname>${.persongenerator:"lastname":"dk":"male"}</lastname>
+				<three>1|2|3|4|5</three>
+				<kr_or_eur>${.lte:currentyear:2001:"kr":"€"}</kr_or_eur>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="7e78a913-90c4-4931-a3a9-230eeabfb786" type="0" creator="9551">
+			<title>
+				<de>${prague}: Konzert nur für Hunde</de>
+				<en>${prague}: Concert for dogs only</en>
+				<pl>${prague}: Koncert tylko dla psów</pl>
+			</title>
+			<description>
+				<de>Der Komponist ${firstname} ${lastname} ${fromprague} hat eine Sinfonie ausschließlich für Hundeohren kreiert. Besitzer hören nichts, Hunde sind begeistert.</de>
+				<en>Composer ${firstname} ${lastname} ${fromprague} created a symphony exclusively for dogs' ears. Owners hear nothing, dogs are thrilled.</en>
+				<pl>Kompozytor ${firstname} ${lastname} ${fromprague} tworzy symfonię wyłącznie dla psich uszu. Właściciele nic nie słyszą, psy zachwycone.</pl>
+			</description>
+			<variables>
+				<firstname>Lukáš|Radek|Jaroslav|Tomáš|Miloslav|Marek|Peter|Andre|Rastislav|Matej</firstname> <!-- TODO: czech / slovenian / slovak / slavic name generator -->
+				<lastname>Novotný|Černý|Král|Pospíšil|Dvořák|Kováč|Hruška|Urban|Horváth|Kralj</lastname>
+				<prague_csv>
+					<de>Prag;aus Prag|Brünn;aus Brünn|Ostrava;aus Ostrava|Pilsen;aus Pilsen|Olmütz;aus Olmütz|Bratislava;aus Bratislava|Košice;aus Košice|Žilina;aus Žilina|Ljubljana;aus Ljubljana</de>
+					<en>Prague;from Prague|Brno;from Brno|Ostrava;from Ostrava|Pilsen;from Pilsen|Olomouc;from Olomouc|Bratislava;from Bratislava|Košice;from Košice|Žilina;from Žilina|Ljubljana;from Ljubljana</en>
+					<pl>Praga;z Pragi|Brno;z Brna|Ostrava;z Ostrawy|Pilzno;z Pilzna|Ołomuniec;z Ołomuńca|Bratysława;z Bratysławy|Koszyce;z Koszyc|Żylina;z Żyliny|Lublana;z Lublany</pl>
+				</prague_csv>
+				<prague>
+					<all>${.csv:prague_csv:0}</all>
+				</prague>
+				<fromprague>
+					<all>${.csv:prague_csv:1}</all>
+				</fromprague>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="fbddd591-5713-4159-accc-74e078c668a4" type="0" creator="9551">
+			<title>
+				<de>${paris}: ${symphony}</de>
+				<en>${paris}: ${symphony}</en>
+				<pl>${paris}: ${symphony}</pl>
+			</title>
+			<description>
+				<de>${orchestre} ${performed}</de>
+				<en>${orchestre} ${performed}</en>
+				<pl>${orchestre} ${performed}</pl>
+			</description>
+			<variables>
+				<paris_csv>
+					<de>Paris;Das Orchestre de Paris|Berlin;Das Berliner Philharmonie-Orchester|Wien;Das Wiener Philharmonie-Orchester|London;Das London Symphony Orchestra|Moskau;Das Moskauer Staats-Symphonieorchester|Amsterdam;Das Koninklijk Concertgebouw-Orchester|Madrid;Das Spanische Nationalorchester|Kopenhagen;Das Königliche Dänische Orchester|Zürich;Das Zürcher Tonhalle-Orchester|Helsinki;Das Finnische Rundfunk-Symphonieorchester|Brüssel;Das Belgische Nationalorchester|Oslo;Das Oslo Philharmonische Orchester|Budapest;Das Budapester Festivalorchester</de>
+					<en>Paris;The Orchestre de Paris|Berlin;The Berlin Philharmonic Orchestra|Vienna;The Vienna Philharmonic Orchestra|London;The London Symphony Orchestra|Moscow;The Moscow State Symphony Orchestra|Amsterdam;The Royal Concertgebouw Orchestra|Madrid;The Spanish National Orchestra|Copenhagen;The Royal Danish Orchestra|Zurich;The Zurich Tonhalle Orchestra|Helsinki;The Finnish Radio Symphony Orchestra|Brussels;The Belgian National Orchestra|Oslo;The Oslo Philharmonic Orchestra|Budapest;The Budapest Festival Orchestra</en>
+					<pl>Paris;Orkiestra Paryska|Berlin;Berlińska Orkiestra Filharmonii|Wiedeń;Wiedeńska Orkiestra Filharmonii|Londyn;Londyńska Orkiestra Symfoniczna|Moskwa;Moskwijska Państwowa Orkiestra Symfoniczna|Amsterdam;Królowska Orkiestra Concertgebouw|Madryt;Hiszpańska Orkiestra Narodowa|Kopenhaga;Królowska Orkiestra Duńska|Zurych;Orkiestra Tonhalle w Zurychu|Helsinki;Fińska Orkiestra Radiowa|Bruksela;Belgijska Orkiestra Narodowa|Oslo;Oslo Filharmonicy|Budapeszt;Budapeszteńska Orkiestra Festiwalowa</pl>
+				</paris_csv>
+				<paris>
+					<all>${.csv:paris_csv:0}</all>
+				</paris>
+				<orchestre>
+					<all>${.csv:paris_csv:1}</all>
+				</orchestre>
+				<symphony_csv>
+					<de>Sinfonie mit Küchenutensilien;hat eine Sinfonie mit Instrumenten wie Töpfen, Pfannen und Mixer aufgeführt. Publikum: „Innovativ und deliziös“.|
+						Orchester im Dunkeln;hat ein Konzert ohne Licht aufgeführt. Die Musiker treffen Töne erstaunlich präzise. Neues Genre geboren?
+					</de>
+					<en>Kitchenware symphony;performed a symphony with instruments such as pots, pans, and blenders. Audience: "Innovative and delicious".|
+						Orchestra in darkness;performed a concert in complete darkness. Musicians hit notes surprisingly well. A new genre born?
+					</en>
+					<pl>Symfonia na sprzęty kuchenne;wykonała symfonię na instrumentach takich jak garnki, patelnie i blendery. Publiczność: "Innowacyjne i smaczne".|
+						Orkiestra w ciemności;gra koncert w całkowitej ciemności. Muzycy zaskakująco dobrze trafiają w nuty. Narodziny nowego gatunku?
+					</pl>
+				</symphony_csv>
+				<symphony>
+					<all>${.csv:symphony_csv:0}</all>
+				</symphony>
+				<performed>
+					<all>${.csv:symphony_csv:1}</all>
+				</performed>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="12f9deac-3c19-4519-bdd4-7654113a7cf1" type="0" creator="9551">
+			<title>
+				<de>${barcelona}: Skulptur wird Spielplatz</de>
+				<en>${barcelona}: Sculpture becomes playground</en>
+				<pl>${barcelona}: Rzeźba jako plac zabaw</pl>
+			</title>
+			<description>
+				<de>Eine abstrakte Skulptur ${inbarcelona} wird von Kindern als Rutsche genutzt. Der Künstler nennt es „interaktive Kunst“.</de>
+				<en>An abstract sculpture ${inbarcelona} is used as a slide by children. Artist calls it "interactive art."</en>
+				<pl>Abstrakcyjna rzeźba ${inbarcelona} służy dzieciom jako zjeżdżalnia. Artysta nazywa to „sztuką interaktywną“.</pl>
+			</description>
+			<variables>
+				<barcelona_csv>
+					<de>Barcelona;in Barcelona|Mailand;in Mailand|Porto;in Porto|Hamburg;in Hamburg|Turin;in Turin|Lyon;in Lyon|Birmingham;in Birmingham|Thessaloniki;in Thessaloniki|Rotterdam;in Rotterdam|Valencia;in Valencia</de>
+					<en>Barcelona;in Barcelona|Milan;in Milan|Porto;in Porto|Hamburg;in Hamburg|Turin;in Turin|Lyon;in Lyon|Birmingham;in Birmingham|Thessaloniki;in Thessaloniki|Rotterdam;in Rotterdam|Valencia;in Valencia</en>
+					<pl>Barcelona;w Barcelonie|Mediolan;w Mediolanie|Porto;w Porto|Hamburg;w Hamburgu|Turyn;w Turynie|Lyon;w Lyonie|Birmingham;w Birminghamie|Saloniki;w Salonikach|Rotterdam;w Rotterdamie|Walencja;w Walencji</pl>
+				</barcelona_csv>
+				<barcelona>
+					<all>${.csv:barcelona_csv:0}</all>
+				</barcelona>
+				<inbarcelona>
+					<all>${.csv:barcelona_csv:1}</all>
+				</inbarcelona>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="91b0391c-a368-4850-ba4d-595d614871fa" type="0" creator="9551">
+			<title>
+				<de>${amsterdam}: ${artfrom}</de>
+				<en>${amsterdam}: ${artfrom}</en>
+				<pl>${amsterdam}: ${artfrom}</pl>
+			</title>
+			<description>
+				<de>In ${amsterdam} ${exhibitionopens}</de>
+				<en>In ${amsterdam}, ${exhibitionopens}</en>
+				<pl>${amsterdam}: ${exhibitionopens}</pl>
+			</description>
+			<variables>
+				<amsterdam>
+					<de>Amsterdam|Berlin|München|Hamburg|Frankfurt|Stuttgart|Wien|Zürich|Prag|Budapest|Krakau</de>
+					<en>Amsterdam|Berlin|Munich|Hamburg|Frankfurt|Stuttgart|Vienna|Zurich|Prague|Budapest|Krakow</en>
+					<pl>Amsterdam|Berlin|Monachium|Hamburg|Frankfurt|Stuttgart|Wiedeń|Zurych|Praga|Budapeszt|Kraków</pl>
+				</amsterdam>
+				<exhibition_csv>
+					<de>Kunst aus verlorenen Koffern;entsteht eine Ausstellung aus verlorenem Gepäck. Kritiker loben die „globale Perspektive“.|
+						Schatten als Kunst;eröffnet ein Museum eine Ausstellung, die ausschließlich aus Schatten besteht. Besucher nennen es „fesselnd“.
+					</de>
+					<en>Art from Lost Luggage;an exhibition from lost luggage is being created. Critics praise its "global perspective".|
+						Shadows as Art;A museum opens an exhibit composed entirely of shadows. Visitors call it "captivating".
+					</en>
+					<pl>Sztuka z zagubionych walizek;Powstaje wystawa z zagubionych bagaży. Krytycy chwalą „globalną perspektywę“.|
+						Cienie jako sztuka;Muzeum otwiera wystawę składającą się wyłącznie z cieni. Zwiedzający nazywają ją „urzekającą“.
+					</pl>
+				</exhibition_csv>
+				<artfrom>
+					<all>${.csv:exhibition_csv:0}</all>
+				</artfrom>
+				<exhibitionopens>
+					<all>${.csv:exhibition_csv:1}</all>
+				</exhibitionopens>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="412c5f38-6254-4c06-b8e9-83273639d246" type="0" creator="9551">
+			<title>
+				<de>${stockholm}: Ausstellung aus ${brand_ikea}-Teilen</de>
+				<en>${stockholm}: Exhibit Made of ${brand_ikea} Parts</en>
+				<pl>${stockholm}: Wystawa z części ${brand_ikea}</pl>
+			</title>
+			<description>
+				<de>${museum} präsentiert eine Skulptur, die sich als falsch zusammengebaute ${brand_ikea}-Möbel entpuppt. Die Besucher sind begeistert.</de>
+				<en>${museum} showcases a sculpture later revealed as mismatched ${brand_ikea} furniture. Visitors love it.</en>
+				<pl>${museum} prezentuje rzeźbę, która okazuje się źle złożonymi meblami ${brand_ikea}. Zwiedzający zachwyceni.</pl>
+			</description>
+			<variables>
+				<stockholm_csv>
+					<de>Stockholm;Das Moderna Museet in Stockholm|Stockholm;Das Nationalmuseum in Stockholm|Göteborg;Das Göteborgs Konstmuseum|Malmö;Das Moderna Museet Malmö|Malmö;Das Malmö Konstmuseum|Uppsala;Das Uppsala Art Museum|Lund;Das Skissernas Museum in Lund|Kopenhagen;Das Statens Museum for Kunst in Kopenhagen|Aarhus;Das ARoS Aarhus Kunstmuseum|Oslo;Das Nasjonalmuseet in Oslo|Oslo;Das Astrup Fearnley Museet in Oslo|Bergen;Die Kunsthall Bergen|Helsinki;Das Ateneum in Helsinki|Helsinki;Das Kiasma in Helsinki</de>
+					<en>Stockholm;The Moderna Museet in Stockholm|Stockholm;The Nationalmuseum in Stockholm|Gothenburg;The Göteborgs Konstmuseum|Malmö;The Moderna Museet Malmö|Malmö;The Malmö Konstmuseum|Uppsala;The Uppsala Art Museum|Lund;The Skissernas Museum in Lund|Copenhagen;The Statens Museum for Kunst in Copenhagen|Aarhus;The ARoS Aarhus Art Museum|Oslo;The Nasjonalmuseet in Oslo|Oslo;The Astrup Fearnley Museum in Oslo|Bergen;The Kunsthall Bergen|Helsinki;The Ateneum in Helsinki|Helsinki;The Kiasma in Helsinki</en>
+					<pl>Sztokholm;Moderna Museet w Sztokholmie|Sztokholm;Nationalmuseum w Sztokholmie|Göteborg;Göteborgs Konstmuseum|Malmö;Moderna Museet Malmö|Malmö;Malmö Konstmuseum|Uppsala;Uppsala Art Museum|Lund;Skissernas Museum w Lund|Kopenhaga;Statens Museum for Kunst w Kopenhadze|Aarhus;ARoS Aarhus Kunstmuseum|Oslo;Nasjonalmuseet w Oslo|Oslo;Astrup Fearnley Museet w Oslo|Bergen;Kunsthall Bergen|Helsinki;Ateneum w Helsinkach|Helsinki;Kiasma w Helsinkach</pl>
+				</stockholm_csv>
+				<stockholm>
+					<all>${.csv:stockholm_csv:0}</all>
+				</stockholm>
+				<museum>
+					<all>${.csv:stockholm_csv:1}</all>
+				</museum>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="21b0c35e-daf3-4499-ad83-59e55672e866" type="0" creator="9551">
+			<title>
+				<de>${prag}: Zahlen, was man fühlt</de>
+				<en>${prag}: Pay What You Feel</en>
+				<pl>${prag}: Płać, ile czujesz</pl>
+			</title>
+			<description>
+				<de>Ein Theater ${inprag} erlaubt Zuschauern, den Ticketpreis nach dem Stück selbst festzulegen. Die Einnahmen überraschen.</de>
+				<en>A theater ${inprag} lets audiences decide the ticket price after the play. Revenues surprise everyone.</en>
+				<pl>Teatr ${inprag} pozwala widzom ustalić cenę biletu po spektaklu. Dochody zaskakują wszystkich.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<prag_csv>
+					<de>Prag;in Prag|Budapest;in Budapest|Bukarest;in Bukarest|Warschau;in Warschau|Zagreb;in Zagreb|Belgrad;in Belgrad|Sofia;in Sofia|Ljubljana;in Ljubljana|Sarajevo;in Sarajevo|Chișinău;in Chișinău|${.lte:currentyear:1991:"Leningrad":"St. Petersburg"};${.lte:currentyear:1991:"in Leningrad":"in St. Petersburg"}</de>
+					<en>Prague;in Prague|Budapest;in Budapest|Bucharest;in Bucharest|Warsaw;in Warsaw|Zagreb;in Zagreb|Belgrade;in Belgrade|Sofia;in Sofia|Ljubljana;in Ljubljana|Sarajevo;in Sarajevo|Chișinău;in Chișinău|${.lte:currentyear:1991:"Leningrad":"St. Petersburg"};${.lte:currentyear:1991:"in Leningrad":"in St. Petersburg"}</en>
+					<pl>Praga;w Pradze|Budapeszt;w Budapeszcie|Bukareszt;w Bukareszcie|Warszawa;w Warszawie|Zagrzeb;w Zagrzebiu|Belgrad;w Belgradzie|Sofia;w Sofii|Lublana;w Lublanie|Sarajewo;w Sarajewie|Kiszyniów;w Kiszyniowie|${.lte:currentyear:1991:"Leningrad":"St. Petersburg"};${.lte:currentyear:1991:"w Leningradzie":"w Sankt Petersburgu"}</pl>
+				</prag_csv>
+				<prag>
+					<all>${.csv:prag_csv:0}</all>
+				</prag>
+				<inprag>
+					<all>${.csv:prag_csv:1}</all>
+				</inprag>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="8306c12e-3ea5-4338-8b0d-08cd18ec765e" type="0" creator="9551">
+			<title>
+				<de>${milan}: Oper mit Snacks</de>
+				<en>${milan}: Opera with Snacks</en>
+				<pl>${milan}: Opera ze smakołykami</pl>
+			</title>
+			<description>
+				<de>${inmilan} werden den Zuschauern während Arien Gourmet-Snacks serviert. Einige fanden es „die perfekte Komposition“.</de>
+				<en>${inmilan}, audiences are served gourmet snacks during arias. Some called it "the perfect composition".</en>
+				<pl>${inmilan} widzowie otrzymują smakołyki w trakcie arii. Niektórzy nazywają to „idealną kompozycją”.</pl>
+			</description>
+			<variables>
+				<milan_csv>
+					<de>Mailand;In Mailand|Wien;In Wien|Paris;In Paris|Barcelona;In Barcelona|Zürich;In Zürich|New York;In New York|Rom;In Rom|Salzburg;In Salzburg|Buenos Aires;In Buenos Aires|Lyon;In Lyon|Chicago;In Chicago|Venedig;In Venedig|Nizza;In Nizza|Marseille;In Marseille|Bordeaux;In Bordeaux|Lille;In Lille|Toulouse;In Toulouse|Straßburg;In Straßburg|Avignon;In Avignon|Sydney;In Sydney</de>
+					<en>Milan;In Milan|Vienna;In Vienna|Paris;In Paris|Barcelona;In Barcelona|Zurich;In Zurich|New York;In New York|Rome;In Rome|Salzburg;In Salzburg|Buenos Aires;In Buenos Aires|Lyon;In Lyon|Chicago;In Chicago|Venice;In Venice|Nice;In Nice|Marseille;In Marseille|Bordeaux;In Bordeaux|Lille;In Lille|Toulouse;In Toulouse|Strasbourg;In Strasbourg|Avignon;In Avignon|Sydney;In Sydney</en>
+					<pl>Mediolan;W Mediolanie|Wiedeń;W Wiedniu|Paryż;W Paryżu|Barcelona;W Barcelonie|Zurych;W Zurychu|Nowy Jork;W Nowym Jorku|Rzym;W Rzymie|Salzburg;W Salzburgu|Buenos Aires;W Buenos Aires|Lyon;W Lyonie|Chicago;W Chicago|Wenecja;W Wenecji|Nicea;W Nicei|Marsylia;W Marsylii|Bordeaux;W Bordeaux|Lille;W Lille|Tuluza;W Tuluzie|Strasburg;W Strasburgu|Awinion;W Awinionie|Sydney;W Sydney</pl>
+				</milan_csv>
+				<milan>
+					<all>${.csv:milan_csv:0}</all>
+				</milan>
+				<inmilan>
+					<all>${.csv:milan_csv:1}</all>
+				</inmilan>
+			</variables>
+			<data genre="5" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="d97f9754-5b04-46e3-b28e-65fb919666a1" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${celebfirst} ${celeblast} backt Brot</de>
+				<en>${celebfirst} ${celeblast} bakes bread</en>
+				<pl>${celebfirst} ${celeblast} piecze chleb</pl>
+			</title>
+			<description>
+				<de></de>
+				<en>${celebfirst} ${celeblast} ${opens}</en>
+				<pl>${celebfirst} ${celeblast} ${opens}</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<i>0|1|2|3|4|5|6|7|8|9|10</i>
+				<celeb_0>2d4e13d7-a121-4ab5-9f87-86c5425a71ee;Montecito</celeb_0> <!-- Jeff Bridges -->
+				<celeb_1>6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3;L.A.</celeb_1> <!-- Dustin Hoffmann -->
+				<celeb_2>9dcc7ea5-2479-4449-9df7-a4079361460c;Westchester County</celeb_2> <!-- Michael Douglas -->
+				<celeb_3>9216f82f-2ae0-48a2-a4c9-4d660c289953;New York</celeb_3> <!-- Alan Alda -->
+				<celeb_4>e2f59fc8-35fa-496b-a182-2aeb116768c2;L.A.</celeb_4> <!-- Malcolm McDowell -->
+				<celeb_5>a61f1eba-e305-404c-833d-3932c445bdc1;Rhode Island</celeb_5> <!-- James Woods -->
+				<celeb_6>506bc383-259e-4a36-9278-081aafc8f35c;New York</celeb_6> <!-- Robert De Niro -->
+				<celeb_7>91af6b99-191b-41e2-8c41-f7c0498e1c18;Colorado</celeb_7> <!-- Kurt Russell -->
+				<celeb_8>${.lte:currentyear:2000:"868b2dcd-e6f6-4606-8ba1-8651b5d1bea9;L.A.":"655b5238-4855-4f37-8b9a-2b4b07f28288;L.A."}</celeb_8> <!-- Gregory Peck or George Clooney -->
+				<celeb_9>${.lte:currentyear:1990:"d23f86b0-f334-4503-b57f-d441e727a0d1;Westport":"eec1280f-fda9-424b-88c4-fda15c7ec6b6;Portland"}</celeb_9> <!-- Paul Newman or Tom Hanks -->
+				<celeb_10>${.lte:currentyear:2005:"c8ce726c-b3db-42f8-a691-9adaaf4eecc5;Mallorca":"0009cb2b-4f26-4634-8679-59655fa67b4e;Mallorca"}</celeb_10> <!-- Peter Alexander or Til Schweiger -->
+				<celebfirst>${.person:"${.csv:celeb_${i}:0}":"firstname"}</celebfirst>
+				<celeblast>${.person:"${.csv:celeb_${i}:0}":"lastname"}</celeblast>
+				<place>${.csv:celeb_${i}:1}</place>
+				<opens_csv>
+					<de>eröffnet eine Bäckerei in ${place}. „${celeblast}'s Loaves“ bietet handgefertigtes Sauerteigbrot - ein Hobby, das zur Leidenschaft wurde.|
+						wird zum Hobby-Bäcker: Er backt italienische Brotsorten in seiner Villa in ${place} und plant ein eigenes Rezeptbuch.|
+						überrascht seine Fans in ${place} mit selbstgebackenem Sauerteigbrot. „Es gibt nichts besseres als frisches deutsches Brot!“, schwärmt er.
+					</de>
+					<en>opens a bakery in ${place}. "${celeblast}'s Loaves" offers handmade sourdough bread - a hobby turned passion.|
+						becomes a hobby baker: He bakes Italian bread varieties at his villa in ${place} and plans to release a recipe book.|
+						surprises fans in ${place} with homemade sourdough bread. "Nothing beats fresh German bread!" he says excitedly.
+					</en>
+					<pl>otwiera piekarnię w ${place}. „${celeblast}'s Loaves” oferuje ręcznie robiony chleb na zakwasie - hobby, które stało się pasją.|
+						zostaje domowym piekarzem: piecze włoskie chleby w swojej willi w ${place} i planuje wydać książkę z przepisami.|
+						zaskakuje fanów w ${place} własnoręcznie upieczonym chlebem na zakwasie. „Nic nie przebije świeżego niemieckiego chleba!” - zachwyca się.
+					</pl>
+				</opens_csv>
+				<opens>
+					<all>${.csv:opens_csv:0}</all>
+				</opens>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="34e32e93-485e-468c-9d87-39e545ddf778" type="0" creator="9551" comment="#maintenancecritical | TODO: celebs pasted from a268c3c0-55a4-47fe-b718-ed74c7139f02 ; should something like this be global?">
+			<title>
+				<de>${celebname} kauft Schafherde</de>
+				<en>${celebname} buys sheep</en>
+				<pl>${celebname} kupuje owce</pl>
+			</title>
+			<description>
+				<de>${celebname} entdeckt ihre Liebe zur Natur: Die ${celebjob} erwirbt eine Schafherde für ihre Villa in Schottland und plant, eigene Wolle zu vermarkten.</de>
+				<en>${celebname} discovers her love for nature: The ${celebjob} purchases a flock of sheep for her Scottish estate and plans to market her own wool.</en>
+				<pl>${celebname} odkrywa miłość do natury: ${celebjob} kupuje stado owiec na swoją posiadłość w Szkocji i planuje sprzedaż własnej wełny.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<dollyparton>${.person:"45306754-5c7c-47ea-b703-6a9e2495f83a":"fullname"}</dollyparton>
+				<lorettalynn>${.person:"572d2232-5079-4e3b-8acf-51c7ab032684":"fullname"}</lorettalynn>
+				<tinaturner>${.person:"e43513ac-ddea-429a-84a0-c57dc7452665":"fullname"}</tinaturner>
+				<mariannefaithfull>${.person:"d36075f7-5476-413c-a7c9-1b3caf316787":"fullname"}</mariannefaithfull>
+				<elizabethtaylor>${.person:"af6a5525-6858-42b2-b313-6ca3e26d3b90":"fullname"}</elizabethtaylor>
+				<shirleymaclaine>${.person:"42eb64da-69d7-4891-be5e-b81435277667":"fullname"}</shirleymaclaine>
+				<gracejones>${.person:"97806487-39c5-434e-9291-9743c3c349ae":"fullname"}</gracejones>
+				<cher>${.person:"55c2956d-d82e-4448-bbad-858f4128656e":"firstname"}</cher>
+				<farrahfawcett>${.person:"300400b0-a0d9-44e0-a9b2-3fe092ad57ac":"fullname"}</farrahfawcett>
+				<dianaross>${.person:"003a25dc-ef9f-40c6-ac29-b9a573543016":"fullname"}</dianaross>
+				<madonna>${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}</madonna>
+				<joanjett>${.person:"1896f56c-41be-4832-830f-c1eb137e3eec":"fullname"}</joanjett>
+				<debbieharry>${.person:"17bd6f98-0161-443f-9b5d-6bd0f92e38db":"fullname"}</debbieharry>
+				<cyndilauper>${.person:"ef262af3-9fa4-4c47-856f-098c2497fc5d":"fullname"}</cyndilauper>
+				<brookeshields>${.person:"2f06d6bf-1521-45bb-b257-c550ec3cab09":"fullname"}</brookeshields>
+				<jennifergrey>${.person:"78ca5f5f-3759-4e5b-84f5-e94afafe8f53":"fullname"}</jennifergrey>
+				<jennifercoolidge>${.person:"b894f32d-1b5e-4fa5-9eed-b6001054174d":"fullname"}</jennifercoolidge>
+				<tatumoneal>${.person:"bc62084c-e611-4fbf-aafb-ae40e4d0f380":"fullname"}</tatumoneal>
+				<robingivens>${.person:"1cce02b2-ff16-4e2a-9c62-cbade40d0b4a":"fullname"}</robingivens>
+				<kimbasinger>${.person:"3342a0e3-66f3-4f30-922c-ebe1b0611a00":"fullname"}</kimbasinger>
+				<britneyspears>${.person:"a0ccd849-e3d5-420a-b8b3-3590a4a6803a":"fullname"}</britneyspears>
+				<parishilton>${.person:"94ca6c17-441a-4540-a323-fccbd20af333":"fullname"}</parishilton>
+				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
+				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
+				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"firstname"}</jenniferlopez>
+				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
+				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
+				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>
+				<winonaryder>${.person:"ba3717c8-1685-464b-84c7-5ea7db5c27cc":"fullname"}</winonaryder>
+				<mischabarton>${.person:"9eb2ff56-08df-4684-945f-001ec03656c8":"fullname"}</mischabarton>
+				<lindsaylohan>${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}</lindsaylohan>
+				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
+				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<gen_0_csv>
+					<de>Country-Sängerin;${dollyparton}|
+						Country-Sängerin;${lorettalynn}|
+						Popsängerin;${tinaturner}|
+						Rocksängerin;${mariannefaithfull}|
+						Schauspielerin;${elizabethtaylor}|
+						Tänzerin und Schauspielerin;${shirleymaclaine}|
+						Sängerin und Schauspielerin;${gracejones}|
+						Sängerin und Schauspielerin;${cher}|
+						Schauspielerin;${farrahfawcett}|
+						Sängerin und Schauspielerin;${dianaross}
+					</de>
+					<en>country singer;${dollyparton}|
+						country singer;${lorettalynn}|
+						pop singer;${tinaturner}|
+						rock singer;${mariannefaithfull}|
+						actress;${elizabethtaylor}|
+						dancer and actress;${shirleymaclaine}|
+						singer and actress;${gracejones}|
+						singer and actress;${cher}|
+						actress;${farrahfawcett}|
+						singer and actress;${dianaross}
+					</en>
+					<pl>piosenkarka country;${dollyparton}|
+						piosenkarka country;${lorettalynn}|
+						piosenkarka pop;${tinaturner}|
+						piosenkarka rockowa;${mariannefaithfull}|
+						aktorka;${elizabethtaylor}|
+						tancerka i aktorka;${shirleymaclaine}|
+						piosenkarka i aktorka;${gracejones}|
+						piosenkarka i aktorka;${cher}|
+						aktorka;${farrahfawcett}|
+						piosenkarka i aktorka;${dianaross}
+					</pl>
+				</gen_0_csv>
+				<gen_1_csv>
+					<de>Popsängerin;${madonna}|
+						Rocksängerin;${joanjett}|
+						Rocksängerin;${debbieharry}|
+						Popsängerin;${cyndilauper}|
+						Schauspielerin;${brookeshields}|
+						Schauspielerin;${jennifergrey}|
+						Schauspielerin;${jennifercoolidge}|
+						Schauspielerin;${tatumoneal}|
+						Schauspielerin;${robingivens}|
+						Schauspielerin;${kimbasinger}
+					</de>
+					<en>
+						pop singer;${madonna}|
+						rock singer;${joanjett}|
+						rock singer;${debbieharry}|
+						pop singer;${cyndilauper}|
+						actress;${brookeshields}|
+						actress;${jennifergrey}|
+						actress;${jennifercoolidge}|
+						actress;${tatumoneal}|
+						actress;${robingivens}|
+						actress;${kimbasinger}
+					</en>
+					<pl>piosenkarka pop;${madonna}|
+						piosenkarka rockowa;${joanjett}|
+						piosenkarka rockowa;${debbieharry}|
+						piosenkarka pop;${cyndilauper}|
+						aktorka;${brookeshields}|
+						aktorka;${jennifergrey}|
+						aktorka;${jennifercoolidge}|
+						aktorka;${tatumoneal}|
+						aktorka;${robingivens}|
+						aktorka;${kimbasinger}
+					</pl>
+				</gen_1_csv>
+				<gen_2_csv>
+					<de>Sängerin;${britneyspears}|
+						Hotelerbin und Schauspielerin;${parishilton}|
+						Rocksängerin;${courtneylove}|
+						Rapperin;${lilkim}|
+						Rapperin und Schauspielerin;${queenlatifah}|
+						Sängerin und Schauspielerin;${jenniferlopez}|
+						Sängerin;${cristinaaguilera}|
+						Sängerin;${beyonce}|
+						Schauspielerin;${pamalaanderson}|
+						Schauspielerin;${winonaryder}
+					</de>
+					<en>singer;${britneyspears}|
+						hotel heiress and actress;${parishilton}|
+						rock singer;${courtneylove}|
+						rapper;${lilkim}|
+						rapper and actress;${queenlatifah}|
+						singer and actress;${jenniferlopez}|
+						singer;${cristinaaguilera}|
+						singer;${beyonce}|
+						actress;${pamalaanderson}|
+						actress;${winonaryder}
+					</en>
+					<pl>piosenkarka;${britneyspears}|
+						dziedziczka hotelowa i aktorka;${parishilton}|
+						piosenkarka rockowa;${courtneylove}|
+						rapperka;${lilkim}|
+						rapperka i aktorka;${queenlatifah}|
+						piosenkarka and aktorka;${jenniferlopez}|
+						piosenkarka;${cristinaaguilera}|
+						piosenkarka;${beyonce}|
+						aktorka;${pamalaanderson}|
+						aktorka;${winonaryder}
+					</pl>
+				</gen_2_csv>
+				<gen_3_csv>
+					<de>Schauspielerin;${mischabarton}|
+						Schauspielerin;${lindsaylohan}|
+						Sängerin und Schauspielerin;${mileycyrus}|
+						Sängerin und Schauspielerin;${taylormomsen}
+					</de>
+					<en>actress;${mischabarton}|
+						actress;${lindsaylohan}|
+						singer and actress;${mileycyrus}|
+						singer and actress;${taylormomsen}
+					</en>
+					<pl>aktorka;${mischabarton}|
+						aktorka;${lindsaylohan}|
+						piosenkarka i aktorka;${mileycyrus}|
+						piosenkarka i aktorka;${taylormomsen}
+					</pl>
+				</gen_3_csv>
+				<celebgen>${.lte:currentyear:2000:0:"${.lte:currentyear:2012:1:"${.lte:currentyear:2025:2:3}"}"}</celebgen>
+				<celebjob>
+					<all>${.csv:gen_${celebgen}_csv:0}</all>
+				</celebjob>
+				<celebname>
+					<all>${.csv:gen_${celebgen}_csv:1}</all>
+				</celebname>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="b5f3607d-d628-464c-864e-4c742f0dd5a9" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${actor}: Mondsprung?</de>
+				<en>${actor}: Moon jump?</en>
+				<pl>${actor}: Skok na księżyc?</pl>
+			</title>
+			<description>
+				<de>Für seinen neuesten Film kündigt ${actor} einen Mondsprung an. Er wolle „die Grenzen der Schwerkraft testen“. Die ${generalorg_nasa} sei angeblich involviert.</de>
+				<en>For his latest film, ${actor} announces a moon jump. He wants to "test the limits of gravity." ${generalorg_nasa} is reportedly involved.</en>
+				<pl>${actor} zapowiada skok na księżyc w swoim nowym filmie. Chce „testować granice grawitacji”. ${generalorg_nasa} podobno zaangażowana.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<charltonheston_or_silvesterstallone>${.lte:currentyear:1986:"${.person:"b4561de6-215e-46ab-9212-f0868c6fcb33":"fullname"}":"${.person:"836b4aa3-b5c6-4529-b30d-4501594cdf13":"fullname"}"}</charltonheston_or_silvesterstallone>
+				<seanconnery_or_arnoldschwarzenegger>${.lte:currentyear:1990:"${.person:"e0807a2d-e04d-4abf-9422-afa44b202438":"fullname"}":"${.person:"cd3a2e20-efe1-4a4c-9249-164b67d185f7":"fullname"}"}</seanconnery_or_arnoldschwarzenegger>
+				<kirkdouglas_or_kurtrussell>${.lte:currentyear:1985:"${.person:"38a54bbb-7a17-43d4-abd4-5482d0acf1ae":"fullname"}":"${.person:"91af6b99-191b-41e2-8c41-f7c0498e1c18":"fullname"}"}</kirkdouglas_or_kurtrussell>
+				<michaeldouglas_or_brucewillis>${.lte:currentyear:1998:"${.person:"9dcc7ea5-2479-4449-9df7-a4079361460c":"fullname"}":"${.person:"2b6af8c4-7775-44da-820e-1ce9c55d8cd9":"fullname"}"}</michaeldouglas_or_brucewillis>
+				<melgibson_or_matthewmcconaughey>${.lte:currentyear:2011:"${.person:"1b8fcb9a-5961-43b8-af1b-1ed144880908":"fullname"}":"${.person:"0af30380-db5a-44fe-9962-c68eaca6d3e9":"fullname"}"}</melgibson_or_matthewmcconaughey>
+				<burtreynolds_or_tomcruise>${.lte:currentyear:1988:"${.person:"e2704c1c-bebd-4e04-9b72-77214e8f9ea1":"fullname"}":"${.person:"1df80fd1-2c56-473b-8687-19a6183b66e8":"fullname"}"}</burtreynolds_or_tomcruise>
+				<stevemcqueen_or_kevincostner>${.lte:currentyear:1980:"${.person:"04932f0c-7546-4ac8-aa28-2748e121971d":"fullname"}":"${.person:"8c71481d-d30b-4da8-a207-82f0bb5a5fea":"fullname"}"}</stevemcqueen_or_kevincostner>
+				<clinteastwood_or_johnnydepp>${.lte:currentyear:1996:"${.person:"ec20fc5a-a552-4119-8d1e-d310650c2830":"fullname"}":"${.person:"e7924d67-a4de-417d-a1f9-581fd611b534":"fullname"}"}</clinteastwood_or_johnnydepp>
+				<actor>${charltonheston_or_silvesterstallone}|${seanconnery_or_arnoldschwarzenegger}|${kirkdouglas_or_kurtrussell}|${michaeldouglas_or_brucewillis}|${melgibson_or_matthewmcconaughey}|${burtreynolds_or_tomcruise}|${stevemcqueen_or_kevincostner}|${clinteastwood_or_johnnydepp}</actor>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="6fe916d7-c89e-4f4d-a2c1-09ea92346d3b" type="0" creator="9551" comment="#maintenancecritical | TODO: celebs pasted from a268c3c0-55a4-47fe-b718-ed74c7139f02 ; should something like this be global?">
+			<title>
+				<de>${celebname} schreibt Roman</de>
+				<en>${celebname} writes novel</en>
+				<pl>${celebname} pisze powieść</pl>
+			</title>
+			<description>
+				<de>${celebjob} ${celebname} wechselt von der Bühne zur Feder: Ihr Debütroman „${queensdiary}“ erzählt vom fiktiven Leben eines Popstars. Fans erwarten Großes.</de>
+				<en>${.ucfirst:celebjob} ${celebname} moves from stage to pen: Her debut novel "${queensdiary}" tells the fictional life of a pop star. Fans have high expectations.</en>
+				<pl>${.ucfirst:celebjob} ${celebname} przenosi się ze sceny do pióra: jej debiutancka powieść „${queensdiary}” opowiada o fikcyjnym życiu gwiazdy pop. Fani spodziewają się wiele.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<dollyparton>${.person:"45306754-5c7c-47ea-b703-6a9e2495f83a":"fullname"}</dollyparton>
+				<lorettalynn>${.person:"572d2232-5079-4e3b-8acf-51c7ab032684":"fullname"}</lorettalynn>
+				<tinaturner>${.person:"e43513ac-ddea-429a-84a0-c57dc7452665":"fullname"}</tinaturner>
+				<mariannefaithfull>${.person:"d36075f7-5476-413c-a7c9-1b3caf316787":"fullname"}</mariannefaithfull>
+				<elizabethtaylor>${.person:"af6a5525-6858-42b2-b313-6ca3e26d3b90":"fullname"}</elizabethtaylor>
+				<shirleymaclaine>${.person:"42eb64da-69d7-4891-be5e-b81435277667":"fullname"}</shirleymaclaine>
+				<gracejones>${.person:"97806487-39c5-434e-9291-9743c3c349ae":"fullname"}</gracejones>
+				<cher>${.person:"55c2956d-d82e-4448-bbad-858f4128656e":"firstname"}</cher>
+				<farrahfawcett>${.person:"300400b0-a0d9-44e0-a9b2-3fe092ad57ac":"fullname"}</farrahfawcett>
+				<dianaross>${.person:"003a25dc-ef9f-40c6-ac29-b9a573543016":"fullname"}</dianaross>
+				<madonna>${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}</madonna>
+				<joanjett>${.person:"1896f56c-41be-4832-830f-c1eb137e3eec":"fullname"}</joanjett>
+				<debbieharry>${.person:"17bd6f98-0161-443f-9b5d-6bd0f92e38db":"fullname"}</debbieharry>
+				<cyndilauper>${.person:"ef262af3-9fa4-4c47-856f-098c2497fc5d":"fullname"}</cyndilauper>
+				<brookeshields>${.person:"2f06d6bf-1521-45bb-b257-c550ec3cab09":"fullname"}</brookeshields>
+				<jennifergrey>${.person:"78ca5f5f-3759-4e5b-84f5-e94afafe8f53":"fullname"}</jennifergrey>
+				<jennifercoolidge>${.person:"b894f32d-1b5e-4fa5-9eed-b6001054174d":"fullname"}</jennifercoolidge>
+				<tatumoneal>${.person:"bc62084c-e611-4fbf-aafb-ae40e4d0f380":"fullname"}</tatumoneal>
+				<robingivens>${.person:"1cce02b2-ff16-4e2a-9c62-cbade40d0b4a":"fullname"}</robingivens>
+				<kimbasinger>${.person:"3342a0e3-66f3-4f30-922c-ebe1b0611a00":"fullname"}</kimbasinger>
+				<britneyspears>${.person:"a0ccd849-e3d5-420a-b8b3-3590a4a6803a":"fullname"}</britneyspears>
+				<parishilton>${.person:"94ca6c17-441a-4540-a323-fccbd20af333":"fullname"}</parishilton>
+				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
+				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
+				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"firstname"}</jenniferlopez>
+				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
+				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
+				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>
+				<winonaryder>${.person:"ba3717c8-1685-464b-84c7-5ea7db5c27cc":"fullname"}</winonaryder>
+				<mischabarton>${.person:"9eb2ff56-08df-4684-945f-001ec03656c8":"fullname"}</mischabarton>
+				<lindsaylohan>${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}</lindsaylohan>
+				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
+				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<gen_0_csv>
+					<de>Country-Sängerin;${dollyparton}|
+						Country-Sängerin;${lorettalynn}|
+						Popsängerin;${tinaturner}|
+						Rocksängerin;${mariannefaithfull}|
+						Schauspielerin;${elizabethtaylor}|
+						Tänzerin und Schauspielerin;${shirleymaclaine}|
+						Sängerin und Schauspielerin;${gracejones}|
+						Sängerin und Schauspielerin;${cher}|
+						Schauspielerin;${farrahfawcett}|
+						Sängerin und Schauspielerin;${dianaross}
+					</de>
+					<en>country singer;${dollyparton}|
+						country singer;${lorettalynn}|
+						pop singer;${tinaturner}|
+						rock singer;${mariannefaithfull}|
+						actress;${elizabethtaylor}|
+						dancer and actress;${shirleymaclaine}|
+						singer and actress;${gracejones}|
+						singer and actress;${cher}|
+						actress;${farrahfawcett}|
+						singer and actress;${dianaross}
+					</en>
+					<pl>piosenkarka country;${dollyparton}|
+						piosenkarka country;${lorettalynn}|
+						piosenkarka pop;${tinaturner}|
+						piosenkarka rockowa;${mariannefaithfull}|
+						aktorka;${elizabethtaylor}|
+						tancerka i aktorka;${shirleymaclaine}|
+						piosenkarka i aktorka;${gracejones}|
+						piosenkarka i aktorka;${cher}|
+						aktorka;${farrahfawcett}|
+						piosenkarka i aktorka;${dianaross}
+					</pl>
+				</gen_0_csv>
+				<gen_1_csv>
+					<de>Popsängerin;${madonna}|
+						Rocksängerin;${joanjett}|
+						Rocksängerin;${debbieharry}|
+						Popsängerin;${cyndilauper}|
+						Schauspielerin;${brookeshields}|
+						Schauspielerin;${jennifergrey}|
+						Schauspielerin;${jennifercoolidge}|
+						Schauspielerin;${tatumoneal}|
+						Schauspielerin;${robingivens}|
+						Schauspielerin;${kimbasinger}
+					</de>
+					<en>
+						pop singer;${madonna}|
+						rock singer;${joanjett}|
+						rock singer;${debbieharry}|
+						pop singer;${cyndilauper}|
+						actress;${brookeshields}|
+						actress;${jennifergrey}|
+						actress;${jennifercoolidge}|
+						actress;${tatumoneal}|
+						actress;${robingivens}|
+						actress;${kimbasinger}
+					</en>
+					<pl>piosenkarka pop;${madonna}|
+						piosenkarka rockowa;${joanjett}|
+						piosenkarka rockowa;${debbieharry}|
+						piosenkarka pop;${cyndilauper}|
+						aktorka;${brookeshields}|
+						aktorka;${jennifergrey}|
+						aktorka;${jennifercoolidge}|
+						aktorka;${tatumoneal}|
+						aktorka;${robingivens}|
+						aktorka;${kimbasinger}
+					</pl>
+				</gen_1_csv>
+				<gen_2_csv>
+					<de>Sängerin;${britneyspears}|
+						Hotelerbin und Schauspielerin;${parishilton}|
+						Rocksängerin;${courtneylove}|
+						Rapperin;${lilkim}|
+						Rapperin und Schauspielerin;${queenlatifah}|
+						Sängerin und Schauspielerin;${jenniferlopez}|
+						Sängerin;${cristinaaguilera}|
+						Sängerin;${beyonce}|
+						Schauspielerin;${pamalaanderson}|
+						Schauspielerin;${winonaryder}
+					</de>
+					<en>singer;${britneyspears}|
+						hotel heiress and actress;${parishilton}|
+						rock singer;${courtneylove}|
+						rapper;${lilkim}|
+						rapper and actress;${queenlatifah}|
+						singer and actress;${jenniferlopez}|
+						singer;${cristinaaguilera}|
+						singer;${beyonce}|
+						actress;${pamalaanderson}|
+						actress;${winonaryder}
+					</en>
+					<pl>piosenkarka;${britneyspears}|
+						dziedziczka hotelowa i aktorka;${parishilton}|
+						piosenkarka rockowa;${courtneylove}|
+						rapperka;${lilkim}|
+						rapperka i aktorka;${queenlatifah}|
+						piosenkarka and aktorka;${jenniferlopez}|
+						piosenkarka;${cristinaaguilera}|
+						piosenkarka;${beyonce}|
+						aktorka;${pamalaanderson}|
+						aktorka;${winonaryder}
+					</pl>
+				</gen_2_csv>
+				<gen_3_csv>
+					<de>Schauspielerin;${mischabarton}|
+						Schauspielerin;${lindsaylohan}|
+						Sängerin und Schauspielerin;${mileycyrus}|
+						Sängerin und Schauspielerin;${taylormomsen}
+					</de>
+					<en>actress;${mischabarton}|
+						actress;${lindsaylohan}|
+						singer and actress;${mileycyrus}|
+						singer and actress;${taylormomsen}
+					</en>
+					<pl>aktorka;${mischabarton}|
+						aktorka;${lindsaylohan}|
+						piosenkarka i aktorka;${mileycyrus}|
+						piosenkarka i aktorka;${taylormomsen}
+					</pl>
+				</gen_3_csv>
+				<celebgen>${.lte:currentyear:2000:0:"${.lte:currentyear:2012:1:"${.lte:currentyear:2025:2:3}"}"}</celebgen>
+				<celebjob>
+					<all>${.csv:gen_${celebgen}_csv:0}</all>
+				</celebjob>
+				<celebname>
+					<all>${.csv:gen_${celebgen}_csv:1}</all>
+				</celebname>
+				<queensdiary>Queen's Diary|Crown &amp; Confessions|The Glitter Diaries|Lights, Love, Legend|Neon Kingdom|Velvet Thorns|Stiletto Stories|Private Stages|Rebel's Romance|The Spotlight Letters|Lace &amp; Leather|The Fame Chronicles|Midnight Crown|Glam &amp; Grit|Diamond Veil|Broken Halos|Phoenix Rising|The Golden Hour|Lipstick &amp; Lies|Wings of Glitter|Unscripted Dreams|Secrets of the Stage|Wild Roses|High Notes, Hard Truths|Royal Flesh</queensdiary>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="75db61f9-d127-4224-95de-419cdfe9211d" type="0" creator="9551" comment="#maintenancecritical | TODO: Shakira, Kim Kardashian, Nicki Minaj, Rihanna, Clara, Lizzo,  Iggy Azalea">
+			<title>
+				<de>${celebshortname} startet Fitnesskette</de>
+				<en>${celebshortname} launches gyms</en>
+				<pl>${celebshortname} otwiera siłownie</pl>
+			</title>
+			<description>
+				<de>${celebfullname} gründet eine globale Fitnessstudio-Kette. Mit Kursen wie „${bootyboost}“ soll der perfekte Popstar-Look für alle erreichbar sein.</de>
+				<en>${celebfullname} launches a global gym chain. With classes like "${bootyboost}", the perfect pop star look is now within reach for everyone.</en>
+				<pl>${celebfullname} otwiera globalną sieć siłowni. Dzięki zajęciom takim jak „${bootyboost}” idealny wygląd gwiazdy pop jest teraz w zasięgu ręki.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<i>0|1|2|3</i>
+				<celeb_0>${.lte:currentyear:1999:"${.person:"f342ae30-61fc-4c16-aafd-f41203fdbc48":"lastname"};${.person:"f342ae30-61fc-4c16-aafd-f41203fdbc48":"fullname"}":"${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"};${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"fullname"}"}</celeb_0> <!-- Olivia Newton John or Beyoncé -->
+				<celeb_1>${.lte:currentyear:1987:"${.person:"5ef23cbd-de29-4cc0-b8ad-92ba0469e869":"lastname"};${.person:"5ef23cbd-de29-4cc0-b8ad-92ba0469e869":"fullname"}":"${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"};${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}"}</celeb_1> <!-- Jane Fonda or Madonna -->
+				<celeb_2>${.lte:currentyear:2001:"${.person:"5a960784-cca5-4eed-832f-01eb657e0909":"fullname"};${.person:"5a960784-cca5-4eed-832f-01eb657e0909":"fullname"}":"${.person:"b8599093-04c5-4afa-a99f-5409b4365bff":"lastname"};${.person:"b8599093-04c5-4afa-a99f-5409b4365bff":"fullname"}"}</celeb_2> <!-- Raquel Welch or Jennifer Aniston -->
+				<celeb_3>${.lte:currentyear:1999:"${.person:"55c2956d-d82e-4448-bbad-858f4128656e":"firstname"};${.person:"55c2956d-d82e-4448-bbad-858f4128656e":"firstname"}":"${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"nickname"};${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"fullname"}"}</celeb_3> <!-- Cher or Jennifer Lopez -->
+				<celebshortname>${.csv:celeb_${i}:0}</celebshortname>
+				<celebfullname>${.csv:celeb_${i}:1}</celebfullname>
+				<bootyboost>Booty Boost|Glute Force One|Buns of Glowry|Twerkout Tuesdays|Rear-End Renaissance|Squat It Like It's Hot|Booty Camp|Jelly-to-Jello|Rump Revival|Peach Perfect|Sculpt &amp; Twerk|Rhythm &amp; Burn|Zumba Ya Bum-Bum|Hip Hop Hump Day|Bounce &amp; Burn|Fanny Fiesta|Barbell Booty Brunch|Heavy Cheeks|Hard-Ass Hustle|Core &amp; More|Steel Buns Sunday|Plank You Very Much|Sore Today, Snatched Tomorrow|Downward Dog, Upward Booty|Stretch &amp; Sass|Bend It Like Booty|HIIT That Booty|Burpees &amp; Booties|Hustle for the Muscle|Cheeky Circuit|Slam &amp; Sculpt|Bubble Butt Bath</bootyboost>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 	</allnews>
 </tvtdb>
