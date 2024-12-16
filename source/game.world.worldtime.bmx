@@ -1126,27 +1126,39 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		If yearMax < yearMin Then yearMax = yearMin
 
 
-		If monthMin <= 0 then monthMin = RandRange(1, 12)
-		If monthMin > 12 Then monthMin = 12
-		If monthMax = -1 Then monthMax = monthMin
-		If monthMax <= 0
+		If monthMin <= 0
+			monthMin = RandRange(1, 12)
+		ElseIf monthMin > 12
+			monthMin = 12
+		EndIf
+		If monthMax < 0
+			monthMax = monthMin
+		ElseIf monthMax = 0
 			If yearMin = yearMax
 				monthMax = RandRange(monthMin, 12)
 			Else
 				monthMax = RandRange(1, 12)
 			EndIf
+		ElseIf monthMax > 12
+			monthMax = 12
 		EndIf
 		If yearMin = yearMax And monthMax < monthMin Then monthMax = monthMin
 
-		If dayMin <= 0 then dayMin = RandRange(1, 30) 'Sorry february!
-		If dayMin > 30 then dayMin = 30
-		If dayMax = -1 Then dayMax = dayMin
-		If dayMax <= 0
+		If dayMin <= 0
+			dayMin = RandRange(1, 30) 'Sorry february!
+		ElseIf dayMin > 30
+			dayMin = 30
+		EndIf
+		If dayMax < 0
+			dayMax = dayMin
+		ElseIf dayMax = 0
 			If yearMin = yearMax And monthMin = monthMax
 				dayMax = RandRange(dayMin, 30)
 			Else
 				dayMax = RandRange(1, 30)
 			EndIf
+		ElseIf dayMax > 30
+			dayMax = 30
 		EndIf
 
 		If yearMin = yearMax And monthMax = monthMin And dayMax <= dayMin
