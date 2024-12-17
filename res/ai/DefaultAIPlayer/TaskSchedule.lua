@@ -331,8 +331,9 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block, p
 end
 
 
-
+--[[
 --TODO list should be "LUA-Objects"
+--store all values for attraction
 function TaskSchedule:SortProgrammeLicencesByAttraction(licenceList, day, hour)
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
 
@@ -341,19 +342,36 @@ function TaskSchedule:SortProgrammeLicencesByAttraction(licenceList, day, hour)
 		local weights = {}
 		for k,v in pairs(licenceList) do
 			-- TODO: take time of broadcast into consideration ?
-			weights[ v.GetID() ] = AITools:GetBroadcastAttraction(v, fixedDay, fixedHour) -- * (0.4 + 0.6 * 0.9 ^ a.GetProgrammedTimes(fixedDay))
+			weights[ v.Id ] = AITools:GetBroadcastAttraction(v.licence, fixedDay, fixedHour) -- * (0.4 + 0.6 * 0.9 ^ a.GetProgrammedTimes(fixedDay))
 		end
 
 		-- sort
 		local sortMethod = function(a, b)
-			return weights[ a.GetID() ] > weights[ b.GetID() ]
+			return weights[ a.Id ] > weights[ b.Id ]
 		end
 		table.sort(licenceList, sortMethod)
 	end
 
 	return licenceList
 end
+--]]
+function TaskSchedule:GetMostAttractiveLicence(licenceList, day, hour)
+	local fixedDay, fixedHour = FixDayAndHour(day, hour)
+	local result = nil
+	local resultWeight = 0
+	local currentWeight = 0
+	if (table.count(licenceList) > 0) then
+		for k,v in pairs(licenceList) do
+			currentWeight = AITools:GetBroadcastAttraction(v.licence, fixedDay, fixedHour)
+			if currentWeight > resultWeight then
+				resultWeight = currentWeight
+				result=v
+			end
+		end
+	end
 
+	return result
+end
 
 function TaskSchedule:FilterInfomercialsByMaxRerunsToday(infomercialList, maxRerunsToday, day)
 	local fixedDay, fixedHour = FixDayAndHour(day, 0)
@@ -456,8 +474,49 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		end
 		local tl = {} --top licences
 		self.availableProgrammes = {}
+
+		function newLuaLicence (licence)
+			local t =
+			{
+				GUID = "";
+				title = "";
+				Id = -1;
+				refId = "";
+				blocks = 0;
+				relativeTopicality = 0;
+				topicality = 0;
+				maxTopicality = 0;
+				quality = 0;
+				exceedingBroadcastLimit = 0;
+				xrated = 0;
+				qualityLevel = 0;
+				sentAndPlanned = 0;
+				licence = nil;
+			}
+			t.GUID = licence.GetGUID()
+			t.title = licence.GetTitle()
+			t.Id = licence.GetID()
+			t.refId = licence:GetReferenceID()
+			t.blocks = licence.data.GetBlocks(0);
+			t.relativeTopicality = licence.GetRelativeTopicality()
+			t.topicality = licence:GetTopicality()
+			t.maxTopicality = licence.GetMaxTopicality()
+			t.quality = licence:GetQuality()
+			t.exceedingBroadcastLimit = licence.isExceedingBroadcastLimit()
+			t.xrated = licence.GetData().IsXRated()
+			t.qualityLevel = AITools:GetBroadcastQualityLevel(licence) -- TODO optimize
+--TODO!!!
+--			t.sentAndPlanned = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
+--			t.planned = licence.isPlanned()
+--			t.quality = licence.GetQualityRaw() * t.maxTopicality
+--			t.timesRun = licence:GetTimesBroadcasted(TVT.ME)
+			t.licence = licence
+			return t;
+		end
+
 		for i=0,TVT.of_getProgrammeLicenceCount()-1 do
 			local licence = TVT.of_getProgrammeLicenceAtIndex(i)
+			local luaLicence
 			if (licence ~= nil) then
 				local addIt = true
 				-- ignore collection/series headers
@@ -466,15 +525,16 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 				if (licence.isNewBroadcastPossible() == 0) then addIt = false end
 
 				if ( addIt == true ) then
-					table.insert(self.availableProgrammes, licence)
+					luaLicence = newLuaLicence(licence)
+					table.insert(self.availableProgrammes, luaLicence)
 
 					--statistics
-					if not table.contains(ignoreLicences, licence:GetReferenceID()) then
-						local blocks = licence.data.GetBlocks(0)
+					if not table.contains(ignoreLicences, luaLicence.refId) then
+						local blocks = luaLicence.blocks
 						totalBlocks = totalBlocks + blocks
-						if licence:GetRelativeTopicality() > 0.99 then
-							if licence:GetTopicality() >= maxTopThreshold then 
-								table.insert(tl,licence:GetReferenceID())
+						if luaLicence.relativeTopicality > 0.99 then
+							if luaLicence.topicality >= maxTopThreshold then 
+								table.insert(tl, luaLicence.refId)
 								maxTopicalityBlocks = maxTopicalityBlocks + blocks
 							else
 								lowMaxTopBlocks = lowMaxTopBlocks + blocks
@@ -498,8 +558,8 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 	if forbiddenIDs == nil or #forbiddenIDs == 0 then
 		allLicences = table.copy(self.availableProgrammes)
 	else
-		for k,licence in pairs(self.availableProgrammes) do
-			if not table.contains(forbiddenIDs, licence.GetReferenceID()) then table.insert(allLicences, licence) end
+		for k,luaLicence in pairs(self.availableProgrammes) do
+			if not table.contains(forbiddenIDs, luaLicence.refId) then table.insert(allLicences, luaLicence) end
 		end
 	end
 	return allLicences
@@ -507,25 +567,25 @@ end
 
 
 
-function TaskSchedule:FilterProgrammeLicencesByBroadcastableState(licenceList, day, hour, forbiddenIDs)
+function TaskSchedule:FilterProgrammeLicencesByBroadcastableState(luaLicenceList, day, hour, forbiddenIDs)
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
 	local filteredList = {}
 
-	if licenceList ~= nil then
+	if luaLicenceList ~= nil then
 		-- add every licence broadcastable at the given time
-		for k,licence in pairs(licenceList) do
+		for k,luaLicence in pairs(luaLicenceList) do
 			local addIt = true
 			-- ignore when exceeding broadcast limits
-			if ( licence.isExceedingBroadcastLimit() == 1 ) then addIt = false; end
+			if ( luaLicence.exceedingBroadcastLimit == 1 ) then addIt = false; end
 			-- ignore programme licences not allowed for that time
-			if ( licence.CanStartBroadcastAtTime(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= 1 ) then addIt = false; end
+			if ( luaLicence.licence.CanStartBroadcastAtTime(TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, fixedHour) ~= 1 ) then addIt = false; end
 			-- skip xrated programme during daytime
-			if (licence.GetData().IsXRated() == 1) and (fixedHour < 22 and fixedHour + licence.data.GetBlocks(0) > 5) then addIt = false; end
+			if (luaLicence.xrated == 1) and (fixedHour < 22 and fixedHour + luaLicence.blocks > 5) then addIt = false; end
 			-- skip forbidden IDs
-			if table.contains(forbiddenIDs, licence.GetReferenceID()) then addIt = false end
+			if table.contains(forbiddenIDs, luaLicence.refId) then addIt = false end
 
 			if ( addIt == true ) then
-				table.insert(filteredList, licence)
+				table.insert(filteredList, luaLicence)
 			end
 		end
 	end
@@ -541,10 +601,10 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 
 	-- select suiting ones from the list of broadcastable licences
 	local resultingLicences = {}
-	for k,licence in pairs(useLicences) do
+	for k,luaLicence in pairs(useLicences) do
 		--TODO determine broadcastlevel depending on all existing licences!!
-		local qLevel = AITools:GetBroadcastQualityLevel(licence)
-		if fixedHour > 21 or fixedHour < 4 and licence.GetData().IsXRated() == 1 then
+		local qLevel = luaLicence.qualityLevel
+		if fixedHour > 21 or fixedHour < 4 and luaLicence.xrated == 1 then
 			if qLevel + 1 == maxLevel or qLevel - 2 >= minLevel then
 				if math.random(0, 10) > 6 then qLevel = minLevel end
 			end
@@ -553,15 +613,17 @@ function TaskSchedule:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxRer
 			local sentAndPlannedToday = -1
 			if maxRerunsToday < 0 then
 				--ignoring number of runs
-				table.insert(resultingLicences, licence)
+				table.insert(resultingLicences, luaLicence)
 			else
 				-- only do the costly programme plan count if needed
 				--TODO count todays broadcast times for licences in Lua!!
-				sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
+				sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(luaLicence.Id, fixedDay, 1, 1, 0)
 				if sentAndPlannedToday <= maxRerunsToday then
-					--self:LogDebug("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
-					table.insert(resultingLicences, licence)
+					--TODO store other log attributes
+					--self:LogDebug("GetProgrammeLicenceList: " .. luaLicence.title .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
+					table.insert(resultingLicences, luaLicence)
 				else
+					--TODO store other log attributes
 					--self:LogDebug("GetProgrammeLicenceList: " .. licence.GetTitle() .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday ..  " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality() .. "   failed Runs " .. maxRerunsToday)
 				end
 			end
@@ -576,12 +638,13 @@ end
 
 --TODO check usage
 function TaskSchedule:GetMaxTopicalityLicences(licencesToUse, level)
+	--TODO with luaLicence weight table not necessary anymore!?
 	local weights = {}
 	for k,l in pairs(licencesToUse) do
-		weights[ l.GetID() ] = l:GetQuality()
+		weights[ l.Id ] = l.quality
 	end
 	local sortMethod = function(a, b)
-		return weights[ a.GetID() ] < weights[ b.GetID() ]
+		return weights[ a.Id ] < weights[ b.Id ]
 	end
 	table.sort(licencesToUse, sortMethod)
 	local count=#licencesToUse
@@ -614,9 +677,9 @@ function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenID
 	if self.useMaxTopicalityOnly == true then
 		--self:LogDebug("using only maxTop licences for hour "..fixedHour)
 		local maxTop = {}
-		for k,licence in pairs(filteredLicences) do
-			if licence:GetRelativeTopicality() > 0.99 then
-				table.insert(maxTop, licence)
+		for k,luaLicence in pairs(filteredLicences) do
+			if luaLicence.relativeTopicality > 0.99 then
+				table.insert(maxTop, luaLicence)
 			end
 		end
 		if level < 4 then return self:GetMaxTopicalityLicences(maxTop, level) end
@@ -673,12 +736,12 @@ end
 
 function TaskSchedule:GetBestProgrammeLicenceForBlock(day, hour, level, forbiddenIDs)
 	local licenceList = self:GetProgrammeLicencesForBlock(day, hour, level, forbiddenIDs)
+	return self:GetMostAttractiveLicence(licenceList, day, hour)
 
-	-- sort by attraction
-	licenceList = self:SortProgrammeLicencesByAttraction(licenceList, day, hour)
-
+	--complete sorting not necessary - retrieve only first
+	--licenceList = self:SortProgrammeLicencesByAttraction(licenceList, day, hour)
 	-- return first or "nil" if list is empty
-	return table.first(licenceList)
+	--return table.first(licenceList)
 end
 
 
@@ -2031,7 +2094,7 @@ function JobProgrammeSchedule:Prepare(pParams)
 end
 
 
-
+--TODO backup also with lua objects?
 function JobProgrammeSchedule:OnStop(pParams)
 	-- HANDLE ALL CHANGED SLOTS
 	local day = TVT.GetDay()
@@ -2257,16 +2320,16 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 
 	-- try to send programme
 	if replaceCurrentBroadcast and canSendProgramme then
-		local bestProgrammeLicence = self.Task:GetBestProgrammeLicenceForBlock(fixedDay, fixedHour, nil, forbiddenIDs)
+		local bestLuaProgrammeLicence = self.Task:GetBestProgrammeLicenceForBlock(fixedDay, fixedHour, nil, forbiddenIDs)
 
-		if bestProgrammeLicence ~= nil then
+		if bestLuaProgrammeLicence ~= nil then
 			if chosenBroadcastSource == nil then
-				chosenBroadcastLog = "Set programme (avoid outage) \"" .. bestProgrammeLicence.GetTitle() .. "\" [" .. bestProgrammeLicence.GetID() .."]."
+				chosenBroadcastLog = "Set programme (avoid outage) \"" .. bestLuaProgrammeLicence.title .. "\" [" .. bestLuaProgrammeLicence.Id .."]."
 			else
-				chosenBroadcastLog = "Set programme (optimized) \"" .. bestProgrammeLicence.GetTitle() .. "\" [" .. bestProgrammeLicence.GetID() .."]. Reason: " .. chosenBroadcastLog
+				chosenBroadcastLog = "Set programme (optimized) \"" .. bestLuaProgrammeLicence.title .. "\" [" .. bestLuaProgrammeLicence.Id .."]. Reason: " .. chosenBroadcastLog
 			end
-			chosenBroadcastSource = bestProgrammeLicence
-			chosenBroadcastMaterial = TVT.CreateBroadcastMaterialFromSource(bestProgrammeLicence)
+			chosenBroadcastSource = bestLuaProgrammeLicence.licence
+			chosenBroadcastMaterial = TVT.CreateBroadcastMaterialFromSource(chosenBroadcastSource)
 		else
 --			self:LogDebug("Set programme (avoid outage): " .. fixedDay .. "/" .. fixedHour .. ":55  FAILED - no best programme.", true)
 		end
