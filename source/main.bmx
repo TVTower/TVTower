@@ -3134,11 +3134,25 @@ Type TSavegameConverter
 	End Method
 	
 	
-	Method GetCurrentTypeName:Object(typeName:String)
+	'return the type name to use for a given (no longer existing)
+	'type
+	Method GetRenamedTypeName:Object(typeName:String, parentPath:String)
 		Local result:String = typeName
 		'strip an array indicator so only base type name is compared 
 		Local typeNameBase:String = typeName.replace("[]", "")
+		
+		'specific changes (type in a field changed)
+		'(attention to only add "compatible" types)
+		If parentPath
+			Select (parentPath + ":" + typeNameBase).ToLower()
+				'Example: a certain type is replaced with TExtObj instead of TBaseObj
+				'while the field itself is defined to use "TBaseObj"
+				'Case "TMyType.children:TOldClass".ToLower()
+				'	Return "TExtObj"
+			End Select
+		EndIf
 
+		'generic changes (no longer existing types)
 		Select typeNameBase.ToLower()
 			Rem
 			'example
@@ -3152,8 +3166,6 @@ Type TSavegameConverter
 			
 			Case "TPersonPersonalityAttribute".ToLower()
 				result = "TRangedFloat"
-			Default
-				print "TSavegameConverter.GetCurrentTypeName(): unsupported but no longer known type ~q"+typeName+"~q requested."
 		End Select
 
 		'add the array indicator back if required
@@ -3228,17 +3240,16 @@ Type TSavegameConverter
 	End Method
 
 
-	'Deserialize no longer known types or ones without special handling
-	'from their XML nodes into a now valid object
-	'ATTENTION: the nodes can an attribute "id" - these need to be stored
-	'           with the object nodes ... for "refs" handling
-	Method DeserializeUnknownType:Int(obj:Object var, oldTypeName:String, newTypeName:String, nodeObj:Object)
-		Return False
+	'Deserialize no longer known types from a XML node into a now valid object
+	'ATTENTION: the nodes can have an attribute "id" - these need to be
+	'           stored with the object nodes ... for "refs" handling
+	Method DeserializeUnknownType:Object(obj:Object, oldTypeName:String, newTypeName:String, nodeObj:Object)
+		Return New TPersistError("DeserializeUnknownType - unhandled")
 	End Method
 
 	
 	'handling stuff like different types used in a field ("list:TList -> list:TMap")
-	Method DeSerializeUnknownProperty:Int(obj:Object var, oldType:String, newType:String, parentObj:Object)
+	Method DeserializeToType:Object(obj:Object, oldType:String, newType:String, parentObj:Object)
 		'Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
@@ -3247,9 +3258,7 @@ Type TSavegameConverter
 				'room(base)collection?
 				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TStationMapSection".ToLower()
 					local old:TVec2D = TVec2D(obj)
-					Local newObj:TVec2I = New TVec2I(int(old.x + 0.5), int(old.y + 0.5))
-					obj = newObj
-					Return True
+					Return New TVec2I(int(old.x + 0.5), int(old.y + 0.5))
 				EndIf
 
 			'v0.7.1 -> 0.7.2: "TStationMapcollection.sections - TList to TStationMapSection[]"
@@ -3259,16 +3268,14 @@ Type TSavegameConverter
 				For local section:TStationMapSection = EachIn list
 					result :+ [section]
 				Next
-				obj = result
-				Return True
+				Return result
 				
 			'v0.7.0 -> "Int to TTriStateIntBitmask"
 			Case "Int>TTriStateIntBitmask".ToLower()
 				local mask:TTriStateIntBitmask = new TTriStateIntBitmask
 				mask.mask = Int(String(obj))
 				'mask.SetAllModified()
-				obj = mask
-				Return True
+				Return mask
 
 			'generic
 			Case "TList>TObjectList".ToLower()
@@ -3278,11 +3285,11 @@ Type TSavegameConverter
 					For Local o:object = EachIn old
 						res.AddLast(o)
 					Next
-					Obj = res
-					Return True
+					Return res
 				EndIf
 		End Select
-		Return False
+
+		Return New TPersistError("DeserializeToType - unhandled " + convert)
 	End Method
 End Type
 
