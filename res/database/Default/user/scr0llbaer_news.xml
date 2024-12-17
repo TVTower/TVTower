@@ -2309,7 +2309,7 @@
 				<pl>${.ucfirst:cow} opóźnia misję ${generalorg_nasa}</pl>
 			</title>
 			<description>
-				<de>${.ucfirst:arunawaycow} hat versehentlich die ${generalorg_nasa}-Abschussrampe aktiviert, wodurch die ${marsmission} um ${three} Tage verzögert wurde. ${thecowis}. ${.lte:currentyear:2001} / ${.or:${.or:${.lte:${.worldtime:"year"}:1984}:{.and:${.gte:${.worldtime:"year"}:1988}:${.lte:${.worldtime:"year"}:2001}}}:${.gte:${.worldtime:"year"}:2005}}</de>
+				<de>${.ucfirst:arunawaycow} hat versehentlich die ${generalorg_nasa}-Abschussrampe aktiviert, wodurch die ${marsmission} um ${three} Tage verzögert wurde. ${thecowis}.</de>
 				<en>${.ucfirst:arunawaycow} accidentally triggered ${generalorg_nasa}'s launch pad, delaying the ${marsmission} by ${three} days. ${thecowis}.</en>
 				<pl>${.ucfirst:arunawaycow} przypadkowo uruchomiła wyrzutnię ${generalorg_nasa}, opóźniając ${marsmission} o ${three} dni. ${thecowis}.</pl>
 			</description>
@@ -2370,7 +2370,7 @@
 				</three>
 			</variables>
 			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
-			<availability script='${.or:${.or:${.lte:${.worldtime:"year"}:1984}:{.and:${.gte:${.worldtime:"year"}:1988}:${.lte:${.worldtime:"year"}:2001}}}:${.gte:${.worldtime:"year"}:2005}}' /> <!-- avoid proximity to catastrophy dates -->
+			<availability script='${.or:${.or:${.lte:${.worldtime:"year"}:1984}:${.and:${.gte:${.worldtime:"year"}:1988}:${.lte:${.worldtime:"year"}:2001}}}:${.gte:${.worldtime:"year"}:2005}}' /> <!-- avoid proximity to catastrophy dates -->
 		</news>
 
 		<news guid="2fd84050-c697-4cec-9d59-ab16303799f4" type="0" creator="9551">
@@ -2391,8 +2391,8 @@
 					<pl>Nowy Jork|Londyn|Frankfurt|Hongkong|Zurych|Singapur|Tokio|Paryż|Sydney|Dubaj</pl>
 				</newyork>
 				<cats_csv>
-					<de>Katzen-Alarm;Eine Gang von Straßenkatzen|Köter-Alarm;Ein Rudel Straßenköter|Waschbär-Alarm;Eine Gruppe Waschbären|Krähen-Alarm;Eine Krähen-Gang</de>
-					<en>Cat alarm;A gang of alley cats|Dog Alarm;A pack of street mutts|Raccoon Alarm;A group of raccoons|Crow Alarm;A gang of crows</en>
+					<de>Katzen;Eine Gang von Straßenkatzen|Köter;Ein Rudel Straßenköter|Waschbär;Eine Gruppe Waschbären|Krähen;Eine Krähen-Gang</de>
+					<en>Cat;A gang of alley cats|Dog;A pack of street mutts|Raccoon;A group of raccoons|Crow;A gang of crows</en>
 					<pl>dla kota;Gang ulicznych kotów|dla psa;Stado ulicznych psów|szopa pracza;Grupa szopów praczów|wronowy;Gang wron</pl>
 				</cats_csv>
 				<cats>
@@ -2488,33 +2488,33 @@
 				<turtle_csv>
 					<de>Schildkröte;eine geduldige;;lobten ihre Geduld als „zenartig“|
 						Igel;ein besonders entschlossener;;lobten seinen „stacheligen Willen zur Selbstbestimmung“|
-						Entenfamilie;eine;Der Entenmutter samt Küken musste Vorrang gewährt werden.;bezeichneten den Moment als „herzerwärmender als jede Pünktlichkeit“|
-						Schaf;ein ausgebüxtes;Es blieb selbst nach wiederholten Lautsprecherdurchsagen gelassen.;lobten die „stoische Ruhe des Ruminanten“|
-						Waschbär;ein neugieriger;Er inspizierte minutenlang die Gleise und ließ sich nicht aus der Ruhe bringen.;beschrieben die Szene als „einen Meisterkurs in Gelassenheit“|
-						Pfau;ein stolzer;Er entschied sich mitten auf den Gleisen zu posieren.;kommentierten: „Eitelkeit schlägt Geschwindigkeit“|
-						Faultier;ein;Es überquerte in typischer Gemächlichkeit die Gleise.;feierten die „Lektion in Entschleunigung“|
+						Entenfamilie;eine; Der Entenmutter samt Küken musste Vorrang gewährt werden.;bezeichneten den Moment als „herzerwärmender als jede Pünktlichkeit“|
+						Schaf;ein ausgebüxtes; Es blieb selbst nach wiederholten Lautsprecherdurchsagen gelassen.;lobten die „stoische Ruhe des Ruminanten“|
+						Waschbär;ein neugieriger; Er inspizierte minutenlang die Gleise und ließ sich nicht aus der Ruhe bringen.;beschrieben die Szene als „einen Meisterkurs in Gelassenheit“|
+						Pfau;ein stolzer; Er entschied sich mitten auf den Gleisen zu posieren.;kommentierten: „Eitelkeit schlägt Geschwindigkeit“|
+						Faultier;ein; Es überquerte in typischer Gemächlichkeit die Gleise.;feierten die „Lektion in Entschleunigung“|
 						Kuh;eine stoische;;bezeichneten sie als „Zen-Meisterin der Langsamkeit“|
-						Wildschwein;ein rennendes;Es rannte unbeirrt das Gleis entlang.;bewunderten das Tier für seinen „mutigen Schachzug gegen die Moderne“
+						Wildschwein;ein rennendes; Es rannte unbeirrt das Gleis entlang.;bewunderten das Tier für seinen „mutigen Schachzug gegen die Moderne“
 					</de>
 					<en>turtle;a patient;;praised its patience as "zen-like"|
 						hedgehog;a particularly determined;;praised its "spiky determination for self-assertion"|
-						family of ducks;a;The mother duck and her ducklings were given priority.;called the moment "more heartwarming than any punctuality"|
-						sheep;a runaway;It remained calm despite repeated loudspeaker announcements.;praised the "stoic calmness of the ruminant"|
-						raccoon;a curious;It inspected the tracks for minutes and remained unfazed.;described the scene as "a masterclass in composure"|
-						peacock;a proud;It chose to pose in the middle of the tracks.;commented: "Vanity trumps speed"|
-						sloth;a;It crossed the tracks in its typical leisurely manner.;celebrated the "lesson in deceleration"|
+						family of ducks;a; The mother duck and her ducklings were given priority.;called the moment "more heartwarming than any punctuality"|
+						sheep;a runaway; It remained calm despite repeated loudspeaker announcements.;praised the "stoic calmness of the ruminant"|
+						raccoon;a curious; It inspected the tracks for minutes and remained unfazed.;described the scene as "a masterclass in composure"|
+						peacock;a proud; It chose to pose in the middle of the tracks.;commented: "Vanity trumps speed"|
+						sloth;a; It crossed the tracks in its typical leisurely manner.;celebrated the "lesson in deceleration"|
 						cow;a stoic;;called it a "Zen master of slowness"|
-						wild boar;a running;It ran unperturbed along the tracks.;admired the animal for its "bold move against modernity"
+						wild boar;a running; It ran unperturbed along the tracks.;admired the animal for its "bold move against modernity"
 					</en>
 					<pl>żwól;cierpliwy ;;chwalili jego cierpliwość jako „zanartą“|
 						jeż;szczególnie zdeterminowany ;;chwalili jego „kolczastą wolę samoafirmacji“|
-						rodzina kaczek;;Kaczka z młodymi miała pierwszeństwo.;uznali moment za „bardziej wzruszający niż jakakolwiek punktualność“|
-						owca;zbiegła ;Pozostała spokojna pomimo licznych komunikatów przez głośniki.;chwalili „stoicki spokój przeżuwacza“|
-						szop;ciekawski ;Przez kilka minut badał tory i nic nie było w stanie go zniechęcić.;opisali scenę jako „lekcję opanowania“|
-						paw;dumny ;Zdecydował się pozować na środku torów.;skomentowali: „Próżność przebija prędkość“|
-						leniwiec;;Przemierzał tory w swoim typowym, powolnym tempie.;świętowali „lekcję spowolnienia“|
+						Rodzina kaczek;; Kaczka z młodymi miała pierwszeństwo.;uznali moment za „bardziej wzruszający niż jakakolwiek punktualność“|
+						owca;zbiegła ; Pozostała spokojna pomimo licznych komunikatów przez głośniki.;chwalili „stoicki spokój przeżuwacza“|
+						szop;ciekawski ; Przez kilka minut badał tory i nic nie było w stanie go zniechęcić.;opisali scenę jako „lekcję opanowania“|
+						paw;dumny ; Zdecydował się pozować na środku torów.;skomentowali: „Próżność przebija prędkość“|
+						Leniwiec;; Przemierzał tory w swoim typowym, powolnym tempie.;świętowali „lekcję spowolnienia“|
 						krowa;stoicka ;;nazwali ją „Mistrzynią Zenu w powolności“|
-						dzik;biegnący ;Nieprzejety biegł wzdłuż torów.;podziwiali zwierzę za jego „śmiały ruch przeciw nowoczesności“
+						dzik;biegnący ; Nieprzejety biegł wzdłuż torów.;podziwiali zwierzę za jego „śmiały ruch przeciw nowoczesności“
 					</pl>
 				</turtle_csv>
 				<turtle>
@@ -2897,7 +2897,7 @@
 					<all>${.csv:poland_csv:0}</all>
 				</poland>
 				<polish>
-					<all>${.csv:polish_csv:1}</all>
+					<all>${.csv:poland_csv:1}</all>
 				</polish>
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
@@ -3017,15 +3017,15 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<strauss_or_stoiber_or_soeder_id>${.lte:currentyear:1987:"88068431-6dfb-4ce6-aec6-7c68a6c8edce":"${.lte:currentyear:2009:"b1cc601e-b7b9-416c-874e-d76031e5441f":"e59e217f-25f1-4c1b-89b5-75f99548a497"}"}</strauss_or_stoiber_or_soeder_id>
-				<politicianname>${.person:"strauss_or_stoiber_or_soeder_id":"fullname"}</politicianname>
+				<politicianname>${.person:"${strauss_or_stoiber_or_soeder_id}":"fullname"}</politicianname>
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 		<news guid="e5011610-b4f0-4732-a84b-d3e8b27f1bc9" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551">
 			<title>
-				<de>${lastname} Gewinner des deutschen Bürokratiepreises</de>
-				<en>${lastname} winner of German Red Tape Prize</en>
-				<pl>${lastname} zwycięzcą niemieckiej nagrody Red Tape Prize</pl>
+				<de>${lastname} Gewinner des Bürokratiepreises</de>
+				<en>${lastname} winner of Red Tape Prize</en>
+				<pl>${lastname} zwycięzcą nagrody Red Tape Prize</pl>
 			</title>
 			<description>
 				<de>Die Initiative „Rotes Band Deutschland“ hat einen Preis für besonders kreative Bürokratie ausgelobt. Gewinner: ${firstname} ${lastname} aus ${town} mit einem Formular, das drei Genehmigungen zum Ausfüllen erfordert.</de>
@@ -3202,6 +3202,7 @@
 				<pl>${danish} artysta ${firstname} ${lastname} sprzedaje puste płótno za ${three} mln ${kr_or_eur}. Nazywa to „Czysty potencjał“.</pl>
 			</description>
 			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<danish>
 					<de>dänische|schwedische|norwegische</de>
 					<en>Danish|Swedish|Norwegian</en>
@@ -3522,7 +3523,7 @@
 				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
 				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
 				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
-				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"firstname"}</jenniferlopez>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"fullname"}</jenniferlopez>
 				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
 				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
 				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>
@@ -3729,7 +3730,7 @@
 				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
 				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
 				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
-				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"firstname"}</jenniferlopez>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"fullname"}</jenniferlopez>
 				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
 				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
 				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>
@@ -3880,9 +3881,9 @@
 				<pl>${celebshortname} otwiera siłownie</pl>
 			</title>
 			<description>
-				<de>${celebfullname} gründet eine globale Fitnessstudio-Kette. Mit Kursen wie „${bootyboost}“ soll der perfekte Popstar-Look für alle erreichbar sein.</de>
-				<en>${celebfullname} launches a global gym chain. With classes like "${bootyboost}", the perfect pop star look is now within reach for everyone.</en>
-				<pl>${celebfullname} otwiera globalną sieć siłowni. Dzięki zajęciom takim jak „${bootyboost}” idealny wygląd gwiazdy pop jest teraz w zasięgu ręki.</pl>
+				<de>${celebfullname} gründet eine globale Fitnessstudio-Kette. Mit Kursen wie „${bootyboost}“ soll der perfekte Celebrity-Look für alle erreichbar sein.</de>
+				<en>${celebfullname} launches a global gym chain. With classes like "${bootyboost}", the perfect celebrity look is now within reach for everyone.</en>
+				<pl>${celebfullname} otwiera globalną sieć siłowni. Dzięki zajęciom takim jak „${bootyboost}”, idealny wygląd gwiazdy jest teraz w zasięgu każdego.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>

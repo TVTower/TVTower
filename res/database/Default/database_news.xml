@@ -6400,39 +6400,92 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${michael} ${ballack} chce odejść</pl>
 			</title>
 			<description>
-				<de>Fußballstar ${ballack} hat keine Lust mehr auf Bayerische Weißwurst und Bier. Manager ${uli} ${hoeness} meint: „${michael} kann gehen, wenn die Ablösesumme stimmt“.</de>
-				<en>Soccer star ${ballack} is tired of Bavarian veal sausage and beer. Manager ${uli} ${hoeness} says: "${michael} can leave if the transfer fee is right".</en>
-				<pl>Piłkarska gwiazda ${ballack} ma dość bawarskiej kiełbasy cielęcej i piwa. Menedżer ${uli} ${hoeness} mówi: "${michael} może odejść, jeśli cena transferu będzie odpowiednia".</pl>
+				<de>Fußballstar ${ballack} hat keine Lust mehr auf Bayerische Weißwurst und Bier. ${manager} ${uli} ${hoeness} meint: „${michi} kann gehen, wenn die Ablösesumme stimmt“.</de>
+				<en>Soccer star ${ballack} is tired of Bavarian veal sausage and beer. ${manager} ${uli} ${hoeness} says: "${michi} can leave if the transfer fee is right".</en>
+				<pl>Piłkarska gwiazda ${ballack} ma dość bawarskiej kiełbasy cielęcej i piwa. ${manager} ${uli} ${hoeness} mówi: "${michi} może odejść, jeśli cena transferu będzie odpowiednia".</pl>
 			</description>
 			<variables>
-				<michael>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"firstname"}</michael>
-				<ballack>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"lastname"}</ballack>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<uli>${.person:"fa2a5f49-1fc5-445a-aa54-eeb2ff8d3340":"firstname"}</uli>
 				<hoeness>${.person:"fa2a5f49-1fc5-445a-aa54-eeb2ff8d3340":"lastname"}</hoeness>
+				<manager>
+					<de>${.lte:currentyear:2009:"Manager":"Präsident"}</de>
+					<en>${.lte:currentyear:2009:"Manager":"President"}</en>
+					<pl>${.lte:currentyear:2009:"Menedżer":"Prezydent"}</pl>
+				</manager>
+				<realmadrid_csv>
+					<de>${sportsclub_real} Madrid;${sportsclub_real}|${sportsclub_fcbarcelona};${sportsclub_barca}|${sports_ac_generic} Mailand;Milan|${sports_inter_generic} Mailand;${sports_inter_generic}|${sportsclub_juventus} Turin;${sportsclub_juve}|${sportsclub_manchesterunited};${sportsclub_manu}|${sports_fc_generic} Liverpool;Liverpool|${sportsclub_ajax} Amsterdam;${sportsclub_ajax}</de>
+					<en>${sportsclub_real} Madrid;${sportsclub_real}|${sportsclub_fcbarcelona};${sportsclub_barca}|${sports_ac_generic} Milan;Milan|${sports_inter_generic} Milan;${sports_inter_generic}|${sportsclub_juventus} Turin;${sportsclub_juve}|${sportsclub_manchesterunited};${sportsclub_manu}|Liverpool ${sports_fc_generic};Liverpool|${sportsclub_ajax} Amsterdam;${sportsclub_ajax}</en>
+					<pl>${sportsclub_real} Madryt;${sportsclub_real}|${sportsclub_fcbarcelona};${sportsclub_barca}|${sports_ac_generic} Milan;Milan|${sports_inter_generic} Mediolan;${sports_inter_generic}|${sportsclub_juventus} Turyn;${sportsclub_juve}|${sportsclub_manchesterunited};${sportsclub_manu}|Liverpool ${sports_fc_generic};Liverpool|${sportsclub_ajax} Amsterdam;${sportsclub_ajax}</pl>
+				</realmadrid_csv>
+				<realmadrid>
+					<all>${.csv:realmadrid_csv:0}</all>
+				</realmadrid>
+				<real>
+					<all>${.csv:realmadrid_csv:1}</all>
+				</real>
+				<dem>
+					<de>${.lte:currentyear:2001:"DM":"Euro"}</de>
+					<en>${.lte:currentyear:2001:"DEM":"euros"}</en>
+					<pl>${.lte:currentyear:2001:"DEM":"euro"}</pl>
+				</dem>
+				<epoch>${.lte:currentyear:1984:"0":"${.lte:currentyear:1988:"1":"${.lte:currentyear:1991:"2":"${.lte:currentyear:1994:"3":"${.lte:currentyear:1997:"4":"${.lte:currentyear:2002:"5":"${.lte:currentyear:2006:"6":"${.lte:currentyear:2011:"7":"${.lte:currentyear:2014:"8":"9"}"}"}"}"}"}"}"}"}</epoch>
+				<athlete_0_firstname>${.person:"09e89ab1-10db-4bea-8814-f8861861c7bb":"firstname"}</athlete_0_firstname>
+				<athlete_0_nickname>${.person:"09e89ab1-10db-4bea-8814-f8861861c7bb":"nickname"}</athlete_0_nickname>
+				<athlete_0_lastname>${.person:"09e89ab1-10db-4bea-8814-f8861861c7bb":"lastname"}</athlete_0_lastname>
+				<athlete_1_firstname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"firstname"}</athlete_1_firstname>
+				<athlete_1_nickname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"nickname"}</athlete_1_nickname>
+				<athlete_1_lastname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"lastname"}</athlete_1_lastname>
+				<athlete_2_firstname>${.person:"160ce3bd-1ce9-41cc-b686-0e3994a50d53":"firstname"}</athlete_2_firstname>
+				<athlete_2_nickname>${.person:"160ce3bd-1ce9-41cc-b686-0e3994a50d53":"nickname"}</athlete_2_nickname>
+				<athlete_2_lastname>${.person:"160ce3bd-1ce9-41cc-b686-0e3994a50d53":"lastname"}</athlete_2_lastname>
+				<athlete_3_firstname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"firstname"}</athlete_3_firstname>
+				<athlete_3_nickname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"nickname"}</athlete_3_nickname>
+				<athlete_3_lastname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"lastname"}</athlete_3_lastname>
+				<athlete_4_firstname>${.person:"a5e34a99-8b79-4f94-a69b-bf43bbd295d8":"firstname"}</athlete_4_firstname>
+				<athlete_4_nickname>${.person:"a5e34a99-8b79-4f94-a69b-bf43bbd295d8":"nickname"}</athlete_4_nickname>
+				<athlete_4_lastname>${.person:"a5e34a99-8b79-4f94-a69b-bf43bbd295d8":"lastname"}</athlete_4_lastname>
+				<athlete_5_firstname>${.person:"7112c33e-97d0-4006-b136-ada88ce2ef0a":"firstname"}</athlete_5_firstname>
+				<athlete_5_nickname>${.person:"7112c33e-97d0-4006-b136-ada88ce2ef0a":"nickname"}</athlete_5_nickname>
+				<athlete_5_lastname>${.person:"7112c33e-97d0-4006-b136-ada88ce2ef0a":"lastname"}</athlete_5_lastname>
+				<athlete_6_firstname>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"firstname"}</athlete_6_firstname>
+				<athlete_6_nickname>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"nickname"}</athlete_6_nickname>
+				<athlete_6_lastname>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"lastname"}</athlete_6_lastname>
+				<athlete_7_firstname>${.person:"1f33d6ae-922e-4029-9eee-5f016a6aaee6":"firstname"}</athlete_7_firstname>
+				<athlete_7_nickname>${.person:"1f33d6ae-922e-4029-9eee-5f016a6aaee6":"nickname"}</athlete_7_nickname>
+				<athlete_7_lastname>${.person:"1f33d6ae-922e-4029-9eee-5f016a6aaee6":"lastname"}</athlete_7_lastname>
+				<athlete_8_firstname>${.person:"bc400955-4a97-46b9-a5ba-b8bca2c3cc9f":"firstname"}</athlete_8_firstname>
+				<athlete_8_nickname>${.person:"bc400955-4a97-46b9-a5ba-b8bca2c3cc9f":"nickname"}</athlete_8_nickname>
+				<athlete_8_lastname>${.person:"bc400955-4a97-46b9-a5ba-b8bca2c3cc9f":"lastname"}</athlete_8_lastname>
+				<athlete_9_firstname>${.person:"9680f6f4-11c7-4475-bea9-98fc63cd4f52":"firstname"}</athlete_9_firstname>
+				<athlete_9_nickname>${.person:"9680f6f4-11c7-4475-bea9-98fc63cd4f52":"nickname"}</athlete_9_nickname>
+				<athlete_9_lastname>${.person:"9680f6f4-11c7-4475-bea9-98fc63cd4f52":"lastname"}</athlete_9_lastname>
+				<michael>${athlete_${epoch}_firstname}</michael>
+				<michi>${athlete_${epoch}_nickname}</michi>
+				<ballack>${athlete_${epoch}_lastname}</ballack>
 			</variables>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="571543da-edcb-48c5-866d-e978491be0b9" time="2,1,1,7,15" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_to="2019" />
 		</news>
 		<news guid="571543da-edcb-48c5-866d-e978491be0b9" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>${sportsclub_real} Madrid will ${ballack} haben</de>
-				<en>${sportsclub_real} Madrid wants ${ballack}</en>
-				<pl>${sportsclub_real} Madryt chce ${ballack}a</pl>
+				<de>${realmadrid} will ${ballack} haben</de>
+				<en>${realmadrid} wants ${ballack}</en>
+				<pl>${ballack}: ${realmadrid} go chce</pl>
 			</title>
 			<description>
-				<de>Die Königlichen haben Interesse an ${sportsclub_fcbayern}-Star ${ballack}. Die ${mediaorg_bild}-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
-				<en>${sportsclub_real} is interested in ${sportsclub_fcbayern} star ${ballack}. The newspaper ${mediaorg_bild}-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
-				<pl>${sportsclub_real} jest zainteresowany gwiazdą ${sportsclub_fcbayern}u, ${ballack}iem. Gazeta ${mediaorg_bild}-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
+				<de>${real} hat Interesse an ${sportsclub_fcbayern}-Star ${ballack}. Die ${mediaorg_bild}-Zeitung spricht von 60 Mio ${dem} Ablöse und 10 Mio ${dem} Jahresgehalt.</de>
+				<en>${real} is interested in ${sportsclub_fcbayern} star ${ballack}. The newspaper ${mediaorg_bild}-Zeitung speaks of 60 Mio ${dem} transfer fee and 10 Mio ${dem} annual salary.</en>
+				<pl>${real} jest zainteresowany gwiazdą ${sportsclub_fcbayern}u, ${ballack}iem. Gazeta ${mediaorg_bild}-Zeitung mówi o 60 mln ${dem} opłaty transferowej i 10 mln ${dem} rocznej pensji.</pl>
 			</description>
 			<effects>
 				<!-- this news is triggered some hours afterwards -->
 				<effect trigger="happen" type="triggernews" news="ef0b1006-b2ce-41b9-a783-1b556124df40" time="1,8,13" />
 			</effects>
 			<data genre="2" price="1.0" quality="39" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="ef0b1006-b2ce-41b9-a783-1b556124df40" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
@@ -6441,46 +6494,43 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${hoeness} poprawia ofertę</pl>
 			</title>
 			<description>
-				<de>Manager ${hoeness} kontert auf das ${sportsclub_real}-Angebot und bietet ${ballack} 7 Mio € Jahresgehalt. „Mehr ist nicht drin“, so ${hoeness}.</de>
-				<en>Manager ${hoeness} responds to ${sportsclub_real} offer by offering ${ballack} €7 million in annual salary. "That is all we can do," ${hoeness} said.</en>
-				<pl>Menedżer ${hoeness} odpowiada na ofertę ${sportsclub_real}u, oferując ${ballack}owi 7 milionów euro rocznej pensji. "To wszystko, co możemy zrobić", powiedział ${hoeness}.</pl>
+				<de>${manager} ${hoeness} kontert auf das ${real}-Angebot und bietet ${ballack} 7 Mio ${dem} Jahresgehalt. „Mehr ist nicht drin“, so ${hoeness}.</de>
+				<en>${manager} ${hoeness} responds to ${real} offer by offering ${ballack} 7 million ${dem} in annual salary. "That is all we can do," ${hoeness} said.</en>
+				<pl>${real} składa ofertę. ${manager} ${hoeness} odpowiada, podnosząc pensję: ${ballack} otrzyma 7 milionów ${dem} rocznie. "To wszystko, co możemy zrobić", powiedział ${hoeness}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a4138dc1-9369-4735-9377-64a569cde6dc" time="2,1,1,12,18" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="a4138dc1-9369-4735-9377-64a569cde6dc" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>${ballack} und ${sportsclub_real} einigen sich</de>
-				<en>${ballack} and ${sportsclub_real} reach agreement</en>
-				<pl>${ballack} i ${sportsclub_real} osiągają porozumienie</pl>
+				<de>${ballack} und ${real} einigen sich</de>
+				<en>${ballack} and ${real} reach agreement</en>
+				<pl>${ballack} i ${real} osiągają porozumienie</pl>
 			</title>
 			<description>
-				<de>Wie die ${mediaorg_bild}-Zeitung berichtet ist der Wechsel des ${sportsclub_fcbayern}-Stars zu den Königlichen perfekt. Manager ${hoeness} dementiert: „Ich weiß von nichts“.</de>
-				<en>As the newspaper ${mediaorg_bild}-Zeitung reports, the ${sportsclub_fcbayern} star's move to ${sportsclub_real} is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
-				<pl>Jak donosi gazeta ${mediaorg_bild}-Zeitung, przejście gwiazdy ${sportsclub_fcbayern}u do ${sportsclub_real}u jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
+				<de>Wie die ${mediaorg_bild}-Zeitung berichtet ist der Wechsel des ${sportsclub_fcbayern}-Stars zu ${real} perfekt. ${manager} ${hoeness} dementiert: „Ich weiß von nichts“.</de>
+				<en>As the newspaper ${mediaorg_bild}-Zeitung reports, the ${sportsclub_fcbayern} star's move to ${real} is perfect. ${manager} ${hoeness} denies: "I know of nothing".</en>
+				<pl>Jak donosi gazeta ${mediaorg_bild}-Zeitung, przejście gwiazdy ${sportsclub_fcbayern}u do ${real}u jest idealne. ${manager} ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" time="2,1,2,8,20" />
 			</effects>
 			<data genre="2" price="1.0" quality="49" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="e2ec64a7-fc37-4a07-b567-1f7761821df7" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
+		<news guid="e2ec64a7-fc37-4a07-b567-1f7761821df7" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="" comment="TODO: Then in most (not all!) combinations to be alternative history / fake news">
 			<title>
 				<de>${hoeness} bestätigt nun doch Wechsel</de>
 				<en>${hoeness} finally confirms transfer</en>
 				<pl>${hoeness} w końcu potwierdza transfer</pl>
 			</title>
 			<description>
-				<de>${michael} ${ballack} wechselt ab nächse Saison für 75 Mio € Ablöse zu ${sportsclub_real}. ${hoeness} reibt sich die Hände: „Für das Geld bekommen wir 2 neue ${ballack}s.“</de>
-				<en>${michael} ${ballack} will join ${sportsclub_real} next season for a fee of €75 million. ${hoeness} rubs his hands: "For the money we get 2 new ${ballack}s."</en>
-				<pl>${michael} ${ballack} dołączy do ${sportsclub_real}u w przyszłym sezonie za kwotę 75 milionów euro. ${hoeness} zaciera ręce: "Za te pieniądze dostaniemy 2 nowych ${ballack}ów".</pl>
+				<de>${michael} ${ballack} wechselt ab nächse Saison für 75 Mio ${dem} Ablöse zu ${real}. ${hoeness} reibt sich die Hände: „Für das Geld bekommen wir 2 neue ${ballack}s.“</de>
+				<en>${michael} ${ballack} will join ${real} next season for a fee of 75 million ${dem}. ${hoeness} rubs his hands: "For the money we get 2 new ${ballack}s."</en>
+				<pl>${michael} ${ballack} dołączy do ${real}u w przyszłym sezonie za kwotę 75 milionów ${dem}. ${hoeness} zaciera ręce: "Za te pieniądze dostaniemy 2 nowych ${ballack}ów".</pl>
 			</description>
 			<data genre="2" price="1.0" quality="19" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news guid="3a5e6a8d-a0ee-4175-ba92-a5bada7cf291" thread_guid="d8ca951a-2240-488a-8913-ddb5b75c8add" type="0" creator="">
@@ -6994,6 +7044,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Po latach tenisowej abstynencji ${athletefirstname} ${athletelastname} planuje swój powrót. Zawodnicy nie mogą się doczekać ${legendary_${epoch}}.</pl>
 			</description>
 			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<athletesfirstname_csv>${.person:"614c90b8-e18c-45d2-a026-a3d216b276cb":"firstname"};${.person:"c6f7756d-3e0c-4e47-9cbe-13dc7826e145":"firstname"};${.person:"b073ffa5-ad2f-40ce-ba52-b5b9d5e4a2a6":"firstname"};${.person:"209467cd-85e1-4212-999e-b6273359320f":"firstname"}</athletesfirstname_csv>
 				<athleteslastname_csv>${.person:"614c90b8-e18c-45d2-a026-a3d216b276cb":"lastname"};${.person:"c6f7756d-3e0c-4e47-9cbe-13dc7826e145":"lastname"};${.person:"b073ffa5-ad2f-40ce-ba52-b5b9d5e4a2a6":"lastname"};${.person:"209467cd-85e1-4212-999e-b6273359320f":"lastname"}</athleteslastname_csv>
 				<epoch>${.lte:currentyear:1986:"0":"${.lte:currentyear:1995:"1":"${.lte:currentyear:2004:"2":"3"}"}"}</epoch>
@@ -7170,7 +7221,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
 				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
 				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
-				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"firstname"}</jenniferlopez>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"fullname"}</jenniferlopez>
 				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
 				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
 				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>

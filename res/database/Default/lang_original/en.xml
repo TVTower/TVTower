@@ -407,6 +407,9 @@
 		<sports_fifa>FIFA</sports_fifa> <!-- https://en.wikipedia.org/wiki/FIFA -->
 		<sports_daviscup>Davis Cup</sports_daviscup> <!-- https://en.wikipedia.org/wiki/Davis_Cup -->
 		<sports_1fc_generic>1. FC</sports_1fc_generic>
+		<sports_fc_generic>FC</sports_fc_generic>
+		<sports_ac_generic>AC</sports_ac_generic>
+		<sports_inter_generic>Inter</sports_inter_generic>
 
 		<sportsclub_fcbayern>FC Bayern</sportsclub_fcbayern> <!-- https://en.wikipedia.org/wiki/FC_Bayern_Munich -->
 		<sportsclub_bayern>Bayern</sportsclub_bayern>
@@ -418,6 +421,9 @@
 		<sportsclub_barca>Barça</sportsclub_barca>
 		<sportsclub_manchesterunited>Manchester United</sportsclub_manchesterunited> <!-- https://en.wikipedia.org/wiki/Manchester_United_F.C. -->
 		<sportsclub_manu>ManU</sportsclub_manu>
+		<sportsclub_juventus>Juventus</sportsclub_juventus> <!-- https://en.wikipedia.org/wiki/Juventus_FC -->
+		<sportsclub_juve>Juve</sportsclub_juve>
+		<sportsclub_ajax>Ajax</sportsclub_ajax> <!-- https://en.wikipedia.org/wiki/AFC_Ajax -->
 		<sportsclub_hamburgersv>Hamburger SV</sportsclub_hamburgersv> <!-- https://en.wikipedia.org/wiki/Hamburger_SV -->
 		<sportsclub_hsv>HSV</sportsclub_hsv>
 
