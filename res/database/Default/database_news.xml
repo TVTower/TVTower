@@ -2693,6 +2693,25 @@
 			<data genre="5" price="1.0" quality="15" fictional="0" flags="2" happen_time="5,2007,2007,7,11,1,30" /> <!-- actual date not clear -->
 		</news>
 
+			<!-- 2007-01 -->
+
+		<news guid="dc199512-2cd8-4167-944b-bbf1615f1d38" type="0" creator="8936" created_by="jorgaeff" comment="https://www.n-tv.de/sport/Langer-mit-Hole-in-One-article209563.html | victory part is fictional alt-history though">
+			<title>
+				<de>${bernhardlanger} gelingt Hole-in-one</de>
+				<en>${bernhardlanger} achieves hole-in-one</en>
+				<pl>${bernhardlanger} osiąga hole-in-one</pl>
+			</title>
+			<description>
+				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone ${bernhardlanger} den Turniersieg beim Major-Turnier der Senioren in Palm Springs.</de>
+				<en>With the first hole-in-one of his professional career, golf legend ${bernhardlanger} claims victory in the senior major tournament in Palm Springs.</en>
+				<pl>Z pierwszym hole-in-one w swojej karierze zawodowej, legenda golfa ${bernhardlanger} zwycięża w turnieju senior major w Palm Springs.</pl>
+			</description>
+			<variables>
+				<bernhardlanger>${.person:"4e3f08d2-839e-4934-a2de-efec79f22233":"fullname"}</bernhardlanger>
+			</variables>
+			<data genre="2" price="0.25" quality="25" flags="2" happen_time="5,2007,2007,1,2,1,28" /> <!-- actual date: 2007-01-21 -->
+		</news>
+
 			<!-- 2007-06 -->
 
 		<news guid="171b9219-f639-42b1-bec8-d8a7d15edb43" type="0" thread_guid="5f58d718-ceac-4821-835d-57637dc6caf8" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/IPhone#History | https://en.wikipedia.org/wiki/Apple_Inc. | TODO: Description talks about throwing away the old model but date corresponds to introduction of the first model">

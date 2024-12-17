@@ -591,23 +591,6 @@
 			<data genre="2" price="0.35" quality="40" fictional="1" />
 		</news>
 
-		<news guid="dc199512-2cd8-4167-944b-bbf1615f1d38" type="0" creator="8936" created_by="jorgaeff" comment="https://www.n-tv.de/sport/Langer-mit-Hole-in-One-article209563.html | victory part is fictional alt-history though">
-			<title>
-				<de>${bernhardlanger} gelingt Hole-in-one</de>
-				<en>${bernhardlanger} achieves hole-in-one</en>
-				<pl>${bernhardlanger} osiąga hole-in-one</pl>
-			</title>
-			<description>
-				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone ${bernhardlanger} den Turniersieg beim Major-Turnier der Senioren in Palm Springs.</de>
-				<en>With the first hole-in-one of his professional career, golf legend ${bernhardlanger} claims victory in the senior major tournament in Palm Springs.</en>
-				<pl>Z pierwszym hole-in-one w swojej karierze zawodowej, legenda golfa ${bernhardlanger} zwycięża w turnieju senior major w Palm Springs.</pl>
-			</description>
-			<variables>
-				<bernhardlanger>${.person:"4e3f08d2-839e-4934-a2de-efec79f22233":"fullname"}</bernhardlanger>
-			</variables>
-			<data genre="2" price="0.25" quality="25" flags="2" happen_time="5,2007,2007,1,2,1,28" /> <!-- actual date: 2007-01-21 -->
-		</news>
-
 		<news guid="news-jorgaeff-dyson-01" type="0" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff" comment="TODO: deal with this 'half-fictional' aspect somehow">
 				<!-- "Beginnt an einem Sonntag" -->
 			<availability year_range_from="2005" script='${.eq:${.worldtime:"weekday"}:6}' />
