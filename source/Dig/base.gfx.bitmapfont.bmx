@@ -533,6 +533,10 @@ Type TBitmapFont
 			extraChars :+ Chr(9664) 'Black Left-Pointing Triangle
 			extraChars :+ Chr(9654) 'Black Right-Pointing Triangle
 			extraChars :+ Chr(9632) 'Black Square
+			'extraChars :+ Chr(632)  'Latin Small Letter Phi - TODO: this doesn't seem to display; 966 Greek Small Letter Phi doesn't seem to display either
+			extraChars :+ Chr(8243) 'Double Prime (Inch)
+			extraChars :+ Chr(8531) 'Vulgar Fraction One Third
+			'extraChars :+ Chr(9829) 'Black Heart Suit - TODO: This one doesn't seem to display
 		EndIf
 
 		Self.glyphCount = glyphCount
