@@ -764,7 +764,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 	'reachable whole time -> player could use audience tooltip
 	Method getReceivers:Int()
-		Return GetStationMapCollection().GetReceivers(Self.ME)
+		Return _GetPlayerStationMap().GetReceivers()
 	End Method
 
 

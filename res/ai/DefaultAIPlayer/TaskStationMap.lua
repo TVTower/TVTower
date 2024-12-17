@@ -179,7 +179,7 @@ function JobAnalyseStationMarket:Tick()
 	TVT.audiencePredictor.RefreshMarkets()
 	player.LastStationMapMarketAnalysis = player.WorldTicks
 	local blocks = player.blocksCount
-	player.totalReceivers = TVT:of_getPlayerReceivers(TVT.ME) --alternative is the player specific TVT:getReceivers()
+	player.totalReceivers = TVT:getReceivers()
 	self.Task.maxReceiverIncrease = 99000000
 
 	--movie prices do not increas so much anymore...
