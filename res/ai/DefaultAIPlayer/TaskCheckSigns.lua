@@ -12,6 +12,7 @@ _G["TaskCheckSigns"] = class(AITask, function(c)
 	c.RequiresBudgetHandling = false
 
 	c.terrorLevel = 0
+	c.checkStudio = 0
 end)
 
 function TaskCheckSigns:typename()
@@ -40,6 +41,8 @@ end
 function TaskCheckSigns:getSituationPriority()
 	if self.terrorLevel >= 2 then
 		self.SituationPriority = math.max(self.SituationPriority, self.terrorLevel)
+	elseif self.checkStudio ~=nil and self.checkStudio > 0 then
+		self.SituationPriority = 5
 	end
 
 	return self.SituationPriority
@@ -62,11 +65,18 @@ end
 function JobCheckRoomSigns:Tick()
 	local scheduleRoomBoardTask = false
 	local forceChangeSigns = false
+	local rentableStudioSize = 0
+	local rentableStudieId = 0
 	for index = 0, TVT.ep_GetSignCount() - 1, 1 do
 		local response = TVT.ep_GetSignAtIndex(index)
 		if response.result == TVT.RESULT_OK then
 			local sign = response.data
 			if sign ~= nil then
+				local rentableSignSize = TVT.ep_IsRentableStudio(sign)
+				if rentableSignSize > rentableStudioSize then
+					rentableStudioSize = rentableSignSize
+					rentableStudieId = sign:GetRoomId()
+				end
 				--Noch am richtigen Platz?
 				if sign.IsAtOriginalPosition() == 0 then
 					if sign.GetOwner() == TVT.ME then
@@ -91,6 +101,17 @@ function JobCheckRoomSigns:Tick()
 			scheduleRoomBoardTask = true
 			forceChangeSigns = true
 		end
+	end
+
+	if rentableStudioSize > getPlayer().maxStudioSize then
+		local ra = getPlayer().TaskList[_G["TASK_ROOMAGENCY"]]
+		if ra ~= nil then
+			self:LogInfo("set studio in roomagency task")
+			ra.studioToRent = rentableStudieId
+			ra.studioSize = rentableStudioSize
+		end
+	else
+		self.checkStudio = 0
 	end
 
 	if scheduleRoomBoardTask == true then

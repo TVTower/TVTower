@@ -20,6 +20,7 @@ _G["TaskScripts"] = class(AITask, function(c)
 	c.RequiresBudgetHandling = false
 	c.prodStatus = PROD_STATUS_GET_CONCEPTS --check state on activation
 	c.producedForSammy = false
+	c.neededStudioSize = 1
 end)
 
 function TaskScripts:typename()
@@ -45,14 +46,27 @@ function TaskScripts:Activate()
 	if self.prodStatus == PROD_STATUS_BUY then
 		self.TargetRoom = TVT.ROOM_SCRIPTAGENCY
 	elseif self.prodStatus == PROD_STATUS_GET_CONCEPTS then
-		self.TargetRoom = TVT.GetFirstRoomByDetails("studio", TVT.ME).id
+		self.TargetRoom = self:GetStudioId()
 	elseif self.prodStatus == PROD_STATUS_SUPERMARKET then
 		self.TargetRoom = TVT.ROOM_SUPERMARKET
 	elseif self.prodStatus == PROD_STATUS_START_PRODUCTION then
-		self.TargetRoom = TVT.GetFirstRoomByDetails("studio", TVT.ME).id
+		self.TargetRoom = self:GetStudioId()
 	end
 
 	--self.LogLevel = LOG_TRACE
+end
+
+function TaskScripts:GetStudioId()
+	if self.neededStudioSize ~= nil then
+		local studios = TVT.GetRoomsByDetails("studio", TVT.ME)
+		for k,v in pairs(studios) do
+			--self:LogInfo(v.id .." ".. v.GetSize().." "..self.neededStudioSize)
+			if v.GetSize() >= self.neededStudioSize then
+				return v.id
+			end
+		end
+	end
+	return TVT.GetFirstRoomByDetails("studio", TVT.ME).id
 end
 
 function TaskScripts:GetNextJobInTargetRoom()
@@ -112,13 +126,13 @@ function JobBuyScript:Prepare(pParams)
 		self.Task.BasePriority = 0.15
 		self.scriptMaxPrice = 1300000
 		self.minPotential = 0.5
-		self.minAttractivity = 0.6
+		self.minAttractivity = 0.5
 	elseif blocks > 48 then
 		self.maxJobCount = 5
 		self.Task.BasePriority = 0.07
 		self.scriptMaxPrice = 100000
 		self.minPotential = 0.35
-		self.minAttractivity = 0.4
+		self.minAttractivity = 0.3
 	else
 		self.scriptMaxPrice = 0	
 	end
@@ -162,6 +176,7 @@ function JobBuyScript:Tick()
 				self.Task.PriorityBackup = self.Task.BasePriority
 				self.Task.BasePriority = self.Task.BasePriority * 5
 				self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
+				self.Task.neededStudioSize = script.requiredStudioSize
 				break
 			end
 		end
@@ -183,6 +198,7 @@ end
 
 function JobBuyScript:canBuy(script)
 	local cultureOverride = 0
+	local studioSize = getPlayer().maxStudioSize
 	if self.Task.awardType == "culture" then
 		if script:IsCulture() > 0 then
 			cultureOverride = 1
@@ -192,7 +208,7 @@ function JobBuyScript:canBuy(script)
 	end
 
 	--hard restrictions
-	if script.requiredStudioSize > 1 then
+	if script.requiredStudioSize > studioSize then
 		return false
 	elseif script:GetPrice() > self.scriptMaxPrice then
 		return false

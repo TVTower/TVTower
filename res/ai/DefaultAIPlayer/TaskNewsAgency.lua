@@ -213,6 +213,9 @@ function JobCheckEventNews:Tick()
 	local roomBoardTask = player.TaskList[TASK_ROOMBOARD]
 
 	if checkSignsTask ~= nil then
+		if checkSignsTask.terrorLevel > terrorLevel then
+			checkSignsTask.checkStudio = 1
+		end
 		checkSignsTask.terrorLevel = terrorLevel
 	end
 	if roomBoardTask ~= nil then

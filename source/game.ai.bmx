@@ -27,6 +27,7 @@ Import "game.roomhandler.movieagency.bmx"
 Import "game.roomhandler.adagency.bmx"
 Import "game.roomhandler.scriptagency.bmx"
 Import "game.roomhandler.studio.bmx"
+Import "game.roomagency.bmx"
 Import "game.programmeproducer.bmx"
 
 
@@ -419,7 +420,8 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method GetRoomsByDetails:TRoom[](roomName:String, owner:Int)
-		Return GetRoomCollection().GetAllByDetails("", roomName, owner)
+		'return by current name, not original one, so that all studios are found
+		Return GetRoomCollection().GetAllByDetails(roomName, "", owner)
 	End Method
 
 
@@ -2095,6 +2097,32 @@ endrem
 		EndIf
 	End Method
 
+
+	Method ep_IsRentableStudio:Int(sign:TRoomBoardSign)
+		If _PlayerInRoom("elevatorplan") And sign
+			Local roomId:Int = sign.GetRoomId()
+			If roomId
+				Local room:TRoom = GetRoomCollection().Get(roomId)
+				If room
+					If room.IsUsableAsStudio() And room.IsRentable() Then return room.GetSize()
+				EndIf
+			EndIf
+		EndIf
+		Return 0
+	End Method
+
+
+	'=== ROOM AGENCY ===
+	Method ra_rentStudio:Int(roomId:Int)
+		If Not _PlayerInRoom("roomagency") Then Return Self.RESULT_WRONGROOM
+
+		If roomId
+			Local room:TRoom = GetRoomCollection().Get(roomId)
+			If room.HasOwner() Then Return Self.RESULT_NOTALLOWED
+			If room And GetRoomAgency().BeginRoomRental(room, Self.ME, False) Then Return Self.RESULT_OK
+		EndIf
+		Return Self.RESULT_FAILED
+	End Method
 
 	'=== ROOM BOARD ===
 	'the plan on the basement which enables switching room signs

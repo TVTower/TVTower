@@ -28,6 +28,7 @@ require "TaskSchedule"
 require "TaskStationMap"
 require "TaskBoss"
 require "TaskRoomBoard"
+require "TaskRoomAgency"
 require "TaskArchive"
 if (unitTestMode) then require "UnitTests" end
 ]]
@@ -46,6 +47,7 @@ dofile(scriptPath .. "TaskSchedule.lua")
 dofile(scriptPath .. "TaskStationMap.lua")
 dofile(scriptPath .. "TaskBoss.lua")
 dofile(scriptPath .. "TaskRoomBoard.lua")
+dofile(scriptPath .. "TaskRoomAgency.lua")
 dofile(scriptPath .. "TaskCheckSigns.lua")
 dofile(scriptPath .. "TaskArchive.lua")
 dofile(scriptPath .. "TaskScripts.lua")
@@ -68,6 +70,7 @@ TASK_STATIONMAP			= "StationMap"
 TASK_BETTY				= "Betty"
 TASK_BOSS				= "Boss"
 TASK_ROOMBOARD			= "RoomBoard"
+TASK_ROOMAGENCY			= "RoomAgency"
 TASK_CHECKSIGNS			= "CheckSigns"
 TASK_SCRIPTS			= "Scripts"
 
@@ -80,6 +83,7 @@ _G["TASK_STATIONMAP"] = TASK_STATIONMAP
 _G["TASK_BETTY"] = TASK_BETTY
 _G["TASK_BOSS"] = TASK_BOSS
 _G["TASK_ROOMBOARD"] = TASK_ROOMBOARD
+_G["TASK_ROOMAGENCY"] = TASK_ROOMAGENCY
 _G["TASK_CHECKSIGNS"] = TASK_CHECKSIGNS
 _G["TASK_SCRIPTS"] = TASK_SCRIPTS
 
@@ -115,6 +119,7 @@ function DefaultAIPlayer:initParameters()
 		self.minutesGone = TVT:GetTimeGoneInMinutes()
 	end
 	if self.coverage == nil then self.coverage = 0 end
+	if self.maxStudioSize == nil then self.maxStudioSize = 1 end
 	self.money = TVT:GetMoney()
 
 	if (self.Ventruesome == nil or self.Ventruesome <= 0) then
@@ -194,6 +199,9 @@ function DefaultAIPlayer:resume()
 	if (self.TaskList[TASK_CHECKSIGNS] == nil) then
 		self.TaskList[TASK_CHECKSIGNS] = TaskCheckSigns()
 	end
+	if (self.TaskList[TASK_ROOMAGENCY] == nil) then
+		self.TaskList[TASK_ROOMAGENCY] = TaskRoomAgency()
+	end
 	if (self.TaskList[TASK_SCRIPTS] == nil) then
 		self.TaskList[TASK_SCRIPTS] = TaskScripts()
 	end
@@ -217,6 +225,7 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_STATIONMAP]			= TaskStationMap()
 	self.TaskList[TASK_BOSS]				= TaskBoss()
 	self.TaskList[TASK_ROOMBOARD]			= TaskRoomBoard()
+	self.TaskList[TASK_ROOMAGENCY]			= TaskRoomAgency()
 	self.TaskList[TASK_CHECKSIGNS]			= TaskCheckSigns()
 	self.TaskList[TASK_ARCHIVE]				= TaskArchive()
 	self.TaskList[TASK_SCRIPTS]				= TaskScripts()
