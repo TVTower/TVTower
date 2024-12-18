@@ -388,9 +388,14 @@
 			</description>
 			<variables>
 				<uweseeler>${.person:"1617d822-7f5e-4362-a4bd-e0f05a2dfee0":"fullname"}</uweseeler>
+				<president> <!-- was not really 'Ehrenpräsident' though, but taking liberty here, and news item seems to refer more to a date in the 2000s -->
+					<de>${.lte:currentyear:1997:"Präsident":"Ehrenpräsident"}</de>
+					<en>${.lte:currentyear:1997:"president":"honorary president"}</en>
+					<pl>${.lte:currentyear:1997:"prezes":"honorowy prezes"}</pl>
+				</president>
 			</variables>
 			<data genre="2" price="0.3" quality="30" fictional="1" flags="2" />
-			<availability year_range_from="1995" year_range_to="1997" />
+			<availability year_range_from="1995" year_range_to="2016" script='${.eq:${.worldtime:"month"}:5}' />
 			<effects>
 				<!-- "morgen 6-10 Uhr / News a oder b" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,10" news1="news-jorgaeff-abstieg-02a" probability1="50" news2="news-jorgaeff-abstieg-02b" probability2="50"/>
@@ -437,9 +442,9 @@
 				<pl>${sportsclub_hamburgersv} rozstaje się z trenerem</pl>
 			</title>
 			<description>
-				<de>Aufgrund des erstmaligen Abstiegs des ${sportsclub_hamburgersv} zieht Präsident ${uweseeler} die Reißleine und entlässt Trainer Knut Knolle. ${uweseeler} möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
-				<en>Due to the first-time relegation of ${sportsclub_hamburgersv}, president ${uweseeler} pulls the plug and sacks coach Knut Knolle. ${uweseeler} now wants to explore the market and look for suitable successors.</en>
-				<pl>Z powodu pierwszego spadku ${sportsclub_hamburgersv}, prezes ${uweseeler} wyciąga wtyczkę i zwalnia trenera Knuta Knolle. ${uweseeler} chce teraz zbadać rynek i poszukać odpowiednich następców.</pl>
+				<de>Aufgrund des erstmaligen Abstiegs des ${sportsclub_hamburgersv} zieht ${president} ${uweseeler} die Reißleine und entlässt Trainer Knut Knolle. ${uweseeler} möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
+				<en>Due to the first-time relegation of ${sportsclub_hamburgersv}, ${president} ${uweseeler} pulls the plug and sacks coach Knut Knolle. ${uweseeler} now wants to explore the market and look for suitable successors.</en>
+				<pl>Z powodu pierwszego spadku ${sportsclub_hamburgersv}, ${president} ${uweseeler} wyciąga wtyczkę i zwalnia trenera Knuta Knolle. ${uweseeler} chce teraz zbadać rynek i poszukać odpowiednich następców.</pl>
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
@@ -450,9 +455,9 @@
 				<pl>${sportsclub_hamburgersv} trzyma się trenera</pl>
 			</title>
 			<description>
-				<de>Trotz des Abstiegs aus der Bundesliga möchte Präsident ${uweseeler} am Trainer festhalten: „Knut Knolle ist unser Mann auch für die 2. Liga. Mit ihm werden wir wieder aufsteigen.“</de>
-				<en>Despite the relegation from the Bundesliga, President ${uweseeler} wants to hold on to the coach: "Knut Knolle is our man also for the 2nd league. With him, we will rise again."</en>
-				<pl>Pomimo spadku z Bundesligi, prezes ${uweseeler} chce zatrzymać trenera: „Knut Knolle to nasz człowiek także na 2. ligę. Z nim znów się podniesiemy”.</pl>
+				<de>Trotz des Abstiegs aus der Bundesliga möchte ${president} ${uweseeler} am Trainer festhalten: „Knut Knolle ist unser Mann auch für die 2. Liga. Mit ihm werden wir wieder aufsteigen.“</de>
+				<en>Despite the relegation from the Bundesliga, ${president} ${uweseeler} wants to hold on to the coach: "Knut Knolle is our man also for the 2nd league. With him, we will rise again."</en>
+				<pl>Pomimo spadku z Bundesligi, ${president} ${uweseeler} chce zatrzymać trenera: „Knut Knolle to nasz człowiek także na 2. ligę. Z nim znów się podniesiemy”.</pl>
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>

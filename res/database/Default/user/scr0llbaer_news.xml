@@ -2931,7 +2931,7 @@
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="d6cc05ba-0aa5-4bf8-a9af-70f0021c260a" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551">
+		<news guid="d6cc05ba-0aa5-4bf8-a9af-70f0021c260a" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551" comment="#maintenancecritical">
 			<title>
 				<de>${chancellor} verpasst Maut-Test</de>
 				<en>${.ucfirst:chancellor} misses toll test</en>
@@ -3631,7 +3631,7 @@
 						piosenkarka rockowa;${courtneylove}|
 						rapperka;${lilkim}|
 						rapperka i aktorka;${queenlatifah}|
-						piosenkarka and aktorka;${jenniferlopez}|
+						piosenkarka i aktorka;${jenniferlopez}|
 						piosenkarka;${cristinaaguilera}|
 						piosenkarka;${beyonce}|
 						aktorka;${pamalaanderson}|
@@ -3838,7 +3838,7 @@
 						piosenkarka rockowa;${courtneylove}|
 						rapperka;${lilkim}|
 						rapperka i aktorka;${queenlatifah}|
-						piosenkarka and aktorka;${jenniferlopez}|
+						piosenkarka i aktorka;${jenniferlopez}|
 						piosenkarka;${cristinaaguilera}|
 						piosenkarka;${beyonce}|
 						aktorka;${pamalaanderson}|

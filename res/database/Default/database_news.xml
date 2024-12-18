@@ -279,7 +279,7 @@
 			</title>
 			<description>
 				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im N.Y. ${brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
-				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. $ {brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
+				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. ${brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
 				<pl>${mediaorg_worldwrestlingfederation} (${mediaorg_wwf}) organizuje swoje pierwsze pokazy w N.Y. ${brand_madisonsquaregarden}. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
 			</description>
 			<variables>
@@ -354,16 +354,16 @@
 			<data genre="0" price="0.5" quality="70" fictional="0" flags="2" happen_time="5,1985,1985,4,5,1,30" /> <!-- actual date: 1985-05-01 -->
 		</news>
 
-		<news guid="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_guid="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart | Oper König Hirsch von Hans Werner Henze">
+		<news guid="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_guid="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart | Oper König Hirsch von Hans Werner Henze | previous spoof 'Der Kolibri'">
 			<title>
 				<de>${henze}-Oper ungekürzt aufgeführt</de>
 				<en>${henze} opera performed unabridged</en> <!-- previously 'Ulm opera' - did not refer to the town Ulm, but to the person -->
 				<pl>Opera ${henze}go w niezmienionej wersji</pl>
 			</title>
 			<description>
-				<de>Im Württembergischen Staatstheater in Stuttgart geht zum ersten Mal die Oper „Der Kolibri“ von ${hanswerner} ${henze} in ihrer ungekürzten Fassung über die Bühne. Davor war das Werk nur mit großen Abstrichen aufgeführt worden.</de>
-				<en>In the Württemberg State Theater in Stuttgart, the opera "The Hummingbird" by ${hanswerner} ${henze} goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
-				<pl>W Württemberg State Theater w Stuttgarcie opera „The Hummingbird” po raz pierwszy trafia na scenę w niezmienionej wersji. Skomponował ją ${hanswerner} ${henze}. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
+				<de>Im Württembergischen Staatstheater in Stuttgart geht zum ersten Mal die Oper „${mediatitle_koenighirsch}“ von ${hanswerner} ${henze} in ihrer ungekürzten Fassung über die Bühne. Davor war das Werk nur mit großen Abstrichen aufgeführt worden.</de>
+				<en>In the Württemberg State Theater in Stuttgart, the opera "${mediatitle_koenighirsch}" by ${hanswerner} ${henze} goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
+				<pl>W Württemberg State Theater w Stuttgarcie opera „${mediatitle_koenighirsch}” po raz pierwszy trafia na scenę w niezmienionej wersji. Skomponował ją ${hanswerner} ${henze}. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
 			</description>
 			<variables>
 				<hanswerner>${.person:"a92ae7df-d662-4352-8975-60c6463fddca":"firstname"}</hanswerner>
@@ -383,9 +383,9 @@
 				<pl>Opera ${henze}go otrzymuje niewielki aplauz</pl>
 			</title>
 			<description>
-				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten ${henze}-Oper „Der Kolibri“. Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
-				<en>There was only little applause at the end of the ${henze} opera "The Hummingbird", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
-				<pl>Niewiele było oklasków na zakończenie opery ${henze} „The Hummingbird”, która po raz pierwszy została wystawiona w wersji nieskróconej. Większość z 1200 widzów zasnęła już pod koniec pierwszego aktu. Krytycy narzekali na długość dzieła.</pl>
+				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten ${henze}-Oper „${mediatitle_koenighirsch}“. Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
+				<en>There was only little applause at the end of the ${henze} opera "${mediatitle_koenighirsch}", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
+				<pl>Niewiele było oklasków na zakończenie opery ${henze} „${mediatitle_koenighirsch}”, która po raz pierwszy została wystawiona w wersji nieskróconej. Większość z 1200 widzów zasnęła już pod koniec pierwszego aktu. Krytycy narzekali na długość dzieła.</pl>
 			</description>
 			<data genre="5" price="0.35" quality="35" fictional="0" flags="2" />
 		</news>
@@ -4276,7 +4276,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Obwohl ${actor} ${millions},${hundredthousands} Millionen Dollar ${topreserve} gesammelt hatte, wurde ${thecar} verschrottet.</de>
 				<en>Although ${actor} had raised $ ${millions}.${hundredthousands} million ${topreserve}, ${thecar} ended up being scrapped.</en>
-				<pl>Chociaż ${actor} zebrał ${millions},${hundredthousands} miliona dolarów ${topreserve}, {thecar} został ostatecznie zezłomowany.</pl>
+				<pl>Chociaż ${actor} zebrał ${millions},${hundredthousands} miliona dolarów ${topreserve}, ${thecar} został ostatecznie zezłomowany.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
@@ -5326,7 +5326,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<raab>${.person:"fbed7ff0-8169-49d7-a909-2a1106cc305d":"lastname"}</raab>
 			</variables>
 			<data genre="1" price="0.7" quality="29" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="2005" /> <!-- actual last year of 'Showpraktikant' 2015 -->
 		</news>
 		<news guid="d5835942-1658-4140-9272-2450165344de" thread_guid="81ef8cbc-3208-4786-aa0d-6d6f824e79ca" type="0" creator="">
 			<title>
@@ -5372,7 +5372,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<kalkofe>${.person:"b59e6041-26d0-41d6-ba8c-3f40c9e8d47a":"lastname"}</kalkofe>
 			</variables>
 			<data genre="5" price="1.0" quality="58" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1995" />
 		</news>
 		<news guid="27a9048d-2066-404a-8a8e-aceb1ad6d84a" thread_guid="8e1eca41-5270-4fc1-99a6-c2404809e276" type="0" creator="" comment="TODO: 'Die Roten Rosen' is an alias/spoof name actually used by 'Die Toten Hosen' themselves. Not making this news entry unique could be the very humour here. Though 'Die Roten Rosen' would need to be spoofed too, but spoofing too much will make the reference perhaps unrecognizable.">
 			<title>
@@ -5992,7 +5992,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news guid="34977b2a-b976-48f8-8254-001ebe2263f1" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="0" creator="">
+		<news guid="34977b2a-b976-48f8-8254-001ebe2263f1" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="0" creator="" comment="#maintenancecritical (not intefere with 'real' news) | TODO: alternative history or resolve into real events">
 			<title>
 				<de>Wahlen in Deutschland</de>
 				<en>Elections in Germany</en>
@@ -6012,7 +6012,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" time="3,5,9,15" />
 			</effects>
 			<data genre="0" price="1.0" quality="38" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="2005" />
 		</news>
 		<news guid="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6030,7 +6030,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="34edc95f-49f3-4131-bc39-8ed5cfc293b1" time="2,1,1,19,21" />
 			</effects>
 			<data genre="0" price="0.5" quality="49" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="661a9905-912e-4801-ad63-73b9ead7fd78" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6044,7 +6043,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Wstępne prognozy pokazały, że frekwencja wyborcza nigdy nie była tak niska. Po południu lokale wyborcze nadal nie były zapełnione.</pl>
 			</description>
 			<data genre="0" price="0.5" quality="68" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="34edc95f-49f3-4131-bc39-8ed5cfc293b1" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6061,7 +6059,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" time="2,1,1,8,17" />
 			</effects>
 			<data genre="0" price="0.5" quality="78" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6078,7 +6075,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="c3848e4a-6629-4481-b036-7aa9abad6e92" time="2,2,3,9,17" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="c3848e4a-6629-4481-b036-7aa9abad6e92" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6095,7 +6091,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="1b87d798-85de-486d-a683-25c11db8c929" time="2,1,1,8,17" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="1b87d798-85de-486d-a683-25c11db8c929" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6109,7 +6104,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Po nocnym spotkaniu na szczycie liderów partii ${generalorg_npd} i ${generalorg_spd}, prawdopodobnie dojdzie do koalicji dwóch najsilniejszych niemieckich partii.</pl>
 			</description>
 			<data genre="0" price="0.5" quality="88" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news guid="99fe6727-f9ea-4a1d-89b5-928a655b1695" thread_guid="c82d429c-fa85-4771-b661-7181b4607c9f" type="0" creator="">
@@ -7051,7 +7045,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="1" price="1.0" quality="35" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_guid="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="" comment="TODO: Could add other sports">
+		<news guid="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_guid="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="" comment="TODO: Could add other sports | #maintenancecritical">
 			<title>
 				<de>${athletefirstname} ${athletelastname} plant Comeback</de>
 				<en>${athletefirstname} ${athletelastname} plans comeback</en>
@@ -7348,7 +7342,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						piosenkarka rockowa;${courtneylove}|
 						rapperka;${lilkim}|
 						rapperka i aktorka;${queenlatifah}|
-						piosenkarka and aktorka;${jenniferlopez}|
+						piosenkarka i aktorka;${jenniferlopez}|
 						piosenkarka;${cristinaaguilera}|
 						piosenkarka;${beyonce}|
 						aktorka;${pamalaanderson}|

@@ -458,6 +458,7 @@
 		<mediatitle_lowestofthelow>At the Lowest Edge</mediatitle_lowestofthelow> <!-- https://en.wikipedia.org/wiki/Lowest_of_the_Low_(book) -->
 		<mediatitle_bornintheusa>Raised in America</mediatitle_bornintheusa> <!-- https://en.wikipedia.org/wiki/Born_in_the_U.S.A. -->
 		<mediatitle_derfreischuetz>Das Freiwild</mediatitle_derfreischuetz> <!-- https://en.wikipedia.org/wiki/Der_Freisch%C3%BCtz -->
+		<mediatitle_koenighirsch>Herrscher Geweih</mediatitle_koenighirsch> <!-- https://en.wikipedia.org/wiki/K%C3%B6nig_Hirsch -->
 		<mediatitle_thephantomoftheopera>The Ghost of the Theatre</mediatitle_thephantomoftheopera> <!-- https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(1986_musical) -->
 		<mediatitle_takeonme>Brake On Me</mediatitle_takeonme> <!-- https://en.wikipedia.org/wiki/Take_On_Me -->
 		<mediatitle_masterofpuppets>Pulling the Strings</mediatitle_masterofpuppets> <!-- https://en.wikipedia.org/wiki/Master_of_Puppets -->
@@ -483,7 +484,7 @@
 		<mediatitle_knightrider>Night Raider</mediatitle_knightrider> <!-- https://en.wikipedia.org/wiki/Knight_Rider -->
 		<mediatitle_gilligansisland>Gallagan's Isle</mediatitle_gilligansisland> <!-- https://en.wikipedia.org/wiki/Gilligan%27s_Island -->
 		<mediatitle_starwars>War Stars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
-		<mediatitle_ottifants>Grottifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant | alt spoofs: Frottifanten, Ollifanten -->
+		<mediatitle_ottifants>Ollifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant | alt spoofs: Frottifanten, Grottifanten -->
 		<mediatitle_wrestlemania>WrestleMadness</mediatitle_wrestlemania> <!-- https://en.wikipedia.org/wiki/WrestleMania -->
 		<mediatitle_familyfeud>Family Duel</mediatitle_familyfeud> <!-- https://en.wikipedia.org/wiki/Family_Feud -->
 
