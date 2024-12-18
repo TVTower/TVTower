@@ -157,6 +157,8 @@ function TaskNewsAgency:BudgetMaximum()
 		return math.max(110000, math.floor(money / 10))
 	elseif money < 2000000 then
 		return math.max(225000, math.floor(money / 10))
+	elseif money > 7000000 and player.coverage > 0.5 then
+		return 1000000
 	else
 		return 300000
 	end

@@ -108,12 +108,13 @@ function JobBuyScript:Prepare(pParams)
 	self.minAttractivity = 0.25
 	self.maxJobCount = 4
 	if blocks > 64 then
+		self.maxJobCount = 6
 		self.Task.BasePriority = 0.15
 		self.scriptMaxPrice = 1300000
 		self.minPotential = 0.5
 		self.minAttractivity = 0.6
 	elseif blocks > 48 then
-		self.maxJobCount = 6
+		self.maxJobCount = 5
 		self.Task.BasePriority = 0.07
 		self.scriptMaxPrice = 100000
 		self.minPotential = 0.35
@@ -278,6 +279,8 @@ function JobPlanProduction:Prepare(pParams)
 		self.MaxBudget = 0
 	elseif self.Task.awardType ~= "culture" and (player.money < 200000) then
 		self.MaxBudget = 0
+	elseif player.coverage > 0.5 and player.money > 5000000 then
+		self.MaxBudget = 2500000
 	elseif receivers > 5000000 and ((credit <= 200000 and lastDayProfit > 0) or (money > fixedCosts)) then
 		if blocks > 72 then
 			self.MaxBudget = 1500000

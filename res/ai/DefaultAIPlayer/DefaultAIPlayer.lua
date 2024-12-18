@@ -114,6 +114,7 @@ function DefaultAIPlayer:initParameters()
 		self.gameDay = TVT:GetDaysRun() + 1
 		self.minutesGone = TVT:GetTimeGoneInMinutes()
 	end
+	if self.coverage == nil then self.coverage = 0 end
 	self.money = TVT:GetMoney()
 
 	if (self.Ventruesome == nil or self.Ventruesome <= 0) then
@@ -170,6 +171,7 @@ function DefaultAIPlayer:initializePlayer()
 	self.licencesToSell = {}
 	self.blocksCount = 0
 	self.maxTopicalityBlocksCount = 0
+	self.coverage = 0
 
 	self.currentAwardType = -1
 	self.currentAwardStartTime = -1
