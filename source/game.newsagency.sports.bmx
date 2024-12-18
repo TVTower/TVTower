@@ -14,6 +14,9 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 	Field teams:TMap = New TMap
 	Field teamsByID:TIntMap = New TIntMap
 	Field matches:TMap = New TMap
+	'caches for faster lookups
+	Field _teamMembersByID:TIntMap = New TIntMap
+
 	Global _instance:TNewsEventSportCollection
 
 
@@ -56,11 +59,11 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetLeagueByGUID:TNewsEventSportLeague(guid:String)
+	Method GetLeague:TNewsEventSportLeague(guid:String)
 		Return TNewsEventSportLeague( leagues.ValueForKey(guid) )
 	End Method
-
-
+	
+	
 	Method AddTeams(teams:TNewsEventSportTeam[])
 		For local team:TNewsEventSportTeam = EachIn teams
 			AddTeam(team)
@@ -85,20 +88,38 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 		Return TNewsEventSportTeam(teamsByID.ValueForKey(id))
 	End Method
 
-
-	Method AddTeamMember(person:TPersonBase)
-		'members are normal persons ... so add them to there
-		GetPersonBaseCollection().Add(person)
+	
+	Method _GetTeamMembersByIDMap:TIntMap()
+		If not _teamMembersByID
+			_teamMembersByID = New TIntMap
+			For local p:TPersonBase = EachIn GetPersonBaseCollection().entries.Values()
+				if p.HasJob(TVTPersonJob.SPORTSMAN)
+					_teamMembersByID.Insert(p.GetID(), p)
+				EndIf
+			Next
+		EndIf
+		Return _teamMembersByID
 	End Method
 
 
-	Method GetTeamMember:TPersonBase(guid:String)
+	Method AddTeamMember(person:TPersonBase)
+		If Not person Then Return
+		
+		'members are normal persons ... so add them to there
+		GetPersonBaseCollection().Add(person)
+		'fill up the cache too
+		_GetTeamMembersByIDMap().Insert(person.GetID(), person)
+	End Method
+
+
+	Method Get:TPersonBase(guid:String)
 		Return GetPersonBaseCollection().GetByGUID(guid)
 	End Method
 
 
 	Method GetTeamMember:TPersonBase(id:Int)
-		Return GetPersonBaseCollection().GetByID(id)
+		Return TPersonBase(_GetTeamMembersByIDMap().ValueForKey(id))
+		'Return GetPersonBaseCollection().GetByID(id)
 	End Method
 
 
@@ -107,7 +128,7 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetMatchByGUID:TNewsEventSportMatch(guid:String)
+	Method GetMatch:TNewsEventSportMatch(guid:String)
 		Return TNewsEventSportMatch( matches.ValueForKey(guid) )
 	End Method
 
@@ -540,7 +561,7 @@ Type TNewsEventSport Extends TGameObject
 	End Method
 
 
-	Method GetLeagueByGUID:TNewsEventSportLeague(leagueGUID:String)
+	Method GetLeague:TNewsEventSportLeague(leagueGUID:String)
 		For Local l:TNewsEventSportLeague = EachIn leagues
 			If l.GetGUID() = leagueGUID Then Return l
 		Next
@@ -788,7 +809,7 @@ Type TNewsEventSport Extends TGameObject
 	End Function
 
 
-	Method GetMatchByGUID:TNewsEventSportMatch(guid:String)
+	Method GetMatch:TNewsEventSportMatch(guid:String)
 	End Method
 
 
@@ -2305,7 +2326,7 @@ Type TNewsEventSportTeam Extends TGameObject
 			'basic attractivity
 			statsAttractivity = statsAttractivityBase
 
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
 			If league
 				Select league._leaguesIndex
 					Case 0   statsAttractivity :+ 0.40
@@ -2332,7 +2353,7 @@ Type TNewsEventSportTeam Extends TGameObject
 	Method GetPower:Float()
 		If statsPower = -1
 			statsPower = statsPowerBase
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
 			If league
 				Select league._leaguesIndex
 					Case 0   statsPower :+ 0.40
@@ -2355,7 +2376,7 @@ Type TNewsEventSportTeam Extends TGameObject
 	Method GetSkill:Float()
 		If statsSkill = -1
 			statsSkill = statsSkillBase
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
 			If league
 				Select league._leaguesIndex
 					Case 0   statsSkill :+ 0.40
@@ -2396,14 +2417,14 @@ Type TNewsEventSportTeam Extends TGameObject
 		If Not leagueGUID Then Return Null
 
 		'try to find league the easy way
-		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
 		If league Then Return league
 
 		'try it the indirect way
 		If Not sportID Then Return Null
 
 		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByID(sportID)
-		If sport Then Return sport.GetLeagueByGUID(leagueGUID)
+		If sport Then Return sport.GetLeague(leagueGUID)
 
 		Return Null
 	End Method
