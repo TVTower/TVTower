@@ -67,6 +67,7 @@
 		<programmerole guid="3a14136f-acc5-4515-8674-2c70846e1224" first_name="Santa Claus" last_name="" />
 		<programmerole guid="a5fbb2e6-3f3b-4482-b63c-d8659ac069f2" first_name="Beauty" last_name="" />
 		<programmerole guid="f850f00c-470d-40d3-b801-00aab8ae0797" first_name="Beast" last_name="" />
+		<programmerole guid="307e3d7c-12fc-48f9-bfc8-63a0545dda82" first_name="Ghost" last_name="" />
 
 		<programmerole guid="a50ea27a-ca49-40a4-8864-44322609a9c5" first_name="Helen" last_name="of Troy" />
 		<programmerole guid="15a7fbe6-996d-4c59-95c8-4453918a6658" first_name="Hector" last_name="" />
@@ -171,6 +172,12 @@
 		<programmerole guid="bd124df0-337d-4df5-94e6-a4606143e66d" first_name="Squirry" last_name="" title="Squirrel" />
 		<programmerole guid="733deb40-6bdf-4d01-af40-b0fae20822c2" first_name="Roberto" last_name="" title="Redbreast" />
 
+		<programmerole guid="79ce57c0-3b0d-41c7-87c2-c1d01703681f" first_name="Anne" last_name="" title="Rubble woman" />
+		<programmerole guid="cf9b4d62-b95d-4937-a50e-edb49e6f6713" first_name="" last_name="Schinder" title="Mayor" />
+		<programmerole guid="e0e925e1-665f-4c41-98f5-b4526bea6ccd" first_name="" last_name="Hinkelfels" title="Local official" />
+		<programmerole guid="e6d20298-118e-4085-bd2e-40cae4a090cc" first_name="Hans" last_name="" title="Citizen" />
+		<programmerole guid="b806ee7b-d43e-4351-99e6-0d8d2c363da4" first_name="Dietmar" last_name="" title="Farmer" />
+
 		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" title="Inspector" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Darlene" last_name="" title="Assistant" />
 	</programmeroles>
@@ -250,6 +257,7 @@
 		<brand_deutschetelekom>Deutsche Tellycom</brand_deutschetelekom> <!-- https://en.wikipedia.org/wiki/Deutsche_Telekom -->
 		<brand_telekom>Tellycom</brand_telekom>
 		<brand_bostondynamics>Bolton Dynamos</brand_bostondynamics> <!-- https://en.wikipedia.org/wiki/Boston_Dynamics -->
+		<brand_spacex>Star-X</brand_spacex> <!-- https://en.wikipedia.org/wiki/SpaceX -->
 		<brand_tesla>Tusla</brand_tesla> <!-- https://en.wikipedia.org/wiki/Tesla,_Inc. | TODO: Nikola Tesla not yet spoofed -->
 		<brand_mercedes>Mercieles</brand_mercedes> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
 		<brand_benz>Bonz</brand_benz> <!-- https://en.wikipedia.org/wiki/Mercedes-Benz -->
@@ -288,6 +296,7 @@
 		<brand_cessna172>Shessna 127</brand_cessna172> <!-- https://en.wikipedia.org/wiki/Cessna_172 -->
 		<brand_ravensburger>Rabensberger</brand_ravensburger> <!-- https://en.wikipedia.org/wiki/Ravensburger -->
 		<brand_carrera>Carrina</brand_carrera> <!-- https://en.wikipedia.org/wiki/Carrera_(slot_car_brand) -->
+		<brand_lego>LEGU</brand_lego> <!-- https://en.wikipedia.org/wiki/Lego -->
 		<brand_lamy>Laimi</brand_lamy> <!-- https://en.wikipedia.org/wiki/Lamy -->
 		<brand_swingline>Slipline</brand_swingline> <!-- https://en.wikipedia.org/wiki/Swingline -->
 		<brand_riored>Rio Rouge</brand_riored> <!-- https://en.wikipedia.org/wiki/Swingline -->
@@ -458,7 +467,7 @@
 		<mediatitle_lowestofthelow>At the Lowest Edge</mediatitle_lowestofthelow> <!-- https://en.wikipedia.org/wiki/Lowest_of_the_Low_(book) -->
 		<mediatitle_bornintheusa>Raised in America</mediatitle_bornintheusa> <!-- https://en.wikipedia.org/wiki/Born_in_the_U.S.A. -->
 		<mediatitle_derfreischuetz>Das Freiwild</mediatitle_derfreischuetz> <!-- https://en.wikipedia.org/wiki/Der_Freisch%C3%BCtz -->
-		<mediatitle_koenighirsch>Herrscher Geweih</mediatitle_koenighirsch> <!-- https://en.wikipedia.org/wiki/K%C3%B6nig_Hirsch -->
+		<mediatitle_koenighirsch>Herrschgeweih</mediatitle_koenighirsch> <!-- https://en.wikipedia.org/wiki/K%C3%B6nig_Hirsch -->
 		<mediatitle_thephantomoftheopera>The Ghost of the Theatre</mediatitle_thephantomoftheopera> <!-- https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(1986_musical) -->
 		<mediatitle_takeonme>Brake On Me</mediatitle_takeonme> <!-- https://en.wikipedia.org/wiki/Take_On_Me -->
 		<mediatitle_masterofpuppets>Pulling the Strings</mediatitle_masterofpuppets> <!-- https://en.wikipedia.org/wiki/Master_of_Puppets -->

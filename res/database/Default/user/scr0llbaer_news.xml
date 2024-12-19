@@ -795,9 +795,9 @@
 				<pl>Pojedynek z ${theirparrot} przegrany</pl>
 			</title>
 			<description>
-				<de>${name} wurde geschickt und zielgenau die Waffe aus ${their}er Hand geschossen; ${heshe} wurde mit drei verstauchten Fingern ins Krankenhaus eingeliefert.</de>
-				<en>${name} got the gun shot out of ${their} hand skillfully and accurately; ${heshe} was hospitalized with three sprained fingers.</en>
-				<pl>${name} umiejętnie i celnie wyjęła pistolet z ręki ${their}; ${heshe} trafiła do szpitala z trzema zwichniętymi palcami.</pl>
+				<de>${name} wurde geschickt und zielgenau die Waffe aus ${their}er Hand geschossen. ${.ucfirst:heshe} wurde mit drei verstauchten Fingern ins Krankenhaus eingeliefert.</de>
+				<en>${name} got the gun shot out of ${their} hand skillfully and accurately. ${.ucfirst:heshe} was hospitalized with three sprained fingers.</en>
+				<pl>${name} umiejętnie i celnie wyjęła pistolet z ręki ${their}. ${.ucfirst:heshe} trafiła do szpitala z trzema zwichniętymi palcami.</pl>
 			</description>
 			<data genre="4" price="1" quality="30" fictional="1" />
 			<effects>
@@ -2370,7 +2370,7 @@
 				</three>
 			</variables>
 			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
-			<availability script='${.or:${.or:${.lte:${.worldtime:"year"}:1984}:${.and:${.gte:${.worldtime:"year"}:1988}:${.lte:${.worldtime:"year"}:2001}}}:${.gte:${.worldtime:"year"}:2005}}' /> <!-- avoid proximity to catastrophy dates -->
+			<availability script='${.or:${.or:${.lte:${.worldtime:"year"}:1984}:${.and:${.gte:${.worldtime:"year"}:1988}:${.lte:${.worldtime:"year"}:2001}}}:${.gte:${.worldtime:"year"}:2005}}' /> <!-- avoid proximity to catastrophe dates -->
 		</news>
 
 		<news guid="2fd84050-c697-4cec-9d59-ab16303799f4" type="0" creator="9551">
@@ -2758,7 +2758,7 @@
 			<data genre="4" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 
-		<news guid="16362271-77ae-49d0-a95e-4e29c4cbc906" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+		<news guid="16362271-77ae-49d0-a95e-4e29c4cbc906" type="0" creator="9551">
 			<title>
 				<de>Italien erfindet Feiertag</de>
 				<en>Italy invents holiday</en>
@@ -2771,7 +2771,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="bbd2bb55-6c52-4e84-8cef-d186ce791381" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+		<news guid="bbd2bb55-6c52-4e84-8cef-d186ce791381" type="0" creator="9551">
 			<title>
 				<de>Spanien verbietet Siesta</de>
 				<en>Spain bans siesta</en>
@@ -2784,7 +2784,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="20a466a2-8c63-4653-814b-7825d3952031" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+		<news guid="20a466a2-8c63-4653-814b-7825d3952031" type="0" creator="9551">
 			<title>
 				<de>Frankreich liebt Büro-Nickerchen</de>
 				<en>France legalizes office naps</en>
@@ -2797,7 +2797,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="96f6d971-6ee4-40ab-a0f6-57b77a1803c9" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+		<news guid="96f6d971-6ee4-40ab-a0f6-57b77a1803c9" type="0" creator="9551">
 			<title>
 				<de>China erfindet Wochenende</de>
 				<en>China invents weekend</en>
@@ -2810,7 +2810,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="b2cae30e-66b1-4391-b6f6-85803917ee5a" type="0" thread_guid="ebfbed5f-cce7-42c6-935e-b0bde05c09da" creator="9551">
+		<news guid="b2cae30e-66b1-4391-b6f6-85803917ee5a" type="0" creator="9551">
 			<title>
 				<de>Schweiz reguliert Alpenglocken</de>
 				<en>Switzerland regulates cowbells</en>
@@ -2824,7 +2824,7 @@
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 
-		<news guid="cb6fea39-146d-4a43-aa8f-4a49f2b939b9" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+		<news guid="cb6fea39-146d-4a43-aa8f-4a49f2b939b9" type="0" creator="9551">
 			<title>
 				<de>Brasilien: Steuer auf Tanzen</de>
 				<en>Brazil: Dance tax</en>
@@ -2837,7 +2837,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="c038b7d4-5aea-4bce-a831-950d8424774e" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+		<news guid="c038b7d4-5aea-4bce-a831-950d8424774e" type="0" creator="9551">
 			<title>
 				<de>Berlin plant Club-Steuer</de>
 				<en>Berlin plans club tax</en>
@@ -2850,7 +2850,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="c380e7a4-678a-4bd1-a808-a2fd19fa1221" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+		<news guid="c380e7a4-678a-4bd1-a808-a2fd19fa1221" type="0" creator="9551">
 			<title>
 				<de>Italien klont Pasta</de>
 				<en>Italy clones pasta</en>
@@ -2863,7 +2863,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="fc73fd57-b341-4bdd-b24e-8f5d21e79aaf" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+		<news guid="fc73fd57-b341-4bdd-b24e-8f5d21e79aaf" type="0" creator="9551">
 			<title>
 				<de>Island exportiert Lava</de>
 				<en>Iceland exports lava</en>
@@ -2876,7 +2876,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="74079ac9-71b5-496a-9215-f72f431ad88b" type="0" thread_guid="057e895e-b8dc-439d-82b6-58d71ee2a5e7" creator="9551">
+		<news guid="74079ac9-71b5-496a-9215-f72f431ad88b" type="0" creator="9551">
 			<title>
 				<de>${poland} will Mauer um ${brand_ikea}</de>
 				<en>${poland} wants ${brand_ikea} wall</en>
@@ -2903,7 +2903,7 @@
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 
-		<news guid="12806cc4-d28e-4d61-80a5-e181195d49cf" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551">
+		<news guid="12806cc4-d28e-4d61-80a5-e181195d49cf" type="0" creator="9551">
 			<title>
 				<de>USA: Senator-Steuererklärung ${hottopic}</de>
 				<en>USA: Senator's tax return ${hottopic}</en>
@@ -2931,7 +2931,7 @@
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="d6cc05ba-0aa5-4bf8-a9af-70f0021c260a" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551" comment="#maintenancecritical">
+		<news guid="d6cc05ba-0aa5-4bf8-a9af-70f0021c260a" type="0" creator="9551" comment="#maintenancecritical">
 			<title>
 				<de>${chancellor} verpasst Maut-Test</de>
 				<en>${.ucfirst:chancellor} misses toll test</en>
@@ -2972,7 +2972,7 @@
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="f5dfddee-00f9-4c88-ba1d-203af5edf2d4" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551" comment="TODO: add the 'real' news item - https://de.wikipedia.org/wiki/Verordnung_(EWG)_Nr._1677/88_(Gurkenverordnung) - fictional here only the extended time frame">
+		<news guid="f5dfddee-00f9-4c88-ba1d-203af5edf2d4" type="0" creator="9551" comment="TODO: add the 'real' news item - https://de.wikipedia.org/wiki/Verordnung_(EWG)_Nr._1677/88_(Gurkenverordnung) - fictional here only the extended time frame">
 			<title>
 				<de>${frg} debattiert über Gurken</de>
 				<en>${frg} debates cucumbers</en>
@@ -3003,7 +3003,7 @@
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="8b7114fe-f460-4f65-a5c8-121e8b2dd7a6" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551" comment="#maintenancecritical">
+		<news guid="8b7114fe-f460-4f65-a5c8-121e8b2dd7a6" type="0" creator="9551" comment="#maintenancecritical">
 			<title>
 				<de>${politicianname}: Lederhosenpflicht</de>
 				<en>${politicianname}: Lederhosen mandate</en>
@@ -3021,7 +3021,7 @@
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="e5011610-b4f0-4732-a84b-d3e8b27f1bc9" type="0" thread_guid="61acb6f8-c809-4d26-89c9-4f233a31b65f" creator="9551">
+		<news guid="e5011610-b4f0-4732-a84b-d3e8b27f1bc9" type="0" creator="9551">
 			<title>
 				<de>${lastname} Gewinner des Bürokratiepreises</de>
 				<en>${lastname} winner of Red Tape Prize</en>
@@ -3040,7 +3040,7 @@
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 
-		<news guid="25050cbc-3168-419e-967a-5d3eac598cc4" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+		<news guid="25050cbc-3168-419e-967a-5d3eac598cc4" type="0" creator="9551">
 			<title>
 				<de>${generalorg_opec} plant Mondölförderung</de>
 				<en>${generalorg_opec} plans moon drilling</en>
@@ -3053,7 +3053,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="a9b24bd3-9a15-4241-9622-4bd289ca944f" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+		<news guid="a9b24bd3-9a15-4241-9622-4bd289ca944f" type="0" creator="9551">
 			<title>
 				<de>Japan testet Robo-Partei</de>
 				<en>Japan tests robot party</en>
@@ -3066,7 +3066,7 @@
 			</description>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="bef701c8-d740-4211-980c-404ff39ac943" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+		<news guid="bef701c8-d740-4211-980c-404ff39ac943" type="0" creator="9551">
 			<title>
 				<de>Russland: Wodka-Gesetz</de>
 				<en>Russia: Vodka law</en>
@@ -3084,7 +3084,7 @@
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="6ed66677-daaf-4863-b76e-c1f1c6f94164" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+		<news guid="6ed66677-daaf-4863-b76e-c1f1c6f94164" type="0" creator="9551">
 			<title>
 				<de>${australia} vermietet Sonne</de>
 				<en>${australia} rents out sun</en>
@@ -3104,7 +3104,7 @@
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
-		<news guid="70c432dd-0627-4061-9ce4-d23ea9266c3e" type="0" thread_guid="98bf56c6-9247-4039-8524-f056e2dd699a" creator="9551">
+		<news guid="70c432dd-0627-4061-9ce4-d23ea9266c3e" type="0" creator="9551">
 			<title>
 				<de>${finland} testet 3-Tage-Woche</de>
 				<en>${finland} tests 3-day week</en>
@@ -3223,7 +3223,7 @@
 				<pl>${prague}: Koncert tylko dla psów</pl>
 			</title>
 			<description>
-				<de>Der Komponist ${firstname} ${lastname} ${fromprague} hat eine Sinfonie ausschließlich für Hundeohren kreiert. Besitzer hören nichts, Hunde sind begeistert.</de>
+				<de>Der Komponist ${firstname} ${lastname} ${fromprague} hat eine Sinfonie ausschließlich für Hundeohren kreiert. Besitzer hören nichts, Hunde sind aus dem Häuschen.</de>
 				<en>Composer ${firstname} ${lastname} ${fromprague} created a symphony exclusively for dogs' ears. Owners hear nothing, dogs are thrilled.</en>
 				<pl>Kompozytor ${firstname} ${lastname} ${fromprague} tworzy symfonię wyłącznie dla psich uszu. Właściciele nic nie słyszą, psy zachwycone.</pl>
 			</description>
@@ -3532,6 +3532,7 @@
 				<lindsaylohan>${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}</lindsaylohan>
 				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
 				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<ladygaga>${.person:"53f70e44-01f4-4e12-9326-68f2d4936b14":"firstname"}</ladygaga>
 				<gen_0_csv>
 					<de>Country-Sängerin;${dollyparton}|
 						Country-Sängerin;${lorettalynn}|
@@ -3642,17 +3643,20 @@
 					<de>Schauspielerin;${mischabarton}|
 						Schauspielerin;${lindsaylohan}|
 						Sängerin und Schauspielerin;${mileycyrus}|
-						Sängerin und Schauspielerin;${taylormomsen}
+						Sängerin und Schauspielerin;${taylormomsen}|
+						Sängerin und Schauspielerin;${ladygaga}
 					</de>
 					<en>actress;${mischabarton}|
 						actress;${lindsaylohan}|
 						singer and actress;${mileycyrus}|
-						singer and actress;${taylormomsen}
+						singer and actress;${taylormomsen}|
+						singer and actress;${ladygaga}
 					</en>
 					<pl>aktorka;${mischabarton}|
 						aktorka;${lindsaylohan}|
 						piosenkarka i aktorka;${mileycyrus}|
-						piosenkarka i aktorka;${taylormomsen}
+						piosenkarka i aktorka;${taylormomsen}|
+						piosenkarka i aktorka;${ladygaga}
 					</pl>
 				</gen_3_csv>
 				<celebgen>${.lte:currentyear:2000:0:"${.lte:currentyear:2012:1:"${.lte:currentyear:2025:2:3}"}"}</celebgen>
@@ -3739,6 +3743,7 @@
 				<lindsaylohan>${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}</lindsaylohan>
 				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
 				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<ladygaga>${.person:"53f70e44-01f4-4e12-9326-68f2d4936b14":"firstname"}</ladygaga>
 				<gen_0_csv>
 					<de>Country-Sängerin;${dollyparton}|
 						Country-Sängerin;${lorettalynn}|
@@ -3849,17 +3854,20 @@
 					<de>Schauspielerin;${mischabarton}|
 						Schauspielerin;${lindsaylohan}|
 						Sängerin und Schauspielerin;${mileycyrus}|
-						Sängerin und Schauspielerin;${taylormomsen}
+						Sängerin und Schauspielerin;${taylormomsen}|
+						Sängerin und Schauspielerin;${ladygaga}
 					</de>
 					<en>actress;${mischabarton}|
 						actress;${lindsaylohan}|
 						singer and actress;${mileycyrus}|
-						singer and actress;${taylormomsen}
+						singer and actress;${taylormomsen}|
+						singer and actress;${ladygaga}
 					</en>
 					<pl>aktorka;${mischabarton}|
 						aktorka;${lindsaylohan}|
 						piosenkarka i aktorka;${mileycyrus}|
-						piosenkarka i aktorka;${taylormomsen}
+						piosenkarka i aktorka;${taylormomsen}|
+						piosenkarka i aktorka;${ladygaga}
 					</pl>
 				</gen_3_csv>
 				<celebgen>${.lte:currentyear:2000:0:"${.lte:currentyear:2012:1:"${.lte:currentyear:2025:2:3}"}"}</celebgen>
@@ -3881,7 +3889,7 @@
 				<pl>${celebshortname} otwiera siłownie</pl>
 			</title>
 			<description>
-				<de>${celebfullname} gründet eine globale Fitnessstudio-Kette. Mit Kursen wie „${bootyboost}“ soll der perfekte Celebrity-Look für alle erreichbar sein.</de>
+				<de>${celebfullname} gründet eine globale Fitnessstudio-Kette. Mit Kursen wie „${bootyboost}“ soll der perfekte Celebrity-Look für alle erreichbar werden.</de>
 				<en>${celebfullname} launches a global gym chain. With classes like "${bootyboost}", the perfect celebrity look is now within reach for everyone.</en>
 				<pl>${celebfullname} otwiera globalną sieć siłowni. Dzięki zajęciom takim jak „${bootyboost}”, idealny wygląd gwiazdy jest teraz w zasięgu każdego.</pl>
 			</description>
@@ -3897,6 +3905,909 @@
 				<bootyboost>Booty Boost|Glute Force One|Buns of Glowry|Twerkout Tuesdays|Rear-End Renaissance|Squat It Like It's Hot|Booty Camp|Jelly-to-Jello|Rump Revival|Peach Perfect|Sculpt &amp; Twerk|Rhythm &amp; Burn|Zumba Ya Bum-Bum|Hip Hop Hump Day|Bounce &amp; Burn|Fanny Fiesta|Barbell Booty Brunch|Heavy Cheeks|Hard-Ass Hustle|Core &amp; More|Steel Buns Sunday|Plank You Very Much|Sore Today, Snatched Tomorrow|Downward Dog, Upward Booty|Stretch &amp; Sass|Bend It Like Booty|HIIT That Booty|Burpees &amp; Booties|Hustle for the Muscle|Cheeky Circuit|Slam &amp; Sculpt|Bubble Butt Bath</bootyboost>
 			</variables>
 			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="8c3416f7-4486-4bfa-bf46-7258e9553c0e" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${celebname} plant Opern-Duett</de>
+				<en>${celebname} plans opera duet</en>
+				<pl>${celebname} planuje duet operowy</pl>
+			</title>
+			<description>
+				<de>${celebjob} ${celebname} geht neue Wege: Sie arbeitet mit einem berühmten Tenor an einem Opern-Duett. „Es ist Zeit, Grenzen zu überschreiten“, sagt sie.</de>
+				<en>${.ucfirst:celebjob} ${celebname} explores new territory: She's collaborating with a famous tenor on an opera duet. "It's time to push boundaries," she says.</en>
+				<pl>${.ucfirst:celebjob} ${celebname} wkracza na nowe terytorium: współpracuje z znanym tenorem nad duetem operowym. „Czas przekraczać granice” - mówi.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<dollyparton>${.person:"45306754-5c7c-47ea-b703-6a9e2495f83a":"fullname"}</dollyparton>
+				<lorettalynn>${.person:"572d2232-5079-4e3b-8acf-51c7ab032684":"fullname"}</lorettalynn>
+				<tinaturner>${.person:"e43513ac-ddea-429a-84a0-c57dc7452665":"fullname"}</tinaturner>
+				<mariannefaithfull>${.person:"d36075f7-5476-413c-a7c9-1b3caf316787":"fullname"}</mariannefaithfull>
+				<gracejones>${.person:"97806487-39c5-434e-9291-9743c3c349ae":"fullname"}</gracejones>
+				<cher>${.person:"55c2956d-d82e-4448-bbad-858f4128656e":"firstname"}</cher>
+				<dianaross>${.person:"003a25dc-ef9f-40c6-ac29-b9a573543016":"fullname"}</dianaross>
+				<madonna>${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}</madonna>
+				<joanjett>${.person:"1896f56c-41be-4832-830f-c1eb137e3eec":"fullname"}</joanjett>
+				<debbieharry>${.person:"17bd6f98-0161-443f-9b5d-6bd0f92e38db":"fullname"}</debbieharry>
+				<cyndilauper>${.person:"ef262af3-9fa4-4c47-856f-098c2497fc5d":"fullname"}</cyndilauper>
+				<britneyspears>${.person:"a0ccd849-e3d5-420a-b8b3-3590a4a6803a":"fullname"}</britneyspears>
+				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
+				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
+				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"fullname"}</jenniferlopez>
+				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
+				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
+				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
+				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<ladygaga>${.person:"53f70e44-01f4-4e12-9326-68f2d4936b14":"firstname"}</ladygaga>
+				<gen_0_csv>
+					<de>Country-Sängerin;${dollyparton}|
+						Country-Sängerin;${lorettalynn}|
+						Popsängerin;${tinaturner}|
+						Rocksängerin;${mariannefaithfull}|
+						Sängerin;${gracejones}|
+						Sängerin;${cher}|
+						Sängerin;${dianaross}
+					</de>
+					<en>country singer;${dollyparton}|
+						country singer;${lorettalynn}|
+						pop singer;${tinaturner}|
+						rock singer;${mariannefaithfull}|
+						singer;${gracejones}|
+						singer;${cher}|
+						singer;${dianaross}
+					</en>
+					<pl>piosenkarka country;${dollyparton}|
+						piosenkarka country;${lorettalynn}|
+						piosenkarka pop;${tinaturner}|
+						piosenkarka rockowa;${mariannefaithfull}|
+						piosenkarka;${gracejones}|
+						piosenkarka;${cher}|
+						piosenkarka;${dianaross}
+					</pl>
+				</gen_0_csv>
+				<gen_1_csv>
+					<de>Popsängerin;${madonna}|
+						Rocksängerin;${joanjett}|
+						Rocksängerin;${debbieharry}|
+						Popsängerin;${cyndilauper}
+					</de>
+					<en>
+						pop singer;${madonna}|
+						rock singer;${joanjett}|
+						rock singer;${debbieharry}|
+						pop singer;${cyndilauper}
+					</en>
+					<pl>piosenkarka pop;${madonna}|
+						piosenkarka rockowa;${joanjett}|
+						piosenkarka rockowa;${debbieharry}|
+						piosenkarka pop;${cyndilauper}
+					</pl>
+				</gen_1_csv>
+				<gen_2_csv>
+					<de>Sängerin;${britneyspears}|
+						Rocksängerin;${courtneylove}|
+						Rapperin;${lilkim}|
+						Rapperin;${queenlatifah}|
+						Sängerin;${jenniferlopez}|
+						Sängerin;${cristinaaguilera}|
+						Sängerin;${beyonce}
+					</de>
+					<en>singer;${britneyspears}|
+						rock singer;${courtneylove}|
+						rapper;${lilkim}|
+						rapper;${queenlatifah}|
+						singer;${jenniferlopez}|
+						singer;${cristinaaguilera}|
+						singer;${beyonce}
+					</en>
+					<pl>piosenkarka;${britneyspears}|
+						piosenkarka rockowa;${courtneylove}|
+						rapperka;${lilkim}|
+						rapperka;${queenlatifah}|
+						piosenkarka;${jenniferlopez}|
+						piosenkarka;${cristinaaguilera}|
+						piosenkarka;${beyonce}
+					</pl>
+				</gen_2_csv>
+				<gen_3_csv>
+					<de>Sängerin;${mileycyrus}|
+						Sängerin;${taylormomsen}|
+						Sängerin;${ladygaga}
+					</de>
+					<en>singer;${mileycyrus}|
+						singer;${taylormomsen}|
+						singer;${ladygaga}
+					</en>
+					<pl>piosenkarka i aktorka;${mileycyrus}|
+						piosenkarka i aktorka;${taylormomsen}|
+						piosenkarka i aktorka;${ladygaga}
+					</pl>
+				</gen_3_csv>
+				<celebgen>${.lte:currentyear:1989:0:"${.lte:currentyear:1999:1:"${.lte:currentyear:2009:2:3}"}"}</celebgen>
+				<celebjob>
+					<all>${.csv:gen_${celebgen}_csv:0}</all>
+				</celebjob>
+				<celebname>
+					<all>${.csv:gen_${celebgen}_csv:1}</all>
+				</celebname>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="ec8a23b6-e307-479b-8455-7e51a21b96e2" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${celeblast} eröffnet Töpferstudio</de>
+				<en>${celeblast} opens pottery studio</en>
+				<pl>${celeblast} otwiera pracownię</pl>
+			</title>
+			<description>
+				<de>${celebfirst} ${celeblast} widmet sich der Kunst des Töpferns. Sein Studio „Clay &amp; Fame“ in Los Angeles bietet Kurse an - Promis bevorzugt.</de>
+				<en>${celebfirst} ${celeblast} delves into pottery. His studio "Clay &amp; Fame" in Los Angeles offers classes - celebrities preferred.</en>
+				<pl>${celebfirst} ${celeblast} zajmuje się garncarstwem. Jego pracownia „Clay &amp; Fame” w Los Angeles oferuje kursy - z preferencją dla celebrytów.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<i>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15</i>
+				<celeb_0>2d4e13d7-a121-4ab5-9f87-86c5425a71ee</celeb_0> <!-- Jeff Bridges -->
+				<celeb_1>6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3</celeb_1> <!-- Dustin Hoffmann -->
+				<celeb_2>9dcc7ea5-2479-4449-9df7-a4079361460c</celeb_2> <!-- Michael Douglas -->
+				<celeb_3>9216f82f-2ae0-48a2-a4c9-4d660c289953</celeb_3> <!-- Alan Alda -->
+				<celeb_4>e2f59fc8-35fa-496b-a182-2aeb116768c2</celeb_4> <!-- Malcolm McDowell -->
+				<celeb_5>a61f1eba-e305-404c-833d-3932c445bdc1</celeb_5> <!-- James Woods -->
+				<celeb_6>506bc383-259e-4a36-9278-081aafc8f35c</celeb_6> <!-- Robert De Niro -->
+				<celeb_7>91af6b99-191b-41e2-8c41-f7c0498e1c18</celeb_7> <!-- Kurt Russell -->
+				<celeb_8>0a3b1917-3e7e-4fb4-b7c9-8e2ff1ad6b61</celeb_8> <!-- John Travolta -->
+				<celeb_9>070bd0dd-1a11-4b2b-80b7-922dae98c3ca</celeb_9> <!-- Harrison Ford -->
+				<celeb_10>${.lte:currentyear:2000:"868b2dcd-e6f6-4606-8ba1-8651b5d1bea9":"655b5238-4855-4f37-8b9a-2b4b07f28288"}</celeb_10> <!-- Gregory Peck or George Clooney -->
+				<celeb_11>${.lte:currentyear:1990:"d23f86b0-f334-4503-b57f-d441e727a0d1":"eec1280f-fda9-424b-88c4-fda15c7ec6b6"}</celeb_11> <!-- Paul Newman or Tom Hanks -->
+				<celeb_12>${.lte:currentyear:2005:"e97d3181-11cf-4e54-8697-ac2b06212851":"0009cb2b-4f26-4634-8679-59655fa67b4e"}</celeb_12> <!-- Maximilian Schell or Til Schweiger -->
+				<celeb_13>${.lte:currentyear:2005:"DF-Celebreties-Patrick_Swayze":"1312b7b5-3215-40fd-92c8-fb0a16a2aebe"}</celeb_13> <!-- Patrick Swayze or Brad Pitt -->
+				<celeb_14>${.lte:currentyear:2005:"2b6af8c4-7775-44da-820e-1ce9c55d8cd9":"1f670052-f988-4341-a342-a168a07803e6"}</celeb_14> <!-- Bruce Willis or Leonardo DiCaprio -->
+				<celeb_15>${.lte:currentyear:1998:"b4561de6-215e-46ab-9212-f0868c6fcb33":"e7924d67-a4de-417d-a1f9-581fd611b534"}</celeb_15> <!-- Charlton Heston or Johnny Depp -->
+				<celebfirst>${.person:"${.csv:celeb_${i}:0}":"firstname"}</celebfirst>
+				<celeblast>${.person:"${.csv:celeb_${i}:0}":"lastname"}</celeblast>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="18a7e04f-d021-49df-b86c-b959a74cd559" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${celebname} startet Zoo</de>
+				<en>${celebname} opens zoo</en>
+				<pl>${celebname} otwiera zoo</pl>
+			</title>
+			<description>
+				<de>${celebjob} ${celebname} überrascht mit einem neuen Projekt: Ein Luxus-Zoo in Barbados, der seltene Tierarten schützt. Eintritt: nur mit Designer-Outfits.</de>
+				<en>${.ucfirst:celebjob} ${celebname} surprises with a new venture: A luxury zoo in Barbados to protect rare species. Entry: only with designer outfits.</en>
+				<pl>${.ucfirst:celebjob} ${celebname} zaskakuje nowym projektem: luksusowe zoo na Barbadosie chroniące rzadkie gatunki. Wstęp: tylko w markowych ubraniach.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<elizabethtaylor>${.person:"af6a5525-6858-42b2-b313-6ca3e26d3b90":"fullname"}</elizabethtaylor>
+				<shirleymaclaine>${.person:"42eb64da-69d7-4891-be5e-b81435277667":"fullname"}</shirleymaclaine>
+				<gracejones>${.person:"97806487-39c5-434e-9291-9743c3c349ae":"fullname"}</gracejones>
+				<cher>${.person:"55c2956d-d82e-4448-bbad-858f4128656e":"firstname"}</cher>
+				<farrahfawcett>${.person:"300400b0-a0d9-44e0-a9b2-3fe092ad57ac":"fullname"}</farrahfawcett>
+				<dianaross>${.person:"003a25dc-ef9f-40c6-ac29-b9a573543016":"fullname"}</dianaross>
+				<madonna>${.person:"a8357c75-2dc8-490c-b850-4a245eb781ce":"firstname"}</madonna>
+				<cyndilauper>${.person:"ef262af3-9fa4-4c47-856f-098c2497fc5d":"fullname"}</cyndilauper>
+				<brookeshields>${.person:"2f06d6bf-1521-45bb-b257-c550ec3cab09":"fullname"}</brookeshields>
+				<jennifergrey>${.person:"78ca5f5f-3759-4e5b-84f5-e94afafe8f53":"fullname"}</jennifergrey>
+				<jennifercoolidge>${.person:"b894f32d-1b5e-4fa5-9eed-b6001054174d":"fullname"}</jennifercoolidge>
+				<tatumoneal>${.person:"bc62084c-e611-4fbf-aafb-ae40e4d0f380":"fullname"}</tatumoneal>
+				<robingivens>${.person:"1cce02b2-ff16-4e2a-9c62-cbade40d0b4a":"fullname"}</robingivens>
+				<kimbasinger>${.person:"3342a0e3-66f3-4f30-922c-ebe1b0611a00":"fullname"}</kimbasinger>
+				<britneyspears>${.person:"a0ccd849-e3d5-420a-b8b3-3590a4a6803a":"fullname"}</britneyspears>
+				<parishilton>${.person:"94ca6c17-441a-4540-a323-fccbd20af333":"fullname"}</parishilton>
+				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
+				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
+				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"fullname"}</jenniferlopez>
+				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
+				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
+				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>
+				<mischabarton>${.person:"9eb2ff56-08df-4684-945f-001ec03656c8":"fullname"}</mischabarton>
+				<lindsaylohan>${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}</lindsaylohan>
+				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
+				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<ladygaga>${.person:"53f70e44-01f4-4e12-9326-68f2d4936b14":"firstname"}</ladygaga>
+				<gen_0_csv>
+					<de>Schauspielerin;${elizabethtaylor}|
+						Tänzerin und Schauspielerin;${shirleymaclaine}|
+						Sängerin und Schauspielerin;${gracejones}|
+						Sängerin und Schauspielerin;${cher}|
+						Schauspielerin;${farrahfawcett}|
+						Sängerin und Schauspielerin;${dianaross}
+					</de>
+					<en>actress;${elizabethtaylor}|
+						dancer and actress;${shirleymaclaine}|
+						singer and actress;${gracejones}|
+						singer and actress;${cher}|
+						actress;${farrahfawcett}|
+						singer and actress;${dianaross}
+					</en>
+					<pl>aktorka;${elizabethtaylor}|
+						tancerka i aktorka;${shirleymaclaine}|
+						piosenkarka i aktorka;${gracejones}|
+						piosenkarka i aktorka;${cher}|
+						aktorka;${farrahfawcett}|
+						piosenkarka i aktorka;${dianaross}
+					</pl>
+				</gen_0_csv>
+				<gen_1_csv>
+					<de>Popsängerin;${madonna}|
+						Popsängerin;${cyndilauper}|
+						Schauspielerin;${brookeshields}|
+						Schauspielerin;${jennifergrey}|
+						Schauspielerin;${jennifercoolidge}|
+						Schauspielerin;${tatumoneal}|
+						Schauspielerin;${robingivens}|
+						Schauspielerin;${kimbasinger}
+					</de>
+					<en>
+						pop singer;${madonna}|
+						pop singer;${cyndilauper}|
+						actress;${brookeshields}|
+						actress;${jennifergrey}|
+						actress;${jennifercoolidge}|
+						actress;${tatumoneal}|
+						actress;${robingivens}|
+						actress;${kimbasinger}
+					</en>
+					<pl>piosenkarka pop;${madonna}|
+						piosenkarka pop;${cyndilauper}|
+						aktorka;${brookeshields}|
+						aktorka;${jennifergrey}|
+						aktorka;${jennifercoolidge}|
+						aktorka;${tatumoneal}|
+						aktorka;${robingivens}|
+						aktorka;${kimbasinger}
+					</pl>
+				</gen_1_csv>
+				<gen_2_csv>
+					<de>Sängerin;${britneyspears}|
+						Hotelerbin und Schauspielerin;${parishilton}|
+						Rocksängerin;${courtneylove}|
+						Rapperin;${lilkim}|
+						Rapperin und Schauspielerin;${queenlatifah}|
+						Sängerin und Schauspielerin;${jenniferlopez}|
+						Sängerin;${cristinaaguilera}|
+						Sängerin;${beyonce}|
+						Schauspielerin;${pamalaanderson}
+					</de>
+					<en>singer;${britneyspears}|
+						hotel heiress and actress;${parishilton}|
+						rock singer;${courtneylove}|
+						rapper;${lilkim}|
+						rapper and actress;${queenlatifah}|
+						singer and actress;${jenniferlopez}|
+						singer;${cristinaaguilera}|
+						singer;${beyonce}|
+						actress;${pamalaanderson}
+					</en>
+					<pl>piosenkarka;${britneyspears}|
+						dziedziczka hotelowa i aktorka;${parishilton}|
+						piosenkarka rockowa;${courtneylove}|
+						rapperka;${lilkim}|
+						rapperka i aktorka;${queenlatifah}|
+						piosenkarka i aktorka;${jenniferlopez}|
+						piosenkarka;${cristinaaguilera}|
+						piosenkarka;${beyonce}|
+						aktorka;${pamalaanderson}
+					</pl>
+				</gen_2_csv>
+				<gen_3_csv>
+					<de>Schauspielerin;${mischabarton}|
+						Schauspielerin;${lindsaylohan}|
+						Sängerin und Schauspielerin;${mileycyrus}|
+						Sängerin und Schauspielerin;${taylormomsen}|
+						Sängerin und Schauspielerin;${ladygaga}
+					</de>
+					<en>actress;${mischabarton}|
+						actress;${lindsaylohan}|
+						singer and actress;${mileycyrus}|
+						singer and actress;${taylormomsen}|
+						singer and actress;${ladygaga}
+					</en>
+					<pl>aktorka;${mischabarton}|
+						aktorka;${lindsaylohan}|
+						piosenkarka i aktorka;${mileycyrus}|
+						piosenkarka i aktorka;${taylormomsen}|
+						piosenkarka i aktorka;${ladygaga}
+					</pl>
+				</gen_3_csv>
+				<celebgen>${.lte:currentyear:1989:0:"${.lte:currentyear:1999:1:"${.lte:currentyear:2009:2:3}"}"}</celebgen>
+				<celebjob>
+					<all>${.csv:gen_${celebgen}_csv:0}</all>
+				</celebjob>
+				<celebname>
+					<all>${.csv:gen_${celebgen}_csv:1}</all>
+				</celebname>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="2edb1c9d-311e-4998-9ad1-d7ee93a054ce" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${celebfirst} ${celeblast} malt Kühe</de>
+				<en>${celebfirst} ${celeblast} paints cows</en>
+				<pl>${celebfirst} ${celeblast} maluje krowy</pl>
+			</title>
+			<description>
+				<de>${celebfirst} ${celeblast} widmet sich der Malerei. Seine erste Ausstellung „Cows in Chaos“ zeigt abstrakte Porträts von Kühen - Kritiker sind begeistert.</de>
+				<en>${celebfirst} ${celeblast} turns to painting. His first exhibition, "Cows in Chaos," features abstract portraits of cows - critics are impressed.</en>
+				<pl>${celebfirst} ${celeblast} poświęca się malarstwu. Jego pierwsza wystawa „Cows in Chaos” przedstawia abstrakcyjne portrety krów - krytycy są zachwyceni.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<i>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15</i>
+				<celeb_0>2d4e13d7-a121-4ab5-9f87-86c5425a71ee</celeb_0> <!-- Jeff Bridges -->
+				<celeb_1>6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3</celeb_1> <!-- Dustin Hoffmann -->
+				<celeb_2>9dcc7ea5-2479-4449-9df7-a4079361460c</celeb_2> <!-- Michael Douglas -->
+				<celeb_3>9216f82f-2ae0-48a2-a4c9-4d660c289953</celeb_3> <!-- Alan Alda -->
+				<celeb_4>e2f59fc8-35fa-496b-a182-2aeb116768c2</celeb_4> <!-- Malcolm McDowell -->
+				<celeb_5>a61f1eba-e305-404c-833d-3932c445bdc1</celeb_5> <!-- James Woods -->
+				<celeb_6>506bc383-259e-4a36-9278-081aafc8f35c</celeb_6> <!-- Robert De Niro -->
+				<celeb_7>91af6b99-191b-41e2-8c41-f7c0498e1c18</celeb_7> <!-- Kurt Russell -->
+				<celeb_8>0a3b1917-3e7e-4fb4-b7c9-8e2ff1ad6b61</celeb_8> <!-- John Travolta -->
+				<celeb_9>070bd0dd-1a11-4b2b-80b7-922dae98c3ca</celeb_9> <!-- Harrison Ford -->
+				<celeb_10>${.lte:currentyear:2000:"868b2dcd-e6f6-4606-8ba1-8651b5d1bea9":"655b5238-4855-4f37-8b9a-2b4b07f28288"}</celeb_10> <!-- Gregory Peck or George Clooney -->
+				<celeb_11>${.lte:currentyear:1990:"d23f86b0-f334-4503-b57f-d441e727a0d1":"eec1280f-fda9-424b-88c4-fda15c7ec6b6"}</celeb_11> <!-- Paul Newman or Tom Hanks -->
+				<celeb_12>${.lte:currentyear:2005:"e97d3181-11cf-4e54-8697-ac2b06212851":"0009cb2b-4f26-4634-8679-59655fa67b4e"}</celeb_12> <!-- Maximilian Schell or Til Schweiger -->
+				<celeb_13>${.lte:currentyear:2005:"DF-Celebreties-Patrick_Swayze":"1312b7b5-3215-40fd-92c8-fb0a16a2aebe"}</celeb_13> <!-- Patrick Swayze or Brad Pitt -->
+				<celeb_14>${.lte:currentyear:2005:"2b6af8c4-7775-44da-820e-1ce9c55d8cd9":"1f670052-f988-4341-a342-a168a07803e6"}</celeb_14> <!-- Bruce Willis or Leonardo DiCaprio -->
+				<celeb_15>${.lte:currentyear:1998:"b4561de6-215e-46ab-9212-f0868c6fcb33":"e7924d67-a4de-417d-a1f9-581fd611b534"}</celeb_15> <!-- Charlton Heston or Johnny Depp -->
+				<celebfirst>${.person:"${.csv:celeb_${i}:0}":"firstname"}</celebfirst>
+				<celeblast>${.person:"${.csv:celeb_${i}:0}":"lastname"}</celeblast>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="2dfb4d79-5088-4d42-b206-825b5c228310" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>${celeblast} rettet Schildkröten</de>
+				<en>${celeblast} saves turtles</en>
+				<pl>${celeblast} ratuje żółwie</pl>
+			</title>
+			<description>
+				<de>${celebfirst} ${celeblast} finanziert ein Schutzprojekt für Meeresschildkröten. Gerüchten zufolge soll eine Schildkröte nach ihm benannt werden.</de>
+				<en>${celebfirst} ${celeblast} funds a sea turtle conservation project. Rumor has it a turtle might be named after him.</en>
+				<pl>${celebfirst} ${celeblast} finansuje projekt ochrony żółwi morskich. Krążą plotki, że jeden z żółwi będzie nosił jego imię.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<i>0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15</i>
+				<celeb_0>2d4e13d7-a121-4ab5-9f87-86c5425a71ee</celeb_0> <!-- Jeff Bridges -->
+				<celeb_1>6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3</celeb_1> <!-- Dustin Hoffmann -->
+				<celeb_2>9dcc7ea5-2479-4449-9df7-a4079361460c</celeb_2> <!-- Michael Douglas -->
+				<celeb_3>9216f82f-2ae0-48a2-a4c9-4d660c289953</celeb_3> <!-- Alan Alda -->
+				<celeb_4>e2f59fc8-35fa-496b-a182-2aeb116768c2</celeb_4> <!-- Malcolm McDowell -->
+				<celeb_5>a61f1eba-e305-404c-833d-3932c445bdc1</celeb_5> <!-- James Woods -->
+				<celeb_6>506bc383-259e-4a36-9278-081aafc8f35c</celeb_6> <!-- Robert De Niro -->
+				<celeb_7>91af6b99-191b-41e2-8c41-f7c0498e1c18</celeb_7> <!-- Kurt Russell -->
+				<celeb_8>0a3b1917-3e7e-4fb4-b7c9-8e2ff1ad6b61</celeb_8> <!-- John Travolta -->
+				<celeb_9>070bd0dd-1a11-4b2b-80b7-922dae98c3ca</celeb_9> <!-- Harrison Ford -->
+				<celeb_10>${.lte:currentyear:2000:"868b2dcd-e6f6-4606-8ba1-8651b5d1bea9":"655b5238-4855-4f37-8b9a-2b4b07f28288"}</celeb_10> <!-- Gregory Peck or George Clooney -->
+				<celeb_11>${.lte:currentyear:1990:"d23f86b0-f334-4503-b57f-d441e727a0d1":"eec1280f-fda9-424b-88c4-fda15c7ec6b6"}</celeb_11> <!-- Paul Newman or Tom Hanks -->
+				<celeb_12>${.lte:currentyear:2005:"e97d3181-11cf-4e54-8697-ac2b06212851":"0009cb2b-4f26-4634-8679-59655fa67b4e"}</celeb_12> <!-- Maximilian Schell or Til Schweiger -->
+				<celeb_13>${.lte:currentyear:2005:"DF-Celebreties-Patrick_Swayze":"1312b7b5-3215-40fd-92c8-fb0a16a2aebe"}</celeb_13> <!-- Patrick Swayze or Brad Pitt -->
+				<celeb_14>${.lte:currentyear:2005:"2b6af8c4-7775-44da-820e-1ce9c55d8cd9":"1f670052-f988-4341-a342-a168a07803e6"}</celeb_14> <!-- Bruce Willis or Leonardo DiCaprio -->
+				<celeb_15>${.lte:currentyear:1998:"b4561de6-215e-46ab-9212-f0868c6fcb33":"e7924d67-a4de-417d-a1f9-581fd611b534"}</celeb_15> <!-- Charlton Heston or Johnny Depp -->
+				<celebfirst>${.person:"${.csv:celeb_${i}:0}":"firstname"}</celebfirst>
+				<celeblast>${.person:"${.csv:celeb_${i}:0}":"lastname"}</celeblast>
+			</variables>
+			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="30a73cd8-4852-4334-ad46-922428ef1037" type="0" creator="9551">
+			<title>
+				<de>„Smarter Stift“ kommt</de>
+				<en>"Smart Pen" released</en>
+				<pl>„Inteligentny długopis”</pl>
+			</title>
+			<description>
+				<de>Ein neuer Stift speichert alles, was man damit schreibt. Kritiker fragen: „Weiß der Lehrer jetzt, wann und wie lange die Hausaufgaben gemacht wurden? Ob abgeschrieben wurde? Alle Korrekturen und Hilfsnotizen? Fließt das in die Note mit ein?“</de>
+				<en>A new pen records everything you write. Critics ask, "Does the teacher now know when and for how long the homework was done? Whether it was copied? All corrections and auxiliary notes? Will that be included in the grade?"</en>
+				<pl>Nowy długopis zapisuje wszystko, co napiszesz. Krytycy pytają: „Czy nauczyciel wie teraz, kiedy i jak długo praca domowa była wykonywana? Czy została skopiowana? Wszystkie poprawki i notatki pomocnicze? Czy będzie to uwzględnione w ocenie?”</pl>
+			</description>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="952881df-da0f-4059-88c0-83e3a68b2187" type="0" creator="9551">
+			<title>
+				<de>${internetcafes} im Trend</de>
+				<en>${.ucfirst:internetcafes} popular</en>
+				<pl>${.ucfirst:internetcafes} w modzie</pl>
+			</title>
+			<description>
+				<de>Neue ${internetcafes} verlangen stündliche Gebühren, damit Nutzer ${surfing} können. Kritiker stellen in Frage, ob ${theinternet} sich „wirklich durchsetzen“ wird.</de>
+				<en>New ${internetcafes} charge hourly fees for ${surfing}. Critics question if ${theinternet} will "really stick around".</en>
+				<pl>Nowe ${internetcafes} pobierają opłaty godzinowe za ${surfing}. Krytycy zastanawiają się, czy ${theinternet}.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<internetcafes>
+					<de>${.lte:currentyear:1992:"BTX-Cafés":"${.lte:currentyear:1999:"Internetcafés":"VR-Cafés"}"}</de>
+					<en>${.lte:currentyear:1992:"BBS cafes":"${.lte:currentyear:1999:"internet cafés":"VR cafes"}"}</en>
+					<pl>${.lte:currentyear:1992:"kawiarnie wideo tekstowe":"${.lte:currentyear:1999:"kawiarnie internetowe":"kawiarnie VR"}"}</pl>
+				</internetcafes>
+				<surfing>
+					<de>${.lte:currentyear:1992:"sich einwählen":"${.lte:currentyear:1999:"surfen":"in virtuelle Welten eintauchen"}"}</de>
+					<en>${.lte:currentyear:1992:"users to dial in":"${.lte:currentyear:1999:"surfing":"users to dive in"}"}</en>
+					<pl>${.lte:currentyear:1992:"godzinowe za korzystanie z usługi":"${.lte:currentyear:1999:"surfowanie po Internecie":"zanurzenie w Wirtualnej Rzeczywistości"}"}</pl>
+				</surfing>
+				<theinternet>
+					<de>${.lte:currentyear:1992:"BTX":"${.lte:currentyear:1999:"das Internet":"Virtual Reality"}"}</de>
+					<en>${.lte:currentyear:1992:"Bulletin Board Systems":"${.lte:currentyear:1999:"the internet":"Virtual Reality"}"}</en>
+					<pl>${.lte:currentyear:1992:"systemy wideo tekstowe „naprawdę zostaną na dłużej“":"${.lte:currentyear:1999:"internet „naprawdę zostanie na dłużej“":"Wirtualna Rzeczywistość „naprawdę zostanie na dłużej“"}"}</pl>
+				</theinternet>
+			</variables>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="70cc878f-a28f-4287-990e-dcb8cc1ca7d9" type="0" creator="9551">
+			<title>
+				<de>Neuer ${companyname} Mini-Drucker versagt</de>
+				<en>New ${companyname} pocket printer fails</en>
+				<pl>Nowa ${companyname} drukarka kieszonkowa zawodzi</pl>
+			</title>
+			<description>
+				<de>Ein tragbarer Drucker für Fotos wird vorgestellt, aber der kann nur verschwommene Bilder produzieren. Hersteller ${companyname} meint: „${banana}“.</de>
+				<en>A portable photo printer is unveiled but can only produce blurry pictures. Manufacturer ${companyname} comments: "${banana}".</en>
+				<pl>Przenośna drukarka do zdjęć drukuje tylko zamazane obrazy. Komentarz producenta ${companyname}: „${banana}”.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<banana>
+					<de>${.lte:currentyear:2001:"Bananenhardware reift nun mal erst beim Kunden.":"Wieso, ist doch ein netter Retro-Effekt!"}</de>
+					<en>${.lte:currentyear:2001:"Unripe banana hardware can only ripen in the hands of the customer, that's just the way it is.":"Why, it's a nice retro effect!"}</en>
+					<pl>${.lte:currentyear:2001:"Niedojrzały sprzęt bananowy może dojrzeć tylko w rękach klienta, tak po prostu jest.":"Ależ to fajny efekt retro!"}</pl>
+				</banana>
+				<companyname>${.persongenerator:"lastname":"us"}</companyname>
+			</variables>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="5627f776-c216-45ea-832b-38a017eb86ca" type="0" creator="9551">
+			<title>
+				<de>Tippen: Haltung zählt!</de>
+				<en>Typing class: posture!</en>
+				<pl>Zajęcia z pisania: postawa!</pl>
+			</title>
+			<description>
+				<de>Im Informatikunterricht an den Schulen sollen Anweisungen zur richtigen Körperhaltung beim Tippen eingeführt werden. Schüler hassen es jetzt schon: „Was bitte bringt mir das beim Zocken!?“</de>
+				<en>Instructions on the correct posture when typing are to be introduced in computer science lessons at schools. Students already hate it: "What the heck's *that* good for when I'm gaming!?"</en>
+				<pl>Instrukcje dotyczące prawidłowej postawy podczas pisania na klawiaturze mają zostać wprowadzone na lekcjach informatyki w szkołach. Uczniowie już tego nienawidzą: „Po co mi to, do cholery, podczas grania!?”</pl>
+			</description>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="4809a99e-e44e-4143-820d-576866507de0" type="0" creator="9551">
+			<title>
+				<de>${town}-Forscher: Katzen steuern ${wifi}</de>
+				<en>${town} researchers: Cats control ${wifi}</en>
+				<pl>${town}-naukowcy: Koty sterują ${wifi}</pl>
+			</title>
+			<description>
+				<de>Wissenschaftler vom Forschungsinstitut in ${town} sind verzweifelt: Katzen beeinflussen ${wifisignals} durch Bewegungen und Schnurren. „Je mehr sie sitzen, desto besser das Signal. Zunächst. Aber dann fangen sie mit dem Schnurren an.“</de>
+				<en>Scientists from the ${town} Research Institute are desperate: cats affect ${wifisignals} through their movements and through purring. "The more they sit, the stronger the signal. At first. But then they start purring."</en>
+				<pl>Naukowcy z ${town} Instytut Badawczy są zdesperowani: koty wpływają na ${wifisignals} poprzez swoje ruchy i mruczenie. „Im więcej siedzą, tym silniejszy jest sygnał. Na początku. Ale potem zaczynają mruczeć”.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<wifi>
+					<de>${.lte:currentyear:2000:"Funk":"WLAN"}</de>
+					<en>${.lte:currentyear:2000:"radio":"Wi-Fi"}</en>
+					<pl>${.lte:currentyear:2000:"radio":"Wi-Fi"}</pl>
+				</wifi>
+				<wifisignals>
+					<de>${.lte:currentyear:2000:"Funksignale":"WLAN-Signale"}</de>
+					<en>${.lte:currentyear:2000:"radio signals":"Wi-Fi signals"}</en>
+					<pl>${.lte:currentyear:2000:"sygnały radiowe":"sygnały Wi-Fi"}</pl>
+				</wifisignals>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="7fd9cc16-f83f-4fdc-b724-3b171c88abd9" type="0" creator="9551">
+			<title>
+				<de>${town}-Forscher: ${colorscreens} lenken ab</de>
+				<en>${town} researchers: ${.ucfirst:colorscreens} distract</en>
+				<pl>${town}-naukowcy: ${.ucfirst:colorscreens} przeszkadzają</pl>
+			</title>
+			<description>
+				<de>User-Interface-Experten vom Forschungsinstitut in ${town} weisen darauf hin, dass ${colorscreens} die Nutzer ablenken könnten. „${blackandwhite} reicht für Tabellen“, sagen sie.</de>
+				<en>User interface experts from the research institute in ${town} Experts warn that ${colorscreens} may distract users. "${blackandwhite} is enough for spreadsheets," they argue.</en>
+				<pl>Eksperci ds. interfejsu użytkownika z ${town} Instytut badawczy ostrzegają, że ${colorscreens} mogą rozpraszać użytkowników. „${blackandwhite} wystarcza do tabel” - argumentują.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<colorscreens>
+					<de>${.lte:currentyear:1992:"Farbbildschirme":"${.lte:currentyear:2007:"Soundkarten":"3D-Grafikkarten"}"}</de>
+					<en>${.lte:currentyear:1992:"color screens":"${.lte:currentyear:2007:"sound cards":"3D graphics cards"}"}</en>
+					<pl>${.lte:currentyear:1992:"kolorowe ekrany":"${.lte:currentyear:2007:"karty dźwiękowe":"karty graficzne 3D"}"}</pl>
+				</colorscreens>
+				<blackandwhite>
+					<de>${.lte:currentyear:1992:"Schwarz-Weiß":"${.lte:currentyear:2007:"Stille":"Onboard-Grafik"}"}</de>
+					<en>${.lte:currentyear:1992:"Black-and-white":"${.lte:currentyear:2007:"Silence":"Onboard graphics"}"}</en>
+					<pl>${.lte:currentyear:1992:"Czarno-białe":"${.lte:currentyear:2007:"Cisza":"Wbudowana grafika"}"}</pl>
+				</blackandwhite>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="386c7725-0c45-4809-823a-c6aa93297ab9" type="0" creator="9551">
+			<title>
+				<de>${town}-Astronomen: Bagel oder Donut?</de>
+				<en>${town} astronomers: Bagel or donut?</en>
+				<pl>${town}-astronomowie: Bagel czy pączek?</pl>
+			</title>
+			<description>
+				<de>Astronomen vom Forschungsinstitut in ${town} streiten darüber, ob ein Schwarzes Loch eher wie ein Bagel oder eher wie ein Donut aussieht. Na dann bestellt das Team halt beides, um sicher zu gehen.</de>
+				<en>Astronomers from the research institute in ${town} argue whether a black hole looks more like a bagel or a donut. The team orders both to be sure.</en>
+				<pl>Astronomowie z ${town} Instytut Badawczy debatują, czy czarna dziura wygląda jak bajgiel, czy jak pączek. Zespół zamawia oba, żeby sprawdzić.</pl>
+			</description>
+			<variables>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="85e7b365-c033-446d-9163-87d06709ba7b" type="0" creator="9551" comment="TODO: maybe not all too fictional">
+			<title>
+				<de>App sagt Trennungen voraus</de>
+				<en>App Predicts Breakups</en>
+				<pl>Apka przewiduje rozstania</pl>
+			</title>
+			<description>
+				<de>Eine neue App analysiert Textnachrichten und Social-Media-Aktivitäten, um Trennungen vorherzusagen. Viele Nutzer berichten: „Yep. Sie hatte recht!“</de>
+				<en>A new app analyzes texts and social media to predict breakups. Many users report, "Yep. It was right!"</en>
+				<pl>Nowa aplikacja analizuje wiadomości i media społecznościowe, by przewidzieć rozstania. Wielu użytkowników mówi: „Tak, miała rację!”</pl>
+			</description>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+			<availability year_range_from="2008" />
+		</news>
+
+		<news guid="ad0c54cb-988a-458d-9fc3-ff3dee784edd" type="0" creator="9551">
+			<title>
+				<de>Alien auf Rover-Selfie</de>
+				<en>Alien photobombs rover</en>
+				<pl>Obcy na selfie łazika</pl>
+			</title>
+			<description>
+				<de>Der Mars-Rover hat ein Selfie zur Erde geschickt, auf dem ein verschwommenes Alien im Hintergrund zu sehen ist. ${generalorg_nasa}: „Kein Kommentar.“</de>
+				<en>The Mars rover sent a selfie to Earth showing a blurry alien in the background. ${generalorg_nasa}: "No comment."</en>
+				<pl>Łazik Marsa przesyła selfie z zamazanym obcym w tle. ${generalorg_nasa}: „Bez komentarza.”</pl>
+			</description>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+			<availability year_range_from="1997" />
+		</news>
+		<news guid="dec3c917-7bf4-404a-b15f-2984bcb554c3" type="0" creator="9551">
+			<title>
+				<de>Quanten-Mail-Zeitschleife</de>
+				<en>Quantum email time warp</en>
+				<pl>Kwantowy e-mail wstecz</pl>
+			</title>
+			<description>
+				<de>Ein neues Quanten-Mail-System verschickt Nachrichten rückwärts in der Zeit. Nutzer sind verwirrt: „Warum steht da bereits vor dem Senden: 'Gelesen'?“</de>
+				<en>A new quantum email system sends messages backward in time. Users puzzled: “Why does it say 'Read' already before sending?”</en>
+				<pl>Nowy system kwantowych maili wysyła wiadomości wstecz w czasie. Użytkownicy zastanawiali się: „Dlaczego przed wysłaniem jest napisane 'Przeczytaj'?”.</pl>
+			</description>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+		<news guid="6e71bf0c-0997-4043-946d-113a42bbd26b" type="0" creator="9551" comment="#maintenancecritical">
+			<title>
+				<de>Pizza im Weltall</de>
+				<en>Pizza in space</en>
+				<pl>Pizza w kosmosie</pl>
+			</title>
+			<description>
+				<de>${ontheinitiative}${nasa} testet Pizzalieferungen an die ${mir}. Astronauten bewerten die Pizza mit „gut, aber überteuert“. ${theinvestor} nennt das „die Zukunft des Essens“.</de>
+				<en>${ontheinitiative}${nasa} tests pizza delivery to the ${mir}. Astronauts rate the pizza as "good but overpriced". ${theinvestor} dubs that "the future of food".</en>
+				<pl>${ontheinitiative}${nasa} testuje dostawy pizzy na ${mir}. Astronauci oceniają pizzę jako „dobrą, ale zbyt drogą”. ${theinvestor} nazywa to „przyszłością jedzenia”.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<elonmusk>${.person:"ef3dfd68-fa9c-4b31-a2be-38748a8d40ce":"fullname"}</elonmusk>
+				<mir>
+					<all>${.lte:currentyear:1999:"MIR":"ISS"}</all>
+					<pl>${.lte:currentyear:1999:"MIR":"MSK"}</pl>
+				</mir>
+				<ontheinitiative>
+					<de>${.lte:currentyear:2005:"Auf Initiative eines ungenannten privaten Investors: ":""}</de>
+					<en>${.lte:currentyear:2005:"On the initiative of an unnamed private investor: ":""}</en>
+					<pl>${.lte:currentyear:2005:"Z inicjatywy nienazwanego prywatnego inwestora: ":""}</pl>
+				</ontheinitiative>
+				<nasa>
+					<de>${.lte:currentyear:2005:"Die ${generalorg_nasa}":"${brand_spacex}"}</de>
+					<en>${.lte:currentyear:2005:"${generalorg_nasa}":"${brand_spacex}"}</en>
+					<pl>${.lte:currentyear:2005:"${generalorg_nasa}":"${brand_spacex}"}</pl>
+				</nasa>
+				<theinvestor>
+					<de>${.lte:currentyear:2005:"Der Investor":"${elonmusk}"}</de>
+					<en>${.lte:currentyear:2005:"The investor":"${elonmusk}"}</en>
+					<pl>${.lte:currentyear:2005:"Inwestor":"${elonmusk}"}</pl>
+				</theinvestor>
+			</variables>
+			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="2903a044-0fd9-4520-8262-1da3681f66fe" type="0" creator="9551">
+			<title>
+				<de>${town}: Torwart liest Buch</de>
+				<en>${town}: Goalkeeper reads book</en>
+				<pl>${town}: Bramkarz czyta książkę</pl>
+			</title>
+			<description>
+				<de>${town}-Torhüter ${johndoe} von ist beim Liga-Spiel beim Lesen eines Buchs erwischt worden, als sein Team dominierte. Er meinte nach dem Spiel lapidar: „Es war ${.programme:"86ddf30f-4027-4826-b2b8-a0f74a33f8bd":"title"}. Kann man viel übers Fangen lernen.“</de>
+				<en>${town} goalkeeper ${johndoe} was caught reading a book during the league game when his team was dominating. After the game, he said succinctly, "It was ${.programme:"86ddf30f-4027-4826-b2b8-a0f74a33f8bd":"title"}. You can learn a lot about catching."</en>
+				<pl>Bramkarz ${johndoe} miasta ${town} został przyłapany na czytaniu książki podczas meczu ligowego, gdy jego drużyna dominowała. Po meczu powiedział zwięźle: „To był ${.programme:"86ddf30f-4027-4826-b2b8-a0f74a33f8bd":"title"}. Można się wiele nauczyć o łapaniu”.</pl>
+			</description>
+			<variables>
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="817014ca-8400-43d0-b983-05e1ce055146" type="0" creator="9551">
+			<title>
+				<de>${norway}: Spieler fängt Möwe</de>
+				<en>${norway}: Player catches seagull</en>
+				<pl>${norway}: Zawodnik łapie mewę</pl>
+			</title>
+			<description>
+				<de>Bei einem Spiel gestern in der ${norwegian} Liga fing Spieler ${johndoe} eine Möwe ein, die über 10 Minuten den Platz blockierte und den Ball verfolgte. ${johndoe} wird als „Möwen-Catcher“ wohl in die Geschichtsbücher eingehen.</de>
+				<en>During a game yesterday in the ${norwegian} league, player ${johndoe} caught a seagull that blocked the field for over 10 minutes and chased the ball. ${johndoe} will probably go down in the history books as the “seagull catcher”.</en>
+				<pl>Podczas wczorajszego meczu ligi ${norwegian} zawodnik ${johndoe} złapał mewę, która przez ponad 10 minut blokowała boisko i goniła za piłką. ${johndoe} prawdopodobnie przejdzie do historii jako „łapacz mew”.</pl>
+			</description>
+			<variables>
+				<norway_csv>
+					<de>Norwegen;norwegischen|Finnland;finnischen|Schweden;schwedischen|Dänemark;dänischen|Island;isländischen|Irland;irischen|Schottland;schottischen|Wales;walisischen</de>
+					<en>Norway;Norwegian|Finland;Finnish|Sweden;Swedish|Denmark;Danish|Iceland;Icelandic|Ireland;Irish|Scotland;Scottish|Wales;Welsh</en>
+					<pl>Norwegia;norweskiej|Finlandia;fińskiej|Szwecja;szwedzkiej|Dania;duńskiej|Islandia;islandzkiej|Irlandia;irlandzkiej|Szkocja;szkockiej|Walia;walijskiej</pl>
+				</norway_csv>
+				<norway>
+					<all>${.csv:norway_csv:0}</all>
+				</norway>
+				<norwegian>
+					<all>${.csv:norway_csv:1}</all>
+				</norwegian>
+				<johndoe>${.persongenerator:"fullname":"dk":"male"}</johndoe>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="9acfe84d-2098-4044-a5ed-badaea6d7564" type="0" creator="9551">
+			<title>
+				<de>${town} Open: Golfball trifft Zuschauer</de>
+				<en>${town} Open: Golf ball hits spectator</en>
+				<pl>${town} Open: Piłka golfowa trafia widza</pl>
+			</title>
+			<description>
+				<de>Beim ${town} Open Turnier hat Golfspieler ${johndoe} den Ball so unglücklich geschlagen, dass er direkt auf dem Kopf eines Zuschauers landete. Zum Glück kam dieser mit einer Platzwunde davon.</de>
+				<en>At the ${town} Open tournament, golfer ${johndoe} hit the ball so awkwardly that it landed directly on the head of a spectator. Fortunately, the spectator got away with only a laceration.</en>
+				<pl>Podczas turnieju ${town} Open, golfista ${johndoe} uderzył piłkę tak niefortunnie, że wylądowała ona bezpośrednio na głowie widza. Na szczęście widz wyszedł z tego tylko z raną szarpaną.</pl>
+			</description>
+			<variables>
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="c249dee0-d025-40dd-972e-e77f11953bd5" type="0" creator="9551">
+			<title>
+				<de>${town}: Torwarte verwechseln Seiten</de>
+				<en>${town}: Goalkeepers confuse sides</en>
+				<pl>${town}: Bramkarze mylą strony</pl>
+			</title>
+			<description>
+				<de>Beim Liga-Spiel gestern in ${town} stellten sich gleich beide Torwarte nach der Pause ins falsche Tor. Die zweite Halbzeit lief ganze 3 Minuten, bis der Irrtum bemerkt wurde. Die Möglichkeit einer Spielwiederholung wird überprüft.</de>
+				<en>In yesterday's league game in ${town}, both goalkeepers went to the wrong goal after the break. The second half lasted a full 3 minutes before the mistake was noticed. The possibility of a replay is being investigated.</en>
+				<pl>We wczorajszym meczu ligowym w mieście ${town} obaj bramkarze trafili do niewłaściwej bramki po przerwie. Druga połowa trwała pełne 3 minuty, zanim błąd został zauważony. Badana jest możliwość powtórki.</pl>
+			</description>
+			<variables>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="63828288-08dd-489b-911b-4b3bfbe06661" type="0" creator="9551">
+			<title>
+				<de>${town}: Pferd stoppt vor Hürde</de>
+				<en>${town}: Horse stops at hurdle</en>
+				<pl>${town}: Koń zatrzymuje się przed przeszkodą</pl>
+			</title>
+			<description>
+				<de>Lokalmatador ${johndoe} ist beim Springreiten in ${town} vom Pferd gefallen. Das Pferd hatte plötzlich vor einer Hürde gestoppt. Das Publikum ist ob der Disqualifikation zutiefst enttäuscht.</de>
+				<en>Local hero ${johndoe} fell off his horse while show jumping in ${town}. The horse suddenly stopped in front of a hurdle. The audience is deeply disappointed by the disqualification.</en>
+				<pl>Lokalny bohater ${johndoe} spadł z konia podczas skoków w mieście ${town}. Koń nagle zatrzymał się przed przeszkodą. Publiczność jest głęboko rozczarowana dyskwalifikacją.</pl>
+			</description>
+			<variables>
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="ef82137a-b6be-403a-9165-46f47138d319" type="0" creator="9551">
+			<title>
+				<de>${town}: Schiri mit falscher Pfeife</de>
+				<en>${town}: Ref uses toy whistle</en>
+				<pl>${town}: Sędzia z zabawkowym gwizdkiem</pl>
+			</title>
+			<description>
+				<de>Beim Liga-Spiel gestern in ${town} hat Schiedsrichter ${johndoe} erst nach 10 Minuten bemerkt, dass er versehentlich eine Kindertrillerpfeife eingepackt und benutzt hat. Die Möglichkeit einer Spielwiederholung wird untersucht.</de>
+				<en>At the league game yesterday in ${town}, referee ${johndoe} didn't realize until 10 minutes into the game that he had accidentally packed and used a child's whistle. The possibility of a replay is being investigated.</en>
+				<pl>Podczas wczorajszego meczu ligowego w mieście ${town} sędzia  ${johndoe} zorientował się dopiero po 10 minutach gry, że przypadkowo spakował i użył dziecięcego gwizdka. Badana jest możliwość powtórki.</pl>
+			</description>
+			<variables>
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="24ad0b93-61bb-477b-91cc-32a0be3c0949" type="0" creator="9551">
+			<title>
+				<de>${town}: Wasserrutsche beim Marathon</de>
+				<en>${town}: Water slide at marathon</en>
+				<pl>${town}: Zjeżdżalnia na maratonie</pl>
+			</title>
+			<description>
+				<de>Beim Marathon in ${town} hat ein Wasserleck einen Abschnitt der Strecke in eine regelrechte Rutschbahn verwandelt. Die meisten Läufer kamen aber heil ins Ziel.</de>
+				<en>At the marathon in ${town}, a water leak turned a section of the course into a veritable slide. Nevertheless, most runners made it to the finish in one piece.</en>
+				<pl>Podczas maratonu w mieście ${town} wyciek wody zamienił część trasy w prawdziwą zjeżdżalnię. Mimo to większość biegaczy dotarła do mety w jednym kawałku.</pl>
+			</description>
+			<variables>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="d44466a1-afb7-4016-ac66-d1765243d94e" type="0" creator="9551">
+			<title>
+				<de>${town}: Sprinter verliert Schuh</de>
+				<en>${town}: Sprinter loses shoe</en>
+				<pl>${town}: Sprinter gubi but</pl>
+			</title>
+			<description>
+				<de>Bei den Leichtathletikmeisterschaften in ${town} hatte Sprinter ${johndoe} beim 400m-Rennen einen Schuh verloren. Er lief aber weiter und holte einen beachtlichen ${fourth}. Platz. Das Reglement soll nochmal überprüft werden.</de>
+				<en>At the athletics championships in ${town}, sprinter ${johndoe} lost a shoe in the 400m race. However, he ran on and took a respectable ${fourth}th place. The rules are to be reviewed again.</en>
+				<pl>Na mistrzostwach lekkoatletycznych w mieście ${town} sprinter ${johndoe} zgubił but w biegu na 400 metrów. Pobiegł jednak dalej i zajął przyzwoite ${fourth}. miejsce. Zasady mają zostać ponownie przeanalizowane.</pl>
+			</description>
+			<variables>
+				<fourth>4|5|6</fourth> <!-- only where n-th works -->
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="b2a6c9da-0a61-4b27-95e6-5e08b1ec5450" type="0" creator="9551">
+			<title>
+				<de>${town}: Ballon stört Freistoß</de>
+				<en>${town}: Balloon deflects free kick</en>
+				<pl>${town}: Balon przeszkadza w wolnym</pl>
+			</title>
+			<description>
+				<de>Ein Freistoß bei der Partie in ${town} ist von einem größeren verirrten Luftballon mitten im Flug abgefälscht worden und verhinderte ein mögliches Tor. Der Ballon kam aus dem Gästeblock. Eine mögliche Spielwiederholung wird geprüft.</de>
+				<en>A free kick at the game in ${town} was deflected mid-flight by a larger stray balloon, preventing a possible goal. The balloon came from the visitors' block. A possible replay of the match is considered.</en>
+				<pl>Rzut wolny w meczu w mieście ${town} został odbity w połowie lotu przez większy zabłąkany balon, zapobiegając potencjalnemu golowi. Balon pochodził z bloku gości. Ewentualna powtórka meczu jest analizowana.</pl>
+			</description>
+			<variables>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="b10330c1-2f66-48c1-8a88-312012117597" type="0" creator="9551">
+			<title>
+				<de>${town}: Schiri pfeift Halbzeit zu früh ab</de>
+				<en>${town}: Ref calls half early</en>
+				<pl>${town}: Sędzia kończy połowę za wcześnie</pl>
+			</title>
+			<description>
+				<de>Beim Liga-Spiel gestern in ${town} hatte der Schiedsrichter die erste Halbzeit fünf Minuten zu früh abgepfiffen. Das Spiel lief nach der Pause ganz normal weiter. Die Gäste aus ${othertown} lassen eine mögliche Spielwiederholung prüfen.</de>
+				<en>At the league game in ${town} yesterday, the referee blew the whistle five minutes early in the first half. The game continued as normal after the break. The visitors from ${othertown} are having a possible replay reviewed.</en>
+				<pl>Podczas wczorajszego meczu ligowego w mieście ${town} sędzia zagwizdał pięć minut przed końcem pierwszej połowy. Po przerwie gra toczyła się normalnie. Przyjezdni z miasta ${othertown} są w trakcie rozpatrywania ewentualnej powtórki.</pl>
+			</description>
+			<variables>
+				<town>${.stationmap:"randomcity"}</town>
+				<othertown>${.stationmap:"randomcity"}</othertown>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="7b394080-473d-417a-b397-c2a502ad3233" type="0" creator="9551">
+			<title>
+				<de>${town}: Schwimmer verliert Brille</de>
+				<en>${town}: Swimmer loses goggles</en>
+				<pl>${town}: Pływak gubi okularki</pl>
+			</title>
+			<description>
+				<de>Bei den Schwimmmeisterschaften in ${town} hatte Schwimmer ${johndoe} beim Startsprung die Schwimmbrille verloren. Er schwamm aber trotzdem weiter und erreichte einen guten ${fourth}. Platz. Das Reglement soll nochmal überprüft werden.</de>
+				<en>At the swimming championships in ${town}, swimmer ${johndoe} lost his swimming goggles during the start jump. However, he swam on anyway and achieved a good ${fourth}th place. The rules are to be reviewed again.</en>
+				<pl>Na mistrzostwach pływackich w mieście ${town} pływak ${johndoe} zgubił okulary pływackie podczas skoku startowego. Mimo to popłynął dalej i zajął dobre ${fourth}. miejsce. Zasady zostaną ponownie przeanalizowane.</pl>
+			</description>
+			<variables>
+				<fourth>4|5|6</fourth> <!-- only where n-th works -->
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="ebcc1ce0-085d-49e0-9b6b-9cc74dbb1bb3" type="0" creator="9551">
+			<title>
+				<de>${town}: Boxer schlägt sich selbst</de>
+				<en>${town}: Boxer punches himself</en>
+				<pl>${town}: Bokser uderza siebie</pl>
+			</title>
+			<description>
+				<de>Beim Boxkampf in ${town} hat sich ${johndoe} mit einem wilden Haken selbst einen Treffer auf die Nase verpasst. Zum Glück blieb er relativ unverletzt und erreichte am Ende des Kampfes noch einen ehrwürdigen zweiten Platz.</de>
+				<en>During the boxing match in ${town}, ${johndoe} hit himself in the nose during a wild swing. Fortunately, he remained relatively unharmed and finished the fight in a respectable second place.</en>
+				<pl>Podczas meczu bokserskiego w mieście ${town}, ${johndoe} uderzył się w nos dzikim sierpowym. Na szczęście pozostał względnie nietknięty i zakończył walkę na zaszczytnym drugim miejscu.</pl>
+			</description>
+			<variables>
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="62a63a53-dc93-42f7-a7e7-f88b9a61cf20" type="0" creator="9551">
+			<title>
+				<de>${town}: Spielunterbrechung durch Taube</de>
+				<en>${town}: Game stopped by pigeon</en>
+				<pl>${town}: Mecz przerwany przez gołębia</pl>
+			</title>
+			<description>
+				<de>Beim Liga-Spiel gestern in ${town} ist eine Taube mitten auf dem Spielfeld gelandet und hat sich geweigert, wegzufliegen. Das Spiel war für über 20 Minuten unterbrochen. Die Gäste aus ${othertown} lassen eine mögliche Spielwiederholung prüfen.</de>
+				<en>At the league game in ${town} yesterday, a pigeon landed in the middle of the pitch and refused to fly away. The game was interrupted for over 20 minutes. The visitors from ${othertown} are having a possible replay reviewed.</en>
+				<pl>Podczas wczorajszego meczu ligowego w mieście ${town} gołąb wylądował na środku boiska i nie chciał odlecieć. Gra została przerwana na ponad 20 minut. Goście z miasta ${othertown} rozważają możliwość rozegrania powtórki.</pl>
+			</description>
+			<variables>
+				<town>${.stationmap:"randomcity"}</town>
+				<othertown>${.stationmap:"randomcity"}</othertown>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="5ad72d01-8c39-4dac-be17-2ce90603445e" type="0" creator="9551">
+			<title>
+				<de>${town}: Balljunge stiehlt die Show</de>
+				<en>${town}: Ball boy steals the show</en>
+				<pl>${town}: Chłopiec do piłek kradnie show</pl>
+			</title>
+			<description>
+				<de>Beim Tennisturnier in ${town} hat der Balljunge ${johndoe} während einer Pause akrobatische Tricks gezeigt und den Spielern die Show gestohlen. Er wurde vom Publikum gefeiert. Ein Sendeformat „Deutschland sucht den Superballjungen“ ist im Gespräch.</de>
+				<en>At the tennis tournament in ${town}, ball boy ${johndoe} performed acrobatic tricks during a break and stole the show from the players. He was celebrated by the audience. A show format “Germany is looking for the super ball boy” is being discussed.</en>
+				<pl>Podczas turnieju tenisowego w mieście ${town}, chłopiec z piłką ${johndoe} wykonał akrobatyczne sztuczki podczas przerwy i ukradł show graczom. Publiczność nie szczędziła mu pochwał. Dyskutowany jest format show „Niemcy szukają super chłopca z piłką”.</pl>
+			</description>
+			<variables>
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
+		</news>
+
+		<news guid="4d719def-93b3-4feb-9089-392a31bbc25a" type="0" creator="9551">
+			<title>
+				<de>${town}: Radfahrer stürzt in Hecke</de>
+				<en>${town}: Cyclist crashes into hedge</en>
+				<pl>${town}: Kolarz wpada w żywopłot</pl>
+			</title>
+			<description>
+				<de>Beim Rennen in ${town} hat Radrennfahrer ${johndoe} eine Kurve verpasst und ist mitten in einer Hecke gelandet. Er blieb zum Glück unverletzt und erreichte einen guten ${thirteenth}. Platz.</de>
+				<en>During the bike race in ${town}, racing cyclist ${johndoe} missed a bend and landed in the middle of a hedge. Fortunately, he was unhurt and finished in a good ${thirteenth}th place.</en>
+				<pl>Podczas wyścigu rowerowego w mieście ${town}, ścigający się rowerzysta ${johndoe} ominął zakręt i wylądował w środku żywopłotu. Na szczęście nic mu się nie stało i ukończył wyścig na dobrym ${thirteenth}. miejscu.</pl>
+			</description>
+			<variables>
+				<thirteenth>13|15|17|24|26|29|30</thirteenth> <!-- only where n-th works -->
+				<johndoe>${.persongenerator:"fullname":"de":"male"}</johndoe>
+				<town>${.stationmap:"randomcity"}</town>
+			</variables>
+			<data genre="2" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 	</allnews>
 </tvtdb>

@@ -79,5 +79,272 @@
 			<speed min="30" max="60" />
 			<studio_size value="1" />
 		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="f853e579-27c4-4eea-b1cc-1c62d5cbd2f0" creator="discord/eggi72" comment="https://www.buecher.de/artikel/buch/hallo-nacht-ich-mag-dich-gerne-setz-dich-zu-mir-wir-gucken-sterne/67736411/ | TODO: Original titles translated, watch for official versions">
+			<title>
+				<de>Huhu Nacht. Ich mag dich sehr. Komm zu mir. Ich guck die Stern'</de>
+				<en>Hiya Night. I Like You Much. Come to Me. I'm Watching Stars</en>
+				<pl>Cześć Nocy. Bardzo cię lubię. Przyjdź do mnie. Patrzę na gwiazdy</pl>
+			</title>
+			<title_original>
+				<de>Hallo Nacht. Ich mag dich gerne. Setz dich zu mir. Wir gucken Sterne</de>
+				<en>Hello Night. I Really Like You. Sit With Me. Let's Watch the Stars</en>
+				<pl>Witaj Nocy. Lubię cię. Usiądź przy mnie. Oglądamy gwiazdy</pl>
+			</title_original>
+			<description>
+				<de>Kinderfilm mit zarten Grautönen, strahlendem Gelb und berührenden Texten. Eine Liebeserklärung an die Nacht. Verwandelt Dunkelheit in eine warme, magische Welt und eignet sich besonders für Kinder, die Ängste überwinden möchten.</de>
+				<en>A children's film with delicate shades of gray, radiant yellow, and touching texts. A love letter to the night. It transforms darkness into a warm, magical world and is especially suitable for children who want to overcome their fears.</en>
+				<pl>Film dla dzieci z delikatnymi odcieniami szarości, promienistą żółcią i wzruszającymi tekstami. List miłosny do nocy. Przemienia ciemność w ciepły, magiczny świat i szczególnie nadaje się dla dzieci, które chcą przezwyciężyć swoje lęki.</pl>
+			</description>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="737d8f3f-f893-4b9d-9bf6-acd882f4a402" />
+				<job index="2" function="2" required="1" role_guid="307e3d7c-12fc-48f9-bfc8-63a0545dda82" />
+				<job index="3" function="32" required="1" gender="1" />
+				<job index="4" function="32" required="1" gender="2" />
+				<job index="5" function="32" required="1" gender="1" />
+				<job index="6" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="10" flags_optional="" target_groups="7" />
+			<targetgroupattractivity women="1.25" teenagers_female="2" />
+			<genres maingenre="3" subgenres="9,1" />
+			<blocks value="1" />
+			<price min="100000" max="200000" />
+			<potential min="40" max="80" />
+			<outcome min="40" max="80" />
+			<review min="40" max="80" />
+			<speed min="20" max="60" />
+			<studio_size value="1" />
+		</scripttemplate>
+		<scripttemplate product="2" licence_type="3" guid="0526aedb-66da-437b-a51a-acff47ea5b40" creator="discord/eggi72" comment="https://de.wikipedia.org/wiki/Kerstin_Wolff | https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/ | TODO: Original titles translated, watch for official versions">
+			<title>
+				<de>Ein Mammutwerk - Die Trümmerfrauen von Kassel 1942-1955</de>
+				<en>An Enormous Task - The Rubble Women of Kassel 1942-1955</en>
+				<pl>Ogromne przedsięwzięcie - Kobiety od gruzów z Kassel 1942-1955</pl>
+			</title>
+			<title_original>
+				<de>Eine Herkulesaufgabe - Die Trümmerräumung in Kassel 1942-1955</de>
+				<en>A Herculean Task - Clearing the Rubble in Kassel 1942-1955</en>
+				<pl>Herkulesowe zadanie - Usuwanie gruzów w Kassel 1942-1955</pl>
+			</title_original>
+			<description>
+				<de>Zwischen 1940 und 1945 erlebte Kassel rund 40 Luftangriffe, die Schuttberge hinterließen. Wer räumte die Trümmer? Kriegsgefangene, Zwangsarbeiter oder „Trümmerfrauen“? Beleuchtet werden die Organisation der Arbeiten, historische Quellen und Zeitzeugenberichte.</de>
+				<en>Between 1940 and 1945, Kassel experienced around 40 air raids that left behind mountains of rubble. Who cleared the rubble? Prisoners of war, forced laborers or “rubble women”? The organization of the work, historical sources and eyewitness accounts are illuminated.</en>
+				<pl>W latach 1940-1945 Kassel doświadczyło około 40 nalotów, które pozostawiły po sobie góry gruzu. Kto usuwał gruz? Jeńcy wojenni, robotnicy przymusowi czy „kobiety gruzowiska”? Organizacja pracy, źródła historyczne i relacje naocznych świadków są naświetlone.</pl>
+			</description>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="77f88d98-5aea-4054-bcda-5e1f2b5f007d">
+					<title>
+						<de>Leben in und mit den Trümmern 1</de>
+						<en>Life In and Among the Ruins 1</en>
+						<pl>Życie wśród ruin i z ruinami 1</pl>
+					</title>
+					<title_original>
+						<de>Leben in und mit den Trümmern 1</de>
+						<en>Life In and Among the Ruins 1</en>
+						<pl>Życie wśród ruin i z ruinami 1</pl>
+					</title_original>
+					<description>
+						<de>Zwischen 1940 und 1945 erlebte Kassel rund 40 Luftangriffe, die Schuttberge hinterließen. Es wird untersucht, wer die Trümmer räumte und wie inmitten der Trümmer gelebt wurde.</de>
+						<en>Between 1940 and 1945, Kassel experienced around 40 air raids that left behind mountains of rubble. It examines who cleared the rubble and how people lived amidst the ruins.</en>
+						<pl>W latach 1940-1945 Kassel doświadczyło około 40 nalotów, które pozostawiły po sobie góry gruzu. Analizuje, kto uprzątnął gruzy i jak ludzie żyli pośród ruin.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="b5ceb408-9a24-4781-aff4-9b9ca0cb3d41">
+					<title>
+						<de>Leben in und mit den Trümmern 2</de>
+						<en>Life In and Among the Ruins 2</en>
+						<pl>Życie wśród ruin i z ruinami 2</pl>
+					</title>
+					<title_original>
+						<de>Leben in und mit den Trümmern 2</de>
+						<en>Life In and Among the Ruins 2</en>
+						<pl>Życie wśród ruin i z ruinami 2</pl>
+					</title_original>
+					<description>
+						<de>Nach den Bombenangriffen blieb Kassel ein Trümmerfeld - aber das Leben ging weiter. Zwischen Schuttbergen, einstürzenden Fassaden und mit viel Improvisation schufen die Menschen neue Wege des Überlebens. Eine Stadt wie ein Steinbruch, aber lebendig.</de>
+						<en>After the bombings, Kassel was a field of rubble - but life went on. Between mountains of debris, collapsing facades, and plenty of improvisation, people forged new ways to survive. A city like a quarry, yet alive.</en>
+						<pl>Po bombardowaniach Kassel stało się gruzowiskiem - ale życie toczyło się dalej. Między stertami ruin i walącymi się fasadami, ludzie szukali sposobów na przetrwanie. Miasto niczym kamieniołom, ale pełne życia.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="dd6fe7bc-0656-4133-987b-4b2127796e96">
+					<title>
+						<de>Was ist eine Trümmerfrau?</de>
+						<en>What is a Rubble Woman?</en>
+						<pl>Kim była kobieta od gruzu?</pl>
+					</title>
+					<title_original>
+						<de>Was ist eine Trümmerfrau?</de>
+						<en>What is a Rubble Woman?</en>
+						<pl>Kim była kobieta od gruzu?</pl>
+					</title_original>
+					<description>
+						<de>Herrgott nochmal, was ist eine Trümmerfrau? Nun, das waren die Frauen, die nach 1945 mit bloßen Händen und Hacken Trümmerberge abtrugen, während der Rest der Stadt versuchte, irgendwie zu überleben. Kassels Wiederaufbau wäre ohne sie kaum denkbar gewesen.</de>
+						<en>For heaven's sake, what is a "rubble woman"? These were the women who, after 1945, cleared mountains of rubble with bare hands and picks while the rest of the city tried to scrape by. Kassel's reconstruction would have been unimaginable without them.</en>
+						<pl>Na miłość boską, kim były „kobiety od gruzów”? To właśnie one, po 1945 roku, własnymi rękami usuwały góry ruin, podczas gdy reszta miasta walczyła o przetrwanie. Bez nich odbudowa Kassel byłaby niemożliwa.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="839f0078-d74e-4354-b280-0f93471f4812">
+					<title>
+						<de>Trümmerräumung während des Krieges</de>
+						<en>Clearing Rubble During the War</en>
+						<pl>Usuwanie gruzu podczas wojny</pl>
+					</title>
+					<title_original>
+						<de>Trümmerräumung während des Krieges</de>
+						<en>Clearing Rubble During the War</en>
+						<pl>Usuwanie gruzu podczas wojny</pl>
+					</title_original>
+					<description>
+						<de>Trümmer während des Krieges räumen? Tatsächlich, ja! Nach jedem Luftangriff begann das Aufräumen, oft durch Zwangsarbeiter, Gefangene und Bewohner. Immerhin musste der Weg frei bleiben - auch im Chaos funktionierte der deutsche Ordnungsgeist.</de>
+						<en>Clearing rubble during the war? Surprisingly, yes! After every air raid, cleanup began, often by forced laborers, prisoners, and residents. After all, pathways had to stay clear - even amidst chaos, the German sense of order prevailed.</en>
+						<pl>Usuwanie gruzów w czasie wojny? Owszem! Po każdym nalocie rozpoczynały się porządki, głównie dzięki robotnikom przymusowym, więźniom i mieszkańcom. Niemiecki zmysł porządku działał nawet w samym środku chaosu.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="038039f4-0079-4fce-b7d3-8b0481748e9b">
+					<title>
+						<de>Trümmerräumung nach 1945</de>
+						<en>Clearing Rubble After 1945</en>
+						<pl>Usuwanie gruzu po 1945 roku</pl>
+					</title>
+					<title_original>
+						<de>Trümmerräumung nach 1945</de>
+						<en>Clearing Rubble After 1945</en>
+						<pl>Usuwanie gruzu po 1945 roku</pl>
+					</title_original>
+					<description>
+						<de>Nach 1945 stapelten sich die Trümmer bis zum Himmel - doch wie räumt man so etwas weg? Mit Schaufeln, Muskelkraft und, natürlich, der Bahn. Die Trümmerzüge rollten tonnenweise Schutt aus der Stadt, während Kassel sich langsam neu erfand.</de>
+						<en>After 1945, rubble piled up to the heavens - but how do you clear such chaos? With shovels, manpower, and, of course, the railway. Rubble trains hauled tons of debris out of the city as Kassel slowly reinvented itself.</en>
+						<pl>Po 1945 roku gruz piętrzył się aż po niebo - ale jak to wszystko usunąć? Łopatami, siłą mięśni i oczywiście koleją. Pociągi wywoziły tony gruzu z miasta, podczas gdy Kassel powoli odradzało się na nowo.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="e131edcd-eb1e-44d2-b298-120604769a03">
+					<title>
+						<de>Was sind Trümmer und wem gehören sie?</de>
+						<en>What is Rubble and Who Owns It?</en>
+						<pl>Czym jest gruz i do kogo należy?</pl>
+					</title>
+					<title_original>
+						<de>Was sind Trümmer und wem gehören sie?</de>
+						<en>What is Rubble and Who Owns It?</en>
+						<pl>Czym jest gruz i do kogo należy?</pl>
+					</title_original>
+					<description>
+						<de>Trümmer: einst Häuser, nun Schutt. Aber wem gehört der Schutt? Überraschenderweise wurde er verkauft - oft an Bauunternehmer, die ihn recycelten. Wer die Trümmer kaufte? Das bleibt ein Rätsel, das so manches Testament wohl nie gelöst hat.</de>
+						<en>Rubble: once houses, now debris. But who owned the debris? Surprisingly, it was sold - often to builders who recycled it. Who bought the rubble? A mystery that some wills never quite solved.</en>
+						<pl>Gruzy: kiedyś domy, teraz sterty ruin. Ale do kogo należały? Ku zaskoczeniu wielu, były sprzedawane - często budowniczym, którzy je przetwarzali. Kto je kupił? Tajemnica, której nie rozwiązało nawet wiele testamentów.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="f77fda25-d078-4daf-a865-0dc355967059">
+					<title>
+						<de>Die Trümmerschuttverwertungsanlage</de>
+						<en>The Rubble Recycling Plant</en>
+						<pl>Zakład Przetwarzania Gruzu</pl>
+					</title>
+					<title_original>
+						<de>Die Trümmerschuttverwertungsanlage</de>
+						<en>The Rubble Recycling Plant</en>
+						<pl>Zakład Przetwarzania Gruzu</pl>
+					</title_original>
+					<description>
+						<de>Trümmer sind nicht nur Schutt - sie sind wertvolle Rohstoffe! In Kassel entstand eine Verwertungsanlage, die aus kaputten Häusern neues Baumaterial machte. Recycling, bevor es cool war - und dringend nötig, denn es fehlte an allem.</de>
+						<en>Rubble isn't just debris - it's valuable raw material! In Kassel, a recycling plant turned broken houses into new building supplies. Recycling before it was cool - and absolutely necessary, as everything was in short supply.</en>
+						<pl>Gruz to nie tylko odpad - to cenny surowiec! W Kassel powstała instalacja, która zamieniała zniszczone domy w nowe materiały budowlane. Recykling zanim stał się modny - i desperacko potrzebny, bo brakowało wszystkiego.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="7" product="2" licence_type="2" guid="cfecb3a7-256b-4176-9494-fac3fed0056e">
+					<title>
+						<de>Bausteinwerk Kassel</de>
+						<en>Kassel Brickworks</en>
+						<pl>Fabryka Cegieł w Kassel</pl>
+					</title>
+					<title_original>
+						<de>Bausteinwerk Kassel</de>
+						<en>Kassel Brickworks</en>
+						<pl>Fabryka Cegieł w Kassel</pl>
+					</title_original>
+					<description>
+						<de>Aus Trümmern werden Bausteine: Im Bausteinwerk Kassel wurde aus Ton und Schutt neues Material gepresst. Klingt wie ${brand_lego} für Erwachsene, war aber harte Arbeit - mit Ergebnissen, die man auch heute noch sehen kann.</de>
+						<en>Turning rubble into building blocks: At Kassel's brickworks, clay and debris were pressed into new material. Like ${brand_lego} for adults, but with backbreaking labor - and results you can still see today.</en>
+						<pl>Z gruzu powstawały nowe cegły: w fabryce w Kassel przetwarzano glinę i ruiny na materiały budowlane. Brzmi jak klocki ${brand_lego} dla dorosłych, ale była to ciężka praca - której efekty widać do dziś.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="8" product="2" licence_type="2" guid="52bba16c-81fb-4e7d-9618-1dbdf1495f89">
+					<title>
+						<de>Fuldabrücke</de>
+						<en>The Fulda Bridge</en>
+						<pl>Most na Fuldzie</pl>
+					</title>
+					<title_original>
+						<de>Fuldabrücke</de>
+						<en>The Fulda Bridge</en>
+						<pl>Most na Fuldzie</pl>
+					</title_original>
+					<description>
+						<de>Eine gesprengte Brücke? Weg damit - und zwar schnell! Der Wiederaufbau der Fuldabrücke war eine logistische Meisterleistung. Mit Muskelkraft, Ingenieurskunst und einer Menge Geduld entstand das Bauwerk neu. Kein Jahrhundertprojekt, aber nah dran.</de>
+						<en>A blown-up bridge? Get rid of it - and quickly! Rebuilding the Fulda Bridge was a logistical masterpiece. With muscle power, engineering skill, and plenty of patience, the structure was reborn. Not quite a century-long project, but close enough.</en>
+						<pl>Wysadzony most? Trzeba go usunąć - i to szybko! Odbudowa mostu nad Fuldą była logistycznym majstersztykiem. Dzięki sile mięśni, inżynierii i ogromnej cierpliwości konstrukcja powstała na nowo. Nie trwało to wieki, ale niewiele brakowało.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="9" product="2" licence_type="2" guid="4db3bad4-c236-4f80-983a-92f2665fb960">
+					<title>
+						<de>Das städtische Bad</de>
+						<en>The Municipal Bathhouse</en>
+						<pl>Miejska Łaźnia</pl>
+					</title>
+					<title_original>
+						<de>Das städtische Bad</de>
+						<en>The Municipal Bathhouse</en>
+						<pl>Miejska Łaźnia</pl>
+					</title_original>
+					<description>
+						<de>Nach dem Krieg war Wasser knapp - warmes Wasser noch knapper. Das städtische Bad war der Luxus, den sich die Bürger teilten. Eine Badewanne für alle? Fast, aber immerhin: Sauberkeit für Kassel, wenn auch in Schichten.</de>
+						<en>After the war, water was scarce - hot water even scarcer. The municipal bathhouse was a luxury shared by all citizens. One bathtub for everyone? Almost, but at least cleanliness for Kassel, even if taken in shifts.</en>
+						<pl>Po wojnie brakowało wody - a ciepłej tym bardziej. Miejskie łaźnie były luksusem, który dzielili wszyscy obywatele. Jedna wanna dla wszystkich? Prawie, ale przynajmniej czystość w Kassel była możliwa - na zmiany.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="10" product="2" licence_type="2" guid="6af49f5a-51e3-4b79-b4e6-24dfbd0b4040">
+					<title>
+						<de>Abwasser und der Gestank</de>
+						<en>Wastewater and the Stench</en>
+						<pl>Ścieki i Smród</pl>
+					</title>
+					<title_original>
+						<de>Abwasser und der Gestank</de>
+						<en>Wastewater and the Stench</en>
+						<pl>Ścieki i Smród</pl>
+					</title_original>
+					<description>
+						<de>Trümmer räumen ist das eine - aber wohin mit dem Abwasser? Nach dem Krieg verwandelten kaputte Leitungen Straßen in übelriechende Bäche. Der Gestank? Atemberaubend. Lösungen? Spät, aber gerade noch rechtzeitig für die Nasen der Bürger.</de>
+						<en>Clearing rubble is one thing - but where does the wastewater go? After the war, broken pipes turned streets into foul-smelling streams. The stench? Overwhelming. Solutions? Late, but just in time for the citizens' noses.</en>
+						<pl>Sprzątanie gruzów to jedno - ale co zrobić ze ściekami? Po wojnie uszkodzone rury zamieniły ulice w cuchnące strumienie. Smród? Powalający. Rozwiązania? Późno, ale w samą porę dla nosów mieszkańców.</pl>
+					</description>
+				</scripttemplate>
+			</children>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="128" required="1" gender="2" />
+				<job index="2" function="2" required="1" role_guid="79ce57c0-3b0d-41c7-87c2-c1d01703681f" />
+				<job index="3" function="2" required="1" role_guid="cf9b4d62-b95d-4937-a50e-edb49e6f6713" />
+				<job index="4" function="2" required="1" role_guid="e0e925e1-665f-4c41-98f5-b4526bea6ccd" />
+				<job index="5" function="2" required="1" role_guid="e6d20298-118e-4085-bd2e-40cae4a090cc" />
+				<job index="6" function="2" required="1" role_guid="b806ee7b-d43e-4351-99e6-0d8d2c363da4" />
+				<job index="7" function="32" required="1" gender="2" />
+				<job index="8" function="32" required="1" gender="1" />
+				<job index="9" function="32" required="1" gender="2" />
+				<job index="10" function="32" required="1" gender="1" />
+				<job index="11" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="4" target_groups="96" />
+			<targetgroupattractivity men="0.75" teenagers_male="0.25" unemployed="0.25" />
+			<genres maingenre="6" subgenres="11,300" />
+			<episodes min="11" max="11" />
+			<blocks value="2" />
+			<price min="100000" max="200000" />
+			<potential min="40" max="80" />
+			<outcome min="30" max="70" />
+			<review min="50" max="90" />
+			<speed min="20" max="60" />
+			<studio_size min="1" max="3" />
+		</scripttemplate>
 	</scripttemplates>
 </tvtdb>

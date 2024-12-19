@@ -2429,6 +2429,22 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,1996,1996,5,11,1,30" /> <!-- actual date: 1996-10, exact day not clear -->
 		</news>
 
+			<!-- 1996-11 -->
+
+		<news guid="ba125495-437b-46e8-9a78-b43f1051339f" type="0" creator="9551">
+			<title>
+				<de>${brand_clippy} irritiert Nutzer</de>
+				<en>${brand_clippy} annoys users</en>
+				<pl>${brand_clippy} drażni użytkowników</pl>
+			</title>
+			<description>
+				<de>${brand_microsoft} führt ${brand_clippy} ein, die virtuelle Assistenz-Büroklammer. Viele sagen: „Sie ist keine Hilfe - sie nervt nur ziemlich.“</de>
+				<en>${brand_microsoft} debuts ${brand_clippy}, the virtual assistant paperclip. Many say: "It doesn't help - but it sure annoys".</en>
+				<pl>${brand_microsoft} debiutuje z ${brand_clippy}, wirtualnym asystentem spinacza. Wielu mówi: „Nie pomaga - ale za to drażni.”</pl>
+			</description>
+			<data genre="3" price="1" quality_min="10" quality_max="40" flags="2" happen_time="5,1996,1997,10,4,1,30" /> <!-- actual date: 1996-11-19 (Microsoft Office 97) -->
+		</news>
+
 			<!-- 1997-03 -->
 
 		<news guid="7cd10a26-8742-4700-8b7d-cbe1208d7f68" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/DVD">
@@ -5152,7 +5168,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<tokiohotel>${.person:"4040006c-b7fc-46a6-812c-6c8bafa52ca7":"firstname"}</tokiohotel>
 			</variables>
 			<data genre="1" price="1.0" quality="23" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="2006" />
 		</news>
 		<news guid="b2719e00-bd4c-42dd-8398-35cf359009b0" thread_guid="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="" comment="TODO: phi symbol not supported yet">
 			<title>
@@ -5908,8 +5924,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<mir>
-					<de>${.lte:currentyear:1999:"MIR":"ISS"}</de>
-					<en>${.lte:currentyear:1999:"MIR":"ISS"}</en>
+					<all>${.lte:currentyear:1999:"MIR":"ISS"}</all>
 					<pl>${.lte:currentyear:1999:"MIR":"MSK"}</pl>
 				</mir>
 				<thesoviet>
@@ -7243,6 +7258,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<lindsaylohan>${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}</lindsaylohan>
 				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
 				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<ladygaga>${.person:"53f70e44-01f4-4e12-9326-68f2d4936b14":"firstname"}</ladygaga>
 				<gen_0_csv>
 					<de>Country-Sängerin;${dollyparton}|
 						Country-Sängerin;${lorettalynn}|
@@ -7353,17 +7369,20 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Schauspielerin;${mischabarton}|
 						Schauspielerin;${lindsaylohan}|
 						Sängerin und Schauspielerin;${mileycyrus}|
-						Sängerin und Schauspielerin;${taylormomsen}
+						Sängerin und Schauspielerin;${taylormomsen}|
+						Sängerin und Schauspielerin;${ladygaga}
 					</de>
 					<en>actress;${mischabarton}|
 						actress;${lindsaylohan}|
 						singer and actress;${mileycyrus}|
-						singer and actress;${taylormomsen}
+						singer and actress;${taylormomsen}|
+						singer and actress;${ladygaga}
 					</en>
 					<pl>aktorka;${mischabarton}|
 						aktorka;${lindsaylohan}|
 						piosenkarka i aktorka;${mileycyrus}|
-						piosenkarka i aktorka;${taylormomsen}
+						piosenkarka i aktorka;${taylormomsen}|
+						piosenkarka i aktorka;${ladygaga}
 					</pl>
 				</gen_3_csv>
 				<mothergen>${.lte:currentyear:2000:0:"${.lte:currentyear:2012:1:2}"}</mothergen>

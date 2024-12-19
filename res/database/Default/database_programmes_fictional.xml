@@ -215,7 +215,7 @@
 			<releaseTime year_relative="5" />
 			<ratings critics="75" speed="15" outcome="10" />
 		</programme>
-		<programme guid="42761763-4125-4a66-8227-40027caab44a" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as f0010a94-c0a9-4d99-8522-06ce3891ac0f | TODO: should have low viewer results (0% in Mad TV) but highest possible Betty points">
+		<programme guid="42761763-4125-4a66-8227-40027caab44a" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as f0010a94-c0a9-4d99-8522-06ce3891ac0f">
 			<title>
 				<de>Kultur Heute</de>
 				<en>Culture Today</en>
@@ -232,15 +232,16 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.5" />
-			<data country="D" distribution="2" maingenre="103" subgenre="300,6" flags="5" blocks="1" broadcast_flags="512" price_mod="0.5" />
+			<data country="D" distribution="2" maingenre="103" subgenre="300,6" flags="5" blocks="1" broadcast_flags="512" price_mod="10" />
 			<releaseTime year_relative="0" day="5" />
-			<ratings critics="100" speed="39" outcome="1" />
+			<ratings critics="5" speed="11" outcome="1" />
 			<effects>
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f0010a94-c0a9-4d99-8522-06ce3891ac0f" />
 			</effects>
 			<modifiers>
 				<modifier name="topicality::notLive" value="0.5" />
 				<modifier name="topicality::age" value="4" />
+				<modifier name="betty::pointsabsolute" value="100" /> <!-- should have low viewer results (0% in Mad TV) but highest possible Betty points -->
 			</modifiers>
 		</programme>
 		<programme guid="4fe2dff2-039d-4747-b37a-7f79010b9997" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
@@ -1788,7 +1789,7 @@ Wartościowe pedagogicznie i całkowicie ekologiczne.</pl>
 				<member index="0" function="5">ronny-programmeperson-freddyjbush</member>
 				<member index="1" function="128">ronny-programmeperson-bennyjameson</member>
 			</staff>
-			<groups target_groups="288" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<groups target_groups="289" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="1.25" women="0.75" children="1.5" />
 			<data country="USA" distribution="2" maingenre="100" subgenre="9,6" flags="0" blocks="1" price_mod="0.95" />
 			<releaseTime year_relative="-5" year_relative_min="1978" year_relative_max="1984" />

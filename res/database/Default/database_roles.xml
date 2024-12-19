@@ -25,6 +25,7 @@
 		<programmerole guid="bb2293f9-7f79-4877-9f47-72ab2c23b5d2" first_name="Jack" last_name="Frost" first_name_original="Jack" last_name_original="Frost" gender="1" comment="https://en.wikipedia.org/wiki/Jack_Frost" />
 		<programmerole guid="3a14136f-acc5-4515-8674-2c70846e1224" first_name="Santa Claus" last_name="" first_name_original="Santa Claus" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Santa_Claus" />
 		<programmerole guid="6ee3cf47-1663-481f-87a9-2721f52901e2" first_name="Satan" last_name="" first_name_original="Satan" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Satan" />
+		<programmerole guid="307e3d7c-12fc-48f9-bfc8-63a0545dda82" first_name="Ghost" last_name="" first_name_original="Ghost" last_name_original="" gender="" comment="https://en.wikipedia.org/wiki/Ghost (generic)" />
 		<programmerole guid="4a42c31b-348f-46fd-822d-c069eac1056e" first_name="Kyot" last_name="" first_name_original="Kyot" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Kyot" />
 		<programmerole guid="282f1daf-e167-46a9-b162-a8146ddca4e8" first_name="Caliban" last_name="" first_name_original="Caliban" last_name_original="" gender="1" comment="https://en.wikipedia.org/wiki/Caliban" />
 		<programmerole guid="bb692924-2108-4df1-99df-171942088921" first_name="Robin" last_name="Hut" first_name_original="Robin" last_name_original="Hood" gender="1" comment="https://en.wikipedia.org/wiki/Robin_Hood" />
@@ -697,6 +698,14 @@
 		<programmerole guid="3d192fec-4e71-4e27-82ef-c3e4a1c39950" first_name="Reinecke" last_name="Schwarz" title="Fuchs" first_name_original="Sam" last_name_original="Grau" gender="1" comment="https://de.wikipedia.org/wiki/Tobias_Goldfarb | also in language files" />
 		<programmerole guid="bd124df0-337d-4df5-94e6-a4606143e66d" first_name="Hörnchen" last_name="" title="Eichhörnchen" first_name_original="Eicho" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Tobias_Goldfarb | also in language files" />
 		<programmerole guid="733deb40-6bdf-4d01-af40-b0fae20822c2" first_name="Rotini" last_name="" title="Rotkehlchen" first_name_original="Robinius" last_name_original="" gender="1" comment="https://de.wikipedia.org/wiki/Tobias_Goldfarb | also in language files" />
+
+		<programmerole guid="737d8f3f-f893-4b9d-9bf6-acd882f4a402" first_name="Sybille" last_name="" first_name_original="Sophie" last_name_original="" gender="2" comment="https://www.thalia.de/shop/home/artikeldetails/A1068442746" />
+
+		<programmerole guid="79ce57c0-3b0d-41c7-87c2-c1d01703681f" first_name="Anne" last_name="" title="Rubble woman" first_name_original="Anna" last_name_original="" gender="2" comment="https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/" />
+		<programmerole guid="cf9b4d62-b95d-4937-a50e-edb49e6f6713" first_name="" last_name="Schinder" title="Mayor" first_name_original="" last_name_original="Schimmel" gender="1" comment="https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/" />
+		<programmerole guid="e0e925e1-665f-4c41-98f5-b4526bea6ccd" first_name="" last_name="Hinkelfels" title="Local official" first_name_original="" last_name_original="Hinkelstein" gender="1" comment="https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/" />
+		<programmerole guid="e6d20298-118e-4085-bd2e-40cae4a090cc" first_name="Hans" last_name="" title="Citizen" first_name_original="Horst" last_name_original="" gender="1" comment="https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/" />
+		<programmerole guid="b806ee7b-d43e-4351-99e6-0d8d2c363da4" first_name="Dietmar" last_name="" title="Farmer" first_name_original="Dieter" last_name_original="" gender="1" comment="https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/" />
 
 		<!-- Music -->
 
