@@ -617,6 +617,17 @@ Type TPersonBase Extends TGameObject
 	End Method
 
 
+	Method New(firstName:String, lastName:String, countryCode:String, gender:Int, isFictional:Int)
+		self.firstName = firstName
+		self.lastName = lastName
+		self.countryCode = countryCode
+		self.gender = gender
+		self.SetFlag(TVTPersonFlag.FICTIONAL, isFictional)
+		self.SetFlag(TVTPersonFlag.BOOKABLE, True)
+		self.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, True)
+	End Method
+	
+
 	Method SetFirstName:Int(firstName:String)
 		Self.firstName = firstName
 	End Method
@@ -1938,6 +1949,16 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 	End Method	
 End Type
 
+
+'for sports men
+Type TPersonSportBaseData Extends TPersonBaseData
+	Field teamID:Int
+	'TODO: power, skill, ... attributes?
+
+	Method SetTeam(teamID:Int)
+		Self.teamID = teamID
+	End Method
+End Type
 
 
 'role/function a person had in a movie/series

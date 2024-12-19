@@ -72,6 +72,12 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 	End Method
 
 
+	Method GenerateRandomTeamMembers:Int(team:TNewsEventSportTeam) override
+		GenerateRandomTeamMembers(team, 6, 3)
+	End Method
+
+
+
 	Function CreateMatch:TNewsEventSportMatch_IceHockey()
 		return new TNewsEventSportMatch_IceHockey
 	End Function
@@ -176,7 +182,7 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 			Next
 
 
-			local teams:TNewsEventSportTeam[]
+			local teams:TNewsEventSportTeam[] = New TNewsEventSportTeam[ cityNames.length ]
 			For local i:int = 0 until cityNames.length
 				'use predefined data if possible
 				local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
@@ -187,9 +193,10 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 				                  predefinedTeamData.GetString("name", ""), ..
 				                  predefinedTeamData.GetString("nameInitials", "") ..
 				                 )
-				teams :+ [team]
 				'give them some basic attributes
 				team.RandomizeBasicStats(leagueIndex)
+				'tell the team what sport it is doing
+				team.AssignSport(self.GetID())
 
 'print "league="+(leagueIndex+1)+"  team="+(i+1)+"  name=" + team.name+"  city="+team.city+"  nameInitials="+team.nameInitials+"  clubName="+team.clubName+"  clubNameInitials="+team.clubNameInitials
 
@@ -198,14 +205,23 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 					if RandRange(0, 10) < 3 then cCode = countryCodes[ RandRange(0, countryCodes.length-1) ]
 
 					local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(cCode, TPersonGenerator.GENDER_MALE)
-					local member:TNewsEventsportTeamMember = new TNewsEventsportTeamMember.Init( p.firstName, p.lastName, p.countryCode, p.gender, True)
+					local member:TPersonBase = new TPersonBase( p.firstName, p.lastName, p.countryCode, p.gender, True)
+					'assume 50% are not interested in TV shows / custom productions
+					If RandRange(0, 100) < 50
+						member.SetFlag(TVTPersonFlag.CASTABLE, False)
+					EndIf
+					'give the person sports specific data (team assignment is done separately)
+					member.AddData("sports_" + self.name, New TPersonSportBaseData)
+
 					if j <> 0
 						team.AddMember( member )
 					else
 						team.SetTrainer( member )
 					endif
 				Next
+				teams[i] = team
 			Next
+			GetNewsEventSportCollection().AddTeams( teams )
 
 			local league:TNewsEventSportLeague_IceHockey = new TNewsEventSportLeague_IceHockey
 			league.Init((leagueIndex+1) + ". " + GetLocale("ICEHOCKEY_LEAGUE"), leagueIndex+".", teams)
@@ -227,7 +243,7 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 				league.seasonStartDay = 16
 				league.seasonStartMonth = 9
 			endif
-
+			
 			AddLeague( league )
 		Next
 	End Method
