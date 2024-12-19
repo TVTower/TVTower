@@ -843,6 +843,8 @@ Type TProductionConcept Extends TOwnedGameObject
 		local personCount:int = 0
 		local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subgenres)
 
+		'map id -> jobs in cast
+		local castUsage:TIntMap = new TIntMap
 
 		For local castIndex:int = 0 until cast.length
 			local person:TPersonBase = cast[castIndex]
@@ -903,6 +905,23 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			'=== JOB FIT ===
 			local job:TPersonProductionJob = script.jobs[castIndex]
+
+			'check person used for same job
+			Local samePersonSameJob:Int = False
+			Local samePersonOtherJob:Int = False
+			local jobBitMask:TIntBitmask = TIntBitmask(castUsage.valueForKey(person.GetId()))
+			If jobBitMask
+				If jobBitMask.Has(job.job)
+					samePersonSameJob = True
+				Else
+					samePersonOtherJob = True
+				EndIf
+			Else
+				jobBitMask = new TIntBitmask()
+				castUsage.Insert(person.GetId(), jobBitMask)
+			EndIf
+			jobBitMask.set(job.job)
+
 			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetTotalProductionJobsDone() + 0.90 * person.GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
@@ -1000,6 +1019,9 @@ Type TProductionConcept Extends TOwnedGameObject
 				Next
 			endif
 
+			If samePersonOtherJob And RandRange(0,100) < 75 Then personFit:/ 2
+			If samePersonSameJob And RandRange(0,100) < 95 Then personFit = -0.05
+
 rem
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
 			local jobsText:String
@@ -1044,6 +1066,8 @@ rem
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  --)", LOG_DEBUG)
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  --)", LOG_DEBUG)
 			endif
+			TLogger.Log("TProductionConcept.CalculateCastFit()", "      sameJob:  "+samePersonSameJob, LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", "     otherJob:  "+samePersonOtherJob, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "=   personFit:  "+personFit, LOG_DEBUG)
 endrem
 			castFitSum :+ personFit
@@ -1052,7 +1076,7 @@ endrem
 
 		if recalculate or castFit < 0
 			if personCount > 0
-				castFit = castFitSum / personCount
+				castFit = Max(castFitSum , 0) / personCount
 			else
 				castFit = 0
 			endif
