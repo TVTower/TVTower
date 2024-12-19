@@ -372,8 +372,8 @@
 			</children>
 			<variables>
 				<Name1>
-					<all>{brand_instagram}|{brand_twitter}|{brand_facebook}|{brand_youtube}|{brand_snapchat}|{brand_whatsapp}</all>
-					<pl>{brand_instagram}ie|{brand_twitter}ze|{brand_facebook}u|{brand_youtube}-ie|{brand_snapchat}-cie|{brand_whatsapp}ie</pl>
+					<all>${brand_instagram}|${brand_twitter}|${brand_facebook}|${brand_youtube}|${brand_snapchat}|${brand_whatsapp}</all>
+					<pl>${brand_instagram}ie|${brand_twitter}ze|${brand_facebook}u|${brand_youtube}-ie|${brand_snapchat}-cie|${brand_whatsapp}ie</pl>
 				</Name1>
 				<Name2>
 					<de>Girl|Woman|Maid|Child|Daughter|Son|Boy|Man</de>

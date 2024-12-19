@@ -1307,9 +1307,9 @@
 				<pl>Życie to tylko faza</pl>
 			</title_original>
 			<description>
-				<de>Ein junger Mann hat sieben Tage frei und möchte sein Leben umkrempeln. Mal ausschlafen, dann Liste machen: Carrera-Bahn kaufen, Kinder kriegen... Die Angetraute ist davon etwas überrascht, und natürlich läuft nicht alles so nach Plan.</de>
-				<en>A young man has seven days off and wants to turn his life around. Sleep in, then make a list: buy a racetrack, have children... Wifey is a little surprised, and of course not everything goes according to plan.</en>
-				<pl>Młody mężczyzna ma siedem dni wolnego i chce zmienić swoje życie. Wyśpij się, a potem zrób listę: kup tor wyścigowy, miej dzieci... Żona jest trochę zaskoczona i oczywiście nie wszystko idzie zgodnie z planem.</pl>
+				<de>Ein junger Mann hat sieben Tage frei und möchte sein Leben umkrempeln. Mal ausschlafen, dann Liste machen: ${brand_carrera}-Bahn kaufen, Kinder kriegen... Die Angetraute ist davon etwas überrascht, und natürlich läuft nicht alles so nach Plan.</de>
+				<en>A young man has seven days off and wants to turn his life around. Sleep in, then make a list: buy a slot car track, have children... Wifey is a little surprised, and of course not everything goes according to plan.</en>
+				<pl>Młody mężczyzna ma siedem dni wolnego i chce zmienić swoje życie. Wyśpij się, a potem zrób listę: kupi tor samochodowy, miej dzieci... Żona jest trochę zaskoczona i oczywiście nie wszystko idzie zgodnie z planem.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />

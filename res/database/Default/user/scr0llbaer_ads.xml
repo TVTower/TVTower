@@ -251,9 +251,9 @@ W Zombocom wszystko jest możliwe.</pl>
 				<pl>Hrabia Smok</pl>
 			</title>
 			<description>
-				<de>\m/ Meddl Loide. Nix für Haider! Der charmante {brand_youtube}-Kanal aus dem Frankenland mit heißen Tips für den gepflegten Fleischwurst-und-Chipstüten-Lifestyle von heute.</de>
-				<en>\m/ Hevvy Meddle peepz. Not for haiderz! The charming {brand_youtube} channel from Franconia with hot tips for today's cultivated meat sausage and chip bag lifestyle.</en>
-				<pl>\m/ Hevvy Meddle peepz. Uroczy kanał {brand_youtube} z Frankonii z gorącymi wskazówkami dotyczącymi dzisiejszego stylu życia opartego na kiełbasie mięsnej i torebkach z chipsami.</pl>
+				<de>\m/ Meddl Loide. Nix für Haider! Der charmante ${brand_youtube}-Kanal aus dem Frankenland mit heißen Tips für den gepflegten Fleischwurst-und-Chipstüten-Lifestyle von heute.</de>
+				<en>\m/ Hevvy Meddle peepz. Not for haiderz! The charming ${brand_youtube} channel from Franconia with hot tips for today's cultivated meat sausage and chip bag lifestyle.</en>
+				<pl>\m/ Hevvy Meddle peepz. Uroczy kanał ${brand_youtube} z Frankonii z gorącymi wskazówkami dotyczącymi dzisiejszego stylu życia opartego na kiełbasie mięsnej i torebkach z chipsami.</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="1" target_group="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="1600" penalty="1900" infomercial_profit="142" fix_infomercial_profit="1" />
@@ -670,14 +670,14 @@ Usługi VPN od Jonas &amp; McApee Spółka z o.o.</pl>
 			<data infomercial="1" quality="20" repetitions="5" duration="2" profit="450" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />
 			<availability year_range_from="1981" year_range_to="1997" />
 		</ad>
-		<ad guid="0120f9b5-e60a-4e03-a4dd-971b7fe4d399" creator="9551" comment="1998- | https://en.wikipedia.org/wiki/AOL | TODO: Make reference: English version is quoting title of the film 7d76d4b1-33e9-4130-b064-b04dd17ca454 that was based on the popular slogan in the US">
+		<ad guid="0120f9b5-e60a-4e03-a4dd-971b7fe4d399" creator="9551" comment="1998- | https://en.wikipedia.org/wiki/AOL">
 			<title>
 				<all>${brand_aol}</all>
 			</title>
 			<description>
 				<de>Jetzt weltweit! Wir schmeißen Ihnen eine Gratis-CD-ROM nach der anderen hinterher, bis endlich auch die letzten Boomer wie Sie drin sind. Ist ja so simpel - ${brand_aol}.</de>
-				<en>New E-Mail in Your Inbox - now world-wide! Bringing you the internet, one free CD at a time.</en>
-				<pl>Nowa wiadomość e-mail w skrzynce odbiorczej - teraz na całym świecie! Przynosimy ci internet, jedną darmową płytę CD na raz.</pl>
+				<en>"${.programme:"7d76d4b1-33e9-4130-b064-b04dd17ca454":"title"}" - now world-wide! Bringing you the internet, one free CD at a time.</en>
+				<pl>„${.programme:"7d76d4b1-33e9-4130-b064-b04dd17ca454":"title"}“ - teraz na całym świecie! Przynosimy ci internet, jedną darmową płytę CD na raz.</pl>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="20" repetitions="5" duration="2" profit="450" penalty="1000" infomercial_profit="124" fix_infomercial_profit="1" />

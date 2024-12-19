@@ -348,21 +348,6 @@
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
-		<news guid="Sjaele-news-Plagiatorin-Forschungsausschuss" type="0" creator="7430" created_by="Sjaele">
-			<title>
-				<de>Plagiatorin im Forschungsausschuss</de>
-				<en>Plagiarist on the Research Committee</en>
-				<pl>Plagiator w komitecie badawczym</pl>
-			</title>
-			<description>
-				<de>Wenige Tage nach Aberkennung ihres Doktorgrades wurde eine EU-Parlamentarierin in den Forschungsausschuss des Parlamentes berufen.</de>
-				<en>A few days after her doctoral degree was revoked, an EU parliamentarian was appointed to the Parliament's Research Committee.</en>
-				<pl>Kilka dni po odebraniu jej tytułu doktora, parlamentarzystka UE została powołana do parlamentarnego Komitetu Badań Naukowych.</pl>
-			</description>
-			<data genre="3" price="0.7" quality="35" />
-			<availability year_range_from="" year_range_to="" />
-		</news>
-
 		<news guid="Sjaele-news-Schlussverkauf-Wahnsinnsrabatten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Schlussverkauf mit Wahnsinnsrabatten</de>
@@ -793,7 +778,7 @@
 			<availability script='${.eq:${.worldtime:"season"}:4}' />
 		</news>
 
-		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele">
+		<news guid="Sjaele-news-iPhone-zertrümmert" type="0" creator="7430" created_by="Sjaele" comment="TODO: 'Al Friedeno' probably Al Pacino">
 			<title>
 				<de>${brand_iphone} zertrümmert</de>
 				<en>${brand_iphone} smashed</en>
