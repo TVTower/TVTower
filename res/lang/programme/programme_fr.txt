@@ -127,9 +127,9 @@ SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Tous les ${.self:"sportle
 SPORT_PROGRAMME_MATCH_TIMES                          = Heures des matchs
 SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match entre les numéros ${.self:"sportteam":0:"leaguerank"} et ${.self:"sportteam":1:"leaguerank"} de la ligue. L'entraîneur de ${.self:"sportteam":0:"teaminitials"}, ${.self:"sportteam":0:"trainer":"lastname"} se montre optimiste.
 SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = L'étoile de ${.self:"sportteam":0:"teaminitials"}, ${.self:"sportteam":0:"members":-1:"lastname"}, contre l'équipe de ${.self:"sportteam":1:"members":-1:"fullname"}.
-SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ce sera un match fascinant quand %TEAM1ARTICLE1% %TEAM1NAME% rencontre les joueurs ${.self:"sportteam":1:"teaminitials"}.
-SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} chez ${.self:"sportteam":0:"teaminitials"} à %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} et son équipe voyagent à %TEAM2CITY% pour rencontrer le numéro ${.self:"sportteam":1:"leaguerank"} de la ligue.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ce sera un match fascinant quand ${.self:"sportteam":0:"teamnamewitharticle"} rencontre les joueurs ${.self:"sportteam":1:"teaminitials"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} chez ${.self:"sportteam":0:"teaminitials"} à ${.self:"sportteam":0:"city"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} et son équipe voyagent à ${.self:"sportteam":1:"city"} pour rencontrer le numéro ${.self:"sportteam":1:"leaguerank"} de la ligue.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Match de relégation.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match de la ligue ${.self:"sportleague":"name"}.

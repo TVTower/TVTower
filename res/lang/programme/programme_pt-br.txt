@@ -127,9 +127,9 @@ SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = All ${.self:"sportleague"
 SPORT_PROGRAMME_MATCH_TIMES                          = Hora da Partida
 SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Partida entre a colocação ${.self:"sportteam":0:"leaguerank"} e ${.self:"sportteam":1:"leaguerank"} da liga. ${.self:"sportteam":0:"teaminitials"} treinador ${.self:"sportteam":0:"trainer":"lastname"} está otimista.
 SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = ${.self:"sportteam":0:"teaminitials"} estrela ${.self:"sportteam":0:"members":-1:"lastname"} contra a equipe em torno do artilheiro ${.self:"sportteam":1:"members":-1:"fullname"}.
-SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Um jogo interessante está chegando quando %TEAM1ARTICLE1% %TEAM1NAME% encontra os jogadores de ${.self:"sportteam":1:"teaminitials"}.
-SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} visitando ${.self:"sportteam":0:"teaminitials"} em %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} e sua equipe viajam para %TEAM2CITY%, classificação ${.self:"sportteam":1:"leaguerank"} na liga.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Um jogo interessante está chegando quando ${.self:"sportteam":0:"teamnamewitharticle"} encontra os jogadores de ${.self:"sportteam":1:"teaminitials"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} visitando ${.self:"sportteam":0:"teaminitials"} em ${.self:"sportteam":0:"city"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} e sua equipe viajam para ${.self:"sportteam":1:"city"}, classificação ${.self:"sportteam":1:"leaguerank"} na liga.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Partida de mata-mata.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Partida de ${.self:"sportleague":"name"}.

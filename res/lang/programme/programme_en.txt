@@ -127,9 +127,9 @@ SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = All ${.self:"sportleague"
 SPORT_PROGRAMME_MATCH_TIMES                          = Match times
 SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match between teams placed ${.self:"sportteam":0:"leaguerank"} and ${.self:"sportteam":1:"leaguerank"} in the league. ${.self:"sportteam":0:"teaminitials"} coach ${.self:"sportteam":0:"trainer":"lastname"} is optimistic.
 SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = ${.self:"sportteam":0:"teaminitials"} star, ${.self:"sportteam":0:"members":-1:"lastname"}, against top scorer ${.self:"sportteam":1:"members":-1:"fullname"}'s team.
-SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = An interesting game is coming up when %TEAM1ARTICLE1% %TEAM1NAME% meet the players of ${.self:"sportteam":1:"teaminitials"}.
-SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} visiting ${.self:"sportteam":0:"teaminitials"} in %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} and his team travel to %TEAM2CITY%, placed ${.self:"sportteam":1:"leaguerank"} in the league.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = An interesting game is coming up when ${.self:"sportteam":0:"teamnamewitharticle"} meet the players of ${.self:"sportteam":1:"teaminitials"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} visiting ${.self:"sportteam":0:"teaminitials"} in ${.self:"sportteam":0:"city"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} and his team travel to ${.self:"sportteam":1:"city"}, placed ${.self:"sportteam":1:"leaguerank"} in the league.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Playoff match.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match taking place in ${.self:"sportleague":"name"}.
