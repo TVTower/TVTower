@@ -284,7 +284,7 @@ Type TNewsEventSportMatch_Soccer Extends TNewsEventSportMatch
 		Local matchText:String = GetLocale("SPORT_TEAMREPORT_MATCHRESULT")
 
 		'make first char uppercase
-		matchText = StringHelper.UCFirst( ReplacePlaceholders(matchText) )
+		matchText = StringHelper.UCFirst( matchText )
 		Return matchText
 	End Method
 

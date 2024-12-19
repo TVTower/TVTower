@@ -2072,7 +2072,7 @@ Type TNewsEventSportMatch Extends TGameObject
 	End Method
 
 
-	Method GetMatchResultText:String()
+	Method GetResultText:String()
 		Local singularPlural:String = "P"
 		If teams[0].clubNameSingular Then singularPlural = "S"
 
@@ -2129,66 +2129,10 @@ Type TNewsEventSportMatch Extends TGameObject
 	Method GetFinalScoreText:String()
 		Return StringHelper.JoinIntArray(":", points)
 	End Method
-
-
-	Method ReplacePlaceholders:String(value:String)
-		Local result:String = value
-		If result.Find("%MATCHRESULT%") >= 0
-			result = result.Replace("%MATCHRESULT%", GetMatchResultText() )
-		EndIf
-
-		If result.Find("%MATCHSCORE") >= 0
-			For Local i:Int = 1 To teams.length
-				If result.Find("%MATCHSCORE"+i) >= 0
-					Local points:Int = GetScore( teams[i-1] )
-					If points = 1
-						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + " " + GetLocale("SCORE_POINT") )
-					Else
-						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + " " + GetLocale("SCORE_POINTS") )
-					EndIf
-
-					result = result.Replace("%MATCHSCORE"+i+"%", points)
-				EndIf
-			Next
-		EndIf
-
-		If result.Find("%MATCHSCOREMAX") >= 0
-			Local points:Int = GetWinnerScore()
-			result = result.Replace("%MATCHSCOREMAX%", points)
-			If points = 1
-				result = result.Replace("%MATCHSCOREMAXTEXT%", points + " " + GetLocale("SCORE_POINT"))
-			Else
-				result = result.Replace("%MATCHSCOREMAXTEXT%", points + " " + GetLocale("SCORE_POINTS"))
-			EndIf
-		EndIf
-
-		If result.Find("%MATCHSCOREDRAWGAME") >= 0
-			Local points:Int = GetDrawGameScore()
-			result = result.Replace("%MATCHSCOREDRAWGAME%", points)
-			If points = 1
-				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + " " + GetLocale("SCORE_POINT"))
-			Else
-				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + " " + GetLocale("SCORE_POINTS"))
-			EndIf
-		EndIf
-
-		If result.Find("%MATCHKIND%") >= 0
-			If RandRange(0,10) < 7
-				result = result.Replace("%MATCHKIND%", GetRandomLocale("SPORT_TEAMREPORT_MATCHKIND"))
-			Else
-				result = result.Replace("%MATCHKIND%", "")
-			EndIf
-		EndIf
-
-		If result.Find("%FINALSCORE%") >= 0
-			result = result.Replace("%FINALSCORE%", GetFinalScoreText())
-		EndIf
-
-		result = result.Replace("%PLAYTIMEMINUTES%", Int(duration / TWorldTime.MINUTELENGTH) )
-
-		result = result.Trim().Replace("  ", " ") 'remove space if no team article...
 	
-		Return result
+	
+	Method GetPlaytimeMinutes:Int()
+		Return Int(duration / TWorldTime.MINUTELENGTH)
 	End Method
 End Type
 

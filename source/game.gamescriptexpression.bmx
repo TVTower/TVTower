@@ -875,6 +875,12 @@ Function _EvaluateNewsEventSportMatch:SToken(match:TNewsEventSportMatch, params:
 				Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 			EndIf
 			Return New SToken( TK_NUMBER, match.GetScore(match.teams[teamIndex]), params.GetToken(0) )
+		case "finalscoretext"
+			Return New SToken( TK_TEXT, match.GetFinalScoreText(), params.GetToken(0) )
+		case "resulttext"
+			Return New SToken( TK_TEXT, match.GetResultText(), params.GetToken(0) )
+		case "playtimeminutes"
+			Return New SToken( TK_NUMBER, match.GetPlaytimeMinutes(), params.GetToken(0) )
 		case "report"
 			Return New SToken( TK_TEXT, match.GetReport(), params.GetToken(0) )
 		case "reportshort"
