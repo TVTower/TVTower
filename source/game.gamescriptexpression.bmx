@@ -376,7 +376,7 @@ Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgramm
 
 	Select propertyName
 		Case "sport", "sportleague", "sportmatch", "sportteam"
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(data.leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(data.leagueGUID)
 			If Not league
 				Return New SToken( TK_ERROR, "No league defined in context of programme data", params.GetToken(0) )
 			EndIf
@@ -390,13 +390,13 @@ Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgramm
 				EndIf
 				Return _EvaluateNewsEventSport(sport, params, tokenOffset + 1) 'inline
 			ElseIf propertyName = "sportmatch"
-				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(data.matchGUID)
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchGUID)
 				If Not match
 					Return New SToken( TK_ERROR, "No match defined in context of programme data", params.GetToken(0) )
 				EndIf
 				Return _EvaluateNewsEventSportMatch(match, params, tokenOffset + 1) 'inline
 			ElseIf propertyName = "sportteam"
-				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(data.matchGUID)
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchGUID)
 				If Not match
 					Return New SToken( TK_ERROR, "No match (to identify teams) defined in context of programme data", params.GetToken(0) )
 				EndIf
@@ -730,10 +730,10 @@ Function SEFN_sportleague:SToken(params:STokenGroup Var, context:SScriptExpressi
 	Local GUID:String = token.value
 	Local ID:Long = token.valueLong
 	If GUID
-		league = GetNewsEventSportCollection().GetLeagueByGUID(GUID)
+		league = GetNewsEventSportCollection().GetLeague(GUID)
 		If Not league Then Return New SToken( TK_ERROR, ".sportleague with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
 	Else
-		league = GetNewsEventSportCollection().GetLeagueByGUID(Int(ID))
+		league = GetNewsEventSportCollection().GetLeague(Int(ID))
 		If Not league Then Return New SToken( TK_ERROR, ".sportleague with ID ~q"+ID+"~q not found", params.GetToken(0) )
 	EndIf
 	
@@ -748,14 +748,14 @@ Function SEFN_sportteam:SToken(params:STokenGroup Var, context:SScriptExpression
 	Local GUID:String = token.value
 	Local ID:Long = token.valueLong
 	If GUID
-		league = GetNewsEventSportCollection().GetLeagueByGUID(GUID)
-		If Not league Then Return New SToken( TK_ERROR, ".sportleague with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
+		team = GetNewsEventSportCollection().GetTeam(GUID)
+		If Not team Then Return New SToken( TK_ERROR, ".sportteam with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
 	Else
-		league = GetNewsEventSportCollection().GetLeagueByGUID(Int(ID))
-		If Not league Then Return New SToken( TK_ERROR, ".sportleague with ID ~q"+ID+"~q not found", params.GetToken(0) )
+		team = GetNewsEventSportCollection().GetTeam(Int(ID))
+		If Not team Then Return New SToken( TK_ERROR, ".sportteam with ID ~q"+ID+"~q not found", params.GetToken(0) )
 	EndIf
 	
-	Return _EvaluateNewsEventSportLeague(league, params, 2)
+	Return _EvaluateNewsEventSportTeam(team, params, 2)
 End Function
 
 
@@ -867,7 +867,7 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			Return _EvaluateNewsEventSportTeamMember(team.trainer, params, tokenOffset + 1)
 		case "members"
 			Local memberIndex:Int = params.GetToken(tokenOffset + 1).valueLong
-			Local member:TNewsEventSportTeamMember = team.GetMemberAtIndex(memberIndex)
+			Local member:TPersonBase = team.GetMemberAtIndex(memberIndex)
 			If not member 
 				Return New SToken( TK_ERROR, "No member at index " + memberIndex + " found", params.GetToken(0) )
 			EndIf
@@ -876,16 +876,58 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			Return New SToken( TK_TEXT, team.GetCity(), params.GetToken(0) )
 		case "leaguerank"
 			Return New SToken( TK_TEXT, team.GetLeagueRank(), params.GetToken(0) )
+		case "leaguerank"
+			Return New SToken( TK_TEXT, team.GetLeagueRank(), params.GetToken(0) )
 		case "teamname"
 			Return New SToken( TK_TEXT, team.GetTeamName(), params.GetToken(0) )
+		case "teamnamewitharticle"
+			Local variant:Int = 1
+			If params.HasToken(tokenOffset + 1) 
+				variant = params.GetToken(tokenOffset + 1).valueLong
+			EndIf
+			Select variant
+				case 2
+					If team.clubNameSingular
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_B") + " " + team.GetTeamName(), params.GetToken(0) )
+					Else
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_B") + " " + team.GetTeamName(), params.GetToken(0) )
+					EndIf
+				default
+					If team.clubNameSingular
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_A") + " " + team.GetTeamName(), params.GetToken(0) )
+					Else
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_A") + " " + team.GetTeamName(), params.GetToken(0) )
+					EndIf
+			End Select
+		case "teamnamearticle"
+			Local variant:Int = 1
+			If params.HasToken(tokenOffset + 1) 
+				variant = params.GetToken(tokenOffset + 1).valueLong
+			EndIf
+			Select variant
+				case 2
+					If team.clubNameSingular
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_B"), params.GetToken(0) )
+					Else
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_B"), params.GetToken(0) )
+					EndIf
+				default
+					If team.clubNameSingular
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_A"), params.GetToken(0) )
+					Else
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_A"), params.GetToken(0) )
+					EndIf
+			End Select
 		case "teamnameshort"
 			Return New SToken( TK_TEXT, team.GetTeamNameShort(), params.GetToken(0) )
 		case "teaminitials"
 			Return New SToken( TK_TEXT, team.GetTeamInitials(), params.GetToken(0) )
+		case "teamnameissingular"
+			Return New SToken( TK_BOOLEAN, team.clubNameSingular, params.GetToken(0) )
 		case "leagueguid"
 			Return New SToken( TK_TEXT, team.leagueGUID, params.GetToken(0) )
 		case "league"
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(team.leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(team.leagueGUID)
 			If Not league
 				Return New SToken( TK_ERROR, "No valid league found for team", params.GetToken(0) )
 			EndIf
@@ -897,7 +939,7 @@ End Function
 
 
 
-Function _EvaluateNewsEventSportTeamMember:SToken(member:TNewsEventSportTeamMember, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateNewsEventSportTeamMember:SToken(member:TPersonBase, params:STokenGroup Var, tokenOffset:int) 'inline
 	If Not member Then Return New SToken( TK_ERROR, "No member instance passed", params.GetToken(0) )
 
 	If params.added <= tokenOffset Then Return New SToken( TK_ERROR, "No subcommand given", params.GetToken(0) )
@@ -906,9 +948,16 @@ Function _EvaluateNewsEventSportTeamMember:SToken(member:TNewsEventSportTeamMemb
 	Local result:SToken =_EvaluatePersonBase(member, params, tokenOffset)			
 
 	If result.id = TK_ERROR 'not evaluated (or real error)
-		Select params.GetToken(tokenOffset).value.ToLower()
-			case "teamguid"  Return New SToken( TK_TEXT, member.teamGUID, params.GetToken(0) )
-		End Select
+		If member.IsSportsman()
+			'load the "current" sportdata set (no special sport-type requested) 
+			Local sportData:TPersonSportBaseData = TPersonSportBaseData(member.GetData("sport"))
+			If sportData
+				Select params.GetToken(tokenOffset).value.ToLower()
+					case "teamid"  Return New SToken( TK_TEXT, sportData.teamID, params.GetToken(0) )
+					case "sportid" Return New SToken( TK_TEXT, sportData.sportID, params.GetToken(0) )
+				End Select
+			EndIf
+		EndIf
 	EndIf
 	Return result 'person-token-result is already an error
 End Function

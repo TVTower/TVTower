@@ -2197,8 +2197,15 @@ Type TNewsEventSportTeam Extends TGameObject
 				If Not sportData
 					sportData = New TPersonSportBaseData()
 					person.AddData("sport_" + sport.name, sportData)
+					
+					' Also add the same data as the "common" one (so last 
+					' sport the person is hired for is the "current" one).
+					' If only one sport is ever used, then this allows 
+					' to refer to this without having to know the sport
+					' or to iterate over "sport_***"-keys 
+					person.AddData("sport", sportData)
 				Endif
-				
+				sportData.SetSport(sport.GetID())
 				sportData.SetTeam(self.GetID())
 			EndIf
 		EndIf
@@ -2217,12 +2224,13 @@ Type TNewsEventSportTeam Extends TGameObject
 			Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByID(sportID)
 			If sport
 				Local sportData:TPersonSportBaseData = TPersonSportBaseData(person.GetData("sport_" + sport.name))
-				If Not sportData
-					sportData = New TPersonSportBaseData()
-					person.AddData("sport_" + sport.name, sportData)
-				Endif
-				
-				sportData.SetTeam(Null)
+				If sportData Then sportData.SetTeam(Null)
+
+				'unset for the "current" sport dataset too
+				sportData = TPersonSportBaseData(person.GetData("sport"))
+				If sportData and sportData.sportID = self.sportID
+					sportData.SetTeam(Null)
+				EndIf
 			EndIf
 		EndIf
 
@@ -2304,7 +2312,7 @@ Type TNewsEventSportTeam Extends TGameObject
 	Method GetLeagueRank:Int()
 		'TODO: give teams a "currentRank:int" field which is updated after
 		'      a match? Only useful if rank is evaluated a lot
-		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
 		If Not league Then Return -1
 		Return league.GetCurrentSeason().GetTeamRank(self)
 	End Method
