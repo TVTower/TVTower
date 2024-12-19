@@ -1993,6 +1993,8 @@ Type TPersonProductionJob
 	End Method
 	
 	
+	'copy is used for making a script out of a template
+	'... randomRole value not needed and hence not copied
 	Method Copy:TPersonProductionJob()
 		Return New TPersonProductionJob.Init(personID, job, gender, country, roleID)
 	End Method
@@ -2003,7 +2005,8 @@ Type TPersonProductionJob
 		       job + "::" +..
 		       gender + "::" +..
 		       StringHelper.EscapeString(country, ":") + "::" + ..
-		       roleID
+		       roleID + "::" + ..
+		       randomRole
 	End Method
 
 
@@ -2014,6 +2017,7 @@ Type TPersonProductionJob
 		If vars.length > 2 Then gender = Int(vars[2])
 		If vars.length > 3 Then country = StringHelper.UnEscapeString(vars[3])
 		If vars.length > 4 Then roleID = Int(vars[4])
+		If vars.length > 5 Then randomRole = Int(vars[5])
 	End Method
 
 
