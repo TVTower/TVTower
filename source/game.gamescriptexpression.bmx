@@ -33,6 +33,7 @@ GameScriptExpression.RegisterFunctionHandler( "sportteam", SEFN_sportteam, 2, 4)
 GameScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 1, 1)
 GameScriptExpression.RegisterFunctionHandler( "persongenerator", SEFN_PersonGenerator, 1, 3)
 GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 1)
+GameScriptExpression.RegisterFunctionHandler( "random", SEFN_random, 1, 1)
 
 
 
@@ -146,15 +147,48 @@ End Function
 Function SEFN_locale:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	If params.HasToken(1)
 		Local key:String = params.GetToken(1).GetValueText()
+		Local random:Int
+		If params.HasToken(3)
+			random = params.GetToken(3).GetValueBool()
+		EndIf
 		If params.HasToken(2)
 			Local languageCode:String = params.GetToken(2).value 'MUST be a string
-			Return New SToken( TK_TEXT, GetLocale(key, languageCode), params.GetToken(0) )
+			If languageCode <> ""
+				If random
+					Return New SToken( TK_TEXT, GetRandomLocale(key, languageCode), params.GetToken(0) )
+				Else
+					Return New SToken( TK_TEXT, GetLocale(key, languageCode), params.GetToken(0) )
+				EndIf
+			EndIf
+		EndIf
+
+		Local localeID:Int = context.contextNumeric
+		If random
+			Return New SToken( TK_TEXT, GetRandomLocale(key, localeID), params.GetToken(0) )
 		Else
-			Local localeID:Int = context.contextNumeric
 			Return New SToken( TK_TEXT, GetLocale(key, localeID), params.GetToken(0) )
 		EndIf
 	Else
 		Return New SToken( TK_ERROR, "No locale key passed", params.GetToken(0) )
+	EndIf
+End Function
+
+
+'${.random:maxValue/minValue:optional maxValue} - context: all
+Function SEFN_random:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
+	If params.HasToken(1)
+		Local minValue:Int
+		Local maxValue:Int
+		If params.HasToken(2)
+			minValue = Int(params.GetToken(1).valueLong)
+			maxValue = Int(params.GetToken(2).valueLong)
+		Else
+			maxValue = Int(params.GetToken(1).valueLong)
+		EndIf
+		
+		Return New SToken( TK_NUMBER, RandRange(minValue, maxValue), params.GetToken(0) )
+	Else
+		Return New SToken( TK_ERROR, "No random max value passed", params.GetToken(0) )
 	EndIf
 End Function
 
