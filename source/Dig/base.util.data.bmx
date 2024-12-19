@@ -220,91 +220,168 @@ Type TData
 	End Method
 
 
-	Method Add:TData(key:Object, data:Object)
-		Local ls:TLowerString = TLowerString(key)
-		If Not ls Then ls = TLowerString.Create(String(key))
-
-		if not self.data then self.data = new TMap
-		Self.data.insert(ls, data)
-		Return Self
-	End Method
-
-
-	Method AddNumber:TData(key:Object, data:Double)
-		Local dd:TDoubleData = New TDoubleData
-		dd.value = data
-		Add( key, dd )
-		Return Self
-rem
-
-		If Double(Long(data)) = data 
-			Return AddLong(key, Long(data))
-		EndIf
-
-		Return AddDouble(key, data)
-endrem
-	End Method
-
-
-	Method AddString:TData(key:Object, data:String)
-		Add( key, data )
-		Return Self
-	End Method
-
-
-	Method AddFloat:TData(key:Object, data:Float)
-		Return AddDouble(key, data)
-	End Method
-
-
-	Method AddDouble:TData(key:Object, data:Double)
-		Local dd:TDoubleData = New TDoubleData
-		dd.value = data
-		Add( key, dd )
-		Return Self
-	End Method
-
-
-	Method AddInt:TData(key:Object, data:int)
-		Return AddLong(key, data)
-	End Method
-
-
-	Method AddLong:TData(key:Object, data:Long)
-		Local ld:TLongData = New TLongData
-		ld.value = data
-		Add( key, ld )
-		Return Self
-	End Method
-
-
-	Method AddBoolString:TData(key:Object, data:String)
-		Select data.toLower()
-			Case "1", "true", "yes"
-				Add( key, "TRUE")
-			Default
-				Add( key, "FALSE")
-		End Select
-		Return Self
-	End Method
-
-
-	Method AddBool:TData(key:Object, bool:Int)
-		If bool
-			Add( key, "TRUE")
-		Else
-			Add( key, "FALSE")
-		EndIf
-		Return Self
-	End Method
-
-
-	Method Remove:Object(key:Object)
-		if not self.data Then Return Null
-
-		Local ls:TLowerString = TLowerString(key)
-		If Not ls Then ls = TLowerString.Create(String(key))
+	Method Add:TData(key:Object, value:Object)
+		If Not key Then Return self
 		
+		If Not self.data Then self.data = New TMap
+		If TLowerString(key)
+			self.data.insert(key, value)
+		Else
+			self.data.insert(TLowerString.Create(String(key)), value)
+		EndIf
+		
+		Return self
+	End Method
+
+
+	Method Add:TData(key:String, value:Object)
+		If Not key Then Return self
+		
+		If Not self.data Then self.data = New TMap
+		self.data.insert(TLowerString.Create(key), value)
+		
+		Return self
+	End Method
+
+
+	Method Add:TData(key:TLowerString, value:Object)
+		If Not key Then Return self
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(key, value)
+
+		Return self
+	End Method
+
+
+	Method Add:TData(key:String, value:Double)
+		If Not key Then Return self
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(TLowerString.Create(key), New TDoubleData(value))
+
+		Return self
+	End Method
+
+
+	Method Add:TData(key:TLowerString, value:Double)
+		If Not key Then Return self
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(key, New TDoubleData(value))
+
+		Return self
+	End Method
+
+
+	Method Add:TData(key:String, value:Long)
+		If Not key Then Return self
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(TLowerString.Create(key), New TLongData(value))
+
+		Return self
+	End Method
+
+
+	Method Add:TData(key:TLowerString, value:Long)
+		If Not key Then Return self
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(key, New TLongData(value))
+
+		Return self
+	End Method
+
+
+	Method Add:TData(key:String, value:String)
+		If Not key Then Return self
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(TLowerString.Create(key), value)
+
+		Return self
+	End Method
+
+
+	Method Add:TData(key:TLowerString, value:String)
+		If Not key Then Return self
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(key, value)
+
+		Return self
+	End Method
+
+
+	Method AddBool:TData(key:String, value:String)
+		If Not key Then Return self
+
+		Select value.ToLower()
+			Case "true", "yes", "1"
+				value = "true"
+			Default
+				value = "false"
+		End Select
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(TLowerString.Create(key), value)
+		
+		Return Self
+	End Method
+
+
+	Method AddBool:TData(key:TLowerString, value:String)
+		If Not key Then Return self
+
+		Select value.ToLower()
+			Case "true", "yes", "1"
+				value = "true"
+			Default
+				value = "false"
+		End Select
+
+		If Not self.data Then self.data = New TMap
+		self.data.insert(key, value)
+		
+		Return Self
+	End Method
+
+
+	Method AddBool:TData(key:String, value:Int)
+		If Not key Then Return self
+		
+		If Not self.data Then self.data = New TMap
+		If value 
+			self.data.insert(TLowerString.Create(key), "true")
+		Else
+			self.data.insert(TLowerString.Create(key), "false")
+		EndIf
+
+		Return Self
+	End Method
+
+
+	Method AddBool:TData(key:TLowerString, value:Int)
+		If Not key Then Return self
+		If Not key Then Return self
+		
+		If Not self.data Then self.data = New TMap
+		If value 
+			self.data.insert(key, "true")
+		Else
+			self.data.insert(key, "false")
+		EndIf
+		
+		Return Self
+	End Method
+
+
+	Method Remove:Object(key:String)
+		if not self.data Then Return Null
+		If Not key Then Return Null
+
+		Local ls:TLowerString = TLowerString.Create(key)
 		Local removed:Object = Get(ls)
 		data.Remove(ls)
 
@@ -312,140 +389,354 @@ endrem
 	End Method
 
 
-	Method Has:Int(key:Object)
-		if not self.data Then Return False
-
-		Local ls:TLowerString = TLowerString(key)
-		If Not ls Then ls = TLowerString.Create(String(key))
-
-		Return data.Contains(ls)
-	End Method
-
-
-	Method Get:Object(k:Object, defaultValue:Object=Null, groupsEnabled:Int = False)
+	Method Remove:Object(key:TLowerString)
 		if not self.data Then Return Null
+		If Not key Then Return Null
 
-		Local ls:TLowerString = TLowerString(k)
-		If Not ls Then ls = TLowerString.Create(String(k))
+		Local removed:Object = Get(key)
+		data.Remove(key)
 
-		'only react if the "::" is in the middle of something
-		If groupsEnabled
-			Local pos:Int = ls.Find("::")
-			If pos > 0
-				Local group:String = Left(ls.orig, pos)
-				Local groupData:TData = TData(Get(group))
-				If groupData
-					Return groupData.Get(Right(ls.orig, pos+1), defaultValue)
-				EndIf
-			EndIf
+		Return removed
+	End Method
+
+
+	Method Has:Int(key:String)
+		If Not self.data Then Return False
+		If Not key Then Return False
+
+		Return data.Contains(TLowerString.Create(key))
+	End Method
+
+
+	Method Has:Int(key:TLowerString)
+		If Not self.data Then Return False
+		If Not key Then Return False
+
+		Return data.Contains(key)
+	End Method
+
+
+	Method Get:Object(key:String, defaultValue:Object=Null)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:Object = self.data.ValueForKey(ls)
+		If result Then Return Result
+
+		If defaultValue And Not self.data.Contains(ls)
+			Return defaultValue
 		EndIf
-
-		Local result:Object = data.ValueForKey(ls)
-		If result Then
-			Return result
-		End If
-		Return defaultValue
+		
+		Return Null
 	End Method
 
 
-	Method GetString:String(key:Object, defaultValue:String=Null)
-		Local result:Object = Get(key)
-		If result Then
-			Return result.ToString()
-		End If
-		Return defaultValue
+	Method Get:Object(key:TLowerString, defaultValue:Object=Null)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:Object = self.data.ValueForKey(key)
+		If result Then Return Result
+
+		If defaultValue And Not self.data.Contains(key)
+			Return defaultValue
+		EndIf
+		
+		Return Null
 	End Method
 
 
-	Method GetBool:Int(key:Object, defaultValue:Int=False)
-		Local result:Object = Get(key)
+	Method GetString:String(key:String, defaultValue:String=Null)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:Object = self.data.ValueForKey(ls)
+		If result Then Return result.ToString()
+		
+		'check if the entry is just "empty" (skip lookup is defaultValue is also Null)
+		If defaultValue And Not self.data.Contains(ls) 
+			Return defaultValue
+		EndIf
+		
+		Return ""
+	End Method
+
+
+	Method GetString:String(key:TLowerString, defaultValue:String=Null)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:Object = self.data.ValueForKey(key)
+		If result Then Return result.ToString()
+		
+		'check if the entry is just "empty" (skip lookup is defaultValue is also Null)
+		If defaultValue And Not self.data.Contains(key) 
+			Return defaultValue
+		EndIf
+		
+		Return ""
+	End Method
+
+
+	Method GetBool:Int(key:String, defaultValue:Int=False)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:Object = self.data.ValueForKey(ls)
+		'empty = default
 		If Not result Then Return defaultValue
-		Select String(result).toLower()
-			Case "true", "yes"
-				Return True
-			Default
-				'also allow "1" / "1.00000" or "33"
-				If Int(String(result)) >= 1 Then Return True
-				Return False
-		End Select
+		
+		Local s:String = String(result)
+		'string interpretation
+		If s
+			s = s.ToLower()
+			Select s
+				Case "true", "yes"
+					Return True
+				Default
+					'also allow "1" / "1.00000" or "33"
+					If Int(s) >= 1 Then Return True
+					Return False
+			End Select
+		'number interpretation
+		ElseIf TDoubleData(result) and Int(TDoubleData(result).value) >= 1
+			Return True
+		'number interpretation
+		ElseIf TLongData(result) and TLongData(result).value >= 1
+			Return True
+		EndIf
+		
 		Return False
 	End Method
 
 
-	Method GetDouble:Double(key:Object, defaultValue:Double = 0.0)
-		Local result:Object = Get(key)
-		If result Then
+	Method GetBool:Int(key:TLowerString, defaultValue:Int=False)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:Object = self.data.ValueForKey(key)
+		'empty = default
+		If Not result Then Return defaultValue
+		
+		Local s:String = String(result)
+		'string interpretation
+		If s
+			s = s.ToLower()
+			Select s
+				Case "true", "yes"
+					Return True
+				Default
+					'also allow "1" / "1.00000" or "33"
+					If Int(s) >= 1 Then Return True
+					Return False
+			End Select
+		'number interpretation
+		ElseIf TDoubleData(result) and Int(TDoubleData(result).value) >= 1
+			Return True
+		'number interpretation
+		ElseIf TLongData(result) and TLongData(result).value >= 1
+			Return True
+		EndIf
+		
+		Return False
+	End Method
+
+
+	Method GetDouble:Double(key:String, defaultValue:Double = 0.0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:Object = self.data.ValueForKey(ls)
+
+		If result
 			Local dd:TDoubleData = TDoubleData(result)
-			If dd Then
-				Return dd.value
-			Else
-				Local ld:TLongData = TLongData(result)
-				If ld Then
-					Return ld.value
-				EndIf
-			End If
-			Return Double( String( result ) )
-		End If
-		Return defaultValue
-	End Method
+			If dd Then Return dd.value
 
-
-	Method GetLong:Long(key:Object, defaultValue:Long = 0)
-		Local result:Object = Get(key)
-		If result Then
 			Local ld:TLongData = TLongData(result)
-			If ld Then
-				Return ld.value
-			Else
-				Local dd:TDoubleData = TDoubleData(result)
-				If dd Then
-					Return Long(dd.value)
-				EndIf
-			End If
-			Return Long( String( result ) )
+			If ld Then Return Double(ld.value)
+
+			'TODO: replace with s.ToDoubleEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Double(String(result))
 		End If
 		Return defaultValue
 	End Method
 
 
-	Method GetFloat:Float(key:Object, defaultValue:Float = 0.0)
-		Local result:Object = Get(key)
-		If result Then
+	Method GetDouble:Double(key:TLowerString, defaultValue:Double = 0.0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:Object = self.data.ValueForKey(key)
+
+		If result
 			Local dd:TDoubleData = TDoubleData(result)
-			If dd Then
-				Return Float(dd.value)
-			Else
-				Local ld:TLongData = TLongData(result)
-				If ld Then
-					Return ld.value
-				EndIf
-			End If
-			Return Float( String( result ) )
-		End If
-		Return defaultValue
-	End Method
+			If dd Then Return dd.value
 
-
-	Method GetInt:Int(key:Object, defaultValue:Int = Null)
-		Local result:Object = Get(key)
-		If result Then
 			Local ld:TLongData = TLongData(result)
-			If ld Then
-				Return Int(ld.value)
-			Else
-				Local dd:TDoubleData = TDoubleData(result)
-				If dd Then
-					Return Int(dd.value)
-				End If
-			EndIf
-			Return Int( String( result ) )
+			If ld Then Return Double(ld.value)
+
+			'TODO: replace with s.ToDoubleEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Double(String(result))
 		End If
 		Return defaultValue
 	End Method
 
 
-	Method GetData:TData(key:String, defaultValue:TData = Null)
-		Return TData(Get(key, defaultValue))
+	Method GetLong:Long(key:String, defaultValue:Double = 0.0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:Object = self.data.ValueForKey(ls)
+
+		If result
+			Local ld:TLongData = TLongData(result)
+			If ld Then Return ld.value
+
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then Return Long(dd.value)
+
+			'TODO: replace with s.ToLongEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Long(String(result))
+		End If
+		Return defaultValue
+	End Method
+	
+
+	Method GetLong:Long(key:TLowerString, defaultValue:Double = 0.0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:Object = self.data.ValueForKey(key)
+
+		If result
+			Local ld:TLongData = TLongData(result)
+			If ld Then Return ld.value
+
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then Return Long(dd.value)
+
+			'TODO: replace with s.ToLongEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Long(String(result))
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetFloat:Float(key:String, defaultValue:Float = 0.0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:Object = self.data.ValueForKey(ls)
+
+		If result
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then Return Float(dd.value)
+
+			Local ld:TLongData = TLongData(result)
+			If ld Then Return Float(ld.value)
+
+			'TODO: replace with s.ToFloatEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Float(String(result))
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetFloat:Float(key:TLowerString, defaultValue:Float = 0.0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:Object = self.data.ValueForKey(key)
+
+		If result
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then Return Float(dd.value)
+
+			Local ld:TLongData = TLongData(result)
+			If ld Then Return Float(ld.value)
+
+			'TODO: replace with s.ToFloatEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Float(String(result))
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetInt:Int(key:String, defaultValue:Int = 0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:Object = self.data.ValueForKey(ls)
+
+		If result
+			Local ld:TLongData = TLongData(result)
+			If ld Then Return Int(ld.value)
+
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then Return Int(dd.value)
+
+			'TODO: replace with s.ToIntEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Int(String(result))
+		End If
+		Return defaultValue
+	End Method
+	
+
+	Method GetInt:Int(key:TLowerString, defaultValue:Int = 0)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:Object = self.data.ValueForKey(key)
+
+		If result
+			Local ld:TLongData = TLongData(result)
+			If ld Then Return Int(ld.value)
+
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then Return Int(dd.value)
+
+			'TODO: replace with s.ToIntEx() (added to brl.mod 12/2024)
+			'this does NOT convert "" to 0 (as we check "If result" before)
+			Return Int(String(result))
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetData:TData(key:String, defaultValue:TData=Null)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local ls:TLowerString = TLowerString.Create(key)
+		Local result:TData = TData(self.data.ValueForKey(ls))
+		If result Then Return Result
+
+		Return defaultValue 'Null or some passed data
+	End Method
+
+
+	Method GetData:TData(key:TLowerString, defaultValue:TData=Null)
+		If Not self.data Then Return Null
+		If Not key Then Return defaultValue
+
+		Local result:TData = TData(self.data.ValueForKey(key))
+		If result Then Return Result
+
+		Return defaultValue 'Null or some passed data
 	End Method
 End Type
 
@@ -870,6 +1161,11 @@ End Type
 
 Type TDoubleData
 	Field value:Double
+	
+	Method New(value:Double)
+		self.value = value
+	End Method
+
 
 	Method ToString:String()
 		Return String(value)
@@ -892,6 +1188,11 @@ End Type
 
 Type TLongData
 	Field value:Long
+
+	Method New(value:Long)
+		self.value = value
+	End Method
+
 
 	Method ToString:String()
 		Return String(value)

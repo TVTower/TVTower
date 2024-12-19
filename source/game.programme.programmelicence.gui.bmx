@@ -167,7 +167,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 			if production
 				local toPay:int = production.productionConcept.GetTotalCost() - production.productionConcept.GetDepositCost()
 				local extraData:TData = new TData
-				extraData.AddInt("productionCostsLeft", toPay)
+				extraData.Add("productionCostsLeft", toPay)
 				Self.licence.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.PROGRAMME, forPlayerID, extraData)
 			else
 				Self.licence.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.PROGRAMME, forPlayerID)

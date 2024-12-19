@@ -153,6 +153,24 @@ Type TTemplateVariables
 		EndIf
 		Return variables.Contains(key)
 	End Method
+	
+	
+	Method GetVariableDefiningTemplateVariables:TTemplateVariables(key:String, keyIsLowerCase:Int = False)
+		If Not keyIsLowerCase 
+			key = key.toLower()
+		EndIf
+
+		If variables.Contains(key)
+			Return self
+		EndIf
+		
+		Local parent:TTemplateVariables = GetParentTemplateVariables()
+		If parent 
+			Return parent.GetVariableDefiningTemplateVariables(key, True)
+		EndIf
+
+		Return Null
+	End Method
 
 
 	'Return the TLocalizedString placed for the given variable / key 

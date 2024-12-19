@@ -413,7 +413,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		self.rent = rent
 		rentalTimes :+ 1
 		
-		TriggerBaseEvent(GameEventKeys.Room_OnBeginRental, New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", newOwner).AddNumber("oldOwner", oldOwner), self)
+		TriggerBaseEvent(GameEventKeys.Room_OnBeginRental, New TData.Add("roomGUID", GetGUID() ).Add("owner", newOwner).Add("oldOwner", oldOwner), self)
 
 		return True
 	End Method
@@ -427,7 +427,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		SetRented(False)
 		rentalChangeTime = GetWorldTime().GetTimeGone()
 
-		TriggerBaseEvent(GameEventKeys.Room_OnCancelRental, New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", owner).AddNumber("oldOwner", oldOwner), self)
+		TriggerBaseEvent(GameEventKeys.Room_OnCancelRental, New TData.Add("roomGUID", GetGUID() ).Add("owner", owner).Add("oldOwner", oldOwner), self)
 
 		Return True
 	End Method
@@ -491,11 +491,11 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'inform others
 		if blockedState & BLOCKEDSTATE_BOMB > 0
-			TriggerBaseEvent(GameEventKeys.Room_OnBombExplosion, New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID).AddNumber("renovationBaseCost", renovationBaseCost), self)
+			TriggerBaseEvent(GameEventKeys.Room_OnBombExplosion, New TData.Add("roomGUID", GetGUID()).Add("roomSignMovedByPlayers", roomSignMovedByPlayers).Add("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID).Add("renovationBaseCost", renovationBaseCost), self)
 		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
-			TriggerBaseEvent(GameEventKeys.Room_OnMarshalVisit, New TData.AddString("roomGUID", GetGUID()), self)
+			TriggerBaseEvent(GameEventKeys.Room_OnMarshalVisit, New TData.Add("roomGUID", GetGUID()), self)
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
-			TriggerBaseEvent(GameEventKeys.Room_OnRenovation, New TData.AddString("roomGUID", GetGUID()), self)
+			TriggerBaseEvent(GameEventKeys.Room_OnRenovation, New TData.Add("roomGUID", GetGUID()), self)
 		endif
 	End Method
 
@@ -528,7 +528,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 
 		'inform others
-		TriggerBaseEvent(GameEventKeys.Room_OnSetBlocked, New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddLong("blockTimeInMilliseconds", blockTimeInMilliseconds), Null, self)
+		TriggerBaseEvent(GameEventKeys.Room_OnSetBlocked, New TData.Add("roomGUID", GetGUID() ).Add("newBlockedState", newBlockedState).Add("blockTimeInMilliseconds", blockTimeInMilliseconds), Null, self)
 	End Method
 
 
@@ -714,7 +714,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'change the owner of this room
 	Method ChangeOwner:int(newOwner:int)
-		local event:TEventBase = TEventBase.Create(GameEventKeys.Room_OnChangeOwner, new TData.AddNumber("oldOwner", self.owner).AddNumber("newOwner", newOwner), self)
+		local event:TEventBase = TEventBase.Create(GameEventKeys.Room_OnChangeOwner, new TData.Add("oldOwner", self.owner).Add("newOwner", newOwner), self)
 		event.Trigger()
 
 		if not event.IsVeto()

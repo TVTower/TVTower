@@ -477,9 +477,9 @@ Type TPlayerBoss
 			'creditMax - credit taken
 			If GetPlayerBase().GetCreditAvailable() > 0
 				local possibleCreditValue:int = GetCreditAvailable()
-				local acceptEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
-				local acceptHalfEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
-				local acceptQuarterEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", 0.25 * GetPlayerBase().GetCreditAvailable()))
+				local acceptEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.Add("value", GetPlayerBase().GetCreditAvailable()))
+				local acceptHalfEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.Add("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
+				local acceptQuarterEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.Add("value", 0.25 * GetPlayerBase().GetCreditAvailable()))
 				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", MathHelper.DottedValue(GetPlayerBase().GetCreditAvailable())))
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
 				'avoid micro credits
@@ -505,12 +505,12 @@ Type TPlayerBoss
 			ChefDialogues[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
 			For local creditValue:int = EachIn [2500000, 1000000, 500000, 250000, 100000]
 				If credit >= creditValue And GetPlayerBase().GetMoney() >= creditValue
-					local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.AddNumber("value", creditValue))
+					local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.Add("value", creditValue))
 					ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_VALUE").replace("%VALUE%", MathHelper.DottedValue(creditValue)), 0, payBackEvent))
 				EndIf
 			Next
 			If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
-				local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.AddNumber("value", GetPlayerBase().GetCredit()))
+				local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.Add("value", GetPlayerBase().GetCredit()))
 				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%",  MathHelper.DottedValue(GetPlayerBase().GetCredit())), 0, payBackEvent))
 			EndIf
 			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), -2))
@@ -560,7 +560,7 @@ Type TPlayerBoss
 		awaitingPlayerAccepted = False
 
 		'send out event that the boss wants to see his player
-		TriggerBaseEvent(GameEventKeys.Playerboss_OnCallPlayer, new TData.AddNumber("latestTime", awaitingPlayerVisitTillTime), Self, GetPlayerBaseCollection().Get(playerID))
+		TriggerBaseEvent(GameEventKeys.Playerboss_OnCallPlayer, new TData.Add("latestTime", awaitingPlayerVisitTillTime), Self, GetPlayerBaseCollection().Get(playerID))
 	End Method
 
 
@@ -574,7 +574,7 @@ Type TPlayerBoss
 
 		'send out event that the boss wants to see his player immediately
 		'latestTime = -1 so event knows "now"
-		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnCallPlayerForced, new TData.AddNumber("latestTime", -1), Self, GetPlayerBaseCollection().Get(playerID))
+		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnCallPlayerForced, new TData.Add("latestTime", -1), Self, GetPlayerBaseCollection().Get(playerID))
 	End Method
 
 
@@ -598,7 +598,7 @@ Type TPlayerBoss
 			result = True
 		endif
 
-		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnPlayerRepaysCredit, new TData.AddNumber("value", value).AddNumber("success", result), Self)
+		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnPlayerRepaysCredit, new TData.Add("value", value).Add("success", result), Self)
 		return result
 	End Method
 
@@ -615,7 +615,7 @@ Type TPlayerBoss
 			result = True
 		endif
 
-		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnPlayerTakesCredit, new TData.AddNumber("value", value).AddNumber("success", result), Self)
+		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnPlayerTakesCredit, new TData.Add("value", value).Add("success", result), Self)
 		return result
 	End Method
 

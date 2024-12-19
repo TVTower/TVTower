@@ -216,7 +216,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		EndIf
 
 
-		Local timeData:TData = New TData.AddInt("minute", GetWorldTime().GetDayMinute()).AddInt("hour", GetWorldTime().GetDayHour()).AddInt("day", GetWorldTime().GetDay()).AddLong("time", GetWorldTime().GetTimeGone())
+		Local timeData:TData = New TData.Add("minute", GetWorldTime().GetDayMinute()).Add("hour", GetWorldTime().GetDayHour()).Add("day", GetWorldTime().GetDay()).Add("time", GetWorldTime().GetTimeGone())
 
 		If startNewGame
 			'=== RESET SAVEGAME INFORMATION ===
@@ -465,14 +465,14 @@ endrem
 		If Not player Then Return
 
 		'emit an event before player data gets reset (money, name ...)
-		TriggerBaseEvent(GameEventKeys.Game_SetPlayerBankruptBegin, New TData.AddInt("playerID", playerID), Self, player)
+		TriggerBaseEvent(GameEventKeys.Game_SetPlayerBankruptBegin, New TData.Add("playerID", playerID), Self, player)
 
 		'inform all AI players about the bankruptcy (eg. to clear their stats)
 		For Local p:TPlayer = EachIn GetPlayerCollection().players
 			If Not p.IsLocalAI() Or Not p.PlayerAI Then Continue
 
 			'p.PlayerAI.CallOnPlayerGoesBankrupt( playerID )
-			p.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnPlayerGoesBankrupt).AddInt(playerID))
+			p.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnPlayerGoesBankrupt).Add(playerID))
 		Next
 		
 		
@@ -549,7 +549,7 @@ endrem
 		EndIf
 
 		'now names might differ
-		TriggerBaseEvent(GameEventKeys.Game_SetPlayerBankruptFinish, New TData.AddInt("playerID", playerID), Self, player)
+		TriggerBaseEvent(GameEventKeys.Game_SetPlayerBankruptFinish, New TData.Add("playerID", playerID), Self, player)
 	End Method
 
 
@@ -768,7 +768,7 @@ endrem
 
 	Method StartPlayer(playerID:Int)
 		'now names might differ
-		TriggerBaseEvent(GameEventKeys.Game_OnStartPlayer, New TData.AddInt("playerID", playerID))
+		TriggerBaseEvent(GameEventKeys.Game_OnStartPlayer, New TData.Add("playerID", playerID))
 	End Method
 
 
@@ -1119,7 +1119,7 @@ endrem
 			Next
 		EndIf
 
-		TriggerBaseEvent(GameEventKeys.Game_PreparePlayer, New TData.AddInt("playerID", playerID), GetPlayer(playerID), Self)
+		TriggerBaseEvent(GameEventKeys.Game_PreparePlayer, New TData.Add("playerID", playerID), GetPlayer(playerID), Self)
 	End Method
 
 
@@ -1682,7 +1682,7 @@ endrem
 					
 					'inform save process of fail state
 					triggerEvent.SetVeto(True)
-					triggerEvent.GetData().AddString("vetoReason", "AI did not react quick enough.")
+					triggerEvent.GetData().Add("vetoReason", "AI did not react quick enough.")
 					Return False
 				endif
 				If not allDone then delay(100)
@@ -1716,7 +1716,7 @@ endrem
 		If time = -1 Then time = GetWorldTime().GetTimeGone()
 		playerBankruptLevelTime[playerID -1] = time
 
-		TriggerBaseEvent(GameEventKeys.Game_SetPlayerBankruptLevel, New TData.AddInt("playerID", playerID) )
+		TriggerBaseEvent(GameEventKeys.Game_SetPlayerBankruptLevel, New TData.Add("playerID", playerID) )
 
 		Return True
 	End Method
@@ -2029,7 +2029,7 @@ endrem
 		'circular references)
 		GetPlayerBossCollection().playerID = ID
 
-		TriggerBaseEvent(GameEventKeys.Game_onSetActivePlayer, New TData.AddInt("playerID", ID).AddInt("oldPlayerID", oldPlayerID) )
+		TriggerBaseEvent(GameEventKeys.Game_onSetActivePlayer, New TData.Add("playerID", ID).Add("oldPlayerID", oldPlayerID) )
 
 		'get currently shown screen of that player
 		If Self.gamestate = TGame.STATE_RUNNING
@@ -2045,7 +2045,7 @@ endrem
 
 	Function SendSystemMessage:Int(message:String)
 		'send out to chats
-		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddInt("senderID", -1).AddInt("channels", CHAT_CHANNEL_SYSTEM).AddString("senderName", "SYSTEM").AddString("text", message) )
+		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.Add("senderID", -1).Add("channels", CHAT_CHANNEL_SYSTEM).Add("senderName", "SYSTEM").Add("text", message) )
 		Return True
 	End Function
 
@@ -2241,7 +2241,7 @@ endrem
 			'event passes milliseconds gone since last call
 			'so if hickups made the game stop for 4.3 seconds, this value
 			'will be about 4300. Maybe AI wants this information.
-			TriggerBaseEvent(GameEventKeys.Game_OnRealTimeSecond, New TData.AddLong("timeGoneSinceLastRTS", Time.GetTimeGone()-lastTimeRealTimeSecondGone).AddLong("gameTimeGone", WorldTime.GetTimeGone()))
+			TriggerBaseEvent(GameEventKeys.Game_OnRealTimeSecond, New TData.Add("timeGoneSinceLastRTS", Time.GetTimeGone()-lastTimeRealTimeSecondGone).Add("gameTimeGone", WorldTime.GetTimeGone()))
 			lastTimeRealTimeSecondGone = Time.GetTimeGone()
 		EndIf
 
@@ -2278,15 +2278,15 @@ endrem
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year
 				If worldTime.GetDayOfYear() = 1
-					TriggerBaseEvent(GameEventKeys.Game_OnYear, New TData.AddLong("time", worldTime.GetTimeGone()))
+					TriggerBaseEvent(GameEventKeys.Game_OnYear, New TData.Add("time", worldTime.GetTimeGone()))
 				EndIf
 
-				TriggerBaseEvent(GameEventKeys.Game_OnDay, New TData.AddLong("time", worldTime.GetTimeGone()))
+				TriggerBaseEvent(GameEventKeys.Game_OnDay, New TData.Add("time", worldTime.GetTimeGone()))
 			EndIf
 
 			'hour
 			If worldTime.GetDayMinute() = 0
-				TriggerBaseEvent(GameEventKeys.Game_OnHour, New TData.AddLong("time", worldTime.GetTimeGone()))
+				TriggerBaseEvent(GameEventKeys.Game_OnHour, New TData.Add("time", worldTime.GetTimeGone()))
 
 				'reset availableNewsEventList - maybe this hour made some
 				'more news available
@@ -2294,7 +2294,7 @@ endrem
 			EndIf
 
 			'minute
-			TriggerBaseEvent(GameEventKeys.Game_OnMinute, New TData.AddLong("time", worldTime.GetTimeGone()))
+			TriggerBaseEvent(GameEventKeys.Game_OnMinute, New TData.Add("time", worldTime.GetTimeGone()))
 		Next
 
 		'reset time of last minute so next update can calculate missed minutes

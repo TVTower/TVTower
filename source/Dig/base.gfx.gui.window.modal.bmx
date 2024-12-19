@@ -239,7 +239,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		
 		'fire event so others know that the window is closed
 		'and what button was used
-		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnClose, new TData.AddNumber("closeButton", closeButton) , Self)
+		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnClose, new TData.Add("closeButton", closeButton) , Self)
 	End Method
 
 
