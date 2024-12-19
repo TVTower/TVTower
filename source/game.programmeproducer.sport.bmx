@@ -113,6 +113,9 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		If Not league Then Return Null
 
 		Local programmeData:TSportsHeaderProgrammeData = New TSportsHeaderProgrammeData
+		programmeData.leagueGUID = league.GetGUID()
+		programmeData.sportID = league.GetSport().GetID()
+
 		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence
 		programmeLicence.SetData(programmeData)
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
@@ -166,7 +169,6 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 
 		programmeData.releaseTime = league.GetFirstMatchTime()
-		programmeData.leagueGUID = league.GetGUID()
 
 		'so the licence datasheet does expose that information
 		programmeData.SetBroadcastLimit(3)
@@ -205,7 +207,10 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 
 		'needed so title/description can fetch the right information
 		If TSportsProgrammeData(programmeData)
-			TSportsProgrammeData(programmeData).AssignSportMatch(match)
+			Local sportsProgrammeData:TSportsProgrammeData = TSportsProgrammeData(programmeData)
+			sportsProgrammeData.AssignSportMatch(match)
+			sportsProgrammeData.leagueGUID = match.teams[0].GetLeague().GetGUID()
+			sportsProgrammeData.sportID = match.teams[0].GetSport().GetID()
 		EndIf
 
 		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence

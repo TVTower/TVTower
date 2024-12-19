@@ -1142,6 +1142,18 @@ Type TNewsEventSportSeason Extends TGameObject
 		Next
 		Return result
 	End Method
+
+
+	Method GetUpcomingMatchCount:Int(minTime:Long, maxTime:Long = -1)
+		Local result:Int
+		For Local match:TNewsEventSportMatch = EachIn upcomingMatches
+			If match.GetMatchTime() < minTime Then Continue
+			If maxTime <> -1 And match.GetMatchTime() > maxTime Then Continue
+
+			result :+ 1
+		Next
+		Return result
+	End Method
 End Type
 
 
@@ -1281,6 +1293,39 @@ Type TNewsEventSportLeague Extends TGameObject
 	End Method
 
 
+	Method GetMatchTimesFormatted:String(onlyUpcoming:Int = False, sortByWeekDay:Int=True, localeID:Int = -1)
+		If localeID < 0 Then localeID = TLocalization.GetCurrentLanguageID()
+
+		Local matchTimes:TStringBuilder = New TStringBuilder()
+		Local lastWeekdayIndex:Int = -1
+		Local thisWeekdayCount:Int = 0
+		Local usedTimeSlots:String[] = self.GetTimeSlots(True, onlyUpcoming, False)
+		For Local slot:String = EachIn usedTimeSlots
+			Local information:String[] = slot.Split("_")
+			Local weekdayIndex:Int = Int(information[0])
+			Local hour:Int = 0
+			If information.length > 1 Then hour = Int(information[1])
+
+			If lastWeekdayIndex <> weekdayIndex
+				If matchTimes.Length() > 0 Then matchTimes.Append(" / ")
+				matchTimes.Append("|b|")
+				matchTimes.Append(GetLocalizedString("WEEK_SHORT_" + GetWorldTime().GetDayName(weekdayIndex)).get(localeID))
+				matchTimes.Append("|/b| ")
+				lastWeekdayIndex = weekdayIndex
+				thisWeekdayCount = 0
+			Else
+				thisWeekdayCount :+ 1
+			EndIf
+
+			If thisWeekdayCount >= 1 Then matchTimes.Append(", ")
+
+			matchTimes.Append(hour)
+			matchTimes.Append(":00")
+		Next
+		Return matchTimes.ToString()
+	End Method
+
+
 	'playoffs should ignore season breaks (season end / winter break)
 
 
@@ -1386,6 +1431,13 @@ Type TNewsEventSportLeague Extends TGameObject
 		Return matchTime
 	End Method
 
+
+	Method GetMatchCount:Int()
+		If GetCurrentSeason()
+			Return GetCurrentSeason().GetMatchCount()
+		EndIf
+		Return 0
+	End Method
 
 	Method GetDoneMatchesCount:Int()
 		If GetCurrentSeason() And GetCurrentSeason().doneMatches
@@ -1581,11 +1633,6 @@ endrem
 
 	Method GetTeamCount:Int()
 		Return GetCurrentSeason().GetTeams().length
-	End Method
-
-
-	Method GetMatchCount:Int()
-		Return GetCurrentSeason().GetMatchCount()
 	End Method
 
 
@@ -2030,6 +2077,8 @@ Type TNewsEventSportMatch Extends TGameObject
 		If teams[0].clubNameSingular Then singularPlural = "S"
 
 		Local result:String = ""
+		Local sport:TNewsEventSport = teams[0].GetSport()
+		Local sportName:String = sport.name
 
 		If points[0] > points[1]
 			If sportName <> ""
@@ -2131,12 +2180,6 @@ Type TNewsEventSportMatch Extends TGameObject
 			EndIf
 		EndIf
 
-		For Local i:Int = 1 To teams.length
-			If result.Find("%TEAM"+i) < 0 Then Continue
-
-			 teams[i-1].FillPlaceholders(result, String(i))
-		Next
-
 		If result.Find("%FINALSCORE%") >= 0
 			result = result.Replace("%FINALSCORE%", GetFinalScoreText())
 		EndIf
@@ -2144,7 +2187,7 @@ Type TNewsEventSportMatch Extends TGameObject
 		result = result.Replace("%PLAYTIMEMINUTES%", Int(duration / TWorldTime.MINUTELENGTH) )
 
 		result = result.Trim().Replace("  ", " ") 'remove space if no team article...
-
+	
 		Return result
 	End Method
 End Type
@@ -2185,8 +2228,8 @@ Type TNewsEventSportTeam Extends TGameObject
 	Field currentRank:Int = 0
 	Field leagueGUID:String
 	Field sportID:Int
-	
-	
+
+
 	Method _HirePerson(person:TPersonBase)
 		If Not person Then Return
 		
@@ -2436,12 +2479,18 @@ Type TNewsEventSportTeam Extends TGameObject
 	End Method
 
 
-	Method GetLeague:TNewsEventSportLeague()
-		If Not leagueGUID Then Return Null
+	Method GetSport:TNewsEventSport()
+		If sportID Then Return GetNewsEventSportCollection().GetByID(sportID)
+		Return Null
+	End Method
 
+
+	Method GetLeague:TNewsEventSportLeague()
 		'try to find league the easy way
-		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
-		If league Then Return league
+		If leagueGUID 
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+			If league Then Return league
+		EndIf
 
 		'try it the indirect way
 		If Not sportID Then Return Null
@@ -2450,38 +2499,5 @@ Type TNewsEventSportTeam Extends TGameObject
 		If sport Then Return sport.GetLeague(leagueGUID)
 
 		Return Null
-	End Method
-
-
-	Method FillPlaceholders(value:String Var, teamIndex:String="")
-		If value.Find("%TEAM"+teamIndex+"%") >= 0
-			If RandRange(0,100) < 75
-				value = value.Replace("%TEAM"+teamIndex+"%", GetTeamName())
-			Else
-				value = value.Replace("%TEAM"+teamIndex+"%", clubNameInitials +" "+ name)
-			EndIf
-		EndIf
-		value = value.Replace("%TEAM"+teamIndex+"NAMEINITIALS%", GetTeamInitials())
-		value = value.Replace("%TEAM"+teamIndex+"NAMESHORT%", GetTeamNameShort())
-		value = value.Replace("%TEAM"+teamIndex+"NAME%", GetTeamName())
-		value = value.Replace("%TEAM"+teamIndex+"CITY%", GetCity())
-
-		value = value.Replace("%TEAM"+teamIndex+"STAR%", GetMemberAtIndex(-1).GetFullName() )
-		value = value.Replace("%TEAM"+teamIndex+"STARSHORT%", GetMemberAtIndex(-1).GetLastName() )
-		value = value.Replace("%TEAM"+teamIndex+"KEEPER%", GetMemberAtIndex(0).GetFullName() )
-		value = value.Replace("%TEAM"+teamIndex+"KEEPERSHORT%", GetMemberAtIndex(0).GetLastName() )
-		value = value.Replace("%TEAM"+teamIndex+"TRAINER%", GetTrainer().GetFullName() )
-		value = value.Replace("%TEAM"+teamIndex+"TRAINERSHORT%", GetTrainer().GetLastName() )
-
-		If value.Find("%TEAM"+teamIndex+"ARTICLE") >= 0
-			If clubNameSingular
-				value = value.Replace("%TEAM"+teamIndex+"ARTICLE1%", GetLocale("SPORT_TEAMNAME_S_VARIANT_A") )
-				value = value.Replace("%TEAM"+teamIndex+"ARTICLE2%", GetLocale("SPORT_TEAMNAME_S_VARIANT_B") )
-			Else
-				value = value.Replace("%TEAM"+teamIndex+"ARTICLE1%", GetLocale("SPORT_TEAMNAME_P_VARIANT_A") )
-				value = value.Replace("%TEAM"+teamIndex+"ARTICLE2%", GetLocale("SPORT_TEAMNAME_P_VARIANT_B") )
-			EndIf
-		EndIf
-
 	End Method
 End Type

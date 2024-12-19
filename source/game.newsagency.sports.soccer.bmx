@@ -275,17 +275,12 @@ End Type
 
 
 Type TNewsEventSportMatch_Soccer Extends TNewsEventSportMatch
-	Method New()
-		sportName = "SOCCER"
-	End Method
-	
-
 	Function CreateMatch:TNewsEventSportMatch_Soccer()
 		Return New TNewsEventSportMatch_Soccer
 	End Function
 
 
-	Method GetReport:String()
+	Method GetReport:String() override
 		Local matchText:String = GetLocale("SPORT_TEAMREPORT_MATCHRESULT")
 
 		'make first char uppercase
@@ -294,7 +289,7 @@ Type TNewsEventSportMatch_Soccer Extends TNewsEventSportMatch
 	End Method
 
 
-	Method GetLiveReportShort:String(mode:String="", time:Long=-1)
+	Method GetLiveReportShort:String(mode:String="", time:Long=-1) override
 		Local matchTime:Int = GetMatchTimeGone(time)
 		
 		Local usePoints:Int[] = GetMatchScore(matchTime)
@@ -320,7 +315,7 @@ Type TNewsEventSportMatch_Soccer Extends TNewsEventSportMatch
 	End Method
 	
 
-	Method GetReportShort:String(mode:String="")
+	Method GetReportShort:String(mode:String="") override
 		Local result:String
 
 		For Local i:Int = 0 Until points.length

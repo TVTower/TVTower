@@ -123,19 +123,14 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 
 				finalDescription = "|i|("+GetLocale("X_OF_Y_LIVE_MATCHES_ALREADY_STARTED").Replace("%X%", matchesRun).Replace("%Y%", totalMatches)+"|/i|)~n" + descriptionProcessed.Get()
 				If descriptionAirTimeHint
-'repair old savegames which contain already match times
-'-> TODO: REMOVE in 2020 or later
-If descriptionAirTimeHint.Get().Find(":00") > 0
-	descriptionAirtimeHint.Set(StringHelper.UCFirst(GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get()))
-EndIf
 					'append match times of UPCOMING matches
 '					if run = 0
 						'DO sort them - so earlier weekdays are first
-						local matchTimes:string = _GetLeagueMatchTimes(league, True, True)
+						local matchTimes:string = league.GetMatchTimesFormatted(True, True)
 						'while the last match is running this will be empty
 						'(it is no longer "upcoming" !
 						if matchTimes
-							finalDescription :+ "~n~n" + descriptionAirTimeHint.Get() + ": " + _GetLeagueMatchTimes(league, True, True)
+							finalDescription :+ "~n~n" + descriptionAirTimeHint.Get() + ": " + matchTimes
 						endif
 '					else
 						'do NOT sort them - so next match's weekday is first
@@ -147,11 +142,11 @@ EndIf
 				If descriptionAirTimeHint
 					Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
 					If league
-						local matchTimes:string = _GetLeagueMatchTimes(league, True, True)
+						local matchTimes:string = league.GetMatchTimesFormatted(True, True)
 						'while the last match is running this will be empty
 						'(it is no longer "upcoming" !
 						if matchTimes
-							finalDescription :+ "~n~n" + descriptionAirTimeHint.Get() + _GetLeagueMatchTimes(league, True, True)
+							finalDescription :+ "~n~n" + descriptionAirTimeHint.Get() + matchTimes
 						endif
 					endif
 				EndIf
@@ -168,6 +163,7 @@ End Type
 Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 	Field matchGUID:String
 	Field leagueGUID:String
+	Field sportID:Int
 	Field dynamicTexts:Int = False
 	Field matchEndTime:Long = -1
 	Field matchTime:Long = -1
@@ -189,7 +185,7 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 					For Local t:TNewsEventSportTeam = EachIn match.teams
 						If Not leagueGUID
 							leagueGUID =  t.leagueGUID
-							leagueText = "%LEAGUENAMESHORT%: "
+							leagueText = "${.self:~qsportleague~q:~qnameshort~q}: "
 						Else If leagueGUID <> t.leagueGUID
 							leagueGUID = ""
 							leagueText = GetLocale("SPORT_PLAYOFFS_SHORT")+": "
@@ -201,16 +197,16 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 					If match And match.GetMatchTime() <= GetWorldTime().GetTimeGone()
 						'still running?
 						If match.GetMatchEndTime() >= GetWorldTime().GetTimeGone()
-							title.Set(leagueText + "%MATCHLIVEREPORTSHORT%", -1 )
+							title.Set(leagueText + "${.self:~qsportmatch~q:~qlivereportshort~q}", -1 )
 							foundTitle = True
 						Else
-							title.Set(leagueText + "%MATCHREPORTSHORT%", -1 )
+							title.Set(leagueText + "${.self:~qsportmatch~q:~qreportshort~q}", -1 )
 							foundTitle = True
 						EndIf
 					EndIf
 
 					If Not foundtitle
-						title.Set(leagueText + "%MATCHNAMESHORT%", -1 )
+						title.Set(leagueText + "${.self:~qsportmatch~q:~qnameshort~q}", -1 )
 					EndIf
 				EndIf
 
@@ -253,155 +249,19 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 	End Method
 
 
-	Function _replaceSportInformation:String(text:String, sport:TNewsEventSport, localeID:Int = -1)
-		If Not sport Then Return text
-
-		Local result:String = text
-		result = result.Replace("%SPORTNAME%", GetLocalizedString("SPORT_"+sport.name).get(localeID))
-		Return result
-	End Function
-
-
-	Function _GetLeagueMatchTimes:String(league:TNewsEventSportLeague, onlyUpcoming:Int = False, sortByWeekDay:Int=True, localeID:Int = -1)
-		If localeID < 0 Then localeID = TLocalization.GetCurrentLanguageID()
-
-		Local matchTimes:String
-		Local lastWeekdayIndex:Int = -1
-		Local thisWeekdayCount:Int = 0
-		Local usedTimeSlots:String[] = league.GetTimeSlots(True, onlyUpcoming, False)
-		For Local slot:String = EachIn usedTimeSlots
-			Local information:String[] = slot.Split("_")
-			Local weekdayIndex:Int = Int(information[0])
-			Local hour:Int = 0
-			If information.length > 1 Then hour = Int(information[1])
-
-			If lastWeekdayIndex <> weekdayIndex
-				If matchTimes <> "" Then matchTimes :+ " / "
-				matchTimes :+ "|b|"+GetLocalizedString("WEEK_SHORT_" + GetWorldTime().GetDayName(weekdayIndex)).get(localeID)+"|/b| "
-				lastWeekdayIndex = weekdayIndex
-				thisWeekdayCount = 0
-			Else
-				thisWeekdayCount :+ 1
-			EndIf
-
-			If thisWeekdayCount >= 1 Then matchTimes :+ ", "
-
-'				matchTimes :+ RSet(hour,2).Replace(" ","0") + ":00"
-			matchTimes :+ hour + ":00"
-		Next
-		Return matchTimes
-	End Function
-
-
-	Function _replaceLeagueInformation:String(text:String, league:TNewsEventSportLeague, localeID:Int = -1)
-		If Not league Then Return text
-
-		Local result:String = text
-		result = result.Replace("%SEASONYEARSTART%", GetWorldTime().GetYear(league.GetNextMatchTime()))
-		result = result.Replace("%LEAGUENAME%", league.name)
-		result = result.Replace("%LEAGUENAMESHORT%", league.nameShort)
-
-		If result.Find("%MATCHCOUNT%") >= 0
-			result = result.Replace("%MATCHCOUNT%", league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1).length)
-		EndIf
-
-		If result.Find("%MATCHTIMES%") >= 0
-			result = result.Replace("%MATCHTIMES%", _GetLeagueMatchTimes(league, False, True, localeID))
-		EndIf
-
-		If result.Find("%UPCOMINGMATCHTIMES%") >= 0
-			result = result.Replace("%UPCOMINGMATCHTIMES%", _GetLeagueMatchTimes(league, True, True, localeID))
-		EndIf
-
-		Return result
-	End Function
-
-
-	Function _replaceMatchInformation:String(text:String, match:TNewsEventSportMatch, localeID:Int = -1)
-		If Not match Then Return text
-
-		Local result:String = text
-		result = result.Replace("%MATCHNAMESHORT%", match.GetNameShort() )
-
-		If result.Find("%MATCHREPORT") >= 0
-			result = result.Replace("%MATCHREPORT%", match.GetReport() )
-			result = result.Replace("%MATCHREPORTSHORT%", match.GetReportShort() )
-		EndIf
-		If result.Find("%MATCHLIVEREPORT") >= 0
-			result = result.Replace("%MATCHLIVEREPORTSHORT%", match.GetLiveReportShort("", -1) )
-		EndIf
-
-		Return result
-	End Function
-
-
-	Function _replaceTeamInformation:String(text:String, team:TNewsEventSportTeam, teamNumber:Int=1, localeID:Int = -1)
-		If Not team Then Return text
-
-		Local result:String = text
-
-		Local league:TNewsEventSportLeague = team.GetLeague()
-		If league
-'		-> %teamXrank% umbenennen in ${.self:sports:team... ?
-			result = result.Replace("%TEAM"+teamNumber+"RANK%", league.GetCurrentSeason().GetTeamRank(team))
-			'handled by "match.ReplacePlaceholders" too
-			team.FillPlaceholders(result, String(teamNumber))
-		EndIf
-
-		Return result
-	End Function
-
-
-	Method _ParseScriptExpressions:TLocalizedString(text:TLocalizedString, createCopy:Int = True) override
-		text = Super._ParseScriptExpressions(text, createCopy)
-
-		'add sports information
-
-		'TODO: replace with "function calls / expressions"
-		'      context TProgrammeData -> TSportsHeaderProgrammeData
-
-		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
-		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchGUID)
-		Local sport:TNewsEventSport
-		If league Then sport = league.GetSport()
-
-		For Local langID:Int = EachIn text.GetLanguageIDs()
-			Local s:String = text.Get(langID)
-			Local sNew:String = s
-			
-			If league
-				sNew = _replaceLeagueInformation(sNew, league, langID)
-			EndIf
-
-			If sport
-				sNew = _replaceSportInformation(sNew, sport, langID)
-			EndIf
-
-			If match
-				sNew = _replaceMatchInformation(sNew, match, langID)
-				If sNew.Find("%TEAM") >= 0
-					For Local teamIndex:Int = 0 Until match.teams.length
-						sNew = _replaceTeamInformation(sNew, match.teams[teamIndex], teamIndex+1, langID)
-					Next
-				EndIf
-			EndIf
-			
-			if sNew <> s
-				text.Set(sNew, langID)
-			EndIf
-		Next
-		
-		Return text
-	End Method
-
-
 	Method AssignSportLeague(league:TNewsEventSportLeague)
 		leagueGUID = league.GetGUID()
+		self.sportID = league.GetSport().GetID()
 	End Method
 
 
 	Method AssignSportMatch(match:TNewsEventSportMatch)
 		matchGUID = match.GetGUID()
+	End Method
+
+
+	Method AssignSport(sportID:Int)
+		self.sportID = sportID
 	End Method
 
 

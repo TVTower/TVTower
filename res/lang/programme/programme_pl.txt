@@ -122,8 +122,8 @@ LIVE_PRODUCTION_FINISH_WILL_COST_X       = Zakończenie produkcji na żywo będz
 OPENINGSHOW_TITLE       = Wielka premiera "%CHANNELNAME%"
 OPENINGSHOW_DESCRIPTION = Otwórzmy szampany. %CHANNELNAME% startuje dzisiaj.
 
-SPORT_PROGRAMME_TITLE                                = %SPORTNAME%: %LEAGUENAME% %SEASONYEARSTART%
-SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Wszystkie %MATCHCOUNT% mecze %LEAGUENAME% w sezonie %SEASONYEARSTART%.
+SPORT_PROGRAMME_TITLE                                = ${.self:"sport":"name"}: ${.self:"sportleague":"name"} ${.worldtime:"year":${.self:"sportleague":"getfirstmatchtime"}}
+SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Wszystkie ${.self:"sportleague":"matchcount"} mecze ${.self:"sportleague":"name"} w sezonie ${.worldtime:"year":${.self:"sportleague":"getfirstmatchtime"}}.
 SPORT_PROGRAMME_MATCH_TIMES                          = Czas meczu
 SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Mecz pomiędzy miejscami ${.self:"sportteam":0:"leaguerank"} i ${.self:"sportteam":1:"leaguerank"} w lidze. ${.self:"sportteam":0:"teaminitials"} trener ${.self:"sportteam":0:"trainer":"lastname"} jest optymistą.
 SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = ${.self:"sportteam":0:"teaminitials"} gwiazda ${.self:"sportteam":0:"members":-1:"lastname"} przeciwko drużynie z najlepszym strzelcem ${.self:"sportteam":1:"members":-1:"fullname"}.
@@ -132,7 +132,7 @@ SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"spor
 SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} i jego drużyna udają się do %TEAM2CITY%, zajmującego pozycję ${.self:"sportteam":1:"leaguerank"} w lidze.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Mecz Playoff.
-SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Mecz %LEAGUENAME%.
+SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Mecz ${.self:"sportleague":"name"}.
 SPORT_PLAYOFFS_LONG              = "Playoff-y"
 SPORT_PLAYOFFS_SHORT             = "PO"
 

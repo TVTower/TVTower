@@ -327,8 +327,6 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 		duration = 60 * TWorldTime.MINUTELENGTH
 		breakTimes = [int(1 * 20 * TWorldTime.MINUTELENGTH), int(2 * 20 * TWorldTime.MINUTELENGTH)]
 		breakDuration = 15 * TWorldTime.MINUTELENGTH
-
-		sportName = "ICEHOCKEY"
 	End Method
 	
 
@@ -371,7 +369,7 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 	End Method
 
 
-	Method GetReport:string()
+	Method GetReport:string() override
 		local matchText:string = GetLocale("SPORT_TEAMREPORT_MATCHRESULT")
 
 		'make first char uppercase
@@ -380,7 +378,7 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 	End Method
 
 
-	Method GetLiveReportShort:string(mode:string="", time:Long=-1)
+	Method GetLiveReportShort:string(mode:string="", time:Long=-1) override
 		local matchTime:Int = GetMatchTimeGone(time)
 		
 		local usePoints:int[] = GetMatchScore(matchTime)
@@ -406,7 +404,7 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 	End Method
 	
 
-	Method GetReportShort:string(mode:string="")
+	Method GetReportShort:string(mode:string="") override
 		local result:string
 
 		for local i:int = 0 until points.length

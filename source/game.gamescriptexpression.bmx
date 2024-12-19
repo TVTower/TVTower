@@ -43,30 +43,32 @@ GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 1)
 Function SEFN_WorldTime:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local command:String = params.GetToken(0).GetValueText()
 	Local subCommand:String = params.GetToken(1).value 'MUST be a string
+	Local timeStamp:Long = -1
+	if params.HasToken(2) then timeStamp = params.GetToken(2).valueLong
 
 	'TODO formatted date, weekdayname?
 	Select subCommand.ToLower()
-		case "year"         Return New SToken( TK_NUMBER, GetWorldTime().GetYear(), params.GetToken(0) )
-		case "month"        Return New SToken( TK_NUMBER, GetWorldTime().GetMonth(), params.GetToken(0) )
-		case "day"          Return New SToken( TK_NUMBER, GetWorldTime().GetDay(), params.GetToken(0) )
-		case "hour"         Return New SToken( TK_NUMBER, GetWorldTime().GetDayHour(), params.GetToken(0) )
-		case "minute"       Return New SToken( TK_NUMBER, GetWorldTime().GetDayMinute(), params.GetToken(0) )
-		case "daysplayed"   Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun(), params.GetToken(0) )
-		case "dayplaying"   Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun() + 1, params.GetToken(0) )
-		case "yearsplayed"  Return New SToken( TK_NUMBER, int(floor(GetWorldTime().GetDaysRun() / GetWorldTime().GetDaysPerYear())), params.GetToken(0) )
+		case "year"         Return New SToken( TK_NUMBER, GetWorldTime().GetYear(timeStamp), params.GetToken(0) )
+		case "month"        Return New SToken( TK_NUMBER, GetWorldTime().GetMonth(timeStamp), params.GetToken(0) )
+		case "day"          Return New SToken( TK_NUMBER, GetWorldTime().GetDay(timeStamp), params.GetToken(0) )
+		case "hour"         Return New SToken( TK_NUMBER, GetWorldTime().GetDayHour(timeStamp), params.GetToken(0) )
+		case "minute"       Return New SToken( TK_NUMBER, GetWorldTime().GetDayMinute(timeStamp), params.GetToken(0) )
+		case "daysplayed"   Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun(timeStamp), params.GetToken(0) )
+		case "dayplaying"   Return New SToken( TK_NUMBER, GetWorldTime().GetDaysRun(timeStamp) + 1, params.GetToken(0) )
+		case "yearsplayed"  Return New SToken( TK_NUMBER, int(floor(GetWorldTime().GetDaysRun(timeStamp) / GetWorldTime().GetDaysPerYear())), params.GetToken(0) )
 		'attention, use the weekday depending on game start (day 1
 		'of a game is always a monday... ani: no it is not)
 		'case "weekday"     Return string( GetWorldTime().GetWeekdayByDay( GetWorldTime().GetDaysRun() ) )
 		'this would return weekday of the exact start date
 		'so 1985/1/1 is a different weekday than 1986/1/1
-		case "weekday"      Return New SToken( TK_NUMBER, GetWorldTime().GetWeekday(), params.GetToken(0) )
-		case "season"       Return New SToken( TK_NUMBER, GetWorldTime().GetSeason(), params.GetToken(0) )
-		case "dayofmonth"   Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfMonth(), params.GetToken(0) )
-		case "dayofyear"    Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfYear(), params.GetToken(0) )
-		case "isnight"      Return New SToken( TK_BOOLEAN, GetWorldTime().IsNight(), params.GetToken(0) )
-		case "isdawn"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDawn(), params.GetToken(0) )
-		case "isday"        Return New SToken( TK_BOOLEAN, GetWorldTime().IsDay(), params.GetToken(0) )
-		case "isdusk"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDusk(), params.GetToken(0) )
+		case "weekday"      Return New SToken( TK_NUMBER, GetWorldTime().GetWeekday(timeStamp), params.GetToken(0) )
+		case "season"       Return New SToken( TK_NUMBER, GetWorldTime().GetSeason(timeStamp), params.GetToken(0) )
+		case "dayofmonth"   Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfMonth(timeStamp), params.GetToken(0) )
+		case "dayofyear"    Return New SToken( TK_NUMBER, GetWorldTime().GetDayOfYear(timeStamp), params.GetToken(0) )
+		case "isnight"      Return New SToken( TK_BOOLEAN, GetWorldTime().IsNight(timeStamp), params.GetToken(0) )
+		case "isdawn"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDawn(timeStamp), params.GetToken(0) )
+		case "isday"        Return New SToken( TK_BOOLEAN, GetWorldTime().IsDay(timeStamp), params.GetToken(0) )
+		case "isdusk"       Return New SToken( TK_BOOLEAN, GetWorldTime().IsDusk(timeStamp), params.GetToken(0) )
 		default             Return New SToken( TK_ERROR, "Undefined command ~q"+subCommand+"~q", params.GetToken(0) )
 	End Select
 End Function
@@ -212,7 +214,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 	If TSportsProgrammeData(licence.data)
 		Select propertyName
 			Case "sport", "sportleague", "sportmatch", "sportteam"
-				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(licence.data), propertyName, params, 1 + tokenOffset)
+				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(licence.data), propertyName, params, 1 + tokenOffset, context.contextNumeric)
 		End Select
 	EndIf
 
@@ -316,7 +318,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 	If TSportsProgrammeData(data)
 		Select propertyName
 			Case "sport", "sportleague", "sportmatch", "sportteam"
-				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(data), propertyName, params, 1 + tokenOffset)
+				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(data), propertyName, params, 1 + tokenOffset, context.contextNumeric)
 		End Select
 	EndIf
 
@@ -369,7 +371,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 End Function
 
 
-Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgrammeData, propertyName:String, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgrammeData, propertyName:String, params:STokenGroup Var, tokenOffset:int, language:int) 'inline
 	If Not propertyName
 		propertyName = params.GetToken(tokenOffset).value.ToLower()
 	EndIf
@@ -382,19 +384,19 @@ Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgramm
 			EndIf
 
 			If propertyName = "sportleague"
-				Return _EvaluateNewsEventSportLeague(league, params, tokenOffset + 1) 'inline
+				Return _EvaluateNewsEventSportLeague(league, params, tokenOffset + 1, language) 'inline
 			ElseIf propertyName = "sport"
 				Local sport:TNewsEventSport = league.GetSport()
 				If Not sport
 					Return New SToken( TK_ERROR, "No sport defined in context of programme data", params.GetToken(0) )
 				EndIf
-				Return _EvaluateNewsEventSport(sport, params, tokenOffset + 1) 'inline
+				Return _EvaluateNewsEventSport(sport, params, tokenOffset + 1, language) 'inline
 			ElseIf propertyName = "sportmatch"
 				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchGUID)
 				If Not match
 					Return New SToken( TK_ERROR, "No match defined in context of programme data", params.GetToken(0) )
 				EndIf
-				Return _EvaluateNewsEventSportMatch(match, params, tokenOffset + 1) 'inline
+				Return _EvaluateNewsEventSportMatch(match, params, tokenOffset + 1, language) 'inline
 			ElseIf propertyName = "sportteam"
 				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchGUID)
 				If Not match
@@ -404,7 +406,7 @@ Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgramm
 				If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
 					Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 				EndIf
-				Return _EvaluateNewsEventSportTeam(match.teams[teamIndex], params, tokenOffset + 2)
+				Return _EvaluateNewsEventSportTeam(match.teams[teamIndex], params, tokenOffset + 2, language)
 			EndIf
 	End Select
 	Return New SToken( TK_ERROR, "Unsupported sports-token ~q"+propertyName+"~q", params.GetToken(0) )
@@ -719,7 +721,7 @@ Function SEFN_sport:SToken(params:STokenGroup Var, context:SScriptExpressionCont
 		If Not sport Then Return New SToken( TK_ERROR, ".sport with ID ~q"+ID+"~q not found", params.GetToken(0) )
 	EndIf
 	
-	Return _EvaluateNewsEventSport(sport, params, 2)
+	Return _EvaluateNewsEventSport(sport, params, 2, context.contextNumeric)
 End Function
 
 
@@ -737,7 +739,7 @@ Function SEFN_sportleague:SToken(params:STokenGroup Var, context:SScriptExpressi
 		If Not league Then Return New SToken( TK_ERROR, ".sportleague with ID ~q"+ID+"~q not found", params.GetToken(0) )
 	EndIf
 	
-	Return _EvaluateNewsEventSportLeague(league, params, 2)
+	Return _EvaluateNewsEventSportLeague(league, params, 2, context.contextNumeric)
 End Function
 
 
@@ -755,11 +757,11 @@ Function SEFN_sportteam:SToken(params:STokenGroup Var, context:SScriptExpression
 		If Not team Then Return New SToken( TK_ERROR, ".sportteam with ID ~q"+ID+"~q not found", params.GetToken(0) )
 	EndIf
 	
-	Return _EvaluateNewsEventSportTeam(team, params, 2)
+	Return _EvaluateNewsEventSportTeam(team, params, 2, context.contextNumeric)
 End Function
 
 
-Function _EvaluateNewsEventSport:SToken(sport:TNewsEventSport, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateNewsEventSport:SToken(sport:TNewsEventSport, params:STokenGroup Var, tokenOffset:int, language:Int) 'inline
 	If params.added <= tokenOffset Then Return New SToken( TK_ERROR, "No subcommand given", params.GetToken(0) )
 	
 	Local propertyName:String = params.GetToken(tokenOffset).value
@@ -772,7 +774,7 @@ Function _EvaluateNewsEventSport:SToken(sport:TNewsEventSport, params:STokenGrou
 			If sport.leagues.length < 0 or sport.leagues.length <= leagueIndex or not sport.leagues[leagueIndex] 
 				Return New SToken( TK_ERROR, "No league at index " + leagueIndex + " found", params.GetToken(0) )
 			EndIf
-			Return _EvaluateNewsEventSportLeague(sport.leagues[leagueIndex], params, tokenOffset + 2)
+			Return _EvaluateNewsEventSportLeague(sport.leagues[leagueIndex], params, tokenOffset + 2, language)
 		case "isseasonstarted"      Return New SToken( TK_BOOLEAN, sport.IsSeasonStarted(), params.GetToken(0) )
 		case "isseasonfinished"     Return New SToken( TK_BOOLEAN, sport.IsSeasonFinished(), params.GetToken(0) )
 		case "areplayoffsrunning"   Return New SToken( TK_BOOLEAN, sport.ArePlayoffsRunning(), params.GetToken(0) )
@@ -787,21 +789,31 @@ End Function
 
 
 
-Function _EvaluateNewsEventSportLeague:SToken(league:TNewsEventSportLeague, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateNewsEventSportLeague:SToken(league:TNewsEventSportLeague, params:STokenGroup Var, tokenOffset:int, language:Int) 'inline
 	If params.added <= tokenOffset Then Return New SToken( TK_ERROR, "No subcommand given", params.GetToken(0) )
 	
 	Local propertyName:String = params.GetToken(tokenOffset).value
 
 	Select propertyName.ToLower()
-		case "name"       Return New SToken( TK_TEXT, league.name, params.GetToken(0) )
-		case "nameshort"  Return New SToken( TK_TEXT, league.nameShort, params.GetToken(0) )
-		default           Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
+		case "name"                 Return New SToken( TK_TEXT, league.name, params.GetToken(0) )
+		case "nameshort"            Return New SToken( TK_TEXT, league.nameShort, params.GetToken(0) )
+		case "matchcount"           Return New SToken( TK_NUMBER, league.GetMatchCount(), params.GetToken(0) )
+		case "upcomingmatchcount"   Return New SToken( TK_NUMBER, league.GetUpcomingMatchesCount(), params.GetToken(0) )
+		case "getnextmatchtime"     Return New SToken( TK_NUMBER, league.GetNextMatchTime(), params.GetToken(0) )
+		case "getfirstmatchtime"    Return New SToken( TK_NUMBER, league.GetFirstMatchTime(), params.GetToken(0) )
+		case "getlastmatchtime"     Return New SToken( TK_NUMBER, league.GetLastMatchTime(), params.GetToken(0) )
+		case "getlastmatchendtime"  Return New SToken( TK_NUMBER, league.GetLastMatchEndTime(), params.GetToken(0) )
+		case "matchtimesformatted"	
+			Return New SToken( TK_TEXT, league.GetMatchTimesFormatted(False, True, language), params.GetToken(0) )
+		case "upcomingmatchtimesformatted"	
+			Return New SToken( TK_TEXT, league.GetMatchTimesFormatted(True, True, language), params.GetToken(0) )
+		default                     Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
 	End Select
 End Function
 
 
 
-Function _EvaluateNewsEventSportMatch:SToken(match:TNewsEventSportMatch, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateNewsEventSportMatch:SToken(match:TNewsEventSportMatch, params:STokenGroup Var, tokenOffset:int, language:Int) 'inline
 	If params.added <= tokenOffset Then Return New SToken( TK_ERROR, "No subcommand given", params.GetToken(0) )
 	
 	Local propertyName:String = params.GetToken(tokenOffset).value
@@ -816,7 +828,7 @@ Function _EvaluateNewsEventSportMatch:SToken(match:TNewsEventSportMatch, params:
 			If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
 				Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 			EndIf
-			Return _EvaluateNewsEventSportTeam(match.teams[teamIndex], params, tokenOffset + 2)
+			Return _EvaluateNewsEventSportTeam(match.teams[teamIndex], params, tokenOffset + 2, language)
 		case "rank"
 			Local teamIndex:Int = params.GetToken(tokenOffset + 1).valueLong
 			If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
@@ -829,9 +841,19 @@ Function _EvaluateNewsEventSportMatch:SToken(match:TNewsEventSportMatch, params:
 				Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 			EndIf
 			Return New SToken( TK_NUMBER, match.GetScore(match.teams[teamIndex]), params.GetToken(0) )
-		case "matchtime"
+		case "report"
+			Return New SToken( TK_TEXT, match.GetReport(), params.GetToken(0) )
+		case "reportshort"
+			Local mode:String = params.GetToken(tokenOffset + 1).value
+			Return New SToken( TK_TEXT, match.GetReportShort(mode), params.GetToken(0) )
+		case "livereportshort"
+			Local mode:String = params.GetToken(tokenOffset + 1).value
+			Local time:Long = -1
+			If params.HasToken(tokenOffset + 2) Then time = params.GetToken(tokenOffset + 2).valueLong
+			Return New SToken( TK_TEXT, match.GetLiveReportShort(mode, time), params.GetToken(0) )
+		case "time"
 			Return New SToken( TK_NUMBER, match.GetMatchTime(), params.GetToken(0) )
-		case "matchendtime"
+		case "endtime"
 			Return New SToken( TK_NUMBER, match.GetMatchEndtime(), params.GetToken(0) )
 		case "looserscore"
 			Return New SToken( TK_NUMBER, match.GetLooserScore(), params.GetToken(0) )
@@ -854,7 +876,7 @@ End Function
 
 
 
-Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STokenGroup Var, tokenOffset:int, language:Int) 'inline
 	If params.added <= tokenOffset Then Return New SToken( TK_ERROR, "No subcommand given", params.GetToken(0) )
 	
 	Local propertyName:String = params.GetToken(tokenOffset).value
@@ -864,14 +886,14 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			If not team.trainer
 				Return New SToken( TK_ERROR, "No trainer found", params.GetToken(0) )
 			EndIf
-			Return _EvaluateNewsEventSportTeamMember(team.trainer, params, tokenOffset + 1)
+			Return _EvaluateNewsEventSportTeamMember(team.trainer, params, tokenOffset + 1, language)
 		case "members"
 			Local memberIndex:Int = params.GetToken(tokenOffset + 1).valueLong
 			Local member:TPersonBase = team.GetMemberAtIndex(memberIndex)
 			If not member 
 				Return New SToken( TK_ERROR, "No member at index " + memberIndex + " found", params.GetToken(0) )
 			EndIf
-			Return _EvaluateNewsEventSportTeamMember(member, params, tokenOffset + 2)
+			Return _EvaluateNewsEventSportTeamMember(member, params, tokenOffset + 2, language)
 		case "city"     
 			Return New SToken( TK_TEXT, team.GetCity(), params.GetToken(0) )
 		case "leaguerank"
@@ -888,15 +910,15 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			Select variant
 				case 2
 					If team.clubNameSingular
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_B") + " " + team.GetTeamName(), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_B", language) + " " + team.GetTeamName(), params.GetToken(0) )
 					Else
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_B") + " " + team.GetTeamName(), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_B", language) + " " + team.GetTeamName(), params.GetToken(0) )
 					EndIf
 				default
 					If team.clubNameSingular
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_A") + " " + team.GetTeamName(), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_A", language) + " " + team.GetTeamName(), params.GetToken(0) )
 					Else
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_A") + " " + team.GetTeamName(), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_A", language) + " " + team.GetTeamName(), params.GetToken(0) )
 					EndIf
 			End Select
 		case "teamnamearticle"
@@ -907,15 +929,15 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			Select variant
 				case 2
 					If team.clubNameSingular
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_B"), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_B", language), params.GetToken(0) )
 					Else
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_B"), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_B", language), params.GetToken(0) )
 					EndIf
 				default
 					If team.clubNameSingular
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_A"), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_S_VARIANT_A", language), params.GetToken(0) )
 					Else
-						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_A"), params.GetToken(0) )
+						Return New SToken( TK_TEXT, GetLocale("SPORT_TEAMNAME_P_VARIANT_A", language), params.GetToken(0) )
 					EndIf
 			End Select
 		case "teamnameshort"
@@ -931,7 +953,7 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			If Not league
 				Return New SToken( TK_ERROR, "No valid league found for team", params.GetToken(0) )
 			EndIf
-			Return _EvaluateNewsEventSportLeague(league, params, tokenOffset + 1)
+			Return _EvaluateNewsEventSportLeague(league, params, tokenOffset + 1, language)
 		default
 			Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
 	End Select
@@ -939,7 +961,7 @@ End Function
 
 
 
-Function _EvaluateNewsEventSportTeamMember:SToken(member:TPersonBase, params:STokenGroup Var, tokenOffset:int) 'inline
+Function _EvaluateNewsEventSportTeamMember:SToken(member:TPersonBase, params:STokenGroup Var, tokenOffset:int, language:Int) 'inline
 	If Not member Then Return New SToken( TK_ERROR, "No member instance passed", params.GetToken(0) )
 
 	If params.added <= tokenOffset Then Return New SToken( TK_ERROR, "No subcommand given", params.GetToken(0) )
