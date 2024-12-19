@@ -125,11 +125,11 @@ OPENINGSHOW_DESCRIPTION = Let's pop the corks! %CHANNELNAME% is launching today.
 SPORT_PROGRAMME_TITLE                                = %SPORTNAME%: %LEAGUENAME% %SEASONYEARSTART%
 SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = All %MATCHCOUNT% matches of %LEAGUENAME% in season %SEASONYEARSTART%.
 SPORT_PROGRAMME_MATCH_TIMES                          = Match times
-SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match between teams placed %TEAM1RANK% and %TEAM2RANK% in the league. %TEAM1NAMEINITIALS% coach %TEAM1TRAINERSHORT% is optimistic.
-SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = %TEAM1NAMEINITIALS% star, %TEAM1STARSHORT%, against top scorer %TEAM2STAR%'s team.
-SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = An interesting game is coming up when %TEAM1ARTICLE1% %TEAM1NAME% meet the players of %TEAM2NAMEINITIALS%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% visiting %TEAM1NAMEINITIALS% in %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% and his team travel to %TEAM2CITY%, placed %TEAM2RANK% in the league.
+SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match between teams placed ${.self:"sportteam":0:"leaguerank"} and ${.self:"sportteam":1:"leaguerank"} in the league. ${.self:"sportteam":0:"teaminitials"} coach ${.self:"sportteam":0:"trainer":"lastname"} is optimistic.
+SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = ${.self:"sportteam":0:"teaminitials"} star, ${.self:"sportteam":0:"members":-1:"lastname"}, against top scorer ${.self:"sportteam":1:"members":-1:"fullname"}'s team.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = An interesting game is coming up when %TEAM1ARTICLE1% %TEAM1NAME% meet the players of ${.self:"sportteam":1:"teaminitials"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} visiting ${.self:"sportteam":0:"teaminitials"} in %TEAM1CITY%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} and his team travel to %TEAM2CITY%, placed ${.self:"sportteam":1:"leaguerank"} in the league.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Playoff match.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match taking place in %LEAGUENAME%.

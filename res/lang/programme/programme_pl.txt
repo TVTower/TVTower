@@ -125,11 +125,11 @@ OPENINGSHOW_DESCRIPTION = Otwórzmy szampany. %CHANNELNAME% startuje dzisiaj.
 SPORT_PROGRAMME_TITLE                                = %SPORTNAME%: %LEAGUENAME% %SEASONYEARSTART%
 SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Wszystkie %MATCHCOUNT% mecze %LEAGUENAME% w sezonie %SEASONYEARSTART%.
 SPORT_PROGRAMME_MATCH_TIMES                          = Czas meczu
-SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Mecz pomiędzy miejscami %TEAM1RANK% i %TEAM2RANK% w lidze. %TEAM1NAMEINITIALS% trener %TEAM1TRAINERSHORT% jest optymistą.
-SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = %TEAM1NAMEINITIALS% gwiazda %TEAM1STARSHORT% przeciwko drużynie z najlepszym strzelcem %TEAM2STAR%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Zbliża się interesujący mecz, w którym %TEAM1ARTICLE1% %TEAM1NAME% spotka się z graczami %TEAM2NAMEINITIALS%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% odwiedzają %TEAM1NAMEINITIALS% w %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% i jego drużyna udają się do %TEAM2CITY%, zajmującego pozycję %TEAM2RANK% w lidze.
+SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Mecz pomiędzy miejscami ${.self:"sportteam":0:"leaguerank"} i ${.self:"sportteam":1:"leaguerank"} w lidze. ${.self:"sportteam":0:"teaminitials"} trener ${.self:"sportteam":0:"trainer":"lastname"} jest optymistą.
+SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = ${.self:"sportteam":0:"teaminitials"} gwiazda ${.self:"sportteam":0:"members":-1:"lastname"} przeciwko drużynie z najlepszym strzelcem ${.self:"sportteam":1:"members":-1:"fullname"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Zbliża się interesujący mecz, w którym %TEAM1ARTICLE1% %TEAM1NAME% spotka się z graczami ${.self:"sportteam":1:"teaminitials"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} odwiedzają ${.self:"sportteam":0:"teaminitials"} w %TEAM1CITY%.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} i jego drużyna udają się do %TEAM2CITY%, zajmującego pozycję ${.self:"sportteam":1:"leaguerank"} w lidze.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Mecz Playoff.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Mecz %LEAGUENAME%.
