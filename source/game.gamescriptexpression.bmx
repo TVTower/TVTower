@@ -926,7 +926,7 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 				Return New SToken( TK_ERROR, "No trainer found", params.GetToken(0) )
 			EndIf
 			Return _EvaluateNewsEventSportTeamMember(team.trainer, params, tokenOffset + 1, language)
-		case "members"
+		case "member"
 			Local member:TPersonBase
 			If params.HasToken(tokenOffset + 1, ETokenValueType.Text)
 				Local memberType:String = params.GetToken(tokenOffset + 1).value

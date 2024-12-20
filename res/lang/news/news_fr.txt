@@ -114,28 +114,28 @@ SCORE_POINTS = Points
 SPORT_ICEHOCKEY = Hockey sur glace
 SPORT_SOCCER    = Foot
 
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = et avant ${.self:"sportteam":0:"members":"forward":"fullname"} gagnent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} sur
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = et avant ${.self:"sportteam":0:"members":"forward":"fullname"} gangnent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} sur
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = est victorieux ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un corner transformé en but par ${.self:"sportteam":0:"members":-1:"lastname"}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = sont victorieux ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un corner transformé en but par ${.self:"sportteam":0:"members":-1:"lastname"}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = l'emporte ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un penalty arrêté par ${.self:"sportteam":0:"members":0:"lastname"}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = l'emportent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un penalty arrêté par ${.self:"sportteam":0:"members":0:"lastname"}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = gagne le match ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à la performance incroyable du gardien ${.self:"sportteam":0:"members":0:"lastname"}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = gagnent le match ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à la performance incroyable du gardien ${.self:"sportteam":0:"members":0:"lastname"}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = et avant ${.self:"sportteam":0:"member":"forward":"fullname"} gagnent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} sur
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = et avant ${.self:"sportteam":0:"member":"forward":"fullname"} gangnent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} sur
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = est victorieux ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un corner transformé en but par ${.self:"sportteam":0:"member":-1:"lastname"}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = sont victorieux ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un corner transformé en but par ${.self:"sportteam":0:"member":-1:"lastname"}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = l'emporte ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un penalty arrêté par ${.self:"sportteam":0:"member":0:"lastname"}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = l'emportent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à un penalty arrêté par ${.self:"sportteam":0:"member":0:"lastname"}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = gagne le match ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à la performance incroyable du gardien ${.self:"sportteam":0:"member":0:"lastname"}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = gagnent le match ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} grâce à la performance incroyable du gardien ${.self:"sportteam":0:"member":0:"lastname"}
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = cède ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} 3 points précieux à
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = cèdent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} 3 points précieux à
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = succombe ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} à cause d'une inattention du gardien ${.self:"sportteam":0:"members":0:"lastname"} à
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = succombent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} à cause d'une inattention du gardien ${.self:"sportteam":0:"members":0:"lastname"} à
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = perd ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} avec une performance décevante du gardien ${.self:"sportteam":0:"members":"keeper":"fullname"} contre
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = perdent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} avec une performance décevante du gardien ${.self:"sportteam":0:"members":"keeper":"fullname"} contre
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = succombe ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} à cause d'une inattention du gardien ${.self:"sportteam":0:"member":0:"lastname"} à
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = succombent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} à cause d'une inattention du gardien ${.self:"sportteam":0:"member":0:"lastname"} à
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = perd ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} avec une performance décevante du gardien ${.self:"sportteam":0:"member":"keeper":"fullname"} contre
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = perdent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} avec une performance décevante du gardien ${.self:"sportteam":0:"member":"keeper":"fullname"} contre
 
 SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = après ${.self:"sportmatch":"playtimeminutes"}  minutes de foot de qualité douteuse
 SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = après ${.self:"sportmatch":"playtimeminutes"}  minutes de manœuvres tactiques
 SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = après ${.self:"sportmatch":"playtimeminutes"}  minutes pleins de suspense
 
-SPORT_TEAMREPORT_MATCHWIN_S1 = bat grâce à ${.self:"sportteam":0:"members":"forward":"fullname"}
-SPORT_TEAMREPORT_MATCHWIN_P1 = battent grâce à ${.self:"sportteam":0:"members":"forward":"fullname"}
+SPORT_TEAMREPORT_MATCHWIN_S1 = bat grâce à ${.self:"sportteam":0:"member":"forward":"fullname"}
+SPORT_TEAMREPORT_MATCHWIN_P1 = battent grâce à ${.self:"sportteam":0:"member":"forward":"fullname"}
 SPORT_TEAMREPORT_MATCHWIN_S2 = l'emporte ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} sur
 SPORT_TEAMREPORT_MATCHWIN_P2 = l'emportent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} sur
 SPORT_TEAMREPORT_MATCHWIN_S3 = gagne contre
