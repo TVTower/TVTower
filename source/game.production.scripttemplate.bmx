@@ -381,8 +381,14 @@ Type TScriptTemplate Extends TScriptBase
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(result[i].country, result[i].gender)
 				result[i].roleID = role.id
 			EndIf
-			If result[i].preselectCast And Not result[i].personID
-				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(result[i].preselectCast)
+			Local personString:String = result[i].preselectCast
+			If personString And Not result[i].personID
+				If personString.Contains("$")
+					Local context:SScriptExpressionContext = new SScriptExpressionContext(self, -1, Null)
+					Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(personString, context)
+					personString = valueNew.ToString()
+				EndIf
+				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(personString)
 				If person Then result[i].personID = person.GetId()
 			EndIf
 			result[i] = result[i].Copy()
