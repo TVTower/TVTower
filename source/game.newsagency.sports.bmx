@@ -2265,6 +2265,24 @@ Type TNewsEventSportTeam Extends TGameObject
 	End Method
 
 
+	'return a person of a given type, if offset is used, it is tried
+	'to return the "n-th" person of this type
+	'ATTENTION: this is sport specific (not all sports have a "keeper"
+	Method GetMemberOfType:TPersonBase(memberType:String, offset:Int = 0)
+		' for now we keep it simple and assume they have "keepers" and
+		' "forwards" - and "stars"
+		' TODO: extract to the sport subtypes and do differently there
+		Select memberType.ToLower()
+			case "keeper"
+				Return members[0]
+			case "forward", "star"
+				Return members[members.length-1 - offset]
+			Default
+				Return members[0]
+		End Select
+	End Method
+
+
 	Method GetCity:String()
 		Return city
 	End Method

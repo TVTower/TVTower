@@ -927,10 +927,27 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			EndIf
 			Return _EvaluateNewsEventSportTeamMember(team.trainer, params, tokenOffset + 1, language)
 		case "members"
-			Local memberIndex:Int = params.GetToken(tokenOffset + 1).valueLong
-			Local member:TPersonBase = team.GetMemberAtIndex(memberIndex)
-			If not member 
-				Return New SToken( TK_ERROR, "No member at index " + memberIndex + " found", params.GetToken(0) )
+			Local member:TPersonBase
+			If params.HasToken(tokenOffset + 1, ETokenValueType.Text)
+				Local memberType:String = params.GetToken(tokenOffset + 1).value
+				Local offsetPos:Int = memberType.Find(",")
+				Local offset:Int
+				If offsetPos > 0 
+					offset = Int(memberType[offsetPos+1 ..])
+					memberType = memberType[.. offsetPos]
+					print "offset = " + offset
+					print "memberType = " + memberType
+				EndIf
+				member = team.GetMemberOfType( memberType, offset )
+				If not member 
+					Return New SToken( TK_ERROR, "No member of type ~q" + memberType + "~q (offset="+offset+") found", params.GetToken(0) )
+				EndIf
+			Else
+				'numeric index, if no value was given, index will be 0
+				member = team.GetMemberAtIndex( Int(params.GetToken(tokenOffset + 1).valueLong) )
+				If not member 
+					Return New SToken( TK_ERROR, "No member at index " + params.GetToken(tokenOffset + 1).valueLong + " found", params.GetToken(0) )
+				EndIf
 			EndIf
 			Return _EvaluateNewsEventSportTeamMember(member, params, tokenOffset + 2, language)
 		case "city"     
