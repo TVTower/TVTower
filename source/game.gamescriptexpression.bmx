@@ -1022,6 +1022,7 @@ Function _EvaluateNewsEventSportTeamMember:SToken(member:TPersonBase, params:STo
 
 	If params.added <= tokenOffset Then Return New SToken( TK_ERROR, "No subcommand given", params.GetToken(0) )
 
+rem
 	'evaluate person stuff first (name etc), then type special things
 	Local result:SToken =_EvaluatePersonBase(member, params, tokenOffset)			
 
@@ -1038,10 +1039,38 @@ Function _EvaluateNewsEventSportTeamMember:SToken(member:TPersonBase, params:STo
 		EndIf
 	EndIf
 	Return result 'person-token-result is already an error
+endrem	
+	Local includeTitle:Int
+	If params.HasToken(1 + tokenOffset)
+		includeTitle = params.GetToken(1 + tokenOffset).GetValueBool()
+	EndIf
+	Local subCommand:String = params.GetToken(tokenOffset).value 'MUST be a string
+	Local subCommandLower:String = subCommand.ToLower()
+	Select subCommandLower
+		Case "firstname" Return New SToken( TK_TEXT, member.GetFirstName(), params.GetToken(0) )
+		Case "lastname"  Return New SToken( TK_TEXT, member.GetLastName(includeTitle), params.GetToken(0) )
+		Case "fullname"  Return New SToken( TK_TEXT, member.GetFullName(includeTitle), params.GetToken(0) )
+		Case "nickname"  Return New SToken( TK_TEXT, member.GetNickName(), params.GetToken(0) )
+		Case "title"     Return New SToken( TK_TEXT, member.GetTitle(), params.GetToken(0) )
+		Case "guid"      Return New SToken( TK_TEXT, member.GetGUID(), params.GetToken(0) )
+		Case "id"        Return New SToken( TK_NUMBER, member.GetID(), params.GetToken(0) )
+	End Select
+
+	If member.IsSportsman()
+		'load the "current" sportdata set (no special sport-type requested) 
+		Local sportData:TPersonSportBaseData = TPersonSportBaseData(member.GetData("sport"))
+		If sportData
+			Select subCommandLower
+				case "teamid"  Return New SToken( TK_TEXT, sportData.teamID, params.GetToken(0) )
+				case "sportid" Return New SToken( TK_TEXT, sportData.sportID, params.GetToken(0) )
+			End Select
+		EndIf
+	EndIf
+	Return New SToken( TK_ERROR, "Undefined command ~q"+subCommand+"~q", params.GetToken(0) )
 End Function
 
 
-
+rem
 Function _EvaluatePersonBase:SToken(person:TPersonBase, params:STokenGroup Var, tokenOffset:int) 'inline
 	If Not person Then Return New SToken( TK_ERROR, "No person instance passed", params.GetToken(0) )
 	
@@ -1064,7 +1093,7 @@ Function _EvaluatePersonBase:SToken(person:TPersonBase, params:STokenGroup Var, 
 		default          Return New SToken( TK_ERROR, "Undefined command ~q"+subCommand+"~q", params.GetToken(0) )
 	End Select
 End Function
-
+endrem
 
 'various "self"-referencing options
 'context: TProgrammeLicence
