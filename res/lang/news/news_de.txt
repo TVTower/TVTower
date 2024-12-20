@@ -143,8 +143,8 @@ SPORT_TEAMREPORT_MATCHWIN_P3 = bezwingen
 SPORT_TEAMREPORT_MATCHWIN_S4 = holt ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} gegen
 SPORT_TEAMREPORT_MATCHWIN_P4 = holen ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} gegen
 
-SPORT_TEAMREPORT_MATCHDRAW_S1 = verspielt die Chance auf %MATCHSCOREMAXTEXT% gegen
-SPORT_TEAMREPORT_MATCHDRAW_P1 = verspielen die Chance auf %MATCHSCOREMAXTEXT% gegen
+SPORT_TEAMREPORT_MATCHDRAW_S1 = verspielt die Chance auf ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} gegen
+SPORT_TEAMREPORT_MATCHDRAW_P1 = verspielen die Chance auf ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} gegen
 SPORT_TEAMREPORT_MATCHDRAW_S2 = erreicht nur ein Unentschieden gegen
 SPORT_TEAMREPORT_MATCHDRAW_P2 = erreichen nur ein Unentschieden gegen
 SPORT_TEAMREPORT_MATCHDRAW_S3 = holt ${.self:"sportmatch":"drawgamescore"} ${.neq:${.self:"sportmatch":"drawgamescore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} gegen

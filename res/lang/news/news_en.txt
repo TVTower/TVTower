@@ -143,8 +143,8 @@ SPORT_TEAMREPORT_MATCHWIN_P3 = subdue
 SPORT_TEAMREPORT_MATCHWIN_S4 = win %MATCHSCORE1TEXT% against
 SPORT_TEAMREPORT_MATCHWIN_P4 = win %MATCHSCORE1TEXT% against
 
-SPORT_TEAMREPORT_MATCHDRAW_S1 = miss out on %MATCHSCOREMAXTEXT% against
-SPORT_TEAMREPORT_MATCHDRAW_P1 = miss out on %MATCHSCOREMAXTEXT% against
+SPORT_TEAMREPORT_MATCHDRAW_S1 = miss out on ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} against
+SPORT_TEAMREPORT_MATCHDRAW_P1 = miss out on ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} against
 SPORT_TEAMREPORT_MATCHDRAW_S2 = draw against
 SPORT_TEAMREPORT_MATCHDRAW_P2 = draw against
 SPORT_TEAMREPORT_MATCHDRAW_S3 = bring home ${.self:"sportmatch":"drawgamescore"} ${.neq:${.self:"sportmatch":"drawgamescore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} against

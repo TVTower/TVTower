@@ -143,8 +143,8 @@ SPORT_TEAMREPORT_MATCHWIN_P3 = poskromieni
 SPORT_TEAMREPORT_MATCHWIN_S4 = Zwycięstwo %MATCHSCORE1TEXT% przeciwko
 SPORT_TEAMREPORT_MATCHWIN_P4 = Zwycięstwo %MATCHSCORE1TEXT% przeciwko
 
-SPORT_TEAMREPORT_MATCHDRAW_S1 = daje szansę na %MATCHSCOREMAXTEXT% przeciwko
-SPORT_TEAMREPORT_MATCHDRAW_P1 = dali szansę na %MATCHSCOREMAXTEXT% przeciwko
+SPORT_TEAMREPORT_MATCHDRAW_S1 = daje szansę na ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} przeciwko
+SPORT_TEAMREPORT_MATCHDRAW_P1 = dali szansę na ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} przeciwko
 SPORT_TEAMREPORT_MATCHDRAW_S2 = osiąga tylko remis przeciwko
 SPORT_TEAMREPORT_MATCHDRAW_P2 = osiągneli tylko remis przeciwko
 SPORT_TEAMREPORT_MATCHDRAW_S3 = przywozi do domu ${.self:"sportmatch":"drawgamescore"} ${.neq:${.self:"sportmatch":"drawgamescore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} przeciwko

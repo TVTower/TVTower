@@ -143,8 +143,8 @@ SPORT_TEAMREPORT_MATCHWIN_P3 = gagnent contre
 SPORT_TEAMREPORT_MATCHWIN_S4 = gagne %MATCHSCORE1TEXT% contre
 SPORT_TEAMREPORT_MATCHWIN_P4 = gagnent %MATCHSCORE1TEXT% contre
 
-SPORT_TEAMREPORT_MATCHDRAW_S1 = perd la chance de %MATCHSCOREMAXTEXT% contre
-SPORT_TEAMREPORT_MATCHDRAW_P1 = perdent la chance de %MATCHSCOREMAXTEXT% contre
+SPORT_TEAMREPORT_MATCHDRAW_S1 = perd la chance de ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} contre
+SPORT_TEAMREPORT_MATCHDRAW_P1 = perdent la chance de ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} contre
 SPORT_TEAMREPORT_MATCHDRAW_S2 = n'obtient qu'un match nul contre
 SPORT_TEAMREPORT_MATCHDRAW_P2 = n'obtiennent qu'un match nul contre
 SPORT_TEAMREPORT_MATCHDRAW_S3 = atteint ${.self:"sportmatch":"drawgamescore"} ${.neq:${.self:"sportmatch":"drawgamescore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} contre
