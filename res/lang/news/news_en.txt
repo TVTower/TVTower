@@ -114,8 +114,8 @@ SCORE_POINTS = points
 SPORT_ICEHOCKEY = Ice hockey
 SPORT_SOCCER    = Soccer
 
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} win, starring attacker ${.self:"sportteam":0:"members":-1:"fullname"}, against
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} win, starring attacker ${.self:"sportteam":0:"members":-1:"fullname"}, against
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} win, starring attacker ${.self:"sportteam":0:"members":"forward":"fullname"}, against
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} win, starring attacker ${.self:"sportteam":0:"members":"forward":"fullname"}, against
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} win, thanks to a converted corner kick by ${.self:"sportteam":0:"members":-1:"lastname"}, against
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} win, thanks to a converted corner kick by ${.self:"sportteam":0:"members":-1:"lastname"}, against
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} win, thanks to a saved penalty by keeper ${.self:"sportteam":0:"members":0:"lastname"}, against
@@ -127,15 +127,15 @@ SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = ${.lte:7:${.random:10}:"${.locale:"SPORT
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} give away 3 valuable points to
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} are defeated, thanks to a blunder by keeper ${.self:"sportteam":0:"members":0:"lastname"}, by
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} are defeated, thanks to a blunder by keeper ${.self:"sportteam":0:"members":0:"lastname"}, by
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} lose, with keeper ${.self:"sportteam":0:"members":0:"fullname"} giving a disappointing performance, against
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} lose, with keeper ${.self:"sportteam":0:"members":0:"fullname"} giving a disappointing performance, against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} lose, with keeper ${.self:"sportteam":0:"members":"keeper":"fullname"} giving a disappointing performance, against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} lose, with keeper ${.self:"sportteam":0:"members":"keeper":"fullname"} giving a disappointing performance, against
 
 SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = - after ${.self:"sportmatch":"playtimeminutes"}  minutes of dodgy play -
 SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = - after ${.self:"sportmatch":"playtimeminutes"}  minutes of sharp tactics -
 SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = - after ${.self:"sportmatch":"playtimeminutes"}  minutes of excitement -
 
-SPORT_TEAMREPORT_MATCHWIN_S1 = win, thanks to ${.self:"sportteam":0:"members":-1:"fullname"}, against
-SPORT_TEAMREPORT_MATCHWIN_P1 = win, thanks to ${.self:"sportteam":0:"members":-1:"fullname"}, against
+SPORT_TEAMREPORT_MATCHWIN_S1 = win, thanks to ${.self:"sportteam":0:"members":"forward":"fullname"}, against
+SPORT_TEAMREPORT_MATCHWIN_P1 = win, thanks to ${.self:"sportteam":0:"members":"forward":"fullname"}, against
 SPORT_TEAMREPORT_MATCHWIN_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} defeat
 SPORT_TEAMREPORT_MATCHWIN_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} defeat
 SPORT_TEAMREPORT_MATCHWIN_S3 = subdue

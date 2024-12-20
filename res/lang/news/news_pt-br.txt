@@ -114,8 +114,8 @@ SCORE_POINTS = Points
 SPORT_ICEHOCKEY = Hóquei no gelo
 SPORT_SOCCER    = Futebol
 
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = e o atacante ${.self:"sportteam":0:"members":-1:"fullname"} vence ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = e o atacante ${.self:"sportteam":0:"members":-1:"fullname"} vence ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = e o atacante ${.self:"sportteam":0:"members":"forward":"fullname"} vence ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = e o atacante ${.self:"sportteam":0:"members":"forward":"fullname"} vence ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = vence graças a um escanteio convertido por ${.self:"sportteam":0:"members":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = vence graças a um escanteio convertido por ${.self:"sportteam":0:"members":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = vence graças a um pênalti defendido pelo goleiro  ${.self:"sportteam":0:"members":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
@@ -127,15 +127,15 @@ SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = 3 pontos valiosos ${.lte:7:${.random:10}
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = deu 3 pontos valiosos ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} para
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = é derrotado por erro do goleiro ${.self:"sportteam":0:"members":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = são derrotados por erro do goleiro ${.self:"sportteam":0:"members":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = perde com o decepcionante goleiro ${.self:"sportteam":0:"members":0:"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = perder com o goleiro desapontado ${.self:"sportteam":0:"members":0:"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = perde com o decepcionante goleiro ${.self:"sportteam":0:"members":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = perder com o goleiro desapontado ${.self:"sportteam":0:"members":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
 
 SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = após ${.self:"sportmatch":"playtimeminutes"}  minutos de jogo questionável
 SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = após ${.self:"sportmatch":"playtimeminutes"}  minutos de duelos táticos
 SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = após emocionantes ${.self:"sportmatch":"playtimeminutes"}  minutos de esportes de campo
 
-SPORT_TEAMREPORT_MATCHWIN_S1 = ganha graças a ${.self:"sportteam":0:"members":-1:"fullname"}
-SPORT_TEAMREPORT_MATCHWIN_P1 = ganharam graças a ${.self:"sportteam":0:"members":-1:"fullname"}
+SPORT_TEAMREPORT_MATCHWIN_S1 = ganha graças a ${.self:"sportteam":0:"members":"forward":"fullname"}
+SPORT_TEAMREPORT_MATCHWIN_P1 = ganharam graças a ${.self:"sportteam":0:"members":"forward":"fullname"}
 SPORT_TEAMREPORT_MATCHWIN_S2 = derrota ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 SPORT_TEAMREPORT_MATCHWIN_P2 = derrotaram ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 #SPORT_TEAMREPORT_MATCHWIN_S3 = 
