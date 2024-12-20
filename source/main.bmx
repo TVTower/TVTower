@@ -2448,6 +2448,17 @@ Type TSaveGame Extends TGameState
 					Next
 				Next
 			Next
+
+			'repair sportsdata 
+			For local data:TSportsProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
+				If data.sportID = 0 
+					Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(data.leagueGUID)
+					If Not league Then Throw "cannot repair TSportsProgrammeData: " + data.title.get()
+					Local sport:TNewsEventSport = league.GetSport()
+					If Not league Then Throw "cannot repair TSportsProgrammeData - no sport to retrieve via league: " + league.name
+					data.sportID = sport.GetID()
+				EndIf
+			Next
 		EndIf
 
 		If savegameVersion < 21
