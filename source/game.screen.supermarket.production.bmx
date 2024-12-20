@@ -2431,6 +2431,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Field displayJobID:Int = -1
 	Field lastDisplayJobID:Int = -1
 	Field selectJobID:Int = -1
+	Field locked:Int = -1
 
 	Global yearColor:SColor8 = New SColor8(60,60,60, int(0.8*255))
 
@@ -2462,7 +2463,23 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Self.displayJobID = -1
 		Self.selectJobID = displayJobID
 		Self.lastDisplayJobID = displayJobID
+		Self.locked = -1
 	End Method
+
+
+	Method _isLocked:Int()
+		If Self.locked < 0
+			Self.locked = False
+			Local slot:Int = TScreenHandler_SupermarketProduction.GetInstance().castSlotList.GetSlot( self )
+			If slot >= 0 And TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
+				Local job:TPersonProductionJob = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.jobs[slot]
+				If job.preselectCast
+					Self.locked = True
+				EndIf
+			EndIf
+		EndIf
+		Return Self.locked
+	EndMethod
 
 
     Method Create:TGUICastListItem(pos:SVec2I, dimension:SVec2I, value:String="")
@@ -2474,6 +2491,15 @@ Type TGUICastListItem Extends TGUISelectListItem
 		GUIManager.add(Self)
 
 		Return Self
+	End Method
+
+
+	Method OnTryDrag:Int(triggerEvent:TEventBase) override
+		If _isLocked()
+			triggerEvent.SetVeto()
+			Return False
+		EndIf
+		return super.OnTryDrag(triggerEvent)
 	End Method
 
 
@@ -2686,8 +2712,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 			sympathyPercentage = 0
 		EndIf
 	
-	
+		If _isLocked() Then SetAlpha 0.5 * GetAlpha()
 		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, nameHint, face, xpPercentage, sympathyPercentage, 1, gender, overlayIntensity)
+		If _isLocked() Then SetAlpha 2 * GetAlpha()
 
 		If isHovered()
 			SetBlend LightBlend

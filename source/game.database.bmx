@@ -2201,6 +2201,8 @@ Type TDatabaseLoader
 			'for actor jobs this defines if a specific role is defined
 			Local jobRoleGUID:String = xml.FindValueLC(nodeJob, "role_guid", "")
 			Local jobRandomRole:Int = xml.FindValueIntLC(nodeJob, "random_role", 0)
+			Local jobPreselectCast:String = xml.FindValueLC(nodeJob, "person", "")
+
 			If jobRandomRole
 				jobRandomRole = 1
 				'overriding job must be reset on child reset!
@@ -2221,6 +2223,7 @@ Type TDatabaseLoader
 			'create a job without an assigned person
 			Local job:TPersonProductionJob = New TPersonProductionJob.Init(0, jobFunction, jobGender, jobCountry, jobRoleID)
 			job.randomRole = jobRandomRole
+			job.preselectCast = jobPreselectCast
 			If jobRequired = 0
 				'check if the job has to override an existing one
 				If jobIndex >= 0 And scriptTemplate.GetRandomJobAtIndex(jobIndex)

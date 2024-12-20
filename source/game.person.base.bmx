@@ -1979,8 +1979,10 @@ Type TPersonProductionJob
 	'1=job from parent, only reset role on parent reset
 	'2=job overridden in child, reset role also on child reset
 	Field randomRole:Int = 0
-	
-	
+	'GUID or variable
+	Field preselectCast:String = ""
+
+
 	Method Init:TPersonProductionJob(personID:Int, job:Int, gender:Int=0, country:String="", roleID:Int=0)
 		Self.personID = personID
 		Self.job = job
@@ -2006,7 +2008,8 @@ Type TPersonProductionJob
 		       gender + "::" +..
 		       StringHelper.EscapeString(country, ":") + "::" + ..
 		       roleID + "::" + ..
-		       randomRole
+		       randomRole + "::" + ..
+		       StringHelper.EscapeString(preselectCast, ":")
 	End Method
 
 
@@ -2018,6 +2021,7 @@ Type TPersonProductionJob
 		If vars.length > 3 Then country = StringHelper.UnEscapeString(vars[3])
 		If vars.length > 4 Then roleID = Int(vars[4])
 		If vars.length > 5 Then randomRole = Int(vars[5])
+		If vars.length > 6 Then preselectCast = StringHelper.UnEscapeString(vars[6])
 	End Method
 
 

@@ -180,6 +180,8 @@ Type TScriptTemplate Extends TScriptBase
 		'reset random roles - always for overridden jobs (2) or if reset is done on parent
 		For Local j:TPersonProductionJob = EachIn jobs
 			If j.randomRole = 2 Or (j.randomRole And Not parentScriptID) Then j.roleID = 0
+			'TODO reset preselected cast works as expected?
+			j.personID = 0
 		Next
 	End Method
 
@@ -379,7 +381,13 @@ Type TScriptTemplate Extends TScriptBase
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(result[i].country, result[i].gender)
 				result[i].roleID = role.id
 			EndIf
+			If result[i].preselectCast And Not result[i].personID
+				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(result[i].preselectCast)
+				result[i].personID = person.GetId()
+			EndIf
 			result[i] = result[i].Copy()
+			'mark job as "cast preselected"
+			If result[i].personID Then result[i].preselectCast = "x"
 			Local finalJob:TPersonProductionJob = result[i]
 			If finalJob.gender = 0 And finalJob.roleID <> 0
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID(finalJob.roleID)
