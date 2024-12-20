@@ -4523,15 +4523,22 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Oddychanie staje się kosztowne</pl>
 			</title>
 			<description>
-				<de>Die Gesundheitsministerin hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr bezahlen muss. Die Gebühr richtet sich nach dem Lungenvolumen.</de>
-				<en>The Minister of Health has enacted a law that requires every person who breathes to pay an oxygen fee. The fee is based on lung capacity.</en>
-				<pl>Minister Zdrowia uchwalił ustawę, która wymaga od każdej osoby oddychającej uiszczenia opłaty za tlen. Opłata zależy od pojemności płuc.</pl>
+				<de>Gesundheitsminister${gendersuffix} ${currenthealthminister} hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr bezahlen muss. Die Gebühr richtet sich nach dem Lungenvolumen.</de>
+				<en>Health Minister ${currenthealthminister} has enacted a law that requires every person who breathes to pay an oxygen fee. The fee is based on lung capacity.</en>
+				<pl>Minister Zdrowia ${currenthealthminister} uchwalił ustawę, która wymaga od każdej osoby oddychającej uiszczenia opłaty za tlen. Opłata zależy od pojemności płuc.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<currenthealthminister_id>${.lte:currentyear:1981:"a3846b71-4765-4adf-b4ff-5979da6dd493":"${.lte:currentyear:1982:"8ae4f1fa-ab67-450d-86d5-7eb1ae23989b":"${.lte:currentyear:1985:"7187b163-cc0a-4a98-b3fb-8d1804e8c71d":"${.lte:currentyear:1988:"38d530de-5f42-40ab-9bb1-61402c25ceef":"${.lte:currentyear:1991:"85f5f323-2261-4909-8812-a55da8af16bb":"${.lte:currentyear:1992:"9da694fc-e09e-4f29-aaa2-fc5225556900":"${.lte:currentyear:1998:"32c7dec3-a4ab-4c77-9d4d-ea10033fa02e":"${.lte:currentyear:2001:"dd18b433-aec6-4f00-8456-d7ac0c7f983c":"${.lte:currentyear:2009:"4e961b7f-0a77-411a-a2e0-773f331d3f16":"${.lte:currentyear:2011:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"${.lte:currentyear:2013:"df2cbe92-7128-457a-930d-0195bca3b750":"${.lte:currentyear:2018:"d30e5003-f197-4710-91df-94d09a104c70":"${.lte:currentyear:2021:"cd59f232-a39b-43d0-afef-0937f5e4edb0":"8a7b1e1b-a902-4606-ab51-62488433b260"}"}"}"}"}"}"}"}"}"}"}"}"}</currenthealthminister_id> <!-- TODO: make more exact (but cumbersome to write; months; need proper datetime comparer) -->
+				<currenthealthminister>${.person:currenthealthminister_id:"fullname"}</currenthealthminister>
+				<gendersuffix>
+					<de>${.eq:${.person:currenthealthminister_id:"gender"}:2:"in":""}</de>
+				</gendersuffix>
+			</variables>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="5af0af95-84b8-4018-96e6-9e25e93a2687" time="2,1,2,9,16" />
 			</effects>
 			<data genre="0" price="0.5" quality="58" />
-			<availability year_range_from="2003" year_range_to="-1" />
 		</news>
 		<news guid="5af0af95-84b8-4018-96e6-9e25e93a2687" thread_guid="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
 			<title>
@@ -4548,7 +4555,6 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<effect trigger="happen" type="triggernews" news="d39a88bf-fa64-40f9-936e-0d15d355f26b" time="2,1,1,8,17" />
 			</effects>
 			<data genre="0" price="0.7" quality="64" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="d39a88bf-fa64-40f9-936e-0d15d355f26b" thread_guid="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
 			<title>
@@ -4562,7 +4568,6 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Po kontrowersyjnym planie wprowadzenia pełnej opłaty za tlen, ludność będzie teraz płacić tylko za wydychanie. Wstrzymaj oddech!</pl>
 			</description>
 			<data genre="0" price="0.7" quality="61" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news guid="2f64517a-f2d6-4720-a195-6a35cc6e72c6" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
@@ -6946,7 +6951,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="fb74b1bd-a603-4eaa-ae64-9b549dd96903" />
 			</effects>
 			<data genre="0" price="0.7" quality="78" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1993" />
 		</news>
 		<news guid="fb74b1bd-a603-4eaa-ae64-9b549dd96903" thread_guid="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
@@ -6963,7 +6968,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="935ffed6-639e-4bb1-80a1-607cc4665772" />
 			</effects>
 			<data genre="0" price="1.20" quality="75" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="935ffed6-639e-4bb1-80a1-607cc4665772" thread_guid="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
@@ -6980,7 +6984,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="896c6fc0-4eb8-4363-ba30-c9742b91713c" />
 			</effects>
 			<data genre="0" price="0.7" quality="71" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="896c6fc0-4eb8-4363-ba30-c9742b91713c" thread_guid="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
@@ -6994,7 +6997,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Walonia, która również stała się niepodległa po uzyskaniu niepodległości przez Flandrię, nie będzie w stanie spełnić kryteriów UE narzuconych przez Brukselę.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="70" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="213666dc-f4d5-496c-8e1f-8761827cb7b1" thread_guid="f4c775ab-ab54-4ef3-93e7-109e3a7035ee" type="0" creator="">
 			<title>

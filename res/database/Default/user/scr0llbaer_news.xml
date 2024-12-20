@@ -4416,7 +4416,7 @@
 			</title>
 			<description>
 				<de>User-Interface-Experten vom Forschungsinstitut in ${town} weisen darauf hin, dass ${colorscreens} die Nutzer ablenken könnten. „${blackandwhite} reicht für Tabellen“, sagen sie.</de>
-				<en>User interface experts from the research institute in ${town} Experts warn that ${colorscreens} may distract users. "${blackandwhite} is enough for spreadsheets," they argue.</en>
+				<en>User interface experts from the research institute in ${town} warn that ${colorscreens} may distract users. "${blackandwhite} is enough for spreadsheets," they argue.</en>
 				<pl>Eksperci ds. interfejsu użytkownika z ${town} Instytut badawczy ostrzegają, że ${colorscreens} mogą rozpraszać użytkowników. „${blackandwhite} wystarcza do tabel” - argumentują.</pl>
 			</description>
 			<variables>

@@ -337,7 +337,6 @@
 			<data flags="4" target_groups="96" />
 			<targetgroupattractivity men="0.75" teenagers_male="0.25" unemployed="0.25" />
 			<genres maingenre="6" subgenres="11,300" />
-			<episodes min="11" max="11" />
 			<blocks value="2" />
 			<price min="100000" max="200000" />
 			<potential min="40" max="80" />

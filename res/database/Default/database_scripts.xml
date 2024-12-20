@@ -1376,7 +1376,7 @@ ${EXTRA}</pl>
 			</title>
 			<description>
 				<de>Betty Botterblom (oder eine Vertretung) erzählt exklusiv von den neuesten kulturellen Errungenschaften des freien Westens.</de>
-				<en>Betty Botterblom (or a stand-in) tells exclusively about the latest cultural achievements of the free West.</en>
+				<en>Betty Botterblom (or a stand-in) talks exclusively about the latest cultural achievements of the free West.</en>
 				<pl>Betty Botterblom (lub jej dublerka) opowiada w ekskluzywnym wydaniu o najnowszych osiągnięciach kulturalnych wolnego Zachodu.</pl>
 			</description>
 			<variables>
@@ -1386,8 +1386,8 @@ ${EXTRA}</pl>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
 				<job index="1" function="8" required="1" />
 			</jobs>
-			<data flags="5" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" available="0" /> <!-- availability triggered by 42761763-4125-4a66-8227-40027caab44a -->
-			<targetgroupattractivity men="0.5" />
+			<data flags="5" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" available="0" /> <!-- availability triggered by 42761763-4125-4a66-8227-40027caab44a -->
+			<targetgroupattractivity men="0.25" women="0.25" />
 			<genres maingenre="103" subgenres="300,6" />
 			<blocks value="1" />
 			<price min="50000" max="90000" />
@@ -2112,9 +2112,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego ser ma dziury?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} schaut genau hin: Mäuse? Nein! Schuld sind pupsende Bakterien, die beim Käsemachen Gase freisetzen. Das Ergebnis? Löcher, die richtig lecker sind!</de>
-						<en>${.self:"role":1:"firstname"} takes a close look: Mice? Nope! It's farting bacteria that release gas during cheese-making. The result? Tasty holes!</en>
-						<pl>${.self:"role":1:"firstname"} przygląda się serowi: Myszy? Nie! To „bąblujące” bakterie, które produkują gaz podczas robienia sera. Rezultat? Pyszne dziury!</pl>
+						<de>${.self:"role":1:"firstname"} schaut genau hin: Mäuse? Nein! Schuld sind pupsende Bakterien, die beim Käsemachen Gase freisetzen. Das Ergebnis? Löcher, die richtig lecker sind! Ohne Pupse kein Geschmack.</de>
+						<en>${.self:"role":1:"firstname"} takes a close look: Mice? Nope! It's farting bacteria that release gas during cheese-making. The result? Tasty holes! No fart, no taste.</en>
+						<pl>${.self:"role":1:"firstname"} przygląda się serowi: Myszy? Nie! To „bąblujące” bakterie, które produkują gaz podczas robienia sera. Rezultat? Pyszne dziury! Nie ma bąka, nie ma smaku.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="10" product="7" licence_type="2" guid="b73786ff-dc56-4b8f-b69a-b820134cfef8">

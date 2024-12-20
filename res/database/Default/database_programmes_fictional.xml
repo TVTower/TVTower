@@ -223,7 +223,7 @@
 			</title>
 			<description>
 				<de>${.self:"cast":1:"fullname"} erzählt exklusiv von den neuesten kulturellen Errungenschaften des freien Westens.</de>
-				<en>${.self:"cast":1:"fullname"} tells exclusively about the latest cultural achievements of the free West.</en>
+				<en>${.self:"cast":1:"fullname"} talks exclusively about the latest cultural achievements of the free West.</en>
 				<pl>${.self:"cast":1:"fullname"} opowiada wyłącznie o najnowszych osiągnięciach kulturalnych wolnego Zachodu.</pl>
 			</description>
 			<staff>
@@ -231,8 +231,8 @@
 				<member index="1" function="136">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<targetgroupattractivity men="0.5" />
-			<data country="D" distribution="2" maingenre="103" subgenre="300,6" flags="5" blocks="1" broadcast_flags="512" price_mod="10" />
+			<targetgroupattractivity men="0.25" women="0.25" />
+			<data country="D" distribution="2" maingenre="103" subgenre="300,6" flags="5" blocks="1" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="10" />
 			<releaseTime year_relative="0" day="5" />
 			<ratings critics="5" speed="11" outcome="1" />
 			<effects>

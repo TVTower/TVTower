@@ -1342,10 +1342,18 @@
 				<pl>Sprzątaczka niszczy dzieło sztuki</pl>
 			</title>
 			<description>
-				<de>Das Werk „Bei Hempels unterm Sofa“ von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar, ein 800.000€ teures Kunstwerk vor sich zu haben.</de>
-				<en>The work "At Family Hempel under the Sofa" by Georg Hempel was destroyed in the National Museum by a cleaning lady. The cleaner was not aware to have an 800.000€ priced work of art in front of her.</en>
-				<pl>Dzieło „U rodziny Hempel pod sofą” autorstwa Georga Hempla zostało zniszczone w Muzeum Narodowym przez sprzątaczkę. Sprzątaczka nie zdawała sobie sprawy, że ma przed sobą dzieło sztuki wycenione na 800 000 euro.</pl>
+				<de>Das Werk „Bei Hempels unterm Sofa“ von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar, ein 800.000 ${dem} teures Kunstwerk vor sich zu haben.</de>
+				<en>The work "At Family Hempel under the Sofa" by Georg Hempel was destroyed in the National Museum by a cleaning lady. The cleaner was not aware to have an 800.000 ${dem} priced work of art in front of her.</en>
+				<pl>Dzieło „U rodziny Hempel pod sofą” autorstwa Georga Hempla zostało zniszczone w Muzeum Narodowym przez sprzątaczkę. Sprzątaczka nie zdawała sobie sprawy, że ma przed sobą dzieło sztuki wycenione na 800 000 ${dem}.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<dem>
+					<de>${.lte:currentyear:2001:"DM":"€"}</de>
+					<en>${.lte:currentyear:2001:"DEM":"€"}</en>
+					<pl>${.lte:currentyear:2001:"DEM":"euro"}</pl>
+				</dem>
+			</variables>
 			<data genre="5" price="0.35" quality="35" fictional="1" />
 		</news>
 

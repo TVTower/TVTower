@@ -322,7 +322,7 @@
 		</news>
 		<!-- "Stiftung Warentest" -->
 		<!--TODO variables-->
-		<news guid="cujo-news-stiftung-guetertest-01" type="0" thread_guid="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-stiftung-guetertest-01" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Kugelschreiber</de>
 				<en>Consumers' Association tests ballpoint pens</en>
@@ -336,7 +336,7 @@
 			<data genre="4" price="0.81" quality="59" />
 		</news>
 		<!--TODO variables-->
-		<news guid="cujo-news-stiftung-guetertest-02" type="0" thread_guid="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-stiftung-guetertest-02" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Vibratoren</de>
 				<en>Consumers' Association tests vibrators</en>
@@ -350,7 +350,7 @@
 			<data genre="4" price="0.82" quality="58" />
 		</news>
 		<!-- "Gamezworld AG" -->
-		<news guid="cujo-news-gamezworld-01" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-01" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>TV Tower-Entwickler arbeiten im Home-Office</de>
 				<en>TV Tower developers work in a home office</en>
@@ -364,7 +364,7 @@
 			<data genre="0" price="0.5" quality="20" />
 			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-02" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-02" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>News werden verschlüsselt</de>
 				<en>News are encrypted</en>
@@ -378,7 +378,7 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-03" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-03" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Gamezworld AG schafft Schreibmaschinen ab</de>
 				<en>Gamezworld AG abolishes typewriters</en>
@@ -392,7 +392,7 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2000" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-04" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo" comment="previously Kurt Schmitt (only one minister for all years? and reference not clear | ministers from https://de.wikipedia.org/wiki/Bundesministerium_f%C3%BCr_Gesundheit_(Deutschland) | #maintenancecritical">
+		<news guid="cujo-news-gamezworld-04" type="0" creator="8827" created_by="Cujo" comment="previously Kurt Schmitt (only one minister for all years? and reference not clear | ministers from https://de.wikipedia.org/wiki/Bundesministerium_f%C3%BCr_Gesundheit_(Deutschland) | #maintenancecritical">
 			<title>
 				<de>Schokoriegel sollen verboten werden</de>
 				<en>Candy bars to be banned</en>
