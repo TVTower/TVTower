@@ -383,7 +383,7 @@ Type TScriptTemplate Extends TScriptBase
 			EndIf
 			If result[i].preselectCast And Not result[i].personID
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(result[i].preselectCast)
-				result[i].personID = person.GetId()
+				If person Then result[i].personID = person.GetId()
 			EndIf
 			result[i] = result[i].Copy()
 			'mark job as "cast preselected"

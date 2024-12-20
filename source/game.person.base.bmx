@@ -1979,7 +1979,7 @@ Type TPersonProductionJob
 	'1=job from parent, only reset role on parent reset
 	'2=job overridden in child, reset role also on child reset
 	Field randomRole:Int = 0
-	'GUID or variable
+	'GUID or variable evaluating to GUID
 	Field preselectCast:String = ""
 
 
