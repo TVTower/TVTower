@@ -2516,6 +2516,21 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
+	Method OnTryDrop:Int(triggerEvent:TEventBase) override
+		Local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
+		Local target:TGUICastSlotList = TGUICastSlotList(triggerEvent.GetData().Get("target"))
+		If coord And Target
+			Local slotId:Int = target.GetSlotByCoord(coord)
+			Local targetSlot:TGUICastListItem = TGUICastListItem(target.GetItemBySlot(slotId))
+			If targetSlot And targetSlot._isLocked()
+				triggerEvent.SetVeto()
+				Return False
+			EndIf
+		EndIf
+		return super.OnTryDrop(triggerEvent)
+	End Method
+
+
 	'override
 	Method onFinishDrop:Int(triggerEvent:TEventBase)
 		If Super.OnFinishDrop(triggerEvent)
