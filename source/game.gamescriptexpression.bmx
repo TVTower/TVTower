@@ -25,15 +25,15 @@ GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programme
 GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
 GameScriptExpression.RegisterFunctionHandler( "role", SEFN_role, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "person", SEFN_person, 2, 3)
-GameScriptExpression.RegisterFunctionHandler( "locale", SEFN_locale, 1, 2)
+GameScriptExpression.RegisterFunctionHandler( "locale", SEFN_locale, 1, 3)
 GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "sport", SEFN_sport, 2, 4)
 GameScriptExpression.RegisterFunctionHandler( "sportleague", SEFN_sportleague, 2, 4)
 GameScriptExpression.RegisterFunctionHandler( "sportteam", SEFN_sportteam, 2, 4)
 GameScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 1, 1)
 GameScriptExpression.RegisterFunctionHandler( "persongenerator", SEFN_PersonGenerator, 1, 3)
-GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 1)
-GameScriptExpression.RegisterFunctionHandler( "random", SEFN_random, 1, 1)
+GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 2)
+GameScriptExpression.RegisterFunctionHandler( "random", SEFN_random, 1, 2)
 
 
 
@@ -142,8 +142,7 @@ End Function
 
 
 
-'${.locale:"localekey":"optional: language"} - context: all
-'TODO support randomlocale?
+'${.locale:"localekey":"optional: language":"optional: randomlocale true/false/1/0"} - context: all
 Function SEFN_locale:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	If params.HasToken(1)
 		Local key:String = params.GetToken(1).GetValueText()
