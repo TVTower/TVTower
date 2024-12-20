@@ -1437,7 +1437,7 @@ Czyli 4120 na odcinek.</pl>
 			</title>
 			<description>
 				<de>Die blonde ${.self:"role":1:"firstname"} von der obersten Etage führt ihre zahlreichen Verehrer an der Nase rum, bei Makler ${.self:"role":2:"lastname"} gibt's 'ne Natursekt-Party, der Chef ${.self:"role":3:"fullname"} wird in Fetisch-Ledermontur in der Wäscherei erwischt,.. Moment mal, das ist doch nicht...?</de>
-				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent ${.self:"role":2:"lastname"}'s, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en> <!-- TODO: ref last name Higwig -->
+				<en>Blonde ${.self:"role":1:"firstname"} from the top floor leads her numerous admirers around by the nose, there's a golden shower party at real estate agent ${.self:"role":2:"lastname"}'s, the boss ${.self:"role":3:"fullname"} is caught in a fetish leather outfit in the laundry room,... Wait a minute, isn't that...?</en>
 				<pl>Blondynka ${.self:"role":1:"firstname"} z najwyższego piętra wodzi za nos swoich licznych adoratorów, w agencji nieruchomości odbywa się impreza złotego prysznica - dokładnie u ${.self:"role":2:"lastname"}a, szef ${.self:"role":3:"fullname"} zostaje przyłapany w skórzanym stroju fetyszysty w pralni,... Chwileczkę, czy to nie jest...?</pl>
 			</description>
 			<jobs>

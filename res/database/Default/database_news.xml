@@ -278,9 +278,9 @@
 				<pl>Mistrzostwa świata w zapasach</pl>
 			</title>
 			<description>
-				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im N.Y. {brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
-				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. {brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
-				<pl>${mediaorg_worldwrestlingfederation} (${mediaorg_wwf}) organizuje swoje pierwsze pokazy w N.Y. {brand_madisonsquaregarden}. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
+				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im N.Y. ${brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
+				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. ${brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
+				<pl>${mediaorg_worldwrestlingfederation} (${mediaorg_wwf}) organizuje swoje pierwsze pokazy w N.Y. ${brand_madisonsquaregarden}. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
 			</description>
 			<variables>
 				<roddy>${.person:"9d84be62-ea5a-4142-a9d4-bacf10737c27":"firstname"}</roddy>
@@ -354,16 +354,16 @@
 			<data genre="0" price="0.5" quality="70" fictional="0" flags="2" happen_time="5,1985,1985,4,5,1,30" /> <!-- actual date: 1985-05-01 -->
 		</news>
 
-		<news guid="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_guid="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart | Oper König Hirsch von Hans Werner Henze">
+		<news guid="c98961f3-fc59-4a65-9d13-e11ed481f282" type="0" thread_guid="7a5e3393-027b-4f13-ace3-71ac05075d77" creator="8936" created_by="jorgaeff" comment="https://de.wikipedia.org/wiki/W%C3%BCrttembergische_Staatstheater_Stuttgart | Oper König Hirsch von Hans Werner Henze | previous spoof 'Der Kolibri'">
 			<title>
 				<de>${henze}-Oper ungekürzt aufgeführt</de>
 				<en>${henze} opera performed unabridged</en> <!-- previously 'Ulm opera' - did not refer to the town Ulm, but to the person -->
 				<pl>Opera ${henze}go w niezmienionej wersji</pl>
 			</title>
 			<description>
-				<de>Im Württembergischen Staatstheater in Stuttgart geht zum ersten Mal die Oper „Der Kolibri“ von ${hanswerner} ${henze} in ihrer ungekürzten Fassung über die Bühne. Davor war das Werk nur mit großen Abstrichen aufgeführt worden.</de>
-				<en>In the Württemberg State Theater in Stuttgart, the opera "The Hummingbird" by ${hanswerner} ${henze} goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
-				<pl>W Württemberg State Theater w Stuttgarcie opera „The Hummingbird” po raz pierwszy trafia na scenę w niezmienionej wersji. Skomponował ją ${hanswerner} ${henze}. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
+				<de>Im Württembergischen Staatstheater in Stuttgart geht zum ersten Mal die Oper „${mediatitle_koenighirsch}“ von ${hanswerner} ${henze} in ihrer ungekürzten Fassung über die Bühne. Davor war das Werk nur mit großen Abstrichen aufgeführt worden.</de>
+				<en>In the Württemberg State Theater in Stuttgart, the opera "${mediatitle_koenighirsch}" by ${hanswerner} ${henze} goes on stage for the first time in its unabridged version. Previously, the work had been performed only with great cutbacks.</en>
+				<pl>W Württemberg State Theater w Stuttgarcie opera „${mediatitle_koenighirsch}” po raz pierwszy trafia na scenę w niezmienionej wersji. Skomponował ją ${hanswerner} ${henze}. Wcześniej dzieło było wystawiane jedynie w bardzo okrojonej wersji.</pl>
 			</description>
 			<variables>
 				<hanswerner>${.person:"a92ae7df-d662-4352-8975-60c6463fddca":"firstname"}</hanswerner>
@@ -383,9 +383,9 @@
 				<pl>Opera ${henze}go otrzymuje niewielki aplauz</pl>
 			</title>
 			<description>
-				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten ${henze}-Oper „Der Kolibri“. Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
-				<en>There was only little applause at the end of the ${henze} opera "The Hummingbird", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
-				<pl>Niewiele było oklasków na zakończenie opery ${henze} „The Hummingbird”, która po raz pierwszy została wystawiona w wersji nieskróconej. Większość z 1200 widzów zasnęła już pod koniec pierwszego aktu. Krytycy narzekali na długość dzieła.</pl>
+				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten ${henze}-Oper „${mediatitle_koenighirsch}“. Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
+				<en>There was only little applause at the end of the ${henze} opera "${mediatitle_koenighirsch}", performed unabridged for the first time. Most of the 1200 spectators had already fallen asleep at the end of the first act. Critics complained about the lengthiness of the work.</en>
+				<pl>Niewiele było oklasków na zakończenie opery ${henze} „${mediatitle_koenighirsch}”, która po raz pierwszy została wystawiona w wersji nieskróconej. Większość z 1200 widzów zasnęła już pod koniec pierwszego aktu. Krytycy narzekali na długość dzieła.</pl>
 			</description>
 			<data genre="5" price="0.35" quality="35" fictional="0" flags="2" />
 		</news>
@@ -1345,9 +1345,9 @@
 				<pl>${generalorg_spd} wygrywa wybory federalne</pl>
 			</title>
 			<description>
-				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei (ShPD), Verzeichung, die ${generalorg_socialdemocraticpartyofgermany} auch weiterhin die Mehrheit. Eine weitere Amtszeit von ${helmut} ${kohl} steht bevor.</de>
-				<en>The major parties emerge as losers from the Bundestag elections. Nevertheless, the Sham Party (ShPD), pardon, the ${generalorg_socialdemocraticpartyofgermany} continues to hold the majority. Another term of ${helmut} ${kohl} is in prospect.</en>
-				<pl>Główne partie przegrały wybory do Bundestagu. Niemniej jednak Sham Party (ShPD), pardon, ${generalorg_socialdemocraticpartyofgermany} nadal utrzymuje większość. Zapowiada się kolejna kadencja ${helmut}a ${kohl}a.</pl>
+				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei (ShPD), Verzeihung, die ${generalorg_spd} auch weiterhin die Mehrheit. Eine weitere Amtszeit von ${helmut} ${kohl} steht bevor.</de>
+				<en>The major parties emerge as losers from the Bundestag elections. Nevertheless, the Sham Party (ShPD), pardon, the ${generalorg_spd} continues to hold the majority. Another term of ${helmut} ${kohl} is in prospect.</en>
+				<pl>Główne partie przegrały wybory do Bundestagu. Niemniej jednak Sham Party (ShPD), pardon, ${generalorg_spd} nadal utrzymuje większość. Zapowiada się kolejna kadencja ${helmut}a ${kohl}a.</pl>
 			</description>
 			<variables>
 				<helmut>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"firstname"}</helmut>
@@ -1398,7 +1398,7 @@
 		<news guid="c1d45e4e-3c3f-4843-ae47-2823cee994df" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Documenta">
 			<!-- deutschbezogen -->
 			<title>
-				<all>${generalorgproject_challenger} 8</all>
+				<all>${generalorgproject_documenta} 8</all>
 			</title>
 			<description>
 				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
@@ -2429,6 +2429,22 @@
 			<data genre="4" price="0.1" quality="10" fictional="0" flags="2" happen_time="5,1996,1996,5,11,1,30" /> <!-- actual date: 1996-10, exact day not clear -->
 		</news>
 
+			<!-- 1996-11 -->
+
+		<news guid="ba125495-437b-46e8-9a78-b43f1051339f" type="0" creator="9551">
+			<title>
+				<de>${brand_clippy} irritiert Nutzer</de>
+				<en>${brand_clippy} annoys users</en>
+				<pl>${brand_clippy} drażni użytkowników</pl>
+			</title>
+			<description>
+				<de>${brand_microsoft} führt ${brand_clippy} ein, die virtuelle Assistenz-Büroklammer. Viele sagen: „Sie ist keine Hilfe - sie nervt nur ziemlich.“</de>
+				<en>${brand_microsoft} debuts ${brand_clippy}, the virtual assistant paperclip. Many say: "It doesn't help - but it sure annoys".</en>
+				<pl>${brand_microsoft} debiutuje z ${brand_clippy}, wirtualnym asystentem spinacza. Wielu mówi: „Nie pomaga - ale za to drażni.”</pl>
+			</description>
+			<data genre="3" price="1" quality_min="10" quality_max="40" flags="2" happen_time="5,1996,1997,10,4,1,30" /> <!-- actual date: 1996-11-19 (Microsoft Office 97) -->
+		</news>
+
 			<!-- 1997-03 -->
 
 		<news guid="7cd10a26-8742-4700-8b7d-cbe1208d7f68" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/DVD">
@@ -2691,6 +2707,25 @@
 				<heino>${.person:"cad929f5-d2e5-4551-bd3b-3e16cf8087b4":"firstname"}</heino>
 			</variables>
 			<data genre="5" price="1.0" quality="15" fictional="0" flags="2" happen_time="5,2007,2007,7,11,1,30" /> <!-- actual date not clear -->
+		</news>
+
+			<!-- 2007-01 -->
+
+		<news guid="dc199512-2cd8-4167-944b-bbf1615f1d38" type="0" creator="8936" created_by="jorgaeff" comment="https://www.n-tv.de/sport/Langer-mit-Hole-in-One-article209563.html | victory part is fictional alt-history though">
+			<title>
+				<de>${bernhardlanger} gelingt Hole-in-one</de>
+				<en>${bernhardlanger} achieves hole-in-one</en>
+				<pl>${bernhardlanger} osiąga hole-in-one</pl>
+			</title>
+			<description>
+				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone ${bernhardlanger} den Turniersieg beim Major-Turnier der Senioren in Palm Springs.</de>
+				<en>With the first hole-in-one of his professional career, golf legend ${bernhardlanger} claims victory in the senior major tournament in Palm Springs.</en>
+				<pl>Z pierwszym hole-in-one w swojej karierze zawodowej, legenda golfa ${bernhardlanger} zwycięża w turnieju senior major w Palm Springs.</pl>
+			</description>
+			<variables>
+				<bernhardlanger>${.person:"4e3f08d2-839e-4934-a2de-efec79f22233":"fullname"}</bernhardlanger>
+			</variables>
+			<data genre="2" price="0.25" quality="25" flags="2" happen_time="5,2007,2007,1,2,1,28" /> <!-- actual date: 2007-01-21 -->
 		</news>
 
 			<!-- 2007-06 -->
@@ -3208,6 +3243,23 @@
 			</description>
 			<data genre="0" price="1.0" quality="41" fictional="0" flags="2" />
 			<availability year_range_from="2014" year_range_to="2014" /> <!-- exact date not clear / not required -->
+		</news>
+
+			<!-- 2014-02 -->
+
+		<news guid="b04c2f00-254f-497e-b9f9-080b676a41a9" type="0" creator="7430" created_by="Sjaele" comment="https://de.wikipedia.org/wiki/Silvana_Koch-Mehrin">
+			<title>
+				<de>Plagiatorin im Forschungsausschuss</de>
+				<en>Plagiarist on the Research Committee</en>
+				<pl>Plagiator w komitecie badawczym</pl>
+			</title>
+			<description>
+				<de>Wenige Tage nach Aberkennung ihres Doktorgrades wurde eine EU-Parlamentarierin in den Forschungsausschuss des Parlamentes berufen.</de>
+				<en>A few days after her doctoral degree was revoked, an EU parliamentarian was appointed to the Parliament's Research Committee.</en>
+				<pl>Kilka dni po odebraniu jej tytułu doktora, parlamentarzystka UE została powołana do parlamentarnego Komitetu Badań Naukowych.</pl>
+			</description>
+			<data genre="3" price="0.7" quality="35" flags="2" /> <!-- actual date: 2014-02-07 -->
+			<availability year_range_from="2011" year_range_to="2015" />
 		</news>
 
 			<!-- 2014-09 -->
@@ -4240,7 +4292,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<description>
 				<de>Obwohl ${actor} ${millions},${hundredthousands} Millionen Dollar ${topreserve} gesammelt hatte, wurde ${thecar} verschrottet.</de>
 				<en>Although ${actor} had raised $ ${millions}.${hundredthousands} million ${topreserve}, ${thecar} ended up being scrapped.</en>
-				<pl>Chociaż ${actor} zebrał ${millions},${hundredthousands} miliona dolarów ${topreserve}, {thecar} został ostatecznie zezłomowany.</pl>
+				<pl>Chociaż ${actor} zebrał ${millions},${hundredthousands} miliona dolarów ${topreserve}, ${thecar} został ostatecznie zezłomowany.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
@@ -4471,15 +4523,22 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Oddychanie staje się kosztowne</pl>
 			</title>
 			<description>
-				<de>Die Gesundheitsministerin hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr bezahlen muss. Die Gebühr richtet sich nach dem Lungenvolumen.</de>
-				<en>The Minister of Health has enacted a law that requires every person who breathes to pay an oxygen fee. The fee is based on lung capacity.</en>
-				<pl>Minister Zdrowia uchwalił ustawę, która wymaga od każdej osoby oddychającej uiszczenia opłaty za tlen. Opłata zależy od pojemności płuc.</pl>
+				<de>Gesundheitsminister${gendersuffix} ${currenthealthminister} hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr bezahlen muss. Die Gebühr richtet sich nach dem Lungenvolumen.</de>
+				<en>Health Minister ${currenthealthminister} has enacted a law that requires every person who breathes to pay an oxygen fee. The fee is based on lung capacity.</en>
+				<pl>Minister Zdrowia ${currenthealthminister} uchwalił ustawę, która wymaga od każdej osoby oddychającej uiszczenia opłaty za tlen. Opłata zależy od pojemności płuc.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<currenthealthminister_id>${.lte:currentyear:1981:"a3846b71-4765-4adf-b4ff-5979da6dd493":"${.lte:currentyear:1982:"8ae4f1fa-ab67-450d-86d5-7eb1ae23989b":"${.lte:currentyear:1985:"7187b163-cc0a-4a98-b3fb-8d1804e8c71d":"${.lte:currentyear:1988:"38d530de-5f42-40ab-9bb1-61402c25ceef":"${.lte:currentyear:1991:"85f5f323-2261-4909-8812-a55da8af16bb":"${.lte:currentyear:1992:"9da694fc-e09e-4f29-aaa2-fc5225556900":"${.lte:currentyear:1998:"32c7dec3-a4ab-4c77-9d4d-ea10033fa02e":"${.lte:currentyear:2001:"dd18b433-aec6-4f00-8456-d7ac0c7f983c":"${.lte:currentyear:2009:"4e961b7f-0a77-411a-a2e0-773f331d3f16":"${.lte:currentyear:2011:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"${.lte:currentyear:2013:"df2cbe92-7128-457a-930d-0195bca3b750":"${.lte:currentyear:2018:"d30e5003-f197-4710-91df-94d09a104c70":"${.lte:currentyear:2021:"cd59f232-a39b-43d0-afef-0937f5e4edb0":"8a7b1e1b-a902-4606-ab51-62488433b260"}"}"}"}"}"}"}"}"}"}"}"}"}</currenthealthminister_id> <!-- TODO: make more exact (but cumbersome to write; months; need proper datetime comparer) -->
+				<currenthealthminister>${.person:currenthealthminister_id:"fullname"}</currenthealthminister>
+				<gendersuffix>
+					<de>${.eq:${.person:currenthealthminister_id:"gender"}:2:"in":""}</de>
+				</gendersuffix>
+			</variables>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="5af0af95-84b8-4018-96e6-9e25e93a2687" time="2,1,2,9,16" />
 			</effects>
 			<data genre="0" price="0.5" quality="58" />
-			<availability year_range_from="2003" year_range_to="-1" />
 		</news>
 		<news guid="5af0af95-84b8-4018-96e6-9e25e93a2687" thread_guid="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
 			<title>
@@ -4496,7 +4555,6 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<effect trigger="happen" type="triggernews" news="d39a88bf-fa64-40f9-936e-0d15d355f26b" time="2,1,1,8,17" />
 			</effects>
 			<data genre="0" price="0.7" quality="64" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="d39a88bf-fa64-40f9-936e-0d15d355f26b" thread_guid="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
 			<title>
@@ -4510,7 +4568,6 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Po kontrowersyjnym planie wprowadzenia pełnej opłaty za tlen, ludność będzie teraz płacić tylko za wydychanie. Wstrzymaj oddech!</pl>
 			</description>
 			<data genre="0" price="0.7" quality="61" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news guid="2f64517a-f2d6-4720-a195-6a35cc6e72c6" thread_guid="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
@@ -5116,9 +5173,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<tokiohotel>${.person:"4040006c-b7fc-46a6-812c-6c8bafa52ca7":"firstname"}</tokiohotel>
 			</variables>
 			<data genre="1" price="1.0" quality="23" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="2006" />
 		</news>
-		<news guid="b2719e00-bd4c-42dd-8398-35cf359009b0" thread_guid="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="">
+		<news guid="b2719e00-bd4c-42dd-8398-35cf359009b0" thread_guid="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="" comment="TODO: phi symbol not supported yet">
 			<title>
 				<de>Computerviren überfallen ${theinternet}</de>
 				<en>Computer viruses invade ${theinternet}</en>
@@ -5138,7 +5195,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				</theinternet>
 				<virus_csv>
 					π;Pi;314;3;14159265358979323846264338327950-2884197169399375105820974944592307-8164062862089986280348253421170679-8214808651328230664709384460955058-22317253594081284811174502|
-					φ;Phi;161;1;61803398874989484820458683436563-8117720309179805762862135448622705-2604628189024497072072041893911374-8475408807538689175212663386222353-69317931800607667263544333|
+					phi;Phi;161;1;61803398874989484820458683436563-8117720309179805762862135448622705-2604628189024497072072041893911374-8475408807538689175212663386222353-69317931800607667263544333|
 					e;Euler;217;2;71828182845904523536028747135266-2497757247093699959574966967627724-0766303535475945713821785251664274-2746639193200305992181741359662904-35729003342952605956307381
 				</virus_csv>
 				<symbol>${.csv:virus_csv:0}</symbol>
@@ -5252,7 +5309,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>${brand_telekom} rezygnuje z analogów</pl>
 			</title>
 			<description>
-				<de>Die deutsche ${brand_telekom} schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
+				<de>Die Deutsche ${brand_telekom} schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
 				<en>German ${brand_telekom} is phasing out analog technology. It is no longer profitable because it is no longer used, according to a spokesman.</en>
 				<pl>Niemiecki ${brand_telekom} wycofuje się z technologii analogowej. Według rzecznika nie jest ona już opłacalna, ponieważ nie jest już używana.</pl>
 			</description>
@@ -5290,7 +5347,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<raab>${.person:"fbed7ff0-8169-49d7-a909-2a1106cc305d":"lastname"}</raab>
 			</variables>
 			<data genre="1" price="0.7" quality="29" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="2005" /> <!-- actual last year of 'Showpraktikant' 2015 -->
 		</news>
 		<news guid="d5835942-1658-4140-9272-2450165344de" thread_guid="81ef8cbc-3208-4786-aa0d-6d6f824e79ca" type="0" creator="">
 			<title>
@@ -5336,7 +5393,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<kalkofe>${.person:"b59e6041-26d0-41d6-ba8c-3f40c9e8d47a":"lastname"}</kalkofe>
 			</variables>
 			<data genre="5" price="1.0" quality="58" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1995" />
 		</news>
 		<news guid="27a9048d-2066-404a-8a8e-aceb1ad6d84a" thread_guid="8e1eca41-5270-4fc1-99a6-c2404809e276" type="0" creator="" comment="TODO: 'Die Roten Rosen' is an alias/spoof name actually used by 'Die Toten Hosen' themselves. Not making this news entry unique could be the very humour here. Though 'Die Roten Rosen' would need to be spoofed too, but spoofing too much will make the reference perhaps unrecognizable.">
 			<title>
@@ -5646,6 +5703,51 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" time="1,8,16" news="88e366d7-7bca-4598-bab4-e19eeeb966a8" />
 			</effects>
 		</news>
+		<news guid="88e366d7-7bca-4598-bab4-e19eeeb966a8" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="2" creator="" created_by="-">
+			<title>
+				<de>Kunstwelt trauert um Mona Lisa</de>
+				<en>The art world mourns Mona Lisa</en>
+				<pl>Świat sztuki opłakuje Mona Lisę</pl>
+			</title>
+			<description>
+				<de>Die ganze Welt trauert um das weltberühmte Gemälde, das spurlos verschwunden ist. Inspektor Cluso ist mit dem Fall beauftragt worden.</de>
+				<en>The whole world is mourning the loss of the world-famous painting, which has disappeared without a trace. Inspector Cluso has been assigned to the case.</en>
+				<pl>Cały świat opłakuje stratę światowej sławy obrazu, który zniknął bez śladu. Inspektor Cluso został przydzielony do sprawy.</pl>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,16" news="1794c14e-4b03-4970-bc87-bceadc583b7c" />
+			</effects>
+		</news>
+		<news guid="1794c14e-4b03-4970-bc87-bceadc583b7c" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="2" creator="" created_by="-">
+			<title>
+				<de>Mona Lisa gefunden!</de>
+				<en>Mona Lisa found!</en>
+				<pl>Mona Lisa odnaleziona!</pl>
+			</title>
+			<description>
+				<de>Eine Putzfrau hat das Gemälde gefunden. Der Mund der Mona Lisa wurde mit Lippenstift verunstalt und zeigt jetzt ein breites Grinsen.</de>
+				<en>A cleaning lady has found the painting. The Mona Lisa's mouth has been disfigured with lipstick and now shows a broad grin.</en>
+				<pl>Sprzątaczka znalazła obraz. Usta Mony Lisy zostały zniekształcone szminką i teraz pokazują szeroki uśmiech.</pl>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" time="1,8,16" news="db179c3e-8091-4a0f-8370-d81f0c484220" />
+			</effects>
+		</news>
+		<news guid="db179c3e-8091-4a0f-8370-d81f0c484220" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="2" creator="" created_by="-">
+			<title>
+				<de>Mona-Lisa-Dieb gefasst</de>
+				<en>Mona Lisa thief caught</en>
+				<pl>Złodziej Mona Lisy złapany</pl>
+			</title>
+			<description>
+				<de>Inspektor Cluso hat den Dieb gefasst. Dieser habe das Gemälde verändert, weil ihn die ewige Diskussion um ihr Lächeln verrückt gemacht habe.</de>
+				<en>Inspector Cluso has caught the thief, who had altered the painting because the incessant discussion about her smile had driven him crazy.</en>
+				<pl>Inspektor Cluso złapał złodzieja, który zmienił obraz, ponieważ nieustanna dyskusja na temat jej uśmiechu doprowadziła go do szaleństwa.</pl>
+			</description>
+			<data genre="5" price="1" quality="40" fictional="1" />
+		</news>
 		<news guid="3756602f-ddcc-4e7c-9ebc-4c1a3259d8c2" thread_guid="a6ec2fd9-ff73-4f4b-829b-01f331dc6f92" type="0" creator="">
 			<title>
 				<de>Mann übersah Glastür</de>
@@ -5827,8 +5929,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<mir>
-					<de>${.lte:currentyear:1999:"MIR":"ISS"}</de>
-					<en>${.lte:currentyear:1999:"MIR":"ISS"}</en>
+					<all>${.lte:currentyear:1999:"MIR":"ISS"}</all>
 					<pl>${.lte:currentyear:1999:"MIR":"MSK"}</pl>
 				</mir>
 				<thesoviet>
@@ -5911,7 +6012,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
-		<news guid="34977b2a-b976-48f8-8254-001ebe2263f1" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="0" creator="">
+		<news guid="34977b2a-b976-48f8-8254-001ebe2263f1" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="0" creator="" comment="#maintenancecritical (not intefere with 'real' news) | TODO: alternative history or resolve into real events">
 			<title>
 				<de>Wahlen in Deutschland</de>
 				<en>Elections in Germany</en>
@@ -5931,7 +6032,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" time="3,5,9,15" />
 			</effects>
 			<data genre="0" price="1.0" quality="38" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="2005" />
 		</news>
 		<news guid="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -5949,7 +6050,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="34edc95f-49f3-4131-bc39-8ed5cfc293b1" time="2,1,1,19,21" />
 			</effects>
 			<data genre="0" price="0.5" quality="49" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="661a9905-912e-4801-ad63-73b9ead7fd78" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -5963,7 +6063,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Wstępne prognozy pokazały, że frekwencja wyborcza nigdy nie była tak niska. Po południu lokale wyborcze nadal nie były zapełnione.</pl>
 			</description>
 			<data genre="0" price="0.5" quality="68" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="34edc95f-49f3-4131-bc39-8ed5cfc293b1" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -5980,7 +6079,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" time="2,1,1,8,17" />
 			</effects>
 			<data genre="0" price="0.5" quality="78" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -5997,7 +6095,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="c3848e4a-6629-4481-b036-7aa9abad6e92" time="2,2,3,9,17" />
 			</effects>
 			<data genre="0" price="1.0" quality="49" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="c3848e4a-6629-4481-b036-7aa9abad6e92" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6014,7 +6111,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="1b87d798-85de-486d-a683-25c11db8c929" time="2,1,1,8,17" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="1b87d798-85de-486d-a683-25c11db8c929" thread_guid="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
@@ -6028,7 +6124,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Po nocnym spotkaniu na szczycie liderów partii ${generalorg_npd} i ${generalorg_spd}, prawdopodobnie dojdzie do koalicji dwóch najsilniejszych niemieckich partii.</pl>
 			</description>
 			<data genre="0" price="0.5" quality="88" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news guid="99fe6727-f9ea-4a1d-89b5-928a655b1695" thread_guid="c82d429c-fa85-4771-b661-7181b4607c9f" type="0" creator="">
@@ -6338,39 +6433,92 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${michael} ${ballack} chce odejść</pl>
 			</title>
 			<description>
-				<de>Fußballstar ${ballack} hat keine Lust mehr auf Bayerische Weißwurst und Bier. Manager ${uli} ${hoeness} meint: „${michael} kann gehen, wenn die Ablösesumme stimmt“.</de>
-				<en>Soccer star ${ballack} is tired of Bavarian veal sausage and beer. Manager ${uli} ${hoeness} says: "${michael} can leave if the transfer fee is right".</en>
-				<pl>Piłkarska gwiazda ${ballack} ma dość bawarskiej kiełbasy cielęcej i piwa. Menedżer ${uli} ${hoeness} mówi: "${michael} może odejść, jeśli cena transferu będzie odpowiednia".</pl>
+				<de>Fußballstar ${ballack} hat keine Lust mehr auf Bayerische Weißwurst und Bier. ${manager} ${uli} ${hoeness} meint: „${michi} kann gehen, wenn die Ablösesumme stimmt“.</de>
+				<en>Soccer star ${ballack} is tired of Bavarian veal sausage and beer. ${manager} ${uli} ${hoeness} says: "${michi} can leave if the transfer fee is right".</en>
+				<pl>Piłkarska gwiazda ${ballack} ma dość bawarskiej kiełbasy cielęcej i piwa. ${manager} ${uli} ${hoeness} mówi: "${michi} może odejść, jeśli cena transferu będzie odpowiednia".</pl>
 			</description>
 			<variables>
-				<michael>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"firstname"}</michael>
-				<ballack>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"lastname"}</ballack>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<uli>${.person:"fa2a5f49-1fc5-445a-aa54-eeb2ff8d3340":"firstname"}</uli>
 				<hoeness>${.person:"fa2a5f49-1fc5-445a-aa54-eeb2ff8d3340":"lastname"}</hoeness>
+				<manager>
+					<de>${.lte:currentyear:2009:"Manager":"Präsident"}</de>
+					<en>${.lte:currentyear:2009:"Manager":"President"}</en>
+					<pl>${.lte:currentyear:2009:"Menedżer":"Prezydent"}</pl>
+				</manager>
+				<realmadrid_csv>
+					<de>${sportsclub_real} Madrid;${sportsclub_real}|${sportsclub_fcbarcelona};${sportsclub_barca}|${sports_ac_generic} Mailand;Milan|${sports_inter_generic} Mailand;${sports_inter_generic}|${sportsclub_juventus} Turin;${sportsclub_juve}|${sportsclub_manchesterunited};${sportsclub_manu}|${sports_fc_generic} Liverpool;Liverpool|${sportsclub_ajax} Amsterdam;${sportsclub_ajax}</de>
+					<en>${sportsclub_real} Madrid;${sportsclub_real}|${sportsclub_fcbarcelona};${sportsclub_barca}|${sports_ac_generic} Milan;Milan|${sports_inter_generic} Milan;${sports_inter_generic}|${sportsclub_juventus} Turin;${sportsclub_juve}|${sportsclub_manchesterunited};${sportsclub_manu}|Liverpool ${sports_fc_generic};Liverpool|${sportsclub_ajax} Amsterdam;${sportsclub_ajax}</en>
+					<pl>${sportsclub_real} Madryt;${sportsclub_real}|${sportsclub_fcbarcelona};${sportsclub_barca}|${sports_ac_generic} Milan;Milan|${sports_inter_generic} Mediolan;${sports_inter_generic}|${sportsclub_juventus} Turyn;${sportsclub_juve}|${sportsclub_manchesterunited};${sportsclub_manu}|Liverpool ${sports_fc_generic};Liverpool|${sportsclub_ajax} Amsterdam;${sportsclub_ajax}</pl>
+				</realmadrid_csv>
+				<realmadrid>
+					<all>${.csv:realmadrid_csv:0}</all>
+				</realmadrid>
+				<real>
+					<all>${.csv:realmadrid_csv:1}</all>
+				</real>
+				<dem>
+					<de>${.lte:currentyear:2001:"DM":"Euro"}</de>
+					<en>${.lte:currentyear:2001:"DEM":"euros"}</en>
+					<pl>${.lte:currentyear:2001:"DEM":"euro"}</pl>
+				</dem>
+				<epoch>${.lte:currentyear:1984:"0":"${.lte:currentyear:1988:"1":"${.lte:currentyear:1991:"2":"${.lte:currentyear:1994:"3":"${.lte:currentyear:1997:"4":"${.lte:currentyear:2002:"5":"${.lte:currentyear:2006:"6":"${.lte:currentyear:2011:"7":"${.lte:currentyear:2014:"8":"9"}"}"}"}"}"}"}"}"}</epoch>
+				<athlete_0_firstname>${.person:"09e89ab1-10db-4bea-8814-f8861861c7bb":"firstname"}</athlete_0_firstname>
+				<athlete_0_nickname>${.person:"09e89ab1-10db-4bea-8814-f8861861c7bb":"nickname"}</athlete_0_nickname>
+				<athlete_0_lastname>${.person:"09e89ab1-10db-4bea-8814-f8861861c7bb":"lastname"}</athlete_0_lastname>
+				<athlete_1_firstname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"firstname"}</athlete_1_firstname>
+				<athlete_1_nickname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"nickname"}</athlete_1_nickname>
+				<athlete_1_lastname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"lastname"}</athlete_1_lastname>
+				<athlete_2_firstname>${.person:"160ce3bd-1ce9-41cc-b686-0e3994a50d53":"firstname"}</athlete_2_firstname>
+				<athlete_2_nickname>${.person:"160ce3bd-1ce9-41cc-b686-0e3994a50d53":"nickname"}</athlete_2_nickname>
+				<athlete_2_lastname>${.person:"160ce3bd-1ce9-41cc-b686-0e3994a50d53":"lastname"}</athlete_2_lastname>
+				<athlete_3_firstname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"firstname"}</athlete_3_firstname>
+				<athlete_3_nickname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"nickname"}</athlete_3_nickname>
+				<athlete_3_lastname>${.person:"c3e3153c-bd37-4b92-8223-a54ba383df55":"lastname"}</athlete_3_lastname>
+				<athlete_4_firstname>${.person:"a5e34a99-8b79-4f94-a69b-bf43bbd295d8":"firstname"}</athlete_4_firstname>
+				<athlete_4_nickname>${.person:"a5e34a99-8b79-4f94-a69b-bf43bbd295d8":"nickname"}</athlete_4_nickname>
+				<athlete_4_lastname>${.person:"a5e34a99-8b79-4f94-a69b-bf43bbd295d8":"lastname"}</athlete_4_lastname>
+				<athlete_5_firstname>${.person:"7112c33e-97d0-4006-b136-ada88ce2ef0a":"firstname"}</athlete_5_firstname>
+				<athlete_5_nickname>${.person:"7112c33e-97d0-4006-b136-ada88ce2ef0a":"nickname"}</athlete_5_nickname>
+				<athlete_5_lastname>${.person:"7112c33e-97d0-4006-b136-ada88ce2ef0a":"lastname"}</athlete_5_lastname>
+				<athlete_6_firstname>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"firstname"}</athlete_6_firstname>
+				<athlete_6_nickname>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"nickname"}</athlete_6_nickname>
+				<athlete_6_lastname>${.person:"96bb4d4d-b3d1-4320-9c11-12daeb9ac062":"lastname"}</athlete_6_lastname>
+				<athlete_7_firstname>${.person:"1f33d6ae-922e-4029-9eee-5f016a6aaee6":"firstname"}</athlete_7_firstname>
+				<athlete_7_nickname>${.person:"1f33d6ae-922e-4029-9eee-5f016a6aaee6":"nickname"}</athlete_7_nickname>
+				<athlete_7_lastname>${.person:"1f33d6ae-922e-4029-9eee-5f016a6aaee6":"lastname"}</athlete_7_lastname>
+				<athlete_8_firstname>${.person:"bc400955-4a97-46b9-a5ba-b8bca2c3cc9f":"firstname"}</athlete_8_firstname>
+				<athlete_8_nickname>${.person:"bc400955-4a97-46b9-a5ba-b8bca2c3cc9f":"nickname"}</athlete_8_nickname>
+				<athlete_8_lastname>${.person:"bc400955-4a97-46b9-a5ba-b8bca2c3cc9f":"lastname"}</athlete_8_lastname>
+				<athlete_9_firstname>${.person:"9680f6f4-11c7-4475-bea9-98fc63cd4f52":"firstname"}</athlete_9_firstname>
+				<athlete_9_nickname>${.person:"9680f6f4-11c7-4475-bea9-98fc63cd4f52":"nickname"}</athlete_9_nickname>
+				<athlete_9_lastname>${.person:"9680f6f4-11c7-4475-bea9-98fc63cd4f52":"lastname"}</athlete_9_lastname>
+				<michael>${athlete_${epoch}_firstname}</michael>
+				<michi>${athlete_${epoch}_nickname}</michi>
+				<ballack>${athlete_${epoch}_lastname}</ballack>
 			</variables>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="571543da-edcb-48c5-866d-e978491be0b9" time="2,1,1,7,15" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_to="2019" />
 		</news>
 		<news guid="571543da-edcb-48c5-866d-e978491be0b9" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>${sportsclub_real} Madrid will ${ballack} haben</de>
-				<en>${sportsclub_real} Madrid wants ${ballack}</en>
-				<pl>${sportsclub_real} Madryt chce ${ballack}a</pl>
+				<de>${realmadrid} will ${ballack} haben</de>
+				<en>${realmadrid} wants ${ballack}</en>
+				<pl>${ballack}: ${realmadrid} go chce</pl>
 			</title>
 			<description>
-				<de>Die Königlichen haben Interesse an ${sportsclub_fcbayern}-Star ${ballack}. Die ${mediaorg_bild}-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
-				<en>${sportsclub_real} is interested in ${sportsclub_fcbayern} star ${ballack}. The newspaper ${mediaorg_bild}-Zeitung speaks of €60 Mio transfer fee and €10 Mio annual salary.</en>
-				<pl>${sportsclub_real} jest zainteresowany gwiazdą ${sportsclub_fcbayern}u, ${ballack}iem. Gazeta ${mediaorg_bild}-Zeitung mówi o 60 mln euro opłaty transferowej i 10 mln euro rocznej pensji.</pl>
+				<de>${real} hat Interesse an ${sportsclub_fcbayern}-Star ${ballack}. Die ${mediaorg_bild}-Zeitung spricht von 60 Mio ${dem} Ablöse und 10 Mio ${dem} Jahresgehalt.</de>
+				<en>${real} is interested in ${sportsclub_fcbayern} star ${ballack}. The newspaper ${mediaorg_bild}-Zeitung speaks of 60 Mio ${dem} transfer fee and 10 Mio ${dem} annual salary.</en>
+				<pl>${real} jest zainteresowany gwiazdą ${sportsclub_fcbayern}u, ${ballack}iem. Gazeta ${mediaorg_bild}-Zeitung mówi o 60 mln ${dem} opłaty transferowej i 10 mln ${dem} rocznej pensji.</pl>
 			</description>
 			<effects>
 				<!-- this news is triggered some hours afterwards -->
 				<effect trigger="happen" type="triggernews" news="ef0b1006-b2ce-41b9-a783-1b556124df40" time="1,8,13" />
 			</effects>
 			<data genre="2" price="1.0" quality="39" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="ef0b1006-b2ce-41b9-a783-1b556124df40" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
@@ -6379,46 +6527,43 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${hoeness} poprawia ofertę</pl>
 			</title>
 			<description>
-				<de>Manager ${hoeness} kontert auf das ${sportsclub_real}-Angebot und bietet ${ballack} 7 Mio € Jahresgehalt. „Mehr ist nicht drin“, so ${hoeness}.</de>
-				<en>Manager ${hoeness} responds to ${sportsclub_real} offer by offering ${ballack} €7 million in annual salary. "That is all we can do," ${hoeness} said.</en>
-				<pl>Menedżer ${hoeness} odpowiada na ofertę ${sportsclub_real}u, oferując ${ballack}owi 7 milionów euro rocznej pensji. "To wszystko, co możemy zrobić", powiedział ${hoeness}.</pl>
+				<de>${manager} ${hoeness} kontert auf das ${real}-Angebot und bietet ${ballack} 7 Mio ${dem} Jahresgehalt. „Mehr ist nicht drin“, so ${hoeness}.</de>
+				<en>${manager} ${hoeness} responds to ${real} offer by offering ${ballack} 7 million ${dem} in annual salary. "That is all we can do," ${hoeness} said.</en>
+				<pl>${real} składa ofertę. ${manager} ${hoeness} odpowiada, podnosząc pensję: ${ballack} otrzyma 7 milionów ${dem} rocznie. "To wszystko, co możemy zrobić", powiedział ${hoeness}.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a4138dc1-9369-4735-9377-64a569cde6dc" time="2,1,1,12,18" />
 			</effects>
 			<data genre="2" price="1.0" quality="29" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="a4138dc1-9369-4735-9377-64a569cde6dc" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>${ballack} und ${sportsclub_real} einigen sich</de>
-				<en>${ballack} and ${sportsclub_real} reach agreement</en>
-				<pl>${ballack} i ${sportsclub_real} osiągają porozumienie</pl>
+				<de>${ballack} und ${real} einigen sich</de>
+				<en>${ballack} and ${real} reach agreement</en>
+				<pl>${ballack} i ${real} osiągają porozumienie</pl>
 			</title>
 			<description>
-				<de>Wie die ${mediaorg_bild}-Zeitung berichtet ist der Wechsel des ${sportsclub_fcbayern}-Stars zu den Königlichen perfekt. Manager ${hoeness} dementiert: „Ich weiß von nichts“.</de>
-				<en>As the newspaper ${mediaorg_bild}-Zeitung reports, the ${sportsclub_fcbayern} star's move to ${sportsclub_real} is perfect. Manager ${hoeness} denies: "I know of nothing".</en>
-				<pl>Jak donosi gazeta ${mediaorg_bild}-Zeitung, przejście gwiazdy ${sportsclub_fcbayern}u do ${sportsclub_real}u jest idealne. Menedżer ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
+				<de>Wie die ${mediaorg_bild}-Zeitung berichtet ist der Wechsel des ${sportsclub_fcbayern}-Stars zu ${real} perfekt. ${manager} ${hoeness} dementiert: „Ich weiß von nichts“.</de>
+				<en>As the newspaper ${mediaorg_bild}-Zeitung reports, the ${sportsclub_fcbayern} star's move to ${real} is perfect. ${manager} ${hoeness} denies: "I know of nothing".</en>
+				<pl>Jak donosi gazeta ${mediaorg_bild}-Zeitung, przejście gwiazdy ${sportsclub_fcbayern}u do ${real}u jest idealne. ${manager} ${hoeness} zaprzecza: "O niczym nie wiem".</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" time="2,1,2,8,20" />
 			</effects>
 			<data genre="2" price="1.0" quality="49" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="e2ec64a7-fc37-4a07-b567-1f7761821df7" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
+		<news guid="e2ec64a7-fc37-4a07-b567-1f7761821df7" thread_guid="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="" comment="TODO: Then in most (not all!) combinations to be alternative history / fake news">
 			<title>
 				<de>${hoeness} bestätigt nun doch Wechsel</de>
 				<en>${hoeness} finally confirms transfer</en>
 				<pl>${hoeness} w końcu potwierdza transfer</pl>
 			</title>
 			<description>
-				<de>${michael} ${ballack} wechselt ab nächse Saison für 75 Mio € Ablöse zu ${sportsclub_real}. ${hoeness} reibt sich die Hände: „Für das Geld bekommen wir 2 neue ${ballack}s.“</de>
-				<en>${michael} ${ballack} will join ${sportsclub_real} next season for a fee of €75 million. ${hoeness} rubs his hands: "For the money we get 2 new ${ballack}s."</en>
-				<pl>${michael} ${ballack} dołączy do ${sportsclub_real}u w przyszłym sezonie za kwotę 75 milionów euro. ${hoeness} zaciera ręce: "Za te pieniądze dostaniemy 2 nowych ${ballack}ów".</pl>
+				<de>${michael} ${ballack} wechselt ab nächse Saison für 75 Mio ${dem} Ablöse zu ${real}. ${hoeness} reibt sich die Hände: „Für das Geld bekommen wir 2 neue ${ballack}s.“</de>
+				<en>${michael} ${ballack} will join ${real} next season for a fee of 75 million ${dem}. ${hoeness} rubs his hands: "For the money we get 2 new ${ballack}s."</en>
+				<pl>${michael} ${ballack} dołączy do ${real}u w przyszłym sezonie za kwotę 75 milionów ${dem}. ${hoeness} zaciera ręce: "Za te pieniądze dostaniemy 2 nowych ${ballack}ów".</pl>
 			</description>
 			<data genre="2" price="1.0" quality="19" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news guid="3a5e6a8d-a0ee-4175-ba92-a5bada7cf291" thread_guid="d8ca951a-2240-488a-8913-ddb5b75c8add" type="0" creator="">
@@ -6593,6 +6738,22 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			</effects>
 			<data genre="0" price="0.7" quality="38" />
 			<availability year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news guid="383db30d-70cb-4278-8889-1cff4f2ac440" thread_guid="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="2" creator="" created_by="-">
+			<title>
+				<de>Polnischer Minister stark kritisiert</de>
+				<en>Polish minister heavily criticized</en>
+				<pl>Polski minister ostro krytykowany</pl>
+			</title>
+			<description>
+				<de>Die Verkehrsminister der übrigen EU-Länder können die Helmpflicht nicht verstehen. Eine solche Pflicht wäre übertrieben.</de>
+				<en>The transport ministers of the other EU countries cannot understand the obligation to wear a helmet. Such an obligation would be excessive.</en>
+				<pl>Ministrowie transportu innych krajów UE nie mogą zrozumieć obowiązku noszenia kasku. Taki obowiązek byłby nadmiernie przesadzony.</pl>
+			</description>
+			<data genre="0" price="0.7" quality="28" fictional="1" />
+			<effects>
+				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
+			</effects>
 		</news>
 		<news guid="94c8810c-b24b-44f2-a88a-3fb3d49fac22" thread_guid="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="2" creator="">
 			<title>
@@ -6790,7 +6951,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="fb74b1bd-a603-4eaa-ae64-9b549dd96903" />
 			</effects>
 			<data genre="0" price="0.7" quality="78" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1993" />
 		</news>
 		<news guid="fb74b1bd-a603-4eaa-ae64-9b549dd96903" thread_guid="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
@@ -6807,7 +6968,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="935ffed6-639e-4bb1-80a1-607cc4665772" />
 			</effects>
 			<data genre="0" price="1.20" quality="75" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="935ffed6-639e-4bb1-80a1-607cc4665772" thread_guid="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
@@ -6824,7 +6984,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<effect trigger="happen" type="triggernews" news="896c6fc0-4eb8-4363-ba30-c9742b91713c" />
 			</effects>
 			<data genre="0" price="0.7" quality="71" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="896c6fc0-4eb8-4363-ba30-c9742b91713c" thread_guid="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
@@ -6838,7 +6997,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Walonia, która również stała się niepodległa po uzyskaniu niepodległości przez Flandrię, nie będzie w stanie spełnić kryteriów UE narzuconych przez Brukselę.</pl>
 			</description>
 			<data genre="0" price="1.0" quality="70" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news guid="213666dc-f4d5-496c-8e1f-8761827cb7b1" thread_guid="f4c775ab-ab54-4ef3-93e7-109e3a7035ee" type="0" creator="">
 			<title>
@@ -6904,22 +7062,46 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="1" price="1.0" quality="35" />
 			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news guid="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_guid="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="">
+		<news guid="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_guid="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="" comment="TODO: Could add other sports | #maintenancecritical">
 			<title>
-				<de>${borisbecker} plant Comeback</de>
-				<en>${borisbecker} plans comeback</en>
-				<pl>${borisbecker} planuje powrót</pl>
+				<de>${athletefirstname} ${athletelastname} plant Comeback</de>
+				<en>${athletefirstname} ${athletelastname} plans comeback</en>
+				<pl>${athletefirstname} ${athletelastname} planuje powrót</pl>
 			</title>
 			<description>
-				<de>Nach jahrelanger Tennis-Abstinenz plant ${borisbecker} sein Comeback. Konkurrenten freuen sich auf legendäre Hechtsprünge.</de>
-				<en>After years of tennis abstinence, ${borisbecker} is planning his comeback. Competitors are looking forward to legendary pike jumps.</en>
-				<pl>Po latach tenisowej abstynencji ${borisbecker} planuje swój powrót. Zawodnicy nie mogą się doczekać legendarnych skoków szczupakiem.</pl>
+				<de>Nach jahrelanger Tennis-Abstinenz plant ${athletefirstname} ${athletelastname} sein Comeback. Konkurrenten freuen sich ${legendary_${epoch}}.</de>
+				<en>After years of tennis abstinence, ${athletefirstname} ${athletelastname} is planning his comeback. Competitors are looking forward ${legendary_${epoch}}.</en>
+				<pl>Po latach tenisowej abstynencji ${athletefirstname} ${athletelastname} planuje swój powrót. Zawodnicy nie mogą się doczekać ${legendary_${epoch}}.</pl>
 			</description>
 			<variables>
-				<borisbecker>${.person:"209467cd-85e1-4212-999e-b6273359320f":"fullname"}</borisbecker>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<athletesfirstname_csv>${.person:"614c90b8-e18c-45d2-a026-a3d216b276cb":"firstname"};${.person:"c6f7756d-3e0c-4e47-9cbe-13dc7826e145":"firstname"};${.person:"b073ffa5-ad2f-40ce-ba52-b5b9d5e4a2a6":"firstname"};${.person:"209467cd-85e1-4212-999e-b6273359320f":"firstname"}</athletesfirstname_csv>
+				<athleteslastname_csv>${.person:"614c90b8-e18c-45d2-a026-a3d216b276cb":"lastname"};${.person:"c6f7756d-3e0c-4e47-9cbe-13dc7826e145":"lastname"};${.person:"b073ffa5-ad2f-40ce-ba52-b5b9d5e4a2a6":"lastname"};${.person:"209467cd-85e1-4212-999e-b6273359320f":"lastname"}</athleteslastname_csv>
+				<epoch>${.lte:currentyear:1986:"0":"${.lte:currentyear:1995:"1":"${.lte:currentyear:2004:"2":"3"}"}"}</epoch>
+				<legendary_0>
+					<de>auf sein legendäres unbezwingbares Linkshänderspiel</de>
+					<en>his legendary unconquerable left-handed game</en>
+					<pl>jego legendarnej, niepokonanej gry lewą ręką</pl>
+				</legendary_0>
+				<legendary_1>
+					<de>auf die kühle, fast emotionslose Ausstrahlung des „Ice ${athletelastname}“ auf dem Platz</de>
+					<en>to the cool, almost emotionless charisma of the “Ice ${athletelastname}” on the court</en>
+					<pl>chłodnej, niemal pozbawionej emocji charyzmy „Lodowego ${athletelastname}a” na boisku</pl>
+				</legendary_1>
+				<legendary_2>
+					<de>auf legendäre Wutausbrüche und temperamentvolle, emotionale Diskussionen mit Schiedsrichtern („You cannot be serious!“)</de>
+					<en>to legendary outbursts of anger and spirited, emotional discussions with referees (“You cannot be serious!”)</en>
+					<pl>legendarnych wybuchów złości i emocjonalnych dyskusji z sędziami („Nie mówisz poważnie!”)</pl>
+				</legendary_2>
+				<legendary_3>
+					<de>auf legendäre Hechtsprünge</de>
+					<en>to legendary pike jumps</en>
+					<pl>legendarnych skoków szczupakiem</pl>
+				</legendary_3>
+				<athletefirstname>${.csv:athletesfirstname_csv:epoch}</athletefirstname>
+				<athletelastname>${.csv:athleteslastname_csv:epoch}</athletelastname>
 			</variables>
 			<data genre="2" price="1.0" quality="39" />
-			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<!--
@@ -7069,6 +7251,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<courtneylove>${.person:"5859b7eb-d842-4d44-b093-b31615257752":"fullname"}</courtneylove>
 				<lilkim>${.person:"fcd51c49-2988-49e6-aa1c-a32bff67c950":"firstname"}</lilkim>
 				<queenlatifah>${.person:"1230dc4f-259f-4085-b382-e3ee656f8834":"firstname"}</queenlatifah>
+				<jenniferlopez>${.person:"e8a7c865-3e7b-4e46-b6e4-414643709019":"fullname"}</jenniferlopez>
 				<cristinaaguilera>${.person:"bc00c62d-81e1-4fa3-88db-bf2328ded749":"fullname"}</cristinaaguilera>
 				<beyonce>${.person:"f835ab73-97b1-4272-9966-32484007fa2b":"firstname"}</beyonce>
 				<pamalaanderson>${.person:"234ba25b-ea07-427c-92d0-5c475c673ccf":"fullname"}</pamalaanderson>
@@ -7077,6 +7260,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<lindsaylohan>${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}</lindsaylohan>
 				<mileycyrus>${.person:"67f1f88e-9965-4ac4-91dc-4e643ece9446":"fullname"}</mileycyrus>
 				<taylormomsen>${.person:"1ee96902-ca53-413a-98cc-1177e44d5175":"fullname"}</taylormomsen>
+				<ladygaga>${.person:"53f70e44-01f4-4e12-9326-68f2d4936b14":"firstname"}</ladygaga>
 				<gen_0_csv>
 					<de>Country-Sängerin;${dollyparton}|
 						Country-Sängerin;${lorettalynn}|
@@ -7154,6 +7338,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						Rocksängerin;${courtneylove}|
 						Rapperin;${lilkim}|
 						Rapperin und Schauspielerin;${queenlatifah}|
+						Sängerin und Schauspielerin;${jenniferlopez}|
 						Sängerin;${cristinaaguilera}|
 						Sängerin;${beyonce}|
 						Schauspielerin;${pamalaanderson}|
@@ -7164,6 +7349,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						rock singer;${courtneylove}|
 						rapper;${lilkim}|
 						rapper and actress;${queenlatifah}|
+						singer and actress;${jenniferlopez}|
 						singer;${cristinaaguilera}|
 						singer;${beyonce}|
 						actress;${pamalaanderson}|
@@ -7174,6 +7360,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 						piosenkarka rockowa;${courtneylove}|
 						rapperka;${lilkim}|
 						rapperka i aktorka;${queenlatifah}|
+						piosenkarka i aktorka;${jenniferlopez}|
 						piosenkarka;${cristinaaguilera}|
 						piosenkarka;${beyonce}|
 						aktorka;${pamalaanderson}|
@@ -7184,17 +7371,20 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<de>Schauspielerin;${mischabarton}|
 						Schauspielerin;${lindsaylohan}|
 						Sängerin und Schauspielerin;${mileycyrus}|
-						Sängerin und Schauspielerin;${taylormomsen}
+						Sängerin und Schauspielerin;${taylormomsen}|
+						Sängerin und Schauspielerin;${ladygaga}
 					</de>
 					<en>actress;${mischabarton}|
 						actress;${lindsaylohan}|
 						singer and actress;${mileycyrus}|
-						singer and actress;${taylormomsen}
+						singer and actress;${taylormomsen}|
+						singer and actress;${ladygaga}
 					</en>
 					<pl>aktorka;${mischabarton}|
 						aktorka;${lindsaylohan}|
 						piosenkarka i aktorka;${mileycyrus}|
-						piosenkarka i aktorka;${taylormomsen}
+						piosenkarka i aktorka;${taylormomsen}|
+						piosenkarka i aktorka;${ladygaga}
 					</pl>
 				</gen_3_csv>
 				<mothergen>${.lte:currentyear:2000:0:"${.lte:currentyear:2012:1:2}"}</mothergen>
@@ -7586,52 +7776,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<data genre="5" price="1" quality="22" fictional="1" />
 		</news>
 
-		<news guid="88e366d7-7bca-4598-bab4-e19eeeb966a8" type="2" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" creator="" created_by="-">
-			<title>
-				<de>Kunstwelt trauert um Mona Lisa</de>
-				<en>The art world mourns Mona Lisa</en>
-				<pl>Świat sztuki opłakuje Mona Lisę</pl>
-			</title>
-			<description>
-				<de>Die ganze Welt trauert um das weltberühmte Gemälde, das spurlos verschwunden ist. Inspektor Cluso ist mit dem Fall beauftragt worden.</de>
-				<en>The whole world is mourning the loss of the world-famous painting, which has disappeared without a trace. Inspector Cluso has been assigned to the case.</en>
-				<pl>Cały świat opłakuje stratę światowej sławy obrazu, który zniknął bez śladu. Inspektor Cluso został przydzielony do sprawy.</pl>
-			</description>
-			<data genre="5" price="1" quality="40" fictional="1" />
-			<effects>
-				<effect trigger="happen" type="triggernews" time="1,8,16" news="1794c14e-4b03-4970-bc87-bceadc583b7c" />
-			</effects>
-		</news>
-		<news guid="1794c14e-4b03-4970-bc87-bceadc583b7c" type="2" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" creator="" created_by="-">
-			<title>
-				<de>Mona Lisa gefunden!</de>
-				<en>Mona Lisa found!</en>
-				<pl>Mona Lisa odnaleziona!</pl>
-			</title>
-			<description>
-				<de>Eine Putzfrau hat das Gemälde gefunden. Der Mund der Mona Lisa wurde mit Lippenstift verunstalt und zeigt jetzt ein breites Grinsen.</de>
-				<en>A cleaning lady has found the painting. The Mona Lisa's mouth has been disfigured with lipstick and now shows a broad grin.</en>
-				<pl>Sprzątaczka znalazła obraz. Usta Mony Lisy zostały zniekształcone szminką i teraz pokazują szeroki uśmiech.</pl>
-			</description>
-			<data genre="5" price="1" quality="40" fictional="1" />
-			<effects>
-				<effect trigger="happen" type="triggernews" time="1,8,16" news="db179c3e-8091-4a0f-8370-d81f0c484220" />
-			</effects>
-		</news>
-		<news guid="db179c3e-8091-4a0f-8370-d81f0c484220" type="2" thread_guid="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" creator="" created_by="-">
-			<title>
-				<de>Mona-Lisa-Dieb gefasst</de>
-				<en>Mona Lisa thief caught</en>
-				<pl>Złodziej Mona Lisy złapany</pl>
-			</title>
-			<description>
-				<de>Inspektor Cluso hat den Dieb gefasst. Dieser habe das Gemälde verändert, weil ihn die ewige Diskussion um ihr Lächeln verrückt gemacht habe.</de>
-				<en>Inspector Cluso has caught the thief, who had altered the painting because the incessant discussion about her smile had driven him crazy.</en>
-				<pl>Inspektor Cluso złapał złodzieja, który zmienił obraz, ponieważ nieustanna dyskusja na temat jej uśmiechu doprowadziła go do szaleństwa.</pl>
-			</description>
-			<data genre="5" price="1" quality="40" fictional="1" />
-		</news>
-
 		<news guid="228d9e57-72f7-4f6d-b02a-e72fc3c140cb" type="0" creator="" created_by="-" comment="TODO: make somehow more funny/ironic/special">
 			<title>
 				<de>Brand in ${town}</de>
@@ -7697,23 +7841,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				</occupants>
 			</variables>
 			<data genre="4" price="1" quality="15" fictional="1" />
-		</news>
-
-		<news guid="383db30d-70cb-4278-8889-1cff4f2ac440" type="2" thread_guid="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" creator="" created_by="-">
-			<title>
-				<de>Polnischer Minister stark kritisiert</de>
-				<en>Polish minister heavily criticized</en>
-				<pl>Polski minister ostro krytykowany</pl>
-			</title>
-			<description>
-				<de>Die Verkehrsminister der übrigen EU-Länder können die Helmpflicht nicht verstehen. Eine solche Pflicht wäre übertrieben.</de>
-				<en>The transport ministers of the other EU countries cannot understand the obligation to wear a helmet. Such an obligation would be excessive.</en>
-				<pl>Ministrowie transportu innych krajów UE nie mogą zrozumieć obowiązku noszenia kasku. Taki obowiązek byłby nadmiernie przesadzony.</pl>
-			</description>
-			<data genre="0" price="0.7" quality="28" fictional="1" />
-			<effects>
-				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
-			</effects>
 		</news>
 
 		<news guid="265997b1-2924-423c-8cb4-594defb5ff6b" type="0" thread_guid="a3ac1453-f37f-4d37-a669-8c127ab2cf48" creator="" created_by="-" comment="TVTower 2014 version: Grönland Eishockey-Weltmeister! - In einem spannenden Duell gegen Kenia gewinnt Grönland das Weltmeisterschafts-Finale mit 5-3. | May collide with 'real' sports news that may be added some time, hence changing to amateur sports and adding niche but existing sports (including some from Epyx's Winter Games and World Games) to the variations">
@@ -8466,7 +8593,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 					<en>Sweden;Norway;Finland;Denmark;Iceland</en>
 					<pl>Szwecja;Norwegia;Finlandia;Dania;Islandia</pl>
 				</countries_csv>
-				<combination_csv>0;1;2|0;1;3|0;1;4|0;2;3|0;2;4|0;3;4|1;2;3|1;2;4|1;3;4|2;3;4</combination_csv>
+				<combination_csv>0;1;2|0;1;3|0;1;4|0;2;1|0;2;3|0;2;4|0;3;1|0;3;2|0;3;4|0;4;1|0;4;2|0;4;3|1;0;2|1;0;3|1;0;4|1;2;0|1;2;3|1;2;4|1;3;0|1;3;2|1;3;4|1;4;0|1;4;2|1;4;3|2;0;1|2;0;3|2;0;4|2;1;0|2;1;3|2;1;4|2;3;0|2;3;1|2;3;4|2;4;0|2;4;1|2;4;3|3;0;1|3;0;2|3;0;4|3;1;0|3;1;2|3;1;4|3;2;0|3;2;1|3;2;4|3;4;0|3;4;1|3;4;2|4;0;1|4;0;2|4;0;3|4;1;0|4;1;2|4;1;3|4;2;0|4;2;1|4;2;3|4;3;0|4;3;1|4;3;2</combination_csv>
 				<swedenandnorway>
 					<de>${.csv:countries_csv:${.csv:combination_csv:0}} und ${.csv:countries_csv:${.csv:combination_csv:1}}</de>
 					<en>${.csv:countries_csv:${.csv:combination_csv:0}} and ${.csv:countries_csv:${.csv:combination_csv:1}}</en>

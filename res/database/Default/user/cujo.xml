@@ -6,50 +6,144 @@
 		<!-- real historical news items moved to database_news.xml -->
 
 		<!-- "Superman und Supergirl" -->
-		<news guid="cujo-news-superkerl-01" type="0" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-superkerl-01" type="0" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo" comment="Superheros referenced: Superman, Supergirl, Wonder Man, Wonder Woman, Mister Fantastic, Fantasma, Thor/Wicker Man, Elektra | used as fictional / spoofs for now | TODO: also to add e.g.: Scarlet Witch - bezaubernd">
 			<title>
-				<de>Superweib verliebt sich in Superkerl</de>
-				<en>Superwoman falls in love with Superguy</en>
-				<pl>Superwoman zakochuje się w Superguyu</pl>
+				<de>${superwoman} verliebt sich in ${superguy_acc}</de>
+				<en>${superwoman} falls in love with ${superguy_acc}</en>
+				<pl>${superwoman} zakochuje się w ${superguy_acc}</pl>
 			</title>
 			<description>
-				<de>Die beiden weltbekannten Superhelden haben sich gefunden. Sie findet ihn super. Er sie auch. Beide: „Unser erstes Date war super“.</de>
-				<en>The world-famous superheroes have found each other. She thinks he's super. He feels the same. Both: "Our first date was super".</en>
-				<pl>Znani na całym świecie superbohaterowie odnaleźli się nawzajem. Ona uważa, że on jest super. On czuje to samo. Oboje: „Nasza pierwsza randka była super”.</pl>
+				<de>Die beiden weltbekannten Superhelden haben sich gefunden. Sie findet${heissuper}. Er ${feelsthesame}. Beide: „Unser erstes Date ${wassuperb}“.</de>
+				<en>The world-famous superheroes have found each other. She thinks${heissuper}. He ${feelsthesame}. Both: "Our first date ${wassuperb}".</en>
+				<pl>Znani na całym świecie superbohaterowie odnaleźli się nawzajem. Ona uważa${heissuper}. On uważa, ${feelsthesame}. Oboje: „Nasza pierwsza randka ${wassuperb}”.</pl>
 			</description>
+			<variables>
+				<superguy_csv>
+					<de>Superkerl;Superweib;Superkerl; ihn super;sie auch;war super;Sie küsst super;war er super;ein Super Vater;Superboy;nicht gerade super;einen Supervater;eine Supermutter|
+						Superkerl;Wonderweib;Superkerl; ihn super;sie wundervoll;war superwundervoll;Sie küsst wundervoll;war er super;ein Super Vater;Superwonderkid;nicht gerade wundervoll;einen Supervater;eine Wundermutter|
+						Superkerl;Fantasta;Superkerl; ihn super;sie fantastisch;war superfantastisch;Sie küsst fantastisch;war er super;ein Super Vater;Superfantasticboy;nicht gerade fantastisch;einen Supervater;eine fantastische Mutter|
+						Superkerl;Electrica;Superkerl; ihn super;sie elektrisierend;war superelektrisierend;Sie küsst elektrisierend;war er super;ein Super Vater;Superelectricboy;nicht gerade elektrisierend;einen Supervater;eine elektrisierende Mutter|
+						Wunderkerl;Superweib;Wunderkerl; ihn wundervoll;sie super;war superwundervoll;Sie küsst super;war er wundervoll;ein Wundervater;Wondersuperboy;nicht gerade super;einen Wundervater;eine Supermutter|
+						Wunderkerl;Wonderweib;Wunderkerl; ihn wundervoll;sie auch;war wundervoll;Sie küsst wundervoll;war er wundervoll;ein Wundervater;Wonderkid;nicht gerade wundervoll;einen Wundervater;eine Wundermutter|
+						Wunderkerl;Fantasta;Wunderkerl; ihn wundervoll;sie fantastisch;war wunderfantastisch;Sie küsst fantastisch;war er wundervoll;ein Wundervater;Wonderfantasticboy;nicht gerade fantastisch;einen Wundervater;eine fantastische Mutter|
+						Wunderkerl;Electrica;Wunderkerl; ihn wundervoll;sie elektrisierend;war wunderelektrisierend;Sie küsst elektrisierend;war er wundervoll;ein Wundervater;Wonderelectricboy;nicht gerade elektrisierend;einen Wundervater;eine elektrisierende Mutter|
+						Mister Fantasmo;Superweib;Mister Fantasmo; ihn fantastisch;sie super;war superfantastisch;Sie küsst super;war er fantastisch;ein fantastischer Vater;Superfantasticboy;nicht gerade super;einen fantastischen Vater;eine Supermutter|
+						Mister Fantasmo;Wonderweib;Mister Fantasmo; ihn fantastisch;sie wundervoll;war wunderfantastisch;Sie küsst wundervoll;war er fantastisch;ein fantastischer Vater;Wonderfantasticboy;nicht gerade wundervoll;einen fantastischen Vater;eine Wundermutter|
+						Mister Fantasmo;Fantasta;Mister Fantasmo; ihn fantastisch;sie auch;war fantastisch;Sie küsst fantastisch;war er fantastisch;ein fantastischer Vater;Wonderfantasticboy;nicht gerade fantastisch;einen fantastischen Vater;eine fantastische Mutter|
+						Mister Fantasmo;Electrica;Mister Fantasmo; ihn fantastisch;sie elektrisierend;war fantastisch elektrisierend;Sie küsst elektrisierend;war er fantastisch;ein fantastischer Vater;Electricfantasticboy;nicht gerade elektrisierend;einen fantastischen Vater;eine elektrisierende Mutter|
+						Thor;Superweib;Thor;, er ist der Hammer;findet sie super;war der Superhammer;Sie küsst super;war er der Hammer;ein Hammervater;Superhammerboy;nicht gerade super;einen Hammervater;eine Supermutter|
+						Thor;Wonderweib;Thor;, er ist der Hammer;findet sie wundervoll;war der Wunderhammer;Sie küsst wundervoll;war er der Hammer;ein Hammervater;Hammerwonderkid;nicht gerade wundervoll;einen Hammervater;eine Wundermutter|
+						Thor;Fantasta;Thor;, er ist der Hammer;findet sie fantastisch;war Hammer fantastisch;Sie küsst fantastisch;war er der Hammer;ein Hammervater;Hammerfantasticboy;nicht gerade fantastisch;einen Hammervater;eine fantastische Mutter|
+						Thor;Electrica;Thor;, er ist der Hammer;findet sie elektrisierend;war Hammer elektrisierend;Sie küsst elektrisierend;war er der Hammer;ein Hammervater;Hammerelectricboy;nicht gerade elektrisierend;einen Hammervater;eine elektrisierende Mutter
+					</de>
+					<en>Superguy;Superwoman;Superguy; he's super;feels the same;was superb;Her kisses are superb;he was superb;a Super father;Superboy;not really a super;a Super father;a Super mother|
+						Superguy;Wonderlady;Superguy; he's super;thinks she's wonderful;was super wonderful;Her kisses are wonderful;he was superb;a Super father;Superwonderkid;not really a wonderful;a Super father;a Wondermother|
+						Superguy;Fantasta;Superguy; he's super;thinks she's fantastic;was super fantastic;Her kisses are fantastic;he was superb;a Super father;Superfantasticboy;not really a fantastic;a Super father;a fantastic mother|
+						Superguy;Electrica;Superguy; he's super;finds her electrifying;was super electrifying;Her kisses are electrifying;he was superb;a Super father;Superelectricboy;not really an electrifying;a Super father;an electrifying mother|
+						Wonderguy;Superwoman;Wonderguy; he's wonderful;thinks she's super;was superwonderful;Her kisses are superb;he was wonderful;a wonderful father;Wondersuperboy;not really a super;a wonderful father;a Super mother|
+						Wonderguy;Wonderlady;Wonderguy; he's wonderful;feels the same;was wonderful;Her kisses are wonderful;he was wonderful;a wonderful father;Wonderkid;not really a wonderful;a wonderful father;a Wondermother|
+						Wonderguy;Fantasta;Wonderguy; he's wonderful;thinks she's fantastic;was wonderfantastic;Her kisses are fantastic;he was wonderful;a wonderful father;Wonderfantasticboy;not really a fantastic;a wonderful father;a fantastic mother|
+						Wonderguy;Electrica;Wonderguy; he's wonderful;finds her electrifying;was wonderfully electrifying;Her kisses are electrifying;he was wonderful;a wonderful father;Wonderelectricboy;not really an electrifying;a wonderful father;an electrifying mother|
+						Mister Fantasmo;Superwoman;Mister Fantasmo; he's fantastic;thinks she's super;was superfantastic;Her kisses are superb;he was fantastic;a fantastic father;Superfantasticboy;not really a super;a fantastic father;a Super mother|
+						Mister Fantasmo;Wonderlady;Mister Fantasmo; he's fantastic;thinks she's wonderful;was wonderfantastic;Her kisses are wonderful;he was fantastic;a fantastic father;Wonderfantasticboy;not really a wonderful;a fantastic father;a Wondermother|
+						Mister Fantasmo;Fantasta;Mister Fantasmo; he's fantastic;feels the same;was fantastic;Her kisses are fantastic;he was fantastic;a fantastic father;Wonderfantasticboy;not really a fantastic;a fantastic father;a fantastic mother|
+						Mister Fantasmo;Electrica;Mister Fantasmo; he's fantastic;finds her electrifying;was fantastically electrifying;Her kisses are electrifying;he was fantastic;a fantastic father;Electricfantasticboy;not really an electrifying;a fantastic father;an electrifying mother|
+						Wicker Man;Superwoman;Wicker Man; he's totally wicked;thinks she's super;was super wicked;Her kisses are superb;he was totally wicked;a totally wicked father;Superwickerboy;not really a super;a totally wicked father;a Super mother|
+						Wicker Man;Wonderlady;Wicker Man; he's totally wicked;thinks she's wonderful;was wonderfully wicked;Her kisses are wonderful;he was totally wicked;a totally wicked father;Wonderwickerboy;not really a wonderful;a totally wicked father;a Wondermother|
+						Wicker Man;Fantasta;Wicker Man; he's totally wicked;thinks she's fantastic;was fantastically wicked;Her kisses are fantastic;he was totally wicked;a totally wicked father;Fantasticwickerboy;not really a fantastic;a totally wicked father;a fantastic mother|
+						Wicker Man;Electrica;Wicker Man; he's totally wicked;finds her electrifying;was wickedly electrifying;Her kisses are electrifying;he was totally wicked;a totally wicked father;Fantasticwickerboy;not really an electrifying;a totally wicked father;an electrifying mother
+					</en>
+					<pl>Superbohater;Superkobieta;Superbohaterze;, że jest super;że ona też;była super;Ona całuje super;był super;Superojcem;Superchłopak;super;Superojca;Supermatkę|
+						Superbohater;Wonderkobieta;Superbohaterze;, że jest super;że ona cudowna;była supercudowna;Ona całuje cudownie;był super;Superojcem;Superwonderdziecko;cudownie;Superojca;Cudownąmatkę|
+						Superbohater;Fantastyczka;Superbohaterze;, że jest super;że ona fantastyczna;była superfascynująca;Ona całuje fantastycznie;był super;Superojcem;Superfantastycznechłopak;fantastycznie;Superojca;Fantastycznąmatkę|
+						Superbohater;Elektryczka;Superbohaterze;, że jest super;że ona elektryzująca;była superelektryzująca;Ona całuje elektryzująco;był super;Superojcem;Superelektrycznechłopak;elektryzująco;Superojca;Elektryzującąmatkę|
+						Cudbohater;Superkobieta;Cudbohaterze;, że jest cudowny;że ona super;była supercudowna;Ona całuje super;był cudowny;Cudojcem;Supercuddziecko;super;Cudojca;Supermatkę|
+						Cudbohater;Wonderkobieta;Cudbohaterze;, że jest cudowny;że ona też;była cudowna;Ona całuje cudownie;był cudowny;Cudojcem;Cuddziecko;cudownie;Cudojca;Cudownąmatkę|
+						Cudbohater;Fantastyczka;Cudbohaterze;, że jest cudowny;że ona fantastyczna;była cudownie fantastyczna;Ona całuje fantastycznie;był cudowny;Cudojcem;Cudfantastycznechłopak;fantastycznie;Cudojca;Fantastycznąmatkę|
+						Cudbohater;Elektryczka;Cudbohaterze;, że jest cudowny;że ona elektryzująca;była cudownie elektryzująca;Ona całuje elektryzująco;był cudowny;Cudojcem;Cudelektrycznechłopak;elektryzująco;Cudojca;Elektryzującąmatkę|
+						Fantastycznybohater;Superkobieta;Fantastycznymbohaterze;, że jest fantastyczny;że ona super;była superfantastyczna;Ona całuje super;był fantastyczny;Fantastycznymojcem;Superfantastycznechłopak;super;Fantastycznegoojca;Supermatkę|
+						Fantastycznybohater;Wonderkobieta;Fantastycznymbohaterze;, że jest fantastyczny;że ona cudowna;była cudownie fantastyczna;Ona całuje cudownie;był fantastyczny;Fantastycznymojcem;Wonderfantastycznechłopak;cudownie;Fantastycznegoojca;Cudownąmatkę|
+						Fantastycznybohater;Fantastyczka;Fantastycznymbohaterze;, że jest fantastyczny;że ona też;była fantastyczna;Ona całuje fantastycznie;był fantastyczny;Fantastycznymojcem;Fantastycznechłopak;fantastycznie;Fantastycznegoojca;Fantastycznąmatkę|
+						Fantastycznybohater;Elektryczka;Fantastycznymbohaterze;, że jest fantastyczny;że ona elektryzująca;była fantastyczna elektryzująca;Ona całuje elektryzująco;był fantastyczny;Fantastycznymojcem;Elektrycznofantastycznechłopak;elektryzująco;Fantastycznegoojca;Elektryzującąmatkę|
+						Thor;Superkobieta;Thorze;, że jest jak młot;że ona super;była supermłotem;Ona całuje super;był jak młot;Młotojcem;Supermłotchłopak;super;Młotojca;Supermatkę|
+						Thor;Wonderkobieta;Thorze;, że jest jak młot;że ona cudowna;była cudownym młotem;Ona całuje cudownie;był jak młot;Młotojcem;Młotwonderdziecko;cudownie;Młotojca;Cudownąmatkę|
+						Thor;Fantastyczka;Thorze;, że jest jak młot;że ona fantastyczna;była młotem fantastycznym;Ona całuje fantastycznie;był jak młot;Młotojcem;Młotfantastycznechłopak;fantastycznie;Młotojca;Fantastycznąmatkę|
+						Thor;Elektryczka;Thorze;, że jest jak młot;że ona elektryzująca;była młotem elektryzującym;Ona całuje elektryzująco;był jak młot;Młotojcem;Młotelektrycznechłopak;elektryzująco;Młotojca;Elektryzującąmatkę
+					</pl>
+				</superguy_csv>
+				<superguy>
+					<all>${.csv:superguy_csv:0}</all>
+				</superguy>
+				<superwoman>
+					<all>${.csv:superguy_csv:1}</all>
+				</superwoman>
+				<superguy_acc>
+					<all>${.csv:superguy_csv:2}</all>
+				</superguy_acc>
+				<heissuper>
+					<all>${.csv:superguy_csv:3}</all>
+				</heissuper>
+				<feelsthesame>
+					<all>${.csv:superguy_csv:4}</all>
+				</feelsthesame>
+				<wassuperb>
+					<all>${.csv:superguy_csv:5}</all>
+				</wassuperb>
+				<herkissesare>
+					<all>${.csv:superguy_csv:6}</all>
+				</herkissesare>
+				<hewassuperb>
+					<all>${.csv:superguy_csv:7}</all>
+				</hewassuperb>
+				<asuperfather>
+					<all>${.csv:superguy_csv:8}</all>
+				</asuperfather>
+				<superboy>
+					<all>${.csv:superguy_csv:9}</all>
+				</superboy>
+				<notreallyasuper>
+					<all>${.csv:superguy_csv:10}</all>
+				</notreallyasuper>
+				<asuperfather_acc>
+					<all>${.csv:superguy_csv:11}</all>
+				</asuperfather_acc>
+				<asupermother_acc>
+					<all>${.csv:superguy_csv:12}</all>
+				</asupermother_acc>
+			</variables>
 			<effects>
 				<!-- "morgen oder uebermorgen, 12-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,12,16" news="cujo-news-superkerl-02" />
 			</effects>
-			<data genre="1" price="1.0" quality="10" flags="2" />
+			<data genre="1" price="1.0" quality="10" />
 		</news>
 		<news guid="cujo-news-superkerl-02" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Superweib und Superkerl verloben sich</de>
-				<en>Superwoman and Superguy get engaged</en>
-				<pl>Superwoman i Superguy zaręczają się</pl>
+				<de>${superguy} und ${superwoman} verloben sich</de>
+				<en>${superguy} and ${superwoman} get engaged</en>
+				<pl>${superguy} i ${superwoman} zaręczają się</pl>
 			</title>
 			<description>
-				<de>Superkerl kann sein Glück nicht fassen: „Sie küsst super.“</de>
-				<en>Superguy can't believe his luck: "Her kisses are super."</en>
-				<pl>Superguy nie może uwierzyć w swoje szczęście: „Jej pocałunki są super”.</pl>
+				<de>${superguy} kann sein Glück nicht fassen: „${herkissesare}.“</de>
+				<en>${superguy} can't believe his luck: "${herkissesare}."</en>
+				<pl>${superguy} nie może uwierzyć w swoje szczęście: „${herkissesare}”.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 13-17 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,2,13,17" news="cujo-news-superkerl-03" />
 			</effects>
-			<data genre="1" price="1.0" quality="30" /> <!-- TODO: for whole thread: flags="2" like triggering entry; or variations with other characters (Wonder Woman etc)? -->
+			<data genre="1" price="1.0" quality="30" />
 		</news>
 		<news guid="cujo-news-superkerl-03" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Superkerl und Superweib haben geheiratet</de>
-				<en>Superguy and Superwoman got married</en>
-				<pl>Superguy i Superwoman wzięli ślub</pl>
+				<de>${superguy} und ${superwoman} haben geheiratet</de>
+				<en>${superguy} and ${superwoman} got married</en>
+				<pl>${superguy} i ${superwoman} wzięli ślub</pl>
 			</title>
 			<description>
-				<de>Superweib über Superkerl: „In der Hochzeitsnacht war er super.“</de>
-				<en>Superwoman about Superguy: "On the wedding night he was super."</en>
-				<pl>Superwoman o Superguyu: „W noc poślubną był super”.</pl>
+				<de>${superwoman} über ${superguy_acc}: „In der Hochzeitsnacht ${hewassuperb}.“</de>
+				<en>${superwoman} about ${superguy_acc}: "On the wedding night ${hewassuperb}."</en>
+				<pl>${superwoman} o ${superguy_acc}: „W noc poślubną ${hewassuperb}”.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 14-18 Uhr" -->
@@ -59,35 +153,35 @@
 		</news>
 		<news guid="cujo-news-superkerl-04" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Superweib ist schwanger</de>
-				<en>Superwoman is pregnant</en>
-				<pl>Superwoman jest w ciąży</pl>
+				<de>${superwoman} ist schwanger</de>
+				<en>${superwoman} is pregnant</en>
+				<pl>${superwoman} jest w ciąży</pl>
 			</title>
 			<description>
-				<de>Superkerl: „Ich will ein super Vater werden.“</de>
-				<en>Superguy: "I want to be a super father."</en>
-				<pl>Superguy: „Chcę być super ojcem”.</pl>
+				<de>${superguy}: „Ich will ${asuperfather} werden.“</de>
+				<en>${superguy}: "I want to be ${asuperfather}."</en>
+				<pl>${superguy}: „Chcę być ${asuperfather}”.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 15-19 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,2,15,19" news="cujo-news-superkerl-05" />
+				<effect trigger="happen" type="triggernews" time="2,1,4,15,19" news="cujo-news-superkerl-05" />
 			</effects>
 			<data genre="1" price="1.0" quality="60" />
 		</news>
 		<news guid="cujo-news-superkerl-05" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Superweib bringt einen Jungen zur Welt</de>
-				<en>Superwoman gives birth to a boy</en>
-				<pl>Superwoman rodzi chłopca</pl>
+				<de>${superwoman} bringt einen Jungen zur Welt</de>
+				<en>${superwoman} gives birth to a boy</en>
+				<pl>${superwoman} rodzi chłopca</pl>
 			</title>
 			<description>
-				<de>Superkerl und Superweib sind glücklich: „Das ist unser Superboy.“</de>
-				<en>Superguy and Superwoman are happy: "This is our Superboy."</en>
-				<pl>Superguy i Superwoman są szczęśliwi: „To jest nasz Superboy”.</pl>
+				<de>${superguy} und ${superwoman} sind glücklich: „Das ist unser ${superboy}.“</de>
+				<en>${superguy} and ${superwoman} are happy: "This is our ${superboy}."</en>
+				<pl>${superguy} i ${superwoman} są szczęśliwi: „To jest nasz ${superboy}”.</pl>
 			</description>
 				<!-- "morgen oder uebermorgen, 16-20 Uhr" -->
 			<effects>
-				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,1,2,16,20"
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,4,5,16,20"
 					news1="cujo-news-superkerl-06a" probability1="50"
 					news2="cujo-news-superkerl-06b" probability2="50"
 				/>
@@ -96,14 +190,14 @@
 		</news>
 		<news guid="cujo-news-superkerl-06a" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Trennungsgerüchte um Superkerl und Superweib</de>
-				<en>Superguy and Superwoman separation rumors</en>
-				<pl>Plotki o separacji Superguya i Superwoman</pl>
+				<de>Trennungsgerüchte um ${superguy} und ${superwoman}</de>
+				<en>${superguy} and ${superwoman} separation rumors</en>
+				<pl>${superguy} i ${superwoman}: Plotki o separacji</pl>
 			</title>
 			<description>
-				<de>Superkerl: „Sie kocht nicht gerade super.“</de>
-				<en>Superguy: "She's not a super cook."</en>
-				<pl>Supergwiazda: „Ona nie jest super kucharką”.</pl>
+				<de>${superguy}: „Sie kocht ${notreallyasuper}.“</de>
+				<en>${superguy}: "She's ${notreallyasuper} cook."</en>
+				<pl>${superguy}: „Ona nie gotuje ${notreallyasuper}”.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 17-21 Uhr" -->
@@ -113,35 +207,35 @@
 		</news>
 		<news guid="cujo-news-superkerl-06b" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Trennungsgerüchte um Superkerl und Superweib</de>
-				<en>Superguy and Superwoman separation rumors</en>
-				<pl>Plotki o separacji Superguya i Superwoman</pl>
+				<de>Trennungsgerüchte um ${superguy} und ${superwoman}</de>
+				<en>${superguy} and ${superwoman} separation rumors</en>
+				<pl>${superguy} i ${superwoman}: Plotki o separacji</pl>
 			</title>
 			<description>
-				<de>Superweib: „Er kann keinen Nagel in die Wand schlagen.“</de>
-				<en>Superwoman: "He can't drive a nail into the wall."</en>
-				<pl>Superwoman: „Nie potrafi wbić gwoździa w ścianę”.</pl>
+				<de>${superwoman}: „Er kann keinen Nagel in die Wand schlagen.“</de>
+				<en>${superwoman}: "He can't drive a nail into the wall."</en>
+				<pl>${superwoman}: „Nie potrafi wbić gwoździa w ścianę”.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 17-21 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,2,17,21" news="cujo-news-superkerl-07" />
+				<effect trigger="happen" type="triggernews" time="2,1,5,17,21" news="cujo-news-superkerl-07" />
 			</effects>
 			<data genre="1" price="1.0" quality="80" />
 		</news>
 		<news guid="cujo-news-superkerl-07" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Superweib und Superkerl versöhnen sich wieder</de>
-				<en>Superwoman and Superguy reconcile again</en>
-				<pl>Superwoman i Superguy ponownie się pogodzili</pl>
+				<de>${superwoman} und ${superguy} versöhnen sich wieder</de>
+				<en>${superwoman} and ${superguy} reconcile again</en>
+				<pl>${superwoman} i ${superguy} ponownie się pogodzili</pl>
 			</title>
 			<description>
-				<de>Superkerl: „Wir sind wieder glücklich. Unsere Versöhnung war super.“</de>
-				<en>Superguy: "We are happy again. Our reconciliation was super."</en>
-				<pl>Superguy: „Znów jesteśmy szczęśliwi. Nasze pojednanie było super”.</pl>
+				<de>${superguy}: „Wir sind wieder glücklich. Unsere Versöhnung ${wassuperb}.“</de>
+				<en>${superguy}: "We are happy again. Our reconciliation ${wassuperb}."</en>
+				<pl>${superguy}: „Znów jesteśmy szczęśliwi. Nasza randka pojednawcza ${wassuperb}”.</pl>
 			</description>
 			<effects>
 				<!-- "morgen oder uebermorgen, 18-22 Uhr" -->
-				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,1,2,18,22"
+				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,4,5,18,22"
 					news1="cujo-news-superkerl-08a" probability1="50"
 					news2="cujo-news-superkerl-08b" probability2="50"
 				/>
@@ -150,27 +244,27 @@
 		</news>
 		<news guid="cujo-news-superkerl-08a" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Superkerl und Superweib lassen sich scheiden</de>
-				<en>Superguy and Superwoman get a divorce</en>
-				<pl>Superguy i Superwoman biorą rozwód</pl>
+				<de>${superguy} und ${superwoman} lassen sich scheiden</de>
+				<en>${superguy} and ${superwoman} get a divorce</en>
+				<pl>${superguy} i ${superwoman} biorą rozwód</pl>
 			</title>
 			<description>
-				<de>Superboy leidet unter Trennung. Er will einen Supervater und eine Supermutter. Das unappetitliche Essen stört ihn nicht.</de>
-				<en>Superboy suffers from separation. He wants a super father and a super mother. The unappetizing food does not bother him.</en>
-				<pl>Superboy cierpi z powodu separacji. Chce mieć super ojca i super matkę. Nieapetyczne jedzenie mu nie przeszkadza.</pl>
+				<de>${superboy} leidet unter Trennung. Er will ${asuperfather_acc} und ${asupermother_acc}. Das unappetitliche Essen stört ihn nicht.</de>
+				<en>${superboy} suffers from separation. He wants ${asuperfather_acc} and ${asupermother_acc}. The unappetizing food does not bother him.</en>
+				<pl>${superboy} cierpi z powodu separacji. Chce mieć ${asuperfather_acc} i ${asupermother_acc}. Nieapetyczne jedzenie mu nie przeszkadza.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="70" />
 		</news>
 		<news guid="cujo-news-superkerl-08b" type="2" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo">
 			<title>
-				<de>Superkerl und Superweib lassen sich scheiden</de>
-				<en>Superguy and Superwoman get a divorce</en>
-				<pl>Superguy i Superwoman biorą rozwód</pl>
+				<de>${superguy} und ${superwoman} lassen sich scheiden</de>
+				<en>${superguy} and ${superwoman} get a divorce</en>
+				<pl>${superguy} i ${superwoman} biorą rozwód</pl>
 			</title>
 			<description>
-				<de>Superboy leidet unter Trennung. Er will einen Supervater und eine Supermutter. „Ich brauche kein neues Regal.“</de>
-				<en>Superboy suffers from separation. He wants a super father and a super mother. "I do not need a new shelf."</en>
-				<pl>Superboy cierpi z powodu separacji. Chce mieć super ojca i super matkę. „Nie potrzebuję nowej półki”.</pl>
+				<de>${superboy} leidet unter Trennung. Er will ${asuperfather_acc} und ${asupermother_acc}. „Ich brauche kein neues Regal.“</de>
+				<en>${superboy} suffers from separation. He wants ${asuperfather_acc} and ${asupermother_acc}. "I do not need a new shelf."</en>
+				<pl>${superboy} cierpi z powodu separacji. Chce mieć ${asuperfather_acc} i ${asupermother_acc}. „Nie potrzebuję nowej półki”.</pl>
 			</description>
 			<data genre="1" price="1.0" quality="70" />
 		</news>
@@ -228,7 +322,7 @@
 		</news>
 		<!-- "Stiftung Warentest" -->
 		<!--TODO variables-->
-		<news guid="cujo-news-stiftung-guetertest-01" type="0" thread_guid="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-stiftung-guetertest-01" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Kugelschreiber</de>
 				<en>Consumers' Association tests ballpoint pens</en>
@@ -242,7 +336,7 @@
 			<data genre="4" price="0.81" quality="59" />
 		</news>
 		<!--TODO variables-->
-		<news guid="cujo-news-stiftung-guetertest-02" type="0" thread_guid="cujo-news-stiftung-guetertest" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-stiftung-guetertest-02" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Stiftung Gütertest testet Vibratoren</de>
 				<en>Consumers' Association tests vibrators</en>
@@ -256,7 +350,7 @@
 			<data genre="4" price="0.82" quality="58" />
 		</news>
 		<!-- "Gamezworld AG" -->
-		<news guid="cujo-news-gamezworld-01" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-01" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>TV Tower-Entwickler arbeiten im Home-Office</de>
 				<en>TV Tower developers work in a home office</en>
@@ -270,7 +364,7 @@
 			<data genre="0" price="0.5" quality="20" />
 			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-02" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-02" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>News werden verschlüsselt</de>
 				<en>News are encrypted</en>
@@ -284,7 +378,7 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2020" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-03" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo">
+		<news guid="cujo-news-gamezworld-03" type="0" creator="8827" created_by="Cujo">
 			<title>
 				<de>Gamezworld AG schafft Schreibmaschinen ab</de>
 				<en>Gamezworld AG abolishes typewriters</en>
@@ -298,16 +392,16 @@
 			<data genre="0" price="0.5" quality="30" flags="2"/>
 			<availability year_range_from="2000" year_range_to="" />
 		</news>
-		<news guid="cujo-news-gamezworld-04" type="0" thread_guid="cujo-news-tvt" creator="8827" created_by="Cujo" comment="previously Kurt Schmitt (only one minister for all years? and reference not clear | ministers from https://de.wikipedia.org/wiki/Bundesministerium_f%C3%BCr_Gesundheit_(Deutschland) | #maintenancecritical">
+		<news guid="cujo-news-gamezworld-04" type="0" creator="8827" created_by="Cujo" comment="previously Kurt Schmitt (only one minister for all years? and reference not clear | ministers from https://de.wikipedia.org/wiki/Bundesministerium_f%C3%BCr_Gesundheit_(Deutschland) | #maintenancecritical">
 			<title>
 				<de>Schokoriegel sollen verboten werden</de>
 				<en>Candy bars to be banned</en>
 				<pl>Batoniki mają zostać zakazane</pl>
 			</title>
 			<description>
-				<de>Wie Gesundheitsminister${gendersuffix} ${currenthealthminister} in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. ${brand_duplo}-Hersteller ${brand_ferrero} prüft, ob er weiterhin Werbung auf den TV Tower-Sendern schaltet.</de>
-				<en>Health Minister ${currenthealthminister} announced on a TV Tower station that candy bars will be banned because of their high sugar content. ${brand_duplo} manufacturer ${brand_ferrero} is considering whether to continue advertising on TV Tower stations.</en>
-				<pl>Minister Zdrowia ${currenthealthminister} ogłosił w stacji TV Tower, że batoniki zostaną zakazane ze względu na wysoką zawartość cukru. Producent ${brand_duplo}, firma ${brand_ferrero}, rozważa, czy kontynuować reklamę w stacjach TV Tower.</pl>
+				<de>Wie Gesundheitsminister${gendersuffix} ${currenthealthminister} in einem TV Tower-Sender bekanntgab, sollen Schokoriegel wegen ihres hohen Zuckergehalts verboten werden. ${duplo}-Hersteller ${ferrero} prüft, ob er weiterhin Werbung auf den TV Tower-Sendern schaltet.</de>
+				<en>Health Minister ${currenthealthminister} announced on a TV Tower station that candy bars will be banned because of their high sugar content. ${duplo} manufacturer ${ferrero} is considering whether to continue advertising on TV Tower stations.</en>
+				<pl>Minister Zdrowia ${currenthealthminister} ogłosił w stacji TV Tower, że batoniki zostaną zakazane ze względu na wysoką zawartość cukru. Producent ${duplo}, firma ${ferrero}, rozważa, czy kontynuować reklamę w stacjach TV Tower.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -316,6 +410,15 @@
 				<gendersuffix>
 					<de>${.eq:${.person:currenthealthminister_id:"gender"}:2:"in":""}</de>
 				</gendersuffix>
+				<duplo_csv>
+					<all>${brand_duplo};${brand_ferrero}|${brand_snickers};${brand_mars}|${brand_sarotti};${brand_stollwerck}</all>
+				</duplo_csv>
+				<duplo>
+					<all>${.csv:duplo_csv:0}</all>
+				</duplo>
+				<ferrero>
+					<all>${.csv:duplo_csv:1}</all>
+				</ferrero>
 			</variables>
 			<data genre="0" price="0.5" quality="40" />
 		</news>

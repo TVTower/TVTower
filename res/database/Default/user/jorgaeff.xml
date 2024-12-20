@@ -375,7 +375,7 @@
 			<data genre="2" price="0.35" quality="40" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-abstieg-01" type="0" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff" comment="TODO: case of alternative history; Hamburger SV *did* relegate for the first time in history to 2nd league eventually, but probably not yet at the time this news was authored.">
+		<news guid="news-jorgaeff-abstieg-01" type="0" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff" comment="TODO: case of alternative history; Hamburger SV *did* relegate for the first time in history to 2nd league eventually, but probably not yet at the time this news was authored. Reference 'Knut Knolle' not clear, leaving as fictional for now.">
 			<title>
 				<de>Bundesliga-Relegation: Wer steigt auf, wer ab?</de>
 				<en>Bundesliga play-offs: Who will rise, who will fall?</en>
@@ -386,13 +386,21 @@
 				<en>The ${sports_1fc_generic} Nuremberg (the "Glubb") fights against ${sportsclub_hamburgersv} for promotion to the Bundesliga. Will the Bundesliga dino from the north escape relegation again or will the challengers from Franconia be victorious?</en>
 				<pl>${sports_1fc_generic} Norymberga („Glubb“) walczy z ${sportsclub_hamburgersv} o awans do Bundesligi. Czy dino z północy ponownie uniknie spadku z Bundesligi, czy też rywale z Frankonii odniosą zwycięstwo?</pl>
 			</description>
-			<data genre="2" price="0.3" quality="30" fictional="1" />
+			<variables>
+				<uweseeler>${.person:"1617d822-7f5e-4362-a4bd-e0f05a2dfee0":"fullname"}</uweseeler>
+				<president> <!-- was not really 'Ehrenpräsident' though, but taking liberty here, and news item seems to refer more to a date in the 2000s -->
+					<de>${.lte:currentyear:1997:"Präsident":"Ehrenpräsident"}</de>
+					<en>${.lte:currentyear:1997:"president":"honorary president"}</en>
+					<pl>${.lte:currentyear:1997:"prezes":"honorowy prezes"}</pl>
+				</president>
+			</variables>
+			<data genre="2" price="0.3" quality="30" fictional="1" flags="2" />
+			<availability year_range_from="1995" year_range_to="2016" script='${.eq:${.worldtime:"month"}:5}' />
 			<effects>
 				<!-- "morgen 6-10 Uhr / News a oder b" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,10" news1="news-jorgaeff-abstieg-02a" probability1="50" news2="news-jorgaeff-abstieg-02b" probability2="50"/>
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-02a" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>${sportsclub_hamburgersv} steigt erstmalig ab</de>
@@ -410,7 +418,6 @@
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03a" probability1="50" news2="news-jorgaeff-abstieg-03b" probability2="50"/>
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-02b" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>„Glubb“ verpasst Aufstieg</de>
@@ -428,7 +435,6 @@
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03c" probability1="50" news2="news-jorgaeff-abstieg-03d" probability2="50"/>
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03a" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>${sportsclub_hamburgersv} trennt sich von Trainer</de>
@@ -436,13 +442,12 @@
 				<pl>${sportsclub_hamburgersv} rozstaje się z trenerem</pl>
 			</title>
 			<description>
-				<de>Aufgrund des erstmaligen Abstiegs des ${sportsclub_hamburgersv} zieht Präsident Uwe Gehler die Reißleine und entlässt Trainer Knut Knolle. Geeler möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
-				<en>Due to the first-time relegation of ${sportsclub_hamburgersv}, president Uwe Gehler pulls the plug and sacks coach Knut Knolle. Geeler now wants to explore the market and look for suitable successors.</en>
-				<pl>Z powodu pierwszego spadku ${sportsclub_hamburgersv}, prezes Uwe Gehler wyciąga wtyczkę i zwalnia trenera Knuta Knolle. Geeler chce teraz zbadać rynek i poszukać odpowiednich następców.</pl>
+				<de>Aufgrund des erstmaligen Abstiegs des ${sportsclub_hamburgersv} zieht ${president} ${uweseeler} die Reißleine und entlässt Trainer Knut Knolle. ${uweseeler} möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
+				<en>Due to the first-time relegation of ${sportsclub_hamburgersv}, ${president} ${uweseeler} pulls the plug and sacks coach Knut Knolle. ${uweseeler} now wants to explore the market and look for suitable successors.</en>
+				<pl>Z powodu pierwszego spadku ${sportsclub_hamburgersv}, ${president} ${uweseeler} wyciąga wtyczkę i zwalnia trenera Knuta Knolle. ${uweseeler} chce teraz zbadać rynek i poszukać odpowiednich następców.</pl>
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03b" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>${sportsclub_hamburgersv} hält am Trainer fest</de>
@@ -450,13 +455,12 @@
 				<pl>${sportsclub_hamburgersv} trzyma się trenera</pl>
 			</title>
 			<description>
-				<de>Trotz des Abstiegs aus der Bundesliga möchte Präsident Uwe Geeler am Trainer festhalten: „Knut Knolle ist unser Mann auch für die 2. Liga. Mit ihm werden wir wieder aufsteigen.“</de>
-				<en>Despite the relegation from the Bundesliga, President Uwe Geeler wants to hold on to the coach: "Knut Knolle is our man also for the 2nd league. With him, we will rise again."</en>
-				<pl>Pomimo spadku z Bundesligi, prezes Uwe Geeler chce zatrzymać trenera: „Knut Knolle to nasz człowiek także na 2. ligę. Z nim znów się podniesiemy”.</pl>
+				<de>Trotz des Abstiegs aus der Bundesliga möchte ${president} ${uweseeler} am Trainer festhalten: „Knut Knolle ist unser Mann auch für die 2. Liga. Mit ihm werden wir wieder aufsteigen.“</de>
+				<en>Despite the relegation from the Bundesliga, ${president} ${uweseeler} wants to hold on to the coach: "Knut Knolle is our man also for the 2nd league. With him, we will rise again."</en>
+				<pl>Pomimo spadku z Bundesligi, ${president} ${uweseeler} chce zatrzymać trenera: „Knut Knolle to nasz człowiek także na 2. ligę. Z nim znów się podniesiemy”.</pl>
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03c" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Muss der „Glubb“ Insolvenz anmelden?</de>
@@ -470,7 +474,6 @@
 			</description>
 			<data genre="2" price="0.25" quality="25" fictional="1" />
 		</news>
-
 		<news guid="news-jorgaeff-abstieg-03d" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Der „Glubb“ ist wieder schuldenfrei</de>
@@ -593,26 +596,9 @@
 			<data genre="2" price="0.35" quality="40" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-kurzer-01" type="0" creator="8936" created_by="jorgaeff">
-			<title>
-				<de>${bernhardlanger} gelingt Hole-in-one</de>
-				<en>${bernhardlanger} achieves hole-in-one</en>
-				<pl>${bernhardlanger} osiąga hole-in-one</pl>
-			</title>
-			<description>
-				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone ${bernhardlanger} den Turniersieg beim Major-Turnier der Senioren in Key Briscane.</de>
-				<en>With the first hole-in-one of his professional career, golf legend ${bernhardlanger} claims victory in the senior major tournament in Key Briscane.</en>
-				<pl>Z pierwszym hole-in-one w swojej karierze zawodowej, legenda golfa ${bernhardlanger} zwycięża w turnieju senior major w Key Briscane.</pl>
-			</description>
-			<variables>
-				<bernhardlanger>${.person:"4e3f08d2-839e-4934-a2de-efec79f22233":"fullname"}</bernhardlanger>
-			</variables>
-			<data genre="2" price="0.25" quality="25" fictional="1" />
-		</news>
-
 		<news guid="news-jorgaeff-dyson-01" type="0" thread_guid="news-jorgaeff-dyson" creator="8936" created_by="jorgaeff" comment="TODO: deal with this 'half-fictional' aspect somehow">
 				<!-- "Beginnt an einem Sonntag" -->
-			<availability script='${.eq:${.worldtime:"weekday"}:6}' />
+			<availability year_range_from="2005" script='${.eq:${.worldtime:"weekday"}:6}' />
 			<title>
 				<de>Klatschkowski weiterhin Boxweltmeister</de>
 				<en>Klatschkowski still world boxing champion</en>
@@ -1356,10 +1342,18 @@
 				<pl>Sprzątaczka niszczy dzieło sztuki</pl>
 			</title>
 			<description>
-				<de>Das Werk „Bei Hempels unterm Sofa“ von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar, ein 800.000€ teures Kunstwerk vor sich zu haben.</de>
-				<en>The work "At Family Hempel under the Sofa" by Georg Hempel was destroyed in the National Museum by a cleaning lady. The cleaner was not aware to have an 800.000€ priced work of art in front of her.</en>
-				<pl>Dzieło „U rodziny Hempel pod sofą” autorstwa Georga Hempla zostało zniszczone w Muzeum Narodowym przez sprzątaczkę. Sprzątaczka nie zdawała sobie sprawy, że ma przed sobą dzieło sztuki wycenione na 800 000 euro.</pl>
+				<de>Das Werk „Bei Hempels unterm Sofa“ von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar, ein 800.000 ${dem} teures Kunstwerk vor sich zu haben.</de>
+				<en>The work "At Family Hempel under the Sofa" by Georg Hempel was destroyed in the National Museum by a cleaning lady. The cleaner was not aware to have an 800.000 ${dem} priced work of art in front of her.</en>
+				<pl>Dzieło „U rodziny Hempel pod sofą” autorstwa Georga Hempla zostało zniszczone w Muzeum Narodowym przez sprzątaczkę. Sprzątaczka nie zdawała sobie sprawy, że ma przed sobą dzieło sztuki wycenione na 800 000 ${dem}.</pl>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<dem>
+					<de>${.lte:currentyear:2001:"DM":"€"}</de>
+					<en>${.lte:currentyear:2001:"DEM":"€"}</en>
+					<pl>${.lte:currentyear:2001:"DEM":"euro"}</pl>
+				</dem>
+			</variables>
 			<data genre="5" price="0.35" quality="35" fictional="1" />
 		</news>
 

@@ -148,7 +148,20 @@ Naprawdę trzeba żuć.</pl>
 			<conditions min_audience="4.17" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="3" profit="537" penalty="900" infomercial_profit="53" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="329eb726-34c8-49b3-a0af-be76dcbd296c" comment="TODO: availability years + predecessor">
+		<ad guid="b41a3658-c32c-4e80-8078-7ed09a359e82">
+			<title>
+				<all>Sticker Fuzzy</all>
+			</title>
+			<description>
+				<de>Räm Bäm Bäääm - Knall dir jetzt die Sticker deiner Lieblingsstars in unser Sammelheft.</de>
+				<en>Ramm Bam Baaam - Pop the stickers of your favorite stars into our scrapbook now.</en>
+				<pl>Ram tam taaam - Umieść naklejki z ulubionymi gwiazdami w naszym scrapbooku już teraz.</pl>
+			</description>
+			<conditions min_audience="0.39" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="10" repetitions="2" duration="3" profit="2000" penalty="3220" fix_infomercial_profit="1" />
+			<availability year_range_to="2000" />
+		</ad>
+		<ad guid="329eb726-34c8-49b3-a0af-be76dcbd296c">
 			<title>
 				<all>Ringtone Fuzzy</all>
 				<pl>Dzwonki Fuzzy</pl>
@@ -160,6 +173,7 @@ Naprawdę trzeba żuć.</pl>
 			</description>
 			<conditions min_audience="0.39" min_image="4" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="2" duration="3" profit="2000" penalty="3220" fix_infomercial_profit="1" />
+			<availability year_range_from="2001" />
 		</ad>
 		<ad guid="360b9ee1-9e2e-469d-b61e-fa8a69cbf560" comment="https://de.wikipedia.org/wiki/Meister_Proper | https://en.wikipedia.org/wiki/Mr._Clean">
 			<title>
@@ -558,9 +572,9 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<pl>Jaś Wiaderko - serwis sanitarny</pl>
 			</title>
 			<description>
-				<de>Wir sorgen für Ihre Sanitäranlagen. Schon ab 10 € - ohne Scheiß!</de>
-				<en>We take care of your sanitary facilities. Starting at 10 € - no shits!</en>
-				<pl>Dbamy o twoje urządzenia sanitarne. Już od 10 € - bez srania!</pl>
+				<de>Wir sorgen für Ihre Sanitäranlagen. Schon ab 10 ${.lte:${.worldtime:"year"}:2001:"DM":"€"} - ohne Scheiß!</de>
+				<en>We take care of your sanitary facilities. Starting at ${.lte:${.worldtime:"year"}:2001:"DEM":"€"} 10 - no shits!</en>
+				<pl>Dbamy o twoje urządzenia sanitarne. Już od 10 ${.lte:${.worldtime:"year"}:2001:"DEM":"€"} - bez srania!</pl>
 			</description>
 			<conditions min_audience="0.4679" min_image="4" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="3" duration="3" profit="1888" penalty="3280" infomercial_profit="119" fix_infomercial_profit="1" />
