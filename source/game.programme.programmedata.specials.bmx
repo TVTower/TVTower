@@ -30,7 +30,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 		'do no longer display "live hint" once the last match started
 
 		If lastMatchStartTime = -1
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 			If league Then lastMatchStartTime = league.GetLastMatchTime()
 		EndIf
 
@@ -62,7 +62,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 		'did the first match start?
 		If Not matchesStarted
 			If matchesStartTime = -1
-				Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+				Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 				If league Then matchesStartTime = league.GetFirstMatchTime()
 			EndIf
 
@@ -77,7 +77,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 		If Not matchesFinished
 			finalDescription = ""
 
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 			If matchesFinishTime = -1 And league
 				Local b:Int = blocks
 				Local lastMatch:TNewsEventSportMatch = league.GetLastMatch()
@@ -109,7 +109,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 				finalDescription = "|i|("+GetLocale("LIVE_ON_TAPE")+", " + GetLocale("ALL_MATCHES_FINISHED") + "|/i|)~n" + descriptionProcessed.Get()
 
 			ElseIf matchesStarted
-				Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+				Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 				If Not league Then Return descriptionProcessed.Get()
 
 				Local totalMatches:Int = league.GetMatchCount()
@@ -140,7 +140,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 			Else 'if not matchesStarted
 				finalDescription = descriptionProcessed.Get()
 				If descriptionAirTimeHint
-					Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+					Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 					If league
 						local matchTimes:string = league.GetMatchTimesFormatted(True, True)
 						'while the last match is running this will be empty
@@ -161,8 +161,8 @@ End Type
 
 
 Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
-	Field matchGUID:String
-	Field leagueGUID:String
+	Field matchID:Int
+	Field leagueID:Int
 	Field sportID:Int
 	Field dynamicTexts:Int = False
 	Field matchEndTime:Long = -1
@@ -179,15 +179,15 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 			'replace placeholders and and cache the result
 			If Not titleProcessed
 				If dynamicTexts
-					Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchGUID)
+					Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 					Local foundTitle:Int = False
 					Local leagueText:String
 					For Local t:TNewsEventSportTeam = EachIn match.teams
-						If Not leagueGUID
-							leagueGUID =  t.leagueGUID
+						If Not leagueID
+							leagueID =  t.leagueID
 							leagueText = "${.self:~qsportleague~q:~qnameshort~q}: "
-						Else If leagueGUID <> t.leagueGUID
-							leagueGUID = ""
+						Else If leagueID <> t.leagueID
+							leagueID = 0
 							leagueText = GetLocale("SPORT_PLAYOFFS_SHORT")+": "
 							Exit
 						EndIf
@@ -228,7 +228,7 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 					'refresh
 					If not description.HasLanguageID( TLocalization.currentLanguageID )
 						'TODO SPORT_PROGRAMME_MATCH_DESCRIPTION benötigt trim und ucfirst *nach* der Variablenersetzung und *vor* dem Konkatenieren
-						If leagueGUID
+						If leagueID
 							description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , TLocalization.currentLanguageID )
 						Else
 							description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , TLocalization.currentLanguageID )
@@ -250,13 +250,13 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 
 
 	Method AssignSportLeague(league:TNewsEventSportLeague)
-		leagueGUID = league.GetGUID()
+		leagueID = league.GetID()
 		self.sportID = league.GetSport().GetID()
 	End Method
 
 
 	Method AssignSportMatch(match:TNewsEventSportMatch)
-		matchGUID = match.GetGUID()
+		matchID = match.GetID()
 	End Method
 
 
@@ -267,7 +267,7 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 
 	Method GetMatchEndTime:Long()
 		If matchEndTime = -1
-			Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchGUID)
+			Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 			If match Then matchEndTime = match.GetMatchEndTime()
 		EndIf
 		Return matchEndTime
@@ -276,7 +276,7 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 
 	Method GetMatchTime:Long()
 		If matchTime = -1
-			Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchGUID)
+			Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 			If match Then matchTime = match.GetMatchTime()
 		EndIf
 		Return matchTime
@@ -302,8 +302,8 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 
 	'returns a value from 0.0 - 1.0 (0-100%)
 	Method GetOutcomeTV:Float()
-		If Not matchGUID Then Return Self.outcomeTV
-		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchGUID)
+		If Not matchID Then Return Self.outcomeTV
+		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 		If Not match Then Return Self.outcomeTV
 
 		'modify by "attractivity" of a match
@@ -339,8 +339,8 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 
 	'returns a value from 0.0 - 1.0 (0-100%)
 	Method GetSpeed:Float()
-		If Not matchGUID Then Return Self.speed
-		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchGUID)
+		If Not matchID Then Return Self.speed
+		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 		If Not match Then Return Self.speed
 
 		'modify by "power" of the teams
@@ -360,8 +360,8 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 
 	'returns a value from 0.0 - 1.0 (0-100%)
 	Method GetReview:Float()
-		If Not matchGUID Then Return Self.review
-		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchGUID)
+		If Not matchID Then Return Self.review
+		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 		If Not match Then Return Self.review
 
 		'modify by "skill" of the teams ("good soccer technics")

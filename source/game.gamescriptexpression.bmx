@@ -411,7 +411,7 @@ Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgramm
 
 	Select propertyName
 		Case "sport", "sportleague", "sportmatch", "sportteam"
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(data.leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(data.leagueID)
 			If Not league
 				Return New SToken( TK_ERROR, "No league defined in context of programme data", params.GetToken(0) )
 			EndIf
@@ -425,13 +425,13 @@ Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgramm
 				EndIf
 				Return _EvaluateNewsEventSport(sport, params, tokenOffset + 1, language) 'inline
 			ElseIf propertyName = "sportmatch"
-				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchGUID)
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchID)
 				If Not match
 					Return New SToken( TK_ERROR, "No match defined in context of programme data", params.GetToken(0) )
 				EndIf
 				Return _EvaluateNewsEventSportMatch(match, params, tokenOffset + 1, language) 'inline
 			ElseIf propertyName = "sportteam"
-				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchGUID)
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchID)
 				If Not match
 					Return New SToken( TK_ERROR, "No match (to identify teams) defined in context of programme data", params.GetToken(0) )
 				EndIf
@@ -1002,10 +1002,10 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 			Return New SToken( TK_TEXT, team.GetTeamInitials(), params.GetToken(0) )
 		case "teamnameissingular"
 			Return New SToken( TK_BOOLEAN, team.clubNameSingular, params.GetToken(0) )
-		case "leagueguid"
-			Return New SToken( TK_TEXT, team.leagueGUID, params.GetToken(0) )
+		case "leagueid"
+			Return New SToken( TK_NUMBER, team.leagueID, params.GetToken(0) )
 		case "league"
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(team.leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(team.leagueID)
 			If Not league
 				Return New SToken( TK_ERROR, "No valid league found for team", params.GetToken(0) )
 			EndIf

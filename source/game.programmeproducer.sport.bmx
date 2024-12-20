@@ -113,7 +113,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		If Not league Then Return Null
 
 		Local programmeData:TSportsHeaderProgrammeData = New TSportsHeaderProgrammeData
-		programmeData.leagueGUID = league.GetGUID()
+		programmeData.leagueID = league.GetID()
 		programmeData.sportID = league.GetSport().GetID()
 
 		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence
@@ -209,8 +209,8 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		If TSportsProgrammeData(programmeData)
 			Local sportsProgrammeData:TSportsProgrammeData = TSportsProgrammeData(programmeData)
 			sportsProgrammeData.AssignSportMatch(match)
-			sportsProgrammeData.leagueGUID = match.teams[0].GetLeague().GetGUID()
-			sportsProgrammeData.sportID = match.teams[0].GetSport().GetID()
+			sportsProgrammeData.leagueID = match.teams[0].leagueID
+			sportsProgrammeData.sportID = match.teams[0].sportID
 		EndIf
 
 		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence

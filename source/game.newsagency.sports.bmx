@@ -13,7 +13,7 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 	Field leaguesByID:TIntMap = New TIntMap
 	Field teams:TMap = New TMap
 	Field teamsByID:TIntMap = New TIntMap
-	Field matches:TMap = New TMap
+	Field matchesByID:TIntMap = New TIntMap
 	'caches for faster lookups
 	Field _teamMembersByID:TIntMap = New TIntMap
 
@@ -50,11 +50,6 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 
 
 	Method GetLeague:TNewsEventSportLeague(id:Int)
-		If not leaguesByID
-			For local l:TNewsEventSportLeague = EachIn leagues.Values()
-				leaguesByID.Insert(l.GetID(), l)
-			Next
-		EndIf
 		Return TNewsEventSportLeague( leaguesByID.ValueForKey(id) )
 	End Method
 
@@ -124,12 +119,12 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 
 
 	Method AddMatch(match:TNewsEventSportMatch)
-		matches.Insert(match.GetGUID(), match)
+		matchesByID.Insert(match.GetID(), match)
 	End Method
 
 
-	Method GetMatch:TNewsEventSportMatch(guid:String)
-		Return TNewsEventSportMatch( matches.ValueForKey(guid) )
+	Method GetMatch:TNewsEventSportMatch(id:Int)
+		Return TNewsEventSportMatch( matchesByID.ValueForKey(id) )
 	End Method
 
 
@@ -138,7 +133,7 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 		if leaguesByID then leaguesByID.clear()
 		if teams then teams.clear()
 		if teamsByID then teamsByID.clear()
-		if matches then matches.clear()
+		if matchesByID then matchesByID.clear()
 
 		For Local sport:TNewsEventSport = EachIn entries.Values()
 			sport.Initialize()
@@ -1023,7 +1018,9 @@ Type TNewsEventSportSeason Extends TGameObject
 
 		'inform teams about the league
 		For Local team:TNewsEventSportTeam = EachIn data.teams
-			team.AssignLeague(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+			If Not league Then Throw "SetTrams failed, no valid league found."
+			team.AssignLeague(league.GetID())
 		Next
 
 		Return result
@@ -2170,7 +2167,7 @@ Type TNewsEventSportTeam Extends TGameObject
 	Field statsSkillBase:Float = 0.4
 
 	Field currentRank:Int = 0
-	Field leagueGUID:String
+	Field leagueID:Int
 	Field sportID:Int
 
 
@@ -2317,7 +2314,7 @@ Type TNewsEventSportTeam Extends TGameObject
 	Method GetLeagueRank:Int()
 		'TODO: give teams a "currentRank:int" field which is updated after
 		'      a match? Only useful if rank is evaluated a lot
-		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 		If Not league Then Return -1
 		Return league.GetCurrentSeason().GetTeamRank(self)
 	End Method
@@ -2354,7 +2351,7 @@ Type TNewsEventSportTeam Extends TGameObject
 			'basic attractivity
 			statsAttractivity = statsAttractivityBase
 
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 			If league
 				Select league._leaguesIndex
 					Case 0   statsAttractivity :+ 0.40
@@ -2381,7 +2378,7 @@ Type TNewsEventSportTeam Extends TGameObject
 	Method GetPower:Float()
 		If statsPower = -1
 			statsPower = statsPowerBase
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 			If league
 				Select league._leaguesIndex
 					Case 0   statsPower :+ 0.40
@@ -2404,7 +2401,7 @@ Type TNewsEventSportTeam Extends TGameObject
 	Method GetSkill:Float()
 		If statsSkill = -1
 			statsSkill = statsSkillBase
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 			If league
 				Select league._leaguesIndex
 					Case 0   statsSkill :+ 0.40
@@ -2431,8 +2428,8 @@ Type TNewsEventSportTeam Extends TGameObject
 	End Method
 
 
-	Method AssignLeague(leagueGUID:String)
-		Self.leagueGUID = leagueGUID
+	Method AssignLeague(leagueID:Int)
+		Self.leagueID = leagueID
 	End Method
 
 
@@ -2449,8 +2446,8 @@ Type TNewsEventSportTeam Extends TGameObject
 
 	Method GetLeague:TNewsEventSportLeague()
 		'try to find league the easy way
-		If leagueGUID 
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+		If leagueID 
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 			If league Then Return league
 		EndIf
 
@@ -2458,7 +2455,7 @@ Type TNewsEventSportTeam Extends TGameObject
 		If Not sportID Then Return Null
 
 		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByID(sportID)
-		If sport Then Return sport.GetLeague(leagueGUID)
+		If sport Then Return sport.GetLeague(leagueID)
 
 		Return Null
 	End Method
