@@ -338,12 +338,14 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 
 			'TODO we do not yet consider casting the same role using the same person
-			'(role once as actore once as supporting actor)
+			'(role once as actor once as supporting actor)
 			If perfectMatch
 				'for the same concept or concepts with the same specification
 				'(e.g. multi-production, episodes), simply copy the cast
 				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
-					currentProductionConcept.SetCast(castIndex, takeOverConcept.cast[castIndex])
+					If Not currentProductionConcept.script.jobs[castIndex].preselectCast
+						currentProductionConcept.SetCast(castIndex, takeOverConcept.cast[castIndex])
+					EndIf
 				Next
 			Else
 				'store old cast by their job
@@ -359,18 +361,20 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				'find the best matching old cast (same job, correct gender)
 				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
 					Local job:TPersonProductionJob = currentProductionConcept.script.jobs[castIndex]
-					Local jobIndex:Int = TVTPersonJob.GetIndex(job.job)
-					Local gender:Int = job.gender
-					Local oldCastList:TPersonBase[] = oldCastByJob[jobIndex]
-					For Local oldCastIndex:Int = 0 Until oldCastList.length
-						Local oldCastPerson:TPersonBase = oldCastList[oldCastIndex]
-						If Not oldCastPerson Then Continue
-						If gender > 0 And gender <> oldCastPerson.gender Then Continue
-						currentProductionConcept.SetCast(castIndex, oldCastPerson)
-						'make a cast member once used unavailable
-						oldCastList[oldCastIndex] = null
-						Exit
-					Next
+					If Not job.preselectCast
+						Local jobIndex:Int = TVTPersonJob.GetIndex(job.job)
+						Local gender:Int = job.gender
+						Local oldCastList:TPersonBase[] = oldCastByJob[jobIndex]
+						For Local oldCastIndex:Int = 0 Until oldCastList.length
+							Local oldCastPerson:TPersonBase = oldCastList[oldCastIndex]
+							If Not oldCastPerson Then Continue
+							If gender > 0 And gender <> oldCastPerson.gender Then Continue
+							currentProductionConcept.SetCast(castIndex, oldCastPerson)
+							'make a cast member once used unavailable
+							oldCastList[oldCastIndex] = null
+							Exit
+						Next
+					EndIf
 				Next
 			EndIf
 
