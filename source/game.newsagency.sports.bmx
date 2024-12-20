@@ -1019,7 +1019,7 @@ Type TNewsEventSportSeason Extends TGameObject
 		'inform teams about the league
 		For Local team:TNewsEventSportTeam = EachIn data.teams
 			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
-			If Not league Then Throw "SetTrams failed, no valid league found."
+			If Not league Then Throw "TNewsEventSportSeason.SetTeams() failed, no valid league found."
 			team.AssignLeague(league.GetID())
 		Next
 
