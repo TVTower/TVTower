@@ -639,6 +639,7 @@ Type TDatabaseLoader
 			expression = expression.Replace("%TEAM2ARTICLE1%", "${.self:~qsportteam~q:1:~qteamnamearticle~q}")
 			expression = expression.Replace("%TEAM2ARTICLE2%", "${.self:~qsportteam~q:1:~qteamnamearticle~q:2}")
 		EndIf
+		expression = expression.Replace("%FINALSCORE%", "${.self:~qsportmatch~q:~qfinalscoretext~q}")
 		expression = expression.Replace("%SPORTNAME%", "${.self:~qsport~q:~qname~q}")
 		expression = expression.Replace("%LEAGUENAME%", "${.self:~qsportleague~q:~qname~q}")
 		expression = expression.Replace("%LEAGUENAMESHORT%", "${.self:~qsportleague~q:~qnameshort~q}")
