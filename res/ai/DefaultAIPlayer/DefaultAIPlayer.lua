@@ -214,6 +214,26 @@ function DefaultAIPlayer:resume()
 	self:initParameters()
 
 	self:CleanUp()
+
+	--TODO snippet can be removed after release
+	--removes statistics with wrong type
+	if self.Stats.BroadcastStatistics ~= nil then
+		local st = self.Stats.BroadcastStatistics.hourlyProgrammeAudience
+		if st ~=nil then
+			local toRemove = {}
+			for k,v in pairs(st) do
+				--debugMsg("existing "..k)
+				if v~=nil and type(v)=="number" then
+					table.insert(toRemove, k)
+					--debugMsg("remove "..k)
+				end
+			end
+			for k,v in pairs(toRemove) do
+				--debugMsg("removing "..v)
+				st[v] = nil--.removeElement(st, v)
+			end
+		end
+	end
 end
 
 function DefaultAIPlayer:initializeTasks()
