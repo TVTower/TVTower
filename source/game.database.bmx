@@ -514,6 +514,27 @@ Type TDatabaseLoader
 	Global convertSB:TStringBuilder = New TStringBuilder()
 	Global convertOldNewMap:TStringMap = New TStringMap
 
+
+	Function ConvertOldScriptExpression:Int(templateVariables:TTemplateVariables, changedSomething:Int Var)
+		If Not templateVariables Then Return 0
+		
+		Local changeCount:Int = 0
+		If templateVariables.variables
+			For Local ls:TLocalizedString = EachIn templateVariables.variables.Values()
+				changeCount :+ ConvertOldScriptExpression(ls, changedSomething)
+			Next
+		EndIf
+		If templateVariables.variablesResolved
+			For Local ls:TLocalizedString = EachIn templateVariables.variablesResolved.Values()
+				changeCount :+ ConvertOldScriptExpression(ls, changedSomething)
+			Next
+		EndIf
+
+		changedSomething = (changeCount > 0)
+		Return changeCount
+	End Function
+
+
 	Function ConvertOldScriptExpression:Int(ls:TLocalizedString, changedSomething:Int Var)
 
 		Local changeCount:Int = 0
@@ -585,6 +606,64 @@ Type TDatabaseLoader
 				personGenPos = expression.Find("%PERSONGENERATOR_")
 			Wend
 		EndIf
+		
+		'replace sport stuff:
+		If expression.Find("%TEAM")>=0
+			expression = expression.Replace("%TEAM1NAMEINITIALS%", "${.self:~qsportteam~q:0:~qteaminitials~q}")
+			expression = expression.Replace("%TEAM2NAMEINITIALS%", "${.self:~qsportteam~q:1:~qteaminitials~q}")
+			expression = expression.Replace("%TEAM1RANK%", "${.self:~qsportteam~q:0:~qleaguerank~q}")
+			expression = expression.Replace("%TEAM2RANK%", "${.self:~qsportteam~q:1:~qleaguerank~q}")
+			expression = expression.Replace("%TEAM1TRAINERSHORT%", "${.self:~qsportteam~q:0:~qtrainer~q:~qlastname~q}")
+			expression = expression.Replace("%TEAM2TRAINERSHORT%", "${.self:~qsportteam~q:1:~qtrainer~q:~qlastname~q}")
+			expression = expression.Replace("%TEAM1TRAINER%", "${.self:~qsportteam~q:0:~qtrainer~q:~qfullname~q}")
+			expression = expression.Replace("%TEAM2TRAINER%", "${.self:~qsportteam~q:1:~qtrainer~q:~qfullname~q}")
+			expression = expression.Replace("%TEAM1STARSHORT%", "${.self:~qsportteam~q:0:~qmember~q:~qforward~q:~qlastname~q}")
+			expression = expression.Replace("%TEAM2STARSHORT%", "${.self:~qsportteam~q:1:~qmember~q:~qforward~q:~qlastname~q}")
+			expression = expression.Replace("%TEAM1STAR%", "${.self:~qsportteam~q:0:~qmember~q:~qforward~q:~qfullname~q}")
+			expression = expression.Replace("%TEAM2STAR%", "${.self:~qsportteam~q:1:~qmember~q:~qforward~q:~qfullname~q}")
+			expression = expression.Replace("%TEAM1KEEPERSHORT%", "${.self:~qsportteam~q:0:~qmember~q:~qkeeper~q:~qlastname~q}")
+			expression = expression.Replace("%TEAM2KEEPERSHORT%", "${.self:~qsportteam~q:1:~qmember~q:~qkeeper~q:~qlastname~q}")
+			expression = expression.Replace("%TEAM1KEEPER%", "${.self:~qsportteam~q:0:~qmember~q:~qkeeper~q:~qfullname~q}")
+			expression = expression.Replace("%TEAM2KEEPER%", "${.self:~qsportteam~q:1:~qmember~q:~qkeeper~q:~qfullname~q}")
+			expression = expression.Replace("%TEAM1NAME%", "${.self:~qsportteam~q:0:~qteamname~q}")
+			expression = expression.Replace("%TEAM2NAME%", "${.self:~qsportteam~q:1:~qteamname~q}")
+			expression = expression.Replace("%TEAM1CITY%", "${.self:~qsportteam~q:0:~qcity~q}")
+			expression = expression.Replace("%TEAM2CITY%", "${.self:~qsportteam~q:1:~qcity~q}")
+			expression = expression.Replace("%TEAM1ARTICLE1% %TEAM1NAME%", "${.self:~qsportteam~q:0:~qteamnamewitharticle~q}")
+			expression = expression.Replace("%TEAM1ARTICLE2% %TEAM1NAME%", "${.self:~qsportteam~q:0:~qteamnamewitharticle~q:2}")
+			expression = expression.Replace("%TEAM2ARTICLE1% %TEAM2NAME%", "${.self:~qsportteam~q:1:~qteamnamewitharticle~q}")
+			expression = expression.Replace("%TEAM2ARTICLE2% %TEAM2NAME%", "${.self:~qsportteam~q:1:~qteamnamewitharticle~q:2}")
+			expression = expression.Replace("%TEAM2ARTICLE2% %TEAM2%", "${.self:~qsportteam~q:1:~qteamnamewitharticle~q:2}")
+			expression = expression.Replace("%TEAM1ARTICLE1%", "${.self:~qsportteam~q:0:~qteamnamearticle~q}")
+			expression = expression.Replace("%TEAM1ARTICLE2%", "${.self:~qsportteam~q:0:~qteamnamearticle~q:2}")
+			expression = expression.Replace("%TEAM2ARTICLE1%", "${.self:~qsportteam~q:1:~qteamnamearticle~q}")
+			expression = expression.Replace("%TEAM2ARTICLE2%", "${.self:~qsportteam~q:1:~qteamnamearticle~q:2}")
+		EndIf
+		expression = expression.Replace("%FINALSCORE%", "${.self:~qsportmatch~q:~qfinalscoretext~q}")
+		expression = expression.Replace("%SPORTNAME%", "${.self:~qsport~q:~qname~q}")
+		expression = expression.Replace("%LEAGUENAME%", "${.self:~qsportleague~q:~qname~q}")
+		expression = expression.Replace("%LEAGUENAMESHORT%", "${.self:~qsportleague~q:~qnameshort~q}")
+		expression = expression.Replace("%SEASONYEARSTART%", "${.worldtime:~qyear~q:${.self:~qsportleague~q:~qgetfirstmatchtime~q}}")
+		expression = expression.Replace("%UPCOMINGMATCHTIMESFORMATTED%", "${.self:~qsportleague~q:~qupcomingmatchtimesformatted~q}")
+		If expression.Find("%MATCH")>=0
+			expression = expression.Replace("%MATCHCOUNT%", "${.self:~qsportleague~q:~qmatchcount~q}")
+			expression = expression.Replace("%MATCHTIMESFORMATTED%", "${.self:~qsportleague~q:~qmatchtimesformatted~q}")
+			expression = expression.Replace("%MATCHNAMESHORT%", "${.self:~qsportmatch~q:~qnameshort~q}")
+			expression = expression.Replace("%MATCHREPORT%", "${.self:~qsportmatch~q:~qreportshort~q}")
+			expression = expression.Replace("%MATCHREPORTSHORT%", "${.self:~qsportmatch~q:~qreportshort~q}")
+			expression = expression.Replace("%MATCHLIVEREPORTSHORT%", "${.self:~qsportmatch~q:~qlivereportshort~q}")
+			expression = expression.Replace("%MATCHRESULT%", "${.self:~qsportmatch~q:~qresulttext~q}")
+			expression = expression.Replace("%MATCHSCOREMAXTEXT%", "${.neq:${.self:~qsportmatch~q:~qwinnerscore~q}:1:~q${.locale:~qSCORE_POINTS~q}~q:~q${.locale:~qSCORE_POINT~q}~q}")
+			expression = expression.Replace("%MATCHKIND%", "${.lte:7:${.random:10}:~q${.locale:~qSPORT_TEAMREPORT_MATCHKIND~q:~q~q:1}~q:~q~q}")
+			expression = expression.Replace("%MATCHSCORE1TEXT%", "${.self:~qsportmatch~q:~qscore~q:0} ${.neq:${.self:~qsportmatch~q:~qscore~q:0}:1:~q${.locale:~qSCORE_POINTS~q}~q:~q${.locale:~qSCORE_POINT~q}~q}")
+			expression = expression.Replace("%MATCHSCORE2TEXT%", "${.self:~qsportmatch~q:~qscore~q:1} ${.neq:${.self:~qsportmatch~q:~qscore~q:1}:1:~q${.locale:~qSCORE_POINTS~q}~q:~q${.locale:~qSCORE_POINT~q}~q}")
+			expression = expression.Replace("%MATCHSCOREDRAWGAMETEXT%", "${.self:~qsportmatch~q:~qdrawgamescore~q} ${.gte:${.self:~qsportmatch~q:~qdrawgamescore~q}:2:~q${.locale:~qSCORE_POINTS~q}~q:~q${.locale:~qSCORE_POINT~q}~q}")
+		EndIf
+		expression = expression.Replace("%PLAYTIMEMINUTES%", "${.self:~qsportmatch~q:~qplaytimeminutes~q}")
+
+		
+		
+		
 
 
 		'type 3:

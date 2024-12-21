@@ -1953,7 +1953,12 @@ End Type
 'for sports men
 Type TPersonSportBaseData Extends TPersonBaseData
 	Field teamID:Int
+	Field sportID:Int
 	'TODO: power, skill, ... attributes?
+
+	Method SetSport(sportID:Int)
+		Self.sportID = sportID
+	End Method
 
 	Method SetTeam(teamID:Int)
 		Self.teamID = teamID

@@ -113,6 +113,9 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		If Not league Then Return Null
 
 		Local programmeData:TSportsHeaderProgrammeData = New TSportsHeaderProgrammeData
+		programmeData.leagueID = league.GetID()
+		programmeData.sportID = league.GetSport().GetID()
+
 		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence
 		programmeLicence.SetData(programmeData)
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
@@ -166,7 +169,6 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 
 		programmeData.releaseTime = league.GetFirstMatchTime()
-		programmeData.leagueGUID = league.GetGUID()
 
 		'so the licence datasheet does expose that information
 		programmeData.SetBroadcastLimit(3)
@@ -205,7 +207,10 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 
 		'needed so title/description can fetch the right information
 		If TSportsProgrammeData(programmeData)
-			TSportsProgrammeData(programmeData).AssignSportMatch(match)
+			Local sportsProgrammeData:TSportsProgrammeData = TSportsProgrammeData(programmeData)
+			sportsProgrammeData.AssignSportMatch(match)
+			sportsProgrammeData.leagueID = match.teams[0].leagueID
+			sportsProgrammeData.sportID = match.teams[0].sportID
 		EndIf
 
 		Local programmeLicence:TProgrammeLicence = New TProgrammeLicence
@@ -224,7 +229,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.description = New TLocalizedString
 		Local localeIDs:Int[] = [TLocalization.currentLanguageID, TLocalization.defaultLanguageID]
 		For Local localeID:Int = EachIn localeIDs
-			programmeData.title.Set("%LEAGUENAMESHORT%: %MATCHNAMESHORT%", localeID )
+			programmeData.title.Set("${.self:~qsportleague~q:~qnameshort~q}: ${.self:~qsportmatch~q:~qnameshort~q}", localeID )
 			programmeData.description.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , localeID )
 		Next
 
@@ -252,7 +257,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 		programmeData.outcome = 0.5 'maximum possible
 
-		Select match.sportName
+		Select match.teams[0].GetSport().name
 			Case "ICEHOCKEY"
 				'in germany not so successful
 				programmeData.outcome = 0.4

@@ -509,6 +509,18 @@ Function GetRandomLocale:string(baseKey:string)
 	return TLocalization.GetRandomString(baseKey)
 End Function
 
+Function GetRandomLocale:string(baseKey:string, language:TLocalizationLanguage)
+	return TLocalization._GetRandomString(language, baseKey)
+End Function
+
+Function GetRandomLocale:string(baseKey:string, languageCode:String)
+	return TLocalization._GetRandomString(TLocalization.GetLanguage(languageCode), baseKey)
+End Function
+
+Function GetRandomLocale:string(baseKey:string, languageID:Int)
+	return TLocalization._GetRandomString(TLocalization.GetLanguage(languageID), baseKey)
+End Function
+
 Function GetRandomLocale2:string(baseKeys:string[])
 	return TLocalization.GetRandomString2(baseKeys)
 End Function

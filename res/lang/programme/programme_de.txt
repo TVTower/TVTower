@@ -122,17 +122,17 @@ LIVE_PRODUCTION_FINISH_WILL_COST_X       = Abschluss der Liveproduktion kostet %
 OPENINGSHOW_TITLE       = Eröffnungsshow „%CHANNELNAME%“
 OPENINGSHOW_DESCRIPTION = Lasst die Korken knallen. %CHANNELNAME% geht an den Start.
 
-SPORT_PROGRAMME_TITLE                                = %SPORTNAME%: %LEAGUENAME% %SEASONYEARSTART%
-SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Alle %MATCHCOUNT% Begegnungen der %LEAGUENAME% in der Saison %SEASONYEARSTART%.
+SPORT_PROGRAMME_TITLE                                = ${.self:"sport":"name"}: ${.self:"sportleague":"name"} ${.worldtime:"year":${.self:"sportleague":"getfirstmatchtime"}}
+SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Alle ${.self:"sportleague":"matchcount"} Begegnungen der ${.self:"sportleague":"name"} in der Saison ${.worldtime:"year":${.self:"sportleague":"getfirstmatchtime"}}.
 SPORT_PROGRAMME_MATCH_TIMES                          = Austragungszeiten
-SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Begegnung zwischen Platz %TEAM1RANK% und %TEAM2RANK% der Liga. %TEAM1NAMEINITIALS%-Trainer %TEAM1TRAINERSHORT% ist optimistisch.
-SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = %TEAM1NAMEINITIALS%-Star %TEAM1STARSHORT% gegen die Mannschaft um Torjäger %TEAM2STAR%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ein interessantes Spiel steht ins Haus, wenn %TEAM1ARTICLE1% %TEAM1NAME% auf die Spieler des %TEAM2NAMEINITIALS% treffen.
-SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% zu Gast beim %TEAM1NAMEINITIALS% in %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% und seine Mannschaft reisen nach %TEAM2CITY% zum Platz %TEAM2RANK% der Liga.
+SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Begegnung zwischen Platz ${.self:"sportteam":0:"leaguerank"} und ${.self:"sportteam":1:"leaguerank"} der Liga. ${.self:"sportteam":0:"teaminitials"}-Trainer ${.self:"sportteam":0:"trainer":"lastname"} ist optimistisch.
+SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = ${.self:"sportteam":0:"teaminitials"}-Star ${.self:"sportteam":0:"member":"forward":"lastname"} gegen die Mannschaft um Torjäger ${.self:"sportteam":1:"member":"forward":"fullname"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ein interessantes Spiel steht ins Haus, wenn ${.self:"sportteam":0:"teamnamewitharticle"} auf Spieler des ${.self:"sportteam":1:"teaminitials"} trifft.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} zu Gast beim ${.self:"sportteam":0:"teaminitials"} in ${.self:"sportteam":0:"city"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} und seine Mannschaft reisen nach ${.self:"sportteam":0:"city"} zum Platz ${.self:"sportteam":0:"leaguerank"} der Liga.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Relegationsspiel.
-SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Spiel der %LEAGUENAME%.
+SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Spiel der ${.self:"sportleague":"name"}.
 SPORT_PLAYOFFS_LONG              = „Relegation“
 SPORT_PLAYOFFS_SHORT             = „REL“
 

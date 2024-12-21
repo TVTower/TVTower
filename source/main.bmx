@@ -2402,6 +2402,33 @@ Type TSaveGame Extends TGameState
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
 		If savegameVersion < 22
+			'create leagueID map
+			For Local league:TNewsEventSportLeague = EachIn GetNewsEventSportCollection().leagues.Values()
+				GetNewsEventSportCollection().AddLeague(league)
+			Next
+
+			'repair sportsdata 
+			For local data:TSportsProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
+				Local leagueGUID:String = String(savegameConverter.temporaryData.ValueForKey(data.GetID() + "_leagueguid"))
+				Local matchGUID:String = String(savegameConverter.temporaryData.ValueForKey(data.GetID() + "_matchguid"))
+				'in our case match guids are "entitybase-MATCHID" so we can simply extract the match id from there..
+				Local matchID:Int = Int( matchGUID[matchGUID.Find("-") + 1 ..] )
+
+				Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+				If Not league Then Throw "cannot repair TSportsProgrammeData: " + data.title.get()
+
+				Local sport:TNewsEventSport = league.GetSport()
+				If Not sport Then Throw "cannot repair TSportsProgrammeData - no sport to retrieve via league: " + league.name
+
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
+				If match
+					data.matchID = match.GetID()
+				EndIf
+
+				data.leagueID = league.GetID()
+				data.sportID = sport.GetID()
+			Next
+
 			Local teams:TIntMap = New TIntMap
 			'add all teams found in known leagues
 			'also make all base persons "sportsmen" again
@@ -2424,8 +2451,13 @@ Type TSaveGame Extends TGameState
 				Next
 
 				For local team:TNewsEventSportTeam = EachIn teams.Values()
-					Local league:TNewsEventSportLeague = team.GetLeague()
+					'convert leagueGUID to leagueID
+					Local leagueGUID:String = String(savegameConverter.temporaryData.ValueForKey(team.GetID() + "_leagueguid"))
+					Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueGUID)
+					team.leagueID = league.GetID()
+					
 					Local sport:TNewsEventSport = league.GetSport()
+					team.sportID = sport.GetID()
 
 					'assume 50% are not interested in TV shows / custom productions
 					If RandRange(0, 100) < 50
@@ -2459,8 +2491,19 @@ Type TSaveGame Extends TGameState
 			'their "strings" contain old script expressions
 			Local migratedScriptExpression:Int
 			Local migratedScriptExpressionCount:Int
+			Local migratedVariables:Int
+
+			migratedScriptExpressionCount = 0
+			migratedVariables = 0
+			For local data:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(data.title, migratedScriptExpression)
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(data.description, migratedScriptExpression)
+			Next
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN PROGRAMME DATA: " + migratedScriptExpressionCount +" data #############"
+
 			
 			migratedScriptExpressionCount = 0
+			migratedVariables = 0
 			For local net:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().allTemplates.Values()
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.title, migratedScriptExpression)
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(net.description, migratedScriptExpression)
@@ -2468,25 +2511,68 @@ Type TSaveGame Extends TGameState
 				If net.availableScript
 					net.availableScript = TDatabaseLoader.ConvertOldAvailableScript(net.availableScript)
 				EndIf
+				
+				migratedVariables :+ TDatabaseLoader.ConvertOldScriptExpression(net.templateVariables, migratedScriptExpression)
 			Next
-			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENT TEMPLATES: " + migratedScriptExpressionCount +" #############"
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENT TEMPLATES: " + migratedScriptExpressionCount +" templates, " + migratedVariables + " variables #############"
+
 
 			migratedScriptExpressionCount = 0
+			migratedVariables = 0
+			For local ne:TNewsEvent = EachIn GetNewsEventCollection().allNewsEvents.Values()
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(ne.title, migratedScriptExpression)
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(ne.description, migratedScriptExpression)
+
+				migratedVariables :+ TDatabaseLoader.ConvertOldScriptExpression(ne.templateVariables, migratedScriptExpression)
+			Next
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN NEWSEVENTS: " + migratedScriptExpressionCount +" events, " + migratedVariables + " variables #############"
+
+
+			migratedScriptExpressionCount = 0
+			migratedVariables = 0
 			For local st:TScriptTemplate = EachIn GetScriptTemplateCollection().entries.Values()
 				'local oldCount:int = migratedScriptExpressionCount
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(st.title, migratedScriptExpression)
 				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(st.description, migratedScriptExpression)
-				'if oldCount <> migratedScriptExpressionCount
-				'	print st.title.toString()
-				'	print st.description.ToString()
-				'	print "----"
-				'endif
 
 				If st.availableScript
 					st.availableScript = TDatabaseLoader.ConvertOldAvailableScript(st.availableScript)
 				EndIf
+
+				migratedVariables :+ TDatabaseLoader.ConvertOldScriptExpression(st.templateVariables, migratedScriptExpression)
+
+				If st.subScripts
+					For local subSt:TScriptTemplate = EachIn st.subScripts
+						migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(subSt.title, migratedScriptExpression)
+						migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(subSt.description, migratedScriptExpression)
+						If subSt.availableScript
+							subSt.availableScript = TDatabaseLoader.ConvertOldAvailableScript(subSt.availableScript)
+						EndIf
+
+						migratedVariables :+ TDatabaseLoader.ConvertOldScriptExpression(subSt.templateVariables, migratedScriptExpression)
+					Next
+				Endif
 			Next
-			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPT TEMPLATES: " + migratedScriptExpressionCount +" #############"
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPT TEMPLATES: " + migratedScriptExpressionCount +" templates, " + migratedVariables + " variables #############"
+
+
+			migratedScriptExpressionCount = 0
+			migratedVariables = 0
+			For local s:TScriptBase = EachIn GetScriptCollection().entries.Values()
+				'local oldCount:int = migratedScriptExpressionCount
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(s.title, migratedScriptExpression)
+				migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(s.description, migratedScriptExpression)
+				
+				If s.subScripts
+					For local subS:TScriptBase = EachIn s.subScripts
+						migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(subS.title, migratedScriptExpression)
+						migratedScriptExpressionCount :+ TDatabaseLoader.ConvertOldScriptExpression(subS.description, migratedScriptExpression)
+					Next
+				Endif
+			Next
+			'print "########## MIGRATED SCRIPT EXPRESSIONS IN SCRIPTS: " + migratedScriptExpressionCount +" scripts #############"
+
+
 
 			For local ac:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 				If ac.availableScript
@@ -3240,6 +3326,16 @@ Type TSavegameConverter
 		sb.Append(fieldTypeName)
 		Local handle:String = sb.ToLower().ToString()
 		Select handle
+			'v0.8.3: TNewsEventSportCollection.matches:TMap -> TNewsEventSportCollection.matchesByID:TIntMap
+			case "TNewsEventSportCollection.matches:TMap".ToLower()
+				Local map:TMap = TMap(fieldObject)
+				Local collection:TNewsEventSportCollection = TNewsEventSportCollection(parent)
+				For local match:TNewsEventSportMatch = EachIn map.Values()
+					collection.AddMatch(match)
+				Next
+				'alternative would be to save the map and process it in "repairdata"
+				'self.temporaryData.insert("TNewsEventSportCollection_matches", map)
+
 			'v0.8.1: TEntityCollection cleanup: TEntityCollection became TLongMap + TStringMap
 			case "TFigureCollection.entries:TMap".ToLower()
 				Local fc:TFigureCollection = TFigureCollection(parent)

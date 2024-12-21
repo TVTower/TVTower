@@ -122,17 +122,17 @@ LIVE_PRODUCTION_FINISH_WILL_COST_X       = Finalisation de la production en dire
 OPENINGSHOW_TITLE       = Inauguration «%CHANNELNAME%«
 OPENINGSHOW_DESCRIPTION = Faites sauter les bouchons ! %CHANNELNAME% se lance chez vous.
 
-SPORT_PROGRAMME_TITLE                                = %SPORTNAME% : %LEAGUENAME% %SEASONYEARSTART%
-SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Tous les %MATCHCOUNT% matchs de la ligue %LEAGUENAME% de la saison %SEASONYEARSTART%.
+SPORT_PROGRAMME_TITLE                                = ${.self:"sport":"name"}: ${.self:"sportleague":"name"} ${.worldtime:"year":${.self:"sportleague":"getfirstmatchtime"}}
+SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = Tous les ${.self:"sportleague":"matchcount"} matchs de la ligue ${.self:"sportleague":"name"} de la saison ${.worldtime:"year":${.self:"sportleague":"getfirstmatchtime"}}.
 SPORT_PROGRAMME_MATCH_TIMES                          = Heures des matchs
-SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match entre les numéros %TEAM1RANK% et %TEAM2RANK% de la ligue. L'entraîneur de %TEAM1NAMEINITIALS%, %TEAM1TRAINERSHORT% se montre optimiste.
-SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = L'étoile de %TEAM1NAMEINITIALS%, %TEAM1STARSHORT%, contre l'équipe de %TEAM2STAR%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ce sera un match fascinant quand %TEAM1ARTICLE1% %TEAM1NAME% rencontre les joueurs %TEAM2NAMEINITIALS%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = %TEAM2ARTICLE1% %TEAM2NAME% chez %TEAM1NAMEINITIALS% à %TEAM1CITY%.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = %TEAM2TRAINER% et son équipe voyagent à %TEAM2CITY% pour rencontrer le numéro %TEAM2RANK% de la ligue.
+SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Match entre les numéros ${.self:"sportteam":0:"leaguerank"} et ${.self:"sportteam":1:"leaguerank"} de la ligue. L'entraîneur de ${.self:"sportteam":0:"teaminitials"}, ${.self:"sportteam":0:"trainer":"lastname"} se montre optimiste.
+SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = L'étoile de ${.self:"sportteam":0:"teaminitials"}, ${.self:"sportteam":0:"member":"forward":"lastname"}, contre l'équipe de ${.self:"sportteam":1:"member":"forward":"fullname"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Ce sera un match fascinant quand ${.self:"sportteam":0:"teamnamewitharticle"} rencontre les joueurs ${.self:"sportteam":1:"teaminitials"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} chez ${.self:"sportteam":0:"teaminitials"} à ${.self:"sportteam":0:"city"}.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} et son équipe voyagent à ${.self:"sportteam":0:"city"} pour rencontrer le numéro ${.self:"sportteam":0:"leaguerank"} de la ligue.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Match de relégation.
-SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match de la ligue %LEAGUENAME%.
+SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match de la ligue ${.self:"sportleague":"name"}.
 SPORT_PLAYOFFS_LONG              = «Relégation»
 SPORT_PLAYOFFS_SHORT             = «REL»
 

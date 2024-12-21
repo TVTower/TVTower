@@ -134,15 +134,6 @@ End Function
 
 
 
-
-
-
-
-
-
-
-
-
 Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TNewsAgencyNewsProvider_Sport
@@ -224,13 +215,18 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(match.GetMatchTime()) ) )
 
 
-		Local NewsEvent:TNewsEvent = new TNewsEvent
+		Local NewsEvent:TNewsEvent_Sport = new TNewsEvent_Sport
 		local localizeTitle:TLocalizedString = new TLocalizedString
 		local localizeDescription:TLocalizedString = new TLocalizedString
 		'quality gets lower the higher the league index (less important)
 		Local quality:Float = 0.01 * randRange(50,60) * 0.9 ^ leagueIndex
 		Local price:Float = 1.0 + 0.01 * randRange(-5,10) * 1.05 ^ leagueIndex
 
+		'add sport meta data
+		NewsEvent.matchID = match.GetID()
+		NewsEvent.leagueID = league.GetID()
+		NewsEvent.sportID = sport.GetID()
+		
 
 		localizeTitle.Set(Getlocale("SPORT_"+sport.name) +" ["+league.nameShort+"]: " +match.GetReportShort())
 		if season and season.seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
@@ -262,6 +258,11 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		'elseif league._leaguesIndex = 2 '3. L
 		'	NewsEvent.minSubscriptionLevel = 1
 		endif
+		
+		'add sports information and parse potential expressions
+		NewsEvent.title = NewsEvent._ParseScriptExpressions(NewsEvent.title, True, Null)
+		NewsEvent.description = NewsEvent._ParseScriptExpressions(NewsEvent.description, True, Null)
+		
 		'debug
 		'print NewsEvent.GetTitle() + "  minLevel=" + NewsEvent.minSubscriptionLevel
 		'print "  Match: gameday="+RSet(GetWorldTime().GetDaysRun(),2)+"  "+ GetWorldTime().GetFormattedDate(NewsEvent.happenedTime)+"  "+Lset(weekday,10) + " " + match.GetReportshort() + "  " + match.GetReport()
