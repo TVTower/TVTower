@@ -605,11 +605,8 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 		Local roomOwner:Int = -1
 		If inRoom Then roomOwner = inRoom.owner
 
-		'block other rooms for x hours - like terror attack ?
-		If Not GetPlayerBaseCollection().isPlayer(roomOwner) or not inRoom.name = "archive"
-			'TODO
 		'when entering an archive, confiscate a licence
-		Else
+		If inRoom And inRoom.name = "archive" And GetPlayerBaseCollection().isPlayer(roomOwner)
 			local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
 			'try to get the licence from the player - if that player does
 			'not own the licence (eg. someone switched roomSigns), take
@@ -638,6 +635,11 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 
 			'switch used sprite - we confiscated something
 			sprite = GetSpriteFromRegistry(GetBaseSpriteName()+".box")
+		EndIf
+
+		'always block room
+		If inRoom
+			inRoom.SetBlocked(RandRange(120,240)*TWorldTime.MINUTELENGTH ,TRoomBase.BLOCKEDSTATE_MARSHAL)
 		EndIf
 
 		'remove the current job, we are done with it
