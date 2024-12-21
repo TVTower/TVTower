@@ -875,7 +875,7 @@ Function _EvaluateNewsEventSport:SToken(sport:TNewsEventSport, params:STokenGrou
 	Local propertyName:String = params.GetToken(tokenOffset).value
 
 	Select propertyName.ToLower()
-		case "name"                 Return New SToken( TK_TEXT, GetLocale("SPORT_"+sport.name), params.GetToken(0) )
+		case "name"                 Return New SToken( TK_TEXT, GetLocale("SPORT_"+sport.name, language), params.GetToken(0) )
 		case "leaguecount"          Return New SToken( TK_NUMBER, sport.leagues.length, params.GetToken(0) )
 		case "league"
 			Local leagueIndex:Int = params.GetToken(tokenOffset + 1).valueLong
