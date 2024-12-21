@@ -20,6 +20,7 @@ GameScriptExpression = New TGameScriptExpression
 'valid context(s): "all supported"
 GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 1, 3)
 
+GameScriptExpression.RegisterFunctionHandler( "newsevent", SEFN_newsevent, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedata, 2, 3)
 GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3) '
 GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
@@ -245,9 +246,11 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 	' delegate to custom sport property handler as programmedata 
 	' and programelicence use same functionality
 	If TSportsProgrammeData(licence.data)
+		Local leagueID:Int = TSportsProgrammeData(licence.data).leagueID
+		Local matchID:Int = TSportsProgrammeData(licence.data).matchID
 		Select propertyName
 			Case "sport", "sportleague", "sportmatch", "sportteam"
-				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(licence.data), propertyName, params, 1 + tokenOffset, context.contextNumeric)
+				Return _EvaluateSportsProperties(leagueID, matchID, propertyName, params, 1 + tokenOffset, context.contextNumeric)
 		End Select
 	EndIf
 
@@ -310,7 +313,6 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 End Function
 
 
-
 '${.programmedata:"guid"/id:"title"} - context: all
 '${.self:"title"} - context: TProgrammeData
 Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
@@ -349,9 +351,11 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 	' delegate to custom sport property handler as programmedata 
 	' and programelicence use same functionality
 	If TSportsProgrammeData(data)
+		Local leagueID:Int = TSportsProgrammeData(data).leagueID
+		Local matchID:Int = TSportsProgrammeData(data).matchID
 		Select propertyName
 			Case "sport", "sportleague", "sportmatch", "sportteam"
-				Return _EvaluateSportsProgrammeDataSportProperties(TSportsProgrammeData(data), propertyName, params, 1 + tokenOffset, context.contextNumeric)
+				Return _EvaluateSportsProperties(leagueID, matchID, propertyName, params, 1 + tokenOffset, context.contextNumeric)
 		End Select
 	EndIf
 
@@ -404,16 +408,87 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 End Function
 
 
-Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgrammeData, propertyName:String, params:STokenGroup Var, tokenOffset:int, language:int) 'inline
+'${.newsevent:"guid"/id:"title"} - context: all
+'${.self:"title"} - context: TNewsEvent
+Function SEFN_newsevent:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
+	'non-self requires an offset of 1 to retrieve required property
+	'${.self:"title"} - ${.myclass:"guid":"title"}
+	Local tokenOffset:Int = 0
+	Local data:TNewsEvent
+	Local firstTokenIsSelf:Int = params.GetToken(0).GetValueText() = "self"
+
+	If firstTokenIsSelf
+		data = TNewsEvent(context.context)
+		If Not data Then Return New SToken( TK_ERROR, ".self is not a TNewsEvent", params.GetToken(0) )
+	Else
+		Local GUID:String = params.GetToken(1).value
+		Local ID:Long = params.GetToken(1).valueLong
+		If GUID
+			data = GetNewsEventCollection().GetByGUID(GUID)
+			If Not data Then Return New SToken( TK_ERROR, ".newsevent with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
+		Else
+			data = GetNewsEventCollection().GetByID(Int(ID))
+			If Not data Then Return New SToken( TK_ERROR, ".newsevent with ID ~q"+ID+"~q not found", params.GetToken(0) )
+		EndIf
+		tokenOffset = 1
+	EndIf
+	
+	Local propertyName:String = params.GetToken(1 + tokenOffset).value.ToLower()
+
+	'TODO: parent retrieval for "news parent" (triggered by newsevent...)
+	rem
+	If propertyName = "parent"
+		data = GetNewsEventCollection().GetByID(data.parentDataID)
+		If Not data Then Return New SToken( TK_ERROR, ".self has no parent", params.GetToken(0) )
+		firstTokenIsSelf = False
+		propertyName = params.GetToken(2 + tokenOffset).value.ToLower()
+	EndIf
+	endrem
+
+
+	' delegate to custom sport property handler as newsevent 
+	' and programelicence use same functionality
+	If TNewsEvent_Sport(data)
+		Local leagueID:Int = TNewsEvent_Sport(data).leagueID
+		Local matchID:Int = TNewsEvent_Sport(data).matchID
+		Select propertyName
+			Case "sport", "sportleague", "sportmatch", "sportteam"
+				Return _EvaluateSportsProperties(leagueID, matchID, propertyName, params, 1 + tokenOffset, context.contextNumeric)
+		End Select
+	EndIf
+
+	'do not allow title/description for "self" as this is prone
+	'to a recursive call (description requesting description)
+	if not firstTokenIsSelf
+		Select propertyName
+		End Select
+	EndIf
+
+	Select propertyName
+		Case "title"            Return New SToken( TK_TEXT, data.GetTitle(), params.GetToken(0) )
+		Case "description"      Return New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
+
+		Case "genre"            Return New SToken( TK_NUMBER, data.GetGenre(), params.GetToken(0) )
+		Case "happenedtime"     Return New SToken( TK_NUMBER, data.happenedTime, params.GetToken(0) )
+		Case "eventduration"    Return New SToken( TK_NUMBER, data.eventDuration, params.GetToken(0) )
+		Case "quality"          Return New SToken( TK_NUMBER, data.GetQuality(), params.GetToken(0) )
+		Case "price"            Return New SToken( TK_NUMBER, data.GetPrice(), params.GetToken(0) )
+
+		Default                 Return New SToken( TK_ERROR, "Unknown property ~q" + propertyName + "~q", params.GetToken(0) )
+	End Select
+End Function
+
+
+Function _EvaluateSportsProperties:SToken(leagueID:Int, matchID:Int, propertyName:String, params:STokenGroup Var, tokenOffset:int, language:int) 'inline
 	If Not propertyName
 		propertyName = params.GetToken(tokenOffset).value.ToLower()
 	EndIf
 
 	Select propertyName
 		Case "sport", "sportleague", "sportmatch", "sportteam"
-			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(data.leagueID)
+			Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeague(leagueID)
 			If Not league
-				Return New SToken( TK_ERROR, "No league defined in context of programme data", params.GetToken(0) )
+				Return New SToken( TK_ERROR, "No league with ID " + leagueID +" defined in context", params.GetToken(0) )
 			EndIf
 
 			If propertyName = "sportleague"
@@ -421,19 +496,19 @@ Function _EvaluateSportsProgrammeDataSportProperties:SToken(data:TSportsProgramm
 			ElseIf propertyName = "sport"
 				Local sport:TNewsEventSport = league.GetSport()
 				If Not sport
-					Return New SToken( TK_ERROR, "No sport defined in context of programme data", params.GetToken(0) )
+					Return New SToken( TK_ERROR, "No sport defined for league in context", params.GetToken(0) )
 				EndIf
 				Return _EvaluateNewsEventSport(sport, params, tokenOffset + 1, language) 'inline
 			ElseIf propertyName = "sportmatch"
-				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchID)
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 				If Not match
-					Return New SToken( TK_ERROR, "No match defined in context of programme data", params.GetToken(0) )
+					Return New SToken( TK_ERROR, "No match with ID " + matchID + " defined in context", params.GetToken(0) )
 				EndIf
 				Return _EvaluateNewsEventSportMatch(match, params, tokenOffset + 1, language) 'inline
 			ElseIf propertyName = "sportteam"
-				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(data.matchID)
+				Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatch(matchID)
 				If Not match
-					Return New SToken( TK_ERROR, "No match (to identify teams) defined in context of programme data", params.GetToken(0) )
+					Return New SToken( TK_ERROR, "No match (to identify teams) with ID " + matchID + " defined in context", params.GetToken(0) )
 				EndIf
 				Local teamIndex:Int = params.GetToken(tokenOffset + 1).valueLong
 				If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
@@ -1107,6 +1182,8 @@ Function SEFN_self:SToken(params:STokenGroup Var, context:SScriptExpressionConte
 		return SEFN_programmelicence(params, context)
 	ElseIf TScript(context.context)
 		return SEFN_script(params, context)
+	ElseIf TNewsEvent(context.context)
+		return SEFN_newsevent(params, context)
 	EndIf
 End Function
 

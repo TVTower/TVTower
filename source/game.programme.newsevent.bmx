@@ -948,6 +948,15 @@ End Type
 
 
 
+'custom class for sport news to provide meta data
+Type TNewsEvent_Sport extends TNewsEvent
+	Field matchID:Int
+	Field leagueID:Int
+	Field sportID:Int
+End Type
+
+
+
 
 Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 	Field triggerNewsGUID:String
