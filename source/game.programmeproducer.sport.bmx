@@ -263,7 +263,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 				programmeData.outcome = 0.4
 			Case "SOCCER"
 				'really popular
-				programmeData.outcome = 0.6
+				programmeData.outcome = 0.75
 		End Select
 
 		'loss due to first broadcast and not being live are covered by
