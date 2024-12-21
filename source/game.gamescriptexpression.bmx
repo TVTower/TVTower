@@ -875,7 +875,7 @@ Function _EvaluateNewsEventSport:SToken(sport:TNewsEventSport, params:STokenGrou
 	Local propertyName:String = params.GetToken(tokenOffset).value
 
 	Select propertyName.ToLower()
-		case "name"                 Return New SToken( TK_TEXT, sport.name, params.GetToken(0) )
+		case "name"                 Return New SToken( TK_TEXT, GetLocale("SPORT_"+sport.name), params.GetToken(0) )
 		case "leaguecount"          Return New SToken( TK_NUMBER, sport.leagues.length, params.GetToken(0) )
 		case "league"
 			Local leagueIndex:Int = params.GetToken(tokenOffset + 1).valueLong
@@ -891,6 +891,9 @@ Function _EvaluateNewsEventSport:SToken(sport:TNewsEventSport, params:STokenGrou
 		case "getfirstmatchtime"    Return New SToken( TK_NUMBER, sport.GetFirstMatchTime(), params.GetToken(0) )
 		case "getlastmatchtime"     Return New SToken( TK_NUMBER, sport.GetLastMatchTime(), params.GetToken(0) )
 		case "getlastmatchendtime"  Return New SToken( TK_NUMBER, sport.GetLastMatchEndTime(), params.GetToken(0) )
+		'nameraw is the internal "type appendix"/name of the sport ("SOCCER") 
+		'instead of a text value which can be/is localized 
+		case "nameraw"              Return New SToken( TK_TEXT, sport.name, params.GetToken(0) )
 		default                     Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
 	End Select
 End Function
