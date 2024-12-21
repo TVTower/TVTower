@@ -229,7 +229,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.description = New TLocalizedString
 		Local localeIDs:Int[] = [TLocalization.currentLanguageID, TLocalization.defaultLanguageID]
 		For Local localeID:Int = EachIn localeIDs
-			programmeData.title.Set("%LEAGUENAMESHORT%: %MATCHNAMESHORT%", localeID )
+			programmeData.title.Set("${.self:~qsportleague~q:~qnameshort~q}: ${.self:~qsportmatch~q:~qnameshort~q}", localeID )
 			programmeData.description.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , localeID )
 		Next
 
