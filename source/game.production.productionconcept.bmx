@@ -396,7 +396,14 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method Reset()
 		'reset cast
-		if script then cast = new TPersonBase[ script.jobs.length ]
+		If script
+			cast = new TPersonBase[ script.jobs.length ]
+			For Local i:Int = 0 Until script.jobs.length
+				If script.jobs[i].personID
+					cast[i] = GetPersonBaseCollection().GetById(script.jobs[i].personID)
+				EndIf
+			Next
+		EndIf
 
 		ResetCache()
 
