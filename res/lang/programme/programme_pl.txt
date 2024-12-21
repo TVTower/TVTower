@@ -129,7 +129,7 @@ SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = Mecz pomiędzy miejscami 
 SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = ${.self:"sportteam":0:"teaminitials"} gwiazda ${.self:"sportteam":0:"member":-1:"lastname"} przeciwko drużynie z najlepszym strzelcem ${.self:"sportteam":1:"member":"forward":"fullname"}.
 SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = Zbliża się interesujący mecz, w którym ${.self:"sportteam":0:"teamnamewitharticle"} spotka się z graczami ${.self:"sportteam":1:"teaminitials"}.
 SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = ${.ucfirst:"${.self:"sportteam":1:"teamnamewitharticle"}"} odwiedzają ${.self:"sportteam":0:"teaminitials"} w ${.self:"sportteam":0:"city"}.
-SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} i jego drużyna udają się do ${.self:"sportteam":1:"city"}, zajmującego pozycję ${.self:"sportteam":1:"leaguerank"} w lidze.
+SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = ${.self:"sportteam":1:"trainer":"fullname"} i jego drużyna udają się do ${.self:"sportteam":0:"city"}, zajmującego pozycję ${.self:"sportteam":0:"leaguerank"} w lidze.
 
 SPORT_PROGRAMME_PLAYOFF_MATCH    = Mecz Playoff.
 SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Mecz ${.self:"sportleague":"name"}.
