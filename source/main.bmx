@@ -2457,6 +2457,7 @@ Type TSaveGame Extends TGameState
 					team.leagueID = league.GetID()
 					
 					Local sport:TNewsEventSport = league.GetSport()
+					team.sportID = sport.GetID()
 
 					'assume 50% are not interested in TV shows / custom productions
 					If RandRange(0, 100) < 50
