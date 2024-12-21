@@ -116,17 +116,17 @@ SPORT_SOCCER    = Fussball
 
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = und Stürmer ${.self:"sportteam":0:"member":"forward":"fullname"} gewinnt ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = und Stürmer ${.self:"sportteam":0:"member":"forward":"fullname"} gewinnen ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = schlägt dank verwandelter Ecke durch ${.self:"sportteam":0:"member":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = schlagen dank verwandelter Ecke durch ${.self:"sportteam":0:"member":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = besiegt dank gehaltenem Elfmeter von Torwart ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = schlagen dank gehaltenem Elfmeter von Torwart ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = schlägt dank genialer Paraden von Torwart ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = schlagen dank genialer Paraden von Torwart ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = schlägt dank verwandelter Ecke durch ${.self:"sportteam":0:"member":"forward":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = schlagen dank verwandelter Ecke durch ${.self:"sportteam":0:"member":"forward":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = besiegt dank gehaltenem Elfmeter von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = schlagen dank gehaltenem Elfmeter von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = schlägt dank genialer Paraden von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = schlagen dank genialer Paraden von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = gibt ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} 3 wertvolle Punkte an
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = geben ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} 3 wertvolle Punkte an
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = unterliegt durch Schusselfehler von Torwart ${.self:"sportteam":0:"member":0:"lastname"} und ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = unterliegen durch Schusselfehler von Torwart ${.self:"sportteam":0:"member":0:"lastname"} und ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = unterliegt durch Schusselfehler von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} und ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = unterliegen durch Schusselfehler von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} und ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = verliert mit enttäuschtem Torwart ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = verlieren mit enttäuschtem Torwart ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
 

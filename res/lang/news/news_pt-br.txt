@@ -116,17 +116,17 @@ SPORT_SOCCER    = Futebol
 
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = e o atacante ${.self:"sportteam":0:"member":"forward":"fullname"} vence ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = e o atacante ${.self:"sportteam":0:"member":"forward":"fullname"} vence ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = vence graças a um escanteio convertido por ${.self:"sportteam":0:"member":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = vence graças a um escanteio convertido por ${.self:"sportteam":0:"member":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = vence graças a um pênalti defendido pelo goleiro  ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = vence graças a um pênalti defendido pelo goleiro  ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = vence graças a um escanteio convertido por ${.self:"sportteam":0:"member":"forward":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = vence graças a um escanteio convertido por ${.self:"sportteam":0:"member":"forward":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = vence graças a um pênalti defendido pelo goleiro  ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = vence graças a um pênalti defendido pelo goleiro  ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 #SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = 
 #SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = 
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = 3 pontos valiosos ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} para
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = deu 3 pontos valiosos ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} para
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = é derrotado por erro do goleiro ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = são derrotados por erro do goleiro ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = é derrotado por erro do goleiro ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = são derrotados por erro do goleiro ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = perde com o decepcionante goleiro ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = perder com o goleiro desapontado ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} contra
 

@@ -116,17 +116,17 @@ SPORT_SOCCER    = Piłka nożna
 
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = i do przodu ${.self:"sportteam":0:"member":"forward":"fullname"} wygrywa ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = i do przodu ${.self:"sportteam":0:"member":"forward":"fullname"} wygrywa ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = pokonuje dzięki rzutowi rożnemu wykonywanemu przez ${.self:"sportteam":0:"member":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = porażka dzięki wykorzystanemu rzutowi rożnemu przez ${.self:"sportteam":0:"member":-1:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = porażka dzięki obronionemu rzutowi karnemu przez bramkarza ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = porażka dzięki obronionemu rzutowi karnemu przez bramkarza ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = pokonuje dzięki genialnym interwencjom bramkarza ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = pokonani dzięki wspaniałym interwencjom bramkarza ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = pokonuje dzięki rzutowi rożnemu wykonywanemu przez ${.self:"sportteam":0:"member":"forward":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = porażka dzięki wykorzystanemu rzutowi rożnemu przez ${.self:"sportteam":0:"member":"forward":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = porażka dzięki obronionemu rzutowi karnemu przez bramkarza ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = porażka dzięki obronionemu rzutowi karnemu przez bramkarza ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = pokonuje dzięki genialnym interwencjom bramkarza ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = pokonani dzięki wspaniałym interwencjom bramkarza ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = oddaje 3 cenne punkty ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} na rzecz
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = rozdaje 3 cenne punkty ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} dla
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = został pokonany z powodu błędu keepera ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = zostali pokonani z powodu błędu keepera ${.self:"sportteam":0:"member":0:"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = został pokonany z powodu błędu keepera ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = zostali pokonani z powodu błędu keepera ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = przegrywa z rozczarowanym bramkarzem ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = przegrać z rozczarowanym bramkarzem ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} przeciwko
 
