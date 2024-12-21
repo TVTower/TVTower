@@ -257,13 +257,13 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 		programmeData.outcome = 0.5 'maximum possible
 
-		Select match.sportName
+		Select match.teams[0].GetSport().name
 			Case "ICEHOCKEY"
 				'in germany not so successful
 				programmeData.outcome = 0.4
 			Case "SOCCER"
 				'really popular
-				programmeData.outcome = 0.75
+				programmeData.outcome = 0.6
 		End Select
 
 		'loss due to first broadcast and not being live are covered by
