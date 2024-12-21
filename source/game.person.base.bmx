@@ -1996,7 +1996,8 @@ Type TPersonProductionJob
 	
 	
 	'copy is used for making a script out of a template
-	'... randomRole value not needed and hence not copied
+	'randomRole value not needed and hence not copied
+	'preselectCast is set explicitly
 	Method Copy:TPersonProductionJob()
 		Return New TPersonProductionJob.Init(personID, job, gender, country, roleID)
 	End Method
