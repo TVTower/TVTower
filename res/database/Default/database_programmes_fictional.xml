@@ -232,7 +232,7 @@
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.25" women="0.25" />
-			<data country="D" distribution="2" maingenre="103" subgenre="300,6" flags="5" blocks="1" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="10" />
+			<data country="D" distribution="2" maingenre="103" subgenre="300,6" flags="5" blocks="1" broadcast_time_slot_start="18" broadcast_time_slot_end="2" broadcast_limit="1" broadcast_flags="512" licence_flags="36" price_mod="10" />
 			<releaseTime year_relative="0" day="5" />
 			<ratings critics="5" speed="11" outcome="1" />
 			<effects>
