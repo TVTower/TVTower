@@ -290,6 +290,8 @@ Type TGameEventKeys
 	Field App_OnStart:TEventKey = GetEventKey("App.onStart", True)
 	Field App_OnLowPriorityUpdate:TEventKey = GetEventKey("App.OnLowPriorityUpdate", True)
 
+	Field Database_OnLoad:TEventKey = GetEventKey("Database.OnLoad", True)
+	Field Database_OnBeginLoad:TEventKey = GetEventKey("Database.OnBeginLoad", True)
 	Field SaveGame_OnBeginLoad:TEventKey = GetEventKey("SaveGame.OnBeginLoad", True)
 	Field SaveGame_OnLoad:TEventKey = GetEventKey("SaveGame.OnLoad", True)
 	Field SaveGame_OnBeginSave:TEventKey = GetEventKey("SaveGame.OnBeginSave", True)

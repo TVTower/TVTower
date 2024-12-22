@@ -4035,6 +4035,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	Field SendGameReadyTimer:Long = 0
 	Field StartMultiplayerSyncStarted:Long = 0
 	Field messageWindow:TGUIGameModalWindow
+	Field actionLog:String[]
 
 	'Store call states as we try a "Non blocking" approach
 	'which means, the update loop gets called multiple time.
@@ -4056,6 +4057,15 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	Field stateName:TLowerString
 
+	Global _registeredListeners:TEventListenerBase[] {nosave}
+	Global _registeredEvents:Int = False
+
+	
+	Method New()
+		RegisterEvents()	
+	End Method
+
+
 	Method Create:TScreen_PrepareGameStart(name:String)
 		Super.Create(name)
 		SetGroupName("ExGame", "PrepareGameStart")
@@ -4069,6 +4079,54 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 		Return Self
 	End Method
+
+
+
+	Method RegisterEvents:Int()
+		EventManager.UnregisterListenersArray(_registeredListeners)
+		_registeredListeners = New TEventListenerBase[0]
+
+		if not _registeredEvents
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoad, OnDatabaseLoad) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoad, OnDatabaseBeginLoad) ]
+
+			_registeredEvents = True
+		endif
+	End Method
+
+
+	Function OnDatabaseBeginLoad:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+		Local fileURI:String = triggerEvent.GetData().GetString("fileURI")
+		screen.actionLog :+ ["Loading DB: " + fileURI]
+		If screen.actionLog.length > 5
+			screen.actionLog = screen.actionLog[screen.actionLog.length-5 ..]
+		EndIf 
+		'enforce redrawing the screen
+		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+		screen.Draw(GetDeltaTimer().GetTween())
+		Flip
+	End Function
+	
+	
+	Function OnDatabaseLoad:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+		Local fileURI:String = triggerEvent.GetData().GetString("fileURI")
+		screen.actionLog :+ ["Loaded DB: " + fileURI]
+		If screen.actionLog.length > 5
+			screen.actionLog = screen.actionLog[screen.actionLog.length-5 ..]
+		EndIf 
+		'enforce redrawing the screen
+		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+		screen.Draw(GetDeltaTimer().GetTween())
+		Flip
+	End Function
 
 
 	Method Draw:Int(tweenValue:Float)
@@ -4095,7 +4153,12 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			Next
 			If Not allReady Then GetBitmapFontManager().baseFont.DrawSimple("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 		Else
-			GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
+			messageDY :+ GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black).y
+			If actionLog.length > 0
+				For local i:Int = 0 until actionLog.length
+					messageDY :+ GetBitmapFontManager().baseFont.DrawBox(actionLog[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_LEFT_TOP, SColor8.Black).y
+				Next
+			EndIf
 		EndIf
 		SetAlpha oldAlpha
 		
