@@ -492,6 +492,31 @@ Struct SToken
 		Return False
 	End Method
 
+
+	Method GetValueLong:Long()
+		Select id
+		Case TK_ERROR
+			Return -1
+		Case TK_EOF
+			Return -2
+		Default
+			Select valueType
+				Case ETokenValueType.Integer
+					Return valueLong
+				Case ETokenValueType.Text
+					Return Long(value)
+				Case ETokenValueType.FloatingPoint
+					Return Long(valueDouble)
+				Case ETokenValueType.Identifier
+					Return -3
+				Case ETokenValueType.LowerCaseHash
+					Return -4
+			End Select
+		End Select
+		Return -5
+	End Method
+
+
 	' Debugging
 	Method reveal:String()
 		If id=TK_ERROR Then Return "h"+Hex(id)+" = ERROR:"+value+" at ["+linenum+","+linepos+"]"
@@ -1822,7 +1847,7 @@ Function SEFN_Csv:SToken(params:STokenGroup Var, context:SScriptExpressionContex
 		separator = String(params.GetToken(3).GetValueText())
 	EndIf
 	If params.added >= 3
-		index = Int(params.GetToken(2).GetValueText())
+		index = Int(params.GetToken(2).GetValueLong())
 	EndIf
 
 	If doTrim
