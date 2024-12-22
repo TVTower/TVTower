@@ -1386,7 +1386,7 @@ ${EXTRA}</pl>
 				<job index="0" function="1" required="1" /> <!-- TODO: preselection -->
 				<job index="1" function="8" required="1" />
 			</jobs>
-			<data flags="5" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" available="0" /> <!-- availability triggered by 42761763-4125-4a66-8227-40027caab44a -->
+			<data flags="5" broadcast_time_slot_start="18" broadcast_time_slot_end="2" production_broadcast_limit="1" production_broadcast_flags="512" production_licence_flags="36" target_groups="0" available="0" /> <!-- availability triggered by 42761763-4125-4a66-8227-40027caab44a -->
 			<targetgroupattractivity men="0.25" women="0.25" />
 			<genres maingenre="103" subgenres="300,6" />
 			<blocks value="1" />
