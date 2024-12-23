@@ -426,12 +426,12 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		'make it "unique" enough
 		Self.Create(Null, Null, HostIp+":"+hostPort)
 
-		Self.data.AddString("hostIP", HostIp)
-		Self.data.AddNumber("hostPort", hostPort)
-		Self.data.AddString("hostName", HostName)
-		Self.data.AddString("gameTitle", gametitle)
-		Self.data.AddNumber("slotsUsed", slotsUsed)
-		Self.data.AddNumber("slotsMax", slotsMax)
+		Self.data.Add("hostIP", HostIp)
+		Self.data.Add("hostPort", hostPort)
+		Self.data.Add("hostName", HostName)
+		Self.data.Add("gameTitle", gametitle)
+		Self.data.Add("slotsUsed", slotsUsed)
+		Self.data.Add("slotsMax", slotsMax)
 
 		'resize it
 		GetDimension()

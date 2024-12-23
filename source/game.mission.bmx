@@ -304,7 +304,7 @@ Type TSimpleMission extends TMission
 				EndIf
 			ElseIf forceFinish
 				'no player wins
-				'data.addInt("player", -1)'do not put this into highscore; 
+				'data.Add("player", -1)'do not put this into highscore; 
 				fireEvent = True
 				key = GameEventKeys.Mission_Failed
 			EndIf
@@ -327,7 +327,7 @@ Type TSimpleMission extends TMission
 
 			Local data:TData = New TData
 			data.add("highscore", score)
-			If text Then data.addString("text", text)
+			If text Then data.Add("text", text)
 			TriggerBaseEvent(key, data, Self)
 		EndIf
 		currentPlayerFinance = null
@@ -549,7 +549,7 @@ Type TCombinedMission extends TMission
 				TMissions.addHighscoreEntry(self, score)
 
 				Local data:TData = New TData
-				If text data.addString("text", text)
+				If text data.Add("text", text)
 				If score Then data.add("highscore", score)
 				TriggerBaseEvent(key, data, Self)
 			EndIf
@@ -720,7 +720,7 @@ Type TSammyMission extends TMission
 
 			Local data:TData = New TData
 			data.add("highscore", score)
-			If text Then data.addString("text", text)
+			If text Then data.Add("text", text)
 			TriggerBaseEvent(key, data, Self)
 		EndIf
 		currentAward =  null

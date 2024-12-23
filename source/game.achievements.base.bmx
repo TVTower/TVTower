@@ -524,14 +524,14 @@ Type TAchievement Extends TAchievementBaseType
 
 
 	Method OnComplete:int(playerID:int, time:Long=0)
-		TriggerBaseEvent(GameEventKeys.Achievement_OnComplete, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.Achievement_OnComplete, New TData.Add("playerID", playerID).Add("time", time), Self)
 '		print "  Achievement.OnComplete: "+playerID
 	End Method
 
 
 	'called if a one-time-chance-achievement fails
 	Method OnFail:int(playerID:int, time:Long=0)
-		TriggerBaseEvent(GameEventKeys.Achievement_OnFail, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.Achievement_OnFail, New TData.Add("playerID", playerID).Add("time", time), Self)
 '		print "  Achievement.OnFail: "+playerID
 	End Method
 
@@ -783,13 +783,13 @@ Type TAchievementTask Extends TAchievementBaseType
 
 
 	Method OnComplete:int(playerID:int, time:Long)
-		TriggerBaseEvent(GameEventKeys.AchievementTask_OnComplete, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.AchievementTask_OnComplete, New TData.Add("playerID", playerID).Add("time", time), Self)
 		'print " Task.OnComplete ("+GetGUID()+"): "+playerID
 	End Method
 
 
 	Method OnFail:int(playerID:int, time:Long)
-		TriggerBaseEvent(GameEventKeys.AchievementTask_OnFail, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.AchievementTask_OnFail, New TData.Add("playerID", playerID).Add("time", time), Self)
 		'print " Task.OnFail ("+GetGUID()+"): "+playerID
 	End Method
 
@@ -850,12 +850,12 @@ Type TAchievementReward Extends TAchievementBaseType
 
 		rewardGiven[playerID-1] = time
 
-		TriggerBaseEvent(GameEventKeys.AchievementReward_OnBeginGiveToPlayer, New TData.addNumber("playerID", playerID), Self)
+		TriggerBaseEvent(GameEventKeys.AchievementReward_OnBeginGiveToPlayer, New TData.Add("playerID", playerID), Self)
 
 		if gameModifier then gameModifier.Run( GetGameModifierParams(playerID) )
 		CustomGiveToPlayer(playerID)
 
-		TriggerBaseEvent(GameEventKeys.AchievementReward_OnGiveToPlayer, New TData.addNumber("playerID", playerID), Self)
+		TriggerBaseEvent(GameEventKeys.AchievementReward_OnGiveToPlayer, New TData.Add("playerID", playerID), Self)
 
 		return True
 	End Method

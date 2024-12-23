@@ -608,6 +608,20 @@ Type TAIEvent {_exposeTolua}
 	End Method
 
 
+	'add after "object" variant so that this is exposed to Lua
+	'with "current" reflection code
+	Method Add:TAIEvent(i:int)
+		data :+ [object(string(i))]
+		return self
+	End Method
+
+
+	Method Add:TAIEvent(l:Long)
+		data :+ [object(string(l))]
+		return self
+	End Method
+
+
 	Method AddDataSet:TAIEvent(o:object[])
 		data :+ o
 		return self
@@ -617,6 +631,7 @@ Type TAIEvent {_exposeTolua}
 	Method GetName:String()
 		Return GetNameByID(self.id)
 	End Method
+
 
 	Function GetNameByID:String(id:int)
 		Select id

@@ -227,7 +227,7 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 			If player.playerAI
 				'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
 				'GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask " + taskName +" 1000", CHAT_COMMAND_WHISPER)
-				player.playerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(1).AddString("CMD_forcetask " + taskName +" 1000").AddInt(CHAT_COMMAND_WHISPER))
+				player.playerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).Add(1).Add("CMD_forcetask " + taskName +" 1000").Add(CHAT_COMMAND_WHISPER))
 			Else
 				'send player to the room of the task
 				Local room:TRoom

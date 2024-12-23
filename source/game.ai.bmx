@@ -364,7 +364,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	
 
 	Method ScheduleNextOnTick()
-		GetPlayerBase(Self.ME).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnInternalTick).AddLong(Time.GetTimeGone()).AddLong(GetWorldTime().GetTimeGone()))
+		GetPlayerBase(Self.ME).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnInternalTick).Add(Time.GetTimeGone()).Add(GetWorldTime().GetTimeGone()))
 	End Method
 
 
@@ -458,7 +458,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	Method SendToChat:Int(ChatText:String)
 		'emit an event, we received a chat message
 		Local sendToChannels:Int = TGUIChat.GetChannelsFromText(ChatText)
-		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddNumber("senderID", Self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) )
+		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.Add("senderID", Self.ME).Add("channels", sendToChannels).Add("text",ChatText) )
 
 		Return 1
 	EndMethod

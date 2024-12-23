@@ -487,10 +487,10 @@ Type TScreen_GameSettings Extends TGameScreen
 							'GameRules.startGameWithCredit = False 'let player decide
 							'GetGameBase().SetRandomizerBase( 0 ) ' let player decide
 							GameRules.randomizeLicenceAttributes = True
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_REVIEW", 15)
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_SPEED", 15)
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_OUTCOME", 15)
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_PRICE", 15)
+							GameRules.devConfig.Add("DEV_DATABASE_LICENCE_RANDOM_REVIEW", 15)
+							GameRules.devConfig.Add("DEV_DATABASE_LICENCE_RANDOM_SPEED", 15)
+							GameRules.devConfig.Add("DEV_DATABASE_LICENCE_RANDOM_OUTCOME", 15)
+							GameRules.devConfig.Add("DEV_DATABASE_LICENCE_RANDOM_PRICE", 15)
 							GetGameBase().userStartYear = Int(guiStartYear.value)
 						EndIf
 
@@ -607,7 +607,7 @@ Type TScreen_GameSettings Extends TGameScreen
 				Local itemToSelect:TGUIDropDownItem
 				For Local s:Int = EachIn difficultyValues
 					Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(100,20), GetLocale("MISSION_DIFFICULTY_"+s))
-					item.data.AddInt("value", s)
+					item.data.Add("value", s)
 					If not itemToSelect Or TVTMissionDifficulty.NORMAL = s Then itemToSelect = item
 
 					guiMissionDifficulty.AddItem( item )

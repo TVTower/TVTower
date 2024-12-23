@@ -70,15 +70,15 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 			Return NULL
 		Endif
 		'process given relative-url
-		data.AddString("url", loader.GetURI(data.GetString("url")))
+		data.Add("url", loader.GetURI(data.GetString("url")))
 		'emit loader event for loading screen
 		'self.doLoadElement("image resource", _url, "loading", self.currentItemNumber)
 
 		data.Add("name", TXmlHelper.FindValue(node, "name", node.GetName()))
 		'use url as name if none was given
-		if data.GetString("name") = "" or data.GetString("name").ToUpper() = "IMAGE" then data.Add("name", data.GetString("url"))
+		if data.GetString("name") = "" or data.GetString("name").ToLower() = "image" then data.Add("name", data.GetString("url"))
 
-		data.AddNumber("flags", GetImageFlags(node))
+		data.Add("flags", GetImageFlags(node))
 
 		'batch load some field names
 		local fieldNames:String[]

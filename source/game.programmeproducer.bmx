@@ -144,10 +144,10 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		EndIf
 		
 		If Not result.data.extra Then result.data.extra = New TData
-		result.data.extra.AddInt("producerID", - GetID()) 'negative!
+		result.data.extra.Add("producerID", - GetID()) 'negative!
 		If result.IsEpisode()
 			If Not result.GetParentLicence().data.extra Then result.GetParentLicence().data.extra = New TData
-			result.GetParentLicence().data.extra.AddInt("producerID", - GetID()) 'negative!
+			result.GetParentLicence().data.extra.Add("producerID", - GetID()) 'negative!
 		EndIf
 
 		budget :- production.productionConcept.GetTotalCost()

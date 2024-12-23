@@ -302,7 +302,7 @@ Type TNewsEventSport Extends TGameObject
 					nextMatch.Run()
 					season.doneMatches.AddLast(nextMatch)
 
-					TriggerBaseEvent(GameEventKeys.Sport_Playoffs_RunMatch, New TData.AddLong("matchTime", nextMatch.GetMatchTime()).Add("match", nextMatch).Add("season", season).AddInt("leagueIndex", leagueNumber -1), Self)
+					TriggerBaseEvent(GameEventKeys.Sport_Playoffs_RunMatch, New TData.Add("matchTime", nextMatch.GetMatchTime()).Add("match", nextMatch).Add("season", season).Add("leagueIndex", leagueNumber -1), Self)
 
 					matchesRun :+ 1
 				'else
@@ -327,7 +327,7 @@ Type TNewsEventSport Extends TGameObject
 
 		playoffsState = 1
 
-		TriggerBaseEvent(GameEventKeys.Sport_StartPlayoffs, New TData.AddLong("time", GetWorldTime().GetTimeGone()), Self)
+		TriggerBaseEvent(GameEventKeys.Sport_StartPlayoffs, New TData.Add("time", GetWorldTime().GetTimeGone()), Self)
 	End Method
 
 
@@ -403,7 +403,7 @@ Type TNewsEventSport Extends TGameObject
 
 		playoffsState = 2
 
-		TriggerBaseEvent(GameEventKeys.Sport_FinishPlayoffs, New TData.AddLong("time", GetWorldTime().GetTimeGone()), Self)
+		TriggerBaseEvent(GameEventKeys.Sport_FinishPlayoffs, New TData.Add("time", GetWorldTime().GetTimeGone()), Self)
 	End Method
 
 
@@ -476,7 +476,7 @@ Type TNewsEventSport Extends TGameObject
 			?
 		Next
 
-		TriggerBaseEvent(GameEventKeys.Sport_StartSeason, New TData.AddLong("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.Sport_StartSeason, New TData.Add("time", time), Self)
 	End Method
 
 
@@ -1486,7 +1486,7 @@ endrem
 		Local matchesRun:Int = 0
 '		if startingMatchGroup
 			'if _onStartMatchGroup then _onStartMatchGroup(self, nextMatch.GetMatchTime())
-			'TriggerBaseEvent(GameEventKeys.SportLeague_StartMatchGroup, New TData.addNumber("matchTime", match.GetMatchTime()).add("match", match), Self)
+			'TriggerBaseEvent(GameEventKeys.SportLeague_StartMatchGroup, New TData.Add("matchTime", match.GetMatchTime()).Add("match", match), Self)
 
 			Local endingMatchTime:Long
 			Local runMatches:TNewsEventSportMatch[]
@@ -1523,7 +1523,7 @@ endrem
 				GetCurrentSeason().RefreshTeamStats(endingMatchTime)
 
 				If endingMatchTime = 0 Then endingMatchTime = GetWorldTime().GetTimeGone()
-				TriggerBaseEvent(GameEventKeys.SportLeague_FinishMatchGroup, New TData.add("matches", runMatches).AddLong("time", endingMatchTime).Add("season", GetCurrentSeason()), Self)
+				TriggerBaseEvent(GameEventKeys.SportLeague_FinishMatchGroup, New TData.Add("matches", runMatches).Add("time", endingMatchTime).Add("season", GetCurrentSeason()), Self)
 			EndIf
 '		endif
 
@@ -1576,7 +1576,7 @@ endrem
 
 		If _onStartSeason Then _onStartSeason(Self)
 
-		TriggerBaseEvent(GameEventKeys.SportLeague_StartSeason, New TData.AddLong("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.SportLeague_StartSeason, New TData.Add("time", time), Self)
 	End Method
 
 
@@ -1585,7 +1585,7 @@ endrem
 		GetCurrentSeason().Finish(GetCurrentSeason().updateTime)
 
 		If _onFinishSeason Then _onFinishSeason(Self)
-		TriggerBaseEvent(GameEventKeys.SportLeague_FinishSeason, New TData.AddLong("time", GetCurrentSeason().updateTime), Self)
+		TriggerBaseEvent(GameEventKeys.SportLeague_FinishSeason, New TData.Add("time", GetCurrentSeason().updateTime), Self)
 	End Method
 
 
@@ -1594,13 +1594,13 @@ endrem
 		GetCurrentSeason().part = part
 
 		If _onStartSeasonPart Then _onStartSeasonPart(Self, part)
-		TriggerBaseEvent(GameEventKeys.SportLeague_StartSeasonPart, New TData.AddInt("part", part).AddLong("time", GetCurrentSeason().updateTime), Self)
+		TriggerBaseEvent(GameEventKeys.SportLeague_StartSeasonPart, New TData.Add("part", part).Add("time", GetCurrentSeason().updateTime), Self)
 	End Method
 
 
 	Method FinishSeasonPart:Int(part:Int)
 		If _onFinishSeasonPart Then _onFinishSeasonPart(Self, part)
-		TriggerBaseEvent(GameEventKeys.SportLeague_FinishSeasonPart, New TData.AddInt("part", part).AddLong("time", GetCurrentSeason().updateTime), Self)
+		TriggerBaseEvent(GameEventKeys.SportLeague_FinishSeasonPart, New TData.Add("part", part).Add("time", GetCurrentSeason().updateTime), Self)
 		If GetCurrentSeason() And part = GetCurrentSeason().partMax Then FinishSeason()
 	End Method
 
@@ -1702,7 +1702,7 @@ endrem
 		GetCurrentSeason().doneMatches.AddLast(match)
 
 		If _onRunMatch Then _onRunMatch(Self, match)
-		TriggerBaseEvent(GameEventKeys.SportLeague_RunMatch, New TData.AddLong("matchTime", match.GetMatchTime()).Add("match", match).Add("season", GetCurrentSeason()), Self)
+		TriggerBaseEvent(GameEventKeys.SportLeague_RunMatch, New TData.Add("matchTime", match.GetMatchTime()).Add("match", match).Add("season", GetCurrentSeason()), Self)
 
 		Return True
 	End Method
