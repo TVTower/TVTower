@@ -1,6 +1,6 @@
 Rem
 ================================================================
-Copyright (c) 2002-2023 TVTower-Team
+Copyright (c) 2002-2024 TVTower-Team
 
 This software is provided 'as-is'. No warranty is given.
 The authors cannot be held liable for any damages arising from
