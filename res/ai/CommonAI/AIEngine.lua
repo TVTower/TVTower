@@ -1193,16 +1193,17 @@ function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction
 
 	if broadcastTypeID == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
 		-- remove everything older than yesterday
-		local lastDaysI = tonumber(tostring(day-1).."00")
-
-		for k,v in pairs(self.hourlyNewsAudience) do
-			if tonumber(k) < lastDaysI then
-				self.hourlyNewsAudience[k] = nil
+		if hour < 2 then
+			local lastDaysI = tonumber(tostring(day-1).."00")
+			for k,v in pairs(self.hourlyNewsAudience) do
+				if tonumber(k) < lastDaysI then
+					self.hourlyNewsAudience[k] = nil
+				end
 			end
-		end
-		for k,v in pairs(self.hourlyNewsAttraction) do
-			if tonumber(k) < lastDaysI then
-				self.hourlyNewsAttraction[k] = nil
+			for k,v in pairs(self.hourlyNewsAttraction) do
+				if tonumber(k) < lastDaysI then
+					self.hourlyNewsAttraction[k] = nil
+				end
 			end
 		end
 
@@ -1211,17 +1212,19 @@ function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction
 		return true
 	elseif broadcastTypeID == TVT.Constants.BroadcastMaterialType.PROGRAMME then
 		-- remove audience older than day before yesterday
-		local lastDaysI = tonumber(tostring(day-2).."00")
-		for k,v in pairs(self.hourlyProgrammeAudience) do
-			if tonumber(k) < lastDaysI then
-				self.hourlyProgrammeAudience[k] = nil
+		if hour < 2 then
+			local lastDaysI = tonumber(tostring(day-2).."00")
+			for k,v in pairs(self.hourlyProgrammeAudience) do
+				if tonumber(k) < lastDaysI then
+					self.hourlyProgrammeAudience[k] = nil
+				end
 			end
-		end
-		--remove attraction older than yesterday
-		lastDaysI = tonumber(tostring(day-1).."00")
-		for k,v in pairs(self.hourlyProgrammeAttraction) do
-			if tonumber(k) < lastDaysI then
-				self.hourlyProgrammeAttraction[k] = nil
+			--remove attraction older than yesterday
+			lastDaysI = tonumber(tostring(day-1).."00")
+			for k,v in pairs(self.hourlyProgrammeAttraction) do
+				if tonumber(k) < lastDaysI then
+					self.hourlyProgrammeAttraction[k] = nil
+				end
 			end
 		end
 
