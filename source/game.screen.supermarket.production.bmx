@@ -338,12 +338,14 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 
 			'TODO we do not yet consider casting the same role using the same person
-			'(role once as actore once as supporting actor)
+			'(role once as actor once as supporting actor)
 			If perfectMatch
 				'for the same concept or concepts with the same specification
 				'(e.g. multi-production, episodes), simply copy the cast
 				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
-					currentProductionConcept.SetCast(castIndex, takeOverConcept.cast[castIndex])
+					If Not currentProductionConcept.script.jobs[castIndex].preselectCast
+						currentProductionConcept.SetCast(castIndex, takeOverConcept.cast[castIndex])
+					EndIf
 				Next
 			Else
 				'store old cast by their job
@@ -359,18 +361,20 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				'find the best matching old cast (same job, correct gender)
 				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
 					Local job:TPersonProductionJob = currentProductionConcept.script.jobs[castIndex]
-					Local jobIndex:Int = TVTPersonJob.GetIndex(job.job)
-					Local gender:Int = job.gender
-					Local oldCastList:TPersonBase[] = oldCastByJob[jobIndex]
-					For Local oldCastIndex:Int = 0 Until oldCastList.length
-						Local oldCastPerson:TPersonBase = oldCastList[oldCastIndex]
-						If Not oldCastPerson Then Continue
-						If gender > 0 And gender <> oldCastPerson.gender Then Continue
-						currentProductionConcept.SetCast(castIndex, oldCastPerson)
-						'make a cast member once used unavailable
-						oldCastList[oldCastIndex] = null
-						Exit
-					Next
+					If Not job.preselectCast
+						Local jobIndex:Int = TVTPersonJob.GetIndex(job.job)
+						Local gender:Int = job.gender
+						Local oldCastList:TPersonBase[] = oldCastByJob[jobIndex]
+						For Local oldCastIndex:Int = 0 Until oldCastList.length
+							Local oldCastPerson:TPersonBase = oldCastList[oldCastIndex]
+							If Not oldCastPerson Then Continue
+							If gender > 0 And gender <> oldCastPerson.gender Then Continue
+							currentProductionConcept.SetCast(castIndex, oldCastPerson)
+							'make a cast member once used unavailable
+							oldCastList[oldCastIndex] = null
+							Exit
+						Next
+					EndIf
 				Next
 			EndIf
 
@@ -2431,6 +2435,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Field displayJobID:Int = -1
 	Field lastDisplayJobID:Int = -1
 	Field selectJobID:Int = -1
+	Field locked:Int = -1
 
 	Global yearColor:SColor8 = New SColor8(60,60,60, int(0.8*255))
 
@@ -2462,7 +2467,23 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Self.displayJobID = -1
 		Self.selectJobID = displayJobID
 		Self.lastDisplayJobID = displayJobID
+		Self.locked = -1
 	End Method
+
+
+	Method _isLocked:Int()
+		If Self.locked < 0
+			Self.locked = False
+			Local slot:Int = TScreenHandler_SupermarketProduction.GetInstance().castSlotList.GetSlot( self )
+			If slot >= 0 And TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
+				Local job:TPersonProductionJob = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.jobs[slot]
+				If job.preselectCast
+					Self.locked = True
+				EndIf
+			EndIf
+		EndIf
+		Return Self.locked
+	EndMethod
 
 
     Method Create:TGUICastListItem(pos:SVec2I, dimension:SVec2I, value:String="")
@@ -2477,6 +2498,15 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
+	Method OnTryDrag:Int(triggerEvent:TEventBase) override
+		If _isLocked()
+			triggerEvent.SetVeto()
+			Return False
+		EndIf
+		return super.OnTryDrag(triggerEvent)
+	End Method
+
+
 	'override
 	Method onFinishDrag:Int(triggerEvent:TEventBase)
 		If Super.OnFinishDrag(triggerEvent)
@@ -2487,6 +2517,21 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Else
 			Return False
 		EndIf
+	End Method
+
+
+	Method OnTryDrop:Int(triggerEvent:TEventBase) override
+		Local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
+		Local target:TGUICastSlotList = TGUICastSlotList(triggerEvent.GetData().Get("target"))
+		If coord And Target
+			Local slotId:Int = target.GetSlotByCoord(coord)
+			Local targetSlot:TGUICastListItem = TGUICastListItem(target.GetItemBySlot(slotId))
+			If targetSlot And targetSlot._isLocked()
+				triggerEvent.SetVeto()
+				Return False
+			EndIf
+		EndIf
+		return super.OnTryDrop(triggerEvent)
 	End Method
 
 
@@ -2686,8 +2731,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 			sympathyPercentage = 0
 		EndIf
 	
-	
+		If _isLocked() Then SetAlpha 0.5 * GetAlpha()
 		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, nameHint, face, xpPercentage, sympathyPercentage, 1, gender, overlayIntensity)
+		If _isLocked() Then SetAlpha 2 * GetAlpha()
 
 		If isHovered()
 			SetBlend LightBlend
