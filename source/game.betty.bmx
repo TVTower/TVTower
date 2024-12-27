@@ -351,9 +351,9 @@ Type TBetty
 			EndIf
 			If points
 				'modifiers determined betty points
-			Else If (programme.data.GetGenre() = TVTProgrammeGenre.Erotic And Not tgWomen)
+			ElseIf (programme.data.GetGenre() = TVTProgrammeGenre.Erotic And Not tgWomen)
 				points = -20 * blocks
-			ElseIf programme.data.HasSubGenre(TVTProgrammeGenre.Erotic And Not tgWomen)
+			ElseIf programme.data.HasSubGenre(TVTProgrammeGenre.Erotic) And Not tgWomen
 				points = -10 * blocks
 			ElseIf programme.data.HasFlag(TVTProgrammeDataFlag.PAID)
 				points = -5 * blocks
