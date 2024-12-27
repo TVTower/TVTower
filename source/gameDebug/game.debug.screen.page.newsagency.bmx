@@ -53,14 +53,14 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		
-		Local upcoming:TList = GetNewsEventCollection().GetUpcomingNewsList()
+		Local upcoming:TObjectList = GetNewsEventCollection().GetUpcomingNewsList()
 
 		textFont.DrawSimple("Queue", textX, textY)
 		textY :+ 12+3
 		If upcoming.Count() = 0
 			textFont.DrawSimple("--", textX, textY)
 		Else
-			Local upcomingSorted:TList = upcoming.Copy()
+			Local upcomingSorted:TObjectList = upcoming.Copy()
 			upcomingSorted.sort(True, TNewsEventCollection.SortByHappenedTime)
 
 			Local nCount:Int

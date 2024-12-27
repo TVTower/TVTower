@@ -46,8 +46,10 @@ Type TNewsEventCollection
 	'cache for faster access
 
 	'holding news coming in a defined future
-	Field _upcomingNewsEvents:TList[] {nosave}
-	Field _followingNewsEvents:TList[] {nosave}
+	Field _upcomingNewsEvents:TObjectList[] {nosave}
+	Field _upcomingNewsEventsValid:Int[] {nosave}
+	Field _followingNewsEvents:TObjectList[] {nosave}
+	Field _followingNewsEventsValid:Int[] {nosave}
 	Global _instance:TNewsEventCollection
 
 
@@ -86,12 +88,30 @@ Type TNewsEventCollection
 
 
 	Method _InvalidateFollowingNewsEvents()
-		_followingNewsEvents = New TList[TVTNewsGenre.count + 1]
+		If _followingNewsEvents.length <> TVTNewsGenre.count + 1
+			_followingNewsEvents = _followingNewsEvents[.. TVTNewsGenre.count + 1]
+			_followingNewsEventsValid = _followingNewsEventsValid[.. TVTNewsGenre.count + 1]
+		EndIf
+		For Local l:TObjectList = EachIn _followingNewsEvents
+			l.Clear()
+		Next
+		For local i:Int = 0 until _followingNewsEventsValid.length
+			_followingNewsEventsValid[i] = False
+		Next
 	End Method
 
 
 	Method _InvalidateUpcomingNewsEvents()
-		_upcomingNewsEvents = New TList[TVTNewsGenre.count + 1]
+		If _upcomingNewsEvents.length <> TVTNewsGenre.count + 1
+			_upcomingNewsEvents = _upcomingNewsEvents[.. TVTNewsGenre.count + 1]
+			_upcomingNewsEventsValid = _upcomingNewsEventsValid[.. TVTNewsGenre.count + 1]
+		EndIf
+		For Local l:TObjectList = EachIn _upcomingNewsEvents
+			l.Clear()
+		Next
+		For local i:Int = 0 until _upcomingNewsEventsValid.length
+			_upcomingNewsEventsValid[i] = False
+		Next
 	End Method
 
 
@@ -301,12 +321,14 @@ Type TNewsEventCollection
 
 
 	'returns (and creates if needed) a list containing only follow up news
-	Method GetFollowingNewsList:TList(genre:Int=-1)
+	Method GetFollowingNewsList:TObjectList(genre:Int=-1)
 		'create if missing
 		If Not _followingNewsEvents Then _InvalidateFollowingNewsEvents()
 
-		If Not _followingNewsEvents[genre+1]
-			_followingNewsEvents[genre+1] = CreateList()
+		If Not _followingNewsEventsValid[genre+1]
+			If Not _followingNewsEvents[genre+1]
+				_followingNewsEvents[genre+1] = New TObjectList()
+			EndIf
 			For Local event:TNewsEvent = EachIn newsEvents.Values()
 				If event.newsType <> TVTNewsType.FollowingNews Then Continue
 				'only interested in a specific genre?
@@ -314,18 +336,21 @@ Type TNewsEventCollection
 
 				_followingNewsEvents[genre+1].AddLast(event)
 			Next
+			_followingNewsEventsValid[genre+1] = True
 		EndIf
 		Return _followingNewsEvents[genre+1]
 	End Method
 
 
 	'returns (and creates if needed) a list containing only initial news
-	Method GetUpcomingNewsList:TList(genre:Int=-1)
+	Method GetUpcomingNewsList:TObjectList(genre:Int=-1)
 		'create if missing
 		If Not _upcomingNewsEvents Then _InvalidateUpcomingNewsEvents()
 
-		If Not _upcomingNewsEvents[genre+1]
-			_upcomingNewsEvents[genre+1] = CreateList()
+		If Not _upcomingNewsEventsValid[genre+1]
+			If Not _upcomingNewsEvents[genre+1]
+				_upcomingNewsEvents[genre+1] = New TObjectList()
+			EndIf
 			For Local event:TNewsEvent = EachIn newsEvents.Values()
 				'skip events already happened (and processed) or not
 				'happened at all (-> "-1")
@@ -335,6 +360,7 @@ Type TNewsEventCollection
 
 				_upcomingNewsEvents[genre+1].AddLast(event)
 			Next
+			_upcomingNewsEventsValid[genre+1] = True
 		EndIf
 		Return _upcomingNewsEvents[genre+1]
 	End Method
@@ -1205,14 +1231,18 @@ Type TGameModifierNews_ModifyAvailability Extends TGameModifierBase
 			'reset to backup value
 '			newsEventTemplate.available = enableBackup
 
-			'also modify "not yet happened" but existing news 
+			'also modify "not yet happened" but existing news
+			Local hasToInvalidateCache:Int = False
 			For Local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
 				If newsEvent.templateID = newsEventTemplate.GetID()
 					newsEvent.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, enableBackup)
-					'refresh caches
-					GetNewsEventCollection()._InvalidateCaches()
+					hasToInvalidateCache = True
 				EndIf
 			Next
+			'refresh caches
+			If hasToInvalidateCache
+				GetNewsEventCollection()._InvalidateCaches()
+			EndIf
 			
 			Return True
 		Else
