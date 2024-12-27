@@ -2105,7 +2105,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 22
+	Const SAVEGAME_VERSION:int = 23
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2401,7 +2401,18 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
-		If savegameVersion < 22
+		If savegameVersion < 23
+			'mark news events of the past as "happening processed"
+			Local neChangeCount:Int
+			For Local ne:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
+				If ne.HasHappened() 
+					ne.SetFlag(TVTNewsFlag.HAPPENING_PROCESSED, True)
+					neChangeCount :+ 1
+				EndIf
+			Next
+			'print "Marked " + neChangeCount + " news events as happening_processed."
+			
+		ElseIf savegameVersion < 22
 			'create leagueID map
 			For Local league:TNewsEventSportLeague = EachIn GetNewsEventSportCollection().leagues.Values()
 				GetNewsEventSportCollection().AddLeague(league)
@@ -2476,7 +2487,7 @@ Type TSaveGame Extends TGameState
 						member.AddData("sports_" + sport.name, New TPersonSportBaseData)
 						'adding the member hires them and sets sport id etc.
 						team.AddMember(member)
-						print "Add " + sport.name+"-sport-data to person: " + member.GetFullName()
+						'print "Add " + sport.name+"-sport-data to person: " + member.GetFullName()
 					Next
 				Next
 			Next

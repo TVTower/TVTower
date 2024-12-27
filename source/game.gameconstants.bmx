@@ -1581,8 +1581,10 @@ Type TVTNewsFlag {_exposeToLua}
 	'invisible events do not create "news" - they only run their "happen"
 	'effects
 	Const INVISIBLE_EVENT:Int = 256
+	'mark if "happen" was processed
+	Const HAPPENING_PROCESSED:Int = 512 
 
-	Const count:Int = 8
+	Const count:Int = 9
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -1603,6 +1605,7 @@ Type TVTNewsFlag {_exposeToLua}
 			Case RESET_TICKER_TIME Return "reset_ticker_time"
 			Case RESET_HAPPEN_TIME Return "reset_happen_time"
 			Case SPECIAL_EVENT     Return "special_event"
+			Case HAPPENING_PROCESSED  Return "happening_processed"
 
 
 			Default

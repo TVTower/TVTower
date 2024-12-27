@@ -327,8 +327,9 @@ Type TNewsEventCollection
 		If Not _upcomingNewsEvents[genre+1]
 			_upcomingNewsEvents[genre+1] = CreateList()
 			For Local event:TNewsEvent = EachIn newsEvents.Values()
-				'skip events already happened or not happened at all (-> "-1")
-				If event.HasHappened() Or event.happenedTime = -1 Then Continue
+				'skip events already happened (and processed) or not
+				'happened at all (-> "-1")
+				If event.HasFlag(TVTNewsFlag.HAPPENING_PROCESSED) Or event.happenedTime = -1 Then Continue
 				'only interested in a specific genre?
 				If genre <> -1 And event.GetGenre() <> genre Then Continue
 
@@ -749,7 +750,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(Self, time)
 
-		If time <= GetWorldTime().GetTimeGone()
+		If time <= GetWorldTime().GetTimeGone() And Not self.HasFlag(TVTNewsFlag.HAPPENING_PROCESSED)
 			'inform a template that it just happens
 			If templateID > 0
 				local newsTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
@@ -774,6 +775,9 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 				effectParams.Add("variables", templateVariables)
 			EndIf
 			If effects Then effects.Update("happen", effectParams)
+
+			'mark newsevent happening as processed
+			self.SetFlag(TVTNewsFlag.HAPPENING_PROCESSED, True)
 		EndIf
 	End Method
 

@@ -707,6 +707,9 @@ Type TNewsAgency
 			'skip news events not happening yet
 			If Not newsEvent.HasHappened() Then Continue
 
+			'TODO: Can they be not available "yet" but already be scheduled?
+			'      (one event triggers the schedule of newsX, another one
+			'       triggers the availability)
 			If Not newsEvent.IsAvailable()
 				GetNewsEventCollection().Remove(newsEvent)
 				Continue
