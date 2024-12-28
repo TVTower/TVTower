@@ -2411,8 +2411,9 @@ Type TSaveGame Extends TGameState
 				EndIf
 			Next
 			'print "Marked " + neChangeCount + " news events as happening_processed."
+		EndIf
 			
-		ElseIf savegameVersion < 22
+		If savegameVersion < 22
 			'create leagueID map
 			For Local league:TNewsEventSportLeague = EachIn GetNewsEventSportCollection().leagues.Values()
 				GetNewsEventSportCollection().AddLeague(league)
