@@ -1263,13 +1263,14 @@ endrem
 		'Next
 
 		'create 3 starting news with random genre (for starting news show)
-		For Local i:Int = 0 Until 3
-			Local genre:int = -1 'genre = -1 to use a random genre
-			If i = 2 Then genre = TVTNewsGenre.POLITICS_ECONOMY 'not quite random to prevent news achievement
-			Local newsEvent:TNewsEvent = GetNewsAgency().GenerateNewNewsEvent(genre)
+		Local newsCount:Int = 3
+		Local newsGenres:Int[] = RandRangeArray(0, TVTNewsGenre.count - 1, newsCount)
+		For Local i:Int = 0 Until newsCount
+			Local newsEvent:TNewsEvent = GetNewsAgency().GenerateNewNewsEvent(newsGenres[i])
 			If newsEvent
-				'time must be lower than for the "current affairs" news
-				'so they are recognizeable as the latest ones
+				' time must be lower than for the "current affairs" news
+				' (which are the default subscription) so they are
+				' recognizeable as the most recent ones
 				Local adjustMinutes:Int = - RandRange(0, 60) * TWorldTime.MINUTELENGTH
 				newsEvent.doHappen( GetWorldTime().GetTimeGone() + adjustMinutes )
 			EndIf
