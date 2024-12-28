@@ -4678,6 +4678,9 @@ Type GameEvents
 					GetGame().SendSystemMessage("No news with GUID ~q"+newsGUID+"~q found.")
 					Return False
 				EndIf
+				
+				'let the event happen
+				news.ProcessHappening(GetWorldTime().GetTimeGone())
 
 				'announce that news
 				GetNewsAgency().AnnounceNewsEventToPlayers(news, 0, announceNow)

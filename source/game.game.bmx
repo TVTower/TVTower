@@ -1271,8 +1271,8 @@ endrem
 				' time must be lower than for the "current affairs" news
 				' (which are the default subscription) so they are
 				' recognizeable as the most recent ones
-				Local adjustMinutes:Int = - RandRange(0, 60) * TWorldTime.MINUTELENGTH
-				newsEvent.doHappen( GetWorldTime().GetTimeGone() + adjustMinutes )
+				newsEvent.happenedTime = GetWorldTime().GetTimeGone() - RandRange(0, 60) * TWorldTime.MINUTELENGTH
+				newsEvent.ProcessHappening()
 			EndIf
 		Next
 

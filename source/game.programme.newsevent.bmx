@@ -143,7 +143,14 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method AddHappenedEvent:Int(obj:TNewsEvent)
+	' Store an event in the "just happened" array.
+	' A maximum of 100 entries is stored.
+	' Retrieval via GetNewsHistory()
+	'
+	' Remark:
+	' For now this method is only used indirectly when preparing
+	' the news of a newly started player 
+	Method AddToNewsEventsHistory:Int(obj:TNewsEvent)
 		If Not obj Then Return False
 
 		'max 100 entries
@@ -232,6 +239,9 @@ Type TNewsEventCollection
 					Add(news)
 
 					if n.happenTime = 0 'planned to execute right on start
+						'mark as not happened yet, before it inherited
+						'the template happen time (which would be 0)
+						news.happenedTime = GetWorldTime().GetTimeGone()
 						scheduledCount :- 1
 						happenOnStartNews :+ [news]
 					EndIf
@@ -240,7 +250,7 @@ Type TNewsEventCollection
 		Next
 
 		For local n:TNewsEvent = EachIn happenOnStartNews
-			n.doHappen(GetWorldTime().GetTimeGone())
+			print "ScheduleTimedInitialNews: id="+n.GetID() +"  title=" + n.GetTitle() + "  happenedTime="+n.happenedTime +"  -> TimeGone"
 		Next
 
 		TLogger.Log("ScheduleTimedInitialNews()", "Pre-Created " + scheduledCount + " news happening at fixed time in the future and " + happenOnStartNews.length + " happening right now.", LOG_DEBUG)
@@ -313,7 +323,7 @@ Type TNewsEventCollection
 
 	Method GetNewsHistory:TNewsEvent[](limit:Int=-1)
 		If limit = -1
-			Return newsEventsHistory[.. newsEventsHistoryIndex]
+			Return newsEventsHistory
 		Else
 			Return newsEventsHistory[Max(0,newsEventsHistoryIndex-limit) .. newsEventsHistoryIndex]
 		EndIf
@@ -364,42 +374,43 @@ Type TNewsEventCollection
 		EndIf
 		Return _upcomingNewsEvents[genre+1]
 	End Method
-
-
-	Method setNewsHappened(news:TNewsEvent, time:Long = 0)
-		'nothing set - use "now"
-		If time = 0 Then time = GetWorldTime().GetTimeGone()
-
-		If news.happenedTime <> time
-			news.newsNumber = nextNewsNumber
-			nextNewsNumber :+ 1
-
-			news.happenedTime = time
-
-			'protect a thread id until the last news of that thread has happened
-			Local collection:TNewsEventTemplateCollection = GetNewsEventTemplateCollection()
-			Local template:TNewsEventTemplate = collection.getById(news.templateID)
-			If template And template.IsReuseable() And template.threadid
-				'print "checking template "+ news.GetTitle()
-				Local threadTime:Long = Long(String(collection.threadLastHappened.ValueForKey(template.threadid)))
-				If threadTime < news.happenedTime
-					collection.threadLastHappened.insert(template.threadid, ""+news.happenedTime)
-					'print "UPDATING "+template.threadid +" "+news.happenedTime
-				EndIf
+	
+	
+	'protect a thread id until the last news of that thread has happened
+	Method ProtectNewsThread:Int(news:TNewsEvent)
+		Local collection:TNewsEventTemplateCollection = GetNewsEventTemplateCollection()
+		Local template:TNewsEventTemplate = collection.getById(news.templateID)
+		If template And template.IsReuseable() And template.threadid
+			'print "checking template "+ news.GetTitle()
+			Local threadTime:Long = Long(String(collection.threadLastHappened.ValueForKey(template.threadid)))
+			If threadTime < news.happenedTime
+				collection.threadLastHappened.insert(template.threadid, ""+news.happenedTime)
+				'print "UPDATING "+template.threadid +" "+news.happenedTime
 			EndIf
-
-			'add to the "happened" list
-			If news.HasHappened()
-				AddHappenedEvent(news)
-
-				'remove from managed ones
-				RemoveActive(news)
-			EndIf
+			Return True
 		EndIf
+		Return False
+	End Method
+	
+
+	Method OnNewsHappened(news:TNewsEvent)
+		news.newsNumber = nextNewsNumber
+		nextNewsNumber :+ 1
+
+		ProtectNewsThread(news)
+
+		' store in last-100-news history
+		' eg to retrieve "last 3 happened news"
+		AddToNewsEventsHistory(news)
+
+		' remove from managed ones
+		RemoveActive(news)
 
 		'reset only specific caches, so news gets in the correct list
 		'- no need to invalidate newstype-specific caches
-		_InvalidateUpcomingNewsEvents()
+		'_InvalidateUpcomingNewsEvents()
+		'instead of invalidating the caches, only remove the event
+		GetUpcomingNewsList().Remove(news)
 	End Method
 
 
@@ -768,51 +779,57 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	'ATTENTION:
-	'to emit an artificial news, use GetNewsAgency().announceNewsEvent()
-	Method doHappen(time:Long = 0)
-		if time = 0 then time = GetWorldTime().GetTimeGone()
-		
-		'set happened time, add to collection list...
-		GetNewsEventCollection().setNewsHappened(Self, time)
-
-		If time <= GetWorldTime().GetTimeGone() And Not self.HasFlag(TVTNewsFlag.HAPPENING_PROCESSED)
-			'inform a template that it just happens
-			If templateID > 0
-				local newsTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
-				if newsTemplate
-					newsTemplate.OnHappen()
-				EndIf
-			Endif
-
-			'replace placeholders with CURRENT information (on creation
-			'of the news event the time could differ, or the weather
-			'is not so shiny...)
-			ReplacePlaceholdersFromTemplate(null, templateVariables, time)
-
-			'set topicality to 100%
-			topicality = 1.0
-
-			'If keywords.Find("movie") >= 0 Then DebugStop
-
-			'trigger happenEffects
-			Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID())
-			If templateVariables
-				effectParams.Add("variables", templateVariables)
-			EndIf
-			If effects Then effects.Update("happen", effectParams)
-
-			'mark newsevent happening as processed
-			self.SetFlag(TVTNewsFlag.HAPPENING_PROCESSED, True)
+	'the news happened (now or earlier) and is now handled the first
+	'time
+	Method ProcessHappening(overrideHappenTime:Long = -1)
+		'override happened time?
+		if overrideHappenTime <> -1
+			self.happenedTime = overrideHappenTime
 		EndIf
+
+		If self.happenedTime > GetWorldTime().GetTimeGone()
+			Throw "TNewsEvent.ProcessHappening() - news event did not happen yet"
+		EndIf
+		
+		If self.HasFlag(TVTNewsFlag.HAPPENING_PROCESSED)
+			Throw "TNewsEvent.ProcessHappening() - news event already processed"
+		EndIf
+		
+		'add to collection list...
+		GetNewsEventCollection().OnNewsHappened(Self)
+
+		'inform a template that it just happens
+		If templateID > 0
+			local newsTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+			if newsTemplate
+				newsTemplate.OnHappen()
+			EndIf
+		Endif
+
+		'replace placeholders with CURRENT information (on creation
+		'of the news event the time could differ, or the weather
+		'is not so shiny...)
+		ReplacePlaceholdersFromTemplate(null, templateVariables, self.happenedTime)
+
+		'set topicality to 100%
+		topicality = 1.0
+
+		'trigger happenEffects
+		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID())
+		If templateVariables
+			effectParams.Add("variables", templateVariables)
+		EndIf
+		If effects Then effects.Update("happen", effectParams)
+
+		'mark newsevent happening as processed
+		self.SetFlag(TVTNewsFlag.HAPPENING_PROCESSED, True)
 	End Method
 
 
-	'override
 	'call this as soon as a news containing this newsEvent is
 	'broadcasted. If playerID = -1 then this effects might target
 	'"all players" (depends on implementation)
-	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0)
+	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0) override
 		'trigger broadcastEffects
 		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("playerID", playerID)
 
@@ -1093,8 +1110,18 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 			TLogger.Log("TGameModifierNews_TriggerNews", "news to trigger not available (yet): "+triggerNewsGUID, LOG_ERROR)
 			Return False
 		EndIf
-		Local triggerTime:Long = GetWorldTime().CalcTime_Auto(-1, happenTimeType, happenTimeData)
-		GetNewsEventCollection().setNewsHappened(news, triggerTime)
+
+		'calculate when the news happens
+		news.happenedTime = GetWorldTime().CalcTime_Auto(-1, happenTimeType, happenTimeData)
+
+		'already happened or is planned to happen just now too
+		If news.happenedTime <= GetWorldTime().GetTimeGone()
+			news.ProcessHappening()
+		Else
+			'enforce cache renowal
+			GetNewsEventCollection()._InvalidateCaches()
+		EndIf
+			
 
 		Return True
 	End Method

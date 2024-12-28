@@ -397,7 +397,10 @@ Type TNewsAgency
 		'announce news for levels 1-4
 		If terroristAggressionLevel[terroristGroup] <= terroristAggressionLevelMax
 			Local newsEvent:TNewsEvent = GetTerroristNewsEvent(terroristGroup)
-			If newsEvent Then AnnounceNewsEventToPlayers(newsEvent, GetWorldTime().GetTimeGone() + 0)
+			If newsEvent
+				newsEvent.ProcessHappening( GetWorldTime().GetTimeGone() )
+				AnnounceNewsEventToPlayers(newsEvent)
+			EndIf
 		EndIf
 		Return True
 	End Method
@@ -673,6 +676,8 @@ Type TNewsAgency
 
 			'create fixed future news
 			Local newsEvent:TNewsEvent = New TNewsEvent.InitFromTemplate(template)
+			GetNewsEventCollection().Add(newsEvent)
+
 'print "created timed future news: " + newsEvent.GetTitle() + "   flags="+newsEvent.flags + "  sendToAll="+newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)
 			'now and missed are not listed in the upcomingNewsList, so
 			'no cache-clearance is needed
@@ -680,6 +685,8 @@ Type TNewsAgency
 			If template.happenTime = 0
 				template.happenTime = GetWorldTime().GetTimeGone()
 				If template.IsAvailable()
+					'happen now
+					newsEvent.ProcessHappening( template.happenTime )
 					AnnounceNewsEventToPlayers(newsEvent)
 				EndIf
 			'missed - only some minutes too late (eg gamestart news)
@@ -692,8 +699,6 @@ Type TNewsAgency
 				'TODO: Wenn happened in der Vergangenheit liegt (und template noch nicht "used")
 				'dann "onHappen" ausloesen damit Folgenachrichten kommen koennen
 			EndIf
-
-			GetNewsEventCollection().Add(newsEvent)
 		Next
 	End Method
 
@@ -714,6 +719,8 @@ Type TNewsAgency
 				GetNewsEventCollection().Remove(newsEvent)
 				Continue
 			EndIf
+
+			newsEvent.ProcessHappening()
 
 			AnnounceNewsEventToPlayers(newsEvent)
 
@@ -736,6 +743,7 @@ Type TNewsAgency
 	Method ProcessNewsProviders:Int()
 		Local delayed:Int = 0
 		Local announced:Int = 0
+
 		For Local nP:TNewsAgencyNewsProvider = EachIn newsProviders
 			nP.Update()
 			For Local newsEvent:TNewsEvent = EachIn nP.GetNewNewsEvents()
@@ -746,6 +754,8 @@ Type TNewsAgency
 					Continue
 				EndIf
 
+				newsEvent.ProcessHappening()
+				
 				AnnounceNewsEventToPlayers(newsEvent)
 
 				'attention: KEEP_TICKER_TIME is only "useful" for initial/single news
@@ -962,9 +972,8 @@ Type TNewsAgency
 	End Method
 
 
-	Method AnnounceNewsEventToPlayers:Int(newsEvent:TNewsEvent, happenedTime:Long=0, sendNow:Int=False, ignoreSubscriptions:Int=False)
-		If happenedTime = 0 Then happenedTime = newsEvent.happenedTime
-		newsEvent.doHappen(happenedTime)
+	Method AnnounceNewsEventToPlayers:Int(newsEvent:TNewsEvent, sendNow:Int=False, ignoreSubscriptions:Int=False)
+		'print "AnnounceNewsEventToPlayers: " + newsEvent.GetTitle() + "  GUID="+newsEvent.GetGUID()
 
 		'only announce as news if not invisible
 		If Not newsEvent.HasFlag(TVTNewsFlag.INVISIBLE_EVENT)
@@ -1053,11 +1062,14 @@ Type TNewsAgency
 			EndIf
 
 			If Not skipNews or forceAnnounce
+				'process as "happening now"
+				newsEvent.ProcessHappening( GetWorldTime().GetTimeGone() )
+
 				if forceAnnounce
 					'if forced, we ignore subscription level checks
-					AnnounceNewsEventToPlayers(newsEvent, GetWorldTime().GetTimeGone() + adjustHappenedTime, sendNow, True)
+					AnnounceNewsEventToPlayers(newsEvent, sendNow, True)
 				Else
-					AnnounceNewsEventToPlayers(newsEvent, GetWorldTime().GetTimeGone() + adjustHappenedTime, sendNow, False)
+					AnnounceNewsEventToPlayers(newsEvent, sendNow, False)
 				Endif
 				announced = True
 				TLogger.Log("NewsAgency", "Added news: ~q"+newsEvent.GetTitle()+"~q for "+GetWorldTime().GetFormattedGameDate(newsEvent.happenedtime)+".", LOG_DEBUG)

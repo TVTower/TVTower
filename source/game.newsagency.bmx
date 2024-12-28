@@ -325,7 +325,6 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 			EndIf
 
 			AddNewNewsEvent(newsEvent)
-'				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone())
 		EndIf
 	End Method
 

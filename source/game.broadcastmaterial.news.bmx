@@ -301,7 +301,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	Function Create:TNews(newsEvent:TNewsEvent, publishdelay:Int = 0)
 		If Not newsEvent then Throw "TNews.Create() - newsEvent is null" 
-		If Not newsEvent.HasHappened() then Throw "TNews.Create() - newsEvent has not happened yet" 
+		If Not newsEvent.HasHappened() then Throw "TNews.Create() - newsEvent (id="+newsEvent.GetID()+", title=~q" + newsEvent.GeTtitle() + "~q) has not happened yet" 
 		
 		Local obj:TNews = New TNews
 		obj.publishDelay = publishdelay
