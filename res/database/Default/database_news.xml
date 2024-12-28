@@ -8611,7 +8611,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="c4ea1bdf-5f0e-4c08-9e02-5c5725b5b7b3" type="2" thread_guid="9464e59a-0944-4ab0-b96a-2227a2cd14f5" creator="" created_by="-">
 			<title>
-				<de>Skandinavien-Rundang in ${exhibitiontown}</de>
+				<de>Skandinavien-Rundgang in ${exhibitiontown}</de>
 				<en>Scandinavia trail in ${exhibitiontown}</en>
 				<pl>Szlak Skandynawii w mieście ${exhibitiontown}</pl>
 			</title>
