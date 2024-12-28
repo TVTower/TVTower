@@ -299,19 +299,13 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Function Create:TNews(text:String="unknown", publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
-		If not useNewsEvent
-			useNewsEvent = GetNewsEventCollection().CreateRandomAvailable()
-			GetNewsEventCollection().Add(useNewsEvent)
-			useNewsEvent.doHappen()
-		endif
-
-		'if no happened time is set, use the Game time
-		if useNewsEvent.happenedtime <= 0 then useNewsEvent.happenedtime = GetWorldTime().GetTimeGone()
-
+	Function Create:TNews(newsEvent:TNewsEvent, publishdelay:Int = 0)
+		If Not newsEvent then Throw "TNews.Create() - newsEvent is null" 
+		If Not newsEvent.HasHappened() then Throw "TNews.Create() - newsEvent has not happened yet" 
+		
 		Local obj:TNews = New TNews
 		obj.publishDelay = publishdelay
-		obj.newsEventID = useNewsEvent.GetID()
+		obj.newsEventID = newsEvent.GetID()
 
 		obj.setMaterialType(TVTBroadcastMaterialType.NEWS)
 		'by default a freshly created programme is of its own type

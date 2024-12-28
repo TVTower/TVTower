@@ -923,7 +923,7 @@ Type TNewsAgency
 
 		If newsEvent.HasFlag(TVTNewsFlag.INVISIBLE_EVENT) Then Return False
 
-		Local news:TNews = TNews.Create("", 0, newsEvent)
+		Local news:TNews = TNews.Create(newsEvent)
 
 		'if forced to send now, the current subscription level becomes
 		'important.
