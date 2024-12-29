@@ -482,6 +482,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Field newsNumber:Long = 0
 	'time when a news gets invalid (eg. thunderstorm warning)
 	Field eventDuration:Long = -1
+	'object who initiated the news event (eg. another news triggering it)
+	Field triggeredByID:Int = 0
 
 	'fine grained attractivity for target groups (splitted gender)
 	Field targetGroupAttractivityMod:TAudience = Null
@@ -815,7 +817,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		topicality = 1.0
 
 		'trigger happenEffects
-		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID())
+		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("triggeredByID", Self.GetID())
 		If templateVariables
 			effectParams.Add("variables", templateVariables)
 		EndIf
@@ -831,7 +833,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'"all players" (depends on implementation)
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0) override
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("playerID", playerID)
+		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("triggeredByID", Self.GetID()).AddInt("playerID", playerID)
 
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)
@@ -852,7 +854,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'override
 	Method doFinishBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("playerID", playerID)
+		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("triggeredByID", Self.GetID()).AddInt("playerID", playerID)
 
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)
@@ -1113,6 +1115,10 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 
 		'calculate when the news happens
 		news.happenedTime = GetWorldTime().CalcTime_Auto(-1, happenTimeType, happenTimeData)
+		
+		'add other allowed "senders"
+		Local triggeredByID:int = params.GetInt("triggeredByID", 0)
+		news.triggeredByID = triggeredByID
 
 		'already happened or is planned to happen just now too
 		If news.happenedTime <= GetWorldTime().GetTimeGone()
