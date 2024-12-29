@@ -98,15 +98,27 @@ endrem
 	End Method
 
 
-	Method GetModifier:Float(key:object, defaultValue:Float=1.0)
+	Method GetModifier:Float(key:TLowerString, defaultValue:Float=1.0)
 		if not _modifiers then return defaultValue
 		return _modifiers.GetFloat(key, defaultValue)
 	End Method
 
 
-	Method SetModifier(key:object, value:Float)
+	Method GetModifier:Float(key:String, defaultValue:Float=1.0)
+		if not _modifiers then return defaultValue
+		return _modifiers.GetFloat(key, defaultValue)
+	End Method
+
+
+	Method SetModifier(key:TLowerString, value:Float)
 		if not _modifiers then _modifiers = new TData
-		_modifiers.AddNumber(key, value)
+		_modifiers.Add(key, value)
+	End Method
+	
+
+	Method SetModifier(key:String, value:Float)
+		if not _modifiers then _modifiers = new TData
+		_modifiers.Add(key, value)
 	End Method
 End Type
 

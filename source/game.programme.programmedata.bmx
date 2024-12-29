@@ -2068,7 +2068,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'=== EFFECTS ===
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("source", Self).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.Add("source", Self).Add("playerID", playerID)
 
 		'send as programme
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
@@ -2114,7 +2114,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'=== EFFECTS ===
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("source", Self).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.Add("source", Self).Add("playerID", playerID)
 
 		'send as programme
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
@@ -2153,7 +2153,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'=== EFFECTS ===
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("source", Self).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.Add("source", Self).Add("playerID", playerID)
 
 		'send as programme
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME

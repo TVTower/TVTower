@@ -569,7 +569,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		castSympathy = 1.0
 		castSympathyCached = False
 
-		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetCast, new TData.AddNumber("castIndex", castIndex).Add("person", person), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetCast, new TData.Add("castIndex", castIndex).Add("person", person), Self )
 
 		return True
 	End Method
@@ -1147,7 +1147,7 @@ endrem
 		'maybe some limitation corrected the value
 		value = productionFocus.GetFocus(focusIndex)
 
-		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetProductionFocus, new TData.AddNumber("focusIndex", focusIndex).AddNumber("value", value), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetProductionFocus, new TData.Add("focusIndex", focusIndex).Add("value", value), Self )
 
 		return True
 	End Method
@@ -1419,7 +1419,7 @@ Type TProductionFocusBase
 		endif
 
 		'emit event with corrected value (via GetFocus())
-		RegisterBaseEvent(GameEventKeys.ProductionFocus_SetFocus, new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionFocus_SetFocus, new TData.Add("focusIndex", index).Add("value", GetFocus(index)), Self )
 		return True
 	End Method
 

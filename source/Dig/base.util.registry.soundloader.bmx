@@ -73,7 +73,7 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 		'process given relative-url
-		data.AddString("url", loader.GetURI(data.GetString("url", "")))
+		data.Add("url", loader.GetURI(data.GetString("url", "")))
 
 		return data
 	End Method

@@ -81,9 +81,9 @@ Type TAwardCulture extends TAward
 			local modifier:TGameModifierBase = GetGameModifierManager().Create("Modifier.GameConfig")
 			modifier.SetLongRunngingWithUndo()
 			local mConfig:TData = new TData
-			mConfig.AddString("name", "CultureBoost.Programme")
-			mConfig.AddString("modifierKey", "Attractivity.ProgrammeDataFlag.player"+winningPlayerID+"."+TVTProgrammeDataFlag.CULTURE)
-			mConfig.AddFloat("value", 0.1)
+			mConfig.Add("name", "CultureBoost.Programme")
+			mConfig.Add("modifierKey", "Attractivity.ProgrammeDataFlag.player"+winningPlayerID+"."+TVTProgrammeDataFlag.CULTURE)
+			mConfig.Add("value", 0.1)
 			mConfig.AddBool("relative", True)
 
 			'activate for 1 day
@@ -100,9 +100,9 @@ Type TAwardCulture extends TAward
 			modifier = GetGameModifierManager().Create("Modifier.GameConfig")
 			modifier.SetLongRunngingWithUndo()
 			mConfig = new TData
-			mConfig.AddString("name", "CultureBoost.News")
-			mConfig.AddString("modifierKey", "Attractivity.NewsGenre.player"+winningPlayerID+"."+TVTNewsGenre.CULTURE)
-			mConfig.AddFloat("value", 0.1)
+			mConfig.Add("name", "CultureBoost.News")
+			mConfig.Add("modifierKey", "Attractivity.NewsGenre.player"+winningPlayerID+"."+TVTNewsGenre.CULTURE)
+			mConfig.Add("value", 0.1)
 			mConfig.AddBool("relative", True)
 
 			'simple reuse time condition of programmes (shared condition)

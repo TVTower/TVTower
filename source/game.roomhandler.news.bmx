@@ -160,12 +160,12 @@ Type RoomHandler_News extends TRoomHandler
 
 		'=== reset gui element options to their defaults
 		'add news genre to button data
-		NewsGenreButtons[0].data.AddNumber("newsGenre", TVTNewsGenre.TECHNICS_MEDIA)
-		NewsGenreButtons[1].data.AddNumber("newsGenre", TVTNewsGenre.POLITICS_ECONOMY)
-		NewsGenreButtons[2].data.AddNumber("newsGenre", TVTNewsGenre.SHOWBIZ)
-		NewsGenreButtons[3].data.AddNumber("newsGenre", TVTNewsGenre.SPORT)
-		NewsGenreButtons[4].data.AddNumber("newsGenre", TVTNewsGenre.CURRENTAFFAIRS)
-		NewsGenreButtons[5].data.AddNumber("newsGenre", TVTNewsGenre.CULTURE)
+		NewsGenreButtons[0].data.Add("newsGenre", TVTNewsGenre.TECHNICS_MEDIA)
+		NewsGenreButtons[1].data.Add("newsGenre", TVTNewsGenre.POLITICS_ECONOMY)
+		NewsGenreButtons[2].data.Add("newsGenre", TVTNewsGenre.SHOWBIZ)
+		NewsGenreButtons[3].data.Add("newsGenre", TVTNewsGenre.SPORT)
+		NewsGenreButtons[4].data.Add("newsGenre", TVTNewsGenre.CURRENTAFFAIRS)
+		NewsGenreButtons[5].data.Add("newsGenre", TVTNewsGenre.CULTURE)
 
 
 		'=== EVENTS ===

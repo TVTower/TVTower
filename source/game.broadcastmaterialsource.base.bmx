@@ -49,14 +49,20 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 
 
 	'returns the stored value for a modifier - defaults to "100%"
-	Method GetModifier:Float(modifierKey:Object, defaultValue:Float = 1.0)
+	Method GetModifier:Float(modifierKey:TLowerString, defaultValue:Float = 1.0)
+		If not modifiers then Return defaultValue
+		Return modifiers.GetFloat(modifierKey, defaultValue)
+	End Method
+
+	'returns the stored value for a modifier - defaults to "100%"
+	Method GetModifier:Float(modifierKey:String, defaultValue:Float = 1.0)
 		If not modifiers then Return defaultValue
 		Return modifiers.GetFloat(modifierKey, defaultValue)
 	End Method
 
 
 	'stores a modifier value
-	Method SetModifier:Int(modifierKey:Object, value:Float)
+	Method SetModifier:Int(modifierKey:TLowerString, value:Float)
 		'skip adding the modifier if it is the same - or a default value
 		'-> keeps datasets smaller
 		If modifiers
@@ -65,7 +71,22 @@ Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="select
 			modifiers = new TData
 		EndIf
 
-		modifiers.AddNumber(modifierKey, value)
+		modifiers.Add(modifierKey, value)
+		Return True
+	End Method
+	
+
+	'stores a modifier value
+	Method SetModifier:Int(modifierKey:String, value:Float)
+		'skip adding the modifier if it is the same - or a default value
+		'-> keeps datasets smaller
+		If modifiers
+			If GetModifier(modifierKey) = value Then Return False
+		Else
+			modifiers = new TData
+		EndIf
+
+		modifiers.Add(modifierKey, value)
 		Return True
 	End Method
 

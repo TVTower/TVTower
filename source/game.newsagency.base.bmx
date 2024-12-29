@@ -216,13 +216,13 @@ Type TNewsAgency
 
 		'add news chain 2 ?
 		Local data:TData = New TData
-		data.AddString("trigger", "happen")
-		data.AddString("type", "TriggerNews")
-		data.AddFloat("probability", 100)
+		data.Add("trigger", "happen")
+		data.Add("type", "TriggerNews")
+		data.Add("probability", 100)
 		'time = in 3-7 hrs
-		data.AddString("time", "1,3,7")
+		data.Add("time", "1,3,7")
 
-		data.AddString("news", newsChain1GUID)
+		data.Add("news", newsChain1GUID)
 
 		NewsEvent.AddEffectByData(data)
 
@@ -254,39 +254,39 @@ Type TNewsAgency
 			For Local pID:Int = EachIn caughtChannelIDsArray
 				data = New TData
 				'decrease image for all caught channels
-				data.AddString("trigger", "broadcastFirstTime")
-				data.AddString("type", "ModifyChannelPublicImage")
-				data.AddDouble("value", -0.03)
-				data.AddBool("valueIsRelative", True)
-				data.AddInt("playerID", pID)
-				data.AddString("log", "decrease image for all caught channels")
+				data.Add("trigger", "broadcastFirstTime")
+				data.Add("type", "ModifyChannelPublicImage")
+				data.Add("value", -0.03)
+				data.Add("valueIsRelative", True)
+				data.Add("playerID", pID)
+				data.Add("log", "decrease image for all caught channels")
 				NewsChainEvent1.AddEffectByData(data)
 			Next
 
 			'increase image for a broadcasting channel not being caught
 			data = New TData
-			data.AddString("trigger", "broadcastFirstTime")
-			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddDouble("value", 0.05)
-			data.AddBool("valueIsRelative", True)
+			data.Add("trigger", "broadcastFirstTime")
+			data.Add("type", "ModifyChannelPublicImage")
+			data.Add("value", 0.05)
+			data.Add("valueIsRelative", True)
 			'use playerID of broadcasting player
-			data.AddInt("playerID", 0)
-			data.Add("conditions", New TData.AddString("broadcaster_notInPlayerIDs", caughtChannelIDs))
-			data.AddString("log", "increase image for a broadcasting channel not being caught")
+			data.Add("playerID", 0)
+			data.Add("conditions", New TData.Add("broadcaster_notInPlayerIDs", caughtChannelIDs))
+			data.Add("log", "increase image for a broadcasting channel not being caught")
 
 			NewsChainEvent1.AddEffectByData(data)
 
 			'increase image (a bit less) for a broadcasting channel being
 			'caught but brave enough to send it...
 			data = New TData
-			data.AddString("trigger", "broadcastFirstTime")
-			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddDouble("value", 0.02)
-			data.AddBool("valueIsRelative", True)
+			data.Add("trigger", "broadcastFirstTime")
+			data.Add("type", "ModifyChannelPublicImage")
+			data.Add("value", 0.02)
+			data.Add("valueIsRelative", True)
 			'use playerID of broadcasting player
-			data.AddInt("playerID", 0)
-			data.AddString("log", "increase for broadcasting channel")
-			data.Add("conditions", New TData.AddString("broadcaster_inPlayerIDs", caughtChannelIDs))
+			data.Add("playerID", 0)
+			data.Add("log", "increase for broadcasting channel")
+			data.Add("conditions", New TData.Add("broadcaster_inPlayerIDs", caughtChannelIDs))
 			NewsChainEvent1.AddEffectByData(data)
 		EndIf
 		NewsChainEvent1.SetModifier(TNewsEvent.modKeyTopicality_AgeLS, 1.4)
@@ -474,7 +474,7 @@ Type TNewsAgency
 			Local effect:TGameModifierBase = New TGameModifierBase
 
 			effect.GetData().Add("figure", GetGameBase().terrorists[terroristGroup])
-			effect.GetData().AddInt("group", terroristGroup)
+			effect.GetData().Add("group", terroristGroup)
 			'send figure to the intented target (it then looks for the position
 			'using the "roomboard" - so switched signes are taken into
 			'consideration there)
@@ -486,10 +486,10 @@ Type TNewsAgency
 			'mark as a special effect so AI can categorize it accordingly
 			effect.setModifierType(TVTGameModifierBase.TERRORIST_ATTACK)
 			'defined function to call when executing
-			effect.GetData().AddString("customRunFuncKey", "TFigureTerrorist.SendFigureToRoom")
+			effect.GetData().Add("customRunFuncKey", "TFigureTerrorist.SendFigureToRoom")
 
 			'Variant 1: pass delay to the SendFigureToRoom-function (delay delivery schedule)
-			'effect.GetData().AddNumber("delayTime", RandRange(45,120)) * TWorldTime.MINUTELENGTH
+			'effect.GetData().Add("delayTime", RandRange(45,120)) * TWorldTime.MINUTELENGTH
 			'Variant 2: delay the execution of the effect
 			effect.SetDelayedExecutionTime(Long(GetWorldTime().GetTimeGone()) +  RandRange(45,120) * TWorldTime.MINUTELENGTH)
 			NewsEvent.GetEffects(True).AddEntry("happen", effect)
@@ -578,17 +578,17 @@ Type TNewsAgency
 				If person And person.GetPopularity()
 					Local jobMod:Float = TVTPersonJob.GetCastJobImportanceMod(job.job)
 					If jobMod > 0.0
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").AddInt("referenceID", job.personID).AddFloat("valueMin", 0.1 * jobMod).AddFloat("valueMax", 0.5 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").Add("referenceID", job.personID).Add("valueMin", 0.1 * jobMod).Add("valueMax", 0.5 * jobMod))
 						'TODO: take broadcast audience into consideration
 						'      or maybe only use broadcastFirstTimeDone
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").AddInt("referenceID", job.personID).AddFloat("valueMin", 0.01 * jobMod).AddFloat("valueMax", 0.025 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").Add("referenceID", job.personID).Add("valueMin", 0.01 * jobMod).Add("valueMax", 0.025 * jobMod))
 					EndIf
 				EndIf
 			EndIf
 		Next
 		'modify genre
-		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastFirstTime").Add("type", "ModifyMovieGenrePopularity").AddInt("genre", licence.GetData().GetGenre()).AddFloat("valueMin", 0.025).AddFloat("valueMax", 0.04))
-		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcast").Add("type", "ModifyMovieGenrePopularity").AddInt("genre", licence.GetData().GetGenre()).AddFloat("valueMin", 0.005).AddFloat("valueMax", 0.01))
+		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastFirstTime").Add("type", "ModifyMovieGenrePopularity").Add("genre", licence.GetData().GetGenre()).Add("valueMin", 0.025).Add("valueMax", 0.04))
+		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcast").Add("type", "ModifyMovieGenrePopularity").Add("genre", licence.GetData().GetGenre()).Add("valueMin", 0.005).Add("valueMax", 0.01))
 
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)

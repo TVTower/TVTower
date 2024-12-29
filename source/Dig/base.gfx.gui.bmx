@@ -147,7 +147,7 @@ Type TGUIManager
 
 
 		'gui specific settings
-		config.AddNumber("panelGap",10)
+		config.Add("panelGap",10)
 
 		initialMouseHitObject = New TGUIObject[ MouseManager.GetButtonCount() +1]
 		UpdateState_mouseButtonDown = New Int[ MouseManager.GetButtonCount() +1]
@@ -1986,7 +1986,7 @@ Type TGUIobject
 		Local clickPos:TVec2D = New TVec2D(x, y)
 
 		'print "IS CLICKED    " + _id + "   " + GetClassName()
-		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
+		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.Add("button", button).Add("coord", clickPos), Self)
 		'let the object handle the click
 		Local handledClick:Int = OnClick(ev)
 		'fire onClickEvent
@@ -2022,7 +2022,7 @@ Type TGUIobject
 	Method DoubleClick:Int(source:EGUIClickType, button:Int, x:Int=-1, y:Int=-1)
 		Local clickPos:TVec2D = New TVec2D(x, y)
 
-		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
+		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.Add("button", button).Add("coord", clickPos), Self)
 		'let the object handle the click
 		Local handledClick:int = OnDoubleClick(ev)
 
@@ -2128,7 +2128,7 @@ Type TGUIobject
 		'no longer mouse over?
 		If not containsMouse and IsHovered()
 'print "on mouse leave :" + _id + ": " + GetValue()
-			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseLeave, New TData.AddInt("x", MouseManager.x).AddInt("y", MouseManager.y), Self )
+			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseLeave, New TData.Add("x", MouseManager.x).Add("y", MouseManager.y), Self )
 			OnMouseLeave(ev)
 			ev.Trigger()
 
@@ -2152,7 +2152,7 @@ Type TGUIobject
 			'mark indicator so next widget does not hover too
 			GUIManager.UpdateState_foundHoveredObject = self
 			
-			Local evData:TData = New TData.AddInt("x", MouseManager.x).AddInt("y", MouseManager.y)
+			Local evData:TData = New TData.Add("x", MouseManager.x).Add("y", MouseManager.y)
 
 			'create event: onmouseenter
 			If Not isHovered()
@@ -2179,7 +2179,7 @@ Type TGUIobject
 		If containsMouse and IsActive()
 			For local i:int = 1 to GUIManager.UpdateState_mouseButtonDown.length - 1
 				If GUIManager.UpdateState_mouseButtonDown[i]
-					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseDown, New TData.AddNumber("button",1).Add("coord", New TVec2D(MouseManager.x, MouseManager.y)), Self)
+					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseDown, New TData.Add("button",1).Add("coord", New TVec2D(MouseManager.x, MouseManager.y)), Self)
 					OnMouseDown(ev)
 					ev.Trigger()
 				EndIf
@@ -2271,7 +2271,7 @@ Type TGUIobject
 		'If IsFocused() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
 		If IsHovered() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
 'print "on scrollwheel :" + _id + " ["+GetClassName()+"] "' + GetValue()
-			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseScrollwheel, New TData.AddInt("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D(MouseManager.x, MouseManager.y)), Self)
+			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseScrollwheel, New TData.Add("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D(MouseManager.x, MouseManager.y)), Self)
 			OnMouseScrollwheel(ev)
 			ev.Trigger()
 

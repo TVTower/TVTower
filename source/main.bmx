@@ -370,24 +370,24 @@ Type TApp
 				Case "-directx7", "-directx"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 7", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX7)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX7)
+					config.Add("renderer", GetGraphicsManager().RENDERER_DIRECTX7)
 				Case "-directx9"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 9", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX9)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX9)
+					config.Add("renderer", GetGraphicsManager().RENDERER_DIRECTX9)
 				Case "-directx11"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 11", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX11)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX11)
+					config.Add("renderer", GetGraphicsManager().RENDERER_DIRECTX11)
 				?
 				Case "-opengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_OPENGL)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_OPENGL)
+					config.Add("renderer", GetGraphicsManager().RENDERER_OPENGL)
 				Case "-bufferedopengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Buffered OpenGL", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
+					config.Add("renderer", GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
 			End Select
 		Next
 	End Method
@@ -1679,7 +1679,7 @@ endrem
 		ExitAppDialogue = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
-		ExitAppDialogue.data.AddNumber("quitToMainMenu", quitToMainMenu)
+		ExitAppDialogue.data.Add("quitToMainMenu", quitToMainMenu)
 	'	ExitAppDialogue.Open()
 
 		'limit to "screen" area
@@ -2152,13 +2152,13 @@ Type TSaveGame Extends TGameState
 		_gameSummary.Add("game_initial_builddate", GameConfig.savegame_initialBuildDate)
 		_gameSummary.Add("game_initial_version", GameConfig.savegame_initialVersion)
 		_gameSummary.Add("game_initial_savegameVersion", GameConfig.savegame_initialSaveGameVersion)
-		_gameSummary.AddInt("game_saveCount", GameConfig.savegame_saveCount)
+		_gameSummary.Add("game_saveCount", GameConfig.savegame_saveCount)
 		_gameSummary.Add("game_mode", "singleplayer")
-		_gameSummary.AddLong("game_timeGone", GetWorldTime().GetTimeGone())
+		_gameSummary.Add("game_timeGone", GetWorldTime().GetTimeGone())
 		_gameSummary.Add("player_name", GetPlayer().name)
 		_gameSummary.Add("player_channelName", GetPlayer().channelName)
-		_gameSummary.AddLong("player_money", GetPlayer().GetMoney())
-		_gameSummary.AddInt("savegame_version", SAVEGAME_VERSION)
+		_gameSummary.Add("player_money", GetPlayer().GetMoney())
+		_gameSummary.Add("savegame_version", SAVEGAME_VERSION)
 		'store last ID of all entities, to avoid duplicates
 		'store them in game summary to be able to reset before "restore"
 		'takes place
@@ -2167,8 +2167,8 @@ Type TSaveGame Extends TGameState
 		'- load in game 1 (having game objects with ID 1 - 1000)
 		'- new entities would again get ID 1 - 1000
 		'  -> duplicates
-		_gameSummary.AddInt("entitybase_lastID", TEntityBase.lastID)
-		_gameSummary.AddInt("gameobject_lastID", TGameObject.LastID)
+		_gameSummary.Add("entitybase_lastID", TEntityBase.lastID)
+		_gameSummary.Add("gameobject_lastID", TGameObject.LastID)
 
 		Super.BackupGameData()
 
@@ -2393,7 +2393,7 @@ Type TSaveGame Extends TGameState
 		If Not summaryData Then summaryData = New TData
 		summaryData.Add("fileURI", fileURI)
 		summaryData.Add("fileName", GetSavegameName(fileURI) )
-		summaryData.AddNumber("fileTime", FileTime(fileURI))
+		summaryData.Add("fileTime", FileTime(fileURI))
 
 		Return summaryData
 	End Function
@@ -2992,9 +2992,9 @@ Type TSaveGame Extends TGameState
 		New TGameState.Initialize()
 
 		Local savegameEventData:TData = new TData
-		savegameEventData.AddString("saveName", saveURI)
-		savegameEventData.AddInt("saved_savegame_version", loadedSaveGameVersion)
-		savegameEventData.AddInt("current_savegame_version", TSaveGame.SAVEGAME_VERSION)
+		savegameEvenTData.Add("saveName", saveURI)
+		savegameEvenTData.Add("saved_savegame_version", loadedSaveGameVersion)
+		savegameEvenTData.Add("current_savegame_version", TSaveGame.SAVEGAME_VERSION)
 
 		'=== LOAD SAVED GAME ===
 		'tell everybody we start loading (eg. for unregistering objects before)
@@ -3105,7 +3105,7 @@ endrem
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveURI
-		Local event:TEventBase = TEventBase.Create(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveURI))
+		Local event:TEventBase = TEventBase.Create(GameEventKeys.SaveGame_OnBeginSave, New TData.Add("saveName", saveURI))
 		event.Trigger()
 		if event.IsVeto()
 '			saveGame.UpdateMessage(False, "Saving: Saving aborted (timeout?).")
@@ -3172,7 +3172,7 @@ endrem
 
 		'tell everybody we finished saving
 		'payload is saveURI and saveGame-object
-		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.addString("saveName", saveURI).add("saveGame", saveGame))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.Add("saveName", saveURI).add("saveGame", saveGame))
 
 		TLogger.Log("Savegame.SaveURI()", "Savegame file ~q"+saveURI+"~q saved in " + (MilliSecs() - t)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
 
@@ -4368,7 +4368,7 @@ Type GameEvents
 				EndIf
 			EndIf
 			If playerBase And TPlayer(playerBase).isLocalAI()
-				TPlayer(playerBase).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER))
+				TPlayer(playerBase).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).Add(senderID).AddString(message).Add(CHAT_COMMAND_WHISPER))
 				'TPlayer(playerBase).PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_WHISPER)
 			EndIf
 		EndIf
@@ -4386,7 +4386,7 @@ Type GameEvents
 					'also check playerAI as in start settings screen the AI
 					'is not there yet
 					If player.isLocalAI() And player.playerAI
-						player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER).AddInt(channels))
+						player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).Add(senderID).AddString(message).Add(CHAT_COMMAND_WHISPER).Add(channels))
 						'player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
 					EndIf
 				Next
@@ -4461,7 +4461,7 @@ Type GameEvents
 				If Not player.IsLocalAI()
 					GetGame().SendSystemMessage("[DEV] cannot command non-local AI player.")
 				Else
-					player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(GetPlayer().playerID).AddString("CMD_" + paramS).AddInt(CHAT_COMMAND_WHISPER))
+					player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).Add(GetPlayer().playerID).Add("CMD_" + paramS).Add(CHAT_COMMAND_WHISPER))
 					'player.playerAI.CallOnChat(GetPlayer().playerID, "CMD_" + paramS, CHAT_COMMAND_WHISPER)
 				EndIf
 
@@ -4889,8 +4889,8 @@ Type GameEvents
 				localAIPlayerCount :+ 1
 
 				TProfiler.Enter(_profilerKey_AI_SECOND[player.playerID-1], False)
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealtimeSecondTick).SetToSynchronize().AddLong(realTime).AddLong(gameTime))
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).AddLong(realTime).AddLong(timeGoneSinceLastRTS))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealtimeSecondTick).SetToSynchronize().Add(realTime).Add(gameTime))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).Add(realTime).Add(timeGoneSinceLastRTS))
 				'player.PlayerAI.ConditionalCallOnTick()
 				'player.PlayerAI.CallOnRealtimeSecond(timeGone)
 				TProfiler.Leave(_profilerKey_AI_SECOND[player.playerID-1], 100, False)
@@ -4980,8 +4980,8 @@ endrem
 			If player.isLocalAI()
 				localAIPlayerCount :+ 1
 				TProfiler.Enter(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[player.playerID-1], False)
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnTick).SetToSynchronize().AddLong(realTime).AddLong(gameTime) )
-				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMinute).AddInt(minuteOfHour) )
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnTick).SetToSynchronize().Add(realTime).Add(gameTime) )
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMinute).Add(minuteOfHour) )
 				TProfiler.Leave(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[player.playerID-1], 100, False)
 			EndIf
 		Next
@@ -5068,7 +5068,7 @@ endrem
 		EndIf
 		toast.SetText(t)
 
-		toast.GetData().AddNumber("playerID", player.playerID)
+		toast.GetData().Add("playerID", player.playerID)
 
 
 		'archive it for all players
@@ -5109,7 +5109,7 @@ endrem
 		Local reference:TNamedGameObject = TNamedGameObject(triggerEvent.GetData().Get("reference", Null))
 
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMoneyChanged).AddLong(value).AddInt(reason).AddData(reference))
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMoneyChanged).Add(value).Add(reason).AddData(reference))
 			'player.playerAI.CallOnMoneyChanged(value, reason, reference)
 		EndIf
 		If player.isActivePlayer() Then GetInGameInterface().ValuesChanged = True
@@ -5167,7 +5167,7 @@ endrem
 
 		'inform ai about the request
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBossCalls).AddLong(latestTime))
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBossCalls).Add(latestTime))
 			'player.playerAI.CallOnBossCalls(latestTime)
 		Else
 			'send out a toast message
@@ -5189,7 +5189,7 @@ endrem
 			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
 			toast.GetData().Add("boss", boss)
 			toast.GetData().Add("player", player)
-			toast.GetData().AddNumber("playerID", player.playerID)
+			toast.GetData().Add("playerID", player.playerID)
 
 			'if this was a new message, the guid will differ
 			If toast.GetGUID() <> toastGUID
@@ -5240,8 +5240,8 @@ endrem
 		EndIf
 
 		'play a special sound instead of the default one
-		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
-		toast.GetData().AddNumber("playerID", boss.playerID)
+		toast.GetData().Add("onAddMessageSFX", "positiveMoneyChange")
+		toast.GetData().Add("playerID", boss.playerID)
 
 
 		'archive it for all players
@@ -5277,7 +5277,7 @@ endrem
 			GetLocale("BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME").Replace("%TITLE%", "|b|"+programme.GetTitle()+"|/b|") + " " + ..
 			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+GetFormattedCurrency(penalty)+"|/b|") ..
 		)
-		toast.GetData().AddNumber("playerID", programme.owner)
+		toast.GetData().Add("playerID", programme.owner)
 
 
 		'archive it for all players
@@ -5316,7 +5316,7 @@ endrem
 		EndIf
 
 		toast.SetText(text)
-		toast.GetData().AddNumber("playerID", player.playerID)
+		toast.GetData().Add("playerID", player.playerID)
 
 
 		'archive it for all players
@@ -5375,7 +5375,7 @@ endrem
 		toast.SetCaption(GetLocale("ACHIEVEMENT_COMPLETED"))
 		toast.SetText( text )
 
-		toast.GetData().AddNumber("playerID", player.playerID)
+		toast.GetData().Add("playerID", player.playerID)
 
 
 		'archive it for all players
@@ -5494,7 +5494,7 @@ endrem
 			toast.SetMessageCategory(TVTMessageCategory.AWARDS)
 			toast.SetText( text )
 
-			toast.GetData().AddInt("playerID", i)
+			toast.GetData().Add("playerID", i)
 
 			'archive it for all players
 			GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
@@ -5586,7 +5586,7 @@ endrem
 				EndIf
 				toast.SetText( text )
 
-				toast.GetData().AddNumber("playerID", i)
+				toast.GetData().Add("playerID", i)
 
 
 				GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
@@ -5626,9 +5626,9 @@ endrem
 			GetLocale("YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED").Replace("%MONEY%", "|b|"+GetFormattedCurrency(previousBestBid)+"|/b|") ..
 		)
 		'play a special sound instead of the default one
-		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
+		toast.GetData().Add("onAddMessageSFX", "positiveMoneyChange")
 
-		toast.GetData().AddNumber("playerID", previousBestBidder)
+		toast.GetData().Add("playerID", previousBestBidder)
 
 
 		'archive it for all players
@@ -5661,7 +5661,7 @@ endrem
 		toast.SetCaption(GetLocale("YOU_HAVE_WON_AN_AUCTION"))
 		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+licence.GetTitle()+"|/b|"))
 
-		toast.GetData().AddNumber("playerID", bestBidder)
+		toast.GetData().Add("playerID", bestBidder)
 
 
 		'archive it for all players
@@ -5715,7 +5715,7 @@ endrem
 			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + GetFormattedCurrency(production.productionConcept.GetTotalCost()) + "|/b|" ))
 		EndIf
 
-		toast.GetData().AddNumber("playerID", production.owner)
+		toast.GetData().Add("playerID", production.owner)
 
 
 		'archive it for all players
@@ -5755,7 +5755,7 @@ endrem
 			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
 		EndIf
 
-		toast.GetData().AddNumber("playerID", production.owner)
+		toast.GetData().Add("playerID", production.owner)
 
 
 		'archive it for all players
@@ -5818,7 +5818,7 @@ endrem
 
 		toast.SetMessageCategory(TVTMessageCategory.MONEY)
 
-		toast.GetData().AddNumber("playerID", playerID)
+		toast.GetData().Add("playerID", playerID)
 
 
 		'archive it for all players
@@ -5850,9 +5850,9 @@ endrem
 			GetLocale("PROFIT_OF_X_GOT_CREDITED").Replace("%MONEY%", "|b|"+GetFormattedCurrency(contract.GetProfit())+"|/b|") ..
 		)
 		'play a special sound instead of the default one
-		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
+		toast.GetData().Add("onAddMessageSFX", "positiveMoneyChange")
 
-		toast.GetData().AddNumber("playerID", contract.owner)
+		toast.GetData().Add("playerID", contract.owner)
 
 
 		'archive it for all players
@@ -5884,7 +5884,7 @@ endrem
 			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+GetFormattedCurrency(contract.GetPenalty())+"|/b|") ..
 		)
 
-		toast.GetData().AddNumber("playerID", contract.owner)
+		toast.GetData().Add("playerID", contract.owner)
 
 
 		'archive it for all players
@@ -5982,7 +5982,7 @@ endrem
 		toast.SetCaption( GetLocale("X_UNDER_CONSTRUCTION").Replace("%X%", station.GetTypeName()) )
 		toast.SetText( GetLocale(readyText).Replace("%TIME%", readyTime) )
 
-		toast.GetData().AddNumber("playerID", player.playerID)
+		toast.GetData().Add("playerID", player.playerID)
 
 		Rem - if only 1 instance allowed
 		'if this was a new message, the guid will differ
@@ -6048,7 +6048,7 @@ endrem
 		EndIf
 		toast.SetText( textJoined.Replace("%X%", "|b|"+reachLevelBefore+"|/b|").Replace("%Y%", "|b|"+reachLevel+"|/b|") )
 
-		toast.GetData().AddNumber("playerID", player.playerID)
+		toast.GetData().Add("playerID", player.playerID)
 
 
 		'archive it for all players
@@ -6115,7 +6115,7 @@ endrem
 		EndIf
 
 		toast.SetText( t )
-		toast.GetData().AddNumber("playerID", station.owner)
+		toast.GetData().Add("playerID", station.owner)
 
 		'archive it for all players
 		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
@@ -6303,14 +6303,14 @@ endrem
 					Local confiscateProgramme:Int = RandRange(1,100) <= player.GetDifficulty().sentXRatedConfiscateRisk
 
 					If confiscateProgramme
-						TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStartConfiscateProgramme, New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player)
+						TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStartConfiscateProgramme, New TData.Add("broadcastMaterialGUID", currentProgramme.GetGUID()).Add("owner", player.playerID), currentProgramme, player)
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank
 						TFigureMarshal(GetGame().marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.licence.GetGUID())
 					EndIf
 
 					'emit event (eg.for ingame toastmessages)
-					TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStopXRatedBroadcast, New TData.AddInt("penalty", penalty), currentProgramme, player)
+					TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStopXRatedBroadcast, New TData.Add("penalty", penalty), currentProgramme, player)
 				Next
 			EndIf
 		EndIf
@@ -6340,7 +6340,7 @@ endrem
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 54
 					evKey = GameEventKeys.Broadcasting_BeforeFinishAllProgrammeBlockBroadcasts
-					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) ).addNumber("hour", hour)
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) ).Add("hour", hour)
 				Case 55
 					evKey = GameEventKeys.Broadcasting_BeforeStartAllAdBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
@@ -6733,8 +6733,8 @@ endrem
 			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-BoldIt.ttf", 18, BOLDFONT | ITALICFONT)
 			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-It.ttf", 18, ITALICFONT)
 
-			Local shadowSettings:TData = New TData.addNumber("size", 1).addNumber("intensity", 0.5)
-			Local gradientSettings:TData = New TData.addNumber("gradientBottom", 180)
+			Local shadowSettings:TData = New TData.Add("size", 1).Add("intensity", 0.5)
+			Local gradientSettings:TData = New TData.Add("gradientBottom", 180)
 			'setup effects for normal and bold
 			headerFont = GetBitmapFontManager().Copy("default", "headerFont", 20, BOLDFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)

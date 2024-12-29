@@ -56,7 +56,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	'override to inform contained news too
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		'inform others
-		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeforeBeginBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeforeBeginBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).add("audienceData", audienceData), Self)
 
 		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
@@ -65,13 +65,13 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		Next
 
 		'inform others
-		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeginBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeginBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).add("audienceData", audienceData), Self)
 	End Method
 
 
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		'inform others _before_ newsentries get adjusted!
-		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeforeFinishBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeforeFinishBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).add("audienceData", audienceData), Self)
 
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 
@@ -92,9 +92,9 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 			if news
 				'adjust trend/popularity
 				local popData:TData = new TData
-				popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
-				popData.AddNumber("audienceSum", audienceSum)
-				popData.AddNumber("broadcastTopAudience", topAudience)
+				popData.Add("attractionQuality", audienceResult.AudienceAttraction.Quality)
+				popData.Add("audienceSum", audienceSum)
+				popData.Add("broadcastTopAudience", topAudience)
 
 				Local popularity:TGenrePopularity = news.GetNewsEvent().GetGenreDefinition().GetPopularity()
 if popularity
@@ -108,7 +108,7 @@ endif
 		Next
 
 		'inform others
-		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_FinishBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_FinishBroadcasting, New TData.Add("day", day).Add("hour", hour).Add("minute", minute).add("audienceData", audienceData), Self)
 	End Method
 
 

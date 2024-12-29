@@ -1093,7 +1093,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'call this to set the contract failed (and pay a penalty)
 	Method Fail:Int(time:Long=0)
 		'send out event for potential listeners (eg. ingame notification)
-		TriggerBaseEvent(GameEventKeys.AdContract_OnFail, New TData.AddLong("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.AdContract_OnFail, New TData.Add("time", time), Self)
 
 		'pay penalty
 		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), Self)
@@ -1112,7 +1112,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'if state = STATE_OK then Throw "Double Finish !!"
 		If Not state = STATE_OK
 			'send out event for potential listeners (eg. ingame notification)
-			TriggerBaseEvent(GameEventKeys.AdContract_OnFinish, New TData.AddLong("time", time), Self)
+			TriggerBaseEvent(GameEventKeys.AdContract_OnFinish, New TData.Add("time", time), Self)
 
 			'give money
 			GetPlayerFinance(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), Self)
@@ -1993,7 +1993,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method doFinishBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'=== EFFECTS ===
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("source", Self).AddInt("playerID", playerID)
+		Local effectParams:TData = New TData.Add("source", Self).Add("playerID", playerID)
 
 		'send as advertisement
 		If broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -2029,7 +2029,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'"all players" (depends on implementation)
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("contract", Self).AddInt("playerID", playerID)
+		Local effectParams:TData = New TData.Add("contract", Self).Add("playerID", playerID)
 
 		'send as advertisement?
 		If broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT

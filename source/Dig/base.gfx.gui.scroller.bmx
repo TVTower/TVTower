@@ -210,7 +210,7 @@ Type TGUIScrollerBase extends TGUIobject
 				If value > 0 Then direction = "right"
 		End Select
 		If direction <> ""
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.AddString("direction", direction).AddInt("scrollAmount", mouseScrollAmount), self)
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.Add("direction", direction).Add("scrollAmount", mouseScrollAmount), self)
 		EndIf
 
 		'set to accepted so that nobody else receives the event
@@ -233,7 +233,7 @@ Type TGUIScrollerBase extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", sender.direction.ToLower()).AddInt("scrollAmount", 15), guiScroller)
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.Add("direction", sender.direction.ToLower()).Add("scrollAmount", 15), guiScroller)
 		EndIf
 
 		'handled the click
@@ -260,7 +260,7 @@ Type TGUIScrollerBase extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", sender.direction.ToLower()), guiScroller )
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.Add("direction", sender.direction.ToLower()), guiScroller )
 		EndIf
 
 		Return True
@@ -393,7 +393,7 @@ Type TGUIScroller Extends TGUIScrollerBase
 		if MouseManager.IsDown(1) then guiScroller.begunAMouseDown = true
 
 		'inform others (equally to up/down-buttonclicks)
-		TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddInt("isRelative", True).AddFloat("percentage", sender.GetRelativeValue()).Add("sendingSlider", sender), guiScroller )
+		TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.Add("isRelative", True).Add("percentage", sender.GetRelativeValue()).Add("sendingSlider", sender), guiScroller )
 	End Function
 
 
@@ -544,7 +544,7 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 					'scroll to the percentage
 					SetRelativeValue(progress)
 					'inform others
-					TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.Addint("isRelative", True).AddFloat("percentage", GetRelativeValue()), self )
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.Add("isRelative", True).Add("percentage", GetRelativeValue()), self )
 
 					'reset clicked state and button state
 					mouseIsClicked = Null

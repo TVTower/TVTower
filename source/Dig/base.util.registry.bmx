@@ -310,7 +310,7 @@ Type TRegistryLoader
 		EndIf
 
 
-		TriggerBaseEvent(eventKey_onLoadXmlFromFinished, New TData.AddString("uri", file) )
+		TriggerBaseEvent(eventKey_onLoadXmlFromFinished, New TData.Add("uri", file) )
 		Return True
 	End Method
 
@@ -373,7 +373,7 @@ Type TRegistryLoader
 		'sender: self (the loader)
 		'target: resourceName in uppercases ("SPRITE") -> so listeners can filter on it
 		'print "RegistryLoader.onLoadResourceFromXML: self + "+ resourceName.ToUpper()
-		TriggerBaseEvent(eventKey_onLoadResourceFromXML, New TData.AddString("resourceName", resourceName).Add("xmlNode", node), Self, resourceName.ToUpper())
+		TriggerBaseEvent(eventKey_onLoadResourceFromXML, New TData.Add("resourceName", resourceName).Add("xmlNode", node), Self, resourceName.ToUpper())
 	End Method
 
 
@@ -603,7 +603,7 @@ Type TRegistryUnloadedResource
 
 
 	Method Load:Int()
-		TriggerBaseEvent(TRegistryLoader.eventKey_onBeginLoadresource, New TData.AddString("name", name).AddString("resourceName", resourceName))
+		TriggerBaseEvent(TRegistryLoader.eventKey_onBeginLoadresource, New TData.Add("name", name).Add("resourceName", resourceName))
 
 		'try to find a loader for the objects resource type
 		Local loader:TRegistryBaseLoader = TRegistryLoader.GetResourceLoader(resourceName)
@@ -612,7 +612,7 @@ Type TRegistryUnloadedResource
 		'try to load an object with the given config and resourceType-name
 		If loader.LoadFromConfig(config, resourceName)
 			'inform others: we loaded something
-			TriggerBaseEvent(TRegistryLoader.eventKey_onLoadResource, New TData.AddString("name", name).AddString("resourceName", resourceName))
+			TriggerBaseEvent(TRegistryLoader.eventKey_onLoadResource, New TData.Add("name", name).Add("resourceName", resourceName))
 			Return True
 		Else
 			Return False
@@ -734,8 +734,8 @@ Type TRegistryFileLoader Extends TRegistryBaseLoader
 		If _url = "" Then Return Null
 
 		Local data:TData = New TData
-		data.addString("url", _url)
-		data.addString("baseURI", loader.baseURI)
+		data.Add("url", _url)
+		data.Add("baseURI", loader.baseURI)
 
 		Return data
 	End Method
@@ -774,8 +774,8 @@ Type TRegistryDataLoader Extends TRegistryBaseLoader
 		EndIf
 
 		Local data:TData = New TData
-		data.AddString("name", name)
-		data.AddNumber("merge", TXmlHelper.FindValueBool(node, "merge", True))
+		data.Add("name", name)
+		data.AddBool("merge", TXmlHelper.FindValue(node, "merge", True))
 		Local values:TData = New TData
 
 
@@ -799,7 +799,7 @@ Type TRegistryDataLoader Extends TRegistryBaseLoader
 
 	'load the xml file (content of file)
 	Method LoadFromConfig:Object(data:TData, resourceName:String)
-		Local merge:Int = data.GetInt("merge", False)
+		Local merge:Int = data.GetBool("merge", False)
 		Local name:String = GetNameFromConfig(data)
 		Local values:TData
 		'if merging - we load the previously stored data (if there is some)

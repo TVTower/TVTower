@@ -491,7 +491,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 			'this makes the "dropdownitem-clicked"-event filterable even
 			'if the itemclass gets extended (compared to the general approach
 			'of "GUIobject_onclick")
-			TriggerBaseEvent(GUIEventKeys.GUIDropDownItem_onClick, New TData.AddNumber("button", button), Self, triggerEvent.GetReceiver())
+			TriggerBaseEvent(GUIEventKeys.GUIDropDownItem_onClick, New TData.Add("button", button), Self, triggerEvent.GetReceiver())
 
 			'we handled it
 			Return True

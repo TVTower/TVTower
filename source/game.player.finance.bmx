@@ -367,13 +367,13 @@ Type TPlayerFinance {_exposeToLua="selected"}
 		revenue_after	:+ value
 		
 		'emit event to inform others
-		TriggerBaseEvent(GameEventKeys.PlayerFinance_OnChangeMoney, new TData.AddNumber("value", value).AddNumber("playerID", playerID).AddNumber("reason", reason).Add("reference", reference), self) 
+		TriggerBaseEvent(GameEventKeys.PlayerFinance_OnChangeMoney, new TData.Add("value", value).Add("playerID", playerID).Add("reason", reason).Add("reference", reference), self) 
 	End Method
 
 
 	Method TransactionFailed:int(value:Long, reason:int, reference:TNamedGameObject=null)
 		'emit event to inform others
-		TriggerBaseEvent(GameEventKeys.PlayerFinance_OnTransactionFailed, new TData.AddNumber("value", value).AddNumber("playerID", playerID), self)
+		TriggerBaseEvent(GameEventKeys.PlayerFinance_OnTransactionFailed, new TData.Add("value", value).Add("playerID", playerID), self)
 		return False
 	End Method
 
@@ -908,8 +908,8 @@ Type TGameModifier_Money extends TGameModifierBase
 		local relative:Int = GetData().GetBool("relative")
 
 		'backup
-		GetData().AddNumber("value.backup", valueBackup)
-		GetData().AddNumber("playerID", playerID)
+		GetData().Add("value.backup", valueBackup)
+		GetData().Add("playerID", playerID)
 
 		'adjust
 		local valueChange:Long
@@ -918,7 +918,7 @@ Type TGameModifier_Money extends TGameModifierBase
 		else
 			valueChange = value
 		endif
-		GetData().AddNumber("value.change", valueChange)
+		GetData().Add("value.change", valueChange)
 		finance.Earn(TVTPlayerFinanceEntryType.SELL_MISC, valueChange)
 
 		'print "TGameModifier_Money: earned "+valueChange+" => "+finance.GetMoney()

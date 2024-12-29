@@ -205,7 +205,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 		'fire event so others know that the window is closed
 		'and what button was used
-		TriggerBaseEvent(GUIEventKeys.GUIModalWindowChain_OnClose, new TData.AddNumber("closeButton", closeButton) , Self)
+		TriggerBaseEvent(GUIEventKeys.GUIModalWindowChain_OnClose, new TData.Add("closeButton", closeButton) , Self)
 	End Method
 
 

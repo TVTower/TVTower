@@ -618,7 +618,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
-			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
+			item.data.Add("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -851,7 +851,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
-			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
+			item.data.Add("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -1273,7 +1273,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 			'link the station to the item
 			item.data.Add("station", station)
-			item.data.AddString("ISOCode", station.GetSectionISO3166Code())
+			item.data.Add("ISOCode", station.GetSectionISO3166Code())
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
 			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
@@ -2363,7 +2363,7 @@ Type TScreenHandler_StationMap
 			For Local i:Int = 0 Until guiFilterButtons.length
 				guiFilterButtons[i] = New TGUICheckBox.Create(New SVec2I(695 + i*23, 30 ), New SVec2I(20, 20), String(i + 1), "STATIONMAP")
 				guiFilterButtons[i].ShowCaption(False)
-				guiFilterButtons[i].data.AddNumber("stationType", i+1)
+				guiFilterButtons[i].data.Add("stationType", i+1)
 				'guiFilterButtons[i].SetUnCheckedTintColor( TColor.Create(255,255,255) )
 				guiFilterButtons[i].SetUnCheckedTintColor( TColor.Create(210,210,210, 0.75) )
 				guiFilterButtons[i].SetCheckedTintColor( TColor.Create(245,255,240) )
@@ -2381,7 +2381,7 @@ Type TScreenHandler_StationMap
 			For Local i:Int = 0 To 3
 				guiShowStations[i] = New TGUICheckBox.Create(New SVec2I(695 + i*23, 30 ), New SVec2I(20, 20), String(i + 1), "STATIONMAP")
 				guiShowStations[i].ShowCaption(False)
-				guiShowStations[i].data.AddNumber("playerNumber", i+1)
+				guiShowStations[i].data.Add("playerNumber", i+1)
 
 				guiShowStations[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_PLAYER_X").Replace("%X%", i+1), New TRectangle.Init(0,60,-1,-1)) )
 				guiShowStations[i].GetTooltip()._minContentDim = New TVec2D(80,-1)

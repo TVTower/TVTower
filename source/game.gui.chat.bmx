@@ -16,10 +16,10 @@ Type TGUIGameChat Extends TGUIChat
 
 		'override data if we found a valid player
 		If sendingPlayer And senderID > 0
-			data.AddString("senderName", sendingPlayer.Name)
+			data.Add("senderName", sendingPlayer.Name)
 			data.Add("senderColor", sendingPlayer.color)
 		Else
-			data.AddString("senderName", "SYSTEM")
+			data.Add("senderName", "SYSTEM")
 			data.Add("senderColor", TColor.Create(220,50,50))
 			data.Add("textColor", TColor.Create(220,80,70))
 		EndIf
