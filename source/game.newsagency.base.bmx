@@ -973,14 +973,15 @@ Type TNewsAgency
 
 
 	Method AnnounceNewsEventToPlayers:Int(newsEvent:TNewsEvent, sendNow:Int=False, ignoreSubscriptions:Int=False)
+		'only announce as news if not invisible
+		If newsEvent.HasFlag(TVTNewsFlag.INVISIBLE_EVENT) Then Return False
+
 		'print "AnnounceNewsEventToPlayers: " + newsEvent.GetTitle() + "  GUID="+newsEvent.GetGUID()
 
-		'only announce as news if not invisible
-		If Not newsEvent.HasFlag(TVTNewsFlag.INVISIBLE_EVENT)
-			For Local i:Int = 1 To 4
-				AddNewsEventToPlayer(newsEvent, i, sendNow, ignoreSubscriptions)
-			Next
-		EndIf
+		For Local i:Int = 1 To 4
+			AddNewsEventToPlayer(newsEvent, i, sendNow, ignoreSubscriptions)
+		Next
+		Return True
 	End Method
 
 
@@ -1063,7 +1064,7 @@ Type TNewsAgency
 
 			If Not skipNews or forceAnnounce
 				'process as "happening now"
-				newsEvent.ProcessHappening( GetWorldTime().GetTimeGone() )
+				newsEvent.ProcessHappening( GetWorldTime().GetTimeGone() + adjustHappenedTime)
 
 				if forceAnnounce
 					'if forced, we ignore subscription level checks

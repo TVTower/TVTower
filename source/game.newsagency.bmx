@@ -318,12 +318,6 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 			EndIf
 
 			local newsEvent:TNewsEvent = GetWeatherNewsEvent()
-			If newsEvent
-				?debug
-				Print "[NEWSAGENCY | LOCAL] UpdateWeather: added weather news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
-				?
-			EndIf
-
 			AddNewNewsEvent(newsEvent)
 		EndIf
 	End Method

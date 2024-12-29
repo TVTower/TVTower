@@ -1257,10 +1257,6 @@ endrem
 		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((60 + RandRange(60,100)) * TWorldTime.MINUTELENGTH), True, False, False)
 		'this is added to the "left side" (> 2,5h)
 		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH), True, False, False)
-		'create a random for each news
-		'for local i:int = 0 until TVTNewsGenre.count
-		'	GetNewsAgency().AnnounceNewNewsEvent(i, - (120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH, True, False, False)
-		'Next
 
 		'create 3 starting news with random genre (for starting news show)
 		Local newsCount:Int = 3
