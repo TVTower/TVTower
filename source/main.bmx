@@ -4684,7 +4684,7 @@ Type GameEvents
 				news.ProcessHappening(GetWorldTime().GetTimeGone())
 
 				'announce that news
-				GetNewsAgency().AnnounceNewsEventToPlayers(news, 0, announceNow)
+				GetNewsAgency().AnnounceNewsEventToPlayers(news, TVTNewsFlag.SEND_IMMEDIATELY)
 				GetGame().SendSystemMessage("News with GUID ~q"+newsGUID+"~q announced.")
 
 			Case "givelicence"

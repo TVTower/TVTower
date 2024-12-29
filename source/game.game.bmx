@@ -961,8 +961,7 @@ endrem
 		For Local ne:TNewsEvent = EachIn GetNewsEventCollection().GetNewsHistory(3)
 			If GetPlayerProgrammeCollection(playerID).HasNewsEvent(ne) Then Continue
 
-			'True, True = send now and add even if not subscribed!
-			GetNewsAgency().AddNewsEventToPlayer(ne, playerID, True, True)
+			GetNewsAgency().AddNewsEventToPlayer(ne, playerID, TVTNewsFlag.SEND_IMMEDIATELY | TVTNewsFlag.IGNORE_ABONNEMENTS)
 			'avoid having that news again (same is done during add, so this
 			'step is not strictly needed here)
 			GetNewsAgency().RemoveFromDelayedListsByNewsEventID(playerID, ne.GetID())
@@ -1220,6 +1219,15 @@ endrem
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
 
 
+		'=== PLAYERS 1/2 ===
+		'first create basics (player, finances, stationmap)
+		'this allows other elements to do things
+		'(eg. newsagency handing out news)
+		For Local playerID:Int = 1 To 4
+			PreparePlayerStep1(playerID, False)
+		Next
+
+
 		'=== CUSTOM PRODUCTION ===
 		'ensure we have at least 3 persons per job available,
 		'and when creating some, prefer the current country
@@ -1253,10 +1261,11 @@ endrem
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((60 + RandRange(0,60)) * TWorldTime.MINUTELENGTH), True, False, False)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((60 + RandRange(60,100)) * TWorldTime.MINUTELENGTH), True, False, False)
+		Local flags:Int = TVTNewsFlag.IGNORE_ABONNEMENTS | TVTNewsFlag.UNSKIPPABLE | TVTNewsFlag.SEND_IMMEDIATELY
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((60 + RandRange(0,60)) * TWorldTime.MINUTELENGTH), flags)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((60 + RandRange(60,100)) * TWorldTime.MINUTELENGTH), flags)
 		'this is added to the "left side" (> 2,5h)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH), True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - int((120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH), flags)
 
 		'create 3 starting news with random genre (for starting news show)
 		Local newsCount:Int = 3
@@ -1268,6 +1277,11 @@ endrem
 				' (which are the default subscription) so they are
 				' recognizeable as the most recent ones
 				newsEvent.happenedTime = GetWorldTime().GetTimeGone() - RandRange(0, 60) * TWorldTime.MINUTELENGTH
+				' we define some flags here while player peparation also
+				' already sets these flags. Better safe than sorry
+				newsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY)
+				newsEvent.SetFlag(TVTNewsFlag.IGNORE_ABONNEMENTS)
+
 				newsEvent.ProcessHappening()
 			EndIf
 		Next
@@ -1280,10 +1294,7 @@ endrem
 		Next
 
 
-		'first create basics (player, finances, stationmap)
-		For Local playerID:Int = 1 To 4
-			PreparePlayerStep1(playerID, False)
-		Next
+		'=== PLAYERS 2/2 ===
 		'then prepare plan, news abonnements, ...
 		'this is needed because adcontracts use average reach of
 		'stationmaps on sign - which needs 4 stationmaps to be "set up"
