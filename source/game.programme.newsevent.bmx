@@ -249,9 +249,9 @@ Type TNewsEventCollection
 			EndIf
 		Next
 
-		For local n:TNewsEvent = EachIn happenOnStartNews
-			print "ScheduleTimedInitialNews: id="+n.GetID() +"  title=" + n.GetTitle() + "  happenedTime="+n.happenedTime +"  -> TimeGone"
-		Next
+		'For local n:TNewsEvent = EachIn happenOnStartNews
+		'	print "ScheduleTimedInitialNews: id="+n.GetID() +"  title=" + n.GetTitle() + "  happenedTime="+n.happenedTime +"  -> TimeGone"
+		'Next
 
 		TLogger.Log("ScheduleTimedInitialNews()", "Pre-Created " + scheduledCount + " news happening at fixed time in the future and " + happenOnStartNews.length + " happening right now.", LOG_DEBUG)
 	End Method
