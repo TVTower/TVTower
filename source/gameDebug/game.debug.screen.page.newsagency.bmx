@@ -43,12 +43,13 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		RenderNewsAgencyQueue(playerID, position.x + 5, 13, 495, 190)
-		RenderNewsAgencyGenreSchedule(playerID, position.x + 5, 13 + 190 + 10, 200, 140)
-		RenderNewsAgencyInformation(playerID, position.x + 5 + 200 + 10, 13 + 190 + 10, 285, 140)
+		RenderNewsAgencyHistory(playerID, position.x + 5, 13, 465, 60)
+		RenderNewsAgencyQueue(playerID, position.x + 5, 13 +70, 465, 160)
+		RenderNewsAgencyGenreSchedule(playerID, position.x + 5, 13 + 190 + 45, 200, 110)
+		RenderNewsAgencyInformation(playerID, position.x + 5 + 200 + 10, 13 + 190 + 45, 255, 110)
 		
 		If hoveredNewsEvent
-			RenderNewsEventInfo(playerID, position.x + 410, 13, 180, 300)
+			RenderNewsEventInfo(playerID, position.x + 475, 13, 195, 340)
 		EndIf
 	End Method
 
@@ -62,7 +63,6 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 		textY :+ textFont.DrawSimple("ID: " + hoveredNewsEvent.GetID(), textX, textY).y
 		textY :+ textFont.DrawSimple("Price: " + hoveredNewsEvent.GetPrice(), textX, textY).y
-		textY :+ textFont.DrawSimple("Triggered By ID: " + hoveredNewsEvent.triggeredByID, textX, textY).y
 
 		If hoveredNewsEvent.triggeredByID
 			'move up as much as possible
@@ -98,16 +98,84 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 					EndIf
 					textY :+ textFont.DrawBox(t, textX, textY, x + w - textX, 15, sALIGN_LEFT_TOP, color).y
 					textY :- 2
-					textY :+ textFont.DrawBox("happened: " + GetWorldTime().GetFormattedGameDate(newsEventChain[i].happenedTime) , textX, textY, x + w - textX - 5, 15, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200)).y
+					If newsEventChain[i].happenedTime > GetWorldTime().GetTimeGone()
+						textY :+ textFont.DrawBox("happens: " + GetWorldTime().GetFormattedGameDate(newsEventChain[i].happenedTime) , textX, textY, x + w - textX - 5, 15, sALIGN_RIGHT_TOP, color).y
+					Else
+						textY :+ textFont.DrawBox("happened: " + GetWorldTime().GetFormattedGameDate(newsEventChain[i].happenedTime) , textX, textY, x + w - textX - 5, 15, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200)).y
+					EndIf
 					textY :+ 2
 				Next
 			EndIf
 
 			'add what it will trigger ?!
+			Local entryLimit:Int = 15 'long chains might call itself again, or hundreds of other chains
+			Local entryCount:Int = 0
+			Local lastNewsEvent:TNewsEvent = newsEventChain[newsEventChain.length-1]
+			Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(lastNewsEvent.templateID)
+			while newsEventTemplate and entryCount < entryLimit
+				Local effects:TList = newsEventTemplate.GetEffectsList("happen")
+				If not effects Then exit
+
+				For Local newsTrigger:TGameModifierNews_TriggerNews = EachIn effects
+					Local color:SColor8 = SColor8.White
+					newsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(newsTrigger.triggerNewsGUID)
+					
+					If newsEventTemplate and newsEventTemplate.GetID() = lastNewsEvent.templateID
+						textY :+ textFont.DrawBox("-> last one again", textX, textY, x + w - textX, 15, sALIGN_LEFT_TOP, color).y
+						newsEventTemplate = Null 'stop here
+					ElseIf newsEventTemplate
+						textY :+ textFont.DrawBox("-> " + newsEventTemplate.GetTitle(), textX, textY, x + w - textX, 15, sALIGN_LEFT_TOP, color).y
+					Else
+						textY :+ textFont.DrawBox("-> unknown news event", textX, textY, x + w - textX, 15, sALIGN_LEFT_TOP, color).y
+					EndIf
+					textY :- 2
+					
+					entryCount :+ 1
+				Next
+			Wend
 		EndIf
 		
 	End Method
 
+
+	Method RenderNewsAgencyHistory(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
+		self.hoveredNewsEvent = Null
+
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		
+		Local lastNews:TNewsEvent[] = GetNewsEventCollection().GetNewsHistory()
+		textFont.DrawSimple("Log", textX, textY)
+		textY :+ 12+3
+		If lastNews.length = 0
+			textFont.DrawSimple("--", textX, textY)
+		Else
+			For Local i:int = Max(0, lastNews.length-3) until lastNews.length
+				Local n:TNewsEvent = lastNews[i]
+				If not n then continue
+
+				If THelper.MouseIn(textX, textY, x+w - textX, 12)
+					self.hoveredNewsEvent = n
+					
+					Local oldA:Float = GetAlpha()
+
+					SetColor 255,235,20
+					SetAlpha Float(0.4)
+					SetBlend LIGHTBLEND
+					DrawRect(textX, textY, x+w - textX, 12)
+					SetBlend ALPHABLEND
+					SetAlpha oldA
+					SetColor 255,255,255
+				EndIf
+
+				textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(n.happenedTime), textX, textY)
+				textFont.DrawSimple(n.GetTitle() + "  ("+GetLocale("NEWS_"+TVTNewsGenre.GetAsString(n.GetGenre()))+")", textX + 100, textY)
+				textY :+ 12
+			Next
+		EndIf
+	End Method
+	
 
 	Method RenderNewsAgencyQueue(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
 		self.hoveredNewsEvent = Null
@@ -146,7 +214,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 				textFont.DrawSimple(n.GetTitle() + "  ("+GetLocale("NEWS_"+TVTNewsGenre.GetAsString(n.GetGenre()))+")", textX + 100, textY)
 				textY :+ 12
 				nCount :+ 1
-				If nCount > 12 Then Exit
+				If nCount > 10 Then Exit
 			Next
 		EndIf
 	End Method
