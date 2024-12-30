@@ -1565,9 +1565,9 @@ Type TVTNewsFlag {_exposeToLua}
 	'eg. if no player listens to the genre
 	'news like "terrorist will attack" happen in all cases => unskippable
 	Const UNSKIPPABLE:Int = 4
-	'send the news event to all players, regardless of their abonnement
-	'level
-	Const SEND_TO_ALL:Int = 8
+	'ignore players' news genre abonnement levels when sending a news 
+	'event to them
+	Const IGNORE_ABONNEMENTS:Int = 8
 	'keep time for next initial/start news of the very same genre (genre
 	'ticker). By default an added news delays next one of a genre
 	Const KEEP_TICKER_TIME:Int = 16
@@ -1581,8 +1581,10 @@ Type TVTNewsFlag {_exposeToLua}
 	'invisible events do not create "news" - they only run their "happen"
 	'effects
 	Const INVISIBLE_EVENT:Int = 256
+	'mark if "happen" was processed
+	Const HAPPENING_PROCESSED:Int = 512 
 
-	Const count:Int = 8
+	Const count:Int = 9
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -1595,14 +1597,15 @@ Type TVTNewsFlag {_exposeToLua}
 		If key < 0 Then Return "none"
 
 		Select key
-			Case SEND_IMMEDIATELY  Return "send_immediately"
-			Case UNIQUE_EVENT      Return "unique_event"
-			Case UNSKIPPABLE       Return "unskippable"
-			Case SEND_TO_ALL       Return "send_to_all"
-			Case KEEP_TICKER_TIME  Return "keep_ticker_time"
-			Case RESET_TICKER_TIME Return "reset_ticker_time"
-			Case RESET_HAPPEN_TIME Return "reset_happen_time"
-			Case SPECIAL_EVENT     Return "special_event"
+			Case SEND_IMMEDIATELY     Return "send_immediately"
+			Case UNIQUE_EVENT         Return "unique_event"
+			Case UNSKIPPABLE          Return "unskippable"
+			Case IGNORE_ABONNEMENTS   Return "ignore_abonnements"
+			Case KEEP_TICKER_TIME     Return "keep_ticker_time"
+			Case RESET_TICKER_TIME    Return "reset_ticker_time"
+			Case RESET_HAPPEN_TIME    Return "reset_happen_time"
+			Case SPECIAL_EVENT        Return "special_event"
+			Case HAPPENING_PROCESSED  Return "happening_processed"
 
 
 			Default

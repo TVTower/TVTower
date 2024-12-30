@@ -422,9 +422,7 @@ Type TGameModifierBase
 		'delay is gone)
 		If HasDelayedExecution() And GetDelayedExecutionTime() > GetWorldTime().GetTimeGone()
 			If Not HasFlag(FLAG_DELAY_MANAGED_BY_MANAGER)
-				If Not GetGameModifierManager().ContainsModifier(Self)
-					GetGameModifierManager().Add(Self)
-				EndIf
+				GetGameModifierManager().Add(Self)
 				SetFlag(FLAG_DELAY_MANAGED_BY_MANAGER, True)
 			EndIf
 			Return False

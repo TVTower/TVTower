@@ -289,4 +289,14 @@ Type MathHelper
 	Function hex2dec:Int(hexString:String)
 		Return hexString.ToInt()
 	End Function
+	
+	
+	Function EditBitmask:Int(bitmask:int, add:int, remove:int)
+		Local result:Int = bitmask
+		'add / remove override
+		result :| add
+		result :& ~remove
+		
+		Return result
+	End Function
 End Type
