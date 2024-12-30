@@ -1050,13 +1050,21 @@ Type TNewsAgency
 		Local skipNews:Int = False
 		Local effectiveNewsFlags:Int = addNewsEventFlags
 
-		'only announce if forced or somebody is listening
+		' only announce if forced, somebody is listening or it is a
+		' not skippable (which implies it is marked as unskippable or
+		' has happen-effects - eg. triggering another news)
 		If newsEvent
 			effectiveNewsFlags = MathHelper.EditBitmask(newsEvent.flags, addNewsEventFlags, removeNewsEventFlags)
-			
+
+			' ask news event if it allows skipping (eg happen effects
+			' prohibit skipping)
+			' override flags could add the UNSKIPPABLE flag and thus 
+			' forbid an else allowed skipping.
+			' Attention: this cannot override IsSkippable()=False to 
+			'            take care of "have to happen"-news events
 			If newsEvent.IsSkippable() and not (effectiveNewsFlags & TVTNewsFlag.UNSKIPPABLE)
 				If (effectiveNewsFlags & TVTNewsFlag.IGNORE_ABONNEMENTS)
-					TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.GetGenre()+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
+					TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.GetGenre()+". Am told to ignore abonnement levels. Adding news: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
 				Else
 					' if no player listens to this genre, skip it
 					Local subscribedPlayersCount:Int = 0
