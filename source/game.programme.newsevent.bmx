@@ -155,6 +155,7 @@ Type TNewsEventCollection
 
 		'max 100 entries
 		If newsEventsHistory.length > 100
+			newsEventsHistoryIndex :- 50
 			newsEventsHistory = newsEventsHistory[50 ..]
 		EndIf
 		'resize if needed
@@ -1115,7 +1116,8 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 
 		'calculate when the news happens
 		news.happenedTime = GetWorldTime().CalcTime_Auto(-1, happenTimeType, happenTimeData)
-		
+		GetNewsEventCollection().ProtectNewsThread(news)
+
 		'add other allowed "senders"
 		Local triggeredByID:int = params.GetInt("triggeredByID", 0)
 		news.triggeredByID = triggeredByID
