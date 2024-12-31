@@ -308,6 +308,9 @@ Type TApp
 			EndIf
 			GetGraphicsManager().SetDesignedResolution(800,600)
 			GetGraphicsManager().InitGraphics()
+			
+			'assign a custom cls function to enhance letterbox visuals
+			GetGraphicsManager().customCLS = CustomCLS_RenderNiceLetterbox
 
 			GameConfig.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
 			GameConfig.autoSaveIntervalHours = obj.config.GetInt("autosaveInterval", 0)
@@ -425,6 +428,30 @@ Type TApp
 		EndIf
 	End Function
 
+
+	Function CustomCLS_RenderNiceLetterbox(contentOffsetX:Int, contentOffsetY:Int, contentWidth:Int, contentHeight:Int)
+		'instead of a custom "cls" it would also be an option to
+		'GetGraphicsManager().ResetVirtualGraphicsArea()
+		'draw...
+		'GetGraphicsManager().SetupVirtualGraphicsArea()
+		'somewhere after each CLS call
+		'yet this way allows to be used as GetGraphicsManager().CLS() replacement
+
+		GetGraphicsManager().ResetVirtualGraphicsArea()
+		brl.max2d.Cls()
+		
+		SetColor 255,255,255
+		Local s:TSprite = GetSpriteFromRegistry("gfx_startscreen_logoSmall")
+		For local i:int = -1 until 8
+			SetAlpha(float(sin(i*30 + Millisecs()/50.0)) * 0.2)
+			s.Draw(GraphicsWidth() - 12, (8 - i)*80, -1, ALIGN_RIGHT_TOP)
+			s.Draw(12, (i*80))
+			'GetSpriteFromRegistry("gfx_startscreen_logoSmall").Draw(float(sin(i*30 + Millisecs()/25.0) * 20), (i*60))
+		Next
+		SetAlpha(1.0)
+		GetGraphicsManager().SetupVirtualGraphicsArea()
+	End Function
+	
 
 	Method IsRunningInBackground:Int()
 		Return runningInBackground
