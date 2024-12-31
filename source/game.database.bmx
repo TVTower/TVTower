@@ -332,6 +332,10 @@ Type TDatabaseLoader
 
 	Method Load(fileURI:String)
 		config.AddString("currentFileURI", fileURI)
+
+		'inform others: done with file
+		TriggerBaseEvent(GameEventKeys.Database_OnBeginLoad, New TData.Add("fileURI", fileURI ), Null, self)
+
 		'register our own mxml error printer:
 		XMLSetErrorCallback(MXMLErrorCallback)
 		
@@ -366,7 +370,10 @@ Type TDatabaseLoader
 				Default	TLogger.Log("TDatabase.Load()", "CANNOT LOAD DB ~q" + fileURI + "~q (version "+version+") - UNHANDLED VERSION." , LOG_LOADING)
 			End Select
 		EndIf
-		
+
+		'inform others: done with file
+		TriggerBaseEvent(GameEventKeys.Database_OnLoad, New TData.Add("fileURI", fileURI ), Null, self)
+
 		'de-register our own mxml error printer:
 		XMLSetErrorCallback(null)
 	End Method
