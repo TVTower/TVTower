@@ -6561,14 +6561,16 @@ endrem
 			Next
 
 		Next
-		'NEWSEVENTS
-		'remove old news events - wait a bit more than "plan time"
-		'this also gets rid of "one time" news events which should
-		'have been "triggered" then
-		Local daysToKeep:Int = 3
-		GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
-		'remove from collection (reuse if possible)
-		GetNewsEventCollection().RemoveEndedNewsEvents()
+		If hour mod 24 = 3
+			'NEWSEVENTS
+			'remove old news events - wait a bit more than "plan time"
+			'this also gets rid of "one time" news events which should
+			'have been "triggered" then
+			Local daysToKeep:Int = 5
+			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
+			'remove from collection (reuse if possible)
+			GetNewsEventCollection().RemoveEndedNewsEvents()
+		EndIf
 
 		If GameConfig.autoSaveIntervalHours > 0 And Not TSaveGame.autoSaveNow and TSaveGame.lastSaveTime > 0 and time - TSaveGame.lastSaveTime > GameConfig.autoSaveIntervalHours * TWorldTime.HOURLENGTH
 			TSaveGame.autoSaveNow = True
