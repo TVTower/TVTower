@@ -55,8 +55,8 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("Matthew Forrester~n(English translation, 2022)")
 
 		role = CreateRole("Datenbank-Team", new SColor8(210,120,250))
-		role.addCast("Ronny Otto") 'begin - since ever
 		role.addCast("scr0llbaer~n(2023 - )")
+		role.addCast("Ronny Otto") 'begin - since ever
 		role.addCast("Alexander Nittka~n(2022 - )")
 		role.addCast("Själe~n(2013 - 2019)") 'begin 2013
 		role.addCast("TheRob~n(2015 - 2019)") 'begin 2015
@@ -66,6 +66,11 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("Rumpelfreddy~n(2014)")
 		role.addCast("Martin Rackow~n(bis 2007)")
 		role.addCast("u.a. Freiwillige")
+
+		role = CreateRole("Lokalisierung", new SColor8(240,120,180))
+		role.addCast("scr0llbaer~n(2023 - )~n(English)")
+		role.addCast("pauldim~n(2024 - )~n(Polish)")
+
 
 		role = CreateRole("Tester", new SColor8(160,180,250))
 		role.addCast("...und Motivationsteam")
