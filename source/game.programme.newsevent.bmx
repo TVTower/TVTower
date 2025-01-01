@@ -362,13 +362,14 @@ Type TNewsEventCollection
 			If Not _upcomingNewsEvents[genre+1]
 				_upcomingNewsEvents[genre+1] = New TObjectList()
 			EndIf
+			Local startTime:Long = GetWorldTime().GetTimeStart() 
 			For Local event:TNewsEvent = EachIn newsEvents.Values()
 				'skip events already happened (and processed) or not
 				'happened at all (-> "-1")
 				If event.HasFlag(TVTNewsFlag.HAPPENING_PROCESSED) Or event.happenedTime = -1 Then Continue
 				'also ignore events which happened before game start 
 				'(eg fixed happen time news events)
-				If event.happenedTime < GetWorldTime().GetTimeStart() Then Continue
+				If event.happenedTime < startTime Then Continue
 				
 				'only interested in a specific genre?
 				If genre <> -1 And event.GetGenre() <> genre Then Continue
