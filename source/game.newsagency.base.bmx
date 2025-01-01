@@ -954,14 +954,6 @@ Type TNewsAgency
 			EndIf
 
 			Local news:TNews = TNews.Create(newsEvent)
-			'TODO: this is no longer in use anywhere in the code ?!
-			'      ... and default of priceModRelativeNewsAgency is 0 ...
-			'do not extra charge for immediate news
-			'If effectiveNewsFlags & TVTNewsFlag.SEND_IMMEDIATELY
-			'	news.priceModRelativeNewsAgency = 0.0
-			'Else
-			'	news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.GetGenre(), player.GetNewsAbonnement(newsEvent.GetGenre()))
-			'EndIf
 			__AddNewsToPlayer(news, player.playerID)
 		Else
 			'add to publishLater-List
@@ -993,6 +985,23 @@ Type TNewsAgency
 	'
 	'internal method
 	Method __AddNewsToPlayer:Int(news:TNews, playerID:Int)
+		'we now know the currently effective news abonnement level
+		'and thus can calculate extra charges
+		'Attention: ignores "overridden" newseventflags during original
+		'           announcements. So only news-innert flag are checked
+
+		local ne:TNewsEvent = news.GetNewsEvent()
+		'do not extra charge for immediate news
+		If ne.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
+			news.priceModRelativeNewsAgency = 0.0
+		Else
+			Local p:TPlayerBase = GetPlayerBase(playerID)
+			If p
+				news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(ne.GetGenre(), p.GetNewsAbonnement(ne.GetGenre()))
+			EndIf
+		EndIf
+
+
 		If Not GetPlayerProgrammeCollection(playerID) Then Return False
 		Return GetPlayerProgrammeCollection(playerID).AddNews(news)
 	End Method
