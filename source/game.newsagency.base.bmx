@@ -936,8 +936,6 @@ Type TNewsAgency
 
 		If effectiveNewsFlags & TVTNewsFlag.INVISIBLE_EVENT Then Return False
 
-		Local news:TNews = TNews.Create(newsEvent)
-
 		'if forced to send now, the current subscription level becomes
 		'important.
 		If effectiveNewsFlags & TVTNewsFlag.SEND_IMMEDIATELY
@@ -955,20 +953,14 @@ Type TNewsAgency
 				If not player.IsNewsAbonnementEffective(newsEvent.GetGenre()) Then Return False
 			EndIf
 
-			'do not extra charge for immediate news
-			'If effectiveNewsFlags & TVTNewsFlag.SEND_IMMEDIATELY
-				news.priceModRelativeNewsAgency = 0.0
-			'Else
-			'TODO: this is no longer in use anywhere in the code ?!
-			'	news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.GetGenre(), player.GetNewsAbonnement(newsEvent.GetGenre()))
-			'EndIf
-
+			Local news:TNews = TNews.Create(newsEvent)
 			__AddNewsToPlayer(news, player.playerID)
 		Else
 			'add to publishLater-List
 			'so dynamical checks of "subscription levels" can take
 			'place - and also "older" new will get added to the
 			'players when they subscribe _after_ happening of the event
+			Local news:TNews = TNews.Create(newsEvent)
 			__AddDelayedNewsToPlayer(news, player.playerID)
 		EndIf
 		
@@ -993,6 +985,23 @@ Type TNewsAgency
 	'
 	'internal method
 	Method __AddNewsToPlayer:Int(news:TNews, playerID:Int)
+		'we now know the currently effective news abonnement level
+		'and thus can calculate extra charges
+		'Attention: ignores "overridden" newseventflags during original
+		'           announcements. So only news-innert flag are checked
+
+		local ne:TNewsEvent = news.GetNewsEvent()
+		'do not extra charge for immediate news
+		If ne.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
+			news.priceModRelativeNewsAgency = 0.0
+		Else
+			Local p:TPlayerBase = GetPlayerBase(playerID)
+			If p
+				news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(ne.GetGenre(), p.GetNewsAbonnement(ne.GetGenre()))
+			EndIf
+		EndIf
+
+
 		If Not GetPlayerProgrammeCollection(playerID) Then Return False
 		Return GetPlayerProgrammeCollection(playerID).AddNews(news)
 	End Method
@@ -1067,15 +1076,17 @@ Type TNewsAgency
 					TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.GetGenre()+". Am told to ignore abonnement levels. Adding news: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
 				Else
 					' if no player listens to this genre, skip it
-					Local subscribedPlayersCount:Int = 0
+					Local isSubscribedGenre:Int
 					For Local player:TPlayerBase = EachIn GetPlayerBaseCollection().players
-						If player.GetNewsabonnement(newsEvent.GetGenre()) > 0 Then subscribedPlayersCount :+ 1
+						If player.GetNewsabonnement(newsEvent.GetGenre()) > 0 
+							isSubscribedGenre = True
+							exit
+						EndIf
 					Next
-					If subscribedPlayersCount = 0
+					If not isSubscribedGenre
 						TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.GetGenre()+". Skip news: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
+						skipNews = True
 					EndIf
-					
-					skipNews = True
 				EndIf
 			EndIf
 
