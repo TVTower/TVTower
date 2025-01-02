@@ -390,7 +390,7 @@ Type TNewsEventCollection
 			'print "checking template "+ news.GetTitle()
 			Local threadTime:Long = Long(String(collection.threadLastHappened.ValueForKey(template.threadid)))
 			If threadTime < news.happenedTime
-				collection.threadLastHappened.insert(template.threadid, ""+news.happenedTime)
+				collection.threadLastHappened.insert(template.threadid, String(news.happenedTime))
 				'print "UPDATING "+template.threadid +" "+news.happenedTime
 			EndIf
 			Return True
@@ -828,6 +828,9 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			effectParams.Add("variables", templateVariables)
 		EndIf
 		If effects Then effects.Update("happen", effectParams)
+		
+		'emit an event so others can react 
+		TriggerBaseEvent(GameEventKeys.NewsEvent_OnHappen, Null, Self)
 
 		'mark newsevent happening as processed
 		self.SetFlag(TVTNewsFlag.HAPPENING_PROCESSED, True)
@@ -1121,6 +1124,8 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 
 		'calculate when the news happens
 		news.happenedTime = GetWorldTime().CalcTime_Auto(-1, happenTimeType, happenTimeData)
+		'ensure that the news chain is not running another instance
+		'in parallel until this one finished
 		GetNewsEventCollection().ProtectNewsThread(news)
 
 		'add other allowed "senders"

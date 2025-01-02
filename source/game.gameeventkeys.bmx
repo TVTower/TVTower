@@ -249,6 +249,8 @@ Type TGameEventKeys
 	Field AdContract_OnFail:TEventKey = GetEventKey("AdContract.onFail", True)
 	Field AdContract_OnFinish:TEventKey = GetEventKey("AdContract.onFinish", True)
 	
+	Field NewsEvent_OnHappen:TEventKey = GetEventKey("NewsEvent.onHappen", True)
+	
 	'game.production.bmx
 	Field Production_Start:TEventKey = GetEventKey("Production.start", True)
 	Field Production_Abort:TEventKey = GetEventKey("Production.abort", True)

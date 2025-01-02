@@ -253,16 +253,18 @@ Type TNewsEventTemplateCollection
 
 
 	Method GetRandomUnusedAvailableInitial:TNewsEventTemplate(genre:int=-1)
+		local arr:TNewsEventTemplate[] = GetUnusedAvailableInitialTemplates(genre)
 		'if no news is available, make older ones available again
 		'start with 7 days ago and lower until we got a news
-		local days:int = 7
-		local arr:TNewsEventTemplate[] = GetUnusedAvailableInitialTemplates(genre)
-		While arr.length = 0 and days >= 0
-			If days<=4 Then TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "ResetUsedTemplates("+days+", "+genre+").", LOG_DEBUG)
-			ResetUsedTemplates(days, genre)
-			days :- 1
-			arr = GetUnusedAvailableInitialTemplates(genre)
-		Wend
+		If arr.length = 0
+			local days:int = 7
+			While arr.length = 0 and days >= 0
+				If days<=4 Then TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "ResetUsedTemplates("+days+", "+genre+").", LOG_DEBUG)
+				ResetUsedTemplates(days, genre)
+				days :- 1
+				arr = GetUnusedAvailableInitialTemplates(genre)
+			Wend
+		EndIf
 
 		if arr.length = 0
 			'This should only happen if no news events were found in the database
@@ -277,6 +279,7 @@ Type TNewsEventTemplateCollection
 
 		'if there are templates with complex availability conditions (more than one condition must be met)
 		'use it with a higher probability; otherwise such a template may never be used at all
+
 		If RandRange(0, 10) > 5
 			Local scriptArr:TNewsEventTemplate[] = new TNewsEventTemplate[0]
 			For Local t:TNewsEventTemplate = EachIn arr
@@ -398,6 +401,7 @@ End Type
 Function GetNewsEventTemplateCollection:TNewsEventTemplateCollection()
 	Return TNewsEventTemplateCollection.GetInstance()
 End Function
+
 
 
 
