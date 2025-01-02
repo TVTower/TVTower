@@ -214,7 +214,7 @@ Type TNewsEventTemplateCollection
 			' (eg. optional news chain elements)
 			If template.lastUsedTime <= 0 Then Continue
 			
-			'when did last element in the thread "happen"?
+			' when did last element in the thread did "happen" ?
 			templateThreadLastHappenedTime = Long(String(threadLastHappened.valueForKey(template.threadId)))
 			If templateThreadLastHappenedTime > threshold
 				currentlyUsedIds.AddLast(template.threadId)
