@@ -210,11 +210,18 @@ Type TNewsEventTemplateCollection
 		For Local template:TNewsEventTemplate = EachIn allTemplates.Values()
 			If genre <> -1 And template.genre <> genre Then Continue
 			If Not template.threadId Then Continue
-
+			' ignore templates not even having been used 
+			' (eg. optional news chain elements)
+			If template.lastUsedTime <= 0 Then Continue
+			
+			'when did last element in the thread "happen"?
 			templateThreadLastHappenedTime = Long(String(threadLastHappened.valueForKey(template.threadId)))
 			If templateThreadLastHappenedTime > threshold
 				currentlyUsedIds.AddLast(template.threadId)
 				'print "  mark thread as used recently new " + template.threadId +" "+template.GetTitle() +" "+GetWorldTime().GetFormattedGameDate(templateThreadLastHappenedTime)
+			' "lastUsedTime" is when a template was used last time to 
+			' initialize a new news event (regardless of the news event
+			' being used at the end).
 			ElseIf abs(GetWorldTime().GetDay(template.lastUsedTime) - day) < minAgeInDays
 				currentlyUsedIds.AddLast(template.threadId)
 				'print "  mark thread as used recently old" + template.threadId +" "+template.GetTitle()+" "+GetWorldTime().GetFormattedGameDate(template.lastUsedTime)
