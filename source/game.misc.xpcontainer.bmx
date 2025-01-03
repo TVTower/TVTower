@@ -18,7 +18,7 @@ Type TXPContainer
 	Method GetEffectivePercentage:Float(key:Int) abstract
 	'defines the amount of "to add" XP (based on the passed "extra" or
 	'a constant value?)
-	Method GetNextGain:Int(key:Int, extra:object) abstract
+	Method GetNextGain:Int(key:Int, extra:object, affinity:Float) abstract
 
 
 	Method Set(key:Int, value:Int)

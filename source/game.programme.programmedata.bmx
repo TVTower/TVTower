@@ -647,11 +647,12 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetCastFame:Float()
 		Local res:Float = 0.0
 		Local castCount:Int = 0
+		Local genre:Int = GetGenre()
 
 		For Local job:TPersonProductionJob = EachIn cast
 			Local p:TPersonBase = GetPersonBase(job.personID)
 			If Not p Then Continue
-			res :+ p.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME)
+			res :+ p.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, job.job, genre)
 			castCount :+ 1
 		Next
 		If castCount > 0 Then res = res / castCount

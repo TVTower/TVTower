@@ -805,9 +805,13 @@ Type TProductionConcept Extends TOwnedGameObject
 			local castXP:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 
 			castXP :* 1.0 + 0.15 * person.GetEffectiveJobExperiencePercentage(job.job)
+			If TPersonProductionData(person.GetProductionData())
+				castXP :* 1.0 + 0.15 *  TPersonProductionData(person.GetProductionData()).GetEffectiveGenreExperiencePercentage(script.mainGenre)
+			EndIf
 
-			castXPSum :+ castXP
-			personCount :+ 1
+			Local weight:Int = _GetJobWeight(job.job, 2)
+			castXPSum :+ weight * castXP
+			personCount :+ weight
 		Next
 		scriptPotentialModCached = True
 
@@ -1048,9 +1052,9 @@ Type TProductionConcept Extends TOwnedGameObject
 			if person.IsCelebrity()
 				for local i:int = 1 to TVTPersonPersonalityAttribute.count
 					if i < 4
-						attributeDetail1 :+ TVTPersonPersonalityAttribute.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttributeValue(i)*100) + "%  "
+						attributeDetail1 :+ TVTPersonPersonalityAttribute.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttributeValue(i, jobID, genreID)*100) + "%  "
 					else
-						attributeDetail2 :+ TVTPersonPersonalityAttribute.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttributeValue(i)*100) + "%  "
+						attributeDetail2 :+ TVTPersonPersonalityAttribute.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttributeValue(i, jobID, genreID)*100) + "%  "
 					endif
 				Next
 			endif
@@ -1106,8 +1110,10 @@ rem
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "     otherJob:  "+samePersonOtherJob, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "=   personFit:  "+personFit, LOG_DEBUG)
 endrem
-			castFitSum :+ personFit
-			personCount :+1
+
+			Local weight:Int = _GetJobWeight(job.job, 1)
+			castFitSum :+ weight * personFit
+			personCount :+ weight
 		Next
 
 		if recalculate or castFit < 0
@@ -1116,9 +1122,53 @@ endrem
 			else
 				castFit = 0
 			endif
+			castFit:* _GetCastConsistencyMod()
 		endif
 
 		return castFit
+	End Method
+
+	'job-dependent weight for a calculated value
+	'in particular lower weight (for now always 1) for supporting actor
+	'weightType 1 for castFit, 2 for castExperience, 3 for fame
+	Method _GetJobWeight:Int(job:Int, weightType:Int)
+		'genre could also be taken into account
+		'e.g. script writer not as important for events
+		'but the database will have few "nonsense-job"
+
+		If TVTPersonJob.DIRECTOR & job Then Return 2
+		If TVTPersonJob.ACTOR & job Then Return 2
+
+		If weightType = 1 'for cast fit
+			If TVTPersonJob.SCRIPTWRITER & job Then Return 2
+			If TVTPersonJob.HOST & job Then Return 2
+		ElseIf weightType = 2 'for cast experience
+			If TVTPersonJob.SCRIPTWRITER & job Then Return 2
+			If TVTPersonJob.MUSICIAN & job Then Return 2
+			If TVTPersonJob.REPORTER & job Then Return 2
+			If TVTPersonJob.HOST & job Then Return 2
+		ElseIf weightType = 3 'for cast fame
+			If TVTPersonJob.GUEST & job Then Return 3
+			If TVTPersonJob.MUSICIAN & job Then Return 2
+		Else
+			throw "TProductionConcept: illegal job weight type"
+		EndIf
+		Return 1
+	End Method
+
+
+
+	'TODO cast consistency
+	Method _GetCastConsistencyMod:Float()
+		'for series consistent cast (actors in particular if roles are involved)
+		'for multi-productions host consistency and varying guests!!
+
+		'do not use concepts but rather finished Licences
+'		Local otherConcepts:TProductionConcept[] = GetProductionConceptCollection().GetProductionConceptsByScript(script, True)
+'		For Local c:TProductionConcept = EachIn otherConcepts
+'			print c.GetTitle()
+'		Next
+		Return 1.0
 	End Method
 
 
@@ -1138,13 +1188,18 @@ endrem
 			local genreID:Int = script.GetMainGenre()
 			local personFameMod:Float = 1.0
 
-			personFameMod :+ 0.75 * person.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genreID)
+			If jobID = TVTPersonJob.GUEST
+				personFameMod :+ 0.75 * person.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, GetMainJob(person), genreID)
+			Else
+				personFameMod :+ 0.75 * person.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genreID)
+			EndIf
 			'really experienced persons benefit from it too (eg.
 			'won awards and so on)
 			personFameMod :+ 0.25 * person.GetEffectiveJobExperiencePercentage(jobID)
 
-			castFameModSum :+ personFameMod
-			personCount :+1
+			Local weight:Int = _GetJobWeight(jobID, 3)
+			castFameModSum :+ weight * personFameMod
+			personCount :+ weight
 		Next
 
 		if recalculate or castFameMod < 0
