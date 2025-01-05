@@ -333,7 +333,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Method GetFocusPointPriority:Float(focusPointID:int )
 		if not focusPointPriorities then return 1.0
 		local value:object = focusPointPriorities.ValueForKey(string(focusPointID))
-		if not value or string(value) then return 1.0
+		if not value or not string(value) then return 1.0
 
 		return float(string(value))
 	End Method
