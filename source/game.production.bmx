@@ -950,7 +950,7 @@ endrem
 
 		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
 		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints(True)
-		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio(True)
+		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsDistribution(True)
 
 rem
 		TLogger.Log("TProduction.FixProductionValues()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
