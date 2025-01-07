@@ -479,7 +479,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			local t =
 			{
 				GUID = "";
-				title = "";
+--				title = "";
 				Id = -1;
 				refId = "";
 				blocks = 0;
@@ -494,7 +494,8 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 				licence = nil;
 			}
 			t.GUID = licence.GetGUID()
-			t.title = licence.GetTitle()
+--do not store title due to xml persistence problem with special characters
+--			t.title = licence.GetTitle()
 			t.Id = licence.GetID()
 			t.refId = licence:GetReferenceID()
 			t.blocks = licence.data.GetBlocks(0);
@@ -1811,7 +1812,7 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 
 	local myProgrammePlan = MY.GetProgrammePlan()
 	local chosenBroadcastSource = nil
-	local chosenBroadcastLog = ""
+	local chosenBroadcastLog = "disabled!"
 	local currentBroadcastMaterial = myProgrammePlan.GetAdvertisement(fixedDay, fixedHour)
 	local currentAdFails = false
 	local sendTrailer = false
@@ -1939,9 +1940,9 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 			if (newAdContract ~= oldAdContract and (audienceCoverageIncrease > 0 or newAdContract.GetDaysLeft(-1) == 0)) then
 				chosenBroadcastSource = newAdContract
 				if currentAdFails then
-					chosenBroadcastLog = "Set ad (avoid failing ad): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup()))
+--					chosenBroadcastLog = "Set ad (avoid failing ad): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup()))
 				else
-					chosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup()))
+--					chosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup()))
 				end
 				sendTrailer = false
 			end
@@ -1960,13 +1961,13 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 			sendAd = false
 			sendTrailer = false
 			chosenBroadcastSource = newAdContract
-			chosenBroadcastLog = "Set ad (avoid failing ad): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup()))
+--			chosenBroadcastLog = "Set ad (avoid failing ad): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup()))
 		-- nothing chosen but having an old one?
 		elseif (chosenBroadcastSource == nil and oldAdContract ~= nil) then
 			sendAd = false
 			sendTrailer = false
 			chosenBroadcastSource = oldAdContract
-			chosenBroadcastLog = "Set ad (keep old): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. oldAdContract.GetTitle() .. " [" .. oldAdContract.GetID() .."]  MinAud=" .. oldAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(oldAdContract.GetLimitedToTargetGroup()))
+--			chosenBroadcastLog = "Set ad (keep old): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. oldAdContract.GetTitle() .. " [" .. oldAdContract.GetID() .."]  MinAud=" .. oldAdContract.GetMinAudience(TVT.ME) .. " (old=" .. oldMinAudience .. ")  guessedAud="..math.floor(guessedAudience.GetTotalValue(oldAdContract.GetLimitedToTargetGroup()))
 		end
 	end
 
@@ -2014,7 +2015,7 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 				local choosenLicence = upcomingProgrammesLicences[ math.random( #upcomingProgrammesLicences ) ]
 				if (choosenLicence ~= nil) then
 					chosenBroadcastSource = choosenLicence
-					chosenBroadcastLog = "Set trailer: " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. choosenLicence.GetTitle() .. "  Reason: " .. sendTrailerReason
+--					chosenBroadcastLog = "Set trailer: " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. choosenLicence.GetTitle() .. "  Reason: " .. sendTrailerReason
 				end
 			end
 		else
@@ -2035,7 +2036,7 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 	if (chosenBroadcastSource == nil and currentBroadcastMaterial == nil) then
 		if TVT.of_getAdContractCount() > 0 then
 			chosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()-1) )
-			chosenBroadcastLog = "Set ad (no alternative): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. chosenBroadcastSource.GetTitle() .. " [" ..chosenBroadcastSource.GetID() .."]  MinAud: " .. chosenBroadcastSource.GetMinAudience(TVT.ME)
+--			chosenBroadcastLog = "Set ad (no alternative): " .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":55  " .. chosenBroadcastSource.GetTitle() .. " [" ..chosenBroadcastSource.GetID() .."]  MinAud: " .. chosenBroadcastSource.GetMinAudience(TVT.ME)
 		end
 	end
 
@@ -2218,7 +2219,7 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 	local adjustedBlocks = 0
 	local chosenBroadcastSource = nil
 	local chosenBroadcastMaterial = nil
-	local chosenBroadcastLog = ""
+	local chosenBroadcastLog = "disabled!"
 
 	--TODO allow infomercials again if programme selection has been improved
 	local infomercialAllowed = false --getPlayer().gameDay <= 1
@@ -2324,9 +2325,9 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 
 		if bestLuaProgrammeLicence ~= nil then
 			if chosenBroadcastSource == nil then
-				chosenBroadcastLog = "Set programme (avoid outage) \"" .. bestLuaProgrammeLicence.title .. "\" [" .. bestLuaProgrammeLicence.Id .."]."
+--				chosenBroadcastLog = "Set programme (avoid outage) \"" .. bestLuaProgrammeLicence.title .. "\" [" .. bestLuaProgrammeLicence.Id .."]."
 			else
-				chosenBroadcastLog = "Set programme (optimized) \"" .. bestLuaProgrammeLicence.title .. "\" [" .. bestLuaProgrammeLicence.Id .."]. Reason: " .. chosenBroadcastLog
+--				chosenBroadcastLog = "Set programme (optimized) \"" .. bestLuaProgrammeLicence.title .. "\" [" .. bestLuaProgrammeLicence.Id .."]. Reason: " .. chosenBroadcastLog
 			end
 			chosenBroadcastSource = bestLuaProgrammeLicence.licence
 			chosenBroadcastMaterial = TVT.CreateBroadcastMaterialFromSource(chosenBroadcastSource)
@@ -2370,13 +2371,13 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 				chosenBroadcastSource = bestInfomercialContract
 				chosenBroadcastMaterial = TVT.CreateBroadcastMaterialFromSource(bestInfomercialContract)
 
-				chosenBroadcastLog = "Set infomercial (avoid outage) \"" .. bestInfomercialContract.GetTitle() .. "\" [" .. bestInfomercialContract.GetID() .."]  CPM: " .. string.format("%.4f", bestInfomercialContract.GetPerViewerRevenue())
+--				chosenBroadcastLog = "Set infomercial (avoid outage) \"" .. bestInfomercialContract.GetTitle() .. "\" [" .. bestInfomercialContract.GetID() .."]  CPM: " .. string.format("%.4f", bestInfomercialContract.GetPerViewerRevenue())
 			else
 				-- compare existing broadcast
 				if currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1 then
 					-- nothing to check as we already fetched the best
 					-- infomercial for that time now
-					chosenBroadcastLog = "Set infomercial (optimized) \"" .. bestInfomercialContract.GetTitle() .. "\" [" .. bestInfomercialContract.GetID() .."]  CPM:" .. string.format("%.4f", bestInfomercialContract.GetPerViewerRevenue()) .."  (previous: \"" .. currentBroadcastMaterial.GetTitle() .. "\"  CPM:" .. string.format("%.4f", currentBroadcastMaterial.GetSource().GetPerViewerRevenue()) ..") . Reason: " .. chosenBroadcastLog
+--					chosenBroadcastLog = "Set infomercial (optimized) \"" .. bestInfomercialContract.GetTitle() .. "\" [" .. bestInfomercialContract.GetID() .."]  CPM:" .. string.format("%.4f", bestInfomercialContract.GetPerViewerRevenue()) .."  (previous: \"" .. currentBroadcastMaterial.GetTitle() .. "\"  CPM:" .. string.format("%.4f", currentBroadcastMaterial.GetSource().GetPerViewerRevenue()) ..") . Reason: " .. chosenBroadcastLog
 --self:LogDebug("  JobProgrammeSchedule:FillSlot(" .. fixedDay .. "/" .. string.format("%02d", fixedHour) .. ":05):  BETTER INFOMERCIAL")
 
 				-- replace programme with infomercials if they are better
@@ -2395,7 +2396,7 @@ function JobProgrammeSchedule:FillSlot(day, hour)
 						chosenBroadcastMaterial = TVT.CreateBroadcastMaterialFromSource(bestInfomercialContract)
 					end
 
-					chosenBroadcastLog = "Set infomercial (replaced programme) \"" .. bestInfomercialContract.GetTitle() .. "\" [" .. bestInfomercialContract.GetID() .."]  CPM:" .. string.format("%.4f", bestInfomercialContract.GetPerViewerRevenue()) .."  (previous: \"" .. currentBroadcastMaterial.GetTitle() .. "\"). Reason: " .. chosenBroadcastLog .. "   attraction: infomercial=" .. infomercialAttraction .."  programme=" .. programmeAttraction
+--					chosenBroadcastLog = "Set infomercial (replaced programme) \"" .. bestInfomercialContract.GetTitle() .. "\" [" .. bestInfomercialContract.GetID() .."]  CPM:" .. string.format("%.4f", bestInfomercialContract.GetPerViewerRevenue()) .."  (previous: \"" .. currentBroadcastMaterial.GetTitle() .. "\"). Reason: " .. chosenBroadcastLog .. "   attraction: infomercial=" .. infomercialAttraction .."  programme=" .. programmeAttraction
 				end
 			end
 		end

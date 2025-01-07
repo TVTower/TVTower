@@ -84,6 +84,7 @@ function TaskAdAgency:OnMoneyChanged(value, reason, reference)
 	reason = tonumber(reason)
 	if reason == TVT.Constants.PlayerFinanceEntryType.PAY_PENALTY and getPlayer().gameDay > 4 then
 		if self.Penalties == nil then self.Penalties = {} end
+--TODO harden for xml persistence
 		--reference.id --id is different for each contract instance
 		local id = reference:GetTitle() 
 		local entry = self.Penalties[id]
@@ -634,6 +635,7 @@ function SignContracts:newOwnedContract (c)
 		targetGroup = 0;
 		daysLeft = 0;
 	}
+--TODO harden for xml persistence
 	t.title = c.GetTitle()
 	t.minAudience = c.GetTotalMinAudience(TVT.ME)
 	t.targetGroup = c.GetLimitedToTargetGroup()

@@ -76,7 +76,7 @@ function JobSellMovies:Tick()
 	function newarchivedMovie (licence)
 		local t =
 		{
-			Title = "N/A";
+--			Title = "N/A";
 			GUID = "";
 			Id = -1;
 			planned = -1;
@@ -84,7 +84,8 @@ function JobSellMovies:Tick()
 			timesRun = 0;
 			licence = nil;
 		}
-		t.Title = licence.GetTitle()
+--do not store title due to xml persistence problem with special characters
+--		t.Title = licence.GetTitle()
 		t.GUID = licence.GetGUID()
 		t.referenceId = licence.GetReferenceID()
 		t.Id = licence.GetID()
@@ -114,10 +115,10 @@ function JobSellMovies:Tick()
 			--ignore episodes/collection-elements
 			if m.HasParentLicence()==0 then
 				vm = newarchivedMovie(m)
-				self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id.."), planned: "..tostring(vm.planned))
+--				self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id.."), planned: "..tostring(vm.planned))
 				if table.contains(toSell, vm.referenceId) then
 					if (vm.relativeTopicality > 0.95 or vm.maxTopicality < 0.35) then
-						self:LogInfo("  placing "..vm.Title.." (max topicality "..vm.maxTopicality.. ", times run " ..vm.timesRun ..") into suitcase for selling")
+						self:LogInfo("  placing "..vm.licence.GetTitle() .." (max topicality "..vm.maxTopicality.. ", times run " ..vm.timesRun ..") into suitcase for selling")
 						table.insert(case, vm)
 					end
 				else
@@ -161,7 +162,7 @@ function JobSellMovies:Tick()
 	end
 
 	if newLicenceToSell ~= nil then
-		self:LogInfo("mark worst licence for selling: "..newLicenceToSell.Title)
+		self:LogInfo("mark worst licence for selling: "..newLicenceToSell.licence.GetTitle())
 		table.insert(toSell, newLicenceToSell.referenceId)
 
 		local childCount =  newLicenceToSell.licence:GetSubLicenceCount()
@@ -183,12 +184,12 @@ function JobSellMovies:Tick()
 	for i=1, #case do
 		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
 		if ec == TVT.RESULT_OK then
-			self:LogDebug("  put "..case[i].Title.." in suitcase, OK")
+			self:LogDebug("  put "..case[i].licence.GetTitle().." in suitcase, OK")
 
 			self.Task.Player.programmeLicencesInArchiveCount = math.max(0, self.Task.Player.programmeLicencesInArchiveCount - 1)
 			self.Task.Player.programmeLicencesInSuitcaseCount = self.Task.Player.programmeLicencesInSuitcaseCount + 1
 		else
-			self:LogError("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
+			self:LogError("# put "..case[i].licence.GetTitle().." in suitcase, errorcode: "..ec)
 		end
 	end
 
@@ -226,7 +227,7 @@ function JobSellMovies:getLowPerformanceLicenceToSell(movies, threshold)
 			end
 		end
 		if worstQuote < threshold then
-			self:LogDebug("worst licence (quote) ".. worstLicence.Title .. " quote: " .. worstQuote)
+			self:LogDebug("worst licence (quote) ".. worstLicence.licence.GetTitle() .. " quote: " .. worstQuote)
 			return worstLicence
 		end
 	end
@@ -243,7 +244,7 @@ function JobSellMovies:determineLicenceToSell(movies)
 		end
 		table.sort(movies, sortMethod)
 		local worstLicence = table.first(movies)
-		self:LogDebug("worst licence (quality) ".. worstLicence.Title .."; planned "..worstLicence.planned )
+		self:LogDebug("worst licence (quality) ".. worstLicence.licence.GetTitle() .."; planned "..worstLicence.planned )
 	
 		if worstLicence.timesRun >= 7 then
 			licenceToSell = worstLicence
@@ -254,7 +255,7 @@ function JobSellMovies:determineLicenceToSell(movies)
 		end
 		table.sort(movies, sortMethod)
 		local worstLicence = table.first(movies)
-		self:LogDebug("worst licence (maxTopicality)".. worstLicence.Title .."; planned "..worstLicence.planned )
+		self:LogDebug("worst licence (maxTopicality)".. worstLicence.licence.GetTitle() .."; planned "..worstLicence.planned )
 	
 		if worstLicence.maxTopicality < 0.25 then
 			licenceToSell = worstLicence
