@@ -723,6 +723,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			focusPoints = GetProductionFocus(focusPointID)
 
 			'production speed does not add to quality
+			'TODO maybe allow some speed points for higher company levels?
 			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
 
 			weight=1.0
@@ -745,10 +746,14 @@ Type TProductionConcept Extends TOwnedGameObject
 			weight=1.0
 			'expected points
 			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
+			'TODO limit by TProductionFocusBase.focusPointLimit
 			focusPoints = (pointsForDistribution / totalWeights) * weight
 			'print "expected "+ focusPointID+": "+ focusPoints + " actual "+ GetProductionFocus(focusPointID)
 			'difference
 			focusPoints = abs(GetProductionFocus(focusPointID) - focusPoints)
+			'TODO make factor depend on company,
+			'6, 11->0.1
+			'15 -> 0.07...
 			If focusPoints > 0 Then _effectiveFocusPointsDistribution :- 0.1 * focusPoints
 		Next
 		'print _effectiveFocusPointsDistribution
