@@ -479,7 +479,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			local t =
 			{
 				GUID = "";
---				title = "";
+				title = "N/A";
 				Id = -1;
 				refId = "";
 				blocks = 0;

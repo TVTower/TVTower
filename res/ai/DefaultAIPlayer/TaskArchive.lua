@@ -76,7 +76,7 @@ function JobSellMovies:Tick()
 	function newarchivedMovie (licence)
 		local t =
 		{
---			Title = "N/A";
+			Title = "N/A";
 			GUID = "";
 			Id = -1;
 			planned = -1;
