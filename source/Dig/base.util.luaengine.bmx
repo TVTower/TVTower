@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2021 Ronny Otto, digidea.de
+	Copyright (C) 2002-2024 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -38,45 +38,19 @@ SuperStrict
 Import Pub.Lua
 Import Brl.Retro
 
-Rem
-	===============================
-	ATTENTION =====================
-	===============================
-	BMXNG-switch is used multiple times (ReturnType() is not the same
-	compared to the call in reflectionExtended)
-	-> imports
-	-> _invoke()
-
-EndRem
-
-?Not bmxng
-'using custom to have support for const/function reflection
-Import "external/reflectionExtended/reflection.bmx"
-'Import BRL.Reflection
-?bmxng
-'ng has it built-in!
 Import BRL.Reflection
-?
 Import "base.util.logger.bmx"
 'from maxlua, modified to define "THREADED"
-?bmxng
 Import "base.util.luaengine.c"
-?Not bmxng
-Import "base.util.luaengine.vanillabmx.c"
-?
 
 Extern
 	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
 	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
-	?bmxng
 	Function lua_boxobject:Int( L:Byte Ptr,obj:Object )="BBINT lua_boxobject(BBBYTE*, BBObject*)!"
 	Function lua_pushlightobject:Int( L:Byte Ptr,obj:Object )="BBINT lua_pushlightobject(BBBYTE*,BBObject*)!"
 	Function lua_gcobject:Int( L:Byte Ptr )="BBINT lua_gcobject(BBBYTE*)"
-	?Not bmxng
-	Function lua_boxobject( L:Byte Ptr,obj:Object )
-	Function lua_pushlightobject( L:Byte Ptr,obj:Object )
-	Function lua_gcobject:Int( L:Byte Ptr )
-	?
+	Function lua_tobbstring:String( L:Byte Ptr,index:Int )
+	Function lua_pushbbstring:Int( L:Byte Ptr,s:String )
 End Extern
 'end from maxlua
 
@@ -334,7 +308,7 @@ Type TLuaEngine
 	
 	
 	Method DumpError(errorType:String = "Error")
-		Local error:String = lua_tostring( getLuaState(), -1 )
+		Local error:String = lua_tobbstring( getLuaState(), -1 )
 		lua_pop(GetLuaState(), 1) 'remove error from stack
 		Local split:String[] = error.split("~nstack traceback:~n")
 		Local errorMessage:String = split[0]
@@ -494,7 +468,7 @@ Type TLuaEngine
 		'eg.: field _myPrivateField
 		'
 		'but lua needs access to global: _G
-		Local ident:String = lua_tostring(getLuaState(), 2)
+		Local ident:String = lua_tobbstring(getLuaState(), 2)
 		If ident[0] =  Asc("_") And ident <> "_G" Then Return False
 
 		'===== CHECK PUSHED OBJECT IS A METHOD or FUNCTION =====
@@ -504,11 +478,7 @@ Type TLuaEngine
 		'thing we have to push is a method/function
 		If callable
 			'PRIVATE...do not add private functions/methods
-			?not bmxng
-			If callable.MetaData("_private")
-			?bmxng
 			If callable.HasMetaData("_private")
-			?
 				If TMethod(callable)
 					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Else
@@ -537,11 +507,7 @@ Type TLuaEngine
 		Local _constant:TConstant = typeId.FindConstant(ident)
 		If _constant
 			'PRIVATE...do not add private functions/methods
-			?not bmxng
-			If _constant.MetaData("_private")
-			?bmxng
 			If _constant.HasMetaData("_private")
-			?
 				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
@@ -562,7 +528,7 @@ Type TLuaEngine
 					lua_pushnumber(getLuaState(), _constant.GetDouble())
 				Case StringTypeId
 					Local t:String = _constant.GetString()
-					lua_pushlstring(getLuaState(), t, t.length)
+					lua_pushbbstring(getLuaState(), t)
 			End Select
 			Return True
 		EndIf
@@ -573,11 +539,7 @@ Type TLuaEngine
 		If fld
 			'PRIVATE...do not add private functions/methods
 			'SELECTED...only expose the children with explicit mention
-			?not bmxng
-			If fld.MetaData("_private")
-			?bmxng
 			If fld.HasMetaData("_private")
-			?
 				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
@@ -597,7 +559,7 @@ Type TLuaEngine
 					lua_pushnumber(getLuaState(), fld.GetDouble(obj))
 				Case StringTypeId
 					Local t:String = fld.GetString(obj)
-					lua_pushlstring(getLuaState(), t, t.length)
+					lua_pushbbstring(getLuaState(), t)
 				Case ArrayTypeId
 					lua_pushArray(fld.Get(obj))
 				Default
@@ -642,7 +604,7 @@ Type TLuaEngine
 		Local obj:Object = lua_unboxobject(getLuaState(), 1)
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
 
-		Local ident:String = lua_tostring(getLuaState(), 2)
+		Local ident:String = lua_tobbstring(getLuaState(), 2)
 		Local mth:TMethod = typeId.FindMethod(ident)
 		If mth Then Throw "newIndex ERROR"
 
@@ -651,9 +613,9 @@ Type TLuaEngine
 		If typeId.name().contains("[]")
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] Arrays are not supported - array type: " + typeId.name() + ".", LOG_ERROR)
 			'array index is
-			'print lua_tostring(getLuaState(), 2)
+			'print lua_tobbstring(getLuaState(), 2)
 			'array value is
-			'print lua_tostring(getLuaState(), 3)
+			'print lua_tobbstring(getLuaState(), 3)
 			Return True
 		EndIf
 
@@ -668,11 +630,8 @@ Type TLuaEngine
 		If fld
 			'PRIVATE...do not allow write to  private functions/methods
 			'check could be removed if performance critical
-			?not bmxng
-			If fld.MetaData("_private") Then Return True
-			?bmxng
 			If fld.HasMetaData("_private") Then Return True
-			?
+
 			'only set values of children with explicit mention
 			If exposeType = "selected" And Not fld.MetaData("_exposeToLua") Then Return True
 			If fld.MetaData("_exposeToLua")<>"rw"
@@ -681,16 +640,6 @@ Type TLuaEngine
 			EndIf
 
 			If lua_isnil(getLuaState(), 3)
-				?Not bmxng
-				Select fld.TypeId()
-					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, StringTypeId
-						'SetInt/SetFloat/...all convert to a string
-						'"null" is 0/0.0/"" for primitive types in BlitzMax
-						fld.SetString(obj, "")
-					Default
-						fld.Set(obj, Null)
-				End Select
-				?bmxng
 				Select fld.TypeId()
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, ULongTypeId, UIntTypeId, SizetTypeId
 						fld.SetByte(obj, 0:Byte)
@@ -700,30 +649,14 @@ Type TLuaEngine
 						fld.SetObject(obj, null)
 '						fld.Set(obj, object(null))
 				End Select
-				?
 			Else
 				Select fld.TypeId()
-?Not bmxng
-					Case IntTypeId, ShortTypeId, ByteTypeId
-						fld.SetInt(obj, lua_tointeger(getLuaState(), 3))
-					Case LongTypeId
-						fld.SetLong(obj, Long(lua_tonumber(getLuaState(), 3)))
-					Case FloatTypeId
-						fld.SetFloat(obj, Float(lua_tonumber(getLuaState(), 3)))
-					Case DoubleTypeId
-						fld.SetDouble(obj, lua_tonumber(getLuaState(), 3))
-					Case StringTypeId
-						fld.SetString(obj, lua_tostring(getLuaState(), 3))
-					Default
-						fld.Set(obj, lua_unboxobject(getLuaState(), 3))
-?bmxng
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, ULongTypeId, UIntTypeId, SizetTypeId
 						fld.Set(obj, lua_tonumber(getLuaState(), 3))
 					Case StringTypeId
-						fld.Set(obj, lua_tostring(getLuaState(), 3))
+						fld.Set(obj, lua_tobbstring(getLuaState(), 3))
 					Default
 						fld.Set(obj, lua_unboxobject(getLuaState(), 3))
-?
 				End Select
 			EndIf
 			Return True
@@ -904,7 +837,7 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 ?
 					args[i] = String.FromDouble(lua_tonumber(getLuaState(), i + luaArgsOffset + 1))
 				Case StringTypeId
-					args[i] = lua_tostring(getLuaState(), i + luaArgsOffset + 1)
+					args[i] = lua_tobbstring(getLuaState(), i + luaArgsOffset + 1)
 				Default
 					local paramObj:object
 					if lua_isnil(getLuaState(), i + luaArgsOffset + 1)
@@ -933,11 +866,7 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 		EndIf
 
 		Local t:Object
-		?Not bmxng
-		If func Then t = func.Invoke(obj, args)
-		?bmxng
 		If func Then t = func.Invoke(args)
-		?
 		If mth Then t = mth.Invoke(obj, args)
 		Local typeId:TTypeId = funcOrMeth.TypeID().ReturnType()
 
@@ -955,7 +884,7 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 				lua_pushnumber(getLuaState(), t.ToString().ToDouble())
 			Case StringTypeId
 				Local s:String = t.ToString()
-				lua_pushlstring(getLuaState(), s, s.length)
+				lua_pushbbstring(getLuaState(), s)
 			Case ArrayTypeId
 				lua_pushArray(t)
 			Default
@@ -1003,7 +932,7 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 						lua_pushnumber(getLuaState(), args[i].ToString().ToDouble())
 					Case StringTypeId
 						Local s:String = args[i].ToString()
-						lua_pushlstring(getLuaState(), s, s.length)
+						lua_pushbbstring(getLuaState(), s)
 					Case ArrayTypeId
 						Self.lua_pushArray(args[i])
 					Default
@@ -1046,7 +975,7 @@ Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-bu
 		If callResult = 0
 			'fetch the results
 			If Not lua_isnil(getLuaState(), -1)
-				ret = lua_tostring(getLuaState(), -1)
+				ret = lua_tobbstring(getLuaState(), -1)
 			EndIf
 
 			'pop the returned result

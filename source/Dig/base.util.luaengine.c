@@ -37,6 +37,24 @@ BBObject *lua_unboxobject( lua_State *L,int index ){
 }
 
 
+void lua_pushbbstring( lua_State *L, BBString *s){
+    char * c = bbStringToUTF8String(s);
+    lua_pushstring(L, c);
+    bbMemFree(c);
+}
+
+BBString *lua_tobbstring( lua_State *L, int index ) {
+	size_t l;
+	char * c = lua_tolstring(L, index, &l);
+	if (c) {
+		BBString * s = bbStringFromUTF8String(c);
+		//no need to free the pointer, it is managed by lua !
+		//bbMemFree(c);
+		return s;
+	}
+	return &bbEmptyString;
+}
+
 void lua_pushlightobject( lua_State *L,BBObject *obj ){
 	lua_pushlightuserdata( L,obj );
 }
