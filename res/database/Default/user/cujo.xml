@@ -163,7 +163,6 @@
 				<pl>${superguy}: „Chcę być ${asuperfather}”.</pl>
 			</description>
 			<effects>
-				<!-- "morgen oder uebermorgen, 15-19 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,4,15,19" news="cujo-news-superkerl-05" />
 			</effects>
 			<data genre="1" price="1.0" quality="60" />
@@ -179,7 +178,6 @@
 				<en>${superguy} and ${superwoman} are happy: "This is our ${superboy}."</en>
 				<pl>${superguy} i ${superwoman} są szczęśliwi: „To jest nasz ${superboy}”.</pl>
 			</description>
-				<!-- "morgen oder uebermorgen, 16-20 Uhr" -->
 			<effects>
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,4,5,16,20"
 					news1="cujo-news-superkerl-06a" probability1="50"
@@ -217,7 +215,6 @@
 				<pl>${superwoman}: „Nie potrafi wbić gwoździa w ścianę”.</pl>
 			</description>
 			<effects>
-				<!-- "morgen oder uebermorgen, 17-21 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,5,17,21" news="cujo-news-superkerl-07" />
 			</effects>
 			<data genre="1" price="1.0" quality="80" />
@@ -234,7 +231,6 @@
 				<pl>${superguy}: „Znów jesteśmy szczęśliwi. Nasza randka pojednawcza ${wassuperb}”.</pl>
 			</description>
 			<effects>
-				<!-- "morgen oder uebermorgen, 18-22 Uhr" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,4,5,18,22"
 					news1="cujo-news-superkerl-08a" probability1="50"
 					news2="cujo-news-superkerl-08b" probability2="50"

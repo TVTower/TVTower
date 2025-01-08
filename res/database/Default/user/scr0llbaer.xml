@@ -1009,9 +1009,9 @@ Obowiązkowa pozycja dla każdej gospodyni domowej, przekleństwo dla twardzieli
 				<all>${tower} ${latebreaking}: ${title}</all>
 			</title>
 			<description>
-				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Boxen, Formel 1, Wintersport, alles dabei.</de>
-				<en>The top licenses included! The latest in sports. New every day. The top leagues and competitions of the nation and around the world. Soccer, ice hockey, basketball, football, tennis, table tennis, athletics, boxing, formula 1, winter sports, you name it.</en>
-				<pl>Najlepsze licencje w zestawie! Najnowsze osiągnięcia sportowe. Nowości każdego dnia. Najlepsze ligi i zawody w kraju i na świecie. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, tenis stołowy, lekkoatletyka, boks, Formuła 1, sporty zimowe, można wymieniać bez końca.</pl>
+				<de>Die Toplizenzen inkludiert! Sport aktuell. Jeden Tag neu. Die Topligen und Wettbewerbe der Nation und aus der ganzen Welt. Fußball, Eishockey, Basketball, Football, Tennis, Tischtennis, Leichtathletik, Boxen, ${sports_formula1}, Wintersport, alles dabei.</de>
+				<en>The top licenses included! The latest in sports. New every day. The top leagues and competitions of the nation and around the world. Soccer, ice hockey, basketball, football, tennis, table tennis, athletics, boxing, ${sports_formula1}, winter sports, you name it.</en>
+				<pl>Najlepsze licencje w zestawie! Najnowsze osiągnięcia sportowe. Nowości każdego dnia. Najlepsze ligi i zawody w kraju i na świecie. Piłka nożna, hokej na lodzie, koszykówka, piłka nożna, tenis, tenis stołowy, lekkoatletyka, boks, ${sports_formula1}, sporty zimowe, można wymieniać bez końca.</pl>
 			</description>
 			<variables>
 				<tower>

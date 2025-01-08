@@ -470,7 +470,7 @@
 				<foundtown>${.stationmap:"randomcity"}</foundtown>
 				<andbroughtdownby>
 					<de> und von der Feuerwehr zu Boden gebracht|. ${theobject} wurde gemütlich schwimmend in einem Parkteich entdeckt und wohlbehalten an die Organisatoren der Parade zurückgegeben|. ${theobject} wurde von ein paar Witzbolden entführt, doch die Polizei konnte die Entführer ausfinding machen</de>
-					<en> and brought down by the fire department|. ${theobject} was discovered leisurely floating in a park pond and was safely returned to the parade organizers|. ${theobject} was hijacked by some pranksters, but the police were able to track down them down</en>
+					<en> and brought down by the fire department|. ${theobject} was discovered leisurely floating in a park pond and was safely returned to the parade organizers|. ${theobject} was hijacked by some pranksters, but the police were able to track them down</en>
 					<pl> i ściągnięty przez straż pożarną| w stawie w parku i bezpiecznie zwrócony organizatorom parady|Okazało się że balon został porwany przez żartownisiów, ale policji udało się ich wytropić</pl>
 				</andbroughtdownby>
 				<nina>Nina|Nia|Nana|Nona</nina>
@@ -636,7 +636,7 @@
 						einen Wahrsager;, dass falsche Vorhersagen zu den Lottozahlen gemacht wurden. ${.ucfirst:heshe} verlangt eine Entschädigung für das Geld, das ${heshe} aufgrund der Ratschläge des Wahrsagers für Lotterielose ausgegeben hat|
 						${their} Navi;, das Gerät habe ${them_dat} irreführende Anweisungen gegeben, was zu zahlreichen falschen Abzweigungen und Verzögerungen geführt habe. ${.ucfirst:heshe} fordert Entschädigung für verschwendete Zeit und Kraftstoff|
 						${their}e Katze;, das Tier habe ${them_dat} durch ihr unaufhörliches Miauen und ihr unberechenbares Verhalten erheblichen seelischen Schaden zugefügt. ${.ucfirst:heshe} fordert Schadenersatz für die verursachte Notlage|
-						${their}en Wecker;, dass das unaufhörliche, laute Klingeln chronischen Schlafentzug verursacht und ${their} allgemeines Wohlbefinden beeinträchtige. ${.ucfirst:heshe} fordert Entschädigung für die daraus entstandenen gesundheitlichen Probleme|
+						${their}en Wecker;, dass das unaufhörliche, laute Klingeln chronischen Schlafentzug verursache und ${their} allgemeines Wohlbefinden beeinträchtige. ${.ucfirst:heshe} fordert Entschädigung für die daraus entstandenen gesundheitlichen Probleme|
 						${their}en Fernseher;, dass der Fernseher ${them_dat} geheime Botschaften schickt und dazu drängt, spezifische Aufgaben auszuführen. ${.ucfirst:heshe} fordert eine Untersuchung der Angelegenheit, um die Quelle der Botschaften zu ermitteln|
 						${their}en Friseur;, man hätte ${them_dat} einen schrecklichen Haarschnitt verpasst, der ${their} Selbstwertgefühl beschädigt habe. ${.ucfirst:heshe} fordert eine Entschädigung für die Kosten der Dienstleistung und den entstandenen seelischen Schaden
 					</de>
@@ -1551,7 +1551,7 @@
 		</news>
 		<news guid="28df5516-4c8f-40d8-9e11-9421990b25bc" type="2" thread_guid="48feebb0-4ef2-419b-8342-aa6376a4f246" creator="9551">
 			<title>
-				<de>${meiguwu}: Blühene Wirtschaft</de>
+				<de>${meiguwu}: Blühende Wirtschaft</de>
 				<en>${meiguwu}: Thriving economy</en>
 				<pl>${meiguwu}: Dobrze prosperująca gospodarka</pl>
 			</title>
@@ -3107,7 +3107,7 @@
 		<news guid="70c432dd-0627-4061-9ce4-d23ea9266c3e" type="0" creator="9551">
 			<title>
 				<de>${finland} testet 3-Tage-Woche</de>
-				<en>${finland} tests 3-day week</en>
+				<en>${finland} is testing 3-day workweek</en>
 				<pl>${finland} testuje 3-dniowy tydzień</pl>
 			</title>
 			<description>
@@ -3223,9 +3223,9 @@
 				<pl>${prague}: Koncert tylko dla psów</pl>
 			</title>
 			<description>
-				<de>Der Komponist ${firstname} ${lastname} ${fromprague} hat eine Sinfonie ausschließlich für Hundeohren kreiert. Besitzer hören nichts, Hunde sind aus dem Häuschen.</de>
-				<en>Composer ${firstname} ${lastname} ${fromprague} created a symphony exclusively for dogs' ears. Owners hear nothing, dogs are thrilled.</en>
-				<pl>Kompozytor ${firstname} ${lastname} ${fromprague} tworzy symfonię wyłącznie dla psich uszu. Właściciele nic nie słyszą, psy zachwycone.</pl>
+				<de>Der Komponist ${firstname} ${lastname} ${fromprague} hat eine Sinfonie ausschließlich für Hundeohren kreiert. Frauchen und Herrchen hören nichts, aber die Hunde sind aus dem Häuschen.</de>
+				<en>Composer ${firstname} ${lastname} ${fromprague} created a symphony exclusively for dogs' ears. Mum and dad can't hear a thing, but the dogs are thrilled.</en>
+				<pl>Kompozytor ${firstname} ${lastname} ${fromprague} stworzył symfonię wyłącznie dla psich uszu. Mama i tata nic nie słyszą, ale psy są zachwycone.</pl>
 			</description>
 			<variables>
 				<firstname>Lukáš|Radek|Jaroslav|Tomáš|Miloslav|Marek|Peter|Andre|Rastislav|Matej</firstname> <!-- TODO: czech / slovenian / slovak / slavic name generator -->
@@ -3335,13 +3335,13 @@
 				</amsterdam>
 				<exhibition_csv>
 					<de>Kunst aus verlorenen Koffern;entsteht eine Ausstellung aus verlorenem Gepäck. Kritiker loben die „globale Perspektive“.|
-						Schatten als Kunst;eröffnet ein Museum eine Ausstellung, die ausschließlich aus Schatten besteht. Besucher nennen es „fesselnd“.
+						Schatten als Kunst;eröffnet ein Museum eine Ausstellung, die ausschließlich aus Schatten besteht. Die Besucher finden es „gespenstisch“.
 					</de>
 					<en>Art from Lost Luggage;an exhibition from lost luggage is being created. Critics praise its "global perspective".|
-						Shadows as Art;A museum opens an exhibit composed entirely of shadows. Visitors call it "captivating".
+						Shadows as Art;a museum opens an exhibit composed entirely of shadows. Visitors find it "haunting".
 					</en>
 					<pl>Sztuka z zagubionych walizek;Powstaje wystawa z zagubionych bagaży. Krytycy chwalą „globalną perspektywę“.|
-						Cienie jako sztuka;Muzeum otwiera wystawę składającą się wyłącznie z cieni. Zwiedzający nazywają ją „urzekającą“.
+						Cienie jako sztuka;Muzeum otwiera wystawę składającą się wyłącznie z cieni. Zwiedzający uważają ją za „nawiedzającą”.
 					</pl>
 				</exhibition_csv>
 				<artfrom>
@@ -3357,7 +3357,7 @@
 		<news guid="412c5f38-6254-4c06-b8e9-83273639d246" type="0" creator="9551">
 			<title>
 				<de>${stockholm}: Ausstellung aus ${brand_ikea}-Teilen</de>
-				<en>${stockholm}: Exhibit Made of ${brand_ikea} Parts</en>
+				<en>${stockholm}: Exhibit made of ${brand_ikea} parts</en>
 				<pl>${stockholm}: Wystawa z części ${brand_ikea}</pl>
 			</title>
 			<description>
@@ -4236,7 +4236,7 @@
 				<pl>${celebfirst} ${celeblast} maluje krowy</pl>
 			</title>
 			<description>
-				<de>${celebfirst} ${celeblast} widmet sich der Malerei. Seine erste Ausstellung „Cows in Chaos“ zeigt abstrakte Porträts von Kühen - Kritiker sind begeistert.</de>
+				<de>${celebfirst} ${celeblast} widmet sich der Malerei. Seine erste Ausstellung „Cows in Chaos“ zeigt abstrakte Porträts von Kühen - Kritiker sind beeindruckt.</de>
 				<en>${celebfirst} ${celeblast} turns to painting. His first exhibition, "Cows in Chaos," features abstract portraits of cows - critics are impressed.</en>
 				<pl>${celebfirst} ${celeblast} poświęca się malarstwu. Jego pierwsza wystawa „Cows in Chaos” przedstawia abstrakcyjne portrety krów - krytycy są zachwyceni.</pl>
 			</description>
@@ -4352,9 +4352,9 @@
 				<pl>Nowa ${companyname} drukarka kieszonkowa zawodzi</pl>
 			</title>
 			<description>
-				<de>Ein tragbarer Drucker für Fotos wird vorgestellt, aber der kann nur verschwommene Bilder produzieren. Hersteller ${companyname} meint: „${banana}“.</de>
-				<en>A portable photo printer is unveiled but can only produce blurry pictures. Manufacturer ${companyname} comments: "${banana}".</en>
-				<pl>Przenośna drukarka do zdjęć drukuje tylko zamazane obrazy. Komentarz producenta ${companyname}: „${banana}”.</pl>
+				<de>Ein tragbarer Drucker für Fotos wird vorgestellt, aber der kann nur verschwommene Bilder produzieren. Hersteller ${companyname} meint: „${banana}“</de>
+				<en>A portable photo printer is unveiled but can only produce blurry pictures. Manufacturer ${companyname} comments: "${banana}"</en>
+				<pl>Przenośna drukarka do zdjęć drukuje tylko zamazane obrazy. Komentarz producenta ${companyname}: „${banana}”</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -4454,7 +4454,7 @@
 		<news guid="85e7b365-c033-446d-9163-87d06709ba7b" type="0" creator="9551" comment="TODO: maybe not all too fictional">
 			<title>
 				<de>App sagt Trennungen voraus</de>
-				<en>App Predicts Breakups</en>
+				<en>App predicts breakups</en>
 				<pl>Apka przewiduje rozstania</pl>
 			</title>
 			<description>

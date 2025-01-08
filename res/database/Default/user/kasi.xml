@@ -220,7 +220,7 @@
 		<scripttemplate licence_type="1" product="1" guid="Kasi-Script-freieTiere">
 			<title>
 				<de>Befreit den ${Tier} ${title}${Name}</de>
-				<en>Free the ${Tier} ${title}${Name}</en>
+				<en>Free the ${.ucfirst:Tier} ${title}${Name}</en>
 				<pl>Uwolnić ${Tier} ${Name}</pl>
 			</title>
 			<description>

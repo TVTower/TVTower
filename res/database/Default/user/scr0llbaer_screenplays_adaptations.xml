@@ -7669,12 +7669,12 @@
 		<scripttemplate product="2" licence_type="3" guid="e10c6a0a-fde6-4f73-8bb4-30a6d65cd744" creator="9551" comment="https://en.wikipedia.org/wiki/The_Secret_of_Monkey_Island">
 			<title>
 				<de>Das ${monkey_title}${island_title}-${secret_title}</de>
-				<en>The ${secret_title} of ${monkey_title}${island_title}</en>
+				<en>The ${secret_title} of ${monkey_title} ${island_title}</en>
 				<pl>${secret_title} ${island_title} ${monkey_title}</pl>
 			</title>
 			<title_original>
 				<de>Das ${monkey_title}${island_title}-${secret_title}</de>
-				<en>The ${secret_title} of ${monkey_title}${island_title}</en>
+				<en>The ${secret_title} of ${monkey_title} ${island_title}</en>
 				<pl>${secret_title} ${island_title} ${monkey_title}</pl>
 			</title_original>
 			<description>

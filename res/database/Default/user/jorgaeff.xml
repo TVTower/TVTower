@@ -1205,7 +1205,7 @@
 			<!-- "Effekt: es stehen weniger Nachrichten zur Verfügung" -->
 		</news>
 
-		<news guid="news-jorgaeff-lotto-01" type="0" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-lotto-01" type="0" creator="8936" created_by="jorgaeff" comment="TODO: actually display random lottery numbers?">
 			<!-- "erscheint mittwochs ab 18.00 Uhr" -->
 			<availability script='${.and:${.eq:${.worldtime:"weekday"}:2}:${.gte:${.worldtime:"hour"}:18}}' />
 			<title>
@@ -1221,7 +1221,7 @@
 			<data genre="4" price="0.4" quality="40" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-lotto-02" type="0" creator="8936" created_by="jorgaeff">
+		<news guid="news-jorgaeff-lotto-02" type="0" creator="8936" created_by="jorgaeff" comment="TODO: actually display random lottery numbers? | TODO: add Lottofee Karin Tietze-Ludwig and others">
 			<!-- "erscheint samstags ab 20.00 Uhr" -->
 			<availability script='${.and:${.eq:${.worldtime:"weekday"}:5}:${.gte:${.worldtime:"hour"}:20}}' />
 			<title>
@@ -1277,10 +1277,14 @@
 				<pl>Kolekcja gum do żucia wystawiona na aukcję</pl>
 			</title>
 			<description>
-				<de>Klaas Klimskis kaukasische Kaugummi-Klumpen-Sammlung wurde beim Auktionshaus ii-bääh für 1,2 Millionen € versteigert.</de>
-				<en>Klaas Klimski's Caucasian chewing gum clump collection was sold at auction house eww-bleah for € 1.2 million.</en>
-				<pl>Kolekcja kaukaskich gum do żucia Klaasa Klimskiego została sprzedana przez dom aukcyjny eww-bleah za 1,2 miliona euro.</pl>
+				<de>${klaus} ${kinski}s kaukasische Kaugummi-Klumpen-Sammlung wurde beim Auktionshaus ii-bääh für 1,2 Millionen € versteigert.</de>
+				<en>${klaus} ${kinski}'s Caucasian chewing gum clump collection was sold at auction house eww-bleah for € 1.2 million.</en>
+				<pl>Kolekcja kaukaskich gum do żucia ${klaus}a ${kinski}ego została sprzedana przez dom aukcyjny eww-bleah za 1,2 miliona euro.</pl>
 			</description>
+			<variables>
+				<klaus>${.person:"9f342b49-1089-47bc-8d92-722fe71d96e3":"firstname"}</klaus>
+				<kinski>${.person:"9f342b49-1089-47bc-8d92-722fe71d96e3":"lastname"}</kinski>
+			</variables>
 			<data genre="5" price="0.4" quality="30" fictional="1" />
 			<effects>
 				<!-- "übermorgen 8-11 Uhr" -->
@@ -1472,7 +1476,7 @@
 						Der wohl erfolgloseste Nachrichtensprecher hörte sich schon immer am liebsten selber reden. Sein „Gedicht aus Bonn“ fand keinen Anklang. Er starb, als er Schalke 05 sagte, obwohl die 3:0 gewonnen hatten. Die Nachricht von seinem Tod erreichte ihn leider zu spät.|
 						Der wohl erfolgloseste Profifußballer aller Zeiten brachte neue Spielkultur mit Torwarthausschuhen und log Tore aus 70 Metern. Er starb gestern bei einem Freundschaftsspiel in Grönland, als er beim Trikottausch erfror.|
 						Der wohl erfolgloseste Polizist aller Zeiten lebte 10 Jahre undercover in einer Litfaßsäule und scheiterte bei der Aufklärung seiner Tochter. Er starb gestern in Essen-Bredeney, als er seine kugelsichere Weste falsch herum anzog und sich selbst erschoss.|
-						Der wohl erfolgloseste Formel-1-Pilot gründete den Rennstall „${rans}${eier} Trabbi“ und erfand die Siegerrolltreppe. Er scheiterte er beim Großen Preis von Spar, als all seine Schachfiguren aus der Zielflagge fielen. Er starb bei seiner ${ayrton}-${senna}-Parodie.|
+						Der wohl erfolgloseste ${sports_formula1}-Pilot gründete den Rennstall „${rans}${eier} Trabbi“ und erfand die Siegerrolltreppe. Er scheiterte er beim Großen Preis von Spar, als all seine Schachfiguren aus der Zielflagge fielen. Er starb bei seiner ${ayrton}-${senna}-Parodie.|
 						Der wohl erfolgloseste Diktator aller Zeiten scheiterte mit Parolen wie „Ein Volk, ein Reich, eins achtzig“ und einem Angriff mit Panzerschildkröten. Er starb gestern, als er versuchte, seinen Schäferhund „Fass“ zu nennen.|
 						Der wohl erfolgloseste Zirkusdirektor aller Zeiten erfand das ${brand_loewensenf}-Bändigen und scheiterte als Schlangenmensch beim Anstehen. Er starb gestern auf der Reeperbahn, als er einen süßen Hasen aus einem 8-Zylinder ziehen wollte.|
 						Der wohl erfolgloseste Wilthentrinker trank eine Palette Wilthen in einem Zug durch die Maschine und ging dabei nicht über „Los“. Er starb gestern abend bei seiner letzten Ölung. Sein Erbe reichte nur für eine Urnenbestattung in einer 3-Liter-Wilthenflasche.|
@@ -1508,7 +1512,7 @@
 						The probably most unsuccessful newscaster always preferred to hear himself speak. His "Song from Bonn" was not well received. He died when he said Schalke 05, even though they had won 3-0. Unfortunately, the news of his death reached him too late.|
 						The probably most unsuccessful professional footballer of all time introduced innovations like goalkeeper slippers and faked goals from 70 meters. He died yesterday during a friendly match in Greenland, freezing to death during a jersey swap.|
 						The probably most unsuccessful police officer of all time spent 10 years undercover in a billboard column and failed to clue up his daughter. He died yesterday in Essen-Bredeney when he put on his bulletproof vest backwards and accidentally shot himself.|
-						The probably most unsuccessful Formula 1 driver founded the "${rans}${eier} Trabbi" racing team and invented the winner's escalator. He failed in the Spar Grand Prix when all his chess pieces fell off the chequered flag. He died during his ${ayrton} ${senna} parody.|
+						The probably most unsuccessful ${sports_formula1} driver founded the "${rans}${eier} Trabbi" racing team and invented the winner's escalator. He failed in the Spar Grand Prix when all his chess pieces fell off the chequered flag. He died during his ${ayrton} ${senna} parody.|
 						The probably most unsuccessful dictator of all time failed with slogans such as "One people, one empire, one eighty" and an attack with tortoiseshells. He died yesterday when he tried to name his sheepdog "Snatch".|
 						The probably most unsuccessful circus director of all time invented lion-mustard taming and failed as a contortionist while lining up. He died yesterday on the Reeperbahn when he tried to pull a cute bunny out of an 8-cylinder.|
 						The probably most unsuccessful Wilthen drinker drank a pallet of Wilthen in one go through the machine and did not pass "Go". He died last night at his final unction. His inheritance provided only enough for an urn burial in a 3-liter Wilthen bottle.|
@@ -1544,7 +1548,7 @@
 						Prawdopodobnie najbardziej nieudany prezenter wiadomości zawsze wolał słuchać siebie mówiącego. Jego „Song from Bonn” nie została dobrze przyjęta. Zmarł, gdy powiedział Schalke 05, mimo że wygrali 3-0. Niestety, wiadomość o jego śmierci dotarła do niego zbyt późno.|
 						Prawdopodobnie najbardziej nieudany piłkarz w historii wprowadził innowacje, jak kapcie bramkarskie, i oszukiwał gole z 70 metrów. Zmarł wczoraj podczas meczu towarzyskiego na Grenlandii, zamarzając przy wymianie koszulek.|
 						Prawdopodobnie najbardziej nieudany policjant wszech czasów spędził 10 lat pod przykrywką na słupie ogłoszeniowym i nie udało mu się namierzyć swojej córki. Zginął wczoraj w Essen-Bredeney, gdy założył kamizelkę kuloodporną tył na przód i przypadkowo się postrzelił.|
-						Prawdopodobnie najbardziej nieudany kierowca Formuły 1 założył zespół „${rans}${eier} Trabbi“ i wynalazł zwycięskie ruchome schody. Zawiódł w Grand Prix Spar, kiedy wszystkie jego figury szachowe spadły z flagi w szachownicę. Zmarł podczas parodii: „${ayrton} ${senna}”.|
+						Prawdopodobnie najbardziej nieudany kierowca ${sports_formula1} założył zespół „${rans}${eier} Trabbi“ i wynalazł zwycięskie ruchome schody. Zawiódł w Grand Prix Spar, kiedy wszystkie jego figury szachowe spadły z flagi w szachownicę. Zmarł podczas parodii: „${ayrton} ${senna}”.|
 						Prawdopodobnie najbardziej nieudany dyktator w historii nie zdobył poparcia hasłami „Jeden naród, jedno imperium, jeden metr osiemdziesiąt“ ani atakiem z użyciem pancernych żółwi. Zmarł wczoraj, próbując nazwać swojego owczarka „Snatch“.|
 						Prawdopodobnie najbardziej nieudany dyrektor cyrku wszechczasów wymyślił oswajanie lwów z musztardą i zawiódł jako kontorsjonista w kolejce. Zginął wczoraj na Reeperbahn, gdy próbował wyciągnąć słodkiego króliczka z 8-cylindrowego samochodu.|
 						Prawdopodobnie najbardziej nieudany pijący Wilthen wypił paletę Wilthen za jednym razem przez maszynę i nie przeszedł „Start”. Zmarł zeszłej nocy podczas ostatniego namaszczenia. Jego spadek wystarczył jedynie na pochówek w urnie w 3-litrowej butelce Wilthen.|
@@ -1575,21 +1579,28 @@
 		<news guid="news-jorgaeff-grafitti-01" type="0" thread_guid="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Bahn beklagt Millionenschaden durch Grafittis</de>
-				<en>Deutsche Bahn laments damage in the millions</en>
-				<pl>Deutsche Bahn ubolewa nad milionowymi szkodami</pl>
+				<en>${bundesbahn} laments damage in the millions</en>
+				<pl>${bundesbahn} ubolewa nad milionowymi szkodami</pl>
 			</title>
 			<description>
 				<de>Für die einen ist es Vandalismus, für die anderen eine Ausdrucksweise urbaner Kultur. Im vergangenen Jahr musste die Bahn Millionen für die Reinigung beschmierter Waggons aufbringen, was sich natürlich auch auf die Fahrpreise auswirkt.</de>
-				<en>For some it is vandalism, for others an expression of urban culture. Last year, Deutsche Bahn had to spend millions to clean graffitied train cars, which of course will also affect tricket prices.</en>
-				<pl>Dla niektórych jest to wandalizm, dla innych wyraz kultury miejskiej. W zeszłym roku Deutsche Bahn musiało wydać miliony na czyszczenie wagonów kolejowych pokrytych graffiti, co oczywiście wpłynie również na ceny biletów.</pl>
+				<en>For some it is vandalism, for others an expression of urban culture. Last year, ${deutschebundesbahn} had to spend millions to clean graffitied train cars, which of course will also affect tricket prices.</en>
+				<pl>Dla niektórych jest to wandalizm, dla innych wyraz kultury miejskiej. W zeszłym roku ${deutschebundesbahn} musiało wydać miliony na czyszczenie wagonów kolejowych pokrytych graffiti, co oczywiście wpłynie również na ceny biletów.</pl>
 			</description>
+			<variables>
+				<bundesbahn>
+					<all>${.lte:currentyear:1993:"Bundesbahn":"Deutsche Bahn"}</all>
+				</bundesbahn>
+				<deutschebundesbahn>
+					<all>${.lte:currentyear:1993:"Deutsche Bundesbahn":"Deutsche Bahn"}</all>
+				</deutschebundesbahn>
+			</variables>
 			<data genre="5" price="0.35" quality="35" fictional="1" />
 			<effects>
 				<!-- "in 7 Tagen 14-20 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,7,7,14,20" news="news-jorgaeff-grafitti-02" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-grafitti-02" type="2" thread_guid="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Grafitti entwickelt sich zur Kunstform</de>
@@ -1607,17 +1618,16 @@
 				<effect trigger="happen" type="triggernews" time="2,4,4,10,20" news="news-jorgaeff-grafitti-03" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-grafitti-03" type="2" thread_guid="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Bahn verkauft Grafitti-Waggons</de>
-				<en>Deutsche Bahn selling graffiti wagons</en>
-				<pl>Deutsche Bahn sprzedaje wagony z graffiti</pl>
+				<en>${bundesbahn} selling graffiti wagons</en>
+				<pl>${bundesbahn} sprzedaje wagony z graffiti</pl>
 			</title>
 			<description>
 				<de>Die Bahn hat einige ihrer besprühten Waggons verkauft. Bei dem derzeitigen Grafitti-Hype sei es lukrativer die alten Waggons zu verscherbeln und neue zu kaufen. Gartenzwerge waren gestern - heute stellt man sich einen Waggon in den Vorgarten.</de>
-				<en>Deutsche Bahn has sold some of their spray-painted wagons. With the current graffiti hype, it is more lucrative to sell off the old wagons and buy new ones. Garden gnomes were yesterday - today you put a wagon in your front yard.</en>
-				<pl>Deutsche Bahn sprzedało część swoich pomalowanych sprayem wagonów. Przy obecnym szumie graffiti bardziej opłacalne jest sprzedawanie starych wagonów i kupowanie nowych. Wczoraj były krasnale ogrodowe - dziś stawiasz wagon na swoim podwórku.</pl>
+				<en>${deutschebundesbahn} has sold some of their spray-painted wagons. With the current graffiti hype, it is more lucrative to sell off the old wagons and buy new ones. Garden gnomes were yesterday - today you put a wagon in your front yard.</en>
+				<pl>${deutschebundesbahn} sprzedało część swoich pomalowanych sprayem wagonów. Przy obecnym szumie graffiti bardziej opłacalne jest sprzedawanie starych wagonów i kupowanie nowych. Wczoraj były krasnale ogrodowe - dziś stawiasz wagon na swoim podwórku.</pl>
 			</description>
 			<data genre="5" price="0.45" quality="45" fictional="1" />
 			<effects>
@@ -1625,7 +1635,6 @@
 				<effect trigger="happen" type="triggernews" time="2,2,2,7,12" news="news-jorgaeff-grafitti-04" />
 			</effects>
 		</news>
-
 		<news guid="news-jorgaeff-grafitti-04" type="2" thread_guid="news-jorgaeff-grafitti" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>${brand_basf} entwickelt unübersprühbare Farbe</de>
@@ -1634,8 +1643,8 @@
 			</title>
 			<description>
 				<de>Die von ${brand_basf} entwickelte unübersprühbare Farbe könnte das Ende für Grafittis bedeuten. Dennoch ist sich die Bahn unschlüssig, ob sie die Farbe einsetzen soll, da der Verkauf besprühter Waggons sehr lukrativ zu sein scheint.</de>
-				<en>The non-over-sprayable paint developed by ${brand_basf} could spell the end for graffiti. Nevertheless, Deutsche Bahn is undecided whether to use the paint, as the sale of sprayed wagons seems to be very lucrative.</en>
-				<pl>Nienadająca się do spryskiwania farba opracowana przez ${brand_basf} może oznaczać koniec graffiti. Niemniej jednak Deutsche Bahn nie jest zdecydowana, czy użyć farby, ponieważ sprzedaż spryskanych wagonów wydaje się być bardzo lukratywna.</pl>
+				<en>The non-over-sprayable paint developed by ${brand_basf} could spell the end for graffiti. Nevertheless, ${deutschebundesbahn} is undecided whether to use the paint, as the sale of sprayed wagons seems to be very lucrative.</en>
+				<pl>Nienadająca się do spryskiwania farba opracowana przez ${brand_basf} może oznaczać koniec graffiti. Niemniej jednak ${deutschebundesbahn} nie jest zdecydowana, czy użyć farby, ponieważ sprzedaż spryskanych wagonów wydaje się być bardzo lukratywna.</pl>
 			</description>
 			<data genre="5" price="0.5" quality="50" fictional="1" />
 		</news>
