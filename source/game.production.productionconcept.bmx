@@ -728,7 +728,9 @@ Type TProductionConcept Extends TOwnedGameObject
 			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED
 				If companyPoints > 24
 					'allow some speed points for higher company levels
-					pointsForDistribution :- (companyPoints - 24) / 6
+					'if 5 points are assigned for each "quality" attribute, 1 speed point
+					'for each "full" further quality-point is OK
+					pointsForDistribution :- min(focusPoints, (companyPoints - 24) / 6)
 				EndIf
 				Continue
 			EndIf
@@ -739,12 +741,20 @@ Type TProductionConcept Extends TOwnedGameObject
 				totalWeights :+ weight
 			Else
 				'do not subtract all assigned team points (6 total all for team - not a good distribution)
+				'3 of 6, 4 of 11, 5 of 15 points for team is OK
+				'due to exponential pricing, for many points you would distribute them more evenly anyway
 				pointsForDistribution :- min(focusPoints, min(3 + (companyPoints - 4) / 4, attributeLimit))
 			EndIf
 			_effectiveFocusPoints :+ weight * focusPoints
 		Next
 
 		'calculate focus point distribution value
+		Local diffPenalty:Float = 0.1
+		If companyPoints > 19
+			diffPenalty = 0.05
+		ElseIf companyPoints > 14
+			diffPenalty = 0.07
+		EndIf
 		For Local focusPointID:Int = EachIn productionFocus.GetOrderedFocusIndices()
 			'production speed and team are ignored
 			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
@@ -757,10 +767,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			'print "expected "+ focusPointID+": "+ focusPoints + " actual "+ GetProductionFocus(focusPointID)
 			'difference
 			focusPoints = abs(GetProductionFocus(focusPointID) - focusPoints)
-			'TODO make factor depend on company,
-			'6, 11->0.1
-			'15 -> 0.07...
-			If focusPoints > 0 Then _effectiveFocusPointsDistribution :- 0.1 * focusPoints
+			If focusPoints > 0 Then _effectiveFocusPointsDistribution :- diffPenalty * focusPoints
 		Next
 		'print _effectiveFocusPointsDistribution
 
