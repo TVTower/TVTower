@@ -715,16 +715,23 @@ Type TProductionConcept Extends TOwnedGameObject
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subGenres)
 		'total number of points as base for distribution
 		'assigned team points are (partially) ignored while speed points should have used for "quality"
-		Local pointsForDistribution:Int = GetProductionCompany().GetFocusPoints()
+		Local companyPoints:Int = GetProductionCompany().GetFocusPoints()
+		Local pointsForDistribution:Int = companyPoints
 		Local focusPoints:Int
 		Local weight:Float
 		Local totalWeights:Float
+		Local attributeLimit:Int = TProductionFocusBase.focusPointLimit
 		For Local focusPointID:Int = EachIn productionFocus.GetOrderedFocusIndices()
 			focusPoints = GetProductionFocus(focusPointID)
 
 			'production speed does not add to quality
-			'TODO maybe allow some speed points for higher company levels?
-			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
+			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED
+				If companyPoints > 24
+					'allow some speed points for higher company levels
+					pointsForDistribution :- (companyPoints - 24) / 6
+				EndIf
+				Continue
+			EndIf
 
 			weight=1.0
 			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
@@ -732,7 +739,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				totalWeights :+ weight
 			Else
 				'do not subtract all assigned team points (6 total all for team - not a good distribution)
-				pointsForDistribution :- min(focusPoints, Min(GetProductionCompany().GetFocusPoints(), TProductionFocusBase.focusPointLimit) / 2)
+				pointsForDistribution :- min(focusPoints, min(3 + (companyPoints - 4) / 4, attributeLimit))
 			EndIf
 			_effectiveFocusPoints :+ weight * focusPoints
 		Next
@@ -746,8 +753,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			weight=1.0
 			'expected points
 			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
-			'TODO limit by TProductionFocusBase.focusPointLimit
-			focusPoints = (pointsForDistribution / totalWeights) * weight
+			focusPoints = min((pointsForDistribution / totalWeights) * weight + 0.5, attributeLimit)
 			'print "expected "+ focusPointID+": "+ focusPoints + " actual "+ GetProductionFocus(focusPointID)
 			'difference
 			focusPoints = abs(GetProductionFocus(focusPointID) - focusPoints)
