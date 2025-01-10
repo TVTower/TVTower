@@ -721,19 +721,13 @@ Type TProductionConcept Extends TOwnedGameObject
 		Local weight:Float
 		Local totalWeights:Float
 		Local attributeLimit:Int = TProductionFocusBase.focusPointLimit
+		Local focusCategories:Int
 		For Local focusPointID:Int = EachIn productionFocus.GetOrderedFocusIndices()
+			focusCategories :+ 1
 			focusPoints = GetProductionFocus(focusPointID)
 
 			'production speed does not add to quality
-			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED
-				If companyPoints > 24
-					'allow some speed points for higher company levels
-					'if 5 points are assigned for each "quality" attribute, 1 speed point
-					'for each "full" further quality-point is OK
-					pointsForDistribution :- min(focusPoints, (companyPoints - 24) / 6)
-				EndIf
-				Continue
-			EndIf
+			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
 
 			weight=1.0
 			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
@@ -747,6 +741,14 @@ Type TProductionConcept Extends TOwnedGameObject
 			EndIf
 			_effectiveFocusPoints :+ weight * focusPoints
 		Next
+		'allow some speed points for higher company levels
+		'if around 5 points are assigned for each "quality" attribute, 1 speed point
+		'for each "full" further quality-point is OK
+		Local threshold:Int = 4 * focusCategories
+		If companyPoints > threshold
+			pointsForDistribution :- min(focusPoints, (companyPoints - threshold) / focusCategories)
+		EndIf
+
 
 		'calculate focus point distribution value
 		Local diffPenalty:Float = 0.1
