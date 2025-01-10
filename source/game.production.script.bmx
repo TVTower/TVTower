@@ -1333,13 +1333,18 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Local genreString:String = GetMainGenreString()
 		'avoid "Action-Undefined" and "Show-Show"
 		If scriptProductType <> TVTProgrammeProductType.UNDEFINED And scriptProductType <> TVTProgrammeProductType.SERIES
-			Local sameType:Int = (TVTProgrammeProductType.GetAsString(scriptProductType) = TVTProgrammeGenre.GetAsString(mainGenre))
-			If sameType And scriptProductType = TVTProgrammeProductType.SHOW And TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.SHOW Then sameType = False
-			If sameType And scriptProductType = TVTProgrammeProductType.FEATURE And TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.FEATURE Then sameType = False
+			Local sameType:Int = True
+			If (TVTProgrammeProductType.GetAsString(scriptProductType) <> TVTProgrammeGenre.GetAsString(mainGenre))
+				If scriptProductType = TVTProgrammeProductType.SHOW And TVTProgrammeGenre.GetGroupKey(mainGenre) <> TVTProgrammeGenre.SHOW Then sameType = False
+				If scriptProductType = TVTProgrammeProductType.FEATURE And TVTProgrammeGenre.GetGroupKey(mainGenre) <> TVTProgrammeGenre.FEATURE Then sameType = False
+			EndIf
 
 '				If Not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" And TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
 			If Not sameType
-				genreString :+ " / " +GetProductionTypeString()
+				genreString :+ " (" +GetProductionTypeString()+")"
+			ElseIf subGenres And GetProductionLimitMax() = 1
+				If subGenres.length > 0 Then genreString :+ ", "+ _GetGenreString(subGenres[0])
+				If subGenres.length > 1 Then genreString :+ ", "+ _GetGenreString(subGenres[1])
 			EndIf
 		EndIf
 		if IsCulture()
