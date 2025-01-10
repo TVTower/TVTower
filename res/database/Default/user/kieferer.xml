@@ -259,9 +259,9 @@ Każdy środek się nada.</pl>
 					<pl>Rynek surowców bez zmian w dniu dzisiejszym. ${RESOURCES2A}</pl>
 				</resources2>
 				<resources2A>
-					<de>Gold liegt bei geringen Umsätzen auf Vortagsniveau.|Öl-Preise zeigen sich unbeeindruckt von OPIG-Plänen.|Weizen und Kaffee nach lustlosem Handel minimal im Plus.|Palladium in einer intakten Seitwärtsbewegung.</de>
-					<en>Gold is at previous day's level on low turnover.|Oil prices appear unimpressed by OPIG plans.|Wheat and coffee minimally up after lackluster trading.|Palladium in an intact sideways movement.</en>
-					<pl>Złoto jest na poziomie z poprzedniego dnia przy niskich obrotach.|Ceny ropy niezmienne po ogłoszeniu planów przez OPIG.|Pszenica i kawa minimalnie wzrosły po słabym wolumenie handlu.|Pallad znajduje się w nienaruszonym ruchu bocznym.</pl>
+					<de>Gold liegt bei geringen Umsätzen auf Vortagsniveau.|Öl-Preise zeigen sich unbeeindruckt von ${generalorg_opec}-Plänen.|Weizen und Kaffee nach lustlosem Handel minimal im Plus.|Palladium in einer intakten Seitwärtsbewegung.</de>
+					<en>Gold is at previous day's level on low turnover.|Oil prices appear unimpressed by ${generalorg_opec} plans.|Wheat and coffee minimally up after lackluster trading.|Palladium in an intact sideways movement.</en>
+					<pl>Złoto jest na poziomie z poprzedniego dnia przy niskich obrotach.|Ceny ropy niezmienne po ogłoszeniu planów przez ${generalorg_opec}.|Pszenica i kawa minimalnie wzrosły po słabym wolumenie handlu.|Pallad znajduje się w nienaruszonym ruchu bocznym.</pl>
 				</resources2A>
 
 				<resources3>
@@ -294,7 +294,7 @@ Każdy środek się nada.</pl>
 					<pl>Dolar bez zmian, ${CURRENCY2A}|Dolar utrzymuje się, ${CURRENCY2A}</pl>	
 				</currency2>
 				<currency2A>
-					<de>${germancurrency} legt leicht zu, Schweizer Franken weiterhin stark.|Inflation sorgt für einen kaum veränderten ${germancurrency}.|${germancurrency} gibt in breiter Front nach.|Sorge um britisches Pfund.</de>
+					<de>${germancurrency} legt leicht zu, Schweizer Franken weiterhin stark.|${germancurrency} zeigt sich trotz Inflation kaum verändert.|${germancurrency} gibt in breiter Front nach.|Sorge um britisches Pfund.</de>
 					<en>${germancurrency} gains slightly, Swiss franc remains strong.|Inflation provides for a barely changed ${germancurrency}.|${germancurrency} weakening across the board.|Concern about British pound.</en>
 					<pl>${germancurrency} nieznacznie zyskuje, frank szwajcarski pozostaje mocny.|Inflacja sprawia, że ${germancurrency} prawie się nie zmienia.|${germancurrency} osłabia się we wszystkich kierunkach.|Zaniepokojenie funtem brytyjskim.</pl>
 				</currency2A>
@@ -305,7 +305,7 @@ Każdy środek się nada.</pl>
 					<pl>Dolar rośnie, ${CURRENCY3A}|Dolar na plusie, ${CURRENCY3A}</pl>
 				</currency3>
 				<currency3A>
-					<de>${germancurrency} gibt Vortagesgewinn ab.|${germancurrency} weiterhin in starker Verfassung.|höhere Inflation sorgt für Unsicherheit bei ${germancurrency}.|Yen überraschend stark.</de>
+					<de>${germancurrency} gibt Vortagesgewinn ab.|${germancurrency} weiterhin in starker Verfassung.|${germancurrency} zeigt Unsicherheit aufgrund höherer Inflation.|Yen überraschend stark.</de>
 					<en>${germancurrency} gives up previous day's gain.|${germancurrency} remains in robust condition.|higher inflation causes uncertainty for the ${germancurrency}.|Yen surprisingly strong.</en>
 					<pl>${germancurrency} oddaje zyski z poprzedniego dnia.|${germancurrency} pozostaje w dobrej kondycji.|Wyższa inflacja powoduje niepewność dla ${germancurrency}.|Jen zaskakująco silny.</pl>
 				</currency3A>

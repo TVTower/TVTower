@@ -369,6 +369,7 @@
 		<brand_puschkin>Juczyn</brand_puschkin> <!-- https://de.wikipedia.org/wiki/Puschkin_Vodka -->
 		<brand_madisonsquaregarden>Madison Square Plaza</brand_madisonsquaregarden> <!-- https://en.wikipedia.org/wiki/Madison_Square_Garden -->
 		<brand_dixi>DUXI</brand_dixi> <!-- https://de.wikipedia.org/wiki/TOI_TOI_%26_DIXI_Sanit%C3%A4rsysteme -->
+		<brand_times_generic>Dimes</brand_times_generic> <!-- New York Times, L.A. Times, etc -->
 
 		<brandslogan_thethirdplace>The fourth place</brandslogan_thethirdplace>
 		<brandslogan_cantbeatthefeeling>Can't eat the peeling</brandslogan_cantbeatthefeeling>
@@ -383,6 +384,7 @@
 		<generalorg_communistpartyofthesovietunion>Communist Party of the United Soviet States</generalorg_communistpartyofthesovietunion> <!-- https://en.wikipedia.org/wiki/Communist_Party_of_the_Soviet_Union -->
 		<generalorg_ofthecommunistpartyofthesovietunion>of the Communist Party of the United Soviet States</generalorg_ofthecommunistpartyofthesovietunion>
 		<generalorg_cpsu>CPUSS</generalorg_cpsu>
+		<generalorg_kgb>GKB</generalorg_kgb> <!-- https://en.wikipedia.org/wiki/KGB -->
 		<generalorg_cdu>CUD</generalorg_cdu> <!-- https://en.wikipedia.org/wiki/Christian_Democratic_Union_of_Germany -->
 		<generalorg_csu>CUS</generalorg_csu> <!-- https://en.wikipedia.org/wiki/Christian_Social_Union_in_Bavaria -->
 		<generalorg_spd>SDPP</generalorg_spd> <!-- https://en.wikipedia.org/wiki/Social_Democratic_Party_of_Germany -->
@@ -458,8 +460,8 @@
 		<mediaorg_bunte>FARBIGE</mediaorg_bunte> <!-- https://en.wikipedia.org/wiki/Bunte -->
 		<mediaorg_worldwrestlingentertainment>Western Wrestling Amusement</mediaorg_worldwrestlingentertainment> <!-- https://en.wikipedia.org/wiki/WWE -->
 		<mediaorg_wwe>WWA</mediaorg_wwe>
-		<mediaorg_worldwrestlingfederation>Western Wrestling Friends</mediaorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
-		<mediaorg_theworldwrestlingfederation>the Western Wrestling Friends</mediaorg_theworldwrestlingfederation>
+		<mediaorg_worldwrestlingfederation>Western Wrestling Friendship</mediaorg_worldwrestlingfederation> <!-- previous name of https://en.wikipedia.org/wiki/WWE -->
+		<mediaorg_theworldwrestlingfederation>the Western Wrestling Friendship</mediaorg_theworldwrestlingfederation>
 		<mediaorg_wwf>WWFr</mediaorg_wwf>
 		<mediaorg_marvel>Marbel</mediaorg_marvel> <!-- https://en.wikipedia.org/wiki/Marvel_Entertainment -->
 		<mediaorg_augsburgerpuppenkiste>Augsburger Plapperschachtel</mediaorg_augsburgerpuppenkiste> <!-- https://en.wikipedia.org/wiki/Augsburger_Puppenkiste -->
@@ -493,9 +495,11 @@
 		<mediatitle_knightrider>Night Raider</mediatitle_knightrider> <!-- https://en.wikipedia.org/wiki/Knight_Rider -->
 		<mediatitle_gilligansisland>Gallagan's Isle</mediatitle_gilligansisland> <!-- https://en.wikipedia.org/wiki/Gilligan%27s_Island -->
 		<mediatitle_starwars>War Stars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
+		<mediatitle_stargate>Spacegate</mediatitle_stargate> <!-- https://en.wikipedia.org/wiki/Stargate -->
 		<mediatitle_ottifants>Ollifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant | alt spoofs: Frottifanten, Grottifanten -->
 		<mediatitle_wrestlemania>WrestleMadness</mediatitle_wrestlemania> <!-- https://en.wikipedia.org/wiki/WrestleMania -->
 		<mediatitle_familyfeud>Family Duel</mediatitle_familyfeud> <!-- https://en.wikipedia.org/wiki/Family_Feud -->
+		<mediatitle_wettendass>Wer wird Wettkönig...?</mediatitle_wettendass> <!-- https://en.wikipedia.org/wiki/Wetten,_dass..%3F -->
 
 		<mediaprop_batmobile>Batcar</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
 		<mediaprop_dudu>Dodo</mediaprop_dudu> <!-- https://en.wikipedia.org/wiki/Superbug_(film_series) -->

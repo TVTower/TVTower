@@ -1498,9 +1498,9 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 				<pl>Wszystkie Hity - Best Of</pl>
 			</title>
 			<description>
-				<de>Nicht eine Kassette, nicht zwei, nicht drei! Unglaubliche 4 Musikkassetten haben wir mit den Hits der letzten 5 Jahre bespielt. Euer Walkman wird nie wieder etwas anderes spielen wollen!</de>
-				<en>Not one cassette, not two, not three! Incredible 4 music cassettes packed with the hits of the last 5 years. Your Walkman will never want to play anything else!</en>
-				<pl>Nie jedna kaseta, nie dwie, nie trzy! Niesamowite 4 kasety muzyczne wypełnione hitami ostatnich 5 lat. Twój Walkman już nigdy nie będzie chciał odtwarzać niczego innego!</pl>
+				<de>Nicht eine Kassette, nicht zwei, nicht drei! Unglaubliche 4 Musikkassetten haben wir mit den Hits der letzten 5 Jahre bespielt. Euer ${brand_walkman} wird nie wieder etwas anderes spielen wollen!</de>
+				<en>Not one cassette, not two, not three! Incredible 4 music cassettes packed with the hits of the last 5 years. Your ${brand_walkman} will never want to play anything else!</en>
+				<pl>Nie jedna kaseta, nie dwie, nie trzy! Niesamowite 4 kasety muzyczne wypełnione hitami ostatnich 5 lat. Twój ${brand_walkman} już nigdy nie będzie chciał odtwarzać niczego innego!</pl>
 			</description>
 			<conditions min_audience="2.083" min_image="7" target_group="2" />
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1" />

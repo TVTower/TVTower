@@ -278,8 +278,8 @@
 				<pl>Mistrzostwa świata w zapasach</pl>
 			</title>
 			<description>
-				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstalten im N.Y. ${brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
-				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) are hosting their first ${mediatitle_wrestlemania} at the N.Y. ${brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
+				<de>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) veranstaltet im N.Y. ${brand_madisonsquaregarden} ihren ersten Wrestlewahnsinn. Im Main-Event trifft Bad Guy ${roddy} „${rowdy}“ ${piper} auf den Titelträger ${hulkhogan}.</de>
+				<en>${.ucfirst:mediaorg_theworldwrestlingfederation} (${mediaorg_wwf}) is hosting their first ${mediatitle_wrestlemania} at the N.Y. ${brand_madisonsquaregarden}. In the Main-Event, bad guy ${roddy} "${rowdy}" ${piper} meets the title holder ${hulkhogan}.</en>
 				<pl>${mediaorg_worldwrestlingfederation} (${mediaorg_wwf}) organizuje swoje pierwsze pokazy w N.Y. ${brand_madisonsquaregarden}. W głównym wydarzeniu ${roddy} „${rowdy}“ ${piper} spotka się z posiadaczem tytułu ${hulkhogan}em.</pl>
 			</description>
 			<variables>
@@ -634,7 +634,7 @@
 		<news guid="5d981172-baf2-4aa9-8c99-fd1ab69a1d11" type="0" creator="8936" created_by="jorgaeff" comment="a-ha, Take On Me, https://en.wikipedia.org/wiki/List_of_number-one_hits_of_1985_(Germany) | 14 weeks apparently not correct">
 			<title>
 				<de>${aha} 14 Wochen an der Chartspitze</de>
-				<en>${aha} 14 weeks at the top of the chart</en>
+				<en>${aha} 14 weeks at the top of the charts</en>
 				<pl>${aha} 14 tygodni na szczycie listy przebojów</pl>
 			</title>
 			<description>
@@ -1516,14 +1516,14 @@
 		</news>
 		<news guid="68185058-09ad-419c-83d4-553b85e58574" type="2" thread_guid="7ce7e209-724e-43dc-bdb6-3fd76fb90cde" creator="8827" created_by="Cujo">
 			<title>
-				<de>${brand_cessna}-Pilot vom GKB verhaftet</de>
-				<en>${brand_cessna} pilot arrested by GKB</en>
-				<pl>Pilot ${brand_cessna} aresztowany przez GKB</pl>
+				<de>${brand_cessna}-Pilot vom ${generalorg_kgb} verhaftet</de>
+				<en>${brand_cessna} pilot arrested by ${generalorg_kgb}</en>
+				<pl>Pilot ${brand_cessna} aresztowany przez ${generalorg_kgb}</pl>
 			</title>
 			<description>
-				<de>Der ${brand_cessna}-Pilot ${mathias} ${rust} wurde vom GKB verhaftet. Muss er jetzt lebenslang hinter Gitter?</de>
-				<en>The ${brand_cessna} pilot ${mathias} ${rust} was arrested by the GKB. Does he now have to spend his life behind bars?</en>
-				<pl>Pilot ${brand_cessna} ${mathias} ${rust} został aresztowany przez GKB. Czy teraz będzie musiał spędzić życie za kratkami?</pl>
+				<de>Der ${brand_cessna}-Pilot ${mathias} ${rust} wurde vom ${generalorg_kgb} verhaftet. Muss er jetzt lebenslang hinter Gitter?</de>
+				<en>The ${brand_cessna} pilot ${mathias} ${rust} was arrested by the ${generalorg_kgb}. Does he now have to spend his life behind bars?</en>
+				<pl>Pilot ${brand_cessna} ${mathias} ${rust} został aresztowany przez ${generalorg_kgb}. Czy teraz będzie musiał spędzić życie za kratkami?</pl>
 			</description>
 			<data genre="4" price="1.1" quality="85" fictional="0" flags="2" />
 			<effects>
@@ -1710,9 +1710,9 @@
 				<pl>${gottschalk} będzie gospodarzem kultowego show</pl>
 			</title>
 			<description>
-				<de>Die erfolgreichste Live-Sendung im 2. Deutschen Fernsehen (${mediaorg_zdf}) „Wer wird Wettkönig?“ hat einen neuen Moderator: ${thomas} ${gottschalk} wettet ab sofort mit den Kandidaten um die Wette, bis sich die Balken biegen.</de>
-				<en>The most successful live program in the 2nd German television (${mediaorg_zdf}) "Who'll be the bet champion?" has a new presenter: From now on, ${thomas} ${gottschalk} will compete and bet with the candidates for bets until the cows come home.</en>
-				<pl>Odnoszący największe sukcesy program na żywo w 2. programie telewizji niemieckiej (${mediaorg_zdf}) „Kto zostanie mistrzem zakładów?” ma nowego prezentera: Od teraz ${thomas} ${gottschalk} będzie rywalizował i zakładał się z kandydatami do zakładów, dopóki krowy nie wrócą do domu.</pl>
+				<de>Die erfolgreichste Live-Sendung im 2. Deutschen Fernsehen (${mediaorg_zdf}) „${mediatitle_wettendass}“ hat einen neuen Moderator: ${thomas} ${gottschalk} wettet ab sofort mit den Kandidaten um die Wette, bis sich die Balken biegen.</de>
+				<en>The most successful live program in the 2nd German television (${mediaorg_zdf}), the entertainment and betting game show "${mediatitle_wettendass}" has a new presenter: From now on, ${thomas} ${gottschalk} will compete and bet with the candidates for bets until the cows come home.</en>
+				<pl>Odnoszący największe sukcesy program na żywo w 2. programie telewizji niemieckiej (${mediaorg_zdf}), rozrywkowo-zakładowy teleturniej „${mediatitle_wettendass}” ma nowego prezentera: Od teraz ${thomas} ${gottschalk} będzie rywalizował i zakładał się z kandydatami do zakładów, dopóki krowy nie wrócą do domu.</pl>
 			</description>
 			<variables>
 				<thomas>${.person:"0334ba64-7610-4c6a-8824-b2bb05e6d2b5":"firstname"}</thomas>
@@ -2197,8 +2197,8 @@
 				<pl>Niemiecka drużyna wygrywa ${sports_daviscup}</pl>
 			</title>
 			<description>
-				<de>Die deutsche Tennis-Nationalmannschaft Deutschland (mit ${borisbecker}, ${carluwesteeb}, ${ericjelen} und ${patrikkuehnen}) gewinnt das ${sports_daviscup}-Finale gegen Schweden.</de>
-				<en>The German national tennis team Germany (with ${borisbecker}, ${carluwesteeb}, ${ericjelen} and ${patrikkuehnen}) wins the ${sports_daviscup} final against Sweden.</en>
+				<de>Die deutsche Tennis-Nationalmannschaft (mit ${borisbecker}, ${carluwesteeb}, ${ericjelen} und ${patrikkuehnen}) gewinnt das ${sports_daviscup}-Finale gegen Schweden.</de>
+				<en>The German national tennis team (with ${borisbecker}, ${carluwesteeb}, ${ericjelen} and ${patrikkuehnen}) wins the ${sports_daviscup} final against Sweden.</en>
 				<pl>Reprezentacja Niemiec w tenisie stołowym (w składzie: ${borisbecker}, ${carluwesteeb}, ${ericjelen} i ${patrikkuehnen}) wygrywa finał ${sports_daviscup} ze Szwecją.</pl>
 			</description>
 			<variables>
@@ -7060,7 +7060,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<rdanderson>${.person:"8d551838-62d6-4ec3-a1f7-6b477206e235":"fullname"}</rdanderson>
 			</variables>
 			<data genre="1" price="1.0" quality="35" />
-			<availability year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="1990" />
 		</news>
 		<news guid="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_guid="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="" comment="TODO: Could add other sports | #maintenancecritical">
 			<title>
@@ -9139,7 +9139,6 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<!-- actor data when they were alive and married only roughly accurate -->
-				<actor>${jeffbridges}|${dustinhoffmann}|${michaeldouglas}|${alanalda}|${malcolmmcdowell}|${jameswoods}|${robertdeniro}|${kurtrussell}|${charltonheston_or_benaffleck}|${melgibson_or_matthewmcconaughey}|${paulnewman_or_ryanreynolds}|${stevemcqueen_or_kevincostner}|${richardburton_or_seanpenn}|${burtreynolds_or_richardgere}|${kirkdouglas_or_hughgrant}|${tonycurtis_or_markwahlberg}|${petersellers_or_mickeyrourke}|${ryanoneal_or_orlandobloom}|${clinteastwood_or_chrishemsworth}|${maximilianschell_or_ashtonkutcher}</actor>
 				<jeffbridges>${.person:"2d4e13d7-a121-4ab5-9f87-86c5425a71ee":"fullname"}</jeffbridges>
 				<dustinhoffmann>${.person:"6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3":"fullname"}</dustinhoffmann>
 				<michaeldouglas>${.person:"9dcc7ea5-2479-4449-9df7-a4079361460c":"fullname"}</michaeldouglas>
@@ -9161,6 +9160,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<clinteastwood_or_chrishemsworth>${.lte:currentyear:2010:"${.person:"ec20fc5a-a552-4119-8d1e-d310650c2830":"fullname"}":"${.person:"176af867-66d3-48f8-bc21-336f2eb1ff6d":"fullname"}"}</clinteastwood_or_chrishemsworth>
 				<maximilianschell_or_ashtonkutcher>${.lte:currentyear:2005:"${.person:"e97d3181-11cf-4e54-8697-ac2b06212851":"fullname"}":"${.person:"4fef5701-2ca1-4332-ac4b-1d59a91c485d":"fullname"}"}</maximilianschell_or_ashtonkutcher>
 				<anthonyquinn_or_johnnydepp>${.lte:currentyear:1998:"${.person:"47ebce00-d182-4e47-aadb-0919c2194905":"fullname"}":"${.person:"e7924d67-a4de-417d-a1f9-581fd611b534":"fullname"}"}</anthonyquinn_or_johnnydepp>
+				<actor>${jeffbridges}|${dustinhoffmann}|${michaeldouglas}|${alanalda}|${malcolmmcdowell}|${jameswoods}|${robertdeniro}|${kurtrussell}|${charltonheston_or_benaffleck}|${melgibson_or_matthewmcconaughey}|${paulnewman_or_ryanreynolds}|${stevemcqueen_or_kevincostner}|${richardburton_or_seanpenn}|${burtreynolds_or_richardgere}|${kirkdouglas_or_hughgrant}|${tonycurtis_or_markwahlberg}|${petersellers_or_mickeyrourke}|${ryanoneal_or_orlandobloom}|${clinteastwood_or_chrishemsworth}|${maximilianschell_or_ashtonkutcher}|${anthonyquinn_or_johnnydepp}</actor>
 				<gettingmarried>
 					<de>Heiraten - aber richtig!|Hochzeit mit Hindernissen|Sag einfach Ja!|Verliebt, verlobt, der große Tag!|Der große Tag des Jaworts|Das Wow des Jaworts|Ring frei für die Liebe!|Heiratsantrag auf Umwegen|Flitterwochen mit Folgen|Ein Ja mit Sahnehäubchen|Und wie die Braut sich traut!|Ehe mit Herz und Witz|Ja, ich will - und zwar sofort!|Liebe, Lachen, Hochzeitsspaß|Jawort im Doppelpack|Das große Glück trägt Weiß|Unter die Haube - aber schnell!</de>
 					<en>Getting Married - Done Right!|Wedding with Obstacles|Just Say Yes!|In Love, Engaged, the Big Day!|The Big Day of the Wedding Vow|The Wedding Wow|Clear the Wedding Ring!|A Roundabout Proposal|About a Honeymoon and what Follows|A Yes with Cherry on Top|The Run-to-You Bride|A Wedding with Wit and Charme|Yes, I Will - and I Will Right Now!|Love, Laughter, Marry, Fun|Double Whammy Wedding Vow|Big Bliss Wears White|Gettin' Hitched - Gettin' Fast</en>

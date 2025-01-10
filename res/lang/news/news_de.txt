@@ -127,8 +127,8 @@ SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = gibt ${.lte:7:${.random:10}:"${.locale:"
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = geben ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} 3 wertvolle Punkte an
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = unterliegt durch Schusselfehler von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} und ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = unterliegen durch Schusselfehler von Torwart ${.self:"sportteam":0:"member":"keeper":"lastname"} und ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = verliert mit enttäuschtem Torwart ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = verlieren mit enttäuschtem Torwart ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = verliert mit enttäuschendem Torwart ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = verlieren mit enttäuschendem Torwart ${.self:"sportteam":0:"member":"keeper":"fullname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} gegen
 
 SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = nach ${.self:"sportmatch":"playtimeminutes"}  Minuten zweifelhaften Fussballs
 SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = nach ${.self:"sportmatch":"playtimeminutes"}  Min taktischer Zweikämpfe

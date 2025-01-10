@@ -7554,6 +7554,7 @@
 		<person guid="bc400955-4a97-46b9-a5ba-b8bca2c3cc9f" first_name="Tommy" last_name="Kloos" first_name_original="Toni" last_name_original="Kroos" gender="1" birthday="1990-01-04" deathday="" imdb_id="nm3819618" creator="9551" comment="https://en.wikipedia.org/wiki/Toni_Kroos" />
 		<person guid="9680f6f4-11c7-4475-bea9-98fc63cd4f52" first_name="Jérmaine" last_name="Beotang" first_name_original="Jérôme" last_name_original="Boateng" gender="1" birthday="1988-09-03" deathday="" imdb_id="nm3819742" creator="9551" comment="https://en.wikipedia.org/wiki/J%C3%A9r%C3%B4me_Boateng" />
 		<person guid="53f70e44-01f4-4e12-9326-68f2d4936b14" first_name="Lady Gacka" last_name="" first_name_original="Lady Gaga" last_name_original="" gender="2" birthday="1986-03-28" deathday="" imdb_id="nm3078932" creator="9551" comment="https://en.wikipedia.org/wiki/Lady_Gaga" />
+		<person guid="ca17e562-ce44-417b-a22e-c194b98e2a4e" first_name="Fridolin" last_name="Pursche" first_name_original="Ferdinand" last_name_original="Porsche" gender="1" birthday="1875-09-03" deathday="1951-01-30" imdb_id="nm2882840" creator="9551" comment="https://en.wikipedia.org/wiki/Ferdinand_Porsche" />
 	</insignificantpeople>
 
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
