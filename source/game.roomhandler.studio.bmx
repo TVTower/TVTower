@@ -953,9 +953,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 				EndIf
 
 
-				If effectiveFocusPointsDistribution < 0.30
+				If effectiveFocusPointsDistribution < 0.55
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD")
-				ElseIf effectiveFocusPointsDistribution > 0.70
+				ElseIf effectiveFocusPointsDistribution > 0.85
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD")
 				Else
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE")
