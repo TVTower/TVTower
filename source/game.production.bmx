@@ -479,7 +479,9 @@ Type TProduction Extends TOwnedGameObject
 			'2 blocks: ends at 21:55
 			'ATTENTION: ensure it ends at xx:x5 (as the production 
 			'           manager updates in 5 minute intervals)
-			endTime = GetWorldtime().GetTimeGoneForGameTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 55)
+			'#1295 use minute 50, so that finalize sets parent licence tradeable in time for
+			'for the removeOnBroadCastLimit check to have the correct licence state
+			endTime = GetWorldtime().GetTimeGoneForGameTime(0, 0, GetWorldTime().GetHour(startTime) + (productionConcept.script.GetBlocks()-1), 50)
 		EndIf
 
 		_designatedProgrammeLicence.data.SetState(TVTProgrammeState.IN_PRODUCTION)
@@ -602,6 +604,7 @@ Type TProduction Extends TOwnedGameObject
 				local licence:TProgrammeLicence = GetProgrammeLicenceCollection().Get(parentScript.usedInProgrammeID)
 				If licence
 					licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
+					print "setting licence tradable "+licence.getTitle() +" "+licence.IsTradeable()
 				EndIf
 			EndIf
 		EndIf
