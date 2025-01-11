@@ -470,7 +470,13 @@ Type TgfxProgrammelist Extends TPlannerList
 					If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
 						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
 					ElseIf mode = MODE_ARCHIVE
-						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+						'archive vetoes picking up running programme
+						Local material:TProgramme = TProgramme(GetPlayerProgrammePlan(_licencesOwner).GetProgramme(-1,-1))
+						If material And material.licence = licence And material.state = TBroadcastMaterial.STATE_RUNNING
+							GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+						Else
+							GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+						EndIf
 					EndIf
 				EndIf
 			Endif

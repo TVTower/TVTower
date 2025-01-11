@@ -86,6 +86,8 @@ Type RoomHandler_Archive extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" ) ]
 		'check right clicks on a gui block
 		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick, onClickProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		'check right clicks on a gui block
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, "TGUIProgrammeLicence" ) ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -361,6 +363,19 @@ Type RoomHandler_Archive extends TRoomHandler
 				return TRUE
 		end select
 
+		return TRUE
+	End Function
+
+
+	'prevent picking up currently scheduled programme (make full price selling harder)
+	Function onTryDragProgrammeLicence:int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("archive") Then Return False
+		Local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
+		If Not guiBlock Then Return False
+		Local material:TProgramme = TProgramme(GetPlayerProgrammePlan(guiBlock.licence.GetOwner()).GetProgramme(-1,-1))
+		If material And material.licence = guiBlock.licence And material.state = TBroadcastMaterial.STATE_RUNNING
+			triggerEvent.setVeto()
+		EndIf
 		return TRUE
 	End Function
 
