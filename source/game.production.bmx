@@ -234,7 +234,8 @@ Type TProduction Extends TOwnedGameObject
 		value :* 1.0 + 0.4 * (effectiveFocusPointsMod - 0.5)
 
 		'more spent focus points "always" leads to a better product
-		value :+ 0.01 * productionConcept.GetEffectiveFocusPoints()
+		Local p:Float = productionConcept.GetEffectiveFocusPoints()
+		value :+ p * 0.099^p
 
 
 		Return value
