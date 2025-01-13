@@ -60,13 +60,6 @@ Type TAiBase
 		EndIf
 	End Method
 
-
-	Method GetLuaEngine:TLuaEngine()
-		'register engine
-		if not _luaEngine then _luaEngine = TLuaEngine.Create("")
-		return _luaEngine
-	End Method
-
 rem
 	'handle all currently queued Events
 	Method HandleQueuedEvents()
@@ -279,26 +272,29 @@ endrem
 
 
 	Method Start()
-		TLogger.Log("TAiBase", "Starting AI " + playerID + " using script " + scriptFileName, LOG_DEBUG)
+		TLogger.Log("TAiBase #" + playerID, "Starting.", LOG_DEBUG)
+		
+		'create the lua engine
+		self._luaEngine = New TLuaEngine()
+		TLuaEngine.AddEngine(_luaEngine) 'so findEngine() can be used
+		
 
 		'load lua file
-		LoadScript(scriptFileName)
-		'register current script code 
-		RegisterSource()
-		'(re-)assign TVT, TIME, ... to lua
-		RegisterSharedObjects()
+		LoadLuaScript(scriptFileName)
 
 		started = True
 
 		If not THREADED_AI_DISABLED
+			TLogger.Log("TAiBase #" + playerID, "Creating update thread", LOG_DEBUG)
 			_updateThread = CreateThread( UpdateThread, self )
-			TLogger.Log("TAiBase", "Created AI " + playerID + " Update Thread", LOG_DEBUG)
 		EndIf
+
+		TLogger.Log("TAiBase #" + playerID, "Started.", LOG_DEBUG)
 	End Method
 
 
 	Method Stop()
-		TLogger.Log("TAiBase", "Stopping AI " + playerID, LOG_DEBUG)
+		TLogger.Log("TAiBase #" + playerID, "Stopping", LOG_DEBUG)
 		started = False
 
 		If not THREADED_AI_DISABLED and _updateThread
@@ -308,7 +304,7 @@ endrem
 			Repeat
 				If _updateThread and ThreadRunning(_updateThread)
 					If Time.GetTimeGone() - startStop > 500
-						TLogger.Log("TAiBase", "#  AI thread did not stop within 500ms. Detaching thread!", LOG_DEBUG)
+						TLogger.Log("TAiBase #" + playerID, "Thread did not stop within 500ms. Detaching thread!", LOG_DEBUG)
 						
 						'reset
 						_updateThreadExit = False
@@ -323,17 +319,17 @@ endrem
 			Forever
 			
 			If not TryLockMutex(_callLuaFunctionMutex)
-				TLogger.Log("TAiBase", "#  Mutex _callLuaFunctionMutex still locked!", LOG_DEBUG)
+				TLogger.Log("TAiBase #" + playerID, "-  Mutex _callLuaFunctionMutex still locked!", LOG_DEBUG)
 				UnlockMutex(_callLuaFunctionMutex)
-				TLogger.Log("TAiBase", "#  Mutex _callLuaFunctionMutex now unlocked!", LOG_DEBUG)
+				TLogger.Log("TAiBase #" + playerID, "-  Mutex _callLuaFunctionMutex now unlocked!", LOG_DEBUG)
 			EndIf
 			If not TryLockMutex(_eventQueueMutex)
-				TLogger.Log("TAiBase", "#  Mutex _eventQueueMutex still locked!", LOG_DEBUG)
+				TLogger.Log("TAiBase #" + playerID, "-  Mutex _eventQueueMutex still locked!", LOG_DEBUG)
 				UnlockMutex(_eventQueueMutex)
-				TLogger.Log("TAiBase", "#  Mutex _eventQueueMutex now unlocked!", LOG_DEBUG)
+				TLogger.Log("TAiBase #" + playerID, "-  Mutex _eventQueueMutex now unlocked!", LOG_DEBUG)
 			EndIf
 
-			TLogger.Log("TAiBase", "Removed AI " + playerID + " Update Thread", LOG_DEBUG)
+			TLogger.Log("TAiBase #" + playerID, "Removed update thread", LOG_DEBUG)
 		EndIf
 	End Method
 
@@ -342,34 +338,38 @@ endrem
 	End Method
 
 	
-	Method RegisterSource()
-		'register source and available objects
-		Local LuaEngine:TLuaEngine = GetLuaEngine()
-		LuaEngine.RegisterToLua()
-	End Method
-
-
 	'loads a .lua-file and registers needed objects
-	Method LoadScript:int(luaScriptFileName:string)
+	Method LoadLuaScript:int(luaScriptFileName:string)
 		if luaScriptFileName <> "" then scriptFileName = luaScriptFileName
-		if scriptFileName = "" then return FALSE
-
-		Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
-		If FileType(scriptFileName) <> FILETYPE_FILE
-			AddLog("TAiBase", "Loading LUA for AI "+playerID+" failed. Script ~q" + luaScriptFileName + "~q does not exist. Loading default script.", LOG_ERROR)
-			scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
-
+		if scriptFileName
+			Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
 			If FileType(scriptFileName) <> FILETYPE_FILE
-				AddLog("TAiBase", "Loading LUA for AI "+playerID+" failed. Default script ~q" + scriptFileName+"~q not found. Aborting.", LOG_ERROR)
-				Return False
+				AddLog("TAiBase #" + playerID, "Loading Lua-script failed, ~q" + luaScriptFileName + "~q does not exist. Loading default Lua-script.", LOG_ERROR)
+				scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
+
+				If FileType(scriptFileName) <> FILETYPE_FILE
+					AddLog("TAiBase #" + playerID, "Loading Lua-script failed. Default Lua-script ~q" + scriptFileName+"~q does not exist. Aborting.", LOG_ERROR)
+					Return False
+				EndIf
 			EndIf
+
+			'(re-)load content
+			_luaEngine.SetSourceFile(scriptFileName)
+
+			'(re-)assign TVT, TIME, ... to lua
+			RegisterSharedObjects()
+
+			'start the engine (and run the code - so functions are known)
+			_luaEngine.Start()
+			
+
+			AddLog("TAiBase #" + playerID, "Loaded Lua-script ~q" + luaScriptFileName +"~q in " + loadingStopWatch.GetTime() + "ms.", LOG_DEBUG)
+			Return True
+		Else
+			AddLog("TAiBase #" + playerID, "Loading Lua-script failed, No Lua-script path passed.", LOG_ERROR)
+			Return False
 		EndIf
-
-		'(re-)load content
-		GetLuaEngine().SetSource(LoadText(scriptFileName), scriptFileName)
-
-		AddLog("TAiBase", "Loaded LUA for AI "+playerID+". Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG)
-		Return True
+		
 	End Method
 
 
@@ -377,7 +377,7 @@ endrem
 	Method ReloadScript:int()
 		if scriptFileName="" then return FALSE
 
-		AddLog("TAiBase", "Reloading LUA for AI "+playerID+".", LOG_DEBUG)
+		AddLog("TAiBase #" + playerID, "Reloading LUA-script.", LOG_DEBUG)
 		
 '		Local wasStarted:Int = started
 
@@ -387,11 +387,7 @@ endrem
 		'save current state
 		CallOnSaveState()
 
-		LoadScript(scriptFileName)
-		'register current script code 
-		RegisterSource()
-		'(re-)assign TVT, TIME, ... to lua
-		RegisterSharedObjects()
+		LoadLuaScript(scriptFileName)
 
 		'restore current state
 		CallOnLoadState()
@@ -496,7 +492,7 @@ endrem
 		'the first call is actually using it
 		if resetObjectsInUse then ResetObjectsUsedInLua()
 
-		local result:object = GetLuaEngine().CallLuaFunction(name, args)
+		local result:object = _luaEngine.CallLuaFunction(name, args)
 
 		UnLockMutex(_callLuaFunctionMutex)
 
