@@ -775,7 +775,7 @@ Type TLuaEngine
 					if lua_isboolean(_luaState, luaIndex)
 						args[i] = String.FromInt(int(lua_toboolean(_luaState, luaIndex)))
 					else
-						args[i] = String.FromLong(Long(lua_tonumber(_luaState, i + luaIndex)))
+						args[i] = String.FromLong(Long(lua_tonumber(_luaState, luaIndex)))
 					endif
 				Case FloatTypeId
 					args[i] = String.FromFloat(Float(lua_tonumber(_luaState, luaIndex)))
