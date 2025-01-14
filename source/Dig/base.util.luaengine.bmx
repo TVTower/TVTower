@@ -476,7 +476,9 @@ Type TLuaEngine
 			Return False
 		EndIf
 
-		Local ident:String = lua_tobbstring(_luaState, 2)
+		'lua_tostring should be enough for idents (no utf8 methods/field names) 
+		'while lua_tobbstring would decode utf8 etc 
+		Local ident:String = lua_tostring(_luaState, 2)
 
 		'=== SKIP PRIVATE THINGS ===
 		'each variable/function with an underscore is private
@@ -493,17 +495,9 @@ Type TLuaEngine
 
 		'thing we have to push is a method/function
 		If callable
-			'PRIVATE...do not add private functions/methods
-			If callable.HasMetaData("_private")
-				If TMethod(callable)
-					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
-				Else
-					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
-				EndIf
-				Return False
-			EndIf
-			'only expose the children with explicit mention
-			If exposeType = "selected" And Not callable.MetaData("_exposeToLua")
+			'PRIVATE...do not add private methods/functions
+			'SELECTED...only expose the methods/functions with explicit mention
+			If callable.HasMetaData("_private") or (exposeType = "selected" And Not callable.MetaData("_exposeToLua"))
 				If TMethod(callable)
 					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Else
