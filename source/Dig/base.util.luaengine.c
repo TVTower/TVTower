@@ -6,6 +6,12 @@
 
 #include <pub.mod/lua.mod/lua-5.1.4/src/lua.h>
 
+//from brl.reflection
+BBClass *Luaengine_bbRefGetObjectClass( BBObject *p ){
+	return p->clas;
+}
+
+
 struct BBObjectContainer {
 	BBObject * o;
 };

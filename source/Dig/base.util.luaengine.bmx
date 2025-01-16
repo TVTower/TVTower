@@ -38,6 +38,7 @@ SuperStrict
 Import Pub.Lua
 Import Brl.Retro
 Import BRL.Reflection
+Import BRL.Collections
 Import "base.util.luaengine.c"
 Import "base.util.logger.bmx"
 
@@ -56,7 +57,15 @@ Extern
 	Function lua_gcobject:Int( L:Byte Ptr )
 	Function lua_tobbstring:String( L:Byte Ptr,index:Int )
 	Function lua_pushbbstring:Int( L:Byte Ptr,s:String )
+
+	Function Luaengine_bbRefGetObjectClass:Byte Ptr( obj:Object )
 End Extern
+
+
+Type TLuaReflectionType
+	Field typeID:TTypeID
+	Field children:TStringMap = New TStringMap
+End Type
 
 
 
@@ -87,6 +96,10 @@ Type TLuaEngine
 	Field _blacklistedFunctions:String[]
 	' which elements can get read without "_exposeToLua" metadata?
 	Field _whiteListedTypes:TStringMap
+	
+	'key = class pointer
+	'value = TLuaReflectionType
+	Field _reflectionTypesCache:TTreeMap<byte ptr, TLuaReflectionType>
 
 
 	Global lastID:Int = 0
@@ -389,6 +402,59 @@ Type TLuaEngine
 	End Method
 	
 	
+	Method _GetReflectionType:TLuaReflectionType(obj:Object)
+		If Not _reflectionTypesCache Then _reflectionTypesCache = New TTreeMap<byte ptr, TLuaReflectionType>
+
+		Local class:Byte Ptr = Luaengine_bbRefGetObjectClass( obj )
+		Local reflectionType:TLuaReflectionType = _reflectionTypesCache[class]
+		If not reflectionType 'not cached yet
+			reflectionType = New TLuaReflectionType
+			_reflectionTypesCache.Add(class, reflectionType)
+
+			reflectionType.typeID = TTypeID.ForObject(obj)
+			If reflectionType.typeID
+				Local typeID:TTypeID = reflectionType.typeID
+				Local typeName:String = typeID.name()
+				Local whiteListedType:Int = _whiteListedTypes.Contains(typeName)
+				Local exposeType:String
+				if not whiteListedType
+					exposeType = typeID.MetaData("_exposeToLua")
+					'whitelist the type if set to expose everything not just
+					'"selected"
+					if exposeType <> "selected"
+						_whiteListedTypes.Insert(typeName, "" )
+					endif
+				endif
+
+				'methods, fields and functions cannot share names
+				'except for overloads (for now we do not handle that)
+				For local map:TStringMap = EachIn [typeID.Functions(), typeID.Methods(), typeID.Fields(), typeID.Constants()]
+					For local key:String = EachIn map.Keys()
+						Local m:TMember = TMember(map.ValueForKey(key))
+						'only add non-private etc.
+						If m.HasMetaData("_private") or (exposeType = "selected" And Not m.MetaData("_exposeToLua"))
+							continue
+						EndIf
+						
+						reflectionType.children.Insert(key.ToLower(), m)
+					Next
+				Next
+			EndIf
+		EndIf
+		Return reflectionType
+	End Method
+	
+	
+	Method _FindTypeChild:TMember(obj:Object, ident:String)
+		Return TMember(_GetReflectionType(obj).children.ValueForKey(ident.ToLower()))
+	End Method
+
+
+	Method _FindType:TTypeId(obj:Object)
+		Return _GetReflectionType(obj).typeID
+	End Method
+	
+	
 	'=== LUA BLITZMAX COUPLING ===
 	
 	Function _HandleIndex:Int(luaState:Byte Ptr)
@@ -444,84 +510,31 @@ Type TLuaEngine
 	Method HandleIndex:Int()
 		'pull blitzmax object (parent of the method)
 		Local obj:Object = lua_unboxobject(_luaState, 1, _objMetaTable)
+		Local ident:String = lua_tostring(_luaState, 2)
 
 		' Check if the object was valid before proceeding
 		If Not obj
-			Local ident:String = lua_tobbstring(_luaState, 2)
 			' Log error if the object is invalid
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to access ~q"+ident+"~q (method or property) of an invalid object. Object not exposed? Object name wrong? Lua is case-sensitive!", LOG_ERROR)
 			Return 0
 		EndIf
 
-		Local typeId:TTypeId = TTypeId.ForObject(obj)
-		Local objTypeName:String = typeId.name()
-
-		'=== READ ACCESS ? ===
-'TODO: Alles cachen (_knownExposableTypes:TStringMap ...) ?
-		Local whiteListedType:Int = _whiteListedTypes.Contains(objTypeName)
-		Local exposeType:String
-		if not whiteListedType
-			exposeType = typeId.MetaData("_exposeToLua")
-
-			'whitelist the type if set to expose everything not just
-			'"selected"
-			if exposeType <> "selected"
-				_whiteListedTypes.Insert(objTypeName, "" )
-			endif
-		endif
-
-		'only expose if type ("parent") is set to get exposed
-		If Not whiteListedType And Not exposeType 
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" is not whitelisted or marked to get exposed to lua. Access Failed.", LOG_ERROR)
-			Return False
-		EndIf
-
 		'lua_tostring should be enough for idents (no utf8 methods/field names) 
 		'while lua_tobbstring would decode utf8 etc 
-		Local ident:String = lua_tostring(_luaState, 2)
-
-		'=== SKIP PRIVATE THINGS ===
-		'each variable/function with an underscore is private
-		'eg.: function _myPrivateFunction
-		'eg.: field _myPrivateField
-		'
-		'but lua needs access to global: _G
-'		If ident[0] =  Asc("_") And ident <> "_G" Then Return False
-
+		Local m:TMember = _FindTypeChild(obj, ident)
 
 		'=== CHECK PUSHED OBJECT IS A METHOD or FUNCTION ===
-		Local callable:TMember = typeId.FindMethod(ident)
-		If Not callable Then callable = typeId.FindFunction(ident)
-
 		'thing we have to push is a method/function
-		If callable
-			'PRIVATE...do not add private methods/functions
-			'SELECTED...only expose the methods/functions with explicit mention
-			If callable.HasMetaData("_private") or (exposeType = "selected" And Not callable.MetaData("_exposeToLua"))
-				If TMethod(callable)
-					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
-				Else
-					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
-				EndIf
-				Return False
-			EndIf
+		If TMethod(m) or TFunction(m)
 			lua_pushvalue(_luaState, 1)
-			lua_pushlightobject(_luaState, callable)
+			lua_pushlightobject(_luaState, m)
 			lua_pushcclosure(_luaState, _HandleInvoke, 2)
 			Return True
 		EndIf
 
-
 		'===== CHECK PUSHED OBJECT IS A FIELD / CONSTANT =====
-		Local fld:TField = typeId.FindField(ident)
-		If fld
-			'PRIVATE...do not add private fields
-			'SELECTED...only expose the fields with explicit mention
-			If fld.HasMetaData("_private") or (exposeType = "selected" And Not fld.MetaData("_exposeToLua"))
-				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not expose field ~q" + ident + "~q. Access Failed.", LOG_ERROR)
-				Return False
-			EndIf
-
+		If TField(m)
+			Local fld:TField = TField(m)
 			Select fld.TypeId()
 				Case IntTypeId, ShortTypeId, ByteTypeId
 					lua_pushinteger(_luaState, fld.GetInt(obj))
@@ -547,14 +560,8 @@ Type TLuaEngine
 
 
 		'===== CHECK PUSHED OBJECT IS A CONSTANT =====
-		Local constant:TConstant = typeId.FindConstant(ident)
-		If constant
-			'PRIVATE...do not add private fields
-			'SELECTED...only expose the fields with explicit mention
-			If constant.HasMetaData("_private") or (exposeType = "selected" And Not constant.MetaData("_exposeToLua"))
-				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not expose constant ~q" + ident + "~q. Access Failed.", LOG_ERROR)
-				Return False
-			EndIf
+		If TConstant(m)
+			Local constant:TConstant = TConstant(m)
 
 			Select constant.TypeId() ' BaH - added more types
 				Case IntTypeId, ShortTypeId, ByteTypeId
@@ -571,7 +578,8 @@ Type TLuaEngine
 			Return True
 		EndIf
 
-		TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+objTypeName+" does not have a property called ~q" + ident+"~q.", LOG_ERROR)
+		local objTypeId:TTypeID = _FindType(obj)
+		TLogger.Log("TLuaEngine", "[Engine " + id + "] Object ~q" + objTypeId.name() + "~q does not have or expose property ~q" + ident + "~q. Access Failed.", LOG_ERROR)
 		Return False
 	End Method
 
@@ -678,8 +686,9 @@ Type TLuaEngine
 
 			Return 0
 		EndIf
+		
+		Local objType:TTypeID
 
-		Local objType:TTypeID = TTypeID.ForObject(obj)
 		Local funcOrMeth:TMember = TMember(lua_tolightobject(_luaState, LUA_GLOBALSINDEX - 2))
 		If Not TFunction(funcOrMeth) And Not TMethod(funcOrMeth) 
 			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling failed. No function/method given.", LOG_ERROR)
@@ -726,7 +735,7 @@ Type TLuaEngine
 			if paramObj = obj
 				if passedArgumentCount = args.length + 1
 					isLuaMethodCall = True
-				EndIf
+
 				'Maybe first param was forgotten but has to be of same
 				'type as instance?
 				'BlitzMax: Type TTest; Method MyMethod(t:TTest)
@@ -735,9 +744,12 @@ Type TLuaEngine
 				'                        function with "TVT" as argument
 				'Lua: TVT.MyMethod()  -> blitzmax sees no argument
 				'                        it could correctly fail (wrong arg amount)
-				If passedArgumentCount = args.length and argTypes[0] = objType
-					isLuaMethodCall = False
-					TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
+				ElseIf passedArgumentCount = args.length
+					If not objType Then objType = _FindType(obj)
+					If argTypes[0] = objType
+						isLuaMethodCall = False
+						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
+					EndIf
 				EndIf
 			endif
 		Endif
@@ -745,6 +757,7 @@ Type TLuaEngine
 		
 
 		If passedArgumentCount <> args.length
+			If not objType Then objType = _FindType(obj)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + args.length+" argument(s) required.", LOG_ERROR)
 			Return False
 		EndIf
@@ -792,14 +805,16 @@ Type TLuaEngine
 						paramObj = null
 					elseif lua_isuserdata(_luaState, luaIndex)
 						paramObj = lua_unboxobject(_luaState, luaIndex, _objMetaTable)
-						Local paramObjType:TTypeID = TTypeID.ForObject(paramObj)
+						Local paramObjType:TTypeID = _FindType(paramObj)
 						'given param does not derive from requested param type (so incompatible)
 						if not paramObjType or not paramObjType.ExtendsType(argTypes[i])
+							If not objType Then objType = _FindType(obj)
 							TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
 							invalidArgs :+ 1
 							paramObj = Null
 						endif
 					else
+						If not objType Then objType = _FindType(obj)
 						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
 						invalidArgs :+ 1
 						paramObj = null
@@ -809,13 +824,17 @@ Type TLuaEngine
 		Next
 		'stop execution if an argument did not fit
 		if invalidArgs > 0
+			If not objType Then objType = _FindType(obj)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + funcOrMeth.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
 			Return False
 		EndIf
 
 		Local t:Object
-		If func Then t = func.Invoke(args)
-		If mth Then t = mth.Invoke(obj, args)
+		If func 
+			t = func.Invoke(args)
+		ElseIf mth
+			t = mth.Invoke(obj, args)
+		EndIf
 		Local typeId:TTypeId = funcOrMeth.TypeID().ReturnType()
 
 		If Object[](t).length > 0 Then typeId = ArrayTypeId
@@ -888,7 +907,7 @@ Type TLuaEngine
 			argCount = args.length
 
 			For Local i:Int = 0 Until args.length
-				Local typeId:TTypeId = TTypeId.ForObject(args[i])
+				Local typeId:TTypeId = _FindType(args[i])
 
 				Select typeId
 					Case IntTypeId, ShortTypeId, ByteTypeId
@@ -936,8 +955,9 @@ Type TLuaEngine
 		' An error occurred, fetch and print the traceback
 		Else
 			' Clean up the stack (if error occurs)
-			lua_pop(_luaState, 1)  ' Pop the error message
+			'lua_pop(_luaState, 1)  ' Pop the error message
    			'TODO print error
+   			DumpError("CallLuaFunc-Error")
 		EndIf
 	End Method
 
