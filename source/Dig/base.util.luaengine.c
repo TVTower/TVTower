@@ -11,6 +11,68 @@ BBClass *Luaengine_bbRefGetObjectClass( BBObject *p ){
 	return p->clas;
 }
 
+// Function to hash a Lua string
+BBULONG lua_StringHash(lua_State* L, int index) {
+    size_t length;
+    const char* str = lua_tolstring(L, index, &length);
+
+    // If the Lua value is not a string, return 0 as a default
+    if (!str) {
+        return 0;
+    }
+
+	// Convert the UTF-8 Lua string to BBChar (same as UTF-16 if BBChar is 2 bytes)
+    size_t utf16Length = length;
+    BBChar* utf16Str = (BBChar*)malloc((utf16Length + 1) * sizeof(BBChar));
+    for (size_t i = 0; i < length; ++i) {
+        utf16Str[i] = (BBChar)str[i];
+    }
+    utf16Str[length] = 0; // Null terminate
+
+    // Compute and return the xxHash hash for the BBChar converted Lua string
+    BBULONG hash = XXH3_64bits((const char*)utf16Str, utf16Length * sizeof(BBChar));
+
+    // Free the allocated memory for the UTF-16 string
+    free(utf16Str);
+
+    return hash;
+}
+
+
+// Function to hash a Lua string case-insensitively
+unsigned long long lua_LowerStringHash(lua_State* L, int index) {
+    size_t length;
+    const char* str = lua_tolstring(L, index, &length);
+
+    // If the Lua value is not a string, return 0 as a default
+    if (!str) {
+        return 0;
+    }
+
+    // Convert the UTF-8 Lua string to BBChar (same as UTF-16 if BBChar is 2 bytes)
+    size_t utf16Length = length;
+    BBChar* utf16Str = (BBChar*)malloc((utf16Length + 1) * sizeof(BBChar)); // +1 for null terminator
+    for (size_t i = 0; i < length; ++i) {
+        utf16Str[i] = (BBChar)str[i];
+    }
+    utf16Str[length] = 0; // Null terminate
+
+    // Convert to lowercase directly on the BBChar (UTF-16) array
+    for (size_t i = 0; i < length; ++i) {
+        if (utf16Str[i] >= 'A' && utf16Str[i] <= 'Z') {
+            utf16Str[i] += 32; // Convert uppercase to lowercase
+        }
+    }
+
+    // Compute and return the xxHash hash for the lowercase BBChar string
+    unsigned long long hash = XXH3_64bits((const char*)utf16Str, utf16Length * sizeof(BBChar));
+
+    // Free the allocated memory for the BBChar string
+    free(utf16Str);
+
+    return hash;
+}
+
 
 struct BBObjectContainer {
 	BBObject * o;

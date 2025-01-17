@@ -59,6 +59,8 @@ Extern
 	Function lua_pushbbstring:Int( L:Byte Ptr,s:String )
 
 	Function Luaengine_bbRefGetObjectClass:Byte Ptr( obj:Object )
+	Function lua_LowerStringHash:ULong( L:Byte Ptr,index:Int )
+	Function lua_StringHash:ULong( L:Byte Ptr,index:Int )
 End Extern
 
 
