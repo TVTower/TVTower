@@ -41,6 +41,7 @@ Import BRL.Reflection
 Import BRL.Collections
 Import "base.util.luaengine.c"
 Import "base.util.logger.bmx"
+Import "base.util.longmap.bmx"
 
 Extern
 	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
@@ -66,7 +67,7 @@ End Extern
 
 Type TLuaReflectionType
 	Field typeID:TTypeID
-	Field children:TStringMap = New TStringMap
+	Field children:TLongMap = New TLongMap
 End Type
 
 
@@ -438,7 +439,7 @@ Type TLuaEngine
 							continue
 						EndIf
 						
-						reflectionType.children.Insert(key.ToLower(), m)
+						reflectionType.children.Insert(Long(key.ToLower().Hash()), m)
 					Next
 				Next
 			EndIf
@@ -447,8 +448,8 @@ Type TLuaEngine
 	End Method
 	
 	
-	Method _FindTypeChild:TMember(obj:Object, ident:String)
-		Return TMember(_GetReflectionType(obj).children.ValueForKey(ident.ToLower()))
+	Method _FindTypeChild:TMember(obj:Object, identHash:ULong)
+		Return TMember(_GetReflectionType(obj).children.ValueForKey(Long(identHash)))
 	End Method
 
 
@@ -512,18 +513,19 @@ Type TLuaEngine
 	Method HandleIndex:Int()
 		'pull blitzmax object (parent of the method)
 		Local obj:Object = lua_unboxobject(_luaState, 1, _objMetaTable)
-		Local ident:String = lua_tostring(_luaState, 2)
+		Local identHash:ULong = lua_LowerStringHash(_luaState, 2)
 
 		' Check if the object was valid before proceeding
 		If Not obj
 			' Log error if the object is invalid
+			Local ident:String = lua_tostring(_luaState, 2)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to access ~q"+ident+"~q (method or property) of an invalid object. Object not exposed? Object name wrong? Lua is case-sensitive!", LOG_ERROR)
 			Return 0
 		EndIf
-
 		'lua_tostring should be enough for idents (no utf8 methods/field names) 
 		'while lua_tobbstring would decode utf8 etc 
-		Local m:TMember = _FindTypeChild(obj, ident)
+
+		Local m:TMember = _FindTypeChild(obj, identHash)
 
 		'=== CHECK PUSHED OBJECT IS A METHOD or FUNCTION ===
 		'thing we have to push is a method/function
@@ -581,6 +583,7 @@ Type TLuaEngine
 		EndIf
 
 		local objTypeId:TTypeID = _FindType(obj)
+		Local ident:String = lua_tostring(_luaState, 2)
 		TLogger.Log("TLuaEngine", "[Engine " + id + "] Object ~q" + objTypeId.name() + "~q does not have or expose property ~q" + ident + "~q. Access Failed.", LOG_ERROR)
 		Return False
 	End Method
@@ -692,6 +695,7 @@ Type TLuaEngine
 		Local objType:TTypeID
 
 		Local funcOrMeth:TMember = TMember(lua_tolightobject(_luaState, LUA_GLOBALSINDEX - 2))
+
 		If Not TFunction(funcOrMeth) And Not TMethod(funcOrMeth) 
 			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling failed. No function/method given.", LOG_ERROR)
 			Return False
