@@ -59,6 +59,9 @@ Extern
 	Function lua_tobbstring:String( L:Byte Ptr,index:Int )
 	Function lua_pushbbstring:Int( L:Byte Ptr,s:String )
 
+	Function Luaengine_bbRefFieldPtr:Byte Ptr( obj:Object,index:Int )
+	Function Luaengine_bbRefPushObject( p:Byte Ptr,obj:Object )
+	Function Luaengine_bbRefGetSuperClass:Byte Ptr( obj:Object )
 	Function Luaengine_bbRefGetObjectClass:Byte Ptr( obj:Object )
 	Function lua_LowerStringHash:ULong( L:Byte Ptr,index:Int )
 	Function lua_StringHash:ULong( L:Byte Ptr,index:Int )
@@ -68,6 +71,842 @@ End Extern
 Type TLuaReflectionType
 	Field typeID:TTypeID
 	Field children:TLongMap = New TLongMap
+End Type
+Type TLuaReflectionChild
+	Field _ref:Byte Ptr 'globals, functions, methods
+	Field member:TMember
+	Field _args:Byte Ptr[10]
+
+	'todo reflect_pushargs hier her  ....
+	Function _CallFunction:Object( p:Byte Ptr,typeId:TTypeId,argsPointer:Byte Ptr[], usedArgCount:Int)
+		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
+
+		Select typeId
+		Case ByteTypeId,ShortTypeId,IntTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Int()=p
+					Return String.FromInt( f() )
+				Case 1
+					Local f:Int(p0:Byte Ptr)=p
+					Return String.FromInt( f(q[0]) )
+				Case 2
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromInt( f(q[0], q[1]) )
+				Case 3
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromInt( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromInt( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Int(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+	?Not ptr64
+		Case UIntTypeId,SizetTypeId
+	?ptr64
+		Case UIntTypeId
+	?
+			Select usedArgCount
+				Case 0
+					Local f:UInt()=p
+					Return String.FromUInt( f() )
+				Case 1
+					Local f:UInt(p0:Byte Ptr)=p
+					Return String.FromUInt( f(q[0]) )
+				Case 2
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromUInt( f(q[0], q[1]) )
+				Case 3
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromUInt( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromUInt( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:UInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromUInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case LongTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Long()=p
+					Return String.Fromlong( f() )
+				Case 1
+					Local f:Long(p0:Byte Ptr)=p
+					Return String.Fromlong( f(q[0]) )
+				Case 2
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.Fromlong( f(q[0], q[1]) )
+				Case 3
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.Fromlong( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.Fromlong( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Long(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.Fromlong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+	?Not ptr64
+		Case ULongTypeId
+	?ptr64
+		Case ULongTypeId,SizetTypeId
+	?
+			Select usedArgCount
+				Case 0
+					Local f:ULong()=p
+					Return String.FromULong( f() )
+				Case 1
+					Local f:ULong(p0:Byte Ptr)=p
+					Return String.FromULong( f(q[0]) )
+				Case 2
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromULong( f(q[0], q[1]) )
+				Case 3
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromULong( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromULong( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:ULong(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromULong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case FloatTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Float()=p
+					Return String.FromFloat( f() )
+				Case 1
+					Local f:Float(p0:Byte Ptr)=p
+					Return String.FromFloat( f(q[0]) )
+				Case 2
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromFloat( f(q[0], q[1]) )
+				Case 3
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromFloat( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromFloat( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Float(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case DoubleTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Double()=p
+					Return String.FromDouble( f() )
+				Case 1
+					Local f:Double(p0:Byte Ptr)=p
+					Return String.FromDouble( f(q[0]) )
+				Case 2
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromDouble( f(q[0], q[1]) )
+				Case 3
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromDouble( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromDouble( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Double(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case VoidTypeId
+			Select usedArgCount
+				Case 0
+					Local f()=p
+					f()
+				Case 1
+					Local f(p0:Byte Ptr)=p
+					f(q[0])
+				Case 2
+					Local f(p0:Byte Ptr, p1:Byte Ptr)=p
+					f(q[0], q[1])
+				Case 3
+					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					f(q[0], q[1], q[2])
+				Case 4
+					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					f(q[0], q[1], q[2], q[3])
+				Case 5
+					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					f(q[0], q[1], q[2], q[3], q[4])
+				Case 6
+					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					f(q[0], q[1], q[2], q[3], q[4], q[5])
+				Case 7
+					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					f(q[0], q[1], q[2], q[3], q[4], q[5], q[6])
+				Case 8
+					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+				Default
+					Local f(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+			End Select
+		Case LongIntTypeId
+			Select usedArgCount
+				Case 0
+					Local f:LongInt()=p
+					Return String.FromLongInt( f() )
+				Case 1
+					Local f:LongInt(p0:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0]) )
+				Case 2
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0], q[1]) )
+				Case 3
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:LongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromLongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case ULongIntTypeId
+			Select usedArgCount
+				Case 0
+					Local f:ULongInt()=p
+					Return String.FromULongInt( f() )
+				Case 1
+					Local f:ULongInt(p0:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0]) )
+				Case 2
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0], q[1]) )
+				Case 3
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:ULongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromULongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Default
+			If typeid.ExtendsType(PointerTypeId) Or typeid.ExtendsType(FunctionTypeId) Then
+	?Not ptr64
+				Select usedArgCount
+					Case 0
+						Local f:Byte Ptr()=p
+						Return String.FromInt(Int f())
+					Case 1
+						Local f:Byte Ptr(p0:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0]))
+					Case 2
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0], q[1]))
+					Case 3
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0], q[1], q[2]))
+					Case 4
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0], q[1], q[2], q[3]))
+					Case 5
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4]))
+					Case 6
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4], q[5]))
+					Case 7
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
+					Case 8
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
+					Default
+						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+						Return String.FromInt(Int f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+				End Select
+	?ptr64
+				Select usedArgCount
+					Case 0
+						Local f:Byte Ptr()=p
+						Return String.Fromlong(Long f())
+					Case 1
+						Local f:Byte Ptr(p0:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0]))
+					Case 2
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0], q[1]))
+					Case 3
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0], q[1], q[2]))
+					Case 4
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3]))
+					Case 5
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4]))
+					Case 6
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4], q[5]))
+					Case 7
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
+					Case 8
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
+					Default
+						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+						Return String.Fromlong(Long f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+				End Select
+	?
+			Else
+				Select usedArgCount
+					Case 0
+						Local f:Object()=p
+						Return f()
+					Case 1
+						Local f:Object(p0:Byte Ptr)=p
+						Return f(q[0])
+					Case 2
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr)=p
+						Return f(q[0], q[1])
+					Case 3
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+						Return f(q[0], q[1], q[2])
+					Case 4
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+						Return f(q[0], q[1], q[2], q[3])
+					Case 5
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+						Return f(q[0], q[1], q[2], q[3], q[4])
+					Case 6
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+						Return f(q[0], q[1], q[2], q[3], q[4], q[5])
+					Case 7
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+						Return f(q[0], q[1], q[2], q[3], q[4], q[5], q[6])
+					Case 8
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						Return f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+					Default
+						Local f:Object(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+						Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+				End Select
+			End If
+		End Select
+	End Function
+
+	Function _CallMethod:Object( p:Byte Ptr, retType:TTypeId, obj:Object, argsPointer:Byte Ptr[], usedArgCount:Int )
+		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
+		
+		Select retType
+		Case ByteTypeId,ShortTypeId,IntTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Int(m:Object)=p
+					Return String.FromInt( f(obj) )
+				Case 1
+					Local f:Int(m:Object, p0:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0]) )
+				Case 2
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Int(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+	?Not ptr64
+		Case UIntTypeId,SizetTypeId
+	?ptr64
+		Case UIntTypeId
+	?
+			Select usedArgCount
+				Case 0
+					Local f:UInt(m:Object)=p
+					Return String.FromUInt( f(obj) )
+				Case 1
+					Local f:UInt(m:Object, p0:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0]) )
+				Case 2
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:UInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromUInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case LongTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Long(m:Object)=p
+					Return String.Fromlong( f(obj) )
+				Case 1
+					Local f:Long(m:Object, p0:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0]) )
+				Case 2
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Long(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.Fromlong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+	?Not ptr64
+		Case ULongTypeId
+	?ptr64
+		Case ULongTypeId,SizetTypeId
+	?
+			Select usedArgCount
+				Case 0
+					Local f:ULong(m:Object)=p
+					Return String.FromULong( f(obj) )
+				Case 1
+					Local f:ULong(m:Object, p0:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0]) )
+				Case 2
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:ULong(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromULong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case FloatTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Float(m:Object)=p
+					Return String.FromFloat( f(obj) )
+				Case 1
+					Local f:Float(m:Object, p0:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0]) )
+				Case 2
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Float(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case DoubleTypeId
+			Select usedArgCount
+				Case 0
+					Local f:Double(m:Object)=p
+					Return String.FromDouble( f(obj) )
+				Case 1
+					Local f:Double(m:Object, p0:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0]) )
+				Case 2
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:Double(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case LongIntTypeId
+			Select usedArgCount
+				Case 0
+					Local f:LongInt(m:Object)=p
+					Return String.FromLongInt( f(obj) )
+				Case 1
+					Local f:LongInt(m:Object, p0:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0]) )
+				Case 2
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:LongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromLongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case ULongIntTypeId
+			Select usedArgCount
+				Case 0
+					Local f:ULongInt(m:Object)=p
+					Return String.FromULongInt( f(obj) )
+				Case 1
+					Local f:ULongInt(m:Object, p0:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0]) )
+				Case 2
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0], q[1]) )
+				Case 3
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Case 8
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+				Default
+					Local f:ULongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					Return String.FromULongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+			End Select
+		Case VoidTypeId
+			Select usedArgCount
+				Case 0
+					Local f(m:Object)=p
+					f(obj)
+				Case 1
+					Local f(m:Object, p0:Byte Ptr)=p
+					f(obj, q[0])
+				Case 2
+					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					f(obj, q[0], q[1])
+				Case 3
+					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					f(obj, q[0], q[1], q[2])
+				Case 4
+					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					f(obj, q[0], q[1], q[2], q[3])
+				Case 5
+					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					f(obj, q[0], q[1], q[2], q[3], q[4])
+				Case 6
+					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					f(obj, q[0], q[1], q[2], q[3], q[4], q[5])
+				Case 7
+					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6])
+				Case 8
+					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+				Default
+					Local f(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+					f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+			End Select
+		Default
+			If retType.ExtendsType(PointerTypeId) Or retType.ExtendsType(FunctionTypeId) Then
+	?Not ptr64
+				Select usedArgCount
+					Case 0
+						Local f:Byte Ptr(m:Object)=p
+						Return String.FromInt(Int f(obj))
+					Case 1
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0]))
+					Case 2
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0], q[1]))
+					Case 3
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0], q[1], q[2]))
+					Case 4
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3]))
+					Case 5
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4]))
+					Case 6
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5]))
+					Case 7
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
+					Case 8
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
+					Default
+						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+						Return String.FromInt(Int f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+				End Select
+	?ptr64
+				Select usedArgCount
+					Case 0
+						Local f:Byte Ptr(m:Object)=p
+						Return String.FromLong(Long f(obj))
+					Case 1
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0]))
+					Case 2
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0], q[1]))
+					Case 3
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0], q[1], q[2]))
+					Case 4
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3]))
+					Case 5
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4]))
+					Case 6
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5]))
+					Case 7
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
+					Case 8
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
+					Default
+						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+						Return String.FromLong(Long f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+				End Select
+	?
+			Else
+				Select usedArgCount
+					Case 0
+						Local f:Object(m:Object)=p
+						Return f(obj)
+					Case 1
+						Local f:Object(m:Object, p0:Byte Ptr)=p
+						Return f(obj, q[0])
+					Case 2
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+						Return f(obj, q[0], q[1])
+					Case 3
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+						Return f(obj, q[0], q[1], q[2])
+					Case 4
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+						Return f(obj, q[0], q[1], q[2], q[3])
+					Case 5
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+						Return f(obj, q[0], q[1], q[2], q[3], q[4])
+					Case 6
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+						Return f(obj, q[0], q[1], q[2], q[3], q[4], q[5])
+					Case 7
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+						Return f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6])
+					Case 8
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						Return f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+					Default
+						Local f:Object(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
+						Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+				End Select
+			End If
+		End Select
+	End Function
 End Type
 
 
@@ -438,8 +1277,19 @@ Type TLuaEngine
 						If m.HasMetaData("_private") or (exposeType = "selected" And Not m.MetaData("_exposeToLua"))
 							continue
 						EndIf
+
+						Local c:TLuaReflectionChild = New TLuaReflectionChild
+						c.member = m
 						
-						reflectionType.children.Insert(Long(key.ToLower().Hash()), m)
+						If TFunction(m)
+							c._ref = TFunction(m)._ref 
+						ElseIf TMethod(m)
+							c._ref = TMethod(m)._ref 
+						ElseIf TGlobal(m)
+							c._ref = TGlobal(m)._ref 
+						EndIf
+						reflectionType.children.Insert(Long(key.ToLower().Hash()), c)
+						
 					Next
 				Next
 			EndIf
@@ -449,7 +1299,7 @@ Type TLuaEngine
 	
 	
 	Method _FindTypeChild:TMember(obj:Object, identHash:ULong)
-		Return TMember(_GetReflectionType(obj).children.ValueForKey(Long(identHash)))
+		Return TLuaReflectionChild(_GetReflectionType(obj).children.ValueForKey(Long(identHash))).member
 	End Method
 
 
@@ -458,6 +1308,59 @@ Type TLuaEngine
 	End Method
 	
 	
+	Function Reflection_ArgPush(sp:Byte Ptr, value:Int)
+		(Int Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:UInt)
+		(UInt Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:Long)
+		(Long Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:ULong)
+		(ULong Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:Size_T)
+		(Size_T Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:Float)
+		(Float Ptr sp)[0]=value
+	End Function
+	
+	Function Reflection_ArgPush(sp:Byte Ptr, value:Double)
+		(Double Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:LongInt)
+		(LongInt Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:ULongInt)
+		(ULongInt Ptr sp)[0]=value
+	End Function
+
+	Function Reflection_ArgPush(sp:Byte Ptr, value:String)
+		LuaEngine_bbRefPushObject(sp, value)
+	End Function
+	
+	Function Reflection_ArgPush(sp:Byte Ptr, value:Object, typeid:TTypeId)
+		If value
+			If typeid.ExtendsType(PointerTypeId) Or typeid.ExtendsType(FunctionTypeId) Then
+?Not ptr64
+				(Int Ptr sp)[0]=value.ToString().ToInt()
+?ptr64
+				(Long Ptr sp)[0]=value.ToString().ToLong()
+?
+			EndIf
+		EndIf
+		Luaengine_bbRefPushObject sp,value
+	End Function
+
 	'=== LUA BLITZMAX COUPLING ===
 	
 	Function _HandleIndex:Int(luaState:Byte Ptr)
@@ -704,12 +1607,15 @@ Type TLuaEngine
 			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + funcOrMeth.name() + "()~q failed. No or invalid parent given.", LOG_ERROR)
 			Return False
 		EndIf
+
 		Local func:TFunction = TFunction(funcOrMeth)
 		Local mth:TMethod = TMethod(funcOrMeth)
 		Local argTypes:TTypeId[]
-		If func Then argTypes = func.ArgTypes()
-		If mth Then argTypes = mth.ArgTypes()
-		Local args:Object[argTypes.length]
+		If mth 
+			argTypes = mth.ArgTypes()
+		ElseIf func
+			argTypes = func.ArgTypes()
+		EndIf
 
 		'Reflection cannot handle "defaults", so all Lua calls need pass
 		'all arguments defined in the function or method
@@ -739,7 +1645,7 @@ Type TLuaEngine
 			'first passed parameter is the same as the parent of the called
 			'method/function? Might be a lua method call
 			if paramObj = obj
-				if passedArgumentCount = args.length + 1
+				if passedArgumentCount = argTypes.length + 1
 					isLuaMethodCall = True
 
 				'Maybe first param was forgotten but has to be of same
@@ -750,7 +1656,7 @@ Type TLuaEngine
 				'                        function with "TVT" as argument
 				'Lua: TVT.MyMethod()  -> blitzmax sees no argument
 				'                        it could correctly fail (wrong arg amount)
-				ElseIf passedArgumentCount = args.length
+				ElseIf passedArgumentCount = argTypes.length
 					If not objType Then objType = _FindType(obj)
 					If argTypes[0] = objType
 						isLuaMethodCall = False
@@ -762,9 +1668,9 @@ Type TLuaEngine
 		if isLuaMethodCall then passedArgumentCount :- 1
 		
 
-		If passedArgumentCount <> args.length
+		If passedArgumentCount <> argTypes.length
 			If not objType Then objType = _FindType(obj)
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + args.length+" argument(s) required.", LOG_ERROR)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + argTypes.length+" argument(s) required.", LOG_ERROR)
 			Return False
 		EndIf
 
@@ -772,19 +1678,24 @@ Type TLuaEngine
 		Local luaArgsOffset:Int = 0
 		if isLuaMethodCall then luaArgsOffset = 1
 
+'lua_pop(_luaState, lua_gettop(_luaState))
+'lua_pushinteger(_luaState, 1)
+'Return 1
+		Local args:Byte Ptr[argTypes.length]
 		Local invalidArgs:Int = 0
+
 		For Local i:Int = 0 Until args.length
 			Local luaIndex:Int = i + luaArgsOffset + 1  ' Precompute Lua stack index
 
 			Select argTypes[i]
 				Case IntTypeId, ShortTypeId, ByteTypeId
 					if lua_isboolean(_luaState, luaIndex)
-						args[i] = String.FromInt(int(lua_toboolean(_luaState, luaIndex)))
+						Reflection_ArgPush(varptr args[i], int(lua_toboolean(_luaState, luaIndex)))
 					else
 						?ptr64
-							args[i] = String.FromLong(lua_tointeger(_luaState, luaIndex))
+							Reflection_ArgPush(varptr args[i], Long(lua_tointeger(_luaState, luaIndex)))
 						?Not ptr64
-							args[i] = String.FromInt(int(lua_tointeger(_luaState, luaIndex)))
+							Reflection_ArgPush(varptr args[i], Int(lua_tointeger(_luaState, luaIndex)))
 						?
 					endif
 				Case LongTypeId
@@ -792,26 +1703,27 @@ Type TLuaEngine
 					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
 					?
 					if lua_isboolean(_luaState, luaIndex)
-						args[i] = String.FromInt(int(lua_toboolean(_luaState, luaIndex)))
+						Reflection_ArgPush(varptr args[i], Int(lua_toboolean(_luaState, luaIndex)))
 					else
-						args[i] = String.FromLong(Long(lua_tonumber(_luaState, luaIndex)))
+						Reflection_ArgPush(varptr args[i], Long(lua_tonumber(_luaState, luaIndex)))
 					endif
 				Case FloatTypeId
-					args[i] = String.FromFloat(Float(lua_tonumber(_luaState, luaIndex)))
+					Reflection_ArgPush(varptr args[i], Float(lua_tonumber(_luaState, luaIndex)))
 				Case DoubleTypeId
 					?not ptr64
 					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
 					?
-					args[i] = String.FromDouble(lua_tonumber(_luaState, luaIndex))
+					Reflection_ArgPush(varptr args[i], Double(lua_tonumber(_luaState, luaIndex)))
 				Case StringTypeId
-					args[i] = lua_tobbstring(_luaState, luaIndex)
+					Reflection_ArgPush(varptr args[i], lua_tobbstring(_luaState, luaIndex))
 				Default
 					local paramObj:object
+					Local paramObjType:TTypeID
 					if lua_isnil(_luaState, luaIndex)
 						paramObj = null
 					elseif lua_isuserdata(_luaState, luaIndex)
 						paramObj = lua_unboxobject(_luaState, luaIndex, _objMetaTable)
-						Local paramObjType:TTypeID = _FindType(paramObj)
+						paramObjType = _FindType(paramObj)
 						'given param does not derive from requested param type (so incompatible)
 						if not paramObjType or not paramObjType.ExtendsType(argTypes[i])
 							If not objType Then objType = _FindType(obj)
@@ -825,7 +1737,7 @@ Type TLuaEngine
 						invalidArgs :+ 1
 						paramObj = null
 					endif
-					args[i] = paramObj
+					Reflection_ArgPush(varptr args[i], paramObj, paramObjType)
 			End Select
 		Next
 		'stop execution if an argument did not fit
@@ -837,9 +1749,9 @@ Type TLuaEngine
 
 		Local t:Object
 		If func 
-			t = func.Invoke(args)
+			t = TLuaReflectionChild._CallFunction(mth._ref, func._typeID, args, argTypes.length)
 		ElseIf mth
-			t = mth.Invoke(obj, args)
+			t = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, args, argTypes.length)
 		EndIf
 		Local typeId:TTypeId = funcOrMeth.TypeID().ReturnType()
 
@@ -848,7 +1760,6 @@ Type TLuaEngine
 		Select typeId
 			Case IntTypeId, ShortTypeId, ByteTypeId
 				lua_pushinteger(_luaState, t.ToString().ToInt())
-'				lua_pushnumber(_luaState, t.ToString().ToLong())
 			Case LongTypeId
 				lua_pushnumber(_luaState, t.ToString().ToLong())
 			Case FloatTypeId

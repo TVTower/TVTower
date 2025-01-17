@@ -10,6 +10,19 @@
 BBClass *Luaengine_bbRefGetObjectClass( BBObject *p ){
 	return p->clas;
 }
+BBClass *Luaengine_bbRefGetSuperClass( BBClass *clas ){
+	return clas->super;
+}
+void Luaengine_bbRefPushObject( BBObject **p,BBObject *t ){
+	*p=t;
+}
+void *Luaengine_bbRefFieldPtr( BBObject *obj,int index ){
+	return (char*)obj+index;
+}
+
+
+
+
 
 // Function to hash a Lua string
 BBULONG lua_StringHash(lua_State* L, int index) {
@@ -40,7 +53,7 @@ BBULONG lua_StringHash(lua_State* L, int index) {
 
 
 // Function to hash a Lua string case-insensitively
-unsigned long long lua_LowerStringHash(lua_State* L, int index) {
+BBULONG lua_LowerStringHash(lua_State* L, int index) {
     size_t length;
     const char* str = lua_tolstring(L, index, &length);
 
@@ -65,7 +78,7 @@ unsigned long long lua_LowerStringHash(lua_State* L, int index) {
     }
 
     // Compute and return the xxHash hash for the lowercase BBChar string
-    unsigned long long hash = XXH3_64bits((const char*)utf16Str, utf16Length * sizeof(BBChar));
+    BBULONG hash = XXH3_64bits((const char*)utf16Str, utf16Length * sizeof(BBChar));
 
     // Free the allocated memory for the BBChar string
     free(utf16Str);
