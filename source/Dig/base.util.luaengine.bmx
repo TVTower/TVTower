@@ -76,6 +76,78 @@ Type TLuaReflectionChild
 	Field _ref:Byte Ptr 'globals, functions, methods
 	Field member:TMember
 	Field _args:Byte Ptr[10]
+	
+	Method ArgReset()
+		For local i:int = 0 until 10
+			_args[i] = 0
+		Next
+	End Method
+
+	Method ArgPush(index:Int, value:Int)
+		Local p:Int Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:UInt)
+		Local p:UInt Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:Long)
+		Local p:Long Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:ULong)
+		Local p:ULong Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:Size_T)
+		Local p:Size_T Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:Float)
+		Local p:Float Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+	
+	Method ArgPush(index:Int, value:Double)
+		Local p:Double Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:LongInt)
+		Local p:LongInt Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:ULongInt)
+		Local p:ULongInt Ptr = varptr _args[index]
+		p[0] = value
+	End Method
+
+	Method ArgPush(index:Int, value:String)
+		Local p:Byte Ptr = varptr _args[index]
+		LuaEngine_bbRefPushObject(p, value)
+	End Method
+	
+	Method ArgPush(index:Int, value:Object, typeid:TTypeId)
+		Local p:Byte Ptr = varptr _args[index]
+		If value
+			If typeid.ExtendsType(PointerTypeId) Or typeid.ExtendsType(FunctionTypeId) Then
+?Not ptr64
+				(Int Ptr p)[0]=value.ToString().ToInt()
+?ptr64
+				(Long Ptr p)[0]=value.ToString().ToLong()
+?
+			EndIf
+		EndIf
+		Luaengine_bbRefPushObject(p, value)
+	End Method
+
+
 
 	'todo reflect_pushargs hier her  ....
 	Function _CallFunction:Object( p:Byte Ptr,typeId:TTypeId,argsPointer:Byte Ptr[], usedArgCount:Int)
@@ -1298,8 +1370,8 @@ Type TLuaEngine
 	End Method
 	
 	
-	Method _FindTypeChild:TMember(obj:Object, identHash:ULong)
-		Return TLuaReflectionChild(_GetReflectionType(obj).children.ValueForKey(Long(identHash))).member
+	Method _FindTypeChild:TLuaReflectionChild(obj:Object, identHash:ULong)
+		Return TLuaReflectionChild(_GetReflectionType(obj).children.ValueForKey(Long(identHash)))
 	End Method
 
 
@@ -1308,59 +1380,6 @@ Type TLuaEngine
 	End Method
 	
 	
-	Function Reflection_ArgPush(sp:Byte Ptr, value:Int)
-		(Int Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:UInt)
-		(UInt Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:Long)
-		(Long Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:ULong)
-		(ULong Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:Size_T)
-		(Size_T Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:Float)
-		(Float Ptr sp)[0]=value
-	End Function
-	
-	Function Reflection_ArgPush(sp:Byte Ptr, value:Double)
-		(Double Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:LongInt)
-		(LongInt Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:ULongInt)
-		(ULongInt Ptr sp)[0]=value
-	End Function
-
-	Function Reflection_ArgPush(sp:Byte Ptr, value:String)
-		LuaEngine_bbRefPushObject(sp, value)
-	End Function
-	
-	Function Reflection_ArgPush(sp:Byte Ptr, value:Object, typeid:TTypeId)
-		If value
-			If typeid.ExtendsType(PointerTypeId) Or typeid.ExtendsType(FunctionTypeId) Then
-?Not ptr64
-				(Int Ptr sp)[0]=value.ToString().ToInt()
-?ptr64
-				(Long Ptr sp)[0]=value.ToString().ToLong()
-?
-			EndIf
-		EndIf
-		Luaengine_bbRefPushObject sp,value
-	End Function
-
 	'=== LUA BLITZMAX COUPLING ===
 	
 	Function _HandleIndex:Int(luaState:Byte Ptr)
@@ -1428,20 +1447,20 @@ Type TLuaEngine
 		'lua_tostring should be enough for idents (no utf8 methods/field names) 
 		'while lua_tobbstring would decode utf8 etc 
 
-		Local m:TMember = _FindTypeChild(obj, identHash)
+		Local child:TLuaReflectionChild = _FindTypeChild(obj, identHash)
 
 		'=== CHECK PUSHED OBJECT IS A METHOD or FUNCTION ===
 		'thing we have to push is a method/function
-		If TMethod(m) or TFunction(m)
+		If TMethod(child.member) or TFunction(child.member)
 			lua_pushvalue(_luaState, 1)
-			lua_pushlightobject(_luaState, m)
+			lua_pushlightobject(_luaState, child)
 			lua_pushcclosure(_luaState, _HandleInvoke, 2)
 			Return True
 		EndIf
 
 		'===== CHECK PUSHED OBJECT IS A FIELD / CONSTANT =====
-		If TField(m)
-			Local fld:TField = TField(m)
+		If TField(child.member)
+			Local fld:TField = TField(child.member)
 			Select fld.TypeId()
 				Case IntTypeId, ShortTypeId, ByteTypeId
 					lua_pushinteger(_luaState, fld.GetInt(obj))
@@ -1467,8 +1486,8 @@ Type TLuaEngine
 
 
 		'===== CHECK PUSHED OBJECT IS A CONSTANT =====
-		If TConstant(m)
-			Local constant:TConstant = TConstant(m)
+		If TConstant(child.member)
+			Local constant:TConstant = TConstant(child.member)
 
 			Select constant.TypeId() ' BaH - added more types
 				Case IntTypeId, ShortTypeId, ByteTypeId
@@ -1597,19 +1616,20 @@ Type TLuaEngine
 		
 		Local objType:TTypeID
 
-		Local funcOrMeth:TMember = TMember(lua_tolightobject(_luaState, LUA_GLOBALSINDEX - 2))
+		'Local funcOrMeth:TMember = TMember(lua_tolightobject(_luaState, LUA_GLOBALSINDEX - 2))
+		Local child:TLuaReflectionChild = TLuaReflectionChild(lua_tolightobject(_luaState, LUA_GLOBALSINDEX - 2))
 
-		If Not TFunction(funcOrMeth) And Not TMethod(funcOrMeth) 
+		If Not TFunction(child.member) And Not TMethod(child.member) 
 			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling failed. No function/method given.", LOG_ERROR)
 			Return False
 		EndIf
 		If Not obj 
-			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + funcOrMeth.name() + "()~q failed. No or invalid parent given.", LOG_ERROR)
+			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + child.member.name() + "()~q failed. No or invalid parent given.", LOG_ERROR)
 			Return False
 		EndIf
 
-		Local func:TFunction = TFunction(funcOrMeth)
-		Local mth:TMethod = TMethod(funcOrMeth)
+		Local func:TFunction = TFunction(child.member)
+		Local mth:TMethod = TMethod(child.member)
 		Local argTypes:TTypeId[]
 		If mth 
 			argTypes = mth.ArgTypes()
@@ -1660,7 +1680,7 @@ Type TLuaEngine
 					If not objType Then objType = _FindType(obj)
 					If argTypes[0] = objType
 						isLuaMethodCall = False
-						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
+						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + child.member.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
 					EndIf
 				EndIf
 			endif
@@ -1670,7 +1690,7 @@ Type TLuaEngine
 
 		If passedArgumentCount <> argTypes.length
 			If not objType Then objType = _FindType(obj)
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + funcOrMeth.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + argTypes.length+" argument(s) required.", LOG_ERROR)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + child.member.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + argTypes.length+" argument(s) required.", LOG_ERROR)
 			Return False
 		EndIf
 
@@ -1681,21 +1701,21 @@ Type TLuaEngine
 'lua_pop(_luaState, lua_gettop(_luaState))
 'lua_pushinteger(_luaState, 1)
 'Return 1
-		Local args:Byte Ptr[argTypes.length]
 		Local invalidArgs:Int = 0
 
-		For Local i:Int = 0 Until args.length
+		child.ArgReset()
+		For Local i:Int = 0 Until argTypes.length
 			Local luaIndex:Int = i + luaArgsOffset + 1  ' Precompute Lua stack index
 
 			Select argTypes[i]
 				Case IntTypeId, ShortTypeId, ByteTypeId
 					if lua_isboolean(_luaState, luaIndex)
-						Reflection_ArgPush(varptr args[i], int(lua_toboolean(_luaState, luaIndex)))
+						child.ArgPush(i, int(lua_toboolean(_luaState, luaIndex)))
 					else
 						?ptr64
-							Reflection_ArgPush(varptr args[i], Long(lua_tointeger(_luaState, luaIndex)))
+							child.ArgPush(i, Long(lua_tointeger(_luaState, luaIndex)))
 						?Not ptr64
-							Reflection_ArgPush(varptr args[i], Int(lua_tointeger(_luaState, luaIndex)))
+							child.ArgPush(i, Int(lua_tointeger(_luaState, luaIndex)))
 						?
 					endif
 				Case LongTypeId
@@ -1703,19 +1723,19 @@ Type TLuaEngine
 					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
 					?
 					if lua_isboolean(_luaState, luaIndex)
-						Reflection_ArgPush(varptr args[i], Int(lua_toboolean(_luaState, luaIndex)))
+						child.ArgPush(i, Int(lua_toboolean(_luaState, luaIndex)))
 					else
-						Reflection_ArgPush(varptr args[i], Long(lua_tonumber(_luaState, luaIndex)))
+						child.ArgPush(i, Long(lua_tonumber(_luaState, luaIndex)))
 					endif
 				Case FloatTypeId
-					Reflection_ArgPush(varptr args[i], Float(lua_tonumber(_luaState, luaIndex)))
+					child.ArgPush(i, Float(lua_tonumber(_luaState, luaIndex)))
 				Case DoubleTypeId
 					?not ptr64
 					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
 					?
-					Reflection_ArgPush(varptr args[i], Double(lua_tonumber(_luaState, luaIndex)))
+					child.ArgPush(i, Double(lua_tonumber(_luaState, luaIndex)))
 				Case StringTypeId
-					Reflection_ArgPush(varptr args[i], lua_tobbstring(_luaState, luaIndex))
+					child.ArgPush(i, lua_tobbstring(_luaState, luaIndex))
 				Default
 					local paramObj:object
 					Local paramObjType:TTypeID
@@ -1727,33 +1747,35 @@ Type TLuaEngine
 						'given param does not derive from requested param type (so incompatible)
 						if not paramObjType or not paramObjType.ExtendsType(argTypes[i])
 							If not objType Then objType = _FindType(obj)
-							TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
+							TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + child.member.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
 							invalidArgs :+ 1
 							paramObj = Null
 						endif
 					else
 						If not objType Then objType = _FindType(obj)
-						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + funcOrMeth.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
+						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + child.member.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
 						invalidArgs :+ 1
 						paramObj = null
 					endif
-					Reflection_ArgPush(varptr args[i], paramObj, paramObjType)
+					child.ArgPush(i, paramObj, paramObjType)
 			End Select
 		Next
 		'stop execution if an argument did not fit
 		if invalidArgs > 0
 			If not objType Then objType = _FindType(obj)
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + funcOrMeth.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + child.member.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
 			Return False
 		EndIf
 
 		Local t:Object
 		If func 
-			t = TLuaReflectionChild._CallFunction(mth._ref, func._typeID, args, argTypes.length)
+			t = TLuaReflectionChild._CallFunction(mth._ref, func._typeID, child._args, argTypes.length)
+			child.ArgReset() 'remove potential refs
 		ElseIf mth
-			t = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, args, argTypes.length)
+			t = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, child._args, argTypes.length)
+			child.ArgReset() 'remove potential refs
 		EndIf
-		Local typeId:TTypeId = funcOrMeth.TypeID().ReturnType()
+		Local typeId:TTypeId = child.member.TypeID().ReturnType()
 
 		If Object[](t).length > 0 Then typeId = ArrayTypeId
 
