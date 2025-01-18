@@ -149,10 +149,9 @@ Type TLuaReflectionChild
 
 
 
-	'todo reflect_pushargs hier her  ....
 	Function _CallFunction:Object( p:Byte Ptr,typeId:TTypeId,argsPointer:Byte Ptr[], usedArgCount:Int)
 		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
-
+ 
 		Select typeId
 		Case ByteTypeId,ShortTypeId,IntTypeId
 			Select usedArgCount
@@ -1513,9 +1512,10 @@ Type TLuaEngine
 
 
 	Method HandleNewIndex:Int( )
+		'pull blitzmax object (parent of the field/property)
 		Local obj:Object = lua_unboxobject(_luaState, 1, _objMetaTable)
+		Local identHash:ULong = lua_LowerStringHash(_luaState, 2)
 		Local passedArgumentCount:Int = lua_gettop(_luaState)
-		Local ident:String = lua_tobbstring(_luaState, 2)
 
 		'=== CHECK OBJ / PROPERTY AND PRIVACY ===
 
@@ -1524,79 +1524,55 @@ Type TLuaEngine
 			' remove unprocessed arguments
 			lua_pop(_luaState, passedArgumentCount)
 			' Log error if the object is invalid
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to set field ~q"+ident+"~q of an invalid object. Object not exposed?", LOG_ERROR)
+			Local ident:String = lua_tostring(_luaState, 2)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to set field ~q"+ident+"~q of an invalid object.", LOG_ERROR)
 			Return 0
 		EndIf
 
-
-		Local typeId:TTypeId = TTypeId.ForObject(obj)
-
-		'only expose if type set to get exposed
-		Local exposeType:String = typeId.MetaData("_exposeToLua")
-		If not exposeType
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] Type " + typeId.name() + " not exposed to Lua.", LOG_ERROR)
+		Local child:TLuaReflectionChild = _FindTypeChild(obj, identHash)
+		If not child
+			Local t:TTypeID = _FindType(obj)
+			If not t
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] Type " + t.name() + " not exposed to Lua.", LOG_ERROR)
+			Else
+				Local ident:String = lua_tostring(_luaState, 2)
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to set not exposed field ~q"+t.name()+"."+ident+"~q.", LOG_ERROR)
+			EndIf
 		EndIf
 
-		'I do not know how to handle arrays properly (needs metatables
-		'and custom userdata)
-		If typeId.name().contains("[]")
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] Arrays are not supported - array type: " + typeId.name() + ".", LOG_ERROR)
-			'array index is
-			'print lua_tobbstring(_luaState, 2)
-			'array value is
-			'print lua_tobbstring(_luaState, 3)
-			Return True
-		EndIf
-
-
-		Local fld:TField=typeId.FindField(ident)
+		Local fld:TField=TField(child.member)
 		If Not fld
 			' remove unprocessed arguments
 			lua_pop(_luaState, passedArgumentCount)
-			If exposeType = "selected" 
-				TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to set unknown field ~q"+ident+"~q. Field not exposed with {_exposeToLua=~qrw~q} ?", LOG_ERROR)
-			Else
-				TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to set unknown field ~q"+ident+"~q.", LOG_ERROR)
-			EndIf
+			Local ident:String = lua_tostring(_luaState, 2)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] reflection cache incorrect. Member is not a TField: ~q"+ident+"~q.", LOG_ERROR)
+			Return True
 		EndIf
 		
 		
 		'=== SET FIELD VALUE ===
-
-		If fld
-			'PRIVATE...do not allow write to  private functions/methods
-			'check could be removed if performance critical
-			If fld.HasMetaData("_private") Then Return True
-
-			'only set values of children with explicit mention
-			If exposeType = "selected" And Not fld.MetaData("_exposeToLua") Then Return True
-			If fld.MetaData("_exposeToLua")<>"rw"
-				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object property "+typeId.name()+"."+ident+" is read-only. Forgot to mark  {_exposeToLua=~qrw~q} ?", LOG_ERROR)
-				Return True
-			EndIf
-
-			'set to null ?
-			If lua_isnil(_luaState, 3)
-				Select fld.TypeId()
-					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, ULongTypeId, UIntTypeId, SizetTypeId
-						fld.SetByte(obj, 0:Byte)
-					Case StringTypeId
-						fld.SetString(obj, "")
-					Default
-						fld.SetObject(obj, null)
-				End Select
-			Else
-				Select fld.TypeId()
-					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, ULongTypeId, UIntTypeId, SizetTypeId
-						fld.Set(obj, lua_tonumber(_luaState, 3))
-					Case StringTypeId
-						fld.Set(obj, lua_tobbstring(_luaState, 3))
-					Default
-						fld.Set(obj, lua_unboxobject(_luaState, 3, _objMetaTable))
-				End Select
-			EndIf
-			Return True
+		'PRIVATE...do not allow write to  private functions/methods
+		'set to null ?
+		If lua_isnil(_luaState, 3)
+			Select fld.TypeId()
+				Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, ULongTypeId, UIntTypeId, SizetTypeId
+					fld.SetByte(obj, 0:Byte)
+				Case StringTypeId
+					fld.SetString(obj, "")
+				Default
+					fld.SetObject(obj, null)
+			End Select
+		Else
+			Select fld.TypeId()
+				Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, ULongTypeId, UIntTypeId, SizetTypeId
+					fld.Set(obj, lua_tonumber(_luaState, 3))
+				Case StringTypeId
+					fld.Set(obj, lua_tobbstring(_luaState, 3))
+				Default
+					fld.Set(obj, lua_unboxobject(_luaState, 3, _objMetaTable))
+			End Select
 		EndIf
+		Return True
 	End Method
 
 
@@ -1698,9 +1674,7 @@ Type TLuaEngine
 		Local luaArgsOffset:Int = 0
 		if isLuaMethodCall then luaArgsOffset = 1
 
-'lua_pop(_luaState, lua_gettop(_luaState))
-'lua_pushinteger(_luaState, 1)
-'Return 1
+
 		Local invalidArgs:Int = 0
 
 		child.ArgReset()
