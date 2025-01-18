@@ -151,7 +151,7 @@ Type TLuaReflectionChild
 
 	Function _CallFunction:Object( p:Byte Ptr,typeId:TTypeId,argsPointer:Byte Ptr[], usedArgCount:Int)
 		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
- 
+
 		Select typeId
 		Case ByteTypeId,ShortTypeId,IntTypeId
 			Select usedArgCount
@@ -1327,40 +1327,53 @@ Type TLuaEngine
 			reflectionType.typeID = TTypeID.ForObject(obj)
 			If reflectionType.typeID
 				Local typeID:TTypeID = reflectionType.typeID
-				Local typeName:String = typeID.name()
-				Local whiteListedType:Int = _whiteListedTypes.Contains(typeName)
-				Local exposeType:String
-				if not whiteListedType
-					exposeType = typeID.MetaData("_exposeToLua")
-					'whitelist the type if set to expose everything not just
-					'"selected"
-					if exposeType <> "selected"
-						_whiteListedTypes.Insert(typeName, "" )
-					endif
-				endif
 
 				'methods, fields and functions cannot share names
 				'except for overloads (for now we do not handle that)
-				For local map:TStringMap = EachIn [typeID.Functions(), typeID.Methods(), typeID.Fields(), typeID.Constants()]
-					For local key:String = EachIn map.Keys()
-						Local m:TMember = TMember(map.ValueForKey(key))
-						'only add non-private etc.
-						If m.HasMetaData("_private") or (exposeType = "selected" And Not m.MetaData("_exposeToLua"))
-							continue
-						EndIf
 
-						Local c:TLuaReflectionChild = New TLuaReflectionChild
-						c.member = m
-						
-						If TFunction(m)
-							c._ref = TFunction(m)._ref 
-						ElseIf TMethod(m)
-							c._ref = TMethod(m)._ref 
-						ElseIf TGlobal(m)
-							c._ref = TGlobal(m)._ref 
-						EndIf
-						reflectionType.children.Insert(Long(key.ToLower().Hash()), c)
-						
+				'parents can define things too ... so we build up a
+				'list of functions, methods, fields and constants the parents
+				'(and their parents) offer
+				Local currentTypeID:TTypeID = typeID
+				Local types:TTypeID[]
+				Repeat
+					types = [currentTypeID] + types
+					currentTypeID = currentTypeID._super
+				Until Not currentTypeID._super
+				
+				For currentTypeID = EachIn types
+					Local typeName:String = currentTypeID.name()
+					Local whiteListedType:Int = _whiteListedTypes.Contains(typeName)
+					Local exposeType:String
+					if not whiteListedType
+						exposeType = currentTypeID.MetaData("_exposeToLua")
+						'whitelist the type if set to expose everything not just
+						'"selected"
+						if exposeType <> "selected"
+							_whiteListedTypes.Insert(typeName, "" )
+						endif
+					endif
+
+					For local map:TStringMap = EachIn [currentTypeID.Functions(), currentTypeID.Methods(), currentTypeID.Fields(), currentTypeID.Constants()]
+						For local key:String = EachIn map.Keys()
+							Local m:TMember = TMember(map.ValueForKey(key))
+							'only add non-private etc.
+							If m.HasMetaData("_private") or (exposeType = "selected" And Not m.MetaData("_exposeToLua"))
+								continue
+							EndIf
+
+							Local c:TLuaReflectionChild = New TLuaReflectionChild
+							c.member = m
+							
+							If TFunction(m)
+								c._ref = TFunction(m)._ref 
+							ElseIf TMethod(m)
+								c._ref = TMethod(m)._ref 
+							ElseIf TGlobal(m)
+								c._ref = TGlobal(m)._ref 
+							EndIf
+							reflectionType.children.Insert(Long(key.ToLower().Hash()), c)
+						Next
 					Next
 				Next
 			EndIf
