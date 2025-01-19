@@ -1301,9 +1301,9 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				endif
 				
 				If MouseManager.x < GetGraphicsManager().GetWidth()/2
-					hoveredGuiCastItem.DrawDatasheet(GetGraphicsManager().GetWidth() - 20, 20, 1.0)
+					hoveredGuiCastItem.DrawDatasheet(GetGraphicsManager().GetWidth() - 15, 20, 1.0)
 				Else
-					hoveredGuiCastItem.DrawDatasheet(20, 20, 0.0)
+					hoveredGuiCastItem.DrawDatasheet(15, 20, 0.0)
 				EndIf
 			EndIf
 
@@ -2901,7 +2901,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 	Function ShowCastSheet:Int(person:TPersonBase, jobID:Int=-1, x:Int, y:Int, alignment:Float=0.5, showAmateurInformation:Int = False)
 		'=== PREPARE VARIABLES ===
-		Local sheetWidth:Int = 250
+		Local sheetWidth:Int = 280
 		Local sheetHeight:Int = 0 'calculated later
 		x = x - alignment * sheetWidth
 
@@ -2930,7 +2930,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'bar area starts with padding, ends with padding and contains
 		'also contains 8 bars
 		If person.IsCelebrity() And Not showAmateurInformation
-			barAreaH = 2 * barAreaPaddingY + 7 * (barH + 2)
+			barAreaH = 2 * barAreaPaddingY + 8 * (barH + 2)
 		else
 			'"profession"
 			barAreaH = 1 * barAreaPaddingY + 1 * (barH + 2)
@@ -2969,6 +2969,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 			Local firstJobID:Int = -1
 			Local genreText:String = ""
 			If not showAmateurInformation
+'TODO not first job but "topJob" - getBestJob sometimes yields 0
+'				firstJobID = TPersonProductionData(person.GetProductionData()).GetBestJob()
 				For Local jobIndex:Int = 1 To TVTPersonJob.Count
 					Local jobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
 					If Not person.HasJob(jobID) Then Continue
@@ -3078,10 +3080,15 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 			'bars have a top-padding
 			contentY :+ barAreaPaddingY
-			'XP
-			Local xpValue:Float = person.GetEffectiveJobExperiencePercentage(jobID)
-			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValue)
-			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			'XP job
+			Local xpValueJob:Float = person.GetEffectiveJobExperiencePercentage(jobID)
+			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValueJob)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_JOB_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			contentY :+ barH + 2
+			'XP genre
+			Local xpValueGenre:Float = TPersonProductionData(person.getProductionData()).GetEffectiveGenreExperiencePercentage(genreID)
+			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValueGenre)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_GENRE_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 			'affinity
 			Local affinity:Float = person.GetPersonalityData().GetAffinityValue(jobID, genreID)
@@ -3104,7 +3111,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 				Local attributePerson:Float = 0.0
 				If genreDefinition
 					attributeGenre = genreDefinition.GetCastAttribute(jobID, attributeID)
-					attributePerson = person.GetPersonalityData().GetAttributeValue(attributeID)
+					attributePerson = person.GetPersonalityData().GetAttributeValue(attributeID, jobID, genreID)
 				EndIf
 
 				'unimportant attribute / no bonus/malus for this attribute

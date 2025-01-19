@@ -733,7 +733,7 @@ Type TPersonBase Extends TGameObject
 	End Method
 	
 	
-	Method GetPersonalityAttribute:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+	Method GetPersonalityAttribute:Float(attributeID:Int, jobID:Int, genreID:Int)
 		Return GetPersonalityData().GetAttributeValue(attributeID, jobID, genreID)
 	End Method
 
@@ -1138,12 +1138,29 @@ endrem
 	
 	
 private
-	Method GetAttributeObject:TRangedFloat(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+	'calculate and set normalized job and genre id depending on the attribute
+	Function normalizedIds(attributeID:Int, jobID:Int var, genreID:Int var)
+		Select attributeID
+			Case TVTPersonPersonalityAttribute.CHARISMA
+				genreID = 0
+			'Case TVTPersonPersonalityAttribute.APPEARANCE 'potentially genre cluster specific
+			Case TVTPersonPersonalityAttribute.FAME
+				'TODO job cluster specific
+				genreID = 0
+			Default
+				'except for some exceptioons all attributes are job/genre independent
+				jobID = 0
+				genreID = 0
+		End Select
+	End Function
+
+	Method GetAttributeObject:TRangedFloat(attributeID:Int, jobID:Int, genreID:Int)
 		If attributeID < 0 or attributeID > attributes.length 
 			TLogger.Log("TPersonPersonalityAttributes.GetAttributeObject()", "Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length, LOG_DEBUG)
 			Throw "GetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
 		EndIf
 
+		normalizedIds(attributeID:Int, jobID:Int, genreID:Int)
 		if jobID <= 0 and genreID <= 0
 			Return attributes[attributeID-1]
 		else
@@ -1162,6 +1179,7 @@ private
 			Throw "SetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
 		EndIf
 
+		normalizedIds(attributeID:Int, jobID:Int, genreID:Int)
 		if jobID <= 0 and genreID <= 0
 			attributes[attributeID-1] = attribute
 		else
@@ -1599,8 +1617,8 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		Return attributes
 	End Method
 
-	
-	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0, generateDefault:Int = True)
+
+	Method GetAttributeValue:Float(attributeID:Int, jobID:Int, genreID:Int, generateDefault:Int = True)
 		if not attributes and generateDefault Then InitAttributes()
 		if not attributes Then Return 0
 		
