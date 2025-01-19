@@ -1020,9 +1020,9 @@ Type TProductionConcept Extends TOwnedGameObject
 			if person.IsCelebrity()
 				for local i:int = 1 to TVTPersonPersonalityAttribute.count
 					if i < 4
-						attributeDetail1 :+ TVTPersonPersonalityAttribute.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttributeValue(i)*100) + "%  "
+						attributeDetail1 :+ TVTPersonPersonalityAttribute.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttributeValue(i, jobID, genreID)*100) + "%  "
 					else
-						attributeDetail2 :+ TVTPersonPersonalityAttribute.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttributeValue(i)*100) + "%  "
+						attributeDetail2 :+ TVTPersonPersonalityAttribute.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttributeValue(i, jobID, genreID)*100) + "%  "
 					endif
 				Next
 			endif
