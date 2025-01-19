@@ -1756,7 +1756,7 @@ Type TLuaEngine
 
 		Local t:Object
 		If func 
-			t = TLuaReflectionChild._CallFunction(mth._ref, func._typeID, child._args, argTypes.length)
+			t = TLuaReflectionChild._CallFunction(func._ref, func._typeID, child._args, argTypes.length)
 			child.ArgReset() 'remove potential refs
 		ElseIf mth
 			t = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, child._args, argTypes.length)
