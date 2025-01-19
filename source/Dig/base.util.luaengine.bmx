@@ -1220,13 +1220,16 @@ Type TLuaEngine
 			Return False
 		EndIf
 
-		'prepend URI as CURRENT_WORKING_DIR global
+		' prepend URI as CURRENT_WORKING_DIR global
+		' this is required as we do not load the lua as file
+		' but the content of the file (so no file-uri information
+		' available for the lua instance)
 		_currentWorkingDirectory = ExtractDir(sourceFile)
 		_sourceFile = sourceFile
 
 		'prepend cwd as a single line so error offsets are -1
-		Local cwdLine:String = "--" + _currentWorkingDirectory + "       ; CURRENT_WORKING_DIR = ~q" + _currentWorkingDirectory + "~q; " + "package.path = CURRENT_WORKING_DIR .. '/?.lua;' .. package.path .. ';'~n"
-		
+		'Local cwdLine:String = "--" + _currentWorkingDirectory + "       ; CURRENT_WORKING_DIR = ~q" + _currentWorkingDirectory + "~q; " + "package.path = CURRENT_WORKING_DIR .. '/?.lua;' .. package.path .. ';'~n"
+		Local cwdLine:String = "CURRENT_WORKING_DIR = ~q" + _currentWorkingDirectory + "~q; " + "package.path = CURRENT_WORKING_DIR .. '/?.lua;' .. package.path .. ';'~n"
 		_SetSource(cwdLine + LoadText(sourceFile))
 	End Method
 
