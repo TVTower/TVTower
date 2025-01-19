@@ -254,7 +254,7 @@ Type TXPContainer_Job extends TXPContainer
 
 
 
-
+'TODO gain should be influenced by affinity
 	Method GetNextGain:Int(key:Int, extra:object)
 		local programmeData:TProgrammeData = TProgrammeData(extra)
 		if not programmeData then return 0
@@ -294,6 +294,7 @@ Type TXPContainer_Genre extends TXPContainer
 	End Method
 
 
+'TODO gain should be influenced by affinity
 	Method GetNextGain:Int(key:Int, extra:object)
 		local programmeData:TProgrammeData = TProgrammeData(extra)
 		if not programmeData then return 0
