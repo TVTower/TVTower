@@ -1036,83 +1036,49 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 	'mixes main and subgenre criterias
-	Method CalculateTotalGenreCriterias(totalReview:Float Var, totalSpeed:Float Var, totalOutcome:Float Var)
+	Method CalculateTotalGenreCriterias(totalReview:Float Var, totalSpeed:Float Var)
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([mainGenre] + subGenres)
 		If Not genreDefinition
 			TLogger.Log("TScript.CalculateTotalGenreCriterias()", "script with wrong movie genre definition, criteria calculation failed.", LOG_ERROR)
 			Return
 		EndIf
 
-		totalOutcome = genreDefinition.OutcomeMod
 		totalReview = genreDefinition.ReviewMod
 		totalSpeed = genreDefinition.SpeedMod
 	End Method
 
 
 	'returns the criteria-congruence
-	'(is review-speed-outcome weight of script the same as in the genres)
-	'a value of 1.0 means a perfect match (eg. x*50% speed, x*20% outcome
-	' and x*30% review)
+	'(is review-speed ratio of script the same as in the genres)
+	'a value of 1.0 means a perfect match
+	'outcome is completely neglected here, because it is a result of the
+	'production not an indicator of how well the script fits the genre
 	Method CalculateGenreCriteriaFit:Float()
 		'Fetch corresponding genre definition, with this we are able to
 		'see what values are "expected" for this genre.
 
-		Local reviewGenre:Float, speedGenre:Float, outcomeGenre:Float
-		CalculateTotalGenreCriterias(reviewGenre, speedGenre, outcomeGenre)
+		Local reviewGenre:Float, speedGenre:Float
+		CalculateTotalGenreCriterias(reviewGenre, speedGenre)
 
 		'scale to total of 100%
-		Local resultTotal:Float = reviewGenre + speedGenre + outcomeGenre
-		reviewGenre :/ resultTotal
-		speedGenre :/ resultTotal
-		outcomeGenre :/ resultTotal
+		reviewGenre :/ (reviewGenre + speedGenre)
+		speedGenre :/ (reviewGenre + speedGenre)
+		Local reviewActual:Float = review / (review + speed)
+		Local speedActual:Float = speed / (review + speed)
+
+		Local distanceReview:Float = Abs(reviewGenre - reviewActual)
+		Local distanceSpeed:Float = Abs(speedGenre - speedActual)
 
 		Rem
-		reviewGenre = 0.5
-		speedGenre = 0.3
-		outcomeGenre = 0.2
-
-		'100% fit
-		review = 0.4
-		speed = 0.24
-		outcome = 0.16
-		endrem
-
-		'scale to biggest property
-		Local maxPropertyScript:Float, maxPropertyGenre:Float
-		If outcomeGenre > 0
-			maxPropertyScript = Max(review, Max(speed, outcome))
-			maxPropertyGenre = Max(reviewGenre, Max(speedGenre, outcomeGenre))
-		Else
-			maxPropertyScript = Max(review, speed)
-			maxPropertyGenre = Max(reviewGenre, speedGenre)
-		EndIf
-		If maxPropertyGenre = 0 Or MathHelper.AreApproximatelyEqual(maxPropertyScript, maxPropertyGenre)
-			Return 1
-		EndIf
-
-		Local scaleFactor:Float = maxPropertyGenre / maxPropertyScript
-		Local distanceReview:Float = Abs(reviewGenre - review*scaleFactor)
-		Local distanceSpeed:Float = Abs(speedGenre - speed*scaleFactor)
-		Local distanceOutcome:Float = Abs(outcomeGenre - outcome*scaleFactor)
-		'ignore outcome ?
-		If outcomeGenre = 0 Then distanceOutcome = 0
-
-		Rem
-		'print "maxPropertyGenre:   "+maxPropertyGenre
-		'print "maxPropertyScript:  "+maxPropertyScript
 		print "mainGenre:          "+mainGenre
-		print "scaleFactor:        "+scaleFactor
-		print "review:             "+review + "  genre:" + reviewGenre
-		print "speed:              "+speed + "  genre:" + speedGenre
+		print "review:             "+review + "  scaled:  " + reviewActual + "  genre:" + reviewGenre
+		print "speed:              "+speed + "  scaled:  " + speedActual + "  genre:" + speedGenre
 		print "Review Abweichung:  "+distanceReview
 		print "Speed Abweichung:   "+distanceSpeed
-		if outcomeGenre > 0
-			print "Outcome Abweichung:   "+distanceOutcome
-		endif
-		print "ergebnis:           "+(1.0 - (distanceReview + distanceSpeed + distanceOutcome))
+		print "ergebnis:           "+(1.0 - (distanceReview + distanceSpeed))
 		endrem
 
-		Return 1.0 - (distanceReview + distanceSpeed + distanceOutcome)
+		Return 1.0 - (distanceReview + distanceSpeed)
 	End Method
 
 
