@@ -524,35 +524,42 @@ Type TLuaReflectionChild
 				End Select
 	?
 			Else
+				Local result:Object
 				Select usedArgCount
 					Case 0
 						Local f:Object()=p
-						TLuaEngine.lua_pushobject(luaState, f(), objMetaTable)
+						result = f()
 					Case 1
 						Local f:Object(p0:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0]), objMetaTable)
+						result = f(q[0])
 					Case 2
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1]), objMetaTable)
+						result = f(q[0], q[1])
 					Case 3
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2]), objMetaTable)
+						result = f(q[0], q[1], q[2])
 					Case 4
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3]), objMetaTable)
+						result = f(q[0], q[1], q[2], q[3])
 					Case 5
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4]), objMetaTable)
+						result = f(q[0], q[1], q[2], q[3], q[4])
 					Case 6
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]), objMetaTable)
+						result = f(q[0], q[1], q[2], q[3], q[4], q[5])
 					Case 7
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]), objMetaTable)
+						result = f(q[0], q[1], q[2], q[3], q[4], q[5], q[6])
 					Default
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]), objMetaTable)
+						result = f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
 				End Select
+
+				If retTypeId.ExtendsType(ArrayTypeId)
+					TLuaEngine.lua_pusharray(luaState, result, objMetaTable, retTypeId)
+				Else
+					TLuaEngine.lua_pushobject(luaState, result, objMetaTable)
+				EndIf
 			End If
 		End Select
 		
@@ -565,17 +572,6 @@ Type TLuaReflectionChild
 
 	Function _CallMethod:Int( p:Byte Ptr, retTypeId:TTypeId, obj:Object, argsPointer:Byte Ptr[], usedArgCount:Int, luaState:Byte Ptr, objMetaTable:Int)
 		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
-
-rem
-TODO: ARRAY
-			Case ArrayTypeId
-				lua_pushArray(_luaState, t, _objMetaTable)
-			Default
-				If typeId And typeId.ExtendsType(ArrayTypeId)
-					lua_pushArray(_luaState, t, _objMetaTable)
-				Else
-					lua_pushobject(_luaState, t, _objMetaTable)
-endrem		
 
 		Select retTypeId
 		Case ByteTypeId,ShortTypeId,IntTypeId
@@ -857,7 +853,8 @@ endrem
 					f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
 			End Select
 		Case StringTypeId
-			Select usedArgCount
+			Local result:Object
+				Select usedArgCount
 				Case 0
 					Local f:String(m:Object)=p
 					lua_pushbbstring(luaState, f(obj) )
@@ -950,35 +947,42 @@ endrem
 				End Select
 	?
 			Else
+				Local result:Object
 				Select usedArgCount
 					Case 0
 						Local f:Object(m:Object)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj), objMetaTable)
+						result = f(obj)
 					Case 1
 						Local f:Object(m:Object, p0:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0]), objMetaTable)
+						result = f(obj, q[0])
 					Case 2
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1]), objMetaTable)
+						result = f(obj, q[0], q[1])
 					Case 3
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2]), objMetaTable)
+						result = f(obj, q[0], q[1], q[2])
 					Case 4
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3]), objMetaTable)
+						result = f(obj, q[0], q[1], q[2], q[3])
 					Case 5
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]), objMetaTable)
+						result = f(obj, q[0], q[1], q[2], q[3], q[4])
 					Case 6
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]), objMetaTable)
+						result = f(obj, q[0], q[1], q[2], q[3], q[4], q[5])
 					Case 7
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]), objMetaTable)
+						result = f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6])
 					Default
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]), objMetaTable)
+						result = f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
 				End Select
+
+				If retTypeId.ExtendsType(ArrayTypeId)
+					TLuaEngine.lua_pusharray(luaState, result, objMetaTable, retTypeId)
+				Else
+					TLuaEngine.lua_pushobject(luaState, result, objMetaTable)
+				EndIf
 			End If
 		End Select
 
@@ -2067,8 +2071,8 @@ Type TLuaEngine
 
 	' create a table and load with array contents
 	' it requires the meta table to use for objects
-	Function lua_pusharray:Int(luaState:Byte Ptr, arr:Object, _objMetaTable:Int)
-		Local typeId:TTypeId = TTypeId.ForObject(arr)
+	Function lua_pusharray:Int(luaState:Byte Ptr, arr:Object, _objMetaTable:Int, typeID:TTypeID = Null)
+		If Not typeId Then typeId = TTypeId.ForObject(arr)
 		' for "Null[]" the function ArrayLength(obj) fails with
 		' "TypeID is not an array type"
 		If typeId.Name() = "Null[]"
