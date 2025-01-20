@@ -1090,8 +1090,8 @@ Type TLuaEngine
 
 
 	Global lastID:Int = 0
-	Global _enginesList:TList = CreateList()
-	Global _enginesListMutex:TMutex = CreateMutex()
+	Global _engines:TLuaEngine[]
+	Global _enginesMutex:TMutex = CreateMutex()
 
 
 
@@ -1113,30 +1113,61 @@ Type TLuaEngine
 
 
 	Function AddEngine(engine:TLuaEngine)
-		LockMutex(_enginesListMutex)
-		_enginesList.AddLast(engine)
-		UnlockMutex(_enginesListMutex)
+		LockMutex(_enginesMutex)
+		_engines = _engines + [engine]
+		UnlockMutex(_enginesMutex)
 	End Function
 	
 
 	Function RemoveEngine(engine:TLuaEngine)
-		LockMutex(_enginesListMutex)
-		_enginesList.Remove(engine)
-		UnlockMutex(_enginesListMutex)
+		LockMutex(_enginesMutex)
+		For Local i:Int = 0 until _engines.length
+			if _engines[i] = engine
+				_engines = _engines[.. i] + _engines[i + 1 ..]
+			EndIf
+		Next
+		UnlockMutex(_enginesMutex)
 	End Function
 
 
 	'find a previously added engine by a given lua state pointer
 	Function FindEngine:TLuaEngine(LuaState:Byte Ptr)
-		LockMutex(_enginesListMutex)
+		'When "FindEngine()" is used, most lua engines will most probably
+		'already exist, so mutexing here would help with a lot of addings
+		'and removals of engines while others already "run".
+		'
+		'What happens if an engine is added while a lua state needs to find 
+		'their engine? It will still find "theirs"
+		'What happens if an engine is removed while their lua state needs
+		'to find it? It won't find it anymore and an error is thrown.
+		'In this case removal of an engine should only happen once the
+		'interaction stopped (should normally be the case ...same thread?)
+		
+		'So I (Ronny) removed the mutex protection here for the sake of
+		'speed optimisation). This is because we only "execute" a lua
+		'engine and its state from one thread 
+		
+		'LockMutex(_enginesMutex)
 		Local result:TLuaEngine
-		For Local engine:TLuaEngine = EachIn _enginesList
-			If engine._luaState = LuaState 
-				result = engine
+		For local i:int = 0 until _engines.length
+			If _engines[i]._luaState = LuaState 
+				result = _engines[i]
 				exit
 			EndIf
 		Next
-		UnLockMutex(_enginesListMutex)
+		'if the engine was NOT found, we simply try again after 1 millisecond
+		'which should be enough time for a concurrent "add/remove" to have
+		'taken place
+		If not result
+			delay(1)
+			For local i:int = 0 until _engines.length
+				If _engines[i]._luaState = LuaState 
+					result = _engines[i]
+					exit
+				EndIf
+			Next
+		EndIf
+		'UnLockMutex(_enginesMutex)
 
 		if not result
 			TLogger.Log("TLuaEngine", "FindEngine(): engine not found.", LOG_ERROR)
