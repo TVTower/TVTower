@@ -148,10 +148,10 @@ Type TLuaReflectionChild
 	End Method
 
 
-	Function _CallFunction:Int( p:Byte Ptr,typeId:TTypeId,argsPointer:Byte Ptr[], usedArgCount:Int, luaState:Byte Ptr, objMetaTable:Int)
+	Function _CallFunction:Int( p:Byte Ptr, retTypeId:TTypeId, argsPointer:Byte Ptr[], usedArgCount:Int, luaState:Byte Ptr, objMetaTable:Int)
 		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
 
-		Select typeId
+		Select retTypeId
 		Case ByteTypeId,ShortTypeId,IntTypeId
 			Select usedArgCount
 				Case 0
@@ -461,7 +461,7 @@ Type TLuaReflectionChild
 					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Default
-			If typeid.ExtendsType(PointerTypeId) Or typeid.ExtendsType(FunctionTypeId) Then
+			If retTypeId.ExtendsType(PointerTypeId) Or retTypeId.ExtendsType(FunctionTypeId) Then
 	?Not ptr64
 				Select usedArgCount
 					Case 0
@@ -555,10 +555,15 @@ Type TLuaReflectionChild
 				End Select
 			End If
 		End Select
-		Return True
+		
+		If retTypeId = VoidTypeId
+			Return 0 'nothing pushed to the stack
+		Else
+			Return 1 'pushed 1 element to the stack
+		EndIf
 	End Function
 
-	Function _CallMethod:Int( p:Byte Ptr, retType:TTypeId, obj:Object, argsPointer:Byte Ptr[], usedArgCount:Int, luaState:Byte Ptr, objMetaTable:Int)
+	Function _CallMethod:Int( p:Byte Ptr, retTypeId:TTypeId, obj:Object, argsPointer:Byte Ptr[], usedArgCount:Int, luaState:Byte Ptr, objMetaTable:Int)
 		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
 
 rem
@@ -572,7 +577,7 @@ TODO: ARRAY
 					lua_pushobject(_luaState, t, _objMetaTable)
 endrem		
 
-		Select retType
+		Select retTypeId
 		Case ByteTypeId,ShortTypeId,IntTypeId
 			Select usedArgCount
 				Case 0
@@ -882,7 +887,7 @@ endrem
 					lua_pushbbstring(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Default
-			If retType.ExtendsType(PointerTypeId) Or retType.ExtendsType(FunctionTypeId) Then
+			If retTypeId.ExtendsType(PointerTypeId) Or retTypeId.ExtendsType(FunctionTypeId) Then
 	?Not ptr64
 				Select usedArgCount
 					Case 0
@@ -976,6 +981,12 @@ endrem
 				End Select
 			End If
 		End Select
+
+		If retTypeId = VoidTypeId
+			Return 0 'nothing pushed to the stack
+		Else
+			Return 1 'pushed 1 element to the stack
+		EndIf
 	End Function
 End Type
 
@@ -1506,6 +1517,7 @@ Type TLuaEngine
 		' called as soon as Lua requests a property or method of an object
 		' which it does not know about (ex. "myobject:themethod()"
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(luaState)
+		If Not engine Then return 0 '0 = no results pushed on stack / nothing done
 
 		' Defer to engine instance method
 		' Leave the result on the stack (or nil if not found)
@@ -1521,14 +1533,14 @@ Type TLuaEngine
 
 		' Lua will push nil if the global table doesn't resolve the key
 		' Leave the result on the stack (or nil if not found)
-		Return 1
+		Return 0
 	End Function
 
 
 	Function _HandleNewIndex:Int(luaState:Byte Ptr)
 		' called as soon as Lua wants to write to a field of an object
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(luaState)
-		If Not engine Then Return 1 'error!
+		If Not engine Then Return 0 'nothing pushed to the stack
 
 		' Defer to engine instance method
 		' Leave the result on the stack (or nil if not found)
@@ -1539,7 +1551,7 @@ Type TLuaEngine
 	Function _HandleInvoke:Int(luaState:Byte Ptr)
 		' called as soon as Lua wants to call a blitzmax method/function
 		Local engine:TLuaEngine = FindEngine(luaState)
-		if not engine then return 1 'error!
+		If Not engine Then Return 0 'nothing pushed to the stack
 
 		Return engine.HandleInvoke()
 	End Function
@@ -1548,7 +1560,7 @@ Type TLuaEngine
 	Function _HandleEQ:Int(luaState:Byte Ptr)
 		' called as soon as Lua wants to compare two (blitzmax) objects
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(luaState)
-		If Not engine Then Return 1 'error!
+		If Not engine Then Return 0 'nothing pushed to the stack
 
 		Return engine.HandleEQ()
 	End Function
@@ -1566,7 +1578,7 @@ Type TLuaEngine
 			' Log error if the object is invalid
 			Local ident:String = lua_tostring(_luaState, 2)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to access ~q"+ident+"~q (method or property) of an invalid object. Object not exposed? Object name wrong? Lua is case-sensitive!", LOG_ERROR)
-			Return 0
+			Return 0 'nothing pushed on the stack
 		EndIf
 		'lua_tostring should be enough for idents (no utf8 methods/field names) 
 		'while lua_tobbstring would decode utf8 etc 
@@ -1579,7 +1591,8 @@ Type TLuaEngine
 			lua_pushvalue(_luaState, 1)
 			lua_pushlightobject(_luaState, child)
 			lua_pushcclosure(_luaState, _HandleInvoke, 2)
-			Return True
+
+			Return 1 'pushed 1 element (the closure) to the stack
 		EndIf
 
 		'===== CHECK PUSHED OBJECT IS A FIELD / CONSTANT =====
@@ -1605,7 +1618,7 @@ Type TLuaEngine
 						lua_pushobject(_luaState, fld.Get(obj), _objMetaTable)
 					EndIf
 			End Select
-			Return True
+			Return 1 'pushed 1 element to the stack
 		EndIf
 
 
@@ -1625,13 +1638,13 @@ Type TLuaEngine
 				Case StringTypeId
 					lua_pushbbstring(_luaState, constant.GetString())
 			End Select
-			Return True
+			Return 1 'pushed 1 element to the stack
 		EndIf
 
 		local objTypeId:TTypeID = _FindType(obj)
 		Local ident:String = lua_tostring(_luaState, 2)
 		TLogger.Log("TLuaEngine", "[Engine " + id + "] Object ~q" + objTypeId.name() + "~q does not have or expose property ~q" + ident + "~q. Access Failed.", LOG_ERROR)
-		Return False
+		Return 1 'nothing pushed to the stack
 	End Method
 
 
@@ -1651,7 +1664,7 @@ Type TLuaEngine
 			' Log error if the object is invalid
 			Local ident:String = lua_tostring(_luaState, 2)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to set field ~q"+ident+"~q of an invalid object.", LOG_ERROR)
-			Return 0
+			Return 0 'nothing pushed to the stack
 		EndIf
 
 		Local child:TLuaReflectionChild = _FindTypeChild(obj, identHash)
@@ -1663,6 +1676,7 @@ Type TLuaEngine
 				Local ident:String = lua_tostring(_luaState, 2)
 				TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to set not exposed field ~q"+t.name()+"."+ident+"~q.", LOG_ERROR)
 			EndIf
+			Return 0 'nothing pushed to the stack
 		EndIf
 
 		Local fld:TField=TField(child.member)
@@ -1671,7 +1685,7 @@ Type TLuaEngine
 			lua_pop(_luaState, passedArgumentCount)
 			Local ident:String = lua_tostring(_luaState, 2)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] reflection cache incorrect. Member is not a TField: ~q"+ident+"~q.", LOG_ERROR)
-			Return True
+			Return 0 'nothing pushed to the stack
 		EndIf
 		
 		
@@ -1697,7 +1711,8 @@ Type TLuaEngine
 					fld.Set(obj, lua_unboxobject(_luaState, 3, _objMetaTable))
 			End Select
 		EndIf
-		Return True
+
+		Return 1 'pushed 1 element to the stack
 	End Method
 
 
@@ -1712,21 +1727,19 @@ Type TLuaEngine
 			lua_pop(_luaState, passedArgumentCount)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] Attempted to call method or read a property of an invalid object. Object garbage collected?", LOG_ERROR)
 
-			Return 0
+			Return 0 'nothing pushed to the stack
 		EndIf
 		
 		Local objType:TTypeID
-
-		'Local funcOrMeth:TMember = TMember(lua_tolightobject(_luaState, LUA_GLOBALSINDEX - 2))
 		Local child:TLuaReflectionChild = TLuaReflectionChild(lua_tolightobject(_luaState, LUA_GLOBALSINDEX - 2))
 
 		If Not TFunction(child.member) And Not TMethod(child.member) 
 			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling failed. No function/method given.", LOG_ERROR)
-			Return False
+			Return 0 'nothing pushed to the stack
 		EndIf
 		If Not obj 
 			TLogger.Log("LuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + child.member.name() + "()~q failed. No or invalid parent given.", LOG_ERROR)
-			Return False
+			Return 0 'nothing pushed to the stack
 		EndIf
 
 		Local func:TFunction = TFunction(child.member)
@@ -1784,7 +1797,7 @@ Type TLuaEngine
 						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + child.member.name() + "()~q failed. Call is ambiguous (1st argument same type as instance. Either a method call or a function call with missing 1st parameter. Handled as Lua.Function() call.", LOG_DEBUG)
 					EndIf
 				EndIf
-			endif
+			EndIf
 		Endif
 		if isLuaMethodCall then passedArgumentCount :- 1
 		
@@ -1792,13 +1805,12 @@ Type TLuaEngine
 		If passedArgumentCount <> argTypes.length
 			If not objType Then objType = _FindType(obj)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() calling ~q" + objType.name() + "." + child.member.name() + "()~q failed. " + passedArgumentCount + " argument(s) passed but " + argTypes.length+" argument(s) required.", LOG_ERROR)
-			Return False
+			Return 0 'nothing pushed to the stack
 		EndIf
 
 		'ignore first param for lua method calls
 		Local luaArgsOffset:Int = 0
 		if isLuaMethodCall then luaArgsOffset = 1
-
 
 		Local invalidArgs:Int = 0
 
@@ -1863,19 +1875,23 @@ Type TLuaEngine
 		if invalidArgs > 0
 			If not objType Then objType = _FindType(obj)
 			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + child.member.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
-			Return False
+			Return 0 'nothing pushed to the stack
 		EndIf
 
 		Local result:Int
-		If func 
-			result = TLuaReflectionChild._CallFunction(func._ref, func._typeID, child._args, argTypes.length, _luaState, _objMetaTable)
+		If func
+			result = TLuaReflectionChild._CallFunction(func._ref, func._typeID._retType, child._args, argTypes.length, _luaState, _objMetaTable)
 			child.ArgReset() 'remove potential refs
 		ElseIf mth
 			result = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, child._args, argTypes.length, _luaState, _objMetaTable)
 			child.ArgReset() 'remove potential refs
 		EndIf
-		if result Then Return 0 'no error!
-		Return 1
+		If result
+			'TODO: if we allow to return multiple elements, "result" must become a struct...
+			Return 1 'pushed 1 element to the stack
+		Else
+			Return 0 'pushed nothing to the stack
+		EndIf
 	End Method
 
 
@@ -1891,7 +1907,7 @@ Type TLuaEngine
 
 		lua_pushboolean(_luaState, obj1 = obj2)
 
-		Return True
+		Return 1 'pushed 1 element to the steck
 	End Method
 
 
