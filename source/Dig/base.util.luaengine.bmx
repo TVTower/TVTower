@@ -148,8 +148,7 @@ Type TLuaReflectionChild
 	End Method
 
 
-
-	Function _CallFunction:Object( p:Byte Ptr,typeId:TTypeId,argsPointer:Byte Ptr[], usedArgCount:Int)
+	Function _CallFunction:Int( p:Byte Ptr,typeId:TTypeId,argsPointer:Byte Ptr[], usedArgCount:Int, luaState:Byte Ptr, objMetaTable:Int)
 		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
 
 		Select typeId
@@ -157,34 +156,31 @@ Type TLuaReflectionChild
 			Select usedArgCount
 				Case 0
 					Local f:Int()=p
-					Return String.FromInt( f() )
+					lua_pushinteger(luaState, f() )
 				Case 1
 					Local f:Int(p0:Byte Ptr)=p
-					Return String.FromInt( f(q[0]) )
+					lua_pushinteger(luaState, f(q[0]) )
 				Case 2
 					Local f:Int(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromInt( f(q[0], q[1]) )
+					lua_pushinteger(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromInt( f(q[0], q[1], q[2]) )
+					lua_pushinteger(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromInt( f(q[0], q[1], q[2], q[3]) )
+					lua_pushinteger(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushinteger(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushinteger(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushinteger(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Int(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushinteger(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 	?Not ptr64
 		Case UIntTypeId,SizetTypeId
@@ -194,67 +190,61 @@ Type TLuaReflectionChild
 			Select usedArgCount
 				Case 0
 					Local f:UInt()=p
-					Return String.FromUInt( f() )
+					lua_pushnumber(luaState, f() )
 				Case 1
 					Local f:UInt(p0:Byte Ptr)=p
-					Return String.FromUInt( f(q[0]) )
+					lua_pushnumber(luaState, f(q[0]) )
 				Case 2
 					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromUInt( f(q[0], q[1]) )
+					lua_pushnumber(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromUInt( f(q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromUInt( f(q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromUInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:UInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromUInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:UInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case LongTypeId
 			Select usedArgCount
 				Case 0
 					Local f:Long()=p
-					Return String.Fromlong( f() )
+					lua_pushnumber(luaState, f() )
 				Case 1
 					Local f:Long(p0:Byte Ptr)=p
-					Return String.Fromlong( f(q[0]) )
+					lua_pushnumber(luaState, f(q[0]) )
 				Case 2
 					Local f:Long(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.Fromlong( f(q[0], q[1]) )
+					lua_pushnumber(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.Fromlong( f(q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.Fromlong( f(q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.Fromlong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Long(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.Fromlong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Long(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 	?Not ptr64
 		Case ULongTypeId
@@ -264,199 +254,211 @@ Type TLuaReflectionChild
 			Select usedArgCount
 				Case 0
 					Local f:ULong()=p
-					Return String.FromULong( f() )
+					lua_pushnumber(luaState, f() )
 				Case 1
 					Local f:ULong(p0:Byte Ptr)=p
-					Return String.FromULong( f(q[0]) )
+					lua_pushnumber(luaState, f(q[0]) )
 				Case 2
 					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromULong( f(q[0], q[1]) )
+					lua_pushnumber(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromULong( f(q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromULong( f(q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromULong( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:ULong(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromULong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:ULong(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case FloatTypeId
 			Select usedArgCount
 				Case 0
 					Local f:Float()=p
-					Return String.FromFloat( f() )
+					lua_pushnumber(luaState, f() )
 				Case 1
 					Local f:Float(p0:Byte Ptr)=p
-					Return String.FromFloat( f(q[0]) )
+					lua_pushnumber(luaState, f(q[0]) )
 				Case 2
 					Local f:Float(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromFloat( f(q[0], q[1]) )
+					lua_pushnumber(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromFloat( f(q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromFloat( f(q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromFloat( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Float(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Float(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case DoubleTypeId
 			Select usedArgCount
 				Case 0
 					Local f:Double()=p
-					Return String.FromDouble( f() )
+					lua_pushnumber(luaState, f() )
 				Case 1
 					Local f:Double(p0:Byte Ptr)=p
-					Return String.FromDouble( f(q[0]) )
+					lua_pushnumber(luaState, f(q[0]) )
 				Case 2
 					Local f:Double(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromDouble( f(q[0], q[1]) )
+					lua_pushnumber(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromDouble( f(q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromDouble( f(q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromDouble( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Double(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Double(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case VoidTypeId
 			Select usedArgCount
 				Case 0
-					Local f()=p
+					Local f:Int()=p
 					f()
 				Case 1
-					Local f(p0:Byte Ptr)=p
+					Local f:Int(p0:Byte Ptr)=p
 					f(q[0])
 				Case 2
-					Local f(p0:Byte Ptr, p1:Byte Ptr)=p
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr)=p
 					f(q[0], q[1])
 				Case 3
-					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
 					f(q[0], q[1], q[2])
 				Case 4
-					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
 					f(q[0], q[1], q[2], q[3])
 				Case 5
-					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
 					f(q[0], q[1], q[2], q[3], q[4])
 				Case 6
-					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
 					f(q[0], q[1], q[2], q[3], q[4], q[5])
 				Case 7
-					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
 					f(q[0], q[1], q[2], q[3], q[4], q[5], q[6])
-				Case 8
-					Local f(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
 				Default
-					Local f(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+					Local f:Int(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+			End Select
+		Case StringTypeId
+			Select usedArgCount
+				Case 0
+					Local f:String()=p
+					lua_pushbbstring(luaState, f() )
+				Case 1
+					Local f:String(p0:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0]) )
+				Case 2
+					Local f:String(p0:Byte Ptr, p1:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0], q[1]) )
+				Case 3
+					Local f:String(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0], q[1], q[2]) )
+				Case 4
+					Local f:String(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:String(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:String(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:String(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Default
+					Local f:String(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case LongIntTypeId
 			Select usedArgCount
 				Case 0
 					Local f:LongInt()=p
-					Return String.FromLongInt( f() )
+					lua_pushnumber(luaState, f() )
 				Case 1
 					Local f:LongInt(p0:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0]) )
+					lua_pushnumber(luaState, f(q[0]) )
 				Case 2
 					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0], q[1]) )
+					lua_pushnumber(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromLongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:LongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromLongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:LongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case ULongIntTypeId
 			Select usedArgCount
 				Case 0
 					Local f:ULongInt()=p
-					Return String.FromULongInt( f() )
+					lua_pushnumber(luaState, f() )
 				Case 1
 					Local f:ULongInt(p0:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0]) )
+					lua_pushnumber(luaState, f(q[0]) )
 				Case 2
 					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0], q[1]) )
+					lua_pushnumber(luaState, f(q[0], q[1]) )
 				Case 3
 					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2]) )
 				Case 4
 					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromULongInt( f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:ULongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromULongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:ULongInt(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Default
 			If typeid.ExtendsType(PointerTypeId) Or typeid.ExtendsType(FunctionTypeId) Then
@@ -464,142 +466,142 @@ Type TLuaReflectionChild
 				Select usedArgCount
 					Case 0
 						Local f:Byte Ptr()=p
-						Return String.FromInt(Int f())
+						lua_pushinteger(luaState, Int f())
 					Case 1
 						Local f:Byte Ptr(p0:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0]))
+						lua_pushinteger(luaState, Int f(q[0]))
 					Case 2
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0], q[1]))
+						lua_pushinteger(luaState, Int f(q[0], q[1]))
 					Case 3
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0], q[1], q[2]))
+						lua_pushinteger(luaState, Int f(q[0], q[1], q[2]))
 					Case 4
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0], q[1], q[2], q[3]))
+						lua_pushinteger(luaState, Int f(q[0], q[1], q[2], q[3]))
 					Case 5
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4]))
+						lua_pushinteger(luaState, Int f(q[0], q[1], q[2], q[3], q[4]))
 					Case 6
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4], q[5]))
+						lua_pushinteger(luaState, Int f(q[0], q[1], q[2], q[3], q[4], q[5]))
 					Case 7
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
-					Case 8
-						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						Return String.FromInt(Int f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
+						lua_pushinteger(luaState, Int f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
 					Default
-						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-						Return String.FromInt(Int f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						lua_pushinteger(luaState, Int f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
 				End Select
 	?ptr64
 				Select usedArgCount
 					Case 0
 						Local f:Byte Ptr()=p
-						Return String.Fromlong(Long f())
+						lua_pushinteger(luaState, Long f())
 					Case 1
 						Local f:Byte Ptr(p0:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0]))
+						lua_pushinteger(luaState, Long f(q[0]))
 					Case 2
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0], q[1]))
+						lua_pushinteger(luaState, Long f(q[0], q[1]))
 					Case 3
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0], q[1], q[2]))
+						lua_pushinteger(luaState, Long f(q[0], q[1], q[2]))
 					Case 4
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3]))
+						lua_pushinteger(luaState, Long f(q[0], q[1], q[2], q[3]))
 					Case 5
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4]))
+						lua_pushinteger(luaState, Long f(q[0], q[1], q[2], q[3], q[4]))
 					Case 6
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4], q[5]))
+						lua_pushinteger(luaState, Long f(q[0], q[1], q[2], q[3], q[4], q[5]))
 					Case 7
 						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
-					Case 8
-						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						Return String.Fromlong(Long f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
+						lua_pushinteger(luaState, Long f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
 					Default
-						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-						Return String.Fromlong(Long f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+						Local f:Byte Ptr(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						lua_pushinteger(luaState, Long f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
 				End Select
 	?
 			Else
 				Select usedArgCount
 					Case 0
 						Local f:Object()=p
-						Return f()
+						TLuaEngine.lua_pushobject(luaState, f(), objMetaTable)
 					Case 1
 						Local f:Object(p0:Byte Ptr)=p
-						Return f(q[0])
+						TLuaEngine.lua_pushobject(luaState, f(q[0]), objMetaTable)
 					Case 2
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr)=p
-						Return f(q[0], q[1])
+						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1]), objMetaTable)
 					Case 3
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						Return f(q[0], q[1], q[2])
+						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2]), objMetaTable)
 					Case 4
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						Return f(q[0], q[1], q[2], q[3])
+						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3]), objMetaTable)
 					Case 5
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						Return f(q[0], q[1], q[2], q[3], q[4])
+						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4]), objMetaTable)
 					Case 6
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						Return f(q[0], q[1], q[2], q[3], q[4], q[5])
+						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5]), objMetaTable)
 					Case 7
 						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						Return f(q[0], q[1], q[2], q[3], q[4], q[5], q[6])
-					Case 8
-						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						Return f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6]), objMetaTable)
 					Default
-						Local f:Object(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-						Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+						Local f:Object(p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						TLuaEngine.lua_pushobject(luaState, f(q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]), objMetaTable)
 				End Select
 			End If
 		End Select
+		Return True
 	End Function
 
-	Function _CallMethod:Object( p:Byte Ptr, retType:TTypeId, obj:Object, argsPointer:Byte Ptr[], usedArgCount:Int )
+	Function _CallMethod:Int( p:Byte Ptr, retType:TTypeId, obj:Object, argsPointer:Byte Ptr[], usedArgCount:Int, luaState:Byte Ptr, objMetaTable:Int)
 		Local q:Byte Ptr[] = argsPointer 'shorter var name :)
-		
+
+rem
+TODO: ARRAY
+			Case ArrayTypeId
+				lua_pushArray(_luaState, t, _objMetaTable)
+			Default
+				If typeId And typeId.ExtendsType(ArrayTypeId)
+					lua_pushArray(_luaState, t, _objMetaTable)
+				Else
+					lua_pushobject(_luaState, t, _objMetaTable)
+endrem		
+
 		Select retType
 		Case ByteTypeId,ShortTypeId,IntTypeId
 			Select usedArgCount
 				Case 0
 					Local f:Int(m:Object)=p
-					Return String.FromInt( f(obj) )
+					lua_pushinteger(luaState, f(obj))
 				Case 1
 					Local f:Int(m:Object, p0:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0]) )
+					lua_pushinteger(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0], q[1]) )
+					lua_pushinteger(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0], q[1], q[2]) )
+					lua_pushinteger(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushinteger(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushinteger(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushinteger(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushinteger(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Int(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushinteger(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 	?Not ptr64
 		Case UIntTypeId,SizetTypeId
@@ -609,67 +611,61 @@ Type TLuaReflectionChild
 			Select usedArgCount
 				Case 0
 					Local f:UInt(m:Object)=p
-					Return String.FromUInt( f(obj) )
+					lua_pushnumber(luaState, f(obj) )
 				Case 1
 					Local f:UInt(m:Object, p0:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0]) )
+					lua_pushnumber(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0], q[1]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromUInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:UInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromUInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:UInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case LongTypeId
 			Select usedArgCount
 				Case 0
 					Local f:Long(m:Object)=p
-					Return String.Fromlong( f(obj) )
+					lua_pushnumber(luaState, f(obj) )
 				Case 1
 					Local f:Long(m:Object, p0:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0]) )
+					lua_pushnumber(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0], q[1]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.Fromlong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Long(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.Fromlong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Long(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 	?Not ptr64
 		Case ULongTypeId
@@ -679,199 +675,211 @@ Type TLuaReflectionChild
 			Select usedArgCount
 				Case 0
 					Local f:ULong(m:Object)=p
-					Return String.FromULong( f(obj) )
+					lua_pushnumber(luaState, f(obj) )
 				Case 1
 					Local f:ULong(m:Object, p0:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0]) )
+					lua_pushnumber(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0], q[1]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromULong( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:ULong(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromULong( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:ULong(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case FloatTypeId
 			Select usedArgCount
 				Case 0
 					Local f:Float(m:Object)=p
-					Return String.FromFloat( f(obj) )
+					lua_pushnumber(luaState, f(obj) )
 				Case 1
 					Local f:Float(m:Object, p0:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0]) )
+					lua_pushnumber(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0], q[1]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromFloat( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Float(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Float(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case DoubleTypeId
 			Select usedArgCount
 				Case 0
 					Local f:Double(m:Object)=p
-					Return String.FromDouble( f(obj) )
+					lua_pushnumber(luaState, f(obj) )
 				Case 1
 					Local f:Double(m:Object, p0:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0]) )
+					lua_pushnumber(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0], q[1]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromDouble( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:Double(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:Double(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case LongIntTypeId
 			Select usedArgCount
 				Case 0
 					Local f:LongInt(m:Object)=p
-					Return String.FromLongInt( f(obj) )
+					lua_pushnumber(luaState, f(obj) )
 				Case 1
 					Local f:LongInt(m:Object, p0:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0]) )
+					lua_pushnumber(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0], q[1]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromLongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:LongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromLongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:LongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case ULongIntTypeId
 			Select usedArgCount
 				Case 0
 					Local f:ULongInt(m:Object)=p
-					Return String.FromULongInt( f(obj) )
+					lua_pushnumber(luaState, f(obj) )
 				Case 1
 					Local f:ULongInt(m:Object, p0:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0]) )
+					lua_pushnumber(luaState, f(obj, q[0]) )
 				Case 2
 					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0], q[1]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1]) )
 				Case 3
 					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0], q[1], q[2]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2]) )
 				Case 4
 					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3]) )
 				Case 5
 					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
 				Case 6
 					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
 				Case 7
 					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
-				Case 8
-					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					Return String.FromULongInt( f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
 				Default
-					Local f:ULongInt(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					Return String.FromULongInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
+					Local f:ULongInt(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushnumber(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Case VoidTypeId
 			Select usedArgCount
 				Case 0
-					Local f(m:Object)=p
+					Local f:Int(m:Object)=p
 					f(obj)
 				Case 1
-					Local f(m:Object, p0:Byte Ptr)=p
+					Local f:Int(m:Object, p0:Byte Ptr)=p
 					f(obj, q[0])
 				Case 2
-					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
 					f(obj, q[0], q[1])
 				Case 3
-					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
 					f(obj, q[0], q[1], q[2])
 				Case 4
-					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
 					f(obj, q[0], q[1], q[2], q[3])
 				Case 5
-					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
 					f(obj, q[0], q[1], q[2], q[3], q[4])
 				Case 6
-					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
 					f(obj, q[0], q[1], q[2], q[3], q[4], q[5])
 				Case 7
-					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
 					f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6])
-				Case 8
-					Local f(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-					f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
 				Default
-					Local f(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-					f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+					Local f:Int(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+			End Select
+		Case StringTypeId
+			Select usedArgCount
+				Case 0
+					Local f:String(m:Object)=p
+					lua_pushbbstring(luaState, f(obj) )
+				Case 1
+					Local f:String(m:Object, p0:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0]) )
+				Case 2
+					Local f:String(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0], q[1]) )
+				Case 3
+					Local f:String(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0], q[1], q[2]) )
+				Case 4
+					Local f:String(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0], q[1], q[2], q[3]) )
+				Case 5
+					Local f:String(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]) )
+				Case 6
+					Local f:String(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]) )
+				Case 7
+					Local f:String(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]) )
+				Default
+					Local f:String(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+					lua_pushbbstring(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]) )
 			End Select
 		Default
 			If retType.ExtendsType(PointerTypeId) Or retType.ExtendsType(FunctionTypeId) Then
@@ -879,106 +887,172 @@ Type TLuaReflectionChild
 				Select usedArgCount
 					Case 0
 						Local f:Byte Ptr(m:Object)=p
-						Return String.FromInt(Int f(obj))
+						lua_pushinteger(luaState, Int f(obj))
 					Case 1
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0]))
+						lua_pushinteger(luaState, Int f(obj, q[0]))
 					Case 2
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0], q[1]))
+						lua_pushinteger(luaState, Int f(obj, q[0], q[1]))
 					Case 3
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0], q[1], q[2]))
+						lua_pushinteger(luaState, Int f(obj, q[0], q[1], q[2]))
 					Case 4
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3]))
+						lua_pushinteger(luaState, Int f(obj, q[0], q[1], q[2], q[3]))
 					Case 5
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4]))
+						lua_pushinteger(luaState, Int f(obj, q[0], q[1], q[2], q[3], q[4]))
 					Case 6
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5]))
+						lua_pushinteger(luaState, Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5]))
 					Case 7
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
-					Case 8
-						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						Return String.FromInt(Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
+						lua_pushinteger(luaState, Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
 					Default
-						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-						Return String.FromInt(Int f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						lua_pushinteger(luaState, Int f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
 				End Select
 	?ptr64
 				Select usedArgCount
 					Case 0
 						Local f:Byte Ptr(m:Object)=p
-						Return String.FromLong(Long f(obj))
+						lua_pushnumber(luaState, Long f(obj))
 					Case 1
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0]))
+						lua_pushnumber(luaState, Long f(obj, q[0]))
 					Case 2
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0], q[1]))
+						lua_pushnumber(luaState, Long f(obj, q[0], q[1]))
 					Case 3
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0], q[1], q[2]))
+						lua_pushnumber(luaState, Long f(obj, q[0], q[1], q[2]))
 					Case 4
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3]))
+						lua_pushnumber(luaState, Long f(obj, q[0], q[1], q[2], q[3]))
 					Case 5
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4]))
+						lua_pushnumber(luaState, Long f(obj, q[0], q[1], q[2], q[3], q[4]))
 					Case 6
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5]))
+						lua_pushnumber(luaState, Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5]))
 					Case 7
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
+						lua_pushnumber(luaState, Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]))
 					Case 8
 						Local f:Byte Ptr(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						Return String.FromLong(Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
-					Default
-						Local f:Byte Ptr(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-						Return String.FromLong(Long f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ))
+						lua_pushnumber(luaState, Long f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]))
 				End Select
 	?
 			Else
 				Select usedArgCount
 					Case 0
 						Local f:Object(m:Object)=p
-						Return f(obj)
+						TLuaEngine.lua_pushobject(luaState, f(obj), objMetaTable)
 					Case 1
 						Local f:Object(m:Object, p0:Byte Ptr)=p
-						Return f(obj, q[0])
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0]), objMetaTable)
 					Case 2
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr)=p
-						Return f(obj, q[0], q[1])
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1]), objMetaTable)
 					Case 3
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr)=p
-						Return f(obj, q[0], q[1], q[2])
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2]), objMetaTable)
 					Case 4
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr)=p
-						Return f(obj, q[0], q[1], q[2], q[3])
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3]), objMetaTable)
 					Case 5
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr)=p
-						Return f(obj, q[0], q[1], q[2], q[3], q[4])
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4]), objMetaTable)
 					Case 6
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr)=p
-						Return f(obj, q[0], q[1], q[2], q[3], q[4], q[5])
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5]), objMetaTable)
 					Case 7
 						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr)=p
-						Return f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6])
-					Case 8
-						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
-						Return f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7])
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6]), objMetaTable)
 					Default
-						Local f:Object(p0:Byte Ptr,p1:Byte Ptr,p2:Byte Ptr,p3:Byte Ptr,p4:Byte Ptr,p5:Byte Ptr,p6:Byte Ptr,p7:Byte Ptr)=p
-						Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
+						Local f:Object(m:Object, p0:Byte Ptr, p1:Byte Ptr, p2:Byte Ptr, p3:Byte Ptr, p4:Byte Ptr, p5:Byte Ptr, p6:Byte Ptr, p7:Byte Ptr)=p
+						TLuaEngine.lua_pushobject(luaState, f(obj, q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]), objMetaTable)
 				End Select
 			End If
 		End Select
 	End Function
 End Type
+
+Struct SLuaCallArguments
+	Field staticarray args_l:Long[10]
+	Field staticarray args_d:Double[10]
+	Field staticarray args_s:String[10]
+	Field staticarray args_o:Object[10]
+	Field staticarray args_type:Int[10] '1 = int, 2 = long, 11 = float, 12 = double, 21 = string, 31 = object, 32 = array
+	Field length:Int
+	
+
+	Method Set(index:Int, value:Int)
+		args_l[index] = value
+		args_type[index] = 1
+		if index >= length Then length = index + 1
+	End Method
+
+	Method Set(index:Int, value:Long)
+		args_l[index] = value
+		args_type[index] = 2
+		if index >= length Then length = index + 1
+	End Method
+
+	Method Set(index:Int, value:Float)
+		args_d[index] = value
+		args_type[index] = 11
+		if index >= length Then length = index + 1
+	End Method
+
+	Method Set(index:Int, value:Double)
+		args_d[index] = value
+		args_type[index] = 12
+		if index >= length Then length = index + 1
+	End Method
+
+	Method Set(index:Int, value:String)
+		args_s[index] = value
+		args_type[index] = 21
+		if index >= length Then length = index + 1
+	End Method
+
+	Method Set(index:Int, value:Object)
+		args_o[index] = value
+		args_type[index] = 31
+		if index >= length Then length = index + 1
+	End Method
+
+
+	Method SetArray(index:Int, value:Object)
+		args_o[index] = value
+		args_type[index] = 32
+		if index >= length Then length = index + 1
+	End Method
+	
+	
+	Method PushArgs(luaState:Byte Ptr, _objMetaTable:Int)
+		For local i:int = 0 until length
+			Select args_type[i]
+				case 1
+					lua_pushinteger(luaState, Int(args_l[i]))
+				Case 2
+					lua_pushnumber(luaState, args_l[i])
+				Case 11
+					lua_pushnumber(luaState, Float(args_d[i]))
+				Case 12
+					lua_pushnumber(luaState, args_d[i])
+				Case 21
+					lua_pushbbstring(luaState, args_s[i])
+				Case 31
+					TLuaEngine.lua_pushobject(luaState, args_o[i], _objMetaTable)
+				Case 32
+					TLuaEngine.lua_pusharray(luaState, args_o[i], _objMetaTable)
+			End Select
+		Next
+	End Method
+End Struct
 
 
 
@@ -1423,6 +1497,7 @@ Type TLuaEngine
 	Function _HandleNewIndex:Int(luaState:Byte Ptr)
 		' called as soon as Lua wants to write to a field of an object
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(luaState)
+		If Not engine Then Return 1 'error!
 
 		' Defer to engine instance method
 		' Leave the result on the stack (or nil if not found)
@@ -1434,6 +1509,7 @@ Type TLuaEngine
 		' called as soon as Lua wants to call a blitzmax method/function
 		Local engine:TLuaEngine = FindEngine(luaState)
 		if not engine then return 1 'error!
+
 		Return engine.HandleInvoke()
 	End Function
 
@@ -1441,7 +1517,9 @@ Type TLuaEngine
 	Function _HandleEQ:Int(luaState:Byte Ptr)
 		' called as soon as Lua wants to compare two (blitzmax) objects
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(luaState)
-		If engine Then Return engine.HandleEQ()
+		If Not engine Then Return 1 'error!
+
+		Return engine.HandleEQ()
 	End Function
 
 
@@ -1757,40 +1835,14 @@ Type TLuaEngine
 			Return False
 		EndIf
 
-		Local t:Object
+		Local result:Int
 		If func 
-			t = TLuaReflectionChild._CallFunction(func._ref, func._typeID, child._args, argTypes.length)
+			result = TLuaReflectionChild._CallFunction(func._ref, func._typeID, child._args, argTypes.length, _luaState, _objMetaTable)
 			child.ArgReset() 'remove potential refs
 		ElseIf mth
-			t = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, child._args, argTypes.length)
+			result = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, child._args, argTypes.length, _luaState, _objMetaTable)
 			child.ArgReset() 'remove potential refs
 		EndIf
-		Local typeId:TTypeId = child.member.TypeID().ReturnType()
-
-		If Object[](t).length > 0 Then typeId = ArrayTypeId
-
-		Select typeId
-			Case IntTypeId, ShortTypeId, ByteTypeId
-				lua_pushinteger(_luaState, t.ToString().ToInt())
-			Case LongTypeId
-				lua_pushnumber(_luaState, t.ToString().ToLong())
-			Case FloatTypeId
-				lua_pushnumber(_luaState, t.ToString().ToFloat())
-			Case DoubleTypeId
-				lua_pushnumber(_luaState, t.ToString().ToDouble())
-			Case StringTypeId
-				Local s:String = t.ToString()
-				lua_pushbbstring(_luaState, s)
-			Case ArrayTypeId
-				lua_pushArray(_luaState, t, _objMetaTable)
-			Default
-				If typeId And typeId.ExtendsType(ArrayTypeId)
-					lua_pushArray(_luaState, t, _objMetaTable)
-				Else
-					lua_pushobject(_luaState, t, _objMetaTable)
-				EndIf
-		End Select
-
 		if result Then Return 0 'no error!
 		Return 1
 	End Method
@@ -1840,6 +1892,9 @@ Type TLuaEngine
 			For Local i:Int = 0 Until args.length
 				Local typeId:TTypeId = _FindType(args[i])
 
+'TODO: "args:object[]" sollte primitive wrappen, damit sie als primitive
+'      rausgesendet werden, sonst landen sie immer als "strings" im lua
+
 				Select typeId
 					Case IntTypeId, ShortTypeId, ByteTypeId
 						lua_pushinteger(_luaState, args[i].ToString().ToInt())
@@ -1865,6 +1920,58 @@ Type TLuaEngine
 		EndIf
 
 
+
+		' (try to) call the function
+		' protected call without custom traceback handler
+		Local callResult:Int = lua_pcall(_luaState, argCount, 1, 0)
+
+		' The function executed successfully, fetch the result if any
+		If callResult = 0
+
+			Local ret:Object
+			If Not lua_isnil(_luaState, -1)
+				ret = lua_tobbstring(_luaState, -1)
+			End If
+
+			' Remove the result from the stack
+			lua_pop(_luaState, 1)
+
+			Return ret
+
+		' An error occurred, fetch and print the traceback
+		Else
+			' Clean up the stack (if error occurs)
+			'lua_pop(_luaState, 1)  ' Pop the error message
+   			'TODO print error
+   			DumpError("CallLuaFunc-Error")
+		EndIf
+	End Method
+
+
+	Method CallLuaFunction:Object(name:String, luaCallArguments:SLuaCallArguments var)
+		' Try fetching the function from the global environment first
+		' (this avoids "super/self" lookups for functions defined in Lua
+		lua_getglobal(_luaState, name)
+    
+		' If the function isn't in the global environment, check the fenv
+		If Not lua_isfunction(_luaState, -1)
+			lua_pop(_luaState, 1)  ' Remove non-function value
+		
+			lua_rawgeti(_luaState, LUA_REGISTRYINDEX, _functionEnvironmentRef)
+			lua_getfield(_luaState, -1, name)
+
+			' Function not found in either the global environment or fenv
+			If Not lua_isfunction(_luaState, -1)
+				lua_pop(_luaState, 1)  ' Remove non-function
+
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] CallLuaFunction(~q" + name + "~q) failed. Unknown function.", LOG_DEBUG)
+				Return Null
+			EndIf
+		EndIf
+
+		Local argCount:Int = luaCallArguments.length
+		'send all defined arguments to lua
+		luaCallArguments.PushArgs(_luaState, _objMetaTable)	
 
 		' (try to) call the function
 		' protected call without custom traceback handler
