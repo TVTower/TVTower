@@ -1433,7 +1433,7 @@ Type TLuaEngine
 	Function _HandleInvoke:Int(luaState:Byte Ptr)
 		' called as soon as Lua wants to call a blitzmax method/function
 		Local engine:TLuaEngine = FindEngine(luaState)
-		if not engine then return False
+		if not engine then return 1 'error!
 		Return engine.HandleInvoke()
 	End Function
 
@@ -1790,7 +1790,9 @@ Type TLuaEngine
 					lua_pushobject(_luaState, t, _objMetaTable)
 				EndIf
 		End Select
-		Return True
+
+		if result Then Return 0 'no error!
+		Return 1
 	End Method
 
 
