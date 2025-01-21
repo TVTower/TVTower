@@ -209,7 +209,7 @@ Type TGUIManager
 
 
 	Method RestrictViewport(x:Int,y:Int,w:Int,h:Int)
-		TRenderConfig.Push()
+		TRenderConfig.Backup()
 		If w > 0 And h > 0
 			GetGraphicsManager().SetViewport(x,y,w,h)
 		EndIf
@@ -217,7 +217,7 @@ Type TGUIManager
 
 
 	Method ResetViewport()
-		TRenderConfig.Pop()
+		TRenderConfig.Restore()
 	End Method
 
 
