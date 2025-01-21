@@ -8,9 +8,15 @@ Import "game.gameeventkeys.bmx"
 
 
 Type TFigureBaseCollection extends TEntityCollection
+	'simple array for lightweight iteration
+	Field figures:TFigureBase[] 
+	Field figuresValid:Int = False {nosave}
+
 	Field figuresToRemove:TFigureBase[]
+	'array which contains all figures in a random order to allow
+	'a varying order of figures reaching a room simultaneously
 	Field shuffledFigures:TFigureBase[]
-	'Field shuffledFiguresIndex:int = 0
+	Field shuffledFiguresValid:Int = False
 
 	Field updateCount:int = 0
 	Global _eventsRegistered:int= FALSE
@@ -41,7 +47,12 @@ Type TFigureBaseCollection extends TEntityCollection
 		Super.Initialize()
 
 		figuresToRemove = figuresToRemove[.. 0]
+
 		shuffledFigures = shuffledFigures[.. 0]
+		shuffledFiguresValid = False
+
+		figures = figures[.. 0]
+		figuresValid = False
 
 		return self
 	End Method
@@ -63,6 +74,37 @@ Type TFigureBaseCollection extends TEntityCollection
 		Next
 		return Null
 	End Method
+	
+	
+	Method GetFigures:TFigureBase[]()
+		If Not figuresValid
+			figures = figures[.. GetCount()]
+			Local i:Int
+			For local figure:TFigureBase = eachin self 'GetEntriesID().Values()
+				figures[i] = figure
+				i:+ 1
+			Next
+			figuresValid = True
+		EndIf
+			
+		Return figures
+	End Method
+
+
+	Method Remove:int(obj:TEntityBase)
+		shuffledFiguresValid = False
+		figuresValid = False
+
+		Return Super.Remove(obj)
+	End Method
+
+
+	Method Add:int(obj:TEntityBase)
+		shuffledFiguresValid = False
+		figuresValid = False
+
+		Return Super.Add(obj)
+	End Method
 
 
 	Method UpdateAll:int()
@@ -71,42 +113,38 @@ Type TFigureBaseCollection extends TEntityCollection
 		'TODO: replace with something like "entering room" - or "logic ticks"
 		'      so things keep synchronized better over network
 		updateCount :+ 1
-		if updateCount > 50 or not shuffledFigures or shuffledFigures.length <> entriesCount
+		
+		'shuffle around figures (so update order is "random" and order of
+		'eg reaching a room first is not the same each time)
+		if updateCount > 50 or not shuffledFiguresValid
 			updateCount = 0
+			
+			local sortedFigures:TFigureBase[] = GetFigures()
+			'only create a new array if length is differing
+			If shuffledFigures.length <> sortedFigures.length
+				shuffledFigures = sortedFigures[..] 'copy
+			Else
+				'sortedFigures might contain "different" figures, so
+				'we assign anew
+				For Local i:Int = 0 until sortedFigures.length
+					shuffledFigures[i] = sortedFigures[i]
+				Next
+			EndIf
 
-			rem
-			'instead of shuffling (using a RandRange...) we just shift one
-			'by one
-			'-> disabled as shifting does not change player-figure order
-			'   in most cases (except it wraps between these 4 figures)
-			shuffledFigures = new TFigureBase[entriesCount]
-			shuffledFiguresIndex = ((shuffledFiguresIndex + 1) mod entriesCount)
-			local i:int = shuffledFiguresIndex
-			For Local Figure:TFigureBase = EachIn entries.Values()
-				shuffledFigures[i] = Figure
-				i :+ 1
-				if i >= entriesCount then i = 0
-			Next
-			endrem
-
-			shuffledFigures = new TFigureBase[entriesCount]
-			local i:int = 0
-			For Local Figure:TFigureBase = EachIn self 'GetEntriesID().Values()
-				shuffledFigures[i] = Figure
-				i :+ 1
-			Next
-			For Local a:int = 0 To entriesCount - 2
-				Local b:int = RandRange( a, entriesCount - 1)
+			For Local a:int = 0 To shuffledFigures.length - 2
+				Local b:int = RandRange( a, shuffledFigures.length - 1)
 				Local f:TFigureBase = shuffledFigures[a]
 				shuffledFigures[a] = shuffledFigures[b]
 				shuffledFigures[b] = f
 			Next
+			
+			shuffledFiguresValid = True
 		endif
 
 
-		'For Local Figure:TFigureBase = EachIn entries.Values()
-		For Local Figure:TFigureBase = EachIn shuffledFigures
-			if not Figure.Update()
+		For Local i:int = 0 until shuffledFigures.length
+			Local figure:TFigureBase = shuffledFigures[i]
+			if not figure.Update()
 				figuresToRemove :+ [Figure]
 			endif
 		Next
