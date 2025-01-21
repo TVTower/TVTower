@@ -174,9 +174,8 @@ Type TGUIManager
 
 	Method GetDraggedNumber:Int(obj:TGUIObject)
 		Local pos:Int = 0
-		For Local guiObject:TGUIObject = EachIn ListDragged
-			If guiObject = obj Then Return pos
-			pos:+1
+		For Local i:int = 0 until ListDragged.Count()
+			If ListDragged.data[i] = obj Then Return i
 		Next
 		Return 0
 	End Method
@@ -321,7 +320,7 @@ Type TGUIManager
 		If(obj._parent And Not haveToHandleObject(obj._parent,State,fromZ,toZ)) Then Return False
 
 		'skip if not visible
-		If Not(obj._flags & GUI_OBJECT_VISIBLE) Then Return False
+		If Not (obj._flags & GUI_OBJECT_VISIBLE) Then Return False
 
 		'skip if not visible by zindex
 		If Not ( (toZ = -1000 Or obj.GetZIndex() <= toZ) And (fromZ = -1000 Or obj.GetZIndex() >= fromZ)) Then Return False
@@ -336,18 +335,20 @@ Type TGUIManager
 
 
 	'returns an array of objects at the given point
-	Method GetObjectsByPos:TGuiObject[](coord:TVec2D, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
-		Return GetObjectsByXY(coord.GetIntX(), coord.GetIntY(), limitState, ignoreDragged, requiredFlags, limit)
+	Method GetObjectsByPos:TGuiObject[](coord:SVec2I, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
+		Return GetObjectsByPos(coord.x, coord.y, limitState, ignoreDragged, requiredFlags, limit)
 	End Method
 
 
 	'returns an array of objects at the given x,y coordinate
-	Method GetObjectsByXY:TGuiObject[](x:Int, y:Int, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
+	Method GetObjectsByPos:TGuiObject[](x:Int, y:Int, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
 	'	If limitState=Null Then limitState = currentState
 
 		Local guiObjects:TGuiObject[]
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
-		For Local obj:TGUIobject = EachIn list.ReverseEnumerator()
+		For Local i:Int = list.Count()-1 to 0 step -1
+			Local obj:TGUIObject = TGUIObject(list.data[i])
+
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
 
@@ -367,25 +368,6 @@ Type TGUIManager
 		Next
 
 		Return guiObjects
-	End Method
-
-
-	Method GetFirstObjectByPos:TGuiObject(coord:TVec2D, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
-		Return GetFirstObjectByXY(coord.GetIntX(), coord.GetIntY(), limitState, ignoreDragged, requiredFlags)
-	End Method
-
-
-	Method GetFirstObjectByXY:TGuiObject(x:Int, y:Int, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
-		Local guiObjects:TGuiObject[] = GetObjectsByXY(x, y, limitState, ignoreDragged, requiredFlags, 1)
-
-		If guiObjects.length = 0 Then Return Null Else Return guiObjects[0]
-	End Method
-
-
-	Method DisplaceGUIobjects(State:TLowerString = Null, x:Int = 0, y:Int = 0)
-		For Local obj:TGUIobject = EachIn List
-			If isState(obj, State) Then obj.rect.MoveXY( x,y )
-		Next
 	End Method
 
 
@@ -624,9 +606,6 @@ Type TGUIManager
 
 
 	Method Draw:Int(State:TLowerString = Null, fromZ:Int=-1000, toZ:Int=-1000, drawTypes:Int=GUIMANAGER_TYPES_ALL)
-		'_lastDrawTick :+1
-		'if _lastDrawTick >= 100000 then _lastDrawTick = 0
-
 		currentState = State
 
 		'this needs to get run in Draw() and Update() as you might else
@@ -659,9 +638,11 @@ Type TGUIManager
 			Next
 
 			'TODO: sort by lastActive state?
-			For Local t:TTooltipBase = EachIn activeTooltips
-				t.Render()
-			Next
+			If activeTooltips.count() > 0 
+				For Local t:TTooltipBase = EachIn activeTooltips
+					t.Render()
+				Next
+			EndIf
 		EndIf
 
 
@@ -735,8 +716,6 @@ Type TGUIobject
 	Field _limitToState:String = ""
 	'an array containing registered event listeners
 	Field _registeredEventListener:TEventListenerBase[]
-	'Field _lastDrawTick:int = 0
-	'Field _lastUpdateTick:int = 0
 
 	Field _acceptedDropFilter:object = Null
 
@@ -816,7 +795,8 @@ Type TGUIobject
 		'remove children (so they might inform their children and so on)
 		If _children
 			'traverse along a copy to avoid concurrent modification
-			'(this else leads to eg. some skipped children
+			'(the children inform the parent...)
+			'(this else leads to eg. some skipped children)
 			For Local child:TGUIObject = EachIn _children.copy()
 				child.Remove()
 			Next
@@ -1555,10 +1535,12 @@ Type TGUIobject
 
 		'find out if a list or some other would accept the dropping
 		'widget
-		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord, limitState, True, GUI_OBJECT_ACCEPTS_DROP)
+		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord.GetIntX(), coord.GetIntY(), limitState, True, GUI_OBJECT_ACCEPTS_DROP)
 		Local dropTarget:TGUIObject
 
-		For Local potentialDropTarget:TGUIobject = EachIn potentialDropTargets
+		For Local i:Int = 0 until potentialDropTargets.length
+			Local potentialDropTarget:TGUIobject = potentialDropTargets[i]
+
 			'ask if it would theoretically handle the drop
 			If potentialDropTarget.AcceptsDrop(self, coord)
 				dropTarget = potentialDropTarget
@@ -2376,10 +2358,12 @@ endrem
 
 		'draw children
 		For Local obj:TGUIobject = EachIn _children
-			'before skipping a dragged one, we try to ask it as a ghost (at old position)
-			If obj.isDragged() Then obj.drawGhost()
 			'skip dragged ones - as we set them to managed by GUIManager for that time
-			If obj.isDragged() Then Continue
+			If obj.isDragged() 
+				'before skipping a dragged one, we try to ask it as a ghost (at old position)
+				obj.drawGhost()
+				Continue
+			EndIf
 
 			'skip invisible objects
 			If Not obj.IsVisible() Then Continue
