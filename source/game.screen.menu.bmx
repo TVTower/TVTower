@@ -39,7 +39,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiGameSeedLabel:TGuiLabel
 	Field guiGameSeed:TGUIinput
 	'for easier iteration over the widgets (and their tooltips)
-	Field guiWidgets:TList = New TList
+	Field guiWidgets:TObjectList = New TObjectList
 
 	Field figureBaseCount:Int = 1
 	Field modifiedPlayers:Int = False
@@ -868,7 +868,8 @@ endrem
 			colorRect = New SRect(slotPosX + 2, Int(guiChannelNames[i-1].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 			'draw colors
-			For Local pc:TPlayerColor = EachIn TPlayerColor.registeredColors
+			For Local colorIndex:Int = 0 until TPlayerColor.registeredColors.Count()
+				Local pc:TPlayerColor = TPlayerColor(TPlayerColor.registeredColors.data[colorIndex])
 				If pc.ownerID = 0
 					colorRect = New SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
 					pc.SetRGB()
@@ -904,7 +905,8 @@ endrem
 		GUIManager.Draw(nameState, 101)
 
 		'draw tooltips above everything
-		For Local widget:TGUIObject = EachIn guiWidgets
+		For Local i:Int = 0 until guiWidgets.Count()
+			Local widget:TGUIObject = TGUIObject(guiWidgets.data[i])
 			If widget.GetTooltip() Then widget.GetTooltip().Render()
 		Next
 	End Method
