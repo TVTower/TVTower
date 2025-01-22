@@ -609,7 +609,6 @@ Type TProduction Extends TOwnedGameObject
 				local licence:TProgrammeLicence = GetProgrammeLicenceCollection().Get(parentScript.usedInProgrammeID)
 				If licence
 					licence.setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, True)
-					print "setting licence tradable "+licence.getTitle() +" "+licence.IsTradeable()
 				EndIf
 			EndIf
 		EndIf

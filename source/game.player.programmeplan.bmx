@@ -1901,7 +1901,6 @@ endrem
 								Local remove:Int = False
 								Local sell:Int = False
 								If licence.IsEpisode()
-									print "broadcastLimit for series "+licence.getTitle()
 									'check if whole series needs removing
 									licenceToRemove = licence.getParentLicence()
 									If Not licenceToRemove Or Not licenceToRemove.isExceedingBroadcastLimit()
@@ -1919,7 +1918,6 @@ endrem
 									licenceToRemove = licence
 								EndIf
 
-								If licenceToRemove Then print "remove "+licenceToRemove.getTitle() +" "+licenceToRemove.isTradeable()
 								'if a licence is removed (not sold) only if it is tradeable, it is possible to only partially produce a series
 								'trash the script for the last episode and sell the series even after all broadcast limits have been reached
 								If licenceToRemove
