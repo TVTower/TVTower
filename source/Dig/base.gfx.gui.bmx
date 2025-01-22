@@ -2728,7 +2728,7 @@ endrem
 	'defines if the passed "o" is accepted
 	Method AcceptsDrop:Int(o:TGUIObject, coord:TVec2D, extra:object=Null)
 		If HasOption(GUI_OBJECT_ACCEPTS_DROP)
-			If _acceptedDropFilter And Not TEventManager.ObjectsAreEqual(o, _acceptedDropFilter)
+			If _acceptedDropFilter And Not TEventManager.FiltersObject(o, _acceptedDropFilter)
 				Return False
 			EndIf
 			Return True
