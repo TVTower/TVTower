@@ -14,7 +14,7 @@ if CURRENT_WORKING_DIR == nil and debug.getinfo(2, "S") then
 end
 
 --require "SLF" -- load SFL.lua
-dofile("res/ai/CommonAI/SLF.lua")
+dofile(CURRENT_WORKING_DIR .. "/../CommonAI/SLF.lua")
 
 -- ##### GLOBALS #####
 globalPlayer = nil

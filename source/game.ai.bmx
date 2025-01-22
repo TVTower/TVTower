@@ -47,18 +47,14 @@ Type TAi Extends TAiBase
 
 	Method RegisterSharedObjects() override
 		'=== LINK SPECIAL OBJECTS ===
-		Local LuaEngine:TLuaEngine = GetLuaEngine()
-
 		'own functions for player
-		LuaEngine.RegisterBlitzmaxObject("TVT", TLuaFunctions.Create(PlayerID))
+		_luaEngine.RegisterObject("TVT", TLuaFunctions.Create(PlayerID))
 		'the player
-		LuaEngine.RegisterBlitzmaxObject("MY", GetPlayerBase(PlayerID))
-		'the player
-'		LuaEngine.RegisterBlitzmaxObject("EVENTS", Self.events)
+		_luaEngine.RegisterObject("MY", GetPlayerBase(PlayerID))
 		'the game object
-		LuaEngine.RegisterBlitzmaxObject("Game", GetGameBase())
-		'the game object
-		LuaEngine.RegisterBlitzmaxObject("WorldTime", GetWorldTime())
+		_luaEngine.RegisterObject("Game", GetGameBase())
+		'world time
+		_luaEngine.RegisterObject("WorldTime", GetWorldTime())
 
 		super.RegisterSharedObjects()
 	End Method

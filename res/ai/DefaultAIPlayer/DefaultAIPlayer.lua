@@ -33,10 +33,9 @@ require "TaskArchive"
 if (unitTestMode) then require "UnitTests" end
 ]]
 --
-dofile("res/ai/CommonAI/AIEngine.lua")
+dofile(CURRENT_WORKING_DIR .. "/../CommonAI/AIEngine.lua")
 
-local scriptPath = "res/ai/DefaultAIPlayer/"
---local scriptPath = ""
+local scriptPath = CURRENT_WORKING_DIR .. "/"
 dofile(scriptPath .. "CommonObjects.lua")
 dofile(scriptPath .. "BudgetManager.lua")
 dofile(scriptPath .. "Strategy.lua")

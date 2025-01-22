@@ -42,9 +42,7 @@ Import BRL.System		'for currenttime()
 'needed to be able to retrieve android's internal storage path
 Import Sdl.sdl
 ?
-?threaded
 Import Brl.Threads
-?
 Import "base.util.string.bmx"
 
 'create a basic log file
@@ -84,9 +82,7 @@ Type TLogger
 	Global lastPrintMode:Int =0
 	Global lastLoggedFunction:String=""
 	Global lastPrintFunction:String=""
-	?threaded
 	Global printMutex:TMutex = CreateMutex()
-	?
 	Const MODE_LENGTH:Int = 8
 
 
@@ -125,6 +121,7 @@ Type TLogger
 	'exactTypeRequired: requires the mode to exactly contain the debugType
 	'                   so a LOG_AI|LOG_DEBUG will only get logged if BOTH are enabled
 	Function Log(functiontext:String = "", message:String, debugType:Int=LOG_DEBUG, exactTypeRequired:Int=False)
+
 		Local debugtext:String = ""
 		If debugType & LOG_LOADING Then debugtext :+ "LOAD "
 		If debugType & LOG_GAME Then debugtext :+ "GAME "
@@ -143,11 +140,7 @@ Type TLogger
 		ElseIf debugType & LOG_INFO
 			debugtext :+ "INFO "
 		EndIf
-'		if len(debugText) < MODE_LENGTH
-			debugtext = LSet(debugtext, MODE_LENGTH) + " | "
-'		else
-'			debugtext = debugtext + " | "
-'		endif
+		debugtext = LSet(debugtext, MODE_LENGTH) + " | "
 
 		Local showFunctionText:String = ""
 		Local doLog:Int = False
@@ -194,9 +187,7 @@ Type TLogger
 			message = StringHelper.RemoveUmlauts(message)
 
 			Local text:String = "[" + CurrentTime() + "] " + debugtext + showFunctionText + ": " + message
-			?threaded
 			LockMutex(printMutex)
-			?
 			?android
 				If debugType & LOG_DEBUG
 					'debug not shown in normal logcat
@@ -210,9 +201,7 @@ Type TLogger
 			?Not android
 				Print text
 			?
-			?threaded
 			UnLockMutex(printMutex)
-			?
 		EndIf
 	End Function
 End Type
@@ -228,9 +217,9 @@ Type TLogFile
 	Field immediateWrite:Int = True
 	Field fileObj:TStream
 	Field keepFileOpen:Int = True
-	?threaded
+
 	Field fileMutex:TMutex = CreateMutex()
-	?
+	Field stringsMutex:TMutex = CreateMutex()
 
 	Global logs:TList = CreateList()
 
@@ -268,39 +257,38 @@ Type TLogFile
 			'if the file is still open, close first
 			If logfile.fileObj Then CloseFile(logfile.fileObj)
 
-			?threaded
 			LockMutex(logfile.fileMutex)
-			?
 			'in all cases, just dump down the file again regardless
 			'of the mode (you might have manipulated logs meanwhile)
 			'try to create the file
 			CreateFile(logfile.filename)
 			Local file:TStream = WriteFile( logfile.filename )
 			If Not file 
-				?threaded
 				UnlockMutex(logfile.fileMutex)
-				?
 				Throw "Cannot open ~q" + logfile.filename + "~q to dump log to."
 			EndIf
 
 			'header
 			WriteLine(file, logfile.title)
 			'current logs
+			logfile.stringsMutex.Lock()
 			For Local line:String = EachIn logfile.Strings
 				WriteLine(file, line)
 			Next
+			logfile.stringsMutex.Unlock()
 
 			CloseFile(file)
-			?threaded
 			UnlockMutex(logfile.fileMutex)
-			?
 		Next
 	End Function
 
 
 	Method AddLog:Int(text:String, addDateTime:Int=False)
 		If addDateTime Then text = "[" + CurrentTime() + "] " + text
+		
+		stringsMutex.Lock()
 		Strings.AddLast(text)
+		stringsMutex.Unlock()
 
 		If immediateWrite
 			?threaded
@@ -331,9 +319,7 @@ Type TLogFile
 			'close file to allow access by other processes
 			If Not keepFileOpen Then CloseFile(fileObj)
 
-			?threaded
 			UnlockMutex(fileMutex)
-			?
 		EndIf
 		Return True
 	End Method
