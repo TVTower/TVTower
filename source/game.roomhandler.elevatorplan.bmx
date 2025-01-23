@@ -123,7 +123,7 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 
 			'figure enters screen - reset the guilists, limit listening to the 4 rooms
 			Local screen:TScreen = ScreenCollection.GetScreen("screen_elevatorplan")
-			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterElevatorPlanScreen, Null, screen) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterElevatorPlanScreen, screen) ]
 		endif
 	End Method
 

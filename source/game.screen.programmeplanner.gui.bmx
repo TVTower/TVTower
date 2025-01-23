@@ -701,14 +701,14 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 
 		'===== REGISTER EVENTS =====
 		'nobody was against dropping the item - so transform according to the lists type
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnFinishDrop, Self, "onFinishDropProgrammePlanElement", Null, "TGUIProgrammePlanElement", Self)
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnFinishDrop, Self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", Self)
 
 		'nobody was against dragging the item - so transform according to the items base type
 		'attention: "drag" does not have a "receiver"-list like a drop has..
 		'so we would have to check vs slot-elements here
 		'that is why we just use a global listener... for all programmeslotlists (prog and ad)
 		If Not registeredGlobalListeners
-			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, Null, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement")
 
 			rem
 			'refresh visual style

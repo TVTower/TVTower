@@ -55,7 +55,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 		'=== register event listeners
 		'to reload achievement list when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, Null, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )

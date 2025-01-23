@@ -127,19 +127,19 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_MoveScript, onChangeProgrammeCollection ) ]
 
 		'check if dropping is possible (affordable price for a script dragged when dropping on a one)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropScript, Null, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropScript, "TGUIScriptAgencyScript") ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScript, Null, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScript, "TGUIScriptAgencyScript") ]
 		'stop dragging vendor elements if suitcase is full
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, OnTryDragScript, Null, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, OnTryDragScript, "TGUIScriptAgencyScript") ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScriptOnVendor, Null, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScriptOnVendor, "TGUIScriptAgencyScript") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, Null, "TGUIScriptAgencyScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGUIScriptAgencyScript" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, Null, "TGUIScriptAgencyScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGUIScriptAgencyScript") ]
 
 		'(re-)localize content
 		SetLanguage()

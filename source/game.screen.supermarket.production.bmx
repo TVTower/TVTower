@@ -74,32 +74,32 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		'=== register event listeners
 		'GUI -> GUI
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickCastItem, Null, "TGUICastListItem") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickEditTextsButton, Null, "TGUIButton") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickCastItem, "TGUICastListItem") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickEditTextsButton, "TGUIButton") ]
 		'we want to know if we hover a specific block
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverCastItem, Null, "TGUICastListItem" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConceptItem, Null, "TGuiProductionConceptSelectListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverCastItem, "TGUICastListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConceptItem, "TGuiProductionConceptSelectListItem" ) ]
 
 
 
 		'GUI -> LOGIC
 		'finish planning/make production ready
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinishProductionConcept, Null, "TGUIButton") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinishProductionConcept, "TGUIButton") ]
 		'changes to the cast (slot) list
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onProductionConceptChangeCastSlotList, Null, "TGUICastSlotList") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onProductionConceptChangeCastSlotList, Null, "TGUICastSlotList") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
 		'changes to production focus sliders
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnChangeValue, onProductionConceptChangeFocusSliders, Null, "TGUISlider") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnSetFocus, onProductionConceptSetFocusSliderFocus, Null, "TGUISlider") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnRemoveFocus, onProductionConceptRemoveFocusSliderFocus, Null, "TGUISlider") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnChangeValue, onProductionConceptChangeFocusSliders, "TGUISlider") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnSetFocus, onProductionConceptSetFocusSliderFocus, "TGUISlider") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnRemoveFocus, onProductionConceptRemoveFocusSliderFocus, "TGUISlider") ]
 		'changes to production company dropdown
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIDropDown_OnSelectEntry, onProductionConceptChangeProductionCompanyDropDown, Null, "TGUIDropDown") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIDropDown_OnSelectEntry, onProductionConceptChangeProductionCompanyDropDown, "TGUIDropDown") ]
 		'changes to production company levels / skill points
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionCompany_OnChangeLevel, onProductionCompanyChangesLevel) ]
 		'select a production concept
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISelectList_OnSelectEntry, onSelectProductionConcept) ]
 		'edit title/description
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnClose, onCloseEditTextsWindow, Null, "TGUIProductionEditTextsModalWindow") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnClose, onCloseEditTextsWindow, "TGUIProductionEditTextsModalWindow") ]
 
 
 		'LOGIC -> GUI
@@ -108,7 +108,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionFocus_SetFocus, onProductionConceptChangeProductionFocus) ]
 
 		'to reload concept list when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, Null, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
 		'refresh finish button on money change (maybe no longer enough money to finish... )
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerFinance_OnChangeMoney, onPlayerChangeMoney) ]
 
@@ -1473,9 +1473,9 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 		buttonOK.SetValue(GetLocale("SELECT_PERSON"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onCastChangeFilterDropdown", Null, "TGUIDropDown") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickCastListItem", Null, "TGUICastListItem") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickSortCastButton", Null, "TGUIButton") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onCastChangeFilterDropdown", "TGUIDropDown") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickCastListItem", "TGUICastListItem") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickSortCastButton", "TGUIButton") ]
 
 		Return Self
 	End Method
@@ -1840,8 +1840,8 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 		buttonOK.SetValue(GetLocale("EDIT_TEXTS"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeInputValues", Null, "TGUIInput") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickClearInputButton", Null, "TGUIButton") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeInputValues", "TGUIInput") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickClearInputButton", "TGUIButton") ]
 
 		Return Self
 	End Method
@@ -2132,7 +2132,7 @@ Type TGUICastSlotList Extends TGUISlotList
     Method Create:TGUICastSlotList(position:SVec2I, dimension:SVec2I, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIModalWindow_OnClose, Self, "onCloseSelectCastWindow", Null, "TGUISelectCastWindow") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIModalWindow_OnClose, Self, "onCloseSelectCastWindow", "TGUISelectCastWindow") ]
 
 		Return Self
 	End Method

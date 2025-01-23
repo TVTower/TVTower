@@ -222,7 +222,7 @@ Type TGUITabGroup Extends TGUIObject
 		EndIf
 
 
-		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIToggleButton_OnSetToggled, Self, "onSetToggled", Null, button))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIToggleButton_OnSetToggled, Self, "onSetToggled", button))
 	End Method
 
 

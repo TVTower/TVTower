@@ -56,14 +56,14 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		_eventListeners = new TEventListenerBase[0]
 
 		'to reload message list when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_onBeginEnter, onEnterScreen, Null, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_onBeginEnter, onEnterScreen, screen) ]
 
 		'also reload when messages get added or removed
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnAdd, onAddOrRemoveArchivedMessage) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnRemove, onAddOrRemoveArchivedMessage) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickMessage, Null, "TGUIArchivedMessageListItem") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeShowModeDropdown", Null, "TGUIDropDown" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickMessage, "TGUIArchivedMessageListItem") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeShowModeDropdown", "TGUIDropDown" ) ]
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )

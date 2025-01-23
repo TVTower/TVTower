@@ -46,7 +46,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 
 	Method New()
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", Null, "TGUICheckbox") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", "TGUICheckbox") ]
 	End Method
 
 

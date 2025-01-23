@@ -76,7 +76,7 @@ Type TGameToastMessage Extends TToastMessage
 
 
 	Method AddCloseOnEvent(eventKey:String)
-		Local listener:TEventListenerBase = EventManager.registerListenerMethod(eventKey, Self, "onReceiveCloseEvent", Null, Self)
+		Local listener:TEventListenerBase = EventManager.registerListenerMethod(eventKey, Self, "onReceiveCloseEvent", Self)
 		_registeredEventListener :+ [listener]
 	End Method
 

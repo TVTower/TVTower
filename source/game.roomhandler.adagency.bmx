@@ -186,15 +186,15 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropContract, Null, "TGuiAdContract" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropContract, "TGuiAdContract" ) ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropContractOnVendor, Null, "TGuiAdContract" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropContractOnVendor, "TGuiAdContract" ) ]
 		'dropping an contract on another can lead to a "replacement"
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceContract, Null, "TGUIAdContractSlotList" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceContract, "TGUIAdContractSlotList" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverContract, Null, "TGuiAdContract" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverContract, "TGuiAdContract" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickContract, Null, "TGuiAdContract") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickContract, "TGuiAdContract") ]
 
 		'(re-)localize content
 		SetLanguage()

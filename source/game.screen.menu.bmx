@@ -294,24 +294,24 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'===== REGISTER EVENTS =====
 		'register changes to GameSettingsStartYear-guiInput
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", Null, guiStartYear)
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiStartYear)
 		'and to game seed
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", Null, guiGameSeed)
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiGameSeed)
 		'register checkbox changes
-		EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", Null, "TGUICheckbox")
+		EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", "TGUICheckbox")
 		'register dropdown for mission selection
-		EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeMissionDropdown", Null, "TGUIDropDown" )
+		EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeMissionDropdown", "TGUIDropDown" )
 
 		'register changes to player or channel name
 		For Local i:Int = 0 To 3
-			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", Null, guiPlayerNames[i])
-			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", Null, guiChannelNames[i])
-			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeGameSettingsInputs", Null, guiDifficulty[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiPlayerNames[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiChannelNames[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeGameSettingsInputs", guiDifficulty[i])
 		Next
 
 		'handle clicks on the gui objects
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", Null, "TGUIButton")
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickArrows", Null, "TGUIArrowButton")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", "TGUIButton")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickArrows", "TGUIArrowButton")
 
 		'invoke correct content of mission dropdown
 		TriggerBaseEvent(GUIEventKeys.GUIDropDown_OnSelectEntry, null, guiMissionCategories)

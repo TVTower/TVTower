@@ -424,7 +424,7 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 '		guiBackground.spriteBaseName = "gfx_gui_modalWindow"
 
 		'we want to know if one clicks on a windows buttons
-		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIButton_OnClick, Self, "onButtonClick", Null, "tguibutton"))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIButton_OnClick, Self, "onButtonClick", "tguibutton"))
 		return self
 	End Method
 
