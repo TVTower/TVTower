@@ -141,19 +141,19 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onFinishDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropUnownedElement, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onFinishDropProgrammePlanElement, Null, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElementOnDayButton, Null, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropFreshProgrammePlanElementOnRunningSlot, Null, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropUnownedElement, Null, "TGUIProgrammePlanElement") ]
 
 		'savegame loaded - clear gui elements
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onLoadSavegame) ]
 		'player enters screen - reset the guilists
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterProgrammePlannerScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterProgrammePlannerScreen, Null, screen) ]
 		'player leaves screen - only without dragged blocks
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnTryLeave, onTryLeaveProgrammePlannerScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnTryLeave, onTryLeaveProgrammePlannerScreen, Null, screen) ]
 		'player leaves screen - clean GUI (especially dragged ones)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnFinishLeave, onLeaveProgrammePlannerScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnFinishLeave, onLeaveProgrammePlannerScreen, Null, screen) ]
 		'player tries to leave the room - check like with screens
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnTryLeaveRoom, onTryLeaveRoom) ]
 		'player leaves office forcefully - clean up
@@ -180,27 +180,27 @@ Type TScreenHandler_ProgrammePlanner
 		'   existing slot item. Must be done in "onTryDrop" so it is run
 		'   before the shortcut-check is done (which is in "onTryDrag")
 		'   -> so "onDrop" is not possible
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElement, Null, "TGUIProgrammePlanElement") ]
 		'drag/drop ... from or to one of the two lists
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListAdvertisements) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, Null, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, Null, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, Null, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, Null, GuiListAdvertisements) ]
 		'so we can forbid adding to a "past"-slot
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, GuiListAdvertisements) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, Null, GuiListProgrammes) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, Null, GuiListAdvertisements) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammePlanElement, Null, "TGUIProgrammePlanElement" ) ]
 		'these lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickProgrammePlanElement, Null, "TGUIProgrammePlanElement") ]
 		'we want to handle drops on the same guilist slot (might be other planning day)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onDropProgrammePlanElementBack, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onDropProgrammePlanElementBack, Null, "TGUIProgrammePlanElement") ]
 
 		'intercept dragging items if we want a SHIFT/CTRL-copy/nextepisode
 		'also handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)
 		'in this case - send them to GuiManager (like freshly created to avoid a history)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, Null, "TGUIProgrammePlanElement") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammePlanElement, Null, "TGUIProgrammePlanElement") ]
 		'handle dropping at the end of the list (for dragging overlapped items)
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onProgrammePlanAddObject) ]
 
@@ -208,7 +208,7 @@ Type TScreenHandler_ProgrammePlanner
 		'_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
 
 		'we are interested in the programmeplanner buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onProgrammePlannerButtonClick, "TGUIButton" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onProgrammePlannerButtonClick, Null, "TGUIButton" ) ]
 
 		'to update/draw the screen
 		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, screen )

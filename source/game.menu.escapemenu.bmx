@@ -28,7 +28,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 				buttons[i] = New TGUIButton.Create(New SVec2I(0, buttonsY + i*40), New SVec2I(Int(canvas.GetContentScreenRect().w), -1), GetLocale(buttonsText[i]), "")
 			EndIf
 			AddChild(buttons[i])
-			AddEventListener( EventManager.RegisterListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick", buttons[i]) )
+			AddEventListener( EventManager.RegisterListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick", Null, buttons[i]) )
 		Next
 
 		If guiCaptionTextBox
@@ -193,7 +193,7 @@ Type TGUIModalSettingsMenu Extends TGUIGameModalWindowChainDialogue
 
 		'=== EVENTS ===
 		'listen to clicks on "load savegame"
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIButton_Onclick, Self, "onApplySettings", dialogueButtons[0]) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIButton_Onclick, Self, "onApplySettings", Null, dialogueButtons[0]) ]
 
 		Return Self
 	End Method

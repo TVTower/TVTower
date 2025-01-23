@@ -103,13 +103,13 @@ Type TGUIListBase Extends TGUIobject
 
 		'register events
 		'- we are interested in certain events from the scroller or self
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, guiScrollerH ))
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, guiScrollerV ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, Null, guiScrollerH ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, Null, guiScrollerV ))
 		'listening to our own scroll events redirects them to the same 
 		'as the scrollers - but without requiring it
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, self ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, Null, self ))
 		'redirect the scroll event of the panel 
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseScrollwheel, onPanelMouseScrollWheel, guiEntriespanel ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseScrollwheel, onPanelMouseScrollWheel, Null, guiEntriespanel ))
 
 		'is something dropping - check if it this list
 		SetAcceptDrop("TGUIListItem")

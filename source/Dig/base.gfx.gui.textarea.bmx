@@ -64,11 +64,11 @@ Type TGUITextArea Extends TGUIobject
 
 		'register events
 		'someone uses the mouse wheel to scroll over the panel
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseScrollwheel, onScrollWheel, Self))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseScrollwheel, onScrollWheel, Null, Self))
 		'- we are interested in certain events from the scroller or self
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, guiScrollerH ))
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, guiScrollerV ))
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, self ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, Null, guiScrollerH ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, Null, guiScrollerV ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScroll, Null, self ))
 
 
 		GUIManager.Add(Self)

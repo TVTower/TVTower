@@ -58,9 +58,9 @@ Type TScreenHandler_Financials
 
 		'=== register event listeners
 		'to listen to clicks on the four buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinanceButtons, "TGUIArrowButton") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinanceButtons, Null, "TGUIArrowButton") ]
 		'to reset finance history scroll position when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterFinancialScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterFinancialScreen, Null, screen) ]
 
 		'to update/draw the screens
 		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, screen)

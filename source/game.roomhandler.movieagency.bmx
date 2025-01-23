@@ -326,18 +326,18 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 		'=== register event listeners
 		'drop ... so sell/buy the thing
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammeLicence, Null, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, Null, "TGUIProgrammeLicence") ]
 		'dropping a licence on another (in suitcase) can lead to a "replacement"
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceProgrammeLicence, "TGUIProgrammeLicenceSlotList" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceProgrammeLicence, Null, "TGUIProgrammeLicenceSlotList" ) ]
 		'is dragging even allowed? - eg. intercept if not enough money
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, Null, "TGUIProgrammeLicence") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, Null, "TGUIProgrammeLicence") ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onFinishDrop, onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onFinishDrop, onDropProgrammeLicenceOnVendor, Null, "TGUIProgrammeLicence") ]
 		'return to original position on right click
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickLicence, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickLicence, Null, "TGUIProgrammeLicence") ]
 
 		'reset auction block caches
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnSetActivePlayer, onResetAuctionBlockCache) ]

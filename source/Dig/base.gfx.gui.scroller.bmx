@@ -62,10 +62,10 @@ Type TGUIScrollerBase extends TGUIobject
 		AddChild(guiButtonPlus)
 
 		'scroller is interested in hits (not clicks) on its buttons
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, guiButtonMinus ))
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, guiButtonPlus ))
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, guiButtonMinus ))
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, guiButtonPlus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, Null, guiButtonMinus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, Null, guiButtonPlus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, Null, guiButtonMinus ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, Null, guiButtonPlus ))
 
 		GUIManager.Add( Self)
 
@@ -352,9 +352,9 @@ Type TGUIScroller Extends TGUIScrollerBase
 		'attention: do not listen to "GUIobject_onchangevalue" as this is
 		'           also triggered by "onScrollPositionChanged" (circlular
 		'           triggers)
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUISlider_SetValueByMouse, onScrollHandleChange, scrollHandle ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUISlider_SetValueByMouse, onScrollHandleChange, Null, scrollHandle ))
 		'listen to changes via scroller buttons
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScrollPositionChanged, self))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScrollPositionChanged, Null, self))
 
 		return self
 	End Method

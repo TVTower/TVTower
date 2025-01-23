@@ -76,13 +76,13 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 		'=== register event listeners
 		'listen to clicks on the four buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, "TGUIButton") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, Null, "TGUIButton") ]
 		'reset button text when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, Null, screen) ]
 		'remove suitcase present from GUI
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginLeave, onLeaveScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginLeave, onLeaveScreen, Null, screen) ]
 		'listen to clicks on a draggable present
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickPresent, "TGUIBettyPresent") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickPresent, Null, "TGUIBettyPresent") ]
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )

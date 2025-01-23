@@ -52,47 +52,47 @@ End Extern
 
 Global EventManager:TEventManager = New TEventManager
 
-Function TriggerBaseEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.triggerEvent(TEventBase.Create(trigger, data, sender, receiver, channel))
+Function TriggerBaseEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:TEventChannel=Null, channel2:TEventChannel=Null) Inline
+	EventManager.triggerEvent(TEventBase.Create(trigger, data, sender, receiver, channel, channel2))
 End Function
 
-Function TriggerBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.triggerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel))
+Function TriggerBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:TEventChannel=Null, channel2:TEventChannel=Null) Inline
+	EventManager.triggerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel, channel2))
 End Function
 
-Function TriggerBaseEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.triggerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel))
+Function TriggerBaseEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:TEventChannel=Null, channel2:TEventChannel=Null) Inline
+	EventManager.triggerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel, channel2))
 End Function
 
-Function TriggerBaseEvent(event:TEventBase)
+Function TriggerBaseEvent(event:TEventBase) Inline
 	EventManager.triggerEvent(event)
 End Function
 
-Function RegisterBaseEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.registerEvent(TEventBase.Create(trigger, data, sender, receiver, channel))
+Function RegisterBaseEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:TEventChannel=Null, channel2:TEventChannel=Null) Inline
+	EventManager.registerEvent(TEventBase.Create(trigger, data, sender, receiver, channel, channel2))
 End Function
 
-Function RegisterBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.registerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel))
+Function RegisterBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:TEventChannel=Null, channel2:TEventChannel=Null) Inline
+	EventManager.registerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel, channel2))
 End Function
 
-Function RegisterBaseEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.registerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel))
+Function RegisterBaseEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:TEventChannel=Null, channel2:TEventChannel=Null) Inline
+	EventManager.registerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel, channel2))
 End Function
 
-Function RegisterBaseEvent(event:TEventBase)
+Function RegisterBaseEvent(event:TEventBase) Inline
 	EventManager.registerEvent(event)
 End Function
 
-Function GetEventKey:TEventKey(text:String, createIfMissing:Int)
+Function GetEventKey:TEventKey(text:String, createIfMissing:Int) Inline
 	Return EventManager.GetEventKey(text, createIfMissing)
 End Function
 
-Function GetEventKey:TEventKey(text:TLowerString, createIfMissing:Int)
+Function GetEventKey:TEventKey(text:TLowerString, createIfMissing:Int) Inline
 	Return EventManager.GetEventKey(text, createIfMissing)
 End Function
 
-Function GetEventKey:TEventKey(eventKeyID:Long)
+Function GetEventKey:TEventKey(eventKeyID:Long) Inline
 	Return EventManager.GetEventKey(eventKeyID)
 End Function
 
@@ -116,6 +116,8 @@ Type TEventManager
 	'list of eventhandlers waiting for trigger
 	'"eventkey.id -> listener"
 	Field _listeners:TLongMap = new TLongMap
+   
+
 	Field eventsProcessed:Int = 0
 	Field listenersCalled:Int = 0
 	Field eventsTriggered:Int = 0
@@ -337,28 +339,28 @@ Type TEventManager
 
 
 	'register a function getting called as soon as a trigger is fired
-	Method RegisterListenerFunction:TEventListenerBase( trigger:String, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return RegisterListener( trigger, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+	Method RegisterListenerFunction:TEventListenerBase( trigger:String, _function:Int(triggeredByEvent:TEventBase), channels:TEventChannel[] = Null, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( trigger, TEventListenerRunFunction.Create(_function, channels, limitToSender, limitToReceiver) )
 	End Method
 
-	Method RegisterListenerFunction:TEventListenerBase( eventKey:TEventKey, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return RegisterListener( eventKey, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+	Method RegisterListenerFunction:TEventListenerBase( eventKey:TEventKey, _function:Int(triggeredByEvent:TEventBase), channels:TEventChannel[] = Null, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKey, TEventListenerRunFunction.Create(_function, channels, limitToSender, limitToReceiver) )
 	End Method
 
-	Method RegisterListenerFunction:TEventListenerBase( eventKeyID:Long, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return RegisterListener( eventKeyID, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+	Method RegisterListenerFunction:TEventListenerBase( eventKeyID:Long, _function:Int(triggeredByEvent:TEventBase), channels:TEventChannel[] = Null, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKeyID, TEventListenerRunFunction.Create(_function, channels, limitToSender, limitToReceiver) )
 	End Method
 
 
 	'register a method getting called as soon as a trigger is fired
-	Method RegisterListenerMethod:TEventListenerBase( trigger:String, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return RegisterListener( trigger, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+	Method RegisterListenerMethod:TEventListenerBase( trigger:String, objectInstance:Object, methodName:String, channels:TEventChannel[] = Null, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( trigger, TEventListenerRunMethod.Create(objectInstance, methodName, channels, limitToSender, limitToReceiver) )
 	End Method
-	Method RegisterListenerMethod:TEventListenerBase( eventKey:TEventKey, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return RegisterListener( eventKey, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+	Method RegisterListenerMethod:TEventListenerBase( eventKey:TEventKey, objectInstance:Object, methodName:String, channels:TEventChannel[] = Null, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKey, TEventListenerRunMethod.Create(objectInstance, methodName, channels, limitToSender, limitToReceiver) )
 	End Method
-	Method RegisterListenerMethod:TEventListenerBase( eventKeyID:Long, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return RegisterListener( eventKeyID, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+	Method RegisterListenerMethod:TEventListenerBase( eventKeyID:Long, objectInstance:Object, methodName:String, channels:TEventChannel[] = Null, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKeyID, TEventListenerRunMethod.Create(objectInstance, methodName, channels, limitToSender, limitToReceiver) )
 	End Method
 
 
@@ -491,36 +493,25 @@ Type TEventManager
 	End Method
 
 
-'global debugLastListenedEventKey:TEventKey
-'global debugLastEventKey:TEventKey
 	'runs all listeners NOW ...returns amount of listeners
-	Method TriggerEvent:Int(triggeredByEvent:TEventBase)
-		If Not triggeredByEvent Then Return 0
+	Method TriggerEvent:Int(event:TEventBase)
+		If Not event Then Return 0
 
-		?Threaded
-		'if we have systemonly-event we cannot do it in a subthread
-		'instead we just add that event to the upcoming events list
-		If triggeredByEvent._channel = 1
-			If CurrentThread()<>MainThread()
-				RegisterEvent(triggeredByEvent)
+		'if we have main-thread-event we cannot do it in a subthread
+		'instead we just add that event to the upcoming events queue
+		If event._flags & TEventBase.FLAG_MAINTHREAD_ONLY
+			If CurrentThread() <> MainThread()
+				RegisterEvent(event)
 				Return False
 			EndIf
 		EndIf
-		?
 
-		?debug
-		if not triggeredByEvent.GetEventKey() then Throw "triggering event without key"
-		?
-
-		Local listeners:TObjectList = GetListeners(triggeredByEvent.GetEventKeyID())
+		Local listeners:TObjectList = GetListeners(event.GetEventKeyID())
 		If listeners
 			'If not TryLockMutex(_listenersMutex)
 			'	print "TryLockMutex(_listenersMutex) failed"
 			'	LockMutex(_listenersMutex)
 			'EndIf
-			'use a _copy_ of the original listeners to avoid concurrent
-			'modification within the loop
-			'listeners = listeners.Copy()
 			For Local listener:TEventListenerBase = EachIn listeners
 				listenersCalled :+ 1
 
@@ -528,30 +519,24 @@ Type TEventManager
 				'only useful if the "eachin listeners" is not mutexed too
 				'If not TryLockMutex(_onEventMutex)
 				'	Print "TryLockMutex(_onEventMutex) failed in EachIn listeners loop ... "
-				'	if debugLastListenedEventKey then print "debugLastListenedEventKey = " + debugLastListenedEventKey.text.ToString()
-				'	if debugLastEventKey then print "debugLastEventKey = " + debugLastEventKey.text.ToString()
 				'	LockMutex(_onEventMutex)
 				'EndIf
-				listener.onEvent(triggeredByEvent)
-				'debugLastListenedEventKey = triggeredByEvent._eventKey
+				listener.onEvent(event)
 				'UnlockMutex(_onEventMutex)
 				'stop triggering the event if ONE of them vetos
-				If triggeredByEvent.isVeto() Then Exit
+				If event.isVeto() Then Exit
 			Next
 			'UnlockMutex(_onEventMutex)
 		EndIf
 
 		'run individual event method
-		If Not triggeredByEvent.IsVeto()
+		If Not event.IsVeto()
 			eventsTriggered :+ 1
 			'If not TryLockMutex(_onEventMutex)
-			'	Print "TryLockMutex(_onEventMutex) failed in triggeredByEvent.onEvent ... "
-			'	if debugLastListenedEventKey then print "debugLastListenedEventKey = " + debugLastListenedEventKey.text.ToString()
-			'	if debugLastEventKey then print "debugLastEventKey = " + debugLastEventKey.text.ToString()
+			'	Print "TryLockMutex(_onEventMutex) failed in event.onEvent ... "
 			'	LockMutex(_onEventMutex)
 			'EndIf
-			triggeredByEvent.onEvent()
-			'debugLastEventKey = triggeredByEvent._eventKey 
+			event.onEvent()
 			'UnlockMutex(_onEventMutex)
 		EndIf
 
@@ -564,43 +549,49 @@ Type TEventManager
 
 
 	'update the event manager - call this each cycle of your app loop
-	Method Update(onlyChannel:Int=Null)
+	Method Update()
 		If Not isStarted() Then Init()
 		'Assert _ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
-		_ProcessEvents(onlyChannel)
+		_ProcessEvents()
 		_ticks = Time.GetTimeGone()
 	End Method
 
 
 	'process all events currently in the queue
-	Method _ProcessEvents(onlyChannel:Int=Null)
-		If Not _events.IsEmpty()
-			' get the next event
+	Method _ProcessEvents()
+		Local event:TEventBase
+		While Not _events.IsEmpty()
+			' get the next event (pop it from the list)
+			' (so other threads won't see it meanwhile)
 			LockMutex(_eventsMutex)
-			Local event:TEventBase = TEventBase(_events.First())
-			UnlockMutex(_eventsMutex)
+				event = TEventBase(_events.First())
+				If not event 
+					UnlockMutex(_eventsMutex)
+					Return
+				EndIf
 
-			If event <> Null
-				If onlyChannel <> Null
-					'system
-					If event._channel = 1 And event._channel <> onlyChannel
-						If CurrentThread() <> MainThread() Then Return
+				'if next event can only run on main thread
+				'(and we are in a sub thread) then we can not process
+				' further until main thread handled it ... to keep "order")
+				If event._flags & TEventBase.FLAG_MAINTHREAD_ONLY
+					If CurrentThread() <> MainThread() 
+						UnlockMutex(_eventsMutex)
+						Return
 					EndIf
 				EndIf
 
-				' is it time for this event?
-				If event.getStartTime() <= _ticks
-					triggerEvent( event )
-
-					' remove from list
-					LockMutex(_eventsMutex)
-					_events.RemoveFirst()
+				' is it not yet time for this event?
+				If event.getStartTime() > _ticks
 					UnlockMutex(_eventsMutex)
-					' another event may start on the same tick - check again
-					_processEvents()
+					Return
 				EndIf
-			EndIf
-		EndIf
+				
+				_events.RemoveFirst() 'finally pop it from the queue
+			UnlockMutex(_eventsMutex)
+
+			'handle the event
+			triggerEvent( event )
+		Wend
 	End Method
 
 
@@ -621,7 +612,7 @@ Type TEventManager
 			if not eventKey then Throw "EventManager._listeners contain obsolete eventKeys for ID="+longKey.value
 
 			'skip GUI for now
-			'If eventKey.text.Find("gui") = 0 then continue
+			If eventKey.text.Find("gui") = 0 then continue
 			print "- " + eventKey.text.ToString() ' + "    [ID:"+eventKey.id+"]"
 
 			For Local elb:TEventListenerBase = EachIn TObjectList( _listeners.ValueForKey(eventKey.id) )
@@ -669,9 +660,11 @@ Type TEventManager
 		UnlockMutex(_listenersMutex)
 
 		Print "====="
-		Print "Events: " + _events.Count()
-		Print "Event Listeners: " + listeners + " (" + methodListenerCount + " method listeners, " + functionListenerCount + " function listeners)"
-
+		Print "Event listeners       : " + listeners + " (" + methodListenerCount + " method listeners, " + functionListenerCount + " function listeners)"
+		Print "Event listeners called: " + listenersCalled
+		Print "Events queued         : " + _events.Count()
+		Print "Events triggered      : " + eventsTriggered
+		Print "Events processed      : " + eventsProcessed
 		Print "====="
 	End Method
 
@@ -755,6 +748,18 @@ private
 End Type
 
 
+'each event channel consists of a fast to retrieve numeric ID
+'and a textual representation
+Type TEventChannel
+	Field id:Long
+	Field text:String
+
+private
+	'avoid outside world being able to create new event keys without Generate()
+	Method New()
+	End Method
+End Type
+
 
 
 'simple basic class for an event listener
@@ -765,6 +770,11 @@ Type TEventListenerBase
 	Field _limitToReceiver:Object
 	Field _limitToReceiverObjType:Int = 0 {nosave}
 	Field _limitToReceiverTypeID:TTypeID {nosave} 'TTypeIDs will differ between savegames...
+
+	'all the channels a specific listener listens to
+	'eg. "gui", "gui.castlistitem", "customproduction"
+	Field _channels:TEventChannel[]
+
 	Global cacheHit:Int
 	Global cacheCalc:Int
 
@@ -907,11 +917,13 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 	Field _method:TMethod {nosave}
 
 
-	Function Create:TEventListenerRunMethod(objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Function Create:TEventListenerRunMethod(objectInstance:Object, methodName:String, channels:TEventChannel[], limitToSender:Object, limitToReceiver:Object)
 		Local obj:TEventListenerRunMethod = New TEventListenerRunMethod
 		obj._methodName	= methodName
 		obj._objectInstance = objectInstance
 
+		obj._channels = channels
+		
 		'convert limits to TTypeID if corresponding - this saves lookups
 		'later on
 		If String(limitToSender)
@@ -975,9 +987,11 @@ Type TEventListenerRunFunction Extends TEventListenerBase
 	Field _function:Int(triggeredByEvent:TEventBase)
 
 
-	Function Create:TEventListenerRunFunction(_function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Function Create:TEventListenerRunFunction(_function:Int(triggeredByEvent:TEventBase), channels:TEventChannel[], limitToSender:Object, limitToReceiver:Object)
 		Local obj:TEventListenerRunFunction = New TEventListenerRunFunction
 		obj._function = _function
+		
+		obj._channels = channels
 		
 		'convert limits to TTypeID if corresponding - this saves lookups
 		'later on
@@ -1012,41 +1026,44 @@ Type TEventBase
 private
 	Field _eventKey:TEventKey
 	Field _data:Object
-public
+	Field _channel1:TEventChannel
+	Field _channel2:TEventChannel
 	Field _startTime:Long
+	Field _flags:Int
+public
 	Field _sender:Object = Null
 	Field _receiver:Object = Null
-	Field _status:Int = 0
-	Field _channel:Int = 0		'no special channel
 	
 	Global stubData:TData = new TData
 
-	Const STATUS_VETO:Int = 1
-	Const STATUS_ACCEPTED:Int = 2
+	Const FLAG_STATUS_VETO:Int = 1
+	Const FLAG_STATUS_ACCEPTED:Int = 2
+	Const FLAG_MAINTHREAD_ONLY:Int = 4
 
-	Function Create:TEventBase(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	Function Create:TEventBase(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel1:TEventChannel=Null, channel2:TEventChannel=Null)
 		Local obj:TEventBase = New TEventBase
 		obj._eventKey = eventKey
 		obj._data = data
 		obj._sender = sender
 		obj._receiver = receiver
-		obj._channel = channel
+		obj._channel1 = channel1
+		obj._channel2 = channel2
 		obj.SetStartTime( EventManager.getTicks() )
 		Return obj
 	End Function
 
 
-	Function Create:TEventBase(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	Function Create:TEventBase(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel1:TEventChannel=Null, channel2:TEventChannel=Null)
 		Local eventKey:TEventKey = EventManager.GetEventKey(trigger, True)
-		Return Create(eventKey, data, sender, receiver, channel)
+		Return Create(eventKey, data, sender, receiver, channel1, channel2)
 	End Function
 
 
-	Function Create:TEventBase(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	Function Create:TEventBase(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel1:TEventChannel=Null, channel2:TEventChannel=Null)
 		Local eventKey:TEventKey = EventManager.GetEventKey(eventKeyID)
 		if not eventKey Then Throw "No eventKey found for ID="+eventKeyID
 
-		Return Create(eventKey, data, sender, receiver, channel)
+		Return Create(eventKey, data, sender, receiver, channel1, channel2)
 	End Function
 
 
@@ -1084,32 +1101,32 @@ public
 	End Method
 
 
-	Method SetStatus(status:Int, enable:Int=True)
+	Method SetFlag(flag:Int, enable:Int=True)
 		If enable
-			_status :| status
+			_flags :| flag
 		Else
-			_status :& ~status
+			_flags :& ~flag
 		EndIf
 	End Method
 
 
 	Method SetVeto(bool:Int=True)
-		SetStatus(STATUS_VETO, bool)
+		SetFlag(FLAG_STATUS_VETO, bool)
 	End Method
 
 
 	Method IsVeto:Int()
-		Return (_status & STATUS_VETO) > 0
+		Return (_flags & FLAG_STATUS_VETO) > 0
 	End Method
 
 
 	Method SetAccepted(bool:Int=True)
-		SetStatus(STATUS_ACCEPTED, bool)
+		SetFlag(FLAG_STATUS_ACCEPTED, bool)
 	End Method
 
 
 	Method IsAccepted:Int()
-		Return (_status & STATUS_ACCEPTED) > 0
+		Return (_flags & FLAG_STATUS_ACCEPTED) > 0
 	End Method
 
 

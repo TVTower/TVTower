@@ -113,7 +113,7 @@ Type TGUIDropDown Extends TGUIInput
 		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIDropDownItem_OnClick,	Self.list, "onClickOnEntry"))
 
 		'to register if an item was selected
-		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "onSelectEntry", Self.list))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "onSelectEntry", Null, Self.list))
 
 		Return Self
 	End Method

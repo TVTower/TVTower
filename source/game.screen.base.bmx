@@ -34,8 +34,8 @@ Type TScreenHandler
 	Function _RegisterScreenHandler:TEventListenerBase[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
 		local listeners:TEventListenerBase[]
 		if screen
-			listeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnScreenUpdate, updateFunc, screen ) ]
-			listeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnScreenDraw, drawFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnScreenUpdate, updateFunc, Null, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnScreenDraw, drawFunc, Null, screen ) ]
 		endif
 		return listeners
 	End Function
@@ -45,7 +45,7 @@ End Type
 
 
 'register to the onLoad-Event for "Screens"
-EventManager.registerListenerFunction(TRegistryLoader.eventKey_onLoadResourceFromXML, onLoadScreens, Null, "SCREENS")
+EventManager.registerListenerFunction(TRegistryLoader.eventKey_onLoadResourceFromXML, onLoadScreens, Null, Null, "SCREENS")
 Function onLoadScreens:Int( triggerEvent:TEventBase )
 	Local screensNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
 	Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
@@ -376,8 +376,8 @@ Type TInGameScreen_World Extends TInGameScreen
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== add new event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnBeginLeaveRoom, onBeginLeaveRoom, "TFigure") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishLeaveRoom, onFinishLeaveRoom, "TFigure") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnBeginLeaveRoom, onBeginLeaveRoom, Null, "TFigure") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishLeaveRoom, onFinishLeaveRoom, Null, "TFigure") ]
 	End Method
 
 

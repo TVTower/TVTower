@@ -90,11 +90,11 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 		'=== register event listeners
 		'listen to clicks on the four buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, "TGUIArrowButton") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, Null, "TGUIArrowButton") ]
 		'listen to tab group selections
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUITabGroup_OnSetToggledButton, Self, "onToggleSubScreenTabGroupButton", tabGroup) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUITabGroup_OnSetToggledButton, Self, "onToggleSubScreenTabGroupButton", Null, tabGroup) ]
 		'reset show day when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, Null, screen) ]
 
 
 		'to update/draw the screen

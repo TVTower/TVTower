@@ -254,7 +254,7 @@ Type TIngameHelpWindow
 
 
 		'=== EVENTS ===
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "OnSetCheckbox", checkboxHideAll) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "OnSetCheckbox", Null, checkboxHideAll) ]
 	End Method
 	
 	

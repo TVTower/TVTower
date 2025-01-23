@@ -3560,7 +3560,7 @@ Type TScreen_MainMenu Extends TGameScreen
 			GuiManager.SortLists()
 			'we want to have max 4 items visible at once
 			guiLanguageDropDown.SetListContentHeight(itemHeight * Min(languageCount,4))
-			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onSelectLanguageEntry", guiLanguageDropDown)
+			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onSelectLanguageEntry", Null, guiLanguageDropDown)
 		EndIf
 
 		'fill captions with the localized values
@@ -3777,8 +3777,8 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		SetLanguage()
 
 		'register clicks on TGUIGameEntry-objects -> game list
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickGameListEntry", "TGUIGameEntry")
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", "TGUIButton")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickGameListEntry", Null, "TGUIGameEntry")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", Null, "TGUIButton")
 
 		'register to network game announcements
 		EventManager.registerListenerMethod(TDigNetwork.eventKey_OnReceiveAnnounceGame, Self, "onReceiveAnnounceGame")

@@ -79,15 +79,15 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== register event listeners
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, Null, "TGUIProgrammeLicence" ) ]
 		'drop programme ... so sell/buy the thing
-		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, Null, "TGUIProgrammeLicence" ) ]
 		'drop programme on dude - add back to player's collection
-		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicenceOnDude, Null, "TGUIProgrammeLicence" ) ]
 		'check right clicks on a gui block
-		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick, onClickProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick, onClickProgrammeLicence, Null, "TGUIProgrammeLicence" ) ]
 		'check right clicks on a gui block
-		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, Null, "TGUIProgrammeLicence" ) ]
 
 		'(re-)localize content
 		SetLanguage()

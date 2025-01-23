@@ -66,7 +66,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'handle the "office" itself (not computer etc)
 		'using this approach avoids "tooltips" to be visible in subscreens
 		_eventListeners :+ _RegisterScreenHandler( onUpdateOffice, onDrawOffice, screen )
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, Null, screen) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnAdd, onAddOrRemoveArchivedMessage) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnRemove, onAddOrRemoveArchivedMessage) ]
 
