@@ -36,8 +36,17 @@ Rem
 EndRem
 SuperStrict
 Import brl.Map
+?Not bmxng
+'using custom to have support for const/function reflection
+Import "external/reflectionExtended/reflection.bmx"
+'Import BRL.Reflection
+?bmxng
+'ng has it built-in!
 Import BRL.Reflection
+?
+?Threaded
 Import Brl.threads
+?
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
 Import "base.util.time.bmx"
@@ -97,15 +106,6 @@ Function GetEventKey:TEventKey(eventKeyID:Long)
 End Function
 
 
-Function GetEventChannel:TEventChannel(text:String, createIfMissing:Int = False) Inline
-	Return EventManager.GetEventChannel(text, createIfMissing)
-End Function
-
-Function GetEventChannel:TEventChannel(eventChannelID:Long) Inline
-	Return EventManager.GetEventChannel(eventChannelID)
-End Function
-
-
 
 
 Type TEventManager
@@ -119,21 +119,16 @@ Type TEventManager
 	Field eventsProcessed:Int = 0
 	Field listenersCalled:Int = 0
 	Field eventsTriggered:Int = 0
-	
+
 	'storing TEventKey by "id" for lookup
 	Field eventKeyIDMap:TLongMap = new TLongMap
 	'storing TEventKey by "text" (TLowerstring) for fast lookup
 	Field eventKeyTextMap:TMap = new TMap
-	'storing TEventChannel by "id" for lookup
-	Field eventChannelIDMap:TLongMap = new TLongMap
-	'storing TEventChannel by "text" (lower cased) for fast lookup
-	Field eventChannelTextMap:TStringMap = new TStringMap
 	
 	'Field _onEventMutex:TMutex = CreateMutex()
 	Field _listenersMutex:TMutex = CreateMutex()
 	Field _eventsMutex:TMutex = CreateMutex()
 	Field _eventKeyMutex:TMutex = CreateMutex()
-	Field _eventChannelMutex:TMutex = CreateMutex()
 
 
 	'returns how many update ticks are gone since start
@@ -167,56 +162,6 @@ Type TEventManager
 	Method isFinished:Int()
 		Return _events.IsEmpty()
 	End Method
-
-
-	Method GetEventChannel:TEventChannel(id:Long)
-		LockMutex(_eventChannelMutex)
-		Local c:TEventChannel = TEventChannel(eventChannelIDMap.ValueForKey( id ))
-		UnlockMutex(_eventChannelMutex)
-
-		Return c
-	End Method
-
-	Method GetEventChannel:TEventChannel(text:String, createIfMissing:Int = False)
-		LockMutex(_eventChannelMutex)
-		Local c:TEventChannel = TEventChannel(eventKeyTextMap.ValueForKey( text.ToLower() ))
-		UnlockMutex(_eventChannelMutex)
-
-		If Not c and createIfMissing Then c = GenerateEventChannel(text)
-
-		Return c
-	End Method
-
-
-	Method GenerateEventChannel:TEventChannel(text:String)
-		'we cannot simply use a "increasing ID" as the order of the
-		'added event keys is not the same everytime
-		'Objects could store eventKeys for less GarbageCollector heavy
-		'event triggering.
-		'So instead of "id = lastID + 1" we generate the hash
-		'from the string and use it
-		
-		'a string hash _could_ collide, so we check for that too
-		
-		Local lowerText:String = text.ToLower()
-		Local e:TEventChannel = new TEventChannel
-		e.id = lowerText.Hash()
-		e.text = text
-		
-		LockMutex(_eventChannelMutex)
-		Local existingChannel:TEventChannel = TEventChannel(eventChannelIDMap.ValueForKey(e.id))
-		If existingChannel
-			UnlockMutex(_eventChannelMutex)
-			Throw "GenerateEventKey(): key for ID="+e.id+" already exists. Hash collision?"
-		EndIf
-		
-		eventChannelTextMap.Insert(lowerText, e)
-		eventChannelIDMap.Insert(e.id, e)
-		UnlockMutex(_eventChannelMutex)
-		
-		Return e
-	End Method
-
 
 
 	Method GetEventKey:TEventKey(id:Long)
