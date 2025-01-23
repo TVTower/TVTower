@@ -204,9 +204,6 @@ Type TScreenHandler_ProgrammePlanner
 		'handle dropping at the end of the list (for dragging overlapped items)
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onProgrammePlanAddObject) ]
 
-		'we want to colorize the list background depending on minute
-		'_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
-
 		'we are interested in the programmeplanner buttons
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onProgrammePlannerButtonClick, "TGUIButton" ) ]
 
