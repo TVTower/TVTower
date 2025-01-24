@@ -560,16 +560,18 @@ Type TEventManager
 		
 		local methodListenerCount:Int
 		local functionListenerCount:Int
+		local guiListenerCount:Int
 
 		For Local longKey:TLongKey = EachIn EventManager._listeners.Keys()
 			local eventKey:TEventKey = GetEventKey(longKey.value)
 			if not eventKey then Throw "EventManager._listeners contain obsolete eventKeys for ID="+longKey.value
 
-			'skip GUI for now
-			'If eventKey.text.Find("gui") = 0 then continue
 			print "- " + eventKey.text.ToString() ' + "    [ID:"+eventKey.id+"]"
 
 			For Local elb:TEventListenerBase = EachIn TObjectList( _listeners.ValueForKey(eventKey.id) )
+				'skip GUI for now
+				If eventKey.text.Find("gui") = 0 then guiListenerCount :+1; continue
+
 				Local callName:String
 				If TEventListenerRunFunction(elb)
 					Local elbF:TEventListenerRunFunction = TEventListenerRunFunction(elb)
@@ -614,9 +616,12 @@ Type TEventManager
 		UnlockMutex(_listenersMutex)
 
 		Print "====="
-		Print "Events: " + _events.Count()
-		Print "Event Listeners: " + listeners + " (" + methodListenerCount + " method listeners, " + functionListenerCount + " function listeners)"
-
+		Print "Event listeners       : " + listeners + " (" + methodListenerCount + " method listeners, " + functionListenerCount + " function listeners)"
+		Print "Event listeners GUI   : " + guiListenerCount
+		Print "Event listeners called: " + listenersCalled
+		Print "Events queued         : " + _events.Count()
+		Print "Events triggered      : " + eventsTriggered
+		Print "Events processed      : " + eventsProcessed
 		Print "====="
 	End Method
 

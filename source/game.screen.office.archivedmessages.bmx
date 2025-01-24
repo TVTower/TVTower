@@ -67,7 +67,6 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnAdd, onAddOrRemoveArchivedMessage) ]
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnRemove, onAddOrRemoveArchivedMessage) ]
 
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickMessage, "TGUIArchivedMessageListItem") ]
 		_globalEventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeShowModeDropdown", "TGUIDropDown" ) ]
 
 
@@ -153,8 +152,9 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		return TRUE
 	End Function
 
-	Function onClickMessage:int( triggerEvent:TEventBase )
-		Local item:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(triggerEvent.GetSender())
+
+	Function onClickArchivedMessageListItemCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		Local item:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(sender)
 		If Not item or Not item.message Then Return False
 
 		If GetInstance().showMode <> SHOW_ALL
@@ -251,6 +251,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 			item.message = message
 			item.displayName = message.GetTitle()
 			item.SetSize(400, Max(70, item.GetContentHeight(400)+5))
+			
+			item._callbacks_onClick :+ [onClickArchivedMessageListItemCallback]
 			messageList.AddItem( item )
 		Next
 

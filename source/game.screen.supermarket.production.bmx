@@ -82,7 +82,6 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		' register new global listeners
 		'GUI -> GUI
 		'this lists want to delete the item if a right mouse click happens...
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickCastItem, "TGUICastListItem") ]
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickEditTextsButton, "TGUIButton") ]
 		'we want to know if we hover a specific block
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverCastItem, "TGUICastListItem" ) ]
@@ -763,12 +762,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 	'in case of right mouse button click we want to remove the
 	'cast
-	Function onClickCastItem:Int(triggerEvent:TEventBase)
-		'print "click on cast item"
+	Function onClickCastListItemCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'only react if the click came from the right mouse button
-		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
+		If mouseButton <> 2 Then Return True
 
-		Local guiCast:TGUICastListItem = TGUICastListItem(triggerEvent._sender)
+		Local guiCast:TGUICastListItem = TGUICastListItem(sender)
 		'ignore wrong types and NON-dragged items
 		If Not guiCast Or Not guiCast.isDragged() Then Return False
 
@@ -1681,6 +1679,8 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 				EndIf
 				item.isAmateur = True
 			EndIf
+			item._callbacks_onClick :+ [TScreenHandler_SupermarketProduction.onClickCastListItemCallback]
+
 			item.SetSize(180,40)
 			castSelectList.AddItem( item )
 		Next
@@ -2220,6 +2220,7 @@ Type TGUICastSlotList Extends TGUISlotList
 		If person
 			If not i
 				i = New TGUICastListItem.CreateSimple(person, GetSlotJobID(slotIndex) )
+				i._callbacks_onClick :+ [TScreenHandler_SupermarketProduction.onClickCastListItemCallback]
 			Else
 				'reuse existing item
 				i.Init(person, GetSlotJobID(slotIndex))
