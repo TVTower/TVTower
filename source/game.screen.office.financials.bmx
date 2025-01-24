@@ -1,11 +1,11 @@
 SuperStrict
 
 Import "game.roomhandler.base.bmx"
-Import "game.screen.programmeplanner.bmx"
-Import "game.screen.stationmap.bmx"
-Import "game.screen.achievements.bmx"
-Import "game.screen.archivedmessages.bmx"
-Import "game.screen.statistics.bmx"
+Import "game.screen.office.programmeplanner.bmx"
+Import "game.screen.office.stationmap.bmx"
+Import "game.screen.office.achievements.bmx"
+Import "game.screen.office.archivedmessages.bmx"
+Import "game.screen.office.statistics.bmx"
 Import "game.gameconfig.bmx"
 
 Import "game.misc.archivedmessage.bmx"

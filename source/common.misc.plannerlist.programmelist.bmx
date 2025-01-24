@@ -4,7 +4,7 @@ Import "game.programme.programmelicence.bmx"
 Import "game.programme.programmelicence.gui.bmx"
 Import "game.player.programmecollection.bmx"
 Import "game.game.base.bmx"
-Import "game.screen.programmeplanner.gui.bmx"
+Import "game.screen.office.programmeplanner.gui.bmx"
 Import "Dig/base.gfx.gui.button.bmx"
 
 
