@@ -60,7 +60,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	Field programmesPerLine:Int	= 13
 
 	Global _instance:RoomHandler_MovieAgency
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:RoomHandler_MovieAgency()
@@ -319,40 +320,49 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
 
 
-		'=== EVENTS ===
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
-		'=== register event listeners
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
+
+		' register new global listeners
 		'drop ... so sell/buy the thing
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, "TGUIProgrammeLicence") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicence, "TGUIProgrammeLicence") ]
 		'dropping a licence on another (in suitcase) can lead to a "replacement"
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceProgrammeLicence, "TGUIProgrammeLicenceSlotList" ) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceProgrammeLicence, "TGUIProgrammeLicenceSlotList" ) ]
 		'is dragging even allowed? - eg. intercept if not enough money
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, "TGUIProgrammeLicence") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, "TGUIProgrammeLicence") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onFinishDrop, onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onFinishDrop, onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
 		'return to original position on right click
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickLicence, "TGUIProgrammeLicence") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickLicence, "TGUIProgrammeLicence") ]
 
 		'reset auction block caches
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnSetActivePlayer, onResetAuctionBlockCache) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onResetAuctionBlockCache) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInActive, onResetAuctionBlockCache) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnSetActivePlayer, onResetAuctionBlockCache) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onResetAuctionBlockCache) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInActive, onResetAuctionBlockCache) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, checkFilters) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, checkFilters)]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, checkFilters) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, checkFilters)]
 
 		'fill/update offerPlan-lists
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicence_OnSetOwner, onSetProgrammeLicenceOwner) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicence_OnSetOwner, onSetProgrammeLicenceOwner) ]
 
 
-		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
-		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		ScreenCollection.GetScreen("screen_movieagency").AddUpdateCallback(onUpdateMovieAgencyScreen)
+		ScreenCollection.GetScreen("screen_movieagency").AddDrawCallback(onDrawMovieAgencyScreen)
+		ScreenCollection.GetScreen("screen_movieauction").AddUpdateCallback(onUpdateMovieAuctionScreen)
+		ScreenCollection.GetScreen("screen_movieauction").AddDrawCallback(onDrawMovieAuctionScreen)
+
 
 		'(re-)localize content
 		SetLanguage()
@@ -1299,7 +1309,7 @@ endrem
 	End Function
 
 
-	Function onDrawMovieAgency:Int( triggerEvent:TEventBase )
+	Function onDrawMovieAgencyScreen:Int(sender:TScreen, tweenValue:Float)
 		If AuctionEntity Then AuctionEntity.Render()
 		If VendorEntity Then VendorEntity.Render()
 
@@ -1428,10 +1438,7 @@ endrem
 	End Function
 
 
-	Function onUpdateMovieAgency:Int( triggerEvent:TEventBase )
-		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		If Not room Then Return 0
-
+	Function onUpdateMovieAgencyScreen:Int(sender:TScreen, deltaTime:Float)
 		If CheckObservedFigureInRoom("movieagency")
 			'show a auction-tooltip (but not if we dragged a block)
 			If Not hoveredGuiProgrammeLicence
@@ -1469,7 +1476,7 @@ endrem
 	'Movie Agency: Room screen
 	'===================================
 
-	Function onDrawMovieAuction:Int( triggerEvent:TEventBase )
+	Function onDrawMovieAuctionScreen:Int(sender:TScreen, tweenValue:Float)
 		If AuctionEntity Then AuctionEntity.Render()
 		If VendorEntity Then VendorEntity.Render()
 		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.x, suitcasePos.y)
@@ -1497,7 +1504,7 @@ endrem
 	End Function
 
 
-	Function onUpdateMovieAuction:Int( triggerEvent:TEventBase )
+	Function onUpdateMovieAuctionScreen:Int(sender:TScreen, deltaTime:Float)
 		If CheckPlayerObservedAndInRoom("movieagency")
 			TAuctionProgrammeBlocks.UpdateAll()
 		EndIf

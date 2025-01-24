@@ -27,7 +27,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Global hoveredGuiMessage:TGUIArchivedMessageListItem
 
 	Global LS_office_archivedmessages:TLowerString = TLowerString.Create("office_archivedmessages")
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_OfficeArchivedMessages
 
 	Const SHOW_ALL:int = 0
@@ -50,23 +51,35 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		InitGUIElements()
 
 
-		'=== EVENTS ===
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
+
+		' register new global listeners
 		'to reload message list when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_onBeginEnter, onEnterScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
 
 		'also reload when messages get added or removed
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnAdd, onAddOrRemoveArchivedMessage) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnRemove, onAddOrRemoveArchivedMessage) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnAdd, onAddOrRemoveArchivedMessage) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnRemove, onAddOrRemoveArchivedMessage) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickMessage, "TGUIArchivedMessageListItem") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeShowModeDropdown", "TGUIDropDown" ) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickMessage, "TGUIArchivedMessageListItem") ]
+		_globalEventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeShowModeDropdown", "TGUIDropDown" ) ]
 
-		'to update/draw the screen
-		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
+
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
+
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -87,9 +100,9 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
-		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		GetInstance().roomOwner = room.owner
 
@@ -97,9 +110,9 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	End Function
 
 
-	Function onDraw:int( triggerEvent:TEventBase )
-		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onDrawScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		GetInstance().roomOwner = room.owner
 

@@ -2297,7 +2297,8 @@ Type TScreenHandler_StationMap
 
 	Global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 
 	Const PRODUCT_NONE:Int = 0
 	Const PRODUCT_STATION:Int = 1
@@ -2403,40 +2404,48 @@ Type TScreenHandler_StationMap
 		Next
 
 
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
 
-		'=== register event listeners
+		' register new global listeners
 		'unset "selected station" when other panels get opened
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnOpenPanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnClosePanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnOpenPanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnClosePanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
 
 		'mark the player's stationmap as "changed" when stations are
 		'added, removed, activated or shutdown
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_SetActive, OnChangeStation) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_SetInactive, OnChangeStation) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnShutDown, OnChangeStation) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnResume, OnChangeStation) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
+'		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_SetActive, OnChangeStation) ]
+'		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_SetInactive, OnChangeStation) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnShutDown, OnChangeStation) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnResume, OnChangeStation) ]
 
 		'player enters station map screen - set checkboxes according to station map config
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterStationMapScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterStationMapScreen, screen) ]
 
 		'register checkbox changes
 		For Local i:Int = 0 Until guiShowStations.length
-			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUICheckbox_OnSetChecked, OnSetChecked_StationMapFilters, guiShowStations[i]) ]
+			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUICheckbox_OnSetChecked, OnSetChecked_StationMapFilters, guiShowStations[i]) ]
 		Next
 		For Local i:Int = 0 Until guiFilterButtons.length
-			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUICheckbox_OnSetChecked, OnSetChecked_StationMapFilters, guiFilterButtons[i]) ]
+			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUICheckbox_OnSetChecked, OnSetChecked_StationMapFilters, guiFilterButtons[i]) ]
 		Next
 
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, OnClickInfoButton, guiInfoButton) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, OnClickInfoButton, guiInfoButton) ]
 
-		'to update/draw the screen
-		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, screen )
+
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
+
 
 		'(re-)localize content
 		SetLanguage()
@@ -2540,10 +2549,9 @@ Type TScreenHandler_StationMap
 	End Function
 
 
- 	Function onDrawStationMap:Int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
-		If Not room Then Return 0
+	Function onDrawScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		SetBlend AlphaBlend
 		'draw map
@@ -2767,10 +2775,9 @@ Type TScreenHandler_StationMap
 	End Function
 	
 
-	Function onUpdateStationMap:Int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
-		If Not room Then Return 0
+	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		'backup room if it changed
 		Local changedSubRoom:int

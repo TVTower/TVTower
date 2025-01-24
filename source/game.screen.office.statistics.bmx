@@ -37,7 +37,8 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 	Global valueBG:TSprite
 	Global valueBG2:TSprite
 
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_OfficeStatistics
 
 	Const SUBSCREEN_AUDIENCE:Int = 0
@@ -83,22 +84,30 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 			nextDayButton.SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
 		EndIf
 
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
 
+		' === REGISTER EVENTS ===
 
-		'=== register event listeners
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
+
+		' register new global listeners
 		'listen to clicks on the four buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, "TGUIArrowButton") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, "TGUIArrowButton") ]
 		'listen to tab group selections
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUITabGroup_OnSetToggledButton, Self, "onToggleSubScreenTabGroupButton", tabGroup) ]
+		_globalEventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUITabGroup_OnSetToggledButton, Self, "onToggleSubScreenTabGroupButton", tabGroup) ]
 		'reset show day when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
 
 
-		'to update/draw the screen
-		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
+
 
 		'(re-)localize content
 		SetLanguage()
@@ -190,9 +199,9 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 	End Function
 
 
-	Function onDraw:Int( triggerEvent:TEventBase )
-		Local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
-		If Not room Then Return 0
+	Function onDrawScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		GetInstance().roomOwner = room.owner
 
@@ -200,9 +209,9 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 	End Function
 
 
-	Function onUpdate:Int( triggerEvent:TEventBase )
-		Local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
-		If Not room Then Return 0
+	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		GetInstance().roomOwner = room.owner
 

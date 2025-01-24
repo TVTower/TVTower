@@ -214,19 +214,6 @@ Type TRoomHandler
 	Method SetLanguage(); End Method
 
 
-	'special events for screens used in rooms - only this event has the room as sender
-	'screen.onScreenUpdate/Draw is more general purpose
-	'returns the event listener links
-	Function _RegisterScreenHandler:TEventListenerBase[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
-		local listeners:TEventListenerBase[]
-		if screen
-			listeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnScreenUpdate, updateFunc, screen ) ]
-			listeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnScreenDraw, drawFunc, screen ) ]
-		endif
-		return listeners
-	End Function
-
-
 	Function GetObservedFigure:TFigureBase()
 		'if we observe another figure, return this one
 		If GameConfig and TFigureBase(GameConfig.GetObservedObject())

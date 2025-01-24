@@ -7,6 +7,7 @@ Import "game.roomhandler.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.newsagency.bmx"
 Import "game.gameconfig.bmx"
+Import "game.screen.base.bmx"
 
 TGUINews.textBlockDrawSettings.data.lineHeight = 12
 TGUINews.textBlockDrawSettings.data.boxDimensionMode = 0
@@ -16,7 +17,7 @@ Type RoomHandler_News extends TRoomHandler
 	Global PlannerToolTip:TTooltip
 	Global NewsGenreButtons:TGUIButton[6]
 	Global NewsGenreTooltip:TTooltip			'the tooltip if hovering over the genre buttons
-	Global currentRoom:TRoom					'holding the currently updated room (so genre buttons can access it)
+	Global currentRoom:TRoomBase					'holding the currently updated room (so genre buttons can access it)
 	'the image displaying "send news"
 	Global newsPlannerTextImage:TImage = null
 
@@ -46,7 +47,8 @@ Type RoomHandler_News extends TRoomHandler
 	global LS_newsroom:TLowerString = TLowerString.Create("newsroom")
 
 	Global _instance:RoomHandler_News
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 	Global showDeleteHintTimer:Long = 0
 	'how long to display?
 	Global showDeleteHintTime:int = 4000
@@ -168,43 +170,55 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreButtons[5].data.AddNumber("newsGenre", TVTNewsGenre.CULTURE)
 
 
-		'=== EVENTS ===
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
 
-		'=== register event listeners
+		' register new global listeners
 		'we are interested in the genre buttons
 		for local i:int = 0 until NewsGenreButtons.length
-			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onHoverNewsGenreButtons, NewsGenreButtons[i]) ]
-			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDraw, onDrawNewsGenreButtons, NewsGenreButtons[i]) ]
-			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNewsGenreButtons, NewsGenreButtons[i]) ]
+			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onHoverNewsGenreButtons, NewsGenreButtons[i]) ]
+			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDraw, onDrawNewsGenreButtons, NewsGenreButtons[i]) ]
+			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNewsGenreButtons, NewsGenreButtons[i]) ]
 		Next
 
 
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropNews, "TGUINews") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropNews, "TGUINews") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropNews, "TGUINews") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropNews, "TGUINews") ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNews, "TGUINews") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNews, "TGUINews") ]
 
 		'we want to get informed if the news situation changes for a user
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onChangeNews) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_RemoveNews, onChangeNews) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddNews, onChangeNews) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveNews, onChangeNews) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onChangeNews) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_RemoveNews, onChangeNews) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddNews, onChangeNews) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveNews, onChangeNews) ]
 		'we want to know if we hover a specific block
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverNews, "TGUINews") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverNews, "TGUINews") ]
 
 		'figure enters screen - reset the guilists, limit listening to the 4 rooms
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterNewsPlannerScreen, plannerScreen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterNewsPlannerScreen, plannerScreen) ]
 		'also we want to interrupt leaving a room with dragged items
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnTryLeave, onTryLeaveNewsPlannerScreen, plannerScreen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnTryLeave, onTryLeaveNewsPlannerScreen, plannerScreen) ]
 
-		_eventListeners :+ _RegisterScreenHandler( onUpdateNews, onDrawNews, studioScreen )
-		_eventListeners :+ _RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, plannerScreen )
+
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		studioScreen.AddUpdateCallback(onUpdateNewsScreen)
+		studioScreen.AddDrawCallback(onDrawNewsScreen)
+		plannerScreen.AddUpdateCallback(onUpdateNewsPlannerScreen)
+		plannerScreen.AddDrawCallback(onDrawNewsPlannerScreen)
+
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -322,12 +336,11 @@ Type RoomHandler_News extends TRoomHandler
 	'News: room screen
 	'===================================
 
-	Function onDrawNews:int( triggerEvent:TEventBase )
-		GUIManager.Draw( LS_newsroom )
+	Function onDrawNewsScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
-		'no further interaction for other players newsrooms
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		'if not IsPlayersRoom(room) then return False
+		GUIManager.Draw( LS_newsroom )
 
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
@@ -383,10 +396,9 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
-	Function onUpdateNews:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
-
+	Function onUpdateNewsScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		If not IsPlayersRoom(room)
 			For local n:TGUIButton = EachIn NewsGenreButtons
@@ -430,7 +442,7 @@ Type RoomHandler_News extends TRoomHandler
 	'onHover: handle tooltip
 	Function onHoverNewsGenreButtons:int( triggerEvent:TEventBase )
 		local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		local room:TRoom = currentRoom
+		local room:TRoomBase = currentRoom
 		if not button or not room then return 0
 		
 		Local playersRoom:Int = IsPlayersRoom(room)
@@ -489,7 +501,7 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function onClickNewsGenreButtons:int( triggerEvent:TEventBase )
 		local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		local room:TRoom = currentRoom
+		local room:TRoomBase = currentRoom
 		if not button or not room then return 0
 
 		'only react to left clicks
@@ -510,7 +522,7 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function onDrawNewsGenreButtons:int( triggerEvent:TEventBase )
 		local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		local room:TRoom = currentRoom
+		local room:TRoomBase = currentRoom
 		if not button or not room then return 0
 
 		'how much levels do we have?
@@ -560,9 +572,9 @@ Type RoomHandler_News extends TRoomHandler
 	'News: NewsPlanner screen
 	'===================================
 
-	Function onUpdateNewsPlanner:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onUpdateNewsPlannerScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		'store current room for later access (in guiobjects)
 		currentRoom = room
@@ -628,9 +640,9 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
-	Function onDrawNewsPlanner:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onDrawNewsPlannerScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		'store current room for later access (in guiobjects)
 		currentRoom = room

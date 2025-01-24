@@ -23,7 +23,8 @@ Type TScreenHandler_Financials
 	Global balanceValueBG:TSprite
 	Global balanceValueBG2:TSprite
 
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 
 
 	Function Initialize:int()
@@ -51,19 +52,27 @@ Type TScreenHandler_Financials
 		endif
 
 
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
 
-		'=== register event listeners
+		' register new global listeners
 		'to listen to clicks on the four buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinanceButtons, "TGUIArrowButton") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinanceButtons, "TGUIArrowButton") ]
 		'to reset finance history scroll position when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterFinancialScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterFinancialScreen, screen) ]
 
-		'to update/draw the screens
-		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, screen)
+
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		screen.AddUpdateCallback(onUpdateFinancialsScreen)
+		screen.AddDrawCallback(onDrawFinancialsScreen)
+
 
 		'(re-)localize content
 		SetLanguage()
@@ -86,10 +95,9 @@ Type TScreenHandler_Financials
 
 
 global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinancialScreen")
-	Function onDrawFinancials:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onDrawFinancialsScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		'limit finance day between 0 and current day
 		financeShowDay = Max(0, Min(financeShowDay, GetWorldTime().GetDay()))
@@ -465,9 +473,9 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 	End Function
 
 
-	Function onUpdateFinancials:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onUpdateFinancialsScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		'disable "up" or "down" button of finance history
 		if financeHistoryStartPos = 0

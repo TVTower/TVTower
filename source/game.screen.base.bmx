@@ -414,6 +414,7 @@ Type TInGameScreen_World Extends TInGameScreen
 	End Function
 
 
+	'override default
 	Method UpdateContent(deltaTime:Float) override
 		GetWorld().Update()
 		GetBuildingBase().Update()
