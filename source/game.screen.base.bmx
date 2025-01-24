@@ -128,12 +128,12 @@ Type TGameScreen Extends TScreen
 	End Method
 
 
-	Method DrawOverlay:Int(tweenValue:Float)
+	Method DrawOverlay:Int(tweenValue:Float) override
 		TError.DrawErrors()
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawBackground()
 	End Method
 End Type
@@ -289,7 +289,7 @@ Type TInGameScreen Extends TScreen
 	End Function
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawContent(tweenValue)
 	End Method
 
@@ -300,7 +300,7 @@ Type TInGameScreen Extends TScreen
 	End Method
 
 
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		'check for clicks on items BEFORE others check and use it
 		GUIManager.Update(ingameState)
 
@@ -414,8 +414,7 @@ Type TInGameScreen_World Extends TInGameScreen
 	End Function
 
 
-	'override default
-	Method UpdateContent(deltaTime:Float)
+	Method UpdateContent(deltaTime:Float) override
 		GetWorld().Update()
 		GetBuildingBase().Update()
 
@@ -439,8 +438,7 @@ Type TInGameScreen_World Extends TInGameScreen
 	End Method
 
 
-	'override default
-	Method DrawContent:Int(tweenValue:Float)
+	Method DrawContent:Int(tweenValue:Float) override
 		GetWorld().Render()
 		'player is not in a room so draw building
 		GetBuildingBase().Render()

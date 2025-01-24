@@ -48,7 +48,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Global hoveredGuiCastItem:TGUICastListItem
 	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
 
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_SupermarketProduction
 
 
@@ -66,55 +67,65 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		InitCustomProductionElements()
 
 
-		'=== EVENTS ===
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = New TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
-		'=== register event listeners
+		' remove old listeners
+		If _globalEventListeners.length > 0
+			EventManager.UnregisterListenersArray(_globalEventListeners)
+			_globalEventListeners = new TEventListenerBase[0]
+		EndIf
+		If _localEventListeners.length > 0
+			EventManager.UnregisterListenersArray(_localEventListeners)
+			_localEventListeners = new TEventListenerBase[0]
+		EndIf
+
+		' register new global listeners
 		'GUI -> GUI
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickCastItem, "TGUICastListItem") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickEditTextsButton, "TGUIButton") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickCastItem, "TGUICastListItem") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickEditTextsButton, "TGUIButton") ]
 		'we want to know if we hover a specific block
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverCastItem, "TGUICastListItem" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConceptItem, "TGuiProductionConceptSelectListItem" ) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverCastItem, "TGUICastListItem" ) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConceptItem, "TGuiProductionConceptSelectListItem" ) ]
 
 
 
 		'GUI -> LOGIC
 		'finish planning/make production ready
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinishProductionConcept, "TGUIButton") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinishProductionConcept, "TGUIButton") ]
 		'changes to the cast (slot) list
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
 		'changes to production focus sliders
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnChangeValue, onProductionConceptChangeFocusSliders, "TGUISlider") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnSetFocus, onProductionConceptSetFocusSliderFocus, "TGUISlider") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnRemoveFocus, onProductionConceptRemoveFocusSliderFocus, "TGUISlider") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnChangeValue, onProductionConceptChangeFocusSliders, "TGUISlider") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnSetFocus, onProductionConceptSetFocusSliderFocus, "TGUISlider") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnRemoveFocus, onProductionConceptRemoveFocusSliderFocus, "TGUISlider") ]
 		'changes to production company dropdown
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIDropDown_OnSelectEntry, onProductionConceptChangeProductionCompanyDropDown, "TGUIDropDown") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIDropDown_OnSelectEntry, onProductionConceptChangeProductionCompanyDropDown, "TGUIDropDown") ]
 		'changes to production company levels / skill points
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionCompany_OnChangeLevel, onProductionCompanyChangesLevel) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionCompany_OnChangeLevel, onProductionCompanyChangesLevel) ]
 		'select a production concept
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISelectList_OnSelectEntry, onSelectProductionConcept) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISelectList_OnSelectEntry, onSelectProductionConcept) ]
 		'edit title/description
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnClose, onCloseEditTextsWindow, "TGUIProductionEditTextsModalWindow") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnClose, onCloseEditTextsWindow, "TGUIProductionEditTextsModalWindow") ]
 
 
 		'LOGIC -> GUI
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionConcept_SetCast, onProductionConceptChangeCast) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionConcept_SetProductionCompany, onProductionConceptChangeProductionCompany) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionFocus_SetFocus, onProductionConceptChangeProductionFocus) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionConcept_SetCast, onProductionConceptChangeCast) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionConcept_SetProductionCompany, onProductionConceptChangeProductionCompany) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProductionFocus_SetFocus, onProductionConceptChangeProductionFocus) ]
 
 		'to reload concept list when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
 		'refresh finish button on money change (maybe no longer enough money to finish... )
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerFinance_OnChangeMoney, onPlayerChangeMoney) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerFinance_OnChangeMoney, onPlayerChangeMoney) ]
 
+
+		' === REGISTER CALLBACKS ===
 
 		'to update/draw the screen
-		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
 	End Method
 
 
@@ -151,13 +162,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	End Method
 
 
-	Function onUpdate:Int( triggerEvent:TEventBase )
-		GetInstance().Update()
+	Function onUpdateScreen:int(sender:TScreen, deltaTime:Float)
+		Return GetInstance().Update(deltaTime)
 	End Function
 
 
-	Function onDraw:Int( triggerEvent:TEventBase )
-		GetInstance().Render()
+	Function onDrawScreen:int(sender:TScreen, tweenValue:Float)
+		Return GetInstance().Draw(tweenValue)
 	End Function
 
 
@@ -964,7 +975,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	End Method
 
 
-	Method Update()
+	Method Update:Int(deltaTime:Float) Final
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = Null
 		'reset hovered concept (will be auto-reassigned by the list)
@@ -1034,7 +1045,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	End Method
 
 
-	Method Render()
+	Method Draw:Int(tweenValue:Float) Final
 		'update finishProductionConcept-button's value if needed
 		If haveToRefreshFinishProductionConceptGUI
 			RefreshFinishProductionConceptGUI()

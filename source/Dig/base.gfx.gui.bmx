@@ -111,8 +111,7 @@ Type TGUIManager
 	Field UpdateState_foundActiveObject:TGUIObject = Null
 
 	Field UpdateState_foundInputReceiverObject:TGUIObject = Null
-
-
+	
 	'=== PRIVATE PROPERTIES ===
 
 	Field _defaultfont:TBitmapFont
@@ -719,6 +718,11 @@ Type TGUIobject
 
 	Field _acceptedDropFilter:object = Null
 
+	'=== CALLBACKS ===
+	'compared to events callbacks can be used for hardwired bindings
+	'where the receiver KNOWS this specific instance
+	Field _callbacks_onClick:Int(sender:TGUIObject, button:Int, x:Int, y:Int)[]
+
 	'=== HOOKS ===
 	'allow custom functions to get hooked in
 	Field _customDraw:Int(obj:TGUIObject)
@@ -808,8 +812,8 @@ Type TGUIobject
 
 		Return True
 	End Method
-
-
+	
+	
 	Method AddEventListener:Int(listener:TEventListenerBase)
 		_registeredEventListener :+ [listener]
 	End Method
@@ -1971,6 +1975,15 @@ Type TGUIobject
 		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
 		'let the object handle the click
 		Local handledClick:Int = OnClick(ev)
+		'run callbacks
+		For Local i:Int = 0 Until _callbacks_onClick.length
+			Local cb:Int(sender:TGUIObject, button:int, x:int, y:Int) = _callbacks_onclick[i]
+			If cb(self, button, x, y)
+				handledClick = True
+				ev.SetAccepted(True) 'mark event as already been handled
+			EndIf
+		Next
+
 		'fire onClickEvent
 		ev.Trigger()
 

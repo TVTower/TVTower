@@ -856,7 +856,7 @@ endrem
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawMenuBackground(True)
 
 		'background gui items
@@ -912,8 +912,7 @@ endrem
 	End Method
 
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		If GetGameBase().networkgame
 			guiGameTitleLabel.show()
 			guiGameTitle.show()

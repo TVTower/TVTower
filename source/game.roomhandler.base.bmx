@@ -220,8 +220,8 @@ Type TRoomHandler
 	Function _RegisterScreenHandler:TEventListenerBase[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
 		local listeners:TEventListenerBase[]
 		if screen
-			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]
-			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnScreenUpdate, updateFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnScreenDraw, drawFunc, screen ) ]
 		endif
 		return listeners
 	End Function

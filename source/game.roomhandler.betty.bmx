@@ -22,7 +22,10 @@ Type RoomHandler_Betty extends TRoomHandler
 	Global suitcaseArea:SRect = new SRect(20,220, 145, 120)
 
 	Global haveToRefreshGuiElements:Int = True
-	Global _eventListeners:TEventListenerBase[]
+	'events we want to listen the whole time
+	Global _globalEventListeners:TEventListenerBase[]
+	'events only of interest during visit of the player (on screen)
+	Global _localEventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_Betty
 	Global LS_betty:TLowerString = TLowerString.Create("betty")
 
@@ -34,15 +37,15 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 	Method Initialize:Int()
-		'=== RESET TO INITIAL STATE ===
+		' === RESET TO INITIAL STATE ===
 		CleanUp()
 
 
-		'=== REGISTER HANDLER ===
+		' === REGISTER HANDLER ===
 		RegisterHandler()
 
 
-		'=== CREATE ELEMENTS =====
+		' === CREATE ELEMENTS =====
 		BettySprite = GetSpriteFromRegistry("gfx_room_betty_betty")
 		if not BettyArea
 			BettyArea = New TGUISimpleRect.Create(new SVec2I(303,142), new SVec2I(112,148), "betty" )
@@ -52,18 +55,18 @@ Type RoomHandler_Betty extends TRoomHandler
 		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase_presents")
 
 
-		'=== EVENTS ===
-		'remove old listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
+		' === EVENTS ===
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
 
-		'register new listeners
-		_eventListeners = new TEventListenerBase[0]
-		'handle the player visiting betty
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnSetCurrent, onPlayerSeesBettyScreen) ]
-		'handle present
-		'_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickPresent, "TGUIBettyPresent") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropPresent, "TGUIBettyPresent") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnHour, CheckOfficeHour) ]
+		' register new global listeners
+		' handle the player visiting betty
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnSetCurrent, onPlayerSeesBettyScreen) ]
+		' close bettys office door if Betty is not working
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnHour, CheckOfficeHour) ]
 
 
 		'(re-)localize content
@@ -72,20 +75,15 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 	Method CleanUp()
-		'=== unset cross referenced objects ===
-		'
-
 		'=== remove obsolete gui elements ===
 		'
 		if presentInSuitcase
 			GUIManager.Remove(presentInSuitcase)
 			presentInSuitcase = Null
 		EndIf
-			
 
-		'=== remove all registered instance specific event listeners
-		'EventManager.unregisterListenersByLinks(_localEventListeners)
-		'_localEventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
 	End Method
 
 
@@ -114,21 +112,6 @@ Type RoomHandler_Betty extends TRoomHandler
 		ResetDialogue()
 	End Function	
 
-	rem
-	'both done by "onPlayerSeesBettyScreen"
-
-	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
-		'We cannot rely on "onEnterRoom" as we could have saved
-		'in this room - so better refresh now
-		haveToRefreshGuiElements = true
-		ResetDialogue()
-	End Method
-
-	Method onEnterRoom:Int( triggerEvent:TEventBase )
-		haveToRefreshGuiElements = true
-		ResetDialogue()
-	End Method
-	endrem
 
 	Function ResetDialogue()
 		GetInstance().dialogue = null
@@ -369,7 +352,28 @@ Type RoomHandler_Betty extends TRoomHandler
 	End Method
 
 
+	Method onEnterRoom:Int( triggerEvent:TEventBase ) override
+		' === EVENTS ===
+		' remove old local listeners
+		If _localEventListeners.length > 0 
+			EventManager.UnregisterListenersArray(_localEventListeners)
+			_localEventListeners = new TEventListenerBase[0]
+		EndIf
+		' register new local events
+		' handle present
+		_localEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropPresent, "TGUIBettyPresent") ]
+	End Method
+
+
 	Method onLeaveRoom:int( triggerEvent:TEventBase )
+		' === EVENTS ===
+		' remove old local listeners
+		If _localEventListeners.length > 0 
+			EventManager.UnregisterListenersArray(_localEventListeners)
+			_localEventListeners = new TEventListenerBase[0]
+		EndIf
+
+
 		If presentInSuitcase
 			GuiManager.Remove(presentInSuitcase)
 			presentInSuitcase = null

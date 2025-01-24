@@ -3682,8 +3682,7 @@ Type TScreen_MainMenu Extends TGameScreen
 	End Method
 
 
-	'override default draw
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawMenuBackground(False, True)
 
 		'draw the janitor BEHIND the panels
@@ -3693,9 +3692,8 @@ Type TScreen_MainMenu Extends TGameScreen
 	End Method
 
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
-		Super.Update(deltaTime)
+	Method UpdateCustom:Int(deltaTime:Float) override
+		Super.UpdateCustom(deltaTime)
 
 		'if gamesettings screen is still missing: disable buttons
 		'-> resources not finished loading
@@ -3871,7 +3869,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawMenuBackground(True, False)
 
 		If Not GetGame().onlinegame
@@ -3907,8 +3905,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	End Method
 
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		'register for events if not done yet
 		GetNetworkHelper().RegisterEventListeners()
 
@@ -4002,7 +3999,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		'draw settings screen as background
 		'BESSER: VORHERIGEN BILDSCHIRM zeichnen (fuer Laden)
 		ScreenCollection.GetScreen("GameSettings").Draw(tweenValue)
@@ -4071,8 +4068,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	Global wait:Long = 0
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		'update messagewindow
 		GUIManager.Update(stateName)
 		
