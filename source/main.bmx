@@ -178,7 +178,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
-Global collectDebugStats:Int = False
+Global collectDebugStats:Int = True
 OCM.enabled = False & (collectDebugStats = True)
 OCM.printEnabled = False & (collectDebugStats = True)
 
@@ -923,6 +923,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+				EventManager.DumpListeners()
 				'your own dev-debug-code
 			EndIf
 
@@ -1050,7 +1051,7 @@ endrem
 		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 * 60 )
 		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeedPreset( 1 )
 		If KeyManager.IsHit(KEY_0) Then GetGame().SetGameSpeed( 0 ) 'pause
-		If KeyManager.IsHit(KEY_Q) Then debugAudienceInfo.Toggle()
+		If KeyManager.IsHit(KEY_Q) and Not KeyManager.IsDown(KEY_LCONTROL) Then debugAudienceInfo.Toggle()
 
 		If KeyManager.IsHit(KEY_TAB)
 			If Not KeyManager.IsDown(KEY_LCONTROL)
@@ -1302,8 +1303,13 @@ endrem
 		EndIf
 	End Function
 
-
+global optimizeHide:Int = False
 	Function Render:Int()
+		If KeyHit(KEY_COMMA)
+			optimizeHide = 1 - optimizeHide
+			print "optimizeHide = " + optimizeHide
+		EndIf
+		
 		'cls only needed if virtual resolution is enabled, else the
 		'background covers everything
 		If GetGraphicsManager().HasBlackBars()
@@ -1324,7 +1330,7 @@ endrem
 
 		'=== RENDER TOASTMESSAGES ===
 		'below everything else of the interface: our toastmessages
-		GetToastMessageCollection().Render(0,0)
+		if not optimizeHide Then GetToastMessageCollection().Render(0,0)
 
 
 		'=== RENDER INGAME HELP ===
@@ -4176,9 +4182,6 @@ Type GameEvents
 
 
 	Function RegisterEventListeners:Int()
-		'react on right clicks during a rooms update (leave room)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnUpdateDone, RoomOnUpdate) ]
-
 		'forcefully set current screen (eg. after loading a "currently
 		'leaving a screen" savegame, or with a faulty timing between
 		'doors and screen-transition-animation)
@@ -5909,32 +5912,6 @@ endrem
 	End Function
 
 
-	'called each time a room (the active player visits) is updated
-	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
-
-		If Not GetPlayer().GetFigure().IsChangingRoom()
-			'handle right click
-			If MOUSEMANAGER.IsClicked(2)
-				'check subrooms
-				'only leave a room if not in a subscreen
-				'if in subscreen, go to parent one
-				If ScreenCollection.GetCurrentScreen().parentScreen
-					ScreenCollection.GoToParentScreen()
-
-					'handled clicks
-					MouseManager.SetClickHandled(2)
-				Else
-					'leaving allowed - reset button
-					If GetPlayer().GetFigure().LeaveRoom()
-						'handled clicks
-						MouseManager.SetClickHandled(2)
-					EndIf
-				EndIf
-			EndIf
-		EndIf
-	End Function
-
-
 	Function StationMap_OnRemoveStation:Int(triggerEvent:TEventBase)
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
@@ -7122,15 +7099,13 @@ Function ShowApp:Int()
 End Function
 
 
-Global bbGCAllocCount:ULong = 0
-rem
-?bmxng
 'ron|gc
+'Global bbGCAllocCount:ULong = 0
+'rem
 Extern
     Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
-?
-endrem
+'endrem
 
 ?linux
 Function CreateDesktopFile()
@@ -7188,12 +7163,6 @@ endrem
 	App.LoadResources("config/resources.xml")
 	TProfiler.Leave("StartTVTower: Create App")
 
-?Threaded
-'	While not RURC.FinishedLoading()
-'		Delay(1)
-'	Wend
-?
-
 	'====
 	'to avoid the "is loaded check" we have two loops
 	'====
@@ -7245,6 +7214,7 @@ endif
 TProfiler.Enter("GameLoop")
 	StartApp()
 
+	Local debugStatsSB:TStringBuilder = New TStringBuilder
 	Repeat
 		If collectDebugStats
 			If MilliSecs() - debugCreationTime > 1000
@@ -7262,15 +7232,21 @@ TProfiler.Enter("GameLoop")
 				EndIf
 				
 				If printDebugStats
+					debugStatsSB.SetLength(0)
+					debugStatsSB.Append("tick: ")
+					debugStatsSB.Append(rectangle_created).Append(" TRectangle. ")
+					debugStatsSB.Append(vec2d_created).Append(" TVec2D. ")
+					debugStatsSB.Append(tcolor_created).Append(" TColor. ")
+					debugStatsSB.Append("  GC: ").Append(bbGCAllocCount).Append(" allocs")
 					If OCM.enabled
+						debugStatsSB.Append(" (OCM: ").Append(gcAllocTotal)
 						If gcAllocChanges >= 0
-							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" +"+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
-						Else
-							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" "+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+							debugStatsSB.Append(" +")
 						EndIf
-					Else
-					Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+						debugStatsSB.Append(gcAllocChanges).Append(")")
 					EndIf
+					debugStatsSB.Append(". GC Mem: ").Append(GCMemAlloced()).Append(" allocated, ").Append(memCollected).Append(" collected.")
+					print debugStatsSB.ToString()
 				EndIf
 				bbGCAllocCount = 0
 				rectangle_created = 0

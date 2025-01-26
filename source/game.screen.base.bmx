@@ -583,6 +583,29 @@ Type TInGameScreen_Room Extends TInGameScreen
 	Method UpdateContent(deltaTime:Float)
 		Local room:TRoomBase = GetCurrentRoom()
 		If room Then room.update()
+
+
+		'Use right click to get out of a room / screen
+		If Not GetPlayer().GetFigure().IsChangingRoom()
+			'handle right click
+			If MOUSEMANAGER.IsClicked(2)
+				'check subrooms
+				'only leave a room if not in a subscreen
+				'if in subscreen, go to parent one
+				If ScreenCollection.GetCurrentScreen().parentScreen
+					ScreenCollection.GoToParentScreen()
+
+					'handled clicks
+					MouseManager.SetClickHandled(2)
+				Else
+					'leaving allowed - reset button
+					If GetPlayer().GetFigure().LeaveRoom()
+						'handled clicks
+						MouseManager.SetClickHandled(2)
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 	End Method
 
 
