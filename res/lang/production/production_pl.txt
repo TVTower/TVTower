@@ -105,7 +105,7 @@ CLICK_TO_SELECT_PERSON = Kliknij, aby wybrać osobę
 TOUCH_TO_SELECT_PERSON = Dotknij, aby wybrać osobę
 
 COULISSE             = Kulisy
-OUTFIT_AND_MASK      = Stróje / Maski
+OUTFIT_AND_MASK      = Stroje / Maski
 STUNTS               = Kaskaderzy
 VFX_AND_SFX          = Efekty specjalne
 TEAM                 = Zespół (Technicy, itp.)
@@ -135,7 +135,7 @@ PRODUCTION_DEPOSIT_PAID                                     = Wpłacony depozyt 
 SELECT_PERSON      = Wybierz osobę
 FINISHED_PLANNING  = Zakończono planowanie
 FINISH_PLANNING    = Zakończ planowanie
-AND_PAY_DOWN_MONEY = i spłacić %money%
+AND_PAY_DOWN_MONEY = i wpłać depozyt %money%
 PLANNING           = Planowanie ...
 MONEY_TO_PAY_DOWN  = %money% do zapłaty
 TAKE_OVER_SETTINGS = Skopiuj ustawienia
