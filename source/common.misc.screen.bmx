@@ -447,11 +447,17 @@ Type TScreen
 
 
 	Method Update:int(deltaTime:float) Final
-		UpdateCustom(deltaTime)
-
+		'Call callbacks before custom screen stuff
+		'(UpdateCustom calls room (of the screen).Update logic which
+		' checks for right clicks to leave the room ... so handle any
+		' "right click resets" like "delete dragged item" before.
+		' This is like with widgets to identify a click: the uppermost
+		' has to be checked first)
 		For Local i:Int = 0 until _callbacks_update.length
 			_callbacks_update[i](self, deltaTime)
 		Next
+
+		UpdateCustom(deltaTime)
 	End Method
 
 	
