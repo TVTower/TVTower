@@ -61,8 +61,6 @@ Type TScreenHandler_Financials
 		_localEventListeners = new TEventListenerBase[0]
 
 		' register new global listeners
-		'to listen to clicks on the four buttons
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinanceButtons, "TGUIArrowButton") ]
 		'to reset finance history scroll position when entering a screen
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterFinancialScreen, screen) ]
 
@@ -72,6 +70,13 @@ Type TScreenHandler_Financials
 		' to update/draw the screen
 		screen.AddUpdateCallback(onUpdateFinancialsScreen)
 		screen.AddDrawCallback(onDrawFinancialsScreen)
+
+		'to listen to clicks on the four arrow buttons
+		financeHistoryDownButton._callbacks_onClick :+ [onClickFincanceArrowButtonsCallback]
+		financeHistoryUpButton._callbacks_onClick :+ [onClickFincanceArrowButtonsCallback]
+		financeNextDayButton._callbacks_onClick :+ [onClickFincanceArrowButtonsCallback]
+		financePreviousDayButton._callbacks_onClick :+ [onClickFincanceArrowButtonsCallback]
+		
 
 
 		'(re-)localize content
@@ -511,10 +516,9 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 	End Function
 
 
-	'right mouse button click: remove the block from the player's programmePlan
-	'left mouse button click: check shortcuts and create a copy/nextepisode-block
-	Function onClickFinanceButtons:int(triggerEvent:TEventBase)
-		local arrowButton:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
+	'handle clicks on the history or day arrow buttons
+	Function onClickFincanceArrowButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		local arrowButton:TGUIArrowButton = TGUIArrowButton(sender)
 		if not arrowButton then return False
 
 		if arrowButton = financeHistoryDownButton then financeHistoryStartPos :- 1

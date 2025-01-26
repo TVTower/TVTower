@@ -183,7 +183,6 @@ Type RoomHandler_News extends TRoomHandler
 		for local i:int = 0 until NewsGenreButtons.length
 			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onHoverNewsGenreButtons, NewsGenreButtons[i]) ]
 			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDraw, onDrawNewsGenreButtons, NewsGenreButtons[i]) ]
-			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNewsGenreButtons, NewsGenreButtons[i]) ]
 		Next
 
 
@@ -191,8 +190,6 @@ Type RoomHandler_News extends TRoomHandler
 		'so we can inform the programmeplan about changes...
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropNews, "TGUINews") ]
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropNews, "TGUINews") ]
-		'this lists want to delete the item if a right mouse click happens...
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNews, "TGUINews") ]
 
 		'we want to get informed if the news situation changes for a user
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onChangeNews) ]
@@ -215,6 +212,10 @@ Type RoomHandler_News extends TRoomHandler
 		studioScreen.AddDrawCallback(onDrawNewsScreen)
 		plannerScreen.AddUpdateCallback(onUpdateNewsPlannerScreen)
 		plannerScreen.AddDrawCallback(onDrawNewsPlannerScreen)
+
+		for local i:int = 0 until NewsGenreButtons.length
+			NewsGenreButtons[i]._callbacks_onClick :+ [onClickNewsGenreButtonsCallback]
+		Next
 
 
 		'(re-)localize content
@@ -499,24 +500,22 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
-	Function onClickNewsGenreButtons:int( triggerEvent:TEventBase )
-		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+	Function onClickNewsGenreButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		local button:TGUIButton = TGUIButton(sender)
 		local room:TRoomBase = currentRoom
 		if not button or not room then return 0
 
 		'only react to left clicks
-		if triggerEvent.GetData().getInt("button",0) <> 1 then return false
+		If mouseButton <> 1 Then Return True
 
 		'wrong room? go away!
 		if room.owner <> GetPlayerBaseCollection().playerID then return 0
 
 		'increase the abonnement
-		For local i:int = 0 until len( NewsGenreButtons )
-			if button = NewsGenreButtons[i]
-				GetPlayerBase().IncreaseNewsAbonnement( button.data.GetInt("newsGenre", i) )
-				exit
-			endif
-		Next
+		Local genre:Int = button.data.GetInt("newsGenre", -1)
+		If genre >= 0
+			GetPlayerBase().IncreaseNewsAbonnement( genre )
+		EndIf
 	End Function
 
 
@@ -799,7 +798,7 @@ Type RoomHandler_News extends TRoomHandler
 		If not currentRoom Then Return False
 		
 		local owner:int = currentRoom.owner
-		
+
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries.Copy()
 			if not GetPlayerProgrammeCollection(owner).hasNews(guiNews.news)
@@ -838,6 +837,9 @@ Type RoomHandler_News extends TRoomHandler
 				'       collection when they got added to the news show
 				if not GetPlayerProgrammePlan(owner).HasNews(news)
 					local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
+					'this lists want to delete the item if a right mouse click happens...
+					guiNews._callbacks_onClick :+ [onClickNewsItemCallback]
+
 					guiNews.SetNews(news)
 					guiNewsListAvailable.AddItem(guiNews)
 				endif
@@ -852,6 +854,9 @@ Type RoomHandler_News extends TRoomHandler
 
 			if news and not guiNewsListUsed.ContainsNews(news)
 				local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
+				'this lists want to delete the item if a right mouse click happens...
+				guiNews._callbacks_onClick :+ [onClickNewsItemCallback]
+
 				guiNews.SetNews(news)
 				guiNewsListUsed.AddItem(guiNews, string(i))
 			endif
@@ -929,15 +934,17 @@ Type RoomHandler_News extends TRoomHandler
 
 	'in case of right mouse button click we want to remove the
 	'block from the player's programmePlan
-	Function onClickNews:int(triggerEvent:TEventBase)
-		if not CheckPlayerObservedAndInRoom("news") then return FALSE
+	Function onClickNewsItemCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		Local guiNews:TGUINews = TGUINews(sender)
+		Local room:TRoomBase = currentRoom
+		If Not guiNews Or Not room Then Return False
+
+		'ignore NON-dragged items
+		If Not guiNews Or Not guiNews.isDragged() Then Return False
 
 		'only react if the click came from the right mouse button
-		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+		If mouseButton <> 2 Then Return False
 
-		local guiNews:TGUINews= TGUINews(triggerEvent._sender)
-		'ignore wrong types and NON-dragged items
-		if not guiNews or not guiNews.isDragged() then return FALSE
 
 		'remove from plan (with addBackToCollection=FALSE) and collection
 		if GetPlayerBaseCollection().IsPlayer(guiNews.news.owner)
