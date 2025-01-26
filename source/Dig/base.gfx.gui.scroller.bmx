@@ -62,10 +62,13 @@ Type TGUIScrollerBase extends TGUIobject
 		AddChild(guiButtonPlus)
 
 		'scroller is interested in hits (not clicks) on its buttons
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, guiButtonMinus ))
-		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick,	TGUIScrollerBase.onButtonClick, guiButtonPlus ))
 		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, guiButtonMinus ))
 		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnMouseDown,	TGUIScrollerBase.onButtonDown, guiButtonPlus ))
+
+		' === REGISTER CALLBACKS ===
+		guiButtonMinus._callbacks_onClick :+ [onClickUpDownButtonsCallback]
+		guiButtonPlus._callbacks_onClick :+ [onClickUpDownButtonsCallback]
+
 
 		GUIManager.Add( Self)
 
@@ -221,19 +224,19 @@ Type TGUIScrollerBase extends TGUIobject
 
 
 	'handle clicks on the up/down-buttons and inform others about changes
-	Function onButtonClick:Int( triggerEvent:TEventBase )
+	Function onClickUpDownButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'only handle left/primary key clicks
-		If triggerEvent.GetData().GetInt("button") <> 1 Then Return False
+		If mouseButton <> 1 Then Return False
 
-		Local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
-		If sender = Null Then Return False
+		Local guiButton:TGUIArrowButton = TGUIArrowButton(sender)
+		If guiButton = Null Then Return False
 
-		Local guiScroller:TGUIScrollerBase = TGUIScrollerBase( sender._parent )
+		Local guiScroller:TGUIScrollerBase = TGUIScrollerBase( guiButton._parent )
 		If guiScroller = Null Then Return False
 
 		'emit event that the scroller position has changed
-		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", sender.direction.ToLower()).AddInt("scrollAmount", 15), guiScroller)
+		If guiButton = guiScroller.guiButtonMinus or guiButton = guiScroller.guiButtonPlus
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", guiButton.direction.ToLower()).AddInt("scrollAmount", 15), guiScroller)
 		EndIf
 
 		'handled the click
