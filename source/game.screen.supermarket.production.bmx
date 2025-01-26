@@ -81,8 +81,6 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		' register new global listeners
 		'GUI -> GUI
-		'this lists want to delete the item if a right mouse click happens...
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickEditTextsButton, "TGUIButton") ]
 		'we want to know if we hover a specific block
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverCastItem, "TGUICastListItem" ) ]
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConceptItem, "TGuiProductionConceptSelectListItem" ) ]
@@ -90,8 +88,6 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 		'GUI -> LOGIC
-		'finish planning/make production ready
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickFinishProductionConcept, "TGUIButton") ]
 		'changes to the cast (slot) list
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onProductionConceptChangeCastSlotList, "TGUICastSlotList") ]
@@ -125,6 +121,12 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		'to update/draw the screen
 		screen.AddUpdateCallback(onUpdateScreen)
 		screen.AddDrawCallback(onDrawScreen)
+		
+		'this lists want to delete the item if a right mouse click happens...
+		editTextsButton._callbacks_onClick :+ [onClickEditTextsButtonCallback]
+		'finish planning/make production ready
+		finishProductionConcept._callbacks_onClick :+ [onClickFinishProductionConceptCallback]
+
 	End Method
 
 
@@ -713,12 +715,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	'open modal window for editing titles
-	Function onClickEditTextsButton:Int(triggerEvent:TEventBase)
-		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		'ignore wrong types and NON-dragged items
-		If Not button Or button <> GetInstance().editTextsButton Then Return False
-
+	Function onClickEditTextsButtonCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		If mouseButton <> 1 Then Return False
+		
 		GetInstance().OpenEditTextsWindow()
+		Return True
 	End Function
 
 
@@ -777,19 +778,20 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		guiCast.remove()
 		guiCast = Null
 
-
 		'avoid clicks
 		'remove right click - to avoid leaving the room
 		MouseManager.SetClickHandled(2)
+		
+		Return True
 	End Function
 
 
 	'finish production concept
-	Function onClickFinishProductionConcept:Int(triggerEvent:TEventBase)
-		'skip other buttons
-		If triggerEvent.GetSender() <> GetInstance().finishProductionConcept Then Return False
-
+	Function onClickFinishProductionConceptCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		If mouseButton <> 1 Then Return False
+		
 		If Not GetInstance().currentProductionConcept Then Return False
+
 		GetInstance().RefreshControlEnablement = True
 		'already at last step
 		If GetInstance().currentProductionConcept.IsProduceable() Then Return False
@@ -1484,7 +1486,10 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onCastChangeFilterDropdown", "TGUIDropDown") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickCastListItem", "TGUICastListItem") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickSortCastButton", "TGUIButton") ]
+
+
+		' === REGISTER CALLBACKS ===
+		sortCastButton._callbacks_onClick :+ [onClickSortCastButtonCallback]
 
 		Return Self
 	End Method
@@ -1519,15 +1524,25 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		Return True
 	End Method
 
-	Method onClickSortCastButton:Int(triggerEvent:TEventBase )
-		If triggerEvent.GetSender() <> sortCastButton Then Return False
 
+	Function onClickSortCastButtonCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		If mouseButton <> 1 Then Return False
+		
+		Local window:TGUISelectCastWindow = TGUISelectCastWindow(sender._parent)
+		If Not window Then Throw "Button is no child of TGUISelectCastWindow"
+		
+		Return window.onClickSortCastButton()
+	End Function
+		
+
+	Method onClickSortCastButton:Int()
 		sortType = sortType + 1
 		If sortType > 3 Then sortType = 0
 		SortCastList(sortType)
 		TScreenHandler_SupermarketProduction.castSortType = sortType
 		Return True
 	End Method
+
 
 	Method SortCastList(sortBy:Int = -1)
 		If sortBy < 0 Then sortBy = sortType
@@ -1852,7 +1867,17 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeInputValues", "TGUIInput") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickClearInputButton", "TGUIButton") ]
+
+	
+		' === REGISTER CALLBACKS ===
+
+		'gui elements have this window as parent, so inside of the callback
+		'the parent will give access to the required context elements
+		'like the concept)
+		clearTitle._callbacks_onClick :+ [onClickClearInputButtonsCallback]
+		clearSubTitle._callbacks_onClick :+ [onClickClearInputButtonsCallback]
+		clearDescription._callbacks_onClick :+ [onClickClearInputButtonsCallback]
+		clearSubDescription._callbacks_onClick :+ [onClickClearInputButtonsCallback]
 
 		Return Self
 	End Method
@@ -1866,7 +1891,7 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 
 
 	'override to fill with content on open
-	Method Open:Int()
+	Method Open:Int() override
 		Super.Open()
 
 		'read values
@@ -1946,8 +1971,19 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 	End Method
 
 
-	Method onClickClearInputButton:Int( triggerEvent:TEventBase )
-		Local button:TGUIButton = TGUIButton( triggerEvent.GetSender() )
+	Function onClickClearInputButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		If mouseButton <> 1 Then Return False
+
+		Local window:TGUIProductionEditTextsModalWindow = TGUIProductionEditTextsModalWindow(sender._parent)
+		If Not window Then Throw "Button is no child of TGUIProductionEditTextsModalWindow"
+		
+		Return window.onClickClearInputButtons(TGUIButton(sender))
+	End Function
+	
+
+	Method onClickClearInputButtons:Int(button:TGUIButton)
+		If Not button Then Return False
+		
 		If concept And concept.script
 			Local isEpisode:int = concept.script.HasParentScript()
 			Select button
