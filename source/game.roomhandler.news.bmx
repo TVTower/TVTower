@@ -291,7 +291,7 @@ Type RoomHandler_News extends TRoomHandler
 
 			if ListSortMode <> sortMode or ListSortInAscendingOrder <> sortInAscendingOrder
 				RemoveAllGuiElements()
-				RefreshGUIElements()
+				haveToRefreshGuiElements = True
 			endif
 		endif
 
@@ -781,9 +781,13 @@ Type RoomHandler_News extends TRoomHandler
 
 
 	Function RefreshGuiElements:int()
-		local owner:int = GetPlayerBaseCollection().playerID
-		if currentRoom then owner = currentRoom.owner
-
+		' skip refresh until currentRoom is set
+		' (eg. after first update/draw if the game was saved in the 
+		'  planner screen)
+		If not currentRoom Then Return False
+		
+		local owner:int = currentRoom.owner
+		
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries.Copy()
 			if not GetPlayerProgrammeCollection(owner).hasNews(guiNews.news)
@@ -990,7 +994,7 @@ Type RoomHandler_News extends TRoomHandler
 	Function onEnterNewsPlannerScreen:int(triggerEvent:TEventBase)
 		'empty the guilist / delete gui elements
 		RemoveAllGuiElements()
-		RefreshGUIElements()
+		haveToRefreshGuiElements = True
 	End Function
 
 
