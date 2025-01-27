@@ -46,6 +46,7 @@
 		<music name="sound_music_main26" url="res/music/26_synth-wave-200494.ogg" />
 		
 		<music name="sound_music_main28" url="res/music/28_voltaire-196018.ogg" />
+		<music name="sound_music_main29" url="res/music/29_Fake love (Maxi).ogg" />
 		<!--
 			options:
 				loop (true/false)
