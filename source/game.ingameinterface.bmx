@@ -298,6 +298,7 @@ Type TInGameInterface
 			'reset current programme sprites
 			CurrentProgrammeOverlay = Null
 			CurrentProgramme = Null
+			Local contentPrefix:String = "~n"
 
 			if programmePlan	'similar to "ShowChannel<>0"
 				If GetWorldTime().GetDayMinute() >= 55
@@ -337,6 +338,7 @@ Type TInGameInterface
 						'real programme
 						If TProgramme(obj)
 							Local programme:TProgramme = TProgramme(obj)
+							contentPrefix = programme.licence.GetGenresLine() + "~n"
 							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
 							If (programme.IsSeriesEpisode() or programme.IsCollectionElement()) and programme.licence.parentLicenceGUID
 								CurrentProgrammeText = programme.licence.GetParentLicence().GetTitle() + " ("+ programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
@@ -487,7 +489,7 @@ Type TInGameInterface
 					content = getLocale("TV_TURN_IT_ON")
 				EndIf
 
-				CurrentProgrammeToolTip.SetContent(content)
+				CurrentProgrammeToolTip.SetContent(contentPrefix + content)
 				CurrentProgrammeToolTip.enabled = 1
 				CurrentProgrammeToolTip.Hover()
 			EndIf
