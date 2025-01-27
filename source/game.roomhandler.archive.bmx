@@ -85,8 +85,6 @@ Type RoomHandler_Archive extends TRoomHandler
 		'drop programme on dude - add back to player's collection
 		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnFinishDrop, onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" ) ]
 		'check right clicks on a gui block
-		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnClick, onClickProgrammeLicence, "TGUIProgrammeLicence" ) ]
-		'check right clicks on a gui block
 		_eventListeners :+ [ EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammeLicence, "TGUIProgrammeLicence" ) ]
 
 		'(re-)localize content
@@ -298,7 +296,9 @@ Type RoomHandler_Archive extends TRoomHandler
 		'create missing gui elements for the current suitcase
 		For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollection( GetPlayerBase().playerID ).suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
-			guiListSuitcase.addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
+			Local block:TGUIProgrammeLicence = new TGuiProgrammeLicence.CreateWithLicence(licence)
+			block._callbacks_onClick :+ [onClickProgrammeLicenceCallback]
+			guiListSuitcase.addItem( block,"-1" )
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
 		Next
 
@@ -309,12 +309,13 @@ Type RoomHandler_Archive extends TRoomHandler
 
 	'in case of right mouse button click we want to add back the
 	'dragged block to the player's programmeCollection
-	Function onClickProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("archive") then return FALSE
-		'only react if the click came from the right mouse button
-		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+	Function onClickProgrammeLicenceCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		if not CheckObservedFigureInRoom("archive") Then Return False
 
-		local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
+		'only react if the click came from the right mouse button
+		If mouseButton <> 2 Then Return False
+
+		local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(sender)
 		'ignore wrong types and NON-dragged items
 		if not guiBlock or not guiBlock.isDragged() then return FALSE
 
@@ -325,6 +326,9 @@ Type RoomHandler_Archive extends TRoomHandler
 		'remove the gui element
 		guiBlock.remove()
 		guiBlock = null
+
+		'rebuild at correct spot
+		GetInstance().haveToRefreshGuiElements = True
 
 		'avoid clicks
 		'remove right click - to avoid leaving the room
@@ -357,7 +361,11 @@ Type RoomHandler_Archive extends TRoomHandler
 					endif
 
 					guiBlock = null
+					
 				endif
+
+				'enforce recreation of "missing" gui elements
+				GetInstance().haveToRefreshGuiElements = True
 
 				'else it is just a "drop back"
 				return TRUE
@@ -421,6 +429,10 @@ Type RoomHandler_Archive extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		local playerIsOwner:Int = room.owner = GetPlayerBaseCollection().playerID
 		if NOT playerIsOwner AND NOT GetCurrentPlayer().HasMasterKey() then return FALSE
+
+
+		'delete unused and create new gui elements
+		if haveToRefreshGuiElements then RefreshGUIElements()
 
 		programmeList.owner = room.owner
 		programmeList.Draw(TgfxProgrammelist.MODE_ARCHIVE)
@@ -516,15 +528,6 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'handle tooltip
 		If openCollectionTooltip Then openCollectionTooltip.Update()
-
-
-		If playerIsOwner
-			'create missing gui elements for the current suitcase
-			For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollection( GetPlayerBase().playerID ).suitcaseProgrammeLicences
-				if guiListSuitcase.ContainsLicence(licence) then continue
-				guiListSuitcase.addItem( new TGuiProgrammeLicence.CreateWithLicence(licence),"-1" )
-			Next
-		EndIf
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then RefreshGUIElements()

@@ -28,7 +28,8 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 				buttons[i] = New TGUIButton.Create(New SVec2I(0, buttonsY + i*40), New SVec2I(Int(canvas.GetContentScreenRect().w), -1), GetLocale(buttonsText[i]), "")
 			EndIf
 			AddChild(buttons[i])
-			AddEventListener( EventManager.RegisterListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick", buttons[i]) )
+			
+			buttons[i]._callbacks_onclick :+ [onButtonsClickCallback]
 		Next
 
 		If guiCaptionTextBox
@@ -68,11 +69,19 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 	End Method
 
 
-	Method onButtonClick:Int(triggerEvent:TEventBase)
-		Local clickedButton:TGUIButton = TGUIButton( triggerEvent.GetSender() )
-		If Not clickedButton Then Return False
+	Function onButtonsClickCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		'only handle left mouse button clicks
+		If mouseButton <> 1 Then Return False
 
-		Select clickedButton
+		Local menu:TGUIModalMainMenu = TGUIModalMainMenu(sender._parent)
+		If Not menu Then Throw "Button is no child of TGUIModalMainMenu"
+		
+		Return menu.onButtonsClick(TGUIButton(sender))
+	End Function
+	
+	
+	Method onButtonsClick:Int(button:TGUIButton)
+		Select button
 			Case buttons[0]
 				Close()
 
@@ -120,7 +129,12 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 				'create extra dialog
 				TApp.CreateConfirmExitAppDialogue(False)
 				Close()
+
+			Default
+				Return False
 		End Select
+		
+		Return True
 	End Method
 	
 	
@@ -160,7 +174,6 @@ End Type
 
 Type TGUIModalSettingsMenu Extends TGUIGameModalWindowChainDialogue
 	Field settingsPanel:TGUISettingsPanel
-	Field _eventListeners:TEventListenerBase[]
 
 
 	Method Create:TGUIModalSettingsMenu(pos:SVec2I, dimension:SVec2I, limitState:String = "")
@@ -191,36 +204,29 @@ Type TGUIModalSettingsMenu Extends TGUIGameModalWindowChainDialogue
 		AddChild(settingsPanel)
 
 
-		'=== EVENTS ===
-		'listen to clicks on "load savegame"
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIButton_Onclick, Self, "onApplySettings", dialogueButtons[0]) ]
+		' === REGISTER CALLBACKS ===
+
+		'listen to clicks on "apply"
+		dialogueButtons[0]._callbacks_onclick :+ [onClickApplySettingsCallback]
 
 		Return Self
 	End Method
 
 
-	Method onApplySettings:Int( triggerEvent:TEventBase )
-		App.ApplyConfigToSettings( ReadGuiValues() )
+	Function onClickApplySettingsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		If mouseButton <> 1 Then Return False
+
+		Local window:TGUIModalSettingsMenu = TGUIModalSettingsMenu(sender._parent)
+		If Not window Then Throw "Button is no child of TGUIModalSettingsMenu"
+
+		App.ApplyConfigToSettings( window.ReadGuiValues() )
+
 		Return True
-	End Method
-
-
-Global LS_modalSettingsMenu:TLowerString = TLowerString.Create("modalSettings")
-	Method Update:Int()
-'		GuiManager.Update( LS_modalSettingsMenu )
-		Super.Update()
-	End Method
-
-
-	Method DrawContent()
-		Super.DrawContent()
-
-'		GuiManager.Draw( LS_modalSettingsMenu )
-	End Method
+	End Function
 
 
 	'override
-	Method Activate:Int()
+	Method Activate:Int() override
 	End Method
 
 
@@ -229,10 +235,6 @@ Global LS_modalSettingsMenu:TLowerString = TLowerString.Create("modalSettings")
 
 		If settingsPanel Then settingsPanel.remove()
 		settingsPanel = Null
-
-		'remove all event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
 	End Method
 
 
@@ -280,10 +282,16 @@ Type TGUIModalLoadSavegameMenu Extends TGUIGameModalWindowChainDialogue
 			SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		EndIf
 
+
 		'=== EVENTS ===
-		'listen to clicks on "load savegame"
-		_eventListeners :+ [ EventManager.RegisterListenerMethod(GUIEventKeys.GUIButton_OnClick, Self, "onClickLoadSavegame") ]
+		'listen to "load savegame"
 		_eventListeners :+ [ EventManager.RegisterListenerMethod(GameEventKeys.SaveGame_OnLoad, Self, "onLoadSavegame") ]
+
+
+		' === REGISTER CALLBACKS ===
+		'listen to clicks on "load savegame"
+		dialogueButtons[0]._callbacks_onclick :+ [onClickLoadSavegameCallback]
+		dialogueButtons[1]._callbacks_onclick :+ [onClickLoadSavegameCallback]
 
 		Return Self
 	End Method
@@ -440,22 +448,24 @@ Type TGUIModalLoadSavegameMenu Extends TGUIGameModalWindowChainDialogue
 	End Method
 
 
-	Method onClickLoadSavegame:Int( triggerEvent:TEventBase )
-		Local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
-		If Not button Then Return False
+	Function onClickLoadSavegameCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		'only handle left mouse button clicks
+		If mouseButton <> 1 Then Return False
 
-
-		If button = dialogueButtons[0]
-			If Not LoadSelectedSaveGame()
-				triggerEvent.SetVeto(True)
-				Return False
-			EndIf
-		ElseIf button = dialogueButtons[1]
-			Close()
-		EndIf
+		Local menu:TGUIModalLoadSavegameMenu = TGUIModalLoadSavegameMenu(sender._parent)
+		If Not menu Then Throw "Button is no child of TGUIModalLoadSavegameMenu"
+		
+		Select sender
+			Case menu.dialogueButtons[0]
+				If Not menu.LoadSelectedSaveGame()
+					Return False
+				EndIf
+			Case menu.dialogueButtons[1]
+				menu.Close()
+		End Select
 
 		Return True
-	End Method
+	End Function
 End Type
 
 

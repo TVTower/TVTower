@@ -127,15 +127,18 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickCancelButton", cancelButton) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickActionButton", actionButton) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickRenewButton", renewButton) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "OnSetChecked_AutoRenewCheckbox", autoRenewCheckbox) ]
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
 '		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
 '		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_onSelectEntry, Self, "OnSelectEntryList", list) ]
+
+
+		' === REGISTER CALLBACKS ===
+		cancelButton._callbacks_onClick :+ [onClickButtonsCallback]
+		actionButton._callbacks_onClick :+ [onClickButtonsCallback]
+		renewButton._callbacks_onClick :+ [onClickButtonsCallback]
 
 		'(re-)localize content
 		SetLanguage()
@@ -156,15 +159,32 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			autoRenewCheckbox.SetCaptionValues(GetLocale("RENEW_AUTOMATICALLY"), GetLocale("RENEW_AUTOMATICALLY"))
 		endif
 	End Method
+	
+	
+	Function onClickButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		Local parent:TGameGUIBasicStationmapPanel = TGameGUIBasicStationmapPanel(sender._parent)
+		If Not parent Then Throw "Button is no child of TGameGUIBasicStationmapPanel"
 
-
-	Method OnClickActionButton:Int(triggerEvent:TEventBase)
-		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not button Then Return False
+		'only handle left mouse button clicks
+		If mouseButton <> 1 Then Return False
 
 		'ignore clicks if not in the own office
 		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
 
+		Select sender
+			Case parent.actionButton
+				parent.OnClickActionButton()
+			Case parent.cancelButton
+				parent.OnClickCancelButton()
+			Case parent.renewButton
+				parent.OnClickRenewButton()
+		End Select
+
+		Return True
+	End Function
+
+
+	Method OnClickActionButton:Int()
 		if TScreenHandler_StationMap.mapInformationFrame
 			'ignore clicks as long as map info screen is shown ?
 			'if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then Return False
@@ -206,26 +226,18 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	End Method
 
 
-	Method OnClickCancelButton:Int(triggerEvent:TEventBase)
-		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not button Then Return False
-
-		'ignore clicks if not in the own office
-		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
-
+	Method OnClickCancelButton:Int()
 		ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
+
+		Return True
 	End Method
 
 
-	Method OnClickRenewButton:Int(triggerEvent:TEventBase)
-		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not button Then Return False
-
-		'ignore clicks if not in the own office
-		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
-
+	Method OnClickRenewButton:Int()
 		'try to renew a contract
 		if TScreenHandler_StationMap.selectedStation then TScreenHandler_StationMap.selectedStation.RenewContractOverDuration(12 * TWorldTime.DAYLENGTH)
+		
+		Return True
 	End Method
 
 
@@ -242,7 +254,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			TScreenHandler_StationMap.selectedStation.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, button.IsChecked())
 		EndIf
 
-		return True
+		Return True
 	End Method
 
 
@@ -1153,14 +1165,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 	End Method
 
 
-	'override
-	Method OnClickRenewButton:Int(triggerEvent:TEventBase)
-		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not button Then Return False
-
-		'ignore clicks if not in the own office
-		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
-
+	Method OnClickRenewButton:Int() override
 		local satLink:TStationSatelliteUplink = TStationSatelliteUplink(TScreenHandler_StationMap.selectedStation)
 		if not satLink then return False
 
@@ -1182,7 +1187,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 			endif
 		else
 
-			Return Super.OnClickRenewButton(triggerEvent)
+			Return Super.OnClickRenewButton()
 
 			'try to renew a contract
 			'TScreenHandler_StationMap.selectedStation.RenewContract(12 * TWorldTime.DAYLENGTH)
@@ -2200,7 +2205,6 @@ Type TStationMapInformationFrame
 
 			local pressureGroups:string 'TVTPressureGroup.GetAsString(pgID).Split(",")
 			local pressureGroupIndexes:int[] = TVTPressureGroup.GetIndexes(selectedSection.pressureGroups)
-			if not pressureGroupIndexes then throw "ups"
 			For local pgIndex:int = eachIn TVTPressureGroup.GetIndexes(selectedSection.pressureGroups)
 				if pressureGroups
 					pressureGroups :+ ", " + GetLocale("PRESSURE_GROUPS_"+ TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(pgIndex) ))
@@ -2437,14 +2441,14 @@ Type TScreenHandler_StationMap
 			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUICheckbox_OnSetChecked, OnSetChecked_StationMapFilters, guiFilterButtons[i]) ]
 		Next
 
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, OnClickInfoButton, guiInfoButton) ]
-
 
 		' === REGISTER CALLBACKS ===
 
 		' to update/draw the screen
 		screen.AddUpdateCallback(onUpdateScreen)
 		screen.AddDrawCallback(onDrawScreen)
+		' to open info frame
+		guiInfoButton._callbacks_onClick :+ [onClickInfoButtonCallback]
 
 
 		'(re-)localize content
@@ -3118,10 +3122,7 @@ endrem
 	'Stationmap: Connect GUI elements
 	'===================================
 
-	Function OnClickInfoButton:Int(triggerEvent:TEventBase)
-		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not button Then Return False
-
+	Function onClickInfoButtonCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		ResetActionMode(0)
 
 		if mapInformationFrame then mapInformationFrame.Open()
