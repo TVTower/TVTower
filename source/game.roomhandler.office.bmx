@@ -212,7 +212,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
 		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
-		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
+		Local room:TRoomBase = ingameScreen.GetCurrentRoom()
 
 		roomOwner = room.owner
 

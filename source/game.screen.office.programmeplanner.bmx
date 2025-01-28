@@ -1137,9 +1137,7 @@ Type TScreenHandler_ProgrammePlanner
 
 	Function onDrawScreen:Int(sender:TScreen, tweenValue:Float)
 		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
-		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
-
-		currentRoom = room
+		currentRoom = ingameScreen.GetCurrentRoom()
 
 		'delete unused and create new gui elements if needed
 		RefreshGuiElements()
@@ -1263,16 +1261,15 @@ endrem
 
 	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
 		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
-		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
+		currentRoom = ingameScreen.GetCurrentRoom()
 
-		currentRoom = room
 
 		'if not initialized, do so
 		If planningDay = -1 Then planningDay = GetWorldTime().GetDay()
 
 		'reset and refresh locked slots of this day
 		ResetSlotOverlays()
-		Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
+		Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
 		DisableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME)
 
 		'enable slot overlay if a dragged element is "live" or has a
@@ -1547,7 +1544,7 @@ endrem
 
 		'do not allow interaction for other players (even with master key)
 		'If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
-		If TRoomHandler.IsPlayersRoom(room)
+		If TRoomHandler.IsPlayersRoom(currentRoom)
 			'enable List interaction
 			PPprogrammeList.clicksAllowed = True
 			PPcontractList.clicksAllowed = True

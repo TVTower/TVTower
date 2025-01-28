@@ -94,8 +94,6 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 		_localEventListeners = new TEventListenerBase[0]
 
 		' register new global listeners
-		'listen to clicks on the four buttons
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, "TGUIArrowButton") ]
 		'listen to tab group selections
 		_globalEventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUITabGroup_OnSetToggledButton, Self, "onToggleSubScreenTabGroupButton", tabGroup) ]
 		'reset show day when entering a screen
@@ -108,6 +106,8 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 		screen.AddUpdateCallback(onUpdateScreen)
 		screen.AddDrawCallback(onDrawScreen)
 
+		nextDayButton._callbacks_onClick :+ [onClickChangeDaysButtonCallback]
+		previousDayButton._callbacks_onClick :+ [onClickChangeDaysButtonCallback]
 
 		'(re-)localize content
 		SetLanguage()
@@ -190,12 +190,20 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 	End Function
 
 
-	Function onClickButtons:Int(triggerEvent:TEventBase)
-		Local arrowButton:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
-		If Not arrowButton Then Return False
+	Function onClickChangeDaysButtonCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		If mouseButton <> 1 Then Return False
 
-		If arrowButton = GetInstance().nextDayButton Then GetInstance().showDay :+ 1
-		If arrowButton = GetInstance().previousDayButton Then GetInstance().showDay :- 1
+		Select sender
+			Case GetInstance().nextDayButton
+				GetInstance().showDay :+ 1
+			Case GetInstance().previousDayButton 
+				GetInstance().showDay :- 1
+				
+			Default
+				Return False
+		End Select
+		
+		Return True
 	End Function
 
 
