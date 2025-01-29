@@ -9,7 +9,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2015 Ronny Otto, digidea.de
+	Copyright (C) 2015-2025 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -46,7 +46,6 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	'the area the window centers to
 	Field screenArea:TRectangle = Null
 	Field buttons:TGUIButton[]
-	Field buttonCallbacks:Int(index:Int, sender:TGUIObject)[]
 	'0 = centered, -1 = left aligned, 1 = right aligned
 	Field buttonAlignment:Int = 0
 	'templates for button positions
@@ -109,7 +108,6 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	Method SetDialogueType:Int(typeID:Int)
 		For Local button:TGUIobject = EachIn Self.buttons
 			button.remove()
-			'RemoveChild(button)
 		Next
 		buttons = New TGUIButton[0] '0 sized array
 
@@ -117,20 +115,18 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			'a default button
 			Case 1
 				buttons = buttons[..1]
-				buttonCallbacks = buttonCallbacks[..1]
 				buttons[0] = New TGUIButton.Create(new SVec2I(0,0), new SVec2I(120,-1), GetLocale("OK"))
-				buttonCallbacks[0] = onClickCallback_Close
+				buttons[0]._callbacks_onClick :+ [onButtonsCloseClickCallback]
 				AddChild(buttons[0])
 				'set to ignore parental padding (so it starts at 0,0)
 				buttons[0].SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 			'yes and no button
 			Case 2
 				buttons = buttons[..2]
-				buttonCallbacks = buttonCallbacks[..2]
 				buttons[0] = New TGUIButton.Create(new SVec2I(0,0), new SVec2I(90,-1), GetLocale("YES"))
 				buttons[1] = New TGUIButton.Create(new SVec2I(0,0), new SVec2I(90,-1), GetLocale("NO"))
-				buttonCallbacks[0] = onClickCallback_Close
-				buttonCallbacks[1] = onClickCallback_Close
+				buttons[0]._callbacks_onClick :+ [onButtonsCloseClickCallback]
+				buttons[1]._callbacks_onClick :+ [onButtonsCloseClickCallback]
 				AddChild(buttons[0])
 				AddChild(buttons[1])
 				'set to ignore parental padding (so it starts at 0,0)
@@ -140,12 +136,18 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		End Select
 	End Method
 	
-	
-	Function onClickCallback_Close:Int(index:Int, sender:TGUIObject)
-		local window:TGUIModalWindow = TGUIModalWindow(sender)
-		if not window then return False
 
-		window.Close(index)
+	'handle clicks on the various close buttons
+	Function onButtonsCloseClickCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		local window:TGUIModalWindow = TGUIModalWindow(sender._parent)
+		If Not window Then Throw "Button is no child of TGUIModalWindow"
+		
+		For local i:int = 0 until window.buttons.length
+			if window.buttons[i] = sender
+				Return window.Close(i)
+			EndIf
+		Next
+		Return False
 	End Function
 
 
@@ -264,21 +266,6 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 	Method IsClosing:int()
 		return closeActionStarted
-	End Method
-
-
-	'handle clicks on the various close buttons
-	Method onButtonClick:Int( triggerEvent:TEventBase )
-		Local sender:TGUIButton = TGUIButton(triggerEvent.GetSender())
-		If sender = Null Then Return False
-
-		For Local i:Int = 0 To Self.buttons.length - 1
-			If Self.buttons[i] <> sender Then Continue
-			If Self.buttonCallbacks[i]
-				'run callback with window as param
-				Self.buttonCallbacks[i](i, self)
-			EndIf
-		Next
 	End Method
 
 

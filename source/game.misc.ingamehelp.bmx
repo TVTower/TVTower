@@ -88,16 +88,15 @@ Type TIngameHelpWindowCollection
 				Return
 			EndIf
 		EndIf
-		If currentIngameHelpWindow
-			'skip creating the very same visible window again
-			If currentIngameHelpWindow.helpGUID.ToLower() = helpGUID.ToLower()
-				If currentIngameHelpWindow.active Then Return
-			EndIf
-			If currentIngameHelpWindow.Show(force)
-				TriggerBaseEvent(GameEventKeys.InGameHelp_ShowHelpWindow, New TData.Add("window", currentIngameHelpWindow) , Self)
-			EndIf
+	
+		'skip creating the very same visible window again
+		If currentIngameHelpWindow.active Then Return
+
+		If currentIngameHelpWindow.Show(force)
+			TriggerBaseEvent(GameEventKeys.InGameHelp_ShowHelpWindow, New TData.Add("window", currentIngameHelpWindow) , Self)
 		EndIf
 	End Method
+
 
 	Method Update:Int()
 		If currentIngameHelpWindow
@@ -184,7 +183,6 @@ Type TIngameHelpWindow
 
 		Local windowW:Int = 600
 		Local windowH:Int = 320
-
 		modalDialogue = New TIngameHelpModalWindow.Create(New SVec2I(0,0), New SVec2I(windowW, windowH), state.ToString())
 		modalDialogue.SetManaged(False)
 		modalDialogue.screenArea = area.Copy()
@@ -205,11 +203,10 @@ Type TIngameHelpWindow
 			modalDialogue.buttons[0].SetSize(150,-1)
 			modalDialogue.buttons[1].SetCaption(GetLocale("MANUAL"))
 			modalDialogue.buttons[1].SetSize(120,-1)
-			modalDialogue.buttonCallbacks[1] = onClickCallback_ShowManual
+			modalDialogue.buttons[1]._callbacks_onClick :+ [onButtonShowManualClickCallback]
 			'move manual button to the most left
 			modalDialogue.buttonPositionTemplate = 1
 		endif
-
 
 '		modalDialogue.SetOption(GUI_OBJECT_CLICKABLE, FALSE)
 
@@ -245,7 +242,6 @@ Type TIngameHelpWindow
 			checkboxHideAll.Hide()
 		EndIf
 
-
 		modalDialogue.Open()
 		active = True
 		
@@ -261,12 +257,14 @@ Type TIngameHelpWindow
 	Method Close:Int()
 		modalDialogue.Close()
 	End Method
-	
-	
-	Function onClickCallback_ShowManual:Int(index:Int, sender:TGUIObject)
+
+
+	'open manual window
+	Function onButtonShowManualClickCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		IngameHelpWindowCollection.currentIngameHelpWindowLocked = False
 '		IngameHelpWindowCollection.currentIngameHelpWindow.Close()
 		IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+		Return True
 	End Function
 	
 
