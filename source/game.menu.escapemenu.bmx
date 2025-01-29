@@ -511,8 +511,6 @@ Type TGUIModalSaveSavegameMenu Extends TGUIGameModalWindowChainDialogue
 		EndIf
 
 		'=== EVENTS ===
-		'listen to clicks on "save savegame"
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIButton_OnClick, Self, "onClickSaveSavegame") ]
 		'listen to clicks on the list
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "onClickOnSavegameEntry") ]
 		'select entry according input content
@@ -522,6 +520,12 @@ Type TGUIModalSaveSavegameMenu Extends TGUIGameModalWindowChainDialogue
 
 		'localize texts
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.App_OnSetLanguage, Self, "onSetLanguage" ) ]
+
+
+		' === REGISTER CALLBACKS ===
+		'listen to clicks on "save savegame"
+		dialogueButtons[0]._callbacks_onClick :+ [onClickSaveSavegameCallback]
+
 
 		'(re-)localize
 		SetLanguage()
@@ -822,17 +826,16 @@ endrem
 	End Method
 
 
-	Method onClickSaveSavegame:Int( triggerEvent:TEventBase )
-		Local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
-		If Not button Or button <> dialogueButtons[0] Then Return False
+	Function onClickSaveSavegameCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		Local parent:TGUIModalSaveSavegameMenu = TGUIModalSaveSavegameMenu(sender._parent)
+		If not parent Then Throw "Button is no child of TGUIModalSaveSavegameMenu"
 
-		If Not SaveSavegame(GetSavegameNameValue())
-			triggerEvent.SetVeto(True)
+		If Not parent.SaveSavegame(parent.GetSavegameNameValue())
 			Return False
 		EndIf
 
 		Return True
-	End Method
+	End Function
 
 
 	'fill the name of the selected entry as savegame name
