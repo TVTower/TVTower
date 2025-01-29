@@ -89,14 +89,18 @@ Type TIngameHelpWindowCollection
 			EndIf
 		EndIf
 	
-		'skip creating the very same visible window again
-		If currentIngameHelpWindow.active Then Return
+		'not all screens/GUIDs have a help window!
+		If currentIngameHelpWindow
+			'skip creating the very same visible window again
+			If currentIngameHelpWindow.helpGUID.ToLower() = helpGUID.ToLower()
+				If currentIngameHelpWindow.active Then Return
+			EndIf
 
-		If currentIngameHelpWindow.Show(force)
-			TriggerBaseEvent(GameEventKeys.InGameHelp_ShowHelpWindow, New TData.Add("window", currentIngameHelpWindow) , Self)
+			If currentIngameHelpWindow.Show(force)
+				TriggerBaseEvent(GameEventKeys.InGameHelp_ShowHelpWindow, New TData.Add("window", currentIngameHelpWindow) , Self)
+			EndIf
 		EndIf
 	End Method
-
 
 	Method Update:Int()
 		If currentIngameHelpWindow
