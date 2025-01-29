@@ -182,7 +182,6 @@ Type RoomHandler_News extends TRoomHandler
 		'we are interested in the genre buttons
 		for local i:int = 0 until NewsGenreButtons.length
 			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onHoverNewsGenreButtons, NewsGenreButtons[i]) ]
-			_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDraw, onDrawNewsGenreButtons, NewsGenreButtons[i]) ]
 		Next
 
 
@@ -215,6 +214,8 @@ Type RoomHandler_News extends TRoomHandler
 
 		for local i:int = 0 until NewsGenreButtons.length
 			NewsGenreButtons[i]._callbacks_onClick :+ [onClickNewsGenreButtonsCallback]
+			NewsGenreButtons[i]._callbacks_onDraw :+ [onDrawNewsGenreButtonsCallback]
+
 		Next
 
 
@@ -501,9 +502,8 @@ Type RoomHandler_News extends TRoomHandler
 
 
 	Function onClickNewsGenreButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
-		local button:TGUIButton = TGUIButton(sender)
 		local room:TRoomBase = currentRoom
-		if not button or not room then return 0
+		if not room then return 0
 
 		'only react to left clicks
 		If mouseButton <> 1 Then Return True
@@ -512,15 +512,15 @@ Type RoomHandler_News extends TRoomHandler
 		if room.owner <> GetPlayerBaseCollection().playerID then return 0
 
 		'increase the abonnement
-		Local genre:Int = button.data.GetInt("newsGenre", -1)
+		Local genre:Int = sender.data.GetInt("newsGenre", -1)
 		If genre >= 0
 			GetPlayerBase().IncreaseNewsAbonnement( genre )
 		EndIf
 	End Function
 
 
-	Function onDrawNewsGenreButtons:int( triggerEvent:TEventBase )
-		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+	Function onDrawNewsGenreButtonsCallback:Int(sender:TGUIObject)
+		local button:TGUIButton = TGUIButton(sender)
 		local room:TRoomBase = currentRoom
 		if not button or not room then return 0
 
@@ -533,28 +533,33 @@ Type RoomHandler_News extends TRoomHandler
 			endif
 		Next
 
+		Local sprite:TSprite = GetSpriteFromRegistry(button.GetSpriteName())
+		Local baseX:Int = button.rect.GetX() + 3
+		Local baseY:Int = button.rect.GetY() + GetSpriteFromRegistry(button.GetSpriteName()).area.GetH()
+		Local oldA:Float; oldA = GetAlpha()
+		Local oldCol:SColor8; GetColor(oldCol)
 		'draw the levels
 		For Local i:Int = 0 to level-1
-			SetAlpha 0.4
+			SetAlpha 0.4 * oldA
 			SetColor 0,0,0
-			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -5, 9,1)
-			SetAlpha 0.6
+			DrawRect( baseX + i*12, baseY - 5, 9,1)
+			SetAlpha 0.6 * oldA
 			SetColor 255,255,255
-			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 9,5)
+			DrawRect( baseX + i*12, baseY - 9, 9,5)
 		Next
 		For Local i:Int = Max(0,level-1) to 2
-			SetAlpha 0.2
+			SetAlpha 0.2 * oldA
 			SetColor 0,0,0
-			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -5, 9,1)
+			DrawRect( baseX + i*12, baseY - 5, 9,1)
 			SetColor 255,255,255
-			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 9,1)
-			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 1,5)
-			DrawRect( button.rect.GetX()+3+i*12 + 9, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 1,5)
-			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9+4, 9,1)
+			DrawRect( baseX + i*12, baseY - 9, 9,1)
+			DrawRect( baseX + i*12, baseY - 9, 1,5)
+			DrawRect( baseX + i*12 + 9, baseY - 9, 1,5)
+			DrawRect( baseX + i*12, baseY - 9 + 4, 9,1)
 		Next
 
-		SetColor 255,255,255
-		SetAlpha 1.0
+		SetColor(oldCol)
+		SetAlpha(oldA)
 
 
 		For local i:int = 0 until NewsGenreButtons.length

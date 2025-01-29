@@ -275,6 +275,8 @@ Type TEventManager
 		EndIf
 
 		listeners.AddLast(eventListener)
+		eventKey.listenerCount :+ 1
+
 		UnlockMutex(_listenersMutex)
 
 		Return eventListener
@@ -313,8 +315,16 @@ Type TEventManager
 			TLogger.Log("UnregisterListener() (Var1)", "Mutex was still locked, waiting.", LOG_DEBUG)
 			LockMutex(_listenersMutex)
 		EndIf
-		For Local listeners:TObjectList = EachIn _listeners.Values()
-			listeners.Remove(eventListener)
+		'For Local listeners:TObjectList = EachIn _listeners.Values()
+		'	listeners.Remove(eventListener)
+		'Next
+		For Local eventKeyKey:TLongKey = EachIn _listeners.Keys()
+			Local eventKeyID:Long = eventKeyKey.value
+			Local eventKey:TEventKey = TEventKey(eventKeyIDMap.ValueForKey(eventKeyID))
+			local listeners:TObjectList = TObjectList(_listeners.ValueForKey(eventKeyID))
+			If listeners.Remove(eventListener)
+				eventKey.listenerCount :- 1
+			Endif
 		Next
 		UnlockMutex(_listenersMutex)
 	End Method
@@ -329,7 +339,11 @@ Type TEventManager
 			LockMutex(_listenersMutex)
 		EndIf
 		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( eventKey.id ))
-		If listeners Then listeners.Remove(eventListener)
+		If listeners
+			If listeners.Remove(eventListener)
+				eventKey.listenerCount :- 1
+			EndIf
+		EndIf
 		UnlockMutex(_listenersMutex)
 	End Method
 
@@ -343,7 +357,9 @@ Type TEventManager
 			LockMutex(_listenersMutex)
 		EndIf
 		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( eventKey.id ))
-		If listeners Then listeners.Remove(eventListener)
+		If listeners And listeners.Remove(eventListener)
+			eventKey.listenerCount :- 1
+		EndIf
 		UnlockMutex(_listenersMutex)
 	End Method
 
@@ -370,12 +386,20 @@ Type TEventManager
 			TLogger.Log("UnregisterListenerByLimit()", "Mutex was still locked, waiting.", LOG_DEBUG)
 			LockMutex(_listenersMutex)
 		EndIf
-		For Local list:TObjectList = EachIn _listeners.Values()
-			For Local listener:TEventListenerBase = EachIn list
+'		For Local list:TObjectList = EachIn _listeners.Values()
+'			For Local listener:TEventListenerBase = EachIn list
+		For Local eventKeyKey:TLongKey = EachIn _listeners.Keys()
+			Local eventKeyID:Long = eventKeyKey.value
+			Local eventKey:TEventKey = TEventKey(eventKeyIDMap.ValueForKey(eventKeyID))
+			local listeners:TObjectList = TObjectList(_listeners.ValueForKey(eventKeyID))
+			For Local listener:TEventListenerBase = EachIn listeners
+
 				'if one of both limits hits, remove that listener
 				If FiltersObject(listener._limitToSender, limitSender) Or..
 				   FiltersObject(listener._limitToReceiver, limitReceiver)
-					list.Remove(listener)
+					If listeners.Remove(listener)
+						eventKey.listenerCount :- 1
+					Endif
 				EndIf
 			Next
 		Next
@@ -414,7 +438,9 @@ Type TEventManager
 					LockMutex(_listenersMutex)
 				EndIf
 				For local listener:TEventListenerBase = EachIn toRemove
-					triggerListeners.remove(listener)
+					If triggerListeners.remove(listener)
+						eventKey.listenerCount :- 1
+					EndIf
 				Next
 				UnlockMutex(_listenersMutex)
 			EndIf
@@ -485,6 +511,9 @@ Type TEventManager
 			Next
 			'UnlockMutex(_onEventMutex)
 		EndIf
+
+		'increase count for the eventKey (statistics)
+		triggeredByEvent._eventKey.callCount :+ 1
 
 		'run individual event method
 		If Not triggeredByEvent.IsVeto()
@@ -697,6 +726,9 @@ End Type
 Type TEventKey
 	Field id:Long
 	Field text:TLowerString
+	Field listenerCount:Int
+	Field callCount:Int
+	Field callsSkippedCount:Int
 
 private
 	'avoid outside world being able to create new event keys without Generate()

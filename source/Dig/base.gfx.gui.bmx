@@ -563,14 +563,13 @@ Type TGUIManager
 			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
-				'avoid getting updated multiple times
-				'this can be overcome with a manual "obj.Update()"-call
-				'if obj._lastUpdateTick = _lastUpdateTick then continue
-				'obj._lastUpdateTick = _lastUpdateTick
-
 				obj.Update()
 				'fire event
-				TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				If GUIEventKeys.GUIObject_OnUpdate.listenerCount > 0
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				Else
+					GUIEventKeys.GUIObject_OnUpdate.callsSkippedCount :+ 1 'for debug information
+				EndIf
 			Next
 		EndIf
 
@@ -583,10 +582,6 @@ Type TGUIManager
 				If ListDragged.Contains(obj) Then Continue
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
-				'avoid getting updated multiple times
-				'this can be overcome with a manual "obj.Update()"-call
-				'if obj._lastUpdateTick = _lastUpdateTick then continue
-				'obj._lastUpdateTick = _lastUpdateTick
 				obj.Update()
 				'if there is a tooltip, update it.
 				'We handle it that way to be able to "group/order" tooltip updates
@@ -596,7 +591,11 @@ Type TGUIManager
 					obj._tooltip.Update()
 				EndIf
 				'fire event
-				TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				If GUIEventKeys.GUIObject_OnUpdate.listenerCount > 0
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				Else
+					GUIEventKeys.GUIObject_OnUpdate.callsSkippedCount :+ 1 'for debug information
+				EndIf
 			Next
 		EndIf
 	End Method
@@ -631,7 +630,11 @@ Type TGUIManager
 				EndIf
 
 				'fire event
-				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+				If GUIEventKeys.GUIObject_OnDraw.listenerCount > 0
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+				Else
+					GUIEventKeys.GUIObject_OnDraw.callsSkippedCount :+ 1 'for debug information
+				EndIf
 			Next
 
 			'TODO: sort by lastActive state?
@@ -720,6 +723,8 @@ Type TGUIobject
 	'compared to events callbacks can be used for hardwired bindings
 	'where the receiver KNOWS this specific instance
 	Field _callbacks_onClick:Int(sender:TGUIObject, button:Int, x:Int, y:Int)[]
+	Field _callbacks_onUpdate:Int(sender:TGUIObject)[]
+	Field _callbacks_onDraw:Int(sender:TGUIObject)[]
 
 	'=== HOOKS ===
 	'allow custom functions to get hooked in
@@ -2363,6 +2368,10 @@ endrem
 		If Not _customDraw
 			DrawTooltips()
 		EndIf
+
+		For Local i:Int = 0 until _callbacks_onDraw.length
+			_callbacks_onDraw[i](self)
+		Next
 	End Method
 
 
@@ -2419,7 +2428,11 @@ endrem
 '			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 
 			'fire event
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+			If GUIEventKeys.GUIObject_OnDraw.listenerCount > 0
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+			Else
+				GUIEventKeys.GUIObject_OnDraw.callsSkippedCount :+ 1 'for debug information
+			EndIf
 		Next
 	End Method
 
@@ -2442,6 +2455,10 @@ endrem
 
 
 	Method Update:Int()
+		For Local i:Int = 0 until _callbacks_onUpdate.length
+			_callbacks_onUpdate[i](self)
+		Next
+
 		_UpdateLayout()
 		If IsDragged() Then InvalidateScreenRect()
 

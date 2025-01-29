@@ -205,7 +205,11 @@ endrem
 
 		GetCurrentScreen().Draw(tweenValue)
 		'trigger event so others can attach
-		TriggerBaseEvent(GameEventKeys.Screen_OnDraw, null, GetCurrentScreen())
+		If GameEventKeys.Screen_OnDraw.listenerCount > 0
+			TriggerBaseEvent(GameEventKeys.Screen_OnDraw, null, GetCurrentScreen())
+		Else
+			GameEventKeys.Screen_OnDraw.callsSkippedCount :+ 1 'for debug information
+		EndIf
 
 		if useChangeEffects
 			'handle screen change effects (LEAVE) for current screen
@@ -262,7 +266,11 @@ endrem
 		GetCurrentScreen().Update(deltaTime)
 
 		'trigger event so others can attach
-		TriggerBaseEvent(GameEventKeys.Screen_OnUpdate, null, GetCurrentScreen())
+		If GameEventKeys.Screen_OnUpdate.listenerCount > 0
+			TriggerBaseEvent(GameEventKeys.Screen_OnUpdate, null, GetCurrentScreen())
+		Else
+			GameEventKeys.Screen_OnUpdate.callsSkippedCount :+ 1 'for debug information
+		EndIf
 	End Method
 
 

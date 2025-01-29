@@ -847,8 +847,6 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method Update:Int()
 		'emit event so custom updaters can handle
 		TriggerBaseEvent(GameEventKeys.Room_OnUpdate, null, self)
-		'emit event after updating
-		TriggerBaseEvent(GameEventKeys.Room_OnUpdateDone, null, self)
 
 		return 0
 	End Method

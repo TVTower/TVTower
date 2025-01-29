@@ -925,6 +925,13 @@ Type TApp
 
 			If KeyManager.IsHit(KEY_Y)
 				EventManager.DumpListeners()
+				
+				print "-----"
+				print "EventKeys:"
+				For local eventKey:TEventKey = EachIn EventManager.eventKeyIDMap.Values()
+					print "- " + LSet(eventKey.text.orig, 50).Replace(" ", ".") + ":  listeners="+Lset(eventKey.listenerCount, 5)+"  calls="+Lset(eventKey.callCount, 5) + " (skipped="+eventKey.callsSkippedCount + ")"
+				Next
+				print "-----"
 				'your own dev-debug-code
 			EndIf
 

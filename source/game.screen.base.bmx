@@ -27,7 +27,7 @@ Import Brl.LinkedList
 
 Type TScreenHandler
 	Method Initialize:int() abstract
-
+rem
 	'special events for screens used in rooms - only this event has the room as sender
 	'screen.onScreenUpdate/Draw is more general purpose
 	'returns the event listener links
@@ -39,6 +39,7 @@ Type TScreenHandler
 		endif
 		return listeners
 	End Function
+endrem
 End Type
 
 
