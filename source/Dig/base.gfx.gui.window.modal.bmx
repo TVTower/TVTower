@@ -77,9 +77,6 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		guiBackground.spriteBaseName = "gfx_gui_modalWindow"
 
 
-		'we want to know if one clicks on a windows buttons
-		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick"))
-
 		'fire event so others know that the window is created
 		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnCreate, Null, Self)
 		Return Self

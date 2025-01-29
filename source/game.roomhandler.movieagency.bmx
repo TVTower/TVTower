@@ -340,8 +340,6 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
 		'drop on vendor - sell things
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onFinishDrop, onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
-		'return to original position on right click
-		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickLicence, "TGUIProgrammeLicence") ]
 
 		'reset auction block caches
 		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnSetActivePlayer, onResetAuctionBlockCache) ]
@@ -362,7 +360,6 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		ScreenCollection.GetScreen("screen_movieagency").AddDrawCallback(onDrawMovieAgencyScreen)
 		ScreenCollection.GetScreen("screen_movieauction").AddUpdateCallback(onUpdateMovieAuctionScreen)
 		ScreenCollection.GetScreen("screen_movieauction").AddDrawCallback(onDrawMovieAuctionScreen)
-
 
 		'(re-)localize content
 		SetLanguage()
@@ -870,6 +867,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 
 				Local lic:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licence)
+				lic._callbacks_onClick :+ [onClickLicenceCallback]
 				'if adding to list was not possible, remove the licence again
 				If Not guiLists[j].addItem(lic,"-1" )
 					GUIManager.Remove(lic)
@@ -882,7 +880,10 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		'create missing gui elements for the current suitcase
 		For Local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(GetPlayerBaseCollection().playerID).suitcaseProgrammeLicences
 			If guiListSuitcase.ContainsLicence(licence) Then Continue
-			guiListSuitcase.addItem(New TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
+			
+			Local lic:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licence)
+			lic._callbacks_onClick :+ [onClickLicenceCallback]
+			guiListSuitcase.addItem(lic)
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
 		Next
 
@@ -1286,19 +1287,18 @@ endrem
 		Return True
 	End Function
 
+
 	'in case of right mouse button click a dragged licence is
 	'placed at its original spot again
-	Function onClickLicence:Int(triggerEvent:TEventBase)
+	Function onClickLicenceCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'only react if the click came from the right mouse button
-		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
-
-		Local guiLicence:TGUIProgrammeLicence= TGUIProgrammeLicence(triggerEvent._sender)
-		'ignore wrong types and NON-dragged items
-		If Not guiLicence Or Not guiLicence.isDragged() Then Return False
+		If mouseButton <> 2 Then Return False
+	
+		'ignore NON-dragged items
+		If Not sender Or Not sender.isDragged() Then Return False
 
 		'remove gui object
-		guiLicence.remove()
-		guiLicence = Null
+		sender.remove()
 
 		'rebuild at correct spot
 		haveToRefreshGuiElements = True

@@ -171,6 +171,7 @@ Global PROFILER_LOG_NAME:String = "log.profiler.txt"
 Global App:TApp = Null
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
+Global ScreenNetworkLobby:TScreen_NetworkLobby = Null
 Global ScreenMainMenu:TScreen_MainMenu = Null
 Global Init_Complete:Int = 0
 
@@ -3572,7 +3573,15 @@ Type TScreen_MainMenu Extends TGameScreen
 		'fill captions with the localized values
 		SetLanguage()
 
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons")
+
+		' === REGISTER CALLBACKS ===
+
+		guiButtonStart._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonNetwork._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonOnline._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonLoadGame._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonSettings._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonQuit._callbacks_onClick :+ [onClickButtonsCallback]
 
 		Return Self
 	End Method
@@ -3594,39 +3603,42 @@ Type TScreen_MainMenu Extends TGameScreen
 
 
 	'handle clicks on the buttons
-	Method onClickButtons:Int(triggerEvent:TEventBase)
-		Local sender:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not sender Then Return False
-		Local game:TGame = GetGame()
+	Function onClickButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		'only react if the click came from the left mouse button
+		If mouseButton <> 1 Then Return False
+
 		Select sender
-			Case guiButtonSettings
+			Case ScreenMainMenu.guiButtonSettings
 					App.CreateSettingsWindow()
 
-			Case guiButtonStart
-					PrepareGameObject()
+			Case ScreenMainMenu.guiButtonStart
+					Local game:TGame = GetGame()
+					ScreenMainMenu.PrepareGameObject()
 					game.SetGamestate(TGame.STATE_SETTINGSMENU)
 					game.onlinegame = False
 					game.networkgame = False
 
-			Case guiButtonNetwork
-					PrepareGameObject()
+			Case ScreenMainMenu.guiButtonNetwork
+					Local game:TGame = GetGame()
+					ScreenMainMenu.PrepareGameObject()
 					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					game.onlinegame = False
 					game.networkgame = True
 
-			Case guiButtonOnline
-					PrepareGameObject()
+			Case ScreenMainMenu.guiButtonOnline
+					Local game:TGame = GetGame()
+					ScreenMainMenu.PrepareGameObject()
 					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					game.onlinegame = True
 					game.networkgame = False
 
-			Case guiButtonLoadGame
-					CreateLoadGameWindow()
+			Case ScreenMainMenu.guiButtonLoadGame
+					ScreenMainMenu.CreateLoadGameWindow()
 
-			Case guiButtonQuit
+			Case ScreenMainMenu.guiButtonQuit
 					App.ExitApp = True
 		End Select
-	End Method
+	End Function
 
 
 	Method PrepareGameObject()
@@ -3782,10 +3794,17 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		'register clicks on TGUIGameEntry-objects -> game list
 		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickGameListEntry", "TGUIGameEntry")
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", "TGUIButton")
 
 		'register to network game announcements
 		EventManager.registerListenerMethod(TDigNetwork.eventKey_OnReceiveAnnounceGame, Self, "onReceiveAnnounceGame")
+
+
+
+		' === REGISTER CALLBACKS ===
+
+		guiButtonCreate._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonJoin._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonBack._callbacks_onClick :+ [onClickButtonsCallback]
 
 		Return Self
 	End Method
@@ -3815,12 +3834,12 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 
 	'handle clicks on the buttons
-	Method onClickButtons:Int(triggerEvent:TEventBase)
-		Local sender:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not sender Then Return False
+	Function onClickButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		'only react if the click came from the left mouse button
+		If mouseButton <> 1 Then Return False
 
 		Select sender
-			Case guiButtonCreate
+			Case ScreenNetworkLobby.guiButtonCreate
 					'guiButtonStart.enable()
 					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
 					?bmxng
@@ -3832,16 +3851,16 @@ Type TScreen_NetworkLobby Extends TGameScreen
 					Network.ConnectToLocalServer()
 					Network.client.playerID	= 1
 
-			Case guiButtonJoin
-					JoinSelectedGameEntry()
+			Case ScreenNetworkLobby.guiButtonJoin
+					ScreenNetworkLobby.JoinSelectedGameEntry()
 
-			Case guiButtonBack
+			Case ScreenNetworkLobby.guiButtonBack
 					GetGame().SetGamestate(TGame.STATE_MAINMENU)
 					GetGame().onlinegame = False
 					If Network.infoStream Then Network.infoStream.close()
 					GetGame().networkgame = False
 		End Select
-	End Method
+	End Function
 
 
 	'override default
@@ -7030,8 +7049,9 @@ Function StartApp:Int()
 
 	'add menu screens
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
+	ScreenNetworkLobby = New TScreen_NetworkLobby.Create("NetworkLobby")
 	ScreenCollection.Add(ScreenGameSettings)
-	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
+	ScreenCollection.Add(ScreenNetworkLobby)
 	ScreenCollection.Add(New TScreen_PrepareGameStart.Create("PrepareGameStart"))
 
 
