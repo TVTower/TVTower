@@ -188,7 +188,7 @@ Type TGUIManager
 		If ListDragged.contains(obj) Then Return False
 
 		ListDragged.addLast(obj)
-		ListDragged.sort(False, SortObjects)
+		ListDragged.sort(False, SortObjects_DrawOrder)
 
 		Return True
 	End Method
@@ -200,7 +200,7 @@ Type TGUIManager
 		ListDragged.Remove(obj)
 		'removing should not need a sort-call as the rest is still
 		'sorted
-		'ListDragged.sort(False, SortObjects)
+		'ListDragged.sort(False, SortObjects_DrawOrder)
 
 		Return True
 	End Method
@@ -231,49 +231,46 @@ Type TGUIManager
 	End Method
 
 
-	Function SortObjects:Int(ob1:Object, ob2:Object)
+	Function SortObjects_DrawOrder:Int(ob1:Object, ob2:Object)
 		Local objA:TGUIobject = TGUIobject(ob1)
 		Local objB:TGUIobject = TGUIobject(ob2)
 
-		'-1 = bottom
-		' 1 = top
+		'-1 = A before B
+		' 1 = A after B
 
-		'undefined object 1 - "a<b"
-		If Not objA Then Return -1
-		'undefined object 2 - "a>b"
-		If Not objB Then Return 1
+		'undefined object 1 - "a after b" (move o1 to bottom/right)
+		If Not objA Then Return 1
+		'undefined object 2 - "a before b" (move o1 to top/left)
+		If Not objB Then Return -1
 
 		'if one is the parent of the other, sort so, that the parent
-		'comes last (child on top of parent -> handled before parent)
+		'comes first (child is drawn on top of parent -> after parent)
 		If objA.HasParent(objB) Then Return 1
 		If objB.HasParent(objA) Then Return -1
 
 		'if objA and objB are dragged elements
 		If objA._flags & GUI_OBJECT_DRAGGED And objB._flags & GUI_OBJECT_DRAGGED
-			'if a drag was earlier -> move to top
+			'if a drag was earlier -> draw it _later_ (additional drags
+			'position behind the first dragged element)
+			'-> move to bottom/right (draw later)
 			If objA._timeDragged < objB._timeDragged Then Return 1
 			If objA._timeDragged > objB._timeDragged Then Return -1
-			Return 0
+			' avoid random sorts... so compare with something different
+			Return objA.compare(objB)
 		EndIf
-		'if only objA is dragged - move to Top
+		'if only objA is dragged, draw it later - move to bottom/right
 		If objA._flags & GUI_OBJECT_DRAGGED Then Return 1
-		'if only objB is dragged - move to A to bottom
+		'if only objB is dragged - draw it earlier (and thus A to top/left)
 		If objB._flags & GUI_OBJECT_DRAGGED Then Return -1
 
-		'if objA is active element - move to top
-		'If objA.IsFocused() Then Return 1
-		'if objB is active element - move to top
-		'If objB.IsFocused() Then Return -1
-
-		'if objA is "higher", move it to the top
+		'if objA is "higher", draw it later - move it to the bottom/right
 		If objA.GetZIndex() > objB.GetZIndex() Then Return 1
-		'if objA is "lower"", move to bottom
+		'if objA is "lower"", move to top/left
 		If objA.GetZIndex() < objB.GetZIndex() Then Return -1
 
-		'if one of them is active - prefer it
+		'if one of them is active - draw it later - move it to the bottom/right
 		If objA._status & GUI_OBJECT_STATUS_ACTIVE Then Return 1
 		If objB._status & GUI_OBJECT_STATUS_ACTIVE Then Return -1
-
 
 		'run custom compare job
 		Return objA.compare(objB)
@@ -281,9 +278,9 @@ Type TGUIManager
 	End Function
 
 
+	'sort lists by draw order
 	Method SortLists()
-		List.sort(True, SortObjects)
-		
+		List.sort(True, SortObjects_DrawOrder)
 		_listsSorted = True
 	End Method
 
@@ -347,6 +344,7 @@ Type TGUIManager
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
 		For Local i:Int = list.Count()-1 to 0 step -1
 			Local obj:TGUIObject = TGUIObject(list.data[i])
+			If Not obj Then Continue
 
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
@@ -562,7 +560,7 @@ Type TGUIManager
 
 		'first update all dragged objects...
 		If GUIMANAGER_TYPES_DRAGGED & updateTypes
-			For Local obj:TGUIobject = EachIn ListDragged
+			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'avoid getting updated multiple times
@@ -648,7 +646,7 @@ Type TGUIManager
 		If GUIMANAGER_TYPES_DRAGGED & drawTypes and draggedCount > 0
 			'draw all dragged objects above normal objects...
 			'from bottom to top
-			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
+			For Local obj:TGUIobject = EachIn ListDragged
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				obj.Draw()
@@ -943,8 +941,9 @@ Type TGUIobject
 	End Method
 
 
+	'sort children by draw order
 	Method SortChildren()
-		If _children Then _children.sort(True, TGUIManager.SortObjects)
+		If _children Then _children.sort(True, TGUIManager.SortObjects_DrawOrder)
 	End Method
 
 
@@ -996,11 +995,43 @@ Type TGUIobject
 		If Not _children Or _children.Count() = 0 Then Return False
 		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
 
-		'update added elements
-		For Local obj:TGUIobject = EachIn _children.ReverseEnumerator()
-			obj.update()
+		' variant 1 : properly copy children to avoid iterating over
+		' a concurrent modification (objects could be empty ..., length 
+		' can change)
+
+		Rem
+		'update them in reverse
+		Local _childrenCopy:object[] = _children.ToArray()
+		For Local i:Int = _childrenCopy.length - 1 to 0 G -1
+			Local obj:TGUIobject = TGUIobject(_childrenCopy[i])
+			if obj Then obj.update()
 		Next
+		EndRem
+
+		
+		' variant 2: just check if the "version" of the list changed
+		' (means something was added/removed) and if so, just skip
+		' updating all the other elements and hope another update()
+		' is enough. THIS BREAKs single/manual "widget.update()" calls
+		' which changes things inside but expects a result right after-
+		' wards 
+
+		'update them in reverse
+		Local oldVersion:Int = _children.version
+		For Local i:Int = _children.Count() - 1 to 0 step - 1
+			Local obj:TGUIobject = TGUIobject(_children.data[i])
+			If obj 
+				obj.update()
+				If oldVersion <> _children.version Then exit
+			EndIf
+		Next
+		
+		?debug
+		'debug line to identify where this happens (for now only modal dialogue of ingame help
+		If oldVersion <> _children.version Then print "GUIObject.UpdateChildren: concurrent change to _children!"
+		?
 	End Method
+	
 
 
 	Method RestrictContentViewport:Int()
