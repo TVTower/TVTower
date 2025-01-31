@@ -27,26 +27,6 @@
 		<music name="sound_music_main7" url="res/music/Honey Bee.ogg" />
 		<music name="sound_music_main8" url="res/music/Peppy Pepe.ogg" />
 		<music name="sound_music_main9" url="res/music/Slow Ska Game.ogg" />
-
-		<music name="sound_music_main11" url="res/music/11_2-cherry-cute-bgm-271158.ogg" />
-		<music name="sound_music_main12" url="res/music/12_3-cream-soda-cute-bgm-271159.ogg" />
-		<music name="sound_music_main13" url="res/music/13_5-strawberry-mousse-cute-bgm-274668.ogg" />
-		<music name="sound_music_main14" url="res/music/14_desolate-world-121196.ogg" />
-		<music name="sound_music_main15" url="res/music/15_gaming-hard-164122.ogg" />
-		<music name="sound_music_main16" url="res/music/16_inside-the-walls-pvz-nds-181200.ogg" />
-		
-		
-		<music name="sound_music_main19" url="res/music/19_mrplastic-jump-11138.ogg" />
-		<music name="sound_music_main20" url="res/music/20_neon-gaming-128925.ogg" />
-		<music name="sound_music_main21" url="res/music/21_ninja-247546.ogg" />
-		<music name="sound_music_main22" url="res/music/22_party-game-bgm-vol2-242467.ogg" />
-		<music name="sound_music_main23" url="res/music/23_puzzle-game-bright-casual-video-game-music-249202.ogg" />
-		<music name="sound_music_main24" url="res/music/24_space-station-247790.ogg" />
-		<music name="sound_music_main25" url="res/music/25_stranger-things-124008.ogg" />
-		<music name="sound_music_main26" url="res/music/26_synth-wave-200494.ogg" />
-		
-		<music name="sound_music_main28" url="res/music/28_voltaire-196018.ogg" />
-		<music name="sound_music_main29" url="res/music/29_Fake love (Maxi).ogg" />
 		<!--
 			options:
 				loop (true/false)
