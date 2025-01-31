@@ -179,13 +179,13 @@ Jak zwykle, kliknij lewym przyciskiem myszy element, aby go podnieść i przenie
 
 Ponieważ wiadomości posiadają własną ocenę oglądalności, wypróbowanie kilku kombinacji może być całkiem interesujące. Zdecydowanie możliwe jest zwiększenie oglądalności wiadomości w stosunku do poprzedniego programu. Wtedy kolejny program może z kolei uzyskać więcej widzów. Ponadto różne grupy widzów różnie reagują na różne wiadomości. Ale przekonaj się sam. Kolejność nadawanych wiadomości również ma wpływ.
 
-Zakup stacji
+Zakup stacji nadawczej
 ----------------
 Teraz oczywiście doszliśmy do jednej z najważniejszych strategicznie funkcji. Czy powinienem przeznaczyć pieniądze na budowę stacji, czy na lepsze programy? Menu budowy stacji można znaleźć, klikając lewym przyciskiem myszy na mapie po prawej stronie [biura].
 
 Jeśli następnie klikniesz „Nowa stacja”, na wskaźniku myszy pojawi się symbol masztu transmisyjnego, który możesz przesuwać po mapie. Spowoduje to wyświetlenie liczby widzów, do których można dotrzeć w odpowiedniej lokalizacji. Będzie to również zawsze wskazywać, ilu nowych widzów zyskasz. Będzie to ważne, jeśli w obszarach metropolitalnych znajduje się kilka masztów nadawczych, które mogą się nakładać. Każdy potencjalny widz liczy się oczywiście tylko raz. Nie należy zapominać o informacji w najniższym wierszu: oczekiwanej cenie zakupu.
 
-Po znalezieniu odpowiedniego miejsca na maszt, należy je ustalić, klikając lewym przyciskiem myszy i potwierdzając przyciskiem „Kup stację”. Jeśli po umieszczeniu spodoba ci się wygląd innego miejsca, możesz ponownie usunąć maszt transmisyjny, klikając prawym przyciskiem myszy. Jeśli kliknąłeś już przycisk „Kup”, jest już na to za późno. Możesz ponownie sprzedać maszt skrzyni biegów. Aby to zrobić, wybierz go na liście po prawej stronie, a następnie kliknij przycisk „Sprzedaj stację”. Otrzymasz mniej pieniędzy z powrotem od cwaniaków, niż cię to kosztowało.
+Po znalezieniu odpowiedniego miejsca na maszt, należy je ustalić, klikając lewym przyciskiem myszy i potwierdzając przyciskiem „Kup stację”. Jeśli po umieszczeniu spodoba ci się wygląd innego miejsca, możesz ponownie usunąć maszt transmisyjny, klikając prawym przyciskiem myszy. Jeśli kliknąłeś już przycisk „Kup”, jest już na to za późno. Możesz ponownie sprzedać maszt nadawczy. Aby to zrobić, wybierz go na liście po prawej stronie, a następnie kliknij przycisk „Sprzedaj stację”. Otrzymasz mniej pieniędzy z powrotem od cwaniaków, niż cię to kosztowało.
 
 Pozycje menu „Cable Network Uplinks” i „Satellite Uplinks” na dole ekranu zapewniają dostęp do dostępnych sieci kablowych i satelitów. Podczas gdy dostępne satelity będą wyświetlane na liście, dostępne sieci kablowe będą wyświetlane poprzez przesuwanie po mapie. Jeśli spełniasz określone warunki, możesz wynająć połączenia. Należy pamiętać, że dla każdego z nich obowiązuje roczny okres umowny. Zasięg sieci kablowych i satelitarnych opiera się na rzeczywistych danych. Dlatego należy spodziewać się tylko częściowego pokrycia obszarów. Jednak zwiększa się to w trakcie gry.
 
