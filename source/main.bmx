@@ -179,7 +179,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
-Global collectDebugStats:Int = True
+Global collectDebugStats:Int = False
 OCM.enabled = False & (collectDebugStats = True)
 OCM.printEnabled = False & (collectDebugStats = True)
 
@@ -924,6 +924,7 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+rem
 				EventManager.DumpListeners()
 				
 				print "-----"
@@ -932,6 +933,8 @@ Type TApp
 					print "- " + LSet(eventKey.text.orig, 50).Replace(" ", ".") + ":  listeners="+Lset(eventKey.listenerCount, 5)+"  calls="+Lset(eventKey.callCount, 5) + " (skipped="+eventKey.callsSkippedCount + ")"
 				Next
 				print "-----"
+endrem
+				GetGame().SetGameSpeed(GameRules.devConfig.GetInt(New TLowerString.Create("DEV_AI_GAME_SPEED"), 1000))
 				'your own dev-debug-code
 			EndIf
 
@@ -1311,13 +1314,7 @@ endrem
 		EndIf
 	End Function
 
-global optimizeHide:Int = False
 	Function Render:Int()
-		If KeyHit(KEY_COMMA)
-			optimizeHide = 1 - optimizeHide
-			print "optimizeHide = " + optimizeHide
-		EndIf
-		
 		'cls only needed if virtual resolution is enabled, else the
 		'background covers everything
 		If GetGraphicsManager().HasBlackBars()
@@ -1338,7 +1335,7 @@ global optimizeHide:Int = False
 
 		'=== RENDER TOASTMESSAGES ===
 		'below everything else of the interface: our toastmessages
-		if not optimizeHide Then GetToastMessageCollection().Render(0,0)
+		GetToastMessageCollection().Render(0,0)
 
 
 		'=== RENDER INGAME HELP ===
@@ -7127,12 +7124,12 @@ End Function
 
 
 'ron|gc
-'Global bbGCAllocCount:ULong = 0
-'rem
+Global bbGCAllocCount:ULong = 0
+rem
 Extern
     Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
-'endrem
+endrem
 
 ?linux
 Function CreateDesktopFile()
