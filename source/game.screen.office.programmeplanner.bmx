@@ -6,7 +6,7 @@ import "common.misc.screen.bmx"
 import "game.room.base.bmx"
 import "game.roomhandler.base.bmx"
 import "game.player.bmx"
-
+import "game.screen.base.bmx"
 
 
 
@@ -44,7 +44,8 @@ Type TScreenHandler_ProgrammePlanner
 	Global LS_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner_buttons")
 	Global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner|programmeplanner_buttons")
 
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 	Global screenName:string = "screen_office_programmeplanner"
 	Global programmePlannerBackgroundOriginal:TImage
 
@@ -135,44 +136,47 @@ Type TScreenHandler_ProgrammePlanner
 		EndIf
 
 
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
 
-		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onFinishDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropUnownedElement, "TGUIProgrammePlanElement") ]
+		' register new global listeners
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onFinishDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElementOnDayButton, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropFreshProgrammePlanElementOnRunningSlot, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropUnownedElement, "TGUIProgrammePlanElement") ]
 
 		'savegame loaded - clear gui elements
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onLoadSavegame) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onLoadSavegame) ]
 		'player enters screen - reset the guilists
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterProgrammePlannerScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterProgrammePlannerScreen, screen) ]
 		'player leaves screen - only without dragged blocks
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnTryLeave, onTryLeaveProgrammePlannerScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnTryLeave, onTryLeaveProgrammePlannerScreen, screen) ]
 		'player leaves screen - clean GUI (especially dragged ones)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnFinishLeave, onLeaveProgrammePlannerScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnFinishLeave, onLeaveProgrammePlannerScreen, screen) ]
 		'player tries to leave the room - check like with screens
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnTryLeaveRoom, onTryLeaveRoom) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnTryLeaveRoom, onTryLeaveRoom) ]
 		'player leaves office forcefully - clean up
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnForcefullyLeaveRoom, onForcefullyLeaveRoom) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnForcefullyLeaveRoom, onForcefullyLeaveRoom) ]
 
 		'to react on changes in the programmePlan (eg. contract finished)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onChangeProgrammePlan) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_RemoveObject, onChangeProgrammePlan) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onChangeProgrammePlan) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_RemoveObject, onChangeProgrammePlan) ]
 		'also react on "group changes" like removing unneeded adspots
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_RemoveObjectInstances, onChangeProgrammePlan) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_RemoveObjectInstances, onChangeProgrammePlan) ]
 
 		'to react on changes in the programmeCollection (eg. contract finished)
 		'contrary to the programmeplan this triggers also for removed ad
 		'contracts if only a dragged advertisement is "on" the plan
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection) ]
 
 	 	'automatically change current-plan-day on day change
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, onChangeGameDay) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, onChangeGameDay) ]
 
 
 		'1) begin drop - to intercept if dropping ad to programme which does not allow Ad-Show
@@ -180,38 +184,43 @@ Type TScreenHandler_ProgrammePlanner
 		'   existing slot item. Must be done in "onTryDrop" so it is run
 		'   before the shortcut-check is done (which is in "onTryDrag")
 		'   -> so "onDrop" is not possible
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrop, onTryDropProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'drag/drop ... from or to one of the two lists
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListAdvertisements) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, GuiListAdvertisements) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListProgrammes) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_RemovedItem, onRemoveItemFromSlotList, GuiListAdvertisements) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, GuiListProgrammes) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_AddedItem, onAddItemToSlotList, GuiListAdvertisements) ]
 		'so we can forbid adding to a "past"-slot
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, GuiListProgrammes) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, GuiListAdvertisements) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, GuiListProgrammes) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIList_TryAddItem, onTryAddItemToSlotList, GuiListAdvertisements) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" ) ]
-		'these lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammePlanElement, "TGUIProgrammePlanElement" ) ]
 		'we want to handle drops on the same guilist slot (might be other planning day)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onDropProgrammePlanElementBack, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onDropProgrammePlanElementBack, "TGUIProgrammePlanElement") ]
 
 		'intercept dragging items if we want a SHIFT/CTRL-copy/nextepisode
 		'also handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)
 		'in this case - send them to GuiManager (like freshly created to avoid a history)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, onTryDragProgrammePlanElement, "TGUIProgrammePlanElement") ]
 		'handle dropping at the end of the list (for dragging overlapped items)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onProgrammePlanAddObject) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onProgrammePlanAddObject) ]
 
-		'we want to colorize the list background depending on minute
-		'_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
+
+
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
 
 		'we are interested in the programmeplanner buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onProgrammePlannerButtonClick, "TGUIButton" ) ]
+		plannerNextDayButton._callbacks_onClick :+ [onProgrammePlannerChangeDayButtonClickCallback]
+		plannerPreviousDayButton._callbacks_onClick :+ [onProgrammePlannerChangeDayButtonClickCallback]
+		For local i:Int = 0 until ProgrammePlannerButtons.length
+			ProgrammePlannerButtons[i]._callbacks_onClick :+ [onProgrammePlannerButtonClickCallback]
+		Next
 
-		'to update/draw the screen
-		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, screen )
 
 		'(re-)localize content
 		SetLanguage()
@@ -741,7 +750,11 @@ Type TScreenHandler_ProgrammePlanner
 		'ex: added 5block to 21:00 - removed programme from 23:00-24:00 gets added again too
 		For Local i:Int = 0 To removedObjects.length-1
 			Local material:TBroadcastMaterial = TBroadcastMaterial(removedObjects[i])
-			If material Then New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(material, "programmePlanner").drag()
+			If material 
+				local element:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(material, "programmePlanner")
+				element._callbacks_onClick :+ [onClickProgrammePlanElementCallback]
+				element.drag()
+			EndIf
 		Next
 		Return False
 	End Function
@@ -1060,34 +1073,29 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	'right mouse button click: remove the block from the player's programmePlan
-	'left mouse button click: check shortcuts and create a copy/nextepisode-block
-	Function onClickProgrammePlanElement:Int(triggerEvent:TEventBase)
-		'only adjust GUI if we are displaying that screen (eg. AI skips that)
-		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
-
+	'(disabled: left mouse button click: check shortcuts and create a copy/nextepisode-block)
+	Function onClickProgrammePlanElementCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'do not react if in other players rooms
 		If Not TRoomHandler.IsPlayersRoom(currentRoom) Return False
 
-		Local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(triggerEvent._sender)
-
+		Local item:TGUIProgrammePlanElement= TGUIProgrammePlanElement(sender)
 
 		'left mouse button - create copy/episode if shortcut was used
-		If triggerEvent.GetData().getInt("button",0) = 1
+		rem
+		'disabled, this is handled in onTryDragProgrammePlanElement()
+		If mouseButton = 1
 			'if shortcut is used on a dragged item ... it gets executed
 			'on a successful drop, no need to do it here before
 			If item.isDragged() Then Return False
 
 			'assisting shortcuts create new guiobjects
 			If CreateNextEpisodeOrCopyByShortcut(item)
-				'do not try to drag the object - we did something special
-				triggerEvent.SetVeto()
-				Return False
+				Return True
 			EndIf
-		EndIf
-
+		EndRem
 
 		'right mouse button - delete
-		If triggerEvent.GetData().getInt("button",0) = 2
+		If mouseButton = 2
 			'ignore wrong types and NON-dragged items
 			If Not item.isDragged() Then Return False
 
@@ -1129,11 +1137,9 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-	Function onDrawProgrammePlanner:Int( triggerEvent:TEventBase )
-		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
-		If Not room Then Return 0
-
-		currentRoom = room
+	Function onDrawScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		currentRoom = ingameScreen.GetCurrentRoom()
 
 		'delete unused and create new gui elements if needed
 		RefreshGuiElements()
@@ -1255,18 +1261,17 @@ endrem
 	End Function
 
 
-	Function onUpdateProgrammePlanner:Int( triggerEvent:TEventBase )
-		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
-		If Not room Then Return 0
+	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		currentRoom = ingameScreen.GetCurrentRoom()
 
-		currentRoom = room
 
 		'if not initialized, do so
 		If planningDay = -1 Then planningDay = GetWorldTime().GetDay()
 
 		'reset and refresh locked slots of this day
 		ResetSlotOverlays()
-		Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
+		Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
 		DisableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME)
 
 		'enable slot overlay if a dragged element is "live" or has a
@@ -1541,7 +1546,7 @@ endrem
 
 		'do not allow interaction for other players (even with master key)
 		'If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
-		If TRoomHandler.IsPlayersRoom(room)
+		If TRoomHandler.IsPlayersRoom(currentRoom)
 			'enable List interaction
 			PPprogrammeList.clicksAllowed = True
 			PPcontractList.clicksAllowed = True
@@ -1571,40 +1576,32 @@ endrem
 	End Function
 
 
-	Function onProgrammePlannerButtonClick:Int( triggerEvent:TEventBase )
-		Local button:TGUIButton = TGUIButton( triggerEvent._sender )
-		If Not button Then Return 0
-
-		'ignore other buttons than the plan buttons
-		If Not GUIManager.IsState(button, LS_programmeplanner_buttons) Then Return 0
-		Rem
-		local validButton:int = False
-		for local b:TGUIButton = EachIn ProgrammePlannerButtons
-			if button = b then validButton = True; exit
-		next
-		if button = plannerNextDayButton then validButton = True
-		if button = plannerPreviousDayButton then validButton = True
-		endrem
-
+	Function onProgrammePlannerChangeDayButtonClickCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'only react if the click came from the left mouse button
-		If triggerEvent.GetData().getInt("button",0) <> 1 Then Return True
+		If mouseButton <> 1 Then Return False
+
+		Select sender
+			case plannerNextDayButton
+				ChangePlanningDay(planningDay+1)
+
+				'handled single click
+				MouseManager.SetClickHandled(1)
+				Return True
+			case plannerPreviousDayButton
+				ChangePlanningDay(planningDay-1)
+
+				'handled single click
+				MouseManager.SetClickHandled(1)
+				Return True
+		End Select
+
+		Return False
+	End Function
 
 
-		If button = plannerNextDayButton
-			ChangePlanningDay(planningDay+1)
-
-			'handled single click
-			MouseManager.SetClickHandled(1)
-			Return True
-		ElseIf button = plannerPreviousDayButton
-			ChangePlanningDay(planningDay-1)
-
-			'handled single click
-			MouseManager.SetClickHandled(1)
-			Return True
-		EndIf
-
-
+	Function onProgrammePlannerButtonClickCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		'only react if the click came from the left mouse button
+		If mouseButton <> 1 Then Return False
 
 		'close both lists
 		PPcontractList.SetOpen(0)
@@ -1614,13 +1611,22 @@ endrem
 		MouseManager.SetClickHandled(1)
 
 		'open others?
-		If button = ProgrammePlannerButtons[0] Then Return PPcontractList.SetOpen(1)		'opens contract list
-		If button = ProgrammePlannerButtons[1] Then Return PPprogrammeList.SetOpen(1)		'opens programme genre list
+		Select sender
+			Case ProgrammePlannerButtons[0] 
+				Return PPcontractList.SetOpen(1)		'opens contract list
+			Case ProgrammePlannerButtons[1]
+				Return PPprogrammeList.SetOpen(1)		'opens programme genre list
+			Case ProgrammePlannerButtons[2] 
+				Return ScreenCollection.GoToSubScreen("screen_office_financials")
+			Case ProgrammePlannerButtons[3]
+				Return ScreenCollection.GoToSubScreen("screen_office_statistics")
+			Case ProgrammePlannerButtons[4]
+				Return ScreenCollection.GoToSubScreen("screen_office_achievements")
+			Case ProgrammePlannerButtons[5]
+				Return ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
+		End Select
 
-		If button = ProgrammePlannerButtons[2] Then Return ScreenCollection.GoToSubScreen("screen_office_financials")
-		If button = ProgrammePlannerButtons[3] Then Return ScreenCollection.GoToSubScreen("screen_office_statistics")
-		If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_achievements")
-		If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
+		Return False
 	End Function
 
 
@@ -1713,11 +1719,13 @@ endrem
 
 		'create and drag
 		If newMaterial
-			Local guiObject:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(newMaterial, "programmePlanner")
+			Local element:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(newMaterial, "programmePlanner")
+			element._callbacks_onClick :+ [onClickProgrammePlanElementCallback]
+
 			'avoid drag() as this emits events (tryDrag, drag, finishDrag)
 			'instead simply add the object as dragged
-			'guiObject.drag()
-			GuiManager.AddDragged(guiObject)
+			'element.drag()
+			GuiManager.AddDragged(element)
 		EndIf
 	End Function
 
@@ -1936,6 +1944,8 @@ endrem
 			EndIf
 
 			Local block:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(obj)
+			block._callbacks_onClick :+ [onClickProgrammePlanElementCallback]
+
 			'print "ADD GuiListProgramme - missed new programme: "+obj.GetTitle() +" (programmedDay="+obj.programmedDay+", currDay="+currDay+") -> created block:"+block._id
 
 			If Not GuiListProgrammes.addItem(block, String(obj.programmedHour))
@@ -1986,6 +1996,7 @@ endrem
 			EndIf
 
 			Local block:TGUIProgrammePlanElement = New TGUIProgrammePlanElement.CreateWithBroadcastMaterial(obj, "programmePlanner")
+			block._callbacks_onClick :+ [onClickProgrammePlanElementCallback]
 			'print "ADD GuiListAdvertisements - missed new advertisement: "+obj.GetTitle()
 
 			If Not GuiListAdvertisements.addItem(block, String(obj.programmedHour))

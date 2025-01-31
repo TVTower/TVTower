@@ -171,6 +171,7 @@ Global PROFILER_LOG_NAME:String = "log.profiler.txt"
 Global App:TApp = Null
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
+Global ScreenNetworkLobby:TScreen_NetworkLobby = Null
 Global ScreenMainMenu:TScreen_MainMenu = Null
 Global Init_Complete:Int = 0
 
@@ -923,6 +924,17 @@ Type TApp
 
 
 			If KeyManager.IsHit(KEY_Y)
+rem
+				EventManager.DumpListeners()
+				
+				print "-----"
+				print "EventKeys:"
+				For local eventKey:TEventKey = EachIn EventManager.eventKeyIDMap.Values()
+					print "- " + LSet(eventKey.text.orig, 50).Replace(" ", ".") + ":  listeners="+Lset(eventKey.listenerCount, 5)+"  calls="+Lset(eventKey.callCount, 5) + " (skipped="+eventKey.callsSkippedCount + ")"
+				Next
+				print "-----"
+endrem
+				GetGame().SetGameSpeed(GameRules.devConfig.GetInt(New TLowerString.Create("DEV_AI_GAME_SPEED"), 1000))
 				'your own dev-debug-code
 			EndIf
 
@@ -1050,7 +1062,7 @@ endrem
 		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240 * 60 )
 		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeedPreset( 1 )
 		If KeyManager.IsHit(KEY_0) Then GetGame().SetGameSpeed( 0 ) 'pause
-		If KeyManager.IsHit(KEY_Q) Then debugAudienceInfo.Toggle()
+		If KeyManager.IsHit(KEY_Q) and Not KeyManager.IsDown(KEY_LCONTROL) Then debugAudienceInfo.Toggle()
 
 		If KeyManager.IsHit(KEY_TAB)
 			If Not KeyManager.IsDown(KEY_LCONTROL)
@@ -1301,7 +1313,6 @@ endrem
 			debugAudienceInfo.Draw()
 		EndIf
 	End Function
-
 
 	Function Render:Int()
 		'cls only needed if virtual resolution is enabled, else the
@@ -3566,7 +3577,15 @@ Type TScreen_MainMenu Extends TGameScreen
 		'fill captions with the localized values
 		SetLanguage()
 
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons")
+
+		' === REGISTER CALLBACKS ===
+
+		guiButtonStart._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonNetwork._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonOnline._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonLoadGame._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonSettings._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonQuit._callbacks_onClick :+ [onClickButtonsCallback]
 
 		Return Self
 	End Method
@@ -3588,39 +3607,42 @@ Type TScreen_MainMenu Extends TGameScreen
 
 
 	'handle clicks on the buttons
-	Method onClickButtons:Int(triggerEvent:TEventBase)
-		Local sender:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not sender Then Return False
-		Local game:TGame = GetGame()
+	Function onClickButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		'only react if the click came from the left mouse button
+		If mouseButton <> 1 Then Return False
+
 		Select sender
-			Case guiButtonSettings
+			Case ScreenMainMenu.guiButtonSettings
 					App.CreateSettingsWindow()
 
-			Case guiButtonStart
-					PrepareGameObject()
+			Case ScreenMainMenu.guiButtonStart
+					Local game:TGame = GetGame()
+					ScreenMainMenu.PrepareGameObject()
 					game.SetGamestate(TGame.STATE_SETTINGSMENU)
 					game.onlinegame = False
 					game.networkgame = False
 
-			Case guiButtonNetwork
-					PrepareGameObject()
+			Case ScreenMainMenu.guiButtonNetwork
+					Local game:TGame = GetGame()
+					ScreenMainMenu.PrepareGameObject()
 					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					game.onlinegame = False
 					game.networkgame = True
 
-			Case guiButtonOnline
-					PrepareGameObject()
+			Case ScreenMainMenu.guiButtonOnline
+					Local game:TGame = GetGame()
+					ScreenMainMenu.PrepareGameObject()
 					game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					game.onlinegame = True
 					game.networkgame = False
 
-			Case guiButtonLoadGame
-					CreateLoadGameWindow()
+			Case ScreenMainMenu.guiButtonLoadGame
+					ScreenMainMenu.CreateLoadGameWindow()
 
-			Case guiButtonQuit
+			Case ScreenMainMenu.guiButtonQuit
 					App.ExitApp = True
 		End Select
-	End Method
+	End Function
 
 
 	Method PrepareGameObject()
@@ -3682,8 +3704,7 @@ Type TScreen_MainMenu Extends TGameScreen
 	End Method
 
 
-	'override default draw
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawMenuBackground(False, True)
 
 		'draw the janitor BEHIND the panels
@@ -3693,9 +3714,8 @@ Type TScreen_MainMenu Extends TGameScreen
 	End Method
 
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
-		Super.Update(deltaTime)
+	Method UpdateCustom:Int(deltaTime:Float) override
+		Super.UpdateCustom(deltaTime)
 
 		'if gamesettings screen is still missing: disable buttons
 		'-> resources not finished loading
@@ -3778,10 +3798,17 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		'register clicks on TGUIGameEntry-objects -> game list
 		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickGameListEntry", "TGUIGameEntry")
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", "TGUIButton")
 
 		'register to network game announcements
 		EventManager.registerListenerMethod(TDigNetwork.eventKey_OnReceiveAnnounceGame, Self, "onReceiveAnnounceGame")
+
+
+
+		' === REGISTER CALLBACKS ===
+
+		guiButtonCreate._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonJoin._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonBack._callbacks_onClick :+ [onClickButtonsCallback]
 
 		Return Self
 	End Method
@@ -3811,12 +3838,12 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 
 	'handle clicks on the buttons
-	Method onClickButtons:Int(triggerEvent:TEventBase)
-		Local sender:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not sender Then Return False
+	Function onClickButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		'only react if the click came from the left mouse button
+		If mouseButton <> 1 Then Return False
 
 		Select sender
-			Case guiButtonCreate
+			Case ScreenNetworkLobby.guiButtonCreate
 					'guiButtonStart.enable()
 					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
 					?bmxng
@@ -3828,16 +3855,16 @@ Type TScreen_NetworkLobby Extends TGameScreen
 					Network.ConnectToLocalServer()
 					Network.client.playerID	= 1
 
-			Case guiButtonJoin
-					JoinSelectedGameEntry()
+			Case ScreenNetworkLobby.guiButtonJoin
+					ScreenNetworkLobby.JoinSelectedGameEntry()
 
-			Case guiButtonBack
+			Case ScreenNetworkLobby.guiButtonBack
 					GetGame().SetGamestate(TGame.STATE_MAINMENU)
 					GetGame().onlinegame = False
 					If Network.infoStream Then Network.infoStream.close()
 					GetGame().networkgame = False
 		End Select
-	End Method
+	End Function
 
 
 	'override default
@@ -3871,7 +3898,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawMenuBackground(True, False)
 
 		If Not GetGame().onlinegame
@@ -3907,8 +3934,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	End Method
 
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		'register for events if not done yet
 		GetNetworkHelper().RegisterEventListeners()
 
@@ -4002,7 +4028,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		'draw settings screen as background
 		'BESSER: VORHERIGEN BILDSCHIRM zeichnen (fuer Laden)
 		ScreenCollection.GetScreen("GameSettings").Draw(tweenValue)
@@ -4071,8 +4097,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	Global wait:Long = 0
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		'update messagewindow
 		GUIManager.Update(stateName)
 		
@@ -4180,9 +4205,6 @@ Type GameEvents
 
 
 	Function RegisterEventListeners:Int()
-		'react on right clicks during a rooms update (leave room)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnUpdateDone, RoomOnUpdate) ]
-
 		'forcefully set current screen (eg. after loading a "currently
 		'leaving a screen" savegame, or with a faulty timing between
 		'doors and screen-transition-animation)
@@ -5913,32 +5935,6 @@ endrem
 	End Function
 
 
-	'called each time a room (the active player visits) is updated
-	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
-
-		If Not GetPlayer().GetFigure().IsChangingRoom()
-			'handle right click
-			If MOUSEMANAGER.IsClicked(2)
-				'check subrooms
-				'only leave a room if not in a subscreen
-				'if in subscreen, go to parent one
-				If ScreenCollection.GetCurrentScreen().parentScreen
-					ScreenCollection.GoToParentScreen()
-
-					'handled clicks
-					MouseManager.SetClickHandled(2)
-				Else
-					'leaving allowed - reset button
-					If GetPlayer().GetFigure().LeaveRoom()
-						'handled clicks
-						MouseManager.SetClickHandled(2)
-					EndIf
-				EndIf
-			EndIf
-		EndIf
-	End Function
-
-
 	Function StationMap_OnRemoveStation:Int(triggerEvent:TEventBase)
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
@@ -7057,8 +7053,9 @@ Function StartApp:Int()
 
 	'add menu screens
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
+	ScreenNetworkLobby = New TScreen_NetworkLobby.Create("NetworkLobby")
 	ScreenCollection.Add(ScreenGameSettings)
-	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
+	ScreenCollection.Add(ScreenNetworkLobby)
 	ScreenCollection.Add(New TScreen_PrepareGameStart.Create("PrepareGameStart"))
 
 
@@ -7126,14 +7123,12 @@ Function ShowApp:Int()
 End Function
 
 
+'ron|gc
 Global bbGCAllocCount:ULong = 0
 rem
-?bmxng
-'ron|gc
 Extern
     Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
-?
 endrem
 
 ?linux
@@ -7192,12 +7187,6 @@ endrem
 	App.LoadResources("config/resources.xml")
 	TProfiler.Leave("StartTVTower: Create App")
 
-?Threaded
-'	While not RURC.FinishedLoading()
-'		Delay(1)
-'	Wend
-?
-
 	'====
 	'to avoid the "is loaded check" we have two loops
 	'====
@@ -7249,6 +7238,7 @@ endif
 TProfiler.Enter("GameLoop")
 	StartApp()
 
+	Local debugStatsSB:TStringBuilder = New TStringBuilder
 	Repeat
 		If collectDebugStats
 			If MilliSecs() - debugCreationTime > 1000
@@ -7266,15 +7256,21 @@ TProfiler.Enter("GameLoop")
 				EndIf
 				
 				If printDebugStats
+					debugStatsSB.SetLength(0)
+					debugStatsSB.Append("tick: ")
+					debugStatsSB.Append(rectangle_created).Append(" TRectangle. ")
+					debugStatsSB.Append(vec2d_created).Append(" TVec2D. ")
+					debugStatsSB.Append(tcolor_created).Append(" TColor. ")
+					debugStatsSB.Append("  GC: ").Append(bbGCAllocCount).Append(" allocs")
 					If OCM.enabled
+						debugStatsSB.Append(" (OCM: ").Append(gcAllocTotal)
 						If gcAllocChanges >= 0
-							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" +"+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
-						Else
-							Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs (OCM: " + gcAllocTotal+" "+gcAllocChanges+"). GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+							debugStatsSB.Append(" +")
 						EndIf
-					Else
-					Print "tick: " + rectangle_created +" TRectangle. " + vec2d_created + " Tvec2d. " + tcolor_created + " TColor.  GC: " + bbGCAllocCount + " allocs. GC Mem: " +GCMemAlloced() + " allocated, " + memCollected + " collected"
+						debugStatsSB.Append(gcAllocChanges).Append(")")
 					EndIf
+					debugStatsSB.Append(". GC Mem: ").Append(GCMemAlloced()).Append(" allocated, ").Append(memCollected).Append(" collected.")
+					print debugStatsSB.ToString()
 				EndIf
 				bbGCAllocCount = 0
 				rectangle_created = 0

@@ -105,7 +105,11 @@ Type TProgrammeLicenceCollection
 			_licencesDataIds.Insert(dataId, Null)
 		EndIf
 
-		TriggerBaseEvent(GameEventKeys.ProgrammeLicenceCollection_OnAddLicence, null, self, licence)
+		If GameEventKeys.ProgrammeLicenceCollection_OnAddLicence.listenerCount > 0
+			TriggerBaseEvent(GameEventKeys.ProgrammeLicenceCollection_OnAddLicence, null, self, licence)
+		Else
+			GameEventKeys.ProgrammeLicenceCollection_OnAddLicence.callsSkippedCount :+ 1 'for debug information
+		EndIf
 		return True
 	End Method
 

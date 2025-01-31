@@ -8,18 +8,21 @@ Import "common.misc.datasheet.bmx"
 
 Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	Global box:TRectangle = new TRectangle.Init(117,13,679,247)
+
 	Global draggedPresent:TGUIBettyPresent
 	Global presentInSuitcase:TGUIBettyPresent
-	Global vendorSprite:TSprite
-	Global vendorArea:TRectangle = new TRectangle.Init(0,70,120,312)
-
 	Global presentButtons:TGUIButton[10]
 	Global presentToolTips:TTooltipBase[10]
-	Global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")
-	Global _eventListeners:TEventListenerBase[]
-	Global _instance:TScreenHandler_SupermarketPresents
+
+	Global vendorSprite:TSprite
+	Global vendorArea:TRectangle = new TRectangle.Init(0,70,120,312)
 	Global spriteSuitcase:TSprite
 	Global suitcaseArea:SRect = new SRect(210,260, 145, 120)
+
+	Global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
+	Global _instance:TScreenHandler_SupermarketPresents
 
 	Function GetInstance:TScreenHandler_SupermarketPresents()
 		if not _instance then _instance = new TScreenHandler_SupermarketPresents
@@ -63,29 +66,42 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 				presentButtons[i].setToolTip(presentTooltips[i])
 			Next
+
+			'hardwire onClick-listening/callback
+			For local i:int = 0 to 9
+				'listen to clicks on the present buttons
+				presentButtons[i]._callbacks_onClick :+ [onClickButtonsCallback]
+			Next
 		endif
 
 		vendorSprite = GetSpriteFromRegistry("gfx_supermarket_vendor")
 
 
-		'=== EVENTS ===
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
+
+		' remove old listeners
+		If _globalEventListeners.length > 0
+			EventManager.UnregisterListenersArray(_globalEventListeners)
+			_globalEventListeners = new TEventListenerBase[0]
+		EndIf
+		If _localEventListeners.length > 0
+			EventManager.UnregisterListenersArray(_localEventListeners)
+			_localEventListeners = new TEventListenerBase[0]
+		EndIf
+
+		' register new global listeners
+		' reset button text when entering a screen
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		' remove suitcase present from GUI
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginLeave, onLeaveScreen, screen) ]
 
 
-		'=== register event listeners
-		'listen to clicks on the four buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, "TGUIButton") ]
-		'reset button text when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
-		'remove suitcase present from GUI
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginLeave, onLeaveScreen, screen) ]
-		'listen to clicks on a draggable present
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickPresent, "TGUIBettyPresent") ]
+		' === REGISTER CALLBACKS ===
 
 		'to update/draw the screen
-		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
+
 	End Method
 
 
@@ -106,6 +122,13 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 	'reset button text when entering the screen
 	Function onEnterScreen:int( triggerEvent:TEventBase )
+		' === EVENTS ===
+		' remove old local listeners
+		If _localEventListeners.length > 0 
+			EventManager.UnregisterListenersArray(_localEventListeners)
+			_localEventListeners = new TEventListenerBase[0]
+		EndIf
+
 		draggedPresent = null
 		presentInSuitcase = null
 		'update number of times a present was given
@@ -118,14 +141,19 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	End function
 
 	Function onLeaveScreen:int(triggerEvent:TEventBase )
+		' === EVENTS ===
+		' remove old local listeners
+		EventManager.UnregisterListenersArray(_localEventListeners)
+
 		If presentInSuitcase
 			GuiManager.remove(presentInSuitcase)
 		End If
 		undoDragPresent()
 	End Function
 
-	Function onClickButtons:int(triggerEvent:TEventBase)
-		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
+
+	Function onClickButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		Local button:TGUIButton = TGUIButton(sender)
 		if not button then return False
 		'can't buy present
 		if GetInstance().presentInSuitcase or GetInstance().draggedPresent then return False
@@ -135,6 +163,9 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 			local present:TBettyPresent=TBettyPresent(button.data.get("present"))
 			if GetPlayerBase().GetFinance().CanAfford(present.price)
 				GetInstance().draggedPresent = new TGUIBettyPresent.Create(button.getX(), button.getY(), present)
+				'add callback to intercept dragging
+				GetInstance().draggedPresent._callbacks_onClick :+ [onClickBettyPresentCallback]
+
 				draggedPresent.setLimitToState("supermarket_presents")
 				GUIManager.add(GetInstance().draggedPresent)
 				GUIManager.addDragged(GetInstance().draggedPresent)
@@ -143,42 +174,42 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		Next
 	End Function
 
-	Function onClickPresent:int( triggerEvent:TEventBase )
-		If Not CheckObservedFigureInRoom("supermarket") then Return False
-		Local presentItem:TGUIBettyPresent = TGUIBettyPresent(triggerEvent._sender)
-		local button:Int=triggerEvent.GetData().getInt("button",0)
-		If presentItem
-			Local present:TBettyPresent=presentItem.present
 
-			If button = 2 and presentItem.isDragged()
-				undoDragPresent()
-				MouseManager.SetClickHandled(2)
-			Else If button = 1
-				Local suitcasePos:int = THelper.MouseInSRect(suitcaseArea)
-				Local returnPos:int = THelper.MouseInRect(box) or THelper.MouseInRect(vendorArea)
-				If suitcasePos
-					If not presentInSuitcase
-						if GetPlayerBase().GetFinance().CanAfford(present.price) And GetBetty().BuyPresent(GetPlayerBase().playerID, present)
-							GetPlayerBase().GetFinance().PayMisc(present.price)
-							undoDragPresent()
-						endif
-					Else if not draggedPresent
-						draggedPresent = presentItem
-					Else
+	' callback connected to the TGUIBettyPresent instances
+	Function onClickBettyPresentCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		Local presentItem:TGUIBettyPresent = TGUIBettyPresent(sender)
+		If Not presentItem Then Return False
+		
+		Local present:TBettyPresent = presentItem.present
+
+		If mouseButton = 2 and presentItem.isDragged()
+			undoDragPresent()
+			MouseManager.SetClickHandled(2)
+		Else If mouseButton = 1
+			Local suitcasePos:int = THelper.MouseInSRect(suitcaseArea)
+			Local returnPos:int = THelper.MouseInRect(box) or THelper.MouseInRect(vendorArea)
+			If suitcasePos
+				If not presentInSuitcase
+					if GetPlayerBase().GetFinance().CanAfford(present.price) And GetBetty().BuyPresent(GetPlayerBase().playerID, present)
+						GetPlayerBase().GetFinance().PayMisc(present.price)
 						undoDragPresent()
-					End If
-				Else If returnPos
-					if presentInSuitcase and GetBetty().SellPresent(GetPlayerBase().playerID, present)
-						GetPlayerBase().GetFinance().SellMisc(present.price)
-						presentInSuitcase = null
-					End If
+					endif
+				Else if not draggedPresent
+					draggedPresent = presentItem
+				Else
 					undoDragPresent()
 				End If
-				Return True
+			Else If returnPos
+				if presentInSuitcase and GetBetty().SellPresent(GetPlayerBase().playerID, present)
+					GetPlayerBase().GetFinance().SellMisc(present.price)
+					presentInSuitcase = null
+				End If
+				undoDragPresent()
 			End If
+			Return True
 		End If
-		Return False
 	End Function
+
 
 	Function undoDragPresent()
 		If draggedPresent
@@ -191,17 +222,18 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		End If
 	End Function
 
-	Function onUpdate:int( triggerEvent:TEventBase )
-		GetInstance().Update()
+
+	Function onUpdateScreen:int(sender:TScreen, deltaTime:Float)
+		Return GetInstance().Update(deltaTime)
 	End Function
 
 
-	Function onDraw:int( triggerEvent:TEventBase )
-		GetInstance().Render()
+	Function onDrawScreen:int(sender:TScreen, tweenValue:Float)
+		Return GetInstance().Draw(tweenValue)
 	End Function
 
 
-	Method Render()
+	Method Draw:Int(tweenValue:Float) Final
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
 		local contentX:int, contentY:int, contentW:int, contentH:int
@@ -250,14 +282,13 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 			End If
 			Next
 		End If
-
 		
 		GuiManager.Draw( LS_supermarket_presents )
 	End Method
 
 
-	Method Update()
-		Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
+	Method Update:Int(deltaTime:Float) Final
+		Local present:TBettyPresent = GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
 		If present And Not presentInSuitcase
 			presentInSuitcase=new TGUIBettyPresent.Create(Int(GetInstance().suitcaseArea.x + 14), Int(GetInstance().suitcaseArea.y + 19), present)
 			presentInSuitcase.setLimitToState("supermarket_presents")
