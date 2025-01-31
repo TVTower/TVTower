@@ -172,7 +172,6 @@ Type TGUIManager
 
 
 	Method GetDraggedNumber:Int(obj:TGUIObject)
-		Local pos:Int = 0
 		For Local i:int = 0 until ListDragged.Count()
 			If ListDragged.data[i] = obj Then Return i
 		Next
