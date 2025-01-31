@@ -1101,7 +1101,7 @@ Type TLuaEngine
 	
 	'key = class pointer
 	'value = TLuaReflectionType
-	Field _reflectionTypesCache:TTreeMap<byte ptr, TLuaReflectionType>
+	Field _reflectionTypesCache:TPtrMap  ':TTreeMap<byte ptr, TLuaReflectionType>
 
 
 	Global lastID:Int = 0
@@ -1439,13 +1439,15 @@ Type TLuaEngine
 	
 	
 	Method _GetReflectionType:TLuaReflectionType(obj:Object)
-		If Not _reflectionTypesCache Then _reflectionTypesCache = New TTreeMap<byte ptr, TLuaReflectionType>
+		If Not _reflectionTypesCache Then _reflectionTypesCache = New TPtrMap ' New TTreeMap<byte ptr, TLuaReflectionType>
 
 		Local class:Byte Ptr = Luaengine_bbRefGetObjectClass( obj )
-		Local reflectionType:TLuaReflectionType = _reflectionTypesCache[class]
+'		Local reflectionType:TLuaReflectionType = _reflectionTypesCache[class]
+		Local reflectionType:TLuaReflectionType = TLuaReflectionType(_reflectionTypesCache.ValueForKey(class))
 		If not reflectionType 'not cached yet
 			reflectionType = New TLuaReflectionType
-			_reflectionTypesCache.Add(class, reflectionType)
+'			_reflectionTypesCache.Add(class, reflectionType)
+			_reflectionTypesCache.Insert(class, reflectionType)
 
 			reflectionType.typeID = TTypeID.ForObject(obj)
 			If reflectionType.typeID
