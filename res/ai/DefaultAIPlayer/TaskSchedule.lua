@@ -16,7 +16,8 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.Id = _G["TASK_SCHEDULE"]
 	c.TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME
 	c.BudgetWeight = 0
-	c.BasePriority = 10
+	--no priortiy for scheduling; default player sets situation priority at xx:06
+	c.BasePriority = 0
 
 	--no budget to spare
 	c.RequiresBudgetHandling = false
@@ -43,6 +44,9 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	--we run more than one AdScheduleJob
 	c.adScheduleJobIndex = 0
 	c.lastScheduleHour = -1
+
+	--guessed audience for an hour for comparison with actual audience
+	c.guessedAudienceHour = {}
 
 	-- basic audience statistics
 	-- this value can then be adjusted for each hour in a long term
@@ -1837,7 +1841,10 @@ function JobAdSchedule:FillSlot(day, hour, guessedAudience)
 --	self:LogDebug("Fill ad slot " .. (fixedDay - TVT.GetStartDay()) .. "/" .. string.format("%02d", fixedHour) .. ":55. guessedAudienceSum=" .. math.floor(guessedAudienceSum))
 
 	-- add for debug screen - do not overwrite, if it is not a guessed but the real audience
-	if fixedHour ~= getPlayer().hour then MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience) end
+	if fixedHour ~= getPlayer().hour then
+		self.Task.guessedAudienceHour[fixedHour] = guessedAudience
+		MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience) 
+	end
 
 	-- send a trailer:
 	-- ===============

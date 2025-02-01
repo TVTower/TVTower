@@ -1013,16 +1013,38 @@ function OnMinute(number)
 		end
 	end
 
-	-- on xx:06 check if there is an unsatisfiable ad planned for this
-	-- hour
 	if minute == 6 then
 		local task = player.TaskList[_G["TASK_SCHEDULE"]]
 		if task then
+			--no base priority for scheduling
+			--activate task every hour (without force)
+			--as a consequence ads for the current programme should always be "optimal"
+			task.SituationPriority = 300
+
+--[[
+			-- on xx:06 check if there is an unsatisfiable ad planned for this hour
 			if TVT:CurrentAdvertisementRequirementsPassed() == TVT.RESULT_FAILED then
 				--debugMsg("#recognized failing ad")
 				task.SituationPriority = 200
 				if player.CurrentTask ~= nil and player.CurrentTask.typename() ~= task.typename() then
 					player:ForceNextTask()
+				end
+			--the following block was never active
+			--idea: if audience is higher than guessed, try rescheduling (better ad)
+			--however impact will be small - guessed audience is less relevant than
+			--audience required by ad (reschedule if there is a better ad available)
+			elseif task.guessedAudienceHour ~= nil then
+				local guessed = task.guessedAudienceHour[player.hour]
+				if guessed ~= nil then
+					local actualSum = TVT.GetCurrentProgrammeAudienceResult().Audience.GetTotalSum()
+					local guessedSum = guessed.GetTotalSum()
+					if actualSum > guessedSum * 1.25 then
+						debugMsg("#recognized higher audience")
+						task.SituationPriority = 200
+						if player.CurrentTask ~= nil and player.CurrentTask.typename() ~= task.typename() then
+							player:ForceNextTask()
+						end
+					end
 				end
 			end
 
@@ -1030,6 +1052,7 @@ function OnMinute(number)
 			--local broadcast = TVT.GetCurrentAdvertisement()
 			--if broadcast ~= nil then...
 			--if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1 then
+--]]
 		end
 	end
 end
