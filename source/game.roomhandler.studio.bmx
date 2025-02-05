@@ -911,6 +911,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 				text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
 
+Rem
 				'TODO fit semantics has changed - only speed/review ratio counts
 				'so 0.1+0.1 has the same fit as 0.9+0.9 - but the latter will result
 				'in much higher quality values - this should be reflected here
@@ -922,7 +923,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE")
 				EndIf
 				text :+ "~n"
-
+EndRem
 
 				Local castSympathyKey:String
 				If castSympathy < - 0.10

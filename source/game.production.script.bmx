@@ -1073,10 +1073,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		print "mainGenre:          "+mainGenre
 		print "review:             "+review + "  scaled:  " + reviewActual + "  genre:" + reviewGenre
 		print "speed:              "+speed + "  scaled:  " + speedActual + "  genre:" + speedGenre
-		print "Review Abweichung:  "+distanceReview
-		print "Speed Abweichung:   "+distanceSpeed
-		print "ergebnis:           "+(1.0 - (distanceReview + distanceSpeed))
-		endrem
+		print "distannce review:   "+distanceReview
+		print "distance speed:     "+distanceSpeed
+		print "genre fit:          "+(1.0 - (distanceReview + distanceSpeed))
+		EndRem
 
 		Return 1.0 - (distanceReview + distanceSpeed)
 	End Method
