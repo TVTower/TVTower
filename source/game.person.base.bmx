@@ -1148,7 +1148,7 @@ private
 				'TODO job cluster specific
 				genreID = 0
 			Default
-				'except for some exceptioons all attributes are job/genre independent
+				'except for a few exceptions all attributes are job/genre independent
 				jobID = 0
 				genreID = 0
 		End Select
