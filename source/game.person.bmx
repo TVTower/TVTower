@@ -401,22 +401,29 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		Local xpMod:Float = 1.0
 		Local baseFee:Int = 0
 		Local dynamicFee:Int = 0
-		'TODO refactor - extract person Attribute values (maybe later include genre)
+
+		'TODO maybe later include genre?
+		Local genre:Int = 0
+		Local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
+		Local power:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER, jobID, genre)
+		Local humor:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, genre)
+		Local charisma:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, genre)
+		Local appearance:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, genre)
+		Local fame:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genre)
+		Local scandalizing:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, genre)
 		Select jobID
 			Case TVTPersonJob.ACTOR,..
 			     TVTPersonJob.SUPPORTINGACTOR, ..
 			     TVTPersonJob.HOST
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
 				'attributes: 0 - 4.0
 				Local attributeMod:Float
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER, jobID, 0)
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, 0)
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, 0)
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, 0)
+				attributeMod :+ power
+				attributeMod :+ humor
+				attributeMod :+ charisma
+				attributeMod :+ appearance
 				'attributes: 0 - 8.0
-				attributeMod :* 1.0 + (0.8 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, 0) + 0.2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, 0))
+				attributeMod :* 1.0 + (0.8 * fame + 0.2 * scandalizing)
 
 				'sympathy: modify by up to 25% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
@@ -437,17 +444,15 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 			Case TVTPersonJob.DIRECTOR,..
 			     TVTPersonJob.SCRIPTWRITER
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
 				'attributes: 0 - 6.0
 				Local attributeMod:Float
-				attributeMod :+ 2.0 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER, jobID, 0)
-				attributeMod :+ 1.0 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, 0)
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, 0)
-				attributeMod :+ 0.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, 0)
+				attributeMod :+ 2.0 * power
+				attributeMod :+ 1.0 * humor
+				attributeMod :+ 1.50 * charisma
+				attributeMod :+ 0.75 * appearance
 				'attributes: 0 - 11.2
-				attributeMod :* 1.0 + (1.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, 0) + 0.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, 0))
+				attributeMod :* 1.0 + (1.1 * fame + 0.1 * scandalizing)
 
 				'sympathy: modify by up to 25% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
@@ -465,16 +470,14 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 			Case TVTPersonJob.MUSICIAN
 
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
-
-				Local attributeMod:Float
 				'attributes: 0 - 6.0
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER, jobID, 0)
-				attributeMod :+ 0.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, 0)
-				attributeMod :+ 1.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, 0)
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, 0)
+				Local attributeMod:Float
+				attributeMod :+ 1.50 * power
+				attributeMod :+ 0.75 * humor
+				attributeMod :+ 1.75 * charisma
+				attributeMod :+ 1.50 * appearance
 				'attributes: 0 - 14.25  (alternative: "* 1-3")
-				attributeMod :* 1.0 + (1.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, 0) + 0.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, 0))
+				attributeMod :* 1.0 + (1.5 * fame + 0.5 * scandalizing)
 
 				'sympathy: modify by up to 30% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.30 * p.GetChannelSympathy(channel)
@@ -486,17 +489,15 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 24500 * attributeMod
 
 			Case TVTPersonJob.REPORTER
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
-				Local attributeMod:Float
 				'attributes: 0 - 6.0
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER, jobID, 0)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, 0)
-				attributeMod :+ 2.00 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, 0)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, 0)
+				Local attributeMod:Float
+				attributeMod :+ 1.50 * power
+				attributeMod :+ 0.50 * humor
+				attributeMod :+ 2.00 * charisma
+				attributeMod :+ 0.50 * appearance
 				'attributes: 0 - 6.75  (alternative: "* 1-1.5")
-				attributeMod :* 1.0 + (0.4 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, 0) + 0.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, 0))
+				attributeMod :* 1.0 + (0.4 * fame + 0.1 * scandalizing)
 
 				'sympathy: modify by up to 50% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.50 * p.GetChannelSympathy(channel)
@@ -508,16 +509,14 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 6500 * attributeMod
 
 			Case TVTPersonJob.GUEST
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
-				Local attributeMod:Float
 				'attributes: 0 - 1.9
-				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, 0)
-				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, 0)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, 0)
+				Local attributeMod:Float
+				attributeMod :+ 0.60 * power
+				attributeMod :+ 0.60 * charisma
+				attributeMod :+ 0.50 * appearance
 				'attributes: 0 - 5.95  (alternative: "* 1-3.5")
-				attributeMod :* 1.0 + (2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, 0) + 0.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, 0))
+				attributeMod :* 1.0 + (2 * fame + 0.5 * scandalizing)
 
 				'sympathy: modify by up to 50% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.5 * p.GetChannelSympathy(channel)
@@ -528,18 +527,16 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				baseFee = 1500
 				dynamicFee = 6000 * attributeMod
 			Default
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
 				'print "FEE for jobID="+jobID+" not defined."
 				'dynamic fee: 0 - 380
 				Local attributeMod:Float
 				'attributes: 0 - 2.1
-				attributeMod :+ 0.30 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, 0)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, 0)
-				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, 0)
+				attributeMod :+ 0.30 * humor
+				attributeMod :+ 0.50 * charisma
+				attributeMod :+ 0.60 * appearance
 				'attributes: 0 - 3.22  (alternative: "* 1-2.3")
-				attributeMod :* 1.0 + (1.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, 0) + 0.2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, 0))
+				attributeMod :* 1.0 + (1.1 * fame + 0.2 * scandalizing)
 
 				'modify by up to 25% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
