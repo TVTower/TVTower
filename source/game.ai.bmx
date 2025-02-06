@@ -793,17 +793,17 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		Return TProgrammeLicence[](obj)
 	End Method
 
-	'required until brl.reflection correctly handles "float parameters" 
-	'in debug builds (same as "doubles" for 32 bit builds)
-	'GREP-key: "brlreflectionbug"
-	Method CopyBasicAudienceAttractionString:TAudienceAttraction(attraction:TAudienceAttraction, multiplyFactor:String)
-		Return CopyBasicAudienceAttraction(attraction, Float(multiplyFactor))
-	End Method
-
 
 	'helper to allow modification of a predicted audience attraction
 	'without affecting the original one
-	Method CopyBasicAudienceAttraction:TAudienceAttraction(attraction:TAudienceAttraction, multiplyFactor:Float)
+	'ATTENTION:
+	' multiplyFactorAsString read as "string" instead of as "float"
+	' required until brl.reflection correctly handles "float parameters" 
+	' in release and debug builds)
+	' GREP-key: "brlreflectionbug"
+	Method CopyBasicAudienceAttraction:TAudienceAttraction(attraction:TAudienceAttraction, multiplyFactorAsString:String)
+		Local multiplyFactor:Float = Float(multiplyFactorAsString)
+
 		If Not attraction Then Return Null
 		Local copyAttraction:TAudienceAttraction = attraction.CopyStaticBaseAttraction()
 		If multiplyFactor <> 1.0 Then copyAttraction.MultiplyAttrFactor(multiplyFactor)
@@ -1794,7 +1794,14 @@ endrem
 
 	'plan all potential productions; handle already planned productions gracefully
 	'Returns result-ID: WRONGROOM / OK / FAILED / NOT_FOUND
-	Method sm_PlanProduction:Int(budget:Int, oneBlockBudgetFactor:Float)
+	'ATTENTION:
+	' oneBlockBudgetFactor read as "string" instead of as "float"
+	' required until brl.reflection correctly handles "float parameters" 
+	' in release and debug builds)
+	' GREP-key: "brlreflectionbug"
+	Method sm_PlanProduction:Int(budget:Int, oneBlockBudgetFactorAsString:String)
+		Local oneBlockBudgetFactor:Float = Float(oneBlockBudgetFactorAsString)
+
 		If Not _PlayerInRoom("supermarket") Then Return Self.RESULT_WRONGROOM
 		Local result:Int = Self.RESULT_NOTFOUND
 		Local producer:TProgrammeProducer = new TProgrammeProducer
