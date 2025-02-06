@@ -907,7 +907,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				Local productionCompanyQuality:Float = 0
 				If pc.productionCompany Then productionCompanyQuality = pc.productionCompany.GetQuality()
 				Local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
-				Local effectiveFocusPointsRatio:Float = pc.GetEffectiveFocusPointsRatio()
+				Local effectiveFocusPointsDistribution:Float = pc.GetEffectiveFocusPointsDistribution(True)
 
 				text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
 
@@ -956,9 +956,9 @@ EndRem
 				EndIf
 
 
-				If effectiveFocusPointsRatio < 0.30
+				If effectiveFocusPointsDistribution < 0.55
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD")
-				ElseIf effectiveFocusPointsRatio> 0.70
+				ElseIf effectiveFocusPointsDistribution > 0.85
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD")
 				Else
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE")
