@@ -1836,20 +1836,21 @@ Type TLuaEngine
 						?
 					endif
 				Case LongTypeId
-					?not ptr64
-					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
-					?
+					'disabled: warn also in 64bit builds, as they are the
+					'ones we test, not the 32bit ones..
+					'?Not ptr64
+					Notify "Reflection with ~qLong~q-parameters is bugged (for 32bit builds). Change " + child.member.name() + " to use :String for now and convert inside of the function/method."
+					'?
 					if lua_isboolean(_luaState, luaIndex)
 						child.ArgPush(i, Int(lua_toboolean(_luaState, luaIndex)))
 					else
 						child.ArgPush(i, Long(lua_tonumber(_luaState, luaIndex)))
 					endif
 				Case FloatTypeId
+					Notify "Reflection with ~qFloat~q-parameters is bugged. Change " + child.member.name() + " to use :String for now and convert inside of the function/method."
 					child.ArgPush(i, Float(lua_tonumber(_luaState, luaIndex)))
 				Case DoubleTypeId
-					?not ptr64
-					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
-					?
+					Notify "Reflection with ~qDouble~q-parameters is bugged. Change " + child.member.name() + " to use :String for now and convert inside of the function/method."
 					child.ArgPush(i, Double(lua_tonumber(_luaState, luaIndex)))
 				Case StringTypeId
 					child.ArgPush(i, lua_tobbstring(_luaState, luaIndex))
