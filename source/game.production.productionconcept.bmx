@@ -749,7 +749,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method CalculateScriptGenreFit:Float(recalculate:int = False)
-		if _scriptGenreFit < 0 Then _scriptGenreFit = script.CalculateGenreCriteriaFit()
+		if _scriptGenreFit < 0 Or recalculate Then _scriptGenreFit = script.CalculateGenreCriteriaFit()
 
 		return _scriptGenreFit
 	End Method
