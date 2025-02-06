@@ -371,7 +371,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	'time with the same output regardless of time)
 	Field _scriptGenreFit:Float = -1.0 {nosave}
 	Field _effectiveFocusPoints:Float = -1.0 {nosave}
-	Field _effectiveFocusPointsMax:Float = -1.0 {nosave}
+	Field _effectiveFocusPointsDistribution:Float = -5.0 {nosave}
 
 	'storage for precalculated values (eg. costs of actors get higher
 	'inbetween)
@@ -414,7 +414,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	Method ResetCache()
 		_scriptGenreFit = -1
 		_effectiveFocusPoints = -1
-		_effectiveFocusPointsMax = -1
+		_effectiveFocusPointsDistribution = -5
 	End Method
 
 
@@ -649,27 +649,14 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method GetEffectiveFocusPointsMax:Float()
-		if _effectiveFocusPointsMax < 0 then CalculateEffectiveFocusPoints()
-		return _effectiveFocusPointsMax
+	'returns a value indicating how well the focus points are balanced with respect to the genre definition
+	'the maximal value is 1.0 and can be negative!
+	Method GetEffectiveFocusPointsDistribution:Float(recalculate:Int = False)
+		If _effectiveFocusPointsDistribution <= -5 or recalculate Then CalculateEffectiveFocusPoints(True)
+		Return _effectiveFocusPointsDistribution
 	End Method
 
 
-	'returns the percentage of used to maximum focus points
-	Method GetEffectiveFocusPointsRatio:Float(recalculate:Int = False)
-		'a "drama" production might have VFX-priority of 0.5, each point
-		'spent there is only added by 50% to the effective ratio
-
-		if _effectiveFocusPointsMax < 0 or recalculate then CalculateEffectiveFocusPoints(True)
-
-		if _effectiveFocusPointsMax > 0
-			return _effectiveFocusPoints / _effectiveFocusPointsMax
-		elseif _effectiveFocusPointsMax = 0
-			return 0.0
-		endif
-	End Method
-	
-	
 	'use this to place focus points where needed (eg custom programme 
 	'producers could use this)
 	'returns amount of unspend points
@@ -718,31 +705,73 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method CalculateEffectiveFocusPoints:Float(recalculate:int = False)
-		if not productionFocus then return 0.0
+		If Not productionFocus Then Return 0.0
 
-		if _effectiveFocusPoints >= 0 and not recalculate then return _effectiveFocusPoints
+		If _effectiveFocusPoints >= 0 And Not recalculate Then Return _effectiveFocusPoints
 
 		_effectiveFocusPoints = 0.0
-		_effectiveFocusPointsMax = 0.0
+		_effectiveFocusPointsDistribution = 1.0
 
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subGenres)
+		'total number of points as base for distribution
+		'assigned team points are (partially) ignored while speed points should have used for "quality"
+		Local companyPoints:Int = GetProductionCompany().GetFocusPoints()
+		Local pointsForDistribution:Int = companyPoints
+		Local focusPoints:Int
+		Local weight:Float
+		Local totalWeights:Float
+		Local attributeLimit:Int = TProductionFocusBase.focusPointLimit
+		Local focusCategories:Int
+		For Local focusPointID:Int = EachIn productionFocus.GetOrderedFocusIndices()
+			focusCategories :+ 1
+			focusPoints = GetProductionFocus(focusPointID)
 
-		For local focusPointID:int = EachIn productionFocus.GetOrderedFocusIndices()
 			'production speed does not add to quality
-			if focusPointID = TVTProductionFocus.PRODUCTION_SPEED then continue
+			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
 
-			if genreDefinition
-				_effectiveFocusPoints :+ GetProductionFocus(focusPointID) * genreDefinition.GetFocusPointPriority(focusPointID)
-				_effectiveFocusPointsMax :+ TProductionFocusBase.focusPointLimit * genreDefinition.GetFocusPointPriority(focusPointID)
-
-				'print "_effectiveFocusPoints :+ "+GetProductionFocus(focusPointID)+" * "+genreDefinition.GetFocusPointPriority(focusPointID)
-				'print "_effectiveFocusPointsMax :+ "+TProductionFocusBase.focusPointLimit+" * "+genreDefinition.GetFocusPointPriority(focusPointID)
-
-			else
-				_effectiveFocusPoints :+ GetProductionFocus(focusPointID)
-				_effectiveFocusPointsMax :+ TProductionFocusBase.focusPointLimit
-			endif
+			weight=1.0
+			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
+			If focusPointID <> TVTProductionFocus.TEAM
+				totalWeights :+ weight
+			Else
+				'do not subtract all assigned team points (6 total all for team - not a good distribution)
+				'3 of 6, 4 of 11, 5 of 15 points for team is OK
+				'due to exponential pricing, for many points you would distribute them more evenly anyway
+				pointsForDistribution :- min(focusPoints, min(3 + (companyPoints - 4) / 4, attributeLimit))
+			EndIf
+			_effectiveFocusPoints :+ weight * focusPoints
 		Next
+		'allow some speed points for higher company levels
+		'if around 5 points are assigned for each "quality" attribute, 1 speed point
+		'for each "full" further quality-point is OK
+		Local threshold:Int = 4 * focusCategories
+		If companyPoints > threshold
+			pointsForDistribution :- min(focusPoints, (companyPoints - threshold) / focusCategories)
+		EndIf
+
+
+		'calculate focus point distribution value
+		Local diffPenalty:Float = 0.1
+		If companyPoints > 19
+			diffPenalty = 0.05
+		ElseIf companyPoints > 14
+			diffPenalty = 0.07
+		EndIf
+		For Local focusPointID:Int = EachIn productionFocus.GetOrderedFocusIndices()
+			'production speed and team are ignored
+			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
+			If focusPointID = TVTProductionFocus.TEAM Then Continue
+
+			weight=1.0
+			'expected points
+			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
+			focusPoints = min((pointsForDistribution / totalWeights) * weight + 0.5, attributeLimit)
+			'print "expected "+ focusPointID+": "+ focusPoints + " actual "+ GetProductionFocus(focusPointID)
+			'difference
+			focusPoints = abs(GetProductionFocus(focusPointID) - focusPoints)
+			If focusPoints > 0 Then _effectiveFocusPointsDistribution :- diffPenalty * focusPoints
+		Next
+		'print _effectiveFocusPointsDistribution
 
 		return _effectiveFocusPoints
 	End Method
