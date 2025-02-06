@@ -227,11 +227,15 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'it is important to set the production priority according
-		'to the genre
-		value :* 1.0 + 0.4 * (effectiveFocusPointsMod - 0.4)
+		'to the genre, modifier can be negative and has maximum 1
+		'studio manager now gives actual feedback for distribution
+		'so you can prevent really bad results
+		'for perfect distribution 20% "bonus" is possible
+		value :* 1.0 + 0.4 * (effectiveFocusPointsMod - 0.5)
 
 		'more spent focus points "always" leads to a better product
-		value :+ 0.01 * productionConcept.GetEffectiveFocusPoints()
+		Local p:Float = productionConcept.GetEffectiveFocusPoints()
+		value :+ p * 0.099^p
 
 
 		Return value
@@ -950,7 +954,7 @@ endrem
 
 		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
 		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints(True)
-		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio(True)
+		effectiveFocusPointsMod = productionConcept.GetEffectiveFocusPointsDistribution(True)
 
 rem
 		TLogger.Log("TProduction.FixProductionValues()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
