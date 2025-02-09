@@ -511,6 +511,8 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 6500 * attributeMod
 
 			Case TVTPersonJob.GUEST
+				'TODO highest fame value should be used
+				'job experience as guest does not matter but overall job experience?
 
 				'attributes: 0 - 1.9
 				Local attributeMod:Float
@@ -550,6 +552,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 7000 * attributeMod
 		End Select
 
+		'TODO for guests the experience factor should work differently - fame much more important than experience as guest
 		Local fee:Float = feeByExperience(baseFee, dynamicFee * xpMod * sympathyMod * priceModifier, GetEffectiveJobExperiencePercentage(jobID))
 		'incorporate the block amount modifier
 		fee :* blocksMod
