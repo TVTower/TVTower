@@ -46,6 +46,8 @@ Function onPersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 End Function
 
 
+'problematic ambiguous usage of "insignificant"
+'insignificant from database do not gain experience but are not shown as "Praktikant"
 Function UpgradeInsignificantToCelebrity:Int(p:TPersonBase var, ignoreProductionJobs:Int = True)
 	'already done?
 	If p.IsCelebrity() Then Return False
@@ -641,19 +643,28 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		If Not PersonsGainExperienceForProgrammes Then Return
 
 		'gain experience for each done job
+		'TODO update not intuitive on game start for insignificant persons
+		'even if they are castable and have a role in an existing licence
+		'they gain experience only after the third production
+		'(Jonas Becker no job experience after producing a series...)
 		Local personID:Int = GetPerson().GetID()
 		Local creditedJobs:Int[]
 		For Local job:TPersonProductionJob = EachIn programmeData.GetCast()
 			If job.personID <> personID Then Continue
-			'already gained experience for this job (eg. multiple roles
-			'played by one actor)
-			If MathHelper.InIntArray(job.job, creditedJobs) Then Continue
+			'handle multiple jobFlags
+			For Local jobIndex:Int = 1 To TVTPersonJob.castCount
+			Local singleJob:Int = TVTPersonJob.GetCastJobAtIndex(jobIndex)
+				If (job.job & singleJob) > 0
+					'already gained experience for this job (eg. multiple roles
+					'played by one actor)
+					If MathHelper.InIntArray(singleJob, creditedJobs) Then Continue
 
-			creditedJobs :+ [job.job]
-			'print GetPerson().GetFullName() +" gains XP as " + TVTPersonJob.GetAsString(job.job) +": " + GetJobExperience(job.job) + " + " + GetNextJobExperienceGain(job.job, programmeData)
-			SetJobExperience(job.job, GetJobExperience(job.job) + GetNextJobExperienceGain(job.job, programmeData))
+					creditedJobs :+ [singleJob]
+					'print GetPerson().GetFullName() +" gains XP as " + TVTPersonJob.GetAsString(job.job) +": " + GetJobExperience(job.job) + " + " + GetNextJobExperienceGain(job.job, programmeData)
+					SetJobExperience(singleJob, GetJobExperience(singleJob) + GetNextJobExperienceGain(singleJob, programmeData))
+				EndIf
+			Next
 		Next
-		
 
 		'gain experience for genres
 		'print GetPerson().GetFullName() +" gains XP for genre " + TVTProgrammeGenre.GetAsString(programmeData.genre) +": " + GetGenreExperience(programmeData.genre) + " + " + GetNextGenreExperienceGain(programmeData.genre, programmeData)
