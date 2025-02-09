@@ -1140,12 +1140,18 @@ endrem
 private
 	'calculate and set normalized job and genre id depending on the attribute
 	Function normalizedIds(attributeID:Int, jobID:Int var, genreID:Int var)
+		'do not distinguish between actor and supporting actor for attributes
+		If jobID = TVTPersonJob.SUPPORTINGACTOR Then jobID = TVTPersonJob.ACTOR
+
 		Select attributeID
 			Case TVTPersonPersonalityAttribute.CHARISMA
 				genreID = 0
 			'Case TVTPersonPersonalityAttribute.APPEARANCE 'potentially genre cluster specific
 			Case TVTPersonPersonalityAttribute.FAME
 				'TODO job cluster specific
+				'actually when the job is guest, the maximum fame for all (other) jobs could/should be used
+				'but this information is not available here. Clustering would have to be done elsewhere
+				If jobID = TVTPersonJob.GUEST Then jobID = 0
 				genreID = 0
 			Default
 				'except for a few exceptions all attributes are job/genre independent
