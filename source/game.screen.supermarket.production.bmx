@@ -2541,6 +2541,13 @@ Type TGUICastListItem Extends TGUISelectListItem
 			'refresh displayJobID
 			displayJobID = -1
 			GetDisplayJobID()
+			'update selectJobId in order to show correct person attributes
+			Local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
+			Local target:TGUICastSlotList = TGUICastSlotList(triggerEvent.GetData().Get("target"))
+			If coord And Target
+				Local slotId:Int = target.GetSlotByCoord(coord)
+				selectJobId = target.GetSlotJobID(slotId)
+			EndIf
 			Return True
 		Else
 			Return False
@@ -2969,23 +2976,33 @@ Type TGUICastListItem Extends TGUISelectListItem
 			Local firstJobID:Int = -1
 			Local genreText:String = ""
 			If not showAmateurInformation
-'TODO not first job but "topJob" - getBestJob sometimes yields 0
-'				firstJobID = TPersonProductionData(person.GetProductionData()).GetBestJob()
+				Local jobExp:Int=1
+				'do not show first job but "topJob"
+				Local pd:TPersonProductionData=TPersonProductionData(person.GetProductionData())
+'				print person.getFullName() + " "+jobId +" "+pd.GetJobExperience(jobId)
 				For Local jobIndex:Int = 1 To TVTPersonJob.Count
-					Local jobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
-					If Not person.HasJob(jobID) Then Continue
-
-					firstJobID = jobID
-					Exit
+					Local tmpJobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
+					If Not person.HasJob(tmpJobID) Then Continue
+					Local exp:Int = pd.GetJobExperience(tmpJobID)
+					'polititions etc. stay keep their "job"
+					'TODO musicians are a problem, due to experience change they become actors....
+					If exp > jobExp Or (jobIndex > 128 And firstJobID <=128)
+						firstJobID = tmpJobID
+						jobExp = exp
+					EndIf
+'					Exit
 				Next
-
+'				print "   "+firstJobID+" "+ person.getJobsDone(firstJobID) +" "+jobExp
 				Local genre:Int = 0
 				if person.GetProductionData() 
 					genre = person.GetProductionData().GetTopGenre()
 				endif
 
-				If genre >= 0 Then genreText = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
-				If genreText Then genreText = "~q" + genreText+"~q-"
+				'show genre only for real cast jobs
+				If firstJobID < 256 And firstJobID <> TVTPersonJob.MUSICIAN
+					If genre >= 0 Then genreText = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
+					If genreText Then genreText = "~q" + genreText+"~q-"
+				EndIf
 			EndIf
 
 			If firstJobID >= 0
