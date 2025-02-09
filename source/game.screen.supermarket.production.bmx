@@ -2976,7 +2976,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 			Local firstJobID:Int = -1
 			Local genreText:String = ""
 			If not showAmateurInformation
-				Local jobExp:Int=1
+				'TODO extract "best job" to person
+				Local jobExp:Int=-1
 				'do not show first job but "topJob"
 				Local pd:TPersonProductionData=TPersonProductionData(person.GetProductionData())
 '				print person.getFullName() + " "+jobId +" "+pd.GetJobExperience(jobId)
@@ -2999,7 +3000,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 				endif
 
 				'show genre only for real cast jobs
-				If firstJobID < 256 And firstJobID <> TVTPersonJob.MUSICIAN
+				If firstJobID < 256 And firstJobID <> TVTPersonJob.MUSICIAN And firstJobID <> TVTPersonJob.GUEST
 					If genre >= 0 Then genreText = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
 					If genreText Then genreText = "~q" + genreText+"~q-"
 				EndIf
