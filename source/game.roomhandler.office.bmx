@@ -124,6 +124,9 @@ Type RoomHandler_Office extends TRoomHandler
 		archivedMessageUnreadCount = 0
 
 		For local message:TArchivedMessage = EachIn GetArchivedMessageCollection().entries.values()
+			'ignore messages of other players
+			if message.GetOwner() <> roomOwner then continue
+
 			archivedMessageTotalCount :+ 1
 			if not message.IsRead(roomOwner) then archivedMessageUnreadCount :+ 1
 		Next
@@ -163,15 +166,12 @@ Type RoomHandler_Office extends TRoomHandler
 		roomOwner = room.owner
 
 		local spriteLevel:int = 0
-		if GetInstance().archivedMessageTotalCount >  0 then spriteLevel = 1
-		if GetInstance().archivedMessageTotalCount > 10 then spriteLevel = 2
-		if GetInstance().archivedMessageTotalCount > 25 then spriteLevel = 3
-		if GetInstance().archivedMessageTotalCount > 50 then spriteLevel = 4
+		if GetInstance().archivedMessageUnreadCount >  0 then spriteLevel = 1
+		if GetInstance().archivedMessageUnreadCount >  5 then spriteLevel = 2
+		if GetInstance().archivedMessageUnreadCount > 10 then spriteLevel = 3
+		if GetInstance().archivedMessageUnreadCount > 25 then spriteLevel = 4
 		if spriteLevel > 0
 			GetSpriteFromRegistry("screen_office_messages"+spriteLevel).Draw(0,0)
-		endif
-		if GetInstance().archivedMessageUnreadCount > 0
-			GetSpriteFromRegistry("screen_office_messages_unread").Draw(0,0)
 		endif
 
 		'allowed for owner only - or with key
