@@ -21,12 +21,11 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 	'these maps act as filtered caches to speed up
 	'lookup times if a specific restriction is needed
-	'- TIntMaps for fast ID-lookups
-	'- TObjectList for fast random retrieval
-	'- count for easy counting (not available in TIntMap)
-	Field filteredIDMaps:TIntMap[5] {nosave}
 	Field filteredLists:TObjectList[5] {nosave}
-	Field filteredCounts:Int[5] {nosave}
+	Field filterMutexes:TMutex[5] {nosave}
+	Field filteredCacheValid:Int[5] {nosave}
+	
+	Global filters:SPersonBaseFilter[5]
 	
 	'Indices in the cache arrays
 	Const FILTER_INSIGNIFICANT:Int = 0
@@ -42,15 +41,29 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		If Not TPersonBaseCollection(_instance) Then _instance = New TPersonBaseCollection
 		Return TPersonBaseCollection(_instance)
 	End Function
+	
+	
+	Method New()
+		For Local i:Int = 0 Until filterMutexes.length
+			filterMutexes[i] = CreateMutex()
+			filteredLists[i] = New TObjectList
+		Next
+
+
+		' setup filters: params: index, celebrity, insignificant, castable
+		filters[FILTER_INSIGNIFICANT] = New SPersonBaseFilter(0, 1, 0, -1)
+		filters[FILTER_CELEBRITY] = New SPersonBaseFilter(1, 0, 1, -1)
+		filters[FILTER_CASTABLE] = New SPersonBaseFilter(2, -1, -1, 1)
+		filters[FILTER_CASTABLE_INSIGNIFICANT] = New SPersonBaseFilter(3, 1, 0, 1)
+		filters[FILTER_CASTABLE_CELEBRITY] = New SPersonBaseFilter(4, 0, 1, 1)
+	End Method
 
 
 	Method Initialize:TPersonBaseCollection()
 		Super.Initialize()
 
-		For Local i:Int = 0 Until filteredIDMaps.length
-			If filteredIDMaps[i] Then filteredIDMaps[i].Clear()
+		For Local i:Int = 0 Until FILTER_COUNT
 			If filteredLists[i] Then filteredLists[i].Clear()
-			filteredCounts[i] = 0
 		Next
 
 		Return Self
@@ -86,90 +99,47 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		'avoid others of same name
 		GetPersonGenerator().ProtectDataset(pg)
 
-		GetPersonBaseCollection().Add(person)
+		' add it to the collection
+		Add(person)
 
 		Return person
 	End Method
 	
 	
-	Method _UpdateFiltered:Int(filterIndex:Int=-1, force:Int=False)
-		If filterIndex < 0 Or filterIndex >= filteredIDMaps.length Then Return False
+	'refresh contents of caches just containing persons suiting to
+	'specific filters ("castable", "only insignificants")
+	Method _UpdateFiltered:Int(filterIndex:Int=-1)
+		If filterIndex < 0 Or filterIndex >= FILTER_COUNT Then Return False
 
-		If force Or Not filteredIDMaps[filterIndex]
-			If Not filteredIDMaps[filterIndex]
-				filteredIDMaps[filterIndex] = New TIntMap
-			Else
-				filteredIDMaps[filterIndex].Clear()
-			EndIf
-			If Not filteredLists[filterIndex]
-				filteredLists[filterIndex] = New TObjectList
-			Else
-				filteredLists[filterIndex].Clear()
-			EndIf
+		'protect against concurrent access
+		LockMutex(filterMutexes[filterIndex])
 
-			Local insignificant:Int, celebrity:Int, castable:Int
-			_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
+		filteredLists[filterIndex].Clear()
 
-			'store in variable so we skip having an array lookup
-			'during person iteration
-			Local map:TIntMap = filteredIDMaps[filterIndex]
-			Local list:TObjectList = filteredLists[filterIndex]
-			Local count:Int = 0
-
+		'store in variable so we skip having an array lookup
+		'during person iteration
+		Local list:TObjectList = filteredLists[filterIndex]
+		Local filter:SPersonBaseFilter = filters[filterIndex]
 'If insignificant = 0 Then Print "====== Update unfiltered ======"
 'print "insignificant=" + insignificant + "   celebrity="+celebrity + "   castable="+castable
-			For Local p:TPersonBase = EachIn entries.Values()
-				'skip non-suiting ones
-				If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, -1) 
+		For Local p:TPersonBase = EachIn entries.Values()
+			'skip non-suiting ones
+			If Not _PersonMeetsRequirements(p, filter.insignificant, filter.celebrity, filter.castable, -1) 
 '					If p.IsFictional() then Print p.GetFullName() + " FAIL"
-					Continue
+				Continue
 '				Else
 '					If p.IsFictional() then Print p.GetFullName() + " OK"
-				EndIf
+			EndIf
 
-				map.Insert(p.GetID(), p)
-				list.AddLast(p)
-				count :+ 1
-			Next
-			
-			filteredCounts[filterIndex] = count
-		EndIf
+			list.AddLast(p)
+		Next
+		
+		filteredCacheValid[filterIndex] = True
+
+		UnLockMutex(filterMutexes[filterIndex])
 
 		Return True
 	End Method
-	
-	
-	Function _FillPersonMeetsRequirementsVariables(filterIndex:Int, insignificant:Int Var, celebrity:Int Var, castable:Int Var)
-		'adders: 0 only if not of type
-		'        1 only if of type
-		'       -1 ignore
-		Select filterIndex
-			Case FILTER_INSIGNIFICANT
-				insignificant = 1
-				celebrity = 0
-				castable = -1
-			Case FILTER_CELEBRITY
-				insignificant = 0
-				celebrity = 1
-				castable = -1
-			Case FILTER_CASTABLE
-				insignificant = -1
-				celebrity = -1
-				castable = 1
-			Case FILTER_CASTABLE_INSIGNIFICANT
-				insignificant = 1
-				celebrity = 0
-				castable = 1
-			Case FILTER_CASTABLE_CELEBRITY
-				insignificant = 0
-				celebrity = 1
-				castable = 1
-			Default
-				insignificant = -1
-				celebrity = -1
-				castable = -1
-		End Select
-	End Function
 	
 
 	'returns False for persons _NOT_ having the desired properties.
@@ -192,12 +162,15 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 		Local result:TPersonBase[] = New TPersonBase[10]
 		Local found:Int = 0
-		Local insignificant:Int=-1, celebrity:Int=-1, castable:Int=-1
-		_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
-		'undefined job-gender 0 corrensponds to filter value -1
+		Local filter:SPersonBaseFilter
+		if filterIndex >= 0 and filterIndex <= filters.length
+			filter = filters[filterIndex]
+		EndIf
+
+		'undefined job-gender 0 corresponds to filter value -1
 		If gender = 0 then gender = -1
 		For Local p:TPersonBase = EachIn list
-			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender, alive, countryCode) Then Continue
+			If Not _PersonMeetsRequirements(p, filter.insignificant, filter.celebrity, filter.castable, gender, alive, countryCode) Then Continue
 			If onlyFictional And Not p.IsFictional() Then Continue
 			If onlyBookable And Not p.IsBookable() Then Continue
 			If productionJob > 0 And Not p.HasJob(productionJob) Then Continue
@@ -219,11 +192,13 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 		Local result:TPersonBase[] = New TPersonBase[10]
 		Local found:Int = 0
-		Local insignificant:Int=-1, celebrity:Int=-1, castable:Int=-1
-		_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
+		Local filter:SPersonBaseFilter
+		if filterIndex >= 0 and filterIndex <= filters.length
+			filter = filters[filterIndex]
+		EndIf
 
 		For Local p:TPersonBase = EachIn map.Values()
-			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender, alive, countryCode) Then Continue
+			If Not _PersonMeetsRequirements(p, filter.insignificant, filter.celebrity, filter.castable, gender, alive, countryCode) Then Continue
 			If onlyFictional And Not p.IsFictional() Then Continue
 			If onlyBookable And Not p.IsBookable() Then Continue
 			If productionJob > 0 And Not p.HasJob(productionJob) Then Continue
@@ -245,11 +220,13 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 		Local result:TPersonBase[] = New TPersonBase[Min(10, array.length)]
 		Local found:Int = 0
-		Local insignificant:Int=-1, celebrity:Int=-1, castable:Int=-1
-		_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
+		Local filter:SPersonBaseFilter
+		if filterIndex >= 0 and filterIndex <= filters.length
+			filter = filters[filterIndex]
+		EndIf
 
 		For Local p:TPersonBase = EachIn array
-			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender, alive, countryCode) Then Continue
+			If Not _PersonMeetsRequirements(p, filter.insignificant, filter.celebrity, filter.castable, gender, alive, countryCode) Then Continue
 			If onlyFictional And Not p.IsFictional() Then Continue
 			If onlyBookable And Not p.IsBookable() Then Continue
 			If productionJob > 0 And Not p.HasJob(productionJob) Then Continue
@@ -266,22 +243,17 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Function
 
 
-	Method GetFilteredMap:TIntMap(filterIndex:Int=-1)
-		If Not _UpdateFiltered(filterIndex) Then Return Null
-
-		Return filteredIDMaps[filterIndex]
-	End Method
-
-	
 	Method GetFilteredList:TObjectList(filterIndex:Int=-1)
-		If Not _UpdateFiltered(filterIndex) Then Return Null
+		If filterIndex < 0 or filterIndex >= FILTER_COUNT Then Return Null
+		If Not filteredCacheValid[filterIndex] then _UpdateFiltered(filterIndex)
 
 		Return filteredLists[filterIndex]
 	End Method
 	
 	
 	Method GetFilteredCount:Int(filterIndex:Int=-1)
-		If Not _UpdateFiltered(filterIndex) Then Return Null
+		If filterIndex < 0 or filterIndex >= FILTER_COUNT Then Return Null
+		If Not filteredCacheValid[filterIndex] then _UpdateFiltered(filterIndex)
 
 		Return filteredLists[filterIndex].Count()
 	End Method
@@ -305,26 +277,6 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 	Method GetCastableCelebritiesList:TObjectList()
 		Return GetFilteredList(FILTER_CASTABLE_CELEBRITY)
-	End Method
-
-	Method GetInsignificant:TPersonBase(ID:Int)
-		Return TPersonBase( GetFilteredMap(FILTER_INSIGNIFICANT).ValueForKey(ID) )
-	End Method
-
-	Method GetCelebrity:TPersonBase(ID:Int)
-		Return TPersonBase( GetFilteredMap(FILTER_CELEBRITY).ValueForKey(ID) )
-	End Method
-
-	Method GetCastable:TPersonBase(ID:Int)
-		Return TPersonBase( GetFilteredMap(FILTER_CASTABLE).ValueForKey(ID) )
-	End Method
-
-	Method GetCastableCelebrity:TPersonBase(ID:Int)
-		Return TPersonBase( GetFilteredMap(FILTER_CASTABLE_CELEBRITY).ValueForKey(ID) )
-	End Method
-
-	Method GetCastableInsignificant:TPersonBase(ID:Int)
-		Return TPersonBase( GetFilteredMap(FILTER_CASTABLE_INSIGNIFICANT).ValueForKey(ID) )
 	End Method
 
 	
@@ -514,9 +466,16 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 
 	Method Remove:Int(obj:TGameObject)
-		If Super.Remove(obj)
+		Local p:TPersonBase = TPersonBase(obj)
+		If Not p Then Return False
+
+		If Super.Remove(p)
 			For Local index:Int = 0 Until FILTER_COUNT
-				filteredIDMaps[index] = null
+				If Not filters[index].PersonMeetsCriterias(p) Then Continue
+
+				LockMutex(filterMutexes[index])
+					filteredLists[index].Remove(p)
+				UnLockMutex(filterMutexes[index])
 			Next
 			Return True
 		EndIf
@@ -530,10 +489,16 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		If Not p Then Return False
 
 		Super.Add(obj)
-		
-		Local insignificant:Int, celebrity:Int, castable:Int
+
+		'mark all affected caches invalid 
 		For Local index:Int = 0 Until FILTER_COUNT
-			filteredIDMaps[index] = null
+			If Not filters[index].PersonMeetsCriterias(p) Then Continue
+
+			LockMutex(filterMutexes[index])
+				If not filteredLists[index].Contains(p)
+					filteredLists[index].AddLast(p)
+				EndIf
+			UnLockMutex(filterMutexes[index])
 		Next
 		
 		Return True
@@ -546,8 +511,8 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		If Not p1 Then Return -1
 		If Not p2 Then Return 1
 
-		Local pName1:String = p1.GetFullName().ToLower()
-		Local pName2:String = p2.GetFullName().ToLower()
+		Local pName1:String = p1.GetSortableName()
+		Local pName2:String = p2.GetSortableName()
 
         If pName1 > pName2
 			Return 1
@@ -576,6 +541,32 @@ End Function
 
 
 
+Struct SPersonBaseFilter
+	'index when stored in an array
+	Field index:Int
+	Field celebrity:Int = -1
+	Field insignificant:Int = -1
+	Field castable:Int = -1
+	
+	Method New(index:Int, celebrity:Int, insignificant:Int, castable:Int)
+		self.index = index
+		self.celebrity = celebrity
+		self.insignificant = insignificant
+		self.castable = castable
+	End Method
+	
+	
+	Method PersonMeetsCriterias:Int(p:TPersonBase)
+		If not p Then Return False
+		If insignificant <> -1 And insignificant <> p.IsInsignificant() Then Return False
+		If celebrity <> -1 And celebrity <> p.IsCelebrity() Then Return False
+		If castable <> -1 And castable <> p.IsCastable() Then Return False
+
+		Return True
+	End Method
+End Struct
+
+
 
 Type TPersonBase Extends TGameObject
 	Field lastName:String = ""
@@ -596,6 +587,7 @@ Type TPersonBase Extends TGameObject
 	'bitmask containing jobs people are "interested" in (eg when
 	'applying as amateur)
 	Field _preferredJobs:Int
+	
 
 	'storage of celebrity, production, ... data sets
 	Field data:TMap
@@ -603,6 +595,8 @@ Type TPersonBase Extends TGameObject
 	'cache for often used Data
 	Field _personalityData:TPersonPersonalityBaseData {nosave}
 	Field _productionData:TPersonProductionBaseData {nosave}
+	'cache for a lower case name of the person used when sorting persons
+	Field _sortableName:String {nosave}
 	
 	Global dataKeyPersonality:String = "personality"
 	Global dataKeyProduction:String = "production"
@@ -679,6 +673,15 @@ Type TPersonBase Extends TGameObject
 		Return sb.ToString()
 	End Method
 
+
+	'a lowe case variant of the full name (without title) which
+	'allows a direct sorting without doing "toLower()" each time
+	Method GetSortableName:String()
+		If not self._sortableName 
+			self._sortableName = GetFullName(False).ToLower()
+		EndIf
+		Return self._sortableName
+	End Method
 
 	Method GetTitle:String()
 		Return title
