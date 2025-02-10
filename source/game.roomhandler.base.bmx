@@ -9,8 +9,6 @@ Import "common.misc.screen.bmx"
 
 Type TRoomHandlerCollection
 	Field handlers:TStringMap = new TStringMap
-	'instead of a temporary variable
-	Global currentHandler:TRoomHandler
 
 	Global _instance:TRoomHandlerCollection
 	Global _eventListeners:TEventListenerBase[]
@@ -135,14 +133,14 @@ Type TRoomHandlerCollection
 		local room:TRoomBase = TRoomBase( triggerEvent.GetReceiver())
 		if not room then return 0
 
-		currentHandler = GetInstance().GetHandler(room.GetName())
-		if not currentHandler then return False
+		Local roomHandler:TRoomHandler = GetInstance().GetHandler(room.GetName())
+		if not roomHandler then return False
 
 		Select triggerEvent.GetEventKey()
 			case GameEventKeys.Figure_OnTryLeaveRoom
-				currentHandler.onTryLeaveRoom( triggerEvent )
+				roomHandler.onTryLeaveRoom( triggerEvent )
 			case GameEventKeys.Figure_OnForcefullyLeaveRoom
-				currentHandler.onForcefullyLeaveRoom( triggerEvent )
+				roomHandler.onForcefullyLeaveRoom( triggerEvent )
 		End Select
 	End Function
 
@@ -151,24 +149,24 @@ Type TRoomHandlerCollection
 		local room:TRoomBase = TRoomBase( triggerEvent.GetSender())
 		if not room then return 0
 
-		currentHandler = GetInstance().GetHandler(room.GetName())
-		if not currentHandler then return False
+		Local roomHandler:TRoomHandler = GetInstance().GetHandler(room.GetName())
+		if not roomHandler then return False
 
 		Select triggerEvent.GetEventKey()
 			case GameEventKeys.Room_OnUpdate
 				if KeyManager.IsHit(KEY_ESCAPE)
-					if currentHandler.AbortScreenActions()
+					if roomHandler.AbortScreenActions()
 						KeyManager.ResetKey(KEY_ESCAPE)
 						KeyManager.BlockKey(KEY_ESCAPE, 150)
 					endif
 				endif
-				currentHandler.onUpdateRoom( triggerEvent )
+				roomHandler.onUpdateRoom( triggerEvent )
 			case GameEventKeys.Room_OnDraw
-				currentHandler.onDrawRoom( triggerEvent )
+				roomHandler.onDrawRoom( triggerEvent )
 			case GameEventKeys.Room_OnBeginEnter
-				currentHandler.onEnterRoom( triggerEvent )
+				roomHandler.onEnterRoom( triggerEvent )
 			case GameEventKeys.Room_OnFinishLeave
-				currentHandler.onLeaveRoom( triggerEvent )
+				roomHandler.onLeaveRoom( triggerEvent )
 		End Select
 	End Function
 End Type
