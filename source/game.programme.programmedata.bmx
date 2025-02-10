@@ -1994,47 +1994,49 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method Update:Int()
-		?debug
-		print self.GetTitle() + "  Update(). State="+state + " (" + TVTProgrammeState.GetAsString(state) +")"
-		?
 		Select state
 			Case TVTProgrammeState.NONE
 				'repair old programme (finished before game start year)
 				'and loop through all states (prod - cinema - release)
 				If isReleased()
-					?debug
-					print "  from NONE. isReleased. production -> cinema -> released"
-					?
+					'?debug
+					'writestdout self.GetTitle() + "  Update(). From NONE. isReleased. production -> cinema -> released~n"
+					'?
 					SetState(TVTProgrammeState.IN_PRODUCTION)
 					SetState(TVTProgrammeState.IN_CINEMA)
 					SetState(TVTProgrammeState.RELEASED)
 				ElseIf isInCinema()
-					?debug
-					print "  from NONE. isInCinema. production -> cinema"
-					?
+					'?debug
+					'writestdout self.GetTitle() + "  Update(). From NONE. isInCinema. production -> cinema~n"
+					'?
 					SetState(TVTProgrammeState.IN_PRODUCTION)
 					SetState(TVTProgrammeState.IN_CINEMA)
 				ElseIf isInProduction()
-					?debug
-					print "  from NONE. isInProduction. production"
-					?
+					'?debug
+					'writestdout self.GetTitle() + "  Update(). From NONE. isInProduction. production~n"
+					'?
 					SetState(TVTProgrammeState.IN_PRODUCTION)
 				EndIf
 			Case TVTProgrammeState.IN_PRODUCTION
 				If isInCinema()
-					?debug
-					print "  from PRODUCTION. isInCinema -> cinema"
-					?
+					'?debug
+					'writestdout self.GetTitle() + "  Update(). From PRODUCTION. isInCinema -> cinema~n"
+					'?
 					SetState(TVTProgrammeState.IN_CINEMA)
 				'some programme do not run in cinema
 				ElseIf isReleased()
-					?debug
-					print "  from PRODUCTION. isInCinema -> released"
-					?
+					'?debug
+					'writestdout self.GetTitle() + "  Update(). From PRODUCTION. isInCinema -> released~n"
+					'?
 					SetState(TVTProgrammeState.RELEASED)
 				EndIf
 			Case TVTProgrammeState.IN_CINEMA
-				If isReleased() Then SetState(TVTProgrammeState.RELEASED)
+				If isReleased() 
+					'?debug
+					'writestdout self.GetTitle() + "  Update(). From CINEMA. isReleased -> released~n"
+					'?
+					SetState(TVTProgrammeState.RELEASED)
+				EndIf
 		End Select
 	End Method
 
