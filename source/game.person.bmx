@@ -46,6 +46,8 @@ Function onPersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 End Function
 
 
+'problematic ambiguous usage of "insignificant"
+'insignificant from database do not gain experience but are not shown as "Praktikant"
 Function UpgradeInsignificantToCelebrity:Int(p:TPersonBase var, ignoreProductionJobs:Int = True)
 	'already done?
 	If p.IsCelebrity() Then Return False
@@ -254,7 +256,7 @@ Type TXPContainer_Job extends TXPContainer
 
 
 
-
+'TODO gain should be influenced by affinity
 	Method GetNextGain:Int(key:Int, extra:object)
 		local programmeData:TProgrammeData = TProgrammeData(extra)
 		if not programmeData then return 0
@@ -294,6 +296,7 @@ Type TXPContainer_Genre extends TXPContainer
 	End Method
 
 
+'TODO gain should be influenced by affinity
 	Method GetNextGain:Int(key:Int, extra:object)
 		local programmeData:TProgrammeData = TProgrammeData(extra)
 		if not programmeData then return 0
@@ -401,21 +404,28 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		Local baseFee:Int = 0
 		Local dynamicFee:Int = 0
 
+		'TODO maybe later include genre?
+		Local genre:Int = 0
+		Local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
+		Local power:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER, jobID, genre)
+		Local humor:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR, jobID, genre)
+		Local charisma:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA, jobID, genre)
+		Local appearance:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, genre)
+		Local fame:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genre)
+		Local scandalizing:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, genre)
 		Select jobID
 			Case TVTPersonJob.ACTOR,..
 			     TVTPersonJob.SUPPORTINGACTOR, ..
 			     TVTPersonJob.HOST
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
 				'attributes: 0 - 4.0
 				Local attributeMod:Float
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				attributeMod :+ power
+				attributeMod :+ humor
+				attributeMod :+ charisma
+				attributeMod :+ appearance
 				'attributes: 0 - 8.0
-				attributeMod :* 1.0 + (0.8 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
+				attributeMod :* 1.0 + (0.8 * fame + 0.2 * scandalizing)
 
 				'sympathy: modify by up to 25% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
@@ -436,17 +446,15 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 			Case TVTPersonJob.DIRECTOR,..
 			     TVTPersonJob.SCRIPTWRITER
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
 				'attributes: 0 - 6.0
 				Local attributeMod:Float
-				attributeMod :+ 2.0 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
-				attributeMod :+ 1.0 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 0.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				attributeMod :+ 2.0 * power
+				attributeMod :+ 1.0 * humor
+				attributeMod :+ 1.50 * charisma
+				attributeMod :+ 0.75 * appearance
 				'attributes: 0 - 11.2
-				attributeMod :* 1.0 + (1.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
+				attributeMod :* 1.0 + (1.1 * fame + 0.1 * scandalizing)
 
 				'sympathy: modify by up to 25% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
@@ -464,16 +472,14 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 			Case TVTPersonJob.MUSICIAN
 
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
-
-				Local attributeMod:Float
 				'attributes: 0 - 6.0
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
-				attributeMod :+ 0.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 1.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				Local attributeMod:Float
+				attributeMod :+ 1.50 * power
+				attributeMod :+ 0.75 * humor
+				attributeMod :+ 1.75 * charisma
+				attributeMod :+ 1.50 * appearance
 				'attributes: 0 - 14.25  (alternative: "* 1-3")
-				attributeMod :* 1.0 + (1.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
+				attributeMod :* 1.0 + (1.5 * fame + 0.5 * scandalizing)
 
 				'sympathy: modify by up to 30% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.30 * p.GetChannelSympathy(channel)
@@ -485,17 +491,15 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 24500 * attributeMod
 
 			Case TVTPersonJob.REPORTER
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
-				Local attributeMod:Float
 				'attributes: 0 - 6.0
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 2.00 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				Local attributeMod:Float
+				attributeMod :+ 1.50 * power
+				attributeMod :+ 0.50 * humor
+				attributeMod :+ 2.00 * charisma
+				attributeMod :+ 0.50 * appearance
 				'attributes: 0 - 6.75  (alternative: "* 1-1.5")
-				attributeMod :* 1.0 + (0.4 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
+				attributeMod :* 1.0 + (0.4 * fame + 0.1 * scandalizing)
 
 				'sympathy: modify by up to 50% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.50 * p.GetChannelSympathy(channel)
@@ -507,16 +511,16 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 6500 * attributeMod
 
 			Case TVTPersonJob.GUEST
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
+				'TODO highest fame value should be used
+				'job experience as guest does not matter but overall job experience?
 
-				Local attributeMod:Float
 				'attributes: 0 - 1.9
-				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				Local attributeMod:Float
+				attributeMod :+ 0.60 * power
+				attributeMod :+ 0.60 * charisma
+				attributeMod :+ 0.50 * appearance
 				'attributes: 0 - 5.95  (alternative: "* 1-3.5")
-				attributeMod :* 1.0 + (2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
+				attributeMod :* 1.0 + (2 * fame + 0.5 * scandalizing)
 
 				'sympathy: modify by up to 50% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.5 * p.GetChannelSympathy(channel)
@@ -527,18 +531,16 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				baseFee = 1500
 				dynamicFee = 6000 * attributeMod
 			Default
-				
-				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
 				'print "FEE for jobID="+jobID+" not defined."
 				'dynamic fee: 0 - 380
 				Local attributeMod:Float
 				'attributes: 0 - 2.1
-				attributeMod :+ 0.30 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				attributeMod :+ 0.30 * humor
+				attributeMod :+ 0.50 * charisma
+				attributeMod :+ 0.60 * appearance
 				'attributes: 0 - 3.22  (alternative: "* 1-2.3")
-				attributeMod :* 1.0 + (1.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
+				attributeMod :* 1.0 + (1.1 * fame + 0.2 * scandalizing)
 
 				'modify by up to 25% ...
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
@@ -550,6 +552,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 7000 * attributeMod
 		End Select
 
+		'TODO for guests the experience factor should work differently - fame much more important than experience as guest
 		Local fee:Float = feeByExperience(baseFee, dynamicFee * xpMod * sympathyMod * priceModifier, GetEffectiveJobExperiencePercentage(jobID))
 		'incorporate the block amount modifier
 		fee :* blocksMod
@@ -643,19 +646,28 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		If Not PersonsGainExperienceForProgrammes Then Return
 
 		'gain experience for each done job
+		'TODO update not intuitive on game start for insignificant persons
+		'even if they are castable and have a role in an existing licence
+		'they gain experience only after the third production
+		'(Jonas Becker no job experience after producing a series...)
 		Local personID:Int = GetPerson().GetID()
 		Local creditedJobs:Int[]
 		For Local job:TPersonProductionJob = EachIn programmeData.GetCast()
 			If job.personID <> personID Then Continue
-			'already gained experience for this job (eg. multiple roles
-			'played by one actor)
-			If MathHelper.InIntArray(job.job, creditedJobs) Then Continue
+			'handle multiple jobFlags
+			For Local jobIndex:Int = 1 To TVTPersonJob.castCount
+			Local singleJob:Int = TVTPersonJob.GetCastJobAtIndex(jobIndex)
+				If (job.job & singleJob) > 0
+					'already gained experience for this job (eg. multiple roles
+					'played by one actor)
+					If MathHelper.InIntArray(singleJob, creditedJobs) Then Continue
 
-			creditedJobs :+ [job.job]
-			'print GetPerson().GetFullName() +" gains XP as " + TVTPersonJob.GetAsString(job.job) +": " + GetJobExperience(job.job) + " + " + GetNextJobExperienceGain(job.job, programmeData)
-			SetJobExperience(job.job, GetJobExperience(job.job) + GetNextJobExperienceGain(job.job, programmeData))
+					creditedJobs :+ [singleJob]
+					'print GetPerson().GetFullName() +" gains XP as " + TVTPersonJob.GetAsString(job.job) +": " + GetJobExperience(job.job) + " + " + GetNextJobExperienceGain(job.job, programmeData)
+					SetJobExperience(singleJob, GetJobExperience(singleJob) + GetNextJobExperienceGain(singleJob, programmeData))
+				EndIf
+			Next
 		Next
-		
 
 		'gain experience for genres
 		'print GetPerson().GetFullName() +" gains XP for genre " + TVTProgrammeGenre.GetAsString(programmeData.genre) +": " + GetGenreExperience(programmeData.genre) + " + " + GetNextGenreExperienceGain(programmeData.genre, programmeData)
@@ -876,9 +888,14 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 			EndIf
 		EndIf
 
+		'TODO determine person's main job for fame
+		'same job should be used for displaying in supermarket AND job selection combobox
+		Local mainJob:Int = 0
+		
 		'the more "fame" a person has, the more likely it has some
 		'popularity
-		local fame:Float = GetAttributeValue(TVTPersonPersonalityAttribute.FAME)
+		'TODO overall fame, use highest(weighted...)
+		local fame:Float = GetAttributeValue(TVTPersonPersonalityAttribute.FAME, mainJob, 0)
 
 		if popularityValue = -1000 then popularityValue = BiasedRandRange(-10, 20, fame)
 		popularityValue = Min(Max(popularityValue, -50), 100)
