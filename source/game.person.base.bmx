@@ -1445,6 +1445,7 @@ public
 	End Method
 
 
+	'TODO set affinity for job and genre separately
 	Method SetAffinity(value:Float, jobID:Int = 0, genreID:Int = 0)
 		local a:TRangedFloat = GetAffinityObject(jobID, genreID)
 		If Not a 
@@ -1463,6 +1464,8 @@ public
 		If genreID <= 0 and jobID <= 0
 			Return affinityPool.Get()
 		EndIf
+
+		'TODO no combined attribute - simply average of job and genre affinity
 
 		'do we have a individual value?
 		Local combinedAttribute:TRangedFloat = GetAffinityObject(jobID, genreID)
