@@ -24,7 +24,8 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	Global hoveredGuiAchievement:TGUIAchievementListItem
 
 	Global LS_office_achievements:TLowerString = TLowerString.Create("office_achievements")
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_OfficeAchievements
 
 	Const SHOW_ALL:int = 0
@@ -44,21 +45,32 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_achievements")
 		if not screen then return False
 
-		'=== CREATE ELEMENTS ===
+		' === CREATE ELEMENTS ===
 		InitGUIElements()
 
 
-		'=== EVENTS ===
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
-		'=== register event listeners
-		'to reload achievement list when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
 
-		'to update/draw the screen
-		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
+		' register new global listeners
+		' to reload achievement list when entering a screen
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+
+
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
+
+
+		'(re-)localize content
+		SetLanguage()
 	End Method
 
 
@@ -79,9 +91,9 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
-		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		GetInstance().roomOwner = room.owner
 
@@ -89,9 +101,9 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	End Function
 
 
-	Function onDraw:int( triggerEvent:TEventBase )
-		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onDrawScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		GetInstance().roomOwner = room.owner
 

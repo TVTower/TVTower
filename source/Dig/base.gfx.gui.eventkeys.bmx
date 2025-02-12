@@ -47,9 +47,6 @@ Type TGUIEventKeys
 	'base.gfx.gui.slider.bmx
 	Field GUISlider_SetValueByMouse:TEventKey = GetEventKey("GUISlider.SetValueByMouse", True)	
 
-	'base.gfx.gui.button.bmx
-	Field GUIButton_OnClick:TEventKey = GetEventKey("GUIButton.OnClick", True)	
-
 	'base.gfx.gui.checkbox.bmx
 	Field GUICheckbox_OnSetChecked:TEventKey = GetEventKey("GUICheckbox.OnSetChecked", True)	
 

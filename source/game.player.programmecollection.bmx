@@ -34,8 +34,8 @@ Type TPlayerProgrammeCollectionCollection
 
 		'=== register event listeners
 		'informing _old_ instances of the various roomhandlers
-		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "StationMap.onRecalculateAudienceSum", onRecalculateStationMapAudienceSum ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.SaveGame_OnLoad, onSaveGameLoad ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.StationMap_OnRecalculateAudienceSum, onRecalculateStationMapAudienceSum ) ]
 	End Method
 
 

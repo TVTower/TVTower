@@ -430,7 +430,7 @@ Type TFigure extends TFigureBase
 	End Method
 
 
-	Method GetGreetingTypeForFigure:int(figure:TFigure)
+	Method GetGreetingTypeForFigure:int(figure:TFigureBase)
 		'0 = grrLeft
 		'1 = hiLeft
 		'2 = ?!left
@@ -447,7 +447,12 @@ Type TFigure extends TFigureBase
 
 
 	Method GreetPeopleOnSameFloor()
-		For Local Figure:TFigure = EachIn GetFigureCollection() '.GetEntriesID().Values()
+		Local nowBuildingTime:Long = GetBuildingTime().GetTimeGone()
+
+		Local figures:TFigureBase[] = GetFigureCollection().GetFigures()
+		For Local i:Int = 0 until figures.length
+			Local Figure:TFigureBase = figures[i]
+
 			'skip other figures
 			if self = Figure then continue
 			'skip if both can't see each other to me
@@ -459,27 +464,29 @@ Type TFigure extends TFigureBase
 			'if the greeting type differs
 			'- or enough time has gone for another greet
 			'- or another figure gets greeted
-			if greetType <> lastGreetType or GetBuildingTime().GetTimeGone() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
+			if greetType <> lastGreetType or nowBuildingTime - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
 				lastGreetType = greetType
 				lastGreetFigureID = figure.id
 
-				lastGreetTime = GetBuildingTime().GetTimeGone()
+				lastGreetTime = nowBuildingTime
 			endif
 
 			'show greet for a maximum time of "showGreetTime"
-			if GetBuildingTime().GetTimeGone() - lastGreetTime < greetTime
-				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, GetBuildingTime().GetTimeGone() - lastGreetTime), greetTime)
+			if nowBuildingTime - lastGreetTime < greetTime
+				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, nowBuildingTime - lastGreetTime), greetTime)
 				local oldAlpha:float = GetAlpha()
-				SetAlpha Float(TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, GetBuildingTime().GetTimeGone() - lastGreetTime), 0.5*greetTime))
+				SetAlpha Float(TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, nowBuildingTime - lastGreetTime), 0.5*greetTime))
+
+				Local screenRect:TRectangle = GetScreenRect()
 				'subtract half width from position - figure is drawn centered
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()
 					'draw the "to the right" balloon a bit lower (so both are better visible)
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenRect().GetX() + area.GetW()/2 -2), int(GetScreenRect().GetY() - sprite.area.GetH() + 2), greetType, ALIGN_LEFT_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(screenRect.GetX() + area.GetW()/2 -2), int(screenRect.GetY() - sprite.area.GetH() + 2), greetType, ALIGN_LEFT_CENTER, scale)
 				'figure left of me
 				else
 					greetType :+ 3
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenRect().GetX() - area.GetW()/2 +2), int(GetScreenRect().GetY() - sprite.area.GetH()), greetType, ALIGN_RIGHT_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(screenRect.GetX() - area.GetW()/2 +2), int(screenRect.GetY() - sprite.area.GetH()), greetType, ALIGN_RIGHT_CENTER, scale)
 				endif
 				SetAlpha oldAlpha
 			endif
@@ -717,9 +724,9 @@ Type TFigure extends TFigureBase
 	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
 		'set time of start
 		changingRoomBuildingTimeStart = GetBuildingTime().GetTimeGone()
-		changingRoomBuildingTimeEnd = GetBuildingTime().GetTimeGone() + changingRoomTime
+		changingRoomBuildingTimeEnd = changingRoomBuildingTimeStart + changingRoomTime
 		changingRoomRealTimeStart = Time.GetTimeGone()
-		changingRoomRealTimeEnd = Time.GetTimeGone() + changingRoomTime
+		changingRoomRealTimeEnd = changingRoomRealTimeStart + changingRoomTime
 		'inform what the figure does now
 		currentAction = ACTION_ENTERING
 

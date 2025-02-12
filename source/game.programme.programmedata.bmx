@@ -52,7 +52,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction( "App.onSetLanguage", onSetLanguage ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.App_OnSetLanguage, onSetLanguage ) ]
 	End Method
 
 

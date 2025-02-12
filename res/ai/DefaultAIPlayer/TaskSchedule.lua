@@ -1182,7 +1182,7 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 					local lastNewsDay, lastNewsHour = FixDayAndHour(previousDay, previousHour - i)
 					previousNewsBroadcastAttraction = self.Player.Stats.BroadcastStatistics:GetAttraction(lastNewsDay, lastNewsHour, TVT.Constants.BroadcastMaterialType.NEWSSHOW)
 					if previousNewsBroadcastAttraction ~= nil then
-						previousNewsBroadcastAttraction = TVT.CopyBasicAudienceAttractionString(previousNewsBroadcastAttraction, tostring(1.0 - i*0.1))
+						previousNewsBroadcastAttraction = TVT.CopyBasicAudienceAttraction(previousNewsBroadcastAttraction, 1.0 - i*0.1)
 						break
 					end
 				end
