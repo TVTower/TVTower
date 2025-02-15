@@ -187,8 +187,8 @@ Type TNewsAgency
 		Local caughtChannelIDs:String = ""
 		Local caughtChannelIDsArray:Int[]
 		For Local i:Int = 1 To 4
-			'ensure "2 ^ (i-1)" does not result in a ":double"!
-			'Local playerBitmask:Int = 2^(i-1)
+			'ensure "2 ^ (playerId)" does not result in a ":double"!
+			'Local playerBitmask:Int = 2^(playerId)
 			Local playerBitmask:Int = 1 shl (i-1)
 			If bombRedirectedByPlayers & playerBitmask > 0
 				If caughtChannels <> "" Then caughtChannels :+ ", "
@@ -230,7 +230,7 @@ Type TNewsAgency
 		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + RandRange(5,20) * TWorldTime.MINUTELENGTH
 
 		Local NewsChainEvent1:TNewsEvent
-		If caughtChannels = "" Or RandRange(0,100) < 80
+		If bombRedirectedByPlayers = 0 Or RandRange(0,100) < 85 - caughtChannelIDsArray.length*5
 			'chain 1
 			Local qualityChain1:Float = 0.01 * randRange(50,60)
 			Local priceChain1:Float = 1.0 + 0.01 * randRange(-5,10)

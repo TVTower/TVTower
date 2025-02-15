@@ -641,8 +641,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 
 	Method MarkMoved(playerID:Int = 0)
-		'ensure "2 ^ (i-1)" does not result in a ":double"!
-		Local playerBitmaskValue:Int = 1 Shl (playerID-1)  ' = 2^(playerID-1)
+		'ensure "2 ^ (playerID)" does not result in a ":double"!
+		Local playerBitmaskValue:Int = 1 Shl (playerID)  ' = 2^(playerID)
 		movedByPlayers :| playerBitmaskValue
 		lastMoveByPlayerID = playerID
 
