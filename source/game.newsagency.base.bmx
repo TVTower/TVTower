@@ -230,7 +230,7 @@ Type TNewsAgency
 		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + RandRange(5,20) * TWorldTime.MINUTELENGTH
 
 		Local NewsChainEvent1:TNewsEvent
-		If bombRedirectedByPlayers = 0 Or RandRange(0,100) < 90
+		If caughtChannels = "" Or RandRange(0,100) < 80
 			'chain 1
 			Local qualityChain1:Float = 0.01 * randRange(50,60)
 			Local priceChain1:Float = 1.0 + 0.01 * randRange(-5,10)
