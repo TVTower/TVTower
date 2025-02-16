@@ -256,8 +256,7 @@ Type TXPContainer_Job extends TXPContainer
 
 
 
-'TODO gain should be influenced by affinity
-	Method GetNextGain:Int(key:Int, extra:object)
+	Method GetNextGain:Int(key:Int, extra:object, affinity:Float = 0.0)
 		local programmeData:TProgrammeData = TProgrammeData(extra)
 		if not programmeData then return 0
 
@@ -273,7 +272,7 @@ Type TXPContainer_Job extends TXPContainer
 		If xp < 1000 Then Return 0.8 * baseGain
 		If xp < 2500 Then Return 0.6 * baseGain
 		If xp < 5000 Then Return 0.4 * baseGain
-		Return 0.2 * baseGain
+		Return (0.2 + 0.25 * affinity) * baseGain
 	End Method
 End Type
 
@@ -296,8 +295,7 @@ Type TXPContainer_Genre extends TXPContainer
 	End Method
 
 
-'TODO gain should be influenced by affinity
-	Method GetNextGain:Int(key:Int, extra:object)
+	Method GetNextGain:Int(key:Int, extra:object, affinity:Float=0.0)
 		local programmeData:TProgrammeData = TProgrammeData(extra)
 		if not programmeData then return 0
 
@@ -313,7 +311,7 @@ Type TXPContainer_Genre extends TXPContainer
 		If xp < 1000 Then Return 0.8 * baseGain
 		If xp < 2500 Then Return 0.6 * baseGain
 		If xp < 5000 Then Return 0.4 * baseGain
-		Return 0.2 * baseGain
+		Return (0.2 + 0.25 * affinity) * baseGain
 	End Method
 End Type
 
@@ -737,7 +735,8 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 	End Method
 	
 	Method GetNextGenreExperienceGain:Int(genreID:Int, programmeData:TProgrammeData)
-		Return genreXP.GetNextGain(genreID, programmeData)
+		Local affinity:Float = GetPerson().GetPersonalityData().GetAffinityValue(0, genreID)
+		Return genreXP.GetNextGain(genreID, programmeData, affinity)
 	End Method
 
 
@@ -775,7 +774,8 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 	End Method
 	
 	Method GetNextJobExperienceGain:Int(jobID:Int, programmeData:TProgrammeData)
-		Return jobXP.GetNextGain(jobID, programmeData)
+		Local affinity:Float = GetPerson().GetPersonalityData().GetAffinityValue(jobID, 0)
+		Return jobXP.GetNextGain(jobID, programmeData, affinity)
 	End Method
 End Type
 
