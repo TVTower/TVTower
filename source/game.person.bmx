@@ -411,6 +411,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		Local appearance:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE, jobID, genre)
 		Local fame:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genre)
 		Local scandalizing:Float = p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING, jobID, genre)
+		Local experienceModifier:Float = GetEffectiveJobExperiencePercentage(jobID)
 		Select jobID
 			Case TVTPersonJob.ACTOR,..
 			     TVTPersonJob.SUPPORTINGACTOR, ..
@@ -429,7 +430,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
+				xpMod :+ 1.2 * experienceModifier
 
 				If jobID = TVTPersonJob.ACTOR
 					baseFee = 11000
@@ -458,7 +459,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
+				xpMod :+ 1.2 * experienceModifier
 
 				If jobID = TVTPersonJob.DIRECTOR
 					baseFee = 13500
@@ -483,7 +484,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.30 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
+				xpMod :+ 1.2 * experienceModifier
 
 				baseFee = 9000
 				dynamicFee = 24500 * attributeMod
@@ -503,7 +504,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.50 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
+				xpMod :+ 1.2 * experienceModifier
 
 				baseFee = 4000
 				dynamicFee = 6500 * attributeMod
@@ -524,10 +525,13 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.5 * p.GetChannelSympathy(channel)
 
 				'xp: up to "75% of XP"
-				xpMod :+ 0.75 * GetEffectiveJobExperiencePercentage(jobID)
+				xpMod :+ 0.75 * experienceModifier
 
-				baseFee = 1500
-				dynamicFee = 6000 * attributeMod
+				baseFee = 3500
+				dynamicFee = 9000 * attributeMod
+
+				'higher fame influence of price for guests
+				experienceModifier = 0.4 * experienceModifier +  0.4 * fame + 0.2* scandalizing
 			Default
 
 				'print "FEE for jobID="+jobID+" not defined."
@@ -544,14 +548,13 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
 
 				'xp: up to "25% of XP"
-				xpMod :+ 0.25 * GetEffectiveJobExperiencePercentage(jobID)
+				xpMod :+ 0.25 * experienceModifier
 
 				baseFee = 3000
 				dynamicFee = 7000 * attributeMod
 		End Select
 
-		'TODO for guests the experience factor should work differently - fame much more important than experience as guest
-		Local fee:Float = feeByExperience(baseFee, dynamicFee * xpMod * sympathyMod * priceModifier, GetEffectiveJobExperiencePercentage(jobID))
+		Local fee:Float = feeByExperience(baseFee, dynamicFee * xpMod * sympathyMod * priceModifier, experienceModifier)
 		'incorporate the block amount modifier
 		fee :* blocksMod
 		'round to next "1000" block
