@@ -6,6 +6,7 @@
 		<sprite name="flag_fr"	url="res/gfx/gui/flags/fr.png" />
 		<sprite name="flag_es"	url="res/gfx/gui/flags/es.png" />
 		<sprite name="flag_tr"	url="res/gfx/gui/flags/tr.png" />
+		<sprite name="flag_ua"	url="res/gfx/gui/flags/ua.png" />
 <!--
 		<sprite name="flag_it"	url="res/gfx/gui/flags/it.png" />
 		<sprite name="flag_ru"	url="res/gfx/gui/flags/ru.png" />

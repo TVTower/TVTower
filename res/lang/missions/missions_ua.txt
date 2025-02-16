@@ -1,0 +1,47 @@
+MISSION               = Виклик
+MISSION_START_PEP1    = Нехай щастить!
+MISSION_START_PEP2    = Удачі!
+MISSION_START_PEP3    = Покажи, на що ти здатен!
+MISSION_START_PEP4    = Ти зможеш!
+MISSION_SUCCESS       = %HURRAY%Виклик %GOAL% успішно завершено
+MISSION_SUCCESS_TEXT1 = Вітаємо!
+MISSION_SUCCESS_TEXT2 = Чудова робота!
+MISSION_SUCCESS_TEXT3 = Відмінно!
+MISSION_END_NEUTRAL1  = Подивимося, на якому місці ти у таблиці рекордів.
+MISSION_FAILED        = Виклик %GOAL% не виконано
+MISSION_OTHER_PLAYER  = %NAME% завершив виклик першим
+MISSION_DISABLE_DEV   = (Режим розробника було вимкнено)
+MISSION_ABORTED       = Виклик скасовано
+
+MISSION_CATEGORY_NOGOAL = Нескінченна гра
+MISSION_CATEGORY_IMAGE  = Імідж
+MISSION_CATEGORY_MONEY  = Гроші
+MISSION_CATEGORY_REACH  = Охоплення аудиторії
+MISSION_CATEGORY_BETTY  = Бетті
+MISSION_CATEGORY_SAMMY  = Семмі
+
+MISSION_TITLE_IMAGE = Імідж
+MISSION_TITLE_MONEY = Баланс рахунку
+MISSION_TITLE_REACH = Аудиторія
+MISSION_TITLE_BETTY = Любов Бетті
+MISSION_TITLE_SAMMY = Семмі
+
+MISSION_GOAL_MAXIMIZE = %GOAL% якнайбільше
+MISSION_GOAL_LESSTHAN = завжди менше ніж %GOAL%
+MISSION_GOAL_IMAGE    = %VALUE%% Імідж
+MISSION_GOAL_MONEY    = Баланс рахунку %VALUE%
+MISSION_GOAL_REACH    = %VALUE%% Зона мовлення
+MISSION_GOAL_BETTY    = %VALUE%% Любов Бетті
+MISSION_GOAL_SAMMY_M  = Якнайбільше Семмі
+MISSION_GOAL_SAMMY_A  = Кожна категорія Семмі
+MISSION_GOAL_SAMMY_R  = %COUNT% Семмі підряд
+
+MISSION_TIME_WITHIN = %GOAL% протягом %DAYS% днів
+MISSION_TIME_AFTER  = %GOAL% після %DAYS% днів
+
+MISSION_DIFFICULTY_0 = Налаштовано
+MISSION_DIFFICULTY_1 = Легко
+MISSION_DIFFICULTY_2 = Нормально
+MISSION_DIFFICULTY_3 = Важко
+MISSION_DIFFICULTY_4 = Ще важче
+MISSION_DIFFICULTY_5 = Найважче
