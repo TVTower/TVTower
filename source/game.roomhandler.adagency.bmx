@@ -193,8 +193,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceContract, "TGUIAdContractSlotList" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverContract, "TGuiAdContract" ) ]
-		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickContract, "TGuiAdContract") ]
+
 
 		'(re-)localize content
 		SetLanguage()
@@ -702,6 +701,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 					If GuiListNormal[i].ContainsContract(contract) Then contractAdded=True;Continue
 					If GuiListNormal[i].getFreeSlot() < 0 Then Continue
 					Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
+					block._callbacks_onClick :+ [onClickAdContractCallback]
 					'change look
 					block.InitAssets(block.getAssetName(-1, False), block.getAssetName(-1, True))
 
@@ -722,6 +722,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 			If Not contract Then Continue
 			If GuiListCheap.ContainsContract(contract) Then Continue
 			Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
+			block._callbacks_onClick :+ [onClickAdContractCallback]
 			'change look
 			block.InitAssets(block.getAssetName(-1, False), block.getAssetName(-1, True))
 
@@ -735,6 +736,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		For Local contract:TAdContract = EachIn programmeCollection.adContracts
 			If guiListSuitcase.ContainsContract(contract) Then Continue
 			Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
+			block._callbacks_onClick :+ [onClickAdContractCallback]
 			'change look
 			block.InitAssets(block.getAssetName(-1, True), block.getAssetName(-1, True))
 
@@ -748,6 +750,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		For Local contract:TAdContract = EachIn programmeCollection.suitcaseAdContracts
 			If guiListSuitcase.ContainsContract(contract) Then Continue
 			Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
+			block._callbacks_onClick :+ [onClickAdContractCallback]
 			'change look
 			block.InitAssets(block.getAssetName(-1, True), block.getAssetName(-1, True))
 
@@ -1105,11 +1108,11 @@ endrem
 
 	'in case of right mouse button click a dragged contract is
 	'placed at its original spot again
-	Function onClickContract:Int(triggerEvent:TEventBase)
+	Function onClickAdContractCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'only react if the click came from the right mouse button
-		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
+		If mouseButton <> 2 Then Return False
 
-		Local guiAdContract:TGuiAdContract= TGUIAdContract(triggerEvent._sender)
+		Local guiAdContract:TGuiAdContract= TGUIAdContract(sender)
 		'ignore wrong types and NON-dragged items
 		If Not guiAdContract Or Not guiAdContract.isDragged() Then Return False
 

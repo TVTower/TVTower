@@ -138,8 +138,6 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onDropScriptOnVendor, "TGUIScriptAgencyScript") ]
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGUIScriptAgencyScript" ) ]
-		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGUIScriptAgencyScript") ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -538,6 +536,9 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			'change look
 			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
 
+			'this lists want to delete the item if a right mouse click happens...
+			block._callbacks_onClick :+ [onClickScriptAgencyScriptCallback]
+
 			'print "ADD guiListSuitcase missed new script: "+block.script.id
 
 			guiListSuitcase.addItem(block, "-1")
@@ -628,6 +629,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			'change look
 			block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
+			'this lists want to delete the item if a right mouse click happens...
+			block._callbacks_onClick :+ [onClickScriptAgencyScriptCallback]
 
 			lists[i].addItem(block, "-1")
 			return True
@@ -773,14 +776,14 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 	'in case of right mouse button click a dragged script is
 	'placed at its original spot again
-	Function onClickScript:int(triggerEvent:TEventBase)
+	Function onClickScriptAgencyScriptCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'only allow interaction if we observe our player and are there
 		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
 		'only react if the click came from the right mouse button
-		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+		If mouseButton <> 2 Then Return True
 
-		local guiScript:TGUIScriptAgencyScript = TGUIScriptAgencyScript(triggerEvent._sender)
+		local guiScript:TGUIScriptAgencyScript = TGUIScriptAgencyScript(sender)
 		'ignore wrong types and NON-dragged items
 		if not guiScript or not guiScript.isDragged() then return FALSE
 

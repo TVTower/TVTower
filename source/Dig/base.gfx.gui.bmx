@@ -111,8 +111,7 @@ Type TGUIManager
 	Field UpdateState_foundActiveObject:TGUIObject = Null
 
 	Field UpdateState_foundInputReceiverObject:TGUIObject = Null
-
-
+	
 	'=== PRIVATE PROPERTIES ===
 
 	Field _defaultfont:TBitmapFont
@@ -173,10 +172,8 @@ Type TGUIManager
 
 
 	Method GetDraggedNumber:Int(obj:TGUIObject)
-		Local pos:Int = 0
-		For Local guiObject:TGUIObject = EachIn ListDragged
-			If guiObject = obj Then Return pos
-			pos:+1
+		For Local i:int = 0 until ListDragged.Count()
+			If ListDragged.data[i] = obj Then Return i
 		Next
 		Return 0
 	End Method
@@ -190,7 +187,7 @@ Type TGUIManager
 		If ListDragged.contains(obj) Then Return False
 
 		ListDragged.addLast(obj)
-		ListDragged.sort(False, SortObjects)
+		ListDragged.sort(False, SortObjects_DrawOrder)
 
 		Return True
 	End Method
@@ -202,14 +199,14 @@ Type TGUIManager
 		ListDragged.Remove(obj)
 		'removing should not need a sort-call as the rest is still
 		'sorted
-		'ListDragged.sort(False, SortObjects)
+		'ListDragged.sort(False, SortObjects_DrawOrder)
 
 		Return True
 	End Method
 
 
 	Method RestrictViewport(x:Int,y:Int,w:Int,h:Int)
-		TRenderConfig.Push()
+		TRenderConfig.Backup()
 		If w > 0 And h > 0
 			GetGraphicsManager().SetViewport(x,y,w,h)
 		EndIf
@@ -217,7 +214,7 @@ Type TGUIManager
 
 
 	Method ResetViewport()
-		TRenderConfig.Pop()
+		TRenderConfig.Restore()
 	End Method
 
 
@@ -233,49 +230,46 @@ Type TGUIManager
 	End Method
 
 
-	Function SortObjects:Int(ob1:Object, ob2:Object)
+	Function SortObjects_DrawOrder:Int(ob1:Object, ob2:Object)
 		Local objA:TGUIobject = TGUIobject(ob1)
 		Local objB:TGUIobject = TGUIobject(ob2)
 
-		'-1 = bottom
-		' 1 = top
+		'-1 = A before B
+		' 1 = A after B
 
-		'undefined object 1 - "a<b"
-		If Not objA Then Return -1
-		'undefined object 2 - "a>b"
-		If Not objB Then Return 1
+		'undefined object 1 - "a after b" (move o1 to bottom/right)
+		If Not objA Then Return 1
+		'undefined object 2 - "a before b" (move o1 to top/left)
+		If Not objB Then Return -1
 
 		'if one is the parent of the other, sort so, that the parent
-		'comes last (child on top of parent -> handled before parent)
+		'comes first (child is drawn on top of parent -> after parent)
 		If objA.HasParent(objB) Then Return 1
 		If objB.HasParent(objA) Then Return -1
 
 		'if objA and objB are dragged elements
 		If objA._flags & GUI_OBJECT_DRAGGED And objB._flags & GUI_OBJECT_DRAGGED
-			'if a drag was earlier -> move to top
+			'if a drag was earlier -> draw it _later_ (additional drags
+			'position behind the first dragged element)
+			'-> move to bottom/right (draw later)
 			If objA._timeDragged < objB._timeDragged Then Return 1
 			If objA._timeDragged > objB._timeDragged Then Return -1
-			Return 0
+			' avoid random sorts... so compare with something different
+			Return objA.compare(objB)
 		EndIf
-		'if only objA is dragged - move to Top
+		'if only objA is dragged, draw it later - move to bottom/right
 		If objA._flags & GUI_OBJECT_DRAGGED Then Return 1
-		'if only objB is dragged - move to A to bottom
+		'if only objB is dragged - draw it earlier (and thus A to top/left)
 		If objB._flags & GUI_OBJECT_DRAGGED Then Return -1
 
-		'if objA is active element - move to top
-		'If objA.IsFocused() Then Return 1
-		'if objB is active element - move to top
-		'If objB.IsFocused() Then Return -1
-
-		'if objA is "higher", move it to the top
+		'if objA is "higher", draw it later - move it to the bottom/right
 		If objA.GetZIndex() > objB.GetZIndex() Then Return 1
-		'if objA is "lower"", move to bottom
+		'if objA is "lower"", move to top/left
 		If objA.GetZIndex() < objB.GetZIndex() Then Return -1
 
-		'if one of them is active - prefer it
+		'if one of them is active - draw it later - move it to the bottom/right
 		If objA._status & GUI_OBJECT_STATUS_ACTIVE Then Return 1
 		If objB._status & GUI_OBJECT_STATUS_ACTIVE Then Return -1
-
 
 		'run custom compare job
 		Return objA.compare(objB)
@@ -283,9 +277,9 @@ Type TGUIManager
 	End Function
 
 
+	'sort lists by draw order
 	Method SortLists()
-		List.sort(True, SortObjects)
-		
+		List.sort(True, SortObjects_DrawOrder)
 		_listsSorted = True
 	End Method
 
@@ -321,7 +315,7 @@ Type TGUIManager
 		If(obj._parent And Not haveToHandleObject(obj._parent,State,fromZ,toZ)) Then Return False
 
 		'skip if not visible
-		If Not(obj._flags & GUI_OBJECT_VISIBLE) Then Return False
+		If Not (obj._flags & GUI_OBJECT_VISIBLE) Then Return False
 
 		'skip if not visible by zindex
 		If Not ( (toZ = -1000 Or obj.GetZIndex() <= toZ) And (fromZ = -1000 Or obj.GetZIndex() >= fromZ)) Then Return False
@@ -336,18 +330,21 @@ Type TGUIManager
 
 
 	'returns an array of objects at the given point
-	Method GetObjectsByPos:TGuiObject[](coord:TVec2D, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
-		Return GetObjectsByXY(coord.GetIntX(), coord.GetIntY(), limitState, ignoreDragged, requiredFlags, limit)
+	Method GetObjectsByPos:TGuiObject[](coord:SVec2I, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
+		Return GetObjectsByPos(coord.x, coord.y, limitState, ignoreDragged, requiredFlags, limit)
 	End Method
 
 
 	'returns an array of objects at the given x,y coordinate
-	Method GetObjectsByXY:TGuiObject[](x:Int, y:Int, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
+	Method GetObjectsByPos:TGuiObject[](x:Int, y:Int, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
 	'	If limitState=Null Then limitState = currentState
 
 		Local guiObjects:TGuiObject[]
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
-		For Local obj:TGUIobject = EachIn list.ReverseEnumerator()
+		For Local i:Int = list.Count()-1 to 0 step -1
+			Local obj:TGUIObject = TGUIObject(list.data[i])
+			If Not obj Then Continue
+
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
 
@@ -367,25 +364,6 @@ Type TGUIManager
 		Next
 
 		Return guiObjects
-	End Method
-
-
-	Method GetFirstObjectByPos:TGuiObject(coord:TVec2D, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
-		Return GetFirstObjectByXY(coord.GetIntX(), coord.GetIntY(), limitState, ignoreDragged, requiredFlags)
-	End Method
-
-
-	Method GetFirstObjectByXY:TGuiObject(x:Int, y:Int, limitState:TLowerString=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
-		Local guiObjects:TGuiObject[] = GetObjectsByXY(x, y, limitState, ignoreDragged, requiredFlags, 1)
-
-		If guiObjects.length = 0 Then Return Null Else Return guiObjects[0]
-	End Method
-
-
-	Method DisplaceGUIobjects(State:TLowerString = Null, x:Int = 0, y:Int = 0)
-		For Local obj:TGUIobject = EachIn List
-			If isState(obj, State) Then obj.rect.MoveXY( x,y )
-		Next
 	End Method
 
 
@@ -581,17 +559,16 @@ Type TGUIManager
 
 		'first update all dragged objects...
 		If GUIMANAGER_TYPES_DRAGGED & updateTypes
-			For Local obj:TGUIobject = EachIn ListDragged
+			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
-
-				'avoid getting updated multiple times
-				'this can be overcome with a manual "obj.Update()"-call
-				'if obj._lastUpdateTick = _lastUpdateTick then continue
-				'obj._lastUpdateTick = _lastUpdateTick
 
 				obj.Update()
 				'fire event
-				TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				If GUIEventKeys.GUIObject_OnUpdate.listenerCount > 0
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				Else
+					GUIEventKeys.GUIObject_OnUpdate.callsSkippedCount :+ 1 'for debug information
+				EndIf
 			Next
 		EndIf
 
@@ -604,10 +581,6 @@ Type TGUIManager
 				If ListDragged.Contains(obj) Then Continue
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
-				'avoid getting updated multiple times
-				'this can be overcome with a manual "obj.Update()"-call
-				'if obj._lastUpdateTick = _lastUpdateTick then continue
-				'obj._lastUpdateTick = _lastUpdateTick
 				obj.Update()
 				'if there is a tooltip, update it.
 				'We handle it that way to be able to "group/order" tooltip updates
@@ -617,16 +590,17 @@ Type TGUIManager
 					obj._tooltip.Update()
 				EndIf
 				'fire event
-				TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				If GUIEventKeys.GUIObject_OnUpdate.listenerCount > 0
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
+				Else
+					GUIEventKeys.GUIObject_OnUpdate.callsSkippedCount :+ 1 'for debug information
+				EndIf
 			Next
 		EndIf
 	End Method
 
 
 	Method Draw:Int(State:TLowerString = Null, fromZ:Int=-1000, toZ:Int=-1000, drawTypes:Int=GUIMANAGER_TYPES_ALL)
-		'_lastDrawTick :+1
-		'if _lastDrawTick >= 100000 then _lastDrawTick = 0
-
 		currentState = State
 
 		'this needs to get run in Draw() and Update() as you might else
@@ -655,20 +629,26 @@ Type TGUIManager
 				EndIf
 
 				'fire event
-				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+				If GUIEventKeys.GUIObject_OnDraw.listenerCount > 0
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+				Else
+					GUIEventKeys.GUIObject_OnDraw.callsSkippedCount :+ 1 'for debug information
+				EndIf
 			Next
 
 			'TODO: sort by lastActive state?
-			For Local t:TTooltipBase = EachIn activeTooltips
-				t.Render()
-			Next
+			If activeTooltips.count() > 0 
+				For Local t:TTooltipBase = EachIn activeTooltips
+					t.Render()
+				Next
+			EndIf
 		EndIf
 
 
 		If GUIMANAGER_TYPES_DRAGGED & drawTypes and draggedCount > 0
 			'draw all dragged objects above normal objects...
 			'from bottom to top
-			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
+			For Local obj:TGUIobject = EachIn ListDragged
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				obj.Draw()
@@ -735,10 +715,15 @@ Type TGUIobject
 	Field _limitToState:String = ""
 	'an array containing registered event listeners
 	Field _registeredEventListener:TEventListenerBase[]
-	'Field _lastDrawTick:int = 0
-	'Field _lastUpdateTick:int = 0
 
 	Field _acceptedDropFilter:object = Null
+
+	'=== CALLBACKS ===
+	'compared to events callbacks can be used for hardwired bindings
+	'where the receiver KNOWS this specific instance
+	Field _callbacks_onClick:Int(sender:TGUIObject, button:Int, x:Int, y:Int)[]
+	Field _callbacks_onUpdate:Int(sender:TGUIObject)[]
+	Field _callbacks_onDraw:Int(sender:TGUIObject)[]
 
 	'=== HOOKS ===
 	'allow custom functions to get hooked in
@@ -816,7 +801,8 @@ Type TGUIobject
 		'remove children (so they might inform their children and so on)
 		If _children
 			'traverse along a copy to avoid concurrent modification
-			'(this else leads to eg. some skipped children
+			'(the children inform the parent...)
+			'(this else leads to eg. some skipped children)
 			For Local child:TGUIObject = EachIn _children.copy()
 				child.Remove()
 			Next
@@ -828,8 +814,8 @@ Type TGUIobject
 
 		Return True
 	End Method
-
-
+	
+	
 	Method AddEventListener:Int(listener:TEventListenerBase)
 		_registeredEventListener :+ [listener]
 	End Method
@@ -959,8 +945,9 @@ Type TGUIobject
 	End Method
 
 
+	'sort children by draw order
 	Method SortChildren()
-		If _children Then _children.sort(True, TGUIManager.SortObjects)
+		If _children Then _children.sort(True, TGUIManager.SortObjects_DrawOrder)
 	End Method
 
 
@@ -1012,11 +999,43 @@ Type TGUIobject
 		If Not _children Or _children.Count() = 0 Then Return False
 		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
 
-		'update added elements
-		For Local obj:TGUIobject = EachIn _children.ReverseEnumerator()
-			obj.update()
+		' variant 1 : properly copy children to avoid iterating over
+		' a concurrent modification (objects could be empty ..., length 
+		' can change)
+
+		Rem
+		'update them in reverse
+		Local _childrenCopy:object[] = _children.ToArray()
+		For Local i:Int = _childrenCopy.length - 1 to 0 G -1
+			Local obj:TGUIobject = TGUIobject(_childrenCopy[i])
+			if obj Then obj.update()
 		Next
+		EndRem
+
+		
+		' variant 2: just check if the "version" of the list changed
+		' (means something was added/removed) and if so, just skip
+		' updating all the other elements and hope another update()
+		' is enough. THIS BREAKs single/manual "widget.update()" calls
+		' which changes things inside but expects a result right after-
+		' wards 
+
+		'update them in reverse
+		Local oldVersion:Int = _children.version
+		For Local i:Int = _children.Count() - 1 to 0 step - 1
+			Local obj:TGUIobject = TGUIobject(_children.data[i])
+			If obj 
+				obj.update()
+				If oldVersion <> _children.version Then exit
+			EndIf
+		Next
+		
+		?debug
+		'debug line to identify where this happens (for now only modal dialogue of ingame help
+		If oldVersion <> _children.version Then print "GUIObject.UpdateChildren: concurrent change to _children!"
+		?
 	End Method
+	
 
 
 	Method RestrictContentViewport:Int()
@@ -1555,10 +1574,12 @@ Type TGUIobject
 
 		'find out if a list or some other would accept the dropping
 		'widget
-		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord, limitState, True, GUI_OBJECT_ACCEPTS_DROP)
+		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord.GetIntX(), coord.GetIntY(), limitState, True, GUI_OBJECT_ACCEPTS_DROP)
 		Local dropTarget:TGUIObject
 
-		For Local potentialDropTarget:TGUIobject = EachIn potentialDropTargets
+		For Local i:Int = 0 until potentialDropTargets.length
+			Local potentialDropTarget:TGUIobject = potentialDropTargets[i]
+
 			'ask if it would theoretically handle the drop
 			If potentialDropTarget.AcceptsDrop(self, coord)
 				dropTarget = potentialDropTarget
@@ -1989,6 +2010,15 @@ Type TGUIobject
 		Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button", button).Add("coord", clickPos), Self)
 		'let the object handle the click
 		Local handledClick:Int = OnClick(ev)
+		'run callbacks
+		For Local i:Int = 0 Until _callbacks_onClick.length
+			Local cb:Int(sender:TGUIObject, button:int, x:int, y:Int) = _callbacks_onclick[i]
+			If cb(self, button, x, y)
+				handledClick = True
+				ev.SetAccepted(True) 'mark event as already been handled
+			EndIf
+		Next
+
 		'fire onClickEvent
 		ev.Trigger()
 
@@ -2337,6 +2367,10 @@ endrem
 		If Not _customDraw
 			DrawTooltips()
 		EndIf
+
+		For Local i:Int = 0 until _callbacks_onDraw.length
+			_callbacks_onDraw[i](self)
+		Next
 	End Method
 
 
@@ -2376,10 +2410,12 @@ endrem
 
 		'draw children
 		For Local obj:TGUIobject = EachIn _children
-			'before skipping a dragged one, we try to ask it as a ghost (at old position)
-			If obj.isDragged() Then obj.drawGhost()
 			'skip dragged ones - as we set them to managed by GUIManager for that time
-			If obj.isDragged() Then Continue
+			If obj.isDragged() 
+				'before skipping a dragged one, we try to ask it as a ghost (at old position)
+				obj.drawGhost()
+				Continue
+			EndIf
 
 			'skip invisible objects
 			If Not obj.IsVisible() Then Continue
@@ -2391,7 +2427,11 @@ endrem
 '			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 
 			'fire event
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+			If GUIEventKeys.GUIObject_OnDraw.listenerCount > 0
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
+			Else
+				GUIEventKeys.GUIObject_OnDraw.callsSkippedCount :+ 1 'for debug information
+			EndIf
 		Next
 	End Method
 
@@ -2414,6 +2454,10 @@ endrem
 
 
 	Method Update:Int()
+		For Local i:Int = 0 until _callbacks_onUpdate.length
+			_callbacks_onUpdate[i](self)
+		Next
+
 		_UpdateLayout()
 		If IsDragged() Then InvalidateScreenRect()
 
@@ -2744,7 +2788,7 @@ endrem
 	'defines if the passed "o" is accepted
 	Method AcceptsDrop:Int(o:TGUIObject, coord:TVec2D, extra:object=Null)
 		If HasOption(GUI_OBJECT_ACCEPTS_DROP)
-			If _acceptedDropFilter And Not TEventManager.ObjectsAreEqual(o, _acceptedDropFilter)
+			If _acceptedDropFilter And Not TEventManager.FiltersObject(o, _acceptedDropFilter)
 				Return False
 			EndIf
 			Return True
