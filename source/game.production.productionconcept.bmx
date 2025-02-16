@@ -805,6 +805,9 @@ Type TProductionConcept Extends TOwnedGameObject
 			local castXP:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 
 			castXP :* 1.0 + 0.15 * person.GetEffectiveJobExperiencePercentage(job.job)
+			If TPersonProductionData(person.GetProductionData())
+				castXP :* 1.0 + 0.15 *  TPersonProductionData(person.GetProductionData()).GetEffectiveGenreExperiencePercentage(script.mainGenre)
+			EndIf
 
 			Local weight:Int = _GetJobWeight(job.job, 2)
 			castXPSum :+ weight * castXP
