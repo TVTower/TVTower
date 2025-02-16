@@ -408,13 +408,13 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			For Local i:Int = 0 Until alternatives.length
 				Local alternative:TPersonBase = alternatives[i]
 				If Not alternative Or Not alternative.IsCastable() Or Not alternative.IsBookable() Or Not passesAgeRestriction(alternative) Then Continue
-				If IsBetterFit(result, alternative, job.job, genreDefinition) Then result = alternative
+				If IsBetterFit(result, alternative, job.job, genreID, genreDefinition) Then result = alternative
 			Next
 
 			return result
 		End Function
 
-		Function IsBetterFit:Int(current:TPersonBase, alternative:TPersonBase, jobId:Int, genreDefinition:TMovieGenreDefinition)
+		Function IsBetterFit:Int(current:TPersonBase, alternative:TPersonBase, jobId:Int, genreId:Int, genreDefinition:TMovieGenreDefinition)
 			Local xpCurrent:Float = current.GetEffectiveJobExperiencePercentage(jobId)
 			Local xpAlternative:Float = alternative.GetEffectiveJobExperiencePercentage(jobId)
 			'adapted from screen.supermarket
@@ -432,11 +432,11 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			For Local attributeID:Int = EachIn attributes
 				Local attributeGenre:Float = genreDefinition.GetCastAttribute(jobID, attributeID)
 				If attributeGenre > 0
-					sumCurrent:+ 4 * current.GetPersonalityData().GetAttributeValue(attributeID)
-					sumAlternative:+ 4 * alternative.GetPersonalityData().GetAttributeValue(attributeID)
+					sumCurrent:+ 4 * current.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
+					sumAlternative:+ 4 * alternative.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
 				Else
-					sumCurrent:+ current.GetPersonalityData().GetAttributeValue(attributeID)
-					sumAlternative:+ alternative.GetPersonalityData().GetAttributeValue(attributeID)
+					sumCurrent:+ current.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
+					sumAlternative:+ alternative.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
 				End If
 			Next
 			Local result:Int=False
