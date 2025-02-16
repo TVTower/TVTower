@@ -1,0 +1,154 @@
+MALE      = чоловік
+FEMALE    = жінка
+UNDEFINED = будь-хто
+
+JOB_ALL              = Всі професії
+JOB_DIRECTOR         = Режисер
+JOB_DIRECTORS        = Режисери
+JOB_ACTOR            = Актор
+JOB_ACTORS           = Актори
+JOB_SUPPORTINGACTOR  = Другорядний актор
+JOB_SUPPORTINGACTORS = Другорядні актори
+JOB_REPORTER         = Репортер
+JOB_REPORTERS        = Репортери
+JOB_GUEST            = Гість
+JOB_GUESTS           = Гості
+JOB_HOST             = Ведучий
+JOB_HOSTS            = Ведучі
+JOB_SCRIPT           = Сценарій
+JOB_SCRIPTWRITER     = Сценарист
+JOB_SCRIPTWRITERS    = Сценаристи
+JOB_MUSIC            = Музика
+JOB_MUSICIAN         = Музикант
+JOB_MUSICIANS        = Музиканти
+
+JOB_AMATEUR                  = Аматор
+JOB_AMATEURS                 = Аматори
+JOB_AMATEUR_DIRECTOR         = Аматорський режисер
+JOB_AMATEUR_DIRECTORS        = Аматорські режисери
+JOB_AMATEUR_ACTOR            = Аматорський актор
+JOB_AMATEUR_ACTORS           = Аматорські актори
+JOB_AMATEUR_SUPPORTINGACTOR  = Аматорський другорядний актор
+JOB_AMATEUR_SUPPORTINGACTORS = Аматорські другорядні актори
+JOB_AMATEUR_REPORTER         = Аматорський репортер
+JOB_AMATEUR_REPORTERS        = Аматорські репортери
+JOB_AMATEUR_GUEST            = Аматорський гість
+JOB_AMATEUR_GUESTS           = Аматорські гості
+JOB_AMATEUR_HOST             = Аматорський ведучий
+JOB_AMATEUR_HOSTS            = Аматорські ведучі
+JOB_AMATEUR_SCRIPTWRITER     = Аматорський сценарист
+JOB_AMATEUR_SCRIPTWRITERS    = Аматорські сценаристи
+JOB_AMATEUR_MUSICIAN         = Аматорський музикант
+JOB_AMATEUR_MUSICIANS        = Аматорські музиканти
+
+JOB_POSITION_UNASSIGNED = Не призначено
+
+CAST_TRAINING         = Тренування
+CAST_EXPERIENCE       = Досвід
+CAST_FAME             = Популярність
+CAST_AFFINITY         = Сумісність
+CAST_POWER            = Вплив
+CAST_HUMOR            = Гумор
+CAST_CHARISMA         = Харизма
+CAST_APPEARANCE       = Зовнішність
+CAST_FEE              = Гонорар
+CAST_JOB_EXPERIENCE   = Досвід роботи
+CAST_GENRE_EXPERIENCE = Досвід у жанрі
+
+DIALOGUE_STUDIO_BRING_SOME_SCRIPT                         = Привіт, %PLAYERNAME%,\n\nПринесіть сценарій, і ми, можливо, зможемо щось гарне зробити.
+DIALOGUE_STUDIO_SCRIPT_HINT                               = Хммм, я не можу розповісти вам деталей про цей сценарій. Можливо, пізніше я зможу сказати більше, це залежить від розробників *знизує плечима*.
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED               = Більше немає місця для списків покупок. Я не можу дати ще один, поки ви не почнете виробництво або не видалите один зі списків (виберіть один і видаліть його правою кнопкою миші).
+DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING    = Щоб розпочати виробництво, спочатку потрібно завершити планування виробництва в супермаркеті.
+
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION                                                    = Отже, ви хочете зняти |b|%SCRIPTTITLE%|/b|?
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED                               = Наразі заплановано |b|1 виробництво|/b| цього сценарію.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED                              = Наразі заплановано |b|%X% виробництв|/b| цього сценарію.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE                                  = Наразі завершено |b|1 виробництво|/b| цього сценарію.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                                 = Наразі завершено |b|%X% виробництв|/b| цього сценарію.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = Наразі заплановано |b|%X% виробництв|/b| цього сценарію, а |b|%Y%|/b| вже завершено.
+
+DIALOGUE_STUDIO_START_PRODUCTION                    = Почати виробництво
+DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Почати всі можливі виробництва ({X}).
+DIALOGUE_STUDIO_START_NEXT_EPISODE                  = Почати виробництво наступного можливого епізоду.
+DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST        = Мені потрібен ще один список покупок для цього сценарію.
+DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST              = Мені потрібен список покупок для цього сценарію.
+DIALOGUE_STUDIO_GOODBYE1                            = Побачимось.
+DIALOGUE_STUDIO_GOODBYE2                            = До побачення.
+
+DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX                   = Я можу сказати вам наступне про ваше заплановане виробництво |b|%TITLE%|/b|:
+DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX               = Планування виробництва для |b|%TITLE%|/b| ще не завершене. Як тільки ви встановите пріоритети виробництва та оберете акторський склад, можливо, я зможу дати вам кілька порад.
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1                  = Жанр сценарію не підходить!
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD2                  = Інший жанр міг би бути кращим.
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE1              =
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD1                 = Хороший вибір жанру!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_BAD1         = Ви обрали дуже поганий акторський склад, і вони вас не люблять!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_AVERAGE1     = Ви обрали дуже поганий акторський склад.
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_GOOD1        = Ви обрали дуже поганий акторський склад, але принаймні вони до вас добре ставляться.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_BAD1     = Ви обрали середній акторський склад, і вони вас не люблять!
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_AVERAGE1 = Ви обрали середній акторський склад.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1    = Ви обрали середній акторський склад, і вони до вас добре ставляться.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1        = Ви обрали відповідний акторський склад, але вони вас не люблять!
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1    = Ви обрали відповідний акторський склад.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1       = Ви обрали відповідний акторський склад, і вони навіть вас люблять.
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1             = Виробнича компанія досить посередня
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1         = Виробнича компанія середнього рівня
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1            = Виробнича компанія є однією з найкращих у бізнесі
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1     = і вам слід краще розподілити ваші фокусні точки виробництва!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = і ви розподілили ваші фокусні точки виробництва досить добре!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1    = і ви розподілили ваші фокусні точки виробництва відмінно!
+
+PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK         = Прямий ефір сьогодні о %X%.
+PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK      = Прямий ефір завтра о %X%.
+PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK     = Прямий ефір через %Y% днів о %X%.
+
+CLICK_TO_SELECT_PERSON = Натисніть, щоб вибрати людину
+TOUCH_TO_SELECT_PERSON = Торкніться, щоб вибрати людину
+
+COULISSE             = Декорації
+OUTFIT_AND_MASK      = Костюми / Маски
+STUNTS               = Трюки
+VFX_AND_SFX          = Візуальні ефекти / Звукові ефекти
+TEAM                 = Команда (технічний персонал тощо)
+PRODUCTION_SPEED     = Швидкість виробництва
+PRODUCTION_POTENTIAL = Потенціал
+SCRIPT_POTENTIAL     = Потенціал
+
+PRODUCTION         = Виробництво
+TOTAL_COSTS        = Загальні витрати
+DURATION           = Тривалість
+SUBHEADING         = Субтитри
+PRODUCTION_DETAILS = Деталі виробництва
+PRODUCTION_FOCUS   = Фокус виробництва
+IN_PRODUCTION      = У виробництві
+
+POINTSSET_OF_POINTSMAX_POINTS_SET                           = %POINTSSET%/%POINTSMAX% встановлено точок
+PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY                  = Фокусні точки виробництва не встановлені повністю
+NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = Потрібно встановити принаймні одну фокусну точку виробництва
+NO_PRODUCTION_COMPANY_SELECTED                              = Не вибрано виробничу компанію
+PRODUCTION_SETUP_NOT_DONE                                   = Налаштування виробництва не завершене
+PRODUCTION_SETUP_INCOMPLETE                                 = Налаштування виробництва неповне
+CAST_INCOMPLETE                                             = Акторський склад неповний
+EPISODES_NOT_IN_ORDER                                       = Епізоди не в порядку
+PRODUCTION_CONCEPTS                                         = Списки покупок
+PRODUCTION_DEPOSIT_PAID                                     = Сплачено депозит (%MONEY%).
+
+SELECT_PERSON      = Вибрати людину
+FINISHED_PLANNING  = Планування завершено
+FINISH_PLANNING    = Завершити планування
+AND_PAY_DOWN_MONEY = і сплатити %money%
+PLANNING           = Планування...
+MONEY_TO_PAY_DOWN  = %money% для сплати
+TAKE_OVER_SETTINGS = Скопіювати налаштування
+PRODUCTION_COMPANY = Виробнича компанія
+EDIT_TEXTS         = Редагувати тексти
+TITLE              = Назва
+DESCRIPTION        = Опис
+EPISODE            = Епізод
+ABBREVIATION_YEARS = РОКИ
+
+STUDIO_MANAGER         = Менеджер студії
+STUDIO_MANAGER_TOOLTIP = Надає інформацію про виробництво та видає нові списки покупок
+
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = Ліцензія на |b|%TITLE%|/b| тепер у вашому розпорядженні.
+THE_LIVE_PRODUCTION_OF_X_JUST_FINISHED   = Прямий ефір |b|%TITLE%|/b| щойно завершився.
+TOTAL_PRODUCTION_COSTS_WERE_X            = Загальні витрати на виробництво склали %TOTALCOST%.

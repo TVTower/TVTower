@@ -1,0 +1,177 @@
+NEWS_TECHNICS_MEDIA   = Медіа / Технології
+NEWS_POLITICS_ECONOMY = Політика / Економіка
+NEWS_SHOWBIZ          = Шоу-бізнес
+NEWS_SPORT            = Спорт
+NEWS_CURRENTAFFAIRS   = Поточні події
+NEWS_CULTURE          = Культура
+
+NEWS_SORT_TOPICALITY = Сортувати за актуальністю
+NEWS_SORT_PAID       = Сортувати за станом оплати
+NEWS_SORT_AGE        = Сортувати за віком
+NEWS_SORT_PRICE      = Сортувати за ціною
+
+NEWSPLANSIGN_TO_THE_TEAM             = До команди
+NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS = надіслати наступні новини:
+MANAGE_BROADCASTED_NEWS              = Керування новинами для трансляції
+
+NEWSSTUDIO_NOT_SUBSCRIBED                          = не підписано
+NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL                   = Підписатися на цей жанр, рівень
+NEWSSTUDIO_SUBSCRIPTION_LEVEL                      = рівень підписки
+NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER         = Припинити підписку на цей жанр
+NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL                 = Наступний рівень підписки
+NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL              = Поточний рівень підписки
+NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = Ви вже використовували рівень підписки %MAXLEVEL% сьогодні і маєте заплатити %TOPAY% наприкінці дня.
+
+RIGHT_CLICK_TO_DELETE = Клацніть правою кнопкою, щоб видалити
+
+
+NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Посол ПР Дубан ображає колегу
+NEWS_TERROR_GROUP1_LEVEL1_TEXT1  = Скандал: посол ПР Дубан образив свого колегу з ФР Дубан.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Посол ФР Дубан ображає сусідів
+NEWS_TERROR_GROUP2_LEVEL1_TEXT1  = Неймовірно, але посол ФР Дубан образив представників ПР Дубан.
+
+NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Посла побито
+NEWS_TERROR_GROUP1_LEVEL2_TEXT1  = По дорозі додому посол ПР Дубан був виявлений непритомним у підземному гаражі. Свідки бачили, як машина ФР Дубан поїхала з місця події.
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Вандалізм у квартирі посла
+NEWS_TERROR_GROUP2_LEVEL2_TEXT1  = Квартира посла Вільної Республіки Дубан була розгромлена. Докази вказують на причетність Народної Республіки Дубан...
+
+NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = ПР Дубан загрожує відповіддю
+NEWS_TERROR_GROUP1_LEVEL3_TEXT1  = ПР Дубан відкрито погрожує помстою. Злочинців, нібито, вже знайдено. Ситуація напружена.
+NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = ФР Дубан попереджає про наслідки
+NEWS_TERROR_GROUP2_LEVEL3_TEXT1  = Жорстке повідомлення з посольства: Досить. ФР Дубан вживає контрзаходів.
+
+NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = Поліція попереджає про терористів
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1  = Поліція втратила слід недавно поміченого терориста. Кажуть, що він має дубанське походження.
+NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = Поліція попереджає про терористів
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1  = Поліція втратила слід недавно поміченого терориста. Кажуть, що він має дубанське походження.
+
+BOMB_DETONATION_IN_TVTOWER                   = Вибух бомби у Телевежі
+BOMB_DETONATION_IN_TVTOWER_TEXT              = Вибух бомби струсонув людей у знаменитій Телевежі, спричинивши пошкодження кімнати "%ROOM%". Розслідування триває.
+TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = Вибух бомби пошкодив кімнату "%ROOM%".
+TOASTMESSAGE_BOMB_RENOVATION_COST_TEXT       = Ремонт коштуватиме %COST%.
+TOASTMESSAGE_BOMB_LICENCE_DESTROYED_TEXT     = Вибух знищив |b|%TITLE%|/b|.
+TOASTMESSAGE_BOMB_CONCEPT_DESTROYED_TEXT     = Вибух знищив виробничий план.
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES          = Напад на Телевежу: Розслідування не дало результатів
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT     = Після нападу на знамениту Телевежу влада провела розслідування. На жаль, жодних корисних доказів знайдено не було.
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES       = Напад на Телевежу: Розслідування дало підказки
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT  = Після нападу на знамениту Телевежу влада провела успішне розслідування! Схоже, що місцеві телеканали (%CHANNELS%) сприяли катастрофі своїми іграми зі зміною вивісок.
+
+
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE       = Новий фільм від режисера та актора %DIRECTORNAME1%
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION = Режисер і головний актор %DIRECTORNAME1% приносить на екрани фільм "%MOVIETITLE%".
+
+NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE       = Незабаром у кіно: "%MOVIETITLE%"
+NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION = Перший трейлер до "%MOVIETITLE%" випущено.
+
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_TITLE       = Незабаром у кіно: "%MOVIETITLE%"
+NEWS_ANNOUNCE_MOVIE_NO_DIRECTOR_DESCRIPTION = Головний актор %ACTORNAME1% незабаром з’явиться у кінотеатрах із "%MOVIETITLE%".
+
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE       = Незабаром у кіно: "%MOVIETITLE%"
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION = Режисер %DIRECTORNAME1% представляє фільм "%MOVIETITLE%" у кінотеатрі поруч із вами.
+
+NEWS_ANNOUNCE_MOVIE_TITLE1 = Новий фільм з %ACTORNAME1%
+NEWS_ANNOUNCE_MOVIE_TITLE2 = %DIRECTORNAME1% знімає новий фільм
+NEWS_ANNOUNCE_MOVIE_TITLE3 = %DIRECTORNAME1% із новим фільмом у кіно
+
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION1 = Режисер %DIRECTORNAME1% і актор %ACTORNAME1% представляють "%MOVIETITLE%".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION2 = Незабаром у кіно: %ACTORNAME1% у "%MOVIETITLE%". Актор %ACTORNAME2% уже висловлює захоплення фільмом.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3 = Останні штрихи до "%MOVIETITLE%". %ACTORNAME1% пишається роллю у фільмі.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION4 = Випущено перший трейлер "%MOVIETITLE%". %DIRECTORNAME1%: "Найкращий фільм року".
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION5 = Останні штрихи до фільму "%MOVIETITLE%". %DIRECTORNAME1% висловлює гордість за свій останній витвір.
+
+
+WEATHER_FORECAST_FOR_X_TILL_Y    = Прогноз погоди з %BEGINHOUR% до %ENDHOUR%
+SKY_IS_PARTIALLY_CLOUDY          = Мінлива хмарність.
+SKY_IS_OVERCAST1                 = Щільна хмарність.
+SKY_IS_OVERCAST2                 = Небо вкрите хмарами.
+SKY_IS_WITHOUT_CLOUDS            = Жодної хмаринки!
+SUN_SHINES_WHOLE_TIME            = Лише сонце.
+SUN_WINS_AGAINST_CLOUDS1         = Мінлива хмарність із проясненнями.
+SUN_WINS_AGAINST_CLOUDS2         = Хмари поступово зміняться сонячною погодою.
+SUN_IS_SHINING_SOMETIMES         = Час від часу видно сонце.
+SUN_IS_NOT_SHINING               = Похмуро, сонця не видно.
+RAIN_AND_SNOW_ALTERNATE          = Очікується дощ і сніг.
+RAIN_IS_POSSIBLE                 = Очікується дощ.
+SNOW_IS_FALLING                  = Обережно на дорогах; сніг може спричинити ожеледицю.
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = Температура коливатиметься від %MINTEMPERATURE% до %MAXTEMPERATURE%°C.
+TEMPERATURE_IS_CONSTANT_AT_X     = Температура залишиться на рівні %TEMPERATURE%°C.
+
+IN_THE_LATER_HOURS1                       = Пізніше протягом дня
+IN_THE_LATER_HOURS2                       = Після світанку
+IN_THE_LATER_HOURS3                       = Потім пізніше
+STORMY_WINDS_OF_UP_TO_X1                  = Пориви вітру до %MAXWINDVELOCITY% км/год охоплять країну.
+STORMY_WINDS_OF_UP_TO_X2                  = Сильний вітер або навіть пориви до %MAXWINDVELOCITY% км/год.
+NEARLY_NO_WIND1                           = Майже безвітряно.
+NEARLY_NO_WIND2                           = Практично без вітру.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Легкий вітерець %MINWINDVELOCITY% км/год з окремими поривами до %MAXWINDVELOCITY% км/год.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1      = Швидкість вітру між %MINWINDVELOCITY% та %MAXWINDVELOCITY% км/год.
+WIND_VELOCITY_IS_CONSTANT_AT_X1           = Швидкість вітру залишиться близько %WINDVELOCITY% км/год.
+
+
+SCORE_POINT  = бал
+SCORE_POINTS = бали
+
+SPORT_ICEHOCKEY = Хокей
+SPORT_SOCCER    = Футбол
+
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = перемога, завдяки ${.self:"sportteam":0:"member":"forward":"fullname"}, проти
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = перемога, завдяки ${.self:"sportteam":0:"member":"forward":"fullname"}, проти
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поразка
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поразка
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = здобули перемогу
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = здобули перемогу
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = перемогли з рахунком %MATCHSCORE1TEXT% проти
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = перемогли з рахунком %MATCHSCORE1TEXT% проти
+
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} втратили гру та подарували ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} супернику
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} втратили гру та подарували ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} супернику
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} зазнали невдачі проти
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} зазнали невдачі проти
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поступилися з рахунком ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} супернику
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поступилися з рахунком ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} супернику
+
+SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = - після ${.self:"sportmatch":"playtimeminutes"} хвилин непевної гри -
+SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = - після ${.self:"sportmatch":"playtimeminutes"} хвилин тактичної гри -
+SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = - після ${.self:"sportmatch":"playtimeminutes"} хвилин напруженого поєдинку -
+
+SPORT_TEAMREPORT_MATCHWIN_S1 = перемога, завдяки ${.self:"sportteam":0:"member":"forward":"fullname"}, проти
+SPORT_TEAMREPORT_MATCHWIN_P1 = перемога, завдяки ${.self:"sportteam":0:"member":"forward":"fullname"}, проти
+SPORT_TEAMREPORT_MATCHWIN_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поразка
+SPORT_TEAMREPORT_MATCHWIN_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поразка
+SPORT_TEAMREPORT_MATCHWIN_S3 = підкорили
+SPORT_TEAMREPORT_MATCHWIN_P3 = підкорили
+SPORT_TEAMREPORT_MATCHWIN_S4 = перемогли %MATCHSCORE1TEXT% проти
+SPORT_TEAMREPORT_MATCHWIN_P4 = перемогли %MATCHSCORE1TEXT% проти
+
+SPORT_TEAMREPORT_MATCHDRAW_S1 = не змогли виграти ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
+SPORT_TEAMREPORT_MATCHDRAW_P1 = не змогли виграти ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
+SPORT_TEAMREPORT_MATCHDRAW_S2 = нічия проти
+SPORT_TEAMREPORT_MATCHDRAW_P2 = нічия проти
+SPORT_TEAMREPORT_MATCHDRAW_S3 = отримали ${.self:"sportmatch":"drawgamescore"} ${.neq:${.self:"sportmatch":"drawgamescore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
+SPORT_TEAMREPORT_MATCHDRAW_P3 = отримали ${.self:"sportmatch":"drawgamescore"} ${.neq:${.self:"sportmatch":"drawgamescore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
+
+SPORT_TEAMREPORT_MATCHLOOSE_S1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} подарували ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} противнику
+SPORT_TEAMREPORT_MATCHLOOSE_P1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} подарували ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} противнику
+SPORT_TEAMREPORT_MATCHLOOSE_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} зганьбилися проти
+SPORT_TEAMREPORT_MATCHLOOSE_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} зганьбилися проти
+SPORT_TEAMREPORT_MATCHLOOSE_S3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} віддали ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} противнику
+SPORT_TEAMREPORT_MATCHLOOSE_P3 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} віддали ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} противнику
+
+SPORT_TEAMREPORT_MATCHKIND1 = заслужено
+SPORT_TEAMREPORT_MATCHKIND2 = незаслужено
+SPORT_TEAMREPORT_MATCHKIND3 = - після виснажливих ${.self:"sportmatch":"playtimeminutes"} хвилин -
+SPORT_TEAMREPORT_MATCHKIND4 = - у неймовірному видовищі -
+SPORT_TEAMREPORT_MATCHKIND5 = - у напруженому матчі -
+SPORT_TEAMREPORT_MATCHKIND6 = - на розпроданому стадіоні -
+SPORT_TEAMREPORT_MATCHKIND7 = - перед повною аудиторією -
+SPORT_TEAMREPORT_MATCHKIND8 = - перед захопленими фанатами -
+SPORT_TEAMREPORT_MATCHKIND9 = - перед шаленими вболівальниками -
+SPORT_TEAMREPORT_MATCHKIND11 = - майже без глядачів -
+SPORT_TEAMREPORT_MATCHKIND12 = - у переповненому стадіоні -
+SPORT_TEAMREPORT_MATCHRESULT = ${.ucfirst:"${.self:"sportteam":0:"teamnamewitharticle"}"} ${.self:"sportmatch":"resulttext"} ${.self:"sportteam":1:"teamnamewitharticle":2} ${.self:"sportmatch":"finalscoretext"}.
+##Variant A = "_der_ FC gewinnt"
+##Variant B = "besiegt _den_ FC"
+SPORT_TEAMNAME_S_VARIANT_A =
+SPORT_TEAMNAME_S_VARIANT_B =
+SPORT_TEAMNAME_P_VARIANT_A =
+SPORT_TEAMNAME_P_VARIANT_B =
