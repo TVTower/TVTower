@@ -194,9 +194,9 @@ Function GetMainJob:Int(person:TPersonBase)
 		Local tmpJobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
 		If Not person.HasJob(tmpJobID) Then Continue
 		Local exp:Int = pd.GetJobExperience(tmpJobID)
-		'polititions etc. stay keep their "job"
+		'polititians etc. stay keep their "job"
 		'TODO musicians may be a problem, due to experience change they become actors....
-		If exp > jobExp Or (jobIndex > 128 And mainJobID <=128)
+		If exp > jobExp Or (jobIndex > 128 And mainJobID <= 128)
 			mainJobID = tmpJobID
 			jobExp = exp
 		EndIf
