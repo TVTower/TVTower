@@ -909,13 +909,11 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 			EndIf
 		EndIf
 
-		'TODO determine person's main job for fame
-		'same job should be used for displaying in supermarket AND job selection combobox
 		Local mainJob:Int = 0
-		
+		If person Then mainJob = GetMainJob(person)
+
 		'the more "fame" a person has, the more likely it has some
 		'popularity
-		'TODO overall fame, use highest(weighted...)
 		local fame:Float = GetAttributeValue(TVTPersonPersonalityAttribute.FAME, mainJob, 0)
 
 		if popularityValue = -1000 then popularityValue = BiasedRandRange(-10, 20, fame)
