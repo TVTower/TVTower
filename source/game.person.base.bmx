@@ -1227,7 +1227,7 @@ private
 					SetAffinityObject(result, jobID, genreID)
 					result.SetRandom(0.25)
 				EndIf
-				return result
+				Return result
 			EndIf
 		EndIf
 		Return Null
