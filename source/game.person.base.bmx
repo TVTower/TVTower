@@ -1148,9 +1148,8 @@ private
 				genreID = 0
 			'Case TVTPersonPersonalityAttribute.APPEARANCE 'potentially genre cluster specific
 			Case TVTPersonPersonalityAttribute.FAME
-				'TODO job cluster specific
-				'actually when the job is guest, the maximum fame for all (other) jobs could/should be used
-				'but this information is not available here. Clustering would have to be done elsewhere
+				'fame for guest should have been replaced by main job on calling already in most cases
+				'this information is not available here
 				If jobID = TVTPersonJob.GUEST Then jobID = 0
 				genreID = 0
 			Default
