@@ -1197,14 +1197,24 @@ private
 
 
 	Method GetAffinityObject:TRangedFloat(jobID:Int = 0, genreID:Int = 0)
-		if jobID <= 0 and genreID <= 0
+		If jobID <= 0 And genreID <= 0
 			Return affinityPool
-		else
-			if other 
+		ElseIf jobID > 0 And genreID > 0
+			Throw "specific affinity only for job OR gerne"
+		Else
+			If jobID = TVTPersonJob.SUPPORTINGACTOR Then jobId = TVTPersonJob.ACTOR
+			If jobID = TVTPersonJob.REPORTER Then jobId = TVTPersonJob.HOST
+			If other
 				Local key:Long = _GetKey(1, 0, jobID, genreID)
-				Return TRangedFloat( other.ValueForKey(key) )
+				Local result:TRangedFloat = TRangedFloat( other.ValueForKey(key))
+				If Not result
+					result = affinityPool.Copy()
+					SetAffinityObject(result, jobID, genreID)
+					result.SetRandom(0.25)
+				EndIf
+				return result
 			EndIf
-		endif
+		EndIf
 		Return Null
 	End Method
 
@@ -1425,12 +1435,11 @@ public
 
 	'AFFINITY
 
-	Method HasAffinity:Int(jobID:Int = 0, genreID:Int = 0)
-		Return GetAffinityObject(jobID, genreID) <> Null
+	Method HasAffinity:Int()
+		Return GetAffinityObject(0, 0) <> Null
 	End Method
 
 
-	'TODO set affinity for job and genre separately
 	Method SetAffinity(value:Float, jobID:Int = 0, genreID:Int = 0)
 		local a:TRangedFloat = GetAffinityObject(jobID, genreID)
 		If Not a 
@@ -1439,7 +1448,7 @@ public
 		EndIf
 		a.Set(value)
 	End Method
-	
+
 
 	Method GetAffinity:Float(jobID:Int = 0, genreID:Int = 0)
 		'if job and genre are not set, the "generic" skill is requested
@@ -1450,42 +1459,22 @@ public
 			Return affinityPool.Get()
 		EndIf
 
-		'TODO no combined attribute - simply average of job and genre affinity
-
-		'do we have a individual value?
-		Local combinedAttribute:TRangedFloat = GetAffinityObject(jobID, genreID)
 		Local jobAttribute:TRangedFloat = GetAffinityObject(jobID, 0)
 		Local genreAttribute:TRangedFloat = GetAffinityObject(0, genreID)
-		
-		If combinedAttribute
-			'by default combined ones should only exist, if the individual
-			'ones are set - but maybe something defined only a combination
-			'(eg. some very rare talent...)
-			If jobAttribute And genreAttribute
-				'could be job/genre specific genre
-				'returns up to 1.0 as affinity
-		 		Return Min(1.0, combinedAttribute.Get() + 0.15 * jobAttribute.Get() + 0.15 * genreAttribute.Get())
-		 	Else
-				Return combinedAttribute.Get()
-			EndIf
-		Else
-			Local jobValue:Float = 0
-			Local genreValue:Float = 0
-			If jobAttribute then jobValue = jobAttribute.Get()
-			If genreAttribute then genreValue = genreAttribute.Get()
 
-			'if never done this results in 25% of the "unused" affinity
-			'(which we then later take from "unused" to "combined")
-			Return 0.25 * affinityPool.Get() + 0.15 * jobValue + 0.15 * genreValue
-		EndIf
+		Local jobValue:Float = 0
+		Local genreValue:Float = 0
+		If jobAttribute then jobValue = jobAttribute.Get()
+		If genreAttribute then genreValue = genreAttribute.Get()
+		Return (jobValue + genreValue)/2.0
 	End Method
-	
-	
-	Method RandomizeAffinity(jobID:Int = 0, genreID:Int = 0)
-		Local t:TRangedFloat = GetAffinityObject(jobID, genreID)
+
+
+	Method RandomizeAffinity()
+		Local t:TRangedFloat = GetAffinityObject(0, 0)
 		If not t
 			t = new TRangedFloat
-			SetAffinityObject(t, jobID, genreID)
+			SetAffinityObject(t, 0, 0)
 		EndIf
 
 		t.SetRandomMin(0.05, 0.15).SetRandomMax(0.60, 0.85, 0.2).SetRandom(0.25)
