@@ -1188,7 +1188,11 @@ endrem
 			local genreID:Int = script.GetMainGenre()
 			local personFameMod:Float = 1.0
 
-			personFameMod :+ 0.75 * person.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genreID)
+			If jobID = TVTPersonJob.GUEST
+				personFameMod :+ 0.75 * person.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, GetMainJob(person), genreID)
+			Else
+				personFameMod :+ 0.75 * person.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genreID)
+			EndIf
 			'really experienced persons benefit from it too (eg.
 			'won awards and so on)
 			personFameMod :+ 0.25 * person.GetEffectiveJobExperiencePercentage(jobID)
