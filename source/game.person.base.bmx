@@ -1481,7 +1481,13 @@ public
 		Local genreValue:Float = 0
 		If jobAttribute then jobValue = jobAttribute.Get()
 		If genreAttribute then genreValue = genreAttribute.Get()
-		Return (jobValue + genreValue)/2.0
+		If jobID = 0
+			Return genreValue
+		ElseIf genreID = 0
+			Return jobValue
+		Else
+			Return (jobValue + genreValue) / 2.0
+		EndIf
 	End Method
 
 
