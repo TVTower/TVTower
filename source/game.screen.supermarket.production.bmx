@@ -2976,24 +2976,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 			Local firstJobID:Int = -1
 			Local genreText:String = ""
 			If not showAmateurInformation
-				'TODO extract "best job" to person
-				Local jobExp:Int=-1
-				'do not show first job but "topJob"
-				Local pd:TPersonProductionData=TPersonProductionData(person.GetProductionData())
-'				print person.getFullName() + " "+jobId +" "+pd.GetJobExperience(jobId)
-				For Local jobIndex:Int = 1 To TVTPersonJob.Count
-					Local tmpJobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
-					If Not person.HasJob(tmpJobID) Then Continue
-					Local exp:Int = pd.GetJobExperience(tmpJobID)
-					'polititions etc. stay keep their "job"
-					'TODO musicians are a problem, due to experience change they become actors....
-					If exp > jobExp Or (jobIndex > 128 And firstJobID <=128)
-						firstJobID = tmpJobID
-						jobExp = exp
-					EndIf
-'					Exit
-				Next
-'				print "   "+firstJobID+" "+ person.getJobsDone(firstJobID) +" "+jobExp
+				firstJobID = GetMainJob(person)
 				Local genre:Int = 0
 				if person.GetProductionData() 
 					genre = person.GetProductionData().GetTopGenre()

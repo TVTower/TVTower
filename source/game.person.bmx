@@ -186,6 +186,25 @@ Function EnsureEnoughCastableCelebritiesPerJob:Int(amount:int, baseCountryCode:S
 End Function
 
 
+Function GetMainJob:Int(person:TPersonBase)
+	Local mainJobID:Int = -1
+	Local jobExp:Int=-1
+	Local pd:TPersonProductionData=TPersonProductionData(person.GetProductionData())
+	For Local jobIndex:Int = 1 To TVTPersonJob.Count
+		Local tmpJobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
+		If Not person.HasJob(tmpJobID) Then Continue
+		Local exp:Int = pd.GetJobExperience(tmpJobID)
+		'polititions etc. stay keep their "job"
+		'TODO musicians may be a problem, due to experience change they become actors....
+		If exp > jobExp Or (jobIndex > 128 And mainJobID <=128)
+			mainJobID = tmpJobID
+			jobExp = exp
+		EndIf
+	Next
+	Return mainJobID
+End Function
+
+
 
 
 Type TXPContainer_Job extends TXPContainer
@@ -510,8 +529,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 6500 * attributeMod
 
 			Case TVTPersonJob.GUEST
-				'TODO highest fame value should be used
-				'job experience as guest does not matter but overall job experience?
+				fame = p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME, getMainJob(getPerson()), genre)
 
 				'attributes: 0 - 1.9
 				Local attributeMod:Float
@@ -531,7 +549,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				dynamicFee = 9000 * attributeMod
 
 				'higher fame influence of price for guests
-				experienceModifier = 0.4 * experienceModifier +  0.4 * fame + 0.2* scandalizing
+				experienceModifier = 0.4 * experienceModifier +  0.4 * fame + 0.2 * scandalizing
 			Default
 
 				'print "FEE for jobID="+jobID+" not defined."
