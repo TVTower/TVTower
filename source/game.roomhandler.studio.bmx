@@ -135,8 +135,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGUIStudioScript") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConcept, "TGuiProductionConceptListItem") ]
-		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGUIStudioScript") ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -290,29 +288,16 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 	'in case of right mouse button click a dragged script is
 	'placed at its original spot again
-	Function onClickScript:Int(triggerEvent:TEventBase)
-		If Not CheckPlayerObservedAndInRoom("studio") Then Return False
-
+	Function onClickScriptCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'only react if the click came from the right mouse button
-		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
-
-		Local guiScript:TGUIStudioScript = TGUIStudioScript(triggerEvent._sender)
-		'ignore wrong types and NON-dragged items
-		If Not guiScript Or Not guiScript.isDragged() Then Return False
+		If mouseButton <> 2 Then Return False
+	
+		'ignore NON-dragged items
+		If Not sender Or Not sender.isDragged() Then Return False
 
 		'just drop it to where it came from
-		guiScript.DropBackToOrigin()
+		sender.DropBackToOrigin()
 		
-		'if deleting:
-		rem
-		'remove gui object
-		guiScript.remove()
-		guiScript = Null
-
-		'rebuild at correct spot
-		GetInstance().RefreshGuiElements()
-		endrem
-
 		'avoid clicks
 		'remove right click - to avoid leaving the room
 		MouseManager.SetClickHandled(2)
@@ -657,6 +642,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			'try to fill in our list
 			If guiListStudio.getFreeSlot() >= 0
 				Local block:TGUIStudioScript = New TGUIStudioScript.CreateWithScript(studioScript)
+				block._callbacks_onClick :+ [onClickScriptCallback]
 
 				'change look
 				block.InitAssets(block.getAssetName(-1, False), block.getAssetName(-1, True))
@@ -677,6 +663,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 			If guiListSuitcase.ContainsScript(script) Then Continue
 
 			Local block:TGUIStudioScript = New TGUIStudioScript.CreateWithScript(script)
+			block._callbacks_onClick :+ [onClickScriptCallback]
+
 			'change look
 			block.InitAssets(block.getAssetName(-1, True), block.getAssetName(-1, True))
 

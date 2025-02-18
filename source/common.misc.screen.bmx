@@ -203,9 +203,13 @@ endrem
 	Method DrawCurrent:int(tweenValue:float)
 		if not GetCurrentScreen() then return FALSE
 
-		GetCurrentScreen().draw(tweenValue)
+		GetCurrentScreen().Draw(tweenValue)
 		'trigger event so others can attach
-		TriggerBaseEvent(GameEventKeys.Screen_OnDraw, null, GetCurrentScreen())
+		If GameEventKeys.Screen_OnDraw.listenerCount > 0
+			TriggerBaseEvent(GameEventKeys.Screen_OnDraw, null, GetCurrentScreen())
+		Else
+			GameEventKeys.Screen_OnDraw.callsSkippedCount :+ 1 'for debug information
+		EndIf
 
 		if useChangeEffects
 			'handle screen change effects (LEAVE) for current screen
@@ -221,7 +225,7 @@ endrem
 		endif
 
 		'draw things on top of everything - eg an ingame interface
-		GetCurrentScreen().drawOverlay(tweenValue)
+		GetCurrentScreen().DrawOverlay(tweenValue)
 	End Method
 
 
@@ -259,10 +263,14 @@ endrem
 			endif
 		endif
 
-		GetCurrentScreen().update(deltaTime)
+		GetCurrentScreen().Update(deltaTime)
 
 		'trigger event so others can attach
-		TriggerBaseEvent(GameEventKeys.Screen_OnUpdate, null, GetCurrentScreen())
+		If GameEventKeys.Screen_OnUpdate.listenerCount > 0
+			TriggerBaseEvent(GameEventKeys.Screen_OnUpdate, null, GetCurrentScreen())
+		Else
+			GameEventKeys.Screen_OnUpdate.callsSkippedCount :+ 1 'for debug information
+		EndIf
 	End Method
 
 
@@ -285,6 +293,8 @@ Type TScreen
 	Field parentScreen:TScreen = null
 	Field _enterScreenEffect:TScreenChangeEffect = null
 	Field _leaveScreenEffect:TScreenChangeEffect = null
+	Field _callbacks_update:Int(sender:TScreen, deltaTime:Float)[]
+	Field _callbacks_draw:Int(sender:TScreen, tweenValue:Float)[]
 	Field state:int = 0
 	Const STATE_NONE:int = 0
 	Const STATE_ENTERING:int = 1
@@ -376,12 +386,11 @@ Type TScreen
 	Method GetSubScreen:TScreen(screenName:string)
 		screenName = lower(screenName)
 		'checking my subs
-		For local key:string = eachin subScreens.Keys()
-			if key = screenName then return TScreen(subScreens.ValueForKey(key))
-		Next
+		Local subScreen:TScreen = TScreen(subScreens.ValueForKey(screenName))
+		If subScreen Then Return subScreen
+
 		'not found? - checking the subs of my subs
 		For local screen:TScreen = eachin subScreens.Values()
-			if not screen then continue
 			local res:TScreen = screen.GetSubScreen(screenName)
 			if res then return res
 		Next
@@ -445,16 +454,84 @@ Type TScreen
 	End Method
 
 
-	Method Update:int(deltaTime:float)
-		'nothing by default
+	Method Update:int(deltaTime:float) Final
+		'Call callbacks before custom screen stuff
+		'(UpdateCustom calls room (of the screen).Update logic which
+		' checks for right clicks to leave the room ... so handle any
+		' "right click resets" like "delete dragged item" before.
+		' This is like with widgets to identify a click: the uppermost
+		' has to be checked first)
+		For Local i:Int = 0 until _callbacks_update.length
+			_callbacks_update[i](self, deltaTime)
+		Next
+
+		UpdateCustom(deltaTime)
 	End Method
 
-	Method Draw:int(tweenValue:float=1.0)
-		'nothing by default
+	
+	Method UpdateCustom:Int(deltatime:Float)
+		'nothing by default, extend for custom stuff
 	End Method
+
+
+	Method Draw:int(tweenValue:float=1.0) Final
+		DrawCustom(tweenValue)
+
+		For Local i:Int = 0 until _callbacks_draw.length
+			_callbacks_draw[i](self, tweenValue)
+		Next
+	End Method
+
+
+	Method DrawCustom:int(tweenValue:float=1.0)
+		'nothing by default, extend for custom stuff
+	End Method
+
 
 	Method DrawOverlay:int(tweenValue:float=1.0)
 		'nothing by default
+	End Method
+	
+	
+	' === CALLBACK HELPERS ===
+	' NOT THREAD-SAFE (not intended to be used from Subthreads!)
+	' we could now use a mutex to check things but this should not be necessary
+	
+	Method AddUpdateCallback:Int(cb:Int(sender:TScreen, deltaTime:Float))
+		For Local i:Int = 0 until _callbacks_update.length
+			if _callbacks_update[i] = cb then Return False
+		Next
+		_callbacks_update :+ [cb]
+
+		Return True
+	End Method
+
+	Method RemoveUpdateCallback:Int(cb:Int(sender:TScreen, deltaTime:Float))
+		For Local i:Int = 0 until _callbacks_update.length
+			if _callbacks_update[i] = cb 
+				_callbacks_update = _callbacks_update[.. i] + _callbacks_update[i + 1 ..] 
+				Return True
+			EndIf
+		Next
+		Return False
+	End Method
+
+	Method AddDrawCallback:Int(cb:Int(sender:TScreen, tweenValue:Float))
+		For Local i:Int = 0 until _callbacks_draw.length
+			if _callbacks_draw[i] = cb then Return False
+		Next
+		_callbacks_draw :+ [cb]
+		Return True
+	End Method
+
+	Method RemoveDrawCallback:Int(cb:Int(sender:TScreen, tweenValue:Float))
+		For Local i:Int = 0 until _callbacks_draw.length
+			if _callbacks_draw[i] = cb 
+				_callbacks_draw = _callbacks_draw[.. i] + _callbacks_draw[i + 1 ..] 
+				Return True
+			EndIf
+		Next
+		Return False
 	End Method
 End Type
 
