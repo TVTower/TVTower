@@ -77,8 +77,6 @@ Type TFigure extends TFigureBase
 
 	'the door used (there might be multiple)
 	Field usedDoor:TRoomDoorBase = Null
-	'coming from room
-	Field fromRoom:TRoomBase = Null
 	'going to room
 	Field inRoom:TRoomBase = Null
 	
@@ -589,9 +587,6 @@ Type TFigure extends TFigureBase
 	'player is now in room "room"
 	Method SetInRoom:Int(room:TRoomBase)
 		If room and not room.IsOccupant(self) then room.addOccupant(Self)
-
-		'backup old room as origin
-		fromRoom = inRoom
 
 		'set new room
 	 	inRoom = room

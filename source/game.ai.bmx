@@ -281,12 +281,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	EndRem
 
 	Method _PlayerInRoom:Int(roomname:String) {_private}
-		'If checkFromRoom
-			'from room has to be set AND inroom <> null (no building!)
-		'	GetPlayer(Self.ME).isComingFromRoom(roomname) and GetPlayer(Self.ME).isInRoom()
-		'Else
-			Return GetPlayerBase(Self.ME).isInRoom(roomname)
-		'EndIf
+		Return GetPlayerBase(Self.ME).isInRoom(roomname)
 	End Method
 
 
