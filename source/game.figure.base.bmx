@@ -468,7 +468,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method MoveToCurrentTarget:int()
 		if not GetTarget() then return False
 
-		area.SetXY( GetTargetMoveToPosition() )
+		area.SetXY( GetMoveToPosition() )
 	End Method
 
 
@@ -541,16 +541,16 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
-	Method GetTargetMoveToPosition:SVec2I()
-		local target:TFigureTargetBase = GetTarget()
-		if not target then return new SVec2I(-1000,-1000)
+	Method GetMoveToPosition:SVec2I(target:TFigureTargetBase = Null)
+		If Not target Then target = GetTarget()
+		If Not target Then Return New SVec2I(-1000,-1000)
 
 		return target.GetMoveToPosition()
 	End Method
 
 
 	Method IsAtCurrentTarget:int()
-		Return area.IsSamePosition(GetTargetMoveToPosition())
+		Return area.IsSamePosition(GetMoveToPosition())
 	End Method
 
 
@@ -569,7 +569,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		Local target:TFigureTargetBase = GetTarget()
 		if target
 			'set target as current position - so we are exactly there we want to be
-			local targetPosition:SVec2I = GetTargetMoveToPosition()
+			local targetPosition:SVec2I = GetMoveToPosition()
 			if targetPosition.x <> -1000 and targetPosition.y <> -1000 then area.setX( targetPosition.x )
 		EndIf
 
@@ -792,7 +792,14 @@ Type TFigureTargetBase
 
 
 	Method GetMoveToPosition:SVec2I()
-		if TVec2D(targetObj) then return new SVec2I(int(TVec2D(targetObj).x), int(TVec2D(targetObj).y))
-		return new SVec2I(-1000,-1000)
+		Return GetMoveToPosition(targetObj)
 	End Method
+
+
+	Function GetMoveToPosition:SVec2I(target:object)
+		If TVec2D(target) 
+			Return New SVec2I(int(TVec2D(target).x), int(TVec2D(target).y))
+		EndIf
+		Return New SVec2I(-1000,-1000)
+	End Function
 End Type

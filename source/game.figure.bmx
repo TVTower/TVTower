@@ -153,14 +153,6 @@ Type TFigure extends TFigureBase
 		if inRoom and not inRoom.isOccupant(self)
 			inRoom.addOccupant(Self)
 		endif
-
-		'convert old targets
-		for local target:object = eachin targets
-			SetTarget( new TFigureTarget.Init(target) )
-		Next
-		'reset - so they are no longer in new savegames (ready to get
-		'deleted later on)
-		targets = null
 	End Method
 
 
@@ -192,7 +184,7 @@ Type TFigure extends TFigureBase
 
 	Method HasToChangeFloor:Int()
 		if not GetTarget() then return FALSE
-		Return GetFloor( GetTargetMoveToPosition().y ) <> GetFloor()
+		Return GetFloor( GetMoveToPosition().y ) <> GetFloor()
 	End Method
 
 
@@ -260,7 +252,7 @@ Type TFigure extends TFigureBase
 	Method IsInFrontOfTarget:int()
 		if not HasToChangeFloor() and GetTarget()
 			'get target coordinate
-			Local targetX:Int = GetTargetMoveToPosition().x
+			Local targetX:Int = GetMoveToPosition().x
 
 			'we stand in front of the target -> reach target!
 			if GetVelocity().x = 0 and abs(area.getX() - targetX) < 1.0
@@ -285,7 +277,7 @@ Type TFigure extends TFigureBase
 			'or target acquired without moving)
 			local reachTemporaryTarget:int = FALSE
 			'get a temporary target coordinate so we can manipulate that safely
-			Local targetX:Int = GetTargetMoveToPosition().x
+			Local targetX:Int = GetMoveToPosition().x
 			'do we have to change the floor?
 			'if that is the case - change temporary target to elevator
 			If HasToChangeFloor() Then targetX = GetElevator().GetDoorCenterX()
@@ -411,11 +403,10 @@ Type TFigure extends TFigureBase
 			'show the backside if at elevator to change floor
 			If hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
 				result = "standBack"
-			'not moving but wants to go to somewhere (also show back if
-			'room is used and enter not possible "for now".
-			ElseIf currentAction = ACTION_ENTERING or IsInFrontOfTarget()
-				result = "standBack"
-			'planning to enter a room
+			'a) planning to enter a room
+			'b) not moving but wants to go to somewhere (also show back 
+			'   if room is used and enter not possible "for now").
+			'   Also avoids "front back front"-alternation of figures
 			ElseIf currentAction = ACTION_ENTERING or IsInFrontOfTarget()
 				result = "standBack"
 			'in a room (or standing in front of a fake room - looking at plan)
@@ -537,6 +528,7 @@ Type TFigure extends TFigureBase
 	'override to add support for rooms
 	Method IsInRoom:Int(roomName:String="")
 		If roomName
+			Local _inRoom:TRoomBase = inRoom
 			If inRoom
 				Local name:String = inRoom.GetName()
 				If name.length = roomname.length
@@ -1107,25 +1099,11 @@ Type TFigure extends TFigureBase
 
 	Method GoOnBoardAndSendElevator:Int()
 		if not GetTarget() then return FALSE
-		Local floorOfTargetY:Int = GetFloor(GetTargetMoveToPosition().y)
+		Local floorOfTargetY:Int = GetFloor(GetMoveToPosition().y)
 		If GetElevator().EnterTheElevator(Self, floorOfTargetY)
 			GetElevator().SendElevator(floorOfTargetY, Self)
 		EndIf
 	End Method
-
-
-	'overridden to add roomdoor/hotspot
-	'returns the coordinate the figure has to walk to, to reach that
-	'target
-	Method GetTargetMoveToPosition:SVec2I()
-		return GetMoveToPosition( GetTarget() )
-	End Method
-
-
-	Function GetMoveToPosition:SVec2I(target:TFigureTargetBase = null)
-		if not target then return new SVec2I(-1000,-1000)
-		return target.GetMoveToPosition()
-	End Function
 
 
 	'overridden
@@ -1180,7 +1158,7 @@ Type TFigure extends TFigureBase
 		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
 		if targetedDoor
 			'move to this door
-			newTargetCoord = TFigureTarget.GetTargetMoveToPosition(targetedDoor)
+			newTargetCoord = TFigureTarget.GetMoveToPosition(targetedDoor)
 			
 			'only go into the room if we were able to target it from our
 			'source position
@@ -1230,9 +1208,9 @@ Type TFigure extends TFigureBase
 			'new target and current target are the same
 			if newTarget = GetTargetObject() then return False
 			'new target and current target coordinates are at the same?
-			if TVec2D(newTarget) and TVec2D(newTarget).IsSame( GetTargetMoveToPosition() ) then return False
+			if TVec2D(newTarget) and TVec2D(newTarget).IsSame( GetMoveToPosition() ) then return False
 
-			'print playerID+": targets are different " + TVec2D(newTarget).x+","+TVec2D(newTarget).y+" vs " + GetTargetMoveToPosition().x+","+GetTargetMoveToPosition().y
+			'print playerID+": targets are different " + TVec2D(newTarget).x+","+TVec2D(newTarget).y+" vs " + GetMoveToPosition().x+","+GetMoveToPosition().y
 		endif
 
 
@@ -1355,7 +1333,7 @@ Type TFigure extends TFigureBase
 				EndIf
 
 				If IsInElevator() and GetElevator().ReadyForBoarding
-					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMoveToPosition().y))
+					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetMoveToPosition().y))
 						GetElevator().LeaveTheElevator(Self)
 					EndIf
 				EndIf
@@ -1444,22 +1422,17 @@ Type TFigureTarget extends TFigureTargetBase
 	End Method
 
 
-	Function GetTargetMoveToPosition:SVec2I(target:object)
-		if TVec2D(target)
-			return new SVec2I(int(TVec2D(target).x), int(TVec2D(target).y))
-		elseif TRoomDoorBase(target)
+	Function GetMoveToPosition:SVec2I(target:object)
+		If TVec2D(target) 
+			Return New SVec2I(int(TVec2D(target).x), int(TVec2D(target).y))
+		ElseIf TRoomDoorBase(target)
 			Local door:TRoomDoorBase = TRoomDoorBase(target)
-			return new SVec2I(Int(door.area.x + door.area.w/2 + door.stopOffset), Int(door.area.y))
-		elseif THotspot(target)
+			Return New SVec2I(Int(door.area.x + door.area.w/2 + door.stopOffset), Int(door.area.y))
+		ElseIf THotspot(target)
 			Local hotspot:THotspot = THotspot(target)
 			'attention: return GetY2() (bottom point) as this is used for figures too
-			return new SVec2I(Int(hotspot.area.x + hotspot.area.w/2), Int(hotspot.area.GetY2()))
-		endif
-		return new SVec2I(-1000,-1000)
+			Return New SVec2I(Int(hotspot.area.x + hotspot.area.w/2), Int(hotspot.area.GetY2()))
+		EndIf
+		Return New SVec2I(-1000,-1000)
 	End Function
-
-
-	Method GetMoveToPosition:SVec2I()
-		return TFigureTarget.GetTargetMoveToPosition( targetObj )
-	End Method
 End Type
