@@ -476,10 +476,12 @@ endrem
 
 
 	Method ResetObjectsUsedInLua()
-		'no mutex required as we simply assign a new array
-		'(so stuff working on the old array can continue doing so ...)
+		LockMutex(_objectsUsedInLuaMutex)
+
 		objectsUsedInLuaCount = 0
 		objectsUsedInLua = new object[0]
+
+		UnlockMutex(_objectsUsedInLuaMutex)
 	End Method
 
 
