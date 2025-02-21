@@ -174,14 +174,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'0=no boarding, 1=boarding, -1=deboarding
 	Field boardingState:Int = 0
 
-	'deprecated: just in there for savegame compatibility (might contain
-	'            references)
-	Field targets:object[]
 	'could contain
 	'- TVec2D: simple position
 	'- TRoomDoorBase: a room door
 	'- THotspot: a hotspot
 	Field figureTargets:TFigureTargetBase[]
+	Field figureTargetsMutex:TMutex = CreateMutex() {nosave}
 	'indicator whether the current target was reached already (eg. it is
 	'still waiting to enter a room)
 	Field currentReachTargetStep:int = 0
@@ -407,61 +405,101 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method GetTarget:TFigureTargetBase()
-		if figureTargets.length = 0 then return Null
-		return figureTargets[0]
+		Local target:TFigureTargetBase
+
+		LockMutex(figureTargetsMutex)
+			if figureTargets.length
+				target = figureTargets[0]
+			EndIf
+		UnlockMutex(figureTargetsMutex)
+
+		Return target
 	End Method
 
 
 	Method GetTargetObject:object()
-		if figureTargets.length > 0 and figureTargets[0]
-			return figureTargets[0].targetObj
-		endif
-		return null
+		Local targetObj:Object
+
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length > 0 And figureTargets[0]
+				targetObj = figureTargets[0].targetObj
+			EndIf
+		UnlockMutex(figureTargetsMutex)
+		
+		Return targetObj
 	End Method
 
 
 	'add a target AFTER all others
 	Method AddTarget(target:TFigureTargetBase)
-		figureTargets :+ [target]
+		If Not target Then Return
+		
+		LockMutex(figureTargetsMutex)
+			figureTargets :+ [target]
+		UnlockMutex(figureTargetsMutex)
+	End Method
+
+
+	Method ClearTargets:int()
+		LockMutex(figureTargetsMutex)
+			figureTargets = new TFigureTargetBase[0]
+		UnlockMutex(figureTargetsMutex)
 	End Method
 
 
 	'sets the current target, removes all other targets
 	Method SetTarget(target:TFigureTargetBase)
-		ClearTargets()
-		AddTarget(target)
+		'remove a previous current target first!
+		RemoveCurrentTarget()
+		
+		LockMutex(figureTargetsMutex)
+			If Not target 
+				figureTargets = new TFigureTargetBase[0]
+			Else
+				figureTargets = [target]
+			EndIf
+		UnlockMutex(figureTargetsMutex)
 	End Method
 
 
 	Method PrependTarget(target:TFigureTargetBase)
-		figureTargets = [target] + figureTargets
+		LockMutex(figureTargetsMutex)
+			figureTargets = [target] + figureTargets
+		UnlockMutex(figureTargetsMutex)
 	End Method
 
 
 	Method RemoveCurrentTarget:int()
-		if figureTargets.length = 0 then return False
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length and figureTargets[0] 
+				'inform target
+				figureTargets[0].Abort(self)
+				'actually remove it
+				figureTargets = figureTargets[1..]
+				
+				result = True
+			EndIf
+		UnlockMutex(figureTargetsMutex)
 
-		'inform target
-		if figureTargets[0] then figureTargets[0].Abort(self)
-
-		figureTargets = figureTargets[1..]
-		return True
+		Return result
 	End Method
 
 
 	Method FinishCurrentTarget:int()
-		if figureTargets.length = 0 then return False
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length And figureTargets[0] 
+				'inform target
+				figureTargets[0].Finish(self)
+				'actually remove it
+				figureTargets = figureTargets[1..]
+				
+				result = True
+			EndIf
+		UnlockMutex(figureTargetsMutex)
 
-		'inform target
-		if figureTargets[0] then figureTargets[0].Finish(self)
-
-		figureTargets = figureTargets[1..]
-		return True
-	End Method
-
-
-	Method ClearTargets:int()
-		figureTargets = new TFigureTargetBase[0]
+		Return result
 	End Method
 
 
@@ -591,8 +629,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'reset current step to 0 so figure can call step 1 again
 		currentReachTargetStep = 0
 
-		if not GetTarget() then print "ReachingTargetStep2 - WITHOUT target. Figure="+name
 		local targetBackup:TFigureTargetBase = GetTarget()
+		if not targetBackup then print "ReachingTargetStep2 - WITHOUT target. Figure="+name
 
 		'finish and remove target
 		FinishCurrentTarget()
