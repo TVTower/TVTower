@@ -174,14 +174,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'0=no boarding, 1=boarding, -1=deboarding
 	Field boardingState:Int = 0
 
-	'deprecated: just in there for savegame compatibility (might contain
-	'            references)
-	Field targets:object[]
 	'could contain
 	'- TVec2D: simple position
 	'- TRoomDoorBase: a room door
 	'- THotspot: a hotspot
 	Field figureTargets:TFigureTargetBase[]
+	Field figureTargetsMutex:TMutex = CreateMutex() {nosave}
 	'indicator whether the current target was reached already (eg. it is
 	'still waiting to enter a room)
 	Field currentReachTargetStep:int = 0
@@ -407,68 +405,108 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method GetTarget:TFigureTargetBase()
-		if figureTargets.length = 0 then return Null
-		return figureTargets[0]
+		Local target:TFigureTargetBase
+
+		LockMutex(figureTargetsMutex)
+			if figureTargets.length
+				target = figureTargets[0]
+			EndIf
+		UnlockMutex(figureTargetsMutex)
+
+		Return target
 	End Method
 
 
 	Method GetTargetObject:object()
-		if figureTargets.length > 0 and figureTargets[0]
-			return figureTargets[0].targetObj
-		endif
-		return null
+		Local targetObj:Object
+
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length > 0 And figureTargets[0]
+				targetObj = figureTargets[0].targetObj
+			EndIf
+		UnlockMutex(figureTargetsMutex)
+		
+		Return targetObj
 	End Method
 
 
 	'add a target AFTER all others
 	Method AddTarget(target:TFigureTargetBase)
-		figureTargets :+ [target]
+		If Not target Then Return
+		
+		LockMutex(figureTargetsMutex)
+			figureTargets :+ [target]
+		UnlockMutex(figureTargetsMutex)
+	End Method
+
+
+	Method ClearTargets:int()
+		LockMutex(figureTargetsMutex)
+			figureTargets = new TFigureTargetBase[0]
+		UnlockMutex(figureTargetsMutex)
 	End Method
 
 
 	'sets the current target, removes all other targets
 	Method SetTarget(target:TFigureTargetBase)
-		ClearTargets()
-		AddTarget(target)
+		'remove a previous current target first!
+		RemoveCurrentTarget()
+		
+		LockMutex(figureTargetsMutex)
+			If Not target 
+				figureTargets = new TFigureTargetBase[0]
+			Else
+				figureTargets = [target]
+			EndIf
+		UnlockMutex(figureTargetsMutex)
 	End Method
 
 
 	Method PrependTarget(target:TFigureTargetBase)
-		figureTargets = [target] + figureTargets
+		LockMutex(figureTargetsMutex)
+			figureTargets = [target] + figureTargets
+		UnlockMutex(figureTargetsMutex)
 	End Method
 
 
 	Method RemoveCurrentTarget:int()
-		if figureTargets.length = 0 then return False
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length and figureTargets[0] 
+				'inform target
+				figureTargets[0].Abort(self)
+				'actually remove it
+				figureTargets = figureTargets[1..]
+				
+				result = True
+			EndIf
+		UnlockMutex(figureTargetsMutex)
 
-		'inform target
-		if figureTargets[0] then figureTargets[0].Abort(self)
-
-		figureTargets = figureTargets[1..]
-		return True
+		Return result
 	End Method
 
 
 	Method FinishCurrentTarget:int()
-		if figureTargets.length = 0 then return False
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length And figureTargets[0] 
+				'inform target
+				figureTargets[0].Finish(self)
+				'actually remove it
+				figureTargets = figureTargets[1..]
+				
+				result = True
+			EndIf
+		UnlockMutex(figureTargetsMutex)
 
-		'inform target
-		if figureTargets[0] then figureTargets[0].Finish(self)
-
-		figureTargets = figureTargets[1..]
-		return True
-	End Method
-
-
-	Method ClearTargets:int()
-		figureTargets = new TFigureTargetBase[0]
+		Return result
 	End Method
 
 
 	Method MoveToCurrentTarget:int()
 		if not GetTarget() then return False
 
-		area.SetXY( GetTargetMoveToPosition() )
+		area.SetXY( GetMoveToPosition() )
 	End Method
 
 
@@ -541,16 +579,16 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'returns the coordinate the figure has to walk to, to reach that
 	'target
-	Method GetTargetMoveToPosition:SVec2I()
-		local target:TFigureTargetBase = GetTarget()
-		if not target then return new SVec2I(-1000,-1000)
+	Method GetMoveToPosition:SVec2I(target:TFigureTargetBase = Null)
+		If Not target Then target = GetTarget()
+		If Not target Then Return New SVec2I(-1000,-1000)
 
 		return target.GetMoveToPosition()
 	End Method
 
 
 	Method IsAtCurrentTarget:int()
-		Return area.IsSamePosition(GetTargetMoveToPosition())
+		Return area.IsSamePosition(GetMoveToPosition())
 	End Method
 
 
@@ -569,7 +607,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		Local target:TFigureTargetBase = GetTarget()
 		if target
 			'set target as current position - so we are exactly there we want to be
-			local targetPosition:SVec2I = GetTargetMoveToPosition()
+			local targetPosition:SVec2I = GetMoveToPosition()
 			if targetPosition.x <> -1000 and targetPosition.y <> -1000 then area.setX( targetPosition.x )
 		EndIf
 
@@ -591,8 +629,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'reset current step to 0 so figure can call step 1 again
 		currentReachTargetStep = 0
 
-		if not GetTarget() then print "ReachingTargetStep2 - WITHOUT target. Figure="+name
 		local targetBackup:TFigureTargetBase = GetTarget()
+		if not targetBackup then print "ReachingTargetStep2 - WITHOUT target. Figure="+name
 
 		'finish and remove target
 		FinishCurrentTarget()
@@ -792,7 +830,14 @@ Type TFigureTargetBase
 
 
 	Method GetMoveToPosition:SVec2I()
-		if TVec2D(targetObj) then return new SVec2I(int(TVec2D(targetObj).x), int(TVec2D(targetObj).y))
-		return new SVec2I(-1000,-1000)
+		Return GetMoveToPosition(targetObj)
 	End Method
+
+
+	Function GetMoveToPosition:SVec2I(target:object)
+		If TVec2D(target) 
+			Return New SVec2I(int(TVec2D(target).x), int(TVec2D(target).y))
+		EndIf
+		Return New SVec2I(-1000,-1000)
+	End Function
 End Type

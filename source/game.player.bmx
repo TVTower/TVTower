@@ -364,17 +364,6 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method isComingFromRoom:Int(roomName:String="") {_exposeToLua}
-		'check for specified room
-		If roomName <> ""
-			Return GetFigure().fromRoom And GetFigure().fromRoom.GetName().toLower() = roomname.toLower()
-			'just check if we are in a unspecified room
-		Else
-			Return GetFigure().fromRoom <> null
-		Endif
-	End Method
-
-
 	'Damit man GetFinance nicht in Lua verfügbar machen muss
 	Method GetCreditInterest:int() {_exposeToLua}
 		return GetFinance().GetCreditInterest()

@@ -1299,8 +1299,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 	Method onUpdateRoom:Int( triggerEvent:TEventBase )
-		TFigure(GetPlayerBase().GetFigure()).fromroom = Null
-
 		'no interaction for other players rooms
 		If Not IsPlayersRoom(TRoom(triggerEvent.GetSender())) Then Return False
 

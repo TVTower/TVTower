@@ -151,7 +151,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 			Else
 				targetText = "Building"
 			EndIf
-			targetText :+ " (" + figure.GetTargetMovetoPosition().ToString() + ")"
+			targetText :+ " (" + figure.GetMoveToPosition().ToString() + ")"
 		EndIf
 
 
