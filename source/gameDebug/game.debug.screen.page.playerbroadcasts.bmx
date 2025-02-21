@@ -129,7 +129,6 @@ Type TDebugWidget_ProgrammePlanInfo
 	Field slotPadding:Int = 3
 	Field dayShown:Int = -1
 	Field showCurrent:Int = 1
-	Field haveToRemoveOutdated:Byte = 0 'byte is atomically changeable
 	Field _eventListeners:TEventListenerBase[]
 	Field programmeForHover:TBroadcastMaterial = null
 	'AIs can adjust their programmeplan from a subthread, so ensure
@@ -141,11 +140,13 @@ Type TDebugWidget_ProgrammePlanInfo
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
 
+		'do a maintenance every 2 hours
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnHour, self, "onGameHour") ]
+
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.ProgrammePlan_AddObject, self, "onChangeProgrammePlan") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.ProgrammePlan_SetNews, self, "onChangeNewsShow") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMap_OnRecalculateAudienceSum, self, "onChangeAudienceSum") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnStart, self, "onStartGame") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnDay, self, "onGameDay") ]
 	End Method
 
 
@@ -154,8 +155,16 @@ Type TDebugWidget_ProgrammePlanInfo
 	End Method
 
 
-	Method onGameDay:Int(triggerEvent:TEventBase)
-		RemoveOutdated()
+	'run a maintenance every 2 game hours
+	Method onGameHour:Int(triggerEvent:TEventBase)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local hour:Int = GetWorldTime().GetDayHour(time)
+		
+		If hour mod 2 = 0
+			'cleanup to avoid excessive array usage (with nobody watching
+			'the debug screen)
+			self.RemoveOutdated()
+		Endif
 	End Method
 
 
@@ -177,8 +186,6 @@ Type TDebugWidget_ProgrammePlanInfo
 		LockMutex(programmePlanChangeMutex)
 		newsInShow.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 		UnlockMutex(programmePlanChangeMutex)
-
-		haveToRemoveOutdated = Byte(True)
 	End Method
 
 
@@ -194,8 +201,6 @@ Type TDebugWidget_ProgrammePlanInfo
 			programmeBroadcasts.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 		EndIf
 		UnlockMutex(programmePlanChangeMutex)
-
-		haveToRemoveOutdated = Byte(True)
 	End Method
 
 
@@ -281,11 +286,6 @@ Type TDebugWidget_ProgrammePlanInfo
 
 		'statistic for the shown day
 		Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(dayShown, True)
-
-		'clean up if needed
-		If haveToRemoveOutdated Or (oldestEntryTime >= 0 And oldestEntryTime + 10000 < Time.GetTimeGone())
-			RemoveOutdated()
-		EndIf
 
 		If currentPlayer <> playerID
 			currentPlayer = playerID
@@ -596,7 +596,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
 
-		'do a maintenance every 6th hour
+		'do a maintenance every 6 hours
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnHour, onGameHour) ]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction(onDeferredChangeProgrammeCollectionKey, onChangeProgrammeCollection) ]
@@ -620,7 +620,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 	End Function
 
 
-	'run a maintenance every 6th gamehour
+	'run a maintenance every 6 game hours
 	Function onGameHour:Int(triggerEvent:TEventBase)
 		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local hour:Int = GetWorldTime().GetDayHour(time)
