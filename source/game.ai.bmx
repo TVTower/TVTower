@@ -1232,10 +1232,21 @@ endrem
 	End Method
 
 
+	'return all broadcastmaterials within the defined timespan
 	Method of_GetBroadcastMaterialInTimeSpan:TLuaFunctionResult(objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True, requireSameType:Int=False)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
 		Local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(Self.ME).GetObjectsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd, includeStartingEarlierObject, requireSameType)
+		Return TLuaFunctionResult.Create(Self.RESULT_OK, bm)
+	End Method
+
+
+	'return an array with broadcastmaterial (or null on outages!) for each
+	'time slot within the defined timespan! 
+	Method of_GetBroadcastMaterialSlotsInTimeSpan:TLuaFunctionResult(objectType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1)
+		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
+
+		Local bm:TBroadcastMaterial[] = GetPlayerProgrammePlan(Self.Me).GetObjectSlotsInTimeSpan(objectType, dayStart, hourStart, dayEnd, hourEnd)
 		Return TLuaFunctionResult.Create(Self.RESULT_OK, bm)
 	End Method
 
