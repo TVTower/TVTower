@@ -1,4 +1,4 @@
-﻿Rem
+Rem
 	====================================================================
 	String helper classes
 	====================================================================
@@ -1045,6 +1045,9 @@ Type StringHelper
 		Next
 		If offset = 0
 			Return s[.. offset + 1].ToUpper() + s[offset + 1 ..]
+		ElseIf offset = -1
+			'prevent seg fault for strings containing unsupported characters
+			Return s
 		ElseIf offset = s.length - 1
 			Return s[.. s.length - 1] + Chr(s[s.length-1]).ToUpper()
 		Else
