@@ -138,23 +138,20 @@ Type TBetty
 
 
 	Method CanGiveMasterKey:Int(playerID:Int)
-		Local threshold:Float = 0.3
-		Local carCount:Int = 0
+		Local threshold:Float = 0.15
+		Local dinnerCount:Int = 0
+		Local bookCount:Int = 0
 		Local playerPresents:TList = GetPresentHistory(playerID)
 		For Local p:TBettyPresentGivingAction = EachIn playerPresents
-			If p.present.index = TBettyPresent.PRESENT_CAR
-				If carCount = 0
-					threshold:- 0.15
-					carCount:+1
-				EndIf
-			EndIf
+			If p.present.index = TBettyPresent.PRESENT_DINNER Then dinnerCount:+ 1
+			If p.present.index = TBettyPresent.PRESENT_BOOK Then bookCount:+ 1
 			If p.present.bettyValue < 0
 				threshold:+0.01
 			Else
 				threshold:-0.0025
 			EndIf
 		Next
-		Return GetInLovePercentage(playerId) >= threshold
+		Return dinnerCount > 3 And bookCount > 1 And GetInLovePercentage(playerId) >= threshold
 	End Method
 
 
@@ -445,7 +442,6 @@ Type TBettyPresent
 	'index constants for referencing particular presents
 	Const PRESENT_DINNER:int = 2
 	Const PRESENT_BOOK:int   = 4
-	Const PRESENT_CAR:int    = 8
 	Const PRESENT_YACHT:int  = 10
 
 	'constants indicating the result of the present action
@@ -472,7 +468,7 @@ Type TBettyPresent
 		'diamond necklace
 		presents[6] = new TBettyPresent.Init(7,              100000, -700, 1.5)
 		'sports car
-		presents[7] = new TBettyPresent.Init(PRESENT_CAR,    250000,  350, 0.4)
+		presents[7] = new TBettyPresent.Init(8,              250000,  350, 0.4)
 		'ring
 		presents[8] = new TBettyPresent.Init(9,              500000,  450, 0.6)
 		'boat/yacht
