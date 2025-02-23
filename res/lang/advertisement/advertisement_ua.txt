@@ -1,0 +1,42 @@
+TARGETGROUP_ALL        = Усі
+TARGETGROUP_CHILDREN   = Діти
+TARGETGROUP_TEENAGERS  = Підлітки
+TARGETGROUP_HOUSEWIVES = Домогосподарки
+TARGETGROUP_EMPLOYEES  = Працівники
+TARGETGROUP_UNEMPLOYED = Безробітні
+TARGETGROUP_MANAGERS   = Менеджери
+TARGETGROUP_PENSIONERS = Пенсіонери
+TARGETGROUP_WOMEN      = Жінки
+TARGETGROUP_MEN        = Чоловіки
+
+CLASSIFICATION = Класифікація
+REMAINING_TERM = Залишковий термін
+SPOTS_TO_SEND  = Рекламні ролики для трансляції
+
+MIN_AUDIENCE          = Мін. аудиторія
+AD_QUALITY            = Якість
+AD_PROFIT             = Прибуток
+AD_PLANNED            = Заплановано
+AD_TOSEND             = Для трансляції
+AD_PENALTY            = Штраф
+AD_MIN_AUDIENCE       = Мін. аудиторія
+AD_TARGETGROUP        = Цільова група
+AD_SEND_TILL_TOLATE   = Запізно!
+AD_SEND_TILL_MIDNIGHT = Показати до півночі!
+AD_SEND_TILL_TOMORROW = Показати до кінця завтрашнього дня!
+AD_STILL_X_DAYS       = ще %1 днів
+
+AD_CHANNEL_IMAGE_TOO_LOW = Рейтинг каналу занадто низький. %CHANNELIMAGE%% < %IMAGE%%.
+AD_PLEASE_GENRE_X        = Будь ласка, жанр %GENRE%
+AD_PLEASE_FLAG           = Будь ласка, %FLAG%
+
+INFOMERCIAL                  = Інфомаркетинг
+AD_INFOMERCIAL               = Ви отримуєте гроші за трансляцію інфомаркетингу. Дохід залежить від аудиторії.
+AD_INFOMERCIAL_NOT_AVAILABLE = Інфомаркетинг неможливий для цієї реклами.
+AD_INFOMERCIAL_PROFIT        = Дохід: %PROFIT% на 1000 глядачів
+
+ADCONTRACT_FINISHED                = Рекламний контракт виконано
+ADCONTRACT_FAILED                  = Рекламний контракт провалено
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Рекламний контракт |b|%TITLE%|/b| успішно завершено.
+PROFIT_OF_X_GOT_CREDITED           = Прибуток у розмірі %MONEY% зараховано.
+ADCONTRACT_X_FAILED                = Рекламний контракт |b|%TITLE%|/b| провалено.
