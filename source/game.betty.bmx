@@ -137,6 +137,24 @@ Type TBetty
 	End Method
 
 
+	Method CanGiveMasterKey:Int(playerID:Int)
+		Local threshold:Float = 0.15
+		Local dinnerCount:Int = 0
+		Local bookCount:Int = 0
+		Local playerPresents:TList = GetPresentHistory(playerID)
+		For Local p:TBettyPresentGivingAction = EachIn playerPresents
+			If p.present.index = TBettyPresent.PRESENT_DINNER Then dinnerCount:+ 1
+			If p.present.index = TBettyPresent.PRESENT_BOOK Then bookCount:+ 1
+			If p.present.bettyValue < 0
+				threshold:+0.01
+			Else
+				threshold:-0.0025
+			EndIf
+		Next
+		Return dinnerCount > 3 And bookCount > 1 And GetInLovePercentage(playerId) >= threshold
+	End Method
+
+
 	'returns (and creates if needed) the present history list of a given playerID
 	Method GetPresentHistory:TList(playerID:int)
 		if playerID <= 0 then return null
