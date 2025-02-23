@@ -896,8 +896,13 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method GetProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=-1)
-		Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(arrayIndex)
-		If obj Then Return obj Else Return Null
+		Try
+			Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(arrayIndex)
+			If obj Then Return obj
+		Catch ex:Object
+			TLogger.Log("AI", "GetProgrammeLicenceAtIndex exception", LOG_ERROR)
+		End Try
+		Return Null
 	End Method
 
 
@@ -1149,8 +1154,12 @@ endrem
 		If Not _PlayerInRoom("office") Then Return Null
 
 		If playerID = -1 Then playerID = Self.ME
-
-		Return _GetPlayerStationMap().GetStationAtIndex(arrayIndex)
+		Try
+			Return _GetPlayerStationMap().GetStationAtIndex(arrayIndex)
+		Catch e:Object
+			TLogger.Log("AI", "of_getStationAtIndex exception", LOG_ERROR)
+		End Try
+		Return Null
 	End Method
 
 
@@ -1288,8 +1297,13 @@ endrem
 	Method of_getAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
-		Local obj:TAdContract = GetPlayerProgrammeCollection(Self.ME).GetAdContractAtIndex(arrayIndex)
-		If obj Then Return obj Else Return Null
+		Try
+			Local obj:TAdContract = GetPlayerProgrammeCollection(Self.ME).GetAdContractAtIndex(arrayIndex)
+			If obj Then Return obj
+		Catch e:Object
+			TLogger.Log("AI", "of_getAdContractAtIndex exception", LOG_ERROR)
+		End Try
+		Return Null
 	End Method
 
 
@@ -1475,12 +1489,15 @@ endrem
 	Method ne_getAvailableNews:TLuaFunctionResult(arrayIndex:Int=-1)
 		If Not (_PlayerInRoom("newsroom") Or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
-		Local availableNews:TNews = GetPlayerProgrammeCollection(Self.ME).GetNewsAtIndex(arrayIndex)
-		If availableNews
-			Return TLuaFunctionResult.Create(Self.RESULT_OK, availableNews)
-		Else
-			Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
-		EndIf
+		Try
+			Local availableNews:TNews = GetPlayerProgrammeCollection(Self.ME).GetNewsAtIndex(arrayIndex)
+			If availableNews
+				Return TLuaFunctionResult.Create(Self.RESULT_OK, availableNews)
+			EndIf
+		Catch e:Object
+			TLogger.Log("AI", "ne_getAvailableNews exception", LOG_ERROR)
+		End Try
+		Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
 	End Method
 
 
@@ -1499,12 +1516,15 @@ endrem
 	Method ne_getBroadcastedNews:TLuaFunctionResult(arrayIndex:Int=-1)
 		If Not (_PlayerInRoom("newsroom") Or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
-		Local broadcastedNews:TNews = TNews(GetPlayerProgrammePlan(Self.ME).GetNewsAtIndex(arrayIndex))
-		If broadcastedNews
-			Return TLuaFunctionResult.Create(Self.RESULT_OK, broadcastedNews)
-		Else
-			Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
-		EndIf
+		Try
+			Local broadcastedNews:TNews = TNews(GetPlayerProgrammePlan(Self.ME).GetNewsAtIndex(arrayIndex))
+			If broadcastedNews
+				Return TLuaFunctionResult.Create(Self.RESULT_OK, broadcastedNews)
+			EndIf
+		Catch e:Object
+			TLogger.Log("AI", "ne_getBroadcastedNews exception", LOG_ERROR)
+		End Try
+		Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
 	End Method
 
 
@@ -1553,10 +1573,14 @@ endrem
 			If Not news Then Return Self.RESULT_NOTFOUND
 		EndIf
 
-		'skip if on same slot
-		If GetPlayerProgrammePlan(Self.ME).GetNewsAtIndex(slot) = news
-			Return Self.RESULT_OK
-		EndIf
+		Try
+			'skip if on same slot
+			If GetPlayerProgrammePlan(Self.ME).GetNewsAtIndex(slot) = news
+				Return Self.RESULT_OK
+			EndIf
+		Catch e:Object
+			TLogger.Log("AI", "ne_doNewsInPlan exception", LOG_ERROR)
+		EndTry
 
 
 		'place it (and remove from other slots before - if needed)
@@ -1593,8 +1617,13 @@ endrem
 	Method sa_getSignedAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("adagency") Then Return Null
 
-		Local obj:TAdContract = GetPlayerProgrammeCollection(Self.ME).GetAdContractAtIndex(arrayIndex)
-		If obj Then Return obj Else Return Null
+		Try
+			Local obj:TAdContract = GetPlayerProgrammeCollection(Self.ME).GetAdContractAtIndex(arrayIndex)
+			If obj Then Return obj
+		Catch e:Object
+			TLogger.Log("AI", "sa_getSignedAdContractAtIndex exception", LOG_ERROR)
+		End Try
+		Return Null
 	End Method
 
 
@@ -2085,12 +2114,15 @@ endrem
 	Method ep_GetSignAtIndex:TLuaFunctionResult(arrayIndex:Int = -1)
 		If Not _PlayerInRoom("elevatorplan") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
-		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
-		If Sign
-			Return TLuaFunctionResult.Create(Self.RESULT_OK, Sign)
-		Else
-			Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
-		EndIf
+		Try
+			Local Sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
+			If Sign
+				Return TLuaFunctionResult.Create(Self.RESULT_OK, Sign)
+			EndIf
+		Catch e:Object
+			TLogger.Log("AI", "ep_GetSignAtIndex exception", LOG_ERROR)
+		End Try
+		Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
 	End Method
 
 
@@ -2133,12 +2165,15 @@ endrem
 	Method rb_GetSignAtIndex:TLuaFunctionResult(arrayIndex:Int = -1)
 		If Not _PlayerInRoom("roomboard") Then Return TLuaFunctionResult.Create(Self.RESULT_WRONGROOM, Null)
 
-		Local Sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
-		If Sign
-			Return TLuaFunctionResult.Create(Self.RESULT_OK, Sign)
-		Else
-			Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
-		EndIf
+		Try
+			Local Sign:TRoomBoardSign = GetRoomBoard().GetSignAtIndex(arrayIndex)
+			If Sign
+				Return TLuaFunctionResult.Create(Self.RESULT_OK, Sign)
+			EndIf
+		Catch e:Object
+			TLogger.Log("AI", "rb_GetSignAtIndex exception", LOG_ERROR)
+		End Try
+		Return TLuaFunctionResult.Create(Self.RESULT_NOTFOUND, Null)
 	End Method
 
 
