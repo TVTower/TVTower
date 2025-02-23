@@ -77,8 +77,6 @@ Type TFigure extends TFigureBase
 
 	'the door used (there might be multiple)
 	Field usedDoor:TRoomDoorBase = Null
-	'coming from room
-	Field fromRoom:TRoomBase = Null
 	'going to room
 	Field inRoom:TRoomBase = Null
 	
@@ -155,14 +153,6 @@ Type TFigure extends TFigureBase
 		if inRoom and not inRoom.isOccupant(self)
 			inRoom.addOccupant(Self)
 		endif
-
-		'convert old targets
-		for local target:object = eachin targets
-			SetTarget( new TFigureTarget.Init(target) )
-		Next
-		'reset - so they are no longer in new savegames (ready to get
-		'deleted later on)
-		targets = null
 	End Method
 
 
@@ -194,7 +184,7 @@ Type TFigure extends TFigureBase
 
 	Method HasToChangeFloor:Int()
 		if not GetTarget() then return FALSE
-		Return GetFloor( GetTargetMoveToPosition().y ) <> GetFloor()
+		Return GetFloor( GetMoveToPosition().y ) <> GetFloor()
 	End Method
 
 
@@ -262,7 +252,7 @@ Type TFigure extends TFigureBase
 	Method IsInFrontOfTarget:int()
 		if not HasToChangeFloor() and GetTarget()
 			'get target coordinate
-			Local targetX:Int = GetTargetMoveToPosition().x
+			Local targetX:Int = GetMoveToPosition().x
 
 			'we stand in front of the target -> reach target!
 			if GetVelocity().x = 0 and abs(area.getX() - targetX) < 1.0
@@ -287,7 +277,7 @@ Type TFigure extends TFigureBase
 			'or target acquired without moving)
 			local reachTemporaryTarget:int = FALSE
 			'get a temporary target coordinate so we can manipulate that safely
-			Local targetX:Int = GetTargetMoveToPosition().x
+			Local targetX:Int = GetMoveToPosition().x
 			'do we have to change the floor?
 			'if that is the case - change temporary target to elevator
 			If HasToChangeFloor() Then targetX = GetElevator().GetDoorCenterX()
@@ -413,11 +403,10 @@ Type TFigure extends TFigureBase
 			'show the backside if at elevator to change floor
 			If hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
 				result = "standBack"
-			'not moving but wants to go to somewhere (also show back if
-			'room is used and enter not possible "for now".
-			ElseIf currentAction = ACTION_ENTERING or IsInFrontOfTarget()
-				result = "standBack"
-			'planning to enter a room
+			'a) planning to enter a room
+			'b) not moving but wants to go to somewhere (also show back 
+			'   if room is used and enter not possible "for now").
+			'   Also avoids "front back front"-alternation of figures
 			ElseIf currentAction = ACTION_ENTERING or IsInFrontOfTarget()
 				result = "standBack"
 			'in a room (or standing in front of a fake room - looking at plan)
@@ -539,8 +528,11 @@ Type TFigure extends TFigureBase
 	'override to add support for rooms
 	Method IsInRoom:Int(roomName:String="")
 		If roomName
-			If inRoom
-				Local name:String = inRoom.GetName()
+			'cache once to avoid concurrent modification of "inRoom"
+			'after checking if "inRoom is null"
+			Local _inRoom:TRoomBase = inRoom
+			If _inRoom
+				Local name:String = _inRoom.GetName()
 				If name.length = roomname.length
 					If name.toLower() = roomname.toLower()
 						Return True
@@ -555,7 +547,8 @@ Type TFigure extends TFigureBase
 
 	'override
 	Method GetInRoomID:Int()
-		if inRoom then return inRoom.id
+		Local _inRoom:TRoomBase = inRoom
+		if _inRoom then return _inRoom.id
 
 		return Super.GetInRoomID()
 	End Method
@@ -567,7 +560,10 @@ Type TFigure extends TFigureBase
 
 
 	Method GetUsedDoorID:Int()
-		if usedDoor then return usedDoor.id
+		'cache once to avoid concurrent modification of "usedDoor"
+		'after checking if "usedDoor is null"
+		Local _usedDoor:TRoomDoorBase = usedDoor
+		if _usedDoor then return _usedDoor.id
 
 		return Super.GetUsedDoorID()
 	End Method
@@ -590,31 +586,37 @@ Type TFigure extends TFigureBase
 	Method SetInRoom:Int(room:TRoomBase)
 		If room and not room.IsOccupant(self) then room.addOccupant(Self)
 
-		'backup old room as origin
-		fromRoom = inRoom
-
 		'set new room
 	 	inRoom = room
 
 		'inform others that room is changed
-		TriggerBaseEvent(GameEventKeys.Figure_SetInRoom, null, self, inroom)
+		TriggerBaseEvent(GameEventKeys.Figure_SetInRoom, null, self, room)
 	End Method
 
 
 	'override
 	Method KickOutOfRoom:Int(kickingFigure:TFigureBase=null)
-		If not GetInRoom() Then Return False
+		' cache once to avoid stumbling over a concurrent modification of
+		' "inRoom" from another thread (a mutex would require more 
+		' overhead)
+		Local _inRoom:TRoomBase = TRoomBase(GetInRoom())
+
+		If not _inRoom Then Return False
 		'self kick?
 		If self = kickingFigure then return FALSE
 
-		'fetch at least the main door if none is provided
+
+
+		' fetch at least the main door if none is provided, also backup
+		' in local variable so it can be changed here and still be used
+		' afterwards in an event
 		local door:TRoomDoorBase = usedDoor
-		if not door and inRoom then door = GetRoomDoorCollection().GetMainDoorToRoom(inRoom.id)
+		if not door then door = GetRoomDoorCollection().GetMainDoorToRoom(_inRoom.id)
 
 		if kickingFigure
-			TLogger.log("TFigure.KickFigureOutOfRoom()", kickingFigure.name+" kicks "+ name + " out of room: "+inRoom.GetDescription(), LOG_DEBUG)
+			TLogger.log("TFigure.KickFigureOutOfRoom()", kickingFigure.name+" kicks "+ name + " out of room: "+_inRoom.GetDescription(), LOG_DEBUG)
 		else
-			TLogger.log("TFigure.KickFigureOutOfRoom()", name + " gets kicked out of room: "+inRoom.GetDescription(), LOG_DEBUG)
+			TLogger.log("TFigure.KickFigureOutOfRoom()", name + " gets kicked out of room: "+_inRoom.GetDescription(), LOG_DEBUG)
 		endif
 		'instead of SimpleSoundSource we use the rooms sound source
 		'so we are able to have positioned sound
@@ -623,7 +625,7 @@ Type TFigure extends TFigureBase
 		endif
 
 		'maybe someone is interested in this information
-		TriggerBaseEvent(GameEventKeys.Room_KickFigure, new TData.Add("figure", self).Add("door", door), GetInRoom())
+		TriggerBaseEvent(GameEventKeys.Room_KickFigure, new TData.Add("figure", self).Add("door", door), _inRoom)
 
 		LeaveRoom(True)
 		Return True
@@ -632,8 +634,11 @@ Type TFigure extends TFigureBase
 
 	'overridden to add support for roombase and roomdoorbase
 	Method EnterLocation:Int(obj:object, forceEnter:int=False)
-		if TRoomDoor(obj) then EnterRoom( TRoomDoor(obj),null, forceEnter )
-		if TRoomBase(obj) then EnterRoom( null, TRoomBase(obj), forceEnter )
+		If TRoomDoor(obj)
+			EnterRoom( TRoomDoor(obj),null, forceEnter )
+		Elseif TRoomBase(obj) 
+			EnterRoom( null, TRoomBase(obj), forceEnter )
+		EndIf
 	End Method
 
 
@@ -678,6 +683,7 @@ Type TFigure extends TFigureBase
 
 
 	Method TryEnterRoom:int(door:TRoomDoorBase, room:TRoomBase, forceEnter:int = False)
+		If Not room Or Not door Then Return False
 
 		'something (bomb, renovation, ...) does not allow access to this
 		'room for now
@@ -715,6 +721,8 @@ Type TFigure extends TFigureBase
 
 
 	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
+		If Not room Or Not door Then Return False
+
 		'set time of start
 		changingRoomBuildingTimeStart = GetBuildingTime().GetTimeGone()
 		changingRoomBuildingTimeEnd = GetBuildingTime().GetTimeGone() + changingRoomTime
@@ -829,6 +837,8 @@ Type TFigure extends TFigureBase
 
 
 	Method FailEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase, reason:String)
+		If Not room Or Not door Then Return False
+
 		'=== INFORM OTHERS ===
 		'inform that figure failed to enter the room
 		'(eg. for players informing the ai)
@@ -859,6 +869,8 @@ Type TFigure extends TFigureBase
 
 
 	Method CanEnterRoom:Int(room:TRoomBase)
+		If Not room Then Return False
+
 		'non-players (also delivery boys and terrorists!) have some
 		'kind of master key
 		'player figures need to gain them (via betty love!)
@@ -870,19 +882,24 @@ Type TFigure extends TFigureBase
 
 	'command to leave a room - "onLeaveRoom" is called when successful
 	Method LeaveRoom:Int(forceLeave:Int=False)
+		' cache once to avoid stumbling over a concurrent modification of
+		' "inRoom" from another thread (a mutex would require more 
+		' overhead)
+		Local _inRoom:TRoomBase = inRoom
+
 		'skip command if in no room or already leaving
-		if not inRoom or IsLeavingRoom() then return True
+		if not _inRoom or IsLeavingRoom() then return True
 
 		'=== INFORM OTHERS ===
 		'inform that figure now begins leaving the room
 		'(eg. for players informing the ai)
-		TriggerBaseEvent(GameEventKeys.Figure_OnLeaveRoom, null, self, inRoom )
+		TriggerBaseEvent(GameEventKeys.Figure_OnLeaveRoom, null, self, _inRoom )
 
 
 		local target:object = GetTargetObject()
 		if TRoomDoorBase(target)
 			local door:TRoomDoorBase = TRoomDoorBase(target)
-			if inRoom and inRoom.id = door.roomID
+			if _inRoom and _inRoom.id = door.roomID
 				TLogger.Log("TFigure.LeaveRoom", "Removing current target of ~q"+name+"~q as we are already leaving that room (eg. got kicked?).", LOG_DEBUG)
 				RemoveCurrentTarget()
 			endif
@@ -896,7 +913,7 @@ Type TFigure extends TFigureBase
 
 		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
-		if not forceLeave and not CanLeaveRoom(inroom) then return False
+		if not forceLeave and not CanLeaveRoom(_inRoom) then return False
 
 		'ask if somebody is against leaving that room
 		if not TryLeaveRoom( forceLeave )
@@ -906,7 +923,7 @@ Type TFigure extends TFigureBase
 		'inform that a figure forcefully leaves a room (so GUI or so can
 		'get cleared)
 		if forceLeave
-			TriggerBaseEvent(GameEventKeys.Figure_OnForcefullyLeaveRoom, new TData.Add("door", usedDoor) , self, inroom)
+			TriggerBaseEvent(GameEventKeys.Figure_OnForcefullyLeaveRoom, new TData.Add("door", usedDoor) , self, _inRoom)
 		endif
 
 		BeginLeaveRoom()
@@ -927,6 +944,13 @@ Type TFigure extends TFigureBase
 
 
 	Method BeginLeaveRoom:int()
+		' cache once to avoid stumbling over a concurrent modification of
+		' "inRoom" from another thread (a mutex would require more 
+		' overhead)
+		Local _inRoom:TRoomBase = inRoom
+
+		If Not _inRoom Then Return False
+		
 		'set time of start
 		changingRoomBuildingTimeStart = GetBuildingTime().GetTimeGone()
 		changingRoomBuildingTimeEnd = GetBuildingTime().GetTimeGone() + changingRoomTime
@@ -945,14 +969,14 @@ Type TFigure extends TFigureBase
 
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
-		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
+		if _inRoom.ShowsOccupants() then fadeOnChangingRoom = False
 
-		inRoom.BeginLeave(usedDoor, self, changingRoomTime)
+		_inRoom.BeginLeave(usedDoor, self, changingRoomTime)
 
 		'=== INFORM OTHERS ===
 		'inform that figure now leaves the room
 		'(eg. for players informing the ai)
-		TriggerBaseEvent(GameEventKeys.Figure_OnBeginLeaveRoom, null, self, inroom)
+		TriggerBaseEvent(GameEventKeys.Figure_OnBeginLeaveRoom, null, self, _inroom)
 
 		return True
 	End Method
@@ -961,6 +985,7 @@ Type TFigure extends TFigureBase
 	'gets called when the figure really left the room
 	Method FinishLeaveRoom()
 		local inRoomBackup:TRoomBase = inRoom
+
 		'Debug
 		'if playerID = 1
 		'	print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
@@ -980,7 +1005,7 @@ Type TFigure extends TFigureBase
 
 		self.finishLeaveRoomTime = Time.GetTimeGone()
 
-		inRoomBackup.FinishLeave(self)
+		If inRoomBackup Then inRoomBackup.FinishLeave(self)
 
 		'=== INFORM OTHERS ===
 		'inform that figure now leaves the room
@@ -990,6 +1015,8 @@ Type TFigure extends TFigureBase
 
 
 	Method CanLeaveRoom:Int(room:TRoomBase)
+		If Not room Then Return False
+		
 		'cannot leave if room forbids
 		if not room.CanEntityLeave(self) then return False
 
@@ -1112,25 +1139,11 @@ Type TFigure extends TFigureBase
 
 	Method GoOnBoardAndSendElevator:Int()
 		if not GetTarget() then return FALSE
-		Local floorOfTargetY:Int = GetFloor(GetTargetMoveToPosition().y)
+		Local floorOfTargetY:Int = GetFloor(GetMoveToPosition().y)
 		If GetElevator().EnterTheElevator(Self, floorOfTargetY)
 			GetElevator().SendElevator(floorOfTargetY, Self)
 		EndIf
 	End Method
-
-
-	'overridden to add roomdoor/hotspot
-	'returns the coordinate the figure has to walk to, to reach that
-	'target
-	Method GetTargetMoveToPosition:SVec2I()
-		return GetMoveToPosition( GetTarget() )
-	End Method
-
-
-	Function GetMoveToPosition:SVec2I(target:TFigureTargetBase = null)
-		if not target then return new SVec2I(-1000,-1000)
-		return target.GetMoveToPosition()
-	End Function
 
 
 	'overridden
@@ -1185,7 +1198,7 @@ Type TFigure extends TFigureBase
 		local targetedDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetByCoord(Int(newTargetCoord.x), Int(newTargetCoord.y))
 		if targetedDoor
 			'move to this door
-			newTargetCoord = TFigureTarget.GetTargetMoveToPosition(targetedDoor)
+			newTargetCoord = TFigureTarget.GetMoveToPosition(targetedDoor)
 			
 			'only go into the room if we were able to target it from our
 			'source position
@@ -1231,13 +1244,14 @@ Type TFigure extends TFigureBase
 		'if newTarget and newTarget = GetTarget() then return False
 		'-> alternative: check coordinates
 
-		if GetTargetObject()
+		Local targetObj:Object = GetTargetObject() 
+		if targetObj
 			'new target and current target are the same
-			if newTarget = GetTargetObject() then return False
+			if newTarget = targetObj then return False
 			'new target and current target coordinates are at the same?
-			if TVec2D(newTarget) and TVec2D(newTarget).IsSame( GetTargetMoveToPosition() ) then return False
+			if TVec2D(newTarget) and TVec2D(newTarget).IsSame( GetMoveToPosition() ) then return False
 
-			'print playerID+": targets are different " + TVec2D(newTarget).x+","+TVec2D(newTarget).y+" vs " + GetTargetMoveToPosition().x+","+GetTargetMoveToPosition().y
+			'print playerID+": targets are different " + TVec2D(newTarget).x+","+TVec2D(newTarget).y+" vs " + GetMoveToPosition().x+","+GetMoveToPosition().y
 		endif
 
 
@@ -1290,12 +1304,13 @@ Type TFigure extends TFigureBase
 
 	'override to add support for hotspots/rooms
 	Method EnterTarget:Int()
-		if not GetTarget() then return False
+		Local t:TFigureTargetBase = GetTarget()
+		if not t then return False
 
 		'emit event
 		if not Super.EnterTarget() then return False
 
-		local targetDoor:TRoomDoor = TRoomDoor(GetTargetObject())
+		local targetDoor:TRoomDoor = TRoomDoor(t.targetObj)
 		if targetDoor
 			'do not remove the target room as it is done during
 			'"entering the room" (which can be animated and so we
@@ -1314,10 +1329,10 @@ Type TFigure extends TFigureBase
 
 				currentReachTargetStep = 0
 				currentAction = ACTION_IDLE
-				if TRoomDoorBase(GetTargetObject())
-					local door:TRoomDoorBase = TRoomDoorBase(GetTargetObject())
+				Local door:TRoomDoorBase = TRoomDoorBase(GetTargetObject())
+				if door
 					local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
-					room.RemoveOccupant(self)
+					If room Then room.RemoveOccupant(self)
 				endif
 
 '				FinishEnterRoom( inRoom )
@@ -1360,7 +1375,7 @@ Type TFigure extends TFigureBase
 				EndIf
 
 				If IsInElevator() and GetElevator().ReadyForBoarding
-					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetTargetMoveToPosition().y))
+					If (not GetTarget() OR GetElevator().CurrentFloor = GetFloor(GetMoveToPosition().y))
 						GetElevator().LeaveTheElevator(Self)
 					EndIf
 				EndIf
@@ -1449,22 +1464,17 @@ Type TFigureTarget extends TFigureTargetBase
 	End Method
 
 
-	Function GetTargetMoveToPosition:SVec2I(target:object)
-		if TVec2D(target)
-			return new SVec2I(int(TVec2D(target).x), int(TVec2D(target).y))
-		elseif TRoomDoorBase(target)
+	Function GetMoveToPosition:SVec2I(target:object)
+		If TVec2D(target) 
+			Return New SVec2I(int(TVec2D(target).x), int(TVec2D(target).y))
+		ElseIf TRoomDoorBase(target)
 			Local door:TRoomDoorBase = TRoomDoorBase(target)
-			return new SVec2I(Int(door.area.x + door.area.w/2 + door.stopOffset), Int(door.area.y))
-		elseif THotspot(target)
+			Return New SVec2I(Int(door.area.x + door.area.w/2 + door.stopOffset), Int(door.area.y))
+		ElseIf THotspot(target)
 			Local hotspot:THotspot = THotspot(target)
 			'attention: return GetY2() (bottom point) as this is used for figures too
-			return new SVec2I(Int(hotspot.area.x + hotspot.area.w/2), Int(hotspot.area.GetY2()))
-		endif
-		return new SVec2I(-1000,-1000)
+			Return New SVec2I(Int(hotspot.area.x + hotspot.area.w/2), Int(hotspot.area.GetY2()))
+		EndIf
+		Return New SVec2I(-1000,-1000)
 	End Function
-
-
-	Method GetMoveToPosition:SVec2I()
-		return TFigureTarget.GetTargetMoveToPosition( targetObj )
-	End Method
 End Type

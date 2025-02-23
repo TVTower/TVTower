@@ -1588,61 +1588,62 @@ Type TLuaEngine
 		'while lua_tobbstring would decode utf8 etc 
 
 		Local child:TLuaReflectionChild = _FindTypeChild(obj, identHash)
+		if child
+			'=== CHECK PUSHED OBJECT IS A METHOD or FUNCTION ===
+			'thing we have to push is a method/function
+			If TMethod(child.member) or TFunction(child.member)
+				lua_pushvalue(_luaState, 1)
+				lua_pushlightobject(_luaState, child)
+				lua_pushcclosure(_luaState, _HandleInvoke, 2)
 
-		'=== CHECK PUSHED OBJECT IS A METHOD or FUNCTION ===
-		'thing we have to push is a method/function
-		If TMethod(child.member) or TFunction(child.member)
-			lua_pushvalue(_luaState, 1)
-			lua_pushlightobject(_luaState, child)
-			lua_pushcclosure(_luaState, _HandleInvoke, 2)
+				Return 1 'pushed 1 element (the closure) to the stack
+			EndIf
 
-			Return 1 'pushed 1 element (the closure) to the stack
-		EndIf
-
-		'===== CHECK PUSHED OBJECT IS A FIELD / CONSTANT =====
-		If TField(child.member)
-			Local fld:TField = TField(child.member)
-			Select fld.TypeId()
-				Case IntTypeId, ShortTypeId, ByteTypeId
-					lua_pushinteger(_luaState, fld.GetInt(obj))
-				Case LongTypeId
-					lua_pushnumber(_luaState, fld.GetLong(obj))
-				Case FloatTypeId
-					lua_pushnumber(_luaState, fld.GetFloat(obj))
-				Case DoubleTypeId
-					lua_pushnumber(_luaState, fld.GetDouble(obj))
-				Case StringTypeId
-					lua_pushbbstring(_luaState, fld.GetString(obj))
-				Case ArrayTypeId
-					lua_pusharray(_luaState, fld.Get(obj), _objMetaTable)
-				Default
-					If fld.TypeId() And fld.TypeID().ExtendsType(ArrayTypeId)
+			'===== CHECK PUSHED OBJECT IS A FIELD / CONSTANT =====
+			If TField(child.member)
+				Local fld:TField = TField(child.member)
+				Select fld.TypeId()
+					Case IntTypeId, ShortTypeId, ByteTypeId
+						lua_pushinteger(_luaState, fld.GetInt(obj))
+					Case LongTypeId
+						lua_pushnumber(_luaState, fld.GetLong(obj))
+					Case FloatTypeId
+						lua_pushnumber(_luaState, fld.GetFloat(obj))
+					Case DoubleTypeId
+						lua_pushnumber(_luaState, fld.GetDouble(obj))
+					Case StringTypeId
+						lua_pushbbstring(_luaState, fld.GetString(obj))
+					Case ArrayTypeId
 						lua_pusharray(_luaState, fld.Get(obj), _objMetaTable)
-					Else
-						lua_pushobject(_luaState, fld.Get(obj), _objMetaTable)
-					EndIf
-			End Select
-			Return 1 'pushed 1 element to the stack
-		EndIf
+					Default
+						If fld.TypeId() And fld.TypeID().ExtendsType(ArrayTypeId)
+							lua_pusharray(_luaState, fld.Get(obj), _objMetaTable)
+						Else
+							lua_pushobject(_luaState, fld.Get(obj), _objMetaTable)
+						EndIf
+				End Select
+				Return 1 'pushed 1 element to the stack
+			EndIf
 
 
-		'===== CHECK PUSHED OBJECT IS A CONSTANT =====
-		If TConstant(child.member)
-			Local constant:TConstant = TConstant(child.member)
+			'===== CHECK PUSHED OBJECT IS A CONSTANT =====
+			If TConstant(child.member)
+				Local constant:TConstant = TConstant(child.member)
 
-			Select constant.TypeId() ' BaH - added more types
-				Case IntTypeId, ShortTypeId, ByteTypeId
-					lua_pushinteger(_luaState, constant.GetInt())
-				Case LongTypeId
-					lua_pushnumber(_luaState, constant.GetLong())
-				Case FloatTypeId
-					lua_pushnumber(_luaState, constant.GetFloat())
-				Case DoubleTypeId
-					lua_pushnumber(_luaState, constant.GetDouble())
-				Case StringTypeId
-					lua_pushbbstring(_luaState, constant.GetString())
-			End Select
-			Return 1 'pushed 1 element to the stack
+				Select constant.TypeId() ' BaH - added more types
+					Case IntTypeId, ShortTypeId, ByteTypeId
+						lua_pushinteger(_luaState, constant.GetInt())
+					Case LongTypeId
+						lua_pushnumber(_luaState, constant.GetLong())
+					Case FloatTypeId
+						lua_pushnumber(_luaState, constant.GetFloat())
+					Case DoubleTypeId
+						lua_pushnumber(_luaState, constant.GetDouble())
+					Case StringTypeId
+						lua_pushbbstring(_luaState, constant.GetString())
+				End Select
+				Return 1 'pushed 1 element to the stack
+			EndIf
 		EndIf
 
 		local objTypeId:TTypeID = _FindType(obj)

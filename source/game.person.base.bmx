@@ -24,7 +24,8 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	Field filteredLists:TObjectList[5] {nosave}
 	Field filterMutexes:TMutex[5] {nosave}
 	Field filteredCacheValid:Int[5] {nosave}
-	
+	Field collectionMutex:TMutex {nosave}
+
 	Global filters:SPersonBaseFilter[5]
 	
 	'Indices in the cache arrays
@@ -49,6 +50,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 			filteredLists[i] = New TObjectList
 		Next
 
+		collectionMutex = CreateMutex()
 
 		' setup filters: params: index, celebrity, insignificant, castable
 		filters[FILTER_INSIGNIFICANT] = New SPersonBaseFilter(0, 1, 0, -1)
@@ -72,13 +74,21 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 	'override
 	Method GetByGUID:TPersonBase(GUID:String)
-		Return TPersonBase( Super.GetByGUID(GUID) )
+		Local p:TPersonBase
+		LockMutex(collectionMutex)
+			p = TPersonBase( Super.GetByGUID(GUID) )
+		UnLockMutex(collectionMutex)
+		Return p
 	End Method
 
 
 	'override
 	Method GetByID:TPersonBase(ID:Int)
-		Return TPersonBase( Super.GetByID(ID) )
+		Local p:TPersonBase
+		LockMutex(collectionMutex)
+			p = TPersonBase( Super.GetByID(ID) )
+		UnLockMutex(collectionMutex)
+		Return p
 	End Method
 	
 
@@ -488,7 +498,9 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		Local p:TPersonBase = TPersonBase(obj)
 		If Not p Then Return False
 
-		Super.Add(obj)
+		LockMutex(collectionMutex)
+			Super.Add(obj)
+		UnlockMutex(collectionMutex)
 
 		'mark all affected caches invalid 
 		For Local index:Int = 0 Until FILTER_COUNT
@@ -500,7 +512,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 				EndIf
 			UnLockMutex(filterMutexes[index])
 		Next
-		
+			
 		Return True
 	End Method
 	

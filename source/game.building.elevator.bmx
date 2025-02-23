@@ -1183,7 +1183,7 @@ Type TSmartFloorRoute Extends TFloorRoute
 
 	Method IntendedFollowingTarget:Int()
 		If who.GetTarget()
-			Return who.getFloor(who.GetTargetMoveToPosition().y)
+			Return who.getFloor(who.GetMoveToPosition().y)
 		Else
 			Return who.getFloor(0)
 		EndIf
