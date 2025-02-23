@@ -8,10 +8,6 @@ Type TGameRules {_exposeToLua}
 	'should licence attributes from the database be randomized
 	Field randomizeLicenceAttributes:Int = False
 
-	'how much love with betty is needed so she would give you the master
-	'key for all the rooms in the building
-	Field bettyLoveToGetMasterKey:Float = 0.75
-	
 	Field baseProductionTimeHours:Int = 9
 
 	'maximum level a news genre abonnement can have

@@ -170,7 +170,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			dialogueTexts[0] = TDialogueTexts.Create(text)
 
 			'enough love to ask for the master key?
-			if not player.GetFigure().hasMasterKey and bettyLove > GameRules.bettyLoveToGetMasterKey
+			if not player.GetFigure().hasMasterKey and GetBetty().CanGiveMasterKey(GetPlayerBase().playerID)
 				dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BETTY_ASK_FOR_MASTERKEY"), -2, Null, onTakeMasterKey))
 			endif
 			dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION"), 1))
