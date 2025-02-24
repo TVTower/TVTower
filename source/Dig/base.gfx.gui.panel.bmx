@@ -155,17 +155,6 @@ Type TGUIPanel Extends TGUIObject
 	End Method
 
 
-	Method UpdateChildren:Int()
-		If Not _children Or _children.Count() = 0 Then Return False
-		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
-
-		'update added elements
-		For Local obj:TGUIobject = EachIn _children.ReverseEnumerator()
-			obj.update()
-		Next
-	End Method
-
-
 	Method Update:Int()
 		'as we do not call "super.Update()" - we handle this manually
 		'if appearance changed since last update tick: inform widget

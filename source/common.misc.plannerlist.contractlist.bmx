@@ -3,7 +3,7 @@ Import "common.misc.plannerlist.base.bmx"
 Import "game.programme.adcontract.bmx"
 Import "game.player.programmecollection.bmx"
 Import "game.game.base.bmx"
-Import "game.screen.programmeplanner.gui.bmx"
+Import "game.screen.office.programmeplanner.gui.bmx"
 
 
 'the adspot/contractlist shown in the programmeplaner

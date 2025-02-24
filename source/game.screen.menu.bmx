@@ -39,7 +39,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiGameSeedLabel:TGuiLabel
 	Field guiGameSeed:TGUIinput
 	'for easier iteration over the widgets (and their tooltips)
-	Field guiWidgets:TList = New TList
+	Field guiWidgets:TObjectList = New TObjectList
 
 	Field figureBaseCount:Int = 1
 	Field modifiedPlayers:Int = False
@@ -64,7 +64,12 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field nameState:TLowerString
 	Field settingsState:TLowerString = TLowerString.Create("GameSettings")
 
+	Global _instance:TScreen_GameSettings
+	
 	Method Create:TScreen_GameSettings(name:String)
+		'we can only have one game settings screen ... mark it
+		_instance = self
+		
 		Super.Create(name)
 		SetGroupName("ExGame", "GameSettings")
 
@@ -309,12 +314,22 @@ Type TScreen_GameSettings Extends TGameScreen
 			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeGameSettingsInputs", guiDifficulty[i])
 		Next
 
-		'handle clicks on the gui objects
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", "TGUIButton")
-		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickArrows", "TGUIArrowButton")
-
 		'invoke correct content of mission dropdown
 		TriggerBaseEvent(GUIEventKeys.GUIDropDown_OnSelectEntry, null, guiMissionCategories)
+
+
+		' === REGISTER CALLBACKS ===
+		guiButtonBack._callbacks_onClick :+ [onClickButtonsCallback]
+		guiButtonStart._callbacks_onClick :+ [onClickButtonsCallback]
+		guiPlayerRandomButtons[0]._callbacks_onClick :+ [onClickButtonsCallback]
+		guiPlayerRandomButtons[1]._callbacks_onClick :+ [onClickButtonsCallback]
+		guiPlayerRandomButtons[2]._callbacks_onClick :+ [onClickButtonsCallback]
+		guiPlayerRandomButtons[3]._callbacks_onClick :+ [onClickButtonsCallback]
+		For local i:Int = 0 until 8
+			guiFigureArrows[i]._callbacks_onClick :+ [onClickFigureArrowsCallback]
+			guiFigureSelectArrows[i]._callbacks_onClick :+ [onClickFigureArrowsCallback]
+		Next
+
 		Return Self
 	End Method
 
@@ -408,21 +423,13 @@ Type TScreen_GameSettings Extends TGameScreen
 	End Method
 
 
-	'handle clicks on the buttons
-	Method onClickArrows:Int(triggerEvent:TEventBase)
-		Local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent._sender)
-		If Not sender Then Return False
-
-		_HandleArrowInteraction(sender)
-
-		'handled even if disabled/reached figure limit
-		MouseManager.SetClickHandled(1)
-
-		Return True
-	End Method
+	'handle clicks on the figure select arrow buttons
+	Function onClickFigureArrowsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		_instance.onClickFigureArrows(sender, mouseButton, x, y)
+	End Function
 
 
-	Method _HandleArrowInteraction:Int(sender:TGUIArrowButton)
+	Method onClickFigureArrows:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		'left/right arrows to change figure base
 		For Local i:Int = 0 To 7
 			If sender = guiFigureArrows[i]
@@ -462,67 +469,68 @@ Type TScreen_GameSettings Extends TGameScreen
 
 
 	'handle clicks on the buttons
-	Method onClickButtons:Int(triggerEvent:TEventBase)
-		Local sender:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not sender Then Return False
-
-
+	Function onClickButtonsCallback:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
+		_instance.onClickButtons(sender, mouseButton, x, y)
+	End Function
+	
+	
+	Method onClickButtons:Int(sender:TGUIObject, mouseButton:Int, x:Int, y:Int)
 		Select sender
 			Case guiButtonStart
-					GetGameBase().mission = null
-					GameRules.devConfig = GameRules.devConfigBackup.Copy()
-					GameRules.randomizeLicenceAttributes = guiRandomizeLicence.isChecked()
-					If Not GetGameBase().networkgame And Not GetGameBase().onlinegame
-						TLogger.Log("Game", "Start a new singleplayer game", LOG_DEBUG)
+				GetGameBase().mission = null
+				GameRules.devConfig = GameRules.devConfigBackup.Copy()
+				GameRules.randomizeLicenceAttributes = guiRandomizeLicence.isChecked()
+				If Not GetGameBase().networkgame And Not GetGameBase().onlinegame
+					TLogger.Log("Game", "Start a new singleplayer game", LOG_DEBUG)
 
-						Local mission:TMission = null
-						If guiMissions.getSelectedEntry() Then mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
-						If mission
-							mission.difficulty = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
-							For Local p:Int = 1 To 4
-								If GetPlayerBase(p).IsLocalHuman() Then mission.playerID = p
-							Next
-							GetGameBase().mission = mission
-							TProgrammeData.setIgnoreUnreleasedProgrammes( true )
-							'GameRules.startGameWithCredit = False 'let player decide
-							'GetGameBase().SetRandomizerBase( 0 ) ' let player decide
-							GameRules.randomizeLicenceAttributes = True
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_REVIEW", 15)
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_SPEED", 15)
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_OUTCOME", 15)
-							GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_PRICE", 15)
-							GetGameBase().userStartYear = Int(guiStartYear.value)
-						EndIf
-
-						'set self into preparation state
-						GetGameBase().SetGamestate(TGameBase.STATE_PREPAREGAMESTART)
-					Else
-						TLogger.Log("Game", "Start a new multiplayer game", LOG_DEBUG)
-						guiAnnounce.SetChecked(False)
-						Network.StopAnnouncing()
-
-						'demand others to do the same
-						GetNetworkHelper().SendPrepareGame()
-						'set self into preparation state
-						GetGameBase().SetGamestate(TGameBase.STATE_PREPAREGAMESTART)
+					Local mission:TMission = null
+					If guiMissions.getSelectedEntry() Then mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
+					If mission
+						mission.difficulty = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
+						For Local p:Int = 1 To 4
+							If GetPlayerBase(p).IsLocalHuman() Then mission.playerID = p
+						Next
+						GetGameBase().mission = mission
+						TProgrammeData.setIgnoreUnreleasedProgrammes( true )
+						'GameRules.startGameWithCredit = False 'let player decide
+						'GetGameBase().SetRandomizerBase( 0 ) ' let player decide
+						GameRules.randomizeLicenceAttributes = True
+						GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_REVIEW", 15)
+						GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_SPEED", 15)
+						GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_OUTCOME", 15)
+						GameRules.devConfig.AddInt("DEV_DATABASE_LICENCE_RANDOM_PRICE", 15)
+						GetGameBase().userStartYear = Int(guiStartYear.value)
 					EndIf
+
+					'set self into preparation state
+					GetGameBase().SetGamestate(TGameBase.STATE_PREPAREGAMESTART)
+				Else
+					TLogger.Log("Game", "Start a new multiplayer game", LOG_DEBUG)
+					guiAnnounce.SetChecked(False)
+					Network.StopAnnouncing()
+
+					'demand others to do the same
+					GetNetworkHelper().SendPrepareGame()
+					'set self into preparation state
+					GetGameBase().SetGamestate(TGameBase.STATE_PREPAREGAMESTART)
+				EndIf
 
 			Case guiButtonBack
-					If GetGameBase().networkgame
-						Network.StopAnnouncing()
+				If GetGameBase().networkgame
+					Network.StopAnnouncing()
 
-						If Network.isServer
-							Network.DisconnectFromServer()
-						Else
-							Network.client.Disconnect()
-						EndIf
-						GetPlayerBaseCollection().playerID = 1
-						GetPlayerBossCollection().playerID = 1
-						GetGameBase().SetGamestate(TGameBase.STATE_NETWORKLOBBY)
-						guiAnnounce.SetChecked(False)
+					If Network.isServer
+						Network.DisconnectFromServer()
 					Else
-						GetGameBase().SetGamestate(TGameBase.STATE_MAINMENU)
+						Network.client.Disconnect()
 					EndIf
+					GetPlayerBaseCollection().playerID = 1
+					GetPlayerBossCollection().playerID = 1
+					GetGameBase().SetGamestate(TGameBase.STATE_NETWORKLOBBY)
+					guiAnnounce.SetChecked(False)
+				Else
+					GetGameBase().SetGamestate(TGameBase.STATE_MAINMENU)
+				EndIf
 			Case guiPlayerRandomButtons[0]
 				randomize(0)
 			Case guiPlayerRandomButtons[1]
@@ -533,6 +541,7 @@ Type TScreen_GameSettings Extends TGameScreen
 				randomize(3)
 		End Select
 	End Method
+
 
 	Method randomize:Int(player:Int)
 		Local channels:String[]=["TowerTV", "SunTV", "FunTV", "RatTV","MoonTV","StarTV","WatchTV","RainTV","SnowTV","RunTV","StunTV","StormTV","CloudTV","RonTV","CatTV","MouseTV","GoldTV","SilverTV","TinTV","SteelTV"]
@@ -856,7 +865,7 @@ endrem
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawMenuBackground(True)
 
 		'background gui items
@@ -868,7 +877,8 @@ endrem
 			colorRect = New SRect(slotPosX + 2, Int(guiChannelNames[i-1].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 			'draw colors
-			For Local pc:TPlayerColor = EachIn TPlayerColor.registeredColors
+			For Local colorIndex:Int = 0 until TPlayerColor.registeredColors.Count()
+				Local pc:TPlayerColor = TPlayerColor(TPlayerColor.registeredColors.data[colorIndex])
 				If pc.ownerID = 0
 					colorRect = New SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
 					pc.SetRGB()
@@ -904,14 +914,14 @@ endrem
 		GUIManager.Draw(nameState, 101)
 
 		'draw tooltips above everything
-		For Local widget:TGUIObject = EachIn guiWidgets
+		For Local i:Int = 0 until guiWidgets.Count()
+			Local widget:TGUIObject = TGUIObject(guiWidgets.data[i])
 			If widget.GetTooltip() Then widget.GetTooltip().Render()
 		Next
 	End Method
 
 
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		If GetGameBase().networkgame
 			guiGameTitleLabel.show()
 			guiGameTitle.show()

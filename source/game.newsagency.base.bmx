@@ -89,12 +89,12 @@ Type TNewsAgency
 		_eventListeners = New TEventListenerBase[0]
 
 		'react to confiscations
-		_eventListeners :+ [ EventManager.registerListenerFunction( "publicAuthorities.onConfiscateProgrammeLicence", onPublicAuthoritiesConfiscateProgrammeLicence) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onBombExplosion", onRoomBombExplosion) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addNews", onPlayerProgrammeCollectionAddNews) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.PublicAuthorities_OnConfiscateProgrammeLicence, onPublicAuthoritiesConfiscateProgrammeLicence) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnBombExplosion, onRoomBombExplosion) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.ProgrammeCollection_addNews, onPlayerProgrammeCollectionAddNews) ]
 
 		'resize news genres when loading an older savegame
-		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.SaveGame_OnLoad, onSavegameLoad) ]
 
 
 		delayedLists = New TList[4]

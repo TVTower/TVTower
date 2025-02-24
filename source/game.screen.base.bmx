@@ -27,7 +27,7 @@ Import Brl.LinkedList
 
 Type TScreenHandler
 	Method Initialize:int() abstract
-
+rem
 	'special events for screens used in rooms - only this event has the room as sender
 	'screen.onScreenUpdate/Draw is more general purpose
 	'returns the event listener links
@@ -39,6 +39,7 @@ Type TScreenHandler
 		endif
 		return listeners
 	End Function
+endrem
 End Type
 
 
@@ -128,12 +129,12 @@ Type TGameScreen Extends TScreen
 	End Method
 
 
-	Method DrawOverlay:Int(tweenValue:Float)
+	Method DrawOverlay:Int(tweenValue:Float) override
 		TError.DrawErrors()
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawBackground()
 	End Method
 End Type
@@ -289,7 +290,7 @@ Type TInGameScreen Extends TScreen
 	End Function
 
 
-	Method Draw:Int(tweenValue:Float)
+	Method DrawCustom:Int(tweenValue:Float) override
 		DrawContent(tweenValue)
 	End Method
 
@@ -300,7 +301,7 @@ Type TInGameScreen Extends TScreen
 	End Method
 
 
-	Method Update:Int(deltaTime:Float)
+	Method UpdateCustom:Int(deltaTime:Float) override
 		'check for clicks on items BEFORE others check and use it
 		GUIManager.Update(ingameState)
 
@@ -415,7 +416,7 @@ Type TInGameScreen_World Extends TInGameScreen
 
 
 	'override default
-	Method UpdateContent(deltaTime:Float)
+	Method UpdateContent(deltaTime:Float) override
 		GetWorld().Update()
 		GetBuildingBase().Update()
 
@@ -439,8 +440,7 @@ Type TInGameScreen_World Extends TInGameScreen
 	End Method
 
 
-	'override default
-	Method DrawContent:Int(tweenValue:Float)
+	Method DrawContent:Int(tweenValue:Float) override
 		GetWorld().Render()
 		'player is not in a room so draw building
 		GetBuildingBase().Render()
@@ -584,6 +584,29 @@ Type TInGameScreen_Room Extends TInGameScreen
 	Method UpdateContent(deltaTime:Float)
 		Local room:TRoomBase = GetCurrentRoom()
 		If room Then room.update()
+
+
+		'Use right click to get out of a room / screen
+		If Not GetPlayer().GetFigure().IsChangingRoom()
+			'handle right click
+			If MOUSEMANAGER.IsClicked(2)
+				'check subrooms
+				'only leave a room if not in a subscreen
+				'if in subscreen, go to parent one
+				If ScreenCollection.GetCurrentScreen().parentScreen
+					ScreenCollection.GoToParentScreen()
+
+					'handled clicks
+					MouseManager.SetClickHandled(2)
+				Else
+					'leaving allowed - reset button
+					If GetPlayer().GetFigure().LeaveRoom()
+						'handled clicks
+						MouseManager.SetClickHandled(2)
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 	End Method
 
 

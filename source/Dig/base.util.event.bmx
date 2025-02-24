@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2022 Ronny Otto, digidea.de
+	Copyright (C) 2002-2025 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -53,6 +53,10 @@ Import "base.util.time.bmx"
 Import "base.util.longmap.bmx"
 Import Brl.ObjectList
 
+
+Extern
+	Function event_bbRefPushObject( p:Byte Ptr,obj:Object )="void bbRefPushObject(BBObject **,BBObject *)!"
+End Extern
 
 
 Global EventManager:TEventManager = New TEventManager
@@ -271,6 +275,8 @@ Type TEventManager
 		EndIf
 
 		listeners.AddLast(eventListener)
+		eventKey.listenerCount :+ 1
+
 		UnlockMutex(_listenersMutex)
 
 		Return eventListener
@@ -309,8 +315,16 @@ Type TEventManager
 			TLogger.Log("UnregisterListener() (Var1)", "Mutex was still locked, waiting.", LOG_DEBUG)
 			LockMutex(_listenersMutex)
 		EndIf
-		For Local listeners:TObjectList = EachIn _listeners.Values()
-			listeners.Remove(eventListener)
+		'For Local listeners:TObjectList = EachIn _listeners.Values()
+		'	listeners.Remove(eventListener)
+		'Next
+		For Local eventKeyKey:TLongKey = EachIn _listeners.Keys()
+			Local eventKeyID:Long = eventKeyKey.value
+			Local eventKey:TEventKey = TEventKey(eventKeyIDMap.ValueForKey(eventKeyID))
+			local listeners:TObjectList = TObjectList(_listeners.ValueForKey(eventKeyID))
+			If listeners.Remove(eventListener)
+				eventKey.listenerCount :- 1
+			Endif
 		Next
 		UnlockMutex(_listenersMutex)
 	End Method
@@ -325,7 +339,11 @@ Type TEventManager
 			LockMutex(_listenersMutex)
 		EndIf
 		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( eventKey.id ))
-		If listeners Then listeners.Remove(eventListener)
+		If listeners
+			If listeners.Remove(eventListener)
+				eventKey.listenerCount :- 1
+			EndIf
+		EndIf
 		UnlockMutex(_listenersMutex)
 	End Method
 
@@ -339,7 +357,9 @@ Type TEventManager
 			LockMutex(_listenersMutex)
 		EndIf
 		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( eventKey.id ))
-		If listeners Then listeners.Remove(eventListener)
+		If listeners And listeners.Remove(eventListener)
+			eventKey.listenerCount :- 1
+		EndIf
 		UnlockMutex(_listenersMutex)
 	End Method
 
@@ -366,12 +386,20 @@ Type TEventManager
 			TLogger.Log("UnregisterListenerByLimit()", "Mutex was still locked, waiting.", LOG_DEBUG)
 			LockMutex(_listenersMutex)
 		EndIf
-		For Local list:TObjectList = EachIn _listeners.Values()
-			For Local listener:TEventListenerBase = EachIn list
+'		For Local list:TObjectList = EachIn _listeners.Values()
+'			For Local listener:TEventListenerBase = EachIn list
+		For Local eventKeyKey:TLongKey = EachIn _listeners.Keys()
+			Local eventKeyID:Long = eventKeyKey.value
+			Local eventKey:TEventKey = TEventKey(eventKeyIDMap.ValueForKey(eventKeyID))
+			local listeners:TObjectList = TObjectList(_listeners.ValueForKey(eventKeyID))
+			For Local listener:TEventListenerBase = EachIn listeners
+
 				'if one of both limits hits, remove that listener
-				If ObjectsAreEqual(listener._limitToSender, limitSender) Or..
-				   ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
-					list.Remove(listener)
+				If FiltersObject(listener._limitToSender, limitSender) Or..
+				   FiltersObject(listener._limitToReceiver, limitReceiver)
+					If listeners.Remove(listener)
+						eventKey.listenerCount :- 1
+					Endif
 				EndIf
 			Next
 		Next
@@ -399,8 +427,8 @@ Type TEventManager
 				Local toRemove:TEventListenerBase[]
 				For Local listener:TEventListenerBase = EachIn triggerListeners
 					'if one of both limits hits, remove that listener
-					If ObjectsAreEqual(listener._limitToSender, limitSender) Or..
-					   ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
+					If FiltersObject(listener._limitToSender, limitSender) Or..
+					   FiltersObject(listener._limitToReceiver, limitReceiver)
 						toRemove :+ [listener]
 					EndIf
 				Next
@@ -410,7 +438,9 @@ Type TEventManager
 					LockMutex(_listenersMutex)
 				EndIf
 				For local listener:TEventListenerBase = EachIn toRemove
-					triggerListeners.remove(listener)
+					If triggerListeners.remove(listener)
+						eventKey.listenerCount :- 1
+					EndIf
 				Next
 				UnlockMutex(_listenersMutex)
 			EndIf
@@ -482,6 +512,9 @@ Type TEventManager
 			'UnlockMutex(_onEventMutex)
 		EndIf
 
+		'increase count for the eventKey (statistics)
+		triggeredByEvent._eventKey.callCount :+ 1
+
 		'run individual event method
 		If Not triggeredByEvent.IsVeto()
 			eventsTriggered :+ 1
@@ -547,28 +580,32 @@ Type TEventManager
 
 	Method DumpListeners()
 		Print "==== EVENT MANAGER DUMP LISTENERS ===="
-		Print "Events: " + _events.Count()
 		LockMutex(_listenersMutex)
 
 		Local listeners:Int
 		For Local l:TObjectList = EachIn EventManager._listeners.Values()
 			listeners :+ l.Count()
 		Next
-		Print "Event Listeners: " + listeners
+		
+		local methodListenerCount:Int
+		local functionListenerCount:Int
+		local guiListenerCount:Int
 
 		For Local longKey:TLongKey = EachIn EventManager._listeners.Keys()
 			local eventKey:TEventKey = GetEventKey(longKey.value)
 			if not eventKey then Throw "EventManager._listeners contain obsolete eventKeys for ID="+longKey.value
 
-			'skip GUI for now
-			If eventKey.text.Find("gui") = 0 then continue
 			print "- " + eventKey.text.ToString() ' + "    [ID:"+eventKey.id+"]"
 
 			For Local elb:TEventListenerBase = EachIn TObjectList( _listeners.ValueForKey(eventKey.id) )
+				'skip GUI for now
+				If eventKey.text.Find("gui") = 0 then guiListenerCount :+1; continue
+
 				Local callName:String
 				If TEventListenerRunFunction(elb)
 					Local elbF:TEventListenerRunFunction = TEventListenerRunFunction(elb)
 					Local callSource:TFunction
+					'identify the function and the parent of it
 					For local t:TTypeID = EachIn TTypeId.EnumTypes()
 						For local f:TFunction = EachIn t.EnumFunctions()
 							If f._ref = Byte Ptr (elbf._function)
@@ -592,55 +629,93 @@ Type TEventManager
 				
 				If TEventListenerRunFunction(elb)
 					For local s:String = Eachin callName.split("~n")
-						Print "  listener function: " + s
+						Print "    listener function: " + s
 					Next
+					functionListenerCount :+ 1
 				ElseIf TEventListenerRunMethod(elb)
 					For local s:String = Eachin callName.split("~n")
-						Print "  listener method: " + s
+						Print "    listener method: " + s
 					Next
+					methodListenerCount :+ 1
 				Else
-					Print "  listener " + TTypeId.ForObject(elb).name()
+					Print "    listener " + TTypeId.ForObject(elb).name()
 				EndIf
 			Next
 		Next
 		UnlockMutex(_listenersMutex)
 
 		Print "====="
+		Print "Event listeners       : " + listeners + " (" + methodListenerCount + " method listeners, " + functionListenerCount + " function listeners)"
+		Print "Event listeners GUI   : " + guiListenerCount
+		Print "Event listeners called: " + listenersCalled
+		Print "Events queued         : " + _events.Count()
+		Print "Events triggered      : " + eventsTriggered
+		Print "Events processed      : " + eventsProcessed
+		Print "====="
 	End Method
 
 
-	'check whether a checkedObject equals to a limitObject
-	'1) is the same object
-	'2) is of the same type
-	'3) is extended from same type
-	Function ObjectsAreEqual:Int(checkedObject:Object, limit:Object)
+	'check whether a object is filtered by a given filter object
+	'1) filter is the same object
+	'2) filter is a type and it is the same as the one of the object
+	'3) filter is a parent type of the one of the object
+	Function FiltersObject:Int(obj:Object, filter:Object, filterObjType:Int = 0, objTypeID:TTypeID = Null)
+		'filterObjType: 0 = unchecked
+		'               1 = string
+		'               2 = ttypeid
+		'               3 = object
+	
 		'one of both is empty
-		If Not checkedObject Then Return False
-		If Not limit Then Return False
+		If Not obj Then Return False
+		If Not filter Then Return False
 		'same object (also compares strings if they are both strings)
-		If checkedObject = limit Then Return True
+		'(only return if they are the same, differing strings need interpretation)
+		If obj = filter Then Return True
 
-		'if both strings we just compare and also return if different
-		If String(limit) And String(checkedObject)
-			Return String(limit) = String(checkedObject)
+		If filterObjType = 0 or filterObjType = 1
+			Local filterString:String = String(filter)
+			Local objString:String = String(obj)
+
+			'if both strings we just compare and also return if different
+			If filterString And objString
+				Return objString = filterString
+			EndIf
+			
+			If filterObjType = 1 'string? so no "type name"!
+				Return False
+			EndIf
 		EndIf
 
 		'check if classname / type is the same (type-name/id given as limit )
-		Local typeId:TTypeId
-		If TTypeId(limit)
-			typeId = TTypeId(limit)
-		ElseIf String(limit)
-			typeId = TTypeId.ForName(String(limit))
+		Local filterTypeId:TTypeId = TTypeId(filter)
+		If filterObjType = 0 or filterObjType = 1
+			If Not filterTypeId And String(filter) 
+				filterTypeId = TTypeId.ForName(String(filter) )
+			EndIf
 		EndIf
 
 		'got a valid classname and checked object is same type or does extend from that type
-		If typeId
-			'if TTypeId.ForObject(checkedObject) = typeId Then Return True
-			if TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
+		If filterTypeId
+			If Not objTypeId Then objTypeID = TTypeId.ForObject(obj)
+			If objTypeId.ExtendsType(filterTypeId) Then Return True
 		EndIf
 
 		Return False
 	End Function
+
+	
+	Function FiltersObjectByTypeID:Int(obj:Object, filter:TTypeID, objTypeID:TTypeID = Null)
+		'one of both is empty
+		If Not obj Then Return False
+		If Not filter Then Return False
+
+		If Not objTypeID Then objTypeID = TTypeId.ForObject(obj)
+
+		'direct comparison to avoid function call (debug speed)
+		'albeit ExtendsType() checks "self" too
+		If objTypeId = filter Then Return True
+		Return objTypeId.ExtendsType(filter)
+	End Function	
 End Type
 
 
@@ -651,6 +726,9 @@ End Type
 Type TEventKey
 	Field id:Long
 	Field text:TLowerString
+	Field listenerCount:Int
+	Field callCount:Int
+	Field callsSkippedCount:Int
 
 private
 	'avoid outside world being able to create new event keys without Generate()
@@ -664,8 +742,13 @@ End Type
 'simple basic class for an event listener
 Type TEventListenerBase
 	Field _limitToSender:Object
+	Field _limitToSenderObjType:Int = 0 {nosave} '0 = unchecked, 1 = string, 2 = ttypeid, 3 = object 
+	Field _limitToSenderTypeID:TTypeID {nosave} 'TTypeIDs will differ between savegames...
 	Field _limitToReceiver:Object
-
+	Field _limitToReceiverObjType:Int = 0 {nosave}
+	Field _limitToReceiverTypeID:TTypeID {nosave} 'TTypeIDs will differ between savegames...
+	Global cacheHit:Int
+	Global cacheCalc:Int
 
 	'what to do if the event happens
 	Method OnEvent:Int(triggeredByEvent:TEventBase) Abstract
@@ -676,30 +759,125 @@ Type TEventListenerBase
 	Method ignoreEvent:Int(triggerEvent:TEventBase)
 		If triggerEvent = Null Then Return True
 
+
 		'Check limit for "sender"
 		'if the listener wants a special sender but the event does not have one... ignore
 		'old if self._limitToSender and triggerEvent._sender
 		'new
-		If _limitToSender
+		If self._limitToSender
 			'we want a sender but got none - ignore (albeit objects are NOT equal)
 			If Not triggerEvent._sender Then Return True
+			
+			If _limitToSenderObjType = 0
+				IdentifySenderReceiverObjType()
+			EndIf
 
-			If Not TEventManager.ObjectsAreEqual(triggerEvent._sender, _limitToSender) Then Return True
+			If self._limitToSenderTypeID
+'				cacheHit :+ 1
+'				print "cache hit" + cacheHit
+				'use pre-cached typeid to speedup lookup
+				If Not TEventManager.FiltersObjectByTypeID(triggerEvent._sender, self._limitToSenderTypeID) Then Return True
+			Else
+				If Not TEventManager.FiltersObject(triggerEvent._sender, self._limitToSender) Then Return True
+			EndIf
 		EndIf
 
 		'Check limit for "receiver" - but only if receiver is set
 		'if the listener wants a special receiver but the event does not have one... ignore
 		'old: if self._limitToReceiver and triggerEvent._receiver
 		'new
-		If _limitToReceiver
+		If self._limitToReceiver
 			'we want a receiver but got none - ignore (albeit objects are NOT equal)
 			If Not triggerEvent._receiver Then Return True
 
-			If Not TEventManager.ObjectsAreEqual(triggerEvent._receiver, _limitToReceiver) Then Return True
+			If _limitToReceiverObjType = 0
+				IdentifySenderReceiverObjType()
+			EndIf
+
+			'identify limit type
+			If _limitToReceiverObjType = 0
+'				cacheCalc :+ 1
+'				print "calc cache: " + cacheCalc
+
+				self._limitToReceiverTypeID = TTypeId(self._limitToReceiver)
+				If Not self._limitToReceiverTypeID And String(self._limitToReceiver) 
+					self._limitToReceiverTypeID = TTypeId.ForName(String(self._limitToReceiver))
+				EndIf
+				If self._limitToReceiverTypeID
+					self._limitToSenderObjType = 2 'typeID
+				ElseIf String(_limitToReceiver)
+					self._limitToReceiverObjType = 1 'string
+				Else
+					self._limitToReceiverObjType = 3 'object 
+				EndIf
+			EndIf
+
+			If self._limitToReceiverTypeID
+'				cacheHit :+ 1
+'				print "cache hit" + cacheHit
+				'use pre-cached typeid to speedup lookup
+				If Not TEventManager.FiltersObjectByTypeID(triggerEvent._sender, self._limitToReceiverTypeID) Then Return True
+			Else
+				If Not TEventManager.FiltersObject(triggerEvent._receiver, self._limitToReceiver, self._limitToReceiverObjType) Then Return True
+			EndIf
 		EndIf
 
 		Return False
 	End Method
+	
+	
+	Method IdentifySenderReceiverObjType()
+		'identify limit type
+		If self._limitToSender and self._limitToSenderObjType = 0
+'				cacheCalc :+ 1
+'				print "calc cache: " + cacheCalc
+			self._limitToSenderTypeID = TTypeId(self._limitToSender)
+			If Not self._limitToSenderTypeID And String(self._limitToSender) 
+				self._limitToSenderTypeID = TTypeId.ForName(String(self._limitToSender))
+			EndIf
+			If self._limitToSenderTypeID
+				self._limitToSenderObjType = 2 'typeID
+			ElseIf String(_limitToSender)
+				self._limitToSenderObjType = 1 'string
+			Else
+				self._limitToSenderObjType = 3 'object 
+			EndIf
+		EndIf
+		'identify limit type
+		If self._limitToReceiver and self._limitToReceiverObjType = 0
+'				cacheCalc :+ 1
+'				print "calc cache: " + cacheCalc
+
+			self._limitToReceiverTypeID = TTypeId(self._limitToReceiver)
+			If Not self._limitToReceiverTypeID And String(self._limitToReceiver) 
+				self._limitToReceiverTypeID = TTypeId.ForName(String(self._limitToReceiver))
+			EndIf
+			If self._limitToReceiverTypeID
+				self._limitToSenderObjType = 2 'typeID
+			ElseIf String(_limitToReceiver)
+				self._limitToReceiverObjType = 1 'string
+			Else
+				self._limitToReceiverObjType = 3 'object 
+			EndIf
+		EndIf
+	End Method
+		
+	Function IdentifyLimitType:Object(limitObj:Object, limitType:Int var)
+		Local result:Object = TTypeId(limitObj)
+		If Not result And String(limitObj) 
+			result = TTypeId.ForName(String(limitObj))
+		EndIf
+		If result
+			limitType = 2 'typeID
+		ElseIf String(limitObj)
+			result = limitObj
+			limitType = 1 'string
+		Else
+			result = limitObj
+			limitType = 3 'object 
+		EndIf
+		Return result
+	End Function
 End Type
 
 
@@ -715,6 +893,18 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 		Local obj:TEventListenerRunMethod = New TEventListenerRunMethod
 		obj._methodName	= methodName
 		obj._objectInstance = objectInstance
+
+		'convert limits to TTypeID if corresponding - this saves lookups
+		'later on
+		If String(limitToSender)
+			local t:TTypeID = TTypeID.ForName(String(limitToSender))
+			if t Then limitToSender = t
+		EndIf
+		If String(limitToReceiver)
+			local t:TTypeID = TTypeID.ForName(String(limitToReceiver))
+			if t Then limitToReceiver = t
+		EndIf
+
 		obj._limitToSender = limitToSender
 		obj._limitToReceiver = limitToReceiver
 		Return obj
@@ -731,7 +921,24 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 			EndIf
 
 			If _method
-				_method.Invoke(_objectInstance ,[triggerEvent])
+				'_method.Invoke(_objectInstance ,[triggerEvent])
+
+				If _method._argTypes.length <> 1
+					print "_method " + _method.name() + " does not correspond to event-definition: only argument should be ~qtriggerEvent:TEventBase~q" 
+					_method.Invoke(_objectInstance ,[triggerEvent])
+				Else	
+					Local arg:Byte Ptr
+					event_bbRefPushObject(varptr arg, triggerEvent)
+				
+					if _method._typeID._retType = IntTypeID
+						Local f:Int(m:Object, data:Byte Ptr) = _method._ref
+						f(_objectInstance, arg)
+					ElseIf _method._typeID._retType = VoidTypeID
+						Local f(m:Object, data:Byte Ptr) = _method._ref
+						f(_objectInstance, arg)
+					EndIf
+				EndIf
+				
 				Return True
 			Else
 				TLogger.Log("TEventListener.OnEvent", "Tried to call non-existing method ~q"+_methodName+"~q.", LOG_WARNING | LOG_DEBUG)
@@ -753,6 +960,18 @@ Type TEventListenerRunFunction Extends TEventListenerBase
 	Function Create:TEventListenerRunFunction(_function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Local obj:TEventListenerRunFunction = New TEventListenerRunFunction
 		obj._function = _function
+		
+		'convert limits to TTypeID if corresponding - this saves lookups
+		'later on
+		If ObjectIsString(limitToSender)
+			local t:TTypeID = TTypeID.ForName(String(limitToSender))
+			if t Then limitToSender = t
+		EndIf
+		If ObjectIsString(limitToReceiver)
+			local t:TTypeID = TTypeID.ForName(String(limitToReceiver))
+			if t Then limitToReceiver = t
+		EndIf
+		
 		obj._limitToSender = limitToSender
 		obj._limitToReceiver = limitToReceiver
 		Return obj

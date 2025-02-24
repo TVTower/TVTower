@@ -587,8 +587,6 @@ Type TGUIBettyPresent extends TGuiObject
 		Else
 			Drag(MouseManager.GetClickPosition(1))
 		EndIf
-		'onclick is already emit
-		'TriggerBaseEvent(GUIEventKeys.GUIObject_OnClick, Null, Self, triggerEvent.GetReceiver())
 		
 		Return True
 	End Method

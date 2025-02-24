@@ -1,17 +1,16 @@
 SuperStrict
 Import "game.roomhandler.base.bmx"
-Import "game.screen.programmeplanner.bmx"
-Import "game.screen.stationmap.bmx"
-Import "game.screen.achievements.bmx"
-Import "game.screen.archivedmessages.bmx"
-Import "game.screen.statistics.bmx"
+Import "game.screen.office.programmeplanner.bmx"
+Import "game.screen.office.stationmap.bmx"
+Import "game.screen.office.achievements.bmx"
+Import "game.screen.office.archivedmessages.bmx"
+Import "game.screen.office.statistics.bmx"
+Import "game.screen.office.financials.bmx"
 
 Import "game.misc.archivedmessage.bmx"
 
 
-Import "game.screen.financials.bmx"
-
-
+Import "game.screen.office.financials.bmx"
 'Office: handling the players room
 Type RoomHandler_Office extends TRoomHandler
 	Field archivedMessageTotalCount:int
@@ -27,7 +26,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Global _instance:RoomHandler_Office
 	Global _initDone:int = False
-	Global _eventListeners:TEventListenerBase[]
+	Global _globalEventListeners:TEventListenerBase[]
+	Global _localEventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:RoomHandler_Office()
@@ -57,18 +57,28 @@ Type RoomHandler_Office extends TRoomHandler
 
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office")
 
-		'=== EVENTS ===
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		' === REGISTER EVENTS ===
 
-		'=== register event listeners
+		' remove old listeners
+		EventManager.UnregisterListenersArray(_globalEventListeners)
+		EventManager.UnregisterListenersArray(_localEventListeners)
+		_globalEventListeners = new TEventListenerBase[0]
+		_localEventListeners = new TEventListenerBase[0]
+
+		' register new global listeners
 		'handle the "office" itself (not computer etc)
 		'using this approach avoids "tooltips" to be visible in subscreens
-		_eventListeners :+ _RegisterScreenHandler( onUpdateOffice, onDrawOffice, screen )
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnAdd, onAddOrRemoveArchivedMessage) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnRemove, onAddOrRemoveArchivedMessage) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnAdd, onAddOrRemoveArchivedMessage) ]
+		_globalEventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ArchivedMessageCollection_OnRemove, onAddOrRemoveArchivedMessage) ]
+
+
+		' === REGISTER CALLBACKS ===
+
+		' to update/draw the screen
+		screen.AddUpdateCallback(onUpdateScreen)
+		screen.AddDrawCallback(onDrawScreen)
+
 
 		'(re-)localize content
 		'disabled as the screens are setting their language during "initialize()"
@@ -158,10 +168,10 @@ Type RoomHandler_Office extends TRoomHandler
 	End Method
 
 
-	Function onDrawOffice:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen( triggerEvent._sender )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+
+	Function onDrawScreen:Int(sender:TScreen, tweenValue:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = GetRoomBaseCollection().Get(ingameScreen.currentRoomID)
 
 		roomOwner = room.owner
 
@@ -200,9 +210,9 @@ Type RoomHandler_Office extends TRoomHandler
 	End Function
 
 
-	Function onUpdateOffice:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onUpdateScreen:Int(sender:TScreen, deltaTime:Float)
+		Local ingameScreen:TInGameScreen_Room = TInGameScreen_Room(sender)
+		Local room:TRoomBase = ingameScreen.GetCurrentRoom()
 
 		roomOwner = room.owner
 

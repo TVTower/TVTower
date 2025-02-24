@@ -271,8 +271,9 @@ Type TToastMessageSpawnPoint extends TEntity
 
 
 	Method GetMessageByGUID:TToastMessage(guid:string)
-		For local m:TToastMessage = EachIn messages
-			if m.GetGUID() = guid then return m
+		For local i:Int = 0 until messages.Count()
+			Local message:TToastMessage = TToastMessage(messages.data[i])
+			If message And message.GetGUID() = guid Then Return message
 		Next
 		return Null
 	End Method
@@ -294,7 +295,8 @@ Type TToastMessageSpawnPoint extends TEntity
 		'if alignment.y = GROW_DOWN then result = 0
 		if alignment.y = GROW_UP then result :+ area.GetH()
 
-		For local message:TToastMessage = EachIn messages
+		For local i:Int = 0 until messages.Count()
+			Local message:TToastMessage = TToastMessage(messages.data[i])
 			if message = child
 				if alignment.y = GROW_UP then result :- message.area.GetH()
 				return result
@@ -325,27 +327,28 @@ Type TToastMessageSpawnPoint extends TEntity
 
 	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		'store old render config and adjust to our needs
-		local renderConfig:TRenderconfig = TRenderConfig.Push()
-		if HasSize() then GetGraphicsManager().SetViewPort(int(GetScreenRect().GetX()), int(GetScreenRect().GetY()), int(GetScreenRect().GetW()), int(GetScreenRect().GetH()))
+		TRenderConfig.Backup()
+		Local rect:TRectangle = GetScreenRect()
+		if HasSize() then GetGraphicsManager().SetViewPort(int(rect.GetX()), int(rect.GetY()), int(rect.GetW()), int(rect.GetH()))
 
 
 		if showBackground then RenderBackground(xOffset, yOffset)
 
-		For local message:TToastMessage = EachIn messages
-			message.Render(xOffset, yOffset, alignment)
+		For local i:Int = 0 until messages.Count()
+			TToastMessage(messages.data[i]).Render(xOffset, yOffset, alignment)
 		Next
 
 		'=== DRAW CHILDREN ===
 		RenderChildren(xOffset, yOffset)
 
 		'restore old render config
-		TRenderConfig.Pop()
+		TRenderConfig.Restore()
 	End Method
 
 
 	Method Update:Int()
-		For local message:TToastMessage = EachIn messages
-			message.Update()
+		For local i:Int = 0 until messages.Count()
+			TToastMessage(messages.data[i]).Update()
 		Next
 
 		'=== UPDATE CHILDREN ===
