@@ -131,6 +131,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		newsShow = newsShow[..0]
 		advertisements = advertisements[..0]
 		dayOffset = -1
+		slotLocks.Clear()
 
 		'unregister events if any
 	End Method
