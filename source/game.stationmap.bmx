@@ -3446,7 +3446,7 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'emit an event so eg. network can recognize the change
 		If fireEvents 
-			TriggerBaseEvent(GameEventKeys.StationMap_RemoveStation, New TData.Add("station", station), Self)
+			TriggerBaseEvent(GameEventKeys.StationMap_RemoveStation, New TData.Add("station", station), Self, Null, 1)
 		EndIf
 
 		Return True
