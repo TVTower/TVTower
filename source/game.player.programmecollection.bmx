@@ -1283,25 +1283,28 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method GetProgrammeLicences:TList() {_exposeToLua}
 		if not _programmeLicences
-			_programmeLicences = CreateList()
+			Local tmpLicences:TList = CreateList()
 			local lists:TList[] = [singleLicences, seriesLicences, collectionLicences]
 
 			For local list:TList = EachIn lists
 				For local l:TProgrammeLicence = EachIn list
-					'add single elements (movies, documentations)
-					if l.GetSubLicenceCount() = 0
-						_programmeLicences.AddLast(l)
-					'add episodes
-					else
-						'add header of series/collection too!
-						_programmeLicences.AddLast(l)
-
-						For local subL:TProgrammeLicence = EachIn l.subLicences
-							_programmeLicences.AddLast(subL)
-						Next
+					if l
+						'add single elements (movies, documentations)
+						if l.GetSubLicenceCount() = 0
+							tmpLicences.AddLast(l)
+						'add episodes
+						else
+							'add header of series/collection too!
+							tmpLicences.AddLast(l)
+	
+							For local subL:TProgrammeLicence = EachIn l.subLicences
+								tmpLicences.AddLast(subL)
+							Next
+						endif
 					endif
 				Next
 			Next
+			_programmeLicences = tmpLicences
 		endif
 		return _programmeLicences
 	End Method
