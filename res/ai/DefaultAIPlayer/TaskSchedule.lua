@@ -269,27 +269,26 @@ function TaskSchedule:GetBroadcastTypeCount(slotType, broadcastType, beginDay, b
 	if hours == nil then hours = 24 end
 
 	local result = 0
-	for i=0, hours-1 do
-		local fixedDay, fixedHour = FixDayAndHour(beginDay, beginHour + i)
-
-		local currentBroadcastMaterial
-		if slotType == TVT.Constants.BroadcastMaterialType.ADVERTISEMENT then
-			currentBroadcastMaterial = MY.GetProgrammePlan().GetAdvertisement(fixedDay, fixedHour)
-		elseif slotType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
-			currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		end
-
-		-- requested outage count
-		if (broadcastType == TVT.Constants.BroadcastMaterialType.UNKNOWN and currentBroadcastMaterial == nil) then
-			result = result + 1
-		-- requested special type
-		elseif broadcastType~=nil and currentBroadcastMaterial~=nil and currentBroadcastMaterial.isType(broadcastType) == 1 then
-			result = result + 1
-		-- requested no outage
-		elseif broadcastType == nil and currentBroadcastMaterial~=nil then
-			result = result + 1
+	result = 0
+	local fixedStartDay, fixedStartHour = FixDayAndHour(beginDay, beginHour)
+	local fixedEndDay, fixedEndHour = FixDayAndHour(beginDay, beginHour + hours)
+	local response = TVT.of_GetBroadcastMaterialSlotsInTimeSpan(slotType, fixedStartDay, fixedStartHour, fixedEndDay, fixedEndHour)
+	if response.result == TVT.RESULT_OK then
+		broadcastSlots = response.DataArray()
+		for _, broadcastMaterial in ipairs(broadcastSlots) do
+			-- requested outage count
+			if (broadcastType == TVT.Constants.BroadcastMaterialType.UNKNOWN and broadcastMaterial == nil) then
+				result = result + 1
+			-- requested special type
+			elseif broadcastType ~= nil and broadcastMaterial ~= nil and broadcastMaterial.isType(broadcastType) == 1 then
+				result = result + 1
+			-- requested no outage
+			elseif broadcastType == nil and broadcastMaterial ~= nil then
+				result = result + 1
+			end
 		end
 	end
+
 	return result
 end
 

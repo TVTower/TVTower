@@ -129,21 +129,24 @@ Type TDebugWidget_ProgrammePlanInfo
 	Field slotPadding:Int = 3
 	Field dayShown:Int = -1
 	Field showCurrent:Int = 1
-	Field haveToRemoveOutdated:Int = 0
-	Field haveToRemoveOutdatedCount:Int = 0
 	Field _eventListeners:TEventListenerBase[]
 	Field programmeForHover:TBroadcastMaterial = null
+	'AIs can adjust their programmeplan from a subthread, so ensure
+	'to only listen to a single change at a time
+	Field programmePlanChangeMutex:TMutex = CreateMutex()
 
 
 	Method New()
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
 
+		'do a maintenance every 2 hours
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnHour, self, "onGameHour") ]
+
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.ProgrammePlan_AddObject, self, "onChangeProgrammePlan") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.ProgrammePlan_SetNews, self, "onChangeNewsShow") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMap_OnRecalculateAudienceSum, self, "onChangeAudienceSum") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnStart, self, "onStartGame") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.Game_OnDay, self, "onGameDay") ]
 	End Method
 
 
@@ -152,8 +155,16 @@ Type TDebugWidget_ProgrammePlanInfo
 	End Method
 
 
-	Method onGameDay:Int(triggerEvent:TEventBase)
-		RemoveOutdated()
+	'run a maintenance every 2 game hours
+	Method onGameHour:Int(triggerEvent:TEventBase)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local hour:Int = GetWorldTime().GetDayHour(time)
+		
+		If hour mod 2 = 0
+			'cleanup to avoid excessive array usage (with nobody watching
+			'the debug screen)
+			self.RemoveOutdated()
+		Endif
 	End Method
 
 
@@ -172,10 +183,9 @@ Type TDebugWidget_ProgrammePlanInfo
 		Local slot:Int = triggerEvent.GetData().GetInt("slot", -1)
 		If Not broadcast Or slot < 0 Then Return False
 
+		LockMutex(programmePlanChangeMutex)
 		newsInShow.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
-
-		haveToRemoveOutdated = True
-		haveToRemoveOutdatedCount :+ 1
+		UnlockMutex(programmePlanChangeMutex)
 	End Method
 
 
@@ -184,14 +194,13 @@ Type TDebugWidget_ProgrammePlanInfo
 		Local slotType:Int = triggerEvent.GetData().GetInt("slotType", -1)
 		If Not broadcast Or slotType <= 0 Then Return False
 
+		LockMutex(programmePlanChangeMutex)
 		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT
 			adBroadcasts.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 		Else
 			programmeBroadcasts.Insert(broadcast.GetID(), String(Time.GetTimeGone()) )
 		EndIf
-
-		haveToRemoveOutdated = True
-		haveToRemoveOutdatedCount :+ 1
+		UnlockMutex(programmePlanChangeMutex)
 	End Method
 
 
@@ -201,6 +210,7 @@ Type TDebugWidget_ProgrammePlanInfo
 		oldestEntryTime = -1
 
 		'remove outdated ones (older than 30 seconds))
+		LockMutex(programmePlanChangeMutex)
 		For Local map:TIntMap = EachIn maps
 			Local remove:Int[]
 			For Local idKey:TIntKey = EachIn map.Keys()
@@ -219,6 +229,7 @@ Type TDebugWidget_ProgrammePlanInfo
 				map.Remove(id)
 			Next
 		Next
+		UnlockMutex(programmePlanChangeMutex)
 
 		'reset cache
 		ResetPredictionCache( GetWorldTime().GetDayHour()+1 )
@@ -275,12 +286,6 @@ Type TDebugWidget_ProgrammePlanInfo
 
 		'statistic for the shown day
 		Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(dayShown, True)
-
-		'clean up if needed
-		If haveToRemoveOutdated Or (oldestEntryTime >= 0 And oldestEntryTime + 10000 < Time.GetTimeGone())
-			haveToRemoveOutdated = False
-			RemoveOutdated()
-		EndIf
 
 		If currentPlayer <> playerID
 			currentPlayer = playerID
@@ -581,22 +586,22 @@ Type TDebugWidget_ProgrammeCollectionInfo
 	Global addedAdContracts:TIntMap = new TIntMap
 	Global removedAdContracts:TIntMap = new TIntMap
 	Global availableAdContracts:TIntMap = new TIntMap
-	Global scheduledRemoveOutdatedTimes:Long[]
-	Global haveToRemoveOutdated:Int
 	Global _eventListeners:TEventListenerBase[]
 	Global programmeForHover:TProgrammeLicence = null
 	Global contractForHover:TAdContract = null
+	'event name to indicate a collection change happened from a subthread
+	Global onDeferredChangeProgrammeCollectionKey:TEventKey = GetEventKey("__DebugWidget_ProgrammeCollectionInfo.onDeferredChangeProgrammeCollection", True)
 
 	Method New()
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
 
+		'do a maintenance every 6 hours
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnHour, onGameHour) ]
+
+		_eventListeners :+ [ EventManager.registerListenerFunction(onDeferredChangeProgrammeCollectionKey, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract, onChangeProgrammeCollection) ]
-		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase, onChangeProgrammeCollection) ]
-		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onGameStart) ]
@@ -606,9 +611,6 @@ Type TDebugWidget_ProgrammeCollectionInfo
 
 	Function onGameStart:Int(triggerEvent:TEventBase)
 		debugWidget_ProgrammeCollectionInfo.Initialize()
-
-		scheduledRemoveOutdatedTimes = New Long[0]
-		haveToRemoveOutdated = True
 	End Function
 
 
@@ -618,134 +620,72 @@ Type TDebugWidget_ProgrammeCollectionInfo
 	End Function
 
 
+	'run a maintenance every 6 game hours
+	Function onGameHour:Int(triggerEvent:TEventBase)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local hour:Int = GetWorldTime().GetDayHour(time)
+		
+		If hour mod 6 = 0
+			'cleanup to avoid excessive array usage (with nobody watching
+			'the debug screen)
+			debugWidget_ProgrammeCollectionInfo.RemoveOutdated()
+		Endif
+	End Function
+
+
 	Function onChangeProgrammeCollection:Int(triggerEvent:TEventBase)
+		'If the event is sent from a subthread, defer handling it by
+		'registering as an event (not triggering it!)
+		If CurrentThread() <> MainThread()
+			RegisterBaseEvent(onDeferredChangeProgrammeCollectionKey, New TData().Add("originalTriggerEvent", triggerEvent))
+			Return False
+		EndIf
+		
+		' if this was a deferred event handling request, restore the original
+		' event - so in both cases the same handling logic can be applied
+		If triggerEvent.GetEventKey() = onDeferredChangeProgrammeCollectionKey
+			triggerEvent = TEventBase(triggerEvent.GetData().Get("originalTriggerEvent"))
+		Endif
+
+
 		Local prog:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmelicence"))
 		Local contract:TAdContract = TAdContract(triggerEvent.GetData().Get("adcontract"))
 		Local broadcastSource:TBroadcastMaterialSource = prog
 		If Not broadcastSource Then broadcastSource = contract
 
 		If Not broadcastSource Then Print "TDebugProgrammeCollectionInfo.onChangeProgrammeCollection: invalid broadcastSourceMaterial."
+		
+		
+		' add the material ID and the current time to a suitable map so
+		' we know about freshly added or removed ones (to mark them in
+		' a special way during rendering)
 
-
-		Local map:TIntMap = Null
 		Select triggerEvent.GetEventKey()
 			Case GameEventKeys.ProgrammeCollection_RemoveAdContract
-				map = removedAdContracts
-				'schedule a cleanup
-				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
-				'directly remove on outdated? 
-				'-> would instantly remove it - without animation
+				removedAdContracts.Insert(broadcastSource.GetID(), String(Time.GetTimeGone()) )
+				' directly remove on outdated? 
+				' -> would instantly remove it - without animation
 				'availableAdContracts.Remove(broadcastSource.GetID())
 			Case GameEventKeys.ProgrammeCollection_AddAdContract
-				map = addedAdContracts
-				'schedule a cleanup
-				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
+				addedAdContracts.Insert(broadcastSource.GetID(), String(Time.GetTimeGone()) )
+
 				availableAdContracts.Insert(broadcastSource.GetID(), broadcastSource)
-	'		Case GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase
-	'			map = addedAdContracts
-	'		Case GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase
-	'			map = addedAdContracts
-	'		Case GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase
-	'			map = suitcaseProgrammeLicences
-	'		Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase
-	'			map = suitcaseProgrammeLicences
 			Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence
-				map = removedProgrammeLicences
-				'schedule a cleanup
-				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
-				'remove on outdated
-				'availableProgrammeLicences.Remove(broadcastSource.GetID())
+				removedProgrammeLicences.Insert(broadcastSource.GetID(), String(Time.GetTimeGone()) )
+
 			Case GameEventKeys.ProgrammeCollection_AddProgrammeLicence
-				map = addedProgrammeLicences
+				addedProgrammeLicences.Insert(broadcastSource.GetID(), String(Time.GetTimeGone()) )
+
 				availableProgrammeLicences.Insert(broadcastSource.GetID(), broadcastSource)
-				'schedule a cleanup
-				AddToRemoveOutdatedSchedule(Time.GetTimeGone() + 3000)
 				sortedLicences = Null
 		End Select
-		If Not map Then Return False
-
-		map.Insert(broadcastSource.GetID(), String(Time.GetTimeGone()) )
-
-		haveToRemoveOutdated = True
 	End Function
-
-
-	Function AddToRemoveOutdatedSchedule(scheduledTime:Long)
-		'cleanup to avoid excessive array usage (with nobody watching
-		'the debug screen)
-		If scheduledRemoveOutdatedTimes.length > 10
-			RemoveOutdatedScheduleTimes()
-		EndIf
-	
-		'round time so "almost equally timed" entries are removed at the
-		'same time, not eg 1-2 ms later ?
-		'we want this entry to be removed (rounded to 10ms steps) in about 3 seconds
-		Local t:Long = long(scheduledTime/10)*10
-		'check if already scheduled and calculate index
-		Local index:Int
-		If scheduledRemoveOutdatedTimes.length > 0
-			For Local i:Int = 0 Until scheduledRemoveOutdatedTimes.length
-				Local existingTime:Long = scheduledRemoveOutdatedTimes[index]
-				If existingTime = t
-					'already added
-					Return
-				ElseIf existingTime > t
-					index = i
-				Else
-					index = i + 1
-				EndIf
-			Next
-		EndIf
-		If index >= scheduledRemoveOutdatedTimes.length
-			scheduledRemoveOutdatedTimes :+ [t]
-		Else
-			scheduledRemoveOutdatedTimes :+ scheduledRemoveOutdatedTimes[.. index] + [t] + scheduledRemoveOutdatedTimes[index ..]
-		EndIf
-
-		'PrintOutdatedScheduleTimes()
-	End Function
-
-
-	Function RemoveOutdatedScheduleTimes()
-		If scheduledRemoveOutdatedTimes.length > 0
-			Local removeTillIndex:Int = -1
-			Local t:Long = Time.GetTimeGone()
-			For Local i:Int = 0 Until scheduledRemoveOutdatedTimes.length
-				If t >= scheduledRemoveOutdatedTimes[i]
-					removeTillIndex = i
-				Else
-					'skip further checks - the array is sorted
-					Exit
-				EndIf
-			Next
-			If removeTillIndex >= 0
-				scheduledRemoveOutdatedTimes = scheduledRemoveOutdatedTimes[removeTillIndex + 1..]
-				
-				'PrintOutdatedScheduleTimes()
-			EndIf
-		EndIf
-	End Function
-
-
-'dev
-rem
-	Function PrintOutdatedScheduleTimes()
-		print "OutdatedScheduleTimes:"
-		for Local i:Int = 0 Until scheduledRemoveOutdatedTimes.length
-			print scheduledRemoveOutdatedTimes[i]
-		Next
-		print "----"
-	End Function
-endrem
 
 
 	Function RemoveOutdated()
 		Local maps:TIntMap[] = [removedProgrammeLicences, removedAdContracts, addedProgrammeLicences, addedAdContracts]
 
-		'pop off all "too old"
-		RemoveOutdatedScheduleTimes()
-
-		'remove outdated ones (older than 30 seconds))
+		'remove outdated ones (older than 3 seconds))
 		For Local map:TIntMap = EachIn maps
 			Local remove:Int[]
 			For Local idKey:TIntKey = EachIn map.Keys()
@@ -757,8 +697,9 @@ endrem
 					If map = removedProgrammeLicences
 						availableProgrammeLicences.Remove(idKey.value)
 						sortedLicences = Null
+					ElseIf map = removedAdContracts
+						availableAdContracts.Remove(idKey.value)
 					EndIf
-					If map = removedAdContracts Then availableAdContracts.Remove(idKey.value)
 					Continue
 				EndIf
 			Next
@@ -817,6 +758,7 @@ endrem
 		initialized = True
 	End Function
 
+
 	Function SortByMaxTopicality:Int(o1:Object, o2:Object)
 		Local a1:TProgrammeLicence = TProgrammeLicence(o1)
 		Local a2:TProgrammeLicence = TProgrammeLicence(o2)
@@ -824,6 +766,7 @@ endrem
 		If Not a2 Then Return 1
 		Return 100*a1.GetMaxTopicality() - 100*a2.GetMaxTopicality()
 	End Function
+
 
 	Function Update(playerID:Int, x:Int, y:Int)
 	End Function
@@ -844,11 +787,6 @@ endrem
 		programmeForHover = null
 		contractForHover = null
 
-		'clean up if needed
-		If scheduledRemoveOutdatedTimes.length > 0 And scheduledRemoveOutdatedTimes[0] < Time.GetTimeGone()
-			haveToRemoveOutdated = False
-			RemoveOutdated()
-		EndIf
 
 		Local collection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
 		Local secondLineCol:SColor8 = new SColor8(220, 220,220)

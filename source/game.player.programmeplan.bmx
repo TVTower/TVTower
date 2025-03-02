@@ -87,6 +87,11 @@ End Function
 
 
 Type TPlayerProgrammePlan {_exposeToLua="selected"}
+	Field programmesMutex:TMutex = CreateMutex() {nosave}
+	Field newsMutex:TMutex = CreateMutex() {nosave}
+	Field advertismentMutex:TMutex = CreateMutex() {nosave}
+	Field slotLockMutex:TMutex = CreateMutex() {nosave}
+
 	Field programmes:TBroadcastMaterial[] = New TBroadcastMaterial[0]
 	'single news -> eg for specials
 	Field news:TBroadcastMaterial[]	= New TBroadcastMaterial[3]
@@ -126,6 +131,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		newsShow = newsShow[..0]
 		advertisements = advertisements[..0]
 		dayOffset = -1
+		slotLocks.Clear()
 
 		'unregister events if any
 	End Method
@@ -299,28 +305,26 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		FixDayHour(day, hour)
 
 		Local key:Int = day*24 + hour
-		Local createdNew:int
-		'null if unset
-		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(key))
-		If Not currentLock
-			currentLock = New TSlotLockInfo
-			createdNew = True
-		endIf
 
-		'add new lockTypeFlags
-		Select slotType
-			case TVTBroadcastMaterialType.PROGRAMME
-				currentLock.programmeLock :| lockTypeFlags
-			case TVTBroadcastMaterialType.ADVERTISEMENT
-				currentLock.adLock :| lockTypeFlags
-			default
-				currentLock.programmeLock :| lockTypeFlags
-				currentLock.adLock :| lockTypeFlags
-		End Select
+		LockMutex(slotLockMutex)
+			'null if unset
+			Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(key))
+			If Not currentLock
+				currentLock = New TSlotLockInfo
+				slotLocks.Insert(key, currentLock)
+			endIf
 
-		If createdNew
-			slotLocks.Insert(key, currentLock)
-		EndIf
+			'add new lockTypeFlags
+			Select slotType
+				case TVTBroadcastMaterialType.PROGRAMME
+					currentLock.programmeLock :| lockTypeFlags
+				case TVTBroadcastMaterialType.ADVERTISEMENT
+					currentLock.adLock :| lockTypeFlags
+				default
+					currentLock.programmeLock :| lockTypeFlags
+					currentLock.adLock :| lockTypeFlags
+			End Select
+		UnlockMutex(slotLockMutex)
 	End Method
 
 
@@ -328,37 +332,77 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		FixDayHour(day, hour)
 
 		Local key:Int = day*24 + hour
-		'null if unset
-		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(key))
-		if not currentLock then Return False
 
-		'remove lockTypeFlags
-		Select slotType
-			case TVTBroadcastMaterialType.PROGRAMME
-				currentLock.programmeLock :& ~lockTypeflags
-			case TVTBroadcastMaterialType.ADVERTISEMENT
-				currentLock.adLock :& ~lockTypeflags
-			default
-				currentLock.programmeLock :& ~lockTypeflags
-				currentLock.adLock :& ~lockTypeflags
-		End Select
+		LockMutex(slotLockMutex)
+			'null if unset
+			Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(key))
+			If currentLock
+				'remove lockTypeFlags
+				Select slotType
+					case TVTBroadcastMaterialType.PROGRAMME
+						currentLock.programmeLock :& ~lockTypeflags
+					case TVTBroadcastMaterialType.ADVERTISEMENT
+						currentLock.adLock :& ~lockTypeflags
+					default
+						currentLock.programmeLock :& ~lockTypeflags
+						currentLock.adLock :& ~lockTypeflags
+				End Select
+			EndIf
+		UnlockMutex(slotLockMutex)
 	End Method
 
 
 	Method IsLockedSlot:int(slotType:Int = 0, day:Int=-1, hour:Int=-1)
 		FixDayHour(day, hour)
 
-		Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(day*24 + hour))
-		if not currentLock then Return False
+		Local result:Int
+		LockMutex(slotLockMutex)
+			Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(day*24 + hour))
+			If currentLock
+				Select slotType
+					case TVTBroadcastMaterialType.PROGRAMME
+						result = currentLock.programmeLock > 0
+					case TVTBroadcastMaterialType.ADVERTISEMENT
+						result = currentLock.adLock > 0
+					default
+						result = currentLock.programmeLock > 0 or currentLock.adLock > 0
+				End Select
+			EndIf
+		UnlockMutex(slotLockMutex)
+		Return result
+	End Method
 
-		Select slotType
-			case TVTBroadcastMaterialType.PROGRAMME
-				Return currentLock.programmeLock > 0
-			case TVTBroadcastMaterialType.ADVERTISEMENT
-				Return currentLock.adLock > 0
-			default
-				Return currentLock.programmeLock > 0 or currentLock.adLock > 0
-		End Select
+
+	Method ContainsLockedSlot:int(slotType:Int = 0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1)
+		FixDayHour(dayStart, hourStart)
+		FixDayHour(dayEnd, hourEnd)
+
+		Local result:Int
+		LockMutex(slotLockMutex)
+		For Local key:Int = (dayStart*24 + hourStart) Until (dayEnd*24 + hourEnd)
+			Local currentLock:TSlotLockInfo = TSlotLockInfo(slotLocks.ValueForKey(key))
+			If Not currentLock Then Continue
+
+			Select slotType
+				case TVTBroadcastMaterialType.PROGRAMME
+					If currentLock.programmeLock > 0
+						result = True
+						exit
+					EndIf
+				case TVTBroadcastMaterialType.ADVERTISEMENT
+					If currentLock.adLock > 0
+						result = True
+						exit
+					EndIf
+				default
+					If currentLock.programmeLock > 0 or currentLock.adLock > 0
+						result = True
+						exit
+					EndIf
+			End Select
+		Next
+		UnlockMutex(slotLockMutex)
+		Return result
 	End Method
 
 
@@ -368,15 +412,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		If Not obj Then obj = GetObject(slotType, day, hour)
 
 		If obj
-			Local hours:Int = obj.programmedDay*24 + obj.programmedHour
-			For Local blockHour:Int = hours Until hours + obj.GetBlocks()
-				If IsLockedSlot(slotType, 0, blockHour)
-					Return True
-				EndIf
-			Next
-			Return False
-			'alternative:
-			'Return IsLockedBroadcastMaterial(obj)
+			Return IsLockedBroadcastMaterial(obj)
 		Else
 			Return IsLockedSlot(slotType, day, hour)
 		EndIf
@@ -394,12 +430,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'skip material not programmed yet
 		if broadcastMaterial.programmedDay = -1 then return False
 
-		for local block:int = 0 until broadcastMaterial.GetBlocks()
-			if IsLockedSlot(broadcastMaterial.usedAsType, broadcastMaterial.programmedDay, broadcastMaterial.programmedHour + block)
-				return True
-			endif
-		Next
-		return False
+		Local hours:Int = broadcastMaterial.programmedDay*24 + broadcastMaterial.programmedHour
+		Return ContainsLockedSlot(broadcastMaterial.usedAsType, 0, hours, 0, hours + broadcastMaterial.GetBlocks())
 	End Method
 
 
@@ -407,15 +439,17 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method RemoveObsoleteSlotLocks:int()
 		local time:Long = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
 
-		For local k:TIntKey = EachIn slotLocks.Keys()
-			if k.value < time
-				slotLocks.Remove(k.value)
-			else
-				'as the keys are sorted by time we could skip all others
-				'once we reached a lock of the present/future
-				return False
-			endif
-		Next
+		LockMutex(slotLockMutex)
+			For local k:TIntKey = EachIn slotLocks.Keys()
+				if k.value < time
+					slotLocks.Remove(k.value)
+				else
+					'as the keys are sorted by time we could skip all others
+					'once we reached a lock of the present/future
+					exit
+				endif
+			Next
+		UnlockMutex(slotLockMutex)
 		return True
 	End Method
 
