@@ -903,8 +903,13 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method GetProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=-1)
-		Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(arrayIndex)
-		If obj Then Return obj Else Return Null
+		Try
+			Local obj:TProgrammeLicence = GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceAtIndex(arrayIndex)
+			If obj Then Return obj
+		Catch ex:Object
+			TLogger.Log("AI", "GetProgrammeLicenceAtIndex exception", LOG_ERROR)
+		End Try
+		Return Null
 	End Method
 
 
