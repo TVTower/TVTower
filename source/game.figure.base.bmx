@@ -288,7 +288,8 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'return if a figure could change targets or receive commands
 	Method IsControllable:Int()
-		if GetTarget() and not GetTarget().IsControllable() then return False
+		Local target:TFigureTargetBase = GetTarget()
+		if target and not target.IsControllable() then return False
 		return _controllable
 	End Method
 
