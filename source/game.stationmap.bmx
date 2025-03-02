@@ -3445,8 +3445,10 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		'-> handled in main.bmx with a listener to "stationmap.removeStation"
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents 
-			TriggerBaseEvent(GameEventKeys.StationMap_RemoveStation, New TData.Add("station", station), Self, Null, 1)
+		If fireEvents
+			'explicitly trigger an event that will be processed by the main thread only
+			'TriggerBaseEvent(GameEventKeys.StationMap_RemoveStation, New TData.Add("station", station), Self, Null, 1)
+			EventManager.RegisterEvent(TEventBase.Create(GameEventKeys.StationMap_RemoveStation, New TData.Add("station", station), Self))
 		EndIf
 
 		Return True
