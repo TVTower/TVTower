@@ -1,0 +1,147 @@
+INCREASE          = Збільшення
+RUNNING_COSTS     = Операційні витрати
+BROADCASTING_AREA = Зона мовлення
+OF_THE_MAP        = карти
+
+##https://www.iso.org/obp/ui/#iso:code:3166:DE
+##SHORT може змінюватися від коду до більш поширених скорочень!
+MAP_COUNTRY_DE_LONG     = Німеччина
+MAP_COUNTRY_DE_SHORT    = GER
+MAP_COUNTRY_DE-HB_LONG  = Бремен
+MAP_COUNTRY_DE-BE_LONG  = Берлін
+MAP_COUNTRY_DE-HH_LONG  = Гамбург
+MAP_COUNTRY_DE-BW_LONG  = Баден-Вюртемберг
+MAP_COUNTRY_DE-BY_LONG  = Баварія
+MAP_COUNTRY_DE-SL_LONG  = Саарланд
+MAP_COUNTRY_DE-RP_LONG  = Рейнланд-Пфальц
+MAP_COUNTRY_DE-HE_LONG  = Гессен
+MAP_COUNTRY_DE-TH_LONG  = Тюрингія
+MAP_COUNTRY_DE-SN_LONG  = Саксонія
+MAP_COUNTRY_DE-ST_LONG  = Саксонія-Ангальт
+MAP_COUNTRY_DE-NI_LONG  = Нижня Саксонія
+MAP_COUNTRY_DE-SH_LONG  = Шлезвіг-Гольштейн
+MAP_COUNTRY_DE-BB_LONG  = Бранденбург
+MAP_COUNTRY_DE-NW_LONG  = Північний Рейн-Вестфалія
+MAP_COUNTRY_DE-MV_LONG  = Мекленбург-Передня Померанія
+MAP_COUNTRY_DE-HB_SHORT = HB
+MAP_COUNTRY_DE-BE_SHORT = BE
+MAP_COUNTRY_DE-HH_SHORT = HH
+MAP_COUNTRY_DE-BW_SHORT = BW
+MAP_COUNTRY_DE-BY_SHORT = BY
+MAP_COUNTRY_DE-SL_SHORT = SL
+MAP_COUNTRY_DE-RP_SHORT = RP
+MAP_COUNTRY_DE-HE_SHORT = HE
+MAP_COUNTRY_DE-TH_SHORT = TH
+MAP_COUNTRY_DE-SN_SHORT = SN
+MAP_COUNTRY_DE-ST_SHORT = ST
+MAP_COUNTRY_DE-NI_SHORT = NI
+MAP_COUNTRY_DE-SH_SHORT = SH
+MAP_COUNTRY_DE-BB_SHORT = BB
+MAP_COUNTRY_DE-NW_SHORT = NW
+MAP_COUNTRY_DE-MV_SHORT = MV
+
+AUDIENCE_REACH_LEVEL_WILL_INCREASE = Рівень охоплення аудиторії зросте!
+AUDIENCE_REACH_LEVEL_INCREASED     = Рівень охоплення аудиторії зріс
+LEVEL_INCREASED_FROM_X_TO_Y        = Рівень піднявся з %X% до %Y%.
+PRICES_WILL_RISE                   = Ціни на програми та новини зростуть.
+AUDIENCE_REACH_LEVEL_DECREASED     = Рівень охоплення аудиторії знизився
+LEVEL_DECREASED_FROM_X_TO_Y        = Рівень знизився з %X% до %Y%.
+PRICES_WILL_FALL                   = Ціни на програми та новини знизяться.
+
+SHOW_MAP_DETAILS                       = Показати деталі карти
+CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Натисніть, щоб показати розширену інформацію про карту.
+
+TOGGLE_DISPLAY_OF_STATIONTYPE = Перемкнути відображення |b|%STATIONTYPE%|/b|
+TOGGLE_DISPLAY_OF_PLAYER_X    = Перемкнути відображення |b|гравця %X%|/b|
+
+SATUPLINK_TO_X = Супутниковий зв’язок до %X%
+
+BROADCAST_QUALITY      = Якість мовлення
+MARKET_SHARE           = Частка ринку
+REQUIRED_CHANNEL_IMAGE = Необхідний імідж каналу
+SUBSCRIBED_CHANNELS    = Підписані канали
+LAUNCHED               = Запущено
+
+PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = Ціна включає %X% за дозвіл на мовлення
+BROADCAST_PERMISSION_EXISTING             = Дозвіл на мовлення існує
+BROADCAST_PERMISSION_MISSING              = Дозвіл на мовлення відсутній
+BROADCAST_PERMISSION                      = Дозвіл на мовлення
+BROADCAST_PERMISSION_SHORT                = Дозвіл мовл.
+PERMISSION                                = Дозвіл
+IMAGE                                     = Зображення
+RENEW_AUTOMATICALLY                       = Оновлювати автоматично
+
+STATIONMAP_SECTION_NAME  = Федеральна земля
+STATIONMAP_SECTIONS_NAME = Федеральні землі
+RECEIVER_SHARE           = Частка приймачів
+AS_OF_DATEX              = Станом на %DATEX%
+NEXT_CENSUS_AT_DATEX     = Наступний перепис %DATEX%
+MIN_VALUEX               = мін. %VALUEX%
+
+PRESSURE_GROUP              = Група впливу
+PRESSURE_GROUPS             = Групи впливу
+PRESSURE_GROUPS_SMOKERLOBBY = Лобі курців
+PRESSURE_GROUPS_ANTISMOKER  = Антикурці
+PRESSURE_GROUPS_ARMSLOBBY   = Лобі зброї
+PRESSURE_GROUPS_PACIFISTS   = Пацифісти
+PRESSURE_GROUPS_CAPITALISTS = Капіталісти
+PRESSURE_GROUPS_COMMUNISTS  = Комуністи
+
+CHANNEL_IMAGE_TOO_LOW = Імідж каналу занадто низький
+CHANNEL_LIMIT_REACHED = Досягнуто ліміт каналів
+PROVIDER              = Провайдер
+
+CONTRACT_DURATION = Тривалість контракту
+PROCEEDS_OF_SALE  = Дохід від продажу
+TERMINATION_FEE   = Плата за розірвання
+
+CONTRACT_ENDS_SOON                                                 = Контракт скоро закінчується
+CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = |b|Контракт на кабельне підключення|/b| з |b|%COMPANYX%|/b| закінчиться %TIMEX% (%DAYX%).
+SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX     = |b|Контракт на супутникове підключення|/b| з |b|%COMPANYX%|/b| закінчиться %TIMEX% (%DAYX%).
+
+ACQUIRED_PROPERTY = Придбана власність
+STATION           = Станція
+STATIONS          = Станції
+ANTENNA           = Антена
+ANTENNAS          = Антени
+ANTENNA_RECEIVER  = Дахова антена
+ANTENNA_RECEIVERS = Дахові антени
+
+CABLE_NETWORK           = Кабельна мережа
+CABLE_NETWORKS          = Кабельні мережі
+CABLE_NETWORK_UPLINK    = Кабельне підключення
+CABLE_NETWORK_UPLINKS   = Кабельні підключення
+CABLE_NETWORK_RECEIVER  = Кабельне з'єднання
+CABLE_NETWORK_RECEIVERS = Кабельні з'єднання
+
+SATELLITE           = Супутник
+SATELLITES          = Супутники
+SATELLITE_UPLINK    = Супутникове підключення
+SATELLITE_UPLINKS   = Супутникові підключення
+SATELLITE_RECEIVER  = Супутникова тарілка
+SATELLITE_RECEIVERS = Супутникові тарілки
+UNUSED_TRANSMITTER  = Невикористаний передавач
+
+NEW_STATION              = Нова станція
+BUY_STATION              = Купити станцію
+SELL_STATION             = Продати станцію
+NEW_CABLE_NETWORK_UPLINK = Нове кабельне підключення
+NEW_SATELLITE_UPLINK     = Нове супутникове підключення
+SIGN_UPLINK              = Підписати підключення
+CANCEL_UPLINK            = Скасувати підключення
+SELL_TRANSMITTER         = Продати передавач
+RENEW_CONTRACT           = Оновити контракт
+
+SELECT_LOCATION  = Вибрати місце
+SELECT_STATION   = Вибрати станцію
+SELECT_SATELLITE = Вибрати супутник
+TOO_EXPENSIVE    = Занадто дорого
+UNSELLABLE       = Непридатний для продажу
+
+CONSTRUCTION_TIME                   = Час будівництва
+UNDER_CONSTRUCTION                  = В процесі будівництва
+READY_AT_TIME_X                     = Готово о %TIME%
+READY_AT_DAY_X                      = Готово %TIME%
+X_UNDER_CONSTRUCTION                = %X% в процесі будівництва
+NEW_STATION_WILL_BE_READY_AT_TIME_X = Нова станція буде готова о %TIME%.
+NEW_STATION_WILL_BE_READY_AT_DAY_X  = Нова станція буде готова %TIME%.
