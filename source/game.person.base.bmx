@@ -1180,7 +1180,7 @@ private
 			Throw "GetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
 		EndIf
 
-		normalizedIds(attributeID:Int, jobID:Int, genreID:Int)
+		normalizedIds(attributeID, jobID, genreID)
 		if jobID <= 0 and genreID <= 0
 			Return attributes[attributeID-1]
 		else
@@ -1199,7 +1199,7 @@ private
 			Throw "SetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
 		EndIf
 
-		normalizedIds(attributeID:Int, jobID:Int, genreID:Int)
+		normalizedIds(attributeID, jobID, genreID)
 		if jobID <= 0 and genreID <= 0
 			attributes[attributeID-1] = attribute
 		else
