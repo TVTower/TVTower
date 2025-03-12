@@ -6756,17 +6756,17 @@ endrem
 			headerFont = GetBitmapFontManager().Copy("default", "headerFont", 20, BOLDFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
-			headerFont.InitFont()
+			headerFont.ApplyCharsEffects()
 
 			headerFont = GetBitmapFont("headerFont", 20, ITALICFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
-			headerFont.InitFont()
+			headerFont.ApplyCharsEffects()
 
 			headerFont = GetBitmapFont("headerFont", 20)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
-			headerFont.InitFont()
+			headerFont.ApplyCharsEffects()
 		EndIf
 	End Function
 

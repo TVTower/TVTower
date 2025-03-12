@@ -88,6 +88,12 @@ Type TSpritePack
 	Field image:TImage {nosave}
 	Field name:String
 	Field sprites:TSprite[]
+	
+	
+	Method New(image:TImage, name:String)
+		Self.image = image
+		Self.name = name
+	End Method
 
 
 	Method Init:TSpritePack(image:TImage, name:String)
