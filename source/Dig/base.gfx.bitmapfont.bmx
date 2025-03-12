@@ -37,12 +37,12 @@ End Rem
 SuperStrict
 Import BRL.Max2D
 Import BRL.Map
+Import Brl.RectPacker
 Import Math.Vector
 'to load from truetype
 Import brl.FreeTypeFont
 'Import "base.util.srectangle.bmx"
 Import "base.gfx.sprite.bmx"
-Import "base.gfx.spriteatlas.bmx"
 
 Global BITMAPFONTBENCHMARK:Int = False
 
@@ -323,68 +323,69 @@ Type TBitmapFontCharGroup
 		
 		' create one or multiple sprite-atlas with information where to
 		' optimally store each char
-
+		Local packer:TRectPacker = New TRectPacker
+		packer.maxSheets = 100
+		'NOT working as expected now!
+		packer.overAllocate = 2 'a bit of padding around the texture
+		packer.borderPadding = font._pixmapCharPadding
 		' we want our images to not exceed 2048x2048 px
-		Local textureMaxSize:Int = 2048
-		Local atlases:TSpriteAtlas[]
-		' store index which fit as last into the currently created atlas
-		Local lastFittingIndex:Int = -1
-		Repeat
-			Local atlas:TSpriteAtlas = New TSpriteAtlas(64, 64, chars.Length, textureMaxSize, textureMaxSize)
-			atlases :+ [atlas]
+		packer.maxHeight = 2048
+		packer.maxWidth = 2048
 
-			For Local charIndex:Int = lastFittingIndex + 1 Until chars.Length
-				If Not chars[charIndex] or chars[charIndex].dim.x = 0 or chars[charIndex].dim.y = 0
-'print "charIndex: skip " + charIndex + "/" + (chars.length-1)
-					lastFittingIndex = charIndex
-					Continue
-				EndIf
+		For Local charIndex:Int = 0 Until chars.Length
+			If Not chars[charIndex] or chars[charIndex].dim.x = 0 or chars[charIndex].dim.y = 0
+				Continue
+			EndIf
 
-				' add box of the char to the sprite atlas
-				If atlas.AddElement(charIndex, Int(chars[charIndex].dim.x + 2*font._pixmapCharPadding), Int(chars[charIndex].dim.y + 2*font._pixmapCharPadding) )
-					lastFittingIndex = charIndex
-'print "charIndex: add " + charIndex + "/" + (chars.length-1)
-				Else
-'print "charIndex: new atlas " + charIndex + "/" + (chars.length-1) + ". new atlas #" + (atlases.length+1)
-					' start a new atlas as soon it did no longer fit
-					Exit 'exit for loop!
-				EndIf
-			Next
-		Until lastFittingIndex = chars.Length - 1
-'Print "... done. atlases: " + atlases.length
+			' TODO: The packer for now does not do "borderPadding" to the sprites
+			'       the sprites - this is why for NOW we add it to the
+			'       rect here, and subtract it below again
+
+			' add box of the char to the sprite atlas
+			'packer.Add( Int(chars[charIndex].dim.x + 2*packer.borderPadding), Int(chars[charIndex].dim.y + 2*packer.borderPadding), charIndex)
+			' using the pixmap size allows effects to alter the size
+			packer.Add( Int(chars[charIndex].pixmap.width + 2*packer.borderPadding), Int(chars[charIndex].pixmap.height + 2*packer.borderPadding), charIndex)
+		Next
+		' pack all char rects together
+		Local sheets:TPackedSheet[] = packer.Pack()
 
 		' create the corresponding pixmaps for the sprite atlases
-		spritePacks = New TSpritePack[atlases.Length]
-		For Local atlasIndex:Int = 0 Until atlases.Length
-			Local atlas:TSpriteAtlas = atlases[atlasIndex]
+		spritePacks = New TSpritePack[sheets.Length]
 
-			Local pix:TPixmap = CreatePixmap(atlas.w, atlas.h, font._pixmapFormat)
+		For Local sheetIndex:Int = 0 Until sheets.Length
+			Local sheet:TPackedSheet = sheets[sheetIndex]
+
+			Local pix:TPixmap = CreatePixmap(sheet.width, sheet.height, font._pixmapFormat)
 			pix.ClearPixels(0)
-			spritePacks[atlasIndex] = New TSpritePack.Init(Null, "charmap")
+			spritePacks[sheetIndex] = New TSpritePack.Init(Null, "charmap")
 
-			'loop through atlas boxes and add chars
-			For Local atlasRect:SSpriteAtlasRect = EachIn atlas.elements
-				'skip missing data
-				If atlasRect.id < 0 Or atlasRect.id >= chars.Length Or Not chars[atlasRect.id] Then Continue
-			
-				Local char:TBitmapFontChar = chars[atlasRect.id]
+			For Local j:Int = 0 Until sheet.rects.Length
+				Local rect:SPackedRect = sheet.rects[j]
+
+				Local char:TBitmapFontChar = chars[rect.id]
 				If Not char.pixmap Then Continue
 				
-				Local atlasX:Int = atlasRect.x + font._pixmapCharPadding
-				Local atlasY:Int = atlasRect.y + font._pixmapCharPadding
+				Local atlasX:Int = rect.x + font._pixmapCharPadding
+				Local atlasY:Int = rect.y + font._pixmapCharPadding
+				' TODO: Packer does not properly pad sprites / doc is
+				'       wrong, so we manually added padding and now need
+				'       to substract again
+				Local unpaddedW:Int = rect.width - packer.borderPadding
+				Local unpaddedH:Int = rect.height - packer.borderPadding
 
-				'draw char image on charmap
+				' draw char image on charmap
 				DrawImageOnImage(char.pixmap, pix, atlasX, atlasY)
 
-				char.sprite = New TSprite.Init(spritePacks[atlasIndex], String(atlasRect.id), New SRectI(atlasX, atlasY, atlasRect.w, atlasRect.h), Null, 0)
+				' create sprite
+				char.sprite = New TSprite.Init(spritePacks[sheetIndex], String(rect.id), New SRectI(atlasX, atlasY, unpaddedW, unpaddedH), Null, 0)
 			Next
 
 			'set image to sprite pack
 			If font.IsSmooth()
-				spritePacks[atlasIndex].image = LoadImage(pix) ', FILTEREDIMAGE | DYNAMICIMAGE)
+				spritePacks[sheetIndex].image = LoadImage(pix) ', FILTEREDIMAGE | DYNAMICIMAGE)
 			Else
 				'non smooth fonts should disable any filtering (eg. in virtual resolution scaling)
-				spritePacks[atlasIndex].image = LoadImage(pix, 0)
+				spritePacks[sheetIndex].image = LoadImage(pix, 0)
 			EndIf
 		Next
 	End Method
@@ -430,7 +431,7 @@ Type TBitmapFont
 	Field charWidthModifier:Float = 1.0
 	Field fixedCharWidth:Int = -1
 	Field tabWidth:Int = 15
-	Field _charsEffectFuncs:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData)[]
+	Field _charsEffectFuncs:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData)[]
 	Field _charsEffectFuncsConfig:TData[]
 
 	'adjust if you add effects
@@ -537,12 +538,13 @@ Type TBitmapFont
 	End Method	
 
 
-	Method SetCharsEffectFunction(position:Int, _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData), config:TData)
+	Method SetCharsEffectFunction(position:Int, _func:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData), config:TData)
 		position :-1 '0 based
 		If _charsEffectFuncs.Length <= position
 			_charsEffectFuncs = _charsEffectFuncs[.. position+1]
 			_charsEffectFuncsConfig = _charsEffectFuncsConfig[.. position+1]
 		EndIf
+
 		_charsEffectFuncs[position] = _func
 		_charsEffectFuncsConfig[position] = config
 	End Method
@@ -556,9 +558,21 @@ Type TBitmapFont
 		'only apply to a specified group - or all?
 		If charGroup
 			ApplyEffectsToCharGroup(charGroup, config)
+			' recreate and optimize spritepacks holding char sprites
+			' that way a "new" chargroup called via "LoadGroup" only
+			' creates spritepacks once
+			If charGroup.spritepacks.length > 0
+				charGroup.CreateSpritePacks(Self)
+			EndIf
 		Else
 			For Local charGroup:TBitmapFontCharGroup = EachIn charGroups
 				ApplyEffectsToCharGroup(charGroup, config)
+				' recreate and optimize spritepacks holding char sprites
+				' that way a "new" chargroup called via "LoadGroup" only
+				' creates spritepacks once
+				If charGroup.spritepacks.length > 0
+					charGroup.CreateSpritePacks(Self)
+				EndIf
 			Next
 		EndIf
 	End Method
@@ -577,7 +591,7 @@ Type TBitmapFont
 			char.pixmap = char.pixmapBackup.Copy()
 
 			' manipulate char
-			Local _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData)
+			Local _func:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData)
 			Local _config:TData
 			For Local i:Int = 0 Until _charsEffectFuncs.Length
 				_func = _charsEffectFuncs[i]
@@ -585,7 +599,7 @@ Type TBitmapFont
 				'use default if nothing defined
 				If Not _config Then _config = defaultConfig
 
-				char = _func(Self, charKey, char, _config)
+				char = _func(Self, char, _config)
 			Next
 
 			' overwrite char
@@ -616,7 +630,7 @@ Type TBitmapFont
 		
 		' 4. create and optimize spritepacks holding char sprites
 		charGroup.CreateSpritePacks(Self)
-		
+
 		' 5. store group
 		charGroups[charGroupIndex] = charGroup
 
@@ -1145,6 +1159,7 @@ endrem
 			LoadCharGroup(charGroupIndex)
 
 			'debug
+			Rem
 			Print "FONT "  + FName + ": char group " + charGroupIndex + " loaded."
 			Local charCodes:String
 			For Local char:TBitmapFontChar = EachIn charGroups[charGroupIndex].chars
@@ -1152,6 +1167,7 @@ endrem
 				If charCodes.Length > 120 Then Print charCodes; charCodes =""
 			Next
 			Print charCodes
+			EndRem
 		EndIf
 
 		Local bm:TBitmapFontChar = charGroups[charGroupIndex].chars[charIndex]
@@ -2344,20 +2360,20 @@ End Type
 
 
 Struct SDrawTextEffect
-	Field Mode:EDrawTextEffect
+	Field mode:EDrawTextEffect
 	Field value:Float = -1.0
 	Field color:SColor8 = SColor8.White
 
-	Method Init(Mode:EDrawTextEffect, value:Float, color:SColor8)
-		Self.Mode = Mode
+	Method Init(mode:EDrawTextEffect, value:Float, color:SColor8)
+		Self.mode = mode
 		Self.value = value
 		Self.color = color
 	End Method
 	
 	
-	Method InitDefaults(Mode:EDrawTextEffect)
+	Method InitDefaults(mode:EDrawTextEffect)
 		value = -1.0
-		Select Mode
+		Select mode
 			Case EDrawTextEffect.Shadow
 				color = SColor8.Black
 			Case EDrawTextEffect.Emboss
