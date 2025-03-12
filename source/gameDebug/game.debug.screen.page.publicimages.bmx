@@ -75,7 +75,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 
 
 	Method Render()
-		DrawOutlineRect(position.x + 510 - 2, position.y, 165, 90)
+		DrawBorderRect(position.x + 510 - 2, position.y, 165, 90)
 		textFont.Draw("P1", position.x + 510, position.y + 0 * 18 + 5)
 		textFont.Draw("P2", position.x + 510, position.y + 1 * 18 + 5)
 		textFont.Draw("P3", position.x + 510, position.y + 2 * 18 + 5)
@@ -96,7 +96,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 		Local boxWidth:Int = 210
 
-		DrawOutlineRect(x, y, boxWidth, 130)
+		DrawBorderRect(x, y, boxWidth, 130)
 
 		Local textX:Int = x + 3
 		Local textY:Int = y + 3 - 1

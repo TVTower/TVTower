@@ -159,7 +159,7 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 			RenderRoomAgencyRoomDetails(roomHighlight, position.x + 510, 200)
 		EndIf
 
-		DrawOutlineRect(position.x + 510, 13, 160, 65)
+		DrawBorderRect(position.x + 510, 13, 160, 65)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -183,7 +183,7 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 			playerColors[i-1] = TPlayerColor.getByOwner(i).copy().AdjustSaturation(-0.5)
 		Next
 
-		DrawOutlineRect(x, y, 4*slotW + (4-1)*slotStepX + slotCenterStepX + 10, 14 * slotH + (14-1) * slotStepY + 10)
+		DrawBorderRect(x, y, 4*slotW + (4-1)*slotStepX + slotCenterStepX + 10, 14 * slotH + (14-1) * slotStepY + 10)
 		'offset content
 		x:+ 5
 		y:+ 5
@@ -199,10 +199,10 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 
 			'ignore never-rentable rooms
 			If room.IsFake() Or room.IsFreeHold() 
-				DrawOutlineRect(slotX, slotY, slotW, slotH, true, true, true, true, 0,0,0, 0.5, 0.0)
+				DrawBorderRect(slotX, slotY, slotW, slotH, true, true, true, true, 0,0,0, 0.5, 0.0)
 				SetAlpha oldColA * 0.45
 			ElseIf room.GetOwner() <= 0 And Not room.IsRentable()
-				DrawOutlineRect(slotX, slotY, slotW, slotH, true, true, true, true, 50,0,0, 0.8, 0.0)
+				DrawBorderRect(slotX, slotY, slotW, slotH, true, true, true, true, 50,0,0, 0.8, 0.0)
 				SetAlpha oldColA * 0.80
 			EndIf
 
@@ -251,7 +251,7 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 
 
 	Method RenderRoomAgencyRoomDetails(room:TRoomBase, x:Int, y:Int, width:Int = 500, height:Int = 80)
-		DrawOutlineRect(x, y, width, height)
+		DrawBorderRect(x, y, width, height)
 		'offset content
 		x:+ 5
 		y:+ 5

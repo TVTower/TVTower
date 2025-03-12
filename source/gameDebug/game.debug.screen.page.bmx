@@ -58,7 +58,7 @@ Type TDebugScreenPage
 	End Function
 
 
-	Function DrawOutlineRect(x:Int, y:Int, w:Int, h:Int, borderTop:Int = True, borderRight:Int = True, borderBottom:Int = True, borderLeft:Int = True, r:Int = 0, g:Int = 0, b:Int = 0, borderAlpha:Float = 0.75, bgAlpha:Float = 0.75)
+	Function DrawBorderRect(x:Int, y:Int, w:Int, h:Int, borderTop:Int = True, borderRight:Int = True, borderBottom:Int = True, borderLeft:Int = True, r:Int = 0, g:Int = 0, b:Int = 0, borderAlpha:Float = 0.75, bgAlpha:Float = 0.75)
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 		SetColor(r, g, b)

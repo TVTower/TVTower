@@ -42,7 +42,7 @@ Type TDebugScreenPage_Producers extends TDebugScreenPage
 
 
 	Method RenderProducersList(x:Int, y:Int, w:Int=280, h:Int=363)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 

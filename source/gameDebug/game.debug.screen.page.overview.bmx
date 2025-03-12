@@ -59,19 +59,19 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 '			textFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
 
 			If TProfiler.activated And GetPlayer(i+1).IsLocalAI()
-				DrawOutlineRect(x + 140 + 150 + 2, 10 + i*75 + 33, sideInfoW, 37)
+				DrawBorderRect(x + 140 + 150 + 2, 10 + i*75 + 33, sideInfoW, 37)
 				DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[i]), x + 140 + 150 + 5, 10 + i*75 + 33 + 5, sideInfoW - 2*4, 28, "AI " + (i+1))
 			EndIf
 
 		Next
 
-		DrawOutlineRect(x + 5 + 500, 10, 140, 180)
+		DrawBorderRect(x + 5 + 500, 10, 140, 180)
 		GetWorld().RenderDebug(x + 5 + 500, 10, 140, 180)
 	End Method
 
 
 	Method RenderPlayerPositions(x:Int, y:Int)
-		DrawOutlineRect(x, y, 130, 70)
+		DrawBorderRect(x, y, 130, 70)
 
 		titleFont.draw("Player positions:", x + 5, y + 5)
 
@@ -107,7 +107,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 
 
 	Method RenderElevatorState(x:Int, y:Int)
-		DrawOutlineRect(x, y, 130, 160)
+		DrawBorderRect(x, y, 130, 160)
 
 		titleFont.draw("Elevator routes:", x + 5, y + 5)
 		Local routepos:Int = 0
@@ -135,7 +135,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 
 
 	Method RenderFigureInformation(figure:TFigure, x:Int, y:Int)
-		DrawOutlineRect(x, y, 150, 70)
+		DrawBorderRect(x, y, 150, 70)
 
 		Local oldCol:SColor8; GetColor(oldCol)
 
@@ -194,7 +194,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 		If Not boss Then Return
 
 
-		DrawOutlineRect(x,y,w,h)
+		DrawBorderRect(x,y,w,h)
 		Local textY:Int = y + 5
 
 		titleFont.draw("Boss #"  + boss.playerID, x + 5, textY - 1)

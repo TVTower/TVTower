@@ -104,7 +104,7 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 		RenderScriptAgencyInformation(playerID, position.x + 5, 13, , 45)
 		RenderScriptAgencyOffers(playerID, position.x + 5, 13 + 45 + 5)
 
-		DrawOutlineRect(position.x + 510, 13, 160, 45)
+		DrawBorderRect(position.x + 510, 13, 160, 45)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -116,7 +116,7 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 
 
 	Method RenderScriptAgencyInformation(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 30)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 
@@ -125,7 +125,7 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 
 
 	Method RenderScriptAgencyOffers(playerID:Int, x:Int, y:Int, w:Int = 500, h:Int = 150)
-		DrawOutlineRect(x, y, w, h + 120)
+		DrawBorderRect(x, y, w, h + 120)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		Local entryNum:Int = 0

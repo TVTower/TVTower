@@ -303,7 +303,7 @@ Type TDialogue
 
 		dialogueText.DrawText(GetContentRect())
 		'SetColor 0,255,255
-		'dialogueText.DrawOutlineRect(int(GetAnswerBalloonRect().x -1), int(GetAnswerBalloonRect().y - 1), int(GetAnswerBalloonRect().w + 2), int(GetAnswerBalloonRect().h + 2))
+		'TFunctions.DrawOutlineRect(int(GetAnswerBalloonRect().x -1), int(GetAnswerBalloonRect().y - 1), int(GetAnswerBalloonRect().w + 2), int(GetAnswerBalloonRect().h + 2))
 		'SetColor 255,255,255
 
 		dialogueText.DrawAnswers(GetAnswerContentRect())
@@ -573,19 +573,11 @@ Type TDialogueTexts
 	End Method
 
 
-	Function DrawOutlineRect:Int(x:Int, y:Int, w:Int, h:Int)
-		DrawLine(x, y, x + w, y, 0)
-		DrawLine(x + w , y, x + w, y + h, 0)
-		DrawLine(x + w, y + h, x, y + h, 0)
-		DrawLine(x, y + h , x, y, 0)
-	End Function
-
-
 	Method DrawAnswers(answerRect:TRectangle)
 		MoveAnswers(answerRect)
 
 		'SetColor 0,255,255
-		'DrawOutlineRect(int(answerRect.x -1), int(answerRect.y - 1), int(answerRect.w + 2), int(answerRect.h + 2))
+		'TFunctions.DrawOutlineRect(int(answerRect.x -1), int(answerRect.y - 1), int(answerRect.w + 2), int(answerRect.h + 2))
 		'SetColor 255,255,255
 
 		For Local answer:TDialogueAnswer = EachIn _answers
@@ -597,8 +589,8 @@ rem
 		Local advanceY:Int = 0
 		For Local answer:TDialogueAnswer = EachIn _answers
 			SetColor 255,0, advanceY*50
-			DrawOutlineRect(int(answerRect.x), int(answerRect.y + advanceY), int(answerRect.w), answer.GetBoxSize(Int(answerRect.w)).y)
-			DrawOutlineRect(int(answerRect.x + answer.GetTextOffset().x), int(answerRect.y + advanceY), int(answerRect.w - answer.GetTextOffset().x), answer.GetBoxSize(Int(answerRect.w)).y)
+			TFunctions.DrawOutlineRect(int(answerRect.x), int(answerRect.y + advanceY), int(answerRect.w), answer.GetBoxSize(Int(answerRect.w)).y)
+			TFunctions.DrawOutlineRect(int(answerRect.x + answer.GetTextOffset().x), int(answerRect.y + advanceY), int(answerRect.w - answer.GetTextOffset().x), answer.GetBoxSize(Int(answerRect.w)).y)
 			advanceY :+ answer.GetBoxSize(Int(answerRect.w)).y
 			advanceY :+ 7
 		Next

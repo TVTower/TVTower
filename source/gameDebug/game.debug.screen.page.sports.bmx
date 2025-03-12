@@ -45,7 +45,7 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 
 
 	Method RenderSportsBlock(x:Int, y:Int, w:Int=325, h:Int=300)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 
@@ -101,7 +101,7 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 
 
 	Method RenderSportsLeagueBlock(league:TNewsEventSportLeague, x:Int, y:Int, w:Int=170, h:Int=300)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 

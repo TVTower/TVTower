@@ -118,7 +118,7 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 
 
-		DrawOutlineRect(position.x, 10, 129, 200)
+		DrawBorderRect(position.x, 10, 129, 200)
 		If player.playerAI
 			titleFont.Draw("Start task:", position.x + 5, 10)
 		Else
@@ -132,7 +132,7 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 			buttons[i].Render()
 		Next
 
-		DrawOutlineRect(position.x + 131, 10, 130, 75)
+		DrawBorderRect(position.x + 131, 10, 130, 75)
 		For Local i:Int = 0 Until aiButtons.length
 			aiButtons[i].Render()
 		Next
@@ -143,7 +143,7 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 
 		If player.playerAI
-			DrawOutlineRect(x, y, 185, 10 * 10 + 25)
+			DrawBorderRect(x, y, 185, 10 * 10 + 25)
 
 			Local textX:Int = x + 3
 			Local textY:Int = y + 3 - 1
@@ -169,7 +169,7 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 
 		If player.playerAI
-			DrawOutlineRect(x, y, 185, 155)
+			DrawBorderRect(x, y, 185, 155)
 
 			Local textX:Int = x + 3
 			Local textY:Int = y + 3 - 1

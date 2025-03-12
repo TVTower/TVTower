@@ -60,7 +60,7 @@ Type TDebugScreenPage_Politics extends TDebugScreenPage
 
 
 	Method Render()
-		DrawOutlineRect(position.x + 510, 13, 160, 65)
+		DrawBorderRect(position.x + 510, 13, 160, 65)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next

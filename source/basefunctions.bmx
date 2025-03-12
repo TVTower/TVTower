@@ -176,10 +176,10 @@ Type TFunctions
 	
 
 	Function DrawOutlineRect:Int(x:Int, y:Int, w:Int, h:Int)
-		DrawLine(x, y, x + w, y, 0)
-		DrawLine(x + w , y, x + w, y + h, 0)
-		DrawLine(x + w, y + h, x, y + h, 0)
-		DrawLine(x, y + h , x, y, 0)
+		DrawLine(x, y, x + w-1, y, 0)
+		DrawLine(x + w - 1 , y, x + w - 1, y + h - 1, 0)
+		DrawLine(x + w - 1, y + h -1, x, y + h - 1, 0)
+		DrawLine(x, y + h -1, x, y, 0)
 	End Function
 
 
