@@ -87,6 +87,8 @@ Type TGUIinput Extends TGUIobject
 		'stay activated if clicked into
 		SetOption(GUI_OBJECT_STAY_ACTIVE_AFTER_MOUSECLICK, True)
 
+		'init sprite names
+		SetSpriteName(_spriteNameBase)
 
 		GUIMAnager.Add(Self)
 	  	Return Self
