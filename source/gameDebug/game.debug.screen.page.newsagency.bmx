@@ -59,7 +59,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 	Method RenderNewsEventInfo(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
 		If Not hoveredNewsEvent Then Return
 		
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 
@@ -145,7 +145,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 	Method RenderNewsAgencyHistory(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
 
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		
@@ -186,7 +186,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 	
 
 	Method RenderNewsAgencyQueue(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		
@@ -233,7 +233,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 
 	Method RenderNewsAgencyGenreSchedule(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 100)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 
@@ -258,7 +258,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 
 	Method RenderNewsAgencyInformation(playerID:Int, x:Int, y:Int, w:Int = 180, h:Int = 150)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 

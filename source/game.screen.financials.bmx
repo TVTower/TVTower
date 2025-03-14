@@ -318,10 +318,10 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			labelStartY :+ 1
 			SetAlpha( bgColA * 0.5 )
 			SetColor( 200,200,200 )
-			TFunctions.DrawOutlineRect(labelX, labelStartY + 6*valueH, balanceEntryW +2, 2*labelH +2)
+			TFunctions.DrawOutlineRect(labelX, labelStartY + 6*valueH, balanceEntryW + 3, 2*labelH + 3)
 			SetAlpha( bgColA * 0.75 )
 			SetColor( 100,100,100 )
-			TFunctions.DrawOutlineRect(labelX-1, labelStartY + 6*valueH -1, balanceEntryW + 1, 2*labelH +1)
+			TFunctions.DrawOutlineRect(labelX - 1, labelStartY + 6*valueH - 1, balanceEntryW + 2, 2*labelH + 2)
 			SetColor( bgCol )
 			SetAlpha( bgColA )
 			labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)

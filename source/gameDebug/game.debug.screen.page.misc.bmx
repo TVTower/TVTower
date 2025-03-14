@@ -152,7 +152,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 
 
 	Method Render()
-		DrawOutlineRect(position.x, 20, 195, 175)
+		DrawBorderRect(position.x, 20, 195, 175)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -161,7 +161,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 
 
 	Method RenderAwardStatus(x:int, y:int, w:int = 355, h:int = 200)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 

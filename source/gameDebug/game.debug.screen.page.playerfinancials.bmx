@@ -63,7 +63,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		DrawOutlineRect(position.x + 510, 13, 160, 80)
+		DrawBorderRect(position.x + 510, 13, 160, 80)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -83,7 +83,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			Local padding:Int = 15
 			Local boxWidth:Int = labelWidth + padding + colWidth*4 + 2 '2 is border*2
 
-			DrawOutlineRect(x, y, boxWidth, 140)
+			DrawBorderRect(x, y, boxWidth, 140)
 
 			Local textX:Int = x + 3
 			Local textY:Int = y + 3 - 1
@@ -123,7 +123,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			Return
 		EndIf
 
-		DrawOutlineRect(x, y, 123, 35)
+		DrawBorderRect(x, y, 123, 35)
 
 		Local textX:Int = x+1
 		Local textY:Int = y+1

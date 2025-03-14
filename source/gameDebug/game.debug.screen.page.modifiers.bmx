@@ -78,7 +78,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 		RenderDifficulties(position.x + 285, position.y -10)
 
-		DrawOutlineRect(position.x + 510, 13, 160, 80)
+		DrawBorderRect(position.x + 510, 13, 160, 80)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -86,7 +86,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 
 	Method RenderGameModifierList(x:int, y:int, w:int = 300, h:int = 370)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 2
 
@@ -107,7 +107,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 	End Method
 
 	Method RenderDifficulties(x:int, y:int, w:int = 220, h:int = 370)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		difficultyX = x + 5
 		difficultyY = y + 2
 		difficultyWidth = w

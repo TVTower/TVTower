@@ -117,7 +117,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 		RenderBlock_NoLongerAvailable(playerID, position.x + 5 + 250 + 5 + 250, position.y  + 3 + 55)
 
 
-		DrawOutlineRect(position.x + 510, 13, 160, 65)
+		DrawBorderRect(position.x + 510, 13, 160, 65)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -130,7 +130,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 	'stuff filtered out
 	Method RenderBlock_NoLongerAvailable(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 300)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
@@ -156,12 +156,12 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 
 	Method RenderBlock_Information(playerID:Int, x:Int, y:Int, w:Int = 180, h:Int = 150)
-'		DrawOutlineRect(x, y, w, h)
+'		DrawBorderRect(x, y, w, h)
 	End Method
 
 
 	Method RenderBlock_Offers(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		Local barWidth:Int = 200

@@ -133,7 +133,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		DrawOutlineRect(position.x + 545, 13, 120, 150)
+		DrawBorderRect(position.x + 545, 13, 120, 150)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -142,7 +142,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Local boxHeight:Int = 330
 		Local fistBlockOffset:Int = 15
 
-		DrawOutlineRect(position.x + 545, position.y + 200, 120, boxHeight - 200)
+		DrawBorderRect(position.x + 545, position.y + 200, 120, boxHeight - 200)
 
 		RenderBlock_PlayerStations(playerID, position.x + 5, position.y, boxWidth, boxHeight)
 		RenderBlock_PlayerStationsList(playerID, fistBlockOffset, position.x + 5, position.y, boxWidth, boxHeight)
@@ -169,7 +169,7 @@ endrem
 		Local player:TPlayer = GetPlayer(playerID)
 
 		For Local i:Int = 0 Until 4
-			DrawOutlineRect(x + i*135, y, w, h)
+			DrawBorderRect(x + i*135, y, w, h)
 		Next
 
 		Local textX:Int = x + 3

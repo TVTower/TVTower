@@ -216,7 +216,7 @@ Type TDebugScreen
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 
-		TDebugScreenPage.DrawOutlineRect(0, 0, sideButtonPanelWidth - 2, 355)
+		TFunctions.DrawOutlineRect(0, 0, sideButtonPanelWidth - 2, 355)
 		For Local b:TDebugControlsButton = EachIn sideButtons
 			b.Render()
 		Next

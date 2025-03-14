@@ -99,7 +99,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 		'RenderBlock_AdAgencyInformation(playerID, position.x + 5 + 250 + 5, position.y + 3)
 		RenderBlock_PlayerAdContractInformation(playerID, position.x + 5 + 250 + 5, position.y + 3)
 
-		DrawOutlineRect(position.x + 510, 13, 160, 83)
+		DrawBorderRect(position.x + 510, 13, 160, 83)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -111,7 +111,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 
 
 	Method RenderBlock_PlayerAdContractInformation(playerID:Int, x:Int, y:Int, w:Int = 170, h:Int = 180)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		titleFont.Draw("Player contracts", textX, textY)
@@ -138,7 +138,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 
 
 	Method RenderBlock_AdAgencyInformation(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
-'		DrawOutlineRect(x, y, w, h)
+'		DrawBorderRect(x, y, w, h)
 rem
 		Local captionFont:TBitMapFont
 			SetColor 0,0,0
@@ -170,7 +170,7 @@ endrem
 
 
 	Method RenderBlock_AdAgencyOffers(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
-		DrawOutlineRect(x, y, w, h)
+		DrawBorderRect(x, y, w, h)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		Local adAgency:RoomHandler_AdAgency = RoomHandler_AdAgency.GetInstance()
