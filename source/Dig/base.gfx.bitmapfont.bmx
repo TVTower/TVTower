@@ -416,6 +416,7 @@ Type TBitmapFont
 	Field ascend:Int = -1000
 	'distance between baseline and lowest font's characters coordinates
 	Field descend:Int = -1000
+	Field xHeight:Int = -1
 	'value the font designer thinks is approbriate as line height
 	Field automaticLineHeight:Int = -1000
 	
@@ -773,6 +774,19 @@ endrem
 	Method GetEllipsisWidth:Float()
 		If _ellipsisWidth < 0 Then _ellipsisWidth = GetSimpleDimension(GetEllipsis()).x
 		Return _ellipsisWidth
+	End Method
+
+
+	Method GetXHeight:Int()
+		If xHeight < 0
+			Local bm:TBitmapFontChar = __GetBitmapFontChar(Asc("x"))
+			If bm 
+				xHeight = bm.dim.y
+			Else
+				xHeight = GetMaxCharHeightAboveBaseline()/2
+			EndIf
+		EndIf
+		Return xHeight
 	End Method
 	
 	
