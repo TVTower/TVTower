@@ -3523,9 +3523,6 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		guiButtonsPanel	= guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
-		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
-		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
-
 		Local buttonWidth:int = Int(guiButtonsPanel.GetContentScreenRect().w)
 		guiButtonStart		= New TGUIButton.Create(New SVec2I(0, 0*38), New SVec2I(buttonWidth, -1), "", name)
 		guiButtonNetwork	= New TGUIButton.Create(New SVec2I(0, 1*38), New SVec2I(buttonWidth, -1), "", name)
@@ -6754,25 +6751,10 @@ endrem
 	'- create special fonts
 	Function onAppStart:Int(triggerEvent:TEventBase)
 		If Not headerFont
-			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-Semibold.ttf", 18)
-			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-Bold.ttf", 18, BOLDFONT)
-			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-BoldIt.ttf", 18, BOLDFONT | ITALICFONT)
-			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-It.ttf", 18, ITALICFONT)
-
 			Local shadowSettings:TData = New TData.addNumber("size", 1).addNumber("intensity", 0.5)
 			Local gradientSettings:TData = New TData.addNumber("gradientBottom", 180)
-			'setup effects for normal and bold
-			headerFont = GetBitmapFontManager().Copy("default", "headerFont", 20, BOLDFONT)
-			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
-			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
-			headerFont.ApplyCharsEffects()
-
-			headerFont = GetBitmapFont("headerFont", 20, ITALICFONT)
-			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
-			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
-			headerFont.ApplyCharsEffects()
-
-			headerFont = GetBitmapFont("headerFont", 20)
+			'setup effects and define the headerFont to be "bold"
+			headerFont = GetBitmapFont("headerFont", 20, BOLDFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
 			headerFont.ApplyCharsEffects()
@@ -7064,6 +7046,7 @@ Function StartApp:Int()
 	'screens (eg. ingame)
 	GetFigureCollection().Remove(MainMenuJanitor)
 
+
 	'add menu screens
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
 	ScreenCollection.Add(ScreenGameSettings)
@@ -7201,15 +7184,21 @@ endrem
 	App.LoadResources("config/resources.xml")
 	TProfiler.Leave("StartTVTower: Create App")
 
-?Threaded
-'	While not RURC.FinishedLoading()
-'		Delay(1)
-'	Wend
-?
-
 	'====
 	'to avoid the "is loaded check" we have two loops
 	'====
+
+	'=== ADJUST GUI FONTS ===
+	'set the now available default font
+	GuiManager.SetDefaultFont( GetBitmapFont("Default", 13.0) )
+	'checkbox (and their labels) get a smaller one
+	'TGUICheckbox.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
+	'labels get a slight smaller one
+	'TGUILabel.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
+
+	'buttons get a bold font
+	TGUIButton.SetTypeFont( GetBitmapFont("Default", 13.0, BOLDFONT) )
+	TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
 	'a) the mode before everything important was loaded
 TProfiler.Enter("InitialLoading")
@@ -7233,16 +7222,6 @@ TProfiler.Enter("InitialLoading")
 	Until AppTerminate() Or TApp.ExitApp Or InitialResourceLoadingDone
 TProfiler.Leave("InitialLoading")
 GCCollect()
-
-	'=== ADJUST GUI FONTS ===
-	'set the now available default font
-	GuiManager.SetDefaultFont( GetBitmapFontManager().Get("Default", 14) )
-	'buttons get a bold font
-	TGUIButton.SetTypeFont( GetBitmapFontManager().Get("Default", 14, BOLDFONT) )
-	'checkbox (and their labels) get a smaller one
-	'TGUICheckbox.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
-	'labels get a slight smaller one
-	'TGUILabel.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
 
 
 

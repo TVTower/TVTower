@@ -162,9 +162,6 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
-		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
-		TGUIButton.SetTypeCaptionColor( New SColor8(75, 75, 75) )
-
 		guiButtonStart = New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 		guiButtonBack = New TGUIButton.Create(New SVec2I(0, Int(guiButtonsPanel.GetContentScreenRect().h - guiButtonStart.GetScreenRect().h)), New SVec2I(Int(guiButtonsPanel.GetContentScreenRect().w), -1), "", name)
 
