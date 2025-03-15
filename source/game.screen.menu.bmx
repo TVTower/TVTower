@@ -35,7 +35,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiMissionDifficulty:TGUIDropDown
 	Field missionForbidsPositionChange:Int = False
 	Field guiFigureArrows:TGUIArrowButton[8]
-	Field guiFigureSelectArrows:TGUIArrowButton[8]
+	Field guiPlayerSelectArrows:TGUIArrowButton[8]
 	Field guiGameSeedLabel:TGuiLabel
 	Field guiGameSeed:TGUIinput
 	'for easier iteration over the widgets (and their tooltips)
@@ -215,19 +215,20 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiDifficulty[i].SetListContentHeight(itemHeight * Min(difficultyValues.length,5))
 
 
-			'left arrow
+			'left + right arrow for figure selection
 			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(New SVec2I(0 + 25, 45), New SVec2I(24, 24), "LEFT", name)
-			'right arrow
-			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().w) - 25, 45), New SVec2I(24, 24), "RIGHT", name)
-			guiFigureArrows[i*2 + 1].Move(-guiFigureArrows[i*2 + 1].GetScreenRect().GetW(),0)
+			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().w) - 25 - 24, 45), New SVec2I(24, 24), "RIGHT", name)
 			guiFigureArrows[i*2 + 0].SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
 			guiFigureArrows[i*2 + 1].SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
+
+			'left + right arrow for player selection
+			guiPlayerSelectArrows[i*2 + 0] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x) - 36, Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "LEFT", name)
+			guiPlayerSelectArrows[i*2 + 1] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x + guiPlayerPanels[i].GetContentScreenRect().w +36 -26), Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "RIGHT", name)
 			
-			'left arrow
-			guiFigureSelectArrows[i*2 + 0] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x) - 36, Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "LEFT", name)
-			'right arrow
-			guiFigureSelectArrows[i*2 + 1] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x + guiPlayerPanels[i].GetContentScreenRect().w +36), Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "RIGHT", name)
-			guiFigureSelectArrows[i*2 + 1].Move(-guiFigureSelectArrows[i*2 + 1].GetScreenRect().GetW(),0)
+			'hide the selection arrows by default
+			guiPlayerSelectArrows[i*2 + 0].Hide()
+			guiPlayerSelectArrows[i*2 + 1].Hide()
+
 
 			guiPlayerPanels[i].AddChild(guiPlayerNames[i])
 			guiPlayerPanels[i].AddChild(guiPlayerRandomButtons[i])
@@ -237,14 +238,17 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiPlayerPanels[i].AddChild(guiFigureArrows[i*2 + 1])
 			
 			'ensure buttons are drawn on top
-			guiFigureSelectArrows[i*2 + 0].SetZIndex(guiPlayerPanels[i].GetZIndex() + 1)
-			guiFigureSelectArrows[i*2 + 1].SetZIndex(guiPlayerPanels[i].GetZIndex() + 1)
+			guiPlayerSelectArrows[i*2 + 0].SetZIndex(guiPlayerPanels[i].GetZIndex() + 1)
+			guiPlayerSelectArrows[i*2 + 1].SetZIndex(guiPlayerPanels[i].GetZIndex() + 1)
 
 
 			guiPlayerNames[i].SetTooltip( CreateBasicTooltip("PLAYERNAME", "NEWGAMESETTINGS_PLAYERNAME_DETAIL"), True, False )
 			guiChannelNames[i].SetTooltip( CreateBasicTooltip("CHANNELNAME", "NEWGAMESETTINGS_CHANNELNAME_DETAIL"), True, False )
 			guiDifficulty[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_DIFFICULTY", "NEWGAMESETTINGS_DIFFICULTY_DETAIL"), True, False )
 			guiPlayerRandomButtons[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_RANDOMIZE", "NEWGAMESETTINGS_RANDOMIZE_DETAIL"), True, False )
+
+			'guiPlayerPanels[i].AddChild(guiPlayerSelectArrows[i*2 + 0])
+			'guiPlayerPanels[i].AddChild(guiPlayerSelectArrows[i*2 + 1])
 		Next
 
 
@@ -440,7 +444,7 @@ Type TScreen_GameSettings Extends TGameScreen
 				Return True
 			EndIf
 
-			If sender = guiFigureSelectArrows[i]
+			If sender = guiPlayerSelectArrows[i]
 				Local playerID:Int = 1+Int(Ceil(i/2))
 				Local newPlayerID:Int = -1
 				'left
@@ -861,6 +865,7 @@ endrem
 				For Local j:Int = 0 To diff.list.entries.Count()-1
 					Local item:TGUIDropDownItem = TGUIDropDownItem(diff.GetEntryByPos(j))
 					If item
+						'item.SetValue(GetLocale("DIFFICULTY_"+item.data.GetString("value")))
 						item.SetValue(GetLocale("DIFFICULTY_"+item.data.GetString("value")))
 					EndIf
 				Next
@@ -988,8 +993,8 @@ endrem
 
 			If missionForbidsPositionChange
 			'	'hide selection arrows
-				guiFigureSelectArrows[i*2].Hide()
-				guiFigureSelectArrows[i*2+1].Hide()
+				guiPlayerSelectArrows[i*2].Hide()
+				guiPlayerSelectArrows[i*2+1].Hide()
 				If GetPlayerBaseCollection().playerID = (i+1)
 					If Not guiPlayerPanels[i].spriteTintColor Then guiPlayerPanels[i].spriteTintColor = TColor.Create(255,240,235)
 				Else
@@ -1000,20 +1005,20 @@ endrem
 
 				'show selection arrows (except most left/right)
 				If i=0
-					guiFigureSelectArrows[i*2].Hide()
+					guiPlayerSelectArrows[i*2].Hide()
 				Else
-					guiFigureSelectArrows[i*2].Show()
+					guiPlayerSelectArrows[i*2].Show()
 				EndIf
 				If i=3
-					guiFigureSelectArrows[i*2+1].Hide()
+					guiPlayerSelectArrows[i*2+1].Hide()
 				Else
-					guiFigureSelectArrows[i*2+1].Show()
+					guiPlayerSelectArrows[i*2+1].Show()
 				EndIf
 			Else
 				If guiPlayerPanels[i].spriteTintColor Then guiPlayerPanels[i].spriteTintColor = Null
 				'hide selection arrows
-				guiFigureSelectArrows[i*2].Hide()
-				guiFigureSelectArrows[i*2+1].Hide()
+				guiPlayerSelectArrows[i*2].Hide()
+				guiPlayerSelectArrows[i*2+1].Hide()
 			EndIf
 		Next
 	End Method
