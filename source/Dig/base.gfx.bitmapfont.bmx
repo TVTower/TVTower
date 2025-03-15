@@ -2637,7 +2637,8 @@ Type STextParseInfo
 	'      lineHeight (or bigger)
 	'1 ... MINIMUM
 	'      lineHeight equals to "max descending" used character 
-	'2 ... NICElineHeight equals to "max descending" character of used font 
+	'2 ... NICE
+	'      lineHeight equals to "max descending" character of used font 
 	Global BLOCK_HEIGHT_MODE_LINEHEIGHT:Int = 0
 	Global BLOCK_HEIGHT_MODE_MINIMUM:Int = 0
 	Global BLOCK_HEIGHT_MODE_NICE:Int = 0
