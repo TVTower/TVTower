@@ -590,7 +590,7 @@ Type TProduction Extends TOwnedGameObject
 			'series: remove parent if it is finished now
 			If productionConcept.script.HasParentScript()
 				Local parentScript:TScript = productionConcept.script.GetParentScript()
-				If parentScript.IsProduced()
+				If parentScript And parentScript.IsProduced()
 					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
 				EndIf
 			EndIf
