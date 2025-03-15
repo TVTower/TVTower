@@ -1,5 +1,5 @@
 SuperStrict
-Import BRL.Max2d 'to debug draw the sprite atlas
+'Import BRL.Max2d 'to debug draw the sprite atlas
 Import BRL.Map
 
 
