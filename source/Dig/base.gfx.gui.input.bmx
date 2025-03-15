@@ -609,8 +609,11 @@ Type TGUIinput Extends TGUIobject
 			'characters with parts below baseline.
 			'avoids "above center"-look if value does not contain such
 			'characters
-'			_textPos.Init(2, (rect.GetH() - GetFont().GetMaxCharHeightAboveBaseline()) / 2)
-			_textPos.SetXY(2, (rect.h - GetFont().GetMaxCharHeight(True)) / 2)
+'			_textPos.SetXY(2, (rect.h - GetFont().GetMaxCharHeight(False)) / 2)
+			' Noto Sans seems to define a big "ascender" (a lot whitespace
+			' on top of the UPPER-case letters)
+			Local f:TBitmapFont = GetFont()
+			_textPos.SetXY(2, Int((rect.h - f.GetMaxCharHeight(True)) / 2.0 + f.GetXHeight()/6.0))
 		Else
 			_textPos.copyFrom(valueDisplacement)
 		EndIf
@@ -649,7 +652,7 @@ Type TGUIinput Extends TGUIobject
 		EndIf
 		'actually draw
 		DrawInputContent(_textPos.GetIntX(), _textPos.GetIntY())
-
+		
 		SetAlpha(oldColA)
 	End Method
 
