@@ -748,7 +748,7 @@ Type TPersonBase Extends TGameObject
 	End Method
 	
 	
-	Method GetPersonalityAttribute:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+	Method GetPersonalityAttribute:Float(attributeID:Int, jobID:Int, genreID:Int)
 		Return GetPersonalityData().GetAttributeValue(attributeID, jobID, genreID)
 	End Method
 
@@ -1153,12 +1153,34 @@ endrem
 	
 	
 private
-	Method GetAttributeObject:TRangedFloat(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+	'calculate and set normalized job and genre id depending on the attribute
+	Function normalizedIds(attributeID:Int, jobID:Int var, genreID:Int var)
+		'do not distinguish between actor and supporting actor for attributes
+		If jobID = TVTPersonJob.SUPPORTINGACTOR Then jobID = TVTPersonJob.ACTOR
+
+		Select attributeID
+			Case TVTPersonPersonalityAttribute.CHARISMA
+				genreID = 0
+			'Case TVTPersonPersonalityAttribute.APPEARANCE 'potentially genre cluster specific
+			Case TVTPersonPersonalityAttribute.FAME
+				'fame for guest should have been replaced by main job on calling already in most cases
+				'this information is not available here
+				If jobID = TVTPersonJob.GUEST Then jobID = 0
+				genreID = 0
+			Default
+				'except for a few exceptions all attributes are job/genre independent
+				jobID = 0
+				genreID = 0
+		End Select
+	End Function
+
+	Method GetAttributeObject:TRangedFloat(attributeID:Int, jobID:Int, genreID:Int)
 		If attributeID < 0 or attributeID > attributes.length 
 			TLogger.Log("TPersonPersonalityAttributes.GetAttributeObject()", "Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length, LOG_DEBUG)
 			Throw "GetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
 		EndIf
 
+		normalizedIds(attributeID, jobID, genreID)
 		if jobID <= 0 and genreID <= 0
 			Return attributes[attributeID-1]
 		else
@@ -1177,6 +1199,7 @@ private
 			Throw "SetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
 		EndIf
 
+		normalizedIds(attributeID, jobID, genreID)
 		if jobID <= 0 and genreID <= 0
 			attributes[attributeID-1] = attribute
 		else
@@ -1188,14 +1211,24 @@ private
 
 
 	Method GetAffinityObject:TRangedFloat(jobID:Int = 0, genreID:Int = 0)
-		if jobID <= 0 and genreID <= 0
+		If jobID <= 0 And genreID <= 0
 			Return affinityPool
-		else
-			if other 
+		ElseIf jobID > 0 And genreID > 0
+			Throw "specific affinity only for job OR gerne"
+		Else
+			If jobID = TVTPersonJob.SUPPORTINGACTOR Then jobId = TVTPersonJob.ACTOR
+			If jobID = TVTPersonJob.REPORTER Then jobId = TVTPersonJob.HOST
+			If other
 				Local key:Long = _GetKey(1, 0, jobID, genreID)
-				Return TRangedFloat( other.ValueForKey(key) )
+				Local result:TRangedFloat = TRangedFloat( other.ValueForKey(key))
+				If Not result
+					result = affinityPool.Copy()
+					SetAffinityObject(result, jobID, genreID)
+					result.SetRandom(0.25)
+				EndIf
+				Return result
 			EndIf
-		endif
+		EndIf
 		Return Null
 	End Method
 
@@ -1416,8 +1449,8 @@ public
 
 	'AFFINITY
 
-	Method HasAffinity:Int(jobID:Int = 0, genreID:Int = 0)
-		Return GetAffinityObject(jobID, genreID) <> Null
+	Method HasAffinity:Int()
+		Return GetAffinityObject(0, 0) <> Null
 	End Method
 
 
@@ -1429,7 +1462,7 @@ public
 		EndIf
 		a.Set(value)
 	End Method
-	
+
 
 	Method GetAffinity:Float(jobID:Int = 0, genreID:Int = 0)
 		'if job and genre are not set, the "generic" skill is requested
@@ -1440,40 +1473,28 @@ public
 			Return affinityPool.Get()
 		EndIf
 
-		'do we have a individual value?
-		Local combinedAttribute:TRangedFloat = GetAffinityObject(jobID, genreID)
 		Local jobAttribute:TRangedFloat = GetAffinityObject(jobID, 0)
 		Local genreAttribute:TRangedFloat = GetAffinityObject(0, genreID)
-		
-		If combinedAttribute
-			'by default combined ones should only exist, if the individual
-			'ones are set - but maybe something defined only a combination
-			'(eg. some very rare talent...)
-			If jobAttribute And genreAttribute
-				'could be job/genre specific genre
-				'returns up to 1.0 as affinity
-		 		Return Min(1.0, combinedAttribute.Get() + 0.15 * jobAttribute.Get() + 0.15 * genreAttribute.Get())
-		 	Else
-				Return combinedAttribute.Get()
-			EndIf
-		Else
-			Local jobValue:Float = 0
-			Local genreValue:Float = 0
-			If jobAttribute then jobValue = jobAttribute.Get()
-			If genreAttribute then genreValue = genreAttribute.Get()
 
-			'if never done this results in 25% of the "unused" affinity
-			'(which we then later take from "unused" to "combined")
-			Return 0.25 * affinityPool.Get() + 0.15 * jobValue + 0.15 * genreValue
+		Local jobValue:Float = 0
+		Local genreValue:Float = 0
+		If jobAttribute then jobValue = jobAttribute.Get()
+		If genreAttribute then genreValue = genreAttribute.Get()
+		If jobID = 0
+			Return genreValue
+		ElseIf genreID = 0
+			Return jobValue
+		Else
+			Return (jobValue + genreValue) / 2.0
 		EndIf
 	End Method
-	
-	
-	Method RandomizeAffinity(jobID:Int = 0, genreID:Int = 0)
-		Local t:TRangedFloat = GetAffinityObject(jobID, genreID)
+
+
+	Method RandomizeAffinity()
+		Local t:TRangedFloat = GetAffinityObject(0, 0)
 		If not t
 			t = new TRangedFloat
-			SetAffinityObject(t, jobID, genreID)
+			SetAffinityObject(t, 0, 0)
 		EndIf
 
 		t.SetRandomMin(0.05, 0.15).SetRandomMax(0.60, 0.85, 0.2).SetRandom(0.25)
@@ -1614,8 +1635,8 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		Return attributes
 	End Method
 
-	
-	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0, generateDefault:Int = True)
+
+	Method GetAttributeValue:Float(attributeID:Int, jobID:Int, genreID:Int, generateDefault:Int = True)
 		if not attributes and generateDefault Then InitAttributes()
 		if not attributes Then Return 0
 		
