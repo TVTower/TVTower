@@ -253,13 +253,13 @@ Type TGUILabel Extends TGUIobject
 				sprite.Draw(int(scrRect.x + 0.5 * scrRect.w), int(scrRect.y + 0.5 * scrRect.h), -1, ALIGN_CENTER_CENTER)
 
 			Default
-				'with alpha<>1.0 we most probably are fading, so we skip
-				'caching for now
-				If oldColA <> 1.0
-					GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
-				Else
-					textCache.DrawBlock(GetFont(), value, Int(scrRect.x + contentDisplacement.GetX()), Int(scrRect.y + contentDisplacement.GetY()), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
-				EndIf
+				' TODO: Move that into the text cache if it is of use
+				'       for other text display elements too
+				
+				' the "descend" (the space below the base line required 
+				' to eg. draw "pqgyj") is substracted/"added" so that 
+				' "centering" between "hello" and "yeah" does not differ.
+				textCache.DrawBlock(GetFont(), value, Int(scrRect.x + contentDisplacement.GetX()), Int(scrRect.y + contentDisplacement.GetY() - contentAlignment.y * GetFont().descend), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
 		End Select
 
 
