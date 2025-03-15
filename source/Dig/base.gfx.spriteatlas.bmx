@@ -15,7 +15,7 @@ Repeat
 	sa.Draw()
 	Flip 0
 until KeyHit(KEY_ESCAPE) or AppTerminate()
-print "done."
+End
 endrem
 
 Struct SSpriteAtlasRect

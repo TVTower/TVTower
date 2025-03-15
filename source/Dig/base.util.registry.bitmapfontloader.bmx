@@ -136,9 +136,12 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 
 		'=== SET DEFAULTS ===
 		If setDefault
-			If flags & BOLDFONT And not (flags & ITALICFONT) 'only bold, NOT bolditalic!
+			' load defaults only when definition is "pure", so to load
+			' an italic font it must be "ITALICFONT" only, not 
+			' "ITALICFONT + BOLDFONT" (bold italic)!
+			If flags & BOLDFONT And not (flags & ITALICFONT)
 				GetBitmapFontManager().baseFontBold = font
-			ElseIf flags & ITALICFONT And not (flags & BOLDFONT) 'only italic, NOT bolditalic!
+			ElseIf flags & ITALICFONT And not (flags & BOLDFONT)
 				GetBitmapFontManager().baseFontItalic = font
 			ElseIf name.ToLower() = "defaultsmall" or name.ToLower() = "smalldefault"
 				GetBitmapFontManager().baseFontSmall = font
