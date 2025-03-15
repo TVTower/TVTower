@@ -1,4 +1,4 @@
-Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData=Null)
+Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData=Null)
 	If Not char.pixmap Then Return char 'for "space" and other empty signs
 	'convert to rgba
 	If char.pixmap.format = PF_A8 Then char.pixmap = char.pixmap.convert(PF_RGBA8888)
@@ -29,7 +29,7 @@ Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TB
 End Function
 
 
-Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData=Null)
+Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData=Null)
 	If Not char.pixmap Then Return char 'for "space" and other empty signs
 	'convert to rgba
 	If char.pixmap.format = PF_A8 Then char.pixmap = char.pixmap.convert(PF_RGBA8888)

@@ -37,12 +37,12 @@ End Rem
 SuperStrict
 Import BRL.Max2D
 Import BRL.Map
+Import Brl.RectPacker
 Import Math.Vector
 'to load from truetype
 Import brl.FreeTypeFont
 'Import "base.util.srectangle.bmx"
 Import "base.gfx.sprite.bmx"
-Import "base.gfx.spriteatlas.bmx"
 
 Global BITMAPFONTBENCHMARK:Int = False
 
@@ -97,7 +97,7 @@ Type TBitmapFontManager
 '	End Method
 
 	'get ignores the "SMOOTHFONT" flag to allow adding "crisp" fonts
-	Method Get:TBitmapFont(name:String="", size:Int=-1, style:Int=-1)
+	Method Get:TBitmapFont(name:String="", size:Float=-1, style:Int=-1)
 		name = Lower(name)
 
 		'fall back to default font if none was given
@@ -148,7 +148,7 @@ Type TBitmapFontManager
 	End Method
 
 
-	Method Copy:TBitmapFont(sourceName:String, copyName:String, size:Int=-1, style:Int=-1)
+	Method Copy:TBitmapFont(sourceName:String, copyName:String, size:Float=-1, style:Int=-1)
 		Local sourceFont:TBitmapFont = Get(sourceName, size, style)
 		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
 		InsertFont(copyName, sourceFont.fSize, sourceFont.fStyle, newFont)
@@ -157,7 +157,7 @@ Type TBitmapFontManager
 	End Method
 
 
-	Method InsertFont(name:String, size:Int, style:Int, font:TBitmapFont)
+	Method InsertFont(name:String, size:Float, style:Int, font:TBitmapFont)
 		Local sizes:TSizedBitmapFonts = TSizedBitmapFonts(fonts.ValueForKey(name))
 
 		If Not sizes Then
@@ -176,7 +176,7 @@ Type TBitmapFontManager
 	End Method
 
 
-	Method GetFont:TBitmapFont(name:String, size:Int = -1, style:Int = -1)
+	Method GetFont:TBitmapFont(name:String, size:Float = -1, style:Int = -1)
 		Local sizes:TSizedBitmapFonts = TSizedBitmapFonts(fonts.ValueForKey(name))
 
 		If Not sizes Then
@@ -187,7 +187,7 @@ Type TBitmapFontManager
 	End Method
 
 
-	Method Add:TBitmapFont(name:String, file:String, size:Int, style:Int=0, ignoreDefaultStyle:Int = False, fixedCharWidth:Int=-1, charWidthModifier:Float=1.0)
+	Method Add:TBitmapFont(name:String, file:String, size:Float, style:Int=0, ignoreDefaultStyle:Int = False, fixedCharWidth:Int=-1, charWidthModifier:Float=1.0)
 		name = Lower(name)
 		If Not ignoreDefaultStyle
 			style :| _defaultFlags
@@ -246,11 +246,11 @@ End Function
 
 'not really needed - but for convenience to avoid direct call to the
 'instance getter GetBitmapFontManager()
-Function GetBitmapFont:TBitmapfont(name:String="", size:Int=-1, style:Int=-1)
+Function GetBitmapFont:TBitmapfont(name:String="", size:Float=-1, style:Int=-1)
 	Return TBitmapFontManager.GetInstance().Get(name, size, style)
 End Function
 
-Function GetBitmapFont:TBitmapfont(familyID:Int, size:Int=-1, style:Int=-1)
+Function GetBitmapFont:TBitmapfont(familyID:Int, size:Float=-1, style:Int=-1)
 	Return TBitmapFontManager.GetInstance().Get(familyID, size, style)
 End Function
 
@@ -258,23 +258,136 @@ End Function
 
 
 Type TBitmapFontChar
+	Field charCode:Int
 	Field pos:SVec2I
 	Field dim:SVec2I
 	Field charWidth:Float
+	' rasterized pixel data of the glyph
 	Field pixmap:TPixmap
+	' backup of original data in case of applied effects
+	Field pixmapBackup:TPixmap
+	' gpu oriented sprite (sub rect of a spritepack/TImage)
+	Field sprite:TSprite
 
 
-	Method Init:TBitmapFontChar(img:TImage, x:Int,y:Int,w:Int, h:Int, charWidth:Float)
-		If img
-			Self.pixmap = LockImage(img)
-			UnlockImage(img)
-		Else
-			Self.pixmap = Null
-		EndIf
+	Method Init:TBitmapFontChar(charCode:Int, imgOrPixmap:Object, x:Int,y:Int,w:Int, h:Int, charWidth:Float)
+		Self.charCode = charCode 
 		Self.pos = New SVec2I(x,y)
 		Self.dim = New SVec2I(w,h)
 		Self.charWidth = charWidth
+		Self.SetPixmap(imgOrPixmap)
 		Return Self
+	End Method
+	
+	
+	Method SetPixmap(o:Object)
+		If TImage(o)
+			Local img:TImage = TImage(o)
+			Self.pixmap = LockImage(img)
+			UnlockImage(img)
+		ElseIf TPixmap(o)
+			Self.pixmap = TPixmap(o)
+		Else
+			Self.pixmap = Null
+		EndIf
+		
+		Self.pixmapBackup = Self.pixmap
+	End Method
+	
+	
+	Method SetSprite(s:TSprite)
+		Self.sprite = s
+	End Method
+End Type
+
+
+
+
+' A char group is similar to a code page - it can hold a various
+' amount of chars "belonging" together
+' Chars often used together should be grouped (eg ANSI/ASCII for the
+' classic AZ,az,09 ... support
+Type TBitmapFontCharGroup
+	Field chars:TBitmapFontChar[]
+	Field spritePacks:TSpritePack[]
+
+
+	Method New(chars:TBitmapFontChar[])
+		Self.chars = chars
+	End Method
+
+
+	'try to pack the chars into as few textures as possible
+	Method CreateSpritePacks(font:TBitmapFont)
+		If chars.Length = 0 Then Return
+		
+		' create one or multiple sprite-atlas with information where to
+		' optimally store each char
+		Local packer:TRectPacker = New TRectPacker
+		packer.maxSheets = 100
+		'NOT working as expected now!
+		packer.overAllocate = 2 'a bit of padding around the texture
+		packer.borderPadding = font._pixmapCharPadding
+		' we want our images to not exceed 2048x2048 px
+		packer.maxHeight = 2048
+		packer.maxWidth = 2048
+
+		For Local charIndex:Int = 0 Until chars.Length
+			If Not chars[charIndex] or chars[charIndex].dim.x = 0 or chars[charIndex].dim.y = 0
+				Continue
+			EndIf
+
+			' TODO: The packer for now does not do "borderPadding" to the sprites
+			'       the sprites - this is why for NOW we add it to the
+			'       rect here, and subtract it below again
+
+			' add box of the char to the sprite atlas
+			'packer.Add( Int(chars[charIndex].dim.x + 2*packer.borderPadding), Int(chars[charIndex].dim.y + 2*packer.borderPadding), charIndex)
+			' using the pixmap size allows effects to alter the size
+			packer.Add( Int(chars[charIndex].pixmap.width + 2*packer.borderPadding), Int(chars[charIndex].pixmap.height + 2*packer.borderPadding), charIndex)
+		Next
+		' pack all char rects together
+		Local sheets:TPackedSheet[] = packer.Pack()
+
+		' create the corresponding pixmaps for the sprite atlases
+		spritePacks = New TSpritePack[sheets.Length]
+
+		For Local sheetIndex:Int = 0 Until sheets.Length
+			Local sheet:TPackedSheet = sheets[sheetIndex]
+
+			Local pix:TPixmap = CreatePixmap(sheet.width, sheet.height, font._pixmapFormat)
+			pix.ClearPixels(0)
+			spritePacks[sheetIndex] = New TSpritePack.Init(Null, "charmap")
+
+			For Local j:Int = 0 Until sheet.rects.Length
+				Local rect:SPackedRect = sheet.rects[j]
+
+				Local char:TBitmapFontChar = chars[rect.id]
+				If Not char.pixmap Then Continue
+				
+				Local atlasX:Int = rect.x + font._pixmapCharPadding
+				Local atlasY:Int = rect.y + font._pixmapCharPadding
+				' TODO: Packer does not properly pad sprites / doc is
+				'       wrong, so we manually added padding and now need
+				'       to substract again
+				Local unpaddedW:Int = rect.width - packer.borderPadding
+				Local unpaddedH:Int = rect.height - packer.borderPadding
+
+				' draw char image on charmap
+				DrawImageOnImage(char.pixmap, pix, atlasX, atlasY)
+
+				' create sprite
+				char.sprite = New TSprite.Init(spritePacks[sheetIndex], String(rect.id), New SRectI(atlasX, atlasY, unpaddedW, unpaddedH), Null, 0)
+			Next
+
+			'set image to sprite pack
+			If font.IsSmooth()
+				spritePacks[sheetIndex].image = LoadImage(pix) ', FILTEREDIMAGE | DYNAMICIMAGE)
+			Else
+				'non smooth fonts should disable any filtering (eg. in virtual resolution scaling)
+				spritePacks[sheetIndex].image = LoadImage(pix, 0)
+			EndIf
+		Next
 	End Method
 End Type
 
@@ -288,23 +401,16 @@ Type TBitmapFont
 	'source path
 	Field FFile:String = ""
 	'size of this font
-	Field FSize:Int = 0
+	Field FSize:Float = 0
+	Field FSize266:Int = 0 'size in 26.6 freetype format (int(size* 64))
 	'style used in this font
 	Field FStyle:Int = 0
 	'the original imagefont
 	Field FImageFont:TImageFont
 
-	Field chars:TBitmapFontChar[] = New TBitmapFontChar[256]
-	Field charsSprites:TSprite[] = New TSprite[0]
-	Field spriteSet:TSpritePack
-	'by default only the first 256 chars get loaded
-	'as soon as an "utf8"-code is requested, the font will re-init with
-	'more sprites
-	Field MaxSigns:Int = 256
-	Field glyphCount:Int = 0
-	Field ExtraChars:String = ""
+	Field charGroups:TBitmapFontCharGroup[]
+
 	Field gfx:TMax2dGraphics
-	Field uniqueID:String =""
 	
 	'distance between baseline and highest font's characters coordinates
 	Field ascend:Int = -1000
@@ -325,8 +431,11 @@ Type TBitmapFont
 	Field charWidthModifier:Float = 1.0
 	Field fixedCharWidth:Int = -1
 	Field tabWidth:Int = 15
-	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData)[]
-	Field _charsEffectFuncConfig:TData[]
+	Field _charsEffectFuncs:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData)[]
+	Field _charsEffectFuncsConfig:TData[]
+
+	'adjust if you add effects
+	Field _pixmapCharPadding:Int = 2
 	'by default this is 8bit alpha only
 	Field _pixmapFormat:Int = PF_A8
 	Field _hasEllipsis:Int = -1
@@ -359,15 +468,9 @@ Type TBitmapFont
 	Global globalParseInfoMutex:TMutex = CreateMutex()
 	Global globalParseInfo:TTextParseInfo
 
-	Const controlChar:Int = Asc("|")
-	Const controlCharEscape:Int = Asc("\")
-
 	Const COMMAND_CHARCODE:Int = Asc("|")
 	Const PAYLOAD_CHARCODE:Int = Asc("=")
 	Const ESCAPE_CHARCODE:Int = Asc("\")
-	
-	Const NO_BREAKING_SPACE:String = Chr(160)
-	Const NARROW_NO_BREAKING_SPACE:String = Chr(8239)
 	
 	'each line height depends on the chars in this line
 	Const LINEHEIGHTMODE_INDIVIDUAL:Int = -1
@@ -377,19 +480,20 @@ Type TBitmapFont
 	Const LINEHEIGHTMODE_FIXED:Int = -3
 	'positive values = height to use
 	
+
 	Method New()
 		_lastID :+ 1
 		Self.id = _lastID
 	End Method 
 
 
-	Function Create:TBitmapFont(name:String, url:String, size:Int, style:Int, fixedCharWidth:Int = -1, charWidthModifier:Float = 1.0)
+	Function Create:TBitmapFont(name:String, url:String, size:Float, style:Int, fixedCharWidth:Int = -1, charWidthModifier:Float = 1.0)
 		Local obj:TBitmapFont = New TBitmapFont
 		obj.FName = name
 		obj.FFile = url
-		obj.FSize = size
+		obj.FSize = Int(size)
+		obj.FSize266 = Int(size * 64)
 		obj.FStyle = style
-		obj.uniqueID = name+"_"+url+"_"+size+"_"+style
 		obj.gfx = tmax2dgraphics.Current()
 		obj.fixedCharWidth = fixedCharWidth
 		obj.charWidthModifier = charWidthModifier
@@ -404,15 +508,19 @@ Type TBitmapFont
 			Return Null 'font not found
 		EndIf
 
-		'create spriteset
-		obj.spriteSet = New TSpritePack.Init(Null, obj.uniqueID+"_charmap")
+		' store basic font information
+		If TFreeTypeFont(obj.FImageFont._src_font)
+			Local ftf:TFreeTypeFont = TFreeTypeFont(obj.FImageFont._src_font)
+			obj.ascend = ftf._ascend
+			obj.descend = ftf._descend
+			obj.automaticLineHeight = ftf._height
+		EndIf
 
-		'generate a charmap containing packed rectangles where to store images
-		obj.InitFont()
-
+		' generate a basic charGroup (Ascii)
+		obj.LoadCharGroup(0)
 		Return obj
 	End Function
-	
+
 	
 	Function InitDefaultDrawSettings()
 		'configure defaults
@@ -421,96 +529,115 @@ Type TBitmapFont
 	End Function
 	
 
-	Method SetCharsEffectFunction(position:Int, _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData), config:TData=Null)
-		position :-1 '0 based
-		If _charsEffectFunc.Length <= position
-			_charsEffectFunc = _charsEffectFunc[..position+1]
-			_charsEffectFuncConfig = _charsEffectFuncConfig[..position+1]
-		EndIf
-		_charsEffectFunc[position] = _func
-		_charsEffectFuncConfig[position] = config
-	End Method
-
-
-	'overrideable method
-	Method ApplyCharsEffect(config:TData=Null)
-		'if instead of overriding a function was provided - use this
-		If _charsEffectFunc.Length > 0
-			'for local _charKey:TIntKey = eachin chars.keys()
-			For Local charKey:Int = 0 Until chars.Length
-
-				'local charKey:Int = _charKey.Value
-				'local char:TBitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
-				Local char:TBitmapFontChar = chars[charKey]
-				If Not char Then
-					Continue
-				End If
-
-				'manipulate char
-				Local _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData)
-				Local _config:TData
-				For Local i:Int = 0 To _charsEffectFunc.Length-1
-					_func = _charsEffectFunc[i]
-					_config = _charsEffectFuncConfig[i]
-					If Not _config Then _config = config
-					char = _func(Self, charKey, char, _config)
-				Next
-				'overwrite char
-				'chars.Insert(charKey, char)
-				chars[charKey] = char
-			Next
-		EndIf
-		'else do nothing by default
-	End Method
-
-
 	'returns the same font in the given size/style combination
 	'it is more or less a wrapper to make acces more convenient
-	Method GetVariant:TBitmapFont(size:Int=-1, style:Int = -1)
+	Method GetVariant:TBitmapFont(size:Float=-1, style:Int = -1)
 		If size = -1 Then size = Self.FSize
 		If style = -1 Then style = Self.FStyle
 		Return TBitmapFontManager.GetInstance().Get(Self.FName, size, style)
+	End Method	
+
+
+	Method SetCharsEffectFunction(position:Int, _func:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData), config:TData)
+		position :-1 '0 based
+		If _charsEffectFuncs.Length <= position
+			_charsEffectFuncs = _charsEffectFuncs[.. position+1]
+			_charsEffectFuncsConfig = _charsEffectFuncsConfig[.. position+1]
+		EndIf
+
+		_charsEffectFuncs[position] = _func
+		_charsEffectFuncsConfig[position] = config
 	End Method
 
 
-	'generate a charmap containing packed rectangles where to store images
-	Method InitFont(config:TData=Null )
-		'1. load chars
-		LoadCharsFromSource()
-		'2. Process the characters (add shadow, gradients, ...)
-		ApplyCharsEffect(config)
-		'3. store them into a packed (optimized) charmap
-		'   -> creates a 8bit alpha'd image (grayscale with alpha ...)
-		CreateCharmapImage( CreateCharmap(1) )
-		
-		'4. Add additional font information
-		If TFreeTypeFont(FImageFont._src_font)
-			Local ftf:TFreeTypeFont = TFreeTypeFont(FImageFont._src_font)
-			Self.ascend = ftf._ascend
-			Self.descend = ftf._descend
-			Self.automaticLineHeight = ftf._height
+	' (re-)apply assigned char effects to all or a specified char group
+	' overrideable method
+	Method ApplyCharsEffects(config:TData = Null, charGroup:TBitmapFontCharGroup = Null)
+		If _charsEffectFuncs.Length = 0 Then Return
+
+		'only apply to a specified group - or all?
+		If charGroup
+			ApplyEffectsToCharGroup(charGroup, config)
+			' recreate and optimize spritepacks holding char sprites
+			' that way a "new" chargroup called via "LoadGroup" only
+			' creates spritepacks once
+			If charGroup.spritepacks.length > 0
+				charGroup.CreateSpritePacks(Self)
+			EndIf
+		Else
+			For Local charGroup:TBitmapFontCharGroup = EachIn charGroups
+				ApplyEffectsToCharGroup(charGroup, config)
+				' recreate and optimize spritepacks holding char sprites
+				' that way a "new" chargroup called via "LoadGroup" only
+				' creates spritepacks once
+				If charGroup.spritepacks.length > 0
+					charGroup.CreateSpritePacks(Self)
+				EndIf
+			Next
 		EndIf
 	End Method
 
 
-	'reinits the font and loads the characters above charcode 256
-	Method LoadExtendedCharacters()
-		MaxSigns = -1
-		InitFont()
+	Method ApplyEffectsToCharGroup(charGroup:TBitmapFontCharGroup, defaultConfig:TData = Null)
+		For Local charKey:Int = 0 Until charGroup.chars.Length
+			Local char:TBitmapFontChar = charGroup.chars[charKey]
+			If Not char Then Continue
+			' not all chars have "visuals" (eg. "Space" char)
+			If Not char.pixmapBackup Then Continue
+			
+			' reload original glyph
+			'Local glyph:TImageGlyph = font.FImageFont.LoadGlyph(charKey)			
+			' or restore backup (and decouple them, so copy())
+			char.pixmap = char.pixmapBackup.Copy()
+
+			' manipulate char
+			Local _func:TBitmapFontChar(font:TBitmapFont, char:TBitmapFontChar, config:TData)
+			Local _config:TData
+			For Local i:Int = 0 Until _charsEffectFuncs.Length
+				_func = _charsEffectFuncs[i]
+				_config = _charsEffectFuncsConfig[i]
+				'use default if nothing defined
+				If Not _config Then _config = defaultConfig
+
+				char = _func(Self, char, _config)
+			Next
+
+			' overwrite char
+			charGroup.chars[charKey] = char
+		Next
 	End Method
 
 
-	'load glyphs of an imagefont as TBitmapFontChar into a char-TMap
-	Method LoadCharsFromSource(source:Object=Null)
-		Local imgFont:TImageFont = TImageFont(source)
-		If imgFont = Null Then imgFont = FImageFont
-		Local glyph:TImageGlyph
-		Local glyphCount:Int = imgFont.CountGlyphs()
-		Local n:Int
-		Local loadMaxGlyphs:Int = glyphCount
-		If MaxSigns <> -1 Then loadMaxGlyphs = MaxSigns
+	' generate a char group for the basic chars (Ascii)
+	Method LoadCharGroup:TBitmapFontCharGroup(charGroupIndex:Int, charCodeStart:Int=-1, charCodeEnd:Int=-1, config:TData=Null )
+		If charGroupIndex < 0 Then charGroupIndex = 0
+		If charCodeStart = -1 Then charCodeStart = charGroupIndex * 256
+		If charCodeEnd = -1 Then charCodeEnd = charCodeStart + 256
+		
+		' 0. Ensure group array is big enough
+		If charGroups.Length <= charGroupIndex
+			charGroups = charGroups[.. charGroupIndex + 1]
+		EndIf
+		
+		' 1. Load chars
+		Local chars:TBitmapFontChar[] = LoadCharsFromSource(charCodeStart, charCodeEnd)
 
-		If extraChars = ""
+		' 2. create the char group (and pack sprite atlas etc)
+		Local charGroup:TBitmapFontCharGroup = New TBitmapFontCharGroup(chars)
+
+		' 3. Process the characters (add shadow, gradients, ...)
+		ApplyCharsEffects(config, charGroup)
+		
+		' 4. create and optimize spritepacks holding char sprites
+		charGroup.CreateSpritePacks(Self)
+
+		' 5. store group
+		charGroups[charGroupIndex] = charGroup
+
+		Return charGroup
+	End Method
+
+Rem
 			extraChars :+ Chr(8239) 'Narrow No Breaking Space
 			extraChars :+ Chr(160)  'No Breaking Space
 			extraChars :+ Chr(8364) 'Euro
@@ -537,127 +664,59 @@ Type TBitmapFont
 			extraChars :+ Chr(8243) 'Double Prime (Inch)
 			extraChars :+ Chr(8531) 'Vulgar Fraction One Third
 			'extraChars :+ Chr(9829) 'Black Heart Suit - TODO: This one doesn't seem to display
+endrem
+
+	'load glyphs of an imagefont as TBitmapFontChar into a char-TMap
+	Method LoadCharsFromSource:TBitmapFontChar[](charCodeStart:Int, charCodeEnd:Int, source:Object=Null)
+		Local imgFont:TImageFont = TImageFont(source)
+		If Not imgFont Then imgFont = Self.FImageFont
+		If Not imgfont Then Return Null
+
+		'ensure params are in right order and within range
+		If charCodeStart < 0 Then charCodeStart = 0
+		If charCodeEnd < 0 Then charCodeEnd = 0
+		If charCodeEnd < charCodeStart 
+			Local tmp:Int = charCodeStart
+			charCodeStart = charCodeEnd
+			charCodeEnd = tmp
 		EndIf
 
-		Self.glyphCount = glyphCount
 
-		For Local i:Int = 0 Until loadMaxGlyphs
-'		For Local i:Int = 0 Until MaxSigns
-			n = imgFont.CharToGlyph(i)
-			If n < 0 Or n > glyphCount Then Continue
-			glyph = imgFont.LoadGlyph(n)
+		Local charsToLoad:Int = charCodeEnd - charCodeStart
+		Local chars:TBitmapFontChar[charsToLoad]
+		For Local i:Int = 0 Until charsToLoad
+			Local glyphIndex:Int = imgFont.CharToGlyph(charCodeStart + i)
+			If glyphIndex < 0 Then Continue
+
+			Local glyph:TImageGlyph = imgFont.LoadGlyph(glyphIndex)
 			If Not glyph Then Continue
-Rem
-eventuell die "extrachars" in eine eigene Collection ueberfuehren
-"loadMaxGlyphs" koennte ja vom Nutzer hochgestellt werden und dann
-landen weiterhin alle im "array"
-
-dazu sollte "LoadMaxGlyphs" als Field gespeichert werden (und nicht jedesmal neu berechnet?)
-
-https://android.googlesource.com/platform/frameworks/base/+/0b285499db739ba50f2f839d633e763c70e67f96/core/java/android/util/SparseIntArray.java
-endrem
+			
+			'glyph._image can be Null! (eg "space" char code)
+			If fixedCharWidth > 0
+				chars[i] = New TBitmapFontChar.Init(charCodeStart + i, glyph._image, glyph._x, glyph._y, glyph._w, glyph._h, fixedCharWidth)
+			Else
+				chars[i] = New TBitmapFontChar.Init(charCodeStart + i, glyph._image, glyph._x, glyph._y, glyph._w, glyph._h, glyph._advance * charWidthModifier)
+				Self._maxCharWidth = Max(Self._maxCharWidth, chars[i].charWidth)
+			EndIf
+			'print "loading #"+i+"/"+charsToLoad+"  glyphIndex "  + glyphIndex + " => " + chr(i)
 
 			'base displacement calculated with A-Z (space between
 			'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
-			If i >= 65 And i < 95 Then 
-				baseDisplaceY = Min(baseDisplaceY, glyph._y)
+			If i >= 65 And i < 95
+				Self.baseDisplaceY = Min(Self.baseDisplaceY, glyph._y)
 			EndIf
 			If i >= 65 'i>32
-				displaceY = Min(displaceY, glyph._y)
-			EndIf
-			resizeChars(i)
-			'chars.insert(i, new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
-			If fixedCharWidth > 0
-				chars[i] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
-			Else
-				chars[i] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
-				Self._maxCharWidth = Max(Self._maxCharWidth, chars[i].charWidth)
-			EndIf
-		Next
-		For Local charNum:Int = 0 Until ExtraChars.Length
-			n = imgFont.CharToGlyph( ExtraChars[charNum] )
-			If n < 0 Or n > glyphCount Then Continue
-			glyph = imgFont.LoadGlyph(n)
-			If Not glyph Then Continue
-			resizeChars(ExtraChars[charNum])
-			'chars.insert(ExtraChars[charNum] , new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
-			If fixedCharWidth > 0
-				chars[ExtraChars[charNum]] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
-			Else
-				chars[ExtraChars[charNum]] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
-				Self._maxCharWidth = Max(Self._maxCharWidth, chars[ExtraChars[charNum]].charWidth)
+				Self.displaceY = Min(Self.displaceY, glyph._y)
 			EndIf
 		Next
 
 		If fixedCharWidth > 0 
 			Self._maxCharWidth = fixedCharWidth
 		EndIf
+		
+		Return chars
 	End Method
 
-
-	Method resizeChars(index:Int)
-		If index >= chars.Length Then
-			chars = chars[.. index + 1 + chars.Length/3]
-		End If
-	End Method
-
-
-	Method resizeCharsSprites(index:Int)
-		If index >= charsSprites.Length Then
-			charsSprites = charsSprites[.. index + 1 + charsSprites.Length/3]
-		End If
-	End Method
-
-
-	'create a charmap-atlas with information where to optimally store
-	'each char
-	Method CreateCharmap:TSpriteAtlas(spaceBetweenChars:Int=0)
-		Local charmap:TSpriteAtlas = New TSpriteAtlas(64,64, chars.Length)
-		Local bitmapFontChar:TBitmapFontChar
-		'for local _charKey:TIntKey = eachin chars.keys()
-		For Local charKey:Int = 0 Until chars.Length
-			'local charKey:Int = _charKey.Value
-			'bitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
-			bitmapFontChar = chars[charKey]
-			If Not bitmapFontChar Then Continue
-			'add box of char and package atlas
-			charmap.AddElement(charKey, Int(bitmapFontChar.dim.x + spaceBetweenChars), Int(bitmapFontChar.dim.y + spaceBetweenChars) )
-		Next
-		Return charmap
-	End Method
-
-
-	'create an image containing all chars
-	'the charmap-atlas contains information where to store each character
-	Method CreateCharmapImage(charmap:TSpriteAtlas)
-		Local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, _pixmapFormat) ; pix.ClearPixels(0)
-		'create spriteset
-		If Not spriteSet Then spriteSet = New TSpritePack.Init(Null, uniqueID+"_charmap")
-		'loop through atlas boxes and add chars
-		For Local atlasRect:SSpriteAtlasRect = EachIn charmap.elements
-			'skip missing data
-			If (atlasRect.id < 0 Or atlasRect.id > chars.Length) Or (Not chars[atlasRect.id]) Then Continue
-			
-			Local bm:TBitmapFontChar = chars[atlasRect.id]
-			If Not bm.pixmap Then Continue
-
-			'draw char image on charmap
-			DrawImageOnImage(bm.pixmap, pix, atlasRect.x, atlasRect.y)
-
-			resizeCharsSprites(atlasRect.id)
-			
-			charsSprites[atlasRect.id] = New TSprite.Init(spriteSet, String(atlasRect.id), New SRectI(atlasRect.x, atlasRect.y, atlasRect.w, atlasRect.h), Null, 0)
-		Next
-
-		'set image to sprite pack
-		If IsSmooth()
-			spriteSet.image = LoadImage(pix) ', FILTEREDIMAGE | DYNAMICIMAGE)
-		Else
-			'non smooth fonts should disable any filtering (eg. in virtual resolution scaling)
-			spriteSet.image = LoadImage(pix, 0)
-		EndIf
-	End Method
-	
 	
 	
 	'-----------------
@@ -1090,23 +1149,32 @@ endrem
 
 
 	Method __GetBitmapFontChar:TBitmapFontChar(charCode:Int)
-		Local bm:TBitmapFontChar
+		Local charGroupIndex:Int = charCode Shr 8 'each group contains 256 chars...
+		Local charIndex:Int = charCode & $FF 'which one in the 256 ?
+		'TODO: Return a default char (some "[?]" thingy ?)
+		If charGroupIndex < 0 Then Return Null
+		
+		' create group if not done yet
+		If charGroups.Length <= charGroupIndex Or Not charGroups[charGroupIndex]
+			LoadCharGroup(charGroupIndex)
 
-		'reload current font with utf8?
-		If charCode > 256 And Self.MaxSigns = 256 And Self.glyphCount > 256 And Self.extraChars.find(Chr(charCode)) = -1
-			Self.LoadExtendedCharacters()
+			'debug
+			Rem
+			Print "FONT "  + FName + ": char group " + charGroupIndex + " loaded."
+			Local charCodes:String
+			For Local char:TBitmapFontChar = EachIn charGroups[charGroupIndex].chars
+				charCodes :+ char.charCode + "=~q" + Chr(char.charCode)+"~q  "
+				If charCodes.Length > 120 Then Print charCodes; charCodes =""
+			Next
+			Print charCodes
+			EndRem
 		EndIf
 
-		If charCode < chars.Length
-			bm = chars[charCode]
-		EndIf
+		Local bm:TBitmapFontChar = charGroups[charGroupIndex].chars[charIndex]
 
 		'some fonts do not contain the given char ... display "?" there
-		If Not bm
-			charCode = Asc("?")
-			If charCode < chars.Length
-				bm = chars[charCode]
-			EndIf
+		If Not bm And (charGroupIndex <> 0 Or charIndex <> Asc("?"))
+			bm = __GetBitmapFontChar(Asc("?"))
 		EndIf
 		Return bm
 	End Method
@@ -1118,17 +1186,10 @@ endrem
 
 
 	Method __DrawSingleChar(bm:TBitmapFontchar, charCode:Int, x:Float, y:Float)
-		If bm
-			'is the char a drawable one ?
-			If charCode > 32 And charCode < charsSprites.Length
-				Local sprite:TSprite = charsSprites[charCode]
-				
-				If sprite
-					Local tx:Float = bm.pos.x * gfx.tform_ix + bm.pos.y * gfx.tform_iy
-					Local ty:Float = bm.pos.x * gfx.tform_jx + bm.pos.y * gfx.tform_jy
-					sprite.Draw(Int(x + tx), Int(y + ty))
-				EndIf
-			EndIf
+		If bm And bm.sprite
+			Local tx:Float = bm.pos.x * gfx.tform_ix + bm.pos.y * gfx.tform_iy
+			Local ty:Float = bm.pos.x * gfx.tform_jx + bm.pos.y * gfx.tform_jy
+			bm.sprite.Draw(Int(x + tx), Int(y + ty))
 		EndIf
 	End Method
 
@@ -1139,17 +1200,10 @@ endrem
 
 
 	Method __DrawSingleCharToPixmap(bm:TBitmapFontchar, charCode:Int, x:Float, y:Float, color:SColor8)
-		If bm
-			'is the char a drawable one ?
-			If charCode > 32 And charCode < charsSprites.Length
-				Local sprite:TSprite = charsSprites[charCode]
-				
-				If sprite
-					Local tx:Float = bm.pos.x * gfx.tform_ix + bm.pos.y * gfx.tform_iy
-					Local ty:Float = bm.pos.x * gfx.tform_jx + bm.pos.y * gfx.tform_jy
-					sprite.DrawOnImageSColor(drawToPixmap, Int(pixmapOrigin.x + x + tx), Int(pixmapOrigin.y + y + ty), -1, Null, color)
-				EndIf
-			EndIf
+		If bm And bm.sprite
+			Local tx:Float = bm.pos.x * gfx.tform_ix + bm.pos.y * gfx.tform_iy
+			Local ty:Float = bm.pos.x * gfx.tform_jx + bm.pos.y * gfx.tform_jy
+			bm.sprite.DrawOnImageSColor(drawToPixmap, Int(pixmapOrigin.x + x + tx), Int(pixmapOrigin.y + y + ty), -1, Null, color)
 		EndIf
 	End Method
 
@@ -2408,25 +2462,30 @@ End Type
 Type TSizedBitmapFonts
 	Field sizes:TStyledBitmapFonts[12]
 
-	Method Get:TBitmapFont(size:Int, style:Int)
+	Method Get:TBitmapFont(size:Float, style:Int)
 		size :+ 1
-		If size < sizes.Length
-			Local styled:TStyledBitmapFonts = sizes[size]
+		'compute 26.6 value (1.0 => 64, 1,1 => rounded to 1,09375 => 70/64)
+		Local sizeInt:Int = Int(size*64)
+
+		If sizeInt < sizes.Length
+			Local styled:TStyledBitmapFonts = sizes[sizeInt]
 			If styled Then
 				Return styled.Get(style)
 			End If
 		End If
 	End Method
 
-	Method Insert(size:Int, style:Int, font:TBitmapFont)
+	Method Insert(size:Float, style:Int, font:TBitmapFont)
 		size :+ 1
-		If size >= sizes.Length
-			sizes = sizes[..size + 1]
+		'compute 26.6 value (1.0 => 64, 1,1 => rounded to 1,09375 => 70/64)
+		Local sizeInt:Int = Int(size*64)
+		If sizeInt >= sizes.Length
+			sizes = sizes[..sizeInt + 1]
 		End If
-		Local styled:TStyledBitmapFonts = sizes[size]
+		Local styled:TStyledBitmapFonts = sizes[sizeInt]
 		If Not styled Then
 			styled = New TStyledBitmapFonts
-			sizes[size] = styled
+			sizes[sizeInt] = styled
 		End If
 
 		styled.Insert(style, font)
@@ -2440,7 +2499,7 @@ End Type
 
 ' - max2d/max2d.bmx -> loadimagefont
 ' - max2d/imagefont.bmx TImageFont.Load ->
-Function LoadTrueTypeFont:TImageFont( url:Object,size:Int,style:Int )
+Function LoadTrueTypeFont:TImageFont( url:Object,size:Float,style:Int )
 	Local src:TFont = TFreeTypeFont.Load( String( url ), size, style )
 	If Not src Then Return Null
 
@@ -2578,7 +2637,8 @@ Type STextParseInfo
 	'      lineHeight (or bigger)
 	'1 ... MINIMUM
 	'      lineHeight equals to "max descending" used character 
-	'2 ... NICElineHeight equals to "max descending" character of used font 
+	'2 ... NICE
+	'      lineHeight equals to "max descending" character of used font 
 	Global BLOCK_HEIGHT_MODE_LINEHEIGHT:Int = 0
 	Global BLOCK_HEIGHT_MODE_MINIMUM:Int = 0
 	Global BLOCK_HEIGHT_MODE_NICE:Int = 0

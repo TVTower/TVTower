@@ -10,15 +10,16 @@ local sa:TSpriteAtlas = new TSpriteAtlas(128,128, 20)
 For local i:int = 32 until 133
 	sa.AddElement(i, 9, 17)
 Next
+print "added"
 Repeat
 	sa.Draw()
 	Flip 0
 until KeyHit(KEY_ESCAPE) or AppTerminate()
-print "done."
+End
 endrem
 
 Struct SSpriteAtlasRect
-	Field id:Int 'eg. charCode
+	Field id:Int = -1 'eg. charCode
 	Field x:int
 	Field y:int
 	Field w:int
@@ -40,19 +41,23 @@ Type TSpriteAtlas
 	Field elements:SSpriteAtlasRect[]
 	Field elementsIndex:Int
 	Field w:Int, h:Int
+	Field limitW:Int = -1
+	Field limitH:Int = -1
 	Field packer:TSpritePacker = New TSpritePacker
 
 
-	Method New(w:Int, h:Int, initialElementCount:Int = 50)
+	Method New(w:Int, h:Int, initialElementCount:Int = 50, limitW:Int = -1, limitH:Int = -1)
 		Self.w = w
 		Self.h = h
+		Self.limitW = limitW
+		Self.limitH = limitH
 		Self.packer.setRect(0,0,w,h)
 		
 		Self.elements = New SSpriteAtlasRect[initialElementCount]
 	End Method
 
 
-	Method AddElement(id:Int, w:Int, h:Int)
+	Method AddElement:Int(id:Int, w:Int, h:Int)
 		'ignore elements with w=0 or h=0?
 		If w=0 Or h=0 Then Throw "TSpriteAtlas: Cannot AddElement() with zero width or height."
 
@@ -65,13 +70,19 @@ Type TSpriteAtlas
 		While freeArea = Null
 			freeArea = packer.pack(w,h)
 			If Not freeArea
-				IncreaseSize()
-				Repack()
+				If IncreaseSize()
+					Repack()
+				Else
+					' failed to increase size (eg tex limit reached)
+					Return False
+				EndIf
 			EndIf
 		Wend
 		
 		elements[elementsIndex] = New SSpriteAtlasRect(id, freeArea.x, freeArea.y, w, h)
 		elementsIndex :+ 1
+		
+		Return True
 	End Method
 
 
@@ -86,7 +97,7 @@ Type TSpriteAtlas
 		packer.setRect(0, 0, w, h)
 
 		For Local atlasRect:SSpriteAtlasRect = EachIn previousElements
-			If atlasRect.id <> 0
+			If atlasRect.id >= 0
 				AddElement(atlasRect.id, atlasRect.w, atlasRect.h)
 			EndIf
 		Next
@@ -107,18 +118,29 @@ endrem
 	End Method
 
 
-	Method IncreaseSize(w:Int = 0, h:Int = 0)
+	Method IncreaseSize:Int(w:Int = 0, h:Int = 0)
+		Local nextW:Int = self.w
+		Local nextH:Int = self.h
+
 		If w = 0 And h = 0
-			If Self.h < Self.w 
-				Self.h = nextPow2(Self.h)
+			If nextH < nextW 'and (limitH = -1 or nextPow2(nextH) <= limitH) 
+				nextH = nextPow2(nextH)
 			Else
-				Self.w = nextPow2(Self.w)
+				nextW = nextPow2(nextW)
 			EndIf
 		Else
-			If w <> 0 Then Self.w = w
-			If h <> 0 Then Self.h = h
+			If w >= 0 Then nextW = w
+			If h >= 0 Then nextH = h
 		EndIf
+		
+		If limitH <> -1 And nextH > limitH Then Return False
+		If limitW <> -1 And nextW > limitW Then Return False
+		
+		self.w = nextW
+		self.h = nextH
 		packer.SetRect(0, 0, Self.w, Self.h)
+		
+		Return True
 	End Method
 
 
