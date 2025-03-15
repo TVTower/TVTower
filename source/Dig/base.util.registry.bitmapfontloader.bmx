@@ -106,7 +106,7 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		Local name:String = GetNameFromConfig(data).ToLower()
 		Local url:String = data.GetString("url", "")
 		Local flagsString:String = data.GetString("flags", "")
-		Local size:Int = data.GetInt("size", 10)
+		Local size:Float = Int(data.GetFloat("size", 10.0) * 64 + 0.5)/64.0 'round to 64th / freetype2's 26.6 encoding
 		Local setDefault:Int= data.GetBool("default", False)
 
 		'=== COMPUTE FLAGS ===
@@ -136,11 +136,11 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 
 		'=== SET DEFAULTS ===
 		If setDefault
-			If flags & BOLDFONT
+			If flags & BOLDFONT And not (flags & ITALICFONT) 'only bold, NOT bolditalic!
 				GetBitmapFontManager().baseFontBold = font
-			ElseIf flags & ITALICFONT
+			ElseIf flags & ITALICFONT And not (flags & BOLDFONT) 'only italic, NOT bolditalic!
 				GetBitmapFontManager().baseFontItalic = font
-			ElseIf name = "smalldefault"
+			ElseIf name.ToLower() = "defaultsmall" or name.ToLower() = "smalldefault"
 				GetBitmapFontManager().baseFontSmall = font
 			Else
 				GetBitmapFontManager().baseFont = font
