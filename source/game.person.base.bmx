@@ -52,7 +52,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 		collectionMutex = CreateMutex()
 
-		' setup filters: params: index, celebrity, insignificant, castable
+		' setup filters: params: index, insignificant, celebrity, castable
 		filters[FILTER_INSIGNIFICANT] = New SPersonBaseFilter(0, 1, 0, -1)
 		filters[FILTER_CELEBRITY] = New SPersonBaseFilter(1, 0, 1, -1)
 		filters[FILTER_CASTABLE] = New SPersonBaseFilter(2, -1, -1, 1)
@@ -560,7 +560,7 @@ Struct SPersonBaseFilter
 	Field insignificant:Int = -1
 	Field castable:Int = -1
 	
-	Method New(index:Int, celebrity:Int, insignificant:Int, castable:Int)
+	Method New(index:Int, insignificant:Int, celebrity:Int, castable:Int)
 		self.index = index
 		self.celebrity = celebrity
 		self.insignificant = insignificant
