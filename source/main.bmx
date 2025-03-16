@@ -5184,7 +5184,7 @@ endrem
 		If player.isLocalAI()
 			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBossCalls).AddLong(latestTime))
 			'player.playerAI.CallOnBossCalls(latestTime)
-		Else
+		ElseIf player = GetPlayer()
 			'send out a toast message
 			Local toastGUID:String = "toastmessage-playerboss-callplayer"+player.playerID
 			'try to fetch an existing one
