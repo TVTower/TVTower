@@ -33,16 +33,24 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 	Method DrawInputContent:Int(x:Int, y:Int) override
 		'draw sprite
 		If TGUISpriteDropDownItem(selectedEntry)
-			Local scaleSprite:Float = 0.8
-			Local labelHeight:Int = GetFont().GetHeight(GetValue())
+			Local scaleSprite:Float = 0.9
 			Local item:TGUISpriteDropDownItem = TGUISpriteDropDownItem(selectedEntry)
+
 			If item
 				Local sprite:TSprite = item.GetSprite()
 				If sprite <> TSprite.defaultSprite
 					Local spriteDim:SVec2I = item.GetSpriteDimension()
 					Local itemHeight:Int = (spriteDim.y * scaleSprite)
-					Local displaceY:Int = 0.5 * (labelHeight - itemHeight)
-					sprite.DrawArea(x, y + displaceY, spriteDim.x * scaleSprite, spriteDim.y * scaleSprite)
+					Local displaceY:Int
+					Local v:String = GetValue()
+					if v.Find("~n") >= 0 'no single line?
+						displaceY = 0.5 * (GetFont().GetHeight(v) - itemHeight)
+					Else
+						' single line texts can be placed "optically weighted"
+						displaceY = Int((itemHeight - GetFont().GetMaxCharHeight(True)) / 2.0 + GetFont().GetXHeight()/6.0)
+					EndIf
+
+					sprite.DrawArea(x, y - displaceY, spriteDim.x * scaleSprite, spriteDim.y * scaleSprite)
 
 					'offset x by sprite
 					x :+ spriteDim.x * scaleSprite + 3
