@@ -3564,8 +3564,8 @@ Type TScreen_MainMenu Extends TGameScreen
 				EndIf
 			Next
 			GuiManager.SortLists()
-			'we want to have max 4 items visible at once
-			guiLanguageDropDown.SetListContentHeight(itemHeight * Min(languageCount,4))
+			'we want to have max 6 items visible at once
+			guiLanguageDropDown.SetListContentHeight(itemHeight * Min(languageCount,6))
 			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onSelectLanguageEntry", guiLanguageDropDown)
 		EndIf
 
