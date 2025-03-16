@@ -613,7 +613,7 @@ Type TBitmapFont
 	Method LoadCharGroup:TBitmapFontCharGroup(charGroupIndex:Int, charCodeStart:Int=-1, charCodeEnd:Int=-1, config:TData=Null )
 		If charGroupIndex < 0 Then charGroupIndex = 0
 		If charCodeStart = -1 Then charCodeStart = charGroupIndex * 256
-		If charCodeEnd = -1 Then charCodeEnd = charCodeStart + 256
+		If charCodeEnd = -1 Then charCodeEnd = charCodeStart + 256 - 1 '-1 as we want 256 chars (0 - 255)
 		
 		' 0. Ensure group array is big enough
 		If charGroups.Length <= charGroupIndex
@@ -701,14 +701,38 @@ endrem
 			EndIf
 			'print "loading #"+i+"/"+charsToLoad+"  glyphIndex "  + glyphIndex + " => " + chr(i)
 
-			'base displacement calculated with A-Z (space between
-			'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
-			If i >= 65 And i < 95
-				Self.baseDisplaceY = Min(Self.baseDisplaceY, glyph._y)
+			' we could try to find out if all our used glyphs use less
+			' "space" than the defined ascender-value in the font tells
+			' (eg a very exotic char is way higher than all other chars
+			' and thus creating a big ascender-value while the used chars
+			' are way smaller and would then render with a lot vertical
+			' whitespace) 
+			' This can lead to odd "jittering" when loading additional
+			' char codes which alter the displaceY values (rendered text
+			' would move).
+			' A simpler approach would be to focus on A-Z and use this as
+			' the final displaceY too (with the risk of special chars
+			' rendering "cut" on a rendertarget when rendering at y=0, or
+			' slight overlaps on multiline text with sharp line-heights)
+			
+			if charCodeStart >= 0 and charCodeEnd <= 255
+				'base displacement calculated with A-Z (space between
+				'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
+				If i >= 65 And i < 95
+					Self.baseDisplaceY = Min(Self.baseDisplaceY, glyph._y)
+				EndIf
+				If i >= 65
+					Self.displaceY = Min(Self.displaceY, glyph._y)
+					'if glyph._y < 0 Then print (charCodeStart + i) +"   ascend="+self.ascend  + " bitmaptop="+(-1*(glyph._y-self.ascend))
+				EndIf
 			EndIf
-			If i >= 65 'i>32
+			Rem
+			'this also includes Cyrillic, Greek - ONCE it is loaded!
+			If (charCodeStart + i) >= 65
 				Self.displaceY = Min(Self.displaceY, glyph._y)
+				'if glyph._y < 0 Then print (charCodeStart + i) +"   ascend="+self.ascend  + " bitmaptop="+(-1*(glyph._y-self.ascend))
 			EndIf
+			EndRem
 		Next
 
 		If fixedCharWidth > 0 
