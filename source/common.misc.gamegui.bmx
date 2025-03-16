@@ -119,27 +119,6 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	End Method
 
 
-	'override to change color
-	Method DrawBackground()
-		If IsHovered() or IsSelected()
-			Local oldCol:SColor8; GetColor(oldCol)
-			Local oldA:Float = GetAlpha()
-			Local scrRect:TRectangle = GetScreenRect()
-
-			SetColor(125, 160, 215)
-			If IsHovered()
-				SetAlpha(oldA * 0.75)
-				DrawRect(scrRect.x, scrRect.y, scrRect.w, rect.h)
-			Else 'same: ElseIf IsSelected()
-				SetAlpha(oldA * 0.5)
-				DrawRect(scrRect.x, scrRect.y, scrRect.w, rect.h)
-			EndIf
-			SetColor(oldCol)
-			SetAlpha(oldA)
-		EndIf
-	End Method
-
-
 	Method DrawValue()
 		Local scrRect:TRectangle = GetScreenRect()
 		Local spriteDim:SVec2I = GetSpriteDimension()

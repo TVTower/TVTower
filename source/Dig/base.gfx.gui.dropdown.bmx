@@ -468,13 +468,15 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		Local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(Self)
 		upperParent.RestrictContentViewPort()
 
+		Local scrRect:TRectangle = GetScreenRect()
 		If isHovered()
+			SetAlpha (oldColA * 0.75)
 			SetColor 250,210,100
-			DrawRect(GetScreenRect().x, GetScreenRect().y, GetScreenRect().w, GetScreenRect().h)
+			DrawRect(scrRect.x, scrRect.y, scrRect.w, scrRect.h)
 		ElseIf isSelected()
-			SetAlpha oldcolA*0.5
+			SetAlpha (oldColA * 0.5)
 			SetColor 250,210,100
-			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
+			DrawRect(scrRect.x, scrRect.y, scrRect.w, scrRect.h)
 		EndIf
 
 		upperParent.ResetViewPort()
