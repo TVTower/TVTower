@@ -68,6 +68,7 @@ Type TGraphicsManager
 	Field flags:Int			= 0 'GRAPHICS_BACKBUFFER '0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
 	Field viewportStack:TRectangle[] = new TRectangle[0]
 	Field viewportStackIndex:Int = -1
+	Field customCLS(contentOffsetX:Int, contentOffsetY:Int, contentWidth:Int, contentHeight:Int)
 	Global _instance:TGraphicsManager
 	Global _g:TGraphics
 	Global RENDERER_NAMES:String[] = [	"OpenGL",..
@@ -329,7 +330,12 @@ End Rem
 		Local x:Int, y:Int, w:Int, h:Int
 		.GetViewport(x,y,w,h)
 		.SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight() )
-		brl.max2d.Cls()
+		
+		If customCLS
+			customCLS(TVirtualGfx.GetInstance().vxoff, TVirtualGfx.GetInstance().vyoff, TVirtualGfx.GetInstance().vwidth, TVirtualGfx.GetInstance().vheight)
+		Else
+			brl.max2d.Cls()
+		EndIf
 		.SetViewport(x,y,w,h)
 '		SetViewport( TVirtualGfx.GetInstance().vxoff, TVirtualGfx.GetInstance().vyoff, TVirtualGfx.GetInstance().vwidth, TVirtualGfx.GetInstance().vheight )
 	End Method
