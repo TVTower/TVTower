@@ -841,12 +841,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 			productionFocusSlider[i].SetValueRange(0,10)
 			productionFocusSlider[i].steps = 10
-			productionFocusSlider[i]._gaugeOffset.SetY(2)
+			productionFocusSlider[i]._gaugeOffset = New SVec2F(productionFocusSlider[i]._gaugeOffset.x, 2)
 			productionFocusSlider[i].SetRenderMode(TGUISlider.RENDERMODE_DISCRETE)
 			productionFocusSlider[i].SetDirection(TGUISlider.DIRECTION_RIGHT)
 			productionFocusSlider[i].data = New TData.AddNumber("focusIndex", i+1)
 
-			productionFocusSlider[i]._handleDim.SetX(17)
+			productionFocusSlider[i]._handleDim = New SVec2F(17, productionFocusSlider[i]._handleDim.y)
+
 		Next
 
 

@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2015-2022 Ronny Otto, digidea.de
+	Copyright (C) 2015-2025 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -44,13 +44,14 @@ Import "base.util.registry.spriteloader.bmx"
 Type TGUISlider extends TGUIObject
 	Field minValue:Double
 	Field maxValue:Double
+	Field numericValue:Double
 	Field valueType:int = 0
 	'limit the "configurable" value range?
 	Field limitValue:int = False
 	Field limitMinValue:Double
 	Field limitMaxValue:Double
 	Field mouseScrollWheelStepSize:Double = 1.0
-	Field steps:int = 0 '<1 disables steps
+	Field steps:int = 0 ' value < 1 disables steps
 	Field handleSpriteName:String = "gfx_gui_slider.handle"
 	Field gaugeSpriteName:String = "gfx_gui_slider.gauge"
 	Field gaugeFilledSpriteName:String = "gfx_gui_slider.gauge.filled"
@@ -59,8 +60,8 @@ Type TGUISlider extends TGUIObject
 	Field _gaugeSprite:TSprite
 	Field _gaugeFilledSprite:TSprite
 	Field _handleSprite:TSprite
-	Field _handleDim:TVec2D = new TVec2D
-	Field _gaugeOffset:TVec2D = new TVec2D(3,3)
+	Field _handleDim:SVec2F
+	Field _gaugeOffset:SVec2F = new SVec2F(3, 3)
 	Field _gaugeAlpha:Float = 1.0
 	Field _showFilledGauge:int = True
 	Const DIRECTION_RIGHT:int = 0
@@ -89,7 +90,7 @@ Type TGUISlider extends TGUIObject
 		'the scroller itself ignores focus too
 		'self.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 
-		_handleDim = new TVec2D(min(rect.w, rect.h), min(rect.w, rect.h))
+		_handleDim = new SVec2F(min(rect.w, rect.h), min(rect.w, rect.h))
 
     	GUIManager.Add(Self)
 		Return Self
@@ -147,10 +148,23 @@ Type TGUISlider extends TGUIObject
 	End Method
 
 
+	Method GetNumericValue:Double()
+		return numericValue
+	End Method
+
+
 	Method GetCurrentValue:Double()
 		'this rounds to "int/float/double" before! - according to type
 		'settings
-		return Double(GetValue())
+
+		Select valueType
+			case VALUETYPE_INTEGER
+				return sgn(numericValue) * Int(Abs(numericValue) + 0.5)
+			case VALUETYPE_FLOAT
+				return Float(numericValue)
+			default
+				return numericValue
+		End Select
 	End Method
 
 
@@ -167,9 +181,14 @@ Type TGUISlider extends TGUIObject
 
 
 	'override default
-	Method SetValue(newValue:string)
+	Method SetValue(newValue:string) override
+		SetValue(Double(newValue))
+	End Method
+	
+	
+	Method SetValue(newValue:Double)
 		If valueType = VALUETYPE_INTEGER
-			Local newValueI:Int = sgn(Double(newValue)) * Abs(Double(newValue) + 0.5)
+			Local newValueI:Int = sgn(newValue) * Abs(newValue + 0.5)
 			Local minValueI:Int = sgn(minValue) * Int(Abs(minValue) + 0.5)
 			Local maxValueI:Int = sgn(maxValue) * Int(Abs(maxValue) + 0.5)
 			if minValueI > newValueI then newValueI = minValueI
@@ -184,7 +203,8 @@ Type TGUISlider extends TGUIObject
 			EndIf
 
 			'only adjust when different
-			If sgn(Double(value)) * Int(Abs(Double(value))+0.5) <> newValueI
+			If sgn(numericValue) * Int(Abs(numericValue)+0.5) <> newValueI
+				numericValue = newValueI
 				value = newValueI
 				TriggerBaseEvent(GUIEventKeys.GUIObject_OnChangeValue, null, self )
 			EndIf
@@ -204,7 +224,8 @@ Type TGUISlider extends TGUIObject
 			if limitValue then newValueD = Max(limitMinValue, Min(newValueD, limitMaxValue))
 
 			'only adjust when different
-			if value <> string(newValueD)
+			if numericValue <> newValueD
+				numericValue = newValueD
 				value = newValueD
 				TriggerBaseEvent(GUIEventKeys.GUIObject_OnChangeValue, null, self )
 			endif
@@ -213,14 +234,14 @@ Type TGUISlider extends TGUIObject
 
 
 	'override default - to use type specific return value
-	Method GetValue:String()
+	Method GetValue:String() override
 		Select valueType
 			case VALUETYPE_INTEGER
-				return sgn(Double(value)) * Int(Abs(Double(value)) + 0.5)
+				return sgn(numericValue) * Int(Abs(numericValue) + 0.5)
 			case VALUETYPE_FLOAT
-				return Float(value)
+				return Float(numericValue)
 			default
-				return Double(value)
+				return numericValue
 		End Select
 	End Method
 
@@ -340,7 +361,7 @@ Type TGUISlider extends TGUIObject
 
 
 	Method GetCurrentStep:int()
-		return floor(GetRelativeValue()*steps)
+		return floor(GetRelativeValue() * steps)
 	End Method
 
 
@@ -366,22 +387,22 @@ Type TGUISlider extends TGUIObject
 
 	'handle mousewheel right on the drop down "input" (not the list)
 	Method onMouseScrollWheel:Int( triggerEvent:TEventBase ) override
-		Local value:Int = triggerEvent.GetData().getInt("value",0)
-		If value = 0 Then Return False
+		Local scrollValue:Int = triggerEvent.GetData().getInt("value",0)
+		If scrollValue = 0 Then Return False
 
 		If steps > 0
-			if value > 0 
+			if scrollValue > 0 
 				SetValue( GetCurrentStep() + 1 )
 				TriggerBaseEvent(GUIEventKeys.GUISlider_SetValueByMouse, null, self )
-			Elseif value < 0
+			Elseif scrollValue < 0
 				SetValue( GetCurrentStep() - 1 )
 				TriggerBaseEvent(GUIEventKeys.GUISlider_SetValueByMouse, null, self )
 			EndIf
 		Else
 			if valueType = VALUETYPE_INTEGER
-				SetValue( GetCurrentValue() + Int(mouseScrollWheelStepSize+0.5) *  value)
+				SetValue( GetCurrentValue() + Int(mouseScrollWheelStepSize+0.5) * scrollValue)
 			Else
-				SetValue( GetCurrentValue() + (maxValue - minValue) * mouseScrollWheelStepSize * 0.01 * value)
+				SetValue( GetCurrentValue() + (maxValue - minValue) * mouseScrollWheelStepSize * 0.01 * scrollValue)
 			EndIf
 			TriggerBaseEvent(GUIEventKeys.GUISlider_SetValueByMouse, null, self )
 		EndIf
