@@ -440,7 +440,7 @@ Type TGUIScroller Extends TGUIScrollerBase
 
 		'called after scrollHandle creation?
 		if scrollHandle
-			scrollHandle._handleDim.SetX( guiButtonMinus.rect.GetW() )
+			scrollHandle._handleDim = New SVec2F(guiButtonMinus.rect.GetW(), scrollHandle._handleDim.y)
 
 			'according the orientation we limit height or width
 			Select _orientation
