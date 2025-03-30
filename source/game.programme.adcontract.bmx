@@ -294,9 +294,6 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	'is the ad broadcasting not allowed for a specific programme flag?
 	'eg. no "paid"
 	Field forbiddenProgrammeFlag:Int = -1
-	'is the ad broadcasting not allowed for a specific programme genre?
-	'eg. no "lovestory"
-	Field forbiddenProgrammeGenre:Int = -1
 
 	'is the ad broadcasting limit to a specific broadcast type?
 	'Field limitedToBroadcastType:Int = -1
