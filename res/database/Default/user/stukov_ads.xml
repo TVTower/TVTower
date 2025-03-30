@@ -256,7 +256,7 @@
 				<en>Loose 50 pounds in 2 days with the new fusion diet.</en>
 				<pl>Schudnij 50 kg w 2 dni dzięki nowej diecie fusion.</pl>
 			</description>
-			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
+			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="24" repetitions="5" duration="5" profit="420" penalty="1600" infomercial_profit="70" fix_infomercial_profit="1" />
 		</ad>
 
@@ -270,7 +270,7 @@
 				<en>Genuine clear cat juice! Yum-yum!</en>
 				<pl>Prawdziwy klarowny sok dla kotów! Mniam mniam!</pl>
 			</description>
-			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
+			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="3" repetitions="7" duration="7" profit="400" penalty="750" infomercial_profit="167" fix_infomercial_profit="1" />
 		</ad>
 
@@ -285,7 +285,7 @@
 				<en>Cheap - cheaper - Cheapo-cheapo.</en>
 				<pl>Tani - tańszy - BezOpłat.</pl>
 			</description>
-			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="8" />
+			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="31" repetitions="2" duration="8" profit="410" penalty="1100" infomercial_profit="3" fix_infomercial_profit="1" />
 		</ad>
 
@@ -652,7 +652,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Only half a calorie. So lonely and fragmented just because of you! So go and buy it, you fat bastard!</en> <!-- orig: So cool. So clear. And only 1 calorie. -->
 				<pl>Tylko pół kalorii. Tak samotny i rozdrobniony tylko z twojego powodu! Więc idź i kup to, gruby draniu!</pl>
 			</description>
-			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
+			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="6" duration="4" profit="255" penalty="380" fix_infomercial_profit="1" />
 		</ad>
 
@@ -663,7 +663,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<description>
 				<all>${brandslogan_cantbeatthefeeling}.</all>
 			</description>
-			<conditions min_audience="18.76" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
+			<conditions min_audience="18.76" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="29" repetitions="2" duration="1" profit="215" penalty="370" fix_infomercial_profit="1" />
 		</ad>
 
@@ -676,7 +676,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Now completely without calories! And you'll have to look for the taste too!</en>
 				<pl>Teraz całkowicie bez kalorii! Ty też będziesz musiał poszukać smaku!</pl>
 			</description>
-			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="16" />
+			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="4" duration="4" profit="290" penalty="500" fix_infomercial_profit="1" />
 		</ad>
 
@@ -691,7 +691,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>The only genuine wok. Authentic from China.</en>
 				<pl>Jedyny oryginalny wok. Autentyczny produkt z Chin.</pl>
 			</description>
-			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_flag="4" />
+			<conditions min_audience="5.21" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
 			<data infomercial="1" quality="6" repetitions="3" duration="8" profit="460" penalty="600" infomercial_profit="127" fix_infomercial_profit="1" />
 		</ad>
@@ -705,7 +705,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Don't trust just any sect! SUN with money-gone guarantee.</en>
 				<pl>Nie ufaj byle jakiej sekcie! SUN z gwarancją zwrotu pieniędzy.</pl>
 			</description>
-			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_flag="4" />
+			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
 			<data infomercial="1" quality="1" repetitions="5" duration="5" profit="500" penalty="1300" infomercial_profit="198" fix_infomercial_profit="1" />
 		</ad>
@@ -719,7 +719,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>From the Cash Van: Cash as Cash can. Your cash into your can now!</en> <!-- orig: Cash as Cash can -->
 				<pl>Z furgonetki Cash Van: Gotówka do puszki. Gotówka do puszki już teraz!</pl>
 			</description>
-			<conditions min_audience="8.3352" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="100" prohibited_programme_flag="4" />
+			<conditions min_audience="8.3352" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="4" />
 			<!-- TODO: Not so clear why shows and series shouldn't be allowed for this one -->
 			<data infomercial="1" quality="33" repetitions="7" duration="7" profit="366" penalty="524" infomercial_profit="74" fix_infomercial_profit="1" />
 		</ad>
@@ -800,7 +800,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>We issue checks before you know it!</en>
 				<pl>Wystawiamy czeki, zanim się zorientujesz!</pl>
 			</description>
-			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_flag="1" />
+			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="14" repetitions="1" duration="7" profit="500" penalty="2246" infomercial_profit="12" fix_infomercial_profit="1" />
 		</ad>
 
@@ -815,7 +815,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Don't call us - we're on vacation!</en>
 				<pl>Nie dzwoń do nas - jesteśmy na wakacjach!</pl>
 			</description>
-			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_flag="1" />
+			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="17" repetitions="6" duration="5" profit="1050" penalty="2930" infomercial_profit="235" fix_infomercial_profit="1" />
 		</ad>
 
@@ -830,7 +830,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Your bank around the corner - and your cash performer.</en>
 				<pl>Twój bank za rogiem - i twój dawca gotówkowy.</pl>
 			</description>
-			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_genre="15" prohibited_programme_flag="1" />
+			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" prohibited_programme_flag="1" />
 			<data infomercial="1" quality="13" repetitions="5" duration="6" profit="750" penalty="1100" infomercial_profit="176" fix_infomercial_profit="1" />
 		</ad>
 
