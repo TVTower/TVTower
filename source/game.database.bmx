@@ -1537,7 +1537,7 @@ Type TDatabaseLoader
 			_adContractConditionKeys = [..
 				"min_audience", "min_image", "max_image", "target_group", ..
 				"allowed_programme_flag", "allowed_genre", ..
-				"prohibited_programme_flag", "prohibited_genre" ..
+				"prohibited_programme_flag" ..
 			]
 		EndIf
 		'do not reset "data" before - it contains the pressure groups
