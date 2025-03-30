@@ -259,7 +259,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 
 	--TODO WIP make problematic ads unattractive
 	-- for now we do not modify our stats if they are special spots
-	if (spot.GetLimitedToProgrammeGenre() > 0) or (spot.GetLimitedToProgrammeFlag() > 0) then
+	if (spot.GetLimitedToProgrammeGenre() > 0) or (spot.GetLimitedToProgrammeFlag() > 0) or (spot.GetForbiddenProgrammeFlag() > 0) then
 		self:LogTrace("  no special spots please")
 		spot.SetAttractivenessString("-1")
 		return
@@ -509,7 +509,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 			self:LogDebug("ignoring children contract")
 		elseif targetGroup == 32 and (veryhard == true or spotCount > 2 or spotsLeft > 0) then
 			self:LogDebug("ignoring manager contract")
-		elseif adContract.GetLimitedToProgrammeGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 then
+		elseif adContract.GetLimitedToProgrammeGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 or adContract.GetForbiddenProgrammeFlag() > 0 then
 			self:LogDebug("ignoring contract with genre limit")
 		elseif blocks < 72 and easy ~= true and spotCount > 4 then
 			self:LogDebug("ignoring contract with too many blocks")
@@ -726,7 +726,7 @@ function SignContracts:ShouldSignContract(contract)
 		maxAllowed = 0
 	elseif targetGroup == 2 or targetGroup == 32 then -- teenagers, managers
 		maxAllowed = 2
-	elseif contract.GetLimitedToProgrammeGenre() > 0 or contract.GetLimitedToProgrammeFlag() > 0 then
+	elseif contract.GetLimitedToProgrammeGenre() > 0 or contract.GetLimitedToProgrammeFlag() > 0 or contract.GetForbiddenProgrammeFlag() > 0 then
 		maxAllowed = 0
 	end
 
