@@ -35,7 +35,8 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import brl.Graphics
+'Import brl.Graphics
+Import sdl.SDLGraphics
 '?MacOs
 'Import BRL.GLMax2D
 '?Win32
@@ -71,20 +72,20 @@ Type TGraphicsManager
 	Global _instance:TGraphicsManager
 	Global _g:TGraphics
 	Global RENDERER_NAMES:String[] = [	"OpenGL",..
-										"DirectX 7", ..
+										"REMOVED (DX7)", ..
 										"DirectX 9", ..
-										"DirectX 11", ..
-										"Buffered OpenGL", ..
-										"GL2SDL" ..
+										"REMOVED (DirectX 11)", ..
+										"REMOVED (Buffered OpenGL)", ..
+										"GL2SDL", ..
+										"SDLRender" ..
 									 ]
-	Global RENDERER_AVAILABILITY:Int[] = [ False, False, False, False, False, False ]
+	Global RENDERER_AVAILABILITY:Int[] = [ False, False, False, False, False, False, False ]
 
 	Const RENDERER_OPENGL:Int   		= 0
-	Const RENDERER_DIRECTX7:Int 		= 1
 	Const RENDERER_DIRECTX9:Int 		= 2
 	Const RENDERER_DIRECTX11:Int 		= 3
-	Const RENDERER_BUFFEREDOPENGL:Int   = 4
 	Const RENDERER_GL2SDL:Int           = 5
+	Const RENDERER_SDLRENDER:Int        = 6
 
 
 	Function GetInstance:TGraphicsManager()
