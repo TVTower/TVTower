@@ -367,27 +367,19 @@ Type TApp
 
 			Select arg.ToLower()
 				?Win32
-				Case "-directx7", "-directx"
-					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 7", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX7)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX7)
-				Case "-directx9"
+				Case "-directx9", "-directx"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 9", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX9)
 					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX9)
-				Case "-directx11"
-					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 11", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX11)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX11)
 				?
 				Case "-opengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
 					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_OPENGL)
 					config.AddNumber("renderer", GetGraphicsManager().RENDERER_OPENGL)
-				Case "-bufferedopengl"
-					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Buffered OpenGL", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
+				Case "-sdlrender"
+					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: SDLRender", LOG_LOADING)
+					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_SDLRENDER)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_SDLRENDER)
 			End Select
 		Next
 	End Method
