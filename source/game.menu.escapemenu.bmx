@@ -990,7 +990,7 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 			Local leftX:Int = GetContentScreenRect().GetX() + 2 + 40
 			SetColor 200,80,0
 			SetAlpha useAlpha * 0.3
-			DrawRect(leftX + 10, GetScreenRect().GetY() + 10,  width, GetScreenRect().GetH() - 20)
+			DrawRect(leftX + 10, GetScreenRect().GetY() + 5,  width, GetScreenRect().GetH() - 10)
 			SetAlpha useAlpha
 			SetColor 255,255,255
 			if fileState = -1
@@ -998,7 +998,14 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 			elseif fileState = -2
 				GetFont().DrawBox(GetLocale("INVALID_SAVEGAME"), leftX, GetScreenRect().GetY() + 10, width, GetScreenRect().GetH() - 20, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.25)
 			else
-				GetFont().DrawBox(GetLocale("INCOMPATIBLE_SAVEGAME"), leftX, GetScreenRect().GetY() + 10, width, GetScreenRect().GetH() - 20, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.25)
+				Local suffix:String="~n"
+				Local v:Int = fileInformation.getInt("savegame_version", -1)
+				If v > 0 And v > 15
+					suffix:+ "try load/save with v0.8.3.2 first"
+				Else
+					suffix:+ fileInformation.getString("savegame_version","")
+				EndIf
+				GetFont().DrawBox(GetLocale("INCOMPATIBLE_SAVEGAME") +suffix, leftX, GetScreenRect().GetY() + 7, width, GetScreenRect().GetH() - 13, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.25)
 			endif
 			SetAlpha oldAlpha
 		endif

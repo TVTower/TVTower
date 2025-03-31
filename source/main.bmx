@@ -2106,7 +2106,7 @@ Type TSaveGame Extends TGameState
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
 	Const SAVEGAME_VERSION:int = 24
-	Const MIN_SAVEGAME_VERSION:Int = 13
+	Const MIN_SAVEGAME_VERSION:Int = 23
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
 	Global messageWindowLastUpdate:Long
@@ -2409,6 +2409,7 @@ Type TSaveGame Extends TGameState
 			Next
 		EndIf
 
+Rem
 		If savegameVersion < 23
 			'mark news events of the past as "happening processed"
 			Local neChangeCount:Int
@@ -2766,7 +2767,7 @@ Type TSaveGame Extends TGameState
 				Next
 			Next
 		endif
-		Rem
+
 			would "break" unfinished series productions with re-ordered
 			production orders (1,3,2) and missing episodes ([1,null,3])
 
