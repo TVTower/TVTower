@@ -291,9 +291,6 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	'is the ad broadcasting limit to a specific programme flag?
 	'eg. "xrated", "live"
 	Field limitedToProgrammeFlag:Int = -1
-	'is the ad broadcasting not allowed for a specific programme genre?
-	'eg. no "lovestory"
-	Field forbiddenProgrammeGenre:Int = -1
 	'is the ad broadcasting not allowed for a specific programme flag?
 	'eg. no "paid"
 	Field forbiddenProgrammeFlag:Int = -1
@@ -589,6 +586,14 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 		Return limitedToProgrammeFlag
 	End Method
 
+
+	Method IsForbiddenProgrammeFlag:Int(flag:Int) {_exposeToLua}
+		Return (GetForbiddenProgrammeFlag() & flag) > 0
+	End Method
+
+	Method GetForbiddenProgrammeFlag:Int() {_exposeToLua}
+		Return forbiddenProgrammeFlag
+	End Method
 
 
 	Method IsLimitedToTargetGroup:Int(targetGroup:Int) {_exposeToLua}
@@ -1257,7 +1262,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'limiting to specific genres change the price too
 		If GetLimitedToProgrammeGenre() > 0 Then price :* limitedToGenreMultiplier
 		'limiting to specific flags change the price too
-		If GetLimitedToProgrammeFlag() > 0 Then price :* limitedToProgrammeFlagMultiplier
+		If GetLimitedToProgrammeFlag() > 0 Or GetForbiddenProgrammeFlag() > 0 Then price :* limitedToProgrammeFlagMultiplier
 
 		'adjust by a player difficulty and randomize
 		If priceType = PRICETYPE_PROFIT
@@ -1514,9 +1519,18 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetLimitedToProgrammeFlagString:String(flag:Int=-1) {_exposeToLua}
-		'if no flag was given, use the one of the object
-		If flag < 0 Then flag = base.limitedToProgrammeFlag
+	Method IsForbiddenProgrammeFlag:Int(flag:Int) {_exposeToLua}
+		Return base.IsForbiddenProgrammeFlag(flag)
+	End Method
+
+	Method GetForbiddenProgrammeFlag:Int() {_exposeToLua}
+		Return base.GetForbiddenProgrammeFlag()
+	End Method
+
+
+	Method GetProgrammeFlagString:String(flag:Int=-1) {_exposeToLua}
+'		'if no flag was given, use the one of the object
+'		If flag < 0 Then flag = base.limitedToProgrammeFlag
 		If flag < 0 Then Return ""
 
 
@@ -1548,7 +1562,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		EndIf
 
 		'limited to a specific genre - and not fulfilled
-		If GetLimitedToProgrammeGenre() >= 0 or GetLimitedToProgrammeFlag() > 0
+		If GetLimitedToProgrammeGenre() >= 0 or GetLimitedToProgrammeFlag() > 0 or GetForbiddenProgrammeFlag() > 0
 			'check current programme of the owner
 			'TODO: check if that has flaws playing with high speed
 			'      (check if current broadcast is correctly set at this
@@ -1569,6 +1583,11 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 				if GetLimitedToProgrammeFlag() > 0
 					if not (GetLimitedToProgrammeFlag() & previouslyRunningBroadcastMaterial.GetProgrammeFlags())
 						Return "FLAGS"
+					endif
+				endif
+				if GetForbiddenProgrammeFlag() > 0
+					if (GetForbiddenProgrammeFlag() & previouslyRunningBroadcastMaterial.GetProgrammeFlags())
+						Return "FLAGSFORBIDDEN"
 					endif
 				endif
 			endif
@@ -1777,6 +1796,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If GetLimitedToTargetGroup() > 0 Then msgAreaH :+ msgH
 		If GetLimitedToProgrammeGenre() >= 0 Then msgAreaH :+ msgH
 		If GetLimitedToProgrammeFlag() > 0 Then msgAreaH :+ msgH
+		If GetForbiddenProgrammeFlag() > 0 Then msgAreaH :+ msgH
 		'warn if short of time or finished/failed
 		If daysLeft <= 1 Or IsCompleted()
 			msgAreaH :+ msgH
@@ -1839,7 +1859,11 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			contentY :+ msgH
 		EndIf
 		If GetLimitedToProgrammeFlag() > 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetLimitedToProgrammeFlagString()), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetProgrammeFlagString(GetLimitedToProgrammeFlag())), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		EndIf
+		If GetForbiddenProgrammeFlag() > 0
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_NOT_FLAG").Replace("%FLAG%", GetProgrammeFlagString(GetForbiddenProgrammeFlag())), "warning", EDatasheetColorStyle.Warning, skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		'only show image hint when NOT signed (after signing the image is not required anymore)

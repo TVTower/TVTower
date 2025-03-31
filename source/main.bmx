@@ -2105,7 +2105,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 23
+	Const SAVEGAME_VERSION:int = 24
 	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TImage
@@ -2401,6 +2401,14 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
+		If savegameVersion < 24
+			For local ac:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+				If ac.forbiddenProgrammeFlag > 0 And ac.forbiddenProgrammeFlag & TVTProgrammeDataFlag.CULT
+					ac.forbiddenProgrammeFlag = ac.forbiddenProgrammeFlag & ~TVTProgrammeDataFlag.CULT
+				EndIf
+			Next
+		EndIf
+
 		If savegameVersion < 23
 			'mark news events of the past as "happening processed"
 			Local neChangeCount:Int

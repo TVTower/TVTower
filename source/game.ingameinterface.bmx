@@ -428,13 +428,14 @@ Type TInGameInterface
 								Else
 									Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(programmePlan.owner)
 									local minAudienceText:string
+									Local contract:TAdContract = TAdvertisement(obj).contract
 									If audience >= 0
-										minAudienceText = TFunctions.ConvertCompareValue(TAdvertisement(obj).contract.getMinAudience(), audience, 2)
+										minAudienceText = TFunctions.ConvertCompareValue(contract.getMinAudience(), audience, 2)
 									Else
-										minAudienceText = TFunctions.ConvertValue(TAdvertisement(obj).contract.getMinAudience(), 2)
+										minAudienceText = TFunctions.ConvertValue(contract.getMinAudience(), 2)
 									Endif
 									if TAdvertisement(obj).contract.GetLimitedToTargetGroup() > 0
-										minAudienceText :+ " " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()
+										minAudienceText :+ " " + contract.GetLimitedToTargetGroupString()
 									endif
 
 									'check if the ad passes all checks for the current broadcast
@@ -446,7 +447,11 @@ Type TInGameInterface
 											'tg already added above (for OK and WILL FAIL)
 											minAudienceText = "|color=200,100,100|" + minAudienceText + "!|/color|"
 										case "GENRE"
-											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToProgrammeGenreString()+ "!|/color|"
+											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + contract.GetLimitedToProgrammeGenreString()+ "!|/color|"
+										case "FLAGS"
+											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + contract.GetProgrammeFlagString(contract.GetLimitedToProgrammeFlag())+ "!|/color|"
+										case "FLAGSFORBIDDEN"
+											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + contract.GetProgrammeFlagString(contract.GetForbiddenProgrammeFlag())+ "!|/color|"
 										default
 											minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
 									End Select
