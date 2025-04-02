@@ -516,7 +516,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'create cache if needed
 		if not textImageProgramme
 			Local maxWidth:Int = textW
-			Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 12, BOLDFONT)
+			Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 11, BOLDFONT)
 
 			'shorten the title to fit into the block
 			While title.length > 4 And titleFont.getWidth(title + titleAppend) > maxWidth
@@ -525,7 +525,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			'add eg. "(1/10)"
 			title = title + titleAppend
 
-			Local useFont:TBitmapFont = GetBitmapFont("Default", 12, ITALICFONT)
+			Local useFont:TBitmapFont = GetBitmapFont("Default", 11, ITALICFONT)
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
@@ -614,10 +614,10 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
-			GetBitmapFont("DefaultThin", 10, BOLDFONT).DrawBox(title, textX + 3, textY + 1, textW, 15, sALIGN_LEFT_TOP, SColor8.Black, titleDrawSettings)
+			GetBitmapFont("DefaultThin", 9, BOLDFONT).DrawBox(title, textX + 3, textY + 1, textW, 15, sALIGN_LEFT_TOP, SColor8.Black, titleDrawSettings)
 	
-			GetBitmapFont("Default", 10).DrawBox(text, textX + 3, textY + 15, textW, 15, sALIGN_LEFT_TOP, textColor.ToSColor8())
-			GetBitmapFont("Default", 10).DrawBox(text2,textX + 3, textY + 15, textW - 3, 15, sALIGN_RIGHT_TOP, textColor.ToSColor8())
+			GetBitmapFont("Default", 9).DrawBox(text, textX + 3, textY + 15, textW, 15, sALIGN_LEFT_TOP, textColor.ToSColor8())
+			GetBitmapFont("Default", 9).DrawBox(text2,textX + 3, textY + 15, textW - 3, 15, sALIGN_RIGHT_TOP, textColor.ToSColor8())
 
 			SetColor 255,255,255
 
