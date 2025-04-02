@@ -169,9 +169,9 @@ Type TInGameInterface
 		spriteInterfaceAudienceTVOverlay = GetSpriteFromRegistry("gfx_interface_audience_tv_overlay")
 		spriteInterfaceAudienceAreaOverlay = GetSpriteFromRegistry("gfx_interface_audience_area_overlay")
 
-		_interfaceFont = GetBitmapFont("Default", 12, BOLDFONT)
-		_interfaceAudienceFont = GetBitmapFont("Default", 12)
-		_interfaceBigFont = GetBitmapFont("Default", 16, BOLDFONT)
+		_interfaceFont = GetBitmapFont("Default", 10, BOLDFONT)
+		_interfaceAudienceFont = GetBitmapFont("Default", 11)
+		_interfaceBigFont = GetBitmapFont("Default", 14, BOLDFONT)
 		_interfaceTVfamily = new TWatchingFamily().Init()
 
 		If FileType("res/images") = FILETYPE_DIR
@@ -183,7 +183,7 @@ Type TInGameInterface
 		bettyLovecolor = new SColor8(220,200,180)
 		channelImageColor = new SColor8(200,220,180)
 		currentDaycolor = new SColor8(180,180,180)
-		marketShareColor = new SColor8(170,170,200)
+		marketShareColor = new SColor8(180,180,210)
 		negativeProfitColor = new SColor8(200,170,170)
 		neutralProfitColor = new SColor8(170,170,170)
 		positiveProfitColor = new SColor8(170,200,170)
@@ -959,7 +959,7 @@ Type TInGameInterface
 
 		'=== INTERFACE TEXTS ===
 
-		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 413, 130, 32, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 415, 130, 29, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
 
 		Local audienceStr:String = "0"
 		Local audiencePercentageStr:String = "0"
@@ -968,7 +968,7 @@ Type TInGameInterface
 			audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
 			audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 		EndIf
-		_interfaceBigFont.DrawBox(audienceStr, 357, 448, 130, 32, sALIGN_CENTER_TOP, audienceColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceBigFont.DrawBox(audienceStr, 357, 450, 130, 29, sALIGN_CENTER_TOP, audienceColor, EDrawTextEffect.Shadow, 0.5)
 
 
 		'=== DRAW SECONDARY INFO ===
@@ -978,18 +978,18 @@ Type TInGameInterface
 		'current days financial win/loss
 		local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
 		if profit > 0
-			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 413, 130, 32, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
+			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 415, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
 		elseif profit = 0
-			_interfaceFont.DrawBox(0, 357, 413, 130, 32, sALIGN_CENTER_BOTTOM, neutralProfitColor, EDrawTextEffect.Shadow, 0.5)
+			_interfaceFont.DrawBox(0, 357, 415, 130, 29, sALIGN_CENTER_BOTTOM, neutralProfitColor, EDrawTextEffect.Shadow, 0.5)
 		else
-			_interfaceFont.DrawBox(MathHelper.DottedValue(profit), 357, 413, 130, 32, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
+			_interfaceFont.DrawBox(MathHelper.DottedValue(profit), 357, 415, 130, 29, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
 		endif
 
 		'market share
-		_interfaceFont.DrawBox(audiencePercentageStr+"%", 357, 448, 130, 32, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox(audiencePercentageStr+"%", 357, 450, 130, 29, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
 
 		'current day
-		_interfaceFont.DrawBox((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 539, 130, 32, sALIGN_CENTER_BOTTOM, currentDayColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 541, 130, 29, sALIGN_CENTER_BOTTOM, currentDayColor, EDrawTextEffect.Shadow, 0.5)
 
 		SetAlpha oldAlpha
 
@@ -1002,7 +1002,7 @@ Type TInGameInterface
 			Setcolor 255,255,255
 			SetAlpha oldAlpha
 		endif
-		_interfaceFont.DrawBox(bettyLoveText, 363, 487, 118, 18, sALIGN_CENTER_CENTER, bettyLoveColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox(bettyLoveText, 363, 488, 118, 18, sALIGN_CENTER_CENTER, bettyLoveColor, EDrawTextEffect.Shadow, 0.5)
 
 		local channelImage:Float = Min(Max(GetPublicImageCollection().Get( playerID ).GetAverageImage()/100.0, 0.0),1.0)
 		local channelImageText:String = MathHelper.NumberToString(channelImage*100, 2)+"%"
@@ -1013,13 +1013,13 @@ Type TInGameInterface
 			Setcolor 255,255,255
 			SetAlpha oldAlpha
 		endif
-		_interfaceFont.DrawBox(channelImageText, 363, 515, 118, 18, sALIGN_CENTER_CENTER, channelImageColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox(channelImageText, 363, 516, 118, 18, sALIGN_CENTER_CENTER, channelImageColor, EDrawTextEffect.Shadow, 0.5)
 
 		'DrawText(GetBetty().GetLoveSummary(),358, 535)
 
 		SetBlend ALPHABLEND
 
-		_interfaceBigFont.DrawBox(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 539, 130, 32, sALIGN_CENTER_TOP, new SColor8(220,220,220), EDrawTextEffect.Shadow, 0.5)
+		_interfaceBigFont.DrawBox(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 541, 130, 29, sALIGN_CENTER_TOP, new SColor8(220,220,220), EDrawTextEffect.Shadow, 0.5)
 
 
 		'=== DRAW HIGHLIGHTED CURRENT SPEED ===
