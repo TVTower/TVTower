@@ -491,7 +491,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIGameModalWindowChainDialogue
 		savegameNameLabel = New TGUILabel.Create(New SVec2I(0, 0), "")
 		savegameList = New TGUISelectList.Create(New SVec2I(0, Int(savegameName.GetScreenRect().h)), New SVec2I(Int(GetContentScreenRect().w),80), "MODALSAVEMENU")
 		checkContinueGame = New TGUICheckbox.Create(New SVec2I(0, 0), New SVec2I(Int(GetContentScreenRect().w),80), GetLocale("CONTINUE_GAME"))
-		checkContinueGame.setChecked(True)
+		checkContinueGame.setChecked(App.config.getBool("continueGameAfterSave", True))
 
 		AddChild(savegameName)
 		AddChild(savegameNameLabel)
@@ -513,6 +513,8 @@ Type TGUIModalSaveSavegameMenu Extends TGUIGameModalWindowChainDialogue
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIInput_OnChangeValue, Self, "onChangeSavegameNameInputValue") ]
 		'register to quit confirmation dialogue
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIModalWindow_OnClose, Self, "onConfirmOverwrite" ) ]
+		'register to store continue game/menu after save
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onSetContinueGameCheckbox", checkContinueGame) ]
 
 		'localize texts
 		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.App_OnSetLanguage, Self, "onSetLanguage" ) ]
@@ -835,6 +837,13 @@ endrem
 		Return True
 	End Method
 
+
+	Method onSetContinueGameCheckbox:Int( triggerEvent:TEventBase )
+		If checkContinueGame And triggerEvent.GetSender() = checkContinueGame
+			App.config.addBool("continueGameAfterSave", checkContinueGame.IsChecked())
+			App.saveSettings(App.config)
+		EndIf
+	End Method
 
 	'fill the name of the selected entry as savegame name
 	Method onClickOnSavegameEntry:Int( triggerEvent:TEventBase )
