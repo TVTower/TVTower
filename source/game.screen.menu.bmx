@@ -300,13 +300,13 @@ Type TScreen_GameSettings Extends TGameScreen
 		'register checkbox changes
 		EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", "TGUICheckbox")
 		'register dropdown for mission selection
-		EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeMissionDropdown", "TGUIDropDown" )
+		EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectionChanged, Self, "onChangeMissionDropdown")
 
 		'register changes to player or channel name
 		For Local i:Int = 0 To 3
 			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiPlayerNames[i])
 			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiChannelNames[i])
-			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeGameSettingsInputs", guiDifficulty[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectionChanged, Self, "onChangeGameSettingsInputs", guiDifficulty[i])
 		Next
 
 		'handle clicks on the gui objects
@@ -572,34 +572,38 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	Method onChangeMissionDropDown:Int(triggerEvent:TEventBase)
 		Local list:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
-		For Local d:TGUIDropDown = EachIn guiDifficulty
-			If list=d Then return False
-		Next
-		local item:TGUIDropDownItem = TGUIDropDownItem(list.getSelectedEntry())
+		
+		' only interested in these 3 dropdowns
+		If list <> guiMissions and list <> guiMissionCategories and list <> guiMissionDifficulty
+			Return False
+		EndIf
+		
+		local item:TGUIDropDownItem = TGUIDropDownItem(triggerEvent.GetReceiver())
 		If not item Then return False
-		'category changed - reinitialize missions
+
+		' category changed - reinitialize missions
 		If list = guiMissionCategories
+			local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
+
 			guiMissions.Remove()
-			guiMissions = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(350, -1), "Mission", 60, name)
-			Local missions:TMission[] = AllMissions.getMissions(guiMissionCategories.GetSelectedEntry().data.GetString("value"))
+			guiMissions = New TGUIDropDown.Create(New SVec2I(Int(settingsRect.getX()+160), Int(settingsRect.getY())), New SVec2I(350, -1), "Mission", 60, name)
+
+			Local missions:TMission[] = AllMissions.getMissions(item.data.GetString("value"))
 			If missions and missions.length > 0
 				Local itemHeight:Int = 0
-				Local missions:TMission[] = AllMissions.getMissions(guiMissionCategories.GetSelectedEntry().data.GetString("value"))
-				local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
+				Local missions:TMission[] = AllMissions.getMissions(item.data.GetString("value"))
 				For Local m:TMission = EachIn missions
-					Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(300,20), m.GetDescription())
-					item.data.Add("value", m)
+					Local missionItem:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(300,20), m.GetDescription())
+					missionItem.data.Add("value", m)
 
-					guiMissions.AddItem( item )
-					If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
+					guiMissions.AddItem( missionItem )
+					If itemHeight = 0 Then itemHeight = missionItem.GetScreenRect().GetH()
 				Next
 				guiMissions.SetListContentHeight(itemHeight * Min(missions.length,7))
-				guiMissions.SetPosition(settingsRect.getX()+160, settingsRect.getY())
 				guiMissions.SetSelectedEntry(guiMissions.GetEntryByPos(0))
 
 				guiMissionDifficulty.Remove()
-				guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(160, -1), "Difficulty", 16, name)
-				guiMissionDifficulty.SetPosition(550, settingsRect.getY())
+				guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(550, Int(settingsRect.getY())), New SVec2I(160, -1), "Difficulty", 16, name)
 
 				Local mission:TMission = TMission(guiMissions.getSelectedEntry().data.Get("value"))
 				Local difficultyValues:Int[] = mission.getSupportedDifficulties()
@@ -620,7 +624,10 @@ Type TScreen_GameSettings Extends TGameScreen
 				guiMissionDifficulty.hide()
 			EndIf
 		EndIf
+		
+		' mission modified in all 3 dropdown adjustments
 		modifiedMissions = True
+
 		Return True
 	End Method
 
