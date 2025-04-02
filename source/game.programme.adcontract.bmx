@@ -1720,6 +1720,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 		If TVTDebugInfo
+			Local lineHeight:Int = 14
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 
@@ -1730,15 +1731,15 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.DrawSimple("Dauerwerbesendung: "+GetTitle(), contentX + 5, contentY)
-			contentY :+ 14
-			skin.fontNormal.DrawSimple("TKP: "+Int(1000*GetPerViewerRevenueForPlayer(forPlayerID)) +" Eur  ("+MathHelper.NumberToString(GetPerViewerRevenueForPlayer(forPlayerID),4)+" Eur/Zuschauer)", contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Aktualitaet: "+MathHelper.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Qualitaet roh: "+MathHelper.NumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
-			contentY :+ 12
-		skin.fontNormal.DrawSimple("Qualitaet wahrgenommen: "+MathHelper.NumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
+			skin.fontBold.DrawSimple("Infomercial: "+GetTitle(), contentX + 5, contentY)
+			contentY :+ lineHeight + 6
+			skin.fontNormal.DrawSimple("Per Viewer Revenue: "+Int(1000*GetPerViewerRevenueForPlayer(forPlayerID)) +" Eur  ("+MathHelper.NumberToString(GetPerViewerRevenueForPlayer(forPlayerID),4)+" Eur/person)", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Topicality: "+MathHelper.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Quality Raw: "+MathHelper.NumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
+			contentY :+ lineHeight
+		skin.fontNormal.DrawSimple("Quality (perceived): "+MathHelper.NumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 		EndIf
 
 
@@ -1949,6 +1950,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'=== DEBUG ===
 		If TVTDebugInfo
+			Local lineHeight:Int = 14
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 			Local oldAlpha:Float = GetAlpha()
@@ -1959,49 +1961,47 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.DrawSimple("Werbung: "+GetTitle(), contentX + 5, contentY)
-			contentY :+ 14
+			skin.fontBold.DrawSimple("AdContract: "+GetTitle(), contentX + 5, contentY)
+			contentY :+ lineHeight + 6
 			If base.fixedPrice
-				skin.fontNormal.DrawSimple("Fester Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
-				contentY :+ 12
-				skin.fontNormal.DrawSimple("Feste Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
-				contentY :+ 12
+				skin.fontNormal.DrawSimple("Fixed Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
+				contentY :+ lineHeight
+				skin.fontNormal.DrawSimple("Fixed Penalty: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
+				contentY :+ lineHeight
 			Else
-				skin.fontNormal.DrawSimple("Dynamischer Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
-				contentY :+ 12
-				skin.fontNormal.DrawSimple("Dynamische Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
-				contentY :+ 12
+				skin.fontNormal.DrawSimple("Dyn. Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
+				contentY :+ lineHeight
+				skin.fontNormal.DrawSimple("Dyn. Profit: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
+				contentY :+ lineHeight
 			EndIf
-			skin.fontNormal.DrawSimple("Spots zu senden "+GetSpotsToSend()+" von "+GetSpotCount(), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Spots: "+GetSpotsSent()+" gesendet, "+GetSpotsPlanned()+" geplant", contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Zuschaueranforderung: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+MathHelper.NumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("SenderImage: " + MathHelper.NumberToString(GetMinImage()*100,2)+"%" +" - " + MathHelper.NumberToString(GetMaxImage()*100,2)+"%", contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Zielgruppe: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", contentX + 5, contentY)
-			contentY :+ 12
+			skin.fontNormal.DrawSimple("Spots To Send: "+GetSpotsToSend()+" of "+GetSpotCount(), contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Spots: "+GetSpotsSent()+" sent, "+GetSpotsPlanned()+" planned", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Min. Audience: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+MathHelper.NumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Channel Image: " + MathHelper.NumberToString(GetMinImage()*100,2)+"%" +" - " + MathHelper.NumberToString(GetMaxImage()*100,2)+"%", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Target Group: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", contentX + 5, contentY)
+			contentY :+ lineHeight
 			If GetLimitedToProgrammeGenre() >= 0
 				skin.fontNormal.DrawSimple("Genre: " + GetLimitedToProgrammeGenre() + " ("+ GetLimitedToProgrammeGenreString() + ")", contentX + 5, contentY)
 			Else
-				skin.fontNormal.DrawSimple("Genre: " + GetLimitedToProgrammeGenre() + " (keine Einschraenkung)", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Genre: " + GetLimitedToProgrammeGenre() + " (no limit)", contentX + 5, contentY)
 			EndIf
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Vertraege mit dieser Werbung: " + base.GetCurrentlyUsedByContractCount(), contentX + 5, contentY)
-			'contentY :+ 12
-			'skin.fontNormal.draw("Verfuegbarkeitszeitraum: --- noch nicht integriert ---", contentX + 5, contentY)
-			contentY :+ 12
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Contracts with this ad: " + base.GetCurrentlyUsedByContractCount(), contentX + 5, contentY)
+			contentY :+ lineHeight
 			If owner > 0
-				skin.fontNormal.DrawSimple("Tage bis Vertragsende: "+GetDaysLeft() + " (Sekunden: "+ GetTimeLeft()+")", contentX + 5, contentY)
-				contentY :+ 12
-				skin.fontNormal.DrawSimple("Unterschrieben: "+owner, contentX + 5, contentY)
-				contentY :+ 12
+				skin.fontNormal.DrawSimple("Days Left: "+GetDaysLeft() + " ("+ (GetTimeLeft()/1000)+" seconds)", contentX + 5, contentY)
+				contentY :+ lineHeight
+				skin.fontNormal.DrawSimple("Signed By: "+owner, contentX + 5, contentY)
+				contentY :+ lineHeight
 			Else
-				skin.fontNormal.DrawSimple("Laufzeit: "+GetDaysToFinish(), contentX + 5, contentY)
-				contentY :+ 12
-				skin.fontNormal.DrawSimple("Unterschrieben: nicht unterschrieben (owner="+owner+")", contentX + 5, contentY)
-				contentY :+ 12
+				skin.fontNormal.DrawSimple("Days To Finish: "+GetDaysToFinish(), contentX + 5, contentY)
+				contentY :+ lineHeight
+				skin.fontNormal.DrawSimple("Signed By: unsigned (owner="+owner+")", contentX + 5, contentY)
+				contentY :+ lineHeight
 			EndIf
 		EndIf
 
