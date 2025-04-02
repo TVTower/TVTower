@@ -139,10 +139,15 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'MISSIONS
 		_initMissionCategories()
+		guiMissionCategories.hide()
+
 		guiMissions = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(300, -1), "Mission", 60, name)
+		guiMissions.SetPosition(guiSettingsPanel.GetContentScreenRect().getX(), guiSettingsPanel.GetContentScreenRect().getY())
+		guiMissions.hide()
 
 		guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(160, -1), "Difficulty", 16, name)
-		guiMissionDifficulty.SetPosition(550, guiSettingsPanel.GetContentScreenRect().getY())
+		guiMissionDifficulty.SetPosition(guiSettingsPanel.GetContentScreenRect().getX() + 520, guiSettingsPanel.GetContentScreenRect().getY())
+		guiMissionDifficulty.hide()
 
 		modifiedMissions = True
 		'END MISSIONS
@@ -220,12 +225,16 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiFigureArrows[i*2 + 1].Move(-guiFigureArrows[i*2 + 1].GetScreenRect().GetW(),0)
 			guiFigureArrows[i*2 + 0].SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
 			guiFigureArrows[i*2 + 1].SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
-
+			
 			'left arrow
 			guiFigureSelectArrows[i*2 + 0] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x) - 36, Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "LEFT", name)
 			'right arrow
 			guiFigureSelectArrows[i*2 + 1] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x + guiPlayerPanels[i].GetContentScreenRect().w +36), Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "RIGHT", name)
 			guiFigureSelectArrows[i*2 + 1].Move(-guiFigureSelectArrows[i*2 + 1].GetScreenRect().GetW(),0)
+
+			'disable first and last
+			if i = 0 Then guiFigureSelectArrows[i*2].Disable()
+			if i = 3 Then guiFigureSelectArrows[i*2 + 1].Disable()
 
 
 			guiPlayerPanels[i].AddChild(guiPlayerNames[i])
@@ -244,9 +253,6 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiChannelNames[i].SetTooltip( CreateBasicTooltip("CHANNELNAME", "NEWGAMESETTINGS_CHANNELNAME_DETAIL"), True, False )
 			guiDifficulty[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_DIFFICULTY", "NEWGAMESETTINGS_DIFFICULTY_DETAIL"), True, False )
 			guiPlayerRandomButtons[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_RANDOMIZE", "NEWGAMESETTINGS_RANDOMIZE_DETAIL"), True, False )
-
-			'guiPlayerPanels[i].AddChild(guiFigureSelectArrows[i*2 + 0])
-			'guiPlayerPanels[i].AddChild(guiFigureSelectArrows[i*2 + 1])
 		Next
 
 
@@ -321,7 +327,11 @@ Type TScreen_GameSettings Extends TGameScreen
 	'extracted for language change
 	Method _initMissionCategories()
 		If guiMissionCategories Then guiMissionCategories.Remove()
+		local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
+
 		guiMissionCategories = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(150, -1), "Category", 20, name)
+		guiMissionCategories.SetPosition(settingsRect.getX(), settingsRect.getY())
+
 		Local itemHeight:Int = 0
 		Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(150,20), GetLocale("MISSION_CATEGORY_NOGOAL"))
 		guiMissionCategories.AddItem( item )
@@ -333,8 +343,8 @@ Type TScreen_GameSettings Extends TGameScreen
 			If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
 		Next
 		guiMissionCategories.SetListContentHeight(itemHeight * Min(AllMissions.getCategories().length+1,10))
-		local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
-		guiMissionCategories.SetPosition(settingsRect.getX(), settingsRect.getY())
+
+		' (re-)select default entry
 		guiMissionCategories.SetSelectedEntry(guiMissionCategories.GetEntryByPos(0))
 	End Method
 
