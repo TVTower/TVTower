@@ -1473,7 +1473,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 		buttonOK.SetValue(GetLocale("SELECT_PERSON"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
-		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onCastChangeFilterDropdown", "TGUIDropDown") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectionChanged, Self, "onCastChangeFilterDropdown") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickCastListItem", "TGUICastListItem") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickSortCastButton", "TGUIButton") ]
 
@@ -1550,7 +1550,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		If Not dropdown Then Return False
 		If dropdown <> jobFilterSelect And dropdown <> genderFilterSelect Then Return False
 
-		Local entry:TGUIDropDownItem = TGUIDropDownItem(dropdown.GetSelectedEntry())
+		Local entry:TGUIDropDownItem = TGUIDropDownItem(triggerEvent.GetReceiver())
 		If Not entry Or Not entry.data Then Return False
 
 		'select*** contains what is supposed to get selected when opening

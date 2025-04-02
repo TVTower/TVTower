@@ -92,13 +92,17 @@ Type TGUISelectList Extends TGUIListBase
 	Method SelectEntry:Int(entry:TGUIObject)
 		'only mark selected if we are owner of that entry
 		If Self.HasItem(entry)
+			Local oldEntry:TGUIObject = self.selectedEntry
 			'remove old entry
 			Self.deselectEntry()
 			Self.selectedEntry = entry
 			Self.selectedEntry.SetSelected(True)
 			Self.selectionChangedTime = Time.GetTimeGone()
 			'inform others: we successfully selected an item
-			TriggerBaseEvent(GUIEventKeys.GUISelectList_OnSelectEntry, New TData.Add("entry", entry) , Self )
+			TriggerBaseEvent(GUIEventKeys.GUISelectList_OnSelectEntry, Null, Self, entry)
+			If oldEntry <> entry
+				TriggerBaseEvent(GUIEventKeys.GUISelectList_OnSelectionChanged, New TData.Add("previousSelection", oldEntry), Self, entry)
+			EndIf
 		EndIf
 	End Method
 

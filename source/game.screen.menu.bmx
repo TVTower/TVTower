@@ -139,10 +139,15 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'MISSIONS
 		_initMissionCategories()
+		guiMissionCategories.hide()
+
 		guiMissions = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(300, -1), "Mission", 60, name)
+		guiMissions.SetPosition(guiSettingsPanel.GetContentScreenRect().getX(), guiSettingsPanel.GetContentScreenRect().getY())
+		guiMissions.hide()
 
 		guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(160, -1), "Difficulty", 16, name)
-		guiMissionDifficulty.SetPosition(550, guiSettingsPanel.GetContentScreenRect().getY())
+		guiMissionDifficulty.SetPosition(guiSettingsPanel.GetContentScreenRect().getX() + 520, guiSettingsPanel.GetContentScreenRect().getY())
+		guiMissionDifficulty.hide()
 
 		modifiedMissions = True
 		'END MISSIONS
@@ -220,13 +225,12 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiFigureArrows[i*2 + 1].Move(-guiFigureArrows[i*2 + 1].GetScreenRect().GetW(),0)
 			guiFigureArrows[i*2 + 0].SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
 			guiFigureArrows[i*2 + 1].SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
-
+			
 			'left arrow
 			guiFigureSelectArrows[i*2 + 0] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x) - 36, Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "LEFT", name)
 			'right arrow
 			guiFigureSelectArrows[i*2 + 1] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x + guiPlayerPanels[i].GetContentScreenRect().w +36), Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "RIGHT", name)
 			guiFigureSelectArrows[i*2 + 1].Move(-guiFigureSelectArrows[i*2 + 1].GetScreenRect().GetW(),0)
-
 
 			guiPlayerPanels[i].AddChild(guiPlayerNames[i])
 			guiPlayerPanels[i].AddChild(guiPlayerRandomButtons[i])
@@ -244,9 +248,6 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiChannelNames[i].SetTooltip( CreateBasicTooltip("CHANNELNAME", "NEWGAMESETTINGS_CHANNELNAME_DETAIL"), True, False )
 			guiDifficulty[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_DIFFICULTY", "NEWGAMESETTINGS_DIFFICULTY_DETAIL"), True, False )
 			guiPlayerRandomButtons[i].SetTooltip( CreateBasicTooltip("NEWGAMESETTINGS_RANDOMIZE", "NEWGAMESETTINGS_RANDOMIZE_DETAIL"), True, False )
-
-			'guiPlayerPanels[i].AddChild(guiFigureSelectArrows[i*2 + 0])
-			'guiPlayerPanels[i].AddChild(guiFigureSelectArrows[i*2 + 1])
 		Next
 
 
@@ -300,13 +301,13 @@ Type TScreen_GameSettings Extends TGameScreen
 		'register checkbox changes
 		EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", "TGUICheckbox")
 		'register dropdown for mission selection
-		EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeMissionDropdown", "TGUIDropDown" )
+		EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectionChanged, Self, "onChangeMissionDropdown")
 
 		'register changes to player or channel name
 		For Local i:Int = 0 To 3
 			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiPlayerNames[i])
 			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiChannelNames[i])
-			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeGameSettingsInputs", guiDifficulty[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectionChanged, Self, "onChangeGameSettingsInputs", guiDifficulty[i])
 		Next
 
 		'handle clicks on the gui objects
@@ -315,13 +316,21 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'invoke correct content of mission dropdown
 		TriggerBaseEvent(GUIEventKeys.GUIDropDown_OnSelectEntry, null, guiMissionCategories)
+
+		'fill/hide/show widgets according to initial settings
+		UpdateGUIValues()
+
 		Return Self
 	End Method
 
 	'extracted for language change
 	Method _initMissionCategories()
 		If guiMissionCategories Then guiMissionCategories.Remove()
+		local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
+
 		guiMissionCategories = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(150, -1), "Category", 20, name)
+		guiMissionCategories.SetPosition(settingsRect.getX(), settingsRect.getY())
+
 		Local itemHeight:Int = 0
 		Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(150,20), GetLocale("MISSION_CATEGORY_NOGOAL"))
 		guiMissionCategories.AddItem( item )
@@ -333,8 +342,8 @@ Type TScreen_GameSettings Extends TGameScreen
 			If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
 		Next
 		guiMissionCategories.SetListContentHeight(itemHeight * Min(AllMissions.getCategories().length+1,10))
-		local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
-		guiMissionCategories.SetPosition(settingsRect.getX(), settingsRect.getY())
+
+		' (re-)select default entry
 		guiMissionCategories.SetSelectedEntry(guiMissionCategories.GetEntryByPos(0))
 	End Method
 
@@ -572,34 +581,38 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	Method onChangeMissionDropDown:Int(triggerEvent:TEventBase)
 		Local list:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
-		For Local d:TGUIDropDown = EachIn guiDifficulty
-			If list=d Then return False
-		Next
-		local item:TGUIDropDownItem = TGUIDropDownItem(list.getSelectedEntry())
+		
+		' only interested in these 3 dropdowns
+		If list <> guiMissions and list <> guiMissionCategories and list <> guiMissionDifficulty
+			Return False
+		EndIf
+		
+		local item:TGUIDropDownItem = TGUIDropDownItem(triggerEvent.GetReceiver())
 		If not item Then return False
-		'category changed - reinitialize missions
+
+		' category changed - reinitialize missions
 		If list = guiMissionCategories
+			local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
+
 			guiMissions.Remove()
-			guiMissions = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(350, -1), "Mission", 60, name)
-			Local missions:TMission[] = AllMissions.getMissions(guiMissionCategories.GetSelectedEntry().data.GetString("value"))
+			guiMissions = New TGUIDropDown.Create(New SVec2I(Int(settingsRect.getX()+160), Int(settingsRect.getY())), New SVec2I(350, -1), "Mission", 60, name)
+
+			Local missions:TMission[] = AllMissions.getMissions(item.data.GetString("value"))
 			If missions and missions.length > 0
 				Local itemHeight:Int = 0
-				Local missions:TMission[] = AllMissions.getMissions(guiMissionCategories.GetSelectedEntry().data.GetString("value"))
-				local settingsRect:TRectangle = guiSettingsPanel.GetContentScreenRect()
+				Local missions:TMission[] = AllMissions.getMissions(item.data.GetString("value"))
 				For Local m:TMission = EachIn missions
-					Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(300,20), m.GetDescription())
-					item.data.Add("value", m)
+					Local missionItem:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(300,20), m.GetDescription())
+					missionItem.data.Add("value", m)
 
-					guiMissions.AddItem( item )
-					If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
+					guiMissions.AddItem( missionItem )
+					If itemHeight = 0 Then itemHeight = missionItem.GetScreenRect().GetH()
 				Next
 				guiMissions.SetListContentHeight(itemHeight * Min(missions.length,7))
-				guiMissions.SetPosition(settingsRect.getX()+160, settingsRect.getY())
 				guiMissions.SetSelectedEntry(guiMissions.GetEntryByPos(0))
 
 				guiMissionDifficulty.Remove()
-				guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(0, 0), New SVec2I(160, -1), "Difficulty", 16, name)
-				guiMissionDifficulty.SetPosition(550, settingsRect.getY())
+				guiMissionDifficulty = New TGUIDropDown.Create(New SVec2I(550, Int(settingsRect.getY())), New SVec2I(160, -1), "Difficulty", 16, name)
 
 				Local mission:TMission = TMission(guiMissions.getSelectedEntry().data.Get("value"))
 				Local difficultyValues:Int[] = mission.getSupportedDifficulties()
@@ -620,7 +633,10 @@ Type TScreen_GameSettings Extends TGameScreen
 				guiMissionDifficulty.hide()
 			EndIf
 		EndIf
+		
+		' mission modified in all 3 dropdown adjustments
 		modifiedMissions = True
+
 		Return True
 	End Method
 
@@ -908,10 +924,9 @@ endrem
 			If widget.GetTooltip() Then widget.GetTooltip().Render()
 		Next
 	End Method
-
-
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	
+	
+	Method UpdateGUIValues()
 		If GetGameBase().networkgame
 			guiGameTitleLabel.show()
 			guiGameTitle.show()
@@ -929,11 +944,8 @@ endrem
 			EndIf
 
 			If guiAnnounce.isChecked() And GetGameBase().isGameLeader()
-			'If GetGame().isGameLeader()
-				'guiAnnounce.enable()
 				guiGameTitle.disable()
 				If guiGameTitle.Value = "" Then guiGameTitle.Value = "no title"
-				GetGameBase().title = guiGameTitle.Value
 			Else
 				guiGameTitle.enable()
 			EndIf
@@ -941,31 +953,13 @@ endrem
 				guiGameTitle.disable()
 				guiAnnounce.disable()
 			EndIf
-
-			'disable/enable announcement on lan/online
-			If guiAnnounce.isChecked()
-				Network.client.playerName = GetPlayerBase().name
-				If Not Network.announceEnabled Then Network.StartAnnouncing(GetGameBase().title)
-			Else
-				Network.StopAnnouncing()
-			EndIf
 		Else
 			guiAnnounce.hide()
 			guiGameTitleLabel.hide()
 			guiGameTitle.hide()
-			If modifiedMissions
-				Local mission:TMission = null
-				Local difficultyInt:Int = TVTMissionDifficulty.NONE
-				If guiMissions.getSelectedEntry()
-					mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
-					difficultyInt = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
-				EndIf
-				updateMissionValues(mission, difficultyInt)
-			EndIf
 			guiSettingsWindow.SetCaption(GetLocale("MENU_SOLO_GAME"))
 			'guiChat.setOption(GUI_OBJECT_VISIBLE,False)
 		EndIf
-
 
 		For Local i:Int = 0 Until 4
 			guiPlayerRandomButtons[i].disable()
@@ -1025,6 +1019,36 @@ endrem
 				guiFigureSelectArrows[i*2+1].Hide()
 			EndIf
 		Next
+	End Method
+	
+
+	'override default update
+	Method Update:Int(deltaTime:Float)
+		UpdateGUIValues()
+		
+		If GetGameBase().networkgame
+			If guiAnnounce.isChecked() And GetGameBase().isGameLeader()
+				GetGameBase().title = guiGameTitle.Value
+			EndIf
+
+			'disable/enable announcement on lan/online
+			If guiAnnounce.isChecked()
+				Network.client.playerName = GetPlayerBase().name
+				If Not Network.announceEnabled Then Network.StartAnnouncing(GetGameBase().title)
+			Else
+				Network.StopAnnouncing()
+			EndIf
+		Else
+			If modifiedMissions
+				Local mission:TMission = null
+				Local difficultyInt:Int = TVTMissionDifficulty.NONE
+				If guiMissions.getSelectedEntry()
+					mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
+					difficultyInt = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
+				EndIf
+				updateMissionValues(mission, difficultyInt)
+			EndIf
+		EndIf
 
 		GUIManager.Update(settingsState)
 
