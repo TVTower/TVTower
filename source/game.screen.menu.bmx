@@ -232,11 +232,6 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiFigureSelectArrows[i*2 + 1] = New TGUIArrowButton.Create(New SVec2I(Int(guiPlayerPanels[i].GetContentScreenRect().x + guiPlayerPanels[i].GetContentScreenRect().w +36), Int(guiPlayerPanels[i].GetContentScreenRect().y) + 71-6), New SVec2I(26, 36), "RIGHT", name)
 			guiFigureSelectArrows[i*2 + 1].Move(-guiFigureSelectArrows[i*2 + 1].GetScreenRect().GetW(),0)
 
-			'disable first and last
-			if i = 0 Then guiFigureSelectArrows[i*2].Disable()
-			if i = 3 Then guiFigureSelectArrows[i*2 + 1].Disable()
-
-
 			guiPlayerPanels[i].AddChild(guiPlayerNames[i])
 			guiPlayerPanels[i].AddChild(guiPlayerRandomButtons[i])
 			guiPlayerPanels[i].AddChild(guiChannelNames[i])
@@ -321,6 +316,10 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'invoke correct content of mission dropdown
 		TriggerBaseEvent(GUIEventKeys.GUIDropDown_OnSelectEntry, null, guiMissionCategories)
+
+		'fill/hide/show widgets according to initial settings
+		UpdateGUIValues()
+
 		Return Self
 	End Method
 
@@ -925,10 +924,9 @@ endrem
 			If widget.GetTooltip() Then widget.GetTooltip().Render()
 		Next
 	End Method
-
-
-	'override default update
-	Method Update:Int(deltaTime:Float)
+	
+	
+	Method UpdateGUIValues()
 		If GetGameBase().networkgame
 			guiGameTitleLabel.show()
 			guiGameTitle.show()
@@ -946,11 +944,8 @@ endrem
 			EndIf
 
 			If guiAnnounce.isChecked() And GetGameBase().isGameLeader()
-			'If GetGame().isGameLeader()
-				'guiAnnounce.enable()
 				guiGameTitle.disable()
 				If guiGameTitle.Value = "" Then guiGameTitle.Value = "no title"
-				GetGameBase().title = guiGameTitle.Value
 			Else
 				guiGameTitle.enable()
 			EndIf
@@ -958,31 +953,13 @@ endrem
 				guiGameTitle.disable()
 				guiAnnounce.disable()
 			EndIf
-
-			'disable/enable announcement on lan/online
-			If guiAnnounce.isChecked()
-				Network.client.playerName = GetPlayerBase().name
-				If Not Network.announceEnabled Then Network.StartAnnouncing(GetGameBase().title)
-			Else
-				Network.StopAnnouncing()
-			EndIf
 		Else
 			guiAnnounce.hide()
 			guiGameTitleLabel.hide()
 			guiGameTitle.hide()
-			If modifiedMissions
-				Local mission:TMission = null
-				Local difficultyInt:Int = TVTMissionDifficulty.NONE
-				If guiMissions.getSelectedEntry()
-					mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
-					difficultyInt = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
-				EndIf
-				updateMissionValues(mission, difficultyInt)
-			EndIf
 			guiSettingsWindow.SetCaption(GetLocale("MENU_SOLO_GAME"))
 			'guiChat.setOption(GUI_OBJECT_VISIBLE,False)
 		EndIf
-
 
 		For Local i:Int = 0 Until 4
 			guiPlayerRandomButtons[i].disable()
@@ -1042,6 +1019,36 @@ endrem
 				guiFigureSelectArrows[i*2+1].Hide()
 			EndIf
 		Next
+	End Method
+	
+
+	'override default update
+	Method Update:Int(deltaTime:Float)
+		UpdateGUIValues()
+		
+		If GetGameBase().networkgame
+			If guiAnnounce.isChecked() And GetGameBase().isGameLeader()
+				GetGameBase().title = guiGameTitle.Value
+			EndIf
+
+			'disable/enable announcement on lan/online
+			If guiAnnounce.isChecked()
+				Network.client.playerName = GetPlayerBase().name
+				If Not Network.announceEnabled Then Network.StartAnnouncing(GetGameBase().title)
+			Else
+				Network.StopAnnouncing()
+			EndIf
+		Else
+			If modifiedMissions
+				Local mission:TMission = null
+				Local difficultyInt:Int = TVTMissionDifficulty.NONE
+				If guiMissions.getSelectedEntry()
+					mission = TMission(guiMissions.getSelectedEntry().data.get("value"))
+					difficultyInt = guiMissionDifficulty.getSelectedEntry().data.getInt("value")
+				EndIf
+				updateMissionValues(mission, difficultyInt)
+			EndIf
+		EndIf
 
 		GUIManager.Update(settingsState)
 
