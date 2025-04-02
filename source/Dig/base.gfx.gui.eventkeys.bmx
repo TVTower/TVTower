@@ -70,6 +70,7 @@ Type TGUIEventKeys
 
 	'base.gfx.gui.list.selectlist.bmx
 	Field GUISelectList_OnSelectEntry:TEventKey = GetEventKey("GUISelectList.onSelectEntry", True)	
+	Field GUISelectList_OnSelectionChanged:TEventKey = GetEventKey("GUISelectList.onSelectionChanged", True)	
 
 	'base.gfx.gui.list.slotlist.bmx
 	Field GUISlotList_OnBeginReplaceSlotItem:TEventKey = GetEventKey("guiSlotList.onBeginReplaceSlotItem", True)	
@@ -91,5 +92,6 @@ Type TGUIEventKeys
 
 	'base.gfx.gui.dropdown.bmx
 	Field GUIDropDown_OnSelectEntry:TEventKey = GetEventKey("GUIDropDown.onSelectEntry", True)	
+	Field GUIDropDown_OnSelectionChanged:TEventKey = GetEventKey("GUIDropDown.onSelectionChanged", True)	
 	Field GUIDropDownItem_OnClick:TEventKey = GetEventKey("GUIDropDownItem.onClick", True)	
 End Type

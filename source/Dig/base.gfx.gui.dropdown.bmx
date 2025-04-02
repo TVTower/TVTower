@@ -156,9 +156,7 @@ Type TGUIDropDown Extends TGUIInput
 
 
 	Method onSelectEntry:Int(triggerEvent:TEventBase)
-		Local guiobj:TGUIObject = TGUIObject(triggerEvent.GetData().Get("entry"))
-
-		Local item:TGUIDropDownItem = TGUIDropDownItem(triggerEvent.GetData().Get("entry"))
+		Local item:TGUIDropDownItem = TGUIDropDownItem(triggerEvent._receiver)
 		'clicked item is of a different type
 		If Not item Then Return False
 
@@ -211,15 +209,21 @@ Type TGUIDropDown Extends TGUIInput
 	
 
 	Method SetSelectedEntry(item:TGUIObject)
+		Local oldItem:TGUIObject = selectedEntry
+
 		If selectedEntry <> item
 			if selectedEntry then selectedEntry.SetSelected(False)
 			if item then item.SetSelected(True)
+			selectedEntry = item
 		EndIf
-		selectedEntry = item
-		
+
+		' content ("label" etc) might have changed
 		RefreshValue()
 
 		TriggerBaseEvent(GUIEventKeys.GUIDropDown_onSelectEntry, Null, Self, item)
+		If selectedEntry <> oldItem
+			TriggerBaseEvent(GUIEventKeys.GUIDropDown_onSelectionChanged, New TData.Add("previousSelection", oldItem), Self, item)
+		EndIf
 	End Method
 
 

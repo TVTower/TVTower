@@ -827,7 +827,7 @@ endrem
 
 	'fill the name of the selected entry as savegame name
 	Method onClickOnSavegameEntry:Int( triggerEvent:TEventBase )
-		Local entry:TGUISaveGameListItem = TGUISaveGameListItem(triggerEvent.GetData().Get("entry"))
+		Local entry:TGUISaveGameListItem = TGUISaveGameListItem(triggerEvent._receiver)
 		If Not entry Then Return False
 
 		Local fileName:String = TSavegame.GetSavegameName( entry.GetFileInformation().GetString("fileURI") )
