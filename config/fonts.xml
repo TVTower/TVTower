@@ -25,6 +25,6 @@
 		<bitmapfont name="defaultThin" url="res/fonts/notosans/NotoSans-Light.ttf" size="13" lineHeightModifier="1.1" />
 		<bitmapfont name="defaultThin" url="res/fonts/notosans/NotoSans-SemiBold.ttf" size="13" flags="BOLDFONT" lineHeightModifier="1.1" />
 
-		<bitmapfont name="defaultSmall" url="res/fonts/notosans/NotoSans-Regular.ttf" size="11" />
+		<bitmapfont name="defaultSmall" url="res/fonts/notosans/NotoSans-Regular.ttf" size="11" default="1" />
 	</bitmapfonts>
 </tvt>

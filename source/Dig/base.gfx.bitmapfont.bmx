@@ -227,6 +227,7 @@ Type TBitmapFontManager
 		If baseFont = Null Then baseFont = Font
 		If baseFontBold = Null And style & BOLDFONT > 0 Then baseFontBold = Font
 		If baseFontItalic  = Null And style & ITALICFONT > 0 Then baseFontItalic = Font
+		If baseFontSmall = Null Then baseFontSmall = Font
 
 		Return Font
 	End Method
