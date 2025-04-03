@@ -1204,23 +1204,24 @@ endrem
 
 
 	Function RenderDevOSD()
-		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
-		Local textX:Int = 5
+		Global bf:TBitmapFont = GetBitmapFont("Default", 10)
+		Local textX:Int = 3
+		Local textY:Int = -1
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldA:Float = GetAlpha()
 		SetAlpha oldA * 0.25
 		SetColor 0,0,0
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
-			DrawRect(0,0, 800, bf.GetMaxCharHeight(true))
+			DrawRect(0,0, 800, bf.GetMaxCharHeight(true) - 1)
 		Else
-			DrawRect(0,0, 175 + 10, bf.GetMaxCharHeight(true))
+			DrawRect(0,0, 175, bf.GetMaxCharHeight(true) - 1)
 		EndIf
 		SetColor(oldCol)
 		SetAlpha(oldA)
 
-		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetTimeFactor()), textX , 0).x)
-		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
-		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX,0).x)
+		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetTimeFactor()), textX, textY).x)
+		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, textY).x)
+		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX, textY).x)
 
 rem
 		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
@@ -1233,21 +1234,21 @@ rem
 		endif
 endrem
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
-			textX:+ Max(85, bf.DrawSimple("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0).x)
+			textX:+ Max(85, bf.DrawSimple("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX, textY).x)
 			'update time per second
-			textX:+ Max(65, bf.DrawSimple("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), textX,0).x)
+			textX:+ Max(65, bf.DrawSimple("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), textX, textY).x)
 			'render time per second
-			textX:+ Max(65, bf.DrawSimple("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), textX,0).x)
+			textX:+ Max(65, bf.DrawSimple("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), textX, textY).x)
 
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If GUIManager.GetFocus()
-				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+" [d:"+GUIManager.GetDraggedCount()+", focusID: "+GUIManager.GetFocus()._id + " ("+TTypeID.ForObject(GUIManager.GetFocus()).name()+")", textX,0).x)
+				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+" [d:"+GUIManager.GetDraggedCount()+", focusID: "+GUIManager.GetFocus()._id + " ("+TTypeID.ForObject(GUIManager.GetFocus()).name()+")", textX, textY).x)
 			Else
-				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+" [d:"+GUIManager.GetDraggedCount()+"]" , textX,0).x)
+				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+" [d:"+GUIManager.GetDraggedCount()+"]" , textX, textY).x)
 			EndIf
 
 			If GetGame().networkgame And Network.client
-				textX:+ Max(50, bf.DrawSimple("Ping: "+Int(Network.client.latency)+"ms", textX,0).x)
+				textX:+ Max(50, bf.DrawSimple("Ping: "+Int(Network.client.latency)+"ms", textX, textY).x)
 			EndIf
 		EndIf
 	End Function
