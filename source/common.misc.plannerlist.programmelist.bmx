@@ -269,6 +269,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			Local currY:Int = GetGenresRect().GetY()
 			Local currX:Int = GetGenresRect().GetX()
 			Local textRect:SRectI = New SRectI(currX + 13, currY, Int(GetGenreSize().x - 12 - 5), Int(GetGenreSize().y))
+			Local font:TBitmapFont = GetBitmapFont("Default", 11)
 
 			Local oldAlpha:Float = GetAlpha()
 
@@ -304,17 +305,17 @@ Type TgfxProgrammelist Extends TPlannerList
 
 				'genre background contains a 2px splitter (bottom + top)
 				'so add 1 pixel to textY
-				textRect = New SRectI(textRect.x, currY + 1, textRect.w, textRect.h)
+				textRect = New SRectI(textRect.x, currY + 1 -2, textRect.w, textRect.h)
 
 				Local licenceCount:Int = programmeCollection.GetFilteredLicenceCount(visibleFilters[i])
 				Local filterName:String = visibleFilters[i].GetCaption()
 
 
 				If licenceCount > 0
-					GetBitmapFontManager().baseFont.DrawBox(filterName + " (" +licenceCount+ ")", textRect.x, textRect.y, textRect.w, textRect.h, sALIGN_LEFT_CENTER, SColor8.Black)
+					font.DrawBox(filterName + " (" +licenceCount+ ")", textRect.x, textRect.y, textRect.w, textRect.h, sALIGN_LEFT_CENTER, SColor8.Black)
 				Else
 					SetAlpha 0.25 * GetAlpha()
-					GetBitmapFontManager().baseFont.DrawBox(filterName, textRect.x, textRect.y, textRect.w, textRect.h, sALIGN_LEFT_CENTER, SColor8.Black)
+					font.DrawBox(filterName, textRect.x, textRect.y, textRect.w, textRect.h, sALIGN_LEFT_CENTER, SColor8.Black)
 					SetAlpha 4 * GetAlpha()
 				EndIf
 				'advance to next line
@@ -379,7 +380,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		entrySize.CopyFrom( GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.GetDimension() )
 		Local currY:Int = GetEntriesRect().y
 		Local currX:Int = GetEntriesRect().x
-		Local font:TBitmapFont = GetBitmapFont("Default", 10)
+		Local font:TBitmapFont = GetBitmapFont("Default", 9)
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 
@@ -457,7 +458,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.DrawBox(licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
+				font.DrawBox(licence.GetTitle(), currX + 22, currY + 2, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
 				SetColor(oldCol)
 				SetAlpha(oldColA)
@@ -534,7 +535,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				SetAlpha oldColA
 			endif
 
-			GetBitmapFont("Default", 10).DrawBox(entriesPage+"/" + entriesPages, currX, currY - 22, GetEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
+			font.DrawBox(entriesPage+"/" + entriesPages, currX, currY - 22, GetEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
 		endif
 
 		Rem
@@ -743,7 +744,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local currSprite:TSprite
 		Local currY:Int = GetSubEntriesRect().GetY()
 		Local currX:Int = GetSubEntriesRect().GetX()
-		Local font:TBitmapFont = GetBitmapFont("Default", 10)
+		Local font:TBitmapFont = GetBitmapFont("Default", 9)
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 
@@ -819,7 +820,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.DrawBox("(" + licence.GetEpisodeNumber() + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
+				font.DrawBox("(" + licence.GetEpisodeNumber() + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 2, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
 				SetColor(oldCol)
 				SetAlpha(oldColA)
@@ -879,7 +880,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				subEntriesButtonNext.Draw()
 				SetAlpha oldColA
 			endif
-			GetBitmapFont("Default", 10).DrawBox(subEntriesPage+"/" + subEntriesPages, currX, currY - 22, GetSubEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
+			font.DrawBox(subEntriesPage+"/" + subEntriesPages, currX, currY - 22, GetSubEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
 		endif
 
 
