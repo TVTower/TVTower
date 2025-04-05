@@ -63,6 +63,7 @@ Type TBitmapFontManager
 
 	Field fonts:TMap = New TMap
 	Field fontsID:TIntMap = New TIntMap
+	Field imageFonts:TStringMap = New TStringMap
 	Global systemFont:TBitmapFont
 	Global _instance:TBitmapFontManager
 	Global _defaultFlags:Int = 0 'SMOOTHFONT
@@ -129,7 +130,7 @@ Type TBitmapFontManager
 			defaultStyledFont = GetDefaultStyledFont(name, style)
 		End If
 
-		font = Add(name, defaultStyledFont.FFile, size, style)
+		font = Add(name, defaultStyledFont.FFontUrlsRaw, size, style)
 
 		Return font
 	End Method
@@ -150,7 +151,7 @@ Type TBitmapFontManager
 
 	Method Copy:TBitmapFont(sourceName:String, copyName:String, size:Float=-1, style:Int=-1)
 		Local sourceFont:TBitmapFont = Get(sourceName, size, style)
-		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
+		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.FFontUrlsRaw, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
 		InsertFont(copyName, sourceFont.fSize, sourceFont.fStyle, newFont)
 
 		Return newFont
@@ -168,6 +169,12 @@ Type TBitmapFontManager
 		sizes.Insert(size, style, font)
 		
 		fontsID.Insert(font.id, font)
+		
+		'insert all used image fonts so a new added font can reuse it
+		For local i:int = 0 until font.FFontUrls.length
+			Local imageFontKey:String = Int(size * 64) + "|" + font.FFontUrls[i]
+			imageFonts.insert(imageFontKey, font.FImageFonts[i])
+		Next
 	End Method
 
 
@@ -196,7 +203,7 @@ Type TBitmapFontManager
 		Local defaultFont:TBitmapFont = GetDefaultFont()
 		If size = -1 Then size = defaultFont.FSize
 		If style = -1 Then style = defaultFont.FStyle
-		If file = "" Then file = defaultFont.FFile
+		If file = "" Then file = defaultFont.FFontUrlsRaw
 
 		Local font:TBitmapFont = TBitmapFont.Create(name, file, size, style, fixedCharWidth, charWidthModifier)
 
@@ -254,7 +261,6 @@ End Function
 Function GetBitmapFont:TBitmapfont(familyID:Int, size:Float=-1, style:Int=-1)
 	Return TBitmapFontManager.GetInstance().Get(familyID, size, style)
 End Function
-
 
 
 
@@ -400,14 +406,15 @@ Type TBitmapFont
 	'identifier
 	Field FName:String = ""
 	'source path
-	Field FFile:String = ""
+	Field FFontUrlsRaw:String = ""
 	'size of this font
 	Field FSize:Float = 0
 	Field FSize266:Int = 0 'size in 26.6 freetype format (int(size* 64))
 	'style used in this font
 	Field FStyle:Int = 0
-	'the original imagefont
-	Field FImageFont:TImageFont
+	'first is the main url/image font, all others are fallbacks
+	Field FFontUrls:String[]
+	Field FImageFonts:TImageFont[]
 
 	Field charGroups:TBitmapFontCharGroup[]
 
@@ -492,32 +499,52 @@ Type TBitmapFont
 	Function Create:TBitmapFont(name:String, url:String, size:Float, style:Int, fixedCharWidth:Int = -1, charWidthModifier:Float = 1.0)
 		Local obj:TBitmapFont = New TBitmapFont
 		obj.FName = name
-		obj.FFile = url
+		'the url could contain multiple urls (comma separated)
+		obj.FFontUrlsRaw = url
 		obj.FSize = Int(size)
 		obj.FSize266 = Int(size * 64)
 		obj.FStyle = style
 		obj.gfx = tmax2dgraphics.Current()
 		obj.fixedCharWidth = fixedCharWidth
 		obj.charWidthModifier = charWidthModifier
-
-		obj.FImageFont = LoadTrueTypeFont(url, size, style)
-		If Not obj.FImageFont
-			'get system/current font
-			obj.FImageFont = GetImageFont()
+		
+		'url could contain fallbacks (comma separated)
+		local urls:String[] = url.split(",")
+		For local i:Int = 0 until urls.length
+			urls[i] = urls[i].Trim()
+		Next
+		
+		' Load in font + fallbacks
+		Local fontIndex:Int = 0
+		For local i:Int = 0 until urls.length
+'TODO: hier "schauen ob bereits existent..."
+			Local imageFont:TImageFont = LoadTrueTypeFont(urls[i], size, style)
+			If imageFont
+				obj.FImageFonts :+ [imageFont]
+				obj.FFontUrls :+ [urls[i]]
+			EndIf
+		Next
+		
+		' If no image was found, load system/current font
+		If obj.FImageFonts.length = 0
+			Local defaultImageFont:TImageFont = GetImageFont()
+			If Not defaultImageFont
+				Throw ("TBitmapFont.Create: font(s) ~q"+url+"~q not found. Also no default font defined!")
+				Return Null 'font not found
+			EndIf
+			obj.FImageFonts :+ [defaultImageFont]
+			obj.FFontUrls :+ [""]
 		EndIf
-		If Not obj.FImageFont
-			Throw ("TBitmapFont.Create: font ~q"+url+"~q not found.")
-			Return Null 'font not found
-		EndIf
 
-		' store basic font information
-		If TFreeTypeFont(obj.FImageFont._src_font)
-			Local ftf:TFreeTypeFont = TFreeTypeFont(obj.FImageFont._src_font)
+
+		' store basic font information (from main font)
+		If TFreeTypeFont(obj.FImageFonts[0]._src_font)
+			Local ftf:TFreeTypeFont = TFreeTypeFont(obj.FImageFonts[0]._src_font)
 			obj.ascend = ftf._ascend
 			obj.descend = ftf._descend
 			obj.automaticLineHeight = ftf._height
 		EndIf
-
+		
 		' generate a basic charGroup (Ascii)
 		obj.LoadCharGroup(0)
 		Return obj
@@ -671,7 +698,7 @@ endrem
 	'load glyphs of an imagefont as TBitmapFontChar into a char-TMap
 	Method LoadCharsFromSource:TBitmapFontChar[](charCodeStart:Int, charCodeEnd:Int, source:Object=Null)
 		Local imgFont:TImageFont = TImageFont(source)
-		If Not imgFont Then imgFont = Self.FImageFont
+		If Not imgFont and Self.FImageFonts.length > 0 Then imgFont = Self.FImageFonts[0]
 		If Not imgfont Then Return Null
 
 		'ensure params are in right order and within range
@@ -687,10 +714,20 @@ endrem
 		Local charsToLoad:Int = charCodeEnd - charCodeStart
 		Local chars:TBitmapFontChar[charsToLoad]
 		For Local i:Int = 0 Until charsToLoad
+			Local glyph:TImageGlyph
 			Local glyphIndex:Int = imgFont.CharToGlyph(charCodeStart + i)
-			If glyphIndex < 0 Then Continue
-
-			Local glyph:TImageGlyph = imgFont.LoadGlyph(glyphIndex)
+			If glyphIndex >= 0
+				glyph = imgFont.LoadGlyph(glyphIndex)
+			ElseIf (charCodeStart + i > 32) and self.FImageFonts.length > 1
+				For Local fontIndex:int = 1 until self.FImageFonts.length
+					glyphIndex = self.FImageFonts[fontIndex].CharToGlyph(charCodeStart + i)
+					if glyphIndex >= 0
+						'print "Fallback found :" + (charCodeStart + i) + " glyph="+glyphIndex
+						glyph = self.FImageFonts[fontIndex].LoadGlyph(glyphIndex)
+						exit
+					EndIf
+				Next
+			EndIf 
 			If Not glyph Then Continue
 			
 			'glyph._image can be Null! (eg "space" char code)
