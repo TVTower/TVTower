@@ -145,10 +145,14 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 				GetBitmapFontManager().baseFontItalic = font
 			ElseIf name.ToLower() = "defaultsmall" or name.ToLower() = "smalldefault"
 				GetBitmapFontManager().baseFontSmall = font
-			Else
+			ElseIf not GetBitmapFontManager().baseFont or (not (flags & BOLDFONT) and not (flags & ITALICFONT))
 				GetBitmapFontManager().baseFont = font
 				'also set as imagefont
-				SetImageFont(font.FImageFont)
+				if font.FImageFonts.length > 0
+					SetImageFont(font.FImageFonts[0])
+				Else
+					SetImageFont(Null)
+				EndIf
 			EndIf
 		EndIf
 
