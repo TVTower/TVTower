@@ -259,7 +259,9 @@ Type TGUILabel Extends TGUIobject
 				' the "descend" (the space below the base line required 
 				' to eg. draw "pqgyj") is substracted/"added" so that 
 				' "centering" between "hello" and "yeah" does not differ.
-				textCache.DrawBlock(GetFont(), value, Int(scrRect.x + contentDisplacement.GetX()), Int(scrRect.y + contentDisplacement.GetY() - contentAlignment.y * GetFont().descend), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
+				' RONNY: descend adjustment seems to be no longer needed
+				'textCache.DrawBlock(GetFont(), value, Int(scrRect.x + contentDisplacement.GetX()), Int(scrRect.y + contentDisplacement.GetY() - contentAlignment.y * GetFont().descend), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
+				textCache.DrawBlock(GetFont(), value, Int(scrRect.x + contentDisplacement.GetX()), Int(scrRect.y + contentDisplacement.GetY()), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
 		End Select
 
 
