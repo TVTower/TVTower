@@ -25,6 +25,10 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], -510, position.y + 8)
+			'custom position
+			button.x = 8
+			button.y = 14 + 2 + i * (button.h + 2)
+
 			button.w = 120
 			button._onClickHandler = OnButtonClickHandler
 
@@ -34,6 +38,10 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		texts = ["Enable AI", "Reload AI", "Pause AI"]
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], -510 + 130, position.y + 8)
+			'custom position
+			button.x = 8 + 130
+			button.y = 14 + 2 + i * (button.h + 2)
+
 			button.w = 120
 			button._onClickHandler = OnPlayerCommandAIButtonClickHandler
 
@@ -117,22 +125,22 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		Local playerID:Int = GetShownPlayerID()
 		Local player:TPlayer = GetPlayer(playerID)
 
+		Local contentRect:SRectI
 
-		DrawBorderRect(position.x, 10, 129, 200)
 		If player.playerAI
-			titleFont.Draw("Start task:", position.x + 5, 10)
+			contentRect = DrawWindow(position.x + 5, 15, 125, 200, "Start Task")
 		Else
-			titleFont.Draw("Go to room:", position.x + 5, 10)
+			contentRect = DrawWindow(position.x + 5, 15, 125, 200, "Go To Room")
 		EndIf
 
-		RenderPlayerEventQueue(playerID, 600, 20)
-		RenderPlayerTaskList(playerID, 600, 160)
+		RenderPlayerEventQueue(playerID, 600, 15)
+		RenderPlayerTaskList(playerID, 400, 15)
 
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
 
-		DrawBorderRect(position.x + 131, 10, 130, 75)
+		DrawWindow(position.x + 135, 15, 125, 75, "AI Mode")
 		For Local i:Int = 0 Until aiButtons.length
 			aiButtons[i].Render()
 		Next
@@ -143,23 +151,18 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 
 		If player.playerAI
-			DrawBorderRect(x, y, 185, 10 * 10 + 25)
-
-			Local textX:Int = x + 3
-			Local textY:Int = y + 3 - 1
-			
-			textFont.Draw("Event Queue: " + player.playerAI.eventQueue.length + " event(s).", textX, textY)
-			textY :+ 12
+			Local contentRect:SRectI = DrawWindow(x, y, 190, 200, "Event Queue", player.playerAI.eventQueue.length + " event(s).")
 
 			Local eventNumber:Int = 0
+			Local textY:Int = contentRect.y
 			For Local aievent:TAIEvent = EachIn player.playerAI.eventQueue
-				textFont.DrawBox(aievent.ID, textX, textY, 15, 13, sALIGN_RIGHT_TOP, SColor8.white)
-				textFont.DrawBox(aievent.GetName(), textX + 18, textY, 179 - 18, 13, SColor8.white)
-				textY :+ 10
+				textFont.DrawBox(aievent.ID, contentRect.x, textY, 15, 13, sALIGN_RIGHT_TOP, SColor8.white)
+				textFont.DrawBox(aievent.GetName(), contentRect.x + 18, textY, 179 - 18, 13, SColor8.white)
+				textY :+ 11
 				eventNumber :+ 1
 				
-				'only print up to 20 events ...
-				If eventNumber > 10 Then Exit
+				'only print up to 15 events ...
+				If eventNumber > 15 Then Exit
 			Next
 		EndIf
 	End Method
@@ -169,37 +172,36 @@ Type TDebugScreenPage_PlayerCommands extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 
 		If player.playerAI
-			DrawBorderRect(x, y, 185, 155)
+			Local contentRect:SRectI = DrawWindow(x, y, 190, 200, "Task List", player.aiData.GetInt("tasklist_count", 1) + " task(s).")
 
-			Local textX:Int = x + 3
-			Local textY:Int = y + 3 - 1
+			Local textY:Int = contentRect.y
 
 			Local assignmentType:Int = player.aiData.GetInt("currentTaskAssignmentType", 0)
 			If assignmentType = 1
-				textFont.Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				textFont.Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", contentRect.x, textY)
 			ElseIf assignmentType = 2
-				textFont.Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				textFont.Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", contentRect.x, textY)
 			Else
-				textFont.Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				textFont.Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", contentRect.x, textY)
 			EndIf
-			textY :+ 10
-			textFont.Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
-			textY :+ 13
+			textY :+ 12
+			textFont.Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", contentRect.x, textY)
+			textY :+ 15
 
-			textFontBold.Draw("Task List: ", textX, textY)
-			textFontBold.Draw("Prio ", textX + 90 + 22*0, textY)
-			textFontBold.Draw("Bas", textX + 90 + 22*1, textY)
-			textFontBold.Draw("Sit", textX + 90 + 22*2, textY)
-			textFontBold.Draw("Req", textX + 90 + 22*3, textY)
-			textY :+ 10 + 2
+			textFontBold.Draw("Task List: ", contentRect.x, textY)
+			textFontBold.Draw("Prio ", contentRect.x + 90 + 22*0, textY)
+			textFontBold.Draw("Bas", contentRect.x + 90 + 22*1, textY)
+			textFontBold.Draw("Sit", contentRect.x + 90 + 22*2, textY)
+			textFontBold.Draw("Req", contentRect.x + 90 + 22*3, textY)
+			textY :+ 11 + 2
 
 			For Local taskNumber:Int = 1 To player.aiData.GetInt("tasklist_count", 1)
-				textFont.Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
-				textFont.Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
-				textFont.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
-				textFont.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
-				textFont.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
-				textY :+ 10
+				textFont.Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), contentRect.x, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), contentRect.x + 90 + 22*0, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), contentRect.x + 90 + 22*1, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), contentRect.x + 90 + 22*2, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), contentRect.x + 90 + 22*3, textY)
+				textY :+ 11
 			Next
 		EndIf
 	End Method
