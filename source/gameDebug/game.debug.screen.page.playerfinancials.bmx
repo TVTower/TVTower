@@ -131,7 +131,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 		Local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, GetWorldTime().GetDay())
 		Local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 
-		Local font:TBitmapfont = GetBitmapFont("default", 10)
+		Local font:TBitmapfont = GetBitmapFont("default", 9)
 		font.Draw("Money #"+playerID+": "+MathHelper.DottedValue(finance.money), textX, textY)
 		textY :+ 9+1
 		font.Draw("~tLic:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_programmeLicences), textX, textY)

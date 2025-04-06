@@ -37,10 +37,20 @@ Type TDebugScreen
 		Local button:TDebugControlsButton
 		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Public Image", "Stationmap", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Custom Production", "Producers", "Sports Sim", "Modifiers", "Misc"]
 		Local mode:int = 0
+		Local buttonNextY:Int = 0
 		For Local i:Int = 0 Until texts.length
-			If texts[i] = "-" Then Continue 'spacer
-			button = TDebugScreenPage.CreateActionButton(i, texts[i], -510 , 10)
-			button.w = 118
+			If texts[i] = "-" 
+				buttonNextY :+ 10
+				Continue 'spacer
+			Endif
+
+			button = TDebugScreenPage.CreateActionButton(i, texts[i], -510 , 18)
+			'custom position
+			button.x = 3
+			button.y = 14 + 2 + buttonNextY
+			buttonNextY :+ button.h + 2 + 1
+
+			button.w = 122
 			button.dataInt = mode
 			mode :+ 1
 			button._onClickHandler = OnButtonClickHandler
@@ -207,25 +217,32 @@ Type TDebugScreen
 
 
 	Method Render()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+
+		SetColor 0,0,0
+		SetAlpha 0.25 * oldColA
+		DrawRect(0,0, 800, 385)
+		SetColor(oldCol)
+		SetAlpha(oldColA)
+
 		If Not TDebugScreenPage.titleFont
 			TDebugScreenPage.titleFont = GetBitmapFont("default", 12, BOLDFONT)
 			TDebugScreenPage.textFontBold = GetBitmapFont("default", 10, BOLDFONT)
 			TDebugScreenPage.textFont = GetBitmapFont("default", 10)
 		EndIf
 
-		Local oldCol:SColor8; GetColor(oldCol)
-		Local oldColA:Float = GetAlpha()
-
-		TFunctions.DrawOutlineRect(0, 0, sideButtonPanelWidth - 2, 355)
+		TFunctions.DrawOutlineRect(0, 12, sideButtonPanelWidth - 2, 370, new SColor8(100,100,100), new SColor8(0,0,0,150))
 		For Local b:TDebugControlsButton = EachIn sideButtons
 			b.Render()
 		Next
 
-		SetColor 0,0,0
-		SetAlpha 0.2 * oldColA
-		DrawRect(sideButtonPanelWidth,0, 800 - sideButtonPanelWidth, 385)
-		SetColor(oldCol)
-		SetAlpha(oldColA)
+		TDebugScreenPage.textFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 3, 355)
+		If ScreenCollection.GetCurrentScreen()
+			TDebugScreenPage.textFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 3, 355 + 11)
+		Else
+			TDebugScreenPage.textFont.draw("onScreen: Main", 3, 360 + 11)
+		EndIf
 
 		If currentPage Then currentPage.Render()
 	End Method
@@ -734,7 +751,7 @@ Type TDebugProfiler
 		Local textY:Int = y
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float; oldColA = GetAlpha()
-		Local font:TBitmapfont = GetBitmapFont("default", 10)
+		Local font:TBitmapfont = GetBitmapFont("default", 9)
 
 		SetColor 0,0,0
 		SetAlpha 0.75*oldColA
