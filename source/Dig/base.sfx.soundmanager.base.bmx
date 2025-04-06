@@ -975,11 +975,18 @@ Type TSfxChannel
 
 		CurrentSfx = sfx
 		CurrentSettings = settings
+		
+		' ensure we have a channel (AdjustSettings() requires one)
+		Local c:TChannel = GetChannel()
+		If Not c Then Return
 
+		'print "PlaySfX: " + sfx
 		AdjustSettings(False)
 
 		Local sound:TSound = TSoundManager.GetInstance().GetSfx(sfx)
-		TSoundManager.GetInstance().PlaySfx(sound, GetChannel())
+		if not sound then return
+
+		TSoundManager.GetInstance().PlaySfx(sound, c)
 	End Method
 
 
@@ -990,11 +997,17 @@ Type TSfxChannel
 		CurrentSfx = playlist
 		CurrentSettings = settings
 
+		' ensure we have a channel (AdjustSettings() requires one)
+		Local c:TChannel = GetChannel()
+		If Not c Then Return
+
+		'print "PlayRandomSfx: " + playlist
 		AdjustSettings(False)
 
 		Local sound:TSound = TSoundManager.GetInstance().GetSfx("", playlist)
-		if not sound or not GetChannel() then return
-		TSoundManager.GetInstance().PlaySfx(sound, GetChannel())
+		if not sound then return
+
+		TSoundManager.GetInstance().PlaySfx(sound, c)
 		'if sound then PlaySound(sound, channel)
 	End Method
 
@@ -1072,8 +1085,8 @@ Type TDynamicSfxChannel Extends TSfxChannel
 		'Local receiverPoint:SVec3D = Receiver.GetCenter()
 
 		If CurrentSettings.forceVolume
-			_channel.SetVolume( CurrentSettings.defaultVolume )
-			'print "Volume (forced):" + CurrentSettings.defaultVolume +   "    source="+TTypeID.ForObject(Source).Name() + "  receiver="+TTypeID.ForObject(Receiver).Name()
+			_channel.SetVolume( TSoundManager.GetInstance().sfxVolume * CurrentSettings.defaultVolume )
+			'print "Volume (forced):" + (TSoundManager.GetInstance().sfxVolume * CurrentSettings.defaultVolume) +   "    source="+TTypeID.ForObject(Source).Name() + "  receiver="+TTypeID.ForObject(Receiver).Name()
 		Else
 			'Volume is dependend on distance to sound source
 			Local distanceVolume:Float = CurrentSettings.GetVolumeByDistance(Source, Receiver)
