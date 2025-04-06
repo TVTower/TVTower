@@ -40,40 +40,29 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 
 
 	Method Render()
-		textFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5, 360)
-		If ScreenCollection.GetCurrentScreen()
-			textFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 360 + 11)
-		Else
-			textFont.draw("onScreen: Main", 5, 360 + 11)
-		EndIf
-
-
 		Local x:Int = position.x + 5
-		RenderPlayerPositions(x, 10)
-		RenderElevatorState(x, 100)
+		'RenderPlayerPositions(x, 15) 'shown in FigureInformation!
+		RenderElevatorState(x, 15)
 
 		Local sideInfoW:Int = 160
 		For Local i:Int = 0 To 3
-			RenderFigureInformation( GetPlayer(i+1).GetFigure(), x + 140, 10 + i*75)
-			RenderBossMood(i+1, x + 140 + 150 + 2, 10 + i*75, sideInfoW, 30)
+			RenderFigureInformation( GetPlayer(i+1).GetFigure(), x + 140, 15 + i*55)
+			RenderBossMood(i+1, x + 140 + 200 + 2, 15 + i*55, sideInfoW, 30)
 '			textFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
 
 			If TProfiler.activated And GetPlayer(i+1).IsLocalAI()
-				DrawBorderRect(x + 140 + 150 + 2, 10 + i*75 + 33, sideInfoW, 37)
+				DrawBorderRect(x + 140 + 150 + 2, 15 + i*75 + 33, sideInfoW, 37)
 				DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[i]), x + 140 + 150 + 5, 10 + i*75 + 33 + 5, sideInfoW - 2*4, 28, "AI " + (i+1))
 			EndIf
 
 		Next
 
-		DrawBorderRect(x + 5 + 500, 10, 140, 180)
-		GetWorld().RenderDebug(x + 5 + 500, 10, 140, 180)
+		RenderWorldInformation(x + 500, 15)
 	End Method
 
 
 	Method RenderPlayerPositions(x:Int, y:Int)
-		DrawBorderRect(x, y, 130, 70)
-
-		titleFont.draw("Player positions:", x + 5, y + 5)
+		Local contentRect:SRectI = DrawWindow(x, y, 130, 70, "Player Positions")
 
 		Local roomName:String = ""
 		Local fig:TFigure
@@ -83,9 +72,9 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 			Local change:String = ""
 			If fig.isChangingRoom()
 				If fig.inRoom
-					change = "<-[]" 'Chr(8646)
+					change = " " + Chr(11013) + "[]"
 				Else
-					change = "->[]" 'Chr(8646)
+					change = " []" + Chr(10145)
 				EndIf
 			EndIf
 
@@ -98,44 +87,49 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 				roomName = "AtElevator"
 			EndIf
 			If fig.isControllable()
-				textFont.draw((i + 1) + ": "+roomName + change , x + 5, y + 20 + i * 10 - 1)
+				textFont.draw((i + 1) + ": "+roomName + change , contentRect.x, contentRect.y + i * 10 - 1)
 			Else
-				textFont.draw((i + 1) + ": "+roomName + change +" (forced)" , x + 5, y + 20 + i * 10 - 1)
+				textFont.draw((i + 1) + ": "+roomName + change +" (forced)" , contentRect.x, contentRect.y + i * 10 - 1)
 			EndIf
 		Next
 	End Method
 
 
 	Method RenderElevatorState(x:Int, y:Int)
-		DrawBorderRect(x, y, 130, 160)
+		Local contentRect:SRectI = DrawWindow(x, y, 130, 210, "Elevator Routes")
 
-		titleFont.draw("Elevator routes:", x + 5, y + 5)
 		Local routepos:Int = 0
-		Local startY:Int = y + 20 - 1
 		Local callType:String = ""
 
-		'Local directionString:String = "up"
-		'If GetElevator().Direction = 1 Then directionString = "down"
-
-		textFont.draw("floor: " + GetElevator().currentFloor + "->" + GetElevator().targetFloor, x + 5, startY)
-		textFont.draw("status:"+GetElevator().ElevatorStatus, x + 5 + 65, startY)
+		textFont.draw("floor: " + RSet(GetElevator().currentFloor,2).Replace(" ", "|color=175,175,175|0|/color|") + " " + Chr(10142) +" " + RSet(GetElevator().targetFloor,2).Replace(" ", "|color=175,175,175|0|/color|"), contentRect.x, contentRect.y)
+		textFont.draw("status: " + GetElevator().ElevatorStatus, contentRect.x + 75, contentRect.y)
 
 		If GetElevator().RouteLogic.GetSortedRouteList()
 			For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
 				If floorroute.call = 0 Then callType = "send" Else callType= "call"
-				textFont.draw(FloorRoute.floornumber, x + 5, startY + 15 + routepos * 11)
-				textFont.draw(callType, x + 18, startY + 15 + routepos * 11)
-				textFont.draw(FloorRoute.who.Name, x + 46, startY + 15 + routepos * 11)
+				textFont.draw(RSet(FloorRoute.floorNumber,2).Replace(" ", "|color=175,175,175|0|/color|"), contentRect.x, contentRect.y + 15 + routepos * 11)
+				textFont.draw(callType, contentRect.x + 15, contentRect.y + 15 + routepos * 11)
+				textFont.draw(FloorRoute.who.Name, contentRect.x + 43, contentRect.y + 15 + routepos * 11)
 				routepos :+ 1
 			Next
 		Else
-			textFont.draw("recalculate", x + 5, startY + 15)
+			textFont.draw("recalculate", contentRect.x, contentRect.y + 15)
 		EndIf
 	End Method
 
 
 	Method RenderFigureInformation(figure:TFigure, x:Int, y:Int)
-		DrawBorderRect(x, y, 150, 70)
+		Local name:String = "unknown"
+		Local contentRect:SRectI
+		If figure
+			Local subTitle:String
+			If Not figure.CanMove() then subTitle = "can't move"
+			contentRect = DrawWindow(x, y, 190, 45, figure.name, subTitle, 0.0)
+		Else
+			contentRect = DrawWindow(x, y, 190, 45, "unknown")
+			Return
+		EndIf
+		
 
 		Local oldCol:SColor8; GetColor(oldCol)
 
@@ -147,11 +141,10 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 			If TRoomDoor(figure.GetTargetObject())
 				targetText = TRoomDoor(figure.GetTargetObject()).GetRoom().GetName()
 			ElseIf THotSpot(figure.GetTargetObject())
-				targetText = "Hotspot"
+				targetText = "Hotspot " + figure.GetMoveToPosition().ToString()
 			Else
-				targetText = "Building"
+				targetText = "Building " + figure.GetMoveToPosition().ToString()
 			EndIf
-			targetText :+ " (" + figure.GetMoveToPosition().ToString() + ")"
 		EndIf
 
 
@@ -165,9 +158,9 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 		EndIf
 		If figure.isChangingRoom()
 			If figure.inRoom
-				roomName :+ "<-[]" 'Chr(8646)
+				roomName :+ " " + Chr(11013) + "[]"
 			Else
-				roomName :+ "->[]" 'Chr(8646)
+				roomName :+ " []" + Chr(10145)
 			EndIf
 		EndIf
 
@@ -175,15 +168,10 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 
 
 		SetColor 255,255,255
-		Local textY:Int = y + 5 - 1
-		titleFont.Draw(figure.name, x + 5, textY)
-		If Not figure.CanMove() Then textFont.DrawBox("cannot move", x, textY, 150 - 3, 14, sALIGN_RIGHT_TOP, SColor8.White)
-		textY :+ 10
-		textFont.DrawSimple(roomName, x + 5, textY)
-		textY :+ 10
-		If targetText Then textFont.DrawSimple("-> " + targetText, x + 5, textY)
-		'textY :+ 10
-		'textFont.draw("usedDoor: " + usedDoorText, x + 5, textY)
+		textFont.DrawSimple(roomName, contentRect.x, contentRect.y)
+		If targetText 
+			textFont.DrawBox(Chr(10145) + targetText, contentRect.x, contentRect.y, contentRect.w, 20, sALIGN_RIGHT_TOP, SColor8.White)
+		EndIf
 
 		SetColor(oldCol)
 	End Method
@@ -193,23 +181,50 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 		Local boss:TPlayerBoss = GetPlayerBoss(playerID)
 		If Not boss Then Return
 
+		Local contentRect:SRectI = DrawWindow(x, y, 150, 45, "Boss #" + boss.playerID)
+		Local barWidth:Int = 70
+		Local oldCol:SColor8; GetColor(oldCol)
 
-		DrawBorderRect(x,y,w,h)
-		Local textY:Int = y + 5
-
-		titleFont.draw("Boss #"  + boss.playerID, x + 5, textY - 1)
-		textY :+ 12
-		textFont.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), x + 5, textY - 1)
+		textFont.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), contentRect.x, contentRect.y)
 		SetColor 150,150,150
-		DrawRect(x + 70, textY, 70, 10 )
+		DrawRect(contentRect.x + 75, contentRect.y + 2, barWidth, 10 )
 		SetColor 0,0,0
-		DrawRect(x + 70 + 1, textY + 1, 70 - 2, 10 - 2)
+		DrawRect(contentRect.x + 75 + 1, contentRect.y + 2 + 1, barWidth - 2, 10 - 2)
 		SetColor 190,150,150
-		Local handleX:Int = MathHelper.Clamp(boss.GetMoodPercentage()*68 - 2, 0, 68 - 4)
-		DrawRect(x + 70 + 1 + handleX , textY + 1, 4, 10 - 2 )
-		SetColor 255,255,255
-	End Method
+		Local handleX:Int = MathHelper.Clamp(boss.GetMoodPercentage()*(barWidth-2) - 2, 0, (barWidth-2) - 4)
+		DrawRect(contentRect.x + 75 + 1 + handleX , contentRect.y + 2 + 1, 4, 10 - 2 )
 
+		SetColor(oldCol)
+	End Method
+	
+	
+	Method RenderWorldInformation(x:Int, y:Int)
+		Local contentRect:SRectI = DrawWindow(x, y, 140, 210, "World Data")
+
+		Local dy:Int = 0
+		Local wt:TWorldTime = GetWorldTime()
+		Local weather:TWorldWeather = GetWorld().Weather
+		dy :+ textFont.DrawSimple("Time: " + wt.GetFormattedTime() + " " + wt.GetDayPhaseText(), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("Date: " + wt.GetFormattedDate(), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("Day: " + wt.GetDay(), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("Day: " + wt.GetDayOfMonth() + " of month: " + wt.GetMonth(), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("Day: " + wt.GetDayOfYear()+" of year: "+wt.GetYear(), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("Season: " + wt.GetSeason()+"/4", contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("Weather: " + weather.GetWeatherText(), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("  Wind: " + MathHelper.NumberToString(weather.GetWindVelocity(),4), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("  Temp.: " + MathHelper.NumberToString(weather.GetTemperature(),4), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("  TargetTemp.: " + MathHelper.NumberToString(weather.currentWeather._targetTemperature,4), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("Speed.: " + wt.GetTimeFactor(), contentRect.x, contentRect.y + dy).y
+
+		Local sunRiseString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetSunRise(), "h:i")
+		Local sunSetString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetSunSet(), "h:i")
+		dy :+ textFont.DrawSimple("Rise: " + sunRiseString + "   set:" + sunSetString, contentRect.x, contentRect.y + dy).y
+
+		Local dawnString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetDawnPhaseBegin(), "h:i")
+		Local duskString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetDuskPhaseBegin(), "h:i")
+		dy :+ textFont.DrawSimple("Dawn: " + dawnString + "   dusk:" + duskString, contentRect.x, contentRect.y + dy).y
+	End Method
+	
 
 	Function DrawProfilerCallHistory(profilerCall:TProfilerCall, x:Int, y:Int, w:Int, h:Int, label:String, drawType:Int=0)
 		SetAlpha 0.5
@@ -265,8 +280,8 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 			Next
 
 			SetColor 255,255,255
-			GetBitmapFont("Default", 10).DrawBox(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, sALIGN_RIGHT_TOP, SColor8.White)
+			GetBitmapFont("Default", 9).DrawBox(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		EndIf
-		GetBitmapFont("Default", 10).DrawBox(label, x+2, y+2, w-4, 20, sALIGN_LEFT_TOP, SColor8.White)
+		GetBitmapFont("Default", 9).DrawBox(label, x+2, y+2, w-4, 20, sALIGN_LEFT_TOP, SColor8.White)
 	End Function
 End Type
