@@ -182,11 +182,11 @@ Type TInGameInterface
 		audienceColor = new SColor8(200,200,230)
 		bettyLovecolor = new SColor8(220,200,180)
 		channelImageColor = new SColor8(200,220,180)
-		currentDaycolor = new SColor8(180,180,180)
-		marketShareColor = new SColor8(180,180,210)
-		negativeProfitColor = new SColor8(200,170,170)
-		neutralProfitColor = new SColor8(170,170,170)
-		positiveProfitColor = new SColor8(170,200,170)
+		currentDaycolor = new SColor8(180,180,180, 200)
+		marketShareColor = new SColor8(180,180,210, 200)
+		negativeProfitColor = new SColor8(200,170,170, 200)
+		neutralProfitColor = new SColor8(170,170,170, 200)
+		positiveProfitColor = new SColor8(170,200,170, 200)
 
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
@@ -586,14 +586,11 @@ Type TInGameInterface
 				CurrentProgrammeToolTip.Hover()
 			EndIf
 			If THelper.MouseIn(309,412,178,32)
-				MoneyToolTip.title = getLocale("MONEY")
+				MoneyToolTip.SetTitle(getLocale("MONEY") + ": " + GetFormattedCurrency(GetPlayerBase().GetMoney()))
 				local content:String = ""
-				content	= "|b|"+getLocale("MONEY")+":|/b| "+GetFormattedCurrency(GetPlayerBase().GetMoney())
 				if GetPlayerBase().GetCredit() > 0
-					content	:+ "~n"
 					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ GetFormattedCurrency(GetPlayerBase().GetCredit()) +"|/color|"
 				else
-					content	:+ "~n"
 					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=0,200,100|" + GetFormattedCurrency(0)+"|/color|"
 				endif
 
@@ -959,8 +956,19 @@ Type TInGameInterface
 
 		'=== INTERFACE TEXTS ===
 
-		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 415, 130, 29, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
+		'player money / current days financial win/loss
+		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 414, 130, 29, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
+		local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
+		if profit > 0
+			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
+		elseif profit = 0
+			_interfaceFont.DrawBox(0, 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, neutralProfitColor, EDrawTextEffect.Shadow, 0.5)
+		else
+			_interfaceFont.DrawBox(MathHelper.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
+		endif
 
+
+		' audience / market share
 		Local audienceStr:String = "0"
 		Local audiencePercentageStr:String = "0"
 		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
@@ -968,31 +976,16 @@ Type TInGameInterface
 			audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
 			audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 		EndIf
-		_interfaceBigFont.DrawBox(audienceStr, 357, 450, 130, 29, sALIGN_CENTER_TOP, audienceColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceBigFont.DrawBox(audienceStr, 357, 449, 130, 29, sALIGN_CENTER_TOP, audienceColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox(audiencePercentageStr+"%", 357, 449, 130, 29, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
 
 
-		'=== DRAW SECONDARY INFO ===
-'			local oldAlpha:Float = GetAlpha()
-		SetAlpha oldAlpha*0.75
+		' current time / day
+		_interfaceBigFont.DrawBox(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 540, 130, 29, sALIGN_CENTER_TOP, new SColor8(220,220,220), EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 540, 130, 29, sALIGN_CENTER_BOTTOM, currentDayColor, EDrawTextEffect.Shadow, 0.5)
+		
 
-		'current days financial win/loss
-		local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
-		if profit > 0
-			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 415, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
-		elseif profit = 0
-			_interfaceFont.DrawBox(0, 357, 415, 130, 29, sALIGN_CENTER_BOTTOM, neutralProfitColor, EDrawTextEffect.Shadow, 0.5)
-		else
-			_interfaceFont.DrawBox(MathHelper.DottedValue(profit), 357, 415, 130, 29, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
-		endif
-
-		'market share
-		_interfaceFont.DrawBox(audiencePercentageStr+"%", 357, 450, 130, 29, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
-
-		'current day
-		_interfaceFont.DrawBox((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 541, 130, 29, sALIGN_CENTER_BOTTOM, currentDayColor, EDrawTextEffect.Shadow, 0.5)
-
-		SetAlpha oldAlpha
-
+		' betty love bar / label
 		local bettyLove:Float = Min(Max(GetBetty().GetInLovePercentage( playerID ), 0.0),1.0)
 		local bettyLoveText:String = MathHelper.NumberToString(bettyLove*100, 2)+"%"
 		if bettyLove * 116 >= 1
@@ -1003,7 +996,9 @@ Type TInGameInterface
 			SetAlpha oldAlpha
 		endif
 		_interfaceFont.DrawBox(bettyLoveText, 363, 488, 118, 18, sALIGN_CENTER_CENTER, bettyLoveColor, EDrawTextEffect.Shadow, 0.5)
+		
 
+		' channel image bar / label
 		local channelImage:Float = Min(Max(GetPublicImageCollection().Get( playerID ).GetAverageImage()/100.0, 0.0),1.0)
 		local channelImageText:String = MathHelper.NumberToString(channelImage*100, 2)+"%"
 		if channelImage * 120 >= 1
@@ -1015,11 +1010,8 @@ Type TInGameInterface
 		endif
 		_interfaceFont.DrawBox(channelImageText, 363, 516, 118, 18, sALIGN_CENTER_CENTER, channelImageColor, EDrawTextEffect.Shadow, 0.5)
 
+
 		'DrawText(GetBetty().GetLoveSummary(),358, 535)
-
-		SetBlend ALPHABLEND
-
-		_interfaceBigFont.DrawBox(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 541, 130, 29, sALIGN_CENTER_TOP, new SColor8(220,220,220), EDrawTextEffect.Shadow, 0.5)
 
 
 		'=== DRAW HIGHLIGHTED CURRENT SPEED ===
