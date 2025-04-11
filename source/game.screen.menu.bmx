@@ -1167,20 +1167,24 @@ Function DrawMenuBackground(darkened:Int=False, drawLogo:Int = False)
 		Local linkColor:SColor8 = New SColor8(60,60,120)
 		Local oldA:Float = GetAlpha()
 		Local offsetY:Int = 0
-		offsetY :+ GetBitmapFont("Default",13, BOLDFONT).DrawBox("Wir brauchen Deine Hilfe!", 10,460 + offsetY, 300, -1, sALIGN_LEFT_TOP, defaultColor).y
-		offsetY :+ GetBitmapFont("Default",12).DrawBox("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,460 + offsetY, 300,-1, sALIGN_LEFT_TOP, defaultColor).y
-		local dim:SVec2I = GetBitmapFont("Default",12, BOLDFONT).DrawBox("gamezworld.de/phpforum", 10,460 + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor)
+		Local startY:Int = 440
+		offsetY :+ GetBitmapFont("Default",12, BOLDFONT).DrawBox("Wir brauchen Deine Hilfe!", 10, startY + offsetY, 300, -1, sALIGN_LEFT_TOP, defaultColor).y
+		offsetY :+ 5
+		offsetY :+ GetBitmapFont("Default",11).DrawBox("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10, startY + offsetY, 300,-1, sALIGN_LEFT_TOP, defaultColor).y
+		local dim:SVec2I = GetBitmapFont("Default",11, BOLDFONT).DrawBox("gamezworld.de/phpforum", 10, startY + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor)
 		SetAlpha 0.75 * oldA
-		GetBitmapFont("Default",10).DrawBox("(ohne Anmeldung nutzbar)", 10 + dim.x + 8,460 + offsetY + 2, 500,20, sALIGN_LEFT_TOP, New SColor8(80,80,170))
+		GetBitmapFont("Default",9).DrawBox("(ohne Anmeldung nutzbar)", 10 + dim.x + 8, startY + offsetY + 1, 500,20, sALIGN_LEFT_TOP, New SColor8(80,80,170))
 		offsetY :+ dim.y
+		offsetY :+ 5
 		SetAlpha oldA
-		offsetY :+ GetBitmapFont("Default",12, BOLDFONT).DrawBox("github.com/TVTower", 10,460 + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor).y
+		offsetY :+ GetBitmapFont("Default",11, BOLDFONT).DrawBox("github.com/TVTower", 10, startY + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor).y
+		offsetY :+ GetBitmapFont("Default",11, BOLDFONT).DrawBox("TVTower.org", 10, startY + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor).y
 
 
 		Local bottomStartY:Int = GetGraphicsManager().GetHeight() - 100 - 10
 		offsetY = 0
-		offsetY :+ GetBitmapFont("Default",12, ITALICFONT).DrawBox(copyrightstring+", www.TVTower.org", 10, bottomStartY, 500, 100, sALIGN_LEFT_BOTTOM, linkColor).y
-		offsetY :+ GetBitmapFont("Default",12, ITALICFONT).DrawBox(versionstring, 10, bottomStartY - offsetY, 500, 100, sALIGN_LEFT_BOTTOM, defaultColor).y
+		offsetY :+ GetBitmapFont("Default",11, ITALICFONT).DrawBox(copyrightstring, 10, bottomStartY, 500, 100, sALIGN_LEFT_BOTTOM, linkColor).y
+		offsetY :+ GetBitmapFont("Default",11, ITALICFONT).DrawBox(versionstring, 10, bottomStartY - offsetY, 500, 100, sALIGN_LEFT_BOTTOM, defaultColor).y
 	EndIf
 
 	If darkened
