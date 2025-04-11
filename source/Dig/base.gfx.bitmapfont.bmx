@@ -714,6 +714,8 @@ endrem
 		Local charsToLoad:Int = charCodeEnd - charCodeStart
 		Local chars:TBitmapFontChar[charsToLoad]
 		For Local i:Int = 0 Until charsToLoad
+			If charCodeStart + i < 32 Then continue 'ignore non-printables (except space)
+
 			Local glyph:TImageGlyph
 			Local glyphIndex:Int = imgFont.CharToGlyph(charCodeStart + i)
 			If glyphIndex >= 0
@@ -1249,7 +1251,7 @@ endrem
 		Local bm:TBitmapFontChar = charGroups[charGroupIndex].chars[charIndex]
 
 		'some fonts do not contain the given char ... display "?" there
-		If Not bm And (charGroupIndex <> 0 Or charIndex <> Asc("?"))
+		If Not bm And (charGroupIndex <> 0 Or charIndex <> Asc("?")) and charIndex >= 32
 			bm = __GetBitmapFontChar(Asc("?"))
 		EndIf
 		Return bm
