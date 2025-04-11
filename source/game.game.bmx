@@ -86,8 +86,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'=== SETUP TOOLTIPS ===
-		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
-		TTooltip.UseFont = GetBitmapFontManager().baseFont
+		TTooltip.UseFontBold = GetBitmapFont("default", 12, BOLDFONT)
+		TTooltip.UseFont = GetBitmapFont("default", 11)
 		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
 		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
 
