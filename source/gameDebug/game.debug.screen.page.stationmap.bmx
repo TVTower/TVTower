@@ -33,7 +33,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 			button = CreateActionButton(i, texts[i], position.x, position.y)
 			button.w = 115
 			'custom position
-			button.x = position.x + 512
+			button.x = position.x + 547
 			button.y = 18 + 2 + i * (button.h + 2)
 
 			button._onClickHandler = OnButtonClickHandler
@@ -48,7 +48,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 	Method MoveBy(dx:Int, dy:Int) override
 		'move buttons
 		For Local b:TDebugControlsButton = EachIn buttons
-			b.x :+ dx + 35
+			b.x :+ dx
 			b.y :+ dy
 		Next
 	End Method
