@@ -46,8 +46,8 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 
 		Local sideInfoW:Int = 160
 		For Local i:Int = 0 To 3
-			RenderFigureInformation( GetPlayer(i+1).GetFigure(), x + 140, 15 + i*55)
-			RenderBossMood(i+1, x + 140 + 200 + 2, 15 + i*55, sideInfoW, 30)
+			RenderFigureInformation( GetPlayer(i+1).GetFigure(), x + 140, position.y + i*55)
+			RenderBossMood(i+1, x + 140 + 200 + 2, position.y + i*55, sideInfoW, 30)
 '			textFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
 
 			If TProfiler.activated And GetPlayer(i+1).IsLocalAI()
@@ -57,7 +57,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 
 		Next
 
-		RenderWorldInformation(x + 500, 15)
+		RenderWorldInformation(x + 500, position.y)
 	End Method
 
 

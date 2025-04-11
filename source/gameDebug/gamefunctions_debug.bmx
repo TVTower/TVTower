@@ -59,57 +59,57 @@ Type TDebugScreen
 		Next
 
 		pageOverview = new TDebugScreenPage_Overview.Init()
-		pageOverview.SetPosition(sideButtonPanelWidth, 20)
+		pageOverview.SetPosition(sideButtonPanelWidth, 15)
 
 		currentPage = pageOverview
 
 		pagePlayerCommands = TDebugScreenPage_PlayerCommands.GetInstance().Init()
-		pagePlayerCommands.SetPosition(sideButtonPanelWidth, 20)
+		pagePlayerCommands.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePlayerFinancials = TDebugScreenPage_PlayerFinancials.GetInstance().Init()
-		pagePlayerFinancials.SetPosition(sideButtonPanelWidth, 20)
+		pagePlayerFinancials.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePlayerBroadcasts = TDebugScreenPage_PlayerBroadcasts.GetInstance().Init()
-		pagePlayerBroadcasts.SetPosition(sideButtonPanelWidth, 20)
+		pagePlayerBroadcasts.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePublicImages = TDebugScreenPage_PublicImages.GetInstance().Init()
-		pagePublicImages.SetPosition(sideButtonPanelWidth, 20)
+		pagePublicImages.SetPosition(sideButtonPanelWidth, 15)
 
 		pageStationmap = TDebugScreenPage_StationMap.GetInstance().Init()
-		pageStationmap.SetPosition(sideButtonPanelWidth, 20)
+		pageStationmap.SetPosition(sideButtonPanelWidth, 15)
 
 		pageAdAgency = TDebugScreenPage_AdAgency.GetInstance().Init()
-		pageAdAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageAdAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageMovieAgency = TDebugScreenPage_MovieAgency.GetInstance().Init()
-		pageMovieAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageMovieAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageNewsAgency = TDebugScreenPage_NewsAgency.GetInstance().Init()
-		pageNewsAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageNewsAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageScriptAgency = TDebugScreenPage_ScriptAgency.GetInstance().Init()
-		pageScriptAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageScriptAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageRoomAgency = TDebugScreenPage_RoomAgency.GetInstance().Init()
-		pageRoomAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageRoomAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePolitics = TDebugScreenPage_Politics.GetInstance().Init()
-		pagePolitics.SetPosition(sideButtonPanelWidth, 20)
+		pagePolitics.SetPosition(sideButtonPanelWidth, 15)
 
 		pageCustomProductions = TDebugScreenPage_CustomProductions.GetInstance().Init()
-		pageCustomProductions.SetPosition(sideButtonPanelWidth, 20)
+		pageCustomProductions.SetPosition(sideButtonPanelWidth, 15)
 
 		pageProducers = TDebugScreenPage_Producers.GetInstance().Init()
-		pageProducers.SetPosition(sideButtonPanelWidth, 20)
+		pageProducers.SetPosition(sideButtonPanelWidth, 15)
 
 		pageSports = TDebugScreenPage_Sports.GetInstance().Init()
-		pageSports.SetPosition(sideButtonPanelWidth, 20)
+		pageSports.SetPosition(sideButtonPanelWidth, 15)
 
 		pageModifiers = TDebugScreenPage_Modifiers.GetInstance().Init()
-		pageModifiers.SetPosition(sideButtonPanelWidth, 20)
+		pageModifiers.SetPosition(sideButtonPanelWidth, 15)
 
 		pageMisc = TDebugScreenPage_Misc.GetInstance().Init()
-		pageMisc.SetPosition(sideButtonPanelWidth, 20)
+		pageMisc.SetPosition(sideButtonPanelWidth, 15)
 
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onStartGame) ]
 	End Method
