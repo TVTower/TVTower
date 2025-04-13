@@ -66,7 +66,7 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 			'for all screens
 			tabGroup = New TGUITabGroup.Create(New SVec2I(19, 10), New SVec2I(762,28), "officeStatisticsScreen")
 
-			Local buttonFont:TBitmapFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
+			Local buttonFont:TBitmapFont = GetBitmapFontManager().Get("Default", 11, BOLDFONT)
 			For Local i:Int = 0 Until 5
 				Local btn:TGUIToggleButton = New TGUIToggleButton.Create(New SVec2I(i*155, 0), New SVec2I(142, 28), "", "officeStatisticsScreen")
 				btn.SetFont( buttonFont )
@@ -556,11 +556,11 @@ endrem
 		'fill cache
 		If Not valueBG Then valueBG = GetSpriteFromRegistry("screen_financial_balanceValue")
 		If Not valueBG2 Then valueBG2 = GetSpriteFromRegistry("screen_financial_balanceValue2")
-		If Not captionFont Then captionFont = GetBitmapFont("Default", 14, BOLDFONT)
-		If Not textFont Then textFont = GetBitmapFont("Default", 14)
-		If Not boldTextFont Then boldTextFont = GetBitmapFont("Default", 14, BOLDFONT)
-		If Not smallTextFont Then smallTextFont = GetBitmapFont("Default", 12)
-		If Not smallBoldTextFont Then smallBoldTextFont = GetBitmapFont("Default", 12, BOLDFONt)
+		If Not captionFont Then captionFont = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not textFont Then textFont = GetBitmapFont("Default", 12)
+		If Not boldTextFont Then boldTextFont = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not smallTextFont Then smallTextFont = GetBitmapFont("Default", 10)
+		If Not smallBoldTextFont Then smallBoldTextFont = GetBitmapFont("Default", 10, BOLDFONt)
 
 		'=== DAY CHANGER ===
 		'how much days to draw
@@ -596,7 +596,7 @@ endrem
 				'the small added/subtracted numbers are for padding of the text
 				Local labelArea:SRectI = New SRectI(tableX + 4, 81-1, 175-4, 19)
 				Local valueArea:SRectI = New SRectI(labelArea.GetX2(), labelArea.y + 2, 155 - 5, 19)
-				Local captionArea:SRectI = New SRectI(labelArea.x, 57, 322, captionHeight)
+				Local captionArea:SRectI = New SRectI(labelArea.x, 55, 322, captionHeight)
 				Local bgArea:SRectI = New SRectI(tableX + 4 - 3, 81 -1, valueArea.GetX2() - labelArea.x + 6, 19)
 				
 				
@@ -672,15 +672,15 @@ endrem
 					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE")+":", labelArea.x, labelArea.y + 1*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.x, labelArea.y + 2*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 
-					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 0*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
-					TextFont.DrawBox("#"+audienceRanks[0], valueArea.x, valueArea.y + 0*valueArea.h -2, valueArea.w, valueArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
+					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.x, valueArea.y - 1 + 0*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y - 1 + 0*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					TextFont.DrawBox("#"+audienceRanks[0], valueArea.x, valueArea.y + 0*valueArea.h -1, valueArea.w, valueArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0), valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0), valueArea.x, valueArea.y - 1 + 1*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y - 1 + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.x, valueArea.y + 2*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.x, valueArea.y - 1 + 2*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.x, valueArea.y - 1 + 2*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
 					'target groups
 					Local halfWidth:Int = 0.5 * (valueArea.GetX2() - labelArea.x)
@@ -717,7 +717,7 @@ endrem
 			GetColor(backupColor)
 			backupColorA = GetAlpha()
 
-			captionFont.DrawBox(GetLocale("AUDIENCE_RATINGS"), 30, startY,  740, captionHeight, sALIGN_LEFT_CENTER, captionColor, EDrawTextEffect.Emboss,  0.5)
+			captionFont.DrawBox(GetLocale("AUDIENCE_RATINGS"), 30, startY-2,  740, captionHeight, sALIGN_LEFT_CENTER, captionColor, EDrawTextEffect.Emboss,  0.5)
 
 			Local rightX:Int = 0
 			Local dim:SVec2I
@@ -893,11 +893,11 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 	Method Init()
 		If Not valueBG Then valueBG = GetSpriteFromRegistry("screen_financial_balanceValue")
 		If Not valueBG2 Then valueBG2 = GetSpriteFromRegistry("screen_financial_balanceValue2filled")
-		If Not captionFont Then captionFont = GetBitmapFont("Default", 14, BOLDFONT)
-		If Not textFont Then textFont = GetBitmapFont("Default", 14)
-		If Not boldTextFont Then boldTextFont = GetBitmapFont("Default", 14, BOLDFONT)
-		If Not smallTextFont Then smallTextFont = GetBitmapFont("Default", 12)
-		If Not smallBoldTextFont Then smallBoldTextFont = GetBitmapFont("Default", 12, BOLDFONt)
+		If Not captionFont Then captionFont = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not textFont Then textFont = GetBitmapFont("Default", 12)
+		If Not boldTextFont Then boldTextFont = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not smallTextFont Then smallTextFont = GetBitmapFont("Default", 10)
+		If Not smallBoldTextFont Then smallBoldTextFont = GetBitmapFont("Default", 10, BOLDFONt)
 	End Method
 
 
@@ -1581,7 +1581,7 @@ Type TDataChart
 
 
 	Method Render()
-		if not labelFont Then labelFont = GetBitmapFont("Default", 10)
+		if not labelFont Then labelFont = GetBitmapFont("Default", 9)
 
 
 		RenderBackground()
@@ -1809,7 +1809,8 @@ Type TDataChart
 
 				labelFont.DrawBox(xSegmentLabels[i], x + GetSegmentStart(i) + bottomAxisLabelOffset.GetIntX(), area.GetY2() - bottomXLabelH + bottomAxisLabelOffset.GetIntY(), GetSegmentWidth(i), bottomXLabelH, sALIGN_CENTER_CENTER, col)
 			EndIf
-			labelFont.DrawBox(dataIndex, x + GetSegmentStart(i) + bottomAxisLabelOffset.GetIntX(), -20 + area.GetY2() - bottomXLabelH + bottomAxisLabelOffset.GetIntY(), GetSegmentWidth(i), bottomXLabelH, sALIGN_CENTER_CENTER, col)
+			'not needed
+			'labelFont.DrawBox(dataIndex, x + GetSegmentStart(i) + bottomAxisLabelOffset.GetIntX(), -20 + area.GetY2() - bottomXLabelH + bottomAxisLabelOffset.GetIntY(), GetSegmentWidth(i), bottomXLabelH, sALIGN_CENTER_CENTER, col)
 		Next
 
 		'values

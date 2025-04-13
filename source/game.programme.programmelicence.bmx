@@ -2346,7 +2346,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 		barH = skin.GetBarSize(100, -1).y
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + skin.fontCaption.GetBoxHeight(title, contentW - 10, 100))
 		'increase for multiline
 '		if titleH > 18 then titleH :+ 3
 
@@ -2385,9 +2385,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		if titleH <= 18
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontCaption.DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontCaption.DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 		contentY :+ titleH
 
@@ -2474,11 +2474,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		contentY :+ barAreaPaddingY
 		'speed
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 		'critic/review
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 		'boxoffice/outcome
 		if data.IsTVDistribution()
@@ -2486,13 +2486,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'use a different text color if tv-outcome is not calculated
 			'yet
 			if GetOutcomeTV() < 0
-				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 2, new SColor8(180,50,50), EDrawTextEffect.Emboss, 0.3)
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 3, new SColor8(180,50,50), EDrawTextEffect.Emboss, 0.3)
 			else
-				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			endif
 		else
 			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcome())
-			skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+			skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 		endif
 		contentY :+ barH + 1
 		'topicality/maxtopicality
