@@ -22,6 +22,10 @@ Type TDebugScreenPage_Politics extends TDebugScreenPage
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
+			button.w = 115
+			'custom position
+			button.x = position.x + 547
+			button.y = 18 + 2 + i * (button.h + 2)
 			button._onClickHandler = OnButtonClickHandler
 
 			buttons :+ [button]
@@ -60,7 +64,7 @@ Type TDebugScreenPage_Politics extends TDebugScreenPage
 
 
 	Method Render()
-		DrawBorderRect(position.x + 510, 13, 160, 65)
+		DrawWindow(position.x + 545, position.y, 120, 73, "Manipulate")
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next

@@ -24,6 +24,10 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
+			button.w = 115
+			'custom position
+			button.x = position.x + 547
+			button.y = 18 + 2 + i * (button.h + 2)
 			button._onClickHandler = OnButtonClickHandler
 
 			buttons :+ [button]
@@ -56,7 +60,7 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 	Method Update()
 		Local playerID:Int = GetShownPlayerID()
 
-		UpdateScriptAgencyOffers(playerID, position.x + 5, 13 + 45 + 5)
+		UpdateScriptAgencyOffers(playerID, position.x, 13)
 
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()
@@ -67,8 +71,8 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 	Method UpdateScriptAgencyOffers(playerID:Int, x:Int, y:Int, w:Int = 400, h:Int = 150)
 		scriptAgencyOfferHightlight = null
 
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
+		Local textX:Int = x + 2
+		Local textY:Int = y + 20 + 2
 
 		textY :+ 15
 		If Not scriptAgencyOfferHightlight
@@ -82,8 +86,6 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 			Next
 		EndIf
 
-'		textY = y + 5
-'		textX :+ 200
 		textY :+ 15
 		If Not scriptAgencyOfferHightlight
 			For Local script:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
@@ -101,10 +103,9 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		RenderScriptAgencyInformation(playerID, position.x + 5, 13, , 45)
-		RenderScriptAgencyOffers(playerID, position.x + 5, 13 + 45 + 5)
+		RenderScriptAgencyOffers(playerID, position.x, 13)
 
-		DrawBorderRect(position.x + 510, 13, 160, 45)
+		DrawWindow(position.x + 545, position.y, 120, 73, "Manipulate")
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -115,25 +116,18 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 	End Method
 
 
-	Method RenderScriptAgencyInformation(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 30)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-
-		textFont.DrawSimple("Offer refill: " + GetGameBase().refillScriptAgencyTime +"min", x, y)
-	End Method
+	Method RenderScriptAgencyOffers(playerID:Int, x:Int, y:Int, w:Int = 500, h:Int = 260)
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Script Offers", "Refill in " + GetGameBase().refillScriptAgencyTime +" min")
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
 
 
-	Method RenderScriptAgencyOffers(playerID:Int, x:Int, y:Int, w:Int = 500, h:Int = 150)
-		DrawBorderRect(x, y, w, h + 120)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
 		Local entryNum:Int = 0
 		Local oldAlpha:Float = GetAlpha()
 		Local barWidth:Int = 230
 
 		textFontBold.Draw("Offered:", textX, textY)
-		textY :+ 14
+		textY :+ 15
 		For Local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
 			If Not script.isOwnedByVendor() Then Continue
 			RenderScript(script, entryNum, textX, textY, barWidth, oldAlpha, scriptAgencyOfferHightlight, True)
@@ -151,7 +145,7 @@ Type TDebugScreenPage_ScriptAgency extends TDebugScreenPage
 			entryNum :+ 1
 		Next
 
-		textY = y + 5
+		textY = contentRect.y
 		textX :+ 250
 		textFontBold.Draw("Player owned:", textX, textY)
 		textY :+ 15
