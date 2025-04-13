@@ -30,6 +30,10 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
+			button.w = 115
+			'custom position
+			button.x = position.x + 547
+			button.y = 18 + 2 + i * (button.h + 2)
 			button._onClickHandler = OnButtonClickHandler
 
 			buttons :+ [button]
@@ -74,46 +78,45 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 
 	Method Render()
-		RenderGameModifierList(position.x + 5, position.y - 10, 275)
+		RenderDifficulties(position.x, position.y)
 
-		RenderDifficulties(position.x + 285, position.y -10)
+		RenderGameModifierList(position.x, position.y + 220, 540, 140)
 
-		DrawBorderRect(position.x + 510, 13, 160, 80)
+		DrawWindow(position.x + 545, position.y, 120, 89, "Manipulate")
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
 	End Method
 
 
-	Method RenderGameModifierList(x:int, y:int, w:int = 300, h:int = 370)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 2
-
-		titleFont.DrawSimple("Game Modifiers: ", textX, textY)
-
-		textY :+ 12 
-
+	Method RenderGameModifierList(x:int, y:int, w:int = 300, h:int = 120)
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Game Modifiers", "", 0.0)
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
+		Local modifierWidth:Int = contentRect.w / 2 - 15
 		Local data:TData = GameConfig._modifiers
 		If data
 			For Local k:TLowerString = EachIn data.data.Keys()
-				If textY + 12 > y + h Then Continue
+				If textY + 12 > contentRect.y + contentRect.h 
+					textY = contentRect.Y
+					textX :+ modifierWidth + 15
+				EndIf
+				If textX - contentRect.x > contentRect.w Then exit
 
-				textFont.DrawBox(k.ToString(), textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
-				textFont.DrawBox(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, w - 10, 15, sALIGN_RIGHT_TOP, SColor8.White)
+				textFont.DrawBox(k.ToString(), textX, textY, modifierWidth - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
+				textFont.DrawBox(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX + modifierWidth - 40, textY, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
 				textY :+ 12
 			Next
 		EndIf
 	End Method
 
-	Method RenderDifficulties(x:int, y:int, w:int = 220, h:int = 370)
-		DrawBorderRect(x, y, w, h)
-		difficultyX = x + 5
-		difficultyY = y + 2
-		difficultyWidth = w
 
-		titleFont.DrawSimple("Player " + playerID +" Difficulty (" +difficulty.GetGUID()+"): ", difficultyX, difficultyY)
-		difficultyY = difficultyY + 12
+	Method RenderDifficulties(x:int, y:int, w:int = 540, h:int = 215)
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Player #" + playerID, "Difficulty: " +difficulty.GetGUID(), 0.0)
+		difficultyX = contentRect.x
+		difficultyY = contentRect.y
+		difficultyWidth = contentRect.w / 2 - 15
+
 		'TODO Spieler mit gleichem Level teilen sich wohl dasselbe Objekt - keine spielerindividuellen Difficulty-Werte
 		'programme
 		renderModifier("Programme Price", "licPrice", difficulty.programmePriceMod)
@@ -128,13 +131,17 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		renderModifier("Ad Penalty", "adPenalty", difficulty.adcontractPenaltyMod)
 		renderModifier("Target Group", "adTarget", difficulty.adcontractLimitedTargetgroupMod)
 		renderModifier("Infomercial Profit", "infoProfit", difficulty.adcontractInfomercialProfitMod)
-
+		
 		renderModifier("Broadcast Permission", "permPrice", difficulty.broadcastPermissionPriceMod)
 		renderModifier("Antenna Price", "stPrice", difficulty.antennaBuyPriceMod)
 		renderModifier("Antenna Constr. Time", "stTime", difficulty.antennaConstructionTime,1)
 		renderModifier("Antenna Daily Costs", "stDaily", difficulty.antennaDailyCostsMod)
 		renderModifier("Ant. Daily Costs Increase", "stInc", difficulty.antennaDailyCostsIncrease,1)
 		renderModifier("Ant. Daily Increase Max", "stIncMax", difficulty.antennaDailyCostsIncreaseMax,1)
+
+		difficultyX = contentRect.x + (1 * difficultyWidth + 2*15)
+		difficultyY = contentRect.y
+
 		renderModifier("Network Price", "cablePrice", difficulty.cableNetworkBuyPriceMod)
 		renderModifier("Network Constr. Time", "cableTime", difficulty.cableNetworkConstructionTime,1)
 		renderModifier("Network Daily Costs", "cableDaily", difficulty.cableNetworkDailyCostsMod,1)
@@ -172,7 +179,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		If Not buttonsCreated
 			createModifierButtons(fieldName, change, difficultyX + difficultyWidth, difficultyY)
 		EndIf
-		difficultyY = difficultyY + 12
+		difficultyY :+ 12
 	End Method
 
 
