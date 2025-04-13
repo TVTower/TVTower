@@ -58,12 +58,11 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 	Method RenderNewsEventInfo(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
 		If Not hoveredNewsEvent Then Return
-		
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
 
-		textY :+ textFont.DrawSimple("ID: " + hoveredNewsEvent.GetID(), textX, textY).y
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "News Event", "ID: " + hoveredNewsEvent.GetID())
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
+		
 		textY :+ textFont.DrawSimple("Price: " + hoveredNewsEvent.GetPrice(), textX, textY).y
 
 		If hoveredNewsEvent.triggeredByID or hoveredNewsEvent.GetEffectsList("happen")
@@ -144,14 +143,12 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 
 	Method RenderNewsAgencyHistory(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Log", "Happened: " + GetNewsEventCollection().nextNewsNumber)
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
 
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-		
 		Local lastNews:TNewsEvent[] = GetNewsEventCollection().GetNewsHistory(4) 'only last x
-		textFont.DrawSimple("Log", textX, textY)
-		textY :+ 12+3
+
 		If lastNews.length = 0
 			textFont.DrawSimple("--", textX, textY)
 		Else
@@ -178,7 +175,15 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 				textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(n.happenedTime), textX, textY, textColor)
 				Local genreW:Int = textFont.DrawBox(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(n.GetGenre())), textX + 100, textY, x + w - textX - 5 - 100, 15, sALIGN_RIGHT_TOP, New SColor8(255,255,255, 200)).x
-				textFont.DrawBox(n.GetTitle(), textX + 100, textY, x + w - textX - 5 - 100 - genreW, 15, sALIGN_LEFT_TOP, textColor)
+				Local t:String = n.GetTitle()
+				If Not t 
+					If n.HasFlag(TVTNewsFlag.INVISIBLE_EVENT)
+						t = "Hidden Trigger News"
+					Else
+						t = "No title"
+					EndIf
+				EndIf
+				textFont.DrawBox(t, textX + 105, textY, x + w - textX - 5 - 105 - genreW, 15, sALIGN_LEFT_TOP, textColor)
 				textY :+ 12
 			Next
 		EndIf
@@ -186,14 +191,12 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 	
 
 	Method RenderNewsAgencyQueue(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-		
 		Local upcoming:TObjectList = GetNewsEventCollection().GetUpcomingNewsList()
 
-		textFont.DrawSimple("Queue", textX, textY)
-		textY :+ 12+3
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Queue", "Upcoming: " + upcoming.Count())
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
+
 		If upcoming.Count() = 0
 			textFont.DrawSimple("--", textX, textY)
 		Else
@@ -223,7 +226,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 				textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(n.happenedTime), textX, textY, textColor)
 				Local genreW:Int = textFont.DrawBox(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(n.GetGenre())), textX + 100, textY, x + w - textX - 5 - 100, 15, sALIGN_RIGHT_TOP, New SColor8(255,255,255, 200)).x
-				textFont.DrawBox(n.GetTitle(), textX + 100, textY, x + w - textX - 5 - 100 - genreW, 15, sALIGN_LEFT_TOP, textColor)
+				textFont.DrawBox(n.GetTitle(), textX + 105, textY, x + w - textX - 5 - 105 - genreW, 15, sALIGN_LEFT_TOP, textColor)
 				textY :+ 12
 				nCount :+ 1
 				If nCount >= 10 Then Exit
@@ -233,17 +236,17 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 
 	Method RenderNewsAgencyGenreSchedule(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 100)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-
 		Local upcomingCount:Int[TVTNewsGenre.count+1]
+		Local upcomingCountTotal:Int
 		For Local n:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
 			upcomingCount[n.GetGenre()] :+ 1
+			upcomingCountTotal :+ 1
 		Next
 
-		textFont.DrawSimple("Scheduled News", textX, textY)
-		textY :+ 12 + 3
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Scheduled News", "Total: " + upcomingCountTotal)
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
+
 		textFont.DrawSimple("Genre", textX, textY)
 		textFont.DrawSimple("Next", textX + 100, textY)
 		textFont.DrawSimple("Upcoming", textX + 140, textY)
@@ -258,28 +261,26 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 
 	Method RenderNewsAgencyInformation(playerID:Int, x:Int, y:Int, w:Int = 180, h:Int = 150)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-
-		textFont.DrawSimple("Player News Subscriptions", textX, textY)
-		textY :+ 12 + 3
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Player News Subscriptions", "", 0.0)
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
 
 		Local playerIndex:Int = 0
 		Local textYBackup:Int = textY
+		Local colWidth:Int = 65
 		For Local player:TPlayerBase = EachIn GetPlayerBaseCollection().players
-			textFont.DrawSimple(player.name, textX + playerIndex * 70, textY, player.color.Copy().AdjustBrightness(0.5).ToSColor8())
+			textFont.DrawSimple(player.name, textX + playerIndex * colWidth, textY, player.color.Copy().AdjustBrightness(0.5).ToSColor8())
 			textY :+ 12 + 3
 			For Local genre:Int = 0 Until player.newsabonnements.length
 				Local currLevel:Int = player.GetNewsAbonnement(genre)
 				Local maxLevel:Int = max(0, player.GetNewsAbonnementDaysMax(genre))
 				If currLevel < maxLevel
-					textFont.DrawSimple(currLevel + " / " + maxLevel + " @ " + GetWorldTime().GetFormattedDate(player.newsabonnementsSetTime[genre], "h:i"), textX + playerIndex * 70, textY, SColor8.white)
+					textFont.DrawSimple(currLevel + "/" + maxLevel + "@" + GetWorldTime().GetFormattedDate(player.newsabonnementsSetTime[genre], "h:i"), textX + playerIndex * colWidth, textY, SColor8.white)
 				ElseIf currLevel > maxLevel
 					'add time until "fixation" (so "end time")
-					textFont.DrawSimple(currLevel + " @ " + GetWorldTime().GetFormattedDate(player.newsabonnementsSetTime[genre] + GameRules.newsSubscriptionIncreaseFixTime, "h:i") + " / " + maxLevel, textX + playerIndex * 70, textY, SColor8.white)
+					textFont.DrawSimple(currLevel + "@" + GetWorldTime().GetFormattedDate(player.newsabonnementsSetTime[genre] + GameRules.newsSubscriptionIncreaseFixTime, "h:i") + "/" + maxLevel, textX + playerIndex * colWidth, textY, SColor8.white)
 				Else
-					textFont.DrawSimple(currLevel + " / " + maxLevel, textX + playerIndex * 70, textY, SColor8.white)
+					textFont.DrawSimple(currLevel + "/" + maxLevel, textX + playerIndex * colWidth, textY, SColor8.white)
 				EndIf
 				textY :+ 12
 			Next
