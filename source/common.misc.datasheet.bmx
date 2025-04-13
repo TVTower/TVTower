@@ -127,7 +127,7 @@ Type TDatasheetSkin
 			font.DrawBox( ..
 				value, ..
 				x + border.GetLeft(), ..
-				y + border.GetTop() - 1, ..
+				y + border.GetTop() - 2, ..
 				w - (border.GetRight() + border.GetLeft()),  ..
 				h - (border.GetTop() + border.GetBottom() - 4), ..
 				new SVec2F(valueAlign.x, valueAlign.y), GetTextColor(fontColorStyle), drawTextEffect.data)
