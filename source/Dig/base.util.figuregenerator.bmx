@@ -224,6 +224,9 @@ Type TFigureGeneratorFigure
 					case 2	mixColor = TColor.Create(128, 87, 62)
 					case 3	mixColor = TColor.Create(165, 57,  0)
 				End Select
+				'add a bit variation (prefer brighter variants to avoid
+				'too dark overall images - clothes, hair, skin)
+				mixColor.AdjustBrightness(PRNG.Rand(30)/100.0 - 0.05)
 			case 2 'asian
 				local variation:int = PRNG.Rand(1, 4)
 				Select variation
@@ -232,6 +235,8 @@ Type TFigureGeneratorFigure
 					case 3	mixColor = TColor.Create(204,132, 67)
 					case 4	mixColor = TColor.Create(223,185,151)
 				EndSelect
+				'add a bit variation
+				mixColor.AdjustBrightness(PRNG.Rand(10)/100.0 - 0.05)
 '			case 3
 			default 'european/caucasian
 				local variation:int = PRNG.Rand(1, 4)
@@ -241,9 +246,10 @@ Type TFigureGeneratorFigure
 					case 3	mixColor = TColor.Create(233,145,110)
 					case 4	mixColor = TColor.Create(245,210,195)
 				End Select
+				'add a bit variation (prefer darker variants to avoid
+				'too pale overall images - clothes, hair, skin)
+				mixColor.AdjustBrightness(PRNG.Rand(10)/100.0 - 0.10)
 		EndSelect
-		'add a bit variation
-		mixColor.AdjustBrightness(PRNG.Rand(10)/100.0 - 0.05)
 
 		SetSkinColor(mixColor)
 	End Method
@@ -281,7 +287,7 @@ Type TFigureGeneratorFigure
 
 			'minimum brightness
 			if PRNG.Rand(100) < 75
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( PRNG.Rand(30)/100 ) '0% - 30%
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( PRNG.Rand(30)/100 + 0.3 ) '30% - 60%
 			endif
 		else
 			Select PRNG.Rand(18)
@@ -329,7 +335,7 @@ Type TFigureGeneratorFigure
 				local modifyValue:int= PRNG.Rand(30) - 15
 				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustRGB( (modify=1)*modifyValue, (modify=2)*modifyValue, (modify=3)*modifyValue )
 			elseif PRNG.Rand(100) < 50
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustSaturation( - PRNG.Rand(50)/100.0 )
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustSaturation( 0.2 - PRNG.Rand(50)/100.0 )
 			endif
 		endif
 
