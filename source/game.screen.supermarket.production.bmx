@@ -809,7 +809,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Method InitCustomProductionElements()
-		Local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 12)
+		Local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 11)
 
 		'=== CAST ===
 		'============
@@ -1059,7 +1059,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		msgH = skin.GetMessageSize(100, -1, "").y
 
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), content.w - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), content.w - 10, 100))
 
 
 		'=== PRODUCTION CONCEPT LIST ===
@@ -1078,7 +1078,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local listH:Int = content.h - titleH - checkboxArea
 
 		skin.RenderContent(content.x, contentY, content.w, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), content.x + 5, contentY, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), content.x + 5, contentY, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(content.x, contentY, content.w, listH , "2")
 		'reposition/resize list and keep scroll position
@@ -1128,7 +1128,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			contentY :+ 10
 			skin.fontBold.DrawSimple(GetLocale("DURATION"), content.x + 5, contentY-1, skin.textColorNeutral)
-			skin.fontNormal.DrawBox(TWorldtime.GetHourMinutesLeft(currentProductionConcept.GetBaseProductionTime(), True), content.x + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(TWorldtime.GetHourMinutesLeft(currentProductionConcept.GetBaseProductionTime(), True), content.x + 5, contentY, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 			contentY :+ subtitleH
 
@@ -1237,7 +1237,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 			contentY :+ productionCompanyH
 
-			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_FOCUS"), content.x + 5, contentY + 3, content.w - 10, titleH - 3, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_FOCUS"), content.x + 5, contentY + 3, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 			'reposition sliders
 			If repositionSliders
@@ -1802,7 +1802,7 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 		labelTitle = New TGUILabel.Create(New SVec2I(15,9), GetLocale("TITLE"), "")
 		labelDescription = New TGUILabel.Create(New SVec2I(15,57), GetLocale("DESCRIPTION"), "")
 		labelEpisode = New TGUILabel.Create(New SVec2I(15,112), GetLocale("EPISODE"), "")
-		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 13, BOLDFONT) )
+		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 12, BOLDFONT) )
 		labelSubTitle = New TGUILabel.Create(New SVec2I(15,134), GetLocale("TITLE"), "")
 		labelSubDescription = New TGUILabel.Create(New SVec2I(15,177), GetLocale("DESCRIPTION"), "")
 
@@ -2933,7 +2933,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 		barH = skin.GetBarSize(100, -1).y
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(person.GetFullName(), contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(person.GetFullName(), contentW - 10, 100))
 
 		'bar area starts with padding, ends with padding and contains
 		'also contains 8 bars
@@ -2963,9 +2963,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 			'EndIf
 
 			If titleH <= 18
-				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			Else
-				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			EndIf
 		contentY :+ titleH
 

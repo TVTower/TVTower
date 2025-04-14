@@ -1243,7 +1243,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", Null, ALIGN_CENTER_CENTER).y
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 		barH = skin.GetBarSize(100, -1).y
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'message area
 		If showMsgEarnInfo Then msgAreaH :+ msgH
@@ -1278,9 +1278,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		If titleH <= 18
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		Else
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		EndIf
 		contentY :+ titleH
 
@@ -1440,15 +1440,15 @@ endrem
 		contentY :+ barAreaPaddingY
 		'speed
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 2
 		'critic/review
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 2
 		'potential
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetPotential())
-		skin.fontSmallCaption.DrawSimple(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 2
 
 
