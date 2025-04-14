@@ -1202,7 +1202,10 @@ endrem
 		EndIf
 
 		If charCode = KEY_TAB
-			Return New SVec2F(+ (Int(lineWidth / tabWidth)+1) * tabWidth, 0)
+			' advance to reach next tab "slot" ?
+			Local nextTab:Int = (int(lineWidth)/tabWidth) * tabWidth + tabWidth
+			Local tabAdvance:Int = nextTab - lineWidth
+			Return New SVec2F(tabAdvance, 0)
 		EndIf
 		
 		Return New SVec2F
@@ -1218,7 +1221,10 @@ endrem
 			EndIf
 		EndIf
 		If charCode = KEY_TAB
-			Return New SVec2F(+ (Int(lineWidth / tabWidth)+1) * tabWidth, 0)
+			' advance to reach next tab "slot" ?
+			Local nextTab:Int = (int(lineWidth)/tabWidth) * tabWidth + tabWidth
+			Local tabAdvance:Int = nextTab - lineWidth
+			Return New SVec2F(tabAdvance, 0)
 		EndIf
 		
 		Return New SVec2F
@@ -2389,21 +2395,18 @@ endrem
 
 			'render char and advance to next char position 
 			If Not newLineChar
-				Local transformedPos:SVec2F = __GetTransformedPosition(textX - handle.x*w, textY + contentAlignDY - handle.y*h - Self.displaceY, localX, localY)
-
-
 				Local bm:TBitmapFontChar = __GetBitmapFontChar(charCode)
+
 				If Not BITMAPFONTBENCHMARK
 					If drawToPixmap
 						Self.__DrawSingleCharToPixmap(bm, charCode, x + textX, y + textY - contentAlignDY, color)
-						'Self.__DrawSingleCharToPixmap(bm, charCode, transformedPos.x, transformedPos.y, color)
 					Else
+						Local transformedPos:SVec2F = __GetTransformedPosition(textX - handle.x*w, textY + contentAlignDY - handle.y*h - Self.displaceY, localX, localY)
 						Self.__DrawSingleChar(bm, charCode, transformedPos.x, transformedPos.y)
 					EndIf
 				EndIf
 
-				Local charAdv:SVec2F = __GetCharAdvance(bm, charCode, textX)
-				textX :+ charAdv.x
+				textX :+ __GetCharAdvance(bm, charCode, textX).x
 			EndIf
 
 
@@ -2905,6 +2908,8 @@ Type STextParseInfo
 '			possibleLineBreakIndex = txtIndex + 1
 		ElseIf charCode = Asc("-") 
 			possibleLineBreakIndex = txtIndex
+		ElseIf charCode = Asc("~t") 
+			possibleLineBreakIndex = txtIndex
 		'handle enforced new line
 		ElseIf charCode = 13 Or charCode = Asc("~n")
 			possibleLineBreakIndex = txtIndex
@@ -3232,6 +3237,8 @@ Type STextParseInfo
 		element.renderObject = bm
 
 		If charCode = Asc(" ")
+			element.skipOnLinebreak = True
+		ElseIf charCode = Asc("~t")
 			element.skipOnLinebreak = True
 		'no need to render this character
 		ElseIf element.manualLineBreak
