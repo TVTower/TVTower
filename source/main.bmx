@@ -6755,7 +6755,7 @@ endrem
 			Local shadowSettings:TData = New TData.addNumber("size", 1).addNumber("intensity", 0.5)
 			Local gradientSettings:TData = New TData.addNumber("gradientBottom", 180)
 			'setup effects and define the headerFont to be "bold"
-			headerFont = GetBitmapFont("headerFont", 20, BOLDFONT)
+			headerFont = GetBitmapFont("headerFont", 18, BOLDFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
 			headerFont.ApplyCharsEffects()

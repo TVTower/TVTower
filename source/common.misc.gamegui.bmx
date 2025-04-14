@@ -225,7 +225,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 		OnChangePadding()
 
 
-		SetCaptionArea(New TRectangle.Init(20, 6, GetContentScreenRect().GetW() - 2*20, 30))
+		SetCaptionArea(New TRectangle.Init(20, 8, GetContentScreenRect().GetW() - 2*20, 30))
 		guiCaptionTextBox.SetValueAlignment( ALIGN_LEFT_TOP )
 
 		Return Self
