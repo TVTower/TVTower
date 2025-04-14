@@ -2771,7 +2771,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local msgAreaH:int = 0, barAreaH:int = 0
 		local barAreaPaddingY:int = 4, msgAreaPaddingY:int = 4
 
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
 
 		'reactivate when adding messages
 		'msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", null, ALIGN_CENTER_CENTER).GetY()
@@ -2802,9 +2802,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		if titleH <= 18
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 		contentY :+ titleH
 

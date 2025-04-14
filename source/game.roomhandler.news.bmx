@@ -446,8 +446,7 @@ Type RoomHandler_News extends TRoomHandler
 			endif
 		Next
 
-		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 180,100 )
-		NewsGenreTooltip.SetMinTitleAndContentWidth(180)
+		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 190,100 )
 		NewsGenreTooltip.enabled = 1
 		'refresh lifetime
 		NewsGenreTooltip.Hover()
@@ -456,6 +455,8 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreTooltip.area.SetXY(Max(21,button.rect.x + button.rect.w), button.rect.y-30)
 
 		If level = 0
+			NewsGenreTooltip.SetMinTitleAndContentWidth(225)
+
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
 			if not playersRoom
 				NewsGenreTooltip.content = ""
@@ -463,6 +464,8 @@ Type RoomHandler_News extends TRoomHandler
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1:~t"+ GetFormattedCurrency(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+"/"+getLocale("DAY")
 			endif
 		Else
+			NewsGenreTooltip.SetMinTitleAndContentWidth(190)
+
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
 			if not playersRoom
 				NewsGenreTooltip.content = ""
@@ -641,7 +644,7 @@ Type RoomHandler_News extends TRoomHandler
 			'render to image
 			TBitmapFont.SetRenderTarget(newsPlannerTextImage)
 
-			GetBitmapFont("default", 18).DrawBox(GetLocale("NEWSPLANSIGN_TO_THE_TEAM")+"~n|b|"+ GetLocale("NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS")+"|/b|", 0, 0, 300, 50, sALIGN_CENTER_CENTER, new SColor8(100, 100, 100))
+			GetBitmapFont("default", 16).DrawBox(GetLocale("NEWSPLANSIGN_TO_THE_TEAM")+"~n|b|"+ GetLocale("NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS")+"|/b|", 0, 0, 300, 50, sALIGN_CENTER_CENTER, new SColor8(100, 100, 100))
 
 			'set back to screen Rendering
 			TBitmapFont.SetRenderTarget(null)
@@ -716,7 +719,7 @@ Type RoomHandler_News extends TRoomHandler
 			elseif showDeleteHintTimer < Time.GetTimeGone() and showDeleteHintTime + showDeleteHintTimer > Time.GetTimeGone()
 				local oldA:float = Getalpha()
 				SetAlpha oldA * 7
-				GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetLocale("RIGHT_CLICK_TO_DELETE"), draggedGuiNews.GetScreenRect().GetX(), draggedGuiNews.GetScreenRect().GetY2() + 3, draggedGuiNews.GetScreenRect().GetW(), 30, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
+				GetBitmapFont("default", 11, BOLDFONT).DrawBox(GetLocale("RIGHT_CLICK_TO_DELETE"), draggedGuiNews.GetScreenRect().GetX(), draggedGuiNews.GetScreenRect().GetY2() + 3, draggedGuiNews.GetScreenRect().GetW(), 30, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
 				SetAlpha oldA
 			endif
 		else
@@ -1172,12 +1175,12 @@ Type TGUINews Extends TGUIGameListItem
 			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
 			'default texts (title, text,...)
-			GetBitmapFontManager().basefontBold.DrawBox(news.GetTitle(), 15, 0, 330, 18, sALIGN_LEFT_TOP, new SColor8(20, 20, 20))
+			GetBitmapFont("default", 12, BOLDFONT).DrawBox(news.GetTitle(), 15, 0, 330, 18, sALIGN_LEFT_TOP, new SColor8(20, 20, 20))
 			GetBitmapFontManager().baseFont.DrawBox(news.GetDescription(), 15, 15, 342, 50 + 10, sALIGN_LEFT_TOP, new SColor8(80, 80, 80), TGUINews.textBlockDrawSettings)
 
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha 0.3*oldAlpha
-			GetBitmapFont("Default", 9).DrawBox(news.GetGenreString(), 15, 74, 120, 15, sALIGN_LEFT_TOP, new SColor8(80, 80, 80))
+			GetBitmapFont("Default", 9).DrawBox(news.GetGenreString(), 15, 73, 120, 15, sALIGN_LEFT_TOP, new SColor8(80, 80, 80))
 			SetAlpha 1.0*oldAlpha
 
 			'set back to screen Rendering
@@ -1230,19 +1233,19 @@ Type TGUINews Extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			If Not news.paid
-				GetBitmapFontManager().basefontBold.DrawBox(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 69, 90, 18, sALIGN_RIGHT_CENTER, SColor8.Black)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 69, 90, 18, sALIGN_RIGHT_CENTER, SColor8.Black)
 			Else
 				SetAlpha GetAlpha()*0.75
-				GetBitmapFontManager().basefontBold.DrawBox(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 69, 90, 18, sALIGN_RIGHT_CENTER, new SColor8(100, 100, 100))
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 69, 90, 18, sALIGN_RIGHT_CENTER, new SColor8(100, 100, 100))
 				SetAlpha GetAlpha()*2.0
 			EndIf
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())
-				Case 0	GetBitmapFontManager().baseFont.DrawBox(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 72, 140, 16, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80) )
+				Case 0	GetBitmapFontManager().baseFont.DrawBox(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 71, 140, 18, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80) )
 				'Case 1	GetBitmapFontManager().baseFont.DrawBox("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, sALIGN_RIGHT_CENTER, SColor8.Black)
 				'Case 2	GetBitmapFontManager().baseFont.DrawBox("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, sALIGN_RIGHT_CENTER, SColor8.Black)
-				Case 1	GetBitmapFontManager().baseFont.DrawBox(GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 72, 140, 16, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80))
-				Case 2	GetBitmapFontManager().baseFont.DrawBox(GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 72, 140, 16, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80))
+				Case 1	GetBitmapFontManager().baseFont.DrawBox(GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 71, 140, 18, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80))
+				Case 2	GetBitmapFontManager().baseFont.DrawBox(GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 71, 140, 18, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80))
 			End Select
 
 			SetAlpha oldAlpha * 0.5
