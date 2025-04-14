@@ -814,6 +814,8 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 	Field figureImage:TImage {nosave}
 	'tried to create it?
 	Field figureImageCreationFailed:Int = False {nosave}
+	
+	Global PRNG:TXoshiroRandom {nosave}
 
 
 
@@ -961,9 +963,13 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 		If Not figure
 			local p:TPersonBase = GetPerson()
 			If Not p.faceCode
-				' initialize a custom PRNG with a fixed but individual
+				' initialize a custom (global) PRNG with a fixed but individual
 				' seed (so the "result" is the same for the given input)
-				Local PRNG:TXoshiroRandom = New TXoshiroRandom(p.GetID()) 
+				If not PRNG 
+					PRNG = New TXoshiroRandom(p.GetID()) 
+				Else
+					PRNG.SeedRnd(p.GetID())
+				EndIf
 
 				Local ageFlag:Int = 1 'young
 				If GetAge() > 50
