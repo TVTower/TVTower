@@ -131,6 +131,7 @@ Type TBitmapFontManager
 		End If
 
 		font = Add(name, defaultStyledFont.FFontUrlsRaw, size, style)
+		font.spaceWidthModifier = defaultStyledFont.spaceWidthModifier
 
 		Return font
 	End Method
@@ -152,6 +153,7 @@ Type TBitmapFontManager
 	Method Copy:TBitmapFont(sourceName:String, copyName:String, size:Float=-1, style:Int=-1)
 		Local sourceFont:TBitmapFont = Get(sourceName, size, style)
 		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.FFontUrlsRaw, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
+		newFont.spaceWidthModifier = sourcefont.spaceWidthModifier
 		InsertFont(copyName, sourceFont.fSize, sourceFont.fStyle, newFont)
 
 		Return newFont

@@ -698,7 +698,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	'generates an image containing background + text on it
 	Method GenerateCacheImage:TSprite(background:TSprite)
 		Local newImage:TImage = background.GetImageCopy()
-		Local font:TBitmapFont = GetBitmapFont("Default",10, BOLDFONT)
+		Local font:TBitmapFont = GetBitmapFont("Default",9, BOLDFONT)
 		TBitmapFont.setRenderTarget(newImage)
 		Local key:String
 		Local playerId:Int = GetPlayerBase().playerID

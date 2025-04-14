@@ -414,7 +414,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		contentH = skin.GetContentH(outer.GetH())
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("ROOM_OVERVIEW")+": " + GetLocale("CANCEL_OR_RENT_ROOMS"), contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(GetLocale("ROOM_OVERVIEW")+": " + GetLocale("CANCEL_OR_RENT_ROOMS"), contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, contentH - titleH , "2")
 
@@ -540,7 +540,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 			ownerInfo = False
 		endif
 
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'== box area
 		boxH = skin.GetBoxSize(80, -1, "", "spotsPlanned", "neutral").y
@@ -562,9 +562,9 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		'== title area
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if titleH <= 18
-				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			else
-				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			endif
 		contentY :+ titleH
 
