@@ -7198,7 +7198,7 @@ endrem
 	'TGUILabel.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
 
 	'buttons get a bold font
-	TGUIButton.SetTypeFont( GetBitmapFont("Default", 13.0, BOLDFONT) )
+	TGUIButton.SetTypeFont( GetBitmapFont("Default", 12.0, BOLDFONT) )
 	TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
 	'a) the mode before everything important was loaded
