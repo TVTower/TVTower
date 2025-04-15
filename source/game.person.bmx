@@ -814,6 +814,8 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 	Field figureImage:TImage {nosave}
 	'tried to create it?
 	Field figureImageCreationFailed:Int = False {nosave}
+	
+	Global PRNG:TXoshiroRandom {nosave}
 
 
 
@@ -961,10 +963,18 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 		If Not figure
 			local p:TPersonBase = GetPerson()
 			If Not p.faceCode
+				' initialize a custom (global) PRNG with a fixed but individual
+				' seed (so the "result" is the same for the given input)
+				If not PRNG 
+					PRNG = New TXoshiroRandom(p.GetID()) 
+				Else
+					PRNG.SeedRnd(p.GetID())
+				EndIf
+
 				Local ageFlag:Int = 1 'young
 				If GetAge() > 50
 					ageFlag = 2
-					If Rand(100) < 20 Then ageFlag = 1 'make younger
+					If PRNG.Rand(100) < 20 Then ageFlag = 1 'make younger
 				EndIf
 
 				Local genderFlag:Int = 0 'random
@@ -972,7 +982,7 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 				If p.gender = TVTPersonGender.FEMALE Then genderFlag = 2
 
 				Local skinTone:Int = 0 'random
-				Local randomSkin:Int = Rand(100)
+				Local randomSkin:Int = PRNG.Rand(100)
 				Select p.countryCode.ToLower()
 					'asian
 					Case "jap", "kor", "vn", "cn", "th"
@@ -1009,7 +1019,7 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 						EndIf
 				End Select
 
-				figure = TFigureGenerator.GenerateFigure(skinTone, genderFlag, ageFlag)
+				figure = TFigureGenerator.GenerateFigure(skinTone, genderFlag, ageFlag, PRNG)
 				p.faceCode = figure.GetFigureCode()
 			Else
 				figure = TFigureGenerator.GenerateFigureFromCode(p.faceCode)

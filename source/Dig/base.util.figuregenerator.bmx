@@ -9,6 +9,7 @@ new TRegistryFigureGeneratorPartLoader.Init()
 
 Type TFigureGenerator
 	Global registeredParts:TList[14]
+	Global PRNG:TXoshiroRandom = New TXoshiroRandom()
 
 	Function RegisterPart(part:TFigureGeneratorPart)
 		if part.partType < 1 or part.partType > registeredParts.length then return
@@ -21,7 +22,9 @@ Type TFigureGenerator
 	End Function
 
 
-	Function GetRandomPart:TFigureGeneratorPart(partType:int, gender:int=0, age:int=0)
+	Function GetRandomPart:TFigureGeneratorPart(partType:int, gender:int=0, age:int=0, usePRNG:TRandom = Null)
+		If Not usePRNG Then usePRNG = PRNG
+
 		if partType < 1 or partType > registeredParts.length then return Null
 		if not registeredParts[partType-1] or registeredParts[partType-1].Count() = 0 then return Null
 
@@ -29,7 +32,7 @@ Type TFigureGenerator
 
 		'quick selection
 		if gender = 0 and age = 0
-			return TFigureGeneratorPart(registeredParts[index].ValueAtIndex(Rand(0, registeredParts[index].Count()-1 )))
+			return TFigureGeneratorPart(registeredParts[index].ValueAtIndex(usePRNG.Rand(0, registeredParts[index].Count()-1 )))
 		endif
 
 		'need to filter
@@ -40,7 +43,7 @@ Type TFigureGenerator
 			potentialParts :+ [p]
 		next
 		if potentialParts.length = 0 then return null
-		return potentialParts[ Rand(0, potentialParts.length-1) ]
+		return potentialParts[ usePRNG.Rand(0, potentialParts.length-1) ]
 	End Function
 
 
@@ -127,17 +130,19 @@ Type TFigureGenerator
 	End Function
 						
 
-	Function GenerateFigure:TFigureGeneratorFigure(skinTone:int, gender:int, age:int=0)
+	Function GenerateFigure:TFigureGeneratorFigure(skinTone:int, gender:int, age:int=0, usePRNG:TRandom = Null)
+		If Not usePRNG Then usePRNG = PRNG
+		
 		local fig:TFigureGeneratorFigure = new TFigureGeneratorFigure
-		if gender = 0 then gender = Rand(1,2)
-		if skintone = 0 then skinTone = Rand(1,3)
+		if gender = 0 then gender = usePRNG.Rand(1,2)
+		if skintone = 0 then skinTone = usePRNG.Rand(1,3)
 
 		For local i:int = 0 until registeredParts.length
 			local partType:int = TFigureGeneratorFigure.partOrder[i]
 			if TFigureGeneratorFigure.useChance[i] <> 100
-				if Rand(100) > TFigureGeneratorFigure.useChance[i] then continue
+				if usePRNG.Rand(100) > TFigureGeneratorFigure.useChance[i] then continue
 			endif
-			local part:TFigureGeneratorPart = GetRandomPart(partType, gender, age)
+			local part:TFigureGeneratorPart = GetRandomPart(partType, gender, age, usePRNG)
 			if part
 				'got a gender specific part? use for rest
 				if part.gender <> 0 then gender = part.gender
@@ -149,8 +154,8 @@ Type TFigureGenerator
 		fig.gender = gender
 		fig.age = age
 
-		fig.SetSkinTone(skinTone)
-		fig.ColorizeElements()
+		fig.SetSkinTone(skinTone, usePRNG)
+		fig.ColorizeElements(usePRNG)
 		return fig
 	End Function
 End Type
@@ -207,38 +212,44 @@ Type TFigureGeneratorFigure
 	End Method
 
 
-	Method SetSkinTone(tone:int)
+	Method SetSkinTone(tone:int, PRNG:TRandom)
 		skinTone = tone
 		
 		local mixColor:TColor
 		Select tone
 			case 1 'african
-				local variation:int = Rand(1, 3)
+				local variation:int = PRNG.Rand(1, 3)
 				Select variation
 					case 1	mixColor = TColor.Create(106, 65, 46)
 					case 2	mixColor = TColor.Create(128, 87, 62)
 					case 3	mixColor = TColor.Create(165, 57,  0)
 				End Select
+				'add a bit variation (prefer brighter variants to avoid
+				'too dark overall images - clothes, hair, skin)
+				mixColor.AdjustBrightness(PRNG.Rand(30)/100.0 - 0.05)
 			case 2 'asian
-				local variation:int = Rand(1, 4)
+				local variation:int = PRNG.Rand(1, 4)
 				Select variation
 					case 1	mixColor = TColor.Create(255,220,177)
 					case 2	mixColor = TColor.Create(229,194,152)
 					case 3	mixColor = TColor.Create(204,132, 67)
 					case 4	mixColor = TColor.Create(223,185,151)
 				EndSelect
+				'add a bit variation
+				mixColor.AdjustBrightness(PRNG.Rand(10)/100.0 - 0.05)
 '			case 3
 			default 'european/caucasian
-				local variation:int = Rand(1, 4)
+				local variation:int = PRNG.Rand(1, 4)
 				Select variation
 					case 1	mixColor = TColor.Create(255,218,204)
 					case 2	mixColor = TColor.Create(253,192,168)
 					case 3	mixColor = TColor.Create(233,145,110)
 					case 4	mixColor = TColor.Create(245,210,195)
 				End Select
+				'add a bit variation (prefer darker variants to avoid
+				'too pale overall images - clothes, hair, skin)
+				mixColor.AdjustBrightness(PRNG.Rand(10)/100.0 - 0.10)
 		EndSelect
-		'add a bit variation
-		mixColor.AdjustBrightness(Rand(10)/100.0 - 0.05)
 
 		SetSkinColor(mixColor)
 	End Method
@@ -263,23 +274,23 @@ Type TFigureGeneratorFigure
 	End Method
 
 
-	Method ColorizeElements()
+	Method ColorizeElements(PRNG:TRandom)
 		'cloth
-		if Rand(100) < 20
+		if PRNG.Rand(100) < 20
 			if gender = 1
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(Rand(8)*16,Rand(8)*31,Rand(8)*31)
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(PRNG.Rand(8)*16, PRNG.Rand(8)*31, PRNG.Rand(8)*31)
 			elseif gender = 2
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(Rand(0,8)*31,Rand(0,8)*31,Rand(0,8)*16)
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(PRNG.Rand(0,8)*31, PRNG.Rand(0,8)*31, PRNG.Rand(0,8)*16)
 			else
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(Rand(8)*31,Rand(8)*31,Rand(8)*31)
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(PRNG.Rand(8)*31, PRNG.Rand(8)*31, PRNG.Rand(8)*31)
 			endif
 
 			'minimum brightness
-			if Rand(100) < 75
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( Rand(30)/100 ) '0% - 30%
+			if PRNG.Rand(100) < 75
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( PRNG.Rand(30)/100 + 0.3 ) '30% - 60%
 			endif
 		else
-			Select Rand(18)
+			Select PRNG.Rand(18)
 				case 1
 					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(255, 180, 0)
 				case 2
@@ -317,14 +328,14 @@ Type TFigureGeneratorFigure
 				default 'blackish
 					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(35, 35, 35)
 			End Select
-			partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( Rand(30)/100 - 0.2 ) '-15% - 15%
+			partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( PRNG.Rand(30)/100 - 0.2 ) '-15% - 15%
 
-			if Rand(100) < 25
-				local modify:int = Rand(1,3)
-				local modifyValue:int= Rand(30) - 15
+			if PRNG.Rand(100) < 25
+				local modify:int = PRNG.Rand(1,3)
+				local modifyValue:int= PRNG.Rand(30) - 15
 				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustRGB( (modify=1)*modifyValue, (modify=2)*modifyValue, (modify=3)*modifyValue )
-			elseif Rand(100) < 50
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustSaturation( - Rand(50)/100.0 )
+			elseif PRNG.Rand(100) < 50
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustSaturation( 0.2 - PRNG.Rand(50)/100.0 )
 			endif
 		endif
 
@@ -355,10 +366,10 @@ Type TFigureGeneratorFigure
 			endif
 		endif
 		local hairColor:TColor
-		local hairTone:int = Rand(100)
+		local hairTone:int = PRNG.Rand(100)
 		'blonde
 		if hairTone < chanceBlonde
-			local variation:int = Rand(1, 2)
+			local variation:int = PRNG.Rand(1, 2)
 			Select variation
 				Case 1	haircolor = TColor.Create(225,200,45)
 				Case 2	haircolor = TColor.Create(225,210,50)
@@ -368,25 +379,25 @@ Type TFigureGeneratorFigure
 			haircolor = TColor.Create(30,25,20)
 		'brown
 		elseif hairTone < chanceBlonde + chanceBlack + chanceBrown
-			local variation:int = Rand(1, 2)
+			local variation:int = PRNG.Rand(1, 2)
 			Select variation
 				Case 1	haircolor = TColor.Create(80,30,10)
 				Case 2	haircolor = TColor.Create(80,40,15)
 			End Select
 		'red
 		else
-			local variation:int = Rand(1, 2)
+			local variation:int = PRNG.Rand(1, 2)
 			Select variation
 				Case 1	haircolor = TColor.Create(255,100,0)
 				Case 2	haircolor = TColor.Create(245,120,15)
 			End Select
 		endif
-		haircolor.AdjustBrightness( Rand(30)/100 - 0.2 ) '-15% - 15%
+		haircolor.AdjustBrightness( PRNG.Rand(30)/100 - 0.2 ) '-15% - 15%
 
 
-		if age = 2 or Rand(100) < 5
+		if age = 2 or PRNG.Rand(100) < 5
 			'desaturate a bit
-'			haircolor.AdjustSaturationRGB( - 0.5 - 0.5 * Rand(100)/100.0)
+'			haircolor.AdjustSaturationRGB( - 0.5 - 0.5 * PRNG.Rand(100)/100.0)
 		endif
 
 		partsColor[TFigureGeneratorPart.PART_HAIR_BACK -1] = hairColor
