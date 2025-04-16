@@ -44,7 +44,7 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 	End Method
 
 
-	Method RenderSportsBlock(x:Int, y:Int, w:Int=375, h:Int=300)
+	Method RenderSportsBlock(x:Int, y:Int, w:Int=390, h:Int=300)
 		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Sport Leagues", "", 0.0)
 		Local textY:Int = contentRect.y
 
@@ -77,7 +77,7 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 				matchInfo :+ "Matches " + GetWorldTime().GetFormattedDate(league.GetFirstMatchTime(), "g/h:i")
 				matchInfo :+ " to " + GetWorldTime().GetFormattedDate(league.GetLastMatchTime(), "g/h:i")
 				matchInfo :+ "   Next " + GetWorldTime().GetFormattedDate(league.GetNextMatchTime(), "g/h:i")
-				textFont.DrawBox(matchInfo, contentRect.x + 140, textY, contentRect.w - 140, 15, sALIGN_LEFT_TOP, col)
+				textFont.DrawBox(matchInfo, contentRect.x + 140, textY, contentRect.w - 155, 15, sALIGN_LEFT_TOP, col)
 				If league.IsSeasonFinished() 
 					textFont.DrawBox("FIN", contentRect.x + contentRect.w - 35, textY, 25, 15, sALIGN_RIGHT_TOP, col)
 				Else
