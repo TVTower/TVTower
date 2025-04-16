@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvt>
-	<bitmapfonts_old>
-		<bitmapfont name="default" url="res/fonts/sourcesans/SourceSansPro-Regular.ttf" size="12" default="1" lineHeightModifier="1.1" spaceWidthModifier="1.4" />
-		<bitmapfont name="default" url="res/fonts/sourcesans/SourceSansPro-Bold.ttf" size="13" flags="BOLDFONT" default="1" lineHeightModifier="1.1" />
-		<bitmapfont name="default" url="res/fonts/sourcesans/SourceSansPro-It.ttf" size="12" flags="ITALICFONT" default="1" lineHeightModifier="1.1" />
-		<bitmapfont name="default" url="res/fonts/sourcesans/SourceSansPro-BoldIt.ttf" size="12" flags="BOLDFONT,ITALICFONT" default="1" lineHeightModifier="1.1" />
-
-		<bitmapfont name="defaultThin" url="res/fonts/sourcesans/SourceSansPro-Light.ttf" size="13" lineHeightModifier="1.1" />
-		<bitmapfont name="defaultThin" url="res/fonts/sourcesans/SourceSansPro-Semibold.ttf" size="13" flags="BOLDFONT" lineHeightModifier="1.1" />
-
-		<bitmapfont name="smalldefault" url="res/fonts/sourcesans/SourceSansPro-Regular.ttf" size="12" default="1" />
-	</bitmapfonts_old>
-
 	<bitmapfonts>
 		<bitmapfont name="default" url="res/fonts/notosans/NotoSans-Regular.ttf, res/fonts/notosans/NotoSansSymbols-Regular.ttf, res/fonts/notosans/NotoSansSymbols2-Regular.ttf" size="11" default="1" lineHeightModifier="1.1" spaceWidthModifier="1.2" />
 		<bitmapfont name="default" url="res/fonts/notosans/NotoSans-Bold.ttf, res/fonts/notosans/NotoSansSymbols-Bold.ttf, res/fonts/notosans/NotoSansSymbols2-Regular.ttf" size="11" flags="BOLDFONT" default="1" lineHeightModifier="1.1" spaceWidthModifier="1.2" />
