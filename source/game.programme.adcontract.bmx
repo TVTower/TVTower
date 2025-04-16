@@ -1694,12 +1694,12 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'quality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetRawQualityForPlayer(forPlayerID))
-		skin.fontSmallCaption.DrawSimple(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 
 		'topicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality(), 1.0)
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 
 
