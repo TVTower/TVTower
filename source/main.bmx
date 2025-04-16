@@ -1250,6 +1250,13 @@ endrem
 			If GetGame().networkgame And Network.client
 				textX:+ Max(50, bf.DrawSimple("Ping: "+Int(Network.client.latency)+"ms", textX, textY).x)
 			EndIf
+
+			If ScreenCollection.GetCurrentScreen()
+				bf.DrawBox("Screen: "+ScreenCollection.GetCurrentScreen().name + " \| " + GetGraphicsManager().GetRendererName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
+			Else
+				bf.DrawBox("Screen: Main \| " + GetGraphicsManager().GetRendererName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
+			EndIf
+
 		EndIf
 	End Function
 

@@ -237,13 +237,6 @@ Type TDebugScreen
 			b.Render()
 		Next
 
-		TDebugScreenPage.textFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 3, 355)
-		If ScreenCollection.GetCurrentScreen()
-			TDebugScreenPage.textFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 3, 355 + 11)
-		Else
-			TDebugScreenPage.textFont.draw("onScreen: Main", 3, 360 + 11)
-		EndIf
-
 		If currentPage Then currentPage.Render()
 	End Method
 
