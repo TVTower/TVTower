@@ -302,12 +302,16 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ labelTouchInput.GetValueDimension().y + 5
 
 		labelTouchClickRadius = New TGUILabel.Create(New SVec2I(nextX + 22, nextY), GetLocale("MOVE_INSTEAD_CLICK_RADIUS")+":")
-		inputTouchClickRadius = New TGUIInput.Create(New SVec2I(nextX + 22, nextY + labelH), New SVec2I(50,-1), "", 4)
-		labelTouchClickRadiusPixel = New TGUILabel.Create(New SVec2I(nextX + 22 + 55, nextY + labelH + 4), "px")
+		labelTouchClickRadius.SetSize(rowWidth[2] - 40, -1)
+		Local inputTouchClickRadiusOffset:Int = labelTouchClickRadius.GetValueDimension().y
+
+		inputTouchClickRadius = New TGUIInput.Create(New SVec2I(nextX + 22, nextY + inputTouchClickRadiusOffset), New SVec2I(50,-1), "", 4)
+		labelTouchClickRadiusPixel = New TGUILabel.Create(New SVec2I(nextX + 22 + 55, nextY + inputTouchClickRadiusOffset + 4), "px")
+
 		Self.AddChild(labelTouchClickRadius)
 		Self.AddChild(inputTouchClickRadius)
 		Self.AddChild(labelTouchClickRadiusPixel)
-		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenRect().GetH() + 3) + labelH + 5
+		nextY :+ Max(inputH, inputTouchClickRadiusOffset + 10 + 3) + labelH + 5
 
 
 		checkRightClickEmulation = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(rowWidth[2] - 5,-1), GetLocale("RIGHTCLICK_EMULATION"))
