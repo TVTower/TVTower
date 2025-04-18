@@ -809,7 +809,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Method InitCustomProductionElements()
-		Local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 12)
+		Local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 11)
 
 		'=== CAST ===
 		'============
@@ -841,12 +841,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 			productionFocusSlider[i].SetValueRange(0,10)
 			productionFocusSlider[i].steps = 10
-			productionFocusSlider[i]._gaugeOffset.SetY(2)
+			productionFocusSlider[i]._gaugeOffset = New SVec2F(productionFocusSlider[i]._gaugeOffset.x, 2)
 			productionFocusSlider[i].SetRenderMode(TGUISlider.RENDERMODE_DISCRETE)
 			productionFocusSlider[i].SetDirection(TGUISlider.DIRECTION_RIGHT)
 			productionFocusSlider[i].data = New TData.AddNumber("focusIndex", i+1)
 
-			productionFocusSlider[i]._handleDim.SetX(17)
+			productionFocusSlider[i]._handleDim = New SVec2F(17, productionFocusSlider[i]._handleDim.y)
+
 		Next
 
 
@@ -1058,7 +1059,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		msgH = skin.GetMessageSize(100, -1, "").y
 
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), content.w - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), content.w - 10, 100))
 
 
 		'=== PRODUCTION CONCEPT LIST ===
@@ -1077,7 +1078,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local listH:Int = content.h - titleH - checkboxArea
 
 		skin.RenderContent(content.x, contentY, content.w, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), content.x + 5, contentY, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), content.x + 5, contentY, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(content.x, contentY, content.w, listH , "2")
 		'reposition/resize list and keep scroll position
@@ -1127,7 +1128,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			contentY :+ 10
 			skin.fontBold.DrawSimple(GetLocale("DURATION"), content.x + 5, contentY-1, skin.textColorNeutral)
-			skin.fontNormal.DrawBox(TWorldtime.GetHourMinutesLeft(currentProductionConcept.GetBaseProductionTime(), True), content.x + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(TWorldtime.GetHourMinutesLeft(currentProductionConcept.GetBaseProductionTime(), True), content.x + 5, contentY, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 			contentY :+ subtitleH
 
@@ -1236,7 +1237,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 			contentY :+ productionCompanyH
 
-			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_FOCUS"), content.x + 5, contentY + 3, content.w - 10, titleH - 3, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_FOCUS"), content.x + 5, contentY + 3, content.w - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 			'reposition sliders
 			If repositionSliders
@@ -1801,7 +1802,7 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 		labelTitle = New TGUILabel.Create(New SVec2I(15,9), GetLocale("TITLE"), "")
 		labelDescription = New TGUILabel.Create(New SVec2I(15,57), GetLocale("DESCRIPTION"), "")
 		labelEpisode = New TGUILabel.Create(New SVec2I(15,112), GetLocale("EPISODE"), "")
-		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 13, BOLDFONT) )
+		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 12, BOLDFONT) )
 		labelSubTitle = New TGUILabel.Create(New SVec2I(15,134), GetLocale("TITLE"), "")
 		labelSubDescription = New TGUILabel.Create(New SVec2I(15,177), GetLocale("DESCRIPTION"), "")
 
@@ -2932,7 +2933,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 		barH = skin.GetBarSize(100, -1).y
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(person.GetFullName(), contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(person.GetFullName(), contentW - 10, 100))
 
 		'bar area starts with padding, ends with padding and contains
 		'also contains 8 bars
@@ -2962,9 +2963,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 			'EndIf
 
 			If titleH <= 18
-				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			Else
-				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			EndIf
 		contentY :+ titleH
 
@@ -3084,17 +3085,17 @@ Type TGUICastListItem Extends TGUISelectListItem
 			'XP job
 			Local xpValueJob:Float = person.GetEffectiveJobExperiencePercentage(jobID)
 			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValueJob)
-			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_JOB_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_JOB_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 			'XP genre
 			Local xpValueGenre:Float = TPersonProductionData(person.getProductionData()).GetEffectiveGenreExperiencePercentage(genreID)
 			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValueGenre)
-			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_GENRE_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_GENRE_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 			'affinity
 			Local affinity:Float = person.GetPersonalityData().GetAffinityValue(jobID, genreID)
 			skin.RenderBar(contentX + 5, contentY, 100, 12, affinity)
-			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_AFFINITY"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_AFFINITY"), contentX + 5 + 100 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 
 
@@ -3137,20 +3138,20 @@ Type TGUICastListItem Extends TGUISelectListItem
 						SetAlpha oldA * 0.5
 						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
 						SetAlpha oldA * 0.4
-						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 						SetAlpha oldA
 					'neutral
 					Case 2
 						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
-						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 					'negative
 					Case 3
 						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
-						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorBad, EDrawTextEffect.Emboss, 0.3)
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 3, skin.textColorBad, EDrawTextEffect.Emboss, 0.3)
 					'positive
 					Case 4
 						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
-						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorGood, EDrawTextEffect.Emboss, 0.3)
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 3, skin.textColorGood, EDrawTextEffect.Emboss, 0.3)
 				End Select
 				contentY :+ barH + 2
 			Next
@@ -3161,7 +3162,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 			Local percentageUntilUpgrade:Float = person.GetProductionJobsDone(jobID) / float(GameRules.UpgradeInsignificantOnProductionJobsCount)
 
 			skin.RenderBar(contentX + 5, contentY, 100, 12, percentageUntilUpgrade)
-			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_TRAINING"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_TRAINING"), contentX + 5 + 100 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 
 		EndIf
@@ -3259,11 +3260,11 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 		skin.RenderBar(scrRect.GetX() + 1, bottomY + 1*barH, 80, -1, company.GetChannelSympathy( GetPlayerBase().playerID ), -1, "cast_bar_sympathy")
 
 		If IsHovered() And (Time.MillisecsLong() / 1500) Mod 3 = 0 'every 3s for 1.5s
-			skin.fontSmall.DrawBox("XP", scrRect.GetX() + 76, bottomY + 0*barH - 2, 30, 2*barH+2, sALIGN_RIGHT_CENTER, xpColor)
-			skin.fontSmall.DrawBox("SYMP", scrRect.GetX() + 2, bottomY + 0*barH -2, scrRect.GetW()-4, 2*barH+2, sALIGN_RIGHT_CENTER, sympathyColor)
+			skin.fontSmall.DrawBox("XP", scrRect.GetX() + 76, bottomY + 0*barH - 3, 30, 2*barH+2, sALIGN_RIGHT_CENTER, xpColor)
+			skin.fontSmall.DrawBox("SYMP", scrRect.GetX() + 2, bottomY + 0*barH - 3, scrRect.GetW()-4, 2*barH+2, sALIGN_RIGHT_CENTER, sympathyColor)
 		Else
-			skin.fontSmall.DrawBox(Int(company.GetLevelExperiencePercentage()*100)+"%", scrRect.GetX() + 76, bottomY + 0*barH - 2, 30, 2*barH+2, sALIGN_RIGHT_CENTER, xpColor)
-			skin.fontSmall.DrawBox(Int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", scrRect.GetX() + 2, bottomY + 0*barH - 2, scrRect.GetW()-4, 2*barH+2, sALIGN_RIGHT_CENTER, sympathyColor)
+			skin.fontSmall.DrawBox(Int(company.GetLevelExperiencePercentage()*100)+"%", scrRect.GetX() + 76, bottomY + 0*barH - 3, 30, 2*barH+2, sALIGN_RIGHT_CENTER, xpColor)
+			skin.fontSmall.DrawBox(Int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", scrRect.GetX() + 2, bottomY + 0*barH - 3, scrRect.GetW()-4, 2*barH+2, sALIGN_RIGHT_CENTER, sympathyColor)
 		EndIf
 	End Method
 End Type

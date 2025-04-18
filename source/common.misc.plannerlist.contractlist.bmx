@@ -148,7 +148,7 @@ Type TgfxContractlist Extends TPlannerList
 		entrySize = null
 		Local currX:Int = GetEntriesRect().GetX()
 		Local currY:Int = GetEntriesRect().GetY()
-		Local font:TBitmapFont = GetBitmapFont("Default", 10)
+		Local font:TBitmapFont = GetBitmapFont("Default", 9)
 
 		Local contracts:TList = GetContracts(owner)
 		'draw slots, even if empty
@@ -197,7 +197,7 @@ Type TgfxContractlist Extends TPlannerList
 				if TVTDebugInfo
 					font.DrawBox(GetFormattedCurrency(contract.GetProfit())+" @ "+ contract.GetMinAudience(), currX + 22, currY + 3, 150,15, sALIGN_LEFT_CENTER, SColor8.Black)
 				else
-					font.DrawBox(contract.GetTitle(), currX + 22, currY + 3, 150,15, sALIGN_LEFT_CENTER, SColor8.Black)
+					font.DrawBox(contract.GetTitle(), currX + 22, currY + 2, 150,15, sALIGN_LEFT_CENTER, SColor8.Black)
 				endif
 
 				'add visual marker for target groups

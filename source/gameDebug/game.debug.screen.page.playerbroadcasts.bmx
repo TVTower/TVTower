@@ -282,7 +282,7 @@ Type TDebugWidget_ProgrammePlanInfo
 		Local adSlotX:Int = programmeSlotX + programmeSlotWidth + slotPadding
 		programmeForHover = null
 
-		Local font:TBitmapFont = GetBitmapFont("default", 10)
+		Local font:TBitmapFont = GetBitmapFont("default", 9)
 
 		'statistic for the shown day
 		Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(dayShown, True)
@@ -303,7 +303,7 @@ Type TDebugWidget_ProgrammePlanInfo
 
 
 		Local s:String = "|color=200,255,200|PRED|/color|/|color=200,200,255|GUESS|/color|/|color=255,220,210|REAL|/color|"
-		GetBitmapFont("default", 10).DrawBox( s, programmeSlotX, y + -1*lineHeight + lineTextDY, programmeSlotWidth, lineTextHeight, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox( s, programmeSlotX, y + -1*lineHeight + lineTextDY, programmeSlotWidth, lineTextHeight, sALIGN_RIGHT_TOP, SColor8.White)
 
 
 		For Local hour:Int = 0 Until daysProgramme.length
@@ -782,7 +782,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 		Local lineWidth:Int = 160
 		Local adLineWidth:Int = 145
 		Local adLeftX:Int = 165
-		Local font:TBitmapFont = GetBitmapFont("default", 10)
+		Local font:TBitmapFont = GetBitmapFont("default", 8)
 		Local initialY:Int = y
 		programmeForHover = null
 		contractForHover = null

@@ -37,10 +37,20 @@ Type TDebugScreen
 		Local button:TDebugControlsButton
 		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Public Image", "Stationmap", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Custom Production", "Producers", "Sports Sim", "Modifiers", "Misc"]
 		Local mode:int = 0
+		Local buttonNextY:Int = 0
 		For Local i:Int = 0 Until texts.length
-			If texts[i] = "-" Then Continue 'spacer
-			button = TDebugScreenPage.CreateActionButton(i, texts[i], -510 , 10)
-			button.w = 118
+			If texts[i] = "-" 
+				buttonNextY :+ 10
+				Continue 'spacer
+			Endif
+
+			button = TDebugScreenPage.CreateActionButton(i, texts[i], -510 , 18)
+			'custom position
+			button.x = 3
+			button.y = 14 + 2 + buttonNextY
+			buttonNextY :+ button.h + 2 + 1
+
+			button.w = 122
 			button.dataInt = mode
 			mode :+ 1
 			button._onClickHandler = OnButtonClickHandler
@@ -49,57 +59,57 @@ Type TDebugScreen
 		Next
 
 		pageOverview = new TDebugScreenPage_Overview.Init()
-		pageOverview.SetPosition(sideButtonPanelWidth, 20)
+		pageOverview.SetPosition(sideButtonPanelWidth, 15)
 
 		currentPage = pageOverview
 
 		pagePlayerCommands = TDebugScreenPage_PlayerCommands.GetInstance().Init()
-		pagePlayerCommands.SetPosition(sideButtonPanelWidth, 20)
+		pagePlayerCommands.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePlayerFinancials = TDebugScreenPage_PlayerFinancials.GetInstance().Init()
-		pagePlayerFinancials.SetPosition(sideButtonPanelWidth, 20)
+		pagePlayerFinancials.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePlayerBroadcasts = TDebugScreenPage_PlayerBroadcasts.GetInstance().Init()
-		pagePlayerBroadcasts.SetPosition(sideButtonPanelWidth, 20)
+		pagePlayerBroadcasts.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePublicImages = TDebugScreenPage_PublicImages.GetInstance().Init()
-		pagePublicImages.SetPosition(sideButtonPanelWidth, 20)
+		pagePublicImages.SetPosition(sideButtonPanelWidth, 15)
 
 		pageStationmap = TDebugScreenPage_StationMap.GetInstance().Init()
-		pageStationmap.SetPosition(sideButtonPanelWidth, 20)
+		pageStationmap.SetPosition(sideButtonPanelWidth, 15)
 
 		pageAdAgency = TDebugScreenPage_AdAgency.GetInstance().Init()
-		pageAdAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageAdAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageMovieAgency = TDebugScreenPage_MovieAgency.GetInstance().Init()
-		pageMovieAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageMovieAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageNewsAgency = TDebugScreenPage_NewsAgency.GetInstance().Init()
-		pageNewsAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageNewsAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageScriptAgency = TDebugScreenPage_ScriptAgency.GetInstance().Init()
-		pageScriptAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageScriptAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pageRoomAgency = TDebugScreenPage_RoomAgency.GetInstance().Init()
-		pageRoomAgency.SetPosition(sideButtonPanelWidth, 20)
+		pageRoomAgency.SetPosition(sideButtonPanelWidth, 15)
 
 		pagePolitics = TDebugScreenPage_Politics.GetInstance().Init()
-		pagePolitics.SetPosition(sideButtonPanelWidth, 20)
+		pagePolitics.SetPosition(sideButtonPanelWidth, 15)
 
 		pageCustomProductions = TDebugScreenPage_CustomProductions.GetInstance().Init()
-		pageCustomProductions.SetPosition(sideButtonPanelWidth, 20)
+		pageCustomProductions.SetPosition(sideButtonPanelWidth, 15)
 
 		pageProducers = TDebugScreenPage_Producers.GetInstance().Init()
-		pageProducers.SetPosition(sideButtonPanelWidth, 20)
+		pageProducers.SetPosition(sideButtonPanelWidth, 15)
 
 		pageSports = TDebugScreenPage_Sports.GetInstance().Init()
-		pageSports.SetPosition(sideButtonPanelWidth, 20)
+		pageSports.SetPosition(sideButtonPanelWidth, 15)
 
 		pageModifiers = TDebugScreenPage_Modifiers.GetInstance().Init()
-		pageModifiers.SetPosition(sideButtonPanelWidth, 20)
+		pageModifiers.SetPosition(sideButtonPanelWidth, 15)
 
 		pageMisc = TDebugScreenPage_Misc.GetInstance().Init()
-		pageMisc.SetPosition(sideButtonPanelWidth, 20)
+		pageMisc.SetPosition(sideButtonPanelWidth, 15)
 
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onStartGame) ]
 	End Method
@@ -207,25 +217,25 @@ Type TDebugScreen
 
 
 	Method Render()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+
+		SetColor 0,0,0
+		SetAlpha 0.25 * oldColA
+		DrawRect(0,0, 800, 385)
+		SetColor(oldCol)
+		SetAlpha(oldColA)
+
 		If Not TDebugScreenPage.titleFont
 			TDebugScreenPage.titleFont = GetBitmapFont("default", 12, BOLDFONT)
 			TDebugScreenPage.textFontBold = GetBitmapFont("default", 10, BOLDFONT)
 			TDebugScreenPage.textFont = GetBitmapFont("default", 10)
 		EndIf
 
-		Local oldCol:SColor8; GetColor(oldCol)
-		Local oldColA:Float = GetAlpha()
-
-		TFunctions.DrawOutlineRect(0, 0, sideButtonPanelWidth - 2, 355)
+		TFunctions.DrawOutlineRect(0, 12, sideButtonPanelWidth - 2, 370, new SColor8(100,100,100), new SColor8(0,0,0,150))
 		For Local b:TDebugControlsButton = EachIn sideButtons
 			b.Render()
 		Next
-
-		SetColor 0,0,0
-		SetAlpha 0.2 * oldColA
-		DrawRect(sideButtonPanelWidth,0, 800 - sideButtonPanelWidth, 385)
-		SetColor(oldCol)
-		SetAlpha(oldColA)
 
 		If currentPage Then currentPage.Render()
 	End Method
@@ -734,7 +744,7 @@ Type TDebugProfiler
 		Local textY:Int = y
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float; oldColA = GetAlpha()
-		Local font:TBitmapfont = GetBitmapFont("default", 10)
+		Local font:TBitmapfont = GetBitmapFont("default", 9)
 
 		SetColor 0,0,0
 		SetAlpha 0.75*oldColA

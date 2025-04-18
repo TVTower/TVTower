@@ -221,7 +221,7 @@ Type TIngameHelpWindow
 		Local canvas:TGUIObject = modalDialogue.GetGuiContent()
 		guiTextArea = New TGUITextArea.Create(New SVec2I(0,0), New SVec2I(Int(canvas.GetContentWidth()), Int(canvas.GetContentHeight(-1) - 22 + 22 * (Not showHideOption))), state.ToString())
 		'guiTextArea.Move(0,0)
-		guiTextArea.SetFont( GetBitmapFont("default", 14) )
+		guiTextArea.SetFont( GetBitmapFont("default", 13) )
 		guiTextArea.textColor = SColor8.Black
 		guiTextArea.SetWordWrap(True)
 		guiTextArea.SetValue( GetLocale(contentKey) )
@@ -234,7 +234,7 @@ Type TIngameHelpWindow
 		Local checkboxWidth:Int = 0
 
 		checkboxHideAll = New TGUICheckBox.Create(New SVec2I(0 + checkboxWidth,190), New SVec2I(-1,-1), "", state.ToString())
-		checkboxHideAll.SetFont( GetBitmapFont("default", 12) )
+		checkboxHideAll.SetFont( GetBitmapFont("default", 11) )
 '		checkboxHideAll.textColor = TColor.clBlack.Copy()
 		checkboxHideAll.SetValue( GetLocale("DO_NOT_SHOW_ANY_TIPS"))
 		checkboxHideAll.SetChecked(Not IngameHelpWindowCollection.showHelp)

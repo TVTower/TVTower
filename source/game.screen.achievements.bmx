@@ -228,17 +228,18 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 
 		'=== CATEGORY SELECTION ===
+		Local captionFont:TBitmapFont = GetBitmapFont("default", 12, BOLDFONT)
 
-		GetBitmapFont("default", 13, BOLDFONT).DrawSimple(GetLocale("ACHIEVEMENTCATEGORY_CATEGORIES"), 40, 33, new SColor8(140, 140, 140), EDrawTextEffect.Emboss, 0.5)
+		captionFont.DrawSimple(GetLocale("ACHIEVEMENTCATEGORY_CATEGORIES"), 40, 33, new SColor8(140, 140, 140), EDrawTextEffect.Emboss, 0.5)
 
 		For local i:int = 0 to TVTAchievementCategory.count
 			local title:string = GetLocale( "ACHIEVEMENTCATEGORY_" + TVTAchievementCategory.GetAsString(TVTAchievementCategory.GetAtIndex(i)) )
 			if highlightNavigationEntry = i
-				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(50, 50, 50), EDrawTextEffect.Emboss, 0.5)
+				captionFont.DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(50, 50, 50), EDrawTextEffect.Emboss, 0.5)
 			elseif i = showCategoryIndex
-				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(90, 180, 220), EDrawTextEffect.Emboss, 0.5)
+				captionFont.DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(90, 180, 220), EDrawTextEffect.Emboss, 0.5)
 			else
-				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(120, 120,120), EDrawTextEffect.Emboss, 0.5)
+				captionFont.DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(120, 120,120), EDrawTextEffect.Emboss, 0.5)
 			endif
 		Next
 
@@ -278,7 +279,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(caption, contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		captionFont.DrawBox(caption, contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
@@ -505,7 +506,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 				x + textOffsetX + border.GetLeft(), ..
 				y + textOffsetY + border.GetTop(), ..
 				leftWidth - 10,  ..
-				Max(17, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
+				Max(19, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
 				sALIGN_LEFT_TOP, skin.textColorNeutral)
 
 			skin.fontNormal.DrawBox( ..
@@ -513,7 +514,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 				x + textOffsetX + border.GetLeft() + leftWidth + 10, ..
 				y + textOffsetY + border.GetTop(), ..
 				rightWidth - 10,  ..
-				Max(17, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
+				Max(19, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
 				sALIGN_LEFT_TOP, skin.textColorNeutral)
 			SetAlpha (oldColA)
 		else
@@ -523,7 +524,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 				x + textOffsetX + border.GetLeft(), ..
 				y + textOffsetY + border.GetTop(), .. '-1 to align it more properly
 				w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
-				Max(17, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
+				Max(19, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
 				sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			SetAlpha (oldColA)
 		endif

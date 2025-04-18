@@ -1205,7 +1205,7 @@ EndRem
 		'draw room size information
 		GetSpriteFromRegistry("gfx_datasheet_icon_roomSize").Draw(GetGraphicsManager().GetWidth() - 48, 20)
 		GetBitmapFont("default", 10).DrawBox(GetLocale("ROOM_SIZE").Replace("%SIZE%", ""), GetGraphicsManager().GetWidth() - 100, 8,90,20, sALIGN_RIGHT_TOP, New SColor8(150,150,150), EDrawTextEffect.SHADOW, 0.50)
-		GetBitmapFont("default", 22, BOLDFONT).DrawBox(room.GetSize(), GetGraphicsManager().GetWidth() - 100,10,90,39, sALIGN_RIGHT_BOTTOM, New SColor8(180,180,180), EDrawTextEffect.SHADOW, 0.50)
+		GetBitmapFont("default", 20, BOLDFONT).DrawBox(room.GetSize(), GetGraphicsManager().GetWidth() - 100,10,90,39, sALIGN_RIGHT_BOTTOM, New SColor8(180,180,180), EDrawTextEffect.SHADOW, 0.50)
 
 		If studioManagerEntity Then studioManagerEntity.Render()
 

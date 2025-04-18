@@ -63,6 +63,7 @@ Type TBitmapFontManager
 
 	Field fonts:TMap = New TMap
 	Field fontsID:TIntMap = New TIntMap
+	Field imageFonts:TStringMap = New TStringMap
 	Global systemFont:TBitmapFont
 	Global _instance:TBitmapFontManager
 	Global _defaultFlags:Int = 0 'SMOOTHFONT
@@ -129,7 +130,8 @@ Type TBitmapFontManager
 			defaultStyledFont = GetDefaultStyledFont(name, style)
 		End If
 
-		font = Add(name, defaultStyledFont.FFile, size, style)
+		font = Add(name, defaultStyledFont.FFontUrlsRaw, size, style)
+		font.spaceWidthModifier = defaultStyledFont.spaceWidthModifier
 
 		Return font
 	End Method
@@ -150,7 +152,8 @@ Type TBitmapFontManager
 
 	Method Copy:TBitmapFont(sourceName:String, copyName:String, size:Float=-1, style:Int=-1)
 		Local sourceFont:TBitmapFont = Get(sourceName, size, style)
-		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
+		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.FFontUrlsRaw, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
+		newFont.spaceWidthModifier = sourcefont.spaceWidthModifier
 		InsertFont(copyName, sourceFont.fSize, sourceFont.fStyle, newFont)
 
 		Return newFont
@@ -168,6 +171,12 @@ Type TBitmapFontManager
 		sizes.Insert(size, style, font)
 		
 		fontsID.Insert(font.id, font)
+		
+		'insert all used image fonts so a new added font can reuse it
+		For local i:int = 0 until font.FFontUrls.length
+			Local imageFontKey:String = Int(size * 64) + "|" + font.FFontUrls[i]
+			imageFonts.insert(imageFontKey, font.FImageFonts[i])
+		Next
 	End Method
 
 
@@ -196,7 +205,7 @@ Type TBitmapFontManager
 		Local defaultFont:TBitmapFont = GetDefaultFont()
 		If size = -1 Then size = defaultFont.FSize
 		If style = -1 Then style = defaultFont.FStyle
-		If file = "" Then file = defaultFont.FFile
+		If file = "" Then file = defaultFont.FFontUrlsRaw
 
 		Local font:TBitmapFont = TBitmapFont.Create(name, file, size, style, fixedCharWidth, charWidthModifier)
 
@@ -227,6 +236,7 @@ Type TBitmapFontManager
 		If baseFont = Null Then baseFont = Font
 		If baseFontBold = Null And style & BOLDFONT > 0 Then baseFontBold = Font
 		If baseFontItalic  = Null And style & ITALICFONT > 0 Then baseFontItalic = Font
+		If baseFontSmall = Null Then baseFontSmall = Font
 
 		Return Font
 	End Method
@@ -253,7 +263,6 @@ End Function
 Function GetBitmapFont:TBitmapfont(familyID:Int, size:Float=-1, style:Int=-1)
 	Return TBitmapFontManager.GetInstance().Get(familyID, size, style)
 End Function
-
 
 
 
@@ -399,14 +408,15 @@ Type TBitmapFont
 	'identifier
 	Field FName:String = ""
 	'source path
-	Field FFile:String = ""
+	Field FFontUrlsRaw:String = ""
 	'size of this font
 	Field FSize:Float = 0
 	Field FSize266:Int = 0 'size in 26.6 freetype format (int(size* 64))
 	'style used in this font
 	Field FStyle:Int = 0
-	'the original imagefont
-	Field FImageFont:TImageFont
+	'first is the main url/image font, all others are fallbacks
+	Field FFontUrls:String[]
+	Field FImageFonts:TImageFont[]
 
 	Field charGroups:TBitmapFontCharGroup[]
 
@@ -416,6 +426,7 @@ Type TBitmapFont
 	Field ascend:Int = -1000
 	'distance between baseline and lowest font's characters coordinates
 	Field descend:Int = -1000
+	Field xHeight:Int = -1
 	'value the font designer thinks is approbriate as line height
 	Field automaticLineHeight:Int = -1000
 	
@@ -490,32 +501,52 @@ Type TBitmapFont
 	Function Create:TBitmapFont(name:String, url:String, size:Float, style:Int, fixedCharWidth:Int = -1, charWidthModifier:Float = 1.0)
 		Local obj:TBitmapFont = New TBitmapFont
 		obj.FName = name
-		obj.FFile = url
+		'the url could contain multiple urls (comma separated)
+		obj.FFontUrlsRaw = url
 		obj.FSize = Int(size)
 		obj.FSize266 = Int(size * 64)
 		obj.FStyle = style
 		obj.gfx = tmax2dgraphics.Current()
 		obj.fixedCharWidth = fixedCharWidth
 		obj.charWidthModifier = charWidthModifier
-
-		obj.FImageFont = LoadTrueTypeFont(url, size, style)
-		If Not obj.FImageFont
-			'get system/current font
-			obj.FImageFont = GetImageFont()
+		
+		'url could contain fallbacks (comma separated)
+		local urls:String[] = url.split(",")
+		For local i:Int = 0 until urls.length
+			urls[i] = urls[i].Trim()
+		Next
+		
+		' Load in font + fallbacks
+		Local fontIndex:Int = 0
+		For local i:Int = 0 until urls.length
+'TODO: hier "schauen ob bereits existent..."
+			Local imageFont:TImageFont = LoadTrueTypeFont(urls[i], size, style)
+			If imageFont
+				obj.FImageFonts :+ [imageFont]
+				obj.FFontUrls :+ [urls[i]]
+			EndIf
+		Next
+		
+		' If no image was found, load system/current font
+		If obj.FImageFonts.length = 0
+			Local defaultImageFont:TImageFont = GetImageFont()
+			If Not defaultImageFont
+				Throw ("TBitmapFont.Create: font(s) ~q"+url+"~q not found. Also no default font defined!")
+				Return Null 'font not found
+			EndIf
+			obj.FImageFonts :+ [defaultImageFont]
+			obj.FFontUrls :+ [""]
 		EndIf
-		If Not obj.FImageFont
-			Throw ("TBitmapFont.Create: font ~q"+url+"~q not found.")
-			Return Null 'font not found
-		EndIf
 
-		' store basic font information
-		If TFreeTypeFont(obj.FImageFont._src_font)
-			Local ftf:TFreeTypeFont = TFreeTypeFont(obj.FImageFont._src_font)
+
+		' store basic font information (from main font)
+		If TFreeTypeFont(obj.FImageFonts[0]._src_font)
+			Local ftf:TFreeTypeFont = TFreeTypeFont(obj.FImageFonts[0]._src_font)
 			obj.ascend = ftf._ascend
 			obj.descend = ftf._descend
 			obj.automaticLineHeight = ftf._height
 		EndIf
-
+		
 		' generate a basic charGroup (Ascii)
 		obj.LoadCharGroup(0)
 		Return obj
@@ -612,7 +643,7 @@ Type TBitmapFont
 	Method LoadCharGroup:TBitmapFontCharGroup(charGroupIndex:Int, charCodeStart:Int=-1, charCodeEnd:Int=-1, config:TData=Null )
 		If charGroupIndex < 0 Then charGroupIndex = 0
 		If charCodeStart = -1 Then charCodeStart = charGroupIndex * 256
-		If charCodeEnd = -1 Then charCodeEnd = charCodeStart + 256
+		If charCodeEnd = -1 Then charCodeEnd = charCodeStart + 256 - 1 '-1 as we want 256 chars (0 - 255)
 		
 		' 0. Ensure group array is big enough
 		If charGroups.Length <= charGroupIndex
@@ -669,7 +700,7 @@ endrem
 	'load glyphs of an imagefont as TBitmapFontChar into a char-TMap
 	Method LoadCharsFromSource:TBitmapFontChar[](charCodeStart:Int, charCodeEnd:Int, source:Object=Null)
 		Local imgFont:TImageFont = TImageFont(source)
-		If Not imgFont Then imgFont = Self.FImageFont
+		If Not imgFont and Self.FImageFonts.length > 0 Then imgFont = Self.FImageFonts[0]
 		If Not imgfont Then Return Null
 
 		'ensure params are in right order and within range
@@ -685,10 +716,22 @@ endrem
 		Local charsToLoad:Int = charCodeEnd - charCodeStart
 		Local chars:TBitmapFontChar[charsToLoad]
 		For Local i:Int = 0 Until charsToLoad
-			Local glyphIndex:Int = imgFont.CharToGlyph(charCodeStart + i)
-			If glyphIndex < 0 Then Continue
+			If charCodeStart + i < 32 Then continue 'ignore non-printables (except space)
 
-			Local glyph:TImageGlyph = imgFont.LoadGlyph(glyphIndex)
+			Local glyph:TImageGlyph
+			Local glyphIndex:Int = imgFont.CharToGlyph(charCodeStart + i)
+			If glyphIndex >= 0
+				glyph = imgFont.LoadGlyph(glyphIndex)
+			ElseIf (charCodeStart + i > 32) and self.FImageFonts.length > 1
+				For Local fontIndex:int = 1 until self.FImageFonts.length
+					glyphIndex = self.FImageFonts[fontIndex].CharToGlyph(charCodeStart + i)
+					if glyphIndex >= 0
+						'print "Fallback found :" + (charCodeStart + i) + " glyph="+glyphIndex
+						glyph = self.FImageFonts[fontIndex].LoadGlyph(glyphIndex)
+						exit
+					EndIf
+				Next
+			EndIf 
 			If Not glyph Then Continue
 			
 			'glyph._image can be Null! (eg "space" char code)
@@ -700,14 +743,38 @@ endrem
 			EndIf
 			'print "loading #"+i+"/"+charsToLoad+"  glyphIndex "  + glyphIndex + " => " + chr(i)
 
-			'base displacement calculated with A-Z (space between
-			'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
-			If i >= 65 And i < 95
-				Self.baseDisplaceY = Min(Self.baseDisplaceY, glyph._y)
+			' we could try to find out if all our used glyphs use less
+			' "space" than the defined ascender-value in the font tells
+			' (eg a very exotic char is way higher than all other chars
+			' and thus creating a big ascender-value while the used chars
+			' are way smaller and would then render with a lot vertical
+			' whitespace) 
+			' This can lead to odd "jittering" when loading additional
+			' char codes which alter the displaceY values (rendered text
+			' would move).
+			' A simpler approach would be to focus on A-Z and use this as
+			' the final displaceY too (with the risk of special chars
+			' rendering "cut" on a rendertarget when rendering at y=0, or
+			' slight overlaps on multiline text with sharp line-heights)
+			
+			if charCodeStart >= 0 and charCodeEnd <= 255
+				'base displacement calculated with A-Z (space between
+				'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
+				If i >= 65 And i < 95
+					Self.baseDisplaceY = Min(Self.baseDisplaceY, glyph._y)
+				EndIf
+				If i >= 65
+					Self.displaceY = Min(Self.displaceY, glyph._y)
+					'if glyph._y < 0 Then print (charCodeStart + i) +"   ascend="+self.ascend  + " bitmaptop="+(-1*(glyph._y-self.ascend))
+				EndIf
 			EndIf
-			If i >= 65 'i>32
+			Rem
+			'this also includes Cyrillic, Greek - ONCE it is loaded!
+			If (charCodeStart + i) >= 65
 				Self.displaceY = Min(Self.displaceY, glyph._y)
+				'if glyph._y < 0 Then print (charCodeStart + i) +"   ascend="+self.ascend  + " bitmaptop="+(-1*(glyph._y-self.ascend))
 			EndIf
+			EndRem
 		Next
 
 		If fixedCharWidth > 0 
@@ -773,6 +840,19 @@ endrem
 	Method GetEllipsisWidth:Float()
 		If _ellipsisWidth < 0 Then _ellipsisWidth = GetSimpleDimension(GetEllipsis()).x
 		Return _ellipsisWidth
+	End Method
+
+
+	Method GetXHeight:Int()
+		If xHeight < 0
+			Local bm:TBitmapFontChar = __GetBitmapFontChar(Asc("x"))
+			If bm 
+				xHeight = bm.dim.y
+			Else
+				xHeight = GetMaxCharHeightAboveBaseline()/2
+			EndIf
+		EndIf
+		Return xHeight
 	End Method
 	
 	
@@ -1124,7 +1204,10 @@ endrem
 		EndIf
 
 		If charCode = KEY_TAB
-			Return New SVec2F(+ (Int(lineWidth / tabWidth)+1) * tabWidth, 0)
+			' advance to reach next tab "slot" ?
+			Local nextTab:Int = (int(lineWidth)/tabWidth) * tabWidth + tabWidth
+			Local tabAdvance:Int = nextTab - lineWidth
+			Return New SVec2F(tabAdvance, 0)
 		EndIf
 		
 		Return New SVec2F
@@ -1140,7 +1223,10 @@ endrem
 			EndIf
 		EndIf
 		If charCode = KEY_TAB
-			Return New SVec2F(+ (Int(lineWidth / tabWidth)+1) * tabWidth, 0)
+			' advance to reach next tab "slot" ?
+			Local nextTab:Int = (int(lineWidth)/tabWidth) * tabWidth + tabWidth
+			Local tabAdvance:Int = nextTab - lineWidth
+			Return New SVec2F(tabAdvance, 0)
 		EndIf
 		
 		Return New SVec2F
@@ -1173,7 +1259,7 @@ endrem
 		Local bm:TBitmapFontChar = charGroups[charGroupIndex].chars[charIndex]
 
 		'some fonts do not contain the given char ... display "?" there
-		If Not bm And (charGroupIndex <> 0 Or charIndex <> Asc("?"))
+		If Not bm And (charGroupIndex <> 0 Or charIndex <> Asc("?")) and charIndex >= 32
 			bm = __GetBitmapFontChar(Asc("?"))
 		EndIf
 		Return bm
@@ -2311,21 +2397,18 @@ endrem
 
 			'render char and advance to next char position 
 			If Not newLineChar
-				Local transformedPos:SVec2F = __GetTransformedPosition(textX - handle.x*w, textY + contentAlignDY - handle.y*h - Self.displaceY, localX, localY)
-
-
 				Local bm:TBitmapFontChar = __GetBitmapFontChar(charCode)
+
 				If Not BITMAPFONTBENCHMARK
 					If drawToPixmap
 						Self.__DrawSingleCharToPixmap(bm, charCode, x + textX, y + textY - contentAlignDY, color)
-						'Self.__DrawSingleCharToPixmap(bm, charCode, transformedPos.x, transformedPos.y, color)
 					Else
+						Local transformedPos:SVec2F = __GetTransformedPosition(textX - handle.x*w, textY + contentAlignDY - handle.y*h - Self.displaceY, localX, localY)
 						Self.__DrawSingleChar(bm, charCode, transformedPos.x, transformedPos.y)
 					EndIf
 				EndIf
 
-				Local charAdv:SVec2F = __GetCharAdvance(bm, charCode, textX)
-				textX :+ charAdv.x
+				textX :+ __GetCharAdvance(bm, charCode, textX).x
 			EndIf
 
 
@@ -2827,6 +2910,8 @@ Type STextParseInfo
 '			possibleLineBreakIndex = txtIndex + 1
 		ElseIf charCode = Asc("-") 
 			possibleLineBreakIndex = txtIndex
+		ElseIf charCode = Asc("~t") 
+			possibleLineBreakIndex = txtIndex
 		'handle enforced new line
 		ElseIf charCode = 13 Or charCode = Asc("~n")
 			possibleLineBreakIndex = txtIndex
@@ -3154,6 +3239,8 @@ Type STextParseInfo
 		element.renderObject = bm
 
 		If charCode = Asc(" ")
+			element.skipOnLinebreak = True
+		ElseIf charCode = Asc("~t")
 			element.skipOnLinebreak = True
 		'no need to render this character
 		ElseIf element.manualLineBreak

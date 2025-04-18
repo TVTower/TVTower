@@ -25,6 +25,10 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
+			button.w = 115
+			'custom position
+			button.x = position.x + 547
+			button.y = 18 + 2 + i * (button.h + 2)
 			button._onClickHandler = OnButtonClickHandler
 			button.visible = False
 
@@ -124,8 +128,8 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 		Local slotStepY:Int = 4
 
 		'offset content
-		x:+ 5
-		y:+ 5
+		x:+ 2
+		y:+ 20 + 2
 
 		roomHovered = Null
 
@@ -154,12 +158,12 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 	Method Render()
 		RenderRoomAgencyRoomList(position.x + 5, 13)
 		If roomHovered
-			RenderRoomAgencyRoomDetails(roomHovered, position.x + 510, 200)
+			RenderRoomAgencyRoomDetails(roomHovered, position.x + 515, 200)
 		ElseIf roomHighlight
-			RenderRoomAgencyRoomDetails(roomHighlight, position.x + 510, 200)
+			RenderRoomAgencyRoomDetails(roomHighlight, position.x + 515, 200)
 		EndIf
 
-		DrawBorderRect(position.x + 510, 13, 160, 65)
+		DrawWindow(position.x + 545, position.y, 120, 73, "Manipulate")
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
@@ -167,10 +171,6 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 
 
 	Method RenderRoomAgencyRoomList(x:Int, y:Int)
-		'- raeume
-		'- selektierten "kick/block/rent" (aktueller Spieler)
-
-
 		Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
 		Local slotW:Int = 118
@@ -183,18 +183,16 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 			playerColors[i-1] = TPlayerColor.getByOwner(i).copy().AdjustSaturation(-0.5)
 		Next
 
-		DrawBorderRect(x, y, 4*slotW + (4-1)*slotStepX + slotCenterStepX + 10, 14 * slotH + (14-1) * slotStepY + 10)
-		'offset content
-		x:+ 5
-		y:+ 5
-
+		Local windowW:Int = 4 + 4*slotW + (4-1)*slotStepX + slotCenterStepX + 10
+		Local windowH:Int = 22 + 14 * slotH + (14-1) * slotStepY + 10
+		Local contentRect:SRectI = DrawWindow(x, y, windowW, windowH, "Room Plan", "", 0.0)
 
 		For Local sign:TRoomBoardSign = EachIn GetRoomBoard().list
 			Local room:TRoomBase = TRoomDoor(sign.door).GetRoom()
 			If Not room Then Continue
 
-			Local slotX:Int = x + (sign.GetOriginalSlot()-1) * (slotW + slotStepX)
-			Local slotY:Int = y + (13 - sign.GetOriginalFloor()) * (slotH + slotStepY)
+			Local slotX:Int = contentRect.x + (sign.GetOriginalSlot()-1) * (slotW + slotStepX)
+			Local slotY:Int = contentRect.y + (13 - sign.GetOriginalFloor()) * (slotH + slotStepY)
 			If sign.GetOriginalSlot() > 2 Then slotX :+ slotCenterStepX
 
 			'ignore never-rentable rooms
@@ -250,40 +248,31 @@ Type TDebugScreenPage_RoomAgency extends TDebugScreenPage
 	End Method
 
 
-	Method RenderRoomAgencyRoomDetails(room:TRoomBase, x:Int, y:Int, width:Int = 500, height:Int = 80)
-		DrawBorderRect(x, y, width, height)
-		'offset content
-		x:+ 5
-		y:+ 5
+	Method RenderRoomAgencyRoomDetails(room:TRoomBase, x:Int, y:Int, width:Int = 150, height:Int = 80)
+		Local contentRect:SRectI = DrawWindow(x, y, width, height, room.GetDescription(1), "", 0.0)
+		Local textY:Int = contentRect.y
 
-		Local textPosX:Int = x
-		Local textPosY:Int = y
-
-		textFont.DrawSimple("Name: ", textPosX, textPosY)
-		textFont.DrawSimple(room.GetDescription(1), textPosX + 50, textPosY)
-
-		textPosY :+ 12
-		textFont.DrawSimple("Size: ", textPosX, textPosY)
-		textFont.DrawSimple(room.GetSize(), textPosX + 50, textPosY)
+		textFont.DrawSimple("Size: ", contentRect.x, textY)
+		textFont.DrawSimple(room.GetSize(), contentRect.x + 50, textY)
 	
-		textPosY :+ 12
-		textFont.DrawSimple("Rentable: ", textPosX, textPosY)
+		textY :+ 12
+		textFont.DrawSimple("Rentable: ", contentRect.x, textY)
 		If room.IsRentable()
-			textFont.DrawSimple("Yes", textPosX + 50, textPosY)
+			textFont.DrawSimple("Yes", contentRect.x + 50, textY)
 		ElseIf room.IsRentableIfNotRented()
-			textFont.DrawSimple("If free", textPosX + 50, textPosY)
+			textFont.DrawSimple("If free", contentRect.x + 50, textY)
 		Else
-			textFont.DrawSimple("Never", textPosX + 50, textPosY)
+			textFont.DrawSimple("Never", contentRect.x + 50, textY)
 		EndIf
 
-		textPosY :+ 12
-		textFont.DrawSimple("Blocked: ", textPosX, textPosY)
+		textY :+ 12
+		textFont.DrawSimple("Blocked: ", contentRect.x, textY)
 		If room.IsBlocked()
-			textFont.DrawSimple("Yes", textPosX + 50, textPosY)
-			textPosY :+ 12
-			textFont.DrawSimple("till " + GetWorldTime().GetFormattedGameDate(room.GetBlockedUntilTime()), textPosX + 50, textPosY)
+			textFont.DrawSimple("Yes", contentRect.x + 50, textY)
+			textY :+ 12
+			textFont.DrawSimple("till " + GetWorldTime().GetFormattedGameDate(room.GetBlockedUntilTime()), contentRect.x + 50, textY)
 		Else
-			textFont.DrawSimple("No", textPosX + 50, textPosY)
+			textFont.DrawSimple("No", contentRect.x + 50, textY)
 		EndIf
 	End Method
 

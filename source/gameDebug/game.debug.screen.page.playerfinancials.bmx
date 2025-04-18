@@ -24,6 +24,10 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 		For Local i:Int = 0 Until texts.length
 			button = CreateActionButton(i, texts[i], position.x, position.y)
 			button._onClickHandler = OnButtonClickHandler
+			'custom position
+			button.x = position.x + 510 + 3
+			button.y = 14 + 2 + i * (button.h + 2)
+
 
 			buttons :+ [button]
 		Next
@@ -63,14 +67,14 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		DrawBorderRect(position.x + 510, 13, 160, 80)
+		DrawWindow(position.x + 510, 13, 155, 100, "Manipulate")
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
 
-		RenderBlock_FinancialInfo(-1, position.x + 5, position.y + 20)
+		RenderBlock_FinancialInfo(-1, position.x, position.y)
 
-		RenderBlock_PlayerBudgets(playerID, position.x + 5, position.y + 150)
+		RenderBlock_PlayerBudgets(playerID, position.x, position.y + 200)
 	End Method
 
 
@@ -83,60 +87,71 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			Local padding:Int = 15
 			Local boxWidth:Int = labelWidth + padding + colWidth*4 + 2 '2 is border*2
 
-			DrawBorderRect(x, y, boxWidth, 140)
+			Local contentRect:SRectI = DrawWindow(x, y, boxWidth, 130, "Budget #" + playerID)
 
-			Local textX:Int = x + 3
-			Local textY:Int = y + 3 - 1
+			Local textY:Int = contentRect.y
 
-			textFont.Draw("Investment Savings: " + MathHelper.DottedValue(player.aiData.GetInt("budget_investmentsavings")), textX, textY)
-			textY :+ 10
-			textFont.Draw("Savings Part: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_savingpart")*100)+"%", textX, textY)
-			textY :+ 10
-			textFont.Draw("Extra fixed costs savings percentage: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_extrafixedcostssavingspercentage")*100)+"%", textX, textY)
-			textY :+ 10
+			textFont.DrawBox("Investment Savings: " + MathHelper.DottedValue(player.aiData.GetInt("budget_investmentsavings")), contentRect.x, textY, contentRect.w, 30, SALIGN_LEFT_TOP, SCOLOR8.WHITE)
+			textY :+ textFont.DrawBox("Savings Part: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_savingpart")*100)+"%", contentRect.x, textY, contentRect.w, 30, SALIGN_RIGHT_TOP, SCOLOR8.WHITE).y
+			textY :+ textFont.DrawBox("Extra fixed costs savings: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_extrafixedcostssavingspercentage")*100)+"%", contentRect.x, textY, contentRect.w, 30, SALIGN_RIGHT_TOP, SCOLOR8.WHITE).y
 
-			textFontBold.Draw("Budget List: ", textX, textY)
-			textFontBold.Draw("Current", textX + labelWidth + padding + colWidth*0, textY)
-			textFontBold.Draw("Max", textX + labelWidth + padding + colWidth*1, textY)
-			textFontBold.Draw("Day", textX + labelWidth + padding + colWidth*2, textY)
-			textFontBold.Draw("FixCosts", textX + labelWidth + padding + colWidth*3, textY)
+			textFontBold.Draw("Budget List: ", contentRect.x, textY)
+			textFontBold.Draw("Current", contentRect.x + labelWidth + padding + colWidth*0, textY)
+			textFontBold.Draw("Max", contentRect.x + labelWidth + padding + colWidth*1, textY)
+			textFontBold.Draw("Day", contentRect.x + labelWidth + padding + colWidth*2, textY)
+			textFontBold.Draw("FixCosts", contentRect.x + labelWidth + padding + colWidth*3, textY)
 			textY :+ 10 + 2
 
 			For Local taskNumber:Int = 1 To player.aiData.GetInt("budget_task_count", 1)
-				textFont.Draw(player.aiData.GetString("budget_task_name"+taskNumber).Replace("Task", ""), textX, textY)
-				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), textX + labelWidth + padding + colWidth*0, textY)
-				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), textX + labelWidth + padding + colWidth*1, textY)
-				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), textX + labelWidth + padding + colWidth*2, textY)
-				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_fixcosts"+taskNumber)), textX + labelWidth + padding + colWidth*3, textY)
-				textY :+ 10
+				textFont.Draw(player.aiData.GetString("budget_task_name"+taskNumber).Replace("Task", ""), contentRect.x, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*0, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*1, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*2, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_fixcosts"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*3, textY)
+				textY :+ 11
 			Next
 		EndIf
 	End Method
 
 
 	Method RenderBlock_FinancialInfo(playerID:Int, x:Int, y:Int)
+		Local windowW:Int = 160
+		Local windowH:Int = 95
+
 		If playerID = -1
-			RenderBlock_FinancialInfo(1, x, y + 30*0)
-			RenderBlock_FinancialInfo(2, x, y + 30*1)
-			RenderBlock_FinancialInfo(3, x + 125, y + 30*0)
-			RenderBlock_FinancialInfo(4, x + 125, y + 30*1)
+			RenderBlock_FinancialInfo(1, x, y + (windowH + 5)*0)
+			RenderBlock_FinancialInfo(2, x, y + (windowH + 5)*1)
+			RenderBlock_FinancialInfo(3, x + windowW + 5, y + (windowH + 5)*0)
+			RenderBlock_FinancialInfo(4, x + windowW + 5, y + (windowH + 5)*1)
 			Return
 		EndIf
-
-		DrawBorderRect(x, y, 123, 35)
-
-		Local textX:Int = x+1
-		Local textY:Int = y+1
 
 		Local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, GetWorldTime().GetDay())
 		Local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 
-		Local font:TBitmapfont = GetBitmapFont("default", 10)
-		font.Draw("Money #"+playerID+": "+MathHelper.DottedValue(finance.money), textX, textY)
-		textY :+ 9+1
-		font.Draw("~tLic:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_programmeLicences), textX, textY)
-		textY :+ 9
-		font.Draw("~tAd:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_penalty), textX, textY)
+		Local contentRect:SRectI = DrawWindow(x, y, windowW, windowH, "Money #" + playerID, MathHelper.DottedValue(finance.money))
+
+		Local textY:Int = contentRect.y
+		Local font:TBitmapfont = GetBitmapFont("default", 9)
+
+		textY :+ DrawEntry("Licences:", finance.income_programmeLicences, finance.expense_programmeLicences, font, contentRect.x, textY, contentRect.w)
+		textY :+ DrawEntry("Ads:", finance.income_ads, finance.expense_penalty, font, contentRect.x, textY, contentRect.w)
+		textY :+ DrawEntry("Stations:", finance.income_stations, finance.expense_stationFees, font, contentRect.x, textY, contentRect.w)
+		textY :+ DrawEntry("Station Fees:", -1, finance.expense_stationFees, font, contentRect.x, textY, contentRect.w)
+		textY :+ DrawEntry("News:", -1, finance.expense_news, font, contentRect.x, textY, contentRect.w)
+		textY :+ DrawEntry("News Fees:", -1, finance.expense_newsAgencies, font, contentRect.x, textY, contentRect.w)
+		
+		Function DrawEntry:Int(title:String, income:Long, expense:Long, font:TBitmapFont, x:Int, y:Int, w:Int)
+			Local dy:Int
+			dy = Max(dy, font.Draw(title, x, y).y)
+			if income >= 0 'minus allows to hide it
+				dy = Max(dy, font.DrawBox(MathHelper.DottedValue(income), x + w - 95, y, 45, 20, SALIGN_RIGHT_TOP, New SColor8(120,255,120)).y)
+			EndIf
+			If expense >= 0 'minus allows to hide it
+				dy = Max(dy, font.DrawBox(MathHelper.DottedValue(expense), x + w - 45, y, 45, 20, SALIGN_RIGHT_TOP, New SColor8(255,120,120)).y)
+			EndIf
+			Return dy
+		End Function
 	End Method
 
 

@@ -101,12 +101,12 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(room.owner, financeShowDay)
 
 		local captionColor:SColor8 = new SColor8(70, 70, 70)
-		local captionFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
+		local captionFont:TBitmapFont = GetBitmapFont("Default", 12, BOLDFONT)
 		local captionHeight:int = 20 'to center it to table header according "font Baseline"
-		local textFont:TBitmapFont = GetBitmapFont("Default", 14)
-		local logFont:TBitmapFont = GetBitmapFont("Default", 12)
-		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 11)
-		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
+		local textFont:TBitmapFont = GetBitmapFont("Default", 12)
+		local logFont:TBitmapFont = GetBitmapFont("Default", 11)
+		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 10)
+		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 12, BOLDFONT)
 
 		local clLog:SColor8 = new SColor8(50,50,50)
 
@@ -137,11 +137,11 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local today:Long = GetWorldTime().GetTimeGoneForGameTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
 '		textFont.DrawBox(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 14 +  screenOffsetY, 160, 20, sALIGN_CENTER_CENTER, New SColor8(90,90,90), EDrawTextEffect.Shadow, 0.2)
-		GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 14 +  screenOffsetY, 160, 20, sALIGN_CENTER_CENTER, New SColor8(90,90,90), EDrawTextEffect.Emboss, 0.2)
+		GetBitmapFont("default", 11, BOLDFONT).DrawBox(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 14 +  screenOffsetY, 160, 20, sALIGN_CENTER_CENTER, New SColor8(90,90,90), EDrawTextEffect.Emboss, 0.2)
 
 
 		'=== NEWS LOG ===
-		captionFont.DrawBox(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 15 + screenOffsetY,  240, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+		captionFont.DrawBox(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 14 + screenOffsetY,  240, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 		local list:TList = GetPlayerFinanceHistoryList(room.owner)
 		local logSlot:int = 0
 		local logH:int = 19
@@ -178,12 +178,12 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 
 		local valueIncomeX:int = labelX + labelW
 		local valueExpenseX:int = valueIncomeX + 120
-		local valueStartY:int = 39 + screenOffsetY + 1
+		local valueStartY:int = 39 + screenOffsetY
 		local valueH:int = 19, valueW:int = 95
 
 		'draw balance table
-		captionFont.DrawBox(GetLocale("FINANCES_INCOME"), 240 + screenOffsetX, 15 + screenOffsetY,  104, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
-		captionFont.DrawBox(GetLocale("FINANCES_EXPENSES"), 352 + screenOffsetX, 15 + screenOffsetY,  104, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+		captionFont.DrawBox(GetLocale("FINANCES_INCOME"), 240 + screenOffsetX, 15 + screenOffsetY,  103, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+		captionFont.DrawBox(GetLocale("FINANCES_EXPENSES"), 352 + screenOffsetX, 15 + screenOffsetY,  103, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 
 		'draw total-area
 		local profit:int = finance.revenue_after - finance.revenue_before
@@ -192,7 +192,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		else
 			GetSpriteFromRegistry("screen_financial_negativeBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		endif
-		captionFont.DrawBox(MathHelper.DottedValue(profit), 250 + screenOffsetX, 334 + screenOffsetY, 200, 25, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.5)
+		captionFont.DrawBox(MathHelper.DottedValue(profit), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.5)
 
 		
 		'draw label backgrounds
@@ -455,8 +455,8 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		SetLineWidth(1)
 
 		'coord descriptor
-		textSmallFont.DrawBox(TFunctions.convertValue(maxvalue,2,0), curveArea.x, curveArea.y-2, curveArea.w, 20, sALIGN_RIGHT_TOP, labelColor)
-		textSmallFont.DrawBox(TFunctions.convertValue(minvalue,2,0), curveArea.x, curveArea.GetY2()-20, curveArea.w, 20, sALIGN_RIGHT_BOTTOM, labelColor)
+		textSmallFont.DrawBox(TFunctions.convertValue(maxvalue,2,0), curveArea.x, curveArea.y-2, curveArea.w-1, 20, sALIGN_RIGHT_TOP, labelColor)
+		textSmallFont.DrawBox(TFunctions.convertValue(minvalue,2,0), curveArea.x, curveArea.GetY2()-18, curveArea.w-1, 20, sALIGN_RIGHT_BOTTOM, labelColor)
 
 
 		GuiManager.Draw( LS_officeFinancialScreen )

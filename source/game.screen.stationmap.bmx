@@ -43,8 +43,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Method Create:TGameGUIBasicStationmapPanel(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
-		buttonFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
-		listFont = GetBitmapFontManager().Get("Default", 12)
+		buttonFont = GetBitmapFontManager().Get("Default", 11, BOLDFONT)
+		listFont = GetBitmapFontManager().Get("Default", 11)
 
 		actionButton = New TGUIButton.Create(New SVec2I(0, 0), New SVec2I(150, 28), "", "STATIONMAP")
 		actionButton.SetSpriteName("gfx_gui_button.datasheet")
@@ -646,7 +646,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		Local boxAreaH:Int = 0
 		Local showDetails:Int = False
 		Local showPermissionText:Int = False
-		Local permissionTextH:int = 24
+		Local permissionTextH:int = 34
 		'only show when buying/looking for a new
 		If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 			If TScreenHandler_StationMap.selectedStation And section And section.NeedsBroadcastPermission(TScreenHandler_StationMap.selectedStation.owner, TVTStationType.ANTENNA)
@@ -776,10 +776,10 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 			If showPermissionText And section And selectedStation
 				If Not section.HasBroadcastPermission(selectedStation.owner)
-					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+GetFormattedCurrency(section.GetBroadcastPermissionPrice(selectedStation.owner)) +"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
+					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+GetFormattedCurrency(section.GetBroadcastPermissionPrice(selectedStation.owner)) +"|/b|"), contentX + 2, currentY, contentW - 4, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				Else
 					currentY :- 1 'align it a bit better
-					skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
+					skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 2, currentY, contentW - 4, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				EndIf
 			EndIf
 		EndIf
@@ -918,7 +918,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() Then showDetails = True
 
 		Local showPermissionText:Int = False
-		Local permissionTextH:int = 24
+		Local permissionTextH:int = 34
 		'only show when buying/looking for a new
 		If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 			If TScreenHandler_StationMap.selectedStation And section And section.NeedsBroadcastPermission(TScreenHandler_StationMap.selectedStation.owner, TVTStationType.CABLE_NETWORK_UPLINK)
@@ -1521,7 +1521,7 @@ Type TSatelliteSelectionFrame
 		'scroll by one entry at a time
 		satelliteList.scrollItemHeightPercentage = 1.0
 		satelliteList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
-		satelliteList.SetFont( GetBitmapFontManager().Get("Default", 12) )
+		satelliteList.SetFont( GetBitmapFontManager().Get("Default", 11) )
 
 		'panel handles them (similar to a child - but with manual draw/update calls)
 		'satelliteList.SetParent(self)
@@ -1902,7 +1902,7 @@ Type TStationMapInformationFrame
 		'scroll by one entry at a time
 		sectionList.scrollItemHeightPercentage = 1.0
 		sectionList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
-		sectionList.SetFont( GetBitmapFontManager().Get("Default", 12) )
+		sectionList.SetFont( GetBitmapFontManager().Get("Default", 11) )
 
 		'panel handles them (similar to a child - but with manual draw/update calls)
 		GuiManager.Remove(sectionList)

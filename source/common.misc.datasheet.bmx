@@ -56,12 +56,12 @@ Type TDatasheetSkin
 		skin.textColorBad = new SColor8(80,10,10)
 		skin.defaultFont = GetBitmapFontManager().baseFont
 
-		skin.fontNormal = GetBitmapFontManager().baseFont
-		skin.fontBold = GetBitmapFontManager().baseFontBold
+		skin.fontNormal = GetBitmapFontManager().Get("default", 11)
+		skin.fontBold = GetBitmapFontManager().Get("default", 12, BOLDFONT)
 		skin.fontSmall = GetBitmapFontManager().Get("default", skin.fontNormal.FSize-1)
 		skin.fontSemiBold = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
-		skin.fontCaption = GetBitmapFontManager().Get("default", 13, BOLDFONT)
-		skin.fontSmallCaption = GetBitmapFontManager().Get("default", 12, BOLDFONT)
+		skin.fontCaption = GetBitmapFontManager().Get("default", 12, BOLDFONT)
+		skin.fontSmallCaption = GetBitmapFontManager().Get("default", 11, BOLDFONT)
 
 		'use content-params from sprite
 		skin.contentPadding.CopyFrom( skin.spriteBorder.GetNinePatchInformation().contentBorder )
@@ -127,7 +127,7 @@ Type TDatasheetSkin
 			font.DrawBox( ..
 				value, ..
 				x + border.GetLeft(), ..
-				y + border.GetTop() - 1, ..
+				y + border.GetTop() - 2, ..
 				w - (border.GetRight() + border.GetLeft()),  ..
 				h - (border.GetTop() + border.GetBottom() - 4), ..
 				new SVec2F(valueAlign.x, valueAlign.y), GetTextColor(fontColorStyle), drawTextEffect.data)

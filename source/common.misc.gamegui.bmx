@@ -33,16 +33,24 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 	Method DrawInputContent:Int(x:Int, y:Int) override
 		'draw sprite
 		If TGUISpriteDropDownItem(selectedEntry)
-			Local scaleSprite:Float = 0.8
-			Local labelHeight:Int = GetFont().GetHeight(GetValue())
+			Local scaleSprite:Float = 0.9
 			Local item:TGUISpriteDropDownItem = TGUISpriteDropDownItem(selectedEntry)
+
 			If item
 				Local sprite:TSprite = item.GetSprite()
 				If sprite <> TSprite.defaultSprite
 					Local spriteDim:SVec2I = item.GetSpriteDimension()
 					Local itemHeight:Int = (spriteDim.y * scaleSprite)
-					Local displaceY:Int = 0.5 * (labelHeight - itemHeight)
-					sprite.DrawArea(x, y + displaceY, spriteDim.x * scaleSprite, spriteDim.y * scaleSprite)
+					Local displaceY:Int
+					Local v:String = GetValue()
+					if v.Find("~n") >= 0 'no single line?
+						displaceY = 0.5 * (GetFont().GetHeight(v) - itemHeight)
+					Else
+						' single line texts can be placed "optically weighted"
+						displaceY = Int((itemHeight - GetFont().GetMaxCharHeight(True)) / 2.0 + GetFont().GetXHeight()/6.0)
+					EndIf
+
+					sprite.DrawArea(x, y - displaceY, spriteDim.x * scaleSprite, spriteDim.y * scaleSprite)
 
 					'offset x by sprite
 					x :+ spriteDim.x * scaleSprite + 3
@@ -108,27 +116,6 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 		endif
 
 		return _sprite
-	End Method
-
-
-	'override to change color
-	Method DrawBackground()
-		If IsHovered() or IsSelected()
-			Local oldCol:SColor8; GetColor(oldCol)
-			Local oldA:Float = GetAlpha()
-			Local scrRect:TRectangle = GetScreenRect()
-
-			SetColor(125, 160, 215)
-			If IsHovered()
-				SetAlpha(oldA * 0.75)
-				DrawRect(scrRect.x, scrRect.y, scrRect.w, rect.h)
-			Else 'same: ElseIf IsSelected()
-				SetAlpha(oldA * 0.5)
-				DrawRect(scrRect.x, scrRect.y, scrRect.w, rect.h)
-			EndIf
-			SetColor(oldCol)
-			SetAlpha(oldA)
-		EndIf
 	End Method
 
 
@@ -238,7 +225,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 		OnChangePadding()
 
 
-		SetCaptionArea(New TRectangle.Init(20, 6, GetContentScreenRect().GetW() - 2*20, 30))
+		SetCaptionArea(New TRectangle.Init(20, 8, GetContentScreenRect().GetW() - 2*20, 30))
 		guiCaptionTextBox.SetValueAlignment( ALIGN_LEFT_TOP )
 
 		Return Self

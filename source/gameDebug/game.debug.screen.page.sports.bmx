@@ -40,23 +40,19 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 
 
 	Method Render()
-		RenderSportsBlock(position.x + 5, 13)
+		RenderSportsBlock(position.x, 13)
 	End Method
 
 
-	Method RenderSportsBlock(x:Int, y:Int, w:Int=325, h:Int=300)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
+	Method RenderSportsBlock(x:Int, y:Int, w:Int=390, h:Int=300)
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Sport Leagues", "", 0.0)
+		Local textY:Int = contentRect.y
 
 		Local mouseOverLeague:TNewsEventSportLeague
 
-		titleFont.DrawSimple("Sport Leagues: ", textX, textY)
-		textY :+ 12 + 8
-
 		For Local sport:TNewsEventSport = EachIn GetNewsEventSportCollection()
-			textFont.DrawBox(sport.name, textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
-			textY :+ 12
+			textFont.DrawBox(sport.name, contentRect.x, textY, contentRect.w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textY :+ 13
 
 			Local seasonInfo:String
 			If sport.IsSeasonStarted() Then seasonInfo :+ "Started  "
@@ -64,31 +60,31 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 			If sport.ReadyForNextSeason() Then seasonInfo :+ "ReadyForNextSeason  "
 			If sport.ArePlayoffsRunning() Then seasonInfo :+ "Playoffs running  "
 			If sport.ArePlayoffsFinished() Then seasonInfo :+ "Playoffs finished  "
-			textFont.DrawBox("  Season: " + seasonInfo, textX, textY, w, 15, sALIGN_LEFT_TOP, SColor8.White)
-			textY :+ 12
+			textFont.DrawBox("  Season: " + seasonInfo, contentRect.X, textY, contentRect.w, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textY :+ 13
 
 			For Local league:TNewsEventSportLeague = EachIn sport.leagues
 				Local col:SColor8 = SColor8.White
 
-				If THelper.MouseIn(textX, textY, w, 12)
+				If THelper.MouseIn(contentRect.x, textY, contentRect.w, 12)
 					mouseOverLeague = league 
 					col = SColor8.Yellow
 				EndIf
 
-				textFont.DrawBox("  L: " + league.name, textX, textY, w, 15, sALIGN_LEFT_TOP, col)
+				textFont.DrawBox("  L: " + league.name, contentRect.x, textY, contentRect.w, 15, sALIGN_LEFT_TOP, col)
 
 				Local matchInfo:String
 				matchInfo :+ "Matches " + GetWorldTime().GetFormattedDate(league.GetFirstMatchTime(), "g/h:i")
 				matchInfo :+ " to " + GetWorldTime().GetFormattedDate(league.GetLastMatchTime(), "g/h:i")
 				matchInfo :+ "   Next " + GetWorldTime().GetFormattedDate(league.GetNextMatchTime(), "g/h:i")
-				textFont.DrawBox(matchInfo, textX + 115, textY, w - 100, 15, sALIGN_LEFT_TOP, col)
+				textFont.DrawBox(matchInfo, contentRect.x + 140, textY, contentRect.w - 155, 15, sALIGN_LEFT_TOP, col)
 				If league.IsSeasonFinished() 
-					textFont.DrawBox("FIN", textX + w - 35, textY, 25, 15, sALIGN_RIGHT_TOP, col)
+					textFont.DrawBox("FIN", contentRect.x + contentRect.w - 35, textY, 25, 15, sALIGN_RIGHT_TOP, col)
 				Else
-					textFont.DrawBox(league.GetDoneMatchesCount() + "/" + league.GetMatchCount(), textX + w - 35, textY, 25, 15, sALIGN_RIGHT_TOP, col)
+					textFont.DrawBox(league.GetDoneMatchesCount() + "/" + league.GetMatchCount(), contentRect.x + contentRect.w - 35, textY, 35, 15, sALIGN_RIGHT_TOP, col)
 				EndIf
 
-				textY :+ 12
+				textY :+ 11
 			Next
 
 			textY :+ 6
@@ -100,13 +96,10 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 	End Method
 
 
-	Method RenderSportsLeagueBlock(league:TNewsEventSportLeague, x:Int, y:Int, w:Int=170, h:Int=300)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-
-		titleFont.DrawSimple("Leaderboard", textX, textY)
-		textY :+ 12 + 8
+	Method RenderSportsLeagueBlock(league:TNewsEventSportLeague, x:Int, y:Int, w:Int=190, h:Int=300)
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Leaderboard", "", 0.0)
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
 
 		For Local rank:TNewsEventSportLeagueRank = EachIn league.GetLeaderboard()
 			textFont.DrawBox(rank.team.GetTeamName(), textX, textY, w - 25, 15, sALIGN_LEFT_TOP, SColor8.White)

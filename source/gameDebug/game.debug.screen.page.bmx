@@ -56,6 +56,53 @@ Type TDebugScreenPage
 		button.text = text
 		Return button
 	End Function
+	
+	
+	Function DrawWindow:SRectI(x:Int, y:Int, w:Int, h:int, caption:String, caption2:String = "", hAlignCaption:Float = 0.5, hAlignCaption2:Float = 1.0)
+		TFunctions.DrawOutlineRect(x, y, w, h, New SColor8(0, 0, 0, 200), New SColor8(0,0,0, 125))
+		
+		Local captionHeight:Int = 0
+		
+		'set it to 0.49 to avoid correction if you really want the main
+		'caption to be centered while caption2 is set too!
+		if caption2 and hAlignCaption = 0.5
+			hAlignCaption = 0.0 'left align main caption
+		EndIf
+
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
+
+		If caption
+			captionHeight = 14
+
+			SetColor 100,100,100
+			SetAlpha oldA * 0.75
+			DrawRect(x + 2, y + 2, w - 4, captionHeight)
+
+			SetAlpha oldA
+			'-1 to include oversized "descend"
+			textFontBold.DrawBox(caption, x + 2, y + 2 -1, w -4, captionHeight, new SVec2F(hAlignCaption, 0.5), SColor8.White)
+		EndIf
+
+		If caption2
+			SetAlpha oldA
+			SetColor oldCol
+
+			captionHeight = 14
+			'-1 to include oversized "descend"
+			textFont.DrawBox(caption2, x + 2, y + 2 -1, w -4, captionHeight, new SVec2F(hAlignCaption2, 0.5), SColor8.White)
+		EndIf
+
+		SetAlpha oldA
+		SetColor oldCol
+		
+		'return content rect
+		If caption or caption2
+			Return New SRectI(x + 2, y + 2 + captionHeight + 2, w - 4, h - 2 - captionHeight - 2)
+		Else
+			Return New SRectI(x + 2, y + 2, w - 4, h - 2)
+		EndIf
+	End Function
 
 
 	Function DrawBorderRect(x:Int, y:Int, w:Int, h:Int, borderTop:Int = True, borderRight:Int = True, borderBottom:Int = True, borderLeft:Int = True, r:Int = 0, g:Int = 0, b:Int = 0, borderAlpha:Float = 0.75, bgAlpha:Float = 0.75)
@@ -277,7 +324,7 @@ Type TDebugControlsButton
 
 		DrawRect(x+1,y+1,w-2,h-2)
 		SetColor 255,255,255
-		GetBitmapFont("default", 11).DrawBox(text, x,y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
+		GetBitmapFont("default", 10).DrawBox(text, x,y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
 
 		SetAlpha(oldColA)
 	End Function

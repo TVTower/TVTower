@@ -35,22 +35,22 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 	Method MoveBy(dx:Int, dy:Int) override
 		'move buttons
 		If buttons.length >= 6
-			buttons[ 0].SetXY(position.x + 510 + 20, position.y + 0 * 18 + 5).SetWH( 43, 15)
-			buttons[ 1].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 0 * 18 + 5).SetWH( 26, 15)
-			buttons[ 2].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 0 * 18 + 5).SetWH( 26, 15)
-			buttons[ 3].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 0 * 18 + 5).SetWH( 30, 15)
-			buttons[ 4].SetXY(position.x + 510 + 20, position.y + 1 * 18 + 5).SetWH( 43, 15)
-			buttons[ 5].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 1 * 18 + 5).SetWH( 26, 15)
-			buttons[ 6].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 1 * 18 + 5).SetWH( 26, 15)
-			buttons[ 7].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 1 * 18 + 5).SetWH( 30, 15)
-			buttons[ 8].SetXY(position.x + 510 + 20, position.y + 2 * 18 + 5).SetWH( 43, 15)
-			buttons[ 9].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 2 * 18 + 5).SetWH( 26, 15)
-			buttons[10].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 2 * 18 + 5).SetWH( 26, 15)
-			buttons[11].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 2 * 18 + 5).SetWH( 30, 15)
-			buttons[12].SetXY(position.x + 510 + 20, position.y + 3 * 18 + 5).SetWH( 43, 15)
-			buttons[13].SetXY(position.x + 510 + 20 + 47 + 0 * 30, position.y + 3 * 18 + 5).SetWH( 26, 15)
-			buttons[14].SetXY(position.x + 510 + 20 + 47 + 1 * 30, position.y + 3 * 18 + 5).SetWH( 26, 15)
-			buttons[15].SetXY(position.x + 510 + 20 + 47 + 2 * 30, position.y + 3 * 18 + 5).SetWH( 30, 15)
+			buttons[ 0].SetXY(position.x + 510 + 18              , position.y + 23 + 0 * 18).SetWH( 43, 15)
+			buttons[ 1].SetXY(position.x + 510 + 18 + 47 + 0 * 30, position.y + 23 + 0 * 18).SetWH( 26, 15)
+			buttons[ 2].SetXY(position.x + 510 + 18 + 47 + 1 * 30, position.y + 23 + 0 * 18).SetWH( 26, 15)
+			buttons[ 3].SetXY(position.x + 510 + 18 + 47 + 2 * 30, position.y + 23 + 0 * 18).SetWH( 30, 15)
+			buttons[ 4].SetXY(position.x + 510 + 18              , position.y + 23 + 1 * 18).SetWH( 43, 15)
+			buttons[ 5].SetXY(position.x + 510 + 18 + 47 + 0 * 30, position.y + 23 + 1 * 18).SetWH( 26, 15)
+			buttons[ 6].SetXY(position.x + 510 + 18 + 47 + 1 * 30, position.y + 23 + 1 * 18).SetWH( 26, 15)
+			buttons[ 7].SetXY(position.x + 510 + 18 + 47 + 2 * 30, position.y + 23 + 1 * 18).SetWH( 30, 15)
+			buttons[ 8].SetXY(position.x + 510 + 18              , position.y + 23 + 2 * 18).SetWH( 43, 15)
+			buttons[ 9].SetXY(position.x + 510 + 18 + 47 + 0 * 30, position.y + 23 + 2 * 18).SetWH( 26, 15)
+			buttons[10].SetXY(position.x + 510 + 18 + 47 + 1 * 30, position.y + 23 + 2 * 18).SetWH( 26, 15)
+			buttons[11].SetXY(position.x + 510 + 18 + 47 + 2 * 30, position.y + 23 + 2 * 18).SetWH( 30, 15)
+			buttons[12].SetXY(position.x + 510 + 18              , position.y + 23 + 3 * 18).SetWH( 43, 15)
+			buttons[13].SetXY(position.x + 510 + 18 + 47 + 0 * 30, position.y + 23 + 3 * 18).SetWH( 26, 15)
+			buttons[14].SetXY(position.x + 510 + 18 + 47 + 1 * 30, position.y + 23 + 3 * 18).SetWH( 26, 15)
+			buttons[15].SetXY(position.x + 510 + 18 + 47 + 2 * 30, position.y + 23 + 3 * 18).SetWH( 30, 15)
 		EndIf
 	End Method
 
@@ -75,47 +75,42 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 
 
 	Method Render()
-		DrawBorderRect(position.x + 510 - 2, position.y, 165, 90)
-		textFont.Draw("P1", position.x + 510, position.y + 0 * 18 + 5)
-		textFont.Draw("P2", position.x + 510, position.y + 1 * 18 + 5)
-		textFont.Draw("P3", position.x + 510, position.y + 2 * 18 + 5)
-		textFont.Draw("P4", position.x + 510, position.y + 3 * 18 + 5)
+		DrawWindow(position.x + 510 - 2, position.y, 160, 95, "Manipulate Images")
+		textFont.Draw("P1", position.x + 510, position.y + 22 + 0 * 18)
+		textFont.Draw("P2", position.x + 510, position.y + 22 + 1 * 18)
+		textFont.Draw("P3", position.x + 510, position.y + 22 + 2 * 18)
+		textFont.Draw("P4", position.x + 510, position.y + 22 + 3 * 18)
 
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
 
 		RenderBlock_ChannelImage(1, position.x + 5, position.y)
-		RenderBlock_ChannelImage(2, position.x + 5 + 250, position.y)
-		RenderBlock_ChannelImage(3, position.x + 5, position.y + 170)
-		RenderBlock_ChannelImage(4, position.x + 5 + 250, position.y + 170)
+		RenderBlock_ChannelImage(2, position.x + 5 + 220, position.y)
+		RenderBlock_ChannelImage(3, position.x + 5, position.y + 120)
+		RenderBlock_ChannelImage(4, position.x + 5 + 220, position.y + 120)
 	End Method
 
 
 	Method RenderBlock_ChannelImage(playerID:Int, x:Int, y:Int)
 		Local player:TPlayer = GetPlayer(playerID)
-		Local boxWidth:Int = 210
-
-		DrawBorderRect(x, y, boxWidth, 130)
-
-		Local textX:Int = x + 3
-		Local textY:Int = y + 3 - 1
 		Local p:TPublicImage = GetPublicImage(playerID)
-		textFont.Draw("Player: " + playerID, textX, textY)
-		textFont.Draw("Image: " + MathHelper.NumberToString(p.GetAverageImage(), 3), textX + 100, textY)
-		textY :+ 15
-		textFont.Draw("m", textX + 85, textY)
-		textFont.Draw("/ f", textX + 117, textY)
-		textFont.Draw("= total", textX + 160, textY)
+
+		Local contentRect:SRectI = DrawWindow(x, y, 210, 110, "Player: " + playerID, "Image: " + MathHelper.NumberToString(p.GetAverageImage(), 3))
+
+		Local textY:Int = contentRect.y
+		textFont.Draw("m", contentRect.x + 85, textY)
+		textFont.Draw("/ f", contentRect.x + 117, textY)
+		textFont.Draw("= total", contentRect.x + 160, textY)
 		textY :+ 12
 
 		Local a:TAudience = p.GetImageValues()
 		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs() 'baseGroupCount = without "men/women"
-			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", textX, textY)
-			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), textX + 85, textY)
-			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), textX + 117, textY)
-			textFont.Draw("= " + MathHelper.NumberToString(a.GetWeightedValue(targetGroupID), 3), textX + 160, textY)
-			textY :+ 10
+			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", contentRect.x, textY)
+			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), contentRect.x + 85, textY)
+			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), contentRect.x + 117, textY)
+			textFont.Draw("= " + MathHelper.NumberToString(a.GetWeightedValue(targetGroupID), 3), contentRect.x + 160, textY)
+			textY :+ 11
 		Next
 	End Method
 

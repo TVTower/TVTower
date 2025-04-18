@@ -294,7 +294,7 @@ Type TDialogue
 		EndIf
 
 		'cache once
-		if not font then font = GetBitmapFont("Default", 14)
+		if not font then font = GetBitmapFont("Default", 13)
 
 		Local balloonRect:TRectangle = GetBalloonRect()
 	    local answerBalloonRect:TRectangle = GetAnswerBalloonRect()
@@ -364,8 +364,8 @@ Type TDialogueAnswer
 	
 	
 	Function LoadFonts()
-		If not _boldFont Then _boldFont = GetBitmapFont("Default", 13, BOLDFONT)
-		If Not _font Then _font = GetBitmapFont("Default", 13)
+		If not _boldFont Then _boldFont = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not _font Then _font = GetBitmapFont("Default", 12)
 	End Function
 
 
@@ -560,7 +560,7 @@ Type TDialogueTexts
 	Method FillTextCache(textDim:SVec2I)
 		if not _textCache then _textCache = new TBitmapFontText
 		if not _textCache.HasCache() or textDim.x <> _textCache.textBoxDimension.x or (textDim.y <> -1 and textDim.y <> _textCache.textBoxDimension.y)
-			If Not _font Then _font = GetBitmapFont("Default", 14)
+			If Not _font Then _font = GetBitmapFont("Default", 13)
 
 			_textCache.CacheDrawBlock(_font, _text, textDim.x, textDim.y, SALIGN_LEFT_TOP, SColor8.Black, _font.defaultDrawEffect, TDialogue.textBlockDrawSettings.data)
 		endif

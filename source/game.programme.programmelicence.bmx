@@ -2346,7 +2346,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 		barH = skin.GetBarSize(100, -1).y
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + skin.fontCaption.GetBoxHeight(title, contentW - 10, 100))
 		'increase for multiline
 '		if titleH > 18 then titleH :+ 3
 
@@ -2385,9 +2385,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		if titleH <= 18
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontCaption.DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontCaption.DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 		contentY :+ titleH
 
@@ -2474,11 +2474,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		contentY :+ barAreaPaddingY
 		'speed
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 		'critic/review
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 		'boxoffice/outcome
 		if data.IsTVDistribution()
@@ -2486,18 +2486,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'use a different text color if tv-outcome is not calculated
 			'yet
 			if GetOutcomeTV() < 0
-				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 2, new SColor8(180,50,50), EDrawTextEffect.Emboss, 0.3)
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 3, new SColor8(180,50,50), EDrawTextEffect.Emboss, 0.3)
 			else
-				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			endif
 		else
 			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcome())
-			skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+			skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 		endif
 		contentY :+ barH + 1
 		'topicality/maxtopicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetTopicality(), GetMaxTopicality())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 
 
@@ -2646,6 +2646,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'=== DEBUG ===
 		If TVTDebugInfo
+			Local lineHeight:Int = 14
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
 			local oldAlpha:Float = GetAlpha()
@@ -2656,59 +2657,55 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.DrawBox("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28, sALIGN_LEFT_TOP, SColor8.White)
-			contentY :+ 28
+			skin.fontBold.DrawBox("Licence: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28, sALIGN_LEFT_TOP, SColor8.White)
+			contentY :+ lineHeight + 6
 			skin.fontNormal.DrawSimple("GUID: "+GetGUID(), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Letzte Trailerstunde im Plan: "+latestPlannedTrailerHour, contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("TV-Kasse: "+MathHelper.NumberToString(data.GetOutcomeTV(), 4), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Preismodifikator:  Lizenz="+MathHelper.NumberToString(GetModifier(modKeyPriceLS), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier(modKeyPriceLS), 4), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Bloecke: "+GetBlocks(), contentX + 5, contentY)
-			contentY :+ 12
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Last Planned Hour: "+latestPlannedEndHour +" (Trailer: " + latestPlannedTrailerHour + ")", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Speed: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Review: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Outcome: "+MathHelper.NumberToString(data.GetOutcome(), 4) + " (TV: " + MathHelper.NumberToString(data.GetOutcomeTV(), 4) + ")", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("PriceMod: Licence="+MathHelper.NumberToString(GetModifier(modKeyPriceLS), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier(modKeyPriceLS), 4), contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Quality Raw: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (w/o Age, Repetitions)", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Quality: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Topicality: "+MathHelper.NumberToString(GetTopicality(), 4)+" / " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Blocks: "+GetBlocks(), contentX + 5, contentY)
+			contentY :+ lineHeight
 			if useOwner <= 0
-				skin.fontNormal.DrawSimple("Ausgestrahlt: "+GetTimesBroadcasted(0)+"x unbekannt, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Broadcasts: "+GetTimesBroadcasted(0)+"x unknown, "+GetTimesBroadcasted()+"x all  Limit:"+broadcastLimit, contentX + 5, contentY)
 			else
-				skin.fontNormal.DrawSimple("Ausgestrahlt: "+GetTimesBroadcasted(useOwner)+"x Spieler, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Broadcasts: "+GetTimesBroadcasted(useOwner)+"x player, "+GetTimesBroadcasted()+"x all  Limit:"+broadcastLimit, contentX + 5, contentY)
 			endif
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("Kaufpreis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (licLvl: " + licencedAudienceReachLevel+")  Verkauf: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
-			contentY :+ 12
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Audience Record: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (player), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (all)", contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("Price: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (licLvl: " + licencedAudienceReachLevel+")  Sell: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
+			contentY :+ lineHeight
 			skin.fontNormal.DrawSimple("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
 			if data.GetTrailerMod(useOwner, False)
-				contentY :+ 12
+				contentY :+ lineHeight
 				local titleDim:SVec2I
 				titleDim = skin.fontNormal.DrawSimple("TrailerMod:", contentX + 5, contentY)
 				skin.fontNormal.DrawBox(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleDim.x + 5, contentY, contentW - titleDim.x - 5 - 5, 60, sALIGN_LEFT_TOP, SColor8.White)
 				'2 lines of output...
-				contentY :+ 12 + 4
+				contentY :+ lineHeight + 8
 			endif
 			
 			if TSportsProgrammeData(data)
 				local sportsData:TSportsProgrammeData = TSportsProgrammeData(data)
-				contentY :+ 12
+				contentY :+ lineHeight
 				skin.fontNormal.DrawSimple("IsMatchFinished: " + sportsData.IsMatchFinished() + "   Matchtime: " + GetWorldTime().GetFormattedGameDate(sportsData.GetMatchEndTime()), contentX + 5, contentY)
 			endif
-			contentY :+ 12
-			skin.fontNormal.DrawSimple("IsCustomProduction: " + IsCustomProduction() + "  IsAPlayersCustomProduction: " + IsAPlayersCustomProduction(), contentX + 5, contentY)
+			contentY :+ lineHeight
+			skin.fontNormal.DrawSimple("IsCustomProd.: " + IsCustomProduction() + " IsAPlayersCustomProd.: " + IsAPlayersCustomProduction(), contentX + 5, contentY)
 			
 		endif
 
@@ -2774,7 +2771,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local msgAreaH:int = 0, barAreaH:int = 0
 		local barAreaPaddingY:int = 4, msgAreaPaddingY:int = 4
 
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
 
 		'reactivate when adding messages
 		'msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", null, ALIGN_CENTER_CENTER).GetY()
@@ -2805,9 +2802,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		if titleH <= 18
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 		contentY :+ titleH
 
@@ -2837,7 +2834,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'topicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetTrailerTopicality())
-		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 
 
 		If TVTDebugInfo

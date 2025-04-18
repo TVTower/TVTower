@@ -570,13 +570,13 @@ Type TTooltipBase
 
 
 	Method GetFont:TBitmapFont()
-		If Not _useFont Then _useFont = GetBitmapFont("Default", 12)
+		If Not _useFont Then _useFont = GetBitmapFont("Default", 11)
 		Return _useFont
 	End Method
 
 
 	Method GetFontBold:TBitmapFont()
-		If Not _useFontBold Then _useFontBold = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not _useFontBold Then _useFontBold = GetBitmapFont("Default", 11, BOLDFONT)
 		Return _useFontBold
 	End Method
 

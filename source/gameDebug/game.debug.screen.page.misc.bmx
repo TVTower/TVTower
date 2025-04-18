@@ -65,23 +65,24 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 		'move buttons
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.x :+ dx
-			b.y :+ dy + 8
+			b.y :+ dy + 20
 		Next
 		Local x:Int = position.x + 210 + 200
 		Local y:Int = 20
+		Local buttonStartY:Int = 15
 		If buttonsAwardControls.length >= 6
-			buttonsAwardControls[ 0].SetXY(x              , y + 0 * 18 + 5).SetWH( 50, 15)
-			buttonsAwardControls[ 1].SetXY(x + 54 + 0 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[ 2].SetXY(x + 54 + 1 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[ 3].SetXY(x + 54 + 2 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[ 4].SetXY(x + 54 + 3 * 22, y + 0 * 18 + 5).SetWH( 20, 15)
-			buttonsAwardControls[ 5].SetXY(x              , y + 0 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[ 0].SetXY(x              , y + 0 * 18 + buttonStartY).SetWH( 50, 15)
+			buttonsAwardControls[ 1].SetXY(x + 54 + 0 * 22, y + 0 * 18 + buttonStartY).SetWH( 20, 15)
+			buttonsAwardControls[ 2].SetXY(x + 54 + 1 * 22, y + 0 * 18 + buttonStartY).SetWH( 20, 15)
+			buttonsAwardControls[ 3].SetXY(x + 54 + 2 * 22, y + 0 * 18 + buttonStartY).SetWH( 20, 15)
+			buttonsAwardControls[ 4].SetXY(x + 54 + 3 * 22, y + 0 * 18 + buttonStartY).SetWH( 20, 15)
+			buttonsAwardControls[ 5].SetXY(x              , y + 0 * 18 + buttonStartY).SetWH(145, 15)
 			'add award - genres
-			buttonsAwardControls[ 6].SetXY(x              , y + 2 * 18 + 5).SetWH(145, 15)
-			buttonsAwardControls[ 7].SetXY(x              , y + 3 * 18 + 5).SetWH(145, 15)
-			buttonsAwardControls[ 8].SetXY(x              , y + 4 * 18 + 5).SetWH(145, 15)
-			buttonsAwardControls[ 9].SetXY(x              , y + 5 * 18 + 5).SetWH(145, 15)
-			buttonsAwardControls[10].SetXY(x              , y + 6 * 18 + 5).SetWH(145, 15)
+			buttonsAwardControls[ 6].SetXY(x              , y + 2 * 18 + buttonStartY).SetWH(145, 15)
+			buttonsAwardControls[ 7].SetXY(x              , y + 3 * 18 + buttonStartY).SetWH(145, 15)
+			buttonsAwardControls[ 8].SetXY(x              , y + 4 * 18 + buttonStartY).SetWH(145, 15)
+			buttonsAwardControls[ 9].SetXY(x              , y + 5 * 18 + buttonStartY).SetWH(145, 15)
+			buttonsAwardControls[10].SetXY(x              , y + 6 * 18 + buttonStartY).SetWH(145, 15)
 		EndIf
 	End Method
 
@@ -152,21 +153,18 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 
 
 	Method Render()
-		DrawBorderRect(position.x, 20, 195, 175)
+		Local contentRect:SRectI = DrawWindow(position.x, position.y, 195, 200, "Misc", "", 0.0)
 		For Local i:Int = 0 Until buttons.length
 			buttons[i].Render()
 		Next
-		RenderAwardStatus(position.x + 5 + 200, 20)
+		RenderAwardStatus(position.x + 200, position.y)
 	End Method
 
 
-	Method RenderAwardStatus(x:int, y:int, w:int = 355, h:int = 200)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
-
-		titleFont.DrawSimple("Award: ", textX, textY)
-		textY :+ 12 + 3
+	Method RenderAwardStatus(x:int, y:int, w:int = 360, h:int = 200)
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Award", "", 0.0)
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
 
 		Local currentAward:TAward = GetAwardCollection().GetCurrentAward()
 		Local nextAward:TAward = GetAwardCollection().GetNextAward()
@@ -233,7 +231,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 			Next
 		EndIf
 
-		textFont.DrawSimple("Add new award: ", buttonsAwardControls[6].x, buttonsAwardControls[6].y - 12)
+		textFont.DrawSimple("Add new award: ", buttonsAwardControls[6].x, buttonsAwardControls[6].y - 14)
 		For Local b:TDebugControlsButton = EachIn buttonsAwardControls
 			b.Render()
 		Next

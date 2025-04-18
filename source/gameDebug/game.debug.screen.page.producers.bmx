@@ -42,14 +42,11 @@ Type TDebugScreenPage_Producers extends TDebugScreenPage
 
 
 	Method RenderProducersList(x:Int, y:Int, w:Int=280, h:Int=363)
-		DrawBorderRect(x, y, w, h)
-		Local textX:Int = x + 5
-		Local textY:Int = y + 5
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Programme Producers", "", 0.0)
+		Local textX:Int = contentRect.x
+		Local textY:Int = contentRect.y
 
 		Local mouseOverProducer:TProgrammeProducer
-
-		titleFont.DrawSimple("Programme Producers: ", textX, textY)
-		textY :+ 12 + 8
 
 		For Local producer:TProgrammeProducerBase = EachIn GetProgrammeProducerCollection()
 			textFont.DrawBox(producer.name + "  ("+producer.countryCode+")", textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
@@ -57,7 +54,7 @@ Type TDebugScreenPage_Producers extends TDebugScreenPage
 			textFont.DrawBox("  " + TTypeID.ForObject(producer).name(), textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("XP: " + producer.experience, textX + 150, textY, 35, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("Budget: " + MathHelper.DottedValue(producer.budget), textX + 100 + 85, textY, 90, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
-			textY :+ 12
+			textY :+ 13
 			If TProgrammeProducer(producer)
 				textY :- 2
 				Local pp:TProgrammeProducer = TProgrammeProducer(producer)
@@ -65,7 +62,7 @@ Type TDebugScreenPage_Producers extends TDebugScreenPage
 				textFont.DrawBox("  Productions    Next: " + GetWorldTime().GetFormattedDate(pp.nextProductionTime, "g/h:i") , textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
 				textFont.DrawBox("  Active: " + pp.activeProductions.Count() , textX + 130, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
 				textFont.DrawBox("  Done: " + pp.producedProgrammeIDs.length, textX + 180, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
-				textY :+ 10
+				textY :+ 11
 
 				If pp.activeProductions.Count() > 0
 					Local listedProduction:Int = 0
@@ -82,7 +79,7 @@ Type TDebugScreenPage_Producers extends TDebugScreenPage
 							textFont.DrawBox("Start: " + GetWorldTime().GetFormattedDate(production.startTime, "g/h:i"), textX + w - 70, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
 						EndIf
 
-						textY :+ 10
+						textY :+ 11
 						listedProduction :+ 1
 						If listedProduction = maxProductions Then Exit
 					Next
@@ -98,7 +95,7 @@ Type TDebugScreenPage_Producers extends TDebugScreenPage
 							Else
 								textFont.DrawBox("  Lic: " + l.GetTitle(), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(235,235,235))
 							EndIf
-							textY :+ 10
+							textY :+ 11
 							listedLicences :+ 1
 						EndIf
 						If listedLicences = maxLicences Then Exit

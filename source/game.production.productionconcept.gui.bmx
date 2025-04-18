@@ -223,7 +223,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").y
 		barH = skin.GetBarSize(100, -1).y
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'message area
 		If showMsgOrderWarning then msgAreaH :+ msgH
@@ -265,9 +265,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		if titleH <= 18
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY + 1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY + 1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 		contentY :+ titleH
 
@@ -328,7 +328,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			contentY :+ barAreaPaddingY
 			'production potential
 			skin.RenderBar(contentX + 5, contentY, 200, 12, productionConcept.script.getPotential())
-			skin.fontSmallCaption.DrawSimple(GetLocale("PRODUCTION_POTENTIAL"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			skin.fontSmallCaption.DrawSimple(GetLocale("PRODUCTION_POTENTIAL"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 		endif
 
@@ -498,10 +498,10 @@ endrem
 		local msgH:int = 0, msgAreaH:int = 0, msgAreaPaddingY:int = 4
 
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).y
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		if subTitle
-			subTitleH = Max(subTitleH, 2 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(subTitle, contentW - 10, 100))
+			subTitleH = Max(subTitleH, 2 + GetBitmapFontManager().Get("default", 11, BOLDFONT).GetBoxHeight(subTitle, contentW - 10, 100))
 		else
 			subTitleH = 0
 		endif
@@ -536,18 +536,18 @@ endrem
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH + subTitleH, "1_top")
 		if titleH <= 18
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 		contentY :+ titleH
 
 		'=== SUBTITLE AREA ===
 		if subTitleH
 			if subTitleH <= 18
-				GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(subTitle, contentX + 5, contentY -1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFontManager().Get("default", 11, BOLDFONT).DrawBox(subTitle, contentX + 5, contentY -1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			else
-				GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(subTitle, contentX + 5, contentY +1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+				GetBitmapFontManager().Get("default", 11, BOLDFONT).DrawBox(subTitle, contentX + 5, contentY +1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			endif
 			contentY :+ subTitleH
 		endif
@@ -559,7 +559,7 @@ endrem
 			local text:string = productionTypeText
 			if genreText <> productionTypeText then text :+ " / "+genreText
 
-			GetBitmapFontManager().Get("default", 12).DrawBox(text, contentX + 5, contentY -1, contentW - 10, genreH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			GetBitmapFontManager().Get("default", 11).DrawBox(text, contentX + 5, contentY -1, contentW - 10, genreH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ genreH
 
 
@@ -914,7 +914,7 @@ endrem
 		local subTitleSize:SVec2I
 		local genreColor:SColor8
 		local titleColor:SColor8
-		local titleFont:TBitmapFont = GetBitmapFont("default",12,BOLDFONT)
+		local titleFont:TBitmapFont = GetBitmapFont("default",11,BOLDFONT)
 		local oldMod:float = titleFont.lineHeightModifier
 		titleFont.lineHeightModifier :* 0.9
 
