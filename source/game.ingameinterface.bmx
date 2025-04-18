@@ -995,7 +995,7 @@ Type TInGameInterface
 			Setcolor 255,255,255
 			SetAlpha oldAlpha
 		endif
-		_interfaceFont.DrawBox(bettyLoveText, 363, 488, 118, 18, sALIGN_CENTER_CENTER, bettyLoveColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox(bettyLoveText, 363, 488-1, 118, 18, sALIGN_CENTER_CENTER, bettyLoveColor, EDrawTextEffect.Shadow, 0.5)
 		
 
 		' channel image bar / label
@@ -1008,7 +1008,7 @@ Type TInGameInterface
 			Setcolor 255,255,255
 			SetAlpha oldAlpha
 		endif
-		_interfaceFont.DrawBox(channelImageText, 363, 516, 118, 18, sALIGN_CENTER_CENTER, channelImageColor, EDrawTextEffect.Shadow, 0.5)
+		_interfaceFont.DrawBox(channelImageText, 363, 516-1, 118, 18, sALIGN_CENTER_CENTER, channelImageColor, EDrawTextEffect.Shadow, 0.5)
 
 
 		'DrawText(GetBetty().GetLoveSummary(),358, 535)
