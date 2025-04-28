@@ -82,12 +82,12 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 
 		If player.playerAI
-			Local colWidth:Int = 45
+			Local colWidth:Int = 57
 			Local labelWidth:Int = 80
 			Local padding:Int = 15
 			Local boxWidth:Int = labelWidth + padding + colWidth*4 + 2 '2 is border*2
 
-			Local contentRect:SRectI = DrawWindow(x, y, boxWidth, 130, "Budget #" + playerID)
+			Local contentRect:SRectI = DrawWindow(x, y, boxWidth, 150, "Budget #" + playerID)
 
 			Local textY:Int = contentRect.y
 
@@ -136,7 +136,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 
 		textY :+ DrawEntry("Licences:", finance.income_programmeLicences, finance.expense_programmeLicences, font, contentRect.x, textY, contentRect.w)
 		textY :+ DrawEntry("Ads:", finance.income_ads, finance.expense_penalty, font, contentRect.x, textY, contentRect.w)
-		textY :+ DrawEntry("Stations:", finance.income_stations, finance.expense_stationFees, font, contentRect.x, textY, contentRect.w)
+		textY :+ DrawEntry("Stations:", finance.income_stations, finance.expense_stations, font, contentRect.x, textY, contentRect.w)
 		textY :+ DrawEntry("Station Fees:", -1, finance.expense_stationFees, font, contentRect.x, textY, contentRect.w)
 		textY :+ DrawEntry("News:", -1, finance.expense_news, font, contentRect.x, textY, contentRect.w)
 		textY :+ DrawEntry("News Fees:", -1, finance.expense_newsAgencies, font, contentRect.x, textY, contentRect.w)

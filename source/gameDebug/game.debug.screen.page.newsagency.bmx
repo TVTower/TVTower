@@ -46,7 +46,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 		self.hoveredNewsEvent = Null
 
 		RenderNewsAgencyHistory(playerID, position.x + 5, 13, 465, 70)
-		RenderNewsAgencyQueue(playerID, position.x + 5, 13 +80, 465, 150)
+		RenderNewsAgencyQueue(playerID, position.x + 5, 13 +80, 465, 145)
 		RenderNewsAgencyGenreSchedule(playerID, position.x + 5, 13 + 190 + 45, 200, 110)
 		RenderNewsAgencyInformation(playerID, position.x + 5 + 200 + 10, 13 + 190 + 45, 255, 110)
 		
@@ -183,7 +183,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 						t = "No title"
 					EndIf
 				EndIf
-				textFont.DrawBox(t, textX + 105, textY, x + w - textX - 5 - 105 - genreW, 15, sALIGN_LEFT_TOP, textColor)
+				textFont.DrawBox(t, textX + 115, textY, x + w - textX - 5 - 115 - genreW, 15, sALIGN_LEFT_TOP, textColor)
 				textY :+ 12
 			Next
 		EndIf
@@ -226,7 +226,7 @@ Type TDebugScreenPage_NewsAgency extends TDebugScreenPage
 
 				textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(n.happenedTime), textX, textY, textColor)
 				Local genreW:Int = textFont.DrawBox(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(n.GetGenre())), textX + 100, textY, x + w - textX - 5 - 100, 15, sALIGN_RIGHT_TOP, New SColor8(255,255,255, 200)).x
-				textFont.DrawBox(n.GetTitle(), textX + 105, textY, x + w - textX - 5 - 105 - genreW, 15, sALIGN_LEFT_TOP, textColor)
+				textFont.DrawBox(n.GetTitle(), textX + 115, textY, x + w - textX - 5 - 115 - genreW, 15, sALIGN_LEFT_TOP, textColor)
 				textY :+ 12
 				nCount :+ 1
 				If nCount >= 10 Then Exit

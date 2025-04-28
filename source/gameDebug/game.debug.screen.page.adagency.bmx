@@ -56,7 +56,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 	Method Update()
 		Local playerID:Int = GetShownPlayerID()
 
-		UpdateBlock_AdAgencyOffers(playerID, position.x + 5, position.y + 3, 250, 230)
+		UpdateBlock_AdAgencyOffers(playerID, position.x + 5, position.y + 3, 300, 230)
 
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()
@@ -79,7 +79,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 			Local ads:TAdContract[] = adLists[listNumber]
 			textY :+ 12
 			For Local i:Int = 0 Until ads.length
-				If THelper.MouseIn(textX, textY, 240, 11)
+				If THelper.MouseIn(textX, textY, 290, 11)
 					offerHightlight = ads[i]
 					Exit
 				EndIf
@@ -95,9 +95,9 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 	Method Render()
 		Local playerID:Int = GetShownPlayerID()
 
-		RenderBlock_AdAgencyOffers(playerID, position.x + 5, position.y + 3, 250, 230)
+		RenderBlock_AdAgencyOffers(playerID, position.x + 5, position.y + 3, 300, 230)
 		'RenderBlock_AdAgencyInformation(playerID, position.x + 5 + 250 + 5, position.y + 3)
-		RenderBlock_PlayerAdContractInformation(playerID, position.x + 5 + 250 + 5, position.y + 3)
+		RenderBlock_PlayerAdContractInformation(playerID, position.x + 5 + 300 + 5, position.y + 3)
 
 		DrawBorderRect(position.x + 510, 13, 160, 83)
 		For Local i:Int = 0 Until buttons.length
@@ -105,7 +105,7 @@ Type TDebugScreenPage_Adagency extends TDebugScreenPage
 		Next
 
 		If offerHightlight
-			offerHightlight.ShowSheet(position.x + 5 + 250, position.y + 3, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID, null)
+			offerHightlight.ShowSheet(position.x + 5 + 300, position.y + 3, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID, null)
 		EndIf
 	End Method
 
@@ -222,7 +222,7 @@ endrem
 					SetColor 60,60,60
 				EndIf
 				SetAlpha 0.75 * oldAlpha
-				DrawRect(textX, textY, 240, 11)
+				DrawRect(textX, textY, 290, 11)
 
 				SetColor 255,255,255
 				SetAlpha oldAlpha
@@ -230,7 +230,7 @@ endrem
 				If ads[i] And ads[i] = offerHightlight
 					SetAlpha 0.25 * oldAlpha
 					SetBlend LIGHTBLEND
-					DrawRect(textX, textY, 240, 11)
+					DrawRect(textX, textY, 290, 11)
 					SetAlpha oldAlpha
 					SetBlend ALPHABLEND
 				EndIf
@@ -240,10 +240,10 @@ endrem
 					textFont.DrawBox(": " + ads[i].GetTitle(), textX + 15, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
 					textFont.DrawSimple(MathHelper.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY - 1)
 					If ads[i].GetLimitedToTargetGroup() > 0
-						textFont.DrawBox(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 120, textY - 1, 100, 15, sALIGN_RIGHT_TOP, SColor8.White)
+						textFont.DrawBox(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 170, textY - 1, 100, 15, sALIGN_RIGHT_TOP, SColor8.White)
 					Else
 						SetAlpha 0.5
-						textFont.DrawBox("no limit", textX + 15 + 120, textY - 1, 100, 15, sALIGN_RIGHT_TOP, SColor8.White)
+						textFont.DrawBox("no limit", textX + 15 + 170, textY - 1, 100, 15, sALIGN_RIGHT_TOP, SColor8.White)
 						SetAlpha oldAlpha
 					EndIf
 				Else

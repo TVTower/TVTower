@@ -831,8 +831,14 @@ Type TDebugWidget_ProgrammeCollectionInfo
 			Local adString1b:String = "R: "+(a.GetDaysLeft())+"D"
 			If a.GetDaysLeft() = 1
 				adString1b = "|color=220,180,50|"+adString1b+"|/color|"
-			ElseIf a.GetDaysLeft() = 0
-				adString1b = "|color=220,80,80|"+adString1b+"|/color|"
+			ElseIf a.GetDaysLeft() <= 0
+				If a.state = a.STATE_OK
+					adString1b = "|color=0,255,0|"+adString1b+"|/color|"
+				ElseIf a.state = a.STATE_FAILED
+					adString1b = "|color=255,0,0|"+adString1b+"|/color|"
+				Else
+					adString1b = "|color=220,80,80|"+adString1b+"|/color|"
+				EndIf
 			EndIf
 			Local adString2a:String = "Min: " +MathHelper.DottedValue(a.GetMinAudience())
 			If a.GetLimitedToTargetGroup() > 0 Or a.GetLimitedToProgrammeGenre() > 0  Or a.GetLimitedToProgrammeFlag() > 0

@@ -96,20 +96,20 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 		Local p:TPublicImage = GetPublicImage(playerID)
 
-		Local contentRect:SRectI = DrawWindow(x, y, 210, 110, "Player: " + playerID, "Image: " + MathHelper.NumberToString(p.GetAverageImage(), 3))
+		Local contentRect:SRectI = DrawWindow(x, y, 213, 110, "Player: " + playerID, "Image: " + MathHelper.NumberToString(p.GetAverageImage(), 3))
 
 		Local textY:Int = contentRect.y
 		textFont.Draw("m", contentRect.x + 85, textY)
-		textFont.Draw("/ f", contentRect.x + 117, textY)
-		textFont.Draw("= total", contentRect.x + 160, textY)
+		textFont.Draw("/ f", contentRect.x + 120, textY)
+		textFont.Draw("= total", contentRect.x + 163, textY)
 		textY :+ 12
 
 		Local a:TAudience = p.GetImageValues()
 		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs() 'baseGroupCount = without "men/women"
 			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", contentRect.x, textY)
 			textFont.Draw(MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), contentRect.x + 85, textY)
-			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), contentRect.x + 117, textY)
-			textFont.Draw("= " + MathHelper.NumberToString(a.GetWeightedValue(targetGroupID), 3), contentRect.x + 160, textY)
+			textFont.Draw("/ " + MathHelper.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), contentRect.x + 120, textY)
+			textFont.Draw("= " + MathHelper.NumberToString(a.GetWeightedValue(targetGroupID), 3), contentRect.x + 163, textY)
 			textY :+ 11
 		Next
 	End Method

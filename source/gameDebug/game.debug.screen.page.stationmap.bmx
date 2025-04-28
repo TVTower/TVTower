@@ -143,7 +143,7 @@ Type TDebugScreenPage_Stationmap extends TDebugScreenPage
 		Next
 
 		Local boxWidth:Int = 130
-		Local boxHeight:Int = 330
+		Local boxHeight:Int = 332
 		Local fistBlockOffset:Int = 15
 
 		RenderBlock_PlayerStations(playerID, position.x + 5, position.y, boxWidth, boxHeight)
@@ -181,6 +181,7 @@ endrem
 	Method RenderBlock_PlayerStationsList(playerID:Int, firstBlockOffset:Int, x:Int, y:Int, w:Int, h:Int)
 		Local player:TPlayer = GetPlayer(playerID)
 		Local map:TStationMap = GetStationMap(playerID)
+		Local font:TBitmapFont = GetBitmapFont("default", 9)
 
 		Local textX:Int = x
 		Local textY:Int = y + firstBlockOffset + 3 - 1
@@ -190,9 +191,9 @@ endrem
 		Local detailsStation:TStationBase = Null
 		Local xForDetails:Int = x + 540
 
-		textFont.Draw("Sat Uplinks: " + map.GetStationCount(TVTStationType.SATELLITE_UPLINK), textX, textY)
-		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetSatelliteUplinkReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
-		textY :+ 13
+		font.Draw("Sat Uplinks: " + map.GetStationCount(TVTStationType.SATELLITE_UPLINK), textX, textY)
+		If attributeToShow = 0 Then font.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetSatelliteUplinkReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		textY :+ 12
 		For Local station:TStationBase = EachIn satellites
 			c = SColor8.WHITE
 			Local n:String =station.GetName()
@@ -202,15 +203,15 @@ endrem
 				detailsStationName = n
 			EndIf
 			If n.length > 13 Then n = ".." + n[n.length-12..]
-			textFont.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
-			textY :+ 11
+			font.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			font.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
 		Next
 		textY :+ 3
 
-		textFont.Draw("Cable Uplinks: " + map.GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK), textX, textY)
-		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetCableNetworkUplinkReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
-		textY :+ 13
+		font.Draw("Cable Uplinks: " + map.GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK), textX, textY)
+		If attributeToShow = 0 Then font.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetCableNetworkUplinkReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		textY :+ 12
 		For Local station:TStationBase = EachIn cables
 			c:SColor8 = SColor8.WHITE
 			Local iso:String = station.GetSectionISO3166Code()
@@ -222,19 +223,19 @@ endrem
 				detailsStationName = n
 			EndIf
 			If n.length > 13 Then n = n[.. 12]+".."
-			textFont.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
-			textY :+ 11
+			font.DrawBox( Chr(9654) + " " + n, textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			font.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
 		Next
 		textY :+ 3
 
-		textFont.Draw("Antennas: " + map.GetStationCount(TVTStationType.ANTENNA), textX, textY)
-		If attributeToShow = 0 Then textFont.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetAntennaReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
+		font.Draw("Antennas: " + map.GetStationCount(TVTStationType.ANTENNA), textX, textY)
+		If attributeToShow = 0 Then font.DrawBox(MathHelper.DottedValue(GetStationMapCollection().GetAntennaReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 
-		textY :+ 13
+		textY :+ 12
 		For Local station:TStationBase = EachIn antennas
 			c:SColor8 = SColor8.WHITE
-			If textY >= y + h - 1
+			If textY >= y + h - 4
 				x = x + 135
 				textX:Int = x + 3
 				textY:Int = y - 1
@@ -248,9 +249,9 @@ endrem
 				detailsStationName = n +": " + station.GetName()
 			EndIf
 			If n.length > 13 Then n = n[.. 12]+".."
-			textFont.DrawBox( Chr(9654) + " " + n +": " + station.GetName(), textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
-			textFont.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
-			textY :+ 11
+			font.DrawBox( Chr(9654) + " " + n +": " + station.GetName(), textX + 5, textY, 90, 16, sALIGN_LEFT_TOP, c)
+			font.DrawBox(getValueToShow(station, attributeToShow), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, c)
+			textY :+ 10
 		Next
 
 		If detailsStation
