@@ -350,7 +350,9 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				EndIf
 			EndIf
 
-			person = OptimizeCast(person, productionConcept, job, jobCountry, usedPersonIDs)
+			'TODO local optimization makes only so much sense
+			'if the budget is high, after the initial cast is chosen, more money could be spent for certain jobs
+			person = OptimizeCast(person, productionConcept, job, jobCountry, usedPersonIDs, budget)
 
 			'store used cast selections so amateurs sooner become celebs
 			'with specialization
@@ -389,7 +391,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		End Function
 
 		'try to find a better fit: equally good but less expensive, better but only slightly more expensive
-		Function OptimizeCast:TPersonBase(currentChoice:TPersonBase, productionConcept:TProductionConcept, job:TPersonProductionJob, jobCountry:String, usedPersonIDs:Int[])
+		Function OptimizeCast:TPersonBase(currentChoice:TPersonBase, productionConcept:TProductionConcept, job:TPersonProductionJob, jobCountry:String, usedPersonIDs:Int[], budget:Int)
 			'do not replace if insignificant was chosen
 			If currentChoice.IsInsignificant() Then return currentChoice
 			'print "    trying to optimize " + job.job + " currently " + currentChoice.GetFullName()
@@ -408,13 +410,13 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			For Local i:Int = 0 Until alternatives.length
 				Local alternative:TPersonBase = alternatives[i]
 				If Not alternative Or Not alternative.IsCastable() Or Not alternative.IsBookable() Or Not passesAgeRestriction(alternative) Then Continue
-				If IsBetterFit(result, alternative, job.job, genreID, genreDefinition) Then result = alternative
+				If IsBetterFit(result, alternative, job.job, genreID, genreDefinition, budget) Then result = alternative
 			Next
 
 			return result
 		End Function
 
-		Function IsBetterFit:Int(current:TPersonBase, alternative:TPersonBase, jobId:Int, genreId:Int, genreDefinition:TMovieGenreDefinition)
+		Function IsBetterFit:Int(current:TPersonBase, alternative:TPersonBase, jobId:Int, genreId:Int, genreDefinition:TMovieGenreDefinition, budget:Int)
 			Local xpCurrent:Float = current.GetEffectiveJobExperiencePercentage(jobId)
 			Local xpAlternative:Float = alternative.GetEffectiveJobExperiencePercentage(jobId)
 			'adapted from screen.supermarket
@@ -426,22 +428,24 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			                         ]
 			Local feeCurrent:Int = current.GetJobBaseFee(jobId, 1, -1)
 			Local feeAlternative:Int = alternative.GetJobBaseFee(jobId, 1, -1)
-			Local sumCurrent:Float = 2 * xpCurrent
-			Local sumAlternative:Float = 2 * xpAlternative
+			Local sumCurrent:Float = 3 * xpCurrent
+			Local sumAlternative:Float = 3 * xpAlternative
 			'TODO genre fit; reduce score if job does not fit? (due to too few alternatives)
 			For Local attributeID:Int = EachIn attributes
 				Local attributeGenre:Float = genreDefinition.GetCastAttribute(jobID, attributeID)
 				If attributeGenre > 0
-					sumCurrent:+ 4 * current.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
-					sumAlternative:+ 4 * alternative.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
+					sumCurrent:+ 1.5 * current.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
+					sumAlternative:+ 1.5 * alternative.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
 				Else
-					sumCurrent:+ current.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
-					sumAlternative:+ alternative.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
+					sumCurrent:+ 0.5 * current.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
+					sumAlternative:+ 0.5 * alternative.GetPersonalityData().GetAttributeValue(attributeID, jobId, genreId)
 				End If
 			Next
 			Local result:Int=False
 			'better and not too expensive
 			If sumAlternative > sumCurrent * 1.1 and feeAlternative < feeCurrent * 1.1 Then result = True
+			'with higher budget always use better alternative
+			If budget > 1400000 and sumAlternative > sumCurrent * 1.2 Then result = True
 			'not much worse but cheaper
 			If sumAlternative > sumCurrent * 0.9 and feeAlternative < feeCurrent Then result = True
 			If result = True
@@ -458,7 +462,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		'GetProductionCompanyBaseCollection().GetRandom()
 		Local productionCompany:TProductionCompanyBase = GetProductionCompanyBaseCollection().GetAmateurs()
 		Local requiredFocusPoints:Int = 5
-		
+
+		'TODO script potential influences improvement by cast only, has nothing to do with quality
 		'to understand the script potential, experience is valuable
 		Local estimatedPotential:Int = (100 * script.potential + 0.5)
 		'the less experience, the more blurry the potential is
@@ -467,15 +472,17 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		If estimatedPotential > 10 Then requiredFocusPoints :+ 1 
 		If estimatedPotential > 30 Then requiredFocusPoints :+ 4 
 		If estimatedPotential > 50 Then requiredFocusPoints :+ 5 
-		If estimatedPotential > 70 Then requiredFocusPoints :+ 7 
-		If estimatedPotential > 90 Then requiredFocusPoints :+ 9 
-		If script.requiredStudioSize > 1 Then requiredFocusPoints :+ 2 
+		If estimatedPotential > 70 Then requiredFocusPoints :+ 5 
+		If estimatedPotential > 90 Then requiredFocusPoints :+ 5 
+		If script.requiredStudioSize > 1 Then requiredFocusPoints :+ 3 
 		If script.requiredStudioSize > 2 Then requiredFocusPoints :+ 5 
 		'budget
-		If budget > 1000000 Then requiredFocusPoints :+ 2
+		If budget > 300000 Then requiredFocusPoints :+ 3
+		If budget > 500000 Then requiredFocusPoints :+ 3
+		If budget > 1000000 Then requiredFocusPoints :+ 3
 		If budget > 2500000 Then requiredFocusPoints :+ 5
-		If budget > 5000000 Then requiredFocusPoints :+ 8
-		If budget >10000000 Then requiredFocusPoints :+ 10
+		If budget > 5000000 Then requiredFocusPoints :+ 5
+		If budget >10000000 Then requiredFocusPoints :+ 5
 		'limit price of chosen company
 		If budget < 250000 Then requiredFocusPoints = Max(requiredFocusPoints, 11)
 

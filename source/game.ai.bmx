@@ -1820,19 +1820,39 @@ endrem
 					result = Self.RESULT_FAILED
 					If pc.script.GetBlocks() = 1 then budgetToUse = budgetToUse * oneBlockBudgetFactor
 					producer.budget = budgetToUse
-					producer.experience = 50
-					If budgetToUse < 300000 then producer.preferCelebrityCastRateSupportingRole = 60
+					producer.experience = 75
+					If budgetToUse < 400000 then producer.preferCelebrityCastRateSupportingRole = 60
+					Local maxCost:Int = 0
+					Local pcCost:Int=-1
 					For Local i:Int = 1 To 15
 						producer.ChooseProductionCompany(pc, pc.script)
 						producer.ChooseCast(pc, pc.script)
 						producer.ChooseFocusPoints(pc, pc.script)
+						pcCost = pc.GetTotalCost()
+						If pcCost <= budgetToUse and pcCost > maxCost Then maxCost = pcCost
 						'in order to inspect the concept, do not pay the deposit and do not return OK
 						'then you can send the AI to the supermarket multiple times
-						If pc.GetTotalCost() <= budgetToUse and pc.PayDeposit() = True
+
+						'If the costs are (much) below budget, maybe more money can't be spent
+						'do another round trying to reach the maximum budget used so far
+						If pcCost >= budgetToUse * 0.75 and pcCost <= budgetToUse and pc.PayDeposit() = True
 							result = Self.RESULT_OK
 							Exit
 						EndIf
 					Next
+					If maxCost > 0 
+						producer.experience = 90
+						For Local i:Int = 1 To 15
+							producer.ChooseProductionCompany(pc, pc.script)
+							producer.ChooseCast(pc, pc.script)
+							producer.ChooseFocusPoints(pc, pc.script)
+							pcCost = pc.GetTotalCost()
+							If pcCost>= maxCost * 0.8 and pcCost <= maxCost and pc.PayDeposit() = True
+								result = Self.RESULT_OK
+								Exit
+							EndIf
+						Next
+					EndIf
 				EndIf
 			EndIf
 		Next

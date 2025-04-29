@@ -678,12 +678,9 @@ Type TProductionConcept Extends TOwnedGameObject
 					priority = genreDefinition.GetFocusPointPriority(focusPointID)
 				EndIf
 				If (focusPointID = TVTProductionFocus.COULISSE or focusPointID = TVTProductionFocus.OUTFIT_AND_MASK) and priority >= 1
-					priority = priority + 0.3
-				ElseIf focusPointID = TVTProductionFocus.TEAM and priority <= 1
-					priority = priority - 0.3
+					priority = priority + 0.15
 				EndIF
 			EndIf
-			priority = priority * priority
 			priorities[i] = priority
 			totalPriorities = totalPriorities + priority
 		Next

@@ -118,21 +118,21 @@ function JobBuyScript:Prepare(pParams)
 	local player = getPlayer()
 	local blocks = player.blocksCount
 	self.scriptMaxPrice = 30000
-	self.minPotential = 0.25
-	self.minAttractivity = 0.25
+	self.minPotential = 0.2
+	self.minAttractivity = 0.35
 	self.maxJobCount = 4
 	if blocks > 64 then
 		self.maxJobCount = 6
 		self.Task.BasePriority = 0.15
 		self.scriptMaxPrice = 1300000
-		self.minPotential = 0.5
-		self.minAttractivity = 0.5
+		self.minPotential = 0.3
+		self.minAttractivity = 0.65
 	elseif blocks > 48 then
 		self.maxJobCount = 5
 		self.Task.BasePriority = 0.07
 		self.scriptMaxPrice = 100000
-		self.minPotential = 0.35
-		self.minAttractivity = 0.3
+		self.minPotential = 0.25
+		self.minAttractivity = 0.55
 	else
 		self.scriptMaxPrice = 0	
 	end
@@ -187,12 +187,12 @@ end
 
 function JobBuyScript:getAttractivity(script)
 	local potential = script:GetPotential()
-	if script.isCulture() then potential = potential * 1.5 end
+	if script.isCulture() then potential = potential * 2 end
 
 	if potential < self.minPotential then
 		return -1
 	else
-		return (script:GetSpeed() + script:GetReview()) * potential
+		return 0.4 * (script:GetSpeed() + script:GetReview()) + 0.2 * potential
 	end
 end
 
@@ -288,38 +288,29 @@ function JobPlanProduction:Prepare(pParams)
 	local lastDayProfit = player.Budget:GetLastDayProfit()
 	local fixedCosts = player.Budget.CurrentFixedCosts
 
-	self.MaxBudget = 140000
-	--TODO more conservative budget if not much money, even if many blocks (but bad average quality)
 	--TODOin AI-code handle series budget better
-	if player.money - credit < -1000000 then
+	self.MaxBudget = 140000
+	if money - credit < -1000000 then
 		self.MaxBudget = 0
 	elseif self.Task.awardType ~= "culture" and (player.money < 200000) then
 		self.MaxBudget = 0
-	elseif player.coverage > 0.5 and player.money > 5000000 then
-		self.MaxBudget = 2500000
-	elseif receivers > 5000000 and ((credit <= 200000 and lastDayProfit > 0) or (money > fixedCosts)) then
-		if blocks > 72 then
+	elseif player.coverage > 0.1 and player.coverage < 0.2 then
+		if money > 2000000 then
+			self.MaxBudget = 1000000
+		else
+			self.MaxBudget = 600000
+		end
+	elseif player.coverage < 0.5 then
+		if money > 3000000 then
 			self.MaxBudget = 1500000
-		elseif blocks > 64 then
-			self.MaxBudget = 750000
-		elseif blocks > 48 then
-			self.MaxBudget = 280000
+		else
+			self.MaxBudget = 1000000
 		end
-	elseif receivers > 3000000 and (money > fixedCosts / 2) and (credit < 750000) then
-		if blocks > 72 then
-			self.MaxBudget = 750000
-		elseif blocks > 64 then
-			self.MaxBudget = 500000
-		elseif blocks > 48 then
-			self.MaxBudget = 280000
-		end
-	elseif receivers > 2000000 then
-		if blocks > 72 then
-			self.MaxBudget = 500000
-		elseif blocks > 64 then
-			self.MaxBudget = 350000
-		elseif blocks > 48 then
-			self.MaxBudget = 250000
+	else
+		if money > 7000000 then
+			self.MaxBudget = 3000000
+		else
+			self.MaxBudget = 2000000
 		end
 	end
 	--self:LogInfo("production budget is "..self.MaxBudget)
