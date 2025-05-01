@@ -664,7 +664,7 @@ function SignContracts:Tick()
 		if player.coverage > 0.9 then threshold = 1 end
 		for key, contract in pairs(signedContracts) do
 			if contract ~= nil then
-				if contract:GetDaysLeft(-1) <= threshold then fixedCosts = fixedCosts + contract.getPenalty(TVT.ME) end
+				if contract:GetDaysLeft(-1) <= threshold then fixedCosts = fixedCosts + contract.getPenalty(TVT.ME)/2 end
 			end
 		end
 	end
@@ -674,7 +674,7 @@ function SignContracts:Tick()
 	--otherwise good average audience contracts cannot be signed without requisition
 	if openSpots < 18 and contractsAllowed > 0 then
 		-- do not be too risky and avoid a non achieveable audience requirement
-		local filteredList = FilterAdContractsByMinAudience(self.Task.SpotsInAgency,  0.0025 * self.maxAudience, 0.15 * self.maxAudience, forbiddenIDs)
+		local filteredList = FilterAdContractsByMinAudience(self.Task.SpotsInAgency,  0.002 * self.maxAudience, 0.1 * self.maxAudience, forbiddenIDs)
 		-- sort it
 		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList, self.Task.Penalties)
 

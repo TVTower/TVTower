@@ -423,21 +423,62 @@ end
 --]]
 
 --TODO this cannot be done without context (all existing licences)
-function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial)
+function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial, count)
 	if broadcastMaterial == nil then return 0 end
 	--TODO raw-QualityLevel!! also consider number of licences und average quality!!
 	local quality = broadcastMaterial:GetQuality() * 100
-
-	if quality > 20 then
-		return 5
-	elseif quality > 15 then
-		return 4
-	elseif quality > 10 then
-		return 3
-	elseif quality > 5 then
-		return 2
+	if count > 144 then
+		if quality > 60 then
+			return 5
+		elseif quality > 50 then
+			return 4
+		elseif quality > 35 then
+			return 3
+		elseif quality > 25 then
+			return 2
+--		elseif quality > 15 then
+--			return 1
+		else
+			return 0
+		end
+	elseif count > 96 then
+		if quality > 50 then
+			return 5
+		elseif quality > 35 then
+			return 4
+		elseif quality > 20 then
+			return 3
+		elseif quality > 15 then
+			return 2
+		elseif quality > 10 then
+			return 1
+		else
+			return 0
+		end
+	elseif count > 48 then
+		if quality > 35 then
+			return 5
+		elseif quality > 22 then
+			return 4
+		elseif quality > 15 then
+			return 3
+		elseif quality > 10 then
+			return 2
+		else
+			return 1
+		end
 	else
-		return 1
+		if quality > 20 then
+			return 5
+		elseif quality > 15 then
+			return 4
+		elseif quality > 10 then
+			return 3
+		elseif quality > 5 then
+			return 2
+		else
+			return 1
+		end
 	end
 end
 

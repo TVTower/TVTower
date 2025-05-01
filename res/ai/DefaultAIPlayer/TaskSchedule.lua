@@ -460,6 +460,7 @@ end
 -- fetch only once per task, then use cached list
 function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 	local allLicences = {}
+	local licenceCount = TVT.of_getProgrammeLicenceCount()
 	if self.availableProgrammes == nil then
 		local player = getPlayer()
 		local ignoreLicences = player.licencesToSell
@@ -503,7 +504,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			t.quality = licence:GetQuality()
 			t.exceedingBroadcastLimit = licence.isExceedingBroadcastLimit()
 			t.xrated = licence.GetData().IsXRated()
-			t.qualityLevel = AITools:GetBroadcastQualityLevel(licence) -- TODO optimize
+			t.qualityLevel = AITools:GetBroadcastQualityLevel(licence, licenceCount) -- TODO optimize
 --TODO!!!
 --			t.sentAndPlanned = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
 --			t.planned = licence.isPlanned()
@@ -513,7 +514,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			return t;
 		end
 
-		for i=0,TVT.of_getProgrammeLicenceCount()-1 do
+		for i=0,licenceCount-1 do
 			local licence = TVT.of_getProgrammeLicenceAtIndex(i)
 			local luaLicence
 			if (licence ~= nil) then
@@ -526,6 +527,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 				if ( addIt == true ) then
 					luaLicence = newLuaLicence(licence)
 					table.insert(self.availableProgrammes, luaLicence)
+					--self:LogInfo(";"..luaLicence.title .. ";"..luaLicence.blocks..";"..luaLicence.licence.GetQualityRaw()..";"..luaLicence.maxTopicality .. ";"..luaLicence.topicality .. ";"..luaLicence.quality .. ";"..luaLicence.qualityLevel)
 
 					--statistics
 					if not table.contains(ignoreLicences, luaLicence.refId) then

@@ -645,11 +645,11 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 		qualityFactor = qualityFactor * 1.3
 	end
 	if licence.GetData().IsTrash() > 0 then
-		qualityFactor = qualityFactor * 0.4
+		qualityFactor = qualityFactor * 0.6
 	end
 	if licence.isLive() > 0 then
 		--TODO do not buy live licences
-		qualityFactor = qualityFactor * 0.5
+		qualityFactor = qualityFactor * 0
 	end
 
 	if (licence.isPaid() > 0 ) then

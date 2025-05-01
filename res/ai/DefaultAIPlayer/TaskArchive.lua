@@ -212,7 +212,7 @@ end
 function JobSellMovies:getLowPerformanceLicenceToSell(movies, threshold)
 	local performanceStats = getPlayer().Stats.PerformanceData
 	if performanceStats~=nil then
-		local worstQuote = 10
+		local worstQuote = 20
 		local worstLicence = nil
 		for i=1, #movies do
 			local movie = movies[i]
