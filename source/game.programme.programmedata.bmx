@@ -1548,6 +1548,8 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local quality:Float = 1.0
 
 		'the older the less ppl want to watch - 1 year = 0.985%, 2 years = 0.97%...
+		'TODO the comment is misleading!!
+		'for age 0 the factor is 1.5, for age 30 the factor is 1.05
 		Local age:Float = 0.015 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - GetYear()) )
 		quality :* Max(0.20, age)
 
