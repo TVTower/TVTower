@@ -42,7 +42,15 @@ function TaskBoss:BeforeBudgetSetup()
 	self:CalculateFixedCosts()
 	self.InvestmentPriority = 1
 
-	local money = getPlayer().money
+	local player = getPlayer()
+	local money = player.money
+	if player.coverage > 0.9 and player.maxTopicalityBlocksCount > 12 then
+		--do not spend all available money (image 0-100)
+		self.BudgetWeight = TVT:GetImage(TVT.ME) / 15
+	else
+		self.BudgetWeight = 0
+	end
+	
 	local credit = MY.GetCredit(-1)
 	self.NeededInvestmentBudget = credit
 	if credit == 0 then
@@ -113,11 +121,10 @@ function JobCheckCredit:Prepare(pParams)
 	if self.Task.NeededInvestmentBudget > 0 then
 		self.Task.TryToRepayCredit = math.max(0, math.min(money, self.Task.NeededInvestmentBudget))
 	end
-	if MY.GetCredit(-1) == 0 and player.hour < 6 then
+	if MY.GetCredit(-1) == 0 and player.hour < 8 then
 		self.Task.TryToRepayCredit = 0
-		local stationTask = player.TaskList[TASK_STATIONMAP]
 		--get credit and increase chance for good investment
-		if stationTask ~= nil and stationTask.maxReachIncrease ~=  nil and stationTask.maxReachIncrease < 0 then
+		if player.coverage > 0.9 then
 			--no credit necessary for station purchase
 		else
 			self.Task.TryToGetCredit = creditAvailable

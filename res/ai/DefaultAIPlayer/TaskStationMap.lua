@@ -209,7 +209,7 @@ function JobAnalyseStationMarket:Tick()
 	if player.money > 10000000 and player.coverage > 0.15 and blocks < 144 then
 		--player bankrupt - do not by stations too fast
 		self.Task.maxReceiverIncrease = -1
-	elseif player.coverage > 0.9 then
+	elseif player.coverage > 0.94 then
 		self.Task.maxReceiverIncrease = -1
 	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
 		self:determineIntendedPositions()

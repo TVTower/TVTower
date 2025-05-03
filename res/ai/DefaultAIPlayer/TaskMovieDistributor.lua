@@ -96,12 +96,21 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 
 	elseif (self.AppraiseMovies.Status ~= JOB_STATUS_DONE) then
 		return self.AppraiseMovies
-	elseif (self.BuyMovies.Status ~= JOB_STATUS_DONE) then
-		return self.BuyMovies
-	elseif (self.BidAuctions.Status ~= JOB_STATUS_DONE) then
-		return self.BidAuctions
+	else
+		if getPlayer().coverage > 0.7 then
+			if (self.BidAuctions.Status ~= JOB_STATUS_DONE) then
+				return self.BidAuctions
+			elseif (self.BuyMovies.Status ~= JOB_STATUS_DONE) then
+				return self.BuyMovies
+			end
+		else
+			if (self.BuyMovies.Status ~= JOB_STATUS_DONE) then
+				return self.BuyMovies
+			elseif (self.BidAuctions.Status ~= JOB_STATUS_DONE) then
+				return self.BidAuctions
+			end
+		end
 	end
-
 	self:SetDone()
 end
 
@@ -515,7 +524,7 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	local stats = player.Stats
 	local movieBudget = self.Task.BudgetWholeDay
 
-	if self.Task.blocksCount > 72 then
+	if self.Task.blocksCount > 72 and player.coverage < 0.8 then
 		movieBudget = movieBudget * 0.7
 	end
 
@@ -548,6 +557,7 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	else
 		self.MaxPricePerBlock = self.MaxPricePerBlock * 2
 	end
+	if player.coverage > 0.9 and self.MaxPricePerBlock > 0 then self.MaxPricePerBlock = self.MaxPricePerBlock * 1.5 end
 
 	--TODO check quality gates
 	local ScopeMovies = maxQualityMovies - minQualityMovies
@@ -601,7 +611,9 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	local qualityGate = myMoviesQuality.AverageValue
 	-- raise quality gate once a certail level is reached
-	if self.Task.blocksCount > 75 then
+	if player.coverage > 0.9 then
+		qualityGate = myMoviesQuality.MaxValue * 0.75
+	elseif self.Task.blocksCount > 75 then
 		qualityGate = (qualityGate + myMoviesQuality.MaxValue) / 2
 	end
 
@@ -682,6 +694,7 @@ function JobBuyMovies:Prepare(pParams)
 		local sortMethod = math.random(0,2)
 		--TODO solange die Auswahl noch nicht groß ist nach Preis (Qualität muss ja ohnehin hoch genug sein)
 		if self.Task.blocksCount > 0 and self.Task.blocksCount < 60 then sortMethod = 1 end
+		if getPlayer().coverage > 0.9 then sortMethod = 0 end
 		if sortMethod == 0 then
 			self:LogTrace("sort by quality")
 			sortFunction = function(a, b)
@@ -849,7 +862,7 @@ function JobBidAuctions:Tick()
 					if (nextBid <= self.Task.CurrentBargainBudget) then
 						--TODO genre bias analogous to movies
 						--TODO live only of sending on live time supported
-						if (v:GetAttractiveness() > 1 and not v:IsLive() == 1) then
+						if (v:GetAttractiveness() > 1) then
 							self:LogInfo("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..")")
 							TVT.md_doBidAuctionProgrammeLicence(v:GetId())
 

@@ -136,7 +136,7 @@ function JobSellMovies:Tick()
 	end
 
 	local receivers = self.Task.Player.totalReceivers
-	local performanceThreshold = 0.15
+	local performanceThreshold = 0.17
 	local minLicenceCount = 50
 	if receivers == nil then
 		-- should not happen
@@ -212,7 +212,7 @@ end
 function JobSellMovies:getLowPerformanceLicenceToSell(movies, threshold)
 	local performanceStats = getPlayer().Stats.PerformanceData
 	if performanceStats~=nil then
-		local worstQuote = 20
+		local worstQuote = 25
 		local worstLicence = nil
 		for i=1, #movies do
 			local movie = movies[i]

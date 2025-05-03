@@ -505,6 +505,9 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			t.exceedingBroadcastLimit = licence.isExceedingBroadcastLimit()
 			t.xrated = licence.GetData().IsXRated()
 			t.qualityLevel = AITools:GetBroadcastQualityLevel(licence, licenceCount) -- TODO optimize
+			if t.qualityLevel == 5 and licence.GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
+				t.qualityLevel = 4
+			end
 --TODO!!!
 --			t.sentAndPlanned = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
 --			t.planned = licence.isPlanned()

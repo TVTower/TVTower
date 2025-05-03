@@ -513,6 +513,8 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 			self:LogDebug("ignoring contract with genre limit")
 		elseif blocks < 72 and easy ~= true and spotCount > 4 then
 			self:LogDebug("ignoring contract with too many blocks")
+		elseif veryhard == true and self.Player.coverage > 0.9 and spotCount > 1 then
+			self:LogDebug("ignoring very hard contracts on high coverage")
 		elseif spotsLeft <= 0 then
 			doSign = true
 		elseif veryhard == true and self.Player.coverage > 0.9 then
@@ -661,7 +663,7 @@ function SignContracts:Tick()
 	local player = getPlayer()
 	if player.hour > 19 or player.coverage > 0.9 then
 		local threshold = 0
-		if player.coverage > 0.9 then threshold = 1 end
+--		if player.coverage > 0.9 then threshold = 1 end
 		for key, contract in pairs(signedContracts) do
 			if contract ~= nil then
 				if contract:GetDaysLeft(-1) <= threshold then fixedCosts = fixedCosts + contract.getPenalty(TVT.ME)/2 end

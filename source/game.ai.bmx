@@ -777,6 +777,11 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 		Return GetPlayerFinance(Self.ME, -1).money
 	End Method
 
+	Method getImage:Int(player:Int)
+		Return GetPublicImage(player).GetAverageImage()
+	End Method
+
+
 	Method convertToAdContract:TAdContract(obj:Object)
 		Return TAdContract(obj)
 	End Method
