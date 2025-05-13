@@ -213,6 +213,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			'avoid "too used" licences
 			filterAuction.filters[0].relativeTopicalityMin = 0.85
 			filterAuction.filters[0].relativeTopicalityMax = -1.0
+			filterAuction.filters[0].SetNotDataFlag(TVTProgrammeDataFlag.LIVEONTAPE)
 			filterAuction.filters[0].maxTopicalityMin = 0.85
 			filterAuction.filters[0].maxTopicalityMax = -1.0
 			filterAuction.filters[0].checkTradeability = True
@@ -223,6 +224,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			filterAuction.filters[1].priceMax = -1
 			filterAuction.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
 			filterAuction.filters[1].SetDataFlag(TVTProgrammeDataFlag.LIVE)
+			filterAuction.filters[1].SetNotDataFlag(TVTProgrammeDataFlag.LIVEONTAPE)
 			filterAuction.filters[1].checkTradeability = True
 			filterAuction.filters[1].timeToReleaseMin = 5 * TWorldTime.DAYLENGTH
 			filterAuction.filters[1].checkTimeToReleaseMin = True
