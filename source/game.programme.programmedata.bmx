@@ -1547,22 +1547,22 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = 1.0
 
-		'the older the less ppl want to watch - 1 year = 0.985%, 2 years = 0.97%...
-		'TODO the comment is misleading!!
-		'for age 0 the factor is 1.5, for age 30 the factor is 1.05
-		Local age:Float = 0.015 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - GetYear()) )
-		quality :* Max(0.20, age)
-
+		'quality bonus for recent release: 1.5 for age 0 years, 1.45 for 1 year,...
+		'due to max(0, max) the age factor will always be >= 1
+		Local age:Float = 1 + 0.05 * Max(0, 10 - Max(0, GetWorldTime().GetYear() - GetYear()) )
+		quality :* age
 
 		'the more the programme got repeated, the lower the quality in
-		'that moment (^2 increases loss per air)
+		'that moment (^2 increases loss per air as well as age)
 		'but a "good movie" should benefit from being good - so the
 		'influence of repetitions gets lower by higher raw quality
 		'-> a movie with 100% base quality will have at least 10% of
 		'   quality no matter how many times it got aired
 		quality :* GetQualityRaw() * (0.10 + 0.90 * GetTopicality()^2)
 
-		Return MathHelper.Clamp(quality, 0.01, 1.0)
+		'allow up to 15% bonus for really new AND really good
+		'(most movies do not reach 100% even with a factor of 1.5 for age 0)
+		Return MathHelper.Clamp(quality, 0.01, 1.15)
 	End Method
 
 
