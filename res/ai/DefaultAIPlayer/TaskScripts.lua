@@ -192,7 +192,11 @@ function JobBuyScript:getAttractivity(script)
 	if potential < self.minPotential then
 		return -1
 	else
-		return 0.4 * (script:GetSpeed() + script:GetReview()) + 0.2 * potential
+		local attractivity = 0.4 * (script:GetSpeed() + script:GetReview()) + 0.2 * potential
+		local genre = script:GetMainGenre()
+		if genre == TVT.Constants.ProgrammeGenre.Horror then attractivity = attractivity * 0.75 end
+		if script:IsAlwaysLive() > 0 then attractivity = attractivity * 1.25 end
+		return attractivity
 	end
 end
 
@@ -212,7 +216,7 @@ function JobBuyScript:canBuy(script)
 		return false
 	elseif script:GetPrice() > self.scriptMaxPrice then
 		return false
-	elseif script:IsLive() == 1 then
+	elseif script:IsLive() > 0 and script:IsAlwaysLive() == 0 then
 		return false
 	elseif TVT:da_getJobCount(script) > self.maxJobCount and cultureOverride == 0 then
 		return false
@@ -300,13 +304,13 @@ function JobPlanProduction:Prepare(pParams)
 		else
 			self.MaxBudget = 600000
 		end
-	elseif player.coverage < 0.5 then
+	elseif player.coverage > 0.2 and player.coverage < 0.5 then
 		if money > 3000000 then
 			self.MaxBudget = 1500000
 		else
 			self.MaxBudget = 1000000
 		end
-	else
+	elseif player.coverage > 0.5 then
 		if money > 7000000 then
 			self.MaxBudget = 3000000
 		else

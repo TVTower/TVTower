@@ -209,7 +209,7 @@ Type TScriptBase Extends TNamedGameObject
 		return HasFlag(TVTProgrammeDataFlag.LIVE)
 	End Method
 
-	Method IsAlwaysLive:int()
+	Method IsAlwaysLive:int() {_exposeToLua}
 		return HasProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
 	End Method
 
