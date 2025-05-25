@@ -537,6 +537,7 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	if self.Task.blocksCount > 100 then
 		self.MovieMaxPrice = movieBudget * 0.75
 		self.SeriesMaxPrice = movieBudget * 0.9
+		if player.coverage > 0.8 then self.SeriesMaxPrice =  math.max(movieBudget, player.money / 2.5) end
 	else
 		self.MovieMaxPrice = movieBudget
 		self.SeriesMaxPrice = movieBudget
@@ -612,7 +613,11 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	local qualityGate = myMoviesQuality.AverageValue
 	-- raise quality gate once a certail level is reached
 	if player.coverage > 0.9 then
-		qualityGate = myMoviesQuality.MaxValue * 0.75
+		if licence:IsSingle() == 1 then
+			qualityGate = myMoviesQuality.MaxValue * 0.8
+		else
+			qualityGate = myMoviesQuality.MaxValue * 0.9
+		end
 	elseif self.Task.blocksCount > 75 then
 		qualityGate = (qualityGate + myMoviesQuality.MaxValue) / 2
 	end
@@ -623,7 +628,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
 			qualityStats = stats.MovieQualityAcceptable
 		else
-			self:LogDebug("CheckMovieBuyConditions (single licence) not met. price: " .. licence.GetPrice(TVT.ME) .. " > " .. self.MovieMaxPrice .."   quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", myMoviesQuality.AverageValue) )
+			self:LogDebug("CheckMovieBuyConditions (single licence) not met. price: " .. licence.GetPrice(TVT.ME) .. " > " .. self.MovieMaxPrice .." or quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", qualityGate) )
 			debugMsgDepth(-1)
 			return
 		end
@@ -632,7 +637,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 			pricePerBlockStats = stats.SeriesPricePerBlockAcceptable
 			qualityStats = stats.SeriesQualityAcceptable
 		else
-			self:LogDebug("CheckMovieBuyConditions (series) not met. price: " .. licence.GetPrice(TVT.ME) .. " > " .. self.SeriesMaxPrice .."   quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", myMoviesQuality.AverageValue) )
+			self:LogDebug("CheckMovieBuyConditions (series) not met. price: " .. licence.GetPrice(TVT.ME) .. " > " .. self.SeriesMaxPrice .." or quality: " .. string.format("%.4f", licence.GetQuality()) .. " < " .. string.format("%.4f", qualityGate) )
 			debugMsgDepth(-1)
 			return
 		end
@@ -659,7 +664,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	if licence.GetData().IsTrash() > 0 then
 		qualityFactor = qualityFactor * 0.6
 	end
-	if licence.isLive() > 0 then
+	if licence.isLive() > 0 and (licence.isSingle() ~= 1 or licence.isAlwaysLive() == 0) then
 		--TODO do not buy live licences
 		qualityFactor = qualityFactor * 0
 	end
@@ -750,25 +755,27 @@ function JobBuyMovies:Tick()
 		end
 	end
 
-	--TODO do not always buy something
-	if (movies ~= nil) then
+	if player.maxTopicalityBlocksCount > 12 and math.random(1, 10) > 5 then
+		--TODO more sophisticated version
+		--do not always buy something
+	elseif (movies ~= nil) then
 		for k,v in pairs(movies) do
-			local priceToPay = v:GetPrice(TVT.ME)
-			if (priceToPay <= self.Task.CurrentBudget) then
-				-- daily budget for good offers without direct need
-				if priceToPay <= maxPrice then
-					if (self:shouldBuyMovie(v) == 1) then
-						self:LogInfo("Buying licence: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. priceToPay)
-						TVT.md_doBuyProgrammeLicence(v:GetId())
+			if (self:shouldBuyMovie(v) == 1) then
+				local doBuy = 1
+				local priceToPay = v:GetPrice(TVT.ME)
+				if priceToPay > self.Task.CurrentBudget or priceToPay > maxPrice then doBuy = 0 end
+				if player.coverage > 0.75 and v:isSingle() ~= 1 and priceToPay < player.money / 2.5 then doBuy = 1 end
+				if doBuy == 1 then
+					self:LogInfo("Buying licence: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. priceToPay)
+					TVT.md_doBuyProgrammeLicence(v:GetId())
 
-						self.Task:PayFromBudget(priceToPay)
-						self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - priceToPay
+					self.Task:PayFromBudget(priceToPay)
+					self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - priceToPay
 
-						--do not spend all available money, if there are enough max-top blocks
-						--saves money for antennas
-						if blocksCount > 72 and player.maxTopicalityBlocksCount > 10 and player.money < 25000000 then
-							self.Task.CurrentBudget = 0
-						end
+					--do not spend all available money, if there are enough max-top blocks
+					--saves money for antennas
+					if blocksCount > 72 and player.maxTopicalityBlocksCount > 10 and player.money < 25000000 then
+						self.Task.CurrentBudget = 0
 					end
 				end
 			end

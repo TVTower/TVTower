@@ -471,6 +471,8 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 		if player.blocksCount ~=nil then
 			if player.blocksCount > 60 then maxTopThreshold = 0.6 end
 			if player.blocksCount > 100 then maxTopThreshold = 0.7 end
+			--TODO check
+			--if player.blocksCount > 150 then maxTopThreshold = 0.9 end
 		end
 		local tl = {} --top licences
 		self.availableProgrammes = {}
@@ -508,6 +510,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			if t.qualityLevel == 5 and licence.GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
 				t.qualityLevel = 4
 			end
+			if t.maxTopicality > 0.95 and licence.IsAlwaysLive() > 0 then t.qualityLevel = 5 end
 --TODO!!!
 --			t.sentAndPlanned = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
 --			t.planned = licence.isPlanned()

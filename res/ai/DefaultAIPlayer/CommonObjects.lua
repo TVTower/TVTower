@@ -5,7 +5,7 @@
 function CheckMovieBuyConditions(licence, maxPrice, maxPricePerBlock, minQuality)
 	local price = licence.GetPrice(TVT.ME)
 	if maxPrice ~= nil and (price > maxPrice) then return false; end
-	if maxPricePerBlock~=nil and maxPricePerBlock > 0 and price / licence.GetBlocks(2) > maxPricePerBlock then return false; end
+	if maxPricePerBlock~=nil and maxPricePerBlock > 0 and price / licence.GetBlocksTotal(2) > maxPricePerBlock then return false; end
 	if (minQuality ~= nil) and (licence.GetQuality() < minQuality) then return false; end
 	return true
 end
@@ -536,7 +536,10 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 	-- "GetQuality()" already contains topicality-influence for infomercials
 	-- and programmes
 	-- return playerMod * timeMod * audienceMod * (broadcastMaterialSource.GetQuality() * broadcastMaterialSource.GetProgrammeTopicality())
-	local result = playerMod * timeMod * audienceMod * broadcastMaterialSource.GetQuality()
+	local quality = broadcastMaterialSource.GetQuality()
+	--for custom live productions quality data is not yet available...
+	if broadcastMaterialSource:IsLive() then quality = math.max(quality, 0.25) end
+	local result = playerMod * timeMod * audienceMod * quality
 
 	--TODO Anzahl Lizenzen, Durchschnittsqualität, Genre (Sendezeit) berücksichtigen
 

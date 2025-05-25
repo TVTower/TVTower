@@ -1755,17 +1755,25 @@ endrem
 
 		local room:Int = getPlayerRoom()
 		local script:TScript = RoomHandler_Studio.GetInstance().GetCurrentStudioScript(room)
+		Local pcc:TProductionConceptCollection = TProductionConceptCollection.GetInstance()
+		'"remove" script from studio if all pre-productions are started - new production is possible
+		If script And isLiveAndAllProductionsStarted(script, pcc) Then script = null
 
 		If not script
 			local scripts:TList = GetPlayerProgrammeCollection(Self.ME).suitcaseScripts
 			'TODO may be more than one - choose most suitable - consider room size and potential
 			If Not scripts.IsEmpty()
-				script:TScript = TScript(scripts.first())
+				'script:TScript = TScript(scripts.first())
+				For Local s:TScript = EachIn scripts
+					If Not isLiveAndAllProductionsStarted(s, pcc)
+						script = s
+						Exit
+					EndIf
+				Next
 			EndIf
 		EndIf
 
 		If script
-			Local pcc:TProductionConceptCollection = TProductionConceptCollection.GetInstance()
 			Local rh:RoomHandler_Studio = RoomHandler_Studio.GetInstance()
 			rh.SetCurrentStudioScript(script, room, False)
 
@@ -1779,7 +1787,20 @@ endrem
 			EndIf
 			Return Self.RESULT_OK
 		EndIf
+		'indicator no script found, new script can be bought
 		Return Self.RESULT_NOTFOUND
+
+		Function isLiveAndAllProductionsStarted:Int(script:TScript,pcc:TProductionConceptCollection)
+			If Not script.IsLive() Then Return False
+			Local concepts:TProductionConcept[]=pcc.GetProductionConceptsByScript(script,True)
+			If Not concepts Or concepts.length = 0 Then return False
+
+			For Local c:TProductionConcept = Eachin concepts
+				If Not c.IsProductionStarted() Then Return False
+			Next
+			Return True
+		EndFunction
+
 	End Method
 
 	'Start a production

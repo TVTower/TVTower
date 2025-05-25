@@ -195,7 +195,7 @@ function JobBuyScript:getAttractivity(script)
 		local attractivity = 0.4 * (script:GetSpeed() + script:GetReview()) + 0.2 * potential
 		local genre = script:GetMainGenre()
 		if genre == TVT.Constants.ProgrammeGenre.Horror then attractivity = attractivity * 0.75 end
-		if script:IsAlwaysLive() > 0 then attractivity = attractivity * 1.25 end
+		--if script:IsAlwaysLive() > 0 then attractivity = attractivity * 1.25 end
 		return attractivity
 	end
 end
