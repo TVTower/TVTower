@@ -151,6 +151,9 @@ end
 function TaskMovieDistributor:BudgetSetup()
 	-- Tagesbudget für gute Angebote ohne konkreten Bedarf
 	--TODO was self.BudgetWholeDay / 2, preventing buying good movies; problem to solve is recalculation of budget...
+	--late in the game use saved money - prevent buying "bad" programmes
+	local player=getPlayer()
+	if player.coverage > 0.9 and player.money > 20000000 then self.BudgetWholeDay = self.BudgetWholeDay + 6000000 end
 	self.CurrentBargainBudget = self.BudgetWholeDay
 end
 
@@ -612,7 +615,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	local qualityGate = myMoviesQuality.AverageValue
 	-- raise quality gate once a certail level is reached
-	if player.coverage > 0.9 then
+	if player.coverage > 0.5 then
 		if licence:IsSingle() == 1 then
 			qualityGate = myMoviesQuality.MaxValue * 0.8
 		else
@@ -645,15 +648,16 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	--TODO Statistik über alle gesehenen Filme, angebotene Filme, Filme die die Kriterien erfüllen, meine Filme?
 
-	-- the cheaper the better
+	-- the cheaper the better; due to extreme range of price per block, a good move will always have a low factor
+	-- you would have to calculate the factor based on movies in the same quality range
 	local financeFactor = 1.0
-	if pricePerBlockStats.AverageValue > 0 then financeFactor = licence:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME) / pricePerBlockStats.AverageValue; end
-	financeFactor = CutFactor(financeFactor, 0.2, 2)
+--	if pricePerBlockStats.AverageValue > 0 then financeFactor = ((pricePerBlockStats.MaxValue + pricePerBlockStats.AverageValue)/ 2) / licence:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME) ; end
+--	financeFactor = CutFactor(financeFactor, 0.1, 3)
 
-	-- the higher the quality the better
+	-- the higher the quality the better (using quality gate yields low values later on)
 	local qualityFactor = 1.0
 	if qualityStats.AverageValue > 0 then qualityFactor = licence:GetQuality() / qualityStats.AverageValue; end
-	qualityFactor = CutFactor(qualityFactor, 0.2, 2)
+	qualityFactor = CutFactor(qualityFactor, 0.1, 3)
 
 	if licence.GetData().IsXRated() > 0 and qualityFactor < 1.9 then
 		qualityFactor = qualityFactor * 0.6
@@ -662,7 +666,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 		qualityFactor = qualityFactor * 1.3
 	end
 	if licence.GetData().IsTrash() > 0 then
-		qualityFactor = qualityFactor * 0.6
+		qualityFactor = qualityFactor * 0.75
 	end
 	if licence.isLive() > 0 and (licence.isSingle() ~= 1 or licence.isAlwaysLive() == 0) then
 		--TODO do not buy live licences
@@ -698,8 +702,8 @@ function JobBuyMovies:Prepare(pParams)
 		local sortFunction
 		local sortMethod = math.random(0,2)
 		--TODO solange die Auswahl noch nicht groß ist nach Preis (Qualität muss ja ohnehin hoch genug sein)
-		if self.Task.blocksCount > 0 and self.Task.blocksCount < 60 then sortMethod = 1 end
-		if getPlayer().coverage > 0.9 then sortMethod = 0 end
+		if self.Task.blocksCount > 0 and self.Task.blocksCount < 96 then sortMethod = 1 end
+		if getPlayer().coverage > 0.35 then sortMethod = 2 end
 		if sortMethod == 0 then
 			self:LogTrace("sort by quality")
 			sortFunction = function(a, b)
@@ -755,6 +759,8 @@ function JobBuyMovies:Tick()
 		end
 	end
 
+	local seriesOverBudgetOk = 1
+
 	if player.maxTopicalityBlocksCount > 12 and math.random(1, 10) > 5 then
 		--TODO more sophisticated version
 		--do not always buy something
@@ -764,7 +770,10 @@ function JobBuyMovies:Tick()
 				local doBuy = 1
 				local priceToPay = v:GetPrice(TVT.ME)
 				if priceToPay > self.Task.CurrentBudget or priceToPay > maxPrice then doBuy = 0 end
-				if player.coverage > 0.75 and v:isSingle() ~= 1 and priceToPay < player.money / 2.5 then doBuy = 1 end
+				if player.coverage > 0.75 and v:isSingle() ~= 1 and priceToPay < player.money / 2.5 and seriesOverBudgetOk == 1 then
+					seriesOverBudgetOk = 0
+					doBuy = 1
+				end
 				if doBuy == 1 then
 					self:LogInfo("Buying licence: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. priceToPay)
 					TVT.md_doBuyProgrammeLicence(v:GetId())
