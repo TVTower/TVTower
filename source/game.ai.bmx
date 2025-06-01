@@ -1761,16 +1761,7 @@ endrem
 
 		If not script
 			local scripts:TList = GetPlayerProgrammeCollection(Self.ME).suitcaseScripts
-			'TODO may be more than one - choose most suitable - consider room size and potential
-			If Not scripts.IsEmpty()
-				'script:TScript = TScript(scripts.first())
-				For Local s:TScript = EachIn scripts
-					If Not isLiveAndAllProductionsStarted(s, pcc)
-						script = s
-						Exit
-					EndIf
-				Next
-			EndIf
+			script = getScriptToProduce(scripts, pcc, room)
 		EndIf
 
 		If script
@@ -1782,6 +1773,11 @@ endrem
 					Local subScript:TScript = TScript(script.GetSubScriptAtIndex(i))
 					If pcc.CanCreateProductionConcept(subScript) then rh.CreateProductionConcept(Self.ME, subScript)
 				Next
+			ElseIf script.GetProductionLimit() > 0 And script.GetProductionsCount() < 3
+				'for multi-productions, 3 concepts the first time (before possibly choosing next script)
+				For Local i:Int = 1 To 3
+					If pcc.CanCreateProductionConcept(script) then rh.CreateProductionConcept(Self.ME, script)
+				Next
 			Else
 				If pcc.CanCreateProductionConcept(script) then rh.CreateProductionConcept(Self.ME, script)
 			EndIf
@@ -1790,7 +1786,7 @@ endrem
 		'indicator no script found, new script can be bought
 		Return Self.RESULT_NOTFOUND
 
-		Function isLiveAndAllProductionsStarted:Int(script:TScript,pcc:TProductionConceptCollection)
+		Function isLiveAndAllProductionsStarted:Int(script:TScript, pcc:TProductionConceptCollection)
 			If Not script.IsLive() Then Return False
 			Local concepts:TProductionConcept[]=pcc.GetProductionConceptsByScript(script,True)
 			If Not concepts Or concepts.length = 0 Then return False
@@ -1801,6 +1797,41 @@ endrem
 			Return True
 		EndFunction
 
+		'TODO throw away multi productions with lower quality (if more than one exists)
+		Function getScriptToProduce:TScript(scripts:TList, pcc:TProductionConceptCollection, roomID:Int)
+			'TODO consider room size!
+			If scripts And Not scripts.IsEmpty()
+				Local multiProdQuality:Float = 0.0
+				Local multiProdQualityMax:Float = 0.0
+				Local multiProdSkipChance:Int
+				For Local s:TScript = EachIn scripts
+					If Not isLiveAndAllProductionsStarted(s, pcc)
+						'prefer non-multi-productions
+						If s.GetProductionLimit() <= 1
+							Return s
+						Else
+							multiProdQuality = s.GetReview() + s.GetSpeed()
+							If multiProdQuality > multiProdQualityMax Then multiProdQualityMax = multiProdQuality
+							'produce at least once
+							If s.GetProductionsCount() < 1 Then Return s
+						EndIf
+					EndIf
+				Next
+				'at this point the only choice should be among multi productions
+				For Local s:TScript = EachIn scripts
+					If Not isLiveAndAllProductionsStarted(s, pcc)
+						'skip already produced script sometimes
+						If s.GetProductionLimit() > 1 And s.GetProductionsCount() > 2
+							multiProdSkipChance = 60
+							If s.GetReview() + s.GetSpeed() < multiProdQualityMax then multiProdSkipChance = 80
+							If RandRange(1,100) < multiProdSkipChance Then Continue
+						EndIf
+						Return s
+					EndIf
+				Next
+			EndIf
+			Return null
+		EndFunction
 	End Method
 
 	'Start a production
@@ -1845,6 +1876,7 @@ endrem
 					Local budgetToUse:Int = budget
 					result = Self.RESULT_FAILED
 					If pc.script.GetBlocks() = 1 then budgetToUse = budgetToUse * oneBlockBudgetFactor
+					If pc.script.GetProductionBroadcastLimit() = 1 then budgetToUse = budgetToUse * oneBlockBudgetFactor
 					producer.budget = budgetToUse
 					producer.experience = 75
 					If budgetToUse < 400000 then producer.preferCelebrityCastRateSupportingRole = 60

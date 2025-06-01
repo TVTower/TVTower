@@ -143,6 +143,7 @@ function JobBuyScript:Prepare(pParams)
 		self.minPotential = self.minPotential - 0.1
 		self.minAttractivity = self.minAttractivity - 0.1
 	end
+	if self.Task.minAttractivityMulti == nil then self.Task.minAttractivityMulti = self.minAttractivity end
 	self.scriptMaxPrice =  math.min(self.scriptMaxPrice, player.money)
 	self:LogDebug("  maxPrice  ".. self.scriptMaxPrice .. " minPotential "..self.minPotential)
 end
@@ -177,6 +178,9 @@ function JobBuyScript:Tick()
 				self.Task.BasePriority = self.Task.BasePriority * 5
 				self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
 				self.Task.neededStudioSize = script.requiredStudioSize
+				if script:GetProductionLimit() > 1 then
+					self.Task.minAttractivityMulti = self:getAttractivity(script)
+				end 
 				break
 			end
 		end
@@ -202,7 +206,8 @@ end
 
 function JobBuyScript:canBuy(script)
 	local cultureOverride = 0
-	local studioSize = getPlayer().maxStudioSize
+	local player=getPlayer()
+	local studioSize = player.maxStudioSize
 	if self.Task.awardType == "culture" then
 		if script:IsCulture() > 0 then
 			cultureOverride = 1
@@ -220,7 +225,9 @@ function JobBuyScript:canBuy(script)
 		return false
 	elseif TVT:da_getJobCount(script) > self.maxJobCount and cultureOverride == 0 then
 		return false
-	elseif script:GetProductionLimit() > 1 then
+	elseif script:HasBroadcastTimeSlot() > 0 then
+		return false
+	elseif script:GetProductionLimit() > 1 and player.coverage < 0.15 then
 		return false
 	elseif script:IsSeries() == 1 then
 		--TODO buy series only if enough money and not too much credit!!
@@ -233,11 +240,15 @@ function JobBuyScript:canBuy(script)
 			return false
 		end
 	end
+	local attractivity = self:getAttractivity(script)
 
 	--less hard restrictions
-	if self:getAttractivity(script) < self.minAttractivity then
+	if attractivity < self.minAttractivity then
 		return false
 	end
+	if script:GetProductionLimit() > 1 and self.Task.minAttractivityMulti ~= nil and attractivity < self.Task.minAttractivityMulti then
+		return false
+	end 
 
 	return true
 end

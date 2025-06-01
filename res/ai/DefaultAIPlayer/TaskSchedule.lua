@@ -514,7 +514,8 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 			if t.qualityLevel == 5 and licence.GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
 				t.qualityLevel = 4
 			end
-			if t.maxTopicality > 0.95 and licence.IsAlwaysLive() > 0 then t.qualityLevel = 5 end
+			--increase probability custom live productions are broadcasted
+			if t.maxTopicality > 0.95 and licence.IsAlwaysLive() > 0 then t.qualityLevel = math.random(4, 5) end
 --TODO!!!
 --			t.sentAndPlanned = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
 --			t.planned = licence.isPlanned()

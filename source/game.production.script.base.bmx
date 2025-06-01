@@ -134,7 +134,7 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
-	Method HasBroadcastTimeSlot:Int()
+	Method HasBroadcastTimeSlot:Int() {_exposeToLua}
 		Return broadcastTimeSlotStart <> -1 And broadcastTimeSlotEnd <> -1
 	End Method
 
