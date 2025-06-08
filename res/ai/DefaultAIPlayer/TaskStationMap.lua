@@ -99,6 +99,8 @@ function TaskStationMap:BeforeBudgetSetup()
 		self.BudgetWeight = 0
 	elseif blocks < 50 and (totalReceivers == nil or totalReceivers > 5000000) then
 		self.BudgetWeight = 4
+	elseif player.coverage > 0.9 then
+		self.BudgetWeight = 4
 	elseif maxTopBlocks > 6 then
 		self.BudgetWeight = 12
 	else
@@ -209,9 +211,9 @@ function JobAnalyseStationMarket:Tick()
 	if player.money > 10000000 and player.coverage > 0.15 and blocks < 144 then
 		--player bankrupt - do not by stations too fast
 		self.Task.maxReceiverIncrease = -1
-	elseif player.coverage > 0.94 then
+	elseif player.coverage > 0.955 then
 		self.Task.maxReceiverIncrease = -1
-	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 7 then
+	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 3 then
 		self:determineIntendedPositions()
 	end
 
@@ -519,7 +521,7 @@ function JobBuyStation:GetAttraction(tempStation)
 		attraction = -1
 	elseif attraction < 1 then
 		attraction = -2
-	elseif exclusiveReceivers < 100000 then
+	elseif exclusiveReceivers < 350000 then
 		attraction = attraction * 0.5
 	end
 	self:LogTrace("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget .. ")")
