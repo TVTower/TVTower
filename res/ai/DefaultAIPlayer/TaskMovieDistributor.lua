@@ -137,6 +137,8 @@ function TaskMovieDistributor:BeforeBudgetSetup()
 	if blocks >= 36 and (totalReceivers==nil or totalReceivers  <= 2500000) then
 		--reduce budget for buying antenna
 		self.BudgetWeight = 2
+	elseif player.coverage > 0.9 then
+		self.BudgetWeight = 3
 	elseif maxTopBlocks < 8 then
 		--do not reduce budget
 	elseif maxTopBlocks >= 12 then
@@ -775,7 +777,7 @@ function JobBuyMovies:Tick()
 					doBuy = 1
 				end
 				if doBuy == 1 then
-					self:LogInfo("Buying licence: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. priceToPay)
+					self:LogInfo("Buying licence: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. priceToPay..", Quality: ".. v.GetQuality()..", MaxTop: "..v.GetMaxTopicality())
 					TVT.md_doBuyProgrammeLicence(v:GetId())
 
 					self.Task:PayFromBudget(priceToPay)

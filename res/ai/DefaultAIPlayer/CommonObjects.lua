@@ -495,6 +495,8 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 	-- how much likes the player to send this kind of programme/infomercial
 	local playerMod = 1.0
 
+	-- "GetQuality()" already contains topicality-influence for infomercials and programmes
+	local quality = broadcastMaterialSource.GetQuality()
 
 	-- infomercials?
 	if broadcastMaterialSource.IsAdContract() == 1 then
@@ -531,14 +533,10 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			if hour >= 0 and hour <=14 then timeMod = 1.10 end
 			if hour >=20 and hour <=22 then timeMod = 0.90 end
 		end
+		--for custom live productions quality data is not yet available...
+		if broadcastMaterialSource:IsLive() then quality = math.max(quality, 0.4) end
 	end
 
-	-- "GetQuality()" already contains topicality-influence for infomercials
-	-- and programmes
-	-- return playerMod * timeMod * audienceMod * (broadcastMaterialSource.GetQuality() * broadcastMaterialSource.GetProgrammeTopicality())
-	local quality = broadcastMaterialSource.GetQuality()
-	--for custom live productions quality data is not yet available...
-	if broadcastMaterialSource:IsLive() then quality = math.max(quality, 0.3) end
 	local result = playerMod * timeMod * audienceMod * quality
 
 	--TODO Anzahl Lizenzen, Durchschnittsqualität, Genre (Sendezeit) berücksichtigen
@@ -553,6 +551,7 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 				result = result * relTop
 			end
 		end
+		if forPlayer.blocksCount > 144 and relTop < 0.99 then result=result * 0.5 end
 		local timesShown = broadcastMaterialSource:GetTimesBroadcasted(forPlayer)
 		if timesShown >= 7 then
 			result=result * 0.3
@@ -566,10 +565,10 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			if forPlayer.coverage > 0.4 then minHour = 16 end
 			if hour < minHour or hour > 22 then
 				--TODO make genre dependent; many blocks - new cheap stuff also earlier 
-				if broadcastMaterialSource:GetTopicality() > 0.6 then
+				if broadcastMaterialSource:GetTopicality() > 0.8 then
 					result= result * 0.3
 				end
-			end 
+			end
 		end
 --		if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
 --			result = result * 0.5

@@ -307,7 +307,8 @@ end
 
 
 -- return the individual audience riskyness
-function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block, playerHour)
+function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block, player)
+	local playerHour = player.hour
 	-- 1.0 means assuming to get all
 	--local baseRiskyness = 0.90
 
@@ -321,8 +322,8 @@ function TaskSchedule:GetGuessedAudienceRiskyness(day, hour, broadcast, block, p
 		local factor = 1
 		--guess for the next day, topicality regain not considered in quess
 		if hour < playerHour then factor = 1.1 end
-		if self.useMaxTopicalityOnly == true then
-			return 1.1*factor
+		if self.useMaxTopicalityOnly == true or player.coverage > 0.9 then
+			return factor
 		else
 			return 1.3*factor
 		end
@@ -686,6 +687,10 @@ function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenID
 	local filteredLicences = self:FilterProgrammeLicencesByBroadcastableState(allLicences, fixedDay, fixedHour, forbiddenIDs)
 
 	local player = getPlayer()
+
+--using only max topicality licences did not cause good available licences
+--to be used for early day programme
+--[[
 	if self.useMaxTopicalityOnly == true then
 		--self:LogDebug("using only maxTop licences for hour "..fixedHour)
 		local maxTop = {}
@@ -697,7 +702,7 @@ function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenID
 		if level < 4 then return self:GetMaxTopicalityLicences(maxTop, level) end
 		filteredLicences = maxTop
 	end
-
+--]]
 	local allLicenceCount = table.count(allLicences)
 
 	local minLevel = level
@@ -715,11 +720,22 @@ function TaskSchedule:GetProgrammeLicencesForBlock(day, hour, level, forbiddenID
 
 	--try to find a programme of the given quality/level
 
+	--late in the game, do not distinguish between levels 1, 2 and 3
+	if player.coverage > 0.9 then
+		if level < 4 then
+			maxLevel = 3
+		elseif level == 4 and hour < 22 then
+			maxLevel = 5
+		end
+	end
+
 	--exact fit?
 	licenceList = self:GetFilteredProgrammeLicenceList(minLevel, maxLevel, maxReruns, fixedDay, fixedHour, filteredLicences, forbiddenIDs)
 	--check for some worse/better quality program - if selection is too small
-	local minSelectionSize = 1 -- allLicenceCount/4
-	if level <= 3 then
+	--once a certail level is achieved, look only for better licences
+	local minSelectionSize = 3 -- allLicenceCount/4
+	if player.coverage > 0.3 then minSelectionSize = 15 end
+	if level <= 3 and player.coverage < 0.25 then
 		if (table.count(licenceList) < minSelectionSize) then licenceList = self:GetFilteredProgrammeLicenceList(minLevel-1, maxLevel, maxReruns + 1, fixedDay, fixedHour, filteredLicences, forbiddenIDs) end
 	else
 		if (table.count(licenceList) < minSelectionSize) then licenceList = self:GetFilteredProgrammeLicenceList(minLevel, maxLevel+1, maxReruns, fixedDay, fixedHour, filteredLicences, forbiddenIDs) end
@@ -1103,7 +1119,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 --	local globalPercentageByHour = AITools:GetMaxAudiencePercentage(fixedDay, fixedHour)
 --	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 --	local sharedMaxAudience = MY.getReceivers() - exclusiveMaxAudience
-	local riskyness = self:GetGuessedAudienceRiskyness(day, hour, broadcast, block, player.hour)
+	local riskyness = self:GetGuessedAudienceRiskyness(day, hour, broadcast, block, player)
 --	self.log["GuessedAudienceForHour"] = "GUESSED: Hour=" .. hour .. "  Lvl=" .. level .. "  Audience: guess=" .. math.round(guessedAudience.GetTotalSum()) .. "  atTV=".. math.round(MY.getReceivers()*globalPercentageByHour) .. "  avgQ="..avgQuality .. "  statQ="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4 .. "   riskyness="..riskyness
 --	self:LogDebug( self.log["GuessedAudienceForHour"] )
 
