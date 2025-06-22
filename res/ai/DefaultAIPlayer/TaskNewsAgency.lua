@@ -92,6 +92,12 @@ function TaskNewsAgency:getStrategicPriority()
 		result = 1.25
 	end
 
+	if player.hour < 8 then 
+		result = result * 0.75
+	elseif player.hour > 16 then
+		result = result * 1.15
+	end
+
 	return result
 end
 
@@ -140,7 +146,7 @@ function TaskNewsAgency:BudgetSetup()
 	-- to have at least news, we need a minimum budget to be able to sub-
 	-- scribe to current affairs
 	local baseFee = TVT.GetNewsAbonnementFee(TVT.Constants.NewsGenre.CURRENTAFFAIRS, 1)
-	local tempAbonnementBudget = math.max(baseFee, self.BudgetWholeDay * 0.45)
+	local tempAbonnementBudget = math.max(baseFee, self.BudgetWholeDay * 0.35)
 	--TODO ensure abonnement bugdet is not subtracted multiple times over the day
 	self.AbonnementBudget = tempAbonnementBudget
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget
@@ -151,16 +157,16 @@ end
 function TaskNewsAgency:BudgetMaximum()
 	local player = getPlayer()
 	local money = player.money
-	if money <= 500000 or player.gameDay < 2 then
-		return math.max(50000, math.floor(money / 10))
-	elseif money < 1000000 then
-		return math.max(110000, math.floor(money / 10))
-	elseif money < 2000000 then
-		return math.max(225000, math.floor(money / 10))
-	elseif money > 7000000 and player.coverage > 0.5 then
-		return 1000000
+	if money <= 500000 or player.gameDay < 3 then
+		return math.max(50000, math.floor(money / 15))
+	elseif money < 1000000 or player.coverage < 0.15 then
+		return math.max(150000, math.floor(money / 15))
+	elseif money < 2000000 or player.coverage < 0.25 then
+		return math.max(250000, math.floor(money / 15))
+	elseif player.coverage > 0.35 then
+		return 1250000
 	else
-		return 300000
+		return 500000
 	end
 end
 
@@ -295,12 +301,12 @@ function JobNewsAgencyAbonnements:Tick()
 		end
 	end
 
-	local preventDowngrade = false
+	local preventDowngrade = true
 	local player = getPlayer()
-	if player.Budget.CurrentFixedCosts > 300000 or oldFees < 40000 then
-		self:LogDebug(" preventing downgrade") 
-		preventDowngrade = true
-	end
+--	if player.Budget.CurrentFixedCosts > 300000 or oldFees < 40000 then
+--		self:LogDebug(" preventing downgrade") 
+--		preventDowngrade = true
+--	end
 	local preventUpgrade = false
 
 	-- finally adjust levels
@@ -313,8 +319,11 @@ function JobNewsAgencyAbonnements:Tick()
 			--once the fixed costs reach a certain level, unsubscribing does not save much
 			self:LogDebug("no cancelling of subscription before 22 o'clock") 
 		elseif oldLevel < newLevel and (self.Task.hour > 7 or self.Task.hour == 0 or preventUpgrade) then
-			--TODO exclude 0 to prevent expensive early subscription after game start
-			self:LogDebug("no subscription upgrade after 8 o'clock") 
+			self:LogDebug("no subscription upgrade after 8 o'clock")
+		elseif newLevel > 1 and player.coverage < 0.15 then
+			self:LogDebug("subscription level 2 too early")
+		elseif newLevel > 2 and player.coverage < 0.35 then
+			self:LogDebug("subscription level 3 too early")
 		elseif oldLevel ~= newLevel then
 			TVT.ne_setNewsAbonnement(genreID, newSubscriptionLevels[genreID])
 			if(oldLevel < newLevel) then 
@@ -370,7 +379,7 @@ function JobNewsAgency:Tick()
 	-- fetch a list of all news, sorted by attractivity
 	-- and modified by a bonus for already paid news (so a news
 	-- is preferred if just a bit less good but already paid)
-	local newsList = self.GetNewsList(0.2)
+	local newsList = self.GetNewsList()
 
 	if self.Task.CurrentBudget < 0 then
 		local player = getPlayer()
@@ -425,15 +434,14 @@ end
 
 
 -- retrieve a (attractivity sorted) list of news candidates
--- paidBonus	defines bonus percentage to attractivity of already paid
---              news
-function JobNewsAgency:GetNewsList(paidBonus)
+function JobNewsAgency:GetNewsList()
 	local currentNewsList = {}
-
-	if (paidBonus == nil) then
-		paidBonus = 0.1 --10%
-	end
-	paidBonus = tonumber(paidBonus)
+	--keep paid news early in the day
+	paidBonus = 0.35
+	--but prefer new news when reaching higher audience
+	if getPlayer().hour > 15 then paidBonus = 0.15 end
+	--prefer new news late in the game
+	if getPlayer().coverage > 0.9 then paidBonus = 0.05 end
 
 
 	-- fetch all news, insert all available to a list
@@ -472,7 +480,7 @@ function JobNewsAgency:GetNewsList(paidBonus)
 	-- precache complex weight calculation
 	local weights = {}
 	for k,v in pairs(currentNewsList) do
-		local weight = v.GetAttractiveness() * (1.0 + v.IsPaid() * paidBonus)
+		local weight = v.GetQuality() * v.GetTopicality() * (1.0 + v.IsPaid() * paidBonus)
 		if cultureAward == 1 and v.GetGenre() == TVT.Constants.NewsGenre.CULTURE then
 			weight = weight * 3
 		end

@@ -668,7 +668,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 		qualityFactor = qualityFactor * 1.3
 	end
 	if licence.GetData().IsTrash() > 0 then
-		qualityFactor = qualityFactor * 0.75
+		qualityFactor = qualityFactor * 0.5
 	end
 	if licence.isLive() > 0 and (licence.isSingle() ~= 1 or licence.isAlwaysLive() == 0) then
 		--TODO do not buy live licences

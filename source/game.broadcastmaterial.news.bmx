@@ -382,7 +382,7 @@ endrem
 		Local quality:Float = ne.GetQuality()
 		'extra bonus for first broadcast
 		If ne.GetTimesBroadcasted() = 0 Then quality :* 1.10
-		Return MathHelper.Clamp(quality, 0.01, 0.99)
+		Return MathHelper.Clamp(quality, 0.01, 1.00)
 	End Method
 
 
@@ -655,6 +655,10 @@ endrem
 	'===== AI-LUA HELPER FUNCTIONS =====
 
 	'Wird bisher nur in der LUA-KI verwendet
+	Method GetTopicality:Float() {_exposeToLua}
+		return GetNewsEvent().GetTopicality()
+	End Method
+
 	Method GetAttractiveness:Float() {_exposeToLua}
 		return GetNewsEvent().GetAttractiveness()
 	End Method

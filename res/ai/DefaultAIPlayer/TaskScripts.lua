@@ -143,7 +143,7 @@ function JobBuyScript:Prepare(pParams)
 		self.minPotential = self.minPotential - 0.1
 		self.minAttractivity = self.minAttractivity - 0.1
 	end
-	if self.Task.minAttractivityMulti == nil then self.Task.minAttractivityMulti = self.minAttractivity end
+	if self.Task.minAttractivityMulti == nil then self.Task.minAttractivityMulti = self.minAttractivity + 0.05 end
 	self.scriptMaxPrice =  math.min(self.scriptMaxPrice, player.money)
 	self:LogDebug("  maxPrice  ".. self.scriptMaxPrice .. " minPotential "..self.minPotential)
 end
@@ -179,7 +179,7 @@ function JobBuyScript:Tick()
 				self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
 				self.Task.neededStudioSize = script.requiredStudioSize
 				if script:GetProductionLimit() > 1 then
-					self.Task.minAttractivityMulti = self:getAttractivity(script)
+					self.Task.minAttractivityMulti = self:getAttractivity(script) + 0.05
 				end 
 				break
 			end
