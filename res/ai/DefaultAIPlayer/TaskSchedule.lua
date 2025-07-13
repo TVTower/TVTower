@@ -364,6 +364,8 @@ function TaskSchedule:GetMostAttractiveLicence(licenceList, day, hour)
 	local result = nil
 	local resultWeight = 0
 	local currentWeight = 0
+	local bestBroadcasted = nil
+	local bestBroadcasedWeight = 0
 	if (table.count(licenceList) > 0) then
 		for k,v in pairs(licenceList) do
 			currentWeight = AITools:GetBroadcastAttraction(v.licence, fixedDay, fixedHour)
@@ -371,9 +373,17 @@ function TaskSchedule:GetMostAttractiveLicence(licenceList, day, hour)
 				resultWeight = currentWeight
 				result=v
 			end
+			if fixedHour < 2 and v.timesRun ~=nil and currentWeight > bestBroadcasedWeight then
+				bestBroadcasedWeight = currentWeight
+				bestBroadcasted = v
+			end
 		end
 	end
 
+	--try not to waste first broadcast when fewer people are watching
+	if fixedHour < 2 and bestBroadcasted ~=nil then
+		return bestBroadcasted
+	end
 	return result
 end
 
@@ -521,7 +531,7 @@ function TaskSchedule:GetAllProgrammeLicences(forbiddenIDs)
 --			t.sentAndPlanned = TVT.of_GetBroadcastMaterialInProgrammePlanCount(licence.GetID(), fixedDay, 1, 1, 0)
 --			t.planned = licence.isPlanned()
 --			t.quality = licence.GetQualityRaw() * t.maxTopicality
---			t.timesRun = licence:GetTimesBroadcasted(TVT.ME)
+			t.timesRun = licence:GetTimesBroadcasted(TVT.ME)
 			t.licence = licence
 			return t;
 		end

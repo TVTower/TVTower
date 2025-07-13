@@ -117,11 +117,13 @@ end
 
 function TaskMovieDistributor:getStrategicPriority()
 	self:LogTrace("TaskMovieDistributor:getStrategicPriority")
-
+	local player = getPlayer()
 	-- no money to buy things? skip even looking...
-	if getPlayer().money <= 50000 then
+	if player.money <= 50000 then
 		return 0.0
-	elseif getPlayer().hour > 18 then
+	elseif player.blocksCount > 48 and player.hour < 6 then
+		return 0.0
+	elseif player.hour > 18 then
 		return 0.5
 	end
 	return 1.0
@@ -147,6 +149,11 @@ function TaskMovieDistributor:BeforeBudgetSetup()
 		self.BudgetWeight = 2
 	elseif blocks >= 75 then
 		self.BudgetWeight = 6
+	end
+
+	--increase chance of station purchase
+	if blocks > 60 and player.hour < 12 and player.coverage < 0.9 then
+		self.BudgetWeight = 0
 	end
 end
 
@@ -210,7 +217,7 @@ function JobBuyStartProgramme:Tick()
 
 	local movieBlocksNeeded = -1
 	if player.blocksCount ~= nil then
-		movieBlocksNeeded = player.Strategy.startProgrammeAmount * 2.5 - player.blocksCount
+		movieBlocksNeeded = player.Strategy.startProgrammeAmount * 3 - player.blocksCount
 	end
 	if movieBlocksNeeded <= 0 then
 		self.Status = JOB_STATUS_DONE
@@ -251,7 +258,7 @@ function JobBuyStartProgramme:Tick()
 		elseif (v:isPaid() > 0 or v:getTopicality() < 0.15 or v:GetGenre() == TVT.Constants.ProgrammeGenre.Horror or self.Task:IsErotic(v)) then
 			--prevent other problematic start programmes: call-in, horror, too old
 			self:LogDebug("IGNORING PROGRAMME (old, genre) "..v:getTitle())
-		elseif pricePerBlock > 50000 then
+		elseif pricePerBlock > 35000 then
 			self:LogDebug("IGNORING PROGRAMME (price) "..v:getTitle() .. " ".. pricePerBlock)
 		elseif math.random(0,10) > 8 then
 			-- ignore randomly
@@ -553,6 +560,8 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 		--restarted player, do not limit price per block
 	else
 		if (player.maxIncomePerSpot ~=nil and player.maxIncomePerSpot > 0) then self.MaxPricePerBlock = player.maxIncomePerSpot end
+		--prefer "average" licences early on - more money for station purchase
+		if player.coverage < 0.2 then self.MaxPricePerBlock = self.MaxPricePerBlock * 0.5 end
 	end
 	--TODO factor risk sensitive/depend on difficulty
 	--TODO make dynamic, increase if enough money/reach/available blocks
@@ -661,7 +670,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	if qualityStats.AverageValue > 0 then qualityFactor = licence:GetQuality() / qualityStats.AverageValue; end
 	qualityFactor = CutFactor(qualityFactor, 0.1, 3)
 
-	if licence.GetData().IsXRated() > 0 and qualityFactor < 1.9 then
+	if licence.GetData().IsXRated() > 0 then --and qualityFactor < 1.9
 		qualityFactor = qualityFactor * 0.6
 	end
 	if licence.GetData().IsCulture() > 0 then
@@ -728,7 +737,8 @@ end
 
 function JobBuyMovies:Tick()
 	-- skip checks without money
-	if (self.Task.CurrentBudget < 0) then
+	local player = getPlayer()
+	if (self.Task.CurrentBudget < 0 or (player.maxTopicalityBlocksCount > 2 and player.hour > 18)) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end
@@ -864,11 +874,10 @@ function JobBidAuctions:Tick()
 	local movies = self.Task.MoviesAtAuctioneer
 
 	--TODO: Check how many licences we need
-
 	for k,v in pairs(movies) do
 		local price = v:GetPrice(TVT.ME)
 		local auctionIndex = TVT.md_getAuctionProgrammeLicenceBlockIndex(v:GetId())
-		if auctionIndex >= 0 then
+		if bid == 1 and auctionIndex >= 0 then
 			local nextBid = TVT.md_GetAuctionProgrammeLicenceNextBid(auctionIndex)
 			local currentBidder = TVT.md_GetAuctionProgrammeLicenceHighestBidder(auctionIndex)
 			self:LogDebug("auction: " .. v:GetTitle() .."   price=" .. price .."  nextBid=" .. nextBid .. "  currentBidder=" .. currentBidder)
@@ -886,11 +895,14 @@ function JobBidAuctions:Tick()
 
 							self.Task:PayFromBudget(nextBid)
 							self.Task.CurrentBargainBudget = self.Task.CurrentBargainBudget - nextBid
+							bid = 0
 						else
 							self:LogDebug("[Licence auction] too low attractivity: " .. v:GetTitle() .. " (" .. v:GetId() .. ") - Price: " .. nextBid .." - Attractivity: " .. v:GetAttractiveness())
 						end
 					end
 				end
+			else
+				bid = 0
 			end
 		end
 	end

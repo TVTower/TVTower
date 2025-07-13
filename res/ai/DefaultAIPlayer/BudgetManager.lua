@@ -203,11 +203,12 @@ function BudgetManager:OnMoneyChanged(value, reason, reference)
 
 
 	if renewBudget == true then
-		local budgetNow = getPlayer().money
+		local player = getPlayer()
+		local budgetNow = player.money
 
-		--update budget when at least 15.000 Euro difference since last
-		--adjustment
-		if math.abs(self.BudgetOnLastUpdateBudget - budgetNow) > 15000 then
+		--update budget when at least 15.000 Euro difference since last adjustment
+		--or early in the day (station budget)
+		if player.hour < 4 or math.abs(self.BudgetOnLastUpdateBudget - budgetNow) > 15000 then
 			self:UpdateBudget(budgetNow)
 
 			self.BudgetOnLastUpdateBudget = budgetNow

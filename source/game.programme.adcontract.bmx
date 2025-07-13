@@ -2135,16 +2135,20 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'base value is audience which typically corrensponds to profit
 		Local result:Float = getMinAudiencePercentage() * 100
+		Local tgFactor:Float = 1.0
+		Local tgCount:Int = 0
 		'min audience for target groups needs to be scaled 
-		If IsLimitedToTargetGroup(TVTTargetGroup.CHILDREN) Then result:* 8
-		If IsLimitedToTargetGroup(TVTTargetGroup.TEENAGERS) Then result:* 10
-		If IsLimitedToTargetGroup(TVTTargetGroup.HOUSEWIVES) Then result:* 6
-		If IsLimitedToTargetGroup(TVTTargetGroup.EMPLOYEES) Then result:* 6
-		If IsLimitedToTargetGroup(TVTTargetGroup.UNEMPLOYED) Then result:* 5
-		If IsLimitedToTargetGroup(TVTTargetGroup.MANAGERS) Then result:* 14
-		If IsLimitedToTargetGroup(TVTTargetGroup.PENSIONERS) Then result:* 4
-		If IsLimitedToTargetGroup(TVTTargetGroup.WOMEN) Then result:* 2
-		If IsLimitedToTargetGroup(TVTTargetGroup.MEN) Then result:* 2
+		If IsLimitedToTargetGroup(TVTTargetGroup.CHILDREN) Then tgFactor:+ 8; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.TEENAGERS) Then tgFactor:+ 10; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.HOUSEWIVES) Then tgFactor:+ 6; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.EMPLOYEES) Then  tgFactor:+ 6; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.UNEMPLOYED) Then  tgFactor:+ 5; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.MANAGERS) Then  tgFactor:+ 14; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.PENSIONERS) Then tgFactor:+ 4; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.WOMEN) Then  tgFactor:+ 2; tgCount:+1;
+		If IsLimitedToTargetGroup(TVTTargetGroup.MEN) Then  tgFactor:+ 2; tgCount:+1;
+
+		If tgCount > 0 then result = result * (tgFactor / tgCount)
 		'aim at one spot per day left
 		If Self.getDaysLeft() < Self.getSpotsToSend() Then result:* 2
 		If Self.getSpotsToSend() = 1 Then result:* 2

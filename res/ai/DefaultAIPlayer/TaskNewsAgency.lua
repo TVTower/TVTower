@@ -147,6 +147,7 @@ function TaskNewsAgency:BudgetSetup()
 	-- scribe to current affairs
 	local baseFee = TVT.GetNewsAbonnementFee(TVT.Constants.NewsGenre.CURRENTAFFAIRS, 1)
 	local tempAbonnementBudget = math.max(baseFee, self.BudgetWholeDay * 0.35)
+	if getPlayer().blocksCount < 48 then tempAbonnementBudget = math.min(2 * baseFee, tempAbonnementBudget) end
 	--TODO ensure abonnement bugdet is not subtracted multiple times over the day
 	self.AbonnementBudget = tempAbonnementBudget
 	self.CurrentBudget = self.CurrentBudget - self.AbonnementBudget

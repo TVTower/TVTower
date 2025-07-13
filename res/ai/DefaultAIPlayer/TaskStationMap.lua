@@ -97,7 +97,7 @@ function TaskStationMap:BeforeBudgetSetup()
 
 	if blocks < 36 and (totalReceivers == nil or totalReceivers > 1200000) then
 		self.BudgetWeight = 0
-	elseif blocks < 50 and (totalReceivers == nil or totalReceivers > 5000000) then
+	elseif blocks < 60 and (totalReceivers == nil or totalReceivers > 5000000) then
 		self.BudgetWeight = 4
 	elseif player.coverage > 0.9 then
 		self.BudgetWeight = 4
@@ -107,7 +107,7 @@ function TaskStationMap:BeforeBudgetSetup()
 		self.BudgetWeight = 8
 	end
 
-	if self.maxReceiverIncrease ~=nil and self.maxReceiverIncrease < 0  then
+	if self.maxReceiverIncrease ~=nil and (self.maxReceiverIncrease < 0 or player.hour > 15)  then
 		self.BudgetWeight = 0
 	end
 end
@@ -481,7 +481,7 @@ function JobBuyStation:Prepare(pParams)
 	end
 
 	local hour = player.hour
-	if hour > 14 then
+	if hour > 17 then
 		self:LogDebug(" Cancel ... no buying if too little of the day is left: ".. hour)
 		self:SetCancel()
 	end
