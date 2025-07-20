@@ -2750,17 +2750,29 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method _GetAllAntennasLayer:TStationMapAntennaLayer()
 		If Not _antennasLayer
-			Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
-
-			'place antenna directly over densityData (offset = 0)
-			_antennasLayer = New TStationMapAntennaLayer(GetStationMapCollection().surfaceData, 0, 0)
-
-			'fill in all currently existing antennas
-			For Local antenna:TStationAntenna = EachIn stations
-				If antenna.IsActive()
-					_antennasLayer.AddAntenna(antenna.x, antenna.y, antenna.radius)
-				EndIf
-			Next
+			If CurrentThread() <> MainThread()
+				Local logged:Int = False
+				Repeat
+					Delay(1)
+					If _antennasLayer Then Exit
+					If Not logged
+						TLogger.Log("TStationMap._GetAllAntennasLayer", "waiting for main thread to create cache", LOG_WARNING)
+						logged = True
+					EndIf
+				Forever
+			Else
+				Local mapInfo:TStationMapInfo = GetStationMapCollection().mapInfo
+	
+				'place antenna directly over densityData (offset = 0)
+				_antennasLayer = New TStationMapAntennaLayer(GetStationMapCollection().surfaceData, 0, 0)
+	
+				'fill in all currently existing antennas
+				For Local antenna:TStationAntenna = EachIn stations
+					If antenna.IsActive()
+						_antennasLayer.AddAntenna(antenna.x, antenna.y, antenna.radius)
+					EndIf
+				Next
+			EndIf
 		EndIf
 		
 		Return _antennasLayer
