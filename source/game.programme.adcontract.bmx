@@ -2135,8 +2135,9 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie dringend ist es diese Spots zu senden
 	Method GetAcuteness:Float() {_exposeToLua}
+		Local daysLeft:Int = Self.getDaysLeft()
 		'no "acuteness" for obsolete contracts
-		If Self.getDaysLeft() < 0 Then Return 0
+		If daysLeft < 0 Then Return 0
 
 		'base value is audience which typically corrensponds to profit
 		Local result:Float = getMinAudiencePercentage() * 100
@@ -2155,10 +2156,10 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		If tgCount > 0 then result = result * (tgFactor / tgCount)
 		'aim at one spot per day left
-		If Self.getDaysLeft() < Self.getSpotsToSend() Then result:* 2
+		If daysLeft < 4 And daysLeft < Self.getSpotsToSend() Then result:* 2
 		If Self.getSpotsToSend() = 1 Then result:* 2
 		'big effort on last day
-		If Self.getDaysLeft() = 0 Then result:* 4
+		If daysLeft = 0 Then result:* 4
 		'the more spots sent the worse failing will be (other spots wasted)
 		If GetSpotsToSendPercentage() < 1 Then result:/ (1-GetSpotsToSendPercentage())
 		'TODO consider profit/penalty more directly?

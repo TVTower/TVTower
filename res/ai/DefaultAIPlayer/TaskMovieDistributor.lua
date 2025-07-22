@@ -121,7 +121,7 @@ function TaskMovieDistributor:getStrategicPriority()
 	-- no money to buy things? skip even looking...
 	if player.money <= 50000 then
 		return 0.0
-	elseif player.blocksCount > 48 and player.hour < 6 then
+	elseif player.coverage < 0.94 and player.blocksCount > 48 and player.hour < 6 then
 		return 0.0
 	elseif player.hour > 18 then
 		return 0.5
@@ -145,7 +145,7 @@ function TaskMovieDistributor:BeforeBudgetSetup()
 		--do not reduce budget
 	elseif maxTopBlocks >= 12 then
 		self.BudgetWeight = 1
-	elseif blocks >= 120 then
+	elseif blocks >= 150 then
 		self.BudgetWeight = 2
 	elseif blocks >= 75 then
 		self.BudgetWeight = 6
@@ -629,11 +629,11 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	-- raise quality gate once a certail level is reached
 	if player.coverage > 0.5 then
 		if licence:IsSingle() == 1 then
-			qualityGate = myMoviesQuality.MaxValue * 0.8
+			qualityGate = myMoviesQuality.MaxValue * 0.75
 		else
-			qualityGate = myMoviesQuality.MaxValue * 0.9
+			qualityGate = myMoviesQuality.MaxValue * 0.8
 		end
-	elseif self.Task.blocksCount > 75 then
+	elseif self.Task.blocksCount > 120 then
 		qualityGate = (qualityGate + myMoviesQuality.MaxValue) / 2
 	end
 
@@ -679,7 +679,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 		qualityFactor = qualityFactor * 1.3
 	end
 	if licence.GetData().IsTrash() > 0 then
-		qualityFactor = qualityFactor * 0.5
+		qualityFactor = qualityFactor * 0.4
 	end
 	if licence.isLive() > 0 and (licence.isSingle() ~= 1 or licence.isAlwaysLive() == 0) then
 		--TODO do not buy live licences
@@ -718,7 +718,7 @@ function JobBuyMovies:Prepare(pParams)
 		local sortMethod = math.random(0,2)
 		--TODO solange die Auswahl noch nicht groß ist nach Preis (Qualität muss ja ohnehin hoch genug sein)
 		if self.Task.blocksCount > 0 and self.Task.blocksCount < 96 then sortMethod = 1 end
-		if getPlayer().coverage > 0.35 then sortMethod = 2 end
+		if getPlayer().coverage > 0.35 and math.random(0,10) > 3 then sortMethod = 2 end
 		if sortMethod == 0 then
 			self:LogTrace("sort by quality")
 			sortFunction = function(a, b)

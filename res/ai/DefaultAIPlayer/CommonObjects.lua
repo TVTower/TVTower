@@ -553,6 +553,7 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 	--TODO Anzahl Lizenzen, Durchschnittsqualität, Genre (Sendezeit) berücksichtigen
 
 	if broadcastMaterialSource.IsProgrammeLicence() == 1 then
+		local top = broadcastMaterialSource:GetTopicality()
 		local relTop = broadcastMaterialSource:GetRelativeTopicality()
 		if relTop == 1 then
 			result = result * 1.5
@@ -575,18 +576,23 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			if isLive then result = result * 1.5 end
 			if isCustomProd then result = result * 1.5 end
 			local minHour = 19
-			local topicality = broadcastMaterialSource:GetTopicality()
-			if topicality > 0.99 then result = result * 1.5 end
+			if top > 0.99 then result = result * 1.5 end
 
 			--in growth phase send good programmes earlier, later they may be too expensive
 			--to waste before prime time
 			if forPlayer.coverage > 0.4 and forPlayer.coverage < 0.9 then minHour = 17 end
-			if hour < minHour or hour > 22 then
+			if (hour < minHour or hour > 22) and not isLive then
 				--TODO make genre dependent; many blocks - new cheap stuff also earlier 
-				if topicality > 0.8 then
+				if top > 0.8 then
 					result= result * 0.3
 				end
 			end
+		end
+--		if top > 0.95 then result = result * 1.3 end
+--		if top > 0.99 then result = result * 1.5 end
+		if hour == 19 or hour == 0 then
+			local blocks = broadcastMaterialSource:GetBlocks(2)
+			if blocks == 1 then result = result * 1.75 end
 		end
 --		if hour > 18 and broadcastMaterialSource:GetGenre() == TVT.Constants.ProgrammeGenre.Animation then
 --			result = result * 0.5
