@@ -594,7 +594,7 @@ Type TInGameInterface
 					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=0,200,100|" + GetFormattedCurrency(0)+"|/color|"
 				endif
 
-				local profit:int = GetPlayerFinance(GetPlayerBase().playerID).GetCurrentProfit()
+				local profit:long = GetPlayerFinance(GetPlayerBase().playerID).GetCurrentProfit()
 				if profit > 0
 					content	:+ "~n"
 					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,200,100|+"+ GetFormattedCurrency(profit) +"|/color|"
@@ -958,7 +958,7 @@ Type TInGameInterface
 
 		'player money / current days financial win/loss
 		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 414, 130, 29, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
-		local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
+		local profit:long = GetPlayerFinance(playerID).GetCurrentProfit()
 		if profit > 0
 			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
 		elseif profit = 0
