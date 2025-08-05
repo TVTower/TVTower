@@ -110,6 +110,12 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		Local remove:TProduction[]
 		
 		For Local p:TProduction = EachIn activeProductions
+			'missing parent script causes crash of the game - abort the production instead
+			If p.productionConcept.script.HasParentScript() And Not p.productionConcept.script.GetParentScript()
+				TLogger.Log("TProgrammeProducer.CheckActiveProductions()", "aborting production with missing parent script", LOG_ERROR)
+				p.Abort()
+			EndIf
+
 			'move on to next production stage ?
 			'(yes, this does not get called each minute but for the producer
 			' 15 minute intervals are still ok)
@@ -119,6 +125,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				If HandleFinishedProduction(p) Then remove :+ [p]
 			ElseIf p.IsProduced()
 				If HandleFinishedProduction(p) Then remove :+ [p]
+			ElseIf p.IsAborted()
+				remove :+ [p]
 			EndIf
 		Next
 
