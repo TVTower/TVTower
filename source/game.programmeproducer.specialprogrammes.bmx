@@ -104,6 +104,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 
 
 	Method Update:Int()
+		'create remakes only once a day
 		Local day:Int=GetWorldTime().getDay()
 		If dayLastChecked <> day
 			dayLastChecked = day
@@ -112,19 +113,16 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		EndIf
 
 		Local now:Long = GetWorldTime().GetTimeGone()
-		Local futureCount:Int = 0
 		Local goodCount:Int = 0
 		Local filterMoviesGood:TProgrammeLicenceFilterGroup = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
 		print "UPDATING FOR REMAKES"
 		For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles.values()
 			If l.getData().IsCustomProduction() Then Continue
-			If l.getData().GetReleaseTime() > now Then futureCount:+1
-			If filterMoviesGood And filterMoviesGood.DoesFilter(l) Then goodCount:+1
+			If filterMoviesGood And filterMoviesGood.DoesFilter(l) And l.getData().GetReleaseTime() <= now Then goodCount:+1
 		Next
-		print "  future "+futureCount
 		print "  good "+goodCount
 
-		If goodCount < 25 Or futureCount < 50 Then
+		If goodCount < 120 Then
 			Local candidateFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterCrap.Copy()
 			candidateFilter.licenceTypes = [TVTProgrammeLicenceType.SINGLE]
 			candidateFilter.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
@@ -142,8 +140,59 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 
 
 	Method addRemake(licence:TProgrammeLicence)
+		Local data:TProgrammeData = licence.GetData()
+
+		If data.title.ContainsString(":~qcast~q:") Or data.description.ContainsString(":~qcast~q:") Then
+			print "texts contain cast reference - no remake for "+data.getTitle()
+			'TODO add noRemake flag to licence
+			return
+		EndIf
+
+		Local nd:TProgrammeData = New TProgrammeData
+		Local nl:TProgrammeLicence = new TProgrammeLicence
+
+		'TODO cast!!
+
+		nd.country=data.country'TODO
+		nd.targetGroupAttractivityMod = data.targetGroupAttractivityMod
+		nd.targetGroups = data.targetGroups
+		nd.proPressureGroups = data.proPressureGroups
+		nd.contraPressureGroups = data.contraPressureGroups
+
+		nd.outcome=data.outcome'TODO randomize
+		nd.review=data.review'TODO randomize
+		nd.speed=data.speed'TODO randomize
+
+		nd.genre=data.genre
+		nd.subGenres=data.subGenres
+		nd.blocks=data.blocks
+
+		nd.dataType=data.dataType
+		nd.franchiseGUID=data.franchiseGUID
+		nd.franchisees=data.franchisees
+
+		nd.distributionChannel=data.distributionChannel
+		nd.productType=data.productType
+
+		nd.releaseTime = GetWorldTime().GetTimeGone() + 3 * TWorldTime.DAYLENGTH
+		If data.modifiers then nd.modifiers=data.modifiers.Copy()
+		nd.flags = data.flags
+		If data.broadcastFlags Then nd.broadcastFlags=data.broadcastFlags.Copy()
+		nd.title = data.title.Copy()
+		nd.description = data.description.Copy()
+
+		nl.SetData(nd)
+		nl.owner = TOwnedGameObject.OWNER_NOBODY
+		nl.extra = New TData
+		nl.extra.AddInt("producerID", - GetID()) 'negative!
+		nl.licenceType = licence.licenceType
+		nl.licenceFlags = licence.licenceFlags
+		
 		print "creating remake of "+licence.getTitle()
 		
+		GetProgrammeDataCollection().Add(nd)
+		GetProgrammeLicenceCollection().AddAutomatic(nl)
+
 		'TODO add remake flag to licence
 	EndMethod
 
