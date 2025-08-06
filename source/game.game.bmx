@@ -1485,6 +1485,8 @@ endrem
 		'if there is only ONE producer for special stuff - add this way
 		GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance().Initialize() )
 		TLogger.Log("PrepareNewGame()", "Generated sport programme producer (id=" + TProgrammeProducerSport.GetInstance().id+").", LOG_DEBUG)
+		GetProgrammeProducerCollection().Add( TProgrammeProducerRemake.GetInstance().Initialize() )
+		TLogger.Log("PrepareNewGame()", "Generated remake producer (id=" + TProgrammeProducerRemake.GetInstance().id+").", LOG_DEBUG)
 		'GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance().Initialize() )
 		'TLogger.Log("PrepareNewGame()", "Generated morning show programme producer.", LOG_DEBUG)
 
