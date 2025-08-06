@@ -293,21 +293,19 @@ Type TApp
 			'override default settings with app arguments (params when executing)
 			obj.ApplyAppArguments()
 			'do not init graphics, this is done some lines later
-			obj.ApplySettings(False)
+			obj.ApplySettings()
 
 			GetDeltatimer().Init(updatesPerSecond, obj.config.GetInt("fps", framesPerSecond))
 			GetDeltaTimer()._funcUpdate = update
 			GetDeltaTimer()._funcRender = render
 
 			GetGraphicsManager().SetVsync(obj.config.GetBool("vsync", vsync))
-			'GetGraphicsManager().SetResolution(1024,768)
+			GetGraphicsManager().SetDesignedSize(800,600)
 			If GetGraphicsManager().GetFullscreen()
-				GetGraphicsManager().SetResolution(800, 600)
+				GetGraphicsManager().InitGraphics(800, 600)
 			Else
-				GetGraphicsManager().SetResolution(obj.config.GetInt("screenW", 800), obj.config.GetInt("screenH", 600))
+				GetGraphicsManager().InitGraphics(obj.config.GetInt("screenW", 800), obj.config.GetInt("screenH", 600))
 			EndIf
-			GetGraphicsManager().SetDesignedResolution(800,600)
-			GetGraphicsManager().InitGraphics()
 
 			GameConfig.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
 			GameConfig.autoSaveIntervalHours = obj.config.GetInt("autosaveInterval", 0)
@@ -369,17 +367,24 @@ Type TApp
 				?Win32
 				Case "-directx9", "-directx"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 9", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX9)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX9)
+					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_D3D9)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_D3D9)
+				?
+				Case "-directx11"
+					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 11", LOG_LOADING)
+					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_D3D11)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_D3D11)
 				?
 				Case "-opengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_OPENGL)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_OPENGL)
-				Case "-sdlrender"
-					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: SDLRender", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_SDLRENDER)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_SDLRENDER)
+					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_OPENGL)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_OPENGL)
+				?macos
+				Case "-metal"
+					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Metal", LOG_LOADING)
+					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_METAL)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_METAL)
+				?
 			End Select
 		Next
 	End Method
@@ -505,55 +510,31 @@ Type TApp
 	End Method
 
 
-	Method ApplySettings:Int(doInitGraphics:Int = True)
-		Local adjusted:Int = False
+	Method ApplySettings:Int()
 		If GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False), False)
 			TLogger.Log("ApplySettings()", "SetFullscreen = "+config.GetBool("fullscreen", False), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
 		EndIf
-		If GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
-			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRenderer()), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
+		If GetGraphicsManager().SetRendererBackend(config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()))
+			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()), LOG_DEBUG)
 		EndIf
 		If GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
 			TLogger.Log("ApplySettings()", "SetColordepth = "+config.GetInt("colordepth", -1), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
 		EndIf
 		If GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
 			TLogger.Log("ApplySettings()", "SetVSync = "+config.GetBool("vsync", False), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
 		EndIf
-		If GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
-			TLogger.Log("ApplySettings()", "SetResolution = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
+		If GetGraphicsManager().ResizeWindow(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
+			TLogger.Log("ApplySettings()", "SetWindowSize = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
 		EndIf
 		If GetGraphicsManager().GetFullscreen()
-			GetGraphicsManager().SetResolution(800, 600)
+			GetGraphicsManager().ResizeWindow(800, 600)
 		EndIf
-		If adjusted And doInitGraphics Then GetGraphicsManager().InitGraphics()
 
 
 		GameConfig.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
 		GameConfig.autoSaveIntervalHours = config.GetInt("autosaveInterval", 0)
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
-
-		adjusted = False
 
 
 
@@ -1244,9 +1225,9 @@ endrem
 			EndIf
 
 			If ScreenCollection.GetCurrentScreen()
-				bf.DrawBox("Screen: "+ScreenCollection.GetCurrentScreen().name + " \| " + GetGraphicsManager().GetRendererName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
+				bf.DrawBox("Screen: "+ScreenCollection.GetCurrentScreen().name + " \| " + GetGraphicsManager().GetRendererBackendName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
 			Else
-				bf.DrawBox("Screen: Main \| " + GetGraphicsManager().GetRendererName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
+				bf.DrawBox("Screen: Main \| " + GetGraphicsManager().GetRendererBackendName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
 			EndIf
 
 		EndIf
@@ -1304,6 +1285,8 @@ endrem
 
 
 	Function Render:Int()
+		GetGraphicsManager().UpdateWindowSize()
+
 		'cls only needed if virtual resolution is enabled, else the
 		'background covers everything
 		If GetGraphicsManager().HasBlackBars()
