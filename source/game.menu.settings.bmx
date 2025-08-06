@@ -217,12 +217,17 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local rendererTexts:String[]
 
 		'fill with all available renderers
-		For Local i:Int = 0 Until TGraphicsManager.RENDERER_AVAILABILITY.length
-			If TGraphicsManager.RENDERER_AVAILABILITY[i]
+		For Local i:Int = 0 Until TGraphicsManager.RENDERER_BACKEND_AVAILABILITY.length
+			If TGraphicsManager.RENDERER_BACKEND_AVAILABILITY[i]
 				rendererValues :+ [String(i)] 'i is the same key here
-				rendererTexts :+ [ TGraphicsManager.RENDERER_NAMES[i] ]
+				rendererTexts :+ [ TGraphicsManager.RENDERER_BACKEND_NAMES[i] ]
 			EndIf
 		Next
+		
+		If rendererValues.length = 0
+			rendererValues :+ [""]
+			rendererTexts :+ [ GetLocale("ERROR_NOT_POSSIBLE") ]
+		EndIf
 
 		itemHeight = 0
 		For Local i:Int = 0 Until rendererValues.Length
@@ -447,7 +452,9 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Next
 		'select the first if nothing was preselected
 		If Not selectedDropDownItem
-			dropdownRenderer.SetSelectedEntryByPos(0)
+			If dropdownRenderer.GetEntries().Count() > 0
+				dropdownRenderer.SetSelectedEntryByPos(0)
+			EndIf
 		Else
 			dropdownRenderer.SetSelectedEntry(selectedDropDownItem)
 		EndIf

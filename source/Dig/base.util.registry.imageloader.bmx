@@ -151,7 +151,7 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 	Method CreateDefaultResource:Int()
 		if _createdDefaults then return FALSE
 		
-		If Not TGraphicsManager._g 
+		If Not TGraphicsManager._g
 			print "TRegistryImageLoader.CreateDefaultResource: Create graphics context before creating TImages"
 		EndIf
 		'create a base image

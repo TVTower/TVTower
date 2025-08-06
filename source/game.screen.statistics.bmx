@@ -1662,7 +1662,8 @@ Type TDataChart
 
 
 	Method RenderData()
-		GetGraphicsManager().BackupAndSetViewport( areaGraph.Copy().MoveXY(area.x, area.y) )
+		Local vp:SRectI = New SRectI(Int(areaGraph.x + area.x), Int(areaGraph.y + area.y), Int(areaGraph.w), Int(areaGraph.h))
+		GetGraphicsManager().BackupAndSetViewport( vp )
 
 		local shadowCol:TColor = TColor.Create(0,0,0)
 		shadowCol.a = 0.3
