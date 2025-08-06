@@ -1,5 +1,6 @@
 SuperStrict
 Import "game.programmeproducer.bmx"
+Import "game.roomhandler.movieagency.bmx"
 
 'register self to producer collection
 'disabled: done in game.GenerateStartProgrammeProducers() now
@@ -106,20 +107,45 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		Local day:Int=GetWorldTime().getDay()
 		If dayLastChecked <> day
 			dayLastChecked = day
+		Else
+			Return True
 		EndIf
+
+		Local now:Long = GetWorldTime().GetTimeGone()
+		Local futureCount:Int = 0
+		Local goodCount:Int = 0
+		Local filterMoviesGood:TProgrammeLicenceFilterGroup = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
 		print "UPDATING FOR REMAKES"
-		'TODO
-		'count licences released in the future
-		'if too few, select from crap and remake
-		'hier eventuell auf "Typ" limitieren aber mehrfache Simultanproduktion
-		'ermoeglichen
-		If activeProductions.Count() = 0
-'			CreateProgrammeLicence(Null)
+		For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles.values()
+			If l.getData().IsCustomProduction() Then Continue
+			If l.getData().GetReleaseTime() > now Then futureCount:+1
+			If filterMoviesGood And filterMoviesGood.DoesFilter(l) Then goodCount:+1
+		Next
+		print "  future "+futureCount
+		print "  good "+goodCount
+
+		If goodCount < 25 Or futureCount < 50 Then
+			Local candidateFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterCrap.Copy()
+			candidateFilter.licenceTypes = [TVTProgrammeLicenceType.SINGLE]
+			candidateFilter.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
+			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION)
+			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.INVISIBLE)
+			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.LIVE)
+			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.LIVEONTAPE)
+			'TODO not flag customProd and not remade
+			Local toRemake:TProgrammeLicence[] = GetProgrammeLicenceCollection().GetRandomsByFilter(candidateFilter, 10)
+			For Local l:TProgrammeLicence = EachIn toRemake
+				addRemake(l)
+			Next
 		EndIf
 	End Method
 
 
-
+	Method addRemake(licence:TProgrammeLicence)
+		print "creating remake of "+licence.getTitle()
+		
+		'TODO add remake flag to licence
+	EndMethod
 
 
 Rem
