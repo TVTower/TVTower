@@ -4517,9 +4517,9 @@ Type GameEvents
 
 				Local changed:String = ""
 				If paramS <> ""
-					player.GetFinance().CheatMoney(Int(paramS))
+					player.GetFinance().CheatMoney(Long(paramS))
 
-					If Int(paramS) > 0 Then paramS = "+"+Int(paramS)
+					If Long(paramS) > 0 Then paramS = "+"+Long(paramS)
 					changed = " ("+paramS+")"
 				EndIf
 				GetGame().SendSystemMessage("[DEV] Money of player "+playerS+": "+player.GetFinance().money+"." + changed)

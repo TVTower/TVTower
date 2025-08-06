@@ -1788,7 +1788,7 @@ endrem
 			If Not finance Then Throw "ComputeDailyIncome failed: finance = null."
 
 			If finance.money > 0
-				finance.EarnBalanceInterest( Long(finance.money * Player.getDifficulty().interestRatePositiveBalance) )
+				finance.EarnBalanceInterest( Min(1000000, Long(finance.money * Player.getDifficulty().interestRatePositiveBalance)) )
 			Else
 				'attention: multiply current money * -1 to make the
 				'negative value an "positive one" - a "positive expense"
