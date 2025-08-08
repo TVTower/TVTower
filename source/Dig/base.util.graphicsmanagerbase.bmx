@@ -184,6 +184,13 @@ Type TGraphicsManager
 			' compare aspect ratios and use min of it
 			Local canvasW:Int = canvasSize.x
 			Local canvasH:Int = canvasSize.y
+			'use original size if possible as we scale nonetheless
+			'but now avoid taking over rounding issues with each update
+			If designedSize.x > 0
+				canvasW = designedSize.x
+				canvasH = designedSize.Y
+			EndIf
+				
 			'take over window size / auto size ?
 			if canvasW < 0 Then canvasW = windowSize.x
 			if canvasH < 0 Then canvasH = windowSize.y
@@ -191,11 +198,8 @@ Type TGraphicsManager
 			'to keep aspect ratio, scale both to minimum of both
 			Local minScale:Float = min(windowSize.x / Float(canvasW), windowSize.y / Float(canvasH))
 
-			'only scale if there is no rounding issue without actual scaling
-			'and scaling (<> 1.0) is requested at all
-			If Abs(minScale - 1.0) > 0.001
-				canvasSize = New SVec2I(Int(canvasW * minScale), Int(canvasH * minScale))
-			EndIf
+			canvasSize = New SVec2I(Int(canvasW * minScale), Int(canvasH * minScale))
+			'print "minScale: " + minScale + "   windowSize="+windowSize.x+", " + windowSize.y + "  canvasWH="+canvasW+", " + canvasH + "  -> new canvasSize: " + canvasSize.x + ", " +canvasSize.y
 		EndIf
 	End Method
 
@@ -352,6 +356,7 @@ Type TGraphicsManager
 
 
 		windowSize = New SVec2I(width, height)
+		windowSizeValid = False
 
 		Local smoothPixels:Int = False 'TODO: remove/make configurable
 		_g = CreateGraphicsObject(windowSize, colorDepth, hertz, flags, fullScreen, smoothPixels)
@@ -482,11 +487,12 @@ Type TGraphicsManager
 
 		'a scale <> 1.0 means that _this_ axis of the original designed
 		'size needs to be scaled to also cover a letterbox
-		Local extendedDesignedSizeX:Int = designedSize.x * scaleX
-		Local extendedDesignedSizeY:Int = designedSize.y * scaleY
+		Local extendedDesignedSizeX:Int = ceil(designedSize.x * scaleX)
+		Local extendedDesignedSizeY:Int = ceil(designedSize.y * scaleY)
 
 		SetVirtualResolution(extendedDesignedSizeX, extendedDesignedSizeY)
-		SetViewport(0, 0, windowSize.x, windowSize.y)
+		'SetViewport(0, 0, windowSize.x, windowSize.y)
+		SetViewport(-5000, -5000, 5000, 5000)
 
 		Return oldViewport
 	End Method
