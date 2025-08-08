@@ -161,7 +161,7 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 	Method SetDesignedSize:Int(width:Int, height:Int) override
 		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
 		If driver
-			driver.renderer.SetLogicalSize(800, 600)
+			driver.renderer.SetLogicalSize(width, height)
 		EndIf
 		Return Super.SetDesignedSize(width, height)
 	End Method
@@ -179,46 +179,6 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		EndIf
 	End Method
 
-
-	Method UpdateCanvasSize:Int() Override
-		Local oldSize:SVec2I = canvasSize
-		
-		'Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
-		'Local lW:Int, lH:Int
-		'driver.renderer.GetLogicalSize(lW, lH)
-		'print "Logical size: " + lW+"x"+lH
-		'driver.renderer.SetLogicalSize(800, 600)
-
-		
-		'either window size zero or canvas size zero
-		If (windowSize.x = 0 or windowSize.y = 0)
-			canvasSize = New SVec2I(0,0)
-		Else
-			Select canvasStretchMode
-				Case STRETCHMODE_FULL
-					canvasSize = windowSize
-
-				Case STRETCHMODE_LETTERBOX
-					' compare aspect ratios and use min of it
-					Local canvasW:Int = canvasSize.x
-					Local canvasH:Int = canvasSize.y
-					'take over window size / auto size ?
-					if canvasW < 0 Then canvasW = windowSize.x
-					if canvasH < 0 Then canvasH = windowSize.y
-
-					'to keep aspect ratio, scale both to minimum of both
-					Local minScale:Float = min(windowSize.x / Float(canvasW), windowSize.y / Float(canvasH))
-
-					'only scale if there is no rounding issue without actual scaling
-					'and scaling (<> 1.0) is requested at all
-					If Abs(minScale - 1.0) > 0.001
-						canvasSize = New SVec2I(Int(canvasW * minScale), Int(canvasH * minScale))
-					EndIf
-			End Select
-		EndIf
-
-		'canvasSize = designedSize 'struct copies
-	End Method
 
 
 	Method SetRendererBackend:Int(value:Int = 0) Override
@@ -273,12 +233,51 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 
 		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
 		If driver 
-			driver.renderer.SetLogicalSize(800, 600)
+			driver.renderer.SetLogicalSize(windowSize.x, windowSize.y)
 		EndIf
 
 '		SetVirtualResolution(800, 600)
 		Return g
 	End Method
+
+
+	Method CurrentCanvasMouseX:Int() Override
+		'SDL already subtracts letterbox offsets from mouse coordinates
+		' (so negative values left/top of the content)
+		Return MouseX() 'self.WindowMouseX() - canvasPos.x
+	End Method
+
+
+	Method CurrentCanvasMouseY:Int() Override
+		'SDL already subtracts letterbox offsets from mouse coordinates
+		' (so negative values left/top of the content)
+		Return MouseY() 'self.WindowMouseY() - canvasPos.y
+	End Method
+
+
+	Method WindowMouseX:Int() Override
+		'SDL already subtracts letterbox offsets from mouse coordinates
+		' (so negative values left/top of the content)
+		'SDL seems to not always do that
+		' (it lazy-adds ... once the first thing is drawn/render command
+		'  is used)
+		'This is why we retrieve it from SDL on our own here
+		Local cursorX:Int, cursorY:Int
+		MouseState(varptr cursorX, varptr cursorY)
+		Return cursorX
+	End Method
+
+
+	Method WindowMouseY:Int() Override
+		'SDL seems to not always add letterbox to coordinates
+		'(it lazy-adds ... once the first thing is drawn/render command
+		' is used)
+		'this is why we retrieve it from SDL on our own here
+		Local cursorX:Int, cursorY:Int
+		MouseState(varptr cursorX, varptr cursorY)
+		Return cursorY
+	End Method
+
 End Type
 
 

@@ -1433,11 +1433,21 @@ endrem
 		GUIManager.Draw(systemState)
 
 
+		'disable virtual resolution letterbox so we can draw mouse cursor
+		'and other stuff also over letterbox bars
+		Local currentVirtualResolutionVP:SRectI = GetGraphicsManager().DisableVirtualResolutionLetterbox()
+
 		'mnouse cursor
 '		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 		local cursorOffsetX:Int
 		local cursorOffsetY:Int
 		local cursorSprite:TSprite
+		
+		'as we render the cursor outside of the virtual resolution we need
+		'to adjust its position
+		Local cursorX:Int = GetGraphicsManager().WindowMouseX()
+		Local cursorY:Int = GetGraphicsManager().WindowMouseY()
+		Local cursorPos:SVec2I = GetGraphicsManager().WindowCoordinateToCurrentCanvasCoordinate(cursorX, cursorY)
 		
 		Select GetGameBase().GetCursor()
 			'drag indicator
@@ -1472,7 +1482,7 @@ endrem
 			cursorOffsetY = cursorSprite.offset.GetTop()
 			Local oldA:Float = GetAlpha()
 			SetAlpha(oldA * GetGameBase().GetCursorAlpha())
-			cursorSprite.Draw(MouseManager.x, MouseManager.y)
+			cursorSprite.Draw(cursorPos.x, cursorPos.y)
 			SetAlpha(oldA)
 		endif
 
@@ -1480,9 +1490,27 @@ endrem
 			Case TGameBase.CURSOR_EXTRA_FORBIDDEN
 				local oldA:Float = GetAlpha()
 				SetAlpha oldA * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
-				GetSpriteFromRegistry("gfx_mousecursor_extra_forbidden").Draw(MouseManager.x - cursorOffsetX, MouseManager.y - cursorOffsetY)
+				GetSpriteFromRegistry("gfx_mousecursor_extra_forbidden").Draw(cursorPos.x - cursorOffsetX, cursorPos.y - cursorOffsetY)
 				SetAlpha oldA
 		End Select
+		
+		SetColor 0,0,0
+		DrawRect(0,0,220,150)
+		SetColor 255,255,255
+		Local tY:Int = 5
+		DrawText("Virtual Resolution:", 5, tY)
+		DrawText("-> MouseManagerXY:  " + Mousemanager.x+", "+Mousemanager.y, 5, tY+1*12)
+		DrawText("-> MouseXY:  " + MouseX()+", "+MouseY(), 5, tY+2*12)
+		DrawText("-> GCanvasMouseXY: " + GetGraphicsManager().CurrentCanvasMouseX()+", "+GetGraphicsManager().CurrentCanvasMouseY(), 5, tY+4*12)
+		DrawText("-> GWindowMouseXY: " + GetGraphicsManager().WindowMouseX()+", "+GetGraphicsManager().WindowMouseY(), 5, tY+5*12)
+
+		tY = 90
+		DrawText("windowSize: " + GetGraphicsManager().windowSize.x+", "+GetGraphicsManager().windowSize.y, 5, tY+0*12)
+		DrawText("canvasSize: " + GetGraphicsManager().canvasSize.x+", "+GetGraphicsManager().canvasSize.y + " (Pos: " + GetGraphicsManager().canvasPos.x+", "+GetGraphicsManager().canvasPos.y+")", 5, tY+1*12)
+		DrawText("designedSize: " + GetGraphicsManager().designedSize.x+", "+GetGraphicsManager().designedSize.y, 5, tY+2*12)
+
+		' restore virtual resolution stuff / letterbox
+		GetGraphicsManager().EnableVirtualResolution(currentVirtualResolutionVP)
 
 '		DrawOval(MouseManager.x-2, MouseManager.y-2, 4,4)
 
