@@ -652,7 +652,7 @@ Type TApp
 			filename = "screenshot_"+padded+".png"
 		Wend
 
-		Local img:TPixmap = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
+		Local img:TPixmap = GetGraphicsManager().VirtualGrabPixmap()
 
 		'add overlay
 		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, -1, Null, TColor.Create(255,255,255,0.5))
@@ -2190,7 +2190,7 @@ Type TSaveGame Extends TGameState
 		EndIf
 
 		If Not messageWindowBackground
-			messageWindowBackground = LoadImage(VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() ))
+			messageWindowBackground = LoadImage(GetGraphicsManager().VirtualGrabPixmap())
 		EndIf
 
 		SetClsColor 0,0,0
@@ -2221,7 +2221,7 @@ Type TSaveGame Extends TGameState
 
 	Function ShowMessage:Int(Load:Int=False, text:String="", progress:Float=0.0)
 		'grab a fresh copy
-		messageWindowBackground = LoadImage(VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() ))
+		messageWindowBackground = LoadImage(GetGraphicsManager().VirtualGrabPixmap())
 
 		If messageWindow Then messageWindow.Remove()
 
