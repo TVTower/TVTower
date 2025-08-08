@@ -39,7 +39,6 @@ Import SDL.SDLRenderMax2D
 Import SDL.SDLHints
 
 Import "base.util.graphicsmanagerbase.bmx"
-Import "base.util.virtualgraphics.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.logger.bmx"
 
@@ -157,6 +156,15 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 	End Function
 
 
+	'set the canvas size the assets are designed for
+	'things get resized according the real canvas size
+	Method SetDesignedSize:Int(width:Int, height:Int) override
+		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
+		If driver
+			driver.renderer.SetLogicalSize(800, 600)
+		EndIf
+		Return Super.SetDesignedSize(width, height)
+	End Method
 
 
 	Method RetrieveWindowSize:SVec2I() Override
@@ -174,6 +182,13 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 
 	Method UpdateCanvasSize:Int() Override
 		Local oldSize:SVec2I = canvasSize
+		
+		'Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
+		'Local lW:Int, lH:Int
+		'driver.renderer.GetLogicalSize(lW, lH)
+		'print "Logical size: " + lW+"x"+lH
+		'driver.renderer.SetLogicalSize(800, 600)
+
 		
 		'either window size zero or canvas size zero
 		If (windowSize.x = 0 or windowSize.y = 0)
@@ -229,27 +244,40 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		Return False
 	End Method
 
-
-	Method _PrepareGraphics:Long(flags:Long, smoothPixels:Int = False) Override
-		If smoothPixels
-			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") 'smooth
-			TLogger.Log("GraphicsManager.InitGraphics()", "Set window canvas to smooth pixels.", LOG_DEBUG)
-		Else
-			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0") 'pixel
-			TLogger.Log("GraphicsManager.InitGraphics()", "Set window canvas to keep pixels non-smoothed.", LOG_DEBUG)
-		EndIf
-		SetGraphicsDriver SDLRenderMax2DDriver()
-
+	
+	
+	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreen:Int, smoothPixels:Int) override
 		If vsync
 			flags :| GRAPHICS_SWAPINTERVAL1
-			TLogger.Log("GraphicsManager.InitGraphics()", "Set SDL Render to use vertical sync.", LOG_DEBUG)
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use vertical sync.", LOG_DEBUG)
 		Else
-			TLogger.Log("GraphicsManager.InitGraphics()", "Set SDL Render to ignore vertical sync.", LOG_DEBUG)
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to ignore vertical sync.", LOG_DEBUG)
 		EndIf
 
+		If smoothPixels
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") 'smooth
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set window canvas to smooth pixels.", LOG_DEBUG)
+		Else
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0") 'pixel
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set window canvas to keep pixels non-smoothed.", LOG_DEBUG)
+		EndIf
+
+		'set sdlrendermax2d as active driver
+		SetGraphicsDriver SDLRenderMax2DDriver()
+
 		flags :| SDL_WINDOW_RESIZABLE
-		
-		Return flags
+		TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set windows to be resizable.", LOG_DEBUG)
+
+		'actually create the graphics object
+		Local g:TGraphics = Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
+
+		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
+		If driver 
+			driver.renderer.SetLogicalSize(800, 600)
+		EndIf
+
+'		SetVirtualResolution(800, 600)
+		Return g
 	End Method
 End Type
 

@@ -36,8 +36,8 @@ Rem
 EndRem
 SuperStrict
 Import sdl.SDLGraphics
+Import BRL.Max2D
 
-Import "base.util.virtualgraphics.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.logger.bmx"
 
@@ -48,6 +48,7 @@ Type TGraphicsManager
 	Field rendererBackend:Int
 	Field colorDepth:Int	= 16
 	'drawable canvas dimensions
+	Field canvasPos:SVec2I = New SVec2I(0, 0)
 	Field canvasSize:SVec2I = New SVec2I(800, 600)
 	Field canvasStretchMode:Int = 0       ' no stretch
 	'designed application dimensions (scaled to the canvas dimensions)
@@ -310,20 +311,18 @@ Type TGraphicsManager
 
 	Method InitGraphics(width:Int, height:Int, flags:Long = 0)
 		TLogger.Log("GraphicsManager.InitGraphics()", "Initializing graphics.", LOG_DEBUG)
+		'close old one
+		If _g
+			TLogger.Log("GraphicsManager.InitGraphics()", "Closing previous graphics object.", LOG_DEBUG)
+			CloseGraphics(_g)
+		EndIf
+
 
 		windowSize = New SVec2I(width, height)
 
-		'initialize virtual graphics only when "InitGraphics()" is run
-		'for the first time
-		If Not _g Then InitVirtualGraphics()
-
-		'close old one
-		If _g Then CloseGraphics(_g)
-
 		Local smoothPixels:Int = False 'TODO: remove/make configurable
-		flags = _PrepareGraphics(flags, smoothPixels)
-		_g = Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
-
+		_g = CreateGraphicsObject(windowSize, colorDepth, hertz, flags, fullScreen, smoothPixels)
+		
 		'now window is created, allow the driver to update window size
 		'if required
 		UpdateWindowSize()
@@ -335,7 +334,7 @@ Type TGraphicsManager
 		EndIf
 
 		'now "renderer" contains the ID of the used renderer
-		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized graphics with backend ~q"+GetRendererBackendName()+"~q.", LOG_DEBUG)
+		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized graphics with backend ~q"+GetRendererBackendName()+"~q. Window size " + windowSize.x + "x" + windowSize.y + ".", LOG_DEBUG)
 
 
 		SetBlend ALPHABLEND
@@ -343,23 +342,48 @@ Type TGraphicsManager
 		HideMouse()
 
 		'virtual resolution
-		SetVirtualGraphics(GetWidth(), GetHeight(), False)
-		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized virtual graphics (for optional letterboxes).", LOG_DEBUG)
+		'SetVirtualGraphics(GetWidth(), GetHeight(), False)
+		'TLogger.Log("GraphicsManager.InitGraphics()", "Initialized virtual graphics (for optional letterboxes) with " + GetWidth() + "x" + GetHeight() + ".", LOG_DEBUG)
+	End Method
+	
+	
+	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreen:Int, smoothPixels:Int)
+		Local g:TGraphics = Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
+		Return g
 	End Method
 
 
-	Method _PrepareGraphics:Long(flags:Long, smoothPixels:Int = False)
-		Return flags
+	Method CurrentCanvasMouseX:Int()
+		Return MouseX()
 	End Method
 
 
+	Method CurrentCanvasMouseY:Int ()
+		Return MouseY()
+	End Method
+	
+	
 	Method ResetVirtualGraphicsArea()
-		TVirtualGfx.ResetVirtualGraphicsArea()
 	End Method
 
 
 	Method SetupVirtualGraphicsArea()
-		TVirtualGfx.SetupVirtualGraphicsArea()
+	End Method
+
+
+	Method VirtualGrabPixmap:TPixmap()
+'TODO: Check
+		Return VirtualGrabPixmap(0, 0, designedSize.x, designedSize.y)
+	End Method
+
+
+	Method VirtualGrabPixmap:TPixmap(x:int,y:int,w:int,h:int)
+'TODO: Check
+		local scaleX:float = windowSize.x / float(self.canvasSize.x)
+		local scaleY:float = windowSize.y / float(self.canvasSize.y)
+		Local vxOff:Int = 0
+		Local vyOff:Int = 0
+		return _max2dDriver.GrabPixmap(int(x*scaleX + vxoff), int(y*scaleY + vyoff), int(w*scaleX), int(h*scaleY))
 	End Method
 
 
@@ -421,12 +445,17 @@ Type TGraphicsManager
 		x = Max(0, x)
 		y = Max(0, y)
 
+		'we call the original max2d-viewport as it updates internal
+		'variables used during image drawing and other functions!
+		.SetViewport(x, y, w, h)
+rem
 		'the . means: access globally defined SetViewPort()
 		.SetViewport(TVirtualGfx.getInstance().vxoff + x, ..
 		             TVirtualGfx.getInstance().vyoff + y, ..
 		             Min(w, TVirtualGfx.getInstance().vWidth - x), ..
 		             Min(h, TVirtualGfx.getInstance().vHeight - y) ..
 		            )
+endrem
 	End Method
 
 
@@ -442,8 +471,8 @@ Type TGraphicsManager
 	Method GetViewport(x:Int Var, y:Int Var, w:Int Var, h:Int Var)
 		'the . means: access globally defined SetViewPort()
 		.GetViewport(x, y, w, h)
-		x :- TVirtualGfx.getInstance().vxoff
-		y :- TVirtualGfx.getInstance().vyoff
+'		x :- TVirtualGfx.getInstance().vxoff
+'		y :- TVirtualGfx.getInstance().vyoff
 	End Method
 	
 	
@@ -452,10 +481,13 @@ Type TGraphicsManager
 		'the . means: access globally defined SetViewPort()
 		.GetViewport(vpX, vpY, vpW, vpH)
 
+		Return New SRectI(vpX, vpY, vpW, vpH)
+rem
 		Return New SRectI(vpX - TVirtualGfx.getInstance().vxoff, ..
 		                  vpY - TVirtualGfx.getInstance().vyoff, ..
 		                  vpW, ..
 		                  vpH)
+endrem
 	End Method
 		
 

@@ -34,7 +34,6 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import "base.util.virtualgraphics.bmx"
 Import "base.util.interpolation.bmx"
 Import "base.util.graphicsmanagerbase.bmx"
 Import "base.gfx.gui.button.bmx"
@@ -129,15 +128,15 @@ Type TGUIModalWindowChain Extends TGUIObject
 		Local centerX:Float=0.0
 		Local centerY:Float=0.0
 		If Not screenArea
-			centerX = VirtualWidth()/2
-			centerY = VirtualHeight()/2
+			centerX = GetGraphicsManager().designedSize.x/2
+			centerY = GetGraphicsManager().designedSize.y/2
 		Else
 			centerX = screenArea.getX() + screenArea.GetW()/2
 			centerY = screenArea.getY() + screenArea.GetH()/2
 		EndIf
 		if centerLimit
-			centerX = MathHelper.Clamp(centerX, centerLimit.GetLeft() + rect.GetW()/2, GetGraphicsManager().GetWidth() - centerLimit.GetRight() - rect.GetW()/2)
-			centerY = MathHelper.Clamp(centerY, centerLimit.GetTop() + rect.GetH()/2, GetGraphicsManager().GetHeight() - centerLimit.GetBottom() - rect.GetH()/2)
+			centerX = MathHelper.Clamp(centerX, centerLimit.GetLeft() + rect.GetW()/2, GetGraphicsManager().designedSize.x - centerLimit.GetRight() - rect.GetW()/2)
+			centerY = MathHelper.Clamp(centerY, centerLimit.GetTop() + rect.GetH()/2, GetGraphicsManager().designedSize.y - centerLimit.GetBottom() - rect.GetH()/2)
 		endif
 
 		SetPosition(centerX - rect.getW()/2 + moveByX, centerY - rect.getH()/2 + moveByY)
@@ -285,7 +284,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		local newAlpha:Float = 1.0
 
 		if closeActionStarted
-			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenRect().GetH())
+			local yUntilScreenLeft:int = GetGraphicsManager().designedSize.y - (closeActionStartPosition.y + GetScreenRect().GetH())
 			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
 			Recenter(0, - yUntilScreenLeft * Float(TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
 		endif
@@ -295,7 +294,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		SetAlpha(oldColA * alpha * 0.5)
 		SetColor(0, 0, 0)
 		If Not DarkenedArea
-			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
+			DrawRect(0, 0, GetGraphicsManager().designedSize.x, GetGraphicsManager().designedSize.y)
 		Else
 			DrawRect(DarkenedArea.getX(), DarkenedArea.getY(), DarkenedArea.getW(), DarkenedArea.getH())
 		EndIf
