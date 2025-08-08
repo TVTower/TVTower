@@ -50,17 +50,11 @@ Type TGraphicsManager
 	'drawable canvas dimensions
 	Field canvasPos:SVec2I = New SVec2I(0, 0)
 	Field canvasSize:SVec2I = New SVec2I(800, 600)
-	Field canvasStretchMode:Int = 0       ' no stretch
 	'designed application dimensions (scaled to the canvas dimensions)
 	Field designedSize:SVec2I = New SVec2I(-1, -1)
 	'window dimensions
 	Global windowSize:SVec2I
 	Global windowSizeValid:Int
-
-	Const STRETCHMODE_NONE:Int = 0      ' keep size
-	Const STRETCHMODE_FULL:Int = 1      ' use full window
-	Const STRETCHMODE_SCALE:Int = 2     ' adjust to window aspect ratio
-	Const STRETCHMODE_LETTERBOX:Int = 3 ' keep aspect ratio
 
 	Field hertz:Int			= 60
 	Field vsync:Int			= True
@@ -144,15 +138,17 @@ Type TGraphicsManager
 			If windowSize.x <> newSize.x Or windowSize.y <> newSize.y
 				windowSize = newSize
 				
-				UpdateCanvasSize()
-
 				If viewportStackIndex >= 0
 					self.SetViewport( viewportStack[viewportStackIndex] )
 				Else
 					self.SetViewport(0,0, canvasSize.x, canvasSize.y)
 				EndIf
 
+				UpdateCanvasInformation()
+
 				Return True
+			Else
+				UpdateCanvasInformation()
 			EndIf
 		EndIf
 
@@ -163,16 +159,53 @@ Type TGraphicsManager
 	Method RetrieveWindowSize:SVec2I()
 		return windowSize
 	End Method
+	
+	
+	Method UpdateCanvasInformation:Int()
+		UpdateCanvasSize()
+
+		'move canvas into position
+		'we are defaulting to "letterbox"
+		canvasPos = New SVec2I((windowSize.x - canvasSize.x)/2, (windowSize.y - canvasSize.y)/2)
+	End Method
+
+
 
 
 	Method UpdateCanvasSize:Int()
-		'by default nothing is done there
+		Local oldSize:SVec2I = canvasSize
+		
+		'either window size zero or canvas size zero
+		If (windowSize.x = 0 or windowSize.y = 0)
+			canvasSize = New SVec2I(0,0)
+		Else
+			'defaulting to letterbox
+
+			' compare aspect ratios and use min of it
+			Local canvasW:Int = canvasSize.x
+			Local canvasH:Int = canvasSize.y
+			'take over window size / auto size ?
+			if canvasW < 0 Then canvasW = windowSize.x
+			if canvasH < 0 Then canvasH = windowSize.y
+
+			'to keep aspect ratio, scale both to minimum of both
+			Local minScale:Float = min(windowSize.x / Float(canvasW), windowSize.y / Float(canvasH))
+
+			'only scale if there is no rounding issue without actual scaling
+			'and scaling (<> 1.0) is requested at all
+			If Abs(minScale - 1.0) > 0.001
+				canvasSize = New SVec2I(Int(canvasW * minScale), Int(canvasH * minScale))
+			EndIf
+		EndIf
 	End Method
 
 
 	Method SetCanvasSize:Int(width:Int, height:Int)
 		If canvasSize.x <> width Or canvasSize.y <> height
 			canvasSize = New SVec2I(width, height)
+			
+			UpdateCanvasInformation()
+
 			Return True
 		Else
 			Return False
@@ -305,7 +338,7 @@ Type TGraphicsManager
 	Method HasBlackBars:Int()
 		If designedSize.x = -1 And designedSize.y = -1 Then Return False
 
-		Return designedSize <> canvasSize
+		Return canvasSize <> windowSize
 	End Method
 
 
@@ -341,9 +374,7 @@ Type TGraphicsManager
 		SetMaskColor 0, 0, 0
 		HideMouse()
 
-		'virtual resolution
-		'SetVirtualGraphics(GetWidth(), GetHeight(), False)
-		'TLogger.Log("GraphicsManager.InitGraphics()", "Initialized virtual graphics (for optional letterboxes) with " + GetWidth() + "x" + GetHeight() + ".", LOG_DEBUG)
+		'SetVirtualResolution(designedSize.x, designedSize.y)
 	End Method
 	
 	
@@ -354,12 +385,30 @@ Type TGraphicsManager
 
 
 	Method CurrentCanvasMouseX:Int()
-		Return MouseX()
+		Return brl.polledInput.MouseX() 'SDL already adds letterbox values
 	End Method
 
 
-	Method CurrentCanvasMouseY:Int ()
-		Return MouseY()
+	Method CurrentCanvasMouseY:Int()
+		Return brl.polledInput.MouseY() 'SDL already adds letterbox values
+	End Method
+
+
+	Method WindowMouseX:Int()
+		Return brl.polledInput.MouseX()
+	End Method
+
+
+	Method WindowMouseY:Int()
+		Return brl.polledInput.MouseY()
+	End Method
+	
+	
+	Method WindowCoordinateToCurrentCanvasCoordinate:SVec2I(x:Int, y:Int)
+		' scale
+		x :* (designedSize.x / Float(canvasSize.x))
+		y :* (designedSize.y / Float(canvasSize.y))
+		Return New SVec2I(x, y)
 	End Method
 	
 	
@@ -390,7 +439,7 @@ Type TGraphicsManager
 	Method Cls()
 		Local x:Int, y:Int, w:Int, h:Int
 		.GetViewport(x,y,w,h)
-		.SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight() )
+		.SetViewport( 0, 0, windowSize.x, windowSize.y )
 		brl.max2d.Cls()
 		.SetViewport(x,y,w,h)
 '		SetViewport( TVirtualGfx.GetInstance().vxoff, TVirtualGfx.GetInstance().vyoff, TVirtualGfx.GetInstance().vwidth, TVirtualGfx.GetInstance().vheight )
@@ -406,6 +455,42 @@ Type TGraphicsManager
 		EndIf
 	End Method
 
+
+	'set viewport to full window, disable logical size
+	Method DisableVirtualResolution:SRectI()
+		local oldViewport:SRectI = self.GetViewPortRect()
+		SetVirtualResolution(windowSize.x, windowSize.y)
+		SetViewport(0, 0, windowSize.x, windowSize.y)
+		Return oldViewport
+	End Method
+	
+
+	Method EnableVirtualResolution(viewport:SRectI)
+		SetVirtualResolution(designedSize.x, designedSize.y)
+		SetViewport(viewport.x, viewport.y, viewport.w, viewport.x)
+	End Method
+	
+
+	'adjust virtual resolution so that no letterbox is used
+	'(so you can draw on the letterbox areas)
+	'while maintaining the "scaling" factor
+	Method DisableVirtualResolutionLetterbox:SRectI()
+		Local oldViewport:SRectI = self.GetViewPortRect()
+		
+		Local scaleX:Float = windowSize.x / Float(canvasSize.x)
+		Local scaleY:Float = windowSize.y / Float(canvasSize.y)
+
+		'a scale <> 1.0 means that _this_ axis of the original designed
+		'size needs to be scaled to also cover a letterbox
+		Local extendedDesignedSizeX:Int = designedSize.x * scaleX
+		Local extendedDesignedSizeY:Int = designedSize.y * scaleY
+
+		SetVirtualResolution(extendedDesignedSizeX, extendedDesignedSizeY)
+		SetViewport(0, 0, windowSize.x, windowSize.y)
+
+		Return oldViewport
+	End Method
+	
 
 	Method BackupAndSetViewport(newViewport:SRectI)
 		BackupViewport()
