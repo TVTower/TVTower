@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2018 Ronny Otto, digidea.de
+	Copyright (C) 2002-2025 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -35,56 +35,43 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import brl.Graphics
-'?MacOs
-'Import BRL.GLMax2D
-'?Win32
-'Import BRL.GLMax2D
-'Import "base.util.graphicsmanager.win32.bmx"
-'?Linux
-'Import BRL.GLMax2D
-'Import "../source/external/bufferedglmax2d/bufferedglmax2d.bmx"
-'?
-'?bmxng
-'?android
-'Import sdl.gl2sdlmax2d
-'?
+Import sdl.SDLGraphics
+Import BRL.Max2D
 
-Import "base.util.virtualgraphics.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.logger.bmx"
 
 
 Type TGraphicsManager
 	Field fullscreen:Int	= 0
-	Field renderer:Int		= 0
+	Field renderer:Int		= 0 'remove
+	Field rendererBackend:Int
 	Field colorDepth:Int	= 16
-	Field realWidth:Int		= 800
-	Field realHeight:Int	= 600
-	Field designedWidth:Int	= -1
-	Field designedHeight:Int= -1
+	'drawable canvas dimensions
+	Field canvasPos:SVec2I = New SVec2I(0, 0)
+	Field canvasSize:SVec2I = New SVec2I(800, 600)
+	'designed application dimensions (scaled to the canvas dimensions)
+	Field designedSize:SVec2I = New SVec2I(-1, -1)
+	'window dimensions
+	Global windowSize:SVec2I
+	Global windowSizeValid:Int
+
 	Field hertz:Int			= 60
 	Field vsync:Int			= True
 	Field flags:Int			= 0 'GRAPHICS_BACKBUFFER '0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
-	Field viewportStack:TRectangle[] = new TRectangle[0]
+
+	Field viewportStack:SRectI[] = new SRectI[0]
 	Field viewportStackIndex:Int = -1
 	Global _instance:TGraphicsManager
 	Global _g:TGraphics
-	Global RENDERER_NAMES:String[] = [	"OpenGL",..
-										"DirectX 7", ..
-										"DirectX 9", ..
-										"DirectX 11", ..
-										"Buffered OpenGL", ..
-										"GL2SDL" ..
-									 ]
-	Global RENDERER_AVAILABILITY:Int[] = [ False, False, False, False, False, False ]
+	Global RENDERER_BACKEND_NAMES_RAW:String[]  'name of the renderer eg used internally
+	Global RENDERER_BACKEND_NAMES:String[]      'printable name of the renderer
+	Global RENDERER_BACKEND_MAX2D_ID:Int[]      'numeric key (for ini files)
+	Global RENDERER_BACKEND_AVAILABILITY:Int[]  'is that renderer available?
 
-	Const RENDERER_OPENGL:Int   		= 0
-	Const RENDERER_DIRECTX7:Int 		= 1
-	Const RENDERER_DIRECTX9:Int 		= 2
-	Const RENDERER_DIRECTX11:Int 		= 3
-	Const RENDERER_BUFFEREDOPENGL:Int   = 4
-	Const RENDERER_GL2SDL:Int           = 5
+	Const RENDERER_BACKEND_OPENGL:Int   = 0
+	Const RENDERER_BACKEND_D3D9:Int     = 1
+	Const RENDERER_BACKEND_D3D11:Int    = 2
 
 
 	Function GetInstance:TGraphicsManager()
@@ -93,25 +80,136 @@ Type TGraphicsManager
 	End Function
 
 
+	Method New()
+		If not _instance
+			AddHook(EmitEventHook, WindowResizedHook, Null,-10000)
+		EndIf
+	End Method
+
+
+	' "Window resized" is emit if the window is manually resized
+	' either via "double click" on the window title bar or by dragging
+	' of one window border. It is NOT emit on internal resize commands
+	' like "window.setSize()" 
+	Function WindowResizedHook:Object( id:Int, data:Object,context:Object )
+		Local ev:TEvent=TEvent( data )
+		If Not ev Return Null
+		If ev.id <> EVENT_WINDOWSIZE Then Return Null
+		
+		TGraphicsManager.windowSizeValid = False
+	End Function
+
+
 	Function SetRendererAvailable(index:int, bool:int=True)
-		if index >= RENDERER_AVAILABILITY.length then return
+		if index >= RENDERER_BACKEND_AVAILABILITY.length then return
 		'setall
 		if index < 0
-			for local i:int = 0 until RENDERER_AVAILABILITY.length
+			for local i:int = 0 until RENDERER_BACKEND_AVAILABILITY.length
 				SetRendererAvailable(i, bool)
 			next
-		elseif index < RENDERER_AVAILABILITY.length
-			RENDERER_AVAILABILITY[index] = bool
+		elseif index < RENDERER_BACKEND_AVAILABILITY.length
+			RENDERER_BACKEND_AVAILABILITY[index] = bool
 		else
 			Throw "Renderer index ~q"+ index+"~q is out of bounds."
 		endif
 	End Function
 
 
-	Method SetResolution:Int(width:Int, height:Int)
-		If realWidth <> width Or realHeight <> height
-			realWidth = width
-			realHeight = height
+	Method ResizeWindow:Int(width:Int, height:Int)
+		print "ResizeWindow() not implemented"
+	End Method
+
+
+	Method CenterWindow()
+		print "CenterWindow() not implemented"
+	End Method
+
+
+	' "window maximizing" can lead to a resize-event but eg. the SDL
+	' renderer is still spitting out the old value (driver.renderer.GetOutputSize())
+	' this is why the window size has to be recalculated in a "lazy"
+	' way (aka on next frame).
+	Method UpdateWindowSize:Int()
+		If Not windowSizeValid
+			Local newSize:SVec2I = RetrieveWindowSize()
+			
+			windowSizeValid = True
+
+			If windowSize.x <> newSize.x Or windowSize.y <> newSize.y
+				windowSize = newSize
+				
+				If viewportStackIndex >= 0
+					self.SetViewport( viewportStack[viewportStackIndex] )
+				Else
+					self.SetViewport(0,0, canvasSize.x, canvasSize.y)
+				EndIf
+
+				UpdateCanvasInformation()
+
+				Return True
+			Else
+				UpdateCanvasInformation()
+			EndIf
+		EndIf
+
+		Return False
+	End Method
+	
+	
+	Method RetrieveWindowSize:SVec2I()
+		return windowSize
+	End Method
+	
+	
+	Method UpdateCanvasInformation:Int()
+		UpdateCanvasSize()
+
+		'move canvas into position
+		'we are defaulting to "letterbox"
+		canvasPos = New SVec2I((windowSize.x - canvasSize.x)/2, (windowSize.y - canvasSize.y)/2)
+	End Method
+
+
+
+
+	Method UpdateCanvasSize:Int()
+		Local oldSize:SVec2I = canvasSize
+		
+		'either window size zero or canvas size zero
+		If (windowSize.x = 0 or windowSize.y = 0)
+			canvasSize = New SVec2I(0,0)
+		Else
+			'defaulting to letterbox
+
+			' compare aspect ratios and use min of it
+			Local canvasW:Int = canvasSize.x
+			Local canvasH:Int = canvasSize.y
+			'use original size if possible as we scale nonetheless
+			'but now avoid taking over rounding issues with each update
+			If designedSize.x > 0
+				canvasW = designedSize.x
+				canvasH = designedSize.Y
+			EndIf
+				
+			'take over window size / auto size ?
+			if canvasW < 0 Then canvasW = windowSize.x
+			if canvasH < 0 Then canvasH = windowSize.y
+
+			'to keep aspect ratio, scale both to minimum of both
+			Local minScale:Float = min(windowSize.x / Float(canvasW), windowSize.y / Float(canvasH))
+
+			canvasSize = New SVec2I(Int(canvasW * minScale), Int(canvasH * minScale))
+			'print "minScale: " + minScale + "   windowSize="+windowSize.x+", " + windowSize.y + "  canvasWH="+canvasW+", " + canvasH + "  -> new canvasSize: " + canvasSize.x + ", " +canvasSize.y
+		EndIf
+	End Method
+
+
+	Method SetCanvasSize:Int(width:Int, height:Int)
+		If canvasSize.x <> width Or canvasSize.y <> height
+			canvasSize = New SVec2I(width, height)
+			
+			UpdateCanvasInformation()
+
 			Return True
 		Else
 			Return False
@@ -119,11 +217,15 @@ Type TGraphicsManager
 	End Method
 
 
-	'set the resolution the assets are designed for
-	'things get resized according the real resolution
-	Method SetDesignedResolution:Int(width:Int, height:Int)
-		designedWidth = width
-		designedHeight = height
+	'set the canvas size the assets are designed for
+	'things get resized according the real canvas size
+	Method SetDesignedSize:Int(width:Int, height:Int)
+		If designedSize.x <> width Or designedSize.y <> height
+			designedSize = New SVec2I(width, height)
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
@@ -134,7 +236,7 @@ Type TGraphicsManager
 		If fullscreen <> bool
 			fullscreen = bool
 			'create a new graphics object if already in graphics mode
-			If _g And reInitGraphics Then InitGraphics()
+			If _g And reInitGraphics Then InitGraphics(windowSize.x, windowSize.y)
 
 			Return True
 		EndIf
@@ -144,6 +246,12 @@ Type TGraphicsManager
 
 	Method GetFullscreen:Int()
 		Return (fullscreen = True)
+	End Method
+
+
+	'switch between fullscreen or windowed mode
+	Method SwitchFullscreen:Int()
+		SetFullscreen(1 - GetFullscreen())
 	End Method
 
 
@@ -177,9 +285,9 @@ Type TGraphicsManager
 	End Method
 
 
-	Method SetRenderer:Int(value:Int = 0)
-		If renderer <> value
-			renderer = value
+	Method SetRendererBackend:Int(value:Int = 0)
+		If rendererBackend <> value
+			rendererBackend = value
 			Return True
 		Else
 			Return False
@@ -187,76 +295,76 @@ Type TGraphicsManager
 	End Method
 
 
-	Method GetRenderer:Int()
-		Return renderer
+	Method GetRendererBackend:Int()
+		Return rendererBackend
 	End Method
 
 
-	Method GetRendererName:String(forRenderer:Int=-1)
-		If forRenderer = -1 Then forRenderer = Self.renderer
-		If forRenderer < 0 Or forRenderer > RENDERER_NAMES.length
+	Method GetRendererBackendName:String(forRendererBackend:Int = -1)
+		If forRendererBackend = -1 Then forRendererBackend = Self.rendererBackend
+		If forRendererBackend < 0 Or forRendererBackend > RENDERER_BACKEND_NAMES.length
 			Return "UNKNOWN"
 		Else
-			Return RENDERER_NAMES[forRenderer]
+			Return RENDERER_BACKEND_NAMES[forRendererBackend]
 		EndIf
 	End Method
 
 
-	Method SetFlags:Int(value:Int = 0)
+	Method SetFlags:Int(value:Long)
 		flags = value
 	End Method
 
 
 	Method GetHeight:Int()
-		If designedHeight = -1 Then Return realHeight
-		Return designedHeight
+		If designedSize.y = -1 Then Return canvasSize.y
+
+		Return designedSize.y
 	End Method
 
 
 	Method GetWidth:Int()
-		If designedWidth = -1 Then Return realWidth
-		Return designedWidth
+		If designedSize.x = -1 Then Return canvasSize.x
+
+		Return designedSize.x
 	End Method
 
 
-	Method GetRealHeight:Int()
-		Return realHeight
+	Method GetCanvasHeight:Int()
+		Return canvasSize.y
 	End Method
 
 
-	Method GetRealWidth:Int()
-		Return realWidth
+	Method GetCanvasWidth:Int()
+		Return canvasSize.x
 	End Method
 
 
 	Method HasBlackBars:Int()
-		If designedWidth = -1 And designedHeight = -1 Then Return False
-		Return designedWidth <> realWidth Or designedHeight <> realHeight
+		If designedSize.x = -1 And designedSize.y = -1 Then Return False
+
+		Return canvasSize <> windowSize
 	End Method
 
 
-	'switch between fullscreen or windowed mode
-	Method SwitchFullscreen:Int()
-		SetFullscreen(1 - GetFullscreen())
-	End Method
-
-
-	Method InitGraphics:Int()
+	Method InitGraphics(width:Int, height:Int, flags:Long = 0)
 		TLogger.Log("GraphicsManager.InitGraphics()", "Initializing graphics.", LOG_DEBUG)
-
-		'initialize virtual graphics only when "InitGraphics()" is run
-		'for the first time
-		If Not _g Then InitVirtualGraphics()
-
 		'close old one
-		If _g Then CloseGraphics(_g)
+		If _g
+			TLogger.Log("GraphicsManager.InitGraphics()", "Closing previous graphics object.", LOG_DEBUG)
+			CloseGraphics(_g)
+		EndIf
 
-		'needed to allow ?win32 + ?bmxng
-'		?win32
-'		_InitGraphicsWin32()
-'		?Not win32
-		_InitGraphicsDefault()
-'		?
+
+		windowSize = New SVec2I(width, height)
+		windowSizeValid = False
+
+		Local smoothPixels:Int = False 'TODO: remove/make configurable
+		_g = CreateGraphicsObject(windowSize, colorDepth, hertz, flags, fullScreen, smoothPixels)
+		
+		'now window is created, allow the driver to update window size
+		'if required
+		UpdateWindowSize()
+
 		If Not _g
 			TLogger.Log("GraphicsManager.InitGraphics()", "Failed to initialize graphics.", LOG_ERROR)
 			Throw "Failed to initialize graphics! No render engine available."
@@ -264,71 +372,79 @@ Type TGraphicsManager
 		EndIf
 
 		'now "renderer" contains the ID of the used renderer
-		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized graphics with ~q"+GetRendererName()+"~q.", LOG_DEBUG)
+		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized graphics with backend ~q"+GetRendererBackendName()+"~q. Window size " + windowSize.x + "x" + windowSize.y + ".", LOG_DEBUG)
 
 
 		SetBlend ALPHABLEND
 		SetMaskColor 0, 0, 0
 		HideMouse()
 
-		'virtual resolution
-		SetVirtualGraphics(GetWidth(), GetHeight(), False)
-		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized virtual graphics (for optional letterboxes).", LOG_DEBUG)
+		'SetVirtualResolution(designedSize.x, designedSize.y)
+	End Method
+	
+	
+	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreen:Int, smoothPixels:Int)
+		Local g:TGraphics = Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
+		Return g
 	End Method
 
-	Method _InitGraphicsDefault:Int() 'Abstract
+
+	Method CurrentCanvasMouseX:Int()
+		Return brl.polledInput.MouseX() 'SDL already adds letterbox values
 	End Method
 
-Rem
-	Method _InitGraphicsDefault:Int()
-		Select renderer
-			'buffered gl?
-			'?android
-			?bmxng
-			Default
-				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qGL2SDL~q.", LOG_DEBUG)
-				SetGraphicsDriver GL2Max2DDriver()
-				renderer = RENDERER_GL2SDL
-			'?Not android
-			?Not bmxng
-			Default
-				TLogger.Log("GraphicsManager.InitGraphics()", "SetGraphicsDriver ~qOpenGL~q.", LOG_DEBUG)
-				SetGraphicsDriver GLMax2DDriver()
-				renderer = RENDERER_OPENGL
-			?
-		End Select
 
-		_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
+	Method CurrentCanvasMouseY:Int()
+		Return brl.polledInput.MouseY() 'SDL already adds letterbox values
 	End Method
-End Rem
-Rem
-	'cannot "?win32" this method as this disables "?not bmxng" in this method
-	Method _InitGraphicsWin32:Int()
-		?win32
-		'done in base.util.graphicsmanager.win32.bmx
-		'alternatively to "_g = Func(_g,...)"
-		'SetRenderWin32 could also use "_g:TGraphics var"
-		'attention: renderer is passed by referenced (might be changed)
-		'           during execution of SetRendererWin32(...)
-		_g = SetRendererWin32(_g, renderer, realWidth, realHeight, colorDepth, fullScreen, hertz, flags)
-		?
-	End Method
-End Rem
 
+
+	Method WindowMouseX:Int()
+		Return brl.polledInput.MouseX()
+	End Method
+
+
+	Method WindowMouseY:Int()
+		Return brl.polledInput.MouseY()
+	End Method
+	
+	
+	Method WindowCoordinateToCurrentCanvasCoordinate:SVec2I(x:Int, y:Int)
+		' scale
+		x :* (designedSize.x / Float(canvasSize.x))
+		y :* (designedSize.y / Float(canvasSize.y))
+		Return New SVec2I(x, y)
+	End Method
+	
+	
 	Method ResetVirtualGraphicsArea()
-		TVirtualGfx.ResetVirtualGraphicsArea()
 	End Method
 
 
 	Method SetupVirtualGraphicsArea()
-		TVirtualGfx.SetupVirtualGraphicsArea()
+	End Method
+
+
+	Method VirtualGrabPixmap:TPixmap()
+'TODO: Check
+		Return VirtualGrabPixmap(0, 0, designedSize.x, designedSize.y)
+	End Method
+
+
+	Method VirtualGrabPixmap:TPixmap(x:int,y:int,w:int,h:int)
+'TODO: Check
+		local scaleX:float = windowSize.x / float(self.canvasSize.x)
+		local scaleY:float = windowSize.y / float(self.canvasSize.y)
+		Local vxOff:Int = 0
+		Local vyOff:Int = 0
+		return _max2dDriver.GrabPixmap(int(x*scaleX + vxoff), int(y*scaleY + vyoff), int(w*scaleX), int(h*scaleY))
 	End Method
 
 
 	Method Cls()
 		Local x:Int, y:Int, w:Int, h:Int
 		.GetViewport(x,y,w,h)
-		.SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight() )
+		.SetViewport( 0, 0, windowSize.x, windowSize.y )
 		brl.max2d.Cls()
 		.SetViewport(x,y,w,h)
 '		SetViewport( TVirtualGfx.GetInstance().vxoff, TVirtualGfx.GetInstance().vyoff, TVirtualGfx.GetInstance().vwidth, TVirtualGfx.GetInstance().vheight )
@@ -345,13 +461,50 @@ End Rem
 	End Method
 
 
-	Method BackupAndSetViewport(newViewport:TRectangle)
+	'set viewport to full window, disable logical size
+	Method DisableVirtualResolution:SRectI()
+		local oldViewport:SRectI = self.GetViewPortRect()
+		SetVirtualResolution(windowSize.x, windowSize.y)
+		SetViewport(0, 0, windowSize.x, windowSize.y)
+		Return oldViewport
+	End Method
+	
+
+	Method EnableVirtualResolution(viewport:SRectI)
+		SetVirtualResolution(designedSize.x, designedSize.y)
+		SetViewport(viewport.x, viewport.y, viewport.w, viewport.x)
+	End Method
+	
+
+	'adjust virtual resolution so that no letterbox is used
+	'(so you can draw on the letterbox areas)
+	'while maintaining the "scaling" factor
+	Method DisableVirtualResolutionLetterbox:SRectI()
+		Local oldViewport:SRectI = self.GetViewPortRect()
+		
+		Local scaleX:Float = windowSize.x / Float(canvasSize.x)
+		Local scaleY:Float = windowSize.y / Float(canvasSize.y)
+
+		'a scale <> 1.0 means that _this_ axis of the original designed
+		'size needs to be scaled to also cover a letterbox
+		Local extendedDesignedSizeX:Int = ceil(designedSize.x * scaleX)
+		Local extendedDesignedSizeY:Int = ceil(designedSize.y * scaleY)
+
+		SetVirtualResolution(extendedDesignedSizeX, extendedDesignedSizeY)
+		'SetViewport(0, 0, windowSize.x, windowSize.y)
+		SetViewport(-5000, -5000, 5000, 5000)
+
+		Return oldViewport
+	End Method
+	
+
+	Method BackupAndSetViewport(newViewport:SRectI)
 		BackupViewport()
-		SetViewportRect(newViewport)
+		SetViewport(newViewport)
 	End Method
 
 	
-	Method BackupViewport:TRectangle()
+	Method BackupViewport:SRectI()
 		viewportStackIndex :+ 1
 		'resize stack
 		if viewportStack.length <= viewPortStackIndex
@@ -360,7 +513,6 @@ End Rem
 			if viewportStack.length >= 500 Then Throw "Too many viewports put to stack: " + viewportStack.length
 		endif
 
-		'create a new rectangle instance
 		viewPortStack[viewPortStackIndex] = GetViewportRect()
 
 		return viewPortStack[viewPortStackIndex]
@@ -370,10 +522,7 @@ End Rem
 	Method RestoreViewport:Int()
 		if viewportStackIndex < 0 then return False
 		
-		if viewportStack[viewportStackIndex]
-			self.SetViewportRect( viewportStack[viewportStackIndex] )
-		endif
-		viewportStack[viewportStackIndex] = null
+		self.SetViewport( viewportStack[viewportStackIndex] )
 		viewportStackIndex :- 1
 		
 		return True
@@ -387,20 +536,25 @@ End Rem
 		x = Max(0, x)
 		y = Max(0, y)
 
+		'we call the original max2d-viewport as it updates internal
+		'variables used during image drawing and other functions!
+		.SetViewport(x, y, w, h)
+rem
 		'the . means: access globally defined SetViewPort()
 		.SetViewport(TVirtualGfx.getInstance().vxoff + x, ..
 		             TVirtualGfx.getInstance().vyoff + y, ..
 		             Min(w, TVirtualGfx.getInstance().vWidth - x), ..
 		             Min(h, TVirtualGfx.getInstance().vHeight - y) ..
 		            )
+endrem
 	End Method
 
 
-	Method SetViewportRect(r:TRectangle)
+	Method SetViewport(r:TRectangle)
 		self.SetViewport(int(r.x), int(r.y), int(r.w), int(r.h))
 	End Method
 
-	Method SetViewportRect(r:SRectI)
+	Method SetViewport(r:SRectI)
 		self.SetViewport(r.x, r.y, r.w, r.h)
 	End Method
 
@@ -408,30 +562,29 @@ End Rem
 	Method GetViewport(x:Int Var, y:Int Var, w:Int Var, h:Int Var)
 		'the . means: access globally defined SetViewPort()
 		.GetViewport(x, y, w, h)
-		x :- TVirtualGfx.getInstance().vxoff
-		y :- TVirtualGfx.getInstance().vyoff
+'		x :- TVirtualGfx.getInstance().vxoff
+'		y :- TVirtualGfx.getInstance().vyoff
 	End Method
 	
 	
-	Method GetViewportRect:TRectangle()
+	Method GetViewportRect:SRectI()
 		Local vpX:int, vpY:int, vpW:int, vpH:Int
 		'the . means: access globally defined SetViewPort()
 		.GetViewport(vpX, vpY, vpW, vpH)
 
-		Return New TRectangle.Init(vpX - TVirtualGfx.getInstance().vxoff, ..
-		                           vpY - TVirtualGfx.getInstance().vyoff, ..
-		                           vpW, ..
-		                           vpH)
+		Return New SRectI(vpX, vpY, vpW, vpH)
+rem
+		Return New SRectI(vpX - TVirtualGfx.getInstance().vxoff, ..
+		                  vpY - TVirtualGfx.getInstance().vyoff, ..
+		                  vpW, ..
+		                  vpH)
+endrem
 	End Method
-	
+		
 
 	Method EnableSmoothLines:Int()
 		Return False
 	End Method
-
-	Method CenterDisplay()
-	End Method
-
 End Type
 
 

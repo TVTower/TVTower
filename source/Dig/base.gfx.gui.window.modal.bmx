@@ -32,7 +32,6 @@ Rem
 	====================================================================
 End Rem
 SuperStrict
-Import "base.util.virtualgraphics.bmx"
 Import "base.util.interpolation.bmx"
 Import "base.gfx.gui.window.base.bmx"
 Import "base.gfx.gui.button.bmx"
@@ -208,8 +207,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		Local centerX:Float=0.0
 		Local centerY:Float=0.0
 		If Not screenArea
-			centerX = VirtualWidth()/2
-			centerY = VirtualHeight()/2
+			centerX = GetGraphicsManager().designedSize.x/2
+			centerY = GetGraphicsManager().designedSize.y/2
 		Else
 			centerX = screenArea.getX() + screenArea.GetW()/2
 			centerY = screenArea.getY() + screenArea.GetH()/2
@@ -324,7 +323,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		Super.Update()
 
 		if closeActionStarted
-			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenRect().GetH())
+			local yUntilScreenLeft:int = GetGraphicsManager().designedSize.y - (closeActionStartPosition.y + GetScreenRect().GetH())
 			Recenter(0, Float(- yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
 		endif
 

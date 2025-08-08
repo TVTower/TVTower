@@ -25,6 +25,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 	Field checkVSync:TGUICheckbox
 	Field inputWindowResolutionWidth:TGUIInput
 	Field inputWindowResolutionHeight:TGUIInput
+	Field buttonWindowResolutionReset:TGUIButton
 	Field inputGameName:TGUIInput
 	Field inputInRoomSlowdown:TGUIInput
 	Field inputAutoSaveInterval:TGUIInput
@@ -41,6 +42,9 @@ Type TGUISettingsPanel Extends TGUIPanel
 	Field labelRightClickEmulationTimeMilliseconds:TGUILabel
 	Field labelTouchClickRadiusPixel:TGUILabel
 	Field labelTouchClickRadius:TGUILabel
+	
+	'cache to avoid costly lookups
+	Field knownWindowSize:SVec2I
 
 	Field _eventListeners:TEventListenerBase[]
 
@@ -217,12 +221,17 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local rendererTexts:String[]
 
 		'fill with all available renderers
-		For Local i:Int = 0 Until TGraphicsManager.RENDERER_AVAILABILITY.length
-			If TGraphicsManager.RENDERER_AVAILABILITY[i]
+		For Local i:Int = 0 Until TGraphicsManager.RENDERER_BACKEND_AVAILABILITY.length
+			If TGraphicsManager.RENDERER_BACKEND_AVAILABILITY[i]
 				rendererValues :+ [String(i)] 'i is the same key here
-				rendererTexts :+ [ TGraphicsManager.RENDERER_NAMES[i] ]
+				rendererTexts :+ [ TGraphicsManager.RENDERER_BACKEND_NAMES[i] ]
 			EndIf
 		Next
+		
+		If rendererValues.length = 0
+			rendererValues :+ [""]
+			rendererTexts :+ [ GetLocale("ERROR_NOT_POSSIBLE") ]
+		EndIf
 
 		itemHeight = 0
 		For Local i:Int = 0 Until rendererValues.Length
@@ -249,15 +258,24 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ Max(inputH, checkVSync.GetScreenRect().GetH())
 
 		Local labelWindowResolution:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("WINDOW_MODE_RESOLUTION")+":")
-		inputWindowResolutionWidth = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(inputWidth/2 - 15,-1), "", 4)
-		inputWindowResolutionHeight = New TGUIInput.Create(New SVec2I(nextX + inputWidth/2 + 15, nextY + labelH), New SVec2I(inputWidth/2 - 15,-1), "", 4)
-		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + inputWidth/2 - 4, nextY + labelH + 4), "x")
+		inputWindowResolutionWidth = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(inputWidth/2 - 33,-1), "", 4)
+		inputWindowResolutionHeight = New TGUIInput.Create(New SVec2I(nextX + inputWidth/2 - 11, nextY + labelH), New SVec2I(inputWidth/2 - 33,-1), "", 4)
+		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + inputWidth/2 - 26, nextY + labelH + 4), "x")
+
+		buttonWindowResolutionReset = New TGUIButton.Create(New SVec2I(nextX + inputWidth - 25, nextY + labelH), New SVec2I(25, inputH), "X", "SETTINGS")
+		buttonWindowResolutionReset.SetSpriteName("gfx_gui_button.round")
+		buttonWindowResolutionReset.Hide() 'hide by default
+
 		Self.AddChild(labelWindowResolution)
 		Self.AddChild(labelWindowResolutionX)
 		Self.AddChild(inputWindowResolutionWidth)
 		Self.AddChild(inputWindowResolutionHeight)
-		nextY :+ inputH + 5 + guiDistance
+		Self.AddChild(buttonWindowResolutionReset)
 
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickButtonWindowResolutionReset", buttonWindowResolutionReset) ]
+
+
+		nextY :+ inputH + labelH + 5
 
 		'MULTIPLAYER
 		nextY = 0
@@ -447,7 +465,9 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Next
 		'select the first if nothing was preselected
 		If Not selectedDropDownItem
-			dropdownRenderer.SetSelectedEntryByPos(0)
+			If dropdownRenderer.GetEntries().Count() > 0
+				dropdownRenderer.SetSelectedEntryByPos(0)
+			EndIf
 		Else
 			dropdownRenderer.SetSelectedEntry(selectedDropDownItem)
 		EndIf
@@ -507,10 +527,32 @@ Type TGUISettingsPanel Extends TGUIPanel
 	End Method
 
 
+	Method OnClickButtonWindowResolutionReset:Int(event:TEventBase)
+		inputWindowResolutionWidth.SetValue(GetGraphicsManager().designedSize.x)
+		inputWindowResolutionHeight.SetValue(GetGraphicsManager().designedSize.y)
+
+		buttonWindowResolutionReset.Hide()
+	End Method
+		
+		
 	Method Update:Int()
 		'dynamically update sounds
 		GetSoundManagerBase().sfxVolume = (0.01 * sliderSFXVolume.GetValue().ToInt())
 		GetSoundManagerBase().SetMusicVolume(0.01 * sliderMusicVolume.GetValue().ToInt())
+		
+		'upate resolution values and hide reset button if needed
+		if knownWindowSize <> GetGraphicsManager().windowSize
+			knownWindowSize = GetGraphicsManager().windowSize
+
+			inputWindowResolutionWidth.SetValue(knownWindowSize.x)
+			inputWindowResolutionHeight.SetValue(knownWindowSize.y)
+			If knownWindowSize <> GetGraphicsManager().designedSize
+				buttonWindowResolutionReset.Show()
+			Else
+				buttonWindowResolutionReset.Hide()
+			EndIf
+		EndIf
+				
 
 		Return Super.Update()
 	End Method
