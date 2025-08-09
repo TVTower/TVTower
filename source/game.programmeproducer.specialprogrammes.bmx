@@ -170,7 +170,31 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		Local nd:TProgrammeData = New TProgrammeData
 		Local nl:TProgrammeLicence = new TProgrammeLicence
 
-		'TODO cast!!
+		Local persons:TPersonBaseCollection = GetPersonBaseCollection()
+		Local p:TPersonBase
+		Local np:TPersonBase
+		For Local c:TPersonProductionJob = EachIn data.GetCast()
+			Local nc:TPersonProductionJob = c.Copy()
+			p = persons.GetById(nc.personID)
+			np=Null
+			If p
+				If p.getGuid().startsWith("various")
+					'no need to replace
+					np = p
+				Else
+					If p.IsInsignificant()
+						np = persons.GetRandomCastableInsignificant(Null, True, True, nc.job, p.gender, True, p.GetCountry())
+					EndIf
+					If Not np then np = persons.GetRandomCastableCelebrity(Null, True, True, nc.job, p.gender, True, p.GetCountry())
+					'If Not np then np = persons.GetRandomCastableCelebrity(Null, True, False, nc.job, p.gender, True, p.GetCountry())
+					If Not np then np = persons.GetRandomCastableCelebrity(Null, True, True, nc.job, p.gender, True, "")
+				EndIf
+				If np
+					nc.personID=np.GetId()
+					nd.AddCast(nc)
+				EndIf
+			EndIf
+		Next
 
 		nd.country=data.country
 		nd.targetGroupAttractivityMod = data.targetGroupAttractivityMod
@@ -178,9 +202,10 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		nd.proPressureGroups = data.proPressureGroups
 		nd.contraPressureGroups = data.contraPressureGroups
 
-		nd.outcome=data.outcome'TODO randomize
-		nd.review=data.review'TODO randomize
-		nd.speed=data.speed'TODO randomize
+		'TODO randomize?
+		nd.outcome=data.outcome
+		nd.review=data.review
+		nd.speed=data.speed
 
 		nd.genre=data.genre
 		nd.subGenres=data.subGenres
@@ -206,26 +231,9 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		nl.extra.AddInt("producerID", - GetID()) 'negative!
 		nl.licenceType = licence.licenceType
 		nl.licenceFlags = licence.licenceFlags
-		
-		print "creating remake of "+licence.getTitle()
-		
+
 		GetProgrammeDataCollection().Add(nd)
 		GetProgrammeLicenceCollection().AddAutomatic(nl)
+		TLogger.Log("TProgrammeProducerRemake", "created remake of " + licence.getTitle(), LOG_DEBUG)
 	EndMethod
-
-
-Rem
-		programmeData.GUID = "programmedata-programmeproducer-specialprogrammes-"+programmeData.id
-		programmeData.productType = TVTProgrammeProductType.MISC
-		programmeData.country = ProducerCountry
-		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
-		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
-		programmeData.genre = TVTProgrammeGenre.SHOW
-		'so the licence datasheet does expose that information
-		programmeData.SetBroadcastLimit(10)
-		'once sold, this programmelicence wont be buyable anylonger
-		programmeLicence.setLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REMOVES_TRADEABILITY, True)
-
-		return programmeLicence
-endrem
 End Type
