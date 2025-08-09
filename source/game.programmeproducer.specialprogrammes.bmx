@@ -73,7 +73,7 @@ End Type
 Type TProgrammeProducerRemake Extends TProgrammeProducer
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TProgrammeProducerRemake
-	Field dayLastChecked:Long=-1
+	Field nextRemakeTime:Long = -1
 
 
 	Method New()
@@ -104,25 +104,40 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 
 
 	Method Update:Int()
-		'create remakes only once a day
-		Local day:Int=GetWorldTime().getDay()
-		If dayLastChecked <> day
-			dayLastChecked = day
-		Else
-			Return True
-		EndIf
-
 		Local now:Long = GetWorldTime().GetTimeGone()
-		Local goodCount:Int = 0
-		Local filterMoviesGood:TProgrammeLicenceFilterGroup = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
-		print "UPDATING FOR REMAKES"
-		For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles.values()
-			If l.getData().IsCustomProduction() Then Continue
-			If filterMoviesGood And filterMoviesGood.DoesFilter(l) And l.getData().GetReleaseTime() <= now Then goodCount:+1
-		Next
-		print "  good "+goodCount
-
-		If goodCount < 120 Then
+		If nextRemakeTime < 0
+			'determine when to start making remakes
+			Local isFictional:Int
+			Local data:TProgrammeData
+			Local cast:TPersonProductionJob[]
+			Local c:TPersonProductionJob
+			Local persons:TPersonBaseCollection = GetPersonBaseCollection()
+			Local p:TPersonBase
+			For Local l:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles.values()
+				data=l.getData()
+				If Not data Then continue
+				If data.GetYear() < 1950 Then data.SetFlag(TVTProgrammeDataFlag.NOREMAKE, True)
+				If data.GetReleaseTime() <= nextRemakeTime Then Continue
+				If data.IsCustomProduction() Then Continue
+				If data.HasFlag(TVTProgrammeDataFlag.LIVE+TVTProgrammeDataFlag.LIVEONTAPE+TVTProgrammeDataFlag.PAID) Then Continue
+				'ignore fictional entries - (no explicit flag - inspect cast
+				isFictional = False
+				cast=data.GetCast()
+				If Not cast Or cast.length = 0 Then Continue
+				For c = EachIn cast
+					p = persons.getById(c.personID)
+					If Not p Then continue
+					If p.IsFictional()
+						isFictional = True
+						Exit
+					EndIf
+				Next
+				If isFictional Then Continue
+				'if the licence made it here it is a candidate with later release time
+				nextRemakeTime = l.getData().GetReleaseTime()
+			Next
+			TLogger.Log("TProgrammeProducerRemake", "will start producing remakes at " + GetWorldTime().GetFormattedGameDate(nextRemakeTime), LOG_DEBUG)
+		ElseIf now >= nextRemakeTime
 			Local candidateFilter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterCrap.Copy()
 			candidateFilter.licenceTypes = [TVTProgrammeLicenceType.SINGLE]
 			candidateFilter.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
@@ -130,21 +145,25 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.INVISIBLE)
 			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.LIVE)
 			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.LIVEONTAPE)
-			'TODO not flag customProd and not remade
-			Local toRemake:TProgrammeLicence[] = GetProgrammeLicenceCollection().GetRandomsByFilter(candidateFilter, 10)
+			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.NOREMAKE)
+			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.PAID)
+			'TODO number of remakes depending on number of days per season?
+			'5, one movie per day per player (candidates may be excluded due to cast reference)
+			Local toRemake:TProgrammeLicence[] = GetProgrammeLicenceCollection().GetRandomsByFilter(candidateFilter, 5)
 			For Local l:TProgrammeLicence = EachIn toRemake
-				addRemake(l)
+				addRemake(l, now)
 			Next
+			nextRemakeTime = now + TWorldTime.DAYLENGTH 'randomize a bit?
 		EndIf
 	End Method
 
 
-	Method addRemake(licence:TProgrammeLicence)
+	Method addRemake(licence:TProgrammeLicence, releaseTime:Long)
 		Local data:TProgrammeData = licence.GetData()
 
 		If data.title.ContainsString(":~qcast~q:") Or data.description.ContainsString(":~qcast~q:") Then
+			data.SetFlag(TVTProgrammeDataFlag.NOREMAKE, True)
 			print "texts contain cast reference - no remake for "+data.getTitle()
-			'TODO add noRemake flag to licence
 			return
 		EndIf
 
@@ -153,7 +172,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 
 		'TODO cast!!
 
-		nd.country=data.country'TODO
+		nd.country=data.country
 		nd.targetGroupAttractivityMod = data.targetGroupAttractivityMod
 		nd.targetGroups = data.targetGroups
 		nd.proPressureGroups = data.proPressureGroups
@@ -174,7 +193,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		nd.distributionChannel=data.distributionChannel
 		nd.productType=data.productType
 
-		nd.releaseTime = GetWorldTime().GetTimeGone() + 3 * TWorldTime.DAYLENGTH
+		nd.releaseTime = releaseTime
 		If data.modifiers then nd.modifiers=data.modifiers.Copy()
 		nd.flags = data.flags
 		If data.broadcastFlags Then nd.broadcastFlags=data.broadcastFlags.Copy()
@@ -192,8 +211,6 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		
 		GetProgrammeDataCollection().Add(nd)
 		GetProgrammeLicenceCollection().AddAutomatic(nl)
-
-		'TODO add remake flag to licence
 	EndMethod
 
 
