@@ -341,10 +341,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			'(role once as actor once as supporting actor)
 			If perfectMatch
 				'for the same concept or concepts with the same specification
-				'(e.g. multi-production, episodes), simply copy the cast
+				'(e.g. multi-production, episodes), simply copy the (existing) cast
 				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
 					If Not currentProductionConcept.script.jobs[castIndex].preselectCast
-						currentProductionConcept.SetCast(castIndex, takeOverConcept.cast[castIndex])
+						Local oldCast:TPersonBase = takeOverConcept.cast[castIndex]
+						If oldCast Then currentProductionConcept.SetCast(castIndex, oldCast)
 					EndIf
 				Next
 			Else
@@ -352,7 +353,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				Local oldCastByJob:TPersonBase[][] = new TPersonBase[TVTPersonJob.GetCastJobs().length][]
 				For Local jobID:Int = EachIn TVTPersonJob.GetCastJobs()
 					Local oldCastGroup:TPersonBase[] = takeOverConcept.GetCastGroup(jobID)
-					Local jobIndex:Int = TVTPersonJob.GetIndex(jobID)
+					Local jobIndex:Int = TVTPersonJob.GetIndex(jobID) - 1
 					For Local oldCast:TPersonBase = EachIn oldCastGroup
 						oldCastByJob[jobIndex]:+ [oldCast]
 					Next
@@ -362,7 +363,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 				For Local castIndex:Int = 0 Until currentProductionConcept.cast.length
 					Local job:TPersonProductionJob = currentProductionConcept.script.jobs[castIndex]
 					If Not job.preselectCast
-						Local jobIndex:Int = TVTPersonJob.GetIndex(job.job)
+						Local jobIndex:Int = TVTPersonJob.GetIndex(job.job) - 1
 						Local gender:Int = job.gender
 						Local oldCastList:TPersonBase[] = oldCastByJob[jobIndex]
 						For Local oldCastIndex:Int = 0 Until oldCastList.length
