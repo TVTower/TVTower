@@ -1284,8 +1284,10 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	Const INVISIBLE:Int = 2048
 	'a previously "live" programme is now only a "recorded live programme"
 	Const LIVEONTAPE:Int = 4096
+	'flag that no remake should be produced
+	Const NOREMAKE:Int = 8192
 
-	Const count:Int = 12
+	Const count:Int = 13
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -1310,6 +1312,7 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 			Case SCRIPTED   Return "scripted"
 			Case INVISIBLE  Return "invisible"
 			Case LIVEONTAPE Return "liveontape"
+			Case NOREMAKE   Return "noremake"
 			Default
 				'loop through all flag-entries and add them if contained
 				Local result:String
