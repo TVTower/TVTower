@@ -173,6 +173,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		Local persons:TPersonBaseCollection = GetPersonBaseCollection()
 		Local p:TPersonBase
 		Local np:TPersonBase
+		Local pm:TProductionManager = GetProductionManager()
 		For Local c:TPersonProductionJob = EachIn data.GetCast()
 			Local nc:TPersonProductionJob = c.Copy()
 			p = persons.GetById(nc.personID)
@@ -182,12 +183,17 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 					'no need to replace
 					np = p
 				Else
-					If p.IsInsignificant()
-						np = persons.GetRandomCastableInsignificant(Null, True, True, nc.job, p.gender, True, p.GetCountry())
+					Local amateurs:TPersonBase[] = pm.GetCurrentAvailableAmateurs(nc.job, p.gender, 21, 5, 0)
+					If amateurs And amateurs.length > 0 And randRange(0,10) > 5
+						np = amateurs[randRange(0,amateurs.length-1)]
+					Else
+						If p.IsInsignificant()
+							np = persons.GetRandomCastableInsignificant(Null, True, True, nc.job, p.gender, True, p.GetCountry())
+						EndIf
+						If Not np then np = persons.GetRandomCastableCelebrity(Null, True, True, nc.job, p.gender, True, p.GetCountry())
+						'If Not np then np = persons.GetRandomCastableCelebrity(Null, True, False, nc.job, p.gender, True, p.GetCountry())
+						If Not np then np = persons.GetRandomCastableCelebrity(Null, True, True, nc.job, p.gender, True, "")
 					EndIf
-					If Not np then np = persons.GetRandomCastableCelebrity(Null, True, True, nc.job, p.gender, True, p.GetCountry())
-					'If Not np then np = persons.GetRandomCastableCelebrity(Null, True, False, nc.job, p.gender, True, p.GetCountry())
-					If Not np then np = persons.GetRandomCastableCelebrity(Null, True, True, nc.job, p.gender, True, "")
 				EndIf
 				If np
 					nc.personID=np.GetId()
