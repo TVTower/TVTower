@@ -182,15 +182,14 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 
 
 	Method SetVSync:Int(bool:Int = True) override
-		If vsync <> bool
-			Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
-			If driver and driver.renderer.SetVSync(bool)
-				vsync = bool
-				Return True
-			EndIf
-		EndIf
+		vsync = bool
 
-		Return False
+		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
+		If driver and driver.renderer.SetVSync(bool) = 0
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 	

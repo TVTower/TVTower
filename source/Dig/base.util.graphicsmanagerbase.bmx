@@ -40,6 +40,7 @@ Import BRL.Max2D
 
 Import "base.util.rectangle.bmx"
 Import "base.util.logger.bmx"
+Import "base.util.time.bmx"
 
 
 Type TGraphicsManager
@@ -59,6 +60,14 @@ Type TGraphicsManager
 	Field hertz:Int			= 60
 	Field vsync:Int			= True
 	Field flags:Int			= 0 'GRAPHICS_BACKBUFFER '0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
+
+	'to allow smooth window resizing, the manager disables a previously
+	'activated vsync-flag (eg SDL blocks when waiting for vsync, so 
+	'window resizing with enabled vsync becomes very sluggish)
+	Global windowResizeActive:Int
+	Global _windowResizeLastTime:Long
+	Global _windowResizeVsyncWasOn:Int
+	Global _windowResizeActiveTime:Int = 200 'reactivate vsync X ms after last resize event 
 
 	Field viewportStack:SRectI[] = new SRectI[0]
 	Field viewportStackIndex:Int = -1
@@ -96,7 +105,22 @@ Type TGraphicsManager
 		If Not ev Return Null
 		If ev.id <> EVENT_WINDOWSIZE Then Return Null
 		
+
 		TGraphicsManager.windowSizeValid = False
+
+		'update smooth-resize logic
+		TGraphicsManager._windowResizeActiveTime = Time.MillisecsLong()
+		'deactivate vsync if some resize is happening
+		If Not TGraphicsManager.windowResizeActive
+			TGraphicsManager.windowResizeActive = True
+			'only fetch state on "resize start" (as deactivation sets
+			'vsync value to False.
+			TGraphicsManager._windowResizeVsyncWasOn = TGraphicsManager.GetInstance().vsync
+			If TGraphicsManager._windowResizeVsyncWasOn
+				TGraphicsManager.GetInstance().SetVSync(False)
+			EndIf
+		EndIf
+		'pay attention to re-enable vsync (eg. calling the manager's flip)
 	End Function
 
 
@@ -276,6 +300,10 @@ Type TGraphicsManager
 
 	Method SetVSync:Int(bool:Int = True)
 		If vsync <> bool
+			' avoid window resize smoother to turn on a now manually
+			' deactivated vsync
+			if not bool then _windowResizeVsyncWasOn = False
+
 			vsync = bool
 			Return True
 		Else
@@ -490,6 +518,16 @@ endrem
 		Else
 			If vsync Then .Flip 1 Else .Flip -1
 		EndIf
+
+		'reactivate vsync if it was on before
+		If windowResizeActive and Time.MillisecsLong() > _windowResizeLastTime + _windowResizeActiveTime
+			windowResizeActive = False
+			'was on before, and still wants to be activated
+			If _windowResizeVsyncWasOn
+				SetVSync(True)
+			EndIf
+		EndIf
+
 	End Method
 
 
