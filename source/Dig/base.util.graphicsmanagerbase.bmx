@@ -141,7 +141,7 @@ Type TGraphicsManager
 				If viewportStackIndex >= 0
 					self.SetViewport( viewportStack[viewportStackIndex] )
 				Else
-					self.SetViewport(0,0, canvasSize.x, canvasSize.y)
+					self.ResetViewport()
 				EndIf
 
 				UpdateCanvasInformation()
@@ -222,6 +222,25 @@ Type TGraphicsManager
 	Method SetDesignedSize:Int(width:Int, height:Int)
 		If designedSize.x <> width Or designedSize.y <> height
 			designedSize = New SVec2I(width, height)
+
+			'update virtual resolution if graphics object already exists
+			If _g
+				'update viewport too
+				rem
+				Local oldVirtualResolutionW:Int = VirtualResolutionWidth()
+				Local oldVirtualResolutionH:Int = VirtualResolutionHeight()
+				if width <> oldVirtualResolutionW or oldVirtualResolutionH <> height
+					'TODO - scale viewport?
+				EndIf
+				endrem
+				'for now: simply set viewport to full window again
+
+				'print "SetDesignedSize: virtual res: " + Int(VirtualResolutionWidth())+"x"+Int(VirtualResolutionHeight()) + " -> " + width+"x"+height	
+				SetVirtualResolution(width, height)
+				SetViewport(0, 0, width, height)
+				'print "               : virtual res: " + Int(VirtualResolutionWidth())+"x"+Int(VirtualResolutionHeight()) + " -> " + width+"x"+height	
+			EndIf
+
 			Return True
 		Else
 			Return False
@@ -379,7 +398,11 @@ Type TGraphicsManager
 		SetMaskColor 0, 0, 0
 		HideMouse()
 
-		'SetVirtualResolution(designedSize.x, designedSize.y)
+		'print "SetDesignedSize: virtual res: " + Int(VirtualResolutionWidth())+"x"+Int(VirtualResolutionHeight()) + " -> " + designedSize.x+"x"+designedSize.y	
+		SetVirtualResolution(designedSize.x, designedSize.y)
+		'set viewport to full "canvas"
+		SetViewport(0, 0, designedSize.x, designedSize.y)
+
 	End Method
 	
 	
@@ -442,14 +465,23 @@ Type TGraphicsManager
 
 
 	Method Cls()
-		Local x:Int, y:Int, w:Int, h:Int
-		.GetViewport(x,y,w,h)
-		.SetViewport( 0, 0, windowSize.x, windowSize.y )
 		brl.max2d.Cls()
+	End Method
+
+rem
+	Method Cls()
+		Local x:Int, y:Int, w:Int, h:Int
+		Local vResW:Int = VirtualResolutionWidth()
+		Local vResH:Int = VirtualResolutionHeight()
+		.GetViewport(x,y,w,h)
+		SetVirtualResolution(windowSize.x, windowSize.y)
+		ResetViewport()
+		brl.max2d.Cls()
+		SetVirtualResolution(vResW, vResH)
 		.SetViewport(x,y,w,h)
 '		SetViewport( TVirtualGfx.GetInstance().vxoff, TVirtualGfx.GetInstance().vyoff, TVirtualGfx.GetInstance().vwidth, TVirtualGfx.GetInstance().vheight )
 	End Method
-
+endrem
 
 	Method Flip(restrictFPS:Int=False)
 		'we call "."flip so we call the "original flip function"
@@ -463,16 +495,18 @@ Type TGraphicsManager
 
 	'set viewport to full window, disable logical size
 	Method DisableVirtualResolution:SRectI()
-		local oldViewport:SRectI = self.GetViewPortRect()
+		local oldViewport:SRectI = self.GetViewPort()
+		'print "Disabling viewport: " + oldViewport.x+", "+oldViewport.y+", "+oldViewport.w+", "+oldViewport.h 	+"  virtual res: " + Int(VirtualResolutionWidth())+"x"+Int(VirtualResolutionHeight())	
 		SetVirtualResolution(windowSize.x, windowSize.y)
-		SetViewport(0, 0, windowSize.x, windowSize.y)
+		Self.SetViewport(0, 0, windowSize.x, windowSize.y)
 		Return oldViewport
 	End Method
 	
 
 	Method EnableVirtualResolution(viewport:SRectI)
+		'print "Enabling viewport: " + viewport.x+", "+viewport.y+", "+viewport.w+", "+viewport.h 	+"  virtual res: " + Int(VirtualResolutionWidth())+"x"+Int(VirtualResolutionHeight())	+" -> " + designedSize.x+"x"+designedSize.y
 		SetVirtualResolution(designedSize.x, designedSize.y)
-		SetViewport(viewport.x, viewport.y, viewport.w, viewport.x)
+		Self.SetViewport(viewport.x, viewport.y, viewport.w, viewport.h)
 	End Method
 	
 
@@ -480,8 +514,7 @@ Type TGraphicsManager
 	'(so you can draw on the letterbox areas)
 	'while maintaining the "scaling" factor
 	Method DisableVirtualResolutionLetterbox:SRectI()
-		Local oldViewport:SRectI = self.GetViewPortRect()
-		
+		Local oldViewport:SRectI = self.GetViewPort()
 		Local scaleX:Float = windowSize.x / Float(canvasSize.x)
 		Local scaleY:Float = windowSize.y / Float(canvasSize.y)
 
@@ -490,9 +523,9 @@ Type TGraphicsManager
 		Local extendedDesignedSizeX:Int = ceil(designedSize.x * scaleX)
 		Local extendedDesignedSizeY:Int = ceil(designedSize.y * scaleY)
 
+		'print "Disabling letterbox viewport: " + oldViewport.x+", "+oldViewport.y+", "+oldViewport.w+", "+oldViewport.h 	+"  virtual res: " + Int(VirtualResolutionWidth())+"x"+Int(VirtualResolutionHeight())	+" -> " + extendedDesignedSizeX+"x"+extendedDesignedSizeY
 		SetVirtualResolution(extendedDesignedSizeX, extendedDesignedSizeY)
-		'SetViewport(0, 0, windowSize.x, windowSize.y)
-		SetViewport(-5000, -5000, 5000, 5000)
+		SetViewport(0, 0, extendedDesignedSizeX, extendedDesignedSizeY)
 
 		Return oldViewport
 	End Method
@@ -513,7 +546,7 @@ Type TGraphicsManager
 			if viewportStack.length >= 500 Then Throw "Too many viewports put to stack: " + viewportStack.length
 		endif
 
-		viewPortStack[viewPortStackIndex] = GetViewportRect()
+		viewPortStack[viewPortStackIndex] = GetViewport()
 
 		return viewPortStack[viewPortStackIndex]
 	End Method
@@ -529,24 +562,20 @@ Type TGraphicsManager
 	End Method
 
 
+	Method ResetViewport()
+		SetViewport(0,0, GetWidth(), GetHeight())
+	End Method
+
+
 	Method SetViewport(x:Int, y:Int, w:Int, h:Int)
 		'limit the viewport to the virtual dimension (to disable drawing
 		'on the black bars)
-
 		x = Max(0, x)
 		y = Max(0, y)
 
 		'we call the original max2d-viewport as it updates internal
 		'variables used during image drawing and other functions!
 		.SetViewport(x, y, w, h)
-rem
-		'the . means: access globally defined SetViewPort()
-		.SetViewport(TVirtualGfx.getInstance().vxoff + x, ..
-		             TVirtualGfx.getInstance().vyoff + y, ..
-		             Min(w, TVirtualGfx.getInstance().vWidth - x), ..
-		             Min(h, TVirtualGfx.getInstance().vHeight - y) ..
-		            )
-endrem
 	End Method
 
 
@@ -567,7 +596,7 @@ endrem
 	End Method
 	
 	
-	Method GetViewportRect:SRectI()
+	Method GetViewport:SRectI()
 		Local vpX:int, vpY:int, vpW:int, vpH:Int
 		'the . means: access globally defined SetViewPort()
 		.GetViewport(vpX, vpY, vpW, vpH)

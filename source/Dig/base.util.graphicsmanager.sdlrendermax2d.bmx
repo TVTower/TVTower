@@ -156,17 +156,6 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 	End Function
 
 
-	'set the canvas size the assets are designed for
-	'things get resized according the real canvas size
-	Method SetDesignedSize:Int(width:Int, height:Int) override
-		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
-		If driver
-			driver.renderer.SetLogicalSize(width, height)
-		EndIf
-		Return Super.SetDesignedSize(width, height)
-	End Method
-
-
 	Method RetrieveWindowSize:SVec2I() Override
 		'fetch new window size
 		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
@@ -229,15 +218,7 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set windows to be resizable.", LOG_DEBUG)
 
 		'actually create the graphics object
-		Local g:TGraphics = Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
-
-		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
-		If driver 
-			driver.renderer.SetLogicalSize(windowSize.x, windowSize.y)
-		EndIf
-
-'		SetVirtualResolution(800, 600)
-		Return g
+		Return Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
 	End Method
 
 
