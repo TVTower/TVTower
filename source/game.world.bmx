@@ -381,7 +381,6 @@ Type TWorld
 
 		'reset viewport
 		GetGraphicsManager().SetViewport(vpX, vpY, vpW, vpH)
-		'GetGraphicsManager().SetViewPort(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 	End Method
 
 

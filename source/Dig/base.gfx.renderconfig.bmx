@@ -96,7 +96,7 @@ Type TRenderConfig
 	'Sets the viewport of all configurations overlayed 	(passepartout)
 	Function SetStackedViewPort()
 		if not list or list.count() = 0
-			GetGraphicsManager().SetViewPort(0, 0, GetGraphicsManager().canvasSize.x, GetGraphicsManager().canvasSize.y)
+			GetGraphicsManager().ResetViewport()
 		EndIf
 	
 		local result:SRectI = GetStackedViewPort()
