@@ -441,12 +441,12 @@ Type TGraphicsManager
 
 
 	Method CurrentCanvasMouseX:Int()
-		Return brl.polledInput.MouseX() 'SDL already adds letterbox values
+		Return brl.polledInput.MouseX()
 	End Method
 
 
 	Method CurrentCanvasMouseY:Int()
-		Return brl.polledInput.MouseY() 'SDL already adds letterbox values
+		Return brl.polledInput.MouseY()
 	End Method
 
 
