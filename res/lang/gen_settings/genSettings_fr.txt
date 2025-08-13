@@ -49,6 +49,7 @@ GRAPHICS                    = Graphismes
 MUSIC                       = Musique
 SFX                         = Effets audio
 FULLSCREEN                  = Plein écran
+#WINDOWED_FULLSCREEN         = 
 VSYNC                       = Synchronisation verticale
 RIGHTCLICK_EMULATION              = Emuler clic-droit
 RIGHTCLICK_EMULATION_EXPLANATION  = Simuler un clic-droit avec un clic prolongé gauche ou tactile

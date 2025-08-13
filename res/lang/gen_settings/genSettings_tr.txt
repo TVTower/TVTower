@@ -49,6 +49,7 @@ GRAPHICS                    = Grafik
 MUSIC                       = Müzik
 SFX                         = Ses Efektleri
 FULLSCREEN                  = Tam Ekran
+#WINDOWED_FULLSCREEN         = 
 #VSYNC                       = 
 #RIGHTCLICK_EMULATION              = 
 #RIGHTCLICK_EMULATION_EXPLANATION  = 

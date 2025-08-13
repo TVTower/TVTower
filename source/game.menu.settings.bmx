@@ -22,6 +22,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 	Field dropdownSoundEngine:TGUIDropDown
 	Field dropdownRenderer:TGUIDropDown
 	Field checkFullscreen:TGUICheckbox
+	Field checkWindowedFullscreen:TGUICheckbox
 	Field checkVSync:TGUICheckbox
 	Field inputWindowResolutionWidth:TGUIInput
 	Field inputWindowResolutionHeight:TGUIInput
@@ -252,6 +253,11 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Self.AddChild(checkFullscreen)
 		nextY :+ Max(inputH -5, checkFullscreen.GetScreenRect().GetH())
 
+		checkWindowedFullscreen = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(rowWidth[1] - 10,-1), "")
+		checkWindowedFullscreen.SetCaption(GetLocale("WINDOWED_FULLSCREEN"))
+		Self.AddChild(checkWindowedFullscreen)
+		nextY :+ Max(inputH -5, checkWindowedFullscreen.GetScreenRect().GetH())
+
 		checkVSync = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(rowWidth[1] - 10,-1), "")
 		checkVSync.SetCaption(GetLocale("VSYNC"))
 		Self.AddChild(checkVSync)
@@ -373,7 +379,15 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 
 		data.Add("renderer", dropdownRenderer.GetSelectedEntry().data.GetString("value", "0"))
-		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
+
+		If checkWindowedFullscreen.IsChecked()
+			data.AddNumber("screenMode", TGraphicsManager.SCREENMODE_WINDOWED_FULLSCREEN)
+		ElseIf checkFullscreen.IsChecked()
+			data.AddNumber("screenMode", TGraphicsManager.SCREENMODE_FULLSCREEN)
+		Else
+			data.AddNumber("screenMode", TGraphicsManager.SCREENMODE_WINDOW)
+		EndIf
+
 		data.AddBoolString("vsync", checkVSync.IsChecked())
 		data.Add("screenW", inputWindowResolutionWidth.GetValue())
 		data.Add("screenH", inputWindowResolutionHeight.GetValue())
@@ -411,7 +425,17 @@ Type TGUISettingsPanel Extends TGUIPanel
 		inputAutoSaveInterval.SetValue(data.GetInt("autosaveInterval", 0))
 '		checkMusic.SetChecked(data.GetBool("sound_music", True))
 '		checkSfx.SetChecked(data.GetBool("sound_effects", True))
-		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
+		Select data.GetInt("screenMode", 0)
+			Case TGraphicsManager.SCREENMODE_WINDOWED_FULLSCREEN
+				checkWindowedFullscreen.SetChecked(True)
+'				checkFullscreen.SetChecked(False)
+			Case TGraphicsManager.SCREENMODE_FULLSCREEN
+				'checkWindowedFullscreenFullscreen.SetChecked(False)
+				checkFullscreen.SetChecked(True)
+			Default
+				checkWindowedFullscreen.SetChecked(False)
+				checkFullscreen.SetChecked(False)
+		EndSelect
 		checkVSync.SetChecked(data.GetBool("vsync", True))
 		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
 		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
@@ -522,6 +546,12 @@ Type TGUISettingsPanel Extends TGUIPanel
 				EndIf
 			EndIf
 		EndIf
+		
+		If checkBox = checkFullscreen and checkBox.IsChecked()
+			checkWindowedFullscreen.SetChecked(False)
+		ElseIf checkBox = checkWindowedFullscreen and checkBox.IsChecked()
+			checkFullscreen.SetChecked(False)
+		EndIf
 
 		Return True
 	End Method
@@ -540,16 +570,19 @@ Type TGUISettingsPanel Extends TGUIPanel
 		GetSoundManagerBase().sfxVolume = (0.01 * sliderSFXVolume.GetValue().ToInt())
 		GetSoundManagerBase().SetMusicVolume(0.01 * sliderMusicVolume.GetValue().ToInt())
 		
-		'upate resolution values and hide reset button if needed
-		if knownWindowSize <> GetGraphicsManager().windowSize
-			knownWindowSize = GetGraphicsManager().windowSize
+		'update resolution values and hide reset button if needed
+		'but do not update values to eg. windowed fullscreen
+		If not GetGraphicsManager().IsFullscreen()
+			if knownWindowSize <> GetGraphicsManager().windowSize
+				knownWindowSize = GetGraphicsManager().windowSize
 
-			inputWindowResolutionWidth.SetValue(knownWindowSize.x)
-			inputWindowResolutionHeight.SetValue(knownWindowSize.y)
-			If knownWindowSize <> GetGraphicsManager().designedSize
-				buttonWindowResolutionReset.Show()
-			Else
-				buttonWindowResolutionReset.Hide()
+				inputWindowResolutionWidth.SetValue(knownWindowSize.x)
+				inputWindowResolutionHeight.SetValue(knownWindowSize.y)
+				If knownWindowSize <> GetGraphicsManager().designedSize
+					buttonWindowResolutionReset.Show()
+				Else
+					buttonWindowResolutionReset.Hide()
+				EndIf
 			EndIf
 		EndIf
 				

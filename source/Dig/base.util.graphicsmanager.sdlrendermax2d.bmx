@@ -254,7 +254,13 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set windows to be resizable.", LOG_DEBUG)
 
 		'actually create the graphics object
-		Return Graphics(windowSize.x, windowSize.y, colorDepth*IsFullScreen(), hertz, flags)
+		If fullscreenMode <> SCREENMODE_FULLSCREEN
+			colorDepth = 0 'only exclusive fullscreen allows colorDepth setting
+		EndIf
+
+		Local g:TGraphics = Graphics(windowSize.x, windowSize.y, colorDepth*IsFullScreen(), hertz, flags)
+		
+		Return g
 	End Method
 
 'rem

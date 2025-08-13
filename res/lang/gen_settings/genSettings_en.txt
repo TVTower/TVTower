@@ -49,6 +49,7 @@ GRAPHICS                    = Graphics
 MUSIC                       = Music
 SFX                         = Sound effects
 FULLSCREEN                  = Fullscreen
+WINDOWED_FULLSCREEN         = Windowed Fullscreen
 VSYNC                       = VSync
 RIGHTCLICK_EMULATION              = Emulate right-click
 RIGHTCLICK_EMULATION_EXPLANATION  = Emulate right-click with long-press of left mouse button or touch

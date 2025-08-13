@@ -49,6 +49,7 @@ GRAPHICS                    = Grafik
 MUSIC                       = Musik
 SFX                         = Soundeffekte
 FULLSCREEN                  = Vollbild
+WINDOWED_FULLSCREEN         = Fenster im Vollbildmodus
 VSYNC                       = VSync
 RIGHTCLICK_EMULATION              = Emuliere „Rechte Maustaste“
 RIGHTCLICK_EMULATION_EXPLANATION  = Simuliere Rechtsklick mit lange-drücken-Klick der linken Maustaste oder Touch
