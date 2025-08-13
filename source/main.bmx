@@ -298,13 +298,16 @@ Type TApp
 			GetDeltatimer().Init(updatesPerSecond, obj.config.GetInt("fps", framesPerSecond))
 			GetDeltaTimer()._funcUpdate = update
 			GetDeltaTimer()._funcRender = render
+			
+			Local designedGameW:Int = 800
+			Local designedGameH:Int = 600
 
 			GetGraphicsManager().SetVsync(obj.config.GetBool("vsync", vsync))
-			GetGraphicsManager().SetDesignedSize(800,600)
-			If GetGraphicsManager().GetFullscreen()
-				GetGraphicsManager().InitGraphics(800, 600)
+			GetGraphicsManager().SetDesignedSize(designedGameW, designedGameH)
+			If GetGraphicsManager().IsFullscreen()
+				GetGraphicsManager().InitGraphics(designedGameW, designedGameH)
 			Else
-				GetGraphicsManager().InitGraphics(obj.config.GetInt("screenW", 800), obj.config.GetInt("screenH", 600))
+				GetGraphicsManager().InitGraphics(obj.config.GetInt("screenW", designedGameW), obj.config.GetInt("screenH", designedGameH))
 			EndIf
 
 			GameConfig.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
@@ -511,8 +514,8 @@ Type TApp
 
 
 	Method ApplySettings:Int()
-		If GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False), False)
-			TLogger.Log("ApplySettings()", "SetFullscreen = "+config.GetBool("fullscreen", False), LOG_DEBUG)
+		If GetGraphicsManager().SetScreenMode(config.GetInt("fullscreenMode", False))
+			TLogger.Log("ApplySettings()", "SetFullscreenMode = "+config.GetInt("fullscreenMode", 0), LOG_DEBUG)
 		EndIf
 		If GetGraphicsManager().SetRendererBackend(config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()))
 			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()), LOG_DEBUG)
@@ -526,9 +529,9 @@ Type TApp
 		If GetGraphicsManager().ResizeWindow(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
 			TLogger.Log("ApplySettings()", "SetWindowSize = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
 		EndIf
-		If GetGraphicsManager().GetFullscreen()
-			GetGraphicsManager().ResizeWindow(800, 600)
-		EndIf
+		'If GetGraphicsManager().IsFullscreen()
+		'	GetGraphicsManager().ResizeWindow(800, 600)
+		'EndIf
 
 
 		GameConfig.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0

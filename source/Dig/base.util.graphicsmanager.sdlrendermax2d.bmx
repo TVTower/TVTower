@@ -181,6 +181,33 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 	End Method
 
 
+	Method SetScreenMode:Int(screenMode:Int = 0) Override
+		If screenMode <> self.screenMode
+			'backup last fullscreen mode
+			If self.screenMode = SCREENMODE_WINDOWED_FULLSCREEN or self.screenMode = SCREENMODE_FULLSCREEN
+				lastFullscreenMode = self.screenMode
+			EndIf
+
+			self.screenMode = screenMode 
+
+			'if a window already is created, set mode
+			Local window:TSDLWindow = TSDLGLContext.GetCurrentWindow()
+			If window
+				Select screenMode
+					case SCREENMODE_WINDOW
+						window.SetFullScreen(0)
+					case SCREENMODE_WINDOWED_FULLSCREEN
+						window.SetFullScreen(SDL_WINDOW_FULLSCREEN_DESKTOP)
+					case SCREENMODE_FULLSCREEN
+						window.SetFullScreen(SDL_WINDOW_FULLSCREEN)
+				End Select
+				Return True
+			EndIf
+		EndIf
+		Return False
+	End Method
+
+
 	Method SetVSync:Int(bool:Int = True) override
 		vsync = bool
 
@@ -194,7 +221,17 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 
 	
 	
-	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreen:Int, smoothPixels:Int) override
+	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreenMode:Int, smoothPixels:Int) override
+		If fullscreenMode = SCREENMODE_WINDOWED_FULLSCREEN
+			flags :| SDL_WINDOW_FULLSCREEN_DESKTOP
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use windowed fullscreen mode.", LOG_DEBUG)
+		ElseIf fullscreenMode = SCREENMODE_FULLSCREEN
+			flags :| SDL_WINDOW_FULLSCREEN
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use exclusive fullscreen mode.", LOG_DEBUG)
+		Else
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use window mode.", LOG_DEBUG)
+		EndIf
+
 		If vsync
 			flags :| GRAPHICS_SWAPINTERVAL1
 			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use vertical sync.", LOG_DEBUG)
@@ -217,7 +254,7 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set windows to be resizable.", LOG_DEBUG)
 
 		'actually create the graphics object
-		Return Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
+		Return Graphics(windowSize.x, windowSize.y, colorDepth*IsFullScreen(), hertz, flags)
 	End Method
 
 'rem
@@ -225,7 +262,13 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		'SDL already subtracts letterbox offsets from mouse coordinates
 		' (so negative values left/top of the content)
 		'Return MouseX() 'self.WindowMouseX() - canvasPos.x
-		Return self.WindowMouseX() - canvasPos.x
+
+		Local x:Int = self.WindowMouseX()
+		'make a local coordinate
+		x :- canvasPos.x
+		'also scale it
+		x :* designedSize.x / Float(canvasSize.x)
+		Return x
 	End Method
 
 
@@ -233,7 +276,13 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		'SDL already subtracts letterbox offsets from mouse coordinates
 		' (so negative values left/top of the content)
 		'Return MouseY() 'self.WindowMouseY() - canvasPos.y
-		Return self.WindowMouseY() - canvasPos.y
+		
+		Local y:Int = self.WindowMouseY()
+		'make a local coordinate
+		y :- canvasPos.y
+		'also scale it
+		y :* designedSize.y / Float(canvasSize.y)
+		Return y
 	End Method
 
 
