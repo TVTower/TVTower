@@ -514,8 +514,8 @@ Type TApp
 
 
 	Method ApplySettings:Int()
-		If GetGraphicsManager().SetScreenMode(config.GetInt("screenMode", 0))
-			TLogger.Log("ApplySettings()", "SetScreenMode = "+config.GetInt("screenMode", 0), LOG_DEBUG)
+		If GetGraphicsManager().SetDisplayMode(config.GetInt("displaymode", 0))
+			TLogger.Log("ApplySettings()", "SetDisplayMode = "+config.GetInt("displaymode", 0), LOG_DEBUG)
 		EndIf
 		If GetGraphicsManager().SetRendererBackend(config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()))
 			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()), LOG_DEBUG)

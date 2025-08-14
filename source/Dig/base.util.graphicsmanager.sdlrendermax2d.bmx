@@ -181,26 +181,26 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 	End Method
 
 
-	Method SetScreenMode:Int(screenMode:Int = 0) Override
-		If screenMode <> self.screenMode
+	Method SetDisplayMode:Int(displayMode:Int = 0) Override
+		If displayMode <> self.displayMode
 			'backup last fullscreen mode
-			If self.screenMode = SCREENMODE_WINDOWED_FULLSCREEN or self.screenMode = SCREENMODE_FULLSCREEN
-				lastFullscreenMode = self.screenMode
+			If self.displayMode = DISPLAYMODE_WINDOWED_FULLSCREEN or self.displayMode = DISPLAYMODE_FULLSCREEN
+				lastFullscreenMode = self.displayMode
 			EndIf
 
-			self.screenMode = screenMode 
+			self.displayMode = displayMode
 
 			'if a window already is created, set mode
 			Local window:TSDLWindow = TSDLGLContext.GetCurrentWindow()
 			If window
-				Select screenMode
-					case SCREENMODE_WINDOW
+				Select displayMode
+					case DISPLAYMODE_WINDOW
 						window.SetFullScreen(0)
 						'ensure we have borders again
 						window.SetBordered(1)
-					case SCREENMODE_WINDOWED_FULLSCREEN
+					case DISPLAYMODE_WINDOWED_FULLSCREEN
 						window.SetFullScreen(SDL_WINDOW_FULLSCREEN_DESKTOP)
-					case SCREENMODE_FULLSCREEN
+					case DISPLAYMODE_FULLSCREEN
 						window.SetFullScreen(SDL_WINDOW_FULLSCREEN)
 				End Select
 				Return True
@@ -226,13 +226,13 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreenMode:Int, smoothPixels:Int) override
 		local useSizeW:Int, useSizeH:int
 
-		If fullscreenMode = SCREENMODE_WINDOWED_FULLSCREEN
+		If fullscreenMode = DISPLAYMODE_WINDOWED_FULLSCREEN
 			flags :| SDL_WINDOW_FULLSCREEN_DESKTOP
 			flags :| SDL_WINDOW_BORDERLESS
 			useSizeW = 0 'use desktop sizes
 			useSizeH = 0 
 			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use borderless windowed fullscreen mode.", LOG_DEBUG)
-		ElseIf fullscreenMode = SCREENMODE_FULLSCREEN
+		ElseIf fullscreenMode = DISPLAYMODE_FULLSCREEN
 			flags :| SDL_WINDOW_FULLSCREEN
 			useSizeW = designedSize.x 'try native
 			useSizeH = designedSize.y
@@ -265,7 +265,7 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set windows to be resizable.", LOG_DEBUG)
 
 		'actually create the graphics object
-		If fullscreenMode <> SCREENMODE_FULLSCREEN
+		If fullscreenMode <> DISPLAYMODE_FULLSCREEN
 			colorDepth = 0 'only exclusive fullscreen allows colorDepth setting
 		EndIf
 

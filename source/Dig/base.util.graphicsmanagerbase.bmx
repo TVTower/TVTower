@@ -44,11 +44,11 @@ Import "base.util.time.bmx"
 
 
 Type TGraphicsManager
-	Field screenMode:Int     = 0     '0 = SCREENMODE_WINDOW, 1 = SCREENMODE_WINDOWED_FULLSCREEN, ...
+	Field displayMode:Int = 0     '0 = DISPLAYMODE_WINDOW, 1 = DISPLAYMODE_WINDOWED_FULLSCREEN, ...
 	Field lastFullscreenMode:Int = 0 'previous fullscreen variant used
-	Field renderer:Int		 = 0 'remove
+	Field renderer:Int = 0           'remove
 	Field rendererBackend:Int
-	Field colorDepth:Int	= 16
+	Field colorDepth:Int = 16
 	'drawable canvas dimensions
 	Field canvasPos:SVec2I = New SVec2I(0, 0)
 	Field canvasSize:SVec2I = New SVec2I(800, 600)
@@ -83,9 +83,9 @@ Type TGraphicsManager
 	Const RENDERER_BACKEND_D3D9:Int     = 1
 	Const RENDERER_BACKEND_D3D11:Int    = 2
 	
-	Const SCREENMODE_WINDOW:Int              = 0
-	Const SCREENMODE_WINDOWED_FULLSCREEN:Int = 1
-	Const SCREENMODE_FULLSCREEN:Int          = 2
+	Const DISPLAYMODE_WINDOW:Int              = 0
+	Const DISPLAYMODE_WINDOWED_FULLSCREEN:Int = 1
+	Const DISPLAYMODE_FULLSCREEN:Int          = 2
 
 
 	Function GetInstance:TGraphicsManager()
@@ -277,19 +277,19 @@ Type TGraphicsManager
 	End Method
 	
 	
-	'Switch fullscreen mode
+	'Switch display mode
 	'fullscreenMode:
-	'  SCREENMODE_WINDOW (0)
-	'  SCREENMODE_WINDOWED_FULLSCREEN (1)
-	'  SCREENMODE_FULLSCREEN (2)
-	Method SetScreenMode:Int(screenMode:Int = 0)
-		If screenMode <> self.screenMode
+	'  DISPLAYMODE_WINDOW (0)
+	'  DISPLAYMODE_WINDOWED_FULLSCREEN (1)
+	'  DISPLAYMODE_FULLSCREEN (2)
+	Method SetDisplayMode:Int(displayMode:Int = 0)
+		If displayMode <> self.displayMode
 			'backup last fullscreen mode
-			If self.screenMode = SCREENMODE_WINDOWED_FULLSCREEN or self.screenMode = SCREENMODE_FULLSCREEN
-				lastFullscreenMode = self.screenMode
+			If self.displayMode = DISPLAYMODE_WINDOWED_FULLSCREEN or self.displayMode = DISPLAYMODE_FULLSCREEN
+				lastFullscreenMode = self.displayMode
 			EndIf
 		
-			self.screenMode = screenmode
+			self.displayMode = displayMode
 
 			Return True
 		EndIf
@@ -298,21 +298,21 @@ Type TGraphicsManager
 
 
 	Method IsFullscreen:Int()
-		Return screenMode = SCREENMODE_FULLSCREEN or screenMode = SCREENMODE_WINDOWED_FULLSCREEN
+		Return displayMode = DISPLAYMODE_FULLSCREEN or displayMode = DISPLAYMODE_WINDOWED_FULLSCREEN
 	End Method
 
 
 	'switch between fullscreen or window mode
 	Method SwitchFullscreen:Int()
-		If screenMode = SCREENMODE_WINDOW
+		If displayMode = DISPLAYMODE_WINDOW
 			'switch to windowed fullscreen except last was exclusive fullscreen
-			If lastFullscreenMode <> SCREENMODE_FULLSCREEN
-				SetScreenMode(SCREENMODE_WINDOWED_FULLSCREEN)
+			If lastFullscreenMode <> DISPLAYMODE_FULLSCREEN
+				SetDisplayMode(DISPLAYMODE_WINDOWED_FULLSCREEN)
 			Else
-				SetScreenMode(SCREENMODE_FULLSCREEN)
+				SetDisplayMode(DISPLAYMODE_FULLSCREEN)
 			EndIf
 		Else
-			SetScreenMode(SCREENMODE_WINDOW)
+			SetDisplayMode(DISPLAYMODE_WINDOW)
 		EndIf
 	End Method
 
@@ -425,7 +425,7 @@ Type TGraphicsManager
 		windowSizeValid = False
 
 		Local smoothPixels:Int = False 'TODO: remove/make configurable
-		_g = CreateGraphicsObject(windowSize, colorDepth, hertz, flags, screenMode, smoothPixels)
+		_g = CreateGraphicsObject(windowSize, colorDepth, hertz, flags, displayMode, smoothPixels)
 		
 		'now window is created, allow the driver to update window size
 		'if required
