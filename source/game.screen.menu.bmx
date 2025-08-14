@@ -1130,9 +1130,6 @@ Function DrawMenuBackground(darkened:Int=False, drawLogo:Int = False)
 	'background covers everything
 	If GetGraphicsManager().HasBlackBars()
 		SetClsColor 0,0,0
-		'use graphicsmanager's cls as it resets virtual resolution
-		'first
-		'Cls()
 		GetGraphicsManager().Cls()
 	EndIf
 

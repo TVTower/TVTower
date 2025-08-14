@@ -67,7 +67,6 @@ Type TWorld
 	Field autoRenderClouds:Int = True
 	Field autoRenderLightning:Int = True
 
-	Global useClsMethod:Int = True
 	'reference to a world configuration data set
 	Global _config:TData
 	Global _instance:TWorld
@@ -339,14 +338,9 @@ Type TWorld
 			If lightningEffect Then lightningEffect.ModifySkyColor(skyColor)
 		EndIf
 
-		If useClsMethod
-			SetClsColor(skyColor)
-			Cls
-		Else
-			SetColor(skyColor)
-			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
-			SetColor 255,255,255
-		EndIf
+		SetColor(skyColor)
+		DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
+		SetColor 255,255,255
 
 		If Not disableEffectRendering
 
