@@ -196,6 +196,8 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 				Select screenMode
 					case SCREENMODE_WINDOW
 						window.SetFullScreen(0)
+						'ensure we have borders again
+						window.SetBordered(1)
 					case SCREENMODE_WINDOWED_FULLSCREEN
 						window.SetFullScreen(SDL_WINDOW_FULLSCREEN_DESKTOP)
 					case SCREENMODE_FULLSCREEN
@@ -222,13 +224,22 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 	
 	
 	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreenMode:Int, smoothPixels:Int) override
+		local useSizeW:Int, useSizeH:int
+
 		If fullscreenMode = SCREENMODE_WINDOWED_FULLSCREEN
 			flags :| SDL_WINDOW_FULLSCREEN_DESKTOP
-			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use windowed fullscreen mode.", LOG_DEBUG)
+			flags :| SDL_WINDOW_BORDERLESS
+			useSizeW = 0 'use desktop sizes
+			useSizeH = 0 
+			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use borderless windowed fullscreen mode.", LOG_DEBUG)
 		ElseIf fullscreenMode = SCREENMODE_FULLSCREEN
 			flags :| SDL_WINDOW_FULLSCREEN
+			useSizeW = designedSize.x 'try native
+			useSizeH = designedSize.y
 			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use exclusive fullscreen mode.", LOG_DEBUG)
 		Else
+			useSizeW = windowSize.x 'try native
+			useSizeH = windowSize.y
 			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to use window mode.", LOG_DEBUG)
 		EndIf
 
@@ -258,7 +269,7 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 			colorDepth = 0 'only exclusive fullscreen allows colorDepth setting
 		EndIf
 
-		Local g:TGraphics = Graphics(windowSize.x, windowSize.y, colorDepth*IsFullScreen(), hertz, flags)
+		Local g:TGraphics = Graphics(useSizeW, useSizeH, colorDepth*IsFullScreen(), hertz, flags)
 		
 		Return g
 	End Method
