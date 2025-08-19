@@ -469,6 +469,19 @@ Type TGraphicsManager
 	End Method
 
 
+	Method CurrentCanvasMoveMouse(x:Int, y:Int)
+		MoveMouse(x, y)
+	End Method
+
+
+	Method CurrentCanvasMoveMouseBy(dx:Int, dy:Int)
+		'limit position to "inside canvas"
+		Local x:Int = canvasPos.x + Min(canvasSize.x, Max(0, CurrentCanvasMouseX() + dx))
+		Local y:Int = canvasPos.y + Min(canvasSize.y, Max(0, CurrentCanvasMouseY() + dy))
+		MoveMouse(x, y)
+	End Method
+
+
 	Method WindowMouseX:Int()
 		Return brl.polledInput.MouseX()
 	End Method
@@ -476,6 +489,16 @@ Type TGraphicsManager
 
 	Method WindowMouseY:Int()
 		Return brl.polledInput.MouseY()
+	End Method
+
+
+	Method WindowMoveMouse(x:Int, y:Int)
+		MoveMouse(x, y)
+	End Method
+
+
+	Method WindowMoveMouseBy(dx:Int, dy:Int)
+		MoveMouse(WindowMouseX() + dx, WindowMouseY() + dy)
 	End Method
 	
 	
