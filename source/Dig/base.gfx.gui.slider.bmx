@@ -173,7 +173,7 @@ Type TGUISlider extends TGUIObject
 	End Method
 
 
-	Method SetRelativeValue:Double(percentage:Float)
+	Method SetRelativeValue:Double(percentage:Double)
 '		SetValue(percentage * (maxValue - minValue + 1))
 		SetValue(percentage * (maxValue - minValue))
 		return GetCurrentValue()

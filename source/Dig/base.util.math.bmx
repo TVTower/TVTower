@@ -82,6 +82,11 @@ Type MathHelper
 
 	'returns the value if within limits, else the corresponding border
 	Function Clamp:Float(value:Float, minValue:Float = 0.0, maxValue:Float = 1.0)
+		Return Float(Min(Max(value, minvalue), maxvalue))
+	End Function
+
+
+	Function Clamp:Double(value:Double, minValue:Double = 0.0, maxValue:Double = 1.0)
 		Return Min(Max(value, minvalue), maxvalue)
 	End Function
 
