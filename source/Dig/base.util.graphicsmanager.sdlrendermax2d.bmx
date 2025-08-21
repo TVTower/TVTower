@@ -274,34 +274,6 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		Return g
 	End Method
 
-'rem
-	Method CurrentCanvasMouseX:Int() Override
-		'SDL already subtracts letterbox offsets from mouse coordinates
-		' (so negative values left/top of the content)
-		'Return MouseX() 'self.WindowMouseX() - canvasPos.x
-
-		Local x:Int = self.WindowMouseX()
-		'make a local coordinate
-		x :- canvasPos.x
-		'also scale it
-		x :* designedSize.x / Float(canvasSize.x)
-		Return x
-	End Method
-
-
-	Method CurrentCanvasMouseY:Int() Override
-		'SDL already subtracts letterbox offsets from mouse coordinates
-		' (so negative values left/top of the content)
-		'Return MouseY() 'self.WindowMouseY() - canvasPos.y
-		
-		Local y:Int = self.WindowMouseY()
-		'make a local coordinate
-		y :- canvasPos.y
-		'also scale it
-		y :* designedSize.y / Float(canvasSize.y)
-		Return y
-	End Method
-
 
 	Method WindowMouseX:Int() Override
 		'SDL already subtracts letterbox offsets from mouse coordinates

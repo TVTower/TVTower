@@ -459,26 +459,71 @@ Type TGraphicsManager
 	End Method
 
 
-	Method CurrentCanvasMouseX:Int()
-		Return brl.polledInput.MouseX()
+	Method DesignedMouseX:Int()
+		'TODO: "canvas" as parameter - default to "current canvas"
+
+		Local x:Int = self.WindowMouseX()
+		'make a local coordinate
+		x :- canvasPos.x
+		'also scale it
+		x :* designedSize.x / Float(canvasSize.x)
+		Return x
 	End Method
 
 
-	Method CurrentCanvasMouseY:Int()
-		Return brl.polledInput.MouseY()
+	Method DesignedMouseY:Int()
+		'TODO: "canvas" as parameter - default to "current canvas"
+
+		Local y:Int = self.WindowMouseY()
+		'make a local coordinate
+		y :- canvasPos.y
+		'also scale it
+		y :* designedSize.y / Float(canvasSize.y)
+		Return y
 	End Method
 
 
-	Method CurrentCanvasMoveMouse(x:Int, y:Int)
-		MoveMouse(x, y)
-	End Method
-
-
-	Method CurrentCanvasMoveMouseBy(dx:Int, dy:Int)
+	Method DesignedMoveMouse(x:Int, y:Int)
 		'limit position to "inside canvas"
-		Local x:Int = canvasPos.x + Min(canvasSize.x, Max(0, CurrentCanvasMouseX() + dx))
-		Local y:Int = canvasPos.y + Min(canvasSize.y, Max(0, CurrentCanvasMouseY() + dy))
-		MoveMouse(x, y)
+		Local cx:Int = Min(canvasSize.x, Max(0, x))
+		Local cy:Int = Min(canvasSize.y, Max(0, y))
+
+		'"+ 0.5" to avoid rounding 1.7 to 1.0 through "integerizing"
+		Local winX:Int = Int(cx * canvasSize.x / Float(designedSize.x) + canvasPos.x + 0.5)
+		Local winY:Int = Int(cy * canvasSize.y / Float(designedSize.y) + canvasPos.y + 0.5)
+		MoveMouse(200, 200)
+	End Method
+
+
+	Method DesignedMoveMouseBy(dx:Int, dy:Int)
+		DesignedMoveMouse(DesignedMouseX() + dx, DesignedMouseY() + dy)
+	End Method
+
+
+	Method CanvasMouseX:Int()
+		Local x:Int = self.WindowMouseX()
+		x :- canvasPos.x
+		Return x
+	End Method
+
+
+	Method CanvasMouseY:Int()
+		Local y:Int = self.WindowMouseY()
+		y :- canvasPos.y
+		Return y
+	End Method
+
+
+	Method CanvasMoveMouse(x:Int, y:Int)
+		' limit position to inside canvas
+		Local cx:Int = Min(canvasSize.x, Max(0, x))
+		Local cy:Int = Min(canvasSize.y, Max(0, y))
+
+		' transform to window coordinates
+		Local winX:Int = cx + canvasPos.x
+		Local winY:Int = cy + canvasPos.y
+
+		MoveMouse(winX, winY)
 	End Method
 
 
@@ -502,14 +547,74 @@ Type TGraphicsManager
 	End Method
 	
 	
-	Method WindowCoordinateToCurrentCanvasCoordinate:SVec2I(x:Int, y:Int)
+	'Transforms a window coordinate to a designed coordinate.
+	'This includes scaling.
+	'Set "makeLocalCoordinate" to false" to ignore a letterbox
+	Method WindowToDesignedCoordinate:SVec2I(x:Int, y:Int, makeLocalCoordinate:Int = True)
+		'make local when rendering with active virtual resolution
+		If makeLocalCoordinate
+			x :- canvasPos.x
+			y :- canvasPos.y
+		EndIf
+
 		' scale
 		x :* (designedSize.x / Float(canvasSize.x))
 		y :* (designedSize.y / Float(canvasSize.y))
 		Return New SVec2I(x, y)
 	End Method
+
+
+	Method DesignedToWindowCoordinate:SVec2I(x:Int, y:Int, makeGlobalCoordinate:Int = True)
+		' inverse scale
+		x :* (canvasSize.x / Float(designedSize.x))
+		y :* (canvasSize.y / Float(designedSize.y))
+
+		'keep global?
+		If Not makeGlobalCoordinate
+			x :+ canvasPos.x
+			y :+ canvasPos.y
+		EndIf
+
+		Return New SVec2I(x, y)
+	End Method
+
+
+	'Transforms a window coordinate to a canvas coordinate.
+	'This just removes the letterbox offset.
+	Method WindowToCanvasCoordinate:SVec2I(x:Int, y:Int)
+		x :- canvasPos.x
+		y :- canvasPos.y
+		Return New SVec2I(x, y)
+	End Method
+
+
+	'Transforms a canvas coordinate to a window coordinate.
+	'This just adds the letterbox offset.
+	Method CanvasToWindowCoordinate:SVec2I(x:Int, y:Int)
+		x :+ canvasPos.x
+		y :+ canvasPos.y
+		Return New SVec2I(x, y)
+	End Method
+
+
+	'Transforms a canvas coordinate to a designed coordinate.
+	'This applies scaling.
+	Method CanvasToDesignedCoordinate:SVec2I(x:Int, y:Int)
+		x :* (designedSize.x / Float(canvasSize.x))
+		y :* (designedSize.y / Float(canvasSize.y))
+		Return New SVec2I(x, y)
+	End Method
+
+
+	'Transforms a designed coordinate to a canvas coordinate.
+	'This applies inverse scaling.
+	Method DesignedToCanvasCoordinate:SVec2I(x:Int, y:Int)
+		x :* (canvasSize.x / Float(designedSize.x))
+		y :* (canvasSize.y / Float(designedSize.y))
+		Return New SVec2I(x, y)
+	End Method
 	
-	
+
 	Method ResetVirtualGraphicsArea()
 	End Method
 
@@ -671,8 +776,6 @@ endrem
 	Method GetViewport(x:Int Var, y:Int Var, w:Int Var, h:Int Var)
 		'the . means: access globally defined SetViewPort()
 		.GetViewport(x, y, w, h)
-'		x :- TVirtualGfx.getInstance().vxoff
-'		y :- TVirtualGfx.getInstance().vyoff
 	End Method
 	
 	
@@ -682,12 +785,6 @@ endrem
 		.GetViewport(vpX, vpY, vpW, vpH)
 
 		Return New SRectI(vpX, vpY, vpW, vpH)
-rem
-		Return New SRectI(vpX - TVirtualGfx.getInstance().vxoff, ..
-		                  vpY - TVirtualGfx.getInstance().vyoff, ..
-		                  vpW, ..
-		                  vpH)
-endrem
 	End Method
 		
 

@@ -2731,7 +2731,7 @@ Type TScreenHandler_StationMap
 	Function Navigate:Int(key:Int, xDelta:Int, yDelta:Int)
 		If KEYMANAGER.IsDown(key)
 			'MoveMouse(MouseManager.evMousePosX+xDelta, MouseManager.evMousePosY+yDelta)
-			GetGraphicsManager().CurrentCanvasMoveMouseBy(xDelta, yDelta)
+			GetGraphicsManager().DesignedMoveMouseBy(xDelta, yDelta)
 			KEYMANAGER.blockKey(key, 100)
 			Return True
 		EndIf

@@ -626,8 +626,8 @@ Type TMouseManager
 		'store last position
 		_lastPos.SetXY(x, y)
 		'update current position
-		x = GetGraphicsManager().CurrentCanvasMouseX()
-		y = GetGraphicsManager().CurrentCanvasMouseY()
+		x = GetGraphicsManager().DesignedMouseX()
+		y = GetGraphicsManager().DesignedMouseY()
 		currentPos.x = x
 		currentPos.y = y
 

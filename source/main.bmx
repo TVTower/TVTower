@@ -1436,10 +1436,15 @@ endrem
 		GUIManager.Draw(systemState)
 
 
+		Local vrW:Int = VirtualResolutionWidth()
+		Local vrH:int = VirtualResolutionHeight()
+		Local vp:SRectI = GetGraphicsManager().GetViewport()
+
+'Rem
 		'disable virtual resolution letterbox so we can draw mouse cursor
 		'and other stuff also over letterbox bars
 		Local currentVirtualResolutionVP:SRectI = GetGraphicsManager().DisableVirtualResolutionLetterbox()
-
+'EndRem		
 		'mnouse cursor
 '		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 		local cursorOffsetX:Int
@@ -1450,7 +1455,7 @@ endrem
 		'to adjust its position
 		Local cursorX:Int = GetGraphicsManager().WindowMouseX()
 		Local cursorY:Int = GetGraphicsManager().WindowMouseY()
-		Local cursorPos:SVec2I = GetGraphicsManager().WindowCoordinateToCurrentCanvasCoordinate(cursorX, cursorY)
+		Local cursorPos:SVec2I = GetGraphicsManager().WindowToDesignedCoordinate(cursorX, cursorY, False)
 		
 		Select GetGameBase().GetCursor()
 			'drag indicator
@@ -1496,26 +1501,34 @@ endrem
 				GetSpriteFromRegistry("gfx_mousecursor_extra_forbidden").Draw(cursorPos.x - cursorOffsetX, cursorPos.y - cursorOffsetY)
 				SetAlpha oldA
 		End Select
-		
+
+'Rem
+		'draw at original size (unscaled)
+		GetGraphicsManager().DisableVirtualResolution()
 		SetColor 0,0,0
-		DrawRect(0,0,220,150)
+		DrawRect(0,0,200,180)
 		SetColor 255,255,255
 		Local tY:Int = 5
 		DrawText("Virtual Resolution:", 5, tY)
 		DrawText("-> MouseManagerXY:  " + Mousemanager.x+", "+Mousemanager.y, 5, tY+1*12)
 		DrawText("-> MouseXY:  " + MouseX()+", "+MouseY(), 5, tY+2*12)
-		DrawText("-> GCanvasMouseXY: " + GetGraphicsManager().CurrentCanvasMouseX()+", "+GetGraphicsManager().CurrentCanvasMouseY(), 5, tY+4*12)
-		DrawText("-> GWindowMouseXY: " + GetGraphicsManager().WindowMouseX()+", "+GetGraphicsManager().WindowMouseY(), 5, tY+5*12)
-
-		tY = 90
-		DrawText("windowSize: " + GetGraphicsManager().windowSize.x+", "+GetGraphicsManager().windowSize.y, 5, tY+0*12)
-		DrawText("canvasSize: " + GetGraphicsManager().canvasSize.x+", "+GetGraphicsManager().canvasSize.y + " (Pos: " + GetGraphicsManager().canvasPos.x+", "+GetGraphicsManager().canvasPos.y+")", 5, tY+1*12)
-		DrawText("designedSize: " + GetGraphicsManager().designedSize.x+", "+GetGraphicsManager().designedSize.y, 5, tY+2*12)
+		DrawText("-> G.DesignedMouseXY: " + GetGraphicsManager().DesignedMouseX()+", "+GetGraphicsManager().DesignedMouseY(), 5, tY+4*12)
+		DrawText("-> G.WindowMouseXY: " + GetGraphicsManager().WindowMouseX()+", "+GetGraphicsManager().WindowMouseY(), 5, tY+5*12)
+		Local msX:Int, msY:Int
+		MouseState(varptr msX, varptr msY)
+		DrawText("-> SDL-Mouse-State XY: " + msX+", "+msY, 5, tY+6*12)
+		
+		DrawText("windowSize: " + GetGraphicsManager().windowSize.x+", "+GetGraphicsManager().windowSize.y, 5, tY+7*12)
+		DrawText("canvasSize: " + GetGraphicsManager().canvasSize.x+", "+GetGraphicsManager().canvasSize.y + " (Pos: " + GetGraphicsManager().canvasPos.x+", "+GetGraphicsManager().canvasPos.y+")", 5, tY+8*12)
+		DrawText("designedSize: " + GetGraphicsManager().designedSize.x+", "+GetGraphicsManager().designedSize.y, 5, tY+9*12)
+		
+		DrawText("viewport: " + vp.x+", "+vp.y+", "+vp.w+", "+vp.h, 5, tY+11*12)
+		DrawText("virtual res: " + vrW+", "+vrH, 5, tY+12*12)
+		
 
 		' restore virtual resolution stuff / letterbox
 		GetGraphicsManager().EnableVirtualResolution(currentVirtualResolutionVP)
-
-'		DrawOval(MouseManager.x-2, MouseManager.y-2, 4,4)
+'endrem
 
 
 		'if a screenshot is generated, draw a logo in
@@ -3716,6 +3729,12 @@ Type TScreen_MainMenu Extends TGameScreen
 	'override default update
 	Method Update:Int(deltaTime:Float)
 		Super.Update(deltaTime)
+
+			TScreenHandler_StationMap.Navigate(KEY_UP, 0, -1)
+			TScreenHandler_StationMap.Navigate(KEY_DOWN, 0, 1) 
+			TScreenHandler_StationMap.Navigate(KEY_LEFT, -1, 0)
+			TScreenHandler_StationMap.Navigate(KEY_RIGHT, 1, 0)
+
 
 		'if gamesettings screen is still missing: disable buttons
 		'-> resources not finished loading
