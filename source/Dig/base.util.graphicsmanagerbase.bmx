@@ -459,10 +459,12 @@ Type TGraphicsManager
 	End Method
 
 
-	Method DesignedMouseX:Int()
+	'the designed mouse position must be a float, as the virtual canvas
+	'can be scaled into the real canvas (and window)
+	Method DesignedMouseX:Float()
 		'TODO: "canvas" as parameter - default to "current canvas"
 
-		Local x:Int = self.WindowMouseX()
+		Local x:Float = self.WindowMouseX()
 		'make a local coordinate
 		x :- canvasPos.x
 		'also scale it
@@ -471,10 +473,12 @@ Type TGraphicsManager
 	End Method
 
 
-	Method DesignedMouseY:Int()
+	'the designed mouse position must be a float, as the virtual canvas
+	'can be scaled into the real canvas (and window)
+	Method DesignedMouseY:Float()
 		'TODO: "canvas" as parameter - default to "current canvas"
 
-		Local y:Int = self.WindowMouseY()
+		Local y:Float = self.WindowMouseY()
 		'make a local coordinate
 		y :- canvasPos.y
 		'also scale it
@@ -483,21 +487,27 @@ Type TGraphicsManager
 	End Method
 
 
-	Method DesignedMoveMouse(x:Int, y:Int)
-		'limit position to "inside canvas"
-		Local cx:Int = Min(canvasSize.x, Max(0, x))
-		Local cy:Int = Min(canvasSize.y, Max(0, y))
+	Method DesignedMoveMouse(x:Float, y:Float)
+		' clamp to virtual canvas (design area) 
+		Local cx:Float = Min(designedSize.x-1, Max(0, x))
+		Local cy:Float = Min(designedSize.y-1, Max(0, y))
 
-		'"+ 0.5" to avoid rounding 1.7 to 1.0 through "integerizing"
-		Local winX:Int = Int(cx * canvasSize.x / Float(designedSize.x) + canvasPos.x + 0.5)
-		Local winY:Int = Int(cy * canvasSize.y / Float(designedSize.y) + canvasPos.y + 0.5)
-		MoveMouse(200, 200)
+		' window positions (Float)
+		Local winX:Float = cx * canvasSize.x / Float(designedSize.x) + canvasPos.x
+		Local winY:Float = cy * canvasSize.y / Float(designedSize.y) + canvasPos.y
+		
+		' clamp to canvas?
+		'winX = Max(canvasPos.x, Min(canvasPos.x + canvasSize.x - 1, winX))
+		'winX = Max(canvasPos.y, Min(canvasPos.y + canvasSize.y - 1, winX))
+
+		'print "DesignedMoveMouseBy("+dx+", "+dy+") designedMouse: " + DesignedMouseX()+","+DesignedMouseY() + " -> "+cx+","+cy + "  //  canvasScale="+(canvasSize.x / Float(designedSize.x))+", " + (canvasSize.y / Float(designedSize.y)) + "  //  windowMouse: " + WindowMouseX()+","+WindowMouseY() +" -> " + winX+", " + winY + " -> " + Int(winX) +"," + Int(winY)
+		MoveMouse(Int(winX + 0.5), Int(winY + 0.5))
 	End Method
 
 
-	Method DesignedMoveMouseBy(dx:Int, dy:Int)
+	Method DesignedMoveMouseBy(dx:Float, dy:Float)
 		DesignedMoveMouse(DesignedMouseX() + dx, DesignedMouseY() + dy)
-	End Method
+   	End Method
 
 
 	Method CanvasMouseX:Int()
