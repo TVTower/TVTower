@@ -3730,12 +3730,6 @@ Type TScreen_MainMenu Extends TGameScreen
 	Method Update:Int(deltaTime:Float)
 		Super.Update(deltaTime)
 
-			TScreenHandler_StationMap.Navigate(KEY_UP, 0, -1)
-			TScreenHandler_StationMap.Navigate(KEY_DOWN, 0, 1) 
-			TScreenHandler_StationMap.Navigate(KEY_LEFT, -1, 0)
-			TScreenHandler_StationMap.Navigate(KEY_RIGHT, 1, 0)
-
-
 		'if gamesettings screen is still missing: disable buttons
 		'-> resources not finished loading
 		If Not ScreenGameSettings
