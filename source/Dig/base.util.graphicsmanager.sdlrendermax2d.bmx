@@ -97,9 +97,9 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		'potential sdl renderer names as returned by the function
 		'the names should be ordered to correspond to "max2D" numbers
 		'means at least OpenGL, D3D9 and D3D11 should be in order (0, 1, 2)
-		Local sdlRendererNamesRAW:String[] = ["opengl", "direct3d",   "direct3d11",  "direct3d12",  "opengles",    "opengles2", "metal", "vulkan", "gpu", "software"]
+		Local sdlRendererNamesRAW:String[] = ["opengl", "direct3d",   "direct3d11",  "direct3d12",  "opengles",    "opengles2", "metal", "vulkan", "software"]
 		'potential sdl renderer names in a ready-for-print variant
-		Local sdlRendererNames:String[]    = ["OpenGL", "Direct3D 9", "Direct3D 11", "Direct3D 12", "OpenGL ES 2", "OpenGL ES", "Metal", "Vulkan", "GPU", "Software"]
+		Local sdlRendererNames:String[]    = ["OpenGL", "Direct3D 9", "Direct3D 11", "Direct3D 12", "OpenGL ES 2", "OpenGL ES", "Metal", "Vulkan", "Software"]
 
 		'add all SDL renderer existing in Max2D
 		'(so IDs between Max2D and SDLRender stay consistent)
