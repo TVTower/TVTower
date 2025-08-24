@@ -1549,7 +1549,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'quality bonus for recent release: 1.5 for age 0 years, 1.45 for 1 year,...
 		'due to max(0, max) the age factor will always be >= 1
-		Local age:Float = 1 + 0.05 * Max(0, 10 - Max(0, GetWorldTime().GetYear() - GetYear()) )
+		Local age:Float = 1 + 0.05 * Max(0, 10 - Max(0, (GetWorldTime().GetTimeGone() - GetReleaseTime())/GetWorldTime().GetYearLength() ))
 		quality :* age
 
 		'the more the programme got repeated, the lower the quality in
