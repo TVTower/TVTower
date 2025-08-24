@@ -59,8 +59,8 @@ Extern
 	Function lua_tobbstring:String( L:Byte Ptr,index:Int )
 	Function lua_pushbbstring:Int( L:Byte Ptr,s:String )
 
-	Function Luaengine_bbRefFieldPtr:Byte Ptr( obj:Object,index:Int )
-	Function Luaengine_bbRefPushObject( p:Byte Ptr,obj:Object )
+	Function Luaengine_bbRefObjectFieldPtr:Byte Ptr( obj:Object, offset:Size_t )
+	Function Luaengine_bbRefAssignObject( p:Byte Ptr, obj:Object )
 	Function Luaengine_bbRefGetSuperClass:Byte Ptr( obj:Object )
 	Function Luaengine_bbRefGetObjectClass:Byte Ptr( obj:Object )
 	Function lua_LowerStringHash:ULong( L:Byte Ptr,index:Int )
@@ -130,7 +130,7 @@ Type TLuaReflectionChild
 
 	Method ArgPush(index:Int, value:String)
 		Local p:Byte Ptr = varptr _args[index]
-		LuaEngine_bbRefPushObject(p, value)
+		LuaEngine_bbRefAssignObject(p, value)
 	End Method
 	
 	Method ArgPush(index:Int, value:Object, typeid:TTypeId)
@@ -144,7 +144,7 @@ Type TLuaReflectionChild
 ?
 			EndIf
 		EndIf
-		Luaengine_bbRefPushObject(p, value)
+		Luaengine_bbRefAssignObject(p, value)
 	End Method
 
 
@@ -1461,8 +1461,8 @@ Type TLuaEngine
 				Local types:TTypeID[]
 				Repeat
 					types = [currentTypeID] + types
-					currentTypeID = currentTypeID._super
-				Until Not currentTypeID._super
+					currentTypeID = currentTypeID.SuperType()
+				Until Not currentTypeID.SuperType()
 				
 				For currentTypeID = EachIn types
 					Local typeName:String = currentTypeID.name()
@@ -1477,9 +1477,8 @@ Type TLuaEngine
 						endif
 					endif
 
-					For local map:TStringMap = EachIn [currentTypeID.Functions(), currentTypeID.Methods(), currentTypeID.Fields(), currentTypeID.Constants()]
-						For local key:String = EachIn map.Keys()
-							Local m:TMember = TMember(map.ValueForKey(key))
+					For local list:TList = EachIn [currentTypeID.Functions(), currentTypeID.Methods(), currentTypeID.Fields(), currentTypeID.Constants()]
+						For Local m:TMember = EachIn list
 							'only add non-private etc.
 							If m.HasMetaData("_private") or (exposeType = "selected" And Not m.MetaData("_exposeToLua"))
 								continue
@@ -1495,7 +1494,8 @@ Type TLuaEngine
 							ElseIf TGlobal(m)
 								c._ref = TGlobal(m)._ref 
 							EndIf
-							reflectionType.children.Insert(Long(key.ToLower().Hash()), c)
+
+							reflectionType.children.Insert(Long(m.Name().ToLower().Hash()), c)
 						Next
 					Next
 				Next
@@ -1885,10 +1885,10 @@ Type TLuaEngine
 
 		Local result:Int
 		If func
-			result = TLuaReflectionChild._CallFunction(func._ref, func._typeID._retType, child._args, argTypes.length, _luaState, _objMetaTable)
+			result = TLuaReflectionChild._CallFunction(func.FunctionPtr(), func.TypeID().ReturnType(), child._args, argTypes.length, _luaState, _objMetaTable)
 			child.ArgReset() 'remove potential refs
 		ElseIf mth
-			result = TLuaReflectionChild._CallMethod(mth._ref, mth._typeID._retType, obj, child._args, argTypes.length, _luaState, _objMetaTable)
+			result = TLuaReflectionChild._CallMethod(mth.FunctionPtr(), mth.TypeID().ReturnType(), obj, child._args, argTypes.length, _luaState, _objMetaTable)
 			child.ArgReset() 'remove potential refs
 		EndIf
 		If result

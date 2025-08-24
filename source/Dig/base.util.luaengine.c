@@ -7,17 +7,17 @@
 #include <pub.mod/lua.mod/lua-5.1.4/src/lua.h>
 
 //from brl.reflection
-BBClass *Luaengine_bbRefGetObjectClass( BBObject *p ){
+BBClass* Luaengine_bbRefGetObjectClass(BBObject* p) {
 	return p->clas;
 }
-BBClass *Luaengine_bbRefGetSuperClass( BBClass *clas ){
+BBClass* Luaengine_bbRefGetSuperClass(BBClass* clas) {
 	return clas->super;
 }
-void Luaengine_bbRefPushObject( BBObject **p,BBObject *t ){
-	*p=t;
+void Luaengine_bbRefAssignObject(BBObject** p, BBObject* t) {
+	*p = t;
 }
-void *Luaengine_bbRefFieldPtr( BBObject *obj,int index ){
-	return (char*)obj+index;
+void* Luaengine_bbRefObjectFieldPtr(BBObject* obj, size_t offset) {
+	return (char*)obj + offset;
 }
 
 
