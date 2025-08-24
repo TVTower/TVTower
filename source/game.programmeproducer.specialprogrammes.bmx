@@ -120,7 +120,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 				If data.GetReleaseTime() <= nextRemakeTime Then Continue
 				If data.IsCustomProduction() Then Continue
 				If data.HasFlag(TVTProgrammeDataFlag.LIVE+TVTProgrammeDataFlag.LIVEONTAPE+TVTProgrammeDataFlag.PAID) Then Continue
-				'ignore fictional entries - (no explicit flag - inspect cast
+				'ignore fictional entries (no explicit flag - inspect cast)
 				isFictional = False
 				cast=data.GetCast()
 				If Not cast Or cast.length = 0 Then Continue
@@ -148,7 +148,8 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.NOREMAKE)
 			candidateFilter.SetNotDataFlag(TVTProgrammeDataFlag.PAID)
 			'TODO number of remakes depending on number of days per season?
-			'5, one movie per day per player (candidates may be excluded due to cast reference)
+			'currently 5 fix, one movie per day per player
+			'(candidates may be excluded due to cast reference)
 			Local toRemake:TProgrammeLicence[] = GetProgrammeLicenceCollection().GetRandomsByFilter(candidateFilter, 5)
 			For Local l:TProgrammeLicence = EachIn toRemake
 				addRemake(l, now)
@@ -163,7 +164,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 
 		If data.title.ContainsString(":~qcast~q:") Or data.description.ContainsString(":~qcast~q:") Then
 			data.SetFlag(TVTProgrammeDataFlag.NOREMAKE, True)
-			print "texts contain cast reference - no remake for "+data.getTitle()
+			'print "texts contain cast reference - no remake for "+data.getTitle()
 			return
 		EndIf
 
@@ -208,7 +209,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 		nd.proPressureGroups = data.proPressureGroups
 		nd.contraPressureGroups = data.contraPressureGroups
 
-		'TODO randomize?
+		'randomize?
 		nd.outcome=data.outcome
 		nd.review=data.review
 		nd.speed=data.speed
