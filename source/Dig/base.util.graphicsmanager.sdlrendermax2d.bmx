@@ -61,7 +61,13 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 
 	Method ResizeWindow:Int(width:Int, height:Int) Override
 		'bigger than initial resolution!
-		Local window:TSDLWindow = TSDLGLContext.GetCurrentWindow()
+		'requires sdl.mod from 07/2025 or newer
+		Local window:TSDLWindow
+		Local driver:TSDLRenderMax2DDriver = TSDLRenderMax2DDriver(brl.max2d._max2dDriver)
+		If driver
+			window = driver.GetWindow()
+		EndIf
+		
 		'alternatively (recent sdl.mod commits):
 		'Local window:TSDLWindow = SDLRenderMax2DDriver().GetCurrentWindow()
 		If window
