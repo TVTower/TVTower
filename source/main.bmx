@@ -1436,17 +1436,11 @@ endrem
 		GUIManager.Draw(systemState)
 
 
-		Local vrW:Int = VirtualResolutionWidth()
-		Local vrH:int = VirtualResolutionHeight()
-		Local vp:SRectI = GetGraphicsManager().GetViewport()
-
-'Rem
 		'disable virtual resolution letterbox so we can draw mouse cursor
 		'and other stuff also over letterbox bars
 		Local currentVirtualResolutionVP:SRectI = GetGraphicsManager().DisableVirtualResolutionLetterbox()
-'EndRem		
+
 		'mnouse cursor
-'		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 		local cursorOffsetX:Int
 		local cursorOffsetY:Int
 		local cursorSprite:TSprite
@@ -1501,34 +1495,37 @@ endrem
 				GetSpriteFromRegistry("gfx_mousecursor_extra_forbidden").Draw(cursorPos.x - cursorOffsetX, cursorPos.y - cursorOffsetY)
 				SetAlpha oldA
 		End Select
+		
+		
 
-'Rem
-		'draw at original size (unscaled)
-		GetGraphicsManager().DisableVirtualResolution()
-		SetColor 0,0,0
-		DrawRect(0,0,200,180)
-		SetColor 255,255,255
-		Local tY:Int = 5
-		DrawText("Virtual Resolution:", 5, tY)
-		DrawText("-> MouseManagerXY:  " + Mousemanager.x+", "+Mousemanager.y, 5, tY+1*12)
-		DrawText("-> MouseXY:  " + MouseX()+", "+MouseY(), 5, tY+2*12)
-		DrawText("-> G.DesignedMouseXY: " + GetGraphicsManager().DesignedMouseX()+", "+GetGraphicsManager().DesignedMouseY(), 5, tY+4*12)
-		DrawText("-> G.WindowMouseXY: " + GetGraphicsManager().WindowMouseX()+", "+GetGraphicsManager().WindowMouseY(), 5, tY+5*12)
-		Local msX:Int, msY:Int
-		MouseState(varptr msX, varptr msY)
-		DrawText("-> SDL-Mouse-State XY: " + msX+", "+msY, 5, tY+6*12)
-		
-		DrawText("windowSize: " + GetGraphicsManager().windowSize.x+", "+GetGraphicsManager().windowSize.y, 5, tY+7*12)
-		DrawText("canvasSize: " + GetGraphicsManager().canvasSize.x+", "+GetGraphicsManager().canvasSize.y + " (Pos: " + GetGraphicsManager().canvasPos.x+", "+GetGraphicsManager().canvasPos.y+")", 5, tY+8*12)
-		DrawText("designedSize: " + GetGraphicsManager().designedSize.x+", "+GetGraphicsManager().designedSize.y, 5, tY+9*12)
-		
-		DrawText("viewport: " + vp.x+", "+vp.y+", "+vp.w+", "+vp.h, 5, tY+11*12)
-		DrawText("virtual res: " + vrW+", "+vrH, 5, tY+12*12)
-		
+		'---- virtual resolution debug information
+		Local showVirtualResolutionDebug:Int = False
+		If showVirtualResolutionDebug
+			Local virtualResolutionDebugX:Int = 5
+			Local virtualResolutionDebugY:Int = 5
+			'draw at original size (unscaled)
+			GetGraphicsManager().DisableVirtualResolution()
+			SetColor 0,0,0
+			Local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.5
+			DrawRect(0,0,215,160)
+			SetAlpha oldAlpha
+			SetColor 255,255,255
+			DrawText("Virtual Resolution:", virtualResolutionDebugX, virtualResolutionDebugY)
+			DrawText(" MouseManagerXY:  " + Mousemanager.x + ", " + Mousemanager.y, virtualResolutionDebugX, virtualResolutionDebugY+1*12)
+			DrawText(" MouseXY:  " + MouseX() + ", " + MouseY(), virtualResolutionDebugX, virtualResolutionDebugY+2*12)
+			DrawText(" GM.DesignedMouseXY: " + MathHelper.NumberToString(GetGraphicsManager().DesignedMouseX(), 2) + ", " + MathHelper.NumberToString(GetGraphicsManager().DesignedMouseY(), 2), virtualResolutionDebugX, virtualResolutionDebugY+4*12)
+			DrawText(" GM.WindowMouseXY: " + GetGraphicsManager().WindowMouseX() + ", " + GetGraphicsManager().WindowMouseY(), virtualResolutionDebugX, virtualResolutionDebugY+5*12)
+			
+			DrawText(" GM.windowSize: " + GetGraphicsManager().windowSize.x + ", " + GetGraphicsManager().windowSize.y, virtualResolutionDebugX, virtualResolutionDebugY+7*12)
+			DrawText(" GM.canvasSize: " + GetGraphicsManager().canvasSize.x + ", " + GetGraphicsManager().canvasSize.y + " (Pos: " + GetGraphicsManager().canvasPos.x+", "+GetGraphicsManager().canvasPos.y+")", virtualResolutionDebugX, virtualResolutionDebugY+8*12)
+			DrawText(" GM.designedSize: " + GetGraphicsManager().designedSize.x + ", " + GetGraphicsManager().designedSize.y, virtualResolutionDebugX, virtualResolutionDebugY+9*12)
+			DrawText(" virtResViewport: " + currentVirtualResolutionVP.x+", "+currentVirtualResolutionVP.y+", "+currentVirtualResolutionVP.w+", "+currentVirtualResolutionVP.h, virtualResolutionDebugX, virtualResolutionDebugY+11*12)
+		EndIf
+		'----
 
 		' restore virtual resolution stuff / letterbox
 		GetGraphicsManager().EnableVirtualResolution(currentVirtualResolutionVP)
-'endrem
 
 
 		'if a screenshot is generated, draw a logo in
