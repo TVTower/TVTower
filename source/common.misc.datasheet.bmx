@@ -198,11 +198,11 @@ Type TDatasheetSkin
 		local barW:int = w - cb.GetLeft() - cb.GetRight()
 		if secondProgress > progress
 			SetAlpha GetAlpha()*0.25
-			spriteBarFilled.DrawArea(x + cB.GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + cB.GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
+			spriteBarFilled.DrawArea(x + cB.GetLeft(), y, barW, h, -1, 0, True, New SRectI(Int(x + cB.GetLeft() + progress*barW), Int(y), Int(barW*(secondProgress-progress)), Int(h)))
 			SetAlpha GetAlpha()*4.0
 		endif
 		if progress > 0
-			spriteBarFilled.DrawArea(x + cB.GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + cB.GetLeft(), y, barW*progress, h))
+			spriteBarFilled.DrawArea(x + cB.GetLeft(), y, barW, h, -1, 0, True, New SRectI(Int(x + cB.GetLeft()), Int(y), Int(barW*progress), Int(h)))
 		endif
 	End Method
 

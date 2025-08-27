@@ -14,11 +14,15 @@
 
 	<fullscreen>FALSE</fullscreen>
 	<!-- possible values:
-		OPENGL         = 0
-		DIRECTX7       = 1
-		DIRECTX9       = 2
-		DIRECTX11      = 3
-		BUFFEREDOPENGL = 4
+		OPENGL         = 0 (Linux, Windows, macOS only)
+		DIRECTX9       = 1 (Windows only)
+		DIRECTX11      = 2 (Windows only)
+		DIRECTX12      = 3 (Windows only)
+		OPEN GLES      = 4 (Android, Raspberry Pi)
+		OPEN GLES 2    = 5 (ARM based OS)
+		METAL          = 6 (macOS, iOS only)
+		(VULKAN        = 7 (not available yet))
+		SOFTWARE       = 8
 	-->
 	<renderer>0</renderer>
 	<colordepth>16</colordepth>

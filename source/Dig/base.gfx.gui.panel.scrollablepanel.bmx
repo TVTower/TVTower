@@ -136,7 +136,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 
 	Method DrawDebug()
-		SetViewport(0,0, 800, 600)
+		GetGraphicsManager().ResetViewport()
 		SetAlpha 0.3
 		SetColor 255,255,0
 		DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())

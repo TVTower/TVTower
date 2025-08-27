@@ -14,7 +14,7 @@ Type TRenderConfig
 	Field scaleX:Float, scaleY:Float
 	Field originX:Float, originY:Float
 	Field rotation:Float
-	Field viewport:SRect
+	Field viewport:SRectI
 
 	Global list:TList = CreateList()
 	Global _stackedViewport:TRectangle = new TRectangle
@@ -35,7 +35,7 @@ Type TRenderConfig
 		SetOrigin(config.originX, config.originY)
 		SetScale(config.scaleX, config.scaleY)
 		SetRotation(config.rotation)
-		GetGraphicsManager().setViewPort(int(config.viewport.x), int(config.viewport.y), int(config.viewport.w), int(config.viewport.h))
+		GetGraphicsManager().setViewPort(config.viewport.x, config.viewport.y, config.viewport.w, config.viewport.h)
 
 		return config
 	End Function
@@ -64,7 +64,7 @@ Type TRenderConfig
 		GetScale(config.scaleX, config.scaleY)
 		config.rotation = GetRotation()
 		local x:int,y:int,w:int,h:int; GetGraphicsManager().GetViewPort(x, y, w, h)
-		config.viewport = new SRect(x,y,w,h)
+		config.viewport = new SRectI(x,y,w,h)
 
 		list.AddLast(config)
 		return config
@@ -72,8 +72,8 @@ Type TRenderConfig
 
 
 	'returns the viewport of all configurations overlayed 	(passepartout)
-	Function GetStackedViewPort:SRect()
-		local result:SRect
+	Function GetStackedViewPort:SRectI()
+		local result:SRectI
 		local isFirst:Int = True
 
 		For local config:TRenderConfig = EachIn list
@@ -96,10 +96,10 @@ Type TRenderConfig
 	'Sets the viewport of all configurations overlayed 	(passepartout)
 	Function SetStackedViewPort()
 		if not list or list.count() = 0
-			GetGraphicsManager().SetViewPort(0, 0, GetGraphicsManager().realWidth, GetGraphicsManager().realHeight)
+			GetGraphicsManager().ResetViewport()
 		EndIf
 	
-		local result:SRect = GetStackedViewPort()
-		GetGraphicsManager().SetViewPort(int(result.x), int(result.y), int(result.w), int(result.h))
+		local result:SRectI = GetStackedViewPort()
+		GetGraphicsManager().SetViewPort(result.x, result.y, result.w, result.h)
 	End Function
 End Type

@@ -21,10 +21,11 @@ Type TGUISettingsPanel Extends TGUIPanel
 '	Field checkSfx:TGUICheckbox
 	Field dropdownSoundEngine:TGUIDropDown
 	Field dropdownRenderer:TGUIDropDown
-	Field checkFullscreen:TGUICheckbox
+	Field dropdownDisplayMode:TGUIDropDown
 	Field checkVSync:TGUICheckbox
 	Field inputWindowResolutionWidth:TGUIInput
 	Field inputWindowResolutionHeight:TGUIInput
+	Field buttonWindowResolutionReset:TGUIButton
 	Field inputGameName:TGUIInput
 	Field inputInRoomSlowdown:TGUIInput
 	Field inputAutoSaveInterval:TGUIInput
@@ -41,6 +42,9 @@ Type TGUISettingsPanel Extends TGUIPanel
 	Field labelRightClickEmulationTimeMilliseconds:TGUILabel
 	Field labelTouchClickRadiusPixel:TGUILabel
 	Field labelTouchClickRadius:TGUILabel
+	
+	'cache to avoid costly lookups
+	Field knownWindowSize:SVec2I
 
 	Field _eventListeners:TEventListenerBase[]
 
@@ -217,12 +221,17 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local rendererTexts:String[]
 
 		'fill with all available renderers
-		For Local i:Int = 0 Until TGraphicsManager.RENDERER_AVAILABILITY.length
-			If TGraphicsManager.RENDERER_AVAILABILITY[i]
+		For Local i:Int = 0 Until TGraphicsManager.RENDERER_BACKEND_AVAILABILITY.length
+			If TGraphicsManager.RENDERER_BACKEND_AVAILABILITY[i]
 				rendererValues :+ [String(i)] 'i is the same key here
-				rendererTexts :+ [ TGraphicsManager.RENDERER_NAMES[i] ]
+				rendererTexts :+ [ TGraphicsManager.RENDERER_BACKEND_NAMES[i] ]
 			EndIf
 		Next
+		
+		If rendererValues.length = 0
+			rendererValues :+ [""]
+			rendererTexts :+ [ GetLocale("ERROR_NOT_POSSIBLE") ]
+		EndIf
 
 		itemHeight = 0
 		For Local i:Int = 0 Until rendererValues.Length
@@ -238,10 +247,25 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Self.AddChild(dropdownRenderer)
 		nextY :+ inputH + guiDistance + 3
 
-		checkFullscreen = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(rowWidth[1] - 10,-1), "")
-		checkFullscreen.SetCaption(GetLocale("FULLSCREEN"))
-		Self.AddChild(checkFullscreen)
-		nextY :+ Max(inputH -5, checkFullscreen.GetScreenRect().GetH())
+
+		Local labelDisplayMode:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("DISPLAY_MODE") + ":")
+		dropdownDisplayMode = New TGUIDropDown.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(inputWidth,-1), "", 128)
+
+		itemHeight = 0
+		Local displayModesNum:Int[] = [TGraphicsManager.DISPLAYMODE_WINDOW, TGraphicsManager.DISPLAYMODE_WINDOWED_FULLSCREEN, TGraphicsManager.DISPLAYMODE_FULLSCREEN]
+		Local displayModes:String[] = [GetLocale("WINDOWED"), GetLocale("WINDOWED_FULLSCREEN"), GetLocale("FULLSCREEN")]
+		For Local i:Int = 0 Until displayModes.Length
+			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), GUI_DIM_AUTOSIZE, displayModes[i])
+			item.SetValueColor(TColor.CreateGrey(50))
+			item.data.AddNumber("value", displayModesNum[i])
+			dropdownDisplayMode.AddItem(item)
+			If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
+		Next
+		dropdownDisplayMode.SetListContentHeight(itemHeight * displayModes.length)
+
+		Self.AddChild(labelDisplayMode)
+		Self.AddChild(dropdownDisplayMode)
+		nextY :+ inputH + guiDistance + 3
 
 		checkVSync = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(rowWidth[1] - 10,-1), "")
 		checkVSync.SetCaption(GetLocale("VSYNC"))
@@ -249,15 +273,24 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ Max(inputH, checkVSync.GetScreenRect().GetH())
 
 		Local labelWindowResolution:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("WINDOW_MODE_RESOLUTION")+":")
-		inputWindowResolutionWidth = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(inputWidth/2 - 15,-1), "", 4)
-		inputWindowResolutionHeight = New TGUIInput.Create(New SVec2I(nextX + inputWidth/2 + 15, nextY + labelH), New SVec2I(inputWidth/2 - 15,-1), "", 4)
-		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + inputWidth/2 - 4, nextY + labelH + 4), "x")
+		inputWindowResolutionWidth = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(inputWidth/2 - 33,-1), "", 4)
+		inputWindowResolutionHeight = New TGUIInput.Create(New SVec2I(nextX + inputWidth/2 - 11, nextY + labelH), New SVec2I(inputWidth/2 - 33,-1), "", 4)
+		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New SVec2I(nextX + inputWidth/2 - 26, nextY + labelH + 4), "x")
+
+		buttonWindowResolutionReset = New TGUIButton.Create(New SVec2I(nextX + inputWidth - 25, nextY + labelH), New SVec2I(25, inputH), "X", "SETTINGS")
+		buttonWindowResolutionReset.SetSpriteName("gfx_gui_button.round")
+		buttonWindowResolutionReset.Hide() 'hide by default
+
 		Self.AddChild(labelWindowResolution)
 		Self.AddChild(labelWindowResolutionX)
 		Self.AddChild(inputWindowResolutionWidth)
 		Self.AddChild(inputWindowResolutionHeight)
-		nextY :+ inputH + 5 + guiDistance
+		Self.AddChild(buttonWindowResolutionReset)
 
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickButtonWindowResolutionReset", buttonWindowResolutionReset) ]
+
+
+		nextY :+ inputH + labelH + 5
 
 		'MULTIPLAYER
 		nextY = 0
@@ -355,7 +388,9 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 
 		data.Add("renderer", dropdownRenderer.GetSelectedEntry().data.GetString("value", "0"))
-		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
+
+		data.AddNumber("displayMode", dropdownDisplayMode.GetSelectedEntry().data.GetInt("value", 0))
+
 		data.AddBoolString("vsync", checkVSync.IsChecked())
 		data.Add("screenW", inputWindowResolutionWidth.GetValue())
 		data.Add("screenH", inputWindowResolutionHeight.GetValue())
@@ -393,10 +428,6 @@ Type TGUISettingsPanel Extends TGUIPanel
 		inputAutoSaveInterval.SetValue(data.GetInt("autosaveInterval", 0))
 '		checkMusic.SetChecked(data.GetBool("sound_music", True))
 '		checkSfx.SetChecked(data.GetBool("sound_effects", True))
-		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
-		checkVSync.SetChecked(data.GetBool("vsync", True))
-		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
-		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
 		checkTouchInput.SetChecked(data.GetBool("touchInput", MouseManager._ignoreFirstClick))
 		inputTouchClickRadius.SetValue(Max(5, data.GetInt("touchClickRadius", MouseManager._minSwipeDistance)))
 		checkRightClickEmulation.SetChecked(data.GetBool("rightClickEmulation", MouseManager._longClickLeadsToRightClick))
@@ -447,10 +478,34 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Next
 		'select the first if nothing was preselected
 		If Not selectedDropDownItem
-			dropdownRenderer.SetSelectedEntryByPos(0)
+			If dropdownRenderer.GetEntries().Count() > 0
+				dropdownRenderer.SetSelectedEntryByPos(0)
+			EndIf
 		Else
 			dropdownRenderer.SetSelectedEntry(selectedDropDownItem)
 		EndIf
+
+
+		'check available display modes entries
+		selectedDropDownItem = Null
+		For Local item:TGUIDropDownItem = EachIn dropdownDisplayMode.GetEntries()
+			Local displayMode:Int = item.data.GetInt("value")
+			'if the same mode then select it
+			If displayMode = data.getInt("displayMode", 0)
+				selectedDropDownItem = item
+				Exit
+			EndIf
+		Next
+		'select the first if nothing was preselected
+		If Not selectedDropDownItem
+			dropdownDisplayMode.SetSelectedEntryByPos(0)
+		Else
+			dropdownDisplayMode.SetSelectedEntry(selectedDropDownItem)
+		EndIf
+
+		checkVSync.SetChecked(data.GetBool("vsync", True))
+		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
+		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
 
 
 		inputGameName.SetValue(data.GetString("gamename", "New Game"))
@@ -502,15 +557,54 @@ Type TGUISettingsPanel Extends TGUIPanel
 				EndIf
 			EndIf
 		EndIf
-
+		
 		Return True
 	End Method
 
 
+	Method OnClickButtonWindowResolutionReset:Int(event:TEventBase)
+		inputWindowResolutionWidth.SetValue(GetGraphicsManager().designedSize.x)
+		inputWindowResolutionHeight.SetValue(GetGraphicsManager().designedSize.y)
+
+		buttonWindowResolutionReset.Hide()
+	End Method
+		
+		
 	Method Update:Int()
 		'dynamically update sounds
 		GetSoundManagerBase().sfxVolume = (0.01 * sliderSFXVolume.GetValue().ToInt())
 		GetSoundManagerBase().SetMusicVolume(0.01 * sliderMusicVolume.GetValue().ToInt())
+
+		'disable/enable screen dimension inputs?
+		rem
+		local item:TGUIDropDownItem = TGUIDropDownItem(dropdownDisplayMode.GetSelectedEntry())
+		if item 
+			If item.data.GetInt("value") <> TGraphicsManager.DISPLAYMODE_WINDOW	
+				inputWindowResolutionWidth.Disable()
+				inputWindowResolutionHeight.Disable()
+			Else
+				inputWindowResolutionWidth.Enable()
+				inputWindowResolutionHeight.Enable()
+			EndIf
+		EndIf
+		endrem
+		
+		'update resolution values and hide reset button if needed
+		'but do not update values to eg. windowed fullscreen
+		If not GetGraphicsManager().IsFullscreen()
+			if knownWindowSize <> GetGraphicsManager().windowSize
+				knownWindowSize = GetGraphicsManager().windowSize
+
+				inputWindowResolutionWidth.SetValue(knownWindowSize.x)
+				inputWindowResolutionHeight.SetValue(knownWindowSize.y)
+				If knownWindowSize <> GetGraphicsManager().designedSize
+					buttonWindowResolutionReset.Show()
+				Else
+					buttonWindowResolutionReset.Hide()
+				EndIf
+			EndIf
+		EndIf
+				
 
 		Return Super.Update()
 	End Method

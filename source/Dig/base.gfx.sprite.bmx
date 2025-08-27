@@ -227,11 +227,11 @@ Type TNinePatchInformation
 			skipLines = 1
 		EndIf
 
-		'  �= L ====== R = �			ROW ROW ROW ROW
+		'  째= L ====== R = 째			ROW ROW ROW ROW
 		'  T               T		COL
 		'  |               |		COL
 		'  B               B		COL
-		'  �= L ====== R = �		COL
+		'  째= L ====== R = 째		COL
 
 		Local minVal:Int = 0, maxVal:Int = 0
 
@@ -284,7 +284,7 @@ Type TSprite
 	Field frameW:Int
 	Field frameH:Int
 	Field frames:Int
-	'amount of rotation: 0=none, 90=90캽lockwise, -90=90캻nti-clockwise
+	'amount of rotation: 0=none, 90=90째clockwise, -90=90째anti-clockwise
 	Field rotated:Int = 0
 	Field parent:TSpritePack
 	Field _pix:TPixmap = Null
@@ -697,6 +697,15 @@ Type TSprite
 	'draw the sprite covering an area (if ninePatch is enabled, the
 	'stretching is only done on the center of the sprite)
 	Method DrawArea:Int(x:Float, y:Float, width:Float=-1, height:Float=-1, frame:Int=-1, skipBorders:Int = 0, clipRect:TRectangle = Null, forceTileMode:Int = 0)
+		if clipRect
+			Return DrawArea(x, y, width, height, frame, skipBorders, True, New SRectI(Int(clipRect.x), Int(clipRect.y), Int(clipRect.w), Int(clipRect.h)), forceTileMode) 
+		Else
+			Return DrawArea(x, y, width, height, frame, skipBorders, False, Null, forceTileMode) 
+		EndIf
+	End Method
+
+
+	Method DrawArea:Int(x:Float, y:Float, width:Float=-1, height:Float=-1, frame:Int=-1, skipBorders:Int = 0, doClipping:Int, clipRect:SRectI, forceTileMode:Int = 0)
 		If width=-1 Then width = area.GetW()
 		If height=-1 Then height = area.GetH()
 		If frames <= 0 Then frame = -1
@@ -768,12 +777,13 @@ Type TSprite
 			Local sourceY2:Int = sourceY1 + ninePatch.borderDimension.GetTop()
 			Local sourceY3:Int = sourceY2 + ninePatch.centerDimension.y
 
-			Local vpx:Int, vpy:Int, vpw:Int, vph:Int
-			If clipRect
-				GetGraphicsManager().GetViewport(vpx, vpy, vpw, vph)
-				Local intersectingVP:SRect = clipRect.IntersectSRectXYWH(vpx, vpy, vpw, vph)
+			Local currentViewport:SRectI
+			If doClipping
+				currentViewport = GetGraphicsManager().GetViewport()
+				Local intersectingVP:SRectI = clipRect.IntersectRect(currentViewport)
+
 				If intersectingVP.w > 0 and intersectingVP.h > 0
-					GetGraphicsManager().SetViewport(Int(intersectingVP.x), Int(intersectingVP.y), Int(intersectingVP.w), Int(intersectingVP.h))
+					GetGraphicsManager().SetViewport(intersectingVP.x, intersectingVP.y, intersectingVP.w, intersectingVP.h)
 				EndIf
 			EndIf
 
@@ -781,45 +791,45 @@ Type TSprite
 			'top
 			If ninePatch.borderDimension.GetTop()
 				If ninePatch.borderDimension.GetLeft()
-					DrawResized( targetX1, targetY1, targetW1, targetH1, sourceX1, sourceY1, ninePatch.borderDimension.GetLeft(), ninePatch.borderDimension.GetTop(), frame, False, clipRect )
+					DrawResized( targetX1, targetY1, targetW1, targetH1, sourceX1, sourceY1, ninePatch.borderDimension.GetLeft(), ninePatch.borderDimension.GetTop(), frame, False, doClipping, clipRect )
 				EndIf
 
-				DrawResized( targetX2, targetY1, targetW2, targetH1, sourceX2, sourceY1, ninePatch.centerDimension.x, ninePatch.borderDimension.GetTop(), frame, False, clipRect, tileMode )
+				DrawResized( targetX2, targetY1, targetW2, targetH1, sourceX2, sourceY1, ninePatch.centerDimension.x, ninePatch.borderDimension.GetTop(), frame, False, doClipping, clipRect, tileMode )
 
 				If ninePatch.borderDimension.GetRight()
-					DrawResized( targetX3, targetY1, targetW3, targetH1, sourceX3, sourceY1, ninePatch.borderDimension.GetRight(), ninePatch.borderDimension.GetTop(), frame, False, clipRect )
+					DrawResized( targetX3, targetY1, targetW3, targetH1, sourceX3, sourceY1, ninePatch.borderDimension.GetRight(), ninePatch.borderDimension.GetTop(), frame, False, doClipping, clipRect )
 				EndIf
 			EndIf
 
 
 			'middle
 			If ninePatch.borderDimension.GetLeft()
-				DrawResized( targetX1 , targetY2, targetW1, targetH2, sourceX1, sourceY2, ninePatch.borderDimension.GetLeft(), ninePatch.centerDimension.y, frame, False, clipRect, tileMode )
+				DrawResized( targetX1 , targetY2, targetW1, targetH2, sourceX1, sourceY2, ninePatch.borderDimension.GetLeft(), ninePatch.centerDimension.y, frame, False, doClipping, clipRect, tileMode )
 			EndIf
 
-			DrawResized( targetX2, targetY2, targetW2, targetH2, sourceX2, sourceY2, ninePatch.centerDimension.x, ninePatch.centerDimension.y, frame, False, clipRect, tileMode )
+			DrawResized( targetX2, targetY2, targetW2, targetH2, sourceX2, sourceY2, ninePatch.centerDimension.x, ninePatch.centerDimension.y, frame, False, doClipping, clipRect, tileMode )
 
 			If ninePatch.borderDimension.GetRight()
-				DrawResized( targetX3, targetY2, targetW3, targetH2, sourceX3, sourceY2, ninePatch.borderDimension.GetRight(), ninePatch.centerDimension.y, frame, False, clipRect, tileMode )
+				DrawResized( targetX3, targetY2, targetW3, targetH2, sourceX3, sourceY2, ninePatch.borderDimension.GetRight(), ninePatch.centerDimension.y, frame, False, doClipping, clipRect, tileMode )
 			EndIf
 
 
 			'bottom
 			If ninePatch.borderDimension.GetBottom()
 				If ninePatch.borderDimension.GetLeft()
-					DrawResized( targetX1, targetY3, targetW1, targetH3, sourceX1, sourceY3, ninePatch.borderDimension.GetLeft(), ninePatch.borderDimension.GetBottom(), frame, False, clipRect )
+					DrawResized( targetX1, targetY3, targetW1, targetH3, sourceX1, sourceY3, ninePatch.borderDimension.GetLeft(), ninePatch.borderDimension.GetBottom(), frame, False, doClipping, clipRect )
 				EndIf
 
-				DrawResized( targetX2, targetY3, targetW2, targetH3, sourceX2, sourceY3, ninePatch.centerDimension.x, ninePatch.borderDimension.GetBottom(), frame, False, clipRect, tileMode)
+				DrawResized( targetX2, targetY3, targetW2, targetH3, sourceX2, sourceY3, ninePatch.centerDimension.x, ninePatch.borderDimension.GetBottom(), frame, False, doClipping, clipRect, tileMode)
 
 				If ninePatch.borderDimension.GetRight()
-					DrawResized( targetX3, targetY3, targetW3, targetH3, sourceX3, sourceY3, ninePatch.borderDimension.GetRight(), ninePatch.borderDimension.GetBottom(), frame, False, clipRect )
+					DrawResized( targetX3, targetY3, targetW3, targetH3, sourceX3, sourceY3, ninePatch.borderDimension.GetRight(), ninePatch.borderDimension.GetBottom(), frame, False, doClipping, clipRect )
 				EndIf
 			EndIf
 
 			'reset viewport if it was modified
-			If clipRect
-				GetGraphicsManager().SetViewport(vpX, vpY, vpW, vpH)
+			If doClipping
+				GetGraphicsManager().SetViewport(currentViewport)
 			EndIf
 		EndIf
 	End Method
@@ -828,6 +838,17 @@ Type TSprite
 	'draw the sprite resized/stretched
 	'source is a rectangle within sprite.area
 	Method DrawResized(tX:Float, tY:Float, tW:Float, tH:Float, sX:Float, sY:Float, sW:Float, sH:Float, frame:Int=-1, drawCompleteImage:Int=False, clipRect:TRectangle = Null, forceTileMode:Int = 0)
+		if clipRect
+			DrawResized(tX, tY, tW, tH, sX, sY, sW, sH, frame, drawCompleteImage, True, New SRectI(Int(clipRect.x), Int(clipRect.y), Int(clipRect.w), Int(clipRect.h)), forceTileMode)
+		Else
+			DrawResized(tX, tY, tW, tH, sX, sY, sW, sH, frame, drawCompleteImage, False, Null, forceTileMode)
+		EndIf
+	End Method
+
+
+	'draw the sprite resized/stretched
+	'source is a rectangle within sprite.area
+	Method DrawResized(tX:Float, tY:Float, tW:Float, tH:Float, sX:Float, sY:Float, sW:Float, sH:Float, frame:Int=-1, drawCompleteImage:Int=False, doClipping:Int, clipRect:SRectI, forceTileMode:Int = 0)
 		If frames <= 0 Then frame = -1
 		If drawCompleteImage Then frame = -1
 
@@ -888,18 +909,17 @@ Type TSprite
 '			endif
 		EndIf
 
-		If clipRect
+		If doClipping
 			'check if render area is outside of clipping area
-			If Not clipRect.IntersectsXYWH(tX, tY, tW, tH) Then Return
+			If Not clipRect.Intersects(Int(tX), int(tY), Int(ceil(tW)), Int(ceil(tH))) Then Return
 
 
 			'limit viewport to intersection of current VP and clipping area
-			Local vpx:Int, vpy:Int, vpw:Int, vph:Int
-			GetGraphicsManager().GetViewport(vpx, vpy, vpw, vph)
+			Local currentViewport:SRectI = GetGraphicsManager().GetViewport()
 
-			Local intersectingVP:SRect = clipRect.IntersectSRectXYWH(vpx, vpy, vpw, vph)
-			If intersectingVP.w > 0 and intersectingVP.h > 0
-				GetGraphicsManager().SetViewport(Int(intersectingVP.x), Int(intersectingVP.y), Int(intersectingVP.w), Int(intersectingVP.h))
+			Local intersectingViewport:SRectI = clipRect.IntersectRect(currentViewport)
+			If intersectingViewport.w > 0 and intersectingViewport.h > 0
+				GetGraphicsManager().SetViewport(intersectingViewport)
 					If forceTileMode = TILEMODE_UNDEFINED Then forceTileMode = tileMode
 
 					If forceTileMode = TILEMODE_UNDEFINED Or forceTileMode = TILEMODE_STRETCHED
@@ -922,7 +942,8 @@ Type TSprite
 							x :+ Int(sW)
 						Wend
 					EndIf
-				GetGraphicsManager().SetViewport(vpx, vpy, vpw, vph)
+				'reset to previous viewport
+				GetGraphicsManager().SetViewport(currentViewport)
 			EndIf
 		Else
 			If tileMode = 0 'stretched

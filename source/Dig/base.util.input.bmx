@@ -44,7 +44,7 @@ Import brl.PolledInput
 Import Math.vector
 Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
-Import "base.util.virtualgraphics.bmx"
+Import "base.util.graphicsmanagerbase.bmx"
 Import "base.util.objectqueue.bmx"
 
 Global MOUSEMANAGER:TMouseManager = New TMouseManager
@@ -626,8 +626,8 @@ Type TMouseManager
 		'store last position
 		_lastPos.SetXY(x, y)
 		'update current position
-		x = TVirtualGfx.getInstance().VMouseX()
-		y = TVirtualGfx.getInstance().VMouseY()
+		x = GetGraphicsManager().DesignedMouseX()
+		y = GetGraphicsManager().DesignedMouseY()
 		currentPos.x = x
 		currentPos.y = y
 

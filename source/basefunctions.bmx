@@ -3,7 +3,6 @@ Import brl.pngloader
 Import "Dig/base.util.rectangle.bmx"
 Import "Dig/base.util.input.bmx"
 Import "Dig/base.util.localization.bmx"
-Import "Dig/base.util.virtualgraphics.bmx"
 Import "Dig/base.util.xmlhelper.bmx"
 Import "Dig/base.util.helper.bmx"
 Import "Dig/base.util.string.bmx"

@@ -293,21 +293,22 @@ Type TApp
 			'override default settings with app arguments (params when executing)
 			obj.ApplyAppArguments()
 			'do not init graphics, this is done some lines later
-			obj.ApplySettings(False)
+			obj.ApplySettings()
 
 			GetDeltatimer().Init(updatesPerSecond, obj.config.GetInt("fps", framesPerSecond))
 			GetDeltaTimer()._funcUpdate = update
 			GetDeltaTimer()._funcRender = render
+			
+			Local designedGameW:Int = 800
+			Local designedGameH:Int = 600
 
 			GetGraphicsManager().SetVsync(obj.config.GetBool("vsync", vsync))
-			'GetGraphicsManager().SetResolution(1024,768)
-			If GetGraphicsManager().GetFullscreen()
-				GetGraphicsManager().SetResolution(800, 600)
+			GetGraphicsManager().SetDesignedSize(designedGameW, designedGameH)
+			If GetGraphicsManager().IsFullscreen()
+				GetGraphicsManager().InitGraphics(designedGameW, designedGameH)
 			Else
-				GetGraphicsManager().SetResolution(obj.config.GetInt("screenW", 800), obj.config.GetInt("screenH", 600))
+				GetGraphicsManager().InitGraphics(obj.config.GetInt("screenW", designedGameW), obj.config.GetInt("screenH", designedGameH))
 			EndIf
-			GetGraphicsManager().SetDesignedResolution(800,600)
-			GetGraphicsManager().InitGraphics()
 
 			GameConfig.InRoomTimeSlowDownMod = obj.config.GetInt("inroomslowdown", 100) / 100.0
 			GameConfig.autoSaveIntervalHours = obj.config.GetInt("autosaveInterval", 0)
@@ -367,27 +368,31 @@ Type TApp
 
 			Select arg.ToLower()
 				?Win32
-				Case "-directx7", "-directx"
-					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 7", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX7)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX7)
-				Case "-directx9"
+				Case "-directx9", "-directx"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 9", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX9)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX9)
+					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_D3D9)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_D3D9)
+				?
 				Case "-directx11"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: DirectX 11", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_DIRECTX11)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_DIRECTX11)
+					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_D3D11)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_D3D11)
 				?
 				Case "-opengl"
 					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: OpenGL", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_OPENGL)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_OPENGL)
-				Case "-bufferedopengl"
-					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Buffered OpenGL", LOG_LOADING)
-					GetGraphicsManager().SetRenderer(GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BUFFEREDOPENGL)
+					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_OPENGL)
+					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_OPENGL)
+				?macos
+				Case "-metal"
+					Local metalRendererIndex:Int = GetGraphicsManager().GetRendererBackend("metal")
+					If GetGraphicsManager().IsRendererAvailable(metalRendererIndex)
+						TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Metal", LOG_LOADING)
+						GetGraphicsManager().SetRendererBackend(metalRendererIndex)
+						config.AddNumber("renderer", metalRendererIndex)
+					Else
+						TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Metal. Failed (Metal backend not available)", LOG_LOADING)
+					EndIf
+				?
 			End Select
 		Next
 	End Method
@@ -513,55 +518,31 @@ Type TApp
 	End Method
 
 
-	Method ApplySettings:Int(doInitGraphics:Int = True)
-		Local adjusted:Int = False
-		If GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False), False)
-			TLogger.Log("ApplySettings()", "SetFullscreen = "+config.GetBool("fullscreen", False), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
+	Method ApplySettings:Int()
+		If GetGraphicsManager().SetDisplayMode(config.GetInt("displaymode", 0))
+			TLogger.Log("ApplySettings()", "SetDisplayMode = "+config.GetInt("displaymode", 0), LOG_DEBUG)
 		EndIf
-		If GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
-			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRenderer()), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
+		If GetGraphicsManager().SetRendererBackend(config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()))
+			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRendererBackend()), LOG_DEBUG)
 		EndIf
 		If GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
 			TLogger.Log("ApplySettings()", "SetColordepth = "+config.GetInt("colordepth", -1), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
 		EndIf
 		If GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
 			TLogger.Log("ApplySettings()", "SetVSync = "+config.GetBool("vsync", False), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
 		EndIf
-		If GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
-			TLogger.Log("ApplySettings()", "SetResolution = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
-			'until GLSDL works as intended:
-			?Not bmxng
-			adjusted = True
-			?
+		If GetGraphicsManager().ResizeWindow(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
+			TLogger.Log("ApplySettings()", "SetWindowSize = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
 		EndIf
-		If GetGraphicsManager().GetFullscreen()
-			GetGraphicsManager().SetResolution(800, 600)
-		EndIf
-		If adjusted And doInitGraphics Then GetGraphicsManager().InitGraphics()
+		'If GetGraphicsManager().IsFullscreen()
+		'	GetGraphicsManager().ResizeWindow(800, 600)
+		'EndIf
 
 
 		GameConfig.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
 		GameConfig.autoSaveIntervalHours = config.GetInt("autosaveInterval", 0)
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
-
-		adjusted = False
 
 
 
@@ -679,7 +660,7 @@ Type TApp
 			filename = "screenshot_"+padded+".png"
 		Wend
 
-		Local img:TPixmap = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
+		Local img:TPixmap = GetGraphicsManager().VirtualGrabPixmap()
 
 		'add overlay
 		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, -1, Null, TColor.Create(255,255,255,0.5))
@@ -1252,9 +1233,9 @@ endrem
 			EndIf
 
 			If ScreenCollection.GetCurrentScreen()
-				bf.DrawBox("Screen: "+ScreenCollection.GetCurrentScreen().name + " \| " + GetGraphicsManager().GetRendererName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
+				bf.DrawBox("Screen: "+ScreenCollection.GetCurrentScreen().name + " \| " + GetGraphicsManager().GetRendererBackendName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
 			Else
-				bf.DrawBox("Screen: Main \| " + GetGraphicsManager().GetRendererName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
+				bf.DrawBox("Screen: Main \| " + GetGraphicsManager().GetRendererBackendName(), 0, textY, GraphicsWidth()-5, 20, SALIGN_RIGHT_TOP, SCOLOR8.WHITE)
 			EndIf
 
 		EndIf
@@ -1312,6 +1293,8 @@ endrem
 
 
 	Function Render:Int()
+		GetGraphicsManager().UpdateWindowSize()
+
 		'cls only needed if virtual resolution is enabled, else the
 		'background covers everything
 		If GetGraphicsManager().HasBlackBars()
@@ -1458,11 +1441,20 @@ endrem
 		GUIManager.Draw(systemState)
 
 
+		'disable virtual resolution letterbox so we can draw mouse cursor
+		'and other stuff also over letterbox bars
+		Local currentVirtualResolutionVP:SRectI = GetGraphicsManager().DisableVirtualResolutionLetterbox()
+
 		'mnouse cursor
-'		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 		local cursorOffsetX:Int
 		local cursorOffsetY:Int
 		local cursorSprite:TSprite
+		
+		'as we render the cursor outside of the virtual resolution we need
+		'to adjust its position
+		Local cursorX:Int = GetGraphicsManager().WindowMouseX()
+		Local cursorY:Int = GetGraphicsManager().WindowMouseY()
+		Local cursorPos:SVec2I = GetGraphicsManager().WindowToDesignedCoordinate(cursorX, cursorY, False)
 		
 		Select GetGameBase().GetCursor()
 			'drag indicator
@@ -1497,7 +1489,7 @@ endrem
 			cursorOffsetY = cursorSprite.offset.GetTop()
 			Local oldA:Float = GetAlpha()
 			SetAlpha(oldA * GetGameBase().GetCursorAlpha())
-			cursorSprite.Draw(MouseManager.x, MouseManager.y)
+			cursorSprite.Draw(cursorPos.x, cursorPos.y)
 			SetAlpha(oldA)
 		endif
 
@@ -1505,11 +1497,40 @@ endrem
 			Case TGameBase.CURSOR_EXTRA_FORBIDDEN
 				local oldA:Float = GetAlpha()
 				SetAlpha oldA * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
-				GetSpriteFromRegistry("gfx_mousecursor_extra_forbidden").Draw(MouseManager.x - cursorOffsetX, MouseManager.y - cursorOffsetY)
+				GetSpriteFromRegistry("gfx_mousecursor_extra_forbidden").Draw(cursorPos.x - cursorOffsetX, cursorPos.y - cursorOffsetY)
 				SetAlpha oldA
 		End Select
+		
+		
 
-'		DrawOval(MouseManager.x-2, MouseManager.y-2, 4,4)
+		'---- virtual resolution debug information
+		Local showVirtualResolutionDebug:Int = False
+		If showVirtualResolutionDebug
+			Local virtualResolutionDebugX:Int = 5
+			Local virtualResolutionDebugY:Int = 5
+			'draw at original size (unscaled)
+			GetGraphicsManager().DisableVirtualResolution()
+			SetColor 0,0,0
+			Local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.5
+			DrawRect(0,0,215,160)
+			SetAlpha oldAlpha
+			SetColor 255,255,255
+			DrawText("Virtual Resolution:", virtualResolutionDebugX, virtualResolutionDebugY)
+			DrawText(" MouseManagerXY:  " + Mousemanager.x + ", " + Mousemanager.y, virtualResolutionDebugX, virtualResolutionDebugY+1*12)
+			DrawText(" MouseXY:  " + MouseX() + ", " + MouseY(), virtualResolutionDebugX, virtualResolutionDebugY+2*12)
+			DrawText(" GM.DesignedMouseXY: " + MathHelper.NumberToString(GetGraphicsManager().DesignedMouseX(), 2) + ", " + MathHelper.NumberToString(GetGraphicsManager().DesignedMouseY(), 2), virtualResolutionDebugX, virtualResolutionDebugY+4*12)
+			DrawText(" GM.WindowMouseXY: " + GetGraphicsManager().WindowMouseX() + ", " + GetGraphicsManager().WindowMouseY(), virtualResolutionDebugX, virtualResolutionDebugY+5*12)
+			
+			DrawText(" GM.windowSize: " + GetGraphicsManager().windowSize.x + ", " + GetGraphicsManager().windowSize.y, virtualResolutionDebugX, virtualResolutionDebugY+7*12)
+			DrawText(" GM.canvasSize: " + GetGraphicsManager().canvasSize.x + ", " + GetGraphicsManager().canvasSize.y + " (Pos: " + GetGraphicsManager().canvasPos.x+", "+GetGraphicsManager().canvasPos.y+")", virtualResolutionDebugX, virtualResolutionDebugY+8*12)
+			DrawText(" GM.designedSize: " + GetGraphicsManager().designedSize.x + ", " + GetGraphicsManager().designedSize.y, virtualResolutionDebugX, virtualResolutionDebugY+9*12)
+			DrawText(" virtResViewport: " + currentVirtualResolutionVP.x+", "+currentVirtualResolutionVP.y+", "+currentVirtualResolutionVP.w+", "+currentVirtualResolutionVP.h, virtualResolutionDebugX, virtualResolutionDebugY+11*12)
+		EndIf
+		'----
+
+		' restore virtual resolution stuff / letterbox
+		GetGraphicsManager().EnableVirtualResolution(currentVirtualResolutionVP)
 
 
 		'if a screenshot is generated, draw a logo in
@@ -2215,7 +2236,7 @@ Type TSaveGame Extends TGameState
 		EndIf
 
 		If Not messageWindowBackground
-			messageWindowBackground = LoadImage(VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() ))
+			messageWindowBackground = LoadImage(GetGraphicsManager().VirtualGrabPixmap())
 		EndIf
 
 		SetClsColor 0,0,0
@@ -2246,7 +2267,7 @@ Type TSaveGame Extends TGameState
 
 	Function ShowMessage:Int(Load:Int=False, text:String="", progress:Float=0.0)
 		'grab a fresh copy
-		messageWindowBackground = LoadImage(VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() ))
+		messageWindowBackground = LoadImage(GetGraphicsManager().VirtualGrabPixmap())
 
 		If messageWindow Then messageWindow.Remove()
 
