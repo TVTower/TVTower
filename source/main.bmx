@@ -384,9 +384,14 @@ Type TApp
 					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_OPENGL)
 				?macos
 				Case "-metal"
-					TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Metal", LOG_LOADING)
-					GetGraphicsManager().SetRendererBackend(GetGraphicsManager().RENDERER_BACKEND_METAL)
-					config.AddNumber("renderer", GetGraphicsManager().RENDERER_BACKEND_METAL)
+					Local metalRendererIndex:Int = GetGraphicsManager().GetRendererBackend("metal")
+					If GetGraphicsManager().IsRendererAvailable(metalRendererIndex)
+						TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Metal", LOG_LOADING)
+						GetGraphicsManager().SetRendererBackend(metalRendererIndex)
+						config.AddNumber("renderer", metalRendererIndex)
+					Else
+						TLogger.Log("TApp.ApplyAppArguments()", "Manual Override of renderer: Metal. Failed (Metal backend not available)", LOG_LOADING)
+					EndIf
 				?
 			End Select
 		Next

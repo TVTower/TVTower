@@ -144,6 +144,14 @@ Type TGraphicsManager
 	End Function
 
 
+	Function IsRendererAvailable:Int(index:int)
+		if index >= RENDERER_BACKEND_AVAILABILITY.length then return False
+		if index < 0 then return False
+
+		Return RENDERER_BACKEND_AVAILABILITY[index]
+	End Function
+
+
 	Method ResizeWindow:Int(width:Int, height:Int)
 		print "ResizeWindow() not implemented"
 	End Method
@@ -363,6 +371,15 @@ Type TGraphicsManager
 
 	Method GetRendererBackend:Int()
 		Return rendererBackend
+	End Method
+
+
+	Method GetRendererBackend:Int(backendName:String)
+		backendName = backendName.ToLower()
+		For local i:Int = 0 until RENDERER_BACKEND_NAMES.length
+			if RENDERER_BACKEND_NAMES[i].ToLower() = backendName Then return i
+		Next
+		Return -1
 	End Method
 
 
