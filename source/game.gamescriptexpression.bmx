@@ -233,6 +233,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		propertyName = params.GetToken(2 + tokenOffset).value.ToLower()
 	EndIf
 
+	rem
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)
 	if not firstTokenIsSelf
@@ -241,7 +242,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 			Case "description"         Return New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
 		End Select
 	EndIf
-
+	endrem
 
 	' delegate to custom sport property handler as programmedata 
 	' and programelicence use same functionality
@@ -256,6 +257,10 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 
 	
 	Select propertyName
+		'it is a potential risk to run into a recursion when using something in title which references
+		'description which references title ... but DB authors should be aware of it
+		Case "title"                   Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
+		Case "description"             Return New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
 		Case "cast"                    Return _EvaluateProgrammeDataCast(licence.data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
 		Case "role"                    Return _EvaluateProgrammeDataRole(licence.data, params, 1 + tokenOffset, context.contextNumeric)
@@ -359,6 +364,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		End Select
 	EndIf
 
+	Rem
 	'do not allow title/description for "self" as this is prone
 	'to a recursive call (description requesting description)
 	if not firstTokenIsSelf
@@ -367,8 +373,14 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 			Case "description"         Return New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
 		End Select
 	EndIf
+	EndRem
 
 	Select propertyName
+		'it is a potential risk to run into a recursion when using something in title which references
+		'description which references title ... but DB authors should be aware of it
+		Case "title"                   Return New SToken( TK_TEXT, data.GetTitle(), params.GetToken(0) )
+		Case "description"             Return New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
+
 		Case "cast"                    Return _EvaluateProgrammeDataCast(data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
 		Case "role"                    Return _EvaluateProgrammeDataRole(data, params, 1 + tokenOffset, context.contextNumeric)
