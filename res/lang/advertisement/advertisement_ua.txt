@@ -29,6 +29,7 @@ AD_STILL_X_DAYS       = ще %1 днів
 AD_CHANNEL_IMAGE_TOO_LOW = Рейтинг каналу занадто низький. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X        = Будь ласка, жанр %GENRE%
 AD_PLEASE_FLAG           = Будь ласка, %FLAG%
+#AD_PLEASE_NOT_FLAG       =
 
 INFOMERCIAL                  = Інфомаркетинг
 AD_INFOMERCIAL               = Ви отримуєте гроші за трансляцію інфомаркетингу. Дохід залежить від аудиторії.

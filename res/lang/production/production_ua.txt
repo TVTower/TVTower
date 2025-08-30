@@ -68,7 +68,7 @@ DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE                
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE       = Наразі заплановано |b|%X% виробництв|/b| цього сценарію, а |b|%Y%|/b| вже завершено.
 
 DIALOGUE_STUDIO_START_PRODUCTION                    = Почати виробництво
-DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Почати всі можливі виробництва ({X}).
+DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS    = Почати всі можливі виробництва (%X%).
 DIALOGUE_STUDIO_START_NEXT_EPISODE                  = Почати виробництво наступного можливого епізоду.
 DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST        = Мені потрібен ще один список покупок для цього сценарію.
 DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST              = Мені потрібен список покупок для цього сценарію.

@@ -140,8 +140,8 @@ SPORT_TEAMREPORT_MATCHWIN_S2 = przegrani ${.lte:7:${.random:10}:"${.locale:"SPOR
 SPORT_TEAMREPORT_MATCHWIN_P2 = przegrana ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""}
 SPORT_TEAMREPORT_MATCHWIN_S3 = poskromieni
 SPORT_TEAMREPORT_MATCHWIN_P3 = poskromieni
-SPORT_TEAMREPORT_MATCHWIN_S4 = Zwycięstwo %MATCHSCORE1TEXT% przeciwko
-SPORT_TEAMREPORT_MATCHWIN_P4 = Zwycięstwo %MATCHSCORE1TEXT% przeciwko
+SPORT_TEAMREPORT_MATCHWIN_S4 = Zwycięstwo ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} przeciwko
+SPORT_TEAMREPORT_MATCHWIN_P4 = Zwycięstwo ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} przeciwko
 
 SPORT_TEAMREPORT_MATCHDRAW_S1 = daje szansę na ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} przeciwko
 SPORT_TEAMREPORT_MATCHDRAW_P1 = dali szansę na ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} przeciwko

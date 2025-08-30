@@ -140,8 +140,8 @@ SPORT_TEAMREPORT_MATCHWIN_S2 = l'emporte ${.lte:7:${.random:10}:"${.locale:"SPOR
 SPORT_TEAMREPORT_MATCHWIN_P2 = l'emportent ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} sur
 SPORT_TEAMREPORT_MATCHWIN_S3 = gagne contre
 SPORT_TEAMREPORT_MATCHWIN_P3 = gagnent contre
-SPORT_TEAMREPORT_MATCHWIN_S4 = gagne %MATCHSCORE1TEXT% contre
-SPORT_TEAMREPORT_MATCHWIN_P4 = gagnent %MATCHSCORE1TEXT% contre
+SPORT_TEAMREPORT_MATCHWIN_S4 = gagne ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} contre
+SPORT_TEAMREPORT_MATCHWIN_P4 = gagnent ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} contre
 
 SPORT_TEAMREPORT_MATCHDRAW_S1 = perd la chance de ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} contre
 SPORT_TEAMREPORT_MATCHDRAW_P1 = perdent la chance de ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} contre

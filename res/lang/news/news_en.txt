@@ -140,8 +140,8 @@ SPORT_TEAMREPORT_MATCHWIN_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPO
 SPORT_TEAMREPORT_MATCHWIN_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} defeat
 SPORT_TEAMREPORT_MATCHWIN_S3 = subdue
 SPORT_TEAMREPORT_MATCHWIN_P3 = subdue
-SPORT_TEAMREPORT_MATCHWIN_S4 = win %MATCHSCORE1TEXT% against
-SPORT_TEAMREPORT_MATCHWIN_P4 = win %MATCHSCORE1TEXT% against
+SPORT_TEAMREPORT_MATCHWIN_S4 = win ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} against
+SPORT_TEAMREPORT_MATCHWIN_P4 = win ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} against
 
 SPORT_TEAMREPORT_MATCHDRAW_S1 = miss out on ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} against
 SPORT_TEAMREPORT_MATCHDRAW_P1 = miss out on ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} against

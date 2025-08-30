@@ -66,16 +66,16 @@ DIALOGUE_BETTY_LEVEL1_GOODBYE1          = Побачимось!
 DIALOGUE_BETTY_LEVEL1_GOODBYE2          = Гей, мені треба йти. Побачимось пізніше!
 DIALOGUE_BETTY_LEVEL1_GOODBYE3          = Слухай, Бетті, робота кличе. Мені потрібно ненадовго вийти.
 
-BETTY_PRESENT_1  = Спрей для ніг
-BETTY_PRESENT_2  = Вечеря на двох
-BETTY_PRESENT_3  = Операція на носі
-BETTY_PRESENT_4  = Персональний роман
-BETTY_PRESENT_5  = Перлова намистина
-BETTY_PRESENT_6  = Пальто з хом'ячків
-BETTY_PRESENT_7  = Намисто з кривавих діамантів
-BETTY_PRESENT_8  = Спортивна машина
-BETTY_PRESENT_9  = Елегантна каблучка
-BETTY_PRESENT_10 = Яхта
+BETTY_PRESENT_1            = Спрей для ніг
+BETTY_PRESENT_2            = Вечеря на двох
+BETTY_PRESENT_3            = Операція на носі
+BETTY_PRESENT_4            = Персональний роман
+BETTY_PRESENT_5            = Перлова намистина
+BETTY_PRESENT_6            = Пальто з хом'ячків
+BETTY_PRESENT_7            = Намисто з кривавих діамантів
+BETTY_PRESENT_8            = Спортивна машина
+BETTY_PRESENT_9            = Елегантна каблучка
+BETTY_PRESENT_10           = Яхта
 
 
 AWARDNAME_CULTURE            = Семмі за Культуру

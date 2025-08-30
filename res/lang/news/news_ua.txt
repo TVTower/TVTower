@@ -120,8 +120,8 @@ SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_T
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поразка
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = здобули перемогу
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = здобули перемогу
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = перемогли з рахунком %MATCHSCORE1TEXT% проти
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = перемогли з рахунком %MATCHSCORE1TEXT% проти
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S4 = перемогли з рахунком ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} проти
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P4 = перемогли з рахунком ${.self:"sportteam":0:"member":"keeper":"lastname"} ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} проти
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} втратили гру та подарували ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} супернику
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} втратили гру та подарували ${.self:"sportmatch":"score":1} ${.neq:${.self:"sportmatch":"score":1}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} супернику
@@ -140,8 +140,8 @@ SPORT_TEAMREPORT_MATCHWIN_S2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPO
 SPORT_TEAMREPORT_MATCHWIN_P2 = ${.lte:7:${.random:10}:"${.locale:"SPORT_TEAMREPORT_MATCHKIND":"":1}":""} поразка
 SPORT_TEAMREPORT_MATCHWIN_S3 = підкорили
 SPORT_TEAMREPORT_MATCHWIN_P3 = підкорили
-SPORT_TEAMREPORT_MATCHWIN_S4 = перемогли %MATCHSCORE1TEXT% проти
-SPORT_TEAMREPORT_MATCHWIN_P4 = перемогли %MATCHSCORE1TEXT% проти
+SPORT_TEAMREPORT_MATCHWIN_S4 = перемогли ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
+SPORT_TEAMREPORT_MATCHWIN_P4 = перемогли ${.self:"sportmatch":"score":0} ${.neq:${.self:"sportmatch":"score":0}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
 
 SPORT_TEAMREPORT_MATCHDRAW_S1 = не змогли виграти ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
 SPORT_TEAMREPORT_MATCHDRAW_P1 = не змогли виграти ${.neq:${.self:"sportmatch":"winnerscore"}:1:"${.locale:"SCORE_POINTS"}":"${.locale:"SCORE_POINT"}"} проти
