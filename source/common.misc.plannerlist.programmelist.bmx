@@ -1097,14 +1097,18 @@ Type TgfxProgrammelist Extends TPlannerList
 
 	Method SetOpen:Int(newState:Int)
 		newState = Max(0, newState)
-		If newState <= 1 Then currentgenre=-1
+		' Genreauswahlseite - kein Genre gewählt, Filmseite zurücksetzen
+		If newState <= 1
+			currentgenre=-1
+			entriesPage = 1
+		EndIf
 		If newState <= 2 Then hoveredParentalLicence=Null
 		If newState = 0
 			enabled = 0
 		Else
 			enabled = 1
-
-			entriesPage = 1
+			'Episodenseite immer zurücksetzen
+			'(Bei Wechsel zwischen zwei Serien nicht auf Seite 2 bleiben)
 			subEntriesPage = 1
 		EndIf
 
