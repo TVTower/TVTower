@@ -182,7 +182,7 @@ function JobAnalyseStationMarket:Tick()
 	player.LastStationMapMarketAnalysis = player.WorldTicks
 	local blocks = player.blocksCount
 	player.totalReceivers = TVT:getReceivers()
-	self.Task.maxReceiverIncrease = 99000000
+	self.Task.maxReceiverIncrease = player.totalReceivers
 
 	--movie prices do not increas so much anymore...
 	--[[
@@ -202,7 +202,7 @@ function JobAnalyseStationMarket:Tick()
 	--]]
 
 	local mapTotalReceivers = TVT:of_getMapReceivers()
-	player.coverage = 0.018
+	if player.coverage == nil then player.coverage = 0.018 end
 	if mapTotalReceivers > 0 then --guard against error return value
 		player.coverage = player.totalReceivers / mapTotalReceivers
 	end

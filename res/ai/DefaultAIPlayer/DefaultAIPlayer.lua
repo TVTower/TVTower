@@ -120,6 +120,7 @@ function DefaultAIPlayer:initParameters()
 	if self.coverage == nil then self.coverage = 0 end
 	if self.maxStudioSize == nil then self.maxStudioSize = 1 end
 	self.money = TVT:GetMoney()
+	self.image = TVT:GetImage(TVT.ME)
 
 	if (self.Ventruesome == nil or self.Ventruesome <= 0) then
 		--Waghalsigkeit 3-8
@@ -303,6 +304,7 @@ end
 function DefaultAIPlayer:OnDayBegins()
 	--ensure money value is correct for all onDayBegins-calls
 	self.money = TVT:GetMoney()
+	self.image = TVT:GetImage(TVT.ME)
 	self.difficulty = MY.difficultyGUID
 	--just in case we missed a "OnGameBegins"
 	self.Strategy:Start(self)

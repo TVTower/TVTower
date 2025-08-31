@@ -1757,7 +1757,10 @@ endrem
 		local script:TScript = RoomHandler_Studio.GetInstance().GetCurrentStudioScript(room)
 		Local pcc:TProductionConceptCollection = TProductionConceptCollection.GetInstance()
 		'"remove" script from studio if all pre-productions are started - new production is possible
-		If script And isLiveAndAllProductionsStarted(script, pcc) Then script = null
+		If script And isLiveAndAllProductionsStarted(script, pcc)
+			GetPlayerProgrammeCollection(Self.ME).MoveScriptFromStudioToSuitcase(script, true)
+			script = null
+		EndIf
 
 		If not script
 			local scripts:TList = GetPlayerProgrammeCollection(Self.ME).suitcaseScripts

@@ -87,9 +87,10 @@ function TaskScripts:GetNextJobInTargetRoom()
 end
 
 function TaskScripts:getStrategicPriority()
-	if getPlayer().hour > 18 then
+	local player = getPlayer()
+	if player.hour > 18 then
 		return 0.0
-	elseif getPlayer().currentAwardType == TVT.Constants.AwardType.CUSTOMPRODUCTION or getPlayer().nextAwardType == TVT.Constants.AwardType.CULTURE then
+	elseif player.currentAwardType == TVT.Constants.AwardType.CUSTOMPRODUCTION or player.nextAwardType == TVT.Constants.AwardType.CULTURE then
 		if self.producedForSammy == false then
 			self.SituationPriority = SAMMY_SIT_PRIORITY
 			if self.awardType == "culture" and self.prodStatus == PROD_STATUS_BUY then
@@ -101,6 +102,7 @@ function TaskScripts:getStrategicPriority()
 	else
 		self.producedForSammy = false
 	end
+	if player.coverage > 0.9 and self.BasePriority < 1 then self.BasePriority = 1.5 end
 	return 1.0
 end
 
@@ -176,7 +178,7 @@ function JobBuyScript:Tick()
 				--less idling for remaining jobs
 				self.Task.PriorityBackup = self.Task.BasePriority
 				self.Task.BasePriority = self.Task.BasePriority * 5
-				self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
+--				self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
 				self.Task.neededStudioSize = script.requiredStudioSize
 				if script:GetProductionLimit() > 1 then
 					self.Task.minAttractivityMulti = self:getAttractivity(script) + 0.05
@@ -185,6 +187,8 @@ function JobBuyScript:Tick()
 			end
 		end
 	end
+	--always try to get concepts - a multi-production may be present in the studio
+	self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
 	self.Task:SetDone()
 	self.Status = JOB_STATUS_DONE
 end

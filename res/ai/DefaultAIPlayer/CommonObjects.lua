@@ -497,6 +497,8 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 
 	-- "GetQuality()" already contains topicality-influence for infomercials and programmes
 	local quality = broadcastMaterialSource.GetQuality()
+	local isLive = false
+	local isCustomProd = false
 
 	-- infomercials?
 	if broadcastMaterialSource.IsAdContract() == 1 then
@@ -525,16 +527,25 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 		playerMod = forPlayer.Strategy.GetInfomercialWeight()
 
 	-- paid programming?
-	elseif broadcastMaterialSource.IsProgrammeLicence() == 1 and broadcastMaterialSource.HasDataFlag(TVT.Constants.ProgrammeDataFlag.PAID) == 1 then
-		audienceMod = 0.75
-		--infomercials are more appreciated during night and morning
-		--and less during afternoon/primetime
-		if hour ~= nil then
-			if hour >= 0 and hour <=14 then timeMod = 1.10 end
-			if hour >=20 and hour <=22 then timeMod = 0.90 end
+	elseif broadcastMaterialSource.IsProgrammeLicence() == 1 then
+		if broadcastMaterialSource.HasDataFlag(TVT.Constants.ProgrammeDataFlag.PAID) == 1 then
+			audienceMod = 0.75
+			--infomercials are more appreciated during night and morning
+			--and less during afternoon/primetime
+			if hour ~= nil then
+				if hour >= 0 and hour <=14 then timeMod = 1.10 end
+				if hour >=20 and hour <=22 then timeMod = 0.90 end
+			end
+		else
+			--for custom live productions quality data is not yet available...
+			if broadcastMaterialSource:IsLive() > 0 then
+				quality = math.max(quality, 0.4)
+				isLive = true
+			end
+			if broadcastMaterialSource.data:IsAPlayersCustomProduction() > 0 then
+				isCustomProd = true
+			end
 		end
-		--for custom live productions quality data is not yet available...
-		if broadcastMaterialSource:IsLive() then quality = math.max(quality, 0.4) end
 	end
 
 	local result = playerMod * timeMod * audienceMod * quality
@@ -561,11 +572,15 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			result=result * 0.8
 		elseif timesShown == 0 then
 			result=result * 1.3
+			if isLive then result = result * 1.5 end
+			if isCustomProd then result = result * 1.5 end
 			local minHour = 19
-			if forPlayer.coverage > 0.4 then minHour = 16 end
+			local topicality = broadcastMaterialSource:GetTopicality()
+			if topicality > 0.99 then result = result * 1.5 end
+			if forPlayer.coverage > 0.4 then minHour = 17 end
 			if hour < minHour or hour > 22 then
 				--TODO make genre dependent; many blocks - new cheap stuff also earlier 
-				if broadcastMaterialSource:GetTopicality() > 0.8 then
+				if topicality > 0.8 then
 					result= result * 0.3
 				end
 			end

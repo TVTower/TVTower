@@ -120,7 +120,7 @@ function JobSellMovies:Tick()
 						self:LogInfo("  placing "..vm.Title.." (max topicality "..vm.maxTopicality.. ", times run " ..vm.timesRun ..") into suitcase for selling")
 						table.insert(case, vm)
 					end
-				else
+				elseif vm.timesRun > 0 then
 					table.insert(movies,vm)
 				end
 			end
