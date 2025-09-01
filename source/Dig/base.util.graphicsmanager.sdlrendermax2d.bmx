@@ -227,9 +227,21 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		EndIf
 	End Method
 
+
+	Method SetScaleQuality:Int(value:Int = 0) override
+		scaleQuality = value
+
+		If scaleQuality = 1
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") 'smooth
+		Else
+			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0") 'pixel
+		EndIf
+
+		Return True
+	End Method
 	
 	
-	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreenMode:Int, smoothPixels:Int) override
+	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreenMode:Int) override
 		local useSizeW:Int, useSizeH:int
 
 		If fullscreenMode = DISPLAYMODE_WINDOWED_FULLSCREEN
@@ -255,12 +267,12 @@ Type TGraphicsManagerSDLRenderMax2D Extends TGraphicsManager
 		Else
 			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set SDL Render to ignore vertical sync.", LOG_DEBUG)
 		EndIf
-
-		If smoothPixels
-			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") 'smooth
+		
+		'inform SDL wether we want pixels or smooth visuals
+		SetScaleQuality(scaleQuality)
+		If scaleQuality = 1
 			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set window canvas to smooth pixels.", LOG_DEBUG)
 		Else
-			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0") 'pixel
 			TLogger.Log("GraphicsManager.CreateGraphicsObject()", "Set window canvas to keep pixels non-smoothed.", LOG_DEBUG)
 		EndIf
 

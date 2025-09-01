@@ -53,6 +53,7 @@ SFX                         = Ses Efektleri
 FULLSCREEN                  = Tam Ekran
 #WINDOWED_FULLSCREEN         = 
 #VSYNC                       = 
+#BILINEAR_FILTERING          =
 #RIGHTCLICK_EMULATION              = 
 #RIGHTCLICK_EMULATION_EXPLANATION  = 
 #RIGHTCLICK_EMULATION_TIME         = 

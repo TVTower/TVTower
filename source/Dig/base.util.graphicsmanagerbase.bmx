@@ -49,6 +49,7 @@ Type TGraphicsManager
 	Field renderer:Int = 0           'remove
 	Field rendererBackend:Int
 	Field colorDepth:Int = 16
+	Field scaleQuality:Int = 0       '0 = pixelated, 1 = smooth
 	'drawable canvas dimensions
 	Field canvasPos:SVec2I = New SVec2I(0, 0)
 	Field canvasSize:SVec2I = New SVec2I(800, 600)
@@ -339,6 +340,17 @@ Type TGraphicsManager
 	End Method
 
 
+	'0 = pixelated, 1 = smooth
+	Method SetScaleQuality:Int(value:Int = 0)
+		If scaleQuality <> value
+			scaleQuality = value
+			Return True
+		Else
+			Return False
+		EndIf
+	End Method
+
+
 	Method SetHertz:Int(value:Int=0)
 		hertz = value
 	End Method
@@ -441,8 +453,7 @@ Type TGraphicsManager
 		windowSize = New SVec2I(width, height)
 		windowSizeValid = False
 
-		Local smoothPixels:Int = False 'TODO: remove/make configurable
-		_g = CreateGraphicsObject(windowSize, colorDepth, hertz, flags, displayMode, smoothPixels)
+		_g = CreateGraphicsObject(windowSize, colorDepth, hertz, flags, displayMode)
 		
 		'now window is created, allow the driver to update window size
 		'if required
@@ -470,7 +481,7 @@ Type TGraphicsManager
 	End Method
 	
 	
-	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreen:Int, smoothPixels:Int)
+	Method CreateGraphicsObject:TGraphics(windowSize:SVec2I, colorDepth:Int, hertz:Int, flags:Long, fullscreen:Int)
 		Local g:TGraphics = Graphics(windowSize.x, windowSize.y, colorDepth*fullScreen, hertz, flags)
 		Return g
 	End Method

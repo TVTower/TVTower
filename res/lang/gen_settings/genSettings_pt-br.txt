@@ -53,6 +53,7 @@ SFX                         = Efeitos sonoros
 FULLSCREEN                  = Tela cheia
 #WINDOWED_FULLSCREEN         = 
 VSYNC                       = VSync
+#BILINEAR_FILTERING          =
 RIGHTCLICK_EMULATION              = Emular "clique direito"
 RIGHTCLICK_EMULATION_EXPLANATION  = Simular um clique direito com um longo clique esquerdo do mouse ou toque
 RIGHTCLICK_EMULATION_TIME         = Tempo até "clique direito"

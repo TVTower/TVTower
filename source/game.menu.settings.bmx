@@ -23,6 +23,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 	Field dropdownRenderer:TGUIDropDown
 	Field dropdownDisplayMode:TGUIDropDown
 	Field checkVSync:TGUICheckbox
+	Field checkScaleQuality:TGUICheckbox
 	Field inputWindowResolutionWidth:TGUIInput
 	Field inputWindowResolutionHeight:TGUIInput
 	Field buttonWindowResolutionReset:TGUIButton
@@ -272,6 +273,11 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Self.AddChild(checkVSync)
 		nextY :+ Max(inputH, checkVSync.GetScreenRect().GetH())
 
+		checkScaleQuality = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(rowWidth[1] - 10,-1), "")
+		checkScaleQuality.SetCaption(GetLocale("BILINEAR_FILTERING"))
+		Self.AddChild(checkScaleQuality)
+		nextY :+ Max(inputH, checkScaleQuality.GetScreenRect().GetH())
+
 		Local labelWindowResolution:TGUILabel = New TGUILabel.Create(New SVec2I(nextX, nextY), GetLocale("WINDOW_MODE_RESOLUTION")+":")
 		inputWindowResolutionWidth = New TGUIInput.Create(New SVec2I(nextX, nextY + labelH), New SVec2I(inputWidth/2 - 33,-1), "", 4)
 		inputWindowResolutionHeight = New TGUIInput.Create(New SVec2I(nextX + inputWidth/2 - 11, nextY + labelH), New SVec2I(inputWidth/2 - 33,-1), "", 4)
@@ -392,6 +398,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		data.AddNumber("displayMode", dropdownDisplayMode.GetSelectedEntry().data.GetInt("value", 0))
 
 		data.AddBoolString("vsync", checkVSync.IsChecked())
+		data.AddNumber("scaleQuality", checkScaleQuality.IsChecked())
 		data.Add("screenW", inputWindowResolutionWidth.GetValue())
 		data.Add("screenH", inputWindowResolutionHeight.GetValue())
 
@@ -504,6 +511,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		EndIf
 
 		checkVSync.SetChecked(data.GetBool("vsync", True))
+		checkScaleQuality.SetChecked(data.GetInt("scalequality", 1) = 1)
 		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
 		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
 

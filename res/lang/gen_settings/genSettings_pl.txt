@@ -53,6 +53,7 @@ SFX                         = Efekty dźwiękowe
 FULLSCREEN                  = Pełny ekran
 #WINDOWED_FULLSCREEN         = 
 VSYNC                       = VSync
+#BILINEAR_FILTERING          =
 RIGHTCLICK_EMULATION              = Emuluj „kliknięcie prawym przyciskiem myszy”
 RIGHTCLICK_EMULATION_EXPLANATION  = Emulacja kliknięcia p.p.m za pom. dług. kliknięcia l.p.m. lub dotyku
 RIGHTCLICK_EMULATION_TIME         = Czas przed „kliknięciem p.p.m.”
