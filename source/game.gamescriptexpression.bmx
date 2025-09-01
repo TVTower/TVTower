@@ -37,6 +37,42 @@ GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 2)
 GameScriptExpression.RegisterFunctionHandler( "random", SEFN_random, 1, 2)
 
 
+Global gameScriptExpressions:TGameScriptExpression[TVTPlayerCount]
+Function GetGameScriptExpression:TGameScriptExpression()
+	'in most cases this will be the one -- so should be fast enough
+	If CurrentThread() = MainThread()
+		Return TGameScriptExpression(GameScriptExpression)
+	EndIf
+
+	'find playerID by currently used AI thread
+	Local gse:TGameScriptExpression
+	Local identifiedPlayerID:Int = 0
+	For Local pID:Int = 1 Until TAIBase._updateThreads.length
+		If TAIBase._updateThreads[pID-1] = CurrentThread()
+			gse = gameScriptExpressions[pID-1]
+			identifiedPlayerID = pID
+			exit
+		EndIf
+	Next
+
+	If not gse
+		If identifiedPlayerID = 0
+			throw "Call into GetGameScriptExpression() from unknown thread."
+		EndIf
+
+		'clone base one 
+		gse = New TGameScriptExpression
+		gse.config = New TScriptExpressionConfig(GameScriptExpression.config.s)
+		
+		' create 
+		gameScriptExpressions[identifiedPlayerID - 1] = gse
+	EndIf
+	
+	
+	Return gse
+End Function
+
+
 
 
 '${.worldTime:***} - context: all
@@ -257,10 +293,23 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 
 	
 	Select propertyName
-		'it is a potential risk to run into a recursion when using something in title which references
-		'description which references title ... but DB authors should be aware of it
-		Case "title"                   Return New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
-		Case "description"             Return New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
+		Case "title"
+					'we use data's ID (you could else fetch ${programmedata:...:"title"}
+					If Not GetGameScriptExpression().PushCallstack(licence.GetData().GetID(), "title")
+						Return New SToken( TK_ERROR, "Cyclic access to property ~qProgrammeLicence.data."+propertyName+"~q", params.GetToken(0) )
+					Else
+						Local s:SToken = New SToken( TK_TEXT, licence.GetTitle(), params.GetToken(0) )
+						GetGameScriptExpression().PopCallstack()
+						Return s
+					EndIf
+		Case "description"             
+					If Not GetGameScriptExpression().PushCallStack(licence.GetData().GetID(), "description")
+						Return New SToken( TK_ERROR, "Cyclic access to  property ~qProgrammeLicence.data."+propertyName+"~q", params.GetToken(0) )
+					Else
+						Local s:SToken = New SToken( TK_TEXT, licence.GetDescription(), params.GetToken(0) )
+						GetGameScriptExpression().PopCallstack()
+						Return s
+					EndIf
 		Case "cast"                    Return _EvaluateProgrammeDataCast(licence.data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
 		Case "role"                    Return _EvaluateProgrammeDataRole(licence.data, params, 1 + tokenOffset, context.contextNumeric)
@@ -376,10 +425,25 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 	EndRem
 
 	Select propertyName
-		'it is a potential risk to run into a recursion when using something in title which references
-		'description which references title ... but DB authors should be aware of it
-		Case "title"                   Return New SToken( TK_TEXT, data.GetTitle(), params.GetToken(0) )
-		Case "description"             Return New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
+		Case "title"
+					debugstop
+					'we use data's ID (you could else fetch ${programmedata:...:"title"}
+					If Not GetGameScriptExpression().PushCallstack(data.GetID(), "title")
+						Return New SToken( TK_ERROR, "Cyclic access to property ~qTProgrammeData."+propertyName+"~q", params.GetToken(0) )
+					Else
+						Local s:SToken = New SToken( TK_TEXT, data.GetTitle(), params.GetToken(0) )
+						GetGameScriptExpression().PopCallstack()
+						Return s
+					EndIf
+		Case "description"
+					debugstop
+					If Not GetGameScriptExpression().PushCallStack(data.GetID(), "description")
+						Return New SToken( TK_ERROR, "Cyclic access to property ~qTProgrammeData."+propertyName+"~q", params.GetToken(0) )
+					Else
+						Local s:SToken = New SToken( TK_TEXT, data.GetDescription(), params.GetToken(0) )
+						GetGameScriptExpression().PopCallstack()
+						Return s
+					EndIf
 
 		Case "cast"                    Return _EvaluateProgrammeDataCast(data, params, 1 + tokenOffset, context.contextNumeric)
 		'convenience access - could be removed if one uses ${.role:${.self:"cast":x:"roleid"}:"fullname"} ...
@@ -1203,15 +1267,53 @@ Function SEFN_self:SToken(params:STokenGroup Var, context:SScriptExpressionConte
 End Function
 
 
+Struct SGSECallStackEntry
+	Field mainKey:Int
+	Field subKey:String
+	
+	Method New(mainKey:Int, subKey:String)
+		self.mainKey = mainKey
+		self.subKey = subKey
+	End Method
+End Struct
+
 
 Type TGameScriptExpression extends TGameScriptExpressionBase
+	' if a stack of 50 is not enough, then it is surely rather slow 
+	' performance-wise already.
+	Field StaticArray callstack:SGSECallStackEntry[50]
+	Field callstackDepth:Int
+	
 	Method New()
 		'set custom config for variable handlers etc
 		'self.config = New TScriptExpressionConfig(null, null, null )
 		self.config.s.variableHandlerCB = TGameScriptExpression.GameScriptVariableHandlerCB
 	End Method
+	
+
+	Method PushCallstack:Int(mainKey:Int, subKey:String)
+		If callstackDepth = callstack.length Then Throw "TGameScriptExpression: Max nesting depth of " + callstack.length + " reached."
+		If callstackDepth > 0
+			For Local i:Int = 0 Until callstackDepth - 1
+				If callstack[i].mainKey = mainKey and callstack[i].subKey = subKey
+					'found cyclic call
+					Return False
+				EndIf
+			Next
+        EndIf
+		
+		callstack[callstackDepth].mainKey = mainKey
+		callstack[callstackDepth].subKey = subKey
+		callstackDepth :+ 1
+		Return True
+	End Method
 
 
+	Method PopCallstack()
+		If callstackDepth > 0 Then callstackDepth :- 1
+    End Method
+	
+	
 	'override to add support for template variables
 	Function GameScriptVariableHandlerCB:String(variable:String, context:SScriptExpressionContext var) override
 		Local result:String
