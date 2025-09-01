@@ -15,33 +15,33 @@ Import Brl.Map
 
 
 'override base gamescript expression instance with specific instance
-GameScriptExpression = New TGameScriptExpression
+_GameScriptExpression = New TGameScriptExpression
 
 'valid context(s): "all supported"
-GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 1, 3)
+_GameScriptExpression.RegisterFunctionHandler( "self", SEFN_self, 1, 3)
 
-GameScriptExpression.RegisterFunctionHandler( "newsevent", SEFN_newsevent, 2, 3)
-GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedata, 2, 3)
-GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3) '
-GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
-GameScriptExpression.RegisterFunctionHandler( "role", SEFN_role, 2, 3)
-GameScriptExpression.RegisterFunctionHandler( "person", SEFN_person, 2, 3)
-GameScriptExpression.RegisterFunctionHandler( "locale", SEFN_locale, 1, 3)
-GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
-GameScriptExpression.RegisterFunctionHandler( "sport", SEFN_sport, 2, 4)
-GameScriptExpression.RegisterFunctionHandler( "sportleague", SEFN_sportleague, 2, 4)
-GameScriptExpression.RegisterFunctionHandler( "sportteam", SEFN_sportteam, 2, 4)
-GameScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 1, 1)
-GameScriptExpression.RegisterFunctionHandler( "persongenerator", SEFN_PersonGenerator, 1, 3)
-GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 2)
-GameScriptExpression.RegisterFunctionHandler( "random", SEFN_random, 1, 2)
+_GameScriptExpression.RegisterFunctionHandler( "newsevent", SEFN_newsevent, 2, 3)
+_GameScriptExpression.RegisterFunctionHandler( "programmedata", SEFN_programmedata, 2, 3)
+_GameScriptExpression.RegisterFunctionHandler( "programmelicence", SEFN_programmelicence, 2, 3) '
+_GameScriptExpression.RegisterFunctionHandler( "programme", SEFN_programmelicence, 2, 3) 'synonym usage
+_GameScriptExpression.RegisterFunctionHandler( "role", SEFN_role, 2, 3)
+_GameScriptExpression.RegisterFunctionHandler( "person", SEFN_person, 2, 3)
+_GameScriptExpression.RegisterFunctionHandler( "locale", SEFN_locale, 1, 3)
+_GameScriptExpression.RegisterFunctionHandler( "script", SEFN_script, 2, 3)
+_GameScriptExpression.RegisterFunctionHandler( "sport", SEFN_sport, 2, 4)
+_GameScriptExpression.RegisterFunctionHandler( "sportleague", SEFN_sportleague, 2, 4)
+_GameScriptExpression.RegisterFunctionHandler( "sportteam", SEFN_sportteam, 2, 4)
+_GameScriptExpression.RegisterFunctionHandler( "stationmap", SEFN_StationMap, 1, 1)
+_GameScriptExpression.RegisterFunctionHandler( "persongenerator", SEFN_PersonGenerator, 1, 3)
+_GameScriptExpression.RegisterFunctionHandler( "worldtime", SEFN_WorldTime, 1, 2)
+_GameScriptExpression.RegisterFunctionHandler( "random", SEFN_random, 1, 2)
 
 
 Global gameScriptExpressions:TGameScriptExpression[TVTPlayerCount]
 Function GetGameScriptExpression:TGameScriptExpression()
 	'in most cases this will be the one -- so should be fast enough
 	If CurrentThread() = MainThread()
-		Return TGameScriptExpression(GameScriptExpression)
+		Return TGameScriptExpression(_GameScriptExpression)
 	EndIf
 
 	'find playerID by currently used AI thread
@@ -62,7 +62,7 @@ Function GetGameScriptExpression:TGameScriptExpression()
 
 		'clone base one 
 		gse = New TGameScriptExpression
-		gse.config = New TScriptExpressionConfig(GameScriptExpression.config.s)
+		gse.config = New TScriptExpressionConfig(_GameScriptExpression.config.s)
 		
 		' create 
 		gameScriptExpressions[identifiedPlayerID - 1] = gse
@@ -1389,7 +1389,7 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 		' so we only need to parse the specific language value here!
 		If lsResult
 			result = lsResult.Get( localeID )
-			local resultNew:TStringBuilder = GameScriptExpression.ParseNestedExpressionText(result, context)
+			local resultNew:TStringBuilder = GetGameScriptExpression().ParseNestedExpressionText(result, context)
 
 			'avoid string creation and compare hashes first
 			If result.hashCode() <> resultNew.hashCode()
