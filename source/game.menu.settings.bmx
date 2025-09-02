@@ -274,7 +274,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ Max(inputH, checkVSync.GetScreenRect().GetH())
 
 		checkScaleQuality = New TGUICheckbox.Create(New SVec2I(nextX, nextY), New SVec2I(rowWidth[1] - 10,-1), "")
-		checkScaleQuality.SetCaption(GetLocale("BILINEAR_FILTERING"))
+		checkScaleQuality.SetCaption(GetLocale("PIXEL_SMOOTHING"))
 		Self.AddChild(checkScaleQuality)
 		nextY :+ Max(inputH, checkScaleQuality.GetScreenRect().GetH())
 
