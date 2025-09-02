@@ -53,6 +53,7 @@ SFX                         = Efectos de sonido
 FULLSCREEN                  = Pantalla completa
 #WINDOWED_FULLSCREEN         =
 #VSYNC                       = 
+#PIXEL_SMOOTHING             =
 RIGHTCLICK_EMULATION              = Emular "clic derecho"
 RIGHTCLICK_EMULATION_EXPLANATION  = Simular un clic con el botón derecho del ratón mediante un clic largo con el botón izquierdo o un toque
 RIGHTCLICK_EMULATION_TIME         = Tiempo hasta "clic derecho"

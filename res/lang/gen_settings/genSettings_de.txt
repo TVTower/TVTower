@@ -53,6 +53,7 @@ WINDOWED                    = Fenster
 FULLSCREEN                  = Vollbild (exklusiv)
 WINDOWED_FULLSCREEN         = Fenster im Vollbildmodus
 VSYNC                       = VSync
+PIXEL_SMOOTHING             = Pixelglättung
 RIGHTCLICK_EMULATION              = Emuliere „Rechte Maustaste“
 RIGHTCLICK_EMULATION_EXPLANATION  = Simuliere Rechtsklick mit lange-drücken-Klick der linken Maustaste oder Touch
 RIGHTCLICK_EMULATION_TIME         = Zeit bis „Rechtsklick“

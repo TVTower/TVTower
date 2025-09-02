@@ -173,6 +173,7 @@ Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
 Global ScreenMainMenu:TScreen_MainMenu = Null
 Global Init_Complete:Int = 0
+Global mainRenderImage:TRenderImage
 
 Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
 
@@ -304,6 +305,7 @@ Type TApp
 
 			GetGraphicsManager().SetVsync(obj.config.GetBool("vsync", vsync))
 			GetGraphicsManager().SetDesignedSize(designedGameW, designedGameH)
+			GetGraphicsManager().SetScaleQuality(obj.config.GetInt("scalequality", 1)) 'default to smooth
 			If GetGraphicsManager().IsFullscreen()
 				GetGraphicsManager().InitGraphics(designedGameW, designedGameH)
 			Else
@@ -531,6 +533,11 @@ Type TApp
 		If GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
 			TLogger.Log("ApplySettings()", "SetVSync = "+config.GetBool("vsync", False), LOG_DEBUG)
 		EndIf
+		If GetGraphicsManager().SetScaleQuality(config.GetInt("scaleQuality", 1))
+			TLogger.Log("ApplySettings()", "SetScaleQuality = "+config.GetInt("scaleQuality", 1), LOG_DEBUG)
+			mainRenderImage = Null 'so it gets recreated with new scale quality
+		EndIf
+
 		If GetGraphicsManager().ResizeWindow(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
 			TLogger.Log("ApplySettings()", "SetWindowSize = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
 		EndIf
@@ -1299,12 +1306,16 @@ endrem
 		'background covers everything
 		If GetGraphicsManager().HasBlackBars()
 			SetClsColor 0,0,0
-			'use graphicsmanager's cls as it resets virtual resolution
-			'first
-			GetGraphicsManager().Cls()
+			Cls()
 		EndIf
 
 		TProfiler.Enter(_profilerKey_Draw)
+		
+		If not mainRenderImage
+			mainRenderImage = CreateRenderImage(UInt(GetGraphicsManager().designedSize.x), UInt(GetGraphicsManager().designedSize.y), FILTEREDIMAGE)
+		EndIf
+		SetRenderImage(mainRenderImage)
+		Cls()
 
 		'set game cursor to 0/default
 		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
@@ -1440,6 +1451,27 @@ endrem
 		'draw system things at last (-> on top)
 		GUIManager.Draw(systemState)
 
+
+		SetRenderImage(Null)
+		' something borks up an internal setting - just scaling ONE window
+		' dimension (so only width OR height) would slide the viewport
+		' over the image. This get+set of the virtual resolution fixes
+		' the issue (for now).
+		Local vpBackup:SRectI = GetGraphicsManager().DisableVirtualResolution()
+		GetGraphicsManager().EnableVirtualResolution(vpBackup)
+
+		DrawImage(mainRenderImage, 0, 0)
+
+Rem
+		'alternatively --- if we would like to scale on our own
+		Local vpBackup:SRectI = GetGraphicsManager().DisableVirtualResolution()
+		Local scaleX:Float = GetGraphicsManager().canvasSize.x / Float (GetGraphicsManager().designedSize.x) 
+		Local scaleY:Float = GetGraphicsManager().canvasSize.y / Float (GetGraphicsManager().designedSize.y) 
+		SetScale scaleX, scaleY
+		DrawImage(mainRenderImage, GetGraphicsManager().canvasPos.x, GetGraphicsManager().canvasPos.y)
+		SetScale 1.0, 1.0
+		GetGraphicsManager().EnableVirtualResolution(vpBackup)
+Endrem
 
 		'disable virtual resolution letterbox so we can draw mouse cursor
 		'and other stuff also over letterbox bars
