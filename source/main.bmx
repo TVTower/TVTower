@@ -1453,6 +1453,13 @@ endrem
 
 
 		SetRenderImage(Null)
+		' something borks up an internal setting - just scaling ONE window
+		' dimension (so only width OR height) would slide the viewport
+		' over the image. This get+set of the virtual resolution fixes
+		' the issue (for now).
+		Local vpBackup:SRectI = GetGraphicsManager().DisableVirtualResolution()
+		GetGraphicsManager().EnableVirtualResolution(vpBackup)
+
 		DrawImage(mainRenderImage, 0, 0)
 
 Rem
