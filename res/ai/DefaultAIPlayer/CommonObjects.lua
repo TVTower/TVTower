@@ -577,7 +577,10 @@ function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour,
 			local minHour = 19
 			local topicality = broadcastMaterialSource:GetTopicality()
 			if topicality > 0.99 then result = result * 1.5 end
-			if forPlayer.coverage > 0.4 then minHour = 17 end
+
+			--in growth phase send good programmes earlier, later they may be too expensive
+			--to waste before prime time
+			if forPlayer.coverage > 0.4 and forPlayer.coverage < 0.9 then minHour = 17 end
 			if hour < minHour or hour > 22 then
 				--TODO make genre dependent; many blocks - new cheap stuff also earlier 
 				if topicality > 0.8 then

@@ -205,6 +205,10 @@ function JobAnalyseStationMarket:Tick()
 	if player.coverage == nil then player.coverage = 0.018 end
 	if mapTotalReceivers > 0 then --guard against error return value
 		player.coverage = player.totalReceivers / mapTotalReceivers
+		for i = 1, 4 do
+			--coverage can be calculated from values available in game interface
+			player.coverages[i] = TVT:of_getPlayerReceivers(i) / mapTotalReceivers
+		end
 	end
 
 	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"

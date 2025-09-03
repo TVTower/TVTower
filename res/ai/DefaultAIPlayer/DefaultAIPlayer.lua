@@ -118,6 +118,12 @@ function DefaultAIPlayer:initParameters()
 		self.minutesGone = TVT:GetTimeGoneInMinutes()
 	end
 	if self.coverage == nil then self.coverage = 0 end
+	if self.coverages == nil then
+		self.coverages = {}
+		for i = 1, 4 do
+			self.coverages[i] = 0
+		end
+	end
 	if self.maxStudioSize == nil then self.maxStudioSize = 1 end
 	self.money = TVT:GetMoney()
 	self.image = TVT:GetImage(TVT.ME)

@@ -41,6 +41,16 @@ function TaskAdAgency:Activate()
 
 	self.SpotsInAgency = {}
 	--self.LogLevel = LOG_TRACE
+
+	self.highRisk = true
+	local player = getPlayer()
+	if player.coverages ~=nil then
+		for i = 1, 4 do
+			if i ~= TVT.ME then
+				if player.coverages[i] < 0.9 then self.highRisk = false end
+			end
+		end
+	end
 end
 
 
@@ -354,9 +364,17 @@ end
 function SignRequisitedContracts:Prepare(pParams)
 	self.CurrentSpotIndex = 0
 	self.maxAudience = MY.GetChannelReceivers()
-	self.highAudienceFactor = 0.08
-	self.avgAudienceFactor = 0.045
-	self.lowAudienceFactor = 0.003
+	if self.Task.highRisk then
+		self.veryHighAudienceFactor = 0.08
+		self.highAudienceFactor = 0.07
+		self.avgAudienceFactor = 0.035
+		self.lowAudienceFactor = 0.003
+	else
+		self.veryHighAudienceFactor = 0.105
+		self.highAudienceFactor = 0.08
+		self.avgAudienceFactor = 0.045
+		self.lowAudienceFactor = 0.003
+	end
 
 	self.Player = getPlayer()
 	if self.Player.blocksCount < 72 then self.lowAudienceFactor = 0.0025 end
@@ -468,7 +486,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 --]]
 	--TODO do not sign really low audience contracts!
 	--raise min audience to certain level or prevent requisition
-	local veryHighAudience = self.maxAudience * 0.105
+	local veryHighAudience = self.maxAudience * self.veryHighAudienceFactor
 	local highAudience = self.maxAudience * self.highAudienceFactor
 	local avgAudience = self.maxAudience * self.avgAudienceFactor
 	local lowAudience = self.maxAudience * self.lowAudienceFactor
@@ -742,6 +760,7 @@ function SignContracts:ShouldSignContract(contract)
 				if self.player.blocksCount < 48 and spotCount > 2 then return 0 end
 				if (self.player.maxTopicalityBlocksCount < 4 or self.player.money < 500000) and spotCount > 1 then return 0 end
 				if self.player.coverage > 0.75 and spotMinAudience > self.maxAudience * 0.11 then return 0 end
+				if self.Task.highRisk and spotMinAudience > self.maxAudience * 0.0875 then return 0 end
 				--TODO few max top too many spots ->no
 			end
 			if targetGroup == 32 and achieved < spotCount then return 0 end
