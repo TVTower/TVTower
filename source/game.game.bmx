@@ -607,6 +607,13 @@ endrem
 			TLogger.Log("ResetPlayer()", "Stopped production: "+p.productionConcept.getTitle(), LOG_DEBUG)
 		Next
 
+		'free additional studios, code adapted from debug kick renter
+		For Local studio:TRoom = EachIn GetRoomCollection().GetAllByDetails("studio","", playerID)
+			If GetRoomAgency().CancelRoomRental(studio, -1)
+				studio.SetUsedAsStudio(False)
+			EndIf
+		Next
+
 		'=== SELL ALL SCRIPTS ===
 		Local lists:TList[] = [ programmeCollection.scripts, ..
 		          programmeCollection.suitcaseScripts, ..

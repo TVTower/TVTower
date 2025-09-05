@@ -47,6 +47,7 @@ function TaskScripts:Activate()
 		self.TargetRoom = TVT.ROOM_SCRIPTAGENCY
 	elseif self.prodStatus == PROD_STATUS_GET_CONCEPTS then
 		self.TargetRoom = self:GetStudioId()
+		self.FixedRoom = self.TargeRoom
 	elseif self.prodStatus == PROD_STATUS_SUPERMARKET then
 		self.TargetRoom = TVT.ROOM_SUPERMARKET
 	elseif self.prodStatus == PROD_STATUS_START_PRODUCTION then
@@ -57,15 +58,20 @@ function TaskScripts:Activate()
 end
 
 function TaskScripts:GetStudioId()
-	if self.neededStudioSize ~= nil then
-		local studios = TVT.GetRoomsByDetails("studio", TVT.ME)
-		for k,v in pairs(studios) do
-			--self:LogInfo(v.id .." ".. v.GetSize().." "..self.neededStudioSize)
-			if v.GetSize() >= self.neededStudioSize then
-				return v.id
-			end
+	if self.FixedRoom ~= nil then return self.FixedRoom end
+	local studios = TVT.GetRoomsByDetails("studio", TVT.ME)
+	local rndStudio = nil
+	for k,v in pairs(studios) do
+		--self:LogInfo(v.id .." ".. v.GetSize().." "..self.neededStudioSize)
+		if v.IsBlocked() > 0 then
+			--skip occupied studio
+		elseif self.neededStudioSize ~= nil and self.neededStudioSize > 0 and v.GetSize() == self.neededStudioSize then
+			return v.id
+		elseif rndStudio == nil or math.random(0,10) > 6 then
+			rndStudio = v.id
 		end
 	end
+	if rndStudio ~=nil then return rndStudio end
 	return TVT.GetFirstRoomByDetails("studio", TVT.ME).id
 end
 
@@ -102,7 +108,6 @@ function TaskScripts:getStrategicPriority()
 	else
 		self.producedForSammy = false
 	end
-	if player.coverage > 0.9 and self.BasePriority < 1 then self.BasePriority = 1.5 end
 	return 1.0
 end
 
@@ -125,7 +130,14 @@ function JobBuyScript:Prepare(pParams)
 	self.maxJobCount = 4
 	if blocks > 64 then
 		self.maxJobCount = 6
-		self.Task.BasePriority = 0.15
+		--TODO person costs are a real problem when trying to stay in budget
+		--unsuccessful planning then blocks everything
+		--if player.coverage > 0.75 then self.maxJobCount = 8 end
+		if player.coverage > 0.75 then
+			self.Task.BasePriority = 1
+		else
+			self.Task.BasePriority = 0.15
+		end
 		self.scriptMaxPrice = 1300000
 		self.minPotential = 0.3
 		self.minAttractivity = 0.65
@@ -172,6 +184,7 @@ function JobBuyScript:Tick()
 		table.sort(scCopy, sortByAttractivity)
 
 		for k,script in pairs(scCopy) do
+			--self:LogInfo("  considering script ".. script:getTitle().." attractivity ".. self:getAttractivity(script))
 			if self:canBuy(script) == true then
 				self:LogInfo("  buying script ".. script:getTitle().." attractivity ".. self:getAttractivity(script))
 				TVT:da_buyScript(script)
@@ -279,8 +292,10 @@ function JobGetConcepts:Tick()
 	elseif response == TVT.RESULT_NOTFOUND then
 		--indicator that no script was in the studio - buy new one
 		self.Task.prodStatus = PROD_STATUS_BUY
+		self.Task.FixedRoom = nil
 	else
 		self:LogInfo("problem dropping script in studio")
+		self.Task.FixedRoom = nil
 	end
 	self.Task:SetDone()
 	self.Status = JOB_STATUS_DONE
@@ -338,10 +353,10 @@ end
 function JobPlanProduction:Tick()
 	if self.MaxBudget > 0 then
 		local response = TVT:sm_PlanProduction(self.MaxBudget, 0.7)
-		if response == TVT.RESULT_OK then
+		if response == TVT.RESULT_OK or response == TVT.RESULT_NOTFOUND then
 			self.Task.prodStatus = PROD_STATUS_START_PRODUCTION
 		else
-			self:LogInfo("problem planning production")
+			self:LogInfo("problem planning production; budget "..self.MaxBudget)
 		end
 	else
 		self:LogInfo(" no budget for planning production")
@@ -370,6 +385,8 @@ function JobStartProduction:Tick()
 	if response == TVT.RESULT_OK then
 		--restore original priority after production start
 		self.Task.BasePriority = self.Task.PriorityBackup
+		self.Task.FixedRoom = nil
+		self.Task.TargetRoom = TVT.ROOM_SCRIPTAGENCY
 		self:LogInfo("Start production")
 	else
 		self:LogInfo("problem starting production")
@@ -377,7 +394,8 @@ function JobStartProduction:Tick()
 	self.SituationPriority = 0
 	self.producedForSammy = true
 	--check state
-	self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
+	self.Task.prodStatus = PROD_STATUS_BUY
+	self.Task.neededStudioSize = 0
 	self.Task:SetDone()
 	self.Status = JOB_STATUS_DONE
 end

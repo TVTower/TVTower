@@ -660,7 +660,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	'use this to place focus points where needed (eg custom programme 
 	'producers could use this)
 	'returns amount of unspend points
-	Method AssignEffectiveFocusPoints:Int(pointsToSpend:Int)
+	Method AssignEffectiveFocusPoints:Int(pointsToSpend:Int, budget:Float = -1.0)
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subgenres)
 
 		Local indices:Int[] = productionFocus.GetOrderedFocusIndices()
@@ -696,6 +696,20 @@ Type TProductionConcept Extends TOwnedGameObject
 			SetProductionFocus(focusPointID, points)
 			pointsToSpend :- points
 		Next
+
+		'reduce points until budget is OK (exponential costs)
+		If budget > 0 and GetProductionCost() > budget
+			For Local j:Int = 0 To 4
+				For Local i:Int = indices.length-1 To 0 Step -1
+					Local focusPointID:Int = indices[i]
+					Local points:Int = GetProductionFocus(focusPointID)
+					If points > 5 And GetProductionCost() > budget
+						SetProductionFocus(focusPointID, points-1)
+						pointsToSpend :+ 1
+					EndIf
+				Next
+			Next
+		EndIf
 
 		Return pointsToSpend
 	End Method

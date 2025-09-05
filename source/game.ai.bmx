@@ -1800,26 +1800,39 @@ endrem
 			Return True
 		EndFunction
 
-		'TODO throw away multi productions with lower quality (if more than one exists)
 		Function getScriptToProduce:TScript(scripts:TList, pcc:TProductionConceptCollection, roomID:Int)
-			'TODO consider room size!
+			Local roomSize:Int = GetRoomCollection().Get(roomId).GetSize()
 			If scripts And Not scripts.IsEmpty()
 				Local multiProdQuality:Float = 0.0
 				Local multiProdQualityMax:Float = 0.0
+				Local multiProdQualityMin:Float = 100.0
 				Local multiProdSkipChance:Int
+				Local multiProdCount:Int = 0
+				Local worstMultiProd:TScript
 				For Local s:TScript = EachIn scripts
+					If roomSize < s.requiredStudioSize Then Continue
 					If Not isLiveAndAllProductionsStarted(s, pcc)
 						'prefer non-multi-productions
 						If s.GetProductionLimit() <= 1
 							Return s
 						Else
+							multiProdCount:+1
 							multiProdQuality = s.GetReview() + s.GetSpeed()
 							If multiProdQuality > multiProdQualityMax Then multiProdQualityMax = multiProdQuality
+							If multiProdQuality < multiProdQualityMin
+								multiProdQualityMin = multiProdQuality
+								worstMultiProd = s
+							EndIf
 							'produce at least once
 							If s.GetProductionsCount() < 1 Then Return s
 						EndIf
 					EndIf
 				Next
+				'if there are too many multi-productions, throw away the worst
+				If multiProdCount > 3 and worstMultiProd
+					scripts.remove(worstMultiProd)
+					GetPlayerProgrammeCollection(worstMultiProd.owner).RemoveScript(worstMultiProd, False)
+				EndIf
 				'at this point the only choice should be among multi productions
 				For Local s:TScript = EachIn scripts
 					If Not isLiveAndAllProductionsStarted(s, pcc)
@@ -1879,9 +1892,9 @@ endrem
 					Local budgetToUse:Int = budget
 					result = Self.RESULT_FAILED
 					If pc.script.GetBlocks() = 1 then budgetToUse = budgetToUse * oneBlockBudgetFactor
-					If pc.script.GetProductionBroadcastLimit() = 1 then budgetToUse = budgetToUse * oneBlockBudgetFactor
+					If pc.script.GetProductionBroadcastLimit() < 3 then budgetToUse = budgetToUse * oneBlockBudgetFactor
 					producer.budget = budgetToUse
-					producer.experience = 75
+					producer.experience = 60
 					If budgetToUse < 400000 then producer.preferCelebrityCastRateSupportingRole = 60
 					Local maxCost:Int = 0
 					Local pcCost:Int=-1
@@ -1901,14 +1914,14 @@ endrem
 							Exit
 						EndIf
 					Next
-					If maxCost > 0 
-						producer.experience = 90
+					If maxCost > 0 and result <> Self.RESULT_OK
+						'producer.experience = 90
 						For Local i:Int = 1 To 15
 							producer.ChooseProductionCompany(pc, pc.script)
 							producer.ChooseCast(pc, pc.script)
 							producer.ChooseFocusPoints(pc, pc.script)
 							pcCost = pc.GetTotalCost()
-							If pcCost>= maxCost * 0.8 and pcCost <= maxCost and pc.PayDeposit() = True
+							If pcCost>= maxCost * 0.8 and pcCost <= maxCost * 1.25 and pc.PayDeposit() = True
 								result = Self.RESULT_OK
 								Exit
 							EndIf

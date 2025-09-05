@@ -550,7 +550,9 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsBlocked:Int()
+	'simplification: not directly visible from room, but AI "could" store end of production time
+	'so expose for usage in production planning
+	Method IsBlocked:Int() {_exposeToLua}
 		if blockedState > BLOCKEDSTATE_NONE and blockedUntil < GetWorldTime().GetTimeGone()
 			SetUnBlocked()
 		EndIf

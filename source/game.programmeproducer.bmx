@@ -450,10 +450,12 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				End If
 			Next
 			Local result:Int=False
-			'better and not too expensive
-			If sumAlternative > sumCurrent * 1.1 and feeAlternative < feeCurrent * 1.1 Then result = True
-			'with higher budget always use better alternative
-			If budget > 1400000 and sumAlternative > sumCurrent * 1.2 Then result = True
+			If feeAlternative < budget/5
+				'better and not too expensive
+				If sumAlternative > sumCurrent * 1.1 and feeAlternative < feeCurrent * 1.1 Then result = True
+				'with higher budget always use better alternative... depends on cast number!
+				If budget > 1400000 and sumAlternative > sumCurrent * 1.2 Then result = True
+			EndIf
 			'not much worse but cheaper
 			If sumAlternative > sumCurrent * 0.9 and feeAlternative < feeCurrent Then result = True
 			If result = True
@@ -543,7 +545,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		'(more points than available cannot be set...
 		Local diff:Int = (100-experience)*25/100
 		Local fpUsed:Int = fpToSpend * Max(0, Min(100, RandRange(100-diff, 100+diff))) / 100
-		productionConcept.AssignEffectiveFocusPoints(fpUsed)
+		productionConcept.AssignEffectiveFocusPoints(fpUsed, budget * 0.7)
 	End Method
 
 
