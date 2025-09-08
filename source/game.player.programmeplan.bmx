@@ -1927,49 +1927,8 @@ endrem
 							'refresh planned state (for next hour)
 							RecalculatePlannedProgramme(TProgramme(obj), -1, hour+1)
 
-							'removal of limited programme licences
-							local licence:TProgrammeLicence = TProgramme(obj).licence
-							if licence.isExceedingBroadcastLimit()
-
-								Local licenceToRemove:TProgrammeLicence
-								Local remove:Int = False
-								Local sell:Int = False
-								If licence.IsEpisode()
-									'check if whole series needs removing
-									licenceToRemove = licence.getParentLicence()
-									If Not licenceToRemove Or Not licenceToRemove.isExceedingBroadcastLimit()
-										'nothing to remove
-										licenceToRemove = Null
-									Else
-										'for series - flag value is true if any of the episodes or the head has the flag
-										For Local l:TProgrammeLicence = eachin licenceToRemove.subLicences
-											If l.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT) Then remove = True
-											If l.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT) Then sell = True
-										Next
-									EndIf
-								ElseIf licence.GetSublicenceCount() = 0
-									'TODO maybe handle franchise/collection differently
-									licenceToRemove = licence
-								EndIf
-
-								'if a licence is removed (not sold) only if it is tradeable, it is possible to only partially produce a series
-								'trash the script for the last episode and sell the series even after all broadcast limits have been reached
-								If licenceToRemove
-									If licenceToRemove.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT) Then remove = True
-									If licenceToRemove.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT) Then sell = True
-									If remove
-										GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licenceToRemove, False)
-									ElseIf sell and licenceToRemove.isTradeable()
-										GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licenceToRemove, True)
-									EndIf
-								EndIf
-
-								'remove _upcoming_ planned programmes with that licence
-								RemoveProgrammeInstancesByLicence(licence, False)
-
-								'inform others
-								TriggerBaseEvent(GameEventKeys.ProgrammeLicence_ExceedingBroadcastLimit, null, licence)
-							endif
+							'removal of licences with broadcast limit is done on minute 55
+							'after ads have been processed
 						EndIf
 					EndIf
 				Else
@@ -2001,6 +1960,7 @@ endrem
 			'use advertisement instead of programme
 			audienceResult.broadcastMaterial = obj
 
+			audienceResult.broadcastOutage = False 'ensure outage flag is not copied
 			if not obj
 				audienceResult.broadcastOutage = True
 			endif
@@ -2040,6 +2000,52 @@ endrem
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
+
+			'=== removal of limited programme licences only after ad has been processed ===
+			obj = GetProgramme(day, hour)
+			If TProgramme(obj)
+				local licence:TProgrammeLicence = TProgramme(obj).licence
+				if licence.isExceedingBroadcastLimit()
+					Local licenceToRemove:TProgrammeLicence
+					Local remove:Int = False
+					Local sell:Int = False
+					If licence.IsEpisode()
+						'check if whole series needs removing
+						licenceToRemove = licence.getParentLicence()
+						If Not licenceToRemove Or Not licenceToRemove.isExceedingBroadcastLimit()
+							'nothing to remove
+							licenceToRemove = Null
+						Else
+							'for series - flag value is true if any of the episodes or the head has the flag
+							For Local l:TProgrammeLicence = eachin licenceToRemove.subLicences
+								If l.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT) Then remove = True
+								If l.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT) Then sell = True
+							Next
+						EndIf
+					ElseIf licence.GetSublicenceCount() = 0
+						'TODO maybe handle franchise/collection differently
+						licenceToRemove = licence
+					EndIf
+
+					'if a licence is removed (not sold) only if it is tradeable, it is possible to only partially produce a series
+					'trash the script for the last episode and sell the series even after all broadcast limits have been reached
+					If licenceToRemove
+						If licenceToRemove.HasLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT) Then remove = True
+						If licenceToRemove.HasLicenceFlag(TVTProgrammeLicenceFlag.SELL_ON_REACHING_BROADCASTLIMIT) Then sell = True
+						If remove
+							GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licenceToRemove, False)
+						ElseIf sell and licenceToRemove.isTradeable()
+							GetPlayerProgrammeCollection(owner).RemoveProgrammeLicence(licenceToRemove, True)
+						EndIf
+					EndIf
+
+					'remove _upcoming_ planned programmes with that licence
+					RemoveProgrammeInstancesByLicence(licence, False)
+	
+					'inform others
+					TriggerBaseEvent(GameEventKeys.ProgrammeLicence_ExceedingBroadcastLimit, null, licence)
+				endif
+			EndIf
 
 		'=== END OF COMMERCIAL BREAK ===
 		'ads end - so trailers can set their "ok"
