@@ -116,7 +116,7 @@ end
 
 
 function TaskMovieDistributor:getStrategicPriority()
-	self:LogTrace("TaskMovieDistributor:getStrategicPriority")
+	--self:LogTrace("TaskMovieDistributor:getStrategicPriority")
 	local player = getPlayer()
 	-- no money to buy things? skip even looking...
 	if player.money <= 50000 then
@@ -570,7 +570,7 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 		self.MaxPricePerBlock = self.MaxPricePerBlock * 1.3
 		movieBudget = movieBudget * 0.7
 	else
-		self.MaxPricePerBlock = self.MaxPricePerBlock * 2
+		self.MaxPricePerBlock = self.MaxPricePerBlock * 1.7
 	end
 	if player.coverage > 0.9 and self.MaxPricePerBlock > 0 then self.MaxPricePerBlock = self.MaxPricePerBlock * 1.5 end
 
@@ -664,6 +664,7 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 	local financeFactor = 1.0
 --	if pricePerBlockStats.AverageValue > 0 then financeFactor = ((pricePerBlockStats.MaxValue + pricePerBlockStats.AverageValue)/ 2) / licence:GetPricePerBlock(TVT.ME, TVT.Constants.BroadcastMaterialType.PROGRAMME) ; end
 --	financeFactor = CutFactor(financeFactor, 0.1, 3)
+--TODO currently no finance factor, so threshold for buying movies was reduced for the beginning of the game
 
 	-- the higher the quality the better (using quality gate yields low values later on)
 	local qualityFactor = 1.0
@@ -710,6 +711,8 @@ end
 function JobBuyMovies:Prepare(pParams)
 	--TODO nicht zufällig, sondern nach bestimmtem Kriterium?
 	if (self.Task.MoviesAtDistributor ~= nil) then
+		self.threshold = 1.0
+		if self.Task.blocksCount < 48 then self.threshold = 0.8 end
 		local sortFunction
 		local sortMethod = math.random(0,2)
 		--TODO solange die Auswahl noch nicht groß ist nach Preis (Qualität muss ja ohnehin hoch genug sein)
@@ -809,7 +812,7 @@ end
 
 function JobBuyMovies:shouldBuyMovie(movie)
 	--TODO more sophisticated bias for choosing movie genre
-	if movie:GetAttractiveness() > 1 then
+	if movie:GetAttractiveness() > self.threshold then
 		local genre = movie:GetGenre()
 		if self.Task:IsErotic(movie) and math.random(0,500) > 1 then
 			return 0
