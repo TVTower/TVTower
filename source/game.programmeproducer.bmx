@@ -360,7 +360,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 			'TODO local optimization makes only so much sense
 			'if the budget is high, after the initial cast is chosen, more money could be spent for certain jobs
-			person = OptimizeCast(person, productionConcept, job, jobCountry, usedPersonIDs, budget)
+			person = OptimizeCast(person, productionConcept, job, jobCountry, usedPersonIDs, budget/2)
 
 			'store used cast selections so amateurs sooner become celebs
 			'with specialization
@@ -399,7 +399,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		End Function
 
 		'try to find a better fit: equally good but less expensive, better but only slightly more expensive
-		Function OptimizeCast:TPersonBase(currentChoice:TPersonBase, productionConcept:TProductionConcept, job:TPersonProductionJob, jobCountry:String, usedPersonIDs:Int[], budget:Int)
+		Function OptimizeCast:TPersonBase(currentChoice:TPersonBase, productionConcept:TProductionConcept, job:TPersonProductionJob, jobCountry:String, usedPersonIDs:Int[], castBudget:Int)
 			'do not replace if insignificant was chosen
 			If currentChoice.IsInsignificant() Then return currentChoice
 			'print "    trying to optimize " + job.job + " currently " + currentChoice.GetFullName()
@@ -414,17 +414,21 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Local script:TScript = productionConcept.script
 			Local genreID:Int = script.mainGenre
 			Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition( [genreID] +script.subgenres)
+			'very naive heuristic for single job budget
+			'the more jobs there are, the more persons are already used
+			'allow lower price for later jobs as that they usually are the less important ones
+			Local singleCastBudget:Int = castBudget / (usedPersonIDs.length+1)
 
 			For Local i:Int = 0 Until alternatives.length
 				Local alternative:TPersonBase = alternatives[i]
 				If Not alternative Or Not alternative.IsCastable() Or Not alternative.IsBookable() Or Not passesAgeRestriction(alternative) Then Continue
-				If IsBetterFit(result, alternative, job.job, genreID, genreDefinition, budget) Then result = alternative
+				If IsBetterFit(result, alternative, job.job, genreID, genreDefinition, singleCastBudget) Then result = alternative
 			Next
 
 			return result
 		End Function
 
-		Function IsBetterFit:Int(current:TPersonBase, alternative:TPersonBase, jobId:Int, genreId:Int, genreDefinition:TMovieGenreDefinition, budget:Int)
+		Function IsBetterFit:Int(current:TPersonBase, alternative:TPersonBase, jobId:Int, genreId:Int, genreDefinition:TMovieGenreDefinition, jobBudget:Int)
 			Local xpCurrent:Float = current.GetEffectiveJobExperiencePercentage(jobId)
 			Local xpAlternative:Float = alternative.GetEffectiveJobExperiencePercentage(jobId)
 			'adapted from screen.supermarket
@@ -450,11 +454,13 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				End If
 			Next
 			Local result:Int=False
-			If feeAlternative < budget/5
+			If feeAlternative < jobBudget
 				'better and not too expensive
 				If sumAlternative > sumCurrent * 1.1 and feeAlternative < feeCurrent * 1.1 Then result = True
-				'with higher budget always use better alternative... depends on cast number!
-				If budget > 1400000 and sumAlternative > sumCurrent * 1.2 Then result = True
+			EndIf
+			'with a certain chance exceed budget for better cast
+			If feeAlternative < jobBudget * 1.25
+				If sumAlternative > sumCurrent * 1.2 and randRange(0,10) > 8 Then result = True
 			EndIf
 			'not much worse but cheaper
 			If sumAlternative > sumCurrent * 0.9 and feeAlternative < feeCurrent Then result = True
@@ -495,6 +501,16 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 		If budget >10000000 Then requiredFocusPoints :+ 5
 		'limit price of chosen company
 		If budget < 250000 Then requiredFocusPoints = Max(requiredFocusPoints, 11)
+		
+		Local useBudgetRatio:Float
+		Local jobCount:Int=script.GetJobs().length
+		If jobCount < 3
+			useBudgetRatio = 0.7
+		ElseIf jobCount < 6
+			useBudgetRatio = 0.6
+		Else'If jobCount < 9
+			useBudgetRatio = 0.5
+		EndIf
 
 		If requiredFocusPoints > 5
 			'print "looking for non amateur production company with focuspoints >= "+requiredFocusPoints
@@ -505,7 +521,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				Local companyFee:Int = p.GetFee(script.owner,  script.GetBlocks(), script.productionBroadCastLimit)
 				'better than what we found ?
 				if bestCompany
-					If p.GetFocusPoints() > bestFocusPoints and companyFee < budget * 0.7
+					If p.GetFocusPoints() > bestFocusPoints and companyFee < budget * useBudgetRatio
 						'if company is more far from requirements than 
 						'current and also more expensive!
 						If abs(p.GetFocusPoints() - requiredFocusPoints) > abs(bestFocusPoints - requiredFocusPoints) and companyFee > bestFee Then Continue
@@ -538,14 +554,24 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	End Method
 
 
-	Method ChooseFocusPoints(productionConcept:TProductionConcept, script:TScript)
+	Method ChooseFocusPoints(productionConcept:TProductionConcept, script:TScript, useBudgetRatio:Float = -1)
+		If useBudgetRatio < 0
+			Local jobCount:Int=script.GetJobs().length
+			If jobCount < 3
+				useBudgetRatio = 0.8
+			ElseIf jobCount < 6
+				useBudgetRatio = 0.65
+			Else'If jobCount < 9
+				useBudgetRatio = 0.5
+			EndIf
+		EndIf
 		Local fpToSpend:Int = productionConcept.productionCompany.GetFocusPoints()
 		'the lower the experience then the more the producer might set
 		'too few or too much focus points (-25 to +25%)
 		'(more points than available cannot be set...
 		Local diff:Int = (100-experience)*25/100
 		Local fpUsed:Int = fpToSpend * Max(0, Min(100, RandRange(100-diff, 100+diff))) / 100
-		productionConcept.AssignEffectiveFocusPoints(fpUsed, budget * 0.7)
+		productionConcept.AssignEffectiveFocusPoints(fpUsed, budget * useBudgetRatio)
 	End Method
 
 

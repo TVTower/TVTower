@@ -130,10 +130,9 @@ function JobBuyScript:Prepare(pParams)
 	self.maxJobCount = 4
 	if blocks > 64 then
 		self.maxJobCount = 6
-		--TODO person costs are a real problem when trying to stay in budget
-		--unsuccessful planning then blocks everything
-		--if player.coverage > 0.75 then self.maxJobCount = 8 end
 		if player.coverage > 0.75 then
+			--TODO further optimize max job count
+			self.maxJobCount = 8
 			self.Task.BasePriority = 1
 		else
 			self.Task.BasePriority = 0.15

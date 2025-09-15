@@ -1892,7 +1892,7 @@ endrem
 					Local budgetToUse:Int = budget
 					result = Self.RESULT_FAILED
 					If pc.script.GetBlocks() = 1 then budgetToUse = budgetToUse * oneBlockBudgetFactor
-					If pc.script.GetProductionBroadcastLimit() < 3 then budgetToUse = budgetToUse * oneBlockBudgetFactor
+					If pc.script.GetProductionBroadcastLimit() > 0 And pc.script.GetProductionBroadcastLimit() < 3 then budgetToUse = budgetToUse * oneBlockBudgetFactor
 					producer.budget = budgetToUse
 					producer.experience = 60
 					If budgetToUse < 400000 then producer.preferCelebrityCastRateSupportingRole = 60
@@ -1903,6 +1903,7 @@ endrem
 						producer.ChooseCast(pc, pc.script)
 						producer.ChooseFocusPoints(pc, pc.script)
 						pcCost = pc.GetTotalCost()
+						'print budgetToUse +" "+pc.GetCastCost() +" "+pc.GetProductionCost()
 						If pcCost <= budgetToUse and pcCost > maxCost Then maxCost = pcCost
 						'in order to inspect the concept, do not pay the deposit and do not return OK
 						'then you can send the AI to the supermarket multiple times
