@@ -212,7 +212,7 @@ function JobAnalyseStationMarket:Tick()
 	end
 
 	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"
-	if player.money > 10000000 and player.coverage > 0.15 and blocks < 144 then
+	if player.money > 10000000 and player.coverage > 0.1 and blocks < 144 then
 		--player bankrupt - do not by stations too fast
 		self.Task.maxReceiverIncrease = -1
 	elseif player.coverage > 0.955 then

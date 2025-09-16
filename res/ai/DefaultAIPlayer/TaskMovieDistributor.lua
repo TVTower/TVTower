@@ -556,12 +556,13 @@ function JobAppraiseMovies:AdjustMovieNiveau()
 	end
 
 	self.MaxPricePerBlock = -1
-	if self.Task.blocksCount < 96 and player.money > 4000000 then
-		--restarted player, do not limit price per block
-	else
-		if (player.maxIncomePerSpot ~=nil and player.maxIncomePerSpot > 0) then self.MaxPricePerBlock = player.maxIncomePerSpot end
+	if (player.maxIncomePerSpot ~=nil and player.maxIncomePerSpot > 0) then self.MaxPricePerBlock = player.maxIncomePerSpot end
+	if self.Task.blocksCount < 144 and player.money > 2000000 then
+		--restarted player, allow slightly more expensive licences
+		self.MaxPricePerBlock = self.MaxPricePerBlock * 1.5 
+	elseif player.coverage < 0.2 then
 		--prefer "average" licences early on - more money for station purchase
-		if player.coverage < 0.2 then self.MaxPricePerBlock = self.MaxPricePerBlock * 0.5 end
+		self.MaxPricePerBlock = self.MaxPricePerBlock * 0.5
 	end
 	--TODO factor risk sensitive/depend on difficulty
 	--TODO make dynamic, increase if enough money/reach/available blocks
@@ -751,7 +752,7 @@ function JobBuyMovies:Tick()
 	local maxPrice = self.Task.CurrentBargainBudget
 	local blocksCount = self.Task.blocksCount
 	local player = getPlayer()
-	if blocksCount > 0 and blocksCount < 72 then
+	if blocksCount > 0 and blocksCount < 120 then
 		if maxPrice > 250000 then
 			maxPrice = maxPrice * 0.5
 		elseif maxPrice > 150000 then
@@ -759,10 +760,10 @@ function JobBuyMovies:Tick()
 		end
 		--TODO max price added to deal with restarting after bankruptcy
 		--problematic for series (price per block would be better), good threshold hard to determine
-		if player.money > 4000000 then
-			if blocksCount < 36 then 
+		if player.money > 2000000 then
+			if blocksCount < 60 then 
 				maxPrice = math.min(maxPrice*2, 600000)
-			elseif blocksCount < 64 then 
+			elseif blocksCount < 120 then 
 				maxPrice = math.min(maxPrice*2, 1200000)
 			end
 		else

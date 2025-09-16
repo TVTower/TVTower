@@ -67,6 +67,8 @@ function TaskBoss:BeforeBudgetSetup()
 		end
 	elseif (money - credit) > 100000 then
 		self.NeededInvestmentBudget = credit / 10
+	elseif money > 3000000 and credit > 500000 then
+		self.NeededInvestmentBudget = 500000
 	else
 		self.InvestmentPriority = 0
 		self.NeededInvestmentBudget = 10000
