@@ -1113,6 +1113,11 @@ endrem
 			Next
 		EndIf
 
+		'initialize caches in particular for AI threads
+		For Local map:TStationMap = EachIn _instance.stationMaps
+			map._GetAllAntennasLayer()
+		Next
+
 		Return True
 	End Function
 
