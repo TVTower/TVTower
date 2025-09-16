@@ -161,9 +161,10 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 
 	Method addRemake(licence:TProgrammeLicence, releaseTime:Long)
 		Local data:TProgrammeData = licence.GetData()
+		'only one remake per data
+		data.SetFlag(TVTProgrammeDataFlag.NOREMAKE, True)
 
 		If data.title.ContainsString(":~qcast~q:") Or data.description.ContainsString(":~qcast~q:") Then
-			data.SetFlag(TVTProgrammeDataFlag.NOREMAKE, True)
 			'print "texts contain cast reference - no remake for "+data.getTitle()
 			return
 		EndIf
