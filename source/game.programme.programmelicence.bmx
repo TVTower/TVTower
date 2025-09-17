@@ -456,10 +456,23 @@ Type TProgrammeLicenceCollection
 	'Cache generators
 	Method _GetLicencesGUID:TMap()
 		if not _licencesGUID
-			_licencesGUID = new TMap
-			for local licence:TProgrammeLicence = EachIn licences.Values()
-				_licencesGUID.Insert(licence.GetGUID(), licence)
-			next
+			If CurrentThread() <> MainThread()
+				Local logged:Int = False
+				Repeat
+					Delay(1)
+					If _licencesGUID Then Exit
+					If Not logged
+						TLogger.Log("TProgrammeLicenceCollection._GetLicencesGUID", "waiting for main thread to create cache", LOG_WARNING)
+						logged = True
+					EndIf
+				Forever
+			Else
+				Local tmp:TMap = new TMap
+				for local licence:TProgrammeLicence = EachIn licences.Values()
+					tmp.Insert(licence.GetGUID(), licence)
+				next
+				_licencesGUID = tmp
+			EndIf
 		endif
 		return _licencesGUID
 	End Method
