@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-2025 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -44,13 +44,13 @@ Import "base.util.data.bmx"
 Import "base.util.string.bmx"
 Import "base.util.localization.bmx"
 Import Brl.Retro 'for filesize
+Import Brl.ObjectList
 
 
 
 Type TXmlHelper
 	Field filename:String =""
 	Field xmlDoc:TxmlDoc
-	Global dataLS:TLowerString = TLowerString.Create("data")
 
 	Function Create:TXmlHelper(filename:String, rootNode:String="", createIfMissing:Int=True)
 		Local obj:TXmlHelper = New TXmlHelper
@@ -119,6 +119,60 @@ Type TXmlHelper
 	'====
 
 
+	'compare (ascii only) strings case-insensitively
+	Function StartsWithAsciiNameLC:Int(s:String, needle:String)
+		if s.length < needle.length Then Return False
+
+		For Local c:Int = 0 Until needle.length
+			Local cmp:Int = AsciiCharacterToLower(s[c]) - AsciiCharacterToLower(needle[c])
+			If cmp <> 0 Then Return False
+		Next
+		Return True
+	End Function
+
+
+	Function CompareAsciiNamesLC:Int(a:String, b:String)
+		Local diff:Int = a.length - b.length
+		if diff <> 0 Then Return diff
+
+		For Local c:Int = 0 Until Min(a.length, b.length)
+			Local cmp:Int = AsciiCharacterToLower(a[c]) - AsciiCharacterToLower(b[c])
+			If cmp <> 0 Then Return cmp
+		Next
+		
+		Return 0
+	End Function
+
+
+	Function AsciiNamesLCAreEqual:Int(a:String, b:String)
+		If a.length <> b.length Then Return False
+		
+		For Local c:Int = 0 Until Min(a.length, b.length)
+			If AsciiCharacterToLower(a[c]) <> AsciiCharacterToLower(b[c]) Then Return False
+		Next
+		Return True
+	End Function
+
+
+	Function InAsciiNamesLCArray:Int(str:String, arr:String[])
+		Local inArray:Int
+		For Local i:Int = 0 Until arr.length
+			If AsciiNamesLCAreEqual(arr[i], str) 
+				Return True
+			EndIf
+		Next
+		Return False
+	End Function
+	
+
+	Function AsciiCharacterToLower:Int(c:Int)
+		Return c | ((c - Asc("A")) <= (Asc("Z") - Asc("A"))) * (Asc("a") - Asc("A"))
+	'	Return c | ((c - 65) <= 25) * $20
+	End Function
+
+	'====
+
+
 	Method GetRootNode:TxmlNode()
 		If xmlDoc Then Return xmlDoc.getRootElement()
 		Return Null
@@ -145,57 +199,35 @@ Type TXmlHelper
 
 
 	'returns a list of all child elements (one level deeper)
-	'in comparison to "txmlnode.GetChildren()" it returns a TList
+	'in comparison to "txmlnode.GetChildren()" it returns a TObjectList
 	'in all cases.
-	Function GetNodeChildElements:TList(node:TxmlNode)
+	Function GetNodeChildElements:TObjectList(node:TxmlNode)
 		'we only want "<ELEMENTS>"
-		If Not node Then Return CreateList()
+		If Not node Then Return New TObjectList()
 		Return node.getChildren()
 	End Function
 
 
 
 	'find a "<tag>"-element within a given start node
-	Function FindElementNode:TxmlNode(startNode:TxmlNode, _nodeName:String)
-		Local nodeName:TLowerString = TLowerString.Create(_nodeName)
-		Return _FindElementNodeLS(startNode, nodeName)
-	End Function
-
-
-	Method FindElementNodeLS:TxmlNode(startNode:TxmlNode, nodeName:TLowerString)
+	Method FindElementNode:TxmlNode(startNode:TxmlNode, nodeName:String)
 		If Not startNode Then startNode = GetRootNode()
-		Return _FindElementNodeLS(startNode, nodeName)
-	End Method
-
-
-	Method FindRootChild:TxmlNode(nodeName:String)
-		Return FindChild(GetRootNode(), nodeName)
-	End Method
-
-
-	Method FindRootChildLC:TxmlNode(nodeNameLC:String)
-		Return FindChildLC(GetRootNode(), nodeNameLC)
+		Return _FindElementNode(startNode, nodeName)
 	End Method
 
 
 	'non recursive child finding
 	Function FindChild:TxmlNode(node:TxmlNode, _nodeName:String)
 		If Not node Then Return Null
-		Local nodeName:TLowerString = TLowerString.Create(_nodeName)
-		For Local child:TxmlNode = EachIn GetNodeChildElements(node)
-			If nodeName.EqualsLower(child.getName()) Then Return child
-		Next
-		Return Null
-	End Function
 
-
-	'same as FindChild() but assuming nodeName to be LowerCase already
-	Function FindChildLC:TxmlNode(node:TxmlNode, nodeNameLC:String)
-		If Not node Then Return Null
-		For Local child:TxmlNode = EachIn GetNodeChildElements(node)
-			Local childName:String = child.getName()
-			if nodeNameLC.length = childName.length And nodeNameLC = child.getName().ToLower() Then Return child
-		Next
+		Local child:TXmlNode = TXmlNode(node.GetFirstChild())
+		If Not child Then Return Null
+		
+		While child
+			If AsciiNamesLCAreEqual(_nodeName, child.getName()) Then Return child
+			child = child.NextSibling()
+		Wend
+		
 		Return Null
 	End Function
 
@@ -213,84 +245,49 @@ Type TXmlHelper
 	Function HasAttribute:Int(node:TxmlNode, fieldName:String)
 		If Not node Then Return False
 
-		Local att:TList = node.GetAttributeList()
-		Local name:TLowerString = TLowerString.Create(fieldName)
-		For Local attribute:TxmlAttribute = EachIn att
-			If name.EqualsLower(attribute.GetName()) Then Return True
+		Return node.HasAttribute(fieldName, True)
+
+rem
+		For Local attribute:TxmlAttribute = EachIn node.GetAttributeList()
+			If AsciiNamesLCAreEqual(fieldName, attribute.GetName()) then Return True
 		Next
 
 		Return False
-	End Function
-
-
-	'same as HasAttribute() but assuming fieldName is LowerCase
-	Function HasAttributeLC:Int(node:TxmlNode, fieldNameLC:String)
-		If Not node Then Return False
-
-		Local att:TList = node.GetAttributeList()
-		For Local attribute:TxmlAttribute = EachIn att
-			Local attributeName:String = attribute.GetName()
-			if fieldNameLC.length = attributeName.length and fieldNameLC = attributeName.ToLower() Then Return True
-		Next
-
-		Return False
+endrem
 	End Function
 
 
 	'returns the value of an attribute
 	'(compared to node.GetAttribute() this is NOT case sensitive!)
 	Function GetAttribute:String(node:TxmlNode, fieldName:String)
-		Local att:TList = node.GetAttributeList()
-		Local fieldNameLS:TLowerString = TLowerString.Create(fieldName)
-		'fieldName = fieldName.ToLower()
-		For Local attribute:TxmlAttribute = EachIn att
-			Local attributeName:String = attribute.GetName()
-			If fieldNameLS.EqualsLower(attributeName) Then Return node.GetAttribute(attributeName)
-		Next
-		Return ""
+		Local exists:Int
+		Return GetAttribute(node, fieldName, exists)
 	End Function
 
 
 	'variant allowing to retrieve the existence-status
 	'this allows skipping a HasAttribute() check before getting the value
 	Function GetAttribute:String(node:TxmlNode, fieldName:String, attributeExists:Int Var)
-		Local att:TList = node.GetAttributeList()
-		Local fieldNameLS:TLowerString = TLowerString.Create(fieldName)
+		Local res:String
+rem
+		Local att:TObjectList = node.GetAttributeList()
+'		Local fieldNameLS:TLowerString = TLowerString.Create(fieldName)
 		For Local attribute:TxmlAttribute = EachIn att
-			Local attributeName:String = attribute.GetName()
-			If fieldNameLS.EqualsLower(attributeName) 
+'			Local attributeName:String = attribute.GetName()
+'			If fieldNameLS.EqualsLower(attributeName) 
+			If AsciiNamesLCAreEqual(fieldName, attribute.GetName())
 				attributeExists = True
-				Return node.GetAttribute(attributeName)
+				'Return attribute.GetValue()
+				res = attribute.GetValue()
+				exit
 			EndIf
 		Next
-		attributeExists = False
-		Return ""
-	End Function
-
-	'same as GetAttribute() but assuming _fieldName is LowerCase
-	Function GetAttributeLC:String(node:TxmlNode, fieldNameLC:String)
-		Local att:TList = node.GetAttributeList()
-		For Local attribute:TxmlAttribute = EachIn att
-			Local attributeName:String = attribute.GetName()
-			If fieldNameLC.length = attributeName.length and fieldNameLC = attributeName.ToLower() Then Return node.GetAttribute(attributeName)
-		Next
-		Return ""
-	End Function
-
-
-	'same as GetAttribute() but assuming _fieldName is LowerCase
-	'this allows skipping a HasAttribute() check before getting the value
-	Function GetAttributeLC:String(node:TxmlNode, fieldNameLC:String, attributeExists:Int Var)
-		Local att:TList = node.GetAttributeList()
-		For Local attribute:TxmlAttribute = EachIn att
-			Local attributeName:String = attribute.GetName()
-			If fieldNameLC.length = attributeName.length and fieldNameLC = attributeName.ToLower() 
-				attributeExists = True
-				Return node.GetAttribute(attributeName)
-			EndIf
-		Next
-		attributeExists = False
-		Return ""
+endrem
+		attributeExists = node.tryGetAttribute(fieldName, res, True)
+		Return res
+		
+'		attributeExists = False
+'		Return ""
 	End Function
 
 
@@ -303,169 +300,162 @@ Type TXmlHelper
 	'  ["other"] or ["*"]
 	'  <obj><other><FIELDNAME>bla</FIELDNAME></other></obj>
 	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+		Local exists:Int
+		Return FindValue(node, fieldName, defaultValue, exists, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+	End function
+	
+
+	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, valueExists:Int var, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
 		If node
 			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
-			Local fieldNames:String[] = fieldName.ToLower().Split("|")
+			If fieldName.Find("|") > 0
+				Local fieldNames:String[] = fieldName.ToLower().Split("|")
 
-			For Local name:String = EachIn fieldNames
-				'given node has attribute (<episode number="1">)
-				If depth = 0 or searchInChildNodeAttributes
-					Local attributeExists:Int
-					Local result:String = GetAttribute(node, name, attributeExists)
-					if attributeExists then Return result
-				EndIf
-
-				For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-					Local subNodeName:String = subNode.GetName()
-					If name.length = subNodeName.length and name = subNodeName.ToLower() Then Return subNode.GetContent()
-					If dataLS.EqualsLower(subNodeName) 
-						Local attributeExists:Int
-						Local result:String = GetAttribute(subNode, name, attributeExists)
-						If attributeExists Then Return result
-					EndIf
-					If searchInChildNodeNames And searchInChildNodeNames.length > 0
-						If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
-							Return FindValue(subNode, fieldName, defaultValue, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth + 1)
-						EndIf
-					EndIf
+				For Local name:String = EachIn fieldNames
+					Local result:String = _FindValueInternalLC(node, name, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+					if valueExists Then Return result
 				Next
-			Next
+			Else
+				fieldName = fieldName.ToLower()
+				Local result:String = _FindValueInternalLC(node, fieldName, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+				if valueExists Then Return result
+			EndIf
 		EndIf
+
 		If logString <> "" Then Print logString
+		valueExists = False
+
 		Return defaultValue
 	End Function
+	
+	
+	Function _FindValueInternalLC_NEW:String(node:TxmlNode, nameLC:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+'295000 -- eigentlich alle mit "depth = 0", also nicht-rekursive Aufrufe
 
-
-	'same as FindValue but assuming fieldName is LowerCase already
-	Function FindValueLC:String(node:TxmlNode, fieldNameLC:String, defaultValue:String, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
-		If node
-			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
-			Local fieldNames:String[] = fieldNameLC.Split("|")
-
-			For Local name:String = EachIn fieldNames
-				'given node has attribute (<episode number="1">)
-				If depth = 0 or searchInChildNodeAttributes
-					Local attributeExists:Int
-					Local result:String = GetAttributeLC(node, name, attributeExists)
-					if attributeExists then Return result
-				EndIf
-
-				For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-					Local subNodeName:String = subNode.GetName()
-					If name.length = subNodeName.length and name = subNodeName.ToLower() Then Return subNode.GetContent()
-					If dataLS.EqualsLower(subNodeName) 
-						Local attributeExists:Int
-						Local result:String = GetAttributeLC(subNode, name, attributeExists)
-						If attributeExists Then Return result
-					EndIf
-					If searchInChildNodeNames And searchInChildNodeNames.length > 0
-						If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNodeName, searchInChildNodeNames, False)
-							Return FindValueLC(subNode, fieldNameLC, defaultValue, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth + 1)
-						EndIf
-					EndIf
-				Next
-			Next
+		'given node has attribute (<episode number="1">)
+		If depth = 0 or searchInChildNodeAttributes
+			Local attributeExists:Int
+			Local result:String = GetAttribute(node, nameLC, attributeExists)
+			if attributeExists 
+				valueExists = True
+				Return result
+			EndIf
 		EndIf
-		If logString <> "" Then Print logString
-		Return defaultValue
-	End Function
+		
+		' to look things up we need the first child of the node,
+		' and use this as starting point for lookups (eg find things on
+		' same level/depth without descending
+		Local firstChild:TXmlNode = TXmlNode(node.GetFirstChild())
+		If Not firstChild
+			valueExists = False
+			Return defaultValue
+		EndIf
+
+		Local childNode:TXmlNode
+		Local dataNode:TXmlNode
 
 
+		' is there a child-node with this name?
+		childNode = firstChild
+		While childNode
+			If AsciiNamesLCAreEqual(nameLC, childNode.GetName())
+				valueExists = True
+				Return childNode.GetContent()
+			EndIf
+			childNode = childNode.NextSibling()
+		Wend
 
-	'same as FindValue but assuming fieldName is LowerCase already
-	'added value_exists so to check if defaultValue is returned (or just the same)
-	Function FindValueLC:String(node:TxmlNode, fieldNameLC:String, defaultValue:String, value_exists:Int var, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
-		If node
-			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
-			Local fieldNames:String[] = fieldNameLC.Split("|")
 
-			For Local name:String = EachIn fieldNames
-				'given node has attribute (<episode number="1">)
-				If depth = 0 or searchInChildNodeAttributes
-					Local attributeExists:Int
-					Local result:String = GetAttributeLC(node, name, attributeExists)
-					if attributeExists 
-						value_exists = True
+		' is there a data-node with this name?
+		childNode = firstChild
+		While childNode
+			If AsciiNamesLCAreEqual("data", childNode.GetName())
+				Local result:String
+				Local attributeExists:Int = childNode.tryGetAttribute(nameLC, result, True)
+				If attributeExists
+					valueExists = True
+					Return result
+				EndIf
+			EndIf
+			childNode = childNode.NextSibling()
+		Wend
+
+		
+		' search in whitelisted child node names (or "*" all)
+		If searchInChildNodeNames.length > 0
+			local checkAll:Int = (searchInChildNodeNames[0] = "*")
+			'iterate over all direct children
+
+			childNode = firstChild
+			While childNode
+				Local inArray:Int = InAsciiNamesLCArray(childNode.GetName(), searchInChildNodeNames)
+				
+				if checkAll or inArray
+					Local result:String = _FindValueInternalLC_NEW(childNode, nameLC, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+					If valueExists
 						Return result
 					EndIf
 				EndIf
-
-				For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-					Local subNodeName:String = subNode.GetName()
-					If name.length = subNodeName.length and name = subNodeName.ToLower() 
-						value_exists = True
-						Return subNode.GetContent()
-					EndIf
-					If dataLS.EqualsLower(subNodeName) 
-						Local attributeExists:Int
-						Local result:String = GetAttributeLC(subNode, name, attributeExists)
-						If attributeExists 
-							value_exists = True
-							Return result
-						EndIf
-					EndIf
-					If searchInChildNodeNames And searchInChildNodeNames.length > 0
-						If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNodeName, searchInChildNodeNames, False)
-							Return FindValueLC(subNode, fieldNameLC, defaultValue, value_exists, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth + 1)
-						EndIf
-					EndIf
-				Next
-			Next
+				childNode = childNode.NextSibling()
+			Wend
 		EndIf
-		If logString <> "" Then Print logString
-		value_exists = False
+
+		valueExists = False
 		Return defaultValue
 	End Function
 
+	'node/attribute name must be lowercased already!
+	Function _FindValueInternalLC:String(node:TxmlNode, nameLC:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+'		Local vExists1:Int
+		Local vExists2:Int
 
-	Function HasValue:Int(node:TxmlNode, fieldName:String, searchInChildNodeNames:String[] = Null)
-		If Not node Then Return False
-
-		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
-		Local fieldNames:String[] = fieldName.ToLower().Split("|")
-
-		For Local name:String = EachIn fieldNames
-			If HasAttribute(node, name) Then Return True
-
-			For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-'				If subNode.getType() = MXML_SAX_COMMENT Then Continue
-				'If subNode.getType() = XML_TEXT_NODE Then Continue
-				If subNode.getName().ToLower() = name Then Return True
-				If dataLS.EqualsLower(subNode.getName()) And HasAttribute(subNode, name) Then Return True
-				If searchInChildNodeNames And searchInChildNodeNames.length > 0
-					If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
-						Return HasValue(subNode, fieldName, searchInChildNodeNames)
-					EndIf
-				EndIf
-			Next
-		Next
-		Return False
+'		Local result1:String = _FindValueInternalLC_OLD(node, nameLC, defaultValue, vExists1, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+		Local result2:String = _FindValueInternalLC_NEW(node, nameLC, defaultValue, vExists2, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+	
+'		if result1 <> result2
+'			Throw "Node ~q"+node.GetName() +"~q differs for ~q" + nameLC + "~q   result1=~q"+result1+"~q   result2=~q"+result2+"~q  defaultValue=~q"+defaultValue+"~q.  node=" + node.GetContent()
+'		EndIf
+		
+'		valueExists = vExists1
+'		Return result1
+		valueExists = vExists2
+		Return result2
 	End Function
+	
+	Function _FindValueInternalLC_OLD:String(node:TxmlNode, nameLC:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+		'given node has attribute (<episode number="1">)
+		If depth = 0 or searchInChildNodeAttributes
+			Local attributeExists:Int
+			Local result:String = GetAttribute(node, nameLC, attributeExists)
+			if attributeExists 
+				valueExists = True
+				Return result
+			EndIf
+		EndIf
 
-
-	'same as HasValue() but fieldName is LowerCase
-	Function HasValueLC:Int(node:TxmlNode, fieldNameLC:String, searchInChildNodeNames:String[] = Null)
-		If Not node Then Return False
-
-		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
-		Local fieldNames:String[] = fieldNameLC.Split("|")
-
-		For Local name:String = EachIn fieldNames
-			If HasAttributeLC(node, name) Then Return True
-
-			For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-'				If subNode.getType() = MXML_SAX_COMMENT Then Continue
-				'If subNode.getType() = XML_TEXT_NODE Then Continue
-				If subNode.getName().ToLower() = name Then Return True
-				If dataLS.EqualsLower(subNode.getName()) And HasAttributeLC(subNode, name) Then Return True
-				If searchInChildNodeNames And searchInChildNodeNames.length > 0
-					If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
-						Return HasValueLC(subNode, fieldNameLC, searchInChildNodeNames)
-					EndIf
+		For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
+			Local subNodeName:String = subNode.GetName()
+			If nameLC.length = subNodeName.length and nameLC = subNodeName.ToLower() 
+				valueExists = True
+				Return subNode.GetContent()
+			EndIf
+			If AsciiNamesLCAreEqual("data", subNodeName) 
+				Local attributeExists:Int
+				Local result:String = GetAttribute(subNode, nameLC, attributeExists)
+				If attributeExists
+					valueExists = True
+					Return result
 				EndIf
-			Next
+			EndIf
+			If searchInChildNodeNames And searchInChildNodeNames.length > 0
+				If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
+					Return _FindValueInternalLC_OLD(subNode, nameLC, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth + 1)
+				EndIf
+			EndIf
 		Next
-		Return False
+		valueExists = False
+		
+		Return defaultValue
 	End Function
 
 
@@ -474,19 +464,25 @@ Type TXmlHelper
 		If Not node Then Return data
 
 		For Local fieldName:String = EachIn fieldNames
-			If Not TXmlHelper.HasValue(node, fieldName, searchInChildNodeNames) Then Continue
 			'use the first fieldname ("frames|f" -> add as "frames")
-			Local names:String[] = fieldName.Split("|")
+			Local splitPos:Int = fieldName.Find("|")
+			Local firstFieldName:String = fieldName
+			if splitPos >= 0 Then firstFieldName = fieldName[.. splitPos]
+
+			Local exists:Int
+			Local value:String = FindValue(node, fieldName, "", exists, "", searchInChildNodeNames, searchInChildNodeAttributes)
+			If not exists Then Continue
+		
 			'if name is occupied -> convert to array and append
-			If Not overwriteExisting And data.Has(names[0])
-				Local old:Object = data.Get(names[0])
+			If Not overwriteExisting And data.Has(firstFieldName)
+				Local old:Object = data.Get(firstFieldName)
 				Local arr:Object[] = Object[](old)
 				If Not arr Then arr = New Object[0]
 
-				arr :+ [FindValue(node, fieldName, "", "", searchInChildNodeNames, searchInChildNodeAttributes)]
-				data.Add(names[0], arr)
+				arr :+ [value]
+				data.Add(firstFieldName, arr)
 			Else
-				data.Add(names[0], FindValue(node, fieldName, "", "", searchInChildNodeNames, searchInChildNodeAttributes))
+				data.Add(firstFieldName, value)
 			EndIf
 		Next
 		Return data
@@ -504,9 +500,9 @@ Type TXmlHelper
 			Local firstFieldName:String = fieldName
 			if splitPos >= 0 Then firstFieldName = fieldName[.. splitPos]
 
-			Local value_exists:Int
-			Local value:String = FindValueLC(node, fieldName, "", value_exists, "", searchInChildNodeNames, searchInChildNodeAttributes)
-			If Not value_exists Then Continue
+			Local exists:Int
+			Local value:String = FindValue(node, fieldName, "", exists, "", searchInChildNodeNames, searchInChildNodeAttributes)
+			If not exists Then Continue
 			
 			'if name is occupied -> convert to array and append
 			If Not overwriteExisting And data.Has(firstFieldName)
@@ -526,101 +522,142 @@ Type TXmlHelper
 
 	'loads values of a node into a tdata object
 	Function LoadAllValuesToData:TData(node:TxmlNode, data:TData, ignoreNames:String[] = Null)
+'		Local resultOLD:TData = LoadAllValuesToData_OLD(node, data, ignoreNames)
+		Local result:TData = LoadAllValuesToData_NEW(node, data, ignoreNames)
+		
+'		if resultOLD.ToString() <> result.ToString()
+'			Throw "differs: " + node.GetName()
+'		EndIf
+		Return result
+	End Function
+
+
+	Function LoadAllValuesToData_NEW:TData(node:TxmlNode, data:TData, ignoreNames:String[] = Null)
 		If Not node Then Return data
 
 		'=== ATTRIBUTES ===
-		For Local attribute:TxmlAttribute = EachIn node.GetAttributeList()
-			If StringHelper.InArray(attribute.GetName(), ignoreNames, False) Then Continue
-			data.Add(attribute.GetName(), node.GetAttribute(attribute.GetName()))
+		Local attributeCount:Int = node.getAttributeCount()
+		For Local i:Int = 0 Until attributeCount
+			Local name:String
+			Local value:String = node.getAttributeByIndex(i, name)
+
+			If ignoreNames.length > 0 And InAsciiNamesLCArray(name, ignoreNames) Then Continue
+
+			data.Add(name, value)
 		Next
 
 
 		'=== CHILD ELEMENTS ===
+		' count only "valid" children (unignored, no comments)
+		Local childrenCount:Int
+		Local child:TxmlNode = TxmlNode(node.GetFirstChild())
+		If child
+			While child
+				Local childNodeName:String = child.getName()
+				' skip comments
+				If childNodeName And childNodeName[0] = Asc("<") And childNodeName.Find("<!--") = 0 Then Continue
+				' skip ignored
+				If InAsciiNamesLCArray(childNodeName, ignoreNames) Then Continue
+
+				childrenCount :+ 1
+				
+				Local childData:TData = New TData
+				LoadAllValuesToData_NEW(child, childData, ignoreNames)
+				data.Add(childNodeName, childData)
+
+				child = child.NextSibling()
+			Wend
+		EndIf
+
+		' if a child has NO attributes and NO children then its
+		' own value is added directly, else their attibutes or
+		' children are added as "sub data" entries recursively.
+		if attributeCount = 0 And childrenCount = 0
+			data.Add(node.getName(), node.GetContent())
+		EndIf
+		
+		Return data
+	End Function
+
+
+	Function LoadAllValuesToData_OLD:TData(node:TxmlNode, data:TData, ignoreNames:String[] = Null)
+		If Not node Then Return data
+
+		'=== ATTRIBUTES ===
+		For Local attribute:TxmlAttribute = EachIn node.GetAttributeList()
+			If ignoreNames.length > 0 And StringHelper.InArray(attribute.GetName(), ignoreNames, False) Then Continue
+			data.Add(attribute.GetName(), attribute.GetValue())
+		Next
+
+		'=== CHILD ELEMENTS ===
 		For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
+			Local subNodeName:String = subNode.getName()
+			' skip comments
+			If subNodeName And subNodeName[0] = Asc("<") And subNodeName.Find("<!--") = 0 Then Continue
+			' skip ignored
+			If StringHelper.InArray(subNodeName, ignoreNames, False) Then Continue
+
 			Local children:Int = subNode.GetAttributeList().Count()
 			If children = 0
-				Local childList:TList = subNode.GetChildren()
+				Local childList:TObjectList = subNode.GetChildren()
 				If childList Then children = childList.Count()
 			EndIf
 
-			If StringHelper.InArray(subNode.GetName(), ignoreNames, False) Then Continue
-
-			If dataLS.EqualsLower(subNode.getName()) Or children > 0
+			If children > 0
 				Local subData:TData = New TData
+				LoadAllValuesToData_OLD(subNode, subData, ignoreNames)
 
-				LoadAllValuesToData(subNode, subData, ignoreNames)
-				Local key:Object
-				If dataLS.EqualsLower(subNode.getName())
-					key = dataLS
-				Else
-					key = subNode.getName()
-				EndIf
-
-rem
-				If data.Has(key)
-					local storedObj:Object = data.Get(key)
-					Local dataArr:TData[] = TData[](storedObj)
-					If Not dataArr
-						dataArr = New TData[0]
-						If storedObj
-							dataArr :+ [storedObj]
-						EndIf
-					EndIf
-					dataArr :+ [subData]
-
-					data.Add(key, dataArr)
-				Else
-endrem
-					data.Add(key, subData)
-'				EndIf
+				data.Add(subNode.getName(), subData)
 			Else
-				Local value:String = subNode.ToString()
-'print bmx_mxmlGetType(subNode.nodePtr) +"  | " + value
-				'skip comments
-				If value And value[0] = Asc("<") And value.Find("<!--") = 0 Then Continue
-
-
-
-				Local key:Object = subNode.getName()
-rem
-				'convert to an array?
-				If data.Has(key)
-					local storedObj:Object = data.Get(key)
-					Local arr:Object[] = Object[](storedObj)
-					If Not arr
-						arr = New Object[0]
-						If storedObj
-							arr :+ [storedObj]
-						EndIf
-					EndIf
-					arr :+ [subNode.GetContent()]
-
-					data.Add(key, arr)
-				Else
-endrem
-					data.Add(key, subNode.GetContent())
-'				EndIf
-				'data.Add(subNode.getName(), subNode.GetContent())
+				data.Add(subNodeName, subNode.GetContent())
 			EndIf
 		Next
 		Return data
 	End Function
 
 
+	Function _FindElementNode:TxmlNode(startNode:TxmlNode, nodeName:String)
+'		Local node_OLD:TxmlNode = _FindElementNode_OLD(startNode, nodeName)
+		Local node_NEW:TxmlNode = _FindElementNode_NEW(startNode, nodeName)
+'		If node_OLD <> node_New 'different TXmlNode objects - except for NULL
+'			If node_OLD.GetName() <> node_NEW.GetName() 'also different node name required
+'				Throw "_FindElementNode differs: " + startNode.getName() + "  nodeName="+nodeName
+'			EndIf
+'		EndIf
+		Return node_NEW
+	End Function
+	
 
-	Function _FindElementNodeLS:TxmlNode(startNode:TxmlNode, nodeName:TLowerString)
+	Function _FindElementNode_NEW:TxmlNode(startNode:TxmlNode, nodeName:String)
 		If Not startNode Then Return Null
 
 		'maybe we are searching for start node
-		If nodeName.EqualsLower(startNode.getName()) Then Return startNode
+		If AsciiNamesLCAreEqual(nodeName, startNode.getName()) Then Return startNode
+
+		'traverse through children
+		Local child:TXmlNode = TXmlNode(startNode.GetFirstChild())
+		If child
+			While child
+				Local result:TxmlNode = _FindElementNode_NEW(child, nodeName)
+				If result Then Return result
+
+				child = child.NextSibling()
+			Wend
+		EndIf
+		Return Null
+	End Function
+
+
+	Function _FindElementNode_OLD:TxmlNode(startNode:TxmlNode, nodeName:String)
+		If Not startNode Then Return Null
+
+		'maybe we are searching for start node
+		If AsciiNamesLCAreEqual(nodeName, startNode.getName()) Then Return startNode
 
 		'traverse through children
 		For Local child:TxmlNode = EachIn GetNodeChildElements(startNode)
-			If nodeName.EqualsLower(child.getName()) Then Return child
-			For Local subStartNode:TxmlNode = EachIn GetNodeChildElements(child)
-				Local subChild:TxmlNode = _FindElementNodeLS(subStartNode, nodeName)
-				If subChild Then Return subChild
-			Next
+			Local result:TxmlNode = _FindElementNode_OLD(child, nodeName)
+			If result Then Return result
 		Next
 		Return Null
 	End Function
@@ -629,67 +666,55 @@ endrem
 	Function GetLocalizedStringFromNode:TLocalizedString(node:TxmlNode)
 		if not node then return Null
 
-		local foundEntry:int = True
-		local localized:TLocalizedString = new TLocalizedString
-		For local nodeLangEntry:TxmlNode = EachIn GetNodeChildElements(node)
-			local language:String = nodeLangEntry.GetName().ToLower()
+
+		local localized:TLocalizedString
+		Local nodeLangEntry:TxmlNode = TxmlNode(node.GetFirstChild())
+		While nodeLangEntry
+			If Not localized Then localized = New TLocalizedString
+
 			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
 			local value:String = nodeLangEntry.getContent() '.Trim()
 
 			if value <> ""
+				local language:String = nodeLangEntry.GetName().ToLower()
 				localized.Set(value, TLocalization.GetLanguageID(language))
-				foundEntry = True
 			endif
-		Next
+			
+			nodeLangEntry = nodeLangEntry.NextSibling()
+		Wend
 
-		if not foundEntry then return Null
-		return localized
+		return localized 'can be null!
 	End Function
 
 
 
 	Function FindValueInt:Int(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
-		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
-		If result = Null Then Return defaultValue
-		Return Int( result )
-	End Function
-
-	Function FindValueIntLC:Int(node:TxmlNode, fieldNameLC:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
-		Local result:String = FindValueLC(node, fieldNameLC, String(defaultValue), logString, searchInChildNodeNames)
-		If result = Null Then Return defaultValue
+		Local exists:Int
+		Local result:String = FindValue(node, fieldName, "", exists, logString, searchInChildNodeNames)
+		If Not exists Then Return defaultValue
 		Return Int( result )
 	End Function
 
 
-	Function FindValueFloat:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
-		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
-		If result = Null Then Return defaultValue
-		Return Float( result )
-	End Function
-
-	Function FindValueFloatLC:Float(node:TxmlNode, fieldNameLC:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
-		Local result:String = FindValueLC(node, fieldNameLC, String(defaultValue), logString, searchInChildNodeNames)
-		If result = Null Then Return defaultValue
+	Function FindValueFloat:Float(node:TxmlNode, fieldName:String, defaultValue:Float, logString:String="", searchInChildNodeNames:String[] = Null)
+		Local exists:Int
+		Local result:String = FindValue(node, fieldName, "", exists, logString, searchInChildNodeNames)
+		If Not exists Then Return defaultValue
 		Return Float( result )
 	End Function
 
 
 	Function FindValueBool:Float(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
-		Local result:String = FindValue(node, fieldName, String(defaultValue), logString, searchInChildNodeNames)
-		Select result.toLower()
-			Case "0", "false"	Return False
-			Case "1", "true"	Return True
-		End Select
-		Return defaultValue
-	End Function
-
-	Function FindValueBoolLC:Float(node:TxmlNode, fieldNameLC:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
-		Local result:String = FindValueLC(node, fieldNameLC, String(defaultValue), logString, searchInChildNodeNames)
-		Select result.toLower()
-			Case "0", "false"	Return False
-			Case "1", "true"	Return True
-		End Select
-		Return defaultValue
+		Local exists:Int
+		Local result:String = FindValue(node, fieldName, "", exists, logString, searchInChildNodeNames)
+		If exists
+			If result = "0" Then Return False
+			If result = "1" Then Return True
+			If AsciiNamesLCAreEqual(result, "false") Then Return False 
+			If AsciiNamesLCAreEqual(result, "true") Then Return True
+		Else
+			Return defaultValue
+		EndIf
 	End Function
 
 
@@ -719,7 +744,7 @@ endrem
 		Local currentNode:TxmlNode = startNode
 		Local nextNode:TxmlNode
 		For Local branch:String = EachIn branches
-			nextNode = FindElementNode(currentNode, branch)
+			nextNode = _FindElementNode(currentNode, branch)
 
 			If Not nextNode
 				If Not createIfMissing Then Return Null
@@ -750,9 +775,7 @@ endrem
 		Local node:TxmlNode = GetNode(startNode, path, True)
 
 		If node
-			print "SetNodeContent: " + value
 			node.SetContent(value)
-			print "       Content: " + node.GetContent()
 			Return True
 		EndIf
 
@@ -801,7 +824,7 @@ endrem
 	End Function
 
 
-	Function GetRootNode:TxmlNode(node:TxmlNode)
+	Function _GetRootNode:TxmlNode(node:TxmlNode)
 		If Not node Then Return null
 
 		Local parent:TxmlNode = node.GetParent()

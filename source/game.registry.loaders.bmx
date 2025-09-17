@@ -47,13 +47,20 @@ Type TRegistryColorLoader Extends TRegistryBaseLoader
 		If node.GetName().toLower() = "colors"
 			Local listName:String = TXmlHelper.FindValue(node, "name", "colorList")
 
-			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-				'skip other elements
-				If childNode.GetName().ToLower() <> "color" Then Continue
+			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+			While childNode
+				'skip other elements than color
+				If Not TXmlHelper.AsciiNamesLCAreEqual("color", childNode.GetName())
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				If Not childData Then Continue
+				If Not childData
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				'add listname to each configuration - if not done yet
 				childData.AddString("list", childData.GetString("list", listName))
@@ -61,9 +68,11 @@ Type TRegistryColorLoader Extends TRegistryBaseLoader
 				'add each color to "ToLoad"-list
 				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "color", childData)..
+					New TRegistryUnloadedResource.Init(resName, "color", childData)..
 				)
-			Next
+				
+				childNode = childNode.NextSibling()
+			Wend
 			Return Null
 		EndIf
 
@@ -138,21 +147,30 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		Local data:TData = New TData
 
 		'=== HANDLE "<ROOMS>" ===
-		If node.GetName().toLower() = "rooms"
-			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-				'skip other elements
-				If childNode.GetName().ToLower() <> "room" Then Continue
+		If TXmlHelper.AsciiNamesLCAreEqual("rooms", node.GetName())
+			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+			While childNode
+				'skip other elements than "room"
+				If Not TXmlHelper.AsciiNamesLCAreEqual("room", childNode.GetName())
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				If Not childData Then Continue
+				If Not childData
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				'add each room to "ToLoad"-list
 				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
 					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "room", childData)..
 				)
-			Next
+
+				childNode = childNode.NextSibling()
+			Wend
 			Return Null
 		EndIf
 
@@ -185,9 +203,13 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		subNode = TXmlHelper.FindChild(node, "hotspots")
 
 		If subNode
-			For Local hotSpotNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
-				'skip other elements
-				If hotspotNode.GetName().ToLower() <> "hotspot" Then Continue
+			Local hotSpotNode:TxmlNode = TxmlNode(subNode.GetFirstChild())
+			While hotSpotNode
+				'skip other elements than "hotspot"
+				If Not TXmlHelper.AsciiNamesLCAreEqual("hotspot", hotspotNode.GetName())
+					hotSpotNode = hotSpotnode.NextSibling()
+					Continue
+				EndIf
 
 				Local hotspotData:TData = New TData
 				Local hotspotFields:String[]
@@ -197,7 +219,9 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 
 				'add hotspot data to list of hotspots
 				hotSpots.addLast(hotspotData)
-			Next
+
+				hotSpotNode = hotSpotnode.NextSibling()
+			Wend
 		EndIf
 		'add hotspot list
 		data.Add("hotspots", hotSpots)
@@ -206,15 +230,23 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		'4. load door(s) settings
 		Local doorsList:TObjectList = New TObjectList
 		data.Add("doors", doorsList)
-		For Local subNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-			If subNode.getName() <> "door" Then Continue
+
+		Local doorNode:TxmlNode = TxmlNode(node.GetFirstChild())
+		While doorNode
+			'skip other elements than "door"
+			If Not TXmlHelper.AsciiNamesLCAreEqual("door", doorNode.GetName())
+				doorNode = doorNode.NextSibling()
+				Continue
+			EndIf
 
 			Local doorData:TData = New TData
 			Local doorFields:String[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doorheight", "doorstopoffset", "flags"]
-			TXmlHelper.LoadValuesToData(subNode, doorData, doorFields)
+			TXmlHelper.LoadValuesToData(doorNode, doorData, doorFields)
 			'add door configuration
 			doorsList.AddLast(doorData)
-		Next
+
+			doorNode = doorNode.NextSibling()
+		Wend
 
 		Return data
 	End Method
@@ -322,21 +354,30 @@ Type TRegistryNewsGenresLoader Extends TRegistryBaseLoader
 		Local data:TData = New TData
 
 		'=== HANDLE "<NEWSGENRES>" ===
-		If node.GetName().toLower() = "newsgenres"
-			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-				'skip other elements
-				If childNode.GetName().ToLower() <> "newsgenre" Then Continue
+		If TXmlHelper.AsciiNamesLCAreEqual("newsgenres", node.GetName())
+			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+			While childNode
+				'skip other elements than "newsgenre"
+				If Not TXmlHelper.AsciiNamesLCAreEqual("newsgenre", childNode.GetName())
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				If Not childData Then Continue
+				If Not childData 
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				'add each entry to "ToLoad"-list
 				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
 					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "newsgenre", childData)..
 				)
-			Next
+
+				childNode = childNode.NextSibling()
+			Wend
 			Return Null
 		EndIf
 
@@ -347,8 +388,10 @@ Type TRegistryNewsGenresLoader Extends TRegistryBaseLoader
 		Local subNode:TxmlNode = TXmlHelper.FindChild(node, "audienceAttractions")
 		If Not subNode Then Return Null
 
+
 		Local audienceAttractions:TMap = CreateMap()
-		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
+		Local subNodeChild:TxmlNode = TxmlNode(subNode.GetFirstChild())
+		While subNodeChild
 			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
 			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
 			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
@@ -357,7 +400,9 @@ Type TRegistryNewsGenresLoader Extends TRegistryBaseLoader
 			If women = "" Then women = all
 			audienceAttractions.Insert(attrId+"_men", men)
 			audienceAttractions.Insert(attrId+"_women", women)
-		Next
+			
+			subNodeChild = subNodeChild.NextSibling()
+		Wend
 		'add attractions to data set
 		data.Add("audienceAttractions", audienceAttractions)
 
@@ -422,43 +467,62 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		Local data:TData = New TData
 
 		'=== HANDLE "<PROGRAMMEDATAMODS>" ===
-		If node.GetName().toLower() = "programmedatamods"
-			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-				'skip other elements
-				Local childNodeNameLC:String = childNode.GetName().ToLower()
-				If childNodeNameLC <> "genres" And childNodeNameLC <> "flags" Then Continue
+		If TXmlHelper.AsciiNamesLCAreEqual("programmedatamods", node.GetName())
+			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+			While childNode
+				'skip other elements than "genres" or "flags" (plural)
+				Local childNodeName:String = childNode.GetName()
+				If Not TXmlHelper.AsciiNamesLCAreEqual("genres", childNodeName) and ..
+				   Not TXmlHelper.AsciiNamesLCAreEqual("flags", childNodeName)
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				GetConfigFromXML(loader, childNode)
-			Next
+
+				childNode = childNode.NextSibling()
+			Wend
 		EndIf
 		
 
 		'=== HANDLE "<GENRES>" ===
-		If node.GetName().toLower() = "genres" Or node.GetName().toLower() = "flags"
-			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-				'skip other elements
-				Local childNodeNameLC:String = childNode.GetName().ToLower()
-				If childNodeNameLC <> "genre" And childNodeNameLC <> "flag" Then Continue
+		Local nodeName:String = node.GetName()
+		If TXmlHelper.AsciiNamesLCAreEqual("genres", nodeName) Or ..
+		   TXmlHelper.AsciiNamesLCAreEqual("flags", nodeName)
+			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+			While childNode
+				'skip other elements than "genre" or "flag" (singular)
+				Local childNodeName:String = childNode.GetName()
+				If Not TXmlHelper.AsciiNamesLCAreEqual("genre", childNodeName) and ..
+				   Not TXmlHelper.AsciiNamesLCAreEqual("flag", childNodeName)
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				If Not childData Then Continue
+				If Not childData
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
-				If childNodeNameLC = "genre"
+				If TXmlHelper.AsciiNamesLCAreEqual("genre", childNodeName)
 					Local genreId:Int=childData.GetInt("id",-1)
 					If genreId < 0 Then HandleError("missing genre id")
 					If genreId > 0
 						Local genre:String = childData.getString("name","*")
-						If TVTProgrammeGenre.GetByString(genre) <> genreId Then HandleError("wrong genre name "+genre)
+						If TVTProgrammeGenre.GetByString(genre) <> genreId Then HandleError("wrong genre name " + genre)
 					EndIf
 				EndIf
 
 				'add each entry to "ToLoad"-list
 				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), childNode.GetName().ToLower(), childData)..
+					New TRegistryUnloadedResource.Init(resName, childNode.GetName().ToLower(), childData)..
 				)
-			Next
+				
+				childNode = childNode.NextSibling()
+			Wend
 			Return Null
 		EndIf
 
@@ -479,49 +543,56 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		If Not subNode Then Return Null
 
 		Local timeMods:TMap = CreateMap()
-		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
+		Local subNodeChild:TxmlNode = TxmlNode(subNode.GetFirstChild())
+		While subNodeChild
 			Local time:String = TXmlHelper.FindValue(subNodeChild, "time", "-1")
 			Local Value:String = TXmlHelper.FindValue(subNodeChild, "value", "")
 			timeMods.Insert(time, value)
-		Next
+			
+			subNodeChild = subNodeChild.NextSibling()
+		Wend
 		'add timemods to data set
 		data.Add("timeMods", timeMods)
 
 
 		'load audienceAttractions
-		subNode = TXmlHelper.FindChildLC(node, "audienceattractions")
+		subNode = TXmlHelper.FindChild(node, "audienceattractions")
 		If Not subNode Then Return Null
 
 		Local audienceAttractions:TMap = CreateMap()
-		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
-			Local attrId:String = TXmlHelper.FindValueLC(subNodeChild, "id", "-1")
+		subNodeChild = TxmlNode(subNode.GetFirstChild())
+		While subNodeChild
+			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
 			If TVTTargetGroup.GetByString(attrId) = TVTTargetGroup.ALL
 				HandleError("unknown audienceAttraction group "+ attrId)
 			EndIf
-			Local men:String = TXmlHelper.FindValueLC(subNodeChild, "men", "")
-			Local women:String = TXmlHelper.FindValueLC(subNodeChild, "women", "")
-			Local all:String = TXmlHelper.FindValueLC(subNodeChild, "value", "0.7")
+			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
+			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
+			Local all:String = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
 			If men = "" Then men = all
 			If women = "" Then women = all
 			audienceAttractions.Insert(attrId+"_men", men)
 			audienceAttractions.Insert(attrId+"_women", women)
-		Next
+			
+			subNodeChild = subNodeChild.NextSibling()
+		Wend
 		'add attractions to data set
 		data.Add("audienceAttractions", audienceAttractions)
 
 
 		'load castAttributes
-		subNode = TXmlHelper.FindChildLC(node, "castattributes")
+		subNode = TXmlHelper.FindChild(node, "castattributes")
 		If subNode
 			Local castAttributes:TMap = Null
-			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
+			subNodeChild = TxmlNode(subNode.GetFirstChild())
+			While subNodeChild
 				If Not castAttributes Then castAttributes = CreateMap()
 				Local jobName:String = subNodeChild.GetName()
 				Local jobID:Int = TVTPersonJob.GetByString(jobName.ToLower())
 				'appearance, charisma,...
-				Local attributeName:String = TXmlHelper.FindValueLC(subNodeChild, "attribute", "")
+				Local attributeName:String = TXmlHelper.FindValue(subNodeChild, "attribute", "")
 				Local attributeID:Int = TVTPersonPersonalityAttribute.GetByString(attributeName)
-				Local value:String = TXmlHelper.FindValueLC(subNodeChild, "value", "0.0")
+				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.0")
 
 				If jobID = TVTPersonJob.UNKNOWN
 					HandleError("unknown job for castAttributes: "+ jobName)
@@ -534,7 +605,9 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 				value = String( MathHelper.Clamp(Float(value), -1.0 , 1.0) )
 
 				castAttributes.Insert(jobID+"_"+attributeID, value)
-			Next
+
+				subNodeChild = subNodeChild.NextSibling()
+			Wend
 			'add attractions to data set
 			If castAttributes Then data.Add("castAttributes", castAttributes)
 		EndIf
@@ -542,22 +615,25 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 
 
 		'load focusPointPriorities
-		subNode = TXmlHelper.FindChildLC(node, "focuspointpriorities")
+		subNode = TXmlHelper.FindChild(node, "focuspointpriorities")
 		If subNode
 			Local focusPointPriorities:TMap = Null
-			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
-				If Not focusPointPriorities Then focusPointPriorities = CreateMap()
-				Local focusPointName:String = subNodeChild.GetName().ToLower()
+			Local subNodeChild:TxmlNode = TxmlNode(subNode.GetFirstChild())
+			While subNodeChild
+				Local focusPointName:String = subNodeChild.GetName()
 				Local focusPointID:Int = TVTProductionFocus.GetByString(focusPointName)
 				'TODO no clamping of value!?
-				Local value:String = TXmlHelper.FindValueLC(subNodeChild, "value", "1.0")
+				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
 				
 				If focusPointID = TVTProductionFocus.NONE
 					HandleError("unknown focuspoint: "+ focusPointName)
 				EndIf
 
+				If Not focusPointPriorities Then focusPointPriorities = CreateMap()
 				focusPointPriorities.Insert(String(focusPointID), value)
-			Next
+				
+				subNodeChild = subNodeChild.NextSibling()
+			Wend
 			'add priorities to data set
 			If focusPointPriorities Then data.Add("focusPointPriorities", focusPointPriorities)
 		EndIf
