@@ -456,10 +456,32 @@ Type TProgrammeLicenceCollection
 	'Cache generators
 	Method _GetLicencesGUID:TMap()
 		if not _licencesGUID
-			_licencesGUID = new TMap
-			for local licence:TProgrammeLicence = EachIn licences.Values()
-				_licencesGUID.Insert(licence.GetGUID(), licence)
-			next
+			'workaround: on loading a game, sometimes an AI-Thread tried to calculate the audience attraction
+			'TProgrammeLicence#GetTargetGroupAttractivitiyMod potentially accesses
+			'the parent licence via GUID, causing a segmentation fault if the cache
+			'was not properly initialized
+			'TODO overhaul: suggestion - initialize Underscore-Caches on loading the game
+			'so the AI-Threads will not be the first to try to access them
+			If CurrentThread() <> MainThread()
+				Local logged:Int = False
+				Repeat
+					Delay(1)
+					If _licencesGUID
+						Delay(5)
+						Exit
+					EndIf
+					If Not logged
+						TLogger.Log("TProgrammeLicenceCollection._GetLicencesGUID", "waiting for main thread to create cache", LOG_WARNING)
+						logged = True
+					EndIf
+				Forever
+			Else
+				Local tmp:TMap = new TMap
+				for local licence:TProgrammeLicence = EachIn licences.Values()
+					tmp.Insert(licence.GetGUID(), licence)
+				next
+				_licencesGUID = tmp
+			EndIf
 		endif
 		return _licencesGUID
 	End Method
