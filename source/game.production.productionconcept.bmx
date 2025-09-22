@@ -1286,12 +1286,25 @@ endrem
 
 	Method GetProductionCost:Int()
 		If productionCompany
-			local fee:int = productionCompany.GetFee(owner, script.GetBlocks(), script.productionBroadCastLimit) ' script.owner)
+			Local blocks:Int = script.GetBlocks()
+			Local baseFee:Int
+			Select blocks
+				Case 1
+					baseFee = 750
+				Case 2
+					baseFee = 1000
+				Case 3
+					baseFee = 1150
+				Default
+					baseFee = 1200
+			End Select
+
+			Local fee:Int = productionCompany.GetFee(owner, blocks, script.productionBroadCastLimit) ' script.owner)
 			'for each category the cost per point doubles
 			For local focusIndex:Int = EachIn productionFocus.activeFocusIndices
 				Local focusPoints:Int = productionFocus.GetFocus(focusIndex)
 				For Local i:Int = 0 until focusPoints
-					fee :+ 1000 * (2 ^ i)
+					fee :+ baseFee * (2 ^ i)
 				Next
 			Next
 			Return fee
@@ -1302,40 +1315,45 @@ endrem
 
 
 	Method GetBaseProductionTime:Long()
-		local base:Long = GameRules.baseProductionTimeHours * TWorldTime.HOURLENGTH
+		Local base:Long = GameRules.baseProductionTimeHours * TWorldTime.HOURLENGTH
+		Local expBase:Float
+		Select script.GetBlocks()
+			Case 1
+				expBase = 1.6
+				base:* 0.6
+			Case 2
+				expBase = 1.8
+				'no change
+			Case 3
+				expBase = 2
+				base:* 1.25
+			Default
+				expBase = 2.1
+				base:* 1.4
+		End Select
+
 		'if a production time is defined then use this. 
-		if script.productionTime > 0 Then base = script.productionTime
+		If script.productionTime > 0 Then base = script.productionTime
 
-		local typeTimeMod:Float = 1.0
-		local speedPointTimeMod:Float = 1.0
-		local teamPointTimeMod:Float = 1.0
-		local blockMinimumMod:Float = 1.0
+		Local speedPointTimeMod:Float = 1.0
+		Local teamPointTimeMod:Float = 1.0
 
-		if productionFocus
-			local speedPoints:int = productionFocus.GetFocus(TVTProductionFocus.PRODUCTION_SPEED)
+		If productionFocus
+			Local speedPoints:Int = productionFocus.GetFocus(TVTProductionFocus.PRODUCTION_SPEED)
 			' 0 points = 1.0
-			' 1 point = 93%
-			' 2 points = 87% ...
-			'10 points = 50%
-			speedPointTimeMod = 0.933 ^ speedPoints
+			' 1 point = 92%
+			' 2 points = 84% ...
+			'10 points = 40%
+			speedPointTimeMod = (0.922 - 0.001*speedPoints)^ speedPoints
 
 
 			'TEAM (good teams work a bit more efficient)
-			local teamPoints:int = productionFocus.GetFocus(TVTProductionFocus.TEAM)
+			Local teamPoints:Int = productionFocus.GetFocus(TVTProductionFocus.TEAM)
 			' 0 points = 1.0
-			' 1 point = 97%
-			' 2 points = 94% ...
-			'10 points = 75%
-			teamPointTimeMod = 0.5 + 0.5 * 0.933 ^ teamPoints
-
-
-			'with a good team, you can record multiple scenes simultaneously
-			'exception for live, no shortcut possible there
-			if not script.IsLive()
-				blockMinimumMod :* (0.97 ^ teamPoints)
-			else
-				blockMinimumMod = 1.0
-			endif
+			' 1 point = 95%
+			' 2 points = 91% ...
+			'10 points = 60%
+			teamPointTimeMod = (0.955- 0.0005*teamPoints)^ teamPoints
 
 
 			'POINTS ADD TO TIME !
@@ -1343,28 +1361,26 @@ endrem
 				If focusIndex <> TVTProductionFocus.TEAM And focusIndex <> TVTProductionFocus.PRODUCTION_SPEED
 					Local focusPoints:Int = productionFocus.GetFocus(focusIndex)
 					For Local i:Int = 0 until focusPoints
-						if script.IsFictional()
-							base :+ (45 * (i+1) + 3 * 2^i) * TWorldTime.MINUTELENGTH
-						else
-							base :+ (30 * (i+1) + 2 * 2^i) * TWorldTime.MINUTELENGTH
-						endif
+						If script.isLive()
+							base :+ (20 * (i+1) + expBase^i) * TWorldTime.MINUTELENGTH
+						ElseIf script.IsFictional()
+							base :+ (45 * (i+1) + 3 * expBase^i) * TWorldTime.MINUTELENGTH
+						Else
+							base :+ (30 * (i+1) + 2 * expBase^i) * TWorldTime.MINUTELENGTH
+						EndIf
 					Next
 				EndIf
  			Next
-		endif
+		EndIf
 
 		base :* speedPointTimeMod
 		base :* teamPointTimeMod
+		base :* script.GetProductionTimeMod()
 
-		if script.productionTime <= 0
-			'if script does not explicitly define production time
-			'consider additional modifiers
-			base :* script.GetProductionTimeMod()
-			base :* typeTimeMod
-			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod) * TWorldTime.HOURLENGTH)
-		endif
+		If script.IsSeries() Then base:* 0.75
+
 		'round to minutes (TWorldTime.MINUTELENGTH and base are LONG)
-		return TWorldTime.MINUTELENGTH * (base / TWorldTime.MINUTELENGTH)
+		Return TWorldTime.MINUTELENGTH * (base / TWorldTime.MINUTELENGTH)
 	End Method
 
 
