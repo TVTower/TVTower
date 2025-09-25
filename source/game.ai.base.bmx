@@ -38,9 +38,11 @@ Type TAiBase
 	Field _objectsUsedInLuaMutex:TMutex = CreateMutex() {nosave}
 	Field _callLuaFunctionMutex:TMutex = CreateMutex() {nosave}
 	Field _eventQueueMutex:TMutex = CreateMutex() {nosave}
-	Field _updateThread:TThread {nosave}
 	Field _updateThreadExit:int = False {nosave}
 	Field paused:int = False
+
+	'easier access from outside
+	Global _updateThreads:TThread[4] {nosave}
 
 	Global AiRunning:Int = true
 
@@ -286,7 +288,10 @@ endrem
 
 		If not THREADED_AI_DISABLED
 			TLogger.Log("TAiBase #" + playerID, "Creating update thread", LOG_DEBUG)
-			_updateThread = CreateThread( UpdateThread, self )
+			If _updateThreads.length < playerID
+				_updateThreads = _updateThreads[.. playerID]
+			EndIf
+			_updateThreads[playerID-1] = CreateThread( UpdateThread, self )
 		EndIf
 
 		TLogger.Log("TAiBase #" + playerID, "Started.", LOG_DEBUG)
@@ -297,19 +302,19 @@ endrem
 		TLogger.Log("TAiBase #" + playerID, "Stopping", LOG_DEBUG)
 		started = False
 
-		If not THREADED_AI_DISABLED and _updateThread
+		If not THREADED_AI_DISABLED and _updateThreads[playerID-1]
 			_updateThreadExit = True
 			
 			Local startStop:Long = Time.GetTimeGone()
 			Repeat
-				If _updateThread and ThreadRunning(_updateThread)
+				If _updateThreads[playerID-1] and ThreadRunning(_updateThreads[playerID-1])
 					If Time.GetTimeGone() - startStop > 500
 						TLogger.Log("TAiBase #" + playerID, "Thread did not stop within 500ms. Detaching thread!", LOG_DEBUG)
 						
 						'reset
 						_updateThreadExit = False
-						DetachThread(_updateThread)
-						_updateThread = Null
+						DetachThread(_updateThreads[playerID-1])
+						_updateThreads[playerID-1] = Null
 					Else
 						Delay(5)
 					EndIf
