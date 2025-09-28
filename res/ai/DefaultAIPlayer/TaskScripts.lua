@@ -133,7 +133,11 @@ function JobBuyScript:Prepare(pParams)
 		if player.coverage > 0.75 then
 			--TODO further optimize max job count
 			self.maxJobCount = 8
-			self.Task.BasePriority = 1
+			if player.coverage > 0.9 and player.money > 5000000 then
+				self.Task.BasePriority = 2.5
+			else
+				self.Task.BasePriority = 1
+			end
 		else
 			self.Task.BasePriority = 0.15
 		end
@@ -189,7 +193,7 @@ function JobBuyScript:Tick()
 				TVT:da_buyScript(script)
 				--less idling for remaining jobs
 				self.Task.PriorityBackup = self.Task.BasePriority
-				self.Task.BasePriority = self.Task.BasePriority * 5
+				self.Task.BasePriority = math.max(self.Task.BasePriority * 5, 5)
 --				self.Task.prodStatus = PROD_STATUS_GET_CONCEPTS
 				self.Task.neededStudioSize = script.requiredStudioSize
 				if script:GetProductionLimit() > 1 then

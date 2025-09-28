@@ -888,7 +888,7 @@ function JobBidAuctions:Tick()
 
 			if currentBidder ~= TVT.ME then
 				--TODO maybe pay higher price if you really want a licence
-				if (nextBid <= self.Task.CurrentBudget and nextBid <= price) then
+				if (nextBid <= self.Task.CurrentBudget and nextBid < price) then
 					-- daily budget for good offers without direct need
 					if (nextBid <= self.Task.CurrentBargainBudget) then
 						--TODO genre bias analogous to movies
