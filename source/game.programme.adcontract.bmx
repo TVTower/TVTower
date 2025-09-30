@@ -885,6 +885,8 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If spotsSent = value Then Return False
 
 		spotsSent = value
+		'invalidate penalty cache
+		penalty = -1
 		'emit an event so eg. ContractList-caches can get recreated
 		TriggerBaseEvent(GameEventKeys.AdContract_OnSetSpotsSent, Null, Self)
 
@@ -1188,10 +1190,8 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If Not invalidateCache
 			If owner > 0 And owner = playerID And penalty >= 0 Then Return penalty
 		EndIf
-
-		Local result:Int = CalculatePricesForPlayer(base.penaltyBase, playerID, PRICETYPE_PENALTY) * GetSpotCount()
-
-		Return result
+		penalty = CalculatePricesForPlayer(base.penaltyBase, playerID, PRICETYPE_PENALTY) * GetSpotsToSend()
+		Return penalty
 	End Method
 
 
@@ -1936,8 +1936,13 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			skin.RenderBox(contentX + 5, contentY, 100, -1, minAudienceToShow, "minAudience", EDatasheetColorStyle.Neutral, skin.fontBold)
 		EndIf
 		If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
+			Local spotsToSend:Int = GetSpotsToSend()
 			'penalty per spot
-			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID)/GetSpotCount(), 2), "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
+			If spotsToSend > 0
+	 			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID)/(GetSpotsToSend()), 2), "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
+			Else
+	 			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(0, 2), "money", EDatasheetColorStyle.Bad, skin.fontBold, ALIGN_RIGHT_CENTER)
+			EndIf
 			'profit per spot
 			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, TFunctions.convertValue(GetProfitForPlayer(forPlayerID)/GetSpotCount(), 2), "money", EDatasheetColorStyle.Good, skin.fontBold, ALIGN_RIGHT_CENTER)
 		Else
