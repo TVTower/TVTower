@@ -325,7 +325,8 @@ Type TProduction Extends TOwnedGameObject
 		'the studio can be done faster; the factor is expected to be 0, 1 or 2
 		Local productionTime:Long = productionConcept.GetBaseProductionTime()
 		If productionTime > 24 * TWorldTime.HOURLENGTH
-			reduceProductionTimeFactor :* 3
+			'reduce by factor 3 per production day
+			reduceProductionTimeFactor :* 3 * ceil(productionTime /TWorldTime.DAYLENGTH)
 		Else If productionTime > 12 * TWorldTime.HOURLENGTH
 			reduceProductionTimeFactor :* 2
 		Else If productionTime < 2 * TWorldTime.HOURLENGTH
