@@ -1232,15 +1232,16 @@ endrem
 			'find and load states configuration
 			Local statesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "states", xmlFile, "Misses the <stationmap><states>-entry.")
 			Local sectionID:Int = 1
-			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
-				Local name:String = TXmlHelper.FindValue(child, "name", "")
-				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
-				Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
-				Local pos:SVec2I = New SVec2I( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
+			Local childNode:TxmlNode = TxmlNode(statesNode.GetFirstChild())
+			While childNode
+				Local name:String = TXmlHelper.FindValue(childNode, "name", "")
+				Local iso3116Code:String = TXmlHelper.FindValue(childNode, "iso3116code", "")
+				Local sprite:String	= TXmlHelper.FindValue(childNode, "sprite", "")
+				Local pos:SVec2I = New SVec2I( TXmlHelper.FindValueInt(childNode, "x", 0), TXmlHelper.FindValueInt(childNode, "y", 0) )
 
-				Local pressureGroups:Int = TXmlHelper.FindValueInt(child, "pressureGroups", -1)
+				Local pressureGroups:Int = TXmlHelper.FindValueInt(childNode, "pressureGroups", -1)
 				Local sectionConfig:TData
-				Local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(child, "config")
+				Local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(childNode, "config")
 				If sectionConfigNode
 					sectionConfig = TXmlHelper.LoadAllValuesToData(sectionConfigNode, New TData)
 				EndIf
@@ -1254,7 +1255,9 @@ endrem
 					self.AddSection( New TStationMapSection.Create(pos, name, iso3116Code, sectionID, sprite, sectionConfig) )
 					sectionID :+ 1
 				EndIf
-			Next
+				
+				childNode = childNode.NextSibling()
+			Wend
 			
 			'calculate positions (now all sprites are loaded)
 			For Local s:TStationMapSection = EachIn self.sections
@@ -1274,15 +1277,18 @@ endrem
 
 			'find and load states configuration
 			Local statesNode:TxmlNode = GetNodeOrThrow(xmlStationMapNode, "states", xmlFile, "Misses the <stationmap><states>-entry.")
-			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
-				Local name:String = TXmlHelper.FindValue(child, "name", "")
-				Local iso3116Code:String = TXmlHelper.FindValue(child, "iso3116code", "")
+			Local childNode:TxmlNode = TxmlNode(statesNode.GetFirstChild())
+			While childNode
+				Local name:String = TXmlHelper.FindValue(childNode, "name", "")
+				Local iso3116Code:String = TXmlHelper.FindValue(childNode, "iso3116code", "")
 
 				local existingSection:TStationMapSection = self.GetSectionByName(name)
 				If existingSection
 					existingsection.iso3116Code = iso3116Code
 				EndIf
-			Next
+				
+				childNode = childNode.NextSibling()
+			Wend
 		EndIf
 
 		'fill in sectionIDs so caches can use them (do it for new and loaded games)

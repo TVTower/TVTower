@@ -68,21 +68,30 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		'=== HANDLE "<BITMAPFONTS>" ===
 		Local nodeTypeName:String = TXmlHelper.FindValue(node, "name", node.GetName())
 
-		if nodeTypeName.toLower() = "bitmapfonts"
-			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-				'skip other elements
-				if childNode.GetName().ToLower() <> "bitmapfont" then continue
+		If TXmlHelper.AsciiNamesLCAreEqual("bitmapfonts", nodeTypeName)
+			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+			While childNode
+				'skip other elements than "bitmapfont"
+				If Not TXmlHelper.AsciiNamesLCAreEqual("bitmapfont", childNode.GetName())
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
-				local childData:TData = GetConfigFromXML(loader, childNode)
+				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				if not childData then continue
+				If Not childData 
+					childNode = childNode.NextSibling()
+					Continue
+				EndIf
 
 				'add each font to "ToLoad"-list
-				local resName:string = GetNameFromConfig(childData)
+				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					new TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "bitmapfont", childData)..
+					new TRegistryUnloadedResource.Init(resName, "bitmapfont", childData)..
 				)
-			Next
+
+				childNode = childNode.NextSibling()
+			Wend
 			return Null
 		endif
 
