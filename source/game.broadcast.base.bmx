@@ -706,9 +706,10 @@ Type TBroadcast
 		Attractions[playerID-1] = audienceAttraction
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-			If market.HasChannel(playerID)
+			'player not being part of the market is handled by the market itself
+			'If market.HasChannel(playerID)
 				market.SetProgrammeAttraction(playerID, Attractions[playerID-1])
-			EndIf
+			'EndIf
 		Next
 	End Method
 
@@ -1216,9 +1217,10 @@ Type TAudienceMarketCalculation
 
 
 	Method SetProgrammeAttraction(channelID:Int, audienceAttraction:TAudienceAttraction)
-		if new SChannelMask(channelMaskValue).Has(channelID) and audienceAttractions.length >= channelID
+		'player not being part of the market is handled by the GetCompetitionAttractionModifier
+		'if new SChannelMask(channelMaskValue).Has(channelID) and audienceAttractions.length >= channelID
 			audienceAttractions[channelID - 1] = audienceAttraction
-		EndIf
+		'EndIf
 	End Method
 
 
@@ -1330,18 +1332,30 @@ Type TAudienceMarketCalculation
 		Local attrRange:SAudience
 		Local result:TAudience = new TAudience
 
-		For Local attraction:TAudienceAttraction = EachIn audienceAttractions
-			attrSum.Add(attraction.FinalAttraction)
+		Local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
+		For Local channelID:Int = 1 To 4
+			If audienceAttractions[channelID - 1]
+				Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
+				If channelMask.Has(channelID)
+					attrSum.Add(attraction.FinalAttraction)
+				Else
+					'if a channel is not part of the market, use part of its attraction to
+					'simulate existing competition
+					'otherwise audience quotes for markets with few players will be unrealistic
+					'multiplier 0=no competition, 1=as if all players are part of the market
+					attrSum.Add(attraction.FinalAttraction.copy().multiply(0.4))
+				EndIf
 
-			For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
-				For Local genderIndex:Int = 0 To 1
-					Local gender:Int = TVTPersonGender.FEMALE
-					If genderIndex = 1 Then gender = TVTPersonGender.MALE
+				For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+					For Local genderIndex:Int = 0 To 1
+						Local gender:Int = TVTPersonGender.FEMALE
+						If genderIndex = 1 Then gender = TVTPersonGender.MALE
 
-					Local rangeValue:Float = attrRange.GetGenderValue(targetGroupID, gender)
-					attrRange.SetGenderValue(targetGroupID, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(targetGroupID, gender), gender)
+						Local rangeValue:Float = attrRange.GetGenderValue(targetGroupID, gender)
+						attrRange.SetGenderValue(targetGroupID, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(targetGroupID, gender), gender)
+					Next
 				Next
-			Next
+			EndIf
 		Next
 
 
