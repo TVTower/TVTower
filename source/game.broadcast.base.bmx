@@ -1308,14 +1308,21 @@ Type TAudienceMarketCalculation
 		'calculate audience flow
 		local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
 		Local audienceFlowSum:TAudience = New TAudience
-		Local attractionCount:Float
-		For Local attractionTemp:TAudienceAttraction = EachIn audienceAttractions
-			audienceFlowSum.Add(attractionTemp.AudienceFlowBonus)
-			attractionCount :+ 1
+		Local totalAttraction:Float
+		For Local channelID:Int = 1 To 4
+			If channelMask.Has(channelID)
+				Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
+				audienceFlowSum.Add(attraction.AudienceFlowBonus)
+				totalAttraction:+attraction.FinalAttraction.GetWeightedAverage()
+			EndIf
 		Next
-		audienceFlowSum.Divide(attractionCount)
+		audienceFlowSum.Divide(channelMask.GetEnabledCount())
 
 		potentialChannelSurfer.Add(audienceFlowSum.Multiply(0.25))
+		'programme attraction increases potential viewers
+		potentialChannelSurfer.Multiply(1.0+(0.0025 * totalAttraction/4))
+		'channel image increases potential viewers
+		potentialChannelSurfer.Multiply(1.0+(0.001*GetPublicImageCollection().GetAverage().GetAverageImage()))
 
 
 		'round to "complete persons" ;-)
@@ -1333,26 +1340,29 @@ Type TAudienceMarketCalculation
 		Local result:TAudience = new TAudience
 
 		Local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
-		For Local channelID:Int = 1 To 4
-			If audienceAttractions[channelID - 1]
-				Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
-				If channelMask.Has(channelID)
-					attrSum.Add(attraction.FinalAttraction)
-				Else
-					'if a channel is not part of the market, use part of its attraction to
-					'simulate existing competition
-					'otherwise audience quotes for markets with few players will be unrealistic
-					'multiplier 0=no competition, 1=as if all players are part of the market
-					attrSum.Add(attraction.FinalAttraction.copy().multiply(0.4))
-				EndIf
+		Local paricipants:Int=channelMask.GetEnabledCount()
+		'The less competition, the more viewers will decide not to watch at all
+		'also "normalize" attraction so that 1 will not automatically mean all
+		'potential viewers will actually watch
+		Local attractionMultiplier:Float
+		Select paricipants
+			Case 1 attractionMultiplier = 0.4
+			Case 2 attractionMultiplier = 0.5
+			Case 3 attractionMultiplier = 0.57
+			Default attractionMultiplier = 0.6
+		EndSelect
 
+		For Local channelID:Int = 1 To 4
+			If channelMask.Has(channelID) and audienceAttractions[channelID - 1]
+				Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
+				attrSum.Add(attraction.FinalAttraction)
 				For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 					For Local genderIndex:Int = 0 To 1
 						Local gender:Int = TVTPersonGender.FEMALE
 						If genderIndex = 1 Then gender = TVTPersonGender.MALE
 
 						Local rangeValue:Float = attrRange.GetGenderValue(targetGroupID, gender)
-						attrRange.SetGenderValue(targetGroupID, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(targetGroupID, gender), gender)
+						attrRange.SetGenderValue(targetGroupID, rangeValue + attractionMultiplier * (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(targetGroupID, gender), gender)
 					Next
 				Next
 			EndIf
