@@ -1347,9 +1347,9 @@ Type TAudienceMarketCalculation
 		Local attractionMultiplier:Float
 		Select paricipants
 			Case 1 attractionMultiplier = 0.4
-			Case 2 attractionMultiplier = 0.5
-			Case 3 attractionMultiplier = 0.57
-			Default attractionMultiplier = 0.6
+			Case 2 attractionMultiplier = 0.55
+			Case 3 attractionMultiplier = 0.64
+			Default attractionMultiplier = 0.7
 		EndSelect
 
 		For Local channelID:Int = 1 To 4
