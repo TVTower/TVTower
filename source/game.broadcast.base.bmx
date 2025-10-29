@@ -1319,9 +1319,10 @@ Type TAudienceMarketCalculation
 		audienceFlowSum.Divide(channelMask.GetEnabledCount())
 
 		potentialChannelSurfer.Add(audienceFlowSum.Multiply(0.25))
-		'programme attraction increases potential viewers
-		potentialChannelSurfer.Multiply(1.0+(0.0025 * totalAttraction/4))
-		'channel image increases potential viewers
+		'TODO max audience values are not modified, so the sum of audience quotes can be greater than 100%
+		'programme attraction increases potential viewers (attraction 0-1, so up to 15% more viewers in case of full attraction for all channels)
+		potentialChannelSurfer.Multiply(1.0+(0.15 * totalAttraction/4))
+		'channel image increases potential viewers (image 0-99, so up to 10% more viewers in case of full image)
 		potentialChannelSurfer.Multiply(1.0+(0.001*GetPublicImageCollection().GetAverage().GetAverageImage()))
 
 
