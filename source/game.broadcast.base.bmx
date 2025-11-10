@@ -1307,9 +1307,12 @@ Type TAudienceMarketCalculation
 
 		'calculate audience flow
 		local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
-		Local audienceFlowSum:TAudience = New TAudience
+		Local audienceFlowSum:SAudience = New SAudience
 		Local totalAttraction:Float
 		For Local channelID:Int = 1 To 4
+			'if you want to play around with the impact of the audience attraction
+			'on the number of viewers and quotes, manipulate the attraction here
+			'audienceAttractions[channelID - 1].set(1.0,1.0)
 			If channelMask.Has(channelID)
 				Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
 				audienceFlowSum.Add(attraction.AudienceFlowBonus)
@@ -1317,13 +1320,13 @@ Type TAudienceMarketCalculation
 			EndIf
 		Next
 		audienceFlowSum.Divide(channelMask.GetEnabledCount())
+		audienceFlowSum.Multiply(0.25) 'do not use the full audience flow
 
-		potentialChannelSurfer.Add(audienceFlowSum.Multiply(0.25))
-		'TODO max audience values are not modified, so the sum of audience quotes can be greater than 100%
-		'programme attraction increases potential viewers (attraction 0-1, so up to 15% more viewers in case of full attraction for all channels)
-		potentialChannelSurfer.Multiply(1.0+(0.15 * totalAttraction/4))
+		potentialChannelSurfer.Add(audienceFlowSum)
+		'programme attraction itself increases potential viewers (attraction 0-1, so up to 10% more viewers in case of full attraction for all channels)
+		potentialChannelSurfer.Multiply(1.0+(0.1 * totalAttraction/4))
 		'channel image increases potential viewers (image 0-99, so up to 10% more viewers in case of full image)
-		potentialChannelSurfer.Multiply(1.0+(0.001*GetPublicImageCollection().GetAverage().GetAverageImage()))
+		'potentialChannelSurfer.Multiply(1.0+(0.001*GetPublicImageCollection().GetAverage().GetAverageImage()))
 
 
 		'round to "complete persons" ;-)
@@ -1337,14 +1340,20 @@ Type TAudienceMarketCalculation
 		'Die Summe aller Attractionwerte
 		Local attrSum:SAudience
 		'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm
+		'(Da in Summe die Einschaltquote kleiner 100% sein kann, schauen die restlichen
+		'also die Öffentlich-Rechtlichen.)
 		Local attrRange:SAudience
 		Local result:TAudience = new TAudience
 
 		Local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
 		Local paricipants:Int=channelMask.GetEnabledCount()
-		'The less competition, the more viewers will decide not to watch at all
-		'also "normalize" attraction so that 1 will not automatically mean all
-		'potential viewers will actually watch
+		'Der attractionMultiplier sorgt einerseits dafür, dass bei weniger
+		'Wettbewerb mehr Zuschauer bei den Öffentlichen bleiben 
+		'(nicht 100% Einschaltquote für den Monopolisten), andererseits
+		'dass auch vollem Wettbewerb aber nur durchschnittlicher Attraktivität
+		'der Sendungen ein Teil Öffis schaut ("Normalisierung" von attraction).
+		'attractionMultiplier 1 und (ein einziger Sender mit) Attraction 1 würde bedeuten, 
+		'dass der gesamte Markt die 4 Sender schauen würde.
 		Local attractionMultiplier:Float
 		Select paricipants
 			Case 1 attractionMultiplier = 0.4
