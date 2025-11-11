@@ -63,8 +63,10 @@ Extern
 	Function Luaengine_bbRefAssignObject( p:Byte Ptr, obj:Object )
 	Function Luaengine_bbRefGetSuperClass:Byte Ptr( obj:Object )
 	Function Luaengine_bbRefGetObjectClass:Byte Ptr( obj:Object )
-	Function lua_LowerStringHash:ULong( L:Byte Ptr,index:Int )
-	Function lua_StringHash:ULong( L:Byte Ptr,index:Int )
+	'Function lua_LowerStringHash:ULong( L:Byte Ptr,index:Int )
+	'Function lua_StringHash:ULong( L:Byte Ptr,index:Int )
+	Function lua_LowerStringHash:UInt( L:Byte Ptr,index:Int )
+	Function lua_StringHash:UInt( L:Byte Ptr,index:Int )
 End Extern
 
 
@@ -1449,6 +1451,7 @@ Type TLuaEngine
 
 			reflectionType.typeID = TTypeID.ForObject(obj)
 			If reflectionType.typeID
+print "Checking type: " + reflectionType.typeID.name()
 				Local typeID:TTypeID = reflectionType.typeID
 
 				'methods, fields and functions cannot share names
@@ -1494,7 +1497,6 @@ Type TLuaEngine
 							ElseIf TGlobal(m)
 								c._ref = TGlobal(m)._ref 
 							EndIf
-
 							reflectionType.children.Insert(Long(m.Name().ToLower().HashCode()), c)
 						Next
 					Next

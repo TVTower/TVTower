@@ -48,12 +48,14 @@ BBULONG lua_StringHash(lua_State* L, int index) {
     // Free the allocated memory for the UTF-16 string
     free(utf16Str);
 
-    return hash;
+    //return hash;
+    //current solution in blitz_string.c:
+	return (BBUINT)(hash ^ (hash >> 32));
 }
 
 
 // Function to hash a Lua string case-insensitively
-BBULONG lua_LowerStringHash(lua_State* L, int index) {
+BBUINT lua_LowerStringHash(lua_State* L, int index) {
     size_t length;
     const char* str = lua_tolstring(L, index, &length);
 
@@ -83,7 +85,9 @@ BBULONG lua_LowerStringHash(lua_State* L, int index) {
     // Free the allocated memory for the BBChar string
     free(utf16Str);
 
-    return hash;
+    //return hash;
+    //current solution in blitz_string.c:
+	return (BBUINT)(hash ^ (hash >> 32));
 }
 
 
