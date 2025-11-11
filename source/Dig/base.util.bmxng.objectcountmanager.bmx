@@ -32,7 +32,7 @@ Type TObjectCountManager
 	
 	
 	Method GetKeyID:Long(key:String)
-		Return Long(key.ToLower().hash())
+		Return Long(key.ToLower().hashCode())
 	End Method
 
 

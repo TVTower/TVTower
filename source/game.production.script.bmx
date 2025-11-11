@@ -846,7 +846,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Local valueOld:String = text.Get(langID)
 			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)
 			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, context)
-			If valueOLD <> valueNew.Hash()
+			If valueOLD <> valueNew.HashCode()
 				result.Set(valueNew.ToString(), langID)
 			EndIf
 		Next

@@ -36,6 +36,8 @@ Rem
 End Rem
 SuperStrict
 Import BRL.Max2D
+Import BRL.IntMap
+Import BRL.StringMap
 Import BRL.Map
 Import Brl.RectPacker
 Import Math.Vector

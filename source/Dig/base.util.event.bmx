@@ -212,7 +212,7 @@ Type TEventManager
 		
 	
 		local e:TEventKey = new TEventKey
-		e.id = text.ToString().ToLower().Hash()
+		e.id = text.ToString().ToLower().HashCode()
 		e.text = text
 		
 		LockMutex(_eventKeyMutex)
