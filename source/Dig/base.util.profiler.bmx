@@ -44,7 +44,7 @@ Import "external/string_comp.bmx"
 Type TProfilerCall
 	Field parent:TProfilerCall = Null
 	Field depth:Int = -1
-	Field pathID:Long 'hash of "parentPath+"::"+name
+	Field pathID:UInt 'hash of "parentPath+"::"+name
 	Field path:String
 	Field name:String
 	Field start:Long
@@ -90,9 +90,9 @@ Type TProfilerCall
 	End Method
 
 
-	Method GetPathID:Long()
+	Method GetPathID:UInt()
 		if pathID = 0
-			pathID = GetPath().Hash()
+			pathID = GetPath().HashCode()
 		endif
 
 		Return pathID
@@ -199,9 +199,9 @@ Type TProfiler
 
 	Function GetCall:TProfilerCall(callName:Object)
 		If TLowerString(callName)
-			Return TProfilerCall(calls.ValueForKey(Long(callName.ToString().Hash())))
+			Return TProfilerCall(calls.ValueForKey(Long(callName.ToString().HashCode())))
 		Else
-			Return TProfilerCall(calls.ValueForKey(Long(string(callName).ToLower().Hash())))
+			Return TProfilerCall(calls.ValueForKey(Long(string(callName).ToLower().HashCode())))
 		EndIf
 	End Function
 
@@ -230,9 +230,9 @@ Type TProfiler
 		EndIf
 		'try to fetch call from list
 		If lastCall and storeAbsolutePath
-			pathID = (lastCall.GetPath() + "::" + pathStr).Hash()
+			pathID = (lastCall.GetPath() + "::" + pathStr).HashCode()
 		Else
-			pathID = pathStr.Hash()
+			pathID = pathStr.HashCode()
 		EndIf
 
 				
@@ -278,9 +278,9 @@ Type TProfiler
 			EndIf
 			'try to fetch call from list
 			If lastCall and storeAbsolutePath
-				pathID = (lastCall.GetPath() + "::" + pathStr).Hash()
+				pathID = (lastCall.GetPath() + "::" + pathStr).HashCode()
 			Else
-				pathID = pathStr.Hash()
+				pathID = pathStr.HashCode()
 			EndIf
 
 			Local call:TProfilerCall = TProfilerCall(calls.ValueForKey(pathID))

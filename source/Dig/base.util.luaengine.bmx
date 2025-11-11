@@ -1495,7 +1495,7 @@ Type TLuaEngine
 								c._ref = TGlobal(m)._ref 
 							EndIf
 
-							reflectionType.children.Insert(Long(m.Name().ToLower().Hash()), c)
+							reflectionType.children.Insert(Long(m.Name().ToLower().HashCode()), c)
 						Next
 					Next
 				Next

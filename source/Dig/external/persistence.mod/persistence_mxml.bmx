@@ -44,6 +44,7 @@ ModuleInfo "History: Initial Release"
 endrem
 Import Text.xml
 Import BRL.Reflection
+Import BRL.IntMap
 Import BRL.Map
 Import "../../base.util.longmap.bmx"
 Import BRL.Stream
@@ -1695,7 +1696,7 @@ Type TIntMapXMLSerializer Extends TXMLSerializer
 		Local map:TIntMap = TIntMap(obj)
 
 		If map Then
-			For Local mapNode:TIntNode = EachIn map
+			For Local mapNode:TIntKeyValue = EachIn map
 				Local v:TxmlNode = node.addChild("e")
 				If mapNode.Value() Then
 					SerializeObject(mapNode.Value(), v)
@@ -1735,7 +1736,7 @@ Type TStringMapXMLSerializer Extends TXMLSerializer
 		Local map:TStringMap = TStringMap(obj)
 
 		If map Then
-			For Local mapNode:TStringNode = EachIn map
+			For Local mapNode:TStringKeyValue = EachIn map
 				Local n:TxmlNode = node.addChild("n")
 				SerializeObject(mapNode.Key(), n.addChild("k"))
 				SerializeObject(mapNode.Value(), n.addChild("v"))

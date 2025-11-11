@@ -38,6 +38,8 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
+Import Brl.IntMap
+Import Brl.StringMap
 Import Brl.Map
 
 

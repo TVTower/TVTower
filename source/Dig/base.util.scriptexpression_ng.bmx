@@ -1,5 +1,6 @@
 SuperStrict
 Framework Brl.StandardIO
+Import Brl.StringMap
 Import Brl.Map
 Import brl.retro	' Hex() in SToken.reveal()
 Import Brl.StringBuilder
@@ -841,7 +842,7 @@ Type TScriptExpression
 		Local fnLower:String = functionName.ToLower()
 		Local handler:TSEFN_Handler = New TSEFN_Handler(callback, paramMinCount, paramMaxCount)
 		functionHandlers.Insert(fnLower, handler)
-		functionHandlersByHash.Insert(Long(fnLower.Hash()), handler)
+		functionHandlersByHash.Insert(Long(fnLower.HashCode()), handler)
 		'functionHandlersByHash.Insert(Long(SubStringHash(fnLower, 0, fnLower.length)), handler)
 	End Function
 
