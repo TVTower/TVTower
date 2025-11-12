@@ -67,13 +67,35 @@ Extern
 	'Function lua_StringHash:ULong( L:Byte Ptr,index:Int )
 	Function lua_LowerStringHash:UInt( L:Byte Ptr,index:Int )
 	Function lua_StringHash:UInt( L:Byte Ptr,index:Int )
+	
+	Function strcmp_ascii_nocase:Int(a:Byte Ptr, b:Byte Ptr) = "BBINT strcmp_ascii_nocase(const char*, const char*)!"
 End Extern
+
+
+Type TCStringCaseInsensitiveComparator Implements IComparator<Byte Ptr>
+	Method Compare:Int(a:Byte Ptr, b:Byte Ptr)
+		Return strcmp_ascii_nocase(a, b)
+	End Method
+End Type
 
 
 Type TLuaReflectionType
 	Field typeID:TTypeID
-	Field children:TLongMap = New TLongMap
+	Field children:TTreeMap<Byte Ptr, TLuaReflectionChild>
+	
+	Method New()
+		children = New TTreeMap<Byte Ptr, TLuaReflectionChild>(New TCStringCaseInsensitiveComparator)
+	End Method
+	
+	Method Delete()
+		'free children cstrings!
+		For local b:Byte Ptr = EachIn children.Keys()
+			MemFree(b)
+		Next
+	End Method
 End Type
+
+
 Type TLuaReflectionChild
 	Field _ref:Byte Ptr 'globals, functions, methods
 	Field member:TMember
@@ -1497,7 +1519,7 @@ print "Checking type: " + reflectionType.typeID.name()
 							ElseIf TGlobal(m)
 								c._ref = TGlobal(m)._ref 
 							EndIf
-							reflectionType.children.Insert(Long(m.Name().ToLower().HashCode()), c)
+							reflectionType.children.Add(m.Name().ToCString(), c)
 						Next
 					Next
 				Next
@@ -1507,8 +1529,8 @@ print "Checking type: " + reflectionType.typeID.name()
 	End Method
 	
 	
-	Method _FindTypeChild:TLuaReflectionChild(obj:Object, identHash:ULong)
-		Return TLuaReflectionChild(_GetReflectionType(obj).children.ValueForKey(Long(identHash)))
+	Method _FindTypeChild:TLuaReflectionChild(obj:Object, identPtr:Byte Ptr)
+		Return TLuaReflectionChild(_GetReflectionType(obj).children[identPtr])
 	End Method
 
 
@@ -1577,7 +1599,12 @@ print "Checking type: " + reflectionType.typeID.name()
 	Method HandleIndex:Int()
 		'pull blitzmax object (parent of the method)
 		Local obj:Object = lua_unboxobject(_luaState, 1, _objMetaTable)
-		Local identHash:ULong = lua_LowerStringHash(_luaState, 2)
+		'Local identHash:UInt = lua_LowerStringHash(_luaState, 2)
+
+		'do not free the identPtr, it is managed by Lua!
+		Local identPtrLength:Size_T
+		Local identPtr:Byte Ptr = lua_tolstring(_luaState, 2, Varptr identPtrLength)
+		If (identPtr = Null or identPtrLength = 0) Then Return 0
 
 		' Check if the object was valid before proceeding
 		If Not obj
@@ -1589,7 +1616,7 @@ print "Checking type: " + reflectionType.typeID.name()
 		'lua_tostring should be enough for idents (no utf8 methods/field names) 
 		'while lua_tobbstring would decode utf8 etc 
 
-		Local child:TLuaReflectionChild = _FindTypeChild(obj, identHash)
+		Local child:TLuaReflectionChild = _FindTypeChild(obj, identPtr)
 		if child
 			'=== CHECK PUSHED OBJECT IS A METHOD or FUNCTION ===
 			'thing we have to push is a method/function
@@ -1659,7 +1686,14 @@ print "Checking type: " + reflectionType.typeID.name()
 	Method HandleNewIndex:Int( )
 		'pull blitzmax object (parent of the field/property)
 		Local obj:Object = lua_unboxobject(_luaState, 1, _objMetaTable)
-		Local identHash:ULong = lua_LowerStringHash(_luaState, 2)
+		'Local identHash:UInt = lua_LowerStringHash(_luaState, 2)
+		'Local ident:String = String.FromCString(lua_tostring(_luaState, 2)) '.ToLower().HashCode()
+
+		'do not free the identPtr, it is managed by Lua!
+		Local identPtrLength:Size_T
+		Local identPtr:Byte Ptr = lua_tolstring(_luaState, 2, Varptr identPtrLength)
+		If (identPtr = Null or identPtrLength = 0) Then Return 0
+
 		Local passedArgumentCount:Int = lua_gettop(_luaState)
 
 		'=== CHECK OBJ / PROPERTY AND PRIVACY ===
@@ -1674,7 +1708,7 @@ print "Checking type: " + reflectionType.typeID.name()
 			Return 0 'nothing pushed to the stack
 		EndIf
 
-		Local child:TLuaReflectionChild = _FindTypeChild(obj, identHash)
+		Local child:TLuaReflectionChild = _FindTypeChild(obj, identPtr)
 		If not child
 			Local t:TTypeID = _FindType(obj)
 			If not t
