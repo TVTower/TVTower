@@ -22,6 +22,27 @@ void* Luaengine_bbRefObjectFieldPtr(BBObject* obj, size_t offset) {
 
 
 
+//merged blitz_string.c's ascii_lower and ascii_upper
+static inline unsigned int ascii_fold(unsigned int c) {
+    return c + ((unsigned int)(c - 'A') <= 25u) * 32u;
+}
+
+int strcmp_ascii_nocase(const char *a, const char *b) {
+    unsigned char ca, cb;
+
+    while ((ca = *a) && (cb = *b)) {
+        unsigned int la = ascii_fold(ca);
+        unsigned int lb = ascii_fold(cb);
+
+        if (la != lb)
+            return (int)la - (int)lb;
+
+        ++a;
+        ++b;
+    }
+
+    return (int)(unsigned char)*a - (int)(unsigned char)*b;
+}
 
 
 // Function to hash a Lua string
