@@ -706,9 +706,10 @@ Type TBroadcast
 		Attractions[playerID-1] = audienceAttraction
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-			If market.HasChannel(playerID)
+			'player not being part of the market is handled by the market itself
+			'If market.HasChannel(playerID)
 				market.SetProgrammeAttraction(playerID, Attractions[playerID-1])
-			EndIf
+			'EndIf
 		Next
 	End Method
 
@@ -1216,9 +1217,10 @@ Type TAudienceMarketCalculation
 
 
 	Method SetProgrammeAttraction(channelID:Int, audienceAttraction:TAudienceAttraction)
-		if new SChannelMask(channelMaskValue).Has(channelID) and audienceAttractions.length >= channelID
+		'player not being part of the market is handled by the GetCompetitionAttractionModifier
+		'if new SChannelMask(channelMaskValue).Has(channelID) and audienceAttractions.length >= channelID
 			audienceAttractions[channelID - 1] = audienceAttraction
-		EndIf
+		'EndIf
 	End Method
 
 
@@ -1305,15 +1307,26 @@ Type TAudienceMarketCalculation
 
 		'calculate audience flow
 		local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
-		Local audienceFlowSum:TAudience = New TAudience
-		Local attractionCount:Float
-		For Local attractionTemp:TAudienceAttraction = EachIn audienceAttractions
-			audienceFlowSum.Add(attractionTemp.AudienceFlowBonus)
-			attractionCount :+ 1
+		Local audienceFlowSum:SAudience = New SAudience
+		Local totalAttraction:Float
+		For Local channelID:Int = 1 To 4
+			'if you want to play around with the impact of the audience attraction
+			'on the number of viewers and quotes, manipulate the attraction here
+			'audienceAttractions[channelID - 1].set(1.0,1.0)
+			If channelMask.Has(channelID)
+				Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
+				audienceFlowSum.Add(attraction.AudienceFlowBonus)
+				totalAttraction:+attraction.FinalAttraction.GetWeightedAverage()
+			EndIf
 		Next
-		audienceFlowSum.Divide(attractionCount)
+		audienceFlowSum.Divide(channelMask.GetEnabledCount())
+		audienceFlowSum.Multiply(0.25) 'do not use the full audience flow
 
-		potentialChannelSurfer.Add(audienceFlowSum.Multiply(0.25))
+		potentialChannelSurfer.Add(audienceFlowSum)
+		'programme attraction itself increases potential viewers (attraction 0-1, so up to 10% more viewers in case of full attraction for all channels)
+		potentialChannelSurfer.Multiply(1.0+(0.1 * totalAttraction/4))
+		'channel image increases potential viewers (image 0-99, so up to 10% more viewers in case of full image)
+		'potentialChannelSurfer.Multiply(1.0+(0.001*GetPublicImageCollection().GetAverage().GetAverageImage()))
 
 
 		'round to "complete persons" ;-)
@@ -1327,21 +1340,42 @@ Type TAudienceMarketCalculation
 		'Die Summe aller Attractionwerte
 		Local attrSum:SAudience
 		'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm
+		'(Da in Summe die Einschaltquote kleiner 100% sein kann, schauen die restlichen
+		'also die Öffentlich-Rechtlichen.)
 		Local attrRange:SAudience
 		Local result:TAudience = new TAudience
 
-		For Local attraction:TAudienceAttraction = EachIn audienceAttractions
-			attrSum.Add(attraction.FinalAttraction)
+		Local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
+		Local paricipants:Int=channelMask.GetEnabledCount()
+		'Der attractionMultiplier sorgt einerseits dafür, dass bei weniger
+		'Wettbewerb mehr Zuschauer bei den Öffentlichen bleiben 
+		'(nicht 100% Einschaltquote für den Monopolisten), andererseits
+		'dass auch vollem Wettbewerb aber nur durchschnittlicher Attraktivität
+		'der Sendungen ein Teil Öffis schaut ("Normalisierung" von attraction).
+		'attractionMultiplier 1 und (ein einziger Sender mit) Attraction 1 würde bedeuten, 
+		'dass der gesamte Markt die 4 Sender schauen würde.
+		Local attractionMultiplier:Float
+		Select paricipants
+			Case 1 attractionMultiplier = 0.4
+			Case 2 attractionMultiplier = 0.55
+			Case 3 attractionMultiplier = 0.64
+			Default attractionMultiplier = 0.7
+		EndSelect
 
-			For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
-				For Local genderIndex:Int = 0 To 1
-					Local gender:Int = TVTPersonGender.FEMALE
-					If genderIndex = 1 Then gender = TVTPersonGender.MALE
+		For Local channelID:Int = 1 To 4
+			If channelMask.Has(channelID) and audienceAttractions[channelID - 1]
+				Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
+				attrSum.Add(attraction.FinalAttraction)
+				For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
+					For Local genderIndex:Int = 0 To 1
+						Local gender:Int = TVTPersonGender.FEMALE
+						If genderIndex = 1 Then gender = TVTPersonGender.MALE
 
-					Local rangeValue:Float = attrRange.GetGenderValue(targetGroupID, gender)
-					attrRange.SetGenderValue(targetGroupID, rangeValue + (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(targetGroupID, gender), gender)
+						Local rangeValue:Float = attrRange.GetGenderValue(targetGroupID, gender)
+						attrRange.SetGenderValue(targetGroupID, rangeValue + attractionMultiplier * (1 - rangeValue) * attraction.FinalAttraction.GetGenderValue(targetGroupID, gender), gender)
+					Next
 				Next
-			Next
+			EndIf
 		Next
 
 

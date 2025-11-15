@@ -473,19 +473,19 @@
 				<pl>Blockbuster „Srebrny”</pl>
 			</title>
 			<text>
-				<de>Erreiche eine Einschaltquote von 55% (20 - 22 Uhr)</de>
-				<en>Achieve an audience rating of 55% (8pm - 10pm)</en>
-				<pl>Osiągnięcie oglądalności na poziomie 55% (od 20:00 do 22:00)</pl>
+				<de>Erreiche eine Einschaltquote von 40% (20 - 22 Uhr)</de>
+				<en>Achieve an audience rating of 40% (8pm - 10pm)</en>
+				<pl>Osiągnięcie oglądalności na poziomie 40% (od 20:00 do 22:00)</pl>
 			</text>
 			<tasks>
 				<task guid="tvt-gameachievement-task-blockbuster2-20" >
-					<data type="reachAudience" minAudienceQuote="0.55" checkHour="20" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="20" checkMinute="5" />
 				</task>
 				<task guid="tvt-gameachievement-task-blockbuster2-21" >
-					<data type="reachAudience" minAudienceQuote="0.55" checkHour="21" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="21" checkMinute="5" />
 				</task>
 				<task guid="tvt-gameachievement-task-blockbuster2-22" >
-					<data type="reachAudience" minAudienceQuote="0.55" checkHour="22" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="22" checkMinute="5" />
 				</task>
 			</tasks>
 			<rewards>
@@ -506,22 +506,22 @@
 				<pl>Blockbuster „Złoty”</pl>
 			</title>
 			<text>
-				<de>Erreiche eine Einschaltquote von 70% (20 - 23 Uhr)</de>
-				<en>Achieve an audience rating of 70% (8pm - 11pm)</en>
-				<pl>Osiągnięcie oglądalności na poziomie 70% (od 20:00 do 23:00)</pl>
+				<de>Erreiche eine Einschaltquote von 35% (20 - 23 Uhr)</de>
+				<en>Achieve an audience rating of 35% (8pm - 11pm)</en>
+				<pl>Osiągnięcie oglądalności na poziomie 35% (od 20:00 do 23:00)</pl>
 			</text>
 			<tasks>
 				<task guid="tvt-gameachievement-task-blockbuster3-20" >
-					<data type="reachAudience" minAudienceQuote="0.7" checkHour="20" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.35" checkHour="20" checkMinute="5" />
 				</task>
 				<task guid="tvt-gameachievement-task-blockbuster3-21" >
-					<data type="reachAudience" minAudienceQuote="0.7" checkHour="21" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.35" checkHour="21" checkMinute="5" />
 				</task>
 				<task guid="tvt-gameachievement-task-blockbuster3-22" >
-					<data type="reachAudience" minAudienceQuote="0.7" checkHour="22" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.35" checkHour="22" checkMinute="5" />
 				</task>
 				<task guid="tvt-gameachievement-task-blockbuster3-23" >
-					<data type="reachAudience" minAudienceQuote="0.7" checkHour="23" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.35" checkHour="23" checkMinute="5" />
 				</task>
 			</tasks>
 			<rewards>
