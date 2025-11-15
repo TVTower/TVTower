@@ -473,19 +473,19 @@
 				<pl>Blockbuster „Srebrny”</pl>
 			</title>
 			<text>
-				<de>Erreiche eine Einschaltquote von 37% (20 - 22 Uhr)</de>
-				<en>Achieve an audience rating of 37% (8pm - 10pm)</en>
-				<pl>Osiągnięcie oglądalności na poziomie 37% (od 20:00 do 22:00)</pl>
+				<de>Erreiche eine Einschaltquote von 40% (20 - 22 Uhr)</de>
+				<en>Achieve an audience rating of 40% (8pm - 10pm)</en>
+				<pl>Osiągnięcie oglądalności na poziomie 40% (od 20:00 do 22:00)</pl>
 			</text>
 			<tasks>
 				<task guid="tvt-gameachievement-task-blockbuster2-20" >
-					<data type="reachAudience" minAudienceQuote="0.37" checkHour="20" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="20" checkMinute="5" />
 				</task>
 				<task guid="tvt-gameachievement-task-blockbuster2-21" >
-					<data type="reachAudience" minAudienceQuote="0.37" checkHour="21" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="21" checkMinute="5" />
 				</task>
 				<task guid="tvt-gameachievement-task-blockbuster2-22" >
-					<data type="reachAudience" minAudienceQuote="0.37" checkHour="22" checkMinute="5" />
+					<data type="reachAudience" minAudienceQuote="0.4" checkHour="22" checkMinute="5" />
 				</task>
 			</tasks>
 			<rewards>
