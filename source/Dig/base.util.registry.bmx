@@ -316,9 +316,12 @@ Type TRegistryLoader
 
 
 	Method LoadResourcesFromXML:Int(node:TxmlNode, source:Object, forceDirectLoad:Int=False)
-		For Local resourceNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
+		Local resourceNode:TxmlNode = TxmlNode(node.GetFirstChild())
+		While resourceNode
 			LoadSingleResourceFromXML(resourceNode, source, forceDirectLoad)
-		Next
+			
+			resourceNode = resourceNode.NextSibling()
+		Wend
 	End Method
 
 
@@ -779,13 +782,19 @@ Type TRegistryDataLoader Extends TRegistryBaseLoader
 		Local values:TData = New TData
 
 
-		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-			Local childName:String = TXmlHelper.FindValue(child, "name", child.getName())
-			If childName = "" Then Continue
+		Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+		While childNode
+			Local childName:String = TXmlHelper.FindValue(childNode, "name", childNode.getName())
+			If childName = "" 
+				childNode = childNode.NextSibling()
+				Continue
+			EndIf
 
-			Local childValue:String = TXmlHelper.FindValue(child, "value", child.getcontent())
+			Local childValue:String = TXmlHelper.FindValue(childNode, "value", childNode.getcontent())
 			values.Add(childName, childValue)
-		Next
+			
+			childNode = childNode.NextSibling()
+		Wend
 
 		data.Add("values", values)
 		Return data

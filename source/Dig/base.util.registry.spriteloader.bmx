@@ -95,14 +95,17 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		If not childrenNode then return data
 
 		local childrenData:TData[]
-		For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childrenNode)
+		Local childNode:TxmlNode = TxmlNode(childrenNode.GetFirstChild())
+		While childNode
 			'load child config into a new data
 			local childData:TData = new TData
 			TXmlHelper.LoadValuesToData(childNode, childData, fieldNames)
 
 			'add child data
 			childrenData :+ [childData]
-		Next
+			
+			childNode = childNode.NextSibling()
+		Wend
 		if len(childrenData)>0 then data.Add("childrenData", childrenData)
 
 		return data
