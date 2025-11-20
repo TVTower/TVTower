@@ -100,6 +100,7 @@ Type TLuaReflectionChild
 	Field _ref:Byte Ptr 'globals, functions, methods
 	Field member:TMember
 	Field _args:Byte Ptr[10]
+	Global _argsSize:Size_T = 10 * SizeOf(Byte Ptr Null)
 	
 	Method ArgReset()
 		For local i:int = 0 until 10
@@ -1473,7 +1474,6 @@ Type TLuaEngine
 
 			reflectionType.typeID = TTypeID.ForObject(obj)
 			If reflectionType.typeID
-print "Checking type: " + reflectionType.typeID.name()
 				Local typeID:TTypeID = reflectionType.typeID
 
 				'methods, fields and functions cannot share names
@@ -1556,7 +1556,6 @@ print "Checking type: " + reflectionType.typeID.name()
 	Function _HandleSuper:Int(luaState:Byte Ptr)
 		' called as soon as Lua requests a property or method of an object
 		' which it does not know about (ex. "myobject:themethod()"
-	print "DDD _HandleSuper"
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(luaState)
 
 		' Lua will push nil if the global table doesn't resolve the key
@@ -1687,7 +1686,6 @@ print "Checking type: " + reflectionType.typeID.name()
 		'pull blitzmax object (parent of the field/property)
 		Local obj:Object = lua_unboxobject(_luaState, 1, _objMetaTable)
 		'Local identHash:UInt = lua_LowerStringHash(_luaState, 2)
-		'Local ident:String = String.FromCString(lua_tostring(_luaState, 2)) '.ToLower().HashCode()
 
 		'do not free the identPtr, it is managed by Lua!
 		Local identPtrLength:Size_T
@@ -1810,12 +1808,16 @@ print "Checking type: " + reflectionType.typeID.name()
 		' parameter will be the "TVT" instance)
 		Local isLuaMethodCall:Int = False
 		if passedArgumentCount > 0
+			'this is not needed, as unboxing already handles null object stuff
+			rem
 			local paramObj:object
 			if lua_isnil(_luaState, 1)
 				paramObj = null
 			elseif lua_isuserdata(_luaState, 1)
 				paramObj = lua_unboxobject(_luaState, 1, _objMetaTable)
 			EndIf
+			endrem
+			local paramObj:object = lua_unboxobject(_luaState, 1, _objMetaTable)
 		
 			'first passed parameter is the same as the parent of the called
 			'method/function? Might be a lua method call
@@ -1856,67 +1858,68 @@ print "Checking type: " + reflectionType.typeID.name()
 		Local invalidArgs:Int = 0
 
 		child.ArgReset()
-		For Local i:Int = 0 Until argTypes.length
-			Local luaIndex:Int = i + luaArgsOffset + 1  ' Precompute Lua stack index
+		If argTypes.length > 0
+			For Local i:Int = 0 Until argTypes.length
+				Local luaIndex:Int = i + luaArgsOffset + 1  ' Precompute Lua stack index
 
-			Select argTypes[i]
-				Case IntTypeId, ShortTypeId, ByteTypeId
-					if lua_isboolean(_luaState, luaIndex)
-						child.ArgPush(i, int(lua_toboolean(_luaState, luaIndex)))
-					else
-						?ptr64
-							child.ArgPush(i, Long(lua_tointeger(_luaState, luaIndex)))
-						?Not ptr64
-							child.ArgPush(i, Int(lua_tointeger(_luaState, luaIndex)))
-						?
-					endif
-				Case LongTypeId
-					?not ptr64
-					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
-					?
-					if lua_isboolean(_luaState, luaIndex)
-						child.ArgPush(i, Int(lua_toboolean(_luaState, luaIndex)))
-					else
-						child.ArgPush(i, Long(lua_tonumber(_luaState, luaIndex)))
-					endif
-				Case FloatTypeId
-					child.ArgPush(i, Float(lua_tonumber(_luaState, luaIndex)))
-				Case DoubleTypeId
-					?not ptr64
-					Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
-					?
-					child.ArgPush(i, Double(lua_tonumber(_luaState, luaIndex)))
-				Case StringTypeId
-					child.ArgPush(i, lua_tobbstring(_luaState, luaIndex))
-				Default
-					local paramObj:object
-					Local paramObjType:TTypeID
-					if lua_isnil(_luaState, luaIndex)
-						paramObj = null
-					elseif lua_isuserdata(_luaState, luaIndex)
-						paramObj = lua_unboxobject(_luaState, luaIndex, _objMetaTable)
-						paramObjType = _FindType(paramObj)
-						'given param does not derive from requested param type (so incompatible)
-						if not paramObjType or not paramObjType.ExtendsType(argTypes[i])
-							If not objType Then objType = _FindType(obj)
-							TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + child.member.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
-							invalidArgs :+ 1
-							paramObj = Null
+				Select argTypes[i]
+					Case IntTypeId, ShortTypeId, ByteTypeId
+						if lua_isboolean(_luaState, luaIndex)
+							child.ArgPush(i, int(lua_toboolean(_luaState, luaIndex)))
+						else
+							?ptr64
+								child.ArgPush(i, Long(lua_tointeger(_luaState, luaIndex)))
+							?Not ptr64
+								child.ArgPush(i, Int(lua_tointeger(_luaState, luaIndex)))
+							?
 						endif
-					else
-						If not objType Then objType = _FindType(obj)
-						TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + child.member.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
-						invalidArgs :+ 1
-						paramObj = null
-					endif
-					child.ArgPush(i, paramObj, paramObjType)
-			End Select
-		Next
-		'stop execution if an argument did not fit
-		if invalidArgs > 0
-			If not objType Then objType = _FindType(obj)
-			TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + child.member.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
-			Return 0 'nothing pushed to the stack
+					Case LongTypeId
+						if lua_isboolean(_luaState, luaIndex)
+							child.ArgPush(i, Int(lua_toboolean(_luaState, luaIndex)))
+						else
+							child.ArgPush(i, Long(lua_tonumber(_luaState, luaIndex)))
+						endif
+					Case FloatTypeId
+						child.ArgPush(i, Float(lua_tonumber(_luaState, luaIndex)))
+					Case DoubleTypeId
+						child.ArgPush(i, Double(lua_tonumber(_luaState, luaIndex)))
+					Case StringTypeId
+						child.ArgPush(i, lua_tobbstring(_luaState, luaIndex))
+					Default
+						If lua_isnil(_luaState, luaIndex)
+							child.ArgPush(i, Null, Null)
+						Else
+							Local paramObj:object = lua_unboxobject(_luaState, luaIndex, _objMetaTable)
+							If paramObj
+								Local paramObjType:TTypeID = _FindType(paramObj)
+								
+								'valid param type ?
+								If paramObjType or paramObjType.ExtendsType(argTypes[i])
+									child.ArgPush(i, paramObj, paramObjType)
+								'given param does not derive from requested param type (so incompatible)
+								Else
+									If not objType Then objType = _FindType(obj)
+									TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + child.member.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received incompatible ~q"+TTypeID.ForObject(paramObj).name()+"~q).", LOG_DEBUG)
+									invalidArgs :+ 1
+									child.ArgPush(i, Null, argTypes[i])
+								EndIf
+							' passed a non-obj
+							Else
+								If not objType Then objType = _FindType(obj)
+								TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() ~q" + objType.name() + "." + child.member.name()+"()~q - param #"+i+" is invalid (expected ~q"+argTypes[i].name()+"~q, received no userdata obj).", LOG_DEBUG)
+								invalidArgs :+ 1
+								child.ArgPush(i, Null, argTypes[i])
+							EndIf
+						EndIf
+				End Select
+			Next
+
+			'stop execution if an argument did not fit
+			if invalidArgs > 0
+				If not objType Then objType = _FindType(obj)
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] _Invoke() failed to call ~q" + objType.name() + "." + child.member.name() + "()~q. " + invalidArgs + " invalid argument(s) passed.", LOG_ERROR)
+				Return 0 'nothing pushed to the stack
+			EndIf
 		EndIf
 
 		Local result:Int
