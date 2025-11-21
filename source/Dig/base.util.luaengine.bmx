@@ -1470,7 +1470,7 @@ Type TLuaEngine
 		Local reflectionType:TLuaReflectionType = _reflectionTypesCache[class]
 		If not reflectionType 'not cached yet
 			reflectionType = New TLuaReflectionType
-			_reflectionTypesCache.Add(class, reflectionType)
+			_reflectionTypesCache.Put(class, reflectionType)
 
 			reflectionType.typeID = TTypeID.ForObject(obj)
 			If reflectionType.typeID
@@ -1519,7 +1519,7 @@ Type TLuaEngine
 							ElseIf TGlobal(m)
 								c._ref = TGlobal(m)._ref 
 							EndIf
-							reflectionType.children.Add(m.Name().ToCString(), c)
+							reflectionType.children.Put(m.Name().ToCString(), c)
 						Next
 					Next
 				Next
