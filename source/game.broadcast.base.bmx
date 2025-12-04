@@ -1239,7 +1239,7 @@ Type TAudienceMarketCalculation
 
 		'Ermittle wie viel ein Attractionpunkt auf Grund der Konkurrenz-
 		'situation wert ist bzw. Quote bringt.
-		Local competitionAttractionModifier:TAudience = GetCompetitionAttractionModifier()
+		Local competitionAttractionModifier:TAudience = GetCompetitionAttractionModifier(ChannelSurferToShare)
 
 		'print "ComputeAudience:   time=" + GetWorldTime().GetFormattedGameDate(time)
 		'Print "  maxAudience: " + MaxAudience.ToString()
@@ -1336,7 +1336,7 @@ Type TAudienceMarketCalculation
 	End Method
 
 
-	Method GetCompetitionAttractionModifier:TAudience()
+	Method GetCompetitionAttractionModifier:TAudience(channelSurfers:TAudience)
 		'Die Summe aller Attractionwerte
 		Local attrSum:SAudience
 		'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm
@@ -1354,13 +1354,19 @@ Type TAudienceMarketCalculation
 		'der Sendungen ein Teil Öffis schaut ("Normalisierung" von attraction).
 		'attractionMultiplier 1 und (ein einziger Sender mit) Attraction 1 würde bedeuten, 
 		'dass der gesamte Markt die 4 Sender schauen würde.
-		Local attractionMultiplier:Float
+		Local attractionMultiplier:Float = 1.0
 		Select paricipants
 			Case 1 attractionMultiplier = 0.4
-			Case 2 attractionMultiplier = 0.55
-			Case 3 attractionMultiplier = 0.64
-			Default attractionMultiplier = 0.7
+			Case 2 attractionMultiplier = 0.52
+			Case 3 attractionMultiplier = 0.6
+			Default attractionMultiplier = 0.65
 		EndSelect
+		'Erhöhung des Multipliers zu Sendezeiten mit wenigen Zuschauern (um maximal 0.15).
+		'Da aufgrund der geringeren möglichen Einnahmen eher schlechtere Programme
+		'gesendet werden, sind "zu hohe" Quoten nicht so problematisch. Zu niedrige Einnahmen
+		'tagsüber erhöhen das Bankrottrisiko.
+		Local surferRatio:Float = channelSurfers.GetTotalSum() / maxAudience.GetTotalSum()
+		attractionMultiplier:+ Math.max(0.0,(0.25 - surferRatio)* 0.6)
 
 		For Local channelID:Int = 1 To 4
 			If channelMask.Has(channelID) and audienceAttractions[channelID - 1]
