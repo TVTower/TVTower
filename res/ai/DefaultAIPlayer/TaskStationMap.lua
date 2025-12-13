@@ -15,7 +15,7 @@ function TaskStationMap:typename()
 end
 
 function TaskStationMap:getStrategicPriority()
-	self:LogTrace("TaskStationMap:getStrategicPriority")
+	--self:LogTrace("TaskStationMap:getStrategicPriority")
 	if getPlayer().hour > 17 then
 		return 0.0
 	end
@@ -184,22 +184,28 @@ function JobAnalyseStationMarket:Tick()
 	player.totalReceivers = TVT:getReceivers()
 	self.Task.maxReceiverIncrease = player.totalReceivers
 
-	--movie prices do not increas so much anymore...
-	--[[
-	if movieCount < 12 then
-		if player.totalReceivers < 2500000 then
-			self.Task.maxReceiverIncrease = 2400000 - player.totalReceivers
-		else
-			self.Task.maxReceiverIncrease = 0
-		end
-	elseif movieCount < 24 then
-		if player.totalReceivers < 5000000 then
-			self.Task.maxReceiverIncrease = 4800000 - player.totalReceivers
-		else
-			self.Task.maxReceiverIncrease = 0
+	--bankruptcy - do not grow too fast
+	if player.money > 5000000 then
+		if blocks < 60 then
+			if player.totalReceivers < 2500000 then
+				self.Task.maxReceiverIncrease = 2300000 - player.totalReceivers
+			else
+				self.Task.maxReceiverIncrease = -1
+			end
+		elseif blocks < 120 then
+			if player.totalReceivers < 5000000 then
+				self.Task.maxReceiverIncrease = 4700000 - player.totalReceivers
+			else
+				self.Task.maxReceiverIncrease = -1
+			end
+		elseif blocks < 150 then
+			if player.totalReceivers < 12000000 then
+				self.Task.maxReceiverIncrease = 11500000 - player.totalReceivers
+			else
+				self.Task.maxReceiverIncrease = -1
+			end
 		end
 	end
-	--]]
 
 	local mapTotalReceivers = TVT:of_getMapReceivers()
 	if player.coverage == nil then player.coverage = 0.018 end
@@ -211,11 +217,8 @@ function JobAnalyseStationMarket:Tick()
 		end
 	end
 
-	--TODO if coverage is high enough, use random positions rather than systematicall "all possible"
-	if player.money > 10000000 and player.coverage > 0.1 and blocks < 144 then
-		--player bankrupt - do not by stations too fast
-		self.Task.maxReceiverIncrease = -1
-	elseif player.coverage > 0.955 then
+	--TODO if coverage is high enough, use random positions rather than systematic "all possible"
+	if player.coverage > 0.955 then
 		self.Task.maxReceiverIncrease = -1
 	elseif self.Task.intendedAntennaPositions == nil or table.count(self.Task.intendedAntennaPositions) < 3 then
 		self:determineIntendedPositions()
@@ -490,7 +493,6 @@ function JobBuyStation:Prepare(pParams)
 		self:SetCancel()
 	end
 	self.Task.CurrentBudget = math.min(self.Task.CurrentBudget, moneyExcludingFixedCosts)
-	--TODO do no spend all money on one task run
 	self.purchaseCount = 0
 end
 
@@ -751,7 +753,7 @@ function JobBuyStation:Tick()
 		self.purchaseCount = self.purchaseCount + 1
 	end
 
-	if bestOffer == nil or self.Task.maxReceiverIncrease < 1000000 or self.Task.CurrentBudget < 300000 or self.purchaseCount >= 3 or getPlayer().minutesGone - self.Task.StartTask > 20 then
+	if bestOffer == nil or self.Task.maxReceiverIncrease < 1000000 or self.Task.CurrentBudget < 300000 or self.purchaseCount >= 3 or getPlayer().minutesGone - self.Task.StartTask > 10 then
 		self.Status = JOB_STATUS_DONE
 	end
 end
