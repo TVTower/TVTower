@@ -76,6 +76,7 @@ function TaskScripts:GetStudioId()
 end
 
 function TaskScripts:GetNextJobInTargetRoom()
+	getPlayer().onOwnFloor = false
 	--depending on state: buy script/bring to studio and get list/supermarket/start production
 	if (self.prodStatus == PROD_STATUS_BUY and self.JobBuyScript.Status ~= JOB_STATUS_DONE) then
 		return self.JobBuyScript

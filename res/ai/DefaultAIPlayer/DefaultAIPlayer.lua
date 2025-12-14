@@ -117,6 +117,8 @@ function DefaultAIPlayer:initParameters()
 		self.gameDay = TVT:GetDaysRun() + 1
 		self.minutesGone = TVT:GetTimeGoneInMinutes()
 	end
+	--station map, boss, news, archive should be visited if the player is on his own floor anyway
+	self.onOwnFloor = true
 	if self.coverage == nil then self.coverage = 0 end
 	if self.coverages == nil then
 		self.coverages = {}
@@ -134,7 +136,7 @@ function DefaultAIPlayer:initParameters()
 	end
 	if (self.NewsPriority == nil or self.NewsPriority <= 0) then
 		--Interesse an News/Geldausgabe fuer News
-		self.NewsPriority = math.random(3,8)
+		self.NewsPriority = math.random(4,8)
 	end
 	if (self.ExpansionPriority == nil or self.ExpansionPriority <= 0) then
 		self.ExpansionPriority = math.random(3,8)
@@ -144,12 +146,13 @@ function DefaultAIPlayer:initParameters()
 		self.BrainSpeed = math.random(4,6)
 	end
 	--eagerness to start the next task
+	--randomizing this value only once is an extreme handicap for players with high values 
 	if (self.startTaskAtPriority == nil or self.startTaskAtPriority <= 0) then
-		self.startTaskAtPriority = math.random(17,25)
+		self.startTaskAtPriority = 19 --math.random(17,25)
 	end
 
 	--for checking that the same parameters are still used after loading a saved game
-	self:LogDebug("initializing ".. self.Ventruesome.. " ".. self.NewsPriority .." ".. self.ExpansionPriority .." " .. self.BrainSpeed)
+	self:LogDebug("initializing venturesome ".. self.Ventruesome.. " news ".. self.NewsPriority .." expansion ".. self.ExpansionPriority .." speed " .. self.BrainSpeed.." taskPrio "..self.startTaskAtPriority)
 end
 
 function DefaultAIPlayer:initializePlayer()

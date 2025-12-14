@@ -125,6 +125,7 @@ end
 
 
 function TaskSchedule:GetNextJobInTargetRoom()
+	self.Player.onOwnFloor = true
 	if (self.AnalyzeEnvironmentJob.Status ~= JOB_STATUS_DONE) then
 		return self.AnalyzeEnvironmentJob
 	elseif (self.PreAnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
@@ -166,7 +167,7 @@ function TaskSchedule:GetNextJobInTargetRoom()
 	--when done invalidate cache of available licences
 	self.availableProgrammes = nil
 
-	local taskTime = getPlayer().minutesGone - self.StartTask
+	local taskTime = self.Player.minutesGone - self.StartTask
 	if taskTime < 7 then
 		self:SetIdle(7-taskTime)
 	else

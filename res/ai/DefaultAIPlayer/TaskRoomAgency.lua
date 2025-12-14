@@ -22,6 +22,7 @@ function TaskRoomAgency:Activate()
 end
 
 function TaskRoomAgency:GetNextJobInTargetRoom()
+	getPlayer().onOwnFloor = false
 	if (self.RentRoomJob.Status ~= JOB_STATUS_DONE) then
 		return self.RentRoomJob
 	end

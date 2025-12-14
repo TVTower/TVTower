@@ -55,6 +55,7 @@ end
 
 
 function TaskAdAgency:GetNextJobInTargetRoom()
+	getPlayer().onOwnFloor = false
 	if (MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax) then
 		self:SetDone()
 		return nil

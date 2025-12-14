@@ -21,6 +21,15 @@ function TaskBoss:typename()
 end
 
 
+function TaskBoss:getStrategicPriority()
+	local player = getPlayer()
+	if not player.onOwnFloor then
+		return 0.0
+	end
+	return 1.0
+end
+
+
 function TaskBoss:Activate()
 	-- Was getan werden soll:
 	self.CheckCreditJob = JobCheckCredit()

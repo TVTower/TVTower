@@ -81,6 +81,7 @@ end
 
 
 function TaskMovieDistributor:GetNextJobInTargetRoom()
+	getPlayer().onOwnFloor = false
 	--added entry for programme licence selling, needs to come first
 	--add "existence check" to skip errors in older savegames not knowing
 	--the new job

@@ -76,6 +76,9 @@ end
 function TaskNewsAgency:getStrategicPriority()
 	-- adjust priority according to player character
 	local player = getPlayer()
+	if not player.onOwnFloor then
+		return 0.0
+	end
 	local result = 0.9
 	if player.NewsPriority > 7 then
 		result = 1.25

@@ -21,7 +21,8 @@ end
 
 function TaskArchive:getStrategicPriority()
 	self:LogTrace("TaskArchive:getStrategicPriority")
-	if getPlayer().hour > 17 then
+	local player = getPlayer()
+	if player.hour > 17 or not player.onOwnFloor then
 		return 0.0
 	end
 	return 1.0
