@@ -560,11 +560,11 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 					if spotsLeft < 3 and spotsLeft < daysToFinish then doSign = true end
 				end
 			elseif avg == true then
-				if spotsLeft < 4 and spotsLeft < daysToFinish * 1.5 then doSign = true end
+				if spotsLeft < 4 and spotsLeft < daysToFinish then doSign = true end
 				--if spotsLeft <= achievedPerDayGoodFit then doSign = true end
 			else
 				--TODO even for easy contracs too many spots left may be harmful
-				if spotsLeft < 4 and spotsLeft < daysToFinish * 2 then doSign = true end
+				if spotsLeft < 4 and spotsLeft < daysToFinish * 1.5 then doSign = true end
 				--if spotsLeft <= achievedPerDayGoodFit then doSign = true end
 			end
 		end
