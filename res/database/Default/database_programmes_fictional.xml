@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3" />
 	<allprogrammes>
-		<programme guid="9bec0952-e3a8-48fc-82e9-d96e2809e746" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="9bec0952-e3a8-48fc-82e9-d96e2809e746" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Beer, Bier, Pivo</de>
 				<en>Beer, Bier, Pivo</en>
@@ -24,10 +24,10 @@
 			<releaseTime year_relative="1" />
 			<ratings critics="9" speed="4" outcome="0" />
 		</programme>
-		<programme guid="f51954ef-5d8a-4ca0-9936-fca27da79267" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="f51954ef-5d8a-4ca0-9936-fca27da79267" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Biedermeier - (K)eine Zeit zum Feiern</de>
-				<en>Biedermeier - (Not) A time For Celebration</en>
+				<en>Biedermeier - (Not) A Time For Celebration</en>
 				<pl>Biedermeier - (Nie) czas na świętowanie</pl>
 			</title>
 			<description>
@@ -45,7 +45,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="14" speed="23" outcome="0" />
 		</programme>
-		<programme guid="53406dc9-1e66-4f79-aa24-67a2ed4c7441" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as 0a2efe28-4326-49d1-a5a8-5f277b514adc">
+		<programme guid="53406dc9-1e66-4f79-aa24-67a2ed4c7441" product="3" licence_type="1" fictional="1" creator="" comment="screenplay continuation added as 0a2efe28-4326-49d1-a5a8-5f277b514adc">
 			<title>
 				<de>Der Hammer fällt LIVE</de>
 				<en>The Hammer Falls LIVE</en>
@@ -68,7 +68,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="0a2efe28-4326-49d1-a5a8-5f277b514adc" />
 			</effects>
 		</programme>
-		<programme guid="35190c1d-aa55-4e84-967f-72a374e84dcf" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="35190c1d-aa55-4e84-967f-72a374e84dcf" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Die Demoskopie des Menschen</de>
 				<en>The Demoscopy of Man</en>
@@ -89,11 +89,11 @@
 			<releaseTime year_relative="1" year_relative_min="1990" year_relative_max="2020" />
 			<ratings critics="42" speed="23" outcome="4" />
 		</programme>
-		<programme guid="2fcf1b3e-701c-434d-acf3-c34c94227e7d" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as 2d938802-02a2-4c38-9248-6a406cfb744d">
+		<programme guid="2fcf1b3e-701c-434d-acf3-c34c94227e7d" product="3" licence_type="1" fictional="1" creator="" comment="screenplay continuation added as 2d938802-02a2-4c38-9248-6a406cfb744d">
 			<title>
 				<de>Die große Verarsche-Show</de>
-				<en>The Big Bullshitting-You Show</en>
-				<pl>Wielki pokaz bzdur</pl>
+				<en>The Big Rip-Off Show</en>
+				<pl>Wielka Ściema Show</pl>
 			</title>
 			<description>
 				<de>Hier treten Männer gegen Frauen an. Das Geschlecht mit den meisten Anrufen gewinnt.</de>
@@ -113,7 +113,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="2d938802-02a2-4c38-9248-6a406cfb744d" />
 			</effects>
 		</programme>
-		<programme guid="4ce1c133-6062-4ad4-b925-729007157db9" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="4ce1c133-6062-4ad4-b925-729007157db9" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Ein Ei zum Frühstück?</de>
 				<en>An Egg For Breakfast?</en>
@@ -133,7 +133,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="28" speed="51" outcome="18" />
 		</programme>
-		<programme guid="6273b893-99bf-4234-a312-a7a2d00845ec" product="7" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="6273b893-99bf-4234-a312-a7a2d00845ec" product="7" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Faszination Plusquamperfekt</de>
 				<en>Fascination Plusquamperfect</en>
@@ -154,7 +154,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="35" speed="0" outcome="10" />
 		</programme>
-		<programme guid="8df86321-0fcd-4903-b9e9-2b67e0eaafea" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="8df86321-0fcd-4903-b9e9-2b67e0eaafea" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Kakiemon-Porzellanmanufakturen in Japan</de>
 				<en>Cacomon Porcelain Manufactories in Japan</en>
@@ -175,7 +175,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="47" speed="5" outcome="15" />
 		</programme>
-		<programme guid="c2f960af-16fa-45f8-8b3a-1a17d4d9f3cf" product="7" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="c2f960af-16fa-45f8-8b3a-1a17d4d9f3cf" product="7" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Kaminfeuer</de>
 				<en>Chimney Fire</en>
@@ -194,7 +194,7 @@
 			<releaseTime year_relative="0" />
 			<ratings critics="5" speed="2" outcome="8" />
 		</programme>
-		<programme guid="e14c3026-b946-4f5b-9986-a41aa03a9bd4" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="e14c3026-b946-4f5b-9986-a41aa03a9bd4" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Klimax Kulturgeschichte: Eine weibliche Erörterung</de>
 				<en>Climax Cultural History: A Female Discourse</en>
@@ -215,7 +215,7 @@
 			<releaseTime year_relative="5" />
 			<ratings critics="75" speed="15" outcome="10" />
 		</programme>
-		<programme guid="42761763-4125-4a66-8227-40027caab44a" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay continuation added as f0010a94-c0a9-4d99-8522-06ce3891ac0f">
+		<programme guid="42761763-4125-4a66-8227-40027caab44a" product="3" licence_type="1" fictional="1" creator="" comment="screenplay continuation added as f0010a94-c0a9-4d99-8522-06ce3891ac0f">
 			<title>
 				<de>Kultur Heute</de>
 				<en>Culture Today</en>
@@ -244,7 +244,7 @@
 				<modifier name="betty::pointsabsolute" value="100" /> <!-- should have low viewer results (0% in Mad TV) but highest possible Betty points -->
 			</modifiers>
 		</programme>
-		<programme guid="4fe2dff2-039d-4747-b37a-7f79010b9997" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="4fe2dff2-039d-4747-b37a-7f79010b9997" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Kunst am Arsch der Welt</de>
 				<en>Arts at the Arse End of Nowhere</en>
@@ -265,7 +265,7 @@
 			<releaseTime year_relative="-1" year_relative_min="1983" year_relative_max="2020" />
 			<ratings critics="54" speed="15" outcome="10" />
 		</programme>
-		<programme guid="c4348eef-2678-486b-a07c-ce00dc4fed91" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="c4348eef-2678-486b-a07c-ce00dc4fed91" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Landung auf dem Mars</de>
 				<en>Landing on Mars</en>
@@ -288,7 +288,7 @@
 			<releaseTime year_relative="5" year_relative_min="2000" year_relative_max="2020" />
 			<ratings critics="94" speed="80" outcome="89" />
 		</programme>
-		<programme guid="bddb797f-53cd-4d15-bb96-bb4b148203b2" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="bddb797f-53cd-4d15-bb96-bb4b148203b2" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Lolcat: Da lacht die Katz'!</de>
 				<en>Lolcat: Here's Where the Cat Laughs!</en>
@@ -308,7 +308,7 @@
 			<data country="USA" year="2007" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="0.07" />
 			<ratings critics="13" speed="23" outcome="9" />
 		</programme>
-		<programme guid="6a9105ff-c5ba-496c-b099-7ec5fb4aa465" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="6a9105ff-c5ba-496c-b099-7ec5fb4aa465" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Mal rückwärts!</de>
 				<en>Try in Reverse!</en>
@@ -330,7 +330,7 @@
 			<releaseTime year_relative="2" />
 			<ratings critics="32" speed="18" outcome="12" />
 		</programme>
-		<programme guid="5eb4277b-41be-4b51-b639-5c8ec17cdb0a" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Fictional programme but existing parody - https://en.wikipedia.org/wiki/Molvan%C3%AEa">
+		<programme guid="5eb4277b-41be-4b51-b639-5c8ec17cdb0a" product="4" licence_type="1" fictional="1" creator="" comment="Fictional programme but existing parody - https://en.wikipedia.org/wiki/Molvan%C3%AEa">
 			<title>
 				<de>Reiseziel Molwanîen</de>
 				<en>Destination Molvanîa</en>
@@ -353,7 +353,7 @@
 			<releaseTime year_relative="2" />
 			<ratings critics="47" speed="9" outcome="4" />
 		</programme>
-		<programme guid="13cc99a6-4e82-4126-9b75-72f190901a2a" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Turned into a special, and made the generic version a screenplay: d176358a-b18a-44d4-86c0-731660bd0c78 | TODO: Could create more 'Specials' with non-bookable 'real' authors already in database (and better ratings if famous), first example added as 870727e0-c302-44ad-a1b2-d23b64b4a1c9">
+		<programme guid="13cc99a6-4e82-4126-9b75-72f190901a2a" product="3" licence_type="1" fictional="1" creator="" comment="Turned into a special, and made the generic version a screenplay: d176358a-b18a-44d4-86c0-731660bd0c78 | TODO: Could create more 'Specials' with non-bookable 'real' authors already in database (and better ratings if famous), first example added as 870727e0-c302-44ad-a1b2-d23b64b4a1c9">
 			<title>
 				<de>Talk um 10 Spezial: ${.self:"cast":2:"fullname"}</de>
 				<en>Talk at 10 Special: ${.self:"cast":2:"fullname"}</en>
@@ -379,7 +379,7 @@
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme guid="69955785-3357-4292-b20b-aba24f0cd98f" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="69955785-3357-4292-b20b-aba24f0cd98f" product="3" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Talk um 10 Spezial: Die große Runde</de>
 				<en>Talk at 10 Special: The Big Round</en>
@@ -409,7 +409,7 @@
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme guid="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as 3768ea29-e556-4bbd-a51b-e68a3ff3951f">
+		<programme guid="6cab2c62-39d7-4e0a-b957-191d54fc78f9" product="3" licence_type="1" fictional="1" creator="" comment="Screenplay continuation added as 3768ea29-e556-4bbd-a51b-e68a3ff3951f">
 			<title>
 				<de>TED am Morgen</de>
 				<en>TED in the Morning</en>
@@ -431,7 +431,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="3768ea29-e556-4bbd-a51b-e68a3ff3951f" />
 			</effects>
 		</programme>
-		<programme guid="ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as a3b10b1d-5cf0-409d-8b99-8f7f7c955898">
+		<programme guid="ffdbdca2-7ad9-bbfc-b1a1-af1d24ee7ab5" product="3" licence_type="1" fictional="1" creator="" comment="Screenplay continuation added as a3b10b1d-5cf0-409d-8b99-8f7f7c955898">
 			<title>
 				<de>TED am Abend</de>
 				<en>TED in the Evening</en>
@@ -453,7 +453,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="a3b10b1d-5cf0-409d-8b99-8f7f7c955898" />
 			</effects>
 		</programme>
-		<programme guid="02d0dfa5-dbcf-40b5-abb4-7e20a58d8efa" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TVTower 2013 title: 'Ade Autobahn', probably erroneously spoofed - TODO: Maybe use that one for a predecessor / follow-up?">
+		<programme guid="02d0dfa5-dbcf-40b5-abb4-7e20a58d8efa" product="4" licence_type="1" fictional="1" creator="" comment="TVTower 2013 title: 'Ade Autobahn', probably erroneously spoofed - TODO: Maybe use that one for a predecessor / follow-up?">
 			<title>
 				<de>Tschüssikowski A4</de>
 				<en>Tschüssi-kowski A4</en>
@@ -472,10 +472,10 @@
 			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="0.5" />
 			<data country="D" distribution="2" maingenre="6" subgenre="300" flags="4" blocks="1" price_mod="0.90" />
-			<releaseTime year_relative="3" year_relative_min="1985" year_relative_max="2020" />
+			<releaseTime year_relative="3" year_relative_min="1995" year_relative_max="2020" />
 			<ratings critics="84" speed="37" outcome="14" />
 		</programme>
-		<programme guid="a61e7775-7565-48cd-ab4a-e5faea09d70d" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="a61e7775-7565-48cd-ab4a-e5faea09d70d" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>VHS im Test</de>
 				<en>Folk High Schools Under Test</en>
@@ -498,7 +498,7 @@
 			<releaseTime year_relative="3" />
 			<ratings critics="42" speed="47" outcome="0" />
 		</programme>
-		<programme guid="862497a5-844d-42cb-a691-c4e3876cd1bc" product="4" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="862497a5-844d-42cb-a691-c4e3876cd1bc" product="4" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Wasser-Theremin, Klickphone &amp; Achselgeige: Musikgeschmack im Grenzbereich</de>
 				<en>Water Theremin, Clickphone &amp; Armpit Fiddle: Music Taste on the Fringe</en>
@@ -519,7 +519,7 @@
 			<releaseTime year_relative="2" />
 			<ratings critics="52" speed="1" outcome="0" />
 		</programme>
-		<programme guid="e0da07de-d9fc-4426-bcf2-119d344598c8" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="screenplay for follow-ups added: 5d2c7faa-4b64-4170-b2e0-dcebe2a1ebf5 | Probably parody and 'opposite' of 'Who Wants to Be a Millionaire?'">
+		<programme guid="e0da07de-d9fc-4426-bcf2-119d344598c8" product="3" licence_type="1" fictional="1" creator="" comment="screenplay for follow-ups added: 5d2c7faa-4b64-4170-b2e0-dcebe2a1ebf5 | Probably parody and 'opposite' of 'Who Wants to Be a Millionaire?'">
 			<title>
 				<de>Wer wird Pleitegeier?</de>
 				<en>Who Wants to Be the Vulture-Bait?</en>
@@ -552,7 +552,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme guid="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+		<programme guid="4544c5b6-59e8-4869-a0e5-7c184c1c0d98" product="6" licence_type="1" fictional="1" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
 			<title>
 				<de>BBWr - Best-Of Bolivian Wrestling I</de>
 				<en>BBWr - Best-Of Bolivian Wrestling I</en>
@@ -582,7 +582,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme guid="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+		<programme guid="3ca74c27-5958-4603-bf65-7ccc0be8b83f" product="6" licence_type="1" fictional="1" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
 			<title>
 				<de>BBWr II: ${.self:"cast":0:"lastname"} - ${.self:"cast":1:"lastname"}</de>
 				<en>BBWr II: ${.self:"cast":0:"lastname"} - ${.self:"cast":1:"lastname"}</en>
@@ -612,7 +612,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme guid="d24b258f-654a-4d2c-8c13-39c4191613bc" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+		<programme guid="d24b258f-654a-4d2c-8c13-39c4191613bc" product="6" licence_type="1" fictional="1" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
 			<title>
 				<de>BBWr III: Der neue wird eingewiesen</de>
 				<en>BBWr III: The New One Is Briefed</en>
@@ -642,7 +642,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme guid="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+		<programme guid="0c080897-ff79-4244-b551-d7929afd42a8" product="6" licence_type="1" fictional="1" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
 			<title>
 				<de>BBWr IV: ${.self:"cast":2:"lastname"} - ${.self:"cast":4:"nickname"}</de>
 				<en>BBWr IV: ${.self:"cast":2:"lastname"} - ${.self:"cast":4:"nickname"}</en>
@@ -672,7 +672,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme guid="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+		<programme guid="2125c95f-d6c2-4472-b2d5-38e203a6e266" product="6" licence_type="1" fictional="1" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
 			<title>
 				<de>BBWr V: ${.self:"cast":3:"lastname"} - ${.self:"cast":5:"lastname"}</de>
 				<en>BBWr V: ${.self:"cast":3:"lastname"} - ${.self:"cast":5:"lastname"}</en>
@@ -702,7 +702,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme guid="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
+		<programme guid="effdf7ed-0738-4711-a3e7-ca5003cef73a" product="6" licence_type="1" fictional="1" creator="" comment="Previously 'Sports'. Because of re-adding the 'real' Wrestlemania series, and this entry using fictional parodies of wrestling stars, turning this more into a deliberate parody show. | TODO: screenplay continuation">
 			<title>
 				<de>BBWr VI: Tag-Team-Match</de>
 				<en>BBWr VI: Tag Team Match</en>
@@ -732,7 +732,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<modifier name="topicality::notLive" value="0.25" />
 			</modifiers>
 		</programme>
-		<programme guid="04439fd1-e89f-4922-a48e-6f8ddf96f7ab" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme guid="04439fd1-e89f-4922-a48e-6f8ddf96f7ab" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Ronny hilft...</de>
 				<en>Ronny assists...</en>
@@ -752,7 +752,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="3" day="3" year_relative_min="2002" />
 			<ratings critics="6" speed="3" outcome="0" />
 			<children>
-				<programme guid="39803483-0800-46e3-a153-5534c3d212da" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="39803483-0800-46e3-a153-5534c3d212da" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Marios Wohnzimmer</de>
 						<en>Mario's Living Room</en>
@@ -765,7 +765,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="6" speed="3" />
 				</programme>
-				<programme guid="4c062f49-f1e8-400a-9c11-852e95327873" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="4c062f49-f1e8-400a-9c11-852e95327873" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sandros Handyvertrag</de>
 						<en>Sandro's Cell Phone Contract</en>
@@ -778,7 +778,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="5" speed="4" />
 				</programme>
-				<programme guid="dc0b1ca6-c1c1-496f-9882-06f51fe0ab97" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="dc0b1ca6-c1c1-496f-9882-06f51fe0ab97" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Ok, OP...</de>
 						<en>Ok, Op...</en>
@@ -791,7 +791,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="6" speed="3" />
 				</programme>
-				<programme guid="fc7b481e-33b5-4113-89b3-9998ef8c66a6" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="fc7b481e-33b5-4113-89b3-9998ef8c66a6" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>...sich selbst</de>
 						<en>...Himself</en>
@@ -806,7 +806,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="e3065f58-7e56-49f4-8978-89f6dfe18b57" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme guid="e3065f58-7e56-49f4-8978-89f6dfe18b57" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Aus dem Leben gegriffen</de>
 				<en>Taken From Real Life</en>
@@ -827,7 +827,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="4" year_relative_min="2002" year_relative_max="2015" />
 			<ratings critics="3" speed="7" outcome="0" />
 			<children>
-				<programme guid="3daec432-9b89-493d-806a-74b39ef9d7c4" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="3daec432-9b89-493d-806a-74b39ef9d7c4" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Malocher</de>
 						<en>The Slogger</en>
@@ -840,7 +840,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="3" speed="7" />
 				</programme>
-				<programme guid="62fdaea6-a012-4430-a442-cedb78a10e82" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="62fdaea6-a012-4430-a442-cedb78a10e82" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Frivole Liebschaften</de>
 						<en>Frivolous Liaisons</en>
@@ -853,7 +853,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="5" speed="10" />
 				</programme>
-				<programme guid="2d98454f-f768-447b-bbd1-070ac621927f" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="2d98454f-f768-447b-bbd1-070ac621927f" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Nachbars Nebenberuf</de>
 						<en>Neighbor's Side Job</en>
@@ -866,7 +866,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="3" speed="9" />
 				</programme>
-				<programme guid="5f96e1bc-5c96-4289-b020-972d657e0d39" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="5f96e1bc-5c96-4289-b020-972d657e0d39" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Ohne Schulabschluss</de>
 						<en>Without Graduation</en>
@@ -879,7 +879,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="5" speed="10" />
 				</programme>
-				<programme guid="7448b9f0-f470-409a-afb6-e2763a4b536c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="7448b9f0-f470-409a-afb6-e2763a4b536c" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der fiese Chef</de>
 						<en>The Nasty Boss</en>
@@ -892,7 +892,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="11" speed="16" />
 				</programme>
-				<programme guid="0d33b686-a7d7-4649-859c-5033e1c64686" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="0d33b686-a7d7-4649-859c-5033e1c64686" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Drogenkurier</de>
 						<en>The Drug Courier</en>
@@ -910,7 +910,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="b528cab3-ec3d-43fc-b76a-2cb1724a7055" product="3" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as f1aff29a-048f-47b8-9503-b50931204611">
+		<programme guid="b528cab3-ec3d-43fc-b76a-2cb1724a7055" product="3" licence_type="3" fictional="1" creator="5578" created_by="Ronny" comment="Screenplay continuation added as f1aff29a-048f-47b8-9503-b50931204611">
 			<title>
 				<de>Ein Päuschen zum Gewinn</de>
 				<en>A Little Break For the Win</en>
@@ -930,7 +930,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="2" day="7" />
 			<ratings critics="5" speed="25" outcome="15" />
 			<children>
-				<programme guid="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="8aedcc43-c63d-4ab3-aec9-dfd858ba3f1e" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Leichte Gewinne</de>
 						<en>Easy Profit</en>
@@ -943,7 +943,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="3" speed="28" />
 				</programme>
-				<programme guid="a2ac67b0-6689-4c50-9489-d516bb15b771" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="a2ac67b0-6689-4c50-9489-d516bb15b771" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Harte Brocken</de>
 						<en>Tough Nut</en>
@@ -956,7 +956,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="3" speed="20" />
 				</programme>
-				<programme guid="82a377c0-4950-40cb-9813-9bb5c8ad9ad8" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="82a377c0-4950-40cb-9813-9bb5c8ad9ad8" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Genie gesucht</de>
 						<en>Genius wanted</en>
@@ -969,7 +969,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="3" speed="25" />
 				</programme>
-				<programme guid="81800e30-c387-4a29-9c21-c306a542cd7a" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="81800e30-c387-4a29-9c21-c306a542cd7a" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Dürft ich Fragen?</de>
 						<en>May I ask?</en>
@@ -987,7 +987,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="7ff3171c-9064-4bbd-bfbb-f0b13e5f5a8a" product="4" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="TODO: Final missing? Also should age pretty fast. Add the other World Cups instead of having this in the movie agency all the time.">
+		<programme guid="7ff3171c-9064-4bbd-bfbb-f0b13e5f5a8a" product="4" licence_type="3" fictional="1" creator="">
 			<title>
 				<de>Fußball-Weltmeisterschaft Italien 1990</de>
 				<en>Soccer World Cup Italy 1990</en>
@@ -999,53 +999,75 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>Mistrzostwa Świata w piłce nożnej pod znakiem legendarnych zawodników, bramek i scen. Mecze grupowe, 1/8, ćwierćfinały, półfinały i finał.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">common-amateur-director</member>
+				<member index="0" function="1">common-directors-provided</member>
+				<member index="1" function="8">common-hosts-provided</member>
+				<member index="2" function="128">common-commentators-provided</member>
+				<member index="3" function="128">common-reporters-provided</member>
+				<member index="4" function="64">common-guests-provided</member>
 			</staff>
 			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="0.75" />
-			<data country="I" distribution="2" maingenre="203" subgenre="" flags="0" blocks="2" price_mod="0.90" />
+			<data country="I" distribution="2" maingenre="203" subgenre="" flags="0" blocks="2" price_mod="0.70" />
 			<releaseTime year="1990" day="8" /> <!-- This shouldn't be availabe at the beginning of the year -->
-			<ratings critics="32" speed="75" outcome="80" />
+			<ratings critics="32" speed="75" outcome="50" />
+			<modifiers>
+				<modifier name="topicality::age" value="4" />
+			</modifiers>
 			<children>
-				<programme guid="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="98a65c7a-10d6-45d6-96e4-653ef6decf62" product="4" licence_type="2" creator="">
 					<title>
 						<de>Kamerun - Kolumbien 2:1</de>
 						<en>Cameroon 2-1 Colombia</en>
-						<pl>Kamerun - Kolumbia</pl>
+						<pl>Kamerun - Kolumbia 2:1</pl>
 					</title>
 					<description></description>
 					<staff>
-						<member index="1" function="2">8dbf9ebe-a0a1-4400-8ed5-82cd8ac0185e</member>
-						<member index="2" function="2">b360f7b8-3d87-4f6a-96c5-cc7a8ab8c488</member>
+						<member index="5" function="2">8dbf9ebe-a0a1-4400-8ed5-82cd8ac0185e</member>
+						<member index="6" function="2">b360f7b8-3d87-4f6a-96c5-cc7a8ab8c488</member>
 					</staff>
 				</programme>
-				<programme guid="3ed6d2bf-ad36-430a-965f-68ea8f00c36f" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="3ed6d2bf-ad36-430a-965f-68ea8f00c36f" product="4" licence_type="2" creator="">
 					<title>
 						<de>CSFR - Costa Rica 4:1</de>
 						<en>CSFR 4-1 Costa Rica</en>
-						<pl>Czechosłowacja - Costa Rica</pl>
+						<pl>Czechosłowacja - Costa Rica 4:1</pl>
 					</title>
 					<description></description>
 					<staff>
-						<member index="1" function="2">c0b2d723-bf35-4e05-868c-205815edd356</member>
-						<member index="2" function="2">b11fed5e-9636-4a9d-b13a-f5d490fef1b9</member>
+						<member index="5" function="2">c0b2d723-bf35-4e05-868c-205815edd356</member>
+						<member index="6" function="2">b11fed5e-9636-4a9d-b13a-f5d490fef1b9</member>
 					</staff>
 				</programme>
-				<programme guid="67f527f4-5d82-442f-9eaa-418710c35bbb" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="67f527f4-5d82-442f-9eaa-418710c35bbb" product="4" licence_type="2" creator="">
 					<title>
 						<de>Brasilien - Argentinien 0:1</de>
 						<en>Brazil 0-1 Argentina</en>
-						<pl>Brazylia - Argentyna</pl>
+						<pl>Brazylia - Argentyna 0:1</pl>
 					</title>
 					<description></description>
 					<staff>
-						<member index="1" function="2">88595c7f-30bf-4600-add4-43098011d419</member>
-						<member index="2" function="2">1d71a663-3fc0-44b5-9887-583eb5ca9959</member>
+						<member index="5" function="2">88595c7f-30bf-4600-add4-43098011d419</member>
+						<member index="6" function="2">1d71a663-3fc0-44b5-9887-583eb5ca9959</member>
+						<member index="7" function="2">5298ced1-2283-47f3-9cfe-68c4244867e2</member>
 					</staff>
 				</programme>
+				<!-- programme guid="2a8b8629-b510-43d0-b67f-736a91f5a36e" programmedata_guid="832a446b-6721-453f-97dd-8650a8946aee" product="4" licence_type="2" creator="" comment="TODO: Probably has always been planned to add the live final here with the programmedata_guid link feature. It's *almost* working, still some unexpected or even wrong behavior.">
+					<title>
+						<de>Deutschland - Argentinien 1:0</de>
+						<en>Germany 1-0 Argentina</en>
+						<pl>Niemcy - Argentyna 1:0</pl>
+					</title>
+					<description></description>
+					<staff>
+						<member index="5" function="2">77138a6b-e5f4-46f3-80cc-dc003459bd6f</member>
+						<member index="6" function="2">c3e3153c-bd37-4b92-8223-a54ba383df55</member>
+						<member index="6" function="2">a5e34a99-8b79-4f94-a69b-bf43bbd295d8</member>
+						<member index="8" function="2">5298ced1-2283-47f3-9cfe-68c4244867e2</member>
+					</staff>
+				</programme-->
 			</children>
 		</programme>
-		<programme guid="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as 84c38251-ff42-4422-908c-8177ff5b10ea">
+		<programme guid="d0b61022-2ec0-4a6c-a496-92c102e41cde" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny" comment="Screenplay continuation added as 84c38251-ff42-4422-908c-8177ff5b10ea">
 			<title>
 				<de>Nur wer anruft kann gewinnen</de>
 				<en>You Need to Call In to Win</en>
@@ -1067,7 +1089,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="3" />
 			<ratings critics="2" speed="35" outcome="15" />
 			<children>
-				<programme guid="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="03f5cdc1-b20f-4db2-b23b-c8bede5b99ca" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Anrufer Tommy wird abgezockt</de>
 						<en>Caller Tommy Gets Ripped Off</en>
@@ -1080,7 +1102,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="5" speed="30" />
 				</programme>
-				<programme guid="f9278cc4-8468-4158-995f-59cc4ffa2230" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="f9278cc4-8468-4158-995f-59cc4ffa2230" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Haarige Erkenntnis</de>
 						<en>Hairy Insight</en>
@@ -1093,7 +1115,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="8" speed="25" />
 				</programme>
-				<programme guid="28b4c473-e977-44c0-a593-4ac951f7d277" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="28b4c473-e977-44c0-a593-4ac951f7d277" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Mella Melone</de>
 						<en>Mella Melon</en>
@@ -1111,7 +1133,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="13cf3270-5458-460e-8360-75e0adc73a49" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as f1f973ed-7100-4514-bc69-3f6843b30bd9">
+		<programme guid="13cf3270-5458-460e-8360-75e0adc73a49" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny" comment="Screenplay continuation added as f1f973ed-7100-4514-bc69-3f6843b30bd9">
 			<title>
 				<de>Die Hellseher</de>
 				<en>The Clairvoyants</en>
@@ -1132,7 +1154,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="1" day="7" />
 			<ratings critics="3" speed="15" outcome="8" />
 			<children>
-				<programme guid="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="36bdc248-0924-4c43-9fd2-2aab51a804b1" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Vaters Geist</de>
 						<en>Father's Spirit</en>
@@ -1145,7 +1167,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="2" speed="18" />
 				</programme>
-				<programme guid="358da90b-2c5c-4796-acb3-6ae69490d7cf" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="358da90b-2c5c-4796-acb3-6ae69490d7cf" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Rudi der Pudel</de>
 						<en>Rudi the Poodle</en>
@@ -1158,7 +1180,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="5" speed="13" />
 				</programme>
-				<programme guid="eeaf10fd-4105-4e53-b70d-c1a32316176e" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="eeaf10fd-4105-4e53-b70d-c1a32316176e" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Transmediale Olympiade</de>
 						<en>Transmedia Olympics</en>
@@ -1176,14 +1198,14 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="4" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="TODO: Use references / spoofs for the later painters">
+		<programme guid="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny" comment="TODO: Use references / spoofs for the later painters">
 			<title>
 				<de>Maler vergangener Zeiten</de>
 				<en>Painters of Bygone Times</en>
 				<pl>Malarze minionych czasów</pl>
 			</title>
 			<description>
-				<de>${.self:"cast":1:"fullname"} sucht und besucht Nachfahren berühmter Maler. Begleitet wird das Treffen von Einspielern die damalige Zeiten nachstellen.</de>
+				<de>${.self:"cast":1:"fullname"} sucht und besucht Nachfahren berühmter Maler. Begleitet wird das Treffen von Einspielern, die damalige Zeiten nachstellen.</de>
 				<en>${.self:"cast":1:"fullname"} seeks and visits descendants of famous painters. The encounter is accompanied by recordings that recreate the era of that time.</en>
 				<pl>${.self:"cast":1:"fullname"} poszukuje i odwiedza potomków słynnych malarzy. Spotkaniu towarzyszą nagrania odtwarzające ówczesną epokę.</pl>
 			</description>
@@ -1197,7 +1219,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="-3" />
 			<ratings critics="49" speed="17" outcome="0" />
 			<children>
-				<programme guid="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Michelangelo</de>
 						<en>Michelangelo</en>
@@ -1210,7 +1232,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="49" speed="17" />
 				</programme>
-				<programme guid="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>Monet</all>
 					</title>
@@ -1221,7 +1243,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="47" speed="12" />
 				</programme>
-				<programme guid="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>Picasso</all>
 					</title>
@@ -1232,7 +1254,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="49" speed="18" />
 				</programme>
-				<programme guid="494fa370-4744-4616-aa14-910aa692af25" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="494fa370-4744-4616-aa14-910aa692af25" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>Rembrandt</all>
 					</title>
@@ -1243,7 +1265,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="22" speed="15" />
 				</programme>
-				<programme guid="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="4" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="4" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>Kandinsky</all>
 					</title>
@@ -1256,7 +1278,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="7ad20bf5-c4c6-4237-b52a-b7b189ede0bf" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme guid="7ad20bf5-c4c6-4237-b52a-b7b189ede0bf" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>${.self:"cast":1:"fullname"} besucht...</de>
 				<en>${.self:"cast":1:"fullname"} Visits...</en>
@@ -1277,7 +1299,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="-1" year_relative_min="1985" year_relative_max="1990" />
 			<ratings critics="20" speed="42" outcome="35" />
 			<children>
-				<programme guid="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="8258fb18-d138-49b4-b07c-0519eec12d2c" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>${.self:"cast":1:"fullname"} besucht... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"}</de>
 						<en>${.self:"cast":1:"fullname"} Visits... Madame ${.person:"8f503528-dcdb-444c-a29b-79120e5e2db7":"lastname"}</en>
@@ -1290,7 +1312,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="28" speed="32" />
 				</programme>
-				<programme guid="b7f87935-b1ec-44a8-b544-398b010af809" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="b7f87935-b1ec-44a8-b544-398b010af809" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>${.self:"cast":1:"fullname"} besucht... Jens Flumme</de>
 						<en>${.self:"cast":1:"fullname"} Visits... Jens Flumme</en>
@@ -1303,7 +1325,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="37" speed="42" />
 				</programme>
-				<programme guid="ff1cff05-d8a8-43dc-9765-a975bcc49e7b" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="ff1cff05-d8a8-43dc-9765-a975bcc49e7b" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>${.self:"cast":1:"fullname"} besucht... Martin Zeck</de>
 						<en>${.self:"cast":1:"fullname"} Visits... Martin Zeck</en>
@@ -1316,7 +1338,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="37" speed="45" />
 				</programme>
-				<programme guid="44db9d84-e8d5-46b4-bed5-70b228a74bcb" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="44db9d84-e8d5-46b4-bed5-70b228a74bcb" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>${.self:"cast":1:"fullname"} besucht... Peter Kruste</de>
 						<en>${.self:"cast":1:"fullname"} Visits... Peter Crust</en>
@@ -1329,7 +1351,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="28" speed="56" />
 				</programme>
-				<programme guid="ec7fe439-49ad-40d4-b1b3-fb89504184c7" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="ec7fe439-49ad-40d4-b1b3-fb89504184c7" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>${.self:"cast":1:"fullname"} besucht... seine Mutter</de>
 						<en>${.self:"cast":1:"fullname"} Visits... His Mother</en>
@@ -1344,7 +1366,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="c4ce4cc9-1c7e-4d25-ad83-8077e7a710b8" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme guid="c4ce4cc9-1c7e-4d25-ad83-8077e7a710b8" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Seniorensause</de>
 				<en>Seniors Big Bash</en>
@@ -1365,7 +1387,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="1" year_relative_min="1985" year_relative_max="2010" />
 			<ratings critics="7" speed="1" outcome="0" />
 			<children>
-				<programme guid="062287d0-1de3-47e9-b365-5ab5d163aef5" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="062287d0-1de3-47e9-b365-5ab5d163aef5" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Svetlana aus Hamburg</de>
 						<en>Svetlana from Hamburg</en>
@@ -1378,7 +1400,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="11" speed="4" />
 				</programme>
-				<programme guid="afcac328-c1ec-4018-8fbb-f01e724463a3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="afcac328-c1ec-4018-8fbb-f01e724463a3" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Renate aus Chemnitz</de>
 						<en>Renate from Chemnitz</en>
@@ -1391,7 +1413,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="7" speed="1" />
 				</programme>
-				<programme guid="37c8b5a1-f289-4061-96d9-51207ee850bc" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="37c8b5a1-f289-4061-96d9-51207ee850bc" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Erich aus Köln</de>
 						<en>Erich from Cologne</en>
@@ -1404,7 +1426,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="5" speed="7" />
 				</programme>
-				<programme guid="fe6f1e06-6c20-42a2-8164-bf357ac3c0d6" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="fe6f1e06-6c20-42a2-8164-bf357ac3c0d6" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Bolle aus Berlin</de>
 						<en>Bolle from Berlin</en>
@@ -1417,7 +1439,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 					</description>
 					<ratings critics="11" speed="7" />
 				</programme>
-				<programme guid="f2cc0b2e-43a0-4e39-8861-43e5c95d172f" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="f2cc0b2e-43a0-4e39-8861-43e5c95d172f" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Sepp aus München</de>
 						<en>Sepp from Munich</en>
@@ -1432,7 +1454,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				</programme>
 			</children>
 		</programme>
-		<programme guid="50b89ce5-a59b-4108-b4e0-0f82b2c6b15f" product="3" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme guid="50b89ce5-a59b-4108-b4e0-0f82b2c6b15f" product="3" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Die ${.self:"cast":1:"fullname"} Show</de>
 				<en>The ${.self:"cast":1:"fullname"} Show</en>
@@ -1454,7 +1476,7 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 			<releaseTime year_relative="1" day="5" year_relative_min="1983" />
 			<ratings critics="51" speed="28" outcome="18" />
 			<children>
-				<programme guid="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="ba5e8d69-ef29-4a26-8db0-1865c0b53e80" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Lothar Molch</de>
 						<en>Landon Newt</en>
@@ -1470,7 +1492,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="61" speed="42" />
 				</programme>
-				<programme guid="9570f151-042a-4913-8873-759f791ffbdd" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="9570f151-042a-4913-8873-759f791ffbdd" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>James Glatzkowski und Lara Luftig</de>
 						<en>James Baldowski and Lara Leezy</en>
@@ -1483,7 +1505,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="23" speed="56" />
 				</programme>
-				<programme guid="7e610bb4-9327-4bc6-bccd-c7b996946e84" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="7e610bb4-9327-4bc6-bccd-c7b996946e84" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>${.self:"cast":1:"fullname"} selbst</de>
 						<en>${.self:"cast":1:"fullname"} Herself</en>
@@ -1496,7 +1518,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="47" speed="42" />
 				</programme>
-				<programme guid="8ffd3e59-e711-45ca-9810-b22c221bad9b" product="3" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="8ffd3e59-e711-45ca-9810-b22c221bad9b" product="3" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>${.self:"cast":2:"fullname"}</all>
 					</title>
@@ -1512,7 +1534,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 			</children>
 		</programme>
-		<programme guid="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="modified by scr0llbaer. Created live script version d6242a49-71e0-4997-97d6-3684e5c67d54">
+		<programme guid="9ad21f32-6e2d-45c9-b3c2-7d758fa30d25" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny" comment="modified by scr0llbaer. Created live script version d6242a49-71e0-4997-97d6-3684e5c67d54">
 			<title>
 				<de>Dynamit - Das Magazin Spezial: ${.self:"cast":2:"nickname"} und ${.self:"cast":3:"nickname"}</de>
 				<en>Dynamite - The Magazine Special: ${.self:"cast":2:"nickname"} and ${.self:"cast":3:"nickname"}</en>
@@ -1535,7 +1557,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 			<releaseTime year="1991" day="7" />
 			<ratings critics="28" speed="61" outcome="0" />
 			<children>
-				<programme guid="178fcb7d-b54d-4064-b3c3-4e577f56d2bf" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="178fcb7d-b54d-4064-b3c3-4e577f56d2bf" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Geüchteküche brodelt</de>
 						<en>The Rumor Mill is Buzzing</en>
@@ -1548,7 +1570,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="42" speed="56" />
 				</programme>
-				<programme guid="39bdbcf8-7865-4d95-b874-18031947c36e" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="39bdbcf8-7865-4d95-b874-18031947c36e" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Geschickte Selbstvermarktung</de>
 						<en>Clever Self-Promotion</en>
@@ -1561,7 +1583,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="42" speed="56" />
 				</programme>
-				<programme guid="558991e0-7971-4489-912b-c7ab299c5062" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="558991e0-7971-4489-912b-c7ab299c5062" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Die Schuldfrage</de>
 						<en>The Question of Blame</en>
@@ -1574,7 +1596,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="28" speed="51" />
 				</programme>
-				<programme guid="a45a7dd5-af5b-4365-80c5-4cf6d7c441c3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="a45a7dd5-af5b-4365-80c5-4cf6d7c441c3" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Ein neues Buch?</de>
 						<en>A New Book?</en>
@@ -1587,7 +1609,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="70" speed="42" />
 				</programme>
-				<programme guid="d8f1c57b-feac-483e-9689-80252d487126" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="d8f1c57b-feac-483e-9689-80252d487126" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Paukenschlag!</de>
 						<en>The Bombshell!</en>
@@ -1602,7 +1624,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 			</children>
 		</programme>
-		<programme guid="0cefc3bc-f628-4b50-a466-682e7d117a2e" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<programme guid="0cefc3bc-f628-4b50-a466-682e7d117a2e" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Entstehung des Kosmos</de>
 				<en>The Origin of Our Cosmos</en>
@@ -1619,11 +1641,11 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 			</staff>
 			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity employees="0.75" />
-			<data country="A" distribution="2" maingenre="100" subgenre="6" flags="4" blocks="2" price_mod="0.85" />
+			<data country="A" distribution="2" maingenre="100" subgenre="6,9" flags="4" blocks="2" price_mod="0.85" />
 			<releaseTime year_relative="-1" year_relative_min="1986" year_relative_max="2020" />
 			<ratings critics="35" speed="7" outcome="0" />
 			<children>
-				<programme guid="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="c68b6bc1-f0c0-4b36-85e7-d7f32dd86063" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der Urknall</de>
 						<en>The Big Bang</en>
@@ -1636,7 +1658,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="24" speed="7" />
 				</programme>
-				<programme guid="5aed6755-d022-46fd-9ca8-04e8b150bd74" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="5aed6755-d022-46fd-9ca8-04e8b150bd74" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Ferne Galaxien</de>
 						<en>Distant Galaxies</en>
@@ -1649,7 +1671,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="29" speed="9" />
 				</programme>
-				<programme guid="79687626-d749-4b16-923c-0644fd9c3298" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="79687626-d749-4b16-923c-0644fd9c3298" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Lecker Milch...straße</de>
 						<en>Delicious Milk...y Way</en>
@@ -1662,7 +1684,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="35" speed="17" />
 				</programme>
-				<programme guid="03f36865-c8d4-46ea-a6bb-edc11ee39fa3" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="03f36865-c8d4-46ea-a6bb-edc11ee39fa3" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Unser Sonnensystem</de>
 						<en>Our Solar System</en>
@@ -1675,7 +1697,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</description>
 					<ratings critics="28" speed="9" />
 				</programme>
-				<programme guid="974003d6-44f3-47a5-b945-450a68d81d64" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="974003d6-44f3-47a5-b945-450a68d81d64" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<de>Der noch blaue Planet</de>
 						<en>The Still Blue Planet</en>
@@ -1690,7 +1712,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 				</programme>
 			</children>
 		</programme>
-		<programme guid="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="7" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny" comment="Screenplay continuation added as fb34ed9a-528e-45a9-83b9-16475c2ab67c">
+		<programme guid="cf19bea6-f3ae-4ea1-92fb-3bccc8d5c9e3" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny" comment="Screenplay continuation added as fb34ed9a-528e-45a9-83b9-16475c2ab67c">
 			<title>
 				<all>Hot Quiz</all>
 			</title>
@@ -1709,7 +1731,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 			<releaseTime year_relative="2" />
 			<ratings critics="5" speed="30" outcome="0" />
 			<children>
-				<programme guid="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="a710207e-6dff-4583-a015-94292f152ba9" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
@@ -1723,7 +1745,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</staff>
 					<ratings critics="4" speed="32" />
 				</programme>
-				<programme guid="f9579b28-072d-4027-8807-1c45326928d5" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="f9579b28-072d-4027-8807-1c45326928d5" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
@@ -1737,7 +1759,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</staff>
 					<ratings critics="8" speed="28" />
 				</programme>
-				<programme guid="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+				<programme guid="ee67bae0-ba95-4cef-8e0a-4aa03c130264" product="7" licence_type="2" creator="5578" created_by="Ronny">
 					<title>
 						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
@@ -1751,7 +1773,7 @@ Czy ta dwójka oferuje wystarczająco dużo materiału na ekscytujący panel?</p
 					</staff>
 					<ratings critics="5" speed="23" />
 				</programme>
-				<programme guid="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="7" licence_type="2" tmdb_id="0" imdb_id="" creator="">
+				<programme guid="4c067d5a-18a9-4646-ab7e-ef240fe18ab0" product="7" licence_type="2" creator="">
 					<title>
 						<all>${.self:"cast":1:"firstname"}</all>
 					</title>
@@ -2166,7 +2188,7 @@ Pouczające historie przekazują aktualne odkrycia uznanych psychologów dzieci�
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" />
 			<data country="D/F" distribution="2" maingenre="15" subgenre="7" blocks="2" />
-			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="1990" />
+			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="2010" />
 			<ratings critics="31" speed="30" />
 			<!-- Episodes -->
 			<children>
@@ -2248,7 +2270,7 @@ Tragiczny finał.</pl>
 
 				<!-- DOKU -->
 		
-		<programme guid="DF-Serien-Dokumentation-001" product="2" licence_type="3" fictional="1" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+		<programme guid="DF-Serien-Dokumentation-001" product="2" licence_type="3" fictional="1" creator="" created_by="DerFronck">
 			<title>
 				<de>Pfusch am Bau</de>
 				<en>Botched Up Construction Sites</en>
@@ -2269,7 +2291,7 @@ Tragiczny finał.</pl>
 			<releaseTime year_relative="-2" />
 			<ratings critics="35" speed="10" outcome="4" />
 			<children>
-				<programme guid="DF-Serien-Dokumentation-001-E01" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+				<programme guid="DF-Serien-Dokumentation-001-E01" product="2" licence_type="2" creator="" created_by="DerFronck">
 					<title>
 						<de>Aller Anfang...</de>
 						<en>All Beginnings Are...</en>
@@ -2282,7 +2304,7 @@ Tragiczny finał.</pl>
 					</description>
 					<ratings critics="39" speed="9" />
 				</programme>
-				<programme guid="DF-Serien-Dokumentation-001-E02" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+				<programme guid="DF-Serien-Dokumentation-001-E02" product="2" licence_type="2" creator="" created_by="DerFronck">
 					<title>
 						<de>Ein krummes Ding</de>
 						<en>A Crooked Thing</en>
@@ -2295,7 +2317,7 @@ Tragiczny finał.</pl>
 					</description>
 					<ratings critics="27" speed="12" />
 				</programme>
-				<programme guid="DF-Serien-Dokumentation-001-E03" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+				<programme guid="DF-Serien-Dokumentation-001-E03" product="2" licence_type="2" creator="" created_by="DerFronck">
 					<title>
 						<de>Der Maurer war's</de>
 						<en>The Bricklayer Did It</en>
@@ -2308,7 +2330,7 @@ Tragiczny finał.</pl>
 					</description>
 					<ratings critics="33" speed="11" />
 				</programme>
-				<programme guid="DF-Serien-Dokumentation-001-E04" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+				<programme guid="DF-Serien-Dokumentation-001-E04" product="2" licence_type="2" creator="" created_by="DerFronck">
 					<title>
 						<de>Das gibt Anpfiff</de>
 						<en>The Whistle Blows</en>
@@ -2321,7 +2343,7 @@ Tragiczny finał.</pl>
 					</description>
 					<ratings critics="32" speed="9" />
 				</programme>
-				<programme guid="DF-Serien-Dokumentation-001-E05" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+				<programme guid="DF-Serien-Dokumentation-001-E05" product="2" licence_type="2" creator="" created_by="DerFronck">
 					<title>
 						<de>Der „fast“ perfekte Anstrich</de>
 						<en>The "Almost" Perfect Coat of Paint</en>
@@ -2334,7 +2356,7 @@ Tragiczny finał.</pl>
 					</description>
 					<ratings critics="29" speed="10" />
 				</programme>
-				<programme guid="DF-Serien-Dokumentation-001-E06" product="2" licence_type="2" tmdb_id="0" imdb_id="" creator="" created_by="DerFronck">
+				<programme guid="DF-Serien-Dokumentation-001-E06" product="2" licence_type="2" creator="" created_by="DerFronck">
 					<title>
 						<de>Das böse Ende</de>
 						<en>The Bad Ending</en>
@@ -2654,7 +2676,7 @@ Tragiczny finał.</pl>
 				<pl>Croco Lake 2: Zemsta wylęgu</pl>
 			</title>
 			<description>
-				<de>Als eine Gruppe von Wilderern Krokodileier aus einem Schutzgebiet stiehlt, wächst die Brut rachsüchtig und blutdürstig auf. Kann ein Team aus Wissenschaftlern und Parkrangern sie aufhalten, bevor es zu einem Blutbad kommt?</de>
+				<de>Als eine Gruppe von Wilderern Krokodileier aus einem Schutzgebiet stiehlt, wächst die Brut rachsüchtig und blutdürstig auf. Kann ein Team aus Wissenschaftlern und Parkhütern sie aufhalten, bevor es zu einem Blutbad kommt?</de>
 				<en>When a group of poachers steals crocodile eggs from a protected reserve, the hatchlings grow up vengeful and bloodthirsty. Cam a team of scientists and park rangers stop them before a bloodbath happens?</en>
 				<pl>Kiedy grupa kłusowników kradnie jaja krokodyli z chronionego rezerwatu, wykluwające się z nich młode stają się mściwe i żądne krwi. Czy zespół naukowców i strażników parku zdoła ich powstrzymać, zanim dojdzie do rozlewu krwi?</pl>
 			</description>
@@ -2744,7 +2766,7 @@ Tragiczny finał.</pl>
 				<member index="1" function="2">Per_custom_Freddy_17</member>
 				<member index="2" function="2">Per_custom_Freddy_8</member>
 				<member index="3" function="2">Per_custom_Freddy_6</member>
-				<member index="4" function="2">Per_custom_Freddy_385</member>
+				<member index="4" function="2">Per_custom_Freddy_387</member>
 				<member index="5" function="2">Per_custom_Freddy_549</member>
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
@@ -2755,7 +2777,7 @@ Tragiczny finał.</pl>
 				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_7" />
 			</effects>
 		</programme>
-		<programme guid="870727e0-c302-44ad-a1b2-d23b64b4a1c9" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="">
+		<programme guid="870727e0-c302-44ad-a1b2-d23b64b4a1c9" product="3" licence_type="1" fictional="1" creator="">
 			<title>
 				<de>Talk um 10 Spezial: ${.self:"cast":2:"fullname"}</de>
 				<en>Talk at 10 Special: ${.self:"cast":2:"fullname"}</en>
@@ -2781,7 +2803,7 @@ Tragiczny finał.</pl>
 				<modifier name="topicality::age" value="4" />
 			</modifiers>
 		</programme>
-		<programme guid="c55267c4-dd5d-4888-8a0a-c70291ad95a2" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as ffc9a36f-5c51-4ad5-8878-8143a8760de5">
+		<programme guid="c55267c4-dd5d-4888-8a0a-c70291ad95a2" product="3" licence_type="1" fictional="1" creator="" comment="Screenplay continuation added as ffc9a36f-5c51-4ad5-8878-8143a8760de5">
 			<title>
 				<de>TED ab Mittag</de>
 				<en>TED at Midday</en>
@@ -2803,7 +2825,7 @@ Tragiczny finał.</pl>
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="ffc9a36f-5c51-4ad5-8878-8143a8760de5" />
 			</effects>
 		</programme>
-		<programme guid="ec190825-aeaa-41fd-b990-291ec0d1726f" product="3" licence_type="1" fictional="1" tmdb_id="0" imdb_id="" creator="" comment="Screenplay continuation added as d0f87d3e-f2a3-45f1-94ca-cb8c75cf2a64">
+		<programme guid="ec190825-aeaa-41fd-b990-291ec0d1726f" product="3" licence_type="1" fictional="1" creator="" comment="Screenplay continuation added as d0f87d3e-f2a3-45f1-94ca-cb8c75cf2a64">
 			<title>
 				<de>TED in der Nacht</de>
 				<en>TED at Night</en>
@@ -2824,6 +2846,115 @@ Tragiczny finał.</pl>
 			<effects>
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="d0f87d3e-f2a3-45f1-94ca-cb8c75cf2a64" />
 			</effects>
+		</programme>
+
+		<!-- added in 2025-08: old entries recovered from forum: https://www.gamezworld.de/phpforum/viewtopic.php?pid=11688#p11688 -->
+
+		<programme guid="579512cf-7c03-4dab-9b32-20c812b8dff9" product="1" licence_type="1" creator="5578" fictional="1">
+			<title>
+				<de>Der Klaustrophobische Mensch</de>
+				<en>The Claustrophobic Human</en>
+				<pl>Człowiek klaustrofobiczny</pl>
+			</title>
+			<description>
+				<de>${.self:"cast":1:"fullname"} liest aus ihrer Autobiographie begleitet von Dokumentarfotos und spontaner Dunkelheit.~n~n    Mit ${.self:"cast":1:"fullname"} und Laiendarstellern für nachgestellte Szenen.</de>
+				<en>${.self:"cast":1:"fullname"} reads from her autobiography, accompanied by documentary photos and moments of sudden darkness.~n~n    Featuring ${.self:"cast":1:"fullname"} and amateur actors for re-enacted scenes.</en>
+				<pl>${.self:"cast":1:"fullname"} czyta fragmenty swojej autobiografii, w towarzystwie zdjęć dokumentalnych i nagłych momentów ciemności.~n~n    Z ${.self:"cast":1:"fullname"} i amatorskimi aktorami w scenach inscenizowanych.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">45d0b8fd-96e1-40bb-abd9-50a21c5f5f3e</member>
+				<member index="1" function="10">0d187d5b-43d9-4dc0-9755-b2e408b8964e</member>
+				<member index="2" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="103" flags="4" blocks="1" price_mod="0.5" />
+			<releaseTime year_relative="-2" />
+			<ratings critics="50" speed="30" outcome="15" />
+		</programme>
+		<programme guid="8b5bf48e-edef-4145-a68f-25cf213a0ebe" product="1" licence_type="1" creator="5578" fictional="1">
+			<title>
+				<de>Wohin mit den Falten?</de>
+				<en>Where to Put the Wrinkles?</en>
+				<pl>Co zrobić ze zmarszczkami?</pl>
+			</title>
+			<description>
+				<de>${.self:"cast":1:"fullname"} und ${.self:"cast":2:"fullname"} erklären alternden Hausfrauen, wie man Hautfalten praktisch umfunktionieren kann.</de>
+				<en>${.self:"cast":1:"fullname"} and ${.self:"cast":2:"fullname"} explain to aging housewives how to practically repurpose skin wrinkles.</en>
+				<pl>${.self:"cast":1:"fullname"} i ${.self:"cast":2:"fullname"} wyjaśniają starzejącym się gospodyniom domowym, jak praktycznie wykorzystać zmarszczki skóry.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="1" function="2">eefab8a5-d3ff-4442-a6e8-ba499cd23eeb</member>
+				<member index="2" function="2">3502d6a9-c7ce-4c28-a9b4-d5211341fb76</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="301" subgenre="103,6" flags="4" blocks="1" price_mod="0.5" />
+			<releaseTime year_relative="-4" year_relative_max="1988" />
+			<ratings critics="30" speed="20" outcome="25" />
+		</programme>
+		<programme guid="9908aa87-f2d2-4f60-8cfd-07ccc128c79b" product="1" licence_type="1" creator="5578" fictional="1">
+			<title>
+				<de>Raubkopierer - Sie sind überall!</de>
+				<en>Pirates - They Are Everywhere!</en>
+				<pl>Piraci - Są wszędzie!</pl>
+			</title>
+			<description>
+				<de>Reporter ${.self:"cast":0:"fullname"} begleitet 2 junge Softwarepiraten und gibt Tipps im Umgang mit Tauschbörsen.~n~n    Mit ${.self:"cast":0:"fullname"} und 2 anonymen Softwarepiraten.</de>
+				<en>Reporter ${.self:"cast":0:"fullname"} accompanies two young software pirates and gives tips on using file-sharing networks.~n~n    Featuring ${.self:"cast":0:"fullname"} and two anonymous software pirates.</en>
+				<pl>Reporter ${.self:"cast":0:"fullname"} towarzyszy dwóm młodym piratom komputerowym i udziela wskazówek dotyczących korzystania z sieci wymiany plików.~n~n    Z ${.self:"cast":0:"firstname"}em ${.self:"cast":0:"lastname"}em i dwoma anonimowymi piratami komputerowymi.</pl>
+			</description>
+			<staff>
+				<member index="0" function="143">943c369a-a648-48b8-9f30-c9c7348f8d37</member>
+				<member index="1" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="50" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.25" housewives="0.25" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300,103" flags="4" blocks="2" price_mod="0.25" />
+			<releaseTime year_relative="0" year_relative_min="1999" year_relative_max="2002" />
+			<ratings critics="50" speed="30" outcome="20" />
+		</programme>
+		<programme guid="8a06e394-683c-4b60-af2c-27befad5578a" product="1" licence_type="1" creator="5578" fictional="1">
+			<title>
+				<de>Heiße Wüste ganz kalt</de>
+				<en>Hot Desert, Ice Cold</en>
+				<pl>Gorąca pustynia, lodowato zimna</pl>
+			</title>
+			<description>
+				<de>${.self:"cast":0:"fullname"} begleitet das Team eines bekannten Eisherstellers bei ihrem Verkaufsfeldzug durch die Sahara.</de>
+				<en>${.self:"cast":0:"fullname"} accompanies the team of a famous ice cream manufacturer during their sales campaign through the Sahara.</en>
+				<pl>${.self:"cast":0:"fullname"} towarzyszy zespołowi znanego producenta lodów podczas ich kampanii sprzedażowej w Saharze.</pl>
+			</description>
+			<staff>
+				<member index="0" function="141">4812f1df-c7bc-424c-b57a-902c43bb22f7</member>
+			</staff>
+			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="2" women="0.5" housewives="0.5" />
+			<data country="A" distribution="2" maingenre="6" subgenre="300,1" flags="4" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="-4" />
+			<ratings critics="60" speed="20" outcome="30" />
+		</programme>
+		<programme guid="d9290aa1-66e7-4a8c-af13-c960cfa5dbde" product="1" licence_type="1" creator="5578" fictional="1">
+			<title>
+				<de>Von der Wiese in die Theke</de>
+				<en>From the Pasture to the Counter</en>
+				<pl>Z łąki na ladę</pl>
+			</title>
+			<description>
+				<de>Vegetarierin ${.self:"cast":1:"fullname"} dokumentiert die Vollverwertung lilaner Kühe. Im zweiten Teil der Sendung gibt sie interessante Kochrezepte preis.~n~n    Mit diversen Kühen und mittendrin ${.self:"cast":1:"fullname"}.</de>
+				<en>Vegetarian ${.self:"cast":1:"fullname"} documents the full utilization of purple cows. In the second part of the program, she shares interesting cooking recipes.~n~n    Featuring various cows and, right in the middle, ${.self:"cast":1:"fullname"}.</en>
+				<pl>Wegetarianka ${.self:"cast":1:"fullname"} dokumentuje pełne wykorzystanie fioletowych krów. W drugiej części programu zdradza ciekawe przepisy kulinarne.~n~n    Występują różne krowy i pośrodku ${.self:"cast":1:"fullname"}.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">6b522cc6-8f0d-492a-98bf-cde9f077749e</member>
+				<member index="1" function="2">4d24c7e0-2dbd-4a11-98d3-f87f0eb60a49</member>
+			</staff>
+			<groups target_groups="186" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.5" />
+			<data country="D" distribution="2" maingenre="6" subgenre="300,100" flags="4" blocks="2" price_mod="0.5" />
+			<releaseTime year_relative="-3" year_relative_min="1982" />
+			<ratings critics="60" speed="20" outcome="20" />
 		</programme>
 	</allprogrammes>
 

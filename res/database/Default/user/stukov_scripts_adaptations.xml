@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3" />
 	<scripttemplates>
-		<scripttemplate licence_type="3" product="2" guid="Stukov_Das-Geheimnis_der_großen_Schwerter" comment="https://en.wikipedia.org/wiki/Memory,_Sorrow,_and_Thorn | TODO: mention and ref author Tad Williams">
+		<scripttemplate licence_type="3" product="2" guid="Stukov_Das-Geheimnis_der_großen_Schwerter" wikidata_id="Q1167968">
 			<title>
 				<de>Das Mysterium der großen Klingen</de>
 				<en>Remembrance, Suffer, and Spike</en>
@@ -138,7 +138,7 @@
 			</jobs>
 			<data target_groups="19" />
 			<targetgroupattractivity children="2" teenagers="2" unemployed="1.5" />
-			<genres maingenre="10" subgenres="1" />
+			<genres maingenre="10" subgenres="1,2" />
 			<blocks value="2" />
 			<studio_size slope="50" max="3" min="2" />
 			<price max="120000" min="50000" />
@@ -149,7 +149,7 @@
 			<availability year_range_from="1994" year_range_to="-1" />
 		</scripttemplate>
 
-		<scripttemplate licence_type="3" product="2" guid="Stukov_Goblins" comment="TODO: doesn't really seem to be https://en.wikipedia.org/wiki/The_Goblins - seems to be made-up">
+		<scripttemplate licence_type="3" product="2" guid="Stukov_Goblins" wikidata_id="" comment="TODO: doesn't really seem to be https://en.wikipedia.org/wiki/The_Goblins - seems to be made-up | or probably it's https://www.goodreads.com/series/93522-goblins">
 			<title>
 				<de>Die Goblins</de>
 				<en>The Goblins</en>
@@ -240,7 +240,7 @@
 			</jobs>
 			<data target_groups="19" />
 			<targetgroupattractivity children="2" teenagers="2" unemployed="1.5" />
-			<genres maingenre="10" subgenres="1" />
+			<genres maingenre="10" subgenres="1,5" />
 			<blocks slope="50" max="2" min="1" />
 			<studio_size slope="33" max="2" min="1" />
 			<price max="250000" min="0" />
@@ -250,7 +250,7 @@
 			<speed slope="60" max="83" min="0" />
 		</scripttemplate>
 
-		<scripttemplate licence_type="1" product="1" guid="Stukov_DarkestDungeon" comment="https://en.wikipedia.org/wiki/Darkest_Dungeon">
+		<scripttemplate licence_type="1" product="1" guid="Stukov_DarkestDungeon" wikidata_id="Q16259390">
 			<title>
 				<de>Dismal Dungeon - Der Film</de>
 				<en>Dismal Dungeon - The Film</en>
@@ -294,7 +294,7 @@
 			<availability year_range_from="2016" year_range_to="-1" />
 		</scripttemplate>
 
-		<scripttemplate licence_type="1" product="1" guid="Stukov_DerWidersacher" comment="TODO: this doesn't seem to be https://de.wikipedia.org/wiki/Der_Widersacher - seems to be completely made up">
+		<scripttemplate licence_type="1" product="1" guid="Stukov_DerWidersacher" wikidata_id="" comment="TODO: this doesn't seem to be https://de.wikipedia.org/wiki/Der_Widersacher - seems to be completely made up | maybe https://en.wikipedia.org/wiki/The_Adversary_Cycle">
 			<title>
 				<de>Der Widersacher</de>
 				<en>The Adversary</en>
@@ -323,7 +323,8 @@
 				<job function="32" index="5" gender="0" required="0" />
 			</jobs>
 			<data flags_optional="48" target_groups="18" />
-			<genres maingenre="17" subgenres="10,2" />
+			<targetgroupattractivity teenagers="2" unemployed="1.5" />
+			<genres maingenre="10" subgenres="17,2" />
 			<studio_size slope="40" max="3" min="1" />
 			<blocks slope="50" max="3" min="2" />
 			<price slope="25" max="500000" min="10000" />

@@ -6,7 +6,7 @@
 		<!-- real historical news items moved to database_news.xml -->
 
 		<!-- "Superman und Supergirl" -->
-		<news guid="cujo-news-superkerl-01" type="0" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo" comment="Superheros referenced: Superman, Supergirl, Wonder Man, Wonder Woman, Mister Fantastic, Fantasma, Thor/Wicker Man, Elektra | used as fictional / spoofs for now | TODO: also to add e.g.: Scarlet Witch - bezaubernd">
+		<news guid="cujo-news-superkerl-01" type="0" thread_guid="cujo-news-superkerl" creator="8827" created_by="Cujo" comment="Superheros referenced: Superman, Supergirl, Wonder Man, Wonder Woman, Mister Fantastic, Fantasma, Thor/Wicker Man, Elektra | used as fictional / spoofs for now | TODO: also to add e.g.: Scarlet Witch - bezaubernd; Electro; Fantomas maybe more popular than Mr Fantastic">
 			<title>
 				<de>${superwoman} verliebt sich in ${superguy_acc}</de>
 				<en>${superwoman} falls in love with ${superguy_acc}</en>
@@ -29,7 +29,7 @@
 						Wunderkerl;Electrica;Wunderkerl; ihn wundervoll;sie elektrisierend;war wunderelektrisierend;Sie küsst elektrisierend;war er wundervoll;ein Wundervater;Wonderelectricboy;nicht gerade elektrisierend;einen Wundervater;eine elektrisierende Mutter|
 						Mister Fantasmo;Superweib;Mister Fantasmo; ihn fantastisch;sie super;war superfantastisch;Sie küsst super;war er fantastisch;ein fantastischer Vater;Superfantasticboy;nicht gerade super;einen fantastischen Vater;eine Supermutter|
 						Mister Fantasmo;Wonderweib;Mister Fantasmo; ihn fantastisch;sie wundervoll;war wunderfantastisch;Sie küsst wundervoll;war er fantastisch;ein fantastischer Vater;Wonderfantasticboy;nicht gerade wundervoll;einen fantastischen Vater;eine Wundermutter|
-						Mister Fantasmo;Fantasta;Mister Fantasmo; ihn fantastisch;sie auch;war fantastisch;Sie küsst fantastisch;war er fantastisch;ein fantastischer Vater;Wonderfantasticboy;nicht gerade fantastisch;einen fantastischen Vater;eine fantastische Mutter|
+						Mister Fantasmo;Fantasta;Mister Fantasmo; ihn fantastisch;sie auch;war fantastisch;Sie küsst fantastisch;war er fantastisch;ein fantastischer Vater;Fantasticboy;nicht gerade fantastisch;einen fantastischen Vater;eine fantastische Mutter|
 						Mister Fantasmo;Electrica;Mister Fantasmo; ihn fantastisch;sie elektrisierend;war fantastisch elektrisierend;Sie küsst elektrisierend;war er fantastisch;ein fantastischer Vater;Electricfantasticboy;nicht gerade elektrisierend;einen fantastischen Vater;eine elektrisierende Mutter|
 						Thor;Superweib;Thor;, er ist der Hammer;findet sie super;war der Superhammer;Sie küsst super;war er der Hammer;ein Hammervater;Superhammerboy;nicht gerade super;einen Hammervater;eine Supermutter|
 						Thor;Wonderweib;Thor;, er ist der Hammer;findet sie wundervoll;war der Wunderhammer;Sie küsst wundervoll;war er der Hammer;ein Hammervater;Hammerwonderkid;nicht gerade wundervoll;einen Hammervater;eine Wundermutter|
@@ -46,7 +46,7 @@
 						Wonderguy;Electrica;Wonderguy; he's wonderful;finds her electrifying;was wonderfully electrifying;Her kisses are electrifying;he was wonderful;a wonderful father;Wonderelectricboy;not really an electrifying;a wonderful father;an electrifying mother|
 						Mister Fantasmo;Superwoman;Mister Fantasmo; he's fantastic;thinks she's super;was superfantastic;Her kisses are superb;he was fantastic;a fantastic father;Superfantasticboy;not really a super;a fantastic father;a Super mother|
 						Mister Fantasmo;Wonderlady;Mister Fantasmo; he's fantastic;thinks she's wonderful;was wonderfantastic;Her kisses are wonderful;he was fantastic;a fantastic father;Wonderfantasticboy;not really a wonderful;a fantastic father;a Wondermother|
-						Mister Fantasmo;Fantasta;Mister Fantasmo; he's fantastic;feels the same;was fantastic;Her kisses are fantastic;he was fantastic;a fantastic father;Wonderfantasticboy;not really a fantastic;a fantastic father;a fantastic mother|
+						Mister Fantasmo;Fantasta;Mister Fantasmo; he's fantastic;feels the same;was fantastic;Her kisses are fantastic;he was fantastic;a fantastic father;Fantasticboy;not really a fantastic;a fantastic father;a fantastic mother|
 						Mister Fantasmo;Electrica;Mister Fantasmo; he's fantastic;finds her electrifying;was fantastically electrifying;Her kisses are electrifying;he was fantastic;a fantastic father;Electricfantasticboy;not really an electrifying;a fantastic father;an electrifying mother|
 						Wicker Man;Superwoman;Wicker Man; he's totally wicked;thinks she's super;was super wicked;Her kisses are superb;he was totally wicked;a totally wicked father;Superwickerboy;not really a super;a totally wicked father;a Super mother|
 						Wicker Man;Wonderlady;Wicker Man; he's totally wicked;thinks she's wonderful;was wonderfully wicked;Her kisses are wonderful;he was totally wicked;a totally wicked father;Wonderwickerboy;not really a wonderful;a totally wicked father;a Wondermother|
@@ -421,20 +421,20 @@
 	</allnews>
 	<allads>
 		<!-- Toyota - Nichts ist unmöglich -->
-		<ad guid="cujo-werbung-yotota" comment="https://en.wikipedia.org/wiki/Toyota">
+		<ad guid="a9ab2cbc-3c26-4507-abeb-95b96f62809a" wikidata_id="Q53268">
 			<title>
 				<all>${brand_toyota}</all>
 			</title>
 			<description>
 				<de>Alles ist möglich - ${brand_toyota} - Helfen Sie mit: ${brand_toyota} stiftet für jedes verkaufte Auto 10 Cent an eine Initiative zur Rettung des Regenwalds.</de>
-				<en>Anything is possible - ${brand_toyota} - Help: ${brand_toyota} donates 10 cents for every car sold to an initiative to save the rainforest.</en>
-				<pl>Wszystko jest możliwe - ${brand_toyota} - Pomoc: ${brand_toyota} przekazuje 10 centów za każdy sprzedany samochód na rzecz inicjatywy ratowania lasów deszczowych.</pl>
+				<en>Anything is possible - ${brand_toyota} - Help us: ${brand_toyota} donates 10 cents for every car sold to an initiative to save the rainforest.</en>
+				<pl>Wszystko jest możliwe - ${brand_toyota} - Pomóż: ${brand_toyota} przekazuje 10 centów za każdy sprzedany samochód na rzecz inicjatywy ratowania lasów deszczowych.</pl>
 			</description>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="5" duration="3" profit="350" penalty="475" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Duplo -->
-		<ad guid="cujo-werbung-pludo" comment="https://de.wikipedia.org/wiki/Duplo_(Schokoriegel)">
+		<ad guid="e6f49c05-0624-47ef-b683-030b8d2c1fe1" wikidata_id="Q1266557">
 			<title>
 				<all>${brand_duplo}</all>
 			</title>
@@ -447,7 +447,7 @@
 			<data quality="12" repetitions="4" duration="3" profit="1000" penalty="1550" fix_infomercial_profit="1"/>
 		</ad>
 		<!-- Schwartau -->
-		<ad guid="cujo-werbung-schwalltau" comment="https://de.wikipedia.org/wiki/Schwartauer_Werke">
+		<ad guid="36b46e9e-9784-4dee-af78-b0205c123d5d" wikidata_id="Q2253243">
 			<title>
 				<all>${brand_schwartau}</all>
 			</title>

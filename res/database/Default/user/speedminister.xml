@@ -3,43 +3,43 @@
 	<version value="3" comment="SpeedMinisters Programme" />
 	<insignificantpeople>
 		<!-- Deutschland -->
-		<person guid="SpeedMinister-person-id001" first_name="Freiherr" last_name="von Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id002" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
-		<person guid="SpeedMinister-person-id003" first_name="Nepomuk" last_name="Frantzen" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
-		<person guid="SpeedMinister-person-id004" first_name="Adalbert" last_name="Neubarth" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
-		<person guid="SpeedMinister-person-id005" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" castable="0" />
-		<person guid="SpeedMinister-person-id006" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id008" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-		<person guid="SpeedMinister-person-id010" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id011" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-		<person guid="SpeedMinister-person-id012" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id014" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id015" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id016" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id017" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
-		<person guid="SpeedMinister-person-id018" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id019" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
-		<person guid="SpeedMinister-person-id027" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
+		<person guid="da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde" first_name="Freiherr" last_name="von Zaster" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="082a759d-8d7a-4430-98f2-7eec7ec3583c" first_name="Willhelm" last_name="Poller" nick_name="Willi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
+		<person guid="0e0bcd86-2715-46b2-bd0e-242aefbee3c4" first_name="Nepomuk" last_name="Frantzen" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="72" />
+		<person guid="e11600c4-24a8-4c7e-9d6c-27bbd3466486" first_name="Adalbert" last_name="Neubarth" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
+		<person guid="ace0081f-b9b7-4928-ae72-ebbfb3b9cf87" first_name="Dr. med. vet. Bilko" last_name="Bausenstein" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" castable="0" />
+		<person guid="fd6d0d77-fb5b-47b5-b98f-fb40ff9a9a60" first_name="Hans Georg" last_name="Matuschnack" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="4fd6dcb4-18b1-4a0f-b978-8b0a7b36575e" first_name="Andrea" last_name="Becker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person guid="7aaa51a2-757c-4f64-8934-aa2effdaafcb" first_name="Manfred" last_name="Daube" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="3ed009e9-6fe5-4376-b497-cd4b2e7a3542" first_name="Prometha" last_name="Kreisel" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person guid="1e99c561-7a07-46b9-bc91-0b134e85308d" first_name="Friedrich" last_name="Mühlherr" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="1f88a2e4-bd6d-4422-af94-a5df4621eba3" first_name="Daniel" last_name="Salamander" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="f6eaed44-0cdd-4f36-81b9-2dfeed7e91f7" first_name="Dr. phil. Ronald" last_name="Blender" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="3ddf8a77-2c2d-4b85-8fc2-04ffe28840e5" first_name="Franz" last_name="Schmierlapp" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="a2d8f953-e677-4dd9-8b6f-155ff24a31bc" first_name="Franziska" last_name="Wolkental" creator="8605" created_by="speedminister" fictional="1" gender="2" country="D" />
+		<person guid="b5ebe787-feb8-4b8e-968d-49dd08acfbc3" first_name="Berthold" last_name="Stauffer" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="1a8dc95e-a7ed-499d-8280-3d338ed1aa46" first_name="Prof. Dr. Raimund" last_name="Holzner" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" />
+		<person guid="a81e040f-86f9-4686-b152-88e79e1511c3" first_name="Dirk" last_name="Kipling" creator="8605" created_by="speedminister" fictional="1" gender="1" country="D" job="69" />
 
 		<!-- Österreich -->
-		<person guid="SpeedMinister-person-id007" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
-		<person guid="SpeedMinister-person-id009" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
+		<person guid="4aebcf2b-c2a7-4a1a-832e-89788955b74b" first_name="Frauke" last_name="Hasenhüttl" creator="8605" created_by="speedminister" fictional="1" gender="2" country="A" />
+		<person guid="e7bf0f58-88c5-47ed-8088-5c6fbf66137d" first_name="Karl" last_name="Schneck" creator="8605" created_by="speedminister" fictional="1" gender="1" country="A" />
 		<!-- Schweden -->
-		<person guid="SpeedMinister-person-id013" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" fictional="1" gender="1" country="S" />
+		<person guid="ff92e4e9-be4c-4317-b51e-0c772e7a4918" first_name="Philipp" last_name="Ingarson" creator="8605" created_by="speedminister" fictional="1" gender="1" country="S" />
 		<!-- Afghanistan -->
-		<person guid="SpeedMinister-person-id020" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="AFG" job="200" /> <!-- Rolle: Tierpfleger -->
-		<person guid="SpeedMinister-person-id021" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" fictional="1" gender="" country="AFG" /> <!-- Rolle: Direktor Zoo Kabul -->
-		<person guid="SpeedMinister-person-id022" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" fictional="1" gender="2" country="AFG" />
+		<person guid="72c411f6-8fa3-45a7-be5c-5e48b81c7c86" first_name="Mustafa" last_name="Ghani Azimi" creator="8605" created_by="speedminister" fictional="1" gender="1" country="AFG" job="200" /> <!-- Rolle: Tierpfleger -->
+		<person guid="ea8bcbeb-370a-4f08-a5c5-72739ac8df25" first_name="Hedayat" last_name="Yousef Tajik" creator="8605" created_by="speedminister" fictional="1" gender="" country="AFG" /> <!-- Rolle: Direktor Zoo Kabul -->
+		<person guid="d7325518-5540-41cb-baa6-fb2dcf049ae5" first_name="Shugofa" last_name="Taslima Yousafza" creator="8605" created_by="speedminister" fictional="1" gender="2" country="AFG" />
 		<!-- China -->
-		<person guid="SpeedMinister-person-id023" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
-		<person guid="SpeedMinister-person-id024" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
+		<person guid="e579d767-db4e-4798-9afd-2492e046f026" first_name="Angúo" last_name="Liao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
+		<person guid="a7103706-1f4a-4ae0-8f8b-0610ec5453ef" first_name="Shuchun" last_name="Yao" creator="8605" created_by="speedminister" fictional="1" gender="" country="CHN" />
 		<!-- USA -->
-		<person guid="SpeedMinister-person-id025" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
-		<person guid="SpeedMinister-person-id026" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
+		<person guid="4b25857a-dae4-4676-b28e-b4b97d8f9b85" first_name="C. J." last_name="Harper" creator="8605" created_by="speedminister" fictional="1" gender="" country="USA" />
+		<person guid="49c98d29-28f6-44cd-8f62-e9a66c02939a" first_name="Franny" last_name="Tucker" creator="8605" created_by="speedminister" fictional="1" gender="2" country="USA" />
 	</insignificantpeople>
 
 	<celebritypeople>
-		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" fictional="1" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
+		<person guid="ed7ffacd-68ba-48e0-8e15-877bdf5886fd" fictional="1" creator="8605" created_by="SpeedMinister">
 			<first_name>Karlheinz</first_name>
 			<last_name>Dorfmichel</last_name>
 			<details job="66" gender="1" birthday="-45" deathday="" country="D" />
@@ -48,8 +48,7 @@
 	</celebritypeople>
 
 	<allprogrammes>
-		<!-- ***** Serie: Die Stars der volksirrtümlichen Hitparade (fiktiv) ***** -->
-		<programme guid="SpeedMinister-Serie-volksirrtuemliche-01" product="3" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+		<programme guid="4c4fa907-4539-4114-9dae-e3f61ce08143" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Die Stars der volksirrtümlichen Hitparade</de>
 				<en>The Stars of the Tradidiotional Hit Parade</en>
@@ -61,133 +60,209 @@
 				<pl>Pełnometrażowy program muzyczny z dobrym humorem, dużą ilością muzyki i krótkimi wywiadami z gwiazdami. Oto coś, co pomoże ci zapomnieć o codziennej harówce.</pl>
 			</description>
 			<staff>
-				<member index="0" function="5">SpeedMinister-person-id001</member>
-				<member index="1" function="8">SpeedMinister-person-id002</member>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity teenagers="0.25" pensioners="2" />
-			<data country="D/A/CH" distribution="2" maingenre="102" flags="1" blocks="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
 			<releaseTime year_relative="4" day="2" hour="20" />
 			<ratings critics="55" speed="60" />
 			<modifiers>
 				<modifier name="topicality::notLive" value="0.5" />
 			</modifiers>
-			<!-- Episodes -->
-			<children>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-01" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Die Debreciner Kuhfladen Schnüffler</de>
-						<en>The Debrecen Cowpat Snoopers</en>
-						<pl>The Debrecen Cowpat Snoopers</pl>
-					</title>
-					<description>
-						<de>Neben einer ungarischen Variante des Schuhplattlers heizt die Truppe mit immer schneller werdenden Rhythmen ein. Da kommt Stimmung in die Bude.</de>
-						<en>In addition to a Hungarian version of the Schuhplattler, the troop gets the audience cooking with ever faster rhythms. This brings life into the place.</en>
-						<pl>Dodatek węgierskiej wersji Schuhplattlera, grupa pobudza publiczność coraz szybszymi rytmami. To ożywia to miejsce.</pl>
-					</description>
-					<ratings critics="59" speed="70" />
-				</programme>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-02" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>Tuba Tinnitus</title>
-					<description>
-						<de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
-						<en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>
-						<pl>To budzi nawet najbardziej śpiącą osobę w ostatnim rzędzie. Cztery tuby, trąbka, zestaw perkusyjny i wokalista dają z siebie wszystko. Z miernym skutkiem.</pl>
-					</description>
-					<ratings critics="40" speed="50" />
-					<releaseTime year_relative="4" day="5" hour="20" />
-				</programme>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-03" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Karl Maische</de>
-						<en>Karl Mash</en>
-						<pl>Karl Zacier</pl>
-					</title>
-					<description>
-						<de>Mit fettigem Schmäh und pomadigen Sprüchen verhilft er der Show zu gezwungenen Lachern. Die Balladen, die er in den Saal schmettert, sind der positive Höhepunkt.</de>
-						<en>With greasy banter and pompous catchphrases he gets the show some forced laughs. The ballads he belts into the hall are the positive highlight.</en>
-						<pl>Z tłustymi przekomarzaniami i pompatycznymi żartami, pomaga uzyskać trochę wymuszonego śmiechu. Ballady, które śpiewa publiczności, są pozytywną atrakcją.</pl>
-					</description>
-					<ratings critics="49" speed="51" />
-					<releaseTime year_relative="4" day="8" hour="20" />
-				</programme>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-04" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Frantius F. Freudius</de>
-						<en>Johnny J. Joydious</en>
-						<pl>Franek F. Radosny</pl>
-					</title>
-					<description>
-						<de>Schon mit seinem Künstlernamen treibt er den Zuschauern die Fremdschäm-Schamesröte ins Gesicht. Ein absoluter Topstar der volksirrtümlichen Hitparade.</de>
-						<en>Alone with his cringeworthy stagename he makes the audience feel embarrassed until their faces turn red. An absolute top star of the tradidiotionally hit parade.</en>
-						<pl>Sam ze swoim godnym potępienia pseudonimem sprawia, że publiczność czuje się zażenowana, aż ich twarze stają się czerwone. Absolutnie najlepsza gwiazda tradycyjnej parady przebojów.</pl>
-					</description>
-					<ratings critics="62" speed="65" />
-					<releaseTime year_relative="4" day="11" hour="20" />
-				</programme>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-05" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Bingo Bumerang</de>
-						<en>Bingo Boomerang</en>
-						<pl>Bingo Bumerang</pl>
-					</title>
-					<description>
-						<de>Kombination von modernen Instrumenten und volksirrtümlichen Rhythmen. Läßt die Zuschauer die Sendung leicht ertragen und ebenso leicht vergessen.</de>
-						<en>Combination of modern instruments and tradidiotional rhythms. Makes it easy for viewers to bear the show and just as easy to forget it.</en>
-						<pl>Połączenie nowoczesnych instrumentów i ludowych rytmów. Sprawia, że program jest łatwy do zniesienia i równie łatwy do zapomnienia.</pl>
-					</description>
-					<ratings critics="42" speed="70" />
-					<releaseTime year_relative="5" day="2" hour="20" />
-				</programme>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-06" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Fette Fritten</de>
-						<en>Fat Fries</en>
-						<pl>Tłusta Frytka</pl>
-					</title>
-					<description>
-						<de>„Es steht ein Bär auf'm Flur, es steht ein Bär auf'm Flur, ja, ja, ein Bär auf'm Flur und knurrt mich an.“ Wen es da nicht mitreißt, der ist schon tot!</de>
-						<en>"There's a bear in the hall, there's a bear in the hall, yeah, yeah, a bear in the hall growling at me." Whoever isn't carried away is already dead!</en>
-						<pl>"Na korytarzu jest niedźwiedź, na korytarzu jest niedźwiedź, tak, tak, na korytarzu jest niedźwiedź, który na mnie warczy". Jeśli cię nie poniosło, to już nie żyjesz!</pl>
-					</description>
-					<ratings critics="60" speed="68" />
-					<releaseTime year_relative="5" day="5" hour="20" />
-				</programme>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-07" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Edmondia und die Schwanenhalsdreher</de>
-						<en>Edmondia and the Gooseneck Twisters</en>
-						<pl>Edmondia i Gęsia Szyja</pl>
-					</title>
-					<description>
-						<de>Neben gesanglichem Talent kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere „Talente“ bei Edmondia entdecken.</de>
-						<en>Besides vocal talent, the neutral spectator, as well as the fan, can discover much more obvious "talents" in Edmondia.</en>
-						<pl>Oprócz talentu wokalnego, neutralny widz, a także fan, może odkryć znacznie bardziej oczywiste "talenty" w Edmondii.</pl>
-					</description>
-					<ratings critics="45" speed="60" />
-					<releaseTime year_relative="5" day="8" hour="20" />
-				</programme>
-				<programme guid="SpeedMinister-Serie-volksirrtuemliche-01-ep-08" product="3" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
-					<title>
-						<de>Finale</de>
-						<en>Final</en>
-						<pl>Finał</pl>
-					</title>
-					<description>
-						<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen ${.self:"cast":2:"fullname"} ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
-						<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist ${.self:"cast":2:"fullname"}. The unrivaled culmination in the popular tradidiotional calendar.</en>
-						<pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą Jasiem Głupkowatym. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl> <!-- using clear-text version of staff member here because of grammar -->
-					</description>
-					<staff>
-						<member index="2" function="64">SpeedMinister-celebritypeople-KarlHeinzDorfmichel</member>
-					</staff>
-					<ratings critics="55" speed="60" />
-					<releaseTime year_relative="5" day="11" hour="20" />
-				</programme>
-			</children>
+		</programme>
+		<programme guid="761e4675-1156-4ce0-b02c-5b8622df8c29" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Mit: Die Debreciner Kuhfladen Schnüffler</de>
+				<en>The Stars of the Tradidiotional Hit Parade - Featuring: The Debrecen Cowpat Snoopers</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: The Debrecen Cowpat Snoopers</pl>
+			</title>
+			<description>
+				<de>Neben einer ungarischen Variante des Schuhplattlers heizt die Truppe mit immer schneller werdenden Rhythmen ein. Da kommt Stimmung in die Bude.</de>
+				<en>In addition to a Hungarian version of the Schuhplattler, the troop gets the audience cooking with ever faster rhythms. This brings life into the place.</en>
+				<pl>Dodatek węgierskiej wersji Schuhplattlera, grupa pobudza publiczność coraz szybszymi rytmami. To ożywia to miejsce.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="5" day="2" hour="20" />
+			<ratings critics="59" speed="70" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+		</programme>
+		<programme guid="ca86ae70-304d-41b0-a594-df9d2b47d13c" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>Tuba Tinnitus</title>
+			<description>
+				<de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
+				<en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>
+				<pl>To budzi nawet najbardziej śpiącą osobę w ostatnim rzędzie. Cztery tuby, trąbka, zestaw perkusyjny i wokalista dają z siebie wszystko. Z miernym skutkiem.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="6" day="2" hour="20" />
+			<ratings critics="40" speed="50" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+		</programme>
+		<programme guid="614e63fc-4bd9-4731-9b71-4317faee63ea" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Mit: Karl Maische</de>
+				<en>The Stars of the Tradidiotional Hit Parade - Featuring: Karl Mash</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: Karl Zacier</pl>
+			</title>
+			<description>
+				<de>Mit fettigem Schmäh und pomadigen Sprüchen verhilft er der Show zu gezwungenen Lachern. Die Balladen, die er in den Saal schmettert, sind der positive Höhepunkt.</de>
+				<en>With greasy banter and pompous catchphrases he gets the show some forced laughs. The ballads he belts into the hall are the positive highlight.</en>
+				<pl>Z tłustymi przekomarzaniami i pompatycznymi żartami, pomaga uzyskać trochę wymuszonego śmiechu. Ballady, które śpiewa publiczności, są pozytywną atrakcją.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="7" day="2" hour="20" />
+			<ratings critics="49" speed="51" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+		</programme>
+		<programme guid="0f083231-5d9a-4027-8a93-937b2e630e98" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Mit: Frantius F. Freudius</de>
+				<en>The Stars of the Tradidiotional Hit Parade - Featuring: Johnny J. Joydious</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: Franek F. Radosny</pl>
+			</title>
+			<description>
+				<de>Schon mit seinem Künstlernamen treibt er den Zuschauern die Fremdschäm-Schamesröte ins Gesicht. Ein absoluter Topstar der volksirrtümlichen Hitparade.</de>
+				<en>Alone with his cringeworthy stagename he makes the audience feel embarrassed until their faces turn red. An absolute top star of the tradidiotionally hit parade.</en>
+				<pl>Sam ze swoim godnym potępienia pseudonimem sprawia, że publiczność czuje się zażenowana, aż ich twarze stają się czerwone. Absolutnie najlepsza gwiazda tradycyjnej parady przebojów.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="8" day="2" hour="20" />
+			<ratings critics="62" speed="65" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+		</programme>
+		<programme guid="110f4264-7f90-4d20-bbd6-c73f730113a5" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Mit: Bingo Bumerang</de>
+				<en>The Stars of the Tradidiotional Hit Parade - Featuring: Bingo Boomerang</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: Bingo Bumerang</pl>
+			</title>
+			<description>
+				<de>Kombination von modernen Instrumenten und volksirrtümlichen Rhythmen. Lässt die Zuschauer die Sendung leicht ertragen und ebenso leicht vergessen.</de>
+				<en>Combination of modern instruments and tradidiotional rhythms. Makes it easy for viewers to bear the show and just as easy to forget it.</en>
+				<pl>Połączenie nowoczesnych instrumentów i ludowych rytmów. Sprawia, że program jest łatwy do zniesienia i równie łatwy do zapomnienia.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="9" day="2" hour="20" />
+			<ratings critics="42" speed="70" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+		</programme>
+		<programme guid="44f81433-c4f5-4c4f-8be9-18d8121e0407" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Mit: Fette Fritten</de>
+				<en>The Stars of the Tradidiotional Hit Parade - Featuring: Fat Fries</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: Tłusta Frytka</pl>
+			</title>
+			<description>
+				<de>„Es steht ein Bär auf'm Flur, es steht ein Bär auf'm Flur, ja, ja, ein Bär auf'm Flur und knurrt mich an.“ Wen es da nicht mitreißt, der ist schon tot!</de>
+				<en>"There's a bear in the hall, there's a bear in the hall, yeah, yeah, a bear in the hall growling at me." Whoever isn't carried away is already dead!</en>
+				<pl>"Na korytarzu jest niedźwiedź, na korytarzu jest niedźwiedź, tak, tak, na korytarzu jest niedźwiedź, który na mnie warczy". Jeśli cię nie poniosło, to już nie żyjesz!</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="10" day="2" hour="20" />
+			<ratings critics="60" speed="68" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+		</programme>
+		<programme guid="6c5e65e4-9abc-4723-9048-40410b39037e" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Mit: Edmondia und die Schwanenhalsdreher</de>
+				<en>The Stars of the Tradidiotional Hit Parade - Featuring: Edmondia and the Gooseneck Twisters</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: Edmondia i Gęsia Szyja</pl>
+			</title>
+			<description>
+				<de>Neben gesanglichem Talent kann der neutrale Zuschauer, sowie der Fan, viel augenfälligere „Talente“ bei Edmondia entdecken.</de>
+				<en>Besides vocal talent, the neutral spectator, as well as the fan, can discover much more obvious "talents" in Edmondia.</en>
+				<pl>Oprócz talentu wokalnego, neutralny widz, a także fan, może odkryć znacznie bardziej oczywiste "talenty" w Edmondii.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="11" day="2" hour="20" />
+			<ratings critics="45" speed="60" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
+		</programme>
+		<programme guid="cad30ec7-8467-4370-a61f-0c4b00a5c567" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Das große Finale</de>
+				<en>The Stars of the Tradidiotional Hit Parade - The Grand Finale</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: Wielki finał</pl>
+			</title>
+			<description>
+				<de>Fette Fritten, Frantius F. Freudius, Edmondia und die Schwanenhalsdreher geben neben dem Humoristen ${.self:"cast":2:"fullname"} ihr Stelldichein. Der unerreichte Höhepunkt im volksirrtümlichen Kalender.</de>
+				<en>Fat Fries, Johnny J. Joydious, Edmondia and the Gooseneck Twisters assemble next to humorist ${.self:"cast":2:"fullname"}. The unrivaled culmination in the popular tradidiotional calendar.</en>
+				<pl>Tłusta Frytka, Franek F. Radosny, Edmondia i Gęsia Szyja występują wraz z humorystą Jasiem Głupkowatym. Bezkonkurencyjna atrakcja w kalendarzu humoru ludowego.</pl> <!-- using clear-text version of staff member here because of grammar -->
+			</description>
+			<staff>
+				<member index="0" function="5">da0ac9f2-dd5d-4cfe-811a-c6a31f81cdde</member>
+				<member index="1" function="8">082a759d-8d7a-4430-98f2-7eec7ec3583c</member>
+				<member index="2" function="64">ed7ffacd-68ba-48e0-8e15-877bdf5886fd</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="0.25" pensioners="2" />
+			<data country="D/A/CH" distribution="2" maingenre="102" subgenre="100,202" flags="1" blocks="2" />
+			<releaseTime year_relative="12" day="2" hour="20" />
+			<ratings critics="55" speed="60" />
+			<modifiers>
+				<modifier name="topicality::notLive" value="0.5" />
+			</modifiers>
 		</programme>
 		<!-- ***** Talkrunde, Serie: Andauernd Käse (fiktiv) ***** -->
-		<programme guid="SpeedMinister-Serie-andauernd-käse-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+		<programme guid="51bf0f45-374c-4df5-a46e-986c346a2c7e" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Andauernd Käse</de>
 				<en>Cheese All the Time</en>
@@ -199,8 +274,8 @@
 				<pl>Relaksująca runda rozmów z moderatorem i 2-3 ekspertami, degustacja różnych marek, z mądrymi powiedzeniami i dużą ilością czerwonego wina.</pl>
 			</description>
 			<staff>
-				<member index="0" function="5">SpeedMinister-person-id004</member>
-				<member index="1" function="8">SpeedMinister-person-id003</member>
+				<member index="0" function="5">e11600c4-24a8-4c7e-9d6c-27bbd3466486</member>
+				<member index="1" function="8">0e0bcd86-2715-46b2-bd0e-242aefbee3c4</member>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" />
@@ -212,7 +287,7 @@
 			</modifiers>
 			<!-- Episodes -->
 			<children>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="da2be3b2-3930-4359-965a-2c6fa685cca7" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Analogkäse</de>
 						<en>Cheese Analogue</en>
@@ -225,12 +300,12 @@
 					</description>
 					<staff>
 						<member index="2" function="64">Per_custom_Freddy_461</member>
-						<member index="3" function="64">SpeedMinister-person-id005</member>
-						<member index="4" function="64">SpeedMinister-person-id006</member>
+						<member index="3" function="64">ace0081f-b9b7-4928-ae72-ebbfb3b9cf87</member>
+						<member index="4" function="64">fd6d0d77-fb5b-47b5-b98f-fb40ff9a9a60</member>
 					</staff>
 					<ratings critics="59" speed="30" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="29e6b4e8-da39-4d3e-a947-e414037b6100" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Frischkäse</de>
 						<en>Cream Cheese</en>
@@ -242,12 +317,12 @@
 						<pl>Bardzo miękka, smarowna konsystencja, gotowa do spożycia bez dojrzewania. Eksperci wyrażają swoje opinie na temat chleba.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id007</member>
-						<member index="3" function="64">SpeedMinister-person-id010</member>
+						<member index="2" function="64">4aebcf2b-c2a7-4a1a-832e-89788955b74b</member>
+						<member index="3" function="64">7aaa51a2-757c-4f64-8934-aa2effdaafcb</member>
 					</staff>
 					<ratings critics="50" speed="25" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="a23ce710-1252-4940-a0c2-bf98d418749a" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Weichkäse</de>
 						<en>Soft Cheese</en>
@@ -259,12 +334,12 @@
 						<pl>Miękkie ciasto, które dojrzewa od zewnątrz do wewnątrz, owinięte delikatną pleśnią lub czerwoną mazistą korą, czas dojrzewania od 2 do 3 tygodni. Rozmowa gości - których myśli nie dojrzewały tak długo.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id005</member>
-						<member index="3" function="64">SpeedMinister-person-id009</member>
+						<member index="2" function="64">ace0081f-b9b7-4928-ae72-ebbfb3b9cf87</member>
+						<member index="3" function="64">e7bf0f58-88c5-47ed-8088-5c6fbf66137d</member>
 					</staff>
 					<ratings critics="49" speed="31" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="dbe12cd2-1832-4d9e-9a74-7ac619dd802d" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Halbfester Schnittkäse</de>
 						<en>Semi-Solid Cheese</en>
@@ -276,12 +351,12 @@
 						<pl>Miękkie i gładkie ciasto o konsystencji pomiędzy serem półtwardym a miękkim, czas dojrzewania co najmniej 3 tygodnie. Goście zazwyczaj mają zbyt pełne policzki, by cokolwiek powiedzieć.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id011</member>
-						<member index="3" function="64">SpeedMinister-person-id012</member>
+						<member index="2" function="64">3ed009e9-6fe5-4376-b497-cd4b2e7a3542</member>
+						<member index="3" function="64">1e99c561-7a07-46b9-bc91-0b134e85308d</member>
 					</staff>
 					<ratings critics="45" speed="35" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="4cbc614b-d662-4be5-9ea0-1fb391211ddd" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Schnittkäse</de>
 						<en>Semi-Hard Cheese</en>
@@ -293,14 +368,14 @@
 						<pl>Gładkie ciasto, czas dojrzewania co najmniej 5 tygodni. Odpychająca uczta pod koniec, z dużą ilością sera i jeszcze większą ilością wina.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id007</member>
-						<member index="3" function="64">SpeedMinister-person-id013</member>
-						<member index="4" function="64">SpeedMinister-person-id014</member>
-						<member index="5" function="64">SpeedMinister-person-id015</member>
+						<member index="2" function="64">4aebcf2b-c2a7-4a1a-832e-89788955b74b</member>
+						<member index="3" function="64">ff92e4e9-be4c-4317-b51e-0c772e7a4918</member>
+						<member index="4" function="64">1f88a2e4-bd6d-4422-af94-a5df4621eba3</member>
+						<member index="5" function="64">f6eaed44-0cdd-4f36-81b9-2dfeed7e91f7</member>
 					</staff>
 					<ratings critics="42" speed="33" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="1b883c99-abb8-45bf-a16e-6777e50d0ad6" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Hartkäse</de>
 						<en>Hard Cheese</en>
@@ -312,12 +387,12 @@
 						<pl>Bardzo twarde lub ziarniste ciasto, czas dojrzewania od co najmniej trzech miesięcy do kilku lat. Porównanie z materiałami z branży budowlanej. Na pizzy ser przewyższa zaprawę!</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id005</member>
-						<member index="3" function="64">SpeedMinister-person-id008</member>
+						<member index="2" function="64">ace0081f-b9b7-4928-ae72-ebbfb3b9cf87</member>
+						<member index="3" function="64">4fd6dcb4-18b1-4a0f-b978-8b0a7b36575e</member>
 					</staff>
 					<ratings critics="60" speed="30" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="44e314e6-695e-4808-b382-99df85dd706d" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Sauermilchkäse</de>
 						<en>Acid Curd Cheese</en>
@@ -329,12 +404,12 @@
 						<pl>Gładkie ciasto dojrzewające od zewnątrz do wewnątrz, żółtawo-przezroczyste, pokryte białą pleśnią lub czerwoną mazią, w zależności od odmiany. Czas dojrzewania od kilku dni do kilku tygodni. Wypożyczane są równie tłuste.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id016</member>
-						<member index="3" function="64">SpeedMinister-person-id005</member>
+						<member index="2" function="64">3ddf8a77-2c2d-4b85-8fc2-04ffe28840e5</member>
+						<member index="3" function="64">ace0081f-b9b7-4928-ae72-ebbfb3b9cf87</member>
 					</staff>
 					<ratings critics="45" speed="25" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="7572a1df-3bbf-4b13-8334-98011262b902" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Schmelzkäse</de>
 						<en>Processed Cheese</en>
@@ -346,12 +421,12 @@
 						<pl>Przetworzony ser jest wytwarzany z dojrzałego sera półtwardego lub śmietankowego, który jest dalej przetwarzany i jednocześnie konserwowany. Jedzenie tego sera nie powoduje takiego pogorszenia stanu zdrowia, jak słuchanie ekspertów.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id017</member>
-						<member index="3" function="64">SpeedMinister-person-id018</member>
+						<member index="2" function="64">a2d8f953-e677-4dd9-8b6f-155ff24a31bc</member>
+						<member index="3" function="64">b5ebe787-feb8-4b8e-968d-49dd08acfbc3</member>
 					</staff>
 					<ratings critics="48" speed="30" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-09" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="2b16a4cf-8526-4a55-93e5-11b88f3f1808" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Schafs- und Ziegenkäse</de>
 						<en>Sheep and Goat Cheese</en>
@@ -363,12 +438,12 @@
 						<pl>Ser owczy cieszy się dobrą reputacją wśród smakoszy i jest niezwykle popularny od kilku lat. Ser kozi od kilku lat jest sekretną gwiazdą wśród serów. Eksperci mają jednak inne zdanie.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id013</member>
-						<member index="3" function="64">SpeedMinister-person-id015</member>
+						<member index="2" function="64">ff92e4e9-be4c-4317-b51e-0c772e7a4918</member>
+						<member index="3" function="64">f6eaed44-0cdd-4f36-81b9-2dfeed7e91f7</member>
 					</staff>
 					<ratings critics="45" speed="29" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-10" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="bd7109a0-4f43-4a09-8cac-4686c7abbf33" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Ofen- und Grillkäse</de>
 						<en>Baked and Grilled Cheese</en>
@@ -380,13 +455,13 @@
 						<pl>Ser z piekarnika jest zaskakująco prosty i różnorodny. Ostrożnie, jest gorący! Czas oczekiwania przed pieczeniem jest wykorzystywany przez ekspertów do gry wstępnej. Alkohol płynie strumieniami...</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id008</member>
-						<member index="3" function="64">SpeedMinister-person-id019</member>
-						<member index="4" function="64">SpeedMinister-person-id017</member>
+						<member index="2" function="64">4fd6dcb4-18b1-4a0f-b978-8b0a7b36575e</member>
+						<member index="3" function="64">1a8dc95e-a7ed-499d-8280-3d338ed1aa46</member>
+						<member index="4" function="64">a2d8f953-e677-4dd9-8b6f-155ff24a31bc</member>
 					</staff>
 					<ratings critics="55" speed="35" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-andauernd-käse-01-ep-11" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="981ef966-efd9-46e9-8d44-9122c7e874c4" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Andauernd Käse</de>
 						<en>Cheese All the Time</en>
@@ -398,19 +473,19 @@
 						<pl>W tym finałowym odcinku wszystkie sery są podrasowane. Sześciu ekspertów przepycha się wzdłuż zimnego bufetu i nie zna umiaru. Zakończenie serii: To wszystko ser!</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id008</member>
-						<member index="3" function="64">SpeedMinister-person-id016</member>
-						<member index="4" function="64">SpeedMinister-person-id006</member>
-						<member index="5" function="64">SpeedMinister-person-id007</member>
-						<member index="6" function="64">SpeedMinister-person-id010</member>
-						<member index="7" function="64">SpeedMinister-person-id012</member>
+						<member index="2" function="64">4fd6dcb4-18b1-4a0f-b978-8b0a7b36575e</member>
+						<member index="3" function="64">3ddf8a77-2c2d-4b85-8fc2-04ffe28840e5</member>
+						<member index="4" function="64">fd6d0d77-fb5b-47b5-b98f-fb40ff9a9a60</member>
+						<member index="5" function="64">4aebcf2b-c2a7-4a1a-832e-89788955b74b</member>
+						<member index="6" function="64">7aaa51a2-757c-4f64-8934-aa2effdaafcb</member>
+						<member index="7" function="64">1e99c561-7a07-46b9-bc91-0b134e85308d</member>
 					</staff>
 					<ratings critics="50" speed="26" />
 				</programme>
 			</children>
 		</programme>
 		<!-- ***** Serie: Soldaten, Paviane und Co. (fiktiv) ***** -->
-		<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
+		<programme guid="1847fcd1-f95e-486c-8661-0cfd8bff5bc9" product="4" licence_type="3" fictional="1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Soldaten, Paviane und Co.</de>
 				<en>Soldiers, Baboons, and Co.</en>
@@ -422,18 +497,18 @@
 				<pl>Życie w afgańskim zoo w stolicy Kabulu zainscenizowane z kamerą.</pl>
 			</description>
 			<staff>
-				<member index="0" function="5">SpeedMinister-person-id027</member>
-				<member index="1" function="136">SpeedMinister-person-id020</member>
+				<member index="0" function="5">a81e040f-86f9-4686-b152-88e79e1511c3</member>
+				<member index="1" function="136">72c411f6-8fa3-45a7-be5c-5e48b81c7c86</member>
 			</staff>
 			<!-- Link: http://de.wikipedia.org/wiki/Kabuler_Zoo -->
 			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" teenagers_female="2" />
-			<data country="D/AFG" distribution="0" maingenre="300" subgenre="6" blocks="1" />
+			<data country="D/AFG" distribution="2" maingenre="300" subgenre="6" blocks="1" />
 			<releaseTime year_relative="3" year_relative_min="2011" year_relative_max="2020" /> <!-- year 2010 mentioned in episode 1 -->
 			<ratings critics="29" speed="35" />
 			<!-- Episodes -->
 			<children>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-01" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="0ec552c6-3d95-4ae4-94a5-158eebfcb2f7" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Rundgang im Zoo Kabul</de>
 						<en>Tour of Kabul Zoo</en>
@@ -445,11 +520,11 @@
 						<pl>Dwie trzecie wybiegów zostało zniszczonych przez wojny. Dyrektor rozpoczął 2010 rok z 2 papugami, które trzymał w ukryciu w domu.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id021</member>
+						<member index="2" function="64">ea8bcbeb-370a-4f08-a5c5-72739ac8df25</member>
 					</staff>
 					<ratings critics="29" speed="30" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-02" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="0076a405-3eee-453c-8795-5b29b94eaac8" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Das neue Bärenhaus</de>
 						<en>The New Bear House</en>
@@ -461,12 +536,12 @@
 						<pl>Ceremonia inauguracji i aklimatyzacja dwóch niedźwiedzi czarnych. Opiekunowie zwierząt i niedźwiedzie budują relację opartą na zaufaniu. Następnie w mieście dochodzi do eksplozji.</pl>
 					</description>
 					<staff>
-						<member index="0" function="64">SpeedMinister-person-id021</member>
-						<member index="1" function="64">SpeedMinister-person-id022</member>
+						<member index="0" function="64">ea8bcbeb-370a-4f08-a5c5-72739ac8df25</member>
+						<member index="1" function="64">d7325518-5540-41cb-baa6-fb2dcf049ae5</member>
 					</staff>
 					<ratings critics="36" speed="35" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-03" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="7e77e627-56b5-4e14-8809-152ff583ff2e" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Die chinesische Spende</de>
 						<en>The Chinese Donation</en>
@@ -478,13 +553,13 @@
 						<pl>Ambasador Chin przekazuje zoo w Kabulu posąg lwa w kolorze brązu, który zostaje odsłonięty na centralnym placu zoo. Ponadto 2 lwy podarowane przez Chiny zostały wypuszczone na wybieg zewnętrzny.</pl>
 					</description>
 					<staff>
-						<member index="0" function="64">SpeedMinister-person-id021</member>
-						<member index="1" function="64">SpeedMinister-person-id023</member>
-						<member index="2" function="64">SpeedMinister-person-id024</member>
+						<member index="0" function="64">ea8bcbeb-370a-4f08-a5c5-72739ac8df25</member>
+						<member index="1" function="64">e579d767-db4e-4798-9afd-2492e046f026</member>
+						<member index="2" function="64">a7103706-1f4a-4ae0-8f8b-0610ec5453ef</member>
 					</staff>
 					<ratings critics="29" speed="24" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-04" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="2c648f51-1259-4f2b-a832-95e00c8650b4" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Auf Streife mit den GIs</de>
 						<en>On Patrol With the GIs</en>
@@ -496,11 +571,11 @@
 						<pl>Trasa prowadzi przez zoo w Kabulu. "Zawsze jesteśmy szczęśliwi, gdy docieramy do zoo. Wszyscy kochają zoo. Jest ono uznawane za teren rekreacyjny przez wszystkich książąt plemiennych. Być może jest to najbezpieczniejsze miejsce w Kabulu".</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id025</member>
+						<member index="2" function="64">4b25857a-dae4-4676-b28e-b4b97d8f9b85</member>
 					</staff>
 					<ratings critics="25" speed="32" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-05" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="b51e5fa9-5cde-4c81-a4aa-0fcc4ac7ba0b" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Medikamente aus Amerika</de>
 						<en>Medicines from America</en>
@@ -512,11 +587,11 @@
 						<pl>Obserwujemy dostawę leków, która jest obsługiwana w USA i jak paczka podróżuje przez różne węzły logistyczne. W tle codzienne sceny z zoo w Kabulu.</pl>
 					</description>
 					<staff>
-						<member index="2" function="64">SpeedMinister-person-id026</member>
+						<member index="2" function="64">49c98d29-28f6-44cd-8f62-e9a66c02939a</member>
 					</staff>
 					<ratings critics="28" speed="34" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-06" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="5013c51f-a117-4633-9741-e9560b4fb9eb" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Da waren's nur noch 13</de>
 						<en>...And Then There Were 13</en>
@@ -528,12 +603,12 @@
 						<pl>Wśród guenonów występują skurcze. Dzielą zewnętrzny wybieg z lwami i surykatkami. Surykatki znikają w swoich jaskiniach, guenony wspinają się na drzewa. Najwyraźniej nie są one wystarczająco wysokie.</pl>
 					</description>
 					<staff>
-						<member index="0" function="64">SpeedMinister-person-id021</member>
-						<member index="1" function="64">SpeedMinister-person-id022</member>
+						<member index="0" function="64">ea8bcbeb-370a-4f08-a5c5-72739ac8df25</member>
+						<member index="1" function="64">d7325518-5540-41cb-baa6-fb2dcf049ae5</member>
 					</staff>
 					<ratings critics="40" speed="40" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-07" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="7304dbe5-421e-4c2a-9870-408bd764c977" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Das improvisierte Affengehege</de>
 						<en>The Improvised Monkey Enclosure</en>
@@ -545,12 +620,12 @@
 						<pl>Po kryzysie na wybiegu dla lwów, w błyskawicznym tempie remontowany jest zewnętrzny wybieg dla guenonów. Z różnych placów budowy w mieście znikają worki z cementem. Standardowy kontener o długości 20 stóp musi być używany jako dom dla zwierząt.</pl>
 					</description>
 					<staff>
-						<member index="0" function="64">SpeedMinister-person-id021</member>
-						<member index="1" function="64">SpeedMinister-person-id022</member>
+						<member index="0" function="64">ea8bcbeb-370a-4f08-a5c5-72739ac8df25</member>
+						<member index="1" function="64">d7325518-5540-41cb-baa6-fb2dcf049ae5</member>
 					</staff>
 					<ratings critics="40" speed="40" />
 				</programme>
-				<programme guid="SpeedMinister-Serie-SoldatenPavianeCo-01-ep-08" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
+				<programme guid="e5140edc-2548-4b0c-bab0-270614d00fea" product="4" licence_type="2" fictional="1" creator="8605" created_by="SpeedMinister">
 					<title>
 						<de>Ein Dank ans Personal</de>
 						<en>A Thank You to the Staff</en>
@@ -562,8 +637,8 @@
 						<pl>Z okazji otwarcia wybiegu dla lampartów śnieżnych, dyrekcja zoo organizuje małe przyjęcie dla pracowników. Wejście do afgańskiego zabytku świętowane jest tańcem i śpiewem.</pl>
 					</description>
 					<staff>
-						<member index="0" function="64">SpeedMinister-person-id021</member>
-						<member index="1" function="64">SpeedMinister-person-id022</member>
+						<member index="0" function="64">ea8bcbeb-370a-4f08-a5c5-72739ac8df25</member>
+						<member index="1" function="64">d7325518-5540-41cb-baa6-fb2dcf049ae5</member>
 					</staff>
 					<ratings critics="30" speed="30" />
 				</programme>
@@ -674,7 +749,7 @@
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="514" infomercial_profit="60" fix_infomercial_profit="1" />
 			<availability year_range_from="2008" />
 		</ad>
-		<ad guid="speedminister-ad-Anwaltskanzlei-Firnhick" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
+		<ad guid="5e59b272-7dce-4d9f-8585-155614214e6e" creator="8605" created_by="SpeedMinister" comment="originally 'Hirnfick' but maybe more subtle is also funnier">
 			<title>
 				<de>Anwaltskanzlei Firnhick</de>
 				<en>Law Firm Fainbruck</en>
@@ -688,7 +763,7 @@
 			<conditions min_audience="2.08" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="speedminister-ad-Wimmerl" creator="8605" created_by="SpeedMinister">
+		<ad guid="bb7799a9-ce98-4822-bd6f-c132c220ab3b" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Büroeinrichtung Wimmerl</de>
 				<en>Office Equipment Pimpler</en>

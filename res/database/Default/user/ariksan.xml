@@ -156,7 +156,7 @@
 						<pl>${protein} i ${spice} ..??!</pl>
 					</title>
 					<description>
-						<de>Die Köche kombinieren ${protein} mit ${spice} und versuchen ${meal} zu kreiren. Ein unterhaltsames Geschmacksdesaster!</de>
+						<de>Die Köche kombinieren ${protein} mit ${spice} und versuchen, ${meal} zu kreieren. Ein unterhaltsames Geschmacksdesaster!</de>
 						<en>The chefs combine ${protein} with ${spice} to create a${flavor} ${meal}. An entertaining flavor fiasco!</en>
 						<pl>Szefowie kuchni łączą produkty w zwariowane danie. Tym razem ${protein} i ${spice}, aby stworzyć ${flavor} ${meal}. Zabawna smakowa katastrofa!</pl>
 					</description>
@@ -172,12 +172,12 @@
 							<pl>kminek|kolendra|kurkuma|cynamon|papryka|kardamon|imbir|gałka muszkatołowa|goździki|musztarda|koper włoski|kozieradka|kminek|anyż gwiazdkowy|czarny pieprz|biały pieprz|pieprz cayenne|chili w proszku|płatki czerwonej papryki|szafran|proszek curry|garam masala|przyprawa pięciu smaków|oregano|tymianek|rozmaryn|bazylia|pietruszka|koperek|mięta|szałwia|liście laurowe|ziele angielskie|przyprawa dyniowa|wanilia|czosnek w proszku|proszek cebulowy|sól selerowa|nasiona kolendry|nasiona maku|papryka w proszku|pieprz cayenne|galareta|musztarda|ketchup</pl>
 						</spice>
 						<flavor>
-							<de>süß|sauer|scharf|salzig|bitter|herb|herzhaft|reichhaltig|kräuterhaft|rauchig|würzig|minzig|zitronig|erdig|fruchtig|blumig|pfeffrig|cremig|buttrig|nussig|knusprig|saftig|mild|kräftig|erfrischend|markant|aromatisch|exotisch|leicht süß|feurig|samten|saftig|leicht sauer|pikant|ausgewogen|sanft|charakteristisch|harmonisch</de>
+							<de>süß|sauer|scharf|salzig|bitter|herb|herzhaft|reichhaltig|kräuterreich|rauchig|würzig|minzig|zitronig|erdig|fruchtig|blumig|pfeffrig|cremig|buttrig|nussig|knusprig|saftig|mild|kräftig|erfrischend|markant|aromatisch|exotisch|leicht süß|feurig|samten|saftig|leicht sauer|pikant|ausgewogen|sanft|charakteristisch|harmonisch</de>
 							<en> sweet| sour| spicy| salty| bitter| tangy| savory| rich|n herbaceous| smoky| zesty| minty| citrusy|n earthy| fruity| floral| peppery| creamy| buttery| nutty| crispy| juicy| mellow| tangy| refreshing| bold|n aromatic|n exotic| slightly sweet| fiery| velvety| succulent| slightly sour| pungent| balanced| mild| distinctive| harmonious</en>
 							<pl>słodki| kwaśny| pikantny| słony| gorzki| cierpki| wytrawny| bogaty| ziołowy| wędzony| pikantny| miętowy| cytrusowy| ziemisty| owocowy| kwiatowy| pieprzny| kremowy| maślany| orzechowy| chrupiący| soczysty| łagodny| cierpki| orzeźwiający| odważny| aromatyczny| egzotyczny| lekko słodki| ognisty| aksamitny| soczysty| lekko kwaśny| ostry| zrównoważony| łagodny| charakterystyczny| harmonijny</pl>
 						</flavor>
 						<meal>
-							<de>ein ${flavor}es Frühstück|einen ${flavor}en Brunch|ein ${flavor}es Mittagessen|ein ${flavor}es Abendessen|${flavor}e Snacks|${flavor}e Vorspeisen|ein ${flavor}es Hauptgericht|${flavor}e Beilagen|eine ${flavor}e Suppe|einen ${flavor}en Salat|ein ${flavor}es Sandwich|einen ${flavor}en Burger|ein ${flavor}es Nudelgericht|eine ${flavor}e Pizza|ein ${flavor}es Pfannengericht|ein ${flavor}es Barbecue|ein ${flavor}es Picknick|ein ${flavor}es Takeout-Gericht|ein ${flavor}es Fast Food Gericht|${flavor}en Street Food|${flavor}e Tapas|ein ${flavor}es Sushi-Gericht|ein ${flavor}es Curry-Gericht|einen ${flavor}en Braten|einen ${flavor}en Auflauf|${flavor}e Wraps|ein ${flavor}es Fingerfood-Gericht|ein ${flavor}es Steak-Gericht|ein ${flavor}es Dessert</de>
+							<de>ein ${flavor}es Frühstück|einen ${flavor}en Brunch|ein ${flavor}es Mittagessen|ein ${flavor}es Abendessen|${flavor}e Snacks|${flavor}e Vorspeisen|ein ${flavor}es Hauptgericht|${flavor}e Beilagen|eine ${flavor}e Suppe|einen ${flavor}en Salat|ein ${flavor}es Sandwich|einen ${flavor}en Burger|ein ${flavor}es Nudelgericht|eine ${flavor}e Pizza|ein ${flavor}es Pfannengericht|ein ${flavor}es Barbecue|ein ${flavor}es Picknick|ein ${flavor}es Takeout-Gericht|ein ${flavor}es Fast Food Gericht|${flavor}es Street Food|${flavor}e Tapas|ein ${flavor}es Sushi-Gericht|ein ${flavor}es Curry-Gericht|einen ${flavor}en Braten|einen ${flavor}en Auflauf|${flavor}e Wraps|ein ${flavor}es Fingerfood-Gericht|ein ${flavor}es Steak-Gericht|ein ${flavor}es Dessert</de>
 							<en>breakfast|brunch|lunch|dinner|snack|appetizer|main course|side dish|soup|salad|sandwich|burger|pasta dish|pizza|stir-fry|barbecue|picnic|takeout dish|fast food dish|street food dish|tapas dish|sushi dish|curry|roast|casserole|wrap|finger food|steak dish|dessert</en>
 							<pl>smak|brunch|lunch|smak na kolację|smak na przekąskę|smak na przystawkę|smak na danie główne|smak na danie poboczne|smak na zupę|smak na sałatka|smak na kanapkę|smak na burgera|smak na danie z makaronem|smak na pizzę|smak na patelni|smak na grilla|smak na piknik|zapach i smak na danie na wynos|smak na danie fast food|wyrób na danie street food|smak na danie tapas|smak na danie sushi|smak na curry|smak na pieczeń|smak na zapiekankę|charakter potrawy|charakter potrawy na przekąski|charakter potrawy|charakter deseru</pl>
 						</meal>
@@ -1038,7 +1038,7 @@
 					<description>
 						<de>Ein Gerücht macht die Runde: Irgendwer soll in jemanden verknallt sein. Natürlich sagen alle: „Nicht mein Problem!“ Doch in Wahrheit brodelt es in allen - und ${.self:"role":5:"firstname"} will unbedingt herausfinden, um wen es geht. ${.self:"role":4:"firstname"} hat genug davon und kündigt eine „Wahrheitsstunde“ an.</de>
 						<en>A rumor is doing the rounds: Someone is said to have a crush on someone. Of course, everyone says: "Not my problem!" But the truth is that everyone is seething - and ${.self:"role":5:"firstname"} is determined to find out who it is. ${.self:"role":4:"firstname"} has had enough and announces a "truth session".</en>
-						<pl>Krąży plotka: Podobno ktoś jest w kimś zakochany. Oczywiście wszyscy mówią: „To nie mój problem!”. Ale prawda jest taka, że ​​wszyscy są wściekli – a ${.self:"role":5:"firstname"} jest zdeterminowany, aby dowiedzieć się, kto to jest. ${.self:"role":4:"firstname"} ma już dość i ogłasza „sesję prawdy”.</pl>
+						<pl>Krąży plotka: Podobno ktoś jest w kimś zakochany. Oczywiście wszyscy mówią: „To nie mój problem!”. Ale prawda jest taka, że ​​wszyscy są wściekli - a ${.self:"role":5:"firstname"} jest zdeterminowany, aby dowiedzieć się, kto to jest. ${.self:"role":4:"firstname"} ma już dość i ogłasza „sesję prawdy”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="17" product="2" licence_type="2" guid="script-ariksan-bever-18">
@@ -1086,7 +1086,7 @@
 					<description>
 						<de>${.self:"role":3:"firstname"} und ${.self:"role":2:"firstname"} machen eine „Nur-Jungs“-Aktion - klar, dass ${.self:"role":5:"firstname"} und ${.self:"role":6:"firstname"} das nicht lange auf sich sitzen lassen. Während die Jungs versuchen, „Männlichkeit“ zu definieren (ein langer Prozess), hinterfragt ${.self:"role":7:"firstname"}, warum sie ihre Freunde eigentlich so oft belehren muss.</de>
 						<en>${.self:"role":3:"firstname"} and ${.self:"role":2:"firstname"} go on a "boys only" campaign - it's clear that ${.self:"role":5:"firstname"} and ${.self:"role":6:"firstname"} won't stand for this for long. While the boys try to define "masculinity" (a long process), ${.self:"role":7:"firstname"} questions why she has to lecture her friends so often.</en>
-						<pl>${.self:"role":3:"firstname"} i ${.self:"role":2:"firstname"} rozpoczynają kampanię „tylko dla chłopców” – jasne jest, że ${.self:"role":5:"firstname"} i ${.self:"role":6:"firstname"} nie będą tego tolerować przez długi czas. Podczas gdy chłopcy próbują zdefiniować „męskość” (długi proces), ${.self:"role":7:"firstname"} zastanawia się, dlaczego tak często musi pouczać swoich przyjaciół.</pl>
+						<pl>${.self:"role":3:"firstname"} i ${.self:"role":2:"firstname"} rozpoczynają kampanię „tylko dla chłopców” - jasne jest, że ${.self:"role":5:"firstname"} i ${.self:"role":6:"firstname"} nie będą tego tolerować przez długi czas. Podczas gdy chłopcy próbują zdefiniować „męskość” (długi proces), ${.self:"role":7:"firstname"} zastanawia się, dlaczego tak często musi pouczać swoich przyjaciół.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="21" product="2" licence_type="2" guid="script-ariksan-bever-22">
@@ -1170,7 +1170,7 @@
 					<description>
 						<de>Ein College-Streich läuft etwas... schief. ${.self:"role":5:"firstname"} und ${.self:"role":3:"firstname"} wollten etwas „lustiges, aber unvergessliches“ machen. Die Cops rückten schnell an. ${.self:"role":7:"firstname"} hält eine moralische Ansprache, die keiner hören will, und ${.self:"role":2:"firstname"} erklärt, dass „unsere Rebellion nie spektakulär sein wird“ - zu ${.self:"role":6:"firstname"}s Verdruss.</de>
 						<en>A college prank goes a little... awry. ${.self:"role":5:"firstname"} and ${.self:"role":3:"firstname"} wanted to do something "fun but memorable". The cops quickly arrive. ${.self:"role":7:"firstname"} gives a moral speech that no one wants to hear, and ${.self:"role":2:"firstname"} declares that "our rebellion will never be spectacular" - much to ${.self:"role":6:"firstname"}'s annoyance.</en>
-						<pl>Kawał na studiach trochę... nie wychodzi. ${.self:"role":5:"firstname"} i ${.self:"role":3:"firstname"} chcieli zrobić coś „zabawnego, ale niezapomnianego”. Szybko przybywa policja. ${.self:"role":7:"firstname"} wygłasza przemowę moralną, której nikt nie chce słuchać, a ${.self:"role":2:"firstname"} oświadcza, że ​​„nasz bunt nigdy nie będzie spektakularny” – ku wielkiemu niezadowoleniu ${.self:"role":6:"firstname"}.</pl>
+						<pl>Kawał na studiach trochę... nie wychodzi. ${.self:"role":5:"firstname"} i ${.self:"role":3:"firstname"} chcieli zrobić coś „zabawnego, ale niezapomnianego”. Szybko przybywa policja. ${.self:"role":7:"firstname"} wygłasza przemowę moralną, której nikt nie chce słuchać, a ${.self:"role":2:"firstname"} oświadcza, że ​​„nasz bunt nigdy nie będzie spektakularny” - ku wielkiemu niezadowoleniu ${.self:"role":6:"firstname"}.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="28" product="2" licence_type="2" guid="script-ariksan-bever-29">
@@ -1182,7 +1182,7 @@
 					<description>
 						<de>Ein Missverständnis zwischen ${.self:"role":6:"firstname"} und ${.self:"role":5:"firstname"} wird zur Freundschaftskrise. ${.self:"role":3:"firstname"} und ${.self:"role":4:"firstname"} spielen Vermittler - aber nur, wenn die Mädels sich halbwegs an zivilisierte Regeln halten. ${.self:"role":7:"firstname"} findet alles kindisch und fragt sich, ob eine echte Krise vielleicht produktiver wäre.</de>
 						<en>A misunderstanding between ${.self:"role":6:"firstname"} and ${.self:"role":5:"firstname"} turns into a friendship crisis. ${.self:"role":3:"firstname"} and ${.self:"role":4:"firstname"} play mediator - but only if the girls stick to halfway civilized rules. ${.self:"role":7:"firstname"} finds it all childish and wonders whether a real crisis might be more productive.</en>
-						<pl>Nieporozumienie między ${.self:"role":6:"firstname"} i ${.self:"role":5:"firstname"} przeradza się w kryzys przyjaźni. ${.self:"role":3:"firstname"} i ${.self:"role":4:"firstname"} odgrywają rolę mediatorów — ale tylko wtedy, gdy dziewczyny trzymają się w miarę cywilizowanych zasad. ${.self:"role":7:"firstname"} uważa to wszystko za dziecinne i zastanawia się, czy prawdziwy kryzys nie byłby bardziej produktywny.</pl>
+						<pl>Nieporozumienie między ${.self:"role":6:"firstname"} i ${.self:"role":5:"firstname"} przeradza się w kryzys przyjaźni. ${.self:"role":3:"firstname"} i ${.self:"role":4:"firstname"} odgrywają rolę mediatorów  -  ale tylko wtedy, gdy dziewczyny trzymają się w miarę cywilizowanych zasad. ${.self:"role":7:"firstname"} uważa to wszystko za dziecinne i zastanawia się, czy prawdziwy kryzys nie byłby bardziej produktywny.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="29" product="2" licence_type="2" guid="script-ariksan-bever-30">
@@ -1194,7 +1194,7 @@
 					<description>
 						<de>Der Sommer nähert sich, und plötzlich wird klar, dass ihre Zeit als Clique nicht ewig sein wird. ${.self:"role":6:"firstname"} und ${.self:"role":2:"firstname"} diskutieren Zukunftspläne (Dramatik inklusive), während ${.self:"role":7:"firstname"} fragt, was wirklich bleibt. ${.self:"role":5:"firstname"} verspricht, dass „die besten Abenteuer noch kommen“ - vielleicht schon heute.</de>
 						<en>Summer is approaching and it suddenly becomes clear that their time as a clique won't last forever. ${.self:"role":6:"firstname"} and ${.self:"role":2:"firstname"} discuss plans for the future (drama included), while ${.self:"role":7:"firstname"} asks what really remains. ${.self:"role":5:"firstname"} promises that "the best adventures are yet to come" - maybe as soon as today.</en>
-						<pl>Zbliża się lato i nagle staje się jasne, że ich czas jako kliki nie będzie trwał wiecznie. ${.self:"role":6:"firstname"} i ${.self:"role":2:"firstname"} rozmawiają o planach na przyszłość (w tym o dramacie), podczas gdy ${.self:"role":7:"firstname"} zastanawia się, co tak naprawdę im pozostało. ${.self:"role":5:"firstname"} obiecuje, że „najlepsze przygody dopiero nadejdą” — może już dziś.</pl>
+						<pl>Zbliża się lato i nagle staje się jasne, że ich czas jako kliki nie będzie trwał wiecznie. ${.self:"role":6:"firstname"} i ${.self:"role":2:"firstname"} rozmawiają o planach na przyszłość (w tym o dramacie), podczas gdy ${.self:"role":7:"firstname"} zastanawia się, co tak naprawdę im pozostało. ${.self:"role":5:"firstname"} obiecuje, że „najlepsze przygody dopiero nadejdą”  -  może już dziś.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="30" product="2" licence_type="2" guid="script-ariksan-bever-31">
@@ -1218,7 +1218,7 @@
 					<description>
 						<de>Die Clique wird von ${.self:"role":6:"firstname"}s Familie zum schicken Dinner eingeladen, und alle versuchen, „erwachsen“ zu wirken - mit durchwachsenem Erfolg. ${.self:"role":3:"firstname"} entdeckt, dass Besteck mehr als eine Funktion hat, und ${.self:"role":5:"firstname"} macht eine Entdeckung: High Society ist nicht halb so dramatisch wie das College.</de>
 						<en>The clique is invited to a fancy dinner by ${.self:"role":6:"firstname"}'s family, and everyone tries to look "grown-up" - with mixed success. ${.self:"role":3:"firstname"} discovers that cutlery has more than one function, and ${.self:"role":5:"firstname"} makes a discovery: high society isn't half as dramatic as college.</en>
-						<pl>Grupa zostaje zaproszona na elegancką kolację przez rodzinę ${.self:"role":6:"firstname"}a, a wszyscy starają się wyglądać „dorośle” — z różnym skutkiem. ${.self:"role":3:"firstname"} odkrywa, że ​​sztućce mają więcej niż jedną funkcję, a ${.self:"role":5:"firstname"} dokonuje odkrycia: wyższe sfery nie są nawet w połowie tak dramatyczne jak studia.</pl>
+						<pl>Grupa zostaje zaproszona na elegancką kolację przez rodzinę ${.self:"role":6:"firstname"}a, a wszyscy starają się wyglądać „dorośle”  -  z różnym skutkiem. ${.self:"role":3:"firstname"} odkrywa, że ​​sztućce mają więcej niż jedną funkcję, a ${.self:"role":5:"firstname"} dokonuje odkrycia: wyższe sfery nie są nawet w połowie tak dramatyczne jak studia.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="32" product="2" licence_type="2" guid="script-ariksan-bever-33">
@@ -1302,7 +1302,7 @@
 					<description>
 						<de>Beim alljährlichen Quizwettbewerb treten sie als Team an - doch was als harmloser Spaß beginnt, wird zur absoluten Katastrophe. ${.self:"role":6:"firstname"} will jede Frage beantworten, ${.self:"role":7:"firstname"} korrigiert sie konsequent, und ${.self:"role":4:"firstname"} bleibt gelassen - bis ${.self:"role":3:"firstname"} die Kontrolle über das Mikrofon übernimmt.</de>
 						<en>They compete as a team in the annual quiz competition - but what starts out as harmless fun turns into an absolute disaster. ${.self:"role":6:"firstname"} wants to answer every question, ${.self:"role":7:"firstname"} consistently corrects her, and ${.self:"role":4:"firstname"} remains calm - until ${.self:"role":3:"firstname"} takes control of the microphone.</en>
-						<pl>Rywalizują jako drużyna w corocznym konkursie quizowym, ale to, co zaczyna się jako niewinna zabawa, przeradza się w całkowitą katastrofę. ${.self:"role":6:"firstname"} chce odpowiedzieć na każde pytanie, ${.self:"role":7:"firstname"} konsekwentnie ją poprawia, a ${.self:"role":4:"firstname"} zachowuje spokój — aż do momentu, gdy ${.self:"role":3:"firstname"} przejmuje kontrolę nad mikrofonem.</pl>
+						<pl>Rywalizują jako drużyna w corocznym konkursie quizowym, ale to, co zaczyna się jako niewinna zabawa, przeradza się w całkowitą katastrofę. ${.self:"role":6:"firstname"} chce odpowiedzieć na każde pytanie, ${.self:"role":7:"firstname"} konsekwentnie ją poprawia, a ${.self:"role":4:"firstname"} zachowuje spokój  -  aż do momentu, gdy ${.self:"role":3:"firstname"} przejmuje kontrolę nad mikrofonem.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="39" product="2" licence_type="2" guid="script-ariksan-bever-40">

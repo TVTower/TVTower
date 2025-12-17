@@ -45,7 +45,7 @@
 			</title>
 			<description>
 				<de>Ein ganz normaler Teenagerausflug endet in einem Besäufnis und einem Wald voller Untoter.</de>
-				<en>A normal teenage trip ends in drunkenness and a forest full of the undead.</en>
+				<en>A normal teenage trip ends in a drinking binge and a forest full of the undead.</en>
 				<pl>Zwykła wycieczka nastolatków kończy się pijaństwem i lasem pełnym nieumarłych.</pl>
 			</description>
 			<variables>
@@ -192,6 +192,19 @@ Każdy środek się nada.</pl>
 			</description>
 
 			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+
+				<dax>
+					<de>${.gt:currentyear:1988:"${brand_dax}":"BZ-Index"}</de> <!-- https://de.wikipedia.org/wiki/B%C3%B6rsen-Zeitung -->
+					<en>${.gt:currentyear:1988:"${brand_dax}":"BZ Index"}</en>
+					<pl>${.gt:currentyear:1988:"${brand_dax}":"Indeks BZ"}</pl>
+				</dax>
+				<stockindexdax>
+					<de>${.gt:currentyear:1988:"Aktienindex ${brand_dax}":"BZ-Index"}</de>
+					<en>${.gt:currentyear:1988:"stock index ${brand_dax}":"BZ Index"}</en>
+					<pl>${.gt:currentyear:1988:"indeks giełdowy ${brand_dax}":"Indeks BZ"}</pl>
+				</stockindexdax>
+
 				<content>
 					<all>${STOCKEXCHANGE} ${RESOURCES}|${STOCKEXCHANGE} ${CURRENCY}</all>
 				</content>
@@ -209,9 +222,9 @@ Każdy środek się nada.</pl>
 
 
 				<stockexchange1>
-					<de>Der Aktienindex ${brand_dax} startet heute bei lebhaftem Handel im Plus. ${STOCKEXCHANGE1A}|Die Zeichen des ${brand_dax} stehen Dank regem Handel auf Plus. ${STOCKEXCHANGE1A}</de>
-					<en>Today, the stock index ${brand_dax} starts with brisk trading in the plus. ${STOCKEXCHANGE1A}|The signs of the ${brand_dax} are on the plus side thanks to brisk trading. ${STOCKEXCHANGE1A}</en>
-					<pl>Dziś indeks giełdowy ${brand_dax} rozpoczyna notowania na plusie. ${STOCKEXCHANGE1A}|Znaki indeksu ${brand_dax} są na plusie dzięki dynamicznemu handlowi. ${STOCKEXCHANGE1A}</pl>
+					<de>Der ${stockindexdax} startet heute bei lebhaftem Handel im Plus. ${STOCKEXCHANGE1A}|Die Zeichen des ${dax} stehen Dank regem Handel auf Plus. ${STOCKEXCHANGE1A}</de>
+					<en>Today, the ${stockindexdax} starts with brisk trading in the plus. ${STOCKEXCHANGE1A}|The signs of the ${dax} are on the plus side thanks to brisk trading. ${STOCKEXCHANGE1A}</en>
+					<pl>Dziś ${stockindexdax} rozpoczyna notowania na plusie. ${STOCKEXCHANGE1A}|Znaki indeksu ${dax} są na plusie dzięki dynamicznemu handlowi. ${STOCKEXCHANGE1A}</pl>
 				</stockexchange1>
 				<stockexchange1A>
 					<de>Gute Zahlen bei den ${VALUES}n sorgen für Phantasie und steigende Kurse.|Gute Analysteneinschätzungen bei den ${VALUES}n beflügeln die Kurse.|Gute Konjunkturdaten befeuern die guten Aussichten.|Gute Arbeitsmarktdaten sorgen für Optimismus.|Übernahmephantasien in der ${SECTION} erfreuen die Bullen.</de>
@@ -220,9 +233,9 @@ Każdy środek się nada.</pl>
 				</stockexchange1A>
 
 				<stockexchange2>
-					<de>Der Aktienindex ${brand_dax} startet heute sehr verhalten. ${STOCKEXCHANGE2A}|Der Aktienindex ${brand_dax} zeigt sich unauffällig. ${STOCKEXCHANGE2A}</de>
-					<en>Today, the stock index ${brand_dax} starts very cautiously. ${STOCKEXCHANGE2A}|The stock index ${brand_dax} displays an unremarkable performance. ${STOCKEXCHANGE2A}</en>
-					<pl>Dzisiejszy dzień indeks giełdowy ${brand_dax} rozpoczyna bardzo ostrożnie. ${STOCKEXCHANGE2A}|Indeks giełdowy ${brand_dax} zachowuje się nietypowo. ${STOCKEXCHANGE2A}</pl>
+					<de>Der ${stockindexdax} startet heute sehr verhalten. ${STOCKEXCHANGE2A}|Der ${stockindexdax} zeigt sich unauffällig. ${STOCKEXCHANGE2A}</de>
+					<en>Today, the ${stockindexdax} starts very cautiously. ${STOCKEXCHANGE2A}|The ${stockindexdax} displays an unremarkable performance. ${STOCKEXCHANGE2A}</en>
+					<pl>Dzisiejszy dzień ${stockindexdax} rozpoczyna bardzo ostrożnie. ${STOCKEXCHANGE2A}|${.ucfirst:stockindexdax} zachowuje się nietypowo. ${STOCKEXCHANGE2A}</pl>
 				</stockexchange2>
 				<stockexchange2A>
 					<de>Zahlen der ${SECTION} liegen im Rahmen der Erwartungen.|${VALUES} behaupten sich.|Der Feiertag in Übersee sorgt für einen zögerlichen Handel.|Die Konjunkturdaten sorgen für ruhigen Handel.|Übernahmepläne in der ${SECTION} sorgen für Verstimmung.</de>
@@ -231,9 +244,9 @@ Każdy środek się nada.</pl>
 				</stockexchange2A>
 
 				<stockexchange3>
-					<de>Der Aktienindex ${brand_dax} startet heute leicht negativ. ${STOCKEXCHANGE3A}|${brand_dax} im leichten Fall. ${STOCKEXCHANGE3A}</de>
-					<en>The stock index ${brand_dax} starts slightly negative today. ${STOCKEXCHANGE3A}|${brand_dax} in a slight fall. ${STOCKEXCHANGE3A}</en>
-					<pl>Indeks giełdowy ${brand_dax} zaczyna dziś lekko na minusie. ${STOCKEXCHANGE3A}|${brand_dax} na lekkim minusie. ${STOCKEXCHANGE3A}</pl>
+					<de>Der ${stockindexdax} startet heute leicht negativ. ${STOCKEXCHANGE3A}|${dax} im leichten Fall. ${STOCKEXCHANGE3A}</de>
+					<en>The ${stockindexdax} starts slightly negative today. ${STOCKEXCHANGE3A}|${dax} in a slight fall. ${STOCKEXCHANGE3A}</en>
+					<pl>${.ucfirst:stockindexdax} zaczyna dziś lekko na minusie. ${STOCKEXCHANGE3A}|${dax} na lekkim minusie. ${STOCKEXCHANGE3A}</pl>
 				</stockexchange3>
 				<stockexchange3A>
 					<de>Grund sind nur zufriedenstellende Zahlen der ${VALUES}.|Negative Bewertungen der ${SECTION} sorgen für sinkende Kurse.|Die Konjunkturdaten verstimmen die Börsianer.|Im großen Rahmen fallende Kurse. Nur ${VALUES} können heute überzeugen.|Für Ernüchterung sorgen Analysteneinschätzungen der ${SECTION}.</de>
@@ -275,7 +288,10 @@ Każdy środek się nada.</pl>
 					<pl>Analitycy nie wierzą w ożywienie dla złota.|Wzrost produkcji ropy naftowej obniża ceny.|Oczekuje się, że zbiory kakao będą szczególnie słabe w tym roku.|Zużycie metali ziem rzadkich zaskakująco spada.</pl>
 				</resources3A>
 				
-				<germancurrency>${.if:${.worldtime:"year"}&gt;=2002:"Euro":"${.if:${.worldtime:"year"}&lt;=1990:"DM":"Mark"}"}</germancurrency>
+				<germancurrency>
+					<all>${.if:currentyear&gt;=2002:"EUR":"DEM"}</all>
+					<de>${.if:currentyear&gt;=2002:"Euro":"${.if:currentyear&lt;=1990:"DM":"Mark"}"}</de>
+				</germancurrency>
 
 				<currency1>
 					<de>Dollar verliert, ${CURRENCY1A}|Dollar schwächelt, ${CURRENCY1A}</de>

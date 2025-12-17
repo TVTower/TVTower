@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvtdb>
-	<version value="3" comment="jorgaeffs Nachrichten; TODO: This file has a lot of persons that should be referenced once possible" />
+	<version value="3" comment="jorgaeffs Nachrichten" />
 	<allnews>
 
 		<!-- real historical news items moved to database_news.xml -->
@@ -182,7 +182,7 @@
 			<data genre="1" price="0.3" quality="30" fictional="1" />
 		</news>
 
-		<news guid="news-jorgaeff-drops-01" type="0" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff" comment="TODO: Maybe shouldn't be the 'real' Johnny Depp but a separate parody">
+		<news guid="news-jorgaeff-drops-01" type="0" thread_guid="news-jorgaeff-drops" creator="8936" created_by="jorgaeff" comment="TODO: Maybe shouldn't be the 'real' Johnny Depp but a separate parody; or shouldn't be mixed with fictional people (original forum entry seemed to have the intention with real actors)">
 			<title>
 				<de>${johnny} ${depp} bei Dreharbeiten schwer verletzt</de>
 				<en>${johnny} ${depp} seriously injured during filming</en>
@@ -412,7 +412,7 @@
 				<en>For the first time in its club history, ${sportsclub_hamburgersv} has been relegated from the Bundesliga. They lost to the "Glubb" in an exciting game with 0-1 after extra time. Is the seat of coach Knut Knolle in question now?</en>
 				<pl>${sportsclub_hamburgersv} po raz pierwszy w historii klubu spadł z Bundesligi. Przegrali z „Glubbem“ w emocjonującym meczu 0-1 po dogrywce. Czy fotel trenera Knuta Knolle stoi teraz pod znakiem zapytania?</pl>
 			</description>
-			<data genre="2" price="0.3" quality="30" fictional="1" />
+			<data genre="2" price="0.3" quality="30" fictional="1" flags="2" />
 			<effects>
 				<!-- "in 4-8 Stunden / News a oder b" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03a" probability1="50" news2="news-jorgaeff-abstieg-03b" probability2="50"/>
@@ -429,7 +429,7 @@
 				<en>It was not quite enough for the "Glubb". The Franconians drew the short straw against Hamburg and missed with a narrow 0-1 the promotion to the Bundesliga.</en>
 				<pl>To nie wystarczyło dla „Glubba“. Frankończycy wyciągnęli krótką słomkę przeciwko Hamburgowi i przegrali 0-1 i awans do Bundesligi</pl>
 			</description>
-			<data genre="2" price="0.3" quality="0" fictional="1" />
+			<data genre="2" price="0.3" quality="0" fictional="1" flags="2" />
 			<effects>
 				<!-- "in 4-8 Stunden / News c oder d" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03c" probability1="50" news2="news-jorgaeff-abstieg-03d" probability2="50"/>
@@ -446,7 +446,7 @@
 				<en>Due to the first-time relegation of ${sportsclub_hamburgersv}, ${president} ${uweseeler} pulls the plug and sacks coach Knut Knolle. ${uweseeler} now wants to explore the market and look for suitable successors.</en>
 				<pl>Z powodu pierwszego spadku ${sportsclub_hamburgersv}, ${president} ${uweseeler} wyciąga wtyczkę i zwalnia trenera Knuta Knolle. ${uweseeler} chce teraz zbadać rynek i poszukać odpowiednich następców.</pl>
 			</description>
-			<data genre="2" price="0.25" quality="25" fictional="1" />
+			<data genre="2" price="0.25" quality="25" fictional="1" flags="2" />
 		</news>
 		<news guid="news-jorgaeff-abstieg-03b" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
@@ -459,7 +459,7 @@
 				<en>Despite the relegation from the Bundesliga, ${president} ${uweseeler} wants to hold on to the coach: "Knut Knolle is our man also for the 2nd league. With him, we will rise again."</en>
 				<pl>Pomimo spadku z Bundesligi, ${president} ${uweseeler} chce zatrzymać trenera: „Knut Knolle to nasz człowiek także na 2. ligę. Z nim znów się podniesiemy”.</pl>
 			</description>
-			<data genre="2" price="0.25" quality="25" fictional="1" />
+			<data genre="2" price="0.25" quality="25" fictional="1" flags="2" />
 		</news>
 		<news guid="news-jorgaeff-abstieg-03c" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
@@ -472,7 +472,7 @@
 				<en>After years of second-class status, much was invested to finally be able to play in the top division again, but unfortunately it has yielded nothing. Only the mountain of debt has grown, and that could be the doom now for the "Glubbers".</en>
 				<pl>Po latach statusu drugoligowca wiele zainwestowano, by w końcu znów móc grać w najwyższej klasie rozgrywkowej, ale niestety nic to nie dało. Wzrosła tylko góra długów, co może być teraz zgubą dla „Glubbersów“.</pl>
 			</description>
-			<data genre="2" price="0.25" quality="25" fictional="1" />
+			<data genre="2" price="0.25" quality="25" fictional="1" flags="2" />
 		</news>
 		<news guid="news-jorgaeff-abstieg-03d" type="2" thread_guid="news-jorgaeff-abstieg" creator="8936" created_by="jorgaeff">
 			<title>
@@ -485,7 +485,7 @@
 				<en>Due to the high promotion bonus, the "Glubb" was able to reduce all its debts and is thus back on a sound footing. The "Glubbers" hope that this will continue.</en>
 				<pl>Dzięki wysokiej premii promocyjnej „Glubb“ był w stanie zredukować wszystkie swoje długi i tym samym powrócił na solidne podstawy. „Glubbersi“ mają nadzieję, że ten stan się utrzyma.</pl>
 			</description>
-			<data genre="2" price="0.25" quality="25" fictional="1" />
+			<data genre="2" price="0.25" quality="25" fictional="1" flags="2" />
 		</news>
 
 		<news guid="news-jorgaeff-racing-01" type="0" thread_guid="news-jorgaeff-racing" creator="8936" created_by="jorgaeff" comment="previously somewhat 'real' with random outcome, thus may collide with actual historical news to be added; turning this into a fictional kids championship; spoof names now intended to be in diminuitive form, in addition to eventual existing 'real' entries | Previously 'Formula X' but Formula 1,2,3,... is probably better spoofed with Formula A,B,C,...">
@@ -497,11 +497,11 @@
 			<description>
 				<de>Zu einem Dreikampf kommt es heute Abend beim letzten Rennen der Unter-15-${sports_formula1} zwischen den punktgleichen Piloten ${driver1}, ${driver2} und ${driver3}. Wer wird Fahrer-Weltmeister?</de>
 				<en>There will be a triple-header tonight in the final race of the Under-15 ${sports_formula1} between the drivers ${driver1}, ${driver2} and ${driver3}, who are tied on points. Who will be the world drivers' champion?</en>
-				<pl>Dziś wieczorem w ostatnim wyścigu Formuły A do lat 15 dojdzie do potrójnego pojedynku. Kierowcy ${driver1}, ${driver2} i ${driver3} zremisowali na punkty. Kto zostanie mistrzem świata kierowców?</pl>
+				<pl>Dziś wieczorem w ostatnim wyścigu ${sports_f1} do lat 15 dojdzie do potrójnego pojedynku. Kierowcy ${driver1}, ${driver2} i ${driver3} zremisowali na punkty. Kto zostanie mistrzem świata kierowców?</pl>
 			</description>
 			<variables>
 				<driver1>Louis Pummelton|Miki Lausa|Kiki Rasburg|Alain Most|Jamie Hurt|Nigel Damsell|Mika Häkkleinen|Michi Schublattler</driver1>
-				<driver2>Sebastian Kettkar|Ayrton Flenna|Jackie Stewie|Mario Androlli|Jody Schleckie|Nelson Pequeno|Emerson Littipoldi|Damian Chill</driver2>
+				<driver2>Sebastian Klettkarr|Ayrton Flenna|Jackie Stewie|Mario Androlli|Jody Schleckie|Nelson Pequeno|Emerson Littipoldi|Damian Chill</driver2>
 				<driver3>Floriano Alfonso|Jackie Villejeune|Rubens Balliballo|Davy Coolheart|Gerald Burgie|Riccardo Capresi|Sean Alusi|Heinz-Harald Frantzi</driver3>
 			</variables>
 			<data genre="2" price="0.45" quality="45" fictional="1" />
@@ -892,15 +892,43 @@
 
 		<news guid="news-jorgaeff-blitzenergie-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Blitzenergie kann genutzt werden</de>
-				<en>Thunderbolt power can be utilized</en>
-				<pl>Możliwość wykorzystania zasilania z energi piorunów - Thunderbolt</pl>
+				<all>${energycanbe}</all> <!-- 'Thunderbolt power': The brand (Apple computer connectors) is not meant here (and would need to be spoofed) -->
 			</title>
 			<description>
-				<de>Forscher haben endlich eine Möglichkeit gefunden, die Energie der Blitze zu nutzen. Sollte das Projekt seine Serienreife erlangen, so könte dies die Energieprobleme des Planeten lösen.</de>
-				<en>Researchers have finally found a way to harness the energy of thunderbolts. If the project reaches its maturity phase, this could solve the energy problems of the planet.</en>
-				<pl>Naukowcy w końcu znaleźli sposób na wykorzystanie energii piorunów. Jeśli projekt osiągnie fazę dojrzałości, może to rozwiązać problemy energetyczne naszej planety.</pl>
+				<all>${researchershave}</all>
 			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<invention_csv>
+					<de>Blitzenergie kann genutzt werden;Forscher haben endlich eine Möglichkeit gefunden, die Energie der Blitze zu nutzen. Sollte das Projekt seine Serienreife erlangen, so könte dies die Energieprobleme des Planeten lösen.|
+						Selbstdenkender Toaster erfunden;Ingenieure haben einen selbstdenkenden Toaster entwickelt, der Brot immer perfekt röstet. Sollte er in jedem Haushalt Einzug finden, könnte dies ein Ende für all die seit Jahrhunderten andauernden Frühstückskatastrophen bedeuten.|
+						Schwerkraft-Invertierer für leichtere Transporte;Wissenschaftler haben einen Schwerkraft-Invertierer entwickelt, der es ermöglicht, schwere Lasten ohne Mühe zu heben. Sollte dies massentauglich werden, könnten Fluggesellschaften Gepäckgebühren endgültig abschaffen.|
+						Gedankenlesemaschine könnte Büro-Meetings überflüssig machen;Ein neues Gerät ermöglicht es, Gedanken direkt zu lesen und in ${brand_powerpoint}-Präsentationen zu übersetzen. Wenn es auf den Markt kommt, könnten endlose Meetings durch endlos wirre Slides ersetzt werden.|
+						Sonnenbrille erkennt Sarkasmus;Eine neue Brille analysiert Gesichtsausdrücke und erkennt Sarkasmus in Echtzeit. Experten glauben, dass das Streitigkeiten bei Familiengrillfesten drastisch reduzieren könnte.|
+						Unendliche Batterie entdeckt;Endlich keine leeren Fernbedienungen mehr! Nach jahrelanger Forschung haben Physiker die erst unendlich währende Batterie entwickelt, die niemals aufgeladen werden muss. Produktionsreife? Kann sich nur noch um Jahrzehnte handeln.
+					</de>
+					<en>Thunderbolt power can be utilized;Researchers have finally found a way to harness the energy of thunderbolts. If the project reaches its maturity phase, this could solve the energy problems of the planet.|
+						Self-thinking toaster invented;Engineers have developed a self-thinking toaster that always toasts bread to perfection. If this is installed in every household, it could spell the end of centuries of breakfast disasters.|
+						Gravity inverter for easier transport invented;Scientists have developed a gravity inverter, allowing heavy loads to be lifted effortlessly. If this becomes mainstream, airlines might finally get rid of baggage fees for good.|
+						Mind-reading machine could make office meetings obsolete;A new device allows thoughts to be read and instantly converted into ${brand_powerpoint} presentations. Once launched, endless meetings could be replaced by endlessly messy slides.|
+						Sunglasses detect sarcasm;A new pair of glasses analyzes facial expressions and detects sarcasm in real time. Experts believe this could drastically reduce arguments at family barbecues.|
+						Infinite battery discovered;No more empty remotes! After years of research, physicists have developed the first infinite battery that never needs recharging. When ready for production? Can only be a matter of decades.
+					</en>
+					<pl>Energia piorunów może zostać wykorzystana;Naukowcy w końcu znaleźli sposób na wykorzystanie energii piorunów. Jeśli projekt osiągnie fazę dojrzałości, może to rozwiązać problemy energetyczne naszej planety.|
+						Samomyślący toster wynaleziony;Inżynierowie opracowali samomyślący toster, który zawsze opieka chleb do perfekcji. Jeśli trafi do każdego domu, może to oznaczać koniec wielowiekowych śniadaniowych katastrof.|
+						Inwerter grawitacji dla łatwiejszego transportu;Naukowcy opracowali inwerter grawitacji, który pozwala bez wysiłku podnosić ciężkie ładunki. Jeśli stanie się powszechny, linie lotnicze mogłyby wreszcie znieść opłaty za bagaż.|
+						Maszyna do czytania w myślach może uczynić spotkania biurowe zbędnymi;Nowe urządzenie pozwala odczytywać myśli i natychmiast tłumaczyć je na prezentacje ${brand_powerpoint}. Gdy wejdzie na rynek, niekończące się zebrania mogą zostać zastąpione niekończącymi się chaotycznymi slajdami.|
+						Okulary przeciwsłoneczne wykrywają sarkazm;Nowe okulary analizują wyraz twarzy i w czasie rzeczywistym wykrywają sarkazm. Eksperci uważają, że mogłoby to drastycznie ograniczyć kłótnie na rodzinnych grillach.|
+						Odkryto nieskończoną baterię;Koniec z pustymi pilotami! Po latach badań fizycy opracowali pierwszą nieskończoną baterię, której nigdy nie trzeba ładować. Gotowość produkcyjna? To może być tylko kwestia dekad.
+					</pl>
+				</invention_csv>
+				<energycanbe>
+					<all>${.csv:invention_csv:0}</all>
+				</energycanbe>
+				<researchershave>
+					<all>${.csv:invention_csv:1}</all>
+				</researchershave>
+			</variables>
 			<data genre="3" price="0.45" quality="45" fictional="1" />
 		</news>
 
@@ -1122,14 +1150,14 @@
 
 		<news guid="news-jorgaeff-news-01" type="0" creator="8936" created_by="jorgaeff">
 			<title>
-				<de>Manfred Mustermann verklagt VISUM</de>
-				<en>John Doe sues VISUM</en>
-				<pl>John Doe pozywa VISUM</pl>
+				<de>Manfred Mustermann verklagt ${brand_visa}</de>
+				<en>John Doe sues ${brand_visa}</en>
+				<pl>John Doe pozywa ${brand_visa}</pl>
 			</title>
 			<description>
-				<de>Manfred Mustermann hat Klage gegen VISUM eingereicht. Der Kreditkarten-Anbieter hatte wiederholt Werbung mit dem Namen Mustermanns betrieben ohne um Erlaubnis zu fragen.</de>
-				<en>John Doe has filed a lawsuit against VISUM. The credit card provider had repeatedly advertised with the name of Doe without asking permission.</en>
-				<pl>John Doe złożył pozew przeciwko VISUM. Dostawca kart kredytowych wielokrotnie reklamował się nazwiskiem Doe bez pytania o zgodę.</pl>
+				<de>Manfred Mustermann hat Klage gegen ${brand_visa} eingereicht. Der Kreditkarten-Anbieter hatte wiederholt Werbung mit dem Namen Mustermanns betrieben ohne um Erlaubnis zu fragen.</de>
+				<en>John Doe has filed a lawsuit against ${brand_visa}. The credit card provider had repeatedly advertised with the name of Doe without asking permission.</en>
+				<pl>John Doe złożył pozew przeciwko ${brand_visa}. Dostawca kart kredytowych wielokrotnie reklamował się nazwiskiem Doe bez pytania o zgodę.</pl>
 			</description>
 			<data genre="4" price="0.3" quality="30" />
 		</news>
@@ -1441,8 +1469,8 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<karl>Karl|Karl|Karl|Karl|Klaus|Knut|Kurd|Kurt|Kurt</karl>
-				<rans>Rans|Ramm|Ramsch|Rantz|Ranz|Rein|Reins|Gams</rans>
-				<eier>eier|geier|meier|reier|reiher|scheier|seier|weier|weiher</eier>
+				<rans>Rans|Ramm|Ramsch|Rantz|Ranz|Rein|Reins|Gams|Rum|Rums</rans>
+				<eier>eier|geier|meier|reier|reiher|sauer|scheier|seier|weier|weiher</eier>
 				<wolfgang>${.person:"1e0f9b72-847d-42a4-9c26-491fac2cc929":"firstname"}</wolfgang>
 				<lippert>${.person:"1e0f9b72-847d-42a4-9c26-491fac2cc929":"lastname"}</lippert>
 				<ayrton>${.person:"84330774-b938-4eb6-8b54-8316dd4172f0":"firstname"}</ayrton>
@@ -1462,6 +1490,11 @@
 					<en>${.gte:currentyear:2009:"with a live stream":"with sensational footage"}</en>
 					<pl>${.gte:currentyear:2009:"za pomocą transmisji na żywo":"za pomocą sensacyjnego materiału filmowego"}</pl>
 				</withalivestream>
+				<webdesignerof>
+					<de>${.gte:currentyear:1997:"Webdesigner aller Zeiten erfand die Schreibschrift-Tastatur und cellulosefreie Webseiten. Er starb gestern, als er versehentlich vom Server gelöscht wurde. Die Trauerfeier findet im engsten Kreis seiner Backups statt":"Schriftsetzer hat sich immer falsch hingesetzt, sein Leben falsch ausgerichtet und die Liebe seines Lebens versetzt, worauf er strafversetzt wurde. Gestern fiel er in die Druckerpresse - sein letzter Eindruck. Die Beisetzung erfolgt in Kursica"}</de>
+					<en>${.gte:currentyear:1997:"web designer of all time invented the cursive keyboard and cellulose-free homepages. He died yesterday when he was accidentally deleted from the server. The funeral will be held in the intimate circle of his backups":"typesetter always set things wrong. His letters were misplaced, and even his résumé was misaligned. Yesterday, he fell into the printing press - his final impression. His funeral will be held in Italics"}</en>
+					<pl>${.gte:currentyear:1997:"projektant stron internetowych wszechczasów wynalazł klawiaturę kursywną i strony główne bez celulozy. Zmarł wczoraj, gdy został przypadkowo usunięty z serwera. Pogrzeb odbędzie się w kameralnym gronie jego kopii zapasowych.":"najgorszy zecer zawsze źle składał tekst. Litery mu uciekały, a życiorys miał nierówno wyjustowany. Wczoraj wpadł do prasy drukarskiej - jego ostatni odcisk. Pogrzeb odbędzie się w Kursicy"}</pl>
+				</webdesignerof>
 				<theprobablymost_csv> <!-- one-element CSV for readability -->
 					<de>Der wohl erfolgloseste Nachrichtensprecher aller Zeiten war der Erste im deutschen Fernsehen, der weder „Bonn“ noch „Berlin“ aussprechen konnte. Er starb gestern im Alter von 63 Jahren beim Versuch die Wetterkarten neu zu mischen.|
 						Der wohl erfolgloseste Enzyklopädie-Autor aller Zeiten verstarb gestern beim Erstellen eines Artikels über das Paarungsverhaltens des geschniegelten Borneograupapageis.|
@@ -1476,21 +1509,21 @@
 						Der wohl erfolgloseste Nachrichtensprecher hörte sich schon immer am liebsten selber reden. Sein „Gedicht aus Bonn“ fand keinen Anklang. Er starb, als er Schalke 05 sagte, obwohl die 3:0 gewonnen hatten. Die Nachricht von seinem Tod erreichte ihn leider zu spät.|
 						Der wohl erfolgloseste Profifußballer aller Zeiten brachte neue Spielkultur mit Torwarthausschuhen und log Tore aus 70 Metern. Er starb gestern bei einem Freundschaftsspiel in Grönland, als er beim Trikottausch erfror.|
 						Der wohl erfolgloseste Polizist aller Zeiten lebte 10 Jahre undercover in einer Litfaßsäule und scheiterte bei der Aufklärung seiner Tochter. Er starb gestern in Essen-Bredeney, als er seine kugelsichere Weste falsch herum anzog und sich selbst erschoss.|
-						Der wohl erfolgloseste ${sports_formula1}-Pilot gründete den Rennstall „${rans}${eier} Trabbi“ und erfand die Siegerrolltreppe. Er scheiterte er beim Großen Preis von Spar, als all seine Schachfiguren aus der Zielflagge fielen. Er starb bei seiner ${ayrton}-${senna}-Parodie.|
+						Der wohl erfolgloseste ${sports_formula1}-Pilot gründete den Rennstall „${rans}${eier} Trabi“ und erfand die Siegerrolltreppe. Er scheiterte er beim Großen Preis von Spar, als all seine Schachfiguren aus der Zielflagge fielen. Er starb bei seiner ${ayrton}-${senna}-Parodie.|
 						Der wohl erfolgloseste Diktator aller Zeiten scheiterte mit Parolen wie „Ein Volk, ein Reich, eins achtzig“ und einem Angriff mit Panzerschildkröten. Er starb gestern, als er versuchte, seinen Schäferhund „Fass“ zu nennen.|
 						Der wohl erfolgloseste Zirkusdirektor aller Zeiten erfand das ${brand_loewensenf}-Bändigen und scheiterte als Schlangenmensch beim Anstehen. Er starb gestern auf der Reeperbahn, als er einen süßen Hasen aus einem 8-Zylinder ziehen wollte.|
 						Der wohl erfolgloseste Wilthentrinker trank eine Palette Wilthen in einem Zug durch die Maschine und ging dabei nicht über „Los“. Er starb gestern abend bei seiner letzten Ölung. Sein Erbe reichte nur für eine Urnenbestattung in einer 3-Liter-Wilthenflasche.|
 						Der wohl erfolgloseste Kapitän aller Zeiten heiratete eine Schiffsschraube und erfand den aufblasbaren Anker. Bei der großen Sinnflut rettete er sich auf eine Leinsameninsel. Er starb gestern, als er bemerkte, dass seine Schwimmweste nicht kugelsicher war.|
 						Der wohl erfolgloseste Tyrann aller Zeiten rief vom Reichstagsbalkon die Diktatur aus und bekam eine Anzeige wegen Ruhestörung. Er starb vorgestern, als er versuchte, seinen Hunger zu unterdrücken.|
 						Der wohl erfolgloseste Schönheitschirurg aller Zeiten schnitt schon in der Kindheit Grimassen und machte Mädchen schöne Augen. Er erfand Heliumbrüste, doch die Patientinnen flogen ohne zu bezahlen weg. Er starb gestern an einer Portion Skalpellkartoffeln.|
-						Der wohl erfolgloseste Feuerwehrmann stand stets auf dem Schlauch, erfand das Feuerzangenbowling, löschte das olympische Feuer mit einer Wolldecke, steckte sich bei einem Seuchenstation-Brand an und starb. Sein Erbe geht an eine Brandstiftung.|
+						Der wohl erfolgloseste Feuerwehrmann stand stets auf dem Schlauch, erfand Feuerzangenbowling, löschte das Olympia-Feuer mit 'ner Wolldecke, steckte sich bei einem Seuchenstation-Brand an und starb. Sein Erbe geht an eine Brandstiftung.|
 						Der wohl erfolgloseste Gigolo aller Zeiten arbeitete als Latrin-Lover, machte einer Bäuerin den kompletten Hof und half sogar alten Damen über die Strapse. Er starb gestern in einem Hafenbecken in Sizilien, weil er Casanova mit Cosanostra verwechselte.|
 						Der wohl erfolgloseste Hellseher war von seinem Tod selbst überrascht. Er besaß nicht nur das zweite Gesicht, sondern auch die dritten Zähne. Er wurde beim Lesen eines Sternzeichens von einem ${brand_mercedes} überfahren.|
 						Das wohl erfolgloseste ${generalorg_adac}-Mitglied aller Zeiten erlangte Berühmtheit als Geisterfahrer und durch seine Bemühungen, die ${sports_formula1} auszurechnen. Er starb gestern im Alter von 82 Jahren an den Folgen einer Führerscheinprüfung.|
 						Der wohl erfolgloseste Automechaniker aller Zeiten hatte schon als Kind einen Plattfuß und lud gern ein zu einer Runde Chef-Roulette. Er starb gestern im Alter von 83 Jahren und wurde in einem ${brand_saab} beerdigt.|
 						Der wohl erfolgloseste Flüchtling aller Zeiten liebte schon als Kind die Fluchtzwerge, züchtete Fluchtfliegen und erfand sogar den Fluchtkompensator. Er starb gestern in einer Talkshow, als er das öffentlich-rechtliche Fernsehen verfluchte.|
 						Der wohl erfolgloseste Laubpuster nahm nie ein Blatt vor den Mund. Er wurde bei der Laubtrennung im Nadelwald erwischt und verlor seinen Laubsägen-Schein. Er starb im Urlaub in einer Laube und wurde auf einem Komposthaufen beerdigt.|
-						Der wohl erfolgloseste Webdesigner aller Zeiten erfand die Schreibschrift-Tastatur und cellulosefreie Webseiten. Er starb gestern, als er versehentlich vom Server gelöscht wurde. Die Trauerfeier findet im engsten Kreis seiner Backups statt.|
+						Der wohl erfolgloseste ${webdesignerof}.|
 						Der wohl erfolgloseste Politiker aller Zeiten war schon früh ständig leer und gab volle Versprechen. Oder umgekehrt. Er warnte vor der Kluft zwischen Arm und Bein - erfolglos. Gestern starb er bei der Neuauflage der großen Kollision.|
 						Der wohl erfolgloseste Demonstrant aller Zeiten zündete schon als Kind Spielzeugautos an und protestierte gegen den G1-Gipfel. Gestern starb er an einer Überdosis Anti-Demonstrativa. Zur Beisetzung lief eine Demo-Version seines Lieblingsliedes.|
 						Der wohl erfolgloseste LARPer aller Zeiten spielte schon als Kind verrückt und entwickelte die Meilensteine „Cowboy und Indianer“ und „Räuber und Gendarm“. Er starb gestern im Alter von 87 Jahren und hinterlässt 7 Kinder sowie einen Ork namens Horst.|
@@ -1499,41 +1532,41 @@
 						Der wohl erfolgloseste Knecht Ruprecht aller Zeiten drohte in den frühen Morgenstunden einem nicht braven Mann eine Tracht Prügel an, der sich mit einer Machete wehrte. ${rans}${eier} hinterlässt Rute, falschen Bart und einen trauernden Nikolaus.|
 						Der wohl erfolgloseste Endurofahrer aller Zeiten beendete nie ein Rennen und verschleierte seine Stürze als innovative Manöver. Er verstarb gestern, als er sein Motorrad aus einem Kirschbaum barg, der völlig überraschend unter ihm gewachsen war.
 					</de>
-					<en>The probably most unsuccessful newscaster of all time was the first on German television who could not pronounce "Bonn" or "Berlin". He died yesterday at the age of 63 while trying to reshuffle the weather charts.|
-						The probably most unsuccessful encyclopedia author of all times died yesterday while writing an article about the mating behavior of the spruced up Borneo grey parrot.|
-						The probably most unsuccessful physicist of the 20th century came up with the "theory of absolutivity" as a schoolboy, in which light always has the same speed. He died in an experiment where he ran in front of a moving train with a flashlight.|
-						The probably most unsuccessful firefighter of all time died when he tried to extinguish a burning match with a liter of petrol. Before that, he had often fought conflagrations with confetti cannons.|
-						The probably most unsuccessful ${influencer} of all time tried to ${generatefollowers} ${withalivestream} from a cave in Greenland. He died when he fell into a hole he had dug himself for better lighting conditions.|
-						The probably most unsuccessful secret agent of all time failed and died during his undercover mission when he got tangled up in his fake beard.|
-						The probably most unsuccessful extreme athlete of all time died while attempting to break the world record for backwards bungee jumping. He was killed by the falling piano to which he had attached the rope.|
-						The probably most unsuccessful astronaut and son of a manned space captain failed his greatest mission: during re-entry, he had to pay extra because he didn't have a stamp. He died yesterday trying to fly into the air with dynamite.|
-						The probably most unsuccessful showmaster of all time created never-aired classics like "Dream Calculations" and was humiliated with the ${wolfgang} ${lippert} Award. He finally died in a studio, shot during "${mediatitle_familyfeud}".|
-						The probably most unsuccessful drug addict injected heroin into a stream and invented the 1.5-liter deposit syringe. Junkies disliked him for snorting ${brand_knorr} in the ${brand_maggi} Coke Studio. He died from a fish egg overdose - Germany's first roe victim.|
-						The probably most unsuccessful newscaster always preferred to hear himself speak. His "Song from Bonn" was not well received. He died when he said Schalke 05, even though they had won 3-0. Unfortunately, the news of his death reached him too late.|
-						The probably most unsuccessful professional footballer of all time introduced innovations like goalkeeper slippers and faked goals from 70 meters. He died yesterday during a friendly match in Greenland, freezing to death during a jersey swap.|
-						The probably most unsuccessful police officer of all time spent 10 years undercover in a billboard column and failed to clue up his daughter. He died yesterday in Essen-Bredeney when he put on his bulletproof vest backwards and accidentally shot himself.|
-						The probably most unsuccessful ${sports_formula1} driver founded the "${rans}${eier} Trabbi" racing team and invented the winner's escalator. He failed in the Spar Grand Prix when all his chess pieces fell off the chequered flag. He died during his ${ayrton} ${senna} parody.|
-						The probably most unsuccessful dictator of all time failed with slogans such as "One people, one empire, one eighty" and an attack with tortoiseshells. He died yesterday when he tried to name his sheepdog "Snatch".|
-						The probably most unsuccessful circus director of all time invented lion-mustard taming and failed as a contortionist while lining up. He died yesterday on the Reeperbahn when he tried to pull a cute bunny out of an 8-cylinder.|
-						The probably most unsuccessful Wilthen drinker drank a pallet of Wilthen in one go through the machine and did not pass "Go". He died last night at his final unction. His inheritance provided only enough for an urn burial in a 3-liter Wilthen bottle.|
-						The probably most unsuccessful captain of all time married a propelling screw and invented the inflatable anchor. During the great flood, he saved himself on a flaxseed island. He died yesterday when he realized his life vest wasn't bulletproof.|
-						The probably most unsuccessful tyrant of all time declared a dictatorship from the Reichstag balcony and got a noise complaint. He died the day before yesterday trying to suppress his hunger.|
-						The probably most unsuccessful plastic surgeon of all time was already making faces and eyes at the girls as a child. He invented helium breasts, but his patients flew away without paying. He died yesterday from a portion of scalpeeled potatoes.|
-						The probably most unsuccessful firefighter was always on the hose, invented fire tong bowling, extinguished the Olympic fire with a woollen blanket, contracted a fire at an epidemic ward and died. His estate goes to an arson foundation.|
-						The probably most unsuccessful gigolo of all time worked as a latrine lover, courted a farmer's wife and even helped old ladies over the straps. He died yesterday in a harbor basin in Sicily because he mistook Casanova for Cosanostra.|
-						The probably most unsuccessful clairvoyant was surprised by his own death. He not only had second sight, but also third teeth. He was run over by a ${brand_mercedes} while reading a star sign.|
-						The probably most unsuccessful automobile club member of all time achieved fame as a wrong-way driver and through his efforts to calculate ${sports_formula1}. He died yesterday at the age of 82 as a result of a driving test.|
-						The probably most unsuccessful car mechanic of all time already had a puncture as a kid and liked to invite people to a round of chef-roulette. He died yesterday at the age of 83 and was buried in a box hole.|
-						The probably most unsuccessful fugitive of all time loved fudgees as a child, bred refuge flies and even invented the flight compensator. He died yesterday on a talk show when he refuted public television.|
-						The probably most unsuccessful leaf blower never minced his words. He was caught cutting leaves in a pine forest and lost his fretsaw license. He died on vacation in an arbor and was buried in a compost heap.|
-						The probably most unsuccessful web designer of all time invented the cursive keyboard and cellulose-free homepages. He died yesterday when he was accidentally deleted from the server. The funeral will be held in the intimate circle of his backups.|
-						The probably most unsuccessful politician of all time was constantly empty and made canned promises early on. Or the other way around. He warned of the gap between the pure and the snitches - unsuccessfully. He died yesterday during the reenactment of the great collision.|
-						The probably most unsuccessful demonstrator of all time set toy cars on fire as a child and protested against the G1 summit. Yesterday he died of an overdose of Anti-Demonstrativa. A demo version of his favorite song played at the funeral.|
-						The probably most unsuccessful LARPer of all time was acting up already as a child and developed the milestones "Cowboys and Indians" and "Robbers and Gendarmes". He died yesterday at the age of 87 and leaves behind 7 children and an orc named Horst.|
-						The probably most unsuccessful consumer advocate of all time was killed by a sandstone tablet in a pyramid while researching consumer protection in ancient Egypt. He left behind 36 reports, 17 statements and 14,424 complaints.|
-						The probably most unsuccessful road marking painter of all time painted crosswalks in serpentine lines, which delighted the innkeepers - but not the authorities. He was killed when he used a match to inspect the new paint delivery in the tanker.|
-						The probably most unsuccessful Knecht Ruprecht of all time threatened an unruly man with a good spanking in the early hours of the morning who fought back with a machete. ${rans}${eier} leaves behind rods, a fake beard and a grieving Santa Claus.|
-						The probably most unsuccessful enduro rider of all time never finished a race and disguised his crashes as innovative maneuvers. He died yesterday when he retrieved his bike from a cherry tree that had completely unexpectedly grown underneath him.
+					<en>The probably least successful newscaster of all time was the first on German television who could not pronounce "Bonn" or "Berlin". He died yesterday at the age of 63 while trying to reshuffle the weather charts.|
+						The probably least successful encyclopedia author of all time died yesterday while writing an article about the mating behavior of the spruced up Borneo grey parrot.|
+						The probably least successful physicist of the 20th century came up with the "theory of absolutivity" as a schoolboy, in which light always has the same speed. He died in an experiment where he ran in front of a moving train with a flashlight.|
+						The probably least successful firefighter of all time died when he tried to extinguish a burning match with a liter of petrol. Before that, he had often fought conflagrations with confetti cannons.|
+						The probably least successful ${influencer} of all time tried to ${generatefollowers} ${withalivestream} from a cave in Greenland. He died when he fell into a hole he had dug himself for better lighting conditions.|
+						The probably least successful secret agent of all time failed and died during his undercover mission when he got tangled up in his fake beard.|
+						The probably least successful extreme athlete of all time died while attempting to break the world record for backwards bungee jumping. He was killed by the falling piano to which he had attached the rope.|
+						The probably least successful astronaut and son of a manned space captain failed his greatest mission: during re-entry, he had to pay extra because he didn't have a stamp. He died yesterday trying to fly into the air with dynamite.|
+						The probably least successful showmaster of all time created never-aired classics like "Dream Calculations" and was humiliated with the ${wolfgang} ${lippert} Award. He finally died in a studio, shot during "${mediatitle_familyfeud}".|
+						The probably least successful drug addict injected heroin into a stream and invented the 1.5-liter deposit syringe. Junkies disliked him for snorting ${brand_knorr} in the ${brand_maggi} Coke Studio. He died from a fish egg overdose - Germany's first roe victim.|
+						The probably least successful newscaster always preferred to hear himself speak. His "Song from Bonn" was not well received. He died when he said Schalke 05, even though they had won 3-0. Unfortunately, the news of his death reached him too late.|
+						The probably least successful professional footballer of all time introduced innovations like goalkeeper slippers and faked goals from 70 meters. He died yesterday during a friendly match in Greenland, freezing to death during a jersey swap.|
+						The probably least successful police officer of all time spent 10 years undercover in a billboard column and failed to clue up his daughter. He died yesterday in Essen-Bredeney when he put on his bulletproof vest backwards and accidentally shot himself.|
+						The probably least successful ${sports_formula1} driver founded the "${rans}${eier} Trabi" racing team and invented the winner's escalator. He failed in the Spar Grand Prix when all his chess pieces fell off the chequered flag. He died during his ${ayrton} ${senna} parody.|
+						The probably least successful dictator of all time failed with slogans such as "One people, one empire, one eighty" and an attack with tortoiseshells. He died yesterday when he tried to name his sheepdog "Snatch".|
+						The probably least successful circus director of all time invented lion-mustard taming and failed as a contortionist while lining up. He died yesterday on the Reeperbahn when he tried to pull a cute bunny out of an 8-cylinder.|
+						The probably least successful Wilthen drinker drank a pallet of Wilthen in one go through the machine and did not pass "Go". He died last night at his final unction. His inheritance provided only enough for an urn burial in a 3-liter Wilthen bottle.|
+						The probably least successful captain of all time married a propelling screw and invented the inflatable anchor. During the great flood, he saved himself on a flaxseed island. He died yesterday when he realized his life vest wasn't bulletproof.|
+						The probably least successful tyrant of all time declared a dictatorship from the Reichstag balcony and got a noise complaint. He died the day before yesterday trying to suppress his hunger.|
+						The probably least successful plastic surgeon of all time was already making faces and eyes at the girls as a child. He invented helium breasts, but his patients flew away without paying. He died yesterday from a portion of scalpeeled potatoes.|
+						The probably least successful firefighter was always on the hose, invented fire tong bowling, extinguished the Olympic fire with a woollen blanket, contracted a fire at an epidemic ward and died. His estate goes to an arson foundation.|
+						The probably least successful gigolo of all time worked as a latrine lover, courted a farmer's wife and even helped old ladies over the straps. He died yesterday in a harbor basin in Sicily because he mistook Casanova for Cosanostra.|
+						The probably least successful clairvoyant was surprised by his own death. He not only had second sight, but also third teeth. He was run over by a ${brand_mercedes} while reading a star sign.|
+						The probably least successful automobile club member of all time achieved fame as a wrong-way driver and through his efforts to calculate ${sports_formula1}. He died yesterday at the age of 82 as a result of a driving test.|
+						The probably least successful car mechanic of all time already had a puncture as a kid and liked to invite people to a round of chef-roulette. He died yesterday at the age of 83 and was buried in a box hole.|
+						The probably least successful fugitive of all time loved fudgees as a child, bred refuge flies and even invented the flight compensator. He died yesterday on a talk show when he refuted public television.|
+						The probably least successful leaf blower never minced his words. He was caught cutting leaves in a pine forest and lost his fretsaw license. He died on vacation in an arbor and was buried in a compost heap.|
+						The probably least successful ${webdesignerof}.|
+						The probably least successful politician of all time was constantly empty and made canned promises early on. Or the other way around. He warned of the gap between the pure and the snitches - unsuccessfully. He died yesterday during the reenactment of the great collision.|
+						The probably least successful demonstrator of all time set toy cars on fire as a child and protested against the G1 summit. Yesterday he died of an overdose of Anti-Demonstrativa. A demo version of his favorite song played at the funeral.|
+						The probably least successful LARPer of all time was acting up already as a child and developed the milestones "Cowboys and Indians" and "Robbers and Gendarmes". He died yesterday at the age of 87 and leaves behind 7 children and an orc named Horst.|
+						The probably least successful consumer advocate of all time was killed by a sandstone tablet in a pyramid while researching consumer protection in ancient Egypt. He left behind 36 reports, 17 statements and 14,424 complaints.|
+						The probably least successful road marking painter of all time painted crosswalks in serpentine lines, which delighted the innkeepers - but not the authorities. He was killed when he used a match to inspect the new paint delivery in the tanker.|
+						The probably least successful Knecht Ruprecht of all time threatened an unruly man with a good spanking in the early hours of the morning who fought back with a machete. ${rans}${eier} leaves behind rods, a fake beard and a grieving Santa Claus.|
+						The probably least successful enduro rider of all time never finished a race and disguised his crashes as innovative maneuvers. He died yesterday when he retrieved his bike from a cherry tree that had completely unexpectedly grown underneath him.
 					</en>
 					<pl>Prawdopodobnie najbardziej nieudany prezenter wiadomości wszech czasów był pierwszym w niemieckiej telewizji, który nie potrafił wymówić słów „Bonn” lub „Berlin”. Zmarł wczoraj w wieku 63 lat, gdy próbował przetasować listę przebojów pogodowych.|
 						Prawdopodobnie najbardziej nieudany autor encyklopedii wszechczasów zmarł wczoraj podczas pisania artykułu o zachowaniach godowych wypielęgnowanej papugi szarej z Borneo.|
@@ -1548,7 +1581,7 @@
 						Prawdopodobnie najbardziej nieudany prezenter wiadomości zawsze wolał słuchać siebie mówiącego. Jego „Song from Bonn” nie została dobrze przyjęta. Zmarł, gdy powiedział Schalke 05, mimo że wygrali 3-0. Niestety, wiadomość o jego śmierci dotarła do niego zbyt późno.|
 						Prawdopodobnie najbardziej nieudany piłkarz w historii wprowadził innowacje, jak kapcie bramkarskie, i oszukiwał gole z 70 metrów. Zmarł wczoraj podczas meczu towarzyskiego na Grenlandii, zamarzając przy wymianie koszulek.|
 						Prawdopodobnie najbardziej nieudany policjant wszech czasów spędził 10 lat pod przykrywką na słupie ogłoszeniowym i nie udało mu się namierzyć swojej córki. Zginął wczoraj w Essen-Bredeney, gdy założył kamizelkę kuloodporną tył na przód i przypadkowo się postrzelił.|
-						Prawdopodobnie najbardziej nieudany kierowca ${sports_formula1} założył zespół „${rans}${eier} Trabbi“ i wynalazł zwycięskie ruchome schody. Zawiódł w Grand Prix Spar, kiedy wszystkie jego figury szachowe spadły z flagi w szachownicę. Zmarł podczas parodii: „${ayrton} ${senna}”.|
+						Prawdopodobnie najbardziej nieudany kierowca ${sports_formula1} założył zespół „${rans}${eier} Trabi“ i wynalazł zwycięskie ruchome schody. Zawiódł w Grand Prix Spar, kiedy wszystkie jego figury szachowe spadły z flagi w szachownicę. Zmarł podczas parodii: „${ayrton} ${senna}”.|
 						Prawdopodobnie najbardziej nieudany dyktator w historii nie zdobył poparcia hasłami „Jeden naród, jedno imperium, jeden metr osiemdziesiąt“ ani atakiem z użyciem pancernych żółwi. Zmarł wczoraj, próbując nazwać swojego owczarka „Snatch“.|
 						Prawdopodobnie najbardziej nieudany dyrektor cyrku wszechczasów wymyślił oswajanie lwów z musztardą i zawiódł jako kontorsjonista w kolejce. Zginął wczoraj na Reeperbahn, gdy próbował wyciągnąć słodkiego króliczka z 8-cylindrowego samochodu.|
 						Prawdopodobnie najbardziej nieudany pijący Wilthen wypił paletę Wilthen za jednym razem przez maszynę i nie przeszedł „Start”. Zmarł zeszłej nocy podczas ostatniego namaszczenia. Jego spadek wystarczył jedynie na pochówek w urnie w 3-litrowej butelce Wilthen.|
@@ -1562,7 +1595,7 @@
 						Prawdopodobnie najbardziej nieudany mechanik samochodowy wszech czasów już jako dziecko miał przebicie opony i lubił zapraszać ludzi na rundę szef-ruletki. Zmarł wczoraj w wieku 83 lat i został pochowany w skrzyni.|
 						Prawdopodobnie najbardziej nieudany uciekinier wszech czasów w dzieciństwie uwielbiał krówki, hodował muchy schronieniowe, a nawet wynalazł kompensator lotu. Zmarł wczoraj w talk show, gdy obalił telewizję publiczną.|
 						Prawdopodobnie najbardziej nieudany dmuchacz liści nigdy nie przebierał w słowach. Został przyłapany na ścinaniu liści w sosnowym lesie i stracił licencję pilarza. Zmarł na wakacjach w altanie i został pochowany w pryzmie kompostu.|
-						Prawdopodobnie najbardziej nieudany projektant stron internetowych wszechczasów wynalazł klawiaturę kursywną i strony główne bez celulozy. Zmarł wczoraj, gdy został przypadkowo usunięty z serwera. Pogrzeb odbędzie się w kameralnym gronie jego kopii zapasowych.|
+						Prawdopodobnie najbardziej nieudany ${webdesignerof}.|
 						Prawdopodobnie najbardziej nieudany polityk wszechczasów był ciągle pusty i wcześnie składał obietnice bez pokrycia. Albo na odwrót. Ostrzegał przed przepaścią między czystymi a donosicielami - bezskutecznie. Zmarł wczoraj podczas odtwarzania wielkiego zderzenia.|
 						Prawdopodobnie najbardziej nieudany demonstrant wszech czasów jako dziecko podpalał samochodziki i protestował przeciwko szczytowi G1. Wczoraj zmarł z powodu przedawkowania Anti-Demonstrativa. Na pogrzebie zagrano wersję demo jego ulubionej piosenki.|
 						Prawdopodobnie najbardziej nieudany LARPer wszech czasów działał już jako dziecko i opracował kamienie milowe „Kowboje i Indianie” oraz „Rozbójnicy i żandarmi”. Zmarł wczoraj w wieku 87 lat i pozostawił po sobie siedmioro dzieci oraz orka o imieniu Horst.|

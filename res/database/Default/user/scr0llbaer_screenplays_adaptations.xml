@@ -6,7 +6,7 @@
 
 		<!-- Literature -->
 		
-		<scripttemplate product="2" licence_type="3" guid="5a2d4f37-b87e-448b-a745-334a869e17bf" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/The_Catcher_in_the_Rye | auch: Der Mann im Roggen">
+		<scripttemplate product="2" licence_type="3" guid="5a2d4f37-b87e-448b-a745-334a869e17bf" creator="9551" wikidata_id="Q183883" comment="author: https://en.wikipedia.org/wiki/J._D._Salinger | auch: Der Mann im Roggen">
 			<title>
 				<de>Der Beschützer im Getreide</de>
 				<en>The Buckler in the Wheat</en>
@@ -88,7 +88,6 @@
 			<data flags="0" flags_optional="8" target_groups="6" />
 			<targetgroupattractivity men="0.75" children="2" teenagers="2" managers="1.25" />
 			<genres maingenre="7" subgenres="" />
-			<episodes min="3" max="3" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="90" />
@@ -97,7 +96,7 @@
 			<speed min="20" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="ee39e911-fabb-48af-9f88-af8476e87734" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/A_Perfect_Day_for_Bananafish | Ordering of this film series not necessarily as the releases of the source material">
+		<scripttemplate product="1" licence_type="1" guid="ee39e911-fabb-48af-9f88-af8476e87734" creator="9551" wikidata_id="Q392849" comment="Ordering of this film series not necessarily as the releases of the source material">
 			<title>
 				<de>Ein fantastischer Tag für Papaya-Fisch</de>
 				<en>A Fantastic Day for Papayafish</en>
@@ -139,7 +138,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="209f0469-2be5-41ba-b39a-9c9c986f084b" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="209f0469-2be5-41ba-b39a-9c9c986f084b" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/Hapworth_16,_1924 | originally the final publication of the Glass family series but fits better here, and taking artistic licence in describing more of the back story here">
+		<scripttemplate product="1" licence_type="1" guid="209f0469-2be5-41ba-b39a-9c9c986f084b" creator="9551" wikidata_id="Q3127227" comment="originally the final publication of the Glass family series but fits better here, and taking artistic licence in describing more of the back story here">
 			<title>
 				<all>Harksworth 18, 1924</all>
 			</title>
@@ -151,7 +150,7 @@
 			<description>
 				<de>Prequel über ${.self:"role":3:"fullname"}: Sein Aufenthalt als 7-Jähriger im titulären Camp, seine Eltern, die Varieté-Perfomer ${.self:"role":1:"firstname"} und ${.self:"role":2:"firstname"}, und seine Geschwister. Alle 7 Kinder traten in einem Radioquiz für Hochbegabte auf, was sie aufs College brachte.</de>
 				<en>Prequel about ${.self:"role":3:"fullname"}: His stay as a 7-year-old at the titular camp, his parents, vaudeville performers ${.self:"role":1:"firstname"} and ${.self:"role":2:"firstname"}, and his siblings. All 7 children performed in a radio quiz for the highly gifted, which got them into college.</en>
-				<pl>Prequel. ${.self:"role":3:"fullname"}: Opowiada o jego pobycie jako 7-latek w tytułowym obozie, jego rodzicach, artystach wodewilowych ​​${.self:"role":1:"firstname"} i ${.self:"role":2:"firstname"} oraz jego rodzeństwu. Wszystkie 7 dzieci wystąpiło w radiowym quizie dla wybitnie uzdolnionych, co pozwoliło im dostać się na studia.</pl>
+				<pl>Prequel. ${.self:"role":3:"fullname"}: Opowiada o jego pobycie jako 7-latek w tytułowym obozie, jego rodzicach, artystach wodewilowych ${.self:"role":1:"firstname"} i ${.self:"role":2:"firstname"} oraz jego rodzeństwu. Wszystkie 7 dzieci wystąpiło w radiowym quizie dla wybitnie uzdolnionych, co pozwoliło im dostać się na studia.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -181,7 +180,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="841040b9-04a8-4064-9b91-31eb8a8b0c46" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="841040b9-04a8-4064-9b91-31eb8a8b0c46" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/Down_at_the_Dinghy | auch: Am Dingi">
+		<scripttemplate product="1" licence_type="1" guid="841040b9-04a8-4064-9b91-31eb8a8b0c46" creator="9551" wikidata_id="Q392088" comment="auch: Am Dingi">
 			<title>
 				<de>Unten am Wasser</de>
 				<en>Down by the Boat</en>
@@ -223,7 +222,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="9755d236-3996-4fff-a205-5a1544281844" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="9755d236-3996-4fff-a205-5a1544281844" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/Raise_High_the_Roof_Beam,_Carpenters_and_Seymour:_An_Introduction | auch: Hebt an den Dachbalken, Zimmerleute">
+		<scripttemplate product="1" licence_type="1" guid="9755d236-3996-4fff-a205-5a1544281844" creator="9551" wikidata_id="Q61551428" comment="was a two-part volume: https://en.wikipedia.org/wiki/Raise_High_the_Roof_Beam,_Carpenters_and_Seymour:_An_Introduction | auch: Hebt an den Dachbalken, Zimmerleute">
 			<title>
 				<de>Hoch mit dem Dachgebälk, Zimmermänner</de>
 				<en>Up with the Roof Trusses, Timbermen</en> <!-- title refers (also) to last name of some (extended family) characters -->
@@ -268,7 +267,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="25903039-a46b-4b97-94b9-49f0c6798887" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="25903039-a46b-4b97-94b9-49f0c6798887" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/Raise_High_the_Roof_Beam,_Carpenters_and_Seymour:_An_Introduction | auch: Seymour wird vorgestellt">
+		<scripttemplate product="1" licence_type="1" guid="25903039-a46b-4b97-94b9-49f0c6798887" creator="9551" wikidata_id="Q4419829" comment="was a two-part volume: https://en.wikipedia.org/wiki/Raise_High_the_Roof_Beam,_Carpenters_and_Seymour:_An_Introduction | auch: Seymour wird vorgestellt">
 			<title>
 				<de>${.self:"role":1:"firstname"} kennenlernen</de>
 				<en>Getting to Know ${.self:"role":1:"firstname"}</en>
@@ -310,7 +309,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="e0e63fdf-b7c4-4aaf-8aa3-2c6b44e407ee" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="e0e63fdf-b7c4-4aaf-8aa3-2c6b44e407ee" creator="9551" comment="https://en.wikipedia.org/wiki/J._D._Salinger | https://en.wikipedia.org/wiki/Franny_and_Zooey">
+		<scripttemplate product="1" licence_type="1" guid="e0e63fdf-b7c4-4aaf-8aa3-2c6b44e407ee" creator="9551" wikidata_id="Q1445395">
 			<title>
 				<de>${.self:"role":1:"nickname"} und ${.self:"role":2:"nickname"}</de>
 				<en>${.self:"role":1:"nickname"} and ${.self:"role":2:"nickname"}</en>
@@ -349,7 +348,7 @@
 			<speed min="20" max="90" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="41a8d639-c657-4817-a822-a51e6d9c7099" creator="9551" comment="https://en.wikipedia.org/wiki/Umberto_Eco | https://en.wikipedia.org/wiki/Foucault%27s_Pendulum">
+		<scripttemplate product="2" licence_type="3" guid="41a8d639-c657-4817-a822-a51e6d9c7099" creator="9551" wikidata_id="Q437791" comment="author: https://en.wikipedia.org/wiki/Umberto_Eco">
 			<title>
 				<de>Die Foucaultschen Schwingungen</de>
 				<en>Foucault's Vibrations</en>
@@ -557,7 +556,6 @@
 			<data flags="0" flags_optional="" target_groups="38" />
 			<targetgroupattractivity managers="2" pensioners="2" />
 			<genres maingenre="14" subgenres="17,1" />
-			<episodes min="10" max="10" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="40" max="90" />
@@ -567,7 +565,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1989" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="267a8dad-4633-4768-9aaf-efc9f9e41552" creator="9551" comment="https://en.wikipedia.org/wiki/Umberto_Eco | https://en.wikipedia.org/wiki/The_Island_of_the_Day_Before">
+		<scripttemplate product="1" licence_type="1" guid="267a8dad-4633-4768-9aaf-efc9f9e41552" creator="9551" wikidata_id="Q472031">
 			<title>
 				<de>Das Eiland von Gestern</de>
 				<en>The Islet of Yesterday</en>
@@ -608,7 +606,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1995" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="ed6652ef-7559-48ab-9ee3-a4fbb26fae59" creator="9551" comment="https://en.wikipedia.org/wiki/Umberto_Eco | https://de.wikipedia.org/wiki/Baudolino">
+		<scripttemplate product="1" licence_type="1" guid="ed6652ef-7559-48ab-9ee3-a4fbb26fae59" creator="9551" wikidata_id="Q791487">
 			<title>
 				<all>${.self:"role":1:"firstname"}</all>
 			</title>
@@ -652,7 +650,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="2002" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="78e95e72-d015-4e62-9a76-e9497d657c17" creator="9551" comment="https://en.wikipedia.org/wiki/Arthur_C._Clarke | https://en.wikipedia.org/wiki/Rendezvous_with_Rama">
+		<scripttemplate product="2" licence_type="3" guid="78e95e72-d015-4e62-9a76-e9497d657c17" creator="9551" wikidata_id="Q741222" comment="author: https://en.wikipedia.org/wiki/Arthur_C._Clarke">
 			<title>
 				<de>Reiseflug nach Rama</de>
 				<en>Revelation of Rama</en>
@@ -736,7 +734,6 @@
 			<data flags="0" flags_optional="" target_groups="34" />
 			<targetgroupattractivity employees="1.5" managers="2" />
 			<genres maingenre="16" subgenres="14,7" />
-			<episodes min="3" max="3" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="40" max="90" />
@@ -745,7 +742,7 @@
 			<speed min="40" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="2649f9e7-d46c-42b7-9c67-7e6afc12d4f3" creator="9551" comment="https://en.wikipedia.org/wiki/Arthur_C._Clarke | https://en.wikipedia.org/wiki/Childhood%27s_End">
+		<scripttemplate product="1" licence_type="1" guid="2649f9e7-d46c-42b7-9c67-7e6afc12d4f3" creator="9551" wikidata_id="Q466057">
 			<title>
 				<de>Das Ende der Kindheit</de>
 				<en>The Last Generation</en>
@@ -784,7 +781,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="333c3813-917a-4208-b137-1108f2b335c2" creator="9551" comment="https://en.wikipedia.org/wiki/Arthur_C._Clarke | https://en.wikipedia.org/wiki/The_City_and_the_Stars | auch 'Die sieben Sonnen' | also/rewrite of 'Against the Fall of Night' / 'Vergessene Zukunft', 'Diesseits der Dämmerung'">
+		<scripttemplate product="1" licence_type="1" guid="333c3813-917a-4208-b137-1108f2b335c2" creator="9551" wikidata_id="Q386544" comment="auch 'Die sieben Sonnen' | also/rewrite of Q4691073 'Against the Fall of Night' / 'Vergessene Zukunft', 'Diesseits der Dämmerung'">
 			<title>
 				<de>Die Welt unter der Sternenkuppel</de>
 				<en>The Seven Suns</en>
@@ -823,7 +820,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="9f9d5722-d45d-4d2f-a741-4be832ff134f" creator="9551" comment="https://en.wikipedia.org/wiki/Isaac_Asimov | https://en.wikipedia.org/wiki/The_Last_Question | https://en.wikipedia.org/wiki/Multivac | 'Multivac' series not necessarily in ordering of source material releases | fictional additions also included by now">
+		<scripttemplate product="1" licence_type="1" guid="9f9d5722-d45d-4d2f-a741-4be832ff134f" creator="9551" wikidata_id="Q979311" comment="author: https://en.wikipedia.org/wiki/Isaac_Asimov | series: https://en.wikipedia.org/wiki/Multivac | 'Multivac' series not necessarily in ordering of source material releases | fictional additions also included by now">
 			<title>
 				<de>Wenn die Gestirne sterben</de>
 				<en>The Final Query</en>
@@ -869,7 +866,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="12c7e43e-4ac9-4ca0-af3d-38a38deb4248" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="12c7e43e-4ac9-4ca0-af3d-38a38deb4248" creator="9551" comment="https://en.wikipedia.org/wiki/Isaac_Asimov | https://en.wikipedia.org/wiki/Question_(short_story) | using as a follow-up 'prequel' to the Multivac 'Franchise' here with some liberties taken with title and roles, i.e. 'half-fictional'. The actual technician names are Ben LeLancey and Joe Cialli but preferring to reuse existing roles here.">
+		<scripttemplate product="1" licence_type="1" guid="12c7e43e-4ac9-4ca0-af3d-38a38deb4248" creator="9551" wikidata_id="Q3927752" comment="using as a follow-up 'prequel' to the Multivac 'Franchise' here with some liberties taken with title and roles, i.e. 'half-fictional'. The actual technician names are Ben LeLancey and Joe Cialli but preferring to reuse existing roles here.">
 			<title>
 				<de>Die Ausgangsfrage</de>
 				<en>The Initial Query</en>
@@ -908,7 +905,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="656e242f-2e6e-452a-9677-50031dcbd96a" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="656e242f-2e6e-452a-9677-50031dcbd96a" creator="9551" comment="https://en.wikipedia.org/wiki/Isaac_Asimov | https://en.wikipedia.org/wiki/Someday_(short_story)">
+		<scripttemplate product="1" licence_type="1" guid="656e242f-2e6e-452a-9677-50031dcbd96a" creator="9551" wikidata_id="Q572480">
 			<title>
 				<de>Der Geschichtenerzähler</de>
 				<en>One Day...</en>
@@ -949,7 +946,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c4157b1a-982a-4b36-8571-b876749e1290" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="c4157b1a-982a-4b36-8571-b876749e1290" creator="9551" comment="https://en.wikipedia.org/wiki/Isaac_Asimov | https://en.wikipedia.org/wiki/Franchise_(short_story) | Liberties taken (originally 'Wahltag im Jahre 2008' but not wanting to be retro-futuristic here) and alluding to be a larger-scope political thriller.">
+		<scripttemplate product="1" licence_type="1" guid="c4157b1a-982a-4b36-8571-b876749e1290" creator="9551" wikidata_id="Q2079836" comment="Liberties taken (originally 'Wahltag im Jahre 2008' but not wanting to be retro-futuristic here) and alluding to be a larger-scope political thriller.">
 			<title>
 				<de>Das 2058er Mandat</de>
 				<en>Mandate</en>
@@ -990,7 +987,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="4b4f5791-ec83-48ca-be7f-adc15a89e276" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="4b4f5791-ec83-48ca-be7f-adc15a89e276" creator="9551" comment="https://en.wikipedia.org/wiki/Isaac_Asimov | https://en.wikipedia.org/wiki/Jokester">
+		<scripttemplate product="1" licence_type="1" guid="4b4f5791-ec83-48ca-be7f-adc15a89e276" creator="9551" wikidata_id="Q2493831">
 			<title>
 				<de>Der Scherzkeks</de>
 				<en>Prankster</en>
@@ -1032,7 +1029,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="71ecfa3a-1178-44f5-837f-8c989ed98631" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="71ecfa3a-1178-44f5-837f-8c989ed98631" creator="9551" comment="https://en.wikipedia.org/wiki/Isaac_Asimov | https://en.wikipedia.org/wiki/The_Dead_Past | Giving the Multivac a larger part here than in the novel">
+		<scripttemplate product="1" licence_type="1" guid="71ecfa3a-1178-44f5-837f-8c989ed98631" creator="9551" wikidata_id="Q3793685" comment="Giving the Multivac a larger part here than in the novel | actually has been adapted as an episode of the science-fiction television series Out of the Unknown - tt0058836 / tt0279036">
 			<title>
 				<de>Das Fenster in die Zeit</de>
 				<en>The Buried History</en>
@@ -1062,7 +1059,7 @@
 			</jobs>
 			<data flags="0" flags_optional="" target_groups="36" available="0" /> <!-- availability triggered by 4b4f5791-ec83-48ca-be7f-adc15a89e276 -->
 			<targetgroupattractivity employees="1.5" managers="2" />
-			<genres maingenre="16" subgenres="7,1" />
+			<genres maingenre="16" subgenres="17,7" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="70" />
@@ -1071,7 +1068,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="ce402a14-9815-4e9a-8801-b2c2cb2fafd5" creator="9551" comment="https://en.wikipedia.org/wiki/Cormac_McCarthy | https://en.wikipedia.org/wiki/Blood_Meridian">
+		<scripttemplate product="1" licence_type="1" guid="ce402a14-9815-4e9a-8801-b2c2cb2fafd5" creator="9551" wikidata_id="Q581426" comment="author: https://en.wikipedia.org/wiki/Cormac_McCarthy | also: Blood Meridian Or The Evening Redness in the West">
 			<title>
 				<de>Dem blutroten Abend entgegen</de>
 				<en>Blood Sunset</en>
@@ -1106,7 +1103,7 @@
 			<speed min="30" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="2debfd84-d201-451d-a8c2-967569967dd5" creator="9551" comment="https://en.wikipedia.org/wiki/Cormac_McCarthy | https://en.wikipedia.org/wiki/The_Orchard_Keeper">
+		<scripttemplate product="1" licence_type="1" guid="2debfd84-d201-451d-a8c2-967569967dd5" creator="9551" wikidata_id="Q1645692">
 			<title>
 				<de>Der Obstgärtner</de>
 				<en>The Field Warden</en>
@@ -1144,7 +1141,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="7fd1459c-12b3-4c86-ac3e-6771d79b52c2" creator="9551" comment="https://en.wikipedia.org/wiki/Cormac_McCarthy | https://en.wikipedia.org/wiki/Suttree">
+		<scripttemplate product="1" licence_type="1" guid="7fd1459c-12b3-4c86-ac3e-6771d79b52c2" creator="9551" wikidata_id="Q3978367">
 			<title>
 				<all>${.self:"role":1:"lastname"}</all>
 			</title>
@@ -1181,7 +1178,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="59eacb49-bfb8-4991-85a0-bfbd2f81cd43" creator="9551" comment="https://de.wikipedia.org/wiki/Till_Raether | https://www.goodreads.com/book/show/20945868-treibland">
+		<scripttemplate product="1" licence_type="1" guid="59eacb49-bfb8-4991-85a0-bfbd2f81cd43" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/20945868-treibland | author: https://de.wikipedia.org/wiki/Till_Raether">
 			<title>
 				<de>Niemands-Sand</de>
 				<en>No Man's Sand</en>
@@ -1220,7 +1217,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="04b0454a-ce03-4ca3-8b30-c3efd358c496" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="04b0454a-ce03-4ca3-8b30-c3efd358c496" creator="9551" comment="https://de.wikipedia.org/wiki/Till_Raether | https://www.goodreads.com/book/show/31675972-fallwind-adam-danowski-3 | TODO: predecessor has a real film adaptation: https://de.wikipedia.org/wiki/Danowski_%E2%80%93_Blutapfel">
+		<scripttemplate product="1" licence_type="1" guid="04b0454a-ce03-4ca3-8b30-c3efd358c496" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/31675972-fallwind-adam-danowski-3 | TODO: predecessor has a real film adaptation: https://de.wikipedia.org/wiki/Danowski_%E2%80%93_Blutapfel">
 			<title>
 				<de>Abwind</de>
 				<en>Downwind</en>
@@ -1259,7 +1256,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="6170d5e0-0dd9-4f64-95a5-fed9feec3575" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="6170d5e0-0dd9-4f64-95a5-fed9feec3575" creator="9551" comment="https://de.wikipedia.org/wiki/Till_Raether | https://www.goodreads.com/book/show/36468525-neunauge">
+		<scripttemplate product="1" licence_type="1" guid="6170d5e0-0dd9-4f64-95a5-fed9feec3575" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/36468525-neunauge">
 			<title>
 				<de>Neungesicht</de>
 				<en>Nine-Face</en>
@@ -1295,7 +1292,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="cff59d4b-cf24-4e87-97c9-dae487c996d6" creator="9551" comment="https://de.wikipedia.org/wiki/Till_Raether | https://www.goodreads.com/book/show/7646366-das-leben-ist-nur-eine-phase">
+		<scripttemplate product="1" licence_type="1" guid="cff59d4b-cf24-4e87-97c9-dae487c996d6" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/7646366-das-leben-ist-nur-eine-phase">
 			<title>
 				<de>Das Leben geht auch wieder vorbei</de>
 				<en>Life Is Just a Phase</en>
@@ -1331,7 +1328,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="87a89565-4ac3-48ea-99d4-1964b5ac4f36" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston | https://www.goodreads.com/book/show/21278.Caught_Stealing">
+		<scripttemplate product="1" licence_type="1" guid="87a89565-4ac3-48ea-99d4-1964b5ac4f36" creator="9551" wikidata_id="Q130680390" comment="author: https://en.wikipedia.org/wiki/Charlie_Huston | https://www.goodreads.com/book/show/21278.Caught_Stealing | TODO: Has by now been adapted: https://en.wikipedia.org/wiki/Caught_Stealing_(film) / tt1493274">
 			<title>
 				<de>Bestohlen und Verprügelt</de>
 				<en>Caught In a Violent Act</en>
@@ -1369,7 +1366,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston | https://www.goodreads.com/book/show/21279.Six_Bad_Things">
+		<scripttemplate product="1" licence_type="1" guid="f4d44af8-747c-4651-a720-bdd84ffbedc0" creator="9551" wikidata_id="Q130680412">
 			<title>
 				<de>Sechs Schlimme Dinge</de>
 				<en>The Hunted One</en>
@@ -1407,7 +1404,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="fb26308d-90bf-426e-b766-3534900c8612" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="fb26308d-90bf-426e-b766-3534900c8612" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston | https://www.goodreads.com/book/show/21276.A_Dangerous_Man">
+		<scripttemplate product="1" licence_type="1" guid="fb26308d-90bf-426e-b766-3534900c8612" creator="9551" wikidata_id="Q130680409" comment="https://www.goodreads.com/book/show/21276.A_Dangerous_Man">
 			<title>
 				<de>Ein bedrohlicher Mann</de>
 				<en>A Hazardous Man</en>
@@ -1442,7 +1439,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="ed95c50e-c70b-47db-9083-426fc3ed2757" creator="9551" comment="https://en.wikipedia.org/wiki/Charlie_Huston | https://en.wikipedia.org/wiki/Joe_Pitt_Casebooks | Terms like 'Vampyre', 'Vyrus' are [sic] with the 'y'.">
+		<scripttemplate product="2" licence_type="3" guid="ed95c50e-c70b-47db-9083-426fc3ed2757" creator="9551" wikidata_id="Q6211812" comment="Terms like 'Vampyre', 'Vyrus' are [sic] with the 'y'.">
 			<title>
 				<de>Das ${.self:"role":1:"fullname"} Dossier</de>
 				<en>The ${.self:"role":1:"fullname"} Dossier</en>
@@ -1459,7 +1456,7 @@
 				<pl>„Vampyre” ${.self:"role":1:"fullname"} zmaga się w podziemiach Nowego Jorku, wykonując zlecenia dla różnych klanów w zamian za krew i wolność, podczas gdy tajemniczy Zombie „Vyrus” się rozprzestrzenia.</pl>
 			</description>
 			<children>
-				<scripttemplate index="0" product="2" licence_type="2" guid="785812f4-20b6-4821-bb8c-0e2ca1e7dbe3" comment="https://en.wikipedia.org/wiki/Already_Dead_(Huston_novel)">
+				<scripttemplate index="0" product="2" licence_type="2" guid="785812f4-20b6-4821-bb8c-0e2ca1e7dbe3" wikidata_id="Q4735697">
 					<title>
 						<de>Die blutige Metropole</de>
 						<en>Deceased at Last</en>
@@ -1476,7 +1473,7 @@
 						<pl>${.self:"role":1:"firstname"} wciąż ukrywa swoją wampirzą przypadłość przed swoją dziewczyną, zakażoną wirusem HIV ${.self:"role":2:"firstname"}, podczas gdy zostaje poproszony o odnalezienie gotyckiej córki bogatego mężczyzny.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="298f3649-4dc4-47ab-9a1b-ad03cf30d3e9" comment="https://en.wikipedia.org/wiki/No_Dominion">
+				<scripttemplate index="1" product="2" licence_type="2" guid="298f3649-4dc4-47ab-9a1b-ad03cf30d3e9" wikidata_id="Q7044116">
 					<title>
 						<de>Blutdurst</de>
 						<en>And Death Shall Have...</en> <!-- 'The title of the book is an allusion to the Dylan Thomas poem "And Death Shall Have No Dominion"'' -->
@@ -1493,7 +1490,7 @@
 						<pl>${.self:"role":1:"firstname"} nie ma szczęścia, zalega z czynszem i ma mało krwi. Jego były szef ${.self:"role":3:"fullname"} rzuca mu zadanie: wytropić źródło nowego narkotyku na ulicach, wystarczająco silnego, by wywołać panikę u osób zarażonych Vyrusem.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="f1d77366-53bd-4ac0-99a4-c95b9e811154" comment="https://en.wikipedia.org/wiki/Half_the_Blood_of_Brooklyn">
+				<scripttemplate index="2" product="2" licence_type="2" guid="f1d77366-53bd-4ac0-99a4-c95b9e811154" wikidata_id="Q5641824">
 					<title>
 						<de>Das meiste Blut Manhattans</de>
 						<en>Most of Manhattan's Blood</en>
@@ -1510,7 +1507,7 @@
 						<pl>${.self:"role":1:"firstname"}, dawniej niezależny i zmagający się z problemami, znajduje się w sytuacji, w której pracuje dla klanu wampirów, mając tyle gotówki i krwi, ile potrzebuje. Ale to wiąże się z wysoką ceną: mordercze rodzinne waśnie i mnóstwo rozlewu krwi.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="d99775b9-41db-4353-9bd8-91715190ffa9" comment="https://en.wikipedia.org/wiki/Every_Last_Drop">
+				<scripttemplate index="3" product="2" licence_type="2" guid="d99775b9-41db-4353-9bd8-91715190ffa9" wikidata_id="Q5417514">
 					<title>
 						<de>Die verbliebenen Tropfen</de>
 						<en>The Final Dripping</en>
@@ -1527,7 +1524,7 @@
 						<pl>Oczywiście, ${.self:"role":1:"firstname"} jest teraz znowu sam, musiał spalić wszystkie mosty i może swobodnie polować. Szef klanu ${.self:"role":6:"fullname"} oferuje mu układ: za wszelką cenę trzeba zapobiec wyleczeniu Zombie-Vyrus...</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="34934d49-f1e7-44fe-a5b3-24415a0d8f5f" comment="https://en.wikipedia.org/wiki/My_Dead_Body">
+				<scripttemplate index="4" product="2" licence_type="2" guid="34934d49-f1e7-44fe-a5b3-24415a0d8f5f" wikidata_id="Q6945236">
 					<title>
 						<de>Die blutigen Überreste</de>
 						<en>My Deceased Remains</en>
@@ -1563,7 +1560,6 @@
 			<data flags="64" flags_optional="" target_groups="18" />
 			<targetgroupattractivity women="1.25" teenagers="2" unemployed="2" />
 			<genres maingenre="12" subgenres="17,2" />
-			<episodes min="5" max="5" />
 			<blocks value="2" />
 			<price min="100000" max="200000" />
 			<potential min="30" max="70" />
@@ -1572,7 +1568,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="ac018c75-aa8f-4cb1-b1aa-6d1e90da8625" creator="9551" comment="https://en.wikipedia.org/wiki/Chuck_Palahniuk | https://en.wikipedia.org/wiki/Survivor_(Palahniuk_novel)">
+		<scripttemplate product="1" licence_type="1" guid="ac018c75-aa8f-4cb1-b1aa-6d1e90da8625" creator="9551" wikidata_id="Q568143" comment="author: https://en.wikipedia.org/wiki/Chuck_Palahniuk">
 			<title>
 				<de>Der Überlebende</de>
 				<en>Flight 2039</en>
@@ -1608,7 +1604,7 @@
 			<speed min="30" max="90" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="d32a4e44-4e60-4faf-bdcc-392f67452959" creator="9551" comment="https://en.wikipedia.org/wiki/Chuck_Palahniuk | https://en.wikipedia.org/wiki/Invisible_Monsters">
+		<scripttemplate product="1" licence_type="1" guid="d32a4e44-4e60-4faf-bdcc-392f67452959" creator="9551" wikidata_id="Q2600527">
 			<title>
 				<de>Entstellt</de>
 				<en>Unseen Creatures</en>
@@ -1648,7 +1644,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="7981114a-198d-4a97-9279-107e182e50e9" creator="9551" comment="https://en.wikipedia.org/wiki/Chuck_Palahniuk | https://en.wikipedia.org/wiki/Rant_(novel)">
+		<scripttemplate product="1" licence_type="1" guid="7981114a-198d-4a97-9279-107e182e50e9" creator="9551" wikidata_id="Q2278436">
 			<title>
 				<de>Das Zeichen von Kain</de>
 				<en>${.self:"role":1:"fullname"}: The Verbal Biography</en>
@@ -1687,7 +1683,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="175c3483-c1e0-43cb-bb2c-2bca8087433f" creator="9551" comment="https://en.wikipedia.org/wiki/Chuck_Palahniuk | https://en.wikipedia.org/wiki/Pygmy_(novel)">
+		<scripttemplate product="1" licence_type="1" guid="175c3483-c1e0-43cb-bb2c-2bca8087433f" creator="9551" wikidata_id="Q1771221">
 			<title>
 				<de>Knirps</de>
 				<en>${.self:"role":1:"firstname"}</en>
@@ -1726,7 +1722,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="a1929a96-b823-4149-884e-2988b99cc35d" creator="9551" comment="https://en.wikipedia.org/wiki/Carl_Hiaasen | https://en.wikipedia.org/wiki/Native_Tongue_(Hiaasen_novel)">
+		<scripttemplate product="1" licence_type="1" guid="a1929a96-b823-4149-884e-2988b99cc35d" creator="9551" wikidata_id="Q16998543" comment="author: https://en.wikipedia.org/wiki/Carl_Hiaasen">
 			<title>
 				<de>Muttersprache</de>
 				<en>Big Shots</en>
@@ -1766,7 +1762,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="945cfba1-393a-44e8-a9f2-3288e91e394f" creator="9551" comment="https://en.wikipedia.org/wiki/Carl_Hiaasen | https://en.wikipedia.org/wiki/Tourist_Season_(novel)">
+		<scripttemplate product="1" licence_type="1" guid="945cfba1-393a-44e8-a9f2-3288e91e394f" creator="9551" wikidata_id="Q7829257">
 			<title>
 				<de>Hochsaison</de>
 				<en>Terror in Florida</en>
@@ -1811,7 +1807,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f7bd33a9-761b-496c-94c7-3c0e07e38e05" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="f7bd33a9-761b-496c-94c7-3c0e07e38e05" creator="9551" comment="https://en.wikipedia.org/wiki/Carl_Hiaasen | https://en.wikipedia.org/wiki/Double_Whammy_(novel) | auch: Miami Morde">
+		<scripttemplate product="1" licence_type="1" guid="f7bd33a9-761b-496c-94c7-3c0e07e38e05" creator="9551" wikidata_id="Q5299946" comment="auch: Miami Morde">
 			<title>
 				<de>Der Doppelschlag</de>
 				<en>Thick Fish</en>
@@ -1856,7 +1852,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="87526283-2e29-4e4b-93b8-25f2f068a308" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="87526283-2e29-4e4b-93b8-25f2f068a308" creator="9551" comment="https://en.wikipedia.org/wiki/Carl_Hiaasen | https://en.wikipedia.org/wiki/Skin_Tight_(novel)">
+		<scripttemplate product="1" licence_type="1" guid="87526283-2e29-4e4b-93b8-25f2f068a308" creator="9551" wikidata_id="Q7535360">
 			<title>
 				<de>Hautnah</de>
 				<en>Under the Skin</en>
@@ -1897,7 +1893,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="98360911-0efe-4040-8b94-da9359ceb149" creator="9551" comment="https://en.wikipedia.org/wiki/Tim_Powers | https://en.wikipedia.org/wiki/The_Anubis_Gates">
+		<scripttemplate product="1" licence_type="1" guid="98360911-0efe-4040-8b94-da9359ceb149" creator="9551" wikidata_id="Q128324" comment="author: https://en.wikipedia.org/wiki/Tim_Powers">
 			<title>
 				<de>Das Anubis-Portal</de>
 				<en>The Anubis Portal</en>
@@ -1940,7 +1936,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1984" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/24178943-im-fr-hling-sterben | https://www.goodreads.com/book/show/31574746-to-die-in-spring">
+		<scripttemplate product="1" licence_type="1" guid="39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0" creator="9551" wikidata_id="Q29341926" comment="author: https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/24178943-im-fr-hling-sterben | https://www.goodreads.com/book/show/31574746-to-die-in-spring">
 			<title>
 				<de>Der Tod im Frühjahr</de>
 				<en>Death in Spring</en>
@@ -1981,7 +1977,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/1329586.Stier">
+		<scripttemplate product="1" licence_type="1" guid="90fbe294-e7ab-4072-a1f0-71a8f8767d1e" creator="9551" wikidata_id="Q109315880" comment="https://www.goodreads.com/book/show/1329586.Stier">
 			<title>
 				<all>Taurus</all>
 			</title>
@@ -2020,7 +2016,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/7819536-w-ldernacht">
+		<scripttemplate product="1" licence_type="1" guid="d5ee2df6-e3cf-47f4-9870-f634fce4aa4a" creator="9551" wikidata_id="Q109315890" comment="https://www.goodreads.com/book/show/7819536-w-ldernacht">
 			<title>
 				<de>Wälderdämmerung</de>
 				<en>Forest Dusk</en>
@@ -2061,7 +2057,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="0bb634fb-3712-489f-a27b-537bfb605c19" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="0bb634fb-3712-489f-a27b-537bfb605c19" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/2633646-milch-und-kohle | part of the 'Ruhrgebietsreihe' and also sequel to 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 (but written earlier)">
+		<scripttemplate product="1" licence_type="1" guid="0bb634fb-3712-489f-a27b-537bfb605c19" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/2633646-milch-und-kohle | part of the 'Ruhrgebietsreihe' and also sequel to 39dcaa6e-7ae3-49b4-85ea-80c00cf85fe0 (but written earlier)">
 			<title>
 				<de>Milch Unter Tage</de>
 				<en>Milk Under Ground</en>
@@ -2102,7 +2098,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/8088885-junges-licht | actually has a film adaptation: https://de.wikipedia.org/wiki/Junges_Licht_(Film) - tt4830708">
+		<scripttemplate product="1" licence_type="1" guid="96a55df3-cd85-4fae-88a8-66295518a8f9" creator="9551" wikidata_id="Q1665034" comment="https://www.goodreads.com/book/show/8088885-junges-licht | actually has a film adaptation: https://de.wikipedia.org/wiki/Junges_Licht_(Film) - tt4830708">
 			<title>
 				<de>Junger Glanz</de>
 				<en>Young Shine</en>
@@ -2140,7 +2136,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="8928879b-ef2e-4df0-a202-59f3ffaffbe1" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://de.wikipedia.org/wiki/Flieh,_mein_Freund! | https://www.goodreads.com/book/show/5188124 | No official English title seems to exist, applying translation">
+		<scripttemplate product="1" licence_type="1" guid="8928879b-ef2e-4df0-a202-59f3ffaffbe1" creator="9551" wikidata_id="Q1428589" comment="https://www.goodreads.com/book/show/5188124 | No official English title seems to exist, applying translation">
 			<title>
 				<de>Lauf, mein Kumpel!</de>
 				<en>Run, My Buddy!</en>
@@ -2178,7 +2174,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1998" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="697f193c-5db2-497c-a6fe-c64d94e70543" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/book/show/6289281-hitze | No official English title seems to exist, applying translation">
+		<scripttemplate product="1" licence_type="1" guid="697f193c-5db2-497c-a6fe-c64d94e70543" creator="9551" wikidata_id="Q109315789" comment="https://www.goodreads.com/book/show/6289281-hitze | No official English title seems to exist, applying translation">
 			<title>
 				<de>Heiß</de>
 				<en>Hot</en>
@@ -2215,7 +2211,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1995" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="13767f14-3fb6-4f76-af84-11800f8a9d91" creator="9551" comment="https://de.wikipedia.org/wiki/Ralf_Rothmann | https://www.goodreads.com/de/book/show/6351046-feuer-brennt-nicht | No official English title seems to exist, applying translation">
+		<scripttemplate product="1" licence_type="1" guid="13767f14-3fb6-4f76-af84-11800f8a9d91" creator="9551" wikidata_id="" comment="https://www.goodreads.com/de/book/show/6351046-feuer-brennt-nicht | No official English title seems to exist, applying translation">
 			<title>
 				<de>Flammen lodern nicht</de>
 				<en>Flames Aren't Blazing</en>
@@ -2253,7 +2249,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="2002" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="503f9778-62b2-4717-98ff-b31cf8c0a5e6" creator="9551" comment="https://en.wikipedia.org/wiki/Jonathan_Franzen | https://en.wikipedia.org/wiki/The_Corrections">
+		<scripttemplate product="1" licence_type="1" guid="503f9778-62b2-4717-98ff-b31cf8c0a5e6" creator="9551" wikidata_id="Q335645" comment="author: https://en.wikipedia.org/wiki/Jonathan_Franzen">
 			<title>
 				<de>Die Richtigstellungen</de>
 				<en>The Rectifications</en>
@@ -2292,7 +2288,7 @@
 			<speed min="30" max="90" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="8e91a205-b352-4a33-bb12-27f87e778549" creator="9551" comment="https://en.wikipedia.org/wiki/Jonathan_Franzen | https://en.wikipedia.org/wiki/The_Twenty-Seventh_City">
+		<scripttemplate product="2" licence_type="3" guid="8e91a205-b352-4a33-bb12-27f87e778549" creator="9551" wikidata_id="Q3824822">
 			<title>
 				<de>Die früher viertgrößte Stadt</de>
 				<en>The Formerly 4th Largest City</en>
@@ -2352,7 +2348,6 @@
 			<data flags="0" flags_optional="" target_groups="6" /> <!-- TODO: perhaps lobby groups -->
 			<targetgroupattractivity teenagers="2" pensioners="0.25" />
 			<genres maingenre="7" subgenres="17,4" />
-			<episodes min="2" max="2" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -2361,7 +2356,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="90ef9c97-60a2-45f0-a95a-108823a503f3" creator="9551" comment="https://en.wikipedia.org/wiki/Jonathan_Franzen | https://en.wikipedia.org/wiki/Strong_Motion">
+		<scripttemplate product="2" licence_type="3" guid="90ef9c97-60a2-45f0-a95a-108823a503f3" creator="9551" wikidata_id="Q769644">
 			<title>
 				<de>Heftiges Beben</de>
 				<en>Power and Motion</en>
@@ -2463,7 +2458,6 @@
 			<data flags="0" flags_optional="" target_groups="6" />
 			<targetgroupattractivity teenagers="2" pensioners="0.25" />
 			<genres maingenre="7" subgenres="17,15" />
-			<episodes min="4" max="4" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -2472,7 +2466,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="57ad453d-1c0e-4d84-acbb-e06e6ceedd8c" creator="9551" comment="https://en.wikipedia.org/wiki/Jonathan_Franzen | https://en.wikipedia.org/wiki/Purity_(novel)">
+		<scripttemplate product="2" licence_type="3" guid="57ad453d-1c0e-4d84-acbb-e06e6ceedd8c" creator="9551" wikidata_id="Q20899538">
 			<title>
 				<de>Reinheit</de>
 				<en>${.self:"role":1:"firstname"}</en>
@@ -2621,7 +2615,6 @@
 			<data flags="0" flags_optional="" target_groups="6" />
 			<targetgroupattractivity teenagers="2" pensioners="0.25" />
 			<genres maingenre="7" subgenres="17,15" />
-			<episodes min="7" max="7" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -2631,7 +2624,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="2005" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="6933d3b7-64b0-46e4-9671-3ddecebc89ce" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Shadow_of_the_Wind">
+		<scripttemplate product="1" licence_type="1" guid="6933d3b7-64b0-46e4-9671-3ddecebc89ce" creator="9551" wikidata_id="Q52910" comment="author: https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n">
 			<title>
 				<de>Schemen der Brise</de>
 				<en>Shade of the Breeze</en>
@@ -2672,7 +2665,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Angel%27s_Game">
+		<scripttemplate product="1" licence_type="1" guid="5740cd0d-3f8f-4b26-823a-23a91ea16b19" creator="9551" wikidata_id="Q1170423">
 			<title>
 				<de>Schach des Engels</de>
 				<en>Angel's Play</en>
@@ -2713,7 +2706,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Prisoner_of_Heaven">
+		<scripttemplate product="1" licence_type="1" guid="2c30a2fd-f940-481d-886e-30f1e21dc43d" creator="9551" wikidata_id="Q2092261">
 			<title>
 				<de>Häftling im Paradies</de>
 				<en>Captive of Paradise</en>
@@ -2754,7 +2747,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/The_Labyrinth_of_Spirits">
+		<scripttemplate product="1" licence_type="1" guid="412e7f15-e4fd-4ac5-adaf-3fdb1bbc301c" creator="9551" wikidata_id="Q27536588">
 			<title>
 				<de>Irrgarten der Geister</de>
 				<en>Maze of Lights</en>
@@ -2768,7 +2761,7 @@
 			<description>
 				<de>${.self:"role":1:"firstname"} hat herausgefunden, dass seine Mutter vom bösartigen Gefängnisdirektor ${.self:"role":2:"firstname"} ermordet wurde, nachdem sie gedroht hatte, zu enthüllen, dass er inhaftierte Autoren als Ghostwriter nutzt. Er sinnt nach Rache.</de>
 				<en>${.self:"role":1:"firstname"} has found out that his mother was murdered by vicious prison warden ${.self:"role":2:"firstname"} after she had threatened to reveal his use of imprisoned authors as ghostwriters. He seeks revenge.</en>
-				<pl>${.self:"role":1:"firstname"} dowiedział się, że jego matka została zamordowana przez okrutnego naczelnika więzienia ${.self:"role":2:"firstname"}a po tym, jak zagroziła, że ​​ujawni, że korzystał z uwięzionych autorów jako ghostwriterów. Szuka zemsty.</pl>
+				<pl>${.self:"role":1:"firstname"} dowiedział się, że jego matka została zamordowana przez okrutnego naczelnika więzienia ${.self:"role":2:"firstname"}a po tym, jak zagroziła, że ujawni, że korzystał z uwięzionych autorów jako ghostwriterów. Szuka zemsty.</pl>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2793,7 +2786,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="9eac358b-717a-4a43-a699-71a813833b00" creator="9551" comment="https://en.wikipedia.org/wiki/Carlos_Ruiz_Zaf%C3%B3n | https://en.wikipedia.org/wiki/Marina_(novel)">
+		<scripttemplate product="1" licence_type="1" guid="9eac358b-717a-4a43-a699-71a813833b00" creator="9551" wikidata_id="Q941006">
 			<title>
 				<all>${.self:"role":1:"firstname"}</all>
 			</title>
@@ -2832,7 +2825,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="19e286f7-0b76-4377-b3c7-34e1887b1fda" creator="9551" comment="https://en.wikipedia.org/wiki/Steven_Millhauser | https://en.wikipedia.org/wiki/Martin_Dressler">
+		<scripttemplate product="1" licence_type="1" guid="19e286f7-0b76-4377-b3c7-34e1887b1fda" creator="9551" wikidata_id="Q6775331" comment="author: https://en.wikipedia.org/wiki/Steven_Millhauser">
 			<title>
 				<de>${.self:"role":1:"fullname"} - Ein amerikanischer Fantast</de>
 				<en>${.self:"role":1:"fullname"} - The Legend of an American Fantast</en>
@@ -2870,7 +2863,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="6019f8fc-6df8-4649-a5b4-3eb6a70439e7" creator="9551" comment="https://en.wikipedia.org/wiki/Steven_Millhauser | https://en.wikipedia.org/wiki/Edwin_Mullhouse">
+		<scripttemplate product="2" licence_type="3" guid="6019f8fc-6df8-4649-a5b4-3eb6a70439e7" creator="9551" wikidata_id="Q3213724">
 			<title>
 				<de>${.self:"role":1:"fullname"}, Vita und Ableben eines amerikanischen Autors, 1943-1954, von ${.self:"role":2:"fullname"}</de>
 				<en>${.self:"role":1:"fullname"}, Vita and Demise of an American Author, 1943-1954, by ${.self:"role":2:"fullname"}</en>
@@ -2952,7 +2945,6 @@
 			<data flags="0" flags_optional="8" target_groups="39" />
 			<targetgroupattractivity men="0.75" children="2" />
 			<genres maingenre="5" subgenres="7,9" />
-			<episodes min="3" max="3" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="90" />
@@ -2961,7 +2953,7 @@
 			<speed min="30" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="e46b5a67-1b39-4625-9761-b0b88dc204ac" creator="9551" comment="https://en.wikipedia.org/wiki/Jonathan_Carroll | https://en.wikipedia.org/wiki/Bones_of_the_Moon">
+		<scripttemplate product="1" licence_type="1" guid="e46b5a67-1b39-4625-9761-b0b88dc204ac" creator="9551" wikidata_id="Q4941756" comment="author: https://en.wikipedia.org/wiki/Jonathan_Carroll">
 			<title>
 				<de>Schreiende Träume</de>
 				<en>Skeletons on the Moon</en>
@@ -2999,7 +2991,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="b6a6f561-943e-4c03-88c6-2d47fb96b7a7" creator="9551" comment="https://de.wikipedia.org/wiki/Philipp_Winkler_(Schriftsteller) | https://www.goodreads.com/book/show/29978653-hool">
+		<scripttemplate product="1" licence_type="1" guid="b6a6f561-943e-4c03-88c6-2d47fb96b7a7" creator="9551" wikidata_id="Q133898093" comment="https://www.goodreads.com/book/show/29978653-hool | author: https://de.wikipedia.org/wiki/Philipp_Winkler_(Schriftsteller)">
 			<title>
 				<all>Rowdy</all>
 				<pl>Hałaśliwy</pl>
@@ -3035,7 +3027,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="e8a3bf50-ab02-43d8-b980-c0fb7234a3b4" creator="9551" comment="https://en.wikipedia.org/wiki/Bruno_Brazil">
+		<scripttemplate product="1" licence_type="1" guid="e8a3bf50-ab02-43d8-b980-c0fb7234a3b4" creator="9551" wikidata_id="Q993088">
 			<title>
 				<all>${.self:"role":1:"fullname"}</all>
 			</title>
@@ -3075,7 +3067,7 @@
 			<speed min="10" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="d545bf8a-b0f4-4888-978e-2a6561027be0" creator="9551" comment="https://de.wikipedia.org/wiki/Kai_Meyer | https://de.wikipedia.org/wiki/Merle-Zyklus">
+		<scripttemplate product="2" licence_type="3" guid="d545bf8a-b0f4-4888-978e-2a6561027be0" creator="9551" wikidata_id="Q1921891" comment="author: https://de.wikipedia.org/wiki/Kai_Meyer">
 			<title>
 				<all>${.self:"role":1:"firstname"}</all>
 			</title>
@@ -3158,7 +3150,6 @@
 			<data target_groups="7" />
 			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
 			<genres maingenre="10" subgenres="9,1" />
-			<episodes min="3" max="3" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -3167,7 +3158,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="628f6d38-a2bc-4122-b191-07461282fef1" creator="9551" comment="https://en.wikipedia.org/wiki/China_Mi%C3%A9ville | https://en.wikipedia.org/wiki/Railsea">
+		<scripttemplate product="1" licence_type="1" guid="628f6d38-a2bc-4122-b191-07461282fef1" creator="9551" wikidata_id="Q7284118" comment="author: https://en.wikipedia.org/wiki/China_Mi%C3%A9ville">
 			<title>
 				<de>Das Eisenmeer</de>
 				<en>Ironsea</en>
@@ -3195,8 +3186,8 @@
 				<job index="8" function="32" required="1" gender="1" />
 			</jobs>
 			<data flags="0" flags_optional="" target_groups="18" />
-			<targetgroupattractivity employees="1.25" />
-			<genres maingenre="2" subgenres="16,1" />
+			<targetgroupattractivity teenagers_female="1.5" employees="1.25" />
+			<genres maingenre="1" subgenres="16,2" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -3205,7 +3196,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="af65875a-62c6-44d2-8e62-844ed3b90a9a" creator="9551" comment="https://dc.fandom.com/wiki/Catwoman:_Selina%27s_Big_Score">
+		<scripttemplate product="2" licence_type="3" guid="af65875a-62c6-44d2-8e62-844ed3b90a9a" creator="9551" wikidata_id="" comment="https://dc.fandom.com/wiki/Catwoman:_Selina%27s_Big_Score">
 			<title>
 				<de>Catlady: ${.self:"role":1:"firstname"}s großer Streich</de>
 				<en>Catlady: ${.self:"role":1:"firstname"}'s Big Shot</en>
@@ -3298,7 +3289,6 @@
 			<data target_groups="18" />
 			<targetgroupattractivity children="2" teenagers="2" />
 			<genres maingenre="17" subgenres="16,2" />
-			<episodes min="4" max="4" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -3308,7 +3298,7 @@
 			<studio_size value="3" />
 			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="214fee00-acec-46a1-8959-ccac3264bee9" creator="9551" comment="https://en.wikipedia.org/wiki/Dan_Simmons | https://en.wikipedia.org/wiki/Hyperion_Cantos">
+		<scripttemplate product="2" licence_type="3" guid="214fee00-acec-46a1-8959-ccac3264bee9" creator="9551" wikidata_id="Q1213577" comment="author: https://en.wikipedia.org/wiki/Dan_Simmons">
 			<title>
 				<de>Die Hyperiad-Kantaten</de>
 				<en>Hyperiad Cantata</en>
@@ -3415,7 +3405,6 @@
 			<data target_groups="22" />
 			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" employees="1.25" managers="1.5" />
 			<genres maingenre="16" subgenres="13,14" />
-			<episodes min="4" max="4" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="90" />
@@ -3425,7 +3414,7 @@
 			<studio_size value="3" />
 			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="b0a49e9d-8fd5-47dd-abb2-fbe2a3ca656b" creator="9551" comment="https://en.wikipedia.org/wiki/Dan_Simmons | https://en.wikipedia.org/wiki/Ilium/Olympos">
+		<scripttemplate product="2" licence_type="3" guid="b0a49e9d-8fd5-47dd-abb2-fbe2a3ca656b" creator="9551" wikidata_id="Q692326">
 			<title>
 				<all>Ilios/Olympium</all>
 			</title>
@@ -3440,7 +3429,7 @@
 				<pl>Przestrzenią i czasem można manipulować. ${.self:"role":1:"fullname"}, historyk XXI wieku wskrzeszony przez bogów (czy oni w ogóle są „prawdziwymi”?) po 4200 latach, studiuje Homera i wojnę trojańską i sam wpływa na wydarzenia.</pl>
 			</description>
 			<children>
-				<scripttemplate index="0" product="2" licence_type="2" guid="031f264a-4cbe-4d5d-9462-76ae0d37a550" comment="https://en.wikipedia.org/wiki/Ilium_(novel)">
+				<scripttemplate index="0" product="2" licence_type="2" guid="031f264a-4cbe-4d5d-9462-76ae0d37a550" wikidata_id="Q2725656">
 					<title>
 						<all>Ilios</all>
 					</title>
@@ -3455,7 +3444,7 @@
 						<pl>${.self:"role":1:"firstname"}, podszywając się pod ${.self:"role":7:"firstname"}, potajemnie umawia się na miłosne spotkanie w cztery oczy z piękną Heleną Trojańską, która przykłada mu sztylet do gardła i obmyśla plan, który ma położyć kres wojnie między Grekami a Trojanami.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="30fee702-4677-45b9-935f-f4dee9c1205a" comment="https://en.wikipedia.org/wiki/Olympos_(novel)">
+				<scripttemplate index="1" product="2" licence_type="2" guid="30fee702-4677-45b9-935f-f4dee9c1205a" wikidata_id="Q2525080">
 					<title>
 						<all>Olympium</all>
 					</title>
@@ -3497,7 +3486,6 @@
 			<data target_groups="18" />
 			<targetgroupattractivity children="2" teenagers="2" employees="1.5" managers="1.5" />
 			<genres maingenre="16" subgenres="13,14" />
-			<episodes min="2" max="2" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -3507,7 +3495,7 @@
 			<studio_size value="3" />
 			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="d5f301bf-a014-4a7c-8963-319cb7dc827b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1309057.Escapade">
+		<scripttemplate product="1" licence_type="1" guid="d5f301bf-a014-4a7c-8963-319cb7dc827b" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/1309057.Escapade | author: https://de.wikipedia.org/wiki/Walter_Satterthwait">
 			<title>
 				<de>Eskalade</de>
 				<en>Escalade</en>
@@ -3550,7 +3538,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="4fb85612-e170-4443-be34-31e9ecd65f50" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="4fb85612-e170-4443-be34-31e9ecd65f50" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/815901.Masquerade">
+		<scripttemplate product="1" licence_type="1" guid="4fb85612-e170-4443-be34-31e9ecd65f50" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/815901.Masquerade">
 			<title>
 				<de>Maskierungen</de>
 				<en>Mimicry</en>
@@ -3593,7 +3581,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1455585.Cavalcade">
+		<scripttemplate product="1" licence_type="1" guid="c3b4897d-af32-4aa4-be78-ae736c03cd0b" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/1455585.Cavalcade">
 			<title>
 				<de>Scherereien</de>
 				<en>Charades</en>
@@ -3636,7 +3624,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1232991.Wilde_West">
+		<scripttemplate product="1" licence_type="1" guid="b3aa52bd-7bf4-4d41-81a8-9e51b6ac0301" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/1232991.Wilde_West">
 			<title>
 				<de>${.self:"role":1:"fullname"} im Amerikanischen Westen</de>
 				<en>${.self:"role":1:"fullname"}'s West</en>
@@ -3676,7 +3664,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="56617d57-9cb3-40a8-afb0-e4621524c8f9" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/1802533.Miss_Lizzie | translators: the rhyming verse might also be on some on the other language versions of https://en.wikipedia.org/wiki/Lizzie_Borden">
+		<scripttemplate product="1" licence_type="1" guid="56617d57-9cb3-40a8-afb0-e4621524c8f9" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/1802533.Miss_Lizzie | translators: the rhyming verse might also be on some on the other language versions of https://en.wikipedia.org/wiki/Lizzie_Borden">
 			<title>
 				<all>Miss ${.self:"role":1:"firstname"}</all>
 				<pl>Panna ${.self:"role":1:"firstname"}</pl>
@@ -3718,7 +3706,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f0dce9e4-e7d5-4e7b-b84b-64247bdd944b" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="f0dce9e4-e7d5-4e7b-b84b-64247bdd944b" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/book/show/27601309-new-york-nocturne">
+		<scripttemplate product="1" licence_type="1" guid="f0dce9e4-e7d5-4e7b-b84b-64247bdd944b" creator="9551" wikidata_id="" comment="https://www.goodreads.com/book/show/27601309-new-york-nocturne">
 			<title>
 				<de>Miss ${.self:"role":1:"firstname"} ist wieder da</de>
 				<en>Manhattan Nights: Miss ${.self:"role":1:"firstname"} Is Back</en>
@@ -3758,7 +3746,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="9df69384-e0a1-40ee-9968-d3291acbba55" creator="9551" comment="https://de.wikipedia.org/wiki/Walter_Satterthwait | https://www.goodreads.com/en/book/show/1434337.Dead_Horse | also: Dead Horse Ranch">
+		<scripttemplate product="1" licence_type="1" guid="9df69384-e0a1-40ee-9968-d3291acbba55" creator="9551" wikidata_id="" comment="https://www.goodreads.com/en/book/show/1434337.Dead_Horse | also: Dead Horse Ranch">
 			<title>
 				<de>Totes Pferd</de>
 				<en>Deceased Horse</en>
@@ -3795,7 +3783,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="e266e7c3-e191-451a-87b6-61962e7c3b27" creator="9551" comment="https://en.wikipedia.org/wiki/Fables_(comics) | public domain, as are the characters">
+		<scripttemplate product="2" licence_type="3" guid="e266e7c3-e191-451a-87b6-61962e7c3b27" creator="9551" wikidata_id="Q784649" comment="public domain, as are the characters">
 			<title>
 				<de>Fables (Staffel 1)</de>
 				<en>Fables (Season 1)</en>
@@ -3958,9 +3946,9 @@
 						<pl>${.self:"role":5:"firstname"} Rozpustnik</pl>
 					</title>
 					<title_original>
-						<de>${.self:"role":5:"firstname"} zügellos</de>
-						<en>${.self:"role":5:"firstname"} Libertine</en>
-						<pl>${.self:"role":5:"firstname"} Rozpustnik</pl>
+						<de>Aschenputtel zügellos</de>
+						<en>Cinderella Libertine</en>
+						<pl>Kopciuszek Rozpustnik</pl>
 					</title_original>
 					<description>
 						<de>${.self:"role":5:"firstname"}s scheinbar frivole Lebensweise stellt sich als Tarnung für andere Tätigkeiten heraus.</de>
@@ -3990,7 +3978,6 @@
 			<data flags="0" flags_optional="" target_groups="18" />
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
 			<genres maingenre="10" subgenres="17,5" />
-			<episodes min="8" max="8" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -4000,7 +3987,7 @@
 			<studio_size value="3" />
 			<availability script='${.gt:${.worldtime:"daysplayed"}:18}' />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="085400ce-9d05-4012-8e16-5276f335c38c" creator="9551" comment="https://en.wikipedia.org/wiki/Fables_(comics) | public domain, as are the characters">
+		<scripttemplate product="2" licence_type="3" guid="085400ce-9d05-4012-8e16-5276f335c38c" creator="9551" wikidata_id="Q784649" comment="public domain, as are the characters">
 			<title>
 				<de>Fables (Staffel 2)</de>
 				<en>Fables (Season 2)</en>
@@ -4194,7 +4181,6 @@
 			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
 			<genres maingenre="10" subgenres="17,5" />
-			<episodes min="8" max="8" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -4203,7 +4189,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="e80a40b9-dd11-47a1-be43-6c766ac33365" creator="9551" comment="https://en.wikipedia.org/wiki/Fables_(comics) | public domain, as are the characters">
+		<scripttemplate product="2" licence_type="3" guid="e80a40b9-dd11-47a1-be43-6c766ac33365" creator="9551" wikidata_id="Q784649" comment="public domain, as are the characters">
 			<title>
 				<de>Fables (Staffel 3)</de>
 				<en>Fables (Season 3)</en>
@@ -4390,7 +4376,6 @@
 			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by by previous season episode 1 -->
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
 			<genres maingenre="10" subgenres="17,5" />
-			<episodes min="8" max="8" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -4399,7 +4384,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="89d9d6e9-7348-4894-86c3-18f64aa25d85" creator="9551" comment="https://en.wikipedia.org/wiki/Fables_(comics) | public domain, as are the characters">
+		<scripttemplate product="2" licence_type="3" guid="89d9d6e9-7348-4894-86c3-18f64aa25d85" creator="9551" wikidata_id="Q784649" comment="public domain, as are the characters">
 			<title>
 				<de>Fables (Staffel 4)</de>
 				<en>Fables (Season 4)</en>
@@ -4603,7 +4588,6 @@
 			<data flags="0" flags_optional="" target_groups="18" available="0" /> <!-- availability triggered by by previous season episode 1 -->
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
 			<genres maingenre="10" subgenres="17,5" />
-			<episodes min="8" max="8" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="80" />
@@ -4612,7 +4596,7 @@
 			<speed min="20" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="ea871c60-e653-4dac-82bb-9e2e78393385" creator="9551" comment="https://en.wikipedia.org/wiki/Xanth | Also was available as a 4 part TV series in MadTV; adding two seasons but changing to 3 episodes each because source material seems to have some trilogies-of-trilogies thing going on.">
+		<scripttemplate product="2" licence_type="3" guid="ea871c60-e653-4dac-82bb-9e2e78393385" creator="9551" wikidata_id="Q182099" comment="author: https://en.wikipedia.org/wiki/Piers_Anthony | Also was available as a 4 part TV series in MadTV; adding two seasons but changing to 3 episodes each because source material seems to have some trilogies-of-trilogies thing going on.">
 			<title>
 				<de>Die Legende vom verzauberten Xynthia (Staffel 1)</de>
 				<en>Enchanted Land Xynthia (Season 1)</en>
@@ -4708,7 +4692,6 @@
 			<data target_groups="18" />
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" managers="2" />
 			<genres maingenre="10" subgenres="5,1" />
-			<episodes min="3" max="3" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="70" />
@@ -4717,7 +4700,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="f75c6a8b-d30b-48a2-b6bc-1458c19ca7ce" creator="9551" comment="https://en.wikipedia.org/wiki/Xanth">
+		<scripttemplate product="2" licence_type="3" guid="f75c6a8b-d30b-48a2-b6bc-1458c19ca7ce" creator="9551" wikidata_id="Q182099">
 			<title>
 				<de>Die Legende vom verzauberten Xynthia (Staffel 2)</de>
 				<en>Enchanted Land Xynthia (Season 2)</en>
@@ -4803,7 +4786,6 @@
 			<data target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" managers="2" />
 			<genres maingenre="10" subgenres="5,1" />
-			<episodes min="3" max="3" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="70" />
@@ -4812,7 +4794,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="f06a42e2-b666-4353-bc53-a0b262071814" creator="9551" comment="https://en.wikipedia.org/wiki/Xanth">
+		<scripttemplate product="2" licence_type="3" guid="f06a42e2-b666-4353-bc53-a0b262071814" creator="9551" wikidata_id="Q182099">
 			<title>
 				<de>Die Legende vom verzauberten Xynthia (Staffel 3)</de>
 				<en>Enchanted Land Xynthia (Season 3)</en>
@@ -4894,7 +4876,6 @@
 			<data target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" managers="2" />
 			<genres maingenre="10" subgenres="5,1" />
-			<episodes min="3" max="3" />
 			<blocks value="3" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="70" />
@@ -4906,7 +4887,7 @@
 
 		<!-- Music (i.e. mostly the stories from concept albums; track list titles usually map well to episode titles) -->
 
-		<scripttemplate product="2" licence_type="3" guid="957dbfe6-2dc6-49f9-93ce-4da50d04b642" creator="9551" comment="https://en.wikipedia.org/wiki/Operation:_Mindcrime">
+		<scripttemplate product="2" licence_type="3" guid="957dbfe6-2dc6-49f9-93ce-4da50d04b642" creator="9551" wikidata_id="Q588052">
 			<title>
 				<de>Mission: Thoughtcrime (Staffel 1)</de>
 				<en>Mission: Thoughtcrime (Season 1)</en>
@@ -5188,7 +5169,6 @@
 			</jobs>
 			<data flags="0" flags_optional="64" target_groups="18" />
 			<genres maingenre="17" subgenres="7,16" />
-			<episodes min="15" max="15" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="40" max="80" />
@@ -5197,7 +5177,7 @@
 			<speed min="40" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="95291ae5-4765-4be2-af31-ecba703fcbf6" creator="9551" comment="https://en.wikipedia.org/wiki/Empire_(Queensr%C3%BFche_album) | Not a concept album, but song titles seemed very suited for episode titles, so asked ChatGPT to make a story. - Could possibly take place in the same universe as 957dbfe6-2dc6-49f9-93ce-4da50d04b642 but be more accessible.">
+		<scripttemplate product="2" licence_type="3" guid="95291ae5-4765-4be2-af31-ecba703fcbf6" creator="9551" wikidata_id="Q989495" comment="Not a concept album, but song titles seemed very suited for episode titles, so asked ChatGPT to make a story. - Could possibly take place in the same universe as 957dbfe6-2dc6-49f9-93ce-4da50d04b642 but be more accessible.">
 			<title>
 				<de>Imperium</de>
 				<en>Dominion</en>
@@ -5258,8 +5238,9 @@
 						<pl>Kobieta z Jet City</pl>
 					</title_original>
 					<description>
-						<de>${.self:"role":2:"firstname"} ist hin- und hergerissen zwischen der Zuneigung von ${.self:"role":1:"firstname"} und Johnny. Ihre unbewältigten Gefühle für Johnny und die wachsende Bindung zu ${.self:"role":1:"firstname"} führen zu einer Dreiecksbeziehung, die die Band, die sie gegründet haben, zu zerreißen droht.</de>
-						<en>${.self:"role":2:"firstname"} finds herself torn between the affection of ${.self:"role":1:"firstname"} and Johnny. Her unresolved feelings for Johnny and the growing bond with ${.self:"role":1:"firstname"} lead to a love triangle that threatens to tear apart the band they've formed.</en>
+						<de>${.self:"role":2:"firstname"} ist hin- und hergerissen zwischen der Zuneigung von ${.self:"role":1:"firstname"} und ${.self:"role":3:"firstname"}. Ihre unbewältigten Gefühle für ${.self:"role":3:"firstname"} und die wachsende Bindung zu ${.self:"role":1:"firstname"} führen zu einer Dreiecksbeziehung, die die Band, die sie gegründet haben, zu zerreißen droht.</de>
+						<en>${.self:"role":2:"firstname"} finds herself torn between the affection of ${.self:"role":1:"firstname"} and ${.self:"role":3:"firstname"}. Her unresolved feelings for ${.self:"role":3:"firstname"} and the growing bond with ${.self:"role":1:"firstname"} lead to a love triangle that threatens to tear apart the band they've formed.</en>
+						<pl>${.self:"role":2:"firstname"} jest rozdarta między uczuciami do ${.self:"role":1:"firstname"}a i ${.self:"role":3:"firstname"}'ego. Jej nierozwiązane uczucia do ${.self:"role":3:"firstname"}'ego i rosnąca więź z Alexem prowadzą do trójkąta miłosnego, który grozi rozbiciem zespołu, który stworzyli.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="be63b350-f1a2-44ad-a139-df3a1145ac12">
@@ -5411,7 +5392,6 @@
 			<data flags="0" flags_optional="" target_groups="6" />
 			<targetgroupattractivity children="2" teenagers="2" managers="0.75" pensioners="0.25" />
 			<genres maingenre="7" subgenres="15,202" />
-			<episodes min="11" max="11" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="40" max="80" />
@@ -5421,7 +5401,7 @@
 			<studio_size value="3" />
 			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="3e6b74d2-b386-47f8-b876-858db1449467" creator="9551" comment="https://en.wikipedia.org/wiki/Operation:_Mindcrime_II">
+		<scripttemplate product="2" licence_type="3" guid="3e6b74d2-b386-47f8-b876-858db1449467" creator="9551" wikidata_id="Q622244">
 			<title>
 				<de>Mission: Thoughtcrime (Staffel 2)</de>
 				<en>Mission: Thoughtcrime (Season 2)</en>
@@ -5724,7 +5704,7 @@
 					<description>
 						<de>${.self:"role":1:"firstname"}s Geist wird mit ${.self:"role":2:"firstname"}s wiedervereint, und es wird enthüllt, dass sie eine Art Happy End im Jenseits finden. Sie reflektieren darüber, dass sie früher nur in den flüchtigen Momenten, in denen sie zusammen waren, glücklich waren.</de>
 						<en>${.self:"role":1:"firstname"}'s spirit is reunited with ${.self:"role":2:"firstname"}'s, with it being revealed that they achieve some kind of happy end in the afterlife. They reflect that the only times they were happy before were in the fleeting moments that they were together.</en>
-						<pl>Duch ${.self:"role":1:"firstname"} spotyka się ponownie z duchem ${.self:"role":2:"firstname"}, co ujawnia, że ​​osiągają oni jakiś rodzaj szczęśliwego zakończenia w życiu pozagrobowym. Rozważają, że jedyne chwile, kiedy byli szczęśliwi wcześniej, to ulotne chwile, kiedy byli razem.</pl>
+						<pl>Duch ${.self:"role":1:"firstname"} spotyka się ponownie z duchem ${.self:"role":2:"firstname"}, co ujawnia, że osiągają oni jakiś rodzaj szczęśliwego zakończenia w życiu pozagrobowym. Rozważają, że jedyne chwile, kiedy byli szczęśliwi wcześniej, to ulotne chwile, kiedy byli razem.</pl>
 					</description>
 				</scripttemplate>
 			</children>
@@ -5739,7 +5719,6 @@
 			</jobs>
 			<data flags="0" flags_optional="64" target_groups="18" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<genres maingenre="17" subgenres="7,16" />
-			<episodes min="17" max="17" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="40" max="80" />
@@ -5748,7 +5727,7 @@
 			<speed min="40" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="4bdf0849-eb29-4e1c-a649-522939a5fa59" creator="9551" comment="https://en.wikipedia.org/wiki/Streets:_A_Rock_Opera">
+		<scripttemplate product="2" licence_type="3" guid="4bdf0849-eb29-4e1c-a649-522939a5fa59" creator="9551" wikidata_id="Q1039815">
 			<title>
 				<de>Gosse</de>
 				<en>Gutter</en>
@@ -6048,7 +6027,6 @@
 			<data flags="0" flags_optional="" target_groups="18" />
 			<targetgroupattractivity children="2" teenagers="2" unemployed="2" managers="0.75" pensioners="0.25" />
 			<genres maingenre="7" subgenres="202" />
-			<episodes min="16" max="16" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="40" max="70" />
@@ -6057,7 +6035,7 @@
 			<speed min="40" max="70" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="ace65fcf-2af9-44b6-9f04-2daa2c1c3fc5" creator="9551" comment="https://en.wikipedia.org/wiki/Handful_of_Rain | Not a concept album, but song titles seemed very suited for episode titles, so asked ChatGPT to make a story.">
+		<scripttemplate product="2" licence_type="3" guid="ace65fcf-2af9-44b6-9f04-2daa2c1c3fc5" creator="9551" wikidata_id="Q266846" comment="Not a concept album, but song titles seemed very suited for episode titles, so asked ChatGPT to make a story.">
 			<title>
 				<de>Eine Handvoll Schauerregen</de>
 				<en>A Palmful of Rain Shower</en>
@@ -6257,7 +6235,6 @@
 			<data flags="0" flags_optional="" target_groups="6" />
 			<targetgroupattractivity children="2" teenagers="2" pensioners="0.25" />
 			<genres maingenre="7" subgenres="1,5" />
-			<episodes min="10" max="10" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -6266,7 +6243,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="61661455-9607-44fd-a090-c1caa8ee3205" creator="9551" comment="https://en.wikipedia.org/wiki/Dead_Winter_Dead">
+		<scripttemplate product="2" licence_type="3" guid="61661455-9607-44fd-a090-c1caa8ee3205" creator="9551" wikidata_id="Q902943">
 			<title>
 				<de>${dead} ${winter} in ${sarajevo}</de>
 				<en>${dead} ${winter} in ${sarajevo}</en>
@@ -6517,7 +6494,6 @@
 			<data target_groups="18" /> <!-- TODO: pro_pressure_groups="8" contra_pressure_groups="4" -->
 			<targetgroupattractivity men="1.25" women="0.75" children="2" teenagers="2" />
 			<genres maingenre="7" subgenres="2,17" />
-			<episodes min="12" max="12" />
 			<blocks value="1" />
 			<price min="57000" max="96000" />
 			<potential min="40" max="90" />
@@ -6527,7 +6503,7 @@
 			<studio_size value="3" />
 			<availability year_range_from="1995" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="91059b32-b099-4fc2-8def-d89f4f28affe" creator="9551" comment="https://en.wikipedia.org/wiki/My_Arms,_Your_Hearse">
+		<scripttemplate product="2" licence_type="3" guid="91059b32-b099-4fc2-8def-d89f4f28affe" creator="9551" wikidata_id="Q18613">
 			<title>
 				<de>Meine Umarmung, deine Bestattung</de>
 				<en>My Embrace, Your Funeral</en>
@@ -6768,7 +6744,6 @@
 			<data flags="0" flags_optional="" target_groups="22" />
 			<targetgroupattractivity teenagers="2" housewives="2" />
 			<genres maingenre="14" subgenres="7,12" />
-			<episodes min="9" max="9" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -6777,7 +6752,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="729cecfe-41d7-44dc-af07-d22bcaa370a7" creator="9551" comment="https://en.wikipedia.org/wiki/Still_Life_(Opeth_album)">
+		<scripttemplate product="2" licence_type="3" guid="729cecfe-41d7-44dc-af07-d22bcaa370a7" creator="9551" wikidata_id="Q18615">
 			<title>
 				<de>Still Leben</de>
 				<en>Silent Life</en>
@@ -6929,7 +6904,6 @@
 			<data flags="0" flags_optional="" target_groups="22" />
 			<targetgroupattractivity women="1.25" teenagers="2" housewives="2" employees="1.25" />
 			<genres maingenre="1" subgenres="15,7" />
-			<episodes min="7" max="7" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -6938,7 +6912,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="10e6e2a8-a46f-4603-be60-9619a3a05fac" creator="9551" comment="https://en.wikipedia.org/wiki/Blackwater_Park | not a concept album but still has an over-all theme, episode content compiled from fan forums and via ChatGPT">
+		<scripttemplate product="2" licence_type="3" guid="10e6e2a8-a46f-4603-be60-9619a3a05fac" creator="9551" wikidata_id="Q18616" comment="not a concept album but still has an over-all theme, episode content compiled from fan forums and via ChatGPT">
 			<title>
 				<all>Darkwater Grove</all>
 			</title>
@@ -7136,7 +7110,6 @@
 			<data flags="0" flags_optional="" target_groups="22" />
 			<targetgroupattractivity teenagers="2" housewives="2" />
 			<genres maingenre="14" subgenres="7,12" />
-			<episodes min="10" max="10" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -7145,7 +7118,7 @@
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="42f179f3-7ae8-45bd-9d15-4a9fcbee93c6" creator="9551" comment="https://en.wikipedia.org/wiki/Ghost_Reveries | originally only 'half' a concept album, 'completed' from fan forums and via ChatGPT">
+		<scripttemplate product="2" licence_type="3" guid="42f179f3-7ae8-45bd-9d15-4a9fcbee93c6" creator="9551" wikidata_id="Q18621" comment="originally only 'half' a concept album, 'completed' from fan forums and via ChatGPT">
 			<title>
 				<de>Gespenstische Rêverie</de>
 				<en>Eerie Reveries</en>
@@ -7315,7 +7288,6 @@
 			<data flags="0" flags_optional="" target_groups="22" />
 			<targetgroupattractivity teenagers="2" housewives="2" />
 			<genres maingenre="14" subgenres="7,12" />
-			<episodes min="8" max="8" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -7327,7 +7299,7 @@
 
 		<!-- Games -->
 
-		<scripttemplate product="1" licence_type="1" guid="352a2fbc-7e7b-462b-a217-34c300043d19" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Maniac_Mansion">
+		<scripttemplate product="1" licence_type="1" guid="352a2fbc-7e7b-462b-a217-34c300043d19" creator="9551" wikidata_id="Q240143">
 			<title>
 				<all>${title_spoofed}</all>
 			</title>
@@ -7420,7 +7392,7 @@
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="a3d2c98d-fbdb-45c1-a5f0-0e61cfa497e7" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="a3d2c98d-fbdb-45c1-a5f0-0e61cfa497e7" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Day_of_the_Tentacle">
+		<scripttemplate product="1" licence_type="1" guid="a3d2c98d-fbdb-45c1-a5f0-0e61cfa497e7" creator="9551" wikidata_id="Q845645">
 			<title>
 				<de>${Revenge} des Tentakels</de>
 				<en>The ${Revenge} of the Tentacle</en>
@@ -7476,7 +7448,7 @@
 			<studio_size value="3" />
 		</scripttemplate>
 		<!-- TODO: Add a series with episodes from https://maniac-mansion-mania.com/ to make more use of all the defined roles. -->
-		<scripttemplate product="1" licence_type="1" guid="61d6403e-6ee6-4849-81af-6b08dbc4aaa8" creator="9551" comment="inspired from https://en.wikipedia.org/wiki/Zak_McKracken_and_the_Alien_Mindbenders">
+		<scripttemplate product="1" licence_type="1" guid="61d6403e-6ee6-4849-81af-6b08dbc4aaa8" creator="9551" wikidata_id="Q144559">
 			<title>
 				<de>${myname}${.self:"role":1:"fullname"}, ${roving} Reporter</de>
 				<en>Hi, ${.self:"role":1:"fullname"}${myname}, ${roving} Reporter</en>
@@ -7492,9 +7464,9 @@
 			</description>
 			<variables>
 				<title_original_optional>
-					<de>${.self:"role":1:"fullname"} and the Alien Mindbenders|${.self:"role":1:"fullname"} und die außerirdischen Gedankenverdreher|${myname}${.self:"role":1:"fullname"}, ${roving} Reporter</de>
-					<en>${.self:"role":1:"fullname"} and the Alien Mindbenders|${.self:"role":1:"fullname"} and the Alien Mindbenders|Hi, ${.self:"role":1:"fullname"}${myname}, ${roving} Reporter</en>
-					<pl>${.self:"role":1:"fullname"} i Obcy|${.self:"role":1:"fullname"} i Obcy łamacze mózgów|Cześć, ${myname} ${.self:"role":1:"fullname"}, ${roving} reporter</pl>
+					<de>Zak McKracken and the Alien Mindbenders|Zak McKracken und die außerirdischen Gedankenverdreher|${myname}Zak McKracken, ${roving} Reporter</de>
+					<en>Zak McKracken and the Alien Mindbenders|Zak McKracken and the Alien Mindbenders|Hi, Zak McKracken${myname}, ${roving} Reporter</en>
+					<pl>Zak McKracken and the Alien Mindbenders|Zak McKracken i Obcy łamacze mózgów|Cześć, ${myname} Zak McKracken, ${roving} reporter</pl>
 				</title_original_optional>
 				<myname>
 					<de>Hi, |Gestatten, |</de>
@@ -7530,7 +7502,7 @@
 			<speed min="41" max="73" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="273d5865-822b-4320-97b0-a0c4e56f6e44" creator="9551" comment="https://en.wikipedia.org/wiki/Loom_(video_game) | TODO: maybe add unreleased sequels: Forge; The Fold">
+		<scripttemplate product="2" licence_type="3" guid="273d5865-822b-4320-97b0-a0c4e56f6e44" creator="9551" wikidata_id="Q672380" comment="TODO: maybe add unreleased sequels: Forge; The Fold">
 			<title>
 				<de>${askmeabout}Weave - Das Zeitalter der Großen Gilden</de>
 				<en>${askmeabout}Weave - The Age of the Great Guilds</en>
@@ -7657,7 +7629,6 @@
 			<data flags="0" flags_optional="" target_groups="7" />
 			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
 			<genres maingenre="10" subgenres="9,202" />
-			<episodes min="5" max="5" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="50" max="90" />
@@ -7666,7 +7637,7 @@
 			<speed min="50" max="90" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="e10c6a0a-fde6-4f73-8bb4-30a6d65cd744" creator="9551" comment="https://en.wikipedia.org/wiki/The_Secret_of_Monkey_Island">
+		<scripttemplate product="2" licence_type="3" guid="e10c6a0a-fde6-4f73-8bb4-30a6d65cd744" creator="9551" wikidata_id="Q179247" comment="OT: The Secret of Monkey Island">
 			<title>
 				<de>Das ${monkey_title}${island_title}-${secret_title}</de>
 				<en>The ${secret_title} of ${monkey_title} ${island_title}</en>
@@ -7934,7 +7905,6 @@
 			<data target_groups="19" />
 			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" employees="1.5" />
 			<genres maingenre="1" subgenres="5,10" />
-			<episodes min="12" max="12" />
 			<blocks value="1" />
 			<price min="80000" max="130000" />
 			<potential min="59" max="95" />
@@ -7943,7 +7913,7 @@
 			<speed min="54" max="89" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="c48d5851-d9f8-4fc1-8d34-264dfa3f6384" creator="9551" comment="https://de.wikipedia.org/wiki/Monkey_Island_2:_LeChuck%E2%80%99s_Revenge">
+		<scripttemplate product="2" licence_type="3" guid="c48d5851-d9f8-4fc1-8d34-264dfa3f6384" creator="9551" wikidata_id="Q841755">
 			<title>
 				<de>${.self:"role":3:"lastname"} schlägt zurück</de>
 				<en>${.self:"role":3:"lastname"} Strikes Back</en>
@@ -8180,7 +8150,6 @@
 			<data flags="0" flags_optional="" target_groups="19" available="0" /> <!-- availability triggered by previous season episode 1 -->
 			<targetgroupattractivity children="2" teenagers_female="1.5" housewives="2" employees="1.5" />
 			<genres maingenre="1" subgenres="5,10" />
-			<episodes min="12" max="12" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="59" max="95" />
@@ -8190,7 +8159,7 @@
 			<studio_size value="3" />
 			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="b23f4846-075a-4c1f-8437-6a989b3c8351" creator="9551" comment="https://en.wikipedia.org/wiki/The_Dig_(video_game)">
+		<scripttemplate product="2" licence_type="3" guid="b23f4846-075a-4c1f-8437-6a989b3c8351" creator="9551" wikidata_id="Q1411498">
 			<title>
 				<all>The Excavation</all>
 				<pl>Wykopaliska</pl>
@@ -8292,7 +8261,6 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<data flags="0" flags_optional="" target_groups="18" />
 			<targetgroupattractivity teenagers="2" employees="1.5" managers="2" />
 			<genres maingenre="16" subgenres="14,7" />
-			<episodes min="4" max="4" />
 			<blocks value="2" />
 			<price min="150000" max="300000" />
 			<potential min="50" max="90" />
@@ -8302,7 +8270,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<studio_size value="3" />
 			<availability year_range_from="1990" year_range_to="-1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" comment="https://en.wikipedia.org/wiki/Commander_Keen">
+		<scripttemplate product="2" licence_type="3" guid="fd47c57a-c84a-4c3d-bfd4-73b10d230406" creator="9551" wikidata_id="Q868531">
 			<title>
 				<all>${title_spoofed}</all>
 			</title>
@@ -8502,7 +8470,6 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<data target_groups="19" />
 			<targetgroupattractivity men="1.25" teenagers="2" employees="1.25" unemployed="1.25" />
 			<genres maingenre="3" subgenres="16,9" />
-			<episodes min="8" max="8" />
 			<blocks value="1" />
 			<price min="9000" max="14000" />
 			<potential min="50" max="70" />
@@ -8510,7 +8477,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<review min="60" max="70" />
 			<speed min="50" max="70" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" comment="https://en.wikipedia.org/wiki/Leisure_Suit_Larry">
+		<scripttemplate product="2" licence_type="3" guid="c0d67fc9-1388-4715-b708-713df17c681a" creator="9551" wikidata_id="Q1335860">
 			<title>
 				<all>${.self:"role":1:"nickname"}, ${ladykiller}</all>
 			</title>
@@ -8533,7 +8500,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				</ladykiller>
 			</variables>
 			<children>
-				<scripttemplate index="0" product="2" licence_type="2" guid="8f5a2c84-89b4-41fe-9e27-3898382f612b">
+				<scripttemplate index="0" product="2" licence_type="2" guid="8f5a2c84-89b4-41fe-9e27-3898382f612b" wikidata_id="Q590699">
 					<title>
 						<de>${.self:"role":1:"nickname"} aus dem Land der alleinigen Leidhammel</de>
 						<en>${.self:"role":1:"nickname"} from the Land of the Lone Lobsters</en>
@@ -8550,7 +8517,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Oczywiście jedno odrzucenie za drugim. W końcu w brudnym lokalu... niezbyt ekscytujące doświadczenie, a on też coś łapie. Pewna pani przy basenie w końcu wydaje się go naprawdę lubić...</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="e1a1fbeb-fd0d-4ebd-ace4-35d57276d7e8">
+				<scripttemplate index="1" product="2" licence_type="2" guid="e1a1fbeb-fd0d-4ebd-ace4-35d57276d7e8" wikidata_id="Q2417526">
 					<title>
 						<de>Suche nach Sex in sechstausend sündigen Spas</de>
 						<en>Searching for Sex in Six-Thousand Sinful Spas</en>
@@ -8567,7 +8534,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Po jedynym krótkotrwałym romansie ${.self:"role":1:"firstname"} wygrywa przynajmniej na loterii i wyrusza na Morza Południowe. Nie tylko wdaje się w erotyczne przygody, ale także wplątuje się w tajne służby...</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="4985f4d8-734b-4991-a7af-eee33546e38f">
+				<scripttemplate index="2" product="2" licence_type="2" guid="4985f4d8-734b-4991-a7af-eee33546e38f" wikidata_id="Q2498436">
 					<title>
 						<de>${.self:"role":2:"nickname"} beim Fördern vibrierender Vernakularität</de>
 						<en>${.self:"role":2:"nickname"} Fostering Vibrating Vernacular</en>
@@ -8584,7 +8551,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>${.self:"role":1:"firstname"} ma wspaniałe życie na Hawajach od 5 lat i szczęśliwe małżeństwo, ale nagle zostaje porzucony, gdy jego żona zakochuje się w innej kobiecie. Po kilku przygodach znajduje kogoś nowego na całe życie, ale potem coś idzie nie tak...</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="a7bbc175-7b5d-45c6-ad1a-9482ab041222" comment="https://en.wikipedia.org/wiki/Leisure_Suit_Larry#Leisure_Suit_Larry_4:_The_Missing_Floppies | spoof title reference to https://floppapedia-revamped.fandom.com/wiki/Big_Floppa">
+				<scripttemplate index="3" product="2" licence_type="2" guid="a7bbc175-7b5d-45c6-ad1a-9482ab041222" wikidata_id="Q1118622" comment="spoof title reference to https://floppapedia-revamped.fandom.com/wiki/Big_Floppa">
 					<title>
 						<de>Floppa vermisst</de>
 						<en>The Missing Floppa</en>
@@ -8601,7 +8568,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>To jest nieco rozproszony odcinek. ${.self:"role":1:"firstname"} znajduje się w czarnej dziurze. Cóż, co się tu stało? Chociaż... czarna dziura... heh. I co robią tu dyskietki i dzikie koty.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="d7c7c96a-1bc3-4e1b-8875-d20ff1ddf632">
+				<scripttemplate index="4" product="2" licence_type="2" guid="d7c7c96a-1bc3-4e1b-8875-d20ff1ddf632" wikidata_id="Q2623667">
 					<title>
 						<de>${.self:"role":2:"nickname"} als wenig verdeckte Ermittlerin</de>
 						<en>${.self:"role":2:"nickname"} as an Undercover Agent</en>
@@ -8618,7 +8585,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Po tej dziwnej amnezji ${.self:"role":1:"firstname"} trafia do branży filmów dla dorosłych, dla której poszukuje modelek na całym świecie. ${.self:"role":2:"firstname"} tymczasem pracuje dla FBI.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="5" product="2" licence_type="2" guid="6ff0a3a1-6c6c-45e4-bfd3-f2729b6210d7">
+				<scripttemplate index="5" product="2" licence_type="2" guid="6ff0a3a1-6c6c-45e4-bfd3-f2729b6210d7" wikidata_id="Q2527532">
 					<title>
 						<de>Komm in Schuss oder schäm dich!</de>
 						<en>Get in Shape or Get Shamed!</en>	
@@ -8635,7 +8602,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Ponownie oddzielony od ${.self:"role":2:"firstname"} z ciężkim sercem, ${.self:"role":1:"firstname"} wygrywa pobyt w ośrodku, gdzie jednak jest traktowany podle, jako gość niepłacący. Ale wciąż próbuje na różne sposoby wylądować z kobietami. Przede wszystkim chodzi o kondycję...</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="6" product="2" licence_type="2" guid="4065b465-ca94-4d7f-b49a-ec020bcb4630">
+				<scripttemplate index="6" product="2" licence_type="2" guid="4065b465-ca94-4d7f-b49a-ec020bcb4630" wikidata_id="Q691462">
 					<title>
 						<de>Das Liebesboot!</de>
 						<en>Sailing Love!</en>
@@ -8652,7 +8619,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Tym razem na statku wycieczkowym wypełnionym wybitnymi gwiazdami i gwiazdkami (a może ich sobowtórami?) odbywa się wiele konkursów i gier, w których ${.self:"role":1:"firstname"} chce wygrać.</pl>
 					</description>	
 				</scripttemplate>
-				<scripttemplate index="7" product="2" licence_type="2" guid="503f7801-dc8d-4f55-a0e9-c017592eba62">
+				<scripttemplate index="7" product="2" licence_type="2" guid="503f7801-dc8d-4f55-a0e9-c017592eba62" wikidata_id="Q1114671">
 					<title>
 						<all>Cum hoc ergo cum laude</all>
 					</title>
@@ -8662,8 +8629,8 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Wielkie wyróżnienie</pl>
 					</title_original>
 					<description>
-						<de>Ein Spinoff? Es geht diesmal um ${.self:"role":1:"firstname"}s Neffen, der auch ${.self:"role":1:"firstname"} heißt, im College ist und bei einer Dating Show mitmacht. Onkel ${.self:"role":1:"firstname"} gibt immerhin noch wertvolle Tips. Was ist mit ${.self:"role":2:"firstname"}? Ist noch offen, vielleicht in der nächsten Staffel...</de>
-						<en>A spinoff? This time it's about ${.self:"role":1:"firstname"}'s nephew, who is also named ${.self:"role":1:"firstname"}, and who's in college, and participating in a dating show. Uncle ${.self:"role":1:"firstname"} still gives valuable tips, at least. What about ${.self:"role":2:"firstname"}? It's still open, maybe next season...</en>
+						<de>Ein Spin-off? Es geht diesmal um ${.self:"role":1:"firstname"}s Neffen, der auch ${.self:"role":1:"firstname"} heißt, im College ist und bei einer Dating Show mitmacht. Onkel ${.self:"role":1:"firstname"} gibt immerhin noch wertvolle Tipps. Was ist mit ${.self:"role":2:"firstname"}? Ist noch offen, vielleicht in der nächsten Staffel...</de>
+						<en>A spin-off? This time it's about ${.self:"role":1:"firstname"}'s nephew, who is also named ${.self:"role":1:"firstname"}, and who's in college, and participating in a dating show. Uncle ${.self:"role":1:"firstname"} still gives valuable tips, at least. What about ${.self:"role":2:"firstname"}? It's still open, maybe next season...</en>
 						<pl>Spin-off? Tym razem chodzi o siostrzeńca ${.self:"role":1:"firstname"}ego, który również nazywa się ${.self:"role":1:"firstname"}, który studiuje i bierze udział w programie randkowym. Wujek ${.self:"role":1:"firstname"} nadal daje cenne wskazówki, przynajmniej. A co z ${.self:"role":2:"firstname"}? Nadal jest otwarty, może w następnym sezonie...</pl>
 					</description>
 				</scripttemplate>
@@ -8679,7 +8646,6 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			</jobs>
 			<data flags="64" flags_optional="40" target_groups="274" />
 			<genres maingenre="8" subgenres="5,15" />
-			<episodes min="8" max="8" />
 			<blocks value="2" />
 			<price min="46000" max="96000" />
 			<potential min="50" max="70" />
@@ -8688,7 +8654,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="30" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="0f7053ad-249f-47d3-8302-4853b386bedb" creator="9551" comment="https://en.wikipedia.org/wiki/Counter-Strike:_Global_Offensive with popular maps as episodes">
+		<scripttemplate product="2" licence_type="3" guid="0f7053ad-249f-47d3-8302-4853b386bedb" creator="9551" wikidata_id="Q842146" comment="using popular maps as episodes">
 			<title>
 				<all>${counteroffensive} - ${global} ${operations}</all>
 			</title>
@@ -8727,7 +8693,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				</operations>
 			</variables>
 			<children>
-				<scripttemplate index="0" product="2" licence_type="2" guid="077e10fa-d063-4450-9295-0843f89d53b4" comment="https://counterstrike.fandom.com/wiki/Dust">
+				<scripttemplate index="0" product="2" licence_type="2" guid="077e10fa-d063-4450-9295-0843f89d53b4" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Dust">
 					<title>
 						<de>Sand</de>
 						<en>Sand</en>
@@ -8744,7 +8710,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>W ogarniętym wojną regionie Bliskiego Wschodu „Elite Crew”, nieuczciwa frakcja wojskowa, przejęła kontrolę i próbuje wejść w posiadanie broni chemicznej. Siły Obronne Izraela zostają wezwane do akcji.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="1" product="2" licence_type="2" guid="9efeadb2-f6aa-4af1-ba55-c825c9671e5f" comment="https://counterstrike.fandom.com/wiki/Dust_II">
+				<scripttemplate index="1" product="2" licence_type="2" guid="9efeadb2-f6aa-4af1-ba55-c825c9671e5f" wikidata_id="Q43369920" comment="https://counterstrike.fandom.com/wiki/Dust_II">
 					<title>
 						<de>Sand 2</de>
 						<en>Sand 2</en>
@@ -8761,7 +8727,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Po zażegnaniu pierwszego niebezpieczeństwa druga część podwójnego odcinka pilotażowego kontynuuje serię zaciętych walk z użyciem koktajli Mołotowa, bomb dymnych i granatów błyskowych na długich ulicach, w wąskich tunelach budynków i wokół dużych podwójnych drzwi.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="2" product="2" licence_type="2" guid="60a6202d-0bb6-43cd-9c4d-e152049b1052" comment="https://counterstrike.fandom.com/wiki/Cobblestone">
+				<scripttemplate index="2" product="2" licence_type="2" guid="60a6202d-0bb6-43cd-9c4d-e152049b1052" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Cobblestone">
 					<title>
 						<de>Pflasterstein</de>
 						<en>Pavestone</en>
@@ -8778,7 +8744,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Scena przenosi się do Francji, do zamku Lorda Williama, jednego z głównych sponsorów Coalition Taskforce. Wschodnioeuropejska operacja terrorystyczna „Phoenix Connexion” jest wymierzona w niego. Francuski GIGN został ostrzeżony.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="3" product="2" licence_type="2" guid="e7239ea7-da0c-49cd-af93-efafc510b30f" comment="https://counterstrike.fandom.com/wiki/Mirage">
+				<scripttemplate index="3" product="2" licence_type="2" guid="e7239ea7-da0c-49cd-af93-efafc510b30f" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Mirage">
 					<title>
 						<de>Morgana</de>
 						<en>Morgana</en>
@@ -8795,7 +8761,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Tymczasem w Maroku „Leet Krew” przejęło kontrolę nad ukrytym składem głowic nuklearnych, które prawdopodobnie zostały skradzione z bazy wojskowej sąsiedniego kraju. Brytyjski SAS zostaje wezwany do zajęcia się kryzysem.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="4" product="2" licence_type="2" guid="108d60b3-54de-4574-afa6-eb28dd79e14f" comment="https://counterstrike.fandom.com/wiki/Inferno">
+				<scripttemplate index="4" product="2" licence_type="2" guid="108d60b3-54de-4574-afa6-eb28dd79e14f" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Inferno">
 					<title>
 						<de>Infernale</de>
 						<en>Infernal</en>
@@ -8812,7 +8778,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>W spokojnej włoskiej wiosce wciąż obowiązują pewne mądre słowa, takie jak: Każdy mężczyzna musi zbudować dom, wychować syna i podłożyć bombę. Separatyści chcą wysadzić dwa gazociągi. W wąskiej alejce bananowej toczy się zacięta bitwa.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="5" product="2" licence_type="2" guid="a66c6bcd-7199-4f5d-9621-66377149c0ba" comment="https://counterstrike.fandom.com/wiki/Office">
+				<scripttemplate index="5" product="2" licence_type="2" guid="a66c6bcd-7199-4f5d-9621-66377149c0ba" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Office">
 					<title>
 						<de>Business</de>
 						<en>Business</en>
@@ -8829,7 +8795,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Teraz USA również angażują się w wydarzenia, ponieważ grupa anarchistów przetrzymuje zakładników w kompleksie biurowym, rzekomo wyzyskujących szefów korporacji. Ale prawdopodobnie jest coś więcej w tej historii. FBI wkracza, aby dokonać nalotu na obiekt.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="6" product="2" licence_type="2" guid="03c19643-d949-4952-af10-324cc12409cd" comment="https://counterstrike.fandom.com/wiki/Nuke">
+				<scripttemplate index="6" product="2" licence_type="2" guid="03c19643-d949-4952-af10-324cc12409cd" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Nuke">
 					<title>
 						<de>Atomar</de>
 						<en>Atomic</en>
@@ -8846,7 +8812,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>W niedawno wycofanej z eksploatacji elektrowni jądrowej nadal można znaleźć zużyte pręty paliwowe. Misja terrorystów z Phoenix brzmi: „Plant the bomb to bomb the plant!” Czy FBI może zapobiec wysadzeniu basenów chłodzących i stopieniu się rdzenia?</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="7" product="2" licence_type="2" guid="3e1679b0-948c-4fa8-97f9-4f10866a9059" comment="https://counterstrike.fandom.com/wiki/Assault">
+				<scripttemplate index="7" product="2" licence_type="2" guid="3e1679b0-948c-4fa8-97f9-4f10866a9059" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Assault">
 					<title>
 						<de>Attentat</de>
 						<en>Assassination</en>
@@ -8863,7 +8829,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Zidentyfikowano główną komórkę terrorystów z Phoenix: Harper Appliance Company, gdzie piorą pieniądze. Gdy FBI się zbliża, biorą zakładników. (Un-) Na szczęście kamery monitorujące są teraz zepsute.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="8" product="2" licence_type="2" guid="7952322c-8ebb-4472-886d-a42b3f2b2b11" comment="https://counterstrike.fandom.com/wiki/Vertigo">
+				<scripttemplate index="8" product="2" licence_type="2" guid="7952322c-8ebb-4472-886d-a42b3f2b2b11" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Vertigo">
 					<title>
 						<de>Vertikal</de>
 						<en>Vertical</en>
@@ -8880,7 +8846,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>„Profesjonaliści” zostają wynajęci, aby wysadzić w powietrze wieżowiec w trakcie budowy. Grupy terrorystyczne chcą dać przykład. Na zawrotnych wysokościach dochodzi do starcia z FBI.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="9" product="2" licence_type="2" guid="0340cbb9-9a54-488d-8587-23c2cd68c18e" comment="https://counterstrike.fandom.com/wiki/Militia">
+				<scripttemplate index="9" product="2" licence_type="2" guid="0340cbb9-9a54-488d-8587-23c2cd68c18e" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Militia">
 					<title>
 						<de>Militant</de>
 						<en>Militant</en>
@@ -8897,7 +8863,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>Phoenix porwał kilku urzędników i przetrzymuje ich jako zakładników w jednym ze swoich centrów operacyjnych, „Cliffe's Compound”, odległej farmie na Środkowym Zachodzie. Czy FBI może ich uwolnić?</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="10" product="2" licence_type="2" guid="58931ee7-f8d0-42e8-ab55-70588cef5815" comment="https://counterstrike.fandom.com/wiki/Ancient">
+				<scripttemplate index="10" product="2" licence_type="2" guid="58931ee7-f8d0-42e8-ab55-70588cef5815" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Ancient">
 					<title>
 						<de>Archaisch</de>
 						<en>Archaic</en>
@@ -8914,7 +8880,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 						<pl>„1337 Krew” zajął stanowisko archeologiczne/turystyczne w lasach deszczowych Ameryki Łacińskiej, ukradł skarby Azteków i zamierza wysadzić to miejsce. GIGN nie może pozwolić im na to.</pl>
 					</description>
 				</scripttemplate>
-				<scripttemplate index="11" product="2" licence_type="2" guid="8ae7825a-1a6b-486e-a38a-3c2a776329e1" comment="https://counterstrike.fandom.com/wiki/Overpass">
+				<scripttemplate index="11" product="2" licence_type="2" guid="8ae7825a-1a6b-486e-a38a-3c2a776329e1" wikidata_id="" comment="https://counterstrike.fandom.com/wiki/Overpass">
 					<title>
 						<de>Überbrückung</de>
 						<en>Overbridge</en>
@@ -8944,7 +8910,6 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<data flags="0" flags_optional="64" target_groups="18" />
 			<targetgroupattractivity employees="1.25" />
 			<genres maingenre="2" subgenres="17,4" />
-			<episodes min="12" max="12" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="70" />
@@ -8953,7 +8918,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="6c47d81a-612a-4a25-b3cf-b2224e2bf3af" creator="9551" comment="https://en.wikipedia.org/wiki/Full_Throttle_(1995_video_game) | good alternative spoof title was 'Pedal to the Metal', but bikes usually don't have pedals">
+		<scripttemplate product="1" licence_type="1" guid="6c47d81a-612a-4a25-b3cf-b2224e2bf3af" creator="9551" wikidata_id="Q847471" comment="good alternative spoof title was 'Pedal to the Metal', but bikes usually don't have pedals">
 			<title>
 				<de>Volles Rohr</de>
 				<en>Full Overdrive</en>
@@ -8990,7 +8955,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="40" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="8264e56c-f9f9-4ffa-975d-93d9cc26f339" creator="9551" comment="https://en.wikipedia.org/wiki/Turrican">
+		<scripttemplate product="1" licence_type="1" guid="8264e56c-f9f9-4ffa-975d-93d9cc26f339" creator="9551" wikidata_id="Q1929662">
 			<title>
 				<all>Turrnado</all>
 			</title>
@@ -9026,7 +8991,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="eda00285-798d-4ba6-b299-621415d879d1" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="eda00285-798d-4ba6-b299-621415d879d1" creator="9551" comment="https://en.wikipedia.org/wiki/Turrican_II:_The_Final_Fight">
+		<scripttemplate product="1" licence_type="1" guid="eda00285-798d-4ba6-b299-621415d879d1" creator="9551" wikidata_id="Q2269628">
 			<title>
 				<de>Turrnado 2: Die Letzte Schlacht</de>
 				<en>Turrnado 2: The Last Battle</en>
@@ -9067,7 +9032,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="83962c77-537a-4baa-abe8-d9b75093d1a8" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="83962c77-537a-4baa-abe8-d9b75093d1a8" creator="9551" comment="https://en.wikipedia.org/wiki/Mega_Turrican">
+		<scripttemplate product="1" licence_type="1" guid="83962c77-537a-4baa-abe8-d9b75093d1a8" creator="9551" wikidata_id="Q3542394">
 			<title>
 				<de>Turrnado 3: Tag der Abrechnung</de>
 				<en>Turrnado 3: The Day of Reckoning</en>
@@ -9102,7 +9067,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="70" max="90" />
 			<studio_size value="1" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="f424b506-9efe-4f1f-ab7c-5ff679dc66c5" creator="9551" comment="https://en.wikipedia.org/wiki/Zero_Wing | https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us">
+		<scripttemplate product="1" licence_type="1" guid="f424b506-9efe-4f1f-ab7c-5ff679dc66c5" creator="9551" wikidata_id="Q191965" comment="https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us">
 			<title>
 				<all>Zero Squad</all>
 			</title>
@@ -9137,7 +9102,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<studio_size value="1" />
 			<availability script='${.gt:${.worldtime:"daysplayed"}:12}' />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="8f13def6-dfd6-4efe-9436-6384faee92d8" creator="9551" comment="https://en.wikipedia.org/wiki/Pyjamarama | TODO: Genre not specified more specifically, not much space. The film series is probably to be a puppet format.">
+		<scripttemplate product="1" licence_type="1" guid="8f13def6-dfd6-4efe-9436-6384faee92d8" creator="9551" wikidata_id="Q3926061" comment="TODO: Genre not specified more specifically, not much space. The film series is probably to be a puppet format.">
 			<title>
 				<de>Pyjama-Palooza</de>
 				<en>Pajama-Palooza</en>
@@ -9177,7 +9142,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="f6fee4c6-4858-43d9-a17a-8bb90c769936" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="f6fee4c6-4858-43d9-a17a-8bb90c769936" creator="9551" comment="https://www.mobygames.com/game/19274/automania/ - actually the first part of the game series, but applying artistic license here.">
+		<scripttemplate product="1" licence_type="1" guid="f6fee4c6-4858-43d9-a17a-8bb90c769936" creator="9551" wikidata_id="Q21190127" comment="https://www.mobygames.com/game/19274/automania/ - actually the first part of the game series, but applying artistic license here.">
 			<title>
 				<all>Auto-Palooza</all>
 			</title>
@@ -9215,7 +9180,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="cc74462f-0e7f-4acc-b95f-fd61e1756037" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="cc74462f-0e7f-4acc-b95f-fd61e1756037" creator="9551" comment="https://en.wikipedia.org/wiki/Everyone%27s_a_Wally">
+		<scripttemplate product="1" licence_type="1" guid="cc74462f-0e7f-4acc-b95f-fd61e1756037" creator="9551" wikidata_id="Q3263119">
 			<title>
 				<de>Wir alle sind ${.self:"role":1:"firstname"}</de>
 				<en>We all are ${.self:"role":1:"firstname"}</en>
@@ -9255,7 +9220,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="d621350a-5e57-4519-814a-5ea9f78d6553" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="d621350a-5e57-4519-814a-5ea9f78d6553" creator="9551" comment="https://www.mobygames.com/game/63125/herberts-dummy-run/">
+		<scripttemplate product="1" licence_type="1" guid="d621350a-5e57-4519-814a-5ea9f78d6553" creator="9551" wikidata_id="" comment="https://www.mobygames.com/game/63125/herberts-dummy-run/">
 			<title>
 				<de>${.self:"role":3:"firstname"} lernt laufen</de>
 				<en>${.self:"role":3:"firstname"}'s Trial Run</en>
@@ -9295,7 +9260,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="aeda3248-41d9-4fd8-8497-bd2f1a9a0eb8" />
 			</effects>
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="aeda3248-41d9-4fd8-8497-bd2f1a9a0eb8" creator="9551" comment="https://en.wikipedia.org/wiki/Three_Weeks_in_Paradise">
+		<scripttemplate product="1" licence_type="1" guid="aeda3248-41d9-4fd8-8497-bd2f1a9a0eb8" creator="9551" wikidata_id="Q4051441">
 			<title>
 				<de>21 Mal Erwachen in Eden</de>
 				<en>21 Times Wake in Eden</en>
@@ -9332,7 +9297,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="20" max="80" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="8471e49c-07d4-4098-b5e7-bfc77ebd074d" creator="9551" comment="https://en.wikipedia.org/wiki/Defender_of_the_Crown">
+		<scripttemplate product="1" licence_type="1" guid="8471e49c-07d4-4098-b5e7-bfc77ebd074d" creator="9551" wikidata_id="Q1182594">
 			<title>
 				<de>Verteidiger der Krone</de>
 				<en>Defender of the King</en>
@@ -9374,7 +9339,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="f4197cbd-24d1-4752-ace8-dc68947faae0" creator="9551" comment="https://en.wikipedia.org/wiki/The_King_of_Chicago">
+		<scripttemplate product="1" licence_type="1" guid="f4197cbd-24d1-4752-ace8-dc68947faae0" creator="9551" wikidata_id="Q3815431">
 			<title>
 				<de>Der Lord von Chicago</de>
 				<en>The Lord of Chicago</en>
@@ -9415,7 +9380,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="30" max="80" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="1092d520-b420-405f-a99d-71db5240e3f3" creator="9551" comment="https://en.wikipedia.org/wiki/It_Came_from_the_Desert | TODO: Maybe make some parody 'It came for the dessert', as used in Space Quest 4 | actually has a film adaptation: https://www.imdb.com/title/tt4288674/">
+		<scripttemplate product="1" licence_type="1" guid="1092d520-b420-405f-a99d-71db5240e3f3" creator="9551" wikidata_id="Q3155818" comment="TODO: Maybe make some parody 'It came for the dessert', as used in Space Quest 4 | actually has a film adaptation: https://www.imdb.com/title/tt4288674/">
 			<title>
 				<de>Es kam aus der Wüste</de>
 				<en>It Came from the Wasteland</en>
@@ -9454,7 +9419,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<speed min="20" max="60" />
 			<studio_size value="2" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="d99a5b85-5f82-4756-8333-dfd90177d9ae" creator="9551" comment="https://en.wikipedia.org/wiki/Wings_(1990_video_game)">
+		<scripttemplate product="1" licence_type="1" guid="d99a5b85-5f82-4756-8333-dfd90177d9ae" creator="9551" wikidata_id="Q389344">
 			<title>
 				<all>Winds</all>
 			</title>
@@ -9494,7 +9459,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 
 		<!-- Fictional spin-offs, fan-fiction and fictional Film/TV remakes but all based on original titles -->
 
-		<scripttemplate product="2" licence_type="3" guid="71f4752c-2c8f-41f0-82c6-3461e02e8160" creator="9551" comment="TODO: To test a future 'franchise script' feature. Episode titles and contents by ChatGPT. A bit formulaic perhaps.">
+		<scripttemplate product="2" licence_type="3" guid="71f4752c-2c8f-41f0-82c6-3461e02e8160" creator="9551" comment="TODO: To test a future 'franchise script' feature. Episode titles and contents by ChatGPT. A bit formulaic perhaps. | There actually seems to be a real-existing newer version from 2004. https://www.themoviedb.org/tv/64090-hurv-nk-v-rok">
 			<title>
 				<de>${.self:"role":1:"lastname"} und ${.self:"role":2:"firstname"} - Die ${new} ${adventures}</de>
 				<en>${.self:"role":1:"lastname"} and ${.self:"role":2:"firstname"} - The ${new} ${adventures}</en>
@@ -9702,10 +9667,9 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 				<job index="4" function="2" required="1" role_guid="96ed8af6-d9e6-4c80-9c83-120cd6ceddc4" />
 				<job index="5" function="2" required="1" role_guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" />
 			</jobs>
-			<data flags="2" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by therob-programme-speiuebelunddubrovnik -->
+			<data flags="2" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by 302c2214-5588-4976-acf5-25852bd29567 -->
 			<targetgroupattractivity children="2" employees="0.75" />
 			<genres maingenre="9" subgenres="5" />
-			<episodes min="10" max="10" />
 			<blocks value="1" />
 			<price min="100000" max="200000" />
 			<potential min="40" max="80" />
@@ -9779,7 +9743,7 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 					<description>
 						<de>${.self:"role":4:"firstname"} und II kommen in eine futuristische Weltraumschule. ${.self:"role":1:"firstname"} leistet akademische Unterstützung, aber der schelmische Quirkle stiftet Chaos unter den Schülern, was zu einem Besuch des Schulleiters führt - einer intelligenten Gaswolke.</de>
 						<en>${.self:"role":4:"firstname"} and II enroll in a futuristic space school. ${.self:"role":1:"firstname"} offers academic support, but the mischievous Quirkle creates mayhem among the students, prompting a visit from the school principal - an intelligent gas cloud.</en>
-						<pl>${.self:"role":4:"firstname"} i ja zapisujemy się do futurystycznej szkoły kosmicznej. ${.self:"role":1:"firstname"} oferuje wsparcie naukowe, ale złośliwy Quirkle wywołuje zamieszanie wśród uczniów, co powoduje wizytę dyrektora szkoły — inteligentnej chmury gazu.</pl>
+						<pl>${.self:"role":4:"firstname"} i II zapisują się do futurystycznej szkoły kosmicznej. ${.self:"role":1:"firstname"} oferuje wsparcie naukowe, ale złośliwy Quirkle wywołuje zamieszanie wśród uczniów, co powoduje wizytę dyrektora szkoły  -  inteligentnej chmury gazu.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="2" licence_type="2" guid="2a62df01-b00e-4335-907e-64a6ea6034f7">
@@ -9833,7 +9797,6 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<data flags="0" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by 9f9d5722-d45d-4d2f-a741-4be832ff134f -->
 			<targetgroupattractivity children="2" teenagers="2" housewives="2" employees="1.5" />
 			<genres maingenre="16" subgenres="9,5" />
-			<episodes min="5" max="5" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="30" max="80" />
@@ -9966,7 +9929,6 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<data target_groups="18" />
 			<targetgroupattractivity employees="1.5" unemployed="2" />
 			<genres maingenre="16" subgenres="17,7" />
-			<episodes min="6" max="6" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="20" max="70" />
@@ -9978,9 +9940,9 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="e79513af-016e-405c-9ff6-76692ac35be0" creator="9551" comment="Episodes titles from Dallas in Mad TV that had made them up, so reusing them in this 'spin-off'; descriptions largely by ChatGPT">
 			<title>
-				<de>Texas-Clan Tales</de>
-				<en>North Texas Tales</en>
-				<pl>Opowieści z Północnego Teksasu</pl>
+				<de>${mediatitle_dallas} Tales</de>
+				<en>${mediatitle_dallas} Tales</en>
+				<pl>Opowieści z ${mediatitle_dallas}</pl>
 			</title>
 			<title_original>
 				<de>Dallas Tales</de>
@@ -10179,7 +10141,6 @@ Projekt, który został anulowany przez dużego producenta, może być teraz rea
 			<data flags="10" flags_optional="" target_groups="7" available="0" /> <!-- availability triggered by Dallas Season 2 Episode 1 -->
 			<targetgroupattractivity women="1.25" teenagers="2" employees="1.25" unemployed="1.25" managers="1.5" pensioners="2" />
 			<genres maingenre="3" subgenres="9,5" />
-			<episodes min="10" max="10" />
 			<blocks value="1" />
 			<price min="150000" max="300000" />
 			<potential min="40" max="80" />
