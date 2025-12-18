@@ -330,14 +330,14 @@
 
 		<scripttemplate product="4" licence_type="1" guid="9a021293-e346-4134-93cd-6a66e4af8216" creator="10061">
 			<title>
-				<de>${.self:"role":1:"fullname"} vor Ort ${inbrazil}</de>
-				<en>${.self:"role":1:"fullname"} on the ground ${inbrazil}</en>
-				<pl>${.self:"role":1:"fullname"} na miejscu ${inbrazil}</pl>
+				<de>${thomasbernstein} vor Ort ${inbrazil}</de>
+				<en>${thomasbernstein} on the ground ${inbrazil}</en>
+				<pl>${thomasbernstein} na miejscu ${inbrazil}</pl>
 			</title>
 			<description>
-				<de>${brazil} ${struggleswith}. ${.self:"role":1:"fullname"} beobachtet die Krise hautnah. Im Gespräch mit den Einheimischen werden deren Sorgen und Nöte beleuchtet. Zwischendurch wird noch Geld für die eigene Rückreise gesammelt.</de>
-				<en>${brazil} ${struggleswith}. ${.self:"role":1:"fullname"} observes the crisis firsthand. In conversations with locals, their worries and hardships are highlighted. In the meantime, money is being collected for his own return journey.</en>
-				<pl>${brazil} ${struggleswith}. ${.self:"role":1:"fullname"} obserwuje kryzys z bliska. W rozmowach z miejscowymi zostają uwidocznione ich troski i potrzeby. W międzyczasie zbierane są jeszcze pieniądze na jego własny powrót.</pl>
+				<de>${brazil} ${struggleswith}. ${thomasbernstein} beobachtet die Krise hautnah. Im Gespräch mit den Einheimischen werden deren Sorgen und Nöte beleuchtet. Zwischendurch wird noch Geld für die eigene Rückreise gesammelt.</de>
+				<en>${brazil} ${struggleswith}. ${thomasbernstein} observes the crisis firsthand. In conversations with locals, their worries and hardships are highlighted. In the meantime, money is being collected for his own return journey.</en>
+				<pl>${brazil} ${struggleswith}. ${thomasbernstein} obserwuje kryzys z bliska. W rozmowach z miejscowymi zostają uwidocznione ich troski i potrzeby. W międzyczasie zbierane są jeszcze pieniądze na jego własny powrót.</pl>
 			</description>
 			<variables>
 				<struggleswith>
@@ -356,10 +356,12 @@
 				<inbrazil>
 					<all>${.csv:country_csv:1}</all>
 				</inbrazil>
+				<personguid>63ad3858-562e-40a8-a06a-848da2feab95</personguid>
+				<thomasbernstein>${.person:"${personguid}":"fullname"}</thomasbernstein>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="128" required="1" person="63ad3858-562e-40a8-a06a-848da2feab95" />
+				<job index="1" function="128" required="1" person="${personguid}" />
 			</jobs>
 			<data flags="1" broadcast_time_slot_start="21" broadcast_time_slot_end="1" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="96" />
 			<targetgroupattractivity women="0.75" />
@@ -3767,28 +3769,29 @@
 
 		<scripttemplate product="3" licence_type="1" guid="cdf28468-9fc0-40c8-b16d-109bc6b8f2f0" creator="10061">
 			<title>
-				<de>Alles außer Liebe - ${.self:"role":2:"firstname"} sucht einen Mann</de>
-				<en>Everything But Love - ${.self:"role":2:"firstname"} is Looking for a Man</en>
-				<pl>Wszystko tylko nie miłość - ${.self:"role":2:"firstname"} szuka mężczyzny</pl>
+				<de>Alles außer Liebe - ${jane} sucht einen Mann</de>
+				<en>Everything But Love - ${jane} is Looking for a Man</en>
+				<pl>Wszystko tylko nie miłość - ${jane} szuka mężczyzny</pl>
 			</title>
 			<description>
-				<de>Drei Männer wollen ${.self:"role":2:"firstname"} erobern. Hierbei vergleichen sie in diversen Wettkämpfen ihr Haus, ihr Boot, ihr Auto und ihre Körperteile. Wer wird die meisten Punkte erringen? Wer sich verliebt bekommt allerdings Minuspunkte.</de>
-				<en>Three men want to win over ${.self:"role":2:"firstname"}. They compete in various contests comparing their house, their boat, their car, and their body parts. Who will earn the most points? However, anyone who falls in love gets negative points points.</en>
-				<pl>Trzech mężczyzn rywalizuje o względy kobiety (${.self:"role":2:"firstname"}). W serii niezwykłych konkurencji porównują swoje domy, łodzie, samochody, a nawet części ciała. Zwycięzcą zostanie ten, który zdobędzie najwięcej punktów, jednak uwaga: zakochanie się skutkuje punktami karnymi.</pl>
+				<de>Drei Männer wollen ${jane} erobern. Hierbei vergleichen sie in diversen Wettkämpfen ihr Haus, ihr Boot, ihr Auto und ihre Körperteile. Wer wird die meisten Punkte erringen? Wer sich verliebt bekommt allerdings Minuspunkte.</de>
+				<en>Three men want to win over ${jane}. They compete in various contests comparing their house, their boat, their car, and their body parts. Who will earn the most points? However, anyone who falls in love gets negative points points.</en>
+				<pl>Trzech mężczyzn rywalizuje o względy kobiety (${jane}). W serii niezwykłych konkurencji porównują swoje domy, łodzie, samochody, a nawet części ciała. Zwycięzcą zostanie ten, który zdobędzie najwięcej punktów, jednak uwaga: zakochanie się skutkuje punktami karnymi.</pl>
 			</description>
 			<variables>
 				<woman>4c338287-36be-4f58-96af-42201dab2fd9|006d7627-8578-4300-bad3-9bea0e6b568e|599bebd4-c5f7-485b-82f4-cbe622bcd18c|29d5d931-7526-4cfd-b2ff-b7e088b8345c|fb9363bd-d2ed-4086-b6c5-52649807eee3|93a6daf6-029f-4ca6-a0a5-25252e93720d|4f1c8151-c8b5-4fcc-8042-204170143383|9d9fba65-9b3e-4f9e-8ae4-36ac4d1362b0|7da2dba4-8617-4963-839d-c1f7b8d40365|df29adff-6e32-44af-bfe9-e87ba9458c2e|74e87d66-d03d-46d6-b868-8f666f0f6137|a33c7071-e7ea-4472-95d3-739371a4b1ed|79cb06d9-f5d4-41a0-810d-d776b12ef4cc|2fbb35c3-2997-449f-8afc-9164a3bedf07|a43777f5-d45e-44d1-80e8-4d7adc133e52|8d475c0a-1835-46ca-a315-92aaa4c47238|1e0125e8-2a4a-43b2-8d27-93993570f0fc|8b1b0a61-4efb-4c1d-9f5c-a76ee5c08e05|55b2008d-89b3-4fc2-a583-2be1b4cb14d8|3a25173d-5b08-4b85-b2ec-d1fe2ac741e8|e302ba0e-0ec6-42c8-b8c4-a87a7be76d83|cb893bed-b383-43be-8665-0ed2c0aa71f6|41e05e96-1100-4939-9567-7f5557dcc45d|e8a95fa6-7b21-4104-a0c7-5ea97e0e3686|16e7ca2f-a819-4b55-98f6-64fbc113c35f|339bea6d-8674-4b3b-a9ff-92f4e13d2dd0|99c5a153-6ba0-44ae-a436-5dca0783a927|669006a0-1d27-42aa-8c0c-3aa8a2330044|690c570f-409c-4a2e-afb9-950b03f47cf4|f3023453-57f2-4658-9245-d45fa2fd88f7|a886b00e-7aa8-4734-9e30-3c34047ca78d|e0aae8b5-480e-4a4b-bbca-8db578230298|08be772f-11ac-4bd8-9126-d3545176ffc1|cd8d9b17-ae24-4b34-9284-060fbda2ccb0|63d8c86d-3dac-44a1-b00a-d672bb6aea56|164e0548-41e8-40e6-b921-e5c7164c6ffb|280f253d-b959-47b9-b6f8-8c4c5adc5b70|df83dfe1-6bc7-4ad6-b1f7-8ad0e5fc0cc4|cfc8d95b-9755-45a8-b485-c449377ae5a4|4a84f2d9-e048-48ae-b957-15d7ffa9191b|bf6ae3f3-13eb-4356-be86-6d5b4e95d067|ff267d8e-8d0f-45ce-aef8-0663e3f2a433|7b1117c0-3cf4-4bc0-ad91-0dab781a0b93|760f3f9e-6fba-4273-915d-ee2f337ae1ff|62f468a9-18f3-489e-b193-c64fa7849f00|31488662-bbf7-4caa-85aa-d0fadfbe2874|577f2e21-6b48-4013-9477-a3318e1ea762|a458042f-6613-4d2e-abe3-dafb3c48cbf6|6e60ec30-4679-43f3-8e07-0db8984095c7|eb4f6f3a-3d2c-4d32-bcf6-b82b9360cff1|425df399-7bb5-423e-a0ae-90f817daabec|fa59468c-fc17-4d2f-bf8a-7614724ce35a|f3970ddc-9011-464a-85ce-395da82d9e97|5119ac7b-ca44-491f-b6b8-b1eba304f317|16253533-ec4e-4ddb-8afe-9ba8bef14e56|7dd7fb62-05ba-46c4-ab0d-08f28eb0b20b|ab46ff23-f495-4a77-8f66-fe0c44c702e1|6fe0626d-9330-4789-97b3-1580a5da2bcc|9ac4259b-de1a-4dc5-9992-e0a18222dda4|3c7ae093-9ce5-4cf5-a818-f66aefdea7d4|2d70dbd0-5d14-409e-ae8b-5c3297b28079|7360d637-cfcb-4ccc-9add-22b4b4597dab|cff1b692-faa1-4c5b-aa66-c7b0df2232ba</woman>
 				<cand_a>1d7245ee-f7fc-417b-b612-1cb247e546a1|2dca73d1-e362-4d39-87e4-9060d757564c|4363558b-2d02-4e39-a6d1-42a84761cb01|22a142fb-e538-419d-992f-f76037edd84c|2870cf82-4745-439f-945a-816e8c1bae06|aee1f108-8557-4585-bd4d-e5ee0254cd71|fe071fcc-4ffa-45e0-b61c-4c5474bbc2c0|710426a4-9f8c-425f-a2c6-3246f946d59d|c8d50d20-9a91-4a8f-b400-20178a931bfd|9e4a65b8-2bf1-44e9-9541-715f6b8ea56e|0d0b4a65-a343-4b39-acb3-146690cf2777|220708be-3a20-41fb-93ed-51a777dc480a|41fee9a3-a980-4358-9ac0-d7884282416d|64edcd8c-f5a4-41b1-8a59-a5fbbc11d4ea|6a8fe902-26da-47c5-8069-b30b3a6ee4fe|57daf048-fb59-432c-b271-9c63e2b528ea|f24bd4df-d07c-4eaf-87d9-f1f26f5d895b|1c241d90-3c91-44ff-82c7-1bc634756969|10c019fb-7a83-4d87-a4f4-52d00057ca55|985d9dc5-fc6d-43f3-b871-b5f2567ab5c9|c81a7f15-691c-4b7e-afdc-3932b95999b2</cand_a>
 				<cand_b>a667f3ca-c03b-4622-bc2b-114fb9be7912|04299a2f-04d3-4656-9f91-61b7992a6849|8dc7fe53-1473-4d79-af76-80193f845900|65305498-c577-491e-890b-6bbd55b1c491|d0215e50-ce4b-45e3-85cc-a1516ef1da5c|50cc38a3-967f-470d-abfc-32966704b96c|820fa0e6-74d5-4708-ac04-f166c26765f0|f150eef7-2a0a-44e0-8ad2-ed87ddde0ed6|6011cc5c-eafe-4dbb-b1db-2594df644390|fe667db4-08ed-4b7a-b761-7f2adede7beb|9fbd24d5-218d-4750-91a6-f662aeef6778|29698c11-91fd-425b-b205-afec392b4f99|461556c9-4b71-484c-bba0-0fed1d60bc66|605951d4-4593-49fc-8194-a43f97056f9f|4404fff9-d20d-4585-ac48-bf5d3cee2161|12c014bb-9371-4886-ab62-eb63669b7225|f535b149-edb0-4370-bf83-cc8287ef3918|f561af6a-26d7-47f6-9388-9186ef8acb5f|6ec56801-2bba-4dba-a8c1-b4381d66af4b|6f57c1b4-92e5-49a5-82e3-e643b3102a5d|55735e61-4bf3-4a86-8372-9b3ece412e51</cand_b>
 				<cand_c>00d1c32d-6a4d-4534-924d-4c1f8d9575e6|5d38545b-4d68-4d7a-b5d7-fba7934d500a|3cdd5864-3122-4066-9b8c-b234e4d7389b|05818042-71ba-40bc-bc64-c77b49ddbde0|64364a44-7ffd-4c63-882a-dbdf5f102fe2|9640d64d-2e2d-4d22-9355-8bc20ebccc9f|d927dafc-8c9a-4df4-9854-e9fbf4852a96|a89a58ab-6ea4-4b75-8faa-9b559e9ebf95|92993a1f-0464-416a-8b7a-8620e07409cf|9512cef1-5c09-4d96-9ed1-bdf6fd1145df|17c3d675-6551-4ad2-9f73-6f68f33cad55|8834fd2d-da97-4600-a0f0-088b3534e1c5|35663fd8-8eeb-4a66-bb55-9e74dca7dd9a|21435958-31fe-432c-92c0-b2159b6941ab|9571ed09-e65c-4b9a-8aed-2fc34cb683ae|17f63d34-1711-46b1-b3c6-3869a255e5a2|c6605fc7-f883-4b73-bdd8-49a952c6b7b3|b9216394-1298-4654-acf1-17a344d1beae|71cb18ee-5952-4f8f-90c7-8494c072cf16|d98b58f8-cfca-4f7e-85cb-9f2806a43a07|38afa6ec-06fb-4644-af91-4a0cd9ba5daf</cand_c>
+				<jane>${.person:"${woman}":"firstname"}</jane>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="8" required="1" />
-				<job index="2" function="64" required="1" person="${woman}" display_template='${.self:"role":2:"firstname"}' />
-				<job index="3" function="64" required="1" person="${cand_a}" display_template='${.self:"role":3:"firstname"}' />
-				<job index="4" function="64" required="1" person="${cand_b}" display_template='${.self:"role":4:"firstname"}' />
-				<job index="5" function="64" required="1" person="${cand_c}" display_template='${.self:"role":5:"firstname"}' />
+				<job index="1" function="8" required="1" /> <!-- TODO: Persons are preselected, but maybe it was requested and it would be better if *persons* could be cast as themselves, not as playing roles -->
+				<job index="2" function="64" required="1" person="${woman}" display_template='${.person:"${woman}":"firstname"}' />
+				<job index="3" function="64" required="1" person="${cand_a}" display_template='${.person:"${cand_a}":"firstname"}' />
+				<job index="4" function="64" required="1" person="${cand_b}" display_template='${.person:"${cand_b}":"firstname"}' />
+				<job index="5" function="64" required="1" person="${cand_c}" display_template='${.person:"${cand_c}":"firstname"}' />
 			</jobs>
 			<data flags="1" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
 			<genres maingenre="100" subgenres="15" />
@@ -3806,28 +3809,29 @@
 
 		<scripttemplate product="3" licence_type="1" guid="6c7ebfee-b651-40f1-8fc1-2ae0600cc534" creator="10061">
 			<title>
-				<de>Alles außer Liebe - ${.self:"role":2:"firstname"} sucht eine Frau</de>
-				<en>Everything But Love - ${.self:"role":2:"firstname"} is Looking for a Woman</en>
-				<pl>Wszystko tylko nie miłość - ${.self:"role":2:"firstname"} szuka kobiety</pl>
+				<de>Alles außer Liebe - ${john} sucht eine Frau</de>
+				<en>Everything But Love - ${john} is Looking for a Woman</en>
+				<pl>Wszystko tylko nie miłość - ${john} szuka kobiety</pl>
 			</title>
 			<description>
-				<de>Drei Frauen wollen ${.self:"role":2:"firstname"} erobern. Hierbei vergleichen sie in diversen Wettkämpfen ihr Haus, ihr Boot, ihr Auto und ihre Körperteile. Wer wird die meisten Punkte erringen? Wer sich verliebt bekommt allerdings Minuspunkte.</de>
-				<en>Three women want to win over ${.self:"role":2:"firstname"}. They compete in various contests comparing their house, their boat, their car, and their body parts. Who will earn the most points? However, anyone who falls in love gets negative points points.</en>
-				<pl>Trzy kobiety rywalizują o względy mężczyzny (${.self:"role":2:"firstname"}). W serii niezwykłych konkurencji porównują swoje domy, łodzie, samochody, a nawet części ciała. Zwycięży ta, która zdobędzie najwięcej punktów, ale uwaga: zakochanie się skutkuje punktami karnymi.</pl>
+				<de>Drei Frauen wollen ${john} erobern. Hierbei vergleichen sie in diversen Wettkämpfen ihr Haus, ihr Boot, ihr Auto und ihre Körperteile. Wer wird die meisten Punkte erringen? Wer sich verliebt bekommt allerdings Minuspunkte.</de>
+				<en>Three women want to win over ${john}. They compete in various contests comparing their house, their boat, their car, and their body parts. Who will earn the most points? However, anyone who falls in love gets negative points points.</en>
+				<pl>Trzy kobiety rywalizują o względy mężczyzny (${john}). W serii niezwykłych konkurencji porównują swoje domy, łodzie, samochody, a nawet części ciała. Zwycięży ta, która zdobędzie najwięcej punktów, ale uwaga: zakochanie się skutkuje punktami karnymi.</pl>
 			</description>
 			<variables>
 				<man>1d7245ee-f7fc-417b-b612-1cb247e546a1|2dca73d1-e362-4d39-87e4-9060d757564c|4363558b-2d02-4e39-a6d1-42a84761cb01|22a142fb-e538-419d-992f-f76037edd84c|2870cf82-4745-439f-945a-816e8c1bae06|aee1f108-8557-4585-bd4d-e5ee0254cd71|fe071fcc-4ffa-45e0-b61c-4c5474bbc2c0|a667f3ca-c03b-4622-bc2b-114fb9be7912|04299a2f-04d3-4656-9f91-61b7992a6849|8dc7fe53-1473-4d79-af76-80193f845900|65305498-c577-491e-890b-6bbd55b1c491|d0215e50-ce4b-45e3-85cc-a1516ef1da5c|50cc38a3-967f-470d-abfc-32966704b96c|820fa0e6-74d5-4708-ac04-f166c26765f0|00d1c32d-6a4d-4534-924d-4c1f8d9575e6|5d38545b-4d68-4d7a-b5d7-fba7934d500a|3cdd5864-3122-4066-9b8c-b234e4d7389b|05818042-71ba-40bc-bc64-c77b49ddbde0|64364a44-7ffd-4c63-882a-dbdf5f102fe2|9640d64d-2e2d-4d22-9355-8bc20ebccc9f|d927dafc-8c9a-4df4-9854-e9fbf4852a96|710426a4-9f8c-425f-a2c6-3246f946d59d|c8d50d20-9a91-4a8f-b400-20178a931bfd|9e4a65b8-2bf1-44e9-9541-715f6b8ea56e|0d0b4a65-a343-4b39-acb3-146690cf2777|220708be-3a20-41fb-93ed-51a777dc480a|41fee9a3-a980-4358-9ac0-d7884282416d|64edcd8c-f5a4-41b1-8a59-a5fbbc11d4ea|f150eef7-2a0a-44e0-8ad2-ed87ddde0ed6|6011cc5c-eafe-4dbb-b1db-2594df644390|fe667db4-08ed-4b7a-b761-7f2adede7beb|9fbd24d5-218d-4750-91a6-f662aeef6778|29698c11-91fd-425b-b205-afec392b4f99|461556c9-4b71-484c-bba0-0fed1d60bc66|605951d4-4593-49fc-8194-a43f97056f9f|a89a58ab-6ea4-4b75-8faa-9b559e9ebf95|92993a1f-0464-416a-8b7a-8620e07409cf|9512cef1-5c09-4d96-9ed1-bdf6fd1145df|17c3d675-6551-4ad2-9f73-6f68f33cad55|8834fd2d-da97-4600-a0f0-088b3534e1c5|35663fd8-8eeb-4a66-bb55-9e74dca7dd9a|21435958-31fe-432c-92c0-b2159b6941ab|6a8fe902-26da-47c5-8069-b30b3a6ee4fe|57daf048-fb59-432c-b271-9c63e2b528ea|f24bd4df-d07c-4eaf-87d9-f1f26f5d895b|1c241d90-3c91-44ff-82c7-1bc634756969|10c019fb-7a83-4d87-a4f4-52d00057ca55|985d9dc5-fc6d-43f3-b871-b5f2567ab5c9|c81a7f15-691c-4b7e-afdc-3932b95999b2|4404fff9-d20d-4585-ac48-bf5d3cee2161|12c014bb-9371-4886-ab62-eb63669b7225|f535b149-edb0-4370-bf83-cc8287ef3918|f561af6a-26d7-47f6-9388-9186ef8acb5f|6ec56801-2bba-4dba-a8c1-b4381d66af4b|6f57c1b4-92e5-49a5-82e3-e643b3102a5d|55735e61-4bf3-4a86-8372-9b3ece412e51|9571ed09-e65c-4b9a-8aed-2fc34cb683ae|17f63d34-1711-46b1-b3c6-3869a255e5a2|c6605fc7-f883-4b73-bdd8-49a952c6b7b3|b9216394-1298-4654-acf1-17a344d1beae|71cb18ee-5952-4f8f-90c7-8494c072cf16|d98b58f8-cfca-4f7e-85cb-9f2806a43a07|38afa6ec-06fb-4644-af91-4a0cd9ba5daf</man>
 				<cand_a>4c338287-36be-4f58-96af-42201dab2fd9|006d7627-8578-4300-bad3-9bea0e6b568e|599bebd4-c5f7-485b-82f4-cbe622bcd18c|29d5d931-7526-4cfd-b2ff-b7e088b8345c|fb9363bd-d2ed-4086-b6c5-52649807eee3|93a6daf6-029f-4ca6-a0a5-25252e93720d|4f1c8151-c8b5-4fcc-8042-204170143383|cb893bed-b383-43be-8665-0ed2c0aa71f6|41e05e96-1100-4939-9567-7f5557dcc45d|e8a95fa6-7b21-4104-a0c7-5ea97e0e3686|16e7ca2f-a819-4b55-98f6-64fbc113c35f|339bea6d-8674-4b3b-a9ff-92f4e13d2dd0|99c5a153-6ba0-44ae-a436-5dca0783a927|669006a0-1d27-42aa-8c0c-3aa8a2330044|7b1117c0-3cf4-4bc0-ad91-0dab781a0b93|760f3f9e-6fba-4273-915d-ee2f337ae1ff|62f468a9-18f3-489e-b193-c64fa7849f00|31488662-bbf7-4caa-85aa-d0fadfbe2874|577f2e21-6b48-4013-9477-a3318e1ea762|a458042f-6613-4d2e-abe3-dafb3c48cbf6|6e60ec30-4679-43f3-8e07-0db8984095c7</cand_a>
 				<cand_b>9d9fba65-9b3e-4f9e-8ae4-36ac4d1362b0|7da2dba4-8617-4963-839d-c1f7b8d40365|df29adff-6e32-44af-bfe9-e87ba9458c2e|74e87d66-d03d-46d6-b868-8f666f0f6137|a33c7071-e7ea-4472-95d3-739371a4b1ed|79cb06d9-f5d4-41a0-810d-d776b12ef4cc|2fbb35c3-2997-449f-8afc-9164a3bedf07|690c570f-409c-4a2e-afb9-950b03f47cf4|f3023453-57f2-4658-9245-d45fa2fd88f7|a886b00e-7aa8-4734-9e30-3c34047ca78d|e0aae8b5-480e-4a4b-bbca-8db578230298|08be772f-11ac-4bd8-9126-d3545176ffc1|cd8d9b17-ae24-4b34-9284-060fbda2ccb0|63d8c86d-3dac-44a1-b00a-d672bb6aea56|eb4f6f3a-3d2c-4d32-bcf6-b82b9360cff1|425df399-7bb5-423e-a0ae-90f817daabec|fa59468c-fc17-4d2f-bf8a-7614724ce35a|f3970ddc-9011-464a-85ce-395da82d9e97|5119ac7b-ca44-491f-b6b8-b1eba304f317|16253533-ec4e-4ddb-8afe-9ba8bef14e56|7dd7fb62-05ba-46c4-ab0d-08f28eb0b20b</cand_b>
 				<cand_c>a43777f5-d45e-44d1-80e8-4d7adc133e52|8d475c0a-1835-46ca-a315-92aaa4c47238|1e0125e8-2a4a-43b2-8d27-93993570f0fc|8b1b0a61-4efb-4c1d-9f5c-a76ee5c08e05|55b2008d-89b3-4fc2-a583-2be1b4cb14d8|3a25173d-5b08-4b85-b2ec-d1fe2ac741e8|e302ba0e-0ec6-42c8-b8c4-a87a7be76d83|164e0548-41e8-40e6-b921-e5c7164c6ffb|280f253d-b959-47b9-b6f8-8c4c5adc5b70|df83dfe1-6bc7-4ad6-b1f7-8ad0e5fc0cc4|cfc8d95b-9755-45a8-b485-c449377ae5a4|4a84f2d9-e048-48ae-b957-15d7ffa9191b|bf6ae3f3-13eb-4356-be86-6d5b4e95d067|ff267d8e-8d0f-45ce-aef8-0663e3f2a433|ab46ff23-f495-4a77-8f66-fe0c44c702e1|6fe0626d-9330-4789-97b3-1580a5da2bcc|9ac4259b-de1a-4dc5-9992-e0a18222dda4|3c7ae093-9ce5-4cf5-a818-f66aefdea7d4|2d70dbd0-5d14-409e-ae8b-5c3297b28079|7360d637-cfcb-4ccc-9add-22b4b4597dab|cff1b692-faa1-4c5b-aa66-c7b0df2232ba</cand_c>
+				<john>${.person:"${man}":"firstname"}</john>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" />
-				<job index="2" function="64" required="1" person="${man}" display_template='${.self:"role":2:"firstname"}' />
-				<job index="3" function="64" required="1" person="${cand_a}" display_template='${.self:"role":3:"firstname"}' />
-				<job index="4" function="64" required="1" person="${cand_b}" display_template='${.self:"role":4:"firstname"}' />
-				<job index="5" function="64" required="1" person="${cand_c}" display_template='${.self:"role":5:"firstname"}' />
+				<job index="2" function="64" required="1" person="${man}" display_template='${.person:"${man}":"firstname"}' />
+				<job index="3" function="64" required="1" person="${cand_a}" display_template='${.person:"${cand_a}":"firstname"}' />
+				<job index="4" function="64" required="1" person="${cand_b}" display_template='${.person:"${cand_b}":"firstname"}' />
+				<job index="5" function="64" required="1" person="${cand_c}" display_template='${.person:"${cand_c}":"firstname"}' />
 			</jobs>
 			<data flags="1" production_broadcast_limit="2" production_broadcast_flags="512" production_licence_flags="36" target_groups="6" />
 			<genres maingenre="100" subgenres="15" />
@@ -3922,12 +3926,18 @@
 						<pl>Bangladesz</pl>
 					</title>
 					<description>
-						<de>Vom blutigen Unabhängigkeitskrieg gegen Pakistan 1971 bis zur Verfassung 1972. Die turbulente Geburt der weltweit achtgrößten Nation, angeführt von ${.self:"role":4:"fullname"}, erkämpft durch immense Opfer und den Einsatz der Mukti Bahini.</de>
-						<en>From the bloody 1971 War of Independence against Pakistan to the 1972 Constitution. The turbulent birth of the world's eighth-most populous nation, led by ${.self:"role":4:"fullname"}, achieved through immense sacrifice and the efforts of the Mukti Bahini.</en>
-						<pl>Od krwawej wojny o niepodległość z Pakistanem w 1971 roku do konstytucji z 1972. Burzliwe narodziny ósmego pod względem ludności kraju świata, pod przywództwem ${.self:"role":4:"firstname"}a ${.self:"role":4:"lastname"}a, wywalczone ogromną ofiarą i działaniami Mukti Bahini.</pl>
+						<de>Vom blutigen Unabhängigkeitskrieg gegen Pakistan 1971 bis zur Verfassung 1972. Die turbulente Geburt der weltweit achtgrößten Nation, angeführt von ${personfullname}, erkämpft durch immense Opfer und den Einsatz der Mukti Bahini.</de>
+						<en>From the bloody 1971 War of Independence against Pakistan to the 1972 Constitution. The turbulent birth of the world's eighth-most populous nation, led by ${personfullname}, achieved through immense sacrifice and the efforts of the Mukti Bahini.</en>
+						<pl>Od krwawej wojny o niepodległość z Pakistanem w 1971 roku do konstytucji z 1972. Burzliwe narodziny ósmego pod względem ludności kraju świata, pod przywództwem ${personfirstname}a ${personlastname}a, wywalczone ogromną ofiarą i działaniami Mukti Bahini.</pl>
 					</description>
+					<variables>
+						<personguid>f902ad2a-9f73-431f-af5a-9796e4587b59</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+						<personfirstname>${.person:"${personguid}":"firstname"}</personfirstname>
+						<personlastname>${.person:"${personguid}":"lastname"}</personlastname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="f902ad2a-9f73-431f-af5a-9796e4587b59" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 					<effects>
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="0fbc853c-ea94-4305-8f20-47f15b6ac992" />
@@ -3940,12 +3950,16 @@
 						<pl>Gwinea Równikowa</pl>
 					</title>
 					<description>
-						<de>Vom spanischen Kolonialterritorium zum unabhängigen Staat 1968. Die Hoffnungen unter dem ersten Präsidenten ${.self:"role":4:"fullname"} schlagen schnell in einen der brutalsten Diktaturen Afrikas um und prägen die junge Nation von Anfang an.</de>
-						<en>From Spanish colonial territory to independent state in 1968. Hopes under first President ${.self:"role":4:"fullname"} quickly turn into one of Africa's most brutal dictatorships, shaping the young nation from its very inception.</en>
-						<pl>Od hiszpańskiego terytorium kolonialnego do niepodległego państwa w 1968 roku. Nadzieje związane z pierwszym prezydentem (${.self:"role":4:"fullname"}) szybko przemieniają się w jedną z najbrutalniejszych dyktatur w Afryce, kształtującą młody naród od samego początku.</pl>
+						<de>Vom spanischen Kolonialterritorium zum unabhängigen Staat 1968. Die Hoffnungen unter dem ersten Präsidenten ${personfullname} schlagen schnell in einen der brutalsten Diktaturen Afrikas um und prägen die junge Nation von Anfang an.</de>
+						<en>From Spanish colonial territory to independent state in 1968. Hopes under first President ${personfullname} quickly turn into one of Africa's most brutal dictatorships, shaping the young nation from its very inception.</en>
+						<pl>Od hiszpańskiego terytorium kolonialnego do niepodległego państwa w 1968 roku. Nadzieje związane z pierwszym prezydentem (${personfullname}) szybko przemieniają się w jedną z najbrutalniejszych dyktatur w Afryce, kształtującą młody naród od samego początku.</pl>
 					</description>
+					<variables>
+						<personguid>8eadf7e8-68f1-4ffe-8089-8ed649595d04</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="8eadf7e8-68f1-4ffe-8089-8ed649595d04" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="2" product="4" licence_type="2" guid="d5eb1c8a-d6de-42e0-a104-399a5c26eee3">
@@ -3997,12 +4011,16 @@
 						<pl>Papua-Nowa Gwinea</pl>
 					</title>
 					<description>
-						<de>1975 erlangt das Land die Unabhängigkeit von Australien. Die neue Nation vereint über 800 indigene Sprachen und Kulturen. Der erste Premierminister ${.self:"role":4:"fullname"} steht vor der Herkulesaufgabe, diese extreme Vielfalt in einen gemeinsamen Staat zu vereinen.</de>
-						<en>In 1975, the country gains independence from Australia. The new nation unites over 800 indigenous languages and cultures. First Prime Minister ${.self:"role":4:"fullname"} faces the Herculean task of uniting this extreme diversity into one state.</en>
-						<pl>W 1975 kraj uzyskuje niepodległość od Australii. Nowy naród łączy ponad 800 rdzennych języków i kultur. Pierwszy premier ${.self:"role":4:"fullname"} staje przed herkulesowym zadaniem zjednoczenia tej skrajnej różnorodności w jedno państwo.</pl>
+						<de>1975 erlangt das Land die Unabhängigkeit von Australien. Die neue Nation vereint über 800 indigene Sprachen und Kulturen. Der erste Premierminister ${personfullname} steht vor der Herkulesaufgabe, diese extreme Vielfalt in einen gemeinsamen Staat zu vereinen.</de>
+						<en>In 1975, the country gains independence from Australia. The new nation unites over 800 indigenous languages and cultures. First Prime Minister ${personfullname} faces the Herculean task of uniting this extreme diversity into one state.</en>
+						<pl>W 1975 kraj uzyskuje niepodległość od Australii. Nowy naród łączy ponad 800 rdzennych języków i kultur. Pierwszy premier ${personfullname} staje przed herkulesowym zadaniem zjednoczenia tej skrajnej różnorodności w jedno państwo.</pl>
 					</description>
+					<variables>
+						<personguid>48df6c6b-120f-4935-9acf-c1bf17b178b8</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="48df6c6b-120f-4935-9acf-c1bf17b178b8" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 					<effects>
 						<effect trigger="broadcastFirstTime" type="modifyScriptAvailability" guid="bc8e3d50-bc3b-456e-927d-354fe84acaac" />
@@ -4081,12 +4099,16 @@
 						<pl>Zimbabwe</pl>
 					</title>
 					<description>
-						<de>Nach einem langen, blutigen Guerillakrieg erklärt das ehemalige Rhodesien 1980 als Simbabwe seine Unabhängigkeit. ${.self:"role":4:"fullname"} wird zum ersten Premierminister, und der internationale Jubel über das Ende der weißen Minderheitsherrschaft trübt den Blick auf die kommende Diktatur.</de>
-						<en>After a long, bloody guerrilla war, former Rhodesia declares independence as Zimbabwe in 1980. ${.self:"role":4:"fullname"} becomes the first Prime Minister, and international jubilation over the end of white minority rule obscures the view of the coming dictatorship.</en>
-						<pl>Po długiej, krwawej wojnie partyzanckiej dawna Rodezja ogłasza niepodległość jako Zimbabwe w 1980 roku. ${.self:"role":4:"fullname"} zostaje pierwszym premierem, a międzynarodowa radość z końca białej władzy mniejszościowej przesłania widok nadchodzącej dyktatury.</pl>
+						<de>Nach einem langen, blutigen Guerillakrieg erklärt das ehemalige Rhodesien 1980 als Simbabwe seine Unabhängigkeit. ${personfullname} wird zum ersten Premierminister, und der internationale Jubel über das Ende der weißen Minderheitsherrschaft trübt den Blick auf die kommende Diktatur.</de>
+						<en>After a long, bloody guerrilla war, former Rhodesia declares independence as Zimbabwe in 1980. ${personfullname} becomes the first Prime Minister, and international jubilation over the end of white minority rule obscures the view of the coming dictatorship.</en>
+						<pl>Po długiej, krwawej wojnie partyzanckiej dawna Rodezja ogłasza niepodległość jako Zimbabwe w 1980 roku. ${personfullname} zostaje pierwszym premierem, a międzynarodowa radość z końca białej władzy mniejszościowej przesłania widok nadchodzącej dyktatury.</pl>
 					</description>
+					<variables>
+						<personguid>f7b4a806-e393-4ddb-be19-01f8061e890d</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="f7b4a806-e393-4ddb-be19-01f8061e890d" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="2" product="4" licence_type="2" guid="f3bb159f-7fba-486e-a0ef-da9268394081">
@@ -4163,12 +4185,16 @@
 						<pl>Białoruś</pl>
 					</title>
 					<description>
-						<de>1991 erklärt Belarus nach dem gescheiterten Moskauer Putsch seine Souveränität. Doch im Gegensatz zu seinen baltischen Nachbarn bleibt das Land unter dem ehemaligen Kolchosvorsitzenden ${.self:"role":4:"fullname"} tief mit Russland verbunden und sucht seine Identität zwischen Ost und West.</de>
-						<en>In 1991, following the failed Moscow coup, Belarus declares its sovereignty. Yet, unlike its Baltic neighbours, the country under former collective farm boss ${.self:"role":4:"fullname"} remains deeply tied to Russia, searching for its identity between East and West.</en>
-						<pl>W 1991 roku, po nieudanym puczu moskiewskim, Białoruś ogłasza swoją suwerenność. Jednak w przeciwieństwie do swoich bałtyckich sąsiadów, kraj pod rządami byłego przewodniczącego kołchozu (${.self:"role":4:"fullname"}) pozostaje głęboko związany z Rosją, szukając swojej tożsamości między Wschodem a Zachodem.</pl>
+						<de>1991 erklärt Belarus nach dem gescheiterten Moskauer Putsch seine Souveränität. Doch im Gegensatz zu seinen baltischen Nachbarn bleibt das Land unter dem ehemaligen Kolchosvorsitzenden ${personfullname} tief mit Russland verbunden und sucht seine Identität zwischen Ost und West.</de>
+						<en>In 1991, following the failed Moscow coup, Belarus declares its sovereignty. Yet, unlike its Baltic neighbours, the country under former collective farm boss ${personfullname} remains deeply tied to Russia, searching for its identity between East and West.</en>
+						<pl>W 1991 roku, po nieudanym puczu moskiewskim, Białoruś ogłasza swoją suwerenność. Jednak w przeciwieństwie do swoich bałtyckich sąsiadów, kraj pod rządami byłego przewodniczącego kołchozu (${personfullname}) pozostaje głęboko związany z Rosją, szukając swojej tożsamości między Wschodem a Zachodem.</pl>
 					</description>
+					<variables>
+						<personguid>8f1bdb5c-ff79-484f-8eb7-f97c236687bc</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="8f1bdb5c-ff79-484f-8eb7-f97c236687bc" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 			</children>
@@ -4209,12 +4235,18 @@
 						<pl>Ukraina</pl>
 					</title>
 					<description>
-						<de>Nach dem gescheiterten Augustputsch in Moskau 1991 erklärt die zweitgrößte Sowjetrepublik ihre Unabhängigkeit. Ein überwältigendes Referendum bestätigt den Schritt. Die junge Nation unter ${.self:"role":4:"fullname"} steht vor der gewaltigen Aufgabe, eine eigene Identität und Wirtschaft aufzubauen.</de>
-						<en>Following the failed August coup in Moscow in 1991, the second-largest Soviet republic declares its independence. An overwhelming referendum confirms the move. The young nation under ${.self:"role":4:"fullname"} faces the monumental task of building its own identity and economy.</en>
-						<pl>Po nieudanym puczu sierpniowym w Moskwie w 1991 roku druga co do wielkości republika radziecka ogłasza niepodległość. Przytłaczające referendum potwierdza ten krok. Młody naród pod przywództwem ${.self:"role":4:"firstname"}a ${.self:"role":4:"lastname"}a staje przed monumentalnym zadaniem budowy własnej tożsamości i gospodarki.</pl>
+						<de>Nach dem gescheiterten Augustputsch in Moskau 1991 erklärt die zweitgrößte Sowjetrepublik ihre Unabhängigkeit. Ein überwältigendes Referendum bestätigt den Schritt. Die junge Nation unter ${personfullname} steht vor der gewaltigen Aufgabe, eine eigene Identität und Wirtschaft aufzubauen.</de>
+						<en>Following the failed August coup in Moscow in 1991, the second-largest Soviet republic declares its independence. An overwhelming referendum confirms the move. The young nation under ${personfullname} faces the monumental task of building its own identity and economy.</en>
+						<pl>Po nieudanym puczu sierpniowym w Moskwie w 1991 roku druga co do wielkości republika radziecka ogłasza niepodległość. Przytłaczające referendum potwierdza ten krok. Młody naród pod przywództwem ${personfirstname}a ${personlastname}a staje przed monumentalnym zadaniem budowy własnej tożsamości i gospodarki.</pl>
 					</description>
+					<variables>
+						<personguid>b61f2ab8-9e56-428e-b34f-df0bdbe8dd08</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+						<personfirstname>${.person:"${personguid}":"firstname"}</personfirstname>
+						<personlastname>${.person:"${personguid}":"lastname"}</personlastname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="b61f2ab8-9e56-428e-b34f-df0bdbe8dd08" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="1" product="4" licence_type="2" guid="2e7b69d6-c004-449b-b4e7-b6cd074ae3a7">
@@ -4236,12 +4268,18 @@
 						<pl>Estonia</pl>
 					</title>
 					<description>
-						<de>Estland erklärt 1991, nach dem Moskauer Putsch, die Wiederherstellung seiner vor 1940 bestehenden Unabhängigkeit. Unter Premier ${.self:"role":4:"fullname"} stürzt sich die kleine baltische Republik mit einem radikalen Reformkurs in die Marktwirtschaft und sieht sich als Vorreiter der „Rückkehr nach Europa“.</de>
-						<en>Following the Moscow coup in 1991, Estonia declares the restoration of its pre-1940 independence. Under Prime Minister ${.self:"role":4:"fullname"}, the small Baltic Republic plunges into a market economy with a radical reform course, seeing itself as a pioneer of the "return to Europe".</en>
-						<pl>Po puczu moskiewskim w 1991 roku Estonia ogłasza przywrócenie swojej niepodległości sprzed 1940 roku. Pod rządami premiera ${.self:"role":4:"firstname"}a ${.self:"role":4:"lastname"}a mała republika bałtycka rzuca się w gospodarkę rynkową z radykalnym kursem reform, widząc siebie jako prekursora „powrotu do Europy”.</pl>
+						<de>Estland erklärt 1991, nach dem Moskauer Putsch, die Wiederherstellung seiner vor 1940 bestehenden Unabhängigkeit. Unter Premier ${personfullname} stürzt sich die kleine baltische Republik mit einem radikalen Reformkurs in die Marktwirtschaft und sieht sich als Vorreiter der „Rückkehr nach Europa“.</de>
+						<en>Following the Moscow coup in 1991, Estonia declares the restoration of its pre-1940 independence. Under Prime Minister ${personfullname}, the small Baltic Republic plunges into a market economy with a radical reform course, seeing itself as a pioneer of the "return to Europe".</en>
+						<pl>Po puczu moskiewskim w 1991 roku Estonia ogłasza przywrócenie swojej niepodległości sprzed 1940 roku. Pod rządami premiera ${personfirstname}a ${personlastname}a mała republika bałtycka rzuca się w gospodarkę rynkową z radykalnym kursem reform, widząc siebie jako prekursora „powrotu do Europy”.</pl>
 					</description>
+					<variables>
+						<personguid>cd5b0473-54c9-4a5c-9f5e-0e5818963568</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+						<personfirstname>${.person:"${personguid}":"firstname"}</personfirstname>
+						<personlastname>${.person:"${personguid}":"lastname"}</personlastname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="cd5b0473-54c9-4a5c-9f5e-0e5818963568" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 			</children>
@@ -4349,12 +4387,17 @@
 						<pl>Timor Wschodni</pl>
 					</title>
 					<description>
-						<de>Nach einer blutigen Besatzung durch Indonesien und unter der Übergangsverwaltung der UNO wird Osttimor 2002 als erster neuer Staat des Jahrtausends unabhängig. Die Nation unter Führung des Freiheitshelden ${.self:"role":4:"fullname"} steht vor der monumentalen Aufgabe des Wiederaufbaus einer zerstörten Infrastruktur.</de>
-						<en>After a brutal occupation by Indonesia and under the transitional administration of the UN, East Timor gains independence in 2002 as the first new state of the millennium. The nation, led by resistance hero ${.self:"role":4:"fullname"}, faces the monumental task of rebuilding a shattered infrastructure.</en>
-						<pl>Po brutalnej okupacji indonezyjskiej i pod przejściowym zarządem ONZ Timor Wschodni uzyskuje niepodległość w 2002 roku jako pierwsze nowe państwo milenium. Naród pod przywództwem bohatera oporu ${.self:"role":4:"lastname"} staje przed ogromnym zadaniem odbudowy zniszczonej infrastruktury.</pl>
+						<de>Nach einer blutigen Besatzung durch Indonesien und unter der Übergangsverwaltung der UNO wird Osttimor 2002 als erster neuer Staat des Jahrtausends unabhängig. Die Nation unter Führung des Freiheitshelden ${personfullname} steht vor der monumentalen Aufgabe des Wiederaufbaus einer zerstörten Infrastruktur.</de>
+						<en>After a brutal occupation by Indonesia and under the transitional administration of the UN, East Timor gains independence in 2002 as the first new state of the millennium. The nation, led by resistance hero ${personfullname}, faces the monumental task of rebuilding a shattered infrastructure.</en>
+						<pl>Po brutalnej okupacji indonezyjskiej i pod przejściowym zarządem ONZ Timor Wschodni uzyskuje niepodległość w 2002 roku jako pierwsze nowe państwo milenium. Naród pod przywództwem bohatera oporu ${personlastname} staje przed ogromnym zadaniem odbudowy zniszczonej infrastruktury.</pl>
 					</description>
+					<variables>
+						<personguid>1e959a21-3590-44f7-a0bd-f9cbc930e1c7</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+						<personlastname>${.person:"${personguid}":"lastname"}</personlastname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="1e959a21-3590-44f7-a0bd-f9cbc930e1c7" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="1" product="4" licence_type="2" guid="3293dae2-9ad9-4cda-b00a-eb44fc73cd0a">
@@ -4364,12 +4407,16 @@
 						<pl>Czarnogóra</pl>
 					</title>
 					<description>
-						<de>2006 löst sich Montenegro nach einem friedlichen Referendum aus der Staatenunion mit Serbien. Die Entscheidung markiert das endgültige Ende des ehemaligen Jugoslawien. Die junge Nation unter ${.self:"role":4:"fullname"} sucht nun rasch die Annäherung an die NATO und die Europäische Union.</de>
-						<en>In 2006, Montenegro peacefully dissolves its state union with Serbia following a referendum. The decision marks the final end of the former Yugoslavia. The young nation under ${.self:"role":4:"fullname"} now swiftly seeks rapprochement with NATO and the European Union.</en>
-						<pl>W 2006 roku Czarnogóra w pokojowy sposób rozwiązuje swoją unię państwową z Serbią po referendum. Decyzja ta oznacza ostateczny koniec byłej Jugosławii. Młody naród pod rządami M. ${.self:"role":4:"lastname"}ia szybko dąży teraz do zbliżenia z NATO i Unią Europejską.</pl>
+						<de>2006 löst sich Montenegro nach einem friedlichen Referendum aus der Staatenunion mit Serbien. Die Entscheidung markiert das endgültige Ende des ehemaligen Jugoslawien. Die junge Nation unter ${personfullname} sucht nun rasch die Annäherung an die NATO und die Europäische Union.</de>
+						<en>In 2006, Montenegro peacefully dissolves its state union with Serbia following a referendum. The decision marks the final end of the former Yugoslavia. The young nation under ${personfullname} now swiftly seeks rapprochement with NATO and the European Union.</en>
+						<pl>W 2006 roku Czarnogóra w pokojowy sposób rozwiązuje swoją unię państwową z Serbią po referendum. Decyzja ta oznacza ostateczny koniec byłej Jugosławii. Młody naród pod rządami M. ${personlastname}ia szybko dąży teraz do zbliżenia z NATO i Unią Europejską.</pl>
 					</description>
+					<variables>
+						<personguid>b54f2eeb-8820-4267-8c5d-1a3a960f5f2d</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="b54f2eeb-8820-4267-8c5d-1a3a960f5f2d" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 				<scripttemplate index="2" product="4" licence_type="2" guid="7d276893-16cf-497a-b85b-6bd8dd55ff62">
@@ -4379,12 +4426,18 @@
 						<pl>Kosowo</pl>
 					</title>
 					<description>
-						<de>Nach dem Kosovo-Krieg und jahrelanger UN-Verwaltung erklärt das Parlament in Priština 2008 unilateral die Unabhängigkeit. Dieser Schritt spaltet die internationale Gemeinschaft tief. Die junge Republik kämpft unter der Führung von ${.self:"role":4:"fullname"} um weltweite Anerkennung.</de>
-						<en>After the Kosovo War and years of UN administration, the parliament in Priština unilaterally declares independence in 2008. This move deeply divides the international community. The young republic, under the leadership of ${.self:"role":4:"fullname"}, struggles for global recognition.</en>
-						<pl>Po wojnie w Kosowie i latach administracji ONZ parlament w Prisztinie jednostronnie ogłasza niepodległość w 2008 roku. Ten krok głęboko dzieli społeczność międzynarodową. Młoda republika pod przywództwem ${.self:"role":4:"firstname"}a ${.self:"role":4:"lastname"}ego zabiega o globalne uznanie.</pl>
+						<de>Nach dem Kosovo-Krieg und jahrelanger UN-Verwaltung erklärt das Parlament in Priština 2008 unilateral die Unabhängigkeit. Dieser Schritt spaltet die internationale Gemeinschaft tief. Die junge Republik kämpft unter der Führung von ${personfullname} um weltweite Anerkennung.</de>
+						<en>After the Kosovo War and years of UN administration, the parliament in Priština unilaterally declares independence in 2008. This move deeply divides the international community. The young republic, under the leadership of ${personfullname}, struggles for global recognition.</en>
+						<pl>Po wojnie w Kosowie i latach administracji ONZ parlament w Prisztinie jednostronnie ogłasza niepodległość w 2008 roku. Ten krok głęboko dzieli społeczność międzynarodową. Młoda republika pod przywództwem ${personfirstname}a ${personlastname}ego zabiega o globalne uznanie.</pl>
 					</description>
+					<variables>
+						<personguid>2e30412d-c9e4-4085-9284-929030d085a2</personguid>
+						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+						<personfirstname>${.person:"${personguid}":"firstname"}</personfirstname>
+						<personlastname>${.person:"${personguid}":"lastname"}</personlastname>
+					</variables>
 					<jobs>
-						<job index="4" function="64" required="1" person="2e30412d-c9e4-4085-9284-929030d085a2" />
+						<job index="4" function="64" required="1" person="${personguid}" />
 					</jobs>
 				</scripttemplate>
 			</children>
@@ -4491,8 +4544,8 @@
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" />
-				<job index="2" function="64" required="1" person="${man}" display_template='${.self:"role":2:"firstname"}' />
-				<job index="3" function="64" required="1" person="${woman}" display_template='${.self:"role":3:"firstname"}' />
+				<job index="2" function="64" required="1" person="${man}" display_template='${.person:"${man}":"firstname"}' />
+				<job index="3" function="64" required="1" person="${woman}" display_template='${.person:"${woman}":"firstname"}' />
 				<job index="4" function="64" required="1" display_template="Special guest" />
 				<job index="5" function="64" required="1" />
 			</jobs>
@@ -5628,9 +5681,9 @@
 
 		<scripttemplate product="3" licence_type="1" guid="0198da41-13e3-4ba4-ac16-13e76125e6ba" creator="10061">
 			<title>
-				<de>Schneereiche Weihnachten ${currentyear} mit ${.self:"role":1:"fullname"}</de>
-				<en>Snowy Christmas ${currentyear} with ${.self:"role":1:"fullname"}</en>
-				<pl>Śnieżne Święta ${currentyear} z udziałem ${.self:"role":1:"fullname"}</pl>
+				<de>Schneereiche Weihnachten ${currentyear} mit ${janedoe}</de>
+				<en>Snowy Christmas ${currentyear} with ${janedoe}</en>
+				<pl>Śnieżne Święta ${currentyear} z udziałem ${janedoe}</pl>
 			</title>
 			<description>
 				<de>Das Studio wird mit Kunstschnee gefüllt, es werden jedes Jahr die gleichen Weihnachtslieder gesungen und man fragt sich, ob die Sendung nicht schon vorproduziert wurde, wenn das halbe Publikum in T-Shirt und kurzer Hose auf den Stühlen sitzt.</de>
@@ -5640,6 +5693,7 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<host>4c338287-36be-4f58-96af-42201dab2fd9|006d7627-8578-4300-bad3-9bea0e6b568e|599bebd4-c5f7-485b-82f4-cbe622bcd18c|29d5d931-7526-4cfd-b2ff-b7e088b8345c|fb9363bd-d2ed-4086-b6c5-52649807eee3|93a6daf6-029f-4ca6-a0a5-25252e93720d|4f1c8151-c8b5-4fcc-8042-204170143383|9d9fba65-9b3e-4f9e-8ae4-36ac4d1362b0|7da2dba4-8617-4963-839d-c1f7b8d40365|df29adff-6e32-44af-bfe9-e87ba9458c2e|74e87d66-d03d-46d6-b868-8f666f0f6137|a33c7071-e7ea-4472-95d3-739371a4b1ed|79cb06d9-f5d4-41a0-810d-d776b12ef4cc|2fbb35c3-2997-449f-8afc-9164a3bedf07|a43777f5-d45e-44d1-80e8-4d7adc133e52|8d475c0a-1835-46ca-a315-92aaa4c47238|1e0125e8-2a4a-43b2-8d27-93993570f0fc|8b1b0a61-4efb-4c1d-9f5c-a76ee5c08e05|55b2008d-89b3-4fc2-a583-2be1b4cb14d8|3a25173d-5b08-4b85-b2ec-d1fe2ac741e8|e302ba0e-0ec6-42c8-b8c4-a87a7be76d83</host>
+				<janedoe>${.person:"${host}":"fullname"}</janedoe>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />

@@ -1995,10 +1995,11 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 			</description>
 			<variables>
 				<titleref>
-					<de>Kinderwelt mit ${.self:"role":1:"firstname"}|Kinderfragen mit ${.self:"role":1:"firstname"}|Frag den ${.self:"role":1:"firstname"}!|Warum? Weshalb? Wieso? ${.self:"role":1:"firstname"} weiß es!|Abenteuer Weisheit mit ${.self:"role":1:"firstname"}|Schlaubergerzeit mit ${.self:"role":1:"firstname"}|${.self:"role":1:"firstname"} der Schlauberger</de>
-					<en>Kids World with ${.self:"role":1:"firstname"}|Kids' Questions with ${.self:"role":1:"firstname"}|Ask ${.self:"role":1:"firstname"}!|Why? How Come? What for? ${.self:"role":1:"firstname"} Knows!|Wisdom: An Adventure. With ${.self:"role":1:"firstname"}|Smart Aleck Time with ${.self:"role":1:"firstname"}|${.self:"role":1:"firstname"} the Smarty-Pants</en>
-					<pl>${.self:"role":1:"firstname"} i świat dzieci|${.self:"role":1:"firstname"} i pytania dzieci|${.self:"role":1:"firstname"} - po prostu go zapytaj!|Dlaczego? Jak to się stało? Po co? ${.self:"role":1:"firstname"} wie!|${.self:"role":1:"firstname"}: Mądrość - Przygoda|${.self:"role":1:"firstname"}: Czas cwaniaczka|${.self:"role":1:"firstname"} mądrala</pl> <!-- TODO: The Polish titles probably seriously look dumb if the moderator name is to be in the title; grammar function needed -->
+					<de>Kinderwelt mit ${john}|Kinderfragen mit ${john}|Frag den ${john}!|Warum? Weshalb? Wieso? ${john} weiß es!|Abenteuer Weisheit mit ${john}|Schlaubergerzeit mit ${john}|${john} der Schlauberger</de>
+					<en>Kids World with ${john}|Kids' Questions with ${john}|Ask ${john}!|Why? How Come? What for? ${john} Knows!|Wisdom: An Adventure. With ${john}|Smart Aleck Time with ${john}|${john} the Smarty-Pants</en>
+					<pl>${john} i świat dzieci|${john} i pytania dzieci|${john} - po prostu go zapytaj!|Dlaczego? Jak to się stało? Po co? ${john} wie!|${john}: Mądrość - Przygoda|${john}: Czas cwaniaczka|${john} mądrala</pl> <!-- TODO: The Polish titles probably seriously look dumb if the moderator name is to be in the title; grammar function needed -->
 				</titleref>
+				<john>${.person:"${personguid}":"firstname"}</john> <!-- TODO: Workaround, many cases like this with the new person-in-job feature now. Eventually ${.self:"cast":1:"fullname"} should be available for script templates -->
 				<personguid>09e65070-6289-4076-8c8f-c3eb493ddf82|dbbd3236-3c7b-4041-aa97-1b3ef4ab944b|3e12f39f-8f45-413d-9b0b-35c2c0d67de8|4515e591-2792-442c-9c2e-6b6956d1d403|107df776-6e0a-4d7f-af24-79e693fc8617|bd14ea03-99ee-49e4-b5b9-bf3f21d4a997|8d105149-e687-48a9-ac5b-9657fe5ae584|be16bb46-c40f-4937-92ab-e3db660b9961|c2206965-7e11-4e7e-be33-36994f2d8018|d797e581-15b5-41fe-bfe2-2ecb373e5939|18543e0d-0782-43ea-aafe-e6ed6d490bfe|9acd7122-907b-4f0d-8f9d-29d05314e67c</personguid>
 			</variables>
 			<children>
@@ -2009,9 +2010,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego mąka jest biała, a chleb brązowy?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} lüftet das Geheimnis: Schuld ist die Maillard-Reaktion! Bei Hitze tanzen Zucker und Eiweiße zusammen - und schwupps, wird's knusprig braun. Fast wie Magie, nur wissenschaftlich lecker!</de>
-						<en>${.self:"role":1:"firstname"} reveals the secret: It's the Maillard reaction! When heated, sugars and proteins dance together, turning bread brown and crispy. It's like magic - only scientifically delicious!</en>
-						<pl>${.self:"role":1:"firstname"} odkrywa sekret: to reakcja Maillarda! Pod wpływem ciepła cukry i białka tańczą razem, tworząc brązową, chrupiącą skórkę. Magia? Nie, pyszna nauka!</pl>
+						<de>${john} lüftet das Geheimnis: Schuld ist die Maillard-Reaktion! Bei Hitze tanzen Zucker und Eiweiße zusammen - und schwupps, wird's knusprig braun. Fast wie Magie, nur wissenschaftlich lecker!</de>
+						<en>${john} reveals the secret: It's the Maillard reaction! When heated, sugars and proteins dance together, turning bread brown and crispy. It's like magic - only scientifically delicious!</en>
+						<pl>${john} odkrywa sekret: to reakcja Maillarda! Pod wpływem ciepła cukry i białka tańczą razem, tworząc brązową, chrupiącą skórkę. Magia? Nie, pyszna nauka!</pl>
 					</description>
 					<episodes min="0" max="1" /> <!-- not a pilot -->
 				</scripttemplate>
@@ -2022,9 +2023,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Co dzieje się z kompasem na biegunie południowym?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} stellt fest: Am Südpol wird's schwierig! Der Kompass dreht durch, weil das magnetische Feld dort senkrecht in die Erde zeigt. Norden? Süden? Egal - hier ist's eh eiskalt!</de>
-						<en>${.self:"role":1:"firstname"} discovers: At the South Pole, compasses go haywire! The magnetic field points straight down into the Earth. North? South? Doesn't matter - it's freezing anyway!</en>
-						<pl>${.self:"role":1:"firstname"} zauważa, że na biegunie południowym kompas wariuje! Pole magnetyczne pokazuje prosto w dół. Północ? Południe? Nieważne - i tak jest zimno!</pl>
+						<de>${john} stellt fest: Am Südpol wird's schwierig! Der Kompass dreht durch, weil das magnetische Feld dort senkrecht in die Erde zeigt. Norden? Süden? Egal - hier ist's eh eiskalt!</de>
+						<en>${john} discovers: At the South Pole, compasses go haywire! The magnetic field points straight down into the Earth. North? South? Doesn't matter - it's freezing anyway!</en>
+						<pl>${john} zauważa, że na biegunie południowym kompas wariuje! Pole magnetyczne pokazuje prosto w dół. Północ? Południe? Nieważne - i tak jest zimno!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="2" product="7" licence_type="2" guid="cebd3678-3f81-4d57-8858-3c804b334f8b">
@@ -2034,9 +2035,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Ziemniaki miękną, jajka twardnieją - dlaczego?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} kocht fleißig und lernt: Kartoffelstärke quillt im Wasser und macht sie weich, während Eiweiß gerinnt und das Ei hart wird. Ein echtes Küchenexperiment!</de>
-						<en>${.self:"role":1:"firstname"} boils away and learns: Potato starch swells in water, making it soft, while egg proteins coagulate and turn solid. A true kitchen experiment!</en>
-						<pl>${.self:"role":1:"firstname"} gotuje i dowiaduje się: Skrobia w ziemniakach pęcznieje w wodzie, a białko w jajku ścina się na twardo. Prawdziwy kuchenny eksperyment!</pl>
+						<de>${john} kocht fleißig und lernt: Kartoffelstärke quillt im Wasser und macht sie weich, während Eiweiß gerinnt und das Ei hart wird. Ein echtes Küchenexperiment!</de>
+						<en>${john} boils away and learns: Potato starch swells in water, making it soft, while egg proteins coagulate and turn solid. A true kitchen experiment!</en>
+						<pl>${john} gotuje i dowiaduje się: Skrobia w ziemniakach pęcznieje w wodzie, a białko w jajku ścina się na twardo. Prawdziwy kuchenny eksperyment!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="3" product="7" licence_type="2" guid="a7e70299-269f-4eb9-9147-123cb430ce56">
@@ -2046,9 +2047,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego jedzenie bez nosa jest mdłe?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} hält sich die Nase zu: Unsere Zunge schmeckt nur süß, sauer, salzig, bitter und umami. Den Rest erledigt die Nase. Ohne Riechen? Voll langweilig!</de>
-						<en>${.self:"role":1:"firstname"} pinches his nose: The tongue tastes sweet, sour, salty, bitter, and umami. The rest is up to the nose. Without smelling? Super boring!</en>
-						<pl>${.self:"role":1:"firstname"} zatyka nos: Język czuje tylko słodkie, kwaśne, słone, gorzkie i umami. Resztę załatwia nos. Bez węchu? Nuuuda!</pl>
+						<de>${john} hält sich die Nase zu: Unsere Zunge schmeckt nur süß, sauer, salzig, bitter und umami. Den Rest erledigt die Nase. Ohne Riechen? Voll langweilig!</de>
+						<en>${john} pinches his nose: The tongue tastes sweet, sour, salty, bitter, and umami. The rest is up to the nose. Without smelling? Super boring!</en>
+						<pl>${john} zatyka nos: Język czuje tylko słodkie, kwaśne, słone, gorzkie i umami. Resztę załatwia nos. Bez węchu? Nuuuda!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="4" product="7" licence_type="2" guid="23ac8b50-488a-4a6a-9f62-44ac2c118b05">
@@ -2058,9 +2059,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego tęcza ma siedem kolorów?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} entdeckt: Licht bricht sich im Regentropfen wie in einem Prisma. Rot, Orange, Gelb ... Newton entschied, dass es sieben Farben sind. ${.self:"role":1:"firstname"} findet: Ein buntes Spektakel!</de>
-						<en>${.self:"role":1:"firstname"} finds out: Light splits in raindrops like in a prism. Red, orange, yellow... Newton decided there are seven colors. ${.self:"role":1:"firstname"} thinks: A colorful spectacle!</en>
-						<pl>${.self:"role":1:"firstname"} odkrywa: Światło załamuje się w kroplach deszczu jak w pryzmacie. Czerwony, pomarańczowy, żółty... Newton uznał, że to siedem kolorów. ${.self:"role":1:"firstname"} mówi: Cudowne zjawisko!</pl>
+						<de>${john} entdeckt: Licht bricht sich im Regentropfen wie in einem Prisma. Rot, Orange, Gelb ... Newton entschied, dass es sieben Farben sind. ${john} findet: Ein buntes Spektakel!</de>
+						<en>${john} finds out: Light splits in raindrops like in a prism. Red, orange, yellow... Newton decided there are seven colors. ${john} thinks: A colorful spectacle!</en>
+						<pl>${john} odkrywa: Światło załamuje się w kroplach deszczu jak w pryzmacie. Czerwony, pomarańczowy, żółty... Newton uznał, że to siedem kolorów. ${john} mówi: Cudowne zjawisko!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="5" product="7" licence_type="2" guid="ae99189c-045e-4c00-a6c8-ba557b177aa4">
@@ -2070,9 +2071,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Jak samoloty mogą latać?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} hebt ab und lernt: Die Flügel erzeugen Auftrieb, weil Luft oben schneller strömt als unten. Ein bisschen Physik - und schon schweben Tonnen Stahl in der Luft!</de>
-						<en>${.self:"role":1:"firstname"} takes off and learns: Wings create lift because air moves faster above than below. A bit of physics - and voilà, tons of steel are flying!</en>
-						<pl>${.self:"role":1:"firstname"} startuje i odkrywa: Skrzydła wytwarzają siłę nośną, bo powietrze płynie szybciej na górze niż na dole. Trochę fizyki - i tona żelaza lata!</pl>
+						<de>${john} hebt ab und lernt: Die Flügel erzeugen Auftrieb, weil Luft oben schneller strömt als unten. Ein bisschen Physik - und schon schweben Tonnen Stahl in der Luft!</de>
+						<en>${john} takes off and learns: Wings create lift because air moves faster above than below. A bit of physics - and voilà, tons of steel are flying!</en>
+						<pl>${john} startuje i odkrywa: Skrzydła wytwarzają siłę nośną, bo powietrze płynie szybciej na górze niż na dole. Trochę fizyki - i tona żelaza lata!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="6" product="7" licence_type="2" guid="19380ad7-5027-473a-86e3-c14b9b6c4e11">
@@ -2082,9 +2083,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego napój gazowany musuje?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} fühlt das Prickeln: Kohlensäure, die im Getränk steckt, blubbert auf der Zunge, weil Kohlendioxid beim Öffnen raus will. Ein flüssiges Feuerwerk!</de>
-						<en>${.self:"role":1:"firstname"} feels the fizz: Carbon dioxide trapped in the drink bubbles out on your tongue when you open it. A liquid firework!</en>
-						<pl>${.self:"role":1:"firstname"} czuje bąbelki: Dwutlenek węgla uwięziony w napoju uwalnia się na języku po otwarciu. Prawdziwy płynny pokaz fajerwerków!</pl>
+						<de>${john} fühlt das Prickeln: Kohlensäure, die im Getränk steckt, blubbert auf der Zunge, weil Kohlendioxid beim Öffnen raus will. Ein flüssiges Feuerwerk!</de>
+						<en>${john} feels the fizz: Carbon dioxide trapped in the drink bubbles out on your tongue when you open it. A liquid firework!</en>
+						<pl>${john} czuje bąbelki: Dwutlenek węgla uwięziony w napoju uwalnia się na języku po otwarciu. Prawdziwy płynny pokaz fajerwerków!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="7" product="7" licence_type="2" guid="d576fde3-345b-4d66-82a1-8decf855eb78">
@@ -2094,9 +2095,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Jak powstaje piorun?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} lernt: In der Wolke reiben sich Eiskristalle aneinander, wodurch Spannung entsteht. Irgendwann macht es „Zack!“ und ein Blitz zuckt vom Himmel!</de>
-						<en>${.self:"role":1:"firstname"} learns: Ice crystals in clouds rub together, building up voltage. Eventually - zap! A lightning bolt shoots from the sky!</en>
-						<pl>${.self:"role":1:"firstname"} dowiaduje się: Kryształki lodu w chmurach pocierają się, tworząc napięcie. W końcu - bzzzt! Piorun przecina niebo!</pl>
+						<de>${john} lernt: In der Wolke reiben sich Eiskristalle aneinander, wodurch Spannung entsteht. Irgendwann macht es „Zack!“ und ein Blitz zuckt vom Himmel!</de>
+						<en>${john} learns: Ice crystals in clouds rub together, building up voltage. Eventually - zap! A lightning bolt shoots from the sky!</en>
+						<pl>${john} dowiaduje się: Kryształki lodu w chmurach pocierają się, tworząc napięcie. W końcu - bzzzt! Piorun przecina niebo!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="8" product="7" licence_type="2" guid="3b41ccf9-3dee-4f15-b77d-128f87c04c0f">
@@ -2106,9 +2107,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego pingwiny nie latają?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} planscht mit Pinguinen: Ihre Flügel sind zu kurzen Flossen geworden - perfekt fürs Wasser! Fliegen? Zu viel Aufwand. Schwimmen ist eh viel cooler!</de>
-						<en>${.self:"role":1:"firstname"} splashes with penguins: Their wings turned into short flippers - perfect for water! Flying? Too much effort. Swimming is way cooler!</en>
-						<pl>${.self:"role":1:"firstname"} pluska się z pingwinami: Ich skrzydła stały się krótkimi płetwami - idealnymi do wody! Latanie? Za dużo zachodu. Pływanie jest fajniejsze!</pl>
+						<de>${john} planscht mit Pinguinen: Ihre Flügel sind zu kurzen Flossen geworden - perfekt fürs Wasser! Fliegen? Zu viel Aufwand. Schwimmen ist eh viel cooler!</de>
+						<en>${john} splashes with penguins: Their wings turned into short flippers - perfect for water! Flying? Too much effort. Swimming is way cooler!</en>
+						<pl>${john} pluska się z pingwinami: Ich skrzydła stały się krótkimi płetwami - idealnymi do wody! Latanie? Za dużo zachodu. Pływanie jest fajniejsze!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="9" product="7" licence_type="2" guid="81b751aa-2bf8-4186-b7fc-6ca8a735800c">
@@ -2118,9 +2119,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego ser ma dziury?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} schaut genau hin: Mäuse? Nein! Schuld sind pupsende Bakterien, die beim Käsemachen Gase freisetzen. Das Ergebnis? Löcher, die richtig lecker sind! Ohne Pupse kein Geschmack.</de>
-						<en>${.self:"role":1:"firstname"} takes a close look: Mice? Nope! It's farting bacteria that release gas during cheese-making. The result? Tasty holes! No fart, no taste.</en>
-						<pl>${.self:"role":1:"firstname"} przygląda się serowi: Myszy? Nie! To „bąblujące” bakterie, które produkują gaz podczas robienia sera. Rezultat? Pyszne dziury! Nie ma bąka, nie ma smaku.</pl>
+						<de>${john} schaut genau hin: Mäuse? Nein! Schuld sind pupsende Bakterien, die beim Käsemachen Gase freisetzen. Das Ergebnis? Löcher, die richtig lecker sind! Ohne Pupse kein Geschmack.</de>
+						<en>${john} takes a close look: Mice? Nope! It's farting bacteria that release gas during cheese-making. The result? Tasty holes! No fart, no taste.</en>
+						<pl>${john} przygląda się serowi: Myszy? Nie! To „bąblujące” bakterie, które produkują gaz podczas robienia sera. Rezultat? Pyszne dziury! Nie ma bąka, nie ma smaku.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="10" product="7" licence_type="2" guid="b73786ff-dc56-4b8f-b69a-b820134cfef8">
@@ -2130,9 +2131,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego szkło jest przezroczyste?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} staunt: Quarzsand ist fest, aber Glas entsteht durch extreme Hitze. Die Atome werden so ordentlich aufgereiht, dass Licht einfach hindurch spaziert!</de>
-						<en>${.self:"role":1:"firstname"} marvels: Quartz sand is solid, but extreme heat turns it into glass. The atoms line up so neatly that light walks right through!</en>
-						<pl>${.self:"role":1:"firstname"} się dziwi: Kwarcowy piasek jest twardy, ale w ekstremalnym cieple zmienia się w szkło. Atomy układają się tak równo, że światło przechodzi przez nie!</pl>
+						<de>${john} staunt: Quarzsand ist fest, aber Glas entsteht durch extreme Hitze. Die Atome werden so ordentlich aufgereiht, dass Licht einfach hindurch spaziert!</de>
+						<en>${john} marvels: Quartz sand is solid, but extreme heat turns it into glass. The atoms line up so neatly that light walks right through!</en>
+						<pl>${john} się dziwi: Kwarcowy piasek jest twardy, ale w ekstremalnym cieple zmienia się w szkło. Atomy układają się tak równo, że światło przechodzi przez nie!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="11" product="7" licence_type="2" guid="548ea929-16ba-4df1-ad84-61b62c580f4c">
@@ -2142,9 +2143,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego statki nie toną?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} geht an Bord: Ein Schiff ist schwer, aber es verdrängt Wasser. Das erzeugt Auftrieb - Archimedes wusste es zuerst! So bleibt sogar Stahl oben.</de>
-						<en>${.self:"role":1:"firstname"} climbs aboard: Ships are heavy, but they displace water. This creates buoyancy - Archimedes figured it out! Even steel can float.</en>
-						<pl>${.self:"role":1:"firstname"} wchodzi na pokład: Statki są ciężkie, ale wypierają wodę. To tworzy siłę wyporu - Archimedes to odkrył! Nawet stal może unosić się na wodzie.</pl>
+						<de>${john} geht an Bord: Ein Schiff ist schwer, aber es verdrängt Wasser. Das erzeugt Auftrieb - Archimedes wusste es zuerst! So bleibt sogar Stahl oben.</de>
+						<en>${john} climbs aboard: Ships are heavy, but they displace water. This creates buoyancy - Archimedes figured it out! Even steel can float.</en>
+						<pl>${john} wchodzi na pokład: Statki są ciężkie, ale wypierają wodę. To tworzy siłę wyporu - Archimedes to odkrył! Nawet stal może unosić się na wodzie.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="12" product="7" licence_type="2" guid="201a294d-3fd1-43f9-892e-f95b2557de0c">
@@ -2154,9 +2155,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego niebo jest niebieskie?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} schaut nach oben: Sonnenlicht ist weiß, aber in der Luft tanzen die blauen Lichtwellen am meisten. So strahlt der Himmel blau, bis die Sonne untergeht und die Show orange wird!</de>
-						<en>${.self:"role":1:"firstname"} looks up: Sunlight is white, but blue light waves dance the most in the air. That's why the sky glows blue - until sunset steals the show with orange hues!</en>
-						<pl>${.self:"role":1:"firstname"} patrzy w górę: Światło słoneczne jest białe, ale niebieskie fale najlepiej rozpraszają się w powietrzu. Dlatego niebo świeci na niebiesko, aż zachód słońca zmieni je na pomarańczowe!</pl>
+						<de>${john} schaut nach oben: Sonnenlicht ist weiß, aber in der Luft tanzen die blauen Lichtwellen am meisten. So strahlt der Himmel blau, bis die Sonne untergeht und die Show orange wird!</de>
+						<en>${john} looks up: Sunlight is white, but blue light waves dance the most in the air. That's why the sky glows blue - until sunset steals the show with orange hues!</en>
+						<pl>${john} patrzy w górę: Światło słoneczne jest białe, ale niebieskie fale najlepiej rozpraszają się w powietrzu. Dlatego niebo świeci na niebiesko, aż zachód słońca zmieni je na pomarańczowe!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="13" product="7" licence_type="2" guid="decfd690-7c59-4de9-99c2-46efd24256ec">
@@ -2166,9 +2167,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego drżymy, gdy jest nam zimno?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} bibbert vor Kälte: Zittern ist wie ein Mini-Workout für die Muskeln. Sie bewegen sich schnell und erzeugen Wärme - der Körper will halt nicht einfrieren!</de>
-						<en>${.self:"role":1:"firstname"} shivers in the cold: Shivering is like a mini-workout for your muscles. They move fast to generate heat - the body just doesn't want to freeze!</en>
-						<pl>${.self:"role":1:"firstname"} drży z zimna: Drżenie to jak mini-trening dla mięśni. Poruszają się szybko, żeby wytworzyć ciepło - ciało nie chce marznąć!</pl>
+						<de>${john} bibbert vor Kälte: Zittern ist wie ein Mini-Workout für die Muskeln. Sie bewegen sich schnell und erzeugen Wärme - der Körper will halt nicht einfrieren!</de>
+						<en>${john} shivers in the cold: Shivering is like a mini-workout for your muscles. They move fast to generate heat - the body just doesn't want to freeze!</en>
+						<pl>${john} drży z zimna: Drżenie to jak mini-trening dla mięśni. Poruszają się szybko, żeby wytworzyć ciepło - ciało nie chce marznąć!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="14" product="7" licence_type="2" guid="712caea5-9111-4a9e-b086-044616bddf27">
@@ -2178,9 +2179,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego miód się klei, a woda nie?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} klebt fest: Honig ist voll von Zucker und dickflüssig. Die Zuckermoleküle wollen alles festhalten. Wasser? Das ist zu dünn - es flutscht einfach weg!</de>
-						<en>${.self:"role":1:"firstname"} gets stuck: Honey is full of sugar and thick. Sugar molecules love to stick to everything. Water? Too thin - it just slips away!</en>
-						<pl>${.self:"role":1:"firstname"} się klei: Miód jest pełen cukru i jest gęsty. Cząsteczki cukru lubią się przyklejać. Woda? Jest zbyt rzadka - po prostu spływa!</pl>
+						<de>${john} klebt fest: Honig ist voll von Zucker und dickflüssig. Die Zuckermoleküle wollen alles festhalten. Wasser? Das ist zu dünn - es flutscht einfach weg!</de>
+						<en>${john} gets stuck: Honey is full of sugar and thick. Sugar molecules love to stick to everything. Water? Too thin - it just slips away!</en>
+						<pl>${john} się klei: Miód jest pełen cukru i jest gęsty. Cząsteczki cukru lubią się przyklejać. Woda? Jest zbyt rzadka - po prostu spływa!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="15" product="7" licence_type="2" guid="87b679a3-7019-4239-87e6-0dfabdd974d6">
@@ -2190,9 +2191,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego są przypływy i odpływy?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} staunt am Meer: Der Mond zieht mit seiner Schwerkraft das Wasser zu sich. So entstehen Wellenberge und -täler. Ein kosmisches Tauziehen!</de>
-						<en>${.self:"role":1:"firstname"} marvels at the sea: The moon pulls water with its gravity. This creates tidal waves - like a cosmic tug-of-war!</en>
-						<pl>${.self:"role":1:"firstname"} podziwia morze: Księżyc przyciąga wodę swoją grawitacją. Powstają fale przypływu i odpływu - to kosmiczna gra w przeciąganie liny!</pl>
+						<de>${john} staunt am Meer: Der Mond zieht mit seiner Schwerkraft das Wasser zu sich. So entstehen Wellenberge und -täler. Ein kosmisches Tauziehen!</de>
+						<en>${john} marvels at the sea: The moon pulls water with its gravity. This creates tidal waves - like a cosmic tug-of-war!</en>
+						<pl>${john} podziwia morze: Księżyc przyciąga wodę swoją grawitacją. Powstają fale przypływu i odpływu - to kosmiczna gra w przeciąganie liny!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="16" product="7" licence_type="2" guid="4f9e3915-d476-42ed-8242-63f5d2700c08">
@@ -2202,9 +2203,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego źle widzimy w ciemności?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} tapst im Dunkeln: Unsere Augen brauchen Licht! Die Stäbchen in der Netzhaut arbeiten bei wenig Licht, aber Farben? Fehlanzeige. Deswegen sieht's im Dunkeln grau aus.</de>
-						<en>${.self:"role":1:"firstname"} stumbles in the dark: Our eyes need light! Rod cells in the retina work in low light, but colors? Nope. That's why darkness looks gray.</en>
-						<pl>${.self:"role":1:"firstname"} błądzi w ciemności: Nasze oczy potrzebują światła! Pręciki w siatkówce działają w słabym świetle, ale kolory? Zapomnij. Dlatego w ciemności wszystko jest szare.</pl>
+						<de>${john} tapst im Dunkeln: Unsere Augen brauchen Licht! Die Stäbchen in der Netzhaut arbeiten bei wenig Licht, aber Farben? Fehlanzeige. Deswegen sieht's im Dunkeln grau aus.</de>
+						<en>${john} stumbles in the dark: Our eyes need light! Rod cells in the retina work in low light, but colors? Nope. That's why darkness looks gray.</en>
+						<pl>${john} błądzi w ciemności: Nasze oczy potrzebują światła! Pręciki w siatkówce działają w słabym świetle, ale kolory? Zapomnij. Dlatego w ciemności wszystko jest szare.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="17" product="7" licence_type="2" guid="b0dae1c8-b247-472d-a5f4-6878864bf095">
@@ -2214,9 +2215,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego mrugamy?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} blinzelt wie wild: Unsere Augen brauchen Feuchtigkeit, sonst trocknen sie aus. Das Blinzeln verteilt Tränenflüssigkeit - wie ein Mini-Wischmopp für klare Sicht!</de>
-						<en>${.self:"role":1:"firstname"} blinks like crazy: Our eyes need moisture, or they dry out. Blinking spreads tears - like a tiny windshield wiper for clear vision!</en>
-						<pl>${.self:"role":1:"firstname"} mruga jak szalony: Nasze oczy potrzebują wilgoci, inaczej wyschną. Mruganie rozprowadza łzy - jak mała wycieraczka dla przejrzystego widzenia!</pl>
+						<de>${john} blinzelt wie wild: Unsere Augen brauchen Feuchtigkeit, sonst trocknen sie aus. Das Blinzeln verteilt Tränenflüssigkeit - wie ein Mini-Wischmopp für klare Sicht!</de>
+						<en>${john} blinks like crazy: Our eyes need moisture, or they dry out. Blinking spreads tears - like a tiny windshield wiper for clear vision!</en>
+						<pl>${john} mruga jak szalony: Nasze oczy potrzebują wilgoci, inaczej wyschną. Mruganie rozprowadza łzy - jak mała wycieraczka dla przejrzystego widzenia!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="18" product="7" licence_type="2" guid="9c5c7712-42d8-45b5-aaf0-4679ad8e8a6e">
@@ -2226,9 +2227,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego popcorn strzela?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} knabbert los: Im Mais steckt Wasser. Wenn's zu heiß wird, will das Wasser raus und sprengt die Hülle. Popp! Ein fluffiges Popcorn entsteht!</de>
-						<en>${.self:"role":1:"firstname"} munches away: Corn kernels hold water. When heated, the water turns to steam and explodes the kernel. Pop! Fluffy popcorn is born!</en>
-						<pl>${.self:"role":1:"firstname"} chrupie popcorn: W ziarnach jest woda. Pod wpływem gorąca zamienia się w parę i rozsadza ziarno. Pyk! Powstaje puszysty popcorn!</pl>
+						<de>${john} knabbert los: Im Mais steckt Wasser. Wenn's zu heiß wird, will das Wasser raus und sprengt die Hülle. Popp! Ein fluffiges Popcorn entsteht!</de>
+						<en>${john} munches away: Corn kernels hold water. When heated, the water turns to steam and explodes the kernel. Pop! Fluffy popcorn is born!</en>
+						<pl>${john} chrupie popcorn: W ziarnach jest woda. Pod wpływem gorąca zamienia się w parę i rozsadza ziarno. Pyk! Powstaje puszysty popcorn!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="19" product="7" licence_type="2" guid="a86e07d3-eaef-4510-a245-3842a20b36ec">
@@ -2238,9 +2239,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego zebry mają paski?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} zählt Streifen: Zebras tricksen! Die Streifen verwirren Insekten und Raubtiere. Bei vielen Zebras sehen die Feinde nur ein gestreiftes Durcheinander!</de>
-						<en>${.self:"role":1:"firstname"} counts stripes: Zebras are tricky! Their stripes confuse insects and predators. In a herd, all those stripes are just a blurry mess!</en>
-						<pl>${.self:"role":1:"firstname"} liczy paski: Zebry oszukują! Ich paski mylą owady i drapieżniki. W stadzie paski zlewają się w jedną wielką plątaninę!</pl>
+						<de>${john} zählt Streifen: Zebras tricksen! Die Streifen verwirren Insekten und Raubtiere. Bei vielen Zebras sehen die Feinde nur ein gestreiftes Durcheinander!</de>
+						<en>${john} counts stripes: Zebras are tricky! Their stripes confuse insects and predators. In a herd, all those stripes are just a blurry mess!</en>
+						<pl>${john} liczy paski: Zebry oszukują! Ich paski mylą owady i drapieżniki. W stadzie paski zlewają się w jedną wielką plątaninę!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="20" product="7" licence_type="2" guid="891c989e-c42d-4697-9c7e-4ecb7a67bdf5">
@@ -2250,9 +2251,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego burczy nam w brzuchu?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} horcht nach: Im Magen blubbert's! Wenn er leer ist, ziehen sich die Muskeln zusammen und schieben Luft herum. Das klingt wie ein hungriges „Grrrrrummel“!</de>
-						<en>${.self:"role":1:"firstname"} listens closely: Your stomach bubbles! When it's empty, muscles contract and move air around. It sounds like a hungry "Roooaaar"!</en>
-						<pl>${.self:"role":1:"firstname"} słucha uważnie: W pustym żołądku mięśnie się kurczą i przesuwają powietrze. To brzmi jak głodne „Buuurczenieee!”</pl>
+						<de>${john} horcht nach: Im Magen blubbert's! Wenn er leer ist, ziehen sich die Muskeln zusammen und schieben Luft herum. Das klingt wie ein hungriges „Grrrrrummel“!</de>
+						<en>${john} listens closely: Your stomach bubbles! When it's empty, muscles contract and move air around. It sounds like a hungry "Roooaaar"!</en>
+						<pl>${john} słucha uważnie: W pustym żołądku mięśnie się kurczą i przesuwają powietrze. To brzmi jak głodne „Buuurczenieee!”</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="21" product="7" licence_type="2" guid="61d9d4ec-3de1-410a-83fd-4672436939d0">
@@ -2262,9 +2263,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego się pocimy?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} schwitzt ordentlich: Unser Körper schwitzt, um uns abzukühlen. Der Schweiß verdunstet und nimmt Hitze mit. Ein eingebauter Kühlschrank, nur ohne Eis!</de>
-						<en>${.self:"role":1:"firstname"} sweats it out: Our bodies sweat to cool down. The sweat evaporates, taking heat with it. Like a built-in fridge - just without the ice!</en>
-						<pl>${.self:"role":1:"firstname"} się poci: Nasze ciało się poci, żeby się ochłodzić. Pot paruje i zabiera ciepło. To jak wbudowana lodówka - tylko bez kostek lodu!</pl>
+						<de>${john} schwitzt ordentlich: Unser Körper schwitzt, um uns abzukühlen. Der Schweiß verdunstet und nimmt Hitze mit. Ein eingebauter Kühlschrank, nur ohne Eis!</de>
+						<en>${john} sweats it out: Our bodies sweat to cool down. The sweat evaporates, taking heat with it. Like a built-in fridge - just without the ice!</en>
+						<pl>${john} się poci: Nasze ciało się poci, żeby się ochłodzić. Pot paruje i zabiera ciepło. To jak wbudowana lodówka - tylko bez kostek lodu!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="22" product="7" licence_type="2" guid="749c370d-9dfb-447c-8867-440de2eb200e">
@@ -2274,9 +2275,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego mamy czkawkę?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} zuckt: Ein Schluckauf kommt, wenn das Zwerchfell einen Ausrutscher hat. Ein falscher Atemzug und die Stimmbänder klappen zu. „Hicks“ - ein kleiner Patzer des Körpers!</de>
-						<en>${.self:"role":1:"firstname"} jolts: Hiccups happen when the diaphragm slips up. One wrong breath, and the vocal cords snap shut. "Hic!" - a little body blooper!</en>
-						<pl>${.self:"role":1:"firstname"} podskakuje: Czkawka to błąd przepony. Jeden nieprawidłowy oddech i struny głosowe się zamykają. „Hic!” - mała wpadka ciała!</pl>
+						<de>${john} zuckt: Ein Schluckauf kommt, wenn das Zwerchfell einen Ausrutscher hat. Ein falscher Atemzug und die Stimmbänder klappen zu. „Hicks“ - ein kleiner Patzer des Körpers!</de>
+						<en>${john} jolts: Hiccups happen when the diaphragm slips up. One wrong breath, and the vocal cords snap shut. "Hic!" - a little body blooper!</en>
+						<pl>${john} podskakuje: Czkawka to błąd przepony. Jeden nieprawidłowy oddech i struny głosowe się zamykają. „Hic!” - mała wpadka ciała!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="23" product="7" licence_type="2" guid="e42e0265-221d-4b0b-b89b-c0c1c3f1ad1d">
@@ -2286,9 +2287,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego pingwiny nie marzną?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} watschelt los: Pinguine tragen einen warmen Federanzug und eine Speckschicht. Luft bleibt gefangen und isoliert sie. Kuschelig warm - auch bei Eiseskälte!</de>
-						<en>${.self:"role":1:"firstname"} waddles along: Penguins wear a cozy feather suit and a fat layer. Trapped air keeps them insulated. Snug and warm - even in the ice!</en>
-						<pl>${.self:"role":1:"firstname"} drepcze: Pingwiny noszą ciepły płaszcz z piór i warstwę tłuszczu. Powietrze uwięzione w piórach izoluje. Ciepło i przytulnie - nawet na lodzie!</pl>
+						<de>${john} watschelt los: Pinguine tragen einen warmen Federanzug und eine Speckschicht. Luft bleibt gefangen und isoliert sie. Kuschelig warm - auch bei Eiseskälte!</de>
+						<en>${john} waddles along: Penguins wear a cozy feather suit and a fat layer. Trapped air keeps them insulated. Snug and warm - even in the ice!</en>
+						<pl>${john} drepcze: Pingwiny noszą ciepły płaszcz z piór i warstwę tłuszczu. Powietrze uwięzione w piórach izoluje. Ciepło i przytulnie - nawet na lodzie!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="24" product="7" licence_type="2" guid="17d3ebbc-75bd-43a2-af80-c08a20422d3c">
@@ -2298,9 +2299,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego świetliki świecą?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} staunt: Glühwürmchen zaubern mit Chemie! Sie mischen Sauerstoff mit speziellen Stoffen und zünden ein kleines Licht an - für die große Liebe oder zur Warnung!</de>
-						<en>${.self:"role":1:"firstname"} is amazed: Fireflies use chemistry! They mix oxygen with special chemicals to light up - for true love or as a warning signal!</en>
-						<pl>${.self:"role":1:"firstname"} się zachwyca: Świetliki używają chemii! Mieszają tlen ze specjalnymi substancjami i zapalają światełko - dla miłości lub jako ostrzeżenie!</pl>
+						<de>${john} staunt: Glühwürmchen zaubern mit Chemie! Sie mischen Sauerstoff mit speziellen Stoffen und zünden ein kleines Licht an - für die große Liebe oder zur Warnung!</de>
+						<en>${john} is amazed: Fireflies use chemistry! They mix oxygen with special chemicals to light up - for true love or as a warning signal!</en>
+						<pl>${john} się zachwyca: Świetliki używają chemii! Mieszają tlen ze specjalnymi substancjami i zapalają światełko - dla miłości lub jako ostrzeżenie!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="25" product="7" licence_type="2" guid="097216ef-c207-47c6-b84d-7d7b34032713">
@@ -2310,9 +2311,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego ludzie chrapią?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} hört's genau: Beim Schlafen entspannen sich Muskeln. Die Luft pfeift durch die lockere Kehle und rüttelt alles durch. Ein schnarchendes „Konzert“ beginnt!</de>
-						<en>${.self:"role":1:"firstname"} listens closely: Sleeping muscles relax. Air whistles through the floppy throat and shakes things up. A snoring “concert” begins!</en>
-						<pl>${.self:"role":1:"firstname"} nasłuchuje: Podczas snu mięśnie się rozluźniają. Powietrze świszczy przez luźne gardło i wszystko wprawia w wibracje. Zaczyna się „koncert” chrapania!</pl>
+						<de>${john} hört's genau: Beim Schlafen entspannen sich Muskeln. Die Luft pfeift durch die lockere Kehle und rüttelt alles durch. Ein schnarchendes „Konzert“ beginnt!</de>
+						<en>${john} listens closely: Sleeping muscles relax. Air whistles through the floppy throat and shakes things up. A snoring “concert” begins!</en>
+						<pl>${john} nasłuchuje: Podczas snu mięśnie się rozluźniają. Powietrze świszczy przez luźne gardło i wszystko wprawia w wibracje. Zaczyna się „koncert” chrapania!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="26" product="7" licence_type="2" guid="bb4ef536-3d03-4ff2-ab22-0946c70b259d">
@@ -2322,9 +2323,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego palce strzelają?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} macht, dass es knackt: Beim Ziehen der Finger entsteht ein Gasbläschen im Gelenk, das platzt. Ein kleines „Plopp“ - aber keine Sorge, alles bleibt heil!</de>
-						<en>${.self:"role":1:"firstname"} makes it pop: Pulling fingers forms a gas bubble in the joint, which bursts. A little "pop" - but don't worry, it's all fine!</en>
-						<pl>${.self:"role":1:"firstname"} strzela palcami: Przy rozciąganiu palców powstaje bąbelek gazu, który pęka. Małe „plop” - ale spokojnie, nic się nie psuje!</pl>
+						<de>${john} macht, dass es knackt: Beim Ziehen der Finger entsteht ein Gasbläschen im Gelenk, das platzt. Ein kleines „Plopp“ - aber keine Sorge, alles bleibt heil!</de>
+						<en>${john} makes it pop: Pulling fingers forms a gas bubble in the joint, which bursts. A little "pop" - but don't worry, it's all fine!</en>
+						<pl>${john} strzela palcami: Przy rozciąganiu palców powstaje bąbelek gazu, który pęka. Małe „plop” - ale spokojnie, nic się nie psuje!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="27" product="7" licence_type="2" guid="e9e67487-33f7-4ef9-ae5a-ec49e6e1966f"> <!-- 'dupe' but other explanation -->
@@ -2334,9 +2335,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego samoloty latają?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} hebt ab: Die Tragflächen eines Flugzeugs teilen die Luft: oben schneller, unten langsamer. Der Luftdruck schubst das Flugzeug nach oben - und schon fliegt's wie ein Vogel!</de>
-						<en>${.self:"role":1:"firstname"} takes off: Airplane wings split the air: faster on top, slower below. The air pressure pushes the plane up - and off it flies like a bird!</en>
-						<pl>${.self:"role":1:"firstname"} startuje: Skrzydła samolotu dzielą powietrze - u góry szybciej, u dołu wolniej. Ciśnienie unosi maszynę - i samolot leci jak ptak!</pl>
+						<de>${john} hebt ab: Die Tragflächen eines Flugzeugs teilen die Luft: oben schneller, unten langsamer. Der Luftdruck schubst das Flugzeug nach oben - und schon fliegt's wie ein Vogel!</de>
+						<en>${john} takes off: Airplane wings split the air: faster on top, slower below. The air pressure pushes the plane up - and off it flies like a bird!</en>
+						<pl>${john} startuje: Skrzydła samolotu dzielą powietrze - u góry szybciej, u dołu wolniej. Ciśnienie unosi maszynę - i samolot leci jak ptak!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="28" product="7" licence_type="2" guid="162c64c3-ee84-4351-a772-2f939d32989d">
@@ -2346,9 +2347,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego żyrafy mają długie szyje?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} schaut hoch: Giraffen können mit ihrem Hals die leckersten Blätter in den höchsten Bäumen erreichen. Ein Wettbewerb um Futter, bei dem der längste Hals gewinnt!</de>
-						<en>${.self:"role":1:"firstname"} looks up: Giraffes use their long necks to reach the tastiest leaves on the tallest trees. A food contest where the longest neck wins!</en>
-						<pl>${.self:"role":1:"firstname"} patrzy w górę: Żyrafy dzięki długim szyjom sięgają smacznych liści z najwyższych drzew. Wyścig o jedzenie - wygrywa najdłuższa szyja!</pl>
+						<de>${john} schaut hoch: Giraffen können mit ihrem Hals die leckersten Blätter in den höchsten Bäumen erreichen. Ein Wettbewerb um Futter, bei dem der längste Hals gewinnt!</de>
+						<en>${john} looks up: Giraffes use their long necks to reach the tastiest leaves on the tallest trees. A food contest where the longest neck wins!</en>
+						<pl>${john} patrzy w górę: Żyrafy dzięki długim szyjom sięgają smacznych liści z najwyższych drzew. Wyścig o jedzenie - wygrywa najdłuższa szyja!</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="29" product="7" licence_type="2" guid="614afcf2-791d-433a-99b3-ebf31143dbcf">
@@ -2358,9 +2359,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego flamingi są różowe?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} staunt: Flamingos sind eigentlich grau! Ihre rosa Farbe kommt vom Essen - Algen und Krebse stecken voller Farbstoffe, die sie rosa „anmalen“.</de>
-						<en>${.self:"role":1:"firstname"} is amazed: Flamingos are born gray! Their pink color comes from their food - algae and shrimp are full of pigments that "paint" them pink.</en>
-						<pl>${.self:"role":1:"firstname"} się dziwi: Flamingi rodzą się szare! Ich różowy kolor pochodzi z jedzenia - algi i krewetki pełne są barwników, które je „malują”.</pl>
+						<de>${john} staunt: Flamingos sind eigentlich grau! Ihre rosa Farbe kommt vom Essen - Algen und Krebse stecken voller Farbstoffe, die sie rosa „anmalen“.</de>
+						<en>${john} is amazed: Flamingos are born gray! Their pink color comes from their food - algae and shrimp are full of pigments that "paint" them pink.</en>
+						<pl>${john} się dziwi: Flamingi rodzą się szare! Ich różowy kolor pochodzi z jedzenia - algi i krewetki pełne są barwników, które je „malują”.</pl>
 					</description>
 				</scripttemplate>
 				<scripttemplate index="30" product="7" licence_type="2" guid="90c2ed49-dd97-48db-b8f9-747a7fbfbbd3">
@@ -2370,9 +2371,9 @@ Ekscytująca rozrywka i łamiące mózg pytania quizowe.</pl>
 						<pl>Dlaczego odczuwamy łaskotki?</pl>
 					</title>
 					<description>
-						<de>${.self:"role":1:"firstname"} ist außer Rand und Band vor Lachen: Kitzligkeit ist ein Alarmsystem der Haut! Sie warnt uns vor kleinen Krabblern oder Fremdkörpern. Und: Sie kann zu Lachkrämpfen führen!</de>
-						<en>${.self:"role":1:"firstname"} laughs uncontrollably: Tickling is your skin's alarm system! It warns you about tiny bugs or intruders. Plus, it brings on unstoppable giggles!</en>
-						<pl>${.self:"role":1:"firstname"} się zaśmiewa: Łaskotki to system alarmowy skóry! Ostrzega przed małymi robakami lub obcymi ciałami. A przy okazji wywołuje salwy śmiechu!</pl>
+						<de>${john} ist außer Rand und Band vor Lachen: Kitzligkeit ist ein Alarmsystem der Haut! Sie warnt uns vor kleinen Krabblern oder Fremdkörpern. Und: Sie kann zu Lachkrämpfen führen!</de>
+						<en>${john} laughs uncontrollably: Tickling is your skin's alarm system! It warns you about tiny bugs or intruders. Plus, it brings on unstoppable giggles!</en>
+						<pl>${john} się zaśmiewa: Łaskotki to system alarmowy skóry! Ostrzega przed małymi robakami lub obcymi ciałami. A przy okazji wywołuje salwy śmiechu!</pl>
 					</description>
 				</scripttemplate>
 			</children>

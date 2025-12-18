@@ -4693,10 +4693,11 @@
 					<all>${.lte:currentyear:1999:"MIR":"ISS"}</all>
 					<pl>${.lte:currentyear:1999:"MIR":"MSK"}</pl>
 				</mir>
+				<colon>:</colon> <!-- 'escaping' because of script evaluation problems with ':' character -->
 				<ontheinitiative>
-					<de>${.lte:currentyear:2005:"Auf Initiative eines ungenannten privaten Investors: ":""}</de>
-					<en>${.lte:currentyear:2005:"On the initiative of an unnamed private investor: ":""}</en>
-					<pl>${.lte:currentyear:2005:"Z inicjatywy nienazwanego prywatnego inwestora: ":""}</pl>
+					<de>${.lte:currentyear:2005:"Auf Initiative eines ungenannten privaten Investors${colon} ":""}</de>
+					<en>${.lte:currentyear:2005:"On the initiative of an unnamed private investor${colon} ":""}</en>
+					<pl>${.lte:currentyear:2005:"Z inicjatywy nienazwanego prywatnego inwestora${colon} ":""}</pl>
 				</ontheinitiative>
 				<nasa>
 					<de>${.lte:currentyear:2005:"Die ${generalorg_nasa}":"${brand_spacex}"}</de>
@@ -5245,7 +5246,7 @@
 					<all>${.csv:symposium_csv:2}</all>
 				</internationalsymposium>
 				<incity_csv>
-					<de>in Lünchen;Duschland|in Hürnberg;Duschland|in Lamburg;Duschland|in Saarlücken;Duschland|in Waschinken;UAS|in Wartzsau;Popland|in Ram;Ibalien|in Meltburn;Antralien|in Colbán;Muategela|in Kotio;Pajan|in Daho;Quantar|in Dramid;Pasnien|in Raiko;Gäypten|in São Pedro;Praskilien</de>
+					<de>in Lünchen;Duschland|in Hürnberg;Duschland|in Lamburg;Duschland|in Saarlücken;Duschland|in Waschinken;UAS|in Wartzsau;Popeln|in Ram;Ibalien|in Meltburn;Antralien|in Colbán;Muategela|in Kotio;Pajan|in Daho;Quantar|in Dramid;Pasnien|in Raiko;Gäypten|in São Pedro;Praskilien</de>
 					<en>in Moonick;Germuddle|in Huremberg;Germuddle|in Hamwich;Germuddle|in Starrucken;Germuddle|in Washampton;UAS|in Battlesaw;Popland|in Ram;Ibaly|in Meltburn;Downtralia|in Colbán;Muategela|in Kotyo;Pajan|in Daho;Quantar|in Dramid;Psain|in Raico;Gezypt|in São Pedro;Praskil</en>
 					<pl>w Monachówek;Niemy|w Norymburga;Niemy|w Hamburku;Niemy|w Saarbrzeczki;Niemy|w Waszyngtoniku;UAS|w Świniogrodzie;Poplandia|w Baranowie;Italuszka|w Meltburn;Downtralia|w Colbán;Muategela|w Kotijko;Pajonka|w Daho;Quantaria|w Dramyt;Hipsania|w Raiko;Gezypt|w São Pedro;Praskilonia</pl>
 				</incity_csv>
@@ -5335,7 +5336,7 @@
 				</topic_lightning>
 			</variables>
 			<data genre="5" price="1" quality_min="20" quality_max="50" fictional="1" />
-			<availability script='${.and:${.gt:${.worldtime:"yearsplayed"}:1}:${.or:${.eq:${.worldtime:"month"}:9}:${.eq:${.worldtime:"month"}:10}}}' />
+			<availability script='${.and:${.gte:${.worldtime:"yearsplayed"}:1}:${.lte:${.worldtime:"month"}:3}}' />
 		</news>
 
 		<news guid="ae153d34-9bb1-46e5-be18-86364127f4f0" type="0" creator="9551">

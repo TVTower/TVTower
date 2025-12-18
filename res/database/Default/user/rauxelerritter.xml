@@ -115,17 +115,27 @@
 				<pl>Pastor i Głowa Państwa</pl>
 			</title>
 			<description>
-				<de>Pfarrer ${.self:"role":3:"fullname"} nahm 1990 ${.self:"role":4:"fullname"} und seine Frau ${.self:"role":5:"firstname"} in sein Pfarrhaus auf, die von einem Tag auf den anderen obdachlos geworden waren. Aufregende 7 Monate standen für die 10-köpfige Familie ${.self:"role":3:"lastname"} an.</de>
-				<en>In 1990, Pastor ${.self:"role":3:"fullname"} took in ${.self:"role":4:"fullname"} and his wife ${.self:"role":5:"firstname"}, who had suddenly become homeless, into his vicarage. An exciting 7 months lay ahead for the ${.self:"role":3:"lastname"} family of 10.</en>
-				<pl>W 1990 roku pastor ${.self:"role":3:"fullname"} przyjął na swoją plebanię ${.self:"role":4:"firstname"}a ${.self:"role":4:"lastname"}a i jego żonę ${.self:"role":5:"firstname"}, którzy nagle stali się bezdomni. Oboje z dnia na dzień zostali bezdomni. Przed 10-osobową rodziną ${.self:"role":3:"lastname"}ów stało 7 ekscytujących miesięcy.</pl>
+				<de>Pfarrer ${uweholmer} nahm 1990 ${erich} ${honecker} und seine Frau ${margot} in sein Pfarrhaus auf, die von einem Tag auf den anderen obdachlos geworden waren. Aufregende 7 Monate standen für die 10-köpfige Familie ${holmer} an.</de>
+				<en>In 1990, Pastor ${uweholmer} took in ${erich} ${honecker} and his wife ${margot}, who had suddenly become homeless, into his vicarage. An exciting 7 months lay ahead for the ${holmer} family of 10.</en>
+				<pl>W 1990 roku pastor ${uweholmer} przyjął na swoją plebanię ${erich}a ${honecker}a i jego żonę ${margot}, którzy nagle stali się bezdomni. Oboje z dnia na dzień zostali bezdomni. Przed 10-osobową rodziną ${holmer}ów stało 7 ekscytujących miesięcy.</pl>
 			</description>
+			<variables>
+				<holmerguid>77edf414-9109-4d69-b9a2-d69f24e4f30c</holmerguid>
+				<honeckerguid>e6351009-15e3-4540-bef6-3c2d1afee093</honeckerguid>
+				<margotguid>47542a59-ab4e-460f-ab28-0f11effb44f2</margotguid>
+				<uweholmer>${.person:"${holmerguid}":"fullname"}</uweholmer>
+				<holmer>${.person:"${holmerguid}":"lastname"}</holmer>
+				<erich>${.person:"${honeckerguid}":"firstname"}</erich>
+				<honecker>${.person:"${honeckerguid}":"lastname"}</honecker>
+				<margot>${.person:"${margotguid}":"firstname"}</margot>
+			</variables>
 			<jobs> <!-- ein Regisseur, ein Moderator, ein Reporter -->
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" />
 				<job index="2" function="128" required="1" />
-				<job index="3" function="64" required="1" person="77edf414-9109-4d69-b9a2-d69f24e4f30c" />
-				<job index="4" function="64" required="1" person="e6351009-15e3-4540-bef6-3c2d1afee093" />
-				<job index="5" function="64" required="1" person="47542a59-ab4e-460f-ab28-0f11effb44f2" />
+				<job index="3" function="64" required="1" person="${holmerguid}" />
+				<job index="4" function="64" required="1" person="${honeckerguid}" />
+				<job index="5" function="64" required="1" person="${margotguid}" />
 			</jobs>
 			<data flags="4" flags_optional="0" target_groups="68" /> <!-- Zielgruppe Rentner und Hausfrauen, Kultur: ja -->
 			<targetgroupattractivity men="0.5" /> <!-- Malus: Männer -->

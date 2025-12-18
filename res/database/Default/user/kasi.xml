@@ -181,17 +181,18 @@
 		<!--Besetzung Musiker, Livedatum, nur eine Ausstrahlung, Produktionszeit (Vorproduktion), kein optionaler Kult-->
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-LiveKonzert">
 			<title>
-				<de>Das Livekonzert von ${.self:"role":1:"fullname"}</de>
-				<en>${.self:"role":1:"fullname"} Live</en>
-				<pl>${.self:"role":1:"fullname"} Na Żywo</pl>
+				<de>Das Livekonzert von ${janedoe}</de>
+				<en>${janedoe} Live</en>
+				<pl>${janedoe} Na Żywo</pl>
 			</title>
 			<description>
-				<de>Live in Stereo, Farbe und Bunt: ${.self:"role":1:"fullname"}</de>
-				<en>Live and In Stereo: ${.self:"role":1:"fullname"}</en>
-				<pl>Na Żywo i w stereo: ${.self:"role":1:"fullname"}</pl>
+				<de>Live in Stereo, Farbe und Bunt: ${janedoe}</de>
+				<en>Live and In Stereo: ${janedoe}</en>
+				<pl>Na Żywo i w stereo: ${janedoe}</pl>
 			</description>
 			<variables>
 				<personguid>2f8f94fa-854f-446f-8c07-93c5616ac7e3|d0e99911-2bf6-455e-bb50-a68bc451b156|ea78b761-f5cb-4717-ad4d-d5876c228211|eb450797-24f3-454e-9442-90b735d2f9a5|297c62c2-cdbc-4fac-8343-b51af405c169|38fdcc9f-3be0-4f9b-90cd-d500f25ac240|dc17bda3-19ff-4af8-8e10-1b4a1562ad5f|6b286c53-f4a5-461e-8dd7-2ef538237d50|61dcdd8c-8ccb-42fc-a2f8-b70972f2a6f4|21ddbec2-30b4-450e-a23b-3aa3bdcb8598|5dc8cd65-f8f8-4ca8-855c-a049c0793e53|ed6557ae-a5e2-415f-bda6-3422bf00df9f|2ff4d9e7-9510-4514-8aa2-0789d63f6ede|4150cd45-a2be-4676-9ae0-c7ccc138e9b7|a4a83c4b-49b2-4863-9343-76c9edcd5cee|798f7326-a7db-4fd3-a13c-e0333986a4ea|bbad128c-c6a7-4a68-b9b1-3ba02f705916|f6f6371a-6b66-4898-9f47-7018eb55dc62|8b292183-66d3-421c-88ae-2155398469b9|37d1e098-1354-4711-a5a6-dcb37ce15135|521f9350-f44a-4f81-a839-afa084cf3163|04af245a-af1d-4cb3-8a98-0d6970cf35e2|82018337-466e-4d9a-8bdc-e57d086172de|e13349d4-9e27-4247-a1e9-64d463154c5d|57cf9dbd-42b2-4daa-a683-123b690b6bd4|0bd56818-5f20-49dd-8fbf-581c896fc598|67039643-449c-419c-8b96-afed18944aa2|cc9839f5-d8e9-4e52-a477-475cce0a92ef</personguid>
+				<janedoe>${.person:"${personguid}":"fullname"}</janedoe>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -443,13 +444,13 @@
 		<!--Show statt Serie, Host+Gäste statt Schauspieler, Genre angepasst; kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="3" guid="Kasi-script-Talkshow">
 			<title>
-				<de>Sprich mit ${.self:"role":1:"firstname"}</de>
-				<en>Talk to ${.self:"role":1:"firstname"}</en>
-				<pl>${.self:"role":1:"firstname"} - porozmawiaj z nim</pl>
+				<de>Sprich mit ${ronny}</de>
+				<en>Talk to ${ronny}</en>
+				<pl>${ronny} - porozmawiaj z nim</pl>
 			</title>
 			<description>
-				<de>Talkshowformat, bei dem die Verzweiflung des Moderators mit jeder einzelnen Sendung zunimmt. Begleiten Sie ${.self:"role":1:"firstname"} bei schrecklichen Gesprächen mit willkürlich aufgelesenen Menschen, die für eine Sekunde Berühmtheit praktisch alles sagen würden.</de>
-				<en>Talk show format where the desperation of the host increases with each show. Join ${.self:"role":1:"firstname"} as he has horrible conversations with people picked up at random who will say practically anything for a second of fame.</en>
+				<de>Talkshowformat, bei dem die Verzweiflung des Moderators mit jeder einzelnen Sendung zunimmt. Begleiten Sie ${ronny} bei schrecklichen Gesprächen mit willkürlich aufgelesenen Menschen, die für eine Sekunde Berühmtheit praktisch alles sagen würden.</de>
+				<en>Talk show format where the desperation of the host increases with each show. Join ${ronny} as he has horrible conversations with people picked up at random who will say practically anything for a second of fame.</en>
 				<pl>Talk show, w którym desperacja prowadzącego rośnie z każdym odcinkiem. Prowadzimy okropne rozmowy z losowo wybranymi ludźmi, którzy powiedzą praktycznie wszystko za sekundę sławy.</pl>
 			</description>
 			<children>
@@ -460,8 +461,8 @@
 						<pl>Pierwsza rozmowa</pl>
 					</title>
 					<description>
-						<de>Drei Arbeitslose treffen sich und bezeichnen die jeweils anderen als Schmarotzer. Als dann noch die Mutter der drei auftaucht, fällt ihnen auf, dass sie Brüder sind. Der verzweifelte Moderator ${.self:"role":1:"firstname"} begleitet dies mit interessanten Fragen.</de>
-						<en>Three unemployed people meet and call each other parasites. Then, when the mother of the three shows up, it strikes them that they are brothers. The desperate moderator ${.self:"role":1:"firstname"} accompanies this with interesting questions.</en>
+						<de>Drei Arbeitslose treffen sich und bezeichnen die jeweils anderen als Schmarotzer. Als dann noch die Mutter der drei auftaucht, fällt ihnen auf, dass sie Brüder sind. Der verzweifelte Moderator ${ronny} begleitet dies mit interessanten Fragen.</de>
+						<en>Three unemployed people meet and call each other parasites. Then, when the mother of the three shows up, it strikes them that they are brothers. The desperate moderator ${ronny} accompanies this with interesting questions.</en>
 						<pl>Trzech bezrobotnych spotyka się i nazywa się nawzajem pasożytami. Kiedy pojawia się matka całej trójki, okazuje się, że są braćmi. Zdesperowany moderator towarzyszy tym interesującym rozmowom.</pl>
 					</description>
 				</scripttemplate>
@@ -472,8 +473,8 @@
 						<pl>Dwie pary</pl>
 					</title>
 					<description>
-						<de>Ein Pärchen gesteht sich gegenseitig fremdgegangen zu sein. Es stellt sich heraus, dass Sie mit dem Mann der Frau, mit der ihr Ehemann fremdgegangen ist, fremdgegangen ist. Diese sind wiederum auch mit einem anderen Pärchen fremdgegangen. Verwirrend, nicht nur für ${.self:"role":1:"firstname"}.</de>
-						<en>A couple confesses to having cheated on each other. It turns out that she has cheated with the husband of the woman with whom her husband has cheated. They, in turn, have also cheated with another couple. Confusing, not only for ${.self:"role":1:"firstname"}.</en>
+						<de>Ein Pärchen gesteht sich gegenseitig fremdgegangen zu sein. Es stellt sich heraus, dass Sie mit dem Mann der Frau, mit der ihr Ehemann fremdgegangen ist, fremdgegangen ist. Diese sind wiederum auch mit einem anderen Pärchen fremdgegangen. Verwirrend, nicht nur für ${ronny}.</de>
+						<en>A couple confesses to having cheated on each other. It turns out that she has cheated with the husband of the woman with whom her husband has cheated. They, in turn, have also cheated with another couple. Confusing, not only for ${ronny}.</en>
 						<pl>Para przyznaje się do zdrady. Okazuje się, że ona zdradzała z mężem kobiety, z którą zdradzał jej mąż. Oni z kolei zdradzali również z inną parą. Zagmatwane, nie tylko dla prowadzącego.</pl>
 					</description>
 				</scripttemplate>
@@ -496,8 +497,8 @@
 						<pl>Porwany</pl>
 					</title>
 					<description>
-						<de>Fünf Menschen behaupten in der Sendung, von Aliens entführt worden zu sein. Dort wurden Tests mit Ihnen durchgeführt z.B. ein IQ-Test und BDI. ${.self:"role":1:"firstname"} verliert die Kontrolle über die fünf, als Sie sich streiten wer, den höchsten BDI-Wert erreicht hat.</de>
-						<en>Five people claim in the program to have been abducted by aliens. There, tests were performed on them, e.g. an IQ test and BDI. ${.self:"role":1:"firstname"} loses control of the five when they argue about who has the highest BDI score.</en>
+						<de>Fünf Menschen behaupten in der Sendung, von Aliens entführt worden zu sein. Dort wurden Tests mit Ihnen durchgeführt z.B. ein IQ-Test und BDI. ${ronny} verliert die Kontrolle über die fünf, als Sie sich streiten wer, den höchsten BDI-Wert erreicht hat.</de>
+						<en>Five people claim in the program to have been abducted by aliens. There, tests were performed on them, e.g. an IQ test and BDI. ${ronny} loses control of the five when they argue about who has the highest BDI score.</en>
 						<pl>Pięć osób twierdzi w programie, że zostało uprowadzonych przez kosmitów. Tam przeprowadzono na nich testy, np. test IQ i BDI. Prezenter traci kontrolę nad piątką, gdy kłócą się o to, kto ma najwyższy wynik BDI.</pl>
 					</description>
 				</scripttemplate>
@@ -508,8 +509,8 @@
 						<pl>Hipnoza</pl>
 					</title>
 					<description>
-						<de>Ein Profihypnotiseur wird eingeladen. Als die Hälfte des Publikums wie ein Huhn gackert, die andere Hälfte denkt, ihr Sitz wäre ein ${brand_bobbycar}, und ${.self:"role":1:"firstname"} anfängt, Modern Walking zu singen, wird die Sendung abgebrochen.</de>
-						<en>A professional hypnotist is invited. When half the audience clucks like a chicken, the other half thinks their seat is a ${brand_bobbycar}, and ${.self:"role":1:"firstname"} starts singing Modern Walking, the show is aborted.</en>
+						<de>Ein Profihypnotiseur wird eingeladen. Als die Hälfte des Publikums wie ein Huhn gackert, die andere Hälfte denkt, ihr Sitz wäre ein ${brand_bobbycar}, und ${ronny} anfängt, Modern Walking zu singen, wird die Sendung abgebrochen.</de>
+						<en>A professional hypnotist is invited. When half the audience clucks like a chicken, the other half thinks their seat is a ${brand_bobbycar}, and ${ronny} starts singing Modern Walking, the show is aborted.</en>
 						<pl>Zaproszony zostaje profesjonalny hipnotyzer. Kiedy połowa publiczności gdakała jak kurczak, druga połowa myślała, że ich siedzenie to kaktus, a prezenter zaczął śpiewać Modern Walking, pokaz został przerwany.</pl>
 					</description>
 				</scripttemplate>
@@ -520,8 +521,8 @@
 						<pl>Miłośnicy drzew</pl>
 					</title>
 					<description>
-						<de>Zwei Menschen haben sich in den gleichen Baum verliebt. In der Sendung streiten sie darum, wen der Baum von den beiden mehr liebt. Als ein Wissenschaftler mit einer Baumsprechmaschine ankommt und der Baum sagt, dass er ${.self:"role":1:"firstname"} am meisten liebt, wird dieser von den Baumliebhabern verprügelt.</de>
-						<en>Two people have fallen in love with the same tree. On the show, they fight over who the tree loves more of the two. When a scientist arrives with a tree language translator and the tree says it loves ${.self:"role":1:"firstname"} the most, the tree lovers beat him up.</en>
+						<de>Zwei Menschen haben sich in den gleichen Baum verliebt. In der Sendung streiten sie darum, wen der Baum von den beiden mehr liebt. Als ein Wissenschaftler mit einer Baumsprechmaschine ankommt und der Baum sagt, dass er ${ronny} am meisten liebt, wird dieser von den Baumliebhabern verprügelt.</de>
+						<en>Two people have fallen in love with the same tree. On the show, they fight over who the tree loves more of the two. When a scientist arrives with a tree language translator and the tree says it loves ${ronny} the most, the tree lovers beat him up.</en>
 						<pl>Dwoje ludzi zakochało się w tym samym drzewie. W programie walczą o to, kogo drzewo kocha bardziej. Kiedy naukowiec przybywa z tłumaczem języka drzew, a drzewo mówi, że najbardziej kocha prezentera, miłośnicy drzew biją go.</pl>
 					</description>
 				</scripttemplate>
@@ -532,14 +533,15 @@
 						<pl>Rezygnacja</pl>
 					</title>
 					<description>
-						<de>Aufgrund schwerer Verletzungen und ernsten Depressionen, die ${.self:"role":1:"firstname"} durch seine Show erlitten hat, tritt ${.self:"role":1:"firstname"} nun zurück. Er erklärt, dass er dieses Format hasst und nicht verstehen kann, wie ein Mensch so etwas freiwillig gucken kann.</de>
-						<en>Due to severe injuries and serious depression that ${.self:"role":1:"firstname"} has suffered from his show, ${.self:"role":1:"firstname"} is now resigning. He explains that he hates this format and cannot understand how a person can watch something like this voluntarily.</en>
+						<de>Aufgrund schwerer Verletzungen und ernsten Depressionen, die ${ronny} durch seine Show erlitten hat, tritt ${ronny} nun zurück. Er erklärt, dass er dieses Format hasst und nicht verstehen kann, wie ein Mensch so etwas freiwillig gucken kann.</de>
+						<en>Due to severe injuries and serious depression that ${ronny} has suffered from his show, ${ronny} is now resigning. He explains that he hates this format and cannot understand how a person can watch something like this voluntarily.</en>
 						<pl>Z powodu poważnych obrażeń i poważnej depresji, na którą cierpiał prezenter z powodu swojego programu, rezygnuje z prowadzenia programu. Wyjaśnia, że nienawidzi tego formatu i nie może zrozumieć, jak ktoś może dobrowolnie oglądać coś takiego.</pl>
 					</description>
 				</scripttemplate>
 			</children>
 			<variables> <!-- must all be male for now (grammar) -->
 				<personguid>9104f9c1-7a0f-4bc0-a34c-389ce282eebf|Ronny-person-various-sjaele|Ronny-person-various-ratz|Ronny-person-various-teppic|Ronny-person-various-therob|Ronny-person-various-sushitv|b8e2c92e-e27a-4919-ae2e-c255f25e6450|fde7c3af-cd5f-44f3-9d31-95ff283ae3ba|23b42242-6683-4e18-ab34-34cd3cda1ec5|0e47f4a4-5b62-4d27-b4b9-131adcaba1f7|72227f20-80a5-4c62-8e41-eb43e01c2568</personguid>
+				<ronny>${.person:"${personguid}":"firstname"}</ronny>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -1628,17 +1630,18 @@
 		<!--Cast Gäste statt Darsteller, Genre Gameshow, live nur eine Ausstrahlung, 5 Produktionen, Produktionszeit kein optionaler Kult-->
 		<scripttemplate product="3" licence_type="1" guid="Kasi-Script-Imschlafreich">
 			<title>
-				<de>${.self:"role":1:"fullname"}s Schlaf dich reich</de>
-				<en>${.self:"role":1:"fullname"}'s Get Rich Sleeping</en>
-				<pl>${.self:"role":1:"fullname"}. Jak stać się bogatym śpiąc?</pl>
+				<de>${janedoe}s Schlaf dich reich</de>
+				<en>${janedoe}'s Get Rich Sleeping</en>
+				<pl>${janedoe}. Jak stać się bogatym śpiąc?</pl>
 			</title>
 			<description>
-				<de>Die berühmte Sängerin ${.self:"role":1:"fullname"} leitet diese skurrile Show, in der der Gast, der am längsten auf seinem Stuhl schlafen kann, eine Million Cent gewinnt. Während des Schlafen werden die Gäste geärgert.</de>
-				<en>The popular singer ${.self:"role":1:"fullname"} hosts this whimsical show where the guest who can sleep on their chair the longest wins a million cents. While sleeping the guests are getting teased.</en>
-				<pl>Popularna piosenkarka ${.self:"role":1:"fullname"} jest gospodarzem tego dziwnego programu, w którym gość, który najdłużej śpi na krześle, wygrywa milion centów. Podczas snu goście są drażnieni i wybudzani ze snu.</pl>
+				<de>Die berühmte Sängerin ${janedoe} leitet diese skurrile Show, in der der Gast, der am längsten auf seinem Stuhl schlafen kann, eine Million Cent gewinnt. Während des Schlafen werden die Gäste geärgert.</de>
+				<en>The popular singer ${janedoe} hosts this whimsical show where the guest who can sleep on their chair the longest wins a million cents. While sleeping the guests are getting teased.</en>
+				<pl>Popularna piosenkarka ${janedoe} jest gospodarzem tego dziwnego programu, w którym gość, który najdłużej śpi na krześle, wygrywa milion centów. Podczas snu goście są drażnieni i wybudzani ze snu.</pl>
 			</description>
 			<variables>
 				<personguid>2f8f94fa-854f-446f-8c07-93c5616ac7e3|d0e99911-2bf6-455e-bb50-a68bc451b156|ea78b761-f5cb-4717-ad4d-d5876c228211|eb450797-24f3-454e-9442-90b735d2f9a5|297c62c2-cdbc-4fac-8343-b51af405c169|38fdcc9f-3be0-4f9b-90cd-d500f25ac240|dc17bda3-19ff-4af8-8e10-1b4a1562ad5f|6b286c53-f4a5-461e-8dd7-2ef538237d50|61dcdd8c-8ccb-42fc-a2f8-b70972f2a6f4|21ddbec2-30b4-450e-a23b-3aa3bdcb8598|5dc8cd65-f8f8-4ca8-855c-a049c0793e53|ed6557ae-a5e2-415f-bda6-3422bf00df9f|2ff4d9e7-9510-4514-8aa2-0789d63f6ede|4150cd45-a2be-4676-9ae0-c7ccc138e9b7|a4a83c4b-49b2-4863-9343-76c9edcd5cee|798f7326-a7db-4fd3-a13c-e0333986a4ea|bbad128c-c6a7-4a68-b9b1-3ba02f705916|f6f6371a-6b66-4898-9f47-7018eb55dc62|8b292183-66d3-421c-88ae-2155398469b9|37d1e098-1354-4711-a5a6-dcb37ce15135|521f9350-f44a-4f81-a839-afa084cf3163|04af245a-af1d-4cb3-8a98-0d6970cf35e2|82018337-466e-4d9a-8bdc-e57d086172de|e13349d4-9e27-4247-a1e9-64d463154c5d|57cf9dbd-42b2-4daa-a683-123b690b6bd4|0bd56818-5f20-49dd-8fbf-581c896fc598|67039643-449c-419c-8b96-afed18944aa2|cc9839f5-d8e9-4e52-a477-475cce0a92ef</personguid>
+				<janedoe>${.person:"${personguid}":"fullname"}</janedoe>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -1661,17 +1664,18 @@
 
 		<scripttemplate product="3" licence_type="1" guid="Kasi-Script-Ratespass">
 			<title>
-				<de>Ratespaß mit ${.self:"role":1:"fullname"}</de>
-				<en>Quiz Fun With ${.self:"role":1:"fullname"}</en>
-				<pl>${.self:"role":1:"fullname"} - Zabawy quizowe</pl>
+				<de>Ratespaß mit ${janedoe}</de>
+				<en>Quiz Fun With ${janedoe}</en>
+				<pl>${janedoe} - Zabawy quizowe</pl>
 			</title>
 			<description>
-				<de>Die berühmte Sängerin ${.self:"role":1:"fullname"} leitet diese wundervolle Rateshow, bei denen die Gäste ein tolles Essservice gewinnen können.</de>
-				<en>Famous singer ${.self:"role":1:"fullname"} hosts this wonderful quiz show where guests can win a fabulous dinnerware set.</en>
-				<pl>Znana piosenkarka ${.self:"role":1:"fullname"} jest gospodarzem tego teleturnieju, w którym goście mogą wygrać wspaniały zestaw zastawy stołowej.</pl>
+				<de>Die berühmte Sängerin ${janedoe} leitet diese wundervolle Rateshow, bei denen die Gäste ein tolles Essservice gewinnen können.</de>
+				<en>Famous singer ${janedoe} hosts this wonderful quiz show where guests can win a fabulous dinnerware set.</en>
+				<pl>Znana piosenkarka ${janedoe} jest gospodarzem tego teleturnieju, w którym goście mogą wygrać wspaniały zestaw zastawy stołowej.</pl>
 			</description>
 			<variables>
 				<personguid>2f8f94fa-854f-446f-8c07-93c5616ac7e3|d0e99911-2bf6-455e-bb50-a68bc451b156|ea78b761-f5cb-4717-ad4d-d5876c228211|eb450797-24f3-454e-9442-90b735d2f9a5|297c62c2-cdbc-4fac-8343-b51af405c169|38fdcc9f-3be0-4f9b-90cd-d500f25ac240|dc17bda3-19ff-4af8-8e10-1b4a1562ad5f|6b286c53-f4a5-461e-8dd7-2ef538237d50|61dcdd8c-8ccb-42fc-a2f8-b70972f2a6f4|21ddbec2-30b4-450e-a23b-3aa3bdcb8598|5dc8cd65-f8f8-4ca8-855c-a049c0793e53|ed6557ae-a5e2-415f-bda6-3422bf00df9f|2ff4d9e7-9510-4514-8aa2-0789d63f6ede|4150cd45-a2be-4676-9ae0-c7ccc138e9b7|a4a83c4b-49b2-4863-9343-76c9edcd5cee|798f7326-a7db-4fd3-a13c-e0333986a4ea|bbad128c-c6a7-4a68-b9b1-3ba02f705916|f6f6371a-6b66-4898-9f47-7018eb55dc62|8b292183-66d3-421c-88ae-2155398469b9|37d1e098-1354-4711-a5a6-dcb37ce15135|521f9350-f44a-4f81-a839-afa084cf3163|04af245a-af1d-4cb3-8a98-0d6970cf35e2|82018337-466e-4d9a-8bdc-e57d086172de|e13349d4-9e27-4247-a1e9-64d463154c5d|57cf9dbd-42b2-4daa-a683-123b690b6bd4|0bd56818-5f20-49dd-8fbf-581c896fc598|67039643-449c-419c-8b96-afed18944aa2|cc9839f5-d8e9-4e52-a477-475cce0a92ef</personguid>
+				<janedoe>${.person:"${personguid}":"fullname"}</janedoe>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
@@ -1695,9 +1699,9 @@
 
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Webcamfreude">
 			<title>
-				<de>${.self:"role":1:"fullname"}s „Versteckte Webcam“</de>
-				<en>${.self:"role":1:"fullname"}'s "Hidden Webcam"</en>
-				<pl>${.self:"role":1:"fullname"} z ukrytą kamerą</pl>
+				<de>${janedoe}s „Versteckte Webcam“</de>
+				<en>${janedoe}'s "Hidden Webcam"</en>
+				<pl>${janedoe} z ukrytą kamerą</pl>
 			</title>
 			<description>
 				<de>Webcams werden in zufälligen Häusern installiert. Eine Woche lang werden die Bewohner bei allem, was sie machen, gefilmt und live ins Internet gestreamt. Die Show konfrontiert die Protagonisten mit ihren Verfehlungen und zeigt die schönsten Szenen.</de>
@@ -1706,6 +1710,7 @@
 			</description>
 			<variables>
 				<personguid>2f8f94fa-854f-446f-8c07-93c5616ac7e3|d0e99911-2bf6-455e-bb50-a68bc451b156|ea78b761-f5cb-4717-ad4d-d5876c228211|eb450797-24f3-454e-9442-90b735d2f9a5|297c62c2-cdbc-4fac-8343-b51af405c169|38fdcc9f-3be0-4f9b-90cd-d500f25ac240|dc17bda3-19ff-4af8-8e10-1b4a1562ad5f|6b286c53-f4a5-461e-8dd7-2ef538237d50|61dcdd8c-8ccb-42fc-a2f8-b70972f2a6f4|21ddbec2-30b4-450e-a23b-3aa3bdcb8598|5dc8cd65-f8f8-4ca8-855c-a049c0793e53|ed6557ae-a5e2-415f-bda6-3422bf00df9f|2ff4d9e7-9510-4514-8aa2-0789d63f6ede|4150cd45-a2be-4676-9ae0-c7ccc138e9b7|a4a83c4b-49b2-4863-9343-76c9edcd5cee|798f7326-a7db-4fd3-a13c-e0333986a4ea|bbad128c-c6a7-4a68-b9b1-3ba02f705916|f6f6371a-6b66-4898-9f47-7018eb55dc62|8b292183-66d3-421c-88ae-2155398469b9|37d1e098-1354-4711-a5a6-dcb37ce15135|521f9350-f44a-4f81-a839-afa084cf3163|04af245a-af1d-4cb3-8a98-0d6970cf35e2|82018337-466e-4d9a-8bdc-e57d086172de|e13349d4-9e27-4247-a1e9-64d463154c5d|57cf9dbd-42b2-4daa-a683-123b690b6bd4|0bd56818-5f20-49dd-8fbf-581c896fc598|67039643-449c-419c-8b96-afed18944aa2|cc9839f5-d8e9-4e52-a477-475cce0a92ef</personguid>
+				<janedoe>${.person:"${personguid}":"fullname"}</janedoe>
 			</variables>
 			<jobs>
 				<job function="1" index="0" required="1" />
