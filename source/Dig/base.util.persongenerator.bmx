@@ -11,6 +11,7 @@ GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Austria )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_China	 )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Denmark )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_France )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Italy )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Germany )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Greece )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Poland )
@@ -508,9 +509,73 @@ Type TPersonGeneratorCountry_Germany extends TPersonGeneratorCountry
 End Type
 
 
+'=== ITALY ===
+'sources:
+' https://teamgroupnames.com/italian-boy-names-classic-modern-choices-with-meanings/
+' https://creativenomenclature.com/baby-name/girls/italian-girl-names/
+' https://oceanofnames.com/italian-last-names/
+' + custom google search for Italian boy and girl names
+Type TPersonGeneratorCountry_Italy extends TPersonGeneratorCountry
+	Method New()
+		self.countryCode = "it"
+
+		self.firstNamesMale = [..
+			"Achille", "Adriano", "Aldo", "Alessandro", "Alessio", "Alberto", "Amerigo", "Andrea", "Angelo", "Antonio", "Arnaldo", "Armando", "Arturo", "Attilio", "Aurelio", "Azzurro", ..
+			"Baldassare", "Bartolomeo", "Benedetto", "Benvenuto", "Biagio", "Brando", "Bruno", "Carmelo", "Cesare", "Christian", "Corrado", "Cristiano", "Daniele", "Dante", "Dario", ..
+			"Davide", "Diego", "Domenico", "Donato", "Edilio", "Elia", "Emiliano", "Emilio", "Enea", "Enrico", "Enzo", "Ettore", "Evaristo", "Fabio", "Fabrizio", "Fausto", ..
+			"Federico", "Felice", "Ferdinando", "Filippo", "Fiorenzo", "Flavio", "Fortunato", "Francesco", "Furio", "Gaetano", "Gabriele", "Gaetano", "Gennaro", "Gianfranco", "Gianluca", "Gianluigi", "Giacomo", ..
+			"Giancarlo", "Giordano", "Giulio", "Giorgio", "Giovanni", "Gioele", "Goffredo", "Guido", "Ignazio", "Ivan", "Jacopo", "Lamberto", "Lorenzo", "Luciano", ..
+			"Luigi", "Luca", "Marco", "Manuel", "Marcello", "Marcantonio", "Mario", "Mattia", "Matteo", "Massimo", "Massimiliano", "Mauro", "Michele", "Mirko", "Niccolo", "Nicola", "Nino", "Noah", ..
+			"Paolo", "Pasquale", "Pietro", "Pino", "Raffaele", "Remo", "Renato", "Riccardo", "Rinaldo", "Rino", "Roberto", "Rocco", "Romano", "Romeo", "Rosario", "Salvatore", "Samuele", "Sandro", "Sebastiano", "Sergio", "Settimio", "Silvano", "Simone", "Stefano", ..
+			"Tancredi", "Teo", "Teodosio", "Tito", "Tommaso", "Valentino", "Vincenzo", "Vittorio", "Vito", "Zeno" ..
+		]
+
+		self.firstNamesFemale = [..
+			"Adelina", "Adriana", "Agata", "Alessandra", "Alessia", "Alice", "Alina", "Amalia", "Anna", "Antonella", "Aurora", "Beatrice", "Benedetta", "Bianca", "Bruna", ..
+			"Camilla", "Carlotta", "Carmen", "Carolina", "Caterina", "Chiara", "Cinzia", "Clara", "Claudia", "Cosima", "Costanza", "Cristina", "Daniela", "Daria", "Debora", "Diana", ..
+			"Donatella", "Elena", "Eleonora", "Elisa", "Elisabetta", "Emma", "Enrica", "Erminia", "Eva", "Federica", "Felicia", "Fiorella", "Flavia", "Flora", "Francesca", "Fulvia", ..
+			"Gabriella", "Gelsomina", "Gemma", "Giada", "Gianna", "Gina", "Giorgia", "Giovanna", "Gisella", "Giulia", "Giuliana", "Giuseppina", "Grazia", "Greta", "Ida", "Ilaria", ..
+			"Immacolata", "Ines", "Irene", "Iris", "Isabella", "Isidora", "Italia", "Lara", "Laura", "Lavinia", "Leda", "Letizia", "Lia", "Lidia", "Liliana", "Lina", ..
+			"Lisa", "Livia", "Lorella", "Lorenza", "Loretta", "Lucia", "Luciana", "Luisa", "Luna", "Maddalena", "Manuela", "Mara", "Marcella", "Margherita", "Maria", "Marina", ..
+			"Marianna", "Martina", "Matilde", "Melissa", "Michela", "Milena", "Mirella", "Monica", "Nadia", "Natalia", "Nicoletta", "Nina", "Noemi", "Olimpia", "Olivia", "Oriana", ..
+			"Ornella", "Ottavia", "Paola", "Patrizia", "Penelope", "Perla", "Pia", "Pina", "Priscilla", "Prisca", "Quirina", "Rachele", "Raffaella", "Renata", "Rina", "Rita", ..
+			"Roberta", "Romana", "Rosa", "Rosalia", "Rosanna", "Rosaria", "Rossana", "Sabina", "Sandra", "Sara", "Serena", "Sibilla", "Silvia", "Simona", "Sonia", "Stefania", ..
+			"Stella", "Susanna", "Tania", "Teresa", "Tina", "Tiziana", "Tosca", "Tullia", "Ughetta", "Ulrica", "Umberta", "Ursula", "Valentina", "Valeria", "Vanna", "Vera", ..
+			"Veronica", "Vincenza", "Viola", "Virginia", "Vittoria", "Viviana", "Zaira", "Zita", "Zoe", "Zoraide" ..
+		]
+
+		self.lastNames = [..
+			"Abate", "Abbati", "Accardi", "Adami", "Agostini", "Albanese", "Altobelli", "Amato", "Anselmo", "Antonelli", ..
+			"Baccari", "Balestra", "Ballarini", "Barbieri", "Barone", "Battaglia", "Bellini", "Benedetti", "Bianchi", "Biondi", "Bocchi", "Bolognese", "Bonanno", "Bordi", ..
+			"Cacioppo", "Calabrese", "Calderone", "Calvi", "Campisi", "Capelli", "Capuano", "Caruso", "Carnovale", "Casella", "Cavalli", "Cecconi", "Cerri", "Chiaro", "Cipriani", "Conti", "Corso", "Costanzo", "Cozzi", ..
+			"Damico", "D'Amico", "D'Angelo", "D'Antonio", "D'Ascenzo", "D'Elia", "DeAngelis", "DeLuca", "DeMarco", "DeRosa", "DeSantis", "DiBenedetto", "DiMarco", "Dini", ..
+			"Elia", "Esposito", "Este", "Eusebi", "Evoli", "Evangelisti", "Ettori", ..
+			"Fabiani", "Fabbri", "Falcone", "Falsone", "Fantini", "Farina", "Fazio", "Ferrara", "Ferrari", "Fiorelli", "Fiorini", "Flammini", "Fontana", "Forlani", "Foschi", "Franchi", "Freschi", "Fusco", ..
+			"Galante", "Gallo", "Gambino", "Gatti", "Gentile", "Gigli", "Giordano", "Giuliani", "Giunta", "Gori", "Grassi", "Greco", "Grimaldi", "Guarnieri", "Guerrini", "Guglielmi", ..
+			"Iacono", "Iacoviello", "Iannelli", "Iorio", "Ippolito", "Iovine", "Isola", "Iuliano", "Iurilli", "Izzo", ..
+			"Jacopetti", "Jannelli", "Jannuzzi", "Jelardi", "Jonni", ..
+			"Labella", "Laconi", "Landi", "Lanza", "Lazzaro", "Leone", "Leonetti", "Leonardi", "Lombardi", "Lonardo", "Lucchesi", "Luciano", "Lugano", "Lupoli", "Lupino", "Lupatini", ..
+			"Macaluso", "Magalotti", "Magnani", "Maione", "Malatesta", "Mancini", "Manfredi", "Manzoni", "Marchesini", "Marchetti", "Mariani", "Marino", "Martino", "Martini", "Mascetti", "Massaro", "Massimi", "Mattei", "Mazzone", "Medici", "Messina", "Milani", "Milano", "Minucci", "Morello", "Morelli", "Moretti", "Moroni", "Murolo", ..
+			"Nappi", "Napolitano", "Naviglio", "Negri", "Neri", "Nicolosi", "Nicoletti", "Nobile", "Noto", "Nucci", "Nuzzo", ..
+			"Olivieri", "Orlando", "Orsini", "Orsino", "Ornati", "Ortelli", "Orsato", "Ottaviani", "Oreste", ..
+			"Palermo", "Palombi", "Palumbo", "Pancaldi", "Panetta", "Parisi", "Passeri", "Pellegrini", "Perrone", "Pescatore", "Petrarca", "Piani", "Pignatelli", "Piras", "Pirozzi", "Pistone", "Pizzo", "Polito", "Polizzi", "Ponti", "Porpora", "Pozzi", "Prato", "Principi", "Pucci", ..
+			"Quagliano", "Quaranta", "Quattrocchi", "Querci", "Quercia", "Quirico", "Quirini", "Quintana", "Quinto", "Quirino", ..
+			"Raffaelli", "Raimondo", "Rinaldi", "Riva", "Rocchi", "Romanelli", "Romano", "Rosati", "Roselli", "Rossini", "Rossi", "Ruggiero", "Russo", ..
+			"Sabatini", "Sacco", "Sala", "Salerno", "Salvatori", "Santoro", "Sartori", "Sassi", "Scala", "Scalia", "Schiavone", "Sciacca", "Segre", "Serra", "Sforza", "Sicari", "Silvestri", "Sisto", "Sollecito", "Spezia", "Spinelli", "Stella", "Storti", ..
+			"Tagliabue", "Tedesco", "Testa", "Tognoni", "Tonelli", "Torelli", "Torre", "Tortora", "Turrini", "Taddei", "Tagliaferro", ..
+			"Uccello", "Ubertini", "Uccelli", "Ugolini", "Ugo", "Urbani", "Urbano", "Urru", "Usai", "Ussia", ..
+			"Valentini", "Valenti", "Valente", "Valenza", "Valeri", "Valeriani", "Valiani", "Valori", "Vallone", "Ventura", "Venturi", "Verdi", "Vesco", "Vianello", "Vettori", "Viani", "Vigano", "Vitali", "Vitale", "Vitelli", "Vitti", "Viviani", "Vita", ..
+			"Zanetti", "Zanni", "Zappala", "Zattoni", "Zegna", "Zeni", "Zerbo", "Zito", "Zucchelli", "Zuccaro", "Zullo", "Zuppa"..
+		]
+
+		self.titleMale = ["Dott.", "Prof."]
+		self.titleFemale = ["Dott.", "Prof."]
+	End Method
+End Type
+
+
 '=== UK ===
 'http://www.ons.gov.uk/ons/rel/vsob1/baby-names--england-and-wales/2013/index.html
-'Germany
 Type TPersonGeneratorCountry_UK extends TPersonGeneratorCountry
 	Method New()
 		self.countryCode = "uk"
