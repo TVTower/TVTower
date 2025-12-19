@@ -77,6 +77,24 @@
 
 			<!-- 1984 recap -->
 
+		<news guid="4b8e6c22-968b-478e-b34d-fc53c19712c8" type="0" creator="8936" created_by="jorgaeff" comment="Bruce Springsteen, Born in the U.S.A. - https://en.wikipedia.org/wiki/Born_in_the_U.S.A.">
+			<title>
+				<de>Musikalbum des Jahres gewählt</de>
+				<en>Music album of the year chosen</en>
+				<pl>Muzyczny album roku wybrany</pl>
+			</title>
+			<description>
+				<de>„${mediatitle_bornintheusa}“, das Musikalbum des amerikanischen Sängers ${bruce} ${springsteen}, wurde zum einflussreichsten Album des Jahres 1984 gewählt. ${springsteen} verwendet darin erstmals Synthesizer.</de>
+				<en>"${mediatitle_bornintheusa}", the music album by American singer ${bruce} ${springsteen}, was voted the most influential album of the year 1984. In it, ${springsteen} uses synthesizers for the first time.</en>
+				<pl>„${mediatitle_bornintheusa}”, album muzyczny amerykańskiego piosenkarza ${bruce}'a ${springsteen}a, został uznany za najbardziej wpływowy album roku 1984. ${springsteen} po raz pierwszy użył w nim syntezatorów.</pl>
+			</description>
+			<variables>
+				<bruce>${.person:"e7de9ef7-b87f-43c5-a1d9-0d045933307a":"firstname"}</bruce> <!-- person references for now written more compact and not within 'all' tags when known to be the likely same in all languages; e.g. Russian names however will be within 'all' -->
+				<springsteen>${.person:"e7de9ef7-b87f-43c5-a1d9-0d045933307a":"lastname"}</springsteen>
+			</variables>
+			<data genre="1" price="0.4" quality_min="40" quality_max="60" fictional="0" flags="2" happen_time="5,1984,1985,12,1,15,15" /> <!-- actually no exact source date (voted where by whom?) -->
+		</news>
+
 			<!-- 1985 general -->
 
 		<news guid="81f3916f-deb7-4931-8d99-db45d52444d5" type="0" creator="7430" created_by="Sjaele" comment="https://en.wikipedia.org/wiki/Tetris">
@@ -127,25 +145,6 @@
 			</description>
 			<data genre="3" price="0.3" quality_min="40" quality_max="60" fictional="0" flags="2" />
 			<availability year_range_from="1985" year_range_to="1985" /> <!-- actual anniversary day is 1985-12-07 but celebrations are for the whole year -->
-		</news>
-
-		<!-- TODO: move to 1984 recap -->
-		<news guid="4b8e6c22-968b-478e-b34d-fc53c19712c8" type="0" creator="8936" created_by="jorgaeff" comment="Bruce Springsteen, Born in the U.S.A. - https://en.wikipedia.org/wiki/Born_in_the_U.S.A.">
-			<title>
-				<de>Musikalbum des Jahres gewählt</de>
-				<en>Music album of the year chosen</en>
-				<pl>Muzyczny album roku wybrany</pl>
-			</title>
-			<description>
-				<de>„${mediatitle_bornintheusa}“, das Musikalbum des amerikanischen Sängers ${bruce} ${springsteen}, wurde zum einflussreichsten Album des Jahres 1984 gewählt. ${springsteen} verwendet darin erstmals Synthesizer.</de>
-				<en>"${mediatitle_bornintheusa}", the music album by American singer ${bruce} ${springsteen}, was voted the most influential album of the year 1984. In it, ${springsteen} uses synthesizers for the first time.</en>
-				<pl>„${mediatitle_bornintheusa}”, album muzyczny amerykańskiego piosenkarza ${bruce}'a ${springsteen}a, został uznany za najbardziej wpływowy album roku 1984. ${springsteen} po raz pierwszy użył w nim syntezatorów.</pl>
-			</description>
-			<variables>
-				<bruce>${.person:"e7de9ef7-b87f-43c5-a1d9-0d045933307a":"firstname"}</bruce> <!-- person references for now written more compact and not within 'all' tags when known to be the likely same in all languages; e.g. Russian names however will be within 'all' -->
-				<springsteen>${.person:"e7de9ef7-b87f-43c5-a1d9-0d045933307a":"lastname"}</springsteen>
-			</variables>
-			<data genre="1" price="0.4" quality_min="40" quality_max="60" fictional="0" flags="2" happen_time="5,1984,1985,12,1,15,15" /> <!-- actually no exact source date (voted where by whom?) -->
 		</news>
 
 			<!-- 1985-01 -->
@@ -700,29 +699,6 @@
 			<availability year_range_from="1986" year_range_to="1986" /> <!-- exact date actually unknown -->
 		</news>
 
-		<!-- TODO: Move to 1986-03 -->
-		<news guid="c7f2508d-afc5-49dd-aee3-6f1c62c988ce" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/58th_Academy_Awards | assuming Oscars were meant and 'Jenseits von Afrika' (previously spoofed with 'Jenseits von Eden', which is a different famous real title), although details and person references didn't fit very well ('George Weisman' film, 'based on letters by Canadian writer Elke Beauford'). Could also be 1986 German award film https://de.wikipedia.org/wiki/Caspar_David_Friedrich_%E2%80%93_Grenzen_der_Zeit but unlikely (TODO: add)">
-			<title>
-				<de>„${outofafrica}“ ausgezeichnet</de>
-				<en>"${outofafrica}" awarded</en>
-				<pl>„${outofafrica}” nagrodzony</pl>
-			</title>
-			<description>
-				<de>Bei den diesjährigen Filmpreisverleihungen wurde ${sydney} ${pollack}s Film „${outofafrica}“ als bester Film ausgezeichnet. Der Film basiert auf Briefen der dänischen Schriftstellerin ${karenblixen}.</de>
-				<en>At this year's film awards, ${sydney} ${pollack}'s film "${outofafrica}" was named best film. The film is based on letters by Danish author ${karenblixen}.</en>
-				<pl>Podczas tegorocznego rozdania nagród filmowych za najlepszy film uznano „${outofafrica}” ${sydney}a ${pollack}a. Film oparty jest na listach duńskiej autorki ${karenblixen}.</pl>
-			</description>
-			<variables>
-				<outofafrica>
-					<all>${.programme:"24062b9f-0ec7-4b65-b4ce-23c751ed5951":"title"}</all>
-				</outofafrica>
-				<sydney>${.person:"6b814f06-43f1-497d-a836-985e0ac91713":"firstname"}</sydney>
-				<pollack>${.person:"6b814f06-43f1-497d-a836-985e0ac91713":"lastname"}</pollack>
-				<karenblixen>${.person:"d6470481-6890-4726-9ec8-71b062f984b3":"fullname"}</karenblixen>
-			</variables>
-			<data genre="1" price="0.4" quality_min="50" quality_max="70" fictional="0" flags="2" happen_time="5,1986,1986,02,04,1,30" /> <!-- actual date: 1986-03-24 -->
-		</news>
-
 			<!-- 1986-01 -->
 
 		<news guid="acb0b107-f99d-450e-8c80-3ab790b42377" type="0" creator="8936" created_by="jorgaeff" comment="apparently via https://en.wikipedia.org/wiki/Goldene_Leinwand | previously: 'Anna - der Film' ausgezeichnet | 'Anna' apparently a spoof on 'Otto' but 'Anna - Der Film' is a very different, actually existing real movie, by now added | TODO: 'Anna Friese' could be used elsewhere">
@@ -987,6 +963,28 @@
 				</gorbachev>
 			</variables>
 			<data genre="0" price="0.8" quality_min="60" quality_max="80" fictional="0" flags="2" happen_time="5,1986,1986,2,4,1,30" /> <!-- actual date: 1986-03-06 -->
+		</news>
+
+		<news guid="c7f2508d-afc5-49dd-aee3-6f1c62c988ce" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/58th_Academy_Awards | assuming Oscars were meant and 'Jenseits von Afrika' (previously spoofed with 'Jenseits von Eden', which is a different famous real title), although details and person references didn't fit very well ('George Weisman' film, 'based on letters by Canadian writer Elke Beauford'). Could also be 1986 German award film https://de.wikipedia.org/wiki/Caspar_David_Friedrich_%E2%80%93_Grenzen_der_Zeit but unlikely (TODO: add)">
+			<title>
+				<de>„${outofafrica}“ ausgezeichnet</de>
+				<en>"${outofafrica}" awarded</en>
+				<pl>„${outofafrica}” nagrodzony</pl>
+			</title>
+			<description>
+				<de>Bei den diesjährigen Filmpreisverleihungen wurde ${sydney} ${pollack}s Film „${outofafrica}“ als bester Film ausgezeichnet. Der Film basiert auf Briefen der dänischen Schriftstellerin ${karenblixen}.</de>
+				<en>At this year's film awards, ${sydney} ${pollack}'s film "${outofafrica}" was named best film. The film is based on letters by Danish author ${karenblixen}.</en>
+				<pl>Podczas tegorocznego rozdania nagród filmowych za najlepszy film uznano „${outofafrica}” ${sydney}a ${pollack}a. Film oparty jest na listach duńskiej autorki ${karenblixen}.</pl>
+			</description>
+			<variables>
+				<outofafrica>
+					<all>${.programme:"24062b9f-0ec7-4b65-b4ce-23c751ed5951":"title"}</all>
+				</outofafrica>
+				<sydney>${.person:"6b814f06-43f1-497d-a836-985e0ac91713":"firstname"}</sydney>
+				<pollack>${.person:"6b814f06-43f1-497d-a836-985e0ac91713":"lastname"}</pollack>
+				<karenblixen>${.person:"d6470481-6890-4726-9ec8-71b062f984b3":"fullname"}</karenblixen>
+			</variables>
+			<data genre="1" price="0.4" quality_min="50" quality_max="70" fictional="0" flags="2" happen_time="5,1986,1986,02,04,1,30" /> <!-- actual date: 1986-03-24 -->
 		</news>
 
 			<!-- 1986-04 -->
