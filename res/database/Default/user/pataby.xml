@@ -4414,6 +4414,7 @@
 					<variables>
 						<personguid>b54f2eeb-8820-4267-8c5d-1a3a960f5f2d</personguid>
 						<personfullname>${.person:"${personguid}":"fullname"}</personfullname>
+						<personlastname>${.person:"${personguid}":"lastname"}</personlastname>
 					</variables>
 					<jobs>
 						<job index="4" function="64" required="1" person="${personguid}" />
