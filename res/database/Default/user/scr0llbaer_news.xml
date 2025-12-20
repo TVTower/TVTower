@@ -4693,11 +4693,10 @@
 					<all>${.lte:currentyear:1999:"MIR":"ISS"}</all>
 					<pl>${.lte:currentyear:1999:"MIR":"MSK"}</pl>
 				</mir>
-				<colon>:</colon> <!-- 'escaping' because of script evaluation problems with ':' character -->
 				<ontheinitiative>
-					<de>${.lte:currentyear:2005:"Auf Initiative eines ungenannten privaten Investors${colon} ":""}</de>
-					<en>${.lte:currentyear:2005:"On the initiative of an unnamed private investor${colon} ":""}</en>
-					<pl>${.lte:currentyear:2005:"Z inicjatywy nienazwanego prywatnego inwestora${colon} ":""}</pl>
+					<de>${.lte:currentyear:2005:"Auf Initiative eines ungenannten privaten Investors - ":""}</de>
+					<en>${.lte:currentyear:2005:"On the initiative of an unnamed private investor - ":""}</en>
+					<pl>${.lte:currentyear:2005:"Z inicjatywy nienazwanego prywatnego inwestora - ":""}</pl>
 				</ontheinitiative>
 				<nasa>
 					<de>${.lte:currentyear:2005:"Die ${generalorg_nasa}":"${brand_spacex}"}</de>
@@ -7034,7 +7033,7 @@
 				<georgeclinton>3bd2433f-121f-4535-9ebc-b5d4959610f9</georgeclinton>
 				<sothatmoonwalk> <!-- same year as in michaeljackson_or_franksinatra -->
 					<de>${.lte:currentyear:1993:"Damit sie ein Mond-Luxus-Casino bauen können und ich für „${mediatitle_flymetothemoon}“ ein Ziel dort habe.":"Damit Tanzschüler den Moonwalk leichter üben können."}</de>
-					<en>${.lte:currentyear:1993:"So they can build a lunar luxury casino and I have a destination for "${mediatitle_flymetothemoon}".":"So that dance students can practice the Moonwalk more easily."}</en>
+					<en>${.lte:currentyear:1993:"So they can build a lunar luxury casino and I have a destination for “${mediatitle_flymetothemoon}“.":"So that dance students can practice the Moonwalk more easily."}</en>
 					<pl>${.lte:currentyear:1993:"Aby mogli zbudować luksusowe kasyno księżycowe, a ja miałbym cel dla „${mediatitle_flymetothemoon}”.":"Aby uczniowie tańca mogli łatwiej ćwiczyć Moonwalk."}</pl>
 				</sothatmoonwalk>
 				<moonflat_csv>
@@ -7046,7 +7045,7 @@
 					</de>
 					<en>${michaeljackson_or_franksinatra};planned;wanted;${sothatmoonwalk}|
 						${davidbowie};planned;wanted;So that residents can get used to stardust more quickly.|
-						${eltonjohn};planned;wanted;So that the "${mediatitle_rocketman}" finally has a home.|
+						${eltonjohn};planned;wanted;So that the “${mediatitle_rocketman}“ finally has a home.|
 						${pinkfloyd};planned;wanted;So that the dark side of the moon becomes more inhabited.|
 						${georgeclinton};planned;wanted;For the launch of the “Funkadelic Mothership Housing Project.”
 					</en>
@@ -7093,17 +7092,17 @@
 				<chucknorris>f9886d56-43a6-4584-950e-d62ecf41e62a</chucknorris>
 				<buttrainingwascut> <!-- same year as seanconnery_or_keanureeves -->
 					<de>${.lte:currentyear:2005:"Das Training wurde jedoch nach einer Meinungsverschiedenheit mit dem Rat abgebrochen. Er bezeichnet die Macht jetzt als „etwasch Schubtiles“.":"„Es ging um Balance, nicht um Laserschwerter“, sagte er. Wie Insider berichten, meisterte er die Macht, indem er sechs Monate lang sanft einen Bleistift über einen Tisch schob."}</de>
-					<en>${.lte:currentyear:2005:"But training was cut short after a disagreement with the Council. He now refers to the Force as "shomething shubtle".":""It was about balance, not lightsabers," he said. Sources confirm he mastered the Force by gently pushing a pencil across a table for six months."}</en>
+					<en>${.lte:currentyear:2005:"But training was cut short after a disagreement with the Council. He now refers to the Force as “shomething shubtle“.":"“It was about balance, not lightsabers,“ he said. Sources confirm he mastered the Force by gently pushing a pencil across a table for six months."}</en>
 					<pl>${.lte:currentyear:2005:"Jednak trening został przerwany po nieporozumieniu z Radą. Teraz nazywa Moc „szo szubtelnego“.":"„Chodziło o równowagę, nie miecze świetlne” - powiedział. Doniesienia potwierdzają, że opanował Moc, delikatnie przesuwając ołówek po stole przez sześć miesięcy."}</pl>
 				</buttrainingwascut>
 				<theforceisalady> <!-- same year as burtreynolds_or_jeanclaudevandamne -->
 					<de>${.lte:currentyear:1995:"„Die Macht ist eine feine Dame... aber sie zieht einen Gentleman vor“, erklärte er dem Interviewer in einem rauchigen Lounge-Bereich voller Schnauzbärte in einer Cantina-Bar in L.A.":"„Die Macht ist wie die schönste Spaltung zwischen Licht und Dunkel... wie ein Rabe und eine Taube, die fliegen“, erklärte er während einem perfekten Spagat zwischen zwei fahrenden Landspeedern."}</de>
-					<en>${.lte:currentyear:1995:""The Force is a lady... but she prefers a gentleman," he explained to the interviewer in a mustachioed smokey lounge of an L.A. cantina bar.":""The Force is the most beautiful split between the light and the dark... like a raven and a dove, flying," he explained, while performing a perfect split between two moving landspeeders."}</en>
+					<en>${.lte:currentyear:1995:"“The Force is a lady... but she prefers a gentleman,“ he explained to the interviewer in a mustachioed smokey lounge of an L.A. cantina bar.":"“The Force is the most beautiful split between the light and the dark... like a raven and a dove, flying,“ he explained, while performing a perfect split between two moving landspeeders."}</en>
 					<pl>${.lte:currentyear:1995:"„Moc to dama... ale woli dżentelmena“ - wyjaśnił rozmówcy w wąsatym, dymnym salonie kantyny w Los Angeles.":"„Moc to najpiękniejszy rozłam między światłem a mrokiem... jak kruk i gołąb, lecące“ - wyjaśnił, wykonując idealny szpagat między dwoma ruchomymi śmigaczami."}</pl>
 				</theforceisalady>
 				<namedpermanentchairman> <!-- same year as charltonheston_or_brucewillis -->
 					<de>${.lte:currentyear:1995:"„Nach Abschluss wurde ich sofort zum Vorsitzenden auf Lebenszeit der Galaktischen Laserschwert-Vereinigung ernannt“, prahlte er. „Wer mein Laserschwert haben will, muss es meinen kalten, toten Händen entreißen.“":"„Es war viel Meditieren und nicht genug Action.“ Er nennt seinen Laserschwert jetzt „Glühstab“ und verwendet die Macht hauptsächlich, um verschlossene Türen zu öffnen."}</de>
-					<en>${.lte:currentyear:1995:""After completion I was immediately named Permanent Chairman of the Galactic Lightsaber Association," he boasted. "You can have my lightsaber when you pry it from my cold, dead hands."":""It was a lot of meditation and not enough action." He now refers to his lightsaber as a "glowstick" and uses the Force primarily to open locked doors."}</en>
+					<en>${.lte:currentyear:1995:"“After completion I was immediately named Permanent Chairman of the Galactic Lightsaber Association,“ he boasted. “You can have my lightsaber when you pry it from my cold, dead hands.“":"“It was a lot of meditation and not enough action.“ He now refers to his lightsaber as a “glowstick“ and uses the Force primarily to open locked doors."}</en>
 					<pl>${.lte:currentyear:1995:"„Po ukończeniu trainingu zostałem natychmiast mianowany Stałym Przewodniczącym Galaktycznego Stowarzyszenia Mieczy Świetlnych“ - chwalił się. "Będziecie mogli wziąć mój miecz świetlny, gdy wydrzecie go z moich zimnych, martwych rąk.“":"„To było dużo medytacji i za mało akcji.“ Teraz nazywa swój miecz świetlny „świecącym patykiem“ i używa Mocy głównie do otwierania zamkniętych drzwi."}</pl>
 				</namedpermanentchairman>
 				<jedi_csv>
@@ -7116,8 +7115,8 @@
 					<en>${seanconnery_or_keanureeves};${buttrainingwascut}|
 						${burtreynolds_or_jeanclaudevandamne};${theforceisalady}|
 						${charltonheston_or_brucewillis};${namedpermanentchairman}|
-						${jackiechan};Reportedly, he was focused entirely on using the Force to safely catch falling lightsabers. He insisted the outtakes during Force training were "the best part".|
-						${chucknorris};"Actually I completed the training in a single afternoon. But it took so long to teach everyone the roundhouse kicks and Yoda the correct grammar," he explained.
+						${jackiechan};Reportedly, he was focused entirely on using the Force to safely catch falling lightsabers. He insisted the outtakes during Force training were “the best part“.|
+						${chucknorris};“Actually I completed the training in a single afternoon. But it took so long to teach everyone the roundhouse kicks and Yoda the correct grammar,“ he explained.
 					</en>
 					<pl>${seanconnery_or_keanureeves};${buttrainingwascut}|
 						${burtreynolds_or_jeanclaudevandamne};${theforceisalady}|
@@ -7715,7 +7714,7 @@
 				</versaceelevates>
 				<gianniversacetransforms>
 					<de>${.lte:currentyear:1996:"${gianni} ${versace} gestaltet 5,25-Zoll-Disketten um zu Ohr-Accessoires. Promis lieben den „futuristischen Look“.":"${.lte:currentyear:2016:"Der bekannte Designer ${karl} ${lagerfeld} veredelt Pager zu Halsketten für 2000 Dollar. Die Limited Edition ist sofort ausverkauft, obwohl niemand mehr anpiepst und die Empfangsfunktion eh deaktiviert ist, um „die ästhetische Integrität zu wahren“.":"${.lte:currentyear:2022:"${jeanpaul} ${gaultier} besetzt ${brand_blackberry}s mit Diamanten und verkauft sie als „Brosche für die geschäftige Frau“, „die das Gefühl vermisst, wichtige Nachrichten zu ignorieren“.":"Für die ${moschino}-Frühjahrskollektion enthüllt ${jeremy} ${scott} einen Stöckelschuh-Absatz bestehend aus einem funktionierenden Selfie-Stick. Influencer loben die Möglichkeit, „nun allzeit bereit“ zu sein."}"}"}</de>
-					<en>${.lte:currentyear:1996:"${gianni} ${versace} transforms 5.25-inch floppy disks into ear accessories. Celebrities love the "futuristic look".":"${.lte:currentyear:2016:"Renowned designer ${karl} ${lagerfeld} elevates pagers into $2000 necklaces. The limited edition sells out instantly, even though no one beeps anymore and the receiving function is disabled to "preserve the aesthetic integrity".":"${.lte:currentyear:2022:"${jeanpaul} ${gaultier} encrusts ${brand_blackberry}s with diamonds and sells them as a "brooch for the busy woman" who "misses the feeling of ignoring important messages".":"For the ${moschino} spring collection, ${jeremy} ${scott} unveils a stiletto heel made from a functioning selfie stick. Influencers praise the possibility of being "ready at all times"."}"}"}</en>
+					<en>${.lte:currentyear:1996:"${gianni} ${versace} transforms 5.25-inch floppy disks into ear accessories. Celebrities love the “futuristic look“.":"${.lte:currentyear:2016:"Renowned designer ${karl} ${lagerfeld} elevates pagers into $2000 necklaces. The limited edition sells out instantly, even though no one beeps anymore and the receiving function is disabled to “preserve the aesthetic integrity“.":"${.lte:currentyear:2022:"${jeanpaul} ${gaultier} encrusts ${brand_blackberry}s with diamonds and sells them as a “brooch for the busy woman“ who “misses the feeling of ignoring important messages“.":"For the ${moschino} spring collection, ${jeremy} ${scott} unveils a stiletto heel made from a functioning selfie stick. Influencers praise the possibility of being “ready at all times“."}"}"}</en>
 					<pl>${.lte:currentyear:1996:"${gianni} ${versace} przerabia 5,25-calowe dyskietki na akcesoria do uszu. Celebryci kochają „futurystyczny wygląd”.":"${.lte:currentyear:2016:"Słynny projektant ${karl} ${lagerfeld} uszlachetnia pagery, zamieniając je w naszyjniki za 2000 dolarów. Limitowana edycja wyprzedaje się natychmiast, mimo że nikt już nie paguje, a funkcja odbioru jest wyłączona, by „zachować integralność estetyczną”.":"${.lte:currentyear:2022:"${jeanpaul} ${gaultier} obsadza ${brand_blackberry} diamentami i sprzedaje je jako „broszkę dla zapracowanej kobiety”, która „tęskni za uczuciem ignorowania ważnych wiadomości”.":"Na wiosenną kolekcję ${moschino} ${jeremy} ${scott} prezentuje obcas szpilki wykonany z działającego selfie sticka. Influencerki chwalą możliwość bycia „zawsze gotową”."}"}"}</pl>
 				</gianniversacetransforms>
 			</variables>
@@ -7775,7 +7774,7 @@
 				</simcity>
 				<thenewgardendlc>
 					<de>${.lte:currentyear:2004:"das neue „Garten-Dungeon“":"den neuen „Garten-DLC“"}</de>
-					<en>${.lte:currentyear:2004:"the new "Garden Dungeon"":"the new "Garden DLC""}</en>
+					<en>${.lte:currentyear:2004:"the new “Garden Dungeon“":"the new “Garden DLC“"}</en>
 					<pl>${.lte:currentyear:2004:"nowe „Podziemie Ogrodowe”":"nowy „DLC Ogrodowy”"}</pl>
 				</thenewgardendlc>
 			</variables>
@@ -7803,11 +7802,11 @@
 						Röhren-Toaster;mit sichtbarer Vakuumröhre und Nixie-Anzeige für die Bräunungsstufe. Verbraucht mehr Strom als das ganze Stadtviertel.
 					</de>
 					<en>Modem Toaster;that dials into BBS systems via acoustic coupler to download toast recipes. The connection always drops during toasting.|
-						Floppy Disk Toaster;that loads 5.25 inch floppies as "browning profiles". Toast always comes out with sector errors.|
+						Floppy Disk Toaster;that loads 5.25 inch floppies as “browning profiles“. Toast always comes out with sector errors.|
 						Tube Toaster;with visible vacuum tube and Nixie display for browning level. Consumes more power than the entire neighborhood.
 					</en>
 					<pl>Toster-modem;który łączy się z BBS przez akustyczny łącznik, by pobierać przepisy na tosty. Połączenie zawsze zrywa się w trakcie opiekania.|
-						Toster-dyskietka;który ładuje dyskietki 5,25 jako "profile opiekania". Tosty zawsze wychodzą z błędami sektorów.|
+						Toster-dyskietka;który ładuje dyskietki 5,25 jako „profile opiekania“. Tosty zawsze wychodzą z błędami sektorów.|
 						Toster-lampowy;z widoczną lampą próżniową i wyświetlaczem Nixie do regulacji poziomu opiekania. Pobiera więcej prądu niż cała dzielnica.
 					</pl>
 				</toaster1980s_csv>

@@ -5795,10 +5795,9 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 					<en>${.lte:currentyear:2010:"Stamp chaos on the highway":"App keeps crashing"}</en>
 					<pl>${.lte:currentyear:2010:"Chaos stempli na autostradzie":"Aplikacja ciągle się zawiesza"}</pl>
 				</appkeepscrashing>
-				<quote>&quot;</quote> <!-- 'escaping' because of script evaluation problems even when written as an html entity -->
 				<thenewapp>
 					<de>${.lte:currentyear:2010:"Autofahrer müssen an jeder Mautstelle ihre Formulare von Hand stempeln lassen. Die langen Warteschlangen sind so geplant. Verkehrsminister: „Autostau plus Papierstau ist gleich Klimarettung.“":"Die neu eingeführte Automaut-App stürzt so häufig ab, dass Autofahrer ständig auf der Autobahn halten müssen, um die App neu zu starten. Umweltminister: „Das ist gewollt, die ständigen Staus schrecken ab.“"}</de>
-					<en>${.lte:currentyear:2010:"Drivers have to stamp their forms by hand at every toll station. The long queues are planned that way. Minister of Transport: ${quote}Traffic jam plus paper jam equals climate rescue.${quote}":"The newly introduced car toll app crashes so often that drivers constantly have to stop on the highway to restart the app. Minister of the Environment: ${quote}This is intentional, the constant traffic jams are meant to deter.${quote}"} </en>
+					<en>${.lte:currentyear:2010:"Drivers have to stamp their forms by hand at every toll station. The long queues are planned that way. Minister of Transport: “Traffic jam plus paper jam equals climate rescue.“":"The newly introduced car toll app crashes so often that drivers constantly have to stop on the highway to restart the app. Minister of the Environment: “This is intentional, the constant traffic jams are meant to deter.“"} </en>
 					<pl>${.lte:currentyear:2010:"Kierowcy muszą osobiście stemplować swoje formularze na każdym punkcie poboru opłat. Długie kolejki są zaplanowane. Minister transportu: „Korek plus papierowy chaos równa się ratowanie klimatu.“":"Nowo wprowadzona aplikacja do opłat drogowych zawiesza się tak często, że kierowcy muszą ciągle zatrzymywać się na autostradzie, aby ją ponownie uruchomić. Minister środowiska: „To celowe, stałe korki mają odstraszać.“"} </pl>
 				</thenewapp>
 			</variables>
