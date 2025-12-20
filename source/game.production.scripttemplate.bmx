@@ -383,7 +383,7 @@ Type TScriptTemplate Extends TScriptBase
 			Local personString:String = result[i].preselectCast
 			If personString And Not result[i].personID
 				If personString.Contains("$")
-					Local context:SScriptExpressionContext = new SScriptExpressionContext(self, -1, Null)
+					Local context:SScriptExpressionContext = new SScriptExpressionContext(self, 0, Null)
 					Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(personString, context)
 					personString = valueNew.ToString()
 				EndIf
