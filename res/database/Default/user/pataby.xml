@@ -390,7 +390,7 @@
 			<variables> <!-- copy-pasted to follow-up series, except consul -->
 				<theghost>
 					<de>Der „Geist“</de>
-					<en>The "Ghost"</en>
+					<en>The “Ghost“</en>
 					<pl>„Duch“</pl>
 				</theghost>
 				<lucius> <!-- TODO: perhaps a Roman/Latin name generator (also note different spelling of such names in Polish). Can't use proper role definition with first_name and last_name etc when displayed from variable (but character is never mentioned, and variable references could be used instead anyway) -->
@@ -402,9 +402,9 @@
 					<pl>Marek Waleriusz|Gajusz Metellus|Lucjusz Emiliusz Paulus|Gnejusz Korneliusz|Marek Tulliusz|Gajusz Aureliusz|Appiusz Klaudiusz|Serwiusz Fulwiusz</pl>
 				</marcusvalerius>
 				<ariosassistant>
-					<de>${.self:"role":1:"fullname"}' Gehilfe</de>
-					<en>${.self:"role":1:"fullname"}' assistant</en>
-					<pl>Pomocnik ${.self:"role":1:"fullname"}a</pl>
+					<de>${.self:"role":1:"firstname"}' Gehilfe</de>
+					<en>${.self:"role":1:"firstname"}' assistant</en>
+					<pl>Pomocnik ${.self:"role":1:"firstname"}a</pl>
 				</ariosassistant>
 				<consul>
 					<de>Konsul</de>
@@ -456,7 +456,7 @@
 			<variables> <!-- copy-pasted from first film, except proconsul and regions. Indeed intended that names can be different. -->
 				<theghost>
 					<de>Der „Geist“</de>
-					<en>The "Ghost"</en>
+					<en>The “Ghost“</en>
 					<pl>„Duch“</pl>
 				</theghost>
 				<lucius>
@@ -468,9 +468,9 @@
 					<pl>Marek Waleriusz|Gajusz Metellus|Lucjusz Emiliusz Paulus|Gnejusz Korneliusz|Marek Tulliusz|Gajusz Aureliusz|Appiusz Klaudiusz|Serwiusz Fulwiusz</pl>
 				</marcusvalerius>
 				<ariosassistant>
-					<de>${.self:"role":1:"fullname"}' Gehilfe</de>
-					<en>${.self:"role":1:"fullname"}' assistant</en>
-					<pl>Pomocnik ${.self:"role":1:"fullname"}a</pl>
+					<de>${.self:"role":1:"firstname"}' Gehilfe</de>
+					<en>${.self:"role":1:"firstname"}' assistant</en>
+					<pl>Pomocnik ${.self:"role":1:"firstname"}a</pl>
 				</ariosassistant>
 				<proconsul>
 					<de>Statthalter</de>

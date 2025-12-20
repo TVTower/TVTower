@@ -1362,11 +1362,11 @@ Czyli 4120 na odcinek.</pl>
 			<targetgroupattractivity children="1.25" pensioners="0.25" />
 			<genres maingenre="5" subgenres="7,9" />
 			<blocks min="2" max="3" />
-			<price min="60000" max="111500" />
-			<potential min="65" max="100" />
-			<outcome min="65" max="100" />
-			<review min="65" max="100" />
-			<speed min="65" max="100" />
+			<price min="160000" max="211500" />
+			<potential min="45" max="100" />
+			<outcome min="55" max="100" />
+			<review min="55" max="100" />
+			<speed min="55" max="100" />
 			<studio_size min="2" max="3" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="d26ee4f9-1b61-4b7a-926a-e462256b127b" creator="9551" comment="Making some use of the existing fairytale characters. Descriptions created with help of ChatGPT.">
@@ -1591,7 +1591,7 @@ Czyli 4120 na odcinek.</pl>
 			<targetgroupattractivity pensioners="0.25" />
 			<genres maingenre="5" subgenres="202,1" />
 			<blocks value="2" />
-			<price min="150000" max="300000" />
+			<price min="100000" max="200000" />
 			<potential min="20" max="50" />
 			<outcome min="20" max="50" />
 			<review min="20" max="50" />

@@ -2688,11 +2688,11 @@
 			<targetgroupattractivity men="0.75" />
 			<genres maingenre="5" subgenres="9" />
 			<blocks min="2" max="3" slope="25" />
-			<price min="50000" max="99500" slope="40" />
-			<potential min="55" max="100" slope="40" />
-			<outcome min="55" max="100" slope="40" />
-			<review min="55" max="100" slope="40" />
-			<speed min="55" max="100" slope="10" />
+			<price min="150000" max="199500" slope="40" />
+			<potential min="45" max="100" slope="40" />
+			<outcome min="45" max="100" slope="40" />
+			<review min="45" max="100" slope="40" />
+			<speed min="45" max="100" slope="10" />
 			<studio_size min="2" max="3" slope="40" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="064f0597-b258-49f1-8f10-36a15741295e">
@@ -3265,11 +3265,11 @@
 			<targetgroupattractivity men="0.75" />
 			<genres maingenre="13" subgenres="15,1" />
 			<blocks min="3" max="5" slope="45" />
-			<price min="67000" max="99500" slope="90" />
-			<potential min="71" max="100" slope="50" />
-			<outcome min="71" max="100" slope="50" />
-			<review min="71" max="100" slope="55" />
-			<speed min="55" max="100" slope="65" />
+			<price min="167000" max="199500" slope="90" />
+			<potential min="61" max="100" slope="50" />
+			<outcome min="61" max="100" slope="50" />
+			<review min="61" max="100" slope="55" />
+			<speed min="45" max="100" slope="65" />
 			<studio_size value="3" />
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="1f556836-dfbd-4b69-992b-d90995e8734e">
@@ -3454,11 +3454,11 @@
 			<data flags="8" flags_optional="64" target_groups="80" />
 			<genres maingenre="18" subgenres="7" />
 			<blocks min="2" max="3" slope="25" />
-			<price min="61000" max="99500" slope="50" />
-			<potential min="61" max="100" slope="50" />
-			<outcome min="75" max="100" slope="50" />
-			<review min="55" max="100" slope="50" />
-			<speed min="65" max="100" slope="50" />
+			<price min="161000" max="199500" slope="50" />
+			<potential min="51" max="100" slope="50" />
+			<outcome min="65" max="100" slope="50" />
+			<review min="45" max="100" slope="50" />
+			<speed min="55" max="100" slope="50" />
 			<studio_size value="3" />
 		</scripttemplate>
 		<scripttemplate product="3" licence_type="3" guid="4ab1938b-08ab-4016-9d37-9809c786a2f0">
