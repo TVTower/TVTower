@@ -388,7 +388,10 @@ Type TScriptTemplate Extends TScriptBase
 					personString = valueNew.ToString()
 				EndIf
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(personString)
-				If person Then result[i].personID = person.GetId()
+				If person
+					If person.GetPersonalityData() And person.GetPersonalityData().isDead() Then person = Null
+					If person Then result[i].personID = person.GetId()
+				EndIf
 			EndIf
 			result[i] = result[i].Copy()
 			'mark job as "cast preselected"

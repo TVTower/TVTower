@@ -891,7 +891,7 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 		'no dob was given
 		If dod = 0 Then Return Super.IsDead()
 
-		Return GetWorldTime().GetTimeGone() < dod
+		Return GetWorldTime().GetTimeGone() > dod
 	End MEthod
 
 
