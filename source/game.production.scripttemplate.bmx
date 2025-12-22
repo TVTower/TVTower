@@ -383,12 +383,15 @@ Type TScriptTemplate Extends TScriptBase
 			Local personString:String = result[i].preselectCast
 			If personString And Not result[i].personID
 				If personString.Contains("$")
-					Local context:SScriptExpressionContext = new SScriptExpressionContext(self, -1, Null)
+					Local context:SScriptExpressionContext = new SScriptExpressionContext(self, 0, Null)
 					Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(personString, context)
 					personString = valueNew.ToString()
 				EndIf
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(personString)
-				If person Then result[i].personID = person.GetId()
+				If person
+					If person.GetPersonalityData() And person.GetPersonalityData().isDead() Then person = Null
+					If person Then result[i].personID = person.GetId()
+				EndIf
 			EndIf
 			result[i] = result[i].Copy()
 			'mark job as "cast preselected"
