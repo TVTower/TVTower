@@ -457,6 +457,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				For Local subTemplate:TScriptTemplate = EachIn template.GetSubTemplateSubset(mainTemplateEpisodeCount, forceIncludePilot)
 					Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
 					If subScript
+						_calculateLiveTime(subScript, subTemplate)
 						If template.programmeDataModifiers
 							if not subScript.programmeDataModifiers Then subScript.programmeDataModifiers = New TData
 							subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
@@ -476,6 +477,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						For Local i:Int = 0 until episodesCount
 							Local subScript:TScript = TScript.CreateFromTemplate(subTemplate, False)
 							If subScript
+								_calculateLiveTime(subScript, subTemplate)
 								If template.programmeDataModifiers
 									if not subScript.programmeDataModifiers Then subScript.programmeDataModifiers = New TData
 									subScript.programmeDataModifiers.Append(template.programmeDataModifiers)
@@ -523,7 +525,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						script.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 					EndIF
 
-					_calculateLiveTime(subScript, template)
 					If not subScript.CanBeXRated()
 						subScript.SetFlag(TVTProgrammeDataFlag.XRATED, False)
 					EndIf
