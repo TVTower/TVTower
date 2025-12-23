@@ -565,18 +565,18 @@
 		<scripttemplate licence_type="1" product="3" guid="Kasi-Script-Spendengala">
 			<title>
 				<de>Die große Spendengala - Ein Herz für ${Name}</de>
-				<en>The Big Charity Gala - A Heart for ${Name}</en>
+				<en>The Big Charity Gala - A love for ${Name}</en>
 				<pl>Wielka Gala Charytatywna - Serce dla ${Name}</pl>
 			</title>
 			<description>
 				<de>Völlig unbekannte Stars wollen Geld für die vom Aussterben bedrohten ${Name} sammeln. Ein Abend voller Musik, Comedy, Hoffnung und Spenden.</de>
-				<en>Completely unknown stars want to raise money for the ${Name} threatened with extinction. An evening full of music, comedy, hope and donations.</en>
+				<en>Completely unknown stars want to raise money for ${Name} threatened with extinction. An evening full of music, comedy, hope and donations.</en>
 				<pl>Zupełnie nieznane gwiazdy chcą zebrać pieniądze dla ${Name} zagrożonych wyginięciem. Wieczór pełen muzyki, komedii, nadziei i datków.</pl>
 			</description>
 			<variables>
 				<name>
 					<de>Wollmäuse|Wasserrehe|Dikdiks|Nasenaffen|Kakapos|Greifstachler|Mimik-Oktopoden</de>
-					<en>Dust bunnies|Water deer|Dikdiks|Proboscis monkeys|Kakapos|Porcupines|Mimic octopi</en>
+					<en>dust bunnies|water deer|dikdiks|proboscis monkeys|kakapos|porcupines|mimic octopi</en>
 					<pl>śnieżnych zajęcy|wodnych jeleni|włochatych tarantul|małp dupiatek|orangutanów wielkich|jeżozwierzy|mimicznych ośmiornic</pl>
 				</name>
 			</variables>

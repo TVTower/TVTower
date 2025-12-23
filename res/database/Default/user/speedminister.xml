@@ -97,7 +97,11 @@
 			</modifiers>
 		</programme>
 		<programme guid="ca86ae70-304d-41b0-a594-df9d2b47d13c" product="6" licence_type="1" fictional="1" creator="8605" created_by="SpeedMinister">
-			<title>Tuba Tinnitus</title>
+			<title>
+				<de>Die Stars der volksirrtümlichen Hitparade - Mit: Tuba Tinnitus</de>
+				<en>The Stars of the Tradidiotional Hit Parade - Featuring: Tuba Tinnitus</en>
+				<pl>Gwiazdy tradycyjnej parady hitów - Występują: Tuba Tinnitus</pl>
+			</title>
 			<description>
 				<de>Das weckt auch den verschlafensten in der letzten Reihe auf. Vier Tuben, eine Trompete, ein Schlagzeug und ein Sänger geben ihr Bestes. Mit mittelmäßigem Erfolg.</de>
 				<en>This wakes up even the sleepiest in the last row. Four tubas, a trumpet, a drum set and a singer give their best. With mediocre success.</en>

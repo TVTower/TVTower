@@ -7611,7 +7611,7 @@
 			</title>
 			<description>
 				<de>Der Künstler ${jeandupont} verkaufte ein PC-Kabelknäuel aus den ${smith}${ltd}-Büros in ${town} als Skulptur. Die IT-Abteilung fordert die Rückgabe. „Das war ein vollständig gepatchtes ${cat6}-Netzwerk, und jetzt sind die Drucker der Finanzabteilung offline.“</de>
-				<en>Artist ${jeandupont} sells a tangled office PC's wiring found at ${smith}${ltd} in ${town} as a sculpture. The IT department is demanding its. "That was a fully patched ${cat6} ecosystem, and now the finance department's printers are offline."</en>
+				<en>Artist ${jeandupont} sells a tangled office PC's wiring found at ${smith}${ltd} in ${town} as a sculpture. The IT department is demanding its return. "That was a fully patched ${cat6} ecosystem, and now the finance department's printers are offline."</en>
 				<pl>Artysta ${jeandupont} sprzedał splątaną plątaninę kabli z biura ${smith}${ltd} w mieście ${town} jako rzeźbę. Dział IT domaga się jej zwrotu. „To było w pełni sprawne środowisko ${cat6}, a teraz drukery działu finansowego nie działają.“</pl>
 			</description>
 			<variables>

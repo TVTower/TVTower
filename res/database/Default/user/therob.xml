@@ -290,7 +290,7 @@
 			</title>
 			<description>
 				<de>${.self:"cast":0:"fullname"} hat ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} und ${.self:"cast":4:"fullname"} eingeladen. Das Ziel ein intensives Gespräch über Sonstiges. Wie wird die Quote? Was gehört da rein? Wie wirkt es sich aus? Sehr spannende Expertenrunde. Vor allem, als der Streit ausbricht.</de>
-				<en>${.self:"cast":0:"fullname"} has invited ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} and ${.self:"cast":4:"fullname"}. The goal an intensive conversation about Sundry. What goes into it? What is the impact? What will be the viewing rates? Very exciting round of experts. Especially when the argument breaks out.</en>
+				<en>${.self:"cast":0:"fullname"} has invited ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} and ${.self:"cast":4:"fullname"}. The goal: an intense conversation about Sundry. What goes into it? What is the impact? What will be the viewing rates? A very exciting round of experts. Especially when the argument breaks out.</en>
 				<pl>${.self:"cast":0:"fullname"} zaprasza gości. To: ${.self:"cast":1:"fullname"}, ${.self:"cast":2:"fullname"}, ${.self:"cast":3:"fullname"} i ${.self:"cast":4:"fullname"}. Celem jest intensywna rozmowa na temat "Różnorodne". Co się na to składa? Jaki jest wpływ? Jakie będą wskaźniki oglądalności? Bardzo ekscytująca runda ekspertów. Zwłaszcza gdy wybuchnie kłótnia.</pl>
 			</description>
 			<staff>

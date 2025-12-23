@@ -1621,8 +1621,9 @@
 				<pl>Dla niektórych jest to wandalizm, dla innych wyraz kultury miejskiej. W zeszłym roku ${deutschebundesbahn} musiało wydać miliony na czyszczenie wagonów kolejowych pokrytych graffiti, co oczywiście wpłynie również na ceny biletów.</pl>
 			</description>
 			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
 				<bundesbahn>
-					<all>${.lte:currentyear:1993:"Bundesbahn":"Deutsche Bahn"}</all>
+					<all>${.lte:currentyear:1993:"Bundesbahn":"Bahn"}</all>
 				</bundesbahn>
 				<deutschebundesbahn>
 					<all>${.lte:currentyear:1993:"Deutsche Bundesbahn":"Deutsche Bahn"}</all>

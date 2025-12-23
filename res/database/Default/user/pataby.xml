@@ -331,7 +331,7 @@
 		<scripttemplate product="4" licence_type="1" guid="9a021293-e346-4134-93cd-6a66e4af8216" creator="10061">
 			<title>
 				<de>${thomasbernstein} vor Ort ${inbrazil}</de>
-				<en>${thomasbernstein} on the ground ${inbrazil}</en>
+				<en>${thomasbernstein} on the Ground ${inbrazil}</en>
 				<pl>${thomasbernstein} na miejscu ${inbrazil}</pl>
 			</title>
 			<description>
@@ -5245,6 +5245,7 @@
 			<review min="10" slope="65" max="90" />
 			<speed min="10" slope="65" max="90" />
 			<studio_size value="2" />
+			<availability year_range_from="1988" />
 		</scripttemplate>
 
 		<scripttemplate product="2" licence_type="3" guid="56781988-af99-493e-bef0-56bbf2d5af05" creator="10061">
