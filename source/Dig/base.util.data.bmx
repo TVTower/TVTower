@@ -35,7 +35,7 @@ Rem
 EndRem
 SuperStrict
 Import brl.Map
-Import brl.StringMap
+Import Collections.StringMap
 Import brl.Retro
 Import brl.StringBuilder
 Import "external/string_comp.bmx"

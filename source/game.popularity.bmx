@@ -1,7 +1,7 @@
 SuperStrict
 Import Brl.LinkedList
-Import Brl.IntMap
-Import Brl.StringMap
+Import Collections.IntMap
+Import Collections.StringMap
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "game.modifier.base.bmx"

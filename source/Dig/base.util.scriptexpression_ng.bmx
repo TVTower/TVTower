@@ -1,6 +1,6 @@
 SuperStrict
 Framework Brl.StandardIO
-Import Brl.StringMap
+Import Collections.StringMap
 Import Brl.Map
 Import brl.retro	' Hex() in SToken.reveal()
 Import Brl.StringBuilder
@@ -719,6 +719,10 @@ Struct SScriptExpression
 				exit
 			EndIf
 		Until not replacedSomething or dollarSymbolsFound = 0
+
+		If mixedTextWithExpressions.Find("&quot;") >= 0
+			mixedTextWithExpressions.Replace("&quot;", "~q")
+		EndIf
 		
 		Return mixedTextWithExpressions
 	End Method
@@ -1385,7 +1389,7 @@ Struct SScriptExpressionLexer
 		popchar()
 '		Local temp:String = expression[ start..cursor - 1].Replace("\~q","~q")
 'DebugStop
-		Return expression[ start..cursor - 1].Replace("\~q","~q")
+		Return expression[ start..cursor - 1].Replace("\\", "\").Replace("\~q","~q")
 	End Method
 End Struct
 

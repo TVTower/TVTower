@@ -44,7 +44,7 @@ ModuleInfo "History: Initial Release"
 endrem
 Import Text.xml
 Import BRL.Reflection
-Import BRL.IntMap
+Import Collections.IntMap
 Import BRL.Map
 Import "../../base.util.longmap.bmx"
 Import BRL.Stream
