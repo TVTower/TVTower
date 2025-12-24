@@ -207,6 +207,9 @@ DebugProfiler.ObserveCall(TDebugScreenPage_Overview._profilerKey_AI_MINUTE[3])
 AppTitle = "TVTower: " + VersionString + " Build ~q" + VersionDate+"~q"
 TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString + " Build ~q" + VersionDate+"~q.", LOG_INFO )
 
+Global letterboxBackground:TLetterboxBackground = New TLetterboxBackground
+
+
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL )
 TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
@@ -710,6 +713,8 @@ Type TApp
 		MouseManager.Enable(2)
 
 		GUIManager.Update(systemState)
+		
+		letterboxBackground.Update() 'animate
 
 
 		UpdateDebugControls()
@@ -1304,9 +1309,11 @@ endrem
 
 		'cls only needed if virtual resolution is enabled, else the
 		'background covers everything
-		If GetGraphicsManager().HasBlackBars()
+		If GetGraphicsManager().HasLetterbox()
 			SetClsColor 0,0,0
 			Cls()
+			
+			letterboxBackground.Draw()
 		EndIf
 
 		TProfiler.Enter(_profilerKey_Draw)
@@ -1757,6 +1764,278 @@ endrem
 		EndIf
 	End Function
 
+End Type
+
+
+
+Type TLetterboxBackgroundMovieReel
+	'offsets to "content" (left side or top side)
+	'-> increasing width will keep reel "On same position"
+	Field offsetX:Int
+	Field offsetY:Int
+	Field position:Float
+	Field speed:Float = 1 '< 0 left/backwards, > 0 right/forwards
+	Field scale:Float = 1.0
+	Field rotation:Int = 0
+	Field brightness:Float = 1.0
+	Field movieReels:TSprite[]
+	'some precalculated values
+	Field _effectiveW:Float
+	Field _effectiveH:Float
+	'x + rectBottom = bottom left of the rect
+	Field _rectBottomX:Float
+	Field _rectBottomY:Float
+	Field _moveX:Float
+	Field _moveY:Float
+	Field _firstReelSpriteIndex:Int = 0
+	Field _positionFlippedCount:Int = 0
+
+
+	Method SetConfig(offsetX:Float, offsetY:Float, rotation:Int, speed:Double)
+		SetConfig(int(offsetX), int(offsetY), rotation, Float(speed))
+	End Method
+
+
+	Method SetConfig(offsetX:Int, offsetY:Int, rotation:Int, speed:Float)
+		self.offsetX = offsetX
+		self.offsetY = offsetY
+		self.rotation = rotation
+		self.speed = speed
+		self.scale = abs(3.0 * self.speed) ^ 1.1	' the smaller the slower
+		self.brightness = self.scale ^ 1.5
+
+		self._firstReelSpriteIndex = RandRange(0, 3) '4 reels
+	End Method
+
+
+	Method FixRotation()
+		'limit rotation to 0-360
+		rotation = rotation mod 360
+		if rotation < 0 Then rotation :+ 360
+		'valid rotation: 0- 90 (rightwards till downwards)
+		'              270-360 (upwards till rightwards)
+		'-> all others will lead to "upside down" reels!
+		if rotation > 90 and rotation < 270 Then rotation = 0
+	End Method
+
+
+	Method Update()
+		position :+ speed
+	End Method
+	
+	
+	Method Draw(outerLimitArea:SRectI var, innerLimitArea:SRectI var)
+		Local designedPos:SVec2I = GetGraphicsManager().designedOffset 'this is also the letterbox size!
+		Local designedSize:SVec2I = GetGraphicsManager().designedSize
+		Local screenArea:SRectI = New SRectI(0, 0, designedSize.x + 2*designedPos.x, designedSize.y + 2*designedPos.y)
+
+		' lazy load sprite
+		If movieReels.length = 0
+			movieReels = New TSprite[3]
+			movieReels[0] = GetSpriteFromRegistry("gfx_moviereel_1")
+			movieReels[1] = GetSpriteFromRegistry("gfx_moviereel_2")
+			movieReels[2] = GetSpriteFromRegistry("gfx_moviereel_3")	
+		EndIf	
+		' correct rotation if required
+		FixRotation()
+
+		Local cosRot:Float = Cos(rotation)
+		Local sinRot:Float = Sin(rotation)
+		'distance to "Top Right"
+		Local widthVecX:Float = cosRot * movieReels[0].area.w * scale
+		Local widthVecY:Float = sinRot * movieReels[0].area.w * scale
+		'distance to "Bottom Right"
+		Local heightVecX:Float = -sinRot * movieReels[0].area.h * scale
+		Local heightVecY:Float = cosRot * movieReels[0].area.h * scale
+		_rectBottomX = Abs(heightVecX)
+		_rectBottomY = Abs(heightVecY)
+
+		Local axisAlignedBoundingBoxW:Int = Ceil(Abs(widthVecX) + _rectBottomX)
+		Local axisAlignedBoundingBoxH:Int = Ceil(Abs(widthVecY) + _rectBottomY)
+		Local axisAlignedBoundingBoxX:Int = Floor(Min(0, Min(widthVecX, Min(widthVecX + heightVecX, heightVecX))))
+		Local axisAlignedBoundingBoxY:Int = Floor(Min(0, Min(widthVecY, Min(widthVecY + heightVecY, heightVecY))))
+
+		Local moveVec:SVec2F = New SVec2F(widthVecX, widthVecY) 
+
+		'so each original pixel is "moved" once
+		Local effectivePos:Float = position mod movieReels[0].area.w
+
+		'(complete sprite NOT visible yet)
+		Local drawX:Float = outerLimitArea.x + offsetX
+		Local drawY:Float = outerLimitArea.y + offsetY
+		'a bounding box with xy-coords relative to origin/pivot/p1			
+		Local relativeAABB:SRectI = New SRectI(0, 0, Int(movieReels[0].area.w * scale), Int(movieReels[0].area.h * scale)).RotatedAABB(rotation)
+
+		local j:Int
+		Local spritesPrepended:Int = 0
+		While outerLimitArea.Contains(Int(drawX + relativeAABB.x), Int(drawY + relativeAABB.y)) or outerLimitArea.contains(Int(drawX + relativeAABB.x + relativeAABB.w), Int(drawY + relativeAABB.y + relativeAABB.h))
+			If moveVec.x > 0 'moves "left to right" -> push back to left side
+				drawX :- Abs(moveVec.x)
+			ElseIf moveVec.x < 0 'moves "right to left" -> push back to right side
+				drawX :+ Abs(moveVec.x)
+			EndIf
+			If moveVec.y > 0 'moves "top to bottom" -> push back to top side
+				drawY :- Abs(moveVec.y)
+			ElseIf moveVec.y < 0 'moves "bottom to top" -> push back to bottom side
+				drawY :+ Abs(moveVec.y)
+			EndIf
+
+			spritesPrepended :+ 1
+			j:+1
+			if j > 100 Then exit
+		Wend
+		
+		'do inner movement
+		Local adjustedDrawX:Float = drawX + moveVec.x * effectivePos/movieReels[0].area.w
+		Local adjustedDrawY:Float = drawY + moveVec.y * effectivePos/movieReels[0].area.w
+
+		SetRotation(rotation)
+		SetScale(scale, scale)
+		Local oldColor:SColor8; GetColor(oldColor)
+		SetColor(Int(oldColor.r * brightness), Int(oldColor.g * brightness), Int(oldColor.b * brightness))
+
+		local i:Int
+		local haveDrawnOne:Int = False 'drawn one inside of limit area?
+		While True
+			Local drawAABB:SRectI = New SRectI(Int(adjustedDrawX + relativeAABB.x), Int(adjustedDrawY + relativeAABB.y), relativeAABB.w, relativeAABB.h)
+		
+			Local isVisible:Int = False
+			'not completely inside the innerLimitArea?
+			If not (innerLimitArea.Contains(drawAABB.x, drawAABB.y) and innerLimitArea.Contains(drawAABB.x + drawAABB.w, drawAABB.y + drawAABB.h))
+				If outerLimitArea.Intersects(drawAABB) 'outerLimitArea.contains(drawAABB.x, drawAABB.y) or outerLimitArea.contains(drawAABB.x + drawAABB.w, drawAABB.y + drawAABB.h) Then
+					isVisible = True
+				EndIf
+			EndIf
+			If isVisible
+				' this allows to retrieve the sprite index offset caused by position
+				' "flip back"
+				Local positionFlippedOffset:Int = Int(position / movieReels[0].area.w) mod movieReels.length
+				Local spriteIndex:Int = (i + spritesPrepended + _firstReelSpriteIndex - positionFlippedOffset) mod movieReels.length
+				movieReels[spriteIndex].Draw(adjustedDrawX, adjustedDrawY)
+				'SetScale(1.0, 1.0)
+				'Drawtext(i +" " + spritesPrepended + " " + positionFlippedOffset, adjustedDrawX, adjustedDrawY)
+				'SetScale(scale, scale)
+			EndIf
+
+			if moveVec.x > 0 and drawAABB.x > outerLimitArea.x + outerLimitArea.w 'moved completely off right side
+				Exit
+			ElseIf moveVec.x < 0 and drawAABB.x + drawAABB.w < outerLimitArea.x 'moved completely off left side
+				Exit
+			ElseIf moveVec.y > 0 and drawAABB.y > outerLimitArea.y + outerLimitArea.h 'moved completely off bottom side
+				Exit
+			ElseIf moveVec.y < 0 and drawAABB.y + drawAABB.h < outerLimitArea.y 'moved completely off top side
+				Exit
+			EndIf
+
+			adjustedDrawX :+ moveVec.x
+			adjustedDrawY :+ moveVec.y
+
+			i:+ 1
+			If i > 100 Then exit 'something is wrong...
+		Wend
+
+		SetRotation(0)
+		SetScale(1.0, 1.0)
+		SetColor(oldColor)
+	End Method
+End Type
+
+
+Type TLetterboxBackground
+	'one set for left/right and one for top/bottom
+	Field movieReelsLR:TLetterboxBackgroundMovieReel[]
+	Field movieReelsTB:TLetterboxBackgroundMovieReel[]
+	Field letterboxShadow:TSprite
+	Field letterboxVariant:int = 0 '0 = none, 1 = lr, 2 = tb
+	
+	
+	'call once the graphicsmanager exists
+	Method CreateEntries()
+		Local perSide:Int = 5
+		Local letterboxSize:SVec2F = GetGraphicsManager().GetLetterboxDesignedSize()
+
+		movieReelsLR = New TLetterboxBackgroundMovieReel[2 * perSide]
+
+		Local reel:TLetterboxBackgroundMovieReel
+		movieReelsLR[0] = New TLetterboxBackgroundMovieReel
+		movieReelsLR[0].SetConfig(letterboxSize.x, RandRange(150, 180), 340 + RandRange(0,3) * 5, -Rnd(0.11, 0.21))
+
+		movieReelsLR[1] = New TLetterboxBackgroundMovieReel
+		movieReelsLR[1].SetConfig(letterboxSize.x, RandRange(300, 450), 340 + RandRange(0,3) * 5, - Rnd(0.12, 0.20))
+
+		movieReelsLR[2] = New TLetterboxBackgroundMovieReel
+		movieReelsLR[2].SetConfig(letterboxSize.x, RandRange(450, 500), 345 + RandRange(0,2) * 5, - Rnd(0.15, 0.20))
+
+		movieReelsLR[3] = New TLetterboxBackgroundMovieReel
+		movieReelsLR[3].SetConfig(letterboxSize.x, RandRange(250, 300), 90 + RandRange(0,4) * 5, Rnd(0.23, 0.29))
+
+		movieReelsLR[4] = New TLetterboxBackgroundMovieReel
+		movieReelsLR[4].SetConfig(letterboxSize.x, RandRange(60, 110), 5 + RandRange(0,4) * 5, Rnd(0.24, 0.29))
+
+		movieReelsLR[5] = New TLetterboxBackgroundMovieReel
+		movieReelsLR[5].SetConfig(letterboxSize.x+50, RandRange(320, 350), 10 + RandRange(0,4) * 5, Rnd(0.25, 0.30))
+	End Method
+
+	
+	Method Update()
+		If movieReelsLR.length = 0 Then CreateEntries()
+
+		If GetGraphicsManager().HasLetterbox()
+			Local letterboxSize:SVec2F = GetGraphicsManager().GetLetterboxDesignedSize()
+
+			If letterboxSize.x > 0
+				For local i:Int = 0 until movieReelsLR.length
+					If movieReelsLR[i] Then movieReelsLR[i].Update()
+				Next
+			ElseIf letterboxSize.y > 0
+				For local i:Int = 0 until movieReelsTB.length
+					If movieReelsTB[i] Then movieReelsTB[i].Update()
+				Next
+			EndIf
+		EndIf
+	End Method
+		
+
+	Method Draw()
+		if movieReelsLR.length = 0 Then CreateEntries()
+
+		If GetGraphicsManager().HasLetterbox()
+			If not letterboxShadow Then letterboxShadow = GetSpriteFromRegistry("gfx_letterbox_shadow")
+
+			Local currentVirtualResolutionVP:SRectI = GetGraphicsManager().DisableVirtualResolutionLetterbox()
+			Local letterboxSize:SVec2F = GetGraphicsManager().GetLetterboxDesignedSize()
+			Local designedPos:SVec2I = GetGraphicsManager().designedOffset 'this is also the letterbox size!
+			Local designedSize:SVec2I = GetGraphicsManager().designedSize
+
+			Local screenArea:SRectI = New SRectI(0, 0, designedSize.x + 2*designedPos.x, designedSize.y + 2*designedPos.y)
+			Local contentArea:SRectI = New SRectI(designedPos.x, designedPos.y, designedSize.x, designedSize.y)
+
+			If letterboxSize.x > 0
+				For local i:Int = 0 until movieReelsLR.length
+					If movieReelsLR[i] Then movieReelsLR[i].Draw(screenArea, contentArea)
+				Next
+				SetRotation(0)
+				letterboxShadow.TileDrawVertical(letterboxSize.x - letterboxShadow.area.w, 0, GetGraphicsManager().designedSize.y) 
+				SetRotation(180)
+				letterboxShadow.TileDrawVertical(letterboxSize.x + GetGraphicsManager().designedSize.x + letterboxShadow.area.w, 0, GetGraphicsManager().designedSize.y, ALIGN_LEFT_BOTTOM) 
+				SetRotation(0)
+			ElseIf letterboxSize.y > 0
+				For local i:Int = 0 until movieReelsTB.length
+					If movieReelsTB[i] Then movieReelsTB[i].Draw(screenArea, contentArea)
+				Next
+				SetRotation(90)
+				letterboxShadow.TileDrawHorizontal(letterboxShadow.area.w, letterboxSize.y, GetGraphicsManager().designedSize.x, ALIGN_LEFT_BOTTOM) 
+				SetRotation(270)
+				letterboxShadow.TileDrawHorizontal(0, letterboxSize.y + letterboxShadow.area.h + GetGraphicsManager().designedSize.y, GetGraphicsManager().designedSize.x, ALIGN_LEFT_TOP) 
+				SetRotation(0)
+			EndIf
+			
+
+
+			' restore virtual resolution stuff / letterbox
+			GetGraphicsManager().EnableVirtualResolution(currentVirtualResolutionVP)
+		EndIf
+	End Method
 End Type
 
 
