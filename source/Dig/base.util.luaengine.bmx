@@ -38,7 +38,7 @@ SuperStrict
 Import Pub.Lua
 Import Brl.Retro
 Import BRL.Reflection
-Import BRL.Collections
+Import Collections.TreeMap
 Import "base.util.luaengine.c"
 Import "base.util.logger.bmx"
 Import "base.util.longmap.bmx"

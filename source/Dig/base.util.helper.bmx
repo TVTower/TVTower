@@ -44,8 +44,8 @@ Import "external/reflectionExtended/reflection.bmx"
 Import BRL.Reflection
 ?
 Import BRL.Retro
-Import BRL.ObjectList
-Import BRL.IntMap
+Import Collections.ObjectList
+Import Collections.IntMap
 Import "base.util.input.bmx" 		'Mousemanager
 Import "base.util.rectangle.bmx"	'TRectangle
 Import "base.util.mersenne.bmx"
