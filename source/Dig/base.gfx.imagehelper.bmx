@@ -725,7 +725,6 @@ Function TrimImage:TImage(src:object, offset:TRectangle var, trimColor:TColor = 
 				   (trimColor.g >= 0 and ((pixel Shr 8) & $ff) <> trimColor.g) or ..
 				   (trimColor.b >= 0 and (pixel & $ff) <> trimColor.b)
 					 contentBottom = y
-print "found at " + x+","+y + "   pixel="+pixel+ "  ("+(new TColor.FromInt(pixel).ToString())+")   trimColor="+trimColor.ToInt()+" ("+trimColor.ToString()+")" +"   " + ((pixel Shr 24) & $ff)
 					 found = True
 					 exit
 				endif
