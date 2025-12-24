@@ -1389,7 +1389,7 @@ Struct SScriptExpressionLexer
 		popchar()
 '		Local temp:String = expression[ start..cursor - 1].Replace("\~q","~q")
 'DebugStop
-		Return expression[ start..cursor - 1].Replace("\\", "\").Replace("\~q","~q")
+		Return expression[ start..cursor - 1].Replace("\~q","~q")
 	End Method
 End Struct
 
