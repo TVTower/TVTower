@@ -1,6 +1,6 @@
 SuperStrict
 Import "Dig/base.util.color.bmx"
-Import Brl.ObjectList
+Import Collections.ObjectList
 
 
 Type TPlayerColor extends TColor

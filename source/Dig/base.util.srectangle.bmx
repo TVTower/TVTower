@@ -34,6 +34,7 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
+Import Brl.Math
 Import Math.Vector
 
 
@@ -83,6 +84,63 @@ Struct SRectI
 
 	Method GetRight:Int()
 		Return h
+	End Method
+
+	'Returns the axis-aligned integer rectangle that contains the rotated corners.
+	Method RotatedAABB:SRectI(rotation:Float, pivot:SVec2I)
+		Local cosRot:Float = Cos(rotation)
+		Local sinRot:Float = Sin(rotation)
+		Local pivotX:Float = pivot.x
+		Local pivotY:Float = pivot.y
+		Local cornerX:Float
+		Local cornerY:Float
+		Local minX:Float = 1e6
+		Local minY:Float = 1e6
+		Local maxX:Float = -1e6
+		Local maxY:Float = -1e6
+
+		For Local i:Int = 0 Until 4
+			Select i
+			Case 0
+				cornerX = x
+				cornerY = y
+			Case 1
+				cornerX = x + w
+				cornerY = y
+			Case 2
+				cornerX = x + w
+				cornerY = y + h
+			Case 3
+				cornerX = x
+				cornerY = y + h
+			EndSelect
+			Local deltaX:Float = cornerX - pivotX
+			Local deltaY:Float = cornerY - pivotY
+			Local rotatedX:Float = deltaX * cosRot - deltaY * sinRot
+			Local rotatedY:Float = deltaX * sinRot + deltaY * cosRot
+			Local finalX:Float = pivotX + rotatedX
+			Local finalY:Float = pivotY + rotatedY
+
+			If finalX < minX Then minX = finalX
+			If finalX > maxX Then maxX = finalX
+			If finalY < minY Then minY = finalY
+			If finalY > maxY Then maxY = finalY
+		Next
+
+		Local resultX:Int = Floor(minX)
+		Local resultY:Int = Floor(minY)
+		Local resultW:Int = Ceil(maxX) - resultX
+		Local resultH:Int = Ceil(maxY) - resultY
+
+		If resultW < 0 Then resultW = 0
+		If resultH < 0 Then resultH = 0
+
+		Return New SRectI(resultX, resultY, resultW, resultH)
+	End Method
+
+	'Returns the rotated bounds using this rect's origin as the pivot.
+	Method RotatedAABB:SRectI(rotation:Float)
+		Return RotatedAABB(rotation, New SVec2I(x, y))
 	End Method
 
 
@@ -144,8 +202,8 @@ Struct SRectI
 		'       )
 
 		'to avoid this, we use "exclusive" ranges (> instead of >=)
-		Return ( x < rect.x + rect.w And y < rect.y + rect.w ) And ..
-		       ( x + w > rect.x And y + h > rect.y )
+		Return ( Self.x < rect.x + rect.w And Self.y < rect.y + rect.h ) And ..
+		       ( Self.x + Self.w > rect.x And Self.y + Self.h > rect.y )
 	End Method
 
 
@@ -308,8 +366,8 @@ Struct SRect
 		'       )
 
 		'to avoid this, we use "exclusive" ranges (> instead of >=)
-		Return ( x < rect.x + rect.w And y < rect.y + rect.w ) And ..
-		       ( x + w > rect.x And y + h > rect.y )
+		Return ( Self.x < rect.x + rect.w And Self.y < rect.y + rect.h ) And ..
+		       ( Self.x + Self.w > rect.x And Self.y + Self.h > rect.y )
 	End Method
 
 
@@ -525,6 +583,63 @@ Struct SRect
 
 	Method GetIntH:Int()
 		Return Int(h)
+	End Method
+
+	'Returns the axis-aligned integer rectangle that contains the rotated corners.
+	Method RotatedAABB:SRect(rotation:Float, pivot:SVec2F)
+		Local cosRot:Float = Cos(rotation)
+		Local sinRot:Float = Sin(rotation)
+		Local pivotX:Float = pivot.x
+		Local pivotY:Float = pivot.y
+		Local cornerX:Float
+		Local cornerY:Float
+		Local minX:Float = 1e6
+		Local minY:Float = 1e6
+		Local maxX:Float = -1e6
+		Local maxY:Float = -1e6
+
+		For Local i:Int = 0 Until 4
+			Select i
+			Case 0
+				cornerX = x
+				cornerY = y
+			Case 1
+				cornerX = x + w
+				cornerY = y
+			Case 2
+				cornerX = x + w
+				cornerY = y + h
+			Case 3
+				cornerX = x
+				cornerY = y + h
+			EndSelect
+			Local deltaX:Float = cornerX - pivotX
+			Local deltaY:Float = cornerY - pivotY
+			Local rotatedX:Float = deltaX * cosRot - deltaY * sinRot
+			Local rotatedY:Float = deltaX * sinRot + deltaY * cosRot
+			Local finalX:Float = pivotX + rotatedX
+			Local finalY:Float = pivotY + rotatedY
+
+			If finalX < minX Then minX = finalX
+			If finalX > maxX Then maxX = finalX
+			If finalY < minY Then minY = finalY
+			If finalY > maxY Then maxY = finalY
+		Next
+
+		Local resultX:Int = Floor(minX)
+		Local resultY:Int = Floor(minY)
+		Local resultW:Int = Ceil(maxX) - resultX
+		Local resultH:Int = Ceil(maxY) - resultY
+
+		If resultW < 0 Then resultW = 0
+		If resultH < 0 Then resultH = 0
+
+		Return New SRect(resultX, resultY, resultW, resultH)
+	End Method
+
+	'Returns the rotated bounds using this rect's origin as the pivot.
+	Method RotatedAABB:SRect(rotation:Float)
+		Return RotatedAABB(rotation, New SVec2F(x, y))
 	End Method
 
 

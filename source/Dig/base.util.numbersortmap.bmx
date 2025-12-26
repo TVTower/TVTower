@@ -32,7 +32,7 @@ Rem
 EndRem
 SuperStrict
 
-Import Brl.ObjectList
+Import Collections.ObjectList
 
 Type TNumberSortMap
 	Field Content:TObjectList = new TObjectList
