@@ -5,6 +5,11 @@
 		<person guid="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" />
 		<person guid="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" />
 		<person guid="common-unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" />
+		<person guid="common-directors-provided" first_name="" last_name="Regie zur Verfügung gestellt" />
+		<person guid="common-hosts-provided" first_name="" last_name="Moderation zur Verfügung gestellt" />
+		<person guid="common-commentators-provided" first_name="" last_name="Kommentar zur Verfügung gestellt" />
+		<person guid="common-reporters-provided" first_name="" last_name="Reporter zur Verfügung gestellt" /> <!-- 'Reporter' auf Englisch ist eher nur der Interviewer an der Seitenlinie -->
+		<person guid="common-guests-provided" first_name="" last_name="Gäste zur Verfügung gestellt" />
 		<person guid="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" />
 		<person guid="various-puppeteers" first_name="" last_name="versch. Puppenspieler" />
 		<person guid="various-models" first_name="" last_name="versch. Models" />
@@ -16,9 +21,27 @@
 		<person guid="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Archie" last_name="Arbeitslos" />
 		<person guid="f43f2b92-43cd-4fc8-93aa-25adc647fb63" first_name="Erwin" last_name="Rotnase" />
 
+		<person guid="8756bb14-5430-4b19-9c99-3c1c55306cf3" first_name="Andrei" last_name="Tarkowski" />
+		<person guid="5bc1e5fe-4222-4fcf-8a4a-fbb5c4116a70" first_name="Irma" last_name="Tarkowskaja" />
+		<person guid="951ba3c6-ac23-4a9f-9ddb-83868ce22e1c" first_name="Andrei" last_name="Kontschalowski" /> <!-- auch: Andrei Sergejewitsch Kontschalowski -->
 		<person guid="51397467-86e2-4c5f-9226-d93ecf9288a6" first_name="Nikita Sergejewitsch" last_name="Chruschtschow" />
 		<person guid="6dd0a9b9-96a0-4712-83f0-f6388bdc5bec" first_name="Michail" last_name="Gorbatschow" />
+		<person guid="94697af4-61c7-44ff-90de-5dafa8c4e650" first_name="Nikolai" last_name="Burljajew" />
+		<person guid="d3ef9796-7873-44e5-be7a-8614d6f2cf0a" first_name="Anatoli" last_name="Solonizyn" />
+		<person guid="acda76fb-f5e1-443a-a721-dff121dbd80f" first_name="Nikolai" last_name="Grinko" />
+		<person guid="9175e82f-e0f3-47cf-a9f5-d77b005a08c0" first_name="Wladimir" last_name="Samanski" />
+		<person guid="ebb42ca0-d886-413f-a31e-c86f550173ec" first_name="Natalja" last_name="Bondartschuk" />
+		<person guid="c8d6fbdd-0676-4b2c-8357-2989ee707686" first_name="Margarita" last_name="Terechowa" />
+		<person guid="d4728dac-e87e-4f46-951b-b5305ab8a737" first_name="Alissa" last_name="Freindlich" />
+		<person guid="1ea8150a-7b03-4f43-a014-afb3f6a01262" first_name="Alexander" last_name="Kaidanowski" />
+		<person guid="cd7e501e-d331-4c31-84f4-a656b93ef655" first_name="Julija" last_name="Snigir" /> <!-- auch: Julija Wiktorowna Snigir -->
+		<person guid="ffb19ebd-1680-4f90-9edb-450cd270bbb4" first_name="Michail" last_name="Baryschnikow" />
 		<person guid="f1bc5e03-2dbc-4219-88a5-6fa1dab4cb79" first_name="Fjodor Michailowitsch" last_name="Dostojewski" />
+		<person guid="75d96dda-04be-415b-b883-aa5a7b0130df" first_name="Alexander" last_name="Antonow" />
+		<person guid="55f1871b-9498-4dca-be41-bd209fc77508" first_name="Tschulpan" last_name="Chamatowa" />
+		<person guid="1e8ee973-bd59-4d9c-abbc-e9444d141671" first_name="Christo" last_name="Schiwkow" />
+		<person guid="72080850-b6c9-4c08-8ede-7d687ea98473" first_name="Anna" last_name="Schimskaja" />
+		<person guid="558bfa8b-ad41-4b22-88a7-158630f52fe3" first_name="Natalja" last_name="Wodjanowa" />
 		<person guid="e315f82e-9a4f-400a-bbde-82585e171cf0" first_name="Alexei" last_name="Paschitnow" />
 		<person guid="7da693f9-978f-4283-9e62-b7ef9b918a80" first_name="Anatoli" last_name="Karpow" />
 		<person guid="232eafa3-79b5-4ae6-8463-dea33a3bda90" first_name="Garri" last_name="Kasparow" />
@@ -26,8 +49,9 @@
 		<person guid="bf36bedc-0928-4b2f-a399-5abbbf310f35" first_name="Vitali" last_name="Klitschko" />
 		<person guid="7df0f616-2f57-4b93-baf0-32feb52fd0d5" first_name="Wladimir" last_name="Klitschko" />
 		<person guid="826d29bc-09fc-4cef-aaa6-65da7624ec92" first_name="Boris" last_name="Jeltsin" />
+		<person guid="b514c0e3-9210-4da0-8411-b5aaab788fa7" first_name="Dersu" last_name="Usala" />
 
-		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" first_name="Karlheinz" last_name="Dorfmichel" />
+		<person guid="ed7ffacd-68ba-48e0-8e15-877bdf5886fd" first_name="Karlheinz" last_name="Dorfmichel" />
 	</persons>
 	<programmeroles>
 		<!--
@@ -61,12 +85,28 @@
 		<programmerole guid="03850cef-e7dc-4e1a-9d42-c548e27b6532" first_name="Alexander III." last_name="" title="Papst" />
 		<programmerole guid="f31a1bf6-1c2a-431e-a10c-cfee5b17fe7d" first_name="Raschid ad-Din" last_name="Sinan" />
 		<programmerole guid="36851db6-9af3-4650-baa6-c3e2e81fee9c" first_name="Richard" last_name="Löwenherz" title="König" />
+		<programmerole guid="f0eda263-10a8-4001-853c-699e32c87bdc" first_name="Peter I." last_name="von Kastilien" />
+		<programmerole guid="0bb15963-acf7-45d4-8a8b-601ec8a5458d" first_name="Peter IV." last_name="von Aragón" />
+		<programmerole guid="f0fd6a54-97f5-4a55-bf79-0a6455f5bf40" first_name="Eduard III." last_name="von England" />
+		<programmerole guid="613093cc-5e2e-47d4-8cfd-fe4da32f2a10" first_name="Karl II." last_name="von Navarra" />
+		<programmerole guid="e5ea6871-a4d5-4d0f-acde-7cdfecdbaacb" first_name="Constance" last_name="von Aragón" />
+		<programmerole guid="8241c9e2-9de6-41ee-bc71-3299cb4c98e3" first_name="Friedrich III." last_name="von Sizilien" />
+		<programmerole guid="bfdc3d9f-7466-432f-903d-0b4cb204c3df" first_name="Heinrich II." last_name="von Trastámara" />
+		<programmerole guid="9e355021-5ada-45be-b177-180279ac71f0" first_name="Peter I." last_name="von Portugal" />
+		<programmerole guid="7eb847a3-9880-43a3-bfc4-b30fdf296ed3" first_name="Eleonora" last_name="of Aragón" />
+		<programmerole guid="c3f1cb4c-fd6f-4f7d-afc1-bf9a712a2514" first_name="Johann I." last_name="von Kastilien" />
 
 		<programmerole guid="487c9c31-be5c-4cf7-93fd-1a470ead1ec4" first_name="Leonard" last_name="McCoy" nick_name="Pille" />
 		<programmerole guid="3670b612-8825-4c4d-a382-0227fe8d9184" first_name="Jozef" last_name="Spejbl" />
 		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Hurvínek" last_name="Spejbl" />
 		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Jerry" last_name="" />
 		<programmerole guid="25387571-5de7-4837-bbfb-f46b5a8d4779" first_name="Angus" last_name="MacGyver" />
+		<programmerole guid="3c71921a-393e-47c3-bed6-be34c7efe827" first_name="Robbi" last_name="" />
+		<programmerole guid="e0e1c037-0e24-4aa8-a7b6-a46d88c17ccd" first_name="Tobbi" last_name="" />
+		<programmerole guid="7a548ff1-df76-4450-8190-d5e6a8b1f0c7" first_name="Tim" last_name="" />
+		<programmerole guid="e3f1a176-8c0f-4c40-85b0-095ed17575ae" first_name="Dorie" last_name="" />
+		<programmerole guid="55b80e0a-916b-4688-96eb-5d2b551c370e" nick_name="Captain America" first_name="Steven" last_name="Rogers" />
+		<programmerole guid="69b85fb7-ea09-4e4c-b902-00bc7df6f823" first_name="Silent Bob" last_name="" />
 
 		<programmerole guid="0db39875-f248-4a7c-9fb7-ede5408993f9" first_name="Der Poet" last_name="" />
 		<programmerole guid="c975b99e-22aa-440d-b8c3-fa7752221e71" first_name="Abdul" last_name="der Levantiner" />
@@ -137,7 +177,7 @@
 		<programmerole guid="roles-smurfs-pushover" first_name="Gimpli" last_name="Schlumpf" />
 		<programmerole guid="roles-smurfs-sweepy" first_name="Kamini" last_name="Schlumpf" />
 		<programmerole guid="roles-smurfs-lazy" first_name="Fauli" last_name="Schlumpf" />
-		<programmerole guid="roles-smurfs-miner" first_name="Schürfi" last_name="Schlumpf" />
+		<programmerole guid="roles-smurfs-miner" first_name="Schürfi" last_name="Schlumpf" /> <!-- auch Bergwerkschlumpf -->
 		<programmerole guid="roles-smurfs-reporter" first_name="Neugieri" last_name="Schlumpf" /> <!-- auch Reporti, Springerli (nach dem Verlag) -->
 		<programmerole guid="roles-smurfs-timber" first_name="Timberli" last_name="Schlumpf" />
 		<programmerole guid="roles-smurfs-dreamy" first_name="Traumi" last_name="Schlumpf" />
@@ -170,7 +210,10 @@
 			Ab hier sind Übersetzungen in andere Sprachen ad-lib. Die Einträge müssen nicht mehr in jeder Sprache gespiegelt werden.
 		-->
 
+		<brand_twitter_verb>twitter</brand_twitter_verb> <!-- https://en.wikipedia.org/wiki/Tweet_(social_media) --> <!-- 'tweet(en)' wär auch ok aber 'twitter(n)' grammatikalisch wegen gegenwärtiger Spoof-Bezeichnung einfacher -->
 		<brand_beetle>Käfer</brand_beetle>
+		<brand_orientexpress>Orient-Express</brand_orientexpress> <!-- https://de.wikipedia.org/wiki/Orient-Express -->
+		<brand_werthers>Werthers</brand_werthers> <!-- https://de.wikipedia.org/wiki/Werther%E2%80%99s_Original -->
 
 		<generalorg_communistpartyofthesovietunion>Kommunistische Partei der Sowjetunion</generalorg_communistpartyofthesovietunion>
 		<generalorg_ofthecommunistpartyofthesovietunion>der Kommunistischen Partei der Sowjetunion</generalorg_ofthecommunistpartyofthesovietunion>
@@ -189,17 +232,40 @@
 		<media_withthegoldenraspberry>mit der Goldenen Himbeere</media_withthegoldenraspberry>
 		
 		<mediaorg_theworldwrestlingfederation>die World Wrestling Federation</mediaorg_theworldwrestlingfederation>
+		<mediaorg_loveparade>Loveparade</mediaorg_loveparade> <!-- https://de.wikipedia.org/wiki/Loveparade -->
 
 		<mediatitle_lowestofthelow>Ganz unten</mediatitle_lowestofthelow> <!-- https://de.wikipedia.org/wiki/Ganz_unten -->
+		<mediatitle_themanoutside>Draußen vor der Tür</mediatitle_themanoutside> <!-- https://de.wikipedia.org/wiki/Drau%C3%9Fen_vor_der_T%C3%BCr -->
 		<mediatitle_thephantomoftheopera>Das Phantom der Oper</mediatitle_thephantomoftheopera> <!-- https://de.wikipedia.org/wiki/Das_Phantom_der_Oper_(Musical,_1986) -->
+
 		<mediatitle_sherlockholmesconsultingdetective>Sherlock Holmes Criminal-Cabinet</mediatitle_sherlockholmesconsultingdetective> <!-- https://de.wikipedia.org/wiki/Sherlock_Holmes_Criminal-Cabinet -->
 		<mediatitle_hoitytoity>Adel verpflichtet</mediatitle_hoitytoity> <!-- https://de.wikipedia.org/wiki/Adel_verpflichtet_(Spiel) -->
 		<mediatitle_thesettlersofcatan>Die Siedler von Catan</mediatitle_thesettlersofcatan> <!-- https://de.wikipedia.org/wiki/Die_Siedler_von_Catan -->
+		<mediatitle_clue>Cluedo</mediatitle_clue> <!-- https://de.wikipedia.org/wiki/Cluedo -->
+
+		<mediatitle_miamivice>Miami Vice</mediatitle_miamivice> <!-- https://de.wikipedia.org/wiki/Miami_Vice -->
 		<mediatitle_gilligansisland>Gilligans Insel</mediatitle_gilligansisland>
 		<mediatitle_ottifants>Ottifanten</mediatitle_ottifants>
 		<mediatitle_familyfeud>Familien-Duell</mediatitle_familyfeud> <!-- https://de.wikipedia.org/wiki/Familien-Duell -->
+		<mediatitle_pinkpanther>rosarote Panther</mediatitle_pinkpanther>
+		<mediatitle_carebears>Glücksbärchis</mediatitle_carebears>
+		<mediatitle_carebear>Glücksbärchi</mediatitle_carebear>
+		<mediatitle_borrowers>Borger</mediatitle_borrowers> <!-- https://de.wikipedia.org/wiki/Die_Borger -->
+		<mediatitle_saw>Saw</mediatitle_saw> <!-- https://de.wikipedia.org/wiki/Saw_(Filmreihe) -->
+		<mediatitle_mylittlepony>Mein kleines Pony</mediatitle_mylittlepony> <!-- https://de.wikipedia.org/wiki/My_Little_Pony -->
+		<mediatitle_wheeloffortune>Glücksrad</mediatitle_wheeloffortune> <!-- https://de.wikipedia.org/wiki/Gl%C3%BCcksrad_(Spielshow) -->
+		<mediatitle_fugitive>Auf der Flucht</mediatitle_fugitive> <!-- https://de.wikipedia.org/wiki/Auf_der_Flucht_(Fernsehserie) -->
 
 		<mediaprop_batmobile>Batmobil</mediaprop_batmobile>
 		<mediaprop_fliewatuut>Fliewatüüt</mediaprop_fliewatuut>
+		<mediaprop_dynamicduo>Dynamische Duo</mediaprop_dynamicduo>
+
+		<character_disney_mickey>Micky</character_disney_mickey> <!-- https://de.wikipedia.org/wiki/Micky_Maus -->
+		<character_disney_dale>Chap</character_disney_dale> <!-- https://de.wikipedia.org/wiki/Ah%C3%B6rnchen_und_Beh%C3%B6rnchen -->
+		<character_disney_ariel>Arielle</character_disney_ariel> <!-- https://de.wikipedia.org/wiki/Arielle -->
+		<character_rj_vicky>Wickie</character_rj_vicky> <!-- https://www.wikidata.org/wiki/Q47495213 -->
+		<character_me_jimbutton>Jim Knopf</character_me_jimbutton> <!-- https://www.wikidata.org/wiki/Q89798190 -->
+		<character_me_jim>Jim</character_me_jim>
+		<character_me_luke>Lukas</character_me_luke> <!-- https://www.wikidata.org/wiki/Q89810130 -->
 	</globalvariables>
 </tvtdb>

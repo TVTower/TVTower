@@ -21,7 +21,7 @@
 		tauchen in News auf
 	-->
 	<celebritypeople>
-		<person guid="nichtdiebetty-celebritypeople-hainerbecherflechter" tmdb_id="0" imdb_id="" fictional="1" creator="">
+		<person guid="nichtdiebetty-celebritypeople-hainerbecherflechter" fictional="1" creator="">
 			<first_name>Hainer</first_name>
 			<last_name>Becherflechter</last_name>
 			<details job="1" gender="1"  birthday="1948" deathday="" country="D" />
@@ -62,7 +62,7 @@ Na koniec rybak Matjes pokazuje, jak prawidłowo łuskać krewetki.</pl>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity employees="0.75" />
-			<data country="D" distribution="0" maingenre="300" subgenre="6" flags="20" blocks="2" price_mod="1.0" />
+			<data country="D" distribution="2" maingenre="300" subgenre="6" flags="20" blocks="2" price_mod="1.0" />
 			<releaseTime year_relative="0" year_relative_min="1970" year_relative_max="2010" />
 			<ratings critics="14" speed="15" outcome="0" />
 		</programme>

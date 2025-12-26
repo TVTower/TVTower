@@ -24,6 +24,11 @@
 		<person guid="common-amateur-actors" first_name="" last_name="Aktorzy amatorzy" nick_name="Aktorzy amatorzy" />
 		<person guid="common-amateur-director" first_name="" last_name="Reżyser amator" nick_name="Reżyser amator" />
 		<person guid="common-unnamed-person" first_name="" last_name="Nieznana" nick_name="Nieznana" />
+		<person guid="common-directors-provided" first_name="" last_name="Zapewniona reżyseria" />
+		<person guid="common-hosts-provided" first_name="" last_name="Zapewniona moderacja" />
+		<person guid="common-commentators-provided" first_name="" last_name="Zapewnieni komentatorzy" />
+		<person guid="common-reporters-provided" first_name="" last_name="Zapewnieni reporterzy" />
+		<person guid="common-guests-provided" first_name="" last_name="Zapewnieni goście" />
 		<person guid="various-voice-artists" first_name="" last_name="różni artyści głosowi" />
 		<person guid="various-puppeteers" first_name="" last_name="różni animatorzy" />
 		<person guid="various-models" first_name="" last_name="różni modele" />
@@ -31,13 +36,31 @@
 		<person guid="various-narrators" first_name="" last_name="różni narratorzy" />
 		<person guid="various-guests" first_name="" last_name="różni goście" />
 		<person guid="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Królowa Svetlana" last_name="ze Szwecji" />
-		<person guid="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="bezrobotny mężczyzna o imieniu" last_name="&quot;Woozy&quot;" />
+		<person guid="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="bezrobotny mężczyzna o imieniu" last_name="“Woozy“" />
 		<person guid="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Bartek" last_name="Bezrobotny" />
 		<person guid="f43f2b92-43cd-4fc8-93aa-25adc647fb63" first_name="Elmer" last_name="Rednose" />
 
+		<person guid="8756bb14-5430-4b19-9c99-3c1c55306cf3" first_name="Andrey" last_name="Czarkowski" />
+		<person guid="5bc1e5fe-4222-4fcf-8a4a-fbb5c4116a70" first_name="Inna" last_name="Czarkowska" />
+		<person guid="951ba3c6-ac23-4a9f-9ddb-83868ce22e1c" first_name="Andriej" last_name="Kanczonowski" />
 		<person guid="51397467-86e2-4c5f-9226-d93ecf9288a6" first_name="Nikita Sergejevich" last_name="Chruszczow" />
 		<person guid="6dd0a9b9-96a0-4712-83f0-f6388bdc5bec" first_name="Michaił" last_name="Gorbaczow" />
-		<person guid="f1bc5e03-2dbc-4219-88a5-6fa1dab4cb79" first_name="Fëdot Mikhailovič" last_name="Dostoeshkev" />
+		<person guid="94697af4-61c7-44ff-90de-5dafa8c4e650" first_name="Nikoła" last_name="Burlakow" />
+		<person guid="d3ef9796-7873-44e5-be7a-8614d6f2cf0a" first_name="Aleksander" last_name="Solomintsyn" />
+		<person guid="acda76fb-f5e1-443a-a721-dff121dbd80f" first_name="Nikola" last_name="Grinev" />
+		<person guid="9175e82f-e0f3-47cf-a9f5-d77b005a08c0" first_name="Vladislav" last_name="Zadomski" />
+		<person guid="ebb42ca0-d886-413f-a31e-c86f550173ec" first_name="Natasha" last_name="Bogdarczuk" />
+		<person guid="c8d6fbdd-0676-4b2c-8357-2989ee707686" first_name="Marita G." last_name="Terentchewa" />
+		<person guid="d4728dac-e87e-4f46-951b-b5305ab8a737" first_name="Alina" last_name="Feundlich" />
+		<person guid="1ea8150a-7b03-4f43-a014-afb3f6a01262" first_name="Aleksei D." last_name="Kaimandowski" />
+		<person guid="cd7e501e-d331-4c31-84f4-a656b93ef655" first_name="Jara" last_name="Snegir´" />
+		<person guid="ffb19ebd-1680-4f90-9edb-450cd270bbb4" first_name="Mstisław" last_name="Baszirow" />
+		<person guid="f1bc5e03-2dbc-4219-88a5-6fa1dab4cb79" first_name="Fëdot Mikhailovič" last_name="Dostoeshkew" />
+		<person guid="75d96dda-04be-415b-b883-aa5a7b0130df" first_name="Anton" last_name="Alexandrow"/>
+		<person guid="55f1871b-9498-4dca-be41-bd209fc77508" first_name="Czułda" last_name="Chabarowa" />
+		<person guid="1e8ee973-bd59-4d9c-abbc-e9444d141671" first_name="Kristo" last_name="Żignow" />
+		<person guid="72080850-b6c9-4c08-8ede-7d687ea98473" first_name="Anka" last_name="Jonskaia" />
+		<person guid="558bfa8b-ad41-4b22-88a7-158630f52fe3" first_name="Natalia" last_name="Woloshinowa" />
 		<person guid="e315f82e-9a4f-400a-bbde-82585e171cf0" first_name="Andriej J." last_name="Pankratow" />
 		<person guid="7da693f9-978f-4283-9e62-b7ef9b918a80" first_name="Arkadij" last_name="Kashkow" />
 		<person guid="232eafa3-79b5-4ae6-8463-dea33a3bda90" first_name="Georgi" last_name="Kashkarow" />
@@ -45,8 +68,9 @@
 		<person guid="bf36bedc-0928-4b2f-a399-5abbbf310f35" first_name="Vasily" last_name="Klatschko" />
 		<person guid="7df0f616-2f57-4b93-baf0-32feb52fd0d5" first_name="Valentin" last_name="Klatschko" />
 		<person guid="826d29bc-09fc-4cef-aaa6-65da7624ec92" first_name="Boris" last_name="Jelczin" />
+		<person guid="b514c0e3-9210-4da0-8411-b5aaab788fa7" first_name="Dersha" last_name="Ulaana" />
 
-		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" first_name="Jasio" last_name="Głupkowaty" />
+		<person guid="ed7ffacd-68ba-48e0-8e15-877bdf5886fd" first_name="Jasio" last_name="Głupkowaty" />
 	</persons>
 	<programmeroles>
 		<!--
@@ -80,12 +104,28 @@
 		<programmerole guid="03850cef-e7dc-4e1a-9d42-c548e27b6532" first_name="Aleksander III" last_name="" title="Papież" />
 		<programmerole guid="f31a1bf6-1c2a-431e-a10c-cfee5b17fe7d" first_name="Rashid ad-Din" last_name="Sinan" />
 		<programmerole guid="36851db6-9af3-4650-baa6-c3e2e81fee9c" first_name="Ryszard I" last_name="Lwie Serce" title="Król" />
+		<programmerole guid="f0eda263-10a8-4001-853c-699e32c87bdc" first_name="Piotr I" last_name="Okrutny" />
+		<programmerole guid="0bb15963-acf7-45d4-8a8b-601ec8a5458d" first_name="Piotr IV" last_name="Aragoński" />
+		<programmerole guid="f0fd6a54-97f5-4a55-bf79-0a6455f5bf40" first_name="Edward III" last_name="z Anglii" />
+		<programmerole guid="613093cc-5e2e-47d4-8cfd-fe4da32f2a10" first_name="Karol II" last_name="Zły" />
+		<programmerole guid="e5ea6871-a4d5-4d0f-acde-7cdfecdbaacb" first_name="Konstancja" last_name="Aragońska" />
+		<programmerole guid="8241c9e2-9de6-41ee-bc71-3299cb4c98e3" first_name="Fryderyk III" last_name="Sycylijski" />
+		<programmerole guid="bfdc3d9f-7466-432f-903d-0b4cb204c3df" first_name="Henryk II" last_name="Trastámara" />
+		<programmerole guid="9e355021-5ada-45be-b177-180279ac71f0" first_name="Piotr I" last_name="Sprawiedliwy" />
+		<programmerole guid="7eb847a3-9880-43a3-bfc4-b30fdf296ed3" first_name="Eleonora" last_name="Aragońska" />
+		<programmerole guid="c3f1cb4c-fd6f-4f7d-afc1-bf9a712a2514" first_name="Jan I" last_name="Kastylijski" />
 
 		<programmerole guid="487c9c31-be5c-4cf7-93fd-1a470ead1ec4" first_name="Lennard" last_name="McCay" nick_name="Hones" />
 		<programmerole guid="3670b612-8825-4c4d-a382-0227fe8d9184" first_name="Jakub" last_name="Špyblík" />
 		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Dubrownik" last_name="Špyblík" />
 		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Zdeněk" last_name="" />
 		<programmerole guid="25387571-5de7-4837-bbfb-f46b5a8d4779" first_name="Angus" last_name="McGrifter" />
+		<programmerole guid="3c71921a-393e-47c3-bed6-be34c7efe827" first_name="Ronny" last_name="" />
+		<programmerole guid="e0e1c037-0e24-4aa8-a7b6-a46d88c17ccd" first_name="Tonny" last_name="" />
+		<programmerole guid="7a548ff1-df76-4450-8190-d5e6a8b1f0c7" first_name="Tonton" last_name="" />
+		<programmerole guid="e3f1a176-8c0f-4c40-85b0-095ed17575ae" first_name="Dorly" last_name="" />
+		<programmerole guid="55b80e0a-916b-4688-96eb-5d2b551c370e" nick_name="Kapitan USA" first_name="Steven" last_name="Rogers" />
+		<programmerole guid="69b85fb7-ea09-4e4c-b902-00bc7df6f823" first_name="Cichy Ben" last_name="" />
 
 		<programmerole guid="0db39875-f248-4a7c-9fb7-ede5408993f9" first_name="Poeta" last_name="" />
 		<programmerole guid="c975b99e-22aa-440d-b8c3-fa7752221e71" first_name="Abdo" last_name="Lewantyńczyk" />
@@ -199,8 +239,36 @@
 		<sports_formula4>Formuła D</sports_formula4>
 
 		<mediatitle_lowestofthelow>Nie całkiem na szczycie</mediatitle_lowestofthelow>
+		<mediatitle_themanoutside>Osoba tam na zewnątrz</mediatitle_themanoutside>
 		<mediatitle_thephantomoftheopera>Duch teatru</mediatitle_thephantomoftheopera>
+
+		<mediatitle_clue>Cludeo</mediatitle_clue>
+		<mediatitle_dungeons_dragons>Leże i Lizardy</mediatitle_dungeons_dragons>
+
+		<mediatitle_miamivice>Gliniarze z Miami</mediatitle_miamivice>
 		<mediatitle_gilligansisland>Wyspa Gallagana</mediatitle_gilligansisland>
 		<mediatitle_ottifants>Ollifanty</mediatitle_ottifants>
+		<mediatitle_familyfeud>Familiwalka</mediatitle_familyfeud>
+		<mediatitle_alien>Owczy</mediatitle_alien>
+		<mediatitle_pinkpanther>Fioletowy lampart</mediatitle_pinkpanther>
+		<mediatitle_looneytunes>Zwariowane Kreskówki</mediatitle_looneytunes>
+		<mediatitle_peanuts>Fasolki</mediatitle_peanuts>
+		<mediatitle_peanuts_stem>Fasolk</mediatitle_peanuts_stem>
+		<mediatitle_carebears>Migotliwe Misie</mediatitle_carebears>
+		<mediatitle_borrowers>Podbieralscy</mediatitle_borrowers>
+		<mediatitle_gameofthrones>Walka o tron</mediatitle_gameofthrones>
+		<mediatitle_getsmart>Zostań Smart</mediatitle_getsmart>
+		<mediatitle_ninjaturtles>Żółwie Wojowniczki</mediatitle_ninjaturtles>
+		<mediatitle_turtles>Żółwie</mediatitle_turtles>
+		<mediatitle_fugitive>W trakcie ucieczki</mediatitle_fugitive>
+		<mediatitle_fast_furious>Zamieszanie i dzikość</mediatitle_fast_furious>
+		<mediatitle_purge>Noc fali</mediatitle_purge>
+		<mediatitle_justiceleague>Lidze Sprawiedliwości</mediatitle_justiceleague>
+		<mediatitle_eurovisionsongcontest>Eurofusion Piosenka Show</mediatitle_eurovisionsongcontest>
+
+		<character_disney_mickey>Macki</character_disney_mickey>
+		<character_me_jimbutton>Kuba Guziec</character_me_jimbutton>
+		<character_me_jim>Kuba</character_me_jim>
+		<character_me_luke>Ludwik</character_me_luke>
 	</globalvariables>
 </tvtdb>

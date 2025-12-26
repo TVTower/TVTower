@@ -3,7 +3,7 @@
 	<version value="3" comment="Screenplays by discord/eggi72" />
 
 	<scripttemplates>
-		<scripttemplate product="1" licence_type="1" guid="ab31c2dd-46f4-4736-81b7-830c73af9ddf" creator="discord/eggi72" comment="https://en.wikipedia.org/wiki/Nathan_Hill_(writer) | https://www.goodreads.com/book/show/65650229-wellness">
+		<scripttemplate product="1" licence_type="1" guid="ab31c2dd-46f4-4736-81b7-830c73af9ddf" creator="discord/eggi72" wikidata_id="Q126656014" comment="https://www.goodreads.com/book/show/65650229-wellness | author: https://en.wikipedia.org/wiki/Nathan_Hill_(writer)">
 			<title>
 				<all>Hellness</all>
 			</title>
@@ -40,7 +40,7 @@
 			<speed min="30" max="50" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="25b61ccf-34c5-4c76-9cc0-ecdab1a10504" creator="discord/eggi72" comment="https://de.wikipedia.org/wiki/Tobias_Goldfarb | https://www.goodreads.com/book/show/205484457-hilda-hasenherz-das-abenteuer-im-fuchswald | english original role names made-up, TODO: watch for actual English version">
+		<scripttemplate product="1" licence_type="1" guid="25b61ccf-34c5-4c76-9cc0-ecdab1a10504" creator="discord/eggi72" comment="https://www.goodreads.com/book/show/205484457-hilda-hasenherz-das-abenteuer-im-fuchswald | author: https://de.wikipedia.org/wiki/Tobias_Goldfarb | english original role names made-up, TODO: watch for actual English version">
 			<title>
 				<de>${.self:"role":1:"fullname"} - Abenteuer Fuchshöhle</de>
 				<en>${.self:"role":1:"fullname"} - Fox Cave Adventures</en>
@@ -82,7 +82,7 @@
 		<scripttemplate product="1" licence_type="1" guid="f853e579-27c4-4eea-b1cc-1c62d5cbd2f0" creator="discord/eggi72" comment="https://www.buecher.de/artikel/buch/hallo-nacht-ich-mag-dich-gerne-setz-dich-zu-mir-wir-gucken-sterne/67736411/ | TODO: Original titles translated, watch for official versions">
 			<title>
 				<de>Huhu Nacht. Ich mag dich sehr. Komm zu mir. Ich guck die Stern'</de>
-				<en>Hiya Night. I Like You Much. Come to Me. I'm Watching Stars</en>
+				<en>Howdy Night. I Like You Much. Come to Me. I'm Watching Stars</en>
 				<pl>Cześć Nocy. Bardzo cię lubię. Przyjdź do mnie. Patrzę na gwiazdy</pl>
 			</title>
 			<title_original>
@@ -115,7 +115,7 @@
 			<speed min="20" max="60" />
 			<studio_size value="1" />
 		</scripttemplate>
-		<scripttemplate product="2" licence_type="3" guid="0526aedb-66da-437b-a51a-acff47ea5b40" creator="discord/eggi72" comment="https://de.wikipedia.org/wiki/Kerstin_Wolff | https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/ | TODO: Original titles translated, watch for official versions">
+		<scripttemplate product="2" licence_type="3" guid="0526aedb-66da-437b-a51a-acff47ea5b40" creator="discord/eggi72" comment="https://www.buecher.de/artikel/buch/die-truemmerraeumung-in-kassel-1942-1955/70920768/ | author: https://de.wikipedia.org/wiki/Kerstin_Wolff | TODO: Original titles translated, watch for official versions">
 			<title>
 				<de>Ein Mammutwerk - Die Trümmerfrauen von Kassel 1942-1955</de>
 				<en>An Enormous Task - The Rubble Women of Kassel 1942-1955</en>
@@ -145,7 +145,7 @@
 					</title_original>
 					<description>
 						<de>Zwischen 1940 und 1945 erlebte Kassel rund 40 Luftangriffe, die Schuttberge hinterließen. Es wird untersucht, wer die Trümmer räumte und wie inmitten der Trümmer gelebt wurde.</de>
-						<en>Between 1940 and 1945, Kassel experienced around 40 air raids that left behind mountains of rubble. It examines who cleared the rubble and how people lived amidst the ruins.</en>
+						<en>Between 1940 and 1945, Kassel experienced around 40 air raids that left behind mountains of rubble. It is examined who cleared the rubble and how people lived amidst the ruins.</en>
 						<pl>W latach 1940-1945 Kassel doświadczyło około 40 nalotów, które pozostawiły po sobie góry gruzu. Analizuje, kto uprzątnął gruzy i jak ludzie żyli pośród ruin.</pl>
 					</description>
 				</scripttemplate>

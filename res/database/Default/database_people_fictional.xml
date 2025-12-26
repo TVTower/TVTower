@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3"  />
 	<celebritypeople>
-		<person guid="88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<person guid="88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2" creator="5578" created_by="Ronny">
 			<first_name>Babsi</first_name>
 			<last_name>Angora</last_name>
 			<nick_name></nick_name>
@@ -10,88 +10,88 @@
 			<details job="136" gender="2" birthday="1951" deathday="" country="D" fictional="1" />
 			<data popularity="20" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="75" topgenre="0" />
 		</person>
-		<person guid="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<person guid="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" creator="5578" created_by="Ronny">
 			<first_name>Henry</first_name>
 			<last_name>Cutamaran</last_name>
 			<nick_name></nick_name>
 			<details job="5" gender="1" birthday="-25" deathday="" country="" fictional="1" />
 		</person>
-		<person guid="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<person guid="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" creator="5578" created_by="Ronny">
 			<first_name>Patty</first_name>
 			<last_name>Glansen</last_name>
 			<nick_name></nick_name>
-			<details job="138" gender="2" birthday="1961" deathday="" country="D" fictional="1" face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
+			<details job="138" gender="2" birthday="-32" deathday="" country="D" fictional="1" face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
 			<data popularity="20" affinity="50" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="1cac5a80-97dc-46f6-8c34-761c4fe43db5" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<person guid="1cac5a80-97dc-46f6-8c34-761c4fe43db5" creator="5578" created_by="Ronny">
 			<first_name>Gustav</first_name>
 			<last_name>Klein</last_name>
 			<nick_name></nick_name>
 			<details job="5" gender="1" birthday="1933-05-01" deathday="2015-07-03" country="D" fictional="1" />
 			<data popularity="14" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="3d37e02e-78f2-4749-9de5-429e31b5590b" tmdb_id="0" imdb_id="" creator="">
+		<person guid="3d37e02e-78f2-4749-9de5-429e31b5590b" creator="">
 			<first_name>Betty</first_name>
 			<last_name>Botterblom</last_name>
 			<nick_name></nick_name>
 			<details job="136" gender="2" birthday="-25" deathday="" country="USA" fictional="1" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
 			<data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" />
 		</person>
-		<person guid="682d65b5-9ff7-475a-8d50-a4ded9eefa9e" tmdb_id="0" imdb_id="" creator="">
+		<person guid="682d65b5-9ff7-475a-8d50-a4ded9eefa9e" creator="">
 			<first_name>Samantha</first_name>
 			<last_name>Goodman</last_name>
 			<nick_name></nick_name>
 			<details job="65" gender="2" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="336ebe49-3b96-46f4-8cd5-da6f64ff8c38" tmdb_id="0" imdb_id="" creator="">
+		<person guid="336ebe49-3b96-46f4-8cd5-da6f64ff8c38" creator="">
 			<first_name>Yoshi</first_name>
 			<last_name>Grünwald</last_name>
 			<nick_name></nick_name>
 			<details job="69" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="bedfa8be-aaff-457d-b549-893c3a784c9b" tmdb_id="0" imdb_id="" creator="">
+		<person guid="bedfa8be-aaff-457d-b549-893c3a784c9b" creator="">
 			<first_name>Rudi</first_name>
 			<last_name>Hackl</last_name>
 			<nick_name></nick_name>
 			<details job="82" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1" tmdb_id="0" imdb_id="" creator="" comment="previously Dietmar Hjüpsh, is fictional, was probably erroneously spoofed in 2013.">
+		<person guid="3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1" creator="" comment="previously Dietmar Hjüpsh, is fictional, was probably erroneously spoofed in 2013.">
 			<first_name>Dietmar</first_name>
 			<last_name>Hübsch</last_name>
 			<nick_name></nick_name>
 			<details job="69" gender="1" birthday="" deathday="" country="" fictional="1" />
 		</person>
-		<person guid="a6055f37-ab53-425e-9332-14e0dfabc424" tmdb_id="0" imdb_id="" creator="" comment="previously Rolf Krehl, is fictional, was probably erroneously spoofed in 2013, which lead to inconsistency with description.">
+		<person guid="a6055f37-ab53-425e-9332-14e0dfabc424" creator="" comment="previously Rolf Krehl, is fictional, was probably erroneously spoofed in 2013, which lead to inconsistency with description.">
 			<first_name>Rolf</first_name>
 			<last_name>Krall</last_name>
 			<nick_name></nick_name>
 			<details job="66" gender="1" birthday="" deathday="" country="" fictional="1" />
 		</person>
-		<person guid="003bbc46-ee54-43ea-bd2b-230f0feb051f" tmdb_id="0" imdb_id="" creator="">
+		<person guid="003bbc46-ee54-43ea-bd2b-230f0feb051f" creator="">
 			<first_name>Pit</first_name>
 			<last_name>Pot</last_name>
 			<nick_name></nick_name>
 			<details job="69" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="31d0bb24-e005-4c7c-b23c-929d4bcc5f5a" tmdb_id="0" imdb_id="" creator="" comment="IMDB-linked version: cc0e496f-83e0-4e53-97da-45895d7448a6">
+		<person guid="31d0bb24-e005-4c7c-b23c-929d4bcc5f5a" creator="" comment="IMDB-linked version: cc0e496f-83e0-4e53-97da-45895d7448a6">
 			<first_name>Alan</first_name>
 			<last_name>Smithee</last_name>
 			<nick_name></nick_name>
 			<details job="1" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="058c2105-4440-4d4f-8c62-131fb2fae01c" tmdb_id="0" imdb_id="" creator="">
+		<person guid="058c2105-4440-4d4f-8c62-131fb2fae01c" creator="">
 			<first_name>Heinz</first_name>
 			<last_name>Ulmer</last_name>
 			<nick_name></nick_name>
 			<details job="74" gender="1" birthday="" deathday="" country="" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
-		<person guid="817052f9-cfbd-415c-a4b4-a225011afcb1" tmdb_id="0" imdb_id="" creator="" comment="parody version of cd3a2e20-efe1-4a4c-9249-164b67d185f7">
+		<person guid="817052f9-cfbd-415c-a4b4-a225011afcb1" creator="" comment="parody version of cd3a2e20-efe1-4a4c-9249-164b67d185f7">
 			<first_name>Arnold</first_name>
 			<last_name>Weissenacker</last_name>
 			<nick_name></nick_name>
@@ -101,7 +101,7 @@
 
 		<!-- from ronny.xml -->
 
-		<person guid="ronny-programmeperson-heinzharaldfehm" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<person guid="ronny-programmeperson-heinzharaldfehm" creator="5578" created_by="Ronny">
 			<first_name>Heinz-Harald</first_name>
 			<last_name>Fehm</last_name>
 			<nick_name></nick_name>
@@ -156,7 +156,7 @@
 			<details job="69" gender="1" birthday="1942" deathday="2030" country="USA" />
 			<data popularity="10" affinity="70" fame="0" scandalizing="60" price_mod="1" power="40" humor="45" charisma="15" appearance="55" topgenre="9" />
 		</person>
-		<person guid="ronny-programmeperson-pipelaho" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+		<person guid="ronny-programmeperson-pipelaho" creator="5578" created_by="Ronny">
 			<first_name>Pipé-Laho</first_name>
 			<last_name>Rashin</last_name>
 			<nick_name>Pipé-Laho</nick_name>
@@ -191,14 +191,14 @@
 			<!-- -->
 			<first_name>Sarah</first_name>
 			<last_name>van Sonderbar</last_name>
-			<details job="69" gender="2" birthday="1987" deathday="" country="D" />
+			<details job="2146" gender="2" birthday="1987" deathday="" country="D" />
 			<data popularity="9" affinity="18" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_5" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- -->
 			<first_name>Blondie</first_name>
 			<last_name>Prall</last_name>
-			<details job="69" gender="2" birthday="1976" deathday="" country="A" />
+			<details job="98" gender="2" birthday="1976" deathday="" country="A" />
 			<data popularity="12" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="55" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_6" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -212,7 +212,7 @@
 			<!-- -->
 			<first_name>Gerlinde</first_name>
 			<last_name>von Gluterhof</last_name>
-			<details job="114" gender="2" birthday="1961" deathday="" country="D" />
+			<details job="119" gender="2" birthday="1961" deathday="" country="D" />
 			<data popularity="15" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_8" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -226,14 +226,14 @@
 			<!-- -->
 			<first_name>Leonie</first_name>
 			<last_name>Luberlippe</last_name>
-			<details job="69" gender="2" birthday="1983" deathday="" country="D" />
+			<details job="98" gender="2" birthday="1983" deathday="" country="D" />
 			<data popularity="10" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_10" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- -->
 			<first_name>Zoe</first_name>
 			<last_name>Zeckenbart</last_name>
-			<details job="69" gender="2" birthday="1960" deathday="" country="D" />
+			<details job="98" gender="2" birthday="1960" deathday="" country="D" />
 			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_11" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -254,28 +254,28 @@
 			<!-- Express nach Sibirien (1) -->
 			<first_name>Hardtmann</first_name>
 			<last_name>von Eisenhalt</last_name>
-			<details job="69" gender="1" birthday="1940" deathday="" country="D" />
+			<details job="103" gender="1" birthday="1940" deathday="" country="D" />
 			<data popularity="18" affinity="40" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_14" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- -->
 			<first_name>Bernd</first_name>
 			<last_name>Bohrman</last_name>
-			<details job="69" gender="1" birthday="1976" deathday="" country="D" />
+			<details job="98" gender="1" birthday="1976" deathday="" country="D" />
 			<data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_15" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
 			<first_name>David</first_name>
 			<last_name>Davidson</last_name>
-			<details job="98" gender="1" birthday="1953" deathday="" country="DK" />
+			<details job="103" gender="1" birthday="1953" deathday="" country="DK" />
 			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_16" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<!-- -->
 			<first_name>Walter</first_name>
 			<last_name>Wienerwurst</last_name>
-			<details job="69" gender="1" birthday="1982" deathday="" country="D" />
+			<details job="98" gender="1" birthday="1982" deathday="" country="D" />
 			<data popularity="7" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="Per_custom_Freddy_17" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -303,7 +303,7 @@
 			<!-- -->
 			<first_name>Karl</first_name>
 			<last_name>Krautrauch</last_name>
-			<details job="69" gender="1" birthday="1933" deathday="" country="D" />
+			<details job="98" gender="1" birthday="1933" deathday="" country="D" />
 			<data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 	</celebritypeople>
@@ -312,6 +312,11 @@
 		<person guid="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" castable="0" />
 		<person guid="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" castable="0" />
 		<person guid="common-unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" castable="0" />
+		<person guid="common-directors-provided" first_name="" last_name="Regie zur Verfügung gestellt" />
+		<person guid="common-hosts-provided" first_name="" last_name="Moderation zur Verfügung gestellt" />
+		<person guid="common-commentators-provided" first_name="" last_name="Kommentar zur Verfügung gestellt" />
+		<person guid="common-reporters-provided" first_name="" last_name="Reporter zur Verfügung gestellt" /> <!-- 'Reporter' auf Englisch ist eher nur der Interviewer an der Seitenlinie -->
+		<person guid="common-guests-provided" first_name="" last_name="Gäste zur Verfügung gestellt" />
 		<person guid="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" fictional="1" levelup="0" castable="0" />
 		<person guid="various-puppeteers" first_name="" last_name="versch. Puppenspieler" fictional="1" levelup="0" castable="0" />
 		<person guid="various-models" first_name="" last_name="versch. Models" fictional="1" levelup="0" castable="0" />
@@ -333,7 +338,7 @@
 		<person guid="be4f2bdc-b09e-44fa-beac-5e2b74cea402" first_name="Siegmund" last_name="Freund" nick_name="" fictional="1" gender="1" castable="0" />
 		<person guid="8f93af7f-ac58-4573-bfae-ddf4698059bb" first_name="Klaus" last_name="Grobe" nick_name="" fictional="1" gender="1" job="69" />
 		<person guid="8cc73e2d-02a4-4403-8270-b4a66a3e872c" first_name="Mario" last_name="Groteski" nick_name="" fictional="1" gender="1" job="72" />
-		<person guid="5b52221c-10f6-4ad8-b818-c89c304e9ea0" first_name="Steven" last_name="Harking" nick_name="" fictional="0" castable="0" imdb_id="nm0370071" comment="non-fictional but parody version | real version: ddfc7c60-1037-46be-8b2c-23974d61c43c" />
+		<person guid="5b52221c-10f6-4ad8-b818-c89c304e9ea0" first_name="Steven" last_name="Harking" nick_name="" fictional="0" castable="0" comment="non-fictional but parody version | real version: ddfc7c60-1037-46be-8b2c-23974d61c43c" />
 		<person guid="c9784ca1-3c3a-4d15-a6c9-493e45d03559" first_name="Brett" last_name="Hartt" nick_name="" fictional="0" gender="1" castable="0" comment="non-fictional but parody version of b080d64f-d986-45f3-b205-f4c7f3622b84" />
 		<person guid="d39a1a8b-1f04-485c-b454-1727c2dfc443" first_name="Hugh" last_name="Hoden" nick_name="" fictional="0" gender="1" castable="0" comment="non-fictional but parody version of 834d00df-d96f-4cfd-85ba-29217d98a3ff" />
 		<person guid="ab17d747-426e-4a3c-ae6b-ac27587f7563" first_name="Klaus" last_name="Grobe Jr." nick_name="" fictional="1" gender="1" job="69" />
@@ -395,6 +400,73 @@
 		<person guid="2a00793b-cb1d-4471-b437-5d59703c79b8" first_name="Heiner" last_name="Böller" fictional="1" gender="1" castable="1" />
 		<person guid="ccb8e04a-7888-475a-896b-1bf83c47072f" first_name="Esraimt" last_name="Kiston" fictional="1" gender="1" castable="0" />
 
+		<!-- added in 2025-08, from recovered entries from forum -->
+
+		<person guid="0d187d5b-43d9-4dc0-9755-b2e408b8964e" first_name="Karin" last_name="Kellerkind" fictional="1" gender="2" castable="1" />
+		<person guid="45d0b8fd-96e1-40bb-abd9-50a21c5f5f3e" first_name="Peter" last_name="Schockert" fictional="1" gender="1" castable="1" />
+		<person guid="3502d6a9-c7ce-4c28-a9b4-d5211341fb76" first_name="Maria" last_name="Watschlowski" fictional="1" gender="2" castable="1" />
+		<person guid="eefab8a5-d3ff-4442-a6e8-ba499cd23eeb" first_name="Harald" last_name="Faltenmeyer" fictional="1" gender="1" castable="1" comment="parody version of 50ef3083-cca1-4e33-97cc-ff596b70ee1e" />
+		<person guid="943c369a-a648-48b8-9f30-c9c7348f8d37" first_name="Heinz" last_name="Napscher" fictional="1" gender="1" castable="1" />
+		<person guid="4812f1df-c7bc-424c-b57a-902c43bb22f7" first_name="Thomas" last_name="Brüller" fictional="1" gender="1" castable="1" />
+		<person guid="4d24c7e0-2dbd-4a11-98d3-f87f0eb60a49" first_name="Silke" last_name="Blumenhof" fictional="1" gender="2" castable="1" />
+		<person guid="6b522cc6-8f0d-492a-98bf-cde9f077749e" first_name="Waldi" last_name="Wurst" fictional="1" gender="1" castable="1" />
+
+		<!-- for preselected cast (partly randomized) for some productions (seems no other way to do it for now) -->
+
+			<!-- for 'Kinderfragen mit ...' 539aee88-a745-489e-bf65-ed7d1f621469 | TODO: Most in German because probably "Checker Tobi"-inspired, or because of the current map. Maybe country shouldn't be fixed, but depend on some other factor -->
+
+		<person guid="09e65070-6289-4076-8c8f-c3eb493ddf82" generator="de,1" fictional="1" castable="1" />
+		<person guid="dbbd3236-3c7b-4041-aa97-1b3ef4ab944b" generator="de,1" fictional="1" castable="1" />
+		<person guid="3e12f39f-8f45-413d-9b0b-35c2c0d67de8" generator="de,1" fictional="1" castable="1" />
+		<person guid="4515e591-2792-442c-9c2e-6b6956d1d403" generator="de,1" fictional="1" castable="1" />
+		<person guid="107df776-6e0a-4d7f-af24-79e693fc8617" generator="de,1" fictional="1" castable="1" />
+		<person guid="bd14ea03-99ee-49e4-b5b9-bf3f21d4a997" generator="de,1" fictional="1" castable="1" />
+		<person guid="8d105149-e687-48a9-ac5b-9657fe5ae584" generator="de,1" fictional="1" castable="1" />
+		<person guid="be16bb46-c40f-4937-92ab-e3db660b9961" generator="de,1" fictional="1" castable="1" />
+		<person guid="c2206965-7e11-4e7e-be33-36994f2d8018" generator="us,1" fictional="1" castable="1" />
+		<person guid="d797e581-15b5-41fe-bfe2-2ecb373e5939" generator="us,1" fictional="1" castable="1" />
+		<person guid="18543e0d-0782-43ea-aafe-e6ed6d490bfe" generator="es,1" fictional="1" castable="1" />
+		<person guid="9acd7122-907b-4f0d-8f9d-29d05314e67c" generator="any,1" fictional="1" castable="1" />
+
+			<!-- for entries in kasi.xml - sacrifices had to be made (more generated names, less likely previously used combinations appearing) -->
+
+		<person guid="2f8f94fa-854f-446f-8c07-93c5616ac7e3" generator="us,2" first_name="Jennifer" fictional="1" castable="1" />
+		<person guid="d0e99911-2bf6-455e-bb50-a68bc451b156" generator="us,2" first_name="Carolin" fictional="1" castable="1" />
+		<person guid="ea78b761-f5cb-4717-ad4d-d5876c228211" generator="us,2" first_name="Jacky" fictional="1" castable="1" />
+		<person guid="eb450797-24f3-454e-9442-90b735d2f9a5" generator="us,2" first_name="Maria" fictional="1" castable="1" />
+		<person guid="297c62c2-cdbc-4fac-8343-b51af405c169" generator="us,2" first_name="Hannah" fictional="1" castable="1" />
+		<person guid="38fdcc9f-3be0-4f9b-90cd-d500f25ac240" generator="us,2" first_name="Helene" fictional="1" castable="1" />
+		<person guid="dc17bda3-19ff-4af8-8e10-1b4a1562ad5f" generator="us,2" first_name="Ivanka" fictional="1" castable="1" />
+		<person guid="6b286c53-f4a5-461e-8dd7-2ef538237d50" generator="dk,2" first_name="Jennifer" fictional="1" castable="1" />
+		<person guid="61dcdd8c-8ccb-42fc-a2f8-b70972f2a6f4" generator="dk,2" first_name="Carolin" fictional="1" castable="1" />
+		<person guid="21ddbec2-30b4-450e-a23b-3aa3bdcb8598" generator="dk,2" first_name="Jacky" fictional="1" castable="1" />
+		<person guid="5dc8cd65-f8f8-4ca8-855c-a049c0793e53" generator="dk,2" first_name="Maria" fictional="1" castable="1" />
+		<person guid="ed6557ae-a5e2-415f-bda6-3422bf00df9f" generator="dk,2" first_name="Hannah" fictional="1" castable="1" />
+		<person guid="2ff4d9e7-9510-4514-8aa2-0789d63f6ede" generator="dk,2" first_name="Helene" fictional="1" castable="1" />
+		<person guid="4150cd45-a2be-4676-9ae0-c7ccc138e9b7" generator="dk,2" first_name="Ivanka" fictional="1" castable="1" />
+		<person guid="a4a83c4b-49b2-4863-9343-76c9edcd5cee" generator="de,2" last_name="Miller" fictional="1" castable="1" />
+		<person guid="798f7326-a7db-4fd3-a13c-e0333986a4ea" generator="de,2" last_name="Jacobson" fictional="1" castable="1" />
+		<person guid="bbad128c-c6a7-4a68-b9b1-3ba02f705916" generator="de,2" last_name="Smith" fictional="1" castable="1" />
+		<person guid="f6f6371a-6b66-4898-9f47-7018eb55dc62" generator="de,2" last_name="Bloomberg" fictional="1" castable="1" />
+		<person guid="8b292183-66d3-421c-88ae-2155398469b9" generator="de,2" last_name="Gate" fictional="1" castable="1" />
+		<person guid="37d1e098-1354-4711-a5a6-dcb37ce15135" generator="de,2" last_name="Johnson" fictional="1" castable="1" />
+		<person guid="521f9350-f44a-4f81-a839-afa084cf3163" generator="de,2" last_name="Petersen" fictional="1" castable="1" />
+		<person guid="04af245a-af1d-4cb3-8a98-0d6970cf35e2" generator="ru,2" last_name="Miller" fictional="1" castable="1" />
+		<person guid="82018337-466e-4d9a-8bdc-e57d086172de" generator="ru,2" last_name="Jacobson" fictional="1" castable="1" />
+		<person guid="e13349d4-9e27-4247-a1e9-64d463154c5d" generator="ru,2" last_name="Smith" fictional="1" castable="1" />
+		<person guid="57cf9dbd-42b2-4daa-a683-123b690b6bd4" generator="ru,2" last_name="Bloomberg" fictional="1" castable="1" />
+		<person guid="0bd56818-5f20-49dd-8fbf-581c896fc598" generator="ru,2" last_name="Gate" fictional="1" castable="1" />
+		<person guid="67039643-449c-419c-8b96-afed18944aa2" generator="ru,2" last_name="Johnson" fictional="1" castable="1" />
+		<person guid="cc9839f5-d8e9-4e52-a477-475cce0a92ef" generator="ru,2" last_name="Petersen" fictional="1" castable="1" />
+
+			<!-- more TVTower forum members that were mentioned in kasi.xml -->
+
+		<person guid="b8e2c92e-e27a-4919-ae2e-c255f25e6450" first_name="Kasi" last_name="" nick_name="Kasi" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person guid="fde7c3af-cd5f-44f3-9d31-95ff283ae3ba" first_name="Fronck" last_name="" nick_name="Fronck" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person guid="23b42242-6683-4e18-ab34-34cd3cda1ec5" first_name="Kieferer" last_name="" nick_name="Kieferer" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person guid="0e47f4a4-5b62-4d27-b4b9-131adcaba1f7" first_name="Jogi" last_name="" nick_name="Jogi" fictional="1" gender="1" castable="0" country="D" job="64" />
+		<person guid="72227f20-80a5-4c62-8e41-eb43e01c2568" first_name="Speedy" last_name="" nick_name="Speedy" fictional="1" gender="1" castable="0" country="D" job="64" />
+
 		<!-- moved from rumpelfreddy.xml -->
 
 		<!-- Schottisch -->
@@ -430,9 +502,9 @@
 		<person guid="Per_custom_Freddy_52" first_name="Charlie" last_name="Jonsson" nick_name="" gender="1" country="S" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_53" first_name="Alicia" last_name="Hansson" nick_name="" gender="2" country="S" fictional="1" job="103" />
 		<!-- Polnisch -->
-		<person guid="Per_custom_Freddy_57" first_name="Lena" last_name="Nowak" nick_name="" gender="2" country="PL" fictional="1" job="103" />
+		<person guid="Per_custom_Freddy_57" first_name="Lena" last_name="Nowak" nick_name="" gender="2" country="PL" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_58" first_name="Jakub" last_name="Wójcik" nick_name="" gender="1" country="PL" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_59" first_name="Julia" last_name="Kowalczyk" nick_name="" gender="2" country="PL" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_59" first_name="Julia" last_name="Kowalczyk" nick_name="" gender="2" country="PL" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_60" first_name="Kacper" last_name="Wozniak" nick_name="" gender="1" country="PL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_61" first_name="Zusanna" last_name="Kowalska" nick_name="" gender="2" country="PL" fictional="1" job="234" />
 		<person guid="Per_custom_Freddy_62" first_name="Filip" last_name="Mazur" nick_name="" gender="1" country="PL" fictional="1" job="119" />
@@ -458,11 +530,11 @@
 		<person guid="Per_custom_Freddy_80" first_name="Daniela" last_name="Rodrigues" nick_name="" gender="2" country="E" fictional="1" job="2154" />
 		<person guid="Per_custom_Freddy_81" first_name="Martina" last_name="Martinez" nick_name="" gender="2" country="E" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_82" first_name="Carla" last_name="Lopez" nick_name="" gender="2" country="E" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_83" first_name="Sara" last_name="Sanchez" nick_name="" gender="2" country="E" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_83" first_name="Sara" last_name="Sanchez" nick_name="" gender="2" country="E" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_84" first_name="Sofia" last_name="Fernandez Garcia" nick_name="" gender="2" country="E" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_85" first_name="Valeria" last_name="Perez" nick_name="" gender="2" country="E" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_86" first_name="Alba" last_name="Martin" nick_name="" gender="2" country="E" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_87" first_name="Hugo" last_name="Santana" nick_name="" gender="1" country="E" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_87" first_name="Hugo" last_name="Santana" nick_name="" gender="1" country="E" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_88" first_name="Pablo" last_name="Cedrez" nick_name="" gender="1" country="E" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_89" first_name="Alejandro" last_name="Moralez" nick_name="" gender="1" country="E" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_90" first_name="Alvaro" last_name="Campillo" nick_name="" gender="1" country="E" fictional="1" job="98" />
@@ -488,9 +560,9 @@
 		<person guid="Per_custom_Freddy_108" first_name="Emily" last_name="Almond" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_109" first_name="Harry" last_name="Badham" nick_name="" gender="1" country="USA" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_110" first_name="Ava" last_name="Bancroft" nick_name="" gender="2" country="USA" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_111" first_name="Jacob" last_name="Bail" nick_name="" gender="1" country="GB" fictional="1" job="234" />
+		<person guid="Per_custom_Freddy_111" first_name="Jacob" last_name="Bail" nick_name="" gender="1" country="GB" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_112" first_name="Isla" last_name="Barrymore" nick_name="" gender="2" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_113" first_name="Charlie" last_name="Baskin" nick_name="" gender="1" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_113" first_name="Charlie" last_name="Baskin" nick_name="" gender="1" country="GB" fictional="1" job="234" />
 		<person guid="Per_custom_Freddy_114" first_name="Jessica" last_name="Beecroft" nick_name="" gender="2" country="GB" fictional="1" job="234" />
 		<person guid="Per_custom_Freddy_115" first_name="Thomas" last_name="Benett" nick_name="" gender="1" country="USA" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_116" first_name="Poppy" last_name="Bloomfield" nick_name="" gender="2" country="CDN" fictional="1" job="98" />
@@ -509,12 +581,12 @@
 		<person guid="Per_custom_Freddy_129" first_name="Noah" last_name="Clancy" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_130" first_name="Evie" last_name="Combe" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_131" first_name="Ethan" last_name="Cort" nick_name="" gender="1" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_132" first_name="Sophia" last_name="Corraface" nick_name="" gender="2" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_132" first_name="Sophia" last_name="Corraface" nick_name="" gender="2" country="GB" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_133" first_name="Ella" last_name="Corey" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_134" first_name="Archie" last_name="Crichton" nick_name="" gender="1" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_135" first_name="Scarlett" last_name="Cromwell" nick_name="" gender="2" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_135" first_name="Scarlett" last_name="Cromwell" nick_name="" gender="2" country="GB" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_136" first_name="Leo" last_name="Darabont" nick_name="" gender="1" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_137" first_name="Chloe" last_name="Davonport" nick_name="" gender="2" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_137" first_name="Chloe" last_name="Davonport" nick_name="" gender="2" country="GB" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_138" first_name="Henry" last_name="Dennehy" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_139" first_name="Isabelle" last_name="Densham" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_140" first_name="Joseph" last_name="Devaney" nick_name="" gender="1" country="CDN" fictional="1" job="98" />
@@ -523,7 +595,7 @@
 		<person guid="Per_custom_Freddy_143" first_name="Charlotte" last_name="Edgecomb" nick_name="" gender="2" country="USA" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_144" first_name="Riley" last_name="Eliot" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_145" first_name="Sienna" last_name="Farnsworth" nick_name="" gender="2" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_146" first_name="Daniel" last_name="Fairchild" nick_name="" gender="1" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_146" first_name="Daniel" last_name="Fairchild" nick_name="" gender="1" country="GB" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_147" first_name="Daisy" last_name="Featherstone" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_148" first_name="Phoebe" last_name="Forsythe" nick_name="" gender="2" country="GB" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_149" first_name="Alexander" last_name="Gady" nick_name="" gender="1" country="GB" fictional="1" job="103" />
@@ -532,13 +604,13 @@
 		<person guid="Per_custom_Freddy_152" first_name="Eva" last_name="Gayheart" nick_name="" gender="2" country="USA" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_153" first_name="Lucas" last_name="Grantham" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_154" first_name="Alice" last_name="Graves" nick_name="" gender="2" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_155" first_name="Mason" last_name="Graysmark" nick_name="" gender="1" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_155" first_name="Mason" last_name="Graysmark" nick_name="" gender="1" country="GB" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_156" first_name="Lucy" last_name="Greaves" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_157" first_name="Logan" last_name="Haddington" nick_name="" gender="1" country="USA" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_158" first_name="Florence" last_name="Haddock" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_159" first_name="Isaac" last_name="Hamlin" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_160" first_name="Sofia" last_name="Hannigan" nick_name="" gender="2" country="USA" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_161" first_name="Benjamin" last_name="Hardin" nick_name="" gender="1" country="USA" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_161" first_name="Benjamin" last_name="Hardin" nick_name="" gender="1" country="USA" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_162" first_name="Layla" last_name="Harrington" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_163" first_name="Dylan" last_name="Hathaway" nick_name="" gender="1" country="USA" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_164" first_name="Lola" last_name="Hartshorn" nick_name="" gender="2" country="GB" fictional="1" job="98" />
@@ -560,16 +632,16 @@
 		<person guid="Per_custom_Freddy_180" first_name="Erin" last_name="Lansbury" nick_name="" gender="2" country="GB" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_181" first_name="Adam" last_name="Leachman" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_182" first_name="Maisie" last_name="Leech" nick_name="" gender="2" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_183" first_name="Theo" last_name="Lester" nick_name="" gender="1" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_183" first_name="Theo" last_name="Lester" nick_name="" gender="1" country="GB" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_184" first_name="Lexi" last_name="Lewis" nick_name="" gender="2" country="GB" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_185" first_name="Jayden" last_name="Lineback" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_186" first_name="Ellie" last_name="Lithgow" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_187" first_name="Arthur" last_name="Lockhart" nick_name="" gender="1" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_188" first_name="Hannah" last_name="Locklear" nick_name="" gender="2" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_188" first_name="Hannah" last_name="Locklear" nick_name="" gender="2" country="GB" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_189" first_name="Toby" last_name="Lockwood" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_190" first_name="Evelyn" last_name="Longfellow" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_191" first_name="Luke" last_name="Lorring" nick_name="" gender="1" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_192" first_name="Abigail" last_name="Madigan" nick_name="" gender="2" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_192" first_name="Abigail" last_name="Madigan" nick_name="" gender="2" country="GB" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_193" first_name="Lewis" last_name="Malfoy" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_194" first_name="Elsie" last_name="Marley" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_195" first_name="Matthew" last_name="Marshal" nick_name="" gender="1" country="GB" fictional="1" job="98" />
@@ -584,7 +656,7 @@
 		<person guid="Per_custom_Freddy_204" first_name="Ellie" last_name="Neil" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_205" first_name="Joshua" last_name="Neville" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_206" first_name="Chloe" last_name="Nicksay" nick_name="" gender="2" country="GB" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_207" first_name="Thomas" last_name="Onnington" nick_name="" gender="1" country="GB" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_207" first_name="Thomas" last_name="Onnington" nick_name="" gender="1" country="GB" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_208" first_name="Jessica" last_name="Patton" nick_name="" gender="2" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_209" first_name="James" last_name="Payne" nick_name="" gender="1" country="GB" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_210" first_name="Sophie" last_name="Perlman" nick_name="" gender="2" country="GB" fictional="1" job="98" />
@@ -621,7 +693,7 @@
 		<person guid="Per_custom_Freddy_243" first_name="Grace" last_name="McKee" nick_name="" gender="2" country="IRL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_244" first_name="Sean" last_name="Riordan" nick_name="" gender="1" country="IRL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_245" first_name="Lily" last_name="O'Mara" nick_name="" gender="2" country="IRL" fictional="1" job="234" />
-		<person guid="Per_custom_Freddy_246" first_name="Conor" last_name="Breen" nick_name="" gender="1" country="IRL" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_246" first_name="Conor" last_name="Breen" nick_name="" gender="1" country="IRL" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_247" first_name="Mia" last_name="Osullivan" nick_name="" gender="2" country="IRL" fictional="1" job="114" />
 		<person guid="Per_custom_Freddy_248" first_name="Adam" last_name="O'Mahony" nick_name="" gender="1" country="IRL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_249" first_name="Ella" last_name="O'Cuinn" nick_name="" gender="2" country="IRL" fictional="1" job="98" />
@@ -649,7 +721,7 @@
 		<person guid="Per_custom_Freddy_270" first_name="Mattia" last_name="Romano" nick_name="" gender="1" country="I" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_271" first_name="Chiara" last_name="Costa" nick_name="" gender="2" country="I" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_272" first_name="Alice" last_name="D'Angelo" nick_name="" gender="2" country="I" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_273" first_name="Leonardo" last_name="Appiani" nick_name="" gender="1" country="I" fictional="1" job="234" />
+		<person guid="Per_custom_Freddy_273" first_name="Leonardo" last_name="Appiani" nick_name="" gender="1" country="I" fictional="1" job="239" />
 		<person guid="Per_custom_Freddy_274" first_name="Davide" last_name="Belmonte " nick_name="" gender="1" country="I" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_275" first_name="Alessia" last_name="Gambacorti" nick_name="" gender="2" country="I" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_276" first_name="Riccardo" last_name="Gianfigliazzi" nick_name="" gender="1" country="I" fictional="1" job="98" />
@@ -661,7 +733,7 @@
 		<person guid="Per_custom_Freddy_282" first_name="Giuseppe" last_name="Nasi" nick_name="" gender="1" country="I" fictional="1" job="114" />
 		<person guid="Per_custom_Freddy_283" first_name="Noemi" last_name="Neroni" nick_name="" gender="2" country="I" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_284" first_name="Marco" last_name="Panciatichi" nick_name="" gender="1" country="I" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_285" first_name="Viola" last_name="Piccinino" nick_name="" gender="2" country="I" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_285" first_name="Viola" last_name="Piccinino" nick_name="" gender="2" country="I" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_286" first_name="Tommaso" last_name="Rucellai" nick_name="" gender="1" country="I" fictional="1" job="234" />
 		<person guid="Per_custom_Freddy_287" first_name="Greta" last_name="Salviati" nick_name="" gender="2" country="I" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_288" first_name="Antonio" last_name="Sanseverino" nick_name="" gender="1" country="I" fictional="1" job="98" />
@@ -697,7 +769,7 @@
 		<person guid="Per_custom_Freddy_316" first_name="Rio" last_name="Kobayashi " nick_name="" gender="1" country="J" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_317" first_name="Riku" last_name="Kato" nick_name="" gender="1" country="J" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_318" first_name="Yuna" last_name="Akada" nick_name="" gender="2" country="J" fictional="1" job="103" />
-		<person guid="Per_custom_Freddy_319" first_name="Kōki" last_name="Fukuno" nick_name="" gender="1" country="J" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_319" first_name="Kōki" last_name="Fukuno" nick_name="" gender="1" country="J" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_320" first_name="Saki" last_name="Hoshi" nick_name="" gender="2" country="J" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_321" first_name="Ryūsei" last_name="Kuromatsu" nick_name="" gender="1" country="J" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_322" first_name="Aoi" last_name="Nakasawa" nick_name="" gender="2" country="J" fictional="1" job="98" />
@@ -728,7 +800,7 @@
 		<person guid="Per_custom_Freddy_346" first_name="Madalena" last_name="Marques" nick_name="" gender="2" country="P" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_347" first_name="Diogo" last_name="Alves" nick_name="" gender="1" country="P" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_348" first_name="Sofia" last_name="Almeida" nick_name="" gender="2" country="P" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_349" first_name="Carlos" last_name="Ribeiro " nick_name="" gender="1" country="P" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_349" first_name="Carlos" last_name="Ribeiro " nick_name="" gender="1" country="P" fictional="1" job="69" />
 		<!-- Frankreich -->
 		<person guid="Per_custom_Freddy_350" first_name="Emma" last_name="Martin" nick_name="" gender="2" country="F" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_351" first_name="Lucas" last_name="Bernard" nick_name="" gender="1" country="F" fictional="1" job="98" />
@@ -765,7 +837,7 @@
 		<person guid="Per_custom_Freddy_382" first_name="Lina" last_name="Blanc" nick_name="" gender="2" country="F" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_383" first_name="Tom" last_name="Guerin" nick_name="" gender="1" country="F" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_384" first_name="Éva" last_name="Muller" nick_name="" gender="2" country="F" fictional="1" job="2146" />
-		<person guid="Per_custom_Freddy_385" first_name="Maxime" last_name="Perrin" nick_name="" gender="1" country="F" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_385" first_name="Maxime" last_name="Perrin" nick_name="" gender="1" country="F" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_386" first_name="Lily" last_name="Clement" nick_name="" gender="2" country="F" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_387" first_name="Clément" last_name="Dumont" nick_name="" gender="1" country="F" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_388" first_name="Louanne" last_name="Fortaine" nick_name="" gender="2" country="F" fictional="1" job="98" />
@@ -801,7 +873,7 @@
 		<person guid="Per_custom_Freddy_416" first_name="Jegor" last_name="Solowjow" nick_name="" gender="1" country="SU" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_417" first_name="Anna" last_name="Wassiljew" nick_name="" gender="2" country="SU" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_418" first_name="Michail" last_name="Saizew" nick_name="" gender="1" country="SU" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_419" first_name="Tatjana" last_name="Pawlow" nick_name="" gender="2" country="SU" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_419" first_name="Tatjana" last_name="Pawlow" nick_name="" gender="2" country="SU" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_420" first_name="Igor" last_name="Semjonow" nick_name="" gender="1" country="SU" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_421" first_name="Galina" last_name="Golubew" nick_name="" gender="2" country="SU" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_422" first_name="Wladimir" last_name="Winogradow" nick_name="" gender="1" country="SU" fictional="1" job="98" />
@@ -845,7 +917,7 @@
 		<person guid="Per_custom_Freddy_457" first_name="Nalani" last_name="Makan" nick_name="" gender="2" country="USA" fictional="1" job="114" />
 		<person guid="Per_custom_Freddy_458" first_name="Ulani" last_name="Pekelo" nick_name="" gender="2" country="USA" fictional="1" job="98" />
 		<!-- Baltische (insbesondere Litauen) -->
-		<person guid="Per_custom_Freddy_459" first_name="Emilija" last_name="Aschmies " nick_name="" gender="2" country="LT" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_459" first_name="Emilija" last_name="Aschmies " nick_name="" gender="2" country="LT" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_460" first_name="Lukas" last_name="Balaszus" nick_name="" gender="1" country="LT" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_461" first_name="Gabija" last_name="Deiweleit" nick_name="" gender="2" country="LT" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_462" first_name="Matas" last_name="Gerullis" nick_name="" gender="1" country="LT" fictional="1" job="98" />
@@ -897,7 +969,7 @@
 		<!-- Holland -->
 		<person guid="Per_custom_Freddy_505" first_name="Emma" last_name="de Jong" nick_name="" gender="2" country="NL" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_506" first_name="Daan" last_name="Jansen" nick_name="" gender="1" country="NL" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_507" first_name="Sophie" last_name="de Vries" nick_name="" gender="2" country="NL" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_507" first_name="Sophie" last_name="de Vries" nick_name="" gender="2" country="NL" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_508" first_name="Bram" last_name="vander Berg" nick_name="" gender="1" country="NL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_509" first_name="Julia" last_name="van Dijk" nick_name="" gender="2" country="NL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_510" first_name="Sem" last_name="Bakker" nick_name="" gender="1" country="NL" fictional="1" job="98" />
@@ -911,7 +983,7 @@
 		<person guid="Per_custom_Freddy_518" first_name="Luuk" last_name="Vos" nick_name="" gender="1" country="NL" fictional="1" job="106" />
 		<person guid="Per_custom_Freddy_519" first_name="Saar" last_name="Peters" nick_name="" gender="1" country="NL" fictional="1" job="234" />
 		<person guid="Per_custom_Freddy_520" first_name="Thijs" last_name="Hendriks" nick_name="" gender="1" country="NL" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_521" first_name="Lotte" last_name="van Leeuwen" nick_name="" gender="2" country="NL" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_521" first_name="Lotte" last_name="van Leeuwen" nick_name="" gender="2" country="NL" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_522" first_name="Jayden" last_name="Dekker" nick_name="" gender="1" country="NL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_523" first_name="Tess" last_name="Brouwer" nick_name="" gender="2" country="NL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_524" first_name="Tim" last_name="de Wit" nick_name="" gender="1" country="NL" fictional="1" job="103" />
@@ -933,7 +1005,7 @@
 		<person guid="Per_custom_Freddy_540" first_name="Johan" last_name="van Vliet" nick_name="" gender="1" country="NL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_541" first_name="Aaltje" last_name="Hoekstra" nick_name="" gender="2" country="NL" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_542" first_name="Dirk" last_name="Maas" nick_name="" gender="1" country="NL" fictional="1" job="98" />
-		<person guid="Per_custom_Freddy_543" first_name="Alida" last_name="Verhoeven" nick_name="" gender="2" country="NL" fictional="1" job="98" />
+		<person guid="Per_custom_Freddy_543" first_name="Alida" last_name="Verhoeven" nick_name="" gender="2" country="NL" fictional="1" job="69" />
 		<person guid="Per_custom_Freddy_544" first_name="Marinus" last_name="Koster" nick_name="" gender="1" country="NL" fictional="1" job="103" />
 		<!-- Türkisch -->
 		<person guid="Per_custom_Freddy_545" first_name="Ayse" last_name="Alemdaroğlu" nick_name="" gender="2" country="TR" fictional="1" job="98" />
@@ -1023,7 +1095,7 @@
 		<person guid="Per_custom_Freddy_625" first_name="Paul" last_name="Meyer" nick_name="" gender="1" country="D" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_626" first_name="Anna" last_name="Wagner" nick_name="" gender="2" country="D" fictional="1" job="103" />
 		<person guid="Per_custom_Freddy_627" first_name="Jonas" last_name="Becker" nick_name="" gender="1" country="D" fictional="1" job="103" />
-		<person guid="Per_custom_Freddy_628" first_name="Lea" last_name="Schulz" nick_name="" gender="2" country="D" fictional="1" job="103" />
+		<person guid="Per_custom_Freddy_628" first_name="Lea" last_name="Schulz" nick_name="" gender="2" country="D" fictional="1" job="2146" />
 		<person guid="Per_custom_Freddy_629" first_name="Finn" last_name="Hoffmann" nick_name="" gender="1" country="D" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_630" first_name="Emilia" last_name="Schäfer" nick_name="" gender="2" country="D" fictional="1" job="98" />
 		<person guid="Per_custom_Freddy_631" first_name="Noah" last_name="Koch" nick_name="" gender="1" country="D" fictional="1" job="234" />

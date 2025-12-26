@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvtdb>
+	<version value="3" />
+
+	<scripttemplates>
+		<scripttemplate product="1" licence_type="1" guid="6b058f36-a6c2-460a-94f9-d7af435daba2" creator="8972">
+			<title>
+				<de>${route} - Traumreisen</de>
+				<en>${route} - Dream Journeys</en>
+				<pl>${route} - Podróże marzeń</pl>
+			</title>
+			<description>
+				<de>${wetravel}</de>
+				<en>${wetravel}</en>
+				<pl>${wetravel}</pl>
+			</description>
+			<variables>
+				<j_csv>
+					<de>Hurtigruten;Auf der „Nordnorge“ reisen wir von Bergen nach Kirkenes und zurück. Traumhafte Fjorde und Landschaften entlang der norwegischen Küste ziehen die Reisenden in ihren Bann!|
+						${brand_orientexpress};Mit dem legendären Luxuszug reisen wir von Paris nach Istanbul. Eleganz, Nostalgie und der Hauch eines Krimis begleiten uns auf dieser einmaligen Fahrt durch Europa!|
+						Transsibirische Eisenbahn;Von Moskau nach Wladiwostok führt uns die längste Zugreise der Welt durch faszinierende Landschaften und über sieben Zeitzonen hinweg - ein Abenteuer auf Schienen!|
+						${brand_rockymountaineer};Durch die majestätischen Rocky Mountains Kanadas erleben wir eine unvergessliche Panoramafahrt zwischen Vancouver und Banff. Atemberaubende Natur inklusive!|
+						Panamericana;Ein Roadtrip der Superlative: Von Alaska bis Feuerland durchqueren wir zwei Kontinente und erleben extreme Landschaften, Kulturen und Abenteuer!|
+						Blauer Zug Südafrika;Der „${brand_bluetrain}“ bringt uns im Stil vergangener Zeiten von Pretoria nach Kapstadt - durch Steppe, Savanne und mit Blick auf den Tafelberg.|
+						Nilkreuzfahrt;Auf einem komfortablen Schiff gleiten wir über den Nil von Luxor nach Assuan. Tempel, Pyramiden und das Erbe der Pharaonen begleiten uns auf jedem Kilometer.|
+						Donaukreuzfahrt;Von Passau bis ans Schwarze Meer führt unsere Reise über Europas zweitlängsten Fluss - mit historischen Städten, Klöstern und wechselnden Kulturen entlang der Route.|
+						Mekong-Kreuzfahrt;Von Vietnam nach Kambodscha reisen wir auf dem legendären Mekong durch Dschungel, schwimmende Märkte und geheimnisvolle Tempelwelten.|
+						Postschiff Spitzbergen;Mit einem modernen Expeditionsschiff erkunden wir die eisige Wildnis Spitzbergens. Eisbären, Gletscher und endlose Tage in der Mitternachtssonne erwarten uns.|
+						Anden-Explorer;Auf Schienen durchqueren wir die beeindruckenden Hochebenen Perus. Zwischen Cusco und Arequipa genießen wir Luxus, Lamaherden und das Panorama der Anden.|
+						Seidenstraße;Auf der legendären Handelsroute reisen wir von China über Usbekistan bis ans Kaspische Meer. Karawanenstädte und orientalische Schätze inklusive!|
+						Australien-Küstenroute;Von Sydney nach Cairns führt uns die legendäre Great Ocean Road entlang der Steilküste, durch Regenwälder und vorbei am Great Barrier Reef.|
+						Japan zur Kirschblüte;Zur schönsten Jahreszeit reisen wir mit dem Zug von Tokio bis Kyoto. Kirschblüten, Zen-Gärten und moderne Metropolen verzaubern uns!|
+						Neuseeland-Rundreise;Zwischen Gletschern, Vulkanen und Fjorden erleben wir die landschaftliche Vielfalt Neuseelands - von der Nord- bis zur Südinsel.|
+						Alaska Inside Passage;Mit dem Schiff durchqueren wir die Inside Passage - eine Route durch Gletscherbuchten, Wälder und vorbei an Buckelwalen und Adlerhorsten.|
+						Nordlichtreise Lappland;Auf der Jagd nach dem Polarlicht reisen wir durch die winterliche Wildnis Lapplands - mit Rentieren, Iglus und magischen Nächten.|
+						Bali und Komodo-Inseln;Mit dem Schiff und zu Fuß erkunden wir die Tropenwelt Indonesiens - von hinduistischen Tempeln bis zu den legendären Waranen.|
+						Grönland-Expedition;Per Schiff und ${brand_zodiac} geht es entlang der Westküste Grönlands - vorbei an Eisbergen, Walsichtungen und traditionellen Inuit-Siedlungen.|
+						Patagonien-Abenteuer;Von Ushuaia bis Torres del Paine entdecken wir das wilde Südende Südamerikas - mit Gletschern, Wind und endloser Weite.|
+						Italien mit dem Oldtimer;La Dolce Vita pur: In einem stilvollen Cabrio reisen wir von der Toskana über Rom bis zur Amalfiküste - begleitet von Sonne, Oliven und Espressoduft.
+					</de>
+					<en>Hurtigruten;On the "Nordnorge" we travel from Bergen to Kirkenes and back. Dreamy fjords and landscapes along the Norwegian coast captivate travelers!|
+						${brand_orientexpress};Aboard the legendary luxury train, we travel from Paris to Istanbul. Elegance, nostalgia, and a hint of mystery accompany us on this unique journey through Europe!|
+						Trans-Siberian Railway;From Moscow to Vladivostok, the world's longest train journey takes us through fascinating landscapes and across seven time zones - an adventure on rails!|
+						${brand_rockymountaineer};Through the majestic Canadian Rockies, we enjoy an unforgettable panoramic ride between Vancouver and Banff. Breathtaking nature included!|
+						Panamericana;A road trip of superlatives: From Alaska to Tierra del Fuego, we cross two continents and experience extreme landscapes, cultures, and adventures!|
+						${brand_bluetrain} South Africa;The "${brand_bluetrain}" carries us in vintage style from Pretoria to Cape Town - through savannas, bushlands, and with views of Table Mountain.|
+						Nile Cruise;Aboard a comfortable ship, we glide along the Nile from Luxor to Aswan. Temples, pyramids, and the legacy of the pharaohs accompany us every mile.|
+						Danube Cruise;From Passau to the Black Sea, our journey follows Europe's second-longest river - with historic cities, monasteries, and diverse cultures along the way.|
+						Mekong Cruise;From Vietnam to Cambodia, we travel on the legendary Mekong through jungles, floating markets, and mysterious temple worlds.|
+						Spitsbergen Expedition;On a modern expedition ship, we explore the icy wilderness of Spitsbergen. Polar bears, glaciers, and endless days in the midnight sun await us.|
+						Andean Explorer;By train, we cross the impressive highlands of Peru. Between Cusco and Arequipa, we enjoy luxury, llama herds, and spectacular Andean panoramas.|
+						Silk Road;On the legendary trade route, we travel from China through Uzbekistan to the Caspian Sea. Caravan cities and oriental treasures included!|
+						Australia Coastal Route;From Sydney to Cairns, we follow the legendary Great Ocean Road - past cliffs, rainforests, and the Great Barrier Reef.|
+						Japan in Cherry Blossom Season;At the most beautiful time of year, we travel by train from Tokyo to Kyoto. Cherry blossoms, Zen gardens, and modern metropolises enchant us!|
+						New Zealand Round Trip;Between glaciers, volcanoes, and fjords, we experience New Zealand's diverse landscapes - from the North Island to the South.|
+						Alaska Inside Passage;By ship, we traverse the Inside Passage - a route through glacier bays and forests, past humpback whales and eagle nests.|
+						Northern Lights in Lapland;Chasing the aurora borealis, we travel through the wintry wilderness of Lapland - with reindeer, igloos, and magical nights.|
+						Bali and Komodo Islands;By boat and on foot, we explore Indonesia's tropical world - from Hindu temples to the legendary Komodo dragons.|
+						Greenland Expedition;By ship and ${brand_zodiac}, we follow the west coast of Greenland - past icebergs, whale sightings, and traditional Inuit settlements.|
+						Patagonia Adventure;From Ushuaia to Torres del Paine, we explore South America's wild southern tip - with glaciers, winds, and endless open spaces.|
+						Italy by Classic Car;Pure "la dolce vita": In a stylish convertible, we journey from Tuscany through Rome to the Amalfi Coast - accompanied by sunshine, olives, and espresso aromas.
+					</en>
+					<pl>Hurtigruten;Na pokładzie "Nordnorge" podróżujemy z Bergen do Kirkenes i z powrotem. Malownicze fiordy i krajobrazy norweskiego wybrzeża oczarowują podróżnych!|
+						${brand_orientexpress};Legendarnym luksusowym pociągiem podróżujemy z Paryża do Stambułu. Elegancja, nostalgia i nuta kryminału towarzyszą tej wyjątkowej podróży przez Europę!|
+						Kolej Transsyberyjska;Z Moskwy do Władywostoku prowadzi nas najdłuższa podróż koleją na świecie - przez fascynujące krajobrazy i siedem stref czasowych. Przygodowa podróż po torach!|
+						${brand_rockymountaineer};Przez majestatyczne Góry Skaliste w Kanadzie odbywamy niezapomnianą podróż panoramiczną między Vancouver a Banff. Zapierająca dech natura w cenie!|
+						Panamericana;Podróż życia: z Alaski aż po Ziemię Ognistą przemierzamy dwa kontynenty, odkrywając skrajne krajobrazy, kultury i przygody!|
+						Błękitny Pociąg (RPA);„${brand_bluetrain}” zabiera nas w stylu dawnych lat z Pretorii do Kapsztadu - przez sawannę i step, z widokiem na Górę Stołową.|
+						Rejs po Nilu;Na komfortowym statku płyniemy Nilem z Luksoru do Asuanu. Świątynie, piramidy i dziedzictwo faraonów towarzyszą nam przez całą trasę.|
+						Rejs po Dunaju;Z Pasawy nad Morze Czarne podróżujemy drugim najdłuższym rzeką Europy - mijając historyczne miasta, klasztory i różnorodne kultury.|
+						Rejs po Mekongu;Z Wietnamu do Kambodży płyniemy legendarnym Mekongiem przez dżungle, pływające targi i tajemnicze świątynie.|
+						Ekspedycja na Spitsbergen;Nowoczesnym statkiem ekspedycyjnym poznajemy lodową dzicz Spitsbergenu. Czekają na nas niedźwiedzie polarne, lodowce i bezkresne dni polarne.|
+						Andean Explorer;Pociągiem przemierzamy imponujące wyżyny Peru. Między Cusco a Arequipą czeka na nas luksus, stada lam i panoramy Andów.|
+						Jedwabny Szlak;Legendarnym szlakiem handlowym podróżujemy z Chin przez Uzbekistan aż nad Morze Kaspijskie. Miasta karawan i orientalne skarby w pakiecie!|
+						Trasa przybrzeżna Australii;Z Sydney do Cairns jedziemy słynną Great Ocean Road - wzdłuż klifów, przez lasy deszczowe i obok Wielkiej Rafy Koralowej.|
+						Japonia w czasie kwitnienia wiśni;W najpiękniejszej porze roku podróżujemy koleją z Tokio do Kioto. Kwitnące wiśnie, ogrody zen i nowoczesne metropolie urzekają nas!|
+						Objazd po Nowej Zelandii;Między lodowcami, wulkanami i fiordami odkrywamy niezwykłą przyrodę Nowej Zelandii - od Wyspy Północnej po Południową.|
+						Alaska Inside Passage;Statkiem przepływamy przez Inside Passage - trasę wśród lodowcowych zatok, lasów i wielorybów.|
+						Zorza polarna w Laponii;Podążając śladem zorzy polarnej, przemierzamy zimową dzicz Laponii - z reniferami, igloo i magicznymi nocami.|
+						Bali i wyspy Komodo;Statkiem i pieszo poznajemy tropikalny świat Indonezji - od świątyń hinduistycznych po legendarne warany z Komodo.|
+						Ekspedycja na Grenlandię;Statkiem i pontonem ${brand_zodiac} wzdłuż zachodniego wybrzeża Grenlandii - mijając góry lodowe, wieloryby i wioski Inuitów.|
+						Przygoda w Patagonii;Od Ushuai po Torres del Paine odkrywamy dzikie południe Ameryki Południowej - z lodowcami, wiatrem i bezkresem.|
+						Włochy klasycznym autem;Prawdziwe „la dolce vita”: stylowym kabrioletem podróżujemy z Toskanii przez Rzym na wybrzeże Amalfi - wśród słońca, oliwek i zapachu espresso.
+					</pl>
+				</j_csv>
+				<route>
+					<all>${.csv:j_csv:0}</all>
+				</route>
+				<wetravel>
+					<all>${.csv:j_csv:1}</all>
+				</wetravel>
+			</variables>
+			<jobs> <!-- ein Regisseur, ein Reporter, 2 Nebenrollen 1x weiblich 1x männlich -->
+				<job index="0" function="1" required="1" />
+				<job index="1" function="128" required="1" />
+				<job index="2" function="32" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="0" flags_optional="4" target_groups="68" /> <!-- Zielgruppe Rentner und Hausfrauen, Kultur: zufällig -->
+			<targetgroupattractivity men="0.5" /> <!-- Malus: Männer -->
+			<genres maingenre="6" subgenres="300" /> <!-- Doku / Reportage -->
+			<blocks value="2" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="80" />
+			<outcome min="20" max="80" />
+			<review min="20" max="80" />
+			<speed min="20" max="80" />
+			<studio_size min="1" max="3" /> <!-- Studiogröße zufällig -->
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="723633c8-c001-443d-b59f-a9d271a2bf8e" creator="8972" comment="fictional docu about real events with real people">
+			<title>
+				<de>Der Pfarrer und der Staatschef</de>
+				<en>The Pastor and the Head of State</en>
+				<pl>Pastor i Głowa Państwa</pl>
+			</title>
+			<description>
+				<de>Pfarrer ${uweholmer} nahm 1990 ${erich} ${honecker} und seine Frau ${margot} in sein Pfarrhaus auf, die von einem Tag auf den anderen obdachlos geworden waren. Aufregende 7 Monate standen für die 10-köpfige Familie ${holmer} an.</de>
+				<en>In 1990, Pastor ${uweholmer} took in ${erich} ${honecker} and his wife ${margot}, who had suddenly become homeless, into his vicarage. An exciting 7 months lay ahead for the ${holmer} family of 10.</en>
+				<pl>W 1990 roku pastor ${uweholmer} przyjął na swoją plebanię ${erich}a ${honecker}a i jego żonę ${margot}, którzy nagle stali się bezdomni. Oboje z dnia na dzień zostali bezdomni. Przed 10-osobową rodziną ${holmer}ów stało 7 ekscytujących miesięcy.</pl>
+			</description>
+			<variables>
+				<holmerguid>77edf414-9109-4d69-b9a2-d69f24e4f30c</holmerguid>
+				<honeckerguid>e6351009-15e3-4540-bef6-3c2d1afee093</honeckerguid>
+				<margotguid>47542a59-ab4e-460f-ab28-0f11effb44f2</margotguid>
+				<uweholmer>${.person:"${holmerguid}":"fullname"}</uweholmer>
+				<holmer>${.person:"${holmerguid}":"lastname"}</holmer>
+				<erich>${.person:"${honeckerguid}":"firstname"}</erich>
+				<honecker>${.person:"${honeckerguid}":"lastname"}</honecker>
+				<margot>${.person:"${margotguid}":"firstname"}</margot>
+			</variables>
+			<jobs> <!-- ein Regisseur, ein Moderator, ein Reporter -->
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" />
+				<job index="2" function="128" required="1" />
+				<job index="3" function="64" required="1" person="${holmerguid}" />
+				<job index="4" function="64" required="1" person="${honeckerguid}" />
+				<job index="5" function="64" required="1" person="${margotguid}" />
+			</jobs>
+			<data flags="4" flags_optional="0" target_groups="68" /> <!-- Zielgruppe Rentner und Hausfrauen, Kultur: ja -->
+			<targetgroupattractivity men="0.5" /> <!-- Malus: Männer -->
+			<genres maingenre="6" subgenres="300" /> <!-- Doku / Reportage -->
+			<blocks value="2" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="80" />
+			<outcome min="20" max="80" />
+			<review min="20" max="80" />
+			<speed min="20" max="80" />
+			<studio_size min="1" max="3" /> <!-- Studiogröße zufällig -->
+			<availability year_range_from="1991" year_range_to="-1" /> <!-- Verfügbarkeit 1991 bis beliebig -->
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="2164ef32-5aba-4a4b-ad82-9010470e1787" creator="8972">
+			<title>
+				<all>${.person:personguid:"fullname"}${birthdeath}</all>
+			</title>
+			<description>
+				<de>Eine Hommage ${tothegreat}.</de>
+				<en>A tribute ${tothegreat}.</en>
+				<pl>Hołd dla ${tothegreat}.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<p_csv> <!-- TODO: more elegant method needed than copy-pasting lifespan-check into every language. Not clear if sufficient date comparison operations supprted yet -->
+					<de>${heinzruehmann};an den großen deutschen Volksschauspieler;${.lte:currentyear:1994:"":" (1902-1994)"}|
+						${hansalbers};an den charismatischen Filmhelden der Vorkriegs- und Nachkriegszeit;${.lte:currentyear:1960:"":" (1891-1960)"}|
+						${willyfritsch};an den charmanten UFA-Star der 1930er und 1950er Jahre;${.lte:currentyear:1973:"":" (1901-1973)"}|
+						${theolingen};an den unvergesslichen Komiker mit dem verschmitzten Blick;${.lte:currentyear:1978:"":" (1903-1978)"}|
+						${paulhoerbiger};an den Wiener Publikumsliebling mit Herz und Humor;${.lte:currentyear:1981:"":" (1894-1981)"}|
+						${oskarwerner};an den österreichischen Weltstar mit Tiefgang;${.lte:currentyear:1984:"":" (1922-1984)"}|
+						${romyschneider};an die tragische Ikone des deutschen und französischen Films;${.lte:currentyear:1982:"":" (1938-1982)"}|
+						${gertfroebe};an den vielseitigen Charakterdarsteller - vom ${.role:"e8ae09d0-6b86-4ed3-b62b-d65e64deea0d":"lastname"} zum Märchenonkel;${.lte:currentyear:1988:"":" (1913-1988)"}|
+						${mariaschell};an die strahlende Mimin mit „dem ${.person:mariaschell:"lastname"}-Lächeln“;${.lte:currentyear:2005:"":" (1926-2005)"}|
+						${karlheinzboehm};an den Kaiser der Herzen und engagierten Humanisten;${.lte:currentyear:2014:"":" (1928-2014)"}|
+						${curdjuergens};an den eleganten Weltmann auf deutschen und internationalen Bühnen;${.lte:currentyear:1982:"":" (1915-1982)"}|
+						${gustavknuth};an den bodenständigen Schauspieler mit Herz und Seele;${.lte:currentyear:1987:"":" (1901-1987)"}|
+						${heidemariehatheyer};an die ausdrucksstarke Charakterdarstellerin der 1950er Jahre;${.lte:currentyear:1990:"":" (1918-1990)"}|
+						${ingemeysel};an die resolute „Mutter der Nation“;${.lte:currentyear:2004:"":" (1910-2004)"}|
+						${liselottepulver};an das fröhliche Gesicht des deutschen Nachkriegsfilms;${.lte:currentyear:2100:"":" (1929-)"}|
+						${peteralexander};an den Entertainer, Sänger und Schauspieler, der ein ganzes Land zum Lächeln brachte;${.lte:currentyear:2011:"":" (1926-2011)"}|
+						${louisdefunes};an den französischen Komiker mit der explosiven Mimik;${.lte:currentyear:1983:"":" (1914-1983)"}|
+						${jeanmarais};an den französischen Leinwandhelden mit Kultstatus;${.lte:currentyear:1998:"":" (1913-1998)"}|
+						${jamesstewart};an den Gentleman ${media_hollywood}s mit Herz und Prinzipien;${.lte:currentyear:1997:"":" (1908-1997)"}|
+						${alecguinness};an den britischen Verwandlungskünstler des klassischen Kinos;${.lte:currentyear:2000:"":" (1914-2000)"}|
+						${zarahleander};an die Diva mit der dunklen Stimme und dem unvergesslichen Pathos;${.lte:currentyear:1981:"":" (1907-1981)"}|
+						${heinzerhardt};an den wortgewandten Humoristen mit Herz, Brille und Klavier;${.lte:currentyear:1979:"":" (1909-1979)"}|
+						${peterustinov};an den kosmopolitischen Schauspieler, Erzähler und Weltbürger mit Witz und Tiefe;${.lte:currentyear:2004:"":" (1921-2004)"}|
+						${gustafgruendgens};an den bedeutenden Theatermann und charismatischen Mephisto-Darsteller;${.lte:currentyear:1963:"":" (1899-1963)"}|
+						${marlenedietrich};an die stilbildende Ikone zwischen Glamour, Gesang und Widerstand;${.lte:currentyear:1992:"":" (1901-1992)"}
+					</de>
+					<en>${heinzruehmann};to the great German popular actor;${.lte:currentyear:1994:"":" (1902-1994)"}|
+						${hansalbers};to the charismatic film hero of the pre- and post-war era;${.lte:currentyear:1960:"":" (1891-1960)"}|
+						${willyfritsch};to the charming UFA star of the 1930s and 1950s;${.lte:currentyear:1973:"":" (1901-1973)"}|
+						${theolingen};to the unforgettable comedian with the mischievous look;${.lte:currentyear:1978:"":" (1903-1978)"}|
+						${paulhoerbiger};to the Viennese audience favorite with heart and humor;${.lte:currentyear:1981:"":" (1894-1981)"}|
+						${oskarwerner};to the Austrian world star with depth;${.lte:currentyear:1984:"":" (1922-1984)"}|
+						${romyschneider};to the tragic icon of German and French cinema;${.lte:currentyear:1982:"":" (1938-1982)"}|
+						${gertfroebe};to the versatile character actor - from ${.role:"e8ae09d0-6b86-4ed3-b62b-d65e64deea0d":"lastname"} to fairytale uncle;${.lte:currentyear:1988:"":" (1913-1988)"}|
+						${mariaschell};to the radiant actress with the "${.person:mariaschell:"lastname"} smile";${.lte:currentyear:2005:"":" (1926-2005)"}|
+						${karlheinzboehm};to the emperor of hearts and committed humanitarian;${.lte:currentyear:2014:"":" (1928-2014)"}|
+						${curdjuergens};to the elegant cosmopolitan on German and international stages;${.lte:currentyear:1982:"":" (1915-1982)"}|
+						${gustavknuth};to the down-to-earth actor with heart and soul;${.lte:currentyear:1987:"":" (1901-1987)"}|
+						${heidemariehatheyer};to the expressive character actress of the 1950s;${.lte:currentyear:1990:"":" (1918-1990)"}|
+						${ingemeysel};to the resolute "mother of the nation";${.lte:currentyear:2004:"":" (1910-2004)"}|
+						${liselottepulver};to the cheerful face of post-war German cinema;${.lte:currentyear:2100:"":" (1929-)"}|
+						${peteralexander};to the entertainer, singer, and actor who made a whole country smile;${.lte:currentyear:2011:"":" (1926-2011)"}|
+						${louisdefunes};to the French comedian with explosive expressions;${.lte:currentyear:1983:"":" (1914-1983)"}|
+						${jeanmarais};to the French screen hero with cult status;${.lte:currentyear:1998:"":" (1913-1998)"}|
+						${jamesstewart};to the gentleman of ${media_hollywood} with heart and principles;${.lte:currentyear:1997:"":" (1908-1997)"}|
+						${alecguinness};to the British chameleon of classic cinema;${.lte:currentyear:2000:"":" (1914-2000)"}|
+						${zarahleander};to the diva with the dark voice and unforgettable pathos;${.lte:currentyear:1981:"":" (1907-1981)"}|
+						${heinzerhardt};to the eloquent humorist with heart, glasses, and a piano;${.lte:currentyear:1979:"":" (1909-1979)"}|
+						${peterustinov};to the cosmopolitan actor, storyteller, and citizen of the world with wit and depth;${.lte:currentyear:2004:"":" (1921-2004)"}|
+						${gustafgruendgens};to the influential man of the theatre and charismatic Mephisto performer;${.lte:currentyear:1963:"":" (1899-1963)"}|
+						${marlenedietrich};to the style-defining icon of glamour, song, and resistance;${.lte:currentyear:1992:"":" (1901-1992)"}
+					</en>
+					<pl>${heinzruehmann};wielkiego niemieckiego aktora ludowego;${.lte:currentyear:1994:"":" (1902-1994)"}|
+						${hansalbers};charyzmatycznego bohatera filmowego czasów przedwojennych i powojennych;${.lte:currentyear:1960:"":" (1891-1960)"}|
+						${willyfritsch};urokliwego gwiazdora UFA z lat 30. i 50.;${.lte:currentyear:1973:"":" (1901-1973)"}|
+						${theolingen};niezapomnianego komika z figlarnym spojrzeniem;${.lte:currentyear:1978:"":" (1903-1978)"}|
+						${paulhoerbiger};wiedeńskiego ulubieńca publiczności pełnego serca i humoru;${.lte:currentyear:1981:"":" (1894-1981)"}|
+						${oskarwerner};austriackiego światowego aktora z głębią;${.lte:currentyear:1984:"":" (1922-1984)"}|
+						${romyschneider};tragicznej ikony niemieckiego i francuskiego kina;${.lte:currentyear:1982:"":" (1938-1982)"}|
+						${gertfroebe};wszechstronnego aktora charakterystycznego - od ${.role:"e8ae09d0-6b86-4ed3-b62b-d65e64deea0d":"lastname"}a do bajkowego wujka;${.lte:currentyear:1988:"":" (1913-1988)"}|
+						${mariaschell};promiennej aktorki z „uśmiechem ${.person:mariaschell:"lastname"}“;${.lte:currentyear:2005:"":" (1926-2005)"}|
+						${karlheinzboehm};„cesarza serc“ i zaangażowanego humanisty;${.lte:currentyear:2014:"":" (1928-2014)"}|
+						${curdjuergens};eleganckiego obywatela świata na scenach niemieckich i międzynarodowych;${.lte:currentyear:1982:"":" (1915-1982)"}|
+						${gustavknuth};serdecznego aktora z sercem i duszą;${.lte:currentyear:1987:"":" (1901-1987)"}|
+						${heidemariehatheyer};wyrazistej aktorki charakterystycznej lat 50.;${.lte:currentyear:1990:"":" (1918-1990)"}|
+						${ingemeysel};stanowczej „matki narodu“;${.lte:currentyear:2004:"":" (1910-2004)"}|
+						${liselottepulver};radosnej twarzy niemieckiego kina powojennego;${.lte:currentyear:2100:"":" (1929-)"}|
+						${peteralexander};artysty, piosenkarza i aktora, który rozbawił cały kraj;${.lte:currentyear:2011:"":" (1926-2011)"}|
+						${louisdefunes};francuskiego komika o wybuchowej mimice;${.lte:currentyear:1983:"":" (1914-1983)"}|
+						${jeanmarais};francuskiego bohatera ekranowego o statusie kultowym;${.lte:currentyear:1998:"":" (1913-1998)"}|
+						${jamesstewart};${media_hollywood}zkiego gentlemana z sercem i zasadami;${.lte:currentyear:1997:"":" (1908-1997)"}|
+						${alecguinness};brytyjskiego mistrza przemian w klasycznym kinie;${.lte:currentyear:2000:"":" (1914-2000)"}|
+						${zarahleander};divy o niskim głosie i niezapomnianym patosie;${.lte:currentyear:1981:"":" (1907-1981)"}|
+						${heinzerhardt};błyskotliwego humorysty z sercem, okularami i fortepianem;${.lte:currentyear:1979:"":" (1909-1979)"}|
+						${peterustinov};kosmopolitycznego aktora, opowiadacza i obywatela świata o błyskotliwym umyśle i głębi;${.lte:currentyear:2004:"":" (1921-2004)"}|
+						${gustafgruendgens};wybitnego człowieka teatru i charyzmatycznego odtwórcy roli Mefista;${.lte:currentyear:1963:"":" (1899-1963)"}|
+						${marlenedietrich};ikony stylu, łączącej glamour, śpiew i postawę oporu;${.lte:currentyear:1992:"":" (1901-1992)"}
+					</pl>
+				</p_csv>
+				<personguid>${.csv:p_csv:0}</personguid>
+				<tothegreat>
+					<all>${.csv:p_csv:1}</all>
+				</tothegreat>
+				<birthdeath>
+					<all>${.csv:p_csv:2}</all>
+				</birthdeath>
+				<heinzruehmann>35ecbb4e-ee36-415d-914a-a78ed8e32d4b</heinzruehmann>
+				<hansalbers>d8bffee8-33ab-4af0-9321-83c2cf7fc11f</hansalbers>
+				<willyfritsch>fedcec69-823d-4bf0-bf7d-6e69ced1125b</willyfritsch>
+				<theolingen>a0111f16-cb88-41c9-a44e-b508cbeb35f6</theolingen>
+				<paulhoerbiger>22a0b99f-8bd0-4809-9d9a-5ffa072bb81d</paulhoerbiger>
+				<oskarwerner>2c97f975-94a4-4ba2-806f-b5642573745f</oskarwerner>
+				<romyschneider>a52d754e-1732-49ff-a06f-f9e770d69f59</romyschneider>
+				<gertfroebe>ea76aa3d-2541-481a-b08a-e6905da0cb30</gertfroebe>
+				<mariaschell>2206e3cd-f5f1-4c96-818e-8fc2f7926f63</mariaschell>
+				<karlheinzboehm>f1fd440b-c20a-476f-a545-ee7b262f0947</karlheinzboehm>
+				<curdjuergens>fecc68e2-12dc-4803-9c5d-f436de97ef40</curdjuergens>
+				<gustavknuth>8bfff12f-2505-4616-8a3a-3c1d01e5d3bf</gustavknuth>
+				<heidemariehatheyer>72e36541-63c2-41b3-8c12-5f10580cc2e3</heidemariehatheyer>
+				<ingemeysel>eb0294a1-6347-4a8e-b8b6-bd499304d871</ingemeysel>
+				<liselottepulver>65538445-9da2-457c-b207-be0544514afa</liselottepulver>
+				<peteralexander>c8ce726c-b3db-42f8-a691-9adaaf4eecc5</peteralexander>
+				<louisdefunes>313d31d0-c50f-48a6-8d67-d392cb98c97a</louisdefunes>
+				<jeanmarais>8ce19738-30dc-442e-8872-2a2d95c6b301</jeanmarais>
+				<jamesstewart>788fa2a0-7908-4e96-b3c0-51ff9386a16e</jamesstewart>
+				<alecguinness>becc2ecd-d309-46a1-b9c2-30253915af0c</alecguinness>
+				<zarahleander>4fe9f048-adf2-4c5b-b268-0b37f32ed908</zarahleander>
+				<heinzerhardt>20162654-5f3a-49d5-950f-4e9a52729768</heinzerhardt>
+				<peterustinov>a86fd32f-09b5-409a-b4cf-4a93df10be3d</peterustinov>
+				<gustafgruendgens>2cfe64de-1b77-4d6a-98b1-29a8ea2a775d</gustafgruendgens>
+				<marlenedietrich>253e2ccd-5d64-44d5-b486-9d3c4ac810e3</marlenedietrich>
+			</variables>
+			<jobs> <!-- ein Regisseur, ein Moderator, ein Reporter, vordefinierter 'Gast' (experimentell) -->
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" />
+				<job index="2" function="128" required="1" />
+				<job index="3" function="64" required="1" person="${personguid}" />
+			</jobs>
+			<data flags="0" flags_optional="0" target_groups="68" /> <!-- Zielgruppe Rentner und Hausfrauen, Kultur: nein -->
+			<targetgroupattractivity men="0.5" /> <!-- Malus: Männer -->
+			<genres maingenre="6" subgenres="301" /> <!-- Doku / Boulevard -->
+			<blocks value="2" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="80" />
+			<outcome min="20" max="80" />
+			<review min="20" max="80" />
+			<speed min="20" max="80" />
+			<studio_size min="1" max="3" /> <!-- Studiogröße zufällig -->
+			<availability year_range_from="1980" year_range_to="-1" /> <!-- Verfügbarkeit 1980 bis beliebig -->
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="7fed610f-6cec-4544-b6df-7df6d5a627f5" creator="8972">
+			<title>
+				<de>Fußball-Legenden des ${sports_dfb}</de>
+				<en>German Football Legends</en>
+				<pl>Legendy niemieckiej piłki nożnej</pl>
+			</title>
+			<description>
+				<de>Wir erinnern uns an große Fußball-Helden, mitreißende Turniere und legendäre Spiele!</de>
+				<en>We remember great football heroes, thrilling tournaments, and legendary matches!</en>
+				<pl>Wspominamy wielkich bohaterów piłki nożnej, emocjonujące turnieje i legendarne mecze!</pl>
+			</description>
+			<variables>
+				<fritzwalter>f5592fbf-76eb-4fc0-90be-4a811706083f</fritzwalter>
+				<franzbeckenbauer>77138a6b-e5f4-46f3-80cc-dc003459bd6f</franzbeckenbauer>
+				<uweseeler>1617d822-7f5e-4362-a4bd-e0f05a2dfee0</uweseeler>
+				<gerdmueller>3db2e099-d336-4b5e-9b86-9cebebdf8f9b</gerdmueller>
+				<toniturek>3b80511d-d48b-457d-92f1-90c992873a6c</toniturek>
+				<herbertzimmermann>56c89c27-c9fa-4914-999d-30a93123a511</herbertzimmermann>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="17c88fae-1ad7-4b7b-9b2d-d2727cdf2b55">
+					<title>
+						<all>${.person:fritzwalter:"fullname"}</all>
+					</title>
+					<description>
+						<de>Er war der „Chef“ beim „Wunder von Bern“ 1954.Ein begnadeter Fußballer vom ${sports_1fc_generic} Kaiserslautern, der mit Vorliebe in Matsch und Regen spielte, dem legendären „${.person:fritzwalter:"fullname"}-Wetter“.</de>
+						<en>He was the "boss" during the "Miracle of Bern" in 1954. A gifted footballer from ${sports_1fc_generic} Kaiserslautern, who preferred playing in mud and rain - the legendary "${.person:fritzwalter:"fullname"} weather".</en>
+						<pl>Był „szefem” podczas „Cudu w Bernie” w 1954 roku. Utalentowany piłkarz ${sports_1fc_generic} Kaiserslautern, który z zamiłowaniem grał w błocie i deszczu - w legendalną „pogodę ${.person:fritzwalter:"fullname"}”.</pl>
+					</description>
+					<jobs>
+						<job index="5" function="64" required="1" person="${fritzwalter}" />
+						<job index="6" function="64" required="1" person="${herbertzimmermann}" />
+					</jobs>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="f5952f92-083d-41df-9e0f-69df6274dbaa">
+					<title>
+						<all>${.person:franzbeckenbauer:"fullname"}</all>
+					</title>
+					<description>
+						<de>Er galt als Deutschlands letzter Kaiser! Er perfektionierte den „Libero“ und wurde 1966 in England Vizeweltmeister, 1972 in Belgien Europameister und 1974 in Deutschland Weltmeister. 1983 beendete er seine Karriere beim ${sportsclub_hsv} und wurde 1984 Teamchef des ${sports_dfb}-Teams. Es folgte der Vizeweltmeister Titel 1986 in Mexico und der WM-Titel 1990 in Italien. Eine wahre Legende!</de>
+						<en>He was regarded as Germany's last emperor! He perfected the "sweeper" role and became runner-up at the 1966 World Cup in England, European Champion in Belgium in 1972, and World Champion in Germany in 1974. In 1983, he ended his career at ${sportsclub_hsv} and in 1984 became team manager of the ${sports_dfb} side. This was followed by the runner-up title at the 1986 World Cup in Mexico and the World Cup title in Italy in 1990. A true legend!</en>
+						<pl>Uważany był za ostatniego cesarza Niemiec! Udoskonalił pozycję „libero” i zdobył wicemistrzostwo świata w 1966 roku w Anglii, mistrzostwo Europy w 1972 roku w Belgii oraz tytuł mistrza świata w 1974 roku w Niemczech. W 1983 roku zakończył karierę w ${sportsclub_hsv}, a w 1984 został selekcjonerem reprezentacji ${sports_dfb}. Następnie zdobył wicemistrzostwo świata w 1986 roku w Meksyku oraz tytuł mistrza świata w 1990 roku we Włoszech. Prawdziwa legenda!</pl>
+					</description>
+					<jobs>
+						<job index="5" function="64" required="1" person="${franzbeckenbauer}" />
+					</jobs>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="a085875f-fb24-4aa8-b79d-f0e4693b0782">
+					<title>
+						<all>${.person:uweseeler:"fullname"}</all>
+					</title>
+					<description>
+						<de>Er spielte von 1966-1970 im ${sports_dfb}-Team. Er blieb dem ${sportsclub_hsv} treu und eroberte sich in den Herzen der Fans einen Platz als „Uns ${.person:uweseeler:"firstname"}“.</de>
+						<en>He played for the ${sports_dfb} team from 1966 to 1970. He remained loyal to ${sportsclub_hsv} and won a place in the hearts of the fans as "Uns ${.person:uweseeler:"firstname"}" (our ${.person:uweseeler:"firstname"}).</en>
+						<pl>W latach 1966-1970 grał w drużynie ${sports_dfb}. Pozostał wierny ${sportsclub_hsv} i zdobył miejsce w sercach kibiców jako „Uns ${.person:uweseeler:"firstname"}” (nasz ${.person:uweseeler:"firstname"}).</pl>
+					</description>
+					<jobs>
+						<job index="5" function="64" required="1" person="${uweseeler}" />
+					</jobs>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="66fc696b-124e-4a1a-a7e2-1b3e2441495c">
+					<title>
+						<all>${.person:gerdmueller:"fullname"}</all>
+					</title>
+					<description>
+						<de>Er war der Bomber der Nation und erzielte in 60 Länderspielen 62 Tore. In der Bundesliga traf er bis zu seinem Karriereende 1979 glatte 365 mal ins Schwarze!</de>
+						<en>He was the “Bomber of the Nation” and scored 62 goals in 60 international matches. In the Bundesliga, he hit the target a staggering 365 times until the end of his career in 1979!</en>
+						<pl>Był „Bombardierem Narodu” i zdobył 62 gole w 60 meczach reprezentacji. W Bundeslidze trafił w samo sedno 365 razy, aż do zakończenia kariery w 1979 roku!</pl>
+					</description>
+					<jobs>
+						<job index="5" function="64" required="1" person="${gerdmueller}" />
+					</jobs>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="eb6d7279-1317-4a03-bb6a-918682be0b50">
+					<title>
+						<all>${.person:toniturek:"fullname"}</all>
+					</title>
+					<description>
+						<de>Er hütete beim „Wunder von Bern“ 1954 das deutsche Tor und war mit seinen Paraden der Garant für den WM-Sieg. Nicht nur für Reporter-Legende ${.person:herbertzimmermann:"fullname"} war er ein „Fußball-Gott“.</de>
+						<en>He guarded the German goal at the "Miracle of Bern" in 1954 and was the guarantor of the World Cup victory with his saves. Not only for reporter legend ${.person:herbertzimmermann:"fullname"} was he a "football god".</en>
+						<pl>On bronił niemieckiej bramki podczas „Cudu w Bernie” w 1954 roku i był gwarantem zwycięstwa w Mistrzostwach Świata swoimi obronami. Dla legendy komentatorstwa ${.person:herbertzimmermann:"firstname"}a ${.person:herbertzimmermann:"lastname"}a był nie tylko „bożkiem piłki nożnej”.</pl>
+					</description>
+					<jobs>
+						<job index="5" function="64" required="1" person="${toniturek}" />
+						<job index="6" function="64" required="1" person="${herbertzimmermann}" />
+					</jobs>
+				</scripttemplate>
+			</children>
+			<jobs> <!-- ein Regisseur, ein Moderator, ein Reporter, 2 Nebendarsteller weiblich männlich -->
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" />
+				<job index="2" function="128" required="1" />
+				<job index="3" function="32" required="1" gender="2" />
+				<job index="4" function="32" required="1" gender="1" />
+				<!-- index 5f used for guests -->
+			</jobs>
+			<data flags="0" flags_optional="" target_groups="274" />
+			<targetgroupattractivity women="0.5" />
+			<genres maingenre="6" subgenres="203,300" /> <!-- Doku / Sport / Reportage -->
+			<blocks value="1" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="80" />
+			<outcome min="20" max="80" />
+			<review min="20" max="80" />
+			<speed min="20" max="80" />
+			<studio_size min="1" max="3" /> <!-- Studiogröße zufällig -->
+		</scripttemplate>
+
+		<scripttemplate product="6" licence_type="3" guid="0c62118c-e03f-4668-b485-e749bac648ae" creator="8972" comment="https://de.wikipedia.org/wiki/Deutschland_Tour | seems to be an official name, but not commercial | Winter sports variation of this format for more availability: 868e6f4c-ae73-4855-8338-0be817a949d6">
+			<title>
+				<de>Die Deutschland Tour ${currentyear}</de>
+				<en>Tour of Germany ${currentyear}</en>
+				<pl>Wyścig kolarski: Deutschland Tour ${currentyear}</pl>
+			</title>
+			<description>
+				<de>Die Radprofis sind in Deutschland unterwegs. Wir fassen die einzelnen Etappen zusammen.</de>
+				<en>The professional cyclists are on the road across Germany. We recap the individual stages.</en>
+				<pl>Profesjonalni kolarze przemierzają Niemcy. Podsumowujemy poszczególne etapy.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="6" licence_type="2" guid="e8df4ca1-10c3-45b8-ab3e-3c9be50ff162">
+					<title>
+						<de>Prolog in Düsseldorf</de>
+						<en>Prologue in Düsseldorf</en>
+						<pl>Prolog w Düsseldorfie</pl>
+					</title>
+					<description>
+						<de>Auf einem Rundkurs findet ein 7,8 km langes Zeitfahren statt.</de>
+						<en>A 7.8 km time trial takes place on a circuit.</en>
+						<pl>Na pętli odbywa się czasówka o długości 7,8 km.</pl>
+					</description>
+					<data live_date="2,3,3,18,19" />
+				</scripttemplate>
+				<scripttemplate index="1" product="6" licence_type="2" guid="4a8eec3e-3947-4209-bab4-10228658b182">
+					<title>
+						<de>1. Etappe: Düsseldorf - Osnabrück</de>
+						<en>Stage 1: Düsseldorf - Osnabrück</en>
+						<pl>Etap 1: Düsseldorf - Osnabrück</pl>
+					</title>
+					<description>
+						<de>Eine Flachetappe über 179km.</de>
+						<en>A flat stage of 179 km.</en>
+						<pl>Płaski etap o długości 179 km.</pl>
+					</description>
+					<data live_date="2,4,4,18,19" /> <!-- TODO: These episode-next-day overrides are not working in 0.8.3.2 release version -->
+				</scripttemplate>
+				<scripttemplate index="2" product="6" licence_type="2" guid="f4569603-a8f0-4de3-9d9c-8f6fc3660a25">
+					<title>
+						<de>2. Etappe: Hildesheim - Brocken / Harz</de>
+						<en>Stage 2: Hildesheim - Brocken / Harz</en>
+						<pl>Etap 2: Hildesheim - Brocken / Harz</pl>
+					</title>
+					<description>
+						<de>Die 2. Etappe ist wohl die Königsetappe und endet nach 102 km mit einer Bergankunft auf dem Brocken im Harz.</de>
+						<en>Stage 2 is arguably the queen stage and ends after 102 km with a summit finish on the Brocken in the Harz.</en>
+						<pl>Etap 2 jest chyba etapem królewskim i kończy się po 102 km finiszowaniem na Brocken w Harzu.</pl>
+					</description>
+					<data live_date="2,5,5,18,19" />
+				</scripttemplate>
+				<scripttemplate index="3" product="6" licence_type="2" guid="04a4c7dd-959d-4ee7-8807-f3e3ed2208db">
+					<title>
+						<de>3. Etappe: Magdeburg - Potsdam</de>
+						<en>Stage 3: Magdeburg - Potsdam</en>
+						<pl>Etap 3: Magdeburg - Poczdam</pl>
+					</title>
+					<description>
+						<de>Auf der 3. Etappe geht es in hügligem Terrain über 201 km von Magdeburg nach Potsdam. Eine Etappe für Ausreißer!</de>
+						<en>On Stage 3, the riders cover 201 km of rolling terrain from Magdeburg to Potsdam. A stage for breakaways!</en>
+						<pl>Na etapie 3 kolarze pokonują 201 km falistego terenu z Magdeburga do Poczdamu. Etap dla uciekinierów!</pl>
+					</description>
+					<data live_date="2,6,6,18,19" />
+				</scripttemplate>
+				<scripttemplate index="4" product="6" licence_type="2" guid="91b3ab6f-a565-4875-8be1-efc40c40b373">
+					<title>
+						<de>4. Etappe: Potsdam - Berlin</de>
+						<en>Stage 4: Potsdam - Berlin</en>
+						<pl>Etap 4: Poczdam - Berlin</pl>
+					</title>
+					<description>
+						<de>Die 4. Etappe startet am Schloss Sanssouci und endet am Brandenburger Tor. Eine Sprinter-Etappe über 78 km durch die Stadt Berlin.</de>
+						<en>Stage 4 starts at Sanssouci Palace and finishes at the Brandenburg Gate. A sprinter's stage of 78 km through the city of Berlin.</en>
+						<pl>Etap 4 startuje przy pałacu Sanssouci, a kończy się przy Bramie Brandenburskiej. Etap sprinterski o długości 78 km przez Berlin.</pl>
+					</description>
+					<data live_date="2,7,7,18,19" />
+				</scripttemplate>
+			</children>
+			<jobs> <!-- ein Regisseur, ein Moderator, ein Reporter -->
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" />
+				<job index="2" function="128" required="1" />
+			</jobs>
+			<data flags="1" live_date="2,3,3,18,19" production_broadcast_limit="2" production_licence_flags="36" target_groups="274" /> <!-- not actual live event, only the evening news coverage is; TODO: this doesn't allow for more flexibility wrt the hour of the programme, but it seems there is no other way to do it for now with the required restrictions -->
+			<targetgroupattractivity women="0.75" />
+			<genres maingenre="203" subgenres="103,300" /> <!-- Sport / Talkshow / Reportage -->
+			<blocks value="1" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="80" />
+			<outcome min="20" max="80" />
+			<review min="20" max="80" />
+			<speed min="20" max="80" />
+			<studio_size value="1" />
+			<production_time value="30" />
+			<availability script='${.or:${.eq:${.worldtime:"month"}:1}:${.eq:${.worldtime:"month"}:2}}' /> <!-- Verified it's working as intended. A spring/summer time event, but should be available 3 'days' earlier to buy the script, hence possible starting months are 4 and 5, possible last episode months are 8 and 9 -->
+		</scripttemplate>
+
+		<scripttemplate product="2" licence_type="3" guid="08e83015-cc5f-4cf5-977c-8dc348d03f71" creator="8972" comment="apparently inspired from https://reddit.com/r/DaystromInstitute/comments/lx9pea/imagining_star_trek_excelsior_a_captain_sulu_show/ | http://www.danhausertrek.com/Excelsior/SuluMain.html | TODO: Maybe move to an _adaptations file (though original_title tags not necessary) | #maintenancecritical">
+			<title>
+				<de>${mediatitle_startrek}: ${mediaprop_excelsior}</de>
+				<en>${mediatitle_startrek}: ${mediaprop_excelsior}</en>
+				<pl>${mediatitle_startrek}: ${mediaprop_excelsior}</pl>
+			</title>
+			<description>
+				<de>Wir begleiten das neue Raumschiff USS ${mediaprop_excelsior} unter seinem Captain ${.self:"role":1:"fullname"} auf seinen Reisen durch die Galaxis.</de>
+				<en>We follow the new starship USS ${mediaprop_excelsior} under its Captain ${.self:"role":1:"fullname"} on its journeys through the galaxy.</en>
+				<pl>Śledzimy nowy okręt USS ${mediaprop_excelsior} pod dowództwem kapitana ${.self:"role":1:"fullname"} podczas jego podróży przez galaktykę.</pl>
+			</description>
+			<variables>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<sulu_actor>${.lte:currentyear:2009:"8c028c56-089b-4f36-9438-b8e5036419d3":"e4d8e5c1-0eaf-4a28-a2a1-4d4d31e7b0ad"}</sulu_actor>
+				<chekov_actor>${.lte:currentyear:2009:"6216a247-6953-4ead-9cf8-1e6a32f54688":"e2c0e489-e115-42e6-9f4e-78570e83e613"}</chekov_actor>
+			</variables>
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="db5e0a0a-1f80-4ee8-ac4c-dad0fa6d4380">
+					<title>
+						<de>Der neue Captain</de>
+						<en>The New Captain</en>
+						<pl>Nowy kapitan</pl>
+					</title>
+					<description>
+						<de>Captain ${.self:"role":1:"lastname"} übernimmt die ${mediaprop_excelsior} und ärgert sich über technische Probleme an Bord. „Lassen sie mich raten: Dienstag!?“</de>
+						<en>Captain ${.self:"role":1:"lastname"} takes command of the ${mediaprop_excelsior} and gets annoyed by technical problems aboard. "Let me guess: Tuesday!?"</en>
+						<pl>Kapitan ${.self:"role":1:"lastname"} przejmuje dowództwo ${mediaprop_excelsior} i irytuje się problemami technicznymi na pokładzie. „Zgadnę: wtorek!?”</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="64e6275a-3911-4a27-bbbb-e8e09f6fc353">
+					<title>
+						<de>Der neue Antrieb</de>
+						<en>The New Engine</en>
+						<pl>Nowy napęd</pl>
+					</title>
+					<description>
+						<de>Die ${mediaprop_excelsior} verfügt über den revolutionären „Trans Warp“-Antrieb. Keine leichte Aufgabe für den Chefingenieur.</de>
+						<en>The ${mediaprop_excelsior} is equipped with the revolutionary "Transwarp" drive. No easy task for the chief engineer.</en>
+						<pl>${mediaprop_excelsior} wyposażony jest w rewolucyjny napęd „Transwarp”. Niełatwe zadanie dla głównego inżyniera.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="15b17c33-67b5-40c7-a87c-8be86e732cd5">
+					<title>
+						<de>Der Botschafter</de>
+						<en>The Ambassador</en>
+						<pl>Ambasador</pl>
+					</title>
+					<description>
+						<de>Der neue Yridianische Botschafter bei der Föderation soll auf Yridia abgeholt und zur Erde gebracht werden. Das ist leichter gesagt als getan, denn das Orion-Syndikat hat noch eine Rechnung mit ihm offen.</de>
+						<en>The new Yridian ambassador to the Federation is to be picked up on Yridia and brought to Earth. Easier said than done, as the Orion Syndicate still has a score to settle with him.</en>
+						<pl>Nowego ambasadora Yridian do Federacji należy odebrać na Yridii i przetransportować na Ziemię. Łatwiej powiedzieć niż zrobić, bo Syndykat Orionu ma z nim jeszcze rachunki do wyrównania.</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="7f4c1eeb-6be8-45df-95e5-53b19b3b851b">
+					<title>
+						<de>Der Zwischenfall</de>
+						<en>The Incident</en>
+						<pl>Incydent</pl>
+					</title>
+					<description>
+						<de>Die USS-Defiant ruft um Hilfe! Sie wurde von Klingonen angegriffen. Droht ein neuer Krieg?</de>
+						<en>The USS Defiant is calling for help! It has been attacked by Klingons. Is a new war looming?</en>
+						<pl>USS Defiant wzywa pomocy! Został zaatakowany przez Klingonów. Czy grozi nam nowa wojna?</pl>
+					</description>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="4fb49d23-2c6d-4741-97b8-f42940960962">
+					<title>
+						<de>Besuch von der ${mediaprop_enterprise}</de>
+						<en>Visit from the ${mediaprop_enterprise}</en>
+						<pl>Wizyta z ${mediaprop_enterprise}</pl>
+					</title>
+					<description>
+						<de>Auf Sternenbasis 102 trifft Captain ${.self:"role":1:"lastname"} einen alten Freund von der ${mediaprop_enterprise}: Commander ${.self:"role":7:"lastname"}. Er kommt an Bord und ist gleich mittendrin. Ein Quantum-Faden trifft die ${mediaprop_excelsior}. Da der Arzt umkommt, übernimmt ${.self:"role":7:"lastname"} die Krankenstation. „Du und Du, ihr seid ab sofort Krankenschwestern!“</de>
+						<en>At Starbase 102, Captain ${.self:"role":1:"lastname"} meets an old friend from the ${mediaprop_enterprise}: Commander ${.self:"role":7:"lastname"}. He boards and is immediately in the thick of things. A quantum filament strikes the ${mediaprop_excelsior}. When the doctor dies, ${.self:"role":7:"lastname"} takes over sickbay. "You and you, you're nurses from now on!"</en>
+						<pl>Na Stacji Gwiezdnej 102 kapitan ${.self:"role":1:"lastname"} spotyka starego przyjaciela z ${mediaprop_enterprise}'a: komandora ${.self:"role":7:"lastname"}a. Wsiada na pokład i od razu jest w centrum wydarzeń. Kwantowe włókno uderza w ${mediaprop_excelsior}. Gdy lekarz umiera, ${.self:"role":7:"lastname"} przejmuje izbę chorych. „Ty i ty, od teraz jesteście pielęgniarkami!”</pl>
+					</description>
+					<jobs>
+						<job index="7" function="2" required="1" role_guid="f2c7223d-8095-4ae0-800b-c70bad7cd768" person="${chekov_actor}" />
+					</jobs>
+				</scripttemplate>
+			</children>
+			<jobs> <!-- 1x Regisseur; Hauptdarsteller männlich, männlich, weiblich, männlich; Nebendarsteller weiblich, männlich -->
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" role_guid="be37181f-527a-4da6-843b-66867b31b8c7" person="${sulu_actor}" /> <!-- TODO: Pre-selecting 'real' actors is working; but should be optional in cases like this. #maintenancecritical -->
+				<job index="2" function="2" required="1" gender="1" />
+				<job index="3" function="2" required="1" gender="2" />
+				<job index="4" function="2" required="1" gender="1" />
+				<job index="5" function="32" required="1" gender="2" />
+				<job index="6" function="32" required="1" gender="1" />
+				<!-- index 7 used in episode -->
+			</jobs>
+			<data flags_optional="0" target_groups="18" />
+			<targetgroupattractivity children="2" teenagers="2" employees="1.5" unemployed="2" />
+			<genres maingenre="16" subgenres="7,17" />
+			<blocks value="1" />
+			<price min="50000" max="100000" />
+			<potential min="20" max="80" />
+			<outcome min="20" max="80" />
+			<review min="20" max="80" />
+			<speed min="20" max="80" />
+			<studio_size min="2" max="3" />
+		</scripttemplate>
+	</scripttemplates>
+</tvtdb>

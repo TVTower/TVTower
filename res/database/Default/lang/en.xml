@@ -24,6 +24,11 @@
 		<person guid="common-amateur-actors" first_name="" last_name="Amateur Actors" nick_name="Amateur Actors" />
 		<person guid="common-amateur-director" first_name="" last_name="Amateur Director" nick_name="Amateur Director" />
 		<person guid="common-unnamed-person" first_name="" last_name="Unknown" nick_name="Unknown" />
+		<person guid="common-directors-provided" first_name="" last_name="Directors provided" />
+		<person guid="common-hosts-provided" first_name="" last_name="Hosts provided" />
+		<person guid="common-commentators-provided" first_name="" last_name="Commentators provided" />
+		<person guid="common-reporters-provided" first_name="" last_name="Reporters provided" /> <!-- 'Reporter' in English sports events is more the sideline interviewer, 'Commentator' in German is mostly also 'Reporter' -->
+		<person guid="common-guests-provided" first_name="" last_name="Guests provided" />
 		<person guid="various-voice-artists" first_name="" last_name="various voice artists" />
 		<person guid="various-puppeteers" first_name="" last_name="various puppeteers" />
 		<person guid="various-models" first_name="" last_name="various models" />
@@ -31,13 +36,31 @@
 		<person guid="various-narrators" first_name="" last_name="various narrators" />
 		<person guid="various-guests" first_name="" last_name="various guests" />
 		<person guid="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Queen Svetlana" last_name="of Sweden" />
-		<person guid="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="a jobless man called" last_name="&quot;Woozy&quot;" />
+		<person guid="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="a jobless man called" last_name="“Woozy“" />
 		<person guid="f14d6ba0-0db5-4a76-a4d3-daba1603e4f6" first_name="Johnny" last_name="Jobless" />
 		<person guid="f43f2b92-43cd-4fc8-93aa-25adc647fb63" first_name="Elmer" last_name="Rednose" />
 
+		<person guid="8756bb14-5430-4b19-9c99-3c1c55306cf3" first_name="Andrey" last_name="Charkowsky" />
+		<person guid="5bc1e5fe-4222-4fcf-8a4a-fbb5c4116a70" first_name="Inna" last_name="Charkowskaya" />
+		<person guid="951ba3c6-ac23-4a9f-9ddb-83868ce22e1c" first_name="Andrei" last_name="Kanshonovsky" />
 		<person guid="51397467-86e2-4c5f-9226-d93ecf9288a6" first_name="Nikola Sergeyevich" last_name="Krasshchev" />
 		<person guid="6dd0a9b9-96a0-4712-83f0-f6388bdc5bec" first_name="Mykhail" last_name="Gorbochov" />
+		<person guid="94697af4-61c7-44ff-90de-5dafa8c4e650" first_name="Nikola" last_name="Burlakov" />
+		<person guid="d3ef9796-7873-44e5-be7a-8614d6f2cf0a" first_name="Aleksander" last_name="Solomintsyn" />
+		<person guid="acda76fb-f5e1-443a-a721-dff121dbd80f" first_name="Nikola" last_name="Grinev" />
+		<person guid="9175e82f-e0f3-47cf-a9f5-d77b005a08c0" first_name="Vladislav" last_name="Zadomsky" />
+		<person guid="ebb42ca0-d886-413f-a31e-c86f550173ec" first_name="Natasha" last_name="Bogdarchuk" />
+		<person guid="c8d6fbdd-0676-4b2c-8357-2989ee707686" first_name="Marita G." last_name="Terentyeva" />
+		<person guid="d4728dac-e87e-4f46-951b-b5305ab8a737" first_name="Alina" last_name="Feundlich" />
+		<person guid="1ea8150a-7b03-4f43-a014-afb3f6a01262" first_name="Aleksej D." last_name="Kaymandovsky" />
+		<person guid="cd7e501e-d331-4c31-84f4-a656b93ef655" first_name="Yara" last_name="Snegir" />
+		<person guid="ffb19ebd-1680-4f90-9edb-450cd270bbb4" first_name="Mstislav" last_name="Bashirov" />
 		<person guid="f1bc5e03-2dbc-4219-88a5-6fa1dab4cb79" first_name="Fëdot Mikhailovič" last_name="Dostoeshkev" />
+		<person guid="75d96dda-04be-415b-b883-aa5a7b0130df" first_name="Anton" last_name="Alexandrov"/>
+		<person guid="55f1871b-9498-4dca-be41-bd209fc77508" first_name="Chulda" last_name="Khabarova" />
+		<person guid="1e8ee973-bd59-4d9c-abbc-e9444d141671" first_name="Krsto" last_name="Jignov" />
+		<person guid="72080850-b6c9-4c08-8ede-7d687ea98473" first_name="Anka" last_name="Jonskaia" />
+		<person guid="558bfa8b-ad41-4b22-88a7-158630f52fe3" first_name="Natalya" last_name="Voloshinova" />
 		<person guid="e315f82e-9a4f-400a-bbde-82585e171cf0" first_name="Andrey J." last_name="Pankratov" />
 		<person guid="7da693f9-978f-4283-9e62-b7ef9b918a80" first_name="Arkadiy" last_name="Kashkov" />
 		<person guid="232eafa3-79b5-4ae6-8463-dea33a3bda90" first_name="Georgy" last_name="Kashkarov" />
@@ -45,16 +68,17 @@
 		<person guid="bf36bedc-0928-4b2f-a399-5abbbf310f35" first_name="Vasily" last_name="Klatschko" />
 		<person guid="7df0f616-2f57-4b93-baf0-32feb52fd0d5" first_name="Valentin" last_name="Klatschko" />
 		<person guid="826d29bc-09fc-4cef-aaa6-65da7624ec92" first_name="Boris" last_name="Yelchsin" />
+		<person guid="b514c0e3-9210-4da0-8411-b5aaab788fa7" first_name="Dersha" last_name="Ulaana" />
 
-		<person guid="SpeedMinister-celebritypeople-KarlHeinzDorfmichel" first_name="John D." last_name="Silly Billy" />
+		<person guid="ed7ffacd-68ba-48e0-8e15-877bdf5886fd" first_name="John D." last_name="Silly Billy" />
 	</persons>
 	<programmeroles>
 		<!--
 			<programmerole guid="script-roles-ron-001" first_name="Vincent" last_name="Count" title="" />
 		-->
 
-		<programmerole guid="a00ea58a-4a9f-466e-9fe5-cf8b53730b60" first_name="Snow White" last_name="" />
-		<programmerole guid="9faa394a-3c7e-4943-9236-7ccf70db6c6e" first_name="Snow White" last_name="" />
+		<programmerole guid="a00ea58a-4a9f-466e-9fe5-cf8b53730b60" first_name="Snow White" last_name="" /> <!-- The one from Snow White and the Seven Dwarves -->
+		<programmerole guid="9faa394a-3c7e-4943-9236-7ccf70db6c6e" first_name="Snow White" last_name="" /> <!-- The one from Snow-White and Rose-Red -->
 		<programmerole guid="e38dc13c-ce6a-4a0f-98f5-fd5cec332bf6" first_name="Rose Red" last_name="" />
 		<programmerole guid="adee8709-5aa4-465b-af8d-60d4ee3e8847" first_name="Prince Charming" last_name="" />
 		<programmerole guid="520fcf21-87d3-4a4d-a791-8c3b55bec8a0" first_name="Little Jack" last_name="Horner" />
@@ -80,12 +104,28 @@
 		<programmerole guid="03850cef-e7dc-4e1a-9d42-c548e27b6532" first_name="Alexander III" last_name="" title="Pope" />
 		<programmerole guid="f31a1bf6-1c2a-431e-a10c-cfee5b17fe7d" first_name="Rashid ad-Din" last_name="Sinan" />
 		<programmerole guid="36851db6-9af3-4650-baa6-c3e2e81fee9c" first_name="Richard" last_name="the Lionheart" title="King" />
+		<programmerole guid="f0eda263-10a8-4001-853c-699e32c87bdc" first_name="Peter" last_name="of Castile" />
+		<programmerole guid="0bb15963-acf7-45d4-8a8b-601ec8a5458d" first_name="Peter IV" last_name="of Aragon" />
+		<programmerole guid="f0fd6a54-97f5-4a55-bf79-0a6455f5bf40" first_name="Edward III" last_name="of England" />
+		<programmerole guid="613093cc-5e2e-47d4-8cfd-fe4da32f2a10" first_name="Charles II" last_name="of Navarre" />
+		<programmerole guid="e5ea6871-a4d5-4d0f-acde-7cdfecdbaacb" first_name="Constance" last_name="of Aragon" />
+		<programmerole guid="8241c9e2-9de6-41ee-bc71-3299cb4c98e3" first_name="Frederick III" last_name="of Sicily" />
+		<programmerole guid="bfdc3d9f-7466-432f-903d-0b4cb204c3df" first_name="Henry II" last_name="of Trastámara" />
+		<programmerole guid="9e355021-5ada-45be-b177-180279ac71f0" first_name="Peter I" last_name="of Portugal" />
+		<programmerole guid="7eb847a3-9880-43a3-bfc4-b30fdf296ed3" first_name="Eleanor" last_name="of Aragon" />
+		<programmerole guid="c3f1cb4c-fd6f-4f7d-afc1-bf9a712a2514" first_name="John I" last_name="of Castile" />
 
 		<programmerole guid="487c9c31-be5c-4cf7-93fd-1a470ead1ec4" first_name="Lennard" last_name="McCay" nick_name="Hones" />
 		<programmerole guid="3670b612-8825-4c4d-a382-0227fe8d9184" first_name="Jakub" last_name="Špyblík" />
 		<programmerole guid="1d1f05ea-43ff-4399-81d9-f00239460700" first_name="Dubrovnik" last_name="Špyblík" />
 		<programmerole guid="8528db70-ba00-4fec-896f-ce5b0ce05b72" first_name="Zdeněk" last_name="" />
 		<programmerole guid="25387571-5de7-4837-bbfb-f46b5a8d4779" first_name="Angus" last_name="McGrifter" />
+		<programmerole guid="3c71921a-393e-47c3-bed6-be34c7efe827" first_name="Ronny" last_name="" />
+		<programmerole guid="e0e1c037-0e24-4aa8-a7b6-a46d88c17ccd" first_name="Tonny" last_name="" />
+		<programmerole guid="7a548ff1-df76-4450-8190-d5e6a8b1f0c7" first_name="Tonton" last_name="" />
+		<programmerole guid="e3f1a176-8c0f-4c40-85b0-095ed17575ae" first_name="Dorly" last_name="" />
+		<programmerole guid="55b80e0a-916b-4688-96eb-5d2b551c370e" first_name="Stephen" last_name="Richards" nick_name="Captain USA" />
+		<programmerole guid="69b85fb7-ea09-4e4c-b902-00bc7df6f823" first_name="Silent Ben" last_name="" />
 
 		<programmerole guid="0db39875-f248-4a7c-9fb7-ede5408993f9" first_name="The Poet" last_name="" />
 		<programmerole guid="c975b99e-22aa-440d-b8c3-fa7752221e71" first_name="Abdo" last_name="the Levantine" />
@@ -178,7 +218,7 @@
 		<programmerole guid="e6d20298-118e-4085-bd2e-40cae4a090cc" first_name="Hans" last_name="" title="Citizen" />
 		<programmerole guid="b806ee7b-d43e-4351-99e6-0d8d2c363da4" first_name="Dietmar" last_name="" title="Farmer" />
 
-		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" title="Inspector" />
+		<programmerole guid="6e48da2f-d468-4542-9510-c3412e8841f7" first_name="" last_name="Gruff" nick_name="Gruffy" title="Inspector" />
 		<programmerole guid="3b128a1f-c2e5-4f76-aa97-0d23d44568d2" first_name="Darlene" last_name="" title="Assistant" />
 	</programmeroles>
 	<globalvariables>
@@ -193,6 +233,8 @@
 
 		<brand_microsoft>Macrohard</brand_microsoft> <!-- https://en.wikipedia.org/wiki/Microsoft -->
 		<brand_windows>Windoze</brand_windows> <!-- https://en.wikipedia.org/wiki/Microsoft_Windows -->
+		<brand_excel>Inxell</brand_excel> <!-- https://en.wikipedia.org/wiki/Microsoft_Excel -->
+		<brand_powerpoint>PowerPunch</brand_powerpoint> <!-- https://en.wikipedia.org/wiki/Microsoft_PowerPoint -->
 		<brand_azure>Arctic</brand_azure> <!-- https://en.wikipedia.org/wiki/Microsoft_Azure -->
 		<brand_xbox>Ycrate</brand_xbox> <!-- https://en.wikipedia.org/wiki/Xbox -->
 		<brand_entertainmentpack>Amusement Pack</brand_entertainmentpack> <!-- https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack -->
@@ -210,18 +252,31 @@
 		<brand_laserjet>LazerJam</brand_laserjet> <!-- https://en.wikipedia.org/wiki/HP_LaserJet -->
 		<brand_logitech>Loggitec</brand_logitech> <!-- https://en.wikipedia.org/wiki/Logitech -->
 		<brand_cherry>Cherie</brand_cherry> <!-- https://en.wikipedia.org/wiki/Cherry_AG -->
+		<brand_blackberry>BlankBerry</brand_blackberry> <!-- https://en.wikipedia.org/wiki/BlackBerry -->
+		<brand_strava>Struvva</brand_strava> <!-- https://en.wikipedia.org/wiki/Strava -->
 		<brand_apple>Aepfle</brand_apple> <!-- https://en.wikipedia.org/wiki/Apple_Inc. | alt/previous spoofs: Orange, Fruit, EppelWoi -->
 		<brand_iphone>myPhone</brand_iphone> <!-- https://en.wikipedia.org/wiki/IPhone -->
+		<brand_ipad>myPad</brand_ipad> <!-- https://en.wikipedia.org/wiki/IPad -->
 		<brand_ipod>myPod</brand_ipod> <!-- https://en.wikipedia.org/wiki/IPod -->
 		<brand_itunes>myTunes</brand_itunes> <!-- https://en.wikipedia.org/wiki/ITunes -->
 		<brand_i_apple_generic>y</brand_i_apple_generic>
 		<brand_google>Googol</brand_google> <!-- https://en.wikipedia.org/wiki/Google -->
+		<brand_googleearth>Googol Globe</brand_googleearth> <!-- https://en.wikipedia.org/wiki/Google_Earth -->
 		<brand_youtube>BooToob</brand_youtube> <!-- https://en.wikipedia.org/wiki/YouTube -->
 		<brand_facebook>Farcebuck</brand_facebook> <!-- https://en.wikipedia.org/wiki/Facebook -->
 		<brand_whatsapp>WhoseApp</brand_whatsapp> <!-- https://en.wikipedia.org/wiki/WhatsApp -->
-		<brand_instagram>Finstagrim</brand_instagram> <!-- https://en.wikipedia.org/wiki/Instagram -->
+		<brand_instagram>Instigram</brand_instagram> <!-- https://en.wikipedia.org/wiki/Instagram --> <!-- TODO: alt spoofs Finstagrim, Instagerm, Instacram,... could be used as parodies -->
 		<brand_twitter>Twatter</brand_twitter> <!-- https://en.wikipedia.org/wiki/Twitter -->
+		<brand_twitter_verb>twatter</brand_twitter_verb> <!-- https://en.wikipedia.org/wiki/Tweet_(social_media) -->
 		<brand_snapchat>Snoopchat</brand_snapchat> <!-- https://en.wikipedia.org/wiki/Snapchat -->
+		<brand_tiktok>TukTuk</brand_tiktok> <!-- https://en.wikipedia.org/wiki/TikTok -->
+		<brand_chatroulette>Chatroulant</brand_chatroulette> <!-- https://en.wikipedia.org/wiki/Chatroulette -->
+		<brand_tinder>Tandler</brand_tinder> <!-- https://en.wikipedia.org/wiki/Tinder_(app) -->
+		<brand_spotify>Spottyfly</brand_spotify> <!-- https://en.wikipedia.org/wiki/Spotify -->
+		<brand_lyft>Lyff</brand_lyft> <!-- https://en.wikipedia.org/wiki/Lyft -->
+		<brand_uber>Ubrig</brand_uber> <!-- https://en.wikipedia.org/wiki/Uber -->
+		<brand_airbnb>Ayebnb</brand_airbnb> <!-- https://en.wikipedia.org/wiki/Airbnb -->
+		<brand_ebay>eBlam</brand_ebay> <!-- https://en.wikipedia.org/wiki/EBay -->
 		<brand_amazon>Annazon</brand_amazon> <!-- https://en.wikipedia.org/wiki/Amazon_(company) -->
 		<brand_netflix>Nutflix</brand_netflix> <!-- https://en.wikipedia.org/wiki/Netflix -->
 		<brand_maxdome>Paxdome</brand_maxdome> <!-- https://de.wikipedia.org/wiki/Maxdome -->
@@ -235,7 +290,8 @@
 		<brand_vaio>VIAO</brand_vaio> <!-- https://en.wikipedia.org/wiki/Vaio -->
 		<brand_playstation>GameStation</brand_playstation> <!-- https://en.wikipedia.org/wiki/PlayStation -->
 		<brand_ps>GS</brand_ps>
-		<brand_nintendo>Nipponix</brand_nintendo> <!-- https://en.wikipedia.org/wiki/Nintendo | alt. spoof previously used: Nidennto -->
+		<brand_nintendo>Nipponix</brand_nintendo> <!-- https://en.wikipedia.org/wiki/Nintendo | alt. spoofs previously used: Nidennto / Nindaddel -->
+		<brand_gameboy>Gem Boy</brand_gameboy> <!-- https://en.wikipedia.org/wiki/Game_Boy -->
 		<brand_supernes>Super NIP</brand_supernes> <!-- https://en.wikipedia.org/wiki/Super_Nintendo_Entertainment_System -->
 		<brand_gamecube>NippoCube</brand_gamecube> <!-- https://en.wikipedia.org/wiki/GameCube -->
 		<brand_commodore>Cormoran</brand_commodore> <!-- https://en.wikipedia.org/wiki/Commodore_International -->
@@ -266,25 +322,54 @@
 		<brand_volkswagen>Wolkwagen</brand_volkswagen> <!-- https://en.wikipedia.org/wiki/Volkswagen | alt./previous spoof: Faulkswagen; TODO: use for some parody -->
 		<brand_vw>WV</brand_vw>
 		<brand_beetle>Buggy</brand_beetle> <!-- https://en.wikipedia.org/wiki/Volkswagen_Beetle -->
+		<brand_vwpolo>WV Poli</brand_vwpolo> <!-- https://en.wikipedia.org/wiki/Volkswagen_Polo -->
+		<brand_vwpassat>WV Passage</brand_vwpassat> <!-- https://en.wikipedia.org/wiki/Volkswagen_Passat -->
+		<brand_phaeton>Phaenom</brand_phaeton> <!-- https://en.wikipedia.org/wiki/Volkswagen_Phaeton -->
+		<brand_vwgolf>WV Guld</brand_vwgolf> <!-- https://en.wikipedia.org/wiki/Volkswagen_Golf -->
 		<brand_toyota>Totoya</brand_toyota> <!-- https://en.wikipedia.org/wiki/Toyota | prev. spoof: Yotota -->
+		<brand_mitsubishi>Mushibashi</brand_mitsubishi> <!-- https://en.wikipedia.org/wiki/Mitsubishi_Motors --> <!-- spoof name: mushi = insect -->
+		<brand_mitsubishigalant>Mushibashi Galanche</brand_mitsubishigalant> <!-- https://en.wikipedia.org/wiki/Mitsubishi_Galant -->
+		<brand_mitsubishilancer>Mushibashi Landslot</brand_mitsubishilancer> <!-- https://en.wikipedia.org/wiki/Mitsubishi_Lancer -->
+		<brand_mitsubishieclipse>Mushibashi Elapse</brand_mitsubishieclipse> <!-- https://en.wikipedia.org/wiki/Mitsubishi_Eclipse -->
+		<brand_mitsubishioutlander>Mushibashi Outlandish</brand_mitsubishioutlander> <!-- https://en.wikipedia.org/wiki/Mitsubishi_Outlander -->
 		<brand_saab>Saalb</brand_saab> <!-- https://en.wikipedia.org/wiki/Saab_AB -->
 		<brand_scania>Scenia</brand_scania> <!-- https://en.wikipedia.org/wiki/Scania_AB -->
 		<brand_kaipan>Kaiplan</brand_kaipan> <!-- https://en.wikipedia.org/wiki/Kaipan | prev. spoof: Saipien -->
 		<brand_opel>Ommel</brand_opel> <!-- https://en.wikipedia.org/wiki/Opel -->
+		<brand_opelkadett>Ommel Korsett</brand_opelkadett> <!-- https://en.wikipedia.org/wiki/Opel_Kadett -->
+		<brand_opelomega>Ommel Omicron</brand_opelomega> <!-- https://en.wikipedia.org/wiki/Opel_Omega -->
+		<brand_opelvectra>Ommel Vector</brand_opelvectra> <!-- https://en.wikipedia.org/wiki/Opel_Vectra -->
+		<brand_opelcorsa>Ommel Crusa</brand_opelcorsa> <!-- https://en.wikipedia.org/wiki/Opel_Corsa -->
 		<brand_manta>Panta</brand_manta> <!-- https://en.wikipedia.org/wiki/Opel_Manta -->
 		<brand_generalmotors>Generic Motos</brand_generalmotors> <!-- https://en.wikipedia.org/wiki/General_Motors -->
+		<brand_chevroletimpala>Chevallier Impoler</brand_chevroletimpala> <!-- https://en.wikipedia.org/wiki/Chevrolet_Impala -->
+		<brand_chevroletcavalier>Chevallier Cavalry</brand_chevroletcavalier> <!-- https://en.wikipedia.org/wiki/Chevrolet_Cavalier -->
+		<brand_saturnion>Sat Proton</brand_saturnion> <!-- https://en.wikipedia.org/wiki/Saturn_Ion -->
+		<brand_chevroletmalibu>Chevallier Maribel</brand_chevroletmalibu> <!-- https://en.wikipedia.org/wiki/Chevrolet_Malibu -->
+		<brand_corvette>Culvette</brand_corvette> <!-- https://en.wikipedia.org/wiki/Chevrolet_Corvette -->
+		<brand_chevy>Chavy</brand_chevy>
 		<brand_pontiac>Puntiac</brand_pontiac> <!-- https://en.wikipedia.org/wiki/Pontiac_(automobile) -->
 		<brand_firebird>Flamerbird</brand_firebird> <!-- https://en.wikipedia.org/wiki/Pontiac_Firebird -->
 		<brand_transam>Tres-M</brand_transam> <!-- https://en.wikipedia.org/wiki/Pontiac_Firebird_(third_generation) -->
 		<brand_delorean>DeLoreno</brand_delorean> <!-- https://en.wikipedia.org/wiki/DeLorean_Motor_Company -->
-		<brand_ford>Fort</brand_ford> <!-- https://en.wikipedia.org/wiki/Ford_Motor_Company -->
+		<brand_ford>Forth</brand_ford> <!-- https://en.wikipedia.org/wiki/Ford_Motor_Company -->
 		<brand_escort>Esguard</brand_escort> <!-- https://en.wikipedia.org/wiki/Ford_Escort -->
 		<brand_sierra>Sienna</brand_sierra> <!-- https://en.wikipedia.org/wiki/Ford_Sierra -->
 		<brand_mondeo>Montana</brand_mondeo> <!-- https://en.wikipedia.org/wiki/Ford_Mondeo -->
 		<brand_mustang>Marten</brand_mustang> <!-- https://en.wikipedia.org/wiki/Ford_Mustang | alt/previous spoof: Mardeo -->
+		<brand_chrysler>Cryslar</brand_chrysler> <!-- https://en.wikipedia.org/wiki/Chrysler -->
+		<brand_lebaron>ElBaron</brand_lebaron> <!-- https://en.wikipedia.org/wiki/Chrysler_LeBaron -->
+		<brand_dodgeneon>Dotch Neo</brand_dodgeneon> <!-- https://en.wikipedia.org/wiki/Chrysler_Neon -->
+		<brand_sebring>Sabring</brand_sebring> <!-- https://en.wikipedia.org/wiki/Chrysler_Sebring -->
+		<brand_chryslervoyager>Cryslar Forager</brand_chryslervoyager> <!-- https://en.wikipedia.org/wiki/Chrysler_Voyager -->
 		<brand_citroen>Citröneaux</brand_citroen> <!-- https://en.wikipedia.org/wiki/Citro%C3%ABn -->
 		<brand_renault>Penault</brand_renault> <!-- https://en.wikipedia.org/wiki/Renault -->
+		<brand_renault9>Penault 9</brand_renault9> <!-- https://en.wikipedia.org/wiki/Renault_9_and_11 -->
+		<brand_renaultlaguna>Penault Lagunis</brand_renaultlaguna> <!-- https://en.wikipedia.org/wiki/Renault_Laguna -->
+		<brand_megane>Mégor</brand_megane> <!-- https://en.wikipedia.org/wiki/Renault_M%C3%A9gane -->
 		<brand_peugeot>Reugeot</brand_peugeot> <!-- https://en.wikipedia.org/wiki/Peugeot -->
+		<brand_mini>Mino</brand_mini> <!-- https://en.wikipedia.org/wiki/Mini -->
+		<brand_vespa>Vespe</brand_vespa> <!-- https://en.wikipedia.org/wiki/Vespa -->
 		<brand_bp>PB</brand_bp> <!-- https://en.wikipedia.org/wiki/BP -->
 		<brand_shell>Swell</brand_shell> <!-- https://en.wikipedia.org/wiki/Shell_plc -->
 		<brand_aral>Arol</brand_aral> <!-- https://en.wikipedia.org/wiki/Aral_AG -->
@@ -292,11 +377,16 @@
 		<brand_twa>TWNA</brand_twa>
 		<brand_americanairlines>Airflight America</brand_americanairlines> <!-- https://en.wikipedia.org/wiki/American_Airlines -->
 		<brand_lufthansa>Lufthänsel</brand_lufthansa> <!-- https://en.wikipedia.org/wiki/Lufthansa -->
+		<brand_ryanair>Rihanair</brand_ryanair> <!-- https://en.wikipedia.org/wiki/Ryanair -->
 		<brand_cessna>Shessna</brand_cessna> <!-- https://en.wikipedia.org/wiki/Cessna -->
 		<brand_cessna172>Shessna 127</brand_cessna172> <!-- https://en.wikipedia.org/wiki/Cessna_172 -->
 		<brand_ravensburger>Rabensberger</brand_ravensburger> <!-- https://en.wikipedia.org/wiki/Ravensburger -->
+		<brand_kettcar>Klettkarr</brand_kettcar> <!-- https://de.wikipedia.org/wiki/Kettcar_(Tretauto) -->
+		<brand_bobbycar>Bubbykarr</brand_bobbycar> <!-- https://en.wikipedia.org/wiki/Bobby_Car -->
 		<brand_carrera>Carrina</brand_carrera> <!-- https://en.wikipedia.org/wiki/Carrera_(slot_car_brand) -->
 		<brand_lego>LEGU</brand_lego> <!-- https://en.wikipedia.org/wiki/Lego -->
+		<brand_duplo_lego>Doplu</brand_duplo_lego> <!-- https://en.wikipedia.org/wiki/Lego_Duplo -->
+		<brand_beaniebaby>Beetie Baby</brand_beaniebaby> <!-- https://en.wikipedia.org/wiki/Beanie_Babies -->
 		<brand_lamy>Laimi</brand_lamy> <!-- https://en.wikipedia.org/wiki/Lamy -->
 		<brand_swingline>Slipline</brand_swingline> <!-- https://en.wikipedia.org/wiki/Swingline -->
 		<brand_riored>Rio Rouge</brand_riored> <!-- https://en.wikipedia.org/wiki/Swingline -->
@@ -306,10 +396,13 @@
 		<brand_praktiker>Praktiko</brand_praktiker> <!-- https://en.wikipedia.org/wiki/Praktiker -->
 		<brand_ikea>MÖKLEA</brand_ikea> <!-- https://en.wikipedia.org/wiki/IKEA | previous spoofs: Barry Buffet (?), Möbler (probably had to be changed, but no resemblance; similar names like OKEA already exist in reality) -->
 		<brand_costco>Cosscu</brand_costco> <!-- https://en.wikipedia.org/wiki/Costco -->
+		<brand_walmart>Wallmarc</brand_walmart> <!-- https://en.wikipedia.org/wiki/Walmart -->
 		<brand_mastercard>Fastercard</brand_mastercard> <!-- https://en.wikipedia.org/wiki/Mastercard -->
+		<brand_visa>VISUM</brand_visa> <!-- https://en.wikipedia.org/wiki/Visa_Inc. -->
 		<brand_dax>DUX</brand_dax> <!-- https://en.wikipedia.org/wiki/DAX | alt. spoof previously used: Daks -->
 		<brand_deutscheaktienindex>Deutsche Unternehmensindex</brand_deutscheaktienindex> <!-- alt. spoof previously used: Deutsches Aktiensystem -->
 		<brand_deutscheraktienindex>Deutscher Unternehmensindex</brand_deutscheraktienindex>
+		<brand_allianz>Alroganz</brand_allianz> <!-- https://en.wikipedia.org/wiki/Allianz -->
 		<brand_basf>DASF</brand_basf> <!-- https://en.wikipedia.org/wiki/BASF -->
 		<brand_cocacola>Cacca Cola</brand_cocacola> <!-- https://en.wikipedia.org/wiki/Coca-Cola -->
 		<brand_coke>Cacca</brand_coke>
@@ -330,6 +423,7 @@
 		<brand_mrclean>Mr. Clank</brand_mrclean> <!-- https://en.wikipedia.org/wiki/Mr._Clean | English version of Meister Proper -->
 		<brand_meisterproper>Mister Ploper</brand_meisterproper> <!-- https://de.wikipedia.org/wiki/Meister_Proper | German version of Mr. Clean -->
 		<brand_gillette>Guillotte</brand_gillette> <!-- https://en.wikipedia.org/wiki/Gillette -->
+		<brand_persil>Serpil</brand_persil> <!-- https://en.wikipedia.org/wiki/Persil -->
 		<brand_weisserriese>Weißer Friese</brand_weisserriese> <!-- https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese -->
 		<brand_whiterevive>White Resize</brand_whiterevive> <!-- https://en.wikipedia.org/wiki/OxiClean -->
 		<brand_nivea>Norwea</brand_nivea> <!-- https://de.wikipedia.org/wiki/Nivea -->
@@ -337,30 +431,42 @@
 		<brand_downy>Dumby</brand_downy> <!-- https://en.wikipedia.org/wiki/Downy | English version of Lenor -->
 		<brand_tempo>Pemto</brand_tempo> <!-- https://en.wikipedia.org/wiki/Tempo_(brand) | alt. spoof: Tampi -->
 		<brand_duschdas>wasch das</brand_duschdas> <!-- https://de.wikipedia.org/wiki/Dusch_das -->
+		<brand_aquanet>Aqua Nat</brand_aquanet> <!-- https://en.wikipedia.org/wiki/Aqua_Net -->
 		<brand_lux>Lyx</brand_lux> <!-- https://en.wikipedia.org/wiki/Lux_(soap) -->
 		<brand_colgate>Calgonte</brand_colgate> <!-- https://en.wikipedia.org/wiki/Colgate_(toothpaste) -->
 		<brand_pampers>Pantzers</brand_pampers> <!-- https://en.wikipedia.org/wiki/Pampers -->
 		<brand_lacoste>La Côte</brand_lacoste> <!-- https://en.wikipedia.org/wiki/Lacoste -->
 		<brand_prada>Praedo</brand_prada> <!-- https://en.wikipedia.org/wiki/Prada -->
+		<brand_rayban>Roy-Bun</brand_rayban> <!-- https://en.wikipedia.org/wiki/Ray-Ban -->
+		<brand_saksfifthavenue>Soks Sixth Avenue</brand_saksfifthavenue> <!-- https://en.wikipedia.org/wiki/Saks_Fifth_Avenue -->
 		<brand_reebok>Roebuck</brand_reebok> <!-- https://en.wikipedia.org/wiki/Reebok -->
 		<brand_c_a>C&amp;B</brand_c_a> <!-- https://en.wikipedia.org/wiki/C%26A -->
+		<brand_quelle>Qualle</brand_quelle> <!-- https://de.wikipedia.org/wiki/Quelle_(Versandhandel) -->
+		<brand_otto>ANNA</brand_otto> <!-- https://en.wikipedia.org/wiki/Otto_Group -->
+		<brand_playboy>Playbum</brand_playboy> <!-- https://en.wikipedia.org/wiki/Playboy -->
 		<brand_sothebys>Suthebay's</brand_sothebys> <!-- https://de.wikipedia.org/wiki/Sotheby%E2%80%99s -->
+		<brand_twinkie>Twankie</brand_twinkie> <!-- https://en.wikipedia.org/wiki/Twinkie -->
+		<brand_eggo>Egglo</brand_eggo> <!-- https://en.wikipedia.org/wiki/Eggo -->
+		<brand_cornetto>Cornotti</brand_cornetto> <!-- https://en.wikipedia.org/wiki/Cornetto_(frozen_dessert) -->
 		<brand_snickers>Trickers</brand_snickers> <!-- https://en.wikipedia.org/wiki/Snickers -->
 		<brand_ferrero>Pferreri</brand_ferrero> <!-- https://en.wikipedia.org/wiki/Ferrero_SpA -->
-		<brand_duplo>Pludo</brand_duplo> <!-- https://de.wikipedia.org/wiki/Duplo_(Schokoriegel) -->
+		<brand_duplo>Doplu</brand_duplo> <!-- https://de.wikipedia.org/wiki/Duplo_(Schokoriegel) -->
 		<brand_mars>Marts</brand_mars> <!-- https://en.wikipedia.org/wiki/Mars_bar -->
 		<brand_sarotti>Schorotti</brand_sarotti> <!-- https://en.wikipedia.org/wiki/Sarotti -->
 		<brand_stollwerck>Stellwerks</brand_stollwerck> <!-- https://de.wikipedia.org/wiki/Stollwerck -->
 		<brand_toblerone>Tuberthrone</brand_toblerone> <!-- https://en.wikipedia.org/wiki/Toblerone -->
+		<brand_werthers>Werthor's</brand_werthers> <!-- https://en.wikipedia.org/wiki/Werther%27s_Original -->
 		<brand_schwartau>Schwalltau</brand_schwartau> <!-- https://de.wikipedia.org/wiki/Schwartauer_Werke -->
 		<brand_maggi>Meggli</brand_maggi> <!-- https://en.wikipedia.org/wiki/Maggi -->
 		<brand_knorr>Knurr</brand_knorr> <!-- https://en.wikipedia.org/wiki/Knorr_(brand) -->
 		<brand_loewensenf>Tigersenf</brand_loewensenf> <!-- https://en.wikipedia.org/wiki/L%C3%B6wensenf -->
 		<brand_heinz>Hanz</brand_heinz> <!-- https://en.wikipedia.org/wiki/Heinz -->
 		<brand_demeter>Delmetro</brand_demeter> <!-- https://de.wikipedia.org/wiki/Demeter_(Deutschland) -->
+		<brand_chuckecheese>Cheese E. Chunk</brand_chuckecheese> <!-- https://en.wikipedia.org/wiki/Chuck_E._Cheese -->
 		<brand_fuddruckers>Futtruckers</brand_fuddruckers> <!-- https://en.wikipedia.org/wiki/Fuddruckers -->
 		<brand_carlsjr>Curt's Jr.</brand_carlsjr> <!-- https://en.wikipedia.org/wiki/Carl%27s_Jr. -->
 		<brand_carljr>Curt Jr.</brand_carljr>
+		<brand_mcdonalds>McDonneld's</brand_mcdonalds> <!-- https://en.wikipedia.org/wiki/McDonald%27s -->
 		<brand_starbucks>Spacebucks</brand_starbucks> <!-- https://en.wikipedia.org/wiki/Starbucks -->
 		<brand_guinness>Gingers</brand_guinness> <!-- https://en.wikipedia.org/wiki/Guinness -->
 		<brand_budweiser>Buckweizer</brand_budweiser> <!-- https://en.wikipedia.org/wiki/Budweiser -->
@@ -370,6 +476,10 @@
 		<brand_madisonsquaregarden>Madison Square Plaza</brand_madisonsquaregarden> <!-- https://en.wikipedia.org/wiki/Madison_Square_Garden -->
 		<brand_dixi>DUXI</brand_dixi> <!-- https://de.wikipedia.org/wiki/TOI_TOI_%26_DIXI_Sanit%C3%A4rsysteme -->
 		<brand_times_generic>Dimes</brand_times_generic> <!-- New York Times, L.A. Times, etc -->
+		<brand_rockymountaineer>Rocky Montana</brand_rockymountaineer> <!-- https://en.wikipedia.org/wiki/Rocky_Mountaineer -->
+		<brand_orientexpress>Eastern Express</brand_orientexpress> <!-- https://en.wikipedia.org/wiki/Orient_Express -->
+		<brand_bluetrain>Blue Rail</brand_bluetrain> <!-- https://en.wikipedia.org/wiki/Blue_Train_(South_Africa) -->
+		<brand_zodiac>Zardiac</brand_zodiac> <!-- https://en.wikipedia.org/wiki/Zodiac_Nautic -->
 
 		<brandslogan_thethirdplace>The fourth place</brandslogan_thethirdplace>
 		<brandslogan_cantbeatthefeeling>Can't eat the peeling</brandslogan_cantbeatthefeeling>
@@ -381,6 +491,7 @@
 
 		<generalorg_nasa>NASE</generalorg_nasa> <!-- https://en.wikipedia.org/wiki/NASA -->
 		<generalorg_unicef>UCINEF</generalorg_unicef> <!-- https://en.wikipedia.org/wiki/UNICEF -->
+		<generalorg_unesco>UCESNO</generalorg_unesco> <!-- https://en.wikipedia.org/wiki/UNESCO -->
 		<generalorg_communistpartyofthesovietunion>Communist Party of the United Soviet States</generalorg_communistpartyofthesovietunion> <!-- https://en.wikipedia.org/wiki/Communist_Party_of_the_Soviet_Union -->
 		<generalorg_ofthecommunistpartyofthesovietunion>of the Communist Party of the United Soviet States</generalorg_ofthecommunistpartyofthesovietunion>
 		<generalorg_cpsu>CPUSS</generalorg_cpsu>
@@ -400,6 +511,7 @@
 		<generalorg_igmetall>DG Metall</generalorg_igmetall> <!-- https://en.wikipedia.org/wiki/IG_Metall -->
 		<generalorg_irs>ISR</generalorg_irs> <!-- https://en.wikipedia.org/wiki/Internal_Revenue_Service -->
 		<generalorg_opec>OILPEX</generalorg_opec> <!-- https://en.wikipedia.org/wiki/OPEC -->
+		<generalorg_caee>CEEA</generalorg_caee> <!-- https://en.wikipedia.org/wiki/Center_for_Advanced_Engineering_Environments -->
 
 		<generalorgproject_columbia>Colombia</generalorgproject_columbia> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Columbia -->
 		<generalorgproject_challenger>Passenger</generalorgproject_challenger> <!-- https://en.wikipedia.org/wiki/Space_Shuttle_Challenger -->
@@ -415,7 +527,12 @@
 		<sports_f2>F-B</sports_f2>
 		<sports_f3>F-C</sports_f3>
 		<sports_f4>F-D</sports_f4>
+		<sports_nascar>NESCAR</sports_nascar> <!-- https://en.wikipedia.org/wiki/NASCAR -->
+		<sports_motogp>MotorGP</sports_motogp> <!-- https://de.wikipedia.org/wiki/MotoGP -->
+		<sports_nba>NAB</sports_nba> <!-- https://en.wikipedia.org/wiki/National_Basketball_Association -->
 		<sports_fifa>FUFA</sports_fifa> <!-- https://en.wikipedia.org/wiki/FIFA -->
+		<sports_uefa>UFEA</sports_uefa> <!-- https://en.wikipedia.org/wiki/UEFA -->
+		<sports_dfb>DBF</sports_dfb> <!-- https://en.wikipedia.org/wiki/German_Football_Association | https://de.wikipedia.org/wiki/Deutscher_Fu%C3%9Fball-Bund -->
 		<sports_daviscup>Navy Cup</sports_daviscup> <!-- https://en.wikipedia.org/wiki/Davis_Cup -->
 		<sports_1fc_generic>FFC</sports_1fc_generic>
 		<sports_fc_generic>SC</sports_fc_generic>
@@ -435,8 +552,9 @@
 		<sportsclub_juventus>Joventus</sportsclub_juventus> <!-- https://en.wikipedia.org/wiki/Juventus_FC -->
 		<sportsclub_juve>Jove</sportsclub_juve>
 		<sportsclub_ajax>Arex</sportsclub_ajax> <!-- https://en.wikipedia.org/wiki/AFC_Ajax -->
-		<sportsclub_hamburgersv>RSV Hamburg</sportsclub_hamburgersv> <!-- https://en.wikipedia.org/wiki/Hamburger_SV -->
-		<sportsclub_hsv>RSVH</sportsclub_hsv>
+		<sportsclub_hamburgersv>Hamburger VS</sportsclub_hamburgersv> <!-- https://en.wikipedia.org/wiki/Hamburger_SV -->
+		<sportsclub_hsv>HVS</sportsclub_hsv>
+		<sportsclub_pistons>Pitons</sportsclub_pistons> <!-- https://en.wikipedia.org/wiki/Detroit_Pistons -->
 
 		<!-- Media -->
 
@@ -446,12 +564,17 @@
 		<media_goldenraspberry>Golden Bramble</media_goldenraspberry> <!-- https://en.wikipedia.org/wiki/Golden_Raspberry_Awards -->
 		<media_ofthegoldenraspberry>of the Golden Bramble</media_ofthegoldenraspberry>
 		<media_withthegoldenraspberry>with the Golden Bramble</media_withthegoldenraspberry>
+		<media_bollywood>Bollywald</media_bollywood> <!-- https://en.wikipedia.org/wiki/Hindi_cinema -->
+		<media_technicolor>Techocoleur</media_technicolor> <!--https://en.wikipedia.org/wiki/Technicolor -->
+		<media_agfacolor>Afgafarben</media_agfacolor> <!-- https://en.wikipedia.org/wiki/Agfacolor -->
+		<media_imax>UMAX</media_imax> <!-- https://en.wikipedia.org/wiki/IMAX -->
 
 		<mediaorg_ard>ADR</mediaorg_ard> <!-- https://en.wikipedia.org/wiki/ARD_(broadcaster) -->
 		<mediaorg_zweitesdeutschesfernsehen>2. Deutsches Fernsehen</mediaorg_zweitesdeutschesfernsehen> <!-- https://en.wikipedia.org/wiki/ZDF -->
 		<mediaorg_zweitedeutschefernsehen>2. Deutsche Fernsehen</mediaorg_zweitedeutschefernsehen>
 		<mediaorg_zdf>2DF</mediaorg_zdf>
 		<mediaorg_3sat>5sat</mediaorg_3sat> <!-- https://en.wikipedia.org/wiki/3sat -->
+		<mediaorg_eurovision>Eurofusion</mediaorg_eurovision> <!-- https://en.wikipedia.org/wiki/Eurovision_(network) -->
 		<mediaorg_rtl>RLT</mediaorg_rtl> <!-- https://en.wikipedia.org/wiki/RTL_Group -->
 		<mediaorg_sat1>Sati.11</mediaorg_sat1> <!-- https://en.wikipedia.org/wiki/Sat.1 -->
 		<mediaorg_prosieben>Pro13</mediaorg_prosieben> <!-- https://en.wikipedia.org/wiki/ProSieben -->
@@ -464,14 +587,38 @@
 		<mediaorg_theworldwrestlingfederation>the Western Wrestling Friendship</mediaorg_theworldwrestlingfederation>
 		<mediaorg_wwf>WWFr</mediaorg_wwf>
 		<mediaorg_marvel>Marbel</mediaorg_marvel> <!-- https://en.wikipedia.org/wiki/Marvel_Entertainment -->
+		<mediaorg_dc>DeC</mediaorg_dc> <!-- https://en.wikipedia.org/wiki/DC_Entertainment -->
+		<mediaorg_pixar>Pixal</mediaorg_pixar> <!-- https://en.wikipedia.org/wiki/Pixar -->
+		<mediaorg_hallmark>Hallwart</mediaorg_hallmark> <!-- https://en.wikipedia.org/wiki/Hallmark_Channel_(international) -->
+		<mediaorg_whog>WOGH</mediaorg_whog> <!-- https://en.wikipedia.org/wiki/WHOG -->
+		<mediaorg_mtv>MVT</mediaorg_mtv> <!-- https://en.wikipedia.org/wiki/MTV -->
+		<mediaorg_fox>Fux</mediaorg_fox> <!-- https://en.wikipedia.org/wiki/Fox_Networks_Group -->
+		<mediaorg_abc>AB3</mediaorg_abc> <!-- https://en.wikipedia.org/wiki/American_Broadcasting_Company -->
+		<mediaorg_warnerbros>Warning Bros.</mediaorg_warnerbros> <!-- https://en.wikipedia.org/wiki/Warner_Bros. -->
+		<mediaorg_nationallampoon>National Harpoon</mediaorg_nationallampoon> <!-- https://en.wikipedia.org/wiki/National_Lampoon,_Inc. -->
+		<mediaorg_rollingstone>Rolling Brick</mediaorg_rollingstone> <!-- https://en.wikipedia.org/wiki/Rolling_Stone -->
+		<mediaorg_bostonglobe>Boston Globus</mediaorg_bostonglobe> <!-- https://en.wikipedia.org/wiki/The_Boston_Globe -->
+		<mediaorg_ted>TERD</mediaorg_ted> <!-- https://en.wikipedia.org/wiki/TED_(conference) -->
+		<mediaorg_productionig>Producers G.I.</mediaorg_productionig> <!-- https://en.wikipedia.org/wiki/Production_I.G -->
+		<mediaorg_ghibli>Glubshi</mediaorg_ghibli> <!-- https://en.wikipedia.org/wiki/Studio_Ghibli -->
 		<mediaorg_augsburgerpuppenkiste>Augsburger Plapperschachtel</mediaorg_augsburgerpuppenkiste> <!-- https://en.wikipedia.org/wiki/Augsburger_Puppenkiste -->
+		<mediaorg_loveparade>Laugh Parade</mediaorg_loveparade> <!-- https://en.wikipedia.org/wiki/Love_Parade | alt. spoof previously used: Beatparade -->
 
 		<mediatitle_lowestofthelow>At the Lowest Edge</mediatitle_lowestofthelow> <!-- https://en.wikipedia.org/wiki/Lowest_of_the_Low_(book) -->
+		<mediatitle_dickandjane>Dan and Jill</mediatitle_dickandjane> <!-- https://en.wikipedia.org/wiki/Dick_and_Jane -->
+		<mediatitle_dick_jane>Dan &amp; Jill</mediatitle_dick_jane>
+
+		<mediatitle_themanoutside>The Person Out There</mediatitle_themanoutside> <!-- https://en.wikipedia.org/wiki/The_Man_Outside -->
+
+		<mediatitle_flymetothemoon>Take Me to the Moon</mediatitle_flymetothemoon> <!-- https://en.wikipedia.org/wiki/Fly_Me_to_the_Moon -->
+		<mediatitle_rocketman>Rocket Guy</mediatitle_rocketman> <!-- https://en.wikipedia.org/wiki/Rocket_Man_(song) -->
 		<mediatitle_bornintheusa>Raised in America</mediatitle_bornintheusa> <!-- https://en.wikipedia.org/wiki/Born_in_the_U.S.A. -->
 		<mediatitle_derfreischuetz>Das Freiwild</mediatitle_derfreischuetz> <!-- https://en.wikipedia.org/wiki/Der_Freisch%C3%BCtz -->
 		<mediatitle_koenighirsch>Herrschgeweih</mediatitle_koenighirsch> <!-- https://en.wikipedia.org/wiki/K%C3%B6nig_Hirsch -->
 		<mediatitle_thephantomoftheopera>The Ghost of the Theatre</mediatitle_thephantomoftheopera> <!-- https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(1986_musical) -->
+		<mediatitle_whatafeeling>How It's Feeling</mediatitle_whatafeeling> <!-- https://en.wikipedia.org/wiki/Flashdance..._What_a_Feeling -->
 		<mediatitle_takeonme>Brake On Me</mediatitle_takeonme> <!-- https://en.wikipedia.org/wiki/Take_On_Me -->
+		<mediatitle_sayyousayme>I Say, You Say</mediatitle_sayyousayme> <!-- https://en.wikipedia.org/wiki/Say_You,_Say_Me -->
 		<mediatitle_masterofpuppets>Pulling the Strings</mediatitle_masterofpuppets> <!-- https://en.wikipedia.org/wiki/Master_of_Puppets -->
 		<mediatitle_trueblue>Deep Blue</mediatitle_trueblue> <!-- https://en.wikipedia.org/wiki/True_Blue_(Madonna_album) -->
 		<mediatitle_thriller>Trillin'</mediatitle_thriller> <!-- https://en.wikipedia.org/wiki/Thriller_(album) -->
@@ -479,29 +626,152 @@
 		<mediatitle_laislabonita>The Isle of Bel Air</mediatitle_laislabonita> <!-- https://en.wikipedia.org/wiki/La_Isla_Bonita -->
 		<mediatitle_voyagevoyage>Journal, Journal</mediatitle_voyagevoyage> <!-- https://en.wikipedia.org/wiki/Voyage,_voyage -->
 		<mediatitle_oe>Ä</mediatitle_oe> <!-- https://de.wikipedia.org/wiki/%C3%96_(Album) -->
+		<mediatitle_whenthegoinggetstough>When the Walk's Going Rough</mediatitle_whenthegoinggetstough> <!-- https://en.wikipedia.org/wiki/When_the_Going_Gets_Tough,_the_Tough_Get_Going_(song) --> <!-- also a proverb, spoofing not always necessary -->
+		<mediatitle_firsttime>First Touch</mediatitle_firsttime> <!-- https://en.wikipedia.org/wiki/First_Time_(Robin_Beck_song) -->
+		<mediatitle_somewhereoutthere>Some Place Outside</mediatitle_somewhereoutthere> <!-- https://en.wikipedia.org/wiki/Somewhere_Out_There_(An_American_Tail_song) -->
+		<mediatitle_nobusinesslikeshowbusiness>Show Business, not Bore Business</mediatitle_nobusinesslikeshowbusiness> <!-- https://en.wikipedia.org/wiki/There%27s_No_Business_Like_Show_Business -->
+		<mediatitle_whatislove>Where Is Love</mediatitle_whatislove> <!-- https://en.wikipedia.org/wiki/What_Is_Love -->
+		<mediatitle_lastchristmas>Past Christmas</mediatitle_lastchristmas> <!-- https://en.wikipedia.org/wiki/Last_Christmas -->
+		<mediatitle_iwannadancewithsomebody>I'm Gonna Dance With Just Someone</mediatitle_iwannadancewithsomebody> <!-- https://en.wikipedia.org/wiki/I_Wanna_Dance_with_Somebody_(Who_Loves_Me) -->
+		<mediatitle_eras>Ages</mediatitle_eras> <!-- https://en.wikipedia.org/wiki/The_Eras_Tour -->
+		<mediatitle_cats>Kittens</mediatitle_cats> <!-- https://en.wikipedia.org/wiki/Cats_(musical) -->
+		<mediatitle_dontgobreakingmyheart>Won't Go Breaking Your Heart</mediatitle_dontgobreakingmyheart> <!-- https://en.wikipedia.org/wiki/Don%27t_Go_Breaking_My_Heart -->
+		<mediatitle_grandmasfeatherbed>Grandmother's Spring Bed</mediatitle_grandmasfeatherbed> <!-- https://www.songfacts.com/facts/john-denver/grandmas-feather-bed -->
+		<mediatitle_everythingscominguproses>Everything's Running Like Roses</mediatitle_everythingscominguproses> <!-- https://en.wikipedia.org/wiki/Everything%27s_Coming_Up_Roses -->
+		<mediatitle_singinintherain>Swingin' in the Drain</mediatitle_singinintherain> <!-- https://en.wikipedia.org/wiki/Singin%27_in_the_Rain_(song) --> <!-- alt. spoof: Chantin' While It's Drizzlin' -->
+		<mediatitle_discofrog>Discus Frog</mediatitle_discofrog> <!-- https://muppet.fandom.com/wiki/Disco_Frog -->
+		<mediatitle_eineinselmitzweibergen>Auf dem Eiland mit zwei Hügeln</mediatitle_eineinselmitzweibergen> <!-- https://de.wikipedia.org/wiki/Eine_Insel_mit_zwei_Bergen -->
+
 		<mediatitle_madtv>Rat TV</mediatitle_madtv> <!-- https://en.wikipedia.org/wiki/Mad_TV_(video_game) -->
 		<mediatitle_tetris>Tetro</mediatitle_tetris> <!-- https://en.wikipedia.org/wiki/Tetris -->
 		<mediatitle_gothic>Baroque</mediatitle_gothic> <!-- https://en.wikipedia.org/wiki/Gothic_(series) -->
 		<mediatitle_grandmonsterslam>Great Monster Slash</mediatitle_grandmonsterslam> <!-- https://en.wikipedia.org/wiki/Grand_Monster_Slam -->
 		<mediatitle_logical>Logikus</mediatitle_logical> <!-- https://www.mobygames.com/game/541/logcal/ -->
 		<mediatitle_muds>M.O.R.D.S.</mediatitle_muds> <!-- https://de.wikipedia.org/wiki/M.U.D.S. -->
+		<mediatitle_rampage>Rampant</mediatitle_rampage> <!-- https://en.wikipedia.org/wiki/Rampage_(franchise) -->
+		<mediatitle_pacman>Peck-Man</mediatitle_pacman> <!-- https://en.wikipedia.org/wiki/Pac-Man -->
+		<mediatitle_donkeykong>Monkey Dong</mediatitle_donkeykong> <!-- https://en.wikipedia.org/wiki/Donkey_Kong -->
+		<mediatitle_grandtheftauto>Great Auto Thieves</mediatitle_grandtheftauto> <!-- https://en.wikipedia.org/wiki/Grand_Theft_Auto -->
+		<mediatitle_gta>GAT</mediatitle_gta>
+		<mediatitle_callofduty>Call for Dispatch</mediatitle_callofduty> <!-- https://en.wikipedia.org/wiki/Call_of_Duty -->
+		<mediatitle_warcraft>Warcroft</mediatitle_warcraft> <!-- https://en.wikipedia.org/wiki/Warcraft -->
+		<mediatitle_angrybirds>Angry Feathers</mediatitle_angrybirds> <!-- https://en.wikipedia.org/wiki/Angry_Birds -->
+		<mediatitle_simcity>SimpCity</mediatitle_simcity> <!-- https://en.wikipedia.org/wiki/SimCity -->
+		<mediatitle_thesims>The Simps</mediatitle_thesims> <!-- https://en.wikipedia.org/wiki/The_Sims -->
+
 		<mediatitle_magicthegathering>Mystic: The Summoning</mediatitle_magicthegathering> <!-- https://en.wikipedia.org/wiki/Magic:_The_Gathering -->
 		<mediatitle_sherlockholmesconsultingdetective>Dr. Watson: Visiting Inspector</mediatitle_sherlockholmesconsultingdetective> <!-- https://en.wikipedia.org/wiki/Sherlock_Holmes:_Consulting_Detective_(gamebook) -->
 		<mediatitle_hoitytoity>Hoity Mighty</mediatitle_hoitytoity> <!-- https://en.wikipedia.org/wiki/Hoity_Toity -->
 		<mediatitle_thesettlersofcatan>The Pioneers of Kastlan</mediatitle_thesettlersofcatan> <!-- https://en.wikipedia.org/wiki/Catan -->
+		<mediatitle_clue>Clou</mediatitle_clue> <!-- https://en.wikipedia.org/wiki/Cluedo -->
+		<mediatitle_jenga>Janga</mediatitle_jenga> <!-- https://en.wikipedia.org/wiki/Jenga -->
+		<mediatitle_dungeons_dragons>Lairs &amp; Lizards</mediatitle_dungeons_dragons> <!-- https://en.wikipedia.org/wiki/Dungeons_%26_Dragons -->
+		<mediatitle_dnd>L&amp;L</mediatitle_dnd>
+
 		<mediatitle_ateam>B-Team</mediatitle_ateam> <!-- https://en.wikipedia.org/wiki/The_A-Team -->
 		<mediatitle_airwolf>Airhound</mediatitle_airwolf> <!-- https://en.wikipedia.org/wiki/Airwolf -->
 		<mediatitle_ghostbusters>Ghostblazers</mediatitle_ghostbusters> <!-- https://en.wikipedia.org/wiki/Ghostbusters_(franchise) -->
 		<mediatitle_knightrider>Night Raider</mediatitle_knightrider> <!-- https://en.wikipedia.org/wiki/Knight_Rider -->
+		<mediatitle_miamivice>Miami White</mediatitle_miamivice> <!-- https://en.wikipedia.org/wiki/Miami_Vice -->
 		<mediatitle_gilligansisland>Gallagan's Isle</mediatitle_gilligansisland> <!-- https://en.wikipedia.org/wiki/Gilligan%27s_Island -->
 		<mediatitle_starwars>War Stars</mediatitle_starwars> <!-- https://en.wikipedia.org/wiki/Star_Wars -->
+		<mediatitle_startrek>Far Track</mediatitle_startrek> <!-- https://en.wikipedia.org/wiki/Star_Trek -->
 		<mediatitle_stargate>Spacegate</mediatitle_stargate> <!-- https://en.wikipedia.org/wiki/Stargate -->
 		<mediatitle_ottifants>Ollifants</mediatitle_ottifants> <!-- https://de.wikipedia.org/wiki/Ottifant | alt spoofs: Frottifanten, Grottifanten -->
 		<mediatitle_wrestlemania>WrestleMadness</mediatitle_wrestlemania> <!-- https://en.wikipedia.org/wiki/WrestleMania -->
 		<mediatitle_familyfeud>Family Duel</mediatitle_familyfeud> <!-- https://en.wikipedia.org/wiki/Family_Feud -->
 		<mediatitle_wettendass>Wer wird Wettkönig...?</mediatitle_wettendass> <!-- https://en.wikipedia.org/wiki/Wetten,_dass..%3F -->
+		<mediatitle_alien>Amorphian</mediatitle_alien> <!-- https://en.wikipedia.org/wiki/Alien_(franchise) --> <!-- previously/alt.: Extraterrestrial / Unearthling -->
+		<mediatitle_predator>Predominator</mediatitle_predator> <!-- https://en.wikipedia.org/wiki/Predator_(franchise) --> <!-- previously/alt.: Hunter / Poacher -->
+		<mediatitle_bonanza>Burranza</mediatitle_bonanza> <!-- https://en.wikipedia.org/wiki/Bonanza -->
+		<mediatitle_pinkpanther>Purple Leopard</mediatitle_pinkpanther> <!-- https://en.wikipedia.org/wiki/The_Pink_Panther --> <!-- Sometimes used with different grammar in clear spoof title text! -->
+		<mediatitle_looneytunes>Lumpey Toons</mediatitle_looneytunes> <!-- https://en.wikipedia.org/wiki/Looney_Tunes -->
+		<mediatitle_peanuts>Peepmutz</mediatitle_peanuts> <!-- https://en.wikipedia.org/wiki/Peanuts -->
+		<mediatitle_peanuts_stem>Peepmut</mediatitle_peanuts_stem> <!-- (used for other languages) -->
+		<mediatitle_astroboy>Astra Kid</mediatitle_astroboy> <!-- https://en.wikipedia.org/wiki/Astro_Boy -->
+		<mediatitle_tatort>Tatplatz</mediatitle_tatort> <!-- https://en.wikipedia.org/wiki/Tatort -->
+		<mediatitle_truegrit>True Guts</mediatitle_truegrit> <!-- https://en.wikipedia.org/wiki/True_Grit_(novel) -->
+		<mediatitle_scoobydoo>Dooby-Scoo</mediatitle_scoobydoo> <!-- https://en.wikipedia.org/wiki/Scooby-Doo -->
+		<mediatitle_carebears>Fair Bears</mediatitle_carebears> <!-- https://en.wikipedia.org/wiki/Care_Bears -->
+		<mediatitle_carebear>Fair Bear</mediatitle_carebear>
+		<mediatitle_macross>Metcross</mediatitle_macross> <!-- https://en.wikipedia.org/wiki/Macross -->
+		<mediatitle_e_t_>E.B.</mediatitle_e_t_> <!-- https://en.wikipedia.org/wiki/E.T._the_Extra-Terrestrial -->
+		<mediatitle_chucky>Churky</mediatitle_chucky> <!-- https://en.wikipedia.org/wiki/Chucky_(Child%27s_Play) -->
+		<mediatitle_dragonball>Draco Bowl</mediatitle_dragonball> <!--https://en.wikipedia.org/wiki/Dragon_Ball -->
+		<mediatitle_topgun>First Gun</mediatitle_topgun> <!-- https://en.wikipedia.org/wiki/Top_Gun_(franchise) -->
+		<mediatitle_yaaba>Yaya</mediatitle_yaaba> <!-- https://en.wikipedia.org/wiki/Yaaba -->
+		<mediatitle_rogerrabbit>Ritchie Rabbit</mediatitle_rogerrabbit> <!-- https://en.wikipedia.org/wiki/Roger_Rabbit -->
+		<mediatitle_borrowers>Narrowers</mediatitle_borrowers> <!-- https://en.wikipedia.org/wiki/The_Borrowers_(book_series) -->
+		<mediatitle_terminator>Tormentator</mediatitle_terminator> <!-- https://en.wikipedia.org/wiki/Terminator_(franchise) -->
+		<mediatitle_onepiece>One Pick</mediatitle_onepiece> <!-- https://en.wikipedia.org/wiki/One_Piece -->
+		<mediatitle_jackass>Jerkass</mediatitle_jackass> <!-- https://en.wikipedia.org/wiki/Jackass_(franchise) -->
+		<mediatitle_southpark>South Yard</mediatitle_southpark> <!-- https://en.wikipedia.org/wiki/South_Park_(franchise) -->
+		<mediatitle_scrubs>Shrubs</mediatitle_scrubs> <!-- https://en.wikipedia.org/wiki/Scrubs_(TV_series) -->
+		<mediatitle_gameofthrones>Throne In Ice and Fire</mediatitle_gameofthrones> <!-- https://en.wikipedia.org/wiki/Game_of_Thrones -->
+		<mediatitle_hellraiser>Howlriser</mediatitle_hellraiser> <!-- https://en.wikipedia.org/wiki/Hellraiser_(franchise) -->
+		<mediatitle_evangelion>Evangelium</mediatitle_evangelion> <!-- https://en.wikipedia.org/wiki/Neon_Genesis_Evangelion_(franchise) -->
+		<mediatitle_getsmart>Go Smart</mediatitle_getsmart> <!-- https://en.wikipedia.org/wiki/Get_Smart -->
+		<mediatitle_avengers>Amazers</mediatitle_avengers> <!-- https://en.wikipedia.org/wiki/Avengers_(comics) -->
+		<mediatitle_avenger>Amazer</mediatitle_avenger>
+		<mediatitle_muppets>Puppmits</mediatitle_muppets> <!-- https://en.wikipedia.org/wiki/The_Muppets -->
+		<mediatitle_muppet>Puppmit</mediatitle_muppet>
+		<mediatitle_bigmomma>Huge Momma</mediatitle_bigmomma> <!-- https://en.wikipedia.org/wiki/Big_Momma%27s_House -->
+		<mediatitle_twilight>Twinklite</mediatitle_twilight> <!-- https://en.wikipedia.org/wiki/Twilight_(novel_series) -->
+		<mediatitle_fiftyshades>Sixty Shades</mediatitle_fiftyshades> <!-- https://en.wikipedia.org/wiki/Fifty_Shades -->
+		<mediatitle_breakingbad>Baking Bread</mediatitle_breakingbad> <!-- https://en.wikipedia.org/wiki/Breaking_Bad -->
+		<mediatitle_saw>Saw</mediatitle_saw> <!-- https://en.wikipedia.org/wiki/Saw_(franchise) -->
+		<mediatitle_yrf>YFR</mediatitle_yrf> <!-- https://en.wikipedia.org/wiki/YRF_Spy_Universe -->
+		<mediatitle_gijoe>G.I. Jim</mediatitle_gijoe> <!-- https://en.wikipedia.org/wiki/G.I._Joe -->
+		<mediatitle_mylittlepony>My Tiny Horsie</mediatitle_mylittlepony> <!-- https://en.wikipedia.org/wiki/My_Little_Pony -->
+		<mediatitle_sharknado>Sharkalanche</mediatitle_sharknado> <!-- https://en.wikipedia.org/wiki/Sharknado_(film_series) -->
+		<mediatitle_kingsman>Krownsman</mediatitle_kingsman> <!-- https://en.wikipedia.org/wiki/Kingsman_(franchise) -->
+		<mediatitle_chipmunks>Chapmonks</mediatitle_chipmunks> <!-- https://en.wikipedia.org/wiki/Alvin_and_the_Chipmunks -->
+		<mediatitle_chipmunk>Chapmonk</mediatitle_chipmunk>
+		<mediatitle_xmen>X-Mate</mediatitle_xmen> <!-- https://en.wikipedia.org/wiki/X-Men -->
+		<mediatitle_ninjaturtles>Tortoise Monsters</mediatitle_ninjaturtles> <!-- https://en.wikipedia.org/wiki/Teenage_Mutant_Ninja_Turtles -->
+		<mediatitle_turtles>Tortoises</mediatitle_turtles>
+		<mediatitle_purge>Surge</mediatitle_purge> <!-- https://en.wikipedia.org/wiki/The_Purge -->
+		<mediatitle_justiceleague>Justness League</mediatitle_justiceleague> <!-- https://en.wikipedia.org/wiki/Justice_League -->
+		<mediatitle_baywatch>Babewatch</mediatitle_baywatch> <!-- https://en.wikipedia.org/wiki/Baywatch -->
+		<mediatitle_powerrangers>Plower Ragers</mediatitle_powerrangers> <!-- https://en.wikipedia.org/wiki/Power_Rangers -->
+		<mediatitle_chips>CHaPs</mediatitle_chips> <!-- https://en.wikipedia.org/wiki/CHiPs -->
+		<mediatitle_narnia>Nornea</mediatitle_narnia> <!-- https://en.wikipedia.org/wiki/The_Chronicles_of_Narnia -->
+		<mediatitle_fast_furious>Fuss &amp; Ferocious</mediatitle_fast_furious> <!-- https://en.wikipedia.org/wiki/Fast_%26_Furious -->
+		<mediatitle_hungergames>Hungry Play</mediatitle_hungergames> <!-- https://en.wikipedia.org/wiki/The_Hunger_Games -->
+		<mediatitle_downtonabbey>Downing Abbey</mediatitle_downtonabbey> <!-- https://en.wikipedia.org/wiki/Downton_Abbey -->
+		<mediatitle_downton>Downing</mediatitle_downton>
+		<mediatitle_fugitive>Refugee</mediatitle_fugitive> <!-- https://en.wikipedia.org/wiki/The_Fugitive_(1963_TV_series) -->
+		<mediatitle_critters>Crawlers</mediatitle_critters> <!-- https://en.wikipedia.org/wiki/Critters_(franchise) -->
+		<mediatitle_blueplanet>Blue Earth</mediatitle_blueplanet> <!-- https://en.wikipedia.org/wiki/The_Blue_Planet -->
+		<mediatitle_doratheexplorer>Dorie at Exploring</mediatitle_doratheexplorer> <!-- https://en.wikipedia.org/wiki/Dora_the_Explorer -->
+		<mediatitle_fantasyisland>Fantastic Isle</mediatitle_fantasyisland> <!-- https://en.wikipedia.org/wiki/Fantasy_Island -->
+		<mediatitle_fantasyisland_stylized>FANTⱯSTIC ISLE</mediatitle_fantasyisland_stylized>
+		<mediatitle_deathrace>Death Derby</mediatitle_deathrace> <!-- https://en.wikipedia.org/wiki/Death_Race_(franchise) -->
+		<mediatitle_spritesisters>Sprite Siblings</mediatitle_spritesisters> <!-- https://sheridanwinn.com/the-sprite-sisters/ -->
+		<mediatitle_walkingdead>Dead Walkers</mediatitle_walkingdead> <!-- https://en.wikipedia.org/wiki/The_Walking_Dead_(franchise) -->
+		<mediatitle_demonslayer>Daemon Slasher</mediatitle_demonslayer> <!-- https://en.wikipedia.org/wiki/Demon_Slayer:_Kimetsu_no_Yaiba -->
+		<mediatitle_kimetsunoyaiba>Yametsu no Katana</mediatitle_kimetsunoyaiba> <!-- "Blade of Evil Destruction" -->
+		<mediatitle_strangerthings>Stranger Kinks</mediatitle_strangerthings> <!-- https://en.wikipedia.org/wiki/Stranger_Things -->
+		<mediatitle_pawpatrol>Pet Petrol</mediatitle_pawpatrol> <!-- https://en.wikipedia.org/wiki/Paw_Patrol -->
+		<mediatitle_twilightzone>Twinklight Zone</mediatitle_twilightzone> <!-- https://en.wikipedia.org/wiki/The_Twilight_Zone -->
+		<mediatitle_avatar>Avapod</mediatitle_avatar> <!-- https://en.wikipedia.org/wiki/Avatar_(franchise) -->
+		<mediatitle_masterchef>MaestroChef</mediatitle_masterchef> <!-- https://en.wikipedia.org/wiki/MasterChef -->
+		<mediatitle_mandalorian>Mondelarian</mediatitle_mandalorian> <!-- https://en.wikipedia.org/wiki/The_Mandalorian -->
+		<mediatitle_miraculous>Miracolos</mediatitle_miraculous> <!-- https://en.wikipedia.org/wiki/Miraculous:_Tales_of_Ladybug_%26_Cat_Noir -->
+		<mediatitle_kingkong>Gorilla Garganto</mediatitle_kingkong> <!-- https://en.wikipedia.org/wiki/King_Kong_(franchise) -->
+		<mediatitle_spongebobsquarepants>SplungeBob SquadPants</mediatitle_spongebobsquarepants> <!-- https://en.wikipedia.org/wiki/SpongeBob_SquarePants -->
+		<mediatitle_barbie>Barbli</mediatitle_barbie> <!-- https://en.wikipedia.org/wiki/Barbie_(media_franchise) -->
+		<mediatitle_pokemon>Pockimún</mediatitle_pokemon> <!-- https://en.wikipedia.org/wiki/Pok%C3%A9mon -->
+		<mediatitle_wheeloffortune>Wheel of Torture</mediatitle_wheeloffortune> <!-- https://en.wikipedia.org/wiki/Wheel_of_Fortune_(American_game_show) --> <!-- spoof title also used in game 'Prime Time' (1988) -->
+		<mediatitle_dallas>Texas Clan</mediatitle_dallas> <!-- https://en.wikipedia.org/wiki/Dallas_(TV_series) -->
+		<mediatitle_beverlyhills90210>Hillywald Hills 90212</mediatitle_beverlyhills90210> <!-- https://en.wikipedia.org/wiki/Beverly_Hills,_90210_(franchise) -->
+		<mediatitle_90210>90212</mediatitle_90210>
+		<mediatitle_melroseplace>Melrose Ave</mediatitle_melroseplace> <!-- https://en.wikipedia.org/wiki/Melrose_Place -->
+		<mediatitle_eurovisionsongcontest>Eurofusion Sing Combat</mediatitle_eurovisionsongcontest> <!-- https://de.wikipedia.org/wiki/Eurovision_Song_Contest -->
 
-		<mediaprop_batmobile>Batcar</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
+		<mediaprop_batmobile>Batvehicle</mediaprop_batmobile> <!-- https://en.wikipedia.org/wiki/Batmobile -->
+		<mediaprop_batcave>Batgrove</mediaprop_batcave> <!-- https://en.wikipedia.org/wiki/Batcave -->
+		<mediaprop_dynamicduo>Dynamite Duo</mediaprop_dynamicduo> <!-- https://en.wikipedia.org/wiki/Batman_and_Robin --> <!-- (appears to be a protected term) -->
 		<mediaprop_dudu>Dodo</mediaprop_dudu> <!-- https://en.wikipedia.org/wiki/Superbug_(film_series) -->
 		<mediaprop_herbie>Herbie</mediaprop_herbie> <!-- https://en.wikipedia.org/wiki/Herbie -->
 		<mediaprop_ecto1>Octo-1</mediaprop_ecto1> <!-- https://en.wikipedia.org/wiki/Ectomobile -->
@@ -509,5 +779,83 @@
 		<mediaprop_meleeisland>Hûrlýë Island™</mediaprop_meleeisland> <!-- https://monkeyisland.fandom.com/wiki/M%C3%AAl%C3%A9e_Island -->
 		<mediaprop_gnosticusiv>Gnostika III</mediaprop_gnosticusiv> <!-- https://keenwiki.shikadi.net/wiki/Gnosticus_IV -->
 		<mediaprop_korathiii>Codrak IV</mediaprop_korathiii> <!-- https://keenwiki.shikadi.net/wiki/Korath_III -->
+		<mediaprop_enterprise>Everpraise</mediaprop_enterprise> <!-- https://en.wikipedia.org/wiki/Starship_Enterprise -->
+		<mediaprop_excelsior>Excelsia</mediaprop_excelsior> <!-- https://www.wikidata.org/wiki/Q1082886 -->
+		<mediaprop_stepford>Stopforth</mediaprop_stepford> <!-- https://en.wikipedia.org/wiki/The_Stepford_Wives -->
+		<mediaprop_jedi>Yodi</mediaprop_jedi> <!-- https://en.wikipedia.org/wiki/Jedi -->
+		<mediaprop_wakanda>Wadanka</mediaprop_wakanda> <!-- https://en.wikipedia.org/wiki/Wakanda -->
+		<mediaprop_electricmayhem>Eclectic Havoc</mediaprop_electricmayhem> <!-- https://en.wikipedia.org/wiki/Dr._Teeth_and_the_Electric_Mayhem -->
+		<mediaprop_rocklobsters>Rawk Lizards</mediaprop_rocklobsters> <!-- https://muppet.fandom.com/wiki/The_Rock_Lobsters -->
+
+		<mediaquote_iliketobeinamerica>I want to be in the U.S.A.</mediaquote_iliketobeinamerica> <!-- https://en.wikipedia.org/wiki/America_(West_Side_Story_song) -->
+		<mediaquote_sayittogethernaturally>Together we say it, certainly</mediaquote_sayittogethernaturally> <!-- https://en.wikipedia.org/wiki/Say_You,_Say_Me -->
+		<mediaquote_imdreamingofawhitechristmas>I'm wishing for a Snowy Christmas</mediaquote_imdreamingofawhitechristmas> <!-- https://en.wikipedia.org/wiki/White_Christmas_(song) -->
+		<mediaquote_batman_chorus>BAAAT GUUUY</mediaquote_batman_chorus> <!-- https://en.wikipedia.org/wiki/Batman_Theme -->
+
+		<character_disney_mickey>Mackey</character_disney_mickey> <!-- https://en.wikipedia.org/wiki/Mickey_Mouse -->
+		<character_disney_chip>Chop</character_disney_chip> <!-- https://en.wikipedia.org/wiki/Chip_%27n%27_Dale -->
+		<character_disney_dale>Dole</character_disney_dale> <!-- https://en.wikipedia.org/wiki/Chip_%27n%27_Dale -->
+		<character_disney_ariel>Averil</character_disney_ariel> <!-- https://en.wikipedia.org/wiki/Ariel_(The_Little_Mermaid) -->
+		<character_lassie>Leslie</character_lassie> <!-- https://en.wikipedia.org/wiki/Lassie -->
+		<character_peanuts_charlie_brown>Charley Beige</character_peanuts_charlie_brown> <!-- https://en.wikipedia.org/wiki/Charlie_Brown -->
+		<character_peanuts_snoopy>Slurpy</character_peanuts_snoopy> <!-- https://en.wikipedia.org/wiki/Snoopy -->
+		<character_peanuts_linus>Lewis</character_peanuts_linus> <!-- https://en.wikipedia.org/wiki/Linus_Van_Pelt -->
+		<character_peanuts_lucy>Lizzie</character_peanuts_lucy> <!-- https://en.wikipedia.org/wiki/Lucy_Van_Pelt -->
+		<character_peanuts_sally>Shelly</character_peanuts_sally> <!-- https://en.wikipedia.org/wiki/Sally_Brown -->
+		<character_peanuts_peppermint_patty>Pepperidge Patsy</character_peanuts_peppermint_patty> <!-- https://en.wikipedia.org/wiki/Peppermint_Patty -->
+		<character_peanuts_woodstock>Woodstick</character_peanuts_woodstock> <!-- https://en.wikipedia.org/wiki/Woodstock_(Peanuts) -->
+		<character_bakshi_fritz>Fred</character_bakshi_fritz> <!-- https://en.wikipedia.org/wiki/Fritz_the_Cat -->
+		<character_kingkong_kong>Garganto</character_kingkong_kong>  <!-- https://en.wikipedia.org/wiki/King_Kong -->
+		<character_nickelodeon_dora>Dorie</character_nickelodeon_dora> <!-- https://en.wikipedia.org/wiki/Dora_(Dora_the_Explorer) -->
+		<character_spongebob>SplungeBob</character_spongebob> <!-- https://en.wikipedia.org/wiki/SpongeBob_SquarePants_(character) -->
+		<character_muppets_kermit>Kirmet</character_muppets_kermit> <!-- https://en.wikipedia.org/wiki/Kermit_the_Frog -->
+		<character_muppets_piggy>Pigsty</character_muppets_piggy> <!-- https://en.wikipedia.org/wiki/Miss_Piggy -->
+		<character_muppets_fozzie>Futzi</character_muppets_fozzie> <!-- https://en.wikipedia.org/wiki/Fozzie_Bear -->
+		<character_muppets_gonzo>Grunzo</character_muppets_gonzo> <!-- https://en.wikipedia.org/wiki/Gonzo_(Muppet) -->
+		<character_muppets_rowlf>Rawlf</character_muppets_rowlf> <!-- https://en.wikipedia.org/wiki/Rowlf_the_Dog -->
+		<character_muppets_scooter>Scutter</character_muppets_scooter> <!-- https://en.wikipedia.org/wiki/Scooter_(Muppet) -->
+		<character_muppets_animal>Animus</character_muppets_animal> <!-- https://en.wikipedia.org/wiki/Animal_(Muppet) -->
+		<character_muppets_rizzo>Rezzo</character_muppets_rizzo> <!-- https://en.wikipedia.org/wiki/Rizzo_the_Rat -->
+		<character_muppets_bunsen>Brunser</character_muppets_bunsen> <!-- https://en.wikipedia.org/wiki/Dr._Bunsen_Honeydew -->
+		<character_muppets_beaker>Bleaky</character_muppets_beaker> <!-- https://en.wikipedia.org/wiki/Beaker_(Muppet) -->
+		<character_muppets_statler>Wattler</character_muppets_statler> <!-- https://en.wikipedia.org/wiki/Statler_and_Waldorf -->
+		<character_muppets_waldorf>Stahldorf</character_muppets_waldorf> <!-- https://en.wikipedia.org/wiki/Statler_and_Waldorf -->
+		<character_muppets_sam>Stan</character_muppets_sam> <!-- https://en.wikipedia.org/wiki/Sam_Eagle -->
+		<character_muppets_camilla>Carmella</character_muppets_camilla> <!-- https://www.wikidata.org/wiki/Q12012713 -->
+		<character_muppets_sweetums>Sweetons</character_muppets_sweetums> <!-- https://www.wikidata.org/wiki/Q6320715 -->
+		<character_muppets_beauregard>Bourgeaux</character_muppets_beauregard> <!-- https://www.wikidata.org/wiki/Q13586476 -->
+		<character_mlp_twilightsparkle>Twanglite Sprinkle</character_mlp_twilightsparkle> <!-- https://en.wikipedia.org/wiki/Twilight_Sparkle -->
+		<character_mlp_twilight>Twanglite</character_mlp_twilight>
+		<character_mlp_rainbowdash>Raindew Bash</character_mlp_rainbowdash> <!-- https://en.wikipedia.org/wiki/Rainbow_Dash -->
+		<character_mlp_rainbow>Raindew</character_mlp_rainbow>
+		<character_mlp_applejack>Applejink</character_mlp_applejack> <!-- https://en.wikipedia.org/wiki/Applejack_(My_Little_Pony:_Friendship_Is_Magic) -->
+		<character_mlp_rarity>Parity</character_mlp_rarity> <!-- https://en.wikipedia.org/wiki/Rarity_(My_Little_Pony:_Friendship_Is_Magic) -->
+		<character_mlp_fluttershy>Stutterfly</character_mlp_fluttershy> <!-- https://en.wikipedia.org/wiki/Fluttershy -->
+		<character_mlp_pinkiepie>Purple Pea</character_mlp_pinkiepie> <!-- https://en.wikipedia.org/wiki/Pinkie_Pie -->
+		<character_mlp_pinkie>Purple</character_mlp_pinkie>
+		<character_doraemon>Daeromin</character_doraemon> <!-- https://en.wikipedia.org/wiki/Doraemon_(character) -->
+		<character_aa_wallace>Wally</character_aa_wallace> <!-- https://www.wikidata.org/wiki/Q53848127 -->
+		<character_aa_gromit>Grombit</character_aa_gromit> <!-- https://www.wikidata.org/wiki/Q53848177 -->
+		<character_aa_shaun>Shawn</character_aa_shaun> <!-- https://en.wikipedia.org/wiki/Shaun_the_Sheep -->
+		<character_ig_kuroko>Kotaro</character_ig_kuroko> <!-- https://en.wikipedia.org/wiki/Kuroko%27s_Basketball -->
+		<character_sega_sonic>Sunnick</character_sega_sonic> <!-- https://en.wikipedia.org/wiki/Sonic_the_Hedgehog_(character) -->
+		<character_wb_tom>Tim</character_wb_tom> <!-- https://en.wikipedia.org/wiki/Tom_Cat -->
+		<character_wb_jerry>Jorry</character_wb_jerry> <!-- https://en.wikipedia.org/wiki/Jerry_(Tom_and_Jerry) -->
+		<character_nb_clifford>Clifton</character_nb_clifford> <!-- https://en.wikipedia.org/wiki/Clifford_the_Big_Red_Dog -->
+		<character_pixar_woody>Waldo</character_pixar_woody> <!-- https://en.wikipedia.org/wiki/Woody_(Toy_Story) -->
+		<character_pixar_buzzlightyear>Fuzz Lichtjahr</character_pixar_buzzlightyear> <!-- https://en.wikipedia.org/wiki/Buzz_Lightyear -->
+		<character_pixar_lightyear>Lichtjahr</character_pixar_lightyear>
+		<character_mj_beavis>Beaver</character_mj_beavis> <!-- https://www.wikidata.org/wiki/Q2560970 -->
+		<character_mj_butthead>Bung-Head</character_mj_butthead> <!-- https://www.wikidata.org/wiki/Q942048 -->
+		<character_nintendo_mario>Manuel</character_nintendo_mario> <!-- https://en.wikipedia.org/wiki/Mario -->
+		<character_nintendo_luigi>Lucio</character_nintendo_luigi> <!-- https://en.wikipedia.org/wiki/Luigi_(character) -->
+		<character_nintendo_bowser>Brausa</character_nintendo_bowser> <!-- https://en.wikipedia.org/wiki/Bowser -->
+		<character_miraculous_ladybug>Ladybird</character_miraculous_ladybug> <!-- https://en.wikipedia.org/wiki/Marinette_Dupain-Cheng -->
+		<character_miraculous_catnoir>Cat Loir</character_miraculous_catnoir> <!-- https://en.wikipedia.org/wiki/Adrien_Agreste -->
+		<character_rj_vicky>Vinny</character_rj_vicky> <!-- https://www.wikidata.org/wiki/Q47495213 -->
+		<character_me_jimbutton>Joe Butter</character_me_jimbutton> <!-- https://www.wikidata.org/wiki/Q89798190 -->
+		<character_me_jim>Joe</character_me_jim>
+		<character_me_luke>Lou</character_me_luke> <!-- https://www.wikidata.org/wiki/Q89810130 -->
+		<character_mk_urmel>Ormel</character_mk_urmel> <!-- https://www.wikidata.org/wiki/Q105582611 -->
 	</globalvariables>
 </tvtdb>

@@ -21,11 +21,11 @@
 			<groups target_groups="96" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="0.75" />
 			<data country="D" distribution="2" maingenre="300" subgenre="16" flags="1" blocks="1" price_mod="0.90" />
-			<releaseTime year="1985" day="6" hour="18" />
+			<releaseTime year="1986" day="5" hour="18" />
 			<ratings critics="45" speed="30" outcome="40" />
 			<modifiers>
 				<modifier name="topicality::notLive" value="0.5" />
-			</modifiers>		
+			</modifiers>
 		</programme>
 		<!--TODO: Sport events could be done by a generator -->
 		<programme guid="ronny-programme-livesport-olympischesommerspiele1988_1" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -73,7 +73,7 @@
 		<programme guid="ronny-programme-doku-kutler-alaaf" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
 			<title>
 				<de>Keil Kutler und Koelle Alaaf</de>
-				<en>Keil Kutler and &quot;Koelle Alaaf&quot;</en>
+				<en>Keil Kutler and “Koelle Alaaf“</en>
 				<pl>Historia w kolorze. Parady karnawałowe w czasach Hitlera.</pl>
 			</title>
 			<description>
@@ -162,7 +162,7 @@ Witamy w przyszłości.</pl>
 				<pl>Prawdziwie upierdliwy</pl>
 			</title>
 			<description>
-				<de>Gudrun erbt die Pantoffelfabrik ihres Vaters - der Bürgermeister intrigiert und die Stadt braucht ... wahre Pantoffelhelden um die Fabrik zu retten.</de>
+				<de>Gudrun erbt die Pantoffelfabrik ihres Vaters - der Bürgermeister intrigiert und die Stadt braucht ... wahre Pantoffelhelden, um die Fabrik zu retten.</de>
 				<en>Gudrun inherits the chicken run of her father. The major is scheming and the city needs ... true hen-peckers to save the chicken run.</en>
 				<pl>Gudrun dziedziczy po ojcu kurnik. Major knuje intrygi, a miasto potrzebuje... prawdziwych dziobaków, by ocalić kurnik.</pl>
 			</description>
@@ -176,7 +176,8 @@ Witamy w przyszłości.</pl>
 			</staff>
 			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" />
-			<data country="D" year="1983" distribution="2" maingenre="9" subgenre="15" flags="16" blocks="2" price_mod="0.9" />
+			<data country="D" distribution="2" maingenre="9" subgenre="15,5" flags="16" blocks="2" price_mod="0.9" />
+			<releaseTime year_relative="-2" year_relative_min="1980" year_relative_max="2010" />
 			<ratings critics="40" speed="20" outcome="48" />
 		</programme>
 		<programme guid="ronny-programme-kartoffeln-01" product="1" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
@@ -201,7 +202,8 @@ Witamy w przyszłości.</pl>
 			</staff>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity men="0.75" children="2" />
-			<data country="D" year="1985" distribution="2" maingenre="15" subgenre="" flags="16" blocks="2" price_mod="0.95" />
+			<data country="D" distribution="2" maingenre="15" subgenre="5,7" flags="16" blocks="2" price_mod="0.95" />
+			<releaseTime year_relative="0" year_relative_min="1982" year_relative_max="2012" />
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
 
@@ -212,7 +214,7 @@ Witamy w przyszłości.</pl>
 				<pl>Wielka kontrola gum do żucia</pl>
 			</title>
 			<description>
-				<de>Es gibt sie in rot, weiss und vielen anderen Farben. Mal mit Zucker und mal ohne. Im großen Kaugummitest werden 200 Kaugummisorten auf Geschmack, Viskosität und Schuhsohlentauglichkeit getestet.</de>
+				<de>Es gibt sie in rot, weiß und vielen anderen Farben. Mal mit Zucker und mal ohne. Im großen Kaugummitest werden 200 Kaugummisorten auf Geschmack, Viskosität und Schuhsohlentauglichkeit getestet.</de>
 				<en>They come in red, white and many other colors. Sometimes with sugar and sometimes without. In the great chewing gum check 200 types of bubblegums are tested for taste, viscosity and shoe sole suitability.</en>
 				<pl>Występują w kolorze czerwonym, białym i wielu innych. Czasami z cukrem, a czasami bez. W wielkim teście gum do żucia 200 rodzajów gumy balonowej jest testowanych pod kątem smaku, lepkości i przydatności do podeszwy buta.</pl>
 			</description>
@@ -273,11 +275,11 @@ Witamy w przyszłości.</pl>
 				<pl>Katalogi sprzedaży wysyłkowej: Skąd i po co?</pl>
 			</title>
 			<description>
-				<de>Der Traum einer jeden Hausfrau: Versandkataloge aus dem Hause ATTA und Qualle. Wie werden sie hergestellt, was kann man damit anstellen?
-Mit praktischen Tipps Ramschware zu erkennen.</de>
-				<en>The dream of every Housewife: Mail-order catalogues from ATTA or Qualle. How they are made and what can you do with them?
+				<de>Der Traum einer jeden Hausfrau: Versandkataloge aus dem Hause ${brand_otto} und ${brand_quelle}. Wie werden sie hergestellt, was kann man damit anstellen?
+Mit praktischen Tipps, Ramschware zu erkennen.</de>
+				<en>The dream of every Housewife: Mail-order catalogues from ${brand_otto} or ${brand_quelle}. How they are made and what can you do with them?
 With practical tricks to recognize junk goods.</en>
-				<pl>Marzenie każdej gospodyni domowej: Katalogi wysyłkowe od ATTA lub Qualle. Jak powstają i co można z nimi zrobić?
+				<pl>Marzenie każdej gospodyni domowej: Katalogi wysyłkowe od ${brand_otto} lub ${brand_quelle}. Jak powstają i co można z nimi zrobić?
 Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 			</description>
 			<staff>
@@ -321,7 +323,7 @@ Z praktycznymi sztuczkami do rozpoznawania śmieciowych towarów.</pl>
 				<pl>Gospodyni domowa - urocza i dopieszczona</pl>
 			</title>
 			<description>
-				<de>Wer hat sowas nicht gern zu Haus? Eine fleissige und artige Hausfrau. Sie kocht, sie wäscht und schweigt.
+				<de>Wer hat sowas nicht gern zu Haus? Eine fleißige und artige Hausfrau. Sie kocht, sie wäscht und schweigt.
 Die Reportage begleitet zwei Familien für einen Sommer in West-Berlin.</de>
 				<en>Who does not like having something like that at home? A diligent and decent housewife. She cooks, she washes and keeps quiet.
 The report accompanies two families for a summer in West Berlin.</en>
@@ -431,7 +433,7 @@ Przygotuj chusteczki do nosa.</pl>
 			<groups target_groups="6" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<!-- women / female teenagers -->
 			<targetgroupattractivity men="0.75" women="1.20" teenagers_female="1.25" />
-			<data country="D" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<data country="D" distribution="2" maingenre="301" subgenre="15,6" blocks="1" />
 			<releaseTime year_relative="+2" year_relative_min="1995" year_relative_max="2005" />
 			<ratings critics="10" speed="30" />
 		</programme>
@@ -969,9 +971,9 @@ Znamienici goście i muzyka autorstwa ${.self:"cast":3:"nickname"}.</pl>
 				<all>${WHAT} ${WHEN}</all>
 			</title>
 			<description>
-				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
-				<en>Snazzy music for young and old. From packed football stadiums to the show stage. Pure entertainment</en>
-				<pl>Odlotowa muzyka dla młodszych i starszych. Od wypełnionych po brzegi stadionów piłkarskich po sceny estradowe. Czysta rozrywka</pl>
+				<de>Fetzige Musik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur!</de>
+				<en>Snazzy music for young and old. From packed football stadiums to the show stage. Pure entertainment!</en>
+				<pl>Odlotowa muzyka dla młodszych i starszych. Od wypełnionych po brzegi stadionów piłkarskich po sceny estradowe. Czysta rozrywka!</pl>
 			</description>
 			<variables>
 				<what>

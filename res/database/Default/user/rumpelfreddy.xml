@@ -12,7 +12,7 @@
 				<pl>Express do Syberii</pl>
 			</title>
 			<description>
-				<de>Eine Mutter versucht ihren in Sibirien verschollenen Sohn wieder zu finden. Kalter Krieg Propaganda aus dem Bilderbuch.</de>
+				<de>Eine Mutter versucht, ihren in Sibirien verschollenen Sohn wieder zu finden. Kalter-Krieg-Propaganda aus dem Bilderbuch.</de>
 				<en>A mother is trying to find her missing son in Siberia. Picture book Cold War propaganda.</en>
 				<pl>Matka próbuje odnaleźć zaginionego syna na Syberii. Książka obrazkowa o zimnowojennej propagandzie</pl>
 			</description>
@@ -52,6 +52,9 @@
 			<targetgroupattractivity employees="1.25" />
 			<data country="CDN" year="1988" distribution="2" maingenre="1" subgenre="2,17" flags="32" blocks="2" price_mod="1.0" />
 			<ratings critics="11" speed="43" outcome="14" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_3" />
+			</effects>
 		</programme>
 		
 		<programme guid="Freddy_Film_CustomB_3" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -74,8 +77,11 @@
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity employees="1.25" />
-			<data country="CDN" year="1991" distribution="2" maingenre="1" subgenre="2,17" flags="32" blocks="2" price_mod="1.0" />
+			<data country="CDN" year="1991" distribution="2" maingenre="1" subgenre="2,17" flags="32" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_2 -->
 			<ratings critics="10" speed="38" outcome="15" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_4" />
+			</effects>
 		</programme>
 		
 		<programme guid="Freddy_Film_CustomB_4" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
@@ -98,7 +104,7 @@
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity employees="1.25" />
-			<data country="CDN" year="1994" distribution="2" maingenre="1" subgenre="2,12" flags="32" blocks="2" price_mod="1.0" />
+			<data country="CDN" year="1994" distribution="2" maingenre="1" subgenre="2,12" flags="32" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_3 -->
 			<ratings critics="7" speed="39" outcome="18" />
 		</programme>
 		
@@ -204,7 +210,7 @@
 		<programme guid="Freddy_Film_CustomB_9" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Midgards Schlacht um die Erde</de>
-				<en>Midgards Battle for Earth</en>
+				<en>Midgard's Battle for Earth</en>
 				<pl>Bitwa Midgardów o Ziemię</pl>
 			</title>
 			<description>
@@ -233,7 +239,7 @@
 				<pl>Dino głębinowy terror, banzai</pl>
 			</title>
 			<description>
-				<de>Ein Megahai, der Dinosaurier DNA gefressen hat, überfällt Japan und wird von Jetman mit einem Staubwedel aufgehalten da das Monster gegen Staub allergisch ist.</de>
+				<de>Ein Megahai, der Dinosaurier-DNA gefressen hat, überfällt Japan und wird von Jetman mit einem Staubwedel aufgehalten, da das Monster gegen Staub allergisch ist.</de>
 				<en>A mega shark that has eaten dinosaur DNA invades Japan but is stopped by Jetman with a feather duster because the monster is allergic to dust.</en>
 				<pl>Mega rekin, który zjadł DNA dinozaura, atakuje Japonię, ale zostaje powstrzymany przez Jetmana za pomocą miotełki do kurzu, ponieważ potwór jest uczulony na kurz.</pl>
 			</description>
@@ -244,7 +250,7 @@
 			</staff>
 			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity employees="1.25" />
-			<data country="J" year="1961" distribution="1" maingenre="2" subgenre="16" flags="40" blocks="2" price_mod="1.0" />
+			<data country="J" year="1961" distribution="1" maingenre="16" subgenre="2,1" flags="40" blocks="2" price_mod="1.0" />
 			<ratings critics="8" speed="37" outcome="13" />
 		</programme>
 		
@@ -355,7 +361,7 @@
 		<programme guid="Freddy_Film_CustomB_15" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy">
 			<title>
 				<de>Santa gegen die Magmazwerge</de>
-				<en>Santa Against the Magma Dwarfs</en>
+				<en>Santa Against the Magma Dwarves</en>
 				<pl>Święty Mikołaj przeciwko Magmowym Krasnoludom</pl>
 			</title>
 			<description>
@@ -371,7 +377,7 @@
 			</staff>
 			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity children="2" teenagers="2" housewives="2" employees="1.25" />
-			<data country="USA" year="1959" distribution="1" maingenre="2" subgenre="9" flags="32" blocks="3" price_mod="1.0" />
+			<data country="USA" year="1959" distribution="1" maingenre="10" subgenre="9,2" flags="32" blocks="3" price_mod="1.0" />
 			<ratings critics="7" speed="18" outcome="22" />
 		</programme>
 		
@@ -382,7 +388,7 @@
 				<pl>Julia w świecie wróżek</pl>
 			</title>
 			<description>
-				<de>Julias neue Schuhe gibt es nur in der Welt der Feen. Also reist sie mit Hilfe von Poo ihrem rosa Eisbär dorthin um zu shoppen.</de>
+				<de>Julias neue Schuhe gibt es nur in der Welt der Feen. Also reist sie mit Hilfe von Poo, ihrem rosa Eisbär, dorthin, um zu shoppen.</de>
 				<en>Julia's new shoes are available only in the world of fairies. Thus, with the help of Poo, her pink polar bear, she travels there so she can go shopping.</en>
 				<pl>Nowe buty Julii są dostępne tylko w świecie wróżek. Dlatego z pomocą Poo, jej różowego misia polarnego, udaje się tam na zakupy.</pl>
 			</description>
@@ -392,8 +398,11 @@
 			</staff>
 			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="1.25" teenagers_female="2" />
-			<data country="D" year="2005" distribution="2" maingenre="3" subgenre="9" flags="48" blocks="2" price_mod="1.0" />
+			<data country="D" year="2005" distribution="2" maingenre="3" subgenre="9,10" flags="34" blocks="2" price_mod="0.5" />
 			<ratings critics="6" speed="12" outcome="27" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_20" />
+			</effects>
 		</programme>
 		
 		<programme guid="Freddy_Film_CustomB_17" product="1" licence_type="1" fictional="1" creator="8667" created_by="Rumpelfreddy" comment="Prequels now added: 6a11e4c6-eb2b-49b2-b6e6-deb2957ca8cb | TODO: Continuation as screenplays">
@@ -403,7 +412,7 @@
 				<pl>Super Duper Mega nastoletnie roboty 4</pl>
 			</title>
 			<description>
-				<de>18 Teenager kombinieren ihre Superkraftroboter um den Galaktischen Übermotz Roboter aufzuhalten. Reines Produktplacement ohne jede Qualität.</de>
+				<de>18 Teenager kombinieren ihre Superkraftroboter, um den Galaktischen Übermotz-Roboter aufzuhalten. Reines Produktplacement ohne jede Qualität.</de>
 				<en>18 teenagers combine their super power robots to stop the Galactic Supreme Uber-Robot. Pure product placement without any quality.</en>
 				<pl>18 nastolatkowie łączą swoje super-moce robotów, aby powstrzymać Galaktycznego Najwyższego Uber-Robota. Czyste lokowanie produktu bez żadnej jakości.</pl>
 			</description>
@@ -415,6 +424,845 @@
 			<targetgroupattractivity men="1.25" teenagers_male="2" />
 			<data country="USA" year="2006" distribution="3" maingenre="3" subgenre="2,16" flags="34" blocks="2" price_mod="1.0" available="0" /> <!-- availability triggered by 9c556f2e-fd6c-4b84-90e4-48f9b4f26e2c -->
 			<ratings critics="5" speed="41" outcome="16" />
+		</programme>
+
+		<!-- added 2025-08 - was not yet in game, from old forum post https://www.gamezworld.de/phpforum/viewtopic.php?pid=78290#p78290 -->
+
+		<programme guid="Freddy_Film_CustomB_18" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Mein Mond ruft nach Engelkatzen</de>
+				<en>My Moon Calls for Angel Cats</en>
+				<pl>Mój Księżyc wzywa anielskie koty</pl>
+			</title>
+			<description>
+				<de>Vollkommen unverständlicher und verstörender Anime. Selbst in Japan versteht ihn keiner. So manch einer hält das für Kunst, aber...</de>
+				<en>Completely incomprehensible and disturbing anime. Not even understood in Japan. Some consider it art, but...</en>
+				<pl>Kompletnie niezrozumiały i niepokojący anime. Nawet w Japonii nikt go nie rozumie. Niektórzy uważają to za sztukę, ale...</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_319</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="50" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" teenagers="2" managers="2" />
+			<data country="J" year="1980" distribution="1" maingenre="3" subgenre="10,1" flags="4" blocks="5" price_mod="0.5" />
+			<ratings critics="28" speed="24" outcome="13" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_19" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Oskar und die Katzengang</de>
+				<en>Oscar and the Cat Gang</en>
+				<pl>Oskar i Kocia Ferajna</pl>
+			</title>
+			<description>
+				<de>Katzen, böse Hunde, Omas Geschenk, alles gesagt. Selbst Grundschüler könnten besser zeichnen, vertonen oder erzählen.</de>
+				<en>Cats, evil dogs, grandma's gift - need we say more? Even elementary schoolers could draw, dub, or narrate better.</en>
+				<pl>Koty, złe psy, prezent od babci - wszystko wyjaśnione. Nawet uczniowie podstawówki lepiej by narysowali, nagrali lub opowiedzieli.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_13</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" teenagers="2" pensioners="2" />
+			<data country="D" year="1981" distribution="3" maingenre="3" subgenre="9,1" flags="40" blocks="2" price_mod="0.5" />
+			<ratings critics="13" speed="11" outcome="14" />
+			<modifiers>
+				<modifier name="topicality::age" value="0.5" />
+			</modifiers>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_20" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Julia Glitzerprinzessin</de>
+				<en>Julia Glitterprincess</en>
+				<pl>Julia Brokatowa Księżniczka</pl>
+			</title>
+			<description>
+				<de>Julia will Prinzessin werden und ändert kurzerhand unsere Demokratie in eine Monarchie mit der Hilfe von magischem Glitzerstaub.</de>
+				<en>Julia wants to be a princess and promptly turns our democracy into a monarchy using magical glitter dust.</en>
+				<pl>Julia chce zostać księżniczką i błyskawicznie zamienia naszą demokrację w monarchię przy pomocy magicznego brokatu.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Rumpelfreddy-fictionalperson-HannaHobkinns</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" teenagers_female="2" />
+			<data country="D" year="2006" distribution="2" maingenre="3" subgenre="9,10" flags="34" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_16 -->
+			<ratings critics="12" speed="12" outcome="15" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_21" />
+			</effects>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_21" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Julia Glitzerprinzessin 2</de>
+				<en>Julia Glitterprincess 2</en>
+				<pl>Julia Brokatowa Księżniczka 2</pl>
+			</title>
+			<description>
+				<de>Julia muss fliehen, als eine böse humanitäre Operation ihren Palast zerstört. Ninjafunkeleinhörner helfen ihr daraufhin, ihre Untertanen zu massakrieren.</de>
+				<en>Julia flees when an evil humanitarian operation destroys her palace. Ninja sparkle-unicorns then help her to massacre her subjects.</en>
+				<pl>Julia ucieka, gdy zła operacja humanitarna niszczy jej pałac. Ninja-błyszczące jednorożce pomagają jej następnie w masakrowaniu jej poddanych.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Rumpelfreddy-fictionalperson-HannaHobkinns</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" teenagers_female="2" />
+			<data country="D" year="2007" distribution="2" maingenre="3" subgenre="9,10" flags="34" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_20 -->
+			<ratings critics="11" speed="22" outcome="14" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_22" />
+			</effects>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_22" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Julia erklärt die Welt</de>
+				<en>Julia Explains the World</en>
+				<pl>Julia Tłumaczy Świat</pl>
+			</title>
+			<description>
+				<de>Julia und Eisbär Poo erklären pädagogisch wertvolle Konzepte wie 1001 Tipps für Schuhe und warum Prinzessinnen 90% aller Bürger töten lassen müssen.</de>
+				<en>Julia and polar bear Poo explain vital concepts like 1001 Shoe Tips and why princesses must execute 90% of citizens.</en>
+				<pl>Julia i niedźwiedź polarny Poo tłumaczą kluczowe zagadnienia jak 1001 Porad o Butach i dlaczego księżniczki muszą stracić 90% obywateli.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Rumpelfreddy-fictionalperson-HannaHobkinns</member>
+				<member index="1" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" teenagers_female="2" />
+			<data country="D" year="2008" distribution="2" maingenre="3" subgenre="9,10" flags="34" blocks="3" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_21 -->
+			<ratings critics="14" speed="17" outcome="8" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_23" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Der frühe Vogel fängt die Kugel</de>
+				<en>The Early Bird Catches the Bullet</en>
+				<pl>Wczesny ptak kulę łapie</pl>
+			</title>
+			<description>
+				<de>Nachdem Tante Mathildas Leiche tot neben dem Apfelbaum im Garten gefunden wurde, versucht ihre Nichte, den Mörder zu entlarven. Diese Rolle übernimmt der Gärtner, wer sonst.</de>
+				<en>Aunt Mathilda's very dead corpse is found by the apple tree. Her niece hunts the killer - spoiler: it's the gardener. Who else?</en>
+				<pl>Ciało cioci Mathildy (śmierć potwierdzona) leży przy jabłoni. Jej siostrzenica szuka mordercy - spoiler: to ogrodnik. Bo kto inny?</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_246</member>
+				<member index="1" function="2">Per_custom_Freddy_253</member>
+				<member index="2" function="2">Per_custom_Freddy_189</member>
+				<member index="3" function="2">Per_custom_Freddy_166</member>
+				<member index="4" function="2">Per_custom_Freddy_88</member>
+				<member index="5" function="2">Per_custom_Freddy_154</member>
+				<member index="6" function="2">Per_custom_Freddy_159</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="GB" year="1963" distribution="2" maingenre="4" subgenre="14,17" flags="0" blocks="3" price_mod="0.5" />
+			<ratings critics="14" speed="12" outcome="18" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_24" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Ein Zug nach Irgendwo</de>
+				<en>A Train to Somewhere</en>
+				<pl>Pociąg do jakiegoś miejsca</pl>
+			</title>
+			<description>
+				<de>Ein Juwelenkurier wird im Zug nach London erdrosselt. Von dem Schmuck fehlt jede Spur. Die Hälfte des Filmes besteht aus Außenaufnahmen des fahrenden Zuges. Ansonsten wäre er noch langweiliger.</de>
+				<en>A jewel courier gets strangled on a London-bound train. The gems vanish. Half the runtime is exterior shots of the moving train - because otherwise it'd be *too* exciting.</en>
+				<pl>Kurier biżuterii zostaje uduszony w pociągu do Londynu. Klejnoty znikają. Połowa filmu to ujęcia jadącego pociągu - bo inaczej byłoby *zbyt* ekscytująco.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_246</member>
+				<member index="1" function="2">Per_custom_Freddy_189</member>
+				<member index="2" function="2">Per_custom_Freddy_183</member>
+				<member index="3" function="2">Per_custom_Freddy_182</member>
+				<member index="4" function="2">Per_custom_Freddy_191</member>
+				<member index="5" function="2">Per_custom_Freddy_63</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="GB" year="1961" distribution="2" maingenre="4" subgenre="5,14" flags="0" blocks="3" price_mod="0.5" />
+			<ratings critics="12" speed="14" outcome="11" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_25" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Kalle der Schnüffler</de>
+				<en>Kalle the Sniffer</en>
+				<pl>Kalle Węszyciel</pl>
+			</title>
+			<description>
+				<de>Rentner Kalle wird zufällig Zeuge eines Verbrechens. Die Gauner wollen ihn daraufhin beseitigen, doch Kalle hat's immer noch drauf und startet zum Gegenangriff.</de>
+				<en>Pensioner Kalle witnesses a crime. Thugs try to silence him, but Kalle's "still got it" and fights back.</en>
+				<pl>Emeryt Kalle jest świadkiem zbrodni. Złoczyńcy chcą go uciszyć, ale Kalle "wciąż ma to coś" i walczy.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_13</member>
+				<member index="1" function="2">Per_custom_Freddy_15</member> <!-- TODO: sic aus dem Forum, ist aber kein Darsteller im Rentner-Alter -->
+				<member index="2" function="2">Per_custom_Freddy_20</member> <!-- der würde besser passen, jedoch nicht verwendet im Folgefilm -->
+				<member index="3" function="2">Per_custom_Freddy_13</member>
+				<member index="4" function="2">Per_custom_Freddy_662</member>
+				<member index="5" function="2">Per_custom_Freddy_426</member>
+				<member index="6" function="2">Per_custom_Freddy_345</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" year="1983" distribution="3" maingenre="4" subgenre="5,17" flags="0" blocks="2" price_mod="0.5" />
+			<ratings critics="16" speed="23" outcome="20" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_26" />
+			</effects>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_26" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Kalle will es wissen</de>
+				<en>Kalle Has Another Try</en>
+				<pl>Kalle próbuje ponownie</pl>
+			</title>
+			<description>
+				<de>Rentner Kalle hat die Schnauze voll von seiner kleinen Rente. Er überlistet ein paar Bankräuber, indem er ihre Beute durch billige Blüten ersetzt.</de>
+				<en>Pensioner Kalle is fed up with his measly pension. He outsmarts bank robbers by swapping their loot with fake cash.</en>
+				<pl>Emeryt Kalle ma dość głodowej emerytury. Przechytra złodziei bankowych, podmieniając ich łup na fałszywki.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_13</member>
+				<member index="1" function="2">Per_custom_Freddy_15</member>
+				<member index="2" function="2">Per_custom_Freddy_12</member>
+				<member index="3" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>
+				<member index="4" function="2">Per_custom_Freddy_542</member>
+				<member index="5" function="2">Per_custom_Freddy_382</member>
+				<member index="6" function="2">Per_custom_Freddy_299</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" year="1984" distribution="3" maingenre="4" subgenre="5,17" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_25 -->
+			<ratings critics="18" speed="27" outcome="26" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_27" />
+			</effects>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_27" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Kalle will's nochmal wissen</de>
+				<en>Kalle Has Another Try... Again!</en>
+				<pl>Kalle próbuje ponownie... Jeszcze raz!</pl>
+			</title>
+			<description>
+				<de>Rentner Kalle überlistet schon wieder Bankräuber. Ein echt schlechter Remake eines nicht besonders guten Filmes.</de>
+				<en>Pensioner Kalle outsmarts bank robbers yet again. A truly terrible remake of a not-very-good film.</en>
+				<pl>Emeryt Kalle znów przechytrza złodziei bankowych. Wyjątkowo kiepski remake niezbyt dobrego filmu.</pl> 
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_12</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_12</member>
+				<member index="3" function="2">Rumpelfreddy-fictionalperson-LenaLauterberg</member>
+				<member index="4" function="2">Per_custom_Freddy_550</member>
+				<member index="5" function="2">Per_custom_Freddy_527</member>
+				<member index="6" function="2">Per_custom_Freddy_447</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" year="2001" distribution="3" maingenre="4" subgenre="5,17" flags="0" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_26 -->
+			<ratings critics="17" speed="14" outcome="18" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_28" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Tortenwerfen für Anfänger</de>
+				<en>Cake Throwing for Beginners</en>
+				<pl>Rzucanie Tortami dla Początkujących</pl>
+			</title>
+			<description>
+				<de>Wer mag keine Tortenschlacht? Nach diesen Film bestimmt jeder. Hat immerhin die Konditorei Schuhrmann finanziell grundsaniert.</de>
+				<en>Who doesn't love cake fights? Everyone after this film. At least it financially renovated Schuhrmann Bakery through product placement.</en>
+				<pl>Kto nie kocha wojen na ciasta? Wszyscy po tym filmie. Przynajmniej sfinansował remont Piekarni Schuhrmann dzięki lokowaniu produktu.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_15</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_12</member>
+				<member index="3" function="2">Per_custom_Freddy_394</member>
+				<member index="4" function="2">Per_custom_Freddy_378</member>
+				<member index="5" function="2">Per_custom_Freddy_515</member>
+				<member index="6" function="2">Per_custom_Freddy_433</member>
+			</staff>
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" year="1973" distribution="2" maingenre="5" subgenre="9,2" flags="32" blocks="2" price_mod="0.5" />
+			<ratings critics="16" speed="28" outcome="9" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_29" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Meine neue Insel</de>
+				<en>My New Island</en>
+				<pl>Moja Nowa Wyspa</pl>
+			</title>
+			<description>
+				<de>Nach einem Schiffbruch landet Familie Müller auf einer paradiesischen Insel. Mit ihrer deutschen Art nerven sie ihre neuen Nachbarn und die Zuschauer zu Tode.</de>
+				<en>After a shipwreck, the Müller family lands on a paradise island. With their German ways, they annoy both their new neighbors and the audience to death.</en>
+				<pl>Po rozbiciu statku rodzina Müllerów ląduje na rajskiej wyspie. Swoim niemieckim sposobem bycia irytują swoich nowych sąsiadów i widzów.</pl>
+			</description>
+			<staff>
+				<member index="0" function="21">Per_custom_Freddy_7</member>
+				<member index="1" function="2">Per_custom_Freddy_17</member>
+				<member index="2" function="2">Per_custom_Freddy_15</member>
+				<member index="3" function="2">Per_custom_Freddy_14</member>
+				<member index="4" function="2">Per_custom_Freddy_371</member>
+				<member index="5" function="2">Per_custom_Freddy_485</member>
+				<member index="6" function="2">Per_custom_Freddy_501</member>
+			</staff>
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" year="1995" distribution="3" maingenre="5" subgenre="1,7" flags="32" blocks="2" price_mod="0.5" />
+			<ratings critics="9" speed="14" outcome="21" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_30" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Der Bananenplan</de>
+				<en>The Banana Plan</en>
+				<pl>Plan bananowy</pl>
+			</title>
+			<description>
+				<de>Angelo erbt eine Bananenplantage. Dort verschwinden jede Nacht alle Bananen, da ein Wissenschaftler aus den Schalen eine Gehirnwaschdroge entwickeln will. Es kommt zu einer wilden Verfolgungsjagd.</de>
+				<en>Angelo inherits a banana plantation where bananas vanish nightly, because a mad scientist needs peels for mind-control drugs. Cue the world's silliest chase scenes.</en>
+				<pl>Angelo dziedziczy plantację bananów, gdzie owoce znikają co noc - szalony naukowiec potrzebuje skórek na narkotyk do kontroli umysłu. Oto najgłupsze sceny pościgów w historii.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_273</member>
+				<member index="1" function="2">Per_custom_Freddy_276</member>
+				<member index="2" function="2">Per_custom_Freddy_279</member>
+				<member index="3" function="2">Per_custom_Freddy_282</member>
+				<member index="4" function="2">Per_custom_Freddy_283</member>
+				<member index="5" function="2">Per_custom_Freddy_284</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.75" />
+			<data country="I" year="1971" distribution="2" maingenre="5" subgenre="17,14" flags="40" blocks="3" price_mod="0.5" />
+			<ratings critics="19" speed="33" outcome="26" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_31" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Fünf Sterne</de>
+				<en>Five Stars</en>
+				<pl>Pięć Gwiazdek</pl>
+			</title>
+			<description>
+				<de>Nachdem Starkoch Marpue von einem jungen Koch bei einem Fernsehkochduell geschlagen wird, setzt er seine Tochter auf ihn an, um an das Rezept zu kommen. Dumme Sprüche und Sex machen leider noch keinen geschmackvollen Film.</de>
+				<en>When chef Marpue loses a TV cook-off, he sends his daughter to seduce the recipe from his rival. Sadly, bad puns and awkward sex scenes don't equal culinary cinema.</en>
+				<pl>Gdy szef kuchni Marpue przegrywa telewizyjny pojedynek, wysyła córkę, by uwiodła rywala i zdobyła przepis. Niestety, głupie żarty i niezręczne sceny łóżkowe nie tworzą kina kulinarnego.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_385</member>
+				<member index="1" function="2">Per_custom_Freddy_386</member>
+				<member index="2" function="2">Per_custom_Freddy_359</member>
+				<member index="3" function="2">Per_custom_Freddy_360</member>
+				<member index="4" function="2">Per_custom_Freddy_369</member>
+				<member index="5" function="2">Per_custom_Freddy_370</member>
+			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="0.5" children="0.25" teenagers="2" managers="0.1" pensioners="0.25" />
+			<data country="F" year="1981" distribution="3" maingenre="5" subgenre="8,15" flags="96" blocks="2" price_mod="0.5" />
+			<ratings critics="18" speed="21" outcome="26" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_32" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Gott erhöre uns</de>
+				<en>Lord, Hear Our Prayer</en>
+				<pl>Boże, wysłuchaj naszej modlitwy</pl>
+			</title>
+			<description>
+				<de>Nachdem Nordkorea die USA in einem Überraschungsangriff überwältigt und besetzt, versucht eine Mutter mit ihrer Tochter heimlich ihren Glauben an Jesus weiterzuführen.</de>
+				<en>After North Korea overwhelms and occupies the US in a surprise attack, a mother and her daughter secretly try to keep their faith in Jesus.</en>
+				<pl>Po tym, jak Korea Północna zaskakującym atakiem pokonuje i okupuje Stany Zjednoczone, matka wraz z córką potajemnie próbują kontynuować swoją wiarę w Jezusa.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_203</member>
+				<member index="1" function="2">Per_custom_Freddy_210</member>
+				<member index="2" function="2">Per_custom_Freddy_228</member>
+				<member index="3" function="2">Per_custom_Freddy_206</member>
+				<member index="4" function="2">Per_custom_Freddy_205</member>
+				<member index="5" function="2">Per_custom_Freddy_200</member>
+				<member index="6" function="2">Per_custom_Freddy_327</member>
+				<member index="7" function="2">Per_custom_Freddy_199</member>
+				<member index="8" function="2">Per_custom_Freddy_321</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="USA" year="2000" distribution="2" maingenre="7" subgenre="17,16" flags="0" blocks="4" price_mod="0.5" />
+			<ratings critics="18" speed="7" outcome="31" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_33" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>M441 der Katastrophenmeteor</de>
+				<en>M441: The Doomsday Meteor</en>
+				<pl>M441: Meteor Zagłady</pl>
+			</title>
+			<description>
+				<de>Ein Meteor schlägt auf die Erde ein. John Derbuckle ist der einzige Überlebende und versucht, mit der Einsamkeit klarzukommen. Keine Zombies, nur öde, endlose innere und äußere Leere.</de>
+				<en>A meteor strikes the Earth. John Derbuckle is the sole survivor and tries to cope with loneliness. No zombies, just a desolate, endless inner and outer emptiness.</en>
+				<pl>Meteoryt uderza w Ziemię. John Derbuckle jest jedynym ocalałym i próbuje poradzić sobie z samotnością. Żadnych zombie, tylko ponura, niekończąca się pustka wewnętrzna i zewnętrzna.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_183</member>
+				<member index="1" function="2">Per_custom_Freddy_203</member>
+			</staff>
+			<groups target_groups="50" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="USA" year="1986" distribution="3" maingenre="7" subgenre="16,17" flags="32" blocks="2" price_mod="0.5" />
+			<ratings critics="27" speed="12" outcome="11" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_34" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Das Roulette</de>
+				<en>The Roulette</en>
+				<pl>Ruletka</pl>
+			</title>
+			<description>
+				<de>Um die Schulden seines Vaters zu bezahlen, wird Rodrigo Falschspieler für ein Kasino der Mafia. Verzweifelt versucht er, aus den Fängen des Mobs zu entkommen.</de>
+				<en>Rodrigo becomes a mafia casino cheat to pay dad's debts. Desperately, he tries to escape the mob's clutches.</en>
+				<pl>Rodrigo zostaje oszustem w kasynie mafijnym, aby spłacić długi ojca. Desperacko próbuje uciec z rąk mafii.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_349</member>
+				<member index="1" function="2">Per_custom_Freddy_338</member>
+				<member index="2" function="2">Per_custom_Freddy_336</member>
+				<member index="3" function="2">Per_custom_Freddy_337</member>
+				<member index="4" function="2">Per_custom_Freddy_342</member>
+				<member index="5" function="2">Per_custom_Freddy_347</member>
+				<member index="6" function="2">Per_custom_Freddy_456</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="BR" year="1983" distribution="3" maingenre="17" subgenre="7,4" flags="32" blocks="2" price_mod="0.5" />
+			<ratings critics="21" speed="26" outcome="7" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_35" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>1953</de>
+				<en>1953</en>
+				<pl>1953: Wersja Propagandowa</pl>
+			</title>
+			<description>
+				<de>Erzählt die Ereignisse des Aufstandes 1953 in der DDR aus Sicht eines Kriegsheimkehrers. Leider wird der Film vor lauter Propaganda dem Thema nicht gerecht.</de>
+				<en>Depicts the 1953 East German uprising through a veteran's eyes. Buried under so much propaganda, you'll need a shovel to find historical truth.</en>
+				<pl>Opowiada o powstaniu w NRD w 1953 oczami weterana. Zakopany pod taką warstwą propagandy, że do prawdy historycznej potrzebna ci łopata.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_13</member>
+				<member index="1" function="2">Per_custom_Freddy_12</member>
+				<member index="2" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>
+				<member index="3" function="2">Per_custom_Freddy_395</member>
+				<member index="4" function="2">Per_custom_Freddy_525</member>
+				<member index="5" function="2">Per_custom_Freddy_561</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1983" distribution="3" maingenre="7" subgenre="11,13" flags="4" blocks="3" price_mod="0.5" />
+			<ratings critics="23" speed="17" outcome="19" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_36" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Die Todeswelle</de>
+				<en>The Death Wave</en>
+				<pl>Fala Śmierci</pl>
+			</title>
+			<description>
+				<de>Epische Erzählung über ein Fischerboot, das in einem Sturm einer Monsterwelle gegenübersteht. Leider sehr sehr sehr langatmig.</de>
+				<en>An epic tale of a fishing boat in a storm facing a killer wave. Unfortunately, very, very, very lengthy.</en>
+				<pl>Epicka opowieść o łodzi rybackiej zmagającej się z zabójczą falą podczas burzy. Niestety, bardzo, bardzo, bardzo długa.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_111</member>
+				<member index="1" function="2">Per_custom_Freddy_123</member>
+				<member index="2" function="2">Per_custom_Freddy_134</member>
+				<member index="3" function="2">Per_custom_Freddy_93</member>
+				<member index="4" function="2">Per_custom_Freddy_208</member>
+				<member index="5" function="2">Per_custom_Freddy_213</member>
+			</staff>
+			<groups target_groups="68" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="2002" distribution="3" maingenre="17" subgenre="7,13" flags="32" blocks="4" price_mod="0.5" />
+			<ratings critics="34" speed="12" outcome="14" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_37" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Fung Chung und seine 13 Sklavinnen</de>
+				<en>Fung Chung and His 13 Sex Slaves</en>
+				<pl>Fung Chung i Jego 13 Niewolnic Seksualnych</pl>
+			</title>
+			<description>
+				<de>Superschurke entführt 13 Supermodels, um ihre sexuelle Energie dazu zu benutzen, eine Superwaffe abzufeuern. Super bescheuert das Ganze.</de>
+				<en>Supervillain kidnaps 13 supermodels to power his superweapon with their sexual energy. Super ridiculous the whole thing.</en>
+				<pl>Superzłoczyńca porywa 13 supermodelek, aby wykorzystać ich energię seksualną do wystrzelenia superbroni. Cała ta historia jest super głupia.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_161</member>
+				<member index="1" function="2">Per_custom_Freddy_211</member>
+				<member index="2" function="2">Per_custom_Freddy_192</member>
+				<member index="3" function="2">Per_custom_Freddy_285</member>
+				<member index="4" function="2">Per_custom_Freddy_132</member>
+				<member index="5" function="2">Per_custom_Freddy_83</member>
+				<member index="6" function="2">various-models</member>
+			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1984" distribution="3" maingenre="8" subgenre="5,16" flags="96" blocks="2" price_mod="0.5" />
+			<ratings critics="5" speed="34" outcome="21" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_38" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Meine Miezen vom Land</de>
+				<en>My Country Pussycats</en>
+				<pl>Moje wiejskie kocice</pl>
+			</title>
+			<description>
+				<de>Ein paar blutjunge vollbusige „Landfrauen“ kommen in die Großstadt, damit ihnen bei ihren „Problemen“ geholfen wird.</de>
+				<en>A bunch of busty young "farm girls" head to the big city to get "help" with their "problems".</en>
+				<pl>Pulchne młode „wieśniaczki” przyjeżdżają do miasta po „pomoc” ze swoimi „problemami”.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_639</member>
+				<member index="1" function="2">Per_custom_Freddy_15</member>
+				<member index="2" function="2">Per_custom_Freddy_507</member>
+				<member index="3" function="2">Per_custom_Freddy_419</member>
+				<member index="4" function="2">Per_custom_Freddy_57</member>
+				<member index="5" function="2">Per_custom_Freddy_459</member>
+				<member index="6" function="2">various-models</member>
+			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1972" distribution="1" maingenre="8" subgenre="5" flags="104" blocks="2" price_mod="0.5" />
+			<ratings critics="12" speed="26" outcome="21" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_39" />
+			</effects>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_39" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Meine Miezen aus der Stadt</de>
+				<en>My City Pussycats</en>
+				<pl>Moje miejskie kocice</pl>
+			</title>
+			<description>
+				<de>Ein paar blutjunge vollbusige „Sekretärinnen“ kommen aufs Land, damit ihnen bei ihren „Problemen“ geholfen wird.</de>
+				<en>A bunch of busty young "secretaries" head to the countryside to get "help" with their "problems".</en>
+				<pl>Pulchne młode „sekretarki” jadą na wieś po „pomoc” ze swoimi „problemami”.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_639</member>
+				<member index="1" function="2">Per_custom_Freddy_15</member>
+				<member index="2" function="2">Per_custom_Freddy_628</member>
+				<member index="3" function="2">Per_custom_Freddy_521</member>
+				<member index="4" function="2">Per_custom_Freddy_638</member>
+				<member index="5" function="2">Per_custom_Freddy_285</member>
+				<member index="6" function="2">various-models</member>
+			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1972" distribution="1" maingenre="8" subgenre="5" flags="104" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_38 -->
+			<ratings critics="12" speed="27" outcome="19" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_40" />
+			</effects>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_40" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Das große Miezentreffen</de>
+				<en>The Great Pussycat Summit</en>
+				<pl>Wielki Zjazd Kocic</pl>
+			</title>
+			<description>
+				<de>„Sekretärinnen“ treffen „Landfrauen“, um über ihre Probleme zu „diskutieren“, oder so ähnlich.</de>
+				<en>"Secretaries" meet "farm girls" to "discuss" their problems. Or whatever.</en>
+				<pl>„Sekretarki” spotykają „wieśniaczki” by „dyskutować” o problemach. Albo cokolwiek innego.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_639</member>
+				<member index="1" function="2">Per_custom_Freddy_507</member>
+				<member index="2" function="2">Per_custom_Freddy_628</member>
+				<member index="3" function="2">Per_custom_Freddy_638</member>
+				<member index="4" function="2">Per_custom_Freddy_459</member>
+				<member index="5" function="2">Per_custom_Freddy_285</member>
+				<member index="6" function="2">various-models</member>
+			</staff>
+			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D" year="1973" distribution="1" maingenre="8" subgenre="5" flags="104" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_39 -->
+			<ratings critics="11" speed="25" outcome="17" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_41" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Das Weihnachtswunder</de>
+				<en>The Christmas Miracle</en>
+				<pl>Cud Bożonarodzeniowy</pl>
+			</title>
+			<description>
+				<de>Millionär Rockefall wurde am Kopf getroffen und hält sich nun für den Weihnachtsmann. Natürlich bekommen alle ein tolles Geschenk.</de>
+				<en>After a head injury, millionaire Rockefall thinks he's Santa. Naturally, everyone gets expensive gifts.</en>
+				<pl>Po uderzeniu w głowę milioner Rockefall myśli, że jest Mikołajem. Naturalnie wszyscy dostają drogie prezenty.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_155</member>
+				<member index="1" function="2">Per_custom_Freddy_240</member>
+				<member index="2" function="2">Per_custom_Freddy_166</member>
+				<member index="3" function="2">Per_custom_Freddy_288</member>
+				<member index="4" function="2">Per_custom_Freddy_251</member>
+				<member index="5" function="2">Per_custom_Freddy_190</member>
+				<member index="6" function="2">Per_custom_Freddy_177</member>
+			</staff>
+			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="USA" year="1979" distribution="2" maingenre="9" subgenre="7,5" flags="0" blocks="2" price_mod="0.5" />
+			<ratings critics="18" speed="12" outcome="35" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_42" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Die kleinen Pupser</de>
+				<en>The Little Poopers</en>
+				<pl>Małe Pierdziochy</pl>
+			</title>
+			<description>
+				<de>Böse Gauner entführen alle Babies aus einem kleinen Dorf, um Lösegeld zu erpressen. Doch sie werden von einem Babiegenie ausgetrickst.</de>
+				<en>Evil crooks kidnap all the babies from a small village to extort ransom money, only to be outsmarted by a baby genius.</en>
+				<pl>Zli przestępcy porywają wszystkie dzieci z małej wioski, aby wyłudzić okup, ale zostają przechytrzeni przez genialne dziecko.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_188</member>
+				<member index="1" function="2">Per_custom_Freddy_187</member>
+				<member index="2" function="2">Per_custom_Freddy_152</member>
+				<member index="3" function="2">Per_custom_Freddy_105</member>
+				<member index="4" function="2">Per_custom_Freddy_233</member>
+				<member index="5" function="2">Per_custom_Freddy_231</member>
+				<member index="6" function="2">Per_custom_Freddy_268</member>
+			</staff>
+			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="USA" year="1987" distribution="3" maingenre="9" subgenre="4,5" flags="0" blocks="2" price_mod="0.5" />
+			<ratings critics="14" speed="16" outcome="33" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_43" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Katzen gegen Hunde gegen die Welt</de>
+				<en>Cats vs Dogs vs The World</en>
+				<pl>Koty kontra Psy kontra Świat</pl>
+			</title>
+			<description>
+				<de>Katzen und Hunde können nicht nur miteinander sprechen, sie haben auch zwei konkurierende Geheimorganisationen, die versuchen, die Welt zuerst zu retten. Der Familien-Mockbuster war sogar etwas früher fertig als das Original.</de>
+				<en>Cats and dogs can not only talk to each other, they also have two competing secret organizations that are trying to be the first to save the world. The family mockbuster actually got finished a bit earlier than the original.</en>
+				<pl>Koty i psy nie tylko potrafią ze sobą rozmawiać, ale mają też dwie konkurujące ze sobą tajne organizacje, które próbują jako pierwsze ocalić świat. Ten rodzinny mockbuster był gotowy nawet nieco wcześniej niż oryginał.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_146</member>
+				<member index="1" function="2">Per_custom_Freddy_230</member>
+				<member index="2" function="2">Per_custom_Freddy_231</member>
+				<member index="3" function="2">Per_custom_Freddy_232</member>
+				<member index="4" function="2">various-voice-artists</member>
+			</staff>
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity children="2" teenagers="2" pensioners="0.25" />
+			<data country="USA" year="2001" distribution="3" maingenre="9" subgenre="16,5" flags="34" blocks="2" price_mod="0.5" />
+			<ratings critics="19" speed="26" outcome="37" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_44" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Super Popstar Story</de>
+				<en>Super Popstar Story</en>
+				<pl>Super Popgwiazdorska Historia</pl>
+			</title>
+			<description>
+				<de>Mary träumt davon, ein Popstar zu werden. Mit der Hilfe ihres magischen Hundes gewinnt sie eine Show und tritt vor 100.000 Leuten live auf.</de>
+				<en>Mary dreams of becoming a pop star. With the help of her magic dog, she wins a show and performs live in front of 100,000 people.</en>
+				<pl>Mary marzy o tym, by zostać gwiazdą pop. Z pomocą swojego magicznego psa wygrywa konkurs i występuje na żywo przed 100 000 osób.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_137</member>
+				<member index="1" function="2">Per_custom_Freddy_170</member>
+				<member index="2" function="2">Per_custom_Freddy_203</member>
+				<member index="3" function="2">Per_custom_Freddy_221</member>
+				<member index="4" function="2">Per_custom_Freddy_226</member>
+				<member index="5" function="2">Per_custom_Freddy_227</member>
+				<member index="6" function="2">Per_custom_Freddy_229</member>
+			</staff>
+			<groups target_groups="7" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" children="2" teenagers="2" employees="0.75" />
+			<data country="USA" year="1995" distribution="3" maingenre="9" subgenre="202,5" flags="32" blocks="3" price_mod="0.5" />
+			<ratings critics="18" speed="22" outcome="39" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_45" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Der Babyflüsterer</de>
+				<en>The Baby Whisperer</en>
+				<pl>Szeptacz Niemowląt</pl>
+			</title>
+			<description>
+				<de>Thomas hat ein gutes Händchen beim Windeln wechseln. Als er gefeuert wird, versucht er sich als Profitagesvater. Leider machen ihm die Kleinen das Leben zur Hölle.</de>
+				<en>Thomas has a knack for changing diapers. When he gets fired, he tries his hand at being a professional nanny. Unfortunately, the toddlers give him hell.</en>
+				<pl>Thomas ma talent do zmiany pieluch. Kiedy zostaje zwolniony, próbuje swoich sił jako profesjonalna niania. Niestety, maluchy dają mu popalić.</pl>
+			</description>
+			<staff>
+				<member index="0" function="21">Per_custom_Freddy_7</member>
+				<member index="1" function="2">Per_custom_Freddy_10</member>
+				<member index="2" function="2">Per_custom_Freddy_5</member>
+				<member index="3" function="2">Per_custom_Freddy_4</member>
+				<member index="4" function="2">Per_custom_Freddy_65</member>
+				<member index="5" function="2">Per_custom_Freddy_280</member>
+				<member index="6" function="2">Per_custom_Freddy_360</member>
+			</staff>
+			<groups target_groups="69" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity men="0.75" />
+			<data country="D" year="2004" distribution="3" maingenre="9" subgenre="5,7" flags="32" blocks="2" price_mod="0.5" />
+			<ratings critics="11" speed="21" outcome="24" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_46" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Drachenattacke: Blau gegen Rot</de>
+				<en>Dragon Attack: Blue vs Red</en>
+				<pl>Atak Smoków: Niebiescy kontra Czerwoni</pl>
+			</title>
+			<description>
+				<de>Weil sich zwei Drachenclans ständig in den Haaren haben, gleicht das Land einer Aschewüste. Laura, eine Bauerstochter, versucht die Drachen zu überzeugen, doch mal netter zu sein.</de>
+				<en>Two dragon clans turn the country to ash with their squabbles. Farm girl Laura tries diplomacy: "Could y'all maybe not?" Spoiler: They couldn't.</en>
+				<pl>Dwa klany smoków zamieniają kraj w popiół. Wiejska Laura próbuje dyplomacji: „Może byście tak nie?“. Spoiler: Nie mogły.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_207</member>
+				<member index="1" function="2">Per_custom_Freddy_216</member>
+				<member index="2" function="2">Per_custom_Freddy_252</member>
+				<member index="3" function="2">Per_custom_Freddy_219</member>
+				<member index="4" function="2">Per_custom_Freddy_217</member>
+				<member index="5" function="2">Per_custom_Freddy_214</member>
+				<member index="6" function="2">Per_custom_Freddy_225</member>
+			</staff>
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
+			<data country="USA" year="2003" distribution="3" maingenre="10" subgenre="9,1" flags="34" blocks="2" price_mod="0.5" />
+			<ratings critics="16" speed="23" outcome="29" />
+			<effects>
+				<effect trigger="broadcastFirstTime" type="modifyProgrammeAvailability" enable="1" guid="Freddy_Film_CustomB_47" />
+			</effects>
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_47" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Drachenattacke II</de>
+				<en>Dragon Attack II</en>
+				<pl>Atak Smoków II</pl>
+			</title>
+			<description>
+				<de>Die Drachenclans haben sich verbündet. Laura, inzwischen Ritterin, muss die Drachen davon überzeugen, nicht alle Menschen zu fressen, indem sie Veganer werden.</de>
+				<en>The dragon clans have formed an alliance. Laura, now a knight, must convince the dragons not to eat all humans and become vegans instead.</en>
+				<pl>Klan smoków zawarł sojusz. Laura, która została rycerzem, musi przekonać smoki, aby nie zjadały wszystkich ludzi, zachęcając je do przejścia na weganizm.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_207</member>
+				<member index="1" function="2">Per_custom_Freddy_216</member>
+				<member index="2" function="2">Per_custom_Freddy_252</member>
+				<member index="3" function="2">Per_custom_Freddy_219</member>
+				<member index="4" function="2">Per_custom_Freddy_220</member>
+				<member index="5" function="2">Per_custom_Freddy_222</member>
+				<member index="6" function="2">Per_custom_Freddy_225</member>
+			</staff>
+			<groups target_groups="19" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity women="1.25" children="2" teenagers="2" housewives="2" />
+			<data country="USA" year="2007" distribution="3" maingenre="10" subgenre="9,1" flags="34" blocks="2" price_mod="0.5" available="0" /> <!-- availability triggered by Freddy_Film_CustomB_46 -->
+			<ratings critics="15" speed="21" outcome="31" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_48" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Karibischer Modderduft</de>
+				<en>Caribbean Mud Aroma</en>
+				<pl>Karaibski Zapach Błota</pl>
+			</title>
+			<description>
+				<de>Zombievoodoogoblinpiraten kämpfen gegen die Spanische Armada in einem Paralleluniversum. Wurde wohl mit Halloweenmasken in einer Badewanne gedreht.</de>
+				<en>Zombie-voodoo-goblin-pirates battle the Spanish Armada in a parallel universe. Probably filmed in a bathtub with Halloween masks.</en>
+				<pl>Zombi-voodoo-goblin-piraci walczą z hiszpańską armadą w równoległym wszechświecie. Prawdopodobnie kręcone w wannie z użyciem masek na Halloween.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_87</member>
+				<member index="1" function="2">Per_custom_Freddy_92</member>
+				<member index="2" function="2">Per_custom_Freddy_95</member>
+				<member index="3" function="2">Per_custom_Freddy_94</member>
+				<member index="4" function="2">Per_custom_Freddy_85</member>
+				<member index="5" function="2">Per_custom_Freddy_84</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity teenagers="2" employees="1.5" />
+			<data country="E" year="1971" distribution="3" maingenre="10" subgenre="12,1" flags="32" blocks="2" price_mod="0.5" />
+			<ratings critics="17" speed="39" outcome="13" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_49" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>König Arthur und die Eisriesen</de>
+				<en>King Arthur and the Ice Giants</en>
+				<pl>Król Artur i Lodowe Olbrzymy</pl>
+			</title>
+			<description>
+				<de>König Arthur wird von Eisriesen beinahe getötet, kann sich aber retten und tötet daraufhin zusammen mit seinen Tafelrittern alle Riesen, indem Merlin sie in Riesenritter verwandelt.</de>
+				<en>King Arthur is almost killed by ice giants, but escapes and then slaughters them all with his Knights of the Round Table, after Merlin turns them into giant knights.</en>
+				<pl>Król Artur ledwo uchodzi z życiem po ataku lodowych olbrzymów, a potem wyrzyna ich wszystkich z Rycerzami Okrągłego Stołu, po tym jak Merlin zamienia ich w olbrzymich rycerzy.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_135</member>
+				<member index="1" function="2">Per_custom_Freddy_31</member>
+				<member index="2" function="2">Per_custom_Freddy_35</member>
+				<member index="3" function="2">Per_custom_Freddy_118</member>
+				<member index="4" function="2">Per_custom_Freddy_121</member>
+				<member index="5" function="2">Per_custom_Freddy_52</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity children="1.25" unemployed="1.5" />
+			<data country="USA" year="1959" distribution="2" maingenre="10" subgenre="13,2" flags="32" blocks="5" price_mod="0.5" />
+			<ratings critics="23" speed="32" outcome="24" />
+		</programme>
+
+		<programme guid="Freddy_Film_CustomB_50" product="1" licence_type="1" creator="8667" created_by="Rumpelfreddy">
+			<title>
+				<de>Orkisch Ich</de>
+				<en>Orkish Me</en>
+				<pl>Orcze Ja</pl>
+			</title>
+			<description>
+				<de>Orks, Höhle, Knochen, Hauen, Kochen, Hobbit, alles gesagt. Warscheinlich einer der besten No-Budget-Filme des Jahres.</de>
+				<en>Orcs, cave, bones, bashing, cooking, hobbit. Everything said. Probably one of the finest no-budget masterpieces of the year.</en>
+				<pl>Orki, jaskinia, kości, tłuczenie, gotowanie, hobbit. Wszystko powiedziane. Prawdopodobnie jedno z najlepszych bezbudżetowych arcydzieł roku.</pl>
+			</description>
+			<staff>
+				<member index="0" function="5">Per_custom_Freddy_11</member>
+				<member index="1" function="2">Per_custom_Freddy_16</member>
+				<member index="2" function="2">Per_custom_Freddy_9</member>
+				<member index="3" function="2">Per_custom_Freddy_402</member>
+				<member index="4" function="2">Per_custom_Freddy_389</member>
+				<member index="5" function="2">Per_custom_Freddy_298</member>
+			</staff>
+			<groups target_groups="18" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<targetgroupattractivity children="1.25" teenagers="2" employees="1.25" />
+			<data country="D" year="2004" distribution="3" maingenre="10" subgenre="5,1" flags="40" blocks="2" price_mod="0.5" />
+			<ratings critics="39" speed="43" outcome="14" />
 		</programme>
 	</allprogrammes>
 </tvtdb>

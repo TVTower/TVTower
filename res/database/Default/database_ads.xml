@@ -2,7 +2,7 @@
 <tvtdb>
 	<version value="3" />
 	<allads>
-		<ad guid="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4" comment="https://en.wikipedia.org/wiki/Ford_Motor_Company">
+		<ad guid="01b8c1c8-f3b3-4353-92fb-e24f5c7dc5b4" wikidata_id="Q44294">
 			<title>
 				<all>${brand_ford}</all>
 			</title>
@@ -26,7 +26,7 @@
 			<conditions min_audience="2.86" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="5" duration="4" profit="672" penalty="950" infomercial_profit="68" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="1199be32-4985-4697-a5c8-c0da0ef09fc1" comment="TVTower 2013 version: Okea | https://en.wikipedia.org/wiki/IKEA">
+		<ad guid="1199be32-4985-4697-a5c8-c0da0ef09fc1" wikidata_id="Q54078" comment="TVTower 2013 version: Okea | TODO: 'Habt Ihr das zu bieten?' and English translation is a bit weird, what was meant?">
 			<title>
 				<all>${brand_ikea}</all>
 			</title>
@@ -41,7 +41,7 @@ Czy masz coś takiego do zaoferowania? Ojej, mój szwedzki przyjacielu!</pl>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="285" penalty="460" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="Rahmah-Ron1">
+		<ad guid="Rahmah-Ron1" wikidata_id="" comment="parody (not in-place spoof) of https://de.wikipedia.org/wiki/Rama_(Marke)">
 			<title>
 				<de>Rahmah</de>
 				<en>Rowmow</en>
@@ -55,7 +55,7 @@ Czy masz coś takiego do zaoferowania? Ojej, mój szwedzki przyjacielu!</pl>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="2" profit="280" penalty="400" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="14340286-55d9-408f-b0b5-9cd4208054dc" comment="TODO: Discuss Translation: I felt the barrel doesn't fit with carpentry. 'Pull s.o. over the barrel' could perhaps be used in a new ad, with a German version of 'Fass aufmachen'.">
+		<ad guid="14340286-55d9-408f-b0b5-9cd4208054dc" wikidata_id="" comment="TODO: Discuss Translation: I felt the barrel doesn't fit with carpentry. 'Pull s.o. over the barrel' could perhaps be used in a new ad, with a German version of 'Fass aufmachen'.">
 			<title>
 				<de>Tischlerei Nagler</de>
 				<en>J. Nailer Carpentry</en>
@@ -69,7 +69,7 @@ Czy masz coś takiego do zaoferowania? Ojej, mój szwedzki przyjacielu!</pl>
 			<conditions min_audience="0.1032" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="3" profit="4000" penalty="4900" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="153bd5af-1163-4c22-a718-3ceb63da26c7" comment="https://en.wikipedia.org/wiki/Pampers">
+		<ad guid="153bd5af-1163-4c22-a718-3ceb63da26c7" wikidata_id="Q2340498">
 			<title>
 				<all>${brand_pampers}</all>
 			</title>
@@ -81,7 +81,7 @@ Czy masz coś takiego do zaoferowania? Ojej, mój szwedzki przyjacielu!</pl>
 			<conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="20" repetitions="2" duration="3" profit="453" penalty="670" infomercial_profit="41" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="17074737-4b08-457e-8536-b3ae0da3c02c" comment="https://en.wikipedia.org/wiki/Snickers | TVTower 2013 version: Snuckers">
+		<ad guid="17074737-4b08-457e-8536-b3ae0da3c02c" wikidata_id="Q714179" comment="TVTower 2013 version: Snuckers">
 			<title>
 				<all>${brand_snickers}</all>
 			</title>
@@ -110,7 +110,7 @@ Naprawdę trzeba żuć.</pl>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="3" profit="345" penalty="450" infomercial_profit="41" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="1fa08a9f-5658-46a1-b634-43bbacd1a7bb" comment="arguably now more https://de.wikipedia.org/wiki/Puschkin_Vodka | TVTower 2013 version: Wodka Jelzin - Des Wodkas reine Seele | https://en.wikipedia.org/wiki/Wodka_Gorbatschow">
+		<ad guid="1fa08a9f-5658-46a1-b634-43bbacd1a7bb" wikidata_id="Q1726904" comment="arguably now Puschkin Vodka, TVTower 2013 version was: Wodka Jelzin - Des Wodkas reine Seele, rather https://en.wikipedia.org/wiki/Wodka_Gorbatschow - TODO: could add that one too">
 			<title>
 				<de>Wodka ${brand_puschkin}</de>
 				<en>Vodka ${brand_puschkin}</en>
@@ -124,7 +124,7 @@ Naprawdę trzeba żuć.</pl>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="23" repetitions="1" duration="2" profit="415" penalty="460" infomercial_profit="40" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="22f3968b-7603-408e-ad78-cfb0cc3b2030" comment="https://en.wikipedia.org/wiki/Afri-Cola | changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there | keeping spoof names here in plain text (pretending Afri is not allowed to use the real brand names)">
+		<ad guid="22f3968b-7603-408e-ad78-cfb0cc3b2030" wikidata_id="Q383742" comment="changed from 'Pipsi' because imported 'Pipsi' ads from Mad TV using more or less the descriptions from there | keeping spoof names here in plain text (pretending Afri is not allowed to use the real brand names)">
 			<title>
 				<all>${brand_africola}</all>
 			</title>
@@ -175,10 +175,10 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="10" repetitions="2" duration="3" profit="2000" penalty="3220" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
-		<ad guid="360b9ee1-9e2e-469d-b61e-fa8a69cbf560" comment="https://de.wikipedia.org/wiki/Meister_Proper | https://en.wikipedia.org/wiki/Mr._Clean">
+		<ad guid="360b9ee1-9e2e-469d-b61e-fa8a69cbf560" wikidata_id="Q3321458" comment="TODO: separate ad https://en.wikipedia.org/wiki/Mr._Clean">
 			<title>
+				<all>${brand_mrclean}</all>
 				<de>${brand_meisterproper}</de>
-				<en>${brand_mrclean}</en>
 				<pl>${brand_meisterproper}</pl>
 			</title>
 			<description>
@@ -189,7 +189,7 @@ Naprawdę trzeba żuć.</pl>
 			<conditions min_audience="11.46" min_image="18" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="29" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="d1339a50-8d64-4f51-a54e-8a26fe956982" comment="1979-1986 | https://en.wikipedia.org/wiki/Walkman">
+		<ad guid="d1339a50-8d64-4f51-a54e-8a26fe956982" wikidata_id="Q622493" comment="1979-1986">
 			<title>
 				<all>${brand_sony} ${brand_walkman}</all>
 			</title>
@@ -202,7 +202,7 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="1979" year_range_to="1986" />
 		</ad>
-		<ad guid="4d2f4ef9-5262-44d7-a062-f27a494fb503" comment="1987-1993 | https://en.wikipedia.org/wiki/Discman">
+		<ad guid="4d2f4ef9-5262-44d7-a062-f27a494fb503" wikidata_id="Q2734531" comment="1987-1993">
 			<title>
 				<all>${brand_sony} ${brand_discman}</all>
 			</title>
@@ -215,7 +215,7 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="15" repetitions="3" duration="3" profit="350" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="1987" year_range_to="1993" />
 		</ad>
-		<ad guid="43e66d8f-5275-47a5-87c0-8f5c5d0082ee" comment="1994-1999 | https://en.wikipedia.org/wiki/PlayStation_(console)">
+		<ad guid="43e66d8f-5275-47a5-87c0-8f5c5d0082ee" wikidata_id="Q10677" comment="1994-1999">
 			<title>
 				<all>${brand_playstation}</all>
 			</title>
@@ -228,7 +228,7 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="1994" year_range_to="1999" />
 		</ad>
-		<ad guid="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad" comment="2000-2005 | https://en.wikipedia.org/wiki/PlayStation_2">
+		<ad guid="3ae01a7d-98b9-4be2-99d7-0e23e2c151ad" wikidata_id="Q10680" comment="2000-2005">
 			<title>
 				<all>${brand_playstation} 2</all>
 			</title>
@@ -241,7 +241,7 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2000" year_range_to="2005" /> <!-- variations for other years added in constr -->
 		</ad>
-		<ad guid="8a2865eb-80d8-4afb-b2e2-2c1a7fe3599b" comment="2006-2012 | https://en.wikipedia.org/wiki/PlayStation_3">
+		<ad guid="8a2865eb-80d8-4afb-b2e2-2c1a7fe3599b" wikidata_id="Q10683" comment="2006-2012">
 			<title>
 				<all>${brand_playstation} 3</all>
 			</title>
@@ -254,7 +254,7 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2006" year_range_to="2012" />
 		</ad>
-		<ad guid="9971a105-b9fe-435f-97f8-e9dfa6f531a5" comment="2013-2019 | https://en.wikipedia.org/wiki/PlayStation_4">
+		<ad guid="9971a105-b9fe-435f-97f8-e9dfa6f531a5" wikidata_id="Q5014725" comment="2013-2019">
 			<title>
 				<all>${brand_playstation} 4</all>
 			</title>
@@ -267,7 +267,7 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2013" year_range_to="2019" />
 		</ad>
-		<ad guid="8b8a295e-b600-48c5-ac81-3f3094cab452" comment="2020- | https://en.wikipedia.org/wiki/PlayStation_5">
+		<ad guid="8b8a295e-b600-48c5-ac81-3f3094cab452" wikidata_id="Q63184502" comment="2020-">
 			<title>
 				<all>${brand_playstation} 5</all>
 			</title>
@@ -280,7 +280,7 @@ Naprawdę trzeba żuć.</pl>
 			<data quality="15" repetitions="3" duration="3" profit="335" penalty="550" infomercial_profit="33" fix_infomercial_profit="1" />
 			<availability year_range_from="2020" />
 		</ad>
-		<ad guid="3bf32cbc-3322-4f3b-851b-88b964cb990d" comment="https://en.wikipedia.org/wiki/MediaMarkt | https://en.wikipedia.org/wiki/Best_Buy | TODO: Maybe separate these ads after all when ad images feature arrives">
+		<ad guid="3bf32cbc-3322-4f3b-851b-88b964cb990d" wikidata_id="Q2381223" comment="TODO: separate ad https://en.wikipedia.org/wiki/Best_Buy">
 			<title>
 				<all>${brand_bestbuy}</all>
 				<de>${brand_mediamarkt}</de>
@@ -405,11 +405,11 @@ Naprawdę trzeba żuć.</pl>
 			</title>
 			<description>
 				<de>Sicher und souverän zum Führerschein.
-In Tempelhof and Steglitz</de>
+In Tempelhof and Steglitz.</de>
 				<en>Get your driver's license safely and confidently.
-In Berlin Tempelhof and Steglitz</en>
+In Berlin Tempelhof and Steglitz.</en>
 				<pl>Zdobądź prawo jazdy bezpiecznie i pewnie.
-W Berlinie Tempelhof i Steglitz</pl>
+W Berlinie Tempelhof i Steglitz.</pl>
 			</description>
 			<conditions min_audience="3.1251" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="4" duration="3" profit="650" penalty="1100" infomercial_profit="67" fix_infomercial_profit="1" />
@@ -428,7 +428,7 @@ W Berlinie Tempelhof i Steglitz</pl>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="5" repetitions="5" duration="3" profit="585" penalty="1050" infomercial_profit="58" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="5078e947-ea8f-47bc-9f20-0e611bf2ad28" comment="https://de.wikipedia.org/wiki/Dusch_das | https://en.wikipedia.org/wiki/Lux_(soap) | TODO: maybe separate when ad image feature arrives; Lux known in Germany too">
+		<ad guid="5078e947-ea8f-47bc-9f20-0e611bf2ad28" wikidata_id="Q15806885" comment="TODO: separate ad https://en.wikipedia.org/wiki/Lux_(soap)">
 			<title>
 				<all>${brand_lux}</all>
 				<de>${brand_duschdas}</de>
@@ -472,7 +472,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="7" repetitions="3" duration="2" profit="2333" penalty="3500" infomercial_profit="133" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="5eaab2a2-34aa-47b9-9387-0223a0eaad29" comment="https://en.wikipedia.org/wiki/Gillette | TODO: maybe spoof slogan">
+		<ad guid="5eaab2a2-34aa-47b9-9387-0223a0eaad29" wikidata_id="Q503592" comment="TODO: maybe spoof slogan">
 			<title>
 				<all>${brand_gillette}</all>
 			</title>
@@ -484,7 +484,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="6.25" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="460" penalty="900" infomercial_profit="42" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9" comment="https://en.wikipedia.org/wiki/Mastercard">
+		<ad guid="5f243d7d-62fa-4cf9-a8f8-a87fe15d76a9" wikidata_id="Q489921">
 			<title>
 				<all>${brand_mastercard}</all>
 			</title>
@@ -552,7 +552,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="3" duration="2" fix_price="0" profit="3000" penalty="3800" infomercial_profit="90" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="774e0ca3-a31c-4afc-86be-304b02176fcd" comment="alt. name: Fakation">
+		<ad guid="774e0ca3-a31c-4afc-86be-304b02176fcd" wikidata_id="" comment="alt. name: Fakation">
 			<title>
 				<de>Tu-doch-so</de>
 				<en>Pre-Tend-Astic</en>
@@ -569,7 +569,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 		<ad guid="79e0a668-f929-4746-bcb2-b073f1f2bf65">
 			<title>
 				<de>Jesse Wasser- und Wärmedienst</de>
-				<en>Jesse water and heat services</en>
+				<en>Jesse, Water and Heat Services</en>
 				<pl>Jaś Wiaderko - serwis sanitarny</pl>
 			</title>
 			<description>
@@ -594,11 +594,10 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="2.6" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="4" duration="3" profit="700" penalty="1100" infomercial_profit="72" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="7bf56c92-52f5-44aa-8cef-2788ece421ac" comment="https://de.wikipedia.org/wiki/Wei%C3%9Fer_Riese | White Revive: https://en.wikipedia.org/wiki/OxiClean">
+		<ad guid="7bf56c92-52f5-44aa-8cef-2788ece421ac" wikidata_id="Q1567800" comment="White Revive: https://en.wikipedia.org/wiki/OxiClean">
 			<title>
 				<all>${brand_whiterevive}</all>
 				<de>${brand_weisserriese}</de>
-				
 			</title>
 			<description>
 				<de>Waschen Sie ihre Wäsche mit „${brand_weisserriese}“ porentief rein!</de>
@@ -608,7 +607,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="15.63" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="1" duration="3" profit="240" penalty="400" infomercial_profit="23" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="81181726-b98e-42fd-8ffb-23ddb068d61d" comment="arguably https://en.wikipedia.org/wiki/Lacoste">
+		<ad guid="81181726-b98e-42fd-8ffb-23ddb068d61d" wikidata_id="" comment="arguably https://en.wikipedia.org/wiki/Lacoste">
 			<title>
 				<all>${brand_lacoste}</all>
 			</title>
@@ -632,7 +631,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="6.25" min_image="12" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="3" duration="4" profit="490" penalty="790" infomercial_profit="43" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="848b76e8-f93f-4a6f-aa55-b62643c0793d" comment="https://en.wikipedia.org/wiki/Kaipan (assumed). 'Saipien' could also have been https://en.wikipedia.org/wiki/Scania_AB or https://en.wikipedia.org/wiki/Saab_AB">
+		<ad guid="848b76e8-f93f-4a6f-aa55-b62643c0793d" wikidata_id="Q30373" comment="Kaipan assumed. 'Saipien' could also have been https://en.wikipedia.org/wiki/Scania_AB or https://en.wikipedia.org/wiki/Saab_AB">
 			<title>
 				<all>${brand_kaipan}</all>
 			</title>
@@ -711,7 +710,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="3.13" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="4" repetitions="5" duration="2" profit="670" penalty="950" infomercial_profit="95" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="9c19ac3c-c1d2-4a2b-9c09-7379ead5382a" comment="https://en.wikipedia.org/wiki/Heinz_Tomato_Ketchup">
+		<ad guid="9c19ac3c-c1d2-4a2b-9c09-7379ead5382a" wikidata_id="Q5700891">
 			<title>
 				<de>${brand_heinz} Tomatenketchup</de>
 				<en>${brand_heinz} Tomato Ketchup</en>
@@ -730,7 +729,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<all>Spysoft</all>
 			</title>
 			<description>
-				<de>Surfen im Garten! WLan-Kabel bis 200m.</de>
+				<de>Surfen im Garten! WLAN-Kabel bis 200m.</de>
 				<en>Surfing the web in the garden! WiFi cables up to 200m.</en>
 				<pl>Surfowanie po sieci w ogrodzie! Kable WiFi o długości do 200 m.</pl>
 			</description>
@@ -738,7 +737,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<data quality="10" repetitions="2" duration="2" profit="440" penalty="640" infomercial_profit="41" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" />
 		</ad>
-		<ad guid="a401f20f-8832-45df-a274-2599fd8d0afb" comment="https://de.wikipedia.org/wiki/B%C3%A4renquell-Brauerei | 'Berliner Pilsener' previously used in clear text but it's a real brand | 'Brandenburger Pilsener' also a real brand">
+		<ad guid="a401f20f-8832-45df-a274-2599fd8d0afb" wikidata_id="Q1019155" comment="'Berliner Pilsener' previously used in clear text but it's a real brand | 'Brandenburger Pilsener' also a real brand">
 			<title>
 				<all>${brand_berlinerpilsener}</all>
 			</title>
@@ -750,7 +749,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="6.25" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="16" repetitions="2" duration="3" profit="425" penalty="667" infomercial_profit="42" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="a574c051-d283-441f-8337-7b159017c7dc" comment="TVTower 2013 version: StyleDJ">
+		<ad guid="a574c051-d283-441f-8337-7b159017c7dc" wikidata_id="" comment="TVTower 2013 version: StyleDJ">
 			<title>
 				<all>Stilvento</all>
 			</title>
@@ -762,7 +761,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="2.3435" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="5" duration="2" profit="766" penalty="1188" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="a5c552c1-9205-4b71-831a-1acc0a1387a9" comment="https://en.wikipedia.org/wiki/Mars_bar">
+		<ad guid="a5c552c1-9205-4b71-831a-1acc0a1387a9" wikidata_id="Q31305">
 			<title>
 				<all>${brand_mars}</all>
 			</title>
@@ -779,14 +778,14 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<all>Ravelli</all>
 			</title>
 			<description>
-				<de>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravelli führt es.</de>
-				<en>The number 1 in model building. Whether Messerschmitt, Panther, or U.S.S. Enterprise - Ravelli has it all.</en>
-				<pl>Numer 1 w budowaniu modeli. Messerschmitt, Panther czy U.S.S. Enterprise - Ravelli ma wszystko.</pl>
+				<de>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. ${mediaprop_enterprise} - Ravelli führt es.</de>
+				<en>The number 1 in model building. Whether Messerschmitt, Panther, or U.S.S. ${mediaprop_enterprise} - Ravelli has it all.</en>
+				<pl>Numer 1 w budowaniu modeli. Messerschmitt, Panther czy U.S.S. ${mediaprop_enterprise} - Ravelli ma wszystko.</pl>
 			</description>
 			<conditions min_audience="4.69" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="22" repetitions="3" duration="2" profit="545" penalty="975" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="a81fea24-859f-463e-a69c-0124de937a47" comment="https://en.wikipedia.org/wiki/Sarotti | TVTower 2013 version: Saratti | TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
+		<ad guid="a81fea24-859f-463e-a69c-0124de937a47" wikidata_id="Q1620890" comment="TVTower 2013 version: Saratti | TODO: new version of the ad after 2020? https://github.com/TVTower/TVTower/pull/884#discussion_r1090005501">
 			<title>
 				<all>${brand_sarotti}</all>
 			</title>
@@ -798,7 +797,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 			<conditions min_audience="2.6" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="4" duration="2" profit="700" penalty="1050" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="a86fab74-1d8f-464c-8ec9-93dc1f894b86">
+		<ad guid="a86fab74-1d8f-464c-8ec9-93dc1f894b86" wikidata_id="" comment="parody (not in-place spoof) of https://en.wikipedia.org/wiki/Postbank">
 			<title>
 				<de>Pustbank</de>
 				<en>Puff-Bank</en>
@@ -841,7 +840,7 @@ Korzyść: brak opłat pocztowych za odcinki przelewów.</pl>
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="315" penalty="448" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="ad62c53b-3d7d-404e-bb37-0babaed87df1">
+		<ad guid="ad62c53b-3d7d-404e-bb37-0babaed87df1" wikidata_id="" comment="parody (not in-place spoof) of https://en.wikipedia.org/wiki/Junghans">
 			<title>
 				<all>Althans</all>
 			</title>
@@ -882,7 +881,7 @@ Zegary słoneczne, kwarcowe, budziki, duże zegary, modele damskie i męskie.</p
 			<conditions min_audience="1.82" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="2" duration="3" profit="828" penalty="960" infomercial_profit="82" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="b61b71f4-255f-48a3-99e4-c25c10c59a58" comment="https://en.wikipedia.org/wiki/Toblerone">
+		<ad guid="b61b71f4-255f-48a3-99e4-c25c10c59a58" wikidata_id="Q215707">
 			<title>
 				<all>${brand_toblerone}</all>
 			</title>
@@ -897,7 +896,7 @@ ${brand_toblerone} - czekolada z charakterem.</pl>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="2" profit="430" penalty="606" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b" comment="https://en.wikipedia.org/wiki/Sony">
+		<ad guid="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b" wikidata_id="Q41187">
 			<title>
 				<de>${brand_sony}</de>
 			</title>
@@ -952,7 +951,7 @@ It's a ${brand_sony}.</pl>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="11" repetitions="3" duration="3" profit="500" penalty="850" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="c078ab28-32f5-439a-81bc-f90602f5fcbc" comment="https://en.wikipedia.org/wiki/Ravensburger">
+		<ad guid="c078ab28-32f5-439a-81bc-f90602f5fcbc" wikidata_id="Q697136">
 			<title>
 				<all>${brand_ravensburger}</all>
 			</title>
@@ -976,7 +975,7 @@ It's a ${brand_sony}.</pl>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="1" profit="445" penalty="730" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="cd0362d7-5317-41d2-8287-64c0c7810f02" comment="https://en.wikipedia.org/wiki/Dr_Pepper | TVTower 2013 version: Dr. Papper | TODO: Maybe create and use role instead of title reference">
+		<ad guid="cd0362d7-5317-41d2-8287-64c0c7810f02" wikidata_id="Q623561" comment="TVTower 2013 version: Dr. Papper | TODO: Maybe create and use role instead of title reference">
 			<title>
 				<all>${brand_drpepper}</all>
 			</title>
@@ -988,7 +987,7 @@ It's a ${brand_sony}.</pl>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" comment="https://de.wikipedia.org/wiki/MediaMarktSaturn | TVTower 2013 version: Zaturn">
+		<ad guid="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" wikidata_id="Q659320" comment="TVTower 2013 version: Zaturn">
 			<title>
 				<all>${brand_saturn}</all>
 			</title>
@@ -1057,7 +1056,7 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 			<conditions min_audience="0.31" min_image="2" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="3" duration="4" profit="2100" penalty="2675" infomercial_profit="116" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="d43943a8-67c3-47a5-bb96-e0f03b5194df" comment="https://en.wikipedia.org/wiki/Lamy">
+		<ad guid="d43943a8-67c3-47a5-bb96-e0f03b5194df" wikidata_id="Q637707">
 			<title>
 				<all>${brand_lamy}</all>
 			</title>
@@ -1069,7 +1068,7 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 			<conditions min_audience="4.17" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="540" penalty="840" infomercial_profit="55" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="d4e84634-b122-4cca-90c6-c44707d8a79e" comment="Capri-Sonne - https://en.wikipedia.org/wiki/Capri-Sun">
+		<ad guid="d4e84634-b122-4cca-90c6-c44707d8a79e" wikidata_id="Q969761" comment="parody but using part of actual brand name">
 			<title>
 				<all>${brand_capri}-Moon</all>
 				<de>${brand_capri}-Mond</de>
@@ -1082,7 +1081,7 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 			<conditions min_audience="7.29" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="3" duration="3" profit="461" penalty="672" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" comment="https://en.wikipedia.org/wiki/Orangina">
+		<ad guid="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" wikidata_id="Q605830">
 			<title>
 				<all>${brand_orangina}</all>
 			</title>
@@ -1106,7 +1105,7 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="14" repetitions="3" duration="3" profit="500" penalty="750" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="Escal-Sjaele-01" comment="https://de.wikipedia.org/wiki/Escom">
+		<ad guid="Escal-Sjaele-01" wikidata_id="Q313988">
 			<title>
 				<all>${brand_escom}</all>
 			</title>
@@ -1119,7 +1118,7 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 			<data quality="3" repetitions="3" duration="1" profit="1650" penalty="1534" infomercial_profit="223" fix_infomercial_profit="1" />
 			<availability year_range_to="2001" />
 		</ad>
-		<ad guid="d8ee3597-56e1-4117-909a-bde9da3f9f9e" comment="https://de.wikipedia.org/wiki/Escom">
+		<ad guid="d8ee3597-56e1-4117-909a-bde9da3f9f9e" wikidata_id="Q313988">
 			<title>
 				<all>${brand_escom}.deu</all>
 			</title>
@@ -1184,7 +1183,7 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="2" duration="3" fix_price="0" profit="325" penalty="520" infomercial_profit="30" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="e096e5ef-34d6-41a4-a98e-cb690673f074" comment="https://en.wikipedia.org/wiki/Nivea | TVTower 2013 version: Novea">
+		<ad guid="e096e5ef-34d6-41a4-a98e-cb690673f074" wikidata_id="Q337408" comment="TVTower 2013 version: Novea">
 			<title>
 				<all>${brand_nivea}</all>
 			</title>
@@ -1199,7 +1198,7 @@ Tylko oryginalne z łosia!</pl>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="2" profit="275" penalty="420" infomercial_profit="24" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="e1f2329c-2a43-453d-8711-11de240d1fbf" comment="https://de.wikipedia.org/wiki/Selterswasser">
+		<ad guid="e1f2329c-2a43-453d-8711-11de240d1fbf" wikidata_id="Q837845">
 			<title>
 				<all>${brand_selters}</all>
 			</title>
@@ -1211,7 +1210,7 @@ Tylko oryginalne z łosia!</pl>
 			<conditions min_audience="1.56" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="4" duration="2" profit="900" penalty="1300" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="e22453eb-7008-4af8-a3a5-7c2f4fd18667" comment="TVTower 2013 version: Reisebüro TeurI">
+		<ad guid="e22453eb-7008-4af8-a3a5-7c2f4fd18667" wikidata_id="" comment="TVTower 2013 version: Reisebüro TeurI">
 			<title>
 				<de>Reisebüro Teurl</de>
 				<en>Travel agency Kostli</en>
@@ -1265,7 +1264,7 @@ Tylko oryginalne z łosia!</pl>
 			<conditions min_audience="10.42" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="345" penalty="581" infomercial_profit="31" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="f006c0bb-89cc-4924-b17e-151658c15618" comment="Lenor: https://de.wikipedia.org/wiki/Procter_%26_Gamble | https://en.wikipedia.org/wiki/Downy | TVTower 2013 version: Lemor">
+		<ad guid="f006c0bb-89cc-4924-b17e-151658c15618" wikidata_id="Q212405" comment="Product: Lenor | TODO: separate ad https://en.wikipedia.org/wiki/Downy | TVTower 2013 version: Lemor">
 			<title>
 				<de>${brand_lenor}</de>
 				<en>${brand_downy}</en>
@@ -1294,7 +1293,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			<conditions min_audience="9.38" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="9" repetitions="3" duration="4" profit="340" penalty="540" infomercial_profit="34" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="fc24c505-d3cc-467c-a57c-a154f9d308cb" comment="https://en.wikipedia.org/wiki/Mercedes-Benz | TVTower 2013 version: Märzedes">
+		<ad guid="fc24c505-d3cc-467c-a57c-a154f9d308cb" wikidata_id="Q36008" comment="TVTower 2013 version: Märzedes">
 			<title>
 				<all>${brand_benz}</all>
 			</title>
@@ -1306,7 +1305,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="nichtdiebetty-ad-angryglasses-01" creator="8659" created_by="Nicht_die_Betty">
+		<ad guid="8753444a-5e28-4f3c-a960-73e98e97cc67" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Brillen Zorn</de>
 				<en>Glasses Blackeye</en>
@@ -1320,7 +1319,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="2466" penalty="3288" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="nichtdiebetty-ad-baroque-01" creator="8659" created_by="Nicht_die_Betty" comment="https://en.wikipedia.org/wiki/Gothic_(series) | https://en.wikipedia.org/wiki/Piranha_Bytes | TODO: pre-2001 variation">
+		<ad guid="287250ab-1f27-48dd-82c9-51e05e9ccdbf" creator="8659" created_by="Nicht_die_Betty" wikidata_id="Q1088631" comment="TODO: pre-2001 variation">
 			<title>
 				<all>${mediatitle_gothic}</all>
 			</title>
@@ -1332,7 +1331,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			<conditions min_audience="5.7301" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="3" duration="4" profit="472" penalty="661" infomercial_profit="133" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="nichtdiebetty-ad-tieminister-01" creator="8659" created_by="Nicht_die_Betty">
+		<ad guid="941db821-45ad-4b9f-8d1d-158ecdf16933" creator="8659" created_by="Nicht_die_Betty">
 			<title>
 				<de>Krawatten-Minister</de>
 				<en>Tie-Minister</en>
@@ -1346,7 +1345,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			<conditions min_audience="0.31" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="2166" penalty="2688" infomercial_profit="75" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny" comment="TODO: predecessor">
+		<ad guid="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny" wikidata_id="" comment="TODO: predecessor">
 			<title>
 				<de>Handy-Dandy</de>
 				<en>Puny Phones</en>
@@ -1631,10 +1630,9 @@ Brucey - ostry zapach dla doświadczonych mężczyzn.</pl>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="5" repetitions="6" duration="4" profit="1675" penalty="1957" infomercial_profit="138" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="ronny-ad-laola-01" creator="5578" created_by="Ronny">
+		<ad guid="ronny-ad-laola-01" creator="5578" created_by="Ronny" wikidata_id="" comment="TODO: Previous Polish spoof 'Olala' could be different ad">
 			<title>
 				<all>Laola</all>
-				<pl>Olala</pl>
 			</title>
 			<description>
 				<de>Das freche Jugendmagazin. Wir beantworten Fragen zu Liebe und Sex nur im Winter.</de>
@@ -2010,7 +2008,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 		<ad guid="speedminister-ad-Hopfengurgler1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Brauerei Hopfengurgler</de>
-				<en>Brewery Hopgurgler</en>
+				<en>Hopsguzzler Brewery</en>
 				<pl>Browar Chmiel</pl>
 			</title>
 			<description>
@@ -2025,12 +2023,12 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 		<ad guid="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Brauerei Hopfengurgler</de>
-				<en>Brewery Hopgurgler</en>
+				<en>Hopsguzzler Brewery</en>
 				<pl>Browar Chmiel</pl>
 			</title>
 			<description>
 				<de>Echt genial: Pilsner, Export und Weizen jetzt auch als Zäpfchen erhältlich! Praktisch im 40er Party-Pack! Das zieht rein! Oans, zwoa, droa, ziags!</de>
-				<en>Really ingenious: Pilsner, export and wheat beer now also available as suppositories! Conveniently in a party pack of 40! That gets in! Oans, zwoa, droa, ziags!</en>
+				<en>Really ingenious: Pilsner, lager and wheat beer now also available as suppositories! Handy 40-pack party size! Goes straight in! Oans, zwoa, droa, bottom's up!</en>
 				<pl>Naprawdę pomysłowe: Piwo pilzneńskie, eksportowe i pszeniczne teraz dostępne również jako czopki! W wygodnym opakowaniu po 40 sztuk! To wchodzi! Jedn, dwoa, tszy, ciach!</pl>
 			</description>
 			<conditions min_audience="4.17" min_image="0" target_group="0" />
@@ -2040,12 +2038,12 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 		<ad guid="speedminister-ad-Hummeldoof" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Imkerei Hummeldoof</de>
-				<en>Apiary Dumblebee</en>
+				<en>Dumblebee Beekeeping</en>
 				<pl>Pasieka Dumblebee</pl>
 			</title>
 			<description>
 				<de>Premium Honigprodukte von Ihrer Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
-				<en>Premium honey products from your favorite apiary Dumblebee. We provide our bees with a good, motivating work environment. Including after-work pints!</en>
+				<en>Premium honey products from your favorite beekeepers at Dumblebee. We provide our bees with a good, motivating work environment. After-work pints included!</en>
 				<pl>Najwyższej jakości produkty miodowe z ulubionej pasieki Dumblebee. Zapewniamy naszym pszczołom dobre, motywujące środowisko pracy. W tym kufle po pracy!</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="4" target_group="4" />
@@ -2143,7 +2141,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</description>
 			<conditions min_audience="14.0663" min_image="30" target_group="32" />
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="14" fix_infomercial_profit="1" />
-			<availability year_range_from="1995" />
+			<availability year_range_to="1995" />
 		</ad>
 		<ad guid="speedminister-ad-Mietmaul4" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2180,7 +2178,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 		<ad guid="speedminister-ad-Musikscheune" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Musikscheune Konzelmann</de>
-				<en>Music Shack Konzelmann</en>
+				<en>Konzelmann Music Shack</en>
 				<pl>Muzyczna chata konesera</pl>
 			</title>
 			<description>
@@ -2208,7 +2206,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			<conditions min_audience="5.21" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="5" duration="4" profit="500" penalty="1056" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
+		<ad guid="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister" wikidata_id="Q2403042">
 			<title>
 				<de>${brand_tempo} Taschentücher</de>
 				<en>${brand_tempo} Tissues</en>
@@ -2222,7 +2220,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			<conditions min_audience="14.07" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="270" penalty="425" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister" comment="https://en.wikipedia.org/wiki/Tempo_(brand)">
+		<ad guid="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister" wikidata_id="Q2403042">
 			<title>
 				<de>${brand_tempo} Toilettenpapier</de>
 				<en>${brand_tempo} Toilet Paper</en>
@@ -2559,7 +2557,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 		</ad>
 		<ad guid="speedminister-ad-chemicalair-01" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Chemical Air</de>
+				<all>Chemical Air</all>
 			</title>
 			<description>
 				<de>Pestizid, Fungizid, Herbizid. Unser Flieger steht bereit. Wir spritzen Ihr Feld, Ihre Obstplantage und Ihren Garten. Auch für privat! Einfach anrufen.</de>
@@ -2611,7 +2609,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			<conditions min_audience="23.44" min_image="0" />
 			<data infomercial="1" quality="16" repetitions="1" duration="4" profit="193" penalty="320" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
+		<ad guid="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" wikidata_id="" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
 			<title>
 				<all>Greek Haircut</all>
 				<pl>Grecki fryzjer</pl>
@@ -2656,13 +2654,13 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</title>
 			<description>
 				<de>Kommst Du. - Kuckst Du. - Kaufst Du.</de>
-				<en>You come. - You lookie. - We make deal.</en>
+				<en>You coming. - You looking. - We dealing.</en>
 				<pl>Ty przychodzisz. - Ty patrzysz. - Zawrzemy umowę.</pl>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" />
 			<data infomercial="1" quality="7" repetitions="4" duration="3" profit="3200" penalty="3771" infomercial_profit="40" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister">
+		<ad guid="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister" wikidata_id="" comment="parody | https://en.wikipedia.org/wiki/Heckler_%26_Koch">
 			<title>
 				<de>Hexler und Schorsch</de>
 				<en>Hexler and Schorsch</en>
@@ -2723,11 +2721,11 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 		<ad guid="speedminister-ad-koizucht-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Koizucht Koiner</de>
-				<en>Koi Breeding Koiner</en>
+				<en>Koiner's Koi Breeding</en>
 				<pl>Hodowla karpi koi</pl>
 			</title>
 			<description>
-				<de>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: „Wenn's nix koscht'! Sonscht kommt koiner nai!“</de>
+				<de>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: „Wenn's nix koscht! Sonscht kommt koiner nai!“</de>
 				<en>Full fish at full prices. Another proof of what a Swabian once said: "No money no fish!"</en>
 				<pl>Całe ryby w pełnych cenach. Kolejny dowód na to, co kiedyś powiedział Szwab: „Bez pieniędzy nie ma ryby!”.</pl>
 			</description>
@@ -2827,7 +2825,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<pl>Kasowski i Szmalowski S.A. - bankowość i ubezpieczenia</pl>
 			</title>
 			<description>
-				<de>Ihr Geld steht bei uns im Mittelpunkt. In unsren Banken bewachen wir es. Wir verteidigen es gegen JEDEN. Keine Ausnahmen.</de>
+				<de>Ihr Geld steht bei uns im Mittelpunkt. In unseren Banken bewachen wir es. Wir verteidigen es gegen JEDEN. Keine Ausnahmen.</de>
 				<en>Your money is our focus. In our banks we guard it. We defend it against EVERYONE. No exceptions.</en>
 				<pl>Twoje pieniądze są dla nas najważniejsze. Strzeżemy ich w naszych bankach. Bronimy ich przed KAŻDYM. Bez wyjątków.</pl>
 			</description>
@@ -2915,7 +2913,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 		<ad guid="speedminister-ad-spackeroog-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Nordseeinsel Spackeroog</de>
-				<en>North Sea island Spackeroog</en>
+				<en>North Sea Island Spackeroog</en>
 				<pl>Spackeroog z wyspy morza Północnego </pl>
 			</title>
 			<description>
@@ -2973,7 +2971,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 				<all>Valvoa</all>
 			</title>
 			<description>
-				<de>Valvoa der Truck fuer die Frau. 460 PS nur 350.000 Euro, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
+				<de>Valvoa der Truck für die Frau. 460 PS nur 350.000 Euro, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
 				<en>Valvoa the ladies' truck. 460 PS only 350,000 Euro, also available in pink on request. Valvoa reeks off!</en>
 				<pl>Valvoa - damska ciężarówka. 460 PS tylko 350 000 euro, na życzenie dostępny również w kolorze różowym. Valvoa cuchnie!</pl>
 			</description>
@@ -2986,7 +2984,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 				<all>Valvoa</all>
 			</title>
 			<description>
-				<de>Valvoa der Truck fuer die Frau. 460 PS nur 700.000 DM, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
+				<de>Valvoa der Truck für die Frau. 460 PS nur 700.000 DM, auf Wunsch auch in rosa. Valvoa stinkt ab!</de>
 				<en>Valvoa the ladies' truck. 460 PS only 700,000 DEM, on request also in pink. Valvoa reeks off!</en>
 				<pl>Valvoa damska ciężarówka. 460 PS tylko 700 000 DEM, na życzenie również w kolorze różowym. Valvoa cuchnie!</pl>
 			</description>
@@ -3036,7 +3034,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 
 		<!-- from discord/vicusfeli, plus different years variations -->
 
-		<ad guid="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="discord/vicusfeli" comment="">
+		<ad guid="a47046aa-4e78-430d-b826-01b9c192f1b5" creator="" created_by="discord/vicusfeli">
 			<title>
 				<de>DubanAirways</de>
 				<en>DubanAirways</en>
@@ -3050,7 +3048,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="275" penalty="400" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="discord/vicusfeli" comment="">
+		<ad guid="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="discord/vicusfeli">
 			<title>
 				<de>Radio</de>
 				<en>Radio</en>
@@ -3064,7 +3062,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="2" profit="300" penalty="420" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="1cba1e23-87ef-46c4-9336-a8e28127953b" comment="1975-1982 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
+		<ad guid="1cba1e23-87ef-46c4-9336-a8e28127953b" wikidata_id="Q1201810" comment="1975-1982">
 			<title>
 				<all>${brand_microsoft} BASIC</all>
 			</title>
@@ -3083,7 +3081,7 @@ Wzorzec dla komputerów osobistych.</pl>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1975" year_range_to="1982" />
 		</ad>
-		<ad guid="9ab691bb-97c6-4fee-bb70-b23386b027e5" comment="1983-1989 | https://en.wikipedia.org/wiki/Microsoft_BASIC">
+		<ad guid="9ab691bb-97c6-4fee-bb70-b23386b027e5" wikidata_id="Q1201810" comment="1983-1989">
 			<title>
 				<all>${brand_microsoft} BASIC</all>
 			</title>
@@ -3102,7 +3100,7 @@ Teraz między innymi dla ${brand_msx} i ${brand_commodore} 64.</pl>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1983" year_range_to="1989" />
 		</ad>
-		<ad guid="8f110aa4-c88d-4bd4-9aad-eb3ee2a1c8a4" comment="1990-1994 | https://en.wikipedia.org/wiki/Microsoft_Entertainment_Pack | https://en.wikipedia.org/wiki/Minesweeper_(video_game)">
+		<ad guid="8f110aa4-c88d-4bd4-9aad-eb3ee2a1c8a4" wikidata_id="Q517199" comment="1990-1994 | also https://en.wikipedia.org/wiki/Minesweeper_(video_game)">
 			<title>
 				<all>${brand_microsoft} ${brand_entertainmentpack}</all>
 			</title>
@@ -3115,7 +3113,7 @@ Teraz między innymi dla ${brand_msx} i ${brand_commodore} 64.</pl>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1994" />
 		</ad>
-		<ad guid="2cf218d7-be6d-4689-9b71-20121cb23434" comment="1995-1996 | https://en.wikipedia.org/wiki/Microsoft_Bob | https://en.wikipedia.org/wiki/Office_Assistant">
+		<ad guid="2cf218d7-be6d-4689-9b71-20121cb23434" wikidata_id="Q127141" comment="1995-1996 | https://en.wikipedia.org/wiki/Office_Assistant">
 			<title>
 				<all>${brand_microsoftbob}</all>
 			</title>
@@ -3128,7 +3126,7 @@ Teraz między innymi dla ${brand_msx} i ${brand_commodore} 64.</pl>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1995" year_range_to="1996" />
 		</ad>
-		<ad guid="20e1f868-bc55-497d-a624-cee97d9886da" comment="1997-2000 | https://en.wikipedia.org/wiki/Encarta">
+		<ad guid="20e1f868-bc55-497d-a624-cee97d9886da" wikidata_id="Q231136" comment="1997-2000">
 			<title>
 				<all>${brand_microsoft} ${brand_encarta}</all>
 			</title>
@@ -3147,7 +3145,7 @@ Bezkonkurencyjne wrażenia multimedialne.</pl>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="2000" />
 		</ad>
-		<ad guid="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="discord/vicusfeli" comment="2001- | https://en.wikipedia.org/wiki/Xbox">
+		<ad guid="0bd2bf49-9f2e-4ba5-b784-c4fa3807d94e" creator="" created_by="discord/vicusfeli" wikidata_id="Q15281614" comment="2001-">
 			<title>
 				<all>${brand_xbox}</all>
 			</title>
@@ -3169,7 +3167,7 @@ Tylko od ${brand_microsoft}.</pl>
 			<data quality="25" repetitions="3" duration="2" profit="300" penalty="400" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
-		<ad guid="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="discord/vicusfeli" comment="https://en.wikipedia.org/wiki/Praktiker">
+		<ad guid="22743ea8-514f-4211-816d-ed9034247aed" creator="" created_by="discord/vicusfeli" wikidata_id="" comment="parody | https://en.wikipedia.org/wiki/Praktiker">
 			<title>
 				<de>Theoretiker</de>
 				<en>Theoreticioner</en>
@@ -3183,7 +3181,7 @@ Tylko od ${brand_microsoft}.</pl>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="3" duration="3" profit="1300" penalty="1716" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="af2fe506-45fd-4330-a2e2-37c04266c25d" creator="" created_by="discord/vicusfeli" comment="">
+		<ad guid="af2fe506-45fd-4330-a2e2-37c04266c25d" creator="" created_by="discord/vicusfeli">
 			<title>
 				<de>FR Duban</de>
 				<en>FR Duban</en>
@@ -3197,7 +3195,7 @@ Tylko od ${brand_microsoft}.</pl>
 			<conditions min_audience="2.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="640" penalty="800" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="9bb0ce36-7b3e-4b85-b7c3-9b7959f66f40" creator="" created_by="discord/vicusfeli" comment="">
+		<ad guid="9bb0ce36-7b3e-4b85-b7c3-9b7959f66f40" creator="" created_by="discord/vicusfeli">
 			<title>
 				<de>VR Duban</de>
 				<en>PR Duban</en>
