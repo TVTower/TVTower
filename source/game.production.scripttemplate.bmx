@@ -377,7 +377,11 @@ Type TScriptTemplate Extends TScriptBase
 		'template jobs)
 		For local i:int = 0 until result.length
 			If result[i].randomRole And result[i].roleId = 0
-				Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(result[i].country, result[i].gender)
+				Local country:String = result[i].country
+				If country And country.Contains("$")
+					country = GameScriptExpression.ParseLocalizedText(country, new SScriptExpressionContext(self, 0, Null)).ToString()
+				EndIf
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(country, result[i].gender)
 				result[i].roleID = role.id
 			EndIf
 			Local personString:String = result[i].preselectCast

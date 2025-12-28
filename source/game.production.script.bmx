@@ -829,11 +829,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Function _EnsureRole:TProgrammeRole(actor:TPersonProductionJob)
+	Function _EnsureRole:TProgrammeRole(actor:TPersonProductionJob, script:TScript = Null)
 		Local roleID:Int = actor.roleID
 		If roleID <> 0 Then return GetProgrammeRoleCollection().GetByID(roleID)
+		Local country:String = actor.country
+		If country And country.Contains("$")
+			country = GameScriptExpression.ParseLocalizedText(country, new SScriptExpressionContext(script, 0, Null)).ToString()
+		EndIf
 		'TODO reuse previous role? - see inactive code in TScriptTemplate#GetFinalJobs
-		Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(actor.country, actor.gender)
+		Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(country, actor.gender)
 		actor.roleID = role.id
 		return role
 	End Function
