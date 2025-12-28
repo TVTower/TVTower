@@ -789,7 +789,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 			Local actors:TPersonProductionJob[] = script.GetJobs()
 			If roleIndex >= actors.length Then Return New SToken( TK_ERROR, "(not enough actors for role #" + roleIndex+".)", params.GetToken(0) )
 
-			Local role:TProgrammeRole = TScript._EnsureRole(actors[roleIndex])
+			Local role:TProgrammeRole = TScript._EnsureRole(actors[roleIndex], script)
 			role = _getLocalizedRole(role, context.contextNumeric)
 
 			Local subCommand:String = params.GetToken(3 + tokenOffset).GetValueText()
