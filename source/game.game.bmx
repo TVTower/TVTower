@@ -356,8 +356,9 @@ endrem
 		'get the new ones / adjustments too
 		'also ensure remake producer exists
 		If Not startNewGame
-			TLogger.Log("Game.PrepareStart()", "loading most current (official) achievements", LOG_DEBUG)
-			LoadDB(["database_achievements.xml"])
+			'Updating existing achievements does not work
+			'TLogger.Log("Game.PrepareStart()", "loading most current (official) achievements", LOG_DEBUG)
+			'LoadDB(["database_achievements.xml"])
 
 			Local addRemakeProducer:Int = True
 			For local prod:TGameObject = EachIn GetProgrammeProducerCollection().entries.Values()
