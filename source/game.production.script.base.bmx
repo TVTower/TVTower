@@ -337,11 +337,24 @@ Type TScriptBase Extends TNamedGameObject
 
 	Method GetLiveTimeText:String(nowTime:Long = -1)
 		If IsLive()
-			If Not IsSeries() And Not IsAlwaysLive()
+			If Not IsAlwaysLive()
 				if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
-				Local liveTime:Long = GetLiveTime()
+				Local liveTime:Long = -1
+				If IsSeries()
+					Local epTime:Long
+					For local idx:Int = 0 Until GetSubScriptCount()
+						epTime = GetSubScriptAtIndex(idx).GetLiveTime()
+						If (liveTime = -1 Or epTime < liveTime) And epTime > nowTime Then liveTime = epTime
+					Next
+				Else
+					liveTime = GetLiveTime()
+				EndIf 
 				Local liveDay:Int = GetWorldTime().GetDay(liveTime)
 				Local nowDay:Int = GetWorldTime().GetDay(nowTime)
+				'live time in the past...
+'				If liveTime < nowTime
+'					Return ""
+'				Else
 				If liveDay = nowDay
 					Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( liveTime ))
 				ElseIf liveDay = nowDay + 1

@@ -2544,7 +2544,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 			'programme start time
 			time :+ ", "+ GetWorldTime().GetDayHour( nextReleaseTime )+":00"
-			if self.isAlwaysLive()
+			if self.GetSublicenceCount() > 0
+				time = ": "+time
+			else if self.isAlwaysLive()
 				time=""
 			else
 				time = ": "+time
