@@ -342,9 +342,13 @@ Type TScriptBase Extends TNamedGameObject
 				Local liveTime:Long = -1
 				If IsSeries()
 					Local epTime:Long
+					Local subScript:TScriptBase
 					For local idx:Int = 0 Until GetSubScriptCount()
-						epTime = GetSubScriptAtIndex(idx).GetLiveTime()
-						If (liveTime = -1 Or epTime < liveTime) And epTime > nowTime Then liveTime = epTime
+						subScript = GetSubScriptAtIndex(idx)
+						If subScript And subScript.IsLive() And Not subScript.IsAlwaysLive() And Not subScript.IsProduced()
+							epTime = GetSubScriptAtIndex(idx).GetLiveTime()
+							If (liveTime = -1 Or epTime < liveTime) And epTime > nowTime Then liveTime = epTime
+						EndIf
 					Next
 				Else
 					liveTime = GetLiveTime()
@@ -355,7 +359,9 @@ Type TScriptBase Extends TNamedGameObject
 '				If liveTime < nowTime
 '					Return ""
 '				Else
-				If liveDay = nowDay
+				If liveTime = -1
+					'no time indicator
+				ElseIf liveDay = nowDay
 					Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( liveTime ))
 				ElseIf liveDay = nowDay + 1
 					Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( liveTime ))
