@@ -46,8 +46,9 @@ Import Text.xml
 Import BRL.Reflection
 Import Collections.IntMap
 Import BRL.Map
-Import BRL.ObjectList
+Import Collections.ObjectList
 Import "../../base.util.longmap.bmx"
+Import "../../base.util.xmlmod.bmx"
 Import BRL.Stream
 
 Import "glue.c"
@@ -853,7 +854,8 @@ Type TPersist
 											Next
 
 										Default
-											Local arrayList:TObjectList = fieldNode.getChildren()
+											'Local arrayList:TObjectList = fieldNode.getChildren()
+											Local arrayList:TObjectList = XMLMOD_Node_getChildren(fieldNode)
 
 											If arrayList ' Birdie
 												Local arrayObj:Object = arrayType.NewArray(arrayList.Count(), scalesi)
@@ -1262,7 +1264,8 @@ endrem
 							Next
 
 						Default
-							Local arrayList:TObjectList = node.getChildren()
+'							Local arrayList:TObjectList = node.getChildren()
+							Local arrayList:TObjectList = XMLMOD_Node_getChildren(node)
 
 							If arrayList
 
