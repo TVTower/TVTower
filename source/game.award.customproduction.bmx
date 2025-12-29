@@ -109,7 +109,7 @@ Type TAwardCustomProduction extends TAward
 		local points:Float = 100 * licence.GetQualityRaw()
 		local pointsMod:Float = 1.0
 
-		if licence.HasFlag(TVTProgrammeDataFlag.TRASH) then pointsMod :+ 0.075
+		if licence.HasFlag(TVTProgrammeDataFlag.TRASH) then pointsMod :- 0.075
 		if licence.HasFlag(TVTProgrammeDataFlag.BMOVIE) then pointsMod :- 0.075
 		if licence.HasFlag(TVTProgrammeDataFlag.PAID) then pointsMod :- 0.1
 		if licence.HasFlag(TVTProgrammeDataFlag.CULTURE) then pointsMod :+ 0.075
