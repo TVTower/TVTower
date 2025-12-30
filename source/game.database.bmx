@@ -16,6 +16,20 @@ Import "game.gameconstants.bmx"
 Import "game.database.localizer.bmx"
 
 
+
+Enum EDBDataTypes
+	ADCONTRACT
+	PROGRAMMELICENCE
+	NEWS
+	NEWSEVENT
+	SCRIPT
+	SCRIPTTEMPLATE
+	PERSON
+	INSIGNIFICANTPEOPLE
+	ACHIEVEMENT
+End Enum
+
+
 Type TDatabaseLoader
 	Field programmeRolesCount:Int, totalProgrammeRolesCount:Int
 	Field scriptTemplatesCount:Int, totalscriptTemplatesCount:Int
@@ -68,68 +82,68 @@ Type TDatabaseLoader
 
 	Method New()
 		allowedAdCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ADS_CREATED_BY", "*").Split(",")
-			allowedAdCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ADS_CREATED_BY", "*").ToLower().Split(",")
+			allowedAdCreators :+ " " + s + " "
 		Next
 
 		skipAdCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_ADS_CREATED_BY", "").Split(",")
-			skipAdCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_ADS_CREATED_BY", "").ToLower().Split(",")
+			skipAdCreators :+ " " + s + " "
 		Next
 
 		allowedProgrammeCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PROGRAMMES_CREATED_BY", "*").Split(",")
-			allowedProgrammeCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PROGRAMMES_CREATED_BY", "*").ToLower().Split(",")
+			allowedProgrammeCreators :+ " " + s + " "
 		Next
 
 		skipProgrammeCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PROGRAMMES_CREATED_BY", "").Split(",")
-			skipProgrammeCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PROGRAMMES_CREATED_BY", "").ToLower().Split(",")
+			skipProgrammeCreators :+ " " + s + " "
 		Next
 
 		allowedNewsCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_NEWS_CREATED_BY", "*").Split(",")
-			allowedNewsCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_NEWS_CREATED_BY", "*").ToLower().Split(",")
+			allowedNewsCreators :+ " " + s + " "
 		Next
 
 		skipNewsCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_NEWS_CREATED_BY", "").Split(",")
-			skipNewsCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_NEWS_CREATED_BY", "").ToLower().Split(",")
+			skipNewsCreators :+ " " + s + " "
 		Next
 
 		allowedScriptCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_SCRIPTS_CREATED_BY", "*").Split(",")
-			allowedScriptCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_SCRIPTS_CREATED_BY", "*").ToLower().Split(",")
+			allowedScriptCreators :+ " " + s + " "
 		Next
 
 		skipScriptCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_SCRIPTS_CREATED_BY", "").Split(",")
-			skipScriptCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_SCRIPTS_CREATED_BY", "").ToLower().Split(",")
+			skipScriptCreators :+ " " + s + " "
 		Next
 
 		allowedAchievementCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ACHIEVEMENTS_CREATED_BY", "*").Split(",")
-			allowedAchievementCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ACHIEVEMENTS_CREATED_BY", "*").ToLower().Split(",")
+			allowedAchievementCreators :+ " " + s + " "
 		Next
 
 		skipAchievementCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_ACHIEVEMENTS_CREATED_BY", "").Split(",")
-			skipAchievementCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_ACHIEVEMENTS_CREATED_BY", "").ToLower().Split(",")
+			skipAchievementCreators :+ " " + s + " "
 		Next
 
 		allowedPersonCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PERSONS_CREATED_BY", "*").Split(",")
-			allowedPersonCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PERSONS_CREATED_BY", "*").ToLower().Split(",")
+			allowedPersonCreators :+ " " + s + " "
 		Next
 
 		skipPersonCreators = ""
-		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PERSONS_CREATED_BY", "").Split(",")
-			skipPersonCreators :+ " "+Trim(s).ToLower()+" "
+		For Local s:String = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PERSONS_CREATED_BY", "").ToLower().Split(",")
+			skipPersonCreators :+ " " + s + " "
 		Next
 	End Method
 
 
-	Method IsAllowedUser:Int(username:String, dataType:String)
+	Method IsAllowedUser:Int(username:String, dataType:EDBDataTypes)
 		Local allowed:String
 		Local skip:String
 
@@ -137,23 +151,23 @@ Type TDatabaseLoader
 		username = username.Trim()
 		If username = "" Then username = "*"
 
-		Select dataType.ToLower()
-			Case "adcontract"
+		Select dataType
+			Case EDBDataTypes.ADCONTRACT
 				allowed = allowedAdCreators
 				skip = skipAdCreators
-			Case "programmelicence"
+			Case EDBDataTypes.PROGRAMMELICENCE
 				allowed = allowedProgrammeCreators
 				skip = skipProgrammeCreators
-			Case "news", "newsevent"
+			Case EDBDataTypes.NEWS, EDBDataTypes.NEWSEVENT
 				allowed = allowedNewsCreators
 				skip = skipNewsCreators
-			Case "script", "scripttemplate"
+			Case EDBDataTypes.SCRIPT, EDBDataTypes.SCRIPTTEMPLATE
 				allowed = allowedScriptCreators
 				skip = skipScriptCreators
-			Case "person", "insignificantpeople"
+			Case EDBDataTypes.PERSON, EDBDataTypes.INSIGNIFICANTPEOPLE
 				allowed = allowedPersonCreators
 				skip = skipPersonCreators
-			Case "achievement"
+			Case EDBDataTypes.ACHIEVEMENT
 				allowed = allowedAchievementCreators
 				skip = skipAchievementCreators
 		EndSelect
@@ -277,7 +291,8 @@ Type TDatabaseLoader
 					Local personCollection:TPersonBaseCollection = GetPersonBaseCollection()
 					Local nodePerson:TxmlNode = TxmlNode(nodeAllPersons.GetFirstChild())
 					While nodePerson
-						If Not TXmlHelper.AsciiNamesLCAreEqual("person", nodePerson.getName())
+						If Not nodePerson.GetName().Equals("person", False)
+						'If Not TXmlHelper.AsciiNamesLCAreEqual("person", nodePerson.getName())
 							nodePerson = nodePerson.NextSibling()
 							continue
 						EndIf
@@ -312,8 +327,11 @@ Type TDatabaseLoader
 					Local index:Int = 0
 					Local nodeRole:TxmlNode = TXmlNode(nodeAllRoles.GetFirstChild())
 					While nodeRole
-						If Not TXmlHelper.CompareAsciiNamesLC("programmerole", nodeRole.getName()) And ..
-						   Not TXmlHelper.CompareAsciiNamesLC("role", nodeRole.getName())  
+						Local nodeRoleName:String = nodeRole.GetName()
+						If Not nodeRoleName.Equals("programmerole", False) And ..
+						   Not nodeRoleName.Equals("role", False)
+'						If Not TXmlHelper.AsciiNamesLCAreEqual("programmerole", nodeRole.getName()) And ..
+'						   Not TXmlHelper.AsciiNamesLCAreEqual("role", nodeRole.getName())  
 
 							nodeRole = nodeRole.NextSibling()
 							Continue
@@ -371,6 +389,7 @@ Type TDatabaseLoader
 		personsCount = 0
 		personsBaseCount = 0
 		scriptTemplatesCount = 0
+		programmeRolesCount = 0
 		If totalNewsGenreCount.length < TVTNewsGenre.count
 			totalNewsGenreCount = []
 			For Local i:Int = 0 Until TVTNewsGenre.count
@@ -579,7 +598,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "person") Then Return Null
+		If Not IsAllowedUser(mData.GetString("createdBy"), EDBDataTypes.PERSON) Then Return Null
 
 		'try to fetch an existing one
 		Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(GUID)
@@ -838,7 +857,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "newsevent") Then Return Null
+		If Not IsAllowedUser(mData.GetString("createdBy"), EDBDataTypes.NEWSEVENT) Then Return Null
 
 		'try to fetch an existing one
 		Local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(GUID)
@@ -1049,7 +1068,8 @@ Type TDatabaseLoader
 		If nodeTasks
 			Local nodeElement:TxmlNode = TxmlNode(nodeTasks.GetFirstChild())
 			While nodeElement
-				If TXmlHelper.AsciiNamesLCAreEqual("task", nodeElement.getName())
+				If nodeElement.GetName().Equals("task", False)
+'				If TXmlHelper.AsciiNamesLCAreEqual("task", nodeElement.getName())
 					LoadV3AchievementElementFromNode("task", achievement, nodeElement, xml)
 				EndIf
 				
@@ -1063,7 +1083,8 @@ Type TDatabaseLoader
 		If nodeRewards
 			Local nodeElement:TxmlNode = TxmlNode(nodeRewards.GetFirstChild())
 			While nodeElement
-				If TXmlHelper.AsciiNamesLCAreEqual("reward", nodeElement.getName())
+				If nodeElement.GetName().Equals("reward", False)
+'				If TXmlHelper.AsciiNamesLCAreEqual("reward", nodeElement.getName())
 					LoadV3AchievementElementFromNode("reward", achievement, nodeElement, xml)
 				EndIf
 				
@@ -1103,7 +1124,7 @@ Type TDatabaseLoader
 		Local reuseExisting:Int = False
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "achievement") Then Return Null
+		If Not IsAllowedUser(mData.GetString("createdBy"), EDBDataTypes.ACHIEVEMENT) Then Return Null
 
 
 		'try to fetch an existing one
@@ -1179,7 +1200,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "adcontract") Then Return Null
+		If Not IsAllowedUser(mData.GetString("createdBy"), EDBDataTypes.ADCONTRACT) Then Return Null
 
 		'try to fetch an existing one
 		Local adContract:TAdContractBase = GetAdContractBaseCollection().GetByGUID(GUID)
@@ -1335,7 +1356,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip if not "all" are allowed (no creator data available)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "programmelicence") Then Return Null
+		If Not IsAllowedUser(mData.GetString("createdBy"), EDBDataTypes.PROGRAMMELICENCE) Then Return Null
 
 
 
@@ -1555,7 +1576,8 @@ Type TDatabaseLoader
 		If nodeStaff
 			Local nodeMember:TxmlNode = TxmlNode(nodeStaff.GetFirstChild())
 			While nodeMember
-				If Not TXmlHelper.AsciiNamesLCAreEqual("member", nodeMember.getName()) 
+				If Not nodeMember.GetName().Equals("member", False)
+'				If Not TXmlHelper.AsciiNamesLCAreEqual("member", nodeMember.getName()) 
 					nodeMember = nodeMember.NextSibling()
 					Continue
 				EndIf
@@ -1703,7 +1725,8 @@ Type TDatabaseLoader
 			Local nodeEpisode:TxmlNode = TxmlNode(nodeEpisodes.GetFirstChild())
 			While nodeEpisode
 				'skip other elements than programme data
-				If Not TXmlHelper.AsciiNamesLCAreEqual("programme", nodeEpisode.getName()) 
+				If Not nodeEpisode.GetName().Equals("programme", False)
+'				If Not TXmlHelper.AsciiNamesLCAreEqual("programme", nodeEpisode.getName()) 
 					nodeEpisode = nodeEpisode.NextSibling()
 					Continue
 				EndIf
@@ -1843,7 +1866,7 @@ Type TDatabaseLoader
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
-		If Not IsAllowedUser(mData.GetString("createdBy"), "adcontract") Then Return Null
+		If Not IsAllowedUser(mData.GetString("createdBy"), EDBDataTypes.ADCONTRACT) Then Return Null
 
 		'=== SCRIPTTEMPLATE DATA ===
 		'try to fetch an existing template with the entries GUID
@@ -2021,7 +2044,8 @@ Type TDatabaseLoader
 			Local nodeJob:TxmlNode = TxmlNode(nodeData.GetFirstChild())
 			While nodeJob
 				'skip other elements than job
-				If Not TXmlHelper.AsciiNamesLCAreEqual("job", nodeJob.getName())
+				If Not nodeJob.GetName().Equals("job", False)
+'				If Not TXmlHelper.AsciiNamesLCAreEqual("job", nodeJob.getName())
 					nodeJob = nodeJob.NextSibling()
 					Continue
 				EnDIf
@@ -2198,7 +2222,8 @@ Type TDatabaseLoader
 			Local nodeModifier:TxmlNode = TxmlNode(nodeModifiers.GetFirstChild())
 			While nodeModifier
 				'skip other elements than "modifier"
-				If Not TXmlHelper.AsciiNamesLCAreEqual("modifier", nodeModifier.getName())
+				If Not nodeModifier.GetName().Equals("modifier", False)
+'				If Not TXmlHelper.AsciiNamesLCAreEqual("modifier", nodeModifier.getName())
 					nodeModifier = nodeModifier.NextSibling()
 					continue
 				EndIf
@@ -2227,7 +2252,8 @@ Type TDatabaseLoader
 			Local nodeChild:TxmlNode = TxmlNode(nodeChildren.GetFirstChild())
 			While nodeChild
 				'skip other elements than "scripttemplate"
-				If Not TXmlHelper.AsciiNamesLCAreEqual("scripttemplate", nodeChild.getName())
+				If Not nodeChild.GetName().Equals("scripttemplate", False)
+'				If Not TXmlHelper.AsciiNamesLCAreEqual("scripttemplate", nodeChild.getName())
 					nodeChild = nodeChild.NextSibling()
 					continue
 				EndIf
@@ -2371,7 +2397,8 @@ Type TDatabaseLoader
 		Local nodeEffect:TxmlNode = TxmlNode(nodeEffects.GetFirstChild())
 		While nodeEffect
 			'skip other elements than "effect"
-			If Not TXmlHelper.AsciiNamesLCAreEqual("effect", nodeEffect.getName())
+			If Not nodeEffect.GetName().Equals("effect", False)
+'			If Not TXmlHelper.AsciiNamesLCAreEqual("effect", nodeEffect.getName())
 				nodeEffect = nodeEffect.NextSibling()
 				Continue
 			EndIf
@@ -2410,7 +2437,8 @@ Type TDatabaseLoader
 		Local nodeModifier:TxmlNode = TxmlNode(nodeModifiers.GetFirstChild())
 		While nodeModifier
 			'skip other elements than "modifier"
-			If Not TXmlHelper.AsciiNamesLCAreEqual("effect", nodeModifier.getName())
+			If Not nodeModifier.GetName().Equals("effect", False)
+'			If Not TXmlHelper.AsciiNamesLCAreEqual("effect", nodeModifier.getName())
 				nodeModifier = nodeModifier.NextSibling()
 				Continue
 			EndIf
@@ -2770,7 +2798,8 @@ Type TDatabaseLoader
 		Else
 			While nodeLangEntry
 				Local nodeLangEntryName:String = nodeLangEntry.GetName()
-				If TXmlHelper.AsciiNamesLCAreEqual("all", nodeLangEntryName)
+				If nodeLangEntryName.Equals("all", False)
+				'If TXmlHelper.AsciiNamesLCAreEqual("all", nodeLangEntryName)
 					'same base value for all default languages
 					_ExtractLangForLocalizedString(nodeLangEntry, localized, -2)
 				Else
