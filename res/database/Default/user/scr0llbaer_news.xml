@@ -5373,7 +5373,7 @@
 						Sweden;senior hiking trips are treated as national security training|
 						Norway;pensioners buy fishing licenses instead of government bonds|
 						Finland;saunas keep seniors healthy - health insurance saves billions|
-						Denmark;eating, drinks, small gifts, and cozy gatherings - "hygge" seniors drive the domestic market|
+						Denmark;- eating, drinks, small gifts, and cozy gatherings - "hygge" seniors drive the domestic market|
 						Austria;seniors dominate traditional cafés with plenty of "Wiener Schmäh", and that not only in Vienna - annual revenues rise|
 						Switzerland;nursing homes invest in golf - local services, gastronomy, and tourism benefit
 					</en>
@@ -5386,8 +5386,8 @@
 						Szwecja;wycieczki piesze seniorów traktowane jako szkolenie bezpieczeństwa narodowego|
 						Norwegia;emeryci kupują licencje wędkarskie zamiast obligacji państwowych|
 						Finlandia;sauna utrzymuje seniorów w zdrowiu - ubezpieczenia zdrowotne oszczędzają miliardy|
-						Dania;jedzenie, napoje, drobne prezenty i przytulne spotkania - seniorzy „hygge” napędzają rynek krajowy|
-						Austria; seniorzy dominują w tradycyjnych kawiarniach, emanując „Wiener Schmäh”, i to nie tylko w Wiedniu - roczne przychody rosną|
+						Dania;- jedzenie, napoje, drobne prezenty i przytulne spotkania - seniorzy „hygge” napędzają rynek krajowy|
+						Austria;seniorzy dominują w tradycyjnych kawiarniach, emanując „Wiener Schmäh”, i to nie tylko w Wiedniu - roczne przychody rosną|
 						Szwajcaria;domy opieki inwestują w pola golfowe - korzystają lokalne usługi, gastronomia i turystyka
 					</pl>
 				</countries_csv>
@@ -5731,7 +5731,7 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<city_csv>
-					<de>Rome;in Rome|Neapel;in Neapel|Bari;in Bari|Barcelona;in Barcelona|Valencia;in Valencia|Sevilla;in Sevilla|Granada;in Granada|Córdoba;in Córdoba|Lissabon;in Lissabon|Porto;in Porto|Athen;in Athen|Thessaloniki;in Thessaloniki|Rhodos;in Rhodos|Korfu;in Korfu|Malta;in Malta|Dubrovnik;in Dubrovnik</de>
+					<de>Rom;in Rom|Neapel;in Neapel|Bari;in Bari|Barcelona;in Barcelona|Valencia;in Valencia|Sevilla;in Sevilla|Granada;in Granada|Córdoba;in Córdoba|Lissabon;in Lissabon|Porto;in Porto|Athen;in Athen|Thessaloniki;in Thessaloniki|Rhodos;in Rhodos|Korfu;in Korfu|Malta;in Malta|Dubrovnik;in Dubrovnik</de>
 					<en>Rome;in Rome|Naples;in Naples|Bari;in Bari|Barcelona;in Barcelona|Valencia;in Valencia|Seville;in Seville|Granada;in Granada|Córdoba;in Córdoba|Lisbon;in Lisbon|Porto;in Porto|Athens;in Athens|Thessaloniki;in Thessaloniki|Rhodes;in Rhodes|Corfu;in Corfu|Malta;in Malta|Dubrovnik;in Dubrovnik</en>
 					<pl>Rzym;Rzymu|Neapol;Neapolu|Bari;Bari|Barcelona;Barcelony|Walencja;Walencji|Sewilla;Sewilli|Granada;Granady|Kordoba;Kordoby|Lizbona;Lizbony|Porto;Porto|Ateny;Aten|Saloniki;Salonik|Rodos;Rodos|Korfu;Korfu|Malta;Malty|Dubrownik;Dubrownika</pl>
 				</city_csv>
