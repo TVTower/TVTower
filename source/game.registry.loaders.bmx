@@ -591,11 +591,13 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		programmeDataMod.Insert("focusPointPriorities", data.Get("focusPointPriorities"))
 
 		If data.GetString("goodFollower") <> ""
+			Local fString:String
 			Local followers:String[] = data.GetString("goodFollower").split(",")
 			For Local i:Int = 0 Until followers.length
-				If Int(followers[i]) = followers[i].Trim() Then Continue
-				Local follower:Int = TVTProgrammeGenre.GetByString(followers[i])
-				If follower = TVTProgrammeGenre.UNDEFINED
+				fString = followers[i].Trim()
+				Local follower:Int = Int(fString)
+				If follower <> fString Then follower = TVTProgrammeGenre.GetByString(fString)
+				If Not TVTProgrammeGenre.GetIndex(follower) And fString <> "0"
 					HandleError("invalid good follower: "+followers[i])
 				EndIf
 				followers[i] = follower
@@ -604,11 +606,13 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		EndIf
 
 		If data.GetString("badFollower") <> ""
+			Local fString:String
 			Local followers:String[] = data.GetString("badFollower").split(",")
 			For Local i:Int = 0 Until followers.length
-				If Int(followers[i]) = followers[i].Trim() Then Continue
-				Local follower:Int = TVTProgrammeGenre.GetByString(followers[i])
-				If follower = TVTProgrammeGenre.UNDEFINED
+				fString = followers[i].Trim()
+				Local follower:Int = Int(fString)
+				If follower <> fString Then follower = TVTProgrammeGenre.GetByString(fString)
+				If Not TVTProgrammeGenre.GetIndex(follower) And fString <> "0"
 					HandleError("invalid bad follower: "+followers[i])
 				EndIf
 				followers[i] = follower
