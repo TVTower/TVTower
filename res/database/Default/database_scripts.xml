@@ -79,9 +79,9 @@
 				<pl>${FOOD} na ${MEALTIME}</pl>
 			</title>
 			<description>
-				<de>${NAMEWOMAN} ist ${JOB1} und ${ACTION} ${NAMEMAN}, ${JOB2}. ${FUNNY} Komödie.</de>
-				<en>${NAMEWOMAN} is ${JOB1} and ${ACTION} ${NAMEMAN}, ${JOB2}. ${FUNNY} comedy.</en>
-				<pl>${NAMEWOMAN} jest ${JOB1} i ${ACTION} ${NAMEMAN} to ${JOB2}. ${FUNNY} komedia.</pl>
+				<de>${.self:"role":1:"firstname"} ist ${JOB1} und ${ACTION} ${.self:"role":2:"firstname"}, ${JOB2}. ${FUNNY} Komödie.</de>
+				<en>${.self:"role":1:"firstname"} is ${JOB1} and ${ACTION} ${.self:"role":2:"firstname"}, ${JOB2}. ${FUNNY} comedy.</en>
+				<pl>${.self:"role":1:"firstname"} jest ${JOB1} i ${ACTION} ${.self:"role":2:"firstname"} to ${JOB2}. ${FUNNY} komedia.</pl>
 			</description>
 
 			<variables>
@@ -115,14 +115,12 @@
 					<en>Hilarious|Lovely|Turbulent|Romantic|Melancholic|Surprising</en>
 					<pl>Zabawna|Urocza|Burzliwa|Romantyczna|Melancholijna|Zaskakująca</pl>
 				</funny>
-				<namewoman>${.persongenerator:"firstname":"":"female"}</namewoman>
-				<nameman>${.persongenerator:"firstname":"":"male"}</nameman>
 			</variables>
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="2" />
-				<job index="2" function="2" required="1" gender="1" />
+				<job index="1" function="2" required="1" gender="2" country="" random_role="1" />
+				<job index="2" function="2" required="1" gender="1" country="" random_role="1" />
 				<!-- there might be up to 2 additional roles without
 				     further specifications -->
 				<job index="3" function="32" required="0" role_guid="script-roles-ron-001" />

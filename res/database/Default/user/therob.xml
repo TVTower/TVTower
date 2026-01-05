@@ -2347,7 +2347,7 @@
 			<targetgroupattractivity children="2" managers="1.25" />
 			<data country="DK" distribution="2" maingenre="13" subgenre="9,7" flags="12" blocks="12" price_mod="1.00" />
 			<releaseTime year_relative="-20" year_relative_max="1970" />
-			<ratings critics="81" speed="17" outcome="2" />
+			<ratings critics="81" speed="17" outcome="12" />
 		</programme>
 
 		<programme guid="f7c843e4-0d6a-44af-997a-fa5549603750" product="3" fictional="1" licence_type="1" creator="">
