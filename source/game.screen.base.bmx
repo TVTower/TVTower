@@ -53,11 +53,13 @@ Function onLoadScreens:Int( triggerEvent:TEventBase )
 
 
 	Local ScreenCollection:TScreenCollection = TScreenCollection.GetInstance()
-	For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(screensNode)
-		Local name:String	= Lower( TXmlHelper.FindValue(child, "name", "") )
-		Local image:String	= Lower( TXmlHelper.FindValue(child, "image", "screen_bg_archive") )
-		Local parent:String = Lower( TXmlHelper.FindValue(child, "parent", "") )
+	Local childNode:TxmlNode = TxmlNode(screensNode.GetFirstChild())
+	While childNode
+		Local name:String	= Lower( TXmlHelper.FindValue(childNode, "name", "") )
 		If name <> ""
+			Local image:String	= Lower( TXmlHelper.FindValue(childNode, "image", "screen_bg_archive") )
+			Local parent:String = Lower( TXmlHelper.FindValue(childNode, "parent", "") )
+
 			Local screen:TInGameScreen_Room= New TInGameScreen_Room.Create(name)
 			screen.backgroundSpriteName = image
 			'add to collection list
@@ -68,7 +70,9 @@ Function onLoadScreens:Int( triggerEvent:TEventBase )
 				ScreenCollection.GetScreen(parent).AddSubScreen(screen)
 			EndIf
 		EndIf
-	Next
+		
+		childNode = childNode.NextSibling()
+	Wend
 End Function
 
 
