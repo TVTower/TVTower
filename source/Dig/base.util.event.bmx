@@ -43,15 +43,12 @@ Import "external/reflectionExtended/reflection.bmx"
 ?bmxng
 'ng has it built-in!
 Import BRL.Reflection
-?
-?Threaded
 Import Brl.threads
-?
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
 Import "base.util.time.bmx"
 Import "base.util.longmap.bmx"
-Import Brl.ObjectList
+Import Collections.ObjectList
 
 
 
@@ -212,7 +209,7 @@ Type TEventManager
 		
 	
 		local e:TEventKey = new TEventKey
-		e.id = text.ToString().ToLower().Hash()
+		e.id = text.ToString().ToLower().HashCode()
 		e.text = text
 		
 		LockMutex(_eventKeyMutex)

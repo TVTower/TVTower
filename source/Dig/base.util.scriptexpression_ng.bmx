@@ -1,5 +1,6 @@
 SuperStrict
 Framework Brl.StandardIO
+Import Collections.StringMap
 Import Brl.Map
 Import brl.retro	' Hex() in SToken.reveal()
 Import Brl.StringBuilder
@@ -718,6 +719,10 @@ Struct SScriptExpression
 				exit
 			EndIf
 		Until not replacedSomething or dollarSymbolsFound = 0
+
+		If mixedTextWithExpressions.Find("&quot;") >= 0
+			mixedTextWithExpressions.Replace("&quot;", "~q")
+		EndIf
 		
 		Return mixedTextWithExpressions
 	End Method
@@ -841,7 +846,7 @@ Type TScriptExpression
 		Local fnLower:String = functionName.ToLower()
 		Local handler:TSEFN_Handler = New TSEFN_Handler(callback, paramMinCount, paramMaxCount)
 		functionHandlers.Insert(fnLower, handler)
-		functionHandlersByHash.Insert(Long(fnLower.Hash()), handler)
+		functionHandlersByHash.Insert(Long(fnLower.HashCode()), handler)
 		'functionHandlersByHash.Insert(Long(SubStringHash(fnLower, 0, fnLower.length)), handler)
 	End Function
 
