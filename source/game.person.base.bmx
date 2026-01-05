@@ -1,5 +1,5 @@
 SuperStrict
-Import Brl.ObjectList
+Import Collections.ObjectList
 Import "Dig/base.util.longmap.bmx"
 Import "Dig/external/string_comp.bmx"
 Import "Dig/base.util.string.bmx"

@@ -44,8 +44,11 @@ ModuleInfo "History: Initial Release"
 endrem
 Import Text.xml
 Import BRL.Reflection
+Import Collections.IntMap
 Import BRL.Map
+Import Collections.ObjectList
 Import "../../base.util.longmap.bmx"
+Import "../../base.util.xmlmod.bmx"
 Import BRL.Stream
 
 Import "glue.c"
@@ -851,7 +854,8 @@ Type TPersist
 											Next
 
 										Default
-											Local arrayList:TList = fieldNode.getChildren()
+											'Local arrayList:TObjectList = fieldNode.getChildren()
+											Local arrayList:TObjectList = XMLMOD_Node_getChildren(fieldNode)
 
 											If arrayList ' Birdie
 												Local arrayObj:Object = arrayType.NewArray(arrayList.Count(), scalesi)
@@ -944,7 +948,7 @@ Type TPersist
 		local m:TMethod = converterTypeID.FindMethod("GetRenamedTypeName")
 		If not m Then Throw "Unknown function. Create function ~qGetRenamedTypeName:TTypeID(typeName:String, parentPath:String)~q in type ~q" + converterTypeID.name() +"~q."
 
-  		local newTypeName:String = String( m.Invoke(converterType, [object(typeName), object(parentPath)]) )
+  		local newTypeName:String = String( m.Invoke(converterTypeID, [object(typeName), object(parentPath)]) )
  		if newTypeName and newTypeName <> typeName
 			If parentPath
 				print "[INFORMATION] TPersistence: Renamed type ~q" + parentPath + ":" + typeName + "~q to ~q" + parentPath + ":" + newTypeName + "~q."
@@ -964,7 +968,7 @@ Type TPersist
 		If not m Then Throw "Unknown method. Create method ~qGetCurrentFieldName:String(fieldName:String, parentName:String)~q in type ~q" + converterTypeID.name() +"~q."
 
 		'return null or the new field name
-  		local newFieldName:String = String( m.Invoke(converterType, [object(fieldName), object(parentName)]) )
+  		local newFieldName:String = String( m.Invoke(converterTypeID, [object(fieldName), object(parentName)]) )
   		if newFieldName and newFieldName <> fieldName
  			print "[INFORMATION] TPersistence: Renamed field ~q" + fieldName + "~q to ~q" + newFieldName + "~q."
  		EndIf
@@ -989,7 +993,7 @@ Type TPersist
 		endif
 
 
-		Local result:Object = deserializeFunction.Invoke(converterType, [object(typeName), object(newTypeName), node])
+		Local result:Object = deserializeFunction.Invoke(converterTypeID, [object(typeName), object(newTypeName), node])
 		if TPersistError(result)
  			Throw "Failed to deserialize ~q" + typeName + "~q. Function ~q" + deserializeFunction.name() + "~q does not handle that type."
  		endif
@@ -1260,7 +1264,8 @@ endrem
 							Next
 
 						Default
-							Local arrayList:TList = node.getChildren()
+'							Local arrayList:TObjectList = node.getChildren()
+							Local arrayList:TObjectList = XMLMOD_Node_getChildren(node)
 
 							If arrayList
 
@@ -1695,7 +1700,7 @@ Type TIntMapXMLSerializer Extends TXMLSerializer
 		Local map:TIntMap = TIntMap(obj)
 
 		If map Then
-			For Local mapNode:TIntNode = EachIn map
+			For Local mapNode:TIntKeyValue = EachIn map
 				Local v:TxmlNode = node.addChild("e")
 				If mapNode.Value() Then
 					SerializeObject(mapNode.Value(), v)
@@ -1735,7 +1740,7 @@ Type TStringMapXMLSerializer Extends TXMLSerializer
 		Local map:TStringMap = TStringMap(obj)
 
 		If map Then
-			For Local mapNode:TStringNode = EachIn map
+			For Local mapNode:TStringKeyValue = EachIn map
 				Local n:TxmlNode = node.addChild("n")
 				SerializeObject(mapNode.Key(), n.addChild("k"))
 				SerializeObject(mapNode.Value(), n.addChild("v"))

@@ -1278,7 +1278,7 @@ Type TGameScriptExpression extends TGameScriptExpressionBase
 			local resultNew:TStringBuilder = GameScriptExpression.ParseNestedExpressionText(result, context)
 
 			'avoid string creation and compare hashes first
-			If result.hash() <> resultNew.hash()
+			If result.hashCode() <> resultNew.hashCode()
 				result = resultNew.ToString()
 				'store the newly parsed expression result
 				lsResult.Set(result, localeID)

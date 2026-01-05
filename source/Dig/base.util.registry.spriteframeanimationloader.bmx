@@ -76,12 +76,13 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 
 		local children:TData[]
 
-		local fieldNames:String[]
-		fieldNames :+ ["currentAnimationName", "guid", "copyGuid"]
+		local fieldNames:String[] = ["currentAnimationName", "guid", "copyGuid"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
-		For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-			if childNode.GetName().ToLower() = "spriteframeanimation"
+		Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+		While childNode
+			'handle only "spriteframeanimation"
+			If TXmlHelper.AsciiNamesLCAreEqual("spriteframeanimation", childNode.GetName())
 				local childData:TData = new TData
 				local childFieldNames:String[]
 				childFieldNames :+ ["name", "flags"]
@@ -90,8 +91,10 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 				childFieldNames :+ ["currentImageFrame", "currentFrame"]
 				TXmlHelper.LoadValuesToData(childNode, childData, childFieldNames)
 				children :+ [childData]
-			endif
-		Next
+			EndIf
+
+			childNode = childNode.NextSibling()
+		Wend
 		if children.length > 0 then data.Add("animations", children)
 
 		return data

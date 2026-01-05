@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2022 Ronny Otto, digidea.de
+	Copyright (C) 2002-2025 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -35,6 +35,7 @@ Rem
 EndRem
 SuperStrict
 Import brl.Map
+Import Collections.StringMap
 Import brl.Retro
 Import brl.StringBuilder
 Import "external/string_comp.bmx"
