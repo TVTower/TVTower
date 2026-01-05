@@ -24,11 +24,11 @@
 		<person guid="common-amateur-actors" first_name="" last_name="Amateur Actors" nick_name="Amateur Actors" />
 		<person guid="common-amateur-director" first_name="" last_name="Amateur Director" nick_name="Amateur Director" />
 		<person guid="common-unnamed-person" first_name="" last_name="Unknown" nick_name="Unknown" />
-		<person guid="common-directors-provided" first_name="" last_name="Directors provided" />
-		<person guid="common-hosts-provided" first_name="" last_name="Hosts provided" />
-		<person guid="common-commentators-provided" first_name="" last_name="Commentators provided" />
-		<person guid="common-reporters-provided" first_name="" last_name="Reporters provided" /> <!-- 'Reporter' in English sports events is more the sideline interviewer, 'Commentator' in German is mostly also 'Reporter' -->
-		<person guid="common-guests-provided" first_name="" last_name="Guests provided" />
+		<person guid="common-directors-external" first_name="" last_name="external" />
+		<person guid="common-hosts-external" first_name="" last_name="external" />
+		<person guid="common-commentators-external" first_name="" last_name="external commentators" />
+		<person guid="common-reporters-external" first_name="" last_name="external reporters" /> <!-- 'Reporter' in English sports events is more the sideline interviewer, 'Commentator' in German is mostly also 'Reporter' -->
+		<person guid="common-guests-external" first_name="" last_name="external" />
 		<person guid="various-voice-artists" first_name="" last_name="various voice artists" />
 		<person guid="various-puppeteers" first_name="" last_name="various puppeteers" />
 		<person guid="various-models" first_name="" last_name="various models" />
@@ -727,7 +727,7 @@
 		<mediatitle_kingsman>Krownsman</mediatitle_kingsman> <!-- https://en.wikipedia.org/wiki/Kingsman_(franchise) -->
 		<mediatitle_chipmunks>Chapmonks</mediatitle_chipmunks> <!-- https://en.wikipedia.org/wiki/Alvin_and_the_Chipmunks -->
 		<mediatitle_chipmunk>Chapmonk</mediatitle_chipmunk>
-		<mediatitle_xmen>X-Mate</mediatitle_xmen> <!-- https://en.wikipedia.org/wiki/X-Men -->
+		<mediatitle_xmen>X-Mates</mediatitle_xmen> <!-- https://en.wikipedia.org/wiki/X-Men -->
 		<mediatitle_ninjaturtles>Tortoise Monsters</mediatitle_ninjaturtles> <!-- https://en.wikipedia.org/wiki/Teenage_Mutant_Ninja_Turtles -->
 		<mediatitle_turtles>Tortoises</mediatitle_turtles>
 		<mediatitle_purge>Surge</mediatitle_purge> <!-- https://en.wikipedia.org/wiki/The_Purge -->

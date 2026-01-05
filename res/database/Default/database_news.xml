@@ -4788,12 +4788,11 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<adamwest_or_christianbale>${.lte:currentyear:2015:"${.person:"e9c1a75d-1b99-439e-9051-a1adacff2bd5":"fullname"}":"${.person:"4eecfcb2-8c0b-415e-aab5-62c6767f7776":"fullname"}"}</adamwest_or_christianbale> <!-- '90s Batmans didn't seem to be very enthusiastic -->
 				<jimmybondi>${.role:"e81d85bb-d1b8-4b02-9995-13407f935c9a":"fullname"}</jimmybondi>
 				<stefaniepowers_or_lindsaylohan>${.lte:currentyear:2005:"${.person:"c5d8b67e-1697-473e-bde5-30068b34c96a":"fullname"}":"${.person:"38c85dc0-2189-452f-85a4-676d99b9b9ec":"fullname"}"}</stefaniepowers_or_lindsaylohan>
-				<robbi>${.role:"3c71921a-393e-47c3-bed6-be34c7efe827":"firstname"}</robbi>
+				<robbi_or_tobbi>${.role:"3c71921a-393e-47c3-bed6-be34c7efe827":"firstname"}|${.role:"e0e1c037-0e24-4aa8-a7b6-a46d88c17ccd":"firstname"}</robbi_or_tobbi>
 				<ernestborgnine_or_janmichaelvincent>${.lte:currentyear:2010:"${.person:"9f7cdf17-c66d-4e73-b943-a3ed689c62f4":"fullname"}":"${.person:"6457578c-f674-4466-ab59-6b8d0dd463db":"fullname"}"}|${.person:"6457578c-f674-4466-ab59-6b8d0dd463db":"fullname"}</ernestborgnine_or_janmichaelvincent> <!-- TODO: version after 2019 -->
 				<christopherlloyd_or_michaeljfox>${.person:"75836a6f-f590-431e-a572-8eb7226beffc":"fullname"}|${.person:"52c52df5-a2a0-478c-8acd-9250aa0fb484":"fullname"}</christopherlloyd_or_michaeljfox>
 				<danaykroyd_or_haroldramis_or_billmurray>${.person:"d7aac1f9-c0c1-42ed-83c8-6c6944ea410e":"fullname"}|${.lte:currentyear:2013:"${.person:"966bcb56-3332-4c0f-9e8a-1714aebeff1a":"fullname"}":"${.person:"a1943cde-0332-4706-8130-9c7a69e52efd":"fullname"}"}</danaykroyd_or_haroldramis_or_billmurray>
 				<mrt>${.person:"a6d2c2f1-6b5e-4ed5-80cf-0db50ed447db":"nickname"}</mrt>
-				<robbi>${.role:"3c71921a-393e-47c3-bed6-be34c7efe827":"firstname"}</robbi>
 				<vehicle_csv>
 					<de>„${mediatitle_knightrider}“-Auto;${kitt};${kitt};${kitt}, das legendäre Auto der Serie „${mediatitle_knightrider}“,;des Autos;das Auto;„Ein Auto, ein Computer, ein Mann.“ ;${davidhasselhoff};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung ${kitt}s;Rettet ${kitt}|
 						${mediaprop_batmobile};${mediaprop_batmobile};das ${mediaprop_batmobile};Das ${mediaprop_batmobile}, das legendäre Supergefährt des Superhelden,;des Gefährts;das Gefährt;;${adamwest_or_christianbale};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediaprop_batmobile}s;Rettet ${mediaprop_batmobile}|
@@ -4803,7 +4802,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 						„${backtothefuture}“-Auto;${brand_delorean};der ${brand_delorean};Der ${brand_delorean} aus dem erfolgreichen Film „${backtothefuture}“;des Autos;das Auto;;${christopherlloyd_or_michaeljfox};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${brand_delorean}s;Rettet den ${brand_delorean}|
 						„${mediatitle_ghostbusters}“-Auto;${mediaprop_ecto1};der ${mediaprop_ecto1};Der ${mediaprop_ecto1} aus dem erfolgreichen Film „${mediatitle_ghostbusters}“;des Autos;das Auto;;${danaykroyd_or_haroldramis_or_billmurray};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung von ${mediaprop_ecto1};Rettet ${mediaprop_ecto1}|
 						${ateamvan};${ateamvan};der ${ateamvan};Der bekannte ${ateamvan} aus der erfolgreichen Fernsehserie;des Autos;das Auto;;${mrt};auf dem Autofriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${ateamvan};Rettet den ${ateamvan}|
-						${mediaprop_fliewatuut};${mediaprop_fliewatuut};das ${mediaprop_fliewatuut};Das ${mediaprop_fliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediaprop_fliewatuut};Rettet das ${mediaprop_fliewatuut}
+						${mediaprop_fliewatuut};${mediaprop_fliewatuut};das ${mediaprop_fliewatuut};Das ${mediaprop_fliewatuut} aus dem beliebten Kinderfilm;des Gefährts;das Gefährt;;${robbi_or_tobbi};auf dem Schrottfriedhof;widersetzt sich der Verschrottung seines Spielzeugs;zur Erhaltung des ${mediaprop_fliewatuut};Rettet das ${mediaprop_fliewatuut}
 					</de>
 					<en>„${mediatitle_knightrider}” car;${kitt};${kitt};${kitt}, the legendary car from the “${mediatitle_knightrider}” series,;of the car;the car;"A lone crusader in a dangerous world." ;${davidhasselhoff};in the junkyard;resists the destruction of his toy;to preserve ${kitt};Save ${kitt}|
 						${mediaprop_batmobile};${mediaprop_batmobile};the ${mediaprop_batmobile};The ${mediaprop_batmobile}, the legendary super vehicle of the super hero,;of the vehicle;the vehicle;;${adamwest_or_christianbale};in the junkyard;resists the destruction of his toy;to preserve the ${mediaprop_batmobile};Save the ${mediaprop_batmobile}|
@@ -4813,7 +4812,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 						„${backtothefuture}” car;${brand_delorean};the ${brand_delorean};The ${brand_delorean} from the successful movie "${backtothefuture}";of the car;the car;;${christopherlloyd_or_michaeljfox};in the junkyard;resists the destruction of his toy;to preserve the ${brand_delorean};Save the ${brand_delorean}|
 						„${mediatitle_ghostbusters}” car;${mediaprop_ecto1};the ${mediaprop_ecto1};The ${mediaprop_ecto1} from the successful movie "${mediatitle_ghostbusters}";of the car;the car;;${danaykroyd_or_haroldramis_or_billmurray};in the junkyard;resists the destruction of his toy;to preserve ${mediaprop_ecto1};Save ${mediaprop_ecto1}|
 						${ateamvan};${ateamvan};the ${ateamvan};The famous ${ateamvan} from the popular TV series;of the car;the car;;${mrt};in the junkyard;resists the destruction of his toy;to preserve the ${ateamvan};Save the ${ateamvan}|
-						${mediaprop_fliewatuut};${mediaprop_fliewatuut};the ${mediaprop_fliewatuut};The ${mediaprop_fliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi};on the scrap yard;resists the destruction of his toy;to preserve the ${mediaprop_fliewatuut};Save the ${mediaprop_fliewatuut}
+						${mediaprop_fliewatuut};${mediaprop_fliewatuut};the ${mediaprop_fliewatuut};The ${mediaprop_fliewatuut} from the beloved children's movie;of the vehicle;the vehicle;;${robbi_or_tobbi};on the scrap yard;resists the destruction of his toy;to preserve the ${mediaprop_fliewatuut};Save the ${mediaprop_fliewatuut}
 					</en>
 					<pl>„${mediatitle_knightrider}”-samochód;${kitt};${kitt};${kitt}, legendarny samochód z serialu „${mediatitle_knightrider}”,;samochodu;samochód;„Samotny krzyżowiec w niebezpiecznym świecie.” ;${davidhasselhoff};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${kitt}a;Save ${kitt}|
 						${mediaprop_batmobile};${mediaprop_batmobile};${mediaprop_batmobile};${mediaprop_batmobile}, legendarny super pojazd super bohatera,;pojazdu;pojazd;;${adamwest_or_christianbale};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie batmobilu;Save the ${mediaprop_batmobile}|
@@ -4823,7 +4822,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 						„${backtothefuture}”-samochód;${brand_delorean};${brand_delorean};${brand_delorean} z popularnego filmu „${backtothefuture}”;samochodu;samochód;;${christopherlloyd_or_michaeljfox};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${brand_delorean}a;Save the ${brand_delorean}|
 						„${mediatitle_ghostbusters}”-samochód;${mediaprop_ecto1};${mediaprop_ecto1};${mediaprop_ecto1} z popularnego filmu „${mediatitle_ghostbusters}”;samochodu;samochód;;${danaykroyd_or_haroldramis_or_billmurray};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediaprop_ecto1};Save ${mediaprop_ecto1}|
 						${ateamvan};${ateamvan};${ateamvan};Znane ${ateamvan} z popularnego serialu telewizyjnego;samochodu;samochód;;${mrt};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${ateamvan}a;Save the ${ateamvan}|
-						${mediaprop_fliewatuut};${mediaprop_fliewatuut};${mediaprop_fliewatuut};${mediaprop_fliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediaprop_fliewatuut}a;Save the ${mediaprop_fliewatuut}
+						${mediaprop_fliewatuut};${mediaprop_fliewatuut};${mediaprop_fliewatuut};${mediaprop_fliewatuut} z popularnego filmu dla dzieci;pojazdu;pojazd;;${robbi_or_tobbi};na złomowisku;sprzeciwia się zniszczeniu swojej zabawki;na zachowanie ${mediaprop_fliewatuut}a;Save the ${mediaprop_fliewatuut}
 					</pl>
 				</vehicle_csv>
 				<vehicletitle>
@@ -7311,8 +7310,8 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>W najbliższą niedzielę Niemcy sięgną po kartę do głosowania - wybory parlamentarne. Ostatnie sondaże zdają się potwierdzać słuszność obecnego rządu.</pl>
 			</description>
 			<variables>
-				<helmut>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"firstname"}</helmut>
-				<kohl>${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"lastname"}</kohl>
+				<currentyear>${.worldtime:"year"}</currentyear>
+				<helmutkohl_or_gerhardschroeder>${.person:"${.lte:currentyear:2010:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"59704761-b8e6-405b-8d2b-74a010e599d8"}":"fullname"}</helmutkohl_or_gerhardschroeder>
 			</variables>
 			<effects>
 				<!-- time type = 3, special weekday, day 6 = saturday, so bring the next on day 5-->
@@ -7374,9 +7373,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>Zakłopotanie w Republice Federalnej Niemiec</pl>
 			</title>
 			<description>
-				<de>Alt-Kanzler ${helmut} ${kohl} merkte angesichts des unmöglichen Wahlergebnisses an, er fühle sich an die Zeiten der Weimarer Republik erinnert.</de>
-				<en>In light of the hopeless election results, former Chancellor ${helmut} ${kohl} remarked that he felt reminded of the times of the Weimar Republic.</en>
-				<pl>W świetle beznadziejnych wyników wyborów, były kanclerz ${helmut} ${kohl} zauważył, że przypominają mu się czasy Republiki Weimarskiej.</pl>
+				<de>Alt-Kanzler ${helmutkohl_or_gerhardschroeder} merkte angesichts des unmöglichen Wahlergebnisses an, er fühle sich an die Zeiten der Weimarer Republik erinnert.</de>
+				<en>In light of the hopeless election results, former Chancellor ${helmutkohl_or_gerhardschroeder} remarked that he felt reminded of the times of the Weimar Republic.</en>
+				<pl>W świetle beznadziejnych wyników wyborów, były kanclerz ${helmutkohl_or_gerhardschroeder} zauważył, że przypominają mu się czasy Republiki Weimarskiej.</pl>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="c3848e4a-6629-4481-b036-7aa9abad6e92" time="2,2,3,9,17" />

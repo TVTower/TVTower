@@ -6025,7 +6025,7 @@
 				<pl>${town}: Wyrzucenie z boiska za słabe wyniki</pl>
 			</title>
 			<description>
-				<de>Beim Liga-Spiel in ${town} war jemand mit seiner Leistung sehr unzufrieden. Es war der Schiedsrichter. Er zückte die Rote Karte - für sich selbst! Grund: „Katastrophales Pfeifen“. Spieler und Publikum applaudieren.</de>
+				<de>Beim Liga-Spiel in ${town} war jemand mit seiner Leistung sehr unzufrieden. Es war der Schiedsrichter. Er zückte die Rote Karte - gegen sich selbst! Grund: „Katastrophales Pfeifen“. Spieler und Publikum applaudieren.</de>
 				<en>During the league game in ${town}, someone was very unhappy with his performance. It was the referee. He pulled out the red card - for himself! Reason: "Disastrous officiating." Players and audience applaud.</en>
 				<pl>Podczas meczu ligowego w mieście ${town} ktoś był bardzo niezadowolony ze swojego występu. Był to sędzia. Wyciągnął czerwoną kartkę - dla siebie! Powód: „Katastrofalne sędziowanie”. Gracze i publiczność oklaskują.</pl>
 			</description>

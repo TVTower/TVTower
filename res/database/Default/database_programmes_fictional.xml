@@ -999,11 +999,11 @@ Ekscytująca rozrywka i łamiące mózg pytania.</pl>
 				<pl>Mistrzostwa Świata w piłce nożnej pod znakiem legendarnych zawodników, bramek i scen. Mecze grupowe, 1/8, ćwierćfinały, półfinały i finał.</pl>
 			</description>
 			<staff>
-				<member index="0" function="1">common-directors-provided</member>
-				<member index="1" function="8">common-hosts-provided</member>
-				<member index="2" function="128">common-commentators-provided</member>
-				<member index="3" function="128">common-reporters-provided</member>
-				<member index="4" function="64">common-guests-provided</member>
+				<member index="0" function="1">common-directors-external</member>
+				<member index="1" function="8">common-hosts-external</member>
+				<member index="2" function="128">common-commentators-external</member>
+				<member index="3" function="128">common-reporters-external</member>
+				<member index="4" function="64">common-guests-external</member>
 			</staff>
 			<groups target_groups="274" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<targetgroupattractivity women="0.75" />
