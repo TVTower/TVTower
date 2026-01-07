@@ -75,6 +75,32 @@ Type TScriptCollection Extends TGameObjectCollection
 		Local script:TScript = TScript(obj)
 		If Not script Then Return False
 
+		'remove unused random roles
+		If Not script.HasParentScript()
+			Local prodCount:Int = script.usedInProductionsCount
+			Local roleIDs:Int[] = []
+			For Local subScript:TScript = EachIn script.subScripts
+				prodCount:+subscript.usedInProductionsCount
+				For Local job:TPersonProductionJob = EachIn subscript.GetJobs()
+					If job And job.RoleId Then roleIDs:+[job.RoleId]
+				Next
+			Next
+			For Local job:TPersonProductionJob = EachIn script.GetJobs()
+				If job And job.RoleId Then roleIDs:+[job.RoleId]
+			Next
+			'for simplicity keep all roles of partially create series - will not happen often
+			If prodCount = 0 And  roleIDs.length > 0
+				Local prc:TProgrammeRoleCollection = GetProgrammeRoleCollection()
+				For Local index:Int = 0 Until roleIDs.length
+					Local role:TProgrammeRole = prc.GetById(roleIDs[index])
+					If role And role.GetGUID().startsWith("rndrole-")
+						prc.remove(role)
+					EndIf
+				Next
+				'print "role count " + prc.GetCount()
+			EndIf
+		EndIf
+
 		_InvalidateCaches()
 		'remove child scripts too
 		For Local subScript:TScript = EachIn script.subScripts
