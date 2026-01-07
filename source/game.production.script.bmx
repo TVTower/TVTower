@@ -93,7 +93,7 @@ Type TScriptCollection Extends TGameObjectCollection
 				Local prc:TProgrammeRoleCollection = GetProgrammeRoleCollection()
 				For Local index:Int = 0 Until roleIDs.length
 					Local role:TProgrammeRole = prc.GetById(roleIDs[index])
-					If role And role.GetGUID().startsWith("rndrole-")
+					If role And role.GetGUID().startsWith("randomprogrammerole-")
 						prc.remove(role)
 					EndIf
 				Next
