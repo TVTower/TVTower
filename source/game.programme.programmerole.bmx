@@ -69,6 +69,8 @@ Type TProgrammeRoleCollection Extends TGameObjectCollection
 
 		'avoid others of same name
 		GetPersonGenerator().ProtectDataset(pg)
+		'mark role as randomly created for cleanup
+		pr.SetGUID("randomprogrammerole-"+pr.GetID())
 		Add(pr)
 		
 		Return pr
