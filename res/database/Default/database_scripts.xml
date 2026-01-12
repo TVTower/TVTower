@@ -119,8 +119,8 @@
 
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="2" country="" random_role="1" />
-				<job index="2" function="2" required="1" gender="1" country="" random_role="1" />
+				<job index="1" function="2" required="1" gender="2" country="" />
+				<job index="2" function="2" required="1" gender="1" country="" />
 				<!-- there might be up to 2 additional roles without
 				     further specifications -->
 				<job index="3" function="32" required="0" role_guid="script-roles-ron-001" />

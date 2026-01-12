@@ -5003,10 +5003,10 @@
 				<en>TVTower is surprisingly considering an expansion of its broadcast area into the so-called "Valley of the Clueless". Technicians say it's "feasible", politicians say "theoretically conceivable", and lawyers say "not entirely forbidden yet". Talks are ongoing.</en>
 				<pl>TVTower zaskakująco rozważa rozszerzenie zasięgu nadawania na tak zwaną "Dolinę Niewtajemniczonych". Technicy mówią o "wykonalnym", politycy o "teoretycznie możliwym", a prawnicy o "jeszcze nie do końca zakazanym". Trwają rozmowy.</pl>
 			</description>
-			<data genre="4" price="1" quality_min="40" quality_max="70" flags="2" fictional="1" />
+			<data genre="4" price="1" quality_min="40" quality_max="70" flags="2" fictional="1" happen_time="5,0,0,3,5,1,30" />
 			<availability year_range_to="1989" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="4bf177c8-ac77-4055-89d6-47bed77d3e9d" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="4bf177c8-ac77-4055-89d6-47bed77d3e9d" />
 			</effects>
 		</news>
 		<news guid="4bf177c8-ac77-4055-89d6-47bed77d3e9d" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5022,7 +5022,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="4d141ecd-596a-4a4a-8721-d0f1269cfd05" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="4d141ecd-596a-4a4a-8721-d0f1269cfd05" />
 			</effects>
 		</news>
 		<news guid="4d141ecd-596a-4a4a-8721-d0f1269cfd05" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5038,7 +5038,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="fde645d6-d9cd-4381-94e2-4957e63a5880" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="fde645d6-d9cd-4381-94e2-4957e63a5880" />
 			</effects>
 		</news>
 		<news guid="fde645d6-d9cd-4381-94e2-4957e63a5880" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5054,7 +5054,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="1899465d-4a7d-4c1d-a3b0-39c6d961243f" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="1899465d-4a7d-4c1d-a3b0-39c6d961243f" />
 			</effects>
 		</news>
 		<news guid="1899465d-4a7d-4c1d-a3b0-39c6d961243f" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5070,7 +5070,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="ea53b26c-6d8f-4fad-8d2d-7d7533b58e41" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="ea53b26c-6d8f-4fad-8d2d-7d7533b58e41" />
 			</effects>
 		</news>
 		<news guid="ea53b26c-6d8f-4fad-8d2d-7d7533b58e41" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5086,7 +5086,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="b4ad095c-91b3-4e69-a5d5-23c84cf80973" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="b4ad095c-91b3-4e69-a5d5-23c84cf80973" />
 			</effects>
 		</news>
 		<news guid="b4ad095c-91b3-4e69-a5d5-23c84cf80973" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5105,9 +5105,9 @@
 
 		<news guid="7f36157e-1ec7-41f0-8a72-1596ec578306" type="0" thread_guid="3ec866b1-9315-4f58-8493-66eac2f45d01" creator="9551" comment="https://en.wikipedia.org/wiki/False_memory#Mandela_effect">
 			<title>
-				<de>${mandela} tot in Zelle?</de>
-				<en>${mandela} dead in cell?</en>
-				<pl>${mandela} martwy w celi?</pl>
+				<de>${nelson} ${mandela} tot in Zelle?</de>
+				<en>${nelson} ${mandela} dead in cell?</en>
+				<pl>${nelson} ${mandela} martwy w celi?</pl>
 			</title>
 			<description>
 				<de>Beamte des Gefängnisses auf Robben Island melden überraschend, ${nelson} ${mandela} sei in seiner Zelle verstorben. Ein Sprecher des Justizministeriums bestätigt „interne Hinweise“, doch Details bleiben unklar. Internationale Beileidsbekundungen treffen umgehend ein.</de>
@@ -5532,9 +5532,9 @@
 				<pl>Podatek od bananów</pl>
 			</title>
 			<description>
-				<de>Ein ${eu}-Politiker fordert eine Steuer auf importierte Bananen, um lokale Obstbauern zu schützen. ${inaddition}Kritiker nennen es eine „krumme Steuer“.</de>
-				<en>An ${eu} politician proposes a tax on imported bananas to protect local fruit growers. ${inaddition}Critics dub it a "crooked tax".</en>
-				<pl>Polityk ${eu} zaproponował podatek od importowanych bananów w celu ochrony lokalnych sadowników. ${inaddition}Krytycy nazwali go „krzywym podatkiem“.</pl>
+				<de>Ein ${eu}-Politiker fordert eine Steuer auf importierte Bananen, um lokale Obstbauern zu schützen. ${inaddition}Kritiker nennen sie eine „krummes Ding“.</de>
+				<en>An ${eu} politician proposes a tax on imported bananas to protect local fruit growers. ${inaddition}Critics dub it a "crooked thing".</en>
+				<pl>Polityk ${eu} zaproponował podatek od importowanych bananów w celu ochrony lokalnych sadowników. ${inaddition}Krytycy nazwali go „krzywą sprawą”.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -6398,42 +6398,83 @@
 
 		<news guid="d31e347f-320d-4ce9-8c39-a0c9d4f87782" type="0" thread_guid="d511047a-410c-4f26-9e80-1a1cb030a6b8" creator="9551">
 			<title>
-				<de>${concert} ${inspace}</de>
-				<en>${concert} ${inspace}</en>
-				<pl>${concert} ${inspace}</pl>
+				<de>${concert_culture} ${inspace_culture}</de>
+				<en>${concert_culture} ${inspace_culture}</en>
+				<pl>${concert_culture} ${inspace_culture}</pl>
 			</title>
 			<description>
-				<de>${aspacecompany} sponsorte ${thefirstsymphony} ${inzerogravity}. ${theconductorstruggled}.</de>
-				<en>${aspacecompany} sponsored ${thefirstsymphony} ${inzerogravity}. ${theconductorstruggled}.</en>
-				<pl>${aspacecompany} sponsorowało ${thefirstsymphony} ${inzerogravity}. ${theconductorstruggled}.</pl>
+				<de>${aspacecompany_culture} sponsorte ${thefirstsymphony_culture} ${inzerogravity_culture}. ${theconductorstruggled}.</de>
+				<en>${aspacecompany_culture} sponsored ${thefirstsymphony_culture} ${inzerogravity_culture}. ${theconductorstruggled}.</en>
+				<pl>${aspacecompany_culture} sponsorowało ${thefirstsymphony_culture} ${inzerogravity_culture}. ${theconductorstruggled}.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
-				<concert>
-					<de>Konzert|Orchesterkonzert|Kammerorchester|Sinfonie</de>
-					<en>Concert|Orchestral concert|Chamber orchestra|Symphony</en>
-					<pl>Koncert|Koncert orkiestrowy|Orkiestra kameralna|Symfonia</pl>
-				</concert>
-				<inspace>
-					<de>im All|in der Schwerelosigkeit|im Weltall|auf der ${iss}|im Orbit</de>
-					<en>in space|in zero gravity|in outer space|on the ${iss}|in orbit</en>
-					<pl>w kosmosie|w stanie nieważkości|w przestrzeni kosmicznej|na ${iss}|na orbicie</pl>
-				</inspace>
-				<aspacecompany>
-					<de>Ein Raumfahrtunternehmen|Ein Multimilliardär</de>
-					<en>A space company|A billionaire</en>
-					<pl>Firma kosmiczna|Multimiliarder</pl>
-				</aspacecompany>
-				<thefirstsymphony>
-					<de>das erste Sinfoniekonzert|das erste Orchesterkonzert</de>
-					<en>the first symphony concert|the first orchestral concert</en>
-					<pl>pierwszy koncert symfoniczny|pierwszy koncert orkiestrowy</pl>
-				</thefirstsymphony>
-				<inzerogravity>
-					<de>in der Schwerelosigkeit|im Weltall|${ontheinternational}|im Orbit</de>
-					<en>in zero gravity|in outer space|${ontheinternational}|in orbit</en>
-					<pl>w stanie nieważkości|w kosmosie|${ontheinternational}|na orbicie</pl>
-				</inzerogravity>
+				<!-- TODO: Simpler way to reuse same variable collection with different outcomes? -->
+				<concert_csv>
+					<de>Konzert;Orchesterkonzert;Kammerorchester;Sinfonie</de>
+					<en>Concert;Orchestral concert;Chamber orchestra;Symphony</en>
+					<pl>Koncert;Koncert orkiestrowy;Orkiestra kameralna;Symfonia</pl>
+				</concert_csv>
+				<concert_culture_i>0|1|2|3</concert_culture_i>
+				<concert_tech_i>0|1|2|3</concert_tech_i>
+				<concert_culture>
+					<all>${.csv:concert_csv:concert_culture_i}</all>
+				</concert_culture>
+				<concert_tech>
+					<all>${.csv:concert_csv:concert_tech_i}</all>
+				</concert_tech>
+				<inspace_csv>
+					<de>im All;in der Schwerelosigkeit;im Weltall;auf der ${iss};im Orbit</de>
+					<en>in space;in zero gravity;in outer space;on the ${iss};in orbit</en>
+					<pl>w kosmosie;w stanie nieważkości;w przestrzeni kosmicznej;na ${iss};na orbicie</pl>
+				</inspace_csv>
+				<inspace_culture_i>0|1|2|3|4</inspace_culture_i>
+				<inspace_tech_i>0|1|2|3|4</inspace_tech_i>
+				<inspace_culture>
+					<all>${.csv:inspace_csv:inspace_culture_i}</all>
+				</inspace_culture>
+				<inspace_tech>
+					<all>${.csv:inspace_csv:inspace_tech_i}</all>
+				</inspace_tech>
+				<aspacecompany_csv>
+					<de>Ein Raumfahrtunternehmen;Ein Multimilliardär</de>
+					<en>A space company;A billionaire</en>
+					<pl>Firma kosmiczna;Multimiliarder</pl>
+				</aspacecompany_csv>
+				<aspacecompany_culture_i>0|1</aspacecompany_culture_i>
+				<aspacecompany_tech_i>0|1</aspacecompany_tech_i>
+				<aspacecompany_culture>
+					<all>${.csv:aspacecompany_csv:aspacecompany_culture_i}</all>
+				</aspacecompany_culture>
+				<aspacecompany_tech>
+					<all>${.csv:aspacecompany_csv:aspacecompany_tech_i}</all>
+				</aspacecompany_tech>
+				<thefirstsymphony_csv>
+					<de>das erste Sinfoniekonzert;das erste Orchesterkonzert</de>
+					<en>the first symphony concert;the first orchestral concert</en>
+					<pl>pierwszy koncert symfoniczny;pierwszy koncert orkiestrowy</pl>
+				</thefirstsymphony_csv>
+				<thefirstsymphony_culture_i>0|1</thefirstsymphony_culture_i>
+				<thefirstsymphony_tech_i>0|1</thefirstsymphony_tech_i>
+				<thefirstsymphony_culture>
+					<all>${.csv:thefirstsymphony_csv:thefirstsymphony_culture_i}</all>
+				</thefirstsymphony_culture>
+				<thefirstsymphony_tech>
+					<all>${.csv:thefirstsymphony_csv:thefirstsymphony_tech_i}</all>
+				</thefirstsymphony_tech>
+				<inzerogravity_csv>
+					<de>in der Schwerelosigkeit;im Weltall;${ontheinternational};im Orbit</de>
+					<en>in zero gravity;in outer space;${ontheinternational};in orbit</en>
+					<pl>w stanie nieważkości;w kosmosie;${ontheinternational};na orbicie</pl>
+				</inzerogravity_csv>
+				<inzerogravity_culture_i>0|1|2|3</inzerogravity_culture_i>
+				<inzerogravity_tech_i>0|1|2|3</inzerogravity_tech_i>
+				<inzerogravity_culture>
+					<all>${.csv:inzerogravity_csv:inzerogravity_culture_i}</all>
+				</inzerogravity_culture>
+				<inzerogravity_tech>
+					<all>${.csv:inzerogravity_csv:inzerogravity_tech_i}</all>
+				</inzerogravity_tech>
 				<theconductorstruggled>
 					<de>Der Dirigent kämpfte mit fliegenden Geigenbögen|Die schwebenden Instrumente entglitten den Musikern|Die Notenblätter schwebten durch die Gegend|Die Streicher waren kaum hörbar, aber die Kulisse überwältigend|Die Geigen entglitten den Musikern|Ein Hornist verlor sein Instrument in der Luftschleuse|Der Dirigent musste am Pult festgeschnallt werden|Die Kontrabässe wurden mit Sicherheitsgurten verankert|Die Pauken wurden weggeschlagen und prallten an die Raumkapselwand|Näher am Mond als je zuvor wurde die Mondscheinsonate gespielt</de>
 					<en>The conductor struggled with flying bows|The floating instruments slipped away from the musicians|Sheets of music drifted around|The strings were barely audible, but the view was breathtaking|The violins slipped away from the players|A hornist lost his instrument in the airlock|The conductor had to be strapped to the podium|The double basses were secured with seatbelts|The timpani bounced off and hit the capsule wall|Closer to the Moon than ever before, the Moonlight Sonata was played</en>
@@ -6459,14 +6500,14 @@
 		</news>
 		<news guid="714f62ae-cf1d-4463-9e62-19a14d192333" type="2" thread_guid="d511047a-410c-4f26-9e80-1a1cb030a6b8" creator="9551">
 			<title>
-				<de>${concert} ${inspace}</de>
-				<en>${concert} ${inspace}</en>
-				<pl>${concert} ${inspace}</pl>
+				<de>${concert_tech} ${inspace_tech}</de>
+				<en>${concert_tech} ${inspace_tech}</en>
+				<pl>${concert_tech} ${inspace_tech}</pl>
 			</title>
 			<description>
-				<de>${aspacecompany} sponsorte ${thefirstsymphony} ${inzerogravity}. ${anastronautcalledit}.</de>
-				<en>${aspacecompany} sponsored ${thefirstsymphony} ${inzerogravity}. ${anastronautcalledit}.</en>
-				<pl>${aspacecompany} sponsorowało ${thefirstsymphony} ${inzerogravity}. ${anastronautcalledit}.</pl>
+				<de>${aspacecompany_tech} sponsorte ${thefirstsymphony_tech} ${inzerogravity_tech}. ${anastronautcalledit}.</de>
+				<en>${aspacecompany_tech} sponsored ${thefirstsymphony_tech} ${inzerogravity_tech}. ${anastronautcalledit}.</en>
+				<pl>${aspacecompany_tech} sponsorowało ${thefirstsymphony_tech} ${inzerogravity_tech}. ${anastronautcalledit}.</pl>
 			</description>
 			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
@@ -7096,12 +7137,12 @@
 					<pl>${.lte:currentyear:2005:"Jednak trening został przerwany po nieporozumieniu z Radą. Teraz nazywa Moc „szo szubtelnego“.":"„Chodziło o równowagę, nie miecze świetlne” - powiedział. Doniesienia potwierdzają, że opanował Moc, delikatnie przesuwając ołówek po stole przez sześć miesięcy."}</pl>
 				</buttrainingwascut>
 				<theforceisalady> <!-- same year as burtreynolds_or_jeanclaudevandamne -->
-					<de>${.lte:currentyear:1995:"„Die Macht ist eine feine Dame... aber sie zieht einen Gentleman vor“, erklärte er dem Interviewer in einem rauchigen Lounge-Bereich voller Schnauzbärte in einer Cantina-Bar in L.A.":"„Die Macht ist wie die schönste Spaltung zwischen Licht und Dunkel... wie ein Rabe und eine Taube, die fliegen“, erklärte er während einem perfekten Spagat zwischen zwei fahrenden Landspeedern."}</de>
+					<de>${.lte:currentyear:1995:"„Die Macht ist eine feine Dame... aber sie zieht einen Gentleman vor“, erklärte er dem Interviewer in einer rauchigen Lounge voller Schnauzbärte in einer Cantina-Bar in L.A.":"„Die Macht gleicht der Schönheit der Spaltung von Licht und Dunkel... wie Krähe und Taube, fliegend“, erklärte er während eines perfekten Spagats zwischen zwei fahrenden Landspeedern."}</de>
 					<en>${.lte:currentyear:1995:"“The Force is a lady... but she prefers a gentleman,“ he explained to the interviewer in a mustachioed smokey lounge of an L.A. cantina bar.":"“The Force is the most beautiful split between the light and the dark... like a raven and a dove, flying,“ he explained, while performing a perfect split between two moving landspeeders."}</en>
 					<pl>${.lte:currentyear:1995:"„Moc to dama... ale woli dżentelmena“ - wyjaśnił rozmówcy w wąsatym, dymnym salonie kantyny w Los Angeles.":"„Moc to najpiękniejszy rozłam między światłem a mrokiem... jak kruk i gołąb, lecące“ - wyjaśnił, wykonując idealny szpagat między dwoma ruchomymi śmigaczami."}</pl>
 				</theforceisalady>
 				<namedpermanentchairman> <!-- same year as charltonheston_or_brucewillis -->
-					<de>${.lte:currentyear:1995:"„Nach Abschluss wurde ich sofort zum Vorsitzenden auf Lebenszeit der Galaktischen Laserschwert-Vereinigung ernannt“, prahlte er. „Wer mein Laserschwert haben will, muss es meinen kalten, toten Händen entreißen.“":"„Es war viel Meditieren und nicht genug Action.“ Er nennt seinen Laserschwert jetzt „Glühstab“ und verwendet die Macht hauptsächlich, um verschlossene Türen zu öffnen."}</de>
+					<de>${.lte:currentyear:1995:"„Nach Abschluss wurde ich sofort zum Vorsitzenden auf Lebenszeit der Galaktischen Laserschwert-Vereinigung ernannt“, prahlte er. „Wer mein Laserschwert haben will, muss es meinen kalten, toten Händen entreißen.“":"„Viel Meditieren, nicht genug Action.“ Er nennt sein Laserschwert jetzt „Glühstab“ und verwendet die Macht hauptsächlich zum Öffnen verschlossener Türen."}</de>
 					<en>${.lte:currentyear:1995:"“After completion I was immediately named Permanent Chairman of the Galactic Lightsaber Association,“ he boasted. “You can have my lightsaber when you pry it from my cold, dead hands.“":"“It was a lot of meditation and not enough action.“ He now refers to his lightsaber as a “glowstick“ and uses the Force primarily to open locked doors."}</en>
 					<pl>${.lte:currentyear:1995:"„Po ukończeniu trainingu zostałem natychmiast mianowany Stałym Przewodniczącym Galaktycznego Stowarzyszenia Mieczy Świetlnych“ - chwalił się. „Będziecie mogli wziąć mój miecz świetlny, gdy wydrzecie go z moich zimnych, martwych rąk.“":"„To było dużo medytacji i za mało akcji.“ Teraz nazywa swój miecz świetlny „świecącym patykiem“ i używa Mocy głównie do otwierania zamkniętych drzwi."}</pl>
 				</namedpermanentchairman>
@@ -7473,7 +7514,7 @@
 
 		<news guid="38d4035b-4c0b-41ad-9c88-24c2d7577ac9" type="0" creator="9551">
 			<title>
-				<de>${gwynethpaltrow}s Mond-Diät</de>
+				<de>${gwynethpaltrow}: Mond-Diät</de>
 				<en>${gwynethpaltrow}: Moon Diet</en>
 				<pl>Księżycowa dieta ${gwynethpaltrow}</pl>
 			</title>

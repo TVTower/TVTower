@@ -3850,7 +3850,7 @@
 		<scripttemplate product="3" licence_type="1" guid="d060c1b3-9769-49cf-8e48-19f6d4d85eba" creator="10061">
 			<title>
 				<de>Hoch die Rakete, Silvesterfete ${currentyear} - Live aus ${city}</de>
-				<en>Rock the Rocket  New Year's Gala ${currentyear} - Live from ${city}</en>
+				<en>Fireworks High, New Year's Nigh ${currentyear} - Live from ${city}</en>
 				<pl>Rakieta w górę, Sylwestrowa Hura ${currentyear} - Na żywo w ${city}</pl>
 			</title>
 			<description>
