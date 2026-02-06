@@ -48,7 +48,6 @@ Import Collections.IntMap
 Import BRL.Map
 Import Collections.ObjectList
 Import "../../base.util.longmap.bmx"
-Import "../../base.util.xmlmod.bmx"
 Import BRL.Stream
 
 Import "glue.c"
@@ -702,17 +701,21 @@ Type TPersist
 	End Method
 	
 
+	global specialCount:Int
 	Method DeserializeFields(objType:TTypeId, obj:Object, node:TxmlNode)
 		' does the node contain child nodes?
-		If node.getChildren() <> Null Then
-			For Local fieldNode:TxmlNode = EachIn node.getChildren()
+		Local childNodes:TObjectList = node.getChildren()
+
+		If childNodes
+			Local parentName:String = node.getAttribute("name")
+			If not parentName and objType then parentName = objType.Name()
+
+			For Local fieldNode:TxmlNode = EachIn childNodes
 				' this should be a field
 				If fieldNode.GetName() = "field" Then
 					Local fieldName:String = fieldNode.getAttribute("name")
 					Local fieldObj:TField = objType.FindField(fieldName)
 					Local fieldType:String = fieldNode.getAttribute("type")
-					Local parentName:String = node.getAttribute("name")
-					If not parentName and objType then parentName = objType.Name()
 					
 					' Ronny: skip unknown fields (no longer existing in the type)
 					' or redirect to a different field if renamed
@@ -793,6 +796,7 @@ Type TPersist
 					' only check field if stored is also a primitive
 					' (both need to be true ...)
 					If isStoredPrimitive
+						Local fieldTypeName:String = fieldObj.TypeID().name() 
 						Select fieldObj.TypeID().name().ToLower()
 							Case "byte", "short", "int", "long", "float", "double"
 								isFieldPrimitive = True
@@ -826,12 +830,17 @@ Type TPersist
 									Local arrayElementType:TTypeId = arrayType.ElementType()
 
 									Local scalesi:Int[]
-									Local scales:String[] = fieldNode.getAttribute("scales").split(",")
-									If scales.length > 1 Then
-										scalesi = New Int[scales.length]
-										For Local i:Int = 0 Until scales.length
-											scalesi[i] = Int(scales[i])
-										Next
+									Local scalesS:String = fieldNode.getAttribute("scales")
+
+									'Ronny: only create scales array if there is the need for (multidim is less likely)
+									If scalesS.Find(",") >= 0 Then
+										Local scales:String[] = scalesS.split(",")
+										If scales.length > 1 Then
+											scalesi = New Int[scales.length]
+											For Local i:Int = 0 Until scales.length
+												scalesi[i] = Int(scales[i])
+											Next
+										EndIf
 									End If
 
 									Select arrayElementType
@@ -854,8 +863,7 @@ Type TPersist
 											Next
 
 										Default
-											'Local arrayList:TObjectList = fieldNode.getChildren()
-											Local arrayList:TObjectList = XMLMOD_Node_getChildren(fieldNode)
+											Local arrayList:TObjectList = fieldNode.getChildren()
 
 											If arrayList ' Birdie
 												Local arrayObj:Object = arrayType.NewArray(arrayList.Count(), scalesi)
@@ -1108,15 +1116,13 @@ Type TPersist
 
 		Local mth:TMethod
 		Local deserializationResult:Object = Null
-
+		
 		' serialized data in attribute?
-		If node.HasAttribute("serialized")
-			'serialized might be "" (eg. an empty TLowerString)
-			Local serialized:String = node.GetAttribute("serialized")
-
+		'serialized might be "" (eg. an empty TLowerString)
+		Local serialized:String
+		If node.tryGetAttribute("serialized", serialized)
 			'check if there is a special "DeSerialize[classname]FromString" Method
-			'defined for the object
-
+			
 			'check if a common serializer wants to handle it
 			If serializer
 				If Not serializerTypeID Then serializerTypeID = TTypeId.ForObject(serializer)
@@ -1147,7 +1153,7 @@ Type TPersist
 			'check if the type itself wants to handle it
 			If Not deserializationResult Or Not serializer
 				deserializationResult = obj
-				mth = objType.FindMethod("DeSerialize"+objType.Name()+"FromString")
+				mth = objType.FindMethod("DeSerialize"+objType.Name()+"FromNode")
 				If mth Then mth.Invoke(deserializationResult, [node])
 			EndIf
 		EndIf
@@ -1264,14 +1270,12 @@ endrem
 							Next
 
 						Default
-'							Local arrayList:TObjectList = node.getChildren()
-							Local arrayList:TObjectList = XMLMOD_Node_getChildren(node)
+							Local arrayList:TObjectList = node.getChildren()
 
 							If arrayList
 
 								Local i:Int
 								For Local arrayNode:TxmlNode = EachIn arrayList
-
 									Select arrayElementType
 										Case StringTypeId
 											objType.SetArrayElement(obj, i, arrayNode.GetContent())
@@ -1597,8 +1601,9 @@ Type TMapXMLSerializer Extends TXMLSerializer
 	Method Deserialize:Object(objType:TTypeId, node:TxmlNode)
 		Local map:TMap = TMap(CreateObjectInstance(objType, node))
 
-		If node.getChildren() Then
-			For Local mapNode:TxmlNode = EachIn node.getChildren()
+		Local childNodes:TObjectList = node.getChildren()
+		If childNodes Then
+			For Local mapNode:TxmlNode = EachIn childNodes
 				Local key:Object = DeserializeObject(TxmlNode(mapNode.getFirstChild()))
 				Local value:Object = DeserializeObject(TxmlNode(mapNode.getLastChild()))
 

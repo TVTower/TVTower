@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2025 Ronny Otto, digidea.de
+	Copyright (C) 2002-2026 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -43,7 +43,6 @@ Import Text.xml
 Import "base.util.data.bmx"
 Import "base.util.string.bmx"
 Import "base.util.localization.bmx"
-Import "base.util.xmlmod.bmx"
 Import Brl.Retro 'for filesize
 Import Collections.ObjectList
 
@@ -205,8 +204,7 @@ Type TXmlHelper
 	Function GetNodeChildElements:TObjectList(node:TxmlNode)
 		'we only want "<ELEMENTS>"
 		If Not node Then Return New TObjectList()
-'		Return node.getChildren()
-		Return XMLMOD_Node_getChildren(node)
+		Return node.getChildren()
 	End Function
 
 
@@ -246,9 +244,7 @@ Type TXmlHelper
 	'(compared to node.HasAttribute() this is NOT case sensitive!)
 	Function HasAttribute:Int(node:TxmlNode, fieldName:String)
 		If Not node Then Return False
-
-'		Return node.HasAttribute(fieldName, True)
-		Return XMLMOD_Node_HasAttribute(node, fieldName, True)
+		Return node.HasAttribute(fieldName, True)
 	End Function
 
 
@@ -264,8 +260,7 @@ Type TXmlHelper
 	'this allows skipping a HasAttribute() check before getting the value
 	Function GetAttribute:String(node:TxmlNode, fieldName:String, attributeExists:Int Var)
 		Local res:String
-'		attributeExists = node.tryGetAttribute(fieldName, res, True)
-		attributeExists = XMLMOD_Node_tryGetAttribute(node, fieldName, res, True)
+		attributeExists = node.tryGetAttribute(fieldName, res, True)
 		Return res
 	End Function
 
@@ -278,13 +273,13 @@ Type TXmlHelper
 	'- in one of the children defined in "searchInChildNodeNames" (recursive!)
 	'  ["other"] or ["*"]
 	'  <obj><other><FIELDNAME>bla</FIELDNAME></other></obj>
-	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String="", logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
 		Local exists:Int
 		Return FindValue(node, fieldName, defaultValue, exists, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth)
 	End function
 	
 
-	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, valueExists:Int var, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String="", valueExists:Int var, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
 		If node
 			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
 			If fieldName.Find("|") > 0
@@ -306,9 +301,10 @@ Type TXmlHelper
 
 		Return defaultValue
 	End Function
-	
-	
-	Function _FindValueInternalLC_NEW:String(node:TxmlNode, nameLC:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+
+
+	'node/attribute name must be lowercased already!
+	Function _FindValueInternalLC:String(node:TxmlNode, nameLC:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
 		'given node has attribute (<episode number="1">)
 		If depth = 0 or searchInChildNodeAttributes
 			Local attributeExists:Int
@@ -348,8 +344,7 @@ Type TXmlHelper
 		While childNode
 			If AsciiNamesLCAreEqual("data", childNode.GetName())
 				Local result:String
-'				Local attributeExists:Int = childNode.tryGetAttribute(nameLC, result, True)
-				Local attributeExists:Int = XMLMOD_Node_tryGetAttribute(childNode, nameLC, result, True)
+				Local attributeExists:Int = childNode.tryGetAttribute(nameLC, result, True)
 				If attributeExists
 					valueExists = True
 					Return result
@@ -369,7 +364,7 @@ Type TXmlHelper
 				Local inArray:Int = InAsciiNamesLCArray(childNode.GetName(), searchInChildNodeNames)
 				
 				if checkAll or inArray
-					Local result:String = _FindValueInternalLC_NEW(childNode, nameLC, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+					Local result:String = _FindValueInternalLC(childNode, nameLC, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
 					If valueExists
 						Return result
 					EndIf
@@ -380,12 +375,6 @@ Type TXmlHelper
 
 		valueExists = False
 		Return defaultValue
-	End Function
-
-	'node/attribute name must be lowercased already!
-	Function _FindValueInternalLC:String(node:TxmlNode, nameLC:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
-		Local result:String = _FindValueInternalLC_NEW(node, nameLC, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
-		Return result
 	End Function
 	
 
@@ -455,12 +444,10 @@ Type TXmlHelper
 		If Not node Then Return data
 
 		'=== ATTRIBUTES ===
-		'Local attributeCount:Int = node.getAttributeCount()
-		Local attributeCount:Int = XMLMOD_Node_getAttributeCount(node)
+		Local attributeCount:Int = node.getAttributeCount()
 		For Local i:Int = 0 Until attributeCount
 			Local name:String
-			'Local value:String = node.getAttributeByIndex(i, name)
-			Local value:String = XMLMOD_Node_getAttributeByIndex(node, i, name)
+			Local value:String = node.getAttributeByIndex(i, name)
 
 			If ignoreNames.length > 0 And InAsciiNamesLCArray(name, ignoreNames) Then Continue
 
