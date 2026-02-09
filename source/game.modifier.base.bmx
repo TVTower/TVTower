@@ -410,7 +410,7 @@ Type TGameModifierBase
 		If data And Not HasDelayedExecution()
 			Local timeString:String = data.GetString("time")
 			If timeString
-				Local happenTime:Int[] = StringHelper.StringToIntArray(timeString, ",")
+				Local happenTime:Int[] = StringHelper.StringToIntArray(timeString, Asc(","))
 				Local timeStamp:Long = GetWorldTime().CalcTime_Auto(-1, happenTime[0], happenTime[1..])
 				If timeStamp > 0 Then SetDelayedExecutionTime(timeStamp)
 				data.remove("time")

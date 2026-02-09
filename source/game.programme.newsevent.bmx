@@ -1055,7 +1055,7 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 		Local happenTimeString:String = data.GetString("time"+index, data.GetString("time", ""))
 		Local happenTime:Int[]
 		If happenTimeString <> ""
-			happenTime = StringHelper.StringToIntArray(happenTimeString, ",")
+			happenTime = StringHelper.StringToIntArray(happenTimeString, Asc(","))
 		Else
 			happenTime = [1, 8,16,0,0]
 		EndIf

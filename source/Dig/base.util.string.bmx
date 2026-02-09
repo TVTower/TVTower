@@ -996,7 +996,10 @@ Type StringHelper
 	End Function
 
 
-	Function StringToIntArray:Int[](s:String, delim:String=",")
+	'using "2" appendix, because it is slower than StringToIntArray
+	'but allows to use a multi-char delimiter (and an overload might
+	'not indicate that well enough)
+	Function StringToIntArray2:Int[](s:String, delim:String=",")
 		If s.length = 0 Then Return New Int[0]
 
 		Local sArray:String[] = s.split(delim)
@@ -1006,6 +1009,68 @@ Type StringHelper
 		Next
 		Return a
 	End Function
+
+
+	Function StringToIntArray:Int[](s:String, separator:Int, skipEmpty:Int = False)
+		Local _index:Int = 0
+		Local _current:Int
+
+		Local elementCount:Int = 1 'no comma needed for the first
+		For Local char:Int = EachIn s
+			If char = separator Then elementCount:+ 1
+		Next
+
+		Local result:Int[] = New Int[elementCount]
+		Local resultIndex:Int = 0
+
+		
+		While _index < s.Length
+			' If we're exactly at end, we may optionally yield one final empty token
+			If _index = s.Length And skipEmpty Then Exit
+
+
+			Local start:Int = _index
+			' Scan to separator or end
+			While _index < s.Length And s[_index] <> separator
+				_index :+ 1
+			Wend
+
+
+			Local finish:Int = _index
+			' Consume separator if present
+			If _index < s.Length And s[_index] = separator
+				_index :+ 1
+			EndIf
+
+			' Maybe skip empty tokens
+			If skipEmpty And finish = start
+				Continue
+			EndIf
+
+			' Extract value
+			Local pos:Int = s.ToIntEx(_current, start, finish, CHARSFORMAT_ALLOWLEADINGPLUS | CHARSFORMAT_SKIPWHITESPACE)
+			If Not pos
+				_current = 0
+			EndIf
+			
+			result[resultIndex] = _current
+			resultIndex :+ 1
+
+			' Handle the end
+			If finish = s.Length
+				Exit
+			EndIf
+		Wend
+		
+		If skipEmpty and result.length > 0
+			If result.Length <> resultIndex
+				result = result[.. resultIndex]
+			EndIf
+		EndIf
+
+		Return result
+	End Function
+
 
 	'convert first alpha (optional alphanumeric) character to uppercase.
 	'does _not_ work with UTF8 characters (would need some utf8-library

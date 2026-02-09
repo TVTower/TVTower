@@ -625,7 +625,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Local liveTime:Long = 0
 			If Not alwaysLive
 				If template And template.liveDateCode
-					Local liveDateCodeParams:Int[] = StringHelper.StringToIntArray(template.liveDateCode, ",")
+					Local liveDateCodeParams:Int[] = StringHelper.StringToIntArray(template.liveDateCode, Asc(","))
 					If liveDateCodeParams.length > 0 And liveDateCodeParams[0] > 0
 						Local useParams:Int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
 						For Local i:Int = 1 Until liveDateCodeParams.length

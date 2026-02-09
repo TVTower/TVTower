@@ -925,7 +925,7 @@ Type TDatabaseLoader
 
 		Local happenTimeString:String = data.GetString("happen_time", "")
 		If happenTimeString
-			Local happenTimeParams:Int[] = StringHelper.StringToIntArray(happenTimeString, ",")
+			Local happenTimeParams:Int[] = StringHelper.StringToIntArray(happenTimeString, Asc(","))
 			If happenTimeParams.length > 0
 				If happenTimeParams[0] = 0
 					newsEventTemplate.happenTime = 0
@@ -1570,7 +1570,9 @@ Type TDatabaseLoader
 		programmeData.SetFlag(data.GetInt("flags", 0))
 
 		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
-		For Local sg:String = EachIn data.GetString("subgenre", "").split(",")
+		For Local sg:String = EachIn data.GetString("subgenre", "")
+		If subGenres
+			For Local sg:Int = EachIn String2IntArray(subGenres, Asc(",")
 			If Trim(sg) = "" Then Continue
 			If Int(sg) < 0 Then Continue
 
@@ -1959,7 +1961,9 @@ Type TDatabaseLoader
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
 		scriptTemplate.mainGenre = data.GetInt("mainGenre", scriptTemplate.mainGenre)
-		For Local sg:String = EachIn data.GetString("subGenres", "").split(",")
+		For Local sg:String = EachIn data.GetString("subGenres", "")
+		If subGenres
+			For Local sg:Int = EachIn String2IntArray(subGenres, Asc(",")
 			'skip empty or "undefined" genres
 			If Int(sg) = 0 Then Continue
 			If Not MathHelper.InIntArray(Int(sg), scriptTemplate.subGenres)

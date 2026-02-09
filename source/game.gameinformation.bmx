@@ -119,15 +119,15 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		if parts.length >= 3
 			firstTrailerAired = Long(parts[0])
 			lastTrailerAired = Long(parts[1])
-			trailerAired = StringHelper.StringToIntArray(parts[2], ",")
+			trailerAired = StringHelper.StringToIntArray(parts[2], Asc(","))
 		endif
 		if parts.length >= 6
 			firstInfomercialAired = Long(parts[3])
 			lastInfomercialAired = Long(parts[4])
-			infomercialsAired = StringHelper.StringToIntArray(parts[5], ",")
+			infomercialsAired = StringHelper.StringToIntArray(parts[5], Asc(","))
 		endif
 		if parts.length >= 7
-			adspotsAired = StringHelper.StringToIntArray(parts[6], ",")
+			adspotsAired = StringHelper.StringToIntArray(parts[6], Asc(","))
 		endif
 		For local player:int = 0 to 4
 			programmeGenreAired[player].Clear()
