@@ -348,7 +348,7 @@ Type TNewsEventSportMatch_Soccer Extends TNewsEventSportMatch
 		Next
 
 		If showHalfTimePoints
-			Return Super.GetFinalScoreText()+" (" + StringHelper.JoinIntArray(":", GetMatchScore(duration/2)) + ")"
+			Return Super.GetFinalScoreText()+" (" + StringHelper.IntArrayToString(GetMatchScore(duration/2), ":") + ")"
 		Else
 			Return Super.GetFinalScoreText()
 		EndIf

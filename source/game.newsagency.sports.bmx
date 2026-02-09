@@ -2121,7 +2121,7 @@ Type TNewsEventSportMatch Extends TGameObject
 
 
 	Method GetFinalScoreText:String()
-		Return StringHelper.JoinIntArray(":", points)
+		Return StringHelper.IntArrayToString(points, ":")
 	End Method
 	
 	

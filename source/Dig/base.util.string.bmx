@@ -104,6 +104,13 @@ Import Brl.StringBuilder
 ?
 Import "base.util.math.bmx"
 Import "external/string_comp.bmx"
+Import "base.util.string.c"
+
+Extern
+'	Function StringJoinInts:String(intArray:Int[], glue:String=",")="BBString* bbStringJoinInts(BBArray*, BBString*)!"
+	Function bbStringJoinInts:String(intArray:Int[], glue:String=",")
+End Extern
+
 
 Type StringHelper
 	'extracts and returns all placeholders in a text
@@ -128,7 +135,7 @@ Type StringHelper
 		Local placeHolderTagOpen:Int = False
 		Local placeHolderStartPos:Int = 0
 		Local placeHolderEndPos:Int = 0
-		local charCode:Int
+		Local charCode:Int
 		
 		For Local i:Int = 0 Until text.length
 			charCode = text[i]
@@ -286,27 +293,6 @@ Type StringHelper
 		Next
 		Return Long(resultString)
 	End Function
-
-
-	?bmxng
-	Function JoinIntArray:String(glue:String, intArray:Int[])
-		Local sb:TStringBuilder = New TStringBuilder()
-		For Local i:Int = 0 Until intArray.Length
-			If sb.Length() > 0 Then sb.Append(glue)
-			sb.Append(intArray[i])
-		Next
-		Return sb.ToString()
-	End Function
-	?not bmxng
-	Function JoinIntArray:String(glue:String, intArray:Int[])
-		Local result:String = ""
-		For Local i:Int = 0 Until intArray.length
-			If result.length > 0 Then result :+ glue
-			result :+ intArray[i]
-		Next
-		Return result
-	End Function
-	?
 
 
 	Function RemoveArrayIndex:Int(index:Int, arr:String[] Var)
@@ -1004,13 +990,9 @@ Type StringHelper
 		End Function
 	End Function
 
+	
 	Function IntArrayToString:String(intArray:Int[], glue:String=",")
-		Local result:String
-		For Local i:Int = EachIn intArray
-			result :+ i + glue
-		Next
-		If glue <> "" Then result = result[.. result.length - glue.length]
-		Return result
+		Return bbStringJoinInts(intArray, glue)
 	End Function
 
 
