@@ -213,9 +213,11 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 			Local flagsarray:String[] = flagsstring.split(",")
 			For Local flag:String = EachIn flagsarray
 				flag = Upper(flag.Trim())
-				If flag = "MASKEDIMAGE" Then flags = flags | MASKEDIMAGE
-				If flag = "DYNAMICIMAGE" Then flags = flags | DYNAMICIMAGE
-				If flag = "FILTEREDIMAGE" Then flags = flags | FILTEREDIMAGE
+				Select flag
+					Case "MASKEDIMAGE"   flags :| MASKEDIMAGE
+					Case "DYNAMICIMAGE"  flags :| DYNAMICIMAGE
+					Case "FILTEREDIMAGE" flags :| FILTEREDIMAGE
+				End Select
 			Next
 		Else
 			flags = 0
@@ -238,13 +240,16 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 			local data:TData = new TData
 
 			'only add to data if the fields exist in the xml
-			local fieldNames:String[] = [..
-			    "do", "src", "dest", ..
-			    "r", "g", "b", ..
-			    "x", "y", "w", "h", ..
-			    "frames", ..
-			    "offsetTop", "offsetLeft", "offsetBottom", "offsetRight"..
-			]
+			Global fieldNames:String[]
+			If fieldNames.length = 0
+				fieldNames = [..
+					"do", "src", "dest", ..
+					"r", "g", "b", ..
+					"x", "y", "w", "h", ..
+					"frames", ..
+					"offsetTop", "offsetLeft", "offsetBottom", "offsetRight"..
+				]
+			EndIf
 			TXmlHelper.LoadValuesToData(script, data, fieldNames)
 
 			'skip if invalid RGB data is provided
