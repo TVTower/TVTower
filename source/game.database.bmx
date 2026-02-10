@@ -1496,11 +1496,9 @@ Type TDatabaseLoader
 
 
 		'=== LOCALIZATION DATA ===
-		'programmeData.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+		programmeData.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
 		'programmeData.originalTitle.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "originalTitle")) )
-		'programmeData.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
-		 GetLocalizedStringFromNode(xml.FindElementNode(node, "title"))
-		GetLocalizedStringFromNode(xml.FindElementNode(node, "description"))
+		programmeData.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
 
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
