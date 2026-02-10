@@ -72,11 +72,23 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local data:TData = new TData
+		Global fieldNames:String[]
+		Global childFieldNames:String[]
+		If fieldNames.length = 0
+			fieldNames = ["currentAnimationName", "guid", "copyGuid"]
+		EndIf
+		If childFieldNames.length = 0
+			childFieldNames = [..
+				"name", "flags", ..
+				"frames", "framesTime", "frameTimer", ..
+				"repeatTimes", "paused", "randomness" , ..
+				"currentImageFrame", "currentFrame" ..
+			]
+		EndIf
 
+		local data:TData = new TData
 		local children:TData[]
 
-		local fieldNames:String[] = ["currentAnimationName", "guid", "copyGuid"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 		Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
@@ -84,11 +96,6 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 			'handle only "spriteframeanimation"
 			If TXmlHelper.AsciiNamesLCAreEqual("spriteframeanimation", childNode.GetName())
 				local childData:TData = new TData
-				local childFieldNames:String[]
-				childFieldNames :+ ["name", "flags"]
-				childFieldNames :+ ["frames", "framesTime", "frameTimer"]
-				childFieldNames :+ ["repeatTimes", "paused", "randomness"]
-				childFieldNames :+ ["currentImageFrame", "currentFrame"]
 				TXmlHelper.LoadValuesToData(childNode, childData, childFieldNames)
 				children :+ [childData]
 			EndIf
