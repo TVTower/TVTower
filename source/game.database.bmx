@@ -173,7 +173,7 @@ Type TDatabaseLoader
 			Case EDBDataTypes.SCRIPT, EDBDataTypes.SCRIPTTEMPLATE
 				allowed = allowedScriptCreators
 				skip = skipScriptCreators
-			Case EDBDataTypes.PERSON, EDBDataTypes.INSIGNIFICANTPEOPLE
+			Case EDBDataTypes.PERSON, EDBDataTypes.INSIGNIFICANTPEOPLE, EDBDataTypes.PROGRAMMEROLE
 				allowed = allowedPersonCreators
 				skip = skipPersonCreators
 			Case EDBDataTypes.ACHIEVEMENT
