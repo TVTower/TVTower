@@ -412,7 +412,7 @@
 					<pl>To po prostu ${DISEASE}|Jasne, ${DISEASE}|${DISEASE} - i co z tego?</pl>
 				</question>
 				<environment>
-					<de>Familie|Freunde|Nachbarn</de>
+					<de>Familienangehörigen|Freunde|Nachbarn</de>
 					<en>relatives|friends|neighbours</en>
 					<pl>krewni|przyjaciele|sąsiedzi</pl>
 				</environment>

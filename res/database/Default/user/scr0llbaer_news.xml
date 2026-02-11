@@ -5078,7 +5078,7 @@
 			</title>
 			<description>
 				<de>Das Ministerium für Post- und Fernmeldewesen bestätigt Tests mit westlichen Privatsendern im Raum Dresden. Ziel sei es, „die Empfangslage realistisch einzuschätzen“. Kritiker vermuten, dass man endlich mitreden möchte, wenn von Serienfinalen die Rede ist.</de>
-				<en>The Ministry for Post and Telecommunications confirms tests with western private broadcasters in the Dresden area. The goal is said to be "to realistically assess the reception situation". Critics suspect they finally want to join the conversation when series finales are discussed.</en>
+				<en>The Ministry for Post and Telecommunications confirms tests with western private broadcasters in the Dresden area. The goal is "to realistically assess the reception situation". Critics suspect they finally want to join the conversation when series finales are discussed.</en>
 				<pl>Ministerstwo Łączności potwierdza testy z zachodnimi prywatnymi nadawcami w rejonie Drezna. Celem ma być „realistyczna ocena sytuacji odbioru”. Krytycy podejrzewają, że w końcu chcą móc uczestniczyć w rozmowach, gdy mowa o finałach seriali.</pl>
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
@@ -6395,21 +6395,21 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<adaptation_csv>
-					<de>Shostakowitsch;Broadway-Musical;Broadway adaptiert Shostakowitschs Leben als Musical;witzig;Die russische Botschaft;„den schrillen, kommerzialisierten Kontext“|
-						Beethovens Fünfte;Rap-Musical;Die New Yorker Philharmoniker verwandeln Beethovens Fünfte in ein Rap-Musical;akzentuiert;Die deutsche Botschaft;den skandalösen Remix|
-						Hamlet;Anime-Oper;Ein japanisches Studio adaptierte Hamlet als zweistündige Anime-Oper;bizarr brillant;Der British Council;die respektlose Interpretation|
-						Michelangelos David;${vrexperience};Auf einer Technologiemesse in San Francisco erlebten die Besucher den David ${infullvirtualreality};surreal, aber unterhaltsam;Die italienische Botschaft;die „übermäßige Trivialisierung“|
-						Mozarts Zauberflöte;virales Phänomen;Die Zauberflöte wurde als ${tiktok} adaptiert;witzig;Die österreichische Botschaft;die „Fehlinterpretation des Kulturerbes“|
-						Van Gogh;essbare Kunstausstellung;Besucher der Tate Modern in London konnten Van Goghs Sternennacht als Dessert genießen;frech-kühn;Die niederländische Botschaft;den „kulturellen Frevel“|
-						Terrakotta-Armee;Laser-Light-Show;Im Deutschen Museum in München wurde die Terrakotta-Armee in eine Laser-Light-Show mit synchronisierter Musik verwandelt;spektakulär futuristisch;Die chinesische Botschaft;die „Verfälschung des historischen Erbes“
+					<de>Shostakowitsch;Broadway-Musical;Broadway adaptiert Shostakowitschs Leben als Musical;witzig;die russische Botschaft;„den schrillen, kommerzialisierten Kontext“|
+						Beethovens Fünfte;Rap-Musical;Die New Yorker Philharmoniker verwandeln Beethovens Fünfte in ein Rap-Musical;akzentuiert;die deutsche Botschaft;den skandalösen Remix|
+						Hamlet;Anime-Oper;Ein japanisches Studio adaptierte Hamlet als zweistündige Anime-Oper;bizarr brillant;der British Council;die respektlose Interpretation|
+						Michelangelos David;${vrexperience};Auf einer Technologiemesse in San Francisco erlebten die Besucher den David ${infullvirtualreality};surreal, aber unterhaltsam;die italienische Botschaft;die „übermäßige Trivialisierung“|
+						Mozarts Zauberflöte;virales Phänomen;Die Zauberflöte wurde als ${tiktok} adaptiert;witzig;die österreichische Botschaft;die „Fehlinterpretation des Kulturerbes“|
+						Van Gogh;essbare Kunstausstellung;Besucher der Tate Modern in London konnten Van Goghs Sternennacht als Dessert genießen;frech-kühn;die niederländische Botschaft;den „kulturellen Frevel“|
+						Terrakotta-Armee;Laser-Light-Show;Im Deutschen Museum in München wurde die Terrakotta-Armee in eine Laser-Light-Show mit synchronisierter Musik verwandelt;spektakulär futuristisch;die chinesische Botschaft;die „Verfälschung des historischen Erbes“
 					</de>
 					<en>Shostakovich;a Broadway musical;Broadway adapts Shostakovich's life into a musical;witty;Russia's embassy;the "flashy, commercialized context"|
-						Beethoven's Fifth;a rap musical;The New York Philharmonic turns Beethoven's Fifth into a rap musical;accentuated;The Germany embassy;the "scandalous remix"|
-						Hamlet;an anime opera;A Japanese studio adapted Hamlet into a 2-hour anime opera;bizarrely brilliant;The British Council;the "disrespectful interpretation"|
-						Michelangelo's David;${vrexperience};At a tech fair in San Francisco, visitors experienced David ${infullvirtualreality};surreal yet entertaining;The Italian Embassy;"excessive trivialization"|
-						Mozart's Magic Flute;a viral sensation;The Magic Flute was adapted into a ${tiktok} dance challenge;witty;The Austrian Embassy;"misrepresentation of cultural heritage"|
-						Van Gogh;an edible art exhibit;Visitors at the Tate Modern in London could taste Van Gogh's Starry Night as desserts;delightfully audacious;The Dutch Embassy;"cultural sacrilege"|
-						Terracotta Army;a laser light show;At the Deutsches Museum, Munich, the Terracotta Army was transformed into a laser light show with synchronized music;spectacularly futuristic;The Chinese Embassy;"distorting historical heritage"
+						Beethoven's Fifth;a rap musical;The New York Philharmonic turns Beethoven's Fifth into a rap musical;accentuated;the Germany embassy;the "scandalous remix"|
+						Hamlet;an anime opera;A Japanese studio adapted Hamlet into a 2-hour anime opera;bizarrely brilliant;the British Council;the "disrespectful interpretation"|
+						Michelangelo's David;${vrexperience};At a tech fair in San Francisco, visitors experienced David ${infullvirtualreality};surreal yet entertaining;the Italian Embassy;"excessive trivialization"|
+						Mozart's Magic Flute;a viral sensation;The Magic Flute was adapted into a ${tiktok} dance challenge;witty;the Austrian Embassy;"misrepresentation of cultural heritage"|
+						Van Gogh;an edible art exhibit;Visitors at the Tate Modern in London could taste Van Gogh's Starry Night as desserts;delightfully audacious;the Dutch Embassy;"cultural sacrilege"|
+						Terracotta Army;a laser light show;At the Deutsches Museum, Munich, the Terracotta Army was transformed into a laser light show with synchronized music;spectacularly futuristic;the Chinese Embassy;"distorting historical heritage"
 					</en>
 					<pl>Szostakowicz;musical Broadway;Broadway przerabia życie Szostakowicza na musical;dowcipny;Ambasada Rosji;w „przesadnie efektownym, komercyjnym kontekście“|
 						V Symfonia Beethovena;musical rap;Nowojorska Filharmonia przerabia V Symfonię Beethovena na musical rap;akcentowaniem;Ambasada Niemiec;„skandaliczny remiks“|
@@ -7826,7 +7826,7 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<sanfrancisco>San Francisco, CA|Austin, TX|Seattle, WA|Portland, OR|Boulder, CO|Cambridge, MA|Asheville, NC|Burlington, VT|Madison, WI|Eugene, OR|Santa Fe, NM|Irvine, CA|Scottsdale, AZ|Omaha, NE|Raleigh, NC|Plano, TX</sanfrancisco>
-				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive Magazine|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
+				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
 				<laserdisc>
 					<all>${.lte:currentyear:2015:"${brand_laserdisc}":"CD"}</all>
 				</laserdisc>
@@ -7898,7 +7898,7 @@
 				<pl>W magazynie „${techlife}” ukazał się artykuł, jak zbudować modem, który wygwizduje aktualne przeboje pop. Zainteresowanie ze strony społeczności majsterkowiczów było jednak niewielkie.</pl>
 			</description>
 			<variables>
-				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive Magazine|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
+				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
 				<kraftwerk>${.person:"06e563d1-159d-40e1-adf8-0e01f4de93cc":"firstname"}</kraftwerk>
 			</variables>
 			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
