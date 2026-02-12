@@ -460,10 +460,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.requiredStudioSize = template.GetStudioSize()
 
 		script.mainGenre = template.mainGenre
-		'add genres
-		For Local subGenre:Int = EachIn template.subGenres
-			script.subGenres :+ [subGenre]
-		Next
+		'append genres
+		script.subGenres :+ template.subGenres
 
 		If template.effects
 			script.effects=template.effects.Copy()
