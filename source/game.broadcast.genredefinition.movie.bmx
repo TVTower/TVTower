@@ -2,12 +2,13 @@ SuperStrict
 Import "Dig/base.util.registry.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.popularity.bmx"
+Import Collections.HashMap
 
 Type TMovieGenreDefinitionCollection
 	Field definitions:TMovieGenreDefinition[]
 	Field flagDefinitions:TIntMap = new TIntMap
 	Global _instance:TMovieGenreDefinitionCollection
-	Field combined:TStringMap = new TStringMap {nosave}
+	Field combined:THashMap<Int, TMovieGenreDefinition> = new THashMap<Int, TMovieGenreDefinition> {nosave}
 
 
 	Function GetInstance:TMovieGenreDefinitionCollection()
@@ -73,17 +74,26 @@ Type TMovieGenreDefinitionCollection
 			If id < 0 or id >= definitions.length Then return Null
 			Return definitions[id]
 		Else
-			Local key:String = StringHelper.IntArrayToString(ids)
-			Local result:TMovieGenreDefinition = TMovieGenreDefinition(combined.ValueForKey(key))
+			Local key:String = ",".join(ids)
+			Local keyHash:Int = key.HashCode()
+
+			Local result:TMovieGenreDefinition = combined[keyHash]
 			If Not result
 				'print "creating aggregate for key "+key
 				result = createAggregatedMovieGenreDefinition(ids)
 				result.SetGUID(result.GetGUIDBaseName() + "-" + key)
-				combined.Insert(key, result)
+				combined[keyHash] = result
 			EndIf
 			Return result
 		EndIf
 	End Method
+
+
+	Method Get:TMovieGenreDefinition(id:Int)
+		If id < 0 or id >= definitions.length Then return Null
+		Return definitions[id]
+	End Method
+	
 
 	Method createAggregatedMovieGenreDefinition:TMovieGenreDefinition(ids:Int[])
 		Local result:TMovieGenreDefinition=new TMovieGenreDefinition
@@ -91,7 +101,7 @@ Type TMovieGenreDefinitionCollection
 		Local i:Int
 		Local floats:Float[ids.length]
 		For i:Int = 0 Until ids.length
-			all[i] = Get([ids[i]])
+			all[i] = Get(ids[i])
 		Next
 		Local main:TMovieGenreDefinition = all[0]
 		result.BadFollower = main.BadFollower
@@ -254,6 +264,14 @@ Function GetMovieGenreDefinitionCollection:TMovieGenreDefinitionCollection()
 End Function
 
 Function GetMovieGenreDefinition:TMovieGenreDefinition(genreIDs:int[])
+	Return TMovieGenreDefinitionCollection.GetInstance().Get(genreIDs)
+End Function
+
+Function GetSingleMovieGenreDefinition:TMovieGenreDefinition(genreID:int)
+	Return TMovieGenreDefinitionCollection.GetInstance().Get(genreID)
+End Function
+
+Function GetCombinedGenreDefinition:TMovieGenreDefinition(genreIDs:int[])
 	Return TMovieGenreDefinitionCollection.GetInstance().Get(genreIDs)
 End Function
 
@@ -473,7 +491,7 @@ Type TGameModifierPopularity_ModifyMovieGenrePopularity extends TGameModifierBas
 		'skip if probability is missed
 		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
 
-		local popularity:TPopularity = GetMovieGenreDefinition([genre]).GetPopularity()
+		local popularity:TPopularity = GetSingleMovieGenreDefinition(genre).GetPopularity()
 		if not popularity
 			TLogger.Log("TGameModifierPopularity_ModifyMovieGenrePopularity", "cannot find popularity of movie genre: "+genre, LOG_ERROR)
 			return false

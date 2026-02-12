@@ -97,7 +97,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 	'override - return INFOMERCIAL genre
 	Method GetGenreDefinition:TGenreDefinitionBase()
-		Return GetMovieGenreDefinitionCollection().Get([TVTProgrammeGenre.INFOMERCIAL])
+		Return GetMovieGenreDefinitionCollection().Get(TVTProgrammeGenre.INFOMERCIAL)
 	End Method
 
 
