@@ -2,22 +2,12 @@ SuperStrict
 Import "Dig/base.util.registry.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.popularity.bmx"
-Import Collections.HashMap
-
-
-Extern
-    Global bbStringsAllocCount:ULong="bbStringsAllocCount"
-    Global bbStringsFreeCount:ULong="bbStringsFreeCount"
-    Global bbGCAllocCount:ULong="bbGCAllocCount"
-End Extern
-Global MovieGenreDefinitionCollectionAllocs:ULong = 0
 
 Type TMovieGenreDefinitionCollection
 	Field definitions:TMovieGenreDefinition[]
 	Field flagDefinitions:TIntMap = new TIntMap
 	Global _instance:TMovieGenreDefinitionCollection
-	Field combined:THashMap<Int, TMovieGenreDefinition>  = New THashMap<Int, TMovieGenreDefinition> {nosave}
-	'Field combined:TStringMap = new TStringMap {nosave}
+	Field combined:TStringMap = new TStringMap {nosave}
 
 
 	Function GetInstance:TMovieGenreDefinitionCollection()
@@ -83,48 +73,17 @@ Type TMovieGenreDefinitionCollection
 			If id < 0 or id >= definitions.length Then return Null
 			Return definitions[id]
 		Else
-			Local key:String = ",".join(ids)
-			Local keyHash:Int = key.HashCode()
-			
-			Return GetCombined(keyHash, ids, key)
-		EndIf
-	End Method
-rem
-	Method Get:TMovieGenreDefinition(mainID:Int, subIDs:Int[])
-		If subIDs.length = 0
-			If mainID < 0 or mainID >= definitions.length Then return Null
-			Return definitions[mainID]
-		Else
-			Local key:String = ",".Join(subIDs)
-			if mainID >= 0
-				if key Then key = mainID + "," + mainID
-			Local keyHash:Int = key.HashCode()
-			
-			Return GetCombined(keyHash, ids, key)
-		EndIf
-	End Method
-endrem
-
-	Method GetSingle:TMovieGenreDefinition(id:Int)
-		If id < 0 or id >= definitions.length Then return Null
-		Return definitions[id]
-	End Method
-	
-	
-	Method GetCombined:TMovieGenreDefinition(keyHash:Int, ids:Int[] = Null, key:String = Null)
-		Local result:TMovieGenreDefinition = combined[keyHash]
-		If Not result
-			If not key and ids.length > 0
-				key = ",".Join(ids)
+			Local key:String = StringHelper.IntArrayToString(ids)
+			Local result:TMovieGenreDefinition = TMovieGenreDefinition(combined.ValueForKey(key))
+			If Not result
+				'print "creating aggregate for key "+key
+				result = createAggregatedMovieGenreDefinition(ids)
+				result.SetGUID(result.GetGUIDBaseName() + "-" + key)
+				combined.Insert(key, result)
 			EndIf
-			'print "creating aggregate for key "+key
-			result = createAggregatedMovieGenreDefinition(ids)
-			result.SetGUID(result.GetGUIDBaseName() + "-" + key)
-			combined[keyHash] = result
+			Return result
 		EndIf
-		Return result
 	End Method
-
 
 	Method createAggregatedMovieGenreDefinition:TMovieGenreDefinition(ids:Int[])
 		Local result:TMovieGenreDefinition=new TMovieGenreDefinition
@@ -132,7 +91,7 @@ endrem
 		Local i:Int
 		Local floats:Float[ids.length]
 		For i:Int = 0 Until ids.length
-			all[i] = GetSingle(ids[i])
+			all[i] = Get([ids[i]])
 		Next
 		Local main:TMovieGenreDefinition = all[0]
 		result.BadFollower = main.BadFollower
@@ -296,14 +255,6 @@ End Function
 
 Function GetMovieGenreDefinition:TMovieGenreDefinition(genreIDs:int[])
 	Return TMovieGenreDefinitionCollection.GetInstance().Get(genreIDs)
-End Function
-
-Function GetSingleMovieGenreDefinition:TMovieGenreDefinition(genreID:int)
-	Return TMovieGenreDefinitionCollection.GetInstance().GetSingle(genreID)
-End Function
-
-Function GetCombinedGenreDefinition:TMovieGenreDefinition(genreIDsHash:Int, genreIDs:int[] = Null)
-	Return TMovieGenreDefinitionCollection.GetInstance().GetCombined(genreIDsHash, genreIDs)
 End Function
 
 
@@ -522,7 +473,7 @@ Type TGameModifierPopularity_ModifyMovieGenrePopularity extends TGameModifierBas
 		'skip if probability is missed
 		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
 
-		local popularity:TPopularity = GetSingleMovieGenreDefinition(genre).GetPopularity()
+		local popularity:TPopularity = GetMovieGenreDefinition([genre]).GetPopularity()
 		if not popularity
 			TLogger.Log("TGameModifierPopularity_ModifyMovieGenrePopularity", "cannot find popularity of movie genre: "+genre, LOG_ERROR)
 			return false
