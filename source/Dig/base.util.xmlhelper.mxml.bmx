@@ -361,7 +361,10 @@ Type TXmlHelper
 
 			childNode = firstChild
 			While childNode
-				Local inArray:Int = InAsciiNamesLCArray(childNode.GetName(), searchInChildNodeNames)
+				Local inArray:Int = checkAll
+				If not checkAll 'only check array if not checking all
+					inArray = InAsciiNamesLCArray(childNode.GetName(), searchInChildNodeNames)
+				EndIf
 				
 				if checkAll or inArray
 					Local result:String = _FindValueInternalLC(childNode, nameLC, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
@@ -465,7 +468,7 @@ Type TXmlHelper
 				' skip comments
 				If childNodeName And childNodeName[0] = Asc("<") And childNodeName.Find("<!--") = 0 Then Continue
 				' skip ignored
-				If InAsciiNamesLCArray(childNodeName, ignoreNames) Then Continue
+				If ignoreNames.length > 0 And InAsciiNamesLCArray(childNodeName, ignoreNames) Then Continue
 
 				childrenCount :+ 1
 				
