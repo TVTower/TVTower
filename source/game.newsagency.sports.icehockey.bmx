@@ -437,7 +437,7 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 		Next
 
 		if showHalfTimePoints
-			return Super.GetFinalScoreText()+" (" + StringHelper.IntArrayToString(GetMatchScore(duration/2), ":") + ")"
+			return Super.GetFinalScoreText()+" (" + ":".Join(GetMatchScore(duration/2)) + ")"
 		else
 			return Super.GetFinalScoreText()
 		endif

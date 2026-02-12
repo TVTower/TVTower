@@ -1,6 +1,6 @@
 #include <brl.mod/blitz.mod/blitz.h>
 
-BBString *bbStringJoinInts( BBArray *bits, BBString *sep ) {
+BBString *digStringJoinInts( BBArray *bits, BBString *sep ) {
 	int i, sz = 0;
 	int n_bits = bits->scales[0];
 	int *p, v;

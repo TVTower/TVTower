@@ -75,7 +75,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2026 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -108,7 +108,7 @@ Import "base.util.string.c"
 
 Extern
 '	Function StringJoinInts:String(intArray:Int[], glue:String=",")="BBString* bbStringJoinInts(BBArray*, BBString*)!"
-	Function bbStringJoinInts:String(intArray:Int[], glue:String=",")
+	Function digStringJoinInts:String(intArray:Int[], glue:String=",")
 End Extern
 
 
@@ -992,7 +992,7 @@ Type StringHelper
 
 	
 	Function IntArrayToString:String(intArray:Int[], glue:String=",")
-		Return bbStringJoinInts(intArray, glue)
+		Return digStringJoinInts(intArray, glue)
 	End Function
 
 

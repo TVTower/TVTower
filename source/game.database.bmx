@@ -4,6 +4,7 @@ Import "Dig/base.util.directorytree.bmx"
 Import "Dig/base.util.xmlhelper.bmx"
 Import "Dig/base.util.hashes.bmx"
 Import "Dig/base.util.mersenne.bmx"
+Import "Dig/base.util.string2intarray.bmx"
 
 Import "game.achievements.bmx"
 Import "game.production.scripttemplate.bmx"
@@ -1568,17 +1569,20 @@ Type TDatabaseLoader
 		programmeData.SetFlag(data.GetInt("flags", 0))
 
 		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
-		For Local sg:String = EachIn data.GetString("subgenre", "")
+		
+
+		Local subGenres:String = data.GetString("subgenre", "")
 		If subGenres
-			For Local sg:Int = EachIn String2IntArray(subGenres, Asc(",")
-			If Trim(sg) = "" Then Continue
-			If Int(sg) < 0 Then Continue
+			For Local sg:Int = EachIn New TIntSpliterator(subGenres, Asc(","), True)
+				'skip invalid ones (0 is allowed!)
+				If sg < 0 Then Continue
 
-			If Not MathHelper.InIntArray(Int(sg), programmeData.subGenres)
-				programmeData.subGenres :+ [Int(sg)]
-			EndIf
-		Next
-
+				'only add non-duplicates
+				If Not MathHelper.InIntArray(sg, programmeData.subGenres)
+					programmeData.subGenres :+ [sg]
+				EndIf
+			Next
+		EndIf
 
 		'=== RELEASE INFORMATION ===
 		Local releaseData:TDataCSK = New TDataCSK
@@ -1959,16 +1963,18 @@ Type TDatabaseLoader
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
 		scriptTemplate.mainGenre = data.GetInt("mainGenre", scriptTemplate.mainGenre)
-		For Local sg:String = EachIn data.GetString("subGenres", "")
-		If subGenres
-			For Local sg:Int = EachIn String2IntArray(subGenres, Asc(",")
-			'skip empty or "undefined" genres
-			If Int(sg) = 0 Then Continue
-			If Not MathHelper.InIntArray(Int(sg), scriptTemplate.subGenres)
-				scriptTemplate.subGenres :+ [Int(sg)]
-			EndIf
-		Next
 
+		Local subGenres:String = data.GetString("subGenres", "")
+		If subGenres
+			For Local sg:Int = EachIn New TIntSpliterator(subGenres, Asc(","))
+				'skip empty or "undefined" genres
+				If sg = 0 Then Continue
+				'only add non-duplicates
+				If Not MathHelper.InIntArray(sg, scriptTemplate.subGenres)
+					scriptTemplate.subGenres :+ [sg]
+				EndIf
+			Next
+		EndIf
 
 
 		'=== DATA: RATINGS - OUTCOME ===

@@ -81,13 +81,13 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		local result:string = ""
 		result :+       firstTrailerAired
 		result :+ ":" + lastTrailerAired
-		result :+ ":" + StringHelper.IntArrayToString(trailerAired, ",")
+		result :+ ":" + ",".Join(trailerAired)
 
 		result :+ ":" + firstInfomercialAired
 		result :+ ":" + lastInfomercialAired
-		result :+ ":" + StringHelper.IntArrayToString(infomercialsAired, ",")
+		result :+ ":" + ",".Join(infomercialsAired)
 
-		result :+ ":" + StringHelper.IntArrayToString(adspotsAired, ",")
+		result :+ ":" + ",".Join(adspotsAired)
 
 		For local i:int = 0 to 4
 			local keys:string[], values:string[]
