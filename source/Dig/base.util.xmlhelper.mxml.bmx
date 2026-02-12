@@ -131,33 +131,11 @@ Type TXmlHelper
 	End Function
 
 
-	Function CompareAsciiNamesLC:Int(a:String, b:String)
-		Local diff:Int = a.length - b.length
-		if diff <> 0 Then Return diff
-
-		For Local c:Int = 0 Until Min(a.length, b.length)
-			Local cmp:Int = AsciiCharacterToLower(a[c]) - AsciiCharacterToLower(b[c])
-			If cmp <> 0 Then Return cmp
-		Next
-		
-		Return 0
-	End Function
-
-
-	Function AsciiNamesLCAreEqual:Int(a:String, b:String)
-		If a.length <> b.length Then Return False
-		
-		For Local c:Int = 0 Until Min(a.length, b.length)
-			If AsciiCharacterToLower(a[c]) <> AsciiCharacterToLower(b[c]) Then Return False
-		Next
-		Return True
-	End Function
-
-
-	Function InAsciiNamesLCArray:Int(str:String, arr:String[])
+	'case insensitive
+	Function StringInArrayCI:Int(str:String, arr:String[])
 		Local inArray:Int
 		For Local i:Int = 0 Until arr.length
-			If AsciiNamesLCAreEqual(arr[i], str) 
+			If str.Equals(arr[i], False) 
 				Return True
 			EndIf
 		Next
@@ -224,7 +202,7 @@ Type TXmlHelper
 		If Not child Then Return Null
 		
 		While child
-			If AsciiNamesLCAreEqual(_nodeName, child.getName()) Then Return child
+			If _nodeName.Equals(child.getName(), False) Then Return child
 			child = child.NextSibling()
 		Wend
 		
@@ -331,7 +309,7 @@ Type TXmlHelper
 		' is there a child-node with this name?
 		childNode = firstChild
 		While childNode
-			If AsciiNamesLCAreEqual(nameLC, childNode.GetName())
+			If nameLC.Equals(childNode.GetName(), False)
 				valueExists = True
 				Return childNode.GetContent()
 			EndIf
@@ -342,7 +320,7 @@ Type TXmlHelper
 		' is there a data-node with this name?
 		childNode = firstChild
 		While childNode
-			If AsciiNamesLCAreEqual("data", childNode.GetName())
+			If "data".Equals(childNode.GetName(), False)
 				Local result:String
 				Local attributeExists:Int = childNode.tryGetAttribute(nameLC, result, True)
 				If attributeExists
@@ -363,7 +341,7 @@ Type TXmlHelper
 			While childNode
 				Local inArray:Int = checkAll
 				If not checkAll 'only check array if not checking all
-					inArray = InAsciiNamesLCArray(childNode.GetName(), searchInChildNodeNames)
+					inArray = StringInArrayCI(childNode.GetName(), searchInChildNodeNames)
 				EndIf
 				
 				if checkAll or inArray
@@ -452,7 +430,7 @@ Type TXmlHelper
 			Local name:String
 			Local value:String = node.getAttributeByIndex(i, name)
 
-			If ignoreNames.length > 0 And InAsciiNamesLCArray(name, ignoreNames) Then Continue
+			If ignoreNames.length > 0 And StringInArrayCI(name, ignoreNames) Then Continue
 
 			data.Add(name, value)
 		Next
@@ -468,7 +446,7 @@ Type TXmlHelper
 				' skip comments
 				If childNodeName And childNodeName[0] = Asc("<") And childNodeName.Find("<!--") = 0 Then Continue
 				' skip ignored
-				If ignoreNames.length > 0 And InAsciiNamesLCArray(childNodeName, ignoreNames) Then Continue
+				If ignoreNames.length > 0 And StringInArrayCI(childNodeName, ignoreNames) Then Continue
 
 				childrenCount :+ 1
 				
@@ -495,7 +473,7 @@ Type TXmlHelper
 		If Not startNode Then Return Null
 
 		'maybe we are searching for start node
-		If AsciiNamesLCAreEqual(nodeName, startNode.getName()) Then Return startNode
+		If nodeName.Equals(startNode.getName(), False) Then Return startNode
 
 		'traverse through children
 		Local child:TXmlNode = TXmlNode(startNode.GetFirstChild())
@@ -558,8 +536,8 @@ Type TXmlHelper
 		If exists
 			If result = "0" Then Return False
 			If result = "1" Then Return True
-			If AsciiNamesLCAreEqual(result, "false") Then Return False 
-			If AsciiNamesLCAreEqual(result, "true") Then Return True
+			If result.Equals("false", False) Then Return False 
+			If result.Equals("true", False) Then Return True
 		Else
 			Return defaultValue
 		EndIf

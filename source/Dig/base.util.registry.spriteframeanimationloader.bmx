@@ -94,7 +94,7 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 		Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
 		While childNode
 			'handle only "spriteframeanimation"
-			If TXmlHelper.AsciiNamesLCAreEqual("spriteframeanimation", childNode.GetName())
+			If childNode.GetName().Equals("spriteframeanimation", False)
 				local childData:TData = new TData
 				TXmlHelper.LoadValuesToData(childNode, childData, childFieldNames)
 				children :+ [childData]

@@ -50,7 +50,7 @@ Type TRegistryColorLoader Extends TRegistryBaseLoader
 			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
 			While childNode
 				'skip other elements than color
-				If Not TXmlHelper.AsciiNamesLCAreEqual("color", childNode.GetName())
+				If Not childNode.GetName().Equals("color", False)
 					childNode = childNode.NextSibling()
 					Continue
 				EndIf
@@ -147,11 +147,11 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		Local data:TData = New TData
 
 		'=== HANDLE "<ROOMS>" ===
-		If TXmlHelper.AsciiNamesLCAreEqual("rooms", node.GetName())
+		If node.GetName().Equals("rooms", False)
 			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
 			While childNode
 				'skip other elements than "room"
-				If Not TXmlHelper.AsciiNamesLCAreEqual("room", childNode.GetName())
+				If Not childNode.GetName().Equals("room", False)
 					childNode = childNode.NextSibling()
 					Continue
 				EndIf
@@ -206,7 +206,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 			Local hotSpotNode:TxmlNode = TxmlNode(subNode.GetFirstChild())
 			While hotSpotNode
 				'skip other elements than "hotspot"
-				If Not TXmlHelper.AsciiNamesLCAreEqual("hotspot", hotspotNode.GetName())
+				If Not hotspotNode.GetName().Equals("hotspot", False)
 					hotSpotNode = hotSpotnode.NextSibling()
 					Continue
 				EndIf
@@ -234,7 +234,7 @@ Type TRegistryRoomLoader Extends TRegistryBaseLoader
 		Local doorNode:TxmlNode = TxmlNode(node.GetFirstChild())
 		While doorNode
 			'skip other elements than "door"
-			If Not TXmlHelper.AsciiNamesLCAreEqual("door", doorNode.GetName())
+			If Not doorNode.GetName().Equals("door", False)
 				doorNode = doorNode.NextSibling()
 				Continue
 			EndIf
@@ -354,11 +354,11 @@ Type TRegistryNewsGenresLoader Extends TRegistryBaseLoader
 		Local data:TData = New TData
 
 		'=== HANDLE "<NEWSGENRES>" ===
-		If TXmlHelper.AsciiNamesLCAreEqual("newsgenres", node.GetName())
+		If node.GetName().Equals("newsgenres", False)
 			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
 			While childNode
 				'skip other elements than "newsgenre"
-				If Not TXmlHelper.AsciiNamesLCAreEqual("newsgenre", childNode.GetName())
+				If Not childNode.GetName().Equals("newsgenre", False)
 					childNode = childNode.NextSibling()
 					Continue
 				EndIf
@@ -467,13 +467,13 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 		Local data:TData = New TData
 
 		'=== HANDLE "<PROGRAMMEDATAMODS>" ===
-		If TXmlHelper.AsciiNamesLCAreEqual("programmedatamods", node.GetName())
+		If node.GetName().Equals("programmedatamods", False)
 			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
 			While childNode
 				'skip other elements than "genres" or "flags" (plural)
 				Local childNodeName:String = childNode.GetName()
-				If Not TXmlHelper.AsciiNamesLCAreEqual("genres", childNodeName) and ..
-				   Not TXmlHelper.AsciiNamesLCAreEqual("flags", childNodeName)
+				If Not childNodeName.Equals("genres", False) and ..
+				   Not childNodeName.Equals("flags", False)
 					childNode = childNode.NextSibling()
 					Continue
 				EndIf
@@ -487,14 +487,14 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 
 		'=== HANDLE "<GENRES>" ===
 		Local nodeName:String = node.GetName()
-		If TXmlHelper.AsciiNamesLCAreEqual("genres", nodeName) Or ..
-		   TXmlHelper.AsciiNamesLCAreEqual("flags", nodeName)
+		If nodeName.Equals("genres", False) Or ..
+		   nodeName.Equals("flags", False)
 			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
 			While childNode
 				'skip other elements than "genre" or "flag" (singular)
 				Local childNodeName:String = childNode.GetName()
-				If Not TXmlHelper.AsciiNamesLCAreEqual("genre", childNodeName) and ..
-				   Not TXmlHelper.AsciiNamesLCAreEqual("flag", childNodeName)
+				If Not childNodeName.Equals("genre", False) and ..
+				   Not childNodeName.Equals("flag", False)
 					childNode = childNode.NextSibling()
 					Continue
 				EndIf
@@ -506,7 +506,7 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 					Continue
 				EndIf
 
-				If TXmlHelper.AsciiNamesLCAreEqual("genre", childNodeName)
+				If childNodeName.Equals("genre", False)
 					Local genreId:Int=childData.GetInt("id",-1)
 					If genreId < 0 Then HandleError("missing genre id")
 					If genreId > 0

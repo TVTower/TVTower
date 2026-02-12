@@ -68,11 +68,11 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		'=== HANDLE "<BITMAPFONTS>" ===
 		Local nodeTypeName:String = TXmlHelper.FindValue(node, "name", node.GetName())
 
-		If TXmlHelper.AsciiNamesLCAreEqual("bitmapfonts", nodeTypeName)
+		If nodeTypeName.Equals("bitmapfonts", False)
 			Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
 			While childNode
 				'skip other elements than "bitmapfont"
-				If Not TXmlHelper.AsciiNamesLCAreEqual("bitmapfont", childNode.GetName())
+				If Not childNode.GetName().Equals("bitmapfont", False)
 					childNode = childNode.NextSibling()
 					Continue
 				EndIf
