@@ -323,16 +323,9 @@ Type StringHelper
 
 
 	Function GetArrayIndex:Int(str:String, arr:String[], caseSensitive:Int = True)
-		If caseSensitive
-			For Local i:Int = 0 Until arr.length
-				If arr[i] = str Then Return i
-			Next
-		Else
-			str = str.toLower()
-			For Local i:Int = 0 Until arr.length
-				If arr[i].ToLower() = str Then Return i
-			Next
-		EndIf
+		For Local i:Int = 0 Until arr.length
+			If arr[i].Equals(str, caseSensitive) Then Return i
+		Next
 		Return -1
 	End Function
 
