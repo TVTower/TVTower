@@ -131,18 +131,6 @@ Type TXmlHelper
 	End Function
 
 
-	'case insensitive
-	Function StringInArrayCI:Int(str:String, arr:String[])
-		Local inArray:Int
-		For Local i:Int = 0 Until arr.length
-			If str.Equals(arr[i], False) 
-				Return True
-			EndIf
-		Next
-		Return False
-	End Function
-	
-
 	Function AsciiCharacterToLower:Int(c:Int)
 		Return c | ((c - Asc("A")) <= (Asc("Z") - Asc("A"))) * (Asc("a") - Asc("A"))
 	'	Return c | ((c - 65) <= 25) * $20
@@ -341,7 +329,7 @@ Type TXmlHelper
 			While childNode
 				Local inArray:Int = checkAll
 				If not checkAll 'only check array if not checking all
-					inArray = StringInArrayCI(childNode.GetName(), searchInChildNodeNames)
+					inArray = StringHelper.InArray(childNode.GetName(), searchInChildNodeNames, False)
 				EndIf
 				
 				if checkAll or inArray
@@ -420,53 +408,73 @@ Type TXmlHelper
 	End Function
 
 
-	'loads values of a node into a tdata object
+	' loads values of a node into a TData object
 	Function LoadAllValuesToData:TData(node:TxmlNode, data:TData, ignoreNames:String[] = Null)
 		If Not node Then Return data
 
-		'=== ATTRIBUTES ===
+		' === ATTRIBUTES ===
 		Local attributeCount:Int = node.getAttributeCount()
 		For Local i:Int = 0 Until attributeCount
 			Local name:String
 			Local value:String = node.getAttributeByIndex(i, name)
 
-			If ignoreNames.length > 0 And StringInArrayCI(name, ignoreNames) Then Continue
+			If ignoreNames.length > 0 And StringHelper.InArray(name, ignoreNames, False) Then Continue
 
 			data.Add(name, value)
 		Next
 
 
-		'=== CHILD ELEMENTS ===
-		' count only "valid" children (unignored, no comments)
-		Local childrenCount:Int
+		' === CHILD ELEMENTS ===
 		Local child:TxmlNode = TxmlNode(node.GetFirstChild())
-		If child
-			While child
-				Local childNodeName:String = child.getName()
-				' skip comments
-				If childNodeName And childNodeName[0] = Asc("<") And childNodeName.Find("<!--") = 0 Then Continue
-				' skip ignored
-				If ignoreNames.length > 0 And StringInArrayCI(childNodeName, ignoreNames) Then Continue
+		While child
+			Local childName:String = child.getName()
 
-				childrenCount :+ 1
-				
-				Local childData:TData = New TData
-				LoadAllValuesToData(child, childData, ignoreNames)
-				data.Add(childNodeName, childData)
-
+			' ---- skip comments ----
+			If childName And childName[0] = Asc("<") And childName.Find("<!--") = 0
 				child = child.NextSibling()
-			Wend
-		EndIf
+				Continue
+			EndIf
 
-		' if a child has NO attributes and NO children then its
-		' own value is added directly, else their attibutes or
-		' children are added as "sub data" entries recursively.
-		if attributeCount = 0 And childrenCount = 0
-			data.Add(node.getName(), node.GetContent())
-		EndIf
-		
+			' ---- skip ignored ----
+			If ignoreNames And ignoreNames.length > 0
+				If StringHelper.InArray(childName, ignoreNames, False)
+					child = child.NextSibling()
+					Continue
+				EndIf
+			EndIf
+
+
+			' has attributes OR children -> subdata
+			Local hasContent:Int = child.getAttributeCount()
+			If hasContent = 0
+				' has at least one sub-node
+				If child.GetFirstChild() Then hasContent = 1
+			EndIf
+
+
+			' if a child has NO attributes and NO children then its
+			' own value is added directly, else their attibutes or
+			' children are added as "sub data" entries recursively.
+			' same for explicit "data" elements
+			If hasContent > 0 or childName.Equals("data", False)
+				Local subData:TData = New TData
+				LoadAllValuesToData(child, subData, ignoreNames)
+
+				If childName.Equals("data", False)
+					data.Add("data", subData)
+				Else
+					data.Add(childName, subData)
+				EndIf
+			Else
+				data.Add(childName, child.GetContent())
+			EndIf
+
+			child = child.NextSibling()
+		Wend
+
 		Return data
 	End Function
+
 
 
 	Function _FindElementNode:TxmlNode(startNode:TxmlNode, nodeName:String)
