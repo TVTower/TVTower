@@ -243,21 +243,20 @@ Type TXmlHelper
 		Local exists:Int
 		Return FindValue(node, fieldName, defaultValue, exists, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth)
 	End function
-	
+
 
 	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String="", valueExists:Int var, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
 		If node
 			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
 			If fieldName.Find("|") > 0
-				Local fieldNames:String[] = fieldName.ToLower().Split("|")
+				Local fieldNames:String[] = fieldName.Split("|")
 
 				For Local name:String = EachIn fieldNames
-					Local result:String = _FindValueInternalLC(node, name, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+					Local result:String = _FindValueInternal(node, name, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
 					if valueExists Then Return result
 				Next
 			Else
-				fieldName = fieldName.ToLower()
-				Local result:String = _FindValueInternalLC(node, fieldName, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+				Local result:String = _FindValueInternal(node, fieldName, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
 				if valueExists Then Return result
 			EndIf
 		EndIf
@@ -269,12 +268,11 @@ Type TXmlHelper
 	End Function
 
 
-	'node/attribute name must be lowercased already!
-	Function _FindValueInternalLC:String(node:TxmlNode, nameLC:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+	Function _FindValueInternal:String(node:TxmlNode, name:String, defaultValue:String, valueExists:Int var, searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
 		'given node has attribute (<episode number="1">)
 		If depth = 0 or searchInChildNodeAttributes
 			Local attributeExists:Int
-			Local result:String = GetAttribute(node, nameLC, attributeExists)
+			Local result:String = GetAttribute(node, name, attributeExists)
 			if attributeExists 
 				valueExists = True
 				Return result
@@ -297,7 +295,7 @@ Type TXmlHelper
 		' is there a child-node with this name?
 		childNode = firstChild
 		While childNode
-			If nameLC.Equals(childNode.GetName(), False)
+			If name.Equals(childNode.GetName(), False)
 				valueExists = True
 				Return childNode.GetContent()
 			EndIf
@@ -310,7 +308,7 @@ Type TXmlHelper
 		While childNode
 			If "data".Equals(childNode.GetName(), False)
 				Local result:String
-				Local attributeExists:Int = childNode.tryGetAttribute(nameLC, result, True)
+				Local attributeExists:Int = childNode.tryGetAttribute(name, result, True)
 				If attributeExists
 					valueExists = True
 					Return result
@@ -333,7 +331,7 @@ Type TXmlHelper
 				EndIf
 				
 				if checkAll or inArray
-					Local result:String = _FindValueInternalLC(childNode, nameLC, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+					Local result:String = _FindValueInternal(childNode, name, defaultValue, valueExists, searchInChildNodeNames, searchInChildNodeAttributes, depth)
 					If valueExists
 						Return result
 					EndIf
@@ -521,6 +519,47 @@ Type TXmlHelper
 	End Function
 
 
+	' only alters "value" if value was found!
+	Function TryFindValue:Int(node:TxmlNode, fieldName:String, value:String var, logString:String="", searchInChildNodeNames:String[] = Null, searchInChildNodeAttributes:Int = False, depth:Int = 0)
+		Local exists:Int
+		Local result:String = FindValue(node, fieldName, "", exists, logString, searchInChildNodeNames, searchInChildNodeAttributes, depth)
+		If exists Then value = result
+		Return exists
+	End function
+
+
+	' only alters "value" if value was found!
+	Function TryFindValueInt:Int(node:TxmlNode, fieldName:String, value:Int var, logString:String="", searchInChildNodeNames:String[] = Null)
+		Local exists:Int
+		Local result:String = FindValue(node, fieldName, "", exists, logString, searchInChildNodeNames)
+		If exists Then value = Int(result)
+		Return exists
+	End Function
+
+
+	' only alters "value" if value was found!
+	Function TryFindValueFloat:Int(node:TxmlNode, fieldName:String, value:Float var, logString:String="", searchInChildNodeNames:String[] = Null)
+		Local exists:Int
+		Local result:String = FindValue(node, fieldName, "", exists, logString, searchInChildNodeNames)
+		If exists Then value = Float(result)
+		Return exists
+	End Function
+
+
+	' only alters "value" if value was found!
+	Function TryFindValueBool:Int(node:TxmlNode, fieldName:String, value:Int var, logString:String="", searchInChildNodeNames:String[] = Null)
+		Local exists:Int
+		Local result:String = FindValue(node, fieldName, "", exists, logString, searchInChildNodeNames)
+		If exists
+			If result = "1" or result.Equals("true", False) 
+				value = True
+			Else
+				value = False
+			EndIf
+		EndIf
+		Return exists
+	End Function
+	
 
 	Function FindValueInt:Int(node:TxmlNode, fieldName:String, defaultValue:Int, logString:String="", searchInChildNodeNames:String[] = Null)
 		Local exists:Int
