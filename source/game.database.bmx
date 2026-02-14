@@ -773,11 +773,9 @@ Type TDatabaseLoader
 			'create after attributes are defined - popularity might
 			'depend on them (eg "fame")
 			'create/override popularity
-			Local popularityValue:Int
-			Local popularityTargetValue:Int
-			If xml.TryFindValueInt(nodeData, "popularity", popularityValue) or ..
-			   xml.TryFindValueInt(nodeData, "popularity_target", popularityTargetValue)
-
+			Local popularityValue:Int = xml.FindValueInt(nodeData, "popularity", -1000)
+			Local popularityTargetValue:Int = xml.FindValueInt(nodeData, "popularity_target", -1000)
+			If popularityValue <> -1000 or popularityTargetValue <> -1000
 				pd.CreatePopularity(popularityValue, popularityTargetValue, person)
 			EndIf
 		EndIf
