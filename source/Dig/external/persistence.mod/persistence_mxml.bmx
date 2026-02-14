@@ -81,6 +81,7 @@ Type TPersist
 	Field serializer:Object
 	Field serializerTypeID:TTypeId
 
+	Field primitiveSB:TStringBuilder = New TStringBuilder
 
 	Rem
 	bbdoc: Serialized formatting.
@@ -805,15 +806,17 @@ Type TPersist
 
 					' primitives can be kind of "casted" (albeit with loss)
 					if isStoredPrimitive and isFieldPrimitive
+						primitiveSB.SetLength(0)
+						
 						Select fieldType
 							Case "byte", "short", "int"
-								fieldObj.SetInt(obj, fieldNode.GetContent().toInt())
+								fieldObj.SetInt(obj, fieldNode.GetContent(primitiveSB).toInt())
 							Case "long"
-								fieldObj.SetLong(obj, fieldNode.GetContent().toLong())
+								fieldObj.SetLong(obj, fieldNode.GetContent(primitiveSB).toLong())
 							Case "float"
-								fieldObj.SetFloat(obj, fieldNode.GetContent().toFloat())
+								fieldObj.SetFloat(obj, fieldNode.GetContent(primitiveSB).toFloat())
 							Case "double"
-								fieldObj.SetDouble(obj, fieldNode.GetContent().toDouble())
+								fieldObj.SetDouble(obj, fieldNode.GetContent(primitiveSB).toDouble())
 						End Select
 					Else
 						Select fieldType
@@ -907,7 +910,7 @@ Type TPersist
 												fieldObj.Set(obj, objRef)
 											'empty string - fileVersion >= 8 uses "String", not "string" ?
 											'ElseIf fieldType = "String" and objectMap.Contains(ref)
-											ElseIf fieldType.ToLower() = "string" and objectMap.Contains(ref)
+											ElseIf fieldType.Equals("string", False) and objectMap.Contains(ref)
 												fieldObj.Set(obj, "")
 											Else
 												Throw "[Field] Reference not mapped yet : " + ref
