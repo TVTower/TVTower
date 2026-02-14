@@ -74,21 +74,7 @@ Type TDatabaseLoader
 	Global metaDataNew:TTreeMap<String, TDBEntryMetaData> = New TTreeMap<String, TDBEntryMetaData>
 	Global XMLErrorCount:Int
 
-
-	'contains custom "fictional" overriding the base one
-	Global _personDetailKeys:String[]
-	Global _personAttributeBaseKeys:String[]
-	Global _personCommonDetailKeys:String[]
-	Global _newsEventDataKeys:String[]
-	Global _newsEventAvailabilityKeys:String[]
-	Global _achievementDataKeys:String[]
-	Global _adContractDataKeys:String[]
-	Global _adContractAvailabilityKeys:String[]
-	Global _adContractConditionKeys:String[]
-	Global _programmeLicenceDataKeys:String[]
 	Global _programmeLicenceDataTimeFieldsKeys:String[]
-	Global _programmeLicenceDataGroupsKeys:String[]	
-	Global _programmeLicenceRatingsKeys:String[]
 
 	Method New()
 		allowedAdCreators = ""
@@ -307,18 +293,16 @@ Type TDatabaseLoader
 							continue
 						EndIf
 
-						Local data:TData = New TData
-						xml.LoadValuesToData(nodePerson, data, ["guid","first_name", "last_name", "nick_name", "title"])
-						Local guid:String=data.GetString("guid")
+						Local guid:String = xml.FindValue(nodePerson, "guid")
 						If guid
 							Local person:TPersonBase = personCollection.GetByGUID(guid)
 							If person
 								Local personToStore:TPersonLocalization = new TPersonLocalization
 								personToStore.id = person.id
-								personToStore.firstName=data.GetString("first_name","")
-								personToStore.lastName=data.GetString("last_name","")
-								personToStore.nickName=data.GetString("nick_name","")
-								personToStore.title=data.GetString("title","")
+								personToStore.firstName = xml.FindValue(nodePerson, "first_name", "")
+								personToStore.lastName = xml.FindValue(nodePerson, "last_name","")
+								personToStore.nickName = xml.FindValue(nodePerson, "nick_name","")
+								personToStore.title = xml.FindValue(nodePerson, "title","")
 								if toStore.length <= index Then toStore = toStore[.. index + 50]
 								toStore[index] = personToStore
 								index:+1
@@ -340,25 +324,21 @@ Type TDatabaseLoader
 						Local nodeRoleName:String = nodeRole.GetName()
 						If Not nodeRoleName.Equals("programmerole", False) And ..
 						   Not nodeRoleName.Equals("role", False)
-'						If Not TXmlHelper.AsciiNamesLCAreEqual("programmerole", nodeRole.getName()) And ..
-'						   Not TXmlHelper.AsciiNamesLCAreEqual("role", nodeRole.getName())  
 
 							nodeRole = nodeRole.NextSibling()
 							Continue
 						EndIf
 
-						Local data:TData = New TData
-						xml.LoadValuesToData(nodeRole, data, ["guid","first_name", "last_name", "nick_name", "title"])
-						Local guid:String = data.GetString("guid")
+						Local guid:String = xml.FindValue(nodeRole, "guid")
 						If guid
 							Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(guid)
 							If role
 								Local roleToStore:TPersonLocalization = new TPersonLocalization
 								roleToStore.id = role.id
-								roleToStore.firstName=data.GetString("first_name","")
-								roleToStore.lastName=data.GetString("last_name","")
-								roleToStore.nickName=data.GetString("nick_name","")
-								roleToStore.title=data.GetString("title","")
+								roleToStore.firstName = xml.FindValue(nodeRole, "first_name","")
+								roleToStore.lastName = xml.FindValue(nodeRole, "last_name","")
+								roleToStore.nickName = xml.FindValue(nodeRole, "nick_name","")
+								roleToStore.title = xml.FindValue(nodeRole, "title","")
 								if toStore.length <= index Then toStore = toStore[.. index + 50]
 								toStore[index] = roleToStore
 								index:+ 1
@@ -633,16 +613,7 @@ Type TDatabaseLoader
 
 
 		'=== COMMON DETAILS ===
-		Local data:TDataCSK = New TDataCSK
-		If Not _personCommonDetailKeys
-			_personCommonDetailKeys = [..
-				"first_name", "last_name", "nick_name", "title", "fictional", "levelup", "country", ..
-				"job", "gender", "generator", "face_code", "bookable", "castable" ..
-			]
-		EndIf		
-		xml.LoadValuesToDataCSK(node, data, _personCommonDetailKeys)
-		
-		Local generator:String = data.GetString("generator", "")
+		Local generator:String = xml.FindValue(node, "generator")
 		Local p:TPersonGeneratorEntry
 		If generator
 			p = GetPersonGenerator().GetUniqueDatasetFromString(generator)
@@ -658,21 +629,21 @@ Type TDatabaseLoader
 		EndIf
 
 		'override with given ones
-		person.firstName = data.GetString("first_name", person.firstName)
-		person.lastName = data.GetString("last_name", person.lastName)
-		person.nickName = data.GetString("nick_name", person.nickName)
-		person.title = data.GetString("title", person.title)
-		person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetBool("fictional", person.IsFictional()) )
+		person.firstName = xml.FindValue(node, "first_name", person.firstName)
+		person.lastName = xml.FindValue(node, "last_name", person.lastName)
+		person.nickName = xml.FindValue(node, "nick_name", person.nickName)
+		person.title = xml.FindValue(node, "title", person.title)
+		person.SetFlag(TVTPersonFlag.FICTIONAL, GetBool(xml.FindValue(node, "fictional"), person.IsFictional()))
 		'fallback for old database syntax
-		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("bookable", person.IsCastable()) )
-		person.SetFlag(TVTPersonFlag.CASTABLE, data.GetBool("castable", person.IsCastable()) )
+		person.SetFlag(TVTPersonFlag.CASTABLE, GetBool(xml.FindValue(node, "bookable"), person.IsCastable()))
+		person.SetFlag(TVTPersonFlag.CASTABLE, GetBool(xml.FindValue(node, "castable"), person.IsCastable()))
 		'cast filtering is mainly done using the bookable flag - not castable implies not bookable
 		If Not person.IsCastable() Then person.SetFlag(TVTPersonFlag.BOOKABLE, false )
-		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, data.GetBool("levelup", person.CanLevelUp()) )
-		person.SetJob(data.GetInt("job"))
-		person.countryCode = data.GetString("country", person.countryCode).ToUpper()
-		person.gender = data.GetInt("gender", person.gender)
-		person.faceCode = data.GetString("face_code", person.faceCode)
+		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, GetBool(xml.FindValue(node, "levelup"), person.CanLevelUp()))
+		person.SetJob(xml.FindValueInt(node, "job", 0)) 'for now it must be defined all time, else: ", person._jobs))"
+		person.countryCode = xml.FindValue(node, "country", person.countryCode).ToUpper()
+		person.gender = xml.FindValueInt(node, "gender", person.gender)
+		person.faceCode = xml.FindValue(node, "face_code", person.faceCode)
 
 		'avoid that other persons with that name are generated
 		If p
@@ -697,55 +668,24 @@ Type TDatabaseLoader
 
 			'=== DETAILS ===
 			Local nodeDetails:TxmlNode = xml.FindChild(node, "details")
-			data.Clear()
-			If not _personDetailKeys
-				_personDetailKeys = [..
-					"gender", "birthday", "deathday", "country", "fictional", "job", "face_code"..
-				]
-			EndIf
-			xml.LoadValuesToDataCSK(nodeDetails, data, _personDetailKeys)
-
-			person.gender = data.GetInt("gender", person.gender)
-			person.countryCode = data.GetString("country", person.countryCode).ToUpper()
-			pd.SetDayOfBirth( data.GetString("birthday", pd.dayOfBirth) )
-			pd.SetDayOfDeath( data.GetString("deathday", pd.dayOfDeath) )
-			person.SetJob( data.GetInt("job", person.GetJobs()) )
-			'can be defined in "details" or as "<name>" tag
-			person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetInt("fictional", person.IsFictional()) )
-			person.faceCode = data.GetString("face_code", person.faceCode)
+			person.gender = xml.FindValueInt(nodeDetails, "gender", person.gender)
+			person.countryCode = xml.FindValue(nodeDetails, "country", person.countryCode).ToUpper()
+			pd.SetDayOfBirth( xml.FindValue(nodeDetails, "birthday", pd.dayOfBirth) )
+			pd.SetDayOfDeath( xml.FindValue(nodeDetails, "deathday", pd.dayOfDeath) )
+			person.SetJob( xml.FindValueInt(nodeDetails, "job", person.GetJobs()) )
+			person.SetFlag(TVTPersonFlag.FICTIONAL, xml.FindValueInt(nodeDetails, "fictional", person.IsFictional()) )
+			person.faceCode = xml.FindValue(nodeDetails, "face_code", person.faceCode)
 
 			'=== DATA ===
 			Local nodeData:TxmlNode = xml.FindChild(node, "data")
-			data.Clear()
-			If not _personAttributeBaseKeys
-				_personAttributeBaseKeys = [ ..
-					"price_mod", "topgenre", "affinity", "popularity", "popularity_target" ..
-				]
-			EndIf
-			'copy base attribute keys at the end of a newer and bigger array
-			'which stores extended attributes then
-			local attributeKeys:String[] = _personAttributeBaseKeys[-(TVTPersonPersonalityAttribute.count * 3)..]
-			local attributeIndex:int = 0
-			For local i:int = 1 to TVTPersonPersonalityAttribute.count
-				local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
-				attributeKeys[attributeIndex + 0] = TVTPersonPersonalityAttribute.GetAsString(attributeID)
-				attributeKeys[attributeIndex + 1] = attributeKeys[attributeIndex + 0] + "_min"
-				attributeKeys[attributeIndex + 2] = attributeKeys[attributeIndex + 0] + "_max"
-				attributeIndex :+ 3
-			Next
-			xml.LoadValuesToDataCSK(nodeData, data, attributeKeys)
-
-			if TPersonProductionData(person.GetProductionData())
-				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
+			If TPersonProductionData(person.GetProductionData())
+				Local ppd:TPersonProductionData = TPersonProductionData(person.GetProductionData())
+				ppd.topGenre = xml.FindValueInt(nodeData, "topgenre", ppd.topGenre)
 			EndIf
 			
 			'0 would mean: cuts price to 0
 			If person.GetProductionData().priceModifier = 0 Then person.GetProductionData().priceModifier = 1.0
-			person.GetProductionData().priceModifier = data.GetFloat("price_mod", person.GetProductionData().priceModifier)
-
-			if TPersonProductionData(person.GetProductionData())
-				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
-			EndIf
+			person.GetProductionData().priceModifier = xml.FindValueFloat(nodeData, "price_mod", person.GetProductionData().priceModifier)
 
 
 			'ATTRIBUTES
@@ -756,19 +696,18 @@ Type TDatabaseLoader
 			Local a:TPersonPersonalityAttributes
 			For local i:int = 1 to TVTPersonPersonalityAttribute.count
 				Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
+				Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
 
-				'reuse attributeKeys array
-				'Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
-				'Local dbMinValue:Float = data.GetFloat(sb.Append(attributeText).Append("_min").ToString(), -1)
-				'Local dbMaxValue:Float = data.GetFloat(sb.Append(attributeText).Append("_max").ToString(), -1)
-				local attributeKeyIndex:int = (i-1) * 3
-				Local attributeText:String = attributeKeys[attributeKeyIndex]
-				Local dbMinValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 1], -1)
-				Local dbMaxValue:Float = data.GetFloat(attributeKeys[attributeKeyIndex + 2], -1)
-
-				Local dbValue:Float = data.GetFloat(attributeText, -1)
-
+				Local dbValue:Float
+				Local dbMinValue:Float
+				Local dbMaxValue:Float
 				'only fill attribute if at least a part is defined here
+				If Not (xml.TryFindValueFloat(nodeData, attributeText, dbValue) or ..
+				        xml.TryFindValueFloat(nodeData, attributeText + "_min", dbMinValue) or ..
+				        xml.TryFindValueFloat(nodeData, attributeText + "_max", dbMaxValue))
+				    Continue
+				EndIf
+				'also values must be positive
 				If not (dbMinValue >= 0 or dbMaxValue >= 0 or dbValue >= 0) Then Continue
 
 				if not a
@@ -828,9 +767,10 @@ Type TDatabaseLoader
 				pd.GetAttributes().RandomizeAffinity()
 			EndIf
 			
-			If data.Has("affinity")
+			Local affinityValue:Float
+			If xml.TryFindValueFloat(nodeData, "affinity", affinityValue)
 				If not pd.HasAttributes() then pd.InitAttributes(False)
-				pd.GetAttributes().SetAffinity(0.01 * data.GetFloat("affinity"), -1, -1)
+				pd.GetAttributes().SetAffinity(0.01 * affinityValue, -1, -1)
 			EndIf
 
 
@@ -838,11 +778,13 @@ Type TDatabaseLoader
 			'create after attributes are defined - popularity might
 			'depend on them (eg "fame")
 			'create/override popularity
-			if data.GetInt("popularity", -1000) <> -1000 or data.GetInt("popularity_target", -1000) <> -1000
-				local popularityValue:Int = data.GetInt("popularity", -1000) 
-				local popularityTarget:Int = data.GetInt("popularity_target", -1000) 
-				pd.CreatePopularity(popularityValue, popularityTarget, person)
-			endif
+			Local popularityValue:Int
+			Local popularityTargetValue:Int
+			If xml.TryFindValueInt(nodeData, "popularity", popularityValue) or ..
+			   xml.TryFindValueInt(nodeData, "popularity_target", popularityTargetValue)
+
+				pd.CreatePopularity(popularityValue, popularityTargetValue, person)
+			EndIf
 		EndIf
 
 
@@ -895,36 +837,28 @@ Type TDatabaseLoader
 
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TDataCSK = New TDataCSK
-		'price and topicality are outdated
-		If Not _newsEventDataKeys
-			_newsEventDataKeys = [..
-				"genre", "price", "quality", "quality_min", "quality_max", "quality_slope", ..
-				"available", "flags", "keywords", "happen_time", "min_subscription_level" ..
-			]
-		EndIf
-		xml.LoadValuesToDataCSK(nodeData, data, _newsEventDataKeys)
+		newsEventTemplate.flags = xml.FindValueInt(nodeData, "flags", newsEventTemplate.flags)
+		newsEventTemplate.genre = xml.FindValueInt(nodeData, "genre", newsEventTemplate.genre)
+		newsEventTemplate.keywords = xml.FindValue(nodeData, "keywords", newsEventTemplate.keywords).ToLower()
+		newsEventTemplate.minSubscriptionLevel = xml.FindValueInt(nodeData, "min_subscription_level", newsEventTemplate.minSubscriptionLevel)
 
-		newsEventTemplate.flags = data.GetInt("flags", newsEventTemplate.flags)
-		newsEventTemplate.genre = data.GetInt("genre", newsEventTemplate.genre)
-		newsEventTemplate.keywords = data.GetString("keywords", newsEventTemplate.keywords).ToLower()
-		newsEventTemplate.minSubscriptionLevel = data.GetInt("min_subscription_level", newsEventTemplate.minSubscriptionLevel)
-
-		Local available:Int = data.GetBool("available", Not newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		Local available:Int = xml.FindValueBool(nodeData, "available", Not newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 
 		'topicality is "quality" here
-		newsEventTemplate.quality = 0.01 * data.GetFloat("quality", 100 * newsEventTemplate.quality)
-		newsEventTemplate.qualityMin = 0.01 * data.GetFloat("quality_min", 100 * newsEventTemplate.qualityMin)
-		newsEventTemplate.qualityMax = 0.01 * data.GetFloat("quality_max", 100 * newsEventTemplate.qualityMax)
-		newsEventTemplate.qualitySlope = 0.01 * data.GetFloat("quality_slope", 100 * newsEventTemplate.qualitySlope)
+		newsEventTemplate.quality = 0.01 * xml.FindValueFloat(nodeData, "quality", 100 * newsEventTemplate.quality)
+		newsEventTemplate.qualityMin = 0.01 * xml.FindValueFloat(nodeData, "quality_min", 100 * newsEventTemplate.qualityMin)
+		newsEventTemplate.qualityMax = 0.01 * xml.FindValueFloat(nodeData, "quality_max", 100 * newsEventTemplate.qualityMax)
+		newsEventTemplate.qualitySlope = 0.01 * xml.FindValueFloat(nodeData, "quality_slope", 100 * newsEventTemplate.qualitySlope)
 
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
-		Local priceMod:Float = data.GetFloat("price", 0)
-		If priceMod = 0 Then priceMod = 1.0 'invalid data given
-		newsEventTemplate.SetModifier("price", data.GetFloat("price", newsEventTemplate.GetModifier("price")))
+		Local priceMod:Float
+		If Not xml.TryFindValueFloat(nodeData, "price", priceMod) 'no valid data given
+			priceMod = 1.0
+		Endif
+		newsEventTemplate.SetModifier("price", priceMod)
 
-		Local happenTimeString:String = data.GetString("happen_time", "")
+		Local happenTimeString:String = xml.FindValue(nodeData, "happen_time", "")
 		If happenTimeString
 			Local happenTimeParams:Int[] = StringHelper.StringToIntArray(happenTimeString, Asc(","))
 			If happenTimeParams.length > 0
@@ -943,15 +877,10 @@ Type TDatabaseLoader
 
 
 		'=== AVAILABILITY ===
-		If not _newsEventAvailabilityKeys
-			_newsEventAvailabilityKeys = [..
-				"script", "year_range_from", "year_range_to" ..
-			]
-		EndIf
-		xml.LoadValuesToDataCSK(xml.FindChild(node, "availability"), data, _newsEventAvailabilityKeys)
-		newsEventTemplate.availableScript = data.GetString("script", newsEventTemplate.availableScript)
-		newsEventTemplate.availableYearRangeFrom = data.GetInt("year_range_from", newsEventTemplate.availableYearRangeFrom)
-		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
+		Local availabilityNode:TxmlNode = xml.FindChild(node, "availability")
+		newsEventTemplate.availableScript = xml.FindValue(availabilityNode, "script", newsEventTemplate.availableScript)
+		newsEventTemplate.availableYearRangeFrom = xml.FindValueInt(availabilityNode, "year_range_from", newsEventTemplate.availableYearRangeFrom)
+		newsEventTemplate.availableYearRangeTo = xml.FindValueInt(availabilityNode, "year_range_to", newsEventTemplate.availableYearRangeTo)
 
 		If newsEventTemplate.availableScript
 			Local parsedToken:SToken
@@ -1062,20 +991,12 @@ Type TDatabaseLoader
 
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TDataCSK = New TDataCSK
-		If Not _achievementDataKeys
-			_achievementDataKeys = [..
-				"flags", "category", "group", "index", "sprite_finished", "sprite_unfinished" ..
-			]
-		EndIf
-		xml.LoadValuesToDataCSK(nodeData, data, _achievementDataKeys)
-
-		achievement.flags = data.GetInt("flags", achievement.flags)
-		achievement.group = data.GetInt("group", achievement.group)
-		achievement.index = data.GetInt("index", achievement.index)
-		achievement.category = data.GetInt("category", achievement.category)
-		achievement.spriteFinished = data.GetString("sprite_finished", achievement.spriteFinished)
-		achievement.spriteUnfinished = data.GetString("sprite_unfinished", achievement.spriteUnfinished)
+		achievement.flags = xml.FindValueInt(nodeData, "flags", achievement.flags)
+		achievement.group = xml.FindValueInt(nodeData, "group", achievement.group)
+		achievement.index = xml.FindValueInt(nodeData, "index", achievement.index)
+		achievement.category = xml.FindValueInt(nodeData, "category", achievement.category)
+		achievement.spriteFinished = xml.FindValue(nodeData, "sprite_finished", achievement.spriteFinished)
+		achievement.spriteUnfinished = xml.FindValue(nodeData, "sprite_unfinished", achievement.spriteUnfinished)
 
 
 		'=== TASKS ===
@@ -1267,54 +1188,37 @@ Type TDatabaseLoader
 
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TDataCSK = New TDataCSK
-		If Not _adContractDataKeys
-			_adContractDataKeys = [..
-				"infomercial", "quality", "repetitions", "fix_price", "duration", ..
-			   "profit", "penalty", "pro_pressure_groups", "contra_pressure_groups", ..
-			   "infomercial_profit", "fix_infomercial_profit", ..
-			   "year_range_from", "year_range_to", "available", "blocks", "type" ..
-			]
-		EndIf
-		xml.LoadValuesToDataCSK(nodeData, data, _adContractDataKeys)
+		adContract.infomercialAllowed = xml.FindValueBool(nodeData, "infomercial", adContract.infomercialAllowed)
+		adContract.quality = 0.01 * xml.FindValueFloat(nodeData, "quality", adContract.quality * 100.0)
 
-		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
-		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
-
-		Local available:Int = data.GetBool("available", Not adContract.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		Local available:Int = xml.FindValueBool(nodeData, "available", Not adContract.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		adContract.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 
 		'old -> now stored in "availability
-		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
-		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
+		adContract.availableYearRangeFrom = xml.FindValueInt(nodeData, "year_range_from", adContract.availableYearRangeFrom)
+		adContract.availableYearRangeTo = xml.FindValueInt(nodeData, "year_range_to", adContract.availableYearRangeTo)
 
-		adContract.adType = data.GetInt("type", adContract.adType)
+		adContract.adType = xml.FindValueInt(nodeData, "type", adContract.adType)
 
-		adContract.blocks = data.GetInt("blocks", adContract.blocks)
-		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
-		adContract.fixedPrice = data.GetBool("fix_price", adContract.fixedPrice)
-		adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
-		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
-		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
-		adContract.profitBase = data.GetFloat("profit", adContract.profitBase)
-		adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
-		adContract.infomercialProfitBase = data.GetFloat("infomercial_profit", adContract.infomercialProfitBase)
-		adContract.fixedInfomercialProfit = data.GetFloat("fix_infomercial_profit", adContract.fixedInfomercialProfit)
+		adContract.blocks = xml.FindValueInt(nodeData, "blocks", adContract.blocks)
+		adContract.spotCount = xml.FindValueInt(nodeData, "repetitions", adContract.spotcount)
+		adContract.fixedPrice = xml.FindValueBool(nodeData, "fix_price", adContract.fixedPrice)
+		adContract.daysToFinish = xml.FindValueInt(nodeData, "duration", adContract.daysToFinish)
+		adContract.proPressureGroups = xml.FindValueInt(nodeData, "pro_pressure_groups", adContract.proPressureGroups)
+		adContract.contraPressureGroups = xml.FindValueInt(nodeData, "contra_pressure_groups", adContract.contraPressureGroups)
+		adContract.profitBase = xml.FindValueFloat(nodeData, "profit", adContract.profitBase)
+		adContract.penaltyBase = xml.FindValueFloat(nodeData, "penalty", adContract.penaltyBase)
+		adContract.infomercialProfitBase = xml.FindValueFloat(nodeData, "infomercial_profit", adContract.infomercialProfitBase)
+		adContract.fixedInfomercialProfit = xml.FindValueFloat(nodeData, "fix_infomercial_profit", adContract.fixedInfomercialProfit)
 		'without data, fall back to 10% of profitBase
 		If adContract.infomercialProfitBase = 0 Then adContract.infomercialProfitBase = adContract.profitBase * 0.1
 
 
 		'=== AVAILABILITY ===
-		If Not _adContractAvailabilityKeys
-			_adContractAvailabilityKeys = [..
-				"script", "year_range_from", "year_range_to" ..
-			]
-		EndIf		
-		'do not reset "data" before - it contains the pressure groups
-		xml.LoadValuesToDataCSK(xml.FindChild(node, "availability"), data, _adContractAvailabilityKeys)
-		adContract.availableScript = data.GetString("script", adContract.availableScript)
-		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
-		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
+		Local availabilityNode:TxmlNode = xml.FindChild(node, "availability")
+		adContract.availableScript = xml.FindValue(availabilityNode, "script", adContract.availableScript)
+		adContract.availableYearRangeFrom = xml.FindValueInt(availabilityNode, "year_range_from", adContract.availableYearRangeFrom)
+		adContract.availableYearRangeTo = xml.FindValueInt(availabilityNode, "year_range_to", adContract.availableYearRangeTo)
 
 		If adContract.availableScript
 			Local parsedToken:SToken
@@ -1329,37 +1233,14 @@ Type TDatabaseLoader
 
 		'=== CONDITIONS ===
 		Local nodeConditions:TxmlNode = xml.FindChild(node, "conditions")
-		If Not _adContractConditionKeys
-			_adContractConditionKeys = [..
-				"min_audience", "min_image", "max_image", "target_group", ..
-				"allowed_programme_flag", "allowed_genre", ..
-				"prohibited_programme_flag" ..
-			]
-		EndIf
-		'do not reset "data" before - it contains the pressure groups
-		xml.LoadValuesToDataCSK(nodeConditions, data, _adContractConditionKeys)
-		'0-100% -> 0.0 - 1.0
-		adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
-		adContract.minImage = 0.01 * data.GetFloat("min_image", adContract.minImage*100.0)
-		adContract.maxImage = 0.01 * data.GetFloat("max_image", adContract.maxImage*100.0)
-		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
-		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
-		adContract.limitedToProgrammeFlag = data.GetInt("allowed_programme_flag", adContract.limitedToProgrammeFlag)
-'		adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
-		adContract.forbiddenProgrammeFlag = data.GetInt("prohibited_programme_flag", adContract.forbiddenProgrammeFlag)
-		'if only one group
-		'adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
-		'adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
-		Rem
-		for multiple groups:
-		local proPressureGroups:String[] = data.GetString("pro_pressure_groups", "").Split(" ")
-		For local group:string = EachIn proPressureGroups
-			if not adContract.HasProPressureGroup(int(group))
-				adContract.proPressureGroups :+ [int(group)]
-			endif
-		Next
-		...
-		endrem
+		adContract.minAudienceBase = 0.01 * xml.FindValueFloat(nodeConditions, "min_audience", adContract.minAudienceBase*100.0)
+		adContract.minImage = 0.01 * xml.FindValueFloat(nodeConditions, "min_image", adContract.minImage*100.0)
+		adContract.maxImage = 0.01 * xml.FindValueFloat(nodeConditions, "max_image", adContract.maxImage*100.0)
+		adContract.limitedToTargetGroup = xml.FindValueInt(nodeConditions, "target_group", adContract.limitedToTargetGroup)
+		adContract.limitedToProgrammeGenre = xml.FindValueInt(nodeConditions, "allowed_genre", adContract.limitedToProgrammeGenre)
+		adContract.limitedToProgrammeFlag = xml.FindValueInt(nodeConditions, "allowed_programme_flag", adContract.limitedToProgrammeFlag)
+'		adContract.forbiddenProgrammeGenre = xml.FindValueInt(nodeConditions, "prohibited_genre", adContract.forbiddenProgrammeGenre)
+		adContract.forbiddenProgrammeFlag = xml.FindValueInt(nodeConditions, "prohibited_programme_flag", adContract.forbiddenProgrammeFlag)
 
 
 		'=== EFFECTS ===
@@ -1503,25 +1384,13 @@ Type TDatabaseLoader
 
 		'=== DATA ===
 		Local nodeData:TxmlNode = xml.FindChild(node, "data")
-		Local data:TDataCSK = New TDataCSK
-		If Not _programmeLicenceDataKeys
-			_programmeLicenceDataKeys = [..
-				"country", "distribution", "blocks", "maingenre", "subgenre", ..
-				"price_mod", "available", "flags", "licence_flags", ..
-				"broadcast_time_slot_start", "broadcast_time_slot_end", ..
-				"broadcast_limit", "licence_broadcast_limit", ..
-				"broadcast_flags", "licence_broadcast_flags" ..
-			]
-		EndIf
-		xml.LoadValuesToDataCSK(nodeData, data, _programmeLicenceDataKeys)
+		programmeData.country = xml.FindValue(nodeData, "country", programmeData.country)
 
-		programmeData.country = data.GetString("country", programmeData.country)
+		programmeData.distributionChannel = xml.FindValueInt(nodeData, "distribution", programmeData.distributionChannel)
+		programmeData.blocks = MathHelper.clamp(xml.FindValueInt(nodeData, "blocks", programmeData.blocks), 1, 12)
 
-		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
-		programmeData.blocks = MathHelper.clamp(data.GetInt("blocks", programmeData.blocks), 1, 12)
-
-		programmeData.broadcastTimeSlotStart = MathHelper.clamp(data.GetInt("broadcast_time_slot_start", programmeData.broadcastTimeSlotStart), 0, 23)
-		programmeData.broadcastTimeSlotEnd = MathHelper.clamp(data.GetInt("broadcast_time_slot_end", programmeData.broadcastTimeSlotEnd), 0, 23)
+		programmeData.broadcastTimeSlotStart = MathHelper.clamp(xml.FindValueInt(nodeData, "broadcast_time_slot_start", programmeData.broadcastTimeSlotStart), 0, 23)
+		programmeData.broadcastTimeSlotEnd = MathHelper.clamp(xml.FindValueInt(nodeData, "broadcast_time_slot_end", programmeData.broadcastTimeSlotEnd), 0, 23)
 		If programmeData.broadcastTimeSlotStart = programmeData.broadcastTimeSlotEnd
 			programmeData.broadcastTimeSlotStart = -1
 			programmeData.broadcastTimeSlotEnd = -1
@@ -1531,15 +1400,15 @@ Type TDatabaseLoader
 		programmeLicence.broadcastTimeSlotEnd = programmeData.broadcastTimeSlotEnd
 
 
-		programmeData.SetBroadcastLimit(data.GetInt("broadcast_limit", programmeData.broadcastLimit))
+		programmeData.SetBroadcastLimit(xml.FindValueInt(nodeData, "broadcast_limit", programmeData.broadcastLimit))
 		'if not given - disable and fallback to programmeData limit then
-		programmeLicence.SetBroadcastLimit(data.GetInt("licence_broadcast_limit", -1))
+		programmeLicence.SetBroadcastLimit(xml.FindValueInt(nodeData, "licence_broadcast_limit", -1))
 
 
-		programmeData.SetBroadcastFlag(data.GetInt("broadcast_flags", 0))
+		programmeData.SetBroadcastFlag(xml.FindValueInt(nodeData, "broadcast_flags", 0))
 		'if defined, it overrides (replaces) the data defined broadcast flags 
 		'we need to set all flags then as "modified" (manually set)
-		Local licenceBroadcastFlags:int = data.GetInt("licence_broadcast_flags", -1)
+		Local licenceBroadcastFlags:int = xml.FindValueInt(nodeData, "licence_broadcast_flags", -1)
 		if licenceBroadcastFlags >= 0 
 			If not programmeLicence.broadcastFlags 
 				programmeLicence.broadcastFlags = new TTriStateIntBitmask
@@ -1549,29 +1418,29 @@ Type TDatabaseLoader
 			'mark all settings as manually set
 			programmeLicence.broadcastFlags.SetAllModified()
 			'activate the flag
-			programmeLicence.broadcastFlags.Set(data.GetInt("licence_broadcast_flags"), True)
+			programmeLicence.broadcastFlags.Set(licenceBroadcastFlags, True)
 		endif
 
 
-		programmeLicence.SetLicenceFlag(data.GetInt("licence_flags", 0))
+		programmeLicence.SetLicenceFlag(xml.FindValueInt(nodeData, "licence_flags", 0))
 
 		'TODO discuss - is it a good idea to use this flag for both licence AND data?
 		'data flag has precedence; data not available - licence not available
 		'availability effect turns both flags on, but only licence flag off
-		Local available:Int = data.GetBool("available", Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		Local available:Int = xml.FindValueBool(nodeData, "available", Not programmeData.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		programmeData.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 		programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, Not available)
 
 		'compatibility: load price mod from "price_mod" first... later
 		'override with "modifiers"-data
-		programmeData.SetModifier("price", data.GetFloat("price_mod", programmeData.GetModifier("price")))
+		programmeData.SetModifier("price", xml.FindValueFloat(nodeData, "price_mod", programmeData.GetModifier("price")))
 
-		programmeData.SetFlag(data.GetInt("flags", 0))
+		programmeData.SetFlag(xml.FindValueInt(nodeData, "flags", 0))
 
-		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
+		programmeData.genre = xml.FindValueInt(nodeData, "maingenre", programmeData.genre)
 		
 
-		Local subGenres:String = data.GetString("subgenre", "")
+		Local subGenres:String = xml.FindValue(nodeData, "subgenre", "")
 		If subGenres
 			For Local sg:Int = EachIn New TIntSpliterator(subGenres, Asc(","), True)
 				'skip invalid ones (0 is allowed!)
@@ -1585,6 +1454,8 @@ Type TDatabaseLoader
 		EndIf
 
 		'=== RELEASE INFORMATION ===
+		'TODO: remove TData-usage here and ensure all are either
+		'      in this block OR <releaseTime> (no mixing / overrides)
 		Local releaseData:TDataCSK = New TDataCSK
 		'try to load it from the "<data>" block
 		'(this is done to allow the old v3-"year" definition)
@@ -1692,16 +1563,9 @@ Type TDatabaseLoader
 
 		'=== GROUPS ===
 		Local nodeGroups:TxmlNode = xml.FindChild(node, "groups")
-		data.Clear()
-		If Not _programmeLicenceDataGroupsKeys
-			_programmeLicenceDataGroupsKeys = [..
-				"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
-			]
-		EndIf
-		xml.LoadValuesToDataCSK(nodeGroups, data, _programmeLicenceDataGroupsKeys)
-		programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
-		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
-		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
+		programmeData.targetGroups = xml.FindValueInt(nodeGroups, "target_groups", programmeData.targetGroups)
+		programmeData.proPressureGroups = xml.FindValueInt(nodeGroups, "pro_pressure_groups", programmeData.proPressureGroups)
+		programmeData.contraPressureGroups = xml.FindValueInt(nodeGroups, "contra_pressure_groups", programmeData.contraPressureGroups)
 
 
 
@@ -1727,16 +1591,9 @@ Type TDatabaseLoader
 
 		'=== RATINGS ===
 		Local nodeRatings:TxmlNode = xml.FindChild(node, "ratings")
-		data.Clear()
-		If Not _programmeLicenceRatingsKeys
-			_programmeLicenceRatingsKeys = [..
-				"critics", "speed", "outcome" ..
-			]
-		EndIf
-		xml.LoadValuesToDataCSK(nodeRatings, data, _programmeLicenceRatingsKeys)
-		programmeData.review = 0.01 * data.GetFloat("critics", programmeData.review*100)
-		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
-		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
+		programmeData.review = 0.01 * xml.FindValueFloat(nodeRatings, "critics", programmeData.review*100)
+		programmeData.speed = 0.01 * xml.FindValueFloat(nodeRatings, "speed", programmeData.speed*100)
+		programmeData.outcome = 0.01 * xml.FindValueFloat(nodeRatings, "outcome", programmeData.outcome*100)
 
 		'auto repair outcome for non-custom productions
 		'(eg. predefined ones from the DB)
@@ -1960,11 +1817,9 @@ Type TDatabaseLoader
 
 		'=== DATA: GENRES ===
 		nodeData = xml.FindChild(node, "genres")
-		data = New TData
-		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
-		scriptTemplate.mainGenre = data.GetInt("mainGenre", scriptTemplate.mainGenre)
+		scriptTemplate.mainGenre = xml.FindValueInt(nodeData, "mainGenre", scriptTemplate.mainGenre)
 
-		Local subGenres:String = data.GetString("subGenres", "")
+		Local subGenres:String = xml.FindValue(nodeData, "subGenres", "")
 		If subGenres
 			For Local sg:Int = EachIn New TIntSpliterator(subGenres, Asc(","))
 				'skip empty or "undefined" genres
@@ -1979,115 +1834,128 @@ Type TDatabaseLoader
 
 		'=== DATA: RATINGS - OUTCOME ===
 		nodeData = xml.FindChild(node, "outcome")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.outcomeMin))
+		Local outcomeValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If outcomeValue >= 0
+			'inherit?
+			'Local value:Float = 0.01 * Max(outcomeValue, Int(100 * scriptTemplate.outcomeMin))
+			Local value:Float = 0.01 * outcomeValue
 			scriptTemplate.SetOutcomeRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetOutcomeRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.outcomeMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.outcomeMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.outcomeSlope)) ..
+				0.01 * xml.FindValueInt(nodeData, "min", Int(100 * scriptTemplate.outcomeMin)), ..
+				0.01 * xml.FindValueInt(nodeData, "max", Int(100 * scriptTemplate.outcomeMax)), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.outcomeSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: RATINGS - REVIEW ===
 		nodeData = xml.FindChild(node, "review")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.reviewMin))
+		Local reviewValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If reviewValue >= 0
+			'inherit?
+			'Local value:Float = 0.01 * Max(reviewValue, Int(100 * scriptTemplate.reviewMin))
+			Local value:Float = 0.01 * reviewValue
 			scriptTemplate.SetReviewRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetReviewRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.reviewMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.reviewMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.reviewSlope)) ..
+				0.01 * xml.FindValueInt(nodeData, "min", Int(100 * scriptTemplate.reviewMin)), ..
+				0.01 * xml.FindValueInt(nodeData, "max", Int(100 * scriptTemplate.reviewMax)), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.reviewSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: RATINGS - SPEED ===
 		nodeData = xml.FindChild(node, "speed")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.speedMin))
+		Local speedValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If speedValue >= 0
+			'inherit?
+			'Local value:Float = 0.01 * Max(speedValue, Int(100 * scriptTemplate.speedMin))
+			Local value:Float = 0.01 * speedValue
 			scriptTemplate.SetSpeedRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetSpeedRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.speedMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.speedMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.speedSlope)) ..
+				0.01 * xml.FindValueInt(nodeData, "min", Int(100 * scriptTemplate.speedMin)), ..
+				0.01 * xml.FindValueInt(nodeData, "max", Int(100 * scriptTemplate.speedMax)), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.speedSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: RATINGS - POTENTIAL ===
 		nodeData = xml.FindChild(node, "potential")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Float = 0.01 * data.GetInt("value", Int(100 * scriptTemplate.potentialMin))
+		Local potentialValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If potentialValue >= 0
+			'inherit?
+			'Local value:Float = 0.01 * Max(potentialValue, Int(100 * scriptTemplate.potentialMin))
+			Local value:Float = 0.01 * potentialValue
 			scriptTemplate.SetPotentialRange(value, value, 0.5)
 		Else
 			scriptTemplate.SetPotentialRange( ..
-				0.01 * data.GetInt("min", Int(100 * scriptTemplate.potentialMin)), ..
-				0.01 * data.GetInt("max", Int(100 * scriptTemplate.potentialMax)), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.potentialSlope)) ..
+				0.01 * xml.FindValueInt(nodeData, "min", Int(100 * scriptTemplate.potentialMin)), ..
+				0.01 * xml.FindValueInt(nodeData, "max", Int(100 * scriptTemplate.potentialMax)), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.potentialSlope)) ..
 			)
 		EndIf
 
 
 		'=== DATA: BLOCKS ===
 		nodeData = xml.FindChild(node, "blocks")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.blocksMin)
-			scriptTemplate.SetBlocksRange(value, value, 0.5)
+		Local blocksValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If blocksValue >= 0
+			'inherit?
+			'blocksValue = Max(blocksValue, scriptTemplate.blocksMin)
+			scriptTemplate.SetBlocksRange(blocksValue, blocksValue, 0.5)
 		Else
 			scriptTemplate.SetBlocksRange( ..
-				data.GetInt("min", scriptTemplate.blocksMin), ..
-				data.GetInt("max", scriptTemplate.blocksMax), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.blocksSlope)) ..
+				xml.FindValueInt(nodeData, "min", scriptTemplate.blocksMin), ..
+				xml.FindValueInt(nodeData, "max", scriptTemplate.blocksMax), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.blocksSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: PRICE ===
 		nodeData = xml.FindChild(node, "price")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.priceMin)
-			scriptTemplate.SetPriceRange(value, value, 0.5)
+		Local priceValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If priceValue >= 0
+			'inherit?
+			'priceValue = Max(priceValue, scriptTemplate.priceMin)
+			scriptTemplate.SetPriceRange(priceValue, priceValue, 0.5)
 		Else
 			scriptTemplate.SetPriceRange( ..
-				data.GetInt("min", scriptTemplate.priceMin), ..
-				data.GetInt("max", scriptTemplate.priceMax), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.priceSlope)) ..
+				xml.FindValueInt(nodeData, "min", scriptTemplate.priceMin), ..
+				xml.FindValueInt(nodeData, "max", scriptTemplate.priceMax), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.priceSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: STUDIO SIZE ===
 		nodeData = xml.FindChild(node, "studio_size")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.studioSizeMin)
-			scriptTemplate.SetStudioSizeRange(value, value, 0.5)
+		Local studioSizeValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If studioSizeValue >= 0
+			'inherit?
+			'studioSizeValue = Max(studioSizeValue, scriptTemplate.studioSizeMin)
+			scriptTemplate.SetStudioSizeRange(studioSizeValue, studioSizeValue, 0.5)
 		Else
 			scriptTemplate.SetStudioSizeRange( ..
-				data.GetInt("min", scriptTemplate.studioSizeMin), ..
-				data.GetInt("max", scriptTemplate.studioSizeMin), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.studioSizeSlope)) ..
+				xml.FindValueInt(nodeData, "min", scriptTemplate.studioSizeMin), ..
+				xml.FindValueInt(nodeData, "max", scriptTemplate.studioSizeMin), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.studioSizeSlope)) ..
 			)
 		EndIf
 
 		'=== DATA: PRODUCTION TIME ===
 		nodeData = xml.FindChild(node, "production_time")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("value", int(scriptTemplate.productionTime / TWorldTime.MINUTELENGTH))
+		Local productionTimeValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If productionTimeValue >= 0
+			'inherit?
+			'productionTimeValue = Max(productionTimeValue, int(scriptTemplate.productionTime / TWorldTime.MINUTELENGTH))
+			scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * productionTimeValue
 		Else
 			'we cannot simply place the min/max as default as "-1 / TWorldTime.MINUTELENGTH" results in 0 ...
-			local pTMin:Int = data.GetInt("min", -1)
-			local pTMax:Int = data.GetInt("max", -1)
+			local pTMin:Int = xml.FindValueInt(nodeData, "min", -1)
+			local pTMax:Int = xml.FindValueInt(nodeData, "max", -1)
 			if pTMin >= 0 Then scriptTemplate.productionTimeMin = TWorldTime.MINUTELENGTH * pTMin
 			if pTMax >= 0 Then scriptTemplate.productionTimeMax = TWorldTime.MINUTELENGTH * pTMax
-			scriptTemplate.productionTimeSlope = 0.01 * data.GetFloat("slope", 100 * scriptTemplate.productionTimeSlope)
+			scriptTemplate.productionTimeSlope = 0.01 * xml.FindValueFloat(nodeData, "slope", 100 * scriptTemplate.productionTimeSlope)
 		EndIf
 
 		'=== DATA: JOBS ===
@@ -2235,12 +2103,10 @@ Type TDatabaseLoader
 		scriptTemplate.productionTimeModBase = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeModBase)
 
 		'=== AVAILABILITY ===
-		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
-			"script", "year_range_from", "year_range_to" ..
-		])
-		scriptTemplate.availableScript = data.GetString("script", scriptTemplate.availableScript)
-		scriptTemplate.availableYearRangeFrom = data.GetInt("year_range_from", scriptTemplate.availableYearRangeFrom)
-		scriptTemplate.availableYearRangeTo = data.GetInt("year_range_to", scriptTemplate.availableYearRangeTo)
+		Local availabilityNode:TXmlNode = xml.FindChild(node, "availability")
+		scriptTemplate.availableScript = xml.FindValue(availabilityNode, "script", scriptTemplate.availableScript)
+		scriptTemplate.availableYearRangeFrom = xml.FindValueInt(availabilityNode, "year_range_from", scriptTemplate.availableYearRangeFrom)
+		scriptTemplate.availableYearRangeTo = xml.FindValueInt(availabilityNode, "year_range_to", scriptTemplate.availableYearRangeTo)
 
 		If scriptTemplate.availableScript
 			Local parsedToken:SToken
@@ -2275,7 +2141,6 @@ Type TDatabaseLoader
 			While nodeModifier
 				'skip other elements than "modifier"
 				If Not nodeModifier.GetName().Equals("modifier", False)
-'				If Not TXmlHelper.AsciiNamesLCAreEqual("modifier", nodeModifier.getName())
 					nodeModifier = nodeModifier.NextSibling()
 					continue
 				EndIf
@@ -2305,7 +2170,6 @@ Type TDatabaseLoader
 			While nodeChild
 				'skip other elements than "scripttemplate"
 				If Not nodeChild.GetName().Equals("scripttemplate", False)
-'				If Not TXmlHelper.AsciiNamesLCAreEqual("scripttemplate", nodeChild.getName())
 					nodeChild = nodeChild.NextSibling()
 					continue
 				EndIf
@@ -2327,15 +2191,16 @@ Type TDatabaseLoader
 		'load episode data only after creating the children as these values must
 		'not be propagated to the children
 		nodeData = xml.FindChild(node, "episodes")
-		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
-		If data.GetInt("value", -1) >= 0
-			Local value:Int = data.GetInt("value", scriptTemplate.episodesMin)
-			scriptTemplate.SetEpisodesRange(value, value, 0.5)
+		Local episodesValue:Int = xml.FindValueInt(nodeData, "value", -1)
+		If episodesValue >= 0
+			'inherit?
+			'episodesValue = Max(episodesValue, scriptTemplate.episodesMin)
+			scriptTemplate.SetEpisodesRange(episodesValue, episodesValue, 0.5)
 		Else
 			scriptTemplate.SetEpisodesRange( ..
-				data.GetInt("min", scriptTemplate.episodesMin), ..
-				data.GetInt("max", scriptTemplate.episodesMax), ..
-				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.episodesSlope)) ..
+				xml.FindValueInt(nodeData, "min", scriptTemplate.episodesMin), ..
+				xml.FindValueInt(nodeData, "max", scriptTemplate.episodesMax), ..
+				0.01 * xml.FindValueInt(nodeData, "slope", Int(100 * scriptTemplate.episodesSlope)) ..
 			)
 		EndIf
 
@@ -2477,9 +2342,8 @@ Type TDatabaseLoader
 			'              decide whether something is missing
 			xml.LoadAllValuesToData(nodeEffect, effectData)
 			'check if the effect has all needed configurations
-			For Local f:String = EachIn ["trigger", "type"]
-				If Not effectData.Has(f) Then ThrowNodeError("DB: <effects> is missing ~q" + f+"~q.", nodeEffect)
-			Next
+			If Not effectData.Has("trigger") Then ThrowNodeError("DB: <effects> is missing ~qtrigger~q.", nodeEffect)
+			If Not effectData.Has("type") Then ThrowNodeError("DB: <effects> is missing ~qtype~q.", nodeEffect)
 
 			source.AddEffectByData(effectData)
 			
@@ -2498,19 +2362,18 @@ Type TDatabaseLoader
 		While nodeModifier
 			'skip other elements than "modifier"
 			If Not nodeModifier.GetName().Equals("effect", False)
-'			If Not TXmlHelper.AsciiNamesLCAreEqual("effect", nodeModifier.getName())
 				nodeModifier = nodeModifier.NextSibling()
 				Continue
 			EndIf
 
-			Local modifierData:TData = New TData
-			xml.LoadAllValuesToData(nodeModifier, modifierData)
-			'check if the modifier has all needed definitions
-			For Local f:String = EachIn ["name", "value"]
-				If Not modifierData.Has(f) Then ThrowNodeError("DB: <modifier> is missing ~q" + f+"~q.", nodeModifier)
-			Next
 
-			source.SetModifier(modifierData.GetString("name"), modifierData.GetFloat("value"))
+			'check if the modifier has all needed definitions
+			Local name:String = xml.FindValue(nodeModifier, "name", "")
+			Local value:Float = xml.FindValueFloat(nodeModifier, "name", -12345.0)
+			If Not name Then ThrowNodeError("DB: <modifier> is missing ~qname~q.", nodeModifier)
+			If value = -12345.0 Then ThrowNodeError("DB: <modifier> is missing ~qvalue~q.", nodeModifier)
+
+			source.SetModifier(name, value)
 			
 			nodeModifier = nodeModifier.NextSibling()
 		Wend
@@ -2690,56 +2553,19 @@ Type TDatabaseLoader
 	End Method
 
 
-	Function convertV2genreToV3:Int(data:TProgrammeData)
-		Select data.genre
-			Case 0 'old ACTION
-				data.genre = TVTProgrammeGenre.Action
-			Case 1 'old THRILLER
-				data.genre = TVTProgrammeGenre.Thriller
-			Case 2 'old SCIFI
-				data.genre = TVTProgrammeGenre.SciFi
-			Case 3 'old COMEDY
-				data.genre = TVTProgrammeGenre.Comedy
-			Case 4 'old HORROR
-				data.genre = TVTProgrammeGenre.Horror
-			Case 5 'old LOVE
-				data.genre = TVTProgrammeGenre.Romance
-			Case 6 'old EROTIC
-				data.genre = TVTProgrammeGenre.Erotic
-			Case 7 'old WESTERN
-				data.genre = TVTProgrammeGenre.Western
-			Case 8 'old LIVE
-				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeDataFlag.LIVE)
-			Case 9 'old KIDS
-				data.genre = TVTProgrammeGenre.Family
-			Case 10 'old CARTOON
-				data.genre = TVTProgrammeGenre.Animation
-			Case 11 'old MUSIC
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 12 'old SPORT
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 13 'old CULTURE
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 14 'old FANTASY
-				data.genre = TVTProgrammeGenre.Fantasy
-			Case 15 'old YELLOWPRESS
-				'hier sind nur "Trash"-Programme drin
-				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeDataFlag.TRASH)
-			Case 17 'old SHOW
-				data.genre = TVTProgrammeGenre.Show
-			Case 18 'old MONUMENTAL
-				data.genre = TVTProgrammeGenre.Monumental
-			Case 19 'TProgrammeData.GENRE_FILLER 'TV films etc.
-				data.genre = TVTProgrammeGenre.Undefined
-			Case 20 'old CALLINSHOW
-				data.genre = TVTProgrammeGenre.Undefined
-				data.SetFlag(TVTProgrammeDataFlag.PAID)
-			Default
-				data.genre = TVTProgrammeGenre.Undefined
-		End Select
-	End Function
+	Method GetBool:Int(value:String, defaultValue:Int = False)
+		'special behaviour: ""/empty returns default Value
+		'(but by default this is "False")
+		If Not value Then Return defaultValue
+
+		If value.Equals("true", False) or value.Equals("yes")
+			Return True
+		EndIf
+		'also allow "1" / "1.00000" or "33"
+		If Int(value) >= 1 Then Return True
+
+		Return False
+	End Method
 
 
 	'load a localized string from the given node
