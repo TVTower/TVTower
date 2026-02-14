@@ -698,16 +698,11 @@ Type TDatabaseLoader
 				Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
 				Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
 
-				Local dbValue:Float
-				Local dbMinValue:Float
-				Local dbMaxValue:Float
-				'only fill attribute if at least a part is defined here
-				If Not (xml.TryFindValueFloat(nodeData, attributeText, dbValue) or ..
-				        xml.TryFindValueFloat(nodeData, attributeText + "_min", dbMinValue) or ..
-				        xml.TryFindValueFloat(nodeData, attributeText + "_max", dbMaxValue))
-				    Continue
-				EndIf
-				'also values must be positive
+				'only fill attribute if at least a part is (correctly)
+				'defined here (all values must be positive)
+				Local dbValue:Float = xml.FindValueFloat(nodeData, attributeText, -1)
+				Local dbMinValue:Float = xml.FindValueFloat(nodeData, attributeText + "_min", -1)
+				Local dbMaxValue:Float = xml.FindValueFloat(nodeData, attributeText + "_max", -1)
 				If not (dbMinValue >= 0 or dbMaxValue >= 0 or dbValue >= 0) Then Continue
 
 				if not a
