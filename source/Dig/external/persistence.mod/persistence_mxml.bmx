@@ -861,23 +861,49 @@ Type TPersist
 
 									' for file Version 1+
 									Select arrayElementType
-										Case FloatTypeId, DoubleTypeId
+										Case FloatTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
 
-											Local arrayList:String[]
-											Local content:String = fieldNode.GetContent().Trim()
-
-											If content Then
-												arrayList = content.Split(" ")
-											Else
-												arrayList = New String[0]
+											Local values:Float[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitFloats(" ")
 											End If
 
-											Local arrayObj:Object = arrayType.NewArray(arrayList.length, scalesi)
-											fieldObj.Set(obj, arrayObj)
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
 
-											For Local i:Int = 0 Until arrayList.length
-												arrayType.SetArrayElement(arrayObj, i, arrayList[i])
-											Next
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+
+										Case DoubleTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:Double[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitDoubles(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
 
 										Case ByteTypeId
 											_sb.SetLength(0)
