@@ -1323,7 +1323,7 @@ Type TDatabaseLoader
 				'For a series this means that the episodes' attractivity would be 0.0
 				'for all target groups due to default struct values.
 				If parentLicence 
-					programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id targetGroupAttractivityMod"))
+					programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, ["id", "targetGroupAttractivityMod"]))
 				EndIf
 				'if failed, create new data
 				If Not programmeData Then programmeData = New TProgrammeData
@@ -1772,7 +1772,7 @@ Type TDatabaseLoader
 		If Not scriptTemplate
 			'try to clone the parent, if that fails, create a new instance
 			If parentScriptTemplate
-				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id guid jobs"))
+				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, ["id","guid","jobs"]))
 				'#440 optional flags are not propagated to episode templates
 				scriptTemplate.flagsOptional = 0
 				'jobs must not be cloned, the same instances must be used for all templates, so that random roles are propagated
