@@ -312,11 +312,11 @@
 		<person guid="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" castable="0" />
 		<person guid="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" castable="0" />
 		<person guid="common-unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" castable="0" />
-		<person guid="common-directors-provided" first_name="" last_name="Regie zur Verfügung gestellt" />
-		<person guid="common-hosts-provided" first_name="" last_name="Moderation zur Verfügung gestellt" />
-		<person guid="common-commentators-provided" first_name="" last_name="Kommentar zur Verfügung gestellt" />
-		<person guid="common-reporters-provided" first_name="" last_name="Reporter zur Verfügung gestellt" /> <!-- 'Reporter' auf Englisch ist eher nur der Interviewer an der Seitenlinie -->
-		<person guid="common-guests-provided" first_name="" last_name="Gäste zur Verfügung gestellt" />
+		<person guid="common-directors-external" first_name="" last_name="extern" />
+		<person guid="common-hosts-external" first_name="" last_name="extern" />
+		<person guid="common-commentators-external" first_name="" last_name="externe Kommentatoren" />
+		<person guid="common-reporters-external" first_name="" last_name="externe Reporter" /> <!-- 'Reporter' auf Englisch ist eher nur der Interviewer an der Seitenlinie -->
+		<person guid="common-guests-external" first_name="" last_name="extern" />
 		<person guid="various-voice-artists" first_name="" last_name="versch. Stimmkünstler" fictional="1" levelup="0" castable="0" />
 		<person guid="various-puppeteers" first_name="" last_name="versch. Puppenspieler" fictional="1" levelup="0" castable="0" />
 		<person guid="various-models" first_name="" last_name="versch. Models" fictional="1" levelup="0" castable="0" />

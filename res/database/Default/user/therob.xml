@@ -921,7 +921,7 @@
 			</children>
 		</programme>
 
-		<programme guid="83a2a0c0-7101-4844-b792-d0ad08554981" product="3" fictional="1" licence_type="3" creator="8751" created_by="TheRob" comment="previous id: b528cab3-ec3d-43fc-TheRobCallInTest01 | Screenplay continuation added as 4e671e3f-b2e4-45d6-b40e-16757e1139dc">
+		<programme guid="83a2a0c0-7101-4844-b792-d0ad08554981" product="3" fictional="1" licence_type="3" creator="8751" created_by="TheRob" comment="previous id: b528cab3-ec3d-43fc-TheRobCallInTest01 | apparently parody of https://de.wikipedia.org/wiki/Schach_der_Gro%C3%9Fmeister | Screenplay continuation added as 4e671e3f-b2e4-45d6-b40e-16757e1139dc">
 			<title>
 				<de>Schach gegen den Meister</de>
 				<en>Chess Against the Master</en>
@@ -2347,7 +2347,7 @@
 			<targetgroupattractivity children="2" managers="1.25" />
 			<data country="DK" distribution="2" maingenre="13" subgenre="9,7" flags="12" blocks="12" price_mod="1.00" />
 			<releaseTime year_relative="-20" year_relative_max="1970" />
-			<ratings critics="81" speed="17" outcome="2" />
+			<ratings critics="81" speed="17" outcome="12" />
 		</programme>
 
 		<programme guid="f7c843e4-0d6a-44af-997a-fa5549603750" product="3" fictional="1" licence_type="1" creator="">

@@ -24,11 +24,11 @@
 		<person guid="common-amateur-actors" first_name="" last_name="Aktorzy amatorzy" nick_name="Aktorzy amatorzy" />
 		<person guid="common-amateur-director" first_name="" last_name="Reżyser amator" nick_name="Reżyser amator" />
 		<person guid="common-unnamed-person" first_name="" last_name="Nieznana" nick_name="Nieznana" />
-		<person guid="common-directors-provided" first_name="" last_name="Zapewniona reżyseria" />
-		<person guid="common-hosts-provided" first_name="" last_name="Zapewniona moderacja" />
-		<person guid="common-commentators-provided" first_name="" last_name="Zapewnieni komentatorzy" />
-		<person guid="common-reporters-provided" first_name="" last_name="Zapewnieni reporterzy" />
-		<person guid="common-guests-provided" first_name="" last_name="Zapewnieni goście" />
+		<person guid="common-directors-external" first_name="" last_name="zewnętrzna" />
+		<person guid="common-hosts-external" first_name="" last_name="zewnętrzne" />
+		<person guid="common-commentators-external" first_name="" last_name="zewnętrzni komentatorzy" />
+		<person guid="common-reporters-external" first_name="" last_name="zewnętrzni reporterzy" />
+		<person guid="common-guests-external" first_name="" last_name="zewnętrzni" />
 		<person guid="various-voice-artists" first_name="" last_name="różni artyści głosowi" />
 		<person guid="various-puppeteers" first_name="" last_name="różni animatorzy" />
 		<person guid="various-models" first_name="" last_name="różni modele" />

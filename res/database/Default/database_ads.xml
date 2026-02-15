@@ -1474,7 +1474,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			</description>
 			<conditions min_audience="2.08" min_image="12" target_group="2" />
 			<data infomercial="1" quality="20" repetitions="4" duration="3" profit="780" penalty="1220" fix_infomercial_profit="1" />
-			<availability year_range_from="1985" year_range_to="1986" />
+			<availability year_range_to="1986" />
 		</ad>
 		<ad guid="ronny-ad-allhits-02" creator="5578" created_by="Ronny">
 			<title>
@@ -1489,7 +1489,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			</description>
 			<conditions min_audience="2.083" min_image="4" target_group="3" />
 			<data infomercial="1" quality="22" repetitions="7" duration="4" profit="780" penalty="1150" fix_infomercial_profit="1" />
-			<availability year_range_from="1987" year_range_to="1988" />
+			<availability year_range_from="1987" year_range_to="1989" />
 		</ad>
 		<ad guid="ronny-ad-allhits-03" creator="5578" created_by="Ronny">
 			<title>
@@ -1504,7 +1504,52 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			</description>
 			<conditions min_audience="2.083" min_image="7" target_group="2" />
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1" />
-			<availability year_range_from="1988" year_range_to="1990" />
+			<availability year_range_from="1990" year_range_to="1992" />
+		</ad>
+		<ad guid="ab03e7a4-5ef6-48d7-87c0-743b3dca2c43">
+			<title>
+				<de>Alle Hits Best Of</de>
+				<en>All Hits Best Of</en>
+				<pl>Wszystkie Hity - Best Of</pl>
+			</title>
+			<description>
+				<de>Nicht eine CD, nicht drei, nicht fünf! Unglaubliche 8 CDs haben wir mit den Hits der letzten 5 Jahre bespielt. Euer ${brand_discman} wird nie wieder etwas anderes spielen wollen!</de>
+				<en>Not one CD, not three, not five! Incredible 8 CDs packed with the hits of the last 5 years. Your ${brand_discman} will never want to play anything else!</en>
+				<pl>Nie jedna płyta CD, nie trzy, nie pięć! Nagraliśmy aż 8 płyt CD z hitami ostatnich 5 lat. Twój ${brand_discman} już nigdy nie będzie chciał odtwarzać niczego innego!</pl>
+			</description>
+			<conditions min_audience="2.083" min_image="7" target_group="2" />
+			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1" />
+			<availability year_range_from="1993" year_range_to="1999" />
+		</ad>
+		<ad guid="3d07c2b7-9eae-4a43-bc6b-8444598e9de5">
+			<title>
+				<de>Alle Hits Best Of</de>
+				<en>All Hits Best Of</en>
+				<pl>Wszystkie Hity - Best Of</pl>
+			</title>
+			<description>
+				<de>Nicht hundert MP3s, nicht dreihundert, nicht fünfhundert! Unglaubliche 800 MP3s der Hits der letzten 10 Jahre haben wir für euch zusammengestellt. Euer MP3-Player wird nie wieder etwas anderes spielen wollen!</de>
+				<en>Not a hundred MP3s, not three hundred, not five hundred! An incredible 800 MP3s of the hits from the last 10 years compiled just for you. Your MP3 player will never want to play anything else!</en>
+				<pl>Nie sto plików MP3, nie trzysta, nie pięćset! Aż 800 plików MP3 z największymi hitami ostatnich 10 lat, zebranych specjalnie dla Ciebie. Twój odtwarzacz MP3 nie będzie chciał odtwarzać niczego innego!</pl>
+			</description>
+			<conditions min_audience="2.083" min_image="7" target_group="2" />
+			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1" />
+			<availability year_range_from="2000" year_range_to="2010" />
+		</ad>
+		<ad guid="5efc44ec-258c-42a0-a76b-a1a6bad91993">
+			<title>
+				<de>Alle Hits Best Of</de>
+				<en>All Hits Best Of</en>
+				<pl>Wszystkie Hity - Best Of</pl>
+			</title>
+			<description>
+				<de>Nicht tausend Songs, nicht dreitausend, nicht fünftausend! Unglaubliche 8.000 Hits der letzten 20 Jahre haben wir für euch zusammengestellt. Hier ist unser Ref-Code. Euer ${brand_spotify} wird nie wieder etwas anderes spielen wollen!</de>
+				<en>Not a thousand songs, not three thousand, not five thousand! An incredible 8,000 hits from the last 20 years compiled just for you. Here's our ref code. Your ${brand_spotify} will never want to play anything else!</en>
+				<pl>Nie tysiąc piosenek, nie trzy tysiące, nie pięć tysięcy! Niesamowite 8000 hitów z ostatnich 20 lat zebranych specjalnie dla Ciebie. Oto nasz kod referencyjny. Twoje ${brand_spotify} nigdy nie będzie chciało odtwarzać niczego innego!</pl>
+			</description>
+			<conditions min_audience="2.083" min_image="7" target_group="2" />
+			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="780" penalty="1100" fix_infomercial_profit="1" />
+			<availability year_range_from="2011" />
 		</ad>
 		<ad guid="ronny-ad-arthritis-01" creator="5578" created_by="Ronny">
 			<title>
@@ -1843,7 +1888,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 		<ad guid="sjaele-ad-Umrechner02" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Der große Umrechner</de>
-				<en>The bulky converter</en>
+				<en>BulkyConverter</en>
 				<pl>SprytnyKonwerter</pl>
 			</title>
 			<description>
@@ -1985,7 +2030,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 			</title>
 			<description>
 				<de>Herausgegeben in 2 Bänden. Band 1 bereits heute erhältlich. Jedoch können wir vorraussagen, dass Band 2 nie erscheinen wird, da wir nicht in die Zukunft sehen können. Ein Paradox? Singularity Verlag.</de>
-				<en>Published in 2 volumes. Volume 1 already available today. However, we can predict that Band 2 will never appear, as we can not see into the future. A paradox? Singularity Publishing.</en>
+				<en>Published in 2 volumes. Volume 1 already available today. However, we can predict that Volume 2 will never appear, as we can not see into the future. A paradox? Singularity Publishing.</en>
 				<pl>Wydany w 2 tomach. Tom 1 jest już dziś dostępny. Możemy jednak przewidzieć, że Tom 2 nigdy się nie ukaże, ponieważ nie możemy zajrzeć w przyszłość. Paradoks? Wydawca: Osobliwość.</pl>
 			</description>
 			<conditions min_audience="20.84" min_image="37" target_group="0" />
@@ -2849,7 +2894,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 		<ad guid="speedminister-ad-rauschebart-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Käpt'n Rauschebart</de>
-				<en>Captain Bush Beard</en>
+				<en>Captain Bushbeard</en>
 				<pl>Pręty rybne Kapitana Brody</pl>
 			</title>
 			<description>

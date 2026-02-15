@@ -4390,14 +4390,14 @@
 
 		<news guid="2edb1c9d-311e-4998-9ad1-d7ee93a054ce" type="0" creator="9551" comment="#maintenancecritical">
 			<title>
-				<de>${celebfirst} ${celeblast} malt Kühe</de>
-				<en>${celebfirst} ${celeblast} paints cows</en>
-				<pl>${celebfirst} ${celeblast} maluje krowy</pl>
+				<de>${celebfirst} ${celeblast} malt ${cows_acc}</de>
+				<en>${celebfirst} ${celeblast} paints ${cows_acc}</en>
+				<pl>${celebfirst} ${celeblast} maluje ${cows_acc}</pl>
 			</title>
 			<description>
-				<de>${celebfirst} ${celeblast} widmet sich der Malerei. Seine erste Ausstellung „Cows in Chaos“ zeigt abstrakte Porträts von Kühen - Kritiker sind beeindruckt.</de>
-				<en>${celebfirst} ${celeblast} turns to painting. His first exhibition, "Cows in Chaos," features abstract portraits of cows - critics are impressed.</en>
-				<pl>${celebfirst} ${celeblast} poświęca się malarstwu. Jego pierwsza wystawa „Cows in Chaos” przedstawia abstrakcyjne portrety krów - krytycy są zachwyceni.</pl>
+				<de>${celebfirst} ${celeblast} widmet sich der Malerei. Seine erste Ausstellung „${cowsinchaos}“ zeigt abstrakte Porträts von ${cows_dat} - ${criticsare}.</de>
+				<en>${celebfirst} ${celeblast} turns to painting. His first exhibition, "${cowsinchaos}", features abstract portraits of ${cows_dat} - ${criticsare}.</en>
+				<pl>${celebfirst} ${celeblast} poświęca się malarstwu. Jego pierwsza wystawa „${cowsinchaos}” przedstawia abstrakcyjne portrety ${cows_dat} - ${criticsare}.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -4431,6 +4431,67 @@
 				<celeb_26>${.lte:currentyear:1990:"a86fd32f-09b5-409a-b4cf-4a93df10be3d":"d92ad3b1-e2e2-455c-8b82-2ec7731607ec"}</celeb_26> <!-- Peter Ustinov or Nicolas Cage -->
 				<celebfirst>${.person:"${.csv:celeb_${i}:0}":"firstname"}</celebfirst>
 				<celeblast>${.person:"${.csv:celeb_${i}:0}":"lastname"}</celeblast>
+				<animal_csv>
+					<de>cow;Kühe;Kühen|
+						raccoon;Waschbären;Waschbären|
+						sloth;Faultiere;Faultieren|
+						skunk;Stinktiere;Stinktieren|
+						armadillo;Gürteltiere;Gürteltieren|
+						platypus;Schnabeltiere;Schnabeltieren|
+						anteater;Ameisenbären;Ameisenbären|
+						coati;Nasenbären;Nasenbären|
+						opossum;Opossums;Opossums|
+						honeybadger;Honigdachse;Honigdachsen|
+						tenrec;Borstenigel;Borstenigeln
+					</de>
+					<en>cow;cows;cows|
+						raccoon;raccoons;raccoons|
+						sloth;sloths;sloths|
+						skunk;skunks;skunks|
+						armadillo;armadillos;armadillos|
+						platypus;platypuses;platypuses|
+						anteater;anteaters;anteaters|
+						coati;coatis;coatis|
+						opossum;opossums;opossums|
+						honeybadger;honey badgers;honey badgers|
+						tenrec;tenrecs;tenrecs
+					</en>
+					<pl>cow;krowy;krowom|
+						raccoon;szopy pracze;szopom praczom|
+						sloth;leniwce;leniwcom|
+						skunk;skunksy;skunksom|
+						armadillo;pancerniki;pancernikom|
+						platypus;dziobaki;dziobakom|
+						anteater;mrówniki;mrównikom|
+						coati;koati;koati|
+						opossum;opossumy;opossumom|
+						honeybadger;borsuki miodowe;borsukom miodowym|
+						tenrec;tenreki;tenrekom
+					</pl>
+				</animal_csv>
+				<cows_acc>
+					<all>${.csv:animal_csv:1}</all>
+				</cows_acc>
+				<cows_dat>
+					<all>${.csv:animal_csv:2}</all>
+				</cows_dat>
+				<exhib_cow>Cows in Chaos|Bovine Ballet|Moo-dern Art|Heifers in Hues|Cud-chewing Canvas</exhib_cow>
+				<exhib_raccoon>Bandits in the Moonlight|Trash Panda Portraiture|Masked Marauders on Canvas|The Midnight Heist Collection|Rinsing &amp; Reflecting</exhib_raccoon>
+				<exhib_sloth>Deliberate Dabs|The Slow Motion Exhibition|A Study in Stillness|Branching Out (Very Slowly)|The Epoch of an Eyelid</exhib_sloth>
+				<exhib_skunk>Striking Scents (An Olfactory-Optical Experience)|Bold Statements in Black &amp; White|Aroma &amp; Art|The Essence of Nature|The Defensive Line</exhib_skunk>
+				<exhib_armadillo>The Armored Avant-Garde|Rolling Avant-Garde|Scutes and Suites|The Ball Collection|Plates of Pigment</exhib_armadillo>
+				<exhib_platypus>The Evolutionary Enigma Series|Duck-Billed Dissonance|Mammalian Mashup|Venomous Vibes|Perplexing Perspective</exhib_platypus>
+				<exhib_anteater>Snout Strokes|The Great Ingestation|Tongue-in-Cheek|Formic Forays|Nose to the Canvas</exhib_anteater>
+				<exhib_coati>Snoots &amp; Troots|The Ringtailed Rascals|Probescissorism|Upward Mobility|Carnival of Coatis</exhib_coati>
+				<exhib_opossum>The Suspended Animation Series|Playing Possum: A Performance|Grin and Bear It (You Can't)|${.programme:"2a4accd5-764a-4e98-b794-4270824dd444":"title"} (Pouches Included)|Nocturnal Nonsense</exhib_opossum>
+				<exhib_honeybadger>Sett-ling the Score|Black, White &amp; Bold|Underearth Undertones|The Uncompromising Line|Stripe of Defiance|Bad-Ass|Doesn't Give An F|Don't Give A Shit</exhib_honeybadger>
+				<exhib_tenrec>Quilled Confusion|The Madagascar Medley|Prickly Polyphony|A Study in Convergence</exhib_tenrec> <!-- TODO: Sonic Youth reference -->
+				<cowsinchaos>${exhib_${.csv:animal_csv:0}}</cowsinchaos>
+				<criticsare>
+					<de>Kritiker sind beeindruckt|Fachwelt ist hin und weg|Kritiker feiern eine unerwartete Genialität|Gelobt wird der mutige, unkonventionelle Zugang|Resonanz ist verhalten bis wohlwollend|Experten rätseln über die tiefere Bedeutung|Meinungen gehen stark auseinander|Kritiker spotten über den „Promi-Dilettantismus“|verrissen als „absoluter Tiefpunkt der modernen Kunst“|was einen Shitstorm in Kunstkreisen auslöst</de>
+					<en>critics are impressed|the art world is utterly dazzled|critics are hailing an unexpected genius|praised for its bold, unconventional approach|the reception is muted yet polite|experts are puzzled by its deeper meaning|reviews are sharply divided|critics are deriding the “celebrity dilettantism“|panned as “the absolute low point of modern art“|which triggered a shitstorm in art circles</en>
+					<pl>Krytycy są zachwyceni|Świat sztuki jest kompletnie oczarowany|Krytycy wychwalają nieoczekiwany geniusz|Chwalony za odważne, niekonwencjonalne podejście|Przyjęcie jest powściągliwe, choć życzliwe|Eksperci głowią się nad głębszym znaczeniem|Recenzje są mocno podzielone|Krytycy wyśmiewają „celebrycki dyletantyzm“|Oceniona jako „absolutne dno sztuki nowoczesnej“|Wystawa wywołała burzę w kręgach artystycznych</pl>
+				</criticsare>
 			</variables>
 			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
@@ -5003,10 +5064,10 @@
 				<en>TVTower is surprisingly considering an expansion of its broadcast area into the so-called "Valley of the Clueless". Technicians say it's "feasible", politicians say "theoretically conceivable", and lawyers say "not entirely forbidden yet". Talks are ongoing.</en>
 				<pl>TVTower zaskakująco rozważa rozszerzenie zasięgu nadawania na tak zwaną "Dolinę Niewtajemniczonych". Technicy mówią o "wykonalnym", politycy o "teoretycznie możliwym", a prawnicy o "jeszcze nie do końca zakazanym". Trwają rozmowy.</pl>
 			</description>
-			<data genre="4" price="1" quality_min="40" quality_max="70" flags="2" fictional="1" />
+			<data genre="4" price="1" quality_min="40" quality_max="70" flags="2" fictional="1" happen_time="5,0,0,3,5,1,30" />
 			<availability year_range_to="1989" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="4bf177c8-ac77-4055-89d6-47bed77d3e9d" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="4bf177c8-ac77-4055-89d6-47bed77d3e9d" />
 			</effects>
 		</news>
 		<news guid="4bf177c8-ac77-4055-89d6-47bed77d3e9d" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5017,12 +5078,12 @@
 			</title>
 			<description>
 				<de>Das Ministerium für Post- und Fernmeldewesen bestätigt Tests mit westlichen Privatsendern im Raum Dresden. Ziel sei es, „die Empfangslage realistisch einzuschätzen“. Kritiker vermuten, dass man endlich mitreden möchte, wenn von Serienfinalen die Rede ist.</de>
-				<en>The Ministry for Post and Telecommunications confirms tests with western private broadcasters in the Dresden area. The goal is said to be "to realistically assess the reception situation". Critics suspect they finally want to join the conversation when series finales are discussed.</en>
+				<en>The Ministry for Post and Telecommunications confirms tests with western private broadcasters in the Dresden area. The goal is "to realistically assess the reception situation". Critics suspect they finally want to join the conversation when series finales are discussed.</en>
 				<pl>Ministerstwo Łączności potwierdza testy z zachodnimi prywatnymi nadawcami w rejonie Drezna. Celem ma być „realistyczna ocena sytuacji odbioru”. Krytycy podejrzewają, że w końcu chcą móc uczestniczyć w rozmowach, gdy mowa o finałach seriali.</pl>
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="4d141ecd-596a-4a4a-8721-d0f1269cfd05" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="4d141ecd-596a-4a4a-8721-d0f1269cfd05" />
 			</effects>
 		</news>
 		<news guid="4d141ecd-596a-4a4a-8721-d0f1269cfd05" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5038,7 +5099,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="fde645d6-d9cd-4381-94e2-4957e63a5880" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="fde645d6-d9cd-4381-94e2-4957e63a5880" />
 			</effects>
 		</news>
 		<news guid="fde645d6-d9cd-4381-94e2-4957e63a5880" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5054,7 +5115,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="1899465d-4a7d-4c1d-a3b0-39c6d961243f" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="1899465d-4a7d-4c1d-a3b0-39c6d961243f" />
 			</effects>
 		</news>
 		<news guid="1899465d-4a7d-4c1d-a3b0-39c6d961243f" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5070,7 +5131,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="ea53b26c-6d8f-4fad-8d2d-7d7533b58e41" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="ea53b26c-6d8f-4fad-8d2d-7d7533b58e41" />
 			</effects>
 		</news>
 		<news guid="ea53b26c-6d8f-4fad-8d2d-7d7533b58e41" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5086,7 +5147,7 @@
 			</description>
 			<data genre="4" price="1" quality_min="30" quality_max="60" flags="2" fictional="1" />
 			<effects>
-				<effect trigger="happen" type="triggernews" time="1,18,36" news="b4ad095c-91b3-4e69-a5d5-23c84cf80973" />
+				<effect trigger="happen" type="triggernews" time="1,12,24" news="b4ad095c-91b3-4e69-a5d5-23c84cf80973" />
 			</effects>
 		</news>
 		<news guid="b4ad095c-91b3-4e69-a5d5-23c84cf80973" type="2" thread_guid="af1b67a7-36e7-4e90-9300-d1fcbb9231db" creator="9551">
@@ -5105,9 +5166,9 @@
 
 		<news guid="7f36157e-1ec7-41f0-8a72-1596ec578306" type="0" thread_guid="3ec866b1-9315-4f58-8493-66eac2f45d01" creator="9551" comment="https://en.wikipedia.org/wiki/False_memory#Mandela_effect">
 			<title>
-				<de>${mandela} tot in Zelle?</de>
-				<en>${mandela} dead in cell?</en>
-				<pl>${mandela} martwy w celi?</pl>
+				<de>${nelson} ${mandela} tot in Zelle?</de>
+				<en>${nelson} ${mandela} dead in cell?</en>
+				<pl>${nelson} ${mandela} martwy w celi?</pl>
 			</title>
 			<description>
 				<de>Beamte des Gefängnisses auf Robben Island melden überraschend, ${nelson} ${mandela} sei in seiner Zelle verstorben. Ein Sprecher des Justizministeriums bestätigt „interne Hinweise“, doch Details bleiben unklar. Internationale Beileidsbekundungen treffen umgehend ein.</de>
@@ -5373,7 +5434,7 @@
 						Sweden;senior hiking trips are treated as national security training|
 						Norway;pensioners buy fishing licenses instead of government bonds|
 						Finland;saunas keep seniors healthy - health insurance saves billions|
-						Denmark;eating, drinks, small gifts, and cozy gatherings - "hygge" seniors drive the domestic market|
+						Denmark;- eating, drinks, small gifts, and cozy gatherings - "hygge" seniors drive the domestic market|
 						Austria;seniors dominate traditional cafés with plenty of "Wiener Schmäh", and that not only in Vienna - annual revenues rise|
 						Switzerland;nursing homes invest in golf - local services, gastronomy, and tourism benefit
 					</en>
@@ -5386,8 +5447,8 @@
 						Szwecja;wycieczki piesze seniorów traktowane jako szkolenie bezpieczeństwa narodowego|
 						Norwegia;emeryci kupują licencje wędkarskie zamiast obligacji państwowych|
 						Finlandia;sauna utrzymuje seniorów w zdrowiu - ubezpieczenia zdrowotne oszczędzają miliardy|
-						Dania;jedzenie, napoje, drobne prezenty i przytulne spotkania - seniorzy „hygge” napędzają rynek krajowy|
-						Austria; seniorzy dominują w tradycyjnych kawiarniach, emanując „Wiener Schmäh”, i to nie tylko w Wiedniu - roczne przychody rosną|
+						Dania;- jedzenie, napoje, drobne prezenty i przytulne spotkania - seniorzy „hygge” napędzają rynek krajowy|
+						Austria;seniorzy dominują w tradycyjnych kawiarniach, emanując „Wiener Schmäh”, i to nie tylko w Wiedniu - roczne przychody rosną|
 						Szwajcaria;domy opieki inwestują w pola golfowe - korzystają lokalne usługi, gastronomia i turystyka
 					</pl>
 				</countries_csv>
@@ -5532,9 +5593,9 @@
 				<pl>Podatek od bananów</pl>
 			</title>
 			<description>
-				<de>Ein ${eu}-Politiker fordert eine Steuer auf importierte Bananen, um lokale Obstbauern zu schützen. ${inaddition}Kritiker nennen es eine „krumme Steuer“.</de>
-				<en>An ${eu} politician proposes a tax on imported bananas to protect local fruit growers. ${inaddition}Critics dub it a "crooked tax".</en>
-				<pl>Polityk ${eu} zaproponował podatek od importowanych bananów w celu ochrony lokalnych sadowników. ${inaddition}Krytycy nazwali go „krzywym podatkiem“.</pl>
+				<de>Ein ${eu}-Politiker fordert eine Steuer auf importierte Bananen, um lokale Obstbauern zu schützen. ${inaddition}Kritiker nennen sie ein „krummes Ding“.</de>
+				<en>An ${eu} politician proposes a tax on imported bananas to protect local fruit growers. ${inaddition}Critics dub it a "crooked thing".</en>
+				<pl>Polityk ${eu} zaproponował podatek od importowanych bananów w celu ochrony lokalnych sadowników. ${inaddition}Krytycy nazwali go „krzywą sprawą”.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
@@ -5558,16 +5619,16 @@
 				<pl>Bruksela: Kryzys Bananowy</pl>
 			</title>
 			<description>
-				<de>Die ${eu} beschließt Mindestkrümmung für Bananen. Bauern protestieren und bezeichnen dies als „krummes Verbot“. Verbraucher fragen sich, ob gerade Bananen der Schlüssel zur europäischen Einheit sind.</de>
-				<en>The ${eu} mandates a minimum banana curvature. Farmers protest, calling it a "crooked ban". Consumers wonder if bananas are the key to European unity.</en>
+				<de>Die ${eu} beschließt Mindestkrümmung für Bananen. Bauern protestieren und bezeichnen das als „krummes Ding“. Verbraucher fragen sich, ob gerade Bananen der Schlüssel zur europäischen Einheit sind.</de>
+				<en>The ${eu} mandates a minimum banana curvature. Farmers protest, calling it "something crooked". Consumers wonder if bananas are the key to European unity.</en>
 				<pl>${eu} wprowadza minimalne zakrzywienie bananów. Rolnicy protestują, nazywając to „krzywym zakazem”. Konsumenci zastanawiają się, czy banany uratują jedność Europy.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<eu>
-					<de>${.lte:currentyear:1994:"EU":"EG"}</de>
-					<en>${.lte:currentyear:1994:"EU":"EC"}</en>
-					<pl>${.lte:currentyear:1994:"UE":"WE"}</pl>
+					<de>${.gte:currentyear:1994:"EU":"EG"}</de>
+					<en>${.gte:currentyear:1994:"EU":"EC"}</en>
+					<pl>${.gte:currentyear:1994:"UE":"WE"}</pl>
 				</eu>
 			</variables>
 			<data genre="0" price="1" quality_min="5" quality_max="40" fictional="1" />
@@ -5731,7 +5792,7 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<city_csv>
-					<de>Rome;in Rome|Neapel;in Neapel|Bari;in Bari|Barcelona;in Barcelona|Valencia;in Valencia|Sevilla;in Sevilla|Granada;in Granada|Córdoba;in Córdoba|Lissabon;in Lissabon|Porto;in Porto|Athen;in Athen|Thessaloniki;in Thessaloniki|Rhodos;in Rhodos|Korfu;in Korfu|Malta;in Malta|Dubrovnik;in Dubrovnik</de>
+					<de>Rom;in Rom|Neapel;in Neapel|Bari;in Bari|Barcelona;in Barcelona|Valencia;in Valencia|Sevilla;in Sevilla|Granada;in Granada|Córdoba;in Córdoba|Lissabon;in Lissabon|Porto;in Porto|Athen;in Athen|Thessaloniki;in Thessaloniki|Rhodos;in Rhodos|Korfu;in Korfu|Malta;in Malta|Dubrovnik;in Dubrovnik</de>
 					<en>Rome;in Rome|Naples;in Naples|Bari;in Bari|Barcelona;in Barcelona|Valencia;in Valencia|Seville;in Seville|Granada;in Granada|Córdoba;in Córdoba|Lisbon;in Lisbon|Porto;in Porto|Athens;in Athens|Thessaloniki;in Thessaloniki|Rhodes;in Rhodes|Corfu;in Corfu|Malta;in Malta|Dubrovnik;in Dubrovnik</en>
 					<pl>Rzym;Rzymu|Neapol;Neapolu|Bari;Bari|Barcelona;Barcelony|Walencja;Walencji|Sewilla;Sewilli|Granada;Granady|Kordoba;Kordoby|Lizbona;Lizbony|Porto;Porto|Ateny;Aten|Saloniki;Salonik|Rodos;Rodos|Korfu;Korfu|Malta;Malty|Dubrownik;Dubrownika</pl>
 				</city_csv>
@@ -6025,7 +6086,7 @@
 				<pl>${town}: Wyrzucenie z boiska za słabe wyniki</pl>
 			</title>
 			<description>
-				<de>Beim Liga-Spiel in ${town} war jemand mit seiner Leistung sehr unzufrieden. Es war der Schiedsrichter. Er zückte die Rote Karte - für sich selbst! Grund: „Katastrophales Pfeifen“. Spieler und Publikum applaudieren.</de>
+				<de>Beim Liga-Spiel in ${town} war jemand mit seiner Leistung sehr unzufrieden. Es war der Schiedsrichter. Er zückte die Rote Karte - gegen sich selbst! Grund: „Katastrophales Pfeifen“. Spieler und Publikum applaudieren.</de>
 				<en>During the league game in ${town}, someone was very unhappy with his performance. It was the referee. He pulled out the red card - for himself! Reason: "Disastrous officiating." Players and audience applaud.</en>
 				<pl>Podczas meczu ligowego w mieście ${town} ktoś był bardzo niezadowolony ze swojego występu. Był to sędzia. Wyciągnął czerwoną kartkę - dla siebie! Powód: „Katastrofalne sędziowanie”. Gracze i publiczność oklaskują.</pl>
 			</description>
@@ -6334,21 +6395,21 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<adaptation_csv>
-					<de>Shostakowitsch;Broadway-Musical;Broadway adaptiert Shostakowitschs Leben als Musical;witzig;Die russische Botschaft;„den schrillen, kommerzialisierten Kontext“|
-						Beethovens Fünfte;Rap-Musical;Die New Yorker Philharmoniker verwandeln Beethovens Fünfte in ein Rap-Musical;akzentuiert;Die deutsche Botschaft;den skandalösen Remix|
-						Hamlet;Anime-Oper;Ein japanisches Studio adaptierte Hamlet als zweistündige Anime-Oper;bizarr brillant;Der British Council;die respektlose Interpretation|
-						Michelangelos David;${vrexperience};Auf einer Technologiemesse in San Francisco erlebten die Besucher den David ${infullvirtualreality};surreal, aber unterhaltsam;Die italienische Botschaft;die „übermäßige Trivialisierung“|
-						Mozarts Zauberflöte;virales Phänomen;Die Zauberflöte wurde als ${tiktok} adaptiert;witzig;Die österreichische Botschaft;die „Fehlinterpretation des Kulturerbes“|
-						Van Gogh;essbare Kunstausstellung;Besucher der Tate Modern in London konnten Van Goghs Sternennacht als Dessert genießen;frech-kühn;Die niederländische Botschaft;den „kulturellen Frevel“|
-						Terrakotta-Armee;Laser-Light-Show;Im Deutschen Museum in München wurde die Terrakotta-Armee in eine Laser-Light-Show mit synchronisierter Musik verwandelt;spektakulär futuristisch;Die chinesische Botschaft;die „Verfälschung des historischen Erbes“
+					<de>Shostakowitsch;Broadway-Musical;Broadway adaptiert Shostakowitschs Leben als Musical;witzig;die russische Botschaft;„den schrillen, kommerzialisierten Kontext“|
+						Beethovens Fünfte;Rap-Musical;Die New Yorker Philharmoniker verwandeln Beethovens Fünfte in ein Rap-Musical;akzentuiert;die deutsche Botschaft;den skandalösen Remix|
+						Hamlet;Anime-Oper;Ein japanisches Studio adaptierte Hamlet als zweistündige Anime-Oper;bizarr brillant;der British Council;die respektlose Interpretation|
+						Michelangelos David;${vrexperience};Auf einer Technologiemesse in San Francisco erlebten die Besucher den David ${infullvirtualreality};surreal, aber unterhaltsam;die italienische Botschaft;die „übermäßige Trivialisierung“|
+						Mozarts Zauberflöte;virales Phänomen;Die Zauberflöte wurde als ${tiktok} adaptiert;witzig;die österreichische Botschaft;die „Fehlinterpretation des Kulturerbes“|
+						Van Gogh;essbare Kunstausstellung;Besucher der Tate Modern in London konnten Van Goghs Sternennacht als Dessert genießen;frech-kühn;die niederländische Botschaft;den „kulturellen Frevel“|
+						Terrakotta-Armee;Laser-Light-Show;Im Deutschen Museum in München wurde die Terrakotta-Armee in eine Laser-Light-Show mit synchronisierter Musik verwandelt;spektakulär futuristisch;die chinesische Botschaft;die „Verfälschung des historischen Erbes“
 					</de>
 					<en>Shostakovich;a Broadway musical;Broadway adapts Shostakovich's life into a musical;witty;Russia's embassy;the "flashy, commercialized context"|
-						Beethoven's Fifth;a rap musical;The New York Philharmonic turns Beethoven's Fifth into a rap musical;accentuated;The Germany embassy;the "scandalous remix"|
-						Hamlet;an anime opera;A Japanese studio adapted Hamlet into a 2-hour anime opera;bizarrely brilliant;The British Council;the "disrespectful interpretation"|
-						Michelangelo's David;${vrexperience};At a tech fair in San Francisco, visitors experienced David ${infullvirtualreality};surreal yet entertaining;The Italian Embassy;"excessive trivialization"|
-						Mozart's Magic Flute;a viral sensation;The Magic Flute was adapted into a ${tiktok} dance challenge;witty;The Austrian Embassy;"misrepresentation of cultural heritage"|
-						Van Gogh;an edible art exhibit;Visitors at the Tate Modern in London could taste Van Gogh's Starry Night as desserts;delightfully audacious;The Dutch Embassy;"cultural sacrilege"|
-						Terracotta Army;a laser light show;At the Deutsches Museum, Munich, the Terracotta Army was transformed into a laser light show with synchronized music;spectacularly futuristic;The Chinese Embassy;"distorting historical heritage"
+						Beethoven's Fifth;a rap musical;The New York Philharmonic turns Beethoven's Fifth into a rap musical;accentuated;the Germany embassy;the "scandalous remix"|
+						Hamlet;an anime opera;A Japanese studio adapted Hamlet into a 2-hour anime opera;bizarrely brilliant;the British Council;the "disrespectful interpretation"|
+						Michelangelo's David;${vrexperience};At a tech fair in San Francisco, visitors experienced David ${infullvirtualreality};surreal yet entertaining;the Italian Embassy;"excessive trivialization"|
+						Mozart's Magic Flute;a viral sensation;The Magic Flute was adapted into a ${tiktok} dance challenge;witty;the Austrian Embassy;"misrepresentation of cultural heritage"|
+						Van Gogh;an edible art exhibit;Visitors at the Tate Modern in London could taste Van Gogh's Starry Night as desserts;delightfully audacious;the Dutch Embassy;"cultural sacrilege"|
+						Terracotta Army;a laser light show;At the Deutsches Museum, Munich, the Terracotta Army was transformed into a laser light show with synchronized music;spectacularly futuristic;the Chinese Embassy;"distorting historical heritage"
 					</en>
 					<pl>Szostakowicz;musical Broadway;Broadway przerabia życie Szostakowicza na musical;dowcipny;Ambasada Rosji;w „przesadnie efektownym, komercyjnym kontekście“|
 						V Symfonia Beethovena;musical rap;Nowojorska Filharmonia przerabia V Symfonię Beethovena na musical rap;akcentowaniem;Ambasada Niemiec;„skandaliczny remiks“|
@@ -6398,42 +6459,83 @@
 
 		<news guid="d31e347f-320d-4ce9-8c39-a0c9d4f87782" type="0" thread_guid="d511047a-410c-4f26-9e80-1a1cb030a6b8" creator="9551">
 			<title>
-				<de>${concert} ${inspace}</de>
-				<en>${concert} ${inspace}</en>
-				<pl>${concert} ${inspace}</pl>
+				<de>${concert_culture} ${inspace_culture}</de>
+				<en>${concert_culture} ${inspace_culture}</en>
+				<pl>${concert_culture} ${inspace_culture}</pl>
 			</title>
 			<description>
-				<de>${aspacecompany} sponsorte ${thefirstsymphony} ${inzerogravity}. ${theconductorstruggled}.</de>
-				<en>${aspacecompany} sponsored ${thefirstsymphony} ${inzerogravity}. ${theconductorstruggled}.</en>
-				<pl>${aspacecompany} sponsorowało ${thefirstsymphony} ${inzerogravity}. ${theconductorstruggled}.</pl>
+				<de>${aspacecompany_culture} sponsorte ${thefirstsymphony_culture} ${inzerogravity_culture}. ${theconductorstruggled}.</de>
+				<en>${aspacecompany_culture} sponsored ${thefirstsymphony_culture} ${inzerogravity_culture}. ${theconductorstruggled}.</en>
+				<pl>${aspacecompany_culture} sponsorowało ${thefirstsymphony_culture} ${inzerogravity_culture}. ${theconductorstruggled}.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
-				<concert>
-					<de>Konzert|Orchesterkonzert|Kammerorchester|Sinfonie</de>
-					<en>Concert|Orchestral concert|Chamber orchestra|Symphony</en>
-					<pl>Koncert|Koncert orkiestrowy|Orkiestra kameralna|Symfonia</pl>
-				</concert>
-				<inspace>
-					<de>im All|in der Schwerelosigkeit|im Weltall|auf der ${iss}|im Orbit</de>
-					<en>in space|in zero gravity|in outer space|on the ${iss}|in orbit</en>
-					<pl>w kosmosie|w stanie nieważkości|w przestrzeni kosmicznej|na ${iss}|na orbicie</pl>
-				</inspace>
-				<aspacecompany>
-					<de>Ein Raumfahrtunternehmen|Ein Multimilliardär</de>
-					<en>A space company|A billionaire</en>
-					<pl>Firma kosmiczna|Multimiliarder</pl>
-				</aspacecompany>
-				<thefirstsymphony>
-					<de>das erste Sinfoniekonzert|das erste Orchesterkonzert</de>
-					<en>the first symphony concert|the first orchestral concert</en>
-					<pl>pierwszy koncert symfoniczny|pierwszy koncert orkiestrowy</pl>
-				</thefirstsymphony>
-				<inzerogravity>
-					<de>in der Schwerelosigkeit|im Weltall|${ontheinternational}|im Orbit</de>
-					<en>in zero gravity|in outer space|${ontheinternational}|in orbit</en>
-					<pl>w stanie nieważkości|w kosmosie|${ontheinternational}|na orbicie</pl>
-				</inzerogravity>
+				<!-- TODO: Simpler way to reuse same variable collection with different outcomes? -->
+				<concert_csv>
+					<de>Konzert;Orchesterkonzert;Kammerorchester;Sinfonie</de>
+					<en>Concert;Orchestral concert;Chamber orchestra;Symphony</en>
+					<pl>Koncert;Koncert orkiestrowy;Orkiestra kameralna;Symfonia</pl>
+				</concert_csv>
+				<concert_culture_i>0|1|2|3</concert_culture_i>
+				<concert_tech_i>0|1|2|3</concert_tech_i>
+				<concert_culture>
+					<all>${.csv:concert_csv:concert_culture_i}</all>
+				</concert_culture>
+				<concert_tech>
+					<all>${.csv:concert_csv:concert_tech_i}</all>
+				</concert_tech>
+				<inspace_csv>
+					<de>im All;in der Schwerelosigkeit;im Weltall;auf der ${iss};im Orbit</de>
+					<en>in space;in zero gravity;in outer space;on the ${iss};in orbit</en>
+					<pl>w kosmosie;w stanie nieważkości;w przestrzeni kosmicznej;na ${iss};na orbicie</pl>
+				</inspace_csv>
+				<inspace_culture_i>0|1|2|3|4</inspace_culture_i>
+				<inspace_tech_i>0|1|2|3|4</inspace_tech_i>
+				<inspace_culture>
+					<all>${.csv:inspace_csv:inspace_culture_i}</all>
+				</inspace_culture>
+				<inspace_tech>
+					<all>${.csv:inspace_csv:inspace_tech_i}</all>
+				</inspace_tech>
+				<aspacecompany_csv>
+					<de>Ein Raumfahrtunternehmen;Ein Multimilliardär</de>
+					<en>A space company;A billionaire</en>
+					<pl>Firma kosmiczna;Multimiliarder</pl>
+				</aspacecompany_csv>
+				<aspacecompany_culture_i>0|1</aspacecompany_culture_i>
+				<aspacecompany_tech_i>0|1</aspacecompany_tech_i>
+				<aspacecompany_culture>
+					<all>${.csv:aspacecompany_csv:aspacecompany_culture_i}</all>
+				</aspacecompany_culture>
+				<aspacecompany_tech>
+					<all>${.csv:aspacecompany_csv:aspacecompany_tech_i}</all>
+				</aspacecompany_tech>
+				<thefirstsymphony_csv>
+					<de>das erste Sinfoniekonzert;das erste Orchesterkonzert</de>
+					<en>the first symphony concert;the first orchestral concert</en>
+					<pl>pierwszy koncert symfoniczny;pierwszy koncert orkiestrowy</pl>
+				</thefirstsymphony_csv>
+				<thefirstsymphony_culture_i>0|1</thefirstsymphony_culture_i>
+				<thefirstsymphony_tech_i>0|1</thefirstsymphony_tech_i>
+				<thefirstsymphony_culture>
+					<all>${.csv:thefirstsymphony_csv:thefirstsymphony_culture_i}</all>
+				</thefirstsymphony_culture>
+				<thefirstsymphony_tech>
+					<all>${.csv:thefirstsymphony_csv:thefirstsymphony_tech_i}</all>
+				</thefirstsymphony_tech>
+				<inzerogravity_csv>
+					<de>in der Schwerelosigkeit;im Weltall;${ontheinternational};im Orbit</de>
+					<en>in zero gravity;in outer space;${ontheinternational};in orbit</en>
+					<pl>w stanie nieważkości;w kosmosie;${ontheinternational};na orbicie</pl>
+				</inzerogravity_csv>
+				<inzerogravity_culture_i>0|1|2|3</inzerogravity_culture_i>
+				<inzerogravity_tech_i>0|1|2|3</inzerogravity_tech_i>
+				<inzerogravity_culture>
+					<all>${.csv:inzerogravity_csv:inzerogravity_culture_i}</all>
+				</inzerogravity_culture>
+				<inzerogravity_tech>
+					<all>${.csv:inzerogravity_csv:inzerogravity_tech_i}</all>
+				</inzerogravity_tech>
 				<theconductorstruggled>
 					<de>Der Dirigent kämpfte mit fliegenden Geigenbögen|Die schwebenden Instrumente entglitten den Musikern|Die Notenblätter schwebten durch die Gegend|Die Streicher waren kaum hörbar, aber die Kulisse überwältigend|Die Geigen entglitten den Musikern|Ein Hornist verlor sein Instrument in der Luftschleuse|Der Dirigent musste am Pult festgeschnallt werden|Die Kontrabässe wurden mit Sicherheitsgurten verankert|Die Pauken wurden weggeschlagen und prallten an die Raumkapselwand|Näher am Mond als je zuvor wurde die Mondscheinsonate gespielt</de>
 					<en>The conductor struggled with flying bows|The floating instruments slipped away from the musicians|Sheets of music drifted around|The strings were barely audible, but the view was breathtaking|The violins slipped away from the players|A hornist lost his instrument in the airlock|The conductor had to be strapped to the podium|The double basses were secured with seatbelts|The timpani bounced off and hit the capsule wall|Closer to the Moon than ever before, the Moonlight Sonata was played</en>
@@ -6459,14 +6561,14 @@
 		</news>
 		<news guid="714f62ae-cf1d-4463-9e62-19a14d192333" type="2" thread_guid="d511047a-410c-4f26-9e80-1a1cb030a6b8" creator="9551">
 			<title>
-				<de>${concert} ${inspace}</de>
-				<en>${concert} ${inspace}</en>
-				<pl>${concert} ${inspace}</pl>
+				<de>${concert_tech} ${inspace_tech}</de>
+				<en>${concert_tech} ${inspace_tech}</en>
+				<pl>${concert_tech} ${inspace_tech}</pl>
 			</title>
 			<description>
-				<de>${aspacecompany} sponsorte ${thefirstsymphony} ${inzerogravity}. ${anastronautcalledit}.</de>
-				<en>${aspacecompany} sponsored ${thefirstsymphony} ${inzerogravity}. ${anastronautcalledit}.</en>
-				<pl>${aspacecompany} sponsorowało ${thefirstsymphony} ${inzerogravity}. ${anastronautcalledit}.</pl>
+				<de>${aspacecompany_tech} sponsorte ${thefirstsymphony_tech} ${inzerogravity_tech}. ${anastronautcalledit}.</de>
+				<en>${aspacecompany_tech} sponsored ${thefirstsymphony_tech} ${inzerogravity_tech}. ${anastronautcalledit}.</en>
+				<pl>${aspacecompany_tech} sponsorowało ${thefirstsymphony_tech} ${inzerogravity_tech}. ${anastronautcalledit}.</pl>
 			</description>
 			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
@@ -6559,26 +6661,26 @@
 			</description>
 			<variables>
 				<festival_csv>
-					<de>London;Renaissance;punkig;in London;Rüstungen mit Lederjacken;Eine Laute als E-Gitarre und Punk-Madrigale|
-						Wien;Barock;rockig;in Wien;Perücken mit Nietengürtel;Ein Cembalo als E-Orgel und Rock-Arien|
-						Florenz;Rokoko;New-Wave;in Florenz;Rokoko-Kleider mit Neonbrillen;Eine Harfe als Theremin und Balltanz mit Leuchtstab-Gefuchtel|
-						Ulm;Mittelalter;metallisch;in Ulm;Kettenhemden mit Nietenjacken;Ein Dudelsack am Verzerrer und Metal-Minnesang|
-						Tokio;Futurismus;steinzeitlich;in Tokio;LED-Kostüme mit Fellen und Keulen;Eine Computer-Tastatur als Schwirrholz und Chiptune-Lagerfeuermusik|
-						Köln;Gotik;futuristisch;in Köln;Buntglasfenster mit Laserschwertern;Eine Kirchenorgel als Reaktorsteuerung und gruftige Walgesänge
+					<de>London;Renaissance;punkig;in London;Rüstungen mit Lederjacken;Punk-Madrigale und eine Laute als E-Gitarre|
+						Wien;Barock;rockig;in Wien;Perücken mit Nietengürtel;Rock-Arien und ein Cembalo als E-Orgel|
+						Florenz;Rokoko;New-Wave;in Florenz;Rokoko-Kleider mit Neonbrillen;Balltanz mit Leuchtstab-Gefuchtel und eine Harfe als Theremin|
+						Ulm;Mittelalter;metallisch;in Ulm;Kettenhemden mit Nietenjacken;Metal-Minnesang und ein Dudelsack am Verzerrer|
+						Tokio;Futurismus;steinzeitlich;in Tokio;LED-Kostüme mit Fellen und Keulen;Chiptune-Lagerfeuermusik und eine Computer-Tastatur als Schwirrholz|
+						Köln;Gotik;futuristisch;in Köln;Buntglasfenster mit Laserschwertern;Gruftige Walgesänge und eine Kirchenorgel als Reaktorsteuerung
 					</de>
-					<en>London;renaissance;punk;in London;armor with leather jackets;a lute as electric guitar and punk madrigals|
-						Vienna;baroque;rock;in Vienna;wigs with studded belts;a harpsichord as electric organ and rock arias|
-						Florence;rococo;New Wave;in Florence;Rococo dresses with neon glasses;a harp as theremin and ballroom dance with glowstick waving|
-						Ulm;medieval;metal;in Ulm;chainmail with studded jackets;a bagpipe with distortion and metal minnesongs|
-						Tokyo;futurism;Stone Age;in Tokyo;LED costumes with furs and clubs;a computer keyboard as a hurdy-gurdy and chiptune campfire music|
-						Cologne;gothic;futuristic;in Cologne;stained-glass windows with laser swords;a church organ as reactor control and dark whale chants
+					<en>London;renaissance;punk;in London;armor with leather jackets;punk madrigals and a lute as electric guitar|
+						Vienna;baroque;rock;in Vienna;wigs with studded belts;rock arias and a harpsichord as electric organ|
+						Florence;rococo;New Wave;in Florence;Rococo dresses with neon glasses;ballroom dance with glowstick waving and a harp as theremin|
+						Ulm;medieval;metal;in Ulm;chainmail with studded jackets;metal minnesongs and a bagpipe with distortion|
+						Tokyo;futurism;Stone Age;in Tokyo;LED costumes with furs and clubs;chiptune campfire music and a computer keyboard as a hurdy-gurdy|
+						Cologne;gothic;futuristic;in Cologne;stained-glass windows with laser swords;dark whale chants and a church organ as reactor control
 					</en>
-					<pl>Londyn;renesans;punkowy;w Londynie;zbroje z kurtkami skórzanymi;lute jako gitara elektryczna i punkowe madrygały|
-						Wiedeń;barok;rockowy;w Wiedniu;peruki z pasami z ćwiekami;cembalo jako organy elektryczne i rockowe arie|
-						Florencja;rokoko;New Wave;we Florencji;suknie rokoko z neonowymi okularami;harfa jako theremin i taniec balowy z machaniem świetlnymi pałeczkami|
-						Ulm;średniowiecze;metalowy;w Ulm;kolczugi z kurtkami z ćwiekami;dudy z przesterem i metalowe minnesongi|
-						Tokio;futuryzm;z epoki kamienia;w Tokio;kostiumy LED z futrami i maczugami;klawiatura komputerowa jako suzafon i muzyka ogniskowa w stylu chiptune|
-						Kolonia;gotyk;futurystyczny;w Kolonii;witraże z mieczami laserowymi;organy kościelne jako panel reaktora i ponure pieśni wielorybów
+					<pl>Londyn;renesans;punkowy;w Londynie;zbroje z kurtkami skórzanymi;punkowe madrygały i lute jako gitara elektryczna|
+						Wiedeń;barok;rockowy;w Wiedniu;peruki z pasami z ćwiekami;rockowe arie i cembalo jako organy elektryczne|
+						Florencja;rokoko;New Wave;we Florencji;suknie rokoko z neonowymi okularami;taniec balowy z machaniem świetlnymi pałeczkami i harfa jako theremin|
+						Ulm;średniowiecze;metalowy;w Ulm;kolczugi z kurtkami z ćwiekami;metalowe minnesongi i dudy z przesterem|
+						Tokio;futuryzm;z epoki kamienia;w Tokio;kostiumy LED z futrami i maczugami;muzyka ogniskowa w stylu chiptune i klawiatura komputerowa jako suzafon|
+						Kolonia;gotyk;futurystyczny;w Kolonii;witraże z mieczami laserowymi;ponure pieśni wielorybów i organy kościelne jako panel reaktora
 					</pl>
 				</festival_csv>
 				<london>
@@ -7041,19 +7143,19 @@
 						${davidbowie};plante;wollte;Damit die Bewohner sich schneller an Sternenstaub gewöhnen können.|
 						${eltonjohn};plante;wollte;Damit der „${mediatitle_rocketman}“ endlich ein Zuhause hat.|
 						${pinkfloyd};planten;wollten;Damit auch die dunkle Seite des Mondes bewohnter wird.|
-						${georgeclinton};plante;wollte;Für den Start des „Funkadelic Mothership Housing Project“.
+						${georgeclinton};plante;wollte;Für den Start des Funkadelic Mothership Housing Project.
 					</de>
 					<en>${michaeljackson_or_franksinatra};planned;wanted;${sothatmoonwalk}|
 						${davidbowie};planned;wanted;So that residents can get used to stardust more quickly.|
 						${eltonjohn};planned;wanted;So that the “${mediatitle_rocketman}“ finally has a home.|
 						${pinkfloyd};planned;wanted;So that the dark side of the moon becomes more inhabited.|
-						${georgeclinton};planned;wanted;For the launch of the “Funkadelic Mothership Housing Project.”
+						${georgeclinton};planned;wanted;For the launch of the Funkadelic Mothership Housing Project.
 					</en>
 					<pl>${michaeljackson_or_franksinatra};planował;chciał;${sothatmoonwalk}|
 						${davidbowie};planował;chciał;Aby mieszkańcy mogli szybciej przyzwyczaić się do pyłu gwiezdnego.|
 						${eltonjohn};planował;chciał;Aby „${mediatitle_rocketman}“ miał wreszcie swój dom.|
 						${pinkfloyd};planowali;chcieli;Aby ciemna strona Księżyca stała się bardziej zaludniona.|
-						${georgeclinton};planował;chciał;Na rozpoczęcie „Funkadelic Mothership Housing Project”.
+						${georgeclinton};planował;chciał;Na rozpoczęcie Funkadelic Mothership Housing Project.
 					</pl>
 				</moonflat_csv>
 				<michaeljackson>
@@ -7096,12 +7198,12 @@
 					<pl>${.lte:currentyear:2005:"Jednak trening został przerwany po nieporozumieniu z Radą. Teraz nazywa Moc „szo szubtelnego“.":"„Chodziło o równowagę, nie miecze świetlne” - powiedział. Doniesienia potwierdzają, że opanował Moc, delikatnie przesuwając ołówek po stole przez sześć miesięcy."}</pl>
 				</buttrainingwascut>
 				<theforceisalady> <!-- same year as burtreynolds_or_jeanclaudevandamne -->
-					<de>${.lte:currentyear:1995:"„Die Macht ist eine feine Dame... aber sie zieht einen Gentleman vor“, erklärte er dem Interviewer in einem rauchigen Lounge-Bereich voller Schnauzbärte in einer Cantina-Bar in L.A.":"„Die Macht ist wie die schönste Spaltung zwischen Licht und Dunkel... wie ein Rabe und eine Taube, die fliegen“, erklärte er während einem perfekten Spagat zwischen zwei fahrenden Landspeedern."}</de>
+					<de>${.lte:currentyear:1995:"„Die Macht ist eine feine Dame... aber sie zieht einen Gentleman vor“, erklärte er dem Interviewer in einer rauchigen Lounge voller Schnauzbärte in einer Cantina-Bar in L.A.":"„Die Macht gleicht der Schönheit der Spaltung von Licht und Dunkel... wie Krähe und Taube, fliegend“, erklärte er während eines perfekten Spagats zwischen zwei fahrenden Landspeedern."}</de>
 					<en>${.lte:currentyear:1995:"“The Force is a lady... but she prefers a gentleman,“ he explained to the interviewer in a mustachioed smokey lounge of an L.A. cantina bar.":"“The Force is the most beautiful split between the light and the dark... like a raven and a dove, flying,“ he explained, while performing a perfect split between two moving landspeeders."}</en>
 					<pl>${.lte:currentyear:1995:"„Moc to dama... ale woli dżentelmena“ - wyjaśnił rozmówcy w wąsatym, dymnym salonie kantyny w Los Angeles.":"„Moc to najpiękniejszy rozłam między światłem a mrokiem... jak kruk i gołąb, lecące“ - wyjaśnił, wykonując idealny szpagat między dwoma ruchomymi śmigaczami."}</pl>
 				</theforceisalady>
 				<namedpermanentchairman> <!-- same year as charltonheston_or_brucewillis -->
-					<de>${.lte:currentyear:1995:"„Nach Abschluss wurde ich sofort zum Vorsitzenden auf Lebenszeit der Galaktischen Laserschwert-Vereinigung ernannt“, prahlte er. „Wer mein Laserschwert haben will, muss es meinen kalten, toten Händen entreißen.“":"„Es war viel Meditieren und nicht genug Action.“ Er nennt seinen Laserschwert jetzt „Glühstab“ und verwendet die Macht hauptsächlich, um verschlossene Türen zu öffnen."}</de>
+					<de>${.lte:currentyear:1995:"„Nach Abschluss wurde ich sofort zum Vorsitzenden auf Lebenszeit der Galaktischen Laserschwert-Vereinigung ernannt“, prahlte er. „Wer mein Laserschwert haben will, muss es meinen kalten, toten Händen entreißen.“":"„Viel Meditieren, nicht genug Action.“ Er nennt sein Laserschwert jetzt „Glühstab“ und verwendet die Macht hauptsächlich zum Öffnen verschlossener Türen."}</de>
 					<en>${.lte:currentyear:1995:"“After completion I was immediately named Permanent Chairman of the Galactic Lightsaber Association,“ he boasted. “You can have my lightsaber when you pry it from my cold, dead hands.“":"“It was a lot of meditation and not enough action.“ He now refers to his lightsaber as a “glowstick“ and uses the Force primarily to open locked doors."}</en>
 					<pl>${.lte:currentyear:1995:"„Po ukończeniu trainingu zostałem natychmiast mianowany Stałym Przewodniczącym Galaktycznego Stowarzyszenia Mieczy Świetlnych“ - chwalił się. „Będziecie mogli wziąć mój miecz świetlny, gdy wydrzecie go z moich zimnych, martwych rąk.“":"„To było dużo medytacji i za mało akcji.“ Teraz nazywa swój miecz świetlny „świecącym patykiem“ i używa Mocy głównie do otwierania zamkniętych drzwi."}</pl>
 				</namedpermanentchairman>
@@ -7304,40 +7406,103 @@
 			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 
-		<news guid="b472f6bb-d9c3-4edd-90dc-7027490da8d0" type="0" creator="9551">
+		<news guid="b472f6bb-d9c3-4edd-90dc-7027490da8d0" type="0" creator="9551" comment="TODO: Vanilla Ice, Backstreet Boys, NSYNC,... | avoid: when it might come across as racist">
 			<title>
 				<de>${justintimberlake}: Tanzkurs für Affen</de>
-				<en>${justintimberlake} teaches monkeys</en>
+				<en>${justintimberlake} teaches monkeys dance</en>
 				<pl>${justintimberlake} uczy małpy tańca</pl>
 			</title>
 			<description>
-				<de>${justintimberlake} startet einen Tanzkurs für Affen in einem Zoo. „Jeder verdient Rhythmus“, sagte er. Die Tiere sind begeistert, PETA eher nicht.</de>
-				<en>${justintimberlake} launched a dance class for monkeys at a zoo. “Everyone deserves rhythm,” he said. The animals are thrilled, but PETA isn't.</en>
-				<pl>${justintimberlake} rozpoczął kurs tańca dla małp w zoo. „Każdy zasługuje na rytm” - powiedział. Zwierzęta są zachwycone, PETA niekoniecznie.</pl>
+				<de>${justintimberlake} startet einen Tanzkurs für Affen in einem Zoo. „Jeder verdient Rhythmus“, sagte ${he}. Die Tiere sind begeistert, PETA eher nicht.</de>
+				<en>${justintimberlake} launched a dance class for monkeys at a zoo. “Everyone deserves rhythm,” ${he} said. The animals are thrilled, but PETA isn't.</en>
+				<pl>${justintimberlake} rozpoczął${he} kurs tańca dla małp w zoo. „Każdy zasługuje na rytm” - powiedział${he}. Zwierzęta są zachwycone, PETA niekoniecznie.</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
-				<prince_or_justintimberlake>${.lte:currentyear:1999:"12aab252-4ac3-4f69-9e3a-8510e02a6f0d":"ce62f72d-41a3-4733-92dd-fb2f2847ab85"}</prince_or_justintimberlake>
-				<michaeljackson_or_snoopdogg>${.lte:currentyear:2004:"25f6e213-7287-4957-a74a-8185f7c82e71":"67609449-8a7e-4703-8bd1-7f5144c67e09"}</michaeljackson_or_snoopdogg>
-				<artistguid>${prince_or_justintimberlake}|${michaeljackson_or_snoopdogg}</artistguid>
-				<justintimberlake>${.person:"${artistguid}":"fullname"}</justintimberlake>
+				<artist_csv> <!-- Patrick Swayze or Justin Timberlake, Mick Jagger or Bruno Mars, John Travolta or Harry Styles, Olivia Newton John or Madonna, Shirley MacLaine or Britney Spears, Liza Minnelli or Shakira, Nina Hagen or Lady Gaga -->
+					<all>
+						${.lte:currentyear:1999:"467fbf4c-d907-4d78-b91b-0471d1a1e5f5":"ce62f72d-41a3-4733-92dd-fb2f2847ab85"};1|
+						${.lte:currentyear:2010:"52abf8f8-e631-4571-925b-1184fd894bef":"234b903e-8d70-42e8-a7fd-746467a78ff0"};1|
+						${.lte:currentyear:2010:"0a3b1917-3e7e-4fb4-b7c9-8e2ff1ad6b61":"141fe78a-49bf-418d-87c6-a044564f78cf"};1|
+						${.lte:currentyear:1990:"f342ae30-61fc-4c16-aafd-f41203fdbc48":"a8357c75-2dc8-490c-b850-4a245eb781ce"};2|
+						${.lte:currentyear:2005:"42eb64da-69d7-4891-be5e-b81435277667":"a0ccd849-e3d5-420a-b8b3-3590a4a6803a"};2|
+						${.lte:currentyear:2010:"9bdb459c-3946-4874-808c-4a5c0b59ffbc":"9423da1a-f265-4234-92ea-1d3437bc19e8"};2|
+						${.lte:currentyear:2010:"abe054cd-1f61-4b2e-b9f8-993532334c05":"53f70e44-01f4-4e12-9326-68f2d4936b14"};2
+					</all>
+				</artist_csv>
+				<pronoun_1>
+					<de>er</de>
+					<en>he</en>
+					<pl></pl>
+				</pronoun_1>
+				<pronoun_2>
+					<de>sie</de>
+					<en>she</en>
+					<pl>a</pl>
+				</pronoun_2>
+				<justintimberlake>${.person:"${.csv:artist_csv:0}":"fullname"}</justintimberlake>
+				<he>
+					<all>${pronoun_${.csv:artist_csv:1}}</all>
+				</he>
 			</variables>
 			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
 
 		<news guid="a4a27d70-4160-4cf7-9262-b436eecc7e79" type="0" creator="9551">
 			<title>
-				<de>${madonna} singt für Pflanzen</de>
-				<en>${madonna} sings for Plants</en>
-				<pl>${madonna} śpiewa dla roślin</pl>
+				<de>${madonna} ${singsfor}</de>
+				<en>${madonna} ${singsfor}</en>
+				<pl>${madonna} ${singsfor}</pl>
 			</title>
 			<description>
-				<de>${madonna} veröffentlicht ein Album mit Liedern speziell für Zimmerpflanzen. „Photosynthesis Beats“ wird ein Nischenhit bei Gärtnereien.</de>
-				<en>${madonna} releases an album with songs specifically for houseplants. "Photosynthesis Beats" became a niche hit in garden centers.</en>
-				<pl>${madonna} wydała album z piosenkami dla roślin doniczkowych. „Photosynthesis Beats“ stało się niszowym hitem w centrach ogrodniczych.</pl>
+				<de>${madonna} ${releases}</de>
+				<en>${madonna} ${releases}</en>
+				<pl>${madonna} ${releases}</pl>
 			</description>
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
+				<photosynthesisbeats>Photosynthesis Beats|Chlorophyll Sonatas|The Stomata Sessions|Root Frequency|Xylem Flow|Photosynthpop|Petal to the Metal|Leaf to the Rhythm|Compostronica|Verdant Vibrations|Garden State of Mind|Green State of Mind|Ambient Growth|Deeply Rooted|Deep Root House|Fertilized Bass|Foliatronic|Bass &amp; Bloom|Photosymphonies|Ode to Chlorophyll|Photosynthesized Remixes|Green Notes|Sustenance Sounds|Watering Frequency|Grow Tunes|The Re-Potting Playlist|Sunlight Serenades|Plant Bops</photosynthesisbeats>
+				<content_csv>
+					<de>singt für Pflanzen;veröffentlicht ein Album mit Liedern speziell für Zimmerpflanzen. „${photosynthesisbeats}“ wird ein Nischenhit bei Gärtnereien.|
+						performt für Kakteen;spielt Exklusivkonzerte in Botanischen Gärten. ${.ucfirst:her} akustisches Set „Dornige Herzen“ soll bei Sukkulenten starke emotionale Resonanz hervorrufen.|
+						legt „Wachstumsplatten“ auf;startet eine Karriere als Gewächshaus-DJ. ${.ucfirst:her}e Setlist besteht aus tiefen Bässen, die angeblich das Wachsen der Wurzeln beschleunigen.|
+						bricht das Schweigen der Pflanzen;enthüllt, dass ${her}e neue akustische Ballade „Whispering Willow“ geschrieben wurde, um traurige Ficus-Bäume aufzuheitern.|
+						wird botanische Stilikone;lanciert eine Kollektion von Kopfhörern in Blattoptik, um ${her}e Tracks über Pflanzen in bester Qualität abzuspielen.|
+						bringt musikalischen Dünger auf den Markt;behauptet, ${her} neues Album „${photosynthesisbeats}“ könne durch spezifische Frequenzen den Ertrag von Kräutergärten steigern. Wissenschaftler sind skeptisch, aber angetan.|
+						geht auf Blumentour;plant eine Konzertreihe in Gärtnereien, bei der ${she} ausschließlich Tracks von „${photosynthesisbeats}“ spielt. Die Eintrittskarte enthält einen Gutschein für eine Gießkanne.|
+						im Streit mit Biologen;behauptet, ${her} Werk „${photosynthesisbeats}“ habe eine Orchidee zum Blühen gebracht. Experten nennen es „Zufall“ und „verantwortungslose Anthropomorphisierung“.|
+						veröffentlicht „${photosynthesisbeats}“ Limited Edition;veröffentlicht neues Album „${photosynthesisbeats}“ auf biologisch abbaubarem Samenpapier. Beim Einpflanzen der Plattenhülle sollen Wildblumen sprießen.|
+						${.lte:currentyear:2020:"sprengt den Rasen":"streamt für Grünzeug"};${.lte:currentyear:2020:"schließt einen Exklusiv-Deal mit einem Rasensprenger-Hersteller ab. ${.ucfirst:her} Album „${photosynthesisbeats}“ ist nur auf deren Geräten verfügbar und spielt automatisch beim Gießen.":"schließt einen Exklusiv-Deal mit einer Pflanzengieß-App ab. ${.ucfirst:her} Album „${photosynthesisbeats}“ ist nur dort verfügbar und startet automatisch, wenn die Pflanzen Wasser brauchen."}
+					</de>
+					<en>sings for plants;releases an album with songs specifically for houseplants. “${photosynthesisbeats}“ became a niche hit in garden centers.|
+						performs for cacti;is playing exclusive gigs in Botanical Gardens. ${.ucfirst:her} acoustic set “Prickly Hearts“ is said to elicit strong emotional resonance in succulents.|
+						spins “Growth Vinyl“;launches a career as a greenhouse DJ. ${.ucfirst:her} setlist features deep basslines allegedly proven to accelerate root development.|
+						breaks the Silence of the Plants;reveals ${her} new acoustic ballad “Whispering Willow“ was developed to cheer up sad Ficus trees.|
+						becomes botanical style icon;launches a line of leaf-patterned headphones to play ${her} plant tracks in the highest quality.|
+						launches musical fertilizer;claims ${her} new album “${photosynthesisbeats}“ can increase herb garden yields through specific frequencies. Scientists are skeptical but intrigued.|
+						goes on a bloom tour;announces a concert series at garden centers where ${she} will exclusively play tracks from “${photosynthesisbeats}“. Admission includes a free watering can coupon.|
+						feuds with biologists;insists he${her}r work “${photosynthesisbeats}“ caused an orchid to bloom. Experts call it “coincidence“ and “irresponsible anthropomorphization“.|
+						releases “${photosynthesisbeats}“ Limited Edition;puts out new album “${photosynthesisbeats}“ on biodegradable seed paper. Planting the record sleeve is promised to sprout wildflowers.|
+						${.lte:currentyear:2020:"floods the lawn":"streams for foliage"};${.lte:currentyear:2020:"signs an exclusive deal with a sprinkler company. ${.ucfirst:her} album “${photosynthesisbeats}“ is only available on their devices and automatically plays during watering cycles.":"signs an exclusive deal with a plant-care app. ${.ucfirst:her} album “${photosynthesisbeats}“ is only available there and auto-plays when your plants are thirsty."}
+					</en>
+					<pl>śpiewa dla roślin;wydał${she} album z piosenkami dla roślin doniczkowych. „${photosynthesisbeats}“ stał się niszowym hitem w centrach ogrodniczych.|
+						koncertuje dla kaktusów;występuje wyłącznie w Ogrodach Botanicznych. ${.ucfirst:her} akustyczny set „Kolczaste Serca“ ma rzekomo wywoływać silny oddźwięk emocjonalny u sukulentów.|
+						stawia „Płyty Wzrostu“;rozpoczyna karierę jako DJ dla szklarni. ${.ucfirst:her} setlista składa się z głębokich basów, które podobno przyspieszają rozwój korzeni.|
+						łamie milczenie roślin;ujawnia, że ${her} nowa ballada akustyczna „Szeptająca Wierzba“ została stworzona, by rozweselić smutne Ficusy.|
+						zostaje botaniczną ikoną stylu;wypuszcza kolekcję słuchawek w liściasty wzór, aby odtwarzać swoje roślinne utwory w najlepszej jakości.|
+						wprowadza muzyczny nawóz;twierdzi, że ${her} nowy album „${photosynthesisbeats}“ może zwiększyć plony ziołowych ogródków dzięki specjalnym częstotliwościom. Naukowcy są sceptyczni, ale zaciekawieni.|
+						wyrusza w Kwiatową Trasę;zapowiada serię koncertów w centrach ogrodniczych, na których będzie grać wyłącznie utwory z „${photosynthesisbeats}“. Bilet wstępu obejmuje kupon na konewkę.|
+						kłóci się z biologami;utrzymuje, że ${her} dzieło „${photosynthesisbeats}“ sprawiło, że orchidea zakwitła. Eksperci mówią o „przypadku” i „nieodpowiedzialnej antropomorfizacji”.|
+						wydaje „${photosynthesisbeats}“ limitowaną edycję;wydaje nowy album „${photosynthesisbeats}“ na biodegradowalnym papierze nasiennym. Posadzenie okładki ma sprawić, że wyrosną polne kwiaty.|
+						${.lte:currentyear:2020:"zrasza trawnik":"streamuje dla zieleni"};${.lte:currentyear:2020:"podpisuje ekskluzywną umowę z firmą produkującą zraszacze. ${.ucfirst:her} album „${photosynthesisbeats}“ jest dostępne tylko w ich urządzeniach i odtwarza się automatycznie podczas podlewania.":"podpisuje ekskluzywną umowę z aplikacją do pielęgnacji roślin. ${.ucfirst:her} album „${photosynthesisbeats}“ jest dostępny tylko tam i włącza się automatycznie, gdy rośliny są spragnione."}
+					</pl>
+				</content_csv>
+				<singsfor>
+					<all>${.csv:content_csv:0}</all>
+				</singsfor>
+				<releases>
+					<all>${.csv:content_csv:1}</all>
+				</releases>
 				<olivianewtonjohn_or_madonna>${.lte:currentyear:1998:"f342ae30-61fc-4c16-aafd-f41203fdbc48":"a8357c75-2dc8-490c-b850-4a245eb781ce"}</olivianewtonjohn_or_madonna>
 				<cher>55c2956d-d82e-4448-bbad-858f4128656e</cher>
 				<dollyparton_or_cyndilauper>${.lte:currentyear:1995:"45306754-5c7c-47ea-b703-6a9e2495f83a":"ef262af3-9fa4-4c47-856f-098c2497fc5d"}</dollyparton_or_cyndilauper>
@@ -7358,25 +7523,25 @@
 				<barbrastreisand_or_shakira>${.lte:currentyear:2015:"a62c5f2b-d61d-4c45-9b8f-ba0d0cdc5285":"9423da1a-f265-4234-92ea-1d3437bc19e8"}</barbrastreisand_or_shakira>
 				<peterkraus_or_herbertgroenemeyer>${.lte:currentyear:1995:"bbc5c21c-c9d2-4b6a-b89f-b77d42b8c88a":"e4b5c5b6-7035-4ead-a6ac-6107aa89a503"}</peterkraus_or_herbertgroenemeyer>
 				<singer_csv>
-					<de>${olivianewtonjohn_or_madonna};ihre;sie|
-						${cher};ihre;sie|
-						${dollyparton_or_cyndilauper};ihre;sie|
-						${prince_or_brunomars};seine;er|
-						${tinaturner_or_gracejones};ihre;sie|
-						${davidbowie_or_petercetera};seine;er|
-						${eltonjohn};seine;er|
-						${mariannefaithfull_or_ladygaga};ihre;sie|
-						${joanjett_or_britneyspears};ihre;sie|
-						${dianaross_or_beyonce};ihre;sie|
-						${ninahagen};ihre;sie|
-						${shirleymaclaine_or_cristinaaguilera};ihre;sie|
-						${agnethafaltskog_or_bjork};ihre;sie|
-						${meatloaf_or_michaelbuble};seine;er|
-						${franksinatra_or_sting};seine;er|
-						${debbieharry_or_avrillavigne};ihre;sie|
-						${lorettalynn_or_lanadelrey};ihre;sie|
-						${barbrastreisand_or_shakira};ihre;sie|
-						${peterkraus_or_herbertgroenemeyer};seine;er
+					<de>${olivianewtonjohn_or_madonna};ihr;sie|
+						${cher};ihr;sie|
+						${dollyparton_or_cyndilauper};ihr;sie|
+						${prince_or_brunomars};sein;er|
+						${tinaturner_or_gracejones};ihr;sie|
+						${davidbowie_or_petercetera};sein;er|
+						${eltonjohn};sein;er|
+						${mariannefaithfull_or_ladygaga};ihr;sie|
+						${joanjett_or_britneyspears};ihr;sie|
+						${dianaross_or_beyonce};ihr;sie|
+						${ninahagen};ihr;sie|
+						${shirleymaclaine_or_cristinaaguilera};ihr;sie|
+						${agnethafaltskog_or_bjork};ihr;sie|
+						${meatloaf_or_michaelbuble};sein;er|
+						${franksinatra_or_sting};sein;er|
+						${debbieharry_or_avrillavigne};ihr;sie|
+						${lorettalynn_or_lanadelrey};ihr;sie|
+						${barbrastreisand_or_shakira};ihr;sie|
+						${peterkraus_or_herbertgroenemeyer};sein;er
 					</de>
 					<en>${olivianewtonjohn_or_madonna};her;she|
 						${cher};her;she|
@@ -7398,25 +7563,25 @@
 						${barbrastreisand_or_shakira};her;she|
 						${peterkraus_or_herbertgroenemeyer};his;he
 					</en>
-					<pl>${olivianewtonjohn_or_madonna};swoje;a|
-						${cher};swoje;a|
-						${dollyparton_or_cyndilauper};swoje;a|
-						${prince_or_brunomars};swoje;|
-						${tinaturner_or_gracejones};swoje;a|
-						${davidbowie_or_petercetera};swoje;|
-						${eltonjohn};swoje;|
-						${mariannefaithfull_or_ladygaga};swoje;a|
-						${joanjett_or_britneyspears};swoje;a|
-						${dianaross_or_beyonce};swoje;a|
-						${ninahagen};swoje;a|
-						${shirleymaclaine_or_cristinaaguilera};swoje;a|
-						${agnethafaltskog_or_bjork};swoje;a|
-						${meatloaf_or_michaelbuble};swoje;|
-						${franksinatra_or_sting};swoje;|
-						${debbieharry_or_avrillavigne};swoje;a|
-						${lorettalynn_or_lanadelrey};swoje;a|
-						${barbrastreisand_or_shakira};swoje;a|
-						${peterkraus_or_herbertgroenemeyer};swoje;
+					<pl>${olivianewtonjohn_or_madonna};jej;a|
+						${cher};jej;a|
+						${dollyparton_or_cyndilauper};jej;a|
+						${prince_or_brunomars};jego;|
+						${tinaturner_or_gracejones};jej;a|
+						${davidbowie_or_petercetera};jego;|
+						${eltonjohn};jego;|
+						${mariannefaithfull_or_ladygaga};jej;a|
+						${joanjett_or_britneyspears};jej;a|
+						${dianaross_or_beyonce};jej;a|
+						${ninahagen};jej;a|
+						${shirleymaclaine_or_cristinaaguilera};jej;a|
+						${agnethafaltskog_or_bjork};jej;a|
+						${meatloaf_or_michaelbuble};jego;|
+						${franksinatra_or_sting};jego;|
+						${debbieharry_or_avrillavigne};jej;a|
+						${lorettalynn_or_lanadelrey};jej;a|
+						${barbrastreisand_or_shakira};jej;a|
+						${peterkraus_or_herbertgroenemeyer};jego;
 					</pl>
 				</singer_csv>
 				<madonna>
@@ -7473,7 +7638,7 @@
 
 		<news guid="38d4035b-4c0b-41ad-9c88-24c2d7577ac9" type="0" creator="9551">
 			<title>
-				<de>${gwynethpaltrow}s Mond-Diät</de>
+				<de>${gwynethpaltrow}: Mond-Diät</de>
 				<en>${gwynethpaltrow}: Moon Diet</en>
 				<pl>Księżycowa dieta ${gwynethpaltrow}</pl>
 			</title>
@@ -7661,7 +7826,7 @@
 			<variables>
 				<currentyear>${.worldtime:"year"}</currentyear>
 				<sanfrancisco>San Francisco, CA|Austin, TX|Seattle, WA|Portland, OR|Boulder, CO|Cambridge, MA|Asheville, NC|Burlington, VT|Madison, WI|Eugene, OR|Santa Fe, NM|Irvine, CA|Scottsdale, AZ|Omaha, NE|Raleigh, NC|Plano, TX</sanfrancisco>
-				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive Magazine|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
+				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
 				<laserdisc>
 					<all>${.lte:currentyear:2015:"${brand_laserdisc}":"CD"}</all>
 				</laserdisc>
@@ -7733,7 +7898,7 @@
 				<pl>W magazynie „${techlife}” ukazał się artykuł, jak zbudować modem, który wygwizduje aktualne przeboje pop. Zainteresowanie ze strony społeczności majsterkowiczów było jednak niewielkie.</pl>
 			</description>
 			<variables>
-				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive Magazine|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
+				<techlife>TechLife|Gadgetron|Wire &amp; Inspire|The Modern Enthusiast|Disruptor Monthly|Analog Revival|Hobbyist's Digest|Future Retro|Play &amp; Display|Maximum PC|NextGen Living|The Daily Byte|Cache Weekly|The Kernel|Input/Output|The Upgrade Path|Silicon Pulp|Ctrl+Alt+Elite|The Peripheral Vision|Circuit Breaker|The Download|Archive|The Physical Medium|ByteSize|Floppy Disk Quarterly</techlife>
 				<kraftwerk>${.person:"06e563d1-159d-40e1-adf8-0e01f4de93cc":"firstname"}</kraftwerk>
 			</variables>
 			<data genre="3" price="1" quality_min="5" quality_max="40" fictional="1" />
