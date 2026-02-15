@@ -81,15 +81,13 @@ Type TPersist
 	Field serializer:Object
 	Field serializerTypeID:TTypeId
 
-	Field primitiveSB:TStringBuilder = New TStringBuilder
+	Field _sb:TStringBuilder = New TStringBuilder
 
 	Rem
 	bbdoc: Serialized formatting.
 	about: Set to True to have the data formatted nicely. Default is False - off.
 	End Rem
 	Global format:Int = False
-
-	Global maxDepth:Int = 0
 
 ?ptr64
 	Global bbEmptyString:String = Base36(Long(bbEmptyStringPtr()))
@@ -138,18 +136,13 @@ Type TPersist
 	Rem
 	bbdoc: Serializes an Object to the file @filename.
 	End Rem
-	Method SerializeToFile(obj:Object, file:Object)
+	Method SerializeToFile(obj:Object, filename:String)
 		If Not _inited Throw "Use TXMLPersistenceBuilder to create TPersist instance."
 		Free()
 		SerializeObject(obj)
-
+		
 		If doc Then
-			If TStream(file)
-				doc.saveFile(file, False, format)
-			'filename/string
-			Else
-				doc.saveFile(file, True, format)
-			EndIf
+			doc.saveFile(filename, True, format)
 		End If
 		Free()
 	End Method
@@ -791,36 +784,57 @@ Type TPersist
 					local isStoredPrimitive:Int = False
 					local isFieldPrimitive:Int = False
 					Select fieldType
-						Case "byte", "short", "int", "long", "float", "double"
+						Case "byte", "short", "int", "long", "uint", "ulong", ..
+						     "longint", "ulongint", "sizet", "float", "double"
 							isStoredPrimitive = True
 					End Select
 					' only check field if stored is also a primitive
 					' (both need to be true ...)
 					If isStoredPrimitive
-						Local fieldTypeName:String = fieldObj.TypeID().name() 
-						Select fieldObj.TypeID().name().ToLower()
-							Case "byte", "short", "int", "long", "float", "double"
-								isFieldPrimitive = True
-						End Select
+						Local fieldTypeName:String = fieldObj.TypeID().name()
+						' assume stored and defined are same (should be
+						' almost always the case)
+						If storedFieldTypeID = targetFieldTypeID
+							isFieldPrimitive = True
+						Else
+							Select fieldTypeName.ToLower()
+								Case "int", "float", "double", "long", "byte", ..
+								     "short", "sizet", "uint", "ulong", "longint", "ulongint"
+									isFieldPrimitive = True
+							End Select
+						EndIf
 					EndIf
 
 					' primitives can be kind of "casted" (albeit with loss)
 					if isStoredPrimitive and isFieldPrimitive
-						primitiveSB.SetLength(0)
+						_sb.SetLength(0)
 						
 						Select fieldType
 							Case "byte", "short", "int"
-								fieldObj.SetInt(obj, fieldNode.GetContent(primitiveSB).toInt())
+								fieldObj.SetInt(obj, fieldNode.GetContent(_sb).toInt())
 							Case "long"
-								fieldObj.SetLong(obj, fieldNode.GetContent(primitiveSB).toLong())
+								fieldObj.SetLong(obj, fieldNode.GetContent(_sb).toLong())
 							Case "float"
-								fieldObj.SetFloat(obj, fieldNode.GetContent(primitiveSB).toFloat())
+								fieldObj.SetFloat(obj, fieldNode.GetContent(_sb).toFloat())
 							Case "double"
-								fieldObj.SetDouble(obj, fieldNode.GetContent(primitiveSB).toDouble())
+								fieldObj.SetDouble(obj, fieldNode.GetContent(_sb).toDouble())
+							Case "uint"
+								fieldObj.SetUInt(obj, fieldNode.GetContent(_sb).toUInt())
+							Case "sizet"
+								fieldObj.SetSizeT(obj, fieldNode.GetContent(_sb).toSizeT())
+							Case "ulong"
+								fieldObj.SetULong(obj, fieldNode.GetContent(_sb).toULong())
+							Case "longint"
+								fieldObj.SetLongInt(obj, LongInt(fieldNode.GetContent(_sb).toLongInt())) ' FIXME : why do we need to cast here?
+							Case "ulongint"
+								fieldObj.SetULongInt(obj, fieldNode.GetContent(_sb).toULongInt())
 						End Select
 					Else
 						Select fieldType
-							Case "byte", "short", "int", "long", "float", "double"
+							'Ronny: Field is primitive, but serialized value is not
+							Case "byte", "short", "int", "long", "uint", "ulong", ..
+								 "longint", "ulongint", "sizet", "float", "double"
+
 								Local convertedObject:Object = obj
 								If DelegateDeserializationToType(convertedObject, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), fieldNode.GetContent())
 									fieldObj.Set(obj, convertedObject)
@@ -832,22 +846,17 @@ Type TPersist
 									Local arrayType:TTypeId = fieldObj.TypeId()
 									Local arrayElementType:TTypeId = arrayType.ElementType()
 
-									Local scalesi:Int[]
-									Local scalesS:String = fieldNode.getAttribute("scales")
 
-									'Ronny: only create scales array if there is the need for (multidim is less likely)
-									If scalesS.Find(",") >= 0 Then
-										Local scales:String[] = scalesS.split(",")
-										If scales.length > 1 Then
-											scalesi = New Int[scales.length]
-											For Local i:Int = 0 Until scales.length
-												scalesi[i] = Int(scales[i])
-											Next
-										EndIf
+									Local scalesi:Int[]
+									Local scales:Int[] = fieldNode.getAttribute("scales", _sb).SplitInts(",")
+									If scales.length > 1 Then
+										scalesi = scales
 									End If
 
+
+									' for file Version 1+
 									Select arrayElementType
-										Case ByteTypeId, ShortTypeId, IntTypeId, LongTypeId, FloatTypeId, DoubleTypeId
+										Case FloatTypeId, DoubleTypeId
 
 											Local arrayList:String[]
 											Local content:String = fieldNode.GetContent().Trim()
@@ -865,38 +874,237 @@ Type TPersist
 												arrayType.SetArrayElement(arrayObj, i, arrayList[i])
 											Next
 
-										Default
-											Local arrayList:TObjectList = fieldNode.getChildren()
+										Case ByteTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
 
-											If arrayList ' Birdie
-												Local arrayObj:Object = arrayType.NewArray(arrayList.Count(), scalesi)
+											Local values:Byte[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitBytes(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
 												fieldObj.Set(obj, arrayObj)
 
-												Local i:Int
-												For Local arrayNode:TxmlNode = EachIn arrayList
-
-													Select arrayElementType
-														Case StringTypeId
-															arrayType.SetArrayElement(arrayObj, i, arrayNode.GetContent())
-														Default
-															' file version 5 ... array cells can contain references
-															' is this a reference?
-															Local ref:String = arrayNode.getAttribute("ref")
-															If ref Then
-																Local objRef:Object = objectMap.ValueForKey(ref)
-																If objRef Then
-																	arrayType.SetArrayElement(arrayObj, i, objRef)
-																Else
-																	Throw "[Array] Reference not mapped yet : " + ref
-																End If
-															Else
-																arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode))
-															End If
-													End Select
-
-													i:+ 1
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
 												Next
-											EndIf
+											End If
+
+										Case ShortTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:Short[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitShorts(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+										
+										Case IntTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:Int[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitInts(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+											
+										Case LongTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:Long[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitLongs(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+
+										Case UIntTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:UInt[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitUInts(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+
+										Case ULongTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:ULong[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitULongs(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+										
+										Case LongIntTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:LongInt[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitLongInts(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+
+										Case ULongIntTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:ULongInt[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitULongInts(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+
+										Case SizeTTypeId
+											_sb.SetLength(0)
+											fieldNode.GetContent(_sb).Trim()
+
+											Local values:Size_T[]
+											If _sb.Length() > 0 Then
+												values = _sb.SplitSizeTs(" ")
+											End If
+
+											' Fast path for 1-dimensional arrays
+											If scalesi.length = 0 Then
+												fieldObj.Set(obj, values)
+											Else
+												' Multi-dimensional array - create and copy
+												Local arrayObj:Object = arrayType.NewArray(values.length, scalesi)
+												fieldObj.Set(obj, arrayObj)
+
+												For Local i:Int = 0 Until values.length
+													arrayType.SetArrayElement(arrayObj, i, values[i])
+												Next
+											End If
+
+
+									Default
+										Local arrayList:TObjectList = fieldNode.getChildren()
+
+										If arrayList ' Birdie
+											Local arrayObj:Object = arrayType.NewArray(arrayList.Count(), scalesi)
+											fieldObj.Set(obj, arrayObj)
+
+											Local i:Int
+											For Local arrayNode:TxmlNode = EachIn arrayList
+
+												Select arrayElementType
+													Case StringTypeId
+														arrayType.SetArrayElement(arrayObj, i, arrayNode.GetContent())
+													Default
+														' file version 5 ... array cells can contain references
+														' is this a reference?
+														Local ref:String = arrayNode.getAttribute("ref")
+														If ref Then
+															Local objRef:Object = objectMap.ValueForKey(ref)
+															If objRef Then
+																arrayType.SetArrayElement(arrayObj, i, objRef)
+															Else
+																Throw "[Array] Reference not mapped yet : " + ref
+															End If
+														Else
+															arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode))
+														End If
+												End Select
+
+												i:+ 1
+											Next
+										EndIf
 									End Select
 								Else
 									If fieldType = "string" And fileVersion < 8 Then

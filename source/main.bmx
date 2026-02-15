@@ -2997,7 +2997,6 @@ Rem
 		
 		Local savegameConverter:TSavegameConverter
 
-		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TXMLPersistenceBuilder.Build()
 		'Local persist:TPersist = New TPersist
 		persist.serializer = New TSavegameSerializer
@@ -3219,7 +3218,6 @@ endrem
 		?debug
 		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
 		?
-		TPersist.maxDepth = 4096
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		p.serializer = New TSavegameSerializer
 
@@ -3239,7 +3237,7 @@ endrem
 			wa.Header(entry)
 			Local xmlArchiveStream:TStream = wa.DataStream()
 			'serialize game into a TStream of XML-Data
-			p.SerializeToFile(saveGame, xmlArchiveStream)
+			p.SerializeToStream(saveGame, xmlArchiveStream)
 
 			wa.FinishEntry()
 			entry.Free()
