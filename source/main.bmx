@@ -3237,7 +3237,7 @@ endrem
 			wa.Header(entry)
 			Local xmlArchiveStream:TStream = wa.DataStream()
 			'serialize game into a TStream of XML-Data
-			p.SerializeToStream(saveGame, xmlArchiveStream)
+			p.SerializeToFile(saveGame, xmlArchiveStream)
 
 			wa.FinishEntry()
 			entry.Free()
