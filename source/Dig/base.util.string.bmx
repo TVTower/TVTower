@@ -318,11 +318,18 @@ Type StringHelper
 
 
 	Function InArray:Int(str:String, arr:String[], caseSensitive:Int = True)
-		Return (GetArrayIndex(str, arr, caseSensitive) >= 0)
+		If arr.length = 0 Then Return False
+		
+		For Local i:Int = 0 Until arr.length
+			If arr[i].Equals(str, caseSensitive) Then Return True
+		Next
+		Return False
 	End Function
 
 
 	Function GetArrayIndex:Int(str:String, arr:String[], caseSensitive:Int = True)
+		If arr.length = 0 Then Return False
+
 		For Local i:Int = 0 Until arr.length
 			If arr[i].Equals(str, caseSensitive) Then Return i
 		Next

@@ -395,11 +395,9 @@ Type THelper
 			'loop over all fields of the object
 			For Local fld:TField=EachIn objTypeID.EnumFields()
 				'ignore this field (eg. an auto-populated ID-field)
-				If skipFields.Length > 0
-					For Local i:int = 0 until skipFields.length
-						If skipFields[i].Equals(fld.name(), False) Then Continue
-					Next
-				EndIf
+				If StringHelper.InArray(fld.name(), skipFields, False)
+					Continue
+				Endif
 
 				'only clone non-null-fields and if not explicitely forbidden
 				If fld.Get(obj) And fld.MetaData("NoClone") = Null
