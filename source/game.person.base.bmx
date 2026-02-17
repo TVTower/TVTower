@@ -1779,7 +1779,7 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 
 
 	Method IsDead:Int()
-		Return True
+		Return False
 	End Method
 
 

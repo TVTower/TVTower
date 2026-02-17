@@ -400,6 +400,12 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 
 		'try to find a better fit: equally good but less expensive, better but only slightly more expensive
 		Function OptimizeCast:TPersonBase(currentChoice:TPersonBase, productionConcept:TProductionConcept, job:TPersonProductionJob, jobCountry:String, usedPersonIDs:Int[], castBudget:Int)
+			'if the job has a preselected person - respect that
+			If job.preselectCast And job.personID
+				Local preselected:TPersonBase = GetPersonBaseCollection().GetByID(job.personID)
+				If preselected Then Return preselected
+			EndIf
+
 			'do not replace if insignificant was chosen
 			If currentChoice.IsInsignificant() Then return currentChoice
 			'print "    trying to optimize " + job.job + " currently " + currentChoice.GetFullName()
