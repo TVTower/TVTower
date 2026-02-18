@@ -460,10 +460,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.requiredStudioSize = template.GetStudioSize()
 
 		script.mainGenre = template.mainGenre
-		'add genres
-		For Local subGenre:Int = EachIn template.subGenres
-			script.subGenres :+ [subGenre]
-		Next
+		'append genres
+		script.subGenres :+ template.subGenres
 
 		If template.effects
 			script.effects=template.effects.Copy()
@@ -625,7 +623,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Local liveTime:Long = 0
 			If Not alwaysLive
 				If template And template.liveDateCode
-					Local liveDateCodeParams:Int[] = StringHelper.StringToIntArray(template.liveDateCode, ",")
+					Local liveDateCodeParams:Int[] = StringHelper.StringToIntArray(template.liveDateCode, Asc(","))
 					If liveDateCodeParams.length > 0 And liveDateCodeParams[0] > 0
 						Local useParams:Int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
 						For Local i:Int = 1 Until liveDateCodeParams.length
@@ -846,7 +844,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Local valueOld:String = text.Get(langID)
 			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)
 			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, context)
-			If valueOLD <> valueNew.Hash()
+			If valueOLD.HashCode() <> valueNew.HashCode() 'only create new string if required
 				result.Set(valueNew.ToString(), langID)
 			EndIf
 		Next

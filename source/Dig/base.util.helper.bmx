@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2025 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -44,7 +44,8 @@ Import "external/reflectionExtended/reflection.bmx"
 Import BRL.Reflection
 ?
 Import BRL.Retro
-Import BRL.ObjectList
+Import Collections.ObjectList
+Import Collections.IntMap
 Import "base.util.input.bmx" 		'Mousemanager
 Import "base.util.rectangle.bmx"	'TRectangle
 Import "base.util.mersenne.bmx"
@@ -303,44 +304,28 @@ Type THelper
 	'clones the given object
 	'function is calling itself recursively for each property
 	'returns the cloned object
-	Function CloneObject:object(obj:object, skipFields:string = "")
+	Function CloneObject:object(obj:object, skipFields:string[] = Null)
 		'clone code is based on the work of "Azathoth"
 		'http://www.blitzbasic.com/codearcs/codearcs.php?code=2132
-
-		skipFields = " " + skipFields.toLower() + " "
 
 		'skip cloning nothing
 		If obj = Null Then Return Null
 
 		'to access properties we need a TTypeID of the object
-		Local objTypeID:TTypeId=TTypeId.ForObject(obj)
+		Local objTypeID:TTypeId = TTypeId.ForObject(obj)
 
 
 		'=== STRINGS ===
-		If objTypeID.ExtendsType(StringTypeId) then return String(obj)
+		If objTypeID.ExtendsType(StringTypeId) Then Return String(obj)
 
 
 		'=== ARRAYS ===
 		If objTypeID.ExtendsType(ArrayTypeId)
-			'if an array does not contain elements, the reflection
-			'cannot recognize which type the array contains (Null[])
-
-			'accessing this "null[]"-arrays would lead to a thrown
-			'error - so we need "try" to catch the exception.
-			'Thanks to Brucey's persistence.mod (doing it similar)
-
-			'objects name might be TMyType[] - remove the []-part
-			Local objTypeName:string = objTypeID.name()[..objTypeID.name().length - 2]
-			Local size:Int
-			Try
-				size = objTypeID.ArrayLength(obj)
-			Catch e$
-				objTypeName = "Object"
-				size = 0
-			End Try
-
-			'if the object does not contain things in that array, the
-			'copy wont need it too
+			' if an array does not contain elements, the reflection
+			' cannot recognize which type the array contains (Null[])
+			' but this is not of importance, as "size = 0" simply
+			' returns Null (as the copy of it also just needs to be Null)
+			Local size:Int = objTypeID.ArrayLength(obj)
 			If size = 0 then return Null
 
 			'create new array
@@ -409,10 +394,10 @@ Type THelper
 
 			'loop over all fields of the object
 			For Local fld:TField=EachIn objTypeID.EnumFields()
-				Local fldId:TTypeId=fld.TypeId()
-
 				'ignore this field (eg. an auto-populated ID-field)
-				if skipFields.find(" "+fld.name().toLower()+" ") >= 0 then continue
+				If StringHelper.InArray(fld.name(), skipFields, False)
+					Continue
+				Endif
 
 				'only clone non-null-fields and if not explicitely forbidden
 				If fld.Get(obj) And fld.MetaData("NoClone") = Null

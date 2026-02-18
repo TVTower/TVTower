@@ -2,6 +2,7 @@ SuperStrict
 Import Brl.Map
 Import Brl.Audio 'for TChannel
 Import Brl.LinkedList
+Import Collections.IntMap
 Import brl.Map
 Import Brl.Reflection
 Import "base.util.logger.bmx"

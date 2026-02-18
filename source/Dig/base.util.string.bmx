@@ -75,7 +75,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2026 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -104,6 +104,13 @@ Import Brl.StringBuilder
 ?
 Import "base.util.math.bmx"
 Import "external/string_comp.bmx"
+Import "base.util.string.c"
+
+Extern
+'	Function StringJoinInts:String(intArray:Int[], glue:String=",")="BBString* bbStringJoinInts(BBArray*, BBString*)!"
+	Function digStringJoinInts:String(intArray:Int[], glue:String=",")
+End Extern
+
 
 Type StringHelper
 	'extracts and returns all placeholders in a text
@@ -128,7 +135,7 @@ Type StringHelper
 		Local placeHolderTagOpen:Int = False
 		Local placeHolderStartPos:Int = 0
 		Local placeHolderEndPos:Int = 0
-		local charCode:Int
+		Local charCode:Int
 		
 		For Local i:Int = 0 Until text.length
 			charCode = text[i]
@@ -288,27 +295,6 @@ Type StringHelper
 	End Function
 
 
-	?bmxng
-	Function JoinIntArray:String(glue:String, intArray:Int[])
-		Local sb:TStringBuilder = New TStringBuilder()
-		For Local i:Int = 0 Until intArray.Length
-			If sb.Length() > 0 Then sb.Append(glue)
-			sb.Append(intArray[i])
-		Next
-		Return sb.ToString()
-	End Function
-	?not bmxng
-	Function JoinIntArray:String(glue:String, intArray:Int[])
-		Local result:String = ""
-		For Local i:Int = 0 Until intArray.length
-			If result.length > 0 Then result :+ glue
-			result :+ intArray[i]
-		Next
-		Return result
-	End Function
-	?
-
-
 	Function RemoveArrayIndex:Int(index:Int, arr:String[] Var)
 		If Not arr Or arr.length = 0
 			Return False
@@ -332,21 +318,21 @@ Type StringHelper
 
 
 	Function InArray:Int(str:String, arr:String[], caseSensitive:Int = True)
-		Return (GetArrayIndex(str, arr, caseSensitive) >= 0)
+		If arr.length = 0 Then Return False
+		
+		For Local i:Int = 0 Until arr.length
+			If arr[i].Equals(str, caseSensitive) Then Return True
+		Next
+		Return False
 	End Function
 
 
 	Function GetArrayIndex:Int(str:String, arr:String[], caseSensitive:Int = True)
-		If caseSensitive
-			For Local i:Int = 0 Until arr.length
-				If arr[i] = str Then Return i
-			Next
-		Else
-			str = str.toLower()
-			For Local i:Int = 0 Until arr.length
-				If arr[i].ToLower() = str Then Return i
-			Next
-		EndIf
+		If arr.length = 0 Then Return False
+
+		For Local i:Int = 0 Until arr.length
+			If arr[i].Equals(str, caseSensitive) Then Return i
+		Next
 		Return -1
 	End Function
 
@@ -1004,17 +990,16 @@ Type StringHelper
 		End Function
 	End Function
 
+	
 	Function IntArrayToString:String(intArray:Int[], glue:String=",")
-		Local result:String
-		For Local i:Int = EachIn intArray
-			result :+ i + glue
-		Next
-		If glue <> "" Then result = result[.. result.length - glue.length]
-		Return result
+		Return digStringJoinInts(intArray, glue)
 	End Function
 
 
-	Function StringToIntArray:Int[](s:String, delim:String=",")
+	'using "2" appendix, because it is slower than StringToIntArray
+	'but allows to use a multi-char delimiter (and an overload might
+	'not indicate that well enough)
+	Function StringToIntArray2:Int[](s:String, delim:String=",")
 		If s.length = 0 Then Return New Int[0]
 
 		Local sArray:String[] = s.split(delim)
@@ -1024,6 +1009,68 @@ Type StringHelper
 		Next
 		Return a
 	End Function
+
+
+	Function StringToIntArray:Int[](s:String, separator:Int, skipEmpty:Int = False)
+		Local _index:Int = 0
+		Local _current:Int
+
+		Local elementCount:Int = 1 'no comma needed for the first
+		For Local char:Int = EachIn s
+			If char = separator Then elementCount:+ 1
+		Next
+
+		Local result:Int[] = New Int[elementCount]
+		Local resultIndex:Int = 0
+
+		
+		While _index < s.Length
+			' If we're exactly at end, we may optionally yield one final empty token
+			If _index = s.Length And skipEmpty Then Exit
+
+
+			Local start:Int = _index
+			' Scan to separator or end
+			While _index < s.Length And s[_index] <> separator
+				_index :+ 1
+			Wend
+
+
+			Local finish:Int = _index
+			' Consume separator if present
+			If _index < s.Length And s[_index] = separator
+				_index :+ 1
+			EndIf
+
+			' Maybe skip empty tokens
+			If skipEmpty And finish = start
+				Continue
+			EndIf
+
+			' Extract value
+			Local pos:Int = s.ToIntEx(_current, start, finish, CHARSFORMAT_ALLOWLEADINGPLUS | CHARSFORMAT_SKIPWHITESPACE)
+			If Not pos
+				_current = 0
+			EndIf
+			
+			result[resultIndex] = _current
+			resultIndex :+ 1
+
+			' Handle the end
+			If finish = s.Length
+				Exit
+			EndIf
+		Wend
+		
+		If skipEmpty and result.length > 0
+			If result.Length <> resultIndex
+				result = result[.. resultIndex]
+			EndIf
+		EndIf
+
+		Return result
+	End Function
+
 
 	'convert first alpha (optional alphanumeric) character to uppercase.
 	'does _not_ work with UTF8 characters (would need some utf8-library

@@ -51,7 +51,6 @@ Type TAllHighscores
 	Function addEntry(missionID:String, mapName:String, difficulty:Int, score:TMissionHighscore)
 		score.realDate = CurrentDate("%Y-%m-%d %H:%M:%S")
 		TPersist.format=True
-		TPersist.maxDepth = 4096
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		'TODO file location and name
 		Local file:String = "highscores.xml"

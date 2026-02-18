@@ -97,13 +97,17 @@ Type TRegistrySpriteEntityLoader extends TRegistryBaseLoader
 		Local childrenNode:TxmlNode = TXmlHelper.FindChild(node, "children")
 		If childrenNode
 			local childrenData:TData[]
-			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childrenNode)
+			
+			Local childNode:TxmlNode = TxmlNode(childrenNode.GetFirstChild())
+			While childNode
 				'recursively load child config into a new data
 				local childData:TData = GetConfigFromXML(loader, childNode)
 
 				'add child data
 				childrenData :+ [childData]
-			Next
+				
+				childNode = childNode.NextSibling()
+			Wend
 			if len(childrenData)>0 then data.Add("childrenData", childrenData)
 		endif
 

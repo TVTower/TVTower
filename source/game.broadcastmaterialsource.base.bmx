@@ -252,7 +252,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 			Local valueOld:String = text.Get(langID)
 			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)
 			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, context)
-			If valueOLD <> valueNew.Hash()
+			If valueOLD.HashCode() <> valueNew.HashCode() 'only create new string if required
 				result.Set(valueNew.ToString(), langID)
 			EndIf
 		Next

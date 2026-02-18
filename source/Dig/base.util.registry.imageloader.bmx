@@ -213,9 +213,11 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 			Local flagsarray:String[] = flagsstring.split(",")
 			For Local flag:String = EachIn flagsarray
 				flag = Upper(flag.Trim())
-				If flag = "MASKEDIMAGE" Then flags = flags | MASKEDIMAGE
-				If flag = "DYNAMICIMAGE" Then flags = flags | DYNAMICIMAGE
-				If flag = "FILTEREDIMAGE" Then flags = flags | FILTEREDIMAGE
+				Select flag
+					Case "MASKEDIMAGE"   flags :| MASKEDIMAGE
+					Case "DYNAMICIMAGE"  flags :| DYNAMICIMAGE
+					Case "FILTEREDIMAGE" flags :| FILTEREDIMAGE
+				End Select
 			Next
 		Else
 			flags = 0
@@ -233,28 +235,38 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 		'TLogger.log("TRegistryImageLoader.ParseScripts()", "found script block.", LOG_LOADING | LOG_DEBUG, TRUE)
 		local datas:TData[]
 
-		For Local script:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(scripts)
+		Local script:TxmlNode = TxmlNode(scripts.GetFirstChild())
+		While script
 			local data:TData = new TData
 
 			'only add to data if the fields exist in the xml
-			local fieldNames:String[]
-			fieldNames :+ ["do", "src", "dest"]
-			fieldNames :+ ["r", "g", "b"]
-			fieldNames :+ ["x", "y", "w", "h"]
-			fieldNames :+ ["frames"]
-			fieldNames :+ ["offsetTop", "offsetLeft", "offsetBottom", "offsetRight"]
+			Global fieldNames:String[]
+			If fieldNames.length = 0
+				fieldNames = [..
+					"do", "src", "dest", ..
+					"r", "g", "b", ..
+					"x", "y", "w", "h", ..
+					"frames", ..
+					"offsetTop", "offsetLeft", "offsetBottom", "offsetRight"..
+				]
+			EndIf
 			TXmlHelper.LoadValuesToData(script, data, fieldNames)
 
 			'skip if invalid RGB data is provided
-			If data.GetInt("r",-1) < 0 then continue
-			If data.GetInt("g",-1) < 0 then continue
-			If data.GetInt("b",-1) < 0 then continue
+			If data.GetInt("r",-1) < 0 Or ..
+			   data.GetInt("g",-1) < 0 Or ..
+			   data.GetInt("b",-1) < 0
+			   
+			   script = script.NextSibling()
+			   Continue
+			EndIf
 
 			'add script data
 			datas :+ [data]
-		Next
-		'if there exists valid scriptdata ... return it
-		'if len(datas) > 0 then
+
+		   script = script.NextSibling()
+		Wend
+
 		return datas
 	End Function
 

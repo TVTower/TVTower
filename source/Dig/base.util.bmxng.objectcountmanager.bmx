@@ -2,7 +2,7 @@ SuperStrict
 Import Brl.Map
 Import Brl.Retro
 Import Brl.Reflection
-Import Brl.ObjectList
+Import Collections.ObjectList
 Import Brl.StringBuilder
 Import "base.util.longmap.bmx"
 
@@ -32,7 +32,7 @@ Type TObjectCountManager
 	
 	
 	Method GetKeyID:Long(key:String)
-		Return Long(key.ToLower().hash())
+		Return Long(key.ToLower().hashCode())
 	End Method
 
 

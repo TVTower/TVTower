@@ -72,26 +72,36 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local data:TData = new TData
+		Global fieldNames:String[]
+		Global childFieldNames:String[]
+		If fieldNames.length = 0
+			fieldNames = ["currentAnimationName", "guid", "copyGuid"]
+		EndIf
+		If childFieldNames.length = 0
+			childFieldNames = [..
+				"name", "flags", ..
+				"frames", "framesTime", "frameTimer", ..
+				"repeatTimes", "paused", "randomness" , ..
+				"currentImageFrame", "currentFrame" ..
+			]
+		EndIf
 
+		local data:TData = new TData
 		local children:TData[]
 
-		local fieldNames:String[]
-		fieldNames :+ ["currentAnimationName", "guid", "copyGuid"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
-		For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
-			if childNode.GetName().ToLower() = "spriteframeanimation"
+		Local childNode:TxmlNode = TxmlNode(node.GetFirstChild())
+		While childNode
+			'handle only "spriteframeanimation"
+			If childNode.GetName().Equals("spriteframeanimation", False)
 				local childData:TData = new TData
-				local childFieldNames:String[]
-				childFieldNames :+ ["name", "flags"]
-				childFieldNames :+ ["frames", "framesTime", "frameTimer"]
-				childFieldNames :+ ["repeatTimes", "paused", "randomness"]
-				childFieldNames :+ ["currentImageFrame", "currentFrame"]
 				TXmlHelper.LoadValuesToData(childNode, childData, childFieldNames)
 				children :+ [childData]
-			endif
-		Next
+			EndIf
+
+			childNode = childNode.NextSibling()
+		Wend
 		if children.length > 0 then data.Add("animations", children)
 
 		return data

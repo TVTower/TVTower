@@ -37,22 +37,32 @@ Type TGenreDefinitionBase extends TGameObject
 
 	Method InitBasic:TGenreDefinitionBase(referenceID:int, data:TData = null)
 		if not data then data = new TData
+		
+		Local sb:TStringBuilder = New TStringBuilder
+		sb.Append(GetGUIDBaseName()).Append("-").Append(referenceID)
+		SetGUID(sb.ToString())
 
-		SetGUID(GetGUIDBaseName() + "-" + referenceID)
 		self.referenceID = referenceID
 
 		TimeMods = TimeMods[..24]
 		For Local i:Int = 0 To 23
+			sb.SetLength(0)
+			sb.Append("timeMod_").Append(i)
 			'data is stored as "-1 to +1", we want a multiplier
 			'so add +1 to value
-			TimeMods[i] = data.GetFloat("timeMod_" + i, 0) + 1.0
+			TimeMods[i] = data.GetFloat(sb.ToString(), 0) + 1.0
 		Next
 
 		AudienceAttraction = New TAudience
 		For local id:int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			Local targetGroupString:String = TVTTargetGroup.GetAsString(id)
-			AudienceAttraction.SetGenderValue(id, data.GetFloat(targetGroupString+"_men", 0.5), TVTPersonGender.MALE)
-			AudienceAttraction.SetGenderValue(id, data.GetFloat(targetGroupString+"_women", 0.5), TVTPersonGender.FEMALE)
+			sb.SetLength(0)
+			sb.Append(targetGroupString).Append("_men")
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(sb.ToString(), 0.5), TVTPersonGender.MALE)
+
+			sb.SetLength(0)
+			sb.Append(targetGroupString).Append("_women")
+			AudienceAttraction.SetGenderValue(id, data.GetFloat(sb.ToString(), 0.5), TVTPersonGender.FEMALE)
 		Next
 
 		return self

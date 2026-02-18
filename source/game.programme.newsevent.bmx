@@ -656,7 +656,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		Local context:SScriptExpressionContext = new SScriptExpressionContext(self, localeID, templateVariablesToUse)
 		sb = GameScriptExpression.ParseLocalizedText(sb, context)
-		If text <> sb.Hash() 'only create new string if required
+		If text.HashCode() <> sb.HashCode() 'only create new string if required
 			text = sb.ToString()
 			Return True
 		EndIf
@@ -1055,7 +1055,7 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 		Local happenTimeString:String = data.GetString("time"+index, data.GetString("time", ""))
 		Local happenTime:Int[]
 		If happenTimeString <> ""
-			happenTime = StringHelper.StringToIntArray(happenTimeString, ",")
+			happenTime = StringHelper.StringToIntArray(happenTimeString, Asc(","))
 		Else
 			happenTime = [1, 8,16,0,0]
 		EndIf

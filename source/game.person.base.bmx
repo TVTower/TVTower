@@ -1,5 +1,5 @@
 SuperStrict
-Import Brl.ObjectList
+Import Collections.ObjectList
 Import "Dig/base.util.longmap.bmx"
 Import "Dig/external/string_comp.bmx"
 Import "Dig/base.util.string.bmx"
@@ -609,6 +609,8 @@ Type TPersonBase Extends TGameObject
 	Field _productionData:TPersonProductionBaseData {nosave}
 	'cache for a lower case name of the person used when sorting persons
 	Field _sortableName:String {nosave}
+	'cache for complete full name
+	Field _fullNameWithTitle:String {nosave}
 	
 	Global dataKeyPersonality:String = "personality"
 	Global dataKeyProduction:String = "production"
@@ -670,8 +672,13 @@ Type TPersonBase Extends TGameObject
 
 
 	Method GetFullName:String(includeTitle:Int = True)
+		If includeTitle and _fullNameWithTitle
+			Return _fullNameWithTitle
+		EndIf
+
 		Local sb:TStringBuilder = New TStringBuilder()
-		If includeTitle and title 
+	
+		If includeTitle and title
 			sb.Append(title)
 		EndIf
 		If firstName
@@ -682,6 +689,12 @@ Type TPersonBase Extends TGameObject
 			If sb.Length() > 0 then sb.Append(" ")
 			sb.Append(lastName)
 		EndIf
+		
+		If includeTitle
+			_fullNameWithTitle = sb.ToString()
+			Return _fullNameWithTitle
+		EndIf
+
 		Return sb.ToString()
 	End Method
 
@@ -1048,11 +1061,13 @@ Type TPersonBase Extends TGameObject
 	Method CompareByName:int(other:object)
 		Local p2:TPersonBase = TPersonBase(other)
 		If Not p2 Then Return 1
+		
+		Local nameCompare:Int = GetFullName().Compare(p2.GetFullName(), False)
 
-		if GetFullName().ToLower() = p2.GetFullName().ToLower()
+		if nameCompare = 0
 			'publishtime is NOT happened time
 			return GetID() > p2.GetID()
-		elseif GetFullName().ToLower() > p2.GetFullName().ToLower()
+		elseif nameCompare > 0 
 			return 1
 		endif
 		return -1
