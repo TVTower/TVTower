@@ -119,6 +119,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 				If data.GetYear() < 1950 Then data.SetFlag(TVTProgrammeDataFlag.NOREMAKE, True)
 				If data.GetReleaseTime() <= nextRemakeTime Then Continue
 				If data.IsCustomProduction() Then Continue
+				If data.HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE) Then Continue
 				If data.HasFlag(TVTProgrammeDataFlag.LIVE+TVTProgrammeDataFlag.LIVEONTAPE+TVTProgrammeDataFlag.PAID) Then Continue
 				'ignore fictional entries (no explicit flag - inspect cast)
 				isFictional = False
