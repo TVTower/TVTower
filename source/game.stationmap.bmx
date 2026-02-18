@@ -2931,6 +2931,33 @@ Type TStationMap Extends TOwnedGameObject {_exposeToLua="selected"}
 		EndIf
 	End Function
 
+	Function GetReceiversForLevel:Int(level:Int)
+		'put this into GameRules?
+		Select level
+			Case 1
+				Return 0
+			Case 2
+				Return 2500000
+			Case 3
+				Return 2500000 * 2 '5mio
+			Case 4
+				Return 2500000 * 5 '12,5 mio
+			Case 5 
+				Return 2500000 * 9 '22,5 mio
+			Case 6
+				Return 2500000 * 14 '35 mio
+			Case 7
+				Return 2500000 * 20 '50 mio
+			Case 8
+				Return 2500000 * 28 '70 mio
+			Case 9
+				Return 2500000 * 40 '100 mio
+			Case 10
+				Return 2500000 * 60 '150 mio
+			Default
+				Return 2500000 * 100 '250 mio
+		EndSelect
+	End Function
 
 	Method GetPopulationCoverage:Float() {_exposeToLua}
 		Return Float(GetPopulation()) / Float(GetStationMapCollection().GetPopulation())

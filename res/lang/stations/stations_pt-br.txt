@@ -40,6 +40,7 @@ OF_THE_MAP        = no mapa
 #MAP_COUNTRY_DE-NW_SHORT =
 #MAP_COUNTRY_DE-MV_SHORT =
 
+AUDIENCE_REACH_LEVEL               = Nível de alcance do público
 AUDIENCE_REACH_LEVEL_WILL_INCREASE = O nível de alcance do público aumentará!
 AUDIENCE_REACH_LEVEL_INCREASED     = O nível de alcance do público aumentou
 LEVEL_INCREASED_FROM_X_TO_Y        = O nível aumenta de %X% para %Y%.

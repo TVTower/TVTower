@@ -40,6 +40,7 @@ MAP_COUNTRY_DE-BB_SHORT = BB
 MAP_COUNTRY_DE-NW_SHORT = NW
 MAP_COUNTRY_DE-MV_SHORT = MV
 
+AUDIENCE_REACH_LEVEL               = Рівень охоплення аудиторії
 AUDIENCE_REACH_LEVEL_WILL_INCREASE = Рівень охоплення аудиторії зросте!
 AUDIENCE_REACH_LEVEL_INCREASED     = Рівень охоплення аудиторії зріс
 LEVEL_INCREASED_FROM_X_TO_Y        = Рівень піднявся з %X% до %Y%.

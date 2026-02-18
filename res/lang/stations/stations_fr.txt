@@ -40,6 +40,7 @@ MAP_COUNTRY_DE-BB_SHORT = BB
 MAP_COUNTRY_DE-NW_SHORT = RW
 MAP_COUNTRY_DE-MV_SHORT = MP
 
+AUDIENCE_REACH_LEVEL               = Niveau de portée
 AUDIENCE_REACH_LEVEL_WILL_INCREASE = Le niveau de portée sera augmenté !
 AUDIENCE_REACH_LEVEL_INCREASED     = Niveau de portée augmenté
 LEVEL_INCREASED_FROM_X_TO_Y        = Le niveau augmente de %X% à %Y%.
@@ -71,8 +72,8 @@ PERMISSION                                = Autorisation
 IMAGE                                     = Image
 RENEW_AUTOMATICALLY                       = Renouveller automatiquement
 
-STATIONMAP_SECTION_NAME  = Land
-STATIONMAP_SECTIONS_NAME = Länder
+STATIONMAP_SECTION_NAME  = Région
+STATIONMAP_SECTIONS_NAME = Régions
 RECEIVER_SHARE           = Répartition de récepteurs
 AS_OF_DATEX              = Date : %DATEX%
 NEXT_CENSUS_AT_DATEX     = Prochaine enquête : %DATEX%
