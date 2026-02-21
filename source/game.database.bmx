@@ -1318,12 +1318,8 @@ Type TDatabaseLoader
 		If Not programmeLicence
 			If Not programmeData
 				'try to clone the parent's data - if that fails, create a new instance;
-				'Attention: do not clone target group attractivity as it contains structs.
-				'Currently, struct data cannot be cloned with clone().
-				'For a series this means that the episodes' attractivity would be 0.0
-				'for all target groups due to default struct values.
 				If parentLicence 
-					programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, ["id", "guid", "targetgroupattractivitymod", "title", "description", "titleprocessed", "descriptionprocessed"]))
+					programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, ["id", "guid", "title", "description", "titleprocessed", "descriptionprocessed"]))
 				EndIf
 				'if failed, create new data
 				If Not programmeData Then programmeData = New TProgrammeData
