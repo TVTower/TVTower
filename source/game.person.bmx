@@ -190,6 +190,8 @@ Function GetMainJob:Int(person:TPersonBase)
 	Local mainJobID:Int = -1
 	Local jobExp:Int=-1
 	Local pd:TPersonProductionData=TPersonProductionData(person.GetProductionData())
+	'fallback for persons without job definitions
+	If Not pd Then Return TVTPersonJob.UNKNOWN
 	For Local jobIndex:Int = 1 To TVTPersonJob.Count
 		Local tmpJobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
 		If Not person.HasJob(tmpJobID) Then Continue
