@@ -1,5 +1,8 @@
 LANGUAGE_NAME_INTERNATIONAL = English
 LANGUAGE_NAME_LOCALE        = English
+NUMBER_DECIMAL_SEPARATOR    = .
+NUMBER_GROUP_SEPARATOR      = *,*
+CURRENCY_FORMAT             = 1
 
 MENU      = Menu / Pause
 OPEN_MENU = Open Menu

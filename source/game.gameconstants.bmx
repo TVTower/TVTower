@@ -8,7 +8,7 @@ Rem
 EndRem
 SuperStrict
 
-Import "Dig/base.util.math.bmx"
+Import "basefunctions.bmx"
 
 Global VersionDate:String = "unknown"
 Global VersionString:String = ""
@@ -16,16 +16,12 @@ Global CopyrightString:String = ""
 
 Global TVTPlayerCount:Int = 4
 
-Const CURRENCYSIGN:String = Chr(8364) 'eurosign
-
-
 Global TVTDebugInfo:Int = False
 Global TVTGhostBuildingScrollMode:Int = False
 
+'delegate - replace GetFormattedCurrency by TFunctions.GetFormattedCurrency
 Function GetFormattedCurrency:String(money:Long)
-	'160 is the "no breaking space" code
-	'8239 is the "narrow no breaking space" code
-	return MathHelper.DottedValue(money) + Chr(160) + CURRENCYSIGN
+	Return TFunctions.GetFormattedCurrency(money)
 EndFunction
 
 'collection of all constants types (so it could be exposed

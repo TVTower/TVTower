@@ -1,5 +1,8 @@
 LANGUAGE_NAME_INTERNATIONAL = German
 LANGUAGE_NAME_LOCALE        = Deutsch
+NUMBER_DECIMAL_SEPARATOR    = ,
+NUMBER_GROUP_SEPARATOR      = *.*
+CURRENCY_FORMAT             = 4
 
 MENU      = Menü / Pause
 OPEN_MENU = Menü öffnen

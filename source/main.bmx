@@ -623,6 +623,10 @@ Type TApp
 		'select language
 		TLocalization.SetCurrentLanguage(languageCode)
 
+		TFunctions.decimalDelimiter = GetLocale("NUMBER_DECIMAL_SEPARATOR")
+		TFunctions.thousandsDelimiter = GetLocale("NUMBER_GROUP_SEPARATOR").replace("*","")
+		TFunctions.currencyPosition = Int(GetLocale("CURRENCY_FORMAT"))
+
 		'skip further actions if the same language is already set
 		If oldLang = languageCode Then Return False
 
@@ -4696,7 +4700,7 @@ Type GameEvents
 					ElseIf oldLicence And Not block.licence
 						GetGame().SendSystemMessage("[DEV] #"+Int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created no new auction")
 					ElseIf oldLicence = block.licence
-						GetGame().SendSystemMessage("[DEV] #"+Int(indexS)+". Reduced auction raw price for '" + oldLicence.GetTitle()+"' from " + MathHelper.DottedValue(oldPrice) + " to " + MathHelper.DottedValue(block.GetNextBidRaw()))
+						GetGame().SendSystemMessage("[DEV] #"+Int(indexS)+". Reduced auction raw price for '" + oldLicence.GetTitle()+"' from " + TFunctions.DottedValue(oldPrice) + " to " + TFunctions.DottedValue(block.GetNextBidRaw()))
 					EndIf
 				Next
 

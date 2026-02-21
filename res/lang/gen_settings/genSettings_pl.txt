@@ -1,5 +1,8 @@
 LANGUAGE_NAME_INTERNATIONAL = Polski
 LANGUAGE_NAME_LOCALE        = Polski
+NUMBER_DECIMAL_SEPARATOR    = ,
+NUMBER_GROUP_SEPARATOR      = * *
+CURRENCY_FORMAT             = 4
 
 MENU      = Menu / Pauza
 OPEN_MENU = Otwórz Menu

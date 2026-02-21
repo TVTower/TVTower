@@ -1,5 +1,8 @@
 LANGUAGE_NAME_INTERNATIONAL = Francais
 LANGUAGE_NAME_LOCALE        = Francais
+NUMBER_DECIMAL_SEPARATOR    = ,
+NUMBER_GROUP_SEPARATOR      = * *
+CURRENCY_FORMAT             = 4
 
 MENU      = Menu / Pause
 OPEN_MENU = Ouvrir le menu

@@ -1,5 +1,8 @@
 LANGUAGE_NAME_INTERNATIONAL = Ukrainian
 LANGUAGE_NAME_LOCALE        = Українська
+NUMBER_DECIMAL_SEPARATOR    = .
+NUMBER_GROUP_SEPARATOR      = *,*
+CURRENCY_FORMAT             = 2
 
 MENU      = Меню / Пауза
 OPEN_MENU = Відкрити меню
