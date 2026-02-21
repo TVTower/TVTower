@@ -6,6 +6,40 @@
 
 #include <pub.mod/lua.mod/lua-5.1.4/src/lua.h>
 
+
+static void lua_printStackTrace(lua_State *L, int indent) {
+
+    lua_Debug ar;
+    int level = 0;
+
+    char pad[64];
+    int i;
+
+    if (indent < 0) indent = 0;
+    if (indent > 63) indent = 63;
+
+    for (i = 0; i < indent; ++i) {
+        pad[i] = ' ';
+    }
+    pad[indent] = '\0';
+
+    printf("%sSTACK TRACE:\n", pad);
+
+    while (lua_getstack(L, level, &ar)) {
+
+        lua_getinfo(L, "nSl", &ar);
+
+        printf("%s[%d] %s:%d (%s)\n",
+            pad,
+            level,
+            ar.short_src,
+            ar.currentline,
+            ar.name ? ar.name : "unknown");
+
+        level++;
+    }
+}
+
 //from brl.reflection
 BBClass* Luaengine_bbRefGetObjectClass(BBObject* p) {
 	return p->clas;
@@ -155,12 +189,15 @@ BBObject *lua_unboxobject_debug(lua_State *L, int index, int _objMetaTable) {
     void *p = lua_touserdata(L, index);
     if (!p) {
         printf("LUA: unbox object contains invalid userdata (userdata is nil or not set/exposed correctly)\n");
+		printf("     index=%d type=%s\n", index, lua_typename(L, lua_type(L, index)));
+		lua_printStackTrace(L, 5);
         fflush(stdout);
         return &bbNullObject;
     }
 
     if (!lua_getmetatable(L, index)) {
         printf("LUA: unbox object misses metatable\n");
+		lua_printStackTrace(L, 5);
         fflush(stdout);
         return &bbNullObject;
     }
@@ -169,6 +206,7 @@ BBObject *lua_unboxobject_debug(lua_State *L, int index, int _objMetaTable) {
     if (!lua_rawequal(L, -1, -2)) {
         lua_pop(L, 2); // Pop both metatables
         printf("LUA: unbox object contains invalid metatable\n");
+		lua_printStackTrace(L, 5);
         fflush(stdout);
         return &bbNullObject;
     }
@@ -209,6 +247,7 @@ int lua_gcobject(lua_State *L) {
     void *p = lua_touserdata(L, 1);
     if (!p) {
         printf("LUA: invalid userdata during __gc\n");
+		lua_printStackTrace(L, 5);
         fflush(stdout);
         return 0;
     }
