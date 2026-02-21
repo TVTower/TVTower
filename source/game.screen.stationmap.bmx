@@ -1898,7 +1898,7 @@ Type TStationMapInformationFrame
 
 
 	Method New()
-		sectionList = New TGUISelectList.Create(New SVec2I(410,153), New SVec2I(378, 100), "STATIONMAP")
+		sectionList = New TGUISelectList.Create(New SVec2I(150,153), New SVec2I(378, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		sectionList.scrollItemHeightPercentage = 1.0
 		sectionList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -2102,7 +2102,7 @@ Type TStationMapInformationFrame
 		Local owner:Int = GetPlayer().playerID
 		If TScreenHandler_StationMap.currentSubRoom Then owner = TScreenHandler_StationMap.currentSubRoom.owner
 
-		If Not area Then area = New TRectangle.Init(170, 5, 400, 349)
+		If Not area Then area = New TRectangle.Init(130, 5, 440, 349)
 		If Not contentArea Then contentArea = New TRectangle
 
 		Local detailsH:Int = 90 * (selectedSection<>Null)
@@ -2122,9 +2122,10 @@ Type TStationMapInformationFrame
 
 
 		Local currentY:Int = contentArea.GetIntY()
+		Local sCol:TStationMapCollection = GetStationMapCollection()
 
 
-		Local headerText:String = GetLocale("MAP_COUNTRY_"+GetStationMapCollection().GetMapISO3166Code()+"_LONG")
+		Local headerText:String = GetLocale("MAP_COUNTRY_"+sCol.GetMapISO3166Code()+"_LONG")
 		Local titleColor:SColor8 = new SColor8(75,75,75)
 		Local subTitleColor:SColor8 = new SColor8(115,115,115)
 
@@ -2138,10 +2139,10 @@ Type TStationMapInformationFrame
 		'=== COUNTRY DETAILS ===
 		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), countryInformationHeight, "1")
 		local lineH:int = 14
-		local col1W:int = 100
+		local col1W:int = 170
 		local col2W:int = 60
-		local col3W:int = 110
-		local col4W:int = 70
+		local col3W:int = 120
+		local col4W:int = 40
 		local col1:int = contentArea.GetX() + 5
 		local col3:int = contentArea.GetX2() - 5 - col3W - col4W
 		local col2:int = col1 + col1W
@@ -2149,21 +2150,30 @@ Type TStationMapInformationFrame
 		local textY:int = currentY + 1
 		local overviewLineH:Int = 18
 		skin.fontNormal.DrawBox("|b|"+GetLocale("POPULATION")+":|/b|", col1, textY + 0*lineH, col1W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
-		skin.fontNormal.DrawBox(TFunctions.DottedValue(GetStationMapCollection().GetPopulation()), col2, textY + 0*lineH, col2W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.DottedValue(sCol.GetPopulation()), col2, textY + 0*lineH, col2W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 		skin.fontNormal.DrawBox("|b|"+GetLocale("STATIONMAP_SECTIONS_NAME")+":|/b|", col1, textY + 1*lineH, col1W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
-		skin.fontNormal.DrawBox(GetStationMapCollection().GetSectionCount(), col2, textY + 1*lineH, col2W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(sCol.GetSectionCount(), col2, textY + 1*lineH, col2W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		Local map:TStationMap = sCol.GetMap(owner)
+		Local level:Int = map.GetReceiverLevel(map.GetReceivers())
+		skin.fontNormal.DrawBox("|b|"+GetLocale("BROADCASTING_AREA")+"|/b|", col1, textY + 2*lineH, col1w + col2w,  overviewLineH, sALIGN_CENTER_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.DottedValue(map.GetReceiversForLevel(level)), col1, textY + 3*lineH, col1w,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox("<", col1 + 60, textY + 3*lineH, 20,  overviewLineH, sALIGN_CENTER_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.DottedValue(map.GetReceivers()), col1, textY + 3*lineH, col1w + col2w,  overviewLineH, sALIGN_CENTER_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox("<", col2 + col2w - 80, textY + 3*lineH, 20,  overviewLineH, sALIGN_CENTER_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.DottedValue(map.GetReceiversForLevel(level+1)), col2, textY + 3*lineH, col2w, overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetLocale("AUDIENCE_REACH_LEVEL") + " " + level, col1, textY + 4*lineH, col1w + col2w,  overviewLineH, sALIGN_CENTER_TOP, skin.textColorNeutral)
 
 		skin.fontNormal.DrawBox("|b|"+GetLocale("RECEIVER_SHARE")+"|/b|", col3, textY + 0*lineH, col3W + col4W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 		skin.fontNormal.DrawBox(GetLocale("ANTENNA_RECEIVERS")+":", col3, textY + 1*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
-		skin.fontNormal.DrawBox(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationAntennaShare()*100, 2)+"%", col4, textY + 1*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(MathHelper.NumberToString(sCol.GetAveragePopulationAntennaShare()*100, 2)+"%", col4, textY + 1*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 		skin.fontNormal.DrawBox(GetLocale("SATELLITE_RECEIVERS")+":", col3, textY + 2*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
-		skin.fontNormal.DrawBox(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationSatelliteShare()*100, 2)+"%", col4, textY + 2*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(MathHelper.NumberToString(sCol.GetAveragePopulationSatelliteShare()*100, 2)+"%", col4, textY + 2*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 		skin.fontNormal.DrawBox(GetLocale("CABLE_NETWORK_RECEIVERS")+":", col3, textY + 3*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
-		skin.fontNormal.DrawBox(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationCableShare()*100, 2)+"%", col4, textY + 3*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(MathHelper.NumberToString(sCol.GetAveragePopulationCableShare()*100, 2)+"%", col4, textY + 3*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 		local statusText:string = GetLocale("AS_OF_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetLastCensusTime()))
 		statusText :+ ". " + GetLocale("NEXT_CENSUS_AT_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetNextCensusTime()))
-		skin.fontNormal.DrawBox("|i|"+statusText+"|/i|", contentArea.GetX() + 5, textY + 4*lineH, contentArea.GetIntW()- 10,  30, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.75)
+		skin.fontNormal.DrawBox("|i|"+statusText+"|/i|", contentArea.GetX() + 5, textY + 5*lineH, contentArea.GetIntW()- 10,  30, sALIGN_CENTER_TOP, subHeaderColor, EDrawTextEffect.Emboss, 0.75)
 		currentY :+ countryInformationHeight
 
 
@@ -2212,7 +2222,7 @@ Type TStationMapInformationFrame
 			skin.fontNormal.DrawBox(TFunctions.DottedValue(selectedSection.GetPopulation()), col2, textY + 0*lineH, col2W,  fontH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 			local cableNetworkText:string
-			if GetStationMapCollection().GetCableNetworksInSectionCount(selectedSection.name, True) > 0
+			if sCol.GetCableNetworksInSectionCount(selectedSection.name, True) > 0
 				cableNetworkText:string = GetLocale("YES")
 			else
 				cableNetworkText:string = GetLocale("NO")
@@ -2230,6 +2240,10 @@ Type TStationMapInformationFrame
 
 			skin.fontNormal.DrawBox("|b|" + GetLocale("PRESSURE_GROUPS")+":|/b| " + pressureGroups, col1, textY + 2*lineH, col1W + col2W,  3*fontH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings.data)
 
+			'more space for last column in section details
+			col3W=col3W-25
+			col4=col4-25
+			col4W=col4W+25
 			skin.fontSmallCaption.DrawBox(GetLocale("BROADCAST_PERMISSION")+":", col3, textY + 0*lineH, col3W+col4W, -1, sALIGN_LEFT_TOP, skin.textColorNeutral)
 			skin.fontNormal.DrawBox(GetLocale("PRICE")+":", col3, textY + 1*lineH, col3W, -1, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.4)
 			skin.fontNormal.DrawBox(GetFormattedCurrency(selectedSection.GetBroadcastPermissionPrice(owner)), col4, textY + 1*lineH, col4W, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
