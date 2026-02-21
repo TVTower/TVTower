@@ -960,11 +960,11 @@ Type TInGameInterface
 		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 414, 130, 29, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
 		local profit:long = GetPlayerFinance(playerID).GetCurrentProfit()
 		if profit > 0
-			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
+			_interfaceFont.DrawBox("+"+TFunctions.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
 		elseif profit = 0
 			_interfaceFont.DrawBox(0, 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, neutralProfitColor, EDrawTextEffect.Shadow, 0.5)
 		else
-			_interfaceFont.DrawBox(MathHelper.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
+			_interfaceFont.DrawBox(TFunctions.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
 		endif
 
 

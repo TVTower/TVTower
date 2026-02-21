@@ -141,6 +141,8 @@ End Function
 'collection of useful functions
 Type TFunctions
 	Global roundToBeautifulEnabled:Int = True
+	Global thousandsDelimiter:String=","
+	Global decimalDelimiter:String="."	
 	
 	
 	'base/targetWidth of 0 leads to a triangle
@@ -238,44 +240,8 @@ Type TFunctions
 
 	'formats a given value from "123000,12" to "123.000,12"
 	'optimized variant
-	Function dottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
-		'is there a "minus" in front ?
-		Local addSign:Int = value < 0
-		Local result:String
-		Local decimalValue:string
-
-		'only process decimals when requested
-		if digitsAfterDecimalPoint > 0 and 1=2
-			Local stringValues:String[] = String(Abs(value)).Split(".")
-			Local fractionalValue:String = ""
-			decimalValue = stringValues[0]
-			if stringValues.length > 1 then fractionalValue = stringValues[1]
-
-			'do we even have a fractionalValue <> ".000" ?
-			if Long(fractionalValue) > 0
-				'not rounded, just truncated
-				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
-				result :+ decimalDelimiter + fractionalValue
-			endif
-		else
-			decimalValue = String(Abs(Long(value)))
-		endif
-
-
-		For Local i:Int = decimalValue.length-1 To 0 Step -1
-			result = Chr(decimalValue[i]) + result
-
-			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0
-				result = thousandsDelimiter + result
-			EndIf
-		Next
-
-		if addSign
-			Return "-" + result
-		else
-			Return result
-		endif
+	Function dottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1)
+		return MathHelper.DottedValue(value, thousandsDelimiter, decimalDelimiter, digitsAfterDecimalPoint)
 	End Function
 
 
@@ -358,7 +324,7 @@ Type TFunctions
 		If typ=3 Then Return MathHelper.NumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
 
 		'add thousands-delimiter: 10000 = 10.000
-		return dottedValue(value, ".", ",", digitsAfterDecimalPoint)
+		return dottedValue(value, digitsAfterDecimalPoint)
     End Function
 
 End Type
