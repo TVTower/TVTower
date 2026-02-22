@@ -188,10 +188,15 @@ BBObject *lua_unboxobject(lua_State *L, int index, int _objMetaTable) {
 BBObject *lua_unboxobject_debug(lua_State *L, int index, int _objMetaTable) {
     void *p = lua_touserdata(L, index);
     if (!p) {
-        printf("LUA: unbox object contains invalid userdata (userdata is nil or not set/exposed correctly)\n");
-		printf("     index=%d type=%s\n", index, lua_typename(L, lua_type(L, index)));
-		lua_printStackTrace(L, 5);
-        fflush(stdout);
+		// there might be something "non userdata" at the index
+		// eg TVT:MyMethod() will put TVT as first param compared
+		// to TVT.MyMethod()
+		if (lua_isnil(L, index)) {
+			printf("LUA: unbox object contains invalid userdata (userdata is nil or not set/exposed correctly)\n");
+			printf("     index=%d type=%s\n", index, lua_typename(L, lua_type(L, index)));
+			lua_printStackTrace(L, 5);
+			fflush(stdout);
+		}
         return &bbNullObject;
     }
 
@@ -247,7 +252,6 @@ int lua_gcobject(lua_State *L) {
     void *p = lua_touserdata(L, 1);
     if (!p) {
         printf("LUA: invalid userdata during __gc\n");
-		lua_printStackTrace(L, 5);
         fflush(stdout);
         return 0;
     }

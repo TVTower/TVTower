@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2025 Ronny Otto, digidea.de
+	Copyright (C) 2002-2026 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -2062,7 +2062,7 @@ Type TLuaEngine
 
 		Local argCount:Int = luaCallArguments.length
 		'send all defined arguments to lua
-		luaCallArguments.PushArgs(_luaState, _objMetaTable)	
+		luaCallArguments.PushArgs(_luaState, _objMetaTable)
 
 		' (try to) call the function
 		' protected call without custom traceback handler
