@@ -191,7 +191,7 @@ rem
 					Case 5	title = "Bester Spieler (Tag):~t"
 					Case 6	title = "Bester Spieler (Prime):"
 				End Select
-				GetBitmapFont("default", 12).Draw(title+"~tMinAudience = " + MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"% - "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"%", 20, y)
+				GetBitmapFont("default", 12).Draw(title+"~tMinAudience = " + TFunctions.NumberToString(100 * filter.minAudienceMin,2)+"% - "+ TFunctions.NumberToString(100 * filter.minAudienceMax,2)+"%", 20, y)
 				If filterNum Mod 2 = 0 Then y :+ 4
 				y:+ 13
 			Next
@@ -238,7 +238,7 @@ endrem
 				textFont.DrawSimple(RSet(i, 2).Replace(" ", "0"), textX, textY - 1)
 				If ads[i]
 					textFont.DrawBox(": " + ads[i].GetTitle(), textX + 15, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
-					textFont.DrawSimple(MathHelper.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY - 1)
+					textFont.DrawSimple(TFunctions.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY - 1)
 					If ads[i].GetLimitedToTargetGroup() > 0
 						textFont.DrawBox(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 170, textY - 1, 100, 15, sALIGN_RIGHT_TOP, SColor8.White)
 					Else

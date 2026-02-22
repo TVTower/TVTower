@@ -399,9 +399,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 			'price
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(productionConcept.GetTotalCost()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(productionConcept.GetTotalCost()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			endif
 			'=== BOX LINE 2 ===
 			contentY :+ boxH
@@ -425,19 +425,19 @@ rem
 			contentY :+ 28
 			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Tempo: "+TFunctions.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Kritik: "+TFunctions.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Kinokasse: "+TFunctions.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Preismodifikator: "+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Preismodifikator: "+TFunctions.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
+			skin.fontNormal.draw("Qualitaet roh: "+TFunctions.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Qualitaet: "+TFunctions.NumberToString(GetQuality(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Aktualitaet: "+TFunctions.NumberToString(GetTopicality(), 4)+" von " + TFunctions.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12
@@ -447,7 +447,7 @@ rem
 			contentY :+ 12
 			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Trailerakt.-modifikator: "+TFunctions.NumberToString(GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
 		endif
 endrem
 		'=== OVERLAY / BORDER ===

@@ -1474,7 +1474,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			Local influencePercentage:Float = 0.01 * MathHelper.Clamp(weightAge * ageInfluence + notLiveInfluence + firstBroadcastInfluence + weightTimesBroadcasted * timesBroadcastedInfluence, 0, 100)
 
 			maxTopicalityCache = 1.0 - THelper.ATanFunction(influencePercentage, 2)
-			'print GetTitle() +" age "+ age +" #br "+ timesBroadcastedValue +" ageInfl " +MathHelper.NumberToString(weightAge * ageInfluence) +" firstBrInfl "+ MathHelper.NumberToString(firstBroadcastInfluence) +" brInfl "+ MathHelper.NumberToString(weightTimesBroadcasted * timesBroadcastedInfluence) +" -> "+ MathHelper.NumberToString(maxTopicalityCache)
+			'print GetTitle() +" age "+ age +" #br "+ timesBroadcastedValue +" ageInfl " +TFunctions.NumberToString(weightAge * ageInfluence) +" firstBrInfl "+ TFunctions.NumberToString(firstBroadcastInfluence) +" brInfl "+ TFunctions.NumberToString(weightTimesBroadcasted * timesBroadcastedInfluence) +" -> "+ TFunctions.NumberToString(maxTopicalityCache)
 			maxTopicalityCacheCode = newCacheCode
 		EndIf
 		Return maxTopicalityCache
@@ -1660,11 +1660,11 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 			topicality = MathHelper.Clamp(topicality + weightedRefresh, 0, maxTopicalityCache)
 			rem
-			print MathHelper.NumberToString(topOld,3)+ " -> "..
-				+ MathHelper.NumberToString(topicality,3) + "   ("..
-				+ MathHelper.NumberToString(maxTopicalityCache,3)+" "..
-				+ MathHelper.NumberToString(refreshModifier,3)+ " "..
-				+ MathHelper.NumberToString(weightedRefresh,3)+" "..
+			print TFunctions.NumberToString(topOld,3)+ " -> "..
+				+ TFunctions.NumberToString(topicality,3) + "   ("..
+				+ TFunctions.NumberToString(maxTopicalityCache,3)+" "..
+				+ TFunctions.NumberToString(refreshModifier,3)+ " "..
+				+ TFunctions.NumberToString(weightedRefresh,3)+" "..
 				+ (Int((maxTopicalityCache-topicality) / weightedRefresh) +1)..
 				+ ") "+GetTitle()
 			endrem

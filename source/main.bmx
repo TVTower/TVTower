@@ -1555,7 +1555,7 @@ Endrem
 			DrawText("Virtual Resolution:", virtualResolutionDebugX, virtualResolutionDebugY)
 			DrawText(" MouseManagerXY:  " + Mousemanager.x + ", " + Mousemanager.y, virtualResolutionDebugX, virtualResolutionDebugY+1*12)
 			DrawText(" MouseXY:  " + MouseX() + ", " + MouseY(), virtualResolutionDebugX, virtualResolutionDebugY+2*12)
-			DrawText(" GM.DesignedMouseXY: " + MathHelper.NumberToString(GetGraphicsManager().DesignedMouseX(), 2) + ", " + MathHelper.NumberToString(GetGraphicsManager().DesignedMouseY(), 2), virtualResolutionDebugX, virtualResolutionDebugY+4*12)
+			DrawText(" GM.DesignedMouseXY: " + TFunctions.NumberToString(GetGraphicsManager().DesignedMouseX(), 2) + ", " + TFunctions.NumberToString(GetGraphicsManager().DesignedMouseY(), 2), virtualResolutionDebugX, virtualResolutionDebugY+4*12)
 			DrawText(" GM.WindowMouseXY: " + GetGraphicsManager().WindowMouseX() + ", " + GetGraphicsManager().WindowMouseY(), virtualResolutionDebugX, virtualResolutionDebugY+5*12)
 			
 			DrawText(" GM.windowSize: " + GetGraphicsManager().windowSize.x + ", " + GetGraphicsManager().windowSize.y, virtualResolutionDebugX, virtualResolutionDebugY+7*12)

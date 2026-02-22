@@ -57,7 +57,7 @@ Type TAwardCulture extends TAward
 		local result:string = Super.GetRewardText()
 		if result then result :+ "~n"
 
-		local valueStr:string = "|color=0,125,0|+" + MathHelper.NumberToString(cultureBoost*100, 2, True)+"%|/color|"
+		local valueStr:string = "|color=0,125,0|+" + TFunctions.NumberToString(cultureBoost*100, 2, True)+"%|/color|"
 		local timeStr:string = " (" + GetLocale("FOR_X_HOURS").Replace("%X%", 24) + ")"
 		result :+ chr(9654) + " " +StringHelper.UCFirst(GetLocale("ATTRACTIVITY"))+": "+GetLocale("PROGRAMME_FLAG_CULTURE")+" " + valueStr + timeStr
 		return result

@@ -2060,7 +2060,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			GetBitmapFont("default", 12).DrawSimple("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), a.getX() + 5, a.GetY() + 5)
+			GetBitmapFont("default", 12).DrawSimple("bidSavings="+TFunctions.NumberToString(bidSavings, 4) + "  Min="+TFunctions.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+TFunctions.NumberToString(GetBidSavingsDecreaseBy(), 4), a.getX() + 5, a.GetY() + 5)
 			GetBitmapFont("default", 12).DrawSimple("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, a.getX() + 5, a.GetY() + 5 + 12)
 			GetBitmapFont("default", 12).DrawSimple("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetChannelReachLevel()), a.getX() + 5, a.GetY() + 5 + 2*12)
 		EndIf

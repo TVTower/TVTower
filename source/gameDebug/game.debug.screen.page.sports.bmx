@@ -105,7 +105,7 @@ Type TDebugScreenPage_Sports extends TDebugScreenPage
 			textFont.DrawBox(rank.team.GetTeamName(), textX, textY, w - 25, 15, sALIGN_LEFT_TOP, SColor8.White)
 			textFont.DrawBox(rank.score, textX + w - 20, textY, 20, 15, sALIGN_LEFT_TOP, SColor8.White)
 			textY :+ 12
-			textFont.DrawBox("Attr: " + MathHelper.NumberToString(rank.team.GetAttractivity()*100,0) + "  Pwr: " + MathHelper.NumberToString(rank.team.GetPower()*100,0) + "  Skill: " + MathHelper.NumberToString(rank.Team.GetSkill()*100,0), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textFont.DrawBox("Attr: " + TFunctions.NumberToString(rank.team.GetAttractivity()*100,0) + "  Pwr: " + TFunctions.NumberToString(rank.team.GetPower()*100,0) + "  Skill: " + TFunctions.NumberToString(rank.Team.GetSkill()*100,0), textX, textY, w, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textY :+ 12 + 4 
 		Next
 	End Method

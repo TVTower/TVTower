@@ -694,7 +694,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						if selectedStation.built = 0 then selectedStation.built = GetWorldTime().GetTimeStart()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
-						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetStationExclusiveReceivers() )
+						reachChange = TFunctions.DottedValue( -1 * selectedStation.GetStationExclusiveReceivers() )
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						runningCost = getRunningCostsString(selectedStation)
 					EndIf
@@ -711,7 +711,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
-						reachChange = MathHelper.DottedValue(selectedStation.GetStationExclusiveReceivers())
+						reachChange = TFunctions.DottedValue(selectedStation.GetStationExclusiveReceivers())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
 						runningCost = getRunningCostsString(selectedStation)
 
@@ -967,7 +967,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 'not needed
-'						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
+'						reachChange = TFunctions.DottedValue(selectedStation.GetReachDecrease())
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						runningCost = getRunningCostsString(selectedStation)
 
@@ -1000,7 +1000,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
-'						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
+'						reachChange = TFunctions.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
 '						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
 						runningCost = getRunningCostsString(selectedStation)
@@ -1352,7 +1352,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 'not needed
-'						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
+'						reachChange = TFunctions.DottedValue(selectedStation.GetReachDecrease())
 
 						'reassign to new satellite?
 						if TScreenHandler_StationMap.satelliteSelectionFrame.IsOpen() and TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
@@ -1392,7 +1392,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReceivers(), 2)
 'not needed
-'						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
+'						reachChange = TFunctions.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
 						runningCost = getRunningCostsString(selectedStation)
 
@@ -1796,10 +1796,10 @@ Type TSatelliteSelectionFrame
 			'=== BOX LINE 1 ===
 			'local qualityText:string = "-/-"
 			'if selectedSatellite.quality <> 100
-			'	qualityText = MathHelper.NumberToString((selectedSatellite.quality-100), 0, True)+"%"
+			'	qualityText = TFunctions.NumberToString((selectedSatellite.quality-100), 0, True)+"%"
 			'endif
-			Local qualityText:String = MathHelper.NumberToString(selectedSatellite.quality, 0, True)+"%"
-			Local marketShareText:String = MathHelper.NumberToString(100*selectedSatellite.populationShare, 1, True)+"%"
+			Local qualityText:String = TFunctions.NumberToString(selectedSatellite.quality, 0, True)+"%"
+			Local marketShareText:String = TFunctions.NumberToString(100*selectedSatellite.populationShare, 1, True)+"%"
 
 			If selectedSatellite.quality < 100
 				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, qualityText, "quality", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
@@ -1813,7 +1813,7 @@ Type TSatelliteSelectionFrame
 
 
 			currentY :+ boxH
-			Local minImageText:String = MathHelper.NumberToString(selectedSatellite.minimumChannelImage, 1, True)+"%"
+			Local minImageText:String = TFunctions.NumberToString(selectedSatellite.minimumChannelImage, 1, True)+"%"
 
 			If Not GetPublicImage(owner) Or GetPublicImage(owner).GetAverageImage() < selectedSatellite.minimumChannelImage
 				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", EDatasheetColorStyle.Neutral, skin.fontNormal, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
@@ -2021,7 +2021,7 @@ Type TStationMapInformationFrame
 		Local valueA:String = GetLocale("MAP_COUNTRY_"+section.GetISO3166Code()+"_LONG")
 		Local valueB:String = GetLocale("NO")
 		if section.HasBroadcastPermission(owner) then valueB = GetLocale("YES")
-		Local valueC:String = MathHelper.NumberToString(section.GetPressureGroupsChannelSympathy(owner)*100,2) +"%"
+		Local valueC:String = TFunctions.NumberToString(section.GetPressureGroupsChannelSympathy(owner)*100,2) +"%"
 		Local valueD:String = TFunctions.convertValue(section.GetPopulation(), 2, 0)
 		Local paddingLR:Int = 2
 		Local textOffsetX:Int = paddingLR + 5
@@ -2165,11 +2165,11 @@ Type TStationMapInformationFrame
 
 		skin.fontNormal.DrawBox("|b|"+GetLocale("RECEIVER_SHARE")+"|/b|", col3, textY + 0*lineH, col3W + col4W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 		skin.fontNormal.DrawBox(GetLocale("ANTENNA_RECEIVERS")+":", col3, textY + 1*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
-		skin.fontNormal.DrawBox(MathHelper.NumberToString(sCol.GetAveragePopulationAntennaShare()*100, 2)+"%", col4, textY + 1*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.NumberToString(sCol.GetAveragePopulationAntennaShare()*100, 2)+"%", col4, textY + 1*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 		skin.fontNormal.DrawBox(GetLocale("SATELLITE_RECEIVERS")+":", col3, textY + 2*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
-		skin.fontNormal.DrawBox(MathHelper.NumberToString(sCol.GetAveragePopulationSatelliteShare()*100, 2)+"%", col4, textY + 2*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.NumberToString(sCol.GetAveragePopulationSatelliteShare()*100, 2)+"%", col4, textY + 2*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 		skin.fontNormal.DrawBox(GetLocale("CABLE_NETWORK_RECEIVERS")+":", col3, textY + 3*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
-		skin.fontNormal.DrawBox(MathHelper.NumberToString(sCol.GetAveragePopulationCableShare()*100, 2)+"%", col4, textY + 3*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.NumberToString(sCol.GetAveragePopulationCableShare()*100, 2)+"%", col4, textY + 3*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 		local statusText:string = GetLocale("AS_OF_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetLastCensusTime()))
 		statusText :+ ". " + GetLocale("NEXT_CENSUS_AT_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetNextCensusTime()))
@@ -2248,7 +2248,7 @@ Type TStationMapInformationFrame
 			skin.fontNormal.DrawBox(GetLocale("PRICE")+":", col3, textY + 1*lineH, col3W, -1, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.4)
 			skin.fontNormal.DrawBox(GetFormattedCurrency(selectedSection.GetBroadcastPermissionPrice(owner)), col4, textY + 1*lineH, col4W, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 			skin.fontNormal.DrawBox(GetLocale("CHANNEL_IMAGE")+":", col3, textY + 2*lineH, col3W,  -1, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.4)
-			skin.fontNormal.DrawBox(GetLocale("MIN_VALUEX").Replace("%VALUEX%", MathHelper.NumberToString(selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(GetLocale("MIN_VALUEX").Replace("%VALUEX%", TFunctions.NumberToString(selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 			if selectedSection.HasBroadcastPermission(owner)
 				skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), col3, textY + 3*lineH, col3W+col4W, -1, sALIGN_LEFT_TOP, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 			else
