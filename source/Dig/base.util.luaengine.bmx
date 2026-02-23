@@ -1808,17 +1808,14 @@ Type TLuaEngine
 		' parameter will be the "TVT" instance)
 		Local isLuaMethodCall:Int = False
 		if passedArgumentCount > 0
-			'this is not needed, as unboxing already handles null object stuff
-			rem
+			' only userdata can be unboxed, but first param
+			' can also be a number or string in a "non method"-style
+			' call
 			local paramObj:object
-			if lua_isnil(_luaState, 1)
-				paramObj = null
-			elseif lua_isuserdata(_luaState, 1)
+			If lua_isuserdata(_luaState, 1)
 				paramObj = lua_unboxobject(_luaState, 1, _objMetaTable)
 			EndIf
-			endrem
-			local paramObj:object = lua_unboxobject(_luaState, 1, _objMetaTable)
-		
+			
 			'first passed parameter is the same as the parent of the called
 			'method/function? Might be a lua method call
 			if paramObj = obj
