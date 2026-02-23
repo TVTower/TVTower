@@ -419,19 +419,19 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		Return targets
 	End Method
 
-
-	Method GetTarget:TFigureTargetBase()
+	Method GetTarget:TFigureTargetBase(index:Int = 0)
+		If index < 0 Then Return Null
+		
 		Local target:TFigureTargetBase
 
 		LockMutex(figureTargetsMutex)
-			if figureTargets.length
-				target = figureTargets[0]
+			if index < figureTargets.length
+				target = figureTargets[index]
 			EndIf
 		UnlockMutex(figureTargetsMutex)
 
 		Return target
 	End Method
-
 
 	Method GetTargetObject:object()
 		Local targetObj:Object

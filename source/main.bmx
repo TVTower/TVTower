@@ -1169,7 +1169,7 @@ endrem
 								' this code, when changing SendToDoor 
 								' logic!
 								Local currentTarget:TFigureTargetBase = GetPlayer().GetFigure().GetTarget()
-								If currentTarget and TRoomDoorBase(currentTarget.targetObj) = targetDoor
+								If currentTarget and currentTarget.targetObj = targetDoor
 									currentTarget.SetFlag(TVTFigureTargetFlag.CREATED_BY_DEVSHORTCUT)
 								EndIf
 							
@@ -4451,8 +4451,13 @@ Type GameEvents
 	Function RestoreSpeedOnReachTarget:Int(triggerEvent:TEventBase)
 		Local fig:TFigureBase = TFigureBase(triggerEvent.GetSender())
 		If fig = GetPlayer().GetFigure()
-			App.DEV_FastForward_TargetReached = True
-			App.__SwitchFastForward(False)
+			'if next target is a dev-shortcut one, keep on fastforwarding
+			'next = index 0 (because it is new current)
+			Local nextTarget:TFigureTargetBase = fig.GetTarget(0)
+			If Not nextTarget or Not nextTarget.HasFlag(TVTFigureTargetFlag.CREATED_BY_DEVSHORTCUT)
+				App.DEV_FastForward_TargetReached = True
+				App.__SwitchFastForward(False)
+			EndIf
 		EndIf
 	End Function
 
