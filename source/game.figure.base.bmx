@@ -406,6 +406,20 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	' returns a _COPY_ of the current targets!
+	Method GetTargets:TFigureTargetBase[]()
+		Local targets:TFigureTargetBase[]
+
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length
+				targets = figureTargets[..]
+			EndIf
+		UnlockMutex(figureTargetsMutex)
+
+		Return targets
+	End Method
+
+
 	Method GetTarget:TFigureTargetBase()
 		Local target:TFigureTargetBase
 
@@ -430,15 +444,59 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		
 		Return targetObj
 	End Method
+	
+	
+	Method ReplaceTarget:Int(original:TFigureTargetBase, replacement:TFigureTargetBase)
+		'delete original if to replace with "nothing"
+		If Not replacement Then Return RemoveTarget(original)
+		
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			For local i:Int = 0 until figureTargets.length
+				If figureTargets[i] = original
+					figureTargets[i] = replacement
+					result = True
+					exit
+				EndIf
+			Next
+		UnlockMutex(figureTargetsMutex)
+		
+		Return result
+	End Method
+	
+	
+	Method RemoveTarget:Int(target:TFigureTargetBase)
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			For local i:Int = 0 until figureTargets.length
+				If figureTargets[i] = target
+					If figureTargets.length = 1
+						figureTargets = New TFigureTargetBase[0]
+					ElseIf i = figureTargets.length - 1
+						figureTargets = figureTargets[.. i]
+					Else
+						figureTargets = figureTargets[0 .. i] + figureTargets[i+1 ..]
+					EndIf
+
+					result = True
+					Exit
+				EndIf
+			Next
+		UnlockMutex(figureTargetsMutex)
+
+		Return result
+	End Method
 
 
 	'add a target AFTER all others
-	Method AddTarget(target:TFigureTargetBase)
-		If Not target Then Return
+	Method AddTarget:Int(target:TFigureTargetBase)
+		If Not target Then Return False
 		
 		LockMutex(figureTargetsMutex)
 			figureTargets :+ [target]
 		UnlockMutex(figureTargetsMutex)
+		
+		Return True
 	End Method
 
 
