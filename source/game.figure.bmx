@@ -1291,7 +1291,7 @@ Type TFigure extends TFigureBase
 
 		'new target - so go to it, remove other previously set targets
 		if forceChange
-			SetTarget( new TFigureTarget.Init(newTarget, 0, TFigureTargetBase.FIGURESTATE_UNCONTROLLABLE) )
+			SetTarget( new TFigureTarget.Init(newTarget, TVTFigureTargetFlag.SET_FIGURE_UNCONTROLLABLE) )
 		else
 			SetTarget( new TFigureTarget.Init(newTarget) )
 		endif

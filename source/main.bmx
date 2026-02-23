@@ -3407,6 +3407,16 @@ Type TSavegameConverter
 		sb.Append(fieldTypeName)
 		Local handle:String = sb.ToLower().ToString()
 		Select handle
+			'v0.8.4: TFigureTarget.startCondition and .figureState -> TFigureTarget.flags
+			case "TFigureTarget.startCondition:Int".ToLower(), ..
+			     "TFigureTargetBase.startCondition:Int".ToLower()
+				Local target:TFigureTargetBase = TFigureTargetBase(parent)
+				target.SetFlag(TVTFigureTargetFlag.MUST_BE_IN_BUILDING_TO_START, fieldObject.ToString().ToInt() = 1)
+			case "TFigureTarget.figureState:Int".ToLower(), ..
+			     "TFigureTargetBase.figureState:Int".ToLower()
+				Local target:TFigureTargetBase = TFigureTargetBase(parent)
+				target.SetFlag(TVTFigureTargetFlag.SET_FIGURE_UNCONTROLLABLE, fieldObject.ToString().ToInt() = 1)
+				
 			'v0.8.3: TNewsEventSportCollection.matches:TMap -> TNewsEventSportCollection.matchesByID:TIntMap
 			case "TNewsEventSportCollection.matches:TMap".ToLower()
 				Local map:TMap = TMap(fieldObject)

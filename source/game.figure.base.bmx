@@ -5,6 +5,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 'figures move according the building time, not the world time
 Import "game.building.buildingtime.bmx"
 Import "game.gameeventkeys.bmx"
+Import "game.gameconstants.bmx"
 
 
 Type TFigureBaseCollection extends TEntityCollection
@@ -767,29 +768,38 @@ End Type
 Type TFigureTargetBase
 	Field targetObj:object
 	Field currentStep:int = 0
-	Field startCondition:int = 0
-	Field figureState:int = 0
-
-	Const FIGURESTATE_UNCONTROLLABLE:int = 1
-
-	Const CONDITION_MUST_BE_IN_BUILDING:int = 1
+	Field flags:Int
 
 
-	Method Init:TFigureTargetBase(target:object, startCondition:int = 0, figureState:int = 0)
+	Method Init:TFigureTargetBase(target:object, flags:Int = 0)
 		self.targetObj = target
-		self.startCondition = startCondition
-		self.figureState = figureState
+		self.flags = flags
 		return self
 	End Method
 
 
-	Method CanGoTo:int(figure:TFigureBase)
-		if not figure then return False
-		if startCondition = 0 then return True
+	Method HasFlag:Int(flag:Int) {_exposeToLua}
+		Return flags & flag
+	End Method
 
-		if startCondition & CONDITION_MUST_BE_IN_BUILDING > 0
-			return figure.IsInBuilding()
-		endif
+
+	Method SetFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
+
+
+	Method CanGoTo:int(figure:TFigureBase)
+		If Not figure Then Return False
+
+		If HasFlag(TVTFigureTargetFlag.MUST_BE_IN_BUILDING_TO_START)
+			If Not figure.IsInBuilding() Then Return False
+		EndIf
+
+		Return True
 	End Method
 
 
@@ -802,11 +812,13 @@ Type TFigureTargetBase
 
 
 	Method IsControllable:int()
-		if currentStep < 2 'not finished
-			return figureState & FIGURESTATE_UNCONTROLLABLE = 0
-		else
-			return True
-		endif
+		If currentStep < 2 'not finished
+			If HasFlag(TVTFigureTargetFlag.SET_FIGURE_UNCONTROLLABLE)
+				Return False
+			EndIf
+		EndIf
+
+		Return True
 	End Method
 
 
