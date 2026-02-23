@@ -1029,8 +1029,8 @@ Type TFigure extends TFigureBase
 		
 		Local target:TFigureTargetBase = new TFigureTarget.Init(h)
 		Local moveToPos:SVec2I = GetMoveToPosition( target )
-		If Not moveToPos
-			print "SendToHotspot: failed, moveToPos = null"
+		If moveToPos.x = -1000 and moveToPos.y = -1000
+			TLogger.log("TFigure.SendToHotspot()", "Failed, moveToPos not set.", LOG_DEBUG)
 			Return False
 		EndIf
 
@@ -1050,17 +1050,15 @@ Type TFigure extends TFigureBase
 
 		local moveToPos:SVec2I = GetMoveToPosition( new TFigureTarget.Init(door) )
 		if moveToPos.x = -1000 or moveToPos.y = -1000
-			print "SendToDoor: failed, moveToPos = null"
+			TLogger.log("TFigure.SendToDoor()", "Failed, moveToPos not set.", LOG_DEBUG)
 			return False
 		endif
 
 		If forceSend
-			ForceChangeTarget(moveToPos.x, moveToPos.y)
+			Return ForceChangeTarget(moveToPos.x, moveToPos.y)
 		Else
-			ChangeTarget(moveToPos.x, moveToPos.y)
+			Return ChangeTarget(moveToPos.x, moveToPos.y)
 		EndIf
-		
-		Return True
 	End Method
 	
 	
@@ -1161,10 +1159,14 @@ Type TFigure extends TFigureBase
 		EndIf
 
 		'is controlling allowed (eg. figure MUST go to a specific target)
-		if not forceChange and not IsControllable() then Return False
+		if not forceChange and not IsControllable() 
+			Return False
+		endif
 
 		'if player is in elevator dont accept changes
-		if not forceChange and IsInElevator() Then Return False
+		if not forceChange and IsInElevator() 
+			Return False
+		EndIf
 
 		reachedTemporaryTarget = False
 
@@ -1184,7 +1186,9 @@ Type TFigure extends TFigureBase
 		endif
 
 		'y is not of floor 0 -13
-		If GetBuildingBase().GetFloor(y) < 0 Or GetBuildingBase().GetFloor(y) > 13 Then Return False
+		If GetBuildingBase().GetFloor(y) < 0 Or GetBuildingBase().GetFloor(y) > 13 
+			Return False
+		EndIf
 
 
 		Local newTarget:object = Null
@@ -1249,7 +1253,9 @@ Type TFigure extends TFigureBase
 			'new target and current target are the same
 			if newTarget = targetObj then return False
 			'new target and current target coordinates are at the same?
-			if TVec2D(newTarget) and TVec2D(newTarget).IsSame( GetMoveToPosition() ) then return False
+			if TVec2D(newTarget) and TVec2D(newTarget).IsSame( GetMoveToPosition() ) 
+				return False
+			EndIf
 
 			'print playerID+": targets are different " + TVec2D(newTarget).x+","+TVec2D(newTarget).y+" vs " + GetMoveToPosition().x+","+GetMoveToPosition().y
 		endif
@@ -1258,7 +1264,9 @@ Type TFigure extends TFigureBase
 		local targetRoom:TRoomBase
 		if TRoomDoor(newTarget) then targetRoom = TRoomDoor(newTarget).GetRoom()
 		'skip moving if already in this room
-		if targetRoom and targetRoom = inRoom then return False
+		if targetRoom and targetRoom = inRoom 
+			return False
+		endif
 
 
 		'=== NEW TARGET IS OK ===
@@ -1271,12 +1279,15 @@ Type TFigure extends TFigureBase
 		if playerID > 0 then print playerID+": _changeTarget = " + targetText+ "   "+ GetWorldTime().GetFormattedDate()
 		endrem
 
-
 		'=== SET NEW TARGET ===
 		'if still in a room, but targetting something else ... leave first
 		'this is needed as computer players do not "leave a room", they
 		'just change targets
-		If inRoom and targetRoom <> inRoom then LeaveRoom(forceChange)
+		If inRoom and targetRoom <> inRoom 
+			' Try to leave the room and if that fails do NOT set
+			' a new target!
+			If Not LeaveRoom(forceChange) Then Return False
+		EndIf
 
 		'new target - so go to it, remove other previously set targets
 		if forceChange

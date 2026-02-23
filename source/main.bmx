@@ -1158,9 +1158,10 @@ endrem
 						'DEV_switchRoom(targetRoom)
 					'EndIf
 					If Not GetPlayer().GetFigure().IsInRoom(room)
-						DEV_FastForward_TargetReached = False
-						__SwitchFastForward(True)
-						GetPlayer().GetFigure().SendToDoor(targetDoor)
+						If GetPlayer().GetFigure().SendToDoor(targetDoor)
+							DEV_FastForward_TargetReached = False
+							__SwitchFastForward(True)
+						EndIf
 					EndIf
 				EndIf
 			EndIf
