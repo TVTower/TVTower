@@ -132,28 +132,169 @@ Import "game.misc.savegameserializers.bmx"
 Import "Dig/base.util.bmxng.objectcountmanager.bmx"
 ?
 
-'Initialize virtual file system handling
-'=====
-' The virtual file system allows to transparently overlay folders
-' and to restrict write-access to a specific directory (WriteDir).
-' baseDir = Directory of the binary (application)
-' prefDir = "~/.local/share/TVTower" (Linux)
-'           "C:\Users\Ronny\AppData\Roaming\TVTower_org\TVTower" (Windows)
-'           "C:\Users\Ronny\AppData\Roaming\TVTower_org\TVTower" (Mac OS X)
-'           "/Users/Ronny/Library/Application Support/TVTower"
+'identify whether we run portable or use user directories
+Global applicationStorageMode:Int = ConfigureStorageMode()
 
-MaxIO.Init()
-Local baseDir:String = MaxIO.GetBaseDir()
-Local prefDir:String = MaxIO.GetPrefDir("TVTower_org", "TVTower")
-'Mount "preference directory" first so it can override any file inside
-'of "base directory.
-'Mount as "/" (root) so files next to "TVTower.bin" are reachable via
-'LoadFile("myfile.txt")
-MaxIO.Mount(prefDir, "/", True)
-MaxIO.Mount(baseDir, "/", True)
-'Redirect any file-write attempts to "prefDir"
-MaxIO.SetWriteDir(prefDir)
-'=====
+
+' check wether to run in "portable" mode or not (and use user directories)
+Function ConfigureStorageMode:Int()
+	TLogger.Log("ConfigureStorageMode", "Identifying storage mode.", LOG_DEBUG)
+	
+	Local baseDir:String = AppDir
+	Local userDir:String
+
+	Const autoMode:Int = 0
+	Const portableMode:Int = 1
+	Const userdirMode:Int = 2
+	Local storageMode:Int 
+
+
+
+	' === CHECK LOCAL (SHIPPED) CONFIG PREFERENCE ===
+	Local xml:TXmlHelper = TXmlHelper.Create("config/settings.xml", "config", True)
+	Local configStorageMode:Int = xml.FindValueInt(xml.GetRootNode(), "storage_mode", autoMode)
+	Select configStorageMode
+		case portableMode
+			TLogger.Log("ConfigureStorageMode", "Portable storage mode requested via settings.xml.", LOG_DEBUG)
+		case userdirMode
+			TLogger.Log("ConfigureStorageMode", "Userdir storage mode requested via settings.xml.", LOG_DEBUG)
+		default
+			TLogger.Log("ConfigureStorageMode", "Auto storage mode requested via settings.xml.", LOG_DEBUG)
+			configStorageMode = autoMode
+	End Select
+	storageMode = configStorageMode
+	
+
+	' === CHECK COMMAND LINE PREFERENCE ===
+	Local commandlineStorageMode:Int = -1
+	For Local arg:String = EachIn AppArgs
+		'only interested in args starting with "-"
+		If arg.Find("-") <> 0 Then Continue
+
+		Select arg.ToLower()
+			case "portable"
+				TLogger.Log("ConfigureStorageMode", "Portable storage mode requested via commandline.", LOG_DEBUG)
+				commandlineStorageMode = portableMode
+			case "userdir"
+				commandlineStorageMode = userdirMode
+				TLogger.Log("ConfigureStorageMode", "Userdir storage mode requested via commandline.", LOG_DEBUG)
+		End Select
+	Next
+	If commandlineStorageMode >= 0
+		storageMode = commandlineStorageMode
+	EndIf
+	
+
+	Local canWrite:Int
+	If storageMode = autoMode or storageMode = portableMode
+		' deinit a potentially previously inited maxIO
+		' (eg. on multiple runs of this function)
+		If MaxIO.IsInit() 
+			MaxIO.DeInit()
+			delay(50) 'give some time for file handle closing
+		EndIf
+
+		'=== CHECK WRITABILITY ===
+		canWrite = WriteTest(["", "config", "savegames", "logfiles"])
+
+		' if writing failed and auto mode is set, fallback to userdirMode
+		' if writing succeeded, settle with portableMode
+		If storageMode = autoMode
+			If not canWrite 
+				TLogger.Log("ConfigureStorageMode", "Portable storage directory is NOT writable. Falling back to userdir storage mode.", LOG_DEBUG)
+				storageMode = userdirMode
+			Else
+				storageMode = portableMode
+			EndIf
+		EndIf
+		If canWrite
+			TLogger.Log("ConfigureStorageMode", "Portable storage directory is writable.", LOG_DEBUG)
+		EndIf
+	EndIf
+
+	If storageMode = userdirMode
+		'=== INITIALIZE VIRTUAL FILE SYSTEM ===
+		' The virtual file system allows to transparently overlay folders
+		' and to restrict write-access to a specific directory (WriteDir).
+		' baseDir = Directory of the binary (application)
+		' prefDir = "~/.local/share/TVTower"                                (Linux)
+		'           "C:\Users\USERNAME\AppData\Roaming\TVTower_org\TVTower" (Windows)
+		'           "/Users/USERNAME/Library/Application Support/TVTower"   (Mac OS)
+		If not MaxIO.IsInit() Then MaxIO.Init()
+		baseDir = MaxIO.GetBaseDir()
+
+		'attention GetPrefDir() already creates the folder!
+		userDir = MaxIO.GetPrefDir("TVTower_org", "TVTower")
+		'strip trailing slash
+		baseDir = ExtractDir(baseDir)
+		userDir = ExtractDir(userDir)
+
+		'=== MOUNT VIRTUAL LAYERS ===
+		' Mount "preference directory"/user dir first so it can override
+		' any file inside of "base directory. (First come, first served)
+		' Mount as "/" (root) so files next to "TVTower.bin" are 
+		' reachable via LoadFile("myfile.txt")
+		MaxIO.Mount(userDir, "/", 0) '0 = PREPEND, 1 = APPEND
+		'mount root, to allow READING from it (for file stat - FileType())
+		MaxIO.Mount(baseDir, "/", 1) 'APPEND, lower "search" priority
+		'TLogger.Log("ConfigureStorageMode", "Overlay application root with ~q" + userDir + "~q. (searched 1st)", LOG_DEBUG)
+
+		'Redirect any file-write attempts to "userDir"
+		MaxIO.SetWriteDir(userDir)
+		'TLogger.Log("ConfigureStorageMode", "Set write directory to ~q" + userDir + "~q.", LOG_DEBUG)
+
+
+		'=== CHECK WRITABILITY ===
+		'use local URI here! (writing directly to the real paths like
+		'"/home/user/.local/share/TVTower/file.txt" is not possible)
+		canWrite = WriteTest(["", "/config", "/savegames", "/logfiles"])
+		If canWrite
+			TLogger.Log("ConfigureStorageMode", "Userdir storage directory is writable.", LOG_DEBUG)
+		EndIf
+		
+		'TODO: 
+ 		' create version specific folder, add (prepend) as "/" mount point
+ 		' file priority then:
+		' -> version specific -> userdir specific -> shipped
+		' but savegames also are stored version specific then
+		' (while loading includes also the userdir specific etc)
+	EndIf
+
+	'End application as we cannot write to something
+	If Not canWrite
+		TLogger.Log("ConfigureStorageMode", "Storage directory is NOT writable. Configure different storage mode!", LOG_ERROR)
+		End
+	EndIf
+
+	
+
+	If storageMode = portableMode
+		TLogger.Log("ConfigureStorageMode", "Portable storage mode configured.", LOG_DEBUG)
+	Else
+		TLogger.Log("ConfigureStorageMode", "Userdir storage mode configured.", LOG_DEBUG)
+	EndIf
+	Return storageMode
+
+	
+	Function WriteTest:Int(dirsToTest:String[])
+		For local dir:String = EachIn dirsToTest
+			If dir Then dir :+ "/"
+			Local uri:String = dir + "writetestfile_" + Millisecs() + ".txt"
+			If CreateFile(uri)
+				If DeleteFile(uri) 
+					Continue
+				Else
+					TLogger.Log("ConfigureStorageMode", "Failed to delete write-test-file ~q"+uri+"~q.", LOG_ERROR)
+					Return False
+				EndIf
+			Else
+				TLogger.Log("ConfigureStorageMode", "Failed to create write-test-file ~q"+uri+"~q.", LOG_ERROR)
+				Return False
+			EndIf
+		Next
+		Return True
+	End Function
+End Function
 
 
 

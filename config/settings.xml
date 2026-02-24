@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <config version="2.0">
+	<!-- storage_mode - possible values:
+		0 = AUTO          (prefer local folder/portable mode, but fall back to userdir if failing)
+		1 = Portable mode (use local folder/portable mode, NO fall back)
+		2 = Userdir mode  (use OS user-and-app-specific folder, NO fall back)
+	-->
+	<storage_mode>2</storage_mode>
+
 	<language>de</language>
 
 	<playername>Player</playername>
