@@ -141,7 +141,7 @@ Function ConfigureStorageMode:Int()
 	TLogger.Log("ConfigureStorageMode", "Identifying storage mode.", LOG_DEBUG)
 	
 	Local baseDir:String = AppDir
-	Local userDir:String
+	Local userDir:String = baseDir
 
 	Const autoMode:Int = 0
 	Const portableMode:Int = 1
@@ -187,6 +187,11 @@ Function ConfigureStorageMode:Int()
 
 	Local canWrite:Int
 	If storageMode = autoMode or storageMode = portableMode
+		If autoMode
+			TLogger.Log("ConfigureStorageMode", "Auto prioritizes ~qPortable~q. Uses ~qUserdir~q as fallback..", LOG_DEBUG)
+		EndIf
+		TLogger.Log("ConfigureStorageMode", "Portable storage directory path: ~q" + baseDir + "~q.", LOG_DEBUG)
+
 		' deinit a potentially previously inited maxIO
 		' (eg. on multiple runs of this function)
 		If MaxIO.IsInit() 
@@ -237,7 +242,8 @@ Function ConfigureStorageMode:Int()
 		MaxIO.Mount(userDir, "/", 0) '0 = PREPEND, 1 = APPEND
 		'mount root, to allow READING from it (for file stat - FileType())
 		MaxIO.Mount(baseDir, "/", 1) 'APPEND, lower "search" priority
-		'TLogger.Log("ConfigureStorageMode", "Overlay application root with ~q" + userDir + "~q. (searched 1st)", LOG_DEBUG)
+		TLogger.Log("ConfigureStorageMode", "Userdir storage directory path: ~q" + userDir + "~q. (searched first)", LOG_DEBUG)
+		TLogger.Log("ConfigureStorageMode", "Userdir overlays base directory path: ~q" + baseDir + "~q. (searched next)", LOG_DEBUG)
 
 		'Redirect any file-write attempts to "userDir"
 		MaxIO.SetWriteDir(userDir)
@@ -262,7 +268,14 @@ Function ConfigureStorageMode:Int()
 
 	'End application as we cannot write to something
 	If Not canWrite
-		TLogger.Log("ConfigureStorageMode", "Storage directory is NOT writable. Configure different storage mode!", LOG_ERROR)
+		Local message:String
+		If storageMode = portableMode
+			message = "Portable storage directory is NOT writable. Path: ~q" + userDir + "~q. Try storage mode ~qAuto~q or ~qUserdir~q!"
+		Else
+			message = "Userdir storage directory is NOT writable. Path: ~q" + userDir + "~q. Try storage mode ~qAuto~q or ~qPortable~q!"
+		EndIf
+		TLogger.Log("ConfigureStorageMode", message, LOG_ERROR)
+		Notify(message.Replace(". ", ".~n"), LOG_ERROR)
 		End
 	EndIf
 
