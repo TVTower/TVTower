@@ -1157,14 +1157,20 @@ endrem
 
 
 	Method PrepareNewGame:Int()
+		TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGame, New TData.AddNumber("startYear", userStartYear), Null, self)
+		Local stepsData:TData = New TData.AddNumber("step", 0)
+		Local percentageComplete:Int = 0
+		
 		'=== SET DEFAULTS ===
 		SetStartYear(userStartYear)
+		percentageComplete = 2; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
 		Local showStartTips:Int = False
 		If showStartTips Then CreateStartTips()
+		percentageComplete = 5; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== LOAD DATABASES ===
@@ -1178,6 +1184,7 @@ endrem
 		'maybe something cached processed-title/description by calling
 		'GetTitle() (eg. in a logfile)
 		GetProgrammeDataCollection().RemoveReplacedPlaceholderCaches()
+		percentageComplete = 70; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 		'=== FIGURES ===
 		'create/move other figures of the building
@@ -1227,6 +1234,7 @@ endrem
 
 			marshals[i] = fig
 		Next
+		percentageComplete = 75; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== STATION MAP ===
@@ -1235,6 +1243,7 @@ endrem
 		GetStationMapCollection().antennaStationRadius = TStationMapCollection.ANTENNA_RADIUS_NOT_INITIALIZED
 		'load the used map
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
+		percentageComplete = 85; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== PLAYERS 1/2 ===
@@ -1244,6 +1253,7 @@ endrem
 		For Local playerID:Int = 1 To 4
 			PreparePlayerStep1(playerID, False)
 		Next
+		percentageComplete = 87; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== CUSTOM PRODUCTION ===
@@ -1255,6 +1265,7 @@ endrem
 		else
 			TLogger.Log("Game.PrepareNewGame()", "No need to add additional celebrity persons for custom production. Found enough.", LOG_DEBUG)
 		endif
+		percentageComplete = 89; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== MOVIE AGENCY ===
@@ -1270,6 +1281,7 @@ endrem
 		For Local i:Int = 0 To 7
 			New TAuctionProgrammeBlocks.Create(i, Null)
 		Next
+		percentageComplete = 91; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== NEWS AGENCY ===
@@ -1310,6 +1322,7 @@ endrem
 		For Local i:Int = 0 Until TVTNewsGenre.count
 			GetNewsAgency().SetNextEventTime(i, GetWorldTime().GetTimeGone() + RandRange(5, 90) * TWorldTime.MINUTELENGTH)
 		Next
+		percentageComplete = 95; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== PLAYERS 2/2 ===
@@ -1324,6 +1337,7 @@ endrem
 		For Local playerID:Int = 1 To 4
 			StartPlayer(playerID)
 		Next
+		percentageComplete = 97; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== CREATE TIMED NEWSEVENTS ===
@@ -1341,6 +1355,8 @@ endrem
 
 		'switch active TV channel to player
 		GetInGameInterface().ShowChannel = GetPlayerCollection().playerID
+
+		percentageComplete = 100; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 	End Method
 
 

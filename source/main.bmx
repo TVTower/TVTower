@@ -4036,6 +4036,11 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	Field StartMultiplayerSyncStarted:Long = 0
 	Field messageWindow:TGUIGameModalWindow
 	Field actionLog:String[]
+	Field prepareProgress:Int = 0
+	Field prepareStepProgress:Float = 0
+	Field prepareStep:Int = 0
+	Field dbFilesLoadedInStep:Int = 0
+	Field dbFilesToLoadInStep:Int = 0
 
 	'Store call states as we try a "Non blocking" approach
 	'which means, the update loop gets called multiple time.
@@ -4087,6 +4092,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		_registeredListeners = New TEventListenerBase[0]
 
 		if not _registeredEvents
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnPrepareNewGameStep, OnPrepareNewGameStep) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoadFiles, OnDatabaseLoadFiles) ]
 			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoad, OnDatabaseLoad) ]
 			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoad, OnDatabaseBeginLoad) ]
 
@@ -4105,12 +4112,40 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If screen.actionLog.length > 5
 			screen.actionLog = screen.actionLog[screen.actionLog.length-5 ..]
 		EndIf 
+
 		'enforce redrawing the screen
 		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 		screen.Draw(GetDeltaTimer().GetTween())
 		Flip
 	End Function
 	
+
+	Function OnPrepareNewGameStep:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+
+		screen.prepareProgress = triggerEvent.GetData().GetInt("percentage")
+		screen.prepareStep = triggerEvent.GetData().GetInt("step")
+		screen.prepareStepProgress = 0.0
+
+		'enforce redrawing the screen
+		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+		screen.Draw(GetDeltaTimer().GetTween())
+		Flip
+	End Function
+
+
+	Function OnDatabaseLoadFiles:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+		Local files:String[] = String[](triggerEvent.GetData().Get("files"))
+		screen.dbFilesToLoadInStep = files.length
+		screen.dbFilesLoadedInStep = 0
+	End Function
+
 	
 	Function OnDatabaseLoad:int( triggerEvent:TEventBase )
 		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
@@ -4122,6 +4157,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If screen.actionLog.length > 5
 			screen.actionLog = screen.actionLog[screen.actionLog.length-5 ..]
 		EndIf 
+		screen.prepareStepProgress :+ 100.0 * (1.0 / screen.dbFilesToLoadInStep)
+
 		'enforce redrawing the screen
 		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 		screen.Draw(GetDeltaTimer().GetTween())
@@ -4153,12 +4190,40 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			Next
 			If Not allReady Then GetBitmapFontManager().baseFont.DrawSimple("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 		Else
-			messageDY :+ GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black).y
+			messageDY :+ GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+ "...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black).y
 			If actionLog.length > 0
 				For local i:Int = 0 until actionLog.length
 					messageDY :+ GetBitmapFontManager().baseFont.DrawBox(actionLog[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_LEFT_TOP, SColor8.Black).y
+					'avoid drawing too much
+					if messageDY + 20 > messageRect.GetH() Then Exit
 				Next
 			EndIf
+			
+			Local barX:Int = Int(messageRect.GetX())
+			Local barY:Int = Int(messageRect.GetY() + messageRect.GetH() + 15)
+			Local oldColor:SColor8; GetColor(oldColor)
+			Local outlineColor:SColor8 = New SColor8(120, 120, 150, Byte(0.5*255))
+			Local bgFillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.2*255))
+			Local fillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.9*255))
+			Local percentageTextColor:SColor8 = New SColor8(0, 0, 0, Byte(0.5*255))
+			'total progress
+			TFunctions.DrawOutlineRect(barX, barY, Int(messageRect.GetW()), 14, outlineColor, bgFillColor)
+			SetColor(fillColor)
+			DrawRect(barX + 1, barY + 1, Int((messageRect.GetW() - 2) * prepareProgress/100.0), 14 - 2)
+			SetColor(oldColor)
+			GetBitmapFontManager().baseFont.DrawBox(self.prepareProgress + " %", barX, barY - 3, messageRect.GetW(), 20, sALIGN_CENTER_CENTER, percentageTextColor)
+			
+
+			'step progress
+			if prepareStepProgress > 0
+				TFunctions.DrawOutlineRect(barX, barY + 17, Int(messageRect.GetW()), 12, outlineColor, bgFillColor)
+				SetColor(fillColor)
+				DrawRect(barX + 1, barY + 17 + 1, Int((messageRect.GetW() - 2) * Min(1.0, prepareStepProgress/100.0)), 12 - 2)
+				SetColor(oldColor)
+			    GetBitmapFontManager().baseFont.DrawBox(Int(self.prepareStepProgress) + " %", barX, barY + 17 - 2, messageRect.GetW(), 17, sALIGN_CENTER_CENTER, percentageTextColor)
+			EndIf
+			
+'			self.prepareProgress+"%"
 		EndIf
 		SetAlpha oldAlpha
 		

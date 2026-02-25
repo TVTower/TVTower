@@ -71,6 +71,8 @@ Type TGameEventKeys
 	Field Game_OnStartPlayer:TEventKey = GetEventKey("Game.OnStartPlayer", True)
 	Field Game_PreparePlayer:TEventKey = GetEventKey("Game.PreparePlayer", True)
 	Field Game_OnSetActivePlayer:TEventKey = GetEventKey("Game.onSetActivePlayer", True)
+	Field Game_OnPrepareNewGame:TEventKey = GetEventKey("Game.onPrepareNewGame", True)
+	Field Game_OnPrepareNewGameStep:TEventKey = GetEventKey("Game.onPrepareNewGameStep", True)
 
 
 	'game.figure.base.bmx:
@@ -290,6 +292,7 @@ Type TGameEventKeys
 	Field App_OnStart:TEventKey = GetEventKey("App.onStart", True)
 	Field App_OnLowPriorityUpdate:TEventKey = GetEventKey("App.OnLowPriorityUpdate", True)
 
+	Field Database_OnLoadFiles:TEventKey = GetEventKey("Database.OnLoadFiles", True)
 	Field Database_OnLoad:TEventKey = GetEventKey("Database.OnLoad", True)
 	Field Database_OnBeginLoad:TEventKey = GetEventKey("Database.OnBeginLoad", True)
 	Field SaveGame_OnBeginLoad:TEventKey = GetEventKey("SaveGame.OnBeginLoad", True)
