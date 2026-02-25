@@ -1,5 +1,8 @@
 LANGUAGE_NAME_INTERNATIONAL = Portuguese (BR)
 LANGUAGE_NAME_LOCALE        = Português (BR)
+NUMBER_DECIMAL_SEPARATOR    = ,
+NUMBER_GROUP_SEPARATOR      = *.*
+CURRENCY_FORMAT             = 2
 
 MENU      = Menu / Pausa
 OPEN_MENU = Abrir Menu

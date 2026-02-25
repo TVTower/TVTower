@@ -1044,7 +1044,7 @@ endrem
 			local c:Double = populationCableShareData.GetInterpolatedValue(t)
 			local s:Double = populationSatelliteShareData.GetInterpolatedValue(t)
 			local sum:Double = a + c + s
-			print "year="+y+"  antenna="+ Rset(MathHelper.NumberToString(a*100,1),5)+"%"+"  cable="+Rset(MathHelper.NumberToString(c*100,1),5)+"%"+"  satellite="+RSet(MathHelper.NumberToString(s,1),5)+"%"+ "   sum="+RSet(MathHelper.NumberToString(sum*100,1),6)+"%"
+			print "year="+y+"  antenna="+ Rset(TFunctions.LocalizedNumberToString(a*100,1),5)+"%"+"  cable="+Rset(TFunctions.LocalizedNumberToString(c*100,1),5)+"%"+"  satellite="+RSet(TFunctions.LocalizedNumberToString(s,1),5)+"%"+ "   sum="+RSet(TFunctions.LocalizedNumberToString(sum*100,1),6)+"%"
 		Next
 		end
 		endrem
@@ -4310,11 +4310,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		font.Draw(GetLocale("REACH")+":", textX, textY)
 		Select stationType
 			case TVTStationType.ANTENNA
-				font.DrawBox(MathHelper.NumberToString(section.GetPopulationAntennaShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+				font.DrawBox(TFunctions.LocalizedNumberToString(section.GetPopulationAntennaShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
 			case TVTStationType.CABLE_NETWORK_UPLINK
-				font.DrawBox(MathHelper.NumberToString(section.GetPopulationCableShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+				font.DrawBox(TFunctions.LocalizedNumberToString(section.GetPopulationCableShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
 			case TVTStationType.SATELLITE_UPLINK
-				font.DrawBox(MathHelper.NumberToString(section.GetPopulationSatelliteShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+				font.DrawBox(TFunctions.LocalizedNumberToString(section.GetPopulationSatelliteShareRatio()*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
 		End Select
 		fontBold.DrawBox(TFunctions.convertValue(GetReceivers(), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		textY:+ textH
@@ -4323,7 +4323,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			Local exclusiveReceivers:Int = GetStationExclusiveReceivers()
 			Local increasePercentage:Float = exclusiveReceivers / Float(GetStationMap(owner).GetReceivers())
 			font.Draw(GetLocale("INCREASE")+":", textX, textY)
-			font.DrawBox("+"+MathHelper.NumberToString(increasePercentage*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
+			font.DrawBox("+"+TFunctions.LocalizedNumberToString(increasePercentage*100, 1)+"%", textX, textY-1, 0.65 * textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,255,255,200))
 			fontBold.DrawBox(TFunctions.convertValue(exclusiveReceivers, 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			textY:+ textH
 		EndIf
@@ -4337,7 +4337,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		If cantGetSectionPermissionReason = -1
 			font.Draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("STATIONMAP_SECTION_NAME")+"): ", textX, textY)
-			fontBold.DrawBox(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage,2)+" %", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,150,150))
+			fontBold.DrawBox(TFunctions.LocalizedNumberToString(section.broadcastPermissionMinimumChannelImage,2)+" %", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,150,150))
 			textY:+ textH
 		EndIf
 		If cantGetProviderPermissionReason = -1
@@ -4346,7 +4346,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			If provider Then minImage = provider.minimumChannelImage
 
 			font.Draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("PROVIDER")+"): ", textX, textY)
-			fontBold.DrawBox(MathHelper.NumberToString(minImage,2)+" %", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,150,150))
+			fontBold.DrawBox(TFunctions.LocalizedNumberToString(minImage,2)+" %", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255,150,150))
 			textY:+ textH
 		EndIf
 
@@ -5919,7 +5919,7 @@ Type TStationMapSection
 
 		GetBitmapFontManager().baseFont.Draw(GetLocale("CHANNEL_IMAGE")+": ", textX, textY)
 		If Not imageOK
-			fontBold.DrawBox(MathHelper.NumberToString(GetPublicImage(channelID).GetAverageImage(), 2)+"% < "+MathHelper.NumberToString(broadcastPermissionMinimumChannelImage, 2)+"%", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255, 150, 150))
+			fontBold.DrawBox(TFunctions.LocalizedNumberToString(GetPublicImage(channelID).GetAverageImage(), 2)+"% < "+TFunctions.LocalizedNumberToString(broadcastPermissionMinimumChannelImage, 2)+"%", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, New SColor8(255, 150, 150))
 		Else
 			fontBold.DrawBox(GetLocale("OK"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		EndIf

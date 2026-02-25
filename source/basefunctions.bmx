@@ -141,6 +141,10 @@ End Function
 'collection of useful functions
 Type TFunctions
 	Global roundToBeautifulEnabled:Int = True
+	Global thousandsDelimiter:String=","
+	Global decimalDelimiter:String="."
+	Global currencyPosition:Int = 0
+	Const CURRENCYSIGN:String = Chr(8364) 'eurosign
 	
 	
 	'base/targetWidth of 0 leads to a triangle
@@ -236,48 +240,45 @@ Type TFunctions
 	End Function
 
 
+	Function GetFormattedCurrency:String(money:Long)
+		'160 is the "no breaking space" code
+		'8239 is the "narrow no breaking space" code
+		'currencyPosition: 1 front no space
+		'                  2 front with space
+		'                  3 end no space
+		'                  4 end with space
+		Local result:String=""
+		If money < 0
+			result="-"
+			money=-money
+		EndIf
+		Select currencyPosition
+			Case 1
+				result:+CURRENCYSIGN + LocalizedDottedValue(money)
+			Case 2
+				result:+CURRENCYSIGN + Chr(160) + LocalizedDottedValue(money)
+			Case 3
+				result:+LocalizedDottedValue(money) + CURRENCYSIGN
+			Default
+				result:+LocalizedDottedValue(money) + Chr(160) + CURRENCYSIGN
+		EndSelect
+		return result
+	EndFunction
+
+
 	'formats a given value from "123000,12" to "123.000,12"
-	'optimized variant
-	Function dottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
-		'is there a "minus" in front ?
-		Local addSign:Int = value < 0
-		Local result:String
-		Local decimalValue:string
-
-		'only process decimals when requested
-		if digitsAfterDecimalPoint > 0 and 1=2
-			Local stringValues:String[] = String(Abs(value)).Split(".")
-			Local fractionalValue:String = ""
-			decimalValue = stringValues[0]
-			if stringValues.length > 1 then fractionalValue = stringValues[1]
-
-			'do we even have a fractionalValue <> ".000" ?
-			if Long(fractionalValue) > 0
-				'not rounded, just truncated
-				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
-				result :+ decimalDelimiter + fractionalValue
-			endif
-		else
-			decimalValue = String(Abs(Long(value)))
-		endif
-
-
-		For Local i:Int = decimalValue.length-1 To 0 Step -1
-			result = Chr(decimalValue[i]) + result
-
-			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0
-				result = thousandsDelimiter + result
-			EndIf
-		Next
-
-		if addSign
-			Return "-" + result
-		else
-			Return result
-		endif
+	'using grouping and separator according to localization
+	Function LocalizedDottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1)
+		return MathHelper.DottedValue(value, thousandsDelimiter, decimalDelimiter, digitsAfterDecimalPoint)
 	End Function
 
+	Function LocalizedNumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
+		If decimalDelimiter = "."
+			Return MathHelper.NumberToString(number, digitsAfterDecimalPoint, truncateZeros)
+		Else
+			Return MathHelper.NumberToString(number, digitsAfterDecimalPoint, truncateZeros).replace(".", decimalDelimiter)
+		EndIf
+	End Function
 
 	Function dottedValue_OLD:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
 		'is there a "minus" in front ?
@@ -351,14 +352,14 @@ Type TFunctions
 			If length >= 10 Then typ=3
 		EndIf
 		'250000 = 250Tsd -> divide by 1000
-		If typ=1 Then Return MathHelper.NumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
+		If typ=1 Then Return LocalizedNumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
 		'250000 = 0,25Mio -> divide by 1000000
-		If typ=2 Then Return MathHelper.NumberToString(value/1000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_MILLION")
+		If typ=2 Then Return LocalizedNumberToString(value/1000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_MILLION")
 		'250000 = 0,0Mrd -> divide by 1000000000
-		If typ=3 Then Return MathHelper.NumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
+		If typ=3 Then Return LocalizedNumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
 
 		'add thousands-delimiter: 10000 = 10.000
-		return dottedValue(value, ".", ",", digitsAfterDecimalPoint)
+		return LocalizedDottedValue(value, digitsAfterDecimalPoint)
     End Function
 
 End Type

@@ -1112,10 +1112,10 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			skin.RenderContent(content.x, contentY, content.w, content.h - buttonAreaH, "1_top")
 			contentY :+ 3
 			skin.fontBold.DrawSimple(GetLocale("MOVIE_CAST"), content.x + 5, contentY - 1, skin.textColorLabel)
-			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetCastCost()), content.x + 5, contentY -1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
+			skin.fontNormal.DrawBox(TFunctions.LocalizedDottedValue(currentProductionConcept.GetCastCost()), content.x + 5, contentY -1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
 			skin.fontBold.DrawSimple(GetLocale("PRODUCTION"), content.x + 5, contentY - 1, skin.textColorLabel)
-			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetProductionCost()), content.x + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
+			skin.fontNormal.DrawBox(TFunctions.LocalizedDottedValue(currentProductionConcept.GetProductionCost()), content.x + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
 
 			SetColor 150,150,150
@@ -1124,7 +1124,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			contentY :+ 1
 			skin.fontBold.DrawSimple(GetLocale("TOTAL_COSTS"), content.x + 5, contentY - 1, skin.textColorNeutral)
-			skin.fontBold.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetTotalCost()), content.X + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
+			skin.fontBold.DrawBox(TFunctions.LocalizedDottedValue(currentProductionConcept.GetTotalCost()), content.X + 5, contentY - 1, content.w - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
 
 			contentY :+ 10
@@ -3187,7 +3187,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		EndIf
 		If jobID >= 0
 			skin.fontSmallCaption.DrawBox(GetLocale("JOB_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY - 1, 94, 25, sALIGN_LEFT_CENTER, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
-			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.owner)), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, TFunctions.LocalizedDottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.owner)), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 		EndIf
 		contentY :+ boxH
 

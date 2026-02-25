@@ -854,14 +854,14 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 Rem
 print "REFILL:"
-print "level0:  audienceDay "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuoteDayTime, 2)+"%"
-print "level0:  audiencePrime "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuotePrimeTime, 2)+"%"
+print "level0:  audienceDay "+"0.0%"+" - "+TFunctions.LocalizedNumberToString(100*lowestChannelQuoteDayTime, 2)+"%"
+print "level0:  audiencePrime "+"0.0%"+" - "+TFunctions.LocalizedNumberToString(100*lowestChannelQuotePrimeTime, 2)+"%"
 print "level0:  image    "+"0.0"+" - "+lowestChannelImage
-print "level1:  audienceDay "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuoteDayTime),2)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuoteDayTime),2)+"%"
-print "level1:  audiencePrime "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuotePrimeTime),2)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuotePrimeTime),2)+"%"
+print "level1:  audienceDay "+TFunctions.LocalizedNumberToString(100 * (0.5 * averageChannelQuoteDayTime),2)+"% - "+TFunctions.LocalizedNumberToString(100 * Max(0.01, 1.5 * averageChannelQuoteDayTime),2)+"%"
+print "level1:  audiencePrime "+TFunctions.LocalizedNumberToString(100 * (0.5 * averageChannelQuotePrimeTime),2)+"% - "+TFunctions.LocalizedNumberToString(100 * Max(0.01, 1.5 * averageChannelQuotePrimeTime),2)+"%"
 print "level1:  image     0.00 - "+averageChannelImage
-print "level2:  audienceDay "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuoteDayTime)),2)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuoteDayTime),2)+"%"
-print "level2:  audiencePrime "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuotePrimeTime)),2)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuotePrimeTime),2)+"%"
+print "level2:  audienceDay "+TFunctions.LocalizedNumberToString(100*(Max(0.01, 0.5 * highestChannelQuoteDayTime)),2)+"% - "+TFunctions.LocalizedNumberToString(100 * Max(0.03, 1.5 * highestChannelQuoteDayTime),2)+"%"
+print "level2:  audiencePrime "+TFunctions.LocalizedNumberToString(100*(Max(0.01, 0.5 * highestChannelQuotePrimeTime)),2)+"% - "+TFunctions.LocalizedNumberToString(100 * Max(0.03, 1.5 * highestChannelQuotePrimeTime),2)+"%"
 print "level2:  image     0.00 - "+highestChannelImage
 print "------------------"
 endrem
@@ -895,13 +895,13 @@ endrem
 						contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(levelFilters[filterNum], False)
 						'if not, then lower minimum and increase maximum audience
 						If Not contractBase
-							TLogger.Log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"% ("+(100 * levelFilters[filterNum].minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
+							TLogger.Log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +TFunctions.LocalizedNumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"% ("+(100 * levelFilters[filterNum].minAudienceMin)+" - 0.5%   Max: "+ TFunctions.LocalizedNumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
 							levelFilters[filterNum].SetAudience( Max(0.0, levelFilters[filterNum].minAudienceMin - rangeStep), Min(1.0, levelFilters[filterNum].minAudienceMax + rangeStep))
 						EndIf
 
 						'absolutely nothing available?
 						If Not contractBase And levelFilters[filterNum].minAudienceMin = 0.0 And levelFilters[filterNum].minAudienceMax = 1.0
-							TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"%."  , LOG_DEBUG)
+							TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for LevelFilter #"+filterNum+"  Min: " +TFunctions.LocalizedNumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"%   Max: "+ TFunctions.LocalizedNumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"%."  , LOG_DEBUG)
 						EndIf
 					Wend
 					If contractBase
@@ -918,13 +918,13 @@ endrem
 						contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapListFilter, False)
 						'if not, then lower minimum and increase maximum audience
 						If Not contractBase
-							TLogger.Log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,2)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
+							TLogger.Log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +TFunctions.LocalizedNumberToString(100 * cheapListFilter.minAudienceMin,2)+"% - 0.5%   Max: "+ TFunctions.LocalizedNumberToString(100 * cheapListFilter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
 							cheapListFilter.SetAudience( Max(0, cheapListFilter.minAudienceMin - rangeStep), Min(1.0, cheapListFilter.minAudienceMax + rangeStep))
 						EndIf
 
 						'absolutely nothing available?
 						If Not contractBase And cheapListFilter.minAudienceMin = 0.0 And cheapListFilter.minAudienceMax = 1.0
-							TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,2)+"%."  , LOG_DEBUG)
+							TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for CheapListFilter  Min: " +TFunctions.LocalizedNumberToString(100 * cheapListFilter.minAudienceMin,2)+"%   Max: "+ TFunctions.LocalizedNumberToString(100 * cheapListFilter.minAudienceMax,2)+"%."  , LOG_DEBUG)
 						EndIf
 					Wend
 					If contractBase
@@ -1038,13 +1038,13 @@ endrem
 					contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(filter, False)
 					'if not, then lower minimum and increase maximum audience
 					If Not contractBase
-						TLogger.Log("AdAgency.RefillBlocks", "Adjusting "+filterName+"  Min: " +MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"% ("+(100 * filter.minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
+						TLogger.Log("AdAgency.RefillBlocks", "Adjusting "+filterName+"  Min: " +TFunctions.LocalizedNumberToString(100 * filter.minAudienceMin,2)+"% ("+(100 * filter.minAudienceMin)+" - 0.5%   Max: "+ TFunctions.LocalizedNumberToString(100 * filter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
 						filter.SetAudience( Max(0.0, filter.minAudienceMin - rangeStep), Min(1.0, filter.minAudienceMax + rangeStep))
 					EndIf
 
 					'absolutely nothing available?
 					If Not contractBase And filter.minAudienceMin = 0.0 And filter.minAudienceMax = 1.0
-						TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for "+filterName+"  Min: " +MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"%."  , LOG_DEBUG)
+						TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for "+filterName+"  Min: " +TFunctions.LocalizedNumberToString(100 * filter.minAudienceMin,2)+"%   Max: "+ TFunctions.LocalizedNumberToString(100 * filter.minAudienceMax,2)+"%."  , LOG_DEBUG)
 					EndIf
 				Wend
 				If contractBase

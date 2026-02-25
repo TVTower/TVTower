@@ -178,7 +178,7 @@ Type TBetty
 	Method GetLoveSummary:string()
 		local res:string
 		for local i:int = 1 to 4
-			res :+ RSet(GetInLove(i),5)+" (Pr: "+RSet(MathHelper.NumberToString(GetInLovePercentage(i)*100,2)+"%",7)+"     Sh: "+RSet(MathHelper.NumberToString(GetInLoveShare(i)*100,2)+"%",7)+")~t"
+			res :+ RSet(GetInLove(i),5)+" (Pr: "+RSet(TFunctions.LocalizedNumberToString(GetInLovePercentage(i)*100,2)+"%",7)+"     Sh: "+RSet(TFunctions.LocalizedNumberToString(GetInLoveShare(i)*100,2)+"%",7)+")~t"
 		Next
 		return res
 	End Method

@@ -376,8 +376,8 @@ Type RoomHandler_News extends TRoomHandler
 
 			local agency:TNewsAgency = GetNewsAgency()
 			GetBitmapFont("default", 12).DrawSimple("Terrorlevel:", 20, 220)
-			GetBitmapFont("default", 10).DrawSimple("a) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[0],2)+"%  " + agency.terroristAggressionLevel[0]+"/"+agency.terroristAggressionLevelMax, 20, 235)
-			GetBitmapFont("default", 10).DrawSimple("b) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[1],2)+"%  " + agency.terroristAggressionLevel[1]+"/"+agency.terroristAggressionLevelMax, 20+130, 235)
+			GetBitmapFont("default", 10).DrawSimple("a) " + TFunctions.LocalizedNumberToString(100*agency.terroristAggressionLevelProgress[0],2)+"%  " + agency.terroristAggressionLevel[0]+"/"+agency.terroristAggressionLevelMax, 20, 235)
+			GetBitmapFont("default", 10).DrawSimple("b) " + TFunctions.LocalizedNumberToString(100*agency.terroristAggressionLevelProgress[1],2)+"%  " + agency.terroristAggressionLevel[1]+"/"+agency.terroristAggressionLevelMax, 20+130, 235)
 
 		endif
 	End Function
@@ -1289,12 +1289,12 @@ Type TGUINews Extends TGUIGameListItem
 			textY :+ 12
 			fontNormal.DrawSimple("GUID: " + ne.GetGUID(), screenX + 5, textY)
 			textY :+ 11
-			fontNormal.DrawSimple("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(ne.GetModifier(TBroadcastMaterialSource.modKeyPriceLS),4)+")", screenX + 5, textY)
+			fontNormal.DrawSimple("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+TFunctions.LocalizedNumberToString(ne.GetModifier(TBroadcastMaterialSource.modKeyPriceLS),4)+")", screenX + 5, textY)
 			textY :+ 11
-			fontNormal.DrawSimple("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(ne.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(ne.GetQualityRaw(), 4) + ")", screenX + 5, textY)
+			fontNormal.DrawSimple("Qualitaet: " + TFunctions.LocalizedNumberToString(news.GetQuality(), 4) + " (Event:" + TFunctions.LocalizedNumberToString(ne.GetQuality(),4) + ", roh=" + TFunctions.LocalizedNumberToString(ne.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11
-			fontNormal.DrawSimple("(KI-)Attraktivitaet: "+MathHelper.NumberToString(ne.GetAttractiveness(),4), screenX + 5, textY)
-			fontNormal.DrawSimple("Aktualitaet: " + MathHelper.NumberToString(ne.GetTopicality(),3) + "/" + MathHelper.NumberToString(ne.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * ne.GetTopicality()/ne.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
+			fontNormal.DrawSimple("(KI-)Attraktivitaet: "+TFunctions.LocalizedNumberToString(ne.GetAttractiveness(),4), screenX + 5, textY)
+			fontNormal.DrawSimple("Aktualitaet: " + TFunctions.LocalizedNumberToString(ne.GetTopicality(),3) + "/" + TFunctions.LocalizedNumberToString(ne.GetMaxTopicality(),3)+" ("+TFunctions.LocalizedNumberToString(100 * ne.GetTopicality()/ne.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
 			textY :+ 11
 			fontNormal.DrawSimple("Ausstrahlungen: " + ne.GetTimesBroadcasted(news.owner)+"x  (" + ne.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
 			fontNormal.DrawSimple("Alter: " + Long((GetWorldTime().GetTimeGone() - news.GetHappenedTime())/1000) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)

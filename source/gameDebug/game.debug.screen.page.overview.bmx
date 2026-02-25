@@ -48,7 +48,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 		For Local i:Int = 0 To 3
 			RenderFigureInformation( GetPlayer(i+1).GetFigure(), x + 140, position.y + i*55)
 			RenderBossMood(i+1, x + 140 + 200 + 2, position.y + i*55, sideInfoW, 30)
-'			textFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
+'			textFont.Draw("Image #"+i+": "+TFunctions.LocalizedNumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
 
 			If TProfiler.activated And GetPlayer(i+1).IsLocalAI()
 				DrawBorderRect(x + 140 + 150 + 2, 15 + i*75 + 33, sideInfoW, 37)
@@ -185,7 +185,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 		Local barWidth:Int = 70
 		Local oldCol:SColor8; GetColor(oldCol)
 
-		textFont.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), contentRect.x, contentRect.y)
+		textFont.draw("Mood: " + TFunctions.LocalizedNumberToString(boss.GetMood(), 2), contentRect.x, contentRect.y)
 		SetColor 150,150,150
 		DrawRect(contentRect.x + 75, contentRect.y + 2, barWidth, 10 )
 		SetColor 0,0,0
@@ -211,9 +211,9 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 		dy :+ textFont.DrawSimple("Day: " + wt.GetDayOfYear()+" of year: "+wt.GetYear(), contentRect.x, contentRect.y + dy).y
 		dy :+ textFont.DrawSimple("Season: " + wt.GetSeason()+"/4", contentRect.x, contentRect.y + dy).y
 		dy :+ textFont.DrawSimple("Weather: " + weather.GetWeatherText(), contentRect.x, contentRect.y + dy).y
-		dy :+ textFont.DrawSimple("  Wind: " + MathHelper.NumberToString(weather.GetWindVelocity(),4), contentRect.x, contentRect.y + dy).y
-		dy :+ textFont.DrawSimple("  Temp.: " + MathHelper.NumberToString(weather.GetTemperature(),4), contentRect.x, contentRect.y + dy).y
-		dy :+ textFont.DrawSimple("  TargetTemp.: " + MathHelper.NumberToString(weather.currentWeather._targetTemperature,4), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("  Wind: " + TFunctions.LocalizedNumberToString(weather.GetWindVelocity(),4), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("  Temp.: " + TFunctions.LocalizedNumberToString(weather.GetTemperature(),4), contentRect.x, contentRect.y + dy).y
+		dy :+ textFont.DrawSimple("  TargetTemp.: " + TFunctions.LocalizedNumberToString(weather.currentWeather._targetTemperature,4), contentRect.x, contentRect.y + dy).y
 		dy :+ textFont.DrawSimple("Speed.: " + wt.GetTimeFactor(), contentRect.x, contentRect.y + dy).y
 
 		Local sunRiseString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetSunRise(), "h:i")
@@ -280,7 +280,7 @@ Type TDebugScreenPage_Overview extends TDebugScreenPage
 			Next
 
 			SetColor 255,255,255
-			GetBitmapFont("Default", 9).DrawBox(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, sALIGN_RIGHT_TOP, SColor8.White)
+			GetBitmapFont("Default", 9).DrawBox(TFunctions.LocalizedNumberToString(durationMax, 4), x+2, y+2, w-4, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		EndIf
 		GetBitmapFont("Default", 9).DrawBox(label, x+2, y+2, w-4, 20, sALIGN_LEFT_TOP, SColor8.White)
 	End Function

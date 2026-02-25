@@ -147,8 +147,8 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 			If Not movieVendor.filterCrap.DoesFilter(pl) Then Continue
 
 			textFont.DrawBox(pl.GetTitle(), textX + 10, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
-			textFont.DrawBox(MathHelper.DottedValue(pl.GetPriceForPlayer(playerID)), textX + 10 + 110, textY - 1, 50, 15, sALIGN_RIGHT_TOP, SColor8.White)
-			textFont.DrawBox(MathHelper.NumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 10 + 110 + 50 -5 + 130, textY - 1, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
+			textFont.DrawBox(TFunctions.LocalizedDottedValue(pl.GetPriceForPlayer(playerID)), textX + 10 + 110, textY - 1, 50, 15, sALIGN_RIGHT_TOP, SColor8.White)
+			textFont.DrawBox(TFunctions.LocalizedNumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 10 + 110 + 50 -5 + 130, textY - 1, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
 			textY :+ 11
 		Next
 	End Method
@@ -182,7 +182,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 			nextBid[index] = auction.GetNextBid(playerID)
 			If auction.bestBid > 0
 				Local bestBidder:TPlayer = GetPlayer(auction.bestBidder)
-				textFont.DrawBox(MathHelper.DottedValue(auction.bestBid), textX + 410, textY + bidOffset + index * 11, 60, 15, sALIGN_RIGHT_TOP, bestBidder.color.ToSColor8())
+				textFont.DrawBox(TFunctions.LocalizedDottedValue(auction.bestBid), textX + 410, textY + bidOffset + index * 11, 60, 15, sALIGN_RIGHT_TOP, bestBidder.color.ToSColor8())
 			Else
 				textFont.DrawBox("---", textX + 410, textY + bidOffset + index * 11, 60, 15, sALIGN_RIGHT_TOP, New SColor8(200,200,200, 200))
 			EndIf
@@ -233,7 +233,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 					Else
 						price = licences[i].GetPriceForPlayer(playerID)
 					EndIf
-					textFont.DrawBox(MathHelper.DottedValue(price), textX + 10 + 115, textY, 50, 20, sALIGN_RIGHT_TOP, SColor8.White)
+					textFont.DrawBox(TFunctions.LocalizedDottedValue(price), textX + 10 + 115, textY, 50, 20, sALIGN_RIGHT_TOP, SColor8.White)
 					textFont.DrawBox(licences[i].data.GetYear(), textX + 10 + 115 + 53 - 5, textY, barWidth - (10 + 115 + 50), 20, sALIGN_RIGHT_TOP, New SColor8(200,200,200))
 				Else
 					textFont.DrawSimple(": ---", textX + 15, textY)

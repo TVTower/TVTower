@@ -285,8 +285,8 @@ Type TAward Extends TGameObject
 	Method GetRewardText:String()
 		Local result:String =""
 		If priceImage <> 0
-			If priceImage > 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=0,125,0|+" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
-			If priceImage < 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=125,0,0|" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
+			If priceImage > 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=0,125,0|+" + TFunctions.LocalizedNumberToString(priceImage, 2)+"%|/color|"
+			If priceImage < 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=125,0,0|" + TFunctions.LocalizedNumberToString(priceImage, 2)+"%|/color|"
 		EndIf
 
 		rem
@@ -413,7 +413,7 @@ Type TAward Extends TGameObject
 	Method GetScoreSummary:String()
 		Local res:String
 		For Local i:Int = 1 To 4
-			res :+ RSet(GetScore(i),3)+" ("+RSet(MathHelper.NumberToString(GetScoreShare(i)*100,2)+"%",7)+")~t"
+			res :+ RSet(GetScore(i),3)+" ("+RSet(TFunctions.LocalizedNumberToString(GetScoreShare(i)*100,2)+"%",7)+")~t"
 		Next
 		Return res
 	End Method

@@ -685,14 +685,14 @@ Vorbesitzer: XYZ
 		'== draw boxes
 		skin.RenderBox(contentX + 5, contentY, 50, -1, room.GetSize(), "roomSize", EDatasheetColorStyle.Neutral, skin.fontBold)
 		if room.GetOwner() = currentPlayerID
-			skin.RenderBox(contentX + 5 + 148 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ "+ GetLocale("DAY") +"|/color|", "moneyRepetitions", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 148 +52, contentY, 110, -1, TFunctions.LocalizedDottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ "+ GetLocale("DAY") +"|/color|", "moneyRepetitions", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 		'only show prices for rentable rooms
 		elseif room.IsRentable()
-			skin.RenderBox(contentX + 5 + 54 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ "+ GetLocale("DAY") +"|/color|", "moneyRepetitions", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 54 +52, contentY, 110, -1, TFunctions.LocalizedDottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ "+ GetLocale("DAY") +"|/color|", "moneyRepetitions", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 			if canAfford
-				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, TFunctions.LocalizedDottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
+				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, TFunctions.LocalizedDottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			endif
 		endif
 

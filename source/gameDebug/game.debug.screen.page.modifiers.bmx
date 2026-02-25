@@ -104,7 +104,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 				If textX - contentRect.x > contentRect.w Then exit
 
 				textFont.DrawBox(k.ToString(), textX, textY, modifierWidth - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
-				textFont.DrawBox(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX + modifierWidth - 40, textY, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
+				textFont.DrawBox(TFunctions.LocalizedNumberToString(data.GetFloat(k.ToString()), 3), textX + modifierWidth - 40, textY, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
 				textY :+ 12
 			Next
 		EndIf
@@ -174,7 +174,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 
 	Method renderModifier(caption:String, fieldName:String, value:Float, change:Int=5)
 		textFont.DrawBox(caption, difficultyX, difficultyY, difficultyWidth - 60 - 25, 15, sALIGN_LEFT_TOP, SColor8.White)
-		textFont.DrawBox(MathHelper.NumberToString(value, 3), difficultyX, difficultyY, difficultyWidth - 60, 15, sALIGN_RIGHT_TOP, SColor8.White)
+		textFont.DrawBox(TFunctions.LocalizedNumberToString(value, 3), difficultyX, difficultyY, difficultyWidth - 60, 15, sALIGN_RIGHT_TOP, SColor8.White)
 
 		If Not buttonsCreated
 			createModifierButtons(fieldName, change, difficultyX + difficultyWidth, difficultyY)

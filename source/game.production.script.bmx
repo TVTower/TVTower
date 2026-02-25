@@ -1544,9 +1544,9 @@ endrem
 		EndIf
 		'price
 		If canAfford
-			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.LocalizedDottedValue(GetPrice()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 		Else
-			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
+			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.LocalizedDottedValue(GetPrice()), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 		EndIf
 		contentY :+ boxH
 
@@ -1565,11 +1565,11 @@ endrem
 
 			skin.fontBold.DrawBox("Drehbuch: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28, sALIGN_LEFT_TOP, SColor8.White)
 			contentY :+ 28
-			skin.fontNormal.DrawSimple("Tempo: "+MathHelper.NumberToString(GetSpeed(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Tempo: "+TFunctions.LocalizedNumberToString(GetSpeed(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.DrawSimple("Kritik: "+MathHelper.NumberToString(GetReview(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Kritik: "+TFunctions.LocalizedNumberToString(GetReview(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.DrawSimple("Potential: "+MathHelper.NumberToString(GetPotential(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Potential: "+TFunctions.LocalizedNumberToString(GetPotential(), 4), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.DrawSimple("Preis: "+GetPrice(), contentX + 5, contentY)
 			contentY :+ 12

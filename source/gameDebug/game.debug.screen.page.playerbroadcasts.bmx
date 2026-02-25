@@ -840,14 +840,14 @@ Type TDebugWidget_ProgrammeCollectionInfo
 					adString1b = "|color=220,80,80|"+adString1b+"|/color|"
 				EndIf
 			EndIf
-			Local adString2a:String = "Min: " +MathHelper.DottedValue(a.GetMinAudience())
+			Local adString2a:String = "Min: " +TFunctions.LocalizedDottedValue(a.GetMinAudience())
 			If a.GetLimitedToTargetGroup() > 0 Or a.GetLimitedToProgrammeGenre() > 0  Or a.GetLimitedToProgrammeFlag() > 0
 				adString2a = "**" + adString2a
 				'adString1a :+ a.GetLimitedToTargetGroup()+","+a.GetLimitedToProgrammeGenre()+","+a.GetLimitedToProgrammeFlag()
 			EndIf
 			adString1b :+ " Bl/D: "+a.SendMinimalBlocksToday()
 
-			Local adString2b:String = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
+			Local adString2b:String = "Acu: " +TFunctions.LocalizedNumberToString(a.GetAcuteness()*100.0)
 			Local adString2c:String = a.GetSpotsSent() + "/" + a.GetSpotCount()
 			font.DrawBox( adString1a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*0 + lineTextDY, adLeftX - 40, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
 			font.DrawBox( adString1b, x + adLeftX + 2 + adLineWidth-60-2, y+1 + entryPos*lineHeight*2 + lineHeight*0 + lineTextDY, 60, lineTextHeight, sALIGN_RIGHT_CENTER, secondLineCol)
@@ -926,7 +926,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 
 			Local attString:String = ""
 '			Local s:String = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
-			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
+			Local s:String = TFunctions.LocalizedNumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
 			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
 
 			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
@@ -977,7 +977,7 @@ Type TDebugWidget_ProgrammeCollectionInfo
 
 			Local attString:String = ""
 '			Local s:String = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetID()))
-			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
+			Local s:String = TFunctions.LocalizedNumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
 			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
 
 			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)

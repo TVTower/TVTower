@@ -53,7 +53,7 @@ Type TDebugScreenPage_Producers extends TDebugScreenPage
 			textY :+ 10
 			textFont.DrawBox("  " + TTypeID.ForObject(producer).name(), textX, textY, 150, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textFont.DrawBox("XP: " + producer.experience, textX + 150, textY, 35, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
-			textFont.DrawBox("Budget: " + MathHelper.DottedValue(producer.budget), textX + 100 + 85, textY, 90, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
+			textFont.DrawBox("Budget: " + TFunctions.LocalizedDottedValue(producer.budget), textX + 100 + 85, textY, 90, 15, sALIGN_LEFT_TOP, new SColor8(220,220,220))
 			textY :+ 13
 			If TProgrammeProducer(producer)
 				textY :- 2

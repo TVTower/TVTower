@@ -478,7 +478,7 @@ Type TInGameInterface
 						Else
 							audienceStr = TFunctions.ConvertValue(audience, 2)
 						EndIf
-						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
+						audiencePercentageStr = TFunctions.LocalizedNumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 					EndIf
 
 					content	= GetLocale("AUDIENCE")+": "+ audienceStr + " (" + audiencePercentageStr + "%)"
@@ -618,7 +618,7 @@ Type TInGameInterface
 					Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( GetPlayerBaseCollection().playerID )
 					If audienceResult 
 						audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
-						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
+						audiencePercentageStr = TFunctions.LocalizedNumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 					EndIf
 					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE")+": " + audienceStr + " (" + audiencePercentageStr +"%)")
 					CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
@@ -657,9 +657,9 @@ Type TInGameInterface
 
 					local channelImage:Float = Min(Max(GetPublicImage(i).GetAverageImage()/100.0, 0.0),1.0)
 					if i = GetPlayerBase().playerID
-						content :+ "|b|"+GetPlayerBase(i).channelname+": " + MathHelper.NumberToString(channelImage*100, 2)+"%|/b|"
+						content :+ "|b|"+GetPlayerBase(i).channelname+": " + TFunctions.LocalizedNumberToString(channelImage*100, 2)+"%|/b|"
 					else
-						content :+ GetPlayerBase(i).channelname+": " + MathHelper.NumberToString(channelImage*100, 2)+"%"
+						content :+ GetPlayerBase(i).channelname+": " + TFunctions.LocalizedNumberToString(channelImage*100, 2)+"%"
 					endif
 				Next
 				ChannelImageToolTip.SetContent(content)
@@ -960,11 +960,11 @@ Type TInGameInterface
 		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 414, 130, 29, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
 		local profit:long = GetPlayerFinance(playerID).GetCurrentProfit()
 		if profit > 0
-			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
+			_interfaceFont.DrawBox("+"+TFunctions.LocalizedDottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
 		elseif profit = 0
 			_interfaceFont.DrawBox(0, 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, neutralProfitColor, EDrawTextEffect.Shadow, 0.5)
 		else
-			_interfaceFont.DrawBox(MathHelper.DottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
+			_interfaceFont.DrawBox(TFunctions.LocalizedDottedValue(profit), 357, 414, 130, 29, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
 		endif
 
 
@@ -974,7 +974,7 @@ Type TInGameInterface
 		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
 		If audienceResult 
 			audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
-			audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
+			audiencePercentageStr = TFunctions.LocalizedNumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 		EndIf
 		_interfaceBigFont.DrawBox(audienceStr, 357, 449, 130, 29, sALIGN_CENTER_TOP, audienceColor, EDrawTextEffect.Shadow, 0.5)
 		_interfaceFont.DrawBox(audiencePercentageStr+"%", 357, 449, 130, 29, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
@@ -987,7 +987,7 @@ Type TInGameInterface
 
 		' betty love bar / label
 		local bettyLove:Float = Min(Max(GetBetty().GetInLovePercentage( playerID ), 0.0),1.0)
-		local bettyLoveText:String = MathHelper.NumberToString(bettyLove*100, 2)+"%"
+		local bettyLoveText:String = TFunctions.LocalizedNumberToString(bettyLove*100, 2)+"%"
 		if bettyLove * 116 >= 1
 			SetAlpha oldAlpha * 0.65
 			SetColor 180,85,65
@@ -1000,7 +1000,7 @@ Type TInGameInterface
 
 		' channel image bar / label
 		local channelImage:Float = Min(Max(GetPublicImageCollection().Get( playerID ).GetAverageImage()/100.0, 0.0),1.0)
-		local channelImageText:String = MathHelper.NumberToString(channelImage*100, 2)+"%"
+		local channelImageText:String = TFunctions.LocalizedNumberToString(channelImage*100, 2)+"%"
 		if channelImage * 120 >= 1
 			SetAlpha oldAlpha * 0.65
 			SetColor 150,170,65
@@ -1088,12 +1088,12 @@ Type TInGameInterface
 			'show how many receivers your stations cover (compared to country)
 			Local receivers:Int = GetStationMap( GetPlayerBase().playerID ).GetReceivers()
 			Local receiversOnMap:Int = GetStationMapCollection().GetReceivers()
-			lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(receivers, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(receivers)/receiversOnMap, 2) + "% "+GetLocale("OF_THE_MAP")+")"
+			lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(receivers, 2, 0) + " (" + TFunctions.LocalizedNumberToString(100.0 * Float(receivers)/receiversOnMap, 2) + "% "+GetLocale("OF_THE_MAP")+")"
 			_interfaceAudienceFont.DrawSimple(lineText, lineX, lineY, colorLight)
 			lineY :+ _interfaceAudienceFont.GetHeight(lineText)
 	
 			'draw overview text
-			lineText = StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)"
+			lineText = StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0) + " (" + TFunctions.LocalizedNumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)"
 			_interfaceAudienceFont.DrawSimple(lineText, lineX, lineY, colorLight)
 			lineY :+ 1 * _interfaceAudienceFont.GetHeight(lineText) + 5
 
@@ -1103,7 +1103,7 @@ Type TInGameInterface
 				lines[i-1] = "|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
 				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetTotalValue(targetGroupID), 2, 0)
 
-				percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialAudience().GetTotalValue(targetGroupID) * 100, 2)
+				percents[i-1] = TFunctions.LocalizedNumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialAudience().GetTotalValue(targetGroupID) * 100, 2)
 			Next
 
 			Local colorDark:SColor8 = new SColor8(230,230,230)
@@ -1458,8 +1458,8 @@ Type TTooltipAudience Extends TTooltip
 			Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetPopulation()
 			Local totalReach:Int = GetStationMapCollection().GetPopulation()
 
-			Return Max(5 + Self.useFont.GetWidth(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"), ..
-                       Self.useFont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)" ) )
+			Return Max(5 + Self.useFont.GetWidth(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + TFunctions.LocalizedNumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"), ..
+                       Self.useFont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0) + " (" + TFunctions.LocalizedNumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)" ) )
 		Else
 			Return Max(Self.Usefont.GetWidth(GetLocale("BROADCASTING_AREA") + ": 100 (100%)"), ..
 			           Self.Usefont.GetWidth(StringHelper.ucfirst(GetLocale("POTENTIAL_AUDIENCE")) + ": 100 (100%)"))
@@ -1498,8 +1498,8 @@ Type TTooltipAudience Extends TTooltip
 
 		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetPopulation()
 		Local totalReach:Int = GetStationMapCollection().GetPopulation()
-		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")")
-		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE") + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(),2, 0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)")
+		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 2, 0) + " (" + TFunctions.LocalizedNumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")")
+		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE") + ": " + TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(),2, 0) + " (" + TFunctions.LocalizedNumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%)")
 		result:+ 1*lineHeight
 
 		If showDetails
@@ -1547,19 +1547,19 @@ Type TTooltipAudience Extends TTooltip
 		Local currentLineHeight:Int
 		currentLineHeight = Self.Usefont.DrawSimple(StringHelper.ucfirst(GetLocale("BROADCASTING_AREA")) + ": ", lineX, lineY, col1).y
 		Self.UseFont.DrawBox(TFunctions.convertValue(receivers, 2, 0), lineX, lineY, iconWidth + lineTextWidth - 50, lineHeight+2, sALIGN_RIGHT_TOP, col1)
-		Self.UseFont.DrawBox(MathHelper.NumberToString(100.0 * Float(receivers)/receiversOnMap, 2) + "%", lineX, lineY, iconWidth + lineTextWidth, lineHeight+2, sALIGN_RIGHT_TOP, col1)
+		Self.UseFont.DrawBox(TFunctions.LocalizedNumberToString(100.0 * Float(receivers)/receiversOnMap, 2) + "%", lineX, lineY, iconWidth + lineTextWidth, lineHeight+2, sALIGN_RIGHT_TOP, col1)
 		lineY :+ currentLineHeight
 
 		'draw overview text
 		lineHeight = Self.Usefont.DrawSimple(StringHelper.ucfirst(GetLocale("POT_AUDIENCE")) + ": ", lineX, lineY, col1).y
 		Self.UseFont.DrawBox(TFunctions.convertValue(audienceResult.GetPotentialAudience().GetTotalSum(), 2, 0), lineX, lineY, iconWidth + lineTextWidth - 50, lineHeight+2, sALIGN_RIGHT_TOP, col1)
-		Self.UseFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage()) + "%", lineX, lineY, iconWidth + lineTextWidth, lineHeight+2, sALIGN_RIGHT_TOP, col1)
+		Self.UseFont.DrawBox(TFunctions.LocalizedNumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage()) + "%", lineX, lineY, iconWidth + lineTextWidth, lineHeight+2, sALIGN_RIGHT_TOP, col1)
 		lineY :+ currentLineHeight
 
 		rem
-		local receptionAntenna:string = "Antenna " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_AntennaMod, 1.0), 2, True)+"%"
-		local receptionCableNetwork:string = "CableNetwork " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_CableNetworkMod, 1.0), 2, True)+"%"
-		local receptionSatellite:string = "Satellite " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_SatelliteMod, 1.0), 2, True)+"%"
+		local receptionAntenna:string = "Antenna " + TFunctions.LocalizedNumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_AntennaMod, 1.0), 2, True)+"%"
+		local receptionCableNetwork:string = "CableNetwork " + TFunctions.LocalizedNumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_CableNetworkMod, 1.0), 2, True)+"%"
+		local receptionSatellite:string = "Satellite " + TFunctions.LocalizedNumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_SatelliteMod, 1.0), 2, True)+"%"
 		lineText = GetLocale("RECEPTION") + ": " + receptionAntenna + " " + receptionCableNetwork + " " + receptionSatellite
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ Self.Usefont.GetHeight(lineText)
@@ -1595,7 +1595,7 @@ Type TTooltipAudience Extends TTooltip
 				lines[i-1] = "|color="+col.r+","+col.g+","+col.b+"|"+Chr(9654)+"|/color| " + getLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": "
 				numbers[i-1] = TFunctions.convertValue(audienceResult.Audience.GetTotalValue(targetGroupID), 2, 0)
 
-				percents[i-1] = MathHelper.NumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialAudience().GetTotalValue(targetGroupID) * 100, 2)
+				percents[i-1] = TFunctions.LocalizedNumberToString(audienceResult.Audience.GetTotalValue(targetGroupID) / audienceResult.GetPotentialAudience().GetTotalValue(targetGroupID) * 100, 2)
 			Next
 
 			Local colorLight:SColor8 = new SColor8(240,240,240)
