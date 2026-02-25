@@ -96,7 +96,7 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		Local player:TPlayer = GetPlayer(playerID)
 		Local p:TPublicImage = GetPublicImage(playerID)
 
-		Local contentRect:SRectI = DrawWindow(x, y, 213, 110, "Player: " + playerID, "Image: " + TFunctions.NumberToString(p.GetAverageImage(), 3))
+		Local contentRect:SRectI = DrawWindow(x, y, 213, 110, "Player: " + playerID, "Image: " + TFunctions.LocalizedNumberToString(p.GetAverageImage(), 3))
 
 		Local textY:Int = contentRect.y
 		textFont.Draw("m", contentRect.x + 85, textY)
@@ -107,9 +107,9 @@ Type TDebugScreenPage_PublicImages extends TDebugScreenPage
 		Local a:TAudience = p.GetImageValues()
 		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs() 'baseGroupCount = without "men/women"
 			textFont.Draw(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString(targetGroupID)) + ": ", contentRect.x, textY)
-			textFont.Draw(TFunctions.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), contentRect.x + 85, textY)
-			textFont.Draw("/ " + TFunctions.NumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), contentRect.x + 120, textY)
-			textFont.Draw("= " + TFunctions.NumberToString(a.GetWeightedValue(targetGroupID), 3), contentRect.x + 163, textY)
+			textFont.Draw(TFunctions.LocalizedNumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.MALE), 3), contentRect.x + 85, textY)
+			textFont.Draw("/ " + TFunctions.LocalizedNumberToString(a.GetGenderValue(targetGroupID, TVTPersonGender.FEMALE), 3), contentRect.x + 120, textY)
+			textFont.Draw("= " + TFunctions.LocalizedNumberToString(a.GetWeightedValue(targetGroupID), 3), contentRect.x + 163, textY)
 			textY :+ 11
 		Next
 	End Method

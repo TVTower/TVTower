@@ -286,24 +286,24 @@ Type TDebugAudienceInfoForPlayer
 		Local diff:Float
 		If minute < 6
 			reach = TFunctions.convertValue(audienceResult.WholeMarket.GetTotalValue(0),2)
-			currentQuoteNews = TFunctions.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
+			currentQuoteNews = TFunctions.LocalizedNumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
 			imageBeforeNews = currentImageProgramme
 			currentImageNews = image
 			diff = currentImageNews - imageBeforeNews
 			colorDiffNews = SColor8.Green
 			If diff < 0 Then colorDiffNews = SColor8.Red
-			diffNews =  TFunctions.NumberToString(diff,2)
+			diffNews =  TFunctions.LocalizedNumberToString(diff,2)
 		ElseIf minute > 5
 			Local player:TPlayer = GetPlayer(playerID)
 			money = player.GetMoneyFormatted()
 			credit = player.GetCreditFormatted()
-			currentQuoteProgramme = TFunctions.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
+			currentQuoteProgramme = TFunctions.LocalizedNumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
 			imageBeforeNews = currentImageProgramme
 			currentImageProgramme = image
 			diff = currentImageProgramme - currentImageNews
 			colorDiffProgramme = SColor8.Green
 			If diff < 0 Then colorDiffProgramme = SColor8.Red
-			diffProgramme = TFunctions.NumberToString(diff,2)
+			diffProgramme = TFunctions.LocalizedNumberToString(diff,2)
 		EndIf
 		potAudience = TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(),2)
 		progTitle = audienceResult.GetTitle()
@@ -398,7 +398,7 @@ Type TDebugAudienceInfo
 			font.DrawBox(data.reach, x, 4*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
 
 			font.DrawBox(data.potAudience, x, 5*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
-			Local percent:String = TFunctions.NumberToString(audienceResult.GetPotentialAudienceQuotePercentage()*100,2) + "%"
+			Local percent:String = TFunctions.LocalizedNumberToString(audienceResult.GetPotentialAudienceQuotePercentage()*100,2) + "%"
 			font.DrawSimple(percent, x, 6*h, SColor8.White)
 
 			font.DrawBox(data.progTitle, x, 7*h, 150, 17, sALIGN_LEFT_TOP, SColor8.White)
@@ -408,13 +408,13 @@ Type TDebugAudienceInfo
 			'player info in row
 			Local y:Int = (11+playerID) * h
 			font.DrawSimple("Spieler "+playerID+":", 15, y, SColor8.White)
-			font.DrawBox(TFunctions.NumberToString(data.imageBeforeNews,2), rowX, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox(TFunctions.LocalizedNumberToString(data.imageBeforeNews,2), rowX, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
 			font.DrawBox(data.currentQuoteNews, rowX+60, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
 			font.DrawBox(data.diffNews, rowX+110, y, 55, 17, sALIGN_RIGHT_TOP, data.colorDiffNews)
-			font.DrawBox(TFunctions.NumberToString(data.currentImageNews,2), rowX+160, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox(TFunctions.LocalizedNumberToString(data.currentImageNews,2), rowX+160, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
 			font.DrawBox(data.currentQuoteProgramme, rowX+210, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
 			font.DrawBox(data.diffProgramme, rowX+260, y, 55, 17, sALIGN_RIGHT_TOP, data.colorDiffProgramme)
-			font.DrawBox(TFunctions.NumberToString(data.currentImageProgramme,2), rowX+310, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox(TFunctions.LocalizedNumberToString(data.currentImageProgramme,2), rowX+310, y, 55, 17, sALIGN_RIGHT_TOP, SColor8.White)
 		Next
 	End Method
 
@@ -446,7 +446,7 @@ Type TDebugAudienceInfo
 		font.DrawSimple("Sendegebiet", 25, 50, SColor8.White)
 		DrawAudience(audienceResult.WholeMarket.data, 200, 50)
 
-		Local percent:String = TFunctions.NumberToString(audienceResult.GetPotentialAudienceQuotePercentage()*100,2) + "%"
+		Local percent:String = TFunctions.LocalizedNumberToString(audienceResult.GetPotentialAudienceQuotePercentage()*100,2) + "%"
 		font.DrawSimple("Potentielle Zuschauer", 25, 70, SColor8.White)
 		font.DrawSimple(percent, 160, 70, SColor8.White)
 		DrawAudience(audienceResult.PotentialAudience.data, 200, 70)
@@ -464,7 +464,7 @@ Type TDebugAudienceInfo
 
 
 		font.DrawSimple("Aktuelle Zuschauerzahl", 25, 90, SColor8.White)
-		percent = TFunctions.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
+		percent = TFunctions.LocalizedNumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
 		font.DrawSimple(percent, 160, 90, SColor8.White)
 		DrawAudience(audienceResult.Audience.data, 200, 90)
 
@@ -489,7 +489,7 @@ Type TDebugAudienceInfo
 				If (attraction.BaseAttraction <> Null And attraction.genreDefinition)
 					genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(attraction.genreDefinition.referenceID))
 					If attraction.GenrePopularityMod
-						popularity = "Popularity "+genre+ ": " + TFunctions.NumberToString(attraction.GenrePopularityMod,2) +"; Long Term: "+TFunctions.NumberToString(1+ attraction.genreDefinition._popularity.LongTermPopularity/100.0,2)
+						popularity = "Popularity "+genre+ ": " + TFunctions.LocalizedNumberToString(attraction.GenrePopularityMod,2) +"; Long Term: "+TFunctions.LocalizedNumberToString(1+ attraction.genreDefinition._popularity.LongTermPopularity/100.0,2)
 					EndIf
 				EndIf
 			Case TVTBroadcastMaterialType.ADVERTISEMENT
@@ -524,20 +524,20 @@ Type TDebugAudienceInfo
 		EndIf
 		offset :+ 20
 
-		font.DrawSimple("3. * TrailerMod ("+TFunctions.NumberToString(TAudienceAttraction.MODINFLUENCE_TRAILER*100)+"%)", 25, offset, SColor8.White)
+		font.DrawSimple("3. * TrailerMod ("+TFunctions.LocalizedNumberToString(TAudienceAttraction.MODINFLUENCE_TRAILER*100)+"%)", 25, offset, SColor8.White)
 		If attraction.TrailerMod
 			font.DrawBox(genre, 60, offset, 205, 25, sALIGN_RIGHT_TOP, colorLight )
 			DrawAudiencePercent(attraction.TrailerMod.Copy().Multiply(TAudienceAttraction.MODINFLUENCE_TRAILER).Add(1).data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.DrawSimple("4. + Sonstige Mods ("+TFunctions.NumberToString(TAudienceAttraction.MODINFLUENCE_MISC*100)+"%)", 25, offset, SColor8.White)
+		font.DrawSimple("4. + Sonstige Mods ("+TFunctions.LocalizedNumberToString(TAudienceAttraction.MODINFLUENCE_MISC*100)+"%)", 25, offset, SColor8.White)
 		If attraction.MiscMod
 			DrawAudiencePercent(attraction.MiscMod.data, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.DrawSimple("5. + CastMod ("+TFunctions.NumberToString(TAudienceAttraction.MODINFLUENCE_CAST*100)+"%)", 25, offset, SColor8.White)
+		font.DrawSimple("5. + CastMod ("+TFunctions.LocalizedNumberToString(TAudienceAttraction.MODINFLUENCE_CAST*100)+"%)", 25, offset, SColor8.White)
 		DrawAudiencePercent(New SAudience(attraction.CastMod,  attraction.CastMod), 200, offset, True, True)
 		offset :+ 20
 
@@ -649,15 +649,15 @@ Rem
 
 Rem
 		font.Draw("Genre <> Sendezeit", 25, offset+240, TColor.clWhite)
-		Local genreTimeMod:String = TFunctions.NumberToString(attraction.GenreTimeMod  * 100,2) + "%"
-		Local genreTimeQuality:String = TFunctions.NumberToString(attraction.GenreTimeQuality * 100,2) + "%"
+		Local genreTimeMod:String = TFunctions.LocalizedNumberToString(attraction.GenreTimeMod  * 100,2) + "%"
+		Local genreTimeQuality:String = TFunctions.LocalizedNumberToString(attraction.GenreTimeQuality * 100,2) + "%"
 		font.Draw(genreTimeMod, 160, offset+240, TColor.clWhite)
 		font.drawBlock(genreTimeQuality, 200, offset+240, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
 
 		'Nur vorübergehend
 		font.Draw("Trailer-Mod", 25, offset+250, TColor.clWhite)
-		Local trailerMod:String = TFunctions.NumberToString(attraction.TrailerMod  * 100,2) + "%"
-		Local trailerQuality:String = TFunctions.NumberToString(attraction.TrailerQuality * 100,2) + "%"
+		Local trailerMod:String = TFunctions.LocalizedNumberToString(attraction.TrailerMod  * 100,2) + "%"
+		Local trailerQuality:String = TFunctions.LocalizedNumberToString(attraction.TrailerQuality * 100,2) + "%"
 		font.Draw(trailerMod, 160, offset+250, TColor.clWhite)
 		font.drawBlock(trailerQuality, 200, offset+250, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
 
@@ -704,7 +704,7 @@ endrem
 		If gray Then color = new SColor8(150, 150, 150)
 
 		If Not hideAverage Then
-			val = TFunctions.NumberToString(audience.GetWeightedAverage(),2)
+			val = TFunctions.LocalizedNumberToString(audience.GetWeightedAverage(),2)
 			If gray Then
 				font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, new SColor8(150, 80, 80))
 			Else
@@ -715,7 +715,7 @@ endrem
 		Local i:Int = 0
 		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			i :+ 1
-			val = TFunctions.NumberToString(0.5 * audience.GetTotalValue(targetGroupID),2)
+			val = TFunctions.LocalizedNumberToString(0.5 * audience.GetTotalValue(targetGroupID),2)
 			font.DrawBox(val, x2 + 70*(i-1), y, 65, 25, sALIGN_RIGHT_TOP, color)
 		Next
 	End Function

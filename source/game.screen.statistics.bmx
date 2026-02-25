@@ -672,15 +672,15 @@ endrem
 					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE")+":", labelArea.x, labelArea.y + 1*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.x, labelArea.y + 2*labelArea.h, labelArea.w, labelArea.h, sALIGN_LEFT_CENTER, fontColor)
 
-					boldTextFont.DrawBox(TFunctions.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.x, valueArea.y - 1 + 0*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(TFunctions.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y - 1 + 0*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.LocalizedDottedValue(audienceResult.audience.GetTotalSum()), valueArea.x, valueArea.y - 1 + 0*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(TFunctions.LocalizedNumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y - 1 + 0*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 					TextFont.DrawBox("#"+audienceRanks[0], valueArea.x, valueArea.y + 0*valueArea.h -1, valueArea.w, valueArea.h, sALIGN_RIGHT_CENTER, rankFontColor)
 
 					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialAudience.GetTotalSum(), 2, 0), valueArea.x, valueArea.y - 1 + 1*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(TFunctions.NumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y - 1 + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.LocalizedNumberToString(100.0 * audienceResult.GetPotentialAudienceQuotePercentage(), 2) + "%", valueArea.x, valueArea.y - 1 + 1*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
 					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.x, valueArea.y - 1 + 2*valueArea.h, valueArea.w - 80, valueArea.h, sALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.DrawBox(TFunctions.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.x, valueArea.y - 1 + 2*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.LocalizedNumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.x, valueArea.y - 1 + 2*valueArea.h, valueArea.w-20, valueArea.h, sALIGN_RIGHT_CENTER, lightFontColor)
 
 					'target groups
 					Local halfWidth:Int = 0.5 * (valueArea.GetX2() - labelArea.x)
@@ -1023,24 +1023,24 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 			If i = 0
 				Local change:Float
 				change = channelImageValues.GetGenderAverage(TVTPersonGender.MALE) - oldChannelImageValues.GetGenderAverage(TVTPersonGender.MALE)
-				_DrawValue(TFunctions.NumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol2w, int(tgLabelArea.h), smallTextFont, fontColor )
+				_DrawValue(TFunctions.LocalizedNumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol2w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetGenderAverage(TVTPersonGender.FEMALE) - oldChannelImageValues.GetGenderAverage(TVTPersonGender.FEMALE)
-				_DrawValue(TFunctions.NumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol3w, int(tgLabelArea.h), smallTextFont, fontColor )
+				_DrawValue(TFunctions.LocalizedNumberToString(channelImageValues.GetGenderAverage(TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol3w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetTotalAverage() - oldChannelImageValues.GetTotalAverage()
-				_DrawValue(TFunctions.NumberToString(channelImageValues.GetTotalAverage(), 2), change, tgCol4x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol4w, int(tgLabelArea.h), smallTextFont, fontColor )
+				_DrawValue(TFunctions.LocalizedNumberToString(channelImageValues.GetTotalAverage(), 2), change, tgCol4x, int(tgLabelArea.y + (0+1)*tgLabelArea.h), tgCol4w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 			Else
 				Local change:Float
 				change = channelImageValues.GetGenderValue(i, TVTPersonGender.MALE) - oldChannelImageValues.GetGenderValue(i, TVTPersonGender.MALE)
-				_DrawValue(TFunctions.NumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol2w, int(tgLabelArea.h), smallTextFont, fontColor )
+				_DrawValue(TFunctions.LocalizedNumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.MALE), 2), change, tgCol2x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol2w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE) - oldChannelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE)
-				_DrawValue(TFunctions.NumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol3w, int(tgLabelArea.h), smallTextFont, fontColor )
+				_DrawValue(TFunctions.LocalizedNumberToString(channelImageValues.GetGenderValue(i, TVTPersonGender.FEMALE), 2), change, tgCol3x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol3w, int(tgLabelArea.h), smallTextFont, fontColor )
 
 				change = channelImageValues.GetTotalValue(i) - oldChannelImageValues.GetTotalValue(i)
-				_DrawValue(TFunctions.NumberToString(channelImageValues.GetTotalValue(i), 2), change, tgCol4x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol4w, int(tgLabelArea.h), smallTextFont, fontColor )
+				_DrawValue(TFunctions.LocalizedNumberToString(channelImageValues.GetTotalValue(i), 2), change, tgCol4x, int(tgLabelArea.y + (i+1)*tgLabelArea.h), tgCol4w, int(tgLabelArea.h), smallTextFont, fontColor )
 			EndIf
 		Next
 	End Method
@@ -1090,7 +1090,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 			smallTextFont.DrawBox(GetLocale("PRESSURE_GROUPS_"+TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(i) )), pgCol1x, pgLabelArea.y + (i)*int(pgLabelArea.h), pgCol1w, int(pgLabelArea.h), sALIGN_LEFT_CENTER, fontColor)
 
 			Local change:Float = GetPressureGroupCollection().GetChannelSympathy(parent.roomOwner, i, 0) - GetPressureGroupCollection().GetChannelSympathy(parent.roomOwner, i, 1)
-			_DrawValue(TFunctions.NumberToString(GetPressureGroup(i).GetChannelSympathy(parent.roomOwner), 2, False), change, pgCol4x, int(pgLabelArea.y + i*int(pgLabelArea.h)), pgCol4w, int(pgLabelArea.h), smallTextFont, fontColor)
+			_DrawValue(TFunctions.LocalizedNumberToString(GetPressureGroup(i).GetChannelSympathy(parent.roomOwner), 2, False), change, pgCol4x, int(pgLabelArea.y + i*int(pgLabelArea.h)), pgCol4w, int(pgLabelArea.h), smallTextFont, fontColor)
 		Next
 	End Method
 

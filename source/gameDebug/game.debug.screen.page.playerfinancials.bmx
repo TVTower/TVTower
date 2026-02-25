@@ -91,9 +91,9 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 
 			Local textY:Int = contentRect.y
 
-			textFont.DrawBox("Investment Savings: " + TFunctions.DottedValue(player.aiData.GetInt("budget_investmentsavings")), contentRect.x, textY, contentRect.w, 30, SALIGN_LEFT_TOP, SCOLOR8.WHITE)
-			textY :+ textFont.DrawBox("Savings Part: " + TFunctions.DottedValue(player.aiData.GetFloat("budget_savingpart")*100)+"%", contentRect.x, textY, contentRect.w, 30, SALIGN_RIGHT_TOP, SCOLOR8.WHITE).y
-			textY :+ textFont.DrawBox("Extra fixed costs savings: " + TFunctions.DottedValue(player.aiData.GetFloat("budget_extrafixedcostssavingspercentage")*100)+"%", contentRect.x, textY, contentRect.w, 30, SALIGN_RIGHT_TOP, SCOLOR8.WHITE).y
+			textFont.DrawBox("Investment Savings: " + TFunctions.LocalizedDottedValue(player.aiData.GetInt("budget_investmentsavings")), contentRect.x, textY, contentRect.w, 30, SALIGN_LEFT_TOP, SCOLOR8.WHITE)
+			textY :+ textFont.DrawBox("Savings Part: " + TFunctions.LocalizedDottedValue(player.aiData.GetFloat("budget_savingpart")*100)+"%", contentRect.x, textY, contentRect.w, 30, SALIGN_RIGHT_TOP, SCOLOR8.WHITE).y
+			textY :+ textFont.DrawBox("Extra fixed costs savings: " + TFunctions.LocalizedDottedValue(player.aiData.GetFloat("budget_extrafixedcostssavingspercentage")*100)+"%", contentRect.x, textY, contentRect.w, 30, SALIGN_RIGHT_TOP, SCOLOR8.WHITE).y
 
 			textFontBold.Draw("Budget List: ", contentRect.x, textY)
 			textFontBold.Draw("Current", contentRect.x + labelWidth + padding + colWidth*0, textY)
@@ -104,10 +104,10 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 
 			For Local taskNumber:Int = 1 To player.aiData.GetInt("budget_task_count", 1)
 				textFont.Draw(player.aiData.GetString("budget_task_name"+taskNumber).Replace("Task", ""), contentRect.x, textY)
-				textFont.Draw(TFunctions.DottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*0, textY)
-				textFont.Draw(TFunctions.DottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*1, textY)
-				textFont.Draw(TFunctions.DottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*2, textY)
-				textFont.Draw(TFunctions.DottedValue(player.aiData.GetInt("budget_task_fixcosts"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*3, textY)
+				textFont.Draw(TFunctions.LocalizedDottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*0, textY)
+				textFont.Draw(TFunctions.LocalizedDottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*1, textY)
+				textFont.Draw(TFunctions.LocalizedDottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*2, textY)
+				textFont.Draw(TFunctions.LocalizedDottedValue(player.aiData.GetInt("budget_task_fixcosts"+taskNumber)), contentRect.x + labelWidth + padding + colWidth*3, textY)
 				textY :+ 11
 			Next
 		EndIf
@@ -129,7 +129,7 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 		Local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, GetWorldTime().GetDay())
 		Local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 
-		Local contentRect:SRectI = DrawWindow(x, y, windowW, windowH, "Money #" + playerID, TFunctions.DottedValue(finance.money))
+		Local contentRect:SRectI = DrawWindow(x, y, windowW, windowH, "Money #" + playerID, TFunctions.LocalizedDottedValue(finance.money))
 
 		Local textY:Int = contentRect.y
 		Local font:TBitmapfont = GetBitmapFont("default", 9)
@@ -145,10 +145,10 @@ Type TDebugScreenPage_PlayerFinancials extends TDebugScreenPage
 			Local dy:Int
 			dy = Max(dy, font.Draw(title, x, y).y)
 			if income >= 0 'minus allows to hide it
-				dy = Max(dy, font.DrawBox(TFunctions.DottedValue(income), x + w - 95, y, 45, 20, SALIGN_RIGHT_TOP, New SColor8(120,255,120)).y)
+				dy = Max(dy, font.DrawBox(TFunctions.LocalizedDottedValue(income), x + w - 95, y, 45, 20, SALIGN_RIGHT_TOP, New SColor8(120,255,120)).y)
 			EndIf
 			If expense >= 0 'minus allows to hide it
-				dy = Max(dy, font.DrawBox(TFunctions.DottedValue(expense), x + w - 45, y, 45, 20, SALIGN_RIGHT_TOP, New SColor8(255,120,120)).y)
+				dy = Max(dy, font.DrawBox(TFunctions.LocalizedDottedValue(expense), x + w - 45, y, 45, 20, SALIGN_RIGHT_TOP, New SColor8(255,120,120)).y)
 			EndIf
 			Return dy
 		End Function

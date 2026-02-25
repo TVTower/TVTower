@@ -215,7 +215,7 @@ Type TRoomAgency
 			endif
 			endrem
 
-			TLogger.Log("RoomAgency.BeginRoomRental()", "Cancelled rental of room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Room owner "+roomOwner+" paid an outstanding rent of "+TFunctions.DottedValue(toPay)+".", LOG_DEBUG)
+			TLogger.Log("RoomAgency.BeginRoomRental()", "Cancelled rental of room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Room owner "+roomOwner+" paid an outstanding rent of "+TFunctions.LocalizedDottedValue(toPay)+".", LOG_DEBUG)
 			return True
 		else
 			TLogger.Log("RoomAgency.BeginRoomRental()", "Failed to cancel rental of room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+" [roomOwner="+roomOwner+"]", LOG_DEBUG)

@@ -990,7 +990,7 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 		GetBitmapFontManager().baseFont.DrawBox("|b|"+GetFileInformation().GetString("fileName")+"|/b|" + compressionInfo, leftX, GetScreenRect().GetY() + Self.paddingTop, 0.70*width, 20, sALIGN_LEFT_TOP, headCol, EDrawTextEffect.Shadow, 0.6)
 		GetFont().DrawBox("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.25 * width, 20, sALIGN_LEFT_TOP, playerCol, EDrawTextEffect.Shadow, 0.25)
 		GetFont().DrawBox("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenRect().GetY() + Self.paddingTop, 0.35 * width, 20, sALIGN_RIGHT_CENTER, col)
-		GetFont().DrawBox("|b|"+GetLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.40 * width, 20, sALIGN_RIGHT_CENTER, col)
+		GetFont().DrawBox("|b|"+GetLocale("MONEY")+":|/b| "+TFunctions.LocalizedDottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.40 * width, 20, sALIGN_RIGHT_CENTER, col)
 
 		SetAlpha useAlpha * 0.30
 		DrawRect(leftX, GetScreenRect().GetY() + GetScreenRect().GetH() - 1, width, 1)

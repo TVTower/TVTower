@@ -254,25 +254,25 @@ Type TFunctions
 		EndIf
 		Select currencyPosition
 			Case 1
-				result:+CURRENCYSIGN + DottedValue(money)
+				result:+CURRENCYSIGN + LocalizedDottedValue(money)
 			Case 2
-				result:+CURRENCYSIGN + Chr(160) + DottedValue(money)
+				result:+CURRENCYSIGN + Chr(160) + LocalizedDottedValue(money)
 			Case 3
-				result:+DottedValue(money) + CURRENCYSIGN
+				result:+LocalizedDottedValue(money) + CURRENCYSIGN
 			Default
-				result:+DottedValue(money) + Chr(160) + CURRENCYSIGN
+				result:+LocalizedDottedValue(money) + Chr(160) + CURRENCYSIGN
 		EndSelect
 		return result
 	EndFunction
 
 
 	'formats a given value from "123000,12" to "123.000,12"
-	'optimized variant
-	Function dottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1)
+	'using grouping and separator according to localization
+	Function LocalizedDottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1)
 		return MathHelper.DottedValue(value, thousandsDelimiter, decimalDelimiter, digitsAfterDecimalPoint)
 	End Function
 
-	Function NumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
+	Function LocalizedNumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
 		If decimalDelimiter = "."
 			Return MathHelper.NumberToString(number, digitsAfterDecimalPoint, truncateZeros)
 		Else
@@ -352,14 +352,14 @@ Type TFunctions
 			If length >= 10 Then typ=3
 		EndIf
 		'250000 = 250Tsd -> divide by 1000
-		If typ=1 Then Return NumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
+		If typ=1 Then Return LocalizedNumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
 		'250000 = 0,25Mio -> divide by 1000000
-		If typ=2 Then Return NumberToString(value/1000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_MILLION")
+		If typ=2 Then Return LocalizedNumberToString(value/1000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_MILLION")
 		'250000 = 0,0Mrd -> divide by 1000000000
-		If typ=3 Then Return NumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
+		If typ=3 Then Return LocalizedNumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
 
 		'add thousands-delimiter: 10000 = 10.000
-		return dottedValue(value, digitsAfterDecimalPoint)
+		return LocalizedDottedValue(value, digitsAfterDecimalPoint)
     End Function
 
 End Type

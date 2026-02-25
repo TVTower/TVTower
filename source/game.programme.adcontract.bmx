@@ -1733,13 +1733,13 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 			skin.fontBold.DrawSimple("Infomercial: "+GetTitle(), contentX + 5, contentY)
 			contentY :+ lineHeight + 6
-			skin.fontNormal.DrawSimple("Per Viewer Revenue: "+Int(1000*GetPerViewerRevenueForPlayer(forPlayerID)) +" Eur  ("+TFunctions.NumberToString(GetPerViewerRevenueForPlayer(forPlayerID),4)+" Eur/person)", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Per Viewer Revenue: "+Int(1000*GetPerViewerRevenueForPlayer(forPlayerID)) +" Eur  ("+TFunctions.LocalizedNumberToString(GetPerViewerRevenueForPlayer(forPlayerID),4)+" Eur/person)", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Topicality: "+TFunctions.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Topicality: "+TFunctions.LocalizedNumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Quality Raw: "+TFunctions.NumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Quality Raw: "+TFunctions.LocalizedNumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 			contentY :+ lineHeight
-		skin.fontNormal.DrawSimple("Quality (perceived): "+TFunctions.NumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
+		skin.fontNormal.DrawSimple("Quality (perceived): "+TFunctions.LocalizedNumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 		EndIf
 
 
@@ -1806,14 +1806,14 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'only show image hint when NOT signed (after signing the image
 		'is not required anymore)
 		If owner <= 0 And GetMinImage() > 0 And 0.01*GetPublicImage( GetObservedPlayerID() ).GetAverageImage() < GetMinImage()
-			Local requiredImage:String = TFunctions.NumberToString(GetMinImage()*100,2)
-			Local channelImage:String = TFunctions.NumberToString(GetPublicImage( GetObservedPlayerID() ).GetAverageImage(),2)
+			Local requiredImage:String = TFunctions.LocalizedNumberToString(GetMinImage()*100,2)
+			Local channelImage:String = TFunctions.LocalizedNumberToString(GetPublicImage( GetObservedPlayerID() ).GetAverageImage(),2)
 			imageText = getLocale("AD_CHANNEL_IMAGE_TOO_LOW").Replace("%IMAGE%", requiredImage).Replace("%CHANNELIMAGE%", channelImage)
 
 			msgAreaH :+ msgH
 		ElseIf owner <= 0 And GetMaxImage() > 0 And 0.01*GetPublicImage( GetObservedPlayerID() ).GetAverageImage() > GetMaxImage()
-			Local requiredMaxImage:String = TFunctions.NumberToString(GetMaxImage()*100,2)
-			Local channelImage:String = TFunctions.NumberToString(GetPublicImage( GetObservedPlayerID() ).GetAverageImage(),2)
+			Local requiredMaxImage:String = TFunctions.LocalizedNumberToString(GetMaxImage()*100,2)
+			Local channelImage:String = TFunctions.LocalizedNumberToString(GetPublicImage( GetObservedPlayerID() ).GetAverageImage(),2)
 			imageText = getLocale("AD_CHANNEL_IMAGE_TOO_HIGH").Replace("%IMAGE%", requiredMaxImage).Replace("%CHANNELIMAGE%", channelImage)
 
 			msgAreaH :+ msgH
@@ -1925,7 +1925,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		contentY :+ boxH
 		Local minAudienceToShow:String = TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2)
 		If audienceResult And (KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT))
-				minAudienceToShow = TFunctions.NumberToString(100.0 * GetMinAudienceForPlayer(forPlayerID) / audienceResult.PotentialAudience.GetTotalValue(GetLimitedToTargetGroup()),2)+"%"
+				minAudienceToShow = TFunctions.LocalizedNumberToString(100.0 * GetMinAudienceForPlayer(forPlayerID) / audienceResult.PotentialAudience.GetTotalValue(GetLimitedToTargetGroup()),2)+"%"
 		EndIf
 		'minAudience
 		If minAudienceHightlightType = 1
@@ -1969,23 +1969,23 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			skin.fontBold.DrawSimple("AdContract: "+GetTitle(), contentX + 5, contentY)
 			contentY :+ lineHeight + 6
 			If base.fixedPrice
-				skin.fontNormal.DrawSimple("Fixed Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+TFunctions.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Fixed Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+TFunctions.LocalizedNumberToString(base.profitBase,2)+")", contentX + 5, contentY)
 				contentY :+ lineHeight
-				skin.fontNormal.DrawSimple("Fixed Penalty: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+TFunctions.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Fixed Penalty: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+TFunctions.LocalizedNumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
 				contentY :+ lineHeight
 			Else
-				skin.fontNormal.DrawSimple("Dyn. Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+TFunctions.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Dyn. Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+TFunctions.LocalizedNumberToString(base.profitBase,2)+")", contentX + 5, contentY)
 				contentY :+ lineHeight
-				skin.fontNormal.DrawSimple("Dyn. Profit: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+TFunctions.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Dyn. Profit: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+TFunctions.LocalizedNumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
 				contentY :+ lineHeight
 			EndIf
 			skin.fontNormal.DrawSimple("Spots To Send: "+GetSpotsToSend()+" of "+GetSpotCount(), contentX + 5, contentY)
 			contentY :+ lineHeight
 			skin.fontNormal.DrawSimple("Spots: "+GetSpotsSent()+" sent, "+GetSpotsPlanned()+" planned", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Min. Audience: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+TFunctions.NumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Min. Audience: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+TFunctions.LocalizedNumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Channel Image: " + TFunctions.NumberToString(GetMinImage()*100,2)+"%" +" - " + TFunctions.NumberToString(GetMaxImage()*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Channel Image: " + TFunctions.LocalizedNumberToString(GetMinImage()*100,2)+"%" +" - " + TFunctions.LocalizedNumberToString(GetMaxImage()*100,2)+"%", contentX + 5, contentY)
 			contentY :+ lineHeight
 			skin.fontNormal.DrawSimple("Target Group: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", contentX + 5, contentY)
 			contentY :+ lineHeight

@@ -483,7 +483,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		endif
 
 		if temperatureText <> "" then description :+ " " + temperatureText.replace("%TEMPERATURE%", tempMin).replace("%MINTEMPERATURE%", tempMin).replace("%MAXTEMPERATURE%", tempMax)
-		if weatherText <> ""  then description :+ " " + weatherText.replace("%MINWINDVELOCITY%", TFunctions.NumberToString(windMin, 0, True)).replace("%MAXWINDVELOCITY%", TFunctions.NumberToString(windMax, 0, True))
+		if weatherText <> ""  then description :+ " " + weatherText.replace("%MINWINDVELOCITY%", TFunctions.LocalizedNumberToString(windMin, 0, True)).replace("%MAXWINDVELOCITY%", TFunctions.LocalizedNumberToString(windMax, 0, True))
 
 
 		local localizeTitle:TLocalizedString = new TLocalizedString

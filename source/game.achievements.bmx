@@ -108,9 +108,9 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
 		if minAudienceAbsolute >= 0
-			t = t.Replace("%VALUE%", TFunctions.DottedValue(minAudienceAbsolute))
+			t = t.Replace("%VALUE%", TFunctions.LocalizedDottedValue(minAudienceAbsolute))
 		elseif minAudienceQuote >= 0
-			t = t.Replace("%VALUE%", TFunctions.NumberToString(minAudienceQuote*100.0,2, True)+"%")
+			t = t.Replace("%VALUE%", TFunctions.LocalizedNumberToString(minAudienceQuote*100.0,2, True)+"%")
 		endif
 		return t
 	End Method
@@ -200,9 +200,9 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
 		if minReachAbsolute >= 0
-			t = t.Replace("%VALUE%", TFunctions.DottedValue(minReachAbsolute))
+			t = t.Replace("%VALUE%", TFunctions.LocalizedDottedValue(minReachAbsolute))
 		elseif minReachPercentage >= 0
-			t = t.Replace("%VALUE%", TFunctions.NumberToString(minReachPercentage*100.0,2, True)+"%")
+			t = t.Replace("%VALUE%", TFunctions.LocalizedNumberToString(minReachPercentage*100.0,2, True)+"%")
 		endif
 		return t
 	End Method

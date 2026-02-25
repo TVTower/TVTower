@@ -480,18 +480,18 @@ Type TPlayerBoss
 				local acceptEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
 				local acceptHalfEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
 				local acceptQuarterEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", 0.25 * GetPlayerBase().GetCreditAvailable()))
-				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", TFunctions.DottedValue(GetPlayerBase().GetCreditAvailable())))
-				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
+				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", TFunctions.LocalizedDottedValue(GetPlayerBase().GetCreditAvailable())))
+				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",TFunctions.LocalizedDottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
 				'avoid micro credits
 				if GetPlayerBase().GetCreditAvailable() > 50000
-					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%VALUE%", TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
+					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%VALUE%", TFunctions.LocalizedDottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
 				endif
 				if GetPlayerBase().GetCreditAvailable() > 100000
-					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER").replace("%VALUE%", TFunctions.DottedValue(0.25 * GetPlayerBase().GetCreditAvailable())),2, acceptQuarterEvent))
+					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER").replace("%VALUE%", TFunctions.LocalizedDottedValue(0.25 * GetPlayerBase().GetCreditAvailable())),2, acceptQuarterEvent))
 				endif
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			Else
-				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", TFunctions.DottedValue(GetPlayerBase().GetCredit())))
+				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", TFunctions.LocalizedDottedValue(GetPlayerBase().GetCredit())))
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			EndIf
@@ -506,12 +506,12 @@ Type TPlayerBoss
 			For local creditValue:int = EachIn [2500000, 1000000, 500000, 250000, 100000]
 				If credit >= creditValue And GetPlayerBase().GetMoney() >= creditValue
 					local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.AddNumber("value", creditValue))
-					ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_VALUE").replace("%VALUE%", TFunctions.DottedValue(creditValue)), 0, payBackEvent))
+					ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_VALUE").replace("%VALUE%", TFunctions.LocalizedDottedValue(creditValue)), 0, payBackEvent))
 				EndIf
 			Next
 			If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
 				local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.AddNumber("value", GetPlayerBase().GetCredit()))
-				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%",  TFunctions.DottedValue(GetPlayerBase().GetCredit())), 0, payBackEvent))
+				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%",  TFunctions.LocalizedDottedValue(GetPlayerBase().GetCredit())), 0, payBackEvent))
 			EndIf
 			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), -2))
 			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))

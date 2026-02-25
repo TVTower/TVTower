@@ -2631,7 +2631,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			Local show:String = "-"
 			If useOwner
 				Local perc:Float = GetBroadcastStatistic(useOwner).bestAudiencePercantage[useOwner-1]
-				If perc > 0 then show = TFunctions.NumberToString(perc*100.0)+"%"
+				If perc > 0 then show = TFunctions.LocalizedNumberToString(perc*100.0)+"%"
 			EndIf
 			skin.RenderBox(contentX + 5 + 107, contentY, 88, -1, show, "maxAudience", EDatasheetColorStyle.Neutral, skin.fontBold)
 		Else
@@ -2655,9 +2655,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if showPrice
 			if shiftDown then price:/ GetBlocksTotal()
 			if canAfford
-				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, TFunctions.DottedValue( price ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, TFunctions.LocalizedDottedValue( price ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, TFunctions.DottedValue( price ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
+				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, TFunctions.LocalizedDottedValue( price ), "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER, EDatasheetColorStyle.Bad)
 			endif
 		else
 			skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, "- ?? -", "money", EDatasheetColorStyle.Neutral, skin.fontBold, ALIGN_RIGHT_CENTER)
@@ -2687,19 +2687,19 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ lineHeight
 			skin.fontNormal.DrawSimple("Last Planned Hour: "+latestPlannedEndHour +" (Trailer: " + latestPlannedTrailerHour + ")", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Speed: "+TFunctions.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Speed: "+TFunctions.LocalizedNumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Review: "+TFunctions.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Review: "+TFunctions.LocalizedNumberToString(data.GetReview(), 4), contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Outcome: "+TFunctions.NumberToString(data.GetOutcome(), 4) + " (TV: " + TFunctions.NumberToString(data.GetOutcomeTV(), 4) + ")", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Outcome: "+TFunctions.LocalizedNumberToString(data.GetOutcome(), 4) + " (TV: " + TFunctions.LocalizedNumberToString(data.GetOutcomeTV(), 4) + ")", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("PriceMod: Licence="+TFunctions.NumberToString(GetModifier(modKeyPriceLS), 4)+"  Data="+TFunctions.NumberToString(data.GetModifier(modKeyPriceLS), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("PriceMod: Licence="+TFunctions.LocalizedNumberToString(GetModifier(modKeyPriceLS), 4)+"  Data="+TFunctions.LocalizedNumberToString(data.GetModifier(modKeyPriceLS), 4), contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Quality Raw: "+TFunctions.NumberToString(GetQualityRaw(), 4)+"  (w/o Age, Repetitions)", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Quality Raw: "+TFunctions.LocalizedNumberToString(GetQualityRaw(), 4)+"  (w/o Age, Repetitions)", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Quality: "+TFunctions.NumberToString(GetQuality(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Quality: "+TFunctions.LocalizedNumberToString(GetQuality(), 4), contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Topicality: "+TFunctions.NumberToString(GetTopicality(), 4)+" / " + TFunctions.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Topicality: "+TFunctions.LocalizedNumberToString(GetTopicality(), 4)+" / " + TFunctions.LocalizedNumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
 			contentY :+ lineHeight
 			skin.fontNormal.DrawSimple("Blocks: "+GetBlocks(), contentX + 5, contentY)
 			contentY :+ lineHeight
@@ -2711,7 +2711,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ lineHeight
 			skin.fontNormal.DrawSimple("Audience Record: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (player), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (all)", contentX + 5, contentY)
 			contentY :+ lineHeight
-			skin.fontNormal.DrawSimple("Price: "+TFunctions.DottedValue(GetPriceForPlayer(useOwner))+" (licLvl: " + licencedAudienceReachLevel+")  Sell: " + TFunctions.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Price: "+TFunctions.LocalizedDottedValue(GetPriceForPlayer(useOwner))+" (licLvl: " + licencedAudienceReachLevel+")  Sell: " + TFunctions.LocalizedDottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
 			contentY :+ lineHeight
 			skin.fontNormal.DrawSimple("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
 			if data.GetTrailerMod(useOwner, False)
@@ -2874,7 +2874,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 			skin.fontBold.DrawSimple("Trailer: "+GetTitle(), contentX + 5, contentY)
 			contentY :+ 14
-			skin.fontNormal.DrawSimple("Traileraktualitaet: "+TFunctions.NumberToString(data.GetTrailerTopicality(), 4)+" von " + TFunctions.NumberToString(data.GetMaxTrailerTopicality(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Traileraktualitaet: "+TFunctions.LocalizedNumberToString(data.GetTrailerTopicality(), 4)+" von " + TFunctions.LocalizedNumberToString(data.GetMaxTrailerTopicality(), 4), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.DrawSimple("Ausstrahlungen: "+data.trailerAired, contentX + 5, contentY)
 			contentY :+ 12
