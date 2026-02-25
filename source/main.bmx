@@ -270,10 +270,17 @@ Function ConfigureStorageMode:Int()
 	If Not canWrite
 		Local message:String
 		If storageMode = portableMode
-			message = "Portable storage directory is NOT writable. Path: ~q" + userDir + "~q. Try storage mode ~qAuto~q or ~qUserdir~q!"
+			message = "Portable storage directory is NOT writable. Path: ~q" + userDir + "~q. Try configuring storage mode ~qAuto~q or ~qUserdir~q"
 		Else
-			message = "Userdir storage directory is NOT writable. Path: ~q" + userDir + "~q. Try storage mode ~qAuto~q or ~qPortable~q!"
+			message = "Userdir storage directory is NOT writable. Path: ~q" + userDir + "~q. Try configuring storage mode ~qAuto~q or ~qPortable~q"
 		EndIf
+		message :+ " in ~q" + userdir + "/config/settings.xml~q. "
+		If storageMode = portableMode
+			message :+ "Alternatively try starting TVTower with the parameter ~q-Userdir~q."
+		Else
+			message :+ "Alternatively try starting TVTower with the parameter ~q-Portable~q."
+		Endif
+			
 		TLogger.Log("ConfigureStorageMode", message, LOG_ERROR)
 		Notify(message.Replace(". ", ".~n"), LOG_ERROR)
 		End
