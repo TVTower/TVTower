@@ -132,12 +132,15 @@ Import "game.misc.savegameserializers.bmx"
 Import "Dig/base.util.bmxng.objectcountmanager.bmx"
 ?
 
-'identify whether we run portable or use user directories
-Global applicationStorageMode:Int = ConfigureStorageMode()
-
+' define what subfolders need to exist (and be writeable)
+' ("" means application folder itself)
+Global requiredWriteableSubfolders:String[] = ["", "config", "logfiles", "savegames"]
+Global applicationStoragePath:String
+' identify whether we run portable or use user directories
+Global applicationStorageMode:Int = ConfigureStorageMode(applicationStoragePath, requiredWriteableSubfolders)
 
 ' check wether to run in "portable" mode or not (and use user directories)
-Function ConfigureStorageMode:Int()
+Function ConfigureStorageMode:Int(applicationStoragePath:String var, writableFoldersToCheck:String[])
 	TLogger.Log("ConfigureStorageMode", "Identifying storage mode.", LOG_DEBUG)
 	
 	Local baseDir:String = AppDir
@@ -199,8 +202,11 @@ Function ConfigureStorageMode:Int()
 			delay(50) 'give some time for file handle closing
 		EndIf
 
+		'=== ENSURE FOLDER STRUCTURE EXISTS ===
+		EnsureDirectoriesExist(writableFoldersToCheck)
+
 		'=== CHECK WRITABILITY ===
-		canWrite = WriteTest(["", "config", "savegames", "logfiles"])
+		canWrite = WriteTest(writableFoldersToCheck)
 
 		' if writing failed and auto mode is set, fallback to userdirMode
 		' if writing succeeded, settle with portableMode
@@ -249,11 +255,13 @@ Function ConfigureStorageMode:Int()
 		MaxIO.SetWriteDir(userDir)
 		'TLogger.Log("ConfigureStorageMode", "Set write directory to ~q" + userDir + "~q.", LOG_DEBUG)
 
+		'=== ENSURE FOLDER STRUCTURE EXISTS ===
+		EnsureDirectoriesExist(writableFoldersToCheck)
 
 		'=== CHECK WRITABILITY ===
 		'use local URI here! (writing directly to the real paths like
 		'"/home/user/.local/share/TVTower/file.txt" is not possible)
-		canWrite = WriteTest(["", "/config", "/savegames", "/logfiles"])
+		canWrite = WriteTest(writableFoldersToCheck)
 		If canWrite
 			TLogger.Log("ConfigureStorageMode", "Userdir storage directory is writable.", LOG_DEBUG)
 		EndIf
@@ -293,10 +301,26 @@ Function ConfigureStorageMode:Int()
 	Else
 		TLogger.Log("ConfigureStorageMode", "Userdir storage mode configured.", LOG_DEBUG)
 	EndIf
+	
+	'assign storage path (so others can use it)
+	applicationStoragePath = userDir
+
 	Return storageMode
 
 	
+	Function EnsureDirectoriesExist:Int(dirsToTest:String[])
+		'ensure dir existence (if possible)
+		For local dir:String = EachIn dirsToTest
+			If Not dir Then Continue 'skip local folder
+
+			If TFileHelper.EnsureWriteableDirectoryExists(dir)
+				TLogger.Log("ConfigureStorageMode", "Created missing subdirectory: ~q"+dir+"~q", LOG_DEBUG)
+			EndIf
+		Next
+	End Function
+	
 	Function WriteTest:Int(dirsToTest:String[])
+
 		For local dir:String = EachIn dirsToTest
 			If dir Then dir :+ "/"
 			Local uri:String = dir + "writetestfile_" + Millisecs() + ".txt"
