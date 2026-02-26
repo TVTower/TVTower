@@ -80,6 +80,7 @@ Type TPersist
 	'- DeSerializeTTypeNameFromString()
 	Field serializer:Object
 	Field serializerTypeID:TTypeId
+	Field progressCallback:Int(progress:String, userData:Object)
 
 	Field _sb:TStringBuilder = New TStringBuilder
 
@@ -592,6 +593,12 @@ Type TPersist
 	Method DeserializeByType:Object(objType:TTypeId, node:TxmlNode)
 		'Ronny: skip loading elements having "nosave" metadata
 		If objType.MetaData("nosave") And Not objType.MetaData("doload") Then Return Null
+		'specific type interest?
+		Local metaProgress:String = objType.MetaData("progress")
+		If metaProgress and progressCallback
+			progressCallback(metaProgress, objType.Name())
+		EndIf
+
 
 		Local serializer:TXMLSerializer = TXMLSerializer(serializers.ValueForKey(objType.Name()))
 		If serializer Then
@@ -756,6 +763,11 @@ Type TPersist
 					'Ronny: skip loading elements having "nosave" metadata
 					If fieldObj.MetaData("nosave") And Not fieldObj.MetaData("doload") Then Continue
 
+					'Ronny: inform someone about this specific field?
+					Local metaProgress:String = fieldObj.MetaData("progress")
+					If metaProgress and progressCallback
+						progressCallback(metaProgress, fieldName)
+					EndIf
 
 					' Ronny: check if the current code knows the stored
 					' but no longer known type under a different name.

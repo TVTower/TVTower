@@ -295,6 +295,14 @@ Type StringHelper
 	End Function
 
 
+	Function MidTruncString:String(s:String, maxLength:Int = 40)
+		If s.length > maxLength
+			Return s[..(maxLength/2 - 5)] + "..." + s[(s.length - maxLength/2) ..]
+		EndIf
+		Return S
+	End Function
+
+
 	Function RemoveArrayIndex:Int(index:Int, arr:String[] Var)
 		If Not arr Or arr.length = 0
 			Return False
