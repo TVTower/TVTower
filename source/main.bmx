@@ -7391,7 +7391,7 @@ endrem
 
 ?linux
 Function CreateDesktopFile()
-	Local cwd:String = CurrentDir()
+	Local cwd:String = AppDir 'CurrentDir()
 	local file:TStream = WriteStream("TVTower.desktop")
 	if file
 		file.WriteLine("[Desktop Entry]")
