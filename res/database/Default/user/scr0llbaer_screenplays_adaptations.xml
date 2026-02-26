@@ -1068,7 +1068,7 @@
 			<speed min="30" max="70" />
 			<studio_size value="3" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="ce402a14-9815-4e9a-8801-b2c2cb2fafd5" creator="9551" wikidata_id="Q581426" comment="author: https://en.wikipedia.org/wiki/Cormac_McCarthy | also: Blood Meridian Or The Evening Redness in the West">
+		<scripttemplate product="1" licence_type="1" guid="ce402a14-9815-4e9a-8801-b2c2cb2fafd5" creator="9551" wikidata_id="Q581426" comment="author: https://en.wikipedia.org/wiki/Cormac_McCarthy">
 			<title>
 				<de>Dem blutroten Abend entgegen</de>
 				<en>Blood Sunset</en>
@@ -1076,7 +1076,7 @@
 			</title>
 			<title_original>
 				<de>Die Abendröte im Westen</de>
-				<en>Blood Meridian</en>
+				<en>Blood Meridian or the Evening Redness in the West</en>
 				<pl>Południk Krwi</pl>
 			</title_original>
 			<description>

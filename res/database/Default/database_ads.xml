@@ -1224,7 +1224,7 @@ Tylko oryginalne z łosia!</pl>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="2" profit="2750" penalty="4000" fix_infomercial_profit="1" />
 		</ad>
-		<ad guid="e77d26ae-895d-448f-b6ac-7171b785d21f">
+		<ad guid="e77d26ae-895d-448f-b6ac-7171b785d21f" comment="TODO: Honey Monster is an actual brand/mascot known mostly in the UK - https://en.wikipedia.org/wiki/Honey_Monster_Puffs - not clear if intended reference or coincidence.">
 			<title>
 				<de>Guld Körn</de>
 				<en>Gulden Cörn</en>

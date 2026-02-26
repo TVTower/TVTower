@@ -149,7 +149,7 @@
 			<availability year_range_from="1994" year_range_to="-1" />
 		</scripttemplate>
 
-		<scripttemplate licence_type="3" product="2" guid="Stukov_Goblins" wikidata_id="" comment="TODO: doesn't really seem to be https://en.wikipedia.org/wiki/The_Goblins - seems to be made-up | or probably it's https://www.goodreads.com/series/93522-goblins">
+		<scripttemplate licence_type="3" product="2" guid="Stukov_Goblins" wikidata_id="" comment="https://www.jimchines.com/project/goblins/ | Only Vol. 2 and Vol.3 on Wikidata: Q134537038 Q134537040 | TODO: Could add similar titles: https://en.wikipedia.org/wiki/The_Goblins | https://www.goodreads.com/series/93522-goblins">
 			<title>
 				<de>Die Goblins</de>
 				<en>The Goblins</en>
@@ -294,9 +294,9 @@
 			<availability year_range_from="2016" year_range_to="-1" />
 		</scripttemplate>
 
-		<scripttemplate licence_type="1" product="1" guid="Stukov_DerWidersacher" wikidata_id="" comment="TODO: this doesn't seem to be https://de.wikipedia.org/wiki/Der_Widersacher - seems to be completely made up | maybe https://en.wikipedia.org/wiki/The_Adversary_Cycle">
+		<scripttemplate licence_type="1" product="1" guid="Stukov_DerWidersacher" wikidata_id="Q137433451" comment="TODO: Could also add similar titles: https://de.wikipedia.org/wiki/Der_Widersacher | https://en.wikipedia.org/wiki/The_Adversary_Cycle">
 			<title>
-				<de>Der Widersacher</de>
+				<de>Der Widerpart</de>
 				<en>The Adversary</en>
 				<pl>Adwersarz</pl>
 			</title>

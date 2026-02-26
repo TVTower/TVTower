@@ -293,7 +293,7 @@
 			<last_name>Devault</last_name>
 			<first_name_original>Robert</first_name_original>
 			<last_name_original>Duvall</last_name_original>
-			<details job="2" gender="1" birthday="1931-01-05" deathday="" country="" />
+			<details job="2" gender="1" birthday="1931-01-05" deathday="2026-02-15" country="" />
 			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="2d237ef7-55da-498c-93bc-523d89bad84b" tmdb_id="11127" imdb_id="nm0751983" wikidata_id="Q230143" creator="">
@@ -11063,7 +11063,7 @@
 		<person guid="118c0dd5-6521-49a0-9165-331cb4d83d41" first_name="Gabrina" last_name="Unell" first_name_original="Gabrielle" last_name_original="Union" gender="2" birthday="1972-10-29" deathday="" tmdb_id="17773" imdb_id="nm0005517" wikidata_id="Q231648" creator="9551" />
 		<person guid="48bf5165-b811-499c-b08d-0139adc0d3f8" first_name="Jasper" last_name="Landon" first_name_original="Jason" last_name_original="London" gender="1" birthday="1972-11-07" deathday="" tmdb_id="52474" imdb_id="nm0518715" wikidata_id="Q1376690" creator="9551" />
 		<person guid="efc79f2a-c92d-4437-a472-a1e9a66b7b52" first_name="Jeromy" last_name="Landon" first_name_original="Jeremy" last_name_original="London" gender="1" birthday="1972-11-07" deathday="" tmdb_id="23646" imdb_id="nm0518718" wikidata_id="Q1189140" creator="9551" />
-		<person guid="69ead04c-85b6-4cf7-8c2e-b0ec87de4a38" first_name="Erik" last_name="Dean" first_name_original="Eric" last_name_original="Dane" gender="1" birthday="1972-11-09" deathday="" tmdb_id="58115" imdb_id="nm0199312" wikidata_id="Q299421" creator="9551" />
+		<person guid="69ead04c-85b6-4cf7-8c2e-b0ec87de4a38" first_name="Erik" last_name="Dean" first_name_original="Eric" last_name_original="Dane" gender="1" birthday="1972-11-09" deathday="2026-02-19" tmdb_id="58115" imdb_id="nm0199312" wikidata_id="Q299421" creator="9551" />
 		<person guid="ba12765a-9a24-4f3f-b9ec-646024e25ddf" first_name="Daniel" last_name="Micard" first_name_original="David" last_name_original="Michôd" gender="1" birthday="1972-11-30" deathday="" tmdb_id="114334" imdb_id="nm2391575" wikidata_id="Q3018459" creator="9551" />
 		<person guid="51a5796d-cd40-482d-b0cc-3e46501fc22a" first_name="Lina" last_name="Spundauer" first_name_original="Lisa" last_name_original="Spoonauer" gender="2" birthday="1972-12-06" deathday="2017-05-21" tmdb_id="23632" imdb_id="nm0819412" wikidata_id="Q3242448" creator="9551" />
 		<person guid="c20f0263-a437-4dfc-a9bf-2b27fb502125" first_name="Katrina" last_name="Hélie Gorgory" first_name_original="Kimberly" last_name_original="Hébert Gregory" gender="2" birthday="1972-12-07" deathday="2025-10-03" tmdb_id="1538035" imdb_id="nm2554997" wikidata_id="Q16745326" creator="9551" />
@@ -11482,7 +11482,7 @@
 		<person guid="88d12693-0b09-4d8c-8712-f5b8f4065781" first_name="Himari" last_name="Saeta" first_name_original="Hinako" last_name_original="Saeki" gender="2" birthday="1977-02-16" deathday="" tmdb_id="58664" imdb_id="nm0755725" wikidata_id="Q2399407" creator="9551" />
 		<person guid="82115ff2-7ec4-4452-a108-3c5eaf5bdb40" first_name="Ian" last_name="Beerenhoelz" first_name_original="Ike" last_name_original="Barinholtz" gender="1" birthday="1977-02-18" deathday="" tmdb_id="198150" imdb_id="nm0054697" wikidata_id="Q739062" creator="9551" />
 		<person guid="bfcd6b32-59eb-4248-ab08-f1d2644a26b4" first_name="J" last_name="Blakeman" first_name_original="J" last_name_original="Blakeson" gender="1" birthday="1977-03-02" deathday="" tmdb_id="111588" imdb_id="nm2128335" wikidata_id="Q16028575" creator="9551" />
-		<person guid="54d2c488-166f-4bb4-b958-a2358721b8be" first_name="John" last_name="Van Der Brook" first_name_original="James" last_name_original="Van Der Beek" gender="1" birthday="1977-03-08" deathday="" tmdb_id="19210" imdb_id="nm0004735" wikidata_id="Q313392" creator="9551" />
+		<person guid="54d2c488-166f-4bb4-b958-a2358721b8be" first_name="John" last_name="Van Der Brook" first_name_original="James" last_name_original="Van Der Beek" gender="1" birthday="1977-03-08" deathday="2026-02-11" tmdb_id="19210" imdb_id="nm0004735" wikidata_id="Q313392" creator="9551" />
 		<person guid="6d7bd361-6a59-4c83-b7f2-8524e22f2a01" first_name="Brea" last_name="Toerner" first_name_original="Bree" last_name_original="Turner" gender="2" birthday="1977-03-10" deathday="" tmdb_id="62065" imdb_id="nm0877430" wikidata_id="Q242206" creator="9551" />
 		<person guid="3b058b28-ffa6-4ca0-a510-8125fccdea23" first_name="Bryan" last_name="Tea" first_name_original="Brian" last_name_original="Tee" gender="1" birthday="1977-03-15" deathday="" tmdb_id="116278" imdb_id="nm0974575" wikidata_id="Q913132" creator="9551" />
 		<person guid="d80cd864-01dc-4812-b3f0-08148adf3c18" first_name="Damian" last_name="Epilosa" first_name_original="Daniel" last_name_original="Espinosa" gender="1" birthday="1977-03-23" deathday="" tmdb_id="125738" imdb_id="nm1174251" wikidata_id="Q977624" creator="9551" />
