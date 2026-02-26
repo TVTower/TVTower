@@ -269,6 +269,15 @@ Type TPersist
 		End If
 
 		Local fieldType:TTypeId = f.TypeId()
+
+		'Ronny: inform someone about this specific field?
+		If progressCallback
+			Local metaProgress:String = f.MetaData("progress")
+			If metaProgress
+				progressCallback(metaProgress, f.Name())
+			EndIf
+		EndIf
+
 		Local fieldNode:TxmlNode = CreateSerializedFieldNode(f, node)
 
 		Local t:String
@@ -594,9 +603,11 @@ Type TPersist
 		'Ronny: skip loading elements having "nosave" metadata
 		If objType.MetaData("nosave") And Not objType.MetaData("doload") Then Return Null
 		'specific type interest?
-		Local metaProgress:String = objType.MetaData("progress")
-		If metaProgress and progressCallback
-			progressCallback(metaProgress, objType.Name())
+		If progressCallback
+			Local metaProgress:String = objType.MetaData("progress")
+			If metaProgress
+				progressCallback(metaProgress, objType.Name())
+			EndIf
 		EndIf
 
 
@@ -764,9 +775,11 @@ Type TPersist
 					If fieldObj.MetaData("nosave") And Not fieldObj.MetaData("doload") Then Continue
 
 					'Ronny: inform someone about this specific field?
-					Local metaProgress:String = fieldObj.MetaData("progress")
-					If metaProgress and progressCallback
-						progressCallback(metaProgress, fieldName)
+					If progressCallback
+						Local metaProgress:String = fieldObj.MetaData("progress")
+						If metaProgress
+							progressCallback(metaProgress, fieldName)
+						EndIf
 					EndIf
 
 					' Ronny: check if the current code knows the stored

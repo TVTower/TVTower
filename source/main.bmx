@@ -3049,16 +3049,26 @@ Rem
 	End Function
 
 
-	Function OnPersistProgressCallback:Int(progress:String, userData:Object)
+	Function OnPersistLoadProgressCallback:Int(progress:String, userData:Object)
+		OnPersistProgress(True, String(userData), Int(progress))
+	End Function
+
+
+	Function OnPersistSaveProgressCallback:Int(progress:String, userData:Object)
+		OnPersistProgress(False, String(userData), Int(progress))
+	End Function
+	
+
+	Function OnPersistProgress:Int(load:Int = True, value:String, progress:Int)
 		'TODO: we could localize / extend the text information depending on the "keys" here
 		'-> _programmeDataCollection => "Programme collection" etc
 		'
 		'alternatively a second MetaTag could provide a label-key or label (not localized)
 		
-		local niceLabel:String = String(userData)
-		If niceLabel and niceLabel[0] = Asc("_") Then niceLabel = niceLabel[1..]
+		local niceValue:String = value
+		If niceValue and niceValue[0] = Asc("_") Then niceValue = niceValue[1..]
 
-		UpdateProgressWindow(True, niceLabel, Int(progress), True)
+		UpdateProgressWindow(load, niceValue, progress, True)
 	End Function
 
 
@@ -3132,7 +3142,7 @@ Rem
 
 		Local loadingStart:Int = MilliSecs()
 
-		persist.progressCallback = OnPersistProgressCallback
+		persist.progressCallback = OnPersistLoadProgressCallback
 
 		'savegame deserialization creates new TGameObjects - and thus
 		'increases the ID count!
@@ -3294,9 +3304,8 @@ endrem
 		Local event:TEventBase = TEventBase.Create(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveURI))
 		event.Trigger()
 		if event.IsVeto()
-'			saveGame.UpdateProgressWindow(False, "Saving aborted (timeout?).")
-			'close message window
-			If messageWindow Then messageWindow.Close()
+			CloseProgressWindow()
+
 			Local reason:String = event.GetData().GetString("vetoReason")
 			if reason then reason = "|b|Reason:|/b| " + reason +"~n"
 			TError.Create("Failed to save game", reason + "|i|Might help to wait a moment and then try again.|/i|", False)
@@ -3320,11 +3329,11 @@ endrem
 		'a bit processing time (formatting) and on whitespace
 		If GameConfig.compressSavegames Then TPersist.format = False
 
-		?debug
 		saveGame.UpdateProgressWindow(False, "Serializing data to savegame file.", 0)
-		?
+
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		p.serializer = New TSavegameSerializer
+		p.progressCallback = OnPersistSaveProgressCallback
 
 		If GameConfig.compressSavegames
 			'compress the TStream of XML-Data into an archive and save it
