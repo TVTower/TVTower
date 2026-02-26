@@ -182,7 +182,7 @@
 				<gerd>${.person:"04fac459-e798-452e-b30a-436ad144a2f4":"firstname"}</gerd>
 				<schoenfelder>${.person:"04fac459-e798-452e-b30a-436ad144a2f4":"lastname"}</schoenfelder>
 			</variables>
-			<data genre="5" price="0.4" quality_min="50" quality_max="70" fictional="0" flags="2" happen_time="5,1984,1985,12,5,1,30" /> <!-- actual date: 1985-02-13 | previously set as fictional but the reopening with an opera did happen in 1985, though spoof names very far off -->
+			<data genre="5" price="0.4" quality_min="50" quality_max="70" fictional="0" flags="2" happen_time="5,1984,1985,12,5,1,30" /> <!-- actual date: 1985-02-13 | previously set as fictional but the reopening with an opera did happen in 1985, though spoof names were very far off -->
 		</news>
 
 		<news guid="87930735-e504-41d3-b648-b2c20875626f" type="0" creator="8936" created_by="jorgaeff" comment="https://en.wikipedia.org/wiki/World_Chess_Championship_1984%E2%80%931985 | duplicate, first one wins | https://en.wikipedia.org/wiki/Anatoly_Karpov | https://en.wikipedia.org/wiki/Garry_Kasparov">
@@ -4259,7 +4259,7 @@
 		</news>
 		<news guid="75e966f2-929d-479d-b24a-9ef2fcbf529c" thread_guid="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
-				<de>Start der Shuttles in in Kasachstan</de>
+				<de>Start der Shuttles in Kasachstan</de>
 				<en>Launch of the shuttles in Kazakhstan</en>
 				<pl>Start wahadłowców w Kazachstanie</pl>
 			</title>
@@ -10637,9 +10637,9 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		</news>
 		<news guid="69f29b25-f989-440b-a697-220fc9bc8712" type="2" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="discord/vicusfeli">
 			<title>
-				<de>Fotoshooting mal anders</de>
-				<en>Photo shoot, but differently</en>
-				<pl>Sesja zdjęciowa, ale jakaś inna</pl>
+				<de>${actress}: Fotoshooting mal anders</de>
+				<en>${actress}: Photo shoot, but differently</en>
+				<pl>${actress}: Sesja zdjęciowa, ale jakaś inna</pl>
 			</title>
 			<description>
 				<de>Die wegen Alkohol am Steuer festgenommene Schauspielerin ${actress} hat sich mit Gefängnisfotografen angelegt. Angeblich würde sie in schlechtem Licht erscheinen.</de>

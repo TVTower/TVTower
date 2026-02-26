@@ -7610,7 +7610,7 @@
 				<spielberg>${.person:"95bfcae9-e542-49e8-9b69-a4a77e4cc42c":"lastname"}</spielberg>
 				<disney>${.person:"c19a3126-bdef-42d8-9c1a-ac8224563052":"lastname"}</disney>
 				<content_csv>
-					<de>${georgelucas}: Ewok-City;${georgelucas} will eine Ewok-Freizeitstadt in Kalifornien eröffnen. „Es wird besser als ${disney}land“, sagte er. Gerüchte besagen, dass alle Mitarbeiter Kostüme tragen müssen.|
+					<de>${georgelucas}: Ewok-City;${georgelucas} will eine Ewok-Freizeitstadt in Kalifornien eröffnen. „Es wird besser als ${disney}land“, sagte er. Gerüchten zufolge müssen alle Mitarbeiter Kostüme tragen.|
 						${spielberg} plant Dinosaurier-Zoo;${steven} ${spielberg} kündigte an, an der Klonung von Dinosauriern zu arbeiten, um seinen Traum eines Dino-Parks Realität werden zu lassen. „Wissenschaft inspiriert Kunst und umgekehrt“, sagte er. PETA protestiert.|
 						${spielberg} dreht mit Dinosauriern;${steven} ${spielberg} kündigte an, demnächst mit echten Dinosauriern zu drehen. „Wir klonen sie für die Kunst“, sagte er. PETA und die Wissenschaft sind entsetzt.|
 						${spielberg}: Riesenhai-Farm;${steven} ${spielberg} plant eine Farm für riesige Haie. „Das ist kein Film, das ist die Zukunft“, sagte er. Ozeanologen protestieren.
