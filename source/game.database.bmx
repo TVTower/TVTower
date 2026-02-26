@@ -233,7 +233,6 @@ Type TDatabaseLoader
 		If URICount < fileURIs.length 
 			fileURIs = fileURIs[.. URICount]
 		EndIf
-		print fileURIs.length + " vs " + rawFileURIs.length  + "  uricount = "+ uricount
 		
 		'inform others: startingToLoad x files from directory
 		TriggerBaseEvent(GameEventKeys.Database_OnLoadfiles, New TData.Add("files", fileURIs).Add("mode", "directory"), Null, self)

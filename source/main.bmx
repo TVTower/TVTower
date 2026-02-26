@@ -2308,7 +2308,7 @@ Type TSaveGame Extends TGameState
 		If messageWindow Then messageWindow.Remove()
 
 		'create a new one
-		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400, 200), "SYSTEM")
+		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(450, 200), "SYSTEM")
 		messageWindow.guiCaptionTextBox.SetFont(headerFont)
 		messageWindow._defaultValueColor = TColor.clBlack.copy()
 		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
@@ -4035,7 +4035,9 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	Field SendGameReadyTimer:Long = 0
 	Field StartMultiplayerSyncStarted:Long = 0
 	Field messageWindow:TGUIGameModalWindow
+	Field actionLogMaxLines:Int = 7
 	Field actionLog:String[]
+	Field actionLogState:String[]
 	Field prepareProgress:Int = 0
 	Field prepareStepProgress:Float = 0
 	Field prepareStep:Int = 0
@@ -4095,11 +4097,19 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnPrepareNewGameStep, OnPrepareNewGameStep) ]
 			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoadFiles, OnDatabaseLoadFiles) ]
 			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoad, OnDatabaseLoad) ]
-			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoad, OnDatabaseBeginLoad) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnBeginLoad, OnDatabaseBeginLoad) ]
 
 			_registeredEvents = True
 		endif
 	End Method
+	
+	
+	Function MidTruncString:String(s:String, maxLength:Int = 40)
+		If s.length > maxLength
+			Return s[..(maxLength/2 - 5)] + "..." + s[(s.length - maxLength/2) ..]
+		EndIf
+		Return S
+	End Function
 
 
 	Function OnDatabaseBeginLoad:int( triggerEvent:TEventBase )
@@ -4108,9 +4118,13 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
 		Local fileURI:String = triggerEvent.GetData().GetString("fileURI")
-		screen.actionLog :+ ["Loading DB: " + fileURI]
-		If screen.actionLog.length > 5
-			screen.actionLog = screen.actionLog[screen.actionLog.length-5 ..]
+		Local message:String = "DB: " + MidTruncString(fileURI, 45)
+
+		screen.actionLog :+ [message]
+		screen.actionLogState :+ ["Loading"]
+		If screen.actionLog.length > screen.actionLogMaxLines
+			screen.actionLog = screen.actionLog[screen.actionLog.length - screen.actionLogMaxLines ..]
+			screen.actionLogState = screen.actionLogState[screen.actionLogState.length - screen.actionLogMaxLines ..]
 		EndIf 
 
 		'enforce redrawing the screen
@@ -4153,9 +4167,25 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
 		Local fileURI:String = triggerEvent.GetData().GetString("fileURI")
-		screen.actionLog :+ ["Loaded DB: " + fileURI]
-		If screen.actionLog.length > 5
-			screen.actionLog = screen.actionLog[screen.actionLog.length-5 ..]
+
+		'replace exiting "Loading" if still in there
+		Local message:String = "DB: " + MidTruncString(fileURI, 45)
+		Local updatedState:Int
+		For local i:Int = 0 until screen.actionLog.length
+			If screen.actionLog[i] = message
+				screen.actionLogState[i] = "OK"
+				updatedState = True
+				exit
+			EndIf
+		Next
+		If not updatedState
+			screen.actionLog :+ [message]
+			screen.actionLogState :+ ["OK"]
+		EndIf
+		
+		If screen.actionLog.length > screen.actionLogMaxLines
+			screen.actionLog = screen.actionLog[screen.actionLog.length - screen.actionLogMaxLines ..]
+			screen.actionLogState = screen.actionLogState[screen.actionLogState.length - screen.actionLogMaxLines ..]
 		EndIf 
 		screen.prepareStepProgress :+ 100.0 * (1.0 / screen.dbFilesToLoadInStep)
 
@@ -4193,6 +4223,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			messageDY :+ GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+ "...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black).y
 			If actionLog.length > 0
 				For local i:Int = 0 until actionLog.length
+					GetBitmapFontManager().baseFont.DrawBox(actionLogState[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_RIGHT_TOP, new SColor8(0,0,0, 150))
 					messageDY :+ GetBitmapFontManager().baseFont.DrawBox(actionLog[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_LEFT_TOP, SColor8.Black).y
 					'avoid drawing too much
 					if messageDY + 20 > messageRect.GetH() Then Exit
