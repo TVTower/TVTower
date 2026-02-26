@@ -2399,7 +2399,7 @@ Type TSaveGame Extends TGameState
 		
 		'progress bar
 		Local barX:Int = Int(messageRect.GetX())
-		Local barY:Int = Int(messageRect.GetY() + messageRect.GetH() + 15)
+		Local barY:Int = Int(messageRect.GetY() + messageRect.GetH() + 20)
 		Local oldColor:SColor8; GetColor(oldColor)
 		Local outlineColor:SColor8 = New SColor8(120, 120, 150, Byte(0.5*255))
 		Local bgFillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.2*255))
@@ -2407,22 +2407,12 @@ Type TSaveGame Extends TGameState
 		Local percentageTextColor:SColor8 = New SColor8(0, 0, 0, Byte(0.5*255))
 		
 		Local totalProgress:Float = progress
-		Local subProgress:Float = -1
 		'total progress
 		TFunctions.DrawOutlineRect(barX, barY, Int(messageRect.GetW()), 14, outlineColor, bgFillColor)
 		SetColor(fillColor)
 		DrawRect(barX + 1, barY + 1, Int((messageRect.GetW() - 2) * totalProgress/100.0), 14 - 2)
 		SetColor(oldColor)
 		GetBitmapFontManager().baseFont.DrawBox(Int(totalProgress) + " %", barX, barY - 3, messageRect.GetW(), 20, sALIGN_CENTER_CENTER, percentageTextColor)
-			
-		'step progress
-		If subProgress >= 0
-			TFunctions.DrawOutlineRect(barX, barY + 17, Int(messageRect.GetW()), 12, outlineColor, bgFillColor)
-			SetColor(fillColor)
-			DrawRect(barX + 1, barY + 17 + 1, Int((messageRect.GetW() - 2) * Min(1.0, subProgress/100.0)), 12 - 2)
-			SetColor(oldColor)
-			GetBitmapFontManager().baseFont.DrawBox(Int(subProgress) + " %", barX, barY + 17 - 2, messageRect.GetW(), 17, sALIGN_CENTER_CENTER, percentageTextColor)
-		EndIf
 			
 		SetAlpha oldAlpha
 
@@ -4148,8 +4138,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	Field actionLogMaxLines:Int = 7
 	Field actionLog:String[]
 	Field actionLogState:String[]
-	Field prepareProgress:Int = 0
-	Field prepareStepProgress:Float = 0
+	Field prepareProgress:Float = 0
+	Field prepareStepSize:Int = 0 'how much will a step move forward after finish
 	Field prepareStep:Int = 0
 	Field dbFilesLoadedInStep:Int = 0
 	Field dbFilesToLoadInStep:Int = 0
@@ -4242,7 +4232,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 		screen.prepareProgress = triggerEvent.GetData().GetInt("percentage")
 		screen.prepareStep = triggerEvent.GetData().GetInt("step")
-		screen.prepareStepProgress = 0.0
+		screen.prepareStepSize = triggerEvent.GetData().GetInt("percentageStepSize")
 
 		'enforce redrawing the screen
 		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
@@ -4287,8 +4277,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If screen.actionLog.length > screen.actionLogMaxLines
 			screen.actionLog = screen.actionLog[screen.actionLog.length - screen.actionLogMaxLines ..]
 			screen.actionLogState = screen.actionLogState[screen.actionLogState.length - screen.actionLogMaxLines ..]
-		EndIf 
-		screen.prepareStepProgress :+ 100.0 * (1.0 / screen.dbFilesToLoadInStep)
+		EndIf
+		screen.prepareProgress :+ screen.prepareStepSize * (1.0 / screen.dbFilesToLoadInStep)
 
 		'enforce redrawing the screen
 		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
@@ -4332,30 +4322,19 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			EndIf
 			
 			Local barX:Int = Int(messageRect.GetX())
-			Local barY:Int = Int(messageRect.GetY() + messageRect.GetH() + 15)
+			Local barY:Int = Int(messageRect.GetY() + messageRect.GetH() + 20)
 			Local oldColor:SColor8; GetColor(oldColor)
 			Local outlineColor:SColor8 = New SColor8(120, 120, 150, Byte(0.5*255))
 			Local bgFillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.2*255))
 			Local fillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.9*255))
 			Local percentageTextColor:SColor8 = New SColor8(0, 0, 0, Byte(0.5*255))
+			
 			'total progress
 			TFunctions.DrawOutlineRect(barX, barY, Int(messageRect.GetW()), 14, outlineColor, bgFillColor)
 			SetColor(fillColor)
 			DrawRect(barX + 1, barY + 1, Int((messageRect.GetW() - 2) * prepareProgress/100.0), 14 - 2)
 			SetColor(oldColor)
-			GetBitmapFontManager().baseFont.DrawBox(self.prepareProgress + " %", barX, barY - 3, messageRect.GetW(), 20, sALIGN_CENTER_CENTER, percentageTextColor)
-			
-
-			'step progress
-			if prepareStepProgress > 0
-				TFunctions.DrawOutlineRect(barX, barY + 17, Int(messageRect.GetW()), 12, outlineColor, bgFillColor)
-				SetColor(fillColor)
-				DrawRect(barX + 1, barY + 17 + 1, Int((messageRect.GetW() - 2) * Min(1.0, prepareStepProgress/100.0)), 12 - 2)
-				SetColor(oldColor)
-			    GetBitmapFontManager().baseFont.DrawBox(Int(self.prepareStepProgress) + " %", barX, barY + 17 - 2, messageRect.GetW(), 17, sALIGN_CENTER_CENTER, percentageTextColor)
-			EndIf
-			
-'			self.prepareProgress+"%"
+			GetBitmapFontManager().baseFont.DrawBox(Int(self.prepareProgress) + " %", barX, barY - 3, messageRect.GetW(), 20, sALIGN_CENTER_CENTER, percentageTextColor)
 		EndIf
 		SetAlpha oldAlpha
 		

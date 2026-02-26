@@ -1158,24 +1158,24 @@ endrem
 
 	Method PrepareNewGame:Int()
 		TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGame, New TData.AddNumber("startYear", userStartYear), Null, self)
-		Local stepsData:TData = New TData.AddNumber("step", 0)
-		Local percentageComplete:Int = 0
+		Local stepData:TData = New TData
 		
 		'=== SET DEFAULTS ===
+		EmitPrepareStepEvent(0, 2, stepData)
 		SetStartYear(userStartYear)
-		percentageComplete = 2; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
+		EmitPrepareStepEvent(2, 5, stepData)
 		Local showStartTips:Int = False
 		If showStartTips Then CreateStartTips()
-		percentageComplete = 5; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== LOAD DATABASES ===
 		'load all movies, news, series and ad-contracts
 		'do this here, as saved games already contain the database
+		EmitPrepareStepEvent(5, 70, stepData)
 		TLogger.Log("Game.PrepareNewGame()", "loading database", LOG_DEBUG)
 		LoadDatabase(userDBDir, True)
 		'load map specific databases
@@ -1184,11 +1184,11 @@ endrem
 		'maybe something cached processed-title/description by calling
 		'GetTitle() (eg. in a logfile)
 		GetProgrammeDataCollection().RemoveReplacedPlaceholderCaches()
-		percentageComplete = 70; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 		'=== FIGURES ===
 		'create/move other figures of the building
 		'all of them are created at "offscreen position"
+		EmitPrepareStepEvent(70, 75, stepData)
 		Local fig:TFigure = GetFigureCollection().GetByName("Hausmeister")
 		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GetBuildingBase().figureOffscreenX, 0, 65)
 		fig.MoveToOffscreen()
@@ -1234,41 +1234,41 @@ endrem
 
 			marshals[i] = fig
 		Next
-		percentageComplete = 75; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== STATION MAP ===
+		EmitPrepareStepEvent(75, 85, stepData)
 		GetStationMapCollection().Initialize()
 		'set marker for initializing antenna radius on new game
 		GetStationMapCollection().antennaStationRadius = TStationMapCollection.ANTENNA_RADIUS_NOT_INITIALIZED
 		'load the used map
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
-		percentageComplete = 85; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== PLAYERS 1/2 ===
 		'first create basics (player, finances, stationmap)
 		'this allows other elements to do things
 		'(eg. newsagency handing out news)
+		EmitPrepareStepEvent(85, 87, stepData)
 		For Local playerID:Int = 1 To 4
 			PreparePlayerStep1(playerID, False)
 		Next
-		percentageComplete = 87; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== CUSTOM PRODUCTION ===
 		'ensure we have at least 3 persons per job available,
 		'and when creating some, prefer the current country
+		EmitPrepareStepEvent(87, 89, stepData)
 		local addedCelebs:Int = EnsureEnoughCastableCelebritiesPerJob(3, GetStationMapCollection().GetMapISO3166Code())
 		if addedCelebs
 			TLogger.Log("Game.PrepareNewGame()", "Added " + addedCelebs + " additional celebrity persons for custom production.", LOG_DEBUG)
 		else
 			TLogger.Log("Game.PrepareNewGame()", "No need to add additional celebrity persons for custom production. Found enough.", LOG_DEBUG)
 		endif
-		percentageComplete = 89; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== MOVIE AGENCY ===
+		EmitPrepareStepEvent(89, 91, stepData)
 		TLogger.Log("Game.PrepareNewGame()", "initializing movie agency", LOG_DEBUG)
 		'shuffle programme licences offer lists - so each game starts 
 		'with a varying set of licences
@@ -1281,10 +1281,10 @@ endrem
 		For Local i:Int = 0 To 7
 			New TAuctionProgrammeBlocks.Create(i, Null)
 		Next
-		percentageComplete = 91; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== NEWS AGENCY ===
+		EmitPrepareStepEvent(91, 95, stepData)
 		TLogger.Log("Game.PrepareNewGame()", "initializing news agency", LOG_DEBUG)
 		
 		GetNewsEventCollection().ScheduleTimedInitialNews()
@@ -1322,13 +1322,13 @@ endrem
 		For Local i:Int = 0 Until TVTNewsGenre.count
 			GetNewsAgency().SetNextEventTime(i, GetWorldTime().GetTimeGone() + RandRange(5, 90) * TWorldTime.MINUTELENGTH)
 		Next
-		percentageComplete = 95; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== PLAYERS 2/2 ===
 		'then prepare plan, news abonnements, ...
 		'this is needed because adcontracts use average reach of
 		'stationmaps on sign - which needs 4 stationmaps to be "set up"
+		EmitPrepareStepEvent(95, 97, stepData)
 		For Local playerID:Int = 1 To 4
 			PreparePlayerStep2(playerID)
 		Next
@@ -1337,10 +1337,10 @@ endrem
 		For Local playerID:Int = 1 To 4
 			StartPlayer(playerID)
 		Next
-		percentageComplete = 97; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
 
 
 		'=== CREATE TIMED NEWSEVENTS ===
+		EmitPrepareStepEvent(97, 100, stepData)
 		'Creates all newsevents with fixed times in the future
 		GetNewsAgency().CreateTimedNewsEvents()
 		
@@ -1356,7 +1356,18 @@ endrem
 		'switch active TV channel to player
 		GetInGameInterface().ShowChannel = GetPlayerCollection().playerID
 
-		percentageComplete = 100; TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepsData.AddNumber("step", stepsData.GetInt("steps") + 1).AddNumber("percentage", percentageComplete), Null, self)
+
+		Function EmitPrepareStepEvent(percentageStart:Int, percentageNext:Int, stepData:TData, userData:Object = Null)
+			'modify data
+			stepData.AddNumber("step", stepData.GetInt("steps") + 1)
+			stepData.Add("userData", userData)
+			stepData.AddNumber("percentageStepSize", percentageNext - percentageStart)
+
+			TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepData)
+
+			'after trigger "finished percentage
+			stepData.AddNumber("percentage", percentageStart)
+		End Function
 	End Method
 
 
