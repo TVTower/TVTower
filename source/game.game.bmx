@@ -1157,12 +1157,17 @@ endrem
 
 
 	Method PrepareNewGame:Int()
+		TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGame, New TData.AddNumber("startYear", userStartYear), Null, self)
+		Local stepData:TData = New TData
+		
 		'=== SET DEFAULTS ===
+		EmitPrepareStepEvent(0, 2, stepData)
 		SetStartYear(userStartYear)
 
 
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
+		EmitPrepareStepEvent(2, 5, stepData)
 		Local showStartTips:Int = False
 		If showStartTips Then CreateStartTips()
 
@@ -1170,6 +1175,7 @@ endrem
 		'=== LOAD DATABASES ===
 		'load all movies, news, series and ad-contracts
 		'do this here, as saved games already contain the database
+		EmitPrepareStepEvent(5, 70, stepData)
 		TLogger.Log("Game.PrepareNewGame()", "loading database", LOG_DEBUG)
 		LoadDatabase(userDBDir, True)
 		'load map specific databases
@@ -1182,6 +1188,7 @@ endrem
 		'=== FIGURES ===
 		'create/move other figures of the building
 		'all of them are created at "offscreen position"
+		EmitPrepareStepEvent(70, 75, stepData)
 		Local fig:TFigure = GetFigureCollection().GetByName("Hausmeister")
 		If Not fig Then fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GetBuildingBase().figureOffscreenX, 0, 65)
 		fig.MoveToOffscreen()
@@ -1230,6 +1237,7 @@ endrem
 
 
 		'=== STATION MAP ===
+		EmitPrepareStepEvent(75, 85, stepData)
 		GetStationMapCollection().Initialize()
 		'set marker for initializing antenna radius on new game
 		GetStationMapCollection().antennaStationRadius = TStationMapCollection.ANTENNA_RADIUS_NOT_INITIALIZED
@@ -1241,6 +1249,7 @@ endrem
 		'first create basics (player, finances, stationmap)
 		'this allows other elements to do things
 		'(eg. newsagency handing out news)
+		EmitPrepareStepEvent(85, 87, stepData)
 		For Local playerID:Int = 1 To 4
 			PreparePlayerStep1(playerID, False)
 		Next
@@ -1249,6 +1258,7 @@ endrem
 		'=== CUSTOM PRODUCTION ===
 		'ensure we have at least 3 persons per job available,
 		'and when creating some, prefer the current country
+		EmitPrepareStepEvent(87, 89, stepData)
 		local addedCelebs:Int = EnsureEnoughCastableCelebritiesPerJob(3, GetStationMapCollection().GetMapISO3166Code())
 		if addedCelebs
 			TLogger.Log("Game.PrepareNewGame()", "Added " + addedCelebs + " additional celebrity persons for custom production.", LOG_DEBUG)
@@ -1258,6 +1268,7 @@ endrem
 
 
 		'=== MOVIE AGENCY ===
+		EmitPrepareStepEvent(89, 91, stepData)
 		TLogger.Log("Game.PrepareNewGame()", "initializing movie agency", LOG_DEBUG)
 		'shuffle programme licences offer lists - so each game starts 
 		'with a varying set of licences
@@ -1273,6 +1284,7 @@ endrem
 
 
 		'=== NEWS AGENCY ===
+		EmitPrepareStepEvent(91, 95, stepData)
 		TLogger.Log("Game.PrepareNewGame()", "initializing news agency", LOG_DEBUG)
 		
 		GetNewsEventCollection().ScheduleTimedInitialNews()
@@ -1316,6 +1328,7 @@ endrem
 		'then prepare plan, news abonnements, ...
 		'this is needed because adcontracts use average reach of
 		'stationmaps on sign - which needs 4 stationmaps to be "set up"
+		EmitPrepareStepEvent(95, 97, stepData)
 		For Local playerID:Int = 1 To 4
 			PreparePlayerStep2(playerID)
 		Next
@@ -1327,6 +1340,7 @@ endrem
 
 
 		'=== CREATE TIMED NEWSEVENTS ===
+		EmitPrepareStepEvent(97, 100, stepData)
 		'Creates all newsevents with fixed times in the future
 		GetNewsAgency().CreateTimedNewsEvents()
 		
@@ -1341,6 +1355,19 @@ endrem
 
 		'switch active TV channel to player
 		GetInGameInterface().ShowChannel = GetPlayerCollection().playerID
+
+
+		Function EmitPrepareStepEvent(percentageStart:Int, percentageNext:Int, stepData:TData, userData:Object = Null)
+			'modify data
+			stepData.AddNumber("step", stepData.GetInt("steps") + 1)
+			stepData.Add("userData", userData)
+			stepData.AddNumber("percentageStepSize", percentageNext - percentageStart)
+
+			TriggerBaseEvent(GameEventKeys.Game_OnPrepareNewGameStep, stepData)
+
+			'after trigger "finished percentage
+			stepData.AddNumber("percentage", percentageStart)
+		End Function
 	End Method
 
 

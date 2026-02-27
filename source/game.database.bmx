@@ -219,18 +219,31 @@ Type TDatabaseLoader
 		dirTree.AddFile(dbDirectory+"/database_people.xml", True) 'first
 
 
-		Local fileURIs:String[] = dirTree.GetFiles()
-		Local validURIs:Int = 0
+		Local rawFileURIs:String[] = dirTree.GetFiles()
+		Local fileURIs:String[rawFileURIs.length]
+		Local URICount:Int
 		'loop over all filenames
-		For Local fileURI:String = EachIn fileURIs
+		For Local i:Int = 0 until rawFileURIs.length
 			'skip non-existent files
-			If FileType(fileURI) <> 1 Then Continue
-			validURIs :+ 1
+			If FileType(rawFileURIs[i]) <> FILETYPE_FILE Then Continue 
+
+			fileURIs[URICount] = rawFileURIs[i]
+			URICount :+ 1
+		Next
+		If URICount < fileURIs.length 
+			fileURIs = fileURIs[.. URICount]
+		EndIf
+		
+		'inform others: startingToLoad x files from directory
+		TriggerBaseEvent(GameEventKeys.Database_OnLoadfiles, New TData.Add("files", fileURIs).Add("mode", "directory"), Null, self)
+
+		For Local fileURI:String = EachIn fileURIs
 			Load(fileURI)
 		Next
 
-		If required Or validURIs > 0
-			TLogger.Log("TDatabase.Load()", "Loaded from "+validURIs + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalPersonsBaseCount+"/"+totalPersonsCount +" basePersons/persons, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates and "+ totalAchievementCount+" achievements. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
+
+		If required Or fileURIs.length > 0
+			TLogger.Log("TDatabase.Load()", "Loaded from "+ fileURIs.length + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalPersonsBaseCount+"/"+totalPersonsCount +" basePersons/persons, " + totalContractsCount + " advertisements, " + totalNewsCount + " news, " + totalProgrammeRolesCount + " roles in scripts, " + totalScriptTemplatesCount + " script templates and "+ totalAchievementCount+" achievements. Loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)
 			Local newsGenreString:String = "initial news templates (unique/reusable): "
 			For Local i:Int = 0 Until TVTNewsGenre.count
 				newsGenreString :+ (TVTNewsGenre.GetAsString(i) + " ("+totalNewsGenreCount[i][0]+"/"+totalNewsGenreCount[i][1]+") ")
@@ -364,6 +377,10 @@ Type TDatabaseLoader
 
 	Method Load(fileURI:String)
 		config.AddString("currentFileURI", fileURI)
+
+		'inform others: done with file
+		TriggerBaseEvent(GameEventKeys.Database_OnBeginLoad, New TData.Add("fileURI", fileURI ), Null, self)
+
 		'register our own mxml error printer:
 		XMLSetErrorCallback(MXMLErrorCallback)
 		
@@ -400,7 +417,10 @@ Type TDatabaseLoader
 				Default	TLogger.Log("TDatabase.Load()", "CANNOT LOAD DB ~q" + fileURI + "~q (version "+version+") - UNHANDLED VERSION." , LOG_LOADING)
 			End Select
 		EndIf
-		
+
+		'inform others: done with file
+		TriggerBaseEvent(GameEventKeys.Database_OnLoad, New TData.Add("fileURI", fileURI ), Null, self)
+
 		'de-register our own mxml error printer:
 		XMLSetErrorCallback(null)
 	End Method
@@ -2630,6 +2650,9 @@ Function LoadDB(files:String[] = Null, baseURI:String="", loader:TDatabaseLoader
 	If files = Null
 		loader.LoadDir(baseURI + "res/database/Default")
 	Else
+		'inform others: startingToLoad x files from directory
+		TriggerBaseEvent(GameEventKeys.Database_OnLoadfiles, New TData.Add("files", files).Add("mode", "manual"), Null)
+
 		For Local f:String = EachIn files
 			loader.Load(baseURI + "res/database/Default/"+f)
 		Next

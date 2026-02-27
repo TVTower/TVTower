@@ -1767,69 +1767,69 @@ End Type
 'just an object holding all data which has to get saved
 'it is kind of an "DataCollectionCollection" ;D
 Type TGameState
-	Field _gameSummary:TData = Null
-	Field _Game:TGame = Null
-	Field _BuildingTime:TBuildingTime = Null
-	Field _WorldTime:TWorldTime = Null
-	Field _WorldWeather:TWorldWeather = Null
-	Field _GameRules:TGamerules = Null
-	Field _GameConfig:TGameConfig = Null
-	Field _Betty:TBetty = Null
-	Field _AwardCollection:TAwardCollection = Null
-	Field _NewsEventSportCollection:TNewsEventSportCollection = Null
+	Field _gameSummary:TData = Null                                     {progress =  0}
+	Field _Game:TGame = Null                                            {progress =  1}
+	Field _BuildingTime:TBuildingTime = Null                            {progress =  1}
+	Field _WorldTime:TWorldTime = Null                                  {progress =  1}
+	Field _WorldWeather:TWorldWeather = Null                            {progress =  1}
+	Field _GameRules:TGamerules = Null                                  {progress =  1}
+	Field _GameConfig:TGameConfig = Null                                {progress =  2}
+	Field _Betty:TBetty = Null                                          {progress =  2}
+	Field _AwardCollection:TAwardCollection = Null                      {progress =  2}
+	Field _NewsEventSportCollection:TNewsEventSportCollection = Null    {progress =  2}
 	
-	Field _GameModifierManager:TGameModifierManager = Null
-	Field _GameInformationCollection:TGameInformationCollection = Null
-	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null
-	Field _DatabaseLocalizer:TDatabaseLocalizer = Null
+	Field _GameModifierManager:TGameModifierManager = Null                  {progress = 3}
+	Field _GameInformationCollection:TGameInformationCollection = Null      {progress = 3}
+	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null    {progress = 6}
+	Field _DatabaseLocalizer:TDatabaseLocalizer = Null                      {progress = 6}
 
-	Field _AudienceManager:TAudienceManager = Null
-	Field _AdContractBaseCollection:TAdContractBaseCollection = Null
-	Field _AdContractCollection:TAdContractCollection = Null
+	Field _AudienceManager:TAudienceManager = Null                          {progress = 7}
+	Field _AdContractBaseCollection:TAdContractBaseCollection = Null        {progress = 10}
+	Field _AdContractCollection:TAdContractCollection = Null                {progress = 13}
 
-	Field _ScriptTemplateCollection:TScriptTemplateCollection = Null
-	Field _ScriptCollection:TScriptCollection = Null
-	Field _ProductionManager:TProductionManager = Null
-	Field _ProductionConceptCollection:TProductionConceptCollection = Null
-	Field _ProductionCompanyBaseCollection:TProductionCompanyBaseCollection = Null
-	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null
-	Field _ProgrammePersonBaseCollection:TPersonBaseCollection = Null
-	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
-	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null
-	Field _ProgrammeProducerCollection:TProgrammeProducerCollection = Null
+	Field _ScriptTemplateCollection:TScriptTemplateCollection = Null               {progress = 16}
+	Field _ScriptCollection:TScriptCollection = Null                               {progress = 20}
+	Field _ProductionManager:TProductionManager = Null                             {progress = 24}
+	Field _ProductionConceptCollection:TProductionConceptCollection = Null         {progress = 25}
+	Field _ProductionCompanyBaseCollection:TProductionCompanyBaseCollection = Null {progress = 26}
+	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null                 {progress = 27}
+	Field _ProgrammePersonBaseCollection:TPersonBaseCollection = Null              {progress = 30}
+	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null                 {progress = 35}
+	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null           {progress = 40}
+	Field _ProgrammeProducerCollection:TProgrammeProducerCollection = Null         {progress = 48}
 
-	Field _NewsEventTemplateCollection:TNewsEventTemplateCollection = Null
-	Field _NewsEventCollection:TNewsEventCollection = Null
-	Field _AchievementCollection:TAchievementCollection = Null
-	Field _ArchivedMessageCollection:TArchivedMessageCollection = Null
-	Field _FigureCollection:TFigureCollection = Null
-	Field _PlayerCollection:TPlayerCollection = Null
-	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null
-	Field _PlayerFinanceHistoryListCollection:TPlayerFinanceHistoryListCollection = Null
-	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = Null
-	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = Null
-	Field _PlayerBossCollection:TPlayerBossCollection = Null
-	Field _PlayerDifficultyCollection:TPlayerDifficultyCollection = Null
-	Field _PublicImageCollection:TPublicImageCollection = Null
-	Field _PressureGroupCollection:TPressureGroupCollection = Null
-	Field _EventManagerEvents:TList = Null
-	Field _PopularityManager:TPopularityManager = Null
-	Field _BroadcastManager:TBroadcastManager = Null
-	Field _DailyBroadcastStatisticCollection:TDailyBroadcastStatisticCollection = Null
-	Field _StationMapCollection:TStationMapCollection = Null
-	Field _Elevator:TElevator
-	Field _Building:TBuilding 'includes, sky, moon, ufo
-	Field _RoomBoard:TRoomBoard 'signs
-	Field _NewsAgency:TNewsAgency
-	Field _RoomAgency:TRoomAgency
-	Field _AuctionProgrammeBlocksList:TList
-	Field _RoomHandler_Studio:RoomHandler_Studio
-	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
-	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
-	Field _RoomHandler_ScriptAgency:RoomHandler_ScriptAgency
-	Field _RoomHandler_News:RoomHandler_News
-	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
-	Field _RoomBaseCollection:TRoomBaseCollection
+	Field _NewsEventTemplateCollection:TNewsEventTemplateCollection = Null         {progress = 50}
+	Field _NewsEventCollection:TNewsEventCollection = Null                         {progress = 55}
+	Field _AchievementCollection:TAchievementCollection = Null                     {progress = 60}
+	Field _ArchivedMessageCollection:TArchivedMessageCollection = Null             {progress = 61}
+	Field _FigureCollection:TFigureCollection = Null                               {progress = 63}
+	Field _PlayerCollection:TPlayerCollection = Null                               {progress = 65}
+	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null                            {progress = 67}
+	Field _PlayerFinanceHistoryListCollection:TPlayerFinanceHistoryListCollection = Null      {progress = 70}
+	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = Null                {progress = 73}
+	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = Null    {progress = 76}
+	Field _PlayerBossCollection:TPlayerBossCollection = Null                                  {progress = 79}
+	Field _PlayerDifficultyCollection:TPlayerDifficultyCollection = Null           {progress = 79}
+	Field _PublicImageCollection:TPublicImageCollection = Null                     {progress = 80}
+	Field _PressureGroupCollection:TPressureGroupCollection = Null                 {progress = 82}
+	Field _EventManagerEvents:TList = Null                                         {progress = 83}
+	Field _PopularityManager:TPopularityManager = Null                             {progress = 85}
+	Field _BroadcastManager:TBroadcastManager = Null                                    {progress = 88}
+	Field _DailyBroadcastStatisticCollection:TDailyBroadcastStatisticCollection = Null  {progress = 89}
+	Field _StationMapCollection:TStationMapCollection = Null                            {progress = 91}
+	Field _Elevator:TElevator                                           {progress = 93}
+	Field _Building:TBuilding                                           {progress = 94} 'includes, sky, moon, ufo
+	Field _RoomBoard:TRoomBoard                                         {progress = 94} 'signs
+	Field _NewsAgency:TNewsAgency                                       {progress = 95}
+	Field _RoomAgency:TRoomAgency                                       {progress = 95}
+	Field _AuctionProgrammeBlocksList:TList                             {progress = 96}
+	Field _RoomHandler_Studio:RoomHandler_Studio                        {progress = 96}
+	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency              {progress = 97}
+	Field _RoomHandler_AdAgency:RoomHandler_AdAgency                    {progress = 97}
+	Field _RoomHandler_ScriptAgency:RoomHandler_ScriptAgency            {progress = 98}
+	Field _RoomHandler_News:RoomHandler_News                            {progress = 98}
+	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection               {progress = 99}
+	Field _RoomBaseCollection:TRoomBaseCollection                       {progress = 99}
 	Field _PlayerColorList:TObjectList
 	Field _CurrentScreenName:String
 	Field _adAgencySortMode:Int
@@ -1844,7 +1844,7 @@ Type TGameState
 	Field _interface_ShowChannel:Int = 0
 	Field _interface_ChatWindowMode:Int = 1
 	Field _interface_ChatShowHideLocked:Int = 0
-	Field _aiBase_AiRunning:Int = False
+	Field _aiBase_AiRunning:Int = False                                 {progress = 100}
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -2173,7 +2173,6 @@ Type TSaveGame Extends TGameState
 	Const SAVEGAME_VERSION:int = 24
 	Const MIN_SAVEGAME_VERSION:Int = 23
 	Global messageWindow:TGUIModalWindow
-	Global messageWindowBackground:TImage
 	Global messageWindowLastUpdate:Long
 	Global messageWindowUpdatesSkipped:Int = 0
 	Global lastSaveTime:Long = 0 {nosave}
@@ -2181,6 +2180,11 @@ Type TSaveGame Extends TGameState
 
 	Global toSaveNow:Int = False {nosave}
 	Global toSaveUri:String {nosave}
+	
+	Global progressLog:String[] {nosave}
+	Global progressLogState:String[] {nosave}
+	Global progressLogMaxLines:Int = 7 {nosave}
+	Global progress:Int = 0 {nosave}
 
 	'override to do nothing
 	Method Initialize:Int()
@@ -2259,67 +2263,39 @@ Type TSaveGame Extends TGameState
 		'check if all data is available
 		Return True
 	End Method
+	
+	
+	Function AddToProgressLog(value:String)
+		If value
+			progressLog :+ [value]
+			progressLogState :+ [""]
 
-
-	Function UpdateMessage:Int(Load:Int=False, text:String="", progress:Float=0.0, forceUpdate:Int=False)
-		'skip update if called too often (as it is still FPS limited ... !)
-		If Not forceUpdate And Time.GetAppTimeGone() - messageWindowLastUpdate < 25 And messageWindowUpdatesSkipped < 5
-			messageWindowUpdatesSkipped :+ 1
-			Return False
-		Else
-			messageWindowUpdatesSkipped = 0
-			messageWindowLastUpdate = Time.GetAppTimeGone()
+			'cut log and only keep last x
+			If progressLog.length > progressLogMaxLines
+				progressLog = progressLog[progressLog.length - progressLogMaxLines ..]
+				progressLogState = progressLogState[progressLogState.length - progressLogMaxLines ..]
+			EndIf 
 		EndIf
-
-		If Not messageWindowBackground
-			messageWindowBackground = LoadImage(GetGraphicsManager().VirtualGrabPixmap())
-		EndIf
-
-		SetClsColor 0,0,0
-		'use graphicsmanager's cls as it resets virtual resolution first
-		GetGraphicsManager().Cls()
-		
-		'before drawing the full screen (which is 100% of the "real" 
-		'window dimension) we need to disable the virtual graphics area
-		'to disable any resizing
-		GetGraphicsManager().ResetVirtualGraphicsArea()
-		DrawImage(messageWindowBackground, 0,0)
-		GetGraphicsManager().SetupVirtualGraphicsArea()
-
-		If Load = 1
-			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), GetLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
-		ElseIf Load = 0
-			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), GetLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
-		Else
-			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), text )
-		EndIf
-
-		messageWindow.Update()
-		messageWindow.Draw()
-
-		Flip 0
 	End Function
-
-
-	Function ShowMessage:Int(Load:Int=False, text:String="", progress:Float=0.0)
-		'grab a fresh copy
-		messageWindowBackground = LoadImage(GetGraphicsManager().VirtualGrabPixmap())
-
+	
+	
+	Function ShowProgressWindow:Int(Load:Int=False)
 		If messageWindow Then messageWindow.Remove()
+		
+		'reset logs
+		progressLog = progressLog[.. 0]
+		progressLogState = progressLogState[.. 0]
+		progress = 0
 
 		'create a new one
-		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(400, 200), "SYSTEM")
+		messageWindow = New TGUIGameModalWindow.Create(New SVec2I(0,0), New SVec2I(450, 250), "SYSTEM")
 		messageWindow.guiCaptionTextBox.SetFont(headerFont)
 		messageWindow._defaultValueColor = TColor.clBlack.copy()
 		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
 		messageWindow.SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		messageWindow.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
-		'no buttons
+		'no buttons (use space for progress bar)
 		messageWindow.SetDialogueType(0)
-		'use a non-button-background
-		messageWindow.guiBackground.spriteBaseName = "gfx_gui_window"
-
-
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
 			messageWindow.darkenedArea = New TRectangle.Init(0,0,800,385)
@@ -2329,16 +2305,116 @@ Type TSaveGame Extends TGameState
 			messageWindow.screenArea = Null
 		EndIf
 
-		If Load
-			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
-		Else
-			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
+		messageWindow.Open()
+		
+		'render it out
+		UpdateProgressWindow(Load, "", 0, True)
+	End Function
+
+
+	Function CloseProgressWindow()
+		messageWindow.SetValue("Done.")
+		'close message window
+		If messageWindow Then messageWindow.Close()
+	End Function
+
+
+	Function UpdateProgressWindow:Int(Load:Int=False, addToLog:String="", newProgressValue:Int = -1000, forceUpdate:Int=False)
+		If addToLog
+			'mark previous as OK
+			if progressLogState.length > 0
+				progressLogState[progressLog.length - 1] = "OK"
+			EndIf
+
+			Local message:String = StringHelper.MidTruncString(addToLog, 45)
+			AddToProgressLog(message)
+		EndIf
+		
+		'set progress if provided
+		If newProgressValue <> -1000
+			progress = newProgressValue
 		EndIf
 
-		messageWindow.Open()
+
+		'=== RENDER / OUTPUT ===
+		
+		'skip update if called too often (as it is still FPS limited ... !)
+		If Not forceUpdate And Time.GetAppTimeGone() - messageWindowLastUpdate < 25 And messageWindowUpdatesSkipped < 5
+			messageWindowUpdatesSkipped :+ 1
+			Return False
+		Else
+			messageWindowUpdatesSkipped = 0
+			messageWindowLastUpdate = Time.GetAppTimeGone()
+		EndIf
+
+
+		GetGraphicsManager().UpdateWindowSize()
+		' something borks up an internal setting - just scaling ONE window
+		' dimension (so only width OR height) would slide the viewport
+		' over the image. This get+set of the virtual resolution fixes
+		' the issue (for now).
+		Local vpBackup:SRectI = GetGraphicsManager().DisableVirtualResolution()
+		GetGraphicsManager().EnableVirtualResolution(vpBackup)
+		If mainRenderImage
+			DrawImage(mainRenderImage, 0, 0)
+		Else
+			Cls()
+		EndIf
+
+		If Load = 1
+			messageWindow.SetCaptionAndValue(GetLocale("SAVEGAME_GETS_LOADED"), "")
+		Else
+			messageWindow.SetCaptionAndValue(GetLocale("SAVEGAME_GETS_CREATED"), "" )
+		EndIf
 
 		messageWindow.Update()
 		messageWindow.Draw()
+
+
+		'rect of the message window's content area
+		Local messageRect:TRectangle = messageWindow.GetContentScreenRect()
+		Local oldAlpha:Float = GetAlpha()
+		SetAlpha messageWindow.GetScreenAlpha()
+		Local messageDY:Int = 0
+		messageDY :+ GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PLEASE_BE_PATIENT") + "~n", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black).y
+		
+	
+		If progressLog.length > 0
+			For local i:Int = 0 until progressLog.length
+				If progressLogState[i] = ""
+					If Load = 1
+						GetBitmapFontManager().baseFont.DrawBox("Loading", messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_RIGHT_TOP, new SColor8(0,0,0, 150))
+					Else
+						GetBitmapFontManager().baseFont.DrawBox("Saving", messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_RIGHT_TOP, new SColor8(0,0,0, 150))
+					EndIf
+				Else
+					GetBitmapFontManager().baseFont.DrawBox(progressLogState[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_RIGHT_TOP, new SColor8(0,0,0, 150))
+				EndIf
+
+				messageDY :+ GetBitmapFontManager().baseFont.DrawBox(progressLog[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_LEFT_TOP, SColor8.Black).y
+				'avoid drawing too much
+				if messageDY + 20 > messageRect.GetH() Then Exit
+			Next
+		EndIf
+		
+		'progress bar
+		Local barX:Int = Int(messageRect.GetX())
+		Local barY:Int = Int(messageRect.GetY() + messageRect.GetH() + 20)
+		Local oldColor:SColor8; GetColor(oldColor)
+		Local outlineColor:SColor8 = New SColor8(120, 120, 150, Byte(0.5*255))
+		Local bgFillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.2*255))
+		Local fillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.9*255))
+		Local percentageTextColor:SColor8 = New SColor8(0, 0, 0, Byte(0.5*255))
+		
+		Local totalProgress:Float = progress
+		'total progress
+		TFunctions.DrawOutlineRect(barX, barY, Int(messageRect.GetW()), 14, outlineColor, bgFillColor)
+		SetColor(fillColor)
+		DrawRect(barX + 1, barY + 1, Int((messageRect.GetW() - 2) * totalProgress/100.0), 14 - 2)
+		SetColor(oldColor)
+		GetBitmapFontManager().baseFont.DrawBox(Int(totalProgress) + " %", barX, barY - 3, messageRect.GetW(), 20, sALIGN_CENTER_CENTER, percentageTextColor)
+			
+		SetAlpha oldAlpha
 
 		Flip 0
 	End Function
@@ -2963,6 +3039,29 @@ Rem
 	End Function
 
 
+	Function OnPersistLoadProgressCallback:Int(progress:String, userData:Object)
+		OnPersistProgress(True, String(userData), Int(progress))
+	End Function
+
+
+	Function OnPersistSaveProgressCallback:Int(progress:String, userData:Object)
+		OnPersistProgress(False, String(userData), Int(progress))
+	End Function
+	
+
+	Function OnPersistProgress:Int(load:Int = True, value:String, progress:Int)
+		'TODO: we could localize / extend the text information depending on the "keys" here
+		'-> _programmeDataCollection => "Programme collection" etc
+		'
+		'alternatively a second MetaTag could provide a label-key or label (not localized)
+		
+		local niceValue:String = value
+		If niceValue and niceValue[0] = Asc("_") Then niceValue = niceValue[1..]
+
+		UpdateProgressWindow(load, niceValue, progress, True)
+	End Function
+
+
 	'internal/private function
 	Function _LoadURI:Int(saveURI:String="savegame.xml", skipCompatibilityCheck:Int = False)
 		'stop ai of previous game if some was running
@@ -2970,7 +3069,7 @@ Rem
 			If GetPlayer(i) Then GetPlayer(i).StopAI()
 		Next
 
-		ShowMessage(True)
+		ShowProgressWindow(True)
 
 		Local savegameSummary:TData = GetGameSummary(saveURI)
 		if not savegameSummary then savegameSummary = new TData
@@ -2983,13 +3082,13 @@ Rem
 		If fileState < 0
 			if fileState = -1
 				TLogger.Log("Savegame.Load()", GetLocale("FILE_NOT_FOUND") + ": ~q"+saveURI+"~q.", LOG_SAVELOAD | LOG_ERROR)
-				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("FILE_NOT_FOUND") + ": ~q"+saveURI+"~q.", 0, True)
+				UpdateProgressWindow(2, "|b|ERROR:|/b|~n" + GetLocale("FILE_NOT_FOUND") + ": ~q"+saveURI+"~q.", 0, True)
 			elseif fileState = -2
 				TLogger.Log("Savegame.Load()", GetLocale("INVALID_SAVEGAME") + ": ~q"+saveURI+"~q.", LOG_SAVELOAD | LOG_ERROR)
-				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INVALID_SAVEGAME") + ": ~q"+saveURI+"~q.", 0, True)
+				UpdateProgressWindow(2, "|b|ERROR:|/b|~n" + GetLocale("INVALID_SAVEGAME") + ": ~q"+saveURI+"~q.", 0, True)
 			elseif fileState = -3
 				TLogger.Log("Savegame.Load()", GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveURI+"~q.", LOG_SAVELOAD | LOG_ERROR)
-				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveURI+"~q.", 0, True)
+				UpdateProgressWindow(2, "|b|ERROR:|/b|~n" + GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveURI+"~q.", 0, True)
 			endif
 			'wait a second
 			Delay(2500)
@@ -3004,7 +3103,7 @@ Rem
 		Local persist:TPersist = New TXMLPersistenceBuilder.Build()
 		'Local persist:TPersist = New TPersist
 		persist.serializer = New TSavegameSerializer
-
+		
 		'reset entity ID
 		'this avoids duplicate GUIDs
 		TEntityBase.lastID = savegameSummary.GetInt("entitybase_lastID", 3000000)
@@ -3032,6 +3131,8 @@ Rem
 		EndIf
 
 		Local loadingStart:Int = MilliSecs()
+
+		persist.progressCallback = OnPersistLoadProgressCallback
 
 		'savegame deserialization creates new TGameObjects - and thus
 		'increases the ID count!
@@ -3143,8 +3244,8 @@ endrem
 
 		RepairData(loadedSaveGameVersion, savegameConverter)
 
-		'close message window
-		If messageWindow Then messageWindow.Close()
+
+		CloseProgressWindow()
 
 		'reduce game speed for autosave games (saved during fast forward)
 		If saveURI.contains("autosave.") and GetWorldTime().GetTimeFactor() > 200
@@ -3161,7 +3262,7 @@ endrem
 		
 
 	Function _SaveURI:Int(saveURI:String="savegame.xml")
-		ShowMessage(False)
+		ShowProgressWindow(False)
 		
 		'check if variants of the savegame filename exist - and delete them!
 		Local fileURI1:String = StripExt(saveURI) + "." + GameConfig.uncompressedSavegameExtension
@@ -3193,9 +3294,8 @@ endrem
 		Local event:TEventBase = TEventBase.Create(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveURI))
 		event.Trigger()
 		if event.IsVeto()
-'			saveGame.UpdateMessage(False, "Saving: Saving aborted (timeout?).")
-			'close message window
-			If messageWindow Then messageWindow.Close()
+			CloseProgressWindow()
+
 			Local reason:String = event.GetData().GetString("vetoReason")
 			if reason then reason = "|b|Reason:|/b| " + reason +"~n"
 			TError.Create("Failed to save game", reason + "|i|Might help to wait a moment and then try again.|/i|", False)
@@ -3219,11 +3319,11 @@ endrem
 		'a bit processing time (formatting) and on whitespace
 		If GameConfig.compressSavegames Then TPersist.format = False
 
-		?debug
-		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
-		?
+		saveGame.UpdateProgressWindow(False, "Serializing data to savegame file.", 0)
+
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		p.serializer = New TSavegameSerializer
+		p.progressCallback = OnPersistSaveProgressCallback
 
 		If GameConfig.compressSavegames
 			'compress the TStream of XML-Data into an archive and save it
@@ -3261,7 +3361,7 @@ endrem
 		TLogger.Log("Savegame.SaveURI()", "Savegame file ~q"+saveURI+"~q saved in " + (MilliSecs() - t)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
 
 		'close message window
-		If messageWindow Then messageWindow.Close()
+		CloseProgressWindow()
 
 		TSaveGame.lastSaveTime = GetWorldTime().GetTimeGone()
 		Return True
@@ -4035,6 +4135,14 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	Field SendGameReadyTimer:Long = 0
 	Field StartMultiplayerSyncStarted:Long = 0
 	Field messageWindow:TGUIGameModalWindow
+	Field actionLogMaxLines:Int = 7
+	Field actionLog:String[]
+	Field actionLogState:String[]
+	Field prepareProgress:Float = 0
+	Field prepareStepSize:Int = 0 'how much will a step move forward after finish
+	Field prepareStep:Int = 0
+	Field dbFilesLoadedInStep:Int = 0
+	Field dbFilesToLoadInStep:Int = 0
 
 	'Store call states as we try a "Non blocking" approach
 	'which means, the update loop gets called multiple time.
@@ -4056,6 +4164,15 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 	Field stateName:TLowerString
 
+	Global _registeredListeners:TEventListenerBase[] {nosave}
+	Global _registeredEvents:Int = False
+
+	
+	Method New()
+		RegisterEvents()	
+	End Method
+
+
 	Method Create:TScreen_PrepareGameStart(name:String)
 		Super.Create(name)
 		SetGroupName("ExGame", "PrepareGameStart")
@@ -4069,6 +4186,105 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 		Return Self
 	End Method
+
+
+
+	Method RegisterEvents:Int()
+		EventManager.UnregisterListenersArray(_registeredListeners)
+		_registeredListeners = New TEventListenerBase[0]
+
+		if not _registeredEvents
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnPrepareNewGameStep, OnPrepareNewGameStep) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoadFiles, OnDatabaseLoadFiles) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnLoad, OnDatabaseLoad) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Database_OnBeginLoad, OnDatabaseBeginLoad) ]
+
+			_registeredEvents = True
+		endif
+	End Method
+	
+	Function OnDatabaseBeginLoad:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+		Local fileURI:String = triggerEvent.GetData().GetString("fileURI")
+		Local message:String = "DB: " + StringHelper.MidTruncString(fileURI, 45)
+
+		screen.actionLog :+ [message]
+		screen.actionLogState :+ ["Loading"]
+		If screen.actionLog.length > screen.actionLogMaxLines
+			screen.actionLog = screen.actionLog[screen.actionLog.length - screen.actionLogMaxLines ..]
+			screen.actionLogState = screen.actionLogState[screen.actionLogState.length - screen.actionLogMaxLines ..]
+		EndIf 
+
+		'enforce redrawing the screen
+		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+		screen.Draw(GetDeltaTimer().GetTween())
+		Flip
+	End Function
+	
+
+	Function OnPrepareNewGameStep:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+
+		screen.prepareProgress = triggerEvent.GetData().GetInt("percentage")
+		screen.prepareStep = triggerEvent.GetData().GetInt("step")
+		screen.prepareStepSize = triggerEvent.GetData().GetInt("percentageStepSize")
+
+		'enforce redrawing the screen
+		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+		screen.Draw(GetDeltaTimer().GetTween())
+		Flip
+	End Function
+
+
+	Function OnDatabaseLoadFiles:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+		Local files:String[] = String[](triggerEvent.GetData().Get("files"))
+		screen.dbFilesToLoadInStep = files.length
+		screen.dbFilesLoadedInStep = 0
+	End Function
+
+	
+	Function OnDatabaseLoad:int( triggerEvent:TEventBase )
+		If not TScreen_PrepareGameStart(ScreenCollection.currentScreen) Then Return	False
+		If GetGame().gameState <> TGame.STATE_PREPAREGAMESTART Then Return False
+
+		Local screen:TScreen_PrepareGameStart = TScreen_PrepareGameStart(ScreenCollection.currentScreen)
+		Local fileURI:String = triggerEvent.GetData().GetString("fileURI")
+
+		'replace exiting "Loading" if still in there
+		Local message:String = "DB: " + StringHelper.MidTruncString(fileURI, 45)
+		Local updatedState:Int
+		For local i:Int = 0 until screen.actionLog.length
+			If screen.actionLog[i] = message
+				screen.actionLogState[i] = "OK"
+				updatedState = True
+				exit
+			EndIf
+		Next
+		If not updatedState
+			screen.actionLog :+ [message]
+			screen.actionLogState :+ ["OK"]
+		EndIf
+		
+		If screen.actionLog.length > screen.actionLogMaxLines
+			screen.actionLog = screen.actionLog[screen.actionLog.length - screen.actionLogMaxLines ..]
+			screen.actionLogState = screen.actionLogState[screen.actionLogState.length - screen.actionLogMaxLines ..]
+		EndIf
+		screen.prepareProgress :+ screen.prepareStepSize * (1.0 / screen.dbFilesToLoadInStep)
+
+		'enforce redrawing the screen
+		'ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+		screen.Draw(GetDeltaTimer().GetTween())
+		Flip
+	End Function
 
 
 	Method Draw:Int(tweenValue:Float)
@@ -4095,7 +4311,30 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			Next
 			If Not allReady Then GetBitmapFontManager().baseFont.DrawSimple("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 		Else
-			GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
+			messageDY :+ GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+ "...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black).y
+			If actionLog.length > 0
+				For local i:Int = 0 until actionLog.length
+					GetBitmapFontManager().baseFont.DrawBox(actionLogState[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_RIGHT_TOP, new SColor8(0,0,0, 150))
+					messageDY :+ GetBitmapFontManager().baseFont.DrawBox(actionLog[i], messageRect.GetX(), messageRect.GetY() + messageDY, messageRect.GetW(), messageRect.GetH(), sALIGN_LEFT_TOP, SColor8.Black).y
+					'avoid drawing too much
+					if messageDY + 20 > messageRect.GetH() Then Exit
+				Next
+			EndIf
+			
+			Local barX:Int = Int(messageRect.GetX())
+			Local barY:Int = Int(messageRect.GetY() + messageRect.GetH() + 20)
+			Local oldColor:SColor8; GetColor(oldColor)
+			Local outlineColor:SColor8 = New SColor8(120, 120, 150, Byte(0.5*255))
+			Local bgFillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.2*255))
+			Local fillColor:SColor8 = New SColor8(120, 130, 180, Byte(0.9*255))
+			Local percentageTextColor:SColor8 = New SColor8(0, 0, 0, Byte(0.5*255))
+			
+			'total progress
+			TFunctions.DrawOutlineRect(barX, barY, Int(messageRect.GetW()), 14, outlineColor, bgFillColor)
+			SetColor(fillColor)
+			DrawRect(barX + 1, barY + 1, Int((messageRect.GetW() - 2) * prepareProgress/100.0), 14 - 2)
+			SetColor(oldColor)
+			GetBitmapFontManager().baseFont.DrawBox(Int(self.prepareProgress) + " %", barX, barY - 3, messageRect.GetW(), 20, sALIGN_CENTER_CENTER, percentageTextColor)
 		EndIf
 		SetAlpha oldAlpha
 		
