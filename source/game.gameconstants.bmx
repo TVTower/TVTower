@@ -75,6 +75,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field RoomFlag:TVTRoomFlag = new TVTRoomFlag
 	Field RoomDoorFlag:TVTRoomDoorFlag = new TVTRoomDoorFlag
 	Field BuildingTargetType:TVTBuildingTargetType = new TVTBuildingTargetType
+	Field FigureTargetFlag:TVTFigureTargetFlag = New TVTFigureTargetFlag
 End Type
 Global GameConstants:TVTGameConstants = New TVTGameConstants
 
@@ -1412,6 +1413,15 @@ Type TVTBuildingTargetType
 	Const DOOR:Int = 1
 	Const HOTSPOT:Int = 2
 End Type
+
+
+Type TVTFigureTargetFlag
+	Const NONE:Int = 0
+	Const SET_FIGURE_UNCONTROLLABLE:Int = 1
+	Const MUST_BE_IN_BUILDING_TO_START:Int = 2
+	Const CREATED_BY_DEVSHORTCUT:Int = 4
+End Type
+
 
 
 Type TVTProgrammeLifecycleFlag

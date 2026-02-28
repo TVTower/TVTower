@@ -1377,9 +1377,54 @@ endrem
 						'DEV_switchRoom(targetRoom)
 					'EndIf
 					If Not GetPlayer().GetFigure().IsInRoom(room)
-						DEV_FastForward_TargetReached = False
-						__SwitchFastForward(True)
-						GetPlayer().GetFigure().SendToDoor(targetDoor)
+						'if player has control, directly move it
+						'but if not, then just enqueue the new target
+						'(but ensure to only do once)
+						If GetPlayer().GetFigure().IsControllable()
+							If GetPlayer().GetFigure().SendToDoor(targetDoor)
+								' ATTENTION: for now "SendtoDoor" sets 
+								' the target as current one - but this
+								' might not be guaranteed. So adjust
+								' this code, when changing SendToDoor 
+								' logic!
+								Local currentTarget:TFigureTargetBase = GetPlayer().GetFigure().GetTarget()
+								If currentTarget and currentTarget.targetObj = targetDoor
+									currentTarget.SetFlag(TVTFigureTargetFlag.CREATED_BY_DEVSHORTCUT)
+								EndIf
+							
+								DEV_FastForward_TargetReached = False
+								__SwitchFastForward(True)
+							EndIf
+						Else
+							Local newTarget:TFigureTargetBase = new TFigureTarget.Init(targetDoor, TVTFigureTargetFlag.CREATED_BY_DEVSHORTCUT)
+							Local newTargetSet:Int = False
+
+							' check targets - and replace a potentially
+							' existing CREATED_BY_DEVSHORTCUT ones
+							' except it is the current one!
+							Local targets:TFigureTargetBase[] = GetPlayer().GetFigure().GetTargets()
+							'there is more than the "current" ?
+							If targets.length > 1
+								For Local i:Int = 1 until targets.length
+									If targets[i].HasFlag(TVTFigureTargetFlag.CREATED_BY_DEVSHORTCUT)
+										If GetPlayer().GetFigure().ReplaceTarget(targets[i], newTarget)
+											newTargetSet = True
+											Exit
+										EndIf
+									EndIf
+								Next
+							EndIf
+							If not newTargetSet
+								' ATTENTION: this will fast forward while
+								' a figure is not-controllable which might
+								' be NOT just because it is "computer control"-
+								' sent to a room!
+								If GetPlayer().GetFigure().AddTarget(newTarget)
+									DEV_FastForward_TargetReached = False
+									__SwitchFastForward(True)
+								EndIf
+							EndIf
+						EndIf
 					EndIf
 				EndIf
 			EndIf
@@ -3715,6 +3760,16 @@ Type TSavegameConverter
 		sb.Append(fieldTypeName)
 		Local handle:String = sb.ToLower().ToString()
 		Select handle
+			'v0.8.4: TFigureTarget.startCondition and .figureState -> TFigureTarget.flags
+			case "TFigureTarget.startCondition:Int".ToLower(), ..
+			     "TFigureTargetBase.startCondition:Int".ToLower()
+				Local target:TFigureTargetBase = TFigureTargetBase(parent)
+				target.SetFlag(TVTFigureTargetFlag.MUST_BE_IN_BUILDING_TO_START, fieldObject.ToString().ToInt() = 1)
+			case "TFigureTarget.figureState:Int".ToLower(), ..
+			     "TFigureTargetBase.figureState:Int".ToLower()
+				Local target:TFigureTargetBase = TFigureTargetBase(parent)
+				target.SetFlag(TVTFigureTargetFlag.SET_FIGURE_UNCONTROLLABLE, fieldObject.ToString().ToInt() = 1)
+				
 			'v0.8.3: TNewsEventSportCollection.matches:TMap -> TNewsEventSportCollection.matchesByID:TIntMap
 			case "TNewsEventSportCollection.matches:TMap".ToLower()
 				Local map:TMap = TMap(fieldObject)
@@ -4844,8 +4899,13 @@ Type GameEvents
 	Function RestoreSpeedOnReachTarget:Int(triggerEvent:TEventBase)
 		Local fig:TFigureBase = TFigureBase(triggerEvent.GetSender())
 		If fig = GetPlayer().GetFigure()
-			App.DEV_FastForward_TargetReached = True
-			App.__SwitchFastForward(False)
+			'if next target is a dev-shortcut one, keep on fastforwarding
+			'next = index 0 (because it is new current)
+			Local nextTarget:TFigureTargetBase = fig.GetTarget(0)
+			If Not nextTarget or Not nextTarget.HasFlag(TVTFigureTargetFlag.CREATED_BY_DEVSHORTCUT)
+				App.DEV_FastForward_TargetReached = True
+				App.__SwitchFastForward(False)
+			EndIf
 		EndIf
 	End Function
 

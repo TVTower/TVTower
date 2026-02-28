@@ -5,6 +5,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 'figures move according the building time, not the world time
 Import "game.building.buildingtime.bmx"
 Import "game.gameeventkeys.bmx"
+Import "game.gameconstants.bmx"
 
 
 Type TFigureBaseCollection extends TEntityCollection
@@ -405,18 +406,32 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetTarget:TFigureTargetBase()
+	' returns a _COPY_ of the current targets!
+	Method GetTargets:TFigureTargetBase[]()
+		Local targets:TFigureTargetBase[]
+
+		LockMutex(figureTargetsMutex)
+			If figureTargets.length
+				targets = figureTargets[..]
+			EndIf
+		UnlockMutex(figureTargetsMutex)
+
+		Return targets
+	End Method
+
+	Method GetTarget:TFigureTargetBase(index:Int = 0)
+		If index < 0 Then Return Null
+		
 		Local target:TFigureTargetBase
 
 		LockMutex(figureTargetsMutex)
-			if figureTargets.length
-				target = figureTargets[0]
+			if index < figureTargets.length
+				target = figureTargets[index]
 			EndIf
 		UnlockMutex(figureTargetsMutex)
 
 		Return target
 	End Method
-
 
 	Method GetTargetObject:object()
 		Local targetObj:Object
@@ -429,15 +444,59 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		
 		Return targetObj
 	End Method
+	
+	
+	Method ReplaceTarget:Int(original:TFigureTargetBase, replacement:TFigureTargetBase)
+		'delete original if to replace with "nothing"
+		If Not replacement Then Return RemoveTarget(original)
+		
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			For local i:Int = 0 until figureTargets.length
+				If figureTargets[i] = original
+					figureTargets[i] = replacement
+					result = True
+					exit
+				EndIf
+			Next
+		UnlockMutex(figureTargetsMutex)
+		
+		Return result
+	End Method
+	
+	
+	Method RemoveTarget:Int(target:TFigureTargetBase)
+		Local result:Int
+		LockMutex(figureTargetsMutex)
+			For local i:Int = 0 until figureTargets.length
+				If figureTargets[i] = target
+					If figureTargets.length = 1
+						figureTargets = New TFigureTargetBase[0]
+					ElseIf i = figureTargets.length - 1
+						figureTargets = figureTargets[.. i]
+					Else
+						figureTargets = figureTargets[0 .. i] + figureTargets[i+1 ..]
+					EndIf
+
+					result = True
+					Exit
+				EndIf
+			Next
+		UnlockMutex(figureTargetsMutex)
+
+		Return result
+	End Method
 
 
 	'add a target AFTER all others
-	Method AddTarget(target:TFigureTargetBase)
-		If Not target Then Return
+	Method AddTarget:Int(target:TFigureTargetBase)
+		If Not target Then Return False
 		
 		LockMutex(figureTargetsMutex)
 			figureTargets :+ [target]
 		UnlockMutex(figureTargetsMutex)
+		
+		Return True
 	End Method
 
 
@@ -767,29 +826,38 @@ End Type
 Type TFigureTargetBase
 	Field targetObj:object
 	Field currentStep:int = 0
-	Field startCondition:int = 0
-	Field figureState:int = 0
-
-	Const FIGURESTATE_UNCONTROLLABLE:int = 1
-
-	Const CONDITION_MUST_BE_IN_BUILDING:int = 1
+	Field flags:Int
 
 
-	Method Init:TFigureTargetBase(target:object, startCondition:int = 0, figureState:int = 0)
+	Method Init:TFigureTargetBase(target:object, flags:Int = 0)
 		self.targetObj = target
-		self.startCondition = startCondition
-		self.figureState = figureState
+		self.flags = flags
 		return self
 	End Method
 
 
-	Method CanGoTo:int(figure:TFigureBase)
-		if not figure then return False
-		if startCondition = 0 then return True
+	Method HasFlag:Int(flag:Int) {_exposeToLua}
+		Return flags & flag
+	End Method
 
-		if startCondition & CONDITION_MUST_BE_IN_BUILDING > 0
-			return figure.IsInBuilding()
-		endif
+
+	Method SetFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
+
+
+	Method CanGoTo:int(figure:TFigureBase)
+		If Not figure Then Return False
+
+		If HasFlag(TVTFigureTargetFlag.MUST_BE_IN_BUILDING_TO_START)
+			If Not figure.IsInBuilding() Then Return False
+		EndIf
+
+		Return True
 	End Method
 
 
@@ -802,11 +870,13 @@ Type TFigureTargetBase
 
 
 	Method IsControllable:int()
-		if currentStep < 2 'not finished
-			return figureState & FIGURESTATE_UNCONTROLLABLE = 0
-		else
-			return True
-		endif
+		If currentStep < 2 'not finished
+			If HasFlag(TVTFigureTargetFlag.SET_FIGURE_UNCONTROLLABLE)
+				Return False
+			EndIf
+		EndIf
+
+		Return True
 	End Method
 
 
