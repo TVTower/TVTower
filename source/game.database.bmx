@@ -897,7 +897,7 @@ Type TDatabaseLoader
 
 		If newsEventTemplate.availableScript
 			Local parsedToken:SToken
-			Local result:Int = GameScriptExpression.ParseToTrue(newsEventTemplate.availableScript, newsEventTemplate, parsedToken)
+			Local result:Int = GetGameScriptExpression().ParseToTrue(newsEventTemplate.availableScript, newsEventTemplate, parsedToken)
 			if parsedToken.id = TK_ERROR
 				TLogger.Log("DB", "Script of NewsEventTemplate ~q" + newsEventTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
 				TLogger.Log("DB", "Script: " + newsEventTemplate.availableScript, LOG_WARNING)
@@ -1235,7 +1235,7 @@ Type TDatabaseLoader
 
 		If adContract.availableScript
 			Local parsedToken:SToken
-			Local result:Int = GameScriptExpression.ParseToTrue(adContract.availableScript, adContract, parsedToken)
+			Local result:Int = GetGameScriptExpression().ParseToTrue(adContract.availableScript, adContract, parsedToken)
 			if parsedToken.id = TK_ERROR
 				TLogger.Log("DB", "Script of AdContract ~q" + adContract.GetGUID() + "~q contains errors:", LOG_WARNING)
 				TLogger.Log("DB", "Script: " + adContract.availableScript, LOG_WARNING)
@@ -2119,7 +2119,7 @@ Type TDatabaseLoader
 
 		If scriptTemplate.availableScript
 			Local parsedToken:SToken
-			Local result:Int = GameScriptExpression.ParseToTrue(scriptTemplate.availableScript, scriptTemplate, parsedToken)
+			Local result:Int = GetGameScriptExpression().ParseToTrue(scriptTemplate.availableScript, scriptTemplate, parsedToken)
 			if parsedToken.id = TK_ERROR
 				TLogger.Log("DB", "Script of ScriptTemplate ~q" + scriptTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
 				TLogger.Log("DB", "Script: " + scriptTemplate.availableScript, LOG_WARNING)

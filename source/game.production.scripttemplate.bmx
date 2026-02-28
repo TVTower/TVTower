@@ -221,7 +221,7 @@ Type TScriptTemplate Extends TScriptBase
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
-		if availableScript and not GameScriptExpression.ParseToTrue(availableScript, self)
+		if availableScript and not GetGameScriptExpression().ParseToTrue(availableScript, self)
 			return False
 		endif
 
@@ -379,7 +379,7 @@ Type TScriptTemplate Extends TScriptBase
 			If result[i].randomRole And result[i].roleId = 0
 				Local country:String = result[i].country
 				If country And country.Contains("$")
-					country = GameScriptExpression.ParseLocalizedText(country, new SScriptExpressionContext(self, 0, Null)).ToString()
+					country = GetGameScriptExpression().ParseLocalizedText(country, new SScriptExpressionContext(self, 0, Null)).ToString()
 				EndIf
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(country, result[i].gender)
 				result[i].roleID = role.id
@@ -388,7 +388,7 @@ Type TScriptTemplate Extends TScriptBase
 			If personString And Not result[i].personID
 				If personString.Contains("$")
 					Local context:SScriptExpressionContext = new SScriptExpressionContext(self, 0, Null)
-					Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(personString, context)
+					Local valueNew:TStringBuilder = GetGameScriptExpression().ParseLocalizedText(personString, context)
 					personString = valueNew.ToString()
 				EndIf
 				Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(personString)

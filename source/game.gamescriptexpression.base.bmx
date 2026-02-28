@@ -1,7 +1,11 @@
 SuperStrict
 Import "Dig/base.util.scriptexpression_ng.bmx"
 
-Global GameScriptExpression:TGameScriptExpressionBase = New TGameScriptExpressionBase
+Global _GameScriptExpression:TGameScriptExpressionBase = New TGameScriptExpressionBase
+
+Function GetGameScriptExpression:TGameScriptExpressionBase()
+	Return _GameScriptExpression
+End Function
 
 
 Type TGameScriptExpressionBase extends TScriptExpression
