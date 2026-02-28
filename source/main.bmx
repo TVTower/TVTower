@@ -138,6 +138,9 @@ Global requiredWriteableSubfolders:String[] = ["", "config", "logfiles", "savega
 Global applicationStoragePath:String
 ' identify whether we run portable or use user directories
 Global applicationStorageMode:Int = ConfigureStorageMode(applicationStoragePath, requiredWriteableSubfolders)
+' after identification log directory can be used
+' (without logs would only be written when exiting the application
+TLogger.SetLogDirectoryUsable()
 
 ' check wether to run in "portable" mode or not (and use user directories)
 Function ConfigureStorageMode:Int(applicationStoragePath:String var, writableFoldersToCheck:String[])
@@ -7042,7 +7045,7 @@ Function EndHook()
 	Next
 	
 	TProfiler.DumpLog("logfiles/"+PROFILER_LOG_NAME)
-	TLogFile.DumpLogs()
+	TLogger.DumpLogs()
 
 ?bmxng
 '	Local buf:Byte[4096*3]

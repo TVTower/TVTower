@@ -35,7 +35,7 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import BRL.LinkedList
+Import Collections.ArrayList
 Import BRL.Retro		'for lset()
 Import BRL.System		'for currenttime()
 ?android
@@ -45,12 +45,6 @@ Import Sdl.sdl
 Import Brl.Threads
 Import "base.util.string.bmx"
 Import "base.util.filehelper.bmx"
-
-'create a basic log file
-'but ensure directory exists
-Const LOG_DIRECTORY:String = "logfiles"
-Global AppLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.txt")
-Global AppErrorLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.error.txt")
 
 Const LOG_ERROR:Int		= 1
 Const LOG_WARNING:Int	= 2
@@ -68,7 +62,7 @@ Const LOG_SAVELOAD:Int	= 2048
 Const LOG_ALL_NORMAL:Int	= 1|2|4| 0 | 0 | 0 |64|128| 0 |512|1024|2048
 Const LOG_ALL:Int			= 1|2|4| 8 |16 |32 |64|128|256|512|1024|2048
 
-
+TLogger.Init()
 'by default EVERYTHING is logged
 TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL)
@@ -83,6 +77,34 @@ Type TLogger
 	Global printMutex:TMutex = CreateMutex()
 	Const MODE_LENGTH:Int = 8
 
+	'create a basic log file
+	'but ensure directory exists
+	Const LOG_DIRECTORY:String = "logfiles"
+	Global AppLog:TLogFile
+	Global AppErrorLog:TLogFile
+
+	'can files be written there (now) (useful for virtual filesystems
+	'to buffer until it is configured
+	Global logDirectoryUsable:Int = False
+	Global logs:TArrayList<TLogFile>
+
+
+	Function Init()
+		logs = New TArrayList<TLogFile>
+
+		AppLog = New TLogFile("App Log v2.0", "log.app.txt")
+		AppErrorLog = New TLogFile("App Log v2.0", "log.app.error.txt")
+		AddManaged(AppLog)
+		AddManaged(AppErrorLog)
+	End Function
+	
+
+	Function AddManaged(logFile:TLogFile)
+		If Not logs.Contains(logFile)
+			logs.Add(logFile)
+		EndIf
+	End Function
+	
 
 	'replace print mode flags
 	Function setPrintMode(flag:Int=0)
@@ -105,6 +127,7 @@ Type TLogger
 		EndIf
 	End Function
 
+
 	'change an existing logfile mode (add or remove flag)
 	Function changeLogMode(flag:Int=0, enable:Int=True)
 		If enable
@@ -112,6 +135,38 @@ Type TLogger
 		Else
 			logMode :& ~flag
 		EndIf
+	End Function
+
+	
+	Function DumpLogs(appendDump:Int = True)
+		'guess we can assume now, saving is possible?
+		TLogger.SetLogDirectoryUsable()
+
+		For Local logfile:TLogFile = EachIn logs
+			logFile.DumpLog(appendDump)
+		Next
+	End Function
+	
+		
+	
+	Function SetLogDirectoryUsable()
+		logDirectoryUsable = True
+
+		'(Try to) remove old log
+		For Local logfile:TLogFile = EachIn logs
+			If Not logfile.existingOldLogDeleted
+				DeleteFile(logfile.GetFilePath())
+				'if maxio was enabled, the original location could
+				'still contain this file too - so we skip checking here
+				logfile.existingOldLogDeleted = True
+			EndIf
+		Next
+		
+		For Local logfile:TLogFile = EachIn logs
+			If logfile.immediateWrite
+				logfile.lineWritten = logfile.DumpLog(False)
+			EndIf
+		Next
 	End Function
 
 
@@ -178,10 +233,6 @@ Type TLogger
 				showFunctionText = lastPrintFunction
 			EndIf
 
-			'message = StringHelper.UTF8toISO8859(message)
-'			?Win32
-'			message = StringHelper.RemoveUmlauts(message)
-'			?
 			message = StringHelper.RemoveUmlauts(message)
 
 			Local text:String = "[" + CurrentTime() + "] " + debugtext + showFunctionText + ": " + message
@@ -208,122 +259,126 @@ End Type
 
 
 Type TLogFile
-	Field Strings:TList = CreateList()
-	Field title:String = ""
-	Field filename:String = ""
-	Field headerWritten:Int = False
-	Field immediateWrite:Int = True
+	'logged content
+	Field lines:TArrayList<string> = New TArrayList<string>
+	'line number (not index) which was written last. 0 = none
+	Field lineWritten:Int
+	Field linesMutex:TMutex = CreateMutex()
+	
+	Field header:String
+
+	'storage location
+	Field fileName:String = ""
 	Field fileObj:TStream
-	Field fileRenewed:Int = False
-	Field keepFileOpen:Int = True
-
 	Field fileMutex:TMutex = CreateMutex()
-	Field stringsMutex:TMutex = CreateMutex()
 
-	Global logs:TList = CreateList()
+	Field immediateWrite:Int = True
+	Field keepFileOpen:Int = True
+	Field existingOldLogDeleted:Int = False
 
 
 	'immediateWrite decides whether a added log is immediately written
 	'to the log file or not
-	Function Create:TLogFile(title:String, filename:String, immediateWrite:Int = True, keepFileOpen:Int = True)
-		Local obj:TLogFile = New TLogFile
-		obj.title = title
-		if LOG_DIRECTORY 
-			filename = LOG_DIRECTORY + "/" + filename
-		EndIf
+	Method New(header:String, fileName:String, immediateWrite:Int = True, keepFileOpen:Int = True)
 		?android
 			'prefix with the path to the internal storage
-			filename = AndroidGetInternalStoragePath()+"/"+filename
+			fileName = AndroidGetInternalStoragePath()+"/"+fileName
 		?
-		obj.filename = filename
-		obj.immediateWrite = immediateWrite
+		self.fileName = fileName
 
-		'(Try to) remove old log
-		DeleteFile(filename)
+		self.immediateWrite = immediateWrite
+		self.keepFileOpen = keepFileOpen
 
-		obj.keepFileOpen = keepFileOpen
-
-		TLogfile.logs.addLast(obj)
-
-		Return obj
-	End Function
+		self.header = header
+	End Method
 	
+
+	Method GetFilePath:String()
+		Local filePath:String = fileName
+		if TLogger.LOG_DIRECTORY Then filePath = TLogger.LOG_DIRECTORY + "/" + fileName
+		Return filePath
+	End Method
+
+
+	Method OpenLogFile:Int(clearFile:Int = True)
+		fileMutex.Lock()
+		
+		Local filePath:String = GetFilePath()
+
+		'already opened?
+		If fileObj And clearFile
+			fileObj.Close()
+		EndIf
+
+		Local dir:String = ExtractDir(filePath)
+		If dir
+			TFileHelper.EnsureWriteableDirectoryExists(dir)
+		EndIf
+
+		If clearFile
+			fileObj = WriteStream(filePath)
+		ElseIf not fileObj
+			fileObj = AppendStream(filePath)
+		EndIf
+
+		fileMutex.Unlock()
+		
+		Return fileObj <> Null
+	End Method
+
+
+	Method DumpLog:Int(appendDump:Int = True)
+		'print only what was not printed yet?
+		If appendDump
+			local newLinesWritten:Int = DumpLogLines(lineWritten, -1, False, lineWritten = 0)
+			lineWritten :+ newLinesWritten
+			Return newLinesWritten
+		Else
+			Return DumpLogLines(0, -1, True, True)
+		EndIf
+	End Method
+		
 	
-	Function DumpLogs()
-		For Local logfile:TLogFile = EachIn TLogFile.logs
-			'if the file is still open, close first
-			If logfile.fileObj Then CloseFile(logfile.fileObj)
+	Method DumpLogLines:Int(startIndex:Int, endIndex:Int = -1, clearFile:Int = True, includeHeader:Int = False)
+		If Not OpenLogFile(clearFile) Then Return 0
+		
+		Local linesWritten:Int
+		
+		fileMutex.Lock()
+		
+		If includeHeader
+			fileObj.WriteLine(header)
+		EndIf
 
-			LockMutex(logfile.fileMutex)
-			'in all cases, just dump down the file again regardless
-			'of the mode (you might have manipulated logs meanwhile)
-			'try to create the file
-			TFileHelper.EnsureWriteableDirectoryExists(LOG_DIRECTORY)
-			Local file:TStream = WriteFile( logfile.filename )
-			If Not file 
-				UnlockMutex(logfile.fileMutex)
-				Throw "Cannot open ~q" + logfile.filename + "~q to dump log to."
-			EndIf
-
-			'header
-			WriteLine(file, logfile.title)
-			'current logs
-			logfile.stringsMutex.Lock()
-			For Local line:String = EachIn logfile.Strings
-				WriteLine(file, line)
-			Next
-			logfile.stringsMutex.Unlock()
-
-			CloseFile(file)
-			UnlockMutex(logfile.fileMutex)
+		linesMutex.Lock()
+		If startIndex < 0 Then startIndex = 0
+		If endIndex = -1 Then endIndex = lines.Count()
+		For local lineIndex:Int = startIndex until endIndex
+			fileObj.WriteLine(lines[lineIndex])
+			linesWritten :+ 1
 		Next
-	End Function
-	
-	
+		fileObj.Flush()
+		linesMutex.Unlock()
+
+		'close file to allow access by other processes
+		If Not keepFileOpen Then fileObj.Close()
+
+		fileMutex.Unlock()
+		
+		Return linesWritten
+	End Method
+		
+
 	Method AddLog:Int(text:String, addDateTime:Int=False)
 		If addDateTime Then text = "[" + CurrentTime() + "] " + text
-		
-		stringsMutex.Lock()
-		Strings.AddLast(text)
-		stringsMutex.Unlock()
 
-		If immediateWrite
-			?threaded
-			LockMutex(fileMutex)
-			?
+		linesMutex.Lock()
+		lines.Add(text)
+		linesMutex.Unlock()
 
-			'open to append if not done yet
-			If Not fileObj
-				TFileHelper.EnsureWriteableDirectoryExists(LOG_DIRECTORY)
-
-				If not fileRenewed
-					fileObj = WriteStream(filename)
-					fileRenewed = True
-				Else
-					fileObj = AppendStream(filename)
-				EndIf
-				If Not fileObj 
-					?threaded
-					UnlockMutex(fileMutex)
-					?
-					Throw "Cannot open ~q"+filename+"~q to append log entry to."
-				EndIf
-			EndIf
-
-			'write the header if not done yet
-			'(doing it here allows to adjust the title after creation)
-			If Not headerWritten
-				fileObj.WriteLine(title)
-				headerWritten = True
-			EndIf
-
-			fileObj.WriteLine(text)
-			fileObj.Flush()
-
-			'close file to allow access by other processes
-			If Not keepFileOpen Then CloseFile(fileObj)
-
-			UnlockMutex(fileMutex)
+		If immediateWrite and TLogger.logDirectoryUsable
+			Local newLinesWritten:Int = DumpLogLines(lineWritten, -1, False, False)
+			lineWritten :+ newLinesWritten
 		EndIf
 		Return True
 	End Method

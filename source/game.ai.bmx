@@ -33,7 +33,8 @@ Import "game.programmeproducer.bmx"
 
 Global AiLog:TLogFile[4]
 For Local i:Int = 0 To 3
-	AiLog[i] = TLogFile.Create("AI Log v1.0", "log.ai"+(i+1)+".txt", True)
+	AiLog[i] = New TLogFile("AI Log v1.0", "log.ai"+(i+1)+".txt", True)
+	TLogger.AddManaged(AiLog[i]) 'so dumpLogs() dumps them too
 Next
 
 
