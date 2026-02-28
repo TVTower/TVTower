@@ -46,7 +46,7 @@ Function SEFN_WorldTime:SToken(params:STokenGroup Var, context:SScriptExpression
 	Local command:String = params.GetToken(0).GetValueText()
 	Local subCommand:String = params.GetToken(1).value 'MUST be a string
 	Local timeStamp:Long = -1
-	if params.HasToken(2) then timeStamp = params.GetToken(2).valueLong
+	if params.HasToken(2) then timeStamp = params.GetToken(2).GetValueLong()
 
 	'TODO formatted date, weekdayname?
 	Select subCommand.ToLower()
@@ -180,10 +180,10 @@ Function SEFN_random:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		Local minValue:Int
 		Local maxValue:Int
 		If params.HasToken(2)
-			minValue = Int(params.GetToken(1).valueLong)
-			maxValue = Int(params.GetToken(2).valueLong)
+			minValue = Int(params.GetToken(1).GetValueLong())
+			maxValue = Int(params.GetToken(2).GetValueLong())
 		Else
-			maxValue = Int(params.GetToken(1).valueLong)
+			maxValue = Int(params.GetToken(1).GetValueLong())
 		EndIf
 		
 		Return New SToken( TK_NUMBER, RandRange(minValue, maxValue), params.GetToken(0) )
@@ -209,7 +209,7 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		If Not licence Then Return New SToken( TK_ERROR, ".self is not a TProgrammeLicence", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
-		Local ID:Long = params.GetToken(1).valueLong
+		Local ID:Long = params.GetToken(1).GetValueLong()
 		If GUID
 			licence = GetProgrammeLicenceCollection().GetByGUID(GUID)
 			If Not licence Then Return New SToken( TK_ERROR, ".programmelicence with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -295,9 +295,9 @@ Function SEFN_programmelicence:SToken(params:STokenGroup Var, context:SScriptExp
 		Case "genre"                   Return New SToken( TK_NUMBER, licence.GetGenre(), params.GetToken(0) )
 		Case "genrestring"             Return New SToken( TK_TEXT, licence.GetGenreString(), params.GetToken(0) )
 		Case "genresline"              Return New SToken( TK_TEXT, licence.GetGenresLine(), params.GetToken(0) )
-		Case "hasdataflag"             Return New SToken( TK_BOOLEAN, licence.HasDataFlag(Int(params.GetToken(3).valueLong)), params.GetToken(0) )
-		Case "hasbroadcastflag"        Return New SToken( TK_BOOLEAN, licence.HasBroadcastFlag(Int(params.GetToken(3).valueLong)), params.GetToken(0) )
-		Case "hasflag"                 Return New SToken( TK_BOOLEAN, licence.HasFlag(Int(params.GetToken(3).valueLong)), params.GetToken(0) )
+		Case "hasdataflag"             Return New SToken( TK_BOOLEAN, licence.HasDataFlag(Int(params.GetToken(3).GetValueLong())), params.GetToken(0) )
+		Case "hasbroadcastflag"        Return New SToken( TK_BOOLEAN, licence.HasBroadcastFlag(Int(params.GetToken(3).GetValueLong())), params.GetToken(0) )
+		Case "hasflag"                 Return New SToken( TK_BOOLEAN, licence.HasFlag(Int(params.GetToken(3).GetValueLong())), params.GetToken(0) )
 		Case "quality"                 Return New SToken( TK_NUMBER, licence.GetQuality(), params.GetToken(0) )
 		Case "speed"                   Return New SToken( TK_NUMBER, licence.GetSpeed(), params.GetToken(0) )
 		Case "review"                  Return New SToken( TK_NUMBER, licence.GetReview(), params.GetToken(0) )
@@ -327,7 +327,7 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		If Not data Then Return New SToken( TK_ERROR, ".self is not a TProgrammeData", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
-		Local ID:Long = params.GetToken(1).valueLong
+		Local ID:Long = params.GetToken(1).GetValueLong()
 		If GUID
 			data = GetProgrammeDataCollection().GetByGUID(GUID)
 			If Not data Then Return New SToken( TK_ERROR, ".programmedata with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -392,8 +392,8 @@ Function SEFN_programmedata:SToken(params:STokenGroup Var, context:SScriptExpres
 		Case "hasbroadcastlimit"       Return New SToken( TK_BOOLEAN, data.HasBroadcastLimit(), params.GetToken(0) )
 		Case "genre"                   Return New SToken( TK_NUMBER, data.GetGenre(), params.GetToken(0) )
 		Case "genrestring"             Return New SToken( TK_TEXT, data.GetGenreString(), params.GetToken(0) )
-		Case "hasbroadcastflag"        Return New SToken( TK_BOOLEAN, data.HasBroadcastFlag(Int(params.GetToken(2).valueLong)), params.GetToken(0) )
-		Case "hasflag"                 Return New SToken( TK_BOOLEAN, data.HasFlag(Int(params.GetToken(2).valueLong)), params.GetToken(0) )
+		Case "hasbroadcastflag"        Return New SToken( TK_BOOLEAN, data.HasBroadcastFlag(Int(params.GetToken(2).GetValueLong())), params.GetToken(0) )
+		Case "hasflag"                 Return New SToken( TK_BOOLEAN, data.HasFlag(Int(params.GetToken(2).GetValueLong())), params.GetToken(0) )
 		Case "quality"                 Return New SToken( TK_NUMBER, data.GetQuality(), params.GetToken(0) )
 		Case "speed"                   Return New SToken( TK_NUMBER, data.GetSpeed(), params.GetToken(0) )
 		Case "review"                  Return New SToken( TK_NUMBER, data.GetReview(), params.GetToken(0) )
@@ -422,7 +422,7 @@ Function SEFN_newsevent:SToken(params:STokenGroup Var, context:SScriptExpression
 		If Not data Then Return New SToken( TK_ERROR, ".self is not a TNewsEvent", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
-		Local ID:Long = params.GetToken(1).valueLong
+		Local ID:Long = params.GetToken(1).GetValueLong()
 		If GUID
 			data = GetNewsEventCollection().GetByGUID(GUID)
 			If Not data Then Return New SToken( TK_ERROR, ".newsevent with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -510,7 +510,7 @@ Function _EvaluateSportsProperties:SToken(leagueID:Int, matchID:Int, propertyNam
 				If Not match
 					Return New SToken( TK_ERROR, "No match (to identify teams) with ID " + matchID + " defined in context", params.GetToken(0) )
 				EndIf
-				Local teamIndex:Int = params.GetToken(tokenOffset + 1).valueLong
+				Local teamIndex:Int = Int(params.GetToken(tokenOffset + 1).GetValueLong())
 				If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
 					Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 				EndIf
@@ -527,7 +527,7 @@ Function _EvaluateProgrammeDataCast:SToken(data:TProgrammeData, params:STokenGro
 		Return New SToken( TK_ERROR, "No valid cast number passed", params.GetToken(0) )
 	EndIf
 
-	Local castIndex:Int = params.GetToken(1 + tokenOffset).valueLong
+	Local castIndex:Int = Int(params.GetToken(1 + tokenOffset).GetValueLong())
 	If castIndex < 0 Then Return New SToken( TK_ERROR, "Cast number must be positive", params.GetToken(0) )
 
 	Local job:TPersonProductionJob = data.GetCastAtIndex(castIndex)
@@ -559,7 +559,7 @@ End Function
 
 
 Function _EvaluateProgrammeDataRole:SToken(data:TProgrammeData, params:STokenGroup Var, tokenOffset:int, language:int) 'inline
-	Local roleIndex:Int = params.GetToken(1 + tokenOffset).valueLong
+	Local roleIndex:Int = Int(params.GetToken(1 + tokenOffset).GetValueLong())
 	If roleIndex < 0 Then Return New SToken( TK_ERROR, "Role index must be positive", params.GetToken(0) )
 
 	Local job:TPersonProductionJob = data.GetCastAtIndex(roleIndex)
@@ -611,7 +611,7 @@ Function SEFN_role:SToken(params:STokenGroup Var, context:SScriptExpressionConte
 	Local role:TProgrammeRole
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
-	Local ID:Long = token.valueLong
+	Local ID:Long = token.GetValueLong()
 	If GUID
 		role = GetProgrammeRoleCollection().GetByGUID(GUID)
 		If Not role Then Return New SToken( TK_ERROR, ".role with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -648,7 +648,7 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	Local person:TPersonBase
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
-	Local ID:Long = token.valueLong
+	Local ID:Long = token.GetValueLong()
 	If GUID
 		person = GetPersonBaseCollection().GetByGUID(GUID)
 		If Not person Then Return New SToken( TK_ERROR, ".person with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -697,7 +697,7 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 			if Not params.HasToken(3)
 				If Not person Then Return New SToken( TK_ERROR, ".person ChannelSympathy requires channel parameter", params.GetToken(0) )
 			else
-				Local channel:Int = Int(params.GetToken(3).GetValueText())
+				Local channel:Int = Int(params.GetToken(3).GetValueLong())
 				Return New SToken( TK_NUMBER, person.GetChannelSympathy(channel), params.GetToken(0) )
 			endif
 		case "productionjobsdone"  Return New SToken( TK_NUMBER, person.GetTotalProductionJobsDone(), params.GetToken(0) )
@@ -705,28 +705,28 @@ Function SEFN_person:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 			if Not params.HasToken(3)
 				If Not person Then Return New SToken( TK_ERROR, ".person JobsDone requires jobID parameter", params.GetToken(0) )
 			else
-				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Local jobID:Int = Int(params.GetToken(3).GetValueLong())
 				Return New SToken( TK_NUMBER, person.GetJobsDone(jobID), params.GetToken(0) )
 			endif
 		case "effectivejobexperiencepercentage"
 			if Not params.HasToken(3)
 				If Not person Then Return New SToken( TK_ERROR, ".person EffectiveJobExperiencePercentage requires jobID parameter", params.GetToken(0) )
 			else
-				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Local jobID:Int = Int(params.GetToken(3).GetValueLong())
 				Return New SToken( TK_NUMBER, person.GetEffectiveJobExperiencePercentage(jobID), params.GetToken(0) )
 			endif
 		case "hasjob"
 			if Not params.HasToken(3) 
 				If Not person Then Return New SToken( TK_ERROR, ".person HasJob requires jobID parameter", params.GetToken(0) )
 			else
-				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Local jobID:Int = Int(params.GetToken(3).GetValueLong())
 				Return New SToken( TK_BOOLEAN, person.HasJob(jobID), params.GetToken(0) )
 			endif
 		case "haspreferredjob"
 			if Not params.HasToken(3)
 				If Not person Then Return New SToken( TK_ERROR, ".person HasPreferredJob requires jobID parameter", params.GetToken(0) )
 			else
-				Local jobID:Int = Int(params.GetToken(3).GetValueText())
+				Local jobID:Int = Int(params.GetToken(3).GetValueLong())
 				Return New SToken( TK_BOOLEAN, person.HasPreferredJob(jobID), params.GetToken(0) )
 			endif
 		default             Return New SToken( TK_ERROR, "Undefined property ~q"+propertyName+"~q", params.GetToken(0) )
@@ -749,7 +749,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 		If Not script Then Return New SToken( TK_ERROR, ".self is not a TScript", params.GetToken(0) )
 	Else
 		Local GUID:String = params.GetToken(1).value
-		Local ID:Long = params.GetToken(1).valueLong
+		Local ID:Long = params.GetToken(1).GetValueLong()
 		If GUID
 			script = GetScriptCollection().GetByGUID(GUID)
 			If Not script Then Return New SToken( TK_ERROR, ".script with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -783,7 +783,7 @@ Function SEFN_script:SToken(params:STokenGroup Var, context:SScriptExpressionCon
 	
 	Select propertyNameLower
 		Case "role"
-			Local roleIndex:Int = Int(params.GetToken(2 + tokenOffset).GetValueText())
+			Local roleIndex:Int = Int(params.GetToken(2 + tokenOffset).GetValueLong())
  			If roleIndex < 0 Then Return New SToken( TK_ERROR, "role index must be positive.", params.GetToken(0) )
 
 			Local actors:TPersonProductionJob[] = script.GetJobs()
@@ -820,7 +820,7 @@ Function SEFN_sport:SToken(params:STokenGroup Var, context:SScriptExpressionCont
 	Local sport:TNewsEventSport
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
-	Local ID:Long = token.valueLong
+	Local ID:Long = token.GetValueLong()
 	If GUID
 		sport = GetNewsEventSportCollection().GetByGUID(GUID)
 		If Not sport Then Return New SToken( TK_ERROR, ".sport with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -838,7 +838,7 @@ Function SEFN_sportleague:SToken(params:STokenGroup Var, context:SScriptExpressi
 	Local league:TNewsEventSportLeague
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
-	Local ID:Long = token.valueLong
+	Local ID:Long = token.GetValueLong()
 	If GUID
 		league = GetNewsEventSportCollection().GetLeague(GUID)
 		If Not league Then Return New SToken( TK_ERROR, ".sportleague with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -856,7 +856,7 @@ Function SEFN_sportteam:SToken(params:STokenGroup Var, context:SScriptExpression
 	Local team:TNewsEventSportTeam
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
-	Local ID:Long = token.valueLong
+	Local ID:Long = token.GetValueLong()
 	If GUID
 		team = GetNewsEventSportCollection().GetTeam(GUID)
 		If Not team Then Return New SToken( TK_ERROR, ".sportteam with GUID ~q"+GUID+"~q not found", params.GetToken(0) )
@@ -878,7 +878,7 @@ Function _EvaluateNewsEventSport:SToken(sport:TNewsEventSport, params:STokenGrou
 		case "name"                 Return New SToken( TK_TEXT, GetLocale("SPORT_"+sport.name, language), params.GetToken(0) )
 		case "leaguecount"          Return New SToken( TK_NUMBER, sport.leagues.length, params.GetToken(0) )
 		case "league"
-			Local leagueIndex:Int = params.GetToken(tokenOffset + 1).valueLong
+			Local leagueIndex:Int = Int(params.GetToken(tokenOffset + 1).GetValueLong())
 			If sport.leagues.length < 0 or sport.leagues.length <= leagueIndex or not sport.leagues[leagueIndex] 
 				Return New SToken( TK_ERROR, "No league at index " + leagueIndex + " found", params.GetToken(0) )
 			EndIf
@@ -935,19 +935,19 @@ Function _EvaluateNewsEventSportMatch:SToken(match:TNewsEventSportMatch, params:
 		case "teamcount"
 			Return New SToken( TK_NUMBER, match.teams.length, params.GetToken(0) )
 		case "team"
-			Local teamIndex:Int = params.GetToken(tokenOffset + 1).valueLong
+			Local teamIndex:Int = Int(params.GetToken(tokenOffset + 1).GetValueLong())
 			If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
 				Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 			EndIf
 			Return _EvaluateNewsEventSportTeam(match.teams[teamIndex], params, tokenOffset + 2, language)
 		case "rank"
-			Local teamIndex:Int = params.GetToken(tokenOffset + 1).valueLong
+			Local teamIndex:Int = Int(params.GetToken(tokenOffset + 1).GetValueLong())
 			If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
 				Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 			EndIf
 			Return New SToken( TK_NUMBER, match.GetRank(match.teams[teamIndex]), params.GetToken(0) )
 		case "score"
-			Local teamIndex:Int = params.GetToken(tokenOffset + 1).valueLong
+			Local teamIndex:Int = Int(params.GetToken(tokenOffset + 1).GetValueLong())
 			If match.teams.length < 0 or match.teams.length <= teamIndex or not match.teams[teamIndex] 
 				Return New SToken( TK_ERROR, "No team at index " + teamIndex + " found", params.GetToken(0) )
 			EndIf
@@ -966,7 +966,7 @@ Function _EvaluateNewsEventSportMatch:SToken(match:TNewsEventSportMatch, params:
 		case "livereportshort"
 			Local mode:String = params.GetToken(tokenOffset + 1).value
 			Local time:Long = -1
-			If params.HasToken(tokenOffset + 2) Then time = params.GetToken(tokenOffset + 2).valueLong
+			If params.HasToken(tokenOffset + 2) Then time = params.GetToken(tokenOffset + 2).GetValueLong()
 			Return New SToken( TK_TEXT, match.GetLiveReportShort(mode, time), params.GetToken(0) )
 		case "time"
 			Return New SToken( TK_NUMBER, match.GetMatchTime(), params.GetToken(0) )
@@ -1022,9 +1022,9 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 				EndIf
 			Else
 				'numeric index, if no value was given, index will be 0
-				member = team.GetMemberAtIndex( Int(params.GetToken(tokenOffset + 1).valueLong) )
+				member = team.GetMemberAtIndex( Int(params.GetToken(tokenOffset + 1).GetValueLong()) )
 				If not member 
-					Return New SToken( TK_ERROR, "No member at index " + params.GetToken(tokenOffset + 1).valueLong + " found", params.GetToken(0) )
+					Return New SToken( TK_ERROR, "No member at index " + params.GetToken(tokenOffset + 1).GetValueLong() + " found", params.GetToken(0) )
 				EndIf
 			EndIf
 			Return _EvaluateNewsEventSportTeamMember(member, params, tokenOffset + 2, language)
@@ -1039,7 +1039,7 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 		case "teamnamewitharticle"
 			Local variant:Int = 1
 			If params.HasToken(tokenOffset + 1) 
-				variant = params.GetToken(tokenOffset + 1).valueLong
+				variant = Int(params.GetToken(tokenOffset + 1).GetValueLong())
 			EndIf
 			Select variant
 				case 2
@@ -1058,7 +1058,7 @@ Function _EvaluateNewsEventSportTeam:SToken(team:TNewsEventSportTeam, params:STo
 		case "teamnamearticle"
 			Local variant:Int = 1
 			If params.HasToken(tokenOffset + 1) 
-				variant = params.GetToken(tokenOffset + 1).valueLong
+				variant = Int(params.GetToken(tokenOffset + 1).GetValueLong())
 			EndIf
 			Select variant
 				case 2
