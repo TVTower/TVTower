@@ -379,7 +379,7 @@ Type TScriptTemplate Extends TScriptBase
 			If result[i].randomRole And result[i].roleId = 0
 				Local country:String = result[i].country
 				If country And country.Contains("$")
-					country = GameScriptExpression.ParseLocalizedText(country, new SScriptExpressionContext(self, 0, Null)).ToString()
+					country = GetGameScriptExpression().ParseLocalizedText(country, new SScriptExpressionContext(self, 0, Null)).ToString()
 				EndIf
 				Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(country, result[i].gender)
 				result[i].roleID = role.id
