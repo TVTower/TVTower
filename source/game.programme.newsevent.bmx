@@ -655,7 +655,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		if not templateVariablesToUse then templateVariablesToUse = self.templateVariables
 
 		Local context:SScriptExpressionContext = new SScriptExpressionContext(self, localeID, templateVariablesToUse)
-		sb = GameScriptExpression.ParseLocalizedText(sb, context)
+		sb = GetGameScriptExpression().ParseLocalizedText(sb, context)
 		If text.HashCode() <> sb.HashCode() 'only create new string if required
 			text = sb.ToString()
 			Return True

@@ -843,7 +843,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		For Local langID:Int = EachIn text.GetLanguageIDs()
 			Local valueOld:String = text.Get(langID)
 			Local context:SScriptExpressionContext = new SScriptExpressionContext(self, langID, Null)
-			Local valueNew:TStringBuilder = GameScriptExpression.ParseLocalizedText(valueOld, context)
+			Local valueNew:TStringBuilder = GetGameScriptExpression().ParseLocalizedText(valueOld, context)
 			If valueOLD.HashCode() <> valueNew.HashCode() 'only create new string if required
 				result.Set(valueNew.ToString(), langID)
 			EndIf
@@ -858,7 +858,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		If roleID <> 0 Then return GetProgrammeRoleCollection().GetByID(roleID)
 		Local country:String = actor.country
 		If country And country.Contains("$")
-			country = GameScriptExpression.ParseLocalizedText(country, new SScriptExpressionContext(script, 0, Null)).ToString()
+			country = GetGameScriptExpression().ParseLocalizedText(country, new SScriptExpressionContext(script, 0, Null)).ToString()
 		EndIf
 		'TODO reuse previous role? - see inactive code in TScriptTemplate#GetFinalJobs
 		Local role:TProgrammeRole = GetProgrammeRoleCollection().CreateRandomRole(country, actor.gender)
