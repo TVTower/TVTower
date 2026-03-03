@@ -878,12 +878,28 @@ Type TInGameInterface
 		'CurrentProgramme can contain "outage"-image, so draw
 		'even without audience
 		If CurrentProgramme
-			if CurrentProgramme.GetWidth() < 200 '220 is normal width
-				local scaleRatio:Float = 220.0 / CurrentProgramme.GetWidth()
-				CurrentProgramme.DrawArea(45, 405, 220, CurrentProgramme.GetHeight()*scaleRatio)
-			else
-				CurrentProgramme.Draw(45, 405)
-			endif
+			'custom images can come in various sizes, so ensure:
+			'- sprite is scaled up/down but covers (220x170)
+			'- viewport limits rendering overlowing pixels
+
+			'hide potential overflow
+			Local programmeArea:SRectI = New SRectI(45, 405, 220, 170)
+			Local currentVP:SRectI = GetGraphicsManager().GetViewport()
+			Local intersectingVP:SRectI = programmeArea.IntersectRect(currentVP)
+			GetGraphicsManager().SetViewport(intersectingVP)
+
+			If intersectingVP.w > 0 and intersectingVP.h > 0
+				local programmeSpriteWidth:Float = CurrentProgramme.GetWidth()
+				local programmeSpriteHeight:Float = CurrentProgramme.GetHeight()
+				local scaleRatio:Float = Max(Float(programmeArea.w) / programmeSpriteWidth, Float(programmeArea.h) / programmeSpriteHeight)
+				local drawWidth:Float = programmeSpriteWidth * scaleRatio
+				local drawHeight:Float = programmeSpriteHeight * scaleRatio
+				local programmeDrawX:Float = programmeArea.x + 0.5 * (programmeArea.w - drawWidth)
+				local programmeDrawY:Float = programmeArea.y + 0.5 * (programmeArea.h - drawHeight)
+				CurrentProgramme.DrawArea(programmeDrawX, programmeDrawY, drawWidth, drawHeight, -1, 0, 1, programmeArea)
+			EndIf
+
+			GetGraphicsManager().SetViewport(currentVP)
 		endif
 		'draw trailer/infomercial-hint
 		If CurrentProgrammeOverlay
