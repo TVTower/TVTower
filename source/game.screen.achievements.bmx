@@ -491,8 +491,8 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			x + textOffsetX + border.GetLeft(), ..
 			y + titleOffsetY + border.GetTop(), .. '-1 to align it more properly
 			w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
-			17, ..
-			sALIGN_LEFT_CENTER, skin.textColorNeutral)
+			20, ..
+			sALIGN_LEFT_TOP, skin.textColorNeutral)
 
 
 		if textRight <> ""
