@@ -319,7 +319,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		contentH = listH
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).DrawBox(GetLocale("MESSAGECATEGORY_CATEGORIES"), contentX + 5, contentY , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		'offset y by -1 pixel for a better visual alignment
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("MESSAGECATEGORY_CATEGORIES"), contentX + 5, contentY -1 , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, contentH , "2")
 
@@ -335,6 +336,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		Next
 		skin.RenderBorder(outer.x, outer.y, outer.w, outer.h)
 
+		'offset y by -1 pixel for a better visual alignment
 		GetBitmapFont("default", 13, BOLDFONT).DrawSimple(GetLocale("MESSAGES_SHOW_HEADING"), contentX + 12, outer.h-25, colorCategoryDefault)
 		if not showModeSelect
 			showModeSelect = New TGUIDropDown.Create(New SVec2I(Int(outer.x) + 12, Int(outer.h)-5 ), New SVec2I(147,-1), "", 128, "office_archivedmessages")
@@ -346,7 +348,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		endif
 
 		'=== MESSAGE LIST ===
-		outer = New SRectI(200, 25, 550, 325)
+		outer = New SRectI(200, 25, 550, 333)
 		contentX = skin.GetContentX(outer.x)
 		contentY = skin.GetContentY(outer.y)
 		contentW = skin.GetContentW(outer.w)
@@ -364,7 +366,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(caption, contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		'offset y by -1 pixel for a better visual alignment
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(caption, contentX + 5, contentY -1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
@@ -569,7 +572,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		dim = skin.fontSemiBold.DrawBox( ..
 			title, ..
 			x + border.GetLeft(), ..
-			y + border.GetTop(), .. '-1 to align it more properly
+			y + border.GetTop() - 1, .. '-1 to align it more properly
 			w - (border.GetRight() + border.GetLeft() - timeW),  ..
 			contentH, ..
 			sALIGN_LEFT_TOP, skin.textColorNeutral)
