@@ -163,25 +163,16 @@ Type TFunctions
 
 	'converts a value in a way that it shows as much digits as needed to
 	'distinguish between value and compareValue
-	Function ConvertCompareValue:String(value:Double, compareValue:Double, decimalPrecision:Int = 2, decimalSeparatorChar:Int = -1)
-		'set default if none provided
-		If decimalSeparatorChar < 0
-			If decimalDelimiter.length 
-				decimalSeparatorChar = decimalDelimiter[0]
-			Else
-				decimalSeparatorChar = Asc(".")
-			EndIf
-		EndIf
-		
+	Function ConvertCompareValue:String(value:Double, compareValue:Double, decimalPrecision:Int = 2)
 		If decimalPrecision < 0 Then decimalPrecision = 0
 		If decimalPrecision > 10 Then decimalPrecision = 10
 
-		If value = compareValue Then Return ConvertValue(value, decimalPrecision, 0, decimalSeparatorChar)
+		If value = compareValue Then Return ConvertValue(value, decimalPrecision, 0)
 
 		Local valueS:String
 		For local i:int = decimalPrecision to 10
-			valueS = ConvertValue(value, i, 0, decimalSeparatorChar)
-			If valueS <> ConvertValue(compareValue, i, 0, decimalSeparatorChar)
+			valueS = ConvertValue(value, i, 0)
+			If valueS <> ConvertValue(compareValue, i, 0)
 				return valueS
 			EndIf
 		Next
@@ -190,16 +181,7 @@ Type TFunctions
 
 
 	'formats a value: 1000400 = 1,0 Mio
-	Function convertValue:String(value:Double, decimalPrecision:Int=2, convertFormat:Int = 0, decimalSeparatorChar:Int = -1)
-		'set default if none provided
-		If decimalSeparatorChar < 0
-			If decimalDelimiter.length 
-				decimalSeparatorChar = decimalDelimiter[0]
-			Else
-				decimalSeparatorChar = Asc(".")
-			EndIf
-		EndIf
-
+	Function convertValue:String(value:Double, decimalPrecision:Int=2, convertFormat:Int = 0)
 		convertFormat = MathHelper.Clamp(convertFormat, 0, 3)
 		' convertFormat 1: 250000 = 250Tsd
 		' convertFormat 2: 250000 = 0,25Mio
