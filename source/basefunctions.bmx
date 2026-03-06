@@ -86,26 +86,33 @@ Type TFunctions
 
 
 	Function RoundToBeautifulValue:Long(value:Double)
-		'dev
 		If Not roundToBeautifulEnabled Then Return value
 
-		If value = 0 Then Return 0
-		If value <= 25 Then Return 25
-		If value <= 50 Then Return 50
-		If value <= 75 Then Return 75
-		If value <= 100 Then Return 100
-		'102 /50 = 2 mod 2 = 0 -> un/gerade
-		If value <= 1000 Then Return Ceil(value / 100.0)*100 'bisher 250
-		If value <= 5000 Then Return Ceil(value / 250.0)*250 'bisher 500
-		If value <= 10000 Then Return Ceil(value / 500.0)*500 'bisher 1.000
-		If value <= 50000 Then Return Ceil(value / 1000.0)*1000 'bisher 2.500
-		If value <= 100000 Then Return Ceil(value / 5000.0)*5000 'bisher 10.000
-		If value <= 500000 Then Return Ceil(value / 10000.0)*10000 'bisher 25.000
-		If value <= 1000000 Then Return Ceil(value / 25000.0)*25000 'bisher 250.000
-		If value <= 2500000 Then Return Ceil(value / 100000.0)*100000 'bisher --
-		If value <= 5000000 Then Return Ceil(value / 250000.0)*250000 'bisher --
-		'>5.000.0000 in steps of 1 million
-		Return Ceil(value / 1000000.0)*1000000
+		Local sign:Int = 1
+		Local absValue:Double = value
+		If value < 0
+			sign = -1
+			absValue = -value
+		End If
+
+		If absValue = 0 Then Return 0
+		If absValue <= 25      Then Return sign * 25
+		If absValue <= 50      Then Return sign * 50
+		If absValue <= 75      Then Return sign * 75
+		If absValue <= 100     Then Return sign * 100
+
+		If absValue <= 1000    Then Return sign * Ceil(absValue / 100.0   ) * 100
+		If absValue <= 5000    Then Return sign * Ceil(absValue / 250.0   ) * 250
+		If absValue <= 10000   Then Return sign * Ceil(absValue / 500.0   ) * 500
+		If absValue <= 50000   Then Return sign * Ceil(absValue / 1000.0  ) * 1000
+		If absValue <= 100000  Then Return sign * Ceil(absValue / 5000.0  ) * 5000
+		If absValue <= 500000  Then Return sign * Ceil(absValue / 10000.0 ) * 10000
+		If absValue <= 1000000 Then Return sign * Ceil(absValue / 25000.0 ) * 25000
+		If absValue <= 2500000 Then Return sign * Ceil(absValue / 100000.0) * 100000
+		If absValue <= 5000000 Then Return sign * Ceil(absValue / 250000.0) * 250000
+
+		' >5.000.000 in steps of 1 million
+		Return sign * Ceil(absValue / 1000000.0) * 1000000
 	End Function
 
 
