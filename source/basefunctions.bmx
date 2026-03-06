@@ -163,13 +163,25 @@ Type TFunctions
 
 	'converts a value in a way that it shows as much digits as needed to
 	'distinguish between value and compareValue
-	Function ConvertCompareValue:String(value:Double, compareValue:Double, digitsAfterDecimalPoint:Int=2, delimeter:String=",")
-		If value = compareValue Then Return ConvertValue(value, digitsAfterDecimalPoint, 0, delimeter)
+	Function ConvertCompareValue:String(value:Double, compareValue:Double, decimalPrecision:Int = 2, decimalSeparatorChar:Int = -1)
+		'set default if none provided
+		If decimalSeparatorChar < 0
+			If decimalDelimiter.length 
+				decimalSeparatorChar = decimalDelimiter[0]
+			Else
+				decimalSeparatorChar = Asc(".")
+			EndIf
+		EndIf
+		
+		If decimalPrecision < 0 Then decimalPrecision = 0
+		If decimalPrecision > 10 Then decimalPrecision = 10
+
+		If value = compareValue Then Return ConvertValue(value, decimalPrecision, 0, decimalSeparatorChar)
 
 		Local valueS:String
-		For local i:int = digitsAfterDecimalPoint to 10
-			valueS = ConvertValue(value, i, 0, delimeter)
-			If valueS <> ConvertValue(compareValue, i, 0, delimeter)
+		For local i:int = decimalPrecision to 10
+			valueS = ConvertValue(value, i, 0, decimalSeparatorChar)
+			If valueS <> ConvertValue(compareValue, i, 0, decimalSeparatorChar)
 				return valueS
 			EndIf
 		Next
@@ -178,12 +190,25 @@ Type TFunctions
 
 
 	'formats a value: 1000400 = 1,0 Mio
-	Function convertValue:String(value:Double, digitsAfterDecimalPoint:Int=2, typ:Int=0, delimeter:String=",")
-		typ = MathHelper.Clamp(typ, 0,3)
-      ' typ 1: 250000 = 250Tsd
-      ' typ 2: 250000 = 0,25Mio
-      ' typ 3: 250000 = 0,0Mrd
-      ' typ 0: 250000 = 0,25Mio (automatically)
+	Function convertValue:String(value:Double, decimalPrecision:Int=2, convertFormat:Int = 0, decimalSeparatorChar:Int = -1)
+		'set default if none provided
+		If decimalSeparatorChar < 0
+			If decimalDelimiter.length 
+				decimalSeparatorChar = decimalDelimiter[0]
+			Else
+				decimalSeparatorChar = Asc(".")
+			EndIf
+		EndIf
+
+		convertFormat = MathHelper.Clamp(convertFormat, 0, 3)
+		' convertFormat 1: 250000 = 250Tsd
+		' convertFormat 2: 250000 = 0,25Mio
+		' convertFormat 3: 250000 = 0,0Mrd
+		' convertFormat 0: 250000 = 0,25Mio (automatically)
+
+		If decimalPrecision < 0 Then decimalPrecision = 0
+		If decimalPrecision > 10 Then decimalPrecision = 10
+
 
 		'find out amount of digits before decimal point
 		Local longValue:Long = Long(value)
@@ -193,19 +218,25 @@ Type TFunctions
 		If value = 0 Then longValue = 0;length = 1
 
 		'automatically
-		If typ=0
-			If length < 10 And length >= 7 Then typ=2
-			If length >= 10 Then typ=3
+		If convertFormat = 0
+			If length < 10 And length >= 7
+				convertFormat = 2
+			ElseIf length >= 10 
+				convertFormat = 3
+			EndIf
 		EndIf
-		'250000 = 250Tsd -> divide by 1000
-		If typ=1 Then Return LocalizedNumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
-		'250000 = 0,25Mio -> divide by 1000000
-		If typ=2 Then Return LocalizedNumberToString(value/1000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_MILLION")
-		'250000 = 0,0Mrd -> divide by 1000000000
-		If typ=3 Then Return LocalizedNumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
+		
+		Select convertFormat
+			Case 1 '250000 = 250Tsd -> divide by 1000
+				Return LocalizedNumberToString(value/1000.0, 0) + " " + GetLocale("ABBREVIATION_THOUSAND")
+			Case 2 '250000 = 0,25Mio -> divide by 1000000
+				Return LocalizedNumberToString(value/1000000.0, decimalPrecision) + " " + GetLocale("ABBREVIATION_MILLION")
+			Case 3 '250000 = 0,0Mrd -> divide by 1000000000
+				Return LocalizedNumberToString(value/1000000000.0, decimalPrecision) + " " + GetLocale("ABBREVIATION_BILLION")
+		End Select
 
 		'add thousands-delimiter: 10000 = 10.000
-		return LocalizedDottedValue(value, digitsAfterDecimalPoint)
+		return LocalizedDottedValue(value, decimalPrecision)
     End Function
 
 End Type
