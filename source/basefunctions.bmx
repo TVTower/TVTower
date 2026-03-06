@@ -1,142 +1,11 @@
 SuperStrict
-Import brl.pngloader
-Import "Dig/base.util.rectangle.bmx"
-Import "Dig/base.util.input.bmx"
+Import Brl.Max2D
+Import Collections.ArrayList
+Import Math.Vector
 Import "Dig/base.util.localization.bmx"
-Import "Dig/base.util.xmlhelper.bmx"
-Import "Dig/base.util.helper.bmx"
+Import "Dig/base.util.vector.bmx"
+Import "Dig/base.util.rectangle.bmx"
 Import "Dig/base.util.string.bmx"
-
-'Import "external/zipengine.mod/zipengine.bmx"
-Import brl.reflection
-?Threaded
-Import Brl.threads
-?
-'Import bah.libxml
-?bmxng
-Import "Dig/external/persistence.mod/persistence_mxml.bmx"
-?not bmxng
-Import "Dig/external/persistence.mod/persistence.bmx"
-?
-Import "Dig/base.util.mersenne.bmx"
-
-
-
-Type TNumberCurveValue
-	Field _value:Int
-
-	Function Create:TNumberCurveValue(number:Int = 0)
-		Local obj:TNumberCurveValue = New TNumberCurveValue
-		obj._value = number
-		Return obj
-	End Function
-End Type
-
-
-Type TNumberCurve
-	Field _values:TList[]
-	Field _ratio:Float[]
-	Field _amount:Int = 100
-
-	Function Create:TNumberCurve(curves:Int = 1, amount:Int = 0)
-		Local obj:TNumberCurve = New TNumberCurve
-		obj._values = obj._values[..Curves + 1]
-		obj._ratio = obj._ratio[..Curves + 1]
-		For Local i:Int = 1 To Curves
-			obj._values[i] = CreateList()
-		Next
-		Return obj
-	End Function
-
-	Method SetCurveRatio(curve:Int = 1, ratio:Float = 1.0)
-		Self._ratio[curve] = ratio
-	End Method
-
-	Method AddNumber(curve:Int = 1, number:Int = 0)
-		If Self._values.Length <= curve
-			Self._values[curve].AddLast(TNumberCurveValue.Create(number))
-			'remove first if over _amount
-			For Local i:Int = 0 To (Self._values[curve].Count() - _amount)
-				Self._values[curve].RemoveFirst()
-			Next
-		EndIf
-	End Method
-
-	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		SetAlpha 0.5
-		SetColor 255, 255, 255
-		DrawRect(x, y, w, h)
-		SetAlpha 1.0
-
-		'find out max value
-		Local curvescount:Int = Self._values.Length
-		Local maxvalue:Int[curvescount]
-		For Local i:Int = 0 To curvescount - 1
-			maxvalue[i] = 0
-			For Local number:TNumberCurveValue = EachIn Self._values[i]
-				If number._value > maxvalue[i] Then maxvalue[i] = number._value
-			Next
-			'Set each ratio
-			If maxvalue[i] > 0
-				Self._ratio[i] = h / maxvalue[i]
-			Else
-				Self._ratio[i] = 1.0
-			EndIf
-			Self._ratio[i] = Self._ratio[i] * 0.75 'don't be at the top each time, 3/4 of height is enough
-		Next
-
-		Local base:Float = y + h
-
-		'draw
-		For Local i:Int = 0 To curvescount - 1
-			Local dx:Float = 0.0
-			Local lastdx:Float = -1
-			Local lastpoint:Float = Null
-			If i = 0 Then SetColor 0, 255, 0
-			If i = 1 Then SetColor 255, 0, 0
-			If i = 2 Then SetColor 0, 0, 255
-
-			For Local number:TNumberCurveValue = EachIn Self._values[i]
-				Local point:Float = base - number._value * Self._ratio[i]
-				If lastpoint = Null Then lastpoint = point
-				DrawLine(x + Max(lastdx, 0), base - lastpoint, x + dx, base - point, True)
-				lastdx = + 1
-				dx = + 1
-			Next
-		Next
-
-	End Method
-End Type
-
-
-
-
-Function MergeLists:TList(a:TList,b:TList)
-	Local list:TList = a.copy()
-	For Local obj:Object = EachIn b
-		list.addLast(obj)
-	Next
-	Return list
-End Function
-
-
-
-Function RequestFromUrl:String(myurl:String)
-	Local myip:TStream    = ReadStream(myurl$)	'Now we gonna open the requested URL to read
-	Local ipstring:String	= ""				'var to store the string returned by the php script
-	'Successfully opened the requested URL?
-	If Not myip 								'If not then we let the user know
-	  ipstring$ = "Error"
-	Else 										'If yes then we read all that our script has for us
-	  While Not Eof(myip)
-		ipstring$ :+ ReadLine(myip) 			'And store the output line by line
-	  Wend
-	EndIf
-	CloseStream myip							'Don't forget to close the opened stream in the end!
-	Return ipstring$							'Just return what we've got
-End Function
-
-
 
 'collection of useful functions
 Type TFunctions
@@ -145,8 +14,8 @@ Type TFunctions
 	Global decimalDelimiter:String="."
 	Global currencyPosition:Int = 0
 	Const CURRENCYSIGN:String = Chr(8364) 'eurosign
-	
-	
+
+
 	'base/targetWidth of 0 leads to a triangle
 	Function DrawBaseTargetRect(baseX:Float, baseY:Float, targetX:Float, targetY:Float, baseWidth:Int = 0, targetWidth:Int = 0)
 		rem
