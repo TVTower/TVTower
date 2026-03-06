@@ -204,88 +204,27 @@ Type MathHelper
 	'convert a double to a string
 	'double is rounded to the requested amount of digits after comma
 	Function NumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
-		Local pow:Int = 10
-		For Local i:Int = 1 Until digitsAfterDecimalPoint
-			pow :* 10
-		Next
-		'slower than the loop!
-		'local pow:int = int(10 ^ digitsAfterDecimalPoint)
-
-		'bring all decimals in front of the dot, add 0.5 to "round"
-		'divide "back" the rounded value
-		Local tmp:Double = (number * pow + Sgn(number) * 0.5) / pow
-
-		'find dot - and keep "digitsAfterDecimalPoint" numbers afterwards
-		Local dotPos:Int = String(Long(tmp)).length  '+1
-		If tmp < 0 Then dotPos :+ 1
-		Local s:String = String(tmp)[.. dotPos + 1 + digitsAfterDecimalPoint]
-		's = _StrLeft(string(tmp), dotPos + 1 + digitsAfterDecimalPoint)
-
-		'remove 0s? 1.23000 => 1.23, 1.00 = 1
-		If truncateZeros
-			While s<>"" And _StrRight(s, 1) = "0"
-				s = s[.. s.length-1]
-			Wend
-			'only "xx." left?
-			If _StrRight(s, 1) = "." Then s = s[.. s.length-1]
-		EndIf
-		Return s
+		Return .NumberToString(number, digitsAfterDecimalPoint, truncateZeros, Asc("."))
 	End Function
 
 
 	'formats a given value from "123000,12" to "123.000,12"
 	'optimized variant
-	Function DottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:Int = -1)
-		Local result:String
-		Local decimalValue:String
-
-		'only process decimals when requested
-		If digitsAfterDecimalPoint > 0
-			Local stringValues:String[] = String(Abs(value)).Split(".")
-			Local fractionalValue:String = ""
-			decimalValue = stringValues[0]
-			If stringValues.length > 1 Then fractionalValue = stringValues[1]
-
-			'do we even have a fractionalValue <> ".000" ?
-			If Long(fractionalValue) > 0
-				'not rounded, just truncated
-				fractionalValue = _StrLeft(fractionalValue, digitsAfterDecimalPoint)
-				result :+ decimalDelimiter + fractionalValue
-			EndIf
-		Else
-			decimalValue = String(Abs(Long(value)))
-		EndIf
-
-
-		For Local i:Int = decimalValue.length-1 To 0 Step -1
-			result = Chr(decimalValue[i]) + result
-
-			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0
-				result = thousandsDelimiter + result
-			EndIf
-		Next
-
-		'is there a "minus" in front ?
-		If value < 0
-			Return "-" + result
-		Else
-			Return result
-		EndIf
+	'compared to NumberToString "truncateZeros" defaults to TRUE here!
+	Function DottedValue:String(value:Double, thousandsSeparatorChar:Int=Asc(","), decimalSeparatorChar:Int=Asc("."), decimals:Int = 0, truncateZeros:Int = True)
+		Return .NumberToDottedValue(value, thousandsSeparatorChar, decimalSeparatorChar, decimals, truncateZeros)
 	End Function
 
 
 	'round to an integer value
 	Function RoundInt:Int(f:Float)
-		'http://www.blitzbasic.com/Community/posts.php?topic=92064
 	    Return f + 0.5 * Sgn(f)
 	End Function
 
 
 	'round to an Long value
-	Function RoundLong:Long(f:Double)
-		'http://www.blitzbasic.com/Community/posts.php?topic=92064
-	    Return f + 0.5 * Sgn(f)
+	Function RoundLong:Long(d:Double)
+	    Return d + 0.5 * Sgn(d)
 	End Function
 
 

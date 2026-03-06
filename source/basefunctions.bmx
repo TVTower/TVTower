@@ -268,49 +268,20 @@ Type TFunctions
 
 	'formats a given value from "123000,12" to "123.000,12"
 	'using grouping and separator according to localization
-	Function LocalizedDottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1)
-		return MathHelper.DottedValue(value, thousandsDelimiter, decimalDelimiter, digitsAfterDecimalPoint)
+	'compared to LocalizedNumberToString "truncateZeros" defaults to TRUE here!
+	Function LocalizedDottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1, truncateZeros:Int = True)
+		Local thousandsSeparatorChar:Int = 0 'none
+		Local decimalSeparatorChar:Int = Asc(".")
+		if thousandsDelimiter.length Then thousandsSeparatorChar = thousandsDelimiter[0]
+		if decimalDelimiter.length Then decimalSeparatorChar = decimalDelimiter[0]
+		return MathHelper.DottedValue(value, thousandsSeparatorChar, decimalSeparatorChar, digitsAfterDecimalPoint, truncateZeros)
 	End Function
+
 
 	Function LocalizedNumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
-		If decimalDelimiter = "."
-			Return MathHelper.NumberToString(number, digitsAfterDecimalPoint, truncateZeros)
-		Else
-			Return MathHelper.NumberToString(number, digitsAfterDecimalPoint, truncateZeros).replace(".", decimalDelimiter)
-		EndIf
-	End Function
-
-	Function dottedValue_OLD:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
-		'is there a "minus" in front ?
-		Local addSign:String = ""
-		If value < 0 Then addSign="-"
-
-		Local stringValue:String = String(Abs(value))
-		'find out amount of digits before decimal point
-		Local length:Int = String(Abs(Long(value))).length
-		'add 2 to length, as this contains the "." delimiter
-		Local fractionalValue:String = Mid(stringValue, length+2, -1)
-		Local decimalValue:String = Left(stringValue, length)
-		Local result:String = ""
-
-		'do we have a fractionalValue <> ".000" ?
-		If Long(fractionalValue) > 0
-			if digitsAfterDecimalPoint > 0
-				'not rounded, just truncated
-				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
-				result :+ decimalDelimiter + fractionalValue
-			endif
-		endif
-
-		For Local i:Int = decimalValue.length-1 To 0 Step -1
-			result = Chr(decimalValue[i]) + result
-
-			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0
-				result = thousandsDelimiter + result
-			EndIf
-		Next
-		Return addSign+result
+		Local decimalSeparatorChar:Int = Asc(".")
+		if decimalDelimiter.length Then decimalSeparatorChar = decimalDelimiter[0]
+		Return NumberToString(number, digitsAfterDecimalPoint, truncateZeros, decimalSeparatorChar)
 	End Function
 
 
