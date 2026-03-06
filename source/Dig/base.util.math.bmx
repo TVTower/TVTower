@@ -38,8 +38,9 @@ SuperStrict
 Import "base.util.math.c"
 
 Extern "C"
-    Function NumberToString:String(value:Double, decimals:Int, truncateZeros:Int = False, decimalSeparatorChar:Int = Asc("."))
-    Function NumberToDottedValue:String(value:Double, thousandsSeparatorChar:Int = Asc("."), decimalSeparatorChar:Int = Asc(","), decimals:Int = 0, truncateZeros:Int = False)
+    Function digNumberToString:String(value:Double, decimalPrecision:Int, truncateZeros:Int = False, decimalSeparatorChar:Int = Asc("."))
+    Function digNumberToDottedValue:String(value:Double, thousandsSeparatorChar:Int = Asc("."), decimalSeparatorChar:Int = Asc(","), decimalPrecision:Int = 0, truncateZeros:Int = True)
+    Function digLongDigitCount:Int(value:Long)
 End Extern
 
 
@@ -203,16 +204,21 @@ Type MathHelper
 
 	'convert a double to a string
 	'double is rounded to the requested amount of digits after comma
-	Function NumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
-		Return .NumberToString(number, digitsAfterDecimalPoint, truncateZeros, Asc("."))
+	Function NumberToString:String(number:Double, decimalPrecision:Int = 2, truncateZeros:Int = False, decimalSeparatorChar:Int = Asc("."))
+		Return digNumberToString(number, decimalPrecision, truncateZeros, decimalSeparatorChar)
 	End Function
 
 
 	'formats a given value from "123000,12" to "123.000,12"
 	'optimized variant
 	'compared to NumberToString "truncateZeros" defaults to TRUE here!
-	Function DottedValue:String(value:Double, thousandsSeparatorChar:Int=Asc(","), decimalSeparatorChar:Int=Asc("."), decimals:Int = 0, truncateZeros:Int = True)
-		Return .NumberToDottedValue(value, thousandsSeparatorChar, decimalSeparatorChar, decimals, truncateZeros)
+	Function DottedValue:String(value:Double, thousandsSeparatorChar:Int=Asc(","), decimalSeparatorChar:Int=Asc("."), decimalPrecision:Int = 0, truncateZeros:Int = True)
+		Return digNumberToDottedValue(value, thousandsSeparatorChar, decimalSeparatorChar, decimalPrecision, truncateZeros)
+	End Function
+	
+	
+	Function LongDigitCount:Int(value:Long)
+		Return digLongDigitCount(value)
 	End Function
 
 

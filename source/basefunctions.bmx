@@ -145,19 +145,19 @@ Type TFunctions
 	'formats a given value from "123000,12" to "123.000,12"
 	'using grouping and separator according to localization
 	'compared to LocalizedNumberToString "truncateZeros" defaults to TRUE here!
-	Function LocalizedDottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1, truncateZeros:Int = True)
+	Function LocalizedDottedValue:String(value:Double, decimalPrecision:int = -1, truncateZeros:Int = True)
 		Local thousandsSeparatorChar:Int = 0 'none
 		Local decimalSeparatorChar:Int = Asc(".")
 		if thousandsDelimiter.length Then thousandsSeparatorChar = thousandsDelimiter[0]
 		if decimalDelimiter.length Then decimalSeparatorChar = decimalDelimiter[0]
-		return MathHelper.DottedValue(value, thousandsSeparatorChar, decimalSeparatorChar, digitsAfterDecimalPoint, truncateZeros)
+		return MathHelper.DottedValue(value, thousandsSeparatorChar, decimalSeparatorChar, decimalPrecision, truncateZeros)
 	End Function
 
 
-	Function LocalizedNumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
+	Function LocalizedNumberToString:String(number:Double, decimalPrecision:Int = 2, truncateZeros:Int = False)
 		Local decimalSeparatorChar:Int = Asc(".")
 		if decimalDelimiter.length Then decimalSeparatorChar = decimalDelimiter[0]
-		Return NumberToString(number, digitsAfterDecimalPoint, truncateZeros, decimalSeparatorChar)
+		Return MathHelper.NumberToString(number, decimalPrecision, truncateZeros, decimalSeparatorChar)
 	End Function
 
 
@@ -187,11 +187,10 @@ Type TFunctions
 
 		'find out amount of digits before decimal point
 		Local longValue:Long = Long(value)
-		Local length:Int = String(longValue).length
+		'this does NOT count "-" in negative numbers as digit!
+		Local length:Int = MathHelper.LongDigitCount(longValue)
 		'avoid problems with "0.000" being shown as "-21213234923"
 		If value = 0 Then longValue = 0;length = 1
-		'do not count negative signs.
-		If longValue < 0 Then length:-1
 
 		'automatically
 		If typ=0
