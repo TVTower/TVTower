@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-2026 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -35,6 +35,12 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
+Import "base.util.math.c"
+
+Extern "C"
+    Function NumberToString:String(value:Double, decimals:Int, truncateZeros:Int = False, decimalSeparatorChar:Int = Asc("."))
+    Function NumberToDottedValue:String(value:Double, thousandsSeparatorChar:Int = Asc("."), decimalSeparatorChar:Int = Asc(","), decimals:Int = 0, truncateZeros:Int = False)
+End Extern
 
 
 
@@ -288,11 +294,6 @@ Type MathHelper
 		If number = 0 Then Return 0
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
 		Return RoundLong(number * t) / Double(t)
-	End Function
-
-
-	Function hex2dec:Int(hexString:String)
-		Return hexString.ToInt()
 	End Function
 	
 	
