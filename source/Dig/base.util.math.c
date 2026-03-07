@@ -57,7 +57,7 @@ static const char DIGITS[201] =
 "90919293949596979899";
 
 /* --- internal function --- */
-static size_t NumberToBuffer(double value, int decimals, int truncateZeros, int decimalSeparatorChar, char* buffer) {
+static size_t digNumberToBuffer(double value, int decimals, int truncateZeros, int decimalSeparatorChar, char* buffer) {
 	if (decimals < 0) decimals = 0;
 	if (decimals > 8) decimals = 8;
 	const int64_t pow = POW10[decimals];
@@ -143,9 +143,9 @@ static size_t NumberToBuffer(double value, int decimals, int truncateZeros, int 
 }
 
 
-BBString* NumberToString(double value, int decimals, int truncateZeros, int decimalSeparatorChar) {
+BBString* digNumberToString(double value, int decimals, int truncateZeros, int decimalSeparatorChar) {
 	char tmp[64];
-	size_t sz = NumberToBuffer(value, decimals, truncateZeros, decimalSeparatorChar, tmp);
+	size_t sz = digNumberToBuffer(value, decimals, truncateZeros, decimalSeparatorChar, tmp);
 	BBString* str = bbStringNew(sz);
 	for (size_t i = 0; i < sz; i++) {
 		str->buf[i] = (BBChar)tmp[i];
@@ -154,9 +154,9 @@ BBString* NumberToString(double value, int decimals, int truncateZeros, int deci
 }
 
 
-BBString* NumberToDottedValue(double value, int thousandsSeparatorChar, int decimalSeparatorChar, int decimals, int truncateZeros){
+BBString* digNumberToDottedValue(double value, int thousandsSeparatorChar, int decimalSeparatorChar, int decimals, int truncateZeros){
 	char tmp[64];
-	size_t len = NumberToBuffer(value, decimals, truncateZeros, decimalSeparatorChar, tmp);
+	size_t len = digNumberToBuffer(value, decimals, truncateZeros, decimalSeparatorChar, tmp);
 
 	/* Count amount of required thousands separators */
 	size_t intLen = 0;
@@ -195,3 +195,31 @@ BBString* NumberToDottedValue(double value, int thousandsSeparatorChar, int deci
 
 	return str;
 }
+
+
+
+/* return amount of digits for the given Long */
+int digLongDigitCount(int64_t v){
+	uint64_t x = (v < 0) ? (uint64_t)(-(int64_t)v) : (uint64_t)v;
+
+	if (x >= 1000000000000000000ULL) return 19;
+	if (x >= 100000000000000000ULL)  return 18;
+	if (x >= 10000000000000000ULL)   return 17;
+	if (x >= 1000000000000000ULL)    return 16;
+	if (x >= 100000000000000ULL)     return 15;
+	if (x >= 10000000000000ULL)      return 14;
+	if (x >= 1000000000000ULL)       return 13;
+	if (x >= 100000000000ULL)        return 12;
+	if (x >= 10000000000ULL)         return 11;
+	if (x >= 1000000000ULL)          return 10;
+	if (x >= 100000000ULL)           return 9;
+	if (x >= 10000000ULL)            return 8;
+	if (x >= 1000000ULL)             return 7;
+	if (x >= 100000ULL)              return 6;
+	if (x >= 10000ULL)               return 5;
+	if (x >= 1000ULL)                return 4;
+	if (x >= 100ULL)                 return 3;
+	if (x >= 10ULL)                  return 2;
+	return 1;
+}
+

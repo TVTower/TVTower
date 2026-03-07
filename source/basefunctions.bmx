@@ -1,142 +1,11 @@
 SuperStrict
-Import brl.pngloader
-Import "Dig/base.util.rectangle.bmx"
-Import "Dig/base.util.input.bmx"
+Import Brl.Max2D
+Import Collections.ArrayList
+Import Math.Vector
 Import "Dig/base.util.localization.bmx"
-Import "Dig/base.util.xmlhelper.bmx"
-Import "Dig/base.util.helper.bmx"
+Import "Dig/base.util.vector.bmx"
+Import "Dig/base.util.rectangle.bmx"
 Import "Dig/base.util.string.bmx"
-
-'Import "external/zipengine.mod/zipengine.bmx"
-Import brl.reflection
-?Threaded
-Import Brl.threads
-?
-'Import bah.libxml
-?bmxng
-Import "Dig/external/persistence.mod/persistence_mxml.bmx"
-?not bmxng
-Import "Dig/external/persistence.mod/persistence.bmx"
-?
-Import "Dig/base.util.mersenne.bmx"
-
-
-
-Type TNumberCurveValue
-	Field _value:Int
-
-	Function Create:TNumberCurveValue(number:Int = 0)
-		Local obj:TNumberCurveValue = New TNumberCurveValue
-		obj._value = number
-		Return obj
-	End Function
-End Type
-
-
-Type TNumberCurve
-	Field _values:TList[]
-	Field _ratio:Float[]
-	Field _amount:Int = 100
-
-	Function Create:TNumberCurve(curves:Int = 1, amount:Int = 0)
-		Local obj:TNumberCurve = New TNumberCurve
-		obj._values = obj._values[..Curves + 1]
-		obj._ratio = obj._ratio[..Curves + 1]
-		For Local i:Int = 1 To Curves
-			obj._values[i] = CreateList()
-		Next
-		Return obj
-	End Function
-
-	Method SetCurveRatio(curve:Int = 1, ratio:Float = 1.0)
-		Self._ratio[curve] = ratio
-	End Method
-
-	Method AddNumber(curve:Int = 1, number:Int = 0)
-		If Self._values.Length <= curve
-			Self._values[curve].AddLast(TNumberCurveValue.Create(number))
-			'remove first if over _amount
-			For Local i:Int = 0 To (Self._values[curve].Count() - _amount)
-				Self._values[curve].RemoveFirst()
-			Next
-		EndIf
-	End Method
-
-	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		SetAlpha 0.5
-		SetColor 255, 255, 255
-		DrawRect(x, y, w, h)
-		SetAlpha 1.0
-
-		'find out max value
-		Local curvescount:Int = Self._values.Length
-		Local maxvalue:Int[curvescount]
-		For Local i:Int = 0 To curvescount - 1
-			maxvalue[i] = 0
-			For Local number:TNumberCurveValue = EachIn Self._values[i]
-				If number._value > maxvalue[i] Then maxvalue[i] = number._value
-			Next
-			'Set each ratio
-			If maxvalue[i] > 0
-				Self._ratio[i] = h / maxvalue[i]
-			Else
-				Self._ratio[i] = 1.0
-			EndIf
-			Self._ratio[i] = Self._ratio[i] * 0.75 'don't be at the top each time, 3/4 of height is enough
-		Next
-
-		Local base:Float = y + h
-
-		'draw
-		For Local i:Int = 0 To curvescount - 1
-			Local dx:Float = 0.0
-			Local lastdx:Float = -1
-			Local lastpoint:Float = Null
-			If i = 0 Then SetColor 0, 255, 0
-			If i = 1 Then SetColor 255, 0, 0
-			If i = 2 Then SetColor 0, 0, 255
-
-			For Local number:TNumberCurveValue = EachIn Self._values[i]
-				Local point:Float = base - number._value * Self._ratio[i]
-				If lastpoint = Null Then lastpoint = point
-				DrawLine(x + Max(lastdx, 0), base - lastpoint, x + dx, base - point, True)
-				lastdx = + 1
-				dx = + 1
-			Next
-		Next
-
-	End Method
-End Type
-
-
-
-
-Function MergeLists:TList(a:TList,b:TList)
-	Local list:TList = a.copy()
-	For Local obj:Object = EachIn b
-		list.addLast(obj)
-	Next
-	Return list
-End Function
-
-
-
-Function RequestFromUrl:String(myurl:String)
-	Local myip:TStream    = ReadStream(myurl$)	'Now we gonna open the requested URL to read
-	Local ipstring:String	= ""				'var to store the string returned by the php script
-	'Successfully opened the requested URL?
-	If Not myip 								'If not then we let the user know
-	  ipstring$ = "Error"
-	Else 										'If yes then we read all that our script has for us
-	  While Not Eof(myip)
-		ipstring$ :+ ReadLine(myip) 			'And store the output line by line
-	  Wend
-	EndIf
-	CloseStream myip							'Don't forget to close the opened stream in the end!
-	Return ipstring$							'Just return what we've got
-End Function
-
-
 
 'collection of useful functions
 Type TFunctions
@@ -145,8 +14,8 @@ Type TFunctions
 	Global decimalDelimiter:String="."
 	Global currencyPosition:Int = 0
 	Const CURRENCYSIGN:String = Chr(8364) 'eurosign
-	
-	
+
+
 	'base/targetWidth of 0 leads to a triangle
 	Function DrawBaseTargetRect(baseX:Float, baseY:Float, targetX:Float, targetY:Float, baseWidth:Int = 0, targetWidth:Int = 0)
 		rem
@@ -217,26 +86,33 @@ Type TFunctions
 
 
 	Function RoundToBeautifulValue:Long(value:Double)
-		'dev
 		If Not roundToBeautifulEnabled Then Return value
 
-		If value = 0 Then Return 0
-		If value <= 25 Then Return 25
-		If value <= 50 Then Return 50
-		If value <= 75 Then Return 75
-		If value <= 100 Then Return 100
-		'102 /50 = 2 mod 2 = 0 -> un/gerade
-		If value <= 1000 Then Return Ceil(value / 100.0)*100 'bisher 250
-		If value <= 5000 Then Return Ceil(value / 250.0)*250 'bisher 500
-		If value <= 10000 Then Return Ceil(value / 500.0)*500 'bisher 1.000
-		If value <= 50000 Then Return Ceil(value / 1000.0)*1000 'bisher 2.500
-		If value <= 100000 Then Return Ceil(value / 5000.0)*5000 'bisher 10.000
-		If value <= 500000 Then Return Ceil(value / 10000.0)*10000 'bisher 25.000
-		If value <= 1000000 Then Return Ceil(value / 25000.0)*25000 'bisher 250.000
-		If value <= 2500000 Then Return Ceil(value / 100000.0)*100000 'bisher --
-		If value <= 5000000 Then Return Ceil(value / 250000.0)*250000 'bisher --
-		'>5.000.0000 in steps of 1 million
-		Return Ceil(value / 1000000.0)*1000000
+		Local sign:Int = 1
+		Local absValue:Double = value
+		If value < 0
+			sign = -1
+			absValue = -value
+		End If
+
+		If absValue = 0 Then Return 0
+		If absValue <= 25      Then Return sign * 25
+		If absValue <= 50      Then Return sign * 50
+		If absValue <= 75      Then Return sign * 75
+		If absValue <= 100     Then Return sign * 100
+
+		If absValue <= 1000    Then Return sign * Ceil(absValue / 100.0   ) * 100
+		If absValue <= 5000    Then Return sign * Ceil(absValue / 250.0   ) * 250
+		If absValue <= 10000   Then Return sign * Ceil(absValue / 500.0   ) * 500
+		If absValue <= 50000   Then Return sign * Ceil(absValue / 1000.0  ) * 1000
+		If absValue <= 100000  Then Return sign * Ceil(absValue / 5000.0  ) * 5000
+		If absValue <= 500000  Then Return sign * Ceil(absValue / 10000.0 ) * 10000
+		If absValue <= 1000000 Then Return sign * Ceil(absValue / 25000.0 ) * 25000
+		If absValue <= 2500000 Then Return sign * Ceil(absValue / 100000.0) * 100000
+		If absValue <= 5000000 Then Return sign * Ceil(absValue / 250000.0) * 250000
+
+		' >5.000.000 in steps of 1 million
+		Return sign * Ceil(absValue / 1000000.0) * 1000000
 	End Function
 
 
@@ -268,61 +144,35 @@ Type TFunctions
 
 	'formats a given value from "123000,12" to "123.000,12"
 	'using grouping and separator according to localization
-	Function LocalizedDottedValue:String(value:Double, digitsAfterDecimalPoint:int = -1)
-		return MathHelper.DottedValue(value, thousandsDelimiter, decimalDelimiter, digitsAfterDecimalPoint)
+	'compared to LocalizedNumberToString "truncateZeros" defaults to TRUE here!
+	Function LocalizedDottedValue:String(value:Double, decimalPrecision:int = -1, truncateZeros:Int = True)
+		Local thousandsSeparatorChar:Int = 0 'none
+		Local decimalSeparatorChar:Int = Asc(".")
+		if thousandsDelimiter.length Then thousandsSeparatorChar = thousandsDelimiter[0]
+		if decimalDelimiter.length Then decimalSeparatorChar = decimalDelimiter[0]
+		return MathHelper.DottedValue(value, thousandsSeparatorChar, decimalSeparatorChar, decimalPrecision, truncateZeros)
 	End Function
 
-	Function LocalizedNumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
-		If decimalDelimiter = "."
-			Return MathHelper.NumberToString(number, digitsAfterDecimalPoint, truncateZeros)
-		Else
-			Return MathHelper.NumberToString(number, digitsAfterDecimalPoint, truncateZeros).replace(".", decimalDelimiter)
-		EndIf
-	End Function
 
-	Function dottedValue_OLD:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
-		'is there a "minus" in front ?
-		Local addSign:String = ""
-		If value < 0 Then addSign="-"
-
-		Local stringValue:String = String(Abs(value))
-		'find out amount of digits before decimal point
-		Local length:Int = String(Abs(Long(value))).length
-		'add 2 to length, as this contains the "." delimiter
-		Local fractionalValue:String = Mid(stringValue, length+2, -1)
-		Local decimalValue:String = Left(stringValue, length)
-		Local result:String = ""
-
-		'do we have a fractionalValue <> ".000" ?
-		If Long(fractionalValue) > 0
-			if digitsAfterDecimalPoint > 0
-				'not rounded, just truncated
-				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
-				result :+ decimalDelimiter + fractionalValue
-			endif
-		endif
-
-		For Local i:Int = decimalValue.length-1 To 0 Step -1
-			result = Chr(decimalValue[i]) + result
-
-			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0
-				result = thousandsDelimiter + result
-			EndIf
-		Next
-		Return addSign+result
+	Function LocalizedNumberToString:String(number:Double, decimalPrecision:Int = 2, truncateZeros:Int = False)
+		Local decimalSeparatorChar:Int = Asc(".")
+		if decimalDelimiter.length Then decimalSeparatorChar = decimalDelimiter[0]
+		Return MathHelper.NumberToString(number, decimalPrecision, truncateZeros, decimalSeparatorChar)
 	End Function
 
 
 	'converts a value in a way that it shows as much digits as needed to
 	'distinguish between value and compareValue
-	Function ConvertCompareValue:String(value:Double, compareValue:Double, digitsAfterDecimalPoint:Int=2, delimeter:String=",")
-		If value = compareValue Then Return ConvertValue(value, digitsAfterDecimalPoint, 0, delimeter)
+	Function ConvertCompareValue:String(value:Double, compareValue:Double, decimalPrecision:Int = 2)
+		If decimalPrecision < 0 Then decimalPrecision = 0
+		If decimalPrecision > 10 Then decimalPrecision = 10
+
+		If value = compareValue Then Return ConvertValue(value, decimalPrecision, 0)
 
 		Local valueS:String
-		For local i:int = digitsAfterDecimalPoint to 10
-			valueS = ConvertValue(value, i, 0, delimeter)
-			If valueS <> ConvertValue(compareValue, i, 0, delimeter)
+		For local i:int = decimalPrecision to 10
+			valueS = ConvertValue(value, i, 0)
+			If valueS <> ConvertValue(compareValue, i, 0)
 				return valueS
 			EndIf
 		Next
@@ -331,35 +181,44 @@ Type TFunctions
 
 
 	'formats a value: 1000400 = 1,0 Mio
-	Function convertValue:String(value:Double, digitsAfterDecimalPoint:Int=2, typ:Int=0, delimeter:String=",")
-		typ = MathHelper.Clamp(typ, 0,3)
-      ' typ 1: 250000 = 250Tsd
-      ' typ 2: 250000 = 0,25Mio
-      ' typ 3: 250000 = 0,0Mrd
-      ' typ 0: 250000 = 0,25Mio (automatically)
+	Function convertValue:String(value:Double, decimalPrecision:Int=2, convertFormat:Int = 0)
+		convertFormat = MathHelper.Clamp(convertFormat, 0, 3)
+		' convertFormat 1: 250000 = 250Tsd
+		' convertFormat 2: 250000 = 0,25Mio
+		' convertFormat 3: 250000 = 0,0Mrd
+		' convertFormat 0: 250000 = 0,25Mio (automatically)
+
+		If decimalPrecision < 0 Then decimalPrecision = 0
+		If decimalPrecision > 10 Then decimalPrecision = 10
+
 
 		'find out amount of digits before decimal point
 		Local longValue:Long = Long(value)
-		Local length:Int = String(longValue).length
+		'this does NOT count "-" in negative numbers as digit!
+		Local length:Int = MathHelper.LongDigitCount(longValue)
 		'avoid problems with "0.000" being shown as "-21213234923"
 		If value = 0 Then longValue = 0;length = 1
-		'do not count negative signs.
-		If longValue < 0 Then length:-1
 
 		'automatically
-		If typ=0
-			If length < 10 And length >= 7 Then typ=2
-			If length >= 10 Then typ=3
+		If convertFormat = 0
+			If length < 10 And length >= 7
+				convertFormat = 2
+			ElseIf length >= 10 
+				convertFormat = 3
+			EndIf
 		EndIf
-		'250000 = 250Tsd -> divide by 1000
-		If typ=1 Then Return LocalizedNumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
-		'250000 = 0,25Mio -> divide by 1000000
-		If typ=2 Then Return LocalizedNumberToString(value/1000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_MILLION")
-		'250000 = 0,0Mrd -> divide by 1000000000
-		If typ=3 Then Return LocalizedNumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
+		
+		Select convertFormat
+			Case 1 '250000 = 250Tsd -> divide by 1000
+				Return LocalizedNumberToString(value/1000.0, 0) + " " + GetLocale("ABBREVIATION_THOUSAND")
+			Case 2 '250000 = 0,25Mio -> divide by 1000000
+				Return LocalizedNumberToString(value/1000000.0, decimalPrecision) + " " + GetLocale("ABBREVIATION_MILLION")
+			Case 3 '250000 = 0,0Mrd -> divide by 1000000000
+				Return LocalizedNumberToString(value/1000000000.0, decimalPrecision) + " " + GetLocale("ABBREVIATION_BILLION")
+		End Select
 
 		'add thousands-delimiter: 10000 = 10.000
-		return LocalizedDottedValue(value, digitsAfterDecimalPoint)
+		return LocalizedDottedValue(value, decimalPrecision)
     End Function
 
 End Type
