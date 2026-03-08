@@ -7241,7 +7241,7 @@ endrem
 			For Local playerID:Int = 1 To 4
 				Local text:String[] = TDebugScreenPage_Misc.GetInstance().GetPlayerFinanceOverviewText(playerID, day - 1)
 				For Local s:String = EachIn text
-					TLogger.Log("OnDay Financials", s, LOG_DEBUG)
+					TLogger.Log("",s, LOG_DEBUG)
 				Next
 			Next
 		EndIf

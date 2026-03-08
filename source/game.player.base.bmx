@@ -460,7 +460,7 @@ endrem
 	End Method
 
 
-	Method GetBankruptcyTime:int(bankruptcyNumber:int=0)
+	Method GetBankruptcyTime:Long(bankruptcyNumber:int=0)
 		if bankruptcyNumber < 1 or bankruptcyTimes.length < bankruptcyNumber then return -1
 
 		return bankruptcyTimes[bankruptcyNumber-1]
