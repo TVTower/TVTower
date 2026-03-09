@@ -317,7 +317,7 @@ Tylko od ${brand_swingline}.</pl>
 			</description>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
-			<availability year_range_from="1991" />
+			<availability year_range_from="1991" year_range_to="2010" />
 		</ad>
 		<ad guid="8c75167f-7155-45ba-9594-8b4fbdfd673c" creator="9551" wikidata_id="Q5507056" comment="2011- | as in https://en.wikipedia.org/wiki/Idiocracy">
 			<title>

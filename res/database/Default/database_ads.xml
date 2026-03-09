@@ -739,7 +739,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 		</ad>
 		<ad guid="a401f20f-8832-45df-a274-2599fd8d0afb" wikidata_id="Q1019155" comment="'Berliner Pilsener' previously used in clear text but it's a real brand | 'Brandenburger Pilsener' also a real brand">
 			<title>
-				<all>${brand_berlinerpilsener}</all>
+				<all>${brand_berlinerpilsner}</all>
 			</title>
 			<description>
 				<de>Berlin, du bist so wunderbar!</de>
@@ -1459,7 +1459,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" infomercial_profit="50" fix_infomercial_profit="1" />
-			<availability year_range_from="1997" year_range_to="2008" />
+			<availability year_range_from="1997" year_range_to="-1" />
 		</ad>
 		<ad guid="ronny-ad-allhits-01" creator="5578" created_by="Ronny">
 			<title>
