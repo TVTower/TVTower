@@ -6960,7 +6960,7 @@
 		<news guid="8556c7e0-3314-449c-992e-db18e1627c53" type="0" creator="9551">
 			<title>
 				<de>Lichtshow ${insistinechapel}</de>
-				<en>Light show held in ${insistinechapel}</en>
+				<en>Light show held ${insistinechapel}</en>
 				<pl>Pokaz świetlny ${insistinechapel}</pl>
 			</title>
 			<description>

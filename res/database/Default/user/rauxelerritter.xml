@@ -281,7 +281,7 @@
 				<job index="3" function="64" required="1" person="${personguid}" />
 			</jobs>
 			<data flags="0" flags_optional="0" target_groups="68" /> <!-- Zielgruppe Rentner und Hausfrauen, Kultur: nein -->
-			<targetgroupattractivity men="0.5" /> <!-- Malus: Männer -->
+			<targetgroupattractivity men="0.5" managers="0.5" /> <!-- Malus: Männer, Manager -->
 			<genres maingenre="6" subgenres="301" /> <!-- Doku / Boulevard -->
 			<blocks value="2" />
 			<price min="50000" max="100000" />

@@ -407,7 +407,7 @@
 			<availability year_range_from="2003" />
 		</ad>
 
-		<ad guid="21b1952e-22d9-4055-a913-092b6b458cfd" wikidata_id="Q1602741" comment="1980 - 2002 | Product: Highscreen">
+		<ad guid="8d9484bd-d86b-4643-be1f-cb68d09a0a89" wikidata_id="Q1602741" comment="1980 - 1994 | Product: Highscreen">
 			<title>
 				<all>${brand_highscreen}</all>
 			</title>
@@ -418,10 +418,22 @@
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="2" duration="6" profit="1800" penalty="1947" infomercial_profit="87" fix_infomercial_profit="1" />
-			<availability year_range_from="1980" year_range_to="2002" />
+			<availability year_range_from="1980" year_range_to="1994" />
 		</ad>
-
-		<ad guid="74fe2e5a-74b1-43fa-9892-d042203179b0" wikidata_id="Q1602741" comment="2003 - | Product: Highscreen">
+		<ad guid="21b1952e-22d9-4055-a913-092b6b458cfd" wikidata_id="Q1602741" comment="1995 - 2005 | Product: Highscreen">
+			<title>
+				<all>${brand_highscreen}.deu</all>
+			</title>
+			<description>
+				<de>Gestochen scharfes Bild der Zukunft. Multimedia-Ready.</de>
+				<en>Razor-sharp image of the future. Multimedia-ready.</en>
+				<pl>Ostry jak brzytwa obraz przyszłości. Gotowość multimedialna.</pl>
+			</description>
+			<conditions min_audience="0.3898" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="35" repetitions="2" duration="6" profit="1800" penalty="1947" infomercial_profit="87" fix_infomercial_profit="1" />
+			<availability year_range_from="1995" year_range_to="2005" />
+		</ad>
+		<ad guid="74fe2e5a-74b1-43fa-9892-d042203179b0" wikidata_id="Q1602741" comment="2006 - | Product: Highscreen">
 			<title>
 				<all>${brand_highscreen}.deu</all>
 			</title>
@@ -432,7 +444,7 @@
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="17" repetitions="6" duration="7" profit="1000" penalty="1400" infomercial_profit="170" fix_infomercial_profit="1" />
-			<availability year_range_from="2003" />
+			<availability year_range_from="2006" />
 		</ad>
 
 		<ad guid="7546a9b0-1990-4434-9164-b4c77f6e0608" wikidata_id="" comment="descriptions from Mad TV but title is different to provide variations to the already existing TVTower Duban ads">
