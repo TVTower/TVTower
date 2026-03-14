@@ -47,7 +47,7 @@ Function GetGameScriptExpression:TGameScriptExpression()
 	'find playerID by currently used AI thread
 	Local gse:TGameScriptExpression
 	Local identifiedPlayerID:Int = 0
-	For Local pID:Int = 1 Until TAIBase._updateThreads.length
+	For Local pID:Int = 1 To TAIBase._updateThreads.length
 		If TAIBase._updateThreads[pID-1] = CurrentThread()
 			gse = gameScriptExpressions[pID-1]
 			identifiedPlayerID = pID
