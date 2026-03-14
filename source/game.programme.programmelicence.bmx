@@ -1262,7 +1262,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method IsTradeable:int()
+	Method IsTradeable:int() {_exposeToLua}
 		'series is not tradeable if the header is not tradeable, either
 		if not hasLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE) then return False
 

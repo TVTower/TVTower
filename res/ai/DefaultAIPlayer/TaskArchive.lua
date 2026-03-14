@@ -113,7 +113,7 @@ function JobSellMovies:Tick()
 		if m ~= nil and m.isAvailable() == 1 then
 			table.insert(allIds, m.GetReferenceID())
 			--ignore episodes/collection-elements
-			if m.HasParentLicence()==0 then
+			if m.HasParentLicence()==0 and m.isTradeable() > 0 then
 				vm = newarchivedMovie(m)
 				self:LogTrace("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id.."), planned: "..tostring(vm.planned))
 				if table.contains(toSell, vm.referenceId) then

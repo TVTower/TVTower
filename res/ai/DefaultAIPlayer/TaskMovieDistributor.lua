@@ -433,11 +433,11 @@ function JobCheckMovies:Prepare(pParams)
 		local movie = TVT.GetProgrammeLicenceAtIndex(i)
 		if movie.isAvailable() > 0 and movie.hasParentLicence() < 1 then
 			--ensure buying licences if there are no fresh movies
-			if maxTopBlocks > 0 then
-				qualityStats:AddValue(movie.getQualityRaw()*movie.getMaxTopicality())
-			else
+	--		if maxTopBlocks > 0 then
+	--			qualityStats:AddValue(movie.getQualityRaw()*movie.getMaxTopicality())
+	--		else
 				qualityStats:AddValue(movie.getQuality())
-			end
+	--		end
 		end
 	end
 	--store quality data in player statistics
@@ -628,14 +628,15 @@ function JobAppraiseMovies:AppraiseMovie(licence)
 
 	local qualityGate = myMoviesQuality.AverageValue
 	-- raise quality gate once a certail level is reached
-	if player.coverage > 0.5 then
+	-- but ensure quality gate is not too high for very late game
+	if player.coverage > 0.5 and player.coverage < 0.9 then
 		if licence:IsSingle() == 1 then
 			qualityGate = myMoviesQuality.MaxValue * 0.75
 		else
 			qualityGate = myMoviesQuality.MaxValue * 0.8
 		end
 	elseif self.Task.blocksCount > 120 then
-		qualityGate = (qualityGate + myMoviesQuality.MaxValue) / 2
+		qualityGate = (2 * qualityGate + myMoviesQuality.MaxValue) / 3
 	end
 
 	-- satisfied basic requirements?
