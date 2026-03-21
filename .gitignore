@@ -12,7 +12,6 @@
 *.bmx/
 *.vscode/
 log.*.txt
-tests/
 *logfiles/
 *savegames/
 *tools/
