@@ -1539,7 +1539,7 @@
 			</description>
 			<variables>
 				<grainman>
-					<de>Krörnermännchen|Kiesmännchen|Lehmmännchen|Lössmännchen|Schluffmännchen|Staubmännchen|Steinmännchen|Salzmännchen|Schottermännchen|Aschemännchen</de>
+					<de>Körnermännchen|Kiesmännchen|Lehmmännchen|Lössmännchen|Schluffmännchen|Staubmännchen|Steinmännchen|Salzmännchen|Schottermännchen|Aschemännchen</de>
 					<en>grainman|gravelman|clayman|loessman|siltman|dustman|stoneman|saltman|shingleman|ashman</en>
 					<pl>ziarniak|żwirowiak|gliniak|lessiak|mułak|pyłak|kamieniak|solak|żwirowiak|popiołak</pl>
 				</grainman>

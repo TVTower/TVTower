@@ -440,7 +440,7 @@
 						<en>A flat stage of 179 km.</en>
 						<pl>Płaski etap o długości 179 km.</pl>
 					</description>
-					<data live_date="2,4,4,18,19" /> <!-- TODO: These episode-next-day overrides are not working in 0.8.3.2 release version -->
+					<data live_date="2,4,4,18,19" />
 				</scripttemplate>
 				<scripttemplate index="2" product="6" licence_type="2" guid="f4569603-a8f0-4de3-9d9c-8f6fc3660a25">
 					<title>
