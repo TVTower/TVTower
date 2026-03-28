@@ -35,14 +35,7 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-?Not bmxng
-'using custom to have support for const/function reflection
-Import "external/reflectionExtended/reflection.bmx"
-'Import BRL.Reflection
-?bmxng
-'ng has it built-in!
 Import BRL.Reflection
-?
 Import BRL.Retro
 Import Collections.ObjectList
 Import Collections.IntMap
@@ -242,10 +235,20 @@ Type THelper
 	Function MouseIn:int(x:Float,y:Float, w:Float,h:Float)
 		return IsIn(Int(MouseManager.x), Int(MouseManager.y), Int(x),Int(y),Int(w),Int(h))
 	End Function
+	
+	
+	Function MouseIn:Int(rectPos:SVec2I, rectSize:SVec2I)
+		return IsIn(Int(MouseManager.x), Int(MouseManager.y), rectPos.x, rectPos.y, rectSize.x, rectSize.y)
+	End Function
 
 
 	'returns whether the mouse is within the given rectangle
 	Function MouseInRect:int(rect:TRectangle)
+		return IsIn(int(MouseManager.x), int(MouseManager.y), int(rect.x), int(rect.y), int(rect.w), int(rect.h))
+	End Function
+
+
+	Function MouseIn:int(rect:SRectI)
 		return IsIn(int(MouseManager.x), int(MouseManager.y), int(rect.x), int(rect.y), int(rect.w), int(rect.h))
 	End Function
 
