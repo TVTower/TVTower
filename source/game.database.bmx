@@ -1510,6 +1510,17 @@ Type TDatabaseLoader
 					local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
 					If role
 						jobRoleID = role.GetID()
+					Else
+						Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(jobRoleGUID)
+						If person
+							role = New TProgrammeRole
+							role.SetGUID(jobRoleGUID)
+							role.Init(person.firstName, person.lastName, person.nickName, person.title, person.countryCode, person.gender, person.isFictional())
+							GetProgrammeRoleCollection().Add(role)
+							jobRoleID = role.GetId()
+						Else
+							TLogger.Log("TDatabase.LoadV3ProgrammeLicenceFromNode()", "No role or person found for role GUID ~q"+jobRoleGUID+"~q in licence ~q"+GUID+"~q.", LOG_ERROR)
+						EndIf
 					EndIf
 				EndIf
 				Local memberGUID:String = nodeMember.GetContent().Trim()
@@ -2004,6 +2015,12 @@ Type TDatabaseLoader
 					If Not role
 						role = New TProgrammeRole
 						role.SetGUID(GUID)
+						Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(jobRoleGUID)
+						If person
+							role.Init(person.firstName, person.lastName, person.nickName, person.title, person.countryCode, person.gender, person.isFictional())
+						Else
+							TLogger.Log("TDatabase.LoadV3ScriptTemplateFromNode()", "No role or person found for role GUID ~q"+jobRoleGUID+"~q in script template ~q"+GUID+"~q. Creating dummy role.", LOG_ERROR)
+						EndIf
 						GetProgrammeRoleCollection().Add(role)
 					EndIf
 					jobRoleID = role.GetID()
