@@ -23,57 +23,136 @@ Type SColor8Helper
 	End Function
 
 
+	Function ToHSL(color:SColor8, h:Float Var, s:Float Var, l:Float Var)
+		Local rK:Float = color.r / 255.0
+		Local gK:Float = color.g / 255.0
+		Local bK:Float = color.b / 255.0
+
+		Local maxV:Float = Max(rK, Max(gK, bK))
+		Local minV:Float = Min(rK, Min(gK, bK))
+
+		l = (maxV + minV) / 2.0
+
+		If maxV = minV
+			h = 0
+			s = 0
+		Else
+			Local d:Float = maxV - minV
+			If l > 0.5
+				s = d / (2 - maxV - minV)
+			Else
+				s = d / (maxV + minV)
+			EndIf
+
+			Select maxV
+				Case rK
+					h = (gK - bK) / d
+					If gK < bK Then h :+ 6
+					'h = ((gK - bK) / d) mod 6
+				Case gK
+					h = (bK - rK) / d + 2
+				Case bK
+					h = (rK - gK) / d + 4
+			EndSelect
+			h :/ 6.0
+		EndIf
+	End Function
+
+
+	Function FromHSL:SColor8(h:Float, s:Float, l:Float)
+		If Abs(s) < 0.0001
+			Local grey:Int = Max(0, Min(255, Int(l * 255)))
+			Return New SColor8(grey, grey, grey)
+		EndIf
+
+		Local q:Float
+		If l < 0.5
+			q = l * (1 + s)
+		Else
+			q = l + s - l * s
+		EndIf
+
+		Local p:Float = 2 * l - q
+
+		Local rValue:Float = 255 * hue2rgb(p, q, h + 1/3.0)
+		Local gValue:Float = 255 * hue2rgb(p, q, h)
+		Local bValue:Float = 255 * hue2rgb(p, q, h - 1/3.0)
+
+		Local r:Int = Max(0, Min(255, Int(rValue)))
+		Local g:Int = Max(0, Min(255, Int(gValue)))
+		Local b:Int = Max(0, Min(255, Int(bValue)))
+
+		Return New SColor8(r, g, b)
+
+		Function hue2rgb:Float(p:Float, q:Float, t:Float)
+			If t < 0
+				t :+ 1
+			ElseIf t > 1
+				t :- 1
+			EndIf
+
+			If t < 1/6.0 Then Return p + (q - p) * 6.0 * t
+			If t < 1/2.0 Then Return q
+			If t < 2/3.0 Then Return p + (q - p) * (2/3.0 - t) * 6.0
+			Return p
+		End Function
+	End Function
+
+
+	Function AdjustHSL:SColor8(color:SColor8, huePercentage:Float=0.0, saturationPercentage:Float=0.0, luminancePercentage:Float=0.0)
+		Local h:Float, s:Float, l:Float
+		ToHSL(color, h, s, l)
+
+		If huePercentage <> 0
+			h :+ huePercentage
+			While h >= 1
+				h :- 1
+			Wend
+			While h < 0
+				h :+ 1
+			Wend
+		EndIf
+
+		s 	:* (1.0 + saturationPercentage)
+		l 	:* (1.0 + luminancePercentage)
+
+		s = Min(1.0, Max(0.0, s))
+		l = Min(1.0, Max(0.0, l))
+
+		Return FromHSL(h, s, l)
+	End Function
+
+	
+	Function AdjustBrightness:SColor8(color:SColor8, percentage:Float=1.0)
+		Return AdjustHSL(color, 0.0, 0.0, percentage)
+	End Function
+
+
+	Function AdjustFactor:SColor8(color:SColor8, factor:Int)
+		Return New SColor8(..
+			Min(255, Max(0, color.r + factor)), ..
+			Min(255, Max(0, color.g + factor)), ..
+			Min(255, Max(0, color.b + factor)) ..
+		)
+	End Function
+
+
+	Function Multiply:SColor8(c:SColor8, rMultiplier:Float = 1.0, gMultiplier:Float = 1.0, bMultiplier:Float = 1.0, aMultiplier:Float = 1.0)
+		Return New SColor8(Max(0, Min(255, Byte(c.r * rMultiplier))), ..
+		                   Max(0, Min(255, Byte(c.g * gMultiplier))), ..
+		                   Max(0, Min(255, Byte(c.b * bMultiplier))), ..
+		                   Max(0, Min(255, Byte(c.a * aMultiplier)))..
+		                  )
+	End Function
+
+
 	Function GetBrightness:Float(c:SColor8)
 		'variant "HSP"
 		Return Sqr(0.299 * c.r^2 + 0.587 * c.g^2 + 0.114 * c.b^2)
 		'variant "Luminance"
 		'return 0.2126 * r + 0.7152 * g + 0.0722 *b
 	End Function
-
 End Type
-
-
-
-
-Struct SColorRGBA
-	Field r:Byte
-	Field g:Byte
-	Field b:Byte
-	Field a:Float
-	
-	Method New(r:Byte, g:Byte, b:Byte, a:Float)
-		self.r = r
-		self.g = g
-		self.b = b
-		self.a = a
-	End Method
-	
-	
-	'loses alpha!
-	Method ToSColor8:SColor8()
-		Return new SColor8(r,g,b)
-	End Method
-	
-	
-	Function FromSColor8:SColorRGBA(c:SColor8)
-		Return new SColorRGBA(c.r, c.g, c.b, 1.0)
-	End Function
-
-
-	Function FromTColor:SColorRGBA(c:TColor)
-		Return new SColorRGBA(Byte(c.r), Byte(c.g), Byte(c.b), c.a)
-	End Function
-	
-
-	Function FromMix:SColorRGBA(c1:TColor, c2:TColor, mixFactor:Float = 0.5)
-		mixFactor = Min(1.0, Max(0.0, mixFactor))
-		Return new SColorRGBA(Byte(c1.r * (1.0 - mixFactor) + c2.r * mixFactor), ..
-		                      Byte(c1.g * (1.0 - mixFactor) + c2.g * mixFactor), ..
-		                      Byte(c1.b * (1.0 - mixFactor) + c2.b * mixFactor), ..
-		                      c1.a * (1.0 - mixFactor) + c2.a * mixFactor)
-	End Function
-End Struct
-
 
 
 
