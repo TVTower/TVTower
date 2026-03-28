@@ -1518,6 +1518,8 @@ Type TDatabaseLoader
 							role.Init(person.firstName, person.lastName, person.nickName, person.title, person.countryCode, person.gender, person.isFictional())
 							GetProgrammeRoleCollection().Add(role)
 							jobRoleID = role.GetId()
+						Else
+							TLogger.Log("TDatabase.LoadV3ProgrammeLicenceFromNode()", "No role or person found for role GUID ~q"+jobRoleGUID+"~q in licence ~q"+GUID+"~q.", LOG_ERROR)
 						EndIf
 					EndIf
 				EndIf
@@ -2016,6 +2018,8 @@ Type TDatabaseLoader
 						Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(jobRoleGUID)
 						If person
 							role.Init(person.firstName, person.lastName, person.nickName, person.title, person.countryCode, person.gender, person.isFictional())
+						Else
+							TLogger.Log("TDatabase.LoadV3ScriptTemplateFromNode()", "No role or person found for role GUID ~q"+jobRoleGUID+"~q in script template ~q"+GUID+"~q. Creating dummy role.", LOG_ERROR)
 						EndIf
 						GetProgrammeRoleCollection().Add(role)
 					EndIf
