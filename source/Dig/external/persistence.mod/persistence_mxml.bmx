@@ -322,21 +322,23 @@ Type TPersist
 					Else
 						t = "array:" + t
 					End If
+					
+					Local fObj:Object = f.Get(obj)
 
-					dims = fieldType.ArrayDimensions(f.Get(obj))
+					dims = fieldType.ArrayDimensions(fObj)
 					If dims > 1 Then
 						Local scales:String
 						For Local i:Int = 0 Until dims - 1
-							scales :+ (fieldType.ArrayLength(f.Get(obj), i) / fieldType.ArrayLength(f.Get(obj), i + 1))
+							scales :+ (fieldType.ArrayLength(fObj, i) / fieldType.ArrayLength(fObj, i + 1))
 							scales :+ ","
 						Next
 
-						scales:+ fieldType.ArrayLength(f.Get(obj), dims - 1)
+						scales:+ fieldType.ArrayLength(fObj, dims - 1)
 
 						fieldNode.setAttribute("scales", scales)
 					End If
 
-					ProcessArray(f.Get(obj), fieldType.ArrayLength(f.Get(obj)), fieldNode, fieldType)
+					ProcessArray(fObj, fieldType.ArrayLength(fObj), fieldNode, fieldType)
 
 				Else
 					Local fieldObject:Object = f.Get(obj)
