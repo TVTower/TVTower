@@ -1,13 +1,11 @@
 SuperStrict
 
+Import "Dig/base.gfx.gui.button.bmx"
+
 Import "game.roomhandler.base.bmx"
-Import "game.screen.programmeplanner.bmx"
-Import "game.screen.stationmap.bmx"
-Import "game.screen.achievements.bmx"
-Import "game.screen.archivedmessages.bmx"
-Import "game.screen.statistics.bmx"
 Import "game.gameconfig.bmx"
 
+Import "game.screen.base.bmx"
 Import "game.misc.archivedmessage.bmx"
 
 Type TScreenHandler_Financials

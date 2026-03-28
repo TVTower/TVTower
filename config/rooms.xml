@@ -7,10 +7,12 @@
 		<image name="screen_bg_programmeplanner" url="res/gfx/office/screen_programmeplanner.png" />
 		<image name="screen_bg_financials" url="res/gfx/office/screen_financials.png" />
 		<image name="screen_bg_statistics_audience" url="res/gfx/office/screen_statistics.png" />
+		<image name="screen_bg_statistics_trends" url="res/gfx/office/screen_statistics_trends.png" />
 		<image name="screen_bg_statistics_channelimage" url="res/gfx/office/screen_statistics_channelimage.png" />
 		<image name="screen_bg_achievements" url="res/gfx/office/screen_achievements.png" />
 		<image name="screen_bg_stationmap" url="res/gfx/office/screen_stationmap.png" />
 		<image name="screen_bg_safe" url="res/gfx/office/screen_safe.png" />
+		<image name="screen_bg_biocontrol" url="res/gfx/biocontrol/screen_biocontrol.png" />
 
 		<image name="screen_bg_archive" url="res/gfx/archive/screen_archive.png" />
 		<image name="screen_bg_boss" url="res/gfx/boss/screen_boss.png" />
@@ -42,6 +44,7 @@
 		<screen name="screen_credits" image="screen_bg_credits" />
 		<screen name="screen_roomboard" image="screen_bg_roomboard" />
 		<screen name="screen_roomagency" image="screen_bg_roomagency" />
+		<screen name="screen_biocontrol" image="screen_bg_biocontrol" />
 
 		<screen name="screen_scriptagency" image="screen_bg_scriptagency" />
 
@@ -187,7 +190,7 @@
 			<tooltip text="ROOM_LAUNDRY" />
 			<door doorslot="1" floor="1" doortype="2" flags="2" />
 		</room>
-		<room name="biocontrol" owner="0" screen="screen_emptyroom" size="1" flags="1">
+		<room name="biocontrol" owner="0" screen="screen_biocontrol" size="1" flags="1">
 			<tooltip text="ROOM_BIOCONTROL" />
 			<door doorslot="2" floor="12" doortype="3" flags="2" />
 		</room>

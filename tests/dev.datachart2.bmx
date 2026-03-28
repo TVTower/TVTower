@@ -222,8 +222,10 @@ End Type
 
 
 Type TDataChart
+	' Area on screen for complete chart
 	Field area:SRectI = new SRectI
-	Field areaGraph:TRectangle = new TRectangle
+	' Area on screen for graph itself (without axis labels)
+	Field areaGraph:SRectI = new SRectI
 
 	'x value limits (min-max)
 	Field xRangeBegin:Float
@@ -243,11 +245,14 @@ Type TDataChart
 	Field xSegmentsCount:int
 	'width for all (if no individuals are set)
 	Field xSegmentWidth:int = -1
-	'width of the individual segments
+	'width of the individual segments (-1 means use global width)
 	Field xSegmentWidths:int[]
-	'start position of the individual segments
-	Field xSegmentStarts:int[]
+	'labels for the individual segments
 	Field xSegmentLabels:string[]
+	'cache for final widths of the individual segments
+	Field _xSegmentWidths:int[]
+	'cache for calculated start position of the individual segments
+	Field _xSegmentStarts:int[]
 	'how many data blocks are _before_ the first
 	Field xDataOffset:int = 1
 	Field hoveredSegment:int = -1
@@ -291,7 +296,7 @@ Type TDataChart
 			return _pixelsPerDataPointX
 		Else
 			if (xRangeEnd - xRangeBegin) <> 0
-				return abs((areaGraph.GetIntW() / Float(xRangeEnd - xRangeBegin)))
+				return abs((areaGraph.w / Float(xRangeEnd - xRangeBegin)))
 			else
 				return area.w
 			endif
@@ -336,9 +341,18 @@ Type TDataChart
 	Method SetXSegmentsCount:TDataChart(count:int)
 		xSegmentsCount = count
 		If xSegmentLabels.length <> count
+			Local oldLen:Int = xSegmentLabels.length
+
 			xSegmentLabels = xSegmentLabels[ .. xSegmentsCount]
 			xSegmentWidths = xSegmentWidths[ .. xSegmentsCount]
-			xSegmentStarts = xSegmentStarts[ .. xSegmentsCount]
+
+			_xSegmentWidths = _xSegmentWidths[ .. xSegmentsCount]
+			_xSegmentStarts = _xSegmentStarts[ .. xSegmentsCount]
+
+			'set defaults to "automatic" for new segments
+			For local i:int = oldLen until xSegmentsCount
+				xSegmentWidths[i] = -1
+			Next
 		EndIf
 
 		_RefreshElementSizes()
@@ -354,20 +368,41 @@ Type TDataChart
 		local axisRight:int = rightAxisLabelEnabled * rightAxisLabelSize
 
 		'update graph area
-		areaGraph.SetXYWH(axisLeft + 1, ..
-		                  axisTop, ..
-		                  area.w - (axisLeft + 1 + axisRight), ..
-		                  area.h - (axisTop  + axisBottom + 1) ..
-		                 )
+		
+		Local areaGraphX:Int = axisLeft + 1
+		Local areaGraphY:Int = axisTop
+		Local areaGraphW:Int = area.w - (axisLeft + 1 + axisRight)
+		Local areaGraphH:Int = area.h - (axisTop  + axisBottom + 1)
 
-		'resize segments
-		'global
-		xSegmentWidth = areaGraph.GetW() / xSegmentsCount
-		'individual
-		'TODO
 
-		'add "skipped pixels" to right label area
-		areaGraph.MoveW( -(areaGraph.w - xSegmentWidth * xSegmentsCount))
+		' calculate "global" segment width (for segments without individual width)
+		' and calculate final position of all segments
+		If xSegmentsCount > 0
+			xSegmentWidth = areaGraphW / xSegmentsCount
+			
+			For local i:int = 0 until xSegmentsCount
+				If xSegmentWidths[i] >= 0
+					_xSegmentWidths[i] = xSegmentWidths[i]
+				Else
+					_xSegmentWidths[i] = xSegmentWidth
+				EndIf
+				
+				If i > 0
+					_xSegmentStarts[i] = _xSegmentStarts[i-1] + _xSegmentWidths[i-1]
+				Else
+					_xSegmentStarts[i] = 0
+				EndIf
+			Next
+		Endif
+
+		' restrict area to segments
+		' (add "skipped pixels" to right label area, so left stays consistent)
+		' this effectively reduces the width of the graph area
+		If xSegmentsCount > 0
+			areaGraphW = _xSegmentStarts[xSegmentsCount-1] + _xSegmentWidths[xSegmentsCount-1]
+		EndIf
+
+		areaGraph = New SRectI(areaGraphX, areaGraphY, areaGraphW, areaGraphH)
 	End Method
 
 
@@ -375,42 +410,22 @@ Type TDataChart
 		if segmentIndex < 0 or segmentIndex >= xSegmentWidths.length then return
 
 		xSegmentWidths[segmentIndex] = width
-		'position this segment after the previous one
-		if segmentIndex > 0
-			xSegmentStarts[segmentIndex] = xSegmentStarts[segmentIndex -1] + GetSegmentWidth(segmentIndex -1)
-		endif
 
-		'reposition all elements afterwards
-		if segmentIndex < xSegmentWidths.length-1
-			'recursive called for all coming segments
-			SetSegmentWidth(segmentIndex + 1, GetSegmentWidth(segmentIndex + 1))
-		endif
+		_RefreshElementSizes() 'recalculate caches and positions
 	End Method
 
 
 	Method GetSegmentWidth:int(segmentIndex:int)
 		if segmentIndex < 0 or segmentIndex >= xSegmentWidths.length then return 0
-		'fallback
-		if xSegmentWidths[segmentIndex] <= 0 and xSegmentWidth > 0 then return xSegmentWidth
-		'or use defined value
-		return xSegmentWidths[segmentIndex]
+
+		Return _xSegmentWidths[segmentIndex]
 	End Method
 
 
 	Method GetSegmentStart:int(segmentIndex:int)
-		if segmentIndex < 0 or not xSegmentStarts or segmentIndex >= xSegmentStarts.length then return 0
+		if segmentIndex < 0 or not _xSegmentStarts or segmentIndex >= _xSegmentStarts.length then return 0
 
-		'use auto-calculated value
-		if xSegmentStarts[segmentIndex] <= 0
-			if segmentIndex > 0
-				return GetSegmentStart(segmentIndex -1) + GetSegmentWidth(segmentIndex -1)
-			else
-				return 0
-			endif
-		endif
-
-		'or use defined value
-		return xSegmentStarts[segmentIndex]
+		Return _xSegmentStarts[segmentIndex]
 	End Method
 
 
@@ -507,9 +522,10 @@ Type TDataChart
 		hoveredSegment = -1
 
 		If THelper.MouseIn(area)
-			Local startX:int = area.x + areaGraph.GetX()
+			Local startX:int = area.x + areaGraph.x
+			Local localMouseX:Int = MouseManager.currentPos.x - startX 
 			For local i:int = 0 until xSegmentsCount
-				If MouseManager.currentPos.x > startX and MouseManager.currentPos.x <= startX + xSegmentWidth
+				If localMouseX > _xSegmentStarts[i] and localMouseX <= _xSegmentStarts[i] + _xSegmentWidths[i]
 					SetHoveredSegment(i)
 
 					If MouseManager.IsClicked(1)
@@ -524,7 +540,6 @@ Type TDataChart
 
 					exit
 				EndIf
-				startX :+ xSegmentWidth
 			Next
 		EndIf
 		If hoveredSegment < 0 And selectedSegment < 0 And autoHoverSegment >= 0
@@ -543,17 +558,40 @@ Type TDataChart
 	End Method
 
 
+	Method RenderSegmentBackground(segmentIndex:int)
+		Local x:int = area.x + areaGraph.x + GetSegmentStart(segmentIndex) - 1 '+-1 for the borders
+		Local y:int = area.y + areaGraph.y - 1
+		Local w:int = GetSegmentWidth(segmentIndex) + 2
+		Local h:int = areaGraph.h + 2
+
+		Local oldColor:SColor8
+		Local oldAlpha:Float
+		GetColor(oldColor, oldAlpha)
+
+		SetColor 0,0,0
+		if segmentIndex mod 2 = 0
+			SetAlpha 0.1 * oldAlpha
+		else
+			SetAlpha 0.05 * oldAlpha
+		endif
+
+		DrawRect(x,y,w,h)
+
+		SetColor(oldColor, oldAlpha)
+	End Method
+
+
 	Method RenderBackground()
-		Local x:int = area.x + areaGraph.GetIntX() - 1 '+-1 for the borders
-		Local y:int = area.y + areaGraph.GetIntY() - 1
-		Local w:int = areaGraph.GetIntW() + 2
-		Local h:int = areaGraph.GetIntH() + 2
+		Local x:int = area.x + areaGraph.x - 1 '+-1 for the borders
+		Local y:int = area.y + areaGraph.y - 1
+		Local w:int = areaGraph.w + 2
+		Local h:int = areaGraph.h + 2
 '		SetColor 255,0,0
 '		DrawRect(x,y,w,h)
 		SetColor 50,50,50
 		DrawLine(x, y, x, y + h - 1)
 		DrawLine(x, y + h - 1, x + w - 1, y + h - 1)
-'print x+"  " + y + "  " + w + "  " + h
+
 		SetColor 150,150,150
 		DrawLine(x + w - 1, y + 1, x + w - 1, y + h - 2) '+2 and -2 to avoid overlap
 		DrawLine(x + 1, y, x + w - 1, y) '+1 and -1 to avoid overlap
@@ -561,13 +599,7 @@ Type TDataChart
 
 
 		for local i:int = 0 until xSegmentsCount
-			SetColor 0,0,0
-			if i mod 2 = 0
-				SetAlpha 0.1
-			else
-				SetAlpha 0.05
-			endif
-			DrawRect(x + 1 + GetSegmentStart(i), y+1, GetSegmentWidth(i), h-2)
+			RenderSegmentBackground(i)
 		next
 		SetAlpha 1.0
 
@@ -636,10 +668,10 @@ Type TDataChart
 
 
 	Method RenderDataSet(dsIndex:int, xOffset:int=0, yOffset:int=0, colorOverride:TColor=Null)
-		Local x:int = area.x + areaGraph.GetIntX()
-		Local y:int = area.y + areaGraph.GetIntY()
-		Local w:int = areaGraph.GetIntW()
-		Local h:int = areaGraph.GetIntH()
+		Local x:int = area.x + areaGraph.x
+		Local y:int = area.y + areaGraph.y
+		Local w:int = areaGraph.w
+		Local h:int = areaGraph.h
 		Local maximumY:Float = GetMaximumY()
 		Local minimumY:Float = GetMinimumY()
 		Local effectiveMaximumY:Float = 1.1 * maximumY
@@ -733,8 +765,8 @@ Type TDataChart
 	Method RenderTexts()
 		'segment labels
 		Local bottomXLabelH:int = area.h - areaGraph.GetY2()
-		Local x:int = area.x + areaGraph.GetIntX()
-		Local x2:int = area.x + areaGraph.GetIntX2()
+		Local x:int = area.x + areaGraph.x
+		Local x2:int = area.x + areaGraph.GetX2()
 
 		Local col:SColor8
 		For Local i:Int = 0 Until xSegmentsCount
@@ -758,7 +790,7 @@ Type TDataChart
 		Next
 
 		'values
-		labelFont.DrawBox(GetFormattedValue(valueDisplayMaximumY), int(x2 + rightAxisLabelOffset.x), int(area.y + areaGraph.GetY() + rightAxisLabelOffset.y), (area.GetX2() - areaGraph.GetX2()), 20, sALIGN_LEFT_TOP, labelColor)
+		labelFont.DrawBox(GetFormattedValue(valueDisplayMaximumY), int(x2 + rightAxisLabelOffset.x), int(area.y + areaGraph.y + rightAxisLabelOffset.y), (area.GetX2() - areaGraph.GetX2()), 20, sALIGN_LEFT_TOP, labelColor)
 		labelFont.DrawBox(GetFormattedValue(valueDisplayMinimumY), int(x2 + rightAxisLabelOffset.x), int(area.y + areaGraph.GetY2() + rightAxisLabelOffset.y), (area.GetX2() - areaGraph.GetX2()), 20, sALIGN_LEFT_TOP, labelColor)
 	End Method
 

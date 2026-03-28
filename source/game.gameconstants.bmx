@@ -1032,6 +1032,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const NewsSpecial:Int = 401		'a news special made out of a news
 
 	Const genreMaximum:Int = 401
+	Const count:Int = 32
 
 
 	Function GetKey:Int(index:Int)

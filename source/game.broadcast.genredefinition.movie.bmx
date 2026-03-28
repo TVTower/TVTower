@@ -275,6 +275,9 @@ Function GetCombinedGenreDefinition:TMovieGenreDefinition(genreIDs:int[])
 	Return TMovieGenreDefinitionCollection.GetInstance().Get(genreIDs)
 End Function
 
+Function GetSingleMovieFlagDefinition:TMovieFlagDefinition(flag:int)
+	Return TMovieGenreDefinitionCollection.GetInstance().GetFlag(flag)
+End Function
 
 
 Type TMovieGenreDefinition Extends TGenreDefinitionBase

@@ -17,6 +17,7 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 	Global subScreenChannelImage:TStatisticsSubScreen = new TStatisticsSubScreen_ChannelImage
 	Global subScreenAudience:TStatisticsSubScreen = new TStatisticsSubScreen_Audience
+	Global subScreenTrends:TStatisticsSubScreen = new TStatisticsSubScreen_Trends
 
 
 	Global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStatisticsScreen")
@@ -42,10 +43,10 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 	Const SUBSCREEN_AUDIENCE:Int = 0
 	Const SUBSCREEN_CHANNELIMAGE:Int = 1
-	Const SUBSCREEN_TARGETGROUP:Int = 2
+	Const SUBSCREEN_TRENDS:Int = 2
 	Const SUBSCREEN_STATIONMAP:Int = 3
 	Const SUBSCREEN_MISC:Int = 4
-	Const SUBSCREEN_TRENDS:Int = 5
+	Const SUBSCREEN_TARGETGROUP:Int = 5
 
 
 
@@ -107,7 +108,7 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 	Method SetLanguage()
 		'nothing up to now
-		Local captions:String[] = ["AUDIENCE_RATINGS", "CHANNEL_IMAGE", "TARGET_GROUPS", "STATIONMAP", "FINANCES_MISC"]
+		Local captions:String[] = ["AUDIENCE_RATINGS", "CHANNEL_IMAGE", "TRENDS", "STATIONMAP", "FINANCES_MISC"]
 		For Local i:Int = 0 Until tabGroup.buttons.length
 			Local btn:TGUIToggleButton = tabGroup.buttons[i]
 			btn.SetCaption(StringHelper.UCFirstSimple(GetLocale(captions[i])))
@@ -131,7 +132,7 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 			Case SUBSCREEN_CHANNELIMAGE
 				OnActivateSubScreen_ChannelImage()
 			Case SUBSCREEN_TRENDS
-			'	OnActivateSubScreen_Trends()
+				OnActivateSubScreen_Trends()
 			Case SUBSCREEN_STATIONMAP
 			'	OnActivateSubScreen_StationMap()
 			Case SUBSCREEN_MISC
@@ -162,6 +163,14 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 	Method OnActivateSubScreen_ChannelImage:Int()
 		'set background
 		SetScreenBackground("screen_bg_statistics_channelimage")
+
+		'move shared gui
+	End Method
+
+
+	Method OnActivateSubScreen_Trends:Int()
+		'set background
+		SetScreenBackground("screen_bg_statistics_trends")
 
 		'move shared gui
 	End Method
@@ -216,14 +225,14 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 				UpdateSubScreen_Audience()
 			Case SUBSCREEN_CHANNELIMAGE
 				UpdateSubScreen_ChannelImage()
-			Case SUBSCREEN_TARGETGROUP
+			'Case SUBSCREEN_TARGETGROUP
 			'	UpdateSubScreen_TargetGroup()
 			Case SUBSCREEN_STATIONMAP
 			'	UpdateSubScreen_StationMap()
 			Case SUBSCREEN_MISC
 			'	UpdateSubScreen_MISC()
 			Case SUBSCREEN_TRENDS
-			'	UpdateSubScreen_Trends()
+				UpdateSubScreen_Trends()
 
 		End Select
 
@@ -237,14 +246,14 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 				RenderSubScreen_Audience()
 			Case SUBSCREEN_CHANNELIMAGE
 				RenderSubScreen_ChannelImage()
-			Case SUBSCREEN_TARGETGROUP
+			'Case SUBSCREEN_TARGETGROUP
 			'	RenderSubScreen_TargetGroup()
 			Case SUBSCREEN_STATIONMAP
 			'	RenderSubScreen_StationMap()
 			Case SUBSCREEN_MISC
 			'	RenderSubScreen_MISC()
 			Case SUBSCREEN_TRENDS
-			'	RenderSubScreen_Trends()
+				RenderSubScreen_Trends()
 
 		End Select
 
@@ -269,6 +278,16 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 	Method RenderSubScreen_Audience:Int()
 		subScreenAudience.Render(self)
+	End Method
+
+
+	Method UpdateSubScreen_Trends:Int()
+		subScreenTrends.Update(self)
+	End Method
+
+
+	Method RenderSubScreen_Trends:Int()
+		subScreenTrends.Render(self)
 	End Method
 End Type
 
@@ -1111,6 +1130,397 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 
 		RenderChart(parent)
 
+
+		GuiManager.Draw( LS_screenName )
+	End Method
+End Type
+
+
+
+
+Type TTrendsEntry
+	Field key:Int
+	Field value:String 'localized label
+	Field pop:TPopularity
+End Type
+
+
+Type TStatisticsSubScreen_Trends extends TStatisticsSubScreen
+	'SUBSCREEN: trends/popularity
+	Field hoveredProgrammeGenre:int = -1
+	Field hoveredProgrammeDataFlag:int = -1
+	Field selectedProgrammeGenre:int = -1
+	Field selectedProgrammeDataFlag:int = -1
+
+	'programme genres
+	Field pgEntryPositions:SVec2I[]
+	Field pgEntries:TTrendsEntry[]
+	'programme data flags
+	Field pdfEntryPositions:SVec2I[]
+	Field pdfEntries:TTrendsEntry[]
+	Field entriesLocalizedAndSorted:Int = False
+	
+	Field trendEntrySize:SVec2I
+	Field trendEntryValueSize:SVec2I
+	Field trendEntryValueOffset:SVec2I
+	Field trendCaptionArea:SRectI
+
+	Field entryValueCol1w:Int
+	Field entryValueCol2w:Int
+
+	'as local generics in import lists currently bug out we define
+	'it here as field
+	Field _sortMap:TTreeMap<String, TTrendsEntry> = New TTreeMap<String, TTrendsEntry>() {nosave}
+	
+	Const positiveIndicator:String = " |color=60,150,50|"+Chr(9650)+"|/color|"
+	Const neutralIndicator:String = " |color=120,120,120|"+Chr(9632)+"|/color|"
+	Const negativeIndicator:String = " |color=150,60,50|"+Chr(9660)+"|/color|"
+
+
+
+
+	Method New()
+		LS_screenName = TLowerString.Create("officeStatisticsScreen_Trends")
+
+		trendCaptionArea = New SRectI(24, 53, 600, 25)
+
+		trendEntrySize   = New SVec2I(145, 19)
+		trendEntryValueOffset = New SVec2I(5, 1)
+		trendEntryValueSize = New SVec2I(trendEntrySize.x - 1 * trendEntryValueOffset.x, trendEntrySize.y - 2 * trendEntryValueOffset.y)
+		
+
+		entryValueCol1W = 0.60 * trendEntryValueSize.x
+		entryValueCol2W = 0.40 * trendEntryValueSize.x
+		Local colsSpacing:Int = 8
+		Local firstEntryPos:SVec2I = new SVec2I(21, trendCaptionArea.GetY2() + 2)
+		
+
+		' Programme genres and flags to show (not all genres and data
+		' flags are "useful" to expose here!)
+		Local pgShowFlags:Int[] = [..
+						TVTProgrammeGenre.Undefined, .. ' "Others"
+		                TVTProgrammeGenre.Adventure, ..
+		                TVTProgrammeGenre.Action, ..
+						TVTProgrammeGenre.Animation, ..
+						TVTProgrammeGenre.Crime, ..
+						TVTProgrammeGenre.Comedy, ..
+						TVTProgrammeGenre.Documentary, ..
+						TVTProgrammeGenre.Drama, ..
+						TVTProgrammeGenre.Erotic, ..
+						TVTProgrammeGenre.Family, ..
+					    TVTProgrammeGenre.Fantasy, ..
+					    TVTProgrammeGenre.History, ..
+					    TVTProgrammeGenre.Horror, ..
+						TVTProgrammeGenre.Monumental, ..
+						TVTProgrammeGenre.Mystery, ..
+						TVTProgrammeGenre.Romance, ..
+						TVTProgrammeGenre.SciFi, ..
+						TVTProgrammeGenre.Thriller, ..
+						TVTProgrammeGenre.Western, ..
+						TVTProgrammeGenre.Show, ..
+						TVTProgrammeGenre.Show_Politics, ..
+						TVTProgrammeGenre.Show_Music, ..
+						TVTProgrammeGenre.Show_Talk, ..
+						TVTProgrammeGenre.Show_Game, ..
+						TVTProgrammeGenre.Event, ..
+						TVTProgrammeGenre.Event_Politics, ..
+						TVTProgrammeGenre.Event_Music, ..
+						TVTProgrammeGenre.Event_Sport, ..
+						TVTProgrammeGenre.Event_Showbiz, ..
+						TVTProgrammeGenre.Feature, ..
+						TVTProgrammeGenre.Feature_YellowPress ..
+					]
+
+		Local pdfShowFlags:Int[] = [..
+						TVTProgrammeDataFlag.LIVE, ..
+						TVTProgrammeDataFlag.ANIMATION, ..
+						TVTProgrammeDataFlag.CULTURE, ..
+						TVTProgrammeDataFlag.CULT, ..
+						TVTProgrammeDataFlag.TRASH, ..
+						TVTProgrammeDataFlag.BMOVIE, ..
+						TVTProgrammeDataFlag.XRATED ..
+					]
+		
+		' resize entries
+		pgEntries = New TTrendsEntry[pgShowFlags.length]
+		pdfEntries = New TTrendsEntry[pdfShowFlags.length]
+		
+		' fill them initially (no locale needed, just keys important
+		' as we sort/localize on init()
+		For Local i:Int = 0 until pgShowFlags.length
+			pgEntries[i] = New TTrendsEntry()
+			pgEntries[i].key = pgShowFlags[i]
+		Next 
+		For Local i:Int = 0 until pdfShowFlags.length
+			pdfEntries[i] = New TTrendsEntry()
+			pdfEntries[i].key = pdfShowFlags[i]
+		Next 
+
+				
+		
+		'precalculate programme genre/data flag slot positions
+		pgEntryPositions = New SVec2I[pgEntries.length]
+		pdfEntryPositions = New SVec2I[pdfEntries.length] 
+
+		Local entriesPerRow:Int = 11
+		Local useCol:Int
+		Local useRow:Int
+		For Local i:Int = 0 Until pgEntries.length
+			'move to next col
+			if useRow = entriesPerRow then useCol :+ 1;useRow = 0
+				
+			Local x:Int = firstEntryPos.x + useCol * (trendEntrySize.x + colsSpacing)
+			Local y:Int = firstEntryPos.y + Int(useRow * trendEntrySize.y)
+			pgEntryPositions[i] = New SVec2I(x, y)
+			
+			useRow :+ 1
+		Next
+		
+		'start new col
+		If useRow <> 0
+			useRow = 0
+			useCol :+1
+		EndIf
+		For Local i:Int = 0 Until pdfEntries.length
+			'move to next col
+			if useRow = entriesPerRow then useCol :+ 1;useRow = 0
+				
+			Local x:Int = firstEntryPos.x + useCol * (trendEntrySize.x + colsSpacing)
+			Local y:Int = firstEntryPos.y + Int(useRow * trendEntrySize.y)
+			pdfEntryPositions[i] = New SVec2I(x, y)
+			
+			useRow :+ 1
+		Next
+	End Method
+
+
+	Method Init()
+		If Not valueBG Then valueBG = GetSpriteFromRegistry("screen_financial_balanceValue")
+		If Not valueBG2 Then valueBG2 = GetSpriteFromRegistry("screen_financial_balanceValue2filled")
+		If Not captionFont Then captionFont = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not textFont Then textFont = GetBitmapFont("Default", 12)
+		If Not boldTextFont Then boldTextFont = GetBitmapFont("Default", 12, BOLDFONT)
+		If Not smallTextFont Then smallTextFont = GetBitmapFont("Default", 10)
+		If Not smallBoldTextFont Then smallBoldTextFont = GetBitmapFont("Default", 10, BOLDFONt)
+
+		If not entriesLocalizedAndSorted
+			SortAndLocalizeEntries()
+			entriesLocalizedAndSorted = True
+		EndIf
+	End Method
+	
+	
+	Method SortAndLocalizeEntries()
+		' go through all keys, store their current locale values
+		' in a string map (so it gets auto sorted)
+		' then refill the key-array(s)
+		
+		_sortMap.Clear()
+
+		For local i:int = 0 until pgEntries.length
+			Local key:Int = pgEntries[i].key
+			Local value:String = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(key))
+			pgEntries[i].value = value
+			
+			' appending the key should avoid duplicates in case of
+			' value being the same (eg localization errors)
+			_sortMap[value + key] = pgEntries[i]
+		Next
+		'values are sorted by keys now
+		local pgIndex:Int
+		For local entry:TTrendsEntry = EachIn _sortMap.Values()
+			pgEntries[pgIndex] = entry
+			pgIndex :+ 1
+		Next
+
+		_sortMap.Clear()
+		For local i:int = 0 until pdfEntries.length
+			Local key:Int = pdfEntries[i].key
+			Local value:String = GetLocale("PROGRAMME_FLAG_" + TVTProgrammeDataFlag.GetAsString(key))
+
+			pdfEntries[i].value = value
+			_sortMap[value + key] = pdfEntries[i]
+		Next
+		Local pdfIndex:Int
+		For local entry:TTrendsEntry = EachIn _sortMap.Values()
+			pdfEntries[pdfIndex] = entry
+			pdfIndex :+ 1
+		Next
+
+		_sortMap.Clear()
+	End Method
+
+
+
+	'helper
+	Function _DrawValue(value:String, change:Float, x:Int, y:Int, w:Int, h:Int, font:TBitmapFont, fontColor:SColor8)
+		font.DrawBox(value, x, y, w - 15, h, sALIGN_RIGHT_CENTER, fontColor)
+
+		If Abs(change) < 0.001
+			font.DrawBox(neutralIndicator, x + w - 15, y, 15, h, sALIGN_CENTER_CENTER, fontColor)
+		ElseIf change < 0
+			font.DrawBox(negativeIndicator, x + w - 15, y, 15, h, sALIGN_CENTER_CENTER, fontColor)
+		Else
+			font.DrawBox(positiveIndicator, x + w - 15, y, 15, h, sALIGN_CENTER_CENTER, fontColor)
+		EndIf
+	End Function
+
+
+	Function _DrawEntryBG(sprite:TSprite, pos:SVec2I, size:SVec2I, isEven:Int, isSelected:Int, isHovered:Int)
+		GetGraphicsManager().SetViewport(pos.x, pos.y, size.x, size.y)
+		
+		Local oldBlend:Int = GetBlend()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
+
+		If isEven
+			valueBG2.DrawArea(pos.x, pos.y, size.x, size.y)
+		Else
+			SetColor 240,240,240
+			valueBG2.DrawArea(pos.x, pos.y, size.x, size.y)
+		EndIf
+
+		If isSelected
+			SetAlpha 0.25 * oldA
+			SetColor 70,110,255
+			valueBG2.DrawArea(pos.x, pos.y, size.x, size.y)
+			SetColor 255,255,255
+		EndIf
+		If isHovered
+			SetBlend LightBlend
+			SetAlpha 0.08 * oldA
+			valueBG2.DrawArea(pos.x, pos.y, size.x, size.y)
+		EndIf
+
+		SetColor oldCol
+		SetAlpha oldA
+		SetBlend oldBlend
+	End Function
+
+
+
+
+	Method Update(parent:TScreenHandler_OfficeStatistics)
+		hoveredProgrammeGenre = -1
+		hoveredProgrammeDataFlag = -1
+		
+		For Local i:Int = 0 To TVTProgrammeGenre.Count
+			If i >= pgEntryPositions.length Then Exit
+			
+			If THelper.MouseIn(pgEntryPositions[i], trendEntrySize)
+				hoveredProgrammeGenre = i
+				exit
+			endif
+		Next
+
+
+		If MouseManager.IsClicked(1)
+			selectedProgrammeGenre = hoveredProgrammeGenre
+			selectedProgrammeDataFlag = hoveredProgrammeDataFlag
+			'handled single click
+			If selectedProgrammeGenre >= 1 or selectedProgrammeDataFlag >= 1
+				MouseManager.SetClickHandled(1)
+			EndIf
+		EndIf
+
+		GuiManager.Update(LS_screenName)
+	End Method
+
+
+	Method RenderTrendEntries(parent:TScreenHandler_OfficeStatistics)
+		Local oldVP:SRectI = GetGraphicsManager().GetViewport()
+
+		For Local i:Int = 0 To TVTProgrammeGenre.Count '0 is "undefined genre", so 0 to 32 = 33 elements!!
+			If i >= pgEntryPositions.length Then Exit
+			
+			Local pos:SVec2I = pgEntryPositions[i]
+			
+			_DrawEntryBG(valueBG2, pos, trendEntrySize, i Mod 2 = 0, i = selectedProgrammeGenre, i = hoveredProgrammeGenre)
+		Next
+
+		For Local i:int = 0 Until pdfEntries.length
+			If i >= pdfEntryPositions.length Then Exit
+			
+			Local pos:SVec2I = pdfEntryPositions[i]
+			
+			_DrawEntryBG(valueBG2, pos, trendEntrySize, i Mod 2 = 0, i = selectedProgrammeDataFlag, i = hoveredProgrammeDataFlag)
+		Next
+		GetGraphicsManager().SetViewport(oldVP)
+		
+		
+		
+		Local channelImageValues:TAudience = GetPublicImageCollection().GetImageValues(parent.roomOwner, 1)
+		Local oldChannelImageValues:TAudience = GetPublicImageCollection().GetImageValues(parent.roomOwner, 1, 1)
+		smallBoldTextFont.DrawBox(GetLocale("PROGRAMME_GENRE"), trendCaptionArea.x, trendCaptionArea.y, entryValueCol1w, trendCaptionArea.h, sALIGN_LEFT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("POPULARITY"), trendCaptionArea.x + entryValueCol1w, trendCaptionArea.y, entryValueCol2w, trendCaptionArea.h, sALIGN_RIGHT_CENTER, fontColor)
+
+		For Local i:Int = 0 To pgEntries.length
+			If i >= pgEntryPositions.length Then Exit
+
+			Local pos:SVec2I = pgEntryPositions[i]
+			'offset label
+			Local x:Int = pos.x + trendEntryValueOffset.x
+			Local y:Int = pos.y + trendEntryValueOffset.y
+
+			smallTextFont.DrawBox(pgEntries[i].value, x, y, entryValueCol1w, trendEntrySize.y, sALIGN_LEFT_CENTER, fontColor)
+
+			Local pop:TPopularity = pgEntries[i].pop
+			If Not pop
+				Local genreDef:TMovieGenreDefinition = GetSingleMovieGenreDefinition(pgEntries[i].key)
+				If genreDef
+					pop = genreDef.GetPopularity()
+					pgEntries[i].pop = pop
+				EndIf
+			EndIf
+
+			If pop
+				'this is copied from GetGenrePopularityMod():
+				'  > Popularity ranges from -50 to 100 (no absolute "unpopular for
+				'  > everyone" possible)
+				'-> popularity is a percentage float with "0" meaning
+				'   neutral, and 100.0 meaning "top popular"
+				'MathHelper.Clamp(definition.GetPopularity().Popularity / 100.0, -1.0, 1.0 )
+
+				_DrawValue(TFunctions.LocalizedNumberToString(pop.popularity, 2), pop.trend - pop.popularity, x + entryValueCol1w, y, entryValueCol2w, trendEntrySize.y, smallTextFont, fontColor )
+			Else
+				_DrawValue("NoDef", 0, x + entryValueCol1w, y, entryValueCol2w, trendEntrySize.y, smallTextFont, fontColor )
+			EndIf
+		Next
+
+
+
+		For Local i:Int = 0 To pdfEntries.length
+			If i >= pdfEntryPositions.length Then Exit
+
+			Local pos:SVec2I = pdfEntryPositions[i]
+			'offset label
+			Local x:Int = pos.x + trendEntryValueOffset.x
+			Local y:Int = pos.y + trendEntryValueOffset.y
+
+			Local pop:TPopularity = pdfEntries[i].pop
+			If pop
+				Local flagDef:TMovieFlagDefinition = GetSingleMovieFlagDefinition(pdfEntries[i].key)
+				If flagDef
+					pop = flagDef.GetPopularity()
+					pdfEntries[i].pop = pop
+				EndIf
+			EndIf
+
+			smallTextFont.DrawBox(pdfEntries[i].value, x, y, entryValueCol1w, trendEntrySize.y, sALIGN_LEFT_CENTER, fontColor)
+			If pop
+				_DrawValue(TFunctions.LocalizedNumberToString(pop.popularity, 2), pop.trend - pop.popularity, x + entryValueCol1w, y, entryValueCol2w, trendEntrySize.y, smallTextFont, fontColor )
+			Else
+				_DrawValue("NoDef", 0, x + entryValueCol1w, y, entryValueCol2w, trendEntrySize.y, smallTextFont, fontColor )
+			EndIf
+		Next
+	End Method
+	
+
+	Method Render(parent:TScreenHandler_OfficeStatistics)
+		'load sprites if not done yet (or not available before)
+		Init()
+
+		RenderTrendEntries(parent)
 
 		GuiManager.Draw( LS_screenName )
 	End Method
