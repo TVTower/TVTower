@@ -1510,6 +1510,15 @@ Type TDatabaseLoader
 					local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
 					If role
 						jobRoleID = role.GetID()
+					Else
+						Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(jobRoleGUID)
+						If person
+							role = New TProgrammeRole
+							role.SetGUID(jobRoleGUID)
+							role.Init(person.firstName, person.lastName, person.nickName, person.title, person.countryCode, person.gender, person.isFictional())
+							GetProgrammeRoleCollection().Add(role)
+							jobRoleID = role.GetId()
+						EndIf
 					EndIf
 				EndIf
 				Local memberGUID:String = nodeMember.GetContent().Trim()
@@ -2004,6 +2013,10 @@ Type TDatabaseLoader
 					If Not role
 						role = New TProgrammeRole
 						role.SetGUID(GUID)
+						Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(jobRoleGUID)
+						If person
+							role.Init(person.firstName, person.lastName, person.nickName, person.title, person.countryCode, person.gender, person.isFictional())
+						EndIf
 						GetProgrammeRoleCollection().Add(role)
 					EndIf
 					jobRoleID = role.GetID()
