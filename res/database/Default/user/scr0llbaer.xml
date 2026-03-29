@@ -3472,7 +3472,7 @@ Czyli 4120 na odcinek.</pl>
 			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
-				<job index="1" function="2" required="1" gender="2" country="${nat}" random_role="1" /> <!-- TODO: country from variable doesn't seem to work yet -->
+				<job index="1" function="2" required="1" gender="2" country="${nat}" random_role="1" />
 				<job index="2" function="2" required="1" gender="1" country="${nat}" random_role="1" />
 				<job index="3" function="2" required="1" gender="2" country="${nat}" random_role="1" />
 				<job index="4" function="2" required="1" gender="1" country="${nat}" random_role="1" />

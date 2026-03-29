@@ -4614,7 +4614,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 			<variables>
 				<ufo_csv>
 					<de>London;vorm Buckingham Palace - schon wieder! -; und machen sich Sorgen über die diplomatischen Konsequenzen;Aliens zum Tee eingeladen;Es kommt zu Missverständnissen, als die Aliens die königlichen Garden für Statuen halten und als Souvenirs mitnehmen wollen.|
-						Paris;vorm Eiffelturm;, deren Bekleidung als „space-chic“ gelobt wird;Aliens Stars bei Pariser Modewoche;Nachdem ihr UFO für ein trendiges neues Café gehalten wurde, wurde eine außerordentliche Modewoche einberufen, um festzustellen, welche Spezies den besseren Geschmack hat.|
+						Paris;vorm Eiffelturm;, deren Bekleidung als „space-chic“ gelobt wird;Aliens sind die Stars bei Pariser Modewoche;Nachdem ihr UFO für ein trendiges neues Café gehalten wurde, wurde eine außerordentliche Modewoche einberufen, um festzustellen, welche Spezies den besseren Geschmack hat.|
 						New York City;mitten auf dem Times Square;, doch New Yorker und Touristen halten das ganze für einen Marketing-Stunt;Aliens: „Wir kommen in Frieden!“;Doch die New Yorker halten das ganze für eine Werbeaktion für den nächsten SciFi-Film, rezitieren begeistert weitere One-Liner und händigen den Aliens „I Love NYC“-T-Shirts und „Buy one, get one free“-Pizza-Deals aus.|
 						Kairo;bei den Pyramiden von Gizeh;, die die Pyramiden begutachten;Aliens von Pyramiden fasziniert;„Wer hat sie erbaut? Und warum?“ „Was ist ihr wahrer Zweck?“ fragen sie sich. „Gibt es etwa noch anderes Leben dort draußen?“|
 						Kairo;bei der Sphinx;, die die Sphinx begutachten;Aliens verwirrt von Hieroglyphen;Während die Aliens Inschriften analysieren und versuchen, ein Kamel zu zeichnen, nutzen Reiseführer die Gelegenheit und bieten „Erkunde die erkundenden Aliens“-Erkundungstouren an.|
@@ -4625,7 +4625,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 						Rio de Janeiro;neben der Christusstatue;, die begeistert von der Sehenswürdigkeit sind;Aliens machen Selfies mit Christusstatue;Nach ein paar gescheiterten Versuchen, bei denen sie ihre Antennen in die Kamera hielten, gelingt den Aliens das perfekte Bild. Rio wird zu einer „Top-Sehenswürdigkeit des Universums“ erklärt.
 					</de>
 					<en>London;in front of Buckingham Palace - again!; and worry about the diplomatic consequences;Aliens invited for tea;Misunderstandings arise when the aliens mistake the royal guards for statues and want to take them with them as souvenirs.|
-						Paris;in front of the Eiffel Tower.; whose clothes are praised as “space-chic”;Aliens stars at Paris fashion week;After their UFO was mistaken for a trendy new café, an emergency fashion week was called in to determine which species has superior taste.|
+						Paris;in front of the Eiffel Tower.; whose clothes are praised as “space-chic”;Aliens are the stars at Paris fashion week;After their UFO was mistaken for a trendy new café, an emergency fashion week was called in to determine which species has superior taste.|
 						New York City;in the middle of Times Square.;, but New Yorkers and tourists think the whole thing is a marketing stunt;Aliens: "We come in peace!";But the New Yorkers think the whole thing is a promotion for the next sci-fi movie, enthusiastically reciting more one-liners and handing out "I Love NYC" T-shirts and "Buy one, get one free" pizza deals to the aliens.|
 						Cairo;near the pyramids of Giza.; inspecting the pyramids;Aliens fascinated by pyramids; "Who built them? And why?" "What is their true purpose?" they wonder. "Is there any other life out there?"|
 						Cairo;by the Sphinx.; examining the Sphinx;Aliens puzzled by hieroglyphics;While the aliens analyze inscriptions and try to draw a camel, tourist guides take the opportunity to offer "Explore the Exploring Aliens" exploration tours.|
@@ -10638,7 +10638,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 		<news guid="69f29b25-f989-440b-a697-220fc9bc8712" type="2" thread_guid="80e989d6-96ec-4efb-8f18-a281f48c8936" created_by="discord/vicusfeli">
 			<title>
 				<de>${actress}: Fotoshooting mal anders</de>
-				<en>${actress}: Photo shoot, but differently</en>
+				<en>${actress}: Photo shoot, but in a different way</en>
 				<pl>${actress}: Sesja zdjęciowa, ale jakaś inna</pl>
 			</title>
 			<description>

@@ -304,7 +304,7 @@
 		<!-- Verfügbarkeit ergänzt, kein optionaler Kult-->
 		<scripttemplate licence_type="3" product="2" guid="Kasi-script-SozialeNetzwerke">
 			<title>
-				<de>${Name1} ${Name2} - Verloren im digitalem Sumpf</de>
+				<de>${Name1} ${Name2} - Verloren im digitalen Sumpf</de>
 				<en>${Name1} ${Name2} - Lost In the Digital Swamp</en>
 				<pl>${Name2} w ${Name1} - Zagubienie w cyfrowym bagnie</pl>
 			</title>

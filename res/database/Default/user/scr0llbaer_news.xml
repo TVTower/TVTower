@@ -3754,8 +3754,8 @@
 				<royscheider_or_dwaynejohnson>${.lte:currentyear:2005:"${.person:"16e22e6d-ced1-4506-a24c-2bab866e0206":"fullname"}":"${.person:"5518ff89-8ce3-435c-a593-43be046c44c4":"fullname"}"}</royscheider_or_dwaynejohnson>
 				<christopherreeve_or_keanureeves>${.lte:currentyear:1995:"${.person:"8ca3a6aa-f02d-4431-a770-051a872f05d8":"fullname"}":"${.person:"7491c589-c117-42b5-a15d-763ebbc23517":"fullname"}"}</christopherreeve_or_keanureeves>
 				<rogermoore_or_vindiesel>${.lte:currentyear:2005:"${.person:"56035d20-9b99-4225-92e0-aee2cd9b7119":"fullname"}":"${.person:"bf298413-fd40-4d27-81a6-fe70353541e8":"fullname"}"}</rogermoore_or_vindiesel>
-				<chucknorris>${.person:"f9886d56-43a6-4584-950e-d62ecf41e62a":"fullname"}</chucknorris>
-				<actor>${charltonheston_or_silvesterstallone}|${seanconnery_or_arnoldschwarzenegger}|${kirkdouglas_or_kurtrussell}|${michaeldouglas_or_brucewillis}|${melgibson_or_matthewmcconaughey}|${burtreynolds_or_tomcruise}|${stevemcqueen_or_kevincostner}|${clinteastwood_or_johnnydepp}|${charlesbronson_or_liamneeson}|${martinsheen_or_jasonstatham}|${royscheider_or_dwaynejohnson}|${christopherreeve_or_keanureeves}|${rogermoore_or_vindiesel}|${chucknorris}</actor>
+				<chucknorris_or_scottadkins>${.lte:currentyear:2025:"${.person:"f9886d56-43a6-4584-950e-d62ecf41e62a":"fullname"}":"${.person:"3a43dbc8-d4f6-4478-aab5-f7048d2d23f9":"fullname"}"}</chucknorris_or_scottadkins>
+				<actor>${charltonheston_or_silvesterstallone}|${seanconnery_or_arnoldschwarzenegger}|${kirkdouglas_or_kurtrussell}|${michaeldouglas_or_brucewillis}|${melgibson_or_matthewmcconaughey}|${burtreynolds_or_tomcruise}|${stevemcqueen_or_kevincostner}|${clinteastwood_or_johnnydepp}|${charlesbronson_or_liamneeson}|${martinsheen_or_jasonstatham}|${royscheider_or_dwaynejohnson}|${christopherreeve_or_keanureeves}|${rogermoore_or_vindiesel}|${chucknorris_or_scottadkins}</actor>
 			</variables>
 			<data genre="1" price="1" quality_min="5" quality_max="40" fictional="1" />
 		</news>
@@ -6960,7 +6960,7 @@
 		<news guid="8556c7e0-3314-449c-992e-db18e1627c53" type="0" creator="9551">
 			<title>
 				<de>Lichtshow ${insistinechapel}</de>
-				<en>Light show held in ${insistinechapel}</en>
+				<en>Light show held ${insistinechapel}</en>
 				<pl>Pokaz świetlny ${insistinechapel}</pl>
 			</title>
 			<description>
@@ -7191,7 +7191,7 @@
 				<burtreynolds_or_jeanclaudevandamne>${.lte:currentyear:1995:"e2704c1c-bebd-4e04-9b72-77214e8f9ea1":"a7ec1487-b766-4030-b27d-19e3540185e0"}</burtreynolds_or_jeanclaudevandamne>
 				<charltonheston_or_brucewillis>${.lte:currentyear:1995:"b4561de6-215e-46ab-9212-f0868c6fcb33":"2b6af8c4-7775-44da-820e-1ce9c55d8cd9"}</charltonheston_or_brucewillis>
 				<jackiechan>194656f2-5799-435c-8324-7d8869e0bbf6</jackiechan>
-				<chucknorris>f9886d56-43a6-4584-950e-d62ecf41e62a</chucknorris>
+				<chucknorris_or_scottadkins>${.lte:currentyear:2025:"${.person:"f9886d56-43a6-4584-950e-d62ecf41e62a":"fullname"}":"${.person:"3a43dbc8-d4f6-4478-aab5-f7048d2d23f9":"fullname"}"}</chucknorris_or_scottadkins>
 				<buttrainingwascut> <!-- same year as seanconnery_or_keanureeves -->
 					<de>${.lte:currentyear:2005:"Das Training wurde jedoch nach einer Meinungsverschiedenheit mit dem Rat abgebrochen. Er bezeichnet die Macht jetzt als „etwasch Schubtiles“.":"„Es ging um Balance, nicht um Laserschwerter“, sagte er. Wie Insider berichten, meisterte er die Macht, indem er sechs Monate lang sanft einen Bleistift über einen Tisch schob."}</de>
 					<en>${.lte:currentyear:2005:"But training was cut short after a disagreement with the Council. He now refers to the Force as “shomething shubtle“.":"“It was about balance, not lightsabers,“ he said. Sources confirm he mastered the Force by gently pushing a pencil across a table for six months."}</en>
@@ -7212,19 +7212,19 @@
 						${burtreynolds_or_jeanclaudevandamne};${theforceisalady}|
 						${charltonheston_or_brucewillis};${namedpermanentchairman}|
 						${jackiechan};Berichten zufolge konzentrierte er sich vollkommen darauf, die Macht zu nutzen, um fallende Laserschwerter sicher aufzufangen. Er bestand darauf, die Outtakes während des Machttrainings seien „das beste gewesen“.|
-						${chucknorris};„Eigentlich habe ich die Ausbildung an einem einzigen Nachmittag abgeschlossen. Aber es hat so lange gedauert, allen die Roundhouse-Kicks und Yoda die richtige Grammatik beizubringen“, erklärte er.
+						${chucknorris_or_scottadkins};„Eigentlich habe ich die Ausbildung an einem einzigen Nachmittag abgeschlossen. Aber es hat so lange gedauert, allen die Roundhouse-Kicks und Yoda die richtige Grammatik beizubringen“, erklärte er.
 					</de>
 					<en>${seanconnery_or_keanureeves};${buttrainingwascut}|
 						${burtreynolds_or_jeanclaudevandamne};${theforceisalady}|
 						${charltonheston_or_brucewillis};${namedpermanentchairman}|
 						${jackiechan};Reportedly, he was focused entirely on using the Force to safely catch falling lightsabers. He insisted the outtakes during Force training were “the best part“.|
-						${chucknorris};“Actually I completed the training in a single afternoon. But it took so long to teach everyone the roundhouse kicks and Yoda the correct grammar,“ he explained.
+						${chucknorris_or_scottadkins};“Actually I completed the training in a single afternoon. But it took so long to teach everyone the roundhouse kicks and Yoda the correct grammar,“ he explained.
 					</en>
 					<pl>${seanconnery_or_keanureeves};${buttrainingwascut}|
 						${burtreynolds_or_jeanclaudevandamne};${theforceisalady}|
 						${charltonheston_or_brucewillis};${namedpermanentchairman}|
 						${jackiechan};Podobno skupiał się entirely na używaniu Mocy, aby bezpiecznie łapać upadające miecze świetlne. Nalegał, że outtaki z treningu Mocy były „najlepszą częścią“.|
-						${chucknorris};„Właściwie to ukończyłem trening w jedno popołudnie. Ale nauczenie wszystkich kopów z obrotu i Yody poprawnej gramatyki zajęło tak dużo czasu“ - wyjaśnił.
+						${chucknorris_or_scottadkins};„Właściwie to ukończyłem trening w jedno popołudnie. Ale nauczenie wszystkich kopów z obrotu i Yody poprawnej gramatyki zajęło tak dużo czasu“ - wyjaśnił.
 					</pl>
 				</jedi_csv>
 				<keanureeves>

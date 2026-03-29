@@ -281,7 +281,7 @@
 				<job index="3" function="64" required="1" person="${personguid}" />
 			</jobs>
 			<data flags="0" flags_optional="0" target_groups="68" /> <!-- Zielgruppe Rentner und Hausfrauen, Kultur: nein -->
-			<targetgroupattractivity men="0.5" /> <!-- Malus: Männer -->
+			<targetgroupattractivity men="0.5" managers="0.5" /> <!-- Malus: Männer, Manager -->
 			<genres maingenre="6" subgenres="301" /> <!-- Doku / Boulevard -->
 			<blocks value="2" />
 			<price min="50000" max="100000" />
@@ -440,7 +440,7 @@
 						<en>A flat stage of 179 km.</en>
 						<pl>Płaski etap o długości 179 km.</pl>
 					</description>
-					<data live_date="2,4,4,18,19" /> <!-- TODO: These episode-next-day overrides are not working in 0.8.3.2 release version -->
+					<data live_date="2,4,4,18,19" />
 				</scripttemplate>
 				<scripttemplate index="2" product="6" licence_type="2" guid="f4569603-a8f0-4de3-9d9c-8f6fc3660a25">
 					<title>
