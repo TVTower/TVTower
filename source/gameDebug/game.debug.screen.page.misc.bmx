@@ -286,9 +286,9 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 					Next
 				else
 					adList.Sort(True, TAdContractBase.SortByName)
-					Print ".---------------------------------.------------------.---------.----------.----------.-------.------.-------."
-					Print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Days | Avail |"
-					Print "|---------------------------------+------------------+---------+----------+----------|-------|------|-------|"
+					Print ".---------------------------------.-------------------.---------.----------.----------.-------.------.-------."
+					Print "| Name                            | Audience        % |  Image  |  Profit  |  Penalty | Spots | Days | Avail |"
+					Print "|---------------------------------+-------------------+---------+----------+----------|-------|------|-------|"
 
 					'For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 					For Local a:TAdContractBase = EachIn adList
@@ -296,7 +296,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 						'do NOT call ad.Create() as it adds to the adcollection
 						ad.base = a
 						Local title:String = LSet(a.GetTitle(), 30)
-						Local audience:String = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( TFunctions.LocalizedNumberToString(100 * a.minAudienceBase,2)+"%", 6)
+						Local audience:String = LSet( RSet(ad.GetMinAudience(), 8), 9)+"  "+RSet( TFunctions.LocalizedNumberToString(100 * a.minAudienceBase,2)+"%", 6)
 						Local image:String =  RSet(TFunctions.LocalizedNumberToString(ad.GetMinImage()*100, 2)+"%", 7)
 						Local profit:String =  RSet(ad.GetProfit(), 8)
 						Local penalty:String =  RSet(ad.GetPenalty(), 8)
@@ -319,7 +319,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 						Print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots + " | " + days + " | " + availability + " |" + targetgroup
 	
 					Next
-					Print "'---------------------------------'------------------'---------'----------'----------'-------'------'-------'"
+					Print "'---------------------------------'-------------------'---------'----------'----------'-------'------'-------'"
 				EndIf
 '
 			Case 1
