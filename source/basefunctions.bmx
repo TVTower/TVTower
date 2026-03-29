@@ -110,8 +110,9 @@ Type TFunctions
 		If absValue <= 1000000 Then Return sign * Ceil(absValue / 25000.0 ) * 25000
 		If absValue <= 2500000 Then Return sign * Ceil(absValue / 100000.0) * 100000
 		If absValue <= 5000000 Then Return sign * Ceil(absValue / 250000.0) * 250000
+		If absValue <=20000000 Then Return sign * Ceil(absValue / 500000.0) * 500000
 
-		' >5.000.000 in steps of 1 million
+		' >20.000.000 in steps of 1 million
 		Return sign * Ceil(absValue / 1000000.0) * 1000000
 	End Function
 
