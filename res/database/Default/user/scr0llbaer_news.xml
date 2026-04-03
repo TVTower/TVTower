@@ -7191,7 +7191,7 @@
 				<burtreynolds_or_jeanclaudevandamne>${.lte:currentyear:1995:"e2704c1c-bebd-4e04-9b72-77214e8f9ea1":"a7ec1487-b766-4030-b27d-19e3540185e0"}</burtreynolds_or_jeanclaudevandamne>
 				<charltonheston_or_brucewillis>${.lte:currentyear:1995:"b4561de6-215e-46ab-9212-f0868c6fcb33":"2b6af8c4-7775-44da-820e-1ce9c55d8cd9"}</charltonheston_or_brucewillis>
 				<jackiechan>194656f2-5799-435c-8324-7d8869e0bbf6</jackiechan>
-				<chucknorris_or_scottadkins>${.lte:currentyear:2025:"${.person:"f9886d56-43a6-4584-950e-d62ecf41e62a":"fullname"}":"${.person:"3a43dbc8-d4f6-4478-aab5-f7048d2d23f9":"fullname"}"}</chucknorris_or_scottadkins>
+				<chucknorris_or_scottadkins>${.lte:currentyear:2025:"f9886d56-43a6-4584-950e-d62ecf41e62a":"3a43dbc8-d4f6-4478-aab5-f7048d2d23f9"}</chucknorris_or_scottadkins>
 				<buttrainingwascut> <!-- same year as seanconnery_or_keanureeves -->
 					<de>${.lte:currentyear:2005:"Das Training wurde jedoch nach einer Meinungsverschiedenheit mit dem Rat abgebrochen. Er bezeichnet die Macht jetzt als „etwasch Schubtiles“.":"„Es ging um Balance, nicht um Laserschwerter“, sagte er. Wie Insider berichten, meisterte er die Macht, indem er sechs Monate lang sanft einen Bleistift über einen Tisch schob."}</de>
 					<en>${.lte:currentyear:2005:"But training was cut short after a disagreement with the Council. He now refers to the Force as “shomething shubtle“.":"“It was about balance, not lightsabers,“ he said. Sources confirm he mastered the Force by gently pushing a pencil across a table for six months."}</en>
