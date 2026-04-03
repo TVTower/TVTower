@@ -1027,13 +1027,13 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 	'first premiered on TV?
 	Method IsTVDistribution:Int() {_exposeToLua}
-		Return distributionChannel & TVTProgrammeDistributionChannel.TV > 0
+		Return (distributionChannel = TVTProgrammeDistributionChannel.TV)
 	End Method
 
 
 	'first premiered in cinema?
 	Method IsCinemaDistribution:Int() {_exposeToLua}
-		Return distributionChannel & TVTProgrammeDistributionChannel.CINEMA > 0
+		Return (distributionChannel = TVTProgrammeDistributionChannel.CINEMA)
 	End Method
 
 
