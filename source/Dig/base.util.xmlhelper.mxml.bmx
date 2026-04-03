@@ -76,8 +76,16 @@ Type TXmlHelper
 
 			'try to load it via a stream (maybe SDL wants to help out)
 			Local stream:TStream = OpenStream(filename)
-			If stream
-				Self.xmlDoc = TxmlDoc.readDoc(stream)
+			If stream 
+				'only try to load when there is content (not just a new
+				'file) as mxml expects some valid "<?xml>".
+				'mxml doc for "mxmlLoadStream":
+				'   If no top node is provided, the XML file MUST be
+				'   well-formed with a single parent node like <?xml>
+				'   for the entire file
+				If stream.size() > 0
+					Self.xmlDoc = TxmlDoc.readDoc(stream)
+				EndIf
 				stream.Close()
 			EndIf
 		EndIf
@@ -88,10 +96,9 @@ Type TXmlHelper
 				Self.xmlDoc = CreateDocument(rootNode)
 			Else
 				If FileSize(filename) >= 0
-					Print "Document ~~"+filename+"~~ not parsed successfully."
+					Print "Document ~q"+filename+"~q not parsed successfully."
 				Else
-					Print "Document ~~"+filename+"~~ not found."
-					Return Null
+					Print "Document ~q"+filename+"~q not found."
 				EndIf
 			EndIf
 		EndIf

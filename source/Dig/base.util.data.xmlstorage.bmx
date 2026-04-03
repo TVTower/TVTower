@@ -51,7 +51,10 @@ Type TDataXmlStorage
 
 
 	Method Load:TData(file:string)
-		local helper:TXmlHelper = TXmlHelper.Create(file)
+		'if file does not exist, return null (not a new TData)
+		If FileType(file) = 0 Then Return Null
+		
+		local helper:TXmlHelper = TXmlHelper.Create(file, "", False) 'False: do not create if missing!
 		local configNode:TXmlNode = helper.FindElementNode(null, rootNodeKey.orig)
 		'if no configuration was found, return null (not a new TData)
 		if not configNode then return null
@@ -66,7 +69,7 @@ Type TDataXmlStorage
 	Method Save:int(file:string, settingsData:TData)
 		'make sure we get a new file
 		deleteFile(file)
-		local helper:TXmlHelper = TXmlHelper.Create(file, rootNodeKey.orig)
+		local helper:TXmlHelper = TXmlHelper.Create(file, rootNodeKey.orig, True) 'True: create if missing
 
 		helper.GetRootNode().SetAttribute("saved", Time.GetSystemTime("%d.%m.%Y %H:%M"))
 

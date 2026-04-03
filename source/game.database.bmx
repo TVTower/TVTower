@@ -367,9 +367,8 @@ Type TDatabaseLoader
 	End Function
 
 
-	Function MXMLErrorCallback(message:Byte Ptr)
-		Local s:String = string.FromCString(message)
-		TLogger.Log("TDatabase.Load()", "mxml-Error: " + s, LOG_ERROR + LOG_XML)
+	Function MXMLErrorCallback(message:String)
+		TLogger.Log("TDatabase.Load()", "mxml-Error: " + message, LOG_ERROR + LOG_XML)
 		'not multithreaded "xml loading" ready!
 		XMLErrorCount :+ 1
 	End Function
