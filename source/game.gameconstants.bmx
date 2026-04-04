@@ -570,12 +570,17 @@ End Type
 
 'to ease access to "comparisons" without knowing
 'the licence object itself
+'main usages: 
+' * FixOutcome if outcome not defined in database (TV vs all other)
+' * Programme sheet localization box office (cinema) vs viewers
+' -> no real impact of video, stream...
 Type TVTProgrammeDistributionChannel {_exposeToLua}
 	Const UNKNOWN:Int    = 0
 	Const CINEMA:Int     = 1
 	Const TV:Int         = 2 'produced for TV
 	Const VIDEO:Int      = 3 'direct to video/dvd/br... (often B-Movies)
-	Const count:Int      = 3
+	Const STREAM:INt     = 4
+	Const count:Int      = 4
 
 
 	Function GetAtIndex:Int(index:Int = 0)
@@ -588,6 +593,7 @@ Type TVTProgrammeDistributionChannel {_exposeToLua}
 			Case CINEMA      Return "cinema"
 			Case TV          Return "tv"
 			Case VIDEO       Return "video"
+			Case STREAM      Return "stream"
 			Default          Return "unknown"
 		End Select
 	End Function

@@ -2514,7 +2514,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 		else
 			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcome())
-			skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+			if data.IsCinemaDistribution()
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+			else
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 3, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
+			endif
 		endif
 		contentY :+ barH + 1
 		'topicality/maxtopicality
