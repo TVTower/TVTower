@@ -262,6 +262,7 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 	End Function
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
+		Local playerID:Int = GetPlayerBaseCollection().GetObservedPlayerID()
 		Select sender.dataInt
 			Case 0
 				Local csv:Int = GameRules.devConfig.GetInt("DEV_ADCONTRACT_STAT_CSV", 0)
@@ -274,15 +275,23 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 				Print "==== AD CONTRACT OVERVIEW ===="
 				If csv
 					adList.Sort(True, SortContractAudienceRange)
+					Local oldBase:Float = -1.0
 					Print "Name;Audience;%;Image;Base;Profit;per Spot;Penalty;Spots;Days;Available;TargetGroup"
 					For Local a:TAdContractBase = EachIn adList
 						Local ad:TAdContract = New TAdContract
 						'do NOT call ad.Create() as it adds to the adcollection
 						ad.base = a
-						Local profit:Int = ad.GetProfit()
+						If oldBase < 0 Then oldBase = a.minAudienceBase
+						If a.minAudienceBase - oldBase > 0.005
+							oldBase = a.minAudienceBase
+							'print empty line to separate ad blocks
+							'print ""
+						EndIf
+						'If a.minAudienceBase < 0.07 Then Continue
+						Local profit:Int = ad.GetProfit(playerID)
 						Local spots:Int = ad.GetSpotCount()
-						print a.GetTitle()+";"+ad.GetMinAudience()+";"+TFunctions.LocalizedNumberToString(100 * a.minAudienceBase,2)+";"+TFunctions.LocalizedNumberToString(ad.GetMinImage()*100, 2)..
-						+";"+Int(a.profitBase)+";"+profit+";"+profit/spots+";"+ad.GetPenalty()+";"+spots+";"+ad.GetDaysToFinish()+";"+ad.base.IsAvailable()+";"+ad.GetLimitedToTargetGroupString()
+						print a.GetTitle()+";"+ad.GetMinAudience(playerID)+";"+TFunctions.LocalizedNumberToString(100 * a.minAudienceBase,2)+";"+TFunctions.LocalizedNumberToString(ad.GetMinImage()*100, 2)..
+						+";"+Int(a.profitBase)+";"+profit+";"+profit/spots+";"+ad.GetPenalty(playerID)+";"+spots+";"+ad.GetDaysToFinish()+";"+ad.base.IsAvailable()+";"+TVTTargetGroup.GetAsString(ad.GetLimitedToTargetGroup())
 					Next
 				else
 					adList.Sort(True, TAdContractBase.SortByName)
@@ -296,10 +305,10 @@ Type TDebugScreenPage_Misc extends TDebugScreenPage
 						'do NOT call ad.Create() as it adds to the adcollection
 						ad.base = a
 						Local title:String = LSet(a.GetTitle(), 30)
-						Local audience:String = LSet( RSet(ad.GetMinAudience(), 8), 9)+"  "+RSet( TFunctions.LocalizedNumberToString(100 * a.minAudienceBase,2)+"%", 6)
+						Local audience:String = LSet( RSet(ad.GetMinAudience(playerID), 8), 9)+"  "+RSet( TFunctions.LocalizedNumberToString(100 * a.minAudienceBase,2)+"%", 6)
 						Local image:String =  RSet(TFunctions.LocalizedNumberToString(ad.GetMinImage()*100, 2)+"%", 7)
-						Local profit:String =  RSet(ad.GetProfit(), 8)
-						Local penalty:String =  RSet(ad.GetPenalty(), 8)
+						Local profit:String =  RSet(ad.GetProfit(playerID), 8)
+						Local penalty:String =  RSet(ad.GetPenalty(playerID), 8)
 						Local spots:String = RSet(ad.GetSpotCount(), 5)
 						Local days:String = RSet(ad.GetDaysToFinish(), 4)
 						Local availability:String = ""
