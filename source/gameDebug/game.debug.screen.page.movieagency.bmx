@@ -7,6 +7,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 	Field offerHightlight:TProgrammeLicence
 	Field offerHightlightOffset:Int
 	Field auctions:TProgrammeLicence[] = new TProgrammeLicence[0]
+	Field crapList:TObjectList
 
 
 	Method New()
@@ -53,10 +54,12 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 
 	Method Activate()
+		crapList = Null
 	End Method
 
 
 	Method Deactivate()
+		crapList = Null
 	End Method
 
 
@@ -64,6 +67,20 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 		Local playerID:Int = GetShownPlayerID()
 
 		UpdateBlock_Offers(playerID, position.x + 5, position.y + 3, 410, 230)
+
+		If Not offerHightlight And MOUSEMANAGER.GetX() > position.x + 495 And crapList
+			offerHightlightOffset = -100
+			Local textX:Int = position.x + 495
+			Local textY:Int = position.y + 85 + 11
+			For Local p:TProgrammeLicence = EachIn crapList
+				textY:+11
+				If THelper.MouseIn(textX, textY, 200, 11)
+					offerHightlight = p
+					Exit
+				EndIf
+				If textY > 600 Then Exit
+			Next
+		EndIf
 
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()
@@ -135,23 +152,55 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 	Method RenderBlock_NoLongerAvailable(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 300)
 		Local movieVendor:RoomHandler_MovieAgency = RoomHandler_MovieAgency.GetInstance()
 
-		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Crap-Filtered")
+		If Not crapList
+			crapList = new TObjectList
+			For Local pl:TProgrammeLicence = EachIn GetProgrammeLicenceCollection()._GetParentLicences().values()
+				If Not pl.IsReleased() Then Continue
+	'			If pl.GetMaxTopicality() > 0.15 Then Continue
+	'			If Not (movieVendor.filterMoviesCheap.DoesFilter(pl) Or movieVendor.filterMoviesGood.DoesFilter(pl) Or movieVendor.filterSeries.DoesFilter(pl)) Then Continue
+				If Not movieVendor.filterCrap.DoesFilter(pl) Then Continue
+				crapList.addLast(pl)
+			Next
+			crapList.sort(False, CrapSort)
+		EndIf
+
+		Local contentRect:SRectI = DrawWindow(x, y, w, h, "Crap-Filtered ("+crapList.size+")")
 
 		Local textX:Int = contentRect.x
 		Local textY:Int = contentRect.y
+		Local count:Int = 0
+		Local oldAlpha:Float = GetAlpha()
 
-		For Local pl:TProgrammeLicence = EachIn GetProgrammeLicenceCollection()._GetParentLicences().values()
-			If Not pl.IsReleased() Then Continue
-'			If pl.GetMaxTopicality() > 0.15 Then Continue
-'			If Not (movieVendor.filterMoviesCheap.DoesFilter(pl) Or movieVendor.filterMoviesGood.DoesFilter(pl) Or movieVendor.filterSeries.DoesFilter(pl)) Then Continue
-			If Not movieVendor.filterCrap.DoesFilter(pl) Then Continue
-
-			textFont.DrawBox(pl.GetTitle(), textX + 10, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
-			textFont.DrawBox(TFunctions.LocalizedDottedValue(pl.GetPriceForPlayer(playerID)), textX + 10 + 110, textY - 1, 50, 15, sALIGN_RIGHT_TOP, SColor8.White)
-			textFont.DrawBox(TFunctions.LocalizedNumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 10 + 110 + 50 -5 + 130, textY - 1, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
+		For Local pl:TProgrammeLicence = EachIn crapList
+			textFont.DrawBox(pl.GetTitle(), textX , textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textFont.DrawBox(TFunctions.LocalizedDottedValue(pl.GetPriceForPlayer(playerID)), textX  + 110, textY - 1, 50, 15, sALIGN_RIGHT_TOP, SColor8.White)
+			'textFont.DrawBox(TFunctions.LocalizedNumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 110 + 50 -5 + 130, textY - 1, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
+			If pl And pl = offerHightlight
+				SetAlpha 0.25 * oldAlpha
+				SetBlend LIGHTBLEND
+				DrawRect(textX , textY, 160, 11)
+				SetAlpha oldAlpha
+				SetBlend ALPHABLEND
+			EndIf
 			textY :+ 11
+			count:+1
+			If count > 50 Then Exit 'do not try to render all
 		Next
+
 	End Method
+
+	Function CrapSort:Int(o1:Object, o2:Object)
+		Local a1:TProgrammeLicence = TProgrammeLicence(o1)
+		Local a2:TProgrammeLicence = TProgrammeLicence(o2)
+		If a1 And a2 And a1.GetData() And a2.GetData()
+			If a1.GetData().GetReleaseTime() > a2.GetData().GetReleaseTime()
+				Return 1
+			Else
+				Return -1
+			EndIf
+		endif
+		return 0
+	End Function
 
 
 	Method RenderBlock_Information(playerID:Int, x:Int, y:Int, w:Int = 180, h:Int = 150)
