@@ -483,13 +483,13 @@ Type TProductionManager
 		Local amountWithoutJob:Int = (amateursToInclude * 3) / 10
 		if amateursToInclude > 1 then amountWithoutJob :+ 1
 
-		local amateursWithJob:TPersonBase[] = GetPersonBaseCollection().GetRandomCastableInsignificants(currentAvailableAmateurs, amateursToInclude - amountWithoutJob, True, True, filtertoJobID, filterToGenderID, True, "", null)
+		local amateursWithJob:TPersonBase[] = GetPersonBaseCollection().GetRandomCastableInsignificants(currentAvailableAmateurs, amateursToInclude - amountWithoutJob, GameRules.castOnlyFictional, True, filtertoJobID, filterToGenderID, True, "", null)
 		local amateursWithJobIDs:Int[] = new Int[amateursWithJob.length]
 		For local i:int = 0 until amateursWithJob.length
 			amateursWithJobIDs[i] = amateursWithJob[i].id
 		Next
 		'no job restrictions but other persons than the ones with job
-		local amateursWithoutJob:TPersonBase[] = GetPersonBaseCollection().GetRandomCastableInsignificants(currentAvailableAmateurs, amountWithoutJob, True, True, 0, filterToGenderID, True, "", null, amateursWithJobIDs)
+		local amateursWithoutJob:TPersonBase[] = GetPersonBaseCollection().GetRandomCastableInsignificants(currentAvailableAmateurs, amountWithoutJob, GameRules.castOnlyFictional, True, 0, filterToGenderID, True, "", null, amateursWithJobIDs)
 
 
 		For local i:int = 0 until amateursWithJob.length + amateursWithoutJob.length
@@ -501,10 +501,8 @@ Type TProductionManager
 			endif
 			
 			If amateur
-				'custom production not possible with real persons...
-				'also the person must be bookable for productions (maybe retired?)
+				'the person must be bookable for productions (maybe retired?)
 				If Not amateur.IsAlive() Then continue
-				If Not amateur.IsFictional() Then continue
 				if Not amateur.IsBookable() Then continue
 
 				if not amateur.HasJob(filterToJobID) and amateur.GetJobCount() >= 4 then continue 
@@ -527,7 +525,7 @@ Type TProductionManager
 		Local personsList:TObjectList = GetPersonBaseCollection().GetCastableCelebritiesList()
 		For Local person:TPersonBase = EachIn personsList
 			'custom production not possible with real persons...
-			If Not person.IsFictional() Then Continue
+			If GameRules.castOnlyFictional And Not person.IsFictional() Then Continue
 			'also the person must be bookable for productions (maybe retired?)
 			If Not person.IsBookable() Then Continue
 			If Not person.IsAlive() Then Continue

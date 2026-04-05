@@ -647,18 +647,18 @@ Type TDatabaseLoader
 
 			person.SetFlag(TVTPersonFlag.FICTIONAL, True)
 		EndIf
+		Local castable:Int = -1
+		Local fictional:Int = -1
 
 		'override with given ones
 		person.firstName = xml.FindValue(node, "first_name", person.firstName)
 		person.lastName = xml.FindValue(node, "last_name", person.lastName)
 		person.nickName = xml.FindValue(node, "nick_name", person.nickName)
 		person.title = xml.FindValue(node, "title", person.title)
-		person.SetFlag(TVTPersonFlag.FICTIONAL, GetBool(xml.FindValue(node, "fictional"), person.IsFictional()))
+		fictional = GetBool(xml.FindValue(node, "fictional"), fictional)
 		'fallback for old database syntax
-		person.SetFlag(TVTPersonFlag.CASTABLE, GetBool(xml.FindValue(node, "bookable"), person.IsCastable()))
-		person.SetFlag(TVTPersonFlag.CASTABLE, GetBool(xml.FindValue(node, "castable"), person.IsCastable()))
-		'cast filtering is mainly done using the bookable flag - not castable implies not bookable
-		If Not person.IsCastable() Then person.SetFlag(TVTPersonFlag.BOOKABLE, false )
+		castable = GetBool(xml.FindValue(node, "bookable"), castable)
+		castable = GetBool(xml.FindValue(node, "castable"), castable)
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, GetBool(xml.FindValue(node, "levelup"), person.CanLevelUp()))
 		person.SetJob(xml.FindValueInt(node, "job", 0)) 'for now it must be defined all time, else: ", person._jobs))"
 		person.countryCode = xml.FindValue(node, "country", person.countryCode).ToUpper()
@@ -693,7 +693,7 @@ Type TDatabaseLoader
 			pd.SetDayOfBirth( xml.FindValue(nodeDetails, "birthday", pd.dayOfBirth) )
 			pd.SetDayOfDeath( xml.FindValue(nodeDetails, "deathday", pd.dayOfDeath) )
 			person.SetJob( xml.FindValueInt(nodeDetails, "job", person.GetJobs()) )
-			person.SetFlag(TVTPersonFlag.FICTIONAL, xml.FindValueInt(nodeDetails, "fictional", person.IsFictional()) )
+			fictional = xml.FindValueInt(nodeDetails, "fictional", fictional)
 			person.faceCode = xml.FindValue(nodeDetails, "face_code", person.faceCode)
 
 			'=== DATA ===
@@ -799,6 +799,19 @@ Type TDatabaseLoader
 				pd.CreatePopularity(popularityValue, popularityTargetValue, person)
 			EndIf
 		EndIf
+
+		'fictional can be defined in two places - set flag only at the very end
+		If fictional > 0 Then person.SetFlag(TVTPersonFlag.FICTIONAL, True)
+		If castable >= 0
+			'castable was explicitly defined (fictional OR real)
+			person.SetFlag(TVTPersonFlag.CASTABLE, castable)
+		Else
+			'make only fictional persons castable by default
+			'general support for real persons requires further changes
+			person.SetFlag(TVTPersonFlag.CASTABLE, person.IsFictional())
+		EndIf
+		'cast filtering is mainly done using the bookable flag - not castable implies not bookable
+		If Not person.IsCastable() Then person.SetFlag(TVTPersonFlag.BOOKABLE, false )
 
 
 		'=== ADD TO COLLECTION ===

@@ -24,6 +24,9 @@ Type TGameRules {_exposeToLua}
 	'how many production concepts could be "planned" at the same time
 	'(per script - for series and shows ...)
 	Field maxProductionConceptsPerScript:int = 8
+	'in current database real persons are not castable - change db at your own risk
+	'currently no DEV.xml switch implemented
+	Field castOnlyFictional:Int = False
 	
 	'(game)time until a news genre subscription increase gets "fixed"
 	Field newsSubscriptionIncreaseFixTime:Int = 30 * 60 * 1000 '30 Minutes
@@ -117,6 +120,7 @@ Type TGameRules {_exposeToLua}
 		adContractInstancesMax = 1
 		adContractsPerPlayerMax = 12
 		adContractRandomize = 0
+		castOnlyFictional = False
 	End Method
 
 

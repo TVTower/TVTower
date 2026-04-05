@@ -2430,7 +2430,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 24
+	Const SAVEGAME_VERSION:int = 25
 	Const MIN_SAVEGAME_VERSION:Int = 23
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowLastUpdate:Long
@@ -2813,6 +2813,20 @@ Type TSaveGame Extends TGameState
 				EndIf
 				'print v.GetVariablesAsText()
 			EndIf
+		EndIf
+		If savegameVersion < 25
+			Local count:Int=0
+			For Local p:TPersonBase = EachIn GetPersonBaseCollection().entries.Values()
+				If Not p.IsFictional() And p.IsCastable()
+					p.setFlag(TVTPersonFlag.CASTABLE, False)
+					p.setFlag(TVTPersonFlag.BOOKABLE, False)
+					count:+1
+				EndIf
+			Next
+			GetPersonBaseCollection()._UpdateFiltered(TPersonBaseCollection.FILTER_CASTABLE)
+			GetPersonBaseCollection()._UpdateFiltered(TPersonBaseCollection.FILTER_CASTABLE_INSIGNIFICANT)
+			GetPersonBaseCollection()._UpdateFiltered(TPersonBaseCollection.FILTER_CASTABLE_CELEBRITY)
+			TLogger.Log("RepairData", "Set " + count + " regular, real persons to not castable.")
 		EndIf
 		If savegameVersion < 24
 			For local ac:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
