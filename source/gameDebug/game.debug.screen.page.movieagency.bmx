@@ -4,8 +4,8 @@ Import "../game.roomhandler.movieagency.bmx"
 
 Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 	Global _instance:TDebugScreenPage_MovieAgency
-	Field offerHightlight:TProgrammeLicence
-	Field offerHightlightOffset:Int
+	Field offerHighlight:TProgrammeLicence
+	Field offerHighlightOffset:Int
 	Field auctions:TProgrammeLicence[] = new TProgrammeLicence[0]
 	Field crapList:TObjectList
 
@@ -49,7 +49,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 
 	Method Reset()
-		offerHightlight = Null
+		offerHighlight = Null
 	End Method
 
 
@@ -68,14 +68,14 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 		UpdateBlock_Offers(playerID, position.x + 5, position.y + 3, 410, 230)
 
-		If Not offerHightlight And MOUSEMANAGER.GetX() > position.x + 495 And crapList
-			offerHightlightOffset = -100
+		If Not offerHighlight And MOUSEMANAGER.GetX() > position.x + 495 And crapList
+			offerHighlightOffset = -100
 			Local textX:Int = position.x + 495
 			Local textY:Int = position.y + 85 + 11
 			For Local p:TProgrammeLicence = EachIn crapList
 				textY:+11
 				If THelper.MouseIn(textX, textY, 200, 11)
-					offerHightlight = p
+					offerHighlight = p
 					Exit
 				EndIf
 				If textY > 600 Then Exit
@@ -90,8 +90,8 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 	Method UpdateBlock_Offers(playerID:Int, x:Int, y:Int, w:Int = 200, h:Int = 150)
 		'reset
-		offerHightlight = null
-		offerHightlightOffset = 0
+		offerHighlight = null
+		offerHighlightOffset = 0
 
 		Local textX:Int = x + 2
 		Local textY:Int = y + 20 + 2
@@ -107,7 +107,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 			If listNumber = 2
 				textY = textYStart
 				textX :+ barWidth + 15
-				offerHightlightOffset = -365
+				offerHighlightOffset = -365
 			EndIf
 
 
@@ -115,14 +115,14 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 			textY :+ 11
 			For Local i:Int = 0 Until licences.length
 				If THelper.MouseIn(textX, textY, barWidth, 11)
-					offerHightlight = licences[i]
+					offerHighlight = licences[i]
 					Exit
 				EndIf
 
 				textY :+ 11
 				entryPos :+ 1
 			Next
-			If offerHightlight Then Exit
+			If offerHighlight Then Exit
 
 			textY :+ 5
 		Next
@@ -142,8 +142,8 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 			buttons[i].Render()
 		Next
 
-		If offerHightlight
-			offerHightlight.ShowSheet(position.x + 5 + 250 + offerHightlightOffset, position.y + 3, 0, TVTBroadcastMaterialType.PROGRAMME, playerID)
+		If offerHighlight
+			offerHighlight.ShowSheet(position.x + 5 + 250 + offerHighlightOffset, position.y + 3, 0, TVTBroadcastMaterialType.PROGRAMME, playerID)
 		EndIf
 	End Method
 
@@ -168,14 +168,13 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 
 		Local textX:Int = contentRect.x
 		Local textY:Int = contentRect.y
-		Local count:Int = 0
 		Local oldAlpha:Float = GetAlpha()
 
 		For Local pl:TProgrammeLicence = EachIn crapList
 			textFont.DrawBox(pl.GetTitle(), textX , textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
 			textFont.DrawBox(TFunctions.LocalizedDottedValue(pl.GetPriceForPlayer(playerID)), textX  + 110, textY - 1, 50, 15, sALIGN_RIGHT_TOP, SColor8.White)
 			'textFont.DrawBox(TFunctions.LocalizedNumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 110 + 50 -5 + 130, textY - 1, 40, 15, sALIGN_RIGHT_TOP, SColor8.White)
-			If pl And pl = offerHightlight
+			If pl And pl = offerHighlight
 				SetAlpha 0.25 * oldAlpha
 				SetBlend LIGHTBLEND
 				DrawRect(textX , textY, 160, 11)
@@ -183,8 +182,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 				SetBlend ALPHABLEND
 			EndIf
 			textY :+ 11
-			count:+1
-			If count > 50 Then Exit 'do not try to render all
+			If textY > 600 Then Exit 'do not render all
 		Next
 
 	End Method
@@ -265,7 +263,7 @@ Type TDebugScreenPage_MovieAgency extends TDebugScreenPage
 				SetColor 255,255,255
 				SetAlpha oldAlpha
 
-				If licences[i] And licences[i] = offerHightlight
+				If licences[i] And licences[i] = offerHighlight
 					SetAlpha 0.25 * oldAlpha
 					SetBlend LIGHTBLEND
 					DrawRect(textX, blockY, barWidth, 11)
