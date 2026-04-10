@@ -1355,6 +1355,8 @@ endrem
 
 		'switch active TV channel to player
 		GetInGameInterface().ShowChannel = GetPlayerCollection().playerID
+		'event listener for room tooltip might be initialized too late - set directly
+		TRoomDoorTooltip.observerID = GetPlayerCollection().playerID
 
 
 		Function EmitPrepareStepEvent(percentageStart:Int, percentageNext:Int, stepData:TData, userData:Object = Null)
@@ -2083,6 +2085,8 @@ endrem
 		'also set this information for the boss collection (avoids
 		'circular references)
 		GetPlayerBossCollection().playerID = ID
+		'event listener for room tooltip might be initialized too late - set directly
+		TRoomDoorTooltip.observerID = ID
 
 		TriggerBaseEvent(GameEventKeys.Game_onSetActivePlayer, New TData.AddInt("playerID", ID).AddInt("oldPlayerID", oldPlayerID) )
 

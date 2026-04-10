@@ -5,6 +5,7 @@ Import "game.room.base.bmx"
 
 Type TRoomDoorTooltip extends TTooltip
 	Field roomID:int
+	Global observerID:Int = -1;
 
 	Function Create:TRoomDoorTooltip(title:String = "", content:String = "unknown", x:Int = 0, y:Int = 0, w:Int = -1, h:Int = -1, lifetime:Int = 300)
 		local obj:TRoomDoorTooltip = new TRoomDoorTooltip
@@ -76,18 +77,21 @@ Type TRoomDoorTooltip extends TTooltip
 			if newContent<>"" then newContent :+ "~n"
 
 			if room.blockedUntilShownInTooltip
-				'add blocked message
-				local endTime:string = room.GetBlockedUntilTimeText()
-
-				if room.blockedState & TRoomBase.BLOCKEDSTATE_SHOOTING > 0
-					newContent :+ GetLocale("SHOOTING_IN_PROGRESS") + "~n"
-					if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
-				elseif room.blockedState & TRoomBase.BLOCKEDSTATE_PREPRODUCTION > 0
-					newContent :+ GetLocale("PREPRODUCTION_IN_PROGRESS") + "~n"
-					if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
-				endif
-
-				newContent :+ GetLocale("BLOCKED_UNTIL_TIME").Replace("%TIME%", endTime)
+				'show studio blocked message only to room owner
+				If tooltipimage <> 5 OR observerID = room.owner
+					'add blocked message
+					local endTime:string = room.GetBlockedUntilTimeText()
+	
+					if room.blockedState & TRoomBase.BLOCKEDSTATE_SHOOTING > 0
+						newContent :+ GetLocale("SHOOTING_IN_PROGRESS") + "~n"
+						if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
+					elseif room.blockedState & TRoomBase.BLOCKEDSTATE_PREPRODUCTION > 0
+						newContent :+ GetLocale("PREPRODUCTION_IN_PROGRESS") + "~n"
+						if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
+					endif
+	
+					newContent :+ GetLocale("BLOCKED_UNTIL_TIME").Replace("%TIME%", endTime)
+				EndIf
 			else if room.blockedState & TRoomBase.BLOCKEDSTATE_NO_OFFICE_HOUR > 0
 				newContent :+ GetLocale("BLOCKED_NO_OFFICE_HOUR")
 			else
