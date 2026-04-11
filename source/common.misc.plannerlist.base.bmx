@@ -7,6 +7,8 @@ Import "game.gameobject.bmx"
 Type TPlannerList extends TOwnedGameObject
 	'0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
 	Field openState:Int = 0
+	Field maxOpenState:Int = 0 {nosave}
+	Field lastCurrentGenre:Int = 0 {nosave}
 	Field currentGenre:Int =-1
 	Field enabled:Int = 0
 	Field Pos:TVec2D = New TVec2D()

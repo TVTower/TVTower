@@ -1546,6 +1546,10 @@ endrem
 			PPprogrammeList.clicksAllowed = True
 			PPcontractList.clicksAllowed = True
 			GuiListProgrammes.setOption(GUI_OBJECT_CLICKABLE, True)
+
+			If PPprogrammeList.openState <=0 And KeyManager.IsHit(KEY_Y)
+				PPprogrammeList.setOpenLastState()
+			EndIf
 		Else
 			'disable List interaction
 			PPprogrammeList.clicksAllowed = False

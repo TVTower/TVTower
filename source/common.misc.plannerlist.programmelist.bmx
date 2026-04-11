@@ -1068,6 +1068,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'react to right click
 		If openState > 0 and MOUSEMANAGER.IsClicked(2)
+			maxOpenState:-1
 			SetOpen( Max(0, openState - 1) )
 
 			'avoid clicks
@@ -1095,10 +1096,24 @@ Type TgfxProgrammelist Extends TPlannerList
 	End Method
 
 
+	'quickly open with the last genre selcted
+	Method setOpenLastState:Int()
+		If openState <= 0
+			If maxOpenState > 0
+				SetOpen(Math.Min(2,maxOpenState))'do not open episodes
+				currentGenre = lastCurrentGenre
+			Else
+				SetOpen(1)
+			EndIf
+		EndIf
+	End Method
+
+
 	Method SetOpen:Int(newState:Int)
 		newState = Max(0, newState)
 		' Genreauswahlseite - kein Genre gewählt, Filmseite zurücksetzen
 		If newState <= 1
+			If newState = 0 And currentgenre > 0 Then lastCurrentGenre = currentGenre
 			currentgenre=-1
 			entriesPage = 1
 		EndIf
@@ -1111,7 +1126,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			'(Bei Wechsel zwischen zwei Serien nicht auf Seite 2 bleiben)
 			subEntriesPage = 1
 		EndIf
-
+		If newState > maxOpenState Then maxOpenState = newState
 		Self.openState = newState
 	End Method
 

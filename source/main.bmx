@@ -1131,6 +1131,7 @@ Type TApp
 
 			If KeyManager.IsHit(KEY_Y)
 				'your own dev-debug-code
+				'y is used in archive and programme planner for opening programme selection
 			EndIf
 
 
