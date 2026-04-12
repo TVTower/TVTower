@@ -481,7 +481,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			programmeList.clicksAllowed = True
 			GuiListSuitcase.setOption(GUI_OBJECT_CLICKABLE, True)
 
-			If programmeList.openState <=0 And KeyManager.IsHit(KEY_Y)
+			If programmeList.openState <=0 And Not draggedGuiProgrammeLicence And KeyManager.IsHit(KEY_Y)
 				programmeList.setOpenLastState()
 			EndIf
 		Else

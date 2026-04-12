@@ -1547,8 +1547,9 @@ endrem
 			PPcontractList.clicksAllowed = True
 			GuiListProgrammes.setOption(GUI_OBJECT_CLICKABLE, True)
 
-			If PPprogrammeList.openState <=0 And KeyManager.IsHit(KEY_Y)
+			If PPprogrammeList.openState <=0 And PPcontractList.openState<=0 And Not draggedGuiProgrammePlanElement And KeyManager.IsHit(KEY_Y)
 				PPprogrammeList.setOpenLastState()
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 			EndIf
 		Else
 			'disable List interaction
