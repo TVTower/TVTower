@@ -1440,6 +1440,10 @@ endrem
 			TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
 			GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
 			GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
+			If GetPlayer().IsLocalAI()
+				'calling "SetLocalHumanControlled()" deletes AI too
+				GetPlayer().SetLocalHumanControlled()
+			EndIf
 		EndIf
 
 		If ff And Not DEV_FastForward
@@ -1450,6 +1454,16 @@ endrem
 
 			GameConfig.InRoomTimeSlowDownModBackup = GameConfig.InRoomTimeSlowDownMod
 			GameConfig.InRoomTimeSlowDownMod = 1.0
+			If KeyManager.IsDown(KEY_LSHIFT) OR KeyManager.IsDown(KEY_RSHIFT)
+				Local p:TPlayer=GetPlayer()
+				p.SetLocalAIControlled()
+				If p.PlayerAI
+					p.PlayerAI.reloadScript()
+				Else
+					p.InitAI( New TAI.Create(GetPlayer().playerID, "res/ai/Assistant/Assistant.lua"))
+				EndIf
+				p.playerAI.CallOnInit()
+			EndIf
 			GetGame().SetGameSpeed( 30 * 60 )
 		EndIf
 	EndFunction
@@ -4898,7 +4912,7 @@ Type GameEvents
 
 	Function RestoreSpeedOnReachTarget:Int(triggerEvent:TEventBase)
 		Local fig:TFigureBase = TFigureBase(triggerEvent.GetSender())
-		If fig = GetPlayer().GetFigure()
+		If GetPlayer().IsHuman() And fig = GetPlayer().GetFigure()
 			'if next target is a dev-shortcut one, keep on fastforwarding
 			'next = index 0 (because it is new current)
 			Local nextTarget:TFigureTargetBase = fig.GetTarget(0)
