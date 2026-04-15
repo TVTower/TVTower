@@ -1301,6 +1301,28 @@ Type TDatabaseLoader
 			Wend
 		EndIf
 
+		'=== Prime ad profit/penalty ===
+		'With decreasing profits per viewer, very demanding contracts are not very attractive due
+		'to the risk of failure. When minimum audience values for many of the high tier contracts
+		'were reduced, the base profit values were not immediately adapted.
+		'For contracts with a minimal audience of at least 11.4% with respect to the total population
+		'(around 8 Mio viewers for a population of 70 Mio), calculate the base profit value
+		'rather than use the value given in the database.
+		'This is done at least temporarily until the final values are agreed on.
+		If adContract.minAudienceBase > 0.1146
+			'0.0052 is the difference between contract levels with respect to min audience,
+			'so level corresponds to the number of increase steps above the "auto calculation" threshold
+			Local level:Int = (adContract.minAudienceBase - 0.1146)/0.0052
+			Local profitOld:Int = adContract.profitBase
+			'320 is the average base profit per 1000 viewers of contracts at the threshold level
+			'... per level increase the profit by 3
+			adContract.profitBase = 320+3*level
+			'the original database values for profit/penalty were not changed
+			'so we calculate new penalty according to original ratio
+			adContract.penaltyBase = adContract.profitBase * (adContract.penaltyBase / profitOld)
+			'print adContract.GetTitle() +" "+ level +" "+adContract.profitBase +" "+adContract.penaltyBase
+		EndIf
+
 		'=== ADD TO COLLECTION ===
 		If doAdd
 			GetAdContractBaseCollection().Add(adContract)
