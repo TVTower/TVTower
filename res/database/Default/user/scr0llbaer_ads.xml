@@ -260,7 +260,7 @@ W Zombocom wszystko jest możliwe.</pl>
 				<en>Hello viewer, what's happening? Ummm, I'm gonna need you to go ahead come in on Saturday. So if you could be here around 9 to work on the TPS reports, that would be great, mmmk... oh oh! and I almost forgot ahh, I'm also gonna need you to go ahead and come in on Sunday too, kay. We ahh lost some people this week and ah, we sorta need to play catch up.</en>
 				<pl>Witaj widzu, co się dzieje? Będę cię potrzebował w sobotę. Więc jeśli mógłbyś być tutaj około 9, aby pracować nad raportami TPS, to byłoby świetnie, mmmk... oh oh! i prawie zapomniałem, ahh, będę również potrzebował, abyś przyszedł w niedzielę, kay. W tym tygodniu straciliśmy kilka osób i musimy nadrobić zaległości.</pl>
 			</description>
-			<conditions min_audience="28.65" min_image="52" target_group="8" />
+			<conditions min_audience="19.26" min_image="52" target_group="8" />
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="fc5c71a5-9dbe-4dc7-a5bf-3c45de0f62de" creator="9551" wikidata_id="Q24838" comment="as in https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/72453974/Office-Space-Stapler">
@@ -290,7 +290,7 @@ Tylko od ${brand_swingline}.</pl>
 				<en>PC LOAD LETTER your TPS Reports into our modern high performance printers.</en>
 				<pl>PC LOAD LETTER raporty TPS do naszych nowoczesnych, wysokowydajnych drukarek.</pl>
 			</description>
-			<conditions min_audience="18.76" min_image="7" target_group="32" />
+			<conditions min_audience="16.16" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="210" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="55f86f26-6484-4bf4-bd27-6a004c8c1343" creator="9551" wikidata_id="Q5507056" comment="-1990 | as in https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/eYb22BLBqGw | also using the brand name progression through time like in the movie, except for the original name and the last finally obviously vulgar version">
@@ -302,7 +302,7 @@ Tylko od ${brand_swingline}.</pl>
 				<en>The finest burgers on the planet.</en>
 				<pl>Najlepsze burgery na świecie.</pl>
 			</description>
-			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="14.58" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 			<availability year_range_to="1990" />
 		</ad>
@@ -315,7 +315,7 @@ Tylko od ${brand_swingline}.</pl>
 				<en>The finest burgers on the planet.</en>
 				<pl>Najlepsze burgery na świecie.</pl>
 			</description>
-			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="15.63" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 			<availability year_range_from="1991" year_range_to="2010" />
 		</ad>
@@ -328,7 +328,7 @@ Tylko od ${brand_swingline}.</pl>
 				<en>The finest burgers on the planet.</en>
 				<pl>Najlepsze burgery na świecie.</pl>
 			</description>
-			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="14.58" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="1" duration="2" profit="240" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 			<availability year_range_from="2011" />
 		</ad>
@@ -368,7 +368,7 @@ ${brand_brawndo} - the thirst mutilator.</en>
 ${brand_brawndo} ma to, czego pragną rośliny. Ma elektrolity!
 ${brand_brawndo} - okaleczacz pragnienia.</pl>
 			</description>
-			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="10.94" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="4" duration="3" profit="320" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="791793cd-94ce-4e36-872c-56dbce7d5970" creator="9551" wikidata_id="Q715583" comment="as in https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So">
@@ -547,7 +547,7 @@ PC Utils tworzony przez Central Finger Soft.
 
 Potężne programy do kopiowania i inne narzędzia dla komputera.</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
+			<conditions min_audience="17.7" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="1980" year_range_to="1986" />
 		</ad>
@@ -568,7 +568,7 @@ AntiVirus - by Jonas &amp; McApee LP LLC</en>
 
 AntiVirus - Jonas &amp; McAfel Spółka z o.o.</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
+			<conditions min_audience="17.7" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="1987" year_range_to="2008" />
 		</ad>
@@ -589,7 +589,7 @@ VPN Services from Jonas &amp; McApee LP LLC</en>
 
 Usługi VPN od Jonas &amp; McApee Spółka z o.o.</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
+			<conditions min_audience="17.7" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="17" />
 			<data quality="38" repetitions="3" duration="6" profit="200" penalty="360" fix_infomercial_profit="1" />
 			<availability year_range_from="2009" />
 		</ad>
@@ -614,7 +614,7 @@ Usługi VPN od Jonas &amp; McApee Spółka z o.o.</pl>
 				<en>Working with professionals for once.</en>
 				<pl>Praca z profesjonalistami po raz pierwszy.</pl>
 			</description>
-			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="19.78" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="1d528879-5a9d-4328-9b06-750f50bf178b" creator="9551" wikidata_id="Q10921851" comment="-2004">
@@ -757,7 +757,7 @@ Polecany przez samego Szatana.</pl>
 				<en>The new ${brand_opel} ${brand_manta}. Now even lower than your blonde hairdresser girlfriend in the passenger seat and the jokes you're cracking about her.</en>
 				<pl>Nowy ${brand_opel} ${brand_manta}. Teraz nawet niżej niż twoja blond fryzjerka na siedzeniu pasażera i żarty, które o niej opowiadasz.</pl>
 			</description>
-			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
+			<conditions min_audience="13.54" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="3" duration="6" profit="250" penalty="300" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="874f2587-f51a-461d-bd46-fb4d93d054b5" creator="9551" wikidata_id="Q750254" comment="-1982 | slogan created with help from ChatGPT">
@@ -769,7 +769,7 @@ Polecany przez samego Szatana.</pl>
 				<en>Who's talking about speaking cars? Even if our speaking model is not yet available, the power speaks for itself. Test drive the latest ${brand_pontiac} ${brand_firebird} model now.</en>
 				<pl>Kto mówi o mówiących samochodach? Nawet jeśli nasz mówiący model nie jest jeszcze dostępny, jego moc mówi sama za siebie. Jazda próbna najnowszym modelem ${brand_pontiac} ${brand_firebird} już teraz dostępna.</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_to="1982" />
 		</ad>
@@ -782,7 +782,7 @@ Polecany przez samego Szatana.</pl>
 				<en>The third generation. The speedster not just for crusaders of the night. The scanner light at the front is now available in rainbow colors.</en>
 				<pl>Trzecia generacja. Speedster nie tylko dla nocnych krzyżowców. Światło skanera z przodu jest teraz dostępne w kolorach tęczy.</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="1983" year_range_to="2002" />
 		</ad>
@@ -795,7 +795,7 @@ Polecany przez samego Szatana.</pl>
 				<en>Making the cars that last almost as long as our board meetings.</en>
 				<pl>Tworzenie samochodów trwa prawie tak długo, jak nasze spotkania zarządu.</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="2003" year_range_to="2008" />
 		</ad>
@@ -808,7 +808,7 @@ Polecany przez samego Szatana.</pl>
 				<en>Resilience in motion - with a dash of taxpayer support.</en>
 				<pl>Odporność w ruchu - z odrobiną wsparcia podatników.</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="2" />
 			<data quality="34" repetitions="2" duration="2" profit="240" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="2009" />
 		</ad>
