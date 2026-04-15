@@ -117,7 +117,7 @@
 				<en>The shoe that flits.</en> <!-- Mad TV: Reebock means sitting down -->
 				<pl>But który pasuje</pl>
 			</description>
-			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="10.94" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="10" repetitions="7" duration="2" profit="345" penalty="790" infomercial_profit="16" fix_infomercial_profit="1" />
 		</ad>
 
@@ -132,7 +132,7 @@
 				<en>Plugs holes even in bad teeth.</en>
 				<pl>Zatyka dziury nawet w uszkodzonych zębach.</pl>
 			</description>
-			<conditions min_audience="9.3772" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="8.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="13" repetitions="8" duration="1" profit="360" penalty="600" infomercial_profit="196" fix_infomercial_profit="1" />
 		</ad>
 
@@ -542,7 +542,7 @@ The brand new multimedia experience straight from the tape loader!</en>
 				<pl>Teraz z ${brand_datasette1530}.
 Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="1980" year_range_to="1988" />
 		</ad>
@@ -556,7 +556,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Marvel at the brand new multimedia experience now in 4096 colors!</en>
 				<pl>Podziwiaj zupełnie nowe wrażenia multimedialne teraz w 4096 kolorach!</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="1989" year_range_to="1991" />
 		</ad>
@@ -570,7 +570,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>${brand_cdtv} - The new multimedia dimension</en>
 				<pl>${brand_cdtv} - Nowy wymiar multimediów</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="1992" year_range_to="1996" />
 		</ad>
@@ -584,7 +584,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>The brand new multimedia experience can now truly be enjoyed with all your senses - as a DIY component kit.</en>
 				<pl>Teraz możesz odkrywać zupełnie nowe doznania multimedialne wszystkimi zmysłami - jako zestaw komponentów Zrób To Sam.</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
+			<conditions min_audience="15.1" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" allowed_genre="15" /> <!-- TODO: several genres like '15,5' possible? -->
 			<data quality="28" repetitions="3" duration="6" profit="230" penalty="340" fix_infomercial_profit="1" />
 			<availability year_range_from="1997" year_range_to="-1" />
 		</ad>
@@ -624,7 +624,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>The toothpaste! Now with radioactive cleaning substances.</en>
 				<pl>Pasta do zębów! Teraz z radioaktywnymi substancjami czyszczącymi.</pl>
 			</description>
-			<conditions min_audience="26.05" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="18.74" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="21" repetitions="4" duration="2" profit="190" penalty="450" fix_infomercial_profit="1" />
 		</ad>
 
@@ -637,7 +637,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>The convenient route to Europe.</en>
 				<pl>Wygodna trasa do Europy.</pl>
 			</description>
-			<conditions min_audience="31.26" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="19.78" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="35" repetitions="5" duration="8" profit="170" penalty="300" fix_infomercial_profit="1" />
 		</ad>
 
@@ -650,7 +650,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Welcome aboard.</en>
 				<pl>Witamy na pokładzie.</pl>
 			</description>
-			<conditions min_audience="41.6799" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="22.9" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="8" duration="2" profit="125" penalty="200" fix_infomercial_profit="1" />
 		</ad>
 
@@ -664,7 +664,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Only half a calorie. So lonely and fragmented just because of you! So go and buy it, you fat bastard!</en> <!-- orig: So cool. So clear. And only 1 calorie. -->
 				<pl>Tylko pół kalorii. Tak samotny i rozdrobniony tylko z twojego powodu! Więc idź i kup to, gruby draniu!</pl>
 			</description>
-			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="14.06" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="6" duration="4" profit="255" penalty="380" fix_infomercial_profit="1" />
 		</ad>
 
@@ -675,7 +675,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 			<description>
 				<all>${brandslogan_cantbeatthefeeling}.</all>
 			</description>
-			<conditions min_audience="18.76" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="16.66" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="29" repetitions="2" duration="1" profit="215" penalty="370" fix_infomercial_profit="1" />
 		</ad>
 
@@ -771,7 +771,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>The smoke through the eye of the needle! Total Taste!</en>
 				<pl>Dym przechodzący przez ucho igielne! Całkowity smak!</pl>
 			</description>
-			<conditions min_audience="10.42" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2" />
+			<conditions min_audience="9.9" min_image="0" target_group="0" pro_pressure_groups="1" contra_pressure_groups="2" />
 			<data infomercial="1" quality="20" repetitions="8" duration="1" profit="355" penalty="1000" infomercial_profit="72" fix_infomercial_profit="1" />
 		</ad>
 
@@ -924,7 +924,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<pl>Pływanie w jeziorze Pirania i wiele innych ofert w przystępnych cenach!</pl>
 			</description>
 			<conditions min_audience="8.3352" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data infomercial="1" quality="14" repetitions="4" duration="5" profit="350" penalty="600" infomercial_profit="7" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="14" repetitions="4" duration="5" profit="360" penalty="600" infomercial_profit="7" fix_infomercial_profit="1" />
 		</ad>
 
 		<ad guid="01a5c6ea-105c-4aab-a5ab-f03393ad2ca0" creator="9584" created_by="Stukov" wikidata_id="Q565073" comment="from Mad TV as 'Rainbow Arts' and as the English version/'translation' of 'PC-Soundman'">
@@ -989,7 +989,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Launders even brighter now! What the wife got, she's got.</en> <!-- orig: Persil washes whiter -->
 				<pl>Teraz pierze jeszcze jaśniej! Co żona ma, to ma.</pl>
 			</description>
-			<conditions min_audience="11.46" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="10.94" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="9" repetitions="5" duration="4" profit="320" penalty="750" infomercial_profit="193" fix_infomercial_profit="1" />
 		</ad>
 
@@ -1002,7 +1002,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>${brand_bmw}. It's merely a vehicle!</en> <!-- orig: It's only a car! -->
 				<pl>${brand_bmw}. To tylko pojazd!</pl>
 			</description>
-			<conditions min_audience="12.5" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="11.98" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="11" repetitions="3" duration="5" profit="280" penalty="600" infomercial_profit="3" fix_infomercial_profit="1" />
 		</ad>
 
@@ -1017,7 +1017,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<en>Whether dazzling pets or glow-in-the-dark plants that show you the way at night - our biotechnology makes the extraordinary part of your everyday life.</en>
 				<pl>Czy to olśniewające zwierzęta domowe, czy świecące w ciemności rośliny, które wskazują drogę w nocy - nasza biotechnologia sprawia, że niezwykłość staje się częścią codziennego życia.</pl>
 			</description>
-			<conditions min_audience="9.3772" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="8.86" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="5" repetitions="3" duration="5" profit="330" penalty="700" infomercial_profit="200" fix_infomercial_profit="1" />
 		</ad>
 
