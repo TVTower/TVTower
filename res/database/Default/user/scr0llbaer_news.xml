@@ -704,9 +704,9 @@
 					<pl>zwolniony|odrzucony|odrzucony|odrzucony|odrzucony|odrzucony|wyrzucony|wyrzucony|odrzucony</pl>
 				</dismissed>
 				<byajudge>
-					<de> von einem Richter | vom Gericht|</de>
-					<en> by a judge | by the court|</en>
-					<pl> przez sędziego | przez sąd|</pl>
+					<de> von einem Richter | vom Gericht |</de>
+					<en> by a judge | by the court |</en>
+					<pl> przez sędziego | przez sąd |</pl>
 				</byajudge>
 				<appeals>
 					<de>legt Berufung ein|geht in Berufung</de>
@@ -747,7 +747,7 @@
 				<pl>Pozew ${name} ${dismissed}</pl>
 			</title>
 			<description>
-				<de>Die Klage von ${name} gegen ${theirparrot} wurde${deemedfrivolous}${forlackofevidence}${quickly}${byajudge} ${dismissed}.</de>
+				<de>Die Klage von ${name} gegen ${theirparrot} wurde${deemedfrivolous}${forlackofevidence}${quickly}${byajudge}${dismissed}.</de>
 				<en>The lawsuit of ${name} against ${theirparrot} was${deemedfrivolous}${quickly} ${dismissed}${byajudge}${forlackofevidence}.</en>
 				<pl>Pozew ${name} przeciwko ${theirparrot} został${deemedfrivolous}${quickly} ${dismissed}${byajudge}${forlackofevidence}.</pl>
 			</description>
