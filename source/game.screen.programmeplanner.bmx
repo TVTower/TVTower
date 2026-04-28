@@ -872,7 +872,7 @@ Type TScreenHandler_ProgrammePlanner
 		If Not item Then Return False
 
 		'dropping on daychangebuttons means trying to change the day
-		'while elements are dragged - ChangePlanningDay handles draggd element
+		'while elements are dragged - ChangePlanningDay handles dragged element
 		If plannerPreviousDayButton = triggerEvent.GetReceiver() Or ..
 		   plannerNExtDayButton = triggerEvent.GetReceiver()
 
