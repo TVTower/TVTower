@@ -872,7 +872,7 @@ Type TScreenHandler_ProgrammePlanner
 		If Not item Then Return False
 
 		'dropping on daychangebuttons means trying to change the day
-		'while elements are dragged
+		'while elements are dragged - ChangePlanningDay handles dragged element
 		If plannerPreviousDayButton = triggerEvent.GetReceiver() Or ..
 		   plannerNExtDayButton = triggerEvent.GetReceiver()
 
@@ -882,16 +882,6 @@ Type TScreenHandler_ProgrammePlanner
 				ChangePlanningDay(planningDay-1)
 			Else
 				ChangePlanningDay(planningDay+1)
-			EndIf
-
-			'remove that programme from plan now
-			'do this to avoid "handleDropBack()" returning true
-			If item.lastList = GuiListAdvertisements
-				GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(item.broadcastMaterial)
-				GuiListAdvertisements.RemoveItem(item)
-			ElseIf item.lastList = GuiListProgrammes
-				GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(item.broadcastMaterial)
-				GuiListProgrammes.RemoveItem(item)
 			EndIf
 
 			'handled single click
@@ -1484,11 +1474,6 @@ endrem
 			plannerPreviousDayButton.enable()
 		EndIf
 
-		'reset hovered and dragged gui objects - gets repopulated automagically
-		hoveredGuiProgrammePlanElement = Null
-		draggedGuiProgrammePlanElement = Null
-		TGUIProgrammePlanElement.hoveredElement = Null
-
 		'RON
 		'fast movement is possible with keys
 		'we use doAction as this allows a decreasing time
@@ -1524,6 +1509,11 @@ endrem
 			ChangePlanningDay(planningDay+1)
 		EndIf
 
+		'reset hovered and dragged gui objects - gets repopulated automagically
+		'reset only after potentially changing planning day by keys - dragged element handling
+		hoveredGuiProgrammePlanElement = Null
+		draggedGuiProgrammePlanElement = Null
+		TGUIProgrammePlanElement.hoveredElement = Null
 
 		Local listsOpened:Int = (PPprogrammeList.enabled Or PPcontractList.enabled)
 		'only handly programmeblocks if the lists are closed
@@ -1728,6 +1718,7 @@ endrem
 
 		'limit to start day
 		planningDay = Max(earliestDay, day)
+		Local dayChanged:Int = (planningDay <> GuiListProgrammes.planDay)
 
 		'adjust slotlists (to hide ghosts on differing days)
 		GuiListProgrammes.planDay = planningDay
@@ -1741,6 +1732,22 @@ endrem
 				'->ONLY keeps newly created, not ones dragged from a slot
 				'also marks all gui elements for refresh
 				RemoveAllGuiElements(False)
+
+				Local dragged:TGuiProgrammePlanElement = draggedGuiProgrammePlanElement
+				If dragged And dayChanged
+					'remove dragged element from plan
+					'in order to avoid "handleDropBack()" returning true
+					'causing the element to disappear on drop
+					'if the day is changed VERY shortly after an element has been picked up
+					'draggedGuiProgrammePlanElement may not yet be set!!
+					If dragged.lastList = GuiListAdvertisements
+						GetPlayerProgrammePlan(currentRoom.owner).RemoveAdvertisement(dragged.broadcastMaterial)
+						GuiListAdvertisements.RemoveItem(dragged)
+					ElseIf dragged.lastList = GuiListProgrammes
+						GetPlayerProgrammePlan(currentRoom.owner).RemoveProgramme(dragged.broadcastMaterial)
+						GuiListProgrammes.RemoveItem(dragged)
+					EndIf
+				EndIf
 			EndIf
 		EndIf
 	End Function
