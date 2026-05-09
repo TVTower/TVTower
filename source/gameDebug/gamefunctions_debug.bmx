@@ -690,7 +690,7 @@ endrem
 		Local i:Int = 0
 		For Local targetGroupID:Int = EachIn TVTTargetGroup.GetBaseGroupIDs()
 			i :+ 1
-			val = TFunctions.convertValue(audience.GetTotalValue(targetGroupID), 2)
+			val = TFunctions.convertValue(audience.GetTotalValue(targetGroupID), 0)
 			font.DrawBox(val, x2 + 70*(i-1), y, 65, 25, sALIGN_RIGHT_TOP, color)
 		Next
 	End Function
