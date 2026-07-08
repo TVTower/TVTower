@@ -1,440 +1,860 @@
 SuperStrict
-Import Brl.LinkedList
+Import Collections.ObjectList
 Import "base.gfx.imagehelper.bmx"
 Import "base.util.registry.bmx"
 Import "base.util.registry.spriteloader.bmx"
+Import "base.util.fastrandom.bmx"
 
-new TRegistryFigureGeneratorPartLoader.Init()
+New TRegistryFigureGeneratorPartLoader.Init()
+
+Global FigureGenerator:TFigureGenerator = New TFigureGenerator
 
 
 Type TFigureGenerator
-	Global registeredParts:TList[14]
-	Global PRNG:TXoshiroRandom = New TXoshiroRandom()
+	Field registeredParts:TObjectList[11]
+	Field maxPartDimension:SVec2I
 
-	Function RegisterPart(part:TFigureGeneratorPart)
-		if part.partType < 1 or part.partType > registeredParts.length then return
-		local index:int = part.partType -1
-		
-		if not registeredParts[index] then registeredParts[index] = CreateList()
-		if not registeredParts[index].contains(part)
-			registeredParts[index].Addlast(part)
-		endif
-	End Function
+	'draw order:
+	'       1,    2,     3,    4,     5,    6,     7,    8,       9,    10, 11
+	'hairBack, body, cloth,  ears, face, eyes, mouth, nose, eyebrow, beard, hair
+	Global partOrder:Int[] = [ 9,   1,  11,   5,   2,   3,   6,   4,   7,  8,  10]
+	Global useChance:Int[] = [100, 100, 100, 100, 100, 100, 100, 100, 100, 25,100]
+	Global clothColorPresets:SColor8[]
+	Global skinTonePresets:SColor8[][]
+	Global hairColorPresets:SColor8[][]
 
+	'indices into TFigureGeneratorFigure.hairColorPresets[x]
+	Const HAIR_BLONDE:Int = 0
+	Const HAIR_BLACK:Int = 1
+	Const HAIR_BROWN:Int = 2
+	Const HAIR_RED:Int = 3
+	Const HAIR_GREY:Int = 4
 
-	Function GetRandomPart:TFigureGeneratorPart(partType:int, gender:int=0, age:int=0, usePRNG:TRandom = Null)
-		If Not usePRNG Then usePRNG = PRNG
-
-		if partType < 1 or partType > registeredParts.length then return Null
-		if not registeredParts[partType-1] or registeredParts[partType-1].Count() = 0 then return Null
-
-		local index:int = partType -1
-
-		'quick selection
-		if gender = 0 and age = 0
-			return TFigureGeneratorPart(registeredParts[index].ValueAtIndex(usePRNG.Rand(0, registeredParts[index].Count()-1 )))
-		endif
-
-		'need to filter
-		local potentialParts:TFigureGeneratorPart[]
-		for local p:TFigureGeneratorPart = EachIn registeredParts[index]
-			if p.gender <> 0 and p.gender <> gender then continue
-			if p.age <> 0 and p.age <> age then continue
-			potentialParts :+ [p]
-		next
-		if potentialParts.length = 0 then return null
-		return potentialParts[ usePRNG.Rand(0, potentialParts.length-1) ]
-	End Function
+	'used eg as indices into TFigureGeneratorFigure.skinTonePresets[x]
+	Const ETHNICITY_CAUCASIAN:Int = 0
+	Const ETHNICITY_AFRICAN:Int = 1
+	Const ETHNICITY_ASIAN:Int = 2 'includes South-America, Mediterranean Sea...
+	Const ETHNICITY_ALIEN:Int = 3 'includes Martians, Critters etc
 
 
-	Function GetPartAtIndex:TFigureGeneratorPart(partType:int, index:int)
-		if partType < 1 or partType > registeredParts.length then return Null
-		if not registeredParts[partType-1] then return Null
-		if registeredParts[partType-1].Count() <= index then return Null
-
-		return TFigureGeneratorPart(registeredParts[partType-1].ValueAtIndex(index))
-	End Function
-
-
-	Function GetPartIndex:Int(partType:int, part:TFigureGeneratorPart)
-		if partType < 1 or partType > registeredParts.length then return -1
-		if not registeredParts[partType-1] then return -1
-
-		for local i:int = 0 until registeredParts[partType-1].Count()
-			if part = TFigureGeneratorPart(registeredParts[partType-1].ValueAtIndex(i))
-				return i
-			endif
-		Next
-		return -1
-	End Function
-
-
-	Function GenerateFigureFromCode:TFigureGeneratorFigure(code:string)
-		local subCodes:string[] = code.Split(":")
-		if subCodes.length < 17
-			if subCodes.length >= 3
-				print "GenerateFigureFromCode(): invalid code. Using first 3 params for default generator."
-				'gender:age:skinTone -> skinTone, gender, age
-				return GenerateFigure(int(subCodes[2]), int(subCodes[0]), int(subCodes[1]))
-			endif
-		else
-			local fig:TFigureGeneratorFigure = new TFigureGeneratorFigure
-			local skinColor:TColor
-			local colors:TColor[fig.parts.length]
-			
-			fig.gender = int(subCodes[0])
-			fig.age = int(subCodes[1])
-			fig.skinTone = int(subCodes[2])
-			'also accept codes leaving out the "number sign"
-			'if subCodes[3].Find("#") = 0
-			if int(subCodes[3]) <> -1
-				skinColor = new TColor.FromHex(subCodes[3])
-			endif
-			for local i:int = 4 to 17
-				local partCode:string[] = subCodes[i].split("#")
-				local partIndex:int = int(partCode[0])
-				local partType:int = i - 4 +1
-				if partIndex < 0
-					fig.SetPart(partType, Null)
-					fig.SetPartColor(partType, Null)
-					continue
-				endif
-				local part:TFigureGeneratorPart = GetPartAtIndex(partType, partIndex)
-
-				fig.SetPart(partType, part)
-				if partCode.length = 2
-					colors[partType -1] = new TColor.FromHex(partCode[1])
-
-					if fig.parts[partType -1].skinVisible and not skinColor
-						skinColor = colors[partType -1]
-					endif
-				else
-					fig.SetPartColor(partType, null)
-				endif
-			Next
-
-			if skinColor then fig.SetSkinColor(skinColor)
-
-			'override skincolors if needed
-			For local i:int = 0 until colors.length
-				'only set valid colors, all other colors like "explicit null"
-				'are set before 
-				if colors[i] Then fig.SetPartColor(i+1, colors[i])
-			Next
-
-			return fig
-		endif
-
-		print "GenerateFigureFromCode(): invalid code. Using absolute random params for generator."
-		return GenerateFigure(0,0,0)
-	End Function
-						
-
-	Function GenerateFigure:TFigureGeneratorFigure(skinTone:int, gender:int, age:int=0, usePRNG:TRandom = Null)
-		If Not usePRNG Then usePRNG = PRNG
-		
-		local fig:TFigureGeneratorFigure = new TFigureGeneratorFigure
-		if gender = 0 then gender = usePRNG.Rand(1,2)
-		if skintone = 0 then skinTone = usePRNG.Rand(1,3)
-
-		For local i:int = 0 until registeredParts.length
-			local partType:int = TFigureGeneratorFigure.partOrder[i]
-			if TFigureGeneratorFigure.useChance[i] <> 100
-				if usePRNG.Rand(100) > TFigureGeneratorFigure.useChance[i] then continue
-			endif
-			local part:TFigureGeneratorPart = GetRandomPart(partType, gender, age, usePRNG)
-			if part
-				'got a gender specific part? use for rest
-				if part.gender <> 0 then gender = part.gender
-				if part.age <> 0 then age = part.age
-			endif
-			fig.SetPart(partType, part)
-		Next
-		'now gender and age are assured
-		fig.gender = gender
-		fig.age = age
-
-		fig.SetSkinTone(skinTone, usePRNG)
-		fig.ColorizeElements(usePRNG)
-		return fig
-	End Function
-End Type
-
-
-Type TFigureGeneratorFigure
-	Field gender:int = 0
-	Field age:int = 0
-	Field skinTone:int = 0
-	Field parts:TFigureGeneratorPart[14]
-	Field partsColor:TColor[14]
+	Method New()
+		maxPartDimension = New SVec2I(-1, -1)
 	
-	Global partOrder:int[] = [  1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  14,  11,  12,  13]
-	Global useChance:int[] = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100,  25, 100, 100, 100]
-
-
-	Method GetFigureCode:string()
-		local code:string = gender+":"+age+":"+skinTone
-		local skinColor:TColor = GetSkinColor()
-		if skinColor
-			code :+ ":#"+skinColor.ToHex()
-		else
-			code :+ ":-1"
-		endif
+		If Not clothColorPresets
+			clothColorPresets = New SColor8[18]
+			clothColorPresets[ 0] = New SColor8(35, 35, 35)	'blackish
+			clothColorPresets[ 1] = New SColor8(255, 180, 0)
+			clothColorPresets[ 2] = New SColor8(100, 130, 0)
+			clothColorPresets[ 3] = New SColor8(215, 210, 0)
+			clothColorPresets[ 4] = New SColor8(120, 220, 0)
+			clothColorPresets[ 5] = New SColor8(50, 220, 0)
+			clothColorPresets[ 6] = New SColor8(250, 50, 120)
+			clothColorPresets[ 7] = New SColor8(0, 180, 220)
+			clothColorPresets[ 8] = New SColor8(0, 80, 220)
+			clothColorPresets[ 9] = New SColor8(100, 80, 200)
+			clothColorPresets[10] = New SColor8(220, 0, 40)
+			clothColorPresets[11] = New SColor8(40, 190, 70)
+			clothColorPresets[12] = New SColor8(40, 0, 220)
+			clothColorPresets[13] = New SColor8(200, 100, 90)
+			clothColorPresets[14] = New SColor8(40, 70, 130)
+			clothColorPresets[15] = New SColor8(100, 100, 100) 'dark gray
+			clothColorPresets[16] = New SColor8(230, 230, 230) 'light gray
+			clothColorPresets[17] = New SColor8(150, 150, 150) 'mid gray
+		EndIf
 		
-		for local i:int = 0 until parts.length
-			if code <> "" then code :+ ":"
-			local partType:int = i + 1
-			local partIndex:int = TFigureGenerator.GetPartIndex(partType, parts[i])
-			if parts[i] and partIndex<>-1
-				code :+ partIndex
-				if not parts[i].skinVisible or not skinColor
-					if partsColor[i] then code :+ "#"+partsColor[i].ToHex()
-				endif
-			else
-				code :+"-1"
-			endif
-		Next
-		return code
+		If Not hairColorPresets Or hairColorPresets.Length = 0
+			hairColorPresets = hairColorPresets[..5] '5 hair color base types
+			
+			hairColorPresets[HAIR_BLONDE] = New SColor8[3]
+			hairColorPresets[HAIR_BLONDE][0] = New SColor8(225,200,45)
+			hairColorPresets[HAIR_BLONDE][1] = New SColor8(235,210,50)
+			hairColorPresets[HAIR_BLONDE][2] = New SColor8(225,180,40)
+
+			hairColorPresets[HAIR_BLACK] = New SColor8[3]
+			hairColorPresets[HAIR_BLACK][0] = New SColor8(30,25,20)
+			hairColorPresets[HAIR_BLACK][1] = New SColor8(50,35,20)
+			hairColorPresets[HAIR_BLACK][2] = New SColor8(30,30,20)
+
+			hairColorPresets[HAIR_BROWN] = New SColor8[3]
+			hairColorPresets[HAIR_BROWN][0] = New SColor8(80,30,10)
+			hairColorPresets[HAIR_BROWN][1] = New SColor8(90,42,18)
+			hairColorPresets[HAIR_BROWN][2] = New SColor8(115,55,35)
+
+			hairColorPresets[HAIR_RED] = New SColor8[2]
+			hairColorPresets[HAIR_RED][0] = New SColor8(255,100,0)
+			hairColorPresets[HAIR_RED][1] = New SColor8(245,120,15)
+
+			hairColorPresets[HAIR_GREY] = New SColor8[2]
+			hairColorPresets[HAIR_GREY][0] = New SColor8(160,160,160)
+			hairColorPresets[HAIR_GREY][1] = New SColor8(130,130,130)
+		EndIf
+
+		If Not skinTonePresets Or skinTonePresets.Length = 0
+			skinTonePresets = skinTonePresets[..4] '3 skin tone base types
+		
+			'caucasian
+			skinTonePresets[ETHNICITY_CAUCASIAN] = New SColor8[3]
+			skinTonePresets[ETHNICITY_CAUCASIAN][0] = New SColor8(255, 226, 207) 'northern
+			skinTonePresets[ETHNICITY_CAUCASIAN][1] = New SColor8(255, 207, 173)
+			skinTonePresets[ETHNICITY_CAUCASIAN][2] = New SColor8(234, 176, 152)
+
+			'african
+			skinTonePresets[ETHNICITY_AFRICAN] = New SColor8[3]
+			skinTonePresets[ETHNICITY_AFRICAN][0] = New SColor8(148, 115, 82)
+			skinTonePresets[ETHNICITY_AFRICAN][1] = New SColor8(132, 55, 34)
+			'skinTonePresets[ETHNICITY_AFRICAN][2] = New SColor8(61, 12, 2) 'sorry, but this is too dark next to bright elements, no offense!
+			skinTonePresets[ETHNICITY_AFRICAN][2] = New SColor8(101, 19, 6)
+
+			'asian
+			skinTonePresets[ETHNICITY_ASIAN] = New SColor8[4]
+			skinTonePresets[ETHNICITY_ASIAN][0] = New SColor8(229, 184, 135)
+			skinTonePresets[ETHNICITY_ASIAN][1] = New SColor8(218, 174, 148)
+			skinTonePresets[ETHNICITY_ASIAN][2] = New SColor8(205, 127, 50)
+			skinTonePresets[ETHNICITY_ASIAN][3] = New SColor8(223, 185, 151)
+
+			'alien
+			skinTonePresets[ETHNICITY_ALIEN] = New SColor8[4]
+			skinTonePresets[ETHNICITY_ALIEN][0] = New SColor8(229, 80, 90)
+			skinTonePresets[ETHNICITY_ALIEN][1] = New SColor8(90, 200, 200)
+			skinTonePresets[ETHNICITY_ALIEN][2] = New SColor8(90, 230, 75)
+			skinTonePresets[ETHNICITY_ALIEN][3] = New SColor8(85, 100, 210)
+		EndIf
 	End Method
 
 
-	Method SetPart(partType:int, part:TFigureGeneratorPart = null)
-		if partType < 1 or partType > parts.length then return
+	Method RegisterPart(part:TFigureGeneratorPart)
+		If part.partType < 1 Or part.partType > registeredParts.Length Then Return
+		Local index:Int = part.partType -1
+		
+		If Not registeredParts[index] 
+			registeredParts[index] = New TObjectList()
+		EndIf
+		
+		If Not registeredParts[index].contains(part)
+			registeredParts[index].Addlast(part)
+		EndIf
+		
+		' update part max dimension cache
+		Local s:TSprite = part.GetSprite()
+		If s
+			maxPartDimension = New SVec2I(Max(maxPartDimension.x, s.GetWidth()), Max(maxPartDimension.y, s.GetHeight()))
+		EndIf
+	End Method
+
+
+	Method GetPartsList:TObjectList(partType:Int)
+		If partType < 1 Or partType > registeredParts.Length Then Return Null
+
+		Return registeredParts[partType - 1]
+	End Method
+
+
+	Method GetFilteredParts:TFigureGeneratorPart[](partType:Int, gender:Int, age:Int, includeIncompleteParts:Int=False)
+		Local partList:TObjectList = GetPartsList(partType)
+		If Not partList Then Return Null
+
+		
+		' need to filter
+		' as there aren't hundreds of parts, it is easier to allocate
+		' a bigger array already and most probably save some re-allocs
+		Local filteredParts:TFigureGeneratorPart[]
+		Local index:Int
+		For Local p:TFigureGeneratorPart = EachIn registeredParts[partType -1]
+			If p.gender <> 0 And p.gender <> gender Then Continue
+			If p.age <> 0 And p.age <> age Then Continue
+			If Not includeIncompleteParts And p.incompletePart Then Continue
+	
+			If index >= filteredParts.Length
+				filteredParts = filteredParts[.. filteredParts.Length + 10]
+			EndIf
+
+			filteredParts[index] = p
+			index :+ 1
+		Next
+		
+		Return filteredParts[.. index]
+	End Method
+
+
+	Method GetRandomPart:TFigureGeneratorPart(partType:Int, gender:Int, age:Int, randomSeed:Int)
+		Local potentialParts:TFigureGeneratorPart[] = GetFilteredParts(partType, gender, age)
+		
+		' return one of the fitting ones (or null if none fitted)
+		If potentialParts.Length = 0
+			Return Null
+		Else
+			Return potentialParts[ New SFastRandom(randomSeed).RandomInt(0, potentialParts.Length - 1) ]
+		EndIf
+	End Method
+
+
+	Method GetRandomHairPair:TFigureGeneratorPart[](gender:Int, age:Int, randomSeed:Int)
+		Local result:TFigureGeneratorPart[]
+
+		'choose a random front hair - and if it requires a specific
+		'backhair, fetch it (if possible)
+		Local hairFront:TFigureGeneratorPart = GetRandomPart(TFigureGeneratorPart.PART_HAIR_FRONT, gender, age, randomSeed)
+		If hairFront
+			If hairFront.hairBackSpriteName
+				'iterate over all hair backs until sprite name fits (crude but simple)
+				For Local p:TFigureGeneratorPart = EachIn GetPartsList(TFigureGeneratorPart.PART_HAIR_BACK)
+					If hairFront.hairBackSpriteName.Equals(p.spriteName, False)
+						result = New TFigureGeneratorPart[2]
+						result[0] = hairFront
+						result[1] = p
+						Return result
+					EndIf
+				Next
+			EndIf
+			
+			result = New TFigureGeneratorPart[1]
+			result[0] = hairFront
+			Return result
+		EndIf
+		
+		Return Null
+	End Method
+
+
+	'return a pair for body/trunk and overlayed clothing
+	Method GetRandomClothBodyPair:TFigureGeneratorPart[](gender:Int, age:Int, randomSeed:Int)
+		Local result:TFigureGeneratorPart[]
+
+		'choose a random cloth/trunk - and a suiting "body" (trunkSkin)
+		'which might be only a small part of the available ones
+		Local cloth:TFigureGeneratorPart = GetRandomPart(TFigureGeneratorPart.PART_CLOTH, gender, age, randomSeed)
+		If cloth
+			'only compatible with certain skins
+			If cloth.compatibleBody.Length > 0
+				'filter first (maybe age/gender limits even more)
+				'do incomplete parts as compatibleBody will either include them or not
+				Local potentialBodies:TFigureGeneratorPart[] = GetFilteredParts(TFigureGeneratorPart.PART_BODY, gender, age, True)
+				Local compatibleBodies:TFigureGeneratorPart[]
+
+				'iterate over all bodies until sprite name fits (crude but simple)
+				For Local p:TFigureGeneratorPart = EachIn potentialBodies
+					If StringHelper.InArray(p.spriteName, cloth.compatibleBody, False)
+						compatibleBodies :+ [p]
+					EndIf
+				Next
+				
+				If compatibleBodies.Length > 0
+					result = New TFigureGeneratorPart[2]
+					result[0] = cloth
+					result[1] = compatibleBodies[ New SFastRandom(randomSeed).RandomInt(0, compatibleBodies.Length - 1) ]
+					Return result
+				EndIf
+				
+'Rem
+			'compatible to all: means "all" are feasible (or none)
+			Else
+				result = New TFigureGeneratorPart[2]
+				result[0] = cloth
+				result[1] = GetRandomPart(TFigureGeneratorPart.PART_BODY, gender, age, randomSeed)
+				Return Result
+'endrem
+			EndIf
+			
+			result = New TFigureGeneratorPart[1]
+			result[0] = cloth
+			Return result
+		EndIf
+		
+		Return Null
+	End Method
+
+
+	Method GetPart:TFigureGeneratorPart(partType:Int, index:Int)
+		Local partList:TObjectList = GetPartsList(partType)
+		If Not partList Then Return Null
+		' index out of bounds?
+		If index < 0 Or index >= partList.Count() Then Return Null
+
+		Return TFigureGeneratorPart(partList.ValueAtIndex(index))
+	End Method
+
+
+	Method GetPartIndex:Int(partType:Int, part:TFigureGeneratorPart)
+		Local partList:TObjectList = GetPartsList(partType)
+		If Not partList Then Return -1
+
+		For Local i:Int = 0 Until partList.Count()
+			If part = TFigureGeneratorPart(partList.data[i])
+				Return i
+			EndIf
+		Next
+		Return -1
+	End Method
+	
+
+	' generates a figure defined in a code-string
+	Method GenerateFigure:TFigureGeneratorFigure(code:String)
+		Return GenerateRandomFigure(code, 0)
+	End Method
+
+
+	' generates a figure defined in a code-string
+	Method GenerateRandomFigure:TFigureGeneratorFigure(code:String, randomSeed:Int)
+		'print "GenerateRandomFigure: code="+code
+
+		Local subCodes:String[] = code.Split(":")
+		If subCodes.Length < 4 + TFigureGeneratorFigureConfig.partsCount
+			' just seed
+			If subCodes.Length = 1
+				' (to allow a "error message" as "default" - see end of 
+				'  function, we only accept it if the seed is a valid
+				'  number!)
+				Local seed:Int = Int(subCodes[0])
+				If subCodes[0] = String(seed)
+					Return GenerateRandomFigure(Int(subCodes[0]))
+				EndIf
+
+			' gender:seed -> random skintone, gender, random age, seed
+			ElseIf subCodes.Length = 2
+				Return GenerateRandomFigure(0, Int(subCodes[0]), 0, Int(subCodes[1]))
+
+			' gender:age:seed -> random skintone, gender, random age, seed
+			ElseIf subCodes.Length = 3
+				Return GenerateRandomFigure(0, Int(subCodes[0]), Int(subCodes[1]), Int(subCodes[2]))
+
+			' gender:age:skinTone:seed -> skinTone, gender, age
+			ElseIf subCodes.Length >= 4
+				Return GenerateRandomFigure(Int(subCodes[2]), Int(subCodes[0]), Int(subCodes[1]), Int(subCodes[3]))
+			EndIf
+		Else
+			Local fig:TFigureGeneratorFigure = New TFigureGeneratorFigure
+			Local skinTone:TColor
+			Local colors:TColor[TFigureGeneratorFigureConfig.partsCount]
+			Local partStartIndex:Int = 4
+			
+			fig.gender = Int(subCodes[0])
+			fig.age = Int(subCodes[1])
+			'ethnicity and skinTone in one String...
+			Local ethnicityAndSkinTone:String[] = subCodes[2].Split("#")
+			fig.ethnicity = Int(ethnicityAndSkinTone[0])
+			
+			If ethnicityAndSkinTone.Length > 1
+				skinTone = New TColor.FromHex(ethnicityAndSkinTone[1])
+			Else
+				skinTone = TColor.clWhite
+			EndIf
+
+			Local defaultColor:SColor8 = New SColor8(255,255,255,255) 'full alpha, no tinting
+
+			For Local i:Int = 0 Until Min(subCodes.Length, registeredParts.Length)
+				Local partCode:String[] = subCodes[i + partStartIndex].split("#")
+				Local partIndex:Int = Int(partCode[0])
+				Local partType:Int = i + 1
+				If partIndex < 0
+					fig.SetPart(partType, Null)
+					fig.SetPartColor(partType, defaultColor)
+					Continue
+				EndIf
+
+				Local part:TFigureGeneratorPart = GetPart(partType, partIndex)
+				If Not part
+					fig.SetPart(partType, Null)
+					fig.SetPartColor(partType, defaultColor)
+					Continue
+				EndIf
+				
+				fig.SetPart(partType, part)
+				If partCode.Length = 2
+					colors[partType -1] = New TColor.FromHex(partCode[1])
+
+					'set skinTone if not done yet (globally or via other skin part)
+					If part.IsSkinPart() And Not skinTone
+						skinTone = colors[partType -1]
+					EndIf
+				Else
+					fig.SetPartColor(partType, defaultColor)
+				EndIf
+			Next
+
+			'set base skin tone (also set individual parts)
+			fig.SetSkinTone(New SColor8(skinTone.r, skinTone.g, skinTone.b), True)
+
+			'override skincolors if needed
+			For Local i:Int = 0 Until colors.Length
+				' only set valid colors, all other colors like "explicit null"
+				' are set before 
+				If colors[i] Then fig.SetPartColor(i+1, New SColor8(colors[i].r, colors[i].g, colors[i].b))
+			Next
+
+			Return fig
+		EndIf
+
+		Print "GenerateFigureFromCode(): invalid code. Using absolute random params for generator."
+		Return GenerateRandomFigure( randomSeed )
+	End Method
+
+
+	' generate a "pure" random figure (depends on seed)
+	Method GenerateRandomFigure:TFigureGeneratorFigure(randomSeed:Int)
+		Return GenerateRandomFigure(TFigureGenerator.ETHNICITY_CAUCASIAN, 0, 0, randomSeed)
+	End Method
+
+
+	Method GenerateRandomFigure:TFigureGeneratorFigure(ethnicity:Int, gender:Int, age:Int)
+		Return GenerateRandomFigure:TFigureGeneratorFigure(ethnicity, gender, age, 0)
+	End Method
+	
+
+	Method GenerateRandomFigure:TFigureGeneratorFigure(ethnicity:Int, gender:Int, age:Int, randomSeed:Int)
+		' fallback to "random" for invalid params
+		If ethnicity < 0 Or ethnicity > 4 Then ethnicity = TFigureGenerator.ETHNICITY_CAUCASIAN
+		If gender < 0 Or gender > 2 Then gender = 0
+		If age < 0 Or age > 2 Then age = 0
+
+		' randomize
+		' when removing/adding - keep "seed + x" constant (so results
+		' do not change for these attributes)
+		If gender = 0 Then gender = New SFastRandom(randomSeed + 1).RandomInt(1,2)
+		If ethnicity = 0 Then ethnicity = New SFastRandom(randomSeed + 2).RandomInt(1,3)
+		If age = 0 Then age = New SFastRandom(randomSeed + 3).RandomInt(1,2)
+
+		' now gender and age are assured
+		Local fig:TFigureGeneratorFigure = New TFigureGeneratorFigure
+		fig.gender = gender
+		fig.age = age
+		fig.ethnicity = ethnicity
+
+		fig.seed = randomSeed
+
+		Return fig
+	End Method
+	
+	
+	Method GenerateImage:TImage(config:TFigureGeneratorFigureConfig, createEmptyOnFailure:Int = False)
+		Local img:TImage = CreateImage(maxPartDimension.x, maxPartDimension.y, DYNAMICIMAGE | FILTEREDIMAGE, PF_RGBA8888)
+		LockImage(img).ClearPixels(0)
+
+		For Local partType:Int = EachIn partOrder
+			If Not config.parts[partType -1] Then Continue
+			Local s:TSprite = config.parts[partType -1].GetSprite()
+			If Not s Then Continue
+
+			DrawImageOnImageSColor(s.GetImage(0, False), img, 0, 0, config.partsColor[partType -1])
+		Next
+		
+		Return img
+	End Method
+	
+	
+	' Get a skinTone variation based on a ethnicity (AFRICAN, ASIAN, CAUCASIAN) 
+	Method GetRandomSkinTone:SColor8(ethnicity:Int, randomSeed:Int)
+		Local fastRandom:SFastRandom = New SFastRandom(randomSeed + 200)
+		Local variation:Int = fastRandom.RandomInt(0, skinTonePresets[ethnicity -1].Length - 1)
+		Local mixColor:SColor8 = skinTonePresets[ethnicity -1][variation] 'copy!
+
+		' add variation to the color
+		Select ethnicity -1 'compare as index
+			Case TFigureGenerator.ETHNICITY_AFRICAN
+				'prefer brighter variants to avoid too dark overall images - clothes, hair, skin)
+				mixColor = SColor8Helper.AdjustHSL(mixColor, 0, 0, fastRandom.RandomInt(10, 30)/100.0)
+			Case TFigureGenerator.ETHNICITY_ASIAN
+				mixColor = SColor8Helper.AdjustHSL(mixColor, 0, 0, fastRandom.RandomInt(-5, 10)/100.0)
+'			case 3
+			Default 'european/caucasian
+				'prefer darker variants to avoid too pale overall images - clothes, hair, skin)
+				mixColor = SColor8Helper.AdjustHSL(mixColor, 0, 0, fastRandom.RandomInt(-10, -0)/100.0)
+		EndSelect
+		
+		Return mixColor
+	End Method
+	
+	
+	Method GetRandomConfig:TFigureGeneratorFigureConfig(ethnicity:Int, gender:Int, age:Int, randomSeed:Int)
+		Local config:TFigureGeneratorFigureConfig = New TFigureGeneratorFigureConfig
+
+		' assign the skin tone base, and after body part creation assign
+		' it to there too. Doing it twice allows to use the skinTone already
+		' during selection
+		config.skinTone = GetRandomSkinTone(ethnicity, randomSeed)
+	
+		' randomize body parts
+		Local hairPair:TFigureGeneratorPart[] = GetRandomHairPair(gender, age, randomSeed)
+		Local clothBodyPair:TFigureGeneratorPart[] = GetRandomClothBodyPair(gender, age, randomSeed)
+
+		For Local i:Int = 0 Until TFigureGenerator.partOrder.Length
+			Local partType:Int = TFigureGenerator.partOrder[i]
+			' randomly skip _optional_ elements (eg. glasses)
+			If TFigureGenerator.useChance[i] <> 100
+				If New SFastRandom(randomSeed + partType).RandomInt(100) > TFigureGenerator.useChance[i] Then Continue
+			EndIf
+
+
+			Local part:TFigureGeneratorPart
+			'special handling for body, cloth, hair/hairback
+			If partType = TFigureGeneratorPart.PART_BODY 
+				If clothBodyPair.Length < 1 Then Throw "no suiting body found and no covering cloth defined"
+				If clothBodyPair.Length > 1
+					part = clothBodyPair[1]
+				EndIf
+			ElseIf partType = TFigureGeneratorPart.PART_CLOTH
+				If clothBodyPair.Length < 1 Then Throw "no cloth/body found"
+				part = clothBodyPair[0]
+			ElseIf partType = TFigureGeneratorPart.PART_HAIR_BACK 
+				If hairPair.Length >= 2 'only if a hair back is defined
+					part = hairPair[1]
+				EndIf
+			ElseIf partType = TFigureGeneratorPart.PART_HAIR_FRONT 
+				If hairPair.Length >= 1 'only if a hair is defined
+					part = hairPair[0]
+				EndIf
+			Else
+				part = GetRandomPart(partType, gender, age, randomSeed + partType)
+			EndIf
+
+
+			If part
+				'got a gender specific part? use for rest
+				If part.gender <> 0 Then gender = part.gender
+				If part.age <> 0 Then age = part.age
+			EndIf
+			
+			config.SetPart(partType, part)
+		Next
+
+
+		'hair - base is caucasian
+		Local fastRandom:SFastRandom = New SFastRandom(randomSeed + 123)
+		Local chanceBlonde:Int = 20
+		Local chanceBlack:Int = 38
+		Local chanceBrown:Int = 28
+		Local chanceRed:Int = 9
+		Local chanceCrazy:Int = 5
+		
+		If ethnicity = ETHNICITY_AFRICAN
+			If gender = 2
+				chanceBlack = 60
+				chanceBrown = 20
+				chanceBlonde = 5
+				chanceRed = 10
+				chanceCrazy = 5
+			Else
+				chanceBlack = 80
+				chanceBrown = 10
+				chanceBlonde = 5
+				chanceRed = 3
+				chanceCrazy = 2
+				If age = 2
+					chanceBlack = 87
+					chanceBrown = 10
+					chanceBlonde = 1
+					chanceRed = 1
+					chanceCrazy = 1
+				EndIf
+			EndIf
+		ElseIf ethnicity = ETHNICITY_ASIAN
+			chanceBlonde = 2
+			chanceBlack = 75
+			chanceBrown = 8
+			chanceRed = 5
+			If gender = 2
+				chanceCrazy = 10
+			Else
+				chanceBlack = 83
+				chanceCrazy = 2
+			EndIf
+		EndIf
+		Local hairColor:SColor8
+		Local hairTone:Int = fastRandom.RandomInt(100)
+		Local hairColorPreset:Int 
+
+		'blonde
+		If hairTone < chanceBlonde
+			hairColorPreset = TFigureGenerator.HAIR_BLONDE
+		'black
+		ElseIf hairTone < chanceBlonde + chanceBlack
+			hairColorPreset = TFigureGenerator.HAIR_BLACK
+		'brown
+		ElseIf hairTone < chanceBlonde + chanceBlack + chanceBrown
+			hairColorPreset = TFigureGenerator.HAIR_BROWN
+		'red
+		Else
+			hairColorPreset = TFigureGenerator.HAIR_RED
+		EndIf
+
+		Local variation:Int = fastRandom.RandomInt(0, TFigureGenerator.hairColorPresets[hairColorPreset].Length - 1)
+		hairColor = TFigureGenerator.hairColorPresets[hairColorPreset][variation] 'copy!
+
+		
+		'gray?
+		If age = 2 And fastRandom.RandomInt(100) > 75
+			'25% chance we fade out the color (does not work for black hair...
+			If hairColorPreset <> HAIR_BLACK And fastRandom.RandomInt(100) > 75
+				haircolor = SColor8Helper.AdjustHSL(hairColor, 0, - fastRandom.RandomInt(30, 75)/100.0, 0)
+			Else
+				Local greyVariation:Int = fastRandom.RandomInt(0, hairColorPresets[TFigureGenerator.HAIR_GREY].Length - 1)
+				hairColor = hairColorPresets[TFigureGenerator.HAIR_GREY][greyVariation]
+			EndIf
+		EndIf
+		
+		hairColor = SColor8Helper.AdjustHSL(hairColor, 0, 0, fastRandom.RandomInt(-15, 15)/100.0)
+
+		config.SetPartColor(TFigureGeneratorPart.PART_HAIR_BACK, hairColor)
+		config.SetPartColor(TFigureGeneratorPart.PART_HAIR_FRONT, hairColor)
+		config.SetPartColor(TFigureGeneratorPart.PART_BEARD, hairColor)
+		config.SetPartColor(TFigureGeneratorPart.PART_EYEBROWS, hairColor)
+
+
+		'cloth
+		Local clothColor:SColor8
+		If fastRandom.RandomInt(100) < 20
+			If gender = 1
+				clothColor = New SColor8(fastRandom.RandomInt(1, 8)*16, fastRandom.RandomInt(1, 8)*31, fastRandom.RandomInt(1, 8)*31)
+			ElseIf gender = 2
+				clothColor =  New SColor8(fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*16)
+			Else
+				clothColor =  New SColor8(fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*31)
+			EndIf
+
+			'minimum brightness
+			If fastRandom.RandomInt(100) < 75
+				clothColor = SColor8Helper.AdjustBrightness(clothColor, fastRandom.RandomInt(30)/100.0 + 0.3) '30% - 60%
+			EndIf
+		' select from a preset
+		Else
+			Local presetIndex:Int = fastRandom.RandomInt(0, clothColorPresets.Length-1)
+			clothColor = clothColorPresets[presetIndex] ' copy
+			clothColor = SColor8Helper.AdjustHSL(clothColor, 0, 0, fastRandom.RandomInt(-10, 10)/100.0) '-10% - 10%
+			
+			Local adjustColorOrTint:Int = fastRandom.RandomInt(100)
+			If adjustColorOrTint < 25
+				Local modifyHue:Int = fastRandom.RandomInt(-15, 15)
+				clothColor = SColor8Helper.AdjustHSL(clothColor, modifyHue/100.0, 0, 0)
+			ElseIf adjustColorOrTint < 50
+				clothColor = SColor8Helper.AdjustHSL(clothColor, 0, 0.2 - fastRandom.RandomInt(50)/100.0, 0)
+			EndIf
+		EndIf
+		config.SetPartColor(TFigureGeneratorPart.PART_CLOTH, clothColor)
+
+
+		config.SetSkinTone(config.skinTone, True)
+		
+		Return config
+	End Method
+
+End Type
+
+
+
+
+
+Type TFigureGeneratorFigureConfig
+	Field parts:TFigureGeneratorPart[11]
+	Field partsColor:SColor8[11]
+	' tone/color of visual skin elements (individual overrides possible)
+	Field skinTone:SColor8
+	
+	Global partsCount:Int = 11
+	
+	
+	Method New()
+		'default all parts colors to white/untinted and fully visible
+		For Local i:Int = 0 Until partsColor.Length
+			partsColor[i] = New SColor8(255,255,255,255)
+		Next
+	End Method
+
+
+	Method SetPart(partType:Int, part:TFigureGeneratorPart = Null)
+		If partType < 1 Or partType > parts.Length Then Return
 		
 		parts[partType-1] = part
 	End Method
 	
 
-	Method SetPartColor(partType:int, color:TColor = null)
-		if partType < 1 or partType > parts.length then return
+	Method SetPartColor(partType:Int, color:SColor8)
+		If partType < 1 Or partType > parts.Length Then Return
 		
 		partsColor[partType-1] = color
 	End Method
-
-
-	Method SetSkinTone(tone:int, PRNG:TRandom)
+	
+	
+	' set color to all parts defined as (showing) "skin"
+	Method SetSkinTone(tone:SColor8, overrideSkinParts:Int = False)
 		skinTone = tone
 		
-		local mixColor:TColor
-		Select tone
-			case 1 'african
-				local variation:int = PRNG.Rand(1, 3)
-				Select variation
-					case 1	mixColor = TColor.Create(106, 65, 46)
-					case 2	mixColor = TColor.Create(128, 87, 62)
-					case 3	mixColor = TColor.Create(165, 57,  0)
-				End Select
-				'add a bit variation (prefer brighter variants to avoid
-				'too dark overall images - clothes, hair, skin)
-				mixColor.AdjustBrightness(PRNG.Rand(30)/100.0 - 0.05)
-			case 2 'asian
-				local variation:int = PRNG.Rand(1, 4)
-				Select variation
-					case 1	mixColor = TColor.Create(255,220,177)
-					case 2	mixColor = TColor.Create(229,194,152)
-					case 3	mixColor = TColor.Create(204,132, 67)
-					case 4	mixColor = TColor.Create(223,185,151)
-				EndSelect
-				'add a bit variation
-				mixColor.AdjustBrightness(PRNG.Rand(10)/100.0 - 0.05)
-'			case 3
-			default 'european/caucasian
-				local variation:int = PRNG.Rand(1, 4)
-				Select variation
-					case 1	mixColor = TColor.Create(255,218,204)
-					case 2	mixColor = TColor.Create(253,192,168)
-					case 3	mixColor = TColor.Create(233,145,110)
-					case 4	mixColor = TColor.Create(245,210,195)
-				End Select
-				'add a bit variation (prefer darker variants to avoid
-				'too pale overall images - clothes, hair, skin)
-				mixColor.AdjustBrightness(PRNG.Rand(10)/100.0 - 0.10)
-		EndSelect
-
-		SetSkinColor(mixColor)
+		For Local i:Int = 0 Until parts.Length
+			If Not parts[i] Then Continue
+			If Not parts[i].IsSkinPart() Then Continue
+			partsColor[i] = tone
+		Next
 	End Method
 
 
-	Method GetSkinColor:TColor()
-		For local partType:int = eachin partOrder
-			if not parts[partType -1] then continue
-			if not parts[partType -1].skinVisible then continue
-			return partsColor[partType -1]
+	Method GetSkinTone:SColor8()
+		Return skinTone
+	End Method
+	
+	
+	Method SerializeTFigureGeneratorFigureConfigToString:String()
+		Local code:String
+		Local colString:String
+		For Local i:Int = 0 Until parts.Length
+			If code Then code :+ ":"
+			Local partType:Int = i + 1
+			If parts[i]
+				Local partIndex:Int = FigureGenerator.GetPartIndex(partType, parts[i])
+				If partIndex<>-1
+					code :+ partIndex
+					If Not parts[i].IsSkinPart() Or partsColor[i] <> skinTone
+						colString = Hex(partsColor[i].ToRGBA())
+						'strip off alpha (not needed)
+						colString = colString[.. colString.Length - 2]
+						code :+ "#" + colString
+					EndIf
+					Continue
+				EndIf
+			EndIf
+
+			code :+"-1"
 		Next
-		return Null
+		
+		Return code
+	End Method
+End Type
+
+
+
+
+Type TFigureGeneratorFigure
+	Field flags:Int
+	Field gender:Int = 0
+	Field age:Int = 0
+	Field ethnicity:Int = TFigureGenerator.ETHNICITY_CAUCASIAN
+	' seed used to generate the figure
+	Field seed:Int
+	' skintone and individual parts config (if differing to "seed")
+	Field config:TFigureGeneratorFigureConfig
+
+	Const PART_BODY:Int = 1        'was 3
+	Const PART_FACE:Int = 2        'was 6
+	Const PART_EYES:Int = 3        'was 7
+	Const PART_NOSE:Int = 4        'was 9
+	Const PART_EARS:Int = 5        'was 10
+	Const PART_MOUTH:Int = 6       'was 11
+	Const PART_EYEBROWS:Int = 7    'was 13
+	Const PART_BEARD:Int = 8       'was 14
+	Const PART_HAIR_BACK:Int = 9   'was 2
+	Const PART_HAIR_FRONT:Int = 10 'was 12
+	Const PART_CLOTH:Int = 11      'was 5 
+
+	Const FLAG_IS_CUSTOMIZED:Int = 1
+
+	
+	Method SetFlag(flag:Int, enable:Int)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
+
+
+	Method HasFlag:Int(flag:Int)
+		Return (flags & flag)
+	End Method
+	
+	
+	Method IsCustomized:Int()
+		Return HasFlag(FLAG_IS_CUSTOMIZED)
+	End Method
+
+	
+	Method GetFigureCode:String()
+		Local code:String = gender+":"+age+":"+ethnicity
+		
+		If IsCustomized()
+			Local skinTone:SColor8 = GetSkinTone()
+			Local colString:String = Hex(skinTone.ToRGBA())
+			'strip off alpha (not needeD)
+			colString = colString[.. colString.Length - 2]
+			code :+ "#" + colString
+		EndIf
+		
+		code :+ ":" + seed
+			
+		If config
+			code :+ ":" + config.SerializeTFigureGeneratorFigureConfigToString()
+		EndIf
+		Return code
+	End Method
+
+
+	Method SetSkinTone(tone:SColor8, overrideSkinParts:Int = False)
+		If Not config Then config = New TFigureGeneratorFigureConfig
+		config.SetSkinTone(tone)
+
+		SetFlag(FLAG_IS_CUSTOMIZED, True)
+	End Method
+
+
+	Method GetSkinTone:SColor8()
+		If Not config Then config = FigureGenerator.GetRandomConfig(ethnicity, gender, age, seed)
+		Return config.GetSkinTone()
+'
+Rem
+		If config Then Return config.GetSkinTone()
+
+		GenerateRandomConfig(seed)
+		Local tempConfig:TFigureGeneratorFigureConfig = self.config
+		config = Null
+		SetFlag(FLAG_IS_CUSTOMIZED, False)
+		
+		Return tempConfig.skinTone
+endrem
+	End Method
+
+
+	Method SetPart(partType:Int, part:TFigureGeneratorPart = Null)
+		If Not config Then config = New TFigureGeneratorFigureConfig
+		config.SetPart(partType, part)
+
+		SetFlag(FLAG_IS_CUSTOMIZED, True)
 	End Method
 	
 
-	Method SetSkinColor(color:TColor)
-		For local partType:int = eachin partOrder
-			if not parts[partType -1] then continue
-			if not parts[partType -1].skinVisible then continue
-			partsColor[partType -1] = color
-		Next
+	Method SetPartColor(partType:Int, color:SColor8)
+		If Not config Then config = New TFigureGeneratorFigureConfig
+		config.SetPartColor(partType, color)
+
+		SetFlag(FLAG_IS_CUSTOMIZED, True)
 	End Method
 
 
-	Method ColorizeElements(PRNG:TRandom)
-		'cloth
-		if PRNG.Rand(100) < 20
-			if gender = 1
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(PRNG.Rand(8)*16, PRNG.Rand(8)*31, PRNG.Rand(8)*31)
-			elseif gender = 2
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(PRNG.Rand(0,8)*31, PRNG.Rand(0,8)*31, PRNG.Rand(0,8)*16)
-			else
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(PRNG.Rand(8)*31, PRNG.Rand(8)*31, PRNG.Rand(8)*31)
-			endif
+	Method Randomize(randomSeed:Int)
+		' find a suitable skin tone (set it again at the end so it can
+		' override body parts without an individual setting)
+'		SetSkinToneBase(ethnicity, randomSeed + 4, False)
 
-			'minimum brightness
-			if PRNG.Rand(100) < 75
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( PRNG.Rand(30)/100 + 0.3 ) '30% - 60%
-			endif
-		else
-			Select PRNG.Rand(18)
-				case 1
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(255, 180, 0)
-				case 2
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(100, 130, 0)
-				case 3
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(215, 210, 0)
-				case 4
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(120, 220, 0)
-				case 5
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(50, 220, 0)
-				case 6
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(250, 50, 120)
-				case 7
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(0, 180, 220)
-				case 8
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(0, 80, 220)
-				case 9
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(100, 80, 200)
-				case 10
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(220, 0, 40)
-				case 11
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(40, 190, 70)
-				case 12
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(40, 0, 220)
-				case 13
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(200, 100, 90)
-				case 14
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(40, 70, 130)
-				case 15 'dark gray
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(100, 100, 100)
-				case 16 'light gray
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(230, 230, 230)
-				case 17
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(150, 150, 150)
-				default 'blackish
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(35, 35, 35)
-			End Select
-			partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( PRNG.Rand(30)/100 - 0.2 ) '-15% - 15%
+		Self.config = FigureGenerator.GetRandomConfig(ethnicity, gender, age, randomSeed)
 
-			if PRNG.Rand(100) < 25
-				local modify:int = PRNG.Rand(1,3)
-				local modifyValue:int= PRNG.Rand(30) - 15
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustRGB( (modify=1)*modifyValue, (modify=2)*modifyValue, (modify=3)*modifyValue )
-			elseif PRNG.Rand(100) < 50
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustSaturation( 0.2 - PRNG.Rand(50)/100.0 )
-			endif
-		endif
-
-
-		'hair
-		local chanceBlonde:int = 20
-		local chanceBlack:int = 38
-		local chanceBrown:int = 28
-		local chanceRed:int = 9
-		local chanceCrazy:int = 5
-		
-		if skinTone = 1 'african
-			chanceBlonde = 5
-			chanceBlack = 60
-			chanceBrown = 20
-			chanceRed = 10
-			chanceCrazy = 5
-		elseif skinTone = 2 'asian
-			chanceBlonde = 2
-			chanceBlack = 75
-			chanceBrown = 8
-			chanceRed = 5
-			if gender = 2
-				chanceCrazy = 10
-			else
-				chanceBlack = 83
-				chanceCrazy = 2
-			endif
-		endif
-		local hairColor:TColor
-		local hairTone:int = PRNG.Rand(100)
-		'blonde
-		if hairTone < chanceBlonde
-			local variation:int = PRNG.Rand(1, 2)
-			Select variation
-				Case 1	haircolor = TColor.Create(225,200,45)
-				Case 2	haircolor = TColor.Create(225,210,50)
-			End Select
-		'black
-		elseif hairTone < chanceBlonde + chanceBlack
-			haircolor = TColor.Create(30,25,20)
-		'brown
-		elseif hairTone < chanceBlonde + chanceBlack + chanceBrown
-			local variation:int = PRNG.Rand(1, 2)
-			Select variation
-				Case 1	haircolor = TColor.Create(80,30,10)
-				Case 2	haircolor = TColor.Create(80,40,15)
-			End Select
-		'red
-		else
-			local variation:int = PRNG.Rand(1, 2)
-			Select variation
-				Case 1	haircolor = TColor.Create(255,100,0)
-				Case 2	haircolor = TColor.Create(245,120,15)
-			End Select
-		endif
-		haircolor.AdjustBrightness( PRNG.Rand(30)/100 - 0.2 ) '-15% - 15%
-
-
-		if age = 2 or PRNG.Rand(100) < 5
-			'desaturate a bit
-'			haircolor.AdjustSaturationRGB( - 0.5 - 0.5 * PRNG.Rand(100)/100.0)
-		endif
-
-		partsColor[TFigureGeneratorPart.PART_HAIR_BACK -1] = hairColor
-		partsColor[TFigureGeneratorPart.PART_HAIR_FRONT -1] = hairColor
-		partsColor[TFigureGeneratorPart.PART_BEARD -1] = hairColor
-		partsColor[TFigureGeneratorPart.PART_EYEBROWS -1] = hairColor
+		'set skin tone again
+		'SetSkinToneBase(ethnicity, randomSeed + 4, True)
+'		SetSkinTone(config.skinTone, True)
 	End Method
 
 
 	Method GenerateImage:TImage()
-		local img:TImage
-		for local partType:int = eachin partOrder
-			if not parts[partType -1] then continue
-			if not parts[partType -1].GetSprite() then continue
-
-			if not img
-				img = parts[partType -1].GetSprite().GetImageCopy()
-				LockImage(img).ClearPixels(0)
-			endif
-			
-			local col:TColor = partsColor[partType -1]
-			if not col then col = TColor.clWhite
-
-			DrawImageOnImage(parts[partType -1].GetSprite().GetImage(), img, 0, 0, col)
-
-			'print "partIndex:"+(partType -1)+" col:"+col.ToString()+"  sprite:"+parts[partType -1].GetSprite().name
-		Next
-		'print "---------"
-		return img
-	End Method
+		'generate parts config if not done yet
+		Local configCreated:Int
+		If Not config
+			config = FigureGenerator.GetRandomConfig(ethnicity, gender, age, seed)
+			configCreated = True
+		EndIf
 		
+		Local img:TImage = FigureGenerator.GenerateImage(config, True)
+	
+		' clean up config if we just created it for the image generation 
+		If configCreated
+			config = Null
+			SetFlag(FLAG_IS_CUSTOMIZED, False)
+		EndIf
 
-	Method Draw(x:int, y:int)
-		for local partType:int = eachin partOrder
-			if not parts[partType -1] then continue
-			parts[partType -1].Draw(x, y, partsColor[partType -1])
-		Next
+		Return img
 	End Method
 End Type
 
@@ -443,69 +863,92 @@ End Type
 
 Type TFigureGeneratorPart
 	Field sprite:TSprite {nosave}
-	Field spriteName:string
-	Field partType:int
-	Field gender:int = 0
-	Field age:int = 0
-	Field skinVisible:int = False
-
-	Const PART_BG:int = 1
-	Const PART_HAIR_BACK:int = 2
-	Const PART_BODY:int = 3
-	Const PART_NECK:int = 4
-	Const PART_CLOTH:int = 5
-	Const PART_FACE:int = 6
-	Const PART_EYES:int = 7
-	Const PART_EYES_IRIS:int = 8
-	Const PART_NOSE:int = 9
-	Const PART_EARS:int = 10
-	Const PART_MOUTH:int = 11
-	Const PART_HAIR_FRONT:int = 12
-	Const PART_EYEBROWS:int = 13
-	Const PART_BEARD:int = 14
+	Field spriteName:String
+	Field partType:Int
+	Field gender:Int = 0
+	Field age:Int = 0
+	
+	'part specific, but to keep things easy, all in one here...
+	Field incompletePart:Int 'eg only a throat, not a complete body
+	Field hairBackSpriteName:String
+	Field compatibleBody:String[]
 
 
-	Method Init:TFigureGeneratorPart(sprite:TSprite, partType:int, gender:int = 0, age:int = 0, skinVisible:int=False)
-		self.sprite = sprite
-		if sprite
-			self.spriteName = sprite.name
-		else
-			self.spriteName = ""
-		endif
-		self.partType = partType
-		self.gender = gender
-		self.age = age
-		self.skinVisible = skinVisible
+	Const PART_BODY:Int = 1        'was 3
+	Const PART_FACE:Int = 2        'was 6
+	Const PART_EYES:Int = 3        'was 7
+	Const PART_NOSE:Int = 4        'was 9
+	Const PART_EARS:Int = 5        'was 10
+	Const PART_MOUTH:Int = 6       'was 11
+	Const PART_EYEBROWS:Int = 7    'was 13
+	Const PART_BEARD:Int = 8       'was 14
+	Const PART_HAIR_BACK:Int = 9   'was 2
+	Const PART_HAIR_FRONT:Int = 10 'was 12
+	Const PART_CLOTH:Int = 11      'was 5 
+
+
+	Method Init:TFigureGeneratorPart(sprite:TSprite, partType:Int, gender:Int = 0, age:Int = 0)
+		Self.sprite = sprite
+		If sprite
+			Self.spriteName = sprite.name
+		Else
+			Self.spriteName = ""
+		EndIf
+		Self.partType = partType
+		Self.gender = gender
+		Self.age = age
 		
-		return self
+		Return Self
 	End Method
 	
 
-	Method GetGUID:string()
-		if sprite then return partType + "_" + sprite.name + "_" + gender + "_" +age
-		return partType + "_" + "nosprite" + "_" + gender + "_" +age
+	Method GetGUID:String()
+		If sprite Then Return partType + "_" + sprite.name + "_" + gender + "_" +age
+		Return partType + "_" + "nosprite" + "_" + gender + "_" +age
 	End Method
 
 
 	Method GetSprite:TSprite()
-		if not sprite
-			if spriteName then sprite = GetSpriteFromRegistry(spriteName)
-		endif
-		return sprite
+		If Not sprite
+			If spriteName Then sprite = GetSpriteFromRegistry(spriteName)
+		EndIf
+		Return sprite
+	End Method
+
+	Method Draw(x:Int, y:Int)
+		If Not GetSprite() Then Return
+		
+		sprite.Draw(x,y)
+	End Method
+
+
+	Method Draw(x:Int, y:Int, tintColor:SColor8)
+		If Not GetSprite() Then Return
+		
+		Local oldCol:SColor8; GetColor(oldCol)
+		SetColor(SColor8Helper.Mix(oldCol, tintColor))
+		sprite.Draw(x,y)
+		SetColor(oldCol)
 	End Method
 	
-
-	Method Draw(x:int, y:int, color:TColor)
-		if not GetSprite() then return
-		
-		if color
-			local oldCol:TColor = new TColor.Get()
-			oldCol.Copy().Mix(color).SetRGBA()
-			sprite.Draw(x,y)
-			oldCol.SetRGBA()
-		else
-			sprite.Draw(x,y)
-		endif
+	
+	Method IsHairPart:Int()
+		Select partType
+			Case PART_HAIR_BACK, PART_HAIR_FRONT, PART_BEARD, PART_EYEBROWS
+				Return True
+			Default
+				Return False
+		End Select
+	End Method
+	
+	
+	Method IsSkinPart:Int()
+		Select partType
+			Case PART_BODY, PART_FACE, PART_NOSE, PART_EARS
+				Return True
+			Default
+				Return False
+		End Select
 	End Method
 End Type
 
@@ -515,11 +958,11 @@ End Type
 
 '===== NEWS GENRE LOADER =====
 'loader caring about "<figuregeneratorpart>"
-Type TRegistryFigureGeneratorPartLoader extends TRegistryBaseLoader
+Type TRegistryFigureGeneratorPartLoader Extends TRegistryBaseLoader
 	Method Init:Int()
 		name = "FigureGeneratorPart"
 		resourceNames = "figuregeneratorpart|fgpart"
-		if not registered then Register()
+		If Not registered Then Register()
 	End Method
 
 
@@ -530,34 +973,43 @@ Type TRegistryFigureGeneratorPartLoader extends TRegistryBaseLoader
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local fieldNames:String[]
-		local data:TData = new TData
-		fieldNames :+ ["sprite", "age", "gender", "skin", "partType"]
+		Local fieldNames:String[]
+		Local data:TData = New TData
+		fieldNames :+ ["sprite", "age", "gender", "skin", "partType", "hairBack", "compatibleBody", "incompletePart"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
-		return data
+		Return data
 	End Method
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknownfiguregenetatorpart")
+		Return data.GetString("name","unknownfiguregenetatorpart")
 	End Method
 
 
-	Method LoadFromConfig:TFigureGeneratorPart(data:TData, resourceName:string)
+	Method LoadFromConfig:TFigureGeneratorPart(data:TData, resourceName:String)
 		'create the figuregenerator part
-		local spriteName:string = data.GetString("sprite", "")
+		Local spriteName:String = data.GetString("sprite", "")
 		'load the sprite
-		local sprite:TSprite = GetSpriteFromRegistry(spriteName)
+		Local sprite:TSprite = GetSpriteFromRegistry(spriteName)
 
-		local partType:int = data.GetInt("partType", 0)
-		local gender:int = data.GetInt("gender", 0)
-		local age:int = data.GetInt("age", 0)
-		local skin:int = data.GetInt("skin", 0)
+		Local partType:Int = data.GetInt("partType", 0)
+		Local gender:Int = data.GetInt("gender", 0)
+		Local age:Int = data.GetInt("age", 0)
+		Local part:TFigureGeneratorPart = New TFigureGeneratorPart.Init( sprite, partType, gender, age)
+		
+		part.incompletePart = data.GetInt("incompletePart", 0)
 
-		local part:TFigureGeneratorPart = new TFigureGeneratorPart.Init( sprite, partType, gender, age, skin)
-		TFigureGenerator.RegisterPart( part )
+		'hair(front) specific ...
+		part.hairBackSpriteName = data.GetString("hairBack", "")
+		'trunk specific
+		Local compatibleBody:String = data.GetString("compatibleBody", "")
+		If compatibleBody
+			part.compatibleBody = compatibleBody.Split(",")
+		EndIf
+		
+		FigureGenerator.RegisterPart( part )
 
-		return part
+		Return part
 	End Method
 End Type
