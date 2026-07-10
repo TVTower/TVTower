@@ -48,6 +48,7 @@ Import Collections.IntMap
 Import BRL.Map
 Import Collections.ObjectList
 Import "../../base.util.longmap.bmx"
+Import Brl.Random
 Import BRL.Stream
 
 Import "glue.c"
@@ -359,15 +360,23 @@ Type TPersist
 		fieldNode.setAttribute("type", t)
 	End Method
 
-	Method SerializeByType(tid:TTypeId, obj:Object, node:TxmlNode)
+	Method SerializeByType(tid:TTypeId, obj:Object, node:TxmlNode, origTid:TTypeId = Null)
 		Local serializer:TXMLSerializer = TXMLSerializer(serializers.ValueForKey(tid.Name()))
-		If serializer Then
+		If serializer And (origTid = Null Or Not serializer.NoSerializeSuperType()) Then
 			serializer.Serialize(tid, obj, node)
 		Else
-			'Ronny: try to let the type or a generic serializer handle it
-			If Not CustomSerializeByType(tid, obj, node)
-				'fall back to default field serialization
-				SerializeFields(tid, obj, node)
+			Local sup:TTypeId = tid.SuperType()
+			If origTid = Null Then
+				origTid = tid
+			End If
+			If sup And sup.Name() <> "Object" Then
+				SerializeByType(sup, obj, node, origTid)
+			Else
+				'Ronny: try to let the type or a generic serializer handle it
+				If Not CustomSerializeByType(origTid, obj, node)
+					'fall back to default field serialization
+					SerializeFields(origTid, obj, node)
+				End If
 			End If
 		End If
 	End Method
@@ -600,8 +609,8 @@ Type TPersist
 		Free()
 		Return obj
 	End Method
-
-	Method DeserializeByType:Object(objType:TTypeId, node:TxmlNode)
+	
+	Method DeserializeByType:Object(objType:TTypeId, node:TxmlNode, origTid:TTypeId = Null)
 		'Ronny: skip loading elements having "nosave" metadata
 		If objType.MetaData("nosave") And Not objType.MetaData("doload") Then Return Null
 		'specific type interest?
@@ -614,16 +623,24 @@ Type TPersist
 
 
 		Local serializer:TXMLSerializer = TXMLSerializer(serializers.ValueForKey(objType.Name()))
-		If serializer Then
+		If serializer And (origTid = Null Or Not serializer.NoSerializeSuperType()) Then
 			Return serializer.Deserialize(objType, node)
 		Else
-			Local obj:Object = CreateObjectInstance(objType, node)
-			'Ronny: try to let the type or a generic serializer handle it
-			If Not DelegateDeserializeByType(objType, obj, node)
-				'fall back to default field deserialization
-				DeserializeFields(objType, obj, node)
+			Local sup:TTypeId = objType.SuperType()
+			If origTid = Null Then
+				origTid = objType
 			End If
-			Return obj
+			If sup And sup.Name() <> "Object" Then
+				Return DeserializeByType(sup, node, origTid)
+			Else
+				Local obj:Object = CreateObjectInstance(origTid, node)
+				'Ronny: try to let the type or a generic serializer handle it
+				If Not DelegateDeserializeByType(origTid, obj, node)
+					'fall back to default field deserialization
+					DeserializeFields(origTid, obj, node)
+				End If
+				Return obj
+			End If
 		End If
 	End Method
 
@@ -1844,6 +1861,10 @@ Type TXMLSerializer
 	Method DeserializeFields(objType:TTypeId, obj:Object, node:TxmlNode)
 		persist.DeserializeFields(objType, obj, node)
 	End Method
+
+	Method NoSerializeSuperType:Int()
+		Return True
+	End Method
 End Type
 
 Type TMapXMLSerializer Extends TXMLSerializer
@@ -2047,6 +2068,49 @@ Type TStringMapXMLSerializer Extends TXMLSerializer
 
 End Type
 
+
+
+
+Type TRandomXMLSerializer Extends TXMLSerializer
+	Method TypeName:String()
+		Return "TRandom"
+	End Method
+    
+
+	Method Serialize(tid:TTypeId, obj:Object, node:TxmlNode)
+		Local r:TRandom = TRandom(obj)
+		If r Then
+			'print "Serialized : " + r.SaveState()
+			node.setContent(r.SaveState())
+		End If
+	End Method
+
+
+	Method Deserialize:Object(objType:TTypeId, node:TxmlNode)
+		Local state:String = node.GetContent()
+
+		Local r:TRandom
+		If RandomLoadState(state, r) = ERandomLoadState.OK Then
+			Return r
+		Else
+			Print "Error: Failed to deserialize / load random state."
+			Return Null
+		End If
+	End Method
+
+
+	Method Clone:TXMLSerializer()
+		Return New TRandomXMLSerializer
+	End Method
+
+
+	Method NoSerializeSuperType:Int()
+		Return False
+	End Method
+End Type
+
+
+TXMLPersistenceBuilder.RegisterDefault(New TRandomXMLSerializer)
 TXMLPersistenceBuilder.RegisterDefault(New TLongMapXMLSerializer)
 TXMLPersistenceBuilder.RegisterDefault(New TIntMapXMLSerializer)
 TXMLPersistenceBuilder.RegisterDefault(New TStringMapXMLSerializer)
