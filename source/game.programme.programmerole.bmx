@@ -57,8 +57,7 @@ Type TProgrammeRoleCollection Extends TGameObjectCollection
 	
 	
 	Method CreateRandomRole:TProgrammeRole(countryCode:String, gender:Int)
-		Local pg:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(countryCode, gender)
-		If Not pg Then Return Null
+		Local pg:SPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(countryCode, gender)
 
 		Local pr:TProgrammeRole = New TProgrammeRole
 		pr.firstName = pg.firstName
