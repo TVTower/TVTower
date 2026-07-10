@@ -1,5 +1,5 @@
 Global debugAudienceInfo:TDebugAudienceInfo = New TDebugAudienceInfo
-Global debugProfiler:TDebugProfiler = new TDebugProfiler
+Global debugProfiler:TDebugProfiler = New TDebugProfiler
 
 
 Type TDebugScreen
@@ -36,13 +36,13 @@ Type TDebugScreen
 	Method New()
 		Local button:TDebugControlsButton
 		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Public Image", "Stationmap", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Custom Production", "Producers", "Sports Sim", "Modifiers", "Misc"]
-		Local mode:int = 0
+		Local Mode:Int = 0
 		Local buttonNextY:Int = 0
-		For Local i:Int = 0 Until texts.length
+		For Local i:Int = 0 Until texts.Length
 			If texts[i] = "-" 
 				buttonNextY :+ 10
 				Continue 'spacer
-			Endif
+			EndIf
 
 			button = TDebugScreenPage.CreateActionButton(i, texts[i], -510 , 18)
 			'custom position
@@ -51,14 +51,14 @@ Type TDebugScreen
 			buttonNextY :+ button.h + 2 + 1
 
 			button.w = 122
-			button.dataInt = mode
-			mode :+ 1
+			button.dataInt = Mode
+			Mode :+ 1
 			button._onClickHandler = OnButtonClickHandler
 
 			sideButtons :+ [button]
 		Next
 
-		pageOverview = new TDebugScreenPage_Overview.Init()
+		pageOverview = New TDebugScreenPage_Overview.Init()
 		pageOverview.SetPosition(sideButtonPanelWidth, 15)
 
 		currentPage = pageOverview
@@ -167,7 +167,7 @@ Type TDebugScreen
 				Case 14	newPage = pageSports
 				Case 15	newPage = pageModifiers
 				Case 16	newPage = pageMisc
-				default newPage = Null
+				Default newPage = Null
 			End Select
 
 			If newPage <> currentPage
@@ -232,7 +232,7 @@ Type TDebugScreen
 			TDebugScreenPage.textFont = GetBitmapFont("default", 10)
 		EndIf
 
-		TFunctions.DrawOutlineRect(0, 12, sideButtonPanelWidth - 2, 370, new SColor8(100,100,100), new SColor8(0,0,0,150))
+		TFunctions.DrawOutlineRect(0, 12, sideButtonPanelWidth - 2, 370, New SColor8(100,100,100), New SColor8(0,0,0,150))
 		For Local b:TDebugControlsButton = EachIn sideButtons
 			b.Render()
 		Next
@@ -315,7 +315,7 @@ End Type
 Type TDebugAudienceInfo
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
-	Field mode:Int = 0 '0=off, 1=one player, 2=all players
+	Field Mode:Int = 0 '0=off, 1=one player, 2=all players
 	Field playerData:TDebugAudienceInfoForPlayer[4]
 
 	Method Reset()
@@ -329,10 +329,10 @@ Type TDebugAudienceInfo
 
 
 	Method Toggle()
-		mode = (mode + 1) mod 3
+		Mode = (Mode + 1) Mod 3
 		Reset()
-		If mode = 2
-			playerData = new TDebugAudienceInfoForPlayer[4]
+		If Mode = 2
+			playerData = New TDebugAudienceInfoForPlayer[4]
 			For Local playerID:Int = 1 To 4
 				playerData[playerID-1] = New TDebugAudienceInfoForPlayer
 				playerData[playerID-1].playerID = playerID
@@ -346,11 +346,11 @@ Type TDebugAudienceInfo
 		DrawRect(0,0,800,385)
 		SetColor 255, 255, 255
 
-		If mode = 1
+		If Mode = 1
 			DrawSinglePlayer()
-		ElseIf mode = 2
+		ElseIf Mode = 2
 			DrawAllPlayers()
-		EndIF
+		EndIf
 	End Method
 
 
@@ -451,7 +451,7 @@ Type TDebugAudienceInfo
 		font.DrawSimple(percent, 160, 70, SColor8.White)
 		DrawAudience(audienceResult.PotentialAudience.data, 200, 70)
 
-		Local colorLight:SColor8 = new SColor8(150, 150, 150)
+		Local colorLight:SColor8 = New SColor8(150, 150, 150)
 
 		'font.drawStyled("      davon Exklusive", 25, 90, TColor.clWhite)
 		'DrawAudience(audienceResult.ExclusiveAudienceSum.data, 200, 90, true)
@@ -489,7 +489,7 @@ Type TDebugAudienceInfo
 				If (attraction.BaseAttraction <> Null And attraction.genreDefinition)
 					genre = GetLocale("PROGRAMME_GENRE_"+TVTProgrammeGenre.GetAsString(attraction.genreDefinition.referenceID))
 					If attraction.GenrePopularityMod
-						popularity = "Popularity "+genre+ ": " + TFunctions.LocalizedNumberToString(attraction.GenrePopularityMod,2) +"; Long Term: "+TFunctions.LocalizedNumberToString(1+ attraction.genreDefinition._popularity.LongTermPopularity/100.0,2)
+						popularity = "Popularity "+genre+ ": " + TFunctions.LocalizedNumberToString(attraction.GenrePopularityMod,2) +"; Long Term: "+TFunctions.LocalizedNumberToString(1+ attraction.genreDefinition.GetPopularity().LongTermPopularity/100.0,2)
 					EndIf
 				EndIf
 			Case TVTBroadcastMaterialType.ADVERTISEMENT
@@ -678,11 +678,11 @@ endrem
 		Local x2:Int = x + 70
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
 		Local color:SColor8 = SColor8.White
-		If gray Then color = new SColor8(150, 150, 150)
+		If gray Then color = New SColor8(150, 150, 150)
 
 		val = TFunctions.convertValue(audience.GetTotalSum(), 2)
 		If gray Then
-			font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, new SColor8(150, 80, 80))
+			font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, New SColor8(150, 80, 80))
 		Else
 			font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 		End If
@@ -701,12 +701,12 @@ endrem
 		Local x2:Int = x + 70
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
 		Local color:SColor8 = SColor8.White
-		If gray Then color = new SColor8(150, 150, 150)
+		If gray Then color = New SColor8(150, 150, 150)
 
 		If Not hideAverage Then
 			val = TFunctions.LocalizedNumberToString(audience.GetWeightedAverage(),2)
 			If gray Then
-				font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, new SColor8(150, 80, 80))
+				font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, New SColor8(150, 80, 80))
 			Else
 				font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 			End If
@@ -725,7 +725,7 @@ End Type
 
 Type TDebugProfiler
 	Field active:Int = False
-	Field callNames:object[]
+	Field callNames:Object[]
 
 
 	Method ObserveCall(callName:Object)
@@ -753,10 +753,10 @@ Type TDebugProfiler
 		SetColor(255,255,255)
 		font.Draw("Profiler", textX, textY)
 		textY :+ 12
-		For Local callName:object = EachIn callNames
+		For Local callName:Object = EachIn callNames
 			Local c:TProfilerCall = TProfiler.GetCall(callName)
 			If c
-				font.Draw(c.name.ToString() + "  " + c.calls + " calls, " + StringHelper.printf("%5.2f", [string(float(c.timeTotal) / c.calls)])+"ms avg.", textX, textY)
+				font.Draw(c.name.ToString() + "  " + c.calls + " calls, " + StringHelper.printf("%5.2f", [String(Float(c.timeTotal) / c.calls)])+"ms avg.", textX, textY)
 				textY :+ 12
 			EndIf
 		Next
