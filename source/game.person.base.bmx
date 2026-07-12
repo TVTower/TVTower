@@ -93,8 +93,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	
 
 	Method CreateRandom:TPersonBase(countryCode:String, gender:Int=0)
-		Local pg:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(countryCode, gender)
-		If Not pg Then Return Null
+		Local pg:SPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(countryCode, gender)
 
 		Local person:TPersonBase = New TPersonBase
 

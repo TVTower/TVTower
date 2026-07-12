@@ -42,7 +42,7 @@ Type TPersonGenerator
 	End Method
 
 
-	Method GetUniqueDataset:TPersonGeneratorEntry(countryCode:string, gender:int)
+	Method GetUniqueDataset:SPersonGeneratorEntry(countryCode:string, gender:int)
 		local provider:TPersonGeneratorCountry = GetProvider(countryCode)
 		if gender = 0 then gender = RandRange(1, 2) 'male or female
 
@@ -52,7 +52,7 @@ Type TPersonGenerator
 			lastName = provider.GetLastName(gender)
 		Until firstName and lastName and not protectedNames.Contains(firstName.ToLower()+"|"+lastName.ToLower())
 
-		local person:TPersonGeneratorEntry = new TPersonGeneratorEntry
+		local person:SPersonGeneratorEntry
 		person.firstName = firstName
 		person.lastName = lastName
 		person.gender = gender
@@ -65,7 +65,7 @@ Type TPersonGenerator
 	End Method
 
 
-	Method GetUniqueDatasetFromString:TPersonGeneratorEntry(config:string)
+	Method GetUniqueDatasetFromString:SPersonGeneratorEntry(config:string)
 		local parts:string[] = config.split(",")
 		local countries:string[] = parts[0].split(" ")
 		local gender:int = GENDER_MALE
@@ -175,8 +175,8 @@ Type TPersonGenerator
 	End Method
 
 
-	Method ProtectDataset:TPersonGenerator(set:TPersonGeneratorEntry)
-		protectedNames.insert(set.firstName.ToLower()+"|"+set.lastName.ToLower(), "1")
+	Method ProtectDataset:TPersonGenerator(p:SPersonGeneratorEntry var)
+		protectedNames.insert(p.firstName.ToLower()+"|"+p.lastName.ToLower(), "1")
 	End Method
 
 
@@ -219,7 +219,7 @@ End Function
 
 
 
-Type TPersonGeneratorEntry
+Struct SPersonGeneratorEntry
 	Field firstName:string
 	Field lastName:string
 	Field prefix:string
@@ -227,7 +227,7 @@ Type TPersonGeneratorEntry
 	Field title:string
 	Field gender:int
 	Field countryCode:string
-End Type
+End Struct
 
 
 

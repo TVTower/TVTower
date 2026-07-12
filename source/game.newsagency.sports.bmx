@@ -231,7 +231,7 @@ Type TNewsEventSport Extends TGameObject
 			Local cCode:String = "de"
 			If RandRange(0, 10) < 3 Then cCode = countryCodes[ RandRange(0, countryCodes.length-1) ]
 
-			Local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(cCode, TPersonGenerator.GENDER_MALE)
+			Local p:SPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(cCode, TPersonGenerator.GENDER_MALE)
 			Local member:TPersonBase = New TPersonBase( p.firstName, p.lastName, p.countryCode, p.gender, True)
 			'assume 50% are not interested in TV shows / custom productions
 			If RandRange(0, 100) < 50

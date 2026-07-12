@@ -633,7 +633,7 @@ Type TDatabaseLoader
 
 		'=== COMMON DETAILS ===
 		Local generator:String = xml.FindValue(node, "generator")
-		Local p:TPersonGeneratorEntry
+		Local p:SPersonGeneratorEntry
 		If generator
 			p = GetPersonGenerator().GetUniqueDatasetFromString(generator)
 			If p
@@ -1552,14 +1552,13 @@ Type TDatabaseLoader
 						Local parts:String[] = memberGenerator.Split(",")
 						Local levelUp:Int = False
 						If parts.length >= 3 And Int(parts[2]) = 1 Then levelUp = True
-						Local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDatasetFromString(memberGenerator)
-						If p
-							'avoid that other persons with that name are generated
-							GetPersonGenerator().ProtectDataset(p)
-							member.firstName = p.firstName
-							member.lastName = p.lastName
-							member.countryCode = p.countryCode.ToUpper()
-						EndIf
+						Local p:SPersonGeneratorEntry = GetPersonGenerator().GetUniqueDatasetFromString(memberGenerator)
+
+						'avoid that other persons with that name are generated
+						GetPersonGenerator().ProtectDataset(p)
+						member.firstName = p.firstName
+						member.lastName = p.lastName
+						member.countryCode = p.countryCode.ToUpper()
 					EndIf
 
 
