@@ -123,22 +123,22 @@
         <figuregeneratorpart sprite="figuregenerator_bodyMale1" partType="1" gender="1" age="0" />
         <figuregeneratorpart sprite="figuregenerator_bodyThroat" partType="1" gender="0" age="0" incompletePart="1" />
         <figuregeneratorpart sprite="figuregenerator_head1" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head2" partType="2" gender="0" age="0" />
+        <figuregeneratorpart sprite="figuregenerator_head2" partType="2" gender="0" age="0" childrenOffsetY="2" />
         <figuregeneratorpart sprite="figuregenerator_head3" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head4" partType="2" gender="0" age="0" />
+        <figuregeneratorpart sprite="figuregenerator_head4" partType="2" gender="0" age="0" childrenOffsetY="-1" offsetY="-1" />
         <figuregeneratorpart sprite="figuregenerator_head5" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head6" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head7" partType="2" gender="0" age="0" />
+        <figuregeneratorpart sprite="figuregenerator_head6" partType="2" gender="0" age="0" childrenOffsetY="1" />
+        <figuregeneratorpart sprite="figuregenerator_head7" partType="2" gender="0" age="0" childrenOffsetY="1" />
         <figuregeneratorpart sprite="figuregenerator_head8" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head9" partType="2" gender="0" age="0" />
+        <figuregeneratorpart sprite="figuregenerator_head9" partType="2" gender="0" age="0" childrenOffsetY="-1" />
         <figuregeneratorpart sprite="figuregenerator_head10" partType="2" gender="0" age="0" />
         <figuregeneratorpart sprite="figuregenerator_head11" partType="2" gender="0" age="0" />
         <figuregeneratorpart sprite="figuregenerator_head12" partType="2" gender="0" age="0" />
         <figuregeneratorpart sprite="figuregenerator_head13" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head14" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head15" partType="2" gender="0" age="0" />
+        <figuregeneratorpart sprite="figuregenerator_head14" partType="2" gender="0" age="0" childrenOffsetY="1" />
+        <figuregeneratorpart sprite="figuregenerator_head15" partType="2" gender="0" age="0" offsetY="-1" />
         <figuregeneratorpart sprite="figuregenerator_head16" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head17" partType="2" gender="0" age="0" />
+        <figuregeneratorpart sprite="figuregenerator_head17" partType="2" gender="0" age="0" childrenOffsetY="1" />
         <figuregeneratorpart sprite="figuregenerator_head18" partType="2" gender="0" age="0" />
         <figuregeneratorpart sprite="figuregenerator_head19" partType="2" gender="0" age="0" />
         <figuregeneratorpart sprite="figuregenerator_head20" partType="2" gender="0" age="0" />

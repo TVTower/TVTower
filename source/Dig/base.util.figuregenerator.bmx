@@ -41,7 +41,7 @@ Type TFigureGenerator
 		maxPartDimension = New SVec2I(-1, -1)
 	
 		If Not clothColorPresets
-			clothColorPresets = New SColor8[18]
+			clothColorPresets = New SColor8[24]
 			clothColorPresets[ 0] = New SColor8(35, 35, 35)	'blackish
 			clothColorPresets[ 1] = New SColor8(255, 180, 0)
 			clothColorPresets[ 2] = New SColor8(100, 130, 0)
@@ -57,32 +57,42 @@ Type TFigureGenerator
 			clothColorPresets[12] = New SColor8(40, 0, 220)
 			clothColorPresets[13] = New SColor8(200, 100, 90)
 			clothColorPresets[14] = New SColor8(40, 70, 130)
-			clothColorPresets[15] = New SColor8(100, 100, 100) 'dark gray
-			clothColorPresets[16] = New SColor8(230, 230, 230) 'light gray
-			clothColorPresets[17] = New SColor8(150, 150, 150) 'mid gray
+			clothColorPresets[15] = New SColor8(170, 70, 90)
+			clothColorPresets[16] = New SColor8(255, 140, 0)
+			clothColorPresets[17] = New SColor8(70, 170, 130)
+			clothColorPresets[18] = New SColor8(0, 105, 255)
+			clothColorPresets[19] = New SColor8(230, 90, 60)
+			clothColorPresets[20] = New SColor8(230, 130, 70)
+			clothColorPresets[21] = New SColor8(100, 100, 100) 'dark gray
+			clothColorPresets[22] = New SColor8(230, 230, 230) 'light gray
+			clothColorPresets[23] = New SColor8(150, 150, 150) 'mid gray
 		EndIf
 		
 		If Not hairColorPresets Or hairColorPresets.Length = 0
 			hairColorPresets = hairColorPresets[..5] '5 hair color base types
 			
-			hairColorPresets[HAIR_BLONDE] = New SColor8[3]
+			hairColorPresets[HAIR_BLONDE] = New SColor8[4]
 			hairColorPresets[HAIR_BLONDE][0] = New SColor8(225,200,45)
 			hairColorPresets[HAIR_BLONDE][1] = New SColor8(235,210,50)
 			hairColorPresets[HAIR_BLONDE][2] = New SColor8(225,180,40)
+			hairColorPresets[HAIR_BLONDE][3] = New SColor8(235,220,30)
 
 			hairColorPresets[HAIR_BLACK] = New SColor8[3]
 			hairColorPresets[HAIR_BLACK][0] = New SColor8(30,25,20)
 			hairColorPresets[HAIR_BLACK][1] = New SColor8(50,35,20)
 			hairColorPresets[HAIR_BLACK][2] = New SColor8(30,30,20)
 
-			hairColorPresets[HAIR_BROWN] = New SColor8[3]
+			hairColorPresets[HAIR_BROWN] = New SColor8[5]
 			hairColorPresets[HAIR_BROWN][0] = New SColor8(80,30,10)
 			hairColorPresets[HAIR_BROWN][1] = New SColor8(90,42,18)
 			hairColorPresets[HAIR_BROWN][2] = New SColor8(115,55,35)
+			hairColorPresets[HAIR_BROWN][3] = New SColor8(96,53,25)
+			hairColorPresets[HAIR_BROWN][4] = New SColor8(125,80,35)
 
-			hairColorPresets[HAIR_RED] = New SColor8[2]
+			hairColorPresets[HAIR_RED] = New SColor8[3]
 			hairColorPresets[HAIR_RED][0] = New SColor8(255,100,0)
 			hairColorPresets[HAIR_RED][1] = New SColor8(245,120,15)
+			hairColorPresets[HAIR_RED][2] = New SColor8(250,125,65)
 
 			hairColorPresets[HAIR_GREY] = New SColor8[2]
 			hairColorPresets[HAIR_GREY][0] = New SColor8(160,160,160)
@@ -428,13 +438,17 @@ Type TFigureGenerator
 	Method GenerateImage:TImage(config:TFigureGeneratorFigureConfig, createEmptyOnFailure:Int = False)
 		Local img:TImage = CreateImage(maxPartDimension.x, maxPartDimension.y, DYNAMICIMAGE | FILTEREDIMAGE, PF_RGBA8888)
 		LockImage(img).ClearPixels(0)
-
+		
 		For Local partType:Int = EachIn partOrder
-			If Not config.parts[partType -1] Then Continue
-			Local s:TSprite = config.parts[partType -1].GetSprite()
-			If Not s Then Continue
+			Local p:TFigureGeneratorPart = config.parts[partType - 1]
+			If Not p Then Continue
 
-			DrawImageOnImageSColor(s.GetImage(0, False), img, 0, 0, config.partsColor[partType -1])
+			Local s:TSprite = p.GetSprite()
+			If Not s Then Continue
+			
+			local offset:SVec2I = config.GetPartOffset(p)
+
+			DrawImageOnImageSColor(s.GetImage(0, False), img, 0 + offset.x, 0 + offset.y, config.partsColor[partType -1])
 		Next
 		
 		Return img
@@ -519,18 +533,18 @@ Type TFigureGenerator
 
 		'hair - base is caucasian
 		Local fastRandom:SFastRandom = New SFastRandom(randomSeed + 123)
-		Local chanceBlonde:Int = 20
-		Local chanceBlack:Int = 38
-		Local chanceBrown:Int = 28
-		Local chanceRed:Int = 9
-		Local chanceCrazy:Int = 5
+		Local chanceBlonde:Int = 15
+		Local chanceBlack:Int = 10
+		Local chanceBrown:Int = 69
+		Local chanceRed:Int = 4
+		Local chanceCrazy:Int = 2
 		
 		If ethnicity = ETHNICITY_AFRICAN
 			If gender = 2
-				chanceBlack = 60
+				chanceBlack = 65
 				chanceBrown = 20
 				chanceBlonde = 5
-				chanceRed = 10
+				chanceRed = 5
 				chanceCrazy = 5
 			Else
 				chanceBlack = 80
@@ -622,7 +636,7 @@ Type TFigureGenerator
 			
 			Local adjustColorOrTint:Int = fastRandom.RandomInt(100)
 			If adjustColorOrTint < 25
-				Local modifyHue:Int = fastRandom.RandomInt(-15, 15)
+				Local modifyHue:Int = fastRandom.RandomInt(-10, 10)
 				clothColor = SColor8Helper.AdjustHSL(clothColor, modifyHue/100.0, 0, 0)
 			ElseIf adjustColorOrTint < 50
 				clothColor = SColor8Helper.AdjustHSL(clothColor, 0, 0.2 - fastRandom.RandomInt(50)/100.0, 0)
@@ -687,6 +701,36 @@ Type TFigureGeneratorFigureConfig
 
 	Method GetSkinTone:SColor8()
 		Return skinTone
+	End Method
+	
+	
+	Method GetPart:TFigureGeneratorPart(partType:Int)
+		If partType < 1 Or partType > parts.Length Then Return Null
+		Return parts[partType - 1]
+	End Method
+	
+	
+	Method GetPartOffset:SVec2I(partType:Int)
+		If partType < 1 Or partType > parts.Length Then Return Null
+		
+		Return GetPartOffset(parts[partType - 1])
+	End Method
+	
+	
+	Method GetPartOffset:SVec2I(p:TFigureGeneratorPart)
+		If Not p Then Return Null
+		If Not p.parentType Then Return p.offset 'only "own offset"
+
+		'fetch (recursively) the child offsets of parents
+		Local result:SVec2I = p.offset
+		Local parent:TFigureGeneratorPart = GetPart(p.parentType)
+		While parent
+			result = result + parent.childrenOffset
+
+			If Not parent.parentType then exit
+			parent = GetPart(parent.parentType)
+		Wend
+		Return result
 	End Method
 	
 	
@@ -870,8 +914,14 @@ Type TFigureGeneratorPart
 	
 	'part specific, but to keep things easy, all in one here...
 	Field incompletePart:Int 'eg only a throat, not a complete body
+	'children of this part will be offset on y for this value
+	'(eg facial features like eyes/nose/... are children of heads)
+	Field childrenOffset:SVec2I
+	'custom individual offset
+	Field offset:SVec2I
 	Field hairBackSpriteName:String
 	Field compatibleBody:String[]
+	Field parentType:Int 'eg "PART_FACE" for "PART_EYES"
 
 
 	Const PART_BODY:Int = 1        'was 3
@@ -897,6 +947,19 @@ Type TFigureGeneratorPart
 		Self.partType = partType
 		Self.gender = gender
 		Self.age = age
+
+		Select partType
+			Case PART_FACE        Self.parentType = PART_BODY
+			Case PART_EYES        Self.parentType = PART_FACE
+			Case PART_NOSE        Self.parentType = PART_FACE
+			Case PART_EARS        Self.parentType = PART_FACE
+			Case PART_MOUTH       Self.parentType = PART_FACE
+			Case PART_EYEBROWS    Self.parentType = PART_FACE
+			Case PART_BEARD       Self.parentType = PART_FACE
+			Case PART_HAIR_BACK   Self.parentType = PART_FACE
+			Case PART_HAIR_FRONT  Self.parentType = PART_FACE
+			Case PART_CLOTH       Self.parentType = PART_BODY
+		End Select
 		
 		Return Self
 	End Method
@@ -975,7 +1038,7 @@ Type TRegistryFigureGeneratorPartLoader Extends TRegistryBaseLoader
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
 		Local fieldNames:String[]
 		Local data:TData = New TData
-		fieldNames :+ ["sprite", "age", "gender", "skin", "partType", "hairBack", "compatibleBody", "incompletePart"]
+		fieldNames :+ ["sprite", "age", "gender", "skin", "partType", "offsetX", "offsetY", "childrenOffsetX", "childrenOffsetY", "hairBack", "compatibleBody", "incompletePart"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 		Return data
@@ -999,6 +1062,16 @@ Type TRegistryFigureGeneratorPartLoader Extends TRegistryBaseLoader
 		Local part:TFigureGeneratorPart = New TFigureGeneratorPart.Init( sprite, partType, gender, age)
 		
 		part.incompletePart = data.GetInt("incompletePart", 0)
+		
+		'(for now) face specific (but could be body-cloth, body-face too
+		Local offX:Int = data.GetInt("childrenOffsetX", 0)
+		Local offY:Int = data.GetInt("childrenOffsetY", 0)
+		part.childrenOffset = New SVec2I(offX, offY)
+		
+		' invidual offset
+		offX = data.GetInt("offsetX", 0)
+		offY = data.GetInt("offsetY", 0)
+		part.offset = New SVec2I(offX, offY)
 
 		'hair(front) specific ...
 		part.hairBackSpriteName = data.GetString("hairBack", "")
