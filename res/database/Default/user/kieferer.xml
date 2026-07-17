@@ -222,7 +222,7 @@ Każdy środek się nada.</pl>
 
 
 				<stockexchange1>
-					<de>Der ${stockindexdax} startet heute bei lebhaftem Handel im Plus. ${STOCKEXCHANGE1A}|Die Zeichen des ${dax} stehen Dank regem Handel auf Plus. ${STOCKEXCHANGE1A}</de>
+					<de>Der ${stockindexdax} startet heute bei lebhaftem Handel im Plus. ${STOCKEXCHANGE1A}|Die Zeichen des ${dax} stehen dank regem Handel auf Plus. ${STOCKEXCHANGE1A}</de>
 					<en>Today, the ${stockindexdax} starts with brisk trading in the plus. ${STOCKEXCHANGE1A}|The signs of the ${dax} are on the plus side thanks to brisk trading. ${STOCKEXCHANGE1A}</en>
 					<pl>Dziś ${stockindexdax} rozpoczyna notowania na plusie. ${STOCKEXCHANGE1A}|Znaki indeksu ${dax} są na plusie dzięki dynamicznemu handlowi. ${STOCKEXCHANGE1A}</pl>
 				</stockexchange1>
