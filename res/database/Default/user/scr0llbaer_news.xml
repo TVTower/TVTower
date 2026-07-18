@@ -704,9 +704,9 @@
 					<pl>zwolniony|odrzucony|odrzucony|odrzucony|odrzucony|odrzucony|wyrzucony|wyrzucony|odrzucony</pl>
 				</dismissed>
 				<byajudge>
-					<de> von einem Richter | vom Gericht|</de>
-					<en> by a judge | by the court|</en>
-					<pl> przez sędziego | przez sąd|</pl>
+					<de> von einem Richter | vom Gericht |</de>
+					<en> by a judge | by the court |</en>
+					<pl> przez sędziego | przez sąd |</pl>
 				</byajudge>
 				<appeals>
 					<de>legt Berufung ein|geht in Berufung</de>
@@ -747,7 +747,7 @@
 				<pl>Pozew ${name} ${dismissed}</pl>
 			</title>
 			<description>
-				<de>Die Klage von ${name} gegen ${theirparrot} wurde${deemedfrivolous}${forlackofevidence}${quickly}${byajudge} ${dismissed}.</de>
+				<de>Die Klage von ${name} gegen ${theirparrot} wurde${deemedfrivolous}${forlackofevidence}${quickly}${byajudge}${dismissed}.</de>
 				<en>The lawsuit of ${name} against ${theirparrot} was${deemedfrivolous}${quickly} ${dismissed}${byajudge}${forlackofevidence}.</en>
 				<pl>Pozew ${name} przeciwko ${theirparrot} został${deemedfrivolous}${quickly} ${dismissed}${byajudge}${forlackofevidence}.</pl>
 			</description>
@@ -6910,7 +6910,7 @@
 					<de>Barock-;in Wien;Ein Wiener ;Torten;barocken ;tragen Perücken;pompöse|
 						Renaissance-;in Paris ;Ein Pariser ;Pralinen;Renaissance-;tragen Spitzenkragen;zu bittere|
 						Rokoko-;in Florenz;Ein Florenzer ;Kuchen;Rokoko-;haben Perückenfrisuren;die überaus theatralischen|
-						Futuristisches ;in Tokio;Ein japanisches ;Tee;automatisierten;haben Roboterarme;heftige|
+						Futuristisches ;in Tokio;Ein japanisches ;Tee;automatisierten ;haben Roboterarme;heftige|
 						Mittelalter-;in York;Ein englisches ;Pasteten;Mittelalter-;tragen Tuniken und Hauben;die gesalzenen|
 						Steinzeit-;in Lascaux;Ein französisches Höhlen-;Höhlenbeeren;steinzeitlichen ;tragen Felle und Knochen;die kernigen|
 						Gotik-;in Leipzig;Ein Leipziger ;Waffeln;gotischen ;tragen schwarze Gewänder und Kajal;horrende

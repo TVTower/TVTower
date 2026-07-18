@@ -4582,7 +4582,7 @@ Oczekuje się, że jej normalny rozmiar ciała zostanie osiągnięty w ciągu ty
 				<pl>Queen z powrotem do normalnego rozmiaru</pl>
 			</title>
 			<description>
-				<de>Die letzten Millimeter haben doch noch länger gebraucht, doch Ärzte bestätigen, die Queen hat nach dem Schrumpflaserbehandlung der Aliens letztes Jahr wieder ihre Normalgröße erreicht.</de>
+				<de>Die letzten Millimeter haben noch länger gebraucht, doch die Ärzte bestätigen, die Queen hat nach der Schrumpflaserbehandlung der Aliens letztes Jahr wieder ihre Normalgröße erreicht.</de>
 				<en>The last millimeters took a little longer, but doctors confirm that the Queen has returned to her normal size after the shrinkage laser treatment by the aliens last year.</en>
 				<pl>Ostatnie milimetry zajęły trochę więcej czasu, ale lekarze potwierdzają, że królowa wróciła do swoich normalnych rozmiarów po laserowym leczeniu skurczu przez kosmitów w zeszłym roku.</pl>
 			</description>
@@ -8358,7 +8358,7 @@ W tym roku ponownie spodziewane są demonstracje.</pl>
 				<pl>${athletefirstname} ${athletelastname} planuje powrót</pl>
 			</title>
 			<description>
-				<de>Nach jahrelanger Tennis-Abstinenz plant ${athletefirstname} ${athletelastname} sein Comeback. Konkurrenten freuen sich ${legendary_${epoch}}.</de>
+				<de>Nach jahrelanger Tennis-Abstinenz plant ${athletefirstname} ${athletelastname} sein Comeback. Konkurrenten freuen sich schon ${legendary_${epoch}}.</de>
 				<en>After years of tennis abstinence, ${athletefirstname} ${athletelastname} is planning his comeback. Competitors are looking forward ${legendary_${epoch}}.</en>
 				<pl>Po latach tenisowej abstynencji ${athletefirstname} ${athletelastname} planuje swój powrót. Zawodnicy nie mogą się doczekać ${legendary_${epoch}}.</pl>
 			</description>

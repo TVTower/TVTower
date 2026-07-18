@@ -898,7 +898,7 @@ ${brand_toblerone} - czekolada z charakterem.</pl>
 		</ad>
 		<ad guid="b8f3c8e6-2927-4975-9117-cfc8e3e1c33b" wikidata_id="Q41187">
 			<title>
-				<de>${brand_sony}</de>
+				<all>${brand_sony}</all>
 			</title>
 			<description>
 				<de>Der Hersteller für High-Tech flächendeckend.
