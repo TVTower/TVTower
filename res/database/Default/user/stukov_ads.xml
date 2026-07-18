@@ -651,7 +651,7 @@ Zupełnie nowe wrażenia multimedialne prosto z magnetofonu!</pl>
 				<pl>Witamy na pokładzie.</pl>
 			</description>
 			<conditions min_audience="22.9" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="12" repetitions="8" duration="2" profit="125" penalty="200" fix_infomercial_profit="1" />
+			<data quality="12" repetitions="2" duration="2" profit="125" penalty="200" fix_infomercial_profit="1" />
 		</ad>
 
 		<ad guid="31da2056-1a11-494b-96f0-56f4de5303b5" wikidata_id="Q1815345" comment="from Mad TV as 'Coke Light' | Differing Diet or Light branding used in various countries">

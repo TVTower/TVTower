@@ -260,7 +260,7 @@ W Zombocom wszystko jest możliwe.</pl>
 				<en>Hello viewer, what's happening? Ummm, I'm gonna need you to go ahead come in on Saturday. So if you could be here around 9 to work on the TPS reports, that would be great, mmmk... oh oh! and I almost forgot ahh, I'm also gonna need you to go ahead and come in on Sunday too, kay. We ahh lost some people this week and ah, we sorta need to play catch up.</en>
 				<pl>Witaj widzu, co się dzieje? Będę cię potrzebował w sobotę. Więc jeśli mógłbyś być tutaj około 9, aby pracować nad raportami TPS, to byłoby świetnie, mmmk... oh oh! i prawie zapomniałem, ahh, będę również potrzebował, abyś przyszedł w niedzielę, kay. W tym tygodniu straciliśmy kilka osób i musimy nadrobić zaległości.</pl>
 			</description>
-			<conditions min_audience="19.26" min_image="52" target_group="8" />
+			<conditions min_audience="16.16" min_image="52" target_group="8" />
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="fc5c71a5-9dbe-4dc7-a5bf-3c45de0f62de" creator="9551" wikidata_id="Q24838" comment="as in https://en.wikipedia.org/wiki/Office_Space | https://imgflip.com/memegenerator/72453974/Office-Space-Stapler">
@@ -290,7 +290,7 @@ Tylko od ${brand_swingline}.</pl>
 				<en>PC LOAD LETTER your TPS Reports into our modern high performance printers.</en>
 				<pl>PC LOAD LETTER raporty TPS do naszych nowoczesnych, wysokowydajnych drukarek.</pl>
 			</description>
-			<conditions min_audience="16.16" min_image="7" target_group="32" />
+			<conditions min_audience="14.06" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="210" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="55f86f26-6484-4bf4-bd27-6a004c8c1343" creator="9551" wikidata_id="Q5507056" comment="-1990 | as in https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/eYb22BLBqGw | also using the brand name progression through time like in the movie, except for the original name and the last finally obviously vulgar version">
@@ -369,7 +369,7 @@ ${brand_brawndo} ma to, czego pragną rośliny. Ma elektrolity!
 ${brand_brawndo} - okaleczacz pragnienia.</pl>
 			</description>
 			<conditions min_audience="10.94" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="4" duration="3" profit="320" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
+			<data quality="18" repetitions="4" duration="3" profit="310" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="791793cd-94ce-4e36-872c-56dbce7d5970" creator="9551" wikidata_id="Q715583" comment="as in https://en.wikipedia.org/wiki/Idiocracy | https://youtu.be/yH2h5btN9So">
 			<title>

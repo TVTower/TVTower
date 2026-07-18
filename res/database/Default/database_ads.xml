@@ -318,7 +318,7 @@ Naprawdę trzeba żuć.</pl>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Gruszka” i „${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"}” w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1982" year_range_to="1989" />
 		</ad>
 		<ad guid="PoliPlayw02">
@@ -331,7 +331,7 @@ Naprawdę trzeba żuć.</pl>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Kwitnące krajobrazy”-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} i „Czerwone skarpetki”-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1997" />
 		</ad>
 		<ad guid="PoliPlayw03">
@@ -344,7 +344,7 @@ Naprawdę trzeba żuć.</pl>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Przynieś mi butelkę piwa”-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} i „Oddział sprzątający”-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" year_range_to="2004" />
 		</ad>
 		<ad guid="42b4aa37-1274-4da2-9d72-4e203720eeb6">
@@ -357,7 +357,7 @@ Naprawdę trzeba żuć.</pl>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} i Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} w cenie jednej.</pl>
 			</description>
 			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="2005" />
 		</ad>
 		<ad guid="44af9e71-7c61-4531-b125-181948cd791a">
@@ -682,7 +682,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<pl>Pyszne laski cynamonu z gwarancją suchego kaszlu. Nigdy wcześniej suchy jak pył nie był... tak pyszny.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="12" repetitions="4" duration="4" profit="600" penalty="950" infomercial_profit="58" fix_infomercial_profit="1" />
+			<data quality="12" repetitions="4" duration="4" profit="630" penalty="950" infomercial_profit="58" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="914bf7d1-8338-4ace-87c8-a84dca3872f5">
 			<title>
@@ -694,7 +694,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<pl>Przy każdym zakupie butelki czerwonego wina otrzymasz dwie tabletki na ból głowy gratis.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="8" repetitions="5" duration="3" profit="610" penalty="990" fix_infomercial_profit="1" />
+			<data quality="8" repetitions="5" duration="3" profit="520" penalty="850" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="95a1c5b7-c89a-4fe8-85c9-834c07daa2f9">
 			<title>
@@ -770,8 +770,8 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<en>The incomparable chocolate bar with the captivating taste.</en>
 				<pl>Niezrównany baton czekoladowy o zniewalającym smaku.</pl>
 			</description>
-			<conditions min_audience="5.73" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="2" duration="3" profit="450" penalty="823" infomercial_profit="45" fix_infomercial_profit="1" />
+			<conditions min_audience="4.17" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="18" repetitions="2" duration="3" profit="570" penalty="823" infomercial_profit="45" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="a8087397-e57e-4bdc-b2a9-f44b7173de6d">
 			<title>
@@ -960,8 +960,8 @@ It's a ${brand_sony}.</pl>
 				<en>Do jigsaw puzzles, play, have fun. ${brand_ravensburger} recommends novelties and classics from its range of products.</en>
 				<pl>Układaj puzzle, graj, baw się. ${brand_ravensburger} poleca nowości i klasyki ze swojej oferty.</pl>
 			</description>
-			<conditions min_audience="7.81" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="14" repetitions="3" duration="2" profit="380" penalty="570" infomercial_profit="37" fix_infomercial_profit="1" />
+			<conditions min_audience="5.21" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="14" repetitions="3" duration="2" profit="460" penalty="570" infomercial_profit="37" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="cb0392f3-cc95-4508-a776-22d0e8ca00fa">
 			<title>
@@ -985,7 +985,7 @@ It's a ${brand_sony}.</pl>
 				<pl>Nie tylko ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} namiętnie pije ${brand_drpepper}.</pl>
 			</description>
 			<conditions min_audience="10.94" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1" />
+			<data quality="18" repetitions="2" duration="4" profit="295" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" wikidata_id="Q659320" comment="TVTower 2013 version: Zaturn">
 			<title>
@@ -1078,8 +1078,8 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 				<en>The nightcap in the tin foil bag.</en>
 				<pl>Nocny drink w torebce z folii aluminiowej.</pl>
 			</description>
-			<conditions min_audience="7.29" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="13" repetitions="3" duration="3" profit="461" penalty="672" infomercial_profit="39" fix_infomercial_profit="1" />
+			<conditions min_audience="4.69" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="13" repetitions="3" duration="3" profit="520" penalty="672" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" wikidata_id="Q605830">
 			<title>
@@ -1262,7 +1262,7 @@ Tylko oryginalne z łosia!</pl>
 				<pl>Chrupiące przekąski z ognistym ostrym chili. Tylko przez krótki czas z motywami zwierzęcymi.</pl>
 			</description>
 			<conditions min_audience="9.9" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="12" repetitions="2" duration="4" profit="345" penalty="581" infomercial_profit="31" fix_infomercial_profit="1" />
+			<data quality="12" repetitions="2" duration="4" profit="310" penalty="550" infomercial_profit="31" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="f006c0bb-89cc-4924-b17e-151658c15618" wikidata_id="Q212405" comment="Product: Lenor | TODO: separate ad https://en.wikipedia.org/wiki/Downy | TVTower 2013 version: Lemor">
 			<title>
@@ -1302,7 +1302,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 				<en>The latest deluxe car from ${brand_benz}: aesthetically impeccable design, robust, classic.</en>
 				<pl>Najnowszy luksusowy samochód od ${brand_benz}: estetycznie nienaganny design, solidny, klasyczny.</pl>
 			</description>
-			<conditions min_audience="19.78" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="18.22" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="8753444a-5e28-4f3c-a960-73e98e97cc67" creator="8659" created_by="Nicht_die_Betty">
@@ -1926,7 +1926,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>We dae nae footer wi' yer business bit ye aye benefit o' commissioning us. Guid insae guid enough! It haes tae be Billayehill!</en>
 				<pl>Nie mamy nic wspólnego z Twoim biznesem, ale skorzystasz na zatrudnieniu nas. Wystarczająco mądrze! To musi być BankrutHill!</pl>
 			</description>
-			<conditions min_audience="16.16" min_image="7" target_group="32" />
+			<conditions min_audience="14.06" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="3" duration="6" profit="220" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Bobo" creator="8605" created_by="SpeedMinister">
@@ -2691,7 +2691,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<pl>Karma dla psów z aspartamem. Utucz swojego ulubieńca! Jak świnia, tak pies, twój mały pupil będzie okrągły jak wieprz.</pl>
 			</description>
 			<conditions min_audience="9.9" min_image="0" target_group="0" />
-			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="520" infomercial_profit="60" fix_infomercial_profit="1" />
+			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="332" penalty="520" infomercial_profit="60" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-haslan-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2732,7 +2732,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<pl>Miejsca stojące, jedzenie w puszkach* i gaz odurzający sprawiają, że lot jest przyjemny. Piloci są również wyjątkowo wypoczęci. Życzymy udanych wakacji!
 (*za dodatkową opłatą)</pl>
 			</description>
-			<conditions min_audience="18.22" min_image="7" target_group="8" />
+			<conditions min_audience="17.7" min_image="7" target_group="8" />
 			<data infomercial="1" quality="22" repetitions="1" duration="4" profit="185" penalty="300" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">
