@@ -123,7 +123,7 @@
         <figuregeneratorpart sprite="figuregenerator_bodyMale1" partType="1" gender="1" age="0" />
         <figuregeneratorpart sprite="figuregenerator_bodyThroat" partType="1" gender="0" age="0" incompletePart="1" />
         <figuregeneratorpart sprite="figuregenerator_head1" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head2" partType="2" gender="0" age="0" childrenOffsetY="2" />
+        <figuregeneratorpart sprite="figuregenerator_head2" partType="2" gender="0" age="0" childrenOffsetY="1" offsetY="1" />
         <figuregeneratorpart sprite="figuregenerator_head3" partType="2" gender="0" age="0" />
         <figuregeneratorpart sprite="figuregenerator_head4" partType="2" gender="0" age="0" childrenOffsetY="-1" offsetY="-1" />
         <figuregeneratorpart sprite="figuregenerator_head5" partType="2" gender="0" age="0" />
