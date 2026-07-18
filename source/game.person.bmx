@@ -988,33 +988,49 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 				If p.gender = TVTPersonGender.FEMALE Then genderFlag = 2
 				If p.gender = TVTPersonGender.UNDEFINED Then genderFlag = 0
 
-				Local ethnicity:Int = 0 'random
+				Local ethnicity:Int = -1 'random
 				Local randomSkin:Int = New SFastRandom(baseSeed + 15).RandomInt(100)
-				Select p.countryCode.ToLower()
-					case "alien"
+				Select TPersonGenerator.GetUnifiedCountryCode(p.countryCode)
+					case "ALIEN"
 						ethnicity = FigureGenerator.ETHNICITY_ALIEN
 					'asian
-					Case "jap", "kor", "vn", "cn", "th"
-						ethnicity = FigureGenerator.ETHNICITY_ASIAN
-						If randomSkin < 5 Then ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
-					'african
-					Case "br", "ar", "gh", "sa", "mz", "mex", "ind", "pak"
-						ethnicity = FigureGenerator.ETHNICITY_AFRICAN
-						If randomSkin < 5 Then ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
+					Case "J", "PRC", "KOR", "VN", "CN", "TH"
+						If randomSkin < 5 
+							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
+						Else
+							ethnicity = FigureGenerator.ETHNICITY_ASIAN
+						Endif
+					'african / South America
+					Case "BRA", "AR", "GH", "SA", "MZ", "MEX", "IND", "PAK"
+						If randomSkin < 5 
+							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
+						Else
+							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
+						Endif
 					'caucasian
-					Case "ca", "swe", "no", "fi", "ru", "dk", "d", "de", "fr", "it", "uk", "cz", "pl", "nl", "sui", "aut", "aus"
-						ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
+					Case "CA", "SWE", "NO", "FI", "RU", "DK", "DE", "IT", "UK", "CZ", "PL", "NL", "SUI", "AUT", "AUS"
 						If randomSkin < 4
 							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
 						ElseIf randomSkin < 8
 							ethnicity = FigureGenerator.ETHNICITY_ASIAN
+						Else
+							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
+						EndIf
+					'caucasian or african
+					Case "FR"
+						If randomSkin < 2
+							ethnicity = FigureGenerator.ETHNICITY_ASIAN
+						ElseIf randomSkin < 15
+							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
+						Else
+							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
 						EndIf
 					'caucasian or african and some asian
-					Case "us", "usa"
-						If randomSkin > 50
-							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
-						ElseIf randomSkin > 10
+					Case "US"
+						If randomSkin < 8
 							ethnicity = FigureGenerator.ETHNICITY_ASIAN
+						ElseIf randomSkin < 40
+							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
 						Else
 							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
 						EndIf

@@ -20,7 +20,7 @@ Type TFigureGenerator
 	Global partOrder:Int[] = [ 9,   1,  11,   5,   2,   3,   6,   4,   7,  8,  10]
 	Global useChance:Int[] = [100, 100, 100, 100, 100, 100, 100, 100, 100, 25,100]
 	Global clothColorPresets:SColor8[]
-	Global skinTonePresets:SColor8[][]
+	Global ethnicitySkinTonePresets:SColor8[][]
 	Global hairColorPresets:SColor8[][]
 
 	'indices into TFigureGeneratorFigure.hairColorPresets[x]
@@ -30,7 +30,7 @@ Type TFigureGenerator
 	Const HAIR_RED:Int = 3
 	Const HAIR_GREY:Int = 4
 
-	'used eg as indices into TFigureGeneratorFigure.skinTonePresets[x]
+	'used eg as indices into TFigureGeneratorFigure.ethnicitySkinTonePresets[x]
 	Const ETHNICITY_CAUCASIAN:Int = 0
 	Const ETHNICITY_AFRICAN:Int = 1
 	Const ETHNICITY_ASIAN:Int = 2 'includes South-America, Mediterranean Sea...
@@ -99,35 +99,35 @@ Type TFigureGenerator
 			hairColorPresets[HAIR_GREY][1] = New SColor8(130,130,130)
 		EndIf
 
-		If Not skinTonePresets Or skinTonePresets.Length = 0
-			skinTonePresets = skinTonePresets[..4] '3 skin tone base types
+		If Not ethnicitySkinTonePresets Or ethnicitySkinTonePresets.Length = 0
+			ethnicitySkinTonePresets = ethnicitySkinTonePresets[..4] '4 skin tone base types
 		
 			'caucasian
-			skinTonePresets[ETHNICITY_CAUCASIAN] = New SColor8[3]
-			skinTonePresets[ETHNICITY_CAUCASIAN][0] = New SColor8(255, 226, 207) 'northern
-			skinTonePresets[ETHNICITY_CAUCASIAN][1] = New SColor8(255, 207, 173)
-			skinTonePresets[ETHNICITY_CAUCASIAN][2] = New SColor8(234, 176, 152)
+			ethnicitySkinTonePresets[ETHNICITY_CAUCASIAN] = New SColor8[3]
+			ethnicitySkinTonePresets[ETHNICITY_CAUCASIAN][0] = New SColor8(255, 226, 207) 'northern
+			ethnicitySkinTonePresets[ETHNICITY_CAUCASIAN][1] = New SColor8(255, 207, 173)
+			ethnicitySkinTonePresets[ETHNICITY_CAUCASIAN][2] = New SColor8(234, 176, 152)
 
 			'african
-			skinTonePresets[ETHNICITY_AFRICAN] = New SColor8[3]
-			skinTonePresets[ETHNICITY_AFRICAN][0] = New SColor8(148, 115, 82)
-			skinTonePresets[ETHNICITY_AFRICAN][1] = New SColor8(132, 55, 34)
-			'skinTonePresets[ETHNICITY_AFRICAN][2] = New SColor8(61, 12, 2) 'sorry, but this is too dark next to bright elements, no offense!
-			skinTonePresets[ETHNICITY_AFRICAN][2] = New SColor8(101, 19, 6)
+			ethnicitySkinTonePresets[ETHNICITY_AFRICAN] = New SColor8[3]
+			ethnicitySkinTonePresets[ETHNICITY_AFRICAN][0] = New SColor8(148, 115, 82)
+			ethnicitySkinTonePresets[ETHNICITY_AFRICAN][1] = New SColor8(132, 55, 34)
+			'ethnicitySkinTonePresets[ETHNICITY_AFRICAN][2] = New SColor8(61, 12, 2) 'sorry, but this is too dark next to bright elements, no offense!
+			ethnicitySkinTonePresets[ETHNICITY_AFRICAN][2] = New SColor8(101, 19, 6)
 
 			'asian
-			skinTonePresets[ETHNICITY_ASIAN] = New SColor8[4]
-			skinTonePresets[ETHNICITY_ASIAN][0] = New SColor8(229, 184, 135)
-			skinTonePresets[ETHNICITY_ASIAN][1] = New SColor8(218, 174, 148)
-			skinTonePresets[ETHNICITY_ASIAN][2] = New SColor8(205, 127, 50)
-			skinTonePresets[ETHNICITY_ASIAN][3] = New SColor8(223, 185, 151)
+			ethnicitySkinTonePresets[ETHNICITY_ASIAN] = New SColor8[4]
+			ethnicitySkinTonePresets[ETHNICITY_ASIAN][0] = New SColor8(229, 184, 135)
+			ethnicitySkinTonePresets[ETHNICITY_ASIAN][1] = New SColor8(218, 174, 148)
+			ethnicitySkinTonePresets[ETHNICITY_ASIAN][2] = New SColor8(205, 127, 50)
+			ethnicitySkinTonePresets[ETHNICITY_ASIAN][3] = New SColor8(223, 185, 151)
 
 			'alien
-			skinTonePresets[ETHNICITY_ALIEN] = New SColor8[4]
-			skinTonePresets[ETHNICITY_ALIEN][0] = New SColor8(229, 80, 90)
-			skinTonePresets[ETHNICITY_ALIEN][1] = New SColor8(90, 200, 200)
-			skinTonePresets[ETHNICITY_ALIEN][2] = New SColor8(90, 230, 75)
-			skinTonePresets[ETHNICITY_ALIEN][3] = New SColor8(85, 100, 210)
+			ethnicitySkinTonePresets[ETHNICITY_ALIEN] = New SColor8[4]
+			ethnicitySkinTonePresets[ETHNICITY_ALIEN][0] = New SColor8(229, 80, 90)
+			ethnicitySkinTonePresets[ETHNICITY_ALIEN][1] = New SColor8(90, 200, 200)
+			ethnicitySkinTonePresets[ETHNICITY_ALIEN][2] = New SColor8(90, 230, 75)
+			ethnicitySkinTonePresets[ETHNICITY_ALIEN][3] = New SColor8(85, 100, 210)
 		EndIf
 	End Method
 
@@ -412,16 +412,11 @@ Type TFigureGenerator
 
 	Method GenerateRandomFigure:TFigureGeneratorFigure(ethnicity:Int, gender:Int, age:Int, randomSeed:Int)
 		' fallback to "random" for invalid params
-		If ethnicity < 0 Or ethnicity > 4 Then ethnicity = TFigureGenerator.ETHNICITY_CAUCASIAN
-		If gender < 0 Or gender > 2 Then gender = 0
-		If age < 0 Or age > 2 Then age = 0
-
-		' randomize
 		' when removing/adding - keep "seed + x" constant (so results
 		' do not change for these attributes)
-		If gender = 0 Then gender = New SFastRandom(randomSeed + 1).RandomInt(1,2)
-		If ethnicity = 0 Then ethnicity = New SFastRandom(randomSeed + 2).RandomInt(1,3)
-		If age = 0 Then age = New SFastRandom(randomSeed + 3).RandomInt(1,2)
+		If gender < 1 or gender > 2 Then gender = New SFastRandom(randomSeed + 1).RandomInt(1,2)
+		If ethnicity < 0 Or ethnicity > 3 Then ethnicity = New SFastRandom(randomSeed + 2).RandomInt(0,3)
+		If age < 1 or age > 2 Then age = New SFastRandom(randomSeed + 3).RandomInt(1,2)
 
 		' now gender and age are assured
 		Local fig:TFigureGeneratorFigure = New TFigureGeneratorFigure
@@ -458,17 +453,20 @@ Type TFigureGenerator
 	' Get a skinTone variation based on a ethnicity (AFRICAN, ASIAN, CAUCASIAN) 
 	Method GetRandomSkinTone:SColor8(ethnicity:Int, randomSeed:Int)
 		Local fastRandom:SFastRandom = New SFastRandom(randomSeed + 200)
-		Local variation:Int = fastRandom.RandomInt(0, skinTonePresets[ethnicity -1].Length - 1)
-		Local mixColor:SColor8 = skinTonePresets[ethnicity -1][variation] 'copy!
+		Local variation:Int = fastRandom.RandomInt(0, ethnicitySkinTonePresets[ethnicity].Length - 1)
+		Local mixColor:SColor8 = ethnicitySkinTonePresets[ethnicity][variation] 'copy!
 
 		' add variation to the color
-		Select ethnicity -1 'compare as index
+		Select ethnicity
 			Case TFigureGenerator.ETHNICITY_AFRICAN
 				'prefer brighter variants to avoid too dark overall images - clothes, hair, skin)
 				mixColor = SColor8Helper.AdjustHSL(mixColor, 0, 0, fastRandom.RandomInt(10, 30)/100.0)
 			Case TFigureGenerator.ETHNICITY_ASIAN
 				mixColor = SColor8Helper.AdjustHSL(mixColor, 0, 0, fastRandom.RandomInt(-5, 10)/100.0)
-'			case 3
+			Case TFigureGenerator.ETHNICITY_ALIEN
+				mixColor = SColor8Helper.AdjustHSL(mixColor, fastRandom.RandomInt(-5, 10)/100.0, 0, 0)
+
+'			case TFigureGenerator.ETHNICITY_CAUCASIAN
 			Default 'european/caucasian
 				'prefer darker variants to avoid too pale overall images - clothes, hair, skin)
 				mixColor = SColor8Helper.AdjustHSL(mixColor, 0, 0, fastRandom.RandomInt(-10, -0)/100.0)
