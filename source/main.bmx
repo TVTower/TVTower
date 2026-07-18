@@ -2803,18 +2803,12 @@ Type TSaveGame Extends TGameState
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
 		If savegameVersion < 26
-			'repair old person face codes
-			local repairCount:Int
-			Local defaultColor:SColor8 = New SColor8(255,255,255,255) 'full alpha, no tinting
-
 			For local p:TPersonBase = EachIn GetPersonBaseCollection().entries.Values()
 				If Not p.faceCode Then Continue
 
 				' simple variant:
-				' just give all of them new figures, except for previously hard-configured
-				' ones
-				
-				p.faceCode = Null
+				' just give all of them new figures, except for previously
+				' hard-configured ones
 				Select p.GetGUID()
 					Case "3d37e02e-78f2-4749-9de5-429e31b5590b" ' Betty Botterblom
 						p.faceCode = "2:1:1#FFC49B:630:0:6:3#FFFFFF:2:2:4#F07F7F:-1:-1:0#DCAD1E:9#E7B514:7#3BA561"
@@ -2825,70 +2819,8 @@ Type TSaveGame Extends TGameState
 					Case "Ronny-person-various-sjaele" ' Sjaele
 						p.faceCode = "1:1:1#E1C7B8:915:3:16:1:0:4:6:-1:-1:1#4A4139:3#42362E:22#ECD7AC"
 				End Select
-			
-				' error prone variant (as indices to cloths etc changed - female/male errors possible)
-				' ===
-				rem
-				Local subCodes:string[] = p.faceCode.Split(":")
-				
-				Local fig:TFigureGeneratorFigure = New TFigureGeneratorFigure
-				fig.gender = Int(subCodes[0])
-				fig.age = int(subCodes[1])
-				fig.ethnicity = int(subCodes[2])
-
-				Local skinToneTColor:TColor = New TColor.FromHex(subCodes[3])
-				Local skinToneColor:SColor8 = New SColor8(skinToneTColor.r, skinToneTColor.g, skinToneTColor.b, 255)
-
-				For Local i:int = 4 to 17
-					Local partCode:string[] = subCodes[i].split("#")
-					Local partIndex:int = int(partCode[0])
-					Local partType:int = i - 4 +1
-					
-					'migrate old partType to new
-					Select partType
-						Case 3		partType = TFigureGeneratorFigure.PART_BODY
-						Case 6		partType = TFigureGeneratorFigure.PART_FACE
-						Case 7		partType = TFigureGeneratorFigure.PART_EYES
-						Case 9		partType = TFigureGeneratorFigure.PART_NOSE
-						Case 10		partType = TFigureGeneratorFigure.PART_EARS
-						Case 11		partType = TFigureGeneratorFigure.PART_MOUTH
-						Case 13		partType = TFigureGeneratorFigure.PART_EYEBROWS
-						Case 14		partType = TFigureGeneratorFigure.PART_BEARD
-						Case 2		partType = TFigureGeneratorFigure.PART_HAIR_BACK
-						Case 12		partType = TFigureGeneratorFigure.PART_HAIR_FRONT
-						Case 5		partType = TFigureGeneratorFigure.PART_CLOTH
-						Default
-							Continue 'skip
-					EndSelect
-					
-					If partIndex < 0
-						fig.SetPart(partType, Null)
-						fig.SetPartColor(partType, Null)
-						Continue
-					EndIf
-
-					Local part:TFigureGeneratorPart = FigureGenerator.GetPart(partType, partIndex)
-					fig.SetPart(partType, part)
-
-					If part and partCode.length = 2
-						Local c:TColor = new TColor.FromHex(partCode[1])
-						fig.SetPartColor(partType, New SColor8(c.r, c.g, c.b, 255))
-					Else
-						fig.SetPartColor(partType, defaultColor)
-					EndIf
-				Next
-				
-				'old auto-figures will have same skin on all body parts
-				fig.SetSkinTone(skinToneColor, True)
-				
-				Local old:String = p.faceCode
-				p.faceCode = fig.GetFigureCode()
-				endrem
-				'===
-				
-				repairCount :+ 1
 			Next
-			TLogger.Log("RepairData", "Reconfigured " + repairCount + " person faces.")
+			TLogger.Log("RepairData", "Reconfigured db-predefined person faces.")
 		EndIf
 
 		If savegameVersion <= 25
