@@ -817,9 +817,6 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 	'tried to create it?
 	Field figureImageCreationFailed:Int = False {nosave}
 	
-	Global PRNG:TXoshiroRandom {nosave}
-
-
 
 	Method CopyFromBase:TPersonPersonalityData(base:TPersonPersonalityBaseData)
 		If Not base Then Return self
@@ -964,67 +961,40 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 	Method GetFigure:TFigureGeneratorFigure()
 		If Not figure
 			local p:TPersonBase = GetPerson()
-			If Not p.faceCode
-				' initialize a custom (global) PRNG with a fixed but individual
-				' seed (so the "result" is the same for the given input)
-				If not PRNG 
-					PRNG = New TXoshiroRandom(p.GetID()) 
-				Else
-					PRNG.SeedRnd(p.GetID())
-				EndIf
 
+			' initialize the PRNG with an individual seed
+			' for consistent figures across games with same data
+			' (so the "result" is the same for the given input)
+			'
+			' when then used, add some individual offset so that
+			' things can get added/removed without affecting the
+			' other PRNG results.
+			local baseSeed:Int = p.GetGUID().HashCode() + GameRules.randomSeed
+
+			If Not p.faceCode
 				Local ageFlag:Int = 1 'young
+				Local appearsYounger:Int = 0
+				'always calculate the flag, for deterministic rand-behaviour
+				If New SFastRandom(baseSeed + 10).RandomInt(100) < 20 Then appearsYounger = 1
+
 				If GetAge() > 50
 					ageFlag = 2
-					If PRNG.Rand(100) < 20 Then ageFlag = 1 'make younger
+					If appearsYounger Then ageFlag = 1
 				EndIf
+			
 
 				Local genderFlag:Int = 0 'random
 				If p.gender = TVTPersonGender.MALE Then genderFlag = 1
 				If p.gender = TVTPersonGender.FEMALE Then genderFlag = 2
+				If p.gender = TVTPersonGender.UNDEFINED Then genderFlag = 0
 
-				Local skinTone:Int = 0 'random
-				Local randomSkin:Int = PRNG.Rand(100)
-				Select p.countryCode.ToLower()
-					'asian
-					Case "jap", "kor", "vn", "cn", "th"
-						skinTone = 1
-						If randomSkin < 5 Then skinTone = 3 'caucasian
-					'african
-					Case "br", "ar", "gh", "sa", "mz", "mex", "ind", "pak"
-						skinTone = 2
-						If randomSkin < 5 Then skinTone = 3 'caucasian
-					'caucasian
-					Case "ca", "swe", "no", "fi", "ru", "dk", "d", "de", "fr", "it", "uk", "cz", "pl", "nl", "sui", "aut", "aus"
-						skinTone = 3
-						If randomSkin < 5
-							skinTone = 2
-						ElseIf randomSkin < 10
-							skinTone = 1
-						EndIf
-					'caucasian or african and some asian
-					Case "us", "usa"
-						If randomSkin > 50
-							skinTone = 3
-						ElseIf randomSkin > 10
-							skinTone = 2
-						Else
-							skinTone = 1
-						EndIf
-					Default
-						If randomSkin < 10      'asian
-							skinTone = 3
-						ElseIf randomSkin < 50  'african
-							skinTone = 2
-						Else                    'most actors are caucasian
-							skinTone = 1
-						EndIf
-				End Select
-
-				figure = TFigureGenerator.GenerateFigure(skinTone, genderFlag, ageFlag, PRNG)
+				Local generatorSeed:Int = New SFastRandom(baseSeed + 20).RandomInt(0, 2^31 - 1)
+				Local skinTone:SColor8 = FigureGenerator.ResolveSkinToneByCountry(p.countryCode, baseSeed + 15)
+				figure = FigureGenerator.GenerateRandomFigureWithSkinTone(genderFlag, ageFlag, generatorSeed, skinTone, p.countryCode)
 				p.faceCode = figure.GetFigureCode()
 			Else
-				figure = TFigureGenerator.GenerateFigureFromCode(p.faceCode)
+				Local generatorSeed:Int = New SFastRandom(baseSeed + 20).RandomInt(0, 2^31 - 1)
+				figure = FigureGenerator.GenerateRandomFigure(p.faceCode, generatorSeed)
 			EndIf
 		EndIf
 		Return figure
