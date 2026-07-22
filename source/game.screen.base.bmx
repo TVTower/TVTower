@@ -355,6 +355,7 @@ End Type
 
 'of this type only one instance can exist
 Type TInGameScreen_World Extends TInGameScreen
+	Field gameOverFader:TScreenChangeEffect
 	Global instance:TInGameScreen_World
 	Global _eventListeners:TEventListenerBase[]
 
@@ -374,7 +375,7 @@ Type TInGameScreen_World Extends TInGameScreen
 
 	Method Initialize:int()
 		Super.Initialize()
-
+		
 		'=== remove all registered event listeners
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
@@ -383,7 +384,7 @@ Type TInGameScreen_World Extends TInGameScreen
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnBeginLeaveRoom, onBeginLeaveRoom, "TFigure") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishLeaveRoom, onFinishLeaveRoom, "TFigure") ]
 	End Method
-
+	
 
 	Method ToString:String()
 		Return "TInGameScreen_World: group="+group+" name="+name
@@ -423,23 +424,38 @@ Type TInGameScreen_World Extends TInGameScreen
 		GetWorld().Update()
 		GetBuildingBase().Update()
 
-		'handle player target changes
-		local fig:TFigureBase = GetPlayerBase().GetFigure()
-		If Not fig.IsInRoom()
-			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
-				If Not fig.isChangingRoom()
-					If THelper.MouseIn(0, 0, 800, 385)
-						'convert mouse position to building-coordinates
-						Local x:Int = MouseManager.x - GetBuildingBase().buildingInner.GetScreenRect().GetX()
-						Local y:Int = MouseManager.y - GetBuildingBase().buildingInner.GetScreenRect().GetY()
-						fig.ChangeTarget(x, y)
+		If Not GetGameBase().IsGameOver()
+			'handle player target changes
+			local fig:TFigureBase = GetPlayerBase().GetFigure()
+			If Not fig.IsInRoom()
+				If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
+					If Not fig.isChangingRoom()
+						If THelper.MouseIn(0, 0, 800, 385)
+							'convert mouse position to building-coordinates
+							Local x:Int = MouseManager.x - GetBuildingBase().buildingInner.GetScreenRect().GetX()
+							Local y:Int = MouseManager.y - GetBuildingBase().buildingInner.GetScreenRect().GetY()
+							fig.ChangeTarget(x, y)
 
-						'handled left click
-						MouseManager.SetClickHandled(1)
+							'handled left click
+							MouseManager.SetClickHandled(1)
+						EndIf
 					EndIf
 				EndIf
 			EndIf
-		EndIf
+		Else
+			local fig:TFigureBase = GetPlayerBase().GetFigure()
+			If fig.IsOffscreen()
+				if not gameOverFader
+					gameOverFader = New TIngameScreenChangeEffect_ClosingRects.Create(TScreenChangeEffect.DIRECTION_CLOSE, _contentArea)
+					gameOverFader.Initialize()
+				endif
+	
+				gameOverFader.Update()
+			EndIf		
+			If KeyManager.IsHit(KEY_ESCAPE) or (MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse)
+				GetGameBase().EndGame()
+			EndIf
+		Endif
 	End Method
 
 
@@ -450,10 +466,18 @@ Type TInGameScreen_World Extends TInGameScreen
 		GetBuildingBase().Render()
 
 		if GetGameBase().IsGameOver()
+			if gameOverFader
+				local fig:TFigureBase = GetPlayerBase().GetFigure()
+				If fig.IsOffscreen()
+					gameOverFader.Draw()
+				EndIf		
+			EndIf
+
 			local oldA:float = GetAlpha()
 			SetAlpha oldA * 0.85
 			GetBitmapFont("default", 72, BOLDFONT).DrawBox("GAME OVER", 0,0, GetGraphicsManager().GetWidth(), 380, sALIGN_CENTER_CENTER, new SColor8(255,155,125), EDrawTextEffect.Shadow, -1.0)
-			Setalpha oldA
+			SetAlpha oldA
+			GetBitmapFont("default", 18, BOLDFONT).DrawBox("hit ESCAPE or a mouse button to return to main menu", 0,0, GetGraphicsManager().GetWidth(), 480, sALIGN_CENTER_CENTER, new SColor8(225,225,225), EDrawTextEffect.Shadow, -1.0)
 		endif
 	End Method
 End Type

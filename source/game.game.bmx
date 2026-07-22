@@ -469,6 +469,52 @@ endrem
 		Next
 
 	End Method
+	
+	
+	Method SetGameOver()
+		Super.SetGameOver()
+		
+'	Method SetPlayerGameOver()
+		Local player:TPlayer = GetPlayer() 'current player
+
+		'needs an event?
+		'TriggerBaseEvent(GameEventKeys.Game_SetPlayerGameOver, New TData.AddInt("playerID", playerID), Self, player)
+
+		'inform all AI players about the game over (maybe they want to
+		'have a laugh in the chat
+		For Local p:TPlayer = EachIn GetPlayerCollection().players
+			If Not p.IsLocalAI() Or Not p.PlayerAI Then Continue
+
+			'p.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnPlayerGameOver).AddInt(playerID))
+		Next
+
+		Local figure:TFigure = player.GetFigure()
+		If figure
+			local visitBossFirst:int = False
+
+			'send figure to boss, then offscreen (figure got fired)
+			If visitBossFirst
+				'goto boss variant 1
+				'If figure.inRoom Then figure.LeaveRoom(True)
+				'figure.SetTarget( new TFigureTarget.Init(GetRoomDoorCollection().GetFirstByDetails("boss", player.playerID)) )
+
+				'goto boss variant 2
+				local moveToPos:SVec2I = new TFigureTarget.Init(GetRoomDoorCollection().GetFirstByDetails("boss", player.playerID) ).GetMoveToPosition()
+				figure.ForceChangeTarget(moveToPos.x, moveToPos.y)
+				
+				'afterwards leave building
+				figure.AddTarget( new TFigureTarget.Init( New TVec2D(GetBuildingBase().figureOffscreenX, TBuildingBase.GetFloorY2(0) - 5)) )
+
+			Else
+				figure.SendToOffscreen(True)
+			EndIf
+
+			'disable figure control (disable changetarget)
+			figure._controllable = False
+		EndIf
+
+	End Method
+	
 
 
 	Method SetPlayerBankrupt(playerID:Int)
