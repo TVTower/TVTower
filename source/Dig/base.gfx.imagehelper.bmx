@@ -598,29 +598,31 @@ Function CopyImage:TImage(src:TImage)
 	If src = Null Then Return Null
 
 	Local dst:TImage = New TImage
-	?bmxng
-	MemCopy(dst, src, Size_T(SizeOf(dst)))
-	?not bmxng
-	MemCopy(dst, src, SizeOf(dst))
-	?
+	
+	dst.width = src.width
+	dst.height = src.height
+	dst.flags = src.flags
+	dst.mask_r = src.mask_r
+	dst.mask_g = src.mask_g
+	dst.mask_b = src.mask_b
+	dst.handle_x = src.handle_x
+	dst.handle_y = src.handle_y
 
 	dst.pixmaps = New TPixmap[src.pixmaps.length]
-	dst.frames = New TImageFrame[src.frames.length]
-	dst.seqs = New Int[src.seqs.length]
-
 	For Local i:Int = 0 To dst.pixmaps.length-1
 	  dst.pixmaps[i] = CopyPixmap(src.pixmaps[i])
 	Next
 
+	' Do NOT simply copy the "seqs" array - it contains 
+	' "frame is valid" indicators. 
+	' With null-values in seqs we enforce frame recration !
+	dst.seqs = New Int[src.seqs.length]
+	dst.frames = New TImageFrame[src.frames.length]
 	For Local i:Int = 0 To dst.frames.length-1
-	  dst.Frame(i)
+		dst.Frame(i)
 	Next
 
-	?bmxng
-	MemCopy(dst.seqs, src.seqs, Size_T(SizeOf(dst.seqs)))
-	?not bmxng
-	MemCopy(dst.seqs, src.seqs, SizeOf(dst.seqs))
-	?
+	dst.frameDuration = src.frameDuration[..]
 
 	Return dst
 End Function
