@@ -988,64 +988,9 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 				If p.gender = TVTPersonGender.FEMALE Then genderFlag = 2
 				If p.gender = TVTPersonGender.UNDEFINED Then genderFlag = 0
 
-				Local ethnicity:Int = -1 'random
-				Local randomSkin:Int = New SFastRandom(baseSeed + 15).RandomInt(100)
-				Select TPersonGenerator.GetUnifiedCountryCode(p.countryCode)
-					case "ALIEN"
-						ethnicity = FigureGenerator.ETHNICITY_ALIEN
-					'asian
-					Case "J", "PRC", "KOR", "VN", "CN", "TH"
-						If randomSkin < 5 
-							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
-						Else
-							ethnicity = FigureGenerator.ETHNICITY_ASIAN
-						Endif
-					'african / South America
-					Case "BRA", "AR", "GH", "SA", "MZ", "MEX", "IND", "PAK"
-						If randomSkin < 5 
-							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
-						Else
-							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
-						Endif
-					'caucasian
-					Case "CA", "SWE", "NO", "FI", "RU", "DK", "DE", "IT", "UK", "CZ", "PL", "NL", "SUI", "AUT", "AUS"
-						If randomSkin < 4
-							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
-						ElseIf randomSkin < 8
-							ethnicity = FigureGenerator.ETHNICITY_ASIAN
-						Else
-							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
-						EndIf
-					'caucasian or african
-					Case "FR"
-						If randomSkin < 2
-							ethnicity = FigureGenerator.ETHNICITY_ASIAN
-						ElseIf randomSkin < 15
-							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
-						Else
-							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
-						EndIf
-					'caucasian or african and some asian
-					Case "US"
-						If randomSkin < 8
-							ethnicity = FigureGenerator.ETHNICITY_ASIAN
-						ElseIf randomSkin < 40
-							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
-						Else
-							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
-						EndIf
-					Default
-						If randomSkin < 10      'asian
-							ethnicity = FigureGenerator.ETHNICITY_ASIAN
-						ElseIf randomSkin < 40  'african
-							ethnicity = FigureGenerator.ETHNICITY_AFRICAN
-						Else                    'most actors are caucasian
-							ethnicity = FigureGenerator.ETHNICITY_CAUCASIAN
-						EndIf
-				End Select
-
 				Local generatorSeed:Int = New SFastRandom(baseSeed + 20).RandomInt(0, 2^31 - 1)
-				figure = FigureGenerator.GenerateRandomFigure(ethnicity, genderFlag, ageFlag, generatorSeed)
+				Local skinTone:SColor8 = FigureGenerator.ResolveSkinToneByCountry(p.countryCode, baseSeed + 15)
+				figure = FigureGenerator.GenerateRandomFigureWithSkinTone(genderFlag, ageFlag, generatorSeed, skinTone, p.countryCode)
 				p.faceCode = figure.GetFigureCode()
 			Else
 				Local generatorSeed:Int = New SFastRandom(baseSeed + 20).RandomInt(0, 2^31 - 1)
