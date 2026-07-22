@@ -1275,6 +1275,16 @@ Type TDatabaseLoader
 		'=== MODIFIERS ===
 		LoadV3ModifiersFromNode(adContract, node, xml)
 
+		'use (higher) calculated base value for ads with high minimal audience
+		If adContract.minAudienceBase > 0.1146
+			Local level:Int = (adContract.minAudienceBase - 0.1146)/0.0052
+			Local profitOld:Int = adContract.profitBase
+			adContract.profitBase = 320+3*level
+			'calculate penalty according to original ratio
+			adContract.penaltyBase = adContract.profitBase * (adContract.penaltyBase / profitOld)
+			'print adContract.GetTitle() +" "+ level +" "+adContract.profitBase +" "+adContract.penaltyBase
+		EndIf
+
 
 		'=== ADD TO COLLECTION ===
 		If doAdd

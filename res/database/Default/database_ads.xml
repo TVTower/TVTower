@@ -38,7 +38,7 @@ Do you have that to offer? Gosh, my Swedish friend!</en>
 				<pl>Półki, stoły, krzesła, szafki itp. - to właśnie mamy do zaoferowania.
 Czy masz coś takiego do zaoferowania? Ojej, mój szwedzki przyjacielu!</pl>
 			</description>
-			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="11.98" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="18" repetitions="2" duration="3" profit="285" penalty="460" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="Rahmah-Ron1" wikidata_id="" comment="parody (not in-place spoof) of https://de.wikipedia.org/wiki/Rama_(Marke)">
@@ -107,7 +107,7 @@ Naprawdę trzeba żuć.</pl>
 				<en>Travel to the world's largest beaches, whether Gobi or Sahara. Duban Tours will take you there.</en>
 				<pl>Podróż na największe plaże świata, czy to Gobi, czy Sahara. Biuro podróży Duban Tours Cię tam zabierze.</pl>
 			</description>
-			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="9.9" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="3" duration="3" profit="345" penalty="450" infomercial_profit="41" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="1fa08a9f-5658-46a1-b634-43bbacd1a7bb" wikidata_id="Q1726904" comment="arguably now Puschkin Vodka, TVTower 2013 version was: Wodka Jelzin - Des Wodkas reine Seele, rather https://en.wikipedia.org/wiki/Wodka_Gorbatschow - TODO: could add that one too">
@@ -133,7 +133,7 @@ Naprawdę trzeba żuć.</pl>
 				<en>The most popular competitor of Cacca Cola and Pipsi - but as pure in taste?</en>
 				<pl>Najpopularniejszy konkurent Cacca Coli i Pipsi - ale czy równie czysty w smaku?</pl>
 			</description>
-			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="14.06" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="240" penalty="380" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="2e70e2e8-1b23-4aa5-90dc-40e2f5230f71">
@@ -317,8 +317,8 @@ Naprawdę trzeba żuć.</pl>
 				<en>Action play figures of your favorite German politicians. For a short time "The Pear" and "${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"}" for the price of one.</en>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Gruszka” i „${.person:"ace8d229-b72c-427c-bf0f-f88aaa265537":"nickname"}” w cenie jednej.</pl>
 			</description>
-			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1982" year_range_to="1989" />
 		</ad>
 		<ad guid="PoliPlayw02">
@@ -330,8 +330,8 @@ Naprawdę trzeba żuć.</pl>
 				<en>Action play figures of your favorite German politicians. For a short time "Blooming landscapes"-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} and "Red Socks"-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} for the price of one.</en>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Kwitnące krajobrazy”-${.person:"fa8ec236-c57b-4672-9f31-afe980a6ed40":"fullname"} i „Czerwone skarpetki”-${.person:"9bbc06ee-9798-47c2-8e89-cb2e615c9803":"lastname"} w cenie jednej.</pl>
 			</description>
-			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1990" year_range_to="1997" />
 		</ad>
 		<ad guid="PoliPlayw03">
@@ -343,8 +343,8 @@ Naprawdę trzeba żuć.</pl>
 				<en>Action play figures of your favorite German politicians. For a short time "Get me a bottle of beer"-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} and "Cleaning Squad"-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} for the price of one.</en>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas „Przynieś mi butelkę piwa”-${.person:"59704761-b8e6-405b-8d2b-74a010e599d8":"lastname"} i „Oddział sprzątający”-${.person:"ca635af1-23d3-4c83-ae65-6fb535b3274f":"firstname"} w cenie jednej.</pl>
 			</description>
-			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="1998" year_range_to="2004" />
 		</ad>
 		<ad guid="42b4aa37-1274-4da2-9d72-4e203720eeb6">
@@ -356,8 +356,8 @@ Naprawdę trzeba żuć.</pl>
 				<en>Action play figures of your favorite German politician. For short time Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} and Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} for the price of one.</en>
 				<pl>Figurki ulubionych niemieckich polityków. Przez krótki czas Action-${.person:"63f7f2cf-b7b9-48f7-813a-a8cc0548838f":"lastname"} i Chaoz-${.person:"eb95fbbf-7b9d-442f-bf45-c49898ceb3bc":"lastname"} w cenie jednej.</pl>
 			</description>
-			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
+			<conditions min_audience="19.26" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="18" repetitions="2" duration="1" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" />
 			<availability year_range_from="2005" />
 		</ad>
 		<ad guid="44af9e71-7c61-4531-b125-181948cd791a">
@@ -382,7 +382,7 @@ Naprawdę trzeba żuć.</pl>
 				<en>Mmmmhmmm - this IS a delicious burger. If you're into burgers, you have to try these!</en>
 				<pl>Mmmmhmmm - to JEST pyszny burger. Jeśli lubisz burgery, musisz ich spróbować!</pl>
 			</description>
-			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="14.58" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="3" profit="250" penalty="350" infomercial_profit="37" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="4921816c-91a3-42c5-8ca8-56d67394f8dc">
@@ -616,8 +616,8 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<en>The brand clothing with the umbrella. Fashionable cuts and trendy colors included.</en>
 				<pl>Markowa odzież z parasolem. Modne kroje i modne kolory w zestawie.</pl>
 			</description>
-			<conditions min_audience="9.38" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="19" repetitions="3" duration="2" profit="340" penalty="560" infomercial_profit="32" fix_infomercial_profit="1" />
+			<conditions min_audience="8.86" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="19" repetitions="3" duration="2" profit="350" penalty="560" infomercial_profit="32" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="8384acef-9c23-4efa-9ffa-0d0e370693d4">
 			<title>
@@ -682,7 +682,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<pl>Pyszne laski cynamonu z gwarancją suchego kaszlu. Nigdy wcześniej suchy jak pył nie był... tak pyszny.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="12" repetitions="4" duration="4" profit="600" penalty="950" infomercial_profit="58" fix_infomercial_profit="1" />
+			<data quality="12" repetitions="4" duration="4" profit="630" penalty="950" infomercial_profit="58" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="914bf7d1-8338-4ace-87c8-a84dca3872f5">
 			<title>
@@ -694,7 +694,7 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<pl>Przy każdym zakupie butelki czerwonego wina otrzymasz dwie tabletki na ból głowy gratis.</pl>
 			</description>
 			<conditions min_audience="3.65" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="8" repetitions="5" duration="3" profit="610" penalty="990" fix_infomercial_profit="1" />
+			<data quality="8" repetitions="5" duration="3" profit="520" penalty="850" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="95a1c5b7-c89a-4fe8-85c9-834c07daa2f9">
 			<title>
@@ -721,8 +721,8 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<en>The ketchup for those who do not drown their fries in mayonnaise. Also suitable for burgers, sausages and chicken nuggets.</en>
 				<pl>Ketchup dla tych, którzy nie topią frytek w majonezie. Nadaje się również do hamburgerów, kiełbasek i nuggetsów z kurczaka.</pl>
 			</description>
-			<conditions min_audience="8.34" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="15" repetitions="3" duration="3" profit="377" penalty="558" infomercial_profit="35" fix_infomercial_profit="1" />
+			<conditions min_audience="7.81" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="15" repetitions="3" duration="3" profit="390" penalty="558" infomercial_profit="35" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="Sjaele-spysoft2" creator="7430" created_by="Sjaele">
 			<title>
@@ -770,8 +770,8 @@ Ale tylko z Rudolfem Relokacyjnym!</pl>
 				<en>The incomparable chocolate bar with the captivating taste.</en>
 				<pl>Niezrównany baton czekoladowy o zniewalającym smaku.</pl>
 			</description>
-			<conditions min_audience="5.73" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="2" duration="3" profit="450" penalty="823" infomercial_profit="45" fix_infomercial_profit="1" />
+			<conditions min_audience="4.17" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="18" repetitions="2" duration="3" profit="570" penalty="823" infomercial_profit="45" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="a8087397-e57e-4bdc-b2a9-f44b7173de6d">
 			<title>
@@ -811,7 +811,7 @@ The benefit: No postage for remittance slips.</en>
 				<pl>Otwórz konto w Nic-Bank-u.
 Korzyść: brak opłat pocztowych za odcinki przelewów.</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="15.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="12" repetitions="2" duration="4" profit="240" penalty="350" infomercial_profit="21" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="a8c56723-2603-4622-bf23-4645b8fa3bb5">
@@ -960,8 +960,8 @@ It's a ${brand_sony}.</pl>
 				<en>Do jigsaw puzzles, play, have fun. ${brand_ravensburger} recommends novelties and classics from its range of products.</en>
 				<pl>Układaj puzzle, graj, baw się. ${brand_ravensburger} poleca nowości i klasyki ze swojej oferty.</pl>
 			</description>
-			<conditions min_audience="8.34" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="14" repetitions="3" duration="2" profit="380" penalty="570" infomercial_profit="37" fix_infomercial_profit="1" />
+			<conditions min_audience="5.21" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="14" repetitions="3" duration="2" profit="460" penalty="570" infomercial_profit="37" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="cb0392f3-cc95-4508-a776-22d0e8ca00fa">
 			<title>
@@ -984,8 +984,8 @@ It's a ${brand_sony}.</pl>
 				<en>It is not just ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} who passionately drinks ${brand_drpepper}.</en>
 				<pl>Nie tylko ${.programme:"f5cf91ce-6aa5-45e9-84bf-a6d0d846e0fc":"title"} namiętnie pije ${brand_drpepper}.</pl>
 			</description>
-			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="18" repetitions="2" duration="4" profit="315" penalty="425" infomercial_profit="28" fix_infomercial_profit="1" />
+			<conditions min_audience="10.94" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="18" repetitions="2" duration="4" profit="295" penalty="400" infomercial_profit="28" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="cd6d32cd-d0b4-4b7c-8235-bbc08fef39d7" wikidata_id="Q659320" comment="TVTower 2013 version: Zaturn">
 			<title>
@@ -1078,8 +1078,8 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 				<en>The nightcap in the tin foil bag.</en>
 				<pl>Nocny drink w torebce z folii aluminiowej.</pl>
 			</description>
-			<conditions min_audience="7.29" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="13" repetitions="3" duration="3" profit="461" penalty="672" infomercial_profit="39" fix_infomercial_profit="1" />
+			<conditions min_audience="4.69" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="13" repetitions="3" duration="3" profit="520" penalty="672" infomercial_profit="39" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="d5c01cc4-e97c-46fd-999b-ed5becd1ab4c" wikidata_id="Q605830">
 			<title>
@@ -1140,7 +1140,7 @@ Tydzień kampanii: brak kaucji za butelki.</pl>
 				<en>Spaceships, phaser weapons, Mars mining rights. On sale at Aeroswift this week at rock-bottom prices.</en>
 				<pl>Statki kosmiczne, broń fazerowa, prawa do wydobywania Marsa. W sprzedaży w Aeroswift w tym tygodniu w najniższych cenach.</pl>
 			</description>
-			<conditions min_audience="8.3352" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="7.81" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="3" duration="4" profit="377" penalty="620" infomercial_profit="24" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="dd4e46bc-3dae-4738-af7a-f2665bf53435">
@@ -1195,7 +1195,7 @@ Only genuine with the elk!</en>
 				<pl>Produkty do pielęgnacji skóry. Maści/kremy, dodatki do kąpieli, dezodoranty i wiele innych.
 Tylko oryginalne z łosia!</pl>
 			</description>
-			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="13.02" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="15" repetitions="2" duration="2" profit="275" penalty="420" infomercial_profit="24" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="e1f2329c-2a43-453d-8711-11de240d1fbf" wikidata_id="Q837845">
@@ -1261,8 +1261,8 @@ Tylko oryginalne z łosia!</pl>
 				<en>Crispy crunchy nibbles with fiery hot chili. Only for a short time with animal motifs.</en>
 				<pl>Chrupiące przekąski z ognistym ostrym chili. Tylko przez krótki czas z motywami zwierzęcymi.</pl>
 			</description>
-			<conditions min_audience="10.42" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data quality="12" repetitions="2" duration="4" profit="345" penalty="581" infomercial_profit="31" fix_infomercial_profit="1" />
+			<conditions min_audience="9.9" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data quality="12" repetitions="2" duration="4" profit="310" penalty="550" infomercial_profit="31" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="f006c0bb-89cc-4924-b17e-151658c15618" wikidata_id="Q212405" comment="Product: Lenor | TODO: separate ad https://en.wikipedia.org/wiki/Downy | TVTower 2013 version: Lemor">
 			<title>
@@ -1302,7 +1302,7 @@ Z ${brand_lenor}em czuję się dobrze</pl>
 				<en>The latest deluxe car from ${brand_benz}: aesthetically impeccable design, robust, classic.</en>
 				<pl>Najnowszy luksusowy samochód od ${brand_benz}: estetycznie nienaganny design, solidny, klasyczny.</pl>
 			</description>
-			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="18.22" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="8753444a-5e28-4f3c-a960-73e98e97cc67" creator="8659" created_by="Nicht_die_Betty">
@@ -1811,7 +1811,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>U too many money under mattress? We helping u find distant relatives for bequeth!</en>
 				<pl>Za dużo pieniędzy pod materacem? Pomagamy znaleźć dalekich krewnych do spadku!</pl>
 			</description>
-			<conditions min_audience="18.76" min_image="0" />
+			<conditions min_audience="16.66" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="7" profit="220" penalty="500" infomercial_profit="95" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="sjaele-ad-Abschiedsgruss" creator="7430" created_by="Sjaele">
@@ -1825,7 +1825,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>We are looking for a new earth. Take care and thanks for the fish. Your dolphins.</en>
 				<pl>Szukamy nowej ziemi. Trzymaj się i dzięki za rybę. Twoje delfiny.</pl>
 			</description>
-			<conditions min_audience="46.89" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="23.94" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="7" profit="170" penalty="453" infomercial_profit="50" fix_infomercial_profit="1" />
 			<availability year_range_from="1999" year_range_to="2000" />
 		</ad>
@@ -1926,7 +1926,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>We dae nae footer wi' yer business bit ye aye benefit o' commissioning us. Guid insae guid enough! It haes tae be Billayehill!</en>
 				<pl>Nie mamy nic wspólnego z Twoim biznesem, ale skorzystasz na zatrudnieniu nas. Wystarczająco mądrze! To musi być BankrutHill!</pl>
 			</description>
-			<conditions min_audience="18.76" min_image="7" target_group="32" />
+			<conditions min_audience="14.06" min_image="7" target_group="32" />
 			<data infomercial="1" quality="15" repetitions="3" duration="6" profit="220" penalty="339" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Bobo" creator="8605" created_by="SpeedMinister">
@@ -1967,7 +1967,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>Dream returns without lifting a finger. Sending entire populations into famine? - Doesn't matter? - Bullseye with Bullshit Bingo Brokers!</en>
 				<pl>Sen powraca bez kiwnięcia palcem. Wysyłanie całych populacji na głód? - To nie ma znaczenia? - Strzał w dziesiątkę z Brokerami Bullshit Bingo!</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="0" target_group="0" />
+			<conditions min_audience="15.1" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="3" duration="4" profit="240" penalty="320" infomercial_profit="15" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Doublie-Kate" creator="8605" created_by="SpeedMinister">
@@ -1979,7 +1979,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>3D scanner and 3D printer in one. Think of the possibilities! Turn a metal template into a plastic original. Doublie-Kate from "Life is Groats"!</en>
 				<pl>Skaner 3D i drukarka 3D w jednym. Pomyśl o możliwościach! Zamień metalowy szablon w plastikowy oryginał. Doublie-Kate z „Życie to kasza”!</pl>
 			</description>
-			<conditions min_audience="28.65" min_image="0" target_group="0" />
+			<conditions min_audience="19.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="4" profit="170" penalty="309" infomercial_profit="35" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Doerrobst" creator="8605" created_by="SpeedMinister">
@@ -2019,7 +2019,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>Let us assume that the calculation of time reaches infinitely into the past and that it reaches infinitely into the future. Thus, the present is exactly half of time, half of all there is. Singularity Publishing.</en>
 				<pl>Załóżmy, że obliczenia czasu sięgają nieskończenie daleko w przeszłość i nieskończenie daleko w przyszłość. Zatem teraźniejszość to dokładnie połowa czasu, połowa wszystkiego, co istnieje. Wydawca: Osobliwość.</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="0" target_group="0" />
+			<conditions min_audience="17.18" min_image="0" target_group="0" />
 			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="210" penalty="303" infomercial_profit="25" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Encyclopedia2" creator="8605" created_by="SpeedMinister">
@@ -2033,7 +2033,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>Published in 2 volumes. Volume 1 already available today. However, we can predict that Volume 2 will never appear, as we can not see into the future. A paradox? Singularity Publishing.</en>
 				<pl>Wydany w 2 tomach. Tom 1 jest już dziś dostępny. Możemy jednak przewidzieć, że Tom 2 nigdy się nie ukaże, ponieważ nie możemy zajrzeć w przyszłość. Paradoks? Wydawca: Osobliwość.</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="37" target_group="0" />
+			<conditions min_audience="17.18" min_image="37" target_group="0" />
 			<data infomercial="1" quality="31" repetitions="2" duration="2" profit="215" penalty="315" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Fluchomat" creator="8605" created_by="SpeedMinister">
@@ -2047,7 +2047,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<en>Annoyed by censoring beeps instead of sappy curses? Karkasonic has the solution: The Cursomat. With innovative curses and exaggeration guarantee!!!</en>
 				<pl>Irytują cię cenzurujące sygnały dźwiękowe zamiast ckliwych przekleństw? Karkasonic ma rozwiązanie: przekleństwomat. Z innowacyjnymi przekleństwami i gwarancją przesady!!!</pl>
 			</description>
-			<conditions min_audience="12.5" min_image="0" target_group="0" />
+			<conditions min_audience="11.98" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="4" profit="287" penalty="422" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Hopfengurgler1" creator="8605" created_by="SpeedMinister">
@@ -2148,7 +2148,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<pl>Podlizujemy się motłochowi - dla nakładu. Ale kto płaci, ten wybiera melodię.
 				Wynajęta Papuga - jesteśmy równiejsi od innych.</pl>
 			</description>
-			<conditions min_audience="14.0663" min_image="7" target_group="32" />
+			<conditions min_audience="13.54" min_image="7" target_group="32" />
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="270" penalty="440" infomercial_profit="14" fix_infomercial_profit="1" />
 			<availability year_range_to="1995" />
 		</ad>
@@ -2166,7 +2166,7 @@ Dostępne w każdej dobrze zaopatrzonej drogerii.</pl>
 				<pl>Reklama w przebraniu dokumentacji. Prześlij nam swoje materiały reklamowe. Stażyści kopiujący i wklejający dostępni 24/7.
 				Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</description>
-			<conditions min_audience="14.0663" min_image="18" target_group="32" />
+			<conditions min_audience="13.54" min_image="18" target_group="32" />
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="278" penalty="460" fix_infomercial_profit="1" />
 			<availability year_range_from="1996" />
 		</ad>
@@ -2184,7 +2184,7 @@ Hired Parrot - We are more equal than others.</en>
 				<pl>Dyskryminacja lub mowa nienawiści. Z przyjemnością. - Honor? Ludzka godność czy współczucie? Dla nas nieznane!
 Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</description>
-			<conditions min_audience="14.0663" min_image="30" target_group="32" />
+			<conditions min_audience="13.54" min_image="30" target_group="32" />
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="285" penalty="480" infomercial_profit="14" fix_infomercial_profit="1" />
 			<availability year_range_to="1995" />
 		</ad>
@@ -2202,7 +2202,7 @@ Hired Parrot - We are better than others.</en>
 				<pl>Wynajęta Papuga - Twój najlepszy przyjaciel. Jesteśmy tak suuuper śledczy.
 Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 			</description>
-			<conditions min_audience="28.65" min_image="52" target_group="8" />
+			<conditions min_audience="19.26" min_image="52" target_group="8" />
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1" />
 			<availability year_range_from="1996" />
 		</ad>
@@ -2262,7 +2262,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Tear-resistant and bulletproof. ${brand_tempo} - even stops 150mph sneezers.</en>
 				<pl>Odporne na rozdarcia i kuloodporne. ${brand_tempo} - zatrzymuje nawet kichnięcia o prędkości 150 mil na godzinę.</pl>
 			</description>
-			<conditions min_audience="14.07" min_image="0" target_group="0" />
+			<conditions min_audience="13.54" min_image="0" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="3" duration="3" profit="270" penalty="425" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Pemto2" creator="8605" created_by="SpeedMinister" wikidata_id="Q2403042">
@@ -2276,7 +2276,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Tear-resistant and bulletproof. ${brand_tempo} - when things get urgent.</en>
 				<pl>Odporny na rozdarcia i kuloodporny. ${brand_tempo} - gdy sprawy stają się pilne.</pl>
 			</description>
-			<conditions min_audience="14.07" min_image="32" target_group="0" />
+			<conditions min_audience="13.02" min_image="32" target_group="0" />
 			<data infomercial="1" quality="24" repetitions="5" duration="4" profit="265" penalty="410" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Pillreis" creator="8605" created_by="SpeedMinister">
@@ -2318,7 +2318,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Toupets and wigs. If you don't have to rely on them - good for you. Otherwise come to Rapunzel's. Buy 5 meters or more and get a meter for free!</en>
 				<pl>Tupety i peruki. Jeśli nie musisz na nich polegać - dobrze dla ciebie. W przeciwnym razie przyjdź do Treski Roszpunki. Kup 5 metrów lub więcej i otrzymaj metr za darmo!</pl>
 			</description>
-			<conditions min_audience="18.76" min_image="0" target_group="0" />
+			<conditions min_audience="16.66" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="4" duration="6" profit="225" penalty="360" infomercial_profit="20" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Rhinozerosfarm" creator="8605" created_by="SpeedMinister">
@@ -2346,7 +2346,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Sniffmaster 2000, the infinitely useful smell transmitter. This is like phone calls for the nose. So come and join the smelling, no matter where you are! Sniffmaster 2000!</en>
 				<pl>Sniffmaster 2000, nieskończenie użyteczny nadajnik zapachów. To jak rozmowy telefoniczne dla nosa. Więc przyjdź i dołącz do wąchania, bez względu na to, gdzie jesteś! Sniffmaster 2000!</pl>
 			</description>
-			<conditions min_audience="23.44" min_image="0" target_group="0" />
+			<conditions min_audience="18.22" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="185" penalty="327" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Roll-Shop" creator="8605" created_by="SpeedMinister">
@@ -2360,7 +2360,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>We have everything with a "roll" in its name: Rollmop - Egg rolls - Rolltowels - Roll curtains - Trolleys. Step in and roll out. The Roll Shop.</en>
 				<pl>Mamy wszystko z „rol” w nazwie: Ręczniki w rolkach - Rolmopsy - Rolety - Cholesterol - Wózki na rolkach. Wejdź i roluj. Rol Shop.</pl>
 			</description>
-			<conditions min_audience="9.38" min_image="0" target_group="0" />
+			<conditions min_audience="8.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="4" duration="4" profit="347" penalty="537" infomercial_profit="32" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Schmierlapp" creator="8605" created_by="SpeedMinister">
@@ -2402,7 +2402,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Licorice to the power of three. All diameters the same length! The best idea ever! We offer in diameters of 10cm, 20cm and 30cm!</en>
 				<pl>Lukrecja do potęgi trzeciej. Wszystkie średnice tej samej długości! Najlepszy pomysł w historii! Oferujemy w średnicach 10cm, 20cm i 30cm!</pl>
 			</description>
-			<conditions min_audience="39.07" min_image="30" target_group="0" />
+			<conditions min_audience="22.38" min_image="30" target_group="0" />
 			<data infomercial="1" quality="13" repetitions="3" duration="4" profit="121" penalty="190" infomercial_profit="12" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Schaedlingsbekaempfung" creator="8605" created_by="SpeedMinister">
@@ -2443,8 +2443,8 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Fox Enterprises presents "Stop Hound". Apply the spray on the body. 20h effect! Stops dogs even against the wind. The anti-bite spray "Stop Hound".</en>
 				<pl>Fox Enterprises przedstawia „Stop Pies”. Nanieść spray na ciało. 20 godzin działania! Zatrzymuje psy nawet pod wiatr. Spray przeciw ugryzieniom „Stop Pies”.</pl>
 			</description>
-			<conditions min_audience="8.34" min_image="0" target_group="0" />
-			<data infomercial="1" quality="24" repetitions="1" duration="2" profit="360" penalty="600" infomercial_profit="35" fix_infomercial_profit="1" />
+			<conditions min_audience="7.81" min_image="0" target_group="0" />
+			<data infomercial="1" quality="24" repetitions="1" duration="2" profit="380" penalty="600" infomercial_profit="35" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-TVBunker" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2471,7 +2471,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Brand new engine! New Movies! NEW: Trash TV and call-in. TVTower, a Mad TV-esque computer game! Huge fun. Cheshire Cat, the Pope and the Queen recommend: TVTower.</en>
 				<pl>Zupełnie nowy silnik! Nowe filmy! NOWOŚĆ: Trash TV i call-in. TVTower, gra komputerowa w stylu Mad TV! Ogromna frajda. Kot z Cheshire, papież i królowa polecają: TVTower.</pl>
 			</description>
-			<conditions min_audience="41.6799" min_image="0" target_group="0" />
+			<conditions min_audience="23.42" min_image="0" target_group="0" />
 			<data infomercial="1" quality="30" repetitions="1" duration="8" profit="113" penalty="196" infomercial_profit="65" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Tarnschiff1" creator="8605" created_by="SpeedMinister">
@@ -2485,7 +2485,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Experience the original U96 Replica on your dream route. The Maldives in 200m depth. Listen to dream beaches. Preheated berths are part of the basic equipment on board.</en>
 				<pl>Doświadcz oryginalnej repliki U96 na swojej wymarzonej trasie. Malediwy na głębokości 200 metrów. Posłuchaj plaż marzeń. Podgrzewane koje są częścią podstawowego wyposażenia na pokładzie.</pl>
 			</description>
-			<conditions min_audience="33.86" min_image="0" target_group="0" />
+			<conditions min_audience="20.82" min_image="0" target_group="0" />
 			<data infomercial="1" quality="25" repetitions="2" duration="4" profit="138" penalty="207" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Tarnschiff2" creator="8605" created_by="SpeedMinister">
@@ -2499,7 +2499,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Experience the original U96 Replica on your dream route. The Mariana Trench - legendary! But still a bit too deep. Or maybe not? Find it out!</en>
 				<pl>Przeżyj oryginalną replikę U96 na swojej wymarzonej trasie. Rów Mariański - legendarny! Ale wciąż trochę za głęboki. A może jednak nie? Przekonaj się!</pl>
 			</description>
-			<conditions min_audience="33.86" min_image="18" target_group="0" />
+			<conditions min_audience="20.82" min_image="18" target_group="0" />
 			<data infomercial="1" quality="22" repetitions="2" duration="4" profit="146" penalty="194" infomercial_profit="33" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Tarnschiff3" creator="8605" created_by="SpeedMinister">
@@ -2513,7 +2513,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Experience the original U96 Replica on your dream route. Break through blockades. Shore leave from 3 to 5. Be on time. Password: "dive deeper!" Otherwise no admission.</en>
 				<pl>Doświadcz oryginalnej repliki U96 na swojej wymarzonej trasie. Przebij się przez blokady. Wyjście na brzeg od 3 do 5. Bądź na czas. Hasło: „zanurkuj głębiej” W przeciwnym razie brak wstępu.</pl>
 			</description>
-			<conditions min_audience="33.86" min_image="32" target_group="0" />
+			<conditions min_audience="20.82" min_image="32" target_group="0" />
 			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="153" penalty="218" infomercial_profit="13" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Ticketschalter" creator="8605" created_by="SpeedMinister">
@@ -2527,7 +2527,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>We sell tickets to all major events, trade fairs and live concerts. Also special tickets like Back-Stage or On-Stage are available!</en>
 				<pl>Sprzedajemy bilety na wszystkie najważniejsze wydarzenia, targi i koncerty na żywo. Dostępne są również bilety specjalne, takie jak Back-Stage lub On-Stage!</pl>
 			</description>
-			<conditions min_audience="15.63" min_image="0" target_group="0" />
+			<conditions min_audience="14.06" min_image="0" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="250" penalty="345" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-Weinstein" creator="8605" created_by="SpeedMinister">
@@ -2555,7 +2555,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Guide to sincere inner cleansing, tips and tricks, best practices and much more. Contact us for more info! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</en>
 				<pl>Przewodnik po szczerym wewnętrznym oczyszczaniu, porady i wskazówki, najlepsze praktyki i wiele więcej. Skontaktuj się z nami, aby uzyskać więcej informacji! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</pl>
 			</description>
-			<conditions min_audience="26.05" min_image="0" target_group="0" />
+			<conditions min_audience="18.74" min_image="0" target_group="0" />
 			<data infomercial="1" quality="11" repetitions="2" duration="5" profit="185" penalty="320" infomercial_profit="69" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-baumschule-01" creator="8605" created_by="SpeedMinister">
@@ -2609,7 +2609,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Pesticide, fungicide, herbicide. Our plane is ready. We spray your field, your orchard and your garden. Also available for private customers! Just give us a call.</en>
 				<pl>Pestycyd, fungicyd, herbicyd. Nasz samolot jest gotowy. Opryskamy Twoje pole, sad i ogród. Dostępne również dla klientów prywatnych! Wystarczy do nas zadzwonić.</pl>
 			</description>
-			<conditions min_audience="28.65" min_image="0" target_group="0" />
+			<conditions min_audience="19.26" min_image="0" target_group="0" />
 			<data infomercial="1" quality="12" repetitions="1" duration="4" profit="175" penalty="240" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-esel24-02" creator="8605" created_by="SpeedMinister">
@@ -2651,7 +2651,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Sparkling soda, fizzing can, chills for the mouth and throat, super tasty? Dream no more! four4down brings you back to earth!</en>
 				<pl>Gazowana soda, musująca puszka, dreszcze w ustach i gardle, super smaczne? Koniec marzeń! four4down sprowadza Cię z powrotem na ziemię!</pl>
 			</description>
-			<conditions min_audience="23.44" min_image="0" />
+			<conditions min_audience="18.22" min_image="0" />
 			<data infomercial="1" quality="16" repetitions="1" duration="4" profit="193" penalty="320" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-greekhaircut-01" creator="8605" created_by="SpeedMinister" wikidata_id="" comment="updated from apparently newer forum version. old: Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm? / We gif Ouzo for evvry inch hair off cut! Who need hair when can wear helmet?">
@@ -2678,7 +2678,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>The car is a blast! 100% steel! Higher than a truck and wider than long. You can stand upright or stretch out on the back seat. Why still pay rent?</en>
 				<pl>Samochód jest niesamowity! 100% stali! Wyższy niż ciężarówka i szerszy niż długi. Możesz stać prosto lub wyciągnąć się na tylnym siedzeniu. Po co jeszcze płacić czynsz?</pl>
 			</description>
-			<conditions min_audience="26.05" min_image="4" target_group="256" />
+			<conditions min_audience="18.74" min_image="4" target_group="256" />
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="180" penalty="330" infomercial_profit="36" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-happo-01" creator="8605" created_by="SpeedMinister">
@@ -2690,8 +2690,8 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>The dog food with aspartame. Fatten your darling! As the pig, so the dog, your little pet will be round as a hog.</en>
 				<pl>Karma dla psów z aspartamem. Utucz swojego ulubieńca! Jak świnia, tak pies, twój mały pupil będzie okrągły jak wieprz.</pl>
 			</description>
-			<conditions min_audience="10.42" min_image="0" target_group="0" />
-			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="320" penalty="520" infomercial_profit="60" fix_infomercial_profit="1" />
+			<conditions min_audience="9.9" min_image="0" target_group="0" />
+			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="332" penalty="520" infomercial_profit="60" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-haslan-01" creator="8605" created_by="SpeedMinister">
 			<title>
@@ -2716,7 +2716,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>No rainforest will be cleared for our shells! Bullets and more from Hexler and Schorsch!</en>
 				<pl>Żaden las deszczowy nie zostanie wycięty dla naszych pocisków! Pociski i nie tylko od Hexler i Schorsch!</pl>
 			</description>
-			<conditions min_audience="17.19" min_image="4" target_group="256" />
+			<conditions min_audience="15.62" min_image="4" target_group="256" />
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="242" penalty="445" infomercial_profit="65" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-interouter-01" creator="8605" created_by="SpeedMinister">
@@ -2732,7 +2732,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<pl>Miejsca stojące, jedzenie w puszkach* i gaz odurzający sprawiają, że lot jest przyjemny. Piloci są również wyjątkowo wypoczęci. Życzymy udanych wakacji!
 (*za dodatkową opłatą)</pl>
 			</description>
-			<conditions min_audience="23.44" min_image="7" target_group="8" />
+			<conditions min_audience="17.7" min_image="7" target_group="8" />
 			<data infomercial="1" quality="22" repetitions="1" duration="4" profit="185" penalty="300" infomercial_profit="17" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">
@@ -2746,7 +2746,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>New collection at Emperor's: Extremely comfortable to wear, wafer-thin fabric, imaginative cuts. A real eye-catcher! Emperor's New Clothes!</en>
 				<pl>Nowa kolekcja Emperor: Niezwykle wygodne w noszeniu, cienkie jak wafel materiały, fantazyjne kroje. Przyciągają wzrok! Nowe ubrania cesarza!</pl>
 			</description>
-			<conditions min_audience="36.47" min_image="0" target_group="0" />
+			<conditions min_audience="21.34" min_image="0" target_group="0" />
 			<data infomercial="1" quality="21" repetitions="1" duration="3" profit="124" penalty="226" infomercial_profit="22" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-kakteenwunderland-01" creator="8605" created_by="SpeedMinister">
@@ -2774,7 +2774,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Full fish at full prices. Another proof of what a Swabian once said: "No money no fish!"</en>
 				<pl>Całe ryby w pełnych cenach. Kolejny dowód na to, co kiedyś powiedział Szwab: „Bez pieniędzy nie ma ryby!”.</pl>
 			</description>
-			<conditions min_audience="33.86" min_image="0" target_group="0" />
+			<conditions min_audience="20.3" min_image="0" target_group="0" />
 			<data infomercial="1" quality="15" repetitions="1" duration="4" profit="130" penalty="228" infomercial_profit="11" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-malereifarbecht-01" creator="8605" created_by="SpeedMinister">
@@ -2802,7 +2802,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Your software is always error-free? Your colleagues shake their heads about it? Simulate normality! The "bug generator" guarantees 5 bugs per 1000 lines.</en>
 				<pl>Twoje oprogramowanie jest zawsze wolne od błędów? Twoi współpracownicy kręcą głowami? Symuluj normalność! „Generator błędów” gwarantuje 5 błędów na 1000 linii.</pl>
 			</description>
-			<conditions min_audience="39.07" min_image="0" target_group="0" />
+			<conditions min_audience="21.86" min_image="0" target_group="0" />
 			<data infomercial="1" quality="14" repetitions="2" duration="5" profit="118" penalty="241" infomercial_profit="11" fix_infomercial_profit="1" />
 			<availability year_range_to="2000" />
 		</ad>
@@ -2817,7 +2817,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>You don't have an internet connection? You never use USB sticks? You can't keep up with the topic of viruses? Now you can: with the dangerous "virus simulator"!</en>
 				<pl>Nie masz połączenia z Internetem? Nigdy nie korzystasz z pamięci USB? Nie nadążasz za tematem wirusów? Teraz możesz: z niebezpiecznym „symulatorem wirusów”!</pl>
 			</description>
-			<conditions min_audience="39.07" min_image="32" target_group="0" />
+			<conditions min_audience="21.86" min_image="32" target_group="0" />
 			<data infomercial="1" quality="20" repetitions="2" duration="5" profit="172" penalty="220" fix_infomercial_profit="1" />
 			<availability year_range_from="2001" />
 		</ad>
@@ -2846,7 +2846,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Placebotazementamol since 1276. Tradition since the Middle Ages. Charlatans and quacks swear by it! Now new as a pastille.</en>
 				<pl>Placebotazementamol od 1276 roku. Tradycja od średniowiecza. Szarlatani i znachorzy przysięgają na niego! Teraz nowość jako pastylka.</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="0" />
+			<conditions min_audience="17.18" min_image="0" />
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="205" penalty="250" infomercial_profit="18" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-potzblitz-01" creator="8605" created_by="SpeedMinister">
@@ -2874,7 +2874,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Your money is our focus. In our banks we guard it. We defend it against EVERYONE. No exceptions.</en>
 				<pl>Twoje pieniądze są dla nas najważniejsze. Strzeżemy ich w naszych bankach. Bronimy ich przed KAŻDYM. Bez wyjątków.</pl>
 			</description>
-			<conditions min_audience="31.26" min_image="0" target_group="0" />
+			<conditions min_audience="20.3" min_image="0" target_group="0" />
 			<data infomercial="1" quality="18" repetitions="1" duration="6" profit="160" penalty="220" infomercial_profit="23" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-raffgier-02" creator="8605" created_by="SpeedMinister">
@@ -2888,7 +2888,7 @@ Wynajęta Papuga - Jesteśmy równiejsi od innych.</pl>
 				<en>Our insurers will take your money even without any reciprocation at all! Please send it in.</en>
 				<pl>Nasi ubezpieczyciele przyjmą Twoje pieniądze nawet bez żadnej wzajemności! Prosimy o przesłanie.</pl>
 			</description>
-			<conditions min_audience="31.26" min_image="68" target_group="128" />
+			<conditions min_audience="20.3" min_image="68" target_group="128" />
 			<data infomercial="1" quality="27" repetitions="3" duration="4" profit="145" penalty="130" infomercial_profit="23" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="speedminister-ad-rauschebart-01" creator="8605" created_by="SpeedMinister">
@@ -3020,7 +3020,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 				<en>Valvoa the ladies' truck. 460 PS only 350,000 Euro, also available in pink on request. Valvoa reeks off!</en>
 				<pl>Valvoa - damska ciężarówka. 460 PS tylko 350 000 euro, na życzenie dostępny również w kolorze różowym. Valvoa cuchnie!</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="4" target_group="128" />
+			<conditions min_audience="17.7" min_image="4" target_group="128" />
 			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="205" penalty="340" infomercial_profit="47" fix_infomercial_profit="1" />
 			<availability year_range_from="2002" />
 		</ad>
@@ -3033,7 +3033,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 				<en>Valvoa the ladies' truck. 460 PS only 700,000 DEM, on request also in pink. Valvoa reeks off!</en>
 				<pl>Valvoa damska ciężarówka. 460 PS tylko 700 000 DEM, na życzenie również w kolorze różowym. Valvoa cuchnie!</pl>
 			</description>
-			<conditions min_audience="20.84" min_image="4" target_group="128" />
+			<conditions min_audience="17.7" min_image="4" target_group="128" />
 			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="205" penalty="340" infomercial_profit="47" fix_infomercial_profit="1" />
 			<availability year_range_to="2001" />
 		</ad>
@@ -3090,7 +3090,7 @@ Nowomowa &lt;=&gt; Polska, nowy Cyfrosłownik. Teraz jako aplikacja mechaniczna,
 				<en>Only lands on airport runways, always.</en>
 				<pl>Zawsze ląduje tylko na pasach startowych lotniska.</pl>
 			</description>
-			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<conditions min_audience="11.98" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data quality="25" repetitions="1" duration="3" profit="275" penalty="400" fix_infomercial_profit="1" />
 		</ad>
 		<ad guid="c5717ec1-4303-4dd0-8d7b-1229760838fb" creator="" created_by="discord/vicusfeli">
