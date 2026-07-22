@@ -895,7 +895,7 @@ End Function
 
 
 '${.sport:"guid"/id:"name"} - context: all
-Function SEFN_sport:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
+Function SEFN_sport:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local sport:TNewsEventSport
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
@@ -913,7 +913,7 @@ End Function
 
 
 '${.sportleague:"guid"/id:"name"} - context: all
-Function SEFN_sportleague:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
+Function SEFN_sportleague:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local league:TNewsEventSportLeague
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
@@ -931,7 +931,7 @@ End Function
 
 
 '${.sportteam:"guid"/id:"name"} - context: all
-Function SEFN_sportteam:SToken(params:STokenGroup Var, context:SScriptExpressionContext)
+Function SEFN_sportteam:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local team:TNewsEventSportTeam
 	Local token:SToken = params.GetToken(1)
 	Local GUID:String = token.value
