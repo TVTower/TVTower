@@ -1212,7 +1212,7 @@ Type TFigureGenerator
 	End Method
 
 
-	Method _GetMaleBaldnessChance:Int(ageYears:Int, gender:Int)
+	Method _GetBaldnessChance:Int(ageYears:Int, gender:Int)
 		' a more realistic distribution would be the following,
 		' but for "celebs" or "TV appearance"-jobs, people would
 		' more likely wear a wig or do hair transplants instead
@@ -1229,13 +1229,16 @@ Type TFigureGenerator
 		Return 55
 		endrem
 
+		'for now only men can be bald
 		If gender <> 1 Then Return 0
+
 		If ageYears < 30 Then Return 0
 		If ageYears <= 39 Then Return 3
 		If ageYears <= 49 Then Return 7
 		If ageYears <= 59 Then Return 12
 		If ageYears <= 69 Then Return 18
 		If ageYears <= 79 Then Return 24
+
 		Return 30
 	End Method
 	
@@ -1297,7 +1300,7 @@ Type TFigureGenerator
 
 
 		'hair probabilities follow the resolved Fitzpatrick level
-		Local baldnessChance:Int = _GetMaleBaldnessChance(age, gender)
+		Local baldnessChance:Int = _GetBaldnessChance(age, gender)
 		If baldnessChance > 0
 			' use a new PRNG to avoid changing the hair color distribution
 			' when a bald head is generated			
