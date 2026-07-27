@@ -118,135 +118,140 @@
                 <child name="figuregenerator_beard6" x="164" y="176" w="7" h="7" offsetLeft="-16" offsetTop="-19" offsetRight="-17" offsetBottom="-14" />
             </children>
         </spritepack>
-        <figuregeneratorpart sprite="figuregenerator_bodyFemale1" partType="1" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_bodyFemale2" partType="1" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_bodyMale1" partType="1" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_bodyThroat" partType="1" gender="0" age="0" incompletePart="1" />
-        <figuregeneratorpart sprite="figuregenerator_head1" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head2" partType="2" gender="0" age="0" childrenOffsetY="1" offsetY="1" />
-        <figuregeneratorpart sprite="figuregenerator_head3" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head4" partType="2" gender="0" age="0" childrenOffsetY="-1" offsetY="-1" />
-        <figuregeneratorpart sprite="figuregenerator_head5" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head6" partType="2" gender="0" age="0" childrenOffsetY="1" />
-        <figuregeneratorpart sprite="figuregenerator_head7" partType="2" gender="0" age="0" childrenOffsetY="1" />
-        <figuregeneratorpart sprite="figuregenerator_head8" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head9" partType="2" gender="0" age="0" childrenOffsetY="-1" />
-        <figuregeneratorpart sprite="figuregenerator_head10" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head11" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head12" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head13" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head14" partType="2" gender="0" age="0" childrenOffsetY="1" />
-        <figuregeneratorpart sprite="figuregenerator_head15" partType="2" gender="0" age="0" offsetY="-1" />
-        <figuregeneratorpart sprite="figuregenerator_head16" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head17" partType="2" gender="0" age="0" childrenOffsetY="1" />
-        <figuregeneratorpart sprite="figuregenerator_head18" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head19" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_head20" partType="2" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears1" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears2" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears3" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears4" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears5" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears6" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears7" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_ears8" partType="5" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes1" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes2" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes3" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes4" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes5" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes6" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes7" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes8" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes9" partType="3" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_eyes10" partType="3" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale1" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale2" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale3" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale4" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale5" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale6" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale7" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale8" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale9" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale10" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesFemale11" partType="11" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale1" partType="11" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale2" partType="11" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale3" partType="11" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale4" partType="11" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale5" partType="11" gender="1" age="1" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale6" partType="11" gender="1" age="1" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale7" partType="11" gender="1" age="1" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale8" partType="11" gender="1" age="1" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale9" partType="11" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale10" partType="11" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale11" partType="11" gender="1" age="0" compatibleBody="figuregenerator_bodyThroat" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale12" partType="11" gender="1" age="0" compatibleBody="figuregenerator_bodyThroat" />
-        <figuregeneratorpart sprite="figuregenerator_clothesMale13" partType="11" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale1" partType="10" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale2" partType="10" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale3" partType="10" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale4" partType="10" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale5" partType="10" gender="1" age="2" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale6" partType="10" gender="1" age="2" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale7" partType="10" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale8" partType="10" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairMale9" partType="10" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale1" partType="10" gender="2" age="0" hairBack="figuregenerator_hairBackFemale1" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale2" partType="10" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale3" partType="10" gender="2" age="0" hairBack="figuregenerator_hairBackFemale3" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale4" partType="10" gender="2" age="0" hairBack="figuregenerator_hairBackFemale4" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale5" partType="10" gender="2" age="0" hairBack="figuregenerator_hairBackFemale5" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale6" partType="10" gender="2" age="0" hairBack="figuregenerator_hairBackFemale6" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale7" partType="10" gender="2" age="1" hairBack="figuregenerator_hairBackFemale7" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale8" partType="10" gender="2" age="1" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale9" partType="10" gender="2" age="0" hairBack="figuregenerator_hairBackFemale9" />
-        <figuregeneratorpart sprite="figuregenerator_hairFemale10" partType="10" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairBackFemale1" partType="9" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairBackFemale3" partType="9" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairBackFemale4" partType="9" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairBackFemale5" partType="9" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairBackFemale6" partType="9" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_hairBackFemale7" partType="9" gender="2" age="1" />
-        <figuregeneratorpart sprite="figuregenerator_hairBackFemale9" partType="9" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth1" partType="6" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth2" partType="6" gender="2" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth3" partType="6" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth4" partType="6" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth5" partType="6" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth6" partType="6" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth7" partType="6" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_mouth8" partType="6" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_nose1" partType="4" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_nose2" partType="4" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_nose3" partType="4" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_nose4" partType="4" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_nose5" partType="4" gender="0" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_beard1" partType="8" gender="1" age="2" />
-        <figuregeneratorpart sprite="figuregenerator_beard2" partType="8" gender="1" age="2" />
-        <figuregeneratorpart sprite="figuregenerator_beard3" partType="8" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_beard4" partType="8" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_beard5" partType="8" gender="1" age="0" />
-        <figuregeneratorpart sprite="figuregenerator_beard6" partType="8" gender="1" age="0" />
+        <!--
+            figuregeneratorpart age handling:
+            ageMin / ageMax are ages in years.
+            -1 means "no limit".
+        -->
+        <figuregeneratorpart sprite="figuregenerator_bodyFemale1" partType="1" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_bodyFemale2" partType="1" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_bodyMale1" partType="1" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_bodyThroat" partType="1" gender="0" ageMin="-1" ageMax="-1" incompletePart="1" />
+        <figuregeneratorpart sprite="figuregenerator_head1" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head2" partType="2" gender="0" ageMin="-1" ageMax="-1" childrenOffsetY="1" offsetY="1" />
+        <figuregeneratorpart sprite="figuregenerator_head3" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head4" partType="2" gender="0" ageMin="-1" ageMax="-1" childrenOffsetY="-1" offsetY="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head5" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head6" partType="2" gender="0" ageMin="-1" ageMax="-1" childrenOffsetY="1" />
+        <figuregeneratorpart sprite="figuregenerator_head7" partType="2" gender="0" ageMin="-1" ageMax="-1" childrenOffsetY="1" />
+        <figuregeneratorpart sprite="figuregenerator_head8" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head9" partType="2" gender="0" ageMin="-1" ageMax="-1" childrenOffsetY="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head10" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head11" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head12" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head13" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head14" partType="2" gender="0" ageMin="-1" ageMax="-1" childrenOffsetY="1" />
+        <figuregeneratorpart sprite="figuregenerator_head15" partType="2" gender="0" ageMin="-1" ageMax="-1" offsetY="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head16" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head17" partType="2" gender="0" ageMin="-1" ageMax="-1" childrenOffsetY="1" />
+        <figuregeneratorpart sprite="figuregenerator_head18" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head19" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_head20" partType="2" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears1" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears2" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears3" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears4" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears5" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears6" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears7" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_ears8" partType="5" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes1" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes2" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes3" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes4" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes5" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes6" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes7" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes8" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes9" partType="3" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_eyes10" partType="3" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale1" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale2" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale3" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale4" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale5" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale6" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale7" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale8" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale9" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale10" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesFemale11" partType="11" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale1" partType="11" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale2" partType="11" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale3" partType="11" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale4" partType="11" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale5" partType="11" gender="1" ageMin="-1" ageMax="50" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale6" partType="11" gender="1" ageMin="-1" ageMax="50" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale7" partType="11" gender="1" ageMin="-1" ageMax="50" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale8" partType="11" gender="1" ageMin="-1" ageMax="50" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale9" partType="11" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale10" partType="11" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale11" partType="11" gender="1" ageMin="-1" ageMax="-1" compatibleBody="figuregenerator_bodyThroat" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale12" partType="11" gender="1" ageMin="-1" ageMax="-1" compatibleBody="figuregenerator_bodyThroat" />
+        <figuregeneratorpart sprite="figuregenerator_clothesMale13" partType="11" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale1" partType="10" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale2" partType="10" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale3" partType="10" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale4" partType="10" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale5" partType="10" gender="1" ageMin="51" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale6" partType="10" gender="1" ageMin="51" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale7" partType="10" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale8" partType="10" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairMale9" partType="10" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale1" partType="10" gender="2" ageMin="-1" ageMax="-1" hairBack="figuregenerator_hairBackFemale1" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale2" partType="10" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale3" partType="10" gender="2" ageMin="-1" ageMax="-1" hairBack="figuregenerator_hairBackFemale3" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale4" partType="10" gender="2" ageMin="-1" ageMax="-1" hairBack="figuregenerator_hairBackFemale4" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale5" partType="10" gender="2" ageMin="-1" ageMax="-1" hairBack="figuregenerator_hairBackFemale5" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale6" partType="10" gender="2" ageMin="-1" ageMax="-1" hairBack="figuregenerator_hairBackFemale6" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale7" partType="10" gender="2" ageMin="-1" ageMax="50" hairBack="figuregenerator_hairBackFemale7" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale8" partType="10" gender="2" ageMin="-1" ageMax="50" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale9" partType="10" gender="2" ageMin="-1" ageMax="-1" hairBack="figuregenerator_hairBackFemale9" />
+        <figuregeneratorpart sprite="figuregenerator_hairFemale10" partType="10" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairBackFemale1" partType="9" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairBackFemale3" partType="9" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairBackFemale4" partType="9" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairBackFemale5" partType="9" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairBackFemale6" partType="9" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_hairBackFemale7" partType="9" gender="2" ageMin="-1" ageMax="50" />
+        <figuregeneratorpart sprite="figuregenerator_hairBackFemale9" partType="9" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth1" partType="6" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth2" partType="6" gender="2" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth3" partType="6" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth4" partType="6" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth5" partType="6" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth6" partType="6" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth7" partType="6" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_mouth8" partType="6" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_nose1" partType="4" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_nose2" partType="4" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_nose3" partType="4" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_nose4" partType="4" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_nose5" partType="4" gender="0" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_beard1" partType="8" gender="1" ageMin="51" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_beard2" partType="8" gender="1" ageMin="51" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_beard3" partType="8" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_beard4" partType="8" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_beard5" partType="8" gender="1" ageMin="-1" ageMax="-1" />
+        <figuregeneratorpart sprite="figuregenerator_beard6" partType="8" gender="1" ageMin="-1" ageMax="-1" />
 
-        <!-- ============================================================ -->
-        <!-- FIGURE SKIN CONFIG (country/region driven skin tone resolver) -->
-        <!-- ============================================================ -->
+        <!-- =============================================================== -->
+        <!-- FIGURE APPEARANCE CONFIG (country/region driven skin + hair) -->
+        <!-- =============================================================== -->
         <!--
                 mode:
-                    - replace : ersetzt Resolver-Defaults komplett durch XML-Daten
-                    - extend  : laedt zuerst Defaults und erweitert/ueberschreibt dann
+                    - replace : completely replaces resolver defaults with XML data
+                    - extend  : loads defaults first, then extends/overrides them
         -->
-        <figuregeneratorskinconfig mode="replace" />
+        <figuregeneratorappearanceconfig mode="replace" />
 
         <!--
                 PROFILE ATTRIBUTES:
-                    id               : eindeutige Profil-ID
-                    fitzMin/fitzMax   : Fitzpatrick-Bereich (1..6)
-                    undertoneWeights  : Gewichte fuer [neutral,warm,cool,olive]
-                    lumJitterMin/Max  : zufaellige Luminanzabweichung (HSL-L)
-                    satJitterMin/Max  : zufaellige Saettigungsabweichung (HSL-S)
+                    id               : unique profile ID
+                    fitzMin/fitzMax   : Fitzpatrick range (1..6)
+                    undertoneWeights  : weights for [neutral,warm,cool,olive]
+                    lumJitterMin/Max  : random luminance offset (HSL-L)
+                    satJitterMin/Max  : random saturation offset (HSL-S)
         -->
         <figuregeneratorskinprofile id="1" fitzMin="1" fitzMax="3" undertoneWeights="35,35,20,10" lumJitterMin="-0.04" lumJitterMax="0.04" satJitterMin="-0.03" satJitterMax="0.03" />
         <figuregeneratorskinprofile id="2" fitzMin="2" fitzMax="4" undertoneWeights="30,30,15,25" lumJitterMin="-0.04" lumJitterMax="0.03" satJitterMin="-0.03" satJitterMax="0.03" />
@@ -257,35 +262,69 @@
         <figuregeneratorskinprofile id="7" fitzMin="3" fitzMax="5" undertoneWeights="15,35,10,40" lumJitterMin="-0.03" lumJitterMax="0.03" satJitterMin="-0.02" satJitterMax="0.04" />
 
         <!--
-                RULE ATTRIBUTES:
-                    scope          : DEFAULT | REGION | COUNTRY
-                    code           : Schluessel innerhalb des Scopes (z.B. GLOBAL, EU_MED, FR)
-                    profileIDs     : kommagetrennte Profil-IDs
-                    profileWeights : kommagetrennte Gewichte (gleiche Laenge wie profileIDs)
+            HAIR PROFILE ATTRIBUTES:
+                id            : unique profile ID
+                chanceBlonde  : weight for blonde hair
+                chanceBlack   : weight for black hair
+                chanceBrown   : weight for brown hair
+                chanceRed     : weight for red hair
+                chanceCrazy   : weight for unnatural colors
+            Note:
+                - the total should ideally sum up to 100
+                - COUNTRY rules can override REGION rules
         -->
-        <figuregeneratorskinrule scope="DEFAULT" code="GLOBAL" profileIDs="1,2,3" profileWeights="40,35,25" />
-        <figuregeneratorskinrule scope="REGION" code="EU_CENTRAL" profileIDs="1,2,4" profileWeights="45,30,25" />
-        <figuregeneratorskinrule scope="REGION" code="EU_MED" profileIDs="2,4,7" profileWeights="25,50,25" />
-        <figuregeneratorskinrule scope="REGION" code="EAST_ASIA" profileIDs="2,5" profileWeights="55,45" />
-        <figuregeneratorskinrule scope="REGION" code="SOUTH_ASIA" profileIDs="2,3,7" profileWeights="20,40,40" />
-        <figuregeneratorskinrule scope="REGION" code="SUB_SAHARAN" profileIDs="6,3" profileWeights="70,30" />
-        <figuregeneratorskinrule scope="REGION" code="NORTH_AMERICA" profileIDs="1,2,3,4" profileWeights="28,32,20,20" />
-        <figuregeneratorskinrule scope="REGION" code="LATIN_AMERICA" profileIDs="2,4,6" profileWeights="35,40,25" />
-        <figuregeneratorskinrule scope="REGION" code="MENA" profileIDs="4,7,3" profileWeights="35,40,25" />
-        <figuregeneratorskinrule scope="COUNTRY" code="FR" profileIDs="1,2,3,4" profileWeights="20,35,20,25" />
+        <figuregeneratorhairprofile id="1" chanceBlonde="18" chanceBlack="8" chanceBrown="60" chanceRed="12" chanceCrazy="2" />
+        <figuregeneratorhairprofile id="2" chanceBlonde="6" chanceBlack="32" chanceBrown="58" chanceRed="3" chanceCrazy="1" />
+        <figuregeneratorhairprofile id="3" chanceBlonde="1" chanceBlack="84" chanceBrown="13" chanceRed="1" chanceCrazy="1" />
+        <figuregeneratorhairprofile id="4" chanceBlonde="2" chanceBlack="68" chanceBrown="26" chanceRed="2" chanceCrazy="2" />
+        <figuregeneratorhairprofile id="5" chanceBlonde="1" chanceBlack="86" chanceBrown="11" chanceRed="1" chanceCrazy="1" />
+        <figuregeneratorhairprofile id="6" chanceBlonde="12" chanceBlack="20" chanceBrown="61" chanceRed="4" chanceCrazy="3" />
+        <figuregeneratorhairprofile id="7" chanceBlonde="5" chanceBlack="26" chanceBrown="65" chanceRed="2" chanceCrazy="2" />
+        <figuregeneratorhairprofile id="8" chanceBlonde="20" chanceBlack="6" chanceBrown="56" chanceRed="16" chanceCrazy="2" />
+
+        <!--
+            RULE ATTRIBUTES:
+                    target         : SKIN | HAIR
+                    scope          : DEFAULT | REGION | COUNTRY
+                    code           : key within the scope (e.g. GLOBAL, EU_MED, FR)
+                    profileIDs     : comma-separated profile IDs
+                    profileWeights : comma-separated weights (same length as profileIDs)
+        -->
+            <figuregeneratorrule target="SKIN" scope="DEFAULT" code="GLOBAL" profileIDs="1,2,3" profileWeights="40,35,25" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="EU_CENTRAL" profileIDs="1,2,4" profileWeights="45,30,25" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="EU_MED" profileIDs="2,4,7" profileWeights="25,50,25" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="EAST_ASIA" profileIDs="2,5" profileWeights="55,45" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="SOUTH_ASIA" profileIDs="2,3,7" profileWeights="20,40,40" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="SUB_SAHARAN" profileIDs="6,3" profileWeights="70,30" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="NORTH_AMERICA" profileIDs="1,2,3,4" profileWeights="28,32,20,20" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="LATIN_AMERICA" profileIDs="2,4,6" profileWeights="35,40,25" />
+            <figuregeneratorrule target="SKIN" scope="REGION" code="MENA" profileIDs="4,7,3" profileWeights="35,40,25" />
+            <figuregeneratorrule target="SKIN" scope="COUNTRY" code="FR" profileIDs="1,2,3,4" profileWeights="20,35,20,25" />
+
+            <figuregeneratorrule target="HAIR" scope="DEFAULT" code="GLOBAL" profileIDs="1,2,6" profileWeights="30,35,35" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="EU_CENTRAL" profileIDs="1,8" profileWeights="85,15" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="EU_MED" profileIDs="2,1" profileWeights="80,20" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="EAST_ASIA" profileIDs="3" profileWeights="100" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="SOUTH_ASIA" profileIDs="4" profileWeights="100" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="SUB_SAHARAN" profileIDs="5" profileWeights="100" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="NORTH_AMERICA" profileIDs="6,1,2" profileWeights="50,25,25" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="LATIN_AMERICA" profileIDs="7,2" profileWeights="70,30" />
+            <figuregeneratorrule target="HAIR" scope="REGION" code="MENA" profileIDs="2" profileWeights="100" />
+            <figuregeneratorrule target="HAIR" scope="COUNTRY" code="IRL" profileIDs="8,1" profileWeights="60,40" />
+            <figuregeneratorrule target="HAIR" scope="COUNTRY" code="UK" profileIDs="8,1" profileWeights="35,65" />
 
         <!--
                 REGION MAPPING ATTRIBUTES:
-                    region       : Zielregion
-                    countryCodes : kommagetrennte ISO-/Alias-Codes, die auf diese Region zeigen
+                    region       : target region
+                    countryCodes : comma-separated ISO/alias codes mapped to this region
         -->
-        <figuregeneratorskinregion region="EU_CENTRAL" countryCodes="DE,AUT,SUI,NL,DK,SWE,NO,FI,PL,CZ,RU,UK,IRL" />
-        <figuregeneratorskinregion region="EU_MED" countryCodes="FR,IT,ES,PT,GR,TR,AL,HR,RS,BG,RO,HU" />
-        <figuregeneratorskinregion region="EAST_ASIA" countryCodes="CN,PRC,J,JP,KOR,TH,VN,PH,ID,MY,SG" />
-        <figuregeneratorskinregion region="SOUTH_ASIA" countryCodes="IND,PAK" />
-        <figuregeneratorskinregion region="SUB_SAHARAN" countryCodes="GH,UG,MZ,SA,NG,KE,TZ" />
-        <figuregeneratorskinregion region="NORTH_AMERICA" countryCodes="US,USA,CA" />
-        <figuregeneratorskinregion region="LATIN_AMERICA" countryCodes="BRA,AR,MEX,COL,CHL,PER,VEN,ECU,PRY,URY" />
-        <figuregeneratorskinregion region="MENA" countryCodes="EG,SAU,IRN,IRQ,SYR,JOR,LBN,MAR,DZA,TUN,LBY" />
+        <figuregeneratorregion region="EU_CENTRAL" countryCodes="DE,AUT,SUI,NL,DK,SWE,NO,FI,PL,CZ,RU,UK,IRL" />
+        <figuregeneratorregion region="EU_MED" countryCodes="FR,IT,ES,PT,GR,TR,AL,HR,RS,BG,RO,HU" />
+        <figuregeneratorregion region="EAST_ASIA" countryCodes="CN,PRC,J,JP,KOR,TH,VN,PH,ID,MY,SG" />
+        <figuregeneratorregion region="SOUTH_ASIA" countryCodes="IND,PAK" />
+        <figuregeneratorregion region="SUB_SAHARAN" countryCodes="GH,UG,MZ,SA,NG,KE,TZ" />
+        <figuregeneratorregion region="NORTH_AMERICA" countryCodes="US,USA,CA" />
+        <figuregeneratorregion region="LATIN_AMERICA" countryCodes="BRA,AR,MEX,COL,CHL,PER,VEN,ECU,PRY,URY" />
+        <figuregeneratorregion region="MENA" countryCodes="EG,SAU,IRN,IRQ,SYR,JOR,LBN,MAR,DZA,TUN,LBY" />
     </resources>
 </tvt>

@@ -972,14 +972,13 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 			local baseSeed:Int = p.GetGUID().HashCode() + GameRules.randomSeed
 
 			If Not p.faceCode
-				Local ageFlag:Int = 1 'young
+				Local figureAgeYears:Int = Max(18, GetAge())
 				Local appearsYounger:Int = 0
-				'always calculate the flag, for deterministic rand-behaviour
+				'always calculate this, for deterministic rand-behaviour
 				If New SFastRandom(baseSeed + 10).RandomInt(100) < 20 Then appearsYounger = 1
-
-				If GetAge() > 50
-					ageFlag = 2
-					If appearsYounger Then ageFlag = 1
+				If appearsYounger And figureAgeYears > 35
+					Local youngerShift:Int = New SFastRandom(baseSeed + 11).RandomInt(4, 12)
+					figureAgeYears = Max(18, figureAgeYears - youngerShift)
 				EndIf
 			
 
@@ -990,7 +989,7 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 
 				Local generatorSeed:Int = New SFastRandom(baseSeed + 20).RandomInt(0, 2^31 - 1)
 				Local skinTone:SColor8 = FigureGenerator.ResolveSkinToneByCountry(p.countryCode, baseSeed + 15)
-				figure = FigureGenerator.GenerateRandomFigureWithSkinTone(genderFlag, ageFlag, generatorSeed, skinTone, p.countryCode)
+				figure = FigureGenerator.GenerateRandomFigureWithSkinTone(genderFlag, figureAgeYears, generatorSeed, skinTone, p.countryCode)
 				p.faceCode = figure.GetFigureCode()
 			Else
 				Local generatorSeed:Int = New SFastRandom(baseSeed + 20).RandomInt(0, 2^31 - 1)

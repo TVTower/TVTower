@@ -8,7 +8,7 @@ Import "base.util.registry.spriteloader.bmx"
 Import "base.util.fastrandom.bmx"
 
 New TRegistryFigureGeneratorPartLoader.Init()
-New TRegistryFigureGeneratorSkinConfigLoader.Init()
+New TRegistryFigureGeneratorAppearanceConfigLoader.Init()
 
 Global FigureGenerator:TFigureGenerator = New TFigureGenerator
 
@@ -62,9 +62,21 @@ Type TFigureSkinProfile
 End Type
 
 
-'Maps a country/region/default scope to weighted skin profile IDs,
-'so skin generation can pick a profile by deterministic random roll.
-Type TFigureSkinRule
+'Defines one weighted hair-color distribution profile that can be
+'selected by default, region or country rules.
+Type TFigureHairProfile
+	Field id:Int
+	Field chanceBlonde:Int
+	Field chanceBlack:Int
+	Field chanceBrown:Int
+	Field chanceRed:Int
+	Field chanceCrazy:Int
+End Type
+
+
+'Maps a default/region/country scope to weighted profile IDs.
+'Used by both skin and hair profile selection.
+Type TFigureGeneratorRule
 	Field profileIDs:Int[]
 	Field profileWeights:Int[]
 
@@ -96,13 +108,15 @@ Type TFigureSkinRule
 End Type
 
 
-'Central resolver for country->region mapping and rule/profile lookup,
-'used by FigureGenerator to resolve a final skin tone color.
-Type TFigureSkinResolver
+'Central resolver for country->region mapping and appearance-related
+'rule/profile lookup used by FigureGenerator for skin and hair.
+Type TFigureAppearanceResolver
 	Field countryToSkinRegion:TMap = CreateMap()
 	Field skinProfiles:TIntMap = New TIntMap
 	Field skinRules:TIntMap = New TIntMap
-	Field skinConfigInitialized:Int = False
+	Field hairProfiles:TIntMap = New TIntMap
+	Field hairRules:TIntMap = New TIntMap
+	Field appearanceConfigInitialized:Int = False
 
 	Const SKIN_UNDERTONE_NEUTRAL:Int = 0
 	Const SKIN_UNDERTONE_WARM:Int = 1
@@ -111,12 +125,12 @@ Type TFigureSkinResolver
 
 
 	Method ResolveSkinTone:SColor8(countryCode:String, randomSeed:Int)
-		_EnsureSkinConfig()
+		_EnsureAppearanceConfig()
 
 		Local unifiedCode:String = _GetUnifiedCountryCode(countryCode)
 		Local regionCode:String = GetSkinRegionForCountry(unifiedCode)
 
-		Local rule:TFigureSkinRule = _GetSkinRule("COUNTRY", unifiedCode)
+		Local rule:TFigureGeneratorRule = _GetSkinRule("COUNTRY", unifiedCode)
 		If Not rule And regionCode <> "" Then rule = _GetSkinRule("REGION", regionCode)
 		If Not rule Then rule = _GetSkinRule("DEFAULT", "GLOBAL")
 		Return _ResolveSkinToneFromRule(rule, randomSeed)
@@ -124,15 +138,37 @@ Type TFigureSkinResolver
 
 
 	Method ResolveSkinToneByRegion:SColor8(regionCode:String, randomSeed:Int)
-		_EnsureSkinConfig()
+		_EnsureAppearanceConfig()
 		Local unifiedRegion:String = regionCode.ToUpper()
-		Local rule:TFigureSkinRule = _GetSkinRule("REGION", unifiedRegion)
+		Local rule:TFigureGeneratorRule = _GetSkinRule("REGION", unifiedRegion)
 		If Not rule Then rule = _GetSkinRule("DEFAULT", "GLOBAL")
 		Return _ResolveSkinToneFromRule(rule, randomSeed)
 	End Method
 
 
-	Method _ResolveSkinToneFromRule:SColor8(rule:TFigureSkinRule, randomSeed:Int)
+	Method ResolveHairProfileByCountry:TFigureHairProfile(countryCode:String, randomSeed:Int)
+		_EnsureAppearanceConfig()
+
+		Local unifiedCode:String = _GetUnifiedCountryCode(countryCode)
+		Local regionCode:String = GetSkinRegionForCountry(unifiedCode)
+
+		Local rule:TFigureGeneratorRule = _GetHairRule("COUNTRY", unifiedCode)
+		If Not rule And regionCode <> "" Then rule = _GetHairRule("REGION", regionCode)
+		If Not rule Then rule = _GetHairRule("DEFAULT", "GLOBAL")
+		Return _ResolveHairProfileFromRule(rule, randomSeed)
+	End Method
+
+
+	Method ResolveHairProfileByRegion:TFigureHairProfile(regionCode:String, randomSeed:Int)
+		_EnsureAppearanceConfig()
+		Local unifiedRegion:String = regionCode.ToUpper()
+		Local rule:TFigureGeneratorRule = _GetHairRule("REGION", unifiedRegion)
+		If Not rule Then rule = _GetHairRule("DEFAULT", "GLOBAL")
+		Return _ResolveHairProfileFromRule(rule, randomSeed)
+	End Method
+
+
+	Method _ResolveSkinToneFromRule:SColor8(rule:TFigureGeneratorRule, randomSeed:Int)
 
 		If Not rule
 			Return _GetBaseSkinToneForFitzpatrick(3)
@@ -156,8 +192,19 @@ Type TFigureSkinResolver
 	End Method
 
 
+	Method _ResolveHairProfileFromRule:TFigureHairProfile(rule:TFigureGeneratorRule, randomSeed:Int)
+		If Not rule Then Return Null
+
+		Local profileID:Int = rule.GetRandomProfileID(randomSeed + 300)
+		Local profile:TFigureHairProfile = TFigureHairProfile(hairProfiles.ValueForKey(profileID))
+		If profile Then Return profile
+
+		Return TFigureHairProfile(hairProfiles.ValueForKey(1))
+	End Method
+
+
 	Method GetSkinRegionForCountry:String(countryCode:String)
-		_EnsureSkinConfig()
+		_EnsureAppearanceConfig()
 
 		countryCode = _GetUnifiedCountryCode(countryCode).ToUpper()
 		Local regionCode:String = String(countryToSkinRegion.ValueForKey(countryCode))
@@ -167,7 +214,7 @@ Type TFigureSkinResolver
 	End Method
 
 
-	Method AddSkinProfile:TFigureSkinResolver(profile:TFigureSkinProfile)
+	Method AddSkinProfile:TFigureAppearanceResolver(profile:TFigureSkinProfile)
 		If profile
 			skinProfiles.Insert(profile.id, profile)
 		EndIf
@@ -175,7 +222,7 @@ Type TFigureSkinResolver
 	End Method
 
 
-	Method AddSkinProfileDefinition:TFigureSkinResolver(id:Int, fitzMin:Int, fitzMax:Int, undertoneWeights:Int[], lumJitterMin:Float, lumJitterMax:Float, satJitterMin:Float, satJitterMax:Float)
+	Method AddSkinProfileDefinition:TFigureAppearanceResolver(id:Int, fitzMin:Int, fitzMax:Int, undertoneWeights:Int[], lumJitterMin:Float, lumJitterMax:Float, satJitterMin:Float, satJitterMax:Float)
 		Local p:TFigureSkinProfile = New TFigureSkinProfile
 		p.id = id
 		p.fitzMin = fitzMin
@@ -189,8 +236,8 @@ Type TFigureSkinResolver
 	End Method
 
 
-	Method AddSkinRule:TFigureSkinResolver(scope:String, code:String, profileIDs:Int[], profileWeights:Int[])
-		Local rule:TFigureSkinRule = New TFigureSkinRule
+	Method AddSkinRule:TFigureAppearanceResolver(scope:String, code:String, profileIDs:Int[], profileWeights:Int[])
+		Local rule:TFigureGeneratorRule = New TFigureGeneratorRule
 		rule.profileIDs = profileIDs
 		rule.profileWeights = profileWeights
 		skinRules.Insert(_GetSkinRuleLookupKey(scope, code), rule)
@@ -198,13 +245,42 @@ Type TFigureSkinResolver
 	End Method
 
 
-	Method SetCountrySkinRegion:TFigureSkinResolver(countryCode:String, regionCode:String)
+	Method AddHairProfile:TFigureAppearanceResolver(profile:TFigureHairProfile)
+		If profile
+			hairProfiles.Insert(profile.id, profile)
+		EndIf
+		Return Self
+	End Method
+
+
+	Method AddHairProfileDefinition:TFigureAppearanceResolver(id:Int, chanceBlonde:Int, chanceBlack:Int, chanceBrown:Int, chanceRed:Int, chanceCrazy:Int)
+		Local profile:TFigureHairProfile = New TFigureHairProfile
+		profile.id = id
+		profile.chanceBlonde = chanceBlonde
+		profile.chanceBlack = chanceBlack
+		profile.chanceBrown = chanceBrown
+		profile.chanceRed = chanceRed
+		profile.chanceCrazy = chanceCrazy
+		Return AddHairProfile(profile)
+	End Method
+
+
+	Method AddHairRule:TFigureAppearanceResolver(scope:String, code:String, profileIDs:Int[], profileWeights:Int[])
+		Local rule:TFigureGeneratorRule = New TFigureGeneratorRule
+		rule.profileIDs = profileIDs
+		rule.profileWeights = profileWeights
+		hairRules.Insert(_GetSkinRuleLookupKey(scope, code), rule)
+		Return Self
+	End Method
+
+
+	Method SetCountrySkinRegion:TFigureAppearanceResolver(countryCode:String, regionCode:String)
 		countryToSkinRegion.Insert(_GetUnifiedCountryCode(countryCode).ToUpper(), regionCode.ToUpper())
 		Return Self
 	End Method
 
 
-	Method SetCountriesSkinRegion:TFigureSkinResolver(regionCode:String, countryCodes:String[])
+	Method SetCountriesSkinRegion:TFigureAppearanceResolver(regionCode:String, countryCodes:String[])
 		For Local code:String = EachIn countryCodes
 			SetCountrySkinRegion(code, regionCode)
 		Next
@@ -212,30 +288,34 @@ Type TFigureSkinResolver
 	End Method
 
 
-	Method BeginXmlSkinConfig:TFigureSkinResolver(replaceDefaults:Int = True)
+	Method BeginXmlAppearanceConfig:TFigureAppearanceResolver(replaceDefaults:Int = True)
 		If replaceDefaults
 			skinProfiles.Clear()
 			skinRules.Clear()
+			hairProfiles.Clear()
+			hairRules.Clear()
 			countryToSkinRegion.Clear()
-		ElseIf Not skinConfigInitialized
-			_LoadDefaultSkinConfig()
+		ElseIf Not appearanceConfigInitialized
+			_LoadDefaultAppearanceConfig()
 		EndIf
 
-		skinConfigInitialized = True
+		appearanceConfigInitialized = True
 		Return Self
 	End Method
 
 
-	Method _EnsureSkinConfig:Int()
-		If skinConfigInitialized Then Return True
-		_LoadDefaultSkinConfig()
+	Method _EnsureAppearanceConfig:Int()
+		If appearanceConfigInitialized Then Return True
+		_LoadDefaultAppearanceConfig()
 		Return True
 	End Method
 
 
-	Method _LoadDefaultSkinConfig:Int()
+	Method _LoadDefaultAppearanceConfig:Int()
 		skinProfiles.Clear()
 		skinRules.Clear()
+		hairProfiles.Clear()
+		hairRules.Clear()
 		countryToSkinRegion.Clear()
 
 		'Profile 1: light (Fitzpatrick I-III), neutral to warm
@@ -275,6 +355,28 @@ Type TFigureSkinResolver
 		' France because of its diverse population and Mediterranean influence
 		AddSkinRule("COUNTRY", "FR", [1, 2, 3, 4], [20, 35, 20, 25])
 
+		' Hair profiles define direct color-weight distributions.
+		AddHairProfileDefinition(1, 18, 8, 60, 12, 2)   'northern / central european
+		AddHairProfileDefinition(2, 6, 32, 58, 3, 1)    'mediterranean / mena
+		AddHairProfileDefinition(3, 1, 84, 13, 1, 1)    'east asian
+		AddHairProfileDefinition(4, 2, 68, 26, 2, 2)    'south asian
+		AddHairProfileDefinition(5, 1, 86, 11, 1, 1)    'sub-saharan
+		AddHairProfileDefinition(6, 12, 20, 61, 4, 3)   'north american mixed
+		AddHairProfileDefinition(7, 5, 26, 65, 2, 2)    'latin american mixed
+		AddHairProfileDefinition(8, 20, 6, 56, 16, 2)   'irish / british red accent
+
+		AddHairRule("DEFAULT", "GLOBAL", [1, 2, 6], [30, 35, 35])
+		AddHairRule("REGION", "EU_CENTRAL", [1, 8], [85, 15])
+		AddHairRule("REGION", "EU_MED", [2, 1], [80, 20])
+		AddHairRule("REGION", "EAST_ASIA", [3], [100])
+		AddHairRule("REGION", "SOUTH_ASIA", [4], [100])
+		AddHairRule("REGION", "SUB_SAHARAN", [5], [100])
+		AddHairRule("REGION", "NORTH_AMERICA", [6, 1, 2], [50, 25, 25])
+		AddHairRule("REGION", "LATIN_AMERICA", [7, 2], [70, 30])
+		AddHairRule("REGION", "MENA", [2], [100])
+		AddHairRule("COUNTRY", "IRL", [8, 1], [60, 40])
+		AddHairRule("COUNTRY", "UK", [8, 1], [35, 65])
+
 		' predefined country to region mappings
 		SetCountriesSkinRegion("EU_CENTRAL", ["DE", "AUT", "SUI", "NL", "DK", "SWE", "NO", "FI", "PL", "CZ", "RU", "UK", "IRL"])
 		SetCountriesSkinRegion("EU_MED", ["FR", "IT", "ES", "PT", "GR", "TR", "AL", "HR", "RS", "BG", "RO", "HU"])
@@ -285,7 +387,7 @@ Type TFigureSkinResolver
 		SetCountriesSkinRegion("LATIN_AMERICA", ["BRA", "AR", "MEX", "COL", "CHL", "PER", "VEN", "ECU", "PRY", "URY"])
 		SetCountriesSkinRegion("MENA", ["EG", "SAU", "IRN", "IRQ", "SYR", "JOR", "LBN", "MAR", "DZA", "TUN", "LBY"])
 
-		skinConfigInitialized = True
+		appearanceConfigInitialized = True
 		Return True
 	End Method
 
@@ -295,9 +397,15 @@ Type TFigureSkinResolver
 	End Method
 
 
-	Method _GetSkinRule:TFigureSkinRule(scope:String, code:String)
+	Method _GetSkinRule:TFigureGeneratorRule(scope:String, code:String)
 		If code = "" Then Return Null
-		Return TFigureSkinRule(skinRules.ValueForKey(_GetSkinRuleLookupKey(scope, code)))
+		Return TFigureGeneratorRule(skinRules.ValueForKey(_GetSkinRuleLookupKey(scope, code)))
+	End Method
+
+
+	Method _GetHairRule:TFigureGeneratorRule(scope:String, code:String)
+		If code = "" Then Return Null
+		Return TFigureGeneratorRule(hairRules.ValueForKey(_GetSkinRuleLookupKey(scope, code)))
 	End Method
 
 
@@ -383,12 +491,12 @@ End Type
 
 
 
-'===== FIGURE SKIN CONFIG LOADER =====
-'loader caring about skin-config tags for the figure generator
-Type TRegistryFigureGeneratorSkinConfigLoader Extends TRegistryBaseLoader
+'===== FIGURE APPEARANCE CONFIG LOADER =====
+'loader caring about appearance-config tags for the figure generator
+Type TRegistryFigureGeneratorAppearanceConfigLoader Extends TRegistryBaseLoader
 	Method Init:Int()
-		name = "FigureGeneratorSkinConfig"
-		resourceNames = "figuregeneratorskinconfig|figuregeneratorskinprofile|figuregeneratorskinrule|figuregeneratorskinregion"
+		name = "FigureGeneratorAppearanceConfig"
+		resourceNames = "figuregeneratorappearanceconfig|figuregeneratorskinprofile|figuregeneratorhairprofile|figuregeneratorrule|figuregeneratorregion"
 		If Not registered Then Register()
 	End Method
 
@@ -403,16 +511,19 @@ Type TRegistryFigureGeneratorSkinConfigLoader Extends TRegistryBaseLoader
 		data.AddString("nodeName", node.GetName().ToLower())
 
 		Select node.GetName().ToLower()
-			Case "figuregeneratorskinconfig"
+			Case "figuregeneratorappearanceconfig"
 				TXmlHelper.LoadValuesToData(node, data, ["mode"])
 
 			Case "figuregeneratorskinprofile"
 				TXmlHelper.LoadValuesToData(node, data, ["id", "fitzMin", "fitzMax", "undertoneWeights", "lumJitterMin", "lumJitterMax", "satJitterMin", "satJitterMax"])
 
-			Case "figuregeneratorskinrule"
-				TXmlHelper.LoadValuesToData(node, data, ["scope", "code", "profileIDs", "profileWeights"])
+			Case "figuregeneratorhairprofile"
+				TXmlHelper.LoadValuesToData(node, data, ["id", "chanceBlonde", "chanceBlack", "chanceBrown", "chanceRed", "chanceCrazy"])
 
-			Case "figuregeneratorskinregion"
+			Case "figuregeneratorrule"
+				TXmlHelper.LoadValuesToData(node, data, ["target", "scope", "code", "profileIDs", "profileWeights"])
+
+			Case "figuregeneratorregion"
 				TXmlHelper.LoadValuesToData(node, data, ["region", "countryCodes"])
 
 			Default
@@ -424,13 +535,15 @@ Type TRegistryFigureGeneratorSkinConfigLoader Extends TRegistryBaseLoader
 
 
 	Method GetNameFromConfig:String(data:TData)
-		Local nodeName:String = data.GetString("nodeName", "figuregeneratorskinconfig")
+		Local nodeName:String = data.GetString("nodeName", "figuregeneratorappearanceconfig")
 		Select nodeName
 			Case "figuregeneratorskinprofile"
 				Return nodeName + "-" + data.GetString("id", "0")
-			Case "figuregeneratorskinrule"
-				Return nodeName + "-" + data.GetString("scope", "") + "-" + data.GetString("code", "")
-			Case "figuregeneratorskinregion"
+			Case "figuregeneratorhairprofile"
+				Return nodeName + "-" + data.GetString("id", "0")
+			Case "figuregeneratorrule"
+				Return nodeName + "-" + data.GetString("target", "") + "-" + data.GetString("scope", "") + "-" + data.GetString("code", "")
+			Case "figuregeneratorregion"
 				Return nodeName + "-" + data.GetString("region", "")
 			Default
 				Return nodeName
@@ -439,17 +552,17 @@ Type TRegistryFigureGeneratorSkinConfigLoader Extends TRegistryBaseLoader
 
 
 	Method LoadFromConfig:Object(data:TData, resourceName:String)
-		Local resolver:TFigureSkinResolver = FigureGenerator.skinResolver
+		Local resolver:TFigureAppearanceResolver = FigureGenerator.appearanceResolver
 		If Not resolver Then Return Null
 
 		Local nodeName:String = data.GetString("nodeName", "")
 		Select nodeName
-			Case "figuregeneratorskinconfig"
+			Case "figuregeneratorappearanceconfig"
 				Local mode:String = data.GetString("mode", "replace").ToLower()
 				If mode = "extend"
-					resolver.BeginXmlSkinConfig(False)
+					resolver.BeginXmlAppearanceConfig(False)
 				Else
-					resolver.BeginXmlSkinConfig(True)
+					resolver.BeginXmlAppearanceConfig(True)
 				EndIf
 
 			Case "figuregeneratorskinprofile"
@@ -464,15 +577,35 @@ Type TRegistryFigureGeneratorSkinConfigLoader Extends TRegistryBaseLoader
 					data.GetFloat("satJitterMax", 0.02) ..
 				)
 
-			Case "figuregeneratorskinrule"
-				resolver.AddSkinRule( ..
-					data.GetString("scope", "REGION"), ..
-					data.GetString("code", "GLOBAL"), ..
-					_ParseIntArray(data.GetString("profileIDs", "")), ..
-					_ParseIntArray(data.GetString("profileWeights", "")) ..
+			Case "figuregeneratorhairprofile"
+				resolver.AddHairProfileDefinition( ..
+					data.GetInt("id", 0), ..
+					data.GetInt("chanceBlonde", 0), ..
+					data.GetInt("chanceBlack", 0), ..
+					data.GetInt("chanceBrown", 0), ..
+					data.GetInt("chanceRed", 0), ..
+					data.GetInt("chanceCrazy", 0) ..
 				)
 
-			Case "figuregeneratorskinregion"
+			Case "figuregeneratorrule"
+				Local target:String = data.GetString("target", "SKIN").ToUpper()
+				If target = "HAIR"
+					resolver.AddHairRule( ..
+						data.GetString("scope", "REGION"), ..
+						data.GetString("code", "GLOBAL"), ..
+						_ParseIntArray(data.GetString("profileIDs", "")), ..
+						_ParseIntArray(data.GetString("profileWeights", "")) ..
+					)
+				Else
+					resolver.AddSkinRule( ..
+						data.GetString("scope", "REGION"), ..
+						data.GetString("code", "GLOBAL"), ..
+						_ParseIntArray(data.GetString("profileIDs", "")), ..
+						_ParseIntArray(data.GetString("profileWeights", "")) ..
+					)
+				EndIf
+
+			Case "figuregeneratorregion"
 				resolver.SetCountriesSkinRegion( ..
 					data.GetString("region", "GLOBAL"), ..
 					_ParseStringArray(data.GetString("countryCodes", "")) ..
@@ -510,7 +643,7 @@ End Type
 Type TFigureGenerator
 	Field registeredParts:TObjectList[11]
 	Field maxPartDimension:SVec2I
-	Field skinResolver:TFigureSkinResolver = New TFigureSkinResolver
+	Field appearanceResolver:TFigureAppearanceResolver = New TFigureAppearanceResolver
 
 	'draw order:
 	'       1,    2,     3,    4,     5,    6,     7,    8,       9,    10, 11
@@ -669,7 +802,7 @@ Type TFigureGenerator
 		Local index:Int
 		For Local p:TFigureGeneratorPart = EachIn registeredParts[partType -1]
 			If p.gender <> 0 And p.gender <> gender Then Continue
-			If p.age <> 0 And p.age <> age Then Continue
+			If Not p.IsAgeMatching(age) Then Continue
 			If Not includeIncompleteParts And p.incompletePart Then Continue
 	
 			If index >= filteredParts.Length
@@ -823,11 +956,11 @@ Type TFigureGenerator
 
 			' gender:age:seed -> random skintone, gender, random age, seed
 			ElseIf subCodes.Length = 3
-				Return GenerateRandomFigure(0, Int(subCodes[0]), Int(subCodes[1]), Int(subCodes[2]))
+				Return GenerateRandomFigure(0, Int(subCodes[0]), _NormalizeLegacyEnumAgeToYears(Int(subCodes[1])), Int(subCodes[2]))
 
 			' gender:age:skinTone:seed -> skinTone, gender, age
 			ElseIf subCodes.Length >= 4
-				Return GenerateRandomFigure(Int(subCodes[2]), Int(subCodes[0]), Int(subCodes[1]), Int(subCodes[3]))
+				Return GenerateRandomFigure(Int(subCodes[2]), Int(subCodes[0]), _NormalizeLegacyEnumAgeToYears(Int(subCodes[1])), Int(subCodes[3]))
 			EndIf
 		Else
 			Local fig:TFigureGeneratorFigure = New TFigureGeneratorFigure
@@ -836,7 +969,7 @@ Type TFigureGenerator
 			Local partStartIndex:Int = 4
 			
 			fig.gender = Int(subCodes[0])
-			fig.age = Int(subCodes[1])
+			fig.age = _NormalizeLegacyEnumAgeToYears(Int(subCodes[1]))
 			'ethnicity and skinTone in one String...
 			Local ethnicityAndSkinTone:String[] = subCodes[2].Split("#")
 			fig.ethnicity = Int(ethnicityAndSkinTone[0])
@@ -846,6 +979,9 @@ Type TFigureGenerator
 			Else
 				skinTone = TColor.clWhite
 			EndIf
+
+			fig.seed = Int(subCodes[3])
+
 
 			Local defaultColor:SColor8 = New SColor8(255,255,255,255) 'full alpha, no tinting
 
@@ -913,9 +1049,9 @@ Type TFigureGenerator
 		Local fig:TFigureGeneratorFigure = GenerateRandomFigure(TFigureGenerator.ETHNICITY_CAUCASIAN, gender, age, randomSeed)
 		'Build the full config using the externally resolved skin tone so
 		'hair chances and skin color are based on the same Fitzpatrick source.
-		If regionHint = "" And countryCode Then regionHint = skinResolver.GetSkinRegionForCountry(countryCode)
+		If regionHint = "" And countryCode Then regionHint = appearanceResolver.GetSkinRegionForCountry(countryCode)
 		If skinTone
-			fig.config = GetRandomConfig(fig.ethnicity, fig.gender, fig.age, randomSeed, New TColor(skinTone), regionHint)
+			fig.config = GetRandomConfig(fig.ethnicity, fig.gender, fig.age, randomSeed, New TColor(skinTone), regionHint, countryCode)
 			fig.SetSkinTone(skinTone, True)
 		Else
 			fig.Randomize(randomSeed)
@@ -933,11 +1069,11 @@ Type TFigureGenerator
 
 		If normalizedScope = "REGION"
 			regionHint = code.ToUpper()
-			resolvedSkinTone = skinResolver.ResolveSkinToneByRegion(regionHint, randomSeed + 15)
+			resolvedSkinTone = appearanceResolver.ResolveSkinToneByRegion(regionHint, randomSeed + 15)
 		Else
 			countryCode = code
 			resolvedSkinTone = ResolveSkinToneByCountry(countryCode, randomSeed + 15)
-			regionHint = skinResolver.GetSkinRegionForCountry(countryCode)
+			regionHint = appearanceResolver.GetSkinRegionForCountry(countryCode)
 		EndIf
 
 		Return GenerateRandomFigureWithSkinTone(gender, age, randomSeed, resolvedSkinTone, countryCode, regionHint)
@@ -945,7 +1081,14 @@ Type TFigureGenerator
 
 
 	Method ResolveSkinToneByCountry:SColor8(countryCode:String, randomSeed:Int)
-		Return skinResolver.ResolveSkinTone(countryCode, randomSeed)
+		Return appearanceResolver.ResolveSkinTone(countryCode, randomSeed)
+	End Method
+
+
+	Method _NormalizeLegacyEnumAgeToYears:Int(ageYears:Int)
+		If ageYears = 1 Then Return 30
+		If ageYears = 2 Then Return 58
+		Return ageYears
 	End Method
 	
 
@@ -955,7 +1098,8 @@ Type TFigureGenerator
 		' do not change for these attributes)
 		If gender < 1 or gender > 2 Then gender = New SFastRandom(randomSeed + 1).RandomInt(1,2)
 		If ethnicity < 0 Or ethnicity > 3 Then ethnicity = New SFastRandom(randomSeed + 2).RandomInt(0,3)
-		If age < 1 or age > 2 Then age = New SFastRandom(randomSeed + 3).RandomInt(1,2)
+		If age <= 0 Then age = New SFastRandom(randomSeed + 3).RandomInt(18,75)
+		If age > 120 Then age = 120
 
 		' now gender and age are assured
 		Local fig:TFigureGeneratorFigure = New TFigureGeneratorFigure
@@ -1012,7 +1156,7 @@ Type TFigureGenerator
 		EndSelect
 
 		Local fitzpatrick:Int = fastRandom.RandomInt(fitzMin, fitzMax)
-		Local mixColor:SColor8 = skinResolver._GetBaseSkinToneForFitzpatrick(fitzpatrick)
+		Local mixColor:SColor8 = appearanceResolver._GetBaseSkinToneForFitzpatrick(fitzpatrick)
 
 		' Keep a small variation to avoid flat-looking repeated output.
 		If ethnicity = TFigureGenerator.ETHNICITY_ALIEN
@@ -1033,7 +1177,7 @@ Type TFigureGenerator
 		Local bestLevel:Int = 3
 		Local bestDistance:Int = 2147483647
 		For Local i:Int = 1 To 6
-			Local tone:SColor8 = skinResolver._GetBaseSkinToneForFitzpatrick(i)
+			Local tone:SColor8 = appearanceResolver._GetBaseSkinToneForFitzpatrick(i)
 			Local distance:Int = Abs(Int(skinTone.r) - Int(tone.r)) + Abs(Int(skinTone.g) - Int(tone.g)) + Abs(Int(skinTone.b) - Int(tone.b))
 			If distance < bestDistance
 				bestDistance = distance
@@ -1043,9 +1187,60 @@ Type TFigureGenerator
 
 		Return bestLevel
 	End Method
+
+
+	Method _GetGreyHairChance:Int(ageYears:Int, gender:Int)
+		If ageYears <= 0 Then Return 0
+
+		' Females
+		If gender = 2
+			If ageYears < 38 Then Return 0
+			If ageYears <= 45 Then Return 6
+			If ageYears <= 55 Then Return 15
+			If ageYears <= 65 Then Return 32
+			If ageYears <= 75 Then Return 48
+			Return 62
+		' Males
+		Else
+			If ageYears < 35 Then Return 1
+			If ageYears <= 45 Then Return 10
+			If ageYears <= 55 Then Return 22
+			If ageYears <= 65 Then Return 38
+			If ageYears <= 75 Then Return 52
+			Return 65
+		EndIf
+	End Method
+
+
+	Method _GetMaleBaldnessChance:Int(ageYears:Int, gender:Int)
+		' a more realistic distribution would be the following,
+		' but for "celebs" or "TV appearance"-jobs, people would
+		' more likely wear a wig or do hair transplants instead
+		' of becoming bald.
+		' also some hair types are "half bald" already.
+		rem
+		If gender <> 1 Then Return 0
+		If ageYears < 30 Then Return 0
+		If ageYears <= 39 Then Return 5
+		If ageYears <= 49 Then Return 12
+		If ageYears <= 59 Then Return 22
+		If ageYears <= 69 Then Return 35
+		If ageYears <= 79 Then Return 46
+		Return 55
+		endrem
+
+		If gender <> 1 Then Return 0
+		If ageYears < 30 Then Return 0
+		If ageYears <= 39 Then Return 3
+		If ageYears <= 49 Then Return 7
+		If ageYears <= 59 Then Return 12
+		If ageYears <= 69 Then Return 18
+		If ageYears <= 79 Then Return 24
+		Return 30
+	End Method
 	
 	
-	Method GetRandomConfig:TFigureGeneratorFigureConfig(ethnicity:Int, gender:Int, age:Int, randomSeed:Int, forcedSkinTone:TColor = Null, regionHint:String = "")
+	Method GetRandomConfig:TFigureGeneratorFigureConfig(ethnicity:Int, gender:Int, age:Int, randomSeed:Int, forcedSkinTone:TColor = Null, regionHint:String = "", countryCode:String = "")
 		Local config:TFigureGeneratorFigureConfig = New TFigureGeneratorFigureConfig
 
 		' assign the skin tone base, and after body part creation assign
@@ -1095,7 +1290,6 @@ Type TFigureGenerator
 			If part
 				'got a gender specific part? use for rest
 				If part.gender <> 0 Then gender = part.gender
-				If part.age <> 0 Then age = part.age
 			EndIf
 			
 			config.SetPart(partType, part)
@@ -1103,60 +1297,54 @@ Type TFigureGenerator
 
 
 		'hair probabilities follow the resolved Fitzpatrick level
-		Local fastRandom:SFastRandom = New SFastRandom(randomSeed + 123)
+		Local baldnessChance:Int = _GetMaleBaldnessChance(age, gender)
+		If baldnessChance > 0
+			' use a new PRNG to avoid changing the hair color distribution
+			' when a bald head is generated			
+			If New SFastRandom(randomSeed + 124).RandomInt(100) < baldnessChance
+				config.SetPart(TFigureGeneratorPart.PART_HAIR_FRONT, Null)
+				config.SetPart(TFigureGeneratorPart.PART_HAIR_BACK, Null)
+			EndIf
+		EndIf
+
+		Local hairRandom:SFastRandom = New SFastRandom(randomSeed + 123)
 		Local chanceBlonde:Int
 		Local chanceBlack:Int
 		Local chanceBrown:Int
 		Local chanceRed:Int
 		Local chanceCrazy:Int
 		Local fitzpatrickLevel:Int = GetClosestFitzpatrickLevel(config.skinTone)
+		Local hairProfile:TFigureHairProfile
+		If countryCode
+			hairProfile = appearanceResolver.ResolveHairProfileByCountry(countryCode, randomSeed + 223)
+		ElseIf regionHint
+			hairProfile = appearanceResolver.ResolveHairProfileByRegion(regionHint, randomSeed + 223)
+		EndIf
 
-		Select fitzpatrickLevel
-			Case 1
-				chanceBlonde = 32; chanceBlack = 6;  chanceBrown = 54; chanceRed = 6; chanceCrazy = 2
-			Case 2
-				chanceBlonde = 22; chanceBlack = 10; chanceBrown = 60; chanceRed = 6; chanceCrazy = 2
-			Case 3
-				chanceBlonde = 10; chanceBlack = 20; chanceBrown = 62; chanceRed = 5; chanceCrazy = 3
-			Case 4
-				chanceBlonde = 4;  chanceBlack = 36; chanceBrown = 54; chanceRed = 3; chanceCrazy = 3
-			Case 5
-				chanceBlonde = 2;  chanceBlack = 60; chanceBrown = 33; chanceRed = 2; chanceCrazy = 3
-			Default 'Fitzpatrick VI
-				chanceBlonde = 1;  chanceBlack = 74; chanceBrown = 21; chanceRed = 1; chanceCrazy = 3
-		End Select
-
-		'Region hint can override the Fitzpatrick baseline for plausibility,
-		'e.g. light skin in EAST_ASIA should not imply very high blonde rates.
-		If regionHint
-			Select regionHint.ToUpper()
-				Case "EAST_ASIA"
-					chanceBlack = Max(chanceBlack, 68)
-					chanceBlonde = Min(chanceBlonde, 2)
-					chanceRed = Min(chanceRed, 2)
-					chanceCrazy = Min(chanceCrazy, 4)
-				Case "SOUTH_ASIA"
-					chanceBlack = Max(chanceBlack, 58)
-					chanceBlonde = Min(chanceBlonde, 4)
-					chanceRed = Min(chanceRed, 3)
-					chanceCrazy = Min(chanceCrazy, 4)
-				Case "SUB_SAHARAN"
-					chanceBlack = Max(chanceBlack, 72)
-					chanceBlonde = Min(chanceBlonde, 2)
-					chanceRed = Min(chanceRed, 2)
-					chanceCrazy = Min(chanceCrazy, 3)
-				Case "MENA"
-					chanceBlack = Max(chanceBlack, 35)
-					chanceBlonde = Min(chanceBlonde, 8)
-					chanceRed = Min(chanceRed, 4)
-				Case "LATIN_AMERICA"
-					chanceBlack = Max(chanceBlack, 26)
-					chanceBlonde = Min(chanceBlonde, 12)
-					chanceRed = Min(chanceRed, 5)
+		If hairProfile
+			chanceBlonde = hairProfile.chanceBlonde
+			chanceBlack = hairProfile.chanceBlack
+			chanceBrown = hairProfile.chanceBrown
+			chanceRed = hairProfile.chanceRed
+			chanceCrazy = hairProfile.chanceCrazy
+		Else
+			Select fitzpatrickLevel
+				Case 1
+					chanceBlonde = 32; chanceBlack = 6;  chanceBrown = 54; chanceRed = 6; chanceCrazy = 2
+				Case 2
+					chanceBlonde = 22; chanceBlack = 10; chanceBrown = 60; chanceRed = 6; chanceCrazy = 2
+				Case 3
+					chanceBlonde = 10; chanceBlack = 20; chanceBrown = 62; chanceRed = 5; chanceCrazy = 3
+				Case 4
+					chanceBlonde = 4;  chanceBlack = 36; chanceBrown = 54; chanceRed = 3; chanceCrazy = 3
+				Case 5
+					chanceBlonde = 2;  chanceBlack = 60; chanceBrown = 33; chanceRed = 2; chanceCrazy = 3
+				Default 'Fitzpatrick VI
+					chanceBlonde = 1;  chanceBlack = 74; chanceBrown = 21; chanceRed = 1; chanceCrazy = 3
 			End Select
 		EndIf
 
-		If age = 2
+		If age >= 45
 			chanceBlack :+ 3
 			chanceBrown :+ 2
 			chanceBlonde = Max(0, chanceBlonde - 2)
@@ -1181,7 +1369,7 @@ Type TFigureGenerator
 
 		'print fitzpatrickLevel + " / " + regionHint + " -> hair color chances: blonde=" + chanceBlonde + ", black=" + chanceBlack + ", brown=" + chanceBrown + ", red=" + chanceRed + ", crazy=" + chanceCrazy
 		Local hairColor:SColor8
-		Local hairTone:Int = fastRandom.RandomInt(100)
+		Local hairTone:Int = hairRandom.RandomInt(100)
 		Local hairColorPreset:Int 
 
 		'blonde
@@ -1202,25 +1390,26 @@ Type TFigureGenerator
 		EndIf
 
 		If hairColorPreset = -1
-			hairColor = New SColor8(fastRandom.RandomInt(60, 255), fastRandom.RandomInt(60, 255), fastRandom.RandomInt(60, 255))
+			hairColor = New SColor8(hairRandom.RandomInt(60, 255), hairRandom.RandomInt(60, 255), hairRandom.RandomInt(60, 255))
 		Else
-			Local variation:Int = fastRandom.RandomInt(0, TFigureGenerator.hairColorPresets[hairColorPreset].Length - 1)
+			Local variation:Int = hairRandom.RandomInt(0, TFigureGenerator.hairColorPresets[hairColorPreset].Length - 1)
 			hairColor = TFigureGenerator.hairColorPresets[hairColorPreset][variation] 'copy!
 		EndIf
 
 		
 		'gray?
-		If age = 2 And fastRandom.RandomInt(100) > 75
+		Local greyHairChance:Int = _GetGreyHairChance(age, gender)
+		If greyHairChance > 0 And hairRandom.RandomInt(100) < greyHairChance
 			'25% chance we fade out the color (does not work for black hair...
-			If hairColorPreset <> HAIR_BLACK And fastRandom.RandomInt(100) > 75
-				haircolor = SColor8Helper.AdjustHSL(hairColor, 0, - fastRandom.RandomInt(30, 75)/100.0, 0)
+			If hairColorPreset <> HAIR_BLACK And hairRandom.RandomInt(100) > 75
+				haircolor = SColor8Helper.AdjustHSL(hairColor, 0, - hairRandom.RandomInt(30, 75)/100.0, 0)
 			Else
-				Local greyVariation:Int = fastRandom.RandomInt(0, hairColorPresets[TFigureGenerator.HAIR_GREY].Length - 1)
+				Local greyVariation:Int = hairRandom.RandomInt(0, hairColorPresets[TFigureGenerator.HAIR_GREY].Length - 1)
 				hairColor = hairColorPresets[TFigureGenerator.HAIR_GREY][greyVariation]
 			EndIf
 		EndIf
 		
-		hairColor = SColor8Helper.AdjustHSL(hairColor, 0, 0, fastRandom.RandomInt(-15, 15)/100.0)
+		hairColor = SColor8Helper.AdjustHSL(hairColor, 0, 0, hairRandom.RandomInt(-15, 15)/100.0)
 
 		config.SetPartColor(TFigureGeneratorPart.PART_HAIR_BACK, hairColor)
 		config.SetPartColor(TFigureGeneratorPart.PART_HAIR_FRONT, hairColor)
@@ -1229,32 +1418,33 @@ Type TFigureGenerator
 
 
 		'cloth
+		Local clothRandom:SFastRandom = New SFastRandom(randomSeed + 234)
 		Local clothColor:SColor8
-		If fastRandom.RandomInt(100) < 20
+		If clothRandom.RandomInt(100) < 20
 			If gender = 1
-				clothColor = New SColor8(fastRandom.RandomInt(1, 8)*16, fastRandom.RandomInt(1, 8)*31, fastRandom.RandomInt(1, 8)*31)
+				clothColor = New SColor8(clothRandom.RandomInt(1, 8)*16, clothRandom.RandomInt(1, 8)*31, clothRandom.RandomInt(1, 8)*31)
 			ElseIf gender = 2
-				clothColor =  New SColor8(fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*16)
+				clothColor =  New SColor8(clothRandom.RandomInt(0, 8)*31, clothRandom.RandomInt(0, 8)*31, clothRandom.RandomInt(0, 8)*16)
 			Else
-				clothColor =  New SColor8(fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*31, fastRandom.RandomInt(0, 8)*31)
+				clothColor =  New SColor8(clothRandom.RandomInt(0, 8)*31, clothRandom.RandomInt(0, 8)*31, clothRandom.RandomInt(0, 8)*31)
 			EndIf
 
 			'minimum brightness
-			If fastRandom.RandomInt(100) < 75
-				clothColor = SColor8Helper.AdjustBrightness(clothColor, fastRandom.RandomInt(30)/100.0 + 0.3) '30% - 60%
+			If clothRandom.RandomInt(100) < 75
+				clothColor = SColor8Helper.AdjustBrightness(clothColor, clothRandom.RandomInt(30)/100.0 + 0.3) '30% - 60%
 			EndIf
 		' select from a preset
 		Else
-			Local presetIndex:Int = fastRandom.RandomInt(0, clothColorPresets.Length-1)
+			Local presetIndex:Int = clothRandom.RandomInt(0, clothColorPresets.Length-1)
 			clothColor = clothColorPresets[presetIndex] ' copy
-			clothColor = SColor8Helper.AdjustHSL(clothColor, 0, 0, fastRandom.RandomInt(-10, 10)/100.0) '-10% - 10%
+			clothColor = SColor8Helper.AdjustHSL(clothColor, 0, 0, clothRandom.RandomInt(-10, 10)/100.0) '-10% - 10%
 			
-			Local adjustColorOrTint:Int = fastRandom.RandomInt(100)
+			Local adjustColorOrTint:Int = clothRandom.RandomInt(100)
 			If adjustColorOrTint < 25
-				Local modifyHue:Int = fastRandom.RandomInt(-10, 10)
+				Local modifyHue:Int = clothRandom.RandomInt(-10, 10)
 				clothColor = SColor8Helper.AdjustHSL(clothColor, modifyHue/100.0, 0, 0)
 			ElseIf adjustColorOrTint < 50
-				clothColor = SColor8Helper.AdjustHSL(clothColor, 0, 0.2 - fastRandom.RandomInt(50)/100.0, 0)
+				clothColor = SColor8Helper.AdjustHSL(clothColor, 0, 0.2 - clothRandom.RandomInt(50)/100.0, 0)
 			EndIf
 		EndIf
 		config.SetPartColor(TFigureGeneratorPart.PART_CLOTH, clothColor)
@@ -1525,7 +1715,8 @@ Type TFigureGeneratorPart
 	Field spriteName:String
 	Field partType:Int
 	Field gender:Int = 0
-	Field age:Int = 0
+	Field ageMin:Int = -1
+	Field ageMax:Int = -1
 	
 	'part specific, but to keep things easy, all in one here...
 	Field incompletePart:Int 'eg only a throat, not a complete body
@@ -1552,7 +1743,7 @@ Type TFigureGeneratorPart
 	Const PART_CLOTH:Int = 11      'was 5 
 
 
-	Method Init:TFigureGeneratorPart(sprite:TSprite, partType:Int, gender:Int = 0, age:Int = 0)
+	Method Init:TFigureGeneratorPart(sprite:TSprite, partType:Int, gender:Int = 0, ageMin:Int = -1, ageMax:Int = -1)
 		Self.sprite = sprite
 		If sprite
 			Self.spriteName = sprite.name
@@ -1561,7 +1752,8 @@ Type TFigureGeneratorPart
 		EndIf
 		Self.partType = partType
 		Self.gender = gender
-		Self.age = age
+		Self.ageMin = ageMin
+		Self.ageMax = ageMax
 
 		Select partType
 			Case PART_FACE        Self.parentType = PART_BODY
@@ -1581,8 +1773,16 @@ Type TFigureGeneratorPart
 	
 
 	Method GetGUID:String()
-		If sprite Then Return partType + "_" + sprite.name + "_" + gender + "_" +age
-		Return partType + "_" + "nosprite" + "_" + gender + "_" +age
+		If sprite Then Return partType + "_" + sprite.name + "_" + gender + "_" + ageMin + "_" + ageMax
+		Return partType + "_" + "nosprite" + "_" + gender + "_" + ageMin + "_" + ageMax
+	End Method
+
+
+	Method IsAgeMatching:Int(ageYears:Int)
+		If ageYears <= 0 Then Return True
+		If ageMin >= 0 And ageYears < ageMin Then Return False
+		If ageMax >= 0 And ageYears > ageMax Then Return False
+		Return True
 	End Method
 
 
@@ -1653,7 +1853,7 @@ Type TRegistryFigureGeneratorPartLoader Extends TRegistryBaseLoader
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
 		Local fieldNames:String[]
 		Local data:TData = New TData
-		fieldNames :+ ["sprite", "age", "gender", "skin", "partType", "offsetX", "offsetY", "childrenOffsetX", "childrenOffsetY", "hairBack", "compatibleBody", "incompletePart"]
+		fieldNames :+ ["sprite", "age", "ageMin", "ageMax", "gender", "skin", "partType", "offsetX", "offsetY", "childrenOffsetX", "childrenOffsetY", "hairBack", "compatibleBody", "incompletePart"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 		Return data
@@ -1673,8 +1873,17 @@ Type TRegistryFigureGeneratorPartLoader Extends TRegistryBaseLoader
 
 		Local partType:Int = data.GetInt("partType", 0)
 		Local gender:Int = data.GetInt("gender", 0)
-		Local age:Int = data.GetInt("age", 0)
-		Local part:TFigureGeneratorPart = New TFigureGeneratorPart.Init( sprite, partType, gender, age)
+		Local ageMin:Int = data.GetInt("ageMin", -1)
+		Local ageMax:Int = data.GetInt("ageMax", -1)
+		Local legacyAge:Int = data.GetInt("age", 0)
+		If ageMin = -1 And ageMax = -1 And legacyAge <> 0
+			If legacyAge = 1
+				ageMax = 50
+			ElseIf legacyAge = 2
+				ageMin = 51
+			EndIf
+		EndIf
+		Local part:TFigureGeneratorPart = New TFigureGeneratorPart.Init( sprite, partType, gender, ageMin, ageMax)
 		
 		part.incompletePart = data.GetInt("incompletePart", 0)
 		
