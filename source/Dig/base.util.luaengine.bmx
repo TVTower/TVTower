@@ -53,11 +53,11 @@ Extern
 ?
 	'the "!" at the end tells to use the return value as raw pointer 
 	'instead as "object". Omit the "!" if objects are to return!
-	Function lua_boxobject:Int( L:Byte Ptr, obj:Object, metaTable:Int)="BBINT lua_boxobject(BBBYTE*, BBObject*, BBINT)!"
-	Function lua_pushlightobject:Int( L:Byte Ptr,obj:Object )="BBINT lua_pushlightobject(BBBYTE*,BBObject*)!"
+	Function lua_boxobject( L:Byte Ptr, obj:Object, metaTable:Int)
+	Function lua_pushlightobject( L:Byte Ptr,obj:Object )
 	Function lua_gcobject:Int( L:Byte Ptr )
 	Function lua_tobbstring:String( L:Byte Ptr,index:Int )
-	Function lua_pushbbstring:Int( L:Byte Ptr,s:String )
+	Function lua_pushbbstring( L:Byte Ptr,s:String )
 
 	Function Luaengine_bbRefObjectFieldPtr:Byte Ptr( obj:Object, offset:Size_t )
 	Function Luaengine_bbRefAssignObject( p:Byte Ptr, obj:Object )
@@ -68,7 +68,7 @@ Extern
 	Function lua_LowerStringHash:UInt( L:Byte Ptr,index:Int )
 	Function lua_StringHash:UInt( L:Byte Ptr,index:Int )
 	
-	Function strcmp_ascii_nocase:Int(a:Byte Ptr, b:Byte Ptr) = "BBINT strcmp_ascii_nocase(const char*, const char*)!"
+	Function strcmp_ascii_nocase:Int(a:Byte Ptr, b:Byte Ptr)
 End Extern
 
 
