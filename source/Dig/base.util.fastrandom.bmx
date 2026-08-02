@@ -32,6 +32,7 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
+Import Brl.Math ' for Log(), Cos(), Sqr()
 
 
 Rem
@@ -235,6 +236,269 @@ Struct SFastRandom
 	End Rem
 	Method RandomInt:Int(minValue:Int = 1, maxValue:Int = 0)
 		Return Int(RandomLong(minValue, maxValue))
+	End Method
+
+
+	Rem
+	bbdoc: Generates an array of unique random integers in range [min,max].
+	returns: Int[] with up to @amount unique values (no duplicates).
+	about:
+	Uses an LCG cycle over a power-of-two modulus and filters values to the desired
+	range, yielding each valid value at most once per cycle.
+	If @amount is larger than the available count in range, all values are returned.
+	@minValue: Lower bound (inclusive).
+	@maxValue: Upper bound (inclusive).
+	@amount: Number of unique random values to return.
+	End Rem
+	Method RandomIntArray:Int[](minValue:Int, maxValue:Int, amount:Int)
+		Local result:Int[]
+		If amount <= 0 Then Return result
+
+		If minValue > maxValue
+			Local t:Int = minValue
+			minValue = maxValue
+			maxValue = t
+		EndIf
+
+		Local valueCount:ULong = ULong(Long(maxValue) - Long(minValue) + 1)
+		If valueCount <= 0 Then Return result
+
+		If ULong(amount) > valueCount Then amount = Int(valueCount)
+		result = New Int[amount]
+
+		' LCG parameters for full period with power-of-two modulus:
+		'  - odd increment
+		'  - multiplier = 1 mod 4
+		Local modulus:ULong = _NextPowerOfTwo(valueCount)
+		Local mask:ULong = modulus - 1
+
+		Local value:ULong = RandomULong(0, mask)
+		Local offset:ULong = (RandomULong(0, mask) Shl 1) | 1
+		Local multiplier:ULong = ((RandomULong(0, mask) Shr 2) Shl 2) + 1
+		Local multiplierMod4:ULong = multiplier Mod 4
+		If multiplierMod4 <> 1
+			multiplier :+ (1 - multiplierMod4)
+		EndIf
+
+		Local found:Int = 0
+		While found < amount
+			If value < valueCount
+				result[found] = minValue + Int(value)
+				found :+ 1
+			EndIf
+
+			value = (value * multiplier + offset) & mask
+		Wend
+
+		Return result
+
+
+		Function _NextPowerOfTwo:ULong(v:ULong)
+			If v <= 1 Then Return 1
+			v :- 1
+			v :| (v Shr 1)
+			v :| (v Shr 2)
+			v :| (v Shr 4)
+			v :| (v Shr 8)
+			v :| (v Shr 16)
+			v :| (v Shr 32)
+			Return v + 1
+		End Function
+	End Method
+
+
+
+	Rem
+	bbdoc: Generates a biased random double in range [min,max].
+	returns: Random Double from @minValue (inclusive) to @maxValue (inclusive), biased by @bias.
+	about:
+	@bias is clamped to [0,1].
+	- 0.0: strong tendency towards @minValue
+	- 0.5: unbiased (uniform)
+	- 1.0: strong tendency towards @maxValue
+	@minValue: Lower bound (inclusive).
+	@maxValue: Upper bound (inclusive).
+	@bias: Bias factor in [0,1].
+	End Rem
+	Method RandomBiasedDouble:Double(minValue:Double, maxValue:Double, bias:Double = 0.5)
+		If minValue > maxValue
+			Local t:Double = minValue
+			minValue = maxValue
+			maxValue = t
+		EndIf
+
+		If minValue = maxValue Then Return minValue
+
+		If bias < 0.0 Then bias = 0.0
+		If bias > 1.0 Then bias = 1.0
+
+		Local r:Double = RndDouble()
+		Local range:Double = maxValue - minValue
+
+		If bias = 0.5
+			Return minValue + r * range
+		ElseIf bias < 0.5
+			Local exponent:Double = (bias * 2.0) ^ 0.5
+			Return maxValue - (r ^ exponent) * range
+		Else
+			Local exponent:Double = (2.0 - bias * 2.0) ^ 0.5
+			Return minValue + (r ^ exponent) * range
+		EndIf
+	End Method
+
+
+	Rem
+	bbdoc: Generates a biased random integer in range [min,max].
+	returns: Random Int from @minValue (inclusive) to @maxValue (inclusive), biased by @bias.
+	about:
+	Uses #RandomBiasedDouble internally and maps to equal-width integer buckets.
+	@bias is clamped to [0,1].
+	- 0.0: strong tendency towards @minValue
+	- 0.5: unbiased (uniform)
+	- 1.0: strong tendency towards @maxValue
+	@minValue: Lower bound (inclusive).
+	@maxValue: Upper bound (inclusive).
+	@bias: Bias factor in [0,1].
+	End Rem
+	Method RandomBiasedInt:Int(minValue:Int, maxValue:Int, bias:Double = 0.5)
+		If minValue > maxValue
+			Local t:Int = minValue
+			minValue = maxValue
+			maxValue = t
+		EndIf
+
+		If minValue = maxValue Then Return minValue
+
+		' Map normalized biased values to equal-width integer buckets.
+		' This avoids the half-width edge bins produced by rounding.
+		Local span:Long = Long(maxValue) - Long(minValue) + 1
+		Local unitValue:Double = RandomBiasedDouble(0.0, 1.0, bias)
+		Local index:Long = Long(unitValue * Double(span))
+
+		If index < 0 Then index = 0
+		If index >= span Then index = span - 1
+
+		Return minValue + Int(index)
+	End Method
+
+
+	Rem
+	bbdoc: Generates a Gaussian-distributed random value using the Box-Muller transform.
+	returns: Random Double distributed around @mean with standard deviation @standardDeviation.
+	about:
+	The method uses deterministic values from this generator and works with BlitzMax
+	trigonometric functions in degree mode.
+	@mean: Center of the normal distribution.
+	@standardDeviation: Standard deviation (spread). Values <= 0 return @mean.
+	End Rem
+	Method RandomGaussian:Double(mean:Double = 0.0, standardDeviation:Double = 1.0)
+		If standardDeviation <= 0.0 Then Return mean
+
+		Local v1:Double = RndDouble()
+		Local v2:Double = RndDouble()
+		' Avoid log(0) which would yield NaN. Clamp to a small positive value.
+		If v1 = 0.0 Then v1 = 1e-10
+
+		' BlitzMax trigonometric functions use degrees, so 2*pi*v2 => 360*v2
+		Local gaussian:Double = Sqr(-2.0 * Log(v1)) * Cos(360.0 * v2)
+		Return mean + standardDeviation * gaussian
+	End Method
+
+
+	Rem
+	bbdoc: Generates a Gaussian-distributed value mapped into [min,max].
+	returns: Random Double in [@minValue,@maxValue] based on Gaussian parameters in normalized space.
+	about:
+	This method samples a Gaussian in normalized space and rejects values outside [0,1],
+	then maps the accepted value to [@minValue,@maxValue].
+	@minValue: Lower bound.
+	@maxValue: Upper bound.
+	@mean: Mean in normalized space (typical 0.5).
+	@standardDeviation: Standard deviation in normalized space (typical 0.15).
+	@maxIterations: Safety cap for rejection sampling. If exceeded, falls back to clamped sample.
+	End Rem
+	Method RandomGaussianDouble:Double(minValue:Double, maxValue:Double, mean:Double = 0.5, standardDeviation:Double = 0.15, maxIterations:Int = 1000)
+		Local lo:Double = minValue
+		Local hi:Double = maxValue
+		If lo > hi
+			Local t:Double = lo
+			lo = hi
+			hi = t
+		EndIf
+
+		If lo = hi Then Return lo
+
+		Local normalized:Double
+		If standardDeviation <= 0.0
+			normalized = mean
+		Else
+			Local accepted:Int = False
+			For Local i:Int = 0 Until Max(1, maxIterations)
+				normalized = RandomGaussian(mean, standardDeviation)
+				If normalized >= 0.0 And normalized <= 1.0
+					accepted = True
+					Exit
+				EndIf
+			Next
+			If Not accepted
+				normalized = RandomGaussian(mean, standardDeviation)
+			EndIf
+		EndIf
+
+		If normalized < 0.0 Then normalized = 0.0
+		If normalized > 1.0 Then normalized = 1.0
+
+		Return lo + (hi - lo) * normalized
+	End Method
+
+
+	Rem
+	bbdoc: Generates a Gaussian-distributed integer in range [min,max].
+	returns: Random Int in [@minValue,@maxValue] based on Gaussian parameters in normalized space.
+	about:
+	This method samples Gaussian values in normalized space and maps them to equal-width
+	integer buckets so that edge values (@minValue and @maxValue) remain reachable.
+	@minValue: Lower bound (inclusive).
+	@maxValue: Upper bound (inclusive).
+	@mean: Mean in normalized space (typical 0.5).
+	@standardDeviation: Standard deviation in normalized space (typical 0.15).
+	@maxIterations: Safety cap for rejection sampling. If exceeded, falls back to clamped sample.
+	End Rem
+	Method RandomGaussianInt:Int(minValue:Int, maxValue:Int, mean:Double = 0.5, standardDeviation:Double = 0.15, maxIterations:Int = 1000)
+		If minValue > maxValue
+			Local t:Int = minValue
+			minValue = maxValue
+			maxValue = t
+		EndIf
+
+		If minValue = maxValue Then Return minValue
+
+		Local normalized:Double
+		If standardDeviation <= 0.0
+			normalized = mean
+		Else
+			Local accepted:Int = False
+			For Local i:Int = 0 Until Max(1, maxIterations)
+				normalized = RandomGaussian(mean, standardDeviation)
+				If normalized >= 0.0 And normalized <= 1.0
+					accepted = True
+					Exit
+				EndIf
+			Next
+			If Not accepted
+				normalized = RandomGaussian(mean, standardDeviation)
+			EndIf
+		EndIf
+
+		If normalized < 0.0 Then normalized = 0.0
+		If normalized > 1.0 Then normalized = 1.0
+
+		Local span:Long = Long(maxValue) - Long(minValue) + 1
+		Local index:Long = Long(normalized * Double(span))
+		If index < 0 Then index = 0
+		If index >= span Then index = span - 1
+
+		Return minValue + Int(index)
 	End Method
 
 
