@@ -99,8 +99,9 @@ Type TBitmapFontManager
 '	Method Get:TBitmapFont(id:Int, size:Int=-1, style:Int=-1)
 '	End Method
 
-	'get ignores the "SMOOTHFONT" flag to allow adding "crisp" fonts
-	Method Get:TBitmapFont(name:String="", size:Float=-1, style:Int=-1)
+	'Get() adds the "SMOOTHFONT" flag if not explicitely forbidden
+	'(eg. when adding "crisp" fonts)
+	Method Get:TBitmapFont(name:String="", size:Float=-1, style:Int=-1, setSmoothFontFlag:Int = True)
 		name = Lower(name)
 
 		'fall back to default font if none was given
@@ -109,6 +110,11 @@ Type TBitmapFontManager
 		'no details given: return default font
 		If name = "default" And size = -1 And style = -1 Then Return GetDefaultFont()
 
+		' add SMOOTHFONT flag if not relying on defaults and if not
+		' explicitely forbidden
+		If style >= 0 And setSmoothFontFlag Then
+			style = style | SMOOTHFONT
+		EndIf
 
 		'try to find default font settings for this font face
 		Local defaultStyledFont:TBitmapFont
@@ -122,7 +128,7 @@ Type TBitmapFontManager
 			'no style given: use default font style
 			If style = -1 Then style = defaultStyledFont.FStyle
 		End If
-
+		
 		'Local key:String = name + "_" + size + "_" + style
 		Local font:TBitmapFont = GetFont(name, size, style)
 		If font Then Return font
@@ -221,13 +227,13 @@ Type TBitmapFontManager
 
 		'if SMOOTHFONT was used - add the unsmoothed too (for easier retrieval)
 		If (style & SMOOTHFONT) <> 0
-			Local styleNonSmooth:Int = style - SMOOTHFONT
-			If Not GetFont(name, -1, (style - SMOOTHFONT))
-				InsertFont(name, -1, (style - SMOOTHFONT), font)
+			Local styleNonSmooth:Int = style & ~SMOOTHFONT
+			If Not GetFont(name, -1, (style & ~SMOOTHFONT))
+				InsertFont(name, -1, (style & ~SMOOTHFONT), font)
 			EndIf
 
-			If Not GetFont(name, size , (style - SMOOTHFONT))
-				InsertFont(name, size, (style - SMOOTHFONT), font)
+			If Not GetFont(name, size , (style & ~SMOOTHFONT))
+				InsertFont(name, size, (style & ~SMOOTHFONT), font)
 			EndIf
 		EndIf
 
@@ -646,7 +652,7 @@ Type TBitmapFont
 		If charGroupIndex < 0 Then charGroupIndex = 0
 		If charCodeStart = -1 Then charCodeStart = charGroupIndex * 256
 		If charCodeEnd = -1 Then charCodeEnd = charCodeStart + 256 - 1 '-1 as we want 256 chars (0 - 255)
-		
+
 		' 0. Ensure group array is big enough
 		If charGroups.Length <= charGroupIndex
 			charGroups = charGroups[.. charGroupIndex + 1]
@@ -703,7 +709,7 @@ endrem
 	Method LoadCharsFromSource:TBitmapFontChar[](charCodeStart:Int, charCodeEnd:Int, source:Object=Null)
 		Local imgFont:TImageFont = TImageFont(source)
 		If Not imgFont and Self.FImageFonts.length > 0 Then imgFont = Self.FImageFonts[0]
-		If Not imgfont Then Return Null
+		If Not imgFont Then Return Null
 
 		'ensure params are in right order and within range
 		If charCodeStart < 0 Then charCodeStart = 0
@@ -713,7 +719,6 @@ endrem
 			charCodeStart = charCodeEnd
 			charCodeEnd = tmp
 		EndIf
-
 
 		Local charsToLoad:Int = charCodeEnd - charCodeStart
 		Local chars:TBitmapFontChar[charsToLoad]
@@ -2591,6 +2596,7 @@ Function LoadTrueTypeFont:TImageFont( url:Object,size:Float,style:Int )
 	Local font:TImageFont=New TImageFont
 	font._src_font=src
 	font._glyphs=New TImageGlyph[src.CountGlyphs()]
+	font._style = style
 	If style & SMOOTHFONT Then font._imageFlags=FILTEREDIMAGE|MIPMAPPEDIMAGE
 
 	Return font
@@ -2698,7 +2704,7 @@ Type STextParseInfo
 	Field truncateEndIndex:Int = -1
 	Field truncateEndLine:Int = -1
 
-	Private
+	Internal
 	'block width and block height are "Line box" based
 	'subtract last lines content height / maxFontHeight to trim
 	Field _visibleBoxWidth:Short
