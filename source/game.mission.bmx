@@ -32,8 +32,8 @@ Type TMissions
 	End Method
 
 
-	'STARTING PRIVATE METHODS
-	private
+	'STARTING PRIVATE ("INTERNAL") METHODS
+	Internal
 
 	'utility method for inserting a mission into the correct category checking for duplicates
 	Method _addMission(mission:TMission)

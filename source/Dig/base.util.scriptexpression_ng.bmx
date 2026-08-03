@@ -1140,7 +1140,7 @@ Struct SScriptExpressionLexer
 		linepos = 1
 	End Method
 	
-	Private
+	Internal
 
 	Method PeekChar:Int()
 		If cursor >= expression.Length Then Return 0

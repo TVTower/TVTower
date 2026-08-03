@@ -649,7 +649,7 @@ Type TEventKey
 	Field id:Long
 	Field text:TLowerString
 
-private
+Internal
 	'avoid outside world being able to create new event keys without Generate()
 	Method New()
 	End Method
