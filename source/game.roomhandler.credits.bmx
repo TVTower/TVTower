@@ -51,7 +51,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("Manuel Vögele~n(KI-Verhalten, KI-Anbindung)~n(bis 2015)")
 
 		role = CreateRole("Handbuch", new SColor8(170,210,250))
-		role.addCast("Själe~n(2017 - 2019")
+		role.addCast("Själe~n(2017 - 2019)")
 		role.addCast("Matthew Forrester~n(English translation, 2022)")
 
 		role = CreateRole("Datenbank-Team", new SColor8(210,120,250))
@@ -183,7 +183,7 @@ Type RoomHandler_Credits extends TRoomHandler
 	'reset to start role when entering
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		'only handle the players figure
-		if TFigure(triggerEvent.GetSender()) <> GetPlayerBase().figure then return False
+		if TFigure(triggerEvent.GetReceiver()) <> GetPlayerBase().figure then return False
 
 		fadeTimer.Reset()
 		changeRoleTimer.Reset()
@@ -201,7 +201,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		if not fadeRole then SetAlpha 1.0
 		fontRole.DrawBox(GetRole().name.ToUpper(), 20,180, GetGraphicsManager().GetWidth() - 40, 40, sALIGN_CENTER_TOP, GetRole().color, EDrawTextEffect.Shadow, 0.6)
 		SetAlpha fadeValue
-		if GetCast() then fontCast.DrawBox(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 80, sALIGN_CENTER_TOP, new SColor8(230,230,30), EDrawTextEffect.Shadow, 0.6)
+		if GetCast() then fontCast.DrawBox(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 160, sALIGN_CENTER_TOP, new SColor8(230,230,30), EDrawTextEffect.Shadow, 0.6)
 
 		SetAlpha 1.0
 	End Method
