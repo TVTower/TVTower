@@ -101,16 +101,16 @@ Type TFunctions
 		If absValue <= 75      Then Return sign * 75
 		If absValue <= 100     Then Return sign * 100
 
-		If absValue <= 1000    Then Return sign * Ceil(absValue / 100.0   ) * 100
-		If absValue <= 5000    Then Return sign * Ceil(absValue / 250.0   ) * 250
-		If absValue <= 10000   Then Return sign * Ceil(absValue / 500.0   ) * 500
-		If absValue <= 50000   Then Return sign * Ceil(absValue / 1000.0  ) * 1000
-		If absValue <= 100000  Then Return sign * Ceil(absValue / 5000.0  ) * 5000
-		If absValue <= 500000  Then Return sign * Ceil(absValue / 10000.0 ) * 10000
-		If absValue <= 1000000 Then Return sign * Ceil(absValue / 25000.0 ) * 25000
-		If absValue <= 2500000 Then Return sign * Ceil(absValue / 100000.0) * 100000
-		If absValue <= 5000000 Then Return sign * Ceil(absValue / 250000.0) * 250000
-		If absValue <=20000000 Then Return sign * Ceil(absValue / 500000.0) * 500000
+		If absValue <=     1000 Then Return sign * Ceil(absValue /    100.0) *    100
+		If absValue <=     5000 Then Return sign * Ceil(absValue /    250.0) *    250
+		If absValue <=    10000 Then Return sign * Ceil(absValue /    500.0) *    500
+		If absValue <=    50000 Then Return sign * Ceil(absValue /   1000.0) *   1000
+		If absValue <=   100000 Then Return sign * Ceil(absValue /   5000.0) *   5000
+		If absValue <=   500000 Then Return sign * Ceil(absValue /  10000.0) *  10000
+		If absValue <=  1000000 Then Return sign * Ceil(absValue /  25000.0) *  25000
+		If absValue <=  5000000 Then Return sign * Ceil(absValue / 100000.0) * 100000
+		If absValue <= 10000000 Then Return sign * Ceil(absValue / 250000.0) * 250000
+		If absValue <= 20000000 Then Return sign * Ceil(absValue / 500000.0) * 500000
 
 		' >20.000.000 in steps of 1 million
 		Return sign * Ceil(absValue / 1000000.0) * 1000000
