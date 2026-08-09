@@ -162,7 +162,7 @@ Type TGameBase {_exposeToLua="selected"}
 		'stub
 	End Method
 
-	Method SetGameSpeed(timeFactor:int = 15)
+	Method SetGameSpeed(timeFactor:int = 15, reducedBuildingTimeFactor:Int = False)
 		'stub
 	End Method
 
@@ -189,7 +189,10 @@ Type TGameBase {_exposeToLua="selected"}
 	Method StartLoadedSaveGame:Int()
 		'stub
 	End Method
-
+	
+	Method EndGame:Int()
+		'stub
+	End Method
 
 	Method Update(deltaTime:Float=1.0)
 		'stub
@@ -341,6 +344,16 @@ endrem
 
 	Method SetLocalPlayer:int(ID:Int=-1)
 		return False
+	End Method
+
+
+	Method SetActivePlayer:Int(ID:Int=-1)
+		return False
+	End Method
+
+
+	Method GetObservedFigure:TFigureBase()
+		Return Null
 	End Method
 
 

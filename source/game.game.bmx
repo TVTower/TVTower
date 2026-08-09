@@ -111,12 +111,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetGameSpeedPreset(preset:Int)
+	Method SetGameSpeedPreset(preset:Int) override
 		preset = Max(Min(GameRules.worldTimeSpeedPresets.length-1, preset), 0)
 		SetGameSpeed(GameRules.worldTimeSpeedPresets[preset], True)
 	End Method
 
-	Method SetGameSpeed(timeFactor:Int = 15, reducedBuildingTimeFactor:Int = False)
+	Method SetGameSpeed(timeFactor:Int = 15, reducedBuildingTimeFactor:Int = False) override
 		GetWorldTime().SetTimeFactor( timeFactor ) 'same as "modifier * GameRules.worldTimeSpeedPresets[0]"
 		'15 30 180 600
 		'1  2  12  40
@@ -142,21 +142,21 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 	'=== START A GAME ===
 
-	Method StartNewGame:Int()
+	Method StartNewGame:Int() Override
 		TLogger.Log("TGame", "====== START NEW GAME ======", LOG_DEBUG)
 		'Preparation is done before (to share data in network games)
 		_Start(True)
 	End Method
 
 
-	Method StartLoadedSaveGame:Int()
+	Method StartLoadedSaveGame:Int() Override
 		TLogger.Log("TGame", "====== START SAVED GAME ======", LOG_DEBUG)
 		PrepareStart(False)
 		_Start(False)
 	End Method
 
 
-	Method EndGame:Int()
+	Method EndGame:Int() Override
 		If Self.gamestate = TGame.STATE_RUNNING
 			'start playing the menu music again
 			GetSoundManagerBase().PlayMusicPlaylist("menu")
@@ -314,15 +314,8 @@ endrem
 
 	'=== PREPARE A GAME ===
 
-	'override
-	'run this BEFORE the first game is started
-	Function PrepareFirstGameStart:Int(startNewGame:Int)
-'
-	End Function
-
-
 	'run this before EACH started game
-	Method PrepareStart(startNewGame:Int)
+	Method PrepareStart(startNewGame:Int) Override
 		If startNewGame
 			'print "INITIALIZE: SET RANDOMIZER BASE =" + GetRandomizerBase()
 			'reset randomizer to defined value
@@ -1767,7 +1760,7 @@ endrem
 
 
 	'override
-	Method SetPlayerBankruptLevel:Int(playerID:Int, level:Int, time:Long = -1)
+	Method SetPlayerBankruptLevel:Int(playerID:Int, level:Int, time:Long = -1) Override
 		If Not Super.SetPlayerBankruptLevel(playerID, level) Then Return False
 
 		If time = -1 Then time = GetWorldTime().GetTimeGone()
@@ -1779,7 +1772,7 @@ endrem
 	End Method
 
 
-	Method SetPaused(bool:Int=False)
+	Method SetPaused(bool:Int=False) Override
 		local changed:int = bool <> GetWorldTime().IsPaused()
 		
 		GetWorldTime().SetPaused(bool)
@@ -1796,14 +1789,14 @@ endrem
 	End Method
 
 
-	Method IsPaused:Int() override
+	Method IsPaused:Int() Override
 		Return GetWorldTime().IsPaused()
 	End Method
 
 
 	'override
 	'computes daily costs like station or newsagency fees for every player
-	Method ComputeDailyCosts(day:Int)
+	Method ComputeDailyCosts(day:Int) Override
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
 			Local finance:TPlayerFinance = Player.GetFinance(day)
 			If Not finance Then Throw "ComputeDailyCosts failed: finance = null."
@@ -1904,12 +1897,12 @@ endrem
 	End Function
 
 
-	Method IsGameLeader:Int()
+	Method IsGameLeader:Int() Override
 		Return (networkgame And Network.isServer) Or (Not networkgame)
 	End Method
 
 
-	Method IsControllingPlayer:Int(playerID:Int)
+	Method IsControllingPlayer:Int(playerID:Int) Override
 		If Not GetPlayer(playerID) Then Return False
 
 		If Not networkgame
@@ -1925,7 +1918,7 @@ endrem
 
 
 	'override
-	Method SetGameState:Int(gamestate:Int, force:Int=False )
+	Method SetGameState:Int(gamestate:Int, force:Int=False ) Override
 		If Self.gamestate = gamestate And Not force Then Return True
 
 		'switch to screen
@@ -1963,7 +1956,7 @@ endrem
 	End Method
 
 
-	Method GetObservedFigure:TFigureBase()
+	Method GetObservedFigure:TFigureBase() Override
 		If Not TFigureBase(GameConfig.GetObservedObject())
 			Return GetPlayerBase().GetFigure()
 		Else
@@ -2007,7 +2000,7 @@ Rem
 	End Method
 endrem
 
-	Method SwitchPlayerIdentity:Int(ID1:Int, ID2:Int)
+	Method SwitchPlayerIdentity:Int(ID1:Int, ID2:Int) Override
 		If ID1 = ID2
 			Print "SwitchPlayerIdentity() skipped: switching with itself"
 			Return False
@@ -2040,7 +2033,7 @@ endrem
 
 
 	'select player in start menu
-	Method SetLocalPlayer:Int(ID:Int=-1)
+	Method SetLocalPlayer:Int(ID:Int=-1) Override
 		'skip if already done
 		If GetPlayerCollection().playerID = ID
 			Print "SetLocalPlayer() skipped: already set"
@@ -2074,7 +2067,7 @@ endrem
 
 
 	'sets the player controlled by this client
-	Method SetActivePlayer(ID:Int=-1)
+	Method SetActivePlayer:Int(ID:Int=-1) Override
 		If ID = -1 Then ID = GetPlayerCollection().playerID
 
 		Local oldPlayerID:Int = GetPlayerCollection().playerID
@@ -2099,10 +2092,12 @@ endrem
 				ScreenCollection.GoToScreen(GameScreen_World)
 			EndIf
 		EndIf
+
+		Return True
 	End Method
 
 
-	Function SendSystemMessage:Int(message:String)
+	Function SendSystemMessage:Int(message:String) Override
 		'send out to chats
 		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddInt("senderID", -1).AddInt("channels", CHAT_CHANNEL_SYSTEM).AddString("senderName", "SYSTEM").AddString("text", message) )
 		Return True
@@ -2245,7 +2240,7 @@ endrem
 
 
 	'Summary: Updates Time, Costs, States ...
-	Method Update(deltaTime:Float=1.0)
+	Method Update(deltaTime:Float=1.0) Override
 		Local worldTime:TWorldTime = GetWorldTime()
 		'==== ADJUST TIME ====
 		worldTime.Update()
