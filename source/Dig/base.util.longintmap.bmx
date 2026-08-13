@@ -8,7 +8,7 @@ Extern
 	Function bmx_map_longintmap_insert(key:Long, value:Int, root:SavlRoot Ptr Ptr)
 	Function bmx_map_longintmap_contains:Int(key:Long, root:SavlRoot Ptr)
 	Function bmx_map_longintmap_valueforkey:Int(key:Long, root:SavlRoot Ptr)
-	Function bmx_map_longintmap_remove:Int(key:Long, root:SavlRoot Ptr)
+	Function bmx_map_longintmap_remove:Int(key:Long, root:SavlRoot Ptr Ptr)
 	Function bmx_map_longintmap_firstnode:SLongIntMapNode Ptr(root:SavlRoot Ptr)
 	Function bmx_map_longintmap_nextnode:SLongIntMapNode Ptr(node:SLongIntMapNode Ptr)
 	Function bmx_map_longintmap_key:Long(node:SLongIntMapNode Ptr)

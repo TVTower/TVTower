@@ -109,47 +109,47 @@ Type TLuaReflectionChild
 	End Method
 
 	Method ArgPush(index:Int, value:Int)
-		Local p:Int Ptr = varptr _args[index]
+		Local p:Int Ptr = Int Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 
 	Method ArgPush(index:Int, value:UInt)
-		Local p:UInt Ptr = varptr _args[index]
+		Local p:UInt Ptr = UInt Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 
 	Method ArgPush(index:Int, value:Long)
-		Local p:Long Ptr = varptr _args[index]
+		Local p:Long Ptr = Long Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 
 	Method ArgPush(index:Int, value:ULong)
-		Local p:ULong Ptr = varptr _args[index]
+		Local p:ULong Ptr = ULong Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 
 	Method ArgPush(index:Int, value:Size_T)
-		Local p:Size_T Ptr = varptr _args[index]
+		Local p:Size_T Ptr = Size_T Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 
 	Method ArgPush(index:Int, value:Float)
-		Local p:Float Ptr = varptr _args[index]
+		Local p:Float Ptr = Float Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 	
 	Method ArgPush(index:Int, value:Double)
-		Local p:Double Ptr = varptr _args[index]
+		Local p:Double Ptr = Double Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 
 	Method ArgPush(index:Int, value:LongInt)
-		Local p:LongInt Ptr = varptr _args[index]
+		Local p:LongInt Ptr = LongInt Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 
 	Method ArgPush(index:Int, value:ULongInt)
-		Local p:ULongInt Ptr = varptr _args[index]
+		Local p:ULongInt Ptr = ULongInt Ptr(varptr _args[index])
 		p[0] = value
 	End Method
 

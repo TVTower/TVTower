@@ -163,7 +163,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	'override
 	Method BeginBroadcasting:Int(day:Int, hour:Int, minute:Int, audienceData:Object)
-		Super.BeginBroadcasting:Int(day, hour, minute, audienceData)
+		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
 		'inform licence and data that it gets broadcasted by a player
 		licence.doBeginBroadcast(owner, usedAsType)
@@ -211,7 +211,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	'override
 	Method BreakBroadcasting:Int(day:Int, hour:Int, minute:Int, audienceData:Object)
-		Super.BreakBroadcasting:Int(day, hour, minute, audienceData)
+		Super.BreakBroadcasting(day, hour, minute, audienceData)
 
 		Local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 

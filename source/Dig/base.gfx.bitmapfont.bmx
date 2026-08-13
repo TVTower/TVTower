@@ -3758,7 +3758,7 @@ Type STextParseInfo
 
 				'has next char to be placed on a new line?
 				'doLineBreak = (parseInfo.lineBreakIndices[currentLine - 1] < i)
-				Local doLineBreak:Int = nextLineBreakIndex =< i 
+				Local doLineBreak:Int = nextLineBreakIndex <= i 
 
 
 				If Not doLineBreak And Not element.visible Then Continue
@@ -3793,7 +3793,7 @@ Type STextParseInfo
 				
 					'only add ellipsis if possible - and allowed
 					If settings.truncateWithEllipse
-						If limitWidth < 0 Or lineWidth + defaultFontEllipsisWidth =< limitWidth
+						If limitWidth < 0 Or lineWidth + defaultFontEllipsisWidth <= limitWidth
 							'lineWidth :+ currentFontEllipsisWidth
 							lineWidth :+ defaultFontEllipsisWidth
 

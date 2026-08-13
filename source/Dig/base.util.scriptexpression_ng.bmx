@@ -1753,9 +1753,9 @@ End Function
 
 Function SEFN_Gte:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 	Local first:SToken = params.GetToken(0)
-	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) => 0, first.linenum, first.linepos )
+	If params.added = 3 Then Return New SToken( TK_BOOLEAN, params.GetToken(1).CompareWith(params.GetToken(2)) >= 0, first.linenum, first.linepos )
 	If params.added = 5
-		If params.GetToken(1).CompareWith(params.GetToken(2)) => 0
+		If params.GetToken(1).CompareWith(params.GetToken(2)) >= 0
 			Return params.GetToken(3)
 		Else
 			Return params.GetToken(4)

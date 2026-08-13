@@ -1366,7 +1366,7 @@ Type TAudienceMarketCalculation
 		'gesendet werden, sind "zu hohe" Quoten nicht so problematisch. Zu niedrige Einnahmen
 		'tagsüber erhöhen das Bankrottrisiko.
 		Local surferRatio:Float = channelSurfers.GetTotalSum() / maxAudience.GetTotalSum()
-		attractionMultiplier:+ Math.max(0.0,(0.25 - surferRatio)* 0.6)
+		attractionMultiplier:+ max(0.0,(0.25 - surferRatio)* 0.6)
 
 		For Local channelID:Int = 1 To 4
 			If channelMask.Has(channelID) and audienceAttractions[channelID - 1]
