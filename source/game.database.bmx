@@ -1275,6 +1275,31 @@ Type TDatabaseLoader
 		'=== MODIFIERS ===
 		LoadV3ModifiersFromNode(adContract, node, xml)
 
+		'=== VARIABLES ===
+		Local nodeVariables:TxmlNode = xml.FindChild(node, "variables")
+		If nodeVariables
+			Local nodeVariable:TxmlNode = TxmlNode(nodeVariables.GetFirstChild())
+			While nodeVariable
+				'each variable is stored as a localizedstring
+				Local varName:String = nodeVariable.getName()
+				If Not varName 
+					nodeVariable = nodeVariable.NextSibling()
+					Continue
+				EndIf
+
+				Local varString:TLocalizedString = GetLocalizedStringFromNode(nodeVariable)
+				If Not varString
+					nodeVariable = nodeVariable.NextSibling()
+					Continue
+				EndIf
+
+				'create if missing
+				adContract.CreateTemplateVariables()
+				adContract.templateVariables.AddVariable(varName, varString)
+
+				nodeVariable = nodeVariable.NextSibling()
+			Wend
+		EndIf
 
 		'=== ADD TO COLLECTION ===
 		If doAdd

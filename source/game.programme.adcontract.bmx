@@ -336,6 +336,8 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
 	Field availableScript:String = ""
 
+	Field templateVariables:TTemplateVariables = null
+
 	'defines the type of the ad according to TVTAdContractType
 	'only adType 0 is generically available in the game
 	Field adType:Int = 0
@@ -384,6 +386,13 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 		GetAdContractBaseCollection().Add(Self)
 
 		Return Self
+	End Method
+
+
+	Method CreateTemplateVariables:TTemplateVariables()
+		If Not templateVariables Then templateVariables = new TTemplateVariables
+
+		Return templateVariables
 	End Method
 
 
@@ -764,8 +773,51 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		Self.base = baseContract
 		'persist texts if expression evaluation is necessary
-		If baseContract.title.ContainsString("${") Then Self.title = _ReplaceScriptExpressions(baseContract.title.Copy())
-		If baseContract.description.ContainsString("${") Self.description = _ReplaceScriptExpressions(baseContract.description.Copy())
+		If baseContract.title.ContainsString("${") Then Self.title = _ParseScriptExpressions(Self.base.title, True, Self.base.templateVariables)
+		If baseContract.description.ContainsString("${") Self.description = _ParseScriptExpressions(Self.base.description, True, Self.base.templateVariables)
+		If Self.base.templateVariables Then Self.base.templateVariables.Reset()
+	End Method
+
+
+	Method _ParseScriptExpressions:TLocalizedString(text:TLocalizedString, createCopy:Int = True, templateVariablesToUse:TTemplateVariables = Null)
+		Local result:TLocalizedString = text
+		If createCopy 
+			result = text.copy()
+		Else
+			result = text
+		EndIf
+	
+		Local sb:TStringBuilder = New TStringBuilder()
+
+		For Local langID:Int = EachIn text.GetLanguageIDs()
+			Local value:String = text.Get(langID)
+			Local valueNew:String = value
+			
+			_ParseScriptExpressions(valueNew, langID, sb, templateVariablesToUse)
+
+			if value <> valueNew
+				result.Set(valueNew, langID)
+			EndIf
+		Next
+		Return result
+	End Method
+
+
+	Method _ParseScriptExpressions:Int(text:String var, localeID:int, sb:TStringBuilder = Null, templateVariablesToUse:TTemplateVariables = Null)
+		if not sb 
+			sb = New TStringBuilder(text)
+		Else
+			sb.SetLength(0)
+			sb.Append(text)
+		EndIf
+
+		Local context:SScriptExpressionContext = new SScriptExpressionContext(self, localeID, templateVariablesToUse)
+		sb = GetGameScriptExpression().ParseLocalizedText(sb, context)
+		If text.HashCode() <> sb.HashCode() 'only create new string if required
+			text = sb.ToString()
+			Return True
+		EndIf
+		Return False
 	End Method
 
 
