@@ -949,7 +949,7 @@ Type TDatabaseLoader
 				EndIf
 
 				'create if missing
-				newsEventTemplate.CreateTemplateVariables()
+				newsEventTemplate.EnsureTemplateVariablesExist()
 				newsEventTemplate.templateVariables.AddVariable(varName, varString)
 
 				nodeVariable = nodeVariable.NextSibling()
@@ -1294,7 +1294,7 @@ Type TDatabaseLoader
 				EndIf
 
 				'create if missing
-				adContract.CreateTemplateVariables()
+				adContract.EnsureTemplateVariablesExist()
 				adContract.templateVariables.AddVariable(varName, varString)
 
 				nodeVariable = nodeVariable.NextSibling()
@@ -2089,7 +2089,7 @@ Type TDatabaseLoader
 		'=== VARIABLES ===
 		'create if missing, create even without "<variables>" as the script
 		'might reference parental variables
-		scriptTemplate.CreateTemplateVariables()
+		scriptTemplate.EnsureTemplateVariablesExist()
 
 		Local nodeVariables:TxmlNode = xml.FindChild(node, "variables")
 		If nodeVariables

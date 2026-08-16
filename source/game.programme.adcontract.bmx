@@ -389,10 +389,8 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method CreateTemplateVariables:TTemplateVariables()
+	Method EnsureTemplateVariablesExist()
 		If Not templateVariables Then templateVariables = new TTemplateVariables
-
-		Return templateVariables
 	End Method
 
 
