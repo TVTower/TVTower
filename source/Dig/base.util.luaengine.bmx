@@ -1398,7 +1398,7 @@ Type TLuaEngine
 
 		' Compile the source code into a chunk
 		If luaL_loadstring(_luaState, source) <> 0
-			Local errorMessage:String = String.FromCString(lua_tostring(_luaState, -1))
+			Local errorMessage:String = lua_tostring(_luaState, -1)
 			lua_pop(_luaState, 1)
 			TLogger.Log("TLuaEngine.SetSource()", "Failed to compile Lua source: " + errorMessage, LOG_ERROR)
 		EndIf
@@ -1417,7 +1417,7 @@ Type TLuaEngine
 		lua_rawgeti(_luaState, LUA_REGISTRYINDEX, _chunk)
 	
 		If lua_pcall(_luaState, 0, 0, 0) <> 0
-			Local errMsg:String = String.FromCString(lua_tostring(_luaState, -1))
+			Local errMsg:String = lua_tostring(_luaState, -1)
 			lua_pop(_luaState, 1)
 			TLogger.Log("TLuaEngine.Start()", "Failed to execute Lua chunk: " + errMsg, LOG_ERROR)
 		EndIf
