@@ -483,11 +483,9 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	Method CreateTemplateVariables:TScriptTemplateVariables()
+	Method EnsureTemplateVariablesExist()
 		if not templateVariables then templateVariables = new TScriptTemplateVariables
 		templateVariables.SetParentID( self.parentScriptID )
-
-		return templateVariables
 	End Method
 
 

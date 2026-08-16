@@ -470,13 +470,11 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	End Method
 
 
-	Method CreateTemplateVariables:TTemplateVariables()
+	Method EnsureTemplateVariablesExist()
 		'the parent of a template is not known in this moment
 		'as the newsEvent gets a potential parent then
 
 		if not templateVariables then templateVariables = new TTemplateVariables
-
-		return templateVariables
 	End Method
 
 
