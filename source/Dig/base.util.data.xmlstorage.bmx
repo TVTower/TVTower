@@ -138,7 +138,7 @@ Type TDataXmlStorage
 		endif
 
 		'for data blocks call function recursively to fill in the data
-		if TData(value)
+		if TData(value) and TData(value).data
 			'add newline
 			node.addContent("~n")
 			For local childKey:TLowerString = eachin TData(value).data.Keys()
