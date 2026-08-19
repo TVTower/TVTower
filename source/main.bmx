@@ -3996,8 +3996,32 @@ Type TScreen_MainMenu Extends TGameScreen
 			guiLanguageDropDown = New TGUISpriteDropDown.Create(New SVec2I(620, 560), New SVec2I(170,-1), "Sprache", 128, name)
 			Local itemHeight:Int = 0
 			Local languageCount:Int = 0
+			
+			'TLocalization.languages is an array loaded in the order the
+			'file-scanner finds/lists directories.
+			'
+			'To ensure an alphabetical order, we sort them first
+			Function SortByLanguageName:Int(o1:Object, o2:Object)
+				Local l1:TLocalizationLanguage = TLocalizationLanguage(o1)
+				Local l2:TLocalizationLanguage = TLocalizationLanguage(o2)
+				If Not l1 Then Return -1
+				If Not l2 Then Return 1
+				Local t1:String = l1.languageCode  'l1.Get("LANGUAGE_NAME_LOCALE").ToLower()
+				Local t2:String = l2.languageCode  'l2.Get("LANGUAGE_NAME_LOCALE").ToLower()
+		
+				If t1 > t2
+					Return 1
+				ElseIf t1 < t2
+					Return -1
+				Else
+					Return 0
+					'Return l1.languageCode > l2.languageCode
+				EndIf
+			End Function
+			Local languages:TList = TList.FromArray(TLocalization.languages)
+			languages.sort(True, SortByLanguageName)
 
-			For Local lang:TLocalizationLanguage = EachIn TLocalization.languages
+			For Local lang:TLocalizationLanguage = EachIn languages
 				languageCount :+ 1
 				Local item:TGUISpriteDropDownItem = New TGUISpriteDropDownItem.Create(Null, Null, lang.Get("LANGUAGE_NAME_LOCALE"))
 				item.SetValueColor(TColor.CreateGrey(100))
