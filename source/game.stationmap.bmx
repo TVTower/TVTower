@@ -112,7 +112,7 @@ Type TStationMapCollection
 		ResetCableNetworks()
 
 
-		population:Int = 0
+		population = 0
 		config = New TData
 		cityNames = New TData
 		sportsData = New TData

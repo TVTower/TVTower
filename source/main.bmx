@@ -6090,11 +6090,11 @@ endrem
 		ElseIf Not GetPlayerCollection().IsPlayer(winningPlayerID) 
 			Return False
 		Else
-			winningPlayer:TPlayer = GetPlayer(winningPlayerID)
+			winningPlayer = GetPlayer(winningPlayerID)
 		EndIf
 
 		If winningPlayer
-			winnerName:String = winningPlayer.name
+			winnerName = winningPlayer.name
 			'inform ai
 			If winningPlayer.isLocalAI()
 				winningPlayer.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnWonAward).AddData(award))

@@ -2223,9 +2223,9 @@ Type TStationMapInformationFrame
 
 			local cableNetworkText:string
 			if sCol.GetCableNetworksInSectionCount(selectedSection.name, True) > 0
-				cableNetworkText:string = GetLocale("YES")
+				cableNetworkText = GetLocale("YES")
 			else
-				cableNetworkText:string = GetLocale("NO")
+				cableNetworkText = GetLocale("NO")
 				rem
 				local firstCableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetFirstCableNetworkBySectionName(selectedSection.name)
 				if firstCableNetwork and firstCableNetwork.launchTime >= 0

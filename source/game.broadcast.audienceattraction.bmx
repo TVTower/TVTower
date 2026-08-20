@@ -168,7 +168,7 @@ Type TAudienceAttraction {_exposeToLua="selected"}
 	'time depending value - includes genre and flags, cannot be used for "base attractivity"
 	'(which is used by Follow-Up-Blocks)
 	Method GetGenreAttractivity:TAudience()
-		If not _genreAttractivity:TAudience Then _genreAttractivity = new TAudience
+		If not _genreAttractivity Then _genreAttractivity = new TAudience
 		_genreAttractivity.Set(1,1)
 		'adjust by genre-time-attractivity: 0.0 - 2.0
 

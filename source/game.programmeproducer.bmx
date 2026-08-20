@@ -60,7 +60,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 	Field producedProgrammeIDs:Int[]
 
 	Method New()
-		_producerName:String = "PP_Programmes"
+		_producerName = "PP_Programmes"
 	End Method
 
 
@@ -268,7 +268,7 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 				Throw "CreateScript(): Failed to fetch a random script template. All reached their limits?"
 			EndIf
 
-			script:TScript = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
+			script = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
 			If script.getTitle().contains("#") and i < 10
 				'print "Script name contained counter"
 				GetScriptCollection().Remove(script)

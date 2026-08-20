@@ -322,7 +322,7 @@ Type TFigureDeliveryBoy Extends TFigure
 
 	'override to react to it
 	Method FailEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase, reason:String)
-		local result:int = Super.FailEnterRoom(room, door, reason:String)
+		local result:int = Super.FailEnterRoom(room, door, reason)
 
 		if reason = "locked"
 			'send home again
@@ -455,7 +455,7 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 		nextActionTimer.Init(1500, 0, 0, 5000)
 
 		'really wait a bit longer than normal delivery boys
-		enterRoomTryCountMax:int = 15
+		enterRoomTryCountMax = 15
 	End Method
 
 
@@ -511,7 +511,7 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 
 	Method New()
 		'really wait a bit longer than normal delivery boys
-		enterRoomTryCountMax:int = 15
+		enterRoomTryCountMax = 15
 	End Method
 
 

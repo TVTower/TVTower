@@ -113,7 +113,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiAnnounce.SetChecked(True, False)
 
 		Local xCol2:Int = 445
-		checkboxHeight:Int = 0
+		checkboxHeight = 0
 
 		guiSpecialFormats = New TGUICheckBox.Create(New SVec2I(xCol2, 0 + checkboxHeight), New SVec2I(280, 0), "", name)
 		guiSpecialFormats.SetChecked(True, False)
@@ -336,7 +336,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(150,20), GetLocale("MISSION_CATEGORY_NOGOAL"))
 		guiMissionCategories.AddItem( item )
 		For Local cat:String = EachIn AllMissions.getCategories()
-			item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(150,20), GetLocale("MISSION_CATEGORY_"+cat))
+			item = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(150,20), GetLocale("MISSION_CATEGORY_"+cat))
 			item.data.Add("value", cat)
 
 			guiMissionCategories.AddItem( item )
@@ -617,7 +617,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 				Local mission:TMission = TMission(guiMissions.getSelectedEntry().data.Get("value"))
 				Local difficultyValues:Int[] = mission.getSupportedDifficulties()
-				itemHeight:Int = 0
+				itemHeight = 0
 				Local itemToSelect:TGUIDropDownItem
 				For Local s:Int = EachIn difficultyValues
 					Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New SVec2I(0,0), New SVec2I(100,20), GetLocale("MISSION_DIFFICULTY_"+s))
@@ -850,7 +850,7 @@ endrem
 		y :+ guiStartWithCredit.GetScreenRect().h
 		guiFilterUnreleased.rect.SetY(y)
 		'column 2
-		y:Int = 0
+		y = 0
 		guiSpecialFormats.rect.SetY(y)
 		y :+ guiSpecialFormats.GetScreenRect().h
 		y :+ guiSpecialFormats.GetScreenRect().h

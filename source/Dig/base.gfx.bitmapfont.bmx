@@ -3801,7 +3801,7 @@ Type STextParseInfo
 
 							visibleElementCount :+ 1
 							
-							dynamicIndex:Int = currentLine - 1 - lineinfo_widths.Length
+							dynamicIndex = currentLine - 1 - lineinfo_widths.Length
 							If dynamicIndex >= 0 
 								lineinfo_widthsDynamic[dynamicIndex] = lineWidth
 							Else

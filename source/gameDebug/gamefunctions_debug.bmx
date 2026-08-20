@@ -633,7 +633,7 @@ Rem
 		EndIf
 
 		If Not currentStatement Then
-			currentStatement:TBroadcastFeedbackStatement = feedback.GetNextAudienceStatement()
+			currentStatement = feedback.GetNextAudienceStatement()
 		EndIf
 
 		SetColor 0,0,0

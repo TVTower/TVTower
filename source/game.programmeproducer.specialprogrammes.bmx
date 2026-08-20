@@ -14,7 +14,7 @@ Type TProgrammeProducerMorningShows Extends TProgrammeProducer
 
 
 	Method New()
-		_producerName:String = "PP_MorningShows"
+		_producerName = "PP_MorningShows"
 
 		'=== remove all registered event listeners
 		EventManager.UnregisterListenersArray(_eventListeners)
@@ -77,7 +77,7 @@ Type TProgrammeProducerRemake Extends TProgrammeProducer
 
 
 	Method New()
-		_producerName:String = "PP_Remake"
+		_producerName = "PP_Remake"
 
 		'=== remove all registered event listeners
 		EventManager.UnregisterListenersArray(_eventListeners)

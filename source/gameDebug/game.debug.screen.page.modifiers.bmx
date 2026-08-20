@@ -69,7 +69,7 @@ Type TDebugScreenPage_Modifiers extends TDebugScreenPage
 		Local player:Int = GetShownPlayerID()
 		If player <> playerID
 			playerID = player
-			difficulty:TPlayerDifficulty = GetPlayerDifficulty(playerID)
+			difficulty = GetPlayerDifficulty(playerID)
 		EndIf 
 		For Local b:TDebugControlsButton = EachIn buttons
 			b.Update()

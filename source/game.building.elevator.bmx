@@ -123,7 +123,7 @@ Type TElevator Extends TEntity
 		DoorStatus = DOOR_CLOSED
 		CurrentFloor = 8
 		TargetFloor = 0
-		Direction:Int = 1
+		Direction = 1
 		ReadyForBoarding = False
 		Speed = GameRules.elevatorSpeed
 		WaitAtFloorTime = GameRules.elevatorWaitAtFloorTime

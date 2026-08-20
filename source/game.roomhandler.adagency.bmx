@@ -66,7 +66,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
 
-		contractsPerLine:Int = 4
+		contractsPerLine = 4
 		contractsNormalAmount = 12
 		contractsCheapAmount = 4
 		listNormal = New TAdContract[contractsNormalAmount]
@@ -1664,13 +1664,13 @@ Struct SAdContractRefillData
 			'averageChannelQuote = 0.085
 			'highestChannelQuote = 0.175
 
-			lowestChannelQuoteDayTime:Float = 0.005
-			averageChannelQuoteDayTime:Float = 0.03
-			highestChannelQuoteDayTime:Float = 0.07
+			lowestChannelQuoteDayTime = 0.005
+			averageChannelQuoteDayTime = 0.03
+			highestChannelQuoteDayTime = 0.07
 
-			lowestChannelQuotePrimeTime:Float = 0.07
-			averageChannelQuotePrimeTime:Float = 0.1
-			highestChannelQuotePrimeTime:Float = 0.15
+			lowestChannelQuotePrimeTime = 0.07
+			averageChannelQuotePrimeTime = 0.1
+			highestChannelQuotePrimeTime = 0.15
 		EndIf
 		rem
 		print "Image "+ lowestChannelImage + " " + averageChannelImage + " " + highestChannelImage

@@ -98,9 +98,8 @@ Type TMovieGenreDefinitionCollection
 	Method createAggregatedMovieGenreDefinition:TMovieGenreDefinition(ids:Int[])
 		Local result:TMovieGenreDefinition=new TMovieGenreDefinition
 		Local all:TMovieGenreDefinition[] = new TMovieGenreDefinition[ids.length]
-		Local i:Int
 		Local floats:Float[ids.length]
-		For i:Int = 0 Until ids.length
+		For Local i:Int = 0 Until ids.length
 			all[i] = Get(ids[i])
 		Next
 		Local main:TMovieGenreDefinition = all[0]
@@ -115,7 +114,7 @@ Type TMovieGenreDefinitionCollection
 
 		result.castAttributes = CreateMap()
 		result.focusPointPriorities = CreateMap()
-		For i:Int = 0 Until ids.length
+		For Local i:Int = 0 Until ids.length
 			collectKeys(all[i].castAttributes, result.castAttributes)
 			collectKeys(all[i].focusPointPriorities, result.focusPointPriorities)
 		Next
@@ -164,27 +163,27 @@ Type TMovieGenreDefinitionCollection
 		End Select
 
 		'speed
-		For i:Int = 0 Until ids.length
+		For Local i:Int = 0 Until ids.length
 			floats[i] = all[i].SpeedMod
 			result.SpeedMod = weighted(floats)
 		Next
 		'outcome
-		For i:Int = 0 Until ids.length
+		For Local i:Int = 0 Until ids.length
 			floats[i] = all[i].outcomeMod
 			result.outcomeMod = weighted(floats)
 		Next
 		'review
-		For i:Int = 0 Until ids.length
+		For Local i:Int = 0 Until ids.length
 			floats[i] = all[i].ReviewMod
 			result.ReviewMod = weighted(floats)
 		Next
 		'refresh
-		For i:Int = 0 Until ids.length
+		For Local i:Int = 0 Until ids.length
 			floats[i] = all[i].RefreshMod
 			result.RefreshMod = weighted(floats)
 		Next
 		'wearoff
-		For i:Int = 0 Until ids.length
+		For Local i:Int = 0 Until ids.length
 			floats[i] = all[i].WearoffMod
 			result.WearoffMod = weighted(floats)
 		Next
@@ -192,7 +191,7 @@ Type TMovieGenreDefinitionCollection
 		'timeMod
 		result.TimeMods = result.TimeMods[..24]
 		For Local hour:Int = 0 To 23
-			For i:Int = 0 Until ids.length
+			For Local i:Int = 0 Until ids.length
 				floats[i] = all[i].TimeMods[hour]
 				result.TimeMods[hour] = weighted(floats)
 			Next

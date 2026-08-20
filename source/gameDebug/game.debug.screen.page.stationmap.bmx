@@ -213,7 +213,7 @@ endrem
 		If attributeToShow = 0 Then font.DrawBox(TFunctions.LocalizedDottedValue(GetStationMapCollection().GetCableNetworkUplinkReceivers(playerID)), textX, textY, w - 6, 16, sALIGN_RIGHT_TOP, SColor8.WHITE)
 		textY :+ 12
 		For Local station:TStationBase = EachIn cables
-			c:SColor8 = SColor8.WHITE
+			c = SColor8.WHITE
 			Local iso:String = station.GetSectionISO3166Code()
 			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_LONG")
 			If Not station.IsActive() Then c = SColor8.GRAY
@@ -234,11 +234,11 @@ endrem
 
 		textY :+ 12
 		For Local station:TStationBase = EachIn antennas
-			c:SColor8 = SColor8.WHITE
+			c = SColor8.WHITE
 			If textY >= y + h - 4
 				x = x + 135
-				textX:Int = x + 3
-				textY:Int = y - 1
+				textX = x + 3
+				textY = y - 1
 			EndIf
 			Local iso:String = station.GetSectionISO3166Code()
 			Local n:String = GetLocale("MAP_COUNTRY_"+iso+"_SHORT")

@@ -231,7 +231,7 @@ Type TSimpleMission extends TMission
 
 
 	Method OnMoneyChange:Int(triggerEvent:TEventBase)
-		currentPlayerFinance:TPlayerFinance = TPlayerFinance(triggerEvent.GetSender())
+		currentPlayerFinance = TPlayerFinance(triggerEvent.GetSender())
 		If Not currentPlayerFinance Then throw "TSimpleMission.OnMoneyChange: no finance in event"
 		checkMissionResult(False)
 	End Method
@@ -243,7 +243,7 @@ Type TSimpleMission extends TMission
 	End Method
 
 	Method OnImageChange:Int(triggerEvent:TEventBase)
-		currentImage:TPublicImage = TPublicImage(triggerEvent.GetSender())
+		currentImage = TPublicImage(triggerEvent.GetSender())
 		If Not currentImage Then throw "TSimpleMission.OnImageChange: no Image"
 		checkMissionResult(False)
 	End Method
@@ -620,7 +620,7 @@ Type TSammyMission extends TMission
 
 
 	Method OnAward:Int(triggerEvent:TEventBase)
-		currentAward:TAward = TAward(triggerEvent.GetSender())
+		currentAward = TAward(triggerEvent.GetSender())
 		If Not currentAward Then throw "TSammyMission.Award: no award in event"
 		checkMissionResult(False)
 	End Method

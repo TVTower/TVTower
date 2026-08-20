@@ -391,7 +391,7 @@ Type TPublicImage {_exposeToLua="selected"}
 					'modifier changed depending on deviation from the average image
 					'above average: win less but lose more (audience expect better from you)
 					'below average: win more and lose less (audience is pleasantly surprised)
-					currentChannelImage:Float = GetPublicImageCollection().Get(channelID).GetImageValues().GetTotalValue(targetGroup)
+					currentChannelImage = GetPublicImageCollection().Get(channelID).GetImageValues().GetTotalValue(targetGroup)
 					If modifier > 0
 						modifier:* (1 + (averageImage - currentChannelImage) / 100)
 					Else

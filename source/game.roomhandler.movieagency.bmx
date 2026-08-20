@@ -98,9 +98,9 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			EndIf
 		Next
 		If minCount > 20
-			movieGoodMoneyMinimum:Int = 400000
-			movieGoodQualityMinimum:Float = 0.25
-			movieCheapMoneyMaximum:Int = 500000
+			movieGoodMoneyMinimum = 400000
+			movieGoodQualityMinimum = 0.25
+			movieCheapMoneyMaximum = 500000
 			relativeTopicalityMin = 0.35
 			crapFilterTopicality = 0.1
 		EndIf

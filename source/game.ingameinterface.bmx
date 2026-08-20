@@ -325,7 +325,7 @@ Type TInGameInterface
 				image= LoadImage(imagePath, 0)
 				If image Then return image
 			EndIf
-			imagePath:String = "res/images/" + guid + ".jpg"
+			imagePath = "res/images/" + guid + ".jpg"
 			If FileType(imagePath) = FILETYPE_FILE
 				image= LoadImage(imagePath, 0)
 				If image Then return image

@@ -716,7 +716,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		If programmeData.finishedProductionForCast Then Return False
 
 
-		Super.FinishProduction(programmeDataID, job:Int)
+		Super.FinishProduction(programmeDataID, job)
 
 		GainExperienceForProgramme(programmeDataID)
 

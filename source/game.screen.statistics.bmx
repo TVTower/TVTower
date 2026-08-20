@@ -812,7 +812,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 		tgBgArea = tgLabelArea.Copy()
 		tgBgArea.SetW( tgValueArea.GetX2() - tgLabelArea.GetX() + 2)
 
-		tgColsTotalW:Int = (tgValueArea.GetX2() - tgLabelArea.GetX())
+		tgColsTotalW = (tgValueArea.GetX2() - tgLabelArea.GetX())
 		tgCol1w = 0.34 * tgColsTotalW
 		tgCol2w = 0.22 * tgColsTotalW
 		tgCol3w = 0.22 * tgColsTotalW
