@@ -2430,7 +2430,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 25
+	Const SAVEGAME_VERSION:int = 26
 	Const MIN_SAVEGAME_VERSION:Int = 23
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowLastUpdate:Long
@@ -2802,6 +2802,27 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
+		If savegameVersion < 26
+			For local p:TPersonBase = EachIn GetPersonBaseCollection().entries.Values()
+				If Not p.faceCode Then Continue
+
+				' simple variant:
+				' just give all of them new figures, except for previously
+				' hard-configured ones
+				Select p.GetGUID()
+					Case "3d37e02e-78f2-4749-9de5-429e31b5590b" ' Betty Botterblom
+						p.faceCode = "2:1:1#FFC49B:630:0:6:3#FFFFFF:2:2:4#F07F7F:-1:-1:0#DCAD1E:9#E7B514:7#3BA561"
+					Case "21e88c65-0cc6-4bd1-bd14-b48b6ce25402" ' Patty Glansen
+						p.faceCode = "2:2:1#FEB886:750:0:7:5:0:7:7:-1:-1:3#352620:13#361C0F:1#9C3386"
+					Case "9104f9c1-7a0f-4bc0-a34c-389ce282eebf" ' Ronny
+						p.faceCode = "1:2:1#E8AB91:825:2:13:8#FFFFFF:4:4:2#FFFFFF:-1:0#A8A8A8:-1:8#626262:23#322E8D"
+					Case "Ronny-person-various-sjaele" ' Sjaele
+						p.faceCode = "1:1:1#E1C7B8:915:3:16:1:0:4:6:-1:-1:1#4A4139:3#42362E:22#ECD7AC"
+				End Select
+			Next
+			TLogger.Log("RepairData", "Reconfigured db-predefined person faces.")
+		EndIf
+
 		If savegameVersion <= 25
 			Local n:TNewsEventTemplate= GetNewsEventTemplateCollection().GetByGUID("aa4b86ff-092d-4442-b212-691d910a3602")
 			If n And n.templateVariables

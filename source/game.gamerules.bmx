@@ -3,6 +3,9 @@ Import "Dig/base.util.data.bmx"
 
 'specific variables shared across the whole game
 Type TGameRules {_exposeToLua}
+	' root random number
+	Field randomSeed:Int
+
 	'should a game start with a credit already given
 	Field startGameWithCredit:Int = True
 	'should licence attributes from the database be randomized
