@@ -840,6 +840,7 @@ Type TApp
 
 		TFunctions.decimalDelimiter = GetLocale("NUMBER_DECIMAL_SEPARATOR")
 		TFunctions.thousandsDelimiter = GetLocale("NUMBER_GROUP_SEPARATOR").replace("*","")
+		If TFunctions.thousandsDelimiter = " " Then TFunctions.thousandsDelimiter = ""+chr(160)
 		TFunctions.currencyPosition = Int(GetLocale("CURRENCY_FORMAT"))
 
 		'skip further actions if the same language is already set

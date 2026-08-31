@@ -224,6 +224,16 @@ Type RoomHandler_News extends TRoomHandler
 	End Method
 
 
+	Method SetLanguage() override
+		NewsGenreButtons[0].SetValue(GetLocale("NEWS_TECHNICS_MEDIA"))
+		NewsGenreButtons[1].SetValue(GetLocale("NEWS_POLITICS_ECONOMY"))
+		NewsGenreButtons[2].SetValue(GetLocale("NEWS_SHOWBIZ"))
+		NewsGenreButtons[3].SetValue(GetLocale("NEWS_SPORT"))
+		NewsGenreButtons[4].SetValue(GetLocale("NEWS_CURRENTAFFAIRS"))
+		NewsGenreButtons[5].SetValue(GetLocale("NEWS_CULTURE"))
+	End Method
+
+
 	Method RegisterHandler:int()
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("news", GetInstance())
@@ -455,7 +465,7 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreTooltip.area.SetXY(Max(21,button.rect.x + button.rect.w), button.rect.y-30)
 
 		If level = 0
-			NewsGenreTooltip.SetMinTitleAndContentWidth(225)
+			NewsGenreTooltip.SetMinTitleAndContentWidth(240)
 
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
 			if not playersRoom
@@ -464,7 +474,7 @@ Type RoomHandler_News extends TRoomHandler
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1:~t"+ GetFormattedCurrency(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+"/"+getLocale("DAY")
 			endif
 		Else
-			NewsGenreTooltip.SetMinTitleAndContentWidth(190)
+			NewsGenreTooltip.SetMinTitleAndContentWidth(270)
 
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
 			if not playersRoom
