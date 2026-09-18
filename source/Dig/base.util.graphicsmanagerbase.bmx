@@ -55,6 +55,8 @@ Type TGraphicsManager
 	Field canvasSize:SVec2I = New SVec2I(800, 600)
 	'designed application dimensions (scaled to the canvas dimensions)
 	Field designedSize:SVec2I = New SVec2I(-1, -1)
+	'the offset defines the letterbox size (x = left or right letterbox, y = top or bottom height)
+	Field designedOffset:SVec2I
 	'window dimensions
 	Global windowSize:SVec2I
 	Global windowSizeValid:Int
@@ -205,6 +207,23 @@ Type TGraphicsManager
 		'move canvas into position
 		'we are defaulting to "letterbox"
 		canvasPos = New SVec2I((windowSize.x - canvasSize.x)/2, (windowSize.y - canvasSize.y)/2)
+
+
+		'update designed information
+		If self.designedSize.x <= 0 or self.designedSize.y <= 0
+			self.designedOffset = New SVec2I()
+		Else
+			Local scaleX:Float = windowSize.x / Float(canvasSize.x)
+			Local scaleY:Float = windowSize.y / Float(canvasSize.y)
+
+			'a scale <> 1.0 means that _this_ axis of the original designed
+			'size needs to be scaled to also cover a letterbox
+			Local extendedDesignedSizeX:Int = ceil(designedSize.x * scaleX)
+			Local extendedDesignedSizeY:Int = ceil(designedSize.y * scaleY)
+
+			Self.designedOffset = New SVec2I((extendedDesignedSizeX - designedSize.x) / 2, ..
+											 (extendedDesignedSizeY - designedSize.y) / 2)
+		EndIf
 	End Method
 
 
@@ -434,10 +453,34 @@ Type TGraphicsManager
 	End Method
 
 
-	Method HasBlackBars:Int()
+	Method HasLetterbox:Int()
 		If designedSize.x = -1 And designedSize.y = -1 Then Return False
 
 		Return canvasSize <> windowSize
+	End Method
+
+
+	Method GetLetterboxDesignedSize:SVec2F()
+		If designedSize.x = -1 And designedSize.y = -1 Then Return New SVec2F(0,0)
+
+
+		Local scaleX:Float = windowSize.x / Float(canvasSize.x)
+		Local scaleY:Float = windowSize.y / Float(canvasSize.y)
+
+		'a scale <> 1.0 means that _this_ axis of the original designed
+		'size needs to be scaled to also cover a letterbox
+'		Local extendedDesignedSizeX:Int = ceil(designedSize.x * scaleX)
+'		Local extendedDesignedSizeY:Int = ceil(designedSize.y * scaleY)
+'		Return New SVec2F((extendedDesignedSizeX - designedSize.x)/2.0, (extendedDesignedSizeY - designedSize.y)/2.0)
+		
+		'shortened
+		Return New SVec2F(Max(0, designedSize.x * (scaleX - 1)/2.0), Max(0, designedSize.y * (scaleY - 1)/2.0))
+
+	End Method
+
+
+	Method GetLetterboxWindowSize:SVec2I()
+		Return New SVec2I(canvasPos.x, canvasPos.y)
 	End Method
 
 
@@ -738,15 +781,10 @@ endrem
 	'while maintaining the "scaling" factor
 	Method DisableVirtualResolutionLetterbox:SRectI()
 		Local oldViewport:SRectI = self.GetViewPort()
-		Local scaleX:Float = windowSize.x / Float(canvasSize.x)
-		Local scaleY:Float = windowSize.y / Float(canvasSize.y)
 
-		'a scale <> 1.0 means that _this_ axis of the original designed
-		'size needs to be scaled to also cover a letterbox
-		Local extendedDesignedSizeX:Int = ceil(designedSize.x * scaleX)
-		Local extendedDesignedSizeY:Int = ceil(designedSize.y * scaleY)
+		Local extendedDesignedSizeX:Int = self.designedOffset.x * 2 + self.designedSize.x
+		Local extendedDesignedSizeY:Int = self.designedOffset.y * 2 + self.designedSize.y
 
-		'print "Disabling letterbox viewport: " + oldViewport.x+", "+oldViewport.y+", "+oldViewport.w+", "+oldViewport.h 	+"  virtual res: " + Int(VirtualResolutionWidth())+"x"+Int(VirtualResolutionHeight())	+" -> " + extendedDesignedSizeX+"x"+extendedDesignedSizeY
 		SetVirtualResolution(extendedDesignedSizeX, extendedDesignedSizeY)
 		SetViewport(0, 0, extendedDesignedSizeX, extendedDesignedSizeY)
 
