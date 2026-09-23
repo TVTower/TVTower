@@ -14,6 +14,9 @@
 visitBossAtStart = true
 
 
+function OnInit()
+	TVT.PrintOut("Sample AI file loaded for player #" .. TVT.ME)
+end
 
  
 -- #### EVENTS CALLED FROM THE GAME
