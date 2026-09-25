@@ -506,9 +506,9 @@ Type TSprite
 	'if the frame is 0+, only this frame is returned
 	'if includeBorder is TRUE, then an potential ninePatchBorder will be
 	'included
-	Method GetImage:TImage(frame:Int=-1, includeBorder:Int=False)
+	Method GetImage:TImage(frame:Int=-1, includeBorder:Int=False, includeOffsets:Int = True)
 		'if a frame is requested, just return it (no need for "animated" check)
-		If frame >=0 Then Return GetFrameImage(frame)
+		If frame >=0 Then Return GetFrameImage(frame, includeOffsets)
 
 		Local DestPixmap:TPixmap
 		If includeBorder
@@ -522,17 +522,33 @@ Type TSprite
 		EndIf
 
 		UnlockImage(parent.GetImage())
-
-		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
+		
+		If includeOffsets and (offset.x <> 0 or offset.y <> 0 or offset.w <> 0 or offset.h <> 0)
+			Local p:TPixmap = CreatePixmap(GetWidth(), GetHeight(), PF_RGBA8888)
+			p.ClearPixels(0)
+			p.Paste(DestPixmap, -offset.GetLeft(), -offset.GetTop())
+			Return TImage.Load(p, 0, 255, 0, 255)
+		Else
+			Return TImage.Load(DestPixmap, 0, 255, 0, 255)
+		EndIf
 	End Method
 
 
-	Method GetFrameImage:TImage(frame:Int=0)
+	Method GetFrameImage:TImage(frame:Int=0, includeOffsets:Int = False)
 		'give back whole image if no frames are configured
 		If frames <= 0 Then frame = 0
-		Local DestPixmap:TPixmap = LockImage(parent.GetImage(), 0, False, True).Window(Int(area.GetX() + frame * framew), Int(area.GetY()), framew, Int(area.GetH()))
+		Local framePixmap:TPixmap = LockImage(parent.GetImage(), 0, False, True).Window(Int(area.GetX() + frame * framew), Int(area.GetY()), framew, Int(area.GetH()))
 
-		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
+		UnlockImage(parent.GetImage())
+
+		If includeOffsets and (offset.x <> 0 or offset.y <> 0 or offset.w <> 0 or offset.h <> 0)
+			Local p:TPixmap = CreatePixmap(GetWidth(), GetHeight(), PF_RGBA8888)
+			p.ClearPixels(0)
+			p.Paste(framePixmap, -offset.GetLeft(), -offset.GetTop())
+			Return TImage.Load(p, 0, 255, 0, 255)
+		Else
+			Return TImage.Load(framePixmap, 0, 255, 0, 255)
+		EndIf
 	End Method
 
 
