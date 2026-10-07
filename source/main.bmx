@@ -193,7 +193,7 @@ Function ConfigureStorageMode:Int(applicationStoragePath:String var, writableFol
 
 	Local canWrite:Int
 	If storageMode = autoMode or storageMode = portableMode
-		If autoMode
+		If storageMode = autoMode
 			TLogger.Log("ConfigureStorageMode", "Auto prioritizes ~qPortable~q. Uses ~qUserdir~q as fallback..", LOG_DEBUG)
 		EndIf
 		TLogger.Log("ConfigureStorageMode", "Portable storage directory path: ~q" + baseDir + "~q.", LOG_DEBUG)
