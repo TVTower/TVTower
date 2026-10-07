@@ -178,10 +178,10 @@ Function ConfigureStorageMode:Int(applicationStoragePath:String var, writableFol
 		If arg.Find("-") <> 0 Then Continue
 
 		Select arg.ToLower()
-			case "portable"
+			case "-portable"
 				TLogger.Log("ConfigureStorageMode", "Portable storage mode requested via commandline.", LOG_DEBUG)
 				commandlineStorageMode = portableMode
-			case "userdir"
+			case "-userdir"
 				commandlineStorageMode = userdirMode
 				TLogger.Log("ConfigureStorageMode", "Userdir storage mode requested via commandline.", LOG_DEBUG)
 		End Select
