@@ -2005,6 +2005,8 @@ Type TVTPersonJob {_exposeToLua}
 	Const MODEL:Int = 2048			'5  12
 	Const SPORTSMAN:Int = 4096		'6  13
 
+	Const ALL:Int = -1              '-1 on signed ints equals to "all bits set"
+
 	Global CAST_IDs:Int[] = [1,2,4,8,16,32,64,128]
 	Global CAST_INDICES:Int[] = [1,2,3,4,5,6,7,8]
 	Global CAST_MASK:Int = 1+2+4+8+16+32+64+128

@@ -900,6 +900,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
+	' Calculate the amount of job positions for a given job.
+	' The maximum amount amongst optional subscripts is used
+	' (as they are not required in parallel).
+	' use job = -1 (or TVTPersonJob.ALL)  to just limit by gender
 	Method GetSpecificJobCount:Int(job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1, ignoreSubScripts:Int = False)
 		Local result:Int = 0
 		For Local j:TPersonProductionJob = EachIn jobs
@@ -931,6 +935,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
+	' use job = -1 (or TVTPersonJob.ALL)  to just limit by gender
 	Method GetSpecificJob:TPersonProductionJob[](job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1)
 		Local result:TPersonProductionJob[]
 		For Local j:TPersonProductionJob = EachIn jobs
