@@ -459,9 +459,9 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		if script
 			if script.isFictional()
-				if not productionFocus.IsFictional() then productionFocus.EnableFictional(true)
+				if not productionFocus.IsFictional() then productionFocus.SetFictional(True)
 			else
-				if productionFocus.IsFictional() then productionFocus.EnableFictional(false)
+				if productionFocus.IsFictional() then productionFocus.SetFictional(False)
 			endif
 		endif
 
@@ -486,9 +486,9 @@ Type TProductionConcept Extends TOwnedGameObject
 		'init if not done
 		if not productionFocus then productionFocus = new TProductionFocusBase
 		if productionCompany
-			productionFocus.SetFocusPointsMax( productionCompany.GetFocusPoints() )
+			productionFocus.SetTotalFocusPointsMax( productionCompany.GetFocusPoints() )
 		else
-			productionFocus.SetFocusPointsMax( 0 )
+			productionFocus.SetTotalFocusPointsMax( 0 )
 		endif
 
 		ResetCache()
@@ -669,21 +669,21 @@ Type TProductionConcept Extends TOwnedGameObject
 	Method AssignEffectiveFocusPoints:Int(pointsToSpend:Int, budget:Float = -1.0)
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition([script.mainGenre]+script.subgenres)
 
-		Local indices:Int[] = productionFocus.GetOrderedFocusIndices()
-		Local priorities:Float[] = new Float[indices.length]
+		Local focusTypes:Int[] = productionFocus.GetFocusTypes()
+		Local priorities:Float[] = new Float[focusTypes.length]
 		Local totalPriorities:Float = 0
 
 		'initialize priority distribution
-		For Local i:Int = 0 To indices.length-1
-			Local focusPointID:Int = indices[i]
+		For Local i:Int = 0 To focusTypes.length-1
+			Local focusType:Int = focusTypes[i]
 			Local priority:Float = 1.0
-			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED
+			If focusType = TVTProductionFocus.PRODUCTION_SPEED
 				priority = 0.4
 			Else
 				If genreDefinition
-					priority = genreDefinition.GetFocusPointPriority(focusPointID)
+					priority = genreDefinition.GetFocusPointPriority(focusType)
 				EndIf
-				If (focusPointID = TVTProductionFocus.COULISSE or focusPointID = TVTProductionFocus.OUTFIT_AND_MASK) and priority >= 1
+				If (focusType = TVTProductionFocus.COULISSE or focusType = TVTProductionFocus.OUTFIT_AND_MASK) and priority >= 1
 					priority = priority + 0.15
 				EndIF
 			EndIf
@@ -693,25 +693,27 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		Local totalPointsToSpend:Int = pointsToSpend
 
-		For Local i:Int = 0 To indices.length-1
-			Local focusPointID:Int = indices[i]
+		For Local i:Int = 0 To focusTypes.length-1
+			Local focusType:Int = focusTypes[i]
 			Local priority:Float = priorities[i]
 			local points:Int = ceil(totalPointsToSpend * priority / totalPriorities)
-			points= Min(pointsToSpend, points)
-			'print "id " + focusPointID +" calculated priority "+priority +" points "+points
-			SetProductionFocus(focusPointID, points)
-			pointsToSpend :- points
+			points = Min(pointsToSpend, points)
+			'print "id " + focusType +" calculated priority "+priority +" points "+points
+			'set the focus points for this type and get the actual amount set
+			Local pointsSet:Int = SetProductionFocusPoints(focusType, points)
+
+			pointsToSpend :- pointsSet
 		Next
 
 		'reduce points until budget is OK (exponential costs)
 		If budget > 0 and GetProductionCost() > budget
 			For Local j:Int = 0 To 4
-				For Local i:Int = indices.length-1 To 0 Step -1
-					Local focusPointID:Int = indices[i]
-					Local points:Int = GetProductionFocus(focusPointID)
+				For Local i:Int = focusTypes.length-1 To 0 Step -1
+					Local focusType:Int = focusTypes[i]
+					Local points:Int = GetProductionFocusPoints(focusType)
 					If points > 5 And GetProductionCost() > budget
-						SetProductionFocus(focusPointID, points-1)
-						pointsToSpend :+ 1
+						Local pointsSet:Int = SetProductionFocusPoints(focusType, points - 1)
+						pointsToSpend :+ (points - pointsSet)
 					EndIf
 				Next
 			Next
@@ -737,18 +739,18 @@ Type TProductionConcept Extends TOwnedGameObject
 		Local focusPoints:Int
 		Local weight:Float
 		Local totalWeights:Float
-		Local attributeLimit:Int = TProductionFocusBase.focusPointLimit
+		Local attributeLimit:Int = TProductionFocusBase.focusPointsMax
 		Local focusCategories:Int
-		For Local focusPointID:Int = EachIn productionFocus.GetOrderedFocusIndices()
+		For Local focusType:Int = EachIn productionFocus.GetFocusTypes()
 			focusCategories :+ 1
-			focusPoints = GetProductionFocus(focusPointID)
+			focusPoints = GetProductionFocusPoints(focusType)
 
 			'production speed does not add to quality
-			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
+			If focusType = TVTProductionFocus.PRODUCTION_SPEED Then Continue
 
 			weight=1.0
-			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
-			If focusPointID <> TVTProductionFocus.TEAM
+			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusType)
+			If focusType <> TVTProductionFocus.TEAM
 				totalWeights :+ weight
 			Else
 				'do not subtract all assigned team points (6 total all for team - not a good distribution)
@@ -774,18 +776,18 @@ Type TProductionConcept Extends TOwnedGameObject
 		ElseIf companyPoints > 14
 			diffPenalty = 0.07
 		EndIf
-		For Local focusPointID:Int = EachIn productionFocus.GetOrderedFocusIndices()
+		For Local focusType:Int = EachIn productionFocus.GetFocusTypes()
 			'production speed and team are ignored
-			If focusPointID = TVTProductionFocus.PRODUCTION_SPEED Then Continue
-			If focusPointID = TVTProductionFocus.TEAM Then Continue
+			If focusType = TVTProductionFocus.PRODUCTION_SPEED Then Continue
+			If focusType = TVTProductionFocus.TEAM Then Continue
 
 			weight=1.0
 			'expected points
-			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusPointID)
+			If genreDefinition Then weight = genreDefinition.GetFocusPointPriority(focusType)
 			focusPoints = min((pointsForDistribution / totalWeights) * weight + 0.5, attributeLimit)
-			'print "expected "+ focusPointID+": "+ focusPoints + " actual "+ GetProductionFocus(focusPointID)
+			'print "expected "+ focusType+": "+ focusPoints + " actual "+ GetProductionFocusPoints(focusType)
 			'difference
-			focusPoints = abs(GetProductionFocus(focusPointID) - focusPoints)
+			focusPoints = abs(GetProductionFocusPoints(focusType) - focusPoints)
 			If focusPoints > 0 Then _effectiveFocusPointsDistribution :- diffPenalty * focusPoints
 		Next
 		'print _effectiveFocusPointsDistribution
@@ -819,7 +821,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			'- experience gained
 			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetTotalProductionJobsDone() + 0.90 * person.GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
-			local castXP:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
+			local castXP:Float = THelper.LogisticalInfluence_Euler(Float(Min(1.0, 0.1 * jobsDone)), 2.5)
 
 			castXP :* 1.0 + 0.15 * person.GetEffectiveJobExperiencePercentage(job.job)
 			If TPersonProductionData(person.GetProductionData())
@@ -939,7 +941,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				local subGenreFit:Float = 0.0
 				For local genre:int = EachIn script.subGenres
 					'96% reached after 8 productions
-					subGenreFit :+ THelper.LogisticalInfluence_Euler(Min(1.0, 0.125 * productionData.GetProducedGenreCount( genre )), 3)
+					subGenreFit :+ THelper.LogisticalInfluence_Euler(Float(Min(1.0, 0.125 * productionData.GetProducedGenreCount( genre ))), 3)
 				Next
 				subGenreFit :/ script.subGenres.length
 
@@ -981,7 +983,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetTotalProductionJobsDone() + 0.90 * person.GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
-			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
+			local jobFit:Float = THelper.LogisticalInfluence_Euler(Float(Min(1.0, 0.1 * jobsDone)), 2.5)
 			local jobFitSwitched:Int = (RandRange(0,100) < 5)
 			'by 5% chance "switch" effect
 			if jobFitSwitched then jobFit = 1.0 - jobFit
@@ -1231,26 +1233,25 @@ endrem
 	End Method
 
 
-	Method GetProductionFocus:int(focusIndex:int)
-		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
-		return productionFocus.GetFocus(focusIndex)
+	Method GetProductionFocusPoints:int(focusType:int)
+		If Not productionFocus Then Return 0
+		Return productionFocus.GetFocusPoints(focusType)
 	End Method
 
 
-	Method SetProductionFocus:int(focusIndex:int, value:int)
-		if not productionCompany then return False
+	Method SetProductionFocusPoints:int(focusType:int, value:int)
+		If Not productionCompany Then Return 0
+		If Not productionFocus Or Not productionFocus.HasFocusType(focusType) Then Return 0
 
-		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
-		'skip if nothing to do
-		if productionFocus.GetFocus(focusIndex) = value then return False
+		' skip if nothing to do (saves eg. emitting an event)
+		If productionFocus.GetFocusPoints(focusType) = value Then Return value
 
-		productionFocus.SetFocus(focusIndex, value, True)
-		'maybe some limitation corrected the value
-		value = productionFocus.GetFocus(focusIndex)
+		' set the value and refresh it to get the actual amount set (eg limits were hit)
+		value = productionFocus.SetFocusPoints(focusType, value, True)
 
-		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetProductionFocus, new TData.AddNumber("focusIndex", focusIndex).AddNumber("value", value), Self )
+		RegisterBaseEvent(GameEventKeys.ProductionConcept_SetProductionFocus, new TData.AddNumber("focusType", focusType).AddNumber("value", value), Self )
 
-		return True
+		Return value
 	End Method
 
 
@@ -1307,8 +1308,8 @@ endrem
 
 			Local fee:Int = productionCompany.GetFee(owner, blocks, script.productionBroadCastLimit) ' script.owner)
 			'for each category the cost per point doubles
-			For local focusIndex:Int = EachIn productionFocus.activeFocusIndices
-				Local focusPoints:Int = productionFocus.GetFocus(focusIndex)
+			For local focusType:Int = EachIn productionFocus.GetFocusTypes()
+				Local focusPoints:Int = productionFocus.GetFocusPoints(focusType)
 				For Local i:Int = 0 until focusPoints
 					fee :+ baseFee * (2 ^ i)
 				Next
@@ -1345,7 +1346,7 @@ endrem
 		Local teamPointTimeMod:Float = 1.0
 
 		If productionFocus
-			Local speedPoints:Int = productionFocus.GetFocus(TVTProductionFocus.PRODUCTION_SPEED)
+			Local speedPoints:Int = productionFocus.GetFocusPoints(TVTProductionFocus.PRODUCTION_SPEED)
 			' 0 points = 1.0
 			' 1 point = 92%
 			' 2 points = 84% ...
@@ -1354,7 +1355,7 @@ endrem
 
 
 			'TEAM (good teams work a bit more efficient)
-			Local teamPoints:Int = productionFocus.GetFocus(TVTProductionFocus.TEAM)
+			Local teamPoints:Int = productionFocus.GetFocusPoints(TVTProductionFocus.TEAM)
 			' 0 points = 1.0
 			' 1 point = 95%
 			' 2 points = 91% ...
@@ -1363,9 +1364,9 @@ endrem
 
 
 			'POINTS ADD TO TIME !
-			For Local focusIndex:Int = EachIn productionFocus.activeFocusIndices
-				If focusIndex <> TVTProductionFocus.TEAM And focusIndex <> TVTProductionFocus.PRODUCTION_SPEED
-					Local focusPoints:Int = productionFocus.GetFocus(focusIndex)
+			For Local focusType:Int = EachIn productionFocus.GetFocusTypes()
+				If focusType <> TVTProductionFocus.TEAM And focusType <> TVTProductionFocus.PRODUCTION_SPEED
+					Local focusPoints:Int = productionFocus.GetFocusPoints(focusType)
 					For Local i:Int = 0 until focusPoints
 						If script.isLive()
 							base :+ (20 * (i+1) + expBase^i) * TWorldTime.MINUTELENGTH
@@ -1462,15 +1463,15 @@ endrem
 
 	Method IsFocusPointsComplete:int()
 		if not productionCompany then return False
-		if not productionFocus or productionFocus.GetFocusPointsMax() = 0 then return False
-		return productionFocus.GetFocusPointsSet() = productionFocus.GetFocusPointsMax()
+		if not productionFocus or productionFocus.GetTotalFocusPointsMax() = 0 then return False
+		return productionFocus.GetTotalFocusPointsSet() = productionFocus.GetTotalFocusPointsMax()
 	End Method
 
 
 	Method IsFocusPointsMinimumUsed:int()
 		if not productionCompany then return False
-		if not productionFocus or productionFocus.GetFocusPointsMax() = 0 then return False
-		return productionFocus.GetFocusPointsSet() > 0
+		if not productionFocus or productionFocus.GetTotalFocusPointsMax() = 0 then return False
+		return productionFocus.GetTotalFocusPointsSet() > 0
 	End Method
 End Type
 
@@ -1478,146 +1479,198 @@ End Type
 
 
 Type TProductionFocusBase
+	' focus type like TVTProductionFocus.COULISSE, etc.
+	Field focusTypes:int[]
+	' points allocated to each focus type
 	Field focusPoints:int[]
-	Field focusPointsMax:int = -1
-	Field activeFocusIndices:int[]
-	Global focusPointLimit:int = 10
+	' maximum focus point for all focus types combined
+	Field totalFocusPointMax:int = -1
+	' limit for each focus type separately
+	Global focusPointsMax:int = 10
 
 
 	Method New()
-		Initialize()
-	End Method
-
-	Method Initialize:int()
 		focusPoints = new Int[6]
 
-		EnableFictional(false)
+		SetFictional(false)
 	End Method
 
 
-	Method EnableFictional:int(bool:int = true)
-		'movielike programme
+	Method SetFictional:int(bool:int = true)
+		' create focus types lookup map
+		'movielike programme (fictional)
 		if bool
-			activeFocusIndices = [TVTProductionFocus.COULISSE, ..
-			                      TVTProductionFocus.OUTFIT_AND_MASK, ..
-			                      TVTProductionFocus.VFX_AND_SFX, ..
-			                      TVTProductionFocus.STUNTS, ..
-			                      ..
-			                      TVTProductionFocus.TEAM, ..
-			                      TVTProductionFocus.PRODUCTION_SPEED ..
-			                     ]
-		'features, documentations...
+			focusTypes = [TVTProductionFocus.COULISSE, ..
+			              TVTProductionFocus.OUTFIT_AND_MASK, ..
+			              TVTProductionFocus.VFX_AND_SFX, ..
+			              TVTProductionFocus.STUNTS, ..
+			              ..
+			              TVTProductionFocus.TEAM, ..
+			              TVTProductionFocus.PRODUCTION_SPEED ..
+			        	 ]
+		'features, documentations... (non-fictional)
 		else
-			activeFocusIndices = [TVTProductionFocus.COULISSE, ..
-			                      TVTProductionFocus.OUTFIT_AND_MASK, ..
-			                      ..
-			                      TVTProductionFocus.TEAM, ..
-			                      TVTProductionFocus.PRODUCTION_SPEED ..
-			                     ]
+			focusTypes = [TVTProductionFocus.COULISSE, ..
+			              TVTProductionFocus.OUTFIT_AND_MASK, ..
+			              ..
+			              TVTProductionFocus.TEAM, ..
+			              TVTProductionFocus.PRODUCTION_SPEED ..
+			             ]
 		endif
+
+
+		' convert focus points if internal representation differed (fictional or non-fictional)
+		If focusPoints.length = 6 And Not bool
+			' convert focus points from fictional to non-fictional
+			focusPoints = [focusPoints[0], focusPoints[1], focusPoints[3], focusPoints[4]]
+		ElseIf focusPoints.length = 4 And bool
+			' convert focus points from non-fictional to fictional
+			focusPoints = [focusPoints[0], focusPoints[1], 0, 0, focusPoints[2], focusPoints[3]]
+		Else
+			' unsupported number of active focus types
+			TLogger.Log("TProductionFocusBase.SetFictional(): Unsupported number of active focus types: " + focusTypes.length, LOG_DEBUG)
+		EndIf
+
+		Return True
 	End Method
 
 
 	Method IsFictional:int()
-		return (activeFocusIndices.length = 6)
+		return (focusTypes.length = 6)
 	End Method
 
 
-	Method SetFocus:int(index:int, value:int, checkLimits:int = True)
-		if focusPoints.length < index or index < 1 then return False
+	Method GetFocusTypeIndex:Int(focusType:int)
+		For local i:Int = 0 To focusTypes.length - 1
+			If focusTypes[i] = focusType Then Return i
+		Next
+		Return -1
+	End Method
+
+
+	Method CopyFocusPoints:Int(sourceProductionFocus:TProductionFocusBase)
+		' request focus point from source - if it 
+		' does not contain it, it returns 0 for the given type
+		For local focusType:Int = EachIn focusTypes
+			' calling the setter() ensures that limits are applied
+			' and events are emitted
+			self.SetFocusPoints(focusType, sourceProductionFocus.GetFocusPoints(focusType) )
+		Next
+	End Method
+
+
+	Method HasFocusType:Int(focusType:int)
+		Return GetFocusTypeIndex(focusType) >= 0
+	End Method
+
+
+	' set amount of focus point for the given focus type
+	' returns the actual amount of focus points set for the given focus type or -1 if none
+	Method SetFocusPoints:int(focusType:int, points:int, checkLimits:int = True)
+		' identify the index within the focusTypes array
+		Local index:Int = GetFocusTypeIndex(focusType)
+		if index < 0 then return -1
 
 		'reset old, so GetFocusPointsLeft() returns correct value
-		focusPoints[index -1] = 0
+		focusPoints[index] = 0
 		if checkLimits
 			'check a total focus point limit
-			focusPoints[index -1] = MathHelper.Clamp(value, 0, Max(0, Min(focusPoints[index -1] + GetFocusPointsLeft(), focusPointLimit)))
+			focusPoints[index] = MathHelper.Clamp(points, 0, Max(0, Min(focusPoints[index] + GetTotalFocusPointsLeft(), focusPointsMax)))
 		else
 			'use the absolute limit
-			focusPoints[index -1] = MathHelper.Clamp(value, 0, focusPointLimit)
+			focusPoints[index] = MathHelper.Clamp(points, 0, focusPointsMax)
 		endif
 
 		'emit event with corrected value (via GetFocus())
-		RegisterBaseEvent(GameEventKeys.ProductionFocus_SetFocus, new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self )
-		return True
+		RegisterBaseEvent(GameEventKeys.ProductionFocus_SetFocus, new TData.AddNumber("focusType", focusType).AddNumber("points", focusPoints[index]), Self )
+
+		return focusPoints[index]
 	End Method
 
 
-	Method GetFocus:int(index:int)
-		if focusPoints.length < index or index < 1 then return -1
+	Method GetFocusPoints:int(focusType:int)
+		Local index:Int = GetFocusTypeIndex(focusType)
+		if index < 0 then return 0
 
-		return focusPoints[index -1]
+		return focusPoints[index]
+	End Method
+
+	
+	Method GetFocusTypes:int[]()
+		return focusTypes
 	End Method
 
 
-	Method GetOrderedFocusIndices:int[]()
-		return activeFocusIndices
+	Method GetFocusTypesCount:int()
+		return focusTypes.length
 	End Method
 
 
-	Method GetFocusPointsSet:int()
+	Method GetTotalFocusPointsSet:int()
 		local result:int = 0
 
-		For local focusIndex:int = EachIn activeFocusIndices
-			result :+ GetFocus(focusIndex)
+		'For local focusType:int = EachIn focusTypes
+		'	result :+ GetFocus(focusType)
+		'Next
+		' simplified (as long as no GetFocusPoints()-override is used)
+		For local points:Int = EachIn focusPoints
+			result :+ points
 		Next
 
 		return result
 	End Method
 
 
-	Method GetFocusPointsLeft:int()
-		return GetFocusPointsMax() - GetFocusPointsSet()
+	Method GetTotalFocusPointsLeft:int()
+		return GetTotalFocusPointsMax() - GetTotalFocusPointsSet()
 	End Method
 
 
 	'removes focus points 1 by 1 from each focus aspects until they are
 	'within a limit
 	'so 3,3,3,0,0 with limit 5 becomes 2,1,1,0,0
-	Method ClampFocusPoints()
-		if GetFocusPointsSet() = 0 then return
+	Method ClampTotalFocusPoints()
+		if GetTotalFocusPointsSet() = 0 then return
 
 		'clamp values
 		'if more points are spend than allowed, subtract one by one
 		'from all aspects until point maximum is no longer beat
-		local trimPoints:int = GetFocusPointsSet() - GetFocusPointsMax()
+		local trimPoints:int = GetTotalFocusPointsSet() - GetTotalFocusPointsMax()
 		While trimPoints > 0
-
 			'start at bottom
-			For local i:int = activeFocusIndices.length-1 to 0 step -1
-				local focusIndex:int = activeFocusIndices[i]
+			For local i:int = focusTypes.length-1 to 0 step -1
+				local focusType:int = focusTypes[i]
 
-				trimPoints = GetFocusPointsSet() - GetFocusPointsMax()
+				trimPoints = GetTotalFocusPointsSet() - GetTotalFocusPointsMax()
 				if trimPoints <= 0 then exit
 
-				if GetFocus( focusIndex ) <= 0 then continue
+				Local points:int = GetFocusPoints(focusType)
+				if points <= 0 then continue
 
 				'to avoid removing more than "-1" (if it still exceeds
 				'a limit), make sure to use "False" to disable this
 				'check
-				SetFocus(focusIndex, GetFocus(focusIndex) - 1, False)
+				SetFocusPoints(focusType, points - 1, False)
 			Next
 		Wend
 	End Method
 
 
-	Method SetFocusPointsMax(maxValue:int)
-		focusPointsMax = maxValue
+	' set the total focus points limit for all focusTypes combined
+	Method SetTotalFocusPointsMax(maxValue:int)
+		totalFocusPointMax = maxValue
 
-		ClampFocusPoints()
+		ClampTotalFocusPoints()
 	End Method
 
 
-	Method GetFocusPointsMax:int()
-		'without limit, each focus aspect can contain focusPointLimit(10) points
-		'if focusPointsMax < 0 then focusPointsMax = GetFocusAspectCount() * focusPointLimit
+	' gets the total focus points limit for all focusTypes combined
+	Method GetTotalFocusPointsMax:int()
+		'without limit, each focus aspect can contain focusPointsMax(10) points
+		'if totalFocusPointMax < 0 then totalFocusPointMax = GetFocusAspectCount() * focusPointsMax
 		'set to 0
-		if focusPointsMax < 0 then focusPointsMax = 0
-		return focusPointsMax
-	End Method
-
-
-	Method GetFocusAspectCount:int()
-		return activeFocusIndices.length
+		if totalFocusPointMax < 0 then totalFocusPointMax = 0
+		return totalFocusPointMax
 	End Method
 End Type
 

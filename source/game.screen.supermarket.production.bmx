@@ -286,10 +286,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			productionFocusSlider[i].Hide()
 		Next
 		'enable used ones...
-		For Local i:Int = 0 To productionFocusSlider.length -1
-			If currentProductionConcept.productionFocus.GetFocusAspectCount() > i
-				productionFocusSlider[i].Show()
-			EndIf
+		For Local i:Int = 0 To Min(productionFocusSlider.length -1, currentProductionConcept.productionFocus.GetFocusTypesCount() - 1)
+			productionFocusSlider[i].Show()
 		Next
 		'reposition them
 		repositionSliders = True
@@ -387,9 +385,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			'=== PRODUCTION FOCUS POINTS ===
 			If takeOverConcept.productionFocus
-				For Local i:Int = 1 To takeOverConcept.productionFocus.focusPoints.length
-					currentProductionConcept.productionFocus.SetFocus(i, takeOverConcept.productionFocus.GetFocus(i) )
-				Next
+				currentProductionConcept.productionFocus.CopyFocusPoints(takeOverConcept.productionFocus)
 			EndIf
 		EndIf
 
@@ -578,25 +574,26 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local productionFocus:TProductionFocusBase = TProductionFocusBase(triggerEvent.GetSender())
 		If GetInstance().currentProductionConcept.productionFocus <> productionFocus Then Return False
 
-		Local focusIndex:Int = triggerEvent.GetData().GetInt("focusIndex")
+		Local focusType:Int = triggerEvent.GetData().GetInt("focusType")
 		Local value:Int = triggerEvent.GetData().GetInt("value")
 
 		'skip without production company!
 		If Not GetInstance().currentProductionConcept.productionCompany Then Return False
 
 		'skip focus aspects without sliders
-		If focusIndex < 0 Or GetInstance().productionFocusSlider.length < focusIndex Then Return False
+		Local slider:TGUISlider = _GetProductionConceptFocusSliderByFocusType(focusType)
+		If not slider Then Return False
 
 		'do this before skipping without changes
 		GetInstance().haveToRefreshFinishProductionConceptGUI = True
 
 		'skip without changes
-		If Int(GetInstance().productionFocusSlider[focusIndex -1].GetValue()) = value Then Return False
+		If Int(slider.GetValue()) = value Then Return False
 
 		'disable a previously set limit
-		GetInstance().productionFocusSlider[focusIndex -1].DisableLimitValue()
+		slider.DisableLimitValue()
 		'adjust values
-		GetInstance().productionFocusSlider[focusIndex -1].SetValue(value)
+		slider.SetValue(value)
 
 		Return True
 	End Function
@@ -613,9 +610,9 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	End Function
 
 
-	Function _GetProductionConceptFocusSliderByFocusIndex:TGUISlider(index:Int)
+	Function _GetProductionConceptFocusSliderByFocusType:TGUISlider(focusType:Int)
 		For Local s:TGUISlider = EachIn GetInstance().productionFocusSlider
-			If s.data And s.data.GetInt("focusIndex") = index Then Return s
+			If s.data And s.data.GetInt("focusType") = focusType Then Return s
 		Next
 		Return Null
 	End Function
@@ -627,11 +624,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If Not slider Then Return False
 
 		'adjust slider limit dynamically
-		Local focusIndex:Int = slider.data.GetInt("focusIndex")
-		Local currentValue:Int = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
+		Local focusType:Int = slider.data.GetInt("focusType")
+		Local currentValue:Int = Max(0, GetInstance().currentProductionConcept.GetProductionFocusPoints(focusType))
 		Local desiredValue:Int = Int(slider.GetValue())
 		'available points (of 10)
-		Local maxValue:Int = Min(10, GetInstance().currentProductionConcept.productionFocus.GetFocusPointsLeft() + currentValue)
+		Local maxValue:Int = Min(10, GetInstance().currentProductionConcept.productionFocus.GetTotalFocusPointsLeft() + currentValue)
 
 		slider.SetLimitValueRange(0, maxValue)
 	End Function
@@ -658,8 +655,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
 		If Not slider Then Return False
 
-		Local focusIndex:Int = slider.data.GetInt("focusIndex")
-		Local currentValue:Int = GetInstance().currentProductionConcept.GetProductionFocus(focusIndex)
+		Local focusType:Int = slider.data.GetInt("focusType")
+		Local currentValue:Int = GetInstance().currentProductionConcept.GetProductionFocusPoints(focusType)
 		Local newValue:Int = Int(slider.GetValue())
 
 		'skip if nothing to do
@@ -667,10 +664,9 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		'set logic-value
 		If Not GetInstance().refreshingProductionGUI
-			GetInstance().currentProductionConcept.SetProductionFocus( focusIndex, newValue )
+		   ' also fetch resulting value (might differ because of limitations)
+			newValue = Max(0, GetInstance().currentProductionConcept.SetProductionFocusPoints( focusType, newValue ))
 		EndIf
-		'fetch resulting value (might differ because of limitations)
-		newValue = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
 
 		'there might be a limitation - so adjust gui slider
 		If newValue <> Int(slider.GetValue())
@@ -845,7 +841,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			productionFocusSlider[i]._gaugeOffset = New SVec2F(productionFocusSlider[i]._gaugeOffset.x, 2)
 			productionFocusSlider[i].SetRenderMode(TGUISlider.RENDERMODE_DISCRETE)
 			productionFocusSlider[i].SetDirection(TGUISlider.DIRECTION_RIGHT)
-			productionFocusSlider[i].data = New TData.AddNumber("focusIndex", i+1)
+			productionFocusSlider[i].data = New TData.AddNumber("focusType", i+1)
 
 			productionFocusSlider[i]._handleDim = New SVec2F(17, productionFocusSlider[i]._handleDim.y)
 
@@ -975,33 +971,35 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If refreshControlEnablement
 			'disable / enable elements according to state
 			If Not currentProductionConcept Or currentProductionConcept.IsProduceable()
-				For Local i:Int = 0 To productionFocusSlider.length -1
-					Local slider:TGUISlider = productionFocusSlider[i]
+				For Local slider:TGUISlider = EachIn productionFocusSlider
 					'ensure correct value is shown for finished concepts
 					If currentProductionConcept
-						slider.SetValue(currentProductionConcept.GetProductionFocus(slider.data.GetInt("focusIndex")))
+						Local focusType:Int = slider.data.GetInt("focusType")
+						slider.SetValue(currentProductionConcept.GetProductionFocusPoints(focusType))
 					EndIf
 					slider.Disable()
 				Next
 				productionCompanySelect.Disable()
 				castSlotList.Disable()
 			Else
-				'disable sliders if no company is selected
+				' disable sliders if no company is selected
 				if not productionCompanySelect.GetSelectedEntry() 
 					If productionFocusSlider[0].IsEnabled()
 						For Local slider:TGUISlider = EachIn productionFocusSlider
 							slider.Disable()
 						Next
 					EndIf
+				' enable all required ones
 				Else
-					Local focusAspectCount:int = currentProductionConcept.productionFocus.GetFocusAspectCount()
-					If focusAspectCount > 0 and Not productionFocusSlider[0].IsEnabled()
-						For Local i:Int = 0 To productionFocusSlider.length -1
-							If focusAspectCount > i
-								productionFocusSlider[i].Enable()
-							EndIf
-						Next
-					EndIf
+					For Local slider:TGUISlider = EachIn productionFocusSlider
+						' avoid enabling sliders that are already enabled (double event triggering etc.)
+						If slider.IsEnabled() Then Continue
+
+						Local focusType:Int = slider.data.GetInt("focusType")
+						If currentProductionConcept.productionFocus.HasFocusType(focusType)
+							slider.Enable()
+						EndIf
+					Next
 				EndIf
 
 				productionCompanySelect.Enable()
@@ -1216,7 +1214,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			Local productionCompanyH:Int = 60
 			Local productionFocusH:Int = titleH + subTitleH + 5 'bottom padding
 			If currentProductionConcept.productionFocus
-				productionFocusH :+ currentProductionConcept.productionFocus.GetFocusAspectCount() * (productionFocusSliderH + productionFocusLabelH)
+				productionFocusH :+ currentProductionConcept.productionFocus.GetFocusTypesCount() * (productionFocusSliderH + productionFocusLabelH)
 			EndIf
 
 
@@ -1242,36 +1240,43 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			contentY :+ titleH
 			'reposition sliders
 			If repositionSliders
-				Local sliderOrder:Int[]
 				If currentProductionConcept And currentProductionConcept.productionFocus
-					sliderOrder = currentProductionConcept.productionFocus.GetOrderedFocusIndices()
+					' Get the focus types in the order they should be displayed
+					Local focusTypesOrdered:Int[] = currentProductionConcept.productionFocus.GetFocusTypes()
+					For Local i:Int = 0 until focusTypesOrdered.length
+						Local focusType:Int = focusTypesOrdered[i]
+						Local slider:TGUISlider = _GetProductionConceptFocusSliderByFocusType(focusType)
+						slider.SetPosition(content.x + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
+						slider.SetSize(content.w - 10)
+					Next
 				Else
-					sliderOrder = [1,2,3,4,5,6]
+					'simply order them one after another
+					For Local i:Int = 0 until productionFocusSlider.length
+						Local slider:TGUISlider = productionFocusSlider[i]
+						slider.SetPosition(content.x + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
+						slider.SetSize(content.w - 10)
+					Next
 				EndIf
-				For Local i:Int = 0 Until sliderOrder.length
-					Local sliderNum:Int = sliderOrder[i]
-					Local slider:TGUISlider = productionFocusSlider[ sliderNum-1]
-					slider.SetPosition(content.x + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
-					slider.SetSize(content.w - 10)
-				Next
 				repositionSliders = False
 			EndIf
 
 			If currentProductionConcept.productionFocus
 				Local pF:TProductionFocusBase = currentProductionConcept.productionFocus
-				For Local labelNum:Int = EachIn pF.GetOrderedFocusIndices()
-		'		For local labelNum:int = 0 until productionFocusLabel.length
-					If Not productionFocusSlider[labelNum-1].IsVisible() Then Continue
-					Local focusIndex:Int = productionFocusSlider[labelNum-1].data.GetInt("focusIndex")
-					Local label:String = GetLocale(TVTProductionFocus.GetAsString(focusIndex))
+				For Local focusType:Int = EachIn pF.GetFocusTypes()
+					Local slider:TGUISlider = _GetProductionConceptFocusSliderByFocusType(focusType)
+					If Not slider or Not slider.IsVisible() Then Continue
+
+					Local label:String = GetLocale(TVTProductionFocus.GetAsString(focusType))
 					skin.fontNormal.DrawBox(label, content.x + 10, contentY, content.w - 15, titleH, sALIGN_LEFT_CENTER, skin.textColorLabel)
 					contentY :+ (productionFocusLabelH + productionFocusSliderH)
 				Next
 
 				'inform about unused skill points / missing company selection
 				If currentProductionConcept.productionCompany
-					Local text:String = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").Replace("%POINTSSET%", pF.GetFocusPointsSet()).Replace("%POINTSMAX%", pF.GetFocusPointsMax())
-					If pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
+					Local totalPointsSet:Int = pF.GetTotalFocusPointsSet()
+					Local totalPointsMax:Int = pF.GetTotalFocusPointsMax()
+					Local text:String = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").Replace("%POINTSSET%", totalPointsSet).Replace("%POINTSMAX%", totalPointsMax)
+					If totalPointsSet < totalPointsMax
 						skin.fontNormal.DrawBox("|i|"+text+"|/i|", content.x + 5, contentY, content.w - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorWarning)
 					Else
 						skin.fontNormal.DrawBox("|i|"+text+"|/i|", content.x + 5, contentY, content.w - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorLabel)
