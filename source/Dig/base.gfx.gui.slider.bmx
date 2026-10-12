@@ -572,7 +572,7 @@ Type TGUISlider extends TGUIObject
 						if switchDirection
 							gaugeSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), GetGaugeW(), filledH, -1, TSprite.BORDER_BOTTOM)
 						else
-							gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), GetGaugeW(), Min(filledH, h - 1.5*gaugeSprite.GetMinHeight()), -1, TSprite.BORDER_BOTTOM)
+							gaugeFilledSprite.DrawArea(position.x + GetGaugeOffsetX(), position.y + GetGaugeOffsetY(), GetGaugeW(), Float(Min(filledH, h - 1.5*gaugeSprite.GetMinHeight())), -1, TSprite.BORDER_BOTTOM)
 						endif
 					endif
 
