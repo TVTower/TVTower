@@ -804,7 +804,7 @@ Type TProduction Extends TOwnedGameObject
 				FillParentalLicence(parentLicence)
 
 				GetProgrammeDataCollection().Add(parentLicence.data)
-				GetProgrammeLicenceCollection().AddAutomatic(parentLicence)
+				GetProgrammeLicenceCollection().Add(parentLicence)
 			Else
 				TLogger.Log("AddProgrammeLicence()", "Failed to create parentLicence!", LOG_ERROR)
 				Throw "Failed to create parentLicence"
@@ -820,7 +820,7 @@ Type TProduction Extends TOwnedGameObject
 		If programmeLicence.IsAPlayersCustomProduction() Then programmeLicence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
 
 		GetProgrammeDataCollection().Add(programmeLicence.data)
-		GetProgrammeLicenceCollection().AddAutomatic(programmeLicence)
+		GetProgrammeLicenceCollection().Add(programmeLicence)
 
 
 		'set owner of licence (and sublicences)
