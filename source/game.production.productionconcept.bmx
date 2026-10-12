@@ -575,49 +575,55 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method GetCastGroup:TPersonBase[](jobFlag:int, skipEmpty:int = True)
-		if not script then return new TPersonBase[0]
-
-		local res:TPersonBase[]
-		local jobs:TPersonProductionJob[] = script.GetSpecificJob(jobFlag)
-		if not skipEmpty and jobs
-			res = new TPersonBase[jobs.length]
-		endif
-
-		'skip further processing with no slots for this specific job
-		if not jobs or jobs.length = 0 then	return res
+	' Returns the number of cast members assigned to this production
+	' (not just the number of cast slots available)
+	Method GetAssignedCastCount:int()
+		Local result:Int = 0
+		For Local i:Int = 0 Until cast.length
+			If cast[i] Then result :+ 1
+		Next
+		Return result
+	End Method
 
 
+	' Retrieve an array of cast members for a specific job, 
+	' skipEmpty: if no cast member was assigned to a slot, this defines whether it should be included in the result
+	Method GetCastGroup:TPersonBase[](jobFlag:Int, skipEmpty:Int = True)
+		If Not script Then Return Null
+		If cast.length <> script.jobs.length Throw "GetCastGroup(): cast and script.jobs length differ!"
+
+		' calculate amount of job-positions in a production
+		' for the specific job
+		Local productionJobsCount:Int = script.GetSpecificJobCount(jobFlag, -1, -1, True)
+		' skip further processing with no slots for this specific job
+		If productionJobsCount = 0 Then Return Null
+
+		'when skipping empty slots, truncate the result array at the end!
+		Local res:TPersonBase[] = New TPersonBase[productionJobsCount]
+	
 		'loop through all (potentially assigned) cast entries and check
 		'whether their job fits to the desired one
-		local castIndex:int = 0
-		For local i:int = 0 until cast.length
-			local job:TPersonProductionJob = script.jobs[i]
-			'flawed data?
-			if not job then continue
-			'skip different jobs
-			if (job.job <> jobFlag and jobFlag <> -1) then continue
+		Local resIndex:Int = 0
+		For Local i:Int = 0 Until cast.length
+			' avoid newly created arrays of prefiltered jobs
+			' and check each cast entry individually in the original array
+			Local job:TPersonProductionJob = script.jobs[i]
+			'flawed data or different job?
+			If Not job Or Not (jobFlag & job.job) Then Continue
 
-			if castIndex > res.length then Throw "GetCastGroup(): castIndex("+castIndex+") > res.length("+res.length+")"
+			If resIndex >= res.length Then Throw "GetCastGroup(): resIndex " + resIndex + " out of bounds (res.length = " + res.length + ")"
+			res[resIndex] = cast[i]
 
-
-			if not skipEmpty
-				if cast[i]
-					res[castIndex] = GetPersonBaseCollection().GetByID( cast[i].GetID() )
-				else
-					res[castIndex] = null
-				endif
-
-				castIndex :+ 1
-			else
-				if cast[i]
-					res :+ [ GetPersonBaseCollection().GetByID( cast[i].GetID() ) ]
-
-					castIndex :+ 1
-				endif
-			endif
+			' move to next result index if appropriate
+			If cast[i] Or not skipEmpty Then resIndex :+ 1
 		Next
-		return res
+
+		' truncate if empty slots were skipped
+		If resIndex < res.length
+			res = res[.. resIndex]
+		EndIf
+
+		Return res
 	End Method
 
 
@@ -630,7 +636,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			if group[i]
 				if result <> "" then result:+ ", "
 				if group[i].IsInsignificant()
-					result:+  GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( jobFlag ) )
+					result:+ GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( jobFlag ) )
 				else
 					result:+ group[i].GetFullName()
 				endif
@@ -1404,9 +1410,10 @@ endrem
 
 
 	Method IsUnplanned:int()
-		'started production setup already?
+		' started production setup already?
 		if productionFocus.GetFocusPointsSet() > 0 then return False
-		if GetCastGroup(-1).length > 0 then return False
+		' assigned cast members already?
+		If GetAssignedCastCount() > 0 Then Return False
 
 		return True
 	End Method
