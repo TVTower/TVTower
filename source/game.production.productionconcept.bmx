@@ -935,7 +935,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			'main genre - 96% reached after 10 productions
 			'euler strength: 3.0, so for done jobs: 26%, 45%, 59%, ...
 			'(it is easier to adopt for a genre than for a job itself)
-			local mainGenreFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * productionData.GetProducedGenreCount( script.GetMainGenre() )), 3)
+			local mainGenreFit:Float = THelper.LogisticalInfluence_Euler(Float(Min(1.0, 0.1 * productionData.GetProducedGenreCount( script.GetMainGenre() ))), 3)
 			'sub genre
 			if script.subGenres and script.subGenres.length > 0
 				local subGenreFit:Float = 0.0
@@ -1412,7 +1412,7 @@ endrem
 
 	Method IsUnplanned:int()
 		' started production setup already?
-		if productionFocus.GetFocusPointsSet() > 0 then return False
+		if productionFocus.GetTotalFocusPointsSet() > 0 then return False
 		' assigned cast members already?
 		If GetAssignedCastCount() > 0 Then Return False
 
