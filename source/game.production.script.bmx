@@ -1222,7 +1222,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'=== PREPARE VARIABLES ===
 		Local sheetWidth:Int = 310
 		Local sheetHeight:Int = 0 'calculated later
-		If align = -1 Then x = x
+		'If align = -1 Then x = x
 		If align = 0 Then x = x - 0.5 * sheetWidth
 		If align = 1 Then x = x - sheetWidth
 

@@ -424,8 +424,8 @@ Type TSprite
 		'is defined, use the whole parental image
 		Local area:SRectI = New SRectI( data.GetInt("x", 0), ..
 		                                data.GetInt("y", 0), ..
-		                                data.GetInt("w", parent.GetImage().width), ..
-		                                data.GetInt("h", parent.GetImage().height) ..
+		                                data.GetInt("w", Int(parent.GetImage().width)), ..
+		                                data.GetInt("h", Int(parent.GetImage().height)) ..
 		                              )
 		'intialize sprite
 		Init(parent, name, area, offset, frames, New TVec2D(frameW, frameH), id)

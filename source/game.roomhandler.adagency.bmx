@@ -802,7 +802,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'the cheap list contains really low contracts
 		Local cheapListFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
-		cheapListFilter.SetAudience(spotMin, Max(spotMin, 1.5 * d.lowestChannelQuoteDaytime))
+		cheapListFilter.SetAudience(spotMin, Float(Max(spotMin, 1.5 * d.lowestChannelQuoteDaytime)))
 		'no image requirements - or not much more than the lowest image
 		'(so all could sign this)
 		cheapListFilter.SetMinImageRange(0, 1.1 * d.lowestChannelImage)
@@ -837,7 +837,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'=== AVERAGE ===
 		levelFilters[1] = New TAdContractbaseFilter
 		'from 80% of avg to lowest prime/dayaverage, may cross with lowest and high
-		levelFilters[1].SetAudience(Max(spotMin, 0.8 * d.averageChannelQuoteDayTime), Max(d.highestChannelQuoteDayTime, d.lowestChannelQuotePrimeTime))
+		levelFilters[1].SetAudience(Float(Max(spotMin, 0.8 * d.averageChannelQuoteDayTime)), Float(Max(d.highestChannelQuoteDayTime, d.lowestChannelQuotePrimeTime)))
 		'0-100% of average Image
 		levelFilters[1].SetMinImageRange(0, d.averageChannelImage)
 		If limitInstances > 0 Then levelFilters[1].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
@@ -845,7 +845,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 		'=== HIGH ===
 		levelFilters[2] = New TAdContractbaseFilter
 		'from 80% of highest day to 130% of highest prime
-		levelFilters[2].SetAudience(Max(spotMin, 0.8 * d.highestChannelQuoteDayTime), 1.3 * Max(d.highestChannelQuoteDayTime, d.highestChannelQuotePrimeTime))
+		levelFilters[2].SetAudience(Float(Max(spotMin, 0.8 * d.highestChannelQuoteDayTime)), Float(1.3 * Max(d.highestChannelQuoteDayTime, d.highestChannelQuotePrimeTime)))
 		'0-100% of highest Image
 		levelFilters[2].SetMinImageRange(0, d.highestChannelImage)
 		If limitInstances > 0 Then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
