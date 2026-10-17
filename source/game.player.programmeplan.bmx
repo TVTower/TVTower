@@ -251,16 +251,18 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'sets the given array to the one requested through objectType
 	'this is needed as assigning to "getObjectArray"-arrays is not possible for now
 	Method SetObjectArrayEntry:Int(obj:TBroadcastMaterial, slotType:Int=0, arrayIndex:Int)
+		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
+
 		'resize array if needed
 		If arrayIndex >= GetObjectArray(slotType).length
+			Local newSize:int = arrayIndex + 1
 			If obj
-				ResizeObjectArray(slotType, arrayIndex + 1 + obj.GetBlocks() - 1)
-			'null is used to unset an objectarray
-			Else
-				ResizeObjectArray(slotType, arrayIndex + 1)
+				newSize :+ obj.GetBlocks() - 1
+			EndIf
+			If Not ResizeObjectArray(slotType, newSize) 
+				Throw "[ERROR] SetObjectArrayEntry: Failed to resize object array for slotType " + slotType + " and newSize " + newSize
 			EndIf
 		EndIf
-		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
 
 		If slotType = TVTBroadcastMaterialType.PROGRAMME Then programmes[arrayIndex] = obj
 		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT Then advertisements[arrayIndex] = obj
@@ -276,13 +278,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Select objectType
 			Case TVTBroadcastMaterialType.PROGRAMME
 				programmes = programmes[..newSize]
-				Return True
+				Return programmes.length = newSize
 			Case TVTBroadcastMaterialType.ADVERTISEMENT
 				advertisements = advertisements[..newSize]
-				Return True
+				Return advertisements.length = newSize
 			Case TVTBroadcastMaterialType.NEWSSHOW
 				newsShow = newsShow[..newSize]
-				Return True
+				Return newsShow.length = newSize
 		End Select
 
 		Return False

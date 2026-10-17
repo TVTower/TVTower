@@ -178,10 +178,10 @@ Function ConfigureStorageMode:Int(applicationStoragePath:String var, writableFol
 		If arg.Find("-") <> 0 Then Continue
 
 		Select arg.ToLower()
-			case "portable"
+			case "-portable"
 				TLogger.Log("ConfigureStorageMode", "Portable storage mode requested via commandline.", LOG_DEBUG)
 				commandlineStorageMode = portableMode
-			case "userdir"
+			case "-userdir"
 				commandlineStorageMode = userdirMode
 				TLogger.Log("ConfigureStorageMode", "Userdir storage mode requested via commandline.", LOG_DEBUG)
 		End Select
@@ -193,7 +193,7 @@ Function ConfigureStorageMode:Int(applicationStoragePath:String var, writableFol
 
 	Local canWrite:Int
 	If storageMode = autoMode or storageMode = portableMode
-		If autoMode
+		If storageMode = autoMode
 			TLogger.Log("ConfigureStorageMode", "Auto prioritizes ~qPortable~q. Uses ~qUserdir~q as fallback..", LOG_DEBUG)
 		EndIf
 		TLogger.Log("ConfigureStorageMode", "Portable storage directory path: ~q" + baseDir + "~q.", LOG_DEBUG)
