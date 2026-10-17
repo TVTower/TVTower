@@ -181,7 +181,7 @@ Type TProduction Extends TOwnedGameObject
 		If not IsPaused()
 			SetPaused(True, pauseExtension)
 		Else
-			self.pauseDuration :+ pauseDuration
+			self.pauseDuration :+ pauseExtension
 		EndIf
 	End Method
 
