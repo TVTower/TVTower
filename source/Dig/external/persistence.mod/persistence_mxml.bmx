@@ -782,6 +782,11 @@ Type TPersist
 
 						'also refresh field type now
 						fieldType = fieldObj.TypeId().Name()
+						' Ronny: ensure fieldType is lower-cased 
+						' (serialized primitives names are lower-cased, via reflection not!)
+						fieldType = fieldType.ToLower()
+
+
 						' As "arrays" in TPersistence-stuff have a "type" value of "array:TheType[]", 
 						' it is required to add "array:" to it again
 						If fieldType.Find("[]") > 0
@@ -815,8 +820,9 @@ Type TPersist
 						' It might have been renamed (or no longer be an
 						' "extending" class but the original one).
 						Local renamedFieldType:String = DelegateRenamedTypeDetection(pureFieldType, parentName + "." + fieldName)
-						If renamedFieldType <> pureFieldType
-							fieldType = renamedFieldType
+						If Not renamedFieldType.Equals(pureFieldType, False)
+							' ensure fieldType is lower-cased (again)
+							fieldType = renamedFieldType.ToLower()
 							If fieldType.Find("[]") > 0 
 								fieldType = "array:" + fieldType
 							EndIf
@@ -827,8 +833,7 @@ Type TPersist
 							fieldNode.SetAttribute("type", fieldType)
 						EndIf
 					EndIf
-
-
+					
 					' Ronny: delegate "primitive to object" conversions
 					local isStoredPrimitive:Int = False
 					local isFieldPrimitive:Int = False
