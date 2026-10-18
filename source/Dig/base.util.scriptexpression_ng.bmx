@@ -1645,7 +1645,7 @@ Type TSEFN_Handler
 	Field paramMaxCount:Int = -1
 	Field callback:SToken(params:STokenGroup Var, context:SScriptExpressionContext var)
 
-	Method New(callback:SToken( params:STokenGroup Var, context:SScriptExpressionContext var), paramMinCount:Int, paramCount:Int)
+	Method New(callback:SToken( params:STokenGroup Var, context:SScriptExpressionContext var), paramMinCount:Int, paramMaxCount:Int)
 		Self.callback = callback
 		Self.paramMinCount = paramMinCount
 		Self.paramMaxCount = paramMaxCount

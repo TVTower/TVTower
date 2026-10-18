@@ -30,11 +30,11 @@ Type TAchievementTask_FulfillAchievements extends TAchievementTask
 		if not configData then return null
 
 		local num:int = 1
-		local achievementGUID:string = configData.GetString("achievementGUID"+num, "")
-
-		While achievementGuid
+		local achievementGUID:string = configData.GetString("achievementGUID" + num, "")
+		While achievementGUID
 			achievementGUIDs :+ [achievementGUID]
-			achievementGUID = configData.GetString("achievementGUID")
+			achievementGUID = configData.GetString("achievementGUID" + num)
+			num :+ 1
 		Wend
 
 		return self
@@ -385,6 +385,7 @@ End Type
 
 '=== REGISTER CREATORS ===
 'TASKS
+GetAchievementCollection().RegisterElement("task::FulfillAchievements", new TAchievementTask_FulfillAchievements)
 GetAchievementCollection().RegisterElement("task::ReachAudience", new TAchievementTask_ReachAudience)
 GetAchievementCollection().RegisterElement("task::ReachBroadcastArea", new TAchievementTask_ReachBroadcastArea)
 GetAchievementCollection().RegisterElement("task::BroadcastNewsShow", new TAchievementTask_BroadcastNewsShow)

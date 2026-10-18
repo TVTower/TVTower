@@ -368,56 +368,99 @@ Type TAchievement Extends TAchievementBaseType
 
 	'=== REWARDS ===
 	Method GetRewards:TAchievementReward[]()
-		if not _rewards and rewardGUIDs
-			_rewards = new TAchievementReward[ 0 ]
-			for local guid:string = EachIn rewardGUIDs
-				local r:TAchievementReward = GetAchievementCollection().GetReward( guid )
-				if r then _rewards :+ [r]
-			next
-		endif
-		return _rewards
+		If Not _rewards And rewardGUIDs
+			' also add invalid/null ones (keep indices aligned to rewardGUIDs array)
+			_rewards = New TAchievementReward[rewardGUIDs.length]
+			For Local i:Int = 0 Until rewardGUIDs.length
+				Local guid:string = rewardGUIDs[i]
+				Local r:TAchievementReward = GetAchievementCollection().GetReward( guid )
+				_rewards[i] = r
+			Next
+		EndIf
+		
+		Return _rewards
 	End Method
 
 
-	Method AddReward:TAchievement(guid:string)
-		If guid And Not HasReward(null, guid)
-			rewardGUIDs :+ [guid]
+	Method AddReward:Int(reward:TAchievementReward)
+		If Not reward Then Return False
+
+		Return AddReward(reward.GetGUID())
+	End Method
+
+
+	Method AddReward:Int(rewardGUID:string)
+		If rewardGUID And Not HasReward(rewardGUID)
+			rewardGUIDs :+ [rewardGUID]
 			'invalidate cache
 			_rewards = null
+			Return True
 		EndIf
-		Return Self
+
+		Return False
+	End Method
+	
+
+	Method GetReward:TAchievementReward(rewardGUID:String)
+		If rewardGUID 
+			Local index:Int = GetRewardIndex(rewardGUID)
+			If index >= 0
+				Return GetReward(index)
+			EndIf
+		EndIf
+		Return Null
 	End Method
 
 
-	Method GetReward:TAchievementReward(rewardGUID:string, index:int = 0)
-		if rewardGUID then index = GetRewardIndex(null, rewardGUID)
-		if index < 0 or index >= rewardGUIDs.length then return Null
-		return GetRewards()[index]
+	Method GetReward:TAchievementReward(index:Int)
+		Local r:TAchievementReward[] = GetRewards()
+		If index >= 0 And index < r.length Then Return r[index]
+		Return Null
 	End Method
 
 
-	Method GetRewardIndex:Int(reward:TAchievementReward=null, rewardGUID:String="")
-		if not rewardGUIDs then return -1 'this also is "not" for rewardGUIDs.length = 0
-		If reward then rewardGUID = reward.GetGUID()
-
-		For Local index:Int = 0 Until rewardGUIDs.length
-			If rewardGUIDs[index] = rewardGUID Then Return index
-		Next
+	Method GetRewardIndex:Int(reward:TAchievementReward)
+		If reward 
+			Return GetRewardIndex(reward.GetGUID())
+		EndIf
 		Return -1
 	End Method
 
 
-	Method HasReward:Int(reward:TAchievementReward, rewardGUID:String="")
-		Return GetRewardIndex(reward, rewardGUID) >= 0
+	Method GetRewardIndex:Int(rewardGUID:String)
+		If rewardGUIDs
+			For Local index:Int = 0 Until rewardGUIDs.length
+				If rewardGUIDs[index] = rewardGUID Then Return index
+			Next
+		EndIf
+		Return -1
 	End Method
 
 
-	Method RemoveReward:TAchievement(reward:TAchievementReward, rewardGUID:String="")
-		Local removeIndex:Int = GetRewardIndex(reward, rewardGUID)
-		If removeIndex = -1 Then Return Self
+	Method HasReward:Int(reward:TAchievementReward)
+		Return GetRewardIndex(reward) >= 0
+	End Method
+
+
+	Method HasReward:Int(rewardGUID:String)
+		Return GetRewardIndex(rewardGUID) >= 0
+	End Method
+
+
+	Method RemoveReward:Int(reward:TAchievementReward)
+		If reward
+			Return RemoveReward(reward.GetGUID())
+		EndIf
+		Return False
+	End Method
+
+
+	Method RemoveReward:Int(rewardGUID:String)
+		Local removeIndex:Int = GetRewardIndex(rewardGUID)
+		If removeIndex = -1 Then Return False
 
 		If not rewardGUIDs 'includes rewardGUIDs.length = 0
-			Return Self
+			Return False
 		ElseIf rewardGUIDs.length = 1
 			rewardGUIDs = New string[0]
 		Else
@@ -426,61 +469,107 @@ Type TAchievement Extends TAchievementBaseType
 
 		'invalidate cache
 		_rewards = null
+
+		Return True
 	End Method
 
 
 
 	'=== TASKS ===
 	Method GetTasks:TAchievementTask[]()
-		if not _tasks and taskGUIDs
-			for local guid:string = EachIn taskGUIDs
-				local t:TAchievementTask = GetAchievementCollection().GetTask( guid )
-				if t then _tasks :+ [t]
-			next
-		endif
-		return _tasks
-	End Method
-
-
-	Method AddTask:TAchievement(guid:string)
-		If guid And Not HasTask(null, guid)
-			taskGUIDs :+ [guid]
-			'invalidate cache
-			_tasks = null
+		If Not _tasks and taskGUIDs
+			' also add invalid/null ones (keep indices aligned to tasksGUIDs array)
+			_tasks = New TAchievementTask[taskGUIDs.length]
+			For Local i:Int = 0 Until taskGUIDs.length
+				Local guid:string = taskGUIDs[i]
+				Local t:TAchievementTask = GetAchievementCollection().GetTask( guid )
+				_tasks[i] = t
+			Next
 		EndIf
-		Return Self
+		
+		Return _tasks
 	End Method
 
 
-	Method GetTask:TAchievementTask(taskGUID:string, index:int = 0)
-		if taskGUID then index = GetTaskIndex(null, taskGUID)
-		if index < 0 or index >= taskGUIDs.length then return Null
-		return GetTasks()[index]
+	Method AddTask:Int(task:TAchievementTask)
+		If Not task Then Return False
+
+		Return AddTask(task.GetGUID())
 	End Method
 
 
-	Method GetTaskIndex:Int(task:TAchievementTask=null, taskGUID:String="")
-		if not taskGUIDs then return -1 'this also is "not" for taskGUIDs.length = 0
-		If task then taskGUID = task.GetGUID()
+	Method AddTask:Int(taskGUID:string)
+		If taskGUID And Not HasTask(taskGUID)
+			taskGUIDs :+ [taskGUID]
+			'invalidate cache
+			_rewards = null
+			Return True
+		EndIf
 
-		For Local index:Int = 0 Until taskGUIDs.length
-			If taskGUIDs[index] = taskGUID Then Return index
-		Next
+		Return False
+	End Method
+	
+
+	Method GetTask:TAchievementTask(taskGUID:String)
+		If taskGUID 
+			Local index:Int = GetTaskIndex(taskGUID)
+			If index >= 0
+				Return GetTasks()[index]
+			EndIf
+		EndIf
+		Return Null
+	End Method
+
+
+	Method GetTask:TAchievementTask(index:Int)
+		Local r:TAchievementTask[] = GetTasks()
+		If index >= 0 And index < r.length Then Return r[index]
+		Return Null
+	End Method
+
+
+	Method GetTaskIndex:Int(task:TAchievementTask)
+		If task
+			Return GetTaskIndex(task.GetGUID())
+		EndIf
 		Return -1
 	End Method
 
 
-	Method HasTask:Int(task:TAchievementTask, taskGUID:String="")
-		Return GetTaskIndex(task, taskGUID) >= 0
+	Method GetTaskIndex:Int(taskGUID:String)
+		If taskGUIDs
+			For Local index:Int = 0 Until taskGUIDs.length
+				If taskGUIDs[index] = taskGUID Then Return index
+			Next
+		EndIf
+		Return -1
 	End Method
 
 
-	Method RemoveTask:TAchievement(task:TAchievementTask, taskGUID:String="")
-		Local removeIndex:Int = GetTaskIndex(task, taskGUID)
-		If removeIndex = -1 Then Return Self
+	Method HasTask:Int(task:TAchievementTask)
+		Return GetTaskIndex(task) >= 0
+	End Method
+
+
+	Method HasTask:Int(taskGUID:String)
+		Return GetTaskIndex(taskGUID) >= 0
+	End Method
+
+
+	Method RemoveTask:Int(task:TAchievementTask)
+		If task
+			Return RemoveTask(task.GetGUID())
+		EndIf
+		Return False
+	End Method
+
+
+	Method RemoveTask:Int(taskGUID:String)
+		Local removeIndex:Int = GetTaskIndex(taskGUID)
+		If removeIndex = -1 Then Return False
 
 		If not taskGUIDs 'includes taskGUIDs.length = 0
-			Return Self
+			Return False
 		ElseIf taskGUIDs.length = 1
 			taskGUIDs = New string[0]
 		Else
@@ -488,7 +577,9 @@ Type TAchievement Extends TAchievementBaseType
 		EndIf
 
 		'invalidate cache
-		_tasks = null
+		_rewards = null
+
+		Return True
 	End Method
 
 

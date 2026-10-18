@@ -181,7 +181,7 @@ Type TProduction Extends TOwnedGameObject
 		If not IsPaused()
 			SetPaused(True, pauseExtension)
 		Else
-			self.pauseDuration :+ pauseDuration
+			self.pauseDuration :+ pauseExtension
 		EndIf
 	End Method
 
@@ -1156,7 +1156,7 @@ endrem
 		Else
 			programmeData.title = script.title.Copy()
 		EndIf
-		If isSeriesHeader And productionConcept.customDescription
+		If isSeriesHeader And script.customDescription
 			programmeData.description = New TLocalizedString.Set(script.customDescription)
 		ElseIf Not isSeriesHeader And productionConcept.customDescription
 			programmeData.description = New TLocalizedString.Set(productionConcept.customDescription)
