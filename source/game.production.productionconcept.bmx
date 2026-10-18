@@ -1522,7 +1522,7 @@ Type TProductionFocusBase
 		' convert focus points if internal representation differed (fictional or non-fictional)
 		If focusPoints.length = 6 And Not bool
 			' convert focus points from fictional to non-fictional
-			focusPoints = [focusPoints[0], focusPoints[1], focusPoints[3], focusPoints[4]]
+			focusPoints = [focusPoints[0], focusPoints[1], focusPoints[4], focusPoints[5]]
 		ElseIf focusPoints.length = 4 And bool
 			' convert focus points from non-fictional to fictional
 			focusPoints = [focusPoints[0], focusPoints[1], 0, 0, focusPoints[2], focusPoints[3]]

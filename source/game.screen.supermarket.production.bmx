@@ -575,7 +575,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If GetInstance().currentProductionConcept.productionFocus <> productionFocus Then Return False
 
 		Local focusType:Int = triggerEvent.GetData().GetInt("focusType")
-		Local value:Int = triggerEvent.GetData().GetInt("value")
+		Local value:Int = triggerEvent.GetData().GetInt("points")
 
 		'skip without production company!
 		If Not GetInstance().currentProductionConcept.productionCompany Then Return False
