@@ -1490,7 +1490,7 @@ Type TProductionFocusBase
 
 
 	Method New()
-		focusPoints = new Int[6]
+		'focusPoints = new Int[6] 'already created in SetFictional()
 
 		SetFictional(false)
 	End Method

@@ -374,7 +374,7 @@ Include "game.menu.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.8.4"
+VersionString = "v0.8.5-dev"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:String = "TVTower"
@@ -2431,7 +2431,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:int = 25
+	Const SAVEGAME_VERSION:int = 26
 	Const MIN_SAVEGAME_VERSION:Int = 23
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowLastUpdate:Long
@@ -2803,6 +2803,22 @@ Type TSaveGame Extends TGameState
 
 	Global _nilNode:TNode = New TNode._parent
 	Function RepairData(savegameVersion:Int, savegameConverter:TSavegameConverter = null)
+		If savegameVersion <= 26
+			' Truncate non-fictional TProductionFocusBase-arrays from 6 to 4 elements
+			' TProductionConcept -> productionFocus
+			' Old concept stored focus types 1,2,4 and 5 as indices 0,1,2,3 (and left 4,5 as zero)
+			' so we can simply truncate
+			' This step is optional (as only set indices' values will be used)
+			For Local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection()
+				If Not productionConcept.productionFocus.IsFictional()
+					Local oldFocusPoints:Int[] = productionConcept.productionFocus.focusPoints
+					If productionConcept.productionFocus.focusPoints.length = 6
+						productionConcept.productionFocus.focusPoints = productionConcept.productionFocus.focusPoints[..4]
+						TLogger.Log("RepairData", "Truncated non-fictional production concept (~q" + productionConcept.GetTitle() +"~q) focus points to 4 elements.")
+					EndIf
+				EndIf
+			Next
+		EndIf
 		If savegameVersion <= 25
 			Local n:TNewsEventTemplate= GetNewsEventTemplateCollection().GetByGUID("aa4b86ff-092d-4442-b212-691d910a3602")
 			If n And n.templateVariables
@@ -3697,6 +3713,13 @@ Type TSavegameConverter
 
 	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
 		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
+			'v0.8.5 -> "TProductionFocusBase: activeFocusIndices" renamed to "focusTypes"
+			case "TProductionFocusBase:activeFocusIndices".ToLower()
+				Return "focusTypes"
+			'v0.8.5 -> "TProductionFocusBase: focusPointsMax" renamed to "totalFocusPointMax"
+			case "TProductionFocusBase:focusPointsMax".ToLower()
+				Return "totalFocusPointMax"
+
 			'v0.8.3 -> "TAudienceResultBase: "PotentialMaxAudience" renamed to "PotentialAudience"
 			case "TAudienceResultBase:PotentialMaxAudience".ToLower()
 				Return "PotentialAudience"
