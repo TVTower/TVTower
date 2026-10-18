@@ -122,6 +122,20 @@ Type TPersonGenerator
 		
 		Return ""
 	End Method
+	
+	
+	' figure and person codes might differ - allows unifying
+	Function GetUnifiedCountryCode:String(countryCode:String)
+		Local countryCodeUC:String = countryCode.ToUpper()
+		Select countryCodeUC
+			Case "BR", "BRA"		Return "BRA"
+			Case "J", "JP", "JAP"	Return "J"
+			Case "D", "DE"			Return "DE"
+			Case "US", "USA"		Return "US"
+		End Select
+		Return countryCodeUC
+	End Function
+
 
 	Function GetGenderFromString:int(str:string)
 		Select str.Trim()

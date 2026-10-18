@@ -14,13 +14,13 @@
 			<first_name>Henry</first_name>
 			<last_name>Cutamaran</last_name>
 			<nick_name></nick_name>
-			<details job="5" gender="1" birthday="-25" deathday="" country="" fictional="1" />
+			<details job="5" gender="1" birthday="-25" deathday="" country="USA" fictional="1" />
 		</person>
 		<person guid="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" creator="5578" created_by="Ronny">
 			<first_name>Patty</first_name>
 			<last_name>Glansen</last_name>
 			<nick_name></nick_name>
-			<details job="138" gender="2" birthday="-32" deathday="" country="D" fictional="1" face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
+			<details job="138" gender="2" birthday="-32" deathday="" country="D" fictional="1" face_code="2:2:1#FEB886:750:0:7:5:0:7:7:-1:-1:3#352620:13#361C0F:1#9C3386" />
 			<data popularity="20" affinity="50" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="1cac5a80-97dc-46f6-8c34-761c4fe43db5" creator="5578" created_by="Ronny">
@@ -34,41 +34,41 @@
 			<first_name>Betty</first_name>
 			<last_name>Botterblom</last_name>
 			<nick_name></nick_name>
-			<details job="136" gender="2" birthday="-25" deathday="" country="USA" fictional="1" face_code="2:2:3:#FCBA9F:-1:-1:0:-1:9#48A96E:6:5:-1:0:5:0:9#FFD11C:-1:-1" />
+			<details job="136" gender="2" birthday="-25" deathday="" country="USA" fictional="1" face_code="2:1:1#FFC49B:630:0:6:3#FFFFFF:2:2:4#F07F7F:-1:-1:0#DCAD1E:9#E7B514:7#3BA561" />
 			<data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" />
 		</person>
 		<person guid="682d65b5-9ff7-475a-8d50-a4ded9eefa9e" creator="">
 			<first_name>Samantha</first_name>
 			<last_name>Goodman</last_name>
 			<nick_name></nick_name>
-			<details job="65" gender="2" birthday="" deathday="" country="" fictional="1" />
+			<details job="65" gender="2" birthday="" deathday="" country="USA" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="336ebe49-3b96-46f4-8cd5-da6f64ff8c38" creator="">
 			<first_name>Yoshi</first_name>
 			<last_name>Grünwald</last_name>
 			<nick_name></nick_name>
-			<details job="69" gender="1" birthday="" deathday="" country="" fictional="1" />
+			<details job="69" gender="1" birthday="" deathday="" country="AUT" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="bedfa8be-aaff-457d-b549-893c3a784c9b" creator="">
 			<first_name>Rudi</first_name>
 			<last_name>Hackl</last_name>
 			<nick_name></nick_name>
-			<details job="82" gender="1" birthday="" deathday="" country="" fictional="1" />
+			<details job="82" gender="1" birthday="" deathday="" country="AUT" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="3bb46451-4b1c-4ae7-90a4-8dbbe66f3bd1" creator="" comment="previously Dietmar Hjüpsh, is fictional, was probably erroneously spoofed in 2013.">
 			<first_name>Dietmar</first_name>
 			<last_name>Hübsch</last_name>
 			<nick_name></nick_name>
-			<details job="69" gender="1" birthday="" deathday="" country="" fictional="1" />
+			<details job="69" gender="1" birthday="" deathday="" country="D" fictional="1" />
 		</person>
 		<person guid="a6055f37-ab53-425e-9332-14e0dfabc424" creator="" comment="previously Rolf Krehl, is fictional, was probably erroneously spoofed in 2013, which lead to inconsistency with description.">
 			<first_name>Rolf</first_name>
 			<last_name>Krall</last_name>
 			<nick_name></nick_name>
-			<details job="66" gender="1" birthday="" deathday="" country="" fictional="1" />
+			<details job="66" gender="1" birthday="" deathday="" country="D" fictional="1" />
 		</person>
 		<person guid="003bbc46-ee54-43ea-bd2b-230f0feb051f" creator="">
 			<first_name>Pit</first_name>
@@ -88,14 +88,14 @@
 			<first_name>Heinz</first_name>
 			<last_name>Ulmer</last_name>
 			<nick_name></nick_name>
-			<details job="74" gender="1" birthday="" deathday="" country="" fictional="1" />
+			<details job="74" gender="1" birthday="" deathday="" country="D" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person guid="817052f9-cfbd-415c-a4b4-a225011afcb1" creator="" comment="parody version of cd3a2e20-efe1-4a4c-9249-164b67d185f7">
 			<first_name>Arnold</first_name>
 			<last_name>Weissenacker</last_name>
 			<nick_name></nick_name>
-			<details job="66" gender="1" birthday="" deathday="" country="" fictional="1" />
+			<details job="66" gender="1" birthday="" deathday="" country="AUT" fictional="1" />
 			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 
@@ -347,7 +347,7 @@
 		<person guid="24967622-b169-4413-90df-6dc574464b65" first_name="Kalle" last_name="Knall" nick_name="" fictional="1" gender="1" job="203" />
 		<person guid="13ce58ce-216d-4f5c-a9ca-bed86eef67e3" first_name="Kalle" last_name="Knausrig" nick_name="" fictional="1" gender="1" />
 		<person guid="4bd36da9-4f07-4067-af4a-01ff5175ad73" first_name="Ulfs" last_name="Maul" nick_name="" fictional="1" gender="1" />
-		<person guid="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" fictional="1" gender="1" face_code="1:2:2:#ECA472:-1:-1:2:-1:11#9090b0:3:7:-1:2:1:7:8#303010:-1:2#807020" />
+		<person guid="9104f9c1-7a0f-4bc0-a34c-389ce282eebf" first_name="Ronny" last_name="Otto" nick_name="" fictional="1" gender="1" face_code="1:2:1#E8AB91:825:2:13:8#FFFFFF:4:4:2#FFFFFF:-1:0#A8A8A8:-1:8#626262:23#322E8D" />
 		<person guid="c1543aab-18a4-44ad-be31-34bc1c972553" first_name="Santiago" last_name="Perez" nick_name="de Chile" fictional="1" gender="1" castable="0" />
 		<person guid="22274e45-da7e-4fb2-8698-3a2364973e1a" first_name="Matthias" last_name="Pfeife" nick_name="" fictional="1" gender="1" />
 		<person guid="afa8d190-c907-4fcf-9c34-d55136ab3c99" first_name="Mariusz" last_name="Plauz" nick_name="" fictional="1" gender="1" />
@@ -374,7 +374,7 @@
 		<person guid="0142e7e1-c601-4de6-ab42-f3a34bc3c2dd" first_name="Karl-Peter" last_name="Ziflecker" nick_name="" fictional="1" />
 
 		<!-- start programme -->
-		<person guid="Ronny-person-various-sjaele" first_name="Själe" last_name="Fjieldsgröhn" fictional="1" gender="1" country="D" job="1" face_code="1:2:3:FEDCCF:-1:-1:2:-1:11#0590B0:14:6:-1:4:7:3:7#45240C:-1:-1"/>
+		<person guid="Ronny-person-various-sjaele" first_name="Själe" last_name="Fjieldsgröhn" fictional="1" gender="1" country="D" job="1" face_code="1:1:1#E1C7B8:915:3:16:1:0:4:6:-1:-1:1#4A4139:3#42362E:22#ECD7AC"/>
 		<!-- start programme - not available for custom productions -->
 		<person guid="Ronny-person-various-ukuleleorchesterstarscrazy" first_name="Ukuleleorchester STARSCrazy" last_name="" nick_name="" fictional="1" gender="1" castable="0" job="16" />
 		<person guid="Ronny-person-various-helmut" first_name="Helmut" last_name="" nick_name="Helmut" fictional="1" gender="1" castable="0" country="D" job="64" />
