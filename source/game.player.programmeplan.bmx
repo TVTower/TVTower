@@ -531,7 +531,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns a programme (or null) for the given array index
 	Method GetObjectAtIndex:TBroadcastMaterial(objectType:Int=0, arrayIndex:Int)
 		Local array:TBroadcastMaterial[] = GetObjectArray(objectType)
-		If arrayIndex > 0 And array.length > arrayIndex
+		If arrayIndex >= 0 And arrayIndex < array.length
 			Return array[arrayIndex]
 		Else
 			Return Null
