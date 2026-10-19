@@ -29,6 +29,17 @@
 				<child name="gfx_mousecursor_extra_forbidden"  x="144"  y="0"    w="48"  h="50" offsetLeft="0" offsetTop="0" />
 			</children>
 		</spritepack>
+		<spritepack name="gfx_moviereels_pack">
+ 			<url>res/gfx/misc/moviereels.png</url>
+			<children>
+				<child name="gfx_moviereel_1"    x="0"   y="0"   w="512" h="128" />
+				<child name="gfx_moviereel_2"    x="0"   y="128"   w="512" h="128" />
+				<child name="gfx_moviereel_3"    x="0"   y="256"   w="512" h="128" />
+				<child name="gfx_moviereel_4"    x="0"   y="384"   w="512" h="128" />
+			</children>
+		</spritepack>
+		<image name="gfx_letterbox_shadow" url="res/gfx/misc/letterbox_shadow.png" />
+
 		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />
 		<file name="resource_gui" url="config/gui.xml" />
 		<file name="settings_colors" url="config/settings_colors.xml" />

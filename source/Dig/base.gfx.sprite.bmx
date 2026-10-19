@@ -1021,7 +1021,6 @@ Type TSprite
 		Local offsetX:Int = Int(alignX * area.GetW())
 		Local offsetY:Int = Int(alignY * area.GetH())
 
-
 		While widthLeft > 0
 			Local widthPart:Float = Min(frameW, widthLeft) 'draw part of sprite or whole ?
 			DrawSubImageRect( parent.GetImage(), currentX + offsetX, y - offsetY, widthPart, area.GetH(), area.GetX() + framePos.x, area.GetY() + framePos.y, widthPart, frameH, 0 )
@@ -1034,9 +1033,24 @@ Type TSprite
 	Method TileDrawVertical(x:Float, y:Float, h:Float, alignment:TVec2D=Null, scale:Float=1.0)
 		Local heightLeft:Float = h
 		Local currentY:Float = y
+
+		Local alignX:Float = 0.0
+		Local alignY:Float = 0.0
+
+		If alignment
+			alignX = alignment.x
+			alignY = alignment.y
+		EndIf
+
+		'add offset
+		currentY :- offset.GetTop() * scale
+
+		Local offsetX:Int = Int(alignX * area.GetW())
+		Local offsetY:Int = Int(alignY * area.GetH())
+
 		While heightLeft >= 1
 			Local heightPart:Float = Min(area.GetH(), heightLeft) 'draw part of sprite or whole ?
-			DrawSubImageRect( parent.GetImage(), x + offset.GetLeft(), currentY + offset.GetTop(), area.GetW(), Float(Ceil(heightPart)), area.GetX(), area.GetY(), area.GetW(), Float(Ceil(heightPart)) )
+			DrawSubImageRect( parent.GetImage(), x + offsetX, currentY + offsetY, area.GetW(), Float(Ceil(heightPart)), area.GetX(), area.GetY(), area.GetW(), Float(Ceil(heightPart)) )
 			currentY :+ Floor(heightPart * scale)
 			heightLeft :- (heightPart * scale)
 		Wend
