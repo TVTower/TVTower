@@ -1262,6 +1262,7 @@ Type TDatabaseLoader
 		adContract.minImage = 0.01 * xml.FindValueFloat(nodeConditions, "min_image", adContract.minImage*100.0)
 		adContract.maxImage = 0.01 * xml.FindValueFloat(nodeConditions, "max_image", adContract.maxImage*100.0)
 		adContract.limitedToTargetGroup = xml.FindValueInt(nodeConditions, "target_group", adContract.limitedToTargetGroup)
+		adContract.limitedToTargetGroupOptional =xml.FindValueInt(nodeConditions, "target_group_optional", adContract.limitedToTargetGroupOptional)
 		adContract.limitedToProgrammeGenre = xml.FindValueInt(nodeConditions, "allowed_genre", adContract.limitedToProgrammeGenre)
 		adContract.limitedToProgrammeFlag = xml.FindValueInt(nodeConditions, "allowed_programme_flag", adContract.limitedToProgrammeFlag)
 '		adContract.forbiddenProgrammeGenre = xml.FindValueInt(nodeConditions, "prohibited_genre", adContract.forbiddenProgrammeGenre)
