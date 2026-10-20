@@ -150,8 +150,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	'returns the index of an array to use for a given hour
+	'Attention: The index can be negative ad any premature 
+	'           clamping could lead to always accessing the 
+	'           first element for any "negative index".
 	Method GetArrayIndex:Int(hour:Int)
-		Return Max(0, hour - getSkipHoursFromIndex())
+		Return hour - getSkipHoursFromIndex()
 	End Method
 
 
@@ -737,6 +740,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method AddObject:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:Int=True)
 		FixDayHour(day, hour)
 		Local arrayIndex:Int = GetArrayIndex(day*24 + hour)
+		'do not allow adding objects to hours before the start of the schedule
+		If arrayIndex < 0 Then Return False
 
 		'do not allow adding objects we do not own
 		If obj.GetOwner() <> owner Then Return False
