@@ -240,14 +240,31 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'===== common function for managed objects =====
 
+	Function IsValidSlotType:Int(slotType:Int)
+		Select slotType
+			Case TVTBroadcastMaterialType.PROGRAMME, ..
+				 TVTBroadcastMaterialType.ADVERTISEMENT, ..
+				 TVTBroadcastMaterialType.NEWSSHOW
+				Return True
+		End Select
+
+		Return False
+	End Function
+
 
 	'sets the given array to the one requested through slotType
 	Method GetObjectArray:TBroadcastMaterial[](slotType:Int=0)
-		If slotType = TVTBroadcastMaterialType.PROGRAMME Then Return programmes
-		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT Then Return advertisements
-		If slotType = TVTBroadcastMaterialType.NEWSSHOW Then Return newsShow
+		Select slotType
+			Case TVTBroadcastMaterialType.PROGRAMME
+				Return programmes
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
+				Return advertisements
+			Case TVTBroadcastMaterialType.NEWSSHOW
+				Return newsShow
+		End Select
 
-		Return New TBroadcastMaterial[0]
+		Throw "GetObjectArray: Invalid slotType " + slotType
+		'Return Null
 	End Method
 
 
@@ -255,6 +272,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'this is needed as assigning to "getObjectArray"-arrays is not possible for now
 	Method SetObjectArrayEntry:Int(obj:TBroadcastMaterial, slotType:Int=0, arrayIndex:Int)
 		If arrayIndex < 0 Then Throw "[ERROR] SetObjectArrayEntry: arrayIndex is negative"
+		If Not IsValidSlotType(slotType) Then Throw "[ERROR] SetObjectArrayEntry: Invalid slotType " + slotType
 
 		'resize array if needed
 		If arrayIndex >= GetObjectArray(slotType).length
@@ -267,18 +285,30 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
-		If slotType = TVTBroadcastMaterialType.PROGRAMME Then programmes[arrayIndex] = obj
-		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT Then advertisements[arrayIndex] = obj
-		If slotType = TVTBroadcastMaterialType.NEWSSHOW Then newsShow[arrayIndex] = obj
+		Select slotType
+			Case TVTBroadcastMaterialType.PROGRAMME
+				programmes[arrayIndex] = obj
+				Return True
+			Case TVTBroadcastMaterialType.ADVERTISEMENT
+				advertisements[arrayIndex] = obj
+				Return True
+			Case TVTBroadcastMaterialType.NEWSSHOW
+				newsShow[arrayIndex] = obj
+				Return True
+		End Select
 
-		Return True
+		' should not be reached as an IsInvalidSlotType()-check already would
+		' have thrown an error already if the slotType was invalid
+		Return False
 	End Method
 
 
 	'make the resizing more generic so the functions do not have to know the
 	'underlying array
-	Method ResizeObjectArray:Int(objectType:Int=0, newSize:Int=0)
-		Select objectType
+	Method ResizeObjectArray:Int(slotType:Int=0, newSize:Int=0)
+		If Not IsValidSlotType(slotType) Then Throw "[ERROR] ResizeObjectArray: Invalid slotType " + slotType
+
+		Select slotType
 			Case TVTBroadcastMaterialType.PROGRAMME
 				programmes = programmes[..newSize]
 				Return programmes.length = newSize
@@ -290,9 +320,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				Return newsShow.length = newSize
 		End Select
 
+		' should not be reached as an IsInvalidSlotType()-check already would
+		' have thrown an error already if the slotType was invalid
 		Return False
 	End Method
 
+	
 	Method TruncateHistory(daysToKeep:Int = 2)
 		local daysToTruncate:Int = GetWorldTime().GetDay() - (GetWorldTime().GetStartDay()+dayOffset) - daysToKeep
 		If daysToTruncate > 0
@@ -304,9 +337,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		EndIf
 	End Method
 
+	
 	'Set a time slot locked
 	'each lock is identifyable by "typeID_timeHours"
 	Method LockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
+		If Not IsValidSlotType(slotType) Then Throw "[ERROR] LockSlot: Invalid slotType " + slotType
+
 		FixDayHour(day, hour)
 
 		Local key:Int = day*24 + hour
@@ -330,10 +366,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 					currentLock.adLock :| lockTypeFlags
 			End Select
 		UnlockMutex(slotLockMutex)
+
+		Return True
 	End Method
 
 
 	Method UnlockSlot:int(slotType:int=0, day:int=-1, hour:int=-1, lockTypeFlags:int=0)
+		If Not IsValidSlotType(slotType) Then Throw "[ERROR] UnlockSlot: Invalid slotType " + slotType
+
 		FixDayHour(day, hour)
 
 		Local key:Int = day*24 + hour
@@ -354,10 +394,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				End Select
 			EndIf
 		UnlockMutex(slotLockMutex)
+
+		Return True
 	End Method
 
 
 	Method IsLockedSlot:int(slotType:Int = 0, day:Int=-1, hour:Int=-1)
+		If Not IsValidSlotType(slotType) Then Throw "[ERROR] IsLockedSlot: Invalid slotType " + slotType
+
 		FixDayHour(day, hour)
 
 		Local result:Int
@@ -374,11 +418,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				End Select
 			EndIf
 		UnlockMutex(slotLockMutex)
+
 		Return result
 	End Method
 
 
 	Method ContainsLockedSlot:int(slotType:Int = 0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1)
+		If Not IsValidSlotType(slotType) Then Throw "[ERROR] ContainsLockedSlot: Invalid slotType " + slotType
+		
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
 
@@ -502,6 +549,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns whether the slot can be used or is already in the past...
 	Function IsUseableTimeSlot:Int(slotType:Int=0, day:Int=-1, hour:Int=-1, currentDay:Int=-1, currentHour:Int=-1, currentMinute:Int=-1)
+		If Not IsValidSlotType(slotType) Then Throw "[ERROR] IsUseableTimeSlot: Invalid slotType " + slotType
+
 		FixDayHour(day, hour)
 		FixDayHour(currentDay, currentHour)
 		If currentMinute = -1 Then currentMinute = GetWorldTime().getDayMinute()
@@ -640,8 +689,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
 		Local plannedMaterial:TBroadcastMaterial
 
-'materials might differ from each other
-'instead of comparing objects we compare their content
+		'materials might differ from each other
+		'instead of comparing objects we compare their content
 		If not startAtLatestTime
 			For Local i:Int = minIndex To maxIndex
 				Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
