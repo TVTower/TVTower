@@ -62,14 +62,15 @@ Struct SFastRandom
 	Rem
 	bbdoc: Sets the new seed for the generator.
 	about:
-	@seed: New seed value.
+	@seed: New seed value. A seed of 0 or 2^31-1 is not allowed and will fallback to $1234. Negative seeds will be masked. 
 	End Rem
 	Method SeedRnd(seed:Int) NoDebug
 		self.seed = seed
-		'start with new state based on seed
-		self.state = seed
+		self.state = seed & $7fffffff
+		If self.state = 0 Or self.state = 2147483647
+			self.state = $1234
+		EndIf
 	End Method
-
 
 	Rem
 	bbdoc: Returns the current seed/state as integer.
