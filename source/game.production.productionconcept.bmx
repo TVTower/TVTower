@@ -1490,7 +1490,7 @@ Type TProductionFocusBase
 
 
 	Method New()
-		'focusPoints = new Int[6] 'already created in SetFictional()
+		focusPoints = new Int[4] 'SetFictional() may resize
 
 		SetFictional(false)
 	End Method
@@ -1526,9 +1526,9 @@ Type TProductionFocusBase
 		ElseIf focusPoints.length = 4 And bool
 			' convert focus points from non-fictional to fictional
 			focusPoints = [focusPoints[0], focusPoints[1], 0, 0, focusPoints[2], focusPoints[3]]
-		Else
+		ElseIf focusTypes.length <> focusPoints.length
 			' unsupported number of active focus types
-			TLogger.Log("TProductionFocusBase.SetFictional(): Unsupported number of active focus types: " + focusTypes.length, LOG_DEBUG)
+			throw "TProductionFocusBase.SetFictional(): Unsupported number of active focus types: " + focusTypes.length
 		EndIf
 
 		Return True
