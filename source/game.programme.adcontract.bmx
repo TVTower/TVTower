@@ -285,6 +285,7 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	Field blocks:Int = 1
 	'target group of the spot
 	Field limitedToTargetGroup:Int = -1
+	Field limitedToTargetGroupOptional:Int = 0
 	'is the ad broadcasting limit to a specific programme genre?
 	'eg. only "lovestory"
 	Field limitedToProgrammeGenre:Int = -1
@@ -418,41 +419,6 @@ Type TAdContractBase Extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetMinAudiencePercentage:Float(value:Float = -1)
 		If value < 0 Then value = minAudienceBase
 		Return MathHelper.Clamp(value, 0.0, 1.0)
-	End Method
-
-
-	'returns the non rounded minimum audience
-	'@playerID          playerID = -1 to use the avg audience maximum
-	'@getTotalAudience  avoid breaking down audience if a target group limit is set up
-	Method GetRawMinAudienceForPlayer:Int(playerID:Int, getTotalAudience:Int = False, audience:Int=-1)
-		Local useAudience:Int = audience
-		If audience < 0
-			If playerID <= 0
-				useAudience = GetStationMapCollection().GetAverageReceivers()
-			Else
-				useAudience = GetStationMap(playerID).GetReceivers()
-			EndIf
-		EndIf
-
-		If Not getTotalAudience
-			'if limited to specific target group ... break audience down
-			'to this specific group
-			If GetLimitedToTargetGroup() > 0
-				useAudience :* AudienceManager.GetTargetGroupPercentage(GetLimitedToTargetGroup())
-			EndIf
-		EndIf
-
-		Local result:Int = GetMinAudiencePercentage() * useAudience
-
-		result :* GetPlayerDifficulty(playerID).adcontractRawMinAudienceMod
-
-		Return result
-	End Method
-
-
-	'Gets minimum needed audience in absolute numbers
-	Method GetMinAudienceForPlayer:Int(playerID:Int, getTotalAudience:Int = False, audience:Int=-1)
-		Return TFunctions.RoundToBeautifulValue( GetRawMinAudienceForPlayer(playerID, getTotalAudience, audience) )
 	End Method
 
 
@@ -724,6 +690,8 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Field minAudience:Int = -1
 	'calculated minimum total audience value (on sign)
 	Field totalMinAudience:Int = -1
+	'set override base limitation in case of optional target group
+	Field limitedToTargetGroup:Int = 0 'TVTTargetGroup.UNEMPLOYED
 	' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	Field attractiveness:Float = -1
 	'the classification of this contract
@@ -774,6 +742,21 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If baseContract.title.ContainsString("${") Then Self.title = _ParseScriptExpressions(Self.base.title, True, Self.base.templateVariables)
 		If baseContract.description.ContainsString("${") Self.description = _ParseScriptExpressions(Self.base.description, True, Self.base.templateVariables)
 		If Self.base.templateVariables Then Self.base.templateVariables.Reset()
+
+		'randomly enable optional flags
+		If Self.base.limitedToTargetGroupOptional > 0
+			For Local i:Int = 1 Until TVTTargetGroup.count
+				Local optionalGroup:Int = TVTTargetGroup.GetAtIndex(i)
+				If Self.base.limitedToTargetGroupOptional & optionalGroup > 0
+					'40% chance to enable this group
+					If RandRange(0, 100) < 40
+						self.limitedToTargetGroup :| optionalGroup
+						'ensure required target group from base is present
+						self.limitedToTargetGroup :| Max(0, Self.base.limitedToTargetGroup)
+					EndIf
+				EndIf
+			Next
+		EndIf
 	End Method
 
 
@@ -1336,7 +1319,28 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'@playerID          playerID = -1 to use the avg audience maximum
 	'@getTotalAudience  avoid breaking down audience if a target group limit is set up
 	Method GetRawMinAudienceForPlayer:Int(playerID:Int, getTotalAudience:Int = False, audience:Int=-1)
-		Return base.GetRawMinAudienceForPlayer(playerID, getTotalAudience, audience)
+		Local useAudience:Int = audience
+		If audience < 0
+			If playerID <= 0
+				useAudience = GetStationMapCollection().GetAverageReceivers()
+			Else
+				useAudience = GetStationMap(playerID).GetReceivers()
+			EndIf
+		EndIf
+
+		If Not getTotalAudience
+			'if limited to specific target group ... break audience down
+			'to this specific group
+			If GetLimitedToTargetGroup() > 0
+				useAudience :* AudienceManager.GetTargetGroupPercentage(GetLimitedToTargetGroup())
+			EndIf
+		EndIf
+
+		Local result:Int = GetMinAudiencePercentage() * useAudience
+
+		result :* GetPlayerDifficulty(playerID).adcontractRawMinAudienceMod
+
+		Return result
 	End Method
 
 
@@ -1353,7 +1357,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			If owner > 0 And playerId = owner And minAudience >=0 Then Return minAudience
 		EndIf
 
-		Return base.GetMinAudienceForPlayer(playerID)
+		Return TFunctions.RoundToBeautifulValue( GetRawMinAudienceForPlayer(playerID) )
 	End Method
 
 
@@ -1509,10 +1513,12 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method IsLimitedToTargetGroup:Int(targetGroup:Int) {_exposeToLua}
+		If limitedToTargetGroup Then Return (limitedToTargetGroup & targetGroup) > 0
 		Return base.IsLimitedtoTargetGroup(targetGroup)
 	End Method
 
 	Method GetLimitedToTargetGroup:Int() {_exposeToLua}
+		If limitedToTargetGroup Then Return limitedToTargetGroup
 		Return base.GetLimitedToTargetGroup()
 	End Method
 
